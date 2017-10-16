@@ -142,7 +142,7 @@ class SessionClient(object):
 
 	def _authenticated(self, success, response):
 		"""Callback function for 'authenticated' from UMCP-Server."""
-		CORE.process('SessionClient(0x%x): _authenticated: success=%s  status=%s  message=%s' % (id(self), success, response.status, response.message))
+		CORE.process('SessionClient(0x%x): _authenticated: success=%s  status=%s  message=%s result=%r' % (id(self), success, response.status, response.message, response.result))
 		self._auth_response = self._auth_response_in
 		self._auth_response.status = response.status
 		self._auth_response.result = response.result
@@ -1040,6 +1040,7 @@ class CPAuth(CPgeneric):
 		# create new UMCP request
 		req = Request('AUTH')
 		req.body = data.get('options', {})
+		req.body['auth_type'] = None
 		return self._auth_request(req, sessionid)
 
 	def _auth_request(self, req, sessionid):

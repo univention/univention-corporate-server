@@ -68,7 +68,7 @@ from ..base import Base
 from ..error import UMC_Error, Unauthorized, BadRequest, NotFound, Forbidden, ServiceUnavailable
 from ..ldap import get_machine_connection, reset_cache
 from ..modules.sanitizers import StringSanitizer, DictSanitizer
-from ..modules.decorators import sanitize, simple_response, allow_get_request
+from ..modules.decorators import sanitize, sanitize_args, simple_response, allow_get_request
 
 TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
 
@@ -974,15 +974,7 @@ class SessionHandler(ProcessorBase):
 		if not self.authenticated and request.command != 'AUTH':
 			self.request(request)
 		elif request.command == 'AUTH':
-			from univention.management.console.protocol.server import Server
-			Server.reload()
-			try:
-				request.body['locale'] = str(self.i18n.locale)
-				self.__auth.authenticate(request)
-			except (TypeError, KeyError):
-				response = Response(request)
-				response.status = 400
-				self._response(response)
+			self._handle_auth(request)
 		elif request.command == 'GET' and 'newsession' in request.arguments:
 			CORE.info('Renewing session')
 			if self.processor:
@@ -992,6 +984,18 @@ class SessionHandler(ProcessorBase):
 		else:
 			self.initalize_processor(request)
 			self.processor.request(request)
+
+	def _handle_auth(self, request):
+		request.body = sanitize_args(DictSanitizer(dict(
+			username=StringSanitizer(required=True),
+			password=StringSanitizer(required=True),
+			auth_type=StringSanitizer(allow_none=True),
+			new_password=StringSanitizer(required=False),
+		)), 'request', {'request': request.body})
+		from univention.management.console.protocol.server import Server
+		Server.reload()
+		request.body['locale'] = str(self.i18n.locale)
+		self.__auth.authenticate(request)
 
 	def initalize_processor(self, request):
 		if not self.processor:

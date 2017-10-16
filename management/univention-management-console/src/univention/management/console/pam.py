@@ -56,6 +56,7 @@ from univention.lib.i18n import Translation, I18N_Error
 _ = Translation('univention.management.console').translate
 
 _('The password is too short.')
+_('The password is too long.')
 _('The password is too simple.')
 _('The password is a palindrome.')
 _('The password is based on a dictionary word.')
@@ -112,6 +113,10 @@ class PamAuth(object):
 			'BAD PASSWORD: it is WAY too short',
 			'Schlechtes Passwort: Es ist zu kurz',
 			'Schlechtes Passwort: Es ist VIEL zu kurz',
+		],
+		'The password is too long.': [
+			'You must choose a shorter password.',
+			'Sie müssen ein kürzeres Passwort wählen.',
 		],
 		'The password is too simple.': [
 			': Es ist zu einfach/systematisch',

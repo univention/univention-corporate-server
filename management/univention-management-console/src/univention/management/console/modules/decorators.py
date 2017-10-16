@@ -177,21 +177,24 @@ def _sanitize_list(function, sanitizer, sanitizer_parameters):
 
 def _sanitize(function, sanitizer):
 	def _response(self, request):
-		try:
-			options_name = 'request.options'
-			try:
-				request.options = sanitizer.sanitize(options_name, {options_name: request.options})
-			except MultiValidationError:
-				raise
-			except ValidationError as e:
-				multi_error = MultiValidationError()
-				multi_error.add_error(e, options_name)
-				raise multi_error
-		except MultiValidationError as e:
-			raise UnprocessableEntity(str(e), result=e.result())
+		request.options = sanitize_args('request.options', {'request.options': request.options})
 		return function(self, request)
 	copy_function_meta_data(function, _response)
 	return _response
+
+
+def sanitize_args(sanitizer, name, args):
+	try:
+		try:
+			return sanitizer.sanitize(name, args)
+		except MultiValidationError:
+			raise
+		except ValidationError as exc:
+			multi_error = MultiValidationError()
+			multi_error.add_error(exc, name)
+			raise multi_error
+	except MultiValidationError as exc:
+		raise UnprocessableEntity(str(exc), result=exc.result())
 
 
 def simple_response(function=None, with_flavor=None, with_progress=False):

@@ -433,6 +433,10 @@ msgstr "Das Passwort basiert auf einem Wörterbucheintrag."
 msgid "The password is too short."
 msgstr "Das Passwort ist zu kurz."
 
+#: univention/management/console/pam.py:58
+msgid "The password is too long."
+msgstr "Das Passwort ist zu lang."
+
 #: univention/management/console/pam.py:59
 msgid "The password is too simple."
 msgstr "Das Passwort ist zu einfach."

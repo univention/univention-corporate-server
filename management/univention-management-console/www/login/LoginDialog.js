@@ -226,7 +226,10 @@ define([
 			var newPasswordInput = dom.byId('umcLoginNewPassword');
 			var newPasswordRetypeInput = dom.byId('umcLoginNewPasswordRetype');
 
-			var data = {};
+			var data = {
+				username: '',
+				password: ''
+			};
 
 			tools.forIn({
 				username: dom.byId('umcLoginUsername'),
