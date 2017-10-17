@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-78) unstable; urgency=medium
+
+  * Bug #44989: Fix invisible login button after failed authentication
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 17 Oct 2017 17:31:02 +0200
+
 univention-management-console (9.0.80-77) unstable; urgency=medium
 
   * Bug #44526: Fix adding/removing modules from favorites not updating

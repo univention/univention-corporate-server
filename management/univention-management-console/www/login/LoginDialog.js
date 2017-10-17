@@ -176,7 +176,7 @@ define([
 
 		_resetForm: function() {
 			array.forEach(['umcLoginForm', 'umcNewPasswordForm', 'umcCustomPromptForm'], function(name) {
-				query('input', dom.byId(name)).forEach(function(node) {
+				query('input:not([type=submit])', dom.byId(name)).forEach(function(node) {
 					attr.set(node, 'value', '');
 				});
 			});
