@@ -1,3 +1,9 @@
+univention-samba4 (6.0.10-39) UNRELEASED; urgency=medium
+
+  * Bug #35071 QA feedback: trivial fix for Samba default
+
+ -- Arvid Requate <requate@univention.de>  Tue, 17 Oct 2017 14:00:09 +0200
+
 univention-samba4 (6.0.10-38) unstable; urgency=medium
 
   * Bug #37946: Removed UCR variable samba/logonscript

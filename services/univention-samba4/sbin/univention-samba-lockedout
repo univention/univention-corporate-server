@@ -111,7 +111,7 @@ def get_lockout_duration():
 		output, re.MULTILINE)
 
 	try:
-		return int(matches[0])
+		return int(matches[0]) or 30
 	except (IndexError, ValueError):
 		exit("Unable to retrieve lockout-duration via samba-tool")
 
