@@ -1,3 +1,9 @@
+ucs-test (7.0.23-61) unstable; urgency=medium
+
+  * Bug #45501: fix 10_ldap/27reconnect_uldap_2 on DC Slave/Backup systems
+
+ -- Florian Best <best@univention.de>  Tue, 17 Oct 2017 14:01:13 +0200
+
 ucs-test (7.0.23-60) unstable; urgency=medium
 
   * Bug #45501: print UCS and ucs-test version before starting ucs-test

@@ -13,11 +13,13 @@ import univention.testing.udm
 import univention.testing.ucr
 import univention.uldap
 import univention.admin.uldap
+import univention.admin.uexceptions
 from thread import start_new_thread
 import traceback
 import time
 import subprocess
 from ldap.filter import filter_format
+from ldap import INSUFFICIENT_ACCESS
 
 
 def delayed_slapd_restart():
@@ -45,14 +47,15 @@ def main():
 
 		# test with univention.uldap and univention.admin.uldap connection objects
 		for access in (univention.uldap.access, univention.admin.uldap.access):
-
+			follow_referral = False  # TODO: implement a truish variant?
 			# get connection
 			lo = access(
 				host=ucr['hostname'],
 				base=ucr.get('ldap/base'),
 				binddn=account.binddn,
 				bindpw=account.bindpw,
-				start_tls=2)
+				start_tls=2,
+				follow_referral=follow_referral)
 
 			if isinstance(lo, tuple):
 				lo = lo[0]
@@ -68,7 +71,7 @@ def main():
 					lo.search(filter=filter_s)[0][0]
 			except Exception as exc:
 				print traceback.format_exc()
-				utils.fail('lo.search() is not restart-safe with %r: %s' % (lo, exc,))
+				utils.fail('lo.search() is not restart-safe with %r follow_referral=%r: %s' % (lo, follow_referral, exc,))
 
 			# test lo.modify operation
 			restart_finished = False
@@ -79,9 +82,11 @@ def main():
 					new_description = 'Foo bar %s' % (time.time(),)
 					lo.modify(user_dn, [['description', old_description, new_description]])
 					old_description = new_description
+			except (INSUFFICIENT_ACCESS, univention.admin.uexceptions.permissionDenied):
+				pass  # On DC Slaves no objects can be modified
 			except Exception as exc:
 				print traceback.format_exc()
-				utils.fail('lo.modify() is not restart-safe with %r: %s' % (lo, exc,))
+				utils.fail('lo.modify() is not restart-safe with %r follow_referral=%r: %s' % (lo, follow_referral, exc,))
 
 			# TODO: add a check for rename() and add()
 
