@@ -53,6 +53,7 @@ ucr = ConfigRegistry()
 ucr.load()
 check_sasl_username = ucr.is_true("mail/postfix/policy/listfilter/use_sasl_username", True)
 _do_debug = ucr.is_true("mail/postfix/policy/listfilter/debug", False)
+is_cyrus = ucr.is_true("mail/cyrus", False) or not ucr.is_true("mail/dovecot", False)
 
 
 def debug(msg, *args):
@@ -115,12 +116,29 @@ def listfilter(attrib):
 							return "REJECT Access denied for empty sender to restricted list %s" % (recipient, )
 
 					# get dn and groups of sender
+					user_filter = (
+						'(&'
+						'(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))'
+						'(!(uidNumber=0))(!(uid=*$))(!(univentionObjectFlag=functional))'
+						'{}'
+						')'
+					)
 					if check_sasl_username:
-						ldap_filter = filter_format('(&(uid=%s)(objectclass=posixAccount))', (sender,))
+						if is_cyrus:
+							ldap_filter = filter_format(
+								user_filter.format('(|(uid=%s)(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))'),
+								(sender, sender, sender, sender)
+							)
+						else:
+							ldap_filter = filter_format(
+								user_filter.format('(uid=%s)'),
+								(sender,)
+							)
 					else:
 						ldap_filter = filter_format(
-							'(&(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))(objectclass=posixAccount))',
-							(sender, sender, sender))
+							user_filter.format('(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))'),
+							(sender, sender, sender)
+						)
 					user_result = ldap.search(base=options.ldap_base, filter=ldap_filter, attr=["dn"])
 					if user_result:
 						user_dn = user_result[0][0]

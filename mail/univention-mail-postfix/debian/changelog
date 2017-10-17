@@ -1,3 +1,9 @@
+univention-mail-postfix (11.0.1-18) unstable; urgency=low
+
+  * Bug #45422: handle Cyrus SASL in listfilter.py
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 16 Oct 2017 15:07:53 +0200
+
 univention-mail-postfix (11.0.1-17) unstable; urgency=low
 
   * Bug #44473: include main.cf.local in /etc/postfix/main.cf
