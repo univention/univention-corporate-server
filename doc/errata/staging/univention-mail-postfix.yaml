@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-mail-postfix
-fix: 11.0.1-18A~4.2.0.201710171216
+fix: 11.0.1-20A~4.2.0.201710171246
 desc: |
  This update addresses the following issue(s):
  * The listfilter policy service can now write debugging information to the
