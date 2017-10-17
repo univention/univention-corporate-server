@@ -188,8 +188,9 @@ class FileSetting(Setting):
 			return None
 
 	def _touch_file(self, filename):
-		mkdir(os.path.dirname(filename))
-		open(filename, 'wb')
+		if not os.path.exists(filename):
+			mkdir(os.path.dirname(filename))
+			open(filename, 'wb')
 
 	def _write_file_content(self, filename, content):
 		try:
@@ -243,7 +244,7 @@ class PasswordSetting(Setting):
 
 class PasswordFileSetting(FileSetting, PasswordSetting):
 	def _touch_file(self, filename):
-		super(FileSetting, self)._touch_file(filename)
+		super(PasswordFileSetting, self)._touch_file(filename)
 		os.chmod(filename, 0600)
 
 
