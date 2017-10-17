@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-appcenter
-fix: 6.0.10-13A~4.2.0.201710061352
+fix: 6.0.10-14A~4.2.0.201710171330
 desc: |-
   This update addresses the following issue(s):
   * Fix problems when trying to upgrade an App that has no newer version.
