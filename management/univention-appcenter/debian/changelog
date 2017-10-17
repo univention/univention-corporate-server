@@ -1,3 +1,9 @@
+univention-appcenter (6.0.10-14) unstable; urgency=medium
+
+  * Bug #45493: univention-app dev-test may download from other servers
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Oct 2017 13:28:05 +0200
+
 univention-appcenter (6.0.10-13) unstable; urgency=medium
 
   * Bug #45493: Add univention-app dev-test

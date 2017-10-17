@@ -48,11 +48,12 @@ class DevTest(UniventionAppAction):
 
 	def setup_parser(self, parser):
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be tested')
+		parser.add_argument('--appcenter-server', help='The server from which the test script is downloaded. Useful if you want to test an App installed regularly with the newest test script from the Test App Center server')
 		parser.add_argument('test_args', nargs=REMAINDER, help='Arguments passed to the test script')
 
 	@possible_network_error
-	def _download_file(self, app, fname):
-		url = os.path.join(app.get_server(), 'univention-repository', app.get_ucs_version(), 'maintained', 'component', app.component_id, 'test')
+	def _download_file(self, server, app, fname):
+		url = os.path.join(server or app.get_server(), 'univention-repository', app.get_ucs_version(), 'maintained', 'component', app.component_id, 'test')
 		self.log('Downloading "%s"...' % url)
 		request = Request(url)
 		response = urlopen(request)
@@ -75,7 +76,7 @@ class DevTest(UniventionAppAction):
 		self.log('%s is installed' % args.app)
 		fname = os.path.join(gettempdir(), '%s.test' % args.app.id)
 		try:
-			self._download_file(args.app, fname)
+			self._download_file(args.appcenter_server, args.app, fname)
 		except NetworkError:
 			self.log('No script downloaded.')
 		return self._run_file(args.app, fname, args.test_args)
