@@ -95,9 +95,9 @@ class Upgrade(Install):
 		if app > self.original_app:
 			super(Upgrade, self)._send_information(app, status)
 
-	def _install_packages(self, packages, percentage_end, update=True):
+	def _install_packages(self, packages, update=True):
 		super(Upgrade, self)._install_packages(packages, 0, update=update)
-		return self._apt_get('dist-upgrade', [], percentage_end, update=False)
+		return self._apt_get('dist-upgrade', [], update=False)
 
 	@classmethod
 	def iter_upgradable_apps(self):

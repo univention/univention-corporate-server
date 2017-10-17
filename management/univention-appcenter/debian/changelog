@@ -1,3 +1,9 @@
+univention-appcenter (6.0.10-17) unstable; urgency=medium
+
+  * Bug #43238: Fix package installations without terminal
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Oct 2017 14:01:28 +0200
+
 univention-appcenter (6.0.10-16) unstable; urgency=medium
 
   * Bug #45543: Fix permissions on PasswordFile setting
