@@ -12,5 +12,5 @@ try:
 				print(line.rstrip())
 		print('# --- end of {} ---\n'.format(filename))
 except (IOError, OSError) as exc:
-	print('\n# ERROR: {}'.format(exc))
+	print('\n# ERROR including {}: {}\n'.format(filename, exc))
 @!@
