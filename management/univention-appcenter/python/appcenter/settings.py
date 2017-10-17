@@ -187,11 +187,15 @@ class FileSetting(Setting):
 		except EnvironmentError:
 			return None
 
+	def _touch_file(self, filename):
+		mkdir(os.path.dirname(filename))
+		open(filename, 'wb')
+
 	def _write_file_content(self, filename, content):
 		try:
 			if content:
 				settings_logger.debug('Writing to %s' % filename)
-				mkdir(os.path.dirname(filename))
+				self._touch_file(filename)
 				with open(filename, 'wb') as fd:
 					fd.write(content)
 			else:
@@ -209,7 +213,10 @@ class FileSetting(Setting):
 				raise SettingValueError('Cannot read %s while %s is not running' % (self.name, app))
 			from univention.appcenter.docker import Docker
 			docker = Docker(app)
-			return self._read_file_content(docker.path(self.filename))
+			value = self._read_file_content(docker.path(self.filename))
+			if value is None:
+				value = self.get_initial_value()
+			return value
 
 	def set_value(self, app, value, together_config_settings, part):
 		if part == 'outside':
@@ -235,7 +242,9 @@ class PasswordSetting(Setting):
 
 
 class PasswordFileSetting(FileSetting, PasswordSetting):
-	pass
+	def _touch_file(self, filename):
+		super(FileSetting, self)._touch_file(filename)
+		os.chmod(filename, 0600)
 
 
 class StatusSetting(Setting):

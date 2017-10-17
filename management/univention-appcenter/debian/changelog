@@ -1,3 +1,9 @@
+univention-appcenter (6.0.10-16) unstable; urgency=medium
+
+  * Bug #45543: Fix permissions on PasswordFile setting
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Oct 2017 11:44:07 +0200
+
 univention-appcenter (6.0.10-15) unstable; urgency=medium
 
   * Bug #40110: Verify that the Docker image could be downloaded
