@@ -1,3 +1,15 @@
+univention-mail-postfix (11.0.1-20) unstable; urgency=low
+
+  * Bug #44473: mention filename in error message
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 17 Oct 2017 12:37:25 +0200
+
+univention-mail-postfix (11.0.1-19) unstable; urgency=low
+
+  * Bug #44473: update include mechanism for main.cf.local and master.cf.local
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 20 Sep 2017 13:05:15 +0200
+
 univention-mail-postfix (11.0.1-18) unstable; urgency=low
 
   * Bug #45422: handle Cyrus SASL in listfilter.py
