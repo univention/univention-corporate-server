@@ -19,3 +19,5 @@ desc: |
    parameter "name resolve order" can now be set through UCR variable
    samba/name/resolve/order.
 bug: [35071, 35072, 41057, 37946, 36089]
+erratum: 200
+announced: 2017-10-18
