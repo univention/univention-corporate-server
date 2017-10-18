@@ -10,3 +10,5 @@ desc: |
  * A failed login caused the login button to become invisible.
    This is now prevented.
 bug: [44526, 44989]
+erratum: 202
+announced: 2017-10-18
