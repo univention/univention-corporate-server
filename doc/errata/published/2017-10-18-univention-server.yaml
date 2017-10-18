@@ -9,3 +9,5 @@ desc: |
  * On DC backup and slave check for pending listener transactions
    before changing the server password.
 bug: [39283]
+erratum: 203
+announced: 2017-10-18
