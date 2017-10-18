@@ -42,7 +42,7 @@ import time
 import ldap
 
 from univention.appcenter.actions import UniventionAppAction
-from univention.appcenter.exceptions import CredentialsNoUsernameError, CredentialsNoPasswordError, ConnectionFailed, ConnectionFailedSecretFile, ConnectionFailedInvalidUserCredentials, ConnectionFailedInvalidMachineCredentials, ConnectionFailedServerDown, ConnectionFailedInvalidAdminCredentials
+from univention.appcenter.exceptions import CredentialsNoUsernameError, CredentialsNoPasswordError, ConnectionFailed, ConnectionFailedSecretFile, ConnectionFailedInvalidUserCredentials, ConnectionFailedInvalidMachineCredentials, ConnectionFailedServerDown, ConnectionFailedInvalidAdminCredentials, ConnectionFailedConnectError
 from univention.appcenter.udm import search_objects, get_machine_connection, get_admin_connection, get_connection
 from univention.appcenter.ucr import ucr_get
 
@@ -125,6 +125,8 @@ class CredentialsAction(UniventionAppAction):
 			raise ConnectionFailedSecretFile()
 		except ldap.INVALID_CREDENTIALS:
 			raise ConnectionFailedInvalidMachineCredentials()
+		except ldap.CONNECT_ERROR as exc:
+			raise ConnectionFailedConnectError(exc)
 		except ldap.SERVER_DOWN:
 			raise ConnectionFailedServerDown()
 
@@ -135,6 +137,8 @@ class CredentialsAction(UniventionAppAction):
 			raise ConnectionFailedSecretFile()
 		except ldap.INVALID_CREDENTIALS:
 			raise ConnectionFailedInvalidAdminCredentials()
+		except ldap.CONNECT_ERROR as exc:
+			raise ConnectionFailedConnectError(exc)
 		except ldap.SERVER_DOWN:
 			raise ConnectionFailedServerDown()
 
@@ -169,6 +173,8 @@ class CredentialsAction(UniventionAppAction):
 					if not userdn or not password:
 						raise ldap.INVALID_CREDENTIALS()
 					return get_connection(userdn, password)
+				except ldap.CONNECT_ERROR as exc:
+					raise ConnectionFailedConnectError(exc)
 				except ldap.SERVER_DOWN:
 					raise ConnectionFailedServerDown()
 				except ldap.INVALID_CREDENTIALS:

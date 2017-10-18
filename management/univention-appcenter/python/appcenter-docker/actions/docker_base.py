@@ -43,7 +43,7 @@ from univention.appcenter.app_cache import Apps
 from univention.appcenter.docker import Docker
 from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.actions import get_action
-from univention.appcenter.exceptions import DockerCouldNotStartContainer, DatabaseConnectorError, AppCenterErrorContainerStart
+from univention.appcenter.exceptions import DockerCouldNotStartContainer, DatabaseConnectorError, AppCenterErrorContainerStart, DockerImagePullFailed
 from univention.appcenter.actions.service import Start, Stop
 from univention.appcenter.utils import mkdir  # get_locale
 from univention.appcenter.ucr import ucr_keys, ucr_get, ucr_is_true
@@ -156,8 +156,10 @@ class DockerActionMixin(object):
 		self.log('Verifying Docker registry manifest for app image %s' % docker.image)
 		docker.verify()
 
-		self.log('Downloading app image %s' % docker.image)
-		docker.pull()
+		if args.pull_image:
+			self.log('Downloading app image %s' % docker.image)
+			if not docker.pull():
+				raise DockerImagePullFailed(docker.image)
 
 		self.log('Initializing app image')
 		hostname = explode_dn(hostdn, 1)[0]

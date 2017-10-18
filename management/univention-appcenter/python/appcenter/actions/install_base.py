@@ -50,35 +50,6 @@ from univention.appcenter.packages import reload_package_manager
 from univention.appcenter.settings import SettingValueError
 
 
-class _AptLogger(object):
-
-	def __init__(self, action, end):
-		import re
-		self.action = action
-		self.progress_re = re.compile('^pmstatus:[^:]+:((\d+\.)?\d+):.*$')
-		self.download_re = re.compile('^dlstatus:[^:]+:((\d+\.)?\d+):.*$')
-		self.start = self.action.percentage
-		self.end = end
-
-	def debug(self, msg):
-		self.action.debug(msg)
-
-	def info(self, msg):
-		match = self.progress_re.match(msg)
-		if match:
-			if self.end:
-				percentage = float(match.groups()[0]) / 100
-				percentage = self.start + ((self.end - self.start) * percentage)
-				self.action.percentage = percentage
-		elif self.download_re.match(msg):
-			pass
-		else:
-			self.action.log(msg)
-
-	def warn(self, msg):
-		self.action.warn(msg)
-
-
 class StoreConfigAction(Action):
 	def __call__(self, parser, namespace, value, option_string=None):
 		set_vars = {}
@@ -332,13 +303,12 @@ class InstallRemoveUpgrade(Register):
 		self._subprocess(['/usr/bin/apt-get', 'update'])
 		reload_package_manager()
 
-	def _apt_get(self, command, packages, percentage_end=100, update=True):
+	def _apt_get(self, command, packages, update=True):
 		env = os.environ.copy()
 		env['DEBIAN_FRONTEND'] = 'noninteractive'
 		if update:
 			self._apt_get_update()
-		apt_logger = _AptLogger(self, percentage_end)
 		try:
-			return self._subprocess(['/usr/bin/apt-get', '-o', 'APT::Status-Fd=1', '-o', 'DPkg::Options::=--force-confold', '-o', 'DPkg::Options::=--force-overwrite', '-o', 'DPkg::Options::=--force-overwrite-dir', '--trivial-only=no', '--assume-yes', '--auto-remove', command] + packages, logger=apt_logger, env=env)
+			return self._subprocess(['/usr/bin/apt-get', '-o', 'DPkg::Options::=--force-confold', '-o', 'DPkg::Options::=--force-overwrite', '-o', 'DPkg::Options::=--force-overwrite-dir', '--trivial-only=no', '--assume-yes', '--auto-remove', command] + packages, env=env)
 		finally:
 			reload_package_manager()

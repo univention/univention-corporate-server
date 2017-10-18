@@ -1,5 +1,24 @@
+univention-appcenter (6.0.10-17) unstable; urgency=medium
+
+  * Bug #43238: Fix package installations without terminal
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Oct 2017 14:01:28 +0200
+
+univention-appcenter (6.0.10-16) unstable; urgency=medium
+
+  * Bug #45543: Fix permissions on PasswordFile setting
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Oct 2017 11:44:07 +0200
+
+univention-appcenter (6.0.10-15) unstable; urgency=medium
+
+  * Bug #40110: Verify that the Docker image could be downloaded
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 16 Oct 2017 14:11:02 +0200
+
 univention-appcenter (6.0.10-14) unstable; urgency=medium
 
+  * Bug #39325: Handle CONNECT_ERROR for LDAP connections
   * Bug #45493: univention-app dev-test may download from other servers
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Oct 2017 13:28:05 +0200

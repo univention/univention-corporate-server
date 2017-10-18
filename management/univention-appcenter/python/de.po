@@ -94,3 +94,8 @@ msgid ""
 msgstr ""
 "Es gab ein Problem mit der HTTP-Antwort des Servers (BadStatusLine). "
 "Bitte versuchen Sie es später noch einmal."
+
+msgid ""
+"LDAP connection refused. There may be an issue with the certificate of the LDAP server. Please also check the proxy and firewall settings, if any."
+msgstr ""
+"LDAP-Verbindung wurde verweigert. Das kann an einem Problem mit dem Zertifikat des LDAP-Servers liegen. Bitte prüfen Sie auch die Proxy- und Firewall-Einstellungen, sofern vorhanden."
