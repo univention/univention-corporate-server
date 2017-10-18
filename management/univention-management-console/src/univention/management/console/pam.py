@@ -33,17 +33,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
 import re
 import traceback
 
+from ldap.filter import filter_format
 from PAM import (
     PAM_ACCT_EXPIRED, PAM_AUTH_ERR, PAM_AUTHTOK_ERR, PAM_AUTHTOK_RECOVER_ERR, PAM_CONV, PAM_ERROR_MSG,
     PAM_NEW_AUTHTOK_REQD, PAM_PROMPT_ECHO_OFF, PAM_PROMPT_ECHO_ON, PAM_TEXT_INFO, PAM_USER, PAM_USER_UNKNOWN,
     error as PAMError, pam as PAM,
 )
 
+import univention.admin
 from univention.lib.i18n import I18N_Error, Translation
 from univention.management.console.config import ucr
+from univention.management.console.ldap import get_machine_connection, get_user_connection
 from univention.management.console.log import AUTH
 
 
@@ -266,10 +271,38 @@ class PamAuth(object):
             self.pam.chauthtok()
         except PAMError as pam_err:
             AUTH.warn('Changing password failed (%s). Prompts: %r' % (pam_err, prompts))
+            try:
+                self.change_password_ldap(username, old_password, new_password)
+            except Exception as exc:
+                AUTH.process('Changing the user password via LDAP failed: %s: %s' % (type(exc).__name__, exc))
+                pass  # ignore a lot of exceptions, password changing failed!
+            else:
+                return  # the password was sucessfully changed
             message = self._parse_error_message_from(pam_err.args, prompts)
             raise PasswordChangeFailed(
                 ('%s %s %s' % (self._('Changing password failed.'), message, self._get_password_complexity_message())).rstrip(),
             )
+
+    users_module = None
+
+    def change_password_ldap(self, username, password, new_password):
+        """Changes the users password via UDM if it is a users/ldap"""
+        lo, po = get_machine_connection()
+        if self.users_module is None:
+            univention.admin.modules.update()
+            self.users_module = univention.admin.modules.get('users/ldap')
+            univention.admin.modules.init(lo, po, self.users_module)
+        users = self.users_module
+        try:
+            user = users.lookup(None, lo, filter_format('username=%s', [username]), unique=True, required=True)[0]
+        except IndexError:
+            raise PasswordChangeFailed('Not an LDAP user.')
+        lo, po = get_user_connection(bind=lambda lo: lo.bind(user.dn, password))
+        user = users.object(None, lo, po, user.dn)
+        user.open()
+        #user['overridePWHistory'] = '1'
+        user['password'] = new_password
+        user.modify()
 
     def init(self):  # type: () -> PAM
         pam = PAM()
