@@ -69,6 +69,7 @@ import tempfile
 import shutil
 import logging
 import atexit
+import ssl
 
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
 RE_SPLIT_MULTI = re.compile('[ ,]+')
@@ -489,6 +490,9 @@ class UCSHttpServer(object):
                 raise ConfigurationError(uri, reason)
             else:  # proxy
                 raise ProxyError(uri, reason)
+        except ssl.SSLError as exc:
+            self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), exc, exc_info=True)
+            raise ConfigurationError(uri, 'ssl error in network connection')
         except socket.timeout as ex:
             self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), ex, exc_info=True)
             raise ConfigurationError(uri, 'timeout in network connection')
