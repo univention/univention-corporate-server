@@ -648,6 +648,7 @@ set_windows_gateway () {
 	local DOMAIN="${2:?Missing domain name}"
 	local GATEWAY="${3:?Missing gateway address}"
 	local DOMAIN_ADMIN_ACCOUNT="${4:-administrator}"
+	local DOMAIN_MODE="${5:-False}"
 	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
 	local LOCAL_ADMIN_ACCOUNT="testadmin"
 	local LOCAL_ADMIN_PWD="Univention@99"
@@ -655,7 +656,7 @@ set_windows_gateway () {
 	python -c "
 import univention.winexe
 win=univention.winexe.WinExe('dummydomain', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
-win.set_gateway('$GATEWAY')
+win.set_gateway('$GATEWAY', $DOMAIN_MODE)
 "
 }
 
