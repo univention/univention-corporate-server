@@ -526,7 +526,7 @@ class ProcessorBase(Base):
 			# inform client
 			res = Response(msg)
 			res.status = SERVER_ERR_MODULE_FAILED  # error connecting to module process
-			res.message = status_description(res.status)
+			res.message = '%s: %s' % (status_description(res.status), mod.name)
 			self.result(res)
 			# cleanup module
 			mod.signal_disconnect('closed', notifier.Callback(self._socket_died))
