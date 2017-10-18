@@ -13,3 +13,5 @@ desc: |-
     upgrade to that version is running.
   * The development tools now support App specific Test scripts.
 bug: [44384, 44607, 44502, 45429, 45493]
+erratum: 199
+announced: 2017-10-18
