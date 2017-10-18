@@ -11,3 +11,5 @@ desc: |
  * The transition for hiding and showing the 'Favorites' category
    works properly again.
 bug: [45261, 44526]
+erratum: 201
+announced: 2017-10-18
