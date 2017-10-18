@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## -*- coding: utf-8 -*-
 ## desc: test automatic reconnect of uldap.py
-## tags: [apptest]
+## tags: [apptest, skip_admember]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave]
 ## exposure: dangerous
 ## packages:
