@@ -807,4 +807,15 @@ assert_app_master_packages () {
 	# for app in "$@"; do
 	return $rv
 }
+
+run_app_appliance_tests () {
+	local app rv=0
+	for app in "$@"; do
+		echo $app >>/var/cache/appcenter-installed.txt
+	done
+	install_with_unmaintained ucs-test-appcenter ucs-test-checks || rv=$?
+	run_minimal_apptests || rv=$?
+	return $rv
+}
+
 # vim:set filetype=sh ts=4:
