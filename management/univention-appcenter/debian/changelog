@@ -1,3 +1,9 @@
+univention-appcenter (6.0.10-18) unstable; urgency=medium
+
+  * Bug #45569: log abort exceptions as fatal to let umc show a error message
+
+ -- Felix Botner <botner@univention.de>  Thu, 19 Oct 2017 15:29:47 +0200
+
 univention-appcenter (6.0.10-17) unstable; urgency=medium
 
   * Bug #43238: Fix package installations without terminal

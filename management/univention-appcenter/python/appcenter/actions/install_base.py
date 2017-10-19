@@ -99,7 +99,7 @@ class InstallRemoveUpgrade(Register):
 					except (Abort, KeyboardInterrupt) as exc:
 						msg = str(exc)
 						if msg:
-							self.warn(msg)
+							self.fatal(msg)
 						self.warn('Aborting...')
 						if exc.__class__ is KeyboardInterrupt:
 							status = 401
