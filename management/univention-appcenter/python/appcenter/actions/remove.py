@@ -69,4 +69,4 @@ class Remove(InstallRemoveUpgrade):
 
 	def _remove_app(self, app, args):
 		self._configure(app, args)
-		self._apt_get('remove', app.get_packages(additional=False), 45, update=False)
+		self._apt_get('remove', app.get_packages(additional=False), update=False)
