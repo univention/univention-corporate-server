@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-appcenter
-fix: 6.0.10-17A~4.2.0.201710191114
+fix: 6.0.10-18A~4.2.0.201710191533
 desc: |-
   This update addresses the following issue(s):
   * Fixed an issue when using the App Center on the command line without
@@ -11,4 +11,5 @@ desc: |-
   * Fixed the permissions of PasswordFile settings.
   * Gracefully fail when the image of a Docker App cannot be downloaded.
   * Handle certain (SSL related) LDAP connection problems more gracefully.
-bug: [43238, 45543, 40110, 39325]
+  * Added more logging in UMC App Center.
+bug: [43238, 45543, 40110, 39325, 45569]
