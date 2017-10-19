@@ -1,3 +1,9 @@
+univention-appcenter (5.0.23-94) unstable; urgency=medium
+
+  * Bug #45290: store /etc/machine.secret during image update
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 19 Oct 2017 11:23:16 +0200
+
 univention-appcenter (5.0.23-93) unstable; urgency=medium
 
   * Bug #44785: apply host proxy settings for container

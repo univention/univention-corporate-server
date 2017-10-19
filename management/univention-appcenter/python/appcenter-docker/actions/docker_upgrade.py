@@ -33,6 +33,9 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+import os
+import shutil
+
 from univention.appcenter.docker import rm as docker_rm
 from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.upgrade import Upgrade
@@ -148,6 +151,10 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self.log('Saving data from old container (%s)' % self.old_app)
 		old_docker = self._get_docker(self.old_app)
 		old_container = old_docker.container
+		secret_on_host = os.path.join('/var/lib/univention-appcenter/apps', app.id, 'machine.secret')
+		secret_in_container = docker.path('/etc/machine.secret')
+		if os.path.isfile(secret_in_container):
+			shutil.copy2(secret_in_container, secret_on_host)
 		if self._backup_container(self.old_app, backup_data='copy') is False:
 			raise Abort('Could not backup container!')
 		self._had_image_upgrade = True
