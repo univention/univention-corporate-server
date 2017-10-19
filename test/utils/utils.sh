@@ -234,6 +234,20 @@ wait_for_replication () {
 	return 0
 }
 
+wait_for_setup_process () {
+	local i
+	local setup_file="/var/www/ucs_setup_process_status.json"
+	sleep 10
+	for i in $(seq 1 1200); do
+		if [ ! -e "$setup_file" ]; then
+			return 0
+		fi
+		sleep 3
+	done
+	echo "setup did not finish after 3600s, timeout"
+	return 1
+}
+
 switch_to_test_app_center () {
 	local app rv=0
 	ucr set repository/app_center/server=appcenter-test.software-univention.de update/secure_apt=no appcenter/index/verify=no
