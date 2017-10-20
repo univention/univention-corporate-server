@@ -227,20 +227,28 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		self.driver.get(self.base_url + 'univention/logout')
 
 	def open_module(self, name):
+		self.search_module(name)
+		self.click_tile(name)
+
+	def search_module(self, name):
 		self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
 
-		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcLiveSearch ")]'
+		search_field_xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcLiveSearch ")]'
 		self.wait_until(
 			expected_conditions.presence_of_element_located(
-				(webdriver.common.by.By.XPATH, xpath)
+				(webdriver.common.by.By.XPATH, search_field_xpath)
 			)
 		)
-		search_field = self.driver.find_element_by_xpath(xpath)
+		search_field = self.driver.find_element_by_xpath(search_field_xpath)
 		search_field.click()
-		search_field.send_keys(name)
-		search_field.send_keys(Keys.RETURN)
 
-		self.click_tile(name)
+		input_field_xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcLiveSearch ")]//input[contains(concat(" ", normalize-space(@class), " "), " dijitInputInner ")]'
+		input_field = self.driver.find_element_by_xpath(input_field_xpath)
+		input_field.click()
+		input_field.send_keys(name)
+		input_field.send_keys(Keys.RETURN)
+
+		self.wait_for_text(_('Search query'))
 
 	#def check_checkbox_by_name(self, inputname, checked=True):
 	#	"""

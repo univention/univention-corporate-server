@@ -6,8 +6,6 @@
 ## roles-not: [basesystem]
 ## exposure: dangerous
 
-from selenium import webdriver
-from selenium.webdriver.support import expected_conditions
 from univention.admin import localization
 import os.path
 import subprocess
@@ -246,16 +244,7 @@ class UMCTester(object):
 			self.selenium.wait_for_text(_('Search query'), timeout=1)
 
 	def get_available_modules(self):
-		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcLiveSearch ")]'
-		self.selenium.wait_until(
-			expected_conditions.presence_of_element_located(
-				(webdriver.common.by.By.XPATH, xpath)
-			)
-		)
-		search_field = self.selenium.driver.find_element_by_xpath(xpath)
-		search_field.click()
-		search_field.send_keys('*')
-		self.selenium.wait_for_text(_('Search query'))
+		self.selenium.search_module('*')
 
 		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")]'
 		tile_headings = self.selenium.driver.find_elements_by_xpath(xpath)
