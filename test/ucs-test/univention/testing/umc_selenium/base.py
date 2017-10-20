@@ -25,6 +25,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from PIL import Image
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions
@@ -96,7 +97,9 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 				})
 		else:
 			if self.browser == 'chrome':
-				self.driver = webdriver.Chrome()
+				chrome_options = webdriver.ChromeOptions()
+				chrome_options.add_argument('--no-sandbox')
+				self.driver = webdriver.Chrome(chrome_options=chrome_options)
 			else:
 				self.driver = webdriver.Firefox()
 
@@ -141,13 +144,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		time.sleep(2)
 
 		if hide_notifications:
-			try:
-				notifications_container = self.driver.find_element_by_xpath(
-					'//*[contains(concat(" ", normalize-space(@class), " "), " umcNotificationContainer ")]'
-				)
-				self.driver.execute_script('arguments[0].style.display="None"', notifications_container)
-			except selenium_exceptions.NoSuchElementException:
-				hide_notifications = False
+			self.show_notifications(False)
 
 		if append_timestamp:
 			timestamp = '_' + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
@@ -156,10 +153,39 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 
 		filename = self.screenshot_path + name + '_' + self.language + timestamp + '.png'
 		logger.info('Saving screenshot %r', filename)
-		self.driver.find_element_by_xpath(xpath).screenshot(filename)
+
+		self.driver.save_screenshot(filename)
+		screenshot = self.crop_screenshot_to_element(filename, xpath)
+		screenshot.save(filename)
 
 		if hide_notifications:
-			self.driver.execute_script('arguments[0].style.display=""', notifications_container)
+			self.show_notifications(True)
+
+	def crop_screenshot_to_element(self, image_filename, xpath):
+		elem = self.driver.find_element_by_xpath(xpath)
+		location = elem.location
+		size = elem.size
+		top, left = int(location['y']), int(location['x'])
+		bottom, right = int(location['y'] + size['height']), int(location['x'] + size['width'])
+
+		screenshot = Image.open(image_filename)
+		return screenshot.crop((left, top, right, bottom))
+
+	def show_notifications(self, show_notifications=True):
+		if show_notifications:
+			if not self.notifications_visible():
+				self.press_notifiactions_button()
+		else:
+			if self.notifications_visible():
+				self.press_notifiactions_button()
+
+	def notifications_visible(self):
+		return not self.elements_invisible('//*[contains(concat(" ", normalize-space(@class), " "), " umcNotificationDropDownButtonOpened ")]')
+
+	def press_notifiactions_button(self):
+		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " umcNotificationDropDownButton ")]')
+		# Wait for the animation to run.
+		time.sleep(1)
 
 	def do_login(self, username=None, password=None):
 		if username is None:
@@ -201,20 +227,28 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		self.driver.get(self.base_url + 'univention/logout')
 
 	def open_module(self, name):
+		self.search_module(name)
+		self.click_tile(name)
+
+	def search_module(self, name):
 		self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
 
-		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcLiveSearch ")]'
+		search_field_xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcLiveSearch ")]'
 		self.wait_until(
 			expected_conditions.presence_of_element_located(
-				(webdriver.common.by.By.XPATH, xpath)
+				(webdriver.common.by.By.XPATH, search_field_xpath)
 			)
 		)
-		search_field = self.driver.find_element_by_xpath(xpath)
+		search_field = self.driver.find_element_by_xpath(search_field_xpath)
 		search_field.click()
-		search_field.send_keys(name)
-		search_field.send_keys(Keys.RETURN)
 
-		self.click_tile(name)
+		input_field_xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcLiveSearch ")]//input[contains(concat(" ", normalize-space(@class), " "), " dijitInputInner ")]'
+		input_field = self.driver.find_element_by_xpath(input_field_xpath)
+		input_field.click()
+		input_field.send_keys(name)
+		input_field.send_keys(Keys.RETURN)
+
+		self.wait_for_text(_('Search query'))
 
 	#def check_checkbox_by_name(self, inputname, checked=True):
 	#	"""
