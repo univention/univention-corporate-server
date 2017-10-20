@@ -96,7 +96,7 @@ class Upgrade(Install):
 			super(Upgrade, self)._send_information(app, status)
 
 	def _install_packages(self, packages, update=True):
-		super(Upgrade, self)._install_packages(packages, 0, update=update)
+		super(Upgrade, self)._install_packages(packages, update=update)
 		return self._apt_get('dist-upgrade', [], update=False)
 
 	@classmethod
