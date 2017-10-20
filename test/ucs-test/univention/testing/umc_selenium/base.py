@@ -25,6 +25,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from PIL import Image
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions
@@ -158,10 +159,23 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 
 		filename = self.screenshot_path + name + '_' + self.language + timestamp + '.png'
 		logger.info('Saving screenshot %r', filename)
-		self.driver.find_element_by_xpath(xpath).screenshot(filename)
+
+		self.driver.save_screenshot(filename)
+		screenshot = self.crop_screenshot_to_element(filename, xpath)
+		screenshot.save(filename)
 
 		if hide_notifications:
 			self.driver.execute_script('arguments[0].style.display=""', notifications_container)
+
+	def crop_screenshot_to_element(self, image_filename, xpath):
+		elem = self.driver.find_element_by_xpath(xpath)
+		location = elem.location
+		size = elem.size
+		top, left = int(location['y']), int(location['x'])
+		bottom, right = int(location['y'] + size['height']), int(location['x'] + size['width'])
+
+		screenshot = Image.open(image_filename)
+		return screenshot.crop((left, top, right, bottom))
 
 	def do_login(self, username=None, password=None):
 		if username is None:
