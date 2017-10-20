@@ -57,18 +57,15 @@ class Configure(UniventionAppAction):
 	def main(self, args):
 		if args.list:
 			for setting in args.app.get_settings():
-				print_method = self.log
-				try:
-					value = setting.get_value(args.app)
-				except SettingValueError as exc:
-					print_method = self.warn
-					value = str(exc)
+				phase = 'Settings'
+				if args.app.is_installed():
+					phase = 'Install'
+				value = setting.get_value(args.app, phase)
+				if isinstance(setting, FileSetting):
+					value = 'File %s contains %s bytes' % (setting.filename, len(value or ''))
 				else:
-					if isinstance(setting, FileSetting):
-						value = 'File %s contains %s bytes' % (setting.filename, len(value or ''))
-					else:
-						value = repr(value)
-				print_method('%s: %s (%s)' % (setting.name, value, setting.description))
+					value = repr(value)
+				self.log('%s: %s (%s)' % (setting.name, value, setting.description))
 		else:
 			self.log('Configuring %s' % args.app)
 			set_vars = (args.set_vars or {}).copy()

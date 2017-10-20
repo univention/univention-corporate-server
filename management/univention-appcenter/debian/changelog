@@ -1,3 +1,9 @@
+univention-appcenter (6.0.10-20) unstable; urgency=medium
+
+  * Bug #45543: Fix initial value for Settings
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 20 Oct 2017 15:13:45 +0200
+
 univention-appcenter (6.0.10-19) unstable; urgency=medium
 
   * Bug #43238: Fix package installations without terminal (2)

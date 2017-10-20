@@ -355,7 +355,7 @@ Filename = /tmp/settingdir/setting6.password
 			assert password_setting.get_value(app) == 'MyPassword'
 			assert os.path.exists(password_file_setting.filename)
 			assert open(password_file_setting.filename, 'rb').read() == 'FilePassword'
-			assert stat.S_IMODE(os.stat(password_file_setting.filename).st_mode) == 0644  # FIXME: should be 0600, right?
+			assert stat.S_IMODE(os.stat(password_file_setting.filename).st_mode) == 0600
 	finally:
 		try:
 			os.unlink(password_file_setting.filename)
@@ -394,7 +394,7 @@ Filename = /tmp/settingdir/setting6.password
 		assert password_setting.get_value(app) == 'MyPassword'
 		assert os.path.exists(password_file)
 		assert open(password_file, 'rb').read() == 'FilePassword'
-		assert stat.S_IMODE(os.stat(password_file).st_mode) == 0644  # FIXME: should be 0600, right?
+		assert stat.S_IMODE(os.stat(password_file).st_mode) == 0600
 
 		stop = get_action('stop')
 		stop.call(app=app)

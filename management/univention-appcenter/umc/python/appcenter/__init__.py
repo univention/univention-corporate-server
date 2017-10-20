@@ -63,7 +63,7 @@ from univention.appcenter.app_cache import Apps
 from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information, app_is_running
 from univention.appcenter.log import get_base_logger, log_to_logfile
 from univention.appcenter.ucr import ucr_instance, ucr_save
-from univention.appcenter.settings import SettingValueError, FileSetting, PasswordFileSetting
+from univention.appcenter.settings import FileSetting, PasswordFileSetting
 
 # local application
 from univention.management.console.modules.appcenter.app_center import Application, LICENSE
@@ -289,19 +289,11 @@ class Instance(umcm.Base, ProgressMixin):
 		values = {}
 		for setting in app.get_settings():
 			if phase in setting.show or phase in setting.show_read_only:
-				try:
-					value = setting.get_value(app)
-				except SettingValueError:
-					if phase == 'Install':
-						values[setting.name] = setting.get_initial_value()
-				else:
-					if value is None and phase == 'Install':
-						values[setting.name] = setting.get_initial_value()
-					else:
-						if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
-							if value:
-								value = encodestring(value).rstrip()
-						values[setting.name] = value
+				value = setting.get_value(app, phase)
+				if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting):
+					if value:
+						value = encodestring(value).rstrip()
+				values[setting.name] = value
 		return {
 			'autostart': autostart,
 			'is_running': is_running,

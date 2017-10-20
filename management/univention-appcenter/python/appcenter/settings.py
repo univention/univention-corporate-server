@@ -80,21 +80,28 @@ class Setting(TypedIniSectionObject):
 			return ucr_run_filter(self.initial_value)
 		return self.initial_value
 
-	def get_value(self, app):
+	def get_value(self, app, phase='Settings'):
 		'''Get the current value for this Setting. Easy implementation'''
 		if self.is_outside(app):
 			value = ucr_get(self.name)
 		else:
-			if not app_is_running(app):
-				raise SettingValueError('Cannot read %s while %s is not running' % (self.name, app))
-			from univention.appcenter.actions import get_action
-			configure = get_action('configure')
-			ucr = configure._get_app_ucr(app)
-			value = ucr.get(self.name)
+			if app_is_running(app):
+				from univention.appcenter.actions import get_action
+				configure = get_action('configure')
+				ucr = configure._get_app_ucr(app)
+				value = ucr.get(self.name)
+			else:
+				settings_logger.info('Cannot read %s while %s is not running' % (self.name, app))
+				value = None
 		try:
-			return self.sanitize_value(app, value)
+			value = self.sanitize_value(app, value)
 		except SettingValueError:
-			return self.get_initial_value()
+			settings_logger.info('Cannot use %r for %s' % (value, self.name))
+			value = None
+		if value is None and phase == 'Install':
+			settings_logger.info('Falling back to initial value for %s' % self.name)
+			value = self.get_initial_value()
+		return value
 
 	def _log_set_value(self, app, value):
 		if value is None:
@@ -206,18 +213,21 @@ class FileSetting(Setting):
 		except EnvironmentError as exc:
 			settings_logger.error('Could not set content: %s' % exc)
 
-	def get_value(self, app):
+	def get_value(self, app, phase='Settings'):
 		if self.is_outside(app):
-			return self._read_file_content(self.filename)
+			value = self._read_file_content(self.filename)
 		else:
-			if not app_is_running(app):
-				raise SettingValueError('Cannot read %s while %s is not running' % (self.name, app))
-			from univention.appcenter.docker import Docker
-			docker = Docker(app)
-			value = self._read_file_content(docker.path(self.filename))
-			if value is None:
-				value = self.get_initial_value()
-			return value
+			if app_is_running(app):
+				from univention.appcenter.docker import Docker
+				docker = Docker(app)
+				value = self._read_file_content(docker.path(self.filename))
+			else:
+				settings_logger.info('Cannot read %s while %s is not running' % (self.name, app))
+				value = None
+		if value is None and phase == 'Install':
+			settings_logger.info('Falling back to initial value for %s' % self.name)
+			value = self.get_initial_value()
+		return value
 
 	def set_value(self, app, value, together_config_settings, part):
 		if part == 'outside':
