@@ -1,3 +1,10 @@
+ucs-test (7.0.23-63) unstable; urgency=medium
+
+  * Bug #37942: don't check 403 in 20_appcenter/17_app_status
+    use request url in refresh
+
+ -- Felix Botner <botner@univention.de>  Fri, 20 Oct 2017 12:39:49 +0200
+
 ucs-test (7.0.23-62) unstable; urgency=medium
 
   * Bug #45501: skip admember

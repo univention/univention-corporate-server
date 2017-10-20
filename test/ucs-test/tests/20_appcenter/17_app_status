@@ -98,7 +98,10 @@ def _check_url(url):
 	requests_timeout = 30
 	r = requests.get(url, timeout=requests_timeout, verify=False)
 	print '       ...', r.status_code
-	assert not str(r.status_code).startswith(('4', '5'))
+	if r.status_code != 403:
+		assert not str(r.status_code).startswith(('4', '5'))
+	print '       ...', r.url
+	url = r.url
 
 	# check meta refresh
 	soup = lxml.html.fromstring(r.text)
