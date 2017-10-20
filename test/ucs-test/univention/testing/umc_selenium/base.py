@@ -96,7 +96,9 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 				})
 		else:
 			if self.browser == 'chrome':
-				self.driver = webdriver.Chrome()
+				chrome_options = webdriver.ChromeOptions()
+				chrome_options.add_argument('--no-sandbox')
+				self.driver = webdriver.Chrome(chrome_options=chrome_options)
 			else:
 				self.driver = webdriver.Firefox()
 
