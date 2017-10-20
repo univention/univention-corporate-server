@@ -144,13 +144,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		time.sleep(2)
 
 		if hide_notifications:
-			try:
-				notifications_container = self.driver.find_element_by_xpath(
-					'//*[contains(concat(" ", normalize-space(@class), " "), " umcNotificationContainer ")]'
-				)
-				self.driver.execute_script('arguments[0].style.display="None"', notifications_container)
-			except selenium_exceptions.NoSuchElementException:
-				hide_notifications = False
+			self.show_notifications(False)
 
 		if append_timestamp:
 			timestamp = '_' + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
@@ -165,7 +159,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		screenshot.save(filename)
 
 		if hide_notifications:
-			self.driver.execute_script('arguments[0].style.display=""', notifications_container)
+			self.show_notifications(True)
 
 	def crop_screenshot_to_element(self, image_filename, xpath):
 		elem = self.driver.find_element_by_xpath(xpath)
@@ -176,6 +170,22 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 
 		screenshot = Image.open(image_filename)
 		return screenshot.crop((left, top, right, bottom))
+
+	def show_notifications(self, show_notifications=True):
+		if show_notifications:
+			if not self.notifications_visible():
+				self.press_notifiactions_button()
+		else:
+			if self.notifications_visible():
+				self.press_notifiactions_button()
+
+	def notifications_visible(self):
+		return not self.elements_invisible('//*[contains(concat(" ", normalize-space(@class), " "), " umcNotificationDropDownButtonOpened ")]')
+
+	def press_notifiactions_button(self):
+		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " umcNotificationDropDownButton ")]')
+		# Wait for the animation to run.
+		time.sleep(1)
 
 	def do_login(self, username=None, password=None):
 		if username is None:
