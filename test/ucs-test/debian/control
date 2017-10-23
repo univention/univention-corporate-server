@@ -422,7 +422,6 @@ Package: ucs-test-selenium
 Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
- python-selenium,
  ${misc:Depends}
 Description: Test scripts for UMC
  This package includes some scripts for testing UMC

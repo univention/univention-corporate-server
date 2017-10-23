@@ -1,3 +1,9 @@
+ucs-test (7.0.23-66) unstable; urgency=medium
+
+  * Bug #44640: don't depend on python-selenium currently
+
+ -- Florian Best <best@univention.de>  Mon, 23 Oct 2017 17:04:40 +0200
+
 ucs-test (7.0.23-65) unstable; urgency=medium
 
   * Bug #45569: 80_docker/40_app_umc_install_latest_appbox
