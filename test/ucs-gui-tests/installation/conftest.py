@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from time import sleep
 from vminstall.utils import copy_through_ssh, execute_through_ssh, remove_old_sshkey
 import ConfigParser
 import pytest
@@ -42,6 +43,10 @@ config.read('tests.cfg')
 def execute_before_any_test():
 	remove_old_sshkeys()
 	copy_out_logs()
+	# UCS will launch an apt process after each boot. To avoid problems with
+	# tests that use apt themselves this sleep() waits until the automatically
+	# started apt process ended.
+	sleep(40)
 
 
 def copy_out_logs():
