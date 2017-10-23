@@ -412,6 +412,11 @@ install_ucs_windows_tools () {
 	install_with_unmaintained ucs-windows-tools
 }
 
+install_selenium () {
+	install_with_unmaintained chromium-browser chromedriver python-pip xvfb
+	pip install selenium
+}
+
 run_apptests () {
 	local app
 	# some tests create domaincontroller_master objects, the listener ldap_server.py
