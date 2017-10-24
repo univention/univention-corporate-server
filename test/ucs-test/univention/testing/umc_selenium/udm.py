@@ -5,7 +5,7 @@ from univention.admin import localization
 import time
 import univention.testing.strings as uts
 
-translator = localization.translation('univention-ucs-test_umc-tests')
+translator = localization.translation('ucs-test-framework')
 _ = translator.translate
 
 

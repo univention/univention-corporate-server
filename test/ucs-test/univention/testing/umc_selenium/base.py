@@ -42,7 +42,7 @@ import univention.testing.utils as utils
 
 logger = logging.getLogger(__name__)
 
-translator = localization.translation('univention-ucs-test_umc-screenshots')
+translator = localization.translation('ucs-test-framework')
 _ = translator.translate
 
 
