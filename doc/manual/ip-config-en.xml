@@ -2620,7 +2620,7 @@ dansguardian -g
 			RADIUS is available through the App Center <xref linkend="software:appcenter"/>
 			and can be installed using the corresponding &ucsUMC; App Center module. It can be
 			installed on multiple machines. After the installation it runs a <ulink
-			url="http://freeradius.org/">freeRADIUS</ulink> server. Clients (e.g.  access
+			url="http://freeradius.org/">FreeRADIUS</ulink> server. Clients (e.g.  access
 			points) can contact via RADIUS to check network access requests.
 
 			The RADIUS app can also be installed on UCS@school systems. In
@@ -2675,13 +2675,14 @@ dansguardian -g
 				The access points must then be configured to use 802.1x ("WPA Enterprise")
 				authentication. And the "RADIUS server" address should be set to the address of
 				the server, where the RADIUS app is installed. The password must be set to the
-				<literal>secret</literal> from the clients.conf entry for that access point.
+				<literal>secret</literal> from the <filename>clients.conf</filename> entry for
+				that access point.
 			  </para>
 		  </section>
 		  <section id="ip-config:radius:configuration:clients">
 			  <title>Clients</title>
 			  <para>
-				WiFi-clients have to be configured to use <emphasis>WPA</emphasis> with
+				WiFi clients have to be configured to use <emphasis>WPA</emphasis> with
 				<emphasis>PEAP</emphasis> and <emphasis>MSCHAPv2</emphasis> for authentication.
 			  </para>
 		  </section>
@@ -2691,7 +2692,7 @@ dansguardian -g
 		  <para>
 			The tool <package>univention-radius-check-access</package> can be used to evaluate the current
 			access policy for a given user and/or station ID (MAC address). It can be
-			executed as root on the server where univention-radius is installed:
+			executed as root on the server where <package>univention-radius</package> its installed:
 			  <programlisting language="sh">
 				root@master211:~# univention-radius-check-access --username=stefan
 				DENY 'uid=stefan,cn=users,dc=ucs,dc=local'
