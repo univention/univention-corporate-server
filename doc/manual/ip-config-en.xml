@@ -2606,19 +2606,19 @@ dansguardian -g
   <section id="ip-config:radius">
 	<title>RADIUS</title>
 	<para>
-		The RADIUS app increases the security for UCS managed IT
-		infrastructures by controlling the access to the wireless network for users,
-		groups and endpoint devices via RADIUS protocol. The configuration is done via
-		black and white lists and directly at user, group and endpoint device objects
-		in the UCS management system. Registered users are authenticated with their
-		usual domain credentials, which, among others, also allows bring your own
-		device concepts.
+		The RADIUS app increases the security for UCS managed IT infrastructures by
+		controlling the access to the wireless network for users, groups and endpoint
+		devices via <ulink url="https://en.wikipedia.org/wiki/RADIUS">RADIUS
+		protocol</ulink>. The configuration is done via black and white lists and
+		directly at user, group and endpoint device objects in the UCS management
+		system. Registered users are authenticated with their usual domain credentials,
+		which, among others, also allows bring your own device concepts.
 	</para>
 	  <section id="ip-config:radius:installation">
 		  <title>Installation</title>
 		  <para>
 			RADIUS is available through the App Center <xref linked="software:appcenter"/>
-			and can be installed using the corresponding UMC App Center module. It can be
+			and can be installed using the corresponding &ucsUMC; App Center module. It can be
 			installed on multiple machines. After the installation it runs a <ulink
 			url="http://freeradius.org/">freeRADIUS</ulink> server. Clients (e.g.  access
 			points) can contact via RADIUS to check network access requests.
@@ -2637,6 +2637,12 @@ dansguardian -g
 				the checkbox for network access on the <guimenu>RADIUS</guimenu> tab, gives the
 				user access to the network. The checkbox can also be set on groups, which
 				allows all users in this group access.
+			  </para>
+			  <para>
+			  <figure id="ip-config:radius:group">
+				  <title>Example for a group allowing network access to its users</title>
+				  <graphic fileref="illustrations42/radius-group-allow-network_EN.png" scalefit="1" width="100%"/>
+			  </figure>
 			  </para>
 		  </section>
 		  <section id="ip-config:radius:configuration:mac-filtering">
