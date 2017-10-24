@@ -66,13 +66,9 @@
 		</para>
 
 		<para>
-			Anschließend sollte eine Anmeldung mit einem <ulink
-url="https://login.microsoftonline.com/login.srf?wa=wsignin1.0&rpsnv=4&ct=1462951962&rver=6.7.6640.0&wp=MCMBI&wreply=https%3a%2f%2fportal.office.com%2flanding.aspx%3ftarget%3d%252fAdmin%252fDefault.aspx&lc=1033&id=501392&msafed=0&client-request-id=9e15a695-378c-4ba6-8aab-941353258f55">Office
-365 Administratorkonto</ulink> im Office 365 Admin Center erfolgen. Im
+			Anschließend sollte eine Anmeldung mit einem <guimenu>Office 365 Administratorkonto</guimenu> im Office 365 Admin Center erfolgen. Im
 			der linken Navigationsleiste ganz unten ist <guimenu>Azure AD</guimenu> auszuwählen, welches in einem neuen Fenter das
-			<guimenu
-url="https://login.microsoftonline.com/common/oauth2/authorize?response_type=code+id_token&redirect_uri=https%3a%2f%2fmanage.windowsazure.com%2f&client_id=00000013-0000-0000-c000-000000000000&resource=https%3a%2f%2fmanagement.core.windows.net%2f&scope=user_impersonation+openid&nonce=b32198d5-a829-44e7-86b1-4de4c47e6904&domain_hint=&site_id=500879&response_mode=form_post">Azure
-Management Portal</ulink> öffnet.
+			<guimenu>Azure Management Portal</guimenu> öffnet.
 		</para>
 
 		<para>
@@ -85,15 +81,83 @@ Management Portal</ulink> öffnet.
 		<para>
 			Nun kann die Microsoft Office 365 App aus dem App Center auf dem UCS System installiert werden. Die Installation dauert
 			nur wenige Minuten. Anschließend steht ein Einrichtungsassistent (Wizard) für die Einrichtung zur Verfügung.
+			Mit Abschluss des Einrichtungsassistenten ist die Installation abgeschklossen und der Connector ist einsatzbereit.
 		</para>
 	</section>
 
 	<section id="idmcloud:o365:config">
 		<title>Konfiguration</title>
+		<para>
+			Nach der Einrichtung über durch den Einrichtungsassistenten kann auf dem Reiter <guimenu>Office 365</guimenu>
+			konfiguriert werden, dass dieser Benutzer ins Office 365 provisioniert wird. Der Verbrauch und die Zuweisung von
+			Lizenzen ist im Office 365 Admin Center zu erkennen.
+		</para>
+
+		<para>
+			Wird eine Änderung am Benutzer durchgeführt, so werden die Änderungen auch im Office 365 synchronisiert. Es erfolgt
+			keine Synchronisation aus dem Azure Active Directory in das UCS System. Das bedeutet Änderungen, die im Azure Active
+			Directory oder Office Portal vorgeommen, können durch Änderungen an den gleichen Attributen in UCS unter Umständen
+			wieder überschrieben werden.
+		</para>
+
+		<para>
+			Aufgrund von  Sicherheitsrichtlinien des Azure Active Directory können keine Benutzer oder Gruppen im Azure AD
+			währen der Synchronisation gelöscht werden. Sie werden lediglich deakiviert und umbeannt. Die Lizenzen werden im Azure
+			Active Directory entzogen, so dass diese für andere Benutzer zur Veräfügung stehen. Benutzer und Gruppen, deren Namen
+			mit <guientry>ZZZ_deleted</guientry> anfangen, können im Office 365 Admin Center gelöscht werden..
+		</para>
+
+		<para>
+			Es ist notwendig in Office 365 ein Land für den Benutzer zu konfigurieren. Der Connector nutzt dafür die Angabe des
+			LAndes aus den Kontaktdaten des Benutzer oder, wenn nicht gesetzt, die Einstellung des Servers. Mit Hilfe der &ucsUCRV;
+			<envar>office365/attributes/usageLocation</envar> kan ein 2-Zeichen-Kürzel, bspw. DE vorgegeben werden.
+		</para>
+
+		<para>
+			Über die &ucsUCRV; <envar>office365/attributes/sync</envar> wird konfiguriert, welche LDAP Attribute (z. B. Vorname, Nachname, etc.)
+			eines Benutzerkontos synchronisiert werden. Es handelt sich um eine kommaseparierte Liste von LDAP Attributen. Die Liste
+			kann entsprechend an die Bedürfnisse angepasst werden.
+		</para>
+
+		<para>
+			Mit der &ucsUCRV; <envar>office365/attributes/anonymize</envar> können kommasepariert LDAP Attribute angegeben werden,
+			die zwar im Azure Active Directory angelegt, jedoch mit Zufallswerten gefüllt werden. Die &ucsUCRV;
+			<envar>office365/attributes/static/.*</envar> erlauben das Füllen von Attributen auf Microsoft Seite mit einem
+			vordefinierten Wert.
+		</para>
+
+		<para>
+			Mit der &ucsUCRV; <envar>office365/attributes/never</envar> können kommasepariert LDAP Attribute angegeben werden, die
+			nicht synchronisiert werden sollen, selbst wenn diese in <envar>office365/attributes/sync</envar> oder
+			<envar>office365/attributes/anonymize</envar> auftauchen.
+		</para>
+
+		<para>
+			Die &ucsUCRV; <envar>office365/attributes/mapping/.*</envar> definieren eine Abbildung der UCS LDAP Attribute zu Azure
+			Attributen. Diese Variablen müssen normalerweise nicht verändert werden. Die Synchronisation der Gruppen der
+Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> aktiviert werden.
+		</para>
+
+		<para>
+			Änderungen an UCR Variablen werden erst nach dem Neustart des Univention Directory Listener umgesetzt.
+		</para>
+
+
 	</section>
 
 	<section id="idmcloud:o365:debug">
 		<title>Fehlersuche</title>
+		<para>
+			Meldungen wärhrend der Einrichtung werden in der folgende Logdatei
+			<filename>/var/log/univention/management-console-module-office365.log</filename> protokolliert.
+		</para>
+
+		<para>
+			Bei Synchronisationsproblemen sollte die Logdatei des Univention Directory Listener geprüft werden:
+			<filename>/var/log/univention/listener.log</filename>. Mit Hilfe der &ucsUCRV; <envar>office365/debug/werror</envar>
+			kann ensprechend mehr Debug aktiviert werden.
+		</para>
+
 	</section>
   </section>
 
