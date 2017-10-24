@@ -1,8 +1,14 @@
-univention-ad-connector (11.0.6-28) UNRELEASED; urgency=medium
+univention-ad-connector (11.0.6-30) unstable; urgency=medium
+
+  * Bug #18501: Revert changes, they change the mapping file
+
+ -- Arvid Requate <requate@univention.de>  Tue, 24 Oct 2017 18:04:23 +0200
+
+univention-ad-connector (11.0.6-29) unstable; urgency=medium
 
   * Bug #36480: Revert changes, they are blocking revert of Bug #18501
 
- -- Arvid Requate <requate@univention.de>  Tue, 24 Oct 2017 17:55:39 +0200
+ -- Arvid Requate <requate@univention.de>  Tue, 24 Oct 2017 18:04:23 +0200
 
 univention-ad-connector (11.0.6-27) unstable; urgency=medium
 

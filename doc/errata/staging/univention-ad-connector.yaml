@@ -12,10 +12,8 @@ desc: |
    handling has been fixed.
  * It is possible to start the AD Connector service process in foreground.
  * It is now prevented to start multiple instances of the AD Connector.
- * The AD Connector now implements the diff-mode which fixes problems with
-   concurrent modifications.
  * LDAP operations are now correctly escaped in the AD Connector.
  * Fixed errors in the SQLite escaping in the AD Connector.
  * Fixed a deletion problem with nested groups in the AD Connector.
  * univention-adsearch now accepts multiple attributes in the ldap filter.
-bug: [40813, 41619, 45011, 45037, 41335, 18501, 11658, 38619, 18680, 45134]
+bug: [40813, 41619, 45011, 45037, 41335, 11658, 38619, 18680, 45134]
