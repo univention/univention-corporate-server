@@ -2287,10 +2287,10 @@ dansguardian -g
 			durch Zugangskontrollen zu WiFi Netzwerken für Benutzer, Gruppen und Endgeräte
 			über das <ulink
 			url="https://de.wikipedia.org/wiki/Remote_Authentication_Dial-In_User_Service">RADIUS
-			Protokoll</ulink>. Die Konfiguration erfolgt über Black- und White-Listen
+			Protokoll</ulink>. Die Konfiguration erfolgt über Blacklisten und Whitelisten
 			direkt am Benutzer-, Gruppen- oder Endgeräte-Objekt im UCS Managementsystem.
-			Registrierte Benutzer werden mit ihren üblichen Domain-Credentials
-			authentisiert, so dass unter anderem Bring-your-own-Device Konzepte ermöglicht
+			Registrierte Benutzer werden mit ihren üblichen Domänenpasswort
+			authentisiert, so dass unter anderem Bring Your Own Device Konzepte ermöglicht
 			werden.
 		</para>
 		<section id="ip-config:radius:installation">
@@ -2315,7 +2315,7 @@ dansguardian -g
 				<title>Erlaubte Benutzer</title>
 				<para>
 					Standardmäßig hat kein Benutzer Zugang zum Netzwerk. Indem die Checkbox für
-					<guimenu>Netzwerkzugriff erlaubt</guimenu> im <guimenu>RADIUS</guimenu> Tab
+					<guimenu>Netzwerkzugriff erlaubt</guimenu> im <guimenu>RADIUS</guimenu> Reiter
 					aktiviert wird, erhält der Benutzer Zugriff auf das Netzwerk. Die Checkbox kann
 					auch für Gruppen gesetzt werden, so dass alle Benutzer in der Gruppe Zugang
 					erlangen.
@@ -2401,7 +2401,7 @@ dansguardian -g
 	Thus access is ALLOWED.
 	root@master211:~#
 </programlisting>
-				Das Werkzeug gibt eine detaillierte Erläuterung und setzt den Exit-Code
+				Das Werkzeug gibt eine detaillierte Erläuterung und setzt den Exit Code
 				abhängig vom Ergebnis der Zugangsprüfung (0 für Zugang gestattet, 1 für Zugang
 				verweigert).
 			</para>
