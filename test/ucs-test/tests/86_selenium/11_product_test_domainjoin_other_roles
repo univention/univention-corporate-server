@@ -1,5 +1,5 @@
-#!/usr/share/ucs-test/runner python
-## desc: UMC domainjoin test
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+## desc: check domain join and running of specific join scripts
 ## roles:
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave
@@ -8,7 +8,7 @@
 
 from univention.admin import localization
 import time
-import univention.testing.umc_selenium as umc_selenium
+from univention.testing import selenium
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
@@ -19,6 +19,7 @@ class PasswordChangeError(Exception):
 
 
 class UMCTester(object):
+
 	def test_umc(self):
 		self.selenium.do_login(username='root')
 
@@ -72,8 +73,8 @@ class UMCTester(object):
 
 
 if __name__ == '__main__':
-	with umc_selenium.base.UMCSeleniumTest() as selenium:
+	with selenium.UMCSeleniumTest() as s:
 		umc_tester = UMCTester()
-		umc_tester.selenium = selenium
+		umc_tester.selenium = s
 
 		umc_tester.test_umc()

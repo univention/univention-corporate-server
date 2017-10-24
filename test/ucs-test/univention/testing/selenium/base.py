@@ -1,3 +1,8 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Selenium Tests
+#
 # Copyright 2013-2017 Univention GmbH
 #
 # http://www.univention.de/
@@ -25,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
 import os
 import time
 import datetime
@@ -37,8 +44,8 @@ from selenium.webdriver.support import expected_conditions
 import selenium.common.exceptions as selenium_exceptions
 
 from univention.admin import localization
-from univention.testing.umc_selenium.checks_and_waits import ChecksAndWaits
-from univention.testing.umc_selenium.interactions import Interactions
+from univention.testing.selenium.checks_and_waits import ChecksAndWaits
+from univention.testing.selenium.interactions import Interactions
 
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
@@ -47,26 +54,6 @@ logger = logging.getLogger(__name__)
 
 translator = localization.translation('ucs-test-framework')
 _ = translator.translate
-
-
-class SeleniumError(Exception):
-	pass
-
-
-class SeleniumTimeoutPageload(SeleniumError):
-	pass
-
-
-class SeleniumCheckTestcaseError(SeleniumError):
-	pass
-
-
-class SeleniumErrorSymbolException(SeleniumError):
-	pass
-
-
-class SeleniumSeeErrorDescriptionBehindFailingTestcase(SeleniumError):
-	pass
 
 
 class UMCSeleniumTest(ChecksAndWaits, Interactions):
@@ -85,13 +72,14 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		'ff': 'firefox',
 	}
 
-	def __init__(self, language='en', host='localhost'):
-		self.max_exceptions = 3
+	def __init__(self, language='en', host=None):
+		self._ucr = ucr_test.UCSTestConfigRegistry()
+		self._ucr.load()
 		self.browser = self.BROWSERS[os.environ.get('UCSTEST_SELENIUM_BROWSER', 'firefox')]
 		self.selenium_grid = os.environ.get('UCSTEST_SELENIUM') != 'local'
 		self.language = language
-		self.base_url = 'https://%s/' % (host,)
-		self.screenshot_path = '/test_selenium_screenshots/'
+		self.base_url = 'https://%s/' % (host or '%s.%s' % (self._ucr.get('hostname'), self._ucr.get('domainname')))
+		self.screenshot_path = os.path.abspath('selenium-screendumps/')
 		translator.set_language(self.language)
 		logging.basicConfig(level=logging.INFO)
 
@@ -105,14 +93,12 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		else:
 			if self.browser == 'chrome':
 				chrome_options = webdriver.ChromeOptions()
-				chrome_options.add_argument('--no-sandbox')
+				chrome_options.add_argument('--no-sandbox')  # chrome complains about being executed as root
 				self.driver = webdriver.Chrome(chrome_options=chrome_options)
 			else:
 				self.driver = webdriver.Firefox()
 
-		ucr = ucr_test.UCSTestConfigRegistry()
-		ucr.load()
-		self.ldap_base = ucr.get('ldap/base')
+		self.ldap_base = self._ucr.get('ldap/base')
 
 		self.account = utils.UCSTestDomainAdminCredentials()
 		self.umcLoginUsername = self.account.username
@@ -152,12 +138,11 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		if hide_notifications:
 			self.show_notifications(False)
 
+		timestamp = ''
 		if append_timestamp:
-			timestamp = '_' + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-		else:
-			timestamp = ''
+			timestamp = '_%s' % (datetime.datetime.now().strftime("%Y%m%d%H%M%S"),)
 
-		filename = self.screenshot_path + name + '_' + self.language + timestamp + '.png'
+		filename = '%s%s_%s%s.png' % (self.screenshot_path, name, self.language, timestamp)
 		logger.info('Saving screenshot %r', filename)
 
 		self.driver.save_screenshot(filename)
@@ -180,15 +165,15 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 	def show_notifications(self, show_notifications=True):
 		if show_notifications:
 			if not self.notifications_visible():
-				self.press_notifiactions_button()
+				self.press_notifications_button()
 		else:
 			if self.notifications_visible():
-				self.press_notifiactions_button()
+				self.press_notifications_button()
 
 	def notifications_visible(self):
 		return not self.elements_invisible('//*[contains(concat(" ", normalize-space(@class), " "), " umcNotificationDropDownButtonOpened ")]')
 
-	def press_notifiactions_button(self):
+	def press_notifications_button(self):
 		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " umcNotificationDropDownButton ")]')
 		# Wait for the animation to run.
 		time.sleep(1)
@@ -309,11 +294,11 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 	#	if displayed:
 	#		if not self.find_error_symbol_for_inputfield(inputfield):
 	#			logger.error('Missing error symbol', inputfield)
-	#			raise SeleniumErrorSymbolException
+	#			raise ValueError()
 	#	else:
 	#		if self.find_error_symbol_for_inputfield(inputfield):
 	#			logger.error('Error symbol %r should not be displayed.', inputfield)
-	#			raise SeleniumErrorSymbolException
+	#			raise ValueError()
 
 	#def select_table_item_by_name(self, itemname):
 	#	elem = self.driver.find_element_by_xpath("//div[contains(text(), %s )]/parent::td" % json.dumps(itemname))

@@ -1,6 +1,6 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 # -*- coding: utf-8 -*-
-## desc: UMC UDM tests
+## desc: Various test for UDM users/user
 ## roles-not: [basesystem]
 ## join: true
 ## exposure: dangerous
@@ -10,13 +10,11 @@ import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-import univention.testing.umc_selenium as umc_selenium
-import univention.testing.umc_selenium.udm as selenium_udm
+from univention.testing import selenium
+import univention.testing.selenium.udm as selenium_udm
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
-
-PASSWORD = 'univention'
 
 
 class UmcUdmError(Exception):
@@ -27,9 +25,7 @@ class UMCTester(object):
 
 	def test_umc(self):
 		self.users = selenium_udm.Users(self.selenium)
-		userdn, username = self.udm.create_user(
-			password=PASSWORD
-		)
+		userdn, username = self.udm.create_user()
 		self.selenium.do_login()
 		self.selenium.open_module(self.users.name)
 		self.users.wait_for_main_grid_load()
@@ -176,11 +172,11 @@ class UMCTester(object):
 
 
 if __name__ == '__main__':
-	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, umc_selenium.base.UMCSeleniumTest() as selenium:
+	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, selenium.UMCSeleniumTest() as s:
 		umc_tester = UMCTester()
 		umc_tester.ucr = ucr
 		umc_tester.udm = udm
-		umc_tester.users = selenium_udm.Users(selenium)
-		umc_tester.selenium = selenium
+		umc_tester.users = selenium_udm.Users(s)
+		umc_tester.selenium = s
 
 		umc_tester.test_umc()

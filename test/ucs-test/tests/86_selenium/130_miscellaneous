@@ -1,6 +1,6 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 # -*- coding: utf-8 -*-
-## desc: UMC miscellaneous tests
+## desc: test language switch, logout, module visibility, process timeout
 ## roles-not: [basesystem]
 ## join: true
 ## exposure: dangerous
@@ -10,7 +10,7 @@ import psutil
 import subprocess
 import time
 import univention.testing.udm as udm_test
-import univention.testing.umc_selenium as umc_selenium
+from univention.testing import selenium
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
@@ -21,6 +21,7 @@ class UmcError(Exception):
 
 
 class UMCTester(object):
+
 	def test_umc(self):
 		self.selenium.do_login()
 		self.test_language_switch()
@@ -171,9 +172,9 @@ class UMCTester(object):
 
 
 if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm, umc_selenium.base.UMCSeleniumTest() as selenium:
+	with udm_test.UCSTestUDM() as udm, selenium.UMCSeleniumTest() as s:
 		umc_tester = UMCTester()
 		umc_tester.udm = udm
-		umc_tester.selenium = selenium
+		umc_tester.selenium = s
 
 		umc_tester.test_umc()

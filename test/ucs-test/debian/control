@@ -421,6 +421,7 @@ Description: Test UMC modules
 Package: ucs-test-selenium
 Architecture: all
 Recommends: ucs-test-framework
+Provides: ucs-test-module,
 Depends: ucs-test-libs (= ${source:Version}),
  ${misc:Depends}
 Description: Test scripts for UMC

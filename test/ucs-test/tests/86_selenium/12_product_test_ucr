@@ -1,13 +1,13 @@
-#!/usr/share/ucs-test/runner python
-# desc: UMC ucr test
-# roles-not: [basesystem]
-# exposure: dangerous
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+## desc: check setting UCR variables
+## roles-not: [basesystem]
+## exposure: dangerous
 
 from univention.admin import localization
 import subprocess
 import tempfile
 import time
-import univention.testing.umc_selenium as umc_selenium
+from univention.testing import selenium
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
@@ -88,6 +88,7 @@ class UcrSearchError(Exception):
 
 
 class UMCTester(object):
+
 	def test_umc(self):
 		self.selenium.do_login()
 		self.selenium.open_module(_('Univention Configuration Registry'))
@@ -204,9 +205,9 @@ if __name__ == '__main__':
 		suffix=".cfg",
 		dir="/etc/univention/registry.info/variables/"
 	)
-	with f as ucr_variable_file, umc_selenium.base.UMCSeleniumTest() as selenium:
+	with f as ucr_variable_file, selenium.UMCSeleniumTest() as s:
 		umc_tester = UMCTester()
-		umc_tester.selenium = selenium
+		umc_tester.selenium = s
 
 		create_testing_ucr_variables(ucr_variable_file)
 		umc_tester.test_umc()

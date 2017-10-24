@@ -25,7 +25,7 @@ msgid "Cancel"
 msgstr "Abbrechen"
 
 #: tests/90_umc-screenshots/00_favorites:15
-#: univention/testing/umc_selenium.py:154
+#: univention/testing/selenium.py:154
 msgid "Favorites"
 msgstr "Favoriten"
 
