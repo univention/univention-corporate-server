@@ -86,7 +86,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		else:
 			if self.browser == 'chrome':
 				chrome_options = webdriver.ChromeOptions()
-				chrome_options.add_argument('--no-sandbox')
+				chrome_options.add_argument('--no-sandbox')  # chrome complains about being executed as root
 				self.driver = webdriver.Chrome(chrome_options=chrome_options)
 			else:
 				self.driver = webdriver.Firefox()
