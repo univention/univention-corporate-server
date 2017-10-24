@@ -104,7 +104,7 @@
 			Aufgrund von  Sicherheitsrichtlinien des Azure Active Directory können keine Benutzer oder Gruppen im Azure AD
 			währen der Synchronisation gelöscht werden. Sie werden lediglich deakiviert und umbeannt. Die Lizenzen werden im Azure
 			Active Directory entzogen, so dass diese für andere Benutzer zur Veräfügung stehen. Benutzer und Gruppen, deren Namen
-			mit <guientry>ZZZ_deleted</guientry> anfangen, können im Office 365 Admin Center gelöscht werden..
+			mit <guimenu>ZZZ_deleted</guimenu> anfangen, können im Office 365 Admin Center gelöscht werden.
 		</para>
 
 		<para>
