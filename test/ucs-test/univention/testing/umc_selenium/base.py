@@ -49,26 +49,6 @@ translator = localization.translation('ucs-test-framework')
 _ = translator.translate
 
 
-class SeleniumError(Exception):
-	pass
-
-
-class SeleniumTimeoutPageload(SeleniumError):
-	pass
-
-
-class SeleniumCheckTestcaseError(SeleniumError):
-	pass
-
-
-class SeleniumErrorSymbolException(SeleniumError):
-	pass
-
-
-class SeleniumSeeErrorDescriptionBehindFailingTestcase(SeleniumError):
-	pass
-
-
 class UMCSeleniumTest(ChecksAndWaits, Interactions):
 	"""
 	This class provides selenium test for web ui tests.
@@ -307,11 +287,11 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 	#	if displayed:
 	#		if not self.find_error_symbol_for_inputfield(inputfield):
 	#			logger.error('Missing error symbol', inputfield)
-	#			raise SeleniumErrorSymbolException
+	#			raise ValueError()
 	#	else:
 	#		if self.find_error_symbol_for_inputfield(inputfield):
 	#			logger.error('Error symbol %r should not be displayed.', inputfield)
-	#			raise SeleniumErrorSymbolException
+	#			raise ValueError()
 
 	#def select_table_item_by_name(self, itemname):
 	#	elem = self.driver.find_element_by_xpath("//div[contains(text(), %s )]/parent::td" % json.dumps(itemname))
