@@ -158,15 +158,15 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 	def show_notifications(self, show_notifications=True):
 		if show_notifications:
 			if not self.notifications_visible():
-				self.press_notifiactions_button()
+				self.press_notifications_button()
 		else:
 			if self.notifications_visible():
-				self.press_notifiactions_button()
+				self.press_notifications_button()
 
 	def notifications_visible(self):
 		return not self.elements_invisible('//*[contains(concat(" ", normalize-space(@class), " "), " umcNotificationDropDownButtonOpened ")]')
 
-	def press_notifiactions_button(self):
+	def press_notifications_button(self):
 		self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " umcNotificationDropDownButton ")]')
 		# Wait for the animation to run.
 		time.sleep(1)
