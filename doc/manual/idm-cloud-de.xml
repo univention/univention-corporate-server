@@ -54,7 +54,7 @@
 		<para>
 			Für den Einsatz des Microsoft Office 365 Connectors wird ein Microsoft Office 365 Administratorkonto, ein entsprechendes
 			Konto im Azure Active Directory sowie eine von Microsoft
-			<ulink="https://azure.microsoft.com/de-de/documentation/articles/active-directory-add-domain/">verifizierte
+			<ulink url="https://azure.microsoft.com/de-de/documentation/articles/active-directory-add-domain/">verifizierte
 			Domäne</ulink> benötigt. Die ersten beiden werden zu Testzwecken kostenlos von Microsoft bereitgestellt. Für das
 			Konfigurieren des SSO wird jedoch eine eigene Internet-Domäne benötigt, in der TXT‑Records erstellt werden können.
 		</para>
