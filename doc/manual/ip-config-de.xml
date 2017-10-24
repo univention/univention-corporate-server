@@ -2297,9 +2297,9 @@ dansguardian -g
 			<title>Installation</title>
 			<para>
 				RADIUS steht über das App Center (siehe <xref linkend="software:appcenter"/>)
-				zur Verfügung und kann über das entsprechend &ucsUMC; Modul App Center
+				zur Verfügung und kann über das entsprechende &ucsUMC; Modul App Center
 				installiert werden. Die App kann auf mehreren Systemen installiert werden. Nach
-				Installation startet die App einen <ulink
+				der Installation startet die App einen <ulink
 				url="http://freeradius.org/">FreeRADIUS</ulink> Server. Clients (z.B. Access
 				Points) können den Server via RADIUS kontaktieren und Netzwerkzugangsanfragen
 				prüfen.
@@ -2331,7 +2331,7 @@ dansguardian -g
 				<title>MAC-Adressfilter</title>
 				<para>
 					Standardmäßig ist allen Geräten der Zugang zum Netzwerk erlaubt, vorausgesetzt
-					der verwendete Benutzername hat Zugriff. Der Netzwerkzugriff kann auch auf
+					der verwendete Benutzer hat Zugriff. Der Netzwerkzugriff kann auch auf
 					spezifische Geräte begrenzt werden. Das kann durch Setzen der &ucsUCRV;
 					<envar>radius/mac/whitelisting</envar> auf <literal>true</literal> erreicht
 					werden. Sobald aktiviert, wird das Geräteobjekt beim Zugriff des Geräts auf das
@@ -2345,7 +2345,7 @@ dansguardian -g
 				<para>
 					Alle Access Points (Netzwerkzugangspunkte) müssen in der Konfigurationsdatei
 					<filename>/etc/freeradius/clients.conf</filename> eingetragen sein. Für jeden
-					Access Point sollte ein zufälliges Password erzeugt werden. (Zum Beispiel über
+					Access Point sollte ein zufälliges Passwort erzeugt werden. (Zum Beispiel über
 					den Befehl <command>makepasswd</command>.) Der <literal>shortname</literal>
 					kann frei gewählt werden. Beispiel für einen Eintrag für einen Access Point:
 <programlisting>
