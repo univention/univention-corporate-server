@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"univention/testing/umc_selenium/*.py"
+		],
+		"po_path": "univention/testing/umc_selenium/{lang}.po",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/ucs-test-framework.mo"
+	}
+]

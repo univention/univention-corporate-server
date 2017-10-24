@@ -11,7 +11,7 @@ import os.path
 import subprocess
 import univention.testing.umc_selenium as umc_selenium
 
-translator = localization.translation('univention-ucs-test_umc-tests')
+translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
 
 MASTER = 'master'

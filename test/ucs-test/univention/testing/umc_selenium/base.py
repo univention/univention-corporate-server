@@ -25,24 +25,27 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os
+import time
+import datetime
+import logging
+
 from PIL import Image
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions
+import selenium.common.exceptions as selenium_exceptions
+
 from univention.admin import localization
 from univention.testing.umc_selenium.checks_and_waits import ChecksAndWaits
 from univention.testing.umc_selenium.interactions import Interactions
-import datetime
-import logging
-import os
-import selenium.common.exceptions as selenium_exceptions
-import time
+
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 
 logger = logging.getLogger(__name__)
 
-translator = localization.translation('univention-ucs-test_umc-screenshots')
+translator = localization.translation('ucs-test-framework')
 _ = translator.translate
 
 
@@ -73,25 +76,29 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 	Tests run on selenium grid server. To run tests locally use lacal varibable UCSTEST_SELENIUM=local.
 	Root privileges are required, also root needs the privilege to display the browser.
 	"""
+
+	BROWSERS = {
+		'ie': 'internet explorer',
+		'firefox': 'firefox',
+		'chrome': 'chrome',
+		'chromium': 'chrome',
+		'ff': 'firefox',
+	}
+
 	def __init__(self, language='en', host='localhost'):
 		self.max_exceptions = 3
-		self.browser = 'firefox'
-		self.selenium_grid = False
+		self.browser = self.BROWSERS[os.environ.get('UCSTEST_SELENIUM_BROWSER', 'firefox')]
+		self.selenium_grid = os.environ.get('UCSTEST_SELENIUM') != 'local'
 		self.language = language
-		self.base_url = 'https://' + host + '/'
+		self.base_url = 'https://%s/' % (host,)
+		self.screenshot_path = '/test_selenium_screenshots/'
 		translator.set_language(self.language)
 		logging.basicConfig(level=logging.INFO)
 
 	def __enter__(self):
-		if 'UCSTEST_SELENIUM_BROWSER' in os.environ:
-			self.browser = os.environ['UCSTEST_SELENIUM_BROWSER']
-		if 'UCSTEST_SELENIUM' in os.environ and os.environ['UCSTEST_SELENIUM'] == 'local':
-			self.selenium_grid = False
 		if self.selenium_grid:
-			if self.browser == 'ie':
-				self.browser = 'internet explorer'
 			self.driver = webdriver.Remote(
-				command_executor='http://jenkins.knut.univention.de:4444/wd/hub',
+				command_executor='http://jenkins.knut.univention.de:4444/wd/hub',  # FIXME: url should be configurable via UCR
 				desired_capabilities={
 					'browserName': self.browser
 				})
@@ -111,7 +118,6 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		self.umcLoginUsername = self.account.username
 		self.umcLoginPassword = self.account.bindpw
 
-		self.screenshot_path = '/test_selenium_screenshots/'
 		if not os.path.exists(self.screenshot_path):
 			os.makedirs(self.screenshot_path)
 

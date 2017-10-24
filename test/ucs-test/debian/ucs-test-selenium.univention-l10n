@@ -1,0 +1,11 @@
+[
+	{
+		"input_files": [
+			"tests/86_selenium/[0-9]+_.*",
+			"tests/90_umc-screenshots/[0-9]+_.*"
+		],
+		"po_path": "tests/86_selenium/locale/{lang}.po",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/ucs-test-selenium.mo"
+	}
+]
