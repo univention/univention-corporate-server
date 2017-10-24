@@ -2279,4 +2279,132 @@ dansguardian -g
 	</section>
 
   </section>
+
+	<section id="ip-config:radius">
+		<title>RADIUS</title>
+		<para>
+			Die RADIUS App erhöht die Sicherheit für mit UCS verwaltete IT-Infrastrukturen
+			durch Zugangskontrollen zu WiFi Netzwerken für Benutzer, Gruppen und Endgeräte
+			über das <ulink
+			url="https://de.wikipedia.org/wiki/Remote_Authentication_Dial-In_User_Service">RADIUS
+			Protokoll</ulink>. Die Konfiguration erfolgt über Black- und White-Listen
+			direkt am Benutzer-, Gruppen- oder Endgeräte-Objekt im UCS Managementsystem.
+			Registrierte Benutzer werden mit ihren üblichen Domain-Credentials
+			authentisiert, so dass unter anderem Bring-your-own-Device Konzepte ermöglicht
+			werden.
+		</para>
+		<section id="ip-config:radius:installation">
+			<title>Installation</title>
+			<para>
+				RADIUS steht über das App Center (siehe <xref linkend="software:appcenter"/>)
+				zur Verfügung und kann über das entsprechend &ucsUMC; Modul App Center
+				installiert werden. Die App kann auf mehreren Systemen installiert werden. Nach
+				Installation startet die App einen <ulink
+				url="http://freeradius.org/">FreeRADIUS</ulink> Server. Clients (z.B. Access
+				Points) können den Server via RADIUS kontaktieren und Netzwerkzugangsanfragen
+				prüfen.
+
+				Die RADIUS App kann auch auf UCS@school Systemen installiert werden. In diesem
+				Fall kann der Netzwerkzugang unabhängig von Internetregeln oder
+				Computerraum-Einstellungen für Benutzer und Gruppen geregelt werden.
+			</para>
+		</section>
+		<section id="ip-config:radius:configuration">
+			<title>Konfiguration</title>
+			<section id="ip-config:radius:configuration:allowed-users">
+				<title>Erlaubte Benutzer</title>
+				<para>
+					Standardmäßig hat kein Benutzer Zugang zum Netzwerk. Indem die Checkbox für
+					<guimenu>Netzwerkzugriff erlaubt</guimenu> im <guimenu>RADIUS</guimenu> Tab
+					aktiviert wird, erhält der Benutzer Zugriff auf das Netzwerk. Die Checkbox kann
+					auch für Gruppen gesetzt werden, so dass alle Benutzer in der Gruppe Zugang
+					erlangen.
+				</para>
+				<para>
+					<figure id="ip-config:radius:group">
+						<title>Beispiel für eine Gruppe, die ihren Benutzern Zugang gewährt</title>
+						<graphic fileref="illustrations42/radius-group-allow-network_DE.png" scalefit="1" width="100%"/>
+					</figure>
+				</para>
+			</section>
+			<section id="ip-config:radius:configuration:mac-filtering">
+				<title>MAC-Adressfilter</title>
+				<para>
+					Standardmäßig ist allen Geräten der Zugang zum Netzwerk erlaubt, vorausgesetzt
+					der verwendete Benutzername hat Zugriff. Der Netzwerkzugriff kann auch auf
+					spezifische Geräte begrenzt werden. Das kann durch Setzen der &ucsUCRV;
+					<envar>radius/mac/whitelisting</envar> auf <literal>true</literal> erreicht
+					werden. Sobald aktiviert, wird das Geräteobjekt beim Zugriff des Geräts auf das
+					Netzwerk über das LDAP-Attribut <property>macAddress</property> abgerufen und
+					dem entsprechenden Geräteobjekt muss der Zugang zum Netzwerk auch erlaubt sein
+					(entweder direkt oder über eine der Gruppen).
+				</para>
+			</section>
+			<section id="ip-config:radius:configuration:access-points">
+				<title>Access Points</title>
+				<para>
+					Alle Access Points (Netzwerkzugangspunkte) müssen in der Konfigurationsdatei
+					<filename>/etc/freeradius/clients.conf</filename> eingetragen sein. Für jeden
+					Access Point sollte ein zufälliges Password erzeugt werden. (Zum Beispiel über
+					den Befehl <command>makepasswd</command>.) Der <literal>shortname</literal>
+					kann frei gewählt werden. Beispiel für einen Eintrag für einen Access Point:
+<programlisting>
+	client 192.168.100.101 {
+	secret = a9RPAeVG
+	shortname = AP01
+	}
+</programlisting>
+					Die Access Points müssen so konfiguriert sein, dass sie 802.1x ("WPA
+					Enterprise") Authentisierung verwenden. Und die "RADIUS Server" Adresse sollte
+					auf die Adresse des Servers gesetzt sein, auf dem die RADIUS App installiert
+					ist. Das Passwort muss auf den Wert für <literal>secret</literal> aus dem
+					Eintrag in der <filename>clients.conf</filename> gesetzt sein.
+				</para>
+			</section>
+			<section id="ip-config:radius:configuration:clients">
+				<title>Clients</title>
+				<para>
+					WiFi Clients müssen so konfiguriert sein, dass sie <emphasis>WPA</emphasis> mit
+					<emphasis>PEAP</emphasis> und <emphasis>MSCHAPv2</emphasis> für die
+					Authentisierung verwenden.
+				</para>
+			</section>
+		</section>
+		<section id="ip-config:radius:debugging">
+			<title>Fehlersuche</title>
+			<para>
+				Das Werkzeug <package>univention-radius-check-access</package> kann zur
+				Untersuchung der aktuellen Zugangsregeln für einen bestimmten Benutzer und/oder
+				MAC Adresse verwendet werden. Es kann als Benutzer root auf dem Server
+				ausgeführt werden, wo das Paket <package>univention-radius</package>
+				installiert ist.
+<programlisting language="sh">
+	root@master211:~# univention-radius-check-access --username=stefan
+	DENY 'uid=stefan,cn=users,dc=ucs,dc=local'
+	'uid=stefan,cn=users,dc=ucs,dc=local'
+	-> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
+	-> 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
+	-> -> DENY 'cn=Users,cn=Builtin,dc=ucs,dc=local'
+	-> -> 'cn=Users,cn=Builtin,dc=ucs,dc=local'
+	Thus access is DENIED.
+</programlisting>
+<programlisting language="sh">
+	root@master211:~# univention-radius-check-access --username=janek
+	DENY 'uid=janek,cn=users,dc=ucs,dc=local'
+	'uid=janek,cn=users,dc=ucs,dc=local'
+	-> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
+	-> ALLOW 'cn=Network Access,cn=groups,dc=ucs,dc=local'
+	-> 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
+	-> -> DENY 'cn=Users,cn=Builtin,dc=ucs,dc=local'
+	-> -> 'cn=Users,cn=Builtin,dc=ucs,dc=local'
+	-> 'cn=Network Access,cn=groups,dc=ucs,dc=local'
+	Thus access is ALLOWED.
+	root@master211:~#
+</programlisting>
+				Das Werkzeug gibt eine detaillierte Erläuterung und setzt den Exit-Code
+				abhängig vom Ergebnis der Zugangsprüfung (0 für Zugang gestattet, 1 für Zugang
+				verweigert).
+			</para>
+		</section>
+	</section>
 </chapter>
