@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
+<chapter id="idmcloud">
+  <title>Identity Management Anbindung an Cloud-Dienste</title>
+  <section id="idmcloud:general">
+	<title>Einführung</title>
+	<para>
+		UCS bietet ein integriertes Identity Management System. Über Univention Management Console können bspw. Benutzer,
+		oder Gruppen sehr einfach administriert werden. Abhängig von den installierten Diensten stehen diese
+		Identitäten über unterschiedliche Schnittstellen bereit, bspw. via LDAP.
+	</para>
+	<para>
+		Mit Hilfe von bereitgestellten Erweiterungen, sogenannten Apps, kann das Managementsystem so erweitert werden, dass
+		Benutzer oder Benutzergruppen auch direkt in Cloud-Dienste repliziert werden. Im App Center sind u.a. Erweiterung für
+		Microsoft Office 365 oder G Suite vorhanden.
+	</para>
+	<para>
+		Dank Single Sign-On (SSO) können sich die Benutzer mit ihrem gewohnten Passwort anmelden und anschließend sofort online
+		in der Cloud arbeiten. Dabei bleibt das Passwort im Unternehmensnetzwerk und wird nicht zum Cloud Dienst übertragen.
+	</para>
+	<para>
+		Im folgenden Kapitel ist die Einrichtung des Microsoft Office 365 Connector beschrieben.
+	</para>
+  </section>
+
+</chapter>

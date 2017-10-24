@@ -51,6 +51,7 @@ feedback@univention.de
   <xi:include href="groups-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
   <xi:include href="computers-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
   <xi:include href="windows-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="idm-cloud-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
   <xi:include href="ip-config-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
   <xi:include href="shares-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
   <xi:include href="print-services-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
