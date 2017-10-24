@@ -1,9 +1,9 @@
 product: ucs
 release: "4.2"
-version: [1,2]
+version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-ad-connector
-fix: 11.0.6-27A~4.2.0.201709041717
+fix: 11.0.6-30A~4.2.0.201710241810
 desc: |
  This update addresses the following issue(s):
  * The AD-Connector skips (re)recreation of UDM deleted objects.
