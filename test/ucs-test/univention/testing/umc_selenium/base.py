@@ -1,3 +1,8 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Selenium Tests
+#
 # Copyright 2013-2017 Univention GmbH
 #
 # http://www.univention.de/
