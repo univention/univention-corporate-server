@@ -86,12 +86,14 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 	}
 
 	def __init__(self, language='en', host='localhost'):
+		self._ucr = ucr_test.UCSTestConfigRegistry()
+		self._ucr.load()
 		self.max_exceptions = 3
 		self.browser = self.BROWSERS[os.environ.get('UCSTEST_SELENIUM_BROWSER', 'firefox')]
 		self.selenium_grid = os.environ.get('UCSTEST_SELENIUM') != 'local'
 		self.language = language
 		self.base_url = 'https://%s/' % (host,)
-		self.screenshot_path = '/test_selenium_screenshots/'
+		self.screenshot_path = os.path.abspath('selenium-screendumps/')
 		translator.set_language(self.language)
 		logging.basicConfig(level=logging.INFO)
 
@@ -110,9 +112,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 			else:
 				self.driver = webdriver.Firefox()
 
-		ucr = ucr_test.UCSTestConfigRegistry()
-		ucr.load()
-		self.ldap_base = ucr.get('ldap/base')
+		self.ldap_base = self._ucr.get('ldap/base')
 
 		self.account = utils.UCSTestDomainAdminCredentials()
 		self.umcLoginUsername = self.account.username
@@ -152,12 +152,11 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		if hide_notifications:
 			self.show_notifications(False)
 
+		timestamp = ''
 		if append_timestamp:
-			timestamp = '_' + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-		else:
-			timestamp = ''
+			timestamp = '_%s' % (datetime.datetime.now().strftime("%Y%m%d%H%M%S"),)
 
-		filename = self.screenshot_path + name + '_' + self.language + timestamp + '.png'
+		filename = '%s%s_%s%s.png' % (self.screenshot_path, name, self.language, timestamp)
 		logger.info('Saving screenshot %r', filename)
 
 		self.driver.save_screenshot(filename)
