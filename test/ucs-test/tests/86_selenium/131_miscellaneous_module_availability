@@ -9,7 +9,7 @@
 from univention.admin import localization
 import os.path
 import subprocess
-import univention.testing.umc_selenium as umc_selenium
+from univention.testing import selenium
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
@@ -254,8 +254,8 @@ class UMCTester(object):
 
 
 if __name__ == '__main__':
-	with umc_selenium.base.UMCSeleniumTest() as selenium:
+	with selenium.UMCSeleniumTest() as s:
 		umc_tester = UMCTester()
-		umc_tester.selenium = selenium
+		umc_tester.selenium = s
 
 		umc_tester.test_umc()

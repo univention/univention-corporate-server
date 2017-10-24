@@ -30,10 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+from __future__ import absolute_import
+
 import json
 import logging
+
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import selenium.common.exceptions as selenium_exceptions
 
 logger = logging.getLogger(__name__)

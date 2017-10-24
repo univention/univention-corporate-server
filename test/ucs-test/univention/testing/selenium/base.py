@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
 import os
 import time
 import datetime
@@ -42,8 +44,8 @@ from selenium.webdriver.support import expected_conditions
 import selenium.common.exceptions as selenium_exceptions
 
 from univention.admin import localization
-from univention.testing.umc_selenium.checks_and_waits import ChecksAndWaits
-from univention.testing.umc_selenium.interactions import Interactions
+from univention.testing.selenium.checks_and_waits import ChecksAndWaits
+from univention.testing.selenium.interactions import Interactions
 
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils

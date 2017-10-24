@@ -30,35 +30,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.admin import localization
-
-translator = localization.translation('ucs-test-framework')
-_ = translator.translate
-
-
-class AppCenter(object):
-
-	def __init__(self, selenium):
-		self.selenium = selenium
-
-	def install_app(app):
-		s.open_module(_('App Center'))
-		s.wait_until_all_standby_animations_disappeared()
-		s.click_text(app)
-		s.wait_for_text(_('Details'))
-		s.wait_for_text(_('More information'))
-		s.click_text(_('Install'))
-		s.click_text(_('Next'))
-		s.click_text(_('Continue'))
-		s.click_text(_('Install'))
-		s.wait_until_all_standby_animations_disappeared()
-		s.wait_for_text(_('Please confirm to install the application'))
-
-
-if __name__ == '__main__':
-	import univention.testing.umc_selenium
-	s = univention.testing.umc_selenium.UMCSeleniumTest()
-	s.__enter__()
-	s.do_login()
-	a = AppCenter(s)
-	a.install_app('Dudle')
+from univention.testing.selenium.base import UMCSeleniumTest
+__all__ = ('UMCSeleniumTest',)

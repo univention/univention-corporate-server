@@ -30,11 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
+import time
+
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
+
 from univention.admin import localization
-import time
 import univention.testing.strings as uts
 
 translator = localization.translation('ucs-test-framework')

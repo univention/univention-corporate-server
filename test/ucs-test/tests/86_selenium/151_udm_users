@@ -10,8 +10,8 @@ import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-import univention.testing.umc_selenium as umc_selenium
-import univention.testing.umc_selenium.udm as selenium_udm
+from univention.testing import selenium
+import univention.testing.selenium.udm as selenium_udm
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
@@ -172,11 +172,11 @@ class UMCTester(object):
 
 
 if __name__ == '__main__':
-	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, umc_selenium.base.UMCSeleniumTest() as selenium:
+	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, selenium.UMCSeleniumTest() as s:
 		umc_tester = UMCTester()
 		umc_tester.ucr = ucr
 		umc_tester.udm = udm
-		umc_tester.users = selenium_udm.Users(selenium)
-		umc_tester.selenium = selenium
+		umc_tester.users = selenium_udm.Users(s)
+		umc_tester.selenium = s
 
 		umc_tester.test_umc()

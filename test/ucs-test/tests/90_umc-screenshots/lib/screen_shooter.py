@@ -1,7 +1,7 @@
 import argparse
 import logging
 import univention.testing.udm as udm_test
-import univention.testing.umc_selenium as umc_selenium_test
+import univention.testing.selenium as selenium_test
 
 
 class BaseScreenShooter(object):
@@ -13,7 +13,7 @@ class BaseScreenShooter(object):
 		logging.basicConfig(level=logging.INFO)
 
 		self.udm = udm_test.UCSTestUDM()
-		self.selenium = umc_selenium_test.UMCSeleniumTest(language=self.args.language)
+		self.selenium = selenium_test.UMCSeleniumTest(language=self.args.language)
 
 	def __enter__(self):
 		self.udm.__enter__()

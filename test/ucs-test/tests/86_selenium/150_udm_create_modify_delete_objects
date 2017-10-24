@@ -6,8 +6,8 @@
 ## exposure: dangerous
 
 from univention.admin import localization
-import univention.testing.umc_selenium as umc_selenium
-import univention.testing.umc_selenium.udm as selenium_udm
+from univention.testing import selenium
+import univention.testing.selenium.udm as selenium_udm
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
@@ -83,8 +83,8 @@ class Policies(selenium_udm.Policies):
 
 
 if __name__ == '__main__':
-	with umc_selenium.base.UMCSeleniumTest() as selenium:
+	with selenium.UMCSeleniumTest() as s:
 		umc_tester = UMCTester()
-		umc_tester.selenium = selenium
+		umc_tester.selenium = s
 
 		umc_tester.test_umc()
