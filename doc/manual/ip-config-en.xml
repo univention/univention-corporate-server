@@ -2602,4 +2602,113 @@ dansguardian -g
 	</section>
 
   </section>
+
+  <section id="ip-config:radius">
+	<title>RADIUS</title>
+	<para>
+		The RADIUS app increases the security for UCS managed IT
+		infrastructures by controlling the access to the wireless network for users,
+		groups and endpoint devices via RADIUS protocol. The configuration is done via
+		black and white lists and directly at user, group and endpoint device objects
+		in the UCS management system. Registered users are authenticated with their
+		usual domain credentials, which, among others, also allows bring your own
+		device concepts.
+	</para>
+	  <section id="ip-config:radius:installation">
+		  <title>Installation</title>
+		  <para>
+			RADIUS is available through the App Center and can be installed
+			using the corresponding UMC App Center module. It can be installed on multiple
+			machines. After the installation it runs a freeRADIUS server. Clients (e.g.
+			access points) can contact via RADIUS to check network access requests.
+
+			The RADIUS app can also be installed on UCS@school systems. In
+			this case, the network access can be given to users or groups regardless of the
+			Internet rule or computer room settings.
+		  </para>
+	  </section>
+	  <section id="ip-config:radius:configuration">
+		  <title>Configuration</title>
+		  <section id="ip-config:radius:configuration:allowed-users">
+			  <title>Allowed users</title>
+			  <para>
+				By default no user is allowed to access the network. Enabling
+				the checkbox for network access on the RADIUS tab, gives the user access to the
+				network. The checkbox can also be set on groups, which allows all users in this
+				group access.
+			  </para>
+		  </section>
+		  <section id="ip-config:radius:configuration:mac-filtering">
+			  <title>MAC filtering</title>
+			  <para>
+				By default access to the network is allowed for every device
+				(assuming the used user name has access). It can be restricted to only allow
+				specific devices. This can be enabled by setting the UCR variable
+				radius/mac/whitelisting to true. When enabled, the device used to access the
+				network is looked up via the LDAP attribute macAddress and the resulting
+				computer object must have network access granted (either directly or via one of
+				its groups) too.
+			  </para>
+		  </section>
+		  <section id="ip-config:radius:configuration:access-points">
+			  <title>Access points</title>
+			  <para>
+				All access points must be registered in the configuration
+				file /etc/freeradius/clients.conf. For each access point a random password
+				should be created. (For example using the command makepasswd). The shortname
+				can be chosen at will. Example entry for an access point:
+				  <programlisting>
+					client 192.168.100.101 {
+						secret = a9RPAeVG
+						shortname = AP01
+					}
+				  </programlisting>
+				The access points must then be configured to use 802.1x ("WPA Enterprise")
+				authentication; The address of the server where the RADIUS app is installed
+				should be set as "RADIUS server" and the password must be set to the "secret"
+				from the clients.conf entry for that access point.
+			  </para>
+		  </section>
+		  <section id="ip-config:radius:configuration:clients">
+			  <title>Clients</title>
+			  <para>
+				WiFi-clients have to be configured to use <emphasis>WPA</emphasis> with
+				<emphasis>PEAP</emphasis> and <emphasis>MSCHAPv2 </emphasis>for authentication.
+			  </para>
+		  </section>
+	  </section>
+	  <section id="ip-config:radius:debugging">
+		  <title>Debugging</title>
+		  <para>
+			The tool univention-radius-check-access can be used to evaluate the current
+			access policy for a given user and/or station ID (MAC address). It can be
+			executed as root on the server where univention-radius is installed:
+			  <programlisting language="sh">
+				root@master211:~# univention-radius-check-access --username=stefan
+				DENY 'uid=stefan,cn=users,dc=ucs,dc=local'
+				'uid=stefan,cn=users,dc=ucs,dc=local'
+				-> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
+				-> 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
+				-> -> DENY 'cn=Users,cn=Builtin,dc=ucs,dc=local'
+				-> -> 'cn=Users,cn=Builtin,dc=ucs,dc=local'
+				Thus access is DENIED.
+			  </programlisting>
+			  <programlisting language="sh">
+				root@master211:~# univention-radius-check-access --username=janek
+				DENY 'uid=janek,cn=users,dc=ucs,dc=local'
+				'uid=janek,cn=users,dc=ucs,dc=local'
+				-> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
+				-> ALLOW 'cn=Network Access,cn=groups,dc=ucs,dc=local'
+				-> 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
+				-> -> DENY 'cn=Users,cn=Builtin,dc=ucs,dc=local'
+				-> -> 'cn=Users,cn=Builtin,dc=ucs,dc=local'
+				-> 'cn=Network Access,cn=groups,dc=ucs,dc=local'
+				Thus access is ALLOWED.
+				root@master211:~#
+			  </programlisting>
+			It prints a detailed explanation and sets the exit code depending on the access
+			(0 for granted access, 1 for denied access)
+		  </para>
+	  </section>
+  </section>
 </chapter>
