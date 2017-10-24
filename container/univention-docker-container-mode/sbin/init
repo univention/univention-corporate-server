@@ -35,23 +35,26 @@ fi
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-## Set nameservers first, so DNS works ASAP:
-if [ -z "$nameserver1" ] && [ -z "$nameserver2" ] && [ -z "$nameserver3" ]; then
-	read -d'\n' nameserver1 nameserver2 nameserver3 \
-		< <(sed -rn 's/^nameserver[\t ]+([^\t ]+)/\1/p' /etc/resolv.conf)
-fi
-
-declare -a ucrchanges
-[ -n "$nameserver1" ] && ucrchanges+=( "nameserver1=$nameserver1" )
-[ -n "$nameserver2" ] && ucrchanges+=( "nameserver2=$nameserver2" )
-[ -n "$nameserver3" ] && ucrchanges+=( "nameserver3=$nameserver3" )
-if [ -n "$ucrchanges" ]; then
-	univention-config-registry set "${ucrchanges[@]}"
-	unset ucrchanges
-fi
-
-## Next pass hostname and domainname to UCR and create a host certificate
 if [ ! -e /var/univention-join/joined ]; then
+
+	## Set nameservers in UCR first, so DNS resolution still works
+	## when something causes an ucr commit on /etc/resolv.conf
+	if [ -z "$nameserver1" ] && [ -z "$nameserver2" ] && [ -z "$nameserver3" ]; then
+		read -d'\n' nameserver1 nameserver2 nameserver3 \
+			< <(sed -rn 's/^nameserver[\t ]+([^\t ]+)/\1/p' /etc/resolv.conf)
+	fi
+
+	declare -a ucrchanges
+	[ -n "$nameserver1" ] && ucrchanges+=( "nameserver1=$nameserver1" )
+	[ -n "$nameserver2" ] && ucrchanges+=( "nameserver2=$nameserver2" )
+	[ -n "$nameserver3" ] && ucrchanges+=( "nameserver3=$nameserver3" )
+	if [ -n "$ucrchanges" ]; then
+		univention-config-registry set "${ucrchanges[@]}"
+		unset ucrchanges
+	fi
+
+	## Next pass hostname and domainname to UCR and create a host certificate
+
 	# set hostname, required for:
 	# 1) apache requires a valid /etc/hosts entry
 	# 2) SSL certificate
