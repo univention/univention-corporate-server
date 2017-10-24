@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
-## desc: UMC ucr test
+## desc: check setting UCR variables
 ## roles-not: [basesystem]
 ## exposure: dangerous
 
@@ -88,6 +88,7 @@ class UcrSearchError(Exception):
 
 
 class UMCTester(object):
+
 	def test_umc(self):
 		self.selenium.do_login()
 		self.selenium.open_module(_('Univention Configuration Registry'))

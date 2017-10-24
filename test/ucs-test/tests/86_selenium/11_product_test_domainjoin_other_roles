@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
-## desc: UMC domainjoin test
+## desc: check domain join and running of specific join scripts
 ## roles:
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave
@@ -19,6 +19,7 @@ class PasswordChangeError(Exception):
 
 
 class UMCTester(object):
+
 	def test_umc(self):
 		self.selenium.do_login(username='root')
 

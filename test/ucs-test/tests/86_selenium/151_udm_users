@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 # -*- coding: utf-8 -*-
-## desc: UMC UDM tests
+## desc: Various test for UDM users/user
 ## roles-not: [basesystem]
 ## join: true
 ## exposure: dangerous
@@ -16,8 +16,6 @@ import univention.testing.umc_selenium.udm as selenium_udm
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
 
-PASSWORD = 'univention'
-
 
 class UmcUdmError(Exception):
 	pass
@@ -27,9 +25,7 @@ class UMCTester(object):
 
 	def test_umc(self):
 		self.users = selenium_udm.Users(self.selenium)
-		userdn, username = self.udm.create_user(
-			password=PASSWORD
-		)
+		userdn, username = self.udm.create_user()
 		self.selenium.do_login()
 		self.selenium.open_module(self.users.name)
 		self.users.wait_for_main_grid_load()

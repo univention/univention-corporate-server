@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 # -*- coding: utf-8 -*-
-## desc: UMC miscellaneous tests
+## desc: test language switch, logout, module visibility, process timeout
 ## roles-not: [basesystem]
 ## join: true
 ## exposure: dangerous
@@ -21,6 +21,7 @@ class UmcError(Exception):
 
 
 class UMCTester(object):
+
 	def test_umc(self):
 		self.selenium.do_login()
 		self.test_language_switch()

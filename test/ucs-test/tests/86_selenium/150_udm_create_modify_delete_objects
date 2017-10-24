@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 # -*- coding: utf-8 -*-
-## desc: UMC UDM tests
+## desc: test adding, modifying, removal of UDM objects
 ## roles-not: [basesystem]
 ## join: true
 ## exposure: dangerous
@@ -18,11 +18,13 @@ class UmcUdmError(Exception):
 
 
 class UMCTester(object):
+
 	def test_umc(self):
 		self.selenium.do_login()
 
 		# The product test requires to create and delete _some_ udm objects.
 		# I think those four should be enough.
+		# fbest: No, they aren't!
 		modules = [
 			Users(self.selenium),
 			Groups(self.selenium),

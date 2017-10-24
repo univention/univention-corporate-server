@@ -179,6 +179,7 @@ class UmcError(Exception):
 
 
 class UMCTester(object):
+
 	def test_umc(self):
 		role = self.determine_ucs_role()
 		users = self.determine_users_by_join_status()
