@@ -85,14 +85,13 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		'ff': 'firefox',
 	}
 
-	def __init__(self, language='en', host='localhost'):
+	def __init__(self, language='en', host=None):
 		self._ucr = ucr_test.UCSTestConfigRegistry()
 		self._ucr.load()
-		self.max_exceptions = 3
 		self.browser = self.BROWSERS[os.environ.get('UCSTEST_SELENIUM_BROWSER', 'firefox')]
 		self.selenium_grid = os.environ.get('UCSTEST_SELENIUM') != 'local'
 		self.language = language
-		self.base_url = 'https://%s/' % (host,)
+		self.base_url = 'https://%s/' % (host or '%s.%s' % (self._ucr.get('hostname'), self._ucr.get('domainname')))
 		self.screenshot_path = os.path.abspath('selenium-screendumps/')
 		translator.set_language(self.language)
 		logging.basicConfig(level=logging.INFO)
