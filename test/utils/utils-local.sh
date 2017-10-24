@@ -70,6 +70,9 @@ fetch-results () {
 	done
 	fetch-files root@${ADDR} /var/log/univention/config-registry.replog "$TARGETDIR/config-registry.replog.log"
 	fetch-files root@${ADDR} /var/log/apache2/error.log "$TARGETDIR/apache2-error.log"
+	# selenium
+	mkdir -p "$TARGETDIR/selenium-screendumps/"
+	fetch-files root@${ADDR} "/usr/share/ucs-test/*/selenium-screendumps/*.png" "$TARGETDIR/selenium-screendumps/"
 	return 0
 }
 
