@@ -50,6 +50,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 
 	def setup_parser(self, parser):
 		super(Upgrade, self).setup_parser(parser)
+		parser.add_argument('--do-not-pull-image', action='store_false', dest='pull_image', help='Do not pull the image of a Docker App. Instead, the image is assumed to be already in place')
 		parser.add_argument('--do-not-backup', action='store_false', dest='backup', help='For docker apps, do not save a backup container')
 
 	def __init__(self):

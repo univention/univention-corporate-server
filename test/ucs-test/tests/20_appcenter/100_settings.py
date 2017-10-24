@@ -229,7 +229,8 @@ Required = Yes
 
 	# FIXME: This should be int(123), right?
 	assert setting.get_initial_value() == '123'
-	assert setting.get_value(app) == '123'
+	assert setting.get_value(app, phase='Install') == '123'
+	assert setting.get_value(app, phase='Settings') is None
 
 	assert setting.should_go_into_image_configuration(app) is False
 
@@ -398,11 +399,9 @@ Filename = /tmp/settingdir/setting6.password
 
 		stop = get_action('stop')
 		stop.call(app=app)
-		config.set({password_setting.name: 'MyNewPassword', password_file_setting.name: 'NewFilePassword'})
-		with pytest.raises(SettingValueError):
-			password_setting.get_value(app)
-		with pytest.raises(SettingValueError):
-			password_file_setting.get_value(app)
+		config.set({password_setting.name: 'MyNewPassword2', password_file_setting.name: 'NewFilePassword2'})
+		assert password_setting.get_value(app) is None
+		assert password_file_setting.get_value(app) is None
 
 		start = get_action('start')
 		start.call(app=app)
