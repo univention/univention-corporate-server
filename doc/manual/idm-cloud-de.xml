@@ -31,4 +31,70 @@
 	</para>
   </section>
 
+  <section id="idmcloud:o365">
+	<title>Microsoft Office 365</title>
+	<para>
+		Der Microsoft Office 365 Connector ermöglicht die Synchronisation der Benutzer und Gruppen zu einer Azure Active
+		Directory Domäne, welche von Office 365 verwendet wird.Dabei lässt sich steuern, welche der in UCS angelegten
+		Benutzerkonten Office 365 verwenden dürfen. Die so ausgewählten Benutzer werden entsprechend von UCS in die Azure Active
+		Directory Domäne provisiert. Es kann dabei konfiguriert werden, welche Attribute synchronisiert werden und Attributte
+		können dabei sogar anonymisiert werden.
+	</para>
+
+	<para>
+		Die Anmeldung an Office 365 erfolgt über die SAML-SSO-Integration von UCS, d.h. die Authentifizierung erfolgt gegen den
+		UCS Server und es werden keine Passwort-Hashes zu Microsofts Azure Cloud übertragen. UCS und Microsoft Azure Active
+		Directory müssen dafür keine direkte Verbindung herstellen können, da die Authentifikation ausschließlich über den
+		Webbrowser des Clients erfolgt. Dieser sollte aber die DNS-Namen der UCS-Domäne auflösen können, das ist insbesondere
+		für Mobilgeräte wichtig zu beachten.
+	</para>
+
+	<section id="idmcloud:o365:setup">
+		<title>Einrichtung</title>
+		<para>
+			Für den Einsatz des Microsoft Office 365 Connectors wird ein Microsoft Office 365 Administratorkonto, ein entsprechendes
+			Konto im Azure Active Directory sowie eine von Microsoft
+			<ulink="https://azure.microsoft.com/de-de/documentation/articles/active-directory-add-domain/">verifizierte
+			Domäne</ulink> benötigt. Die ersten beiden werden zu Testzwecken kostenlos von Microsoft bereitgestellt. Für das
+			Konfigurieren des SSO wird jedoch eine eigene Internet-Domäne benötigt, in der TXT‑Records erstellt werden können.
+		</para>
+
+		<para>
+			Falls noch keine Microsoft Office 365 Subskription vorhanden ist, so kann diese via <ulink url="http://www.office.com"/>
+			im Bereich <guimenu>kostenlos testen für Unternehmen</guimenu> konfiguriert werden. Mit einem privaten Microsoft Konto
+			ist eine Verbindung nicht möglich.
+		</para>
+
+		<para>
+			Anschließend sollte eine Anmeldung mit einem <ulink
+url="https://login.microsoftonline.com/login.srf?wa=wsignin1.0&rpsnv=4&ct=1462951962&rver=6.7.6640.0&wp=MCMBI&wreply=https%3a%2f%2fportal.office.com%2flanding.aspx%3ftarget%3d%252fAdmin%252fDefault.aspx&lc=1033&id=501392&msafed=0&client-request-id=9e15a695-378c-4ba6-8aab-941353258f55">Office
+365 Administratorkonto</ulink> im Office 365 Admin Center erfolgen. Im
+			der linken Navigationsleiste ganz unten ist <guimenu>Azure AD</guimenu> auszuwählen, welches in einem neuen Fenter das
+			<guimenu
+url="https://login.microsoftonline.com/common/oauth2/authorize?response_type=code+id_token&redirect_uri=https%3a%2f%2fmanage.windowsazure.com%2f&client_id=00000013-0000-0000-c000-000000000000&resource=https%3a%2f%2fmanagement.core.windows.net%2f&scope=user_impersonation+openid&nonce=b32198d5-a829-44e7-86b1-4de4c47e6904&domain_hint=&site_id=500879&response_mode=form_post">Azure
+Management Portal</ulink> öffnet.
+		</para>
+
+		<para>
+			Unter dem Menüpunkt <guimenu>Domänen</guimenu> kann nun die eigene Domäne hinzugefügt und verifiziert werden. Dafür wird
+			es notwendig sein, einen TXT-Record im DNS der eigenen Domäne zu erzeugen. Dieser Vorgang kann einige Minuten in
+			Anspruch nehmen. Nun sollte der <guimenu>Status</guimenu> der konfigurierten Domäne als
+			<guimenu>überprüft</guimenu> angezeigt werden.
+		</para>
+
+		<para>
+			Nun kann die Microsoft Office 365 App aus dem App Center auf dem UCS System installiert werden. Die Installation dauert
+			nur wenige Minuten. Anschließend steht ein Einrichtungsassistent (Wizard) für die Einrichtung zur Verfügung.
+		</para>
+	</section>
+
+	<section id="idmcloud:o365:config">
+		<title>Konfiguration</title>
+	</section>
+
+	<section id="idmcloud:o365:debug">
+		<title>Fehlersuche</title>
+	</section>
+  </section>
+
 </chapter>
