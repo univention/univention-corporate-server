@@ -45,7 +45,6 @@ import array
 import ldap.sasl
 import subprocess
 import univention.uldap
-from univention.lib import ordered_set
 import univention.connector
 import univention.debug2 as ud
 from ldap.controls import LDAPControl
@@ -58,7 +57,6 @@ from samba.credentials import Credentials, DONT_USE_KERBEROS
 from samba import drs_utils
 from samba.dcerpc import drsuapi, lsa, security
 import samba.dcerpc.samr
-
 
 
 class kerberosAuthenticationFailed(Exception):
@@ -2365,7 +2363,7 @@ class ad(univention.connector.ucs):
 
 						if value:
 							modlist.append((ldap.MOD_REPLACE, attr, value))
-						elif ad_object.get(attr):
+						else:
 							modlist.append((ldap.MOD_DELETE, attr, None))
 
 			ud.debug(ud.LDAP, ud.INFO, "to add: %s" % object['dn'])
@@ -2407,7 +2405,7 @@ class ad(univention.connector.ucs):
 				"sync_from_ucs: new_object: %s" % new_ucs_object)
 			object['old_ucs_object'] = old_ucs_object
 			object['new_ucs_object'] = new_ucs_object
-			attribute_list = ordered_set.OrderedSet(old_ucs_object.keys() + new_ucs_object.keys())
+			attribute_list = set(old_ucs_object.keys() + new_ucs_object.keys())
 
 			def find_case_independent(ad_object, attribute):
 				attr = attribute.lower()
@@ -2416,7 +2414,7 @@ class ad(univention.connector.ucs):
 					values = next(matching)
 				except StopIteration:
 					values = []
-				return ordered_set.OrderedSet(values)
+				return set(values)
 
 			# Iterate over attributes and post_attributes
 			for attribute_type_name, attribute_type in [('attributes', self.property[property_type].attributes),
@@ -2446,8 +2444,8 @@ class ad(univention.connector.ucs):
 								continue
 
 							# Get the UCS attributes
-							old_values = ordered_set.OrderedSet(old_ucs_object.get(attr, []))
-							new_values = ordered_set.OrderedSet(new_ucs_object.get(attr, []))
+							old_values = set(old_ucs_object.get(attr, []))
+							new_values = set(new_ucs_object.get(attr, []))
 
 							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: old_values: %s" % old_values)
 							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: new_values: %s" % new_values)
@@ -2466,53 +2464,31 @@ class ad(univention.connector.ucs):
 							to_add = new_values - old_values
 							to_remove = old_values - new_values
 
-							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: to_add: %s" % to_add)
-							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: to_remove: %s" % to_remove)
-
 							if ad_other_attribute:
 								# This is the case, where we map from a multi-valued UCS attribute to two AD attributes.
 								# telephoneNumber/otherTelephone (AD) to telephoneNumber (UCS) would be an example.
 								#
-								# In Active Directory, for attributes that are split in two the administrator is
-								# responsible for keeping a value in `telephoneNumber`. Imagine the following:
-								# (a) telephoneNumber = '123', otherTelephone = ['123', '456']
-								# In this case, if the administrator deletes the value of `telephoneNumber`,
-								# Active Directory does NOT automatically pull a new value from `otherTelephone`.
+								# The direct mapping assumes preserved ordering of the multi-valued UCS
+								# attributes and places the first value in the primary AD attribute,
+								# the rest in the secondary AD attributes.
+								# Assuming preserved ordering is wrong, as LDAP does not guarantee is and the
+								# deduplication of LDAP attribute values in `__set_values()` destroys it.
 								#
-								# This is impossible to support with the connector. Imagine again case (a). If
-								# we delete `123` from `phone` via UDM, AD would be synced into the following
-								# state: (b) telephoneNumber = '', otherTelephone = ['456']
-								# From now on, whenever we add a new value to `phone` via UDM, for example:
-								# (c) phone = ['456', '789'] it MUST be synced as
-								# (d) telephoneNumber = '', otherTelephone = ['456', '789'] as '456' came
-								# before '789' and '456' is definitely in `otherTelephone`.
-								#
-								# We therefore implement, that `telephoneNumber` is never empty, as long as there
-								# are values in `otherTelephone`. If a modification would delete the value of
-								# `telephoneNumber` and at least one value exists in `otherTelephone`, the
-								# connector duplicates the first entry of `otherTelephone` into
-								# `telephoneNumber`.
+								# The following code handles the correct distribution of the UCS attribute,
+								# to two AD attributes. It also ensures, that the primary AD attribute keeps
+								# its value as long as that value is not removed. If removed the primary
+								# attribute is assigned a random value from the UCS attribute.
 								current_ad_other_values = find_case_independent(ad_object, ad_other_attribute)
-								current_ad_other_values = ordered_set.OrderedSet(reversed(current_ad_other_values))
 
 								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD values: %s" % current_ad_values)
 								ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD other values: %s" % current_ad_other_values)
 
+								# If we removed the value on the UCS side that was contained in the `ad_attribute`,
+								# but are adding new values, we choose a random value from the new values.
 								new_ad_values = current_ad_values - to_remove
-								retained_ad_other_values = current_ad_other_values - to_remove
-
-								# If we removed the value on the UCS side that was contained in the `current_ad_values`,
-								# but have values, we duplicate the first value from the `new_ad_other_values`.
-								if not new_ad_values:
-									if retained_ad_other_values:
-										new_ad_values.add(retained_ad_other_values[0])
-									elif to_add:
-										new_ad_values.add(to_add[0])
-
-								# Take the old values without those to be removed. Add the new ones
-								# (without duplicating the `new_ad_values`, but preserving existing
-								# duplicates in `con_other_attribute`)
-								new_ad_other_values = retained_ad_other_values | (to_add - new_ad_values)
+								if not new_ad_values and to_add:
+									new_ad_values.add(to_add.pop())
+								new_ad_other_values = (current_ad_other_values | to_add) - to_remove - current_ad_values
 
 								if current_ad_values != new_ad_values:
 									modlist.append((ldap.MOD_REPLACE, ad_attribute, new_ad_values))

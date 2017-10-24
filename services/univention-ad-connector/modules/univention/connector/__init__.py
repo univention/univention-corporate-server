@@ -42,7 +42,6 @@ import copy
 import time
 import ldap
 import univention.uldap
-from univention.lib import ordered_set
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
@@ -1060,14 +1059,7 @@ class ucs:
 						else:
 							equal = compare[0] == compare[1]
 						if not equal:
-							# This is deduplication of LDAP attribute values for AD -> UCS.
-							# It preserves ordering of the attribute values which is
-							# important for the handling of `con_other_attribute`.
-							if isinstance(value, list):
-								ucs_object[ucs_key] = list(ordered_set.OrderedSet(value))
-							else:
-								ucs_object[ucs_key] = value
-
+							ucs_object[ucs_key] = value
 							ud.debug(ud.LDAP, ud.INFO, "set key in ucs-object: %s" % ucs_key)
 				else:
 					ud.debug(ud.LDAP, ud.WARN, '__set_values: no ucs_attribute found in %s' % attributes)
