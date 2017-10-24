@@ -2673,10 +2673,9 @@ dansguardian -g
 					}
 				  </programlisting>
 				The access points must then be configured to use 802.1x ("WPA Enterprise")
-				authentication. The address of the server where the RADIUS app is installed
-				should be set as "RADIUS server" and the password must be set to the
-				<literal>secret</literal>
-				from the clients.conf entry for that access point.
+				authentication. And the "RADIUS server" address should be set to the address of
+				the server, where the RADIUS app is installed. The password must be set to the
+				<literal>secret</literal> from the clients.conf entry for that access point.
 			  </para>
 		  </section>
 		  <section id="ip-config:radius:configuration:clients">
