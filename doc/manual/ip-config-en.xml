@@ -2617,7 +2617,7 @@ dansguardian -g
 	  <section id="ip-config:radius:installation">
 		  <title>Installation</title>
 		  <para>
-			RADIUS is available through the App Center <xref linked="software:appcenter"/>
+			RADIUS is available through the App Center <xref linkend="software:appcenter"/>
 			and can be installed using the corresponding &ucsUMC; App Center module. It can be
 			installed on multiple machines. After the installation it runs a <ulink
 			url="http://freeradius.org/">freeRADIUS</ulink> server. Clients (e.g.  access
