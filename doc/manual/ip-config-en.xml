@@ -2633,9 +2633,9 @@ dansguardian -g
 		  <section id="ip-config:radius:configuration:allowed-users">
 			  <title>Allowed users</title>
 			  <para>
-				By default no user is allowed to access the network. Enabling
-				the checkbox for network access on the <guimenu>RADIUS</guimenu> tab, gives the
-				user access to the network. The checkbox can also be set on groups, which
+				By default no user is allowed to access the network. Enabling the checkbox for
+				<guimenu>network access</guimenu> on the <guimenu>RADIUS</guimenu> tab, gives
+				the user access to the network. The checkbox can also be set on groups, which
 				allows all users in this group access.
 			  </para>
 			  <para>
@@ -2648,13 +2648,14 @@ dansguardian -g
 		  <section id="ip-config:radius:configuration:mac-filtering">
 			  <title>MAC filtering</title>
 			  <para>
-				By default access to the network is allowed for every device
-				(assuming the used user name has access). It can be restricted to only allow
-				specific devices. This can be enabled by setting the UCR variable
+				By default access to the network is allowed for every device (assuming the used
+				user name has access). It can be restricted to only allow specific devices.
+				This can be enabled by setting the &ucsUCRV;
 				<envar>radius/mac/whitelisting</envar> to <literal>true</literal>. When
 				enabled, the device used to access the network is looked up via the LDAP
-				attribute macAddress and the resulting computer object must have network access
-				granted (either directly or via one of its groups) too.
+				attribute <property>macAddress</property> and the resulting computer object
+				must have network access granted (either directly or via one of its groups),
+				too.
 			  </para>
 		  </section>
 		  <section id="ip-config:radius:configuration:access-points">
@@ -2672,8 +2673,9 @@ dansguardian -g
 					}
 				  </programlisting>
 				The access points must then be configured to use 802.1x ("WPA Enterprise")
-				authentication; The address of the server where the RADIUS app is installed
-				should be set as "RADIUS server" and the password must be set to the "secret"
+				authentication. The address of the server where the RADIUS app is installed
+				should be set as "RADIUS server" and the password must be set to the
+				<literal>secret</literal>
 				from the clients.conf entry for that access point.
 			  </para>
 		  </section>
@@ -2681,7 +2683,7 @@ dansguardian -g
 			  <title>Clients</title>
 			  <para>
 				WiFi-clients have to be configured to use <emphasis>WPA</emphasis> with
-				<emphasis>PEAP</emphasis> and <emphasis>MSCHAPv2 </emphasis>for authentication.
+				<emphasis>PEAP</emphasis> and <emphasis>MSCHAPv2</emphasis> for authentication.
 			  </para>
 		  </section>
 	  </section>
