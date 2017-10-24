@@ -2617,7 +2617,7 @@ dansguardian -g
 	  <section id="ip-config:radius:installation">
 		  <title>Installation</title>
 		  <para>
-			RADIUS is available through the App Center <xref linkend="software:appcenter"/>
+			RADIUS is available through the App Center (see <xref linkend="software:appcenter"/>)
 			and can be installed using the corresponding &ucsUMC; App Center module. It can be
 			installed on multiple machines. After the installation it runs a <ulink
 			url="http://freeradius.org/">FreeRADIUS</ulink> server. Clients (e.g.  access
@@ -2666,12 +2666,12 @@ dansguardian -g
 				random password should be created. (For example using the command
 				<command>makepasswd</command>). The <literal>shortname</literal> can be chosen
 				at will. Example entry for an access point:
-				  <programlisting>
-					client 192.168.100.101 {
-						secret = a9RPAeVG
-						shortname = AP01
-					}
-				  </programlisting>
+<programlisting>
+	client 192.168.100.101 {
+		secret = a9RPAeVG
+		shortname = AP01
+	}
+</programlisting>
 				The access points must then be configured to use 802.1x ("WPA Enterprise")
 				authentication. And the "RADIUS server" address should be set to the address of
 				the server, where the RADIUS app is installed. The password must be set to the
@@ -2693,31 +2693,31 @@ dansguardian -g
 			The tool <package>univention-radius-check-access</package> can be used to evaluate the current
 			access policy for a given user and/or station ID (MAC address). It can be
 			executed as root on the server where <package>univention-radius</package> its installed:
-			  <programlisting language="sh">
-				root@master211:~# univention-radius-check-access --username=stefan
-				DENY 'uid=stefan,cn=users,dc=ucs,dc=local'
-				'uid=stefan,cn=users,dc=ucs,dc=local'
-				-> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
-				-> 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
-				-> -> DENY 'cn=Users,cn=Builtin,dc=ucs,dc=local'
-				-> -> 'cn=Users,cn=Builtin,dc=ucs,dc=local'
-				Thus access is DENIED.
-			  </programlisting>
-			  <programlisting language="sh">
-				root@master211:~# univention-radius-check-access --username=janek
-				DENY 'uid=janek,cn=users,dc=ucs,dc=local'
-				'uid=janek,cn=users,dc=ucs,dc=local'
-				-> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
-				-> ALLOW 'cn=Network Access,cn=groups,dc=ucs,dc=local'
-				-> 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
-				-> -> DENY 'cn=Users,cn=Builtin,dc=ucs,dc=local'
-				-> -> 'cn=Users,cn=Builtin,dc=ucs,dc=local'
-				-> 'cn=Network Access,cn=groups,dc=ucs,dc=local'
-				Thus access is ALLOWED.
-				root@master211:~#
-			  </programlisting>
+<programlisting language="sh">
+	root@master211:~# univention-radius-check-access --username=stefan
+	DENY 'uid=stefan,cn=users,dc=ucs,dc=local'
+	'uid=stefan,cn=users,dc=ucs,dc=local'
+	-> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
+	-> 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
+	-> -> DENY 'cn=Users,cn=Builtin,dc=ucs,dc=local'
+	-> -> 'cn=Users,cn=Builtin,dc=ucs,dc=local'
+	Thus access is DENIED.
+</programlisting>
+<programlisting language="sh">
+	root@master211:~# univention-radius-check-access --username=janek
+	DENY 'uid=janek,cn=users,dc=ucs,dc=local'
+	'uid=janek,cn=users,dc=ucs,dc=local'
+	-> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
+	-> ALLOW 'cn=Network Access,cn=groups,dc=ucs,dc=local'
+	-> 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
+	-> -> DENY 'cn=Users,cn=Builtin,dc=ucs,dc=local'
+	-> -> 'cn=Users,cn=Builtin,dc=ucs,dc=local'
+	-> 'cn=Network Access,cn=groups,dc=ucs,dc=local'
+	Thus access is ALLOWED.
+	root@master211:~#
+</programlisting>
 			It prints a detailed explanation and sets the exit code depending on the access
-			(0 for granted access, 1 for denied access)
+			(0 for granted access, 1 for denied access).
 		  </para>
 	  </section>
   </section>
