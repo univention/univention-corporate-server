@@ -42,18 +42,19 @@ class AppCenter(object):
 	def __init__(self, selenium):
 		self.selenium = selenium
 
-	def install_app(app):
-		s.open_module(_('App Center'))
-		s.wait_until_all_standby_animations_disappeared()
-		s.click_text(app)
-		s.wait_for_text(_('Details'))
-		s.wait_for_text(_('More information'))
-		s.click_text(_('Install'))
-		s.click_text(_('Next'))
-		s.click_text(_('Continue'))
-		s.click_text(_('Install'))
-		s.wait_until_all_standby_animations_disappeared()
-		s.wait_for_text(_('Please confirm to install the application'))
+	def install_app(self, app):
+		self.selenium.open_module(_('App Center'))
+		self.selenium.wait_until_all_standby_animations_disappeared()
+		self.selenium.click_text(app)
+		self.selenium.wait_for_text(_('Details'))
+		self.selenium.wait_for_text(_('More information'))
+		self.selenium.click_button(_('Install'))
+		self.selenium.click_button(_('Next'))
+		self.selenium.click_button(_('Continue'))
+		self.selenium.wait_until_all_standby_animations_disappeared()
+		self.selenium.wait_for_text(_('Please confirm to install the application'))
+		self.selenium.click_button(_('Install'))
+		self.selenium.wait_until_all_standby_animations_disappeared()
 
 
 if __name__ == '__main__':
