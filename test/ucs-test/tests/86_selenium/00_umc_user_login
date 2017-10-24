@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
-# desc: UMC login test
-# roles-not: [basesystem]
-# exposure: dangerous
+## desc: UMC login test
+## roles-not: [basesystem]
+## exposure: dangerous
 
 from time import sleep
 from selenium.webdriver.common.keys import Keys

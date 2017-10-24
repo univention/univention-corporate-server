@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
-# desc: UMC ucr test
-# roles-not: [basesystem]
-# exposure: dangerous
+## desc: UMC ucr test
+## roles-not: [basesystem]
+## exposure: dangerous
 
 from univention.admin import localization
 import subprocess
