@@ -335,6 +335,7 @@ install_with_unmaintained () {
 
 install_ucs_test () {
 	install_with_unmaintained ucs-test
+	install_selenium
 }
 
 install_additional_packages () {
