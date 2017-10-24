@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 ## desc: UMC login test
 ## roles-not: [basesystem]
 ## exposure: dangerous

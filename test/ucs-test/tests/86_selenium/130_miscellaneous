@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 # -*- coding: utf-8 -*-
 ## desc: UMC miscellaneous tests
 ## roles-not: [basesystem]

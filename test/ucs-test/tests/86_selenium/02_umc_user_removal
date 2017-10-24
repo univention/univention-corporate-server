@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 ## desc: UMC remove user
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
