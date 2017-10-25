@@ -137,11 +137,11 @@ class ListenerModuleHandler(object):
 
 	@staticmethod
 	@contextmanager
-	def set_uid():  # type: () -> None
+	def as_root():  # type: () -> None
 		"""
 		Temporarily change the UID of the current process to 0.
 
-		with self.set_uid():
+		with self.as_root():
 			do something
 
 		Use listener.setuid(<int|str>) for any other user that root. But be
@@ -196,7 +196,7 @@ class ListenerModuleHandler(object):
 		:param exc_traceback: traceback object
 		:return: None
 		"""
-		self.logger.error('Exception for dn=%r command=%r: %r', dn, command, exc_type(exc_value))
+		self.logger.exception('dn=%r command=%r', dn, command)
 		raise exc_type, exc_value, exc_traceback
 
 	@classmethod
