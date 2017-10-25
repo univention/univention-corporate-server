@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.6-31) unstable; urgency=medium
+
+  * Bug #18680: Fix ignore_object logic
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Oct 2017 19:36:11 +0200
+
 univention-ad-connector (11.0.6-30) unstable; urgency=medium
 
   * Bug #18501: Revert changes, they change the mapping file
