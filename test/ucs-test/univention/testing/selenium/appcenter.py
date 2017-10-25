@@ -47,14 +47,8 @@ class AppCenter(object):
 
 	def install_app(self, app):
 		# TODO: Make sure the license is activated!
-
-		self.selenium.open_module(_('App Center'))
-		self.close_info_dialog_if_visisble()
-		self.selenium.wait_until_all_standby_animations_disappeared()
-
-		self.selenium.click_text(app)
-		self.selenium.wait_for_text(_('More information'))
-		self.selenium.wait_until_all_standby_animations_disappeared()
+		self.open()
+		self.open_app(app)
 
 		self.selenium.click_button(_('Install'))
 
@@ -71,9 +65,35 @@ class AppCenter(object):
 		# method and use it here.
 		self.selenium.click_button(_('Install'))
 
-		self.selenium.wait_for_text(_('Installed'), timeout=900)
+		self.selenium.wait_for_text(_('Installing %s') % (app,))
 		# TODO: Maybe implement a wait_until_all_loading_animations_disappeared
 		# method and use it here.
+
+		self.selenium.wait_for_text(_('Installed'), timeout=900)
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+	def uninstall_app(self, app):
+		self.open()
+		self.open_app(app)
+
+		self.selenium.click_text(_('(this computer)'))
+		self.selenium.click_button(_('Uninstall'))
+
+		self.selenium.wait_for_text(_('Please confirm to uninstall the application'))
+		self.selenium.click_button(_('Uninstall'))
+
+		self.selenium.wait_for_text(_('Running tests'))
+		self.selenium.wait_for_text(_('More information'), timeout=900)
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+	def open(self):
+		self.selenium.open_module(_('App Center'))
+		self.close_info_dialog_if_visisble()
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+	def open_app(self, app):
+		self.selenium.click_text(app)
+		self.selenium.wait_for_text(_('More information'))
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
 	def close_info_dialog_if_visisble(self):
@@ -92,3 +112,4 @@ if __name__ == '__main__':
 	s.do_login()
 	a = AppCenter(s)
 	a.install_app('Dudle')
+	a.uninstall_app('Dudle')
