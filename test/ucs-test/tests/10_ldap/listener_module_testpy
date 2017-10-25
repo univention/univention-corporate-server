@@ -1,0 +1,75 @@
+__package__ = ''  # workaround for PEP 366
+
+import traceback
+from ldap.filter import filter_format
+import univention.debug as ud
+from univention.listener import ListenerModuleAdapter, ListenerModuleHandler, ListenerModuleConfiguration
+
+
+TEST_ID = '@@TEST_ID@@'
+MODULE_NAME = '@@MODULE_NAME@@'
+LOGFILE = '@@LOGFILE@@'
+TEST_USERNAME = '@@USERNAME@@'
+UID_ROOT_FILE = '@@UID_ROOT_FILE@@'
+UID_DEFAULT_FILE = '@@UID_DEFAULT_FILE@@'
+
+
+class MyTestException(Exception):
+	pass
+
+
+class TestListenerModule(ListenerModuleHandler):
+	@staticmethod
+	def test_log(msg):
+		with open(LOGFILE, 'ab') as fp:
+			fp.write('{} {}\n'.format(TEST_ID, msg))
+
+	def create(self, dn, new):
+		self.logger.info('create() for user %r.', new['uid'][0])
+		self.test_log('create')
+		self.logger.info('create() touch uid root %r.', UID_ROOT_FILE)
+		with self.set_uid():
+			open(UID_ROOT_FILE, 'wb').write('test')
+		self.logger.info('create() touch uid listener %r.', UID_DEFAULT_FILE)
+		open(UID_DEFAULT_FILE, 'wb').write('test')
+		self.logger.info('create() test self.lo')
+		ldap_res = self.lo.searchDn(filter=filter_format('(&(objectClass=posixAccount)(uid=%s))', (new['uid'][0],)))
+		if ldap_res[0] != dn and ldap_res[0]['uidNumber'] != new['uidNumber']:
+			raise Exception('self.lo.searchDn had unexpected result: {!r}'.format(ldap_res))
+		return
+
+	def modify(self, dn, old, new, old_dn):
+		if old_dn:
+			self.logger.info('modify() MOVE for user %r. old_dn=%r | new dn=%r | diff(old, new)=%r', new['uid'][0], old_dn, dn, self.diff(old, new))
+			self.test_log('move')
+		else:
+			self.logger.info('modify() for user %r. diff(old, new)=%r', new['uid'][0], self.diff(old, new))
+			self.test_log('modify')
+		if 'roomNumber' in self.diff(old, new):
+			raise MyTestException('Error {}.'.format(TEST_ID))
+		return
+
+	def remove(self, dn, old):
+		self.logger.info('remove() for user %r.', old['uid'][0])
+		self.test_log('remove')
+		return
+
+	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
+		ud.debug(ud.LISTENER, ud.ERROR, ''.join(traceback.format_exception(exc_type, exc_value, exc_traceback)))
+		ud.debug(ud.LISTENER, ud.ERROR, 'exc_type=%r exc_value=%r' % (exc_type, exc_value))
+		self.logger.error(''.join(traceback.format_exception(exc_type, exc_value, exc_traceback)))
+		if exc_type == MyTestException:
+			TestListenerModule.test_log('error_handler')
+			return
+		raise exc_type(exc_value)
+
+
+class TestListenerModuleConfiguration(ListenerModuleConfiguration):
+	name = MODULE_NAME
+	description = 'test module #{}'.format(TEST_ID)
+	ldap_filter = '(&(objectClass=inetOrgPerson)(uid={}))'.format(TEST_USERNAME)
+	attributes = ['employeeType', 'roomNumber']
+	listener_module_class = TestListenerModule
+
+
+globals().update(ListenerModuleAdapter(TestListenerModuleConfiguration()).get_globals())

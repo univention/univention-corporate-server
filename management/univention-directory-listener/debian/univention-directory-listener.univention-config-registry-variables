@@ -57,3 +57,15 @@ Description[de]=Die maximale Größe der Cache-Datenbank in Bytes. Auf 64 Bit Sy
 Description[en]=The maximum size of the cache database in bytes. On 64 bit systems the default is 2 GiB. On 32 bit systems the default is 1.9 GiB.
 Type=str
 Categories=service-ln
+
+[listener/module/<name>/deactivate]
+Description[de]=Deaktiviert das Listener Modul <name>, wenn eingeschaltet. Standard wenn nicht gesetzt: false.
+Description[en]=When enabled, deactivates the listener module <name>. Default when no set: false.
+Type=bool
+Categories=service-ln
+
+[listener/module/<name>/debug/level]
+Description[de]=Diese Variable konfiguriert den Detailgrad der Logausgaben für das Listener Modul <name> in /var/log/univention/listener_modules/<name>.log. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben). Standard: 2 (INFO).
+Description[en]=This variable configures the verbosity of the log messages for the mistener module <name> in /var/log/univention/listener_modules/<name>.log. Possible values: 0-4 (0: only error messages to 4: all debug statements). Default: 2 (INFO).
+Type=int
+Categories=service-ln
