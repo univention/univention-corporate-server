@@ -11,5 +11,5 @@ desc: |-
   * Fixed the permissions of PasswordFile settings.
   * Gracefully fail when the image of a Docker App cannot be downloaded.
   * Handle certain (SSL related) LDAP connection problems more gracefully.
-  * Added more logging in UMC App Center.
+  * Improved handling of error messages in UMC.
 bug: [43238, 45543, 40110, 39325, 45569]
