@@ -84,7 +84,7 @@
 			Mit Abschluss des Einrichtungsassistenten ist die Installation abgeschlossen und der Connector ist einsatzbereit.
 		</para>
 
-		<figure id="net-networks">
+		<figure id="idmcloud:o365:wizard">
 			<title>Office 365 Einrichtungsassistent</title>
 		<graphic scalefit="1" width="100%" fileref="illustrations42/office_wizard1_de.png"/>
     </figure>
