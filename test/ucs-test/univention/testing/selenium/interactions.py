@@ -80,6 +80,10 @@ class Interactions(object):
 			**kwargs
 		)
 
+	def click_search_button(self):
+		logger.info("Clicking the search button")
+		self.click_element('//form//div[contains(concat(" ", normalize-space(@class), " "), " umcSearchIcon ")]')
+
 	def click_tile(self, tilename, **kwargs):
 		logger.info("Clicking the tile %r", tilename)
 		self.click_element(
@@ -171,7 +175,7 @@ class Interactions(object):
 		elems = self.driver.find_elements_by_xpath(xpath)
 		try:
 			clickable_elems = [elem for elem in elems if elem.is_enabled() and elem.is_displayed()]
-			if len(clickable_elems) > 0:
+			if clickable_elems:
 				return clickable_elems
 		except selenium_exceptions.StaleElementReferenceException:
 			pass

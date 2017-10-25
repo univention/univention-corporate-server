@@ -71,6 +71,9 @@ class ChecksAndWaits(object):
 			self.elements_invisible
 		)
 
+	def wait_until_progress_bar_finishes(self):
+		raise NotImplementedError('TODO')
+
 	def wait_until_element_visible(self, xpath):
 		logger.info('Waiting for the element with the xpath %r to be visible.' % (xpath,))
 		self.wait_until(

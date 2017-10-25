@@ -47,7 +47,6 @@ class AppCenter(object):
 
 	def install_app(self, app):
 		# TODO: Make sure the license is activated!
-		self.open()
 		self.open_app(app)
 
 		self.selenium.click_button(_('Install'))
@@ -73,7 +72,6 @@ class AppCenter(object):
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
 	def uninstall_app(self, app):
-		self.open()
 		self.open_app(app)
 
 		self.selenium.click_text(_('(this computer)'))
@@ -86,12 +84,23 @@ class AppCenter(object):
 		self.selenium.wait_for_text(_('More information'), timeout=900)
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
+	def upgrade_app(self, app):
+		raise NotImplementedError('TODO')
+
+	def search_for_apps(self, text, category=None):
+		self.open()
+		# TODO: return a list of found apps for the specified category (or all)
+		raise NotImplementedError('TODO')
+
 	def open(self):
+		# TODO: check if appcenter is already opened with the overview site
 		self.selenium.open_module(_('App Center'))
 		self.close_info_dialog_if_visisble()
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
 	def open_app(self, app):
+		# TODO: check if appcenter is already opened with the app page
+		self.open()
 		self.selenium.click_text(app)
 		self.selenium.wait_for_text(_('More information'))
 		self.selenium.wait_until_all_standby_animations_disappeared()

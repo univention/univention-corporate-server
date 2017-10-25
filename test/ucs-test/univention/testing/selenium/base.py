@@ -220,6 +220,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 	def open_module(self, name):
 		self.search_module(name)
 		self.click_tile(name)
+		self.wait_until_all_standby_animations_disappeared()
 
 	def search_module(self, name):
 		self.driver.get(self.base_url + 'univention/management/?lang=%s' % (self.language,))
