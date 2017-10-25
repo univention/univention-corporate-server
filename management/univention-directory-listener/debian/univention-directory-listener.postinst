@@ -37,6 +37,7 @@ univention-config-registry set listener/autostart?yes
 adduser --quiet --system --home /var/lib/univention-directory-listener listener
 
 create_logfile /var/log/univention/listener.log "root:adm" 640
+chown listener:adm /var/log/univention/listener_modules
 
 mkdir -p /var/lib/univention-ldap/listener
 if [ ! -e /var/lib/univention-ldap/listener/listener ]; then

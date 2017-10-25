@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.1-29) unstable; urgency=low
+
+  * Bug #44786: user 'listener' unknown before installation of package
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 25 Oct 2017 15:59:57 +0200
+
 univention-directory-listener (11.0.1-28) unstable; urgency=low
 
   * Bug #44786: add new listener module API
