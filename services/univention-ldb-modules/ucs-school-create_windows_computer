@@ -63,6 +63,7 @@ def main():
 	result = client.umc_command(args.command, options).result
 	already_exists = result.get('already_exists')
 	dn_ol = result.get('dn')
+	object_sid = result.get('attr', {}).get('sambaSID', [''])[0]
 	if not dn_ol:
 		# sys.exit(1)
 		sys.exit(0)   # for compatibility with univention-management-console-module-selective-udm before 5.0.0-2
@@ -71,7 +72,8 @@ def main():
 		sys.exit(3)
 
 	dn_s4 = dn_ol[:len(dn_ol) - len(ldap_base)] + samba4_ldap_base
-	print dn_s4
+	print(dn_s4)
+	print(object_sid)
 	if already_exists:
 		sys.exit(4)
 

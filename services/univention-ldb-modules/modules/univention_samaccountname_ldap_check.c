@@ -134,13 +134,17 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 	struct ldb_context *ldb;
 	struct ldb_message *msg;
 	struct ldb_message_element *attribute;
+	struct ldb_message_element *object_sid_element;
 	struct ldb_request *down_req = NULL;
+	struct ldb_val *object_sid_val;
 	bool is_computer = false;
 	bool is_group = false;
 	bool is_user = false;
 	char *usersid;
 	int i, fd[2], nbytes, ret;
+	size_t len = 0;
 	char target_dn_str[SLAP_LDAPDN_MAXLEN+1] = "";	// initialize with NULs
+	char object_sid[148] = "";
 
 	/* check if there's a bypass_samaccountname_ldap_check control */
 	struct ldb_control *control;
@@ -296,27 +300,48 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 			return LDB_ERR_UNWILLING_TO_PERFORM;
 		}
 
-		nbytes = read(fd[0], target_dn_str, sizeof(target_dn_str)-1);
-		close(fd[0]);   // close reading end
-
+		nbytes = getline(&target_dn_str, &len, fd[0]);
 		ldb_debug(ldb, LDB_DEBUG_TRACE, ("%s: ucs-school-create_windows_computer returned: '%s' (%d bytes)\n"), ldb_module_get_name(module), target_dn_str, nbytes);
 
 		if (nbytes == 0) {
+			close(fd[0]);   // close reading end
 			// The call succeeded but we didn't obtain a recommended location,
 			// in this case we must continue without rewriting the DN.
 			return ldb_next_request(module, req);
 		}
 
 		// Trim trailing space
-  		char *end_ptr = target_dn_str + nbytes - 1;
-  		while(end_ptr > target_dn_str && isspace((unsigned char)*end_ptr)) end_ptr--;
-  		// Write new null terminator
-  		*(end_ptr+1) = 0;
+		char *end_ptr = target_dn_str + nbytes - 1;
+		while(end_ptr > target_dn_str && isspace((unsigned char)*end_ptr)) end_ptr--;
+		// Write new null terminator
+		*(end_ptr+1) = 0;
+
+		nbytes = getline(&object_sid, &len, fd[0]);
+
+		// Trim trailing space
+		if (nbytes) {
+			end_ptr = object_sid + nbytes - 1;
+			while(end_ptr > object_sid && isspace((unsigned char)*end_ptr)) end_ptr--;
+			// Write new null terminator
+			*(end_ptr+1) = 0;
+		}
+
+		close(fd[0]);   // close reading end
 
 		// Now modify request DN
 		msg = ldb_msg_copy_shallow(req, req->op.add.message);
 		if (msg == NULL) {
 			return ldb_module_oom(module);
+		}
+
+		if (object_sid) {
+			if (!ldb_msg_add_empty(msg, "objectSid", 0, &object_sid_element)) {
+				return LDB_ERR_OPERATIONS_ERROR;
+			}
+
+			object_sid_element->values = object_sid_val;
+			object_sid_val->data = object_sid;
+			object_sid->length = (size_t)sizeof(object_sid);
 		}
 
 		msg->dn = ldb_dn_new(msg, ldb, target_dn_str);
