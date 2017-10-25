@@ -31,6 +31,9 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+
+from selenium.common.exceptions import TimeoutException
+
 from univention.admin import localization
 
 translator = localization.translation('ucs-test-framework')
@@ -42,18 +45,87 @@ class AppCenter(object):
 	def __init__(self, selenium):
 		self.selenium = selenium
 
-	def install_app(app):
-		s.open_module(_('App Center'))
-		s.wait_until_all_standby_animations_disappeared()
-		s.click_text(app)
-		s.wait_for_text(_('Details'))
-		s.wait_for_text(_('More information'))
-		s.click_text(_('Install'))
-		s.click_text(_('Next'))
-		s.click_text(_('Continue'))
-		s.click_text(_('Install'))
-		s.wait_until_all_standby_animations_disappeared()
-		s.wait_for_text(_('Please confirm to install the application'))
+	def install_app(self, app):
+		# TODO: Make sure the license is activated!
+		self.open_app(app)
+
+		self.selenium.click_button(_('Install'))
+
+		try:
+			self.selenium.wait_for_text(_('In order to proceed with the installation'), timeout=15)
+			self.selenium.click_button(_('Next'))
+		except TimeoutException:
+			pass
+
+		self.close_info_dialog_if_visisble()
+
+		self.selenium.wait_for_text(_('Please confirm to install the application'))
+		self.self.wait_until_progress_bar_finishes()
+		self.selenium.click_button(_('Install'))
+
+		self.selenium.wait_for_text(_('Installing %s') % (app,))
+		self.self.wait_until_progress_bar_finishes()
+
+		self.selenium.wait_for_text(_('Installed'), timeout=900)
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+	def uninstall_app(self, app):
+		self.open_app(app)
+
+		self.selenium.click_text(_('(this computer)'))
+		self.selenium.click_button(_('Uninstall'))
+
+		self.selenium.wait_for_text(_('Please confirm to uninstall the application'))
+		self.selenium.click_button(_('Uninstall'))
+
+		self.selenium.wait_for_text(_('Running tests'))
+		self.selenium.wait_for_text(_('More information'), timeout=900)
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+	def upgrade_app(self, app):
+		self.open_app(app)
+
+		self.selenium.click_text(_('(this computer)'))
+		self.selenium.click_button(_('Upgrade'))
+
+		try:
+			self.selenium.wait_for_text(_('Upgrade Information'), timeout=5)
+		except TimeoutException:
+			pass
+		else:
+			self.selenium.click_element('//div[contains(concat(" ", normalize-space(@class), " "), " umcConfirmDialog ")]//*[contains(concat(" ", normalize-space(@class), " "), " dijitButtonText ")][text() = "%s"]' % (_('Upgrade'),))
+
+		self.selenium.wait_until_progress_bar_finishes()
+		self.selenium.wait_for_text(_('Upgrade of %s') % (app,))
+		self.selenium.click_button(_('Upgrade'))
+		self.selenium.wait_until_progress_bar_finishes(timeout=900)
+		self.selenium.wait_for_text(_('More information'), timeout=900)
+
+	def search_for_apps(self, text, category=None):
+		self.open()
+		# TODO: return a list of found apps for the specified category (or all)
+		raise NotImplementedError('TODO')
+
+	def open(self):
+		# TODO: check if appcenter is already opened with the overview site
+		self.selenium.open_module(_('App Center'))
+		self.close_info_dialog_if_visisble()
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+	def open_app(self, app):
+		# TODO: check if appcenter is already opened with the app page
+		self.open()
+		self.selenium.click_text(app)
+		self.selenium.wait_for_text(_('More information'))
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+	def close_info_dialog_if_visisble(self):
+		try:
+			self.selenium.wait_for_text(_('Do not show this message again'), timeout=5)
+			self.selenium.click_button(_('Continue'))
+		except TimeoutException:
+			pass
+		self.selenium.wait_until_all_standby_animations_disappeared()
 
 
 if __name__ == '__main__':
@@ -63,3 +135,4 @@ if __name__ == '__main__':
 	s.do_login()
 	a = AppCenter(s)
 	a.install_app('Dudle')
+	a.uninstall_app('Dudle')
