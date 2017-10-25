@@ -31,6 +31,9 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+
+from selenium.common.exceptions import TimeoutException
+
 from univention.admin import localization
 
 translator = localization.translation('ucs-test-framework')
@@ -43,17 +46,42 @@ class AppCenter(object):
 		self.selenium = selenium
 
 	def install_app(self, app):
+		# TODO: Make sure the license is activated!
+
 		self.selenium.open_module(_('App Center'))
+		self.close_info_dialog_if_visisble()
 		self.selenium.wait_until_all_standby_animations_disappeared()
+
 		self.selenium.click_text(app)
-		self.selenium.wait_for_text(_('Details'))
 		self.selenium.wait_for_text(_('More information'))
-		self.selenium.click_button(_('Install'))
-		self.selenium.click_button(_('Next'))
-		self.selenium.click_button(_('Continue'))
 		self.selenium.wait_until_all_standby_animations_disappeared()
-		self.selenium.wait_for_text(_('Please confirm to install the application'))
+
 		self.selenium.click_button(_('Install'))
+
+		try:
+			self.selenium.wait_for_text(_('In order to proceed with the installation'), timeout=15)
+			self.selenium.click_button(_('Next'))
+		except TimeoutException:
+			pass
+
+		self.close_info_dialog_if_visisble()
+
+		self.selenium.wait_for_text(_('Please confirm to install the application'))
+		# TODO: Maybe implement a wait_until_all_loading_animations_disappeared
+		# method and use it here.
+		self.selenium.click_button(_('Install'))
+
+		self.selenium.wait_for_text(_('Installed'), timeout=900)
+		# TODO: Maybe implement a wait_until_all_loading_animations_disappeared
+		# method and use it here.
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+	def close_info_dialog_if_visisble(self):
+		try:
+			self.selenium.wait_for_text(_('Do not show this message again'), timeout=5)
+			self.selenium.click_button(_('Continue'))
+		except TimeoutException:
+			pass
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
 
