@@ -83,6 +83,12 @@
 			nur wenige Minuten. Anschließend steht ein Einrichtungsassistent (Wizard) für die Einrichtung zur Verfügung.
 			Mit Abschluss des Einrichtungsassistenten ist die Installation abgeschlossen und der Connector ist einsatzbereit.
 		</para>
+
+		<figure id="net-networks">
+			<title>Office 365 Einrichtungsassistent</title>
+		<graphic scalefit="1" width="100%" fileref="illustrations42/office_wizard1_de.png"/>
+    </figure>
+
 	</section>
 
 	<section id="idmcloud:o365:config">
