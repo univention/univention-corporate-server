@@ -8,3 +8,5 @@ desc: |-
   This update addresses the following issue(s):
   * Container passwords aren't changed anymore during container upgrades.
 bug: [45290]
+erratum: 479
+announced: 2017-10-25
