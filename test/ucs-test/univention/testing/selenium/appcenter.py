@@ -60,13 +60,11 @@ class AppCenter(object):
 		self.close_info_dialog_if_visisble()
 
 		self.selenium.wait_for_text(_('Please confirm to install the application'))
-		# TODO: Maybe implement a wait_until_all_loading_animations_disappeared
-		# method and use it here.
+		self.self.wait_until_progress_bar_finishes()
 		self.selenium.click_button(_('Install'))
 
 		self.selenium.wait_for_text(_('Installing %s') % (app,))
-		# TODO: Maybe implement a wait_until_all_loading_animations_disappeared
-		# method and use it here.
+		self.self.wait_until_progress_bar_finishes()
 
 		self.selenium.wait_for_text(_('Installed'), timeout=900)
 		self.selenium.wait_until_all_standby_animations_disappeared()
@@ -85,7 +83,17 @@ class AppCenter(object):
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
 	def upgrade_app(self, app):
-		raise NotImplementedError('TODO')
+		self.open_app(app)
+
+		self.selenium.click_text(_('(this computer)'))
+		self.selenium.click_button(_('Upgrade'))
+
+		try:
+			self.selenium.wait_for_text(_('Upgrade Information'), timeout=5)
+		except TimeoutException:
+			pass
+		else:
+			self.selenium.click_button(_('Upgrade'))
 
 	def search_for_apps(self, text, category=None):
 		self.open()
