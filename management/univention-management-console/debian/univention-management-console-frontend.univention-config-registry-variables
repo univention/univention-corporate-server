@@ -39,3 +39,9 @@ Description[de]=Ist diese Option aktiviert, wird bei Navigation über die Signle
 Description[en]=If this option is activated, a new window will be opened on single sign-on, otherwise the current window will be replaced.
 Type=bool
 Categories=management-umc
+
+[umc/web/sso/enabled]
+Description[de]=Ist diese Option aktiviert, wird der Login an UMC per Signle-Sign-On versucht bevor der reguläre Login benutzt wird.
+Description[en]=If this option is activated, the login via single sign-on is tried before the regular login is used.
+Type=bool
+Categories=management-umc

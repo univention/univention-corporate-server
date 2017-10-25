@@ -134,6 +134,7 @@ ucr_vars = [
 	('umc/web/feedback/mail', 'feedbackAddress', 'feedback@univention.de', ),
 	('umc/web/startupdialog', ),
 	('umc/server/upload/max', ),
+	('umc/web/sso/enabled', ),
 ]
 
 data.update([get_ucr_entry(*i) for i in ucr_vars])
