@@ -93,7 +93,13 @@ class AppCenter(object):
 		except TimeoutException:
 			pass
 		else:
-			self.selenium.click_button(_('Upgrade'))
+			self.selenium.click_element('//div[contains(concat(" ", normalize-space(@class), " "), " umcConfirmDialog ")]//*[contains(concat(" ", normalize-space(@class), " "), " dijitButtonText ")][text() = "%s"]' % (_('Upgrade'),))
+
+		self.selenium.wait_until_progress_bar_finishes()
+		self.selenium.wait_for_text(_('Upgrade of %s') % (app,))
+		self.selenium.click_button(_('Upgrade'))
+		self.selenium.wait_until_progress_bar_finishes(timeout=900)
+		self.selenium.wait_for_text(_('More information'), timeout=900)
 
 	def search_for_apps(self, text, category=None):
 		self.open()
