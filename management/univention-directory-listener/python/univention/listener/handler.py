@@ -51,18 +51,19 @@ class ListenerModuleHandler(object):
 
 	def __init__(self, module_configuration, *args, **kwargs):  # type: (object) -> None
 		"""
-		When subclassing, call super()__init__() first.
+		When subclassing, call super()__init__() first!
 
 		:param module_configuration: ListenerModuleConfiguration object
 		"""
 		self.config = module_configuration
-		self.lo = self.config.lo          # LDAP object
 		self.logger = self.config.logger  # Python logging object
 		self.ucr.load()
 		self.logger.info('Starting with configuration: %r', module_configuration)
 
 	def create(self, dn, new):  # type: (str, dict) -> None
 		"""
+		Called when a new object was created.
+
 		:param dn: str
 		:param new: dict
 		:return: None
@@ -71,6 +72,11 @@ class ListenerModuleHandler(object):
 
 	def modify(self, dn, old, new, old_dn):  # type: (str, dict, dict, str) -> None
 		"""
+		Called when an existing object was modified or moved.
+
+		A move can be be detected by looking at old_dn. Attributes can be
+		modified during a move.
+
 		:param dn: str
 		:param old: dict
 		:param new: dict
@@ -81,6 +87,8 @@ class ListenerModuleHandler(object):
 
 	def remove(self, dn, old):  # type: (str, dict) -> None
 		"""
+		Called when an object was deleted.
+
 		:param dn: str
 		:param old: dict
 		:return: None
@@ -88,15 +96,43 @@ class ListenerModuleHandler(object):
 		pass
 
 	def initialize(self):  # type: () -> None
+		"""
+		Called once when the Univention Directory Listener loads the module
+		for the first time or when a resync it triggered.
+
+		:return: None
+		"""
 		pass
 
 	def clean(self):  # type: () -> None
+		"""
+		Called once when the Univention Directory Listener loads the module
+		for the first time or when a resync it triggered.
+
+		:return: None
+		"""
 		pass
 
 	def pre_run(self):  # type: () -> None
+		"""
+		Called before create/modify/remove if either the Univention Directory
+		Listener has been restarted or when post_run() has run before.
+
+		Use for example to open an LDAP connection.
+
+		:return: None
+		"""
 		pass
 
 	def post_run(self):  # type: () -> None
+		"""
+		Called only, when no change happens for 15 seconds - for *any* listener
+		module.
+
+		Use for example to close an LDAP connection.
+
+		:return: None
+		"""
 		pass
 
 	@staticmethod
@@ -149,6 +185,8 @@ class ListenerModuleHandler(object):
 
 	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
 		"""
+		Will be called for unhandled exceptions in create/modify/remove.
+
 		:param dn: str
 		:param old: dict
 		:param new: dict
@@ -182,3 +220,12 @@ class ListenerModuleHandler(object):
 			cls._udm_module_cache[key] = udm_module
 		udm_module = cls._udm_module_cache[key]
 		return udm_module.lookup(None, lo, filter_s=filter_s, base=base_dn, **kwargs)
+
+	@property
+	def lo(self):
+		"""
+		LDAP connection object.
+
+		:return: univention.admin.uldap.access object
+		"""
+		return self.config.lo

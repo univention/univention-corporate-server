@@ -1,6 +1,7 @@
 __package__ = ''  # workaround for PEP 366
 
 import traceback
+from ldap.filter import filter_format
 import univention.debug as ud
 from univention.listener import ListenerModuleAdapter, ListenerModuleHandler, ListenerModuleConfiguration
 
@@ -31,6 +32,10 @@ class TestListenerModule(ListenerModuleHandler):
 			open(UID_ROOT_FILE, 'wb').write('test')
 		self.logger.info('create() touch uid listener %r.', UID_DEFAULT_FILE)
 		open(UID_DEFAULT_FILE, 'wb').write('test')
+		self.logger.info('create() test self.lo')
+		ldap_res = self.lo.searchDn(filter=filter_format('(&(objectClass=posixAccount)(uid=%s))', (new['uid'][0],)))
+		if ldap_res[0] != dn and ldap_res[0]['uidNumber'] != new['uidNumber']:
+			raise Exception('self.lo.searchDn had unexpected result: {!r}'.format(ldap_res))
 		return
 
 	def modify(self, dn, old, new, old_dn):

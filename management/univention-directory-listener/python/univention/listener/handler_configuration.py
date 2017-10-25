@@ -190,7 +190,7 @@ class ListenerModuleConfiguration(object):
 		"""
 		if not self._lo:
 			raise ListenerModuleConfigurationError('LDAP connection of listener module %r has not yet been initialized.')
-		return self._lo
+		return self._lo()
 
 	@property
 	def po(self):  # type: () -> object
@@ -236,22 +236,20 @@ class ListenerModuleConfiguration(object):
 			self._logger = get_logger(logger_name, target=file_path)
 		return self._logger
 
-	def set_ldap_credentials(self, base_dn, bind_dn, bind_pw, ldap_server):  # type: (str, str, str, str) -> (object, object)
+	def set_ldap_credentials(self, base_dn, bind_dn, bind_pw, ldap_server):  # type: (str, str, str, str) -> None
 		"""
 		This method is intended for the listener server to set the connection
 		credentials (for cn=admin). This will create a univention.admin.uldap.access
-		and univention.admin.uldap.position objects from them.
+		object from them and make it accessible through self.lo.
 
 		:param base_dn: str
 		:param bind_dn: str
 		:param bind_pw: str
 		:param ldap_server: str
-		:return: tuple(univention.admin.uldap.access, univention.admin.uldap.position)
+		:return: None
 		"""
-		self._lo = univention.admin.uldap.access(
+		self._lo = lambda: univention.admin.uldap.access(
 			host=ldap_server,
 			base=base_dn,
 			binddn=bind_dn,
 			bindpw=bind_pw)
-		self.__class__._po_cache[self._lo.base] = univention.admin.uldap.position(self._lo.base)
-		return self._lo, self._po_cache[self._lo.base]
