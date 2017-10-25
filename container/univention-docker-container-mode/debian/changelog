@@ -1,4 +1,10 @@
-univention-docker-container-mode (2.0.0-15) UNRELEASED; urgency=medium
+univention-docker-container-mode (2.0.0-16) unstable; urgency=medium
+
+  * Bug #45172: Always commit resolv.conf in /sbin/init wrapper
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Oct 2017 13:41:27 +0200
+
+univention-docker-container-mode (2.0.0-15) unstable; urgency=medium
 
   * Bug #45172: Only set nameserver* UCR from environment if not joined yet
 

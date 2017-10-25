@@ -76,6 +76,9 @@ if [ ! -e /var/univention-join/joined ]; then
 	univention-certificate new -name "$hostname.$domainname"
 fi
 
+## docker restart "$container" overwrites resolv.conf
+univention-config-registry commit /etc/resolv.conf
+
 eval "$(ucr shell hostname domainname)"
 
 # purge fstab (unused for docker)
