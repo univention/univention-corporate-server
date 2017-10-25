@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-radius
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The RADIUS helper program "univention-radius-ntlm-auth" now supports
+   different formats for station ids, e.g. 1122.3344.5566 or
+   11-22-33-44-55-66. All non-hexadecimal characters are removed
+   automatically before checking the station id (Bug #42722).
+bug: [42722]
