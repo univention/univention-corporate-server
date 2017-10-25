@@ -37,6 +37,8 @@
 # globals().update(ListenerModuleAdapter(MyListenerModuleInfo()).get_globals())
 #
 
-from api_adapter import ListenerModuleAdapter  # noqa
-from handler_configuration import ListenerModuleConfigurationError, ListenerModuleConfiguration  # noqa
-from handler import ListenerModuleHandler  # noqa
+from univention.listener.api_adapter import ListenerModuleAdapter
+from univention.listener.handler_configuration import ListenerModuleConfigurationError, ListenerModuleConfiguration
+from univention.listener.handler import ListenerModuleHandler
+
+__all__ = [ListenerModuleAdapter, ListenerModuleConfigurationError, ListenerModuleConfiguration, ListenerModuleHandler]

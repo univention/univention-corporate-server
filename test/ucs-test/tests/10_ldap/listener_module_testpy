@@ -1,5 +1,4 @@
-__package__ = ''  # workaround for PEP 366
-
+from __future__ import absolute_import
 import traceback
 from ldap.filter import filter_format
 import univention.debug as ud
@@ -28,7 +27,7 @@ class TestListenerModule(ListenerModuleHandler):
 		self.logger.info('create() for user %r.', new['uid'][0])
 		self.test_log('create')
 		self.logger.info('create() touch uid root %r.', UID_ROOT_FILE)
-		with self.set_uid():
+		with self.as_root():
 			open(UID_ROOT_FILE, 'wb').write('test')
 		self.logger.info('create() touch uid listener %r.', UID_DEFAULT_FILE)
 		open(UID_DEFAULT_FILE, 'wb').write('test')
