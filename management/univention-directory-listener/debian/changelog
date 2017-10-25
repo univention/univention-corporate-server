@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.1-32) unstable; urgency=low
+
+  * Bug #44786: fix typo
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 25 Oct 2017 22:39:21 +0200
+
 univention-directory-listener (11.0.1-31) unstable; urgency=low
 
   * Bug #44786: style fixes

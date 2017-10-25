@@ -41,4 +41,4 @@ from univention.listener.api_adapter import ListenerModuleAdapter
 from univention.listener.handler_configuration import ListenerModuleConfigurationError, ListenerModuleConfiguration
 from univention.listener.handler import ListenerModuleHandler
 
-__all__ = [ListenerModuleAdapter, ListenerModuleConfigurationError, ListenerModuleConfiguration, ListenerModuleHandler]
+__all__ = ['ListenerModuleAdapter', 'ListenerModuleConfigurationError', 'ListenerModuleConfiguration', 'ListenerModuleHandler']
