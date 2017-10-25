@@ -57,8 +57,9 @@ override_dh_installinit:
 	dh_installinit -a --no-start -r -u"defaults 50"
 
 override_dh_fixperms:
-	chmod 755 debian/univention-directory-listener/etc/network/if-post-down.d/univention-directory-listener
 	dh_fixperms
+	chmod 755 debian/univention-directory-listener/etc/network/if-post-down.d/univention-directory-listener
+	chmod 750 debian/univention-directory-listener/var/log/univention/listener_modules
 
 override_dh_auto_test:
 	ucslint

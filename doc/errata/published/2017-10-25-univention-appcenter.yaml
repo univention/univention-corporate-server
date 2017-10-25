@@ -13,3 +13,5 @@ desc: |-
   * Handle certain (SSL related) LDAP connection problems more gracefully.
   * Improved handling of error messages in UMC.
 bug: [43238, 45543, 40110, 39325, 45569]
+erratum: 204
+announced: 2017-10-25

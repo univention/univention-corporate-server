@@ -1,3 +1,21 @@
+ucs-test (7.0.23-72) unstable; urgency=low
+
+  * Bug #44786: adapt to api change
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 25 Oct 2017 17:05:50 +0200
+
+ucs-test (7.0.23-71) unstable; urgency=medium
+
+  * Bug #44640: Selenium improvements
+
+ -- Florian Best <best@univention.de>  Wed, 25 Oct 2017 17:09:48 +0200
+
+ucs-test (7.0.23-70) unstable; urgency=medium
+
+  * Bug #44786: add test of new listener module API
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 25 Oct 2017 14:32:36 +0200
+
 ucs-test (7.0.23-69) unstable; urgency=medium
 
   * Bug #44640: integrate selenium tests

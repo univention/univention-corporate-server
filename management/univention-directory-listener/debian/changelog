@@ -1,3 +1,27 @@
+univention-directory-listener (11.0.1-31) unstable; urgency=low
+
+  * Bug #44786: style fixes
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 25 Oct 2017 17:04:30 +0200
+
+univention-directory-listener (11.0.1-30) unstable; urgency=low
+
+  * Bug #44786: fix typo
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 25 Oct 2017 16:29:09 +0200
+
+univention-directory-listener (11.0.1-29) unstable; urgency=low
+
+  * Bug #44786: user 'listener' unknown before installation of package
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 25 Oct 2017 15:59:57 +0200
+
+univention-directory-listener (11.0.1-28) unstable; urgency=low
+
+  * Bug #44786: add new listener module API
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 14 Jun 2017 16:48:28 +0200
+
 univention-directory-listener (11.0.1-27) unstable; urgency=medium
 
   * Bug #44466: Fix cache migration

@@ -1,0 +1,171 @@
+#!/usr/share/ucs-test/runner python
+## -*- coding: utf-8 -*-
+## desc: New listener module API test
+## tags: []
+## roles: []
+## exposure: dangerous
+## packages:
+##   - univention-directory-listener
+## bugs: [44786]
+
+import os
+import pwd
+import logging
+import subprocess
+
+from ldap.filter import escape_filter_chars
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+from univention.testing.decorators import SetTimeout
+import univention.testing.utils as utils
+from univention.testing.ucs_samba import wait_for_drs_replication
+from univention.config_registry import handler_set
+from univention.listener.handler_logging import get_logger
+
+
+lm_file = os.path.join('/usr/lib/univention-directory-listener/system', '{}.py'.format(uts.random_name()))
+log_file = os.path.join('/tmp', '{}.log'.format(uts.random_name()))
+uid_default_file = None
+uid_root_file = None
+verify_ldap_object = SetTimeout(utils.verify_ldap_object, 60)
+
+
+def cleanup():
+	for filename in (lm_file, log_file, uid_default_file, uid_root_file):
+		print('Deleting {!r}...'.format(filename))
+		try:
+			os.remove(filename)
+		except (OSError, IOError) as exc:
+			print(exc)
+	print('Restarting univention-directory-listener...')
+	subprocess.call(['systemctl', 'restart', 'univention-directory-listener.service'])
+
+
+def main():
+	global uid_default_file, uid_root_file
+
+	username = uts.random_name()
+	employeeType = uts.random_name()
+	test_id = uts.random_name()
+	lm_name = 'test{}'.format(test_id)
+	street = uts.random_name()
+	roomNumber = uts.random_name()
+	uid_default_file = os.path.join('/tmp', '{}.log'.format(uts.random_name()))
+	uid_root_file = os.path.join('/tmp', '{}'.format(uts.random_name()))
+	lm_logger_path = os.path.join('/var/log/univention/listener_modules', '{}.log'.format(lm_name))
+
+	# create test listener module
+	with open('listener_module_testpy', 'rb') as fp:
+		lm_txt = fp.read()
+		lm_txt = lm_txt.replace('@@TEST_ID@@', test_id).replace('@@MODULE_NAME@@', lm_name).replace('@@LOGFILE@@', log_file).replace('@@USERNAME@@', username).replace('@@UID_ROOT_FILE@@', uid_root_file).replace('@@UID_DEFAULT_FILE@@', uid_default_file)
+
+	with open(lm_file, 'wb') as fp:
+		fp.write(lm_txt)
+
+	print('test_id: {!r}'.format(test_id))
+	print('Listener module: {!r}'.format(lm_file))
+	print('Action log file: {!r}'.format(log_file))
+	print('Listener module log file: {!r}'.format(lm_logger_path))
+	print('UID default (listener) file: {!r}'.format(uid_default_file))
+	print('UID root file: {!r}'.format(uid_root_file))
+
+	# create, modify, move, modify
+	with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr:
+		handler_set(['listener/module/{}/debug/level=4'.format(lm_name)])
+		print('Restarting univention-directory-listener...')
+		subprocess.call(['systemctl', 'restart', 'univention-directory-listener.service'])
+
+		lm_logger = get_logger(lm_name, target=lm_logger_path)
+		lm_logger.addHandler(logging.StreamHandler())
+
+		lm_logger.info('*** Creating user...')
+		userdn, username = udm.create_user(
+			username=username
+		)
+		verify_ldap_object(userdn, should_exist=True)
+		wait_for_drs_replication('cn={}'.format(escape_filter_chars(username)))
+
+		lm_logger.info('*** Checking setuid()...')
+		file0_uid = os.stat(uid_root_file).st_uid
+		if file0_uid != 0:
+			utils.fail('File (root) {!r} has uid={!r}, expected 0.'.format(uid_root_file, file0_uid))
+		file_default_uid = os.stat(uid_default_file).st_uid
+		listener_uid = pwd.getpwnam('listener').pw_uid
+		if file_default_uid != listener_uid:
+			utils.fail('File (listener) {!r} has uid={!r}, expected {!r}.'.format(uid_default_file, file_default_uid, listener_uid))
+
+		lm_logger.info('*** Modifying user (employeeType)...')
+		udm.modify_object(
+			'users/user',
+			dn=userdn,
+			employeeType=employeeType
+		)
+
+		lm_logger.info('*** Moving user (to LDAP base)...')
+		new_dn = udm.move_object(
+			'users/user',
+			dn=userdn,
+			position=ucr['ldap/base']
+		)
+
+		lm_logger.info('*** Modifying user (street) should not trigger listener module...')
+		udm.modify_object(
+			'users/user',
+			dn=new_dn,
+			street=street
+		)
+
+		lm_logger.info('*** Moving user (to cn=users)...')
+		new_dn = udm.move_object(
+			'users/user',
+			dn=new_dn,
+			position='cn=users,{}'.format(ucr['ldap/base'])
+		)
+
+		lm_logger.info('*** Modifying user (roomNumber) and triggering error...')
+		udm.modify_object(
+			'users/user',
+			dn=new_dn,
+			roomNumber=roomNumber
+		)
+
+		lm_logger.info('*** Deleting user...')
+
+	# wait for UCSTestUDM context manager to delete user
+	verify_ldap_object(new_dn, should_exist=False)
+	wait_for_drs_replication('(!(cn={}))'.format(escape_filter_chars(username)))
+
+	logging.shutdown()
+
+	lm_logfile = '/var/log/univention/listener_modules/{}.log'.format(lm_name)
+	print('*******************************************')
+	print('    {}'.format(lm_logfile))
+	print('----------')
+	with open(lm_logfile, 'rb') as fp:
+		print(fp.read())
+	print('*******************************************')
+
+	# check logfile for correct entries
+	with open(log_file, 'rb') as fp:
+		log_text = fp.read()
+		print('*******************************************')
+		print('    {}'.format(log_file))
+		print('----------')
+		print(log_text)
+		print('*******************************************')
+
+	lines = (l for l in log_text.split('\n') if l.strip())
+	for operation in ('create', 'modify', 'move', 'move', 'modify', 'error_handler', 'remove'):
+		exp = '{} {}'.format(test_id, operation)
+		line = lines.next()
+		if line != exp:
+			utils.fail('Expected {!r} found {!r}.'.format(exp, line))
+	print('Test succeeded.')
+
+
+if __name__ == '__main__':
+	try:
+		main()
+	finally:
+		cleanup()
