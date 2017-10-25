@@ -66,6 +66,6 @@ Categories=service-ln
 
 [listener/module/<name>/debug/level]
 Description[de]=Diese Variable konfiguriert den Detailgrad der Logausgaben für das Listener Modul <name> in /var/log/univention/listener_modules/<name>.log. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben). Standard: 2 (INFO).
-Description[en]=This variable configures the verbosity of the log messages for the mistener module <name> in /var/log/univention/listener_modules/<name>.log. Possible values: 0-4 (0: only error messages to 4: all debug statements). Default: 2 (INFO).
+Description[en]=This variable configures the verbosity of the log messages for the listener module <name> in /var/log/univention/listener_modules/<name>.log. Possible values: 0-4 (0: only error messages to 4: all debug statements). Default: 2 (INFO).
 Type=int
 Categories=service-ln
