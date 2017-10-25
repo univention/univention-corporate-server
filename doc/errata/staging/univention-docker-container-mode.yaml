@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-docker-container-mode
-fix: 2.0.0-15A~4.2.0.201710241622
+fix: 2.0.0-16A~4.2.0.201710251346
 desc: |
  This update addresses the following issue(s):
  * Only set nameserver UCR variables from environment if not joined yet
