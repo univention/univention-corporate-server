@@ -9,6 +9,11 @@
 ## bugs:
 ##  - 36480
 
+# skip test, see http://forge.univention.org/bugzilla/show_bug.cgi?id=36480#c7
+from sys import exit
+from univention.testing.codes import TestCodes
+exit(TestCodes.REASON_VERSION_MISMATCH)
+
 import pytest
 
 import univention.testing.connector_common as tcommon
