@@ -1,7 +1,11 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 # -*- coding: utf-8 -*-
 ## desc: test language switch, logout, module visibility, process timeout
-## roles-not: [basesystem]
+## packages:
+##  - univention-management-console-module-ucr
+##  - univention-management-console-module-top
+## roles-not:
+##  - basesystem
 ## join: true
 ## exposure: dangerous
 

@@ -1,5 +1,7 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 ## desc: check domain join and running of specific join scripts
+## packages:
+##  - univention-management-console-module-join
 ## roles:
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave

@@ -1,7 +1,11 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 # -*- coding: utf-8 -*-
 ## desc: test adding, modifying, removal of UDM objects
-## roles-not: [basesystem]
+## packages:
+##  - univention-management-console-module-udm
+## roles-not:
+##  - memberserver
+##  - basesystem
 ## join: true
 ## exposure: dangerous
 

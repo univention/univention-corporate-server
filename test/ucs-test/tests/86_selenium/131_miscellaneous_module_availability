@@ -3,7 +3,9 @@
 ## desc: |
 ##  Test if all expected modules are available for 'root' and 'administrator'
 ##  users, with different join-states.
-## roles-not: [basesystem]
+## roles-not:
+##  - basesystem
+## join: true
 ## exposure: dangerous
 
 from univention.admin import localization

@@ -1,5 +1,7 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 ## desc: Check execution of joinscript
+## packages:
+##  - univention-management-console-module-join
 ## roles:
 ##  - domaincontroller_master
 ## exposure: dangerous

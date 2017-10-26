@@ -1,6 +1,10 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 ## desc: check setting UCR variables
-## roles-not: [basesystem]
+## packages:
+##  - univention-management-console-module-ucr
+## roles-not:
+##  - basesystem
+## join: true
 ## exposure: dangerous
 
 from univention.admin import localization
