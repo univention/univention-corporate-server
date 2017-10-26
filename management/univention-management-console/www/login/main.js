@@ -256,6 +256,12 @@ define([
 			}
 			this.autologin().otherwise(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
 				//console.debug('no active session found');
+				if (tools.isFalse(tools.status('umc/web/sso/enabled') || 'yes')) {
+					if (!withoutRedirect) {
+						this.redirectToLogin(false);
+					}
+					return;
+				}
 				var passiveLogin = this.passiveSingleSignOn({ timeout: 3000 });
 				return passiveLogin.then(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
 					if (!withoutRedirect) {
