@@ -88,7 +88,14 @@ define([
 				results = array.map(results, lang.hitch(this, function(obj) {
 					obj.sortlabel = obj.label;
 					if (obj.objectType === 'dns/reverse_zone') {
-						obj.sortlabel = array.map(obj.label.split('.'), function(v) { return sprintf('%03d', v); }).join('.');
+						// sort IP's numerical
+						if (~obj.label.indexOf(':')) {
+							// ipv6
+							obj.sortlabel = array.map(obj.label.split(':'), function(v) { return sprintf('%05d', parseInt(v, 16)); }).join(':');
+						} else {
+							// ipv4
+							obj.sortlabel = array.map(obj.label.split('.'), function(v) { return sprintf('%03d', v); }).join('.');
+						}
 					}
 					return obj;
 				}));

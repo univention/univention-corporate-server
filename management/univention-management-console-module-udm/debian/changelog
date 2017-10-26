@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.10-21) unstable; urgency=medium
+
+  * Bug #45600: fix tree sorting for reverse zones with IPv6 addresses
+
+ -- Florian Best <best@univention.de>  Thu, 26 Oct 2017 11:38:46 +0200
+
 univention-management-console-module-udm (7.0.10-20) unstable; urgency=medium
 
   * Bug #43999: Adjust styling of dialogs
