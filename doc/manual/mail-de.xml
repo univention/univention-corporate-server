@@ -161,16 +161,7 @@
 	<section id="mail::management::users">
 	  <title>Zuordnung von E-Mail-Adressen zu Benutzern</title>
 	  <para>
-		E-Mail-Adressen können die Zeichen a-z, die Ziffern 0-9, Punkte,
-		Bindestriche und Unterstriche enthalten. Als weitere Vorgabe müssen die
-		E-Mail-Adressen mit einem Buchstaben beginnen und ein
-		<emphasis>@</emphasis>-Zeichen enthalten.
-		Um E-Mail-Adressen vergeben zu können, muss vorher mindestens eine Mail-Domäne
-		registriert werden (siehe <xref linkend="mail::management::domains"/>).
-	  </para>
-
-	  <para>
-		Einem Benutzer können zwei verschiedene Arten von E-Mail-Adressen zugeordnet werden:
+		Einem Benutzer können drei verschiedene Arten von E-Mail-Adressen zugeordnet werden:
 	  </para>
 	  <para>
 		<itemizedlist>
@@ -200,8 +191,30 @@
 				primäre E-Mail-Adresse besitzen.
 			</simpara>
 		  </listitem>
+
+		  <listitem>
+		    <simpara>
+		      Wenn <emphasis>Weiterleitungs-E-Mail-Adressen</emphasis> für einen Benutzer
+		      konfiguriert sind, werden E-Mails die er über die primäre oder über alternative
+		      E-Mail-Adressen empfängt, an diese weiter geleitet. Optional kann eine Kopie
+		      der Nachrichten in das Postfach des Benutzers zugestellt werden. Es können beliebig
+		      viele Adressen angegeben werden. Weiterleitungs-E-Mail-Adressen müssen weder
+		      eindeutig, noch muss ihr Domänenanteil in &ucsUMC; registriert sein.
+		    </simpara>
+		  </listitem>
 		</itemizedlist>
 	  </para>
+
+	  <note>
+	    <para>
+		  E-Mail-Adressen können die Zeichen a-z, die Ziffern 0-9, Punkte,
+		  Bindestriche und Unterstriche enthalten. Als weitere Vorgabe müssen die
+		  E-Mail-Adressen mit einem Buchstaben beginnen und ein
+		  <emphasis>@</emphasis>-Zeichen enthalten.
+		  Um E-Mail-Adressen vergeben zu können, muss vorher mindestens eine Mail-Domäne
+		  registriert werden (siehe <xref linkend="mail::management::domains"/>).
+	    </para>
+	  </note>
 
 	  <para>
 		E-Mail-Adressen werden im UMC-Modul <emphasis>Benutzer</emphasis> verwaltet.

@@ -159,14 +159,7 @@
 	<section id="mail::management::users">
 	  <title>Assignment of e-mail addresses to users</title>
 	  <para>
-		E-mail addresses can consist of the following characters: letters a-z,
-		figures 0-9, dots, hyphens and underscores. The address has to begin
-		with a letter and must include an @ character.
-		At least one mail domain must be registered for to be able to
-		assign e-mail addresses (see <xref linkend="mail::management::domains"/>).
-	  </para>
-	  <para>
-		A user can be assigned two different types of e-mail addresses:
+		A user can be assigned three different types of e-mail addresses:
 	  </para>
 		<itemizedlist>
 		  <listitem>
@@ -183,7 +176,7 @@
 		  <listitem>
 			<para>
 			  E-mails to <emphasis>alternative e-mail addresses</emphasis> are also delivered to the
-			  user's mailbox. As many addresses can be entered as you wish. The
+			  users mailbox. As many addresses can be entered as you wish. The
 			  alternative e-mail addresses do not have to be unique: if two users
 			  have the same e-mail address, they both receive all the e-mails which
 			  are sent to this address. The domain part of the
@@ -192,7 +185,28 @@
 				a user must have a primary e-mail address.
 			</para>
 		  </listitem>
+
+		  <listitem>
+		    <simpara>
+		      If <emphasis>forward e-mail addresses</emphasis> are configured for a user,
+		      e-mails received through the primary or alternative e-mail addresses are
+		      forwarded to them. A copy of the messages can optionally be stored in the
+		      users mailbox. Forward e-mail addresses do not have to be unique and their
+		      domain part does not have to be registered in &ucsUMC;.
+		    </simpara>
+		  </listitem>
 		</itemizedlist>
+
+		  <note>
+		    <para>
+		      E-mail addresses can consist of the following characters: letters a-z,
+		      figures 0-9, dots, hyphens and underscores. The address has to begin
+		      with a letter and must include an @ character.
+		      At least one mail domain must be registered for to be able to
+		      assign e-mail addresses (see <xref linkend="mail::management::domains"/>).
+		    </para>
+		  </note>
+
 	  <para>
 		E-mail addresses are managed in the UMC module <emphasis>Users</emphasis>.
 		The <guimenu>primary e-mail address</guimenu> is entered in
