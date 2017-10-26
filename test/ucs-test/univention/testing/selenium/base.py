@@ -142,7 +142,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		if append_timestamp:
 			timestamp = '_%s' % (datetime.datetime.now().strftime("%Y%m%d%H%M%S"),)
 
-		filename = '%s%s_%s%s.png' % (self.screenshot_path, name, self.language, timestamp)
+		filename = '%s/%s_%s%s.png' % (self.screenshot_path, name, self.language, timestamp)
 		logger.info('Saving screenshot %r', filename)
 
 		self.driver.save_screenshot(filename)
