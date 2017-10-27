@@ -27,9 +27,9 @@ import univention.admin.hook
 import univention.admin.handlers.users.user
 
 class %s(univention.admin.hook.simpleHook):
-	def hook_open(self, module):
+	def hook_open(self, obj):
 		with open('/tmp/%s_executed', 'a+') as fp:
-			if not isinstance(module, univention.admin.handlers.users.user.object):
+			if not isinstance(obj, univention.admin.handlers.users.user.object):
 				fp.write('Hook called with wrong object parameter (Type: %%s)' %% type(module))
 """ % (hook_name, hook_name))
 

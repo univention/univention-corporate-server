@@ -27,10 +27,10 @@ import univention.admin.hook
 import univention.admin.handlers.users.user
 
 class %s(univention.admin.hook.simpleHook):
-	def hook_ldap_addlist(self, module, al=[]):
+	def hook_ldap_addlist(self, obj, al=[]):
 		with open('/tmp/%s_executed', 'w') as fp:
-			if not isinstance(module, univention.admin.handlers.users.user.object):
-				fp.write('LDAP addlist hook called with wrong object parameter (Type: %%s)' %% type(module))
+			if not isinstance(obj, univention.admin.handlers.users.user.object):
+				fp.write('LDAP addlist hook called with wrong object parameter (Type: %%s)' %% type(obj))
 		return al + [('description', '%s')]
 """ % (hook_name, hook_name, hook_name))
 

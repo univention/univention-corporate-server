@@ -709,7 +709,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 						<methodsynopsis>
 							<methodname>hook_open</methodname>
 							<methodparam><parameter>self</parameter></methodparam>
-							<methodparam><parameter>module</parameter></methodparam>
+							<methodparam><parameter>obj</parameter></methodparam>
 						</methodsynopsis>
 					</term>
 					<listitem>
@@ -723,7 +723,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 						<methodsynopsis>
 							<methodname>hook_ldap_pre_create</methodname>
 							<methodparam><parameter>self</parameter></methodparam>
-							<methodparam><parameter>module</parameter></methodparam>
+							<methodparam><parameter>obj</parameter></methodparam>
 						</methodsynopsis>
 					</term>
 					<listitem>
@@ -739,7 +739,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 							<type>list</type>
 							<methodname>hook_ldap_addlist</methodname>
 							<methodparam><parameter>self</parameter></methodparam>
-							<methodparam><parameter>module</parameter></methodparam>
+							<methodparam><parameter>obj</parameter></methodparam>
 							<methodparam><parameter>al</parameter><initializer>[]</initializer></methodparam>
 						</methodsynopsis>
 					</term>
@@ -757,7 +757,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 						<methodsynopsis>
 							<methodname>hook_ldap_post_create</methodname>
 							<methodparam><parameter>self</parameter></methodparam>
-							<methodparam><parameter>module</parameter></methodparam>
+							<methodparam><parameter>obj</parameter></methodparam>
 						</methodsynopsis>
 					</term>
 					<listitem>
@@ -771,7 +771,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 						<methodsynopsis>
 							<methodname>hook_ldap_pre_modify</methodname>
 							<methodparam><parameter>self</parameter></methodparam>
-							<methodparam><parameter>module</parameter></methodparam>
+							<methodparam><parameter>obj</parameter></methodparam>
 						</methodsynopsis>
 					</term>
 					<listitem>
@@ -787,7 +787,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 							<type>list</type>
 							<methodname>hook_ldap_modlist</methodname>
 							<methodparam><parameter>self</parameter></methodparam>
-							<methodparam><parameter>module</parameter></methodparam>
+							<methodparam><parameter>obj</parameter></methodparam>
 							<methodparam><parameter>ml</parameter><initializer>[]</initializer></methodparam>
 						</methodsynopsis>
 					</term>
@@ -805,7 +805,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 						<methodsynopsis>
 							<methodname>hook_ldap_post_modify</methodname>
 							<methodparam><parameter>self</parameter></methodparam>
-							<methodparam><parameter>module</parameter></methodparam>
+							<methodparam><parameter>obj</parameter></methodparam>
 						</methodsynopsis>
 					</term>
 					<listitem>
@@ -819,7 +819,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 						<methodsynopsis>
 							<methodname>hook_ldap_pre_remove</methodname>
 							<methodparam><parameter>self</parameter></methodparam>
-							<methodparam><parameter>module</parameter></methodparam>
+							<methodparam><parameter>obj</parameter></methodparam>
 						</methodsynopsis>
 					</term>
 					<listitem>
@@ -833,7 +833,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 						<methodsynopsis>
 							<methodname>hook_ldap_post_remove</methodname>
 							<methodparam><parameter>self</parameter></methodparam>
-							<methodparam><parameter>module</parameter></methodparam>
+							<methodparam><parameter>obj</parameter></methodparam>
 						</methodsynopsis>
 					</term>
 					<listitem>
@@ -852,15 +852,15 @@ from univention.admin.hook import simpleHook
 class RemoveObjClassUnused(simpleHook):
 	type = 'RemoveObjClassUnused'
 
-	def hook_ldap_post_modify(self, module):
+	def hook_ldap_post_modify(self, obj):
 		"""Remove unused objectClass."""
 		ext_attr_name = 'isSampleUser'
 		class_name = 'univentionFreeAttributes'
 
-		if module.oldinfo.get(ext_attr_name) in ('1',) and \
-				module.info.get(ext_attr_name) in ('0', None):
-			if class_name in module.oldattr.get('objectClass', []):
-				module.lo.modify(module.dn,
+		if obj.oldinfo.get(ext_attr_name) in ('1',) and \
+				obj.info.get(ext_attr_name) in ('0', None):
+			if class_name in obj.oldattr.get('objectClass', []):
+				obj.lo.modify(obj.dn,
 					[('objectClass', class_name, '')])
 			]]></programlisting>
 			<para>
