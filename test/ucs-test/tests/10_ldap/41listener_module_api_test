@@ -10,6 +10,7 @@
 
 import os
 import pwd
+import time
 import logging
 import subprocess
 
@@ -135,6 +136,7 @@ def main():
 	# wait for UCSTestUDM context manager to delete user
 	verify_ldap_object(new_dn, should_exist=False)
 	wait_for_drs_replication('(!(cn={}))'.format(escape_filter_chars(username)))
+	time.sleep(15)  # give listener time to settle: wait for post_run()
 
 	logging.shutdown()
 
@@ -156,7 +158,7 @@ def main():
 		print('*******************************************')
 
 	lines = (l for l in log_text.split('\n') if l.strip())
-	for operation in ('create', 'modify', 'move', 'move', 'modify', 'error_handler', 'remove'):
+	for operation in ('clean', 'initialize', 'pre_run', 'create', 'modify employeeType {}'.format(employeeType), 'move', 'move', 'modify roomNumber {}'.format(roomNumber), 'error_handler', 'remove', 'post_run'):
 		exp = '{} {}'.format(test_id, operation)
 		line = lines.next()
 		if line != exp:
