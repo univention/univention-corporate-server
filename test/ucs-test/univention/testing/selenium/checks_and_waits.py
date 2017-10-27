@@ -78,6 +78,13 @@ class ChecksAndWaits(object):
 			self.elements_invisible
 		)
 
+	def wait_until_progress_bar_finishes(self, timeout=60):
+		logger.info("Waiting for all progress bars to disappear.")
+		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcProgressBar ")]'
+		webdriver.support.ui.WebDriverWait(xpath, timeout=timeout).until(
+			self.elements_invisible
+		)
+
 	def wait_until_element_visible(self, xpath):
 		logger.info('Waiting for the element with the xpath %r to be visible.' % (xpath,))
 		self.wait_until(
@@ -90,6 +97,12 @@ class ChecksAndWaits(object):
 		webdriver.support.ui.WebDriverWait(self.driver, timeout).until(
 			check_function
 		)
+
+	def get_gallery_items(self):
+		items = self.get_all_visible_elements(['//div[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")]'])
+		if items:
+			return [item.text for item in items]
+		return []
 
 	def get_all_visible_elements(self, xpaths):
 		visible_elems = []
