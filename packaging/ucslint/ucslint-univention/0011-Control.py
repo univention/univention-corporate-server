@@ -59,6 +59,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0011-14': [uub.RESULT_WARN, 'no matching package in debian/control'],
 			'0011-15': [uub.RESULT_WARN, 'non-prefixed debhelper file'],
 			'0011-16': [uub.RESULT_INFO, 'unknown debhelper file'],
+			'0011-17': [uub.RESULT_WARN, 'XS-Python-Version is missing but debian/rules contains "--with python_support"'],
 		}
 
 	def postinit(self, path):
@@ -115,6 +116,18 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		xs_python_version = parser.source_section.get('XS-Python-Version', '')
 		if xs_python_version and xs_python_version not in ('2.7',):
 			self.addmsg('0011-8', 'XS-Python-Version should be "2.7"', filename=fn_control)
+
+		if not xs_python_version:
+			fn_rules = os.path.join(path, 'debian', 'rules')
+			try:
+				with open(fn_rules, 'r') as fd:
+					content = fd.read()
+			except (IOError, OSError):
+				self.addmsg('0011-1', 'failed to open and read file', filename=fn_rules)
+				content = ''
+			reWithPythonSupport = re.compile('''--with ["']?python_support["']?''', re.MULTILINE)
+			if reWithPythonSupport.search(content):
+				self.addmsg('0011-17', 'XS-Python-Version is missing in debian/control but debian/rules contains "--with python_support"', filename=fn_control)
 
 		# XS-Python-Version is still required for UCS 4.2 since python-support is used
 		# if parser.source_section.get('XS-Python-Version', ''):
