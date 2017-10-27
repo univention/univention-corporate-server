@@ -17,17 +17,17 @@ def get_options(prefix):
 	return result
 
 print '%s      inet  n       -       n       -       -       smtpd %s%s' % (
-	configRegistry.get('mail/smtpport', '25'),
+	configRegistry.get('mail/smtpport', 'smtp'),
 	opt_verbose,
 	get_options('mail/postfix/mastercf/options/smtp/'),
 )
 
-print '465       inet  n       -       n       -       -       smtpd %s%s' % (
+print 'smtps   inet  n       -       n       -       -       smtpd %s%s' % (
 	opt_verbose,
 	get_options('mail/postfix/mastercf/options/smtps/'),
 )
 
-print '587       inet  n       -       n       -       -       smtpd %s%s' % (
+print 'submission  inet  n       -       n       -       -       smtpd %s%s' % (
 	opt_verbose,
 	get_options('mail/postfix/mastercf/options/submission/'),
 )
