@@ -135,13 +135,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 		udm_filter.walk(filter_p, udm_mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res = []
-	try:
-		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append(object(co, lo, None, dn, attributes=attrs))
-	except:
-		pass
-	return res
+	return object.lookup(co, lo, filter, base, superordinate, scope, unique, required, timeout, sizelimit)
 
 
 def identify(dn, attr, canonical=0):
