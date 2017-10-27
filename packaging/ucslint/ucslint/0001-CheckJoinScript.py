@@ -59,6 +59,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0001-13': [uub.RESULT_ERROR, 'join script does not include "joinscripthelper.lib"'],
 			'0001-14': [uub.RESULT_ERROR, 'join script does not call "joinscript_init"'],
 			'0001-15': [uub.RESULT_ERROR, 'join script does not call "joinscript_save_current_version"'],
+			'0001-16': [uub.RESULT_ERROR, 'join script is not mentioned in *.install'],
+			'0001-17': [uub.RESULT_WARN, 'join script is not called via call_joinscript in *.postinst'],
+			'0001-18': [uub.RESULT_ERROR, 'unjoin script is not removed in *.postinst'],
+			'0001-19': [uub.RESULT_ERROR, 'unjoin script is not copied in *.prerm'],
+			'0001-20': [uub.RESULT_WARN, 'join script is not called via call_unjoinscript in *.postrm'],
+			'0001-21': [uub.RESULT_ERROR, 'unjoin script is not mentioned in *.install'],
 		}
 
 	def postinit(self, path):
@@ -68,6 +74,149 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	RE_LINE_CONTAINS_SET_E = re.compile('\n[\t ]*set -e', re.M)
 	RE_DH_UMC = re.compile(r'\bdh-umc-module-install\b')
 	RE_DH_JOIN = re.compile(r'\bunivention-install-joinscript\b')
+
+	def check_unjoin_script_boilerplate(self, path, filename):
+		js_basename = os.path.basename(filename)
+
+		found_install = False
+		found_postrm_call_unjoinscript = False
+		found_postinst_remove1 = False
+		found_postinst_remove2 = False
+		found_prerm_copy = False
+
+		# check for automatic installation via univention-install-joinscript
+		fn = os.path.join(path, 'debian', 'rules')
+		try:
+			content = open(fn, 'r').read()
+			if 'univention-install-joinscript' in content:
+				self.debug('Check install: found univention-install-joinscript in %s - skipping other checks' % (fn,))
+				return
+		except (IOError, OSError):
+			self.addmsg('0001-9', 'failed to open and read file', fn)
+
+		# check for manual installation
+		for fn in os.listdir(os.path.join(path, 'debian')):
+			fn = os.path.join(path, 'debian', fn)
+			# check for entry in *.install
+			if fn.endswith('.install'):
+				try:
+					lines = open(fn, 'r').readlines()
+				except IOError:
+					self.addmsg('0001-9', 'failed to open and read file', fn)
+				else:
+					for line in lines:
+						items = line.split()
+						self.debug('Check install: items=%r' % (items,))
+						if len(items) >= 2 and items[0] == js_basename and items[1].strip('/') == 'usr/lib/univention-uninstall':
+							found_install = True
+							self.debug('Check install: found line in %s' % (fn,))
+			# check for removal in postinst
+			if fn.endswith('.postinst') or fn.endswith('/postinst'):
+				try:
+					lines = open(fn, 'r').readlines()
+				except IOError:
+					self.addmsg('0001-9', 'failed to open and read file', fn)
+				else:
+					for line in lines:
+						items = line.split()
+						self.debug('Check removal 1 in postinst: items=%r' % (items,))
+						if len(items) >= 1 and items[0].replace('"', '').replace("'", '') == 'uinst=/usr/lib/univention-install/%s' % (js_basename,):
+							found_postinst_remove1 = True
+							self.debug('Check removal in postinst: found line in %s' % (fn,))
+						line = line.strip().replace(' ', '').replace('\t', '')
+						self.debug('Check removal 2 in postinst: stripped line=%r' % (line,))
+						if line == '[-e"$uinst"]&&rm"$uinst"':
+							found_postinst_remove2 = True
+							self.debug('Check removal in postinst: found line in %s' % (fn,))
+
+			# check copy in *.prerm
+			if fn.endswith('.prerm') or fn.endswith('/prerm'):
+				try:
+					content = open(fn, 'r').read()
+				except IOError:
+					self.addmsg('0001-9', 'failed to open and read file', fn)
+				else:
+					lines = content.replace('\\\n', ' ').splitlines()
+					for line in lines:
+						items = line.split()
+						self.debug('Check copy in prerm: items=%r' % (items,))
+						if len(items) >= 3 and items[0] == 'cp' and items[1] == '/usr/lib/univention-uninstall/%s' % (js_basename,) and items[2].rstrip('/') == '/usr/lib/univention-install':
+							found_prerm_copy = True
+							self.debug('Check copy in prerm: found line in %s' % (fn,))
+
+			# check for call_unjoinscript
+			if fn.endswith('.postrm') or fn.endswith('/postrm'):
+				try:
+					lines = open(fn, 'r').readlines()
+				except IOError:
+					self.addmsg('0001-9', 'failed to open and read file', fn)
+				else:
+					for line in lines:
+						items = line.split()
+						self.debug('Check call_unjoinscript: items=%r' % (items,))
+						if len(items) >= 2 and items[0] == 'call_unjoinscript' and items[1] == js_basename:
+							found_postrm_call_unjoinscript = True
+							self.debug('Check call_unjoinscript: found line in %s' % (fn,))
+
+		if not found_install:
+			self.addmsg('0001-21', 'Unjoinscript %s is not mentioned in debian/*.install' % (js_basename,), js_basename)
+		if not(found_postinst_remove1 and found_postinst_remove2):
+			self.addmsg('0001-18', 'Unjoinscript %s is not removed in debian/*.postinst' % (js_basename,), js_basename)
+		if not found_prerm_copy:
+			self.addmsg('0001-19', 'Unjoinscript %s is not copied in debian/*.prerm' % (js_basename,), js_basename)
+		if not found_postrm_call_unjoinscript:
+			self.addmsg('0001-20', 'Unjoinscript %s is not called via call_unjoinscript() in debian/*.postrm' % (js_basename,), js_basename)
+
+	def check_join_script_boilerplate(self, path, filename):
+		js_basename = os.path.basename(filename)
+
+		found_install = False
+		found_call_joinscript = False
+
+		# check for automatic installation via univention-install-joinscript
+		fn = os.path.join(path, 'debian', 'rules')
+		try:
+			content = open(fn, 'r').read()
+			if 'univention-install-joinscript' in content:
+				found_install = True
+				self.debug('Check install: found univention-install-joinscript in %s' % (fn,))
+		except (IOError, OSError):
+			self.addmsg('0001-9', 'failed to open and read file', fn)
+
+		# check for manual installation
+		for fn in os.listdir(os.path.join(path, 'debian')):
+			fn = os.path.join(path, 'debian', fn)
+			# check for entry in *.install
+			if fn.endswith('.install') or fn.endswith('/install'):
+				try:
+					lines = open(fn, 'r').readlines()
+				except IOError:
+					self.addmsg('0001-9', 'failed to open and read file', fn)
+				else:
+					for line in lines:
+						items = line.split()
+						self.debug('Check install: items=%r' % (items,))
+						if len(items) >= 2 and items[0] == js_basename and items[1].strip('/') == 'usr/lib/univention-install':
+							found_install = True
+							self.debug('Check install: found line in %s' % (fn,))
+			# check for call_joinscript
+			if fn.endswith('.postinst') or fn.endswith('/postinst'):
+				try:
+					lines = open(fn, 'r').readlines()
+				except IOError:
+					self.addmsg('0001-9', 'failed to open and read file', fn)
+				else:
+					for line in lines:
+						items = line.split()
+						self.debug('Check call_joinscript: items=%r' % (items,))
+						if len(items) >= 2 and items[0] == 'call_joinscript' and items[1] == js_basename:
+							found_call_joinscript = True
+							self.debug('Check call_joinscript: found line in %s' % (fn,))
+
+		if not found_install:
+			self.addmsg('0001-16', 'Joinscript %s is not mentioned in debian/*.install (please check debian/rules for dh-umc-module-build or univention-install-joinscript)' % (js_basename,), js_basename)
+		if not found_call_joinscript:
+			self.addmsg('0001-17', 'Joinscript %s is not called via call_joinscript() in debian/*.postinst' % (js_basename,), js_basename)
 
 	def check_join_script(self, filename):
 		"""Check a single join script."""
@@ -146,7 +295,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
-		fnlist_joinscripts = {}
+		fnlist_joinscripts = {}  # { path_to_joinscript(str) --> joinscript_is_installed(bool) }
+		fnlist_unjoinscripts = {}  # { path_to_unjoinscript(str) --> unjoinscript_is_installed(bool) }
 
 		#
 		# search join scripts
@@ -156,12 +306,19 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				fn = os.path.join(path, f)
 				fnlist_joinscripts[fn] = False
 				self.debug('found %s' % fn)
+			if f.endswith('.uinst') and f[0:2].isdigit():
+				fn = os.path.join(path, f)
+				fnlist_unjoinscripts[fn] = False
+				self.debug('found %s' % fn)
 
 		#
 		# check if join scripts use versioning
 		#
 		for js in fnlist_joinscripts:
 			self.check_join_script(js)
+			self.check_join_script_boilerplate(path, js)
+		for js in fnlist_unjoinscripts:
+			self.check_unjoin_script_boilerplate(path, js)
 
 		#
 		# check if join scripts are present in debian/rules || debian/*.install
