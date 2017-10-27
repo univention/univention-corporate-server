@@ -7,4 +7,6 @@ fix:
 desc: |
  This update addresses the following issue(s):
  * univention.admin.modules.update() is now thread safe.
-bug: [45540]
+ * The misleading parameter name "module" has been renamed into "obj" in the
+   stub methods of simpleHook.
+bug: [45540, 32375]

@@ -67,34 +67,34 @@ class simpleHook(object):
 
 	#
 	# To use the LDAP connection of the parent UDM call in any of the following
-	# methods, use module.lo and module.position.
+	# methods, use obj.lo and obj.position.
 	#
 
-	def hook_open(self, module):
+	def hook_open(self, obj):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _open called')
 
-	def hook_ldap_pre_create(self, module):
+	def hook_ldap_pre_create(self, obj):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_create called')
 
-	def hook_ldap_addlist(self, module, al=[]):
+	def hook_ldap_addlist(self, obj, al=[]):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_addlist called')
 		return al
 
-	def hook_ldap_post_create(self, module):
+	def hook_ldap_post_create(self, obj):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_create called')
 
-	def hook_ldap_pre_modify(self, module):
+	def hook_ldap_pre_modify(self, obj):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_modify called')
 
-	def hook_ldap_modlist(self, module, ml=[]):
+	def hook_ldap_modlist(self, obj, ml=[]):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_modlist called')
 		return ml
 
-	def hook_ldap_post_modify(self, module):
+	def hook_ldap_post_modify(self, obj):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_modify called')
 
-	def hook_ldap_pre_remove(self, module):
+	def hook_ldap_pre_remove(self, obj):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_remove called')
 
-	def hook_ldap_post_remove(self, module):
+	def hook_ldap_post_remove(self, obj):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_remove called')
