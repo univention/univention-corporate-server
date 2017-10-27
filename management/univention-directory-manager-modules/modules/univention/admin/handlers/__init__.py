@@ -1387,6 +1387,21 @@ class simpleLdap(base):
 		flags = self.oldattr.get('univentionObjectFlag', [])
 		return 'synced' in flags and 'docker' not in flags
 
+	@classmethod
+	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+		filter_str = unicode(cls.lookup_filter(filter_s, lo) or '')
+		result = []
+		for dn, attrs in lo.search(filter_str, base, scope, [], unique, required, timeout, sizelimit):
+			try:
+				result.append(cls(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs))
+			except univention.admin.uexception.base as exc:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'lookup() of object %r failed: %s' % (dn, exc))
+		return result
+
+	@classmethod
+	def lookup_filter(cls, filter_s=None, lo=None):
+		return filter_s
+
 
 class simpleComputer(simpleLdap):
 
