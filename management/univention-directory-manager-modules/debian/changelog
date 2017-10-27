@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.18-13) unstable; urgency=medium
+
+  * Bug #45540: fix thread safety of univention.admin.modules.update()
+
+ -- Florian Best <best@univention.de>  Fri, 27 Oct 2017 15:35:28 +0200
+
 univention-directory-manager-modules (12.0.18-12) unstable; urgency=medium
 
   * Bug #45066: unmap boolean extended attributes so that default values don't
