@@ -243,7 +243,10 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.valueError(str(exc), property='nextIp')
 
 			if self['ipRange']:
-				self.sort_ipranges()
+				try:
+					self.sort_ipranges()
+				except TypeError as exc:
+					raise univention.admin.uexceptions.valueError(str(exc))
 				self['nextIp'] = self['ipRange'][0][0]
 			else:
 				self['nextIp'] = str(network.network_address + 1)
