@@ -229,3 +229,12 @@ class ListenerModuleHandler(object):
 		:return: univention.admin.uldap.access object
 		"""
 		return self.config.lo
+
+	@property
+	def po(self):
+		"""
+		Get a LDAP position object for the base DN (ldap/base).
+
+		:return: univention.admin.uldap.position object
+		"""
+		return self.config.po

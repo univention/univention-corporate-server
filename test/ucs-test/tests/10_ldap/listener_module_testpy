@@ -35,6 +35,10 @@ class TestListenerModule(ListenerModuleHandler):
 		ldap_res = self.lo.searchDn(filter=filter_format('(&(objectClass=posixAccount)(uid=%s))', (new['uid'][0],)))
 		if ldap_res[0] != dn and ldap_res[0]['uidNumber'] != new['uidNumber']:
 			raise Exception('self.lo.searchDn had unexpected result: {!r}'.format(ldap_res))
+		self.logger.info('create() test self.get_udm_objects')
+		udm_users = self.get_udm_objects('users/user', '(&(objectClass=inetOrgPerson)(uid={}))'.format(TEST_USERNAME), self.lo.base, self.lo, self.config.po)
+		if len(udm_users) != 1 or udm_users[0].info['username'] != new['uid'][0]:
+			raise Exception('self.get_udm_objects has unexpected result: {!r}'.format(ldap_res))
 		return
 
 	def modify(self, dn, old, new, old_dn):
@@ -43,8 +47,8 @@ class TestListenerModule(ListenerModuleHandler):
 			self.test_log('move')
 		else:
 			self.logger.info('modify() for user %r. diff(old, new)=%r', new['uid'][0], self.diff(old, new))
-			self.test_log('modify')
-		if 'roomNumber' in self.diff(old, new):
+			self.test_log('modify {}'.format(''.join(['{} {}'.format(k, v[1][0]) for k, v in self.diff(old, new).items()])))
+		if 'roomNumber' in self.diff(old, new).keys():
 			raise MyTestException('Error {}.'.format(TEST_ID))
 		return
 
@@ -61,6 +65,18 @@ class TestListenerModule(ListenerModuleHandler):
 			TestListenerModule.test_log('error_handler')
 			return
 		raise exc_type(exc_value)
+
+	def clean(self):
+		self.test_log('clean')
+
+	def initialize(self):
+		self.test_log('initialize')
+
+	def pre_run(self):
+		self.test_log('pre_run')
+
+	def post_run(self):
+		self.test_log('post_run')
 
 
 class TestListenerModuleConfiguration(ListenerModuleConfiguration):

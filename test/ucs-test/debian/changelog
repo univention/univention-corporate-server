@@ -1,4 +1,10 @@
-ucs-test (7.0.23-74) UNRELEASED; urgency=medium
+ucs-test (7.0.23-75) unstable; urgency=low
+
+  * Bug #44786: impove test coverage
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 27 Oct 2017 10:22:24 +0200
+
+ucs-test (7.0.23-74) unstable; urgency=medium
 
   * Disable tests for Bug #18501 and Bug #36480
 

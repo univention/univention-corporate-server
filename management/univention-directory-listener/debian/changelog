@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.1-33) unstable; urgency=low
+
+  * Bug #44786: add uldap position object to handler class
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 27 Oct 2017 10:19:42 +0200
+
 univention-directory-listener (11.0.1-32) unstable; urgency=low
 
   * Bug #44786: fix typo
