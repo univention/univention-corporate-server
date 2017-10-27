@@ -1,0 +1,9 @@
+# Access list for postscreen.
+# Please not that rules are evaluated in the order as specified.
+#
+# Example:
+# # Blacklist 192.168.* except 192.168.0.1.
+# 192.168.0.1         dunno
+# 192.168.0.0/16      reject
+#
+# see also <http://www.postfix.org/postconf.5.html#postscreen_access_list>
