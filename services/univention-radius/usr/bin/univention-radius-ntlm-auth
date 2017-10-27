@@ -61,7 +61,7 @@ def main():
 		print 'Missing required parameter --nt-response!'
 		return 1
 	if not options.stationId:
-		stationId = None
+		stationId = ''
 	else:
 		# safely decode station id (fails with exception on mis-formatted id, thus returning 1)
 		stationId = options.stationId.lower()
