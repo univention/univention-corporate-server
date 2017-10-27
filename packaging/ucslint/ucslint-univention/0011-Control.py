@@ -60,6 +60,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0011-15': [uub.RESULT_WARN, 'non-prefixed debhelper file'],
 			'0011-16': [uub.RESULT_INFO, 'unknown debhelper file'],
 			'0011-17': [uub.RESULT_WARN, 'XS-Python-Version is missing but debian/rules contains "--with python_support"'],
+			'0011-18': [uub.RESULT_ERROR, 'debian/compat should contain level 9'],
 		}
 
 	def postinit(self, path):
@@ -138,6 +139,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		if 'ucslint' not in parser.source_section.get('Build-Depends', ''):
 			self.addmsg('0011-13', 'ucslint is missing in Build-Depends', filename=fn_control)
+
+		# check debian/compat level
+		try:
+			fn_compat = os.path.join(path, 'debian', 'compat')
+			content = open('debian/compat', 'r').read().strip()
+			if not content.isdigit() or int(content) < 9:
+				self.addmsg('0011-18', 'debian/compat should contain level 9', filename='debian/compat')
+		except (IOError, OSError):
+			self.addmsg('0011-1', 'failed to open and read file', filename=fn_compat)
 
 		self.check_debhelper(path, parser)
 
