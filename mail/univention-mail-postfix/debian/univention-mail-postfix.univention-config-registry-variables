@@ -419,3 +419,57 @@ Description[de]=Wenn aktiviert, weise nicht-ASCII Adressen von Clients zurück, 
 Description[en]=Set to "yes" to rejects non-ASCII addresses from clients that don't request SMTPUTF8 support (see <http://www.postfix.org/postconf.5.html#smtputf8_enable>). The default when unset is "no".
 Type=bool
 Categories=service-mail
+
+[mail/postfix/postscreen/enabled]
+Description[de]=Ist diese Option aktiviert, werden eingehende SMTP-Verbindungen durch Postscreen geprüft, bevor sie an den SMTP-Dienst übergeben werden. Ist die Variable nicht gesetzt, erfolgt keine Prüfung (Standard: "no").
+Description[en]=If this option is activated, incoming SMTP connections are checked by postscreen before the connection is passed to the SMTP daemon. If the variable is unset, no check is performed (Default: "no").
+Type=bool
+Categories=service-mail
+
+[mail/postfix/postscreen/dnsbl/action]
+Description[de]=Aktion, die ausgeführt wird, wenn die DNSBL-Trefferpunkte den Schwellwert erreichen (siehe auch <http://www.postfix.org/postconf.5.html#postscreen_dnsbl_action>) (Standard: "enforce")
+Description[en]=Action that is performed when the DNSBL hitpoints reach the threshold (see also <http://www.postfix.org/postconf.5.html#postscreen_dnsbl_action>) (Default: "enforce")
+Type=str
+Categories=service-mail
+
+[mail/postfix/postscreen/dnsbl/threshold]
+Description[de]=Der Schwellwert, ab dem postscreen eingehende SMTP-Verbindungen basierend auf den DNSBL-Trefferpunkten ablehnt (siehe auch <http://www.postfix.org/postconf.5.html#postscreen_dnsbl_threshold>) (Standard: "3")
+Description[en]=The threshold from which postscreen rejects incoming SMTP connections based on the DNSBL hitpoints (see also <http://www.postfix.org/postconf.5.html#postscreen_dnsbl_threshold>) (Default: "3")
+Type=int
+Categories=service-mail
+
+[mail/postfix/postscreen/dnsbl/sites]
+Description[de]=Optionale Liste an DNS-White/Blacklist-Domänen, Filtern and Gewichtungsfaktoren. Das Format ist unter <http://www.postfix.org/postconf.5.html#postscreen_dnsbl_sites> beschrieben. (Standard: <leer>)
+Description[en]=Optional list of DNS white/blacklist domains, filters and weight factors. The format is described at <http://www.postfix.org/postconf.5.html#postscreen_dnsbl_sites>. (Default: <empty>)
+Type=str
+Categories=service-mail
+
+[mail/postfix/postscreen/helo/required]
+Description[de]=Ist diese Option aktiviert, ist es erforderlich, dass ein SMTP-Client sich mit dem HELO- oder EHLO-Befehl vor dem Senden des MAIL-Befehls oder anderer Befehle, die EHLO-Negotiation erfordern, vorstellt (Standard: "no").
+Description[en]=If this option is activated, it is required that a remote SMTP client introduces itself with the HELO or EHLO command before sending the MAIL command or other commands that require EHLO negotiation (Default: "no").
+Type=bool
+Categories=service-mail
+
+[mail/postfix/postscreen/greet/action]
+Description[de]=Die Aktion, die postscreen ausführt, wenn ein SMTP-Client Befehle sendet, bevor dieser an der Reihe ist (siehe auch <http://www.postfix.org/postconf.5.html#postscreen_greet_action>) (Standard: "drop")
+Description[en]=The action that postscreen takes when a remote SMTP client speaks before its turn within the configured waiting time (see also <http://www.postfix.org/postconf.5.html#postscreen_greet_action>) (Default: "drop")
+Type=str
+Categories=service-mail
+
+[mail/postfix/postscreen/greet/ttl]
+Description[de]=Diese Option definiert die Zeitspanne, in der SMTP-Clients keinen PREGREET-Test durchlaufen müssen, sofern sie diesen bereits erfolgreich bestanden haben (siehe auch <http://www.postfix.org/postconf.5.html#postscreen_greet_ttl>) (Standard: "1d")
+Description[en]=This option defines the time period that remote SMTP clients do not have to run a PREGREET test if they have already passed the PREGREET test (see also <http://www.postfix.org/postconf.5.html#postscreen_greet_ttl>) (Default: "1d")
+Type=str
+Categories=service-mail
+
+[mail/postfix/postscreen/blacklist/action]
+Description[de]=Die Aktion, die postscreen ausführt, wenn ein SMTP-Client über die Option postscreen_access_list permanent geblacklisted wurde (siehe auch <http://www.postfix.org/postconf.5.html#postscreen_blacklist_action>) (Standard: "ignore")
+Description[en]=The action that postscreen takes when a remote SMTP client is permanently blacklisted with the postscreen_access_list parameter (see also <http://www.postfix.org/postconf.5.html#postscreen_blacklist_action>) (Default: "ignore")
+Type=str
+Categories=service-mail
+
+[mail/postfix/postscreen/access_list]
+Description[de]=Permanente Whiteliste/Blacklist für IP-Adressen von SMTP-Clients (siehe auch <http://www.postfix.org/postconf.5.html#postscreen_access_list>) (Standard: "permit_mynetworks, cidr:/etc/postfix/postscreen_access.cidr")
+Description[en]=Permanent white/blacklist for remote SMTP client IP addresses (see also <http://www.postfix.org/postconf.5.html#postscreen_access_list>) (Default: "permit_mynetworks, cidr:/etc/postfix/postscreen_access.cidr")
+Type=str
+Categories=service-mail
