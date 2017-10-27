@@ -112,6 +112,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		if not parser.source_section.get('Maintainer', '') in ('Univention GmbH <packages@univention.de>',):
 			self.addmsg('0011-5', 'wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"', filename=fn_control)
 
+		xs_python_version = parser.source_section.get('XS-Python-Version', '')
+		if xs_python_version and xs_python_version not in ('2.7',):
+			self.addmsg('0011-8', 'XS-Python-Version should be "2.7"', filename=fn_control)
+
 		# XS-Python-Version is still required for UCS 4.2 since python-support is used
 		# if parser.source_section.get('XS-Python-Version', ''):
 		#  	self.addmsg('0011-11', 'XS-Python-Version is not required any longer', filename=fn_control)
