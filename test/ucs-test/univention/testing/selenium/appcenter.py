@@ -129,7 +129,8 @@ class AppCenter(object):
 
 	def open(self):
 		# TODO: check if appcenter is already opened with the overview site
-		self.selenium.open_module(_('App Center'))
+		self.selenium.search_module(_('App Center'))
+		self.selenium.click_tile(_('App Center'))
 		self.close_info_dialog_if_visisble()
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
