@@ -56,7 +56,6 @@ discard   unix  -       -       n       -       -       discard
 local     unix  -       n       n       -       -       local
 #virtual   unix  -       n       n       -       -       virtual
 lmtp      unix  -       -       n       -       -       lmtp
-#587      inet  n       -       n       -       -       smtpd -v -o smtpd_enforce_tls=yes -o smtpd_sasl_auth_enable=yes
 anvil     unix  -       -       n       -       1       anvil
 scache    unix  -       -       -       -       1       scache
 
