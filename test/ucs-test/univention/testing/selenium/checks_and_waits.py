@@ -98,6 +98,12 @@ class ChecksAndWaits(object):
 			check_function
 		)
 
+	def get_gallery_items(self):
+		items = self.get_all_visible_elements(['//div[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")]'])
+		if items:
+			return [item.text for item in items]
+		return []
+
 	def get_all_visible_elements(self, xpaths):
 		visible_elems = []
 		try:

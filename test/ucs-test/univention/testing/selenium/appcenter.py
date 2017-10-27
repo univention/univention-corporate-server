@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from time import sleep
 
 from selenium.common.exceptions import TimeoutException
 
@@ -103,8 +104,28 @@ class AppCenter(object):
 
 	def search_for_apps(self, text, category=None):
 		self.open()
-		# TODO: return a list of found apps for the specified category (or all)
-		raise NotImplementedError('TODO')
+
+		category = category or _('All')
+		self.select_search_category(category)
+
+		search_field = self.selenium.driver.find_element_by_xpath(
+			'//*[contains(text(), "%s")]/../input' % ('Search applications...',)
+		)
+		search_field.send_keys(text)
+		sleep(2)
+
+		return self.selenium.get_gallery_items()
+
+	def select_search_category(self, category):
+		self.selenium.show_notifications(False)
+		self.selenium.click_element(
+			'//div[contains(concat(" ", normalize-space(@class), " "), " dropDownMenu ")]//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]'
+		)
+		self.selenium.click_element(
+			'//*[contains(concat(" ", normalize-space(@class), " "), " dijitMenuItem ")][@role="option"]//*[contains(text(), "%s")]'
+			% (category,)
+		)
+		sleep(2)
 
 	def open(self):
 		# TODO: check if appcenter is already opened with the overview site
