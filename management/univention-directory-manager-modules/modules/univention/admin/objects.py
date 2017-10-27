@@ -84,7 +84,7 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None, attribut
 			obj = univention.admin.modules.lookup(module.module, co, lo, base=dn, superordinate=superordinate, scope='base', unique=True, required=True)[0]
 			obj.position.setDn(position.getDn() if position else dn)
 			return obj
-		except (ldap.NO_SUCH_OBJECT, univention.admin.uexceptions.noObject, IndexError):  # IndexError: because of Bug #37171
+		except (ldap.NO_SUCH_OBJECT, univention.admin.uexceptions.noObject):
 			if not lo.get(dn):
 				raise univention.admin.uexceptions.noObject(dn)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'univention.admin.objects.get(): The object %s is not a %s. Ignoring this error.' % (dn, module.module,))
