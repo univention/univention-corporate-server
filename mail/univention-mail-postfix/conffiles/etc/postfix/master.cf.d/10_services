@@ -2,7 +2,7 @@
 
 # ==========================================================================
 # service type	private	unpriv	chroot	wakeup	maxproc	command + args
-# 		(yes)	(yes)	(yes)	(never)	(50)
+# 		(yes)	(yes)	(yes)	(never)	(100)
 # ==========================================================================
 @!@
 opt_verbose = ''
