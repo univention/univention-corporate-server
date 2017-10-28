@@ -1,5 +1,6 @@
 E:0001-2: 34univention-management-console-server.inst: join script contains 2 lines with missing "$@"
 S:0001-1: 34univention-management-console-server.inst: join script contains 36 lines using "univention-admin"
+W:0001-17: 35univention-management-console-proxy.inst: Joinscript 35univention-management-console-proxy.inst is not called via call_joinscript() in debian/*.postinst
 W:0001-3: 35univention-management-console-proxy.inst: join script does not set VERSION
 W:0001-4: 35univention-management-console-proxy.inst: join script does not grep for " v${VERSION} "
 W:0001-6: 35univention-management-console-proxy.inst: join script is not mentioned in debian/rules or *.install files

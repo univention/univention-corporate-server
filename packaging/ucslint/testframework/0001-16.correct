@@ -1,0 +1,1 @@
+E:0001-16: 34univention-management-console-server.inst: Joinscript 34univention-management-console-server.inst is not mentioned in debian/*.install (please check debian/rules for dh-umc-module-build or univention-install-joinscript)
