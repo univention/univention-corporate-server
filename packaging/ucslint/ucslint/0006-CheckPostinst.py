@@ -32,7 +32,7 @@ try:
 except ImportError:
 	import ucslint.base as uub
 import os
-
+import re
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
@@ -50,10 +50,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0006-6': [uub.RESULT_ERROR, 'script contains no "exit 0" at end of file'],
 			'0006-7': [uub.RESULT_WARN, 'script uses broken remove_ucr_template'],
 			'0006-8': [uub.RESULT_WARN, 'script uses broken remove_ucr_info_file'],
+			'0006-9': [uub.RESULT_WARN, 'script contains UCR variable "server/role" or $server_role - these may be undefined during package installation!'],
 		}
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
+
+	# find "server/role", "$server_role" and "${server_role}"
+	RE_SERVER_ROLE = re.compile(r'(\bserver/role\b|[$][{]?\bserver_role\b[}]?)')
 
 	def check(self, path):
 		""" the real check """
@@ -101,7 +105,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			if '/bin/sh -e' in hashbang or '/bin/bash -e' in hashbang:
 				checks['set-e-hashbang'] += 1
 
-			for line in lines:
+			for linecnt, line in enumerate(lines, start=1):
 				line = line.strip()
 				if not line or line.startswith('#'):
 					continue
@@ -111,6 +115,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						checks['udm_calls'] += 1
 					elif cmd in line:
 						checks['udm_in_line'] += 1
+
+				if fn.endswith('postinst') or fn.endswith('preinst'):
+					if self.RE_SERVER_ROLE.search(line):
+						self.addmsg('0006-9', 'script contains UCR variable server/role or $server_role - this variable may be undefined during package installation!', fn, linecnt)
 
 				# search for "set -e" in line
 				if line.startswith('set -e'):

@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+
+#DEBHELPER#
+
+if [ "$(ucr get server/role)" = "memberserver" ] ; then
+	echo "A member"
+fi
+
+exit 0

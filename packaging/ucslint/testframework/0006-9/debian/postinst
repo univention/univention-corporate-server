@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+
+#DEBHELPER#
+
+eval "$(ucr shell)"
+if [ "$server_role" = "domaincontroller_slave" ] ; then
+	echo "It's a slave"
+fi
+
+exit 0
+
