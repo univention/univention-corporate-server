@@ -1,1 +1,2 @@
+W:0001-17: 34univention-management-console-server.inst: Joinscript 34univention-management-console-server.inst is not called via call_joinscript() in debian/*.postinst
 W:0001-8: debian/postinst: the join script 34univention-management-console-server.inst is not called with "|| true" but "set -e" is set

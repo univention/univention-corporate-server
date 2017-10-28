@@ -38,7 +38,7 @@ build-stamp: configure-stamp
 	# Add here commands to compile the package.
 	#$(MAKE)
 	#docbook-to-man debian/ucs-tools.sgml > ucs-tools.1
-
+	univention-install-joinscript
 	touch build-stamp
 
 clean:

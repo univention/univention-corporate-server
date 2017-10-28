@@ -1,0 +1,2 @@
+E:0001-16: 0001-6-7.inst: Joinscript 0001-6-7.inst is not mentioned in debian/*.install (please check debian/rules for dh-umc-module-build or univention-install-joinscript)
+W:0001-17: 0001-6-7.inst: Joinscript 0001-6-7.inst is not called via call_joinscript() in debian/*.postinst

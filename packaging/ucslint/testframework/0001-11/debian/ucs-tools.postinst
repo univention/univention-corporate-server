@@ -4,4 +4,6 @@
 
 /usr/lib/univention-install/34univention-management-console-server.inst
 
+call_joinscript 34univention-management-console-server.inst
+
 exit 0
