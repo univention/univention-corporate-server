@@ -1,6 +1,6 @@
 univention-directory-listener (11.0.1-34) unstable; urgency=low
 
-  * Bug #44786: complete metadata attribute list, fix old-new comparisation
+  * Bug #44786: complete metadata attribute list, fix old-new comparison
 
  -- Daniel Troeder <troeder@univention.de>  Sun, 29 Oct 2017 04:10:47 +0100
 

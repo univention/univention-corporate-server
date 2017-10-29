@@ -3,7 +3,7 @@ release: "4.2"
 version: [1,2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-directory-listener
-fix: 11.0.1-32A~4.2.0.201710252243
+fix: 11.0.1-34A~4.2.0.201710290416
 desc: |
  This update addresses the following issue(s):
  * A new API for programming of Univention Directory Listener modules was
