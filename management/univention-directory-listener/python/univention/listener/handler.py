@@ -45,7 +45,12 @@ class ListenerModuleHandler(object):
 	instantiated by ListenerModuleConfiguration.get_listener_module_instance().
 	"""
 
-	_metadata_attributes = ('entryCSN', 'entryDN', 'modifyTimestamp')
+	_metadata_attributes = (
+		'createTimestamp', 'creatorsName', 'entryCSN', 'entryDN', 'entryUUID',
+		'hasSubordinates', 'modifiersName', 'modifyTimestamp',
+		'structuralObjectClass', 'subschemaSubentry'
+	)
+
 	_udm_module_cache = dict()
 	ucr = listener.configRegistry
 
@@ -167,8 +172,8 @@ class ListenerModuleHandler(object):
 
 		:param old: dict
 		:param new: dict
-		:param keys: list: optional list of keys to consider in search
-		:param ignore_metadata: bool: whether to ignore changed metadata attributes
+		:param keys: list: consider only those keys in comparison
+		:param ignore_metadata: bool: ignore changed metadata attributes (if `keys` is not set)
 		:return: dict: key -> (old[key], new[key])
 		"""
 		res = dict()
@@ -176,10 +181,10 @@ class ListenerModuleHandler(object):
 			keys = set(keys)
 		else:
 			keys = set(old.keys()).union(set(new.keys()))
-		if ignore_metadata:
-			keys.difference_update(cls._metadata_attributes)
+			if ignore_metadata:
+				keys.difference_update(cls._metadata_attributes)
 		for key in keys:
-			if set(old.get(key, '<not set>')) != set(new.get(key, '<not set>')):
+			if set(old.get(key, [])) != set(new.get(key, [])):
 				res[key] = old.get(key), new.get(key)
 		return res
 
