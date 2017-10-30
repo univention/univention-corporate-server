@@ -1,0 +1,37 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: dnsmasq
+fix: 2.72-3+deb8u2
+desc: |
+ This update addresses the following issues:
+ * Crash on receipt of certain malformed DNS requests (CVE-2015-3294)
+ * Heap-based buffer overflow allows remote attackers to cause a
+   denial of service (crash) or execute arbitrary code via a crafted
+   DNS response (CVE-2017-14491)
+ * Heap-based buffer overflow allows remote attackers to cause a
+   denial of service (crash) or execute arbitrary code via a crafted
+   IPv6 router advertisement request (CVE-2017-14492)
+ * Stack-based buffer overflow allows remote attackers to cause a
+   denial of service (crash) or execute arbitrary code via a
+   crafted DHCPv6 request. (CVE-2017-14493)
+ * When configured as a relay, dnsmasq allows remote attackers to
+   obtain sensitive memory information via vectors involving handling
+   DHCPv6 forwarded requests (CVE-2017-14494)
+ * Memory leak, when the --add-mac, --add-cpe-id or --add-subnet option
+   is specified, allows remote attackers to cause a denial of service
+   (memory consumption) via vectors involving DNS response creation
+   (CVE-2017-14495)
+ * Integer underflow in the add_pseudoheader function, when the --add-mac,
+   --add-cpe-id or --add-subnet option is specified, allows remote
+   attackers to cause a denial of service via a crafted DNS request
+   (CVE-2017-14496)
+bug: [45617]
+cve:
+- CVE-2017-14491
+- CVE-2017-14492
+- CVE-2017-14493
+- CVE-2017-14494
+- CVE-2017-14495
+- CVE-2017-14496
