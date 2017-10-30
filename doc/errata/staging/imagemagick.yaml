@@ -1,0 +1,576 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: imagemagick
+fix: 8:6.7.7.10-5.63.201710302043
+desc: |
+ This update addresses the following issues:
+ * ipl file missing malloc check (CVE-2016-10144)
+ * wpg file off by one (CVE-2016-10145)
+ * memory leak in caption and label handling (CVE-2016-10146)
+ * memory allocate failure in AcquireQuantumPixels (CVE-2016-8677)
+ * double free in profile (CVE-2017-5506)
+ * memory leak in MPC file handling (CVE-2017-5507)
+ * Crash - PushQuantumPixel - Heap-Buffer-Overflow (TIFF) (CVE-2017-5508)
+ * memory corruption heap overflow, psb file related, another one
+   (CVE-2017-5510)
+ * memory corruption heap overflow, psb file related (CVE-2017-5511)
+ * Incorrect TGA files could trigger assertion failures, thus leading
+   to Denial of Service (CVE-2017-6498)
+ * A specially crafted file creating a nested exception could lead to a
+   memory leak (thus, a Denial of Service) (CVE-2017-6499)
+ * A specially crafted sun file triggers a heap-based buffer over-read
+   (CVE-2017-6500)
+ * coders/rle.c has an "outside the range of representable values of
+   type unsigned char" undefined behavior issue, which might allow remote
+   attackers to cause a denial of service (application crash) or possibly
+   have unspecified other impact via a crafted image (CVE-2017-7606)
+ * An infinite loop can occur because of a floating-point rounding error
+   in some of the color algorithms. This affects ModulateHSL, ModulateHCL,
+   ModulateHCLp, ModulateHSB, ModulateHSI, ModulateHSV, ModulateHWB,
+   ModulateLCHab, and ModulateLCHuv (CVE-2017-7619)
+ * The ReadPSDLayers function in coders/psd.c allows remote attackers to
+   have unspecified impact via unknown vectors, related to "throwing of
+   exceptions" (CVE-2014-9841)
+ * The ReadHDRImage function in coders/hdr.c allows remote attackers to
+   cause a denial of service (infinite loop) via a crafted HDR file
+   (CVE-2015-8900)
+ * Remote attackers may cause a denial of service (infinite loop) via a
+   crafted MIFF file (CVE-2015-8901)
+ * The ReadBlobByte function in coders/pdb.c allows remote attackers to
+   cause a denial of service (infinite loop) via a crafted PDB file
+   (CVE-2015-8902)
+ * The ReadVICARImage function in coders/vicar.c allows remote attackers
+   to cause a denial of service (infinite loop) via a crafted VICAR file
+   (CVE-2015-8903)
+ * The ReadSGIImage function in sgi.c allows remote attackers to consume
+   an amount of available memory via a crafted file (CVE-2017-7941)
+ * The ReadSVGImage function in svg.c allows remote attackers to consume
+   an amount of available memory via a crafted file (CVE-2017-7943)
+ * The ReadAAIImage function in aai.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-8343)
+ * The ReadPCXImage function in pcx.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-8344)
+ * The ReadMNGImage function in png.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-8345)
+ * The ReadDCMImage function in dcm.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-8346)
+ * The ReadEXRImage function in exr.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-8347)
+ * The ReadMATImage function in mat.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-8348)
+ * The ReadSFWImage function in sfw.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-8349)
+ * The ReadJNGImage function in png.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-8350)
+ * The ReadPCDImage function in pcd.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-8351)
+ * The ReadXWDImage function in xwd.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-8352)
+ * The ReadPICTImage function in pict.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-8353)
+ * The ReadBMPImage function in bmp.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-8354)
+ * The ReadMTVImage function in mtv.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-8355)
+ * The ReadSUNImage function in sun.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-8356)
+ * The ReadEPTImage function in ept.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-8357)
+ * The function named ReadICONImage in coders\icon.c has a memory leak
+   vulnerability which can cause memory exhaustion via a crafted ICON file
+   (CVE-2017-8765)
+ * The ReadBMPImage function in bmp.c:1379 allows attackers to cause a
+   denial of service (memory leak) via a crafted file (CVE-2017-8830)
+ * Uninitialized memory in the RLE decoder, allowing an attacker to leak
+   sensitive information from process memory space, as demonstrated by
+   remote attacks against ImageMagick code in a long-running server
+   process that converts image data on behalf of multiple users. This
+   is caused by a missing initialization step in the ReadRLEImage
+   function in coders/rle.c (CVE-2017-9098)
+ * A crafted file could trigger an assertion failure in the
+   ResetImageProfileIterator function in MagickCore/profile.c because
+   of missing checks in the ReadDDSImage function in coders/dds.c
+   (CVE-2017-9141)
+ * A crafted file could trigger an assertion failure in the WriteBlob
+   function in MagickCore/blob.c because of missing checks in the
+   ReadOneJNGImage function in coders/png.c (CVE-2017-9142)
+ * The ReadARTImage function in coders/art.c allows attackers to cause
+   a denial of service (memory leak) via a crafted .art file (CVE-2017-9143)
+ * A crafted RLE image can trigger a crash because of incorrect EOF handling
+   in coders/rle.c (CVE-2017-9144)
+ * The ReadMNGImage function in coders/png.c allows attackers to cause a
+   denial of service (memory leak) via a crafted file (CVE-2017-9261)
+ * The ReadJNGImage function in coders/png.c allows attackers to cause a
+   denial of service (memory leak) via a crafted file (CVE-2017-9262)
+ * The ReadICONImage function in icon.c:452 allows attackers to cause a
+   denial of service (memory leak) via a crafted file (CVE-2017-9405)
+ * The ReadPALMImage function in palm.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-9407)
+ * The ReadMPCImage function in mpc.c allows attackers to cause a denial
+   of service (memory leak) via a crafted file (CVE-2017-9409)
+ * A memory leak was found in the function ReadPDBImage in coders/pdb.c,
+   which allows attackers to cause a denial of service via a crafted file
+   (CVE-2017-9439)
+ * An assertion failure was found in the function ResetImageProfileIterator,
+   which allows attackers to cause a denial of service via a crafted file
+   (CVE-2017-9500)
+ * An assertion failure was found in the function LockSemaphoreInfo, which
+   allows attackers to cause a denial of service via a crafted file
+   (CVE-2017-9501)
+ * The mng_get_long function in coders/png.c allows remote attackers to cause
+   a denial of service (heap-based buffer over-read and application crash)
+   via a crafted MNG image (CVE-2017-10995)
+ * The ReadXWDImage function in coders\xwd.c has a memory leak vulnerability
+   that can cause memory exhaustion via a crafted length (number of color-map
+   entries) field in the header of an XWD file (CVE-2017-11166)
+ * A crafted RLE image can trigger a crash because of incorrect EOF handling
+   in coders/rle.c. NOTE: this vulnerability exists because of an incomplete
+   fix for CVE-2017-9144 (CVE-2017-11352)
+ * The ReadRLEImage function in coders\rle.c has a large loop vulnerability
+   via a crafted rle file that triggers a huge number_pixels value
+   (CVE-2017-11360)
+ * The ReadPESImage function in coders\pes.c has an infinite loop
+   vulnerability that can cause CPU exhaustion via a crafted PES file
+   (CVE-2017-11446)
+ * The ReadJPEGImage function in coders/jpeg.c allows remote attackers to
+   obtain sensitive information from uninitialized memory locations via a
+   crafted file (CVE-2017-11448)
+ * coders/mpc.c does not enable seekable streams and thus cannot validate
+   blob sizes, which allows remote attackers to cause a denial of service
+   (application crash) or possibly have unspecified other impact via an image
+   received from stdin (CVE-2017-11449)
+ * coders/jpeg.c allows remote attackers to cause a denial of service
+   (application crash) or possibly have unspecified other impact via JPEG
+   data that is too short (CVE-2017-11450)
+ * The ReadOneDJVUImage function in coders/djvu.c allows remote attackers to
+   cause a denial of service (infinite loop and CPU consumption) via a
+   malformed DJVU image (CVE-2017-11478)
+ * The ReadOneJNGImage function in coders/png.c allows remote attackers to
+   cause a denial of service (large loop and CPU consumption) via a malformed
+   JNG file (CVE-2017-11505)
+ * The ReadTXTImage function in coders/txt.c allows remote attackers to cause
+   a denial of service (infinite loop) via a crafted file, because the
+   end-of-file condition is not considered (CVE-2017-11523)
+ * The WriteBlob function in MagickCore/blob.c allows remote attackers to
+   cause a denial of service (assertion failure and application exit) via a
+   crafted file (CVE-2017-11524)
+ * The ReadCINImage function in coders/cin.c allows remote attackers to cause
+   a denial of service (memory consumption) via a crafted file
+   (CVE-2017-11525)
+ * The ReadOneMNGImage function in coders/png.c allows remote attackers to
+   cause a denial of service (large loop and CPU consumption) via a crafted
+   file (CVE-2017-11526)
+ * The ReadDPXImage function in coders/dpx.c allows remote attackers to cause
+   a denial of service (memory consumption) via a crafted file
+   (CVE-2017-11527)
+ * The ReadDIBImage function in coders/dib.c allows remote attackers to cause
+   a denial of service (memory leak) via a crafted file (CVE-2017-11528)
+ * The ReadMATImage function in coders/mat.c allows remote attackers to cause
+   a denial of service (memory leak) via a crafted file (CVE-2017-11529)
+ * The ReadEPTImage function in coders/ept.c allows remote attackers to cause
+   a denial of service (memory consumption) via a crafted file
+   (CVE-2017-11530)
+ * When ImageMagick processes a crafted file in convert, it can lead to a
+   Memory Leak in the WriteHISTOGRAMImage() function in coders/histogram.c
+   (CVE-2017-11531)
+ * When ImageMagick processes a crafted file in convert, it can lead to a
+   Memory Leak in the WriteMPCImage() function in coders/mpc.c
+   (CVE-2017-11532)
+ * When ImageMagick processes a crafted file in convert, it can lead to a
+   heap-based buffer over-read in the WriteUILImage() function in
+   coders/uil.c (CVE-2017-11533)
+ * When ImageMagick processes a crafted file in convert, it can lead to a
+   Memory Leak in the lite_font_map() function in coders/wmf.c
+   (CVE-2017-11534)
+ * When ImageMagick processes a crafted file in convert, it can lead to a
+   heap-based buffer over-read in the WritePSImage() function in coders/ps.c
+   (CVE-2017-11535)
+ * When ImageMagick processes a crafted file in convert, it can lead to a
+   Floating Point Exception (FPE) in the WritePALMImage() function in
+   coders/palm.c, related to an incorrect bits-per-pixel calculation
+   (CVE-2017-11537)
+ * When ImageMagick processes a crafted file in convert, it can lead to a
+   Memory Leak in the ReadOnePNGImage() function in coders/png.c
+   (CVE-2017-11539)
+ * When ImageMagick processes a crafted file in convert, it can lead to a
+   heap-based buffer over-read in the WriteCIPImage() function in
+   coders/cip.c, related to the GetPixelLuma function in
+ * MagickCore/pixel-accessor.h (CVE-2017-11639)
+ * When ImageMagick processes a crafted file in convert, it can lead to an
+   address access exception in the WritePTIFImage() function in coders/tiff.c
+   (CVE-2017-11640)
+ * When ImageMagick processes a crafted file in convert, it can lead to a
+   Memory Leak in the ReadMATImage() function in coders/mat.c
+   (CVE-2017-11644)
+ * The ReadMATImage function in coders/mat.c has memory leaks involving the
+   quantum_info and clone_info data structures (CVE-2017-11724)
+ * The WritePICONImage function in coders/xpm.c allows remote attackers to
+   cause a denial of service (memory leak) via a crafted file
+   (CVE-2017-11751)
+ * The ReadMAGICKImage function in coders/magick.c allows remote attackers to
+   cause a denial of service (memory leak) via a crafted file
+   (CVE-2017-11752)
+ * The ReadDCMImage function in coders\dcm.c has an integer signedness error
+   leading to excessive memory consumption via a crafted DCM file
+   (CVE-2017-12140)
+ * Has memory leaks in the parse8BIMW and format8BIM functions in
+   coders/meta.c, related to the WriteImage function in
+   MagickCore/constitute.c (CVE-2017-12418)
+ * The ProcessMSLScript function in coders/msl.c allows remote attackers to
+   cause a denial of service (memory leak) via a crafted file, related to the
+   WriteMSLImage function (CVE-2017-12427)
+ * A memory leak vulnerability was found in the function ReadWMFImage in
+   coders/wmf.c, which allows attackers to cause a denial of service in
+   CloneDrawInfo in draw.c (CVE-2017-12428)
+ * A memory exhaustion vulnerability was found in the function ReadMIFFImage
+   in coders/miff.c, which allows attackers to cause a denial of service
+   (CVE-2017-12429)
+ * A memory exhaustion vulnerability was found in the function ReadMPCImage
+   in coders/mpc.c, which allows attackers to cause a denial of service
+   (CVE-2017-12430)
+ * A use-after-free vulnerability was found in the function ReadWMFImage in
+   coders/wmf.c, which allows attackers to cause a denial of service
+   (CVE-2017-12431)
+ * A memory exhaustion vulnerability was found in the function ReadPCXImage
+   in coders/pcx.c, which allows attackers to cause a denial of service
+   (CVE-2017-12432)
+ * A memory leak vulnerability was found in the function ReadPESImage in
+   coders/pes.c, which allows attackers to cause a denial of service, related
+   to ResizeMagickMemory in memory.c (CVE-2017-12433)
+ * A memory exhaustion vulnerability was found in the function ReadSUNImage
+   in coders/sun.c, which allows attackers to cause a denial of service
+   (CVE-2017-12435)
+ * A memory exhaustion vulnerability was found in the function ReadPSDImage
+   in coders/psd.c, which allows attackers to cause a denial of service
+   (CVE-2017-12563)
+ * A memory leak vulnerability was found in the function ReadMATImage in
+   coders/mat.c, which allows attackers to cause a denial of service
+   (CVE-2017-12564)
+ * A memory leak vulnerability was found in the function ReadOneJNGImage in
+   coders/png.c, which allows attackers to cause a denial of service
+   (CVE-2017-12565)
+ * A memory leak vulnerability was found in the function ReadMVGImage in
+   coders/mvg.c, which allows attackers to cause a denial of service, related
+   to the function ReadSVGImage in svg.c (CVE-2017-12566)
+ * Large loop vulnerability in the ReadPWPImage function in coders\pwp.c
+   (CVE-2017-12587)
+   Out-of-bounds read vulnerability in ReadOneMNGImage in coders/png.c
+   (CVE-2017-12640)
+ * Memory leak vulnerability in ReadOneJNGImage in coders\png.c
+   (CVE-2017-12641)
+ * Memory leak vulnerability in ReadMPCImage in coders\mpc.c (CVE-2017-12642)
+ * Memory exhaustion vulnerability in ReadOneJNGImage in coders\png.c
+   (CVE-2017-12643)
+ * The ReadPICTImage function in coders/pict.c allows attackers to cause a
+   denial of service (memory leak) via a crafted file (CVE-2017-12654)
+ * Memory leak vulnerability in WritePALMImage in coders/palm.c
+   (CVE-2017-12664)
+ * Memory leak vulnerability in WritePICTImage in coders/pict.c
+   (CVE-2017-12665)
+ * Memory leak vulnerability in WritePCXImage in coders/pcx.c
+   (CVE-2017-12668)
+ * Missing validation in coders/mat.c, leading to an assertion failure in the
+   function DestroyImage in MagickCore/image.c, which allows attackers to
+   cause a denial of service (CVE-2017-12670)
+ * A CPU exhaustion vulnerability was found in the function ReadPDBImage in
+   coders/pdb.c, which allows attackers to cause a denial of service
+   (CVE-2017-12674)
+ * A missing check for multidimensional data was found in coders/mat.c,
+   leading to a memory leak in the function ReadImage in
+   MagickCore/constitute.c, which allows attackers to cause a denial of
+   service (CVE-2017-12675)
+ * A memory leak vulnerability was found in the function ReadOneJNGImage in
+   coders/png.c, which allows attackers to cause a denial of service
+   (CVE-2017-12676)
+ * Use-after-free vulnerability in the DestroyImage function in image.c
+   allows remote attackers to cause a denial of service via a crafted file
+   (CVE-2017-12877)
+ * Heap-based buffer overflow in the ReadSFWImage function in coders/sfw.c
+   allows remote attackers to cause a denial of service (application crash)
+   or possibly have unspecified other impact via a crafted file
+   (CVE-2017-12983)
+ * The load_level function in coders/xcf.c lacks offset validation, which
+   allows attackers to cause a denial of service (load_tile memory
+   exhaustion) via a crafted file (CVE-2017-13133)
+ * A heap-based buffer over-read was found in the function SFWScan in
+   coders/sfw.c, which allows attackers to cause a denial of service via a
+   crafted file (CVE-2017-13134)
+ * The ReadOneMNGImage function in coders/png.c has an out-of-bounds read
+   with the MNG CLIP chunk (CVE-2017-13139)
+ * A crafted PNG file could trigger a crash because there was an insufficient
+   check for short files (CVE-2017-13142)
+ * The ReadMATImage function in coders/mat.c uses uninitialized data, which
+   might allow remote attackers to obtain sensitive information from process
+   memory (CVE-2017-13143)
+ * There is a crash (rather than a "width or height exceeds limit" error
+   report) if the image dimensions are too large, as demonstrated by use of
+   the mpc coder (CVE-2017-13144)
+ * Memory leak in the ReadMATImage function in coders/mat.c (CVE-2017-13146)
+ * Missing NULL check in the ReadMATImage function in coders/mat.c, leading
+   to a denial of service (assertion failure and application exit) in the
+ * DestroyImageInfo function in MagickCore/image.c (CVE-2017-13658)
+ * Heap-based buffer over-read in the GetNextToken function in token.c allows
+   remote attackers to obtain sensitive information from process memory or
+   possibly have unspecified other impact via a crafted SVG document that is
+   mishandled in the GetUserSpaceCoordinateValue function in coders/svg.c
+   (CVE-2017-10928)
+ * The ReadMATImage function in coders\mat.c has a memory leak vulnerability
+   that can cause memory exhaustion via a crafted MAT file, related to
+   incorrect ordering of a SetImageExtent call (CVE-2017-11141)
+ * The ReadTGAImage function in coders\tga.c has a memory leak vulnerability
+   that can cause memory exhaustion via invalid colors data in the header of
+   a TGA or VST file (CVE-2017-11170)
+ * The ReadDPXImage function in coders\dpx.c has a large loop vulnerability
+   that can cause CPU exhaustion via a crafted DPX file, related to lack of
+   an EOF check (CVE-2017-11188)
+ * The ReadOneLayer function in coders/xcf.c allows remote attackers to cause
+   a denial of service (memory consumption) via a crafted file
+   (CVE-2017-12691)
+ * The ReadVIFFImage function in coders/viff.c allows remote attackers to
+   cause a denial of service (memory consumption) via a crafted VIFF file
+   (CVE-2017-12692)
+ * The ReadBMPImage function in coders/bmp.c allows remote attackers to cause
+   a denial of service (memory consumption) via a crafted BMP file
+   (CVE-2017-12693)
+ * The WritePixelCachePixels function allows remote attackers to cause a
+   denial of service (CPU consumption) via a crafted file (CVE-2017-12875)
+ * There is a heap-based buffer overflow in the TracePoint() function in
+   MagickCore/draw.c (CVE-2017-13758)
+ * Null Pointer Dereference in the IdentifyImage function in
+   MagickCore/identify.c allows an attacker to perform denial of service by
+   sending a crafted image file (CVE-2017-13768)
+ * The WriteTHUMBNAILImage function in coders/thumbnail.c allows an attacker
+   to cause a denial of service (buffer over-read) by sending a crafted JPEG
+   file (CVE-2017-13769)
+ * A NULL Pointer Dereference issue is present in the ReadCUTImage function
+   in coders/cut.c that could allow an attacker to cause a Denial of Service
+   (in the QueueAuthenticPixelCacheNexus function within the
+   MagickCore/cache.c file) by submitting a malformed image file
+   (CVE-2017-14060)
+ * In coders/ps.c a DoS in ReadPSImage() due to lack of an EOF (End of File)
+   check might cause huge CPU consumption. When a crafted PSD file, which
+   claims a large "extent" field in the header but does not contain
+   sufficient backing data, is provided, the loop over "length" would consume
+   huge CPU resources, since there is no EOF check inside the loop
+   (CVE-2017-14172)
+ * In the function ReadTXTImage() in coders/txt.c an integer overflow might
+   occur for the addition operation "GetQuantumRange(depth)+1" when "depth"
+   is large, producing a smaller value than expected. As a result, an
+   infinite loop would occur for a crafted TXT file that claims a very large
+   "max_value" value (CVE-2017-14173)
+ * In coders/psd.c a DoS in ReadPSDLayersInternal() due to lack of an EOF
+   (End of File) check might cause huge CPU consumption. When a crafted PSD
+   file, which claims a large "length" field in the header but does not
+   contain sufficient backing data, is provided, the loop over "length" would
+   consume huge CPU resources, since there is no EOF check inside the loop
+   (CVE-2017-14174)
+ * In coders/xbm.c a DoS in ReadXBMImage() due to lack of an EOF (End of
+   File) check might cause huge CPU consumption. When a crafted XBM file,
+   which claims large rows and columns fields in the header but does not
+   contain sufficient backing data, is provided, the loop over the rows would
+   consume huge CPU resources, since there is no EOF check inside the loop
+   (CVE-2017-14175)
+ * A heap-based buffer overflow in WritePCXImage in coders/pcx.c allows
+   remote attackers to cause a denial of service or code execution via a
+   crafted file (CVE-2017-14224)
+ * ImageMagick mishandles EOF checks in ReadMPCImage in coders/mpc.c, leading
+   to division by zero in GetPixelCacheTileSize in MagickCore/cache.c,
+   allowing remote attackers to cause a denial of service via a crafted file
+   (CVE-2017-14249)
+ * Large loop vulnerability in ReadWPGImage in coders/wpg.c, causing CPU
+   exhaustion via a crafted wpg image file (CVE-2017-14341)
+ * The PersistPixelCache function in magick/cache.c mishandles the pixel
+   cache nexus, which allows remote attackers to cause a denial of service
+   (NULL pointer dereference in the function GetVirtualPixels in
+   MagickCore/cache.c) via a  crafted file (CVE-2017-14400)
+ * DrawGetStrokeDashArray in wand/drawing-wand.c mishandles certain NULL
+   arrays, which allows attackers to perform Denial of Service (NULL pointer
+   dereference and application crash in AcquireQuantumMemory within
+   MagickCore/memory.c) by providing a crafted Image File as input
+   (CVE-2017-14505)
+ * An out of bounds read flaw related to ReadTIFFImage has been reported in
+   coders/tiff.c. An attacker could possibly exploit this flaw to disclose
+   potentially sensitive memory or cause an application crash
+   (CVE-2017-14607)
+ * GetNextToken in MagickCore/token.c allows remote attackers to cause a
+   denial of service (heap-based buffer overflow and application crash) or
+   possibly have unspecified other impact via a crafted SVG document, a
+   different vulnerability than CVE-2017-10928 (CVE-2017-14682)
+ * The AcquireResampleFilterThreadSet function in magick/resample-private.h
+   mishandles failed memory allocation, which allows remote attackers to
+   cause a denial of service (NULL Pointer Dereference in DistortImage in
+   MagickCore/distort.c, and application crash) via unspecified vectors
+   (CVE-2017-14739)
+ * The ReadCAPTIONImage function in coders/caption.c allows remote attackers
+   to cause a denial of service (infinite loop) via a crafted font file
+   (CVE-2017-14741)
+ * A use-after-free in RenderFreetype in MagickCore/annotate.c allows
+   attackers to crash the application via a crafted font file, because the
+   FT_Done_Glyph function (from FreeType 2) is called at an incorrect place
+   in the ImageMagick code (CVE-2017-14989)
+ * NULL pointer dereference vulnerability in ReadEnhMetaFile in coders/emf.c
+   (CVE-2017-15016)
+ * NULL pointer dereference vulnerability in ReadOneMNGImage in coders/png.c
+   (CVE-2017-15017)
+ * ReadGIFImage in coders/gif.c leaves the palette uninitialized when
+   processing a GIF file that has neither a global nor local palette. If the
+   affected product is used as a library loaded into a process that operates
+   on interesting data, this data sometimes can be leaked via the
+   uninitialized palette (CVE-2017-15277)
+ * ReadPSDImage in coders/psd.c allows remote attackers to cause a denial of
+   service (application crash) or possibly have unspecified other impact via
+   a crafted file, related to "Conditional jump or move depends on
+   uninitialised value(s)" (CVE-2017-15281)
+bug: [43448]
+cve:
+ - CVE-2016-10144
+ - CVE-2016-10145
+ - CVE-2016-10146
+ - CVE-2016-8677
+ - CVE-2017-5506
+ - CVE-2017-5507
+ - CVE-2017-5508
+ - CVE-2017-5510
+ - CVE-2017-5511
+ - CVE-2017-6498
+ - CVE-2017-6499
+ - CVE-2017-6500
+ - CVE-2017-7606
+ - CVE-2017-7619
+ - CVE-2014-9841
+ - CVE-2015-8900
+ - CVE-2015-8901
+ - CVE-2015-8902
+ - CVE-2015-8903
+ - CVE-2017-7941
+ - CVE-2017-7943
+ - CVE-2017-8343
+ - CVE-2017-8344
+ - CVE-2017-8345
+ - CVE-2017-8346
+ - CVE-2017-8347
+ - CVE-2017-8348
+ - CVE-2017-8349
+ - CVE-2017-8350
+ - CVE-2017-8351
+ - CVE-2017-8352
+ - CVE-2017-8353
+ - CVE-2017-8354
+ - CVE-2017-8355
+ - CVE-2017-8356
+ - CVE-2017-8357
+ - CVE-2017-8765
+ - CVE-2017-8830
+ - CVE-2017-9098
+ - CVE-2017-9141
+ - CVE-2017-9142
+ - CVE-2017-9143
+ - CVE-2017-9144
+ - CVE-2017-9261
+ - CVE-2017-9262
+ - CVE-2017-9405
+ - CVE-2017-9407
+ - CVE-2017-9409
+ - CVE-2017-9439
+ - CVE-2017-9500
+ - CVE-2017-9501
+ - CVE-2017-10995
+ - CVE-2017-11166
+ - CVE-2017-11352
+ - CVE-2017-11360
+ - CVE-2017-11446
+ - CVE-2017-11448
+ - CVE-2017-11449
+ - CVE-2017-11450
+ - CVE-2017-11478
+ - CVE-2017-11505
+ - CVE-2017-11523
+ - CVE-2017-11524
+ - CVE-2017-11525
+ - CVE-2017-11526
+ - CVE-2017-11527
+ - CVE-2017-11528
+ - CVE-2017-11529
+ - CVE-2017-11530
+ - CVE-2017-11531
+ - CVE-2017-11532
+ - CVE-2017-11533
+ - CVE-2017-11534
+ - CVE-2017-11535
+ - CVE-2017-11537
+ - CVE-2017-11539
+ - CVE-2017-11639
+ - CVE-2017-11640
+ - CVE-2017-11644
+ - CVE-2017-11724
+ - CVE-2017-11751
+ - CVE-2017-11752
+ - CVE-2017-12140
+ - CVE-2017-12418
+ - CVE-2017-12427
+ - CVE-2017-12428
+ - CVE-2017-12429
+ - CVE-2017-12430
+ - CVE-2017-12431
+ - CVE-2017-12432
+ - CVE-2017-12433
+ - CVE-2017-12435
+ - CVE-2017-12563
+ - CVE-2017-12564
+ - CVE-2017-12565
+ - CVE-2017-12566
+ - CVE-2017-12587
+ - CVE-2017-12640
+ - CVE-2017-12641
+ - CVE-2017-12642
+ - CVE-2017-12643
+ - CVE-2017-12654
+ - CVE-2017-12664
+ - CVE-2017-12665
+ - CVE-2017-12668
+ - CVE-2017-12670
+ - CVE-2017-12674
+ - CVE-2017-12675
+ - CVE-2017-12676
+ - CVE-2017-12877
+ - CVE-2017-12983
+ - CVE-2017-13133
+ - CVE-2017-13134
+ - CVE-2017-13139
+ - CVE-2017-13142
+ - CVE-2017-13143
+ - CVE-2017-13144
+ - CVE-2017-13146
+ - CVE-2017-13658
+ - CVE-2017-10928
+ - CVE-2017-11141
+ - CVE-2017-11170
+ - CVE-2017-11188
+ - CVE-2017-12691
+ - CVE-2017-12692
+ - CVE-2017-12693
+ - CVE-2017-12875
+ - CVE-2017-13758
+ - CVE-2017-13768
+ - CVE-2017-13769
+ - CVE-2017-14060
+ - CVE-2017-14172
+ - CVE-2017-14173
+ - CVE-2017-14174
+ - CVE-2017-14175
+ - CVE-2017-14224
+ - CVE-2017-14249
+ - CVE-2017-14341
+ - CVE-2017-14400
+ - CVE-2017-14505
+ - CVE-2017-14607
+ - CVE-2017-14682
+ - CVE-2017-14739
+ - CVE-2017-14741
+ - CVE-2017-14989
+ - CVE-2017-15016
+ - CVE-2017-15017
+ - CVE-2017-15277
+ - CVE-2017-15281
