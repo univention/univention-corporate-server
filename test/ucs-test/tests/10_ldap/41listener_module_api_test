@@ -20,7 +20,7 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 from univention.testing.decorators import SetTimeout
 import univention.testing.utils as utils
-from univention.testing.ucs_samba import wait_for_drs_replication
+from univention.testing.ucs_samba import wait_for_drs_replication, wait_for_s4connector
 from univention.config_registry import handler_set
 from univention.listener.handler_logging import get_logger
 
@@ -136,6 +136,7 @@ def main():
 	# wait for UCSTestUDM context manager to delete user
 	verify_ldap_object(new_dn, should_exist=False)
 	wait_for_drs_replication('(!(cn={}))'.format(escape_filter_chars(username)))
+	wait_for_s4connector()
 	time.sleep(15)  # give listener time to settle: wait for post_run()
 
 	logging.shutdown()
@@ -158,9 +159,13 @@ def main():
 		print('*******************************************')
 
 	lines = (l for l in log_text.split('\n') if l.strip())
-	for operation in ('clean', 'initialize', 'pre_run', 'create', 'modify employeeType {}'.format(employeeType), 'move', 'move', 'modify roomNumber {}'.format(roomNumber), 'error_handler', 'remove', 'post_run'):
+	operations = ('clean', 'initialize', 'pre_run', 'create', 'modify employeeType {}'.format(employeeType), 'move', 'move', 'modify roomNumber {}'.format(roomNumber), 'error_handler', 'remove', 'post_run')
+	for operation in operations:
 		exp = '{} {}'.format(test_id, operation)
-		line = lines.next()
+		try:
+			line = lines.next()
+		except StopIteration:
+		    utils.fail('Missing operation(s). Expected: {!r}.'.format(operations))
 		if line != exp:
 			utils.fail('Expected {!r} found {!r}.'.format(exp, line))
 	print('Test succeeded.')
