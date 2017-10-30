@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-mail-dovecot
+fix:
+desc: |
+ This update addresses the following issue(s):
+ * Support for creating subfolders in shared folders was added (Bug #41138).
+bug: [41138]

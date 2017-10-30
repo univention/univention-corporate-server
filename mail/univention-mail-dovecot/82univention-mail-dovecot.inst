@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 
 . /usr/share/univention-join/joinscripthelper.lib
 
@@ -72,9 +72,9 @@ ucs_addServiceToLocalhost "IMAP" "$@"
 . /usr/share/univention-lib/base.sh
 stop_udm_cli_server
 
-# Fix for Bug #40038:
-# only used during update from univention-mail-dovecot <=2.0.0 to 2.0.1-1
-if joinscript_check_specific_version_executed 1 ; then
+# Fix for Bug #40038 and #41138:
+# only used during update from univention-mail-dovecot <=2.0.0 to 2.0.1-1 and <=3.0.1-2 to >3.0.1-2
+if joinscript_check_specific_version_executed 1 || joinscript_check_specific_version_executed 2; then
 	/usr/share/univention-mail-dovecot/reapply_shared_folder_acls
 fi
 

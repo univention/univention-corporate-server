@@ -1,3 +1,9 @@
+univention-mail-dovecot (3.0.1-3) unstable; urgency=low
+
+  * Bug #41138: add support for creating subfolders in shared folders
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 30 Oct 2017 16:14:46 +0100
+
 univention-mail-dovecot (3.0.1-2) unstable; urgency=medium
 
   * Bug #41368: Applied patch from Florian Best - Use univention.admin.uldap
