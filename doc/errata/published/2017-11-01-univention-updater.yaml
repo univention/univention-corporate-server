@@ -9,3 +9,5 @@ desc: |-
   * App updates within univention-upgrade were searched within the wrong set
     of Apps. This has been fixed.
 bug: [45548]
+erratum: 209
+announced: 2017-11-01
