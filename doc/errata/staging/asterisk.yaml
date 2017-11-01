@@ -1,0 +1,63 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: asterisk
+fix: 1:11.13.1~dfsg-2~bpo70+1.20.201711011501
+desc: |
+ This update addresses the following issues:
+ * SSL protocol BEAST vulnerability in HTTP server (CVE-2011-3389)
+ * When registering a SIP TLS device, asterisk does not properly handle a
+   null byte in a domain name in the subject's Common Name (CN) field of
+   an X.509 certificate, which allows man-in-the-middle attackers to spoof
+   arbitrary SSL servers via a crafted certificate issued by a legitimate
+   Certification Authority (CVE-2015-3008)
+ * Remote authenticated users can cause a denial of service (uninitialized
+   pointer dereference and crash) via a zero length error correcting
+   redundancy packet for a UDPTL FAX packet that is lost (CVE-2016-2232)
+ * Remote denial of service (file descriptor consumption) via vectors
+   related to large retransmit timeout values (CVE-2016-2316)
+ * Remote denial of service (port exhaustion) in chain_sip (CVE-2016-7551)
+ * Non-printable ASCII chars treated as whitespace (CVE-2016-9938)
+ * In res/res_rtp_asterisk.c unauthorized data disclosure (media takeover
+   in the RTP stack) is possible with careful timing by an attacker. The
+   "strictrtp" option in rtp.conf enables a feature of the RTP stack that
+   learns the source address of media for a session and drops any packets
+   that do not originate from the expected address. This option is enabled
+   by default in Asterisk 11 and above. The "nat" and "rtp_symmetric"
+   options (for chan_sip and chan_pjsip, respectively) enable symmetric RTP
+   support in the RTP stack. This uses the source address of incoming media
+   as the target address of any sent media. This option is not enabled by
+   default, but is commonly enabled to handle devices behind NAT. A change
+   was made to the strict RTP support in the RTP stack to better tolerate
+   late media when a reinvite occurs. When combined with the symmetric RTP
+   support, this introduced an avenue where media could be hijacked. Instead
+   of only learning a new address when expected, the new code allowed a new
+   source address to be learned at all times. If a flood of RTP traffic was
+   received, the strict RTP support would allow the new address to provide
+   media, and (with symmetric RTP enabled) outgoing traffic would be sent to
+   this new address, allowing the media to be hijacked. Provided the attacker
+   continued to send traffic, they would continue to receive traffic as well.
+   (CVE-2017-14099)
+ * Unauthorized command execution is possible. The app_minivm module has an
+   "externnotify" program configuration option that is executed by the
+   MinivmNotify dialplan application. The application uses the caller-id
+   name and number as part of a built string passed to the OS shell for
+   interpretation and execution. Since the caller-id name and number can
+   come from an untrusted source, a crafted caller-id name or number allows
+   an arbitrary shell command injection. (CVE-2017-14100)
+ * insufficient RTCP packet validation could allow reading stale buffer
+   contents and when combined with the "nat" and "symmetric_rtp" options
+   allow redirecting where Asterisk sends the next RTCP report
+   (CVE-2017-14603)
+bug: [40975]
+cve:
+- CVE-2011-3389
+- CVE-2015-3008
+- CVE-2016-2232
+- CVE-2016-2316
+- CVE-2016-7551
+- CVE-2016-9938
+- CVE-2017-14099
+- CVE-2017-14100
+- CVE-2017-14603
