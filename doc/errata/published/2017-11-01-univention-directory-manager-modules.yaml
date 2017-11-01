@@ -12,3 +12,5 @@ desc: |
  * Exceptions in the lookup function of policy and settings modules are now
    caught more granular.
 bug: [45540, 32375, 37171]
+erratum: 206
+announced: 2017-11-01
