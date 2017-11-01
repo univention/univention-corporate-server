@@ -18,8 +18,6 @@ desc: |
  * memory corruption heap overflow, psb file related (CVE-2017-5511)
  * Incorrect TGA files could trigger assertion failures, thus leading
    to Denial of Service (CVE-2017-6498)
- * A specially crafted file creating a nested exception could lead to a
-   memory leak (thus, a Denial of Service) (CVE-2017-6499)
  * A specially crafted sun file triggers a heap-based buffer over-read
    (CVE-2017-6500)
  * coders/rle.c has an "outside the range of representable values of
@@ -423,6 +421,18 @@ desc: |
    service (application crash) or possibly have unspecified other impact via
    a crafted file, related to "Conditional jump or move depends on
    uninitialised value(s)" (CVE-2017-15281)
+ * The HorizontalFilter function in resize.c allows remote attackers to cause
+   a denial of service (out-of-bounds read) via a crafted image file
+   (CVE-2014-8354)
+ * PCX parser code allows remote attackers to cause a denial of service
+   (out-of-bounds read) (CVE-2014-8355)
+ * DCM decode 6.8.9-9 allows remote attackers to cause a denial of service
+   (out-of-bounds read) (CVE-2014-8562)
+ * The JPEG decoder allows local users to cause a denial of service
+   (out-of-bounds memory access and crash) (CVE-2014-8716)
+ * The ReadGROUP4Image function in coders/tiff.c does not check the return
+   value of the fwrite function, which allows remote attackers to cause a
+   denial of service (application crash) via a crafted file (CVE-2016-10062)
 bug: [43448]
 cve:
  - CVE-2016-10144
@@ -435,7 +445,6 @@ cve:
  - CVE-2017-5510
  - CVE-2017-5511
  - CVE-2017-6498
- - CVE-2017-6499
  - CVE-2017-6500
  - CVE-2017-7606
  - CVE-2017-7619
@@ -574,3 +583,8 @@ cve:
  - CVE-2017-15017
  - CVE-2017-15277
  - CVE-2017-15281
+ - CVE-2014-8354
+ - CVE-2014-8355
+ - CVE-2014-8562
+ - CVE-2014-8716
+ - CVE-2016-10062
