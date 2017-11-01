@@ -9,3 +9,5 @@ desc: |
  * The automatic redirection to the SAML single sign-on login may now be
    disabled by setting the UCR variable umc/web/sso/enabled to false.
 bug: [45597]
+erratum: 207
+announced: 2017-11-01
