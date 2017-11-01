@@ -17,3 +17,5 @@ desc: |
  * Fixed a deletion problem with nested groups in the AD Connector.
  * univention-adsearch now accepts multiple attributes in the ldap filter.
 bug: [40813, 41619, 45011, 45037, 41335, 11658, 38619, 18680, 45134]
+erratum: 205
+announced: 2017-11-01
