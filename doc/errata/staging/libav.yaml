@@ -1,0 +1,100 @@
+product: ucs
+release: "4.1"
+version: [4]
+scope: ucs_4.1-0-errata4.1-4
+src: libav
+fix: 6:0.8.21-0.6.201711011730
+desc: |
+ This update addresses the following issues:
+ * Use-after-free vulnerability in the matroska_read_seek function
+   (CVE-2014-7933)
+ * Memory corruption in MJPEG (CVE-2014-8541)
+ * Invalid memory access in MMVideo (CVE-2014-8543)
+ * Invalid memory access in TIFF (CVE-2014-8544)
+ * Invalid memory access in PNG (CVE-2014-8545)
+ * Integer underflow in Cinepak (CVE-2014-8546)
+ * Out of bounds access in GIF (CVE-2014-8547)
+ * Off-by-one in the SMC (CVE-2014-8548)
+ * Memory corruption in he VMD decoder (CVE-2014-9603)
+ * Denial of service in the Ut Video decoder (CVE-2014-9604)
+ * The seg_write_packet function in libavformat/segment.c in ffmpeg 2.1.4 and
+   earlier does not free the correct memory location, which allows remote
+   attackers to cause a denial of service ("invalid memory handler") and
+   possibly execute arbitrary code via a crafted video that triggers a use
+   after free. (CVE-2014-9676)
+ * The ff_mjpeg_decode_sof function in libavcodec/mjpegdec.c in Libav before
+   0.8.18 does not validate the number of components in a JPEG-LS Start Of
+   Frame segment, which allows remote attackers to cause a denial of service
+   (out-of-bounds array access) or possibly have unspecified other impact via
+   crafted Motion JPEG data (CVE-2015-1872)
+ * The ff_h263_decode_mba function in libavcodec/ituh263dec.c in Libav before
+   11.5 allows remote attackers to cause a denial of service (divide-by-zero
+   error and application crash) via a file with crafted dimensions
+   (CVE-2015-5479)
+ * The smka_decode_frame function in libavcodec/smacker.c does not verify that
+   the data size is consistent with the number of channels, which allows remote
+   attackers to cause a denial of service (out-of-bounds array access) or
+   possibly have unspecified other impact via crafted Smacker data.
+   (CVE-2015-8365)
+ * remote cross-origin attacks and read arbitrary files by using the concat
+   protocol in an HTTP Live Streaming (HLS) M3U8 file, leading to an external
+   HTTP request in which the URL string contains the first line of a local
+   file. (CVE-2016-1897)
+ * remote cross-origin attacks and read arbitrary files by using the subfile
+   protocol in an HTTP Live Streaming (HLS) M3U8 file, leading to an external
+   HTTP request in which the URL string contains an arbitrary line of a local
+   file. (CVE-2016-1898)
+ * Integer overflow in the asf_write_packet function in libavformat/asfenc.c
+   allows remote attackers to cause a denial of service or possibly have
+   unspecified other impact via a crafted PTS (aka presentation timestamp)
+   value in a .mov file. (CVE-2016-2326)
+ * memory corruption when parsing .mp4 files possibly leading to crash or
+   arbitrary code execution (CVE-2016-3062)
+ * The aac_sync function in libavcodec/aac_parser.c in Libav before 11.5 is
+   vulnerable to a stack-based buffer overflow (CVE-2016-7393)
+ * The put_no_rnd_pixels8_xy2_mmx function in x86/rnd_template.c in libav 11.7
+   and earlier allows remote attackers to cause a denial of service (NULL
+   pointer dereference and crash) via a crafted MP3 file (CVE-2016-7424)
+ * The h264 codec is vulnerable to various crashes with invalid-free, corrupted
+   double-linked list or out-of-bounds read (No CVE assigned)
+ * Multiple integer overflows have been discovered in libav 11.8 and earlier,
+   allowing remote attackers to cause a crash via a crafted MP3 file
+   (CVE-2016-9819 CVE-2016-9820 CVE-2016-9821 CVE-2016-9822)
+ * The decode_residual function in libavcodec allows remote attackers to cause
+   a denial of service (buffer over-read) or obtain sensitive information from
+   process memory via a crafted h264 video file. (CVE-2017-7208)
+ * FFmpeg before 2017-02-07 has an out-of-bounds write caused by a heap-based
+   buffer overflow related to the decode_frame function in
+   libavcodec/pictordec.c. (CVE-2017-7862)
+ * Heap-based buffer overflow in the decode_dds1 function in libavcodec/dfa.c
+   allows remote attackers to cause a denial of service (application crash) or
+   possibly have unspecified other impact via a crafted file. (CVE-2017-9992)
+bug: [37024]
+cve:
+ - CVE-2014-7933
+ - CVE-2014-8541
+ - CVE-2014-8543
+ - CVE-2014-8544
+ - CVE-2014-8545
+ - CVE-2014-8546
+ - CVE-2014-8547
+ - CVE-2014-8548
+ - CVE-2014-9603
+ - CVE-2014-9604
+ - CVE-2014-9676
+ - CVE-2015-1872
+ - CVE-2015-5479
+ - CVE-2015-8365
+ - CVE-2016-1897
+ - CVE-2016-1898
+ - CVE-2016-2326
+ - CVE-2016-3062
+ - CVE-2016-7393
+ - CVE-2016-7424
+ - CVE-2016-9819
+ - CVE-2016-9820
+ - CVE-2016-9821
+ - CVE-2016-9822
+ - CVE-2017-7208
+ - CVE-2017-7862
+ - CVE-2017-9992
