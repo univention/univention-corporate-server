@@ -2,8 +2,6 @@
 ## desc: Postfix accepts mails on port 25, 465 and 587
 ## tags: [apptest]
 ## exposure: dangerous
-## versions:
-##  4.1-0: skip
 
 
 import time

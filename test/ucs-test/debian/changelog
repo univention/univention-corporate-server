@@ -1,3 +1,9 @@
+ucs-test (7.0.23-78) unstable; urgency=low
+
+  * Bug #38792: enable mail tests
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 01 Nov 2017 16:49:09 +0100
+
 ucs-test (7.0.23-77) unstable; urgency=low
 
   * Bug #44786: ignoring missing "post_run"

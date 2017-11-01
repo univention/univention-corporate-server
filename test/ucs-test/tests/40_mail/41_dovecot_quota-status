@@ -7,8 +7,6 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 ## bugs: [38727]
-## versions:
-##  4.1-0: skip
 
 # * quota-service for Postfix: new mails should be rejected during SMTP dialogue if user is over quota (until 110%
 #   is allowed)
@@ -19,7 +17,6 @@ import subprocess
 import socket
 import smtplib
 
-import univention.config_registry
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
