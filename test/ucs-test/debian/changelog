@@ -1,3 +1,9 @@
+ucs-test (7.0.23-77) unstable; urgency=low
+
+  * Bug #44786: ignoring missing "post_run"
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 01 Nov 2017 09:19:34 +0100
+
 ucs-test (7.0.23-76) unstable; urgency=low
 
   * Bug #44786: handle slow s4connector
