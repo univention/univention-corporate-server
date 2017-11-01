@@ -42,7 +42,6 @@ fi
 # copy image
 _ssh mkdir -p "$kvm_template_dir"
 _ssh cp "$appliance_template" "$kvm_template"
-_ssh cp "$appliance_template.md5" "$kvm_template.md5"
 
 # create xml
 _ssh "APP='$APP_ID' envsubst <'$xml_template' >'$kvm_xml'"
@@ -55,5 +54,7 @@ gtsja8vsiQHtN+EtR8mIn tech'"
 
 # fake uvmm template
 _ssh touch /mnt/omar/vmwares/kvm/single/Others/appliance_${APP_ID}_amd64.tar.gz
+
+_ssh cp "$appliance_template.md5" "$kvm_template.md5"
 
 exit 0
