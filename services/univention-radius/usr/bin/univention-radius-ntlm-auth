@@ -61,11 +61,13 @@ def main():
 		print 'Missing required parameter --nt-response!'
 		return 1
 	if not options.stationId:
-		stationId = None
+		stationId = ''
 	else:
 		# safely decode station id (fails with exception on mis-formatted id, thus returning 1)
-		stationId = options.stationId
-		stationId = stationId[0:2] + stationId[3:5] + stationId[6:8] + stationId[9:11] + stationId[12:14] + stationId[15:17]
+		stationId = options.stationId.lower()
+		# remove all non-hex characters, so different formats may be decoded
+		# e.g. 11:22:33:44:55:66 or 1122.3344.5566 or 11-22-33-44-55-66 or ...
+		stationId = ''.join(c for c in stationId if c in '0123456789abcdef')
 		stationId = stationId.decode('hex')
 	options.Challenge = options.Challenge.decode('hex')
 	options.Response = options.Response.decode('hex')
