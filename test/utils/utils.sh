@@ -788,6 +788,7 @@ remove_apps_via_umc () {
 }
 
 assert_app_is_installed_and_latest () {
+	univention-app info
 	local rv=0 app
 	for app in "$@"; do
 		local latest="$(python -m shared-utils/app-info -a $app -v)"
