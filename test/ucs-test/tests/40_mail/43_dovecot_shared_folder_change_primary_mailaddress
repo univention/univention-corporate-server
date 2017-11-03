@@ -77,7 +77,12 @@ def main():
 					msgid = uts.random_name()
 					send_mail(recipients=[old_address], messageid=msgid, server=fqdn)
 					for _ in xrange(TIMEOUT_MAIL):
-						if imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (old_address,), use_ssl=True):
+						try:
+							found = imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (old_address,), use_ssl=True)
+						except AssertionError as exc:
+							print(exc)
+							found = False
+						if found:
 							print 'Found mail in shared folder sent to %r' % ('shared/%s' % (old_address,),)
 							break
 						time.sleep(1)
