@@ -48,13 +48,18 @@ from logging.handlers import TimedRotatingFileHandler
 import listener
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry
+try:
+	from typing import Any, Dict, IO, List, Tuple, Optional, Union
+	import univention.config_registry.ConfigRegistry
+except ImportError:
+	pass
 
 
 class UniFileHandler(TimedRotatingFileHandler):
 	_listener_uid = pwd.getpwnam('listener').pw_uid
 	_adm_gid = grp.getgrnam('adm').gr_gid
 
-	def _open(self):
+	def _open(self):  # type: () -> IO[str]
 		stream = super(UniFileHandler, self)._open()
 		file_stat = os.fstat(stream.fileno())
 		if file_stat.st_uid != self._listener_uid or file_stat.st_gid != self._adm_gid:
@@ -83,14 +88,14 @@ class ModuleHandler(logging.Handler):
 		INFO=ud.PROCESS,
 		DEBUG=ud.INFO,
 		NOTSET=ud.INFO
-	)
+	)  # type: Dict[str, int]
 
-	def __init__(self, level=logging.NOTSET, udebug_facility=ud.LISTENER):
-		self._udebug_facility = udebug_facility
+	def __init__(self, level=logging.NOTSET, udebug_facility=ud.LISTENER):  # type: (Optional[int], Optional[int]) -> None
+		self._udebug_facility = udebug_facility  # type: int
 		super(ModuleHandler, self).__init__(level)
 
-	def emit(self, record):
-		msg = self.format(record)
+	def emit(self, record):  # type: (logging.LogRecord) -> None
+		msg = self.format(record)  # type: str
 		if isinstance(msg, unicode):
 			msg = msg.encode('utf-8')
 		udebug_level = self.LOGGING_TO_UDEBUG[record.levelname]
@@ -100,7 +105,7 @@ class ModuleHandler(logging.Handler):
 FILE_LOG_FORMATS = dict(
 	DEBUG='%(asctime)s %(levelname)-5s %(module)s.%(funcName)s:%(lineno)d  %(message)s',
 	INFO='%(asctime)s %(levelname)-5s %(message)s'
-)
+)  # type: Dict[str, str]
 for lvl in ['CRITICAL', 'ERROR', 'WARN', 'WARNING']:
 	FILE_LOG_FORMATS[lvl] = FILE_LOG_FORMATS['INFO']
 FILE_LOG_FORMATS['NOTSET'] = FILE_LOG_FORMATS['DEBUG']
@@ -109,7 +114,7 @@ CMDLINE_LOG_FORMATS = dict(
 	DEBUG='%(asctime)s %(levelname)-5s %(module)s.%(funcName)s:%(lineno)d  %(message)s',
 	INFO='%(message)s',
 	WARN='%(levelname)-5s  %(message)s'
-)
+)  # type: Dict[str, str]
 for lvl in ['CRITICAL', 'ERROR', 'WARNING']:
 	CMDLINE_LOG_FORMATS[lvl] = CMDLINE_LOG_FORMATS['WARN']
 CMDLINE_LOG_FORMATS['NOTSET'] = CMDLINE_LOG_FORMATS['DEBUG']
@@ -120,31 +125,31 @@ UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL = {
 	2: 'INFO',
 	3: 'DEBUG',
 	4: 'DEBUG',
-}
+}  # type: Dict[int, str]
 
 LOG_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
-_handler_cache = dict()
-_ucr = ConfigRegistry()
+_handler_cache = dict()  # type: Dict[str, logging.Handler]
+_ucr = ConfigRegistry()  # type: univention.config_registry.ConfigRegistry
 _ucr.load()
 
 
-def _get_ucr_int(ucr_key, default):
+def _get_ucr_int(ucr_key, default):  # type: (str, Any) -> Any
 	try:
 		return int(_ucr.get(ucr_key, default))
 	except ValueError:
 		return default
 
 
-_listener_debug_level = _get_ucr_int('listener/debug/level', 2)
-_listener_debug_level_str = UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL[max(0, min(4, _listener_debug_level))]
-_listener_module_handler = ModuleHandler(level=getattr(logging, _listener_debug_level_str))
+_listener_debug_level = _get_ucr_int('listener/debug/level', 2)  # type: int
+_listener_debug_level_str = UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL[max(0, min(4, _listener_debug_level))]  # type: str
+_listener_module_handler = ModuleHandler(level=getattr(logging, _listener_debug_level_str))  # type: logging.Handler
 _listener_module_handler.set_name('_listener_module_handler')
-listener_module_root_logger = logging.getLogger('listener module')
+listener_module_root_logger = logging.getLogger('listener module')  # type: logging.Logger
 listener_module_root_logger.setLevel(getattr(logging, _listener_debug_level_str))
 
 
-def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatter_kwargs=None):
+def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatter_kwargs=None):  # type: (str, Optional[str], Optional[Union[str, IO[str]]], Optional[dict], Optional[dict]) -> logging.Logger
 	"""
 	Get a logger object below the listener module root logger. The logger
 	will additionally log to the common listener.log.
@@ -216,7 +221,7 @@ def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatt
 		handler_defaults = dict(cls=UniFileHandler, filename=target, when='W6', backupCount=60)
 		fmt = FILE_LOG_FORMATS[level]
 	handler_defaults.update(handler_kwargs)
-	fmt_kwargs = dict(cls=logging.Formatter, fmt=fmt, datefmt=LOG_DATETIME_FORMAT)
+	fmt_kwargs = dict(cls=logging.Formatter, fmt=fmt, datefmt=LOG_DATETIME_FORMAT)  # type: Dict[str, Any]
 	fmt_kwargs.update(formatter_kwargs)
 
 	if _logger.level == logging.NOTSET:

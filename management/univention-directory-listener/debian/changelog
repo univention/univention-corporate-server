@@ -1,6 +1,7 @@
 univention-directory-listener (11.0.1-35) unstable; urgency=low
 
-  * Bug #44786: change attribute name
+  * Bug #44786: improve mypy static type annotations
+  * change attribute name
 
  -- Daniel Troeder <troeder@univention.de>  Sat, 04 Nov 2017 21:49:49 +0100
 

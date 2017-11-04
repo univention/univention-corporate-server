@@ -30,6 +30,14 @@ import os
 from contextlib import contextmanager
 import listener
 import univention.admin.objects
+try:
+	from typing import Dict, Iterable, Iterator, List, Tuple, Type, Optional
+	import univention.admin.uldap.access
+	import univention.admin.uldap.position
+	import univention.config_registry.ConfigRegistry
+	from univention.listener.handler_configuration import ListenerModuleConfiguration
+except ImportError:
+	pass
 
 
 listener.configRegistry.load()
@@ -51,10 +59,10 @@ class ListenerModuleHandler(object):
 		'structuralObjectClass', 'subschemaSubentry'
 	)
 
-	_udm_module_cache = dict()
-	ucr = listener.configRegistry
+	_udm_module_cache = dict()  # type: Dict
+	ucr = listener.configRegistry    # type: univention.config_registry.ConfigRegistry
 
-	def __init__(self, module_configuration, *args, **kwargs):  # type: (object) -> None
+	def __init__(self, module_configuration, *args, **kwargs):  # type: (ListenerModuleConfiguration, *Tuple, **Dict) -> None
 		"""
 		When subclassing, call super()__init__() first!
 
@@ -65,7 +73,7 @@ class ListenerModuleHandler(object):
 		self.ucr.load()
 		self.logger.info('Starting with configuration: %r', module_configuration)
 
-	def create(self, dn, new):  # type: (str, dict) -> None
+	def create(self, dn, new):  # type: (str, Dict[str, List]) -> None
 		"""
 		Called when a new object was created.
 
@@ -75,7 +83,7 @@ class ListenerModuleHandler(object):
 		"""
 		pass
 
-	def modify(self, dn, old, new, old_dn):  # type: (str, dict, dict, str) -> None
+	def modify(self, dn, old, new, old_dn):  # type: (str, Dict[str, List], Dict[str, List], str) -> None
 		"""
 		Called when an existing object was modified or moved.
 
@@ -90,7 +98,7 @@ class ListenerModuleHandler(object):
 		"""
 		pass
 
-	def remove(self, dn, old):  # type: (str, dict) -> None
+	def remove(self, dn, old):  # type: (str, Dict[str, List]) -> None
 		"""
 		Called when an object was deleted.
 
@@ -142,7 +150,7 @@ class ListenerModuleHandler(object):
 
 	@staticmethod
 	@contextmanager
-	def as_root():  # type: () -> None
+	def as_root():  # type: () -> Iterator[None]
 		"""
 		Temporarily change the UID of the current process to 0.
 
@@ -165,7 +173,7 @@ class ListenerModuleHandler(object):
 				listener.unsetuid()
 
 	@classmethod
-	def diff(cls, old, new, keys=None, ignore_metadata=True):  # type: (dict, dict, list, bool) -> dict
+	def diff(cls, old, new, keys=None, ignore_metadata=True):  # type: (Dict[str, List], Dict[str, List], Optional[Iterable[str]], Optional[bool]) -> dict
 		"""
 		Find differences in old and new. Returns dict with keys pointing to old
 		and new values.
@@ -188,7 +196,7 @@ class ListenerModuleHandler(object):
 				res[key] = old.get(key), new.get(key)
 		return res
 
-	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
+	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):  # type: (str, Dict[str, List], Dict[str, List], str, Type[BaseException], object, object) -> None
 		"""
 		Will be called for unhandled exceptions in create/modify/remove.
 
@@ -205,7 +213,7 @@ class ListenerModuleHandler(object):
 		raise exc_type, exc_value, exc_traceback
 
 	@classmethod
-	def get_udm_objects(cls, module_name, filter_s, base_dn, lo, po, **kwargs):
+	def get_udm_objects(cls, module_name, filter_s, base_dn, lo, po, **kwargs):  # type: (str, str, str, univention.admin.uldap.access, univention.admin.uldap.position, **Dict) -> List[object]
 		"""
 		Search LDAP for UDM objects.
 
@@ -227,7 +235,7 @@ class ListenerModuleHandler(object):
 		return udm_module.lookup(None, lo, filter_s=filter_s, base=base_dn, **kwargs)
 
 	@property
-	def lo(self):
+	def lo(self):  # type: () -> object
 		"""
 		LDAP connection object.
 
@@ -236,7 +244,7 @@ class ListenerModuleHandler(object):
 		return self.config.lo
 
 	@property
-	def po(self):
+	def po(self):  # type: () -> object
 		"""
 		Get a LDAP position object for the base DN (ldap/base).
 
