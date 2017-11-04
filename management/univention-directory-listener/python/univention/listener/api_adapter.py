@@ -27,6 +27,12 @@
 # <http://www.gnu.org/licenses/>.
 
 import sys
+try:
+	from typing import Any, Dict, List, Tuple, Optional
+	from univention.listener.handler_configuration import ListenerModuleConfiguration
+	from univention.listener.handler import ListenerModuleHandler
+except ImportError:
+	pass
 
 
 class ListenerModuleAdapter(object):
@@ -35,22 +41,22 @@ class ListenerModuleAdapter(object):
 	the existing listener module interface.
 
 	Use in a classic listener module like this:
-	globals().update(ListenerModuleAdapter(MyListenerModuleInfo()).get_globals())
+	globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
 	"""
 
-	def __init__(self, module_configuration, *args, **kwargs):  # type: (object) -> None
+	def __init__(self, module_configuration, *args, **kwargs):  # type: (ListenerModuleConfiguration, *Tuple, **Dict) -> None
 		"""
 		:param module_configuration: ListenerModuleConfiguration object
 		"""
-		self.config = module_configuration
-		self._ldap_cred = dict()
-		self.__module_handler = None
-		self._saved_old = dict()
-		self._saved_old_dn = None
-		self._rename = False
-		self._renamed = False
+		self.config = module_configuration  # type: ListenerModuleConfiguration
+		self._ldap_cred = dict()  # type: Dict[str, str]
+		self.__module_handler = None  # type: ListenerModuleHandler
+		self._saved_old = dict()  # type: Dict[str, List[str]]
+		self._saved_old_dn = None  # type: str
+		self._rename = False  # type: bool
+		self._renamed = False  # type: bool
 
-	def get_globals(self):  # type: () -> dict
+	def get_globals(self):  # type: () -> Dict[str, Any]
 		"""
 		Returns the variables to be written to the module namespace, that
 		make up the legacy listener module interface.
@@ -94,7 +100,7 @@ class ListenerModuleAdapter(object):
 			)
 
 	@property
-	def _module_handler(self):  # type: () -> object
+	def _module_handler(self):  # type: () -> ListenerModuleHandler
 		if not self.__module_handler:
 			self.__module_handler = self.config.get_listener_module_instance()
 		return self.__module_handler

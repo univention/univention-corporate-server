@@ -31,10 +31,7 @@
 # To use this listener module interface:
 # 1. subclass ListenerModuleHandler
 # 2. subclass ListenerModuleConfiguration
-# 3. Use the code snippet in the doc string of the ListenerModuleAdapter to
-# set the required module level variables to satisfy the current listener
-# module interface:
-# globals().update(ListenerModuleAdapter(MyListenerModuleInfo()).get_globals())
+# 3. globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
 #
 
 from univention.listener.api_adapter import ListenerModuleAdapter

@@ -35,6 +35,14 @@ import listener
 import univention.admin.uldap
 
 from univention.listener.handler_logging import get_logger
+try:
+	from typing import Dict, List, Tuple, Optional
+	import logging
+	import univention.admin.uldap.access
+	import univention.admin.uldap.position
+	from univention.listener.handler import ListenerModuleHandler
+except ImportError:
+	pass
 
 
 listener.configRegistry.load()
@@ -63,22 +71,22 @@ class ListenerModuleConfiguration(object):
 	2. get_listener_module_instance()
 	"""
 
-	name = ''                      # (*) name of the listener module
-	description = ''               # description of the listener module
-	ldap_filter = ''               # (*) LDAP filter, if matched will trigger the listener module
-	attributes = []                # only trigger module, if any of the listed attributes has changed
-	modules_to_run_before_me = []  # list of names of module to run before this one
-	modules_to_run_after_me = []   # list of names of module to run after this one
-	run_asynchronously = False     # run module in the background
-	parallelism = 1                # run multiple instances of module in parallel
-	listener_module_class = None   # (*) class that implements the module
+	name = ''  # type: str                         # (*) name of the listener module
+	description = ''  # type: str                  # description of the listener module
+	ldap_filter = ''  # type: str                  # (*) LDAP filter, if matched will trigger the listener module
+	attributes = []  # type: List[str]             # only trigger module, if any of the listed attributes has changed
+	modules_to_run_before = []  # type: List[str]  # list of names of module to run before this one
+	modules_to_run_after = []  # type: List[str]   # list of names of module to run after this one
+	run_asynchronously = False  # type: bool       # run module in the background
+	parallelism = 1  # type: int                   # run multiple instances of module in parallel (implies run_asynchronously)
+	listener_module_class = None  # type: type     # (*) class that implements the module
 	# (*) required
 
-	_po_cache = dict()
+	_po_cache = dict()  # type: Dict[str, univention.admin.uldap.position]
 
-	def __init__(self, *args, **kwargs):  # type: () -> None
-		self._lo = None
-		self._logger = None
+	def __init__(self, *args, **kwargs):  # type: (*Tuple, **Dict) -> None
+		self._lo = None  # type: univention.admin.uldap.access
+		self._logger = None  # type: logging.Logger
 		_keys = self.get_configuration_keys()
 		for k, v in kwargs.items():
 			if k in _keys:
@@ -116,8 +124,8 @@ class ListenerModuleConfiguration(object):
 			'description',
 			'ldap_filter',
 			'listener_module_class',
-			'modules_to_run_after_me',
-			'modules_to_run_before_me',
+			'modules_to_run_after',
+			'modules_to_run_before',
 			'name',
 			'parallelism',
 			'run_asynchronously'
@@ -139,11 +147,11 @@ class ListenerModuleConfiguration(object):
 	def get_attributes(self):  # type: () -> list
 		return self.attributes
 
-	def get_modules_to_run_before_me(self):  # type: () -> list
-		return self.modules_to_run_before_me
+	def get_modules_to_run_before(self):  # type: () -> list
+		return self.modules_to_run_before
 
-	def get_modules_to_run_after_me(self):  # type: () -> list
-		return self.modules_to_run_after_me
+	def get_modules_to_run_after(self):  # type: () -> list
+		return self.modules_to_run_after
 
 	def get_parallelism(self):  # type: () -> int
 		return self.parallelism
@@ -151,7 +159,7 @@ class ListenerModuleConfiguration(object):
 	def get_run_asynchronously(self):  # type: () -> bool
 		return self.run_asynchronously
 
-	def get_listener_module_instance(self, *args, **kwargs):  # type: () -> object
+	def get_listener_module_instance(self, *args, **kwargs):  # type: (*Tuple, **Dict) -> ListenerModuleHandler
 		"""
 		Get an instance of the listener module.
 
@@ -182,7 +190,7 @@ class ListenerModuleConfiguration(object):
 		return not listener.configRegistry.is_true('listener/module/{}/deactivate'.format(self.get_name()), False)
 
 	@property
-	def lo(self):  # type: () -> object
+	def lo(self):  # type: () -> univention.admin.uldap.access
 		"""
 		Get a LDAP access object.
 
@@ -193,7 +201,7 @@ class ListenerModuleConfiguration(object):
 		return self._lo()
 
 	@property
-	def po(self):  # type: () -> object
+	def po(self):  # type: () -> univention.admin.uldap.position
 		"""
 		Get a LDAP position object for the base DN (ldap/base).
 
@@ -202,7 +210,7 @@ class ListenerModuleConfiguration(object):
 		return self.get_ldap_position(self.lo.base)
 
 	@classmethod
-	def get_ldap_position(cls, ldap_position=listener.configRegistry['ldap/base']):
+	def get_ldap_position(cls, ldap_position=listener.configRegistry['ldap/base']):  # type: (str) -> univention.admin.uldap.position
 		"""
 		Get a LDAP position object.
 
@@ -214,7 +222,7 @@ class ListenerModuleConfiguration(object):
 		return cls._po_cache[ldap_position]
 
 	@property
-	def logger(self):  # type: () -> object
+	def logger(self):  # type: () -> logging.Logger
 		if not self._logger:
 			file_name = self.get_name().replace('/', '_')
 			logger_name = self.get_name().replace('.', '_')
