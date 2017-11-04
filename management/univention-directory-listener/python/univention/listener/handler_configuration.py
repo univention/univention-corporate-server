@@ -67,8 +67,8 @@ class ListenerModuleConfiguration(object):
 	description = ''               # description of the listener module
 	ldap_filter = ''               # (*) LDAP filter, if matched will trigger the listener module
 	attributes = []                # only trigger module, if any of the listed attributes has changed
-	modules_to_run_before_me = []  # list of names of module to run before this one
-	modules_to_run_after_me = []   # list of names of module to run after this one
+	modules_to_run_before = []     # list of names of module to run before this one
+	modules_to_run_after = []      # list of names of module to run after this one
 	run_asynchronously = False     # run module in the background
 	parallelism = 1                # run multiple instances of module in parallel
 	listener_module_class = None   # (*) class that implements the module
@@ -116,8 +116,8 @@ class ListenerModuleConfiguration(object):
 			'description',
 			'ldap_filter',
 			'listener_module_class',
-			'modules_to_run_after_me',
-			'modules_to_run_before_me',
+			'modules_to_run_after',
+			'modules_to_run_before',
 			'name',
 			'parallelism',
 			'run_asynchronously'
@@ -139,11 +139,11 @@ class ListenerModuleConfiguration(object):
 	def get_attributes(self):  # type: () -> list
 		return self.attributes
 
-	def get_modules_to_run_before_me(self):  # type: () -> list
-		return self.modules_to_run_before_me
+	def get_modules_to_run_before(self):  # type: () -> list
+		return self.modules_to_run_before
 
-	def get_modules_to_run_after_me(self):  # type: () -> list
-		return self.modules_to_run_after_me
+	def get_modules_to_run_after(self):  # type: () -> list
+		return self.modules_to_run_after
 
 	def get_parallelism(self):  # type: () -> int
 		return self.parallelism
