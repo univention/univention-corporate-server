@@ -41,7 +41,7 @@ class ListenerModuleAdapter(object):
 	the existing listener module interface.
 
 	Use in a classic listener module like this:
-	globals().update(ListenerModuleAdapter(MyListenerModuleInfo()).get_globals())
+	globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
 	"""
 
 	def __init__(self, module_configuration, *args, **kwargs):  # type: (ListenerModuleConfiguration, *Tuple, **Dict) -> None
