@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.1-36) unstable; urgency=low
+
+  * Bug #44786: improve logging output
+
+ -- Daniel Troeder <troeder@univention.de>  Sun, 05 Nov 2017 06:39:27 +0100
+
 univention-directory-listener (11.0.1-35) unstable; urgency=low
 
   * Bug #44786: improve mypy static type annotations

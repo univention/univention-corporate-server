@@ -91,6 +91,7 @@ class ModuleHandler(logging.Handler):
 	)  # type: Dict[str, int]
 
 	def __init__(self, level=logging.NOTSET, udebug_facility=ud.LISTENER):  # type: (Optional[int], Optional[int]) -> None
+		self.module_name = ''
 		self._udebug_facility = udebug_facility  # type: int
 		super(ModuleHandler, self).__init__(level)
 
@@ -98,22 +99,23 @@ class ModuleHandler(logging.Handler):
 		msg = self.format(record)  # type: str
 		if isinstance(msg, unicode):
 			msg = msg.encode('utf-8')
+		msg = '{}: {}'.format(self.module_name, msg)
 		udebug_level = self.LOGGING_TO_UDEBUG[record.levelname]
 		ud.debug(self._udebug_facility, udebug_level, msg)
 
 
 FILE_LOG_FORMATS = dict(
-	DEBUG='%(asctime)s %(levelname)-5s %(module)s.%(funcName)s:%(lineno)d  %(message)s',
-	INFO='%(asctime)s %(levelname)-5s %(message)s'
+	DEBUG='%(asctime)s %(levelname)-7s %(module)s.%(funcName)s:%(lineno)d  %(message)s',
+	INFO='%(asctime)s %(levelname)-7s %(message)s'
 )  # type: Dict[str, str]
 for lvl in ['CRITICAL', 'ERROR', 'WARN', 'WARNING']:
 	FILE_LOG_FORMATS[lvl] = FILE_LOG_FORMATS['INFO']
 FILE_LOG_FORMATS['NOTSET'] = FILE_LOG_FORMATS['DEBUG']
 
 CMDLINE_LOG_FORMATS = dict(
-	DEBUG='%(asctime)s %(levelname)-5s %(module)s.%(funcName)s:%(lineno)d  %(message)s',
+	DEBUG='%(asctime)s %(levelname)-7s %(module)s.%(funcName)s:%(lineno)d  %(message)s',
 	INFO='%(message)s',
-	WARN='%(levelname)-5s  %(message)s'
+	WARN='%(levelname)-7s  %(message)s'
 )  # type: Dict[str, str]
 for lvl in ['CRITICAL', 'ERROR', 'WARNING']:
 	CMDLINE_LOG_FORMATS[lvl] = CMDLINE_LOG_FORMATS['WARN']
@@ -246,5 +248,6 @@ def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatt
 		_logger.addHandler(handler)
 		_handler_cache[cache_key] = handler
 	if _listener_module_handler not in listener_module_root_logger.handlers:
+		_listener_module_handler.module_name = name
 		listener_module_root_logger.addHandler(_listener_module_handler)
 	return _logger
