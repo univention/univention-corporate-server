@@ -784,6 +784,10 @@ if [ "$samba4_role" = 'DC' ]; then
 		kerberos/kdc=127.0.0.1 \
 		kerberos/kpasswdserver=127.0.0.1
 
+
+	# samba4/provision/secondary in this context means
+	# ucs@school slave
+
 	is_ucr_true samba4/provision/primary
 	if [ $? -eq 0 ] \
 		|| [ -z "$samba4servicedcs" ] \
@@ -797,16 +801,30 @@ if [ "$samba4_role" = 'DC' ]; then
 		## provision erases the idmap.ldb
 		/usr/lib/univention-directory-listener/system/samba4-idmap.py --direct-resync 2>/dev/null
 
-		sysvol_fixup
+
+		if is_ucr_true samba4/provision/secondary; then
+			sysvol_fixup --overwrite-local
+		else
+			sysvol_fixup
+		fi
 
 		## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
-		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc --gc --pdc "${SITE_OPTION[@]}"
+		if is_ucr_true samba4/provision/secondary; then
+			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${SITE_OPTION[@]}"
+		else
+			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc --gc --pdc "${SITE_OPTION[@]}"
+		fi
 
 		if ! univention_samba4_is_ucr_false dns/register/srv_records/kerberos; then
 			remove_non_samba4_dc_srv_records
 		fi
 
 		operatingSystem_attribute replace
+
+		if is_ucr_true samba4/provision/secondary; then
+			# Don't use the default RID pool
+			set_rid_pool 2100 2599
+		fi
 
 		## Start samba daemon
 		/etc/init.d/samba start
@@ -818,76 +836,44 @@ if [ "$samba4_role" = 'DC' ]; then
 			disable_slapd_on_standard_port
 		fi
 
-		is_ucr_true samba4/provision/secondary
-		if [ $? -eq 0 ]; then
-			## secondary provision for selective replication
+		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 
-			if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
-				## special case: provision another instance of Samba 4
-				## this is similar to univention-samba-slave-pdc
-				run_samba_provision "$@"
-
-				## provision erases the idmap.ldb
-				/usr/lib/univention-directory-listener/system/samba4-idmap.py --direct-resync 2>/dev/null
-
-				sysvol_fixup --overwrite-local
-
-				## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
-				/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${SITE_OPTION[@]}"
-
-				if ! univention_samba4_is_ucr_false dns/register/srv_records/kerberos; then
-					remove_non_samba4_dc_srv_records
-				fi
-
-				operatingSystem_attribute replace
-
-				# Don't use the default RID pool
-				set_rid_pool 2100 2599
+			if [ -z "$dcaccount" ] &&  [ -z "$bindpwd" ]; then
+				echo "Administative credentials are needed to join to existing Samba4 domain. Please run:"
+				printf "\tunivention-run-join-scripts --ask-pass\n"
+				echo "to complete the domain join."
+				exit 1
 			fi
 
-		else
-			## regular join
+			remove_dc_ntds_guid_records_from_dns "$@"
 
-			if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
-
-				if [ -z "$dcaccount" ] &&  [ -z "$bindpwd" ]; then
-					echo "Administative credentials are needed to join to existing Samba4 domain. Please run:"
-					printf "\tunivention-run-join-scripts --ask-pass\n"
-					echo "to complete the domain join."
-					exit 1
-				fi
-
-				remove_dc_ntds_guid_records_from_dns "$@"
-
-				## Check if this is a re-join
-				if [ -n "$samba4_ldap_base" ] && \
-					ldbsearch -H  /var/lib/samba/private/sam.ldb samAccountName="$hostname\$" \
-						msDS-KeyVersionNumber 2>/dev/null | grep -qi "^msDS-KeyVersionNumber: "
-				then
-					## backup old keytab if samba4 generated it
-					backup_samba4_keytab
-				fi
-
-				cleanup_var_lib_samba
-				samba_domain_join "${samba_join_options[@]}"
-
-				## if the key version number increased, merge the old keys into the new keytab
-				merge_backup_samba4_keytab
-				restore_rIDNextRID
-
+			## Check if this is a re-join
+			if [ -n "$samba4_ldap_base" ] && \
+				ldbsearch -H  /var/lib/samba/private/sam.ldb samAccountName="$hostname\$" \
+					msDS-KeyVersionNumber 2>/dev/null | grep -qi "^msDS-KeyVersionNumber: "
+			then
+				## backup old keytab if samba4 generated it
+				backup_samba4_keytab
 			fi
 
-			## write UCS posix IDs into the idmap.ldb
-			/usr/lib/univention-directory-listener/system/samba4-idmap.py --direct-resync 2>/dev/null
+			cleanup_var_lib_samba
+			samba_domain_join "${samba_join_options[@]}"
 
-			sysvol_fixup --overwrite-local
-
-			## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
-			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${SITE_OPTION[@]}"
-
-			operatingSystem_attribute add
+			## if the key version number increased, merge the old keys into the new keytab
+			merge_backup_samba4_keytab
+			restore_rIDNextRID
 
 		fi
+
+		## write UCS posix IDs into the idmap.ldb
+		/usr/lib/univention-directory-listener/system/samba4-idmap.py --direct-resync 2>/dev/null
+
+		sysvol_fixup --overwrite-local
+
+		## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
+		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${SITE_OPTION[@]}"
+
+		operatingSystem_attribute add
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 4 ] && [ $JS_LAST_EXECUTED_VERSION -gt 0 ]; then
 			create_and_replicate_DnsZone_partitions

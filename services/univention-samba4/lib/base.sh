@@ -160,6 +160,22 @@ is_ucs_school_domain() {
 	grep -q "^dn: " <<<"$ldif"
 }
 
+is_localhost_administration() {
+	local ldif
+	local hostname="$(hostname)\$"
+	ldif=$(univention-ldapsearch -LLL \
+		"(&(uid=$hostname)(univentionService=UCS@school Administration))")
+	grep -q "^dn: " <<<"$ldif"
+}
+
+is_localhost_education() {
+	local ldif
+	local hostname="$(hostname)\$"
+	ldif=$(univention-ldapsearch -LLL \
+		"(&(uid=$hostname)(univentionService=UCS@school Education))")
+	grep -q "^dn: " <<<"$ldif"
+}
+
 get_available_s4connector_dc() {
 	local s4cldapbase
 	local s4cldapfilter
@@ -182,7 +198,19 @@ get_available_s4connector_dc() {
 				## or alternatively, defacto this should give the same result:
 				## s4cldapfilter="(&(univentionService=S4 Connector)(univentionServerRole=master)(univentionServerRole=backup))"
 			else
-				## We are in a central school department
+				## We are in a school department
+				## this can either be the administration or the education section,
+				## both have separate samba domains, so ignore the other section
+				if is_localhost_education; then
+					s4cldapfilter="(&(univentionService=S4 Connector)(objectClass=univentionDomainController)(!(univentionService=UCS@school Administration)))"
+				elif is_localhost_administration; then
+					s4cldapfilter="(&(univentionService=S4 Connector)(objectClass=univentionDomainController)(!(univentionService=UCS@school Education)))"
+				else
+					echo "ERROR: This seems to be a UCS@school school department server," 1>&2
+					echo "ERROR: but is neither a administrative nor a educative server." 1>&2
+					echo "ERROR: This is not supported, make sure that UCS@school metapackages are installed properly" 1>&2
+					return 1
+				fi
 				s4cldapbase=$(school_dn "$ldap_hostdn")
 			fi
 		else
