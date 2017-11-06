@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-lib
+fix: 6.0.9-19A~4.2.0.201711061506
+desc: |
+ This update addresses the following issue:
+ * Add python dictionary listing RIDs for well known security identifiers
+bug: [44333]
