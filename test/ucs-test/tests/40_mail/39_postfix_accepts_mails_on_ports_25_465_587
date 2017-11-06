@@ -5,29 +5,50 @@
 ## packages:
 ##  - univention-mail-server
 
-
-import time
+import syslog
 from essential.mail import send_mail, check_delivery
-from univention.config_registry import handler_set
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
+import univention.testing.strings as uts
+import univention.testing.udm as udm_test
 
 
 def main():
 	logfiles = ['/var/log/mail.log']
-	with ucr_test.UCSTestConfigRegistry() as ucr:
-		with utils.FollowLogfile(logfiles=logfiles) as flf:
-			fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
-			handler_set(['mail/alias/root=systemmail@%s' % fqdn])
-			recipient = 'root@%s' % fqdn
+	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, utils.FollowLogfile(logfiles=logfiles) as flf:
+		domain = ucr.get('domainname')
+		mail1 = '%s@%s' % (uts.random_name(), domain)
+		password = 'univention'
+		user_dn1, username1 = udm.create_user(
+			set={
+				'password': password,
+				'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+				'mailPrimaryAddress': mail1
+			},
+		)
+		mail2 = '%s@%s' % (uts.random_name(), domain)
+		user_dn2, username2 = udm.create_user(
+			set={
+				'password': password,
+				'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+				'mailPrimaryAddress': mail2
+			},
+		)
 
-			for kwargs in [
-				{"port": 25, "tls": True},
-				{"port": 465, "ssl": True},
-				{"port": 587, "tls": True}]:
-					token = str(time.time())
-					send_mail(recipients=recipient, msg=token, **kwargs)
-					check_delivery(token, recipient, True)
+		syslog.openlog(facility=syslog.LOG_MAIL)  # get markers in mail.log in case of error
+
+		smtp_args = {
+			25: dict(port=25, tls=True, ssl=False, recipients=mail2, sender=mail1, msg=uts.random_name()),
+			465: dict(port=465, tls=False, ssl=True, recipients=mail2, sender=mail1, msg=uts.random_name()),
+			587: dict(port=587, tls=True, ssl=False, recipients=mail2, sender=mail1, msg=uts.random_name()),
+		}
+
+		for port, kwargs in smtp_args.items():
+			syslog.syslog(syslog.LOG_INFO, 'Sending to port {}.'.format(kwargs['port']))
+			send_mail(**kwargs)
+			check_delivery(kwargs['msg'], mail2, True)
+			print('*** OK: mail delivered through port {}.'.format(kwargs['port']))
+			syslog.syslog(syslog.LOG_INFO, 'OK: mail delivered through port {}.'.format(kwargs['port']))
 
 
 if __name__ == '__main__':
