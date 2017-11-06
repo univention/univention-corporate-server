@@ -1,8 +1,14 @@
-univention-s4-connector (11.0.8-14) UNRELEASED; urgency=medium
+univention-s4-connector (11.0.8-15) UNRELEASED; urgency=medium
+
+  * Bug #44333: Fix postinst syntax
+
+ -- Arvid Requate <requate@univention.de>  Mon, 06 Nov 2017 17:56:19 +0100
+
+univention-s4-connector (11.0.8-14) unstable; urgency=medium
 
   * Bug #44333: Check RID of krbtgt account and fix if necessary
 
- -- Arvid Requate <requate@univention.de>  Mon, 06 Nov 2017 17:41:38 +0100
+ -- Arvid Requate <requate@univention.de>  Mon, 06 Nov 2017 17:55:42 +0100
 
 univention-s4-connector (11.0.8-13) unstable; urgency=medium
 

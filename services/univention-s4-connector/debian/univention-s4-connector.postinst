@@ -178,7 +178,6 @@ if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join
 					%EOR
 				fi
 			fi
-		fi
 	fi
 
 	if [ "$skip_final_restart" != "true" ]; then
