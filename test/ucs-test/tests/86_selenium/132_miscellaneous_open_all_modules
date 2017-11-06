@@ -1,0 +1,72 @@
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+# -*- coding: utf-8 -*-
+## desc: |
+##  Test if all available modules can be opened and closed without a problem.
+## roles-not:
+##  - basesystem
+## join: true
+## exposure: dangerous
+
+import time
+from selenium.common.exceptions import TimeoutException
+from univention.admin import localization
+from univention.testing import selenium
+from univention.testing.selenium.appcenter import AppCenter
+
+translator = localization.translation('ucs-test-selenium')
+_ = translator.translate
+
+
+class UMCTester(object):
+
+	def test_umc(self):
+		self.selenium.do_login()
+		self.open_and_close_all_modules()
+
+	def open_and_close_all_modules(self):
+		available_modules = self.get_available_modules()
+		self.selenium.show_notifications(False)
+		for module in available_modules:
+			self.close_large_notification_if_visible()
+			self.selenium.click_tile(module)
+			if module == _('App Center'):
+				self.appcenter.close_info_dialog_if_visisble()
+			# FIXME: This loop is a workaround.
+			for i in range(12):
+				try:
+					self.selenium.click_button(_('Close'))
+				except:
+					pass
+				try:
+					self.selenium.wait_for_text(_('Search query'), timeout=5)
+					break
+				except:
+					pass
+			self.selenium.wait_for_text(_('Search query'), timeout=1)
+
+	def close_large_notification_if_visible(self):
+		try:
+			self.selenium.click_element(
+				'//button[contains(concat(" ", normalize-space(@class), " "), " umcNotificationActionButton ")][text() = "%s"]'
+				% (_('OK'),), timeout=1
+			)
+		except TimeoutException:
+			pass
+		time.sleep(1)  # Wait for animation to finish.
+
+	def get_available_modules(self):
+		self.selenium.search_module('*')
+
+		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")]'
+		tile_headings = self.selenium.driver.find_elements_by_xpath(xpath)
+
+		return [tile_heading.text for tile_heading in tile_headings]
+
+
+if __name__ == '__main__':
+	with selenium.UMCSeleniumTest() as s:
+		umc_tester = UMCTester()
+		umc_tester.selenium = s
+		umc_tester.appcenter = AppCenter(umc_tester.selenium)
+
+		umc_tester.test_umc()

@@ -103,14 +103,14 @@ class Interactions(object):
 	def open_side_menu(self):
 		self.click_element('//*[@class="umcMobileMenuToggleButton"]')
 
-	def click_element(self, xpath, scroll_into_view=False):
+	def click_element(self, xpath, scroll_into_view=False, timeout=60):
 		"""
 		Click on the element which is found by the given xpath.
 
 		Only use with caution when there are multiple elements with that xpath.
 		Waits for the element to be clickable before attempting to click.
 		"""
-		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
+		elems = webdriver.support.ui.WebDriverWait(xpath, timeout).until(
 			self.get_all_enabled_elements
 		)
 

@@ -8,9 +8,11 @@
 ## join: true
 ## exposure: dangerous
 
-from univention.admin import localization
 import os.path
 import subprocess
+import time
+from selenium.common.exceptions import TimeoutException
+from univention.admin import localization
 from univention.testing import selenium
 
 translator = localization.translation('ucs-test-selenium')
@@ -190,7 +192,6 @@ class UMCTester(object):
 		for user in users:
 			self.selenium.do_login(username=user)
 			self.check_if_required_modules_are_visible(role, user)
-			self.open_and_close_all_modules()
 			self.selenium.end_umc_session()
 
 	def determine_ucs_role(self):
@@ -220,26 +221,6 @@ class UMCTester(object):
 			raise UmcError(
 				'These modules are missing in the UMC: %r' % (missing_modules,)
 			)
-
-	def open_and_close_all_modules(self):
-		available_modules = self.get_available_modules()
-		for module in available_modules:
-			self.selenium.click_tile(module)
-			if module == _('App Center'):
-				self.selenium.wait_for_text(_('App Center is designed for easy'))
-				self.selenium.click_button(_('Continue'))
-			# FIXME: This loop is a workaround.
-			for i in range(12):
-				try:
-					self.selenium.click_button(_('Close'))
-				except:
-					pass
-				try:
-					self.selenium.wait_for_text(_('Search query'), timeout=5)
-					break
-				except:
-					pass
-			self.selenium.wait_for_text(_('Search query'), timeout=1)
 
 	def get_available_modules(self):
 		self.selenium.search_module('*')
