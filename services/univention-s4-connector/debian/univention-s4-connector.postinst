@@ -157,6 +157,30 @@ if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join
       ucr set connector/s4/mapping/dns/ignorelist=$(echo "$connector_s4_mapping_dns_ignorelist" | sed -e 's/^DC=//i' -e 's/,DC=/,/gi')
 	fi
 
+	# Bug 44333
+	if [ "$1" = "configure" -a -n "$2" ] \
+		&& dpkg --compare-versions "$2" lt 11.0.8-14 \
+		&& [ "$server_role" = "domaincontroller_master"  -o "$server_role" = "domaincontroller_backup" ] \
+		&& [ -f /var/univention-join/joined ] \
+		&& [ -n "$(pgrep slapd)" ]; then
+			ldif=$(univention-ldapsearch -LLL -o ldif-wrap=no uid=krbtgt sambaSID)
+			dn=$(sed -n "s/^dn: //p" <<<"$ldif")
+			if [ -n "$dn" ]; then
+				sambaSID=$(sed -n "s/^sambaSID: //p" <<<"$ldif")
+				rid=$(sed -nr "s/(.*)-([0-9]+)/\2/p" <<<"$sambaSID")
+				if [ "$rid" != 502 ]; then
+					domainsid=$(sed -nr "s/(.*)-([0-9]+)/\1/p" <<<"$sambaSID")
+					ldapmodify -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<-%EOR
+					dn: $dn
+					changetype: modify
+					replace: sambaSID
+					sambaSID: $domainsid-502
+					%EOR
+				fi
+			fi
+		fi
+	fi
+
 	if [ "$skip_final_restart" != "true" ]; then
 		/etc/init.d/univention-s4-connector restart
 	fi
