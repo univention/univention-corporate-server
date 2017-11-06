@@ -163,7 +163,8 @@ is_ucs_school_domain() {
 is_localhost_administration() {
 	local ldif
 	local hostname="$(hostname)\$"
-	ldif=$(univention-ldapsearch -LLL \
+	local master=$(ucr get ldap/master)
+	ldif=$(univention-ldapsearch -h "$master" -LLL \
 		"(&(uid=$hostname)(univentionService=UCS@school Administration))")
 	grep -q "^dn: " <<<"$ldif"
 }
@@ -171,7 +172,8 @@ is_localhost_administration() {
 is_localhost_education() {
 	local ldif
 	local hostname="$(hostname)\$"
-	ldif=$(univention-ldapsearch -LLL \
+	local master=$(ucr get ldap/master)
+	ldif=$(univention-ldapsearch -h "$master" -LLL \
 		"(&(uid=$hostname)(univentionService=UCS@school Education))")
 	grep -q "^dn: " <<<"$ldif"
 }
