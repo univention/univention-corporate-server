@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-samba4
+fix: 6.0.10-41A~4.2.0.201711061824
+desc: |
+ This update addresses the following issue(s):
+ * The join of (administrative) Samba Slaves PDC's in
+   UCS@school has been fixed.
+ * Some special options for the join of Samba Slaves PDC's
+   in UCS@school were ignored. This has been fixed.
+bug: [45596, 44885]
