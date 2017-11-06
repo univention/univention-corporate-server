@@ -766,7 +766,11 @@ class Instance(Base, ProgressMixin):
 			except (failedADConnect, connectionFailed) as e:
 				MODULE.warn('ADDS DC lookup failed: %s' % e)
 		elif role == 'nonmaster':
-			fqdn = util.get_fqdn(nameserver)
+			domain = util.get_ucs_domain(nameserver)
+			if domain:
+				fqdn = util.resolve_domaincontroller_master_srv_record(nameserver, domain)
+			else:
+				fqdn = util.get_fqdn(nameserver)
 			if fqdn:
 				result['dc_name'] = fqdn
 				domain = '.'.join(fqdn.split('.')[1:])
