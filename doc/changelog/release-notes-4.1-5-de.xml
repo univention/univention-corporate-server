@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-4.1-4-de">
+<book lang="de" id="releasenotes-4.1-5-de">
 	<bookinfo>
-		<title>UCS 4.1-4 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.1-4</subtitle>
+		<title>UCS 4.1-5 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.1-5</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -17,7 +17,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2016 Univention GmbH
+				(c) 2002-2017 Univention GmbH
 			</para>
 
 			<para>
@@ -44,27 +44,13 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit &ucsUCS; 4.1-4 steht das vierte Point-Release für &ucsUCS; (UCS) 4.1 zur Verfügung. Es
+			Mit &ucsUCS; 4.1-5 steht das fünfte Point-Release für &ucsUCS; (UCS) 4.1 zur Verfügung. Es
 			umfasst diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten Änderungen im
 			Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				Der Installationsassistent und das UCS-Managementsystem sind ab sofort auch in Französisch verfügbar.
-			</para></listitem>
-			<listitem><para>
-				Samba wurde auf Version 4.5.1 aktualisiert. Dies umfasst diverse Verbesserungen, u.a. im Bereich der DRS-Replikation,
-				allgemein der Active Directory Kompatibilität und der Datei- und Druckdienste.
-			</para></listitem>
-			<listitem><para>
-				Der Linux Kernel wurde auf den letzten stabilen 4.1er <foreignphrase>Longterm-Kernel</foreignphrase> aktualisiert. Dieser beinhaltet diverse
-				Sicherheitsaktualisierungen, Verbesserungen in der Stabilität, sowie neuere und aktualisierte Treiber für eine verbesserte
-				Hardware-Unterstützung.
-			</para></listitem>
-			<listitem><para>
-				Docker Apps können nun über eine einfache Konfigurationseinstellung die Datenbank auf dem UCS-System verwenden,
-				wodurch u.a. eine Migration der Docker Apps vereinfacht wird.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -206,10 +192,10 @@
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS 4.1-3:
+			Aufgeführt sind die Änderungen seit UCS 4.1-4:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-4.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-5.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-4.1-4-en">
+<book lang="en" id="releasenotes-4.1-5-en">
 	<bookinfo>
-		<title>UCS 4.1-4 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.1-4</subtitle>
+		<title>UCS 4.1-5 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.1-5</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -17,7 +17,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2016 Univention GmbH
+				(c) 2002-2017 Univention GmbH
 			</para>
 
 			<para>
@@ -44,28 +44,13 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With &ucsUCS; 4.1-4, the fourth point release of &ucsUCS; (UCS) 4.1 is
+			With &ucsUCS; 4.1-5, the fives point release of &ucsUCS; (UCS) 4.1 is
 			now available.  It provides various improvements and
 			bugfixes. An overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				The installation wizard and the UCS management system are now also available in French.
-			</para></listitem>
-			<listitem><para>
-				Samba has been updated to version 4.5.1. This includes various improvements,
-				among other things the DRS replication, the Active Directory compatibility,
-				the file services and the printer handling.
-			</para></listitem>
-			<listitem><para>
-				The Linux kernel has been updated to the latest stable version of the 4.1
-				long term kernel. This includes several security updates, improvements in the
-				stability, as well as newer and updated drivers for a better hardware support.
-			</para></listitem>
-			<listitem><para>
-				Docker Apps can now use the database on the UCS system using a simple configuration
-				setting, which simplifies the migration of Docker Apps.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -206,10 +191,10 @@
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS 4.1-3:
+			Listed are the changes since UCS 4.1-4:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-4.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-5.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
