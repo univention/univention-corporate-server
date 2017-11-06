@@ -213,17 +213,12 @@ class UMCTester(object):
 			return [ROOT]
 
 	def check_if_required_modules_are_visible(self, role, user):
-		available_modules = self.get_available_modules()
-		requiered_modules = expected_modules_for_role[role][user]
-		differing_modules = set(
-			[module.lower() for module in requiered_modules]
-		).symmetric_difference(set(
-			[module.lower() for module in available_modules]
-		))
-		if len(differing_modules) > 0:
+		available_modules = [module.lower() for module in self.get_available_modules()]
+		requiered_modules = [module.lower() for module in expected_modules_for_role[role][user]]
+		missing_modules = set(requiered_modules) - set(available_modules)
+		if len(missing_modules) > 0:
 			raise UmcError(
-				'These modules are missing or excess in the UMC: %r'
-				% (differing_modules,)
+				'These modules are missing in the UMC: %r' % (missing_modules,)
 			)
 
 	def open_and_close_all_modules(self):
