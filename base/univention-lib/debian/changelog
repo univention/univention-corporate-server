@@ -1,3 +1,9 @@
+univention-lib (6.0.9-19) unstable; urgency=medium
+
+  * Bug #44333: Add lib.s4.rids_for_well_known_security_identifiers
+
+ -- Arvid Requate <requate@univention.de>  Mon, 06 Nov 2017 14:34:04 +0100
+
 univention-lib (6.0.9-18) unstable; urgency=medium
 
   * Redirect admember debug to join.log (Bug #38442)

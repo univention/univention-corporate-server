@@ -57,6 +57,7 @@ import univention.admin.uldap
 import univention.admin.mungeddial as mungeddial
 import univention.admin.handlers.settings.prohibited_username
 from univention.admin import configRegistry
+from univention.lib.s4 import rids_for_well_known_security_identifiers
 
 import univention.debug
 import univention.password
@@ -2702,16 +2703,16 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		# TODO: cleanup function
 		userSid = None
 
-		if self['sambaRID']:
+		rid = self['sambaRID'] or rids_for_well_known_security_identifiers.get(self['username'].lower())
+		if rid:
 			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
 			domainsid = searchResult[0][1]['sambaSID'][0]
-			sid = domainsid + '-' + self['sambaRID']
+			sid = domainsid + '-' + rid
 			try:
 				userSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
 				self.alloc.append(('sid', userSid))
 			except univention.admin.uexceptions.noLock:
-				raise univention.admin.uexceptions.sidAlreadyUsed(': %s' % self['sambaRID'])
-
+				raise univention.admin.uexceptions.sidAlreadyUsed(': %s' % rid)
 		else:
 			if self.s4connector_present:
 				# In this case Samba 4 must create the SID, the s4 connector will sync the
