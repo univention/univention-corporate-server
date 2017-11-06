@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.18-14) UNRELEASED; urgency=medium
+
+  * Bug #44333: users/user: assign well known rids when creating
+    well known security identifiers
+
+ -- Arvid Requate <requate@univention.de>  Mon, 06 Nov 2017 14:34:17 +0100
+
 univention-directory-manager-modules (12.0.18-13) unstable; urgency=medium
 
   * Bug #45540: fix thread safety of univention.admin.modules.update()

@@ -55,3 +55,27 @@ well_known_domain_rids = {
 	# Windows Server "8"
 	"522": "Cloneable Domain Controllers",
 }
+
+rids_for_well_known_security_identifiers = {
+	# All lowercase for lookup
+	"administrator": "500",
+	"guest": "501",
+	"krbtgt": "502",
+	"domain admins": "512",
+	"domain users": "513",
+	"domain guests": "514",
+	"domain computers": "515",
+	"domain controllers": "516",
+	"cert publishers": "517",
+	"schema admins": "518",
+	"enterprise admins": "519",
+	"group policy creator owners": "520",
+	"ras and ias servers": "553",
+	# Windows Server 2008
+	"enterprise read-only domain controllers": "498",
+	"read-only domain controllers": "521",
+	"allowed rodc password replication group": "571",
+	"denied rodc password replication group": "572",
+	# Windows Server "8"
+	"cloneable domain controllers": "522",
+}
