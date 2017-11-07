@@ -2699,30 +2699,37 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		res = string.join(pwlist, '')
 		return res
 
+	def __allocate_rid(self, rid):
+		searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
+		domainsid = searchResult[0][1]['sambaSID'][0]
+		sid = domainsid + '-' + rid
+		try:
+			userSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
+			self.alloc.append(('sid', userSid))
+		except univention.admin.uexceptions.noLock:
+			raise univention.admin.uexceptions.sidAlreadyUsed(': %s' % rid)
+		return userSid
+
 	def __generate_user_sid(self, uidNum):
 		# TODO: cleanup function
 		userSid = None
 
-		rid = self['sambaRID'] or rids_for_well_known_security_identifiers.get(self['username'].lower())
-		if rid:
-			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
-			domainsid = searchResult[0][1]['sambaSID'][0]
-			sid = domainsid + '-' + rid
-			try:
-				userSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
-				self.alloc.append(('sid', userSid))
-			except univention.admin.uexceptions.noLock:
-				raise univention.admin.uexceptions.sidAlreadyUsed(': %s' % rid)
+		if self['sambaRID']:
+			userSid = self.__allocate_rid(self['sambaRID'])
 		else:
 			if self.s4connector_present:
 				# In this case Samba 4 must create the SID, the s4 connector will sync the
 				# new sambaSID back from Samba 4.
 				userSid = 'S-1-4-%s' % uidNum
 			else:
-				try:
-					userSid = univention.admin.allocators.requestUserSid(self.lo, self.position, uidNum)
-				except:
-					pass
+				rid = rids_for_well_known_security_identifiers.get(self['username'].lower())
+				if rid:
+					userSid = self.__allocate_rid(rid)
+				else:
+					try:
+						userSid = univention.admin.allocators.requestUserSid(self.lo, self.position, uidNum)
+					except:
+						pass
 			if not userSid or userSid == 'None':
 				num = uidNum
 				while not userSid or userSid == 'None':
