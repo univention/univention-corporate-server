@@ -3,9 +3,9 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-management-console-module-udm
-fix: 
+fix: 7.0.10-22A~4.2.0.201711071729
 desc: |
  This update addresses the following issue(s):
- * The access protection of the directory
-   /var/www/univention-directory-reports/ has been corrected.
+ * The files created by univention-directory-reports via the UMC module are
+   now access protected.
 bug: [45644]
