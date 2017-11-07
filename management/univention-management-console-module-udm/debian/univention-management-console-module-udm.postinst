@@ -34,25 +34,18 @@
 
 eval "$(univention-config-registry shell)"
 
-# autosearch and size limit
 univention-config-registry set directory/manager/web/modules/autosearch?1 \
-	directory/manager/web/sizelimit?2000
+	directory/manager/web/sizelimit?2000 \
+	directory/reports/cleanup/cron?"0 0 * * *" \
+	directory/reports/cleanup/age?43200 \
+	directory/manager/web/modules/wizards/disabled?no \
+	directory/manager/web/modules/computers/computer/add/default?"computers/windows" \
+	directory/manager/web/modules/groups/group/checks/circular_dependency?"yes" \
+	umc/module/udm/users/self/disabled?true
 
-# directory reports
-univention-config-registry set directory/reports/cleanup/cron?"0 0 * * *" \
-	directory/reports/cleanup/age?43200
-
-# simple forms (wizards)
-univention-config-registry set directory/manager/web/modules/wizards/disabled?no
-
-univention-config-registry set directory/manager/web/modules/computers/computer/add/default?"computers/windows"
-
-univention-config-registry set directory/manager/web/modules/groups/group/checks/circular_dependency?"yes"
-
-univention-config-registry set umc/module/udm/users/self/disabled?true
-
-# activate new sites
-#a2ensite univention-directory-manager
-#invoke-rc.d apache2 restart
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 7.0.10-22; then
+	mv /var/www/univention-directory-reports/univention-directory-reports-* /usr/share/univention-management-console-module-udm/
+	rmdir /var/www/univention-directory-reports || true
+fi
 
 exit 0

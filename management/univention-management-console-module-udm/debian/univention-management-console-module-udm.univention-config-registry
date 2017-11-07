@@ -1,6 +1,3 @@
 Type: file
-File: etc/apache2/sites-available/univention-directory-manager.conf
-
-Type: file
 File: etc/cron.d/univention-directory-reports-cleanup
 Variables: directory/reports/cleanup/cron
