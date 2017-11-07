@@ -42,7 +42,7 @@ now = time.time()
 max_age = int(configRegistry.get('directory/reports/cleanup/age', '43200'))
 
 old = []
-dirname = '/var/www/univention-directory-reports'
+dirname = '/usr/share/univention-management-console-module-udm'
 for f in os.listdir(dirname):
 	if not f.startswith('univention-directory-reports-') or not f.endswith('.pdf'):
 		continue

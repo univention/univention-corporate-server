@@ -1323,6 +1323,8 @@ define([
 			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'grid', 'report');
 			var _dialog = new CreateReportDialog( {
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
+				standby: lang.hitch(this, 'standby'),
+				standbyDuring: lang.hitch(this, 'standbyDuring'),
 				moduleFlavor: this.moduleFlavor,
 				objects: ids,
 				reports: this._reports

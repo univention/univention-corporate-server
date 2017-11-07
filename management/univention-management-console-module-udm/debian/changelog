@@ -1,3 +1,11 @@
+univention-management-console-module-udm (7.0.10-22) unstable; urgency=medium
+
+  * Bug #45644: move the report directory for security reasons from 
+  	/var/www/univention-directory-reports to
+  	/usr/share/univention-management-console-module-udm
+
+ -- Florian Best <best@univention.de>  Tue, 07 Nov 2017 12:51:38 +0100
+
 univention-management-console-module-udm (7.0.10-21) unstable; urgency=medium
 
   * Bug #45600: fix tree sorting for reverse zones with IPv6 addresses

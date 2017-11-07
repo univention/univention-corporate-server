@@ -33,10 +33,8 @@
 
 import copy
 import re
-import grp
 import os
 import shutil
-import pwd
 import tempfile
 import locale
 import urllib
@@ -50,7 +48,7 @@ from ldap import LDAPError, INVALID_CREDENTIALS
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError, UMC_Error
-from univention.management.console.modules.decorators import simple_response, sanitize, multi_response, prevent_xsrf_check
+from univention.management.console.modules.decorators import simple_response, sanitize, multi_response, prevent_xsrf_check, allow_get_request
 from univention.management.console.modules.sanitizers import (
 	Sanitizer, LDAPSearchSanitizer, EmailSanitizer, ChoicesSanitizer,
 	ListSanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer,
@@ -620,19 +618,28 @@ class Instance(Base, ProgressMixin):
 			except udr.ReportError as exc:
 				raise UMC_Error(str(exc))
 
-			www_data_user = pwd.getpwnam('www-data')
-			www_data_grp = grp.getgrnam('www-data')
-			path = '/var/www/univention-directory-reports/'
+			path = '/usr/share/univention-management-console-module-udm/'
 			filename = os.path.join(path, os.path.basename(report_file))
 
 			shutil.move(report_file, path)
-			os.chown(filename, www_data_user.pw_uid, www_data_grp.gr_gid)
-			os.chmod(filename, 0o644)
-			url = '/univention-directory-reports/%s' % os.path.basename(report_file)
+			os.chmod(filename, 0o600)
+			url = '/univention/command/udm/reports/get?report=%s' % (urllib.quote(os.path.basename(report_file)),)
 			return {'URL': url}
 
 		thread = notifier.threads.Simple('ReportsCreate', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
+
+	@allow_get_request
+	@sanitize(report=StringSanitizer(required=True))
+	def reports_get(self, request):
+		report = request.options['report']
+		path = '/usr/share/univention-management-console-module-udm/'
+		filename = os.path.join(path, os.path.basename(report))
+		try:
+			with open(filename) as fd:
+				self.finished(request.id, fd.read(), mimetype='text/csv' if report.endswith('.csv') else 'application/pdf')
+		except EnvironmentError:
+			raise UMC_Error(_('The report does not exists. Please create a new one.'), status=404)
 
 	def values(self, request):
 		"""Returns the default search pattern/value for the given object property

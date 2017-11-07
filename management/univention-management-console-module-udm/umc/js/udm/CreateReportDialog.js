@@ -33,15 +33,14 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dijit/Dialog",
-	"umc/widgets/StandbyMixin",
+	"umc/tools",
 	"umc/widgets/Form",
 	"umc/widgets/ContainerWidget",
-	"umc/widgets/Text",
-	"umc/widgets/Button",
+	"umc/widgets/ProgressBar",
 	"umc/widgets/ComboBox",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, Dialog, StandbyMixin, Form, ContainerWidget, Text, Button, ComboBox, _) {
-	return declare("umc.modules.udm.CreateReportDialog", [ Dialog, StandbyMixin ], {
+], function(declare, lang, array, Dialog, tools, Form, ContainerWidget, ProgressBar, ComboBox, _) {
+	return declare("umc.modules.udm.CreateReportDialog", [ Dialog ], {
 		// summary:
 		//		Dialog class for creating Univention Directory Reports.
 
@@ -141,85 +140,55 @@ define([
 		onDone: function(options) {
 			var _waitingContentText = lang.hitch(this, function(n) {
 				var text = {
-					'users/user'        : _.ngettext('<p>Generating user report for one object.</p>',
-					                                  '<p>Generating user report for %d objects.</p>', n),
-					'groups/group'      : _.ngettext('<p>Generating group report for one object.</p>',
-					                                  '<p>Generating group report for %d objects.</p>', n),
-					'computers/computer': _.ngettext('<p>Generating computer report for one object.</p>',
-					                                  '<p>Generating computer report for %d objects.</p>', n),
-					'networks/network'  : _.ngettext('<p>Generating network object report for one object.</p>',
-					                                  '<p>Generating network object report for %d objects.</p>', n),
-					'dns/dns'           : _.ngettext('<p>Generating DNS object report for one object.</p>',
-					                                  '<p>Generating DNS object report for %d objects.</p>', n),
-					'dhcp/dhcp'         : _.ngettext('<p>Generating DHCP object report for one object.</p>',
-					                                  '<p>Generating DHCP object report for %d objects.</p>', n),
-					'shares/share'      : _.ngettext('<p>Generating share report for one object.</p>',
-					                                  '<p>Generating share report for %d objects.</p>', n),
-					'shares/print'      : _.ngettext('<p>Generating printer report for one object.</p>',
-					                                  '<p>Generating printer report for %d objects.</p>', n),
-					'mail/mail'         : _.ngettext('<p>Generating mail object report for one object.</p>',
-					                                  '<p>Generating mail object report for %d objects.</p>', n),
-					'nagios/nagios'     : _.ngettext('<p>Generating Nagios object report for one object.</p>',
-					                                  '<p>Generating Nagios object report for %d objects.</p>', n),
-					'policies/policy'   : _.ngettext('<p>Generating policy report for one object.</p>',
-					                                  '<p>Generating policy report for %d objects.</p>', n)
+					'users/user'        : _.ngettext('Generating user report for one object.',
+					                                 'Generating user report for %d objects.', n),
+					'groups/group'      : _.ngettext('Generating group report for one object.',
+					                                 'Generating group report for %d objects.', n),
+					'computers/computer': _.ngettext('Generating computer report for one object.',
+					                                 'Generating computer report for %d objects.', n),
+					'networks/network'  : _.ngettext('Generating network object report for one object.',
+					                                 'Generating network object report for %d objects.', n),
+					'dns/dns'           : _.ngettext('Generating DNS object report for one object.',
+					                                 'Generating DNS object report for %d objects.', n),
+					'dhcp/dhcp'         : _.ngettext('Generating DHCP object report for one object.',
+					                                 'Generating DHCP object report for %d objects.', n),
+					'shares/share'      : _.ngettext('Generating share report for one object.',
+					                                 'Generating share report for %d objects.', n),
+					'shares/print'      : _.ngettext('Generating printer report for one object.',
+					                                 'Generating printer report for %d objects.', n),
+					'mail/mail'         : _.ngettext('Generating mail object report for one object.',
+					                                 'Generating mail object report for %d objects.', n),
+					'nagios/nagios'     : _.ngettext('Generating Nagios object report for one object.',
+					                                 'Generating Nagios object report for %d objects.', n),
+					'policies/policy'   : _.ngettext('Generating policy report for one object.',
+					                                 'Generating policy report for %d objects.', n)
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _.ngettext('<p>Generating LDAP object report for one object.</p>',
-					                   '<p>Generating LDAP object report for %d objects.</p>', n);
+					text = _.ngettext('Generating LDAP object report for one object.',
+					                   'Generating LDAP object report for %d objects.', n);
 				}
-				text += '<p>' + _('This may take a while.') + '</p>';
+				text += ' ' + _('This may take a while.');
 				return text;
 			});
-			var _standbyDuringSuccessText = lang.hitch(this, function(type, href) {
-				var obj = {
-					'users/user'        : _('user report'),
-					'groups/group'      : _('group report'),
-					'computers/computer': _('computer report'),
-					'networks/network'  : _('network object report'),
-					'dns/dns'           : _('DNS object report'),
-					'dhcp/dhcp'         : _('DHCP object report'),
-					'shares/share'      : _('share report'),
-					'shares/print'      : _('printer report'),
-					'mail/mail'         : _('mail object report'),
-					'nagios/nagios'     : _('Nagios object report'),
-					'policies/policy'   : _('policy report')
-				}[this.moduleFlavor];
-				if (!obj) {
-					obj = _('LDAP object report');
+
+			var progress = new ProgressBar();
+			this.own(progress);
+			progress.setInfo(_('Creating the report...'), _waitingContentText(this.objects.length), Infinity);
+
+			this.hide();
+			this.standbyDuring(this.umcpCommand('udm/reports/create', {objects: this.objects, report: options.report}, this._form), progress).then(lang.hitch(this, function(data) {
+				var link = document.createElement('a');
+				this._container.domNode.appendChild(link);
+				link.href = data.result.URL;
+				link.download = link.href.substr(link.href.lastIndexOf('=') + 1);
+				link.click();
+				this.destroyRecursive();
+			}), lang.hitch(this, function(error) {
+				if (tools.parseError(error).status === 422) {
+					this.show();
+					return;
 				}
-				return lang.replace(_('The {type} can be downloaded at<br><br><a target="_blank" href="{href}">{obj}</a>'), {type: type, href: href, obj: obj});
-			});
-
-			var waiting = new Text({
-				content: _waitingContentText(this.objects.length)
-			});
-			this._container.addChild(waiting, 0);
-
-			this.set('title', _('Creating the report ...'));
-
-			this.standbyDuring(this.umcpCommand('udm/reports/create', {objects: this.objects, report: options.report}, this._form)).then(lang.hitch(this, function(data) {
-				this._container.removeChild(this._form);
-				this._container.removeChild(waiting);
-				waiting.destroy();
-
-				var message = lang.replace('<p>{0}</p>', [_standbyDuringSuccessText(options.report, data.result.URL)]);
-				this.set('title', _('Report has been created'));
-				this._container.addChild(new Text({content: message}));
-
-				var btnContainer = new ContainerWidget({
-					'class' : 'umcButtonRow'
-				});
-				btnContainer.addChild(new Button({
-					defaultButton: true,
-					label: _('Close'),
-					callback: lang.hitch(this, function() {
-						this.destroyRecursive();
-					})
-				}));
-				this._container.addChild(btnContainer);
-			}), lang.hitch(this, function() {
-				this._container.removeChild(waiting);
+				this.destroyRecursive();
 			}));
 		}
 	});
