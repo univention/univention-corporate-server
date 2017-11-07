@@ -46,6 +46,7 @@ univention-config-registry set directory/manager/web/modules/autosearch?1 \
 if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 7.0.10-22; then
 	mv /var/www/univention-directory-reports/univention-directory-reports-* /usr/share/univention-management-console-module-udm/
 	rmdir /var/www/univention-directory-reports || true
+	a2dissite univention-directory-manager.conf || true
 fi
 
 exit 0
