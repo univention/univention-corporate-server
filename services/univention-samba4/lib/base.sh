@@ -204,10 +204,11 @@ get_available_s4connector_dc() {
 				## this can either be the administration or the education section,
 				## both have separate samba domains, so ignore the other section
 				if is_localhost_education; then
-					s4cldapfilter="(&(univentionService=S4 Connector)(objectClass=univentionDomainController)(!(univentionService=UCS@school Administration)))"
+					s4cldapfilter="(&(univentionService=S4 SlavePDC)(univentionService=S4 Connector)(objectClass=univentionDomainController)(univentionService=UCS@school Education))"
 				elif is_localhost_administration; then
-					s4cldapfilter="(&(univentionService=S4 Connector)(objectClass=univentionDomainController)(!(univentionService=UCS@school Education)))"
+					s4cldapfilter="(&(univentionService=S4 SlavePDC)(univentionService=S4 Connector)(objectClass=univentionDomainController)(univentionService=UCS@school Administration))"
 				else
+					## unsupported, a school slave with UCS@school Administration or UCS@school Education service
 					echo "ERROR: This seems to be a UCS@school school department server," 1>&2
 					echo "ERROR: but is neither a administrative nor a educative server." 1>&2
 					echo "ERROR: This is not supported, make sure that UCS@school metapackages are installed properly" 1>&2
