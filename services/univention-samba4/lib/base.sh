@@ -164,7 +164,8 @@ is_localhost_administration() {
 	local ldif
 	local hostname="$(hostname)\$"
 	local master=$(ucr get ldap/master)
-	ldif=$(univention-ldapsearch -h "$master" -p 7389 -LLL \
+	local master_port=$(ucr get ldap/master/port)
+	ldif=$(univention-ldapsearch -h "$master" -p "$master_port" -LLL \
 		"(&(uid=$hostname)(univentionService=UCS@school Administration))")
 	grep -q "^dn: " <<<"$ldif"
 }
@@ -173,7 +174,8 @@ is_localhost_education() {
 	local ldif
 	local hostname="$(hostname)\$"
 	local master=$(ucr get ldap/master)
-	ldif=$(univention-ldapsearch -h "$master" -p 7389 -LLL \
+	local master_port=$(ucr get ldap/master/port)
+	ldif=$(univention-ldapsearch -h "$master" -p "$master_port" -LLL \
 		"(&(uid=$hostname)(univentionService=UCS@school Education))")
 	grep -q "^dn: " <<<"$ldif"
 }
