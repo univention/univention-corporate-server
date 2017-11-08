@@ -223,6 +223,7 @@
 			<title>Software update module</title>
 			<itemizedlist>
 				<listitem><simpara>
+						The updater message for UCS releases that receive extended maintenance was clarified (<u:bug>44410</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
