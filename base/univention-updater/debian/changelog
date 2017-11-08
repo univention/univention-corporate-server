@@ -1,3 +1,9 @@
+univention-updater (11.0.12-3) unstable; urgency=medium
+
+  * Bug #45671: Improve updater message for extended maintenance warning
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 08 Nov 2017 17:02:08 +0100
+
 univention-updater (11.0.12-2) unstable; urgency=medium
 
   * Bug #45109: Backport 4.2 LSB "INIT INFO" headers
