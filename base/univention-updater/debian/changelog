@@ -1,9 +1,9 @@
 univention-updater (12.0.11-11) unstable; urgency=medium
 
-  * Bug #45078, Bug #44824: updater/maintenance_information does not crash
+  * Bug #44824: updater/maintenance_information does not crash
     anymore when failing to receive maintenance status info
 
- -- Jannik Ahlers <jahlers@hemmahos.knut.univention.de>  Fri, 20 Oct 2017 11:41:25 +0200
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 20 Oct 2017 11:41:25 +0200
 
 univention-updater (12.0.11-10) unstable; urgency=medium
 
