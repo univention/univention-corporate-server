@@ -43,7 +43,7 @@ univention-config-registry set directory/manager/web/modules/autosearch?1 \
 	directory/manager/web/modules/groups/group/checks/circular_dependency?"yes" \
 	umc/module/udm/users/self/disabled?true
 
-if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 7.0.10-22; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 7.0.10-23; then
 	mv /var/www/univention-directory-reports/univention-directory-reports-* /usr/share/univention-management-console-module-udm/
 	rmdir /var/www/univention-directory-reports || true
 	a2dissite univention-directory-manager.conf || true

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.10-23) unstable; urgency=medium
+
+  * Bug #45644: fix typo in postinst
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2017 10:07:51 +0100
+
 univention-management-console-module-udm (7.0.10-22) unstable; urgency=medium
 
   * Bug #45644: move the report directory for security reasons from 
