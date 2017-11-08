@@ -11,3 +11,5 @@ desc: |
    11-22-33-44-55-66. All non-hexadecimal characters are removed
    automatically before checking the station id (Bug #42722).
 bug: [42722]
+erratum: 213
+announced: 2017-11-08
