@@ -187,7 +187,7 @@ define([
 		isSyncedObject: null, // object which is modified (or one of multiedited) has univentionObjectFlag == synced
 
 		'class': 'udmDetailPage',
-		standbyOpacity: 1,
+		standbyOpacity: 0,  // the standby animation should be transparent to improove visiblity when loading the object
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -241,7 +241,7 @@ define([
 			}
 
 			// when the commands have been finished, create the detail page
-			(new all(commands)).then(lang.hitch(this, function(results) {
+			this.standbyDuring(new all(commands)).then(lang.hitch(this, function(results) {
 				var template = lang.getObject('template.result', false, results) || null;
 				var layout = lang.clone(results.layout);
 				var policies = lang.clone(results.policies);
@@ -258,7 +258,6 @@ define([
 					}));
 				}), 50);
 			}), lang.hitch(this, function() {
-				this.standby(false);
 				this._pageRenderedDeferred.reject();
 			}));
 		},
@@ -1120,6 +1119,7 @@ define([
 			loadedDeferred.then(lang.hitch(this, 'addActiveDirectoryWarning'));
 			loadedDeferred.then(lang.hitch(this, 'set', 'helpLink', metaInfo.help_link));
 			this._displayProgressOnSubmitButton(loadedDeferred);
+			this.standbyDuring(loadedDeferred);
 			all([loadedDeferred, formBuiltDeferred]).then(lang.hitch(this, '_notifyAboutAutomaticChanges'));
 
 			if (template && template.length > 0) {
@@ -1149,7 +1149,6 @@ define([
 				this._renderMultiEditCheckBoxes(widgets);
 				this._registerOptionWatchHandler();
 				formBuiltDeferred.resolve();
-				this.standby(false);
 
 				// initiate the template mechanism (only for new objects)
 				// searches for given default values in the properties... these will be replaced

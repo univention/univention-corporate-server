@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.10-24) unstable; urgency=medium
+
+  * Bug #45574: enable standby animation during loading of objects
+
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2017 16:09:36 +0100
+
 univention-management-console-module-udm (7.0.10-23) unstable; urgency=medium
 
   * Bug #45644: fix typo in postinst
