@@ -1,3 +1,9 @@
+univention-postgrey (5.0.0-3) unstable; urgency=low
+
+  * Bug #43555: fix program name to allow detection of service status
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 08 Nov 2017 10:39:26 +0100
+
 univention-postgrey (5.0.0-2) unstable; urgency=low
 
   * Bug #43470: Handle UCRV */autostart through systemd
