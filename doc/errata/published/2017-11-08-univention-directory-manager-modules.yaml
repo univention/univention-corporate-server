@@ -9,3 +9,5 @@ desc: |
  * Assign well known SIDs when creating users for well known security
    identifiers like krbtgt, guest or administrator.
 bug: [44333]
+erratum: 215
+announced: 2017-11-08
