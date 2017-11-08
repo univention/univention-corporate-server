@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-updater
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * updater/maintenance_information does not crash
+   anymore when failing to receive maintenance status info
+
+bug: [44824, 45519, 45078, 44080]
