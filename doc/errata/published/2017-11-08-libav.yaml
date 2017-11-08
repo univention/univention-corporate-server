@@ -98,3 +98,5 @@ cve:
 ignore:
  - cve.CVE-2015-3395.bugzilla
  - cve.CVE-2014-7937.bugzilla
+erratum: 483
+announced: 2017-11-08
