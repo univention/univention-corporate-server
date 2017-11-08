@@ -1,3 +1,9 @@
+univention-samba4 (6.0.10-43) unstable; urgency=medium
+
+  * Bug #45596: fixed LDAP search port
+
+ -- Arvid Requate <requate@univention.de>  Wed, 08 Nov 2017 14:11:47 +0100
+
 univention-samba4 (6.0.10-42) unstable; urgency=medium
 
   * Bug #45596: fixed s4dc search filter

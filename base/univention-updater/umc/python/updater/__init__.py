@@ -213,7 +213,6 @@ class Instance(Base):
 		ucr.load()
 		if ucr.is_true('license/extended_maintenance/disable_warning'):
 			return {'show_warning': False}
-
 		version = self.uu.get_ucs_version()
 		try:
 			url = 'http://updates.software-univention.de/download/ucs-maintenance/{}.yaml'.format(version)
@@ -221,11 +220,16 @@ class Instance(Base):
 			if not response.ok:
 				response.raise_for_status()
 			status = yaml.load(response.content)
+			if not isinstance(status, dict):
+				raise yaml.YAMLError(repr(status))
 			# the yaml file contains for maintained either false, true or extended as value.
 			# yaml.load converts true and false into booleans but extended into string.
 			_maintained_status = status.get('maintained')
 			maintenance_extended = _maintained_status == 'extended'
 			show_warning = maintenance_extended or not _maintained_status
+		except yaml.YAMLError as exc:
+			MODULE.error('The YAML format is malformed: %s' % (exc,))
+			return {'show_warning': False}
 		except requests.exceptions.RequestException as exc:
 			MODULE.error("Querying maintenance information failed: %s" % (exc,))
 			return
