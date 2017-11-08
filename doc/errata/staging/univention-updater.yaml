@@ -3,10 +3,9 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-updater
-fix: 12.0.11-11A~4.2.0.201711081305
+fix: 
 desc: |
- This update addresses the following issue(s):
- * updater/maintenance_information does not crash
-   anymore when failing to receive maintenance status info
-
-bug: [44824, 45519, 45078, 44080]
+ This update addresses the following issue:
+ * The error handling has been improved during querying update servers for
+   maintenance information.
+bug: [44824]
