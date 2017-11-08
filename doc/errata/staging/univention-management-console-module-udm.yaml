@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-management-console-module-udm
-fix: 
+fix: 7.0.10-24A~4.2.0.201711081614
 desc: |
  This update addresses the following issue(s):
  * A standby animation is shown until all form values are loaded when
