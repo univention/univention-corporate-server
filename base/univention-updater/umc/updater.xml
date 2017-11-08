@@ -41,5 +41,9 @@
 		<!-- STATUS: get job status, even if job has finished -->
 		<command name="updater/installer/status" function="updater_job_status" />
 		<command name="updater/hooks/call" function="call_hooks"/>
+		<!--PARSEPROGRESS: get update progress in % -->
+		<command name="updater/installer/parseprogress" function="parseprogressresult"/>
+
+	
 	</module>
 </umc>

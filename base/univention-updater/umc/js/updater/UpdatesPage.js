@@ -46,10 +46,12 @@ define([
 ], function(declare, lang, array, all, domClass, topic, sprintf, dialog, tools, store, TitlePane, Page, Form, _) {
 	return declare("umc.modules.updater.UpdatesPage", Page, {
 
+
 		_last_reboot:	false,
 		_update_prohibited: false,
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
+		_update_runnig :false, //will be used to determine if 'check for updates' should be performed depending on if an update process is running or not
 
 		postMixInProperties: function() {
 
@@ -60,12 +62,23 @@ define([
 				headerText:		_("Available system updates"),
 				helpText:		_("Overview of all updates that affect the system as a whole.")
 			});
+
+
+			this.footerButtons = [{
+				name: 'showlog',
+				label: _('Show logfile'),
+				callback: lang.hitch(this, function() {
+					this.onClickLog();
+				})
+			}];
+
 		},
+
+
 
 		buildRendering: function() {
 
 			this.inherited(arguments);
-
 			var widgets =
 			[
 				// --------------------- Reboot pane -----------------------------
@@ -134,57 +147,77 @@ define([
 					// FIXME Manual placement: should be done by the layout framework some day.
 					style:			'width:300px;',
 					onValuesLoaded:	lang.hitch(this, function(values) {
-						// TODO check updater/installer/running, don't do anything if something IS running
-						try
-						{
-							this.onQuerySuccess('updater/updates/query');
-							var element_releases = this._form.getWidget('releases');
-							var to_show = false;
-							var to_show_msg = true;
-
-							var element_updatestext = this._form.getWidget('ucs_updates_text');
-							element_updatestext.set('content', _("There are no release updates available."));
-
-							if (values.length)
+									
+					// check if updater is running, don't check for updates if it is
+					//
+					//	this._update_running will be set to true in case an update is running
+					//	or false if it isn't
+					//
+					tools.umcpCommand('updater/installer/running', {}, false).then(lang.hitch(this, function(data) {	
+						this.isRunning = data.result;
+						if (this.isRunning == "" ) {
+							// only do this if no update is running
+							this._update_running=false;	
+							try
 							{
-								var val = values[values.length-1].id;
-								to_show = true;
-								to_show_msg = false;
-								element_releases.set('value', val);
-							}
+								this.onQuerySuccess('updater/updates/query');
+								var element_releases = this._form.getWidget('releases');
+								var to_show = false;
+								var to_show_msg = true;
 
-							var appliance_mode = (this._form.getWidget('appliance_mode').get('value') === 'true');
-							var blocking_component = this._form.getWidget('release_update_blocking_component').get('value');
-							if ((blocking_component) && (! appliance_mode)) {
-								// further updates are available but blocked by specified component which is required for update
-								element_updatestext.set('content', lang.replace(_("Further release updates are available but cannot be installed because the component '{0}' is not available for newer release versions."), [blocking_component]));
-								to_show_msg = true;
-							}
+								var element_updatestext = this._form.getWidget('ucs_updates_text');
+								element_updatestext.set('content', _("There are no release updates available."));
 
-							// hide or show combobox, spacers and corresponding button
-							this._form.showWidget('releases', to_show);
-							this._form.showWidget('hspacer_180px', to_show);
-							this._form.showWidget('vspacer_1em', to_show);
+								if (values.length)
+								{
+									var val = values[values.length-1].id;
+									to_show = true;
+									to_show_msg = false;
+									element_releases.set('value', val);
+								}
 
-							this._form.showWidget('ucs_updates_text', to_show_msg);
+								var appliance_mode = (this._form.getWidget('appliance_mode').get('value') === 'true');
+								var blocking_component = this._form.getWidget('release_update_blocking_component').get('value');
+								if ((blocking_component) && (! appliance_mode)) {
+									// further updates are available but blocked by specified component which is required for update
+									element_updatestext.set('content', lang.replace(_("Further release updates are available but cannot be installed because the component '{0}' is not available for newer release versions."), [blocking_component]));
+									to_show_msg = true;
+								}
+								// hide or show combobox, spacers and corresponding button
+								this._form.showWidget('releases', to_show);
+								this._form.showWidget('hspacer_180px', to_show);
+								this._form.showWidget('vspacer_1em', to_show);
 
-							var but = this._form._buttons.run_release_update;
-							but.set('visible', to_show);
+								this._form.showWidget('ucs_updates_text', to_show_msg);
 
-							// renew affordance to check for package updates, but only
-							// if we didn't see availability yet.
-							if (! this._updates_available)
+								var but = this._form._buttons.run_release_update;
+								but.set('visible', to_show);
+
+								// renew affordance to check for package updates, but only
+								// if we didn't see availability yet.
+								if (! this._updates_available) 
+								{
+									this._set_updates_button(false, _("Package update status not yet checked"));
+									this.standbyDuring(all([this._check_dist_upgrade(), this._check_app_updates()]));
+								}
+							}	
+							catch(error)
 							{
-								this._set_updates_button(false, _("Package update status not yet checked"));
-							}
+								console.error("onValuesLoaded: " + error.message);
+							} 
 
-							this.standbyDuring(all([this._check_dist_upgrade(), this._check_app_updates()]));
 						}
-						catch(error)
-						{
-							console.error("onValuesLoaded: " + error.message);
-						}
-					})
+						else
+						{ 
+							// notify parent page if update is already running 
+							this.onProgressResume();
+							this._update_running=true;
+						}	
+					}))		
+				})
+
+
+				
 				},
 				{
 					type:			'HiddenInput',
@@ -267,6 +300,11 @@ define([
 					name:			'app_center_updates_apps',
 					style:			'width:500px;margin-top:.5em;',
 					content:		''
+				},
+				{
+					type:			'Text',
+					label:			'',
+					name:			'app_center_updates_link'
 				}
 			];
 
@@ -282,9 +320,13 @@ define([
 					callback:	lang.hitch(this, function() {
 						var element = this._form.getWidget('releases');
 						var release = element.get('value');
-						// TODO check updater/installer/running, don't do action if a job is running
-						this.onRunReleaseUpdate(release);
-						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'release-update');
+
+						//check updater/installer/running, don't do action if a job is running
+						if (! this._update_running){
+						
+							this.onRunReleaseUpdate(release);
+							topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'release-update');
+						}
 					}),
 					visible:	false
 				},
@@ -292,8 +334,12 @@ define([
 					name:		'run_packages_update',
 					label:		_("Check for package updates"),
 					callback:	lang.hitch(this, function() {
-						this.standbyDuring(this._check_dist_upgrade());
-						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'package-update');
+
+						if (! this._update_running){
+
+							this.standbyDuring(this._check_dist_upgrade());
+							topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'package-update');
+						}
 					})
 				},
 				// If refresh isn't automatic anymore... should we show a "Refresh" button?
@@ -316,9 +362,12 @@ define([
 					name:		'easy_upgrade',
 					label:		_("Start Upgrade"), 		// FIXME Label not correct
 					callback:	lang.hitch(this, function() {
-						// TODO check updater/installer/running, don't do action if a job is running
-						this.onRunEasyUpgrade();
-						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'easy-upgrade');
+						
+						//check updater/installer/running, don't do action if a job is running	
+						if (! this._update_running){
+							this.onRunEasyUpgrade();
+							topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'easy-upgrade');
+						}
 					})
 				}
 			];
@@ -364,7 +413,7 @@ define([
 					layout:
 					[
 						['app_center_updates_text'],
-						['app_center_updates_apps']
+						['app_center_updates_apps', 'app_center_updates_link']
 					]
 				}
 			];
@@ -493,6 +542,7 @@ define([
 
 		},
 
+
 		_update_errata_link: function(version) {
 			var versionWithoutPatchlevel;
 			try {
@@ -536,11 +586,12 @@ define([
 					if (apps.length) {
 						msg = _('There are App Center updates available.');
 						var appUpdatesInfo = array.map(apps, function(app) {
-							var link = sprintf('<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'apps\', \'%(id)s\')">%(name)s</a>', app);
-							return _('%(name)s: Version %(old)s can be updated to %(new)s', {name: link, old: app.version, 'new': app.candidate_version});
+							return _('%(name)s: Version %(old)s can be updated to %(new)s', {name: app.name, old: app.version, 'new': app.candidate_version});
 						});
 						var appUpdatesList = '<ul><li>' + appUpdatesInfo.join('</li><li>') + '</li></ul>';
 						this._form.getWidget('app_center_updates_apps').set('content', appUpdatesList);
+						var link = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'appcenter\')"';
+						this._form.getWidget('app_center_updates_link').set('content', _('Please visit the <a %s>App Center Module</a> to install these updates.', link));
 					} else {
 						msg = _('There are no App Center updates available.');
 					}
@@ -658,19 +709,23 @@ define([
 		// First page refresh doesn't work properly when invoked in 'buildRendering()' so
 		// we defer it until the UI is being shown
 		startup: function() {
-
-			this.inherited(arguments);
-			this._show_reboot_pane(false);
-
+			if (! this._update_running){
+				this.inherited(arguments);
+				this._show_reboot_pane(false);
+			}
 		},
 
 		// ensures refresh whenever we're returning from any action.
 		onShow: function() {
 
-			this.inherited(arguments);
-			// show standby while loading data
-			this.standby(true);
-			this.refreshPage(true);
+			this.inherited(arguments);		
+			// we don't want any 'standby' to interfere with our progress bar if active
+			if (! this._update_running){
+
+				this.standby(true);
+				this.refreshPage(true);
+
+			}
 		},
 
 		// should refresh any data contained here. (can be called from outside when needed)
@@ -689,6 +744,7 @@ define([
 		startPolling: function() {
 			// not needed anymore.
 			// this._form.startPolling();
+			//this.onProgressResume();
 		},
 
 		// These functions are stubs that the 'updater' Module is listening to,
@@ -701,10 +757,15 @@ define([
 		},
 		onRunEasyUpgrade: function() {
 		},
+		onProgressResume: function() {
+		},
 
 		onStatusLoaded: function(vals) {
 			// event stub
+		},
+		onClickLog: function() {
 		}
+
 
 	});
 });

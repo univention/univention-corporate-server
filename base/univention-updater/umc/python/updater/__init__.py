@@ -39,18 +39,17 @@ import univention.management.console.modules as umcm
 import univention.config_registry
 
 import re
-from os import stat, getpid
+from os import stat, getpid, path, SEEK_END
 from time import time
 from subprocess import Popen
 from hashlib import md5
 from copy import deepcopy
 import univention.hooks
 import notifier.threads
-
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
-
 from univention.updater import UniventionUpdater
+
 
 _ = umc.Translation('univention-management-console-module-updater').translate
 
@@ -112,6 +111,7 @@ INSTALLERS = {
 	}
 }
 
+
 class Watched_File(object):
 	"""	A class that takes a file name and watches changes to this file.
 		We don't use any advanced technologies (FAM, inotify etc.) but
@@ -169,6 +169,235 @@ class Watched_File(object):
 
 		return self._last_returned_stamp
 
+class Progress(object):
+	"""Class to get the progress of updates according
+	to the log file (/var/log/univention/updater.log).
+	Output is stored in a dict to be polled by a progress bar
+	in auto mode
+	"""
+
+
+
+	def __init__(self, versions, numPackageTotal):
+		self._logVersions = versions
+		self.numPackageTotal = numPackageTotal
+		self._steps = 0
+		self._iPackage = 0
+		self._addPackages = True
+		self._ipercent = 0
+		self._logPackageLines = []
+		self._countDownloadedPackages = False
+		self._istep = 0
+		self._logFinalVersion = []
+		self._logCurrentVersion = []
+		self._percentOutput = 0
+		self._didRunBefore = False
+		self._logLineOriginal = ''
+		self._updateFinished = False
+		self._updateErrors = []
+		self._updateErrorCritical = False
+
+	def startMonitoring(self,logSize1,job):
+		""" main function of class Progress
+		looks for changes in log size. If size is different
+		starts processing of log and returns new log size"""
+		
+
+		if not self._didRunBefore:
+			# ----------- DEBUG -----------------
+			MODULE.info("Percent is running")
+			MODULE.info("Packages so far: %d "%self.numPackageTotal)
+			MODULE.info(" %s " %self._logVersions)
+			# -----------------------------------
+			self._didRunBefore = True
+		self.job = job
+		filename = '/var/log/univention/updater.log'
+		logSize2 = int(path.getsize(filename))
+		if logSize2 <= logSize1:
+			return (logSize2)
+		with open(filename) as fd:
+			fd.seek((logSize1-logSize2),SEEK_END)
+			self.processNewLines(fd.readlines())
+		self.poll();
+		return logSize2
+
+	def poll(self):
+		""" polling function to feed an automated progress bar
+		 refurbishes the data just like our little progress bar likes it """
+
+		regStatus = re.compile(r"status=(?P<state>\w+)")
+		if not self.job:
+			self._updateErrorCritical = True
+			self._updateFinished = True
+		else:
+			with open(INSTALLERS[self.job]['statusfile']) as s:
+				lines = s.readlines()
+				for line in lines:
+					line = line.lower()
+					matchStatus = regStatus.match(line)
+					if matchStatus:
+						if matchStatus.group("state") == 'failed':
+							self._updateErrorCritical = True
+							self._updateFinished = True
+						if matchStatus.group("state") == 'success':
+							self._updateFinished = True
+	@property
+	def values(self):
+		return  dict(
+			finished=self._updateFinished,
+			steps=self._percentOutput,
+			component=_('Updating system'),
+			info=self._logLineOriginal,
+			errors=self._updateErrors,
+			critical=self._updateErrorCritical
+		)
+
+
+	def processNewLines(self, newlines):
+		"""Read unprocessed lines from log file and process them."""
+		for line in newlines:
+			self._logLineOriginal = line
+			line = line.lower()
+			# any line with 'error:' at the beginning will be collected for error handling
+			if line.startswith('error:'):
+				self._updateErrors.append(self._logLineOriginal)
+				MODULE.error(" WARNING: %s "%self._logLineOriginal)
+			if not self.numPackageTotal:
+				self.preDistUpgrade(line)
+			else:
+				self.countPackages(line)
+	
+			if self._logFinalVersion:
+				self.findCurrentVersion(line)
+
+			# safety-switch so only the right 'Get:'s are counted
+			if not self._countDownloadedPackages:
+				if line.startswith('need to get') or line.startswith('after this operation'):
+					self._countDownloadedPackages = True
+
+
+
+	def findCurrentVersion(self, line):
+		""" in case of a dist-upgrade find the current version """
+		regCurrVers = re.compile(r"version=(?P<currVersion>[0-9.]+).*")
+		regCurrPatch = re.compile(r"patchlevel=(?P<currPatch>[0-9]*).*")
+		matchCurrVers = regCurrVers.match(line)
+		if matchCurrVers:
+			self._logCurrentVersion = []
+			self._logCurrentVersion.append(matchCurrVers.group("currVersion"))
+
+			# ----------- DEBUG -----------------
+			MODULE.info(" Found Version= %s " %self._logCurrentVersion)
+			# -----------------------------------
+
+		matchCurrPatch = regCurrPatch.match(line)
+		if matchCurrPatch:
+			MODULE.info (" Found Patchlevel= %s " %matchCurrPatch.group("currPatch"))
+			self._logCurrentVersion.append('-')
+			self._logCurrentVersion.append(matchCurrPatch.group("currPatch"))
+			self._logCurrentVersion = ''.join(self._logCurrentVersion)
+
+			# ----------- DEBUG -----------------
+			MODULE.info(" Current Version : %s " %self._logCurrentVersion)
+			# -----------------------------------
+
+			#end if Current Version = Final Version
+			if self._logCurrentVersion == self._logFinalVersion :
+				MODULE.info (' trigger update finished ')
+				self._percentOutput = 100
+				self._updateFinished = True
+				self.numPackageTotal = 0
+			else :
+			# else reset counter between upgrade-steps
+
+				# ----------- DEBUG -----------------
+				MODULE.info (" Resetting counter ")
+				# -----------------------------------
+
+				self.numPackageTotal = 0
+				self._countDownloadedPackages = False
+				if self._ipercent:
+					self._istep += 1
+				self._iPackage = 0
+
+
+	def increaseProgress(self):
+		""" calculating % """
+		self._iPackage += 0.33
+		p = 100.0 * self._iPackage / self.numPackageTotal
+		if not self._steps:
+			self._steps = 1
+		self._ipercent = p / self._steps
+
+		# ----------- DEBUG -----------------
+		MODULE.info(" %.2f "%self.totalProgress)
+		# -----------------------------------
+
+		self._percentOutput = ("%.2f" %self.totalProgress)
+
+	@property
+	def totalProgress(self):
+		return self._istep * (100.0 / self._steps) + self._ipercent
+
+	def countPackages(self, line):
+		""" count the number of already downloaded / unpacked and progressed packages """
+		regSettingUpOrUnpacking = re.compile(r"^(setting up|unpacking) .* \.\.\.\s*$")
+		if line.startswith('get:') and self._countDownloadedPackages:
+			self.increaseProgress()
+		if regSettingUpOrUnpacking.match(line):
+			self.increaseProgress()
+
+		if line.startswith('the update has been finished'):
+			MODULE.info(' trigger update finished ')
+			self._percentOutput = 100
+			self._updateFinished = True
+			self.numPackageTotal = 0
+
+
+	def preDistUpgrade(self, line):
+		""" getting the version to wich is upgraded so we can get
+		 the number of neccessary steps"""
+		regStartUpdater = re.compile(r"\*\*\*\* starting univention-updater with parameter.*--updateto', '(?P<finalVersion>[0-9.-]+)'.*")
+		if not self._logFinalVersion:
+			matchStartUpdater = regStartUpdater.match(line)
+			if matchStartUpdater:
+				self._logFinalVersion = matchStartUpdater.group("finalVersion")
+
+				# ----------- DEBUG -----------------
+				MODULE.info(" Final Version found: %s " %self._logFinalVersion)
+				# -----------------------------------
+
+				if not self._steps:
+					self._steps = len(self._logVersions[0:(self._logVersions.index(self._logFinalVersion)+1)])
+		# if not available get number of packages to be progressed
+		self.percDistUpgrade(line)
+
+
+
+	def percDistUpgrade(self, line):
+		""" in case no package number is gathered from pre-update procedures
+		this function counts the number of packages to be installed / updated """
+		if line.startswith('the following packages will be removed'):
+			self._addPackages = False
+		elif line.startswith('the following new packages will be installed') or line.startswith('the following packages will be upgraded'):
+			self._addPackages = True
+		elif line.startswith('  ') and self._addPackages:
+			self._logPackageLines.append(line)
+		elif line.startswith('after this operation'):
+			packageStr = (''.join(self._logPackageLines)).strip()
+		        r = re.compile(r"\s+")
+			packages = r.split(packageStr)
+			self.numPackageTotal = len(packages)
+			self._logPackageLines = []
+
+			# ----------- DEBUG -----------------
+			MODULE.info(" Packages: %d "%self.numPackageTotal)
+			# -----------------------------------
+
+			# +1 imaginary package so the progress won't 'rest' at 100%
+			self.numPackageTotal += 1
+
+
 class Watched_Files(object):
 	""" Convenience class to monitor more than one file at a time.
 	"""
@@ -211,7 +440,15 @@ class Instance(umcm.Base):
 	def __init__( self ):
 		umcm.Base.__init__( self )
 
+		self.numPackageTotal = 0
+		self._logVersions = []
+		self.progress = None
+
 		self.init_called = False
+
+		# get initial log size early so we don't miss any lines
+		self.last_log_size = int(path.getsize('/var/log/univention/updater.log'))
+		self.ori_log_size = self.last_log_size
 
 	def init(self):
 		try:
@@ -230,7 +467,6 @@ class Instance(umcm.Base):
 
 			self._serial_file = Watched_File(COMPONENTS_SERIAL_FILE)
 			self._updates_serial = Watched_Files(UPDATE_SERIAL_FILES)
-
 		except Exception, ex:
 			MODULE.error("init() ERROR: %s" % str(ex))
 
@@ -286,7 +522,7 @@ class Instance(umcm.Base):
 		for s in st:
 				MODULE.info("   >> %s" % s)
 		# -----------------------------------
-
+	
 		self.finished(request.id,result)
 
 	def _check_thread_error( self, thread, result, request ):
@@ -305,6 +541,32 @@ class Instance(umcm.Base):
 	def _thread_finished( self, thread, result, request ):
 		if self._check_thread_error( thread, result, request ):
 			return
+		self.finished( request.id, result )
+
+	def parseprogressresult(self, request):
+		"""Returns current updater progress """
+		#defined earlier, this is 'just in case'
+		if not self.last_log_size:
+			self.last_log_size =  int(path.getsize('/var/log/univention/updater.log'))
+
+		if not self.progress:
+			self._logVersions = self.uu.get_all_available_release_updates()[0]
+			self.progress = Progress(self._logVersions, self.numPackageTotal)
+
+		(self.last_log_size) = self.progress.startMonitoring(self.last_log_size,self.__which_job_is_running())
+		result = self.progress.values
+		if result:
+			if self.progress.values['finished']:
+				self.progress = None
+
+		# ----------- DEBUG -----------------
+		MODULE.info("### updater/updates/parseprogress returns %s ###")
+		pp = pprint.PrettyPrinter(indent=4)
+		st = pp.pformat(result).split("\n")
+		for s in st:
+			MODULE.info("###   >> %s" % s)
+		#------------------------------------
+		
 		self.finished( request.id, result )
 
 
@@ -390,7 +652,16 @@ class Instance(umcm.Base):
 		result['install'] = sorted(result['install'])
 		result['remove'] = sorted(result['remove'])
 
+		# get number of packages
+		numPackageUpdated = len(result['update'])
+		numPackageInstalled = len(result['install'])
+
+		self.numPackageTotal = numPackageUpdated + numPackageInstalled
+		# add 1 imaginary packet so progress won't rest at 100 % because of post update scripts
+		self.numPackageTotal = self.numPackageTotal + 1
+
 		self.finished(request.id,result)
+
 
 
 	def updates_available(self,request):
@@ -581,69 +852,12 @@ class Instance(umcm.Base):
 		self.finished(request.id, result)
 
 	def updater_log_file(self,request):
-		""" returns the content of the log file associated with
-			the job.
 
-			Argument 'count' has the same meaning as already known:
-			<0 ...... return timestamp of file (for polling)
-			0 ....... return whole file as a string list
-			>0 ...... ignore this many lines, return the rest of the file
-
-			*** NOTE *** As soon as we have looked for a running job at least once,
-						we know the job key and can associate it here.
-
-			TODO: honor a given 'job' argument
-		"""
-		# ----------- DEBUG -----------------
-		MODULE.info("updater/installer/logfile invoked with:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-				MODULE.info("   << %s" % s)
-		# -----------------------------------
-		result = None
-		job = ''
-		if self._current_job and 'job' in self._current_job:
-			job = self._current_job['job']
-		else:
-			job = request.options.get('job','')
-
-		count = request.options.get('count',0)
-		if count < 0:
-			result = 0
-		else:
-			result = []
-		if not job in INSTALLERS:
-			# job empty: this is the first call I can't avoid
-			if job != '':
-				MODULE.warn("   ?? Don't know a '%s' job" % job)
-		else:
-			if not 'logfile' in INSTALLERS[job]:
-				MODULE.warn("   ?? Job '%s' has no associated log file" % job)
-			else:
-				fname = INSTALLERS[job]['logfile']
-				if count < 0:
-					result = self._logstamp(fname)
-				else:
-					# don't read complete file if we have an 'ignore' count
-					if ('lines' in self._current_job) and (self._current_job['lines']):
-						count += int(self._current_job['lines'])
-					result = self._logview(fname, -count)
-
-		# again debug, shortened
-		if isinstance(result,int):
-			MODULE.info("   >> %d" % result)
-		else:
-			MODULE.info("   >> %d lines" % len(result))
-
-		# ----------- DEBUG -----------------
-		MODULE.info("updater/installer/logfile returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(result).split("\n")
-		for s in st:
-				MODULE.info("   >> %s" % s)
-		# -----------------------------------
-
+		#open log file
+		filename = '/var/log/univention/updater.log'
+		with open(filename) as fd:
+			result = fd.readlines()
+	
 		self.finished(request.id, result)
 
 
@@ -695,7 +909,7 @@ class Instance(umcm.Base):
 				if inst == '':
 					result['running'] = False
 			else:
-				# no job running but status for release was asked? 
+				# no job running but status for release was asked?
 				# maybe the server restarted after job finished
 				# and the frontend did not get that information
 				# Bug #26318
@@ -924,7 +1138,7 @@ class Instance(umcm.Base):
 ''' % (started,detail,logfile,lines,command,command)
 		p1 = subprocess.Popen( [ 'LC_ALL=C at now', ], stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True )
 		(stdout,stderr) = p1.communicate( script )
-
+	
 		if p1.returncode != 0:
 			return (p1.returncode,stderr)
 		else:
@@ -967,4 +1181,3 @@ class Instance(umcm.Base):
 										self._current_job[var] = val
 							return inst
 		return ''
-

@@ -34,12 +34,15 @@ define([
 	"dojo/_base/array",
 	"dijit/Dialog",
 	"umc/dialog",
+	"umc/tools",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Module",
 	"umc/modules/updater/UpdatesPage",
-	"umc/modules/updater/ProgressPage",
+	"umc/widgets/ProgressBar",
+	"umc/modules/updater/LogPage",
+	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, Dialog, dialog, ConfirmDialog, Module, UpdatesPage, ProgressPage, _) {
+], function(declare, lang, array, Dialog, dialog, tools, ConfirmDialog, Module, UpdatesPage, ProgressBar, LogPage, libServer, _) {
 	return declare("umc.modules.updater", Module, {
 
 		// some variables related to error handling
@@ -49,6 +52,8 @@ define([
 		_busy_dialog: null, 		// a handle to the 'connection lost' dialog while
 								// queries return with errors.
 		_error_count: 0, 		// how much errors in one row
+		
+		_reboot_required: null,
 
 		buildRendering: function() {
 
@@ -60,27 +65,16 @@ define([
 				standby: lang.hitch(this, 'standby'),
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
-			this._progress = new ProgressPage({});
+		
+			this._progressBar = new ProgressBar;
+			this.own(this._progressBar);			
+
+			this._log = new LogPage;
 
 			this.addChild(this._updates);
-			this.addChild(this._progress);
+			this.addChild(this._log);
 
-			// --------------------------------------------------------------------------
-			//
-			//		Connections that make the UI work (mostly tab switching)
-			//
-
-			this._progress.on('stopwatching', lang.hitch(this, function() {
-				// Revert to the 'Updates' page if the installer action encountered
-				// the 'reboot' affordance.
-				this.selectChild(this._updates);
-			}));
-
-			// waits for the Progress Page to notify us that a job is running
-			this._progress.on('jobstarted', lang.hitch(this, function() {
-				this._switch_to_progress_page();
-			}));
-
+			
 			// --------------------------------------------------------------------------
 			//
 			//		Connections that listen for changes and propagate
@@ -140,8 +134,26 @@ define([
 
 			// propagate the status information to other pages
 			this._updates.on('statusloaded', lang.hitch(this, function(vals) {
-				this._progress.updateStatus(vals);
+				this._updateStatus(vals);
 			}));
+
+			// open Log when triggered
+			this._updates.on('clicklog', lang.hitch(this, function() {
+				//read log every time button is clicked
+				this._log._fetch_log();
+				this.selectChild(this._log);
+			}));
+
+			// change view back to updates page (hide log)
+			this._log.on('closelog', lang.hitch(this, function() {
+				this.selectChild(this._updates);
+			}));
+
+			// shows progress bar if module is loaded while update is running in background
+			this._updates.on('progressresume', lang.hitch(this, function() {
+				this.standby(false);
+				this._query_progress();
+ 			}));
 		},
 
 		// We defer these actions until the UI is readily rendered
@@ -152,6 +164,25 @@ define([
 			this.selectChild(this._updates);
 
 		},
+		
+		_updateStatus: function(values) {
+			this._reboot_required = tools.isTrue(values.reboot_required);
+		},
+
+		_ask_for_reboot: function() {
+			if (this._reboot_required) {
+						// show an alert
+						dialog.alert(_('In order to complete the recently executed action, it is required to reboot the system.'))
+					} else {
+						// ask user to restart
+						libServer.askRestart(_('For the changes to take effect, it is recommended to perform a restart of the UMC server components.')).then(
+							function() { /* nothing to do */ },
+							function() { /* nothing at all */}
+						);
+					}
+
+		},
+
 
 		// Seperate function that can be called the same way as _call_installer:
 		// instead of presenting the usual confirm dialog it presents the list
@@ -347,7 +378,7 @@ define([
 				this.standby(false);
 				if (data.result.status === 0)
 				{
-					this._switch_to_progress_page();
+					this._query_progress();
 				}
 				else
 				{
@@ -358,27 +389,11 @@ define([
 			// (popup or login prompt) is well suited for the situation, so we don't disable it.
 			lang.hitch(this, function() {
 				this.standby(false);
-			}));
+			})
+			);
 		},
 
 
-		// Switches to the progress view: all tabs but the 'update in progess' will disappear.
-		// Remembers the currently selected tab and will restore it when finished.
-		// NOTE that we don't pass any args to the progress page since it is able
-		//		to fetch them all from the AT job.
-		_switch_to_progress_page: function() {
-
-			try
-			{
-				this.selectChild(this._progress);
-
-				this._progress.startWatching();
-			}
-			catch(error)
-			{
-				console.error("switch_progress: " + error.message);
-			}
-		},
 
 		// We must establish a NO ERROR callback too, so we can reset
 		// the error status
@@ -389,6 +404,30 @@ define([
 			{
 				this._reset_error_status();
 			}
+		},
+		// invokes a progress bar which automagically polls the updater script
+		// for current progress and stops if finished or errors occur
+		_query_progress: function() {
+			this.standby(true, this._progressBar);
+			this._progressBar.reset(_('Starting the update process...'));
+			this._progressBar.auto(
+				'updater/installer/parseprogress',
+				{},
+				lang.hitch(this, function() {
+					this.standby(false);
+					var errors = this._progressBar.getErrors();
+					if (errors.critical) {
+						// in case of errors notify user
+						dialog.alert((_('An error has occurred :') + '<br>' + '<br>' + errors.errors[0] + '<br>'+ '<br>' + _('See the log for further info !')),_('Update error'));
+					} else {
+						dialog.notify(_('The update process was successful.'));
+						this._ask_for_reboot();
+					}
+				}),
+				undefined,
+				undefined,
+				true // let our callback handle errors
+			);
 		},
 
 		// Recover after any kind of long-term failure:
@@ -409,6 +448,7 @@ define([
 				this._busy_dialog = null;
 			}
 		},
+
 
 		// Handles gracefully all things related to fatal query errors while
 		// an installer call is running. The background is that all polling
@@ -446,10 +486,7 @@ define([
 							// is already active.
 							this._updates.refreshPage();
 							this._updates.startPolling();
-							this._progress.startPolling();
-						})
-						);
-
+						}));
 
 						dialog.notify(_("Your current session has expired, or the connection to the server was lost. You must authenticate yourself again."));
 					}
