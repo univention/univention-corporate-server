@@ -1,7 +1,7 @@
 [postgrey]
 Description[de]=E-Mail-Greylisting-Dienst
 Description[en]=e-mail greylisting service
-programs=/usr/sbin/postgrey
+programs=postgrey
 icon=service/postgrey
 start_type=postgrey/autostart
 systemd=postgrey.service

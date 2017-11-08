@@ -115,7 +115,7 @@ def pidof(name, docker='/var/run/docker.pid'):
 				log.error('Failed getting parent: %s', ex)
 
 		args = commandline.split('\0')
-		if cmd[0] not in args:
+		if cmd[0] not in args and not commandline.startswith(name):
 			log.debug('skip %d: %s', pid, commandline)
 			continue
 		if len(args) >= len(cmd) > 1:

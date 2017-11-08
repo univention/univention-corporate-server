@@ -1,3 +1,10 @@
+univention-config-registry (12.0.1-8) unstable; urgency=low
+
+  * Bug #43555: handle detection of services, when their command line is a
+    single string
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 08 Nov 2017 10:37:15 +0100
+
 univention-config-registry (12.0.1-7) unstable; urgency=medium
 
   * Bug #25095: Improve wording of validate_key error messages
