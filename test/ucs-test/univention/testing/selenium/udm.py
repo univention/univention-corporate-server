@@ -94,7 +94,7 @@ class UDMBase(object):
 		time.sleep(5)
 		xpaths = ['//div[contains(concat(" ", normalize-space(@class), " "), " dgrid-row ")]']
 		webdriver.support.ui.WebDriverWait(xpaths, timeout).until(
-			self.selenium.get_all_visible_elements
+			self.selenium.get_all_visible_elements, 'wait %s for grid load' % (timeout,)
 		)
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
