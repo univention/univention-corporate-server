@@ -2265,7 +2265,7 @@ nscd -i hosts
                   <simpara>For Apple iOS there is <ulink url="http://www.irdesktop.com/">iResktop.</ulink></simpara>
                 </listitem>
                 <listitem>
-                  <simpara>For Android there are <ulink url="https://play.google.com/store/search?q=rdp+client&c=apps">multiple apps</ulink>.</simpara>
+                  <simpara>For Android there are <ulink url="https://play.google.com/store/search?q=rdp+client%26c=apps">multiple apps</ulink>.</simpara>
                 </listitem>
             </itemizedlist>
         </section>
