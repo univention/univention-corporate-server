@@ -90,14 +90,6 @@ class UDMBase(object):
 		)
 		self.wait_for_main_grid_load()
 
-	def wait_for_main_grid_load(self, timeout=60):
-		time.sleep(5)
-		xpaths = ['//div[contains(concat(" ", normalize-space(@class), " "), " dgrid-row ")]']
-		webdriver.support.ui.WebDriverWait(xpaths, timeout).until(
-			self.selenium.get_all_visible_elements
-		)
-		self.selenium.wait_until_all_standby_animations_disappeared()
-
 	def search(self, objectname):
 		# This method will work with *most* UDM modules.
 		xpath = '//input[@name="objectPropertyValue"]'
@@ -107,9 +99,16 @@ class UDMBase(object):
 		elems[0].clear()
 		elems[0].send_keys(objectname)
 		elems[0].send_keys(Keys.RETURN)
-		time.sleep(5)
-		self.selenium.wait_until_all_standby_animations_disappeared()
+		self.selenium.wait_for_main_grid_load()
 		elems[0].clear()
+
+	def wait_for_main_grid_load(self, timeout=60):
+		time.sleep(5)
+		xpaths = ['//div[contains(concat(" ", normalize-space(@class), " "), " dgrid-row ")]']
+		webdriver.support.ui.WebDriverWait(xpaths, timeout).until(
+			self.selenium.get_all_visible_elements, 'wait %s for grid load' % (timeout,)
+		)
+		self.selenium.wait_until_all_standby_animations_disappeared()
 
 
 class Computers(UDMBase):
