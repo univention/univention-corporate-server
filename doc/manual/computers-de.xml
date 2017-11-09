@@ -2110,10 +2110,10 @@ nscd -i hosts
 
 
         <section id="computers:xrdp">
-            <title>RDP Anmeldung an Systemen mit XRDP</title>
+            <title>RDP Anmeldung mit XRDP</title>
             <para>
                 XRDP ist ein auf &ucsUCS; laufender Dienst, der es Benutzern erlaubt, eine X
-                Sitzung mit dem <ulink
+                Sitzung über das <ulink
                 url="https://de.wikipedia.org/wiki/Remote_Desktop_Protocol">Remote Desktop
                 Protocol (RDP)</ulink> aufzubauen. Das Protokoll wird von Microsoft Windows und
                 vielen anderen Betriebssystemen nativ unterstützt und benötigt damit keine
@@ -2125,7 +2125,7 @@ nscd -i hosts
                 <para>
                     XRDP ist über das App Center (siehe <xref linkend="software:appcenter"/>)
                     verfügbar und kann über das entsprechende &ucsUMC; Modul App Center installiert
-                    werden. Es kann auf mehreren Systemen installiert werden. Nach der Installation
+                    werden, auch auf mehreren Systemen. Nach der Installation
                     läuft ein <ulink url="http://www.xrdp.org/">XRDP Server</ulink>.
                 </para>
             </section>
@@ -2234,7 +2234,7 @@ nscd -i hosts
                     ausgewählt werden. Ein Klick auf den rechten Pfeil fügt das Layout hinzu. Die
                     Hoch/Runter Pfeiltasten verändern die Reihenfolge in der rechten Liste der
                     <guimenu>Aktiven Layouts</guimenu>. Änderungen anwenden und Applikation
-                    schließen. Hintergrundinformationen finden sich in der <ulink
+                    schließen. Hintergrundinformationen zu dem Problem finden sich in der <ulink
                     url="https://github.com/FreeRDP/FreeRDP/wiki/Keyboard">Projekt
                     Dokumentation</ulink>.
                 </para>
