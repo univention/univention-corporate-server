@@ -1,3 +1,9 @@
+univention-pkgdb (10.0.2-3) unstable; urgency=medium
+
+  * Bug #44173: removed useless selection boxes from UMC module
+
+ -- Jannik Ahlers <ahlers@univention.de>  Thu, 09 Nov 2017 12:32:33 +0100
+
 univention-pkgdb (10.0.2-2) unstable; urgency=medium
 
   * Bug #43889: fix fuzzy entries

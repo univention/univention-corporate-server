@@ -134,7 +134,8 @@ define([
 					region: 'main',
 					actions: [],
 					columns: columns,
-					moduleStore: store(fields[0], 'pkgdb')
+					moduleStore: store(fields[0], 'pkgdb'),
+					gridOptions: {selectionMode: 'none'}
 				});
 
 				if (this._grid) {

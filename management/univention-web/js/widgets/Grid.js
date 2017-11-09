@@ -917,10 +917,11 @@ define([
 			var nItems = this.getSelectedIDs().length;
 			this._grid.collection.fetch().totalLength.then(lang.hitch(this, function(nItemsTotal) {
 				var msg = '';
+				var showCounter = !this.gridOptions || !this.gridOptions.selectionMode || this.gridOptions.selectionMode !== 'none';
 				if (typeof this.footerFormatter === "function") {
 					msg = this.footerFormatter(nItems, nItemsTotal);
 				}
-				else {
+				else if (showCounter) {
 					msg = _('%(num)d entries of %(total)d selected', {num: nItems, total: nItemsTotal});
 					if (0 === nItemsTotal) {
 						msg = _('No entries could be found');
