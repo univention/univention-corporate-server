@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-ad-connector
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Adapt to code changes in univention-lib.
+bug: [43745]
