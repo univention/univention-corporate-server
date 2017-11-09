@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Only set nameserver UCR variables from environment if not joined yet
 bug: [45172]
+erratum: 217
+announced: 2017-11-09
