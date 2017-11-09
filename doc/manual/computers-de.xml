@@ -2225,7 +2225,7 @@ nscd -i hosts
     
                 <para>
                     Bei der Anmeldung an KDE mit XRDP, wird die Tastatur standardmäßig mit dem US
-                    Layout konfiguriert. Um das zu ändern, muss das Startmenu geöffnet und zum
+                    Layout konfiguriert. Um das zu ändern, muss das Startmenü geöffnet und zum
                     <guimenu>Computer Reiter</guimenu> gewechselt werden, weiter über die
                     <guimenu>Systemeinstellungen</guimenu> zu <guimenu>Region &amp;
                     Sprachen</guimenu>. Dort muss das <guimenu>Tastatur Layout</guimenu> geöffnet
