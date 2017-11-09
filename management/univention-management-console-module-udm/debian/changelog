@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.11-41) unstable; urgency=medium
+
+  * Bug #45680: protect directory reports from unauthenticated access
+
+ -- Florian Best <best@univention.de>  Thu, 09 Nov 2017 14:42:54 +0100
+
 univention-management-console-module-udm (6.0.11-40) unstable; urgency=medium
 
   * Bug #42903: move nonempty_is_default logic into backend to prevent race
