@@ -9,3 +9,5 @@ desc: |
  * The error handling has been improved during querying update servers for
    maintenance information.
 bug: [44824]
+erratum: 219
+announced: 2017-11-09
