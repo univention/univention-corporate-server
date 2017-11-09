@@ -532,9 +532,9 @@ class ProcessorBase(Base):
 			mod.signal_disconnect('closed', notifier.Callback(self._socket_died))
 			mod.signal_disconnect('result', notifier.Callback(self.result))
 			mod.signal_disconnect('finished', notifier.Callback(self._mod_died))
-			if mod.name in self.__processes:
-				self.__processes[mod.name].__del__()
-				del self.__processes[mod.name]
+			proc = self.__processes.pop(mod.name, None)
+			if proc:
+				proc.__del__()
 
 		try:
 			mod.connect()
