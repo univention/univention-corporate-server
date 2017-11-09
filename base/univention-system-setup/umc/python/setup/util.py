@@ -46,6 +46,7 @@ import os.path
 import json
 import random
 import psutil
+import socket
 import traceback
 from contextlib import contextmanager
 
@@ -927,22 +928,52 @@ def _get_dns_resolver(nameserver):
 
 
 def is_ucs_domain(nameserver, domain):
+	return bool(get_ucs_domaincontroller_master_query(nameserver, domain))
+
+
+def get_ucs_domaincontroller_master_query(nameserver, domain):
 	if not nameserver or not domain:
-		return False
+		return
 
 	# register nameserver
 	resolver = _get_dns_resolver(nameserver)
 
 	# perform a SRV lookup
 	try:
-		resolver.query('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
-		return True
+		return resolver.query('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
 	except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer, dns.resolver.NoNameservers):
 		MODULE.warn('No valid UCS domain (%s) at nameserver %s!' % (domain, nameserver))
 	except dns.exception.Timeout as exc:
 		MODULE.warn('Lookup for DC master record at nameserver %s timed out: %s' % (nameserver, exc))
 	except dns.exception.DNSException as exc:
 		MODULE.error('DNS Exception: %s' % (traceback.format_exc()))
+
+
+def resolve_domaincontroller_master_srv_record(nameserver, domain):
+	query = get_ucs_domaincontroller_master_query(nameserver, domain)
+	if not query:
+		return False
+	try:
+		return query.response.answer[0].items[0].target.to_text().rstrip('.')
+	except IndexError:
+		return False
+
+
+def is_ssh_reachable(host):
+	if not host:
+		return False
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	try:
+		# TODO: timeout?
+		s.connect((host, 22))
+		return True
+	except EnvironmentError:
+		pass
+	finally:
+		try:
+			s.close()
+		except EnvironmentError:
+			pass
 	return False
 
 
@@ -966,6 +997,7 @@ def get_fqdn(nameserver):
 	# perform a reverse lookup
 	try:
 		reverse_address = dns.reversename.from_address(nameserver)
+		MODULE.info('Found reverse address: %s' % (reverse_address,))
 		reverse_lookup = resolver.query(reverse_address, 'PTR')
 		if not len(reverse_lookup):
 			return None
@@ -976,7 +1008,7 @@ def get_fqdn(nameserver):
 
 		return domain
 	except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer, dns.resolver.NoNameservers) as exc:
-		MODULE.warn('Lookup for nameserver %s failed: %s' % (nameserver, exc))
+		MODULE.warn('Lookup for nameserver %s failed: %s %s' % (nameserver, type(exc).__name__, exc))
 	except dns.exception.Timeout as exc:
 		MODULE.warn('Lookup for nameserver %s timed out: %s' % (nameserver, exc))
 	except dns.exception.DNSException as exc:
@@ -1099,7 +1131,7 @@ def domain_has_activated_license(nameserver, username, password):
 				'/usr/sbin/ucr',
 				'get',
 				'uuid/license'
-				], stderr=subprocess.STDOUT).rstrip()
+			], stderr=subprocess.STDOUT).rstrip()
 		except subprocess.CalledProcessError as processError:
 			appliance_name = ucr["umc/web/appliance/name"]
 			raise UMC_Error(_('''To install the {appliance_name} appliance it is necessary to have an activated UCS license on the master domain controller. During the check of the license status the following error occurred:\n{error}''').format(appliance_name=appliance_name, error=processError.output))
@@ -1114,10 +1146,10 @@ def check_credentials_ad(nameserver, address, username, password):
 		check_ad_account(ad_domain_info, username, password)
 	except failedADConnect:
 		# Not checked... no AD!
-		return None
+		raise UMC_Error(_('The connection to the Active Directory server failed. Please recheck the address.'));
 	except connectionFailed:
 		# checked: failed!
-		return False
+		raise UMC_Error(_('The connection to the Active Directory server was refused. Please recheck the password.'));
 	except notDomainAdminInAD:  # check_ad_account()
 		# checked: Not a Domain Administrator!
 		raise UMC_Error(_("The given user is not member of the Domain Admins group in Active Directory. This is a requirement for the Active Directory domain join."))
@@ -1132,7 +1164,8 @@ def check_credentials_nonmaster(dns, nameserver, address, username, password):
 		domain = '.'.join(address.split('.')[1:])
 	if not domain:
 		# Not checked... no UCS domain!
-		return None
+		raise UMC_Error(_('No UCS DC Master could be found at the address.'))
 	with _temporary_password_file(password) as password_file:
-		return_code = subprocess.call(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo', 'WORKS'])
-		return return_code == 0 and domain
+		if subprocess.call(['univention-ssh', password_file, '%s@%s' % (username, address), '/bin/true']):
+			raise UMC_Error(_('The connection to the UCS DC Master was refused. Please recheck the password.'))
+		return domain

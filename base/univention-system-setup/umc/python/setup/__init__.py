@@ -242,8 +242,7 @@ class Instance(Base, ProgressMixin):
 				self._progressParser.current.critical = True
 				self._finishedResult = True
 
-		thread = notifier.threads.Simple('save',
-			notifier.Callback(_thread, request, self), _finished)
+		thread = notifier.threads.Simple('save', notifier.Callback(_thread, request, self), _finished)
 		thread.run()
 		self.finished(request.id, None)
 
@@ -761,12 +760,20 @@ class Instance(Base, ProgressMixin):
 				dc = ad_domain_info['DC DNS Name']
 				if dc:
 					result['dc_name'] = dc
-					result['domain'] = ad_domain_info['Domain']
-					result['ucs_master'] = util.is_ucs_domain(nameserver, ad_domain_info['Domain'])
-			except (failedADConnect, connectionFailed) as e:
-				MODULE.warn('ADDS DC lookup failed: %s' % e)
+					domain = ad_domain_info['Domain']
+					result['domain'] = domain
+					result['ucs_master'] = util.is_ucs_domain(nameserver, domain)
+					ucs_master_fqdn = util.resolve_domaincontroller_master_srv_record(nameserver, domain)
+					result['ucs_master_fqdn'] = ucs_master_fqdn
+					result['ucs_master_reachable'] = util.is_ssh_reachable(ucs_master_fqdn)
+			except (failedADConnect, connectionFailed) as exc:
+				MODULE.warn('ADDS DC lookup failed: %s' % (exc,))
 		elif role == 'nonmaster':
-			fqdn = util.get_fqdn(nameserver)
+			domain = util.get_ucs_domain(nameserver)
+			if domain:
+				fqdn = util.resolve_domaincontroller_master_srv_record(nameserver, domain)
+			else:
+				fqdn = util.get_fqdn(nameserver)
 			if fqdn:
 				result['dc_name'] = fqdn
 				domain = '.'.join(fqdn.split('.')[1:])
@@ -780,7 +787,15 @@ class Instance(Base, ProgressMixin):
 	@simple_response
 	def check_credentials(self, role, dns, nameserver, address, username, password):
 		if role == 'ad':
-			return util.check_credentials_ad(nameserver, address, username, password)
+			domain = util.check_credentials_ad(nameserver, address, username, password)
+			if dns:  # "dns" means we don't want to replace the existing DC Master
+				ucs_master_fqdn = util.resolve_domaincontroller_master_srv_record(nameserver, domain)
+				if ucs_master_fqdn:
+					# if we found a _domaincontroller_master._tcp SRV record the system will be a DC Backup/Slave/Member.
+					# We need to check the credentials of this system, too, so we ensure that the System is reachable via SSH.
+					# Otherwise the join will fail with strange error like "ping to ..." failed.
+					util.check_credentials_nonmaster(False, nameserver, ucs_master_fqdn, username, password)
+			return domain
 		elif role == 'nonmaster':
 			return util.check_credentials_nonmaster(dns, nameserver, address, username, password)
 		# master? basesystem? no domain check necessary

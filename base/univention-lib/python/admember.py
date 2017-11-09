@@ -1323,7 +1323,7 @@ def get_domaincontroller_srv_record(domain, nameserver=None):
 	return None
 
 
-def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
+def add_domaincontroller_srv_record_in_ad(ad_ip, username, password, ucr=None):
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
@@ -1333,9 +1333,30 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 	domainname = ucr.get('domainname')
 	fqdn_with_trailing_dot = "%s.%s." % (hostname, domainname)
 	srv_record = "_domaincontroller_master._tcp.%s" % (domainname,)
-	if get_domaincontroller_srv_record(domainname) == fqdn_with_trailing_dot:
+	current_record = get_domaincontroller_srv_record(domainname)
+	if current_record == fqdn_with_trailing_dot:
 		ud.debug(ud.MODULE, ud.PROCESS, "Ok, SRV record %s already points to this server" % (srv_record,))
 		return True
+
+	if current_record:
+		# remove the existing SRV record. Important when replacing an existing DC Master system!
+		# we need Administrator permissions to do this.
+		ud.debug(ud.MODULE, ud.PROCESS, "Removing previous SRV record %s" % (current_record,))
+		with tempfile.NamedTemporaryFile() as fd, tempfile.NamedTemporaryFile() as fd2:
+			fd2.write(password)
+			fd2.flush()
+			fd.write('server %s\n' % ad_ip)
+			fd.write('update delete %s. SRV\n' % (srv_record,))
+			fd.write('send\n')
+			fd.write('quit\n')
+			fd.flush()
+			p1 = subprocess.Popen(['kinit', '--password-file=%s' % (fd2.name,), username, 'nsupdate', '-v', '-g', fd.name], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			stdout, stderr = p1.communicate()
+			ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
+			if p1.returncode:
+				ud.debug(ud.MODULE, ud.ERROR, "%s failed with %d (%s)" % (cmd, p1.returncode, stderr))
+				ud.debug(ud.MODULE, ud.ERROR, "failed to remove SRV record. Ignoring error.")
+			subprocess.call(['kdestroy'])
 
 	fd = tempfile.NamedTemporaryFile(delete=False)
 	fd.write('server %s\n' % ad_ip)
@@ -1346,6 +1367,7 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 	fd.close()
 
 	cmd = ['kinit', '--password-file=/etc/machine.secret']
+	# use the machine account so that the server has permissions to modify this record
 	cmd += ['%s\$' % hostname]
 	cmd += ['nsupdate', '-v', '-g', fd.name]
 	try:
@@ -1422,7 +1444,7 @@ def configure_ad_member(ad_server_ip, username, password):
 
 	run_samba_join_script(username, password)
 
-	add_domaincontroller_srv_record_in_ad(ad_server_ip)
+	add_domaincontroller_srv_record_in_ad(ad_server_ip, username, password)
 
 	if server_supports_ssl(server=ad_domain_info["DC DNS Name"]):
 		enable_ssl()

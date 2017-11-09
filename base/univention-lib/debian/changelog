@@ -1,3 +1,9 @@
+univention-lib (6.0.9-20) unstable; urgency=medium
+
+  * Bug #43745: replace _domaincontroller_master._tcp SRV record
+
+ -- Florian Best <best@univention.de>  Thu, 09 Nov 2017 20:36:33 +0100
+
 univention-lib (6.0.9-19) unstable; urgency=medium
 
   * Bug #44333: Add lib.s4.rids_for_well_known_security_identifiers

@@ -34,10 +34,12 @@ import os
 import sys
 import traceback
 from datetime import datetime
+from contextlib import contextmanager
 
+from univention.lib.package_manager import PackageManager, _PackageManagerLoggerHandler
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
-from util import PATH_SETUP_SCRIPTS, PATH_PROFILE
+from univention.management.console.modules.setup.util import PATH_SETUP_SCRIPTS, PATH_PROFILE
 
 
 def setup_i18n():
@@ -231,10 +233,8 @@ class SetupScript(object):
 		read by the parser. In a more advanced version, the script
 		could change the state of the progress directly.
 		'''
-		msg = '__%s__:%s' % (progress_attribute.upper(), msg)
-		if not msg.endswith('\n'):
-			msg += '\n'
-		sys.stdout.write(msg)
+		msg = '\n'.join('__%s__:%s' % (progress_attribute.upper(), message) for message in msg.splitlines())
+		sys.stdout.write('%s\n' % (msg,))
 		sys.stdout.flush()
 
 	def header(self, msg):
@@ -344,10 +344,6 @@ class SetupScript(object):
 		It is called at the end of run() even when an error in up()
 		or inner_run() occurred.
 		'''
-
-
-from univention.lib.package_manager import PackageManager, _PackageManagerLoggerHandler
-from contextlib import contextmanager
 
 
 class _PackageManagerLoggerHandlerWithoutProcess(_PackageManagerLoggerHandler):
