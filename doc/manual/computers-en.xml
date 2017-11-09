@@ -2162,7 +2162,7 @@ nscd -i hosts
 	</section>
 
     <section id="computers:xrdp">
-        <title>RDP login to systems using xrdp</title>
+        <title>RDP login to systems using XRDP</title>
         <para>
             XRDP is a daemon running on &ucsUCS;, which allows users to open a X session on
             the server using the <ulink
@@ -2178,7 +2178,7 @@ nscd -i hosts
                 XRDP is available through the App Center (see <xref
                 linkend="software:appcenter"/>) and can be installed using the corresponding
                 &ucsUMC; module App Center. It can be installed on multiple machines. After the
-                installation the machine runs a <ulink url="http://www.xrdp.org/">xrpd
+                installation the machine runs a <ulink url="http://www.xrdp.org/">XRDP
                 server</ulink>.
             </para>
         </section>
@@ -2218,25 +2218,25 @@ nscd -i hosts
                 </para>
                 <variablelist>
                   <varlistentry>
-                    <term>ad24b.bmp</term>
+                    <term><wordasword>ad24b.bmp</wordasword></term>
                     <listitem>
                       <simpara>24 bit color logo, 140 x 140</simpara>
                     </listitem>
                   </varlistentry>
                   <varlistentry>
-                    <term>ad256.bmp</term>
+                    <term><wordasword>ad256.bmp</wordasword></term>
                     <listitem>
                       <simpara>256 color logo, 140 x 140</simpara>
                     </listitem>
                   </varlistentry>
                   <varlistentry>
-                    <term>xrdp24b.bmp</term>
+                    <term><wordasword>xrdp24b.bmp</wordasword></term>
                     <listitem>
                       <simpara>24 bit color banner, 256 x 192</simpara>
                     </listitem>
                   </varlistentry>
                   <varlistentry>
-                    <term>xrdp256.bmp</term>
+                    <term><wordasword>xrdp256.bmp</wordasword></term>
                     <listitem>
                       <simpara>256 color banner, 256 x 192</simpara>
                     </listitem>
@@ -2262,7 +2262,7 @@ nscd -i hosts
                   </simpara>
                 </listitem>
                 <listitem>
-                  <simpara>For Apple iOS there is <ulink url="http://www.irdesktop.com/">iResktop.</ulink></simpara>
+                  <simpara>For Apple iOS there is <ulink url="http://www.irdesktop.com/"><wordasword>iResktop</wordasword></ulink>.</simpara>
                 </listitem>
                 <listitem>
                   <simpara>For Android there are <ulink url="https://play.google.com/store/search?q=rdp+client%26c=apps">multiple apps</ulink>.</simpara>
