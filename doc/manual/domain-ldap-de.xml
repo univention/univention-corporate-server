@@ -1480,7 +1480,8 @@ univention-directory-listener-ctrl resync cups-printers
 <section id="domain:backup2master">
 	<title>Umwandlung eines DC Backup zum neuen DC Master</title>
 	<para>
-		Ein &ucsBackup; speichert alle Domänendaten und alle
+		Eine UCS Domäne hat immer genau einen &ucsMaster;, kann aber beliebig viele
+		&ucsBackup; beinhalten. Ein &ucsBackup; speichert alle Domänendaten und alle
 		SSL-Sicherheitszertifikate als Kopie, im Gegensatz zum &ucsMaster;
 		können jedoch keine schreibenden Änderungen vorgenommen werden.
 	</para>
@@ -1496,25 +1497,36 @@ univention-directory-listener-ctrl resync cups-printers
 		</listitem>
 		<listitem>
 			<simpara>
-			Zum geplanten Ersetzen des &ucsMaster; durch neue Hardware
+			Zum geplanten Ersetzen des &ucsMaster; durch neue Hardware oder Wechsel der Architektur von i386 auf amd64
 			</simpara>
 		</listitem>
 	</itemizedlist>
 	<caution>
 		<para>
-	  Die Umwandlung eines &ucsBackup; in einen &ucsMaster; ist ein tief eingreifender
-	  Konfigurationsschritt und sollte gründlich vorbereitet werden! Die Umwandlung kann nicht rückgängig
-	  gemacht werden.
+		Die Umwandlung eines &ucsBackup; in einen &ucsMaster; ist ein tiefgreifender
+		Konfigurationsschritt und sollte gründlich vorbereitet werden! Die Umwandlung kann nicht rückgängig
+		gemacht werden.
+		</para>
+		<para>
+		Der zu ersetzende &ucsMaster; muss vor Beginn der Umwandlung abgeschaltet werden und darf weder während
+		der Umwandlung noch im Anschluss daran wieder in Betrieb genommen werden!
+		</para>
+		<para>
+		Im Vorfeld muss die installierte Software sowie die aktuelle Konfiguration zwischen &ucsMaster; und &ucsBackup; abgeglichen werden.
+		Wenn der &ucsMaster; wegen eines Ausfalls nicht mehr verfügbar ist, muss eine Sicherung herangezogen werden.
+		Im Nachgang an die Umwandlung müssen alle evtl. verbliebenen Referenzen auf den alten &ucsMaster; entfernt bzw. korrigiert werden.
 		</para>
 	</caution>
 	<para>
 		Die Umwandlung umfasst primär die Umstellung der für die Authentifizierung
-		relevanten Dienste wie LDAP, Kerberos oder Samba. Der Abgleich der
+		relevanten Dienste wie LDAP, DNS, Kerberos und Samba. Der Abgleich der
 		installierten Software muss manuell erfolgen (über die UMC-Module
 		<guimenu>App Center</guimenu> und <guimenu>Paket-Verwaltung</guimenu>).
 		Wenn also z.B. auf dem vorherigen DC Master die
 		Mailkomponente installiert war, ist diese nach der Umwandlung nicht automatisch
 		auf dem neuen DC Master verfügbar.
+		Um den Umfang der Nachbereitung möglichst gering zu halten, sollte im Vorfeld <xref
+		linkend="domain:fault-tolerant"/> beachtet werden.
 	</para>
 	<para>
 	  Wurden auf dem &ucsMaster; zusätzliche LDAP-Schema-Pakete installiert, so
@@ -1524,27 +1536,105 @@ univention-directory-listener-ctrl resync cups-printers
 	  erstellt werden:
 	</para>
 	  <programlisting language="sh">
-COLUMNS=200 dpkg --list &gt; dateiliste.txt
+dpkg --get-selections \* > dpkg.selection
 	  </programlisting>
 	<para>
-	  Darüber hinaus sollte der &ucsUCR;-Datenbestand gespeichert werden, um
-	  Konfigurationsanpassungen auch auf dem neuen &ucsMaster; abgleichen zu können. Dies kann mit
-	  dem folgenden Befehl erfolgen:
+	  Die so auf dem &ucsMaster; erstellte Datei sollte mit einer ebenso erstellten Datei des &ucsBackup;
+	  verglichen und benötigte Pakete auf dem &ucsBackup; nachinstalliert werden. Insbesondere alle Pakete,
+	  die ein LDAP-Schema installieren sind zwingend erforderlich. Eine Auflistung dieser LDAP-Schema-Pakete
+	  lässt sich wie folgt erstellen:
 	</para>
 	  <programlisting language="sh">
-ucr dump &gt; ucr.txt
+ls -1 /etc/ldap/schema/*.schema /usr/share/univention-ldap/schema/*.schema | xargs dpkg -S
+		</programlisting>
+	<para>
+		Um einfach alle installierten Pakete des &ucsMaster; auch auf dem &ucsBackup; zu installieren,
+		kann die zuvor auf dem &ucsMaster; erstellte Datei <filename>dpkg.selection</filename> mit
+		folgenden Befehlen verwendet werden:
+	</para>
+	  <programlisting language="sh">
+dpkg --set-selections < dpkg.selection
+apt-get dselect-upgrade
 	  </programlisting>
 	<para>
-	  Die Umwandlung eines DC Backup zum neuen DC Master erfolgt durch Aufruf des
-	  Befehls <command>/usr/lib/univention-ldap/univention-backup2master</command>.
+	  Darüber hinaus sollte der &ucsUCR;-Datenbestand gesichert werden, um
+	  Konfigurationsanpassungen auch auf dem neuen &ucsMaster; abgleichen zu können. Folgende Dateien
+	  des &ucsMaster; sind dazu mit denen auf dem &ucsBackup; zu vergleichen:
+	</para>
+	  <programlisting language="sh">
+/etc/univention/base.conf
+/etc/univention/base-forced.conf
+	  </programlisting>
+	<para>
+	  Eine nächtliche Sicherung dieser Dateien findet sich auch in <filename>/var/univention-backup/ucr-backup_%Y%m%d.tgz</filename>
+	</para>
+	<para>
+	  Die Umwandlung eines &ucsBackup; zum neuen &ucsMaster; erfolgt dann durch Aufruf des
+	  Befehls <command>/usr/lib/univention-ldap/univention-backup2master</command> auf dem &ucsBackup;.
 	  Das System muss anschließend neu gestartet werden. Die Umstellung wird in der Logdatei
 	  <filename>/var/log/univention/backup2master.log</filename> protokolliert.
 	</para>
 	<para>
-	  Der Rechnername und/oder die IP-Adresse des &ucsMaster; wird im Rahmen der Umwandlung in allen aus dem UCS-LDAP oder
-	  durch &ucsUCR; verwalteten Konfigurationen automatisch auf den neuen Namen angepasst. Wird der
-	  Name in Konfigurationsdateien oder auf Systemen referenziert, die nicht durch &ucsUCR; verwaltet werden, muss er
-	  nach der Umwandlung angepasst werden.
+	  Folgende Schritte führt der Befehl <command>univention-backup2master</command> der Reihe nach aus:
+	</para>
+	<itemizedlist>
+		<listitem>
+			<simpara>
+			Prüfung der Umgebung - das System muss über &ucsUCR; verfügen, ein &ucsBackup; und der Domäne beigetreten sein,
+			der &ucsMaster; muss per DNS auflösbar und eine Verbindung zum Repositoryserver möglich sein. Zudem darf der
+			&ucsMaster; nicht mehr im Netzwerk erreichbar sein.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+			Nun werden die wichtigsten Dienste OpenLDAP, Samba, Kerberos sowie Univention Directory Notifier und Listener gestoppt,
+			elementare &ucsUCRV; wie <envar>ldap/master</envar> und <envar>server/role</envar> umgestellt, das UCS Root CA Zertifikat
+			vom Webserver des &ucsBackup; abrufbar gemacht und die oben genannten Dienste wieder gestartet.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+			Der DNS SRV Eintrag <literal>kerberos-adm</literal> wird vom alten auf den neuen &ucsMaster; geändert
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+			Sofern vorhanden, wird der Univention S4 Connector (siehe <xref linkend="windows:s4connector"/>) vom Rechnerobjekt des
+			alten &ucsMaster; entfernt und auf dem neuen &ucsMaster; zur erneuten Konfiguration vorgemerkt.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+			Im OpenLDAP wird die Serverrolle des neuen &ucsMaster; auf "domaincontroller_master" geändert.
+			Ebenfalls wird der DNS SRV Eintrag <literal>_domaincontroller_master._tcp</literal> korrigiert.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+			Sofern vorhanden werden die Einträge des alten &ucsMaster; aus der lokalen Samba-Datenbank des neuen &ucsMaster; entfernt.
+			Zudem werden die FSMO-Rollen auf den neuen &ucsMaster; übertragen.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+			Anschließend wird das Rechnerobjekt des alten &ucsMaster; im OpenLDAP gelöscht.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+			Nun wird das LDAP nach Referenzen auf den alten &ucsMaster; durchsucht. Alle gefundenen Referenzen werden angezeigt
+			und es wird eine Korrektur vorgeschlagen, welche einzeln geprüft und bestätigt werden muss, bspw. weitere DNS-Einträge.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+			Zum Abschluss wird das Paket <package>univention-server-backup</package> durch <package>univention-server-master</package> ersetzt.
+			</simpara>
+		</listitem>
+	</itemizedlist>
+	<para>
+		Im Anschluss sollte sowohl &ucsUCR; auf allen UCS-Systemen der Domäne als auch das LDAP auf dem jetzt neuen &ucsMaster;
+		hinsichtlich Verweisen auf den Namen und die IP-Adresse des alten &ucsMaster; überprüft und diese ggf. angepasst werden.
 	</para>
 </section>
 
@@ -1558,3 +1648,4 @@ ucr dump &gt; ucr.txt
 </section>
 
 </chapter>
+
