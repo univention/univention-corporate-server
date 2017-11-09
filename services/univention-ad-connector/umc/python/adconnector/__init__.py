@@ -509,7 +509,7 @@ class Instance(Base, ProgressMixin):
 			admember.run_samba_join_script(username, password)
 
 			_progress(85, _('Configuring DNS entries...'))
-			admember.add_domaincontroller_srv_record_in_ad(ad_server_ip)
+			admember.add_domaincontroller_srv_record_in_ad(ad_server_ip, username, password)
 			admember.add_host_record_in_ad(uid=username, bindpw=password, sso=True)
 
 			admember.make_deleted_objects_readable_for_this_machine(username, password)
