@@ -175,6 +175,7 @@
 			<title>Univention Directory Reports</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The Univention Directory Reports created via the UMC are now access protected (<u:bug>45680</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
