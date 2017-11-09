@@ -2162,7 +2162,7 @@ nscd -i hosts
                         <envar>xrdp/title</envar> und <envar>xrdp/imagedir</envar> angepasst werden.
                         Das Verzeichnis muss vier Bilddateien im Windows Bitmap Format enthalten. Die
                         ersten beiden werden als rechteckiges Logo an der linken Seite des
-                        Eingebafeldes verwendet und die anderen beiden Dateien werden für das Banner
+                        Eingabefeldes verwendet und die anderen beiden Dateien werden für das Banner
                         genutzt, dass unter dem Eingabefenster angezeigt wird.
                     </para>
                     <variablelist>
@@ -2221,11 +2221,11 @@ nscd -i hosts
             </section>
     
             <section id="computers:xrdp:know_issues">
-                <title>Bekannte Problene: Falsches Keyboard Layout</title>
+                <title>Bekannte Probleme: Falsches Keyboard Layout</title>
     
                 <para>
                     Bei der Anmeldung an KDE mit XRDP, wird die Tastatur standardmäßig mit dem US
-                    Layout konfiguriert. Um das zu ändern, muss das K-Menu geöffnet und zum
+                    Layout konfiguriert. Um das zu ändern, muss das Startmenu geöffnet und zum
                     <guimenu>Computer Reiter</guimenu> gewechselt werden, weiter über die
                     <guimenu>Systemeinstellungen</guimenu> zu <guimenu>Region &amp;
                     Sprachen</guimenu>. Dort muss das <guimenu>Tastatur Layout</guimenu> geöffnet
@@ -2247,7 +2247,7 @@ nscd -i hosts
                   <varlistentry>
                     <term>VNC</term>
                     <listitem>
-                      <simpara>Virtual Network Connect bietet ein einfacheres Protokoll, das zum Beispiel für KVM verwendet wird.</simpara>
+                      <simpara><wordasword>Virtual Network Connect</wordasword> bietet ein einfacheres Protokoll, das zum Beispiel für KVM verwendet wird.</simpara>
                     </listitem>
                   </varlistentry>
                   <varlistentry>
