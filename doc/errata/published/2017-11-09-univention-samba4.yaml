@@ -11,3 +11,5 @@ desc: |
  * Some special options for the join of Samba Slaves PDC's
    in UCS@school were ignored. This has been fixed.
 bug: [45596, 44885]
+erratum: 218
+announced: 2017-11-09
