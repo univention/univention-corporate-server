@@ -1,12 +1,8 @@
-# Univention System Setup
-# Copyright (C) 2015-2017 Univention GmbH
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-22 13:38+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2017-11-09 20:57+0100\n"
 "PO-Revision-Date: 2015-06-01 10:13+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -16,11 +12,7 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 "Language: de\n"
 
-#: usr/share/univention-system-setup-boot/www/main.js:44
-msgid "Welcome to UCS initial configuration"
-msgstr "Willkommen zum initialen UCS Konfigurationssetup"
-
-#: usr/share/univention-system-setup-boot/www/main.js:51
+#: usr/share/univention-system-setup-boot/www/main.js:50
 msgid ""
 "Before starting the setup wizard, an initial password for the <i>root</i> "
 "user must be set."
@@ -28,7 +20,7 @@ msgstr ""
 "Bevor der Einrichtungsassistent gestartet werden kann, muss ein initiales "
 "Passwort für den <i>root</i> Benutzer gesetzt werden."
 
-#: usr/share/univention-system-setup-boot/www/main.js:54
+#: usr/share/univention-system-setup-boot/www/main.js:52
 msgid ""
 "Connect to this server instance as <i>root</i> via ssh and your selected "
 "private ssh key. "
@@ -36,21 +28,28 @@ msgstr ""
 "Verbinden Sie sich per ssh mit der Serverinstanz als <i>root</i> und dem "
 "gewählten privaten ssh Schlüssel. "
 
-#: usr/share/univention-system-setup-boot/www/main.js:55
+#: usr/share/univention-system-setup-boot/www/main.js:59
+msgid ""
+"If a password for <i>root</i> has been set, <a "
+"href='/univention/setup/?username=root'>start the setup wizard</a>."
+msgstr ""
+"Wenn das Passwort für <i>root</i> gesetzt wurde, <a "
+"href='/univention/setup/?username=root'>starten Sie den "
+"Einrichtungsassistenten</a>."
+
+#: usr/share/univention-system-setup-boot/www/main.js:53
 msgid ""
 "Set a password with <i>passwd</i>, e.g., by issuing the following command:"
 msgstr ""
 "Setzen Sie ein Passwort mit <i>passwd</i>, beispielsweise mit folgendem "
 "Befehl:"
 
-#: usr/share/univention-system-setup-boot/www/main.js:57
-msgid "ssh -ti &lt;path/to/privatekey&gt; root@%(serveraddress)s passwd"
-msgstr "ssh -ti &lt;pfad/zum/privatschlüssel&gt; root@%(serveraddress)s passwd"
+#: usr/share/univention-system-setup-boot/www/main.js:44
+msgid "Welcome to UCS initial configuration"
+msgstr "Willkommen zum initialen UCS Konfigurationssetup"
 
-#: usr/share/univention-system-setup-boot/www/main.js:61
-msgid ""
-"If a password for <i>root</i> has been set, <a href='/univention/setup/?"
-"username=root'>start the setup wizard</a>."
+#: usr/share/univention-system-setup-boot/www/main.js:55
+#, python-format
+msgid "ssh -ti &lt;path/to/privatekey&gt; root@%(serveraddress)s passwd"
 msgstr ""
-"Wenn das Passwort für <i>root</i> gesetzt wurde, <a href='/univention/setup/?"
-"username=root'>starten Sie den Einrichtungsassistenten</a>."
+"ssh -ti &lt;pfad/zum/privatschlüssel&gt; root@%(serveraddress)s passwd"
