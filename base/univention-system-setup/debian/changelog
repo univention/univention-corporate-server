@@ -1,3 +1,10 @@
+univention-system-setup (10.0.10-45) unstable; urgency=medium
+
+  * Bug #43745: make it possible to replace the DC Master which was
+    prior joined into an Active Directory Domain
+
+ -- Florian Best <best@univention.de>  Thu, 09 Nov 2017 20:44:18 +0100
+
 univention-system-setup (10.0.10-44) unstable; urgency=medium
 
   * Bug #43745: make joining into AD domains possible if a dead
