@@ -3,6 +3,7 @@
 ## packages:
 ##  - univention-management-console-module-join
 ## roles:
+##  - domaincontroller_backup
 ##  - domaincontroller_master
 ## exposure: dangerous
 

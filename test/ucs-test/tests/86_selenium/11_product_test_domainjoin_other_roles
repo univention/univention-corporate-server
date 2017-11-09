@@ -3,7 +3,6 @@
 ## packages:
 ##  - univention-management-console-module-join
 ## roles:
-##  - domaincontroller_backup
 ##  - domaincontroller_slave
 ##  - memeberserver
 ## exposure: dangerous
