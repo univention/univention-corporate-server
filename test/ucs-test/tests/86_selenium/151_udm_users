@@ -131,7 +131,7 @@ class UMCTester(object):
 		self.selenium.click_checkbox_of_grid_entry(username)
 		self.selenium.click_text(_('more'))
 		self.selenium.click_text(_('Move to...'))
-		self.selenium.click_grid_entry(container_name, scroll_into_view=True)
+		self.selenium.click_tree_entry(container_name, scroll_into_view=True)
 		self.selenium.click_button(_('Move user'))
 		self.users.wait_for_main_grid_load()
 
