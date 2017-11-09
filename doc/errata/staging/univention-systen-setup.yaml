@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-systen-setup
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * When joining into an Active Directory domain where an UCS system is already
+   part of an dialog to replace this system is shown if that system is not
+   reachable.
+ * The detection of the domaincontroller master FQDN during the initial system
+   configuration has been fixed if the nameserver is not the DC Master.
+bug: [43745, 45170]
