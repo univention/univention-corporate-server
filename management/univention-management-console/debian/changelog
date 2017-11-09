@@ -1,3 +1,10 @@
+univention-management-console (9.0.80-80) unstable; urgency=medium
+
+  * Bug #45676: fix a UMC-Server crash caused by a threading issue during
+  	cleanup when connecting to a module process fails
+
+ -- Florian Best <best@univention.de>  Thu, 09 Nov 2017 10:46:22 +0100
+
 univention-management-console (9.0.80-79) unstable; urgency=medium
 
   * Bug #45597: The automatic redirection to the SAML single sign-on
