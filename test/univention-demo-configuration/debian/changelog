@@ -1,3 +1,9 @@
+univention-demo-configuration (5.0.2-14) unstable; urgency=medium
+
+  * Bug #44397: Enabled HTML encoding to fix cross site scripting issue
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 08 Nov 2017 15:34:00 +0200
+
 univention-demo-configuration (5.0.2-13) unstable; urgency=medium
 
   * Bug #45480: Let the help overlay be closable by clicking anywhere

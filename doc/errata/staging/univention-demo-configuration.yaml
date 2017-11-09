@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-demo-configuration
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * A web page supplied by the univention-demo-configuration package allowed cross site scripting.
+bug: [44397]

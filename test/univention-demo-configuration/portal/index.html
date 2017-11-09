@@ -29,10 +29,10 @@
 			};
 
 			var umcConfig = {
-				deps: ["dojo/_base/lang", "dojo/_base/kernel", "dojo/io-query", "dojo/dom", "dojo/topic", "umc/piwik"],
+				deps: ["dojo/_base/lang", "dojo/_base/kernel", "dojo/io-query", "dojo/dom", "dojo/topic", "dojox/html/entities", "umc/piwik"],
 				forceLogin: false,
 				loadHooks: false,
-				callback: function(lang, dojo, ioQuery, dom, topic) {
+				callback: function(lang, dojo, ioQuery, dom, topic, entities) {
 					function _(text, args) {
 						if (dojo.locale == 'de-DE' || dojo.locale == 'de_DE') {
 							text = _de[text] || text;
@@ -46,8 +46,10 @@
 						data = ioQuery.queryToObject(query.substring(1));
 					}
 					topic.publish('/umc/actions', 'demo-app', data.catalogID);
-					dom.byId('title').innerHTML = data.label;
-					dom.byId('message').innerHTML = _('This is a demo system on which no external Apps are installed. To find more information about {label}, visit the <a href="https://www.univention.com/products/univention-app-center/app-catalog/{catalogID}/">Univention App Catalog</a> on the Univention website or <a href="https://www.univention.com/downloads/">download</a> and install a UCS system yourself.', data);
+					var label_enc = entities.encode(data.label);
+					var catalogID_enc = entities.encode(data.catalogID);
+					dom.byId('title').innerHTML = label_enc;
+					dom.byId('message').innerHTML = _('This is a demo system on which no external Apps are installed. To find more information about {label}, visit the <a href="https://www.univention.com/products/univention-app-center/app-catalog/{catalogID}/">Univention App Catalog</a> on the Univention website or <a href="https://www.univention.com/downloads/">download</a> and install a UCS system yourself.', lang.mixin({}, data, {label: label_enc, catalogID: catalogID_enc}));
 					dom.byId('icon').src = lang.replace("/univention/portal/icons/entries/{cn}.svg", data);
 				}
 			};
