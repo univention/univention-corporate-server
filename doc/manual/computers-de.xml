@@ -2119,7 +2119,7 @@ nscd -i hosts
                 vielen anderen Betriebssystemen nativ unterstützt und benötigt damit keine
                 Installation von zusätzlicher Software auf Client PCs.
             </para>
-    
+
             <section id="computers:xrdp:installation">
                 <title>Installation</title>
                 <para>
@@ -2129,13 +2129,13 @@ nscd -i hosts
                     läuft ein <ulink url="http://www.xrdp.org/">XRDP Server</ulink>.
                 </para>
             </section>
-    
+
             <section id="computers:xrdp:configuration">
                 <title>Konfiguration</title>
-                
+
                 <section id="computers:xrdp:allowed_users">
                     <title>Erlaubte Benutzer</title>
-    
+
                     <para>
                         Standardmäßig dürfen sich alle Benutzer der UNIX Gruppe <systemitem
                         class="groupname">Domain Admins</systemitem> über RDP verbinden. Der Name der
@@ -2143,20 +2143,20 @@ nscd -i hosts
                         werden.
                     </para>
                 </section>
-    
+
                 <section id="computers:xrdp:concurrent_sessions">
                     <title>Maximale Anzahl gleichzeitiger Sitzungen</title>
-    
+
                     <para>
                         Die maximale Anzahl gleichzeitiger RDP Sitzungen ist standardmäßig auf
                         <literal>10</literal> beschränkt und kann mit der &ucsUCRV;
                         <envar>xrdp/sessions/max</envar> geändert werden.
                     </para>
                 </section>
-    
+
                 <section id="computers:xrdp:login_customization">
                     <title>Anpassung Anmeldefenster</title>
-    
+
                     <para>
                         Der Titel und die Bilder im Anmeldefenster können über die &ucsUCRV;
                         <envar>xrdp/title</envar> und <envar>xrdp/imagedir</envar> angepasst werden.
@@ -2167,25 +2167,25 @@ nscd -i hosts
                     </para>
                     <variablelist>
                       <varlistentry>
-                        <term><wordasword>ad24b.bmp</wordasword></term>
+                        <term><filename>ad24b.bmp</filename></term>
                         <listitem>
                           <simpara>24 bit farbiges Logo, 140 x 140</simpara>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
-                        <term><wordasword>ad256.bmp</wordasword></term>
+                        <term><filename>ad256.bmp</filename></term>
                         <listitem>
                           <simpara>256 farbiges Logo, 140 x 140</simpara>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
-                        <term><wordasword>xrdp24b.bmp</wordasword></term>
+                        <term><filename>xrdp24b.bmp</filename></term>
                         <listitem>
                           <simpara>24 bit farbiges Banner, 256 x 192</simpara>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
-                        <term><wordasword>xrdp256.bmp</wordasword></term>
+                        <term><filename>xrdp256.bmp</filename></term>
                         <listitem>
                           <simpara>256 farbiges Banner, 256 x 192</simpara>
                         </listitem>
@@ -2193,10 +2193,10 @@ nscd -i hosts
                     </variablelist>
                 </section>
             </section>
-    
+
             <section id="computers:xrdp:client_software">
                 <title>Client Software</title>
-    
+
                 <itemizedlist>
                     <listitem>
                       <simpara>
@@ -2219,10 +2219,10 @@ nscd -i hosts
                     </listitem>
                 </itemizedlist>
             </section>
-    
+
             <section id="computers:xrdp:know_issues">
                 <title>Bekannte Probleme: Falsches Keyboard Layout</title>
-    
+
                 <para>
                     Bei der Anmeldung an KDE mit XRDP, wird die Tastatur standardmäßig mit dem US
                     Layout konfiguriert. Um das zu ändern, muss das Startmenü geöffnet und zum
@@ -2239,10 +2239,10 @@ nscd -i hosts
                     Dokumentation</ulink>.
                 </para>
             </section>
-    
+
             <section id="computers:xrdp:alternatives">
                 <title>Alternativen</title>
-                
+
                 <variablelist>
                   <varlistentry>
                     <term>VNC</term>
