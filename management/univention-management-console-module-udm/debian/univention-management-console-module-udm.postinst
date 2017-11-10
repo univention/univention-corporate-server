@@ -52,8 +52,8 @@ univention-config-registry set directory/manager/web/modules/groups/group/checks
 univention-config-registry set umc/module/udm/users/self/disabled?true
 
 # activate new sites
-a2ensite univention-directory-manager.conf
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 6.0.11-41; then
+a2ensite univention-directory-manager
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 6.0.11-42; then
 	invoke-rc.d apache2 reload
 fi
 
