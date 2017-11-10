@@ -338,6 +338,13 @@ install_ucs_test () {
 	install_selenium
 }
 
+install_ucs_test_checks_from_errata_test () {
+	local rv=0
+	bash /root/activate-errata-test-scope.sh || rv=$?
+	install_with_unmaintained ucs-test-checks || rv=$?
+	return $rv
+}
+
 install_additional_packages () {
 	[ $# -ge 1 ] || return 0
 	install_with_unmaintained "$@"
@@ -798,6 +805,7 @@ assert_app_is_installed_and_latest () {
 }
 
 assert_app_is_installed () {
+	univention-app info
 	local rv=0 app
 	for app in "$@"; do
 		 univention-app info | grep -q "Installed: .*\b$app\b.*" || rv=$?
