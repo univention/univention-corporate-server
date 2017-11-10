@@ -32,19 +32,6 @@
 
 case "$1" in
 	configure)
-		if [ ! -e /var/www/statistik/index.htm ]; then
-			echo "<HTML>"												>>/var/www/statistik/index.htm
-			echo "<HEAD>"												>>/var/www/statistik/index.htm
-			echo "</HEAD>"												>>/var/www/statistik/index.htm
-			echo "<BODY BGCOLOR=\"#F0F0F0\">"							>>/var/www/statistik/index.htm
-			echo ""														>>/var/www/statistik/index.htm
-			echo "No data available. </br> </br>"						>>/var/www/statistik/index.htm
-			echo ""														>>/var/www/statistik/index.htm
-			echo "Start \"/usr/sbin/univention-maintenance\" manually"	>>/var/www/statistik/index.htm
-			echo "</BODY>"												>>/var/www/statistik/index.htm
-			echo "</HTML>"												>>/var/www/statistik/index.htm
-		fi
-
 		if [ -z "$2" ]; then
 			#run script every 15 minutes
 			univention-config-registry set mrtg/cron?"*/15 * * * *" \
@@ -66,5 +53,10 @@ esac
 #DEBHELPER#
 
 a2enmod authz_groupfile
+
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "9.0.0-5"; then
+	mv /var/www/statistik/* /usr/share/univention-maintenance/
+	rmdir /var/www/statistik
+fi
 
 exit 0

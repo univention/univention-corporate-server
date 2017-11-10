@@ -32,11 +32,12 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojox/html/entities",
 	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/TabbedModule",
 	"umc/i18n!umc/modules/mrtg"
-], function(declare, lang, array, Page, Text, TabbedModule, _) {
+], function(declare, lang, array, entities, Page, Text, TabbedModule, _) {
 	return declare("umc.modules.mrtg", TabbedModule, {
 
 		_page: null,
@@ -90,7 +91,7 @@ define([
 
 				array.forEach(tab_setup, function(tab) {
 					child.addChild(new Text({
-						content: lang.replace('<h3>{0}</h3><img src="/statistik/ucs_{1}-{2}.png">', [tab.label, page.key, tab.key])
+						content: lang.replace('<h3>{0}</h3><img src="/univention/command/mrtg/statistic/get?filename=ucs_{1}-{2}.png">', [entities.encode(tab.label), entities.encode(encodeURIComponent(page.key)), entities.encode(encodeURIComponent(tab.key))])
 					}));
 				});
 			}));

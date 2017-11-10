@@ -1,3 +1,9 @@
+univention-management-console-module-mrtg (5.0.0-3) unstable; urgency=medium
+
+  * Bug #45192: mrtg statistics under /var/www/statistic are now access protected and get delivered to UMC via backend
+
+ -- Jannik Ahlers <ahlers@univention.de>  Mon, 20 Nov 2017 11:39:03 +0100
+
 univention-management-console-module-mrtg (5.0.0-2) unstable; urgency=medium
 
   * Bug #23837: add ucslint to build process
