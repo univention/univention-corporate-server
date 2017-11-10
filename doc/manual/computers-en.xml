@@ -2169,7 +2169,7 @@ nscd -i hosts
             url="https://en.wikipedia.org/wiki/Remote_Desktop_Protocol">Remote Desktop
             Protocol (RDP)</ulink>. This protocol is natively supported by Microsoft
             Windows and many other operating systems and thus does not require additional
-            software to be installed on the client PCs. 
+            software to be installed on the client PCs.
         </para>
 
         <section id="computers:xrdp:installation">
@@ -2185,14 +2185,14 @@ nscd -i hosts
 
         <section id="computers:xrdp:configuration">
             <title>Configuration</title>
-            
+
             <section id="computers:xrdp:allowed_users">
                 <title>Allowed users</title>
 
                 <para>
                     By default all users of the UNIX group <systemitem class="groupname">Domain
                     Admins</systemitem> are allowed to connect using RDP. The name of the group can
-                    be changed by setting the &ucsUCRV; <envar>xrdp/access/admins</envar>. 
+                    be changed by setting the &ucsUCRV; <envar>xrdp/access/admins</envar>.
                 </para>
             </section>
 
@@ -2202,7 +2202,7 @@ nscd -i hosts
                 <para>
                     The maximum number of concurrently running RDP sessions is by default limited
                     to <literal>10</literal> and can be changed using the &ucsUCRV;
-                    <envar>xrdp/sessions/max</envar>. 
+                    <envar>xrdp/sessions/max</envar>.
                 </para>
             </section>
 
@@ -2214,29 +2214,29 @@ nscd -i hosts
                     &ucsUCRV; <envar>xrdp/title</envar> and <envar>xrdp/imagedir</envar>. The
                     directory must contain 4 images using the Windows bitmap format. The first two
                     are used as the rectangular logo at the left side on the input fields, the
-                    other two are used for the banner displayed below the input window: 
+                    other two are used for the banner displayed below the input window:
                 </para>
                 <variablelist>
                   <varlistentry>
-                    <term><wordasword>ad24b.bmp</wordasword></term>
+                    <term><filename>ad24b.bmp</filename></term>
                     <listitem>
                       <simpara>24 bit color logo, 140 x 140</simpara>
                     </listitem>
                   </varlistentry>
                   <varlistentry>
-                    <term><wordasword>ad256.bmp</wordasword></term>
+                    <term><filename>ad256.bmp</filename></term>
                     <listitem>
                       <simpara>256 color logo, 140 x 140</simpara>
                     </listitem>
                   </varlistentry>
                   <varlistentry>
-                    <term><wordasword>xrdp24b.bmp</wordasword></term>
+                    <term><filename>xrdp24b.bmp</filename></term>
                     <listitem>
                       <simpara>24 bit color banner, 256 x 192</simpara>
                     </listitem>
                   </varlistentry>
                   <varlistentry>
-                    <term><wordasword>xrdp256.bmp</wordasword></term>
+                    <term><filename>xrdp256.bmp</filename></term>
                     <listitem>
                       <simpara>256 color banner, 256 x 192</simpara>
                     </listitem>
@@ -2290,7 +2290,7 @@ nscd -i hosts
 
         <section id="computers:xrdp:alternatives">
             <title>Alternatives</title>
-            
+
             <variablelist>
               <varlistentry>
                 <term>VNC</term>
