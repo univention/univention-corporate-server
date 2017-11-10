@@ -68,7 +68,7 @@ define([
 		// replace IPv4 address inside IPv6 address
 		if (tools.isIPv4Address(parts[parts.length - 1])) {
 			// parse bytes of IPv4 address 
-			ipv4Parts = parts[parts.length - 1].split('.');
+			var ipv4Parts = parts[parts.length - 1].split('.');
 			for (var i = 0; i < 4; ++i) {
 				var byte = parseInt(ipv4Parts[i], 10);
 				ipv4Parts[i] = sprintf('%02x', byte);
@@ -193,7 +193,7 @@ define([
 		}
 		var i;
 		for (i = 0; i < Math.min(browserHostname.length, hostname.length); ++i) {
-			if (browserHostname[i] != hostname[i]) {
+			if (browserHostname[i] !== hostname[i]) {
 				break;
 			}
 		}
@@ -215,9 +215,9 @@ define([
 			var linkType = _getAddressType(linkHostname);
 			var linkProtocolType = _getProtocolType(ilink);
 			var addressMatchScore = 0;
-			if (browserLinkType == linkType) {
+			if (browserLinkType === linkType) {
 				// FQDNs are matched backwards, IP addresses forwards
-				matchBackwards = linkType == 'fqdn' ? true : false;
+				var matchBackwards = linkType === 'fqdn' ? true : false;
 				addressMatchScore = _scoreAddressMatch(canonicalizedBrowserHostname, canonicalizedLinkHostname, matchBackwards);
 			}
 			return {
@@ -233,7 +233,7 @@ define([
 
 		function _cmp(x, y) {
 			for (var i = 0; i < x.scores.length; ++i) {
-				if (x.scores[i] == y.scores[i]) {
+				if (x.scores[i] === y.scores[i]) {
 					continue;
 				}
 				if (x.scores[i] < y.scores[i]) {
@@ -267,7 +267,7 @@ define([
 		var localLinks = [];
 		array.forEach(links, function(ilink) {
 			var uri = getAnchorElement(ilink);
-			if (uri.hostname == serverFQDN) {
+			if (uri.hostname === serverFQDN) {
 				uri.hostname = browserHostname;
 				localLinks.push(uri.href);
 			}
@@ -324,15 +324,15 @@ define([
 	};
 
 	// adjust white styling of header via extra CSS class
-	if (lang.getObject('portal.fontColor', false, portalContent) == 'white') {
+	if (lang.getObject('portal.fontColor', false, portalContent) === 'white') {
 		try {
-			domClass.add(dojo.byId('umcHeader'), 'umcWhiteIcons');
+			domClass.add(dom.byId('umcHeader'), 'umcWhiteIcons');
 		} catch(err) { }
 	}
 
 	// remove display=none from header 
 	try {
-		domClass.remove(dojo.byId('umcHeaderRight'), 'dijitDisplayNone');
+		domClass.remove(dom.byId('umcHeaderRight'), 'dijitDisplayNone');
 	} catch(err) { }
 
 	var locale = i18nTools.defaultLang().replace(/-/, '_');
@@ -343,7 +343,7 @@ define([
 			// set title
 			var portal = portalContent.portal;
 			var title = dom.byId('portalTitle');
-			var portalName = lang.replace(portal.name[locale] || portal.name.en_US, tools._status);
+			var portalName = lang.replace(portal.name[locale] || portal.name.en_US || '', tools._status);
 			title.innerHTML = portalName;
 			document.title = portalName;
 
@@ -371,16 +371,16 @@ define([
 			array.forEach(['service', 'admin'], lang.hitch(this, function(category) {
 				var categoryEntries = array.filter(entries, function(entry) {
 					// TODO: filter by entry.authRestriction (anonymous, authenticated, admin)
-					return entry.category == category && entry.activated && entry.portals && entry.portals.indexOf(portal.dn) !== -1;
+					return entry.category === category && entry.activated && entry.portals && entry.portals.indexOf(portal.dn) !== -1;
 				});
 				var apps = this._getApps(categoryEntries, locale, protocol, isIPv4, isIPv6);
 				var heading;
-				if (category == 'admin') {
+				if (category === 'admin') {
 					heading = _('Administration');
-				} else if (category == 'service') {
+				} else if (category === 'service') {
 					heading = _('Applications');
 				}
-				this._addCategory(heading, apps, category == 'service');
+				this._addCategory(heading, apps, category === 'service');
 			}));
 		},
 

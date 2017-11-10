@@ -1,5 +1,11 @@
 univention-portal (1.0.12-12) unstable; urgency=medium
 
+  * Bug #45688: don't crash if the portal name is not translated into en_US
+
+ -- Florian Best <best@univention.de>  Fri, 10 Nov 2017 13:25:58 +0100
+
+univention-portal (1.0.12-12) unstable; urgency=medium
+
   * Bug #45412: fix descriptions and UCR variable evaluation
 
  -- Florian Best <best@univention.de>  Wed, 20 Sep 2017 17:02:31 +0200
