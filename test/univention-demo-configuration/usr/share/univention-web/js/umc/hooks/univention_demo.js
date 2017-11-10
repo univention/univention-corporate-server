@@ -84,7 +84,7 @@ define([
 				label: _('<span style="color: red">Download UCS now!</span>'),
 				style: 'box-shadow: none;',
 				onClick: function() {
-					window.location.href = 'https://univention.com/';
+					window.location.href = 'https://univention.com/download/ucs-download/';
 				}
 			}).placeAt(w, 'first');
 		});
