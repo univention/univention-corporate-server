@@ -1,4 +1,4 @@
-univention-portal (1.0.12-12) unstable; urgency=medium
+univention-portal (1.0.12-13) unstable; urgency=medium
 
   * Bug #45688: don't crash if the portal name is not translated into en_US
 
