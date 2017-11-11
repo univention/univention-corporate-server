@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-46) unstable; urgency=medium
+
+  * Bug #43745: fix AttributeError when logging non string
+
+ -- Florian Best <best@univention.de>  Sat, 11 Nov 2017 10:28:19 +0100
+
 univention-system-setup (10.0.10-45) unstable; urgency=medium
 
   * Bug #43745: make it possible to replace the DC Master which was
