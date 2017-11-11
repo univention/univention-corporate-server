@@ -233,7 +233,7 @@ class SetupScript(object):
 		read by the parser. In a more advanced version, the script
 		could change the state of the progress directly.
 		'''
-		msg = '\n'.join('__%s__:%s' % (progress_attribute.upper(), message) for message in msg.splitlines())
+		msg = '\n'.join('__%s__:%s' % (progress_attribute.upper(), message) for message in str(msg).splitlines())
 		sys.stdout.write('%s\n' % (msg,))
 		sys.stdout.flush()
 
