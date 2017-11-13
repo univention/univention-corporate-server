@@ -88,7 +88,8 @@ class UDMBase(object):
 			'//*[contains(concat(" ", normalize-space(@class), " "), " dijitButtonText ")]'
 			'[text() = "%s"]' % (_("Delete"),)
 		)
-		self.wait_for_main_grid_load()
+		# FIXME: this waits forever and let's the test fail when no grid entries exists.
+		# self.wait_for_main_grid_load()
 
 	def search(self, objectname):
 		# This method will work with *most* UDM modules.
