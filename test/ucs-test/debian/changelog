@@ -1,3 +1,9 @@
+ucs-test (7.0.23-86) unstable; urgency=medium
+
+  * Bug #43083: ignore update error
+
+ -- Felix Botner <botner@univention.de>  Mon, 13 Nov 2017 13:54:05 +0100
+
 ucs-test (7.0.23-85) unstable; urgency=medium
 
   * Bug #44640: Fix syntax error
