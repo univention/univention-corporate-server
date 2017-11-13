@@ -1,3 +1,9 @@
+univention-updater (11.0.13-1) unstable; urgency=medium
+
+  * Bug #45648:  Adapt links and components for 4.1-5
+
+ -- Felix Botner <botner@univention.de>  Mon, 13 Nov 2017 13:15:14 +0100
+
 univention-updater (11.0.12-3) unstable; urgency=medium
 
   * Bug #45671: Improve updater message for extended maintenance warning
