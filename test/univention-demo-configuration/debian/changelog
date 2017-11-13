@@ -1,3 +1,9 @@
+univention-demo-configuration (5.0.2-15) unstable; urgency=medium
+
+  * Bug #45706: Add 'download ucs now' link to umc on demo system
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 13 Nov 2017 13:00:52 +0100
+
 univention-demo-configuration (5.0.2-14) unstable; urgency=medium
 
   * Bug #44397: Enabled HTML encoding to fix cross site scripting issue
