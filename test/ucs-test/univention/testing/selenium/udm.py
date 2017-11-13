@@ -51,6 +51,7 @@ class UDMBase(object):
 		self.selenium = selenium
 
 	def exists(self, objectname):
+		print '*** check if object exists', objectname
 		# This method will work with *most* UDM modules.
 		self.search(objectname)
 		time.sleep(5)
@@ -63,20 +64,24 @@ class UDMBase(object):
 		return False
 
 	def open_details(self, objectname):
+		print '*** open detail page of object', objectname
 		# This method will work with *most* UDM modules.
 		self.search(objectname)
 		self.selenium.click_grid_entry(objectname)
 		self.selenium.wait_for_text(_('Basic settings'))
 
 	def close_details(self):
+		print '*** close the detailpage'
 		self.selenium.click_button(_('Back'))
 		self.wait_for_main_grid_load()
 
 	def save_details(self):
+		print '*** save the detailpage'
 		self.selenium.click_button(_('Save'))
 		self.wait_for_main_grid_load()
 
 	def delete(self, objectname):
+		print '*** remove the object with name=', objectname
 		# This method will work with *most* UDM modules.
 		self.search(objectname)
 
@@ -92,6 +97,7 @@ class UDMBase(object):
 		# self.wait_for_main_grid_load()
 
 	def search(self, objectname):
+		print '*** searching for objects with name=', objectname
 		# This method will work with *most* UDM modules.
 		xpath = '//input[@name="objectPropertyValue"]'
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
@@ -104,6 +110,7 @@ class UDMBase(object):
 		elems[0].clear()
 
 	def wait_for_main_grid_load(self, timeout=60):
+		print '*** waiting for main grid load'
 		time.sleep(5)
 		xpaths = ['//div[contains(concat(" ", normalize-space(@class), " "), " dgrid-row ")]']
 		webdriver.support.ui.WebDriverWait(xpaths, timeout).until(
@@ -112,6 +119,7 @@ class UDMBase(object):
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
 	def open_add_dialog(self, container=None, template=None):
+		print '*** open the add dialog'
 		self.selenium.click_button(_('Add'))
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
