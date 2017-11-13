@@ -49,6 +49,7 @@ import psutil
 import socket
 import traceback
 from contextlib import contextmanager
+from distutils.version import LooseVersion
 
 import dns.resolver
 import dns.reversename
@@ -1146,6 +1147,14 @@ def check_domain_has_activated_license(address, username, password):
 			_('To install the {appliance_name} appliance it is necessary to have an activated UCS license on the master domain controller.').format(appliance_name=appliance_name) + ' ' +
 			_('During the check of the license status the following error occurred:\n{error}''').format(error=error)
 		)
+
+
+def check_domain_is_higher_or_equal_version(address, username, password):
+	with _temporary_password_file(password) as password_file:
+		domain_version = subprocess.check_output(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo $(/usr/sbin/ucr get version/version)-$(/usr/sbin/ucr get version/patchlevel)'], stderr=subprocess.STDOUT).rstrip()
+		nonmaster_version = '{}-{}'.format(ucr.get('version/version'), ucr.get('version/patchlevel'))
+		if (LooseVersion(nonmaster_version) > LooseVersion(domain_version)):
+			raise UMC_Error(_('The UCS version of the domain you are trying to join ({}) is lower than the local one ({}). This constellation is not supported.').format(domain_version, nonmaster_version))
 
 
 def check_credentials_ad(nameserver, address, username, password):
