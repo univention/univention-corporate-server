@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup\n"
-"Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-11-09 20:57+0100\n"
+"Report-Msgid-Bugs-To: forge.univention.org\n"
+"POT-Creation-Date: 2017-11-13 16:38+0100\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -15,15 +16,6 @@ msgstr ""
 #, python-format
 msgid "%s Appliance"
 msgstr ""
-
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2730
-#, python-format
-msgid ""
-"%s Appliance could not be joined because the license on the DC Master is not"
-" activated."
-msgstr ""
-"%s Appliance kann nicht gejoined werden. Es liegt keine aktivierte Lizenz "
-"auf dem DC Master vor."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1969
 #, python-format
@@ -336,7 +328,7 @@ msgid "At least one network device needs to be properly configured."
 msgstr "Wenigstens ein Netzwerkgerät muss konfiguriert werden."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2540
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2787
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2772
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -384,7 +376,7 @@ msgstr ""
 "entweder als Benutzer <b>Administrator</b> oder als Benutzer <b>root</b>, "
 "falls das System noch nicht der Domäne beigetreten ist:"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2790
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2775
 msgid "Continue"
 msgstr "Fortfahren"
 
@@ -887,7 +879,7 @@ msgstr "Neustart der Server-Komponenten..."
 msgid "Retry connection"
 msgstr "Verbindung wiederholen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2786
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2771
 msgid "Root password empty. Continue?"
 msgstr "Root-Passwort ist leer. Möchten Sie fortfahren?"
 
@@ -1098,7 +1090,7 @@ msgstr "Warten auf den Neustart der Server-Komponenten ..."
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2562
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2640
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2653
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2793
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2778
 msgid "Warning"
 msgstr "Warnung"
 
@@ -1127,6 +1119,13 @@ msgstr "bspw. Bremen..."
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:823
 msgid "more information"
 msgstr "mehr Informationen"
+
+#~ msgid ""
+#~ "%s Appliance could not be joined because the license on the DC Master is not"
+#~ " activated."
+#~ msgstr ""
+#~ "%s Appliance kann nicht gejoined werden. Es liegt keine aktivierte Lizenz "
+#~ "auf dem DC Master vor."
 
 #~ msgid ""
 #~ "<i>Bond</i> interfaces allows two or more physical network interfaces to be "

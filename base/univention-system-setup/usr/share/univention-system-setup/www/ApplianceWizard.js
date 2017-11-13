@@ -2719,22 +2719,7 @@ define([
 
 			if (pageName == 'credentials-ad' || pageName == 'credentials-nonmaster') {
 				return this.standbyDuring(this._checkCredentials().then(lang.hitch(this, function(domain) {
-					var msg = '';
-					this._domainName = null;
-
-					if (typeof domain == 'string') {
-						this._domainName = domain;
-						if (this.ucr['umc/web/appliance/name'] && pageName == 'credentials-nonmaster') {
-							return this._domainHasActivatedLicense().then(lang.hitch(this, function(activatedLicense) {
-								if (!activatedLicense) {
-									msg = _('%s Appliance could not be joined because the license on the DC Master is not activated.', this.ucr['umc/web/appliance/name']);
-									nextPage = pageName;
-									dialog.alert(msg);
-								}
-								return this._forcePageTemporarily(nextPage);
-							}));
-						}
-					}
+					this._domainName = domain;
 				}), lang.hitch(this, function() {
 					// in case of errors don't switch the page
 					nextPage = pageName;

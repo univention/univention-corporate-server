@@ -259,13 +259,6 @@ class Instance(Base, ProgressMixin):
 		oldrole = orgValues.get('server/role', '')
 		newrole = values.get('server/role', oldrole)
 
-		is_appliance = bool(ucr.get('umc/web/appliance/name'))
-		is_nonmaster = newrole != "domaincontroller_master"
-		if is_appliance and is_nonmaster:
-			activated = util.domain_has_activated_license(values.get('nameserver1'), username, password)
-			if not activated:
-				raise UMC_Error(_('%s Appliance could not be joined because the license on the DC Master is not activated.') % (ucr.get('umc/web/appliance/name'),))
-
 		# create a status file that indicates that save has been triggered
 		util.create_status_file()
 
@@ -781,10 +774,6 @@ class Instance(Base, ProgressMixin):
 		return result
 
 	@simple_response
-	def domain_has_activated_license(self, nameserver, username, password):
-		return util.domain_has_activated_license(nameserver, username, password)
-
-	@simple_response
 	def check_credentials(self, role, dns, nameserver, address, username, password):
 		if role == 'ad':
 			domain = util.check_credentials_ad(nameserver, address, username, password)
@@ -795,8 +784,11 @@ class Instance(Base, ProgressMixin):
 					# We need to check the credentials of this system, too, so we ensure that the System is reachable via SSH.
 					# Otherwise the join will fail with strange error like "ping to ..." failed.
 					util.check_credentials_nonmaster(False, nameserver, ucs_master_fqdn, username, password)
+					util.check_domain_has_activated_license(ucs_master_fqdn, username, password)
 			return domain
 		elif role == 'nonmaster':
-			return util.check_credentials_nonmaster(dns, nameserver, address, username, password)
+			domain = util.check_credentials_nonmaster(dns, nameserver, address, username, password)
+			util.check_domain_has_activated_license(address, username, password)
+			return domain
 		# master? basesystem? no domain check necessary
 		return True

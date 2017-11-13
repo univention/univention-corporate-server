@@ -1117,25 +1117,35 @@ def get_random_nameserver(country):
 	)
 
 
-def domain_has_activated_license(nameserver, username, password):
-	fqdn_master = get_fqdn(nameserver)
-	if not fqdn_master:
-		return False
+def check_domain_has_activated_license(address, username, password):
+	appliance_name = ucr.get("umc/web/appliance/name")
+	if not appliance_name:
+		return  # the license must only be checked in an appliance scenario
 
+	valid_license = True
+	error = None
 	with _temporary_password_file(password) as password_file:
 		try:
 			license_uuid = subprocess.check_output([
 				'univention-ssh',
 				password_file,
-				'%s@%s' % (username, fqdn_master),
+				'%s@%s' % (username, address),
 				'/usr/sbin/ucr',
 				'get',
 				'uuid/license'
 			], stderr=subprocess.STDOUT).rstrip()
-		except subprocess.CalledProcessError as processError:
-			appliance_name = ucr["umc/web/appliance/name"]
-			raise UMC_Error(_('''To install the {appliance_name} appliance it is necessary to have an activated UCS license on the master domain controller. During the check of the license status the following error occurred:\n{error}''').format(appliance_name=appliance_name, error=processError.output))
-	return len(license_uuid) == 36
+		except subprocess.CalledProcessError as exc:
+			valid_license = False
+			error = exc.output
+		else:
+			valid_license = len(license_uuid) == 36
+			error = _('The license %s is not valid.') % (license_uuid,)
+
+	if not valid_license:
+		raise UMC_Error(
+			_('To install the {appliance_name} appliance it is necessary to have an activated UCS license on the master domain controller.').format(appliance_name=appliance_name) + ' ' +
+			_('During the check of the license status the following error occurred:\n{error}''').format(error=error)
+		)
 
 
 def check_credentials_ad(nameserver, address, username, password):
@@ -1146,10 +1156,10 @@ def check_credentials_ad(nameserver, address, username, password):
 		check_ad_account(ad_domain_info, username, password)
 	except failedADConnect:
 		# Not checked... no AD!
-		raise UMC_Error(_('The connection to the Active Directory server failed. Please recheck the address.'));
+		raise UMC_Error(_('The connection to the Active Directory server failed. Please recheck the address.'))
 	except connectionFailed:
 		# checked: failed!
-		raise UMC_Error(_('The connection to the Active Directory server was refused. Please recheck the password.'));
+		raise UMC_Error(_('The connection to the Active Directory server was refused. Please recheck the password.'))
 	except notDomainAdminInAD:  # check_ad_account()
 		# checked: Not a Domain Administrator!
 		raise UMC_Error(_("The given user is not member of the Domain Admins group in Active Directory. This is a requirement for the Active Directory domain join."))
