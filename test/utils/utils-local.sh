@@ -53,7 +53,7 @@ fetch-results () {
 		test-reports
 		artifacts
 		'/var/log/univention/management*'
-		'/var/log/univention/{join,setup,listener,appcenter,actualise,system-stats,updater}.log'
+		'/var/log/univention/{join,setup,listener,appcenter,actualise,system-stats,updater,directory-manager-cmd}.log'
 		'/var/log/{syslog,auth.log}'
 		'/var/log/univention/connector*'
 		'/var/log/samba/*'
