@@ -106,9 +106,43 @@ class UDMBase(object):
 		time.sleep(5)
 		xpaths = ['//div[contains(concat(" ", normalize-space(@class), " "), " dgrid-row ")]']
 		webdriver.support.ui.WebDriverWait(xpaths, timeout).until(
-			self.selenium.get_all_visible_elements, 'wait %s for grid load' % (timeout,)
+			self.selenium.get_all_visible_elements, 'waited %s seconds for grid load' % (timeout,)
 		)
 		self.selenium.wait_until_all_standby_animations_disappeared()
+
+	def open_add_dialog(self, container=None, template=None):
+		self.selenium.click_button(_('Add'))
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+		click_next = False
+		try:
+			self.selenium.wait_for_text(_('Container'), timeout=1)
+			click_next = True
+		except TimeoutException:
+			pass
+
+		# FIXME: select the given container
+
+		try:
+			self.selenium.wait_for_text(_("User template"), timeout=1)
+			click_next = True
+		except TimeoutException:
+			pass
+
+		if template is not None:
+			template_selection_dropdown_button = self.selenium.driver.find_element_by_xpath(
+				'//input[@name="objectTemplate"]/../..//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]'
+			)
+			template_selection_dropdown_button.click()
+			self.selenium.click_text(template)
+
+		if click_next:
+			self.selenium.click_button(_('Next'))
+			self.selenium.wait_until_all_standby_animations_disappeared()
+
+	def open_advanced_add_dialog(self, **kwargs):
+		self.open_add_dialog(**kwargs)
+		self.selenium.click_button(_('Advanced'))
 
 
 class Computers(UDMBase):
@@ -118,9 +152,7 @@ class Computers(UDMBase):
 		if computername is None:
 			computername = uts.random_string()
 
-		self.selenium.click_button(_('Add'))
-		self.selenium.wait_for_text(_("Container"))
-		self.selenium.click_button(_('Next'))
+		self.open_add_dialog()
 		self.selenium.enter_input("name", computername)
 		self.selenium.click_button(_("Create computer"))
 		self.selenium.wait_for_text(_('has been created'))
@@ -137,7 +169,7 @@ class Groups(UDMBase):
 		if groupname is None:
 			groupname = uts.random_string()
 
-		self.selenium.click_button(_('Add'))
+		self.open_add_dialog()
 		self.selenium.wait_for_text(_("Members of this group"))
 		self.selenium.enter_input("name", groupname)
 		self.selenium.click_button(_("Create group"))
@@ -153,9 +185,7 @@ class Policies(UDMBase):
 		if policyname is None:
 			policyname = uts.random_string()
 
-		self.selenium.click_button(_('Add'))
-		self.selenium.wait_for_text(_("Container"))
-		self.selenium.click_button(_('Next'))
+		self.open_add_dialog()
 		self.selenium.enter_input("name", policyname)
 		self.selenium.click_button(_("Create policy"))
 		self.wait_for_main_grid_load()
@@ -215,37 +245,3 @@ class Users(UDMBase):
 		self.selenium.wait_until_all_dialogues_closed()
 
 		return username
-
-	def open_add_dialog(self, container=None, template=None):
-		self.selenium.click_button(_('Add'))
-		self.selenium.wait_until_all_standby_animations_disappeared()
-
-		click_next = False
-		try:
-			self.selenium.wait_for_text(_('Container'), timeout=1)
-			click_next = True
-		except TimeoutException:
-			pass
-
-		# FIXME: select the given container
-
-		try:
-			self.selenium.wait_for_text(_("User template"), timeout=1)
-			click_next = True
-		except TimeoutException:
-			pass
-
-		if template is not None:
-			template_selection_dropdown_button = self.selenium.driver.find_element_by_xpath(
-				'//input[@name="objectTemplate"]/../..//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]'
-			)
-			template_selection_dropdown_button.click()
-			self.selenium.click_text(template)
-
-		if click_next:
-			self.selenium.click_button(_('Next'))
-			self.selenium.wait_until_all_standby_animations_disappeared()
-
-	def open_advanced_add_dialog(self, **kwargs):
-		self.open_add_dialog(**kwargs)
-		self.selenium.click_button(_('Advanced'))
