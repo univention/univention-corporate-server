@@ -99,7 +99,7 @@ class UDMBase(object):
 		elems[0].clear()
 		elems[0].send_keys(objectname)
 		elems[0].send_keys(Keys.RETURN)
-		self.selenium.wait_for_main_grid_load()
+		self.wait_for_main_grid_load()
 		elems[0].clear()
 
 	def wait_for_main_grid_load(self, timeout=60):
