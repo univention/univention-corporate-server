@@ -10,7 +10,6 @@
 ## exposure: dangerous
 
 from univention.admin import localization
-import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
@@ -39,6 +38,7 @@ class UMCTester(object):
 		self.test_user_templates()
 
 	def move_user_into_containers_and_out_again(self, username):
+		print '*** move user into different container'
 		position = self.ucr.get('ldap/base')
 		cn_name = uts.random_string()
 		self.udm.create_object('container/cn', position=position, name=cn_name)
@@ -50,11 +50,8 @@ class UMCTester(object):
 		self.move_user(username, 'users')
 
 	def test_options_effect_on_field_visibility(self):
-		self.selenium.click_button(_('Add'))
-		time.sleep(5)
-		self.selenium.wait_until_all_standby_animations_disappeared()
-		time.sleep(5)
-		self.selenium.click_button(_('Advanced'))
+		print '*** test if (de)selecting options works'
+		self.users.open_advanced_add_dialog()
 
 		self.unselect_all_options()
 		self.check_if_only_expected_tabs_are_visisble()
@@ -66,6 +63,7 @@ class UMCTester(object):
 		self.users.close_details()
 
 	def test_user_templates(self):
+		print '*** testing user templates'
 		self.test_description_template()
 		self.test_group_template()
 
@@ -128,6 +126,7 @@ class UMCTester(object):
 
 	# container_name has to be a direct child of the LDAP-base.
 	def move_user(self, username, container_name):
+		print '*** moving user %s into %s' % (username, container_name)
 		self.selenium.click_checkbox_of_grid_entry(username)
 		self.selenium.click_text(_('more'))
 		self.selenium.click_text(_('Move to...'))
@@ -180,7 +179,6 @@ if __name__ == '__main__':
 		umc_tester = UMCTester()
 		umc_tester.ucr = ucr
 		umc_tester.udm = udm
-		umc_tester.users = selenium_udm.Users(s)
 		umc_tester.selenium = s
 
 		umc_tester.test_umc()
