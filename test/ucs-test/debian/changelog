@@ -1,3 +1,9 @@
+ucs-test (7.0.23-87) unstable; urgency=medium
+
+  * Bug #44640: improve tests
+
+ -- Florian Best <best@univention.de>  Mon, 13 Nov 2017 16:57:52 +0100
+
 ucs-test (7.0.23-86) unstable; urgency=medium
 
   * Bug #43083: ignore update error
