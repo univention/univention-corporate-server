@@ -198,16 +198,7 @@ class Users(UDMBase):
 		if lastname is None:
 			lastname = uts.random_string()
 
-		self.selenium.click_button(_('Add'))
-
-		if template is not None:
-			self.selenium.wait_for_text(_("User template"))
-			template_selection_dropdown_button = self.selenium.driver.find_element_by_xpath(
-				'//input[@name="objectTemplate"]/../..//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]'
-			)
-			template_selection_dropdown_button.click()
-			self.selenium.click_text(template)
-			self.selenium.click_button(_("Next"))
+		self.open_add_dialog(template=template)
 
 		self.selenium.wait_for_text(_("First name"))
 		self.selenium.enter_input("firstname", firstname)
@@ -224,3 +215,37 @@ class Users(UDMBase):
 		self.selenium.wait_until_all_dialogues_closed()
 
 		return username
+
+	def open_add_dialog(self, container=None, template=None):
+		self.selenium.click_button(_('Add'))
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+		click_next = False
+		try:
+			self.selenium.wait_for_text(_('Container'), timeout=1)
+			click_next = True
+		except TimeoutException:
+			pass
+
+		# FIXME: select the given container
+
+		try:
+			self.selenium.wait_for_text(_("User template"), timeout=1)
+			click_next = True
+		except TimeoutException:
+			pass
+
+		if template is not None:
+			template_selection_dropdown_button = self.selenium.driver.find_element_by_xpath(
+				'//input[@name="objectTemplate"]/../..//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]'
+			)
+			template_selection_dropdown_button.click()
+			self.selenium.click_text(template)
+
+		if click_next:
+			self.selenium.click_button(_('Next'))
+			self.selenium.wait_until_all_standby_animations_disappeared()
+
+	def open_advanced_add_dialog(self, **kwargs):
+		self.open_add_dialog(**kwargs)
+		self.selenium.click_button(_('Advanced'))
