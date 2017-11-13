@@ -143,15 +143,13 @@ class UMCTester(object):
 			self.selenium.click_text(option)
 
 	def check_if_only_expected_tabs_are_visisble(self):
-		amount_tabs = len(self.selenium.get_all_visible_elements([
+		tabs = set(x.text for x in self.selenium.get_all_visible_elements([
 			'//div[contains(concat(" ", normalize-space(@class), " "), " umcPageNav ")]'
 			'//*[contains(concat(" ", normalize-space(@class), " "), " tabLabel ")]'
 		]))
-		if amount_tabs != 5:
-			raise UmcUdmError(
-				'%d tabs exist instead of 5, after unselecting all options.'
-				% (amount_tabs)
-			)
+		required_tabs = {_('General'), _('Account'), _('[Advanced settings]'), _('[Options]'), _('[Policies]')}
+		assert tabs & required_tabs == required_tabs, 'not all necessary tabs are shown'
+		assert not tabs & {_('Groups'), _('Contact')}, 'tabs are not hidden'
 
 	def check_if_only_expected_fields_are_visible(self):
 		self.selenium.click_tab(_('General'))
