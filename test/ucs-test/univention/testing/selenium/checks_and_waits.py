@@ -47,14 +47,14 @@ class ChecksAndWaits(object):
 		logger.info("Waiting for text: %r", text)
 		xpath = '//*[contains(text(), "%s")]' % (text,)
 		webdriver.support.ui.WebDriverWait([xpath], timeout).until(
-			self.get_all_visible_elements
+			self.get_all_visible_elements, 'waited %s seconds for text %r' % (timeout, text)
 		)
 
 	def wait_for_any_text_in_list(self, texts, timeout=60):
 		logger.info("Waiting until any of those texts is visible: %r", texts)
 		xpaths = ['//*[contains(text(), "%s")]' % (text,) for text in texts]
 		webdriver.support.ui.WebDriverWait(xpaths, timeout).until(
-			self.get_all_visible_elements
+			self.get_all_visible_elements, 'waited %s seconds for texts %r' % (timeout, texts)
 		)
 
 	def wait_until_all_dialogues_closed(self):
@@ -75,7 +75,7 @@ class ChecksAndWaits(object):
 		logger.info("Waiting for all progress bars to disappear.")
 		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcProgressBar ")]'
 		webdriver.support.ui.WebDriverWait(xpath, timeout=timeout).until(
-			self.elements_invisible
+			self.elements_invisible, 'waited %s seconds for progress bar' % (timeout,)
 		)
 
 	def wait_until_element_visible(self, xpath):
