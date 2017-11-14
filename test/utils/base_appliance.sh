@@ -1100,6 +1100,20 @@ univention-app shell "\$APP" /usr/sbin/fix_owncloud_trusted_domains
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/99_fix_owncloud_trusted_domains
 	fi
+
+	if [ "$app" = "mattermost" ]; then
+		cat >/usr/lib/univention-system-setup/cleanup-post.d/99_reconfigure_mattermost <<__EOF__
+#!/bin/bash
+
+# During system-setup, apache2 uses temporary certificates, configured by UCR.
+# These are also configured by mattermost.
+# Reconfiguring the app will use the correct certs.
+
+univention-app configure mattermost
+
+__EOF__
+	chmod 755 /usr/lib/univention-system-setup/cleanup-post.d/99_reconfigure_mattermost
+	fi
 }
 
 install_appreport ()
