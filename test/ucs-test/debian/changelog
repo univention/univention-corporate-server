@@ -1,3 +1,9 @@
+ucs-test (7.0.23-88) unstable; urgency=medium
+
+  * Bug #44640: Restructure domain join tests
+
+ -- Richard Ulmer <ulmer@univention.de>  Tue, 14 Nov 2017 17:19:02 +0100
+
 ucs-test (7.0.23-87) unstable; urgency=medium
 
   * Bug #44640: improve tests
