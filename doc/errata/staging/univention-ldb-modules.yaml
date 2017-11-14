@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-ldb-modules
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The error return codes when joining computers have been improved.
+bug: [45263]
