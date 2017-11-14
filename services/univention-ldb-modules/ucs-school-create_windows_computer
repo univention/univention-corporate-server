@@ -61,6 +61,7 @@ def main():
 	options['school'] = SchoolSearchBase.getOU(ucr.get('ldap/hostdn', '')) or SchoolSearchBase.getOU(ucr.get('dhcpd/ldap/base', ''))
 	client = Client(args.server, args.username, args.password)
 	result = client.umc_command(args.command, options).result
+	already_exists = result.get('already_exists')
 	dn_ol = result.get('dn')
 	if not dn_ol:
 		# sys.exit(1)
@@ -71,6 +72,8 @@ def main():
 
 	dn_s4 = dn_ol[:len(dn_ol) - len(ldap_base)] + samba4_ldap_base
 	print dn_s4
+	if already_exists:
+		sys.exit(4)
 
 
 if __name__ == '__main__':
