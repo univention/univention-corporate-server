@@ -112,10 +112,6 @@ class UDMBase(object):
 	def wait_for_main_grid_load(self, timeout=60):
 		print '*** waiting for main grid load'
 		time.sleep(5)
-		xpaths = ['//div[contains(concat(" ", normalize-space(@class), " "), " dgrid-row ")]']
-		webdriver.support.ui.WebDriverWait(xpaths, timeout).until(
-			self.selenium.get_all_visible_elements, 'waited %s seconds for grid load' % (timeout,)
-		)
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
 	def open_add_dialog(self, container=None, template=None):

@@ -55,7 +55,7 @@ class UMCTester(object):
 
 	def add_test_join_script(self):
 		copyfile('/usr/share/ucs-test/60_umc/99univention_test_join_script.inst', '/usr/lib/univention-install/99univention-test-join-script.inst')
-		os.chmod('/usr/lib/univention-install/99univention-test-join-script.inst', 755)
+		os.chmod('/usr/lib/univention-install/99univention-test-join-script.inst', 0o755)
 
 	def remove_test_join_script(self):
 		if os.path.exists('/usr/lib/univention-install/99univention-test-join-script.inst'):
