@@ -7,9 +7,9 @@ fix: 6:11.9-1~deb8u1
 desc: |
  This update addresses the following issues:
  * The smka_decode_frame function in libavcodec/smacker.c does not verify that
-   the data size is consistent with the number of channels, which allows remote
-   attackers to cause a denial of service (out-of-bounds array access) or
-   possibly have unspecified other impact via crafted Smacker data.
+   the data size is consistent with the number of channels, which allows
+   remote attackers to cause a denial of service (out-of-bounds array access)
+   or possibly have unspecified other impact via crafted Smacker data.
    (CVE-2015-8365)
  * Multiple integer overflows have been discovered in libav 11.8 and earlier,
    allowing remote attackers to cause a crash via a crafted MP3 file
