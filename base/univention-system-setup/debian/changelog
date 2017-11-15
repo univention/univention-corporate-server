@@ -1,3 +1,10 @@
+univention-system-setup (10.0.10-48) unstable; urgency=medium
+
+  * Bug #42059: throw error early when trying to join system with
+    higher UCS version
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 15 Nov 2017 13:11:45 +0100
+
 univention-system-setup (10.0.10-47) unstable; urgency=medium
 
   * Bug #42910: fix check of license in an appliance scenario
