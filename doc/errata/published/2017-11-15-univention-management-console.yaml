@@ -9,3 +9,5 @@ desc: |
  * A crash of the UMC-Server is now prevented which happened while the system
    load is very high.
 bug: [45676]
+erratum: 221
+announced: 2017-11-15
