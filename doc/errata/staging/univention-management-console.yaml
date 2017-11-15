@@ -6,6 +6,6 @@ src: univention-management-console
 fix: 9.0.80-80A~4.2.0.201711091053
 desc: |
  This update addresses the following issue(s):
- * A crash of the UMC-Server is now prevented which happened during the system
+ * A crash of the UMC-Server is now prevented which happened while the system
    load is very high.
 bug: [45676]
