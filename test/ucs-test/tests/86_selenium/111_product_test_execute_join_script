@@ -55,11 +55,21 @@ class UMCTester(object):
 
 	def add_test_join_script(self):
 		copyfile('/usr/share/ucs-test/60_umc/99univention_test_join_script.inst', '/usr/lib/univention-install/99univention-test-join-script.inst')
-		os.chmod('/usr/lib/univention-install/99univention-test-join-script.inst', 0755)
+		os.chmod('/usr/lib/univention-install/99univention-test-join-script.inst', 755)
 
 	def remove_test_join_script(self):
 		if os.path.exists('/usr/lib/univention-install/99univention-test-join-script.inst'):
 			os.unlink('/usr/lib/univention-install/99univention-test-join-script.inst')
+
+	def open_join_module(self):
+		self.selenium.open_module(_('Domain join'))
+		xpaths = ['//div[contains(concat(" ", normalize-space(@class), " "), " dgrid-row ")]']
+		webdriver.support.ui.WebDriverWait(xpaths, 60).until(
+			self.selenium.get_all_visible_elements, 'Waited 60s for grid load.'
+		)
+		self.selenium.force_full_grid_load()
+		self.selenium.wait_for_text('99univention-test-join-script')
+		self.selenium.wait_until_all_standby_animations_disappeared()
 
 	def run_join_script(self, joinscript):
 		self.scroll_join_script_into_view(joinscript)
@@ -99,7 +109,6 @@ class UMCTester(object):
 		return elems[0].get_attribute('innerHTML')
 
 	def scroll_join_script_into_view(self, joinscript):
-		self.selenium.force_full_grid_load()
 		xpath = \
 			'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")]' \
 			'[@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]' \
@@ -108,12 +117,6 @@ class UMCTester(object):
 			self.selenium.get_all_enabled_elements
 		)
 		self.selenium.driver.execute_script("arguments[0].scrollIntoView();", elems[0])
-
-	def open_join_module(self):
-		self.scroll_join_script_into_view('99univention-test-join-script')
-		self.selenium.open_module(_('Domain join'))
-		self.selenium.wait_for_text('99univention-test-join-script')
-		self.selenium.wait_until_all_standby_animations_disappeared()
 
 
 if __name__ == '__main__':

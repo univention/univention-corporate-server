@@ -1,3 +1,9 @@
+ucs-test (7.0.23-90) unstable; urgency=medium
+
+  * Bug #44640: Fix domain join test
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 15 Nov 2017 10:10:37 +0100
+
 ucs-test (7.0.23-89) unstable; urgency=medium
 
   * Bug #44640: fix fuzzy entry
