@@ -9,3 +9,5 @@ desc: |
  * The portal site was empty when the portal name was not translated into
    English (en_US).
 bug: [45688]
+erratum: 222
+announced: 2017-11-15
