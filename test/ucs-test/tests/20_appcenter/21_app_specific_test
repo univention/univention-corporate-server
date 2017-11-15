@@ -1,0 +1,21 @@
+#!/usr/share/ucs-test/runner bash
+## desc: run app specific tests with appcenter-dev
+## tags: [apptest]
+## roles-not: [basesystem]
+## packages:
+##   - univention-appcenter-dev
+## exposure: dangerous
+
+set -x
+
+retval=0
+
+for app in $(< /var/cache/appcenter-installed.txt); do
+	univention-app dev-test \
+		--appcenter-server http://appcenter-test.software-univention.de \
+		"$app" \
+		--binddn "$(ucr get tests/domainadmin/account)" \
+		--bindpwdfile "$(ucr get tests/domainadmin/pwdfile)" || retval=110
+done
+
+exit $retval
