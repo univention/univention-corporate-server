@@ -1553,7 +1553,7 @@ ls -1 /etc/ldap/schema/*.schema /usr/share/univention-ldap/schema/*.schema | xar
 		folgenden Befehlen verwendet werden:
 	</para>
 	  <programlisting language="sh">
-dpkg --set-selections < dpkg.selection
+dpkg --set-selections &lt; dpkg.selection
 apt-get dselect-upgrade
 	  </programlisting>
 	<para>
