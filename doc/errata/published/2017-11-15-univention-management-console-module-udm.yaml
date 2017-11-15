@@ -9,3 +9,5 @@ desc: |
  * A standby animation is shown until all form values are loaded when
    modifying objects.
 bug: [45574]
+erratum: 220
+announced: 2017-11-15
