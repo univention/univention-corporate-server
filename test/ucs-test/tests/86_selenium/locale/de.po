@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-11-14 17:31+0100\n"
+"POT-Creation-Date: 2017-09-21 14:41+0200\n"
 "PO-Revision-Date: 2017-06-23 12:00+0200\n"
 "Last-Translator: <ulmer@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -16,7 +16,7 @@ msgstr ""
 msgid "A reboot of the server is recommended"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:128
+#: tests/86_selenium/10_product_test_password_change:132
 #: tests/86_selenium/151_udm_users:150
 msgid "Account"
 msgstr "Konto"
@@ -50,8 +50,8 @@ msgstr ""
 msgid "Certificate settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/86_selenium/10_product_test_password_change:178
-#: tests/86_selenium/10_product_test_password_change:183
+#: tests/86_selenium/10_product_test_password_change:182
+#: tests/86_selenium/10_product_test_password_change:187
 #: tests/86_selenium/14_password_self-service:82
 #: tests/86_selenium/14_password_self-service:99
 #: tests/86_selenium/14_password_self-service:109
@@ -59,12 +59,12 @@ msgstr "Benutzereinstellungen"
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: tests/86_selenium/10_product_test_password_change:129
-#: tests/86_selenium/10_product_test_password_change:130
+#: tests/86_selenium/10_product_test_password_change:133
+#: tests/86_selenium/10_product_test_password_change:134
 msgid "Change password on next login"
 msgstr "Passwort bei der nächsten Anmeldung ändern"
 
-#: tests/86_selenium/10_product_test_password_change:179
+#: tests/86_selenium/10_product_test_password_change:183
 msgid "Change the password of"
 msgstr "Passwort ändern für"
 
@@ -107,6 +107,7 @@ msgstr ""
 msgid "Domain Admins"
 msgstr ""
 
+#: tests/86_selenium/110_product_test_do_rejoin:44
 #: tests/86_selenium/131_miscellaneous_module_availability:40
 #: tests/86_selenium/131_miscellaneous_module_availability:63
 #: tests/86_selenium/131_miscellaneous_module_availability:85
@@ -115,8 +116,7 @@ msgstr ""
 #: tests/86_selenium/131_miscellaneous_module_availability:137
 #: tests/86_selenium/131_miscellaneous_module_availability:151
 #: tests/86_selenium/131_miscellaneous_module_availability:167
-#: tests/86_selenium/110_product_test_do_rejoin:44
-#: tests/86_selenium/111_product_test_execute_join_script:114
+#: tests/86_selenium/111_product_test_execute_join_script:65
 msgid "Domain join"
 msgstr ""
 
@@ -124,11 +124,11 @@ msgstr ""
 msgid "Edit UCR variable"
 msgstr ""
 
-#: tests/86_selenium/111_product_test_execute_join_script:67
+#: tests/86_selenium/111_product_test_execute_join_script:77
 msgid "Execute"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:165
+#: tests/86_selenium/10_product_test_password_change:169
 #: tests/90_umc-screenshots/00_favorites:15
 msgid "Favorites"
 msgstr "Favoriten"
@@ -257,8 +257,8 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:170
-#: tests/86_selenium/10_product_test_password_change:199
+#: tests/86_selenium/10_product_test_password_change:174
+#: tests/86_selenium/10_product_test_password_change:209
 msgid "Ok"
 msgstr "Ok"
 
@@ -289,7 +289,7 @@ msgstr ""
 msgid "Please choose an option"
 msgstr ""
 
-#: tests/86_selenium/111_product_test_execute_join_script:70
+#: tests/86_selenium/111_product_test_execute_join_script:80
 msgid "Please enter credentials"
 msgstr ""
 
@@ -339,15 +339,15 @@ msgstr ""
 msgid "Repository Settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/86_selenium/111_product_test_execute_join_script:80
+#: tests/86_selenium/111_product_test_execute_join_script:90
 msgid "Restart"
 msgstr ""
 
-#: tests/86_selenium/111_product_test_execute_join_script:76
+#: tests/86_selenium/111_product_test_execute_join_script:86
 msgid "Run"
 msgstr ""
 
-#: tests/86_selenium/111_product_test_execute_join_script:72
+#: tests/86_selenium/111_product_test_execute_join_script:82
 msgid "Run join scripts"
 msgstr ""
 
@@ -425,7 +425,6 @@ msgstr ""
 msgid "This page shows the status of"
 msgstr ""
 
-#: tests/86_selenium/12_product_test_ucr:98
 #: tests/86_selenium/130_miscellaneous:54
 #: tests/86_selenium/130_miscellaneous:126
 #: tests/86_selenium/131_miscellaneous_module_availability:54
@@ -436,6 +435,7 @@ msgstr ""
 #: tests/86_selenium/131_miscellaneous_module_availability:144
 #: tests/86_selenium/131_miscellaneous_module_availability:158
 #: tests/86_selenium/131_miscellaneous_module_availability:174
+#: tests/86_selenium/12_product_test_ucr:98
 msgid "Univention Configuration Registry"
 msgstr ""
 
@@ -444,7 +444,7 @@ msgstr ""
 msgid "Univention Portal"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:177
+#: tests/86_selenium/10_product_test_password_change:181
 msgid "User settings"
 msgstr "Benutzereinstellungen"
 
@@ -452,8 +452,8 @@ msgstr "Benutzereinstellungen"
 msgid "User template"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:84
-#: tests/86_selenium/10_product_test_password_change:122
+#: tests/86_selenium/10_product_test_password_change:88
+#: tests/86_selenium/10_product_test_password_change:126
 #: tests/86_selenium/131_miscellaneous_module_availability:34
 #: tests/86_selenium/131_miscellaneous_module_availability:79
 #: tests/90_umc-screenshots/03_users:19
@@ -485,16 +485,16 @@ msgstr ""
 msgid "more"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:166
-#: tests/86_selenium/10_product_test_password_change:169
+#: tests/86_selenium/10_product_test_password_change:170
+#: tests/86_selenium/10_product_test_password_change:173
 msgid "no module available"
 msgstr "kein Modul verfügbar"
 
-#: tests/86_selenium/10_product_test_password_change:185
+#: tests/86_selenium/10_product_test_password_change:189
 msgid "password has been changed"
 msgstr "Passwort wurde erfolgreich geändert"
 
-#: tests/86_selenium/10_product_test_password_change:135
+#: tests/86_selenium/10_product_test_password_change:139
 msgid "password has expired and must be renewed"
 msgstr "password has expired and must be renewed"
 
@@ -502,13 +502,18 @@ msgstr "password has expired and must be renewed"
 msgid "password history"
 msgstr "Passwort-History"
 
-#: tests/86_selenium/10_product_test_password_change:187
-#: tests/86_selenium/10_product_test_password_change:195
+#: tests/86_selenium/10_product_test_password_change:191
+#: tests/86_selenium/10_product_test_password_change:205
 msgid "password is too short"
 msgstr "Passwort ist zu kurz"
 
-#: tests/86_selenium/10_product_test_password_change:186
+#: tests/86_selenium/10_product_test_password_change:192
+#: tests/86_selenium/10_product_test_password_change:200
+msgid "password is too simple"
+msgstr ""
+
 #: tests/86_selenium/10_product_test_password_change:190
+#: tests/86_selenium/10_product_test_password_change:195
 msgid "password was already used"
 msgstr "Passwort wurde bereits genutzt"
 
@@ -516,7 +521,7 @@ msgstr "Passwort wurde bereits genutzt"
 msgid "really want to logout"
 msgstr ""
 
-#: tests/86_selenium/111_product_test_execute_join_script:79
+#: tests/86_selenium/111_product_test_execute_join_script:89
 msgid "restart of the UMC server"
 msgstr ""
 
