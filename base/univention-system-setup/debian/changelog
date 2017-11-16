@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-49) unstable; urgency=medium
+
+  * Bug #42059: Improve error handling
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 16 Nov 2017 18:37:16 +0100
+
 univention-system-setup (10.0.10-48) unstable; urgency=medium
 
   * Bug #42059: throw error early when trying to join system with
