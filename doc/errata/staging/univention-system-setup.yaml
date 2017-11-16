@@ -13,4 +13,6 @@ desc: |
    configuration has been fixed if the nameserver is not the DC Master.
  * UCS appliances now check for a valid license before starting the join
    process.
-bug: [43745, 45170, 42910]
+ * Trying to join a system with a lower UCS version than the domaincontroller
+   master is now detected early.
+bug: [43745, 45170, 42910, 42059]

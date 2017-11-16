@@ -785,10 +785,12 @@ class Instance(Base, ProgressMixin):
 					# Otherwise the join will fail with strange error like "ping to ..." failed.
 					util.check_credentials_nonmaster(False, nameserver, ucs_master_fqdn, username, password)
 					util.check_domain_has_activated_license(ucs_master_fqdn, username, password)
+					util.check_domain_is_higher_or_equal_version(ucs_master_fqdn, username, password)
 			return domain
 		elif role == 'nonmaster':
 			domain = util.check_credentials_nonmaster(dns, nameserver, address, username, password)
 			util.check_domain_has_activated_license(address, username, password)
+			util.check_domain_is_higher_or_equal_version(address, username, password)
 			return domain
 		# master? basesystem? no domain check necessary
 		return True

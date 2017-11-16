@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-11-13 16:38+0100\n"
+"POT-Creation-Date: 2017-11-15 18:24+0100\n"
 "PO-Revision-Date: 2015-07-01 12:23+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -32,7 +32,7 @@ msgstr "Bond-primary muss in bond-slaves enthalten sein"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/python/setup/__init__.py:507 umc/python/setup/util.py:183
+#: umc/python/setup/util.py:184 umc/python/setup/__init__.py:507
 msgid ""
 "Cannot automatically determine the domain. Please specify the server's fully "
 "qualified domain name."
@@ -83,13 +83,13 @@ msgstr "Domänen-DNS-Server"
 msgid "Duplicated IP address: %r"
 msgstr "Duplizierte IP-Addresse: %r"
 
-#: umc/python/setup/util.py:1147
+#: umc/python/setup/util.py:1148
 #, python-brace-format
 msgid ""
 "During the check of the license status the following error occurred:\n"
 "{error}"
-msgstr "Während der Überprüfung "
-"des Lizenzstatus trat der folgende Fehler auf:\n"
+msgstr ""
+"Während der Überprüfung des Lizenzstatus trat der folgende Fehler auf:\n"
 "{error}"
 
 #: umc/python/setup/__init__.py:432 umc/python/setup/__init__.py:433
@@ -191,7 +191,7 @@ msgstr "Fehlendes Gerät: %r"
 msgid "Multiple IPv4 addresses are not supported on this device."
 msgstr "Mehrere IPv4 Adressen sind an diesem Gerät nicht unterstützt."
 
-#: umc/python/setup/util.py:1177
+#: umc/python/setup/util.py:1186
 msgid "No UCS DC Master could be found at the address."
 msgstr "Es wurde kein UCS DC Master unter der angegebenen Adresse gefunden."
 
@@ -238,7 +238,15 @@ msgstr ""
 "eines der Attribut-Tags 'dc', 'cn', 'c', 'o', or 'l' verwenden (z.B. dc=test,"
 "dc=net)."
 
-#: umc/python/setup/util.py:1159
+#: umc/python/setup/util.py:1157
+msgid ""
+"The UCS version of the domain you are trying to join ({}) is lower than the "
+"local one ({}). This constellation is not supported."
+msgstr ""
+"Die UCS Version der Domäne, der Sie beitreten wollen ({}), ist niedriger als "
+"als die lokale UCS Version ({}). Diese Konstellation ist nicht unterstützt."
+
+#: umc/python/setup/util.py:1168
 msgid ""
 "The connection to the Active Directory server failed. Please recheck the "
 "address."
@@ -246,7 +254,7 @@ msgstr ""
 "Die Verbindung zum Active Directory Server ist fehlgeschlagen. Bitte "
 "überprüfen Sie die Adresse."
 
-#: umc/python/setup/util.py:1162
+#: umc/python/setup/util.py:1171
 msgid ""
 "The connection to the Active Directory server was refused. Please recheck "
 "the password."
@@ -254,7 +262,7 @@ msgstr ""
 "Die Verbindung zum Active Directory Server wurde abgelehnt. Bitte überprüfen "
 "Sie das Passwort."
 
-#: umc/python/setup/util.py:1180
+#: umc/python/setup/util.py:1189
 msgid ""
 "The connection to the UCS DC Master was refused. Please recheck the password."
 msgstr ""
@@ -268,7 +276,7 @@ msgid ""
 msgstr ""
 "Der folgende Wert ist zu lang, es sind nur %(max)s Zeichen erlaubt: %(name)s"
 
-#: umc/python/setup/util.py:1165
+#: umc/python/setup/util.py:1174
 msgid ""
 "The given user is not member of the Domain Admins group in Active Directory. "
 "This is a requirement for the Active Directory domain join."
@@ -292,7 +300,7 @@ msgid ""
 "The length of fully qualified domain name is greater than 63 characters."
 msgstr "Die Länge von System- und Domänennamen ist größer als 63 Zeichen."
 
-#: umc/python/setup/util.py:1142
+#: umc/python/setup/util.py:1143
 #, python-format
 msgid "The license %s is not valid."
 msgstr "Die Lizenz %s ist nicht gültig."
@@ -364,7 +372,7 @@ msgstr ""
 "Es ist kein Gerät konfiguriert. Mindestens eine IPv4 oder IPv6-Adresse oder "
 "DHCP oder SLAAC muss angegeben werden."
 
-#: umc/python/setup/util.py:1146
+#: umc/python/setup/util.py:1147
 #, python-brace-format
 msgid ""
 "To install the {appliance_name} appliance it is necessary to have an "
