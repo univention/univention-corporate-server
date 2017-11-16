@@ -26,14 +26,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
 import os
 from contextlib import contextmanager
 import listener
 import univention.admin.objects
 try:
-	from typing import Dict, Iterable, Iterator, List, Tuple, Type, Optional
+	from typing import Any, Dict, Iterable, Iterator, List, Tuple, Type, Optional
+	import logging
+	import types.TracebackType
 	import univention.admin.uldap.access
 	import univention.admin.uldap.position
+	import univention.admin.handlers.simpleLdap
 	import univention.config_registry.ConfigRegistry
 	from univention.listener.handler_configuration import ListenerModuleConfiguration
 except ImportError:
@@ -45,6 +49,8 @@ listener.configRegistry.load()
 
 class ListenerModuleHandler(object):
 	"""
+	Listener module base class.
+
 	Subclass this to implement the logic of your listener module and have
 	ListenerModuleConfiguration.get_listener_module_class return the name of
 	your subclass.
@@ -68,12 +74,12 @@ class ListenerModuleHandler(object):
 
 		:param module_configuration: ListenerModuleConfiguration object
 		"""
-		self.config = module_configuration
-		self.logger = self.config.logger  # Python logging object
+		self.config = module_configuration  # type: ListenerModuleConfiguration
+		self.logger = self.config.logger  # type: logging.Logger
 		self.ucr.load()
 		self.logger.info('Starting with configuration: %r', module_configuration)
 
-	def create(self, dn, new):  # type: (str, Dict[str, List]) -> None
+	def create(self, dn, new):  # type: (str, Dict[str, List[str]]) -> None
 		"""
 		Called when a new object was created.
 
@@ -83,7 +89,7 @@ class ListenerModuleHandler(object):
 		"""
 		pass
 
-	def modify(self, dn, old, new, old_dn):  # type: (str, Dict[str, List], Dict[str, List], str) -> None
+	def modify(self, dn, old, new, old_dn):  # type: (str, Dict[str, List[str]], Dict[str, List[str]], str) -> None
 		"""
 		Called when an existing object was modified or moved.
 
@@ -98,7 +104,7 @@ class ListenerModuleHandler(object):
 		"""
 		pass
 
-	def remove(self, dn, old):  # type: (str, Dict[str, List]) -> None
+	def remove(self, dn, old):  # type: (str, Dict[str, List[str]]) -> None
 		"""
 		Called when an object was deleted.
 
@@ -196,7 +202,7 @@ class ListenerModuleHandler(object):
 				res[key] = old.get(key), new.get(key)
 		return res
 
-	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):  # type: (str, Dict[str, List], Dict[str, List], str, Type[BaseException], object, object) -> None
+	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):  # type: (str, Dict[str, List], Dict[str, List], str, Type[BaseException], BaseException, types.TracebackType) -> None
 		"""
 		Will be called for unhandled exceptions in create/modify/remove.
 
@@ -204,8 +210,8 @@ class ListenerModuleHandler(object):
 		:param old: dict
 		:param new: dict
 		:param command: str
-		:param exc_type: exception type
-		:param exc_value: exception parameter
+		:param exc_type: exception class
+		:param exc_value: exception object
 		:param exc_traceback: traceback object
 		:return: None
 		"""
@@ -213,7 +219,7 @@ class ListenerModuleHandler(object):
 		raise exc_type, exc_value, exc_traceback
 
 	@classmethod
-	def get_udm_objects(cls, module_name, filter_s, base_dn, lo, po, **kwargs):  # type: (str, str, str, univention.admin.uldap.access, univention.admin.uldap.position, **Dict) -> List[object]
+	def get_udm_objects(cls, module_name, filter_s, base_dn, lo, po, **kwargs):  # type: (str, str, str, univention.admin.uldap.access, univention.admin.uldap.position, **Dict) -> List[univention.admin.handlers.simpleLdap]
 		"""
 		Search LDAP for UDM objects.
 
@@ -223,7 +229,7 @@ class ListenerModuleHandler(object):
 		:param lo: univention.admin.uldap.access object
 		:param po: univention.admin.uldap.position object
 		:param kwargs: dict: arguments to pass to udm_module.lookup()
-		:return: list of (not yet opened) UDM (simpleLdap) objects
+		:return: list of (not yet opened) univention.admin.handlers.simpleLdap objects
 		"""
 		key = (lo.base, lo.binddn, lo.bindpw, po.getDn())
 		if key not in cls._udm_module_cache:
@@ -235,7 +241,7 @@ class ListenerModuleHandler(object):
 		return udm_module.lookup(None, lo, filter_s=filter_s, base=base_dn, **kwargs)
 
 	@property
-	def lo(self):  # type: () -> object
+	def lo(self):  # type: () -> univention.admin.uldap.access
 		"""
 		LDAP connection object.
 
@@ -244,7 +250,7 @@ class ListenerModuleHandler(object):
 		return self.config.lo
 
 	@property
-	def po(self):  # type: () -> object
+	def po(self):  # type: () -> univention.admin.uldap.position
 		"""
 		Get a LDAP position object for the base DN (ldap/base).
 
