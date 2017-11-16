@@ -1151,10 +1151,14 @@ def check_domain_has_activated_license(address, username, password):
 
 def check_domain_is_higher_or_equal_version(address, username, password):
 	with _temporary_password_file(password) as password_file:
-		domain_version = subprocess.check_output(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo $(/usr/sbin/ucr get version/version)-$(/usr/sbin/ucr get version/patchlevel)'], stderr=subprocess.STDOUT).rstrip()
-		nonmaster_version = '{}-{}'.format(ucr.get('version/version'), ucr.get('version/patchlevel'))
-		if (LooseVersion(nonmaster_version) > LooseVersion(domain_version)):
-			raise UMC_Error(_('The UCS version of the domain you are trying to join ({}) is lower than the local one ({}). This constellation is not supported.').format(domain_version, nonmaster_version))
+		try:
+			master_ucs_version = subprocess.check_output(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo $(/usr/sbin/ucr get version/version)-$(/usr/sbin/ucr get version/patchlevel)'], stderr=subprocess.STDOUT).rstrip()
+		except subprocess.CalledProcessError:
+			MODULE.error('Failed to retrieve UCS version: %s' % (traceback.format_exc()))
+			return
+		nonmaster_ucs_version = '{}-{}'.format(ucr.get('version/version'), ucr.get('version/patchlevel'))
+		if LooseVersion(nonmaster_ucs_version) > LooseVersion(master_ucs_version):
+			raise UMC_Error(_('The UCS version of the domain you are trying to join ({}) is lower than the local one ({}). This constellation is not supported.').format(master_ucs_version, nonmaster_ucs_version))
 
 
 def check_credentials_ad(nameserver, address, username, password):
