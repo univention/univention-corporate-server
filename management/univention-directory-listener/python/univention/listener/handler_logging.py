@@ -38,6 +38,7 @@
 # ucs-school-4.2/ucs-school-lib/python/models/utils.py
 #
 
+from __future__ import absolute_import
 import os
 import grp
 import pwd
@@ -91,7 +92,6 @@ class ModuleHandler(logging.Handler):
 	)  # type: Dict[str, int]
 
 	def __init__(self, level=logging.NOTSET, udebug_facility=ud.LISTENER):  # type: (Optional[int], Optional[int]) -> None
-		self.module_name = ''
 		self._udebug_facility = udebug_facility  # type: int
 		super(ModuleHandler, self).__init__(level)
 
@@ -99,7 +99,7 @@ class ModuleHandler(logging.Handler):
 		msg = self.format(record)  # type: str
 		if isinstance(msg, unicode):
 			msg = msg.encode('utf-8')
-		msg = '{}: {}'.format(self.module_name, msg)
+		msg = '{}: {}'.format(record.name.rsplit('.')[-1], msg)
 		udebug_level = self.LOGGING_TO_UDEBUG[record.levelname]
 		ud.debug(self._udebug_facility, udebug_level, msg)
 
@@ -146,7 +146,6 @@ def _get_ucr_int(ucr_key, default):  # type: (str, Any) -> Any
 _listener_debug_level = _get_ucr_int('listener/debug/level', 2)  # type: int
 _listener_debug_level_str = UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL[max(0, min(4, _listener_debug_level))]  # type: str
 _listener_module_handler = ModuleHandler(level=getattr(logging, _listener_debug_level_str))  # type: logging.Handler
-_listener_module_handler.set_name('_listener_module_handler')
 listener_module_root_logger = logging.getLogger('listener module')  # type: logging.Logger
 listener_module_root_logger.setLevel(getattr(logging, _listener_debug_level_str))
 
@@ -187,6 +186,7 @@ def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatt
 	"""
 	if not name:
 		name = 'noname'
+	name = name.replace('.', '_')  # don't mess up logger hierarchy
 	if isinstance(target, file) or hasattr(target, 'write'):
 		# file like object
 		filename = target.name

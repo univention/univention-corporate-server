@@ -26,12 +26,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
 import sys
 try:
-	from typing import Any, Dict, List, Tuple, Optional
+	from typing import Any, Callable, Dict, List, Tuple
 	from univention.listener.handler_configuration import ListenerModuleConfiguration
 	from univention.listener.handler import ListenerModuleHandler
 except ImportError:
+	pass
+
+
+class ListenerModuleAdapterError(Exception):
 	pass
 
 
@@ -43,12 +48,23 @@ class ListenerModuleAdapter(object):
 	Use in a classic listener module like this:
 	globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
 	"""
+	_support_async = False
 
 	def __init__(self, module_configuration, *args, **kwargs):  # type: (ListenerModuleConfiguration, *Tuple, **Dict) -> None
 		"""
 		:param module_configuration: ListenerModuleConfiguration object
 		"""
 		self.config = module_configuration  # type: ListenerModuleConfiguration
+		if (self.config.get_run_asynchronously() or self.config.get_parallelism() > 1) and not self._support_async:
+			raise ListenerModuleAdapterError(
+				'Loading of asynchronous listener modules is currently not supported.'
+			)
+		if self.config.get_parallelism() > 1 and not self.config.get_run_asynchronously():
+			self.config.logger.warn(
+				'Configuration of "parallelism > 1" implies "run_asynchronously = True". To prevent this warning '
+				'configure it in your ListenerModuleConfiguration class.'
+			)
+			self.config.run_asynchronously = True
 		self._ldap_cred = dict()  # type: Dict[str, str]
 		self.__module_handler = None  # type: ListenerModuleHandler
 		self._saved_old = dict()  # type: Dict[str, List[str]]
@@ -105,7 +121,7 @@ class ListenerModuleAdapter(object):
 			self.__module_handler = self.config.get_listener_module_instance()
 		return self.__module_handler
 
-	def _handler(self, dn, new, old, command):  # type: (str, dict, dict, str) -> None
+	def _handler(self, dn, new, old, command):  # type: (str, Dict[str, List[str]], Dict[str, List[str]], str) -> None
 		if command == 'r':
 			self._saved_old = old
 			self._saved_old_dn = dn
@@ -134,14 +150,14 @@ class ListenerModuleAdapter(object):
 			exc_type, exc_value, exc_traceback = sys.exc_info()
 			self._module_handler.error_handler(dn, old, new, command, exc_type, exc_value, exc_traceback)
 
-	def _lazy_initialize(self):  # type: () -> None
+	def _lazy_initialize(self):  # type: () -> Callable[None]
 		return self._module_handler.initialize()
 
-	def _lazy_clean(self):  # type: () -> None
+	def _lazy_clean(self):  # type: () -> Callable[None]
 		return self._module_handler.clean()
 
-	def _lazy_pre_run(self):  # type: () -> None
+	def _lazy_pre_run(self):  # type: () -> Callable[None]
 		return self._module_handler.pre_run()
 
-	def _lazy_post_run(self):  # type: () -> None
+	def _lazy_post_run(self):  # type: () -> Callable[None]
 		return self._module_handler.post_run()

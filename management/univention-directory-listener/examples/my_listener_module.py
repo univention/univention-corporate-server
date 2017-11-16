@@ -53,7 +53,7 @@ class MyListenerModule(ListenerModuleHandler):
 
 	def remove(self, dn, old):
 		self.logger.info('MyListenerModule.remove() dn=%r', dn)
-		fail = {}['fail']  # this will raise an Exception, which will be handled by seld.error_handler
+		fail = {}['fail']  # this will raise an Exception, which will be handled by self.error_handler
 
 	def initialize(self):
 		super(MyListenerModule, self).initialize()

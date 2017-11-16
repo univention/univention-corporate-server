@@ -26,6 +26,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
 import os
 import grp
 import pwd
@@ -36,7 +37,7 @@ import univention.admin.uldap
 
 from univention.listener.handler_logging import get_logger
 try:
-	from typing import Dict, List, Tuple, Optional
+	from typing import Any, Dict, List, Optional, Tuple
 	import logging
 	import univention.admin.uldap.access
 	import univention.admin.uldap.position
@@ -71,22 +72,21 @@ class ListenerModuleConfiguration(object):
 	2. get_listener_module_instance()
 	"""
 
-	name = ''  # type: str                         # (*) name of the listener module
-	description = ''  # type: str                  # description of the listener module
-	ldap_filter = ''  # type: str                  # (*) LDAP filter, if matched will trigger the listener module
-	attributes = []  # type: List[str]             # only trigger module, if any of the listed attributes has changed
-	modules_to_run_before = []  # type: List[str]  # list of names of module to run before this one
-	modules_to_run_after = []  # type: List[str]   # list of names of module to run after this one
-	run_asynchronously = False  # type: bool       # run module in the background
-	parallelism = 1  # type: int                   # run multiple instances of module in parallel (implies run_asynchronously)
-	listener_module_class = None  # type: type     # (*) class that implements the module
+	name = ''  # type: str                       # (*) name of the listener module
+	description = ''  # type: str                # description of the listener module
+	ldap_filter = ''  # type: str                # (*) LDAP filter, if matched will trigger the listener module
+	attributes = []  # type: List[str]           # only trigger module, if any of the listed attributes has changed
+	listener_module_class = None  # type: type   # (*) class that implements the module
+	run_asynchronously = False  # type: bool     # run module in the background
+	parallelism = 1  # type: int                 # run multiple instances of module in parallel (implies run_asynchronously)
 	# (*) required
 
 	_po_cache = dict()  # type: Dict[str, univention.admin.uldap.position]
 
 	def __init__(self, *args, **kwargs):  # type: (*Tuple, **Dict) -> None
-		self._lo = None  # type: univention.admin.uldap.access
+		self.ldap_credentials = None  # type: Dict[str, str]   # LDAP credentials received through setdata()
 		self._logger = None  # type: logging.Logger
+		self._lo = None  # type: univention.admin.uldap.access
 		_keys = self.get_configuration_keys()
 		for k, v in kwargs.items():
 			if k in _keys:
@@ -113,7 +113,8 @@ class ListenerModuleConfiguration(object):
 					self.logger.warn("No 'get_%s' method found, using value of attribute %r directly.", key, key)
 					value = getattr(self, key)
 				else:
-					raise ListenerModuleConfigurationError('No get_* method or class attribute found for configuration key %r.', key)
+					raise ListenerModuleConfigurationError(
+						'No get_* method or class attribute found for configuration key {!r}.'.format(key))
 			res[key] = value
 		return res
 
@@ -124,8 +125,6 @@ class ListenerModuleConfiguration(object):
 			'description',
 			'ldap_filter',
 			'listener_module_class',
-			'modules_to_run_after',
-			'modules_to_run_before',
 			'name',
 			'parallelism',
 			'run_asynchronously'
@@ -145,13 +144,8 @@ class ListenerModuleConfiguration(object):
 		return self.ldap_filter
 
 	def get_attributes(self):  # type: () -> list
+		assert isinstance(self.attributes, list)
 		return self.attributes
-
-	def get_modules_to_run_before(self):  # type: () -> list
-		return self.modules_to_run_before
-
-	def get_modules_to_run_after(self):  # type: () -> list
-		return self.modules_to_run_after
 
 	def get_parallelism(self):  # type: () -> int
 		return self.parallelism
@@ -192,18 +186,21 @@ class ListenerModuleConfiguration(object):
 	@property
 	def lo(self):  # type: () -> univention.admin.uldap.access
 		"""
-		Get a LDAP access object.
+		LDAP access object.
 
 		:return: univention.admin.uldap.access object
 		"""
 		if not self._lo:
-			raise ListenerModuleConfigurationError('LDAP connection of listener module %r has not yet been initialized.')
-		return self._lo()
+			if not self.ldap_credentials:
+				raise ListenerModuleConfigurationError(
+					'LDAP connection of listener module {!r} has not yet been initialized.'.format(self.get_name()))
+			self._lo = univention.admin.uldap.access(**self.ldap_credentials)
+		return self._lo
 
 	@property
 	def po(self):  # type: () -> univention.admin.uldap.position
 		"""
-		Get a LDAP position object for the base DN (ldap/base).
+		LDAP position object for the base DN (ldap/base).
 
 		:return: univention.admin.uldap.position object
 		"""
@@ -214,7 +211,7 @@ class ListenerModuleConfiguration(object):
 		"""
 		Get a LDAP position object.
 
-		:param ldap_position: str: DN
+		:param ldap_position: str: DN (defaults to ldap/base)
 		:return: univention.admin.uldap.position object
 		"""
 		if ldap_position not in cls._po_cache:
@@ -244,20 +241,22 @@ class ListenerModuleConfiguration(object):
 			self._logger = get_logger(logger_name, target=file_path)
 		return self._logger
 
-	def set_ldap_credentials(self, base_dn, bind_dn, bind_pw, ldap_server):  # type: (str, str, str, str) -> None
+	def set_ldap_credentials(self, base, binddn, bindpw, host):  # type: (str, str, str, str) -> None
 		"""
-		This method is intended for the listener server to set the connection
-		credentials (for cn=admin). This will create a univention.admin.uldap.access
-		object from them and make it accessible through self.lo.
+		Store LDAP connection credentials for use by self.lo.
 
-		:param base_dn: str
-		:param bind_dn: str
-		:param bind_pw: str
-		:param ldap_server: str
+		:param base: str
+		:param binddn: str
+		:param bindpw: str
+		:param host: str
 		:return: None
 		"""
-		self._lo = lambda: univention.admin.uldap.access(
-			host=ldap_server,
-			base=base_dn,
-			binddn=bind_dn,
-			bindpw=bind_pw)
+		self.ldap_credentials = dict(
+			host=host,
+			base=base,
+			binddn=binddn,
+			bindpw=bindpw
+		)
+
+	def set_logger(self, logger):  # type: (logging.Logger) -> None
+		self._logger = logger
