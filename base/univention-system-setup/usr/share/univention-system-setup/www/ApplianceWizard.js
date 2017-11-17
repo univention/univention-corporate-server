@@ -1326,6 +1326,7 @@ define([
 			buttons = this._pages.error._footerButtons;
 			buttons.previous.set('label', _('Reconfigure'));
 			buttons.finish.set('label', _('Finish'));
+			this._pages.done._footerButtons.next.set('label', _('Finish'));
 		},
 
 		_setLocaleValues: function(data) {

@@ -220,7 +220,7 @@ msgid ""
 "system will be removed."
 msgstr ""
 "Ein früheres UCS System ist bereits der Active Directory Domäne beigetreten."
-" Bitte Stellen Sie sicher, dass das System \"%(ucs_master_fqdn)s\" per SSH "
+" Bitte stellen Sie sicher, dass das System \"%(ucs_master_fqdn)s\" per SSH "
 "erreichbar ist. Wenn Sie mit \"System ersetzen\" fortfahren wird die "
 "Registrierung des früheren Systems gelöscht."
 
