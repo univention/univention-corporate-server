@@ -1,26 +1,30 @@
 # Univention Corporate Server
 
-Welcome to the git mirror of our Open Source product Univention Corporate Server (UCS).
-
-[UCS](https://www.univention.com/products/ucs/) is the innovative basis for the operation and easy management of server applications and IT infrastructures.
+Welcome to the git mirror of the Open Source product Univention Corporate
+Server (UCS). [UCS](https://www.univention.com/products/ucs/) is the innovative
+platform for identity and IT infrastructure management and the operation of
+enterprise applications.
 
 ## Download and Demo
-Various ISO, VMWare and VirtualBox images of UCS are available for downloading on our [website](https://www.univention.com/downloads/ucs-download/).
-Our online demo of UCS is available under [demo.univention.de](http://demo.univention.de/).
+
+ISO and virtual machine images of UCS are [available for download](https://www.univention.com/downloads/ucs-download/).
+
+The online demo of UCS is available under [demo.univention.de](http://demo.univention.de/).
 
 ## Documentation and Support
-The UCS documentation, including a Quick start guide, can be found at [docs.software-univention.de](http://docs.software-univention.de/) .
-Another helpful resource is our [wiki](http://wiki.univention.de/index.php?title=Main_Page).
 
-If you need direct help, our [forum](https://help.univention.com) provides a very good community support.
+The UCS documentation, including a Quickstart guide, can be found at [docs.software-univention.de](http://docs.software-univention.de/) .
 
-We also have the [#univention IRC channel](irc://irc.freenode.net/univention) on freenode.
+Another helpful resource is the [Univention Wiki](http://wiki.univention.de/index.php?title=Main_Page).
 
-If you do not wish to use our forum, you will find more options [here](http://www.univention.com/download-and-support/support/commercial-support/).
+If you need direct help, the forum [Univention
+Help](https://help.univention.com) provides a very good community support. For commercial support, please have a look at the [support
+offerings](http://www.univention.com/download-and-support/support/commercial-support/).
 
 ## Contributing
-Read our [contributing guide](./CONTRIBUTING.md) to learn about our development process, how to propose bugfixes and improvements.
-Our Code of Conduct contains guidelines we expect project participants to adhere to.
+
+Please read the [contributing guide](./CONTRIBUTING.md) to find more information about the UCS development process, how to propose bugfixes and improvements. The [Code of Conduct contains guidelines](./CONTRIBUTING.md#code-of-conduct) we expect project participants to adhere to.
 
 ## License
-Please see the [license file](./LICENSE) for more information.
+
+UCS is licensed under the AGPLv3. Please see the [license file](./LICENSE) for more information.
