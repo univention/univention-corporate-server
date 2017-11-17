@@ -1,4 +1,4 @@
-univention-updater (11.0.13-2) unstable; urgency=medium
+univention-updater (11.0.13-3) unstable; urgency=medium
 
   * Bug #45671: Further improvements to extended maintenance warning message
 
