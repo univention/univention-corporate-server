@@ -12,7 +12,7 @@ There are some requirements for submitting a Pull Request:
 
 * You need to sign the [Contributor License Agreements](https://www.univention.com/about-us/open-source/contributor-agreement/). This can be done either by sending us a facsimile or digitally by filling out the form which is send to you after submitting the Pull Request.
 
-* Please create a issue in the [bugzilla bug tracker](https://forge.univention.org/bugzilla/enter_bug.cgi). Changes in the documentation don't neccessarily need an issue.
+* Please create an issue in the [bugzilla bug tracker](https://forge.univention.org/bugzilla/enter_bug.cgi). Changes in the documentation don't neccessarily need an issue.
 
 * Either the bug report or the pull request have to describe the problem and changes as exact as possible.
 
