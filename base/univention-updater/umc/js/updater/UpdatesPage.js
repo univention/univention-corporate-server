@@ -649,7 +649,6 @@ define([
 
 				// construct the correct message
 				var msg = '';
-				// UCS Base/Standard/Premium subscription
 				if (info.maintenance_extended) {
 					msg = extendedEnterpriseMsg;
 				} else {
