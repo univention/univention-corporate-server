@@ -126,7 +126,7 @@ from univention.management.console.protocol.definitions import MODULE_ERR, MODUL
 from univention.management.console.ldap import get_user_connection
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE, CORE
-from univention.management.console.error import UMC_Error, NotAcceptable, PasswordRequired, LDAP_ServerDown, LDAP_ConnectionFailed, ServerError
+from univention.management.console.error import UMC_Error, NotAcceptable, PasswordRequired, LDAP_ServerDown, LDAP_ConnectionFailed
 
 _ = Translation('univention.management.console').translate
 
@@ -372,8 +372,6 @@ class Base(signals.Provider, Translation):
 					self.auth_type = 'SAML'
 		except ldap.INVALID_CREDENTIALS:
 			etype, exc, etraceback = sys.exc_info()
-			if exc.args and 'SAML assertion signature verification failure' in exc.args[0].get('info'):
-				raise ServerError(_('The connection to the LDAP service could not be established: The SAML certificate verification failed.'))
 			exc = etype('An error during LDAP authentication happened. Auth type: %s; SAML message length: %s; DN length: %s; Original Error: %s' % (self.auth_type, len(self._password or '') if len(self._password or '') > 25 else False, len(self._user_dn or ''), exc))
 			raise etype, exc, etraceback
 
