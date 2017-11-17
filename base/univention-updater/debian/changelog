@@ -1,3 +1,9 @@
+univention-updater (11.0.13-2) unstable; urgency=medium
+
+  * Bug #45671: Further improvements to extended maintenance warning message
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 17 Nov 2017 16:39:27 +0100
+
 univention-updater (11.0.13-1) unstable; urgency=medium
 
   * Bug #45648:  Adapt links and components for 4.1-5
