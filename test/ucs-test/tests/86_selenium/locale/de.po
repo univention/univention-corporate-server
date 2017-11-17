@@ -1,533 +1,485 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-09-21 14:41+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2017-11-17 17:13+0100\n"
 "PO-Revision-Date: 2017-06-23 12:00+0200\n"
 "Last-Translator: <ulmer@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
+"Language: DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: DE\n"
 
-#: tests/86_selenium/110_product_test_do_rejoin:53
+#: 110_product_test_do_rejoin:53
 msgid "A reboot of the server is recommended"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:132
-#: tests/86_selenium/151_udm_users:150
+#: 151_udm_users:150 10_product_test_password_change:132
 msgid "Account"
 msgstr "Konto"
 
-#: tests/90_umc-screenshots/03_users:25
-msgid "Add"
-msgstr ""
+#: 15_favorite_modules:62
+msgid "Add to favorites"
+msgstr "Zu Favoriten hinzufügen"
 
-#: tests/90_umc-screenshots/02_portal:16
-msgid "Administration"
-msgstr ""
-
-#: tests/86_selenium/131_miscellaneous_module_availability:56
-#: tests/86_selenium/131_miscellaneous_module_availability:100
-#: tests/86_selenium/131_miscellaneous_module_availability:130
-#: tests/86_selenium/131_miscellaneous_module_availability:160
-#: tests/86_selenium/132_miscellaneous_open_all_modules:32
+#: 132_miscellaneous_open_all_modules:32
+#: 131_miscellaneous_module_availability:56
+#: 131_miscellaneous_module_availability:100
+#: 131_miscellaneous_module_availability:130
+#: 131_miscellaneous_module_availability:160
 msgid "App Center"
 msgstr ""
 
-#: tests/86_selenium/12_product_test_ucr:148
+#: 12_product_test_ucr:148
 msgid "Base Settings"
 msgstr ""
 
-#: tests/90_umc-screenshots/03_users:39
-msgid "Cancel"
-msgstr ""
-
-#: tests/86_selenium/131_miscellaneous_module_availability:47
-#: tests/86_selenium/131_miscellaneous_module_availability:64
+#: 131_miscellaneous_module_availability:47
+#: 131_miscellaneous_module_availability:64
 msgid "Certificate settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/86_selenium/10_product_test_password_change:182
-#: tests/86_selenium/10_product_test_password_change:187
-#: tests/86_selenium/14_password_self-service:82
-#: tests/86_selenium/14_password_self-service:99
-#: tests/86_selenium/14_password_self-service:109
-#: tests/86_selenium/14_password_self-service:124
+#: 14_password_self-service:82 14_password_self-service:99
+#: 14_password_self-service:109 14_password_self-service:124
+#: 10_product_test_password_change:182 10_product_test_password_change:187
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: tests/86_selenium/10_product_test_password_change:133
-#: tests/86_selenium/10_product_test_password_change:134
+#: 10_product_test_password_change:133 10_product_test_password_change:134
 msgid "Change password on next login"
 msgstr "Passwort bei der nächsten Anmeldung ändern"
 
-#: tests/86_selenium/10_product_test_password_change:183
+#: 10_product_test_password_change:183
 msgid "Change the password of"
 msgstr "Passwort ändern für"
 
-#: tests/86_selenium/14_password_self-service:101
+#: 14_password_self-service:101
 msgid "Change your (expired) password."
 msgstr ""
 
-#: tests/86_selenium/132_miscellaneous_open_all_modules:37
+#: 132_miscellaneous_open_all_modules:37
 msgid "Close"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:35
-#: tests/86_selenium/131_miscellaneous_module_availability:80
+#: 131_miscellaneous_module_availability:35
+#: 131_miscellaneous_module_availability:80
 msgid "Computers"
 msgstr ""
 
-#: tests/86_selenium/110_product_test_do_rejoin:48
+#: 110_product_test_do_rejoin:48
 msgid "Confirmation"
 msgstr ""
 
-#: tests/86_selenium/151_udm_users:152
+#: 151_udm_users:152
 msgid "Contact"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:38
-#: tests/86_selenium/131_miscellaneous_module_availability:83
+#: 131_miscellaneous_module_availability:38
+#: 131_miscellaneous_module_availability:83
 msgid "DHCP"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:39
-#: tests/86_selenium/131_miscellaneous_module_availability:84
+#: 131_miscellaneous_module_availability:39
+#: 131_miscellaneous_module_availability:84
 msgid "DNS"
 msgstr ""
 
-#: tests/90_umc-screenshots/03_users:166
-msgid "Developer"
-msgstr ""
-
-#: tests/86_selenium/151_udm_users:122
+#: 151_udm_users:122
 msgid "Domain Admins"
 msgstr ""
 
-#: tests/86_selenium/110_product_test_do_rejoin:44
-#: tests/86_selenium/131_miscellaneous_module_availability:40
-#: tests/86_selenium/131_miscellaneous_module_availability:63
-#: tests/86_selenium/131_miscellaneous_module_availability:85
-#: tests/86_selenium/131_miscellaneous_module_availability:107
-#: tests/86_selenium/131_miscellaneous_module_availability:121
-#: tests/86_selenium/131_miscellaneous_module_availability:137
-#: tests/86_selenium/131_miscellaneous_module_availability:151
-#: tests/86_selenium/131_miscellaneous_module_availability:167
-#: tests/86_selenium/111_product_test_execute_join_script:65
+#: 111_product_test_execute_join_script:65 110_product_test_do_rejoin:44
+#: 131_miscellaneous_module_availability:40
+#: 131_miscellaneous_module_availability:63
+#: 131_miscellaneous_module_availability:85
+#: 131_miscellaneous_module_availability:107
+#: 131_miscellaneous_module_availability:121
+#: 131_miscellaneous_module_availability:137
+#: 131_miscellaneous_module_availability:151
+#: 131_miscellaneous_module_availability:167
 msgid "Domain join"
 msgstr ""
 
-#: tests/86_selenium/12_product_test_ucr:126
+#: 12_product_test_ucr:126
 msgid "Edit UCR variable"
 msgstr ""
 
-#: tests/86_selenium/111_product_test_execute_join_script:77
+#: 111_product_test_execute_join_script:77
 msgid "Execute"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:169
-#: tests/90_umc-screenshots/00_favorites:15
+#: 15_favorite_modules:30 15_favorite_modules:74
+#: 10_product_test_password_change:169
 msgid "Favorites"
 msgstr "Favoriten"
 
-#: tests/86_selenium/131_miscellaneous_module_availability:32
-#: tests/86_selenium/131_miscellaneous_module_availability:62
-#: tests/86_selenium/131_miscellaneous_module_availability:77
-#: tests/86_selenium/131_miscellaneous_module_availability:106
-#: tests/86_selenium/131_miscellaneous_module_availability:120
-#: tests/86_selenium/131_miscellaneous_module_availability:136
-#: tests/86_selenium/131_miscellaneous_module_availability:150
-#: tests/86_selenium/131_miscellaneous_module_availability:166
+#: 131_miscellaneous_module_availability:32
+#: 131_miscellaneous_module_availability:62
+#: 131_miscellaneous_module_availability:77
+#: 131_miscellaneous_module_availability:106
+#: 131_miscellaneous_module_availability:120
+#: 131_miscellaneous_module_availability:136
+#: 131_miscellaneous_module_availability:150
+#: 131_miscellaneous_module_availability:166
 msgid "Filesystem quotas"
 msgstr ""
 
-#: tests/90_umc-screenshots/03_users:27
-msgid "First name"
-msgstr ""
-
-#: tests/86_selenium/14_password_self-service:126
+#: 14_password_self-service:126
 msgid "Forgot your password"
 msgstr ""
 
-#: tests/86_selenium/151_udm_users:150 tests/86_selenium/151_udm_users:155
-#: tests/86_selenium/151_udm_users:167
+#: 151_udm_users:150 151_udm_users:155 151_udm_users:167
 msgid "General"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:33
-#: tests/86_selenium/131_miscellaneous_module_availability:78
-#: tests/86_selenium/151_udm_users:121 tests/86_selenium/151_udm_users:152
+#: 151_udm_users:121 151_udm_users:152 131_miscellaneous_module_availability:33
+#: 131_miscellaneous_module_availability:78
 msgid "Groups"
 msgstr ""
 
-#: tests/90_umc-screenshots/03_users:170
-msgid "Guest"
-msgstr ""
-
-#: tests/86_selenium/131_miscellaneous_module_availability:48
-#: tests/86_selenium/131_miscellaneous_module_availability:65
-#: tests/86_selenium/131_miscellaneous_module_availability:92
-#: tests/86_selenium/131_miscellaneous_module_availability:108
-#: tests/86_selenium/131_miscellaneous_module_availability:122
-#: tests/86_selenium/131_miscellaneous_module_availability:138
-#: tests/86_selenium/131_miscellaneous_module_availability:152
-#: tests/86_selenium/131_miscellaneous_module_availability:168
+#: 131_miscellaneous_module_availability:48
+#: 131_miscellaneous_module_availability:65
+#: 131_miscellaneous_module_availability:92
+#: 131_miscellaneous_module_availability:108
+#: 131_miscellaneous_module_availability:122
+#: 131_miscellaneous_module_availability:138
+#: 131_miscellaneous_module_availability:152
+#: 131_miscellaneous_module_availability:168
 msgid "Hardware information"
 msgstr ""
 
-#: tests/86_selenium/151_udm_users:140
+#: 151_udm_users:140
 msgid "Kerberos principal"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:41
-#: tests/86_selenium/131_miscellaneous_module_availability:86
-#: tests/90_umc-screenshots/04_ldap:15
+#: 131_miscellaneous_module_availability:41
+#: 131_miscellaneous_module_availability:86
 msgid "LDAP directory"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:49
-#: tests/86_selenium/131_miscellaneous_module_availability:66
-#: tests/86_selenium/131_miscellaneous_module_availability:93
-#: tests/86_selenium/131_miscellaneous_module_availability:109
-#: tests/86_selenium/131_miscellaneous_module_availability:123
-#: tests/86_selenium/131_miscellaneous_module_availability:139
-#: tests/86_selenium/131_miscellaneous_module_availability:153
-#: tests/86_selenium/131_miscellaneous_module_availability:169
+#: 131_miscellaneous_module_availability:49
+#: 131_miscellaneous_module_availability:66
+#: 131_miscellaneous_module_availability:93
+#: 131_miscellaneous_module_availability:109
+#: 131_miscellaneous_module_availability:123
+#: 131_miscellaneous_module_availability:139
+#: 131_miscellaneous_module_availability:153
+#: 131_miscellaneous_module_availability:169
 msgid "Language settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/86_selenium/151_udm_users:156 tests/86_selenium/151_udm_users:168
+#: 151_udm_users:156 151_udm_users:168
 msgid "Last name"
 msgstr ""
 
-#: tests/86_selenium/130_miscellaneous:43
-#: tests/86_selenium/130_miscellaneous:45
+#: 130_miscellaneous:43 130_miscellaneous:45
 msgid "Logout"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:42
-#: tests/86_selenium/131_miscellaneous_module_availability:87
+#: 131_miscellaneous_module_availability:42
+#: 131_miscellaneous_module_availability:87
 msgid "Mail"
 msgstr ""
 
-#: tests/86_selenium/151_udm_users:140
+#: 151_udm_users:140
 msgid "Mail account"
 msgstr ""
 
-#: tests/86_selenium/151_udm_users:132
+#: 151_udm_users:132
 msgid "Move to..."
 msgstr ""
 
-#: tests/86_selenium/151_udm_users:134
+#: 151_udm_users:134
 msgid "Move user"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:36
-#: tests/86_selenium/131_miscellaneous_module_availability:81
+#: 131_miscellaneous_module_availability:36
+#: 131_miscellaneous_module_availability:81
 msgid "Nagios"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:50
-#: tests/86_selenium/131_miscellaneous_module_availability:67
-#: tests/86_selenium/131_miscellaneous_module_availability:94
-#: tests/86_selenium/131_miscellaneous_module_availability:110
-#: tests/86_selenium/131_miscellaneous_module_availability:124
-#: tests/86_selenium/131_miscellaneous_module_availability:140
-#: tests/86_selenium/131_miscellaneous_module_availability:154
-#: tests/86_selenium/131_miscellaneous_module_availability:170
+#: 131_miscellaneous_module_availability:50
+#: 131_miscellaneous_module_availability:67
+#: 131_miscellaneous_module_availability:94
+#: 131_miscellaneous_module_availability:110
+#: 131_miscellaneous_module_availability:124
+#: 131_miscellaneous_module_availability:140
+#: 131_miscellaneous_module_availability:154
+#: 131_miscellaneous_module_availability:170
 msgid "Network settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/86_selenium/131_miscellaneous_module_availability:43
-#: tests/86_selenium/131_miscellaneous_module_availability:88
+#: 131_miscellaneous_module_availability:43
+#: 131_miscellaneous_module_availability:88
 msgid "Networks"
 msgstr ""
 
-#: tests/86_selenium/14_password_self-service:88
-#: tests/86_selenium/14_password_self-service:128
-#: tests/86_selenium/14_password_self-service:130
-#: tests/90_umc-screenshots/03_users:53
+#: 14_password_self-service:88 14_password_self-service:128
+#: 14_password_self-service:130
 msgid "Next"
 msgstr ""
 
-#: tests/86_selenium/132_miscellaneous_open_all_modules:51
+#: 132_miscellaneous_open_all_modules:51
 msgid "OK"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:174
-#: tests/86_selenium/10_product_test_password_change:209
+#: 10_product_test_password_change:174 10_product_test_password_change:209
 msgid "Ok"
 msgstr "Ok"
 
-#: tests/86_selenium/151_udm_users:141 tests/86_selenium/151_udm_users:164
+#: 151_udm_users:141 151_udm_users:164
 msgid "POSIX account"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:57
-#: tests/86_selenium/131_miscellaneous_module_availability:101
-#: tests/86_selenium/131_miscellaneous_module_availability:131
-#: tests/86_selenium/131_miscellaneous_module_availability:161
+#: 131_miscellaneous_module_availability:57
+#: 131_miscellaneous_module_availability:101
+#: 131_miscellaneous_module_availability:131
+#: 131_miscellaneous_module_availability:161
 msgid "Package Management"
 msgstr ""
 
-#: tests/86_selenium/14_password_self-service:100
+#: 14_password_self-service:100
 msgid "Password change"
 msgstr ""
 
-#: tests/86_selenium/14_password_self-service:125
+#: 14_password_self-service:125
 msgid "Password forgotten"
 msgstr ""
 
-#: tests/86_selenium/151_udm_users:141
+#: 151_udm_users:141
 msgid "Personal information"
 msgstr ""
 
-#: tests/86_selenium/14_password_self-service:129
+#: 14_password_self-service:129
 msgid "Please choose an option"
 msgstr ""
 
-#: tests/86_selenium/111_product_test_execute_join_script:80
+#: 111_product_test_execute_join_script:80
 msgid "Please enter credentials"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:44
-#: tests/86_selenium/131_miscellaneous_module_availability:89
+#: 131_miscellaneous_module_availability:44
+#: 131_miscellaneous_module_availability:89
 msgid "Policies"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:37
-#: tests/86_selenium/131_miscellaneous_module_availability:82
+#: 131_miscellaneous_module_availability:37
+#: 131_miscellaneous_module_availability:82
 msgid "Printers"
 msgstr ""
 
-#: tests/86_selenium/130_miscellaneous:56
-#: tests/86_selenium/130_miscellaneous:127
-#: tests/86_selenium/131_miscellaneous_module_availability:51
-#: tests/86_selenium/131_miscellaneous_module_availability:68
-#: tests/86_selenium/131_miscellaneous_module_availability:95
-#: tests/86_selenium/131_miscellaneous_module_availability:111
-#: tests/86_selenium/131_miscellaneous_module_availability:125
-#: tests/86_selenium/131_miscellaneous_module_availability:141
-#: tests/86_selenium/131_miscellaneous_module_availability:155
-#: tests/86_selenium/131_miscellaneous_module_availability:171
+#: 130_miscellaneous:56 130_miscellaneous:127
+#: 131_miscellaneous_module_availability:51
+#: 131_miscellaneous_module_availability:68
+#: 131_miscellaneous_module_availability:95
+#: 131_miscellaneous_module_availability:111
+#: 131_miscellaneous_module_availability:125
+#: 131_miscellaneous_module_availability:141
+#: 131_miscellaneous_module_availability:155
+#: 131_miscellaneous_module_availability:171
 msgid "Process overview"
 msgstr ""
 
-#: tests/86_selenium/14_password_self-service:83
+#: 14_password_self-service:83
 msgid "Protect account"
 msgstr ""
 
-#: tests/86_selenium/110_product_test_do_rejoin:54
+#: 110_product_test_do_rejoin:54
 msgid "Reboot"
 msgstr ""
 
-#: tests/86_selenium/110_product_test_do_rejoin:46
+#: 110_product_test_do_rejoin:46
 msgid "Rejoin"
 msgstr ""
 
-#: tests/86_selenium/110_product_test_do_rejoin:51
+#: 110_product_test_do_rejoin:51
 msgid "Rejoin system"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:58
-#: tests/86_selenium/131_miscellaneous_module_availability:102
-#: tests/86_selenium/131_miscellaneous_module_availability:132
-#: tests/86_selenium/131_miscellaneous_module_availability:162
+#: 15_favorite_modules:47
+msgid "Remove from favorites"
+msgstr "Aus Favoriten entfernen"
+
+#: 131_miscellaneous_module_availability:58
+#: 131_miscellaneous_module_availability:102
+#: 131_miscellaneous_module_availability:132
+#: 131_miscellaneous_module_availability:162
 msgid "Repository Settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/86_selenium/111_product_test_execute_join_script:90
+#: 111_product_test_execute_join_script:90
 msgid "Restart"
 msgstr ""
 
-#: tests/86_selenium/111_product_test_execute_join_script:86
+#: 111_product_test_execute_join_script:86
 msgid "Run"
 msgstr ""
 
-#: tests/86_selenium/111_product_test_execute_join_script:82
+#: 111_product_test_execute_join_script:82
 msgid "Run join scripts"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:46
-#: tests/86_selenium/131_miscellaneous_module_availability:91
+#: 131_miscellaneous_module_availability:46
+#: 131_miscellaneous_module_availability:91
 msgid "SAML identity provider"
 msgstr ""
 
-#: tests/86_selenium/151_udm_users:140
+#: 151_udm_users:140
 msgid "Samba account"
 msgstr ""
 
-#: tests/86_selenium/12_product_test_ucr:129
-#: tests/86_selenium/14_password_self-service:94
-#: tests/86_selenium/150_udm_create_modify_delete_objects:59
+#: 150_udm_create_modify_delete_objects:59 12_product_test_ucr:129
+#: 14_password_self-service:94
 msgid "Save"
 msgstr "Speichern"
 
-#: tests/86_selenium/132_miscellaneous_open_all_modules:41
-#: tests/86_selenium/132_miscellaneous_open_all_modules:45
+#: 132_miscellaneous_open_all_modules:41 132_miscellaneous_open_all_modules:45
 msgid "Search query"
 msgstr "Suche Benutzer..."
 
-#: tests/86_selenium/131_miscellaneous_module_availability:45
-#: tests/86_selenium/131_miscellaneous_module_availability:90
+#: 131_miscellaneous_module_availability:45
+#: 131_miscellaneous_module_availability:90
 msgid "Shares"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:59
-#: tests/86_selenium/131_miscellaneous_module_availability:72
-#: tests/86_selenium/131_miscellaneous_module_availability:103
-#: tests/86_selenium/131_miscellaneous_module_availability:115
-#: tests/86_selenium/131_miscellaneous_module_availability:133
-#: tests/86_selenium/131_miscellaneous_module_availability:145
-#: tests/86_selenium/131_miscellaneous_module_availability:163
-#: tests/86_selenium/131_miscellaneous_module_availability:175
+#: 131_miscellaneous_module_availability:59
+#: 131_miscellaneous_module_availability:72
+#: 131_miscellaneous_module_availability:103
+#: 131_miscellaneous_module_availability:115
+#: 131_miscellaneous_module_availability:133
+#: 131_miscellaneous_module_availability:145
+#: 131_miscellaneous_module_availability:163
+#: 131_miscellaneous_module_availability:175
 msgid "Software update"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:52
-#: tests/86_selenium/131_miscellaneous_module_availability:69
-#: tests/86_selenium/131_miscellaneous_module_availability:96
-#: tests/86_selenium/131_miscellaneous_module_availability:112
-#: tests/86_selenium/131_miscellaneous_module_availability:126
-#: tests/86_selenium/131_miscellaneous_module_availability:142
-#: tests/86_selenium/131_miscellaneous_module_availability:156
-#: tests/86_selenium/131_miscellaneous_module_availability:172
+#: 131_miscellaneous_module_availability:52
+#: 131_miscellaneous_module_availability:69
+#: 131_miscellaneous_module_availability:96
+#: 131_miscellaneous_module_availability:112
+#: 131_miscellaneous_module_availability:126
+#: 131_miscellaneous_module_availability:142
+#: 131_miscellaneous_module_availability:156
+#: 131_miscellaneous_module_availability:172
 msgid "Statistics"
 msgstr ""
 
-#: tests/86_selenium/130_miscellaneous:160
-#: tests/86_selenium/130_miscellaneous:162
+#: 130_miscellaneous:160 130_miscellaneous:162
 msgid "Switch language"
 msgstr "Sprache ändern"
 
-#: tests/86_selenium/131_miscellaneous_module_availability:55
-#: tests/86_selenium/131_miscellaneous_module_availability:99
-#: tests/86_selenium/131_miscellaneous_module_availability:129
-#: tests/86_selenium/131_miscellaneous_module_availability:159
+#: 131_miscellaneous_module_availability:55
+#: 131_miscellaneous_module_availability:99
+#: 131_miscellaneous_module_availability:129
+#: 131_miscellaneous_module_availability:159
 msgid "System diagnostic"
 msgstr ""
 
-#: tests/86_selenium/131_miscellaneous_module_availability:53
-#: tests/86_selenium/131_miscellaneous_module_availability:70
-#: tests/86_selenium/131_miscellaneous_module_availability:97
-#: tests/86_selenium/131_miscellaneous_module_availability:113
-#: tests/86_selenium/131_miscellaneous_module_availability:127
-#: tests/86_selenium/131_miscellaneous_module_availability:143
-#: tests/86_selenium/131_miscellaneous_module_availability:157
-#: tests/86_selenium/131_miscellaneous_module_availability:173
+#: 131_miscellaneous_module_availability:53
+#: 131_miscellaneous_module_availability:70
+#: 131_miscellaneous_module_availability:97
+#: 131_miscellaneous_module_availability:113
+#: 131_miscellaneous_module_availability:127
+#: 131_miscellaneous_module_availability:143
+#: 131_miscellaneous_module_availability:157
+#: 131_miscellaneous_module_availability:173
 msgid "System services"
 msgstr ""
 
-#: tests/86_selenium/110_product_test_do_rejoin:45
+#: 110_product_test_do_rejoin:45
 msgid "This page shows the status of"
 msgstr ""
 
-#: tests/86_selenium/130_miscellaneous:54
-#: tests/86_selenium/130_miscellaneous:126
-#: tests/86_selenium/131_miscellaneous_module_availability:54
-#: tests/86_selenium/131_miscellaneous_module_availability:71
-#: tests/86_selenium/131_miscellaneous_module_availability:98
-#: tests/86_selenium/131_miscellaneous_module_availability:114
-#: tests/86_selenium/131_miscellaneous_module_availability:128
-#: tests/86_selenium/131_miscellaneous_module_availability:144
-#: tests/86_selenium/131_miscellaneous_module_availability:158
-#: tests/86_selenium/131_miscellaneous_module_availability:174
-#: tests/86_selenium/12_product_test_ucr:98
+#: 12_product_test_ucr:98 130_miscellaneous:54 130_miscellaneous:126
+#: 131_miscellaneous_module_availability:54
+#: 131_miscellaneous_module_availability:71
+#: 131_miscellaneous_module_availability:98
+#: 131_miscellaneous_module_availability:114
+#: 131_miscellaneous_module_availability:128
+#: 131_miscellaneous_module_availability:144
+#: 131_miscellaneous_module_availability:158
+#: 131_miscellaneous_module_availability:174
 msgid "Univention Configuration Registry"
 msgstr ""
 
-#: tests/86_selenium/14_password_self-service:95
-#: tests/86_selenium/14_password_self-service:110
+#: 14_password_self-service:95 14_password_self-service:110
 msgid "Univention Portal"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:181
+#: 10_product_test_password_change:181
 msgid "User settings"
 msgstr "Benutzereinstellungen"
 
-#: tests/90_umc-screenshots/03_users:43
-msgid "User template"
-msgstr ""
-
-#: tests/86_selenium/10_product_test_password_change:88
-#: tests/86_selenium/10_product_test_password_change:126
-#: tests/86_selenium/131_miscellaneous_module_availability:34
-#: tests/86_selenium/131_miscellaneous_module_availability:79
-#: tests/90_umc-screenshots/03_users:19
+#: 131_miscellaneous_module_availability:34
+#: 131_miscellaneous_module_availability:79 15_favorite_modules:57
+#: 10_product_test_password_change:88 10_product_test_password_change:126
 msgid "Users"
 msgstr "Benutzer"
 
-#: tests/86_selenium/151_udm_users:150
+#: 151_udm_users:150
 msgid "[Advanced settings]"
 msgstr ""
 
-#: tests/86_selenium/151_udm_users:138 tests/86_selenium/151_udm_users:150
-#: tests/86_selenium/151_udm_users:163
+#: 151_udm_users:138 151_udm_users:150 151_udm_users:163
 msgid "[Options]"
 msgstr ""
 
-#: tests/86_selenium/151_udm_users:150
+#: 151_udm_users:150
 msgid "[Policies]"
 msgstr ""
 
-#: tests/86_selenium/12_product_test_ucr:99
+#: 12_product_test_ucr:99
 msgid "apache"
 msgstr ""
 
-#: tests/86_selenium/130_miscellaneous:57
+#: 130_miscellaneous:57
 msgid "generates an overview"
 msgstr ""
 
-#: tests/86_selenium/151_udm_users:131
+#: 151_udm_users:131
 msgid "more"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:170
-#: tests/86_selenium/10_product_test_password_change:173
+#: 10_product_test_password_change:170 10_product_test_password_change:173
 msgid "no module available"
 msgstr "kein Modul verfügbar"
 
-#: tests/86_selenium/10_product_test_password_change:189
+#: 10_product_test_password_change:189
 msgid "password has been changed"
 msgstr "Passwort wurde erfolgreich geändert"
 
-#: tests/86_selenium/10_product_test_password_change:139
+#: 10_product_test_password_change:139
 msgid "password has expired and must be renewed"
 msgstr "password has expired and must be renewed"
 
-#: tests/90_umc-screenshots/03_users:57
-msgid "password history"
-msgstr "Passwort-History"
-
-#: tests/86_selenium/10_product_test_password_change:191
-#: tests/86_selenium/10_product_test_password_change:205
+#: 10_product_test_password_change:191 10_product_test_password_change:205
 msgid "password is too short"
 msgstr "Passwort ist zu kurz"
 
-#: tests/86_selenium/10_product_test_password_change:192
-#: tests/86_selenium/10_product_test_password_change:200
+#: 10_product_test_password_change:192 10_product_test_password_change:200
 msgid "password is too simple"
 msgstr ""
 
-#: tests/86_selenium/10_product_test_password_change:190
-#: tests/86_selenium/10_product_test_password_change:195
+#: 10_product_test_password_change:190 10_product_test_password_change:195
 msgid "password was already used"
 msgstr "Passwort wurde bereits genutzt"
 
-#: tests/86_selenium/130_miscellaneous:44
+#: 130_miscellaneous:44
 msgid "really want to logout"
 msgstr ""
 
-#: tests/86_selenium/111_product_test_execute_join_script:89
+#: 111_product_test_execute_join_script:89
 msgid "restart of the UMC server"
 msgstr ""
 
-#: tests/86_selenium/12_product_test_ucr:128
+#: 12_product_test_ucr:128
 msgid "value"
 msgstr ""
 
 #~ msgid "Search users..."
 #~ msgstr "Suche Benutzer..."
+
+#~ msgid "password history"
+#~ msgstr "Passwort-History"
