@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-50) unstable; urgency=medium
+
+  * Bug #43745: don't try to reconnect immediately.
+
+ -- Florian Best <best@univention.de>  Fri, 17 Nov 2017 13:21:44 +0100
+
 univention-system-setup (10.0.10-49) unstable; urgency=medium
 
   * Bug #42059: Improve error handling

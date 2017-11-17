@@ -2645,7 +2645,7 @@ define([
 				var _adJoinWithUnreachableMaster = lang.hitch(this, function(infos) {
 					this._domainReplaceMaster = false;
 					return dialog.confirm(_('A previous UCS system has already joined into the Active Directory domain. Please make sure the system "%(ucs_master_fqdn)s" is reachable via SSH. If you continue with "Replace system" the registration of the previous UCS system will be removed.', infos), [{
-						label: _('Retry connection'),
+						label: _('Cancel'),
 						name: pageName
 					}, {
 						label: _('Replace system'),
@@ -2657,9 +2657,6 @@ define([
 							this._domainReplaceMaster = true;
 							return forcedPage;
 						}
-						tools.defer(lang.hitch(this, function() {
-							this._next(forcedPage);
-						}), 1000);
 						return forcedPage;
 					}));
 				});
