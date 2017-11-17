@@ -1,3 +1,9 @@
+univention-system-setup (10.0.10-52) unstable; urgency=medium
+
+  * Bug #43745: depend on explicit version of univention-lib
+
+ -- Florian Best <best@univention.de>  Fri, 17 Nov 2017 15:59:29 +0100
+
 univention-system-setup (10.0.10-51) unstable; urgency=medium
 
   * Bug #43745: fix typo
