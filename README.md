@@ -5,11 +5,11 @@ Welcome to the git mirror of our Open Source product Univention Corporate Server
 [UCS](https://www.univention.com/products/ucs/) is the innovative basis for the operation and easy management of server applications and IT infrastructures.
 
 ## Download and Demo
-You can download various ISO, VMWare and VirtualBox images of UCS on our [website](https://www.univention.com/downloads/ucs-download/).
+Various ISO, VMWare and VirtualBox images of UCS are available for downloading on our [website](https://www.univention.com/downloads/ucs-download/).
 Our online demo of UCS is available under [demo.univention.de](http://demo.univention.de/).
 
 ## Documentation and Support
-You can find the UCS documentation on the [website](http://docs.software-univention.de/) including a Quick start guide.
+The UCS documentation, including a Quick start guide, can be found at [docs.software-univention.de](http://docs.software-univention.de/) .
 Another helpful resource is our [wiki](http://wiki.univention.de/index.php?title=Main_Page).
 
 If you need direct help, our [forum](https://help.univention.com) provides a very good community support.
