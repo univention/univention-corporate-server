@@ -53,6 +53,10 @@ class DatabaseCreationFailed(DatabaseError):
 	pass
 
 
+class DatabaseConnectionFailed(DatabaseError):
+	pass
+
+
 class DatabaseInfoError(DatabaseError):
 	pass
 
@@ -254,7 +258,10 @@ class MySQL(DatabaseConnector):
 		if self._connection is None:
 			with open('/etc/mysql.secret') as f:
 				passwd = f.read().rstrip('\n')
-			self._connection = mysql.connect(host='localhost', user='root', passwd=passwd)
+			try:
+				self._connection = mysql.connect(host='localhost', user='root', passwd=passwd)
+			except mysql.OperationalError:
+				raise DatabaseConnectionFailed('Could not connect to the MySQL server. Please verify that MySQL is running. The password for MySQL\'s root user should be in /etc/mysql.secret. You can test the connection via\n  mysql --password="$(cat /etc/mysql.secret)"')
 		return self._connection
 
 	def get_cursor(self):
