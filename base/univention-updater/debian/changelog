@@ -1,3 +1,9 @@
+univention-updater (11.0.14-1) unstable; urgency=medium
+
+  * Bug #45745: Adapt updater message for 4.1-5 errata
+
+ -- Erik Damrose <damrose@univention.de>  Sun, 19 Nov 2017 22:10:29 +0100
+
 univention-updater (11.0.13-3) unstable; urgency=medium
 
   * Bug #45671: Further improvements to extended maintenance warning message
