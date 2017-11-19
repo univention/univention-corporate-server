@@ -1,3 +1,9 @@
+univention-updater (12.0.10-9) unstable; urgency=medium
+
+  * Bug #45745: Remove settings from UCS 4.1-5 updater
+
+ -- Erik Damrose <damrose@univention.de>  Sun, 19 Nov 2017 22:23:06 +0100
+
 univention-updater (12.0.10-8) unstable; urgency=low
 
   *  Bug #44084: Require seabios_1.10.2-1 before updating

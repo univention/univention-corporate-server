@@ -245,6 +245,12 @@ done
 # remove broken symlinks e.g. univention-management-console, univention-saml
 find /etc/apache2/sites-enabled/ -xtype l -delete >>"$UPDATER_LOG" 2>&1
 
+# Bug #45745: remove possible deactivated updater warniung
+if is_ucr_true license/extended_maintenance/disable_warning/set_by_415-updater; then
+	ucr unset license/extended_maintenance/disable_warning/set_by_415-updater \
+			license/extended_maintenance/disable_warning
+fi
+
 echo "
 
 
