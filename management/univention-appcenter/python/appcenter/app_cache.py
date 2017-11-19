@@ -211,7 +211,10 @@ class AppCache(_AppCache):
 			else:
 				archive_modified = self._archive_modified()
 				if archive_modified is not None:
-					os.utime(cache_file, (archive_modified, archive_modified))
+					try:
+						os.utime(cache_file, (archive_modified, archive_modified))
+					except EnvironmentError:
+						return False
 				self._cache_modified = archive_modified
 				return True
 
