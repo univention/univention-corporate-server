@@ -148,6 +148,12 @@ if [ "$1" = "configure" ]; then
 				repository/online/component/${version_version}-${version_patchlevel}-errata/description="Errata updates for UCS ${version_version}-${version_patchlevel}" \
 				repository/online/component/${version_version}-${version_patchlevel}-errata/version="${version_version}"
 	fi
+	
+	# Set for UCS 4.1-5-errata only. Do not merge this change to other ucs versions! Bug #45745
+	if ! is_ucr_true license/extended_maintenance/disable_warning; then
+		ucr set license/extended_maintenance/disable_warning=true \
+				license/extended_maintenance/disable_warning/set_by_415-updater?true
+	fi
 fi
 
 call_joinscript 41univention-updater.inst
