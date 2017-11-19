@@ -1,3 +1,9 @@
+univention-lib (6.0.9-21) unstable; urgency=medium
+
+  * Bug #43619: When locking PackageManager, also get apt lock
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 19 Nov 2017 20:35:10 +0100
+
 univention-lib (6.0.9-20) unstable; urgency=medium
 
   * Bug #43745: replace _domaincontroller_master._tcp SRV record

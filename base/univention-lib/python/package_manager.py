@@ -287,6 +287,7 @@ class PackageManager(object):
 		self._always_install = []
 		self.always_noninteractive = always_noninteractive
 		self.lock_fd = None
+		self.apt_lock_fd = None
 		if lock:
 			self.lock()
 
@@ -306,14 +307,28 @@ class PackageManager(object):
 				pkg.mark_install()
 
 	def lock(self, raise_on_fail=True):
+		if self.is_locked():
+			return True
 		self.lock_fd = get_lock('univention-lib-package-manager', nonblocking=True)
 		return_value = self.lock_fd is not None
+
+		if return_value is True:
+			# get apt lock; taken from dist-packages/apt/cache.py
+			lockfile = apt_pkg.config.find_dir("Dir::Cache::Archives") + "lock"
+			self.apt_lock_fd = apt_pkg.get_lock(lockfile)
+			if self.apt_lock_fd < 0:
+				return_value = False
+
 		if return_value is False:
 			if raise_on_fail:
 				raise LockError(_('Failed to lock'))
+
 		return return_value
 
 	def unlock(self):
+		if self.apt_lock_fd >= 0:
+			os.close(self.apt_lock_fd)
+			self.apt_lock_fd = None
 		if self.lock_fd is not None:
 			release_lock(self.lock_fd)
 			self.lock_fd = None
@@ -321,7 +336,7 @@ class PackageManager(object):
 		return False
 
 	def is_locked(self):
-		return self.lock_fd is not None
+		return self.lock_fd is not None and self.apt_lock_fd >= 0
 
 	@contextmanager
 	def locked(self, reset_status=False, set_finished=False):
