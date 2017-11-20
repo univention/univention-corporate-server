@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-lib
-fix: 
+fix: 6.0.9-20A~4.2.0.201711092116
 desc: |
  This update addresses the following issue(s):
  * When joining into an Active Directory domain any existing
