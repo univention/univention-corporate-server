@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## -*- coding: utf-8 -*-
-## desc: New listener module API test
+## desc: New listener module API test, async, parallelism 1
 ## tags: []
 ## roles: []
 ## exposure: dangerous
@@ -9,10 +9,12 @@
 ## bugs: [44786]
 
 import os
+import re
 import pwd
 import time
 import logging
 import subprocess
+from collections import OrderedDict
 
 from ldap.filter import filter_format
 from ldap.filter import escape_filter_chars
@@ -32,15 +34,25 @@ log_file = os.path.join('/tmp', '{}.log'.format(uts.random_name()))
 uid_default_file = None
 uid_root_file = None
 verify_ldap_object = SetTimeout(utils.verify_ldap_object, 60)
+CELERY_CONFIG = '/etc/default/celery-worker-async-listener-modules'
 
 
 def cleanup():
-	for filename in (lm_file, log_file, uid_default_file, uid_root_file):
+	print('Stopping celery-worker-async-listener-modules.service...')
+	subprocess.call(['/sync/univention-directory-listener/share/stop-workers'])
+	subprocess.call(['systemctl', 'stop', 'celery-worker-async-listener-modules.service'])
+	# be extra paranoid to not mess up jenkins env
+	time.sleep(5)
+	subprocess.call(['pkill', '-9', '-f', 'celery worker --app=univention.listener.async.celery:app.*{}'.format(lm_name)])
+	for filename in (lm_file, '{}c'.format(lm_file), log_file, uid_default_file, uid_root_file):
 		print('Deleting {!r}...'.format(filename))
 		try:
 			os.remove(filename)
 		except (OSError, IOError) as exc:
 			print(exc)
+	subprocess.call(['/sync/univention-directory-listener/share/update-celery-configuration'])
+	print('Restarting celery-worker-async-listener-modules.service...')
+	subprocess.call(['systemctl', 'restart', 'celery-worker-async-listener-modules.service'])
 	print('Restarting univention-directory-listener...')
 	subprocess.call(['systemctl', 'restart', 'univention-directory-listener.service'])
 
@@ -56,6 +68,7 @@ def main():
 	uid_default_file = os.path.join('/tmp', '{}.log'.format(uts.random_name()))
 	uid_root_file = os.path.join('/tmp', '{}'.format(uts.random_name()))
 	lm_logger_path = os.path.join('/var/log/univention/listener_modules', '{}.log'.format(lm_name))
+	parallelism = 1
 	text_replacements = {
 		'TEST_ID': test_id,
 		'MODULE_NAME': lm_name,
@@ -63,10 +76,10 @@ def main():
 		'LDAP_FILTER': filter_format('(&(objectClass=inetOrgPerson)(uid=%s))', (username,)),
 		'UID_ROOT_FILE': uid_root_file,
 		'UID_DEFAULT_FILE': uid_default_file,
-		'IMPORTS': '',
-		'ADAPTER_CLASS': 'ListenerModuleAdapter',
-		'HANDLER_SUPER_CLASS': 'ListenerModuleHandler',
-		'CONFIG_MODULE_ARGS': '',
+		'IMPORTS': 'from univention.listener.async import AsyncListenerModuleHandler, AsyncListenerModuleAdapter',
+		'ADAPTER_CLASS': 'AsyncListenerModuleAdapter',
+		'HANDLER_SUPER_CLASS': 'AsyncListenerModuleHandler',
+		'CONFIG_MODULE_ARGS': '\trun_asynchronously = True\n\tparallelism = {}\n'.format(parallelism)
 	}
 
 	# create test listener module
@@ -86,12 +99,34 @@ def main():
 	print('Listener module log file: {!r}'.format(lm_logger_path))
 	print('UID default (listener) file: {!r}'.format(uid_default_file))
 	print('UID root file: {!r}'.format(uid_root_file))
-	print('run_asynchronously: False')
-
+	print('run_asynchronously: True')
+	print('parallelism: {}'.format(parallelism))
 
 	# create, modify, move, modify
 	with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr:
 		handler_set(['listener/module/{}/debug/level=4'.format(lm_name)])
+		print('Restarting celery-worker-async-listener-modules.service...')
+		subprocess.call(['systemctl', 'restart', 'celery-worker-async-listener-modules.service'])
+
+		# check that the celery worker config was updated
+		conf = OrderedDict()
+		for line in open(CELERY_CONFIG, 'rb'):
+			m = re.match(r'^(?P<key>[\w_-]*)=(?P<value>.*)$', line)
+			if m:
+				k, v = m.groups()
+				conf[k] = v
+		print('   --- Celery worker configuration ---')
+		print('\n'.join('{}={}'.format(k, v) for k, v in conf.items()))
+		if 'true' not in conf.get('ENABLED'):
+			utils.fail('Bad Celery worker configuration: not ENABLED: {!r}'.format(conf.get('ENABLED')))
+		if lm_name not in conf.get('CELERYD_NODES'):
+			utils.fail('Bad Celery worker configuration: listener module name {!r} missing in CELERYD_NODES: {!r}'.format(
+				lm_name, conf.get('CELERYD_NODES')))
+		if '-c:{} {}'.format(lm_name, parallelism) not in conf.get('CELERYD_OPTS'):
+			utils.fail('Bad Celery worker configuration: parallelism config {!r} missing in CELERYD_OPTS: {!r}'.format(
+				'-c:{} {}'.format(lm_name, parallelism), conf.get('CELERYD_OPTS')))
+		print('OK: --- Celery worker configuration ---')
+
 		print('Restarting univention-directory-listener...')
 		subprocess.call(['systemctl', 'restart', 'univention-directory-listener.service'])
 
@@ -106,7 +141,18 @@ def main():
 		verify_ldap_object(userdn, should_exist=True)
 
 		lm_logger.info('*** Checking setuid()...')
-		file0_uid = os.stat(uid_root_file).st_uid
+		count = 0
+		while True:
+			try:
+				file0_uid = os.stat(uid_root_file).st_uid
+				break
+			except OSError:
+				count += 1
+				if count > 6:
+					raise
+				else:
+					print('Waiting 10s for {!r} to show up...'.format(uid_root_file))
+					time.sleep(10)
 		if file0_uid != 0:
 			utils.fail('File (root) {!r} has uid={!r}, expected 0.'.format(uid_root_file, file0_uid))
 		file_default_uid = os.stat(uid_default_file).st_uid
@@ -157,7 +203,13 @@ def main():
 	verify_ldap_object(new_dn, should_exist=False)
 	time.sleep(15)  # give listener time to settle: wait for post_run()
 
-	logging.shutdown()
+	last_changed = 0
+	lm_logger.info('*** os.stat(log_file).st_mtime=%r', os.stat(log_file).st_mtime)
+	while last_changed != os.stat(log_file).st_mtime:
+		last_changed = os.stat(log_file).st_mtime
+		lm_logger.info('*** last_changed=%r', last_changed)
+		lm_logger.info('*** File changed, waiting 30s...')
+		time.sleep(30)
 
 	lm_logfile = '/var/log/univention/listener_modules/{}.log'.format(lm_name)
 	print('*******************************************')
@@ -189,7 +241,15 @@ def main():
 			else:
 				utils.fail('Missing operation(s). Expected: {!r}.'.format(operations))
 		if not line.startswith(exp):
-			utils.fail('Expected startswith({!r}) found {!r}.'.format(exp, line))
+			if line == 'post_run':
+				print('Found a possible intermittent post_run, looking for a pre_run...')
+				line = lines.next()
+				if line == 'pre_run':
+					print('Ignoring intermittent post_run, pre_run...')
+					continue
+				else:
+					utils.fail('No pre_run found - bad order.')
+			utils.fail('Expected {!r} found {!r}.'.format(exp, line))
 	print('Test succeeded.')
 
 

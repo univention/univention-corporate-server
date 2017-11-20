@@ -1,14 +1,17 @@
 from __future__ import absolute_import
+import time
+import random
 import traceback
 from ldap.filter import filter_format
 import univention.debug as ud
 from univention.listener import ListenerModuleAdapter, ListenerModuleHandler, ListenerModuleConfiguration
+@@IMPORTS@@
 
 
 TEST_ID = '@@TEST_ID@@'
 MODULE_NAME = '@@MODULE_NAME@@'
 LOGFILE = '@@LOGFILE@@'
-TEST_USERNAME = '@@USERNAME@@'
+LDAP_FILTER = '@@LDAP_FILTER@@'
 UID_ROOT_FILE = '@@UID_ROOT_FILE@@'
 UID_DEFAULT_FILE = '@@UID_DEFAULT_FILE@@'
 
@@ -17,44 +20,55 @@ class MyTestException(Exception):
 	pass
 
 
-class TestListenerModule(ListenerModuleHandler):
+class TestListenerModule(@@HANDLER_SUPER_CLASS@@):
 	@staticmethod
-	def test_log(msg):
+	def test_log(msg, uid):
 		with open(LOGFILE, 'ab') as fp:
-			fp.write('{} {}\n'.format(TEST_ID, msg))
+			fp.write('{} {} {}\n'.format(TEST_ID, msg, uid))
 
 	def create(self, dn, new):
+		self.uid = new['uid'][0]
 		self.logger.info('create() for user %r.', new['uid'][0])
-		self.test_log('create')
+		self.test_log('create', new['uid'][0])
 		self.logger.info('create() touch uid root %r.', UID_ROOT_FILE)
 		with self.as_root():
 			open(UID_ROOT_FILE, 'wb').write('test')
 		self.logger.info('create() touch uid listener %r.', UID_DEFAULT_FILE)
 		open(UID_DEFAULT_FILE, 'wb').write('test')
 		self.logger.info('create() test self.lo')
-		ldap_res = self.lo.searchDn(filter=filter_format('(&(objectClass=posixAccount)(uid=%s))', (new['uid'][0],)))
+		filter_s = filter_format('(&(objectClass=posixAccount)(uid=%s))', (new['uid'][0],))
+		self.logger.debug('filter_s=%r', filter_s)
+		ldap_res = self.lo.searchDn(filter=filter_s)
+		self.logger.debug('ldap_res=%r', ldap_res)
+		if not ldap_res:
+			raise Exception('self.lo.searchDn did not return a result')
 		if ldap_res[0] != dn and ldap_res[0]['uidNumber'] != new['uidNumber']:
 			raise Exception('self.lo.searchDn had unexpected result: {!r}'.format(ldap_res))
 		self.logger.info('create() test self.get_udm_objects')
-		udm_users = self.get_udm_objects('users/user', '(&(objectClass=inetOrgPerson)(uid={}))'.format(TEST_USERNAME), self.lo.base, self.lo, self.config.po)
+		udm_users = self.get_udm_objects('users/user', filter_s, self.lo.base, self.lo, self.config.po)
 		if len(udm_users) != 1 or udm_users[0].info['username'] != new['uid'][0]:
 			raise Exception('self.get_udm_objects has unexpected result: {!r}'.format(ldap_res))
+		time.sleep(random.uniform(0, 6))
 		return
 
 	def modify(self, dn, old, new, old_dn):
+		self.uid = new['uid'][0]
 		if old_dn:
 			self.logger.info('modify() MOVE for user %r. old_dn=%r | new dn=%r | diff(old, new)=%r', new['uid'][0], old_dn, dn, self.diff(old, new))
-			self.test_log('move')
+			self.test_log('move', new['uid'][0])
 		else:
 			self.logger.info('modify() for user %r. diff(old, new)=%r', new['uid'][0], self.diff(old, new))
-			self.test_log('modify {}'.format(''.join(['{} {}'.format(k, v[1][0]) for k, v in self.diff(old, new).items()])))
+			self.test_log('modify {}'.format(''.join(['{} {}'.format(k, v[1][0]) for k, v in self.diff(old, new).items()])), new['uid'][0])
+		time.sleep(random.uniform(0, 6))
 		if 'roomNumber' in self.diff(old, new).keys():
 			raise MyTestException('Error {}.'.format(TEST_ID))
 		return
 
 	def remove(self, dn, old):
+		self.uid = old['uid'][0]
 		self.logger.info('remove() for user %r.', old['uid'][0])
-		self.test_log('remove')
+		self.test_log('remove', old['uid'][0])
+		time.sleep(random.uniform(0, 6))
 		return
 
 	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
@@ -62,29 +76,29 @@ class TestListenerModule(ListenerModuleHandler):
 		ud.debug(ud.LISTENER, ud.ERROR, 'exc_type=%r exc_value=%r' % (exc_type, exc_value))
 		self.logger.error(''.join(traceback.format_exception(exc_type, exc_value, exc_traceback)))
 		if exc_type == MyTestException:
-			TestListenerModule.test_log('error_handler')
+			TestListenerModule.test_log('error_handler', new.get('uid', [''])[0] or old.get('uid', [''])[0])
 			return
 		raise exc_type(exc_value)
 
 	def clean(self):
-		self.test_log('clean')
+		self.test_log('clean', '')
 
 	def initialize(self):
-		self.test_log('initialize')
+		self.test_log('initialize', '')
 
 	def pre_run(self):
-		self.test_log('pre_run')
+		self.test_log('pre_run', '')
 
 	def post_run(self):
-		self.test_log('post_run')
+		self.test_log('post_run', '')
 
 
 class TestListenerModuleConfiguration(ListenerModuleConfiguration):
 	name = MODULE_NAME
 	description = 'test module #{}'.format(TEST_ID)
-	ldap_filter = '(&(objectClass=inetOrgPerson)(uid={}))'.format(TEST_USERNAME)
+	ldap_filter = LDAP_FILTER
 	attributes = ['employeeType', 'roomNumber']
 	listener_module_class = TestListenerModule
+@@CONFIG_MODULE_ARGS@@
 
-
-globals().update(ListenerModuleAdapter(TestListenerModuleConfiguration()).get_globals())
+globals().update(@@ADAPTER_CLASS@@(TestListenerModuleConfiguration()).get_globals())
