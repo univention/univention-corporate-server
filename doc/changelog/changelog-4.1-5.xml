@@ -597,6 +597,7 @@
 					A race condition between writing and reading cached data has been fixed (<u:bug>42507</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
+		</section>
 	</section>
 
 	<section id="changelog:other">
