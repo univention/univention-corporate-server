@@ -18,11 +18,13 @@ parse () {
 		if [ $patch -ge 1 ]
 		then
 			prev="$(($patch - 1))"
+			papt="ucs_${major}.${minor}-0-ucs${major}.${minor}-${prev}"
 			plong="${major}.${minor}-${prev}"
 			pshort="ucs${major}${minor}${prev}"
 		elif [ $minor -ge 1 ]
 		then
 			prev="${4:?old-minor}"
+			papt="ucs_${major}.${minor}-0"
 			plong="${major}.$((minor - 1))-${prev}"
 			pshort="ucs${major}$((minor - 1))${prev}"
 		else
@@ -32,6 +34,7 @@ parse () {
 	*) usage ;;
 	esac
 
+	apt="ucs_${major}.${minor}-0-ucs${major}.${minor}-${patch}"
 	long="${major}.${minor}-${patch}"
 	short="ucs${major}${minor}${patch}"
 }
@@ -42,7 +45,7 @@ copy () {
 	mv "tasks/$short/task-$pshort" "tasks/$short/task-$short"
 	ln "tools/$pshort" "tools/$short"
 	cp -lrP "tools/boot/$pshort" "tools/boot/$short"
-	sed -e "s/$pshort/$short/g" -e "s/$plong/$long/" <"$pshort.conf" >"$short.conf"
+	sed -e "s/$papt/$apt/g" -e "s/$pshort/$short/g" -e "s/$plong/$long/" <"$pshort.conf" >"$short.conf"
 }
 
 usage () {
