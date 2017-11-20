@@ -4,15 +4,100 @@
 See http://docs.software-univention.de/manual-4.2.html#domain:listenernotifier
 
 ## Listener module development
-Classic API: see http://docs.software-univention.de/developer-reference-4.2.html#chap:listener
 
-New API: To use this listener module interface copy `/usr/share/doc/univention-directory-listener/examples/listener_module_template.py` and modify the code to your needs, or:
+### Classic API
+
+See http://docs.software-univention.de/developer-reference-4.2.html#chap:listener
+
+### New API
+
+To use this listener module interface copy `/usr/share/doc/univention-directory-listener/examples/listener_module_template.py` and modify the code to your needs, or:
 
 * subclass ListenerModuleHandler
 * subclass ListenerModuleConfiguration
 * at the bottom add:
 
 		globals().update(ListenerModuleAdapter(ListenerModuleConfiguration()).get_globals())
+
+
+An example from `examples/listener_module_template.py`:
+
+	from __future__ import absolute_import
+	from univention.listener import ListenerModuleAdapter, ListenerModuleHandler, ListenerModuleConfiguration
+	
+	
+	class ListenerModuleTemplate(ListenerModuleHandler):
+		def create(self, dn, new):
+			self.logger.debug('dn=%r', dn)
+	
+		def modify(self, dn, old, new, old_dn):
+			self.logger.debug('dn=%r old_dn=%r', dn, old_dn)
+			if old_dn:
+				self.logger.info('it is (also) a move')
+	
+		def remove(self, dn, old):
+			self.logger.debug('dn=%r', dn)
+	
+	
+	class ListenerModuleTemplateConfiguration(ListenerModuleConfiguration):
+		name = 'listener module template'
+		description = 'a listener module template'
+		ldap_filter = ''
+		attributes = []
+		listener_module_class = ListenerModuleTemplate
+	
+	
+	globals().update(ListenerModuleAdapter(ListenerModuleTemplateConfiguration()).get_globals())
+
+
+### Asynchronous listener module API
+
+The new listener module API support creation of asynchronous listener modules. The code of those modules will not run in the listener process, but in a separate process. The main listener process will only send signals to the worker(s) that do the work and will return immediately.
+
+Asynchronous listener modules can optionally run in multiple instances at once. When a listener module is configured with `parallelism > 1` the handler code will run in multiple processes in parallel. To share variables between the processes, methods are provided to easily save data to and retrieve it from a memcached server.
+
+`set_shared_var()` and `get_shared_var()` can be used to store and retrieve data, `lock()` can be used to prevent race conditions.
+
+All operations on the same LDAP object will be serialized: `create()`, `modify()` and `remove()` will never run in parallel for objects with the same `entryUUID` and the execution order of those functions will be preserved.	Operations on LDAP object with different `entryUUIDs` will run in parallel.
+
+A word of *caution* about `pre_run()` and `post_run()` in asynchronous listener modules: If possible their use should be completely avoided. They will run in the expected order, but as they might be queued in between `create()`, `modify()`, `remove()`, it is possible for those calls to follow a `post_run()`. So even if a `pre_run()` will follow a `post_run()` before the next c/m/r call, it may not be efficient to tear down network/DB connections etc.
+
+`pre_run()` is guaranteed to only run before the first `create/modify/remove()` and after a `post_run()`. `post_run()` is guaranteed to run as the last function.
+
+An asynchronous listener module can be created using the same API as a synchronous listener module! The only difference is the use of `AsyncListenerModuleHandler` and `AsyncListenerModuleAdapter` from `univention.listener.async` instead of the respective classes without the "Async" prefix. In the configuration class `run_asynchronously = True` has to be specified and optionally `parallelism = <int:number of workers>`.
+
+The example above as an asynchronous listener modules:
+
+	from __future__ import absolute_import
+	from univention.listener import ListenerModuleConfiguration
+	from univention.listener.async import AsyncListenerModuleAdapter, AsyncListenerModuleHandler
+
+	
+	
+	class ListenerModuleTemplate(AsyncListenerModuleHandler):
+		def create(self, dn, new):
+			self.logger.debug('dn=%r', dn)
+	
+		def modify(self, dn, old, new, old_dn):
+			self.logger.debug('dn=%r old_dn=%r', dn, old_dn)
+			if old_dn:
+				self.logger.info('it is (also) a move')
+	
+		def remove(self, dn, old):
+			self.logger.debug('dn=%r', dn)
+	
+	
+	class ListenerModuleTemplateConfiguration(ListenerModuleConfiguration):
+		name = 'listener module template'
+		description = 'a listener module template'
+		ldap_filter = ''
+		attributes = []
+		listener_module_class = ListenerModuleTemplate
+		run_asynchronously = True
+	
+	
+	globals().update(AsyncListenerModuleAdapter(ListenerModuleTemplateConfiguration()).get_globals())
+
 
 ## Static type checking new API code
 In a UCS 4.2 system:

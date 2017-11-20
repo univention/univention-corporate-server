@@ -31,11 +31,12 @@ import os
 import grp
 import pwd
 import stat
+import string
 import os.path
 import listener
 import univention.admin.uldap
-
 from univention.listener.handler_logging import get_logger
+from univention.listener.exceptions import ListenerModuleConfigurationError, ListenerModuleRuntimeError
 try:
 	from typing import Any, Dict, List, Optional, Tuple
 	import logging
@@ -47,10 +48,6 @@ except ImportError:
 
 
 listener.configRegistry.load()
-
-
-class ListenerModuleConfigurationError(Exception):
-	pass
 
 
 class ListenerModuleConfiguration(object):
@@ -91,11 +88,25 @@ class ListenerModuleConfiguration(object):
 		for k, v in kwargs.items():
 			if k in _keys:
 				setattr(self, k, kwargs.pop(k))
+		self._run_checks()
 
 	def __repr__(self):
 		return '{}({})'.format(
 			self.__class__.__name__,
 			', '.join('{}={!r}'.format(k, v)for k, v in self.get_configuration().items()))
+
+	def _run_checks(self):
+		allowed_name_chars = string.ascii_letters + string.digits + ',.-_'
+		if set(self.get_name()) - set(allowed_name_chars):
+			raise ListenerModuleConfigurationError(
+				'The "name" of a listener module may only contain the following characters: {!r}'.format(allowed_name_chars)
+			)
+		if self.get_parallelism() > 1 and not self.get_run_asynchronously():
+			self.logger.warn(
+				'Configuration of "parallelism > 1" implies "run_asynchronously = True". To prevent this warning '
+				'configure it in your ListenerModuleConfiguration class.'
+			)
+			self.run_asynchronously = True
 
 	def get_configuration(self):  # type: () -> dict
 		"""
@@ -190,9 +201,11 @@ class ListenerModuleConfiguration(object):
 
 		:return: univention.admin.uldap.access object
 		"""
+		# The LDAP credentials may change with subsequent setdata() calls, when
+		# the notifier changes its LDAP server or when it restarts.
 		if not self._lo:
 			if not self.ldap_credentials:
-				raise ListenerModuleConfigurationError(
+				raise ListenerModuleRuntimeError(
 					'LDAP connection of listener module {!r} has not yet been initialized.'.format(self.get_name()))
 			self._lo = univention.admin.uldap.access(**self.ldap_credentials)
 		return self._lo
@@ -207,7 +220,8 @@ class ListenerModuleConfiguration(object):
 		return self.get_ldap_position(self.lo.base)
 
 	@classmethod
-	def get_ldap_position(cls, ldap_position=listener.configRegistry['ldap/base']):  # type: (str) -> univention.admin.uldap.position
+	def get_ldap_position(cls, ldap_position=listener.configRegistry['ldap/base']):
+		# type: (str) -> univention.admin.uldap.position
 		"""
 		Get a LDAP position object.
 
@@ -234,7 +248,10 @@ class ListenerModuleConfiguration(object):
 						listener.setuid(0)
 					os.mkdir(log_dir)
 					os.chown(log_dir, listener_uid, adm_grp)
-					os.chmod(log_dir, stat.S_ISGID | stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP)
+					os.chmod(
+						log_dir,
+						stat.S_ISGID | stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP
+					)
 				finally:
 					if old_uid != 0:
 						listener.unsetuid()
@@ -251,12 +268,16 @@ class ListenerModuleConfiguration(object):
 		:param host: str
 		:return: None
 		"""
+		old_credentials = self.ldap_credentials
 		self.ldap_credentials = dict(
 			host=host,
 			base=base,
 			binddn=binddn,
 			bindpw=bindpw
 		)
+		if old_credentials != self.ldap_credentials:
+			# force creation of new LDAP connection
+			self._lo = None
 
 	def set_logger(self, logger):  # type: (logging.Logger) -> None
 		self._logger = logger

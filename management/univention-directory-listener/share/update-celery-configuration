@@ -1,0 +1,48 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Copyright 2017 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import os
+import univention.config_registry
+from univention.listener.handler_logging import info_to_syslog
+from univention.listener.async.utils import update_listener_module_cache
+
+
+celery_config_path = '/etc/default/celery-worker-async-listener-modules'
+lm_path = '/usr/lib/univention-directory-listener/system/'
+
+if os.stat(lm_path).st_mtime > os.stat(celery_config_path).st_mtime:
+	info_to_syslog('Updating Celery worker configuration...')
+
+	changed, lm_cache = update_listener_module_cache()
+	async_listener_modules = dict((k, v) for k, v in lm_cache.items() if v.get('run_asynchronously'))
+	lm_names = sorted(a['name'] for a in async_listener_modules.values())
+	info_to_syslog('Found %d Celery nodes: {}'.format(len(lm_names), ', '.join(lm_names)))
+
+	univention.config_registry.handler_commit([celery_config_path])

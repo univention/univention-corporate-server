@@ -28,15 +28,12 @@
 
 from __future__ import absolute_import
 import sys
+from univention.listener.exceptions import ListenerModuleConfigurationError
 try:
 	from typing import Any, Callable, Dict, List, Tuple
 	from univention.listener.handler_configuration import ListenerModuleConfiguration
 	from univention.listener.handler import ListenerModuleHandler
 except ImportError:
-	pass
-
-
-class ListenerModuleAdapterError(Exception):
 	pass
 
 
@@ -50,14 +47,15 @@ class ListenerModuleAdapter(object):
 	"""
 	_support_async = False
 
-	def __init__(self, module_configuration, *args, **kwargs):  # type: (ListenerModuleConfiguration, *Tuple, **Dict) -> None
+	def __init__(self, module_configuration, *args, **kwargs):
+		# type: (ListenerModuleConfiguration, *Tuple, **Dict) -> None
 		"""
 		:param module_configuration: ListenerModuleConfiguration object
 		"""
 		self.config = module_configuration  # type: ListenerModuleConfiguration
 		if (self.config.get_run_asynchronously() or self.config.get_parallelism() > 1) and not self._support_async:
-			raise ListenerModuleAdapterError(
-				'Loading of asynchronous listener modules is currently not supported.'
+			raise ListenerModuleConfigurationError(
+				'Loading of asynchronous listener modules must be done with an AsyncListenerModuleAdapter.'
 			)
 		if self.config.get_parallelism() > 1 and not self.config.get_run_asynchronously():
 			self.config.logger.warn(

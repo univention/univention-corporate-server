@@ -1,0 +1,8 @@
+Type: file
+File: etc/default/celery-worker-async-listener-modules
+
+Type: file
+File: etc/init.d/celery-worker-async-listener-modules
+
+Type: file
+File: etc/memcached_univention-directory-listener.conf

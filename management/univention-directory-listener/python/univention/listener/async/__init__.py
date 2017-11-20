@@ -28,28 +28,23 @@
 
 
 """
-Listener module API
+Asynchronous (optionally parallel) listener module API
 
 To create a listener module (LM) with this API, create a Python file in
 /usr/lib/univention-directory-listener/system/ which includes:
 
-1. a subclass of ListenerModuleHandler
+1. a subclass of AsyncListenerModuleHandler
 2. a subclass of ListenerModuleConfiguration
-3. at the bottom write for a regular LM:
-		globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
-	or for asynchronously (optionally parallel) LM:
-		globals().update(AsyncListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
-
-For an asynchronously LM, the package univention-directory-listener-async must be installed.
+3. at the bottom write:
+     globals().update(AsyncListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
 """
 
 from __future__ import absolute_import
-from univention.listener.api_adapter import ListenerModuleAdapter
-from univention.listener.handler_configuration import ListenerModuleConfiguration
-from univention.listener.handler import ListenerModuleHandler
-from univention.listener.exceptions import ListenerModuleConfigurationError, ListenerModuleRuntimeError
+from univention.listener.async.async_handler import AsyncListenerModuleHandler
+from univention.listener.async.async_api_adapter import AsyncListenerModuleAdapter
 
-__all__ = [
-	'ListenerModuleAdapter', 'ListenerModuleConfigurationError', 'ListenerModuleRuntimeError',
-	'ListenerModuleConfiguration', 'ListenerModuleHandler'
-]
+# This will make sure the app is always imported when a listener module is
+# loaded, so that shared_task will use this app:
+from univention.listener.async.celery import app as celery_app
+
+__all__ = ['AsyncListenerModuleHandler', 'AsyncListenerModuleAdapter', 'celery_app']

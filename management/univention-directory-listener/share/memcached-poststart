@@ -1,0 +1,64 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Copyright 2017 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import json
+import pylibmc
+from univention.listener.handler_logging import info_to_syslog
+from univention.listener.async.utils import get_all_configuration_classes
+from univention.listener.async.memcached import (
+	ListenerJob, MEMCACHED_SOCKET, MemcachedQueue, MemcachedVariable, QueuedTask, TasksQueue
+)
+
+
+__memcached_persistence_path = '/var/cache/univention-directory-listener/memcached_persistence.json'
+
+
+memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True, behaviors={'tcp_nodelay': True, 'ketama': True})
+with open(__memcached_persistence_path, 'rb') as fp:
+	data = json.load(fp)
+
+for conf_class in get_all_configuration_classes():
+	conf_obj = conf_class()
+	if conf_obj.get_run_asynchronously():
+		lm_name = conf_obj.get_name()
+		if lm_name not in data:
+			info_to_syslog('Ignoring stale data for missing listener module {!r}.'.format(lm_name))
+			continue
+		info_to_syslog('Writing data of listener module {!r} to memcached...'.format(lm_name))
+		for job_id, listener_job_dict in data[lm_name]['listener_jobs']:
+			ListenerJob(memcache, **listener_job_dict).store()
+		for entry_uuid in data[lm_name]['entryUUIDs']:
+			MemcachedVariable(memcache, lm_name, entry_uuid['var_name']).set(entry_uuid['value'])
+		tasks_taken = MemcachedQueue(memcache, lm_name, 'TasksTaken')
+		for job_id in data[lm_name]['tasks_taken']:
+			tasks_taken.append(job_id)
+		tasks_queue = TasksQueue(memcache, lm_name, 'TasksQueue')
+		for task_data in data[lm_name]['tasks_queue']:
+			task = QueuedTask(*task_data)

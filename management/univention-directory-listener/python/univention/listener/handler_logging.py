@@ -44,6 +44,7 @@ import grp
 import pwd
 import sys
 import stat
+import syslog
 import logging
 from logging.handlers import TimedRotatingFileHandler
 import listener
@@ -54,6 +55,9 @@ try:
 	import univention.config_registry.ConfigRegistry
 except ImportError:
 	pass
+
+
+__syslog_opened = False
 
 
 class UniFileHandler(TimedRotatingFileHandler):
@@ -91,7 +95,8 @@ class ModuleHandler(logging.Handler):
 		NOTSET=ud.INFO
 	)  # type: Dict[str, int]
 
-	def __init__(self, level=logging.NOTSET, udebug_facility=ud.LISTENER):  # type: (Optional[int], Optional[int]) -> None
+	def __init__(self, level=logging.NOTSET, udebug_facility=ud.LISTENER):
+		# type: (Optional[int], Optional[int]) -> None
 		self._udebug_facility = udebug_facility  # type: int
 		super(ModuleHandler, self).__init__(level)
 
@@ -150,7 +155,8 @@ listener_module_root_logger = logging.getLogger('listener module')  # type: logg
 listener_module_root_logger.setLevel(getattr(logging, _listener_debug_level_str))
 
 
-def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatter_kwargs=None):  # type: (str, Optional[str], Optional[Union[str, IO[str]]], Optional[dict], Optional[dict]) -> logging.Logger
+def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatter_kwargs=None):
+	# type: (str, Optional[str], Optional[Union[str, IO[str]]], Optional[dict], Optional[dict]) -> logging.Logger
 	"""
 	Get a logger object below the listener module root logger. The logger
 	will additionally log to the common listener.log.
@@ -251,3 +257,15 @@ def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatt
 		_listener_module_handler.module_name = name
 		listener_module_root_logger.addHandler(_listener_module_handler)
 	return _logger
+
+
+def _log_to_syslog(level, msg):
+	global __syslog_opened
+	if not __syslog_opened:
+		syslog.openlog('Listener', 0, syslog.LOG_SYSLOG)
+
+	syslog.syslog(level, msg)
+
+
+def info_to_syslog(msg):
+	_log_to_syslog(syslog.LOG_INFO, msg)
