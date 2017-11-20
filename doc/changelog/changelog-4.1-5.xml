@@ -578,9 +578,9 @@
 
 				<listitem>
 					<itemizedlist>
-						<listitem>UDP: fast, but messages can get lost or get dropped in congested networks.</listitem>
-						<listitem>TCP: more reliable, but can block the sending syslog daemon.</listitem>
-						<listitem>RELP: reliable, but non standard; can also block the   syslog daemon.</listitem>
+						<listitem><simpara>UDP: fast, but messages can get lost or get dropped in congested networks.</simpara></listitem>
+						<listitem><simpara>TCP: more reliable, but can block the sending syslog daemon.</simpara></listitem>
+						<listitem><simpara>RELP: reliable, but non standard; can also block the syslog daemon.</simpara></listitem>
 					</itemizedlist>
 				</listitem>
 
@@ -590,9 +590,9 @@
 						The mapping for the MS-Exchange related attribute <emphasis>proxyAddresses</emphasis>  has been revised to synchonize the OpenLDAP attribute <emphasis>mailPrimaryAddress</emphasis>  with the default value configured in <emphasis>proxyAddresses</emphasis> (<u:bug>43216</u:bug>). In detail:
 					</simpara>
 					<itemizedlist>
-						<listitem>1. When reading from Active Directory, the value with <emphasis>SMTP:</emphasis> prefix is now written to the OpenLDAP attribute <emphasis>mailPrimaryAddress</emphasis>. Before this update <emphasis>mailPrimaryAddress</emphasis> used to be synchronized with the value of the Active Directory <emphasis>mail</emphasis>  attribute instead. The Active Directory <emphasis>mail</emphasis> attribute has informative character.</listitem>
-						<listitem>2. In the other direction, i.e. writing from OpenLDAP to Active Directory,  the value of <emphasis>mailPrimaryAddress</emphasis> continues to be written to the <emphasis>mail</emphasis> attribute and now additionally gets written into the <emphasis>proxyAddresses</emphasis> as default value, i.e. prefixed with <emphasis>SMTP:</emphasis>.</listitem>
-						<listitem>3. <emphasis>smtp:</emphasis> prefixed values in <emphasis>proxyAddresses</emphasis> continue to be synchronized  with OpenLDAP <emphasis>mailAlternativeAddress</emphasis></listitem>
+						<listitem><simpara>1. When reading from Active Directory, the value with <emphasis>SMTP:</emphasis> prefix is now written to the OpenLDAP attribute <emphasis>mailPrimaryAddress</emphasis>. Before this update <emphasis>mailPrimaryAddress</emphasis> used to be synchronized with the value of the Active Directory <emphasis>mail</emphasis>  attribute instead. The Active Directory <emphasis>mail</emphasis> attribute has informative character.</simpara></listitem>
+						<listitem><simpara>2. In the other direction, i.e. writing from OpenLDAP to Active Directory,  the value of <emphasis>mailPrimaryAddress</emphasis> continues to be written to the <emphasis>mail</emphasis> attribute and now additionally gets written into the <emphasis>proxyAddresses</emphasis> as default value, i.e. prefixed with <emphasis>SMTP:</emphasis>.</simpara></listitem>
+							<listitem><simpara>3. <emphasis>smtp:</emphasis> prefixed values in <emphasis>proxyAddresses</emphasis> continue to be synchronized  with OpenLDAP <emphasis>mailAlternativeAddress</emphasis></simpara></listitem>
 					</itemizedlist>
 				</listitem>
 				<listitem><simpara>
@@ -625,9 +625,9 @@
 					The <package>syslog</package> configuration has been extended to allow logging to remote hosts. Several protocols are supported:
 				</simpara>
 				<itemizedlist>
-					<listitem>UDP: fast, but messages can get lost or get dropped in congested networks.</listitem>
-					<listitem>TCP: more reliable, but can block the sending syslog daemon.</listitem>
-					<listitem>RELP: reliable, but non standard; can also block the   syslog daemon.</listitem>
+					<listitem><simpara>UDP: fast, but messages can get lost or get dropped in congested networks.</simpara></listitem>
+					<listitem><simpara>TCP: more reliable, but can block the sending syslog daemon.</simpara></listitem>
+					<listitem><simpara>RELP: reliable, but non standard; can also block the   syslog daemon.</simpara></listitem>
 				</itemizedlist>
 				<simpara>
 					Sending must be enabled explicitly. For this the new &ucsUCR; variables <envar>syslog/remote</envar>, <envar>syslog/remote/fallback</envar> and <envar>syslog/remote/selector</envar> have been added. Receiving must also be enabled explicitly. For this the new &ucsUCR; variables <envar>syslog/input/udp</envar>, <envar>syslog/input/tdp</envar> and <envar>syslog/input/relp</envar> have been added. Please note, that log messages are sent unencrypted and in clear text! It is recommended to use this only in protected networks, as passwords and other sensitive data might leak otherwise (<u:bug>15728</u:bug>).
@@ -641,18 +641,18 @@
 					Several new &ucsUCR; variables <envar>syslog/...</envar> have been added to enable/disable logging of events of certain facilities to the corresponding targets: 
 				</simpara>
 				<itemizedlist>
-					<listitem><envar>syslog/auth</envar> -> /var/log/auth.log</listitem>
-					<listitem><envar>syslog/cron</envar> -> /var/log/cron.log</listitem>
-					<listitem><envar>syslog/kern</envar> -> /var/log/kern.log </listitem>
-					<listitem><envar>syslog/daemon</envar> -> /var/log/daemon.log</listitem>
-					<listitem><envar>syslog/user</envar> -> /var/log/user.log</listitem>
-					<listitem><envar>syslog/lpr</envar> -> /var/log/lpr.log</listitem>
-					<listitem><envar>syslog/mail</envar> -> /var/log/mail.*</listitem>
-					<listitem><envar>syslog/news</envar> -> /var/log/news.*</listitem>
-					<listitem><envar>syslog/syslog</envar> -> /var/log/syslog (catch-all for all messages)</listitem>
-					<listitem><envar>syslog/debug</envar> -> /var/log/debug (only debug messages)</listitem>
-					<listitem><envar>syslog/messages</envar> -> /var/log/messages (all except debu  g and errors)</listitem>
-					<listitem><envar>syslog/xconsole</envar> -> /dev/xconsole (used by graphical console)</listitem>
+					<listitem><simpara><envar>syslog/auth</envar> -> /var/log/auth.log</simpara></listitem>
+					<listitem><simpara><envar>syslog/cron</envar> -> /var/log/cron.log</simpara></listitem>
+					<listitem><simpara><envar>syslog/kern</envar> -> /var/log/kern.log</simpara></listitem>
+					<listitem><simpara><envar>syslog/daemon</envar> -> /var/log/daemon.log</simpara></listitem>
+					<listitem><simpara><envar>syslog/user</envar> -> /var/log/user.log</simpara></listitem>
+					<listitem><simpara><envar>syslog/lpr</envar> -> /var/log/lpr.log</simpara></listitem>
+					<listitem><simpara><envar>syslog/mail</envar> -> /var/log/mail.*</simpara></listitem>
+					<listitem><simpara><envar>syslog/news</envar> -> /var/log/news.*</simpara></listitem>
+					<listitem><simpara><envar>syslog/syslog</envar> -> /var/log/syslog (catch-all for all messages)</simpara></listitem>
+					<listitem><simpara><envar>syslog/debug</envar> -> /var/log/debug (only debug messages)</simpara></listitem>
+					<listitem><simpara><envar>syslog/messages</envar> -> /var/log/messages (all except debu  g and errors)</simpara></listitem>
+					<listitem><simpara><envar>syslog/xconsole</envar> -> /dev/xconsole (used by graphical console)</simpara></listitem>
 				</itemizedlist>
 				<simpara>
 				The new &ucsUCR; variable <envar>syslog/syslog/avoid_duplicate_messages</envar> can be used to remove messages logged to other targets from '/var/log/syslog'. By default messages get logged multiple times. Further more the selector for certain files can now be customized through the following new &ucsUCR; variables 'syslog/.../selector': 'syslog' [*.*] 'debug' [*.=debug;auth,authpriv,news,mail.none] 'messages' [*.=info-warn;auth;authpriv;cron;daemon;mail;news.none] 'xconsole' [daemon,mail.*;news.err;*.debug-warn] (<u:bug>41815</u:bug>).
