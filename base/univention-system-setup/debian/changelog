@@ -1,3 +1,9 @@
+univention-system-setup (10.0.11-1) unstable; urgency=medium
+
+  * Bug #45765: Link App Center logos into the UMC frontend
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 20 Nov 2017 12:07:58 +0100
+
 univention-system-setup (10.0.10-52) unstable; urgency=medium
 
   * Bug #43745: depend on explicit version of univention-lib
