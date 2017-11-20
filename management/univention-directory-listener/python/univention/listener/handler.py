@@ -31,6 +31,7 @@ import os
 from contextlib import contextmanager
 import listener
 import univention.admin.objects
+from univention.listener.exceptions import ListenerModuleConfigurationError
 try:
 	from typing import Any, Dict, Iterable, Iterator, List, Tuple, Type, Optional
 	import logging
@@ -64,11 +65,12 @@ class ListenerModuleHandler(object):
 		'hasSubordinates', 'modifiersName', 'modifyTimestamp',
 		'structuralObjectClass', 'subschemaSubentry'
 	)
-
+	_support_async = False
 	_udm_module_cache = dict()  # type: Dict
 	ucr = listener.configRegistry    # type: univention.config_registry.ConfigRegistry
 
-	def __init__(self, module_configuration, *args, **kwargs):  # type: (ListenerModuleConfiguration, *Tuple, **Dict) -> None
+	def __init__(self, module_configuration, *args, **kwargs):
+		# type: (ListenerModuleConfiguration, *Tuple, **Dict) -> None
 		"""
 		When subclassing, call super()__init__() first!
 
@@ -77,7 +79,14 @@ class ListenerModuleHandler(object):
 		self.config = module_configuration  # type: ListenerModuleConfiguration
 		self.logger = self.config.logger  # type: logging.Logger
 		self.ucr.load()
-		self.logger.info('Starting with configuration: %r', module_configuration)
+		if self.config.get_run_asynchronously() and not self._support_async:
+			raise ListenerModuleConfigurationError(
+				'Loading of asynchronous listener modules must be done with an AsyncListenerModuleAdapter.'
+			)
+		self.logger.debug('Starting with configuration: %r', module_configuration)
+
+	def __repr__(self):
+		return '{}({})'.format(self.__class__.__name__, self.config.name)
 
 	def create(self, dn, new):  # type: (str, Dict[str, List[str]]) -> None
 		"""
@@ -179,7 +188,8 @@ class ListenerModuleHandler(object):
 				listener.unsetuid()
 
 	@classmethod
-	def diff(cls, old, new, keys=None, ignore_metadata=True):  # type: (Dict[str, List], Dict[str, List], Optional[Iterable[str]], Optional[bool]) -> dict
+	def diff(cls, old, new, keys=None, ignore_metadata=True):
+		# type: (Dict[str, List], Dict[str, List], Optional[Iterable[str]], Optional[bool]) -> dict
 		"""
 		Find differences in old and new. Returns dict with keys pointing to old
 		and new values.
@@ -202,7 +212,8 @@ class ListenerModuleHandler(object):
 				res[key] = old.get(key), new.get(key)
 		return res
 
-	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):  # type: (str, Dict[str, List], Dict[str, List], str, Type[BaseException], BaseException, types.TracebackType) -> None
+	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
+		# type: (str, Dict[str, List], Dict[str, List], str, Type[BaseException], BaseException, types.TracebackType) -> None
 		"""
 		Will be called for unhandled exceptions in create/modify/remove.
 
@@ -219,7 +230,8 @@ class ListenerModuleHandler(object):
 		raise exc_type, exc_value, exc_traceback
 
 	@classmethod
-	def get_udm_objects(cls, module_name, filter_s, base_dn, lo, po, **kwargs):  # type: (str, str, str, univention.admin.uldap.access, univention.admin.uldap.position, **Dict) -> List[univention.admin.handlers.simpleLdap]
+	def get_udm_objects(cls, module_name, filter_s, base_dn, lo, po, **kwargs):
+		# type: (str, str, str, univention.admin.uldap.access, univention.admin.uldap.position, **Dict) -> List[univention.admin.handlers.simpleLdap]
 		"""
 		Search LDAP for UDM objects.
 

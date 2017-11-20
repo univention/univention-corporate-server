@@ -91,7 +91,8 @@ class ModuleHandler(logging.Handler):
 		NOTSET=ud.INFO
 	)  # type: Dict[str, int]
 
-	def __init__(self, level=logging.NOTSET, udebug_facility=ud.LISTENER):  # type: (Optional[int], Optional[int]) -> None
+	def __init__(self, level=logging.NOTSET, udebug_facility=ud.LISTENER):
+		# type: (Optional[int], Optional[int]) -> None
 		self._udebug_facility = udebug_facility  # type: int
 		super(ModuleHandler, self).__init__(level)
 
@@ -150,7 +151,8 @@ listener_module_root_logger = logging.getLogger('listener module')  # type: logg
 listener_module_root_logger.setLevel(getattr(logging, _listener_debug_level_str))
 
 
-def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatter_kwargs=None):  # type: (str, Optional[str], Optional[Union[str, IO[str]]], Optional[dict], Optional[dict]) -> logging.Logger
+def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatter_kwargs=None):
+	# type: (str, Optional[str], Optional[Union[str, IO[str]]], Optional[dict], Optional[dict]) -> logging.Logger
 	"""
 	Get a logger object below the listener module root logger. The logger
 	will additionally log to the common listener.log.

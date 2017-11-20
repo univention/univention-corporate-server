@@ -36,16 +36,20 @@ To create a listener module (LM) with this API, create a Python file in
 1. a subclass of ListenerModuleHandler
 2. a subclass of ListenerModuleConfiguration
 3. at the bottom write for a regular LM:
-     globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
-  or for asynchronously (optionally parallel) LM:
-     globals().update(AsyncListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
+		globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
+	or for asynchronously (optionally parallel) LM:
+		globals().update(AsyncListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
 
 For an asynchronously LM, the package univention-directory-listener-async must be installed.
 """
 
 from __future__ import absolute_import
 from univention.listener.api_adapter import ListenerModuleAdapter
-from univention.listener.handler_configuration import ListenerModuleConfigurationError, ListenerModuleConfiguration
+from univention.listener.handler_configuration import ListenerModuleConfiguration
 from univention.listener.handler import ListenerModuleHandler
+from univention.listener.exceptions import ListenerModuleConfigurationError, ListenerModuleRuntimeError
 
-__all__ = ['ListenerModuleAdapter', 'ListenerModuleConfigurationError', 'ListenerModuleConfiguration', 'ListenerModuleHandler']
+__all__ = [
+	'ListenerModuleAdapter', 'ListenerModuleConfigurationError', 'ListenerModuleRuntimeError',
+	'ListenerModuleConfiguration', 'ListenerModuleHandler'
+]
