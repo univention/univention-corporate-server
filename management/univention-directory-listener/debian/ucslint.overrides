@@ -31,4 +31,5 @@
 0010-2: doc.34355/test30_case_difference
 0010-2: doc.34355/test31_case_difference_umlaut
 0010-2: tests/listener_module_api_test
+0010-2: conffiles/etc/init.d/celery-worker-async-listener-modules
 0013-2: conffiles/etc/runit/univention-directory-listener/run

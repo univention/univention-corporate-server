@@ -44,6 +44,7 @@ import grp
 import pwd
 import sys
 import stat
+import syslog
 import logging
 from logging.handlers import TimedRotatingFileHandler
 import listener
@@ -54,6 +55,9 @@ try:
 	import univention.config_registry.ConfigRegistry
 except ImportError:
 	pass
+
+
+__syslog_opened = False
 
 
 class UniFileHandler(TimedRotatingFileHandler):
@@ -253,3 +257,15 @@ def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatt
 		_listener_module_handler.module_name = name
 		listener_module_root_logger.addHandler(_listener_module_handler)
 	return _logger
+
+
+def _log_to_syslog(level, msg):
+	global __syslog_opened
+	if not __syslog_opened:
+		syslog.openlog('Listener', 0, syslog.LOG_SYSLOG)
+
+	syslog.syslog(level, msg)
+
+
+def info_to_syslog(msg):
+	_log_to_syslog(syslog.LOG_INFO, msg)

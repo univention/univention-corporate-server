@@ -1,3 +1,10 @@
+univention-directory-listener (11.0.1-39) unstable; urgency=low
+
+  * Bug #44786: add support for creating asynchronous listener modules
+    using the same simple API
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 20 Nov 2017 05:33:55 +0100
+
 univention-directory-listener (11.0.1-38) unstable; urgency=low
 
   * Bug #44786: handle notifier restarts, pep8, extract exceptions

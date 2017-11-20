@@ -1,0 +1,4 @@
+04univention-directory-listener-async.inst usr/lib/univention-install/
+97univention-directory-listener-async.uinst usr/lib/univention-uninstall/
+python/univention/listener/async usr/share/pyshared/univention/listener/
+share/* usr/share/univention-directory-listener/

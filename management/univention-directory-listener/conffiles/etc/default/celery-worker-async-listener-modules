@@ -1,0 +1,25 @@
+@%@UCRWARNING=# @%@
+
+@!@
+from univention.listener.async.utils import update_listener_module_cache
+
+changed, lm_cache = update_listener_module_cache()
+async_listener_modules = dict((k, v) for k, v in lm_cache.items() if v.get('run_asynchronously'))
+
+print('ENABLED="{}"'.format(str(bool(async_listener_modules)).lower()))
+print('CELERYD_NODES="{}"'.format(' '.join(sorted(a['name'] for a in async_listener_modules.values()))))
+print('CELERYD_OPTS="{}"'.format(
+	' '.join(
+		'-c:{name} {parallelism} -Q:{name} {name} -O:{name} fair -l:{name} DEBUG'.format(**v)
+		for k, v in async_listener_modules.items()
+	)
+))
+@!@
+CELERYD_CHDIR=
+CELERY_CONFIG_MODULE=
+CELERYD_LOG_FILE="/var/log/univention/listener_async/workers-%n.log"
+CELERYD_USER="root"
+CELERYD_GROUP="root"
+CELERY_APP="univention.listener.async.celery:app"
+CELERYD_PID_FILE="/run/listener-async-%n.pid"
+CELERY_CREATE_DIRS=1

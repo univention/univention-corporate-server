@@ -1,0 +1,91 @@
+#!/bin/bash
+# -*- coding: utf-8 -*-
+#
+# Univention Directory Listener async modules API
+#  join script
+#
+# Copyright 2017 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+VERSION=1
+
+. /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-celery/celery.sh
+
+joinscript_init
+
+RABBITMQ_USER="listener"
+RABBITMQ_VHOST="listener"
+RABBITMQ_SECRET_FILE="/etc/univention/rabbitmq_listener.secret"
+
+write_secret () {
+	local filename="$1" secret="${2:-}"
+	mkdir -p "$(dirname $filename)"
+	touch "$filename"
+	chmod 0600 "$filename"
+	chown listener:root "$filename"
+	if [ -n "$secret" ];
+	then
+	    echo "$secret" >"$filename"
+	else
+        echo "ERROR: refusing to write empty string to $filename"
+        return 1
+    fi
+}
+
+if [ -e "$RABBITMQ_SECRET_FILE" ];
+then
+    echo "Using exiting password for RabbitMQ."
+    RABBITMQ_PW="$(cat "$RABBITMQ_SECRET_FILE" | cut -d : -f 2)"
+else
+    echo "Creating new password for RabbitMQ."
+    RABBITMQ_PW="$(makepasswd --chars=50)"
+    write_secret "$RABBITMQ_SECRET_FILE" "$RABBITMQ_USER:$RABBITMQ_PW" || die
+fi
+
+if rabbitmqctl list_users | grep -q "$RABBITMQ_USER";
+then
+    echo "Using exiting RabbitMQ user and vhost."
+else
+    echo "Creating new RabbitMQ user and vhost."
+    rabbitmq_add_vhost "$RABBITMQ_USER" "$RABBITMQ_PW" "$RABBITMQ_VHOST" || die
+fi
+
+systemctl daemon-reload
+deb-systemd-invoke enable univention-directory-listener-async.service
+deb-systemd-invoke start univention-directory-listener-async.service
+
+deb-systemd-invoke stop celery-worker-async-listener-modules.service
+/usr/share/univention-directory-listener/update-celery-configuration
+ucr commit /etc/default/celery-worker-async-listener-modules
+
+deb-systemd-invoke enable celery-worker-async-listener-modules.service
+deb-systemd-invoke start celery-worker-async-listener-modules.service
+
+joinscript_save_current_version
+
+exit 0

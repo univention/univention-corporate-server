@@ -1,0 +1,11 @@
+[Unit]
+Description=memcached daemon (univention-directory-listener instance)
+After=network.target
+
+[Service]
+ExecStart=/usr/share/memcached/scripts/systemd-memcached-wrapper /etc/memcached_univention-directory-listener.conf
+ExecStartPost=/usr/share/univention-directory-listener/memcached-poststart
+ExecStop=/usr/share/univention-directory-listener/memcached-stop
+
+[Install]
+WantedBy=multi-user.target
