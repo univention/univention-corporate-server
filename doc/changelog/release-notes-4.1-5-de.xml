@@ -51,6 +51,13 @@
 
 		<itemizedlist>
 			<listitem><para>
+				Samba wurde mit wichtigen Sicherheitsupdates aktualisiert.
+			</para></listitem>
+			<listitem><para>
+				Der Linux Kernel wurde auf den letzten stabilen 4.1er Longterm-Kernel aktualisiert. Dieser beinhaltet diverse Sicherheitsaktualisierungen, Verbesserungen in der Stabilität, sowie neuere und aktualisierte Treiber für eine verbesserte Hardware-Unterstützung.
+			</para></listitem>
+			<listitem><para>
+				Die Startzeit des App Center UMC moduls wurde verbessert. Diese Optimierung wird durch das differenzielle Herunterladen von aktualisierten Daten vom App Center Server mit Hilfe von zsync erreicht.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>

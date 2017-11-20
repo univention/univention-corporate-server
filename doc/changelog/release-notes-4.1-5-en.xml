@@ -44,13 +44,20 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With &ucsUCS; 4.1-5, the fives point release of &ucsUCS; (UCS) 4.1 is
+			With &ucsUCS; 4.1-5, the fifth point release of &ucsUCS; (UCS) 4.1 is
 			now available.  It provides various improvements and
 			bugfixes. An overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
+				Samba has been updated to include important security fixes.
+			</para></listitem>
+			<listitem><para>
+				The Linux kernel has been updated to the latest stable version of the 4.1 long term kernel. This includes several security updates, improvements in the stability, as well as newer and updated drivers for a better hardware support.
+			</para></listitem>
+			<listitem><para>
+				The App Center UMC module startup performance has been improved. This optimization is achieved by only downloading differential updates from the App Center Server using zsync.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
