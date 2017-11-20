@@ -319,6 +319,9 @@
 				<listitem><simpara>
 					Admin credentials are now passed to a preinst script during App installation / upgrade (<u:bug>44655</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					App Logos are linked to the UMC frontend immediately after the initial System setup (<u:bug>45748</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
