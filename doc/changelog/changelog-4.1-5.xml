@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE chapter  PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
 	%extensions;
@@ -238,7 +238,7 @@
 					The maximum request size can now be configured via the &ucsUCR; variable <envar>umc/http/max_request_body_size</envar> (<u:bug>42357</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The login dialog after a session timeout is now centered on the viewport and not at the top of the page. Making the login immediately possible without the need to scroll to the top (<u:bug>40492</u:bug>).
+					The login dialog after a session timeout is now centered on the view-port and not at the top of the page. Making the login immediately possible without the need to scroll to the top (<u:bug>40492</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The UMC overview page shows a banner that links to the Univention Summit website (<u:bug>42979</u:bug>).
@@ -254,13 +254,13 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The App Center now uses a different directory for special temporary files  for Docker Apps to avoid problems with the sysvinit's tmp cleanup (<u:bug>44387</u:bug>).
+					The App Center now uses a different directory for special temporary files for Docker Apps to avoid problems with the <package>sysvinit</package>'s <filename class="directory">tmp</filename> cleanup (<u:bug>44387</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Notifications about App updates of Docker Apps were not sent. This has been  corrected (<u:bug>44148</u:bug>).
+					Notifications about App updates of Docker Apps were not sent. This has been corrected (<u:bug>44148</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					When an App sets it HTTP port to 0, disable the HTTP link for the App Center link and for the ucs-overview link (<u:bug>43657</u:bug>).
+					When an App sets it HTTP port to 0, disable the HTTP link for the App Center link and for the <uri>ucs-overview</uri> link (<u:bug>43657</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					A bug in detecting apps on domain hosts has been fixed (<u:bug>41801</u:bug>).
@@ -281,7 +281,7 @@
 					A script can now be run after configuring an App (<u:bug>43838</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					<emphasis>AdditionalPackages</emphasis> defined by the App are no longer removed when uninstalling an app (<u:bug>44772</u:bug>).
+					<property>AdditionalPackages</property> defined by the App are no longer removed when uninstalling an app (<u:bug>44772</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The documentation has been extended (<u:bug>42761</u:bug>).
@@ -296,7 +296,7 @@
 					When upgrading from a Non-Docker version to a Docker version, the old version was removed even the installation process of the new version was not successful (<u:bug>42969</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The ini attribute <emphasis>License</emphasis> is now passed to the frontend (<u:bug>42798</u:bug>).
+					The ini attribute <property>License</property> is now passed to the frontend (<u:bug>42798</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Hiding dockerized versions of installed Apps did not work when upgrading from UCS 4.0 (<u:bug>43075</u:bug>).
@@ -308,19 +308,19 @@
 					Start App container with the hosts proxy settings by default (<u:bug>44785</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					If the download of App meta data via zsync fails, the archive is downloaded via an HTTPS request (<u:bug>45291</u:bug>).
+					If the download of App meta data via <package>zsync</package> fails, the archive is downloaded via an HTTPS request (<u:bug>45291</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Fixed the utility function for creating LDAP objects not honoring existing objects (<u:bug>42928</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					When trying to upgrade to a Docker version of a formerly Non-Docker App, a link to a migration guide is shown if avaiable (<u:bug>43038</u:bug>).
+					When trying to upgrade to a Docker version of a formerly Non-Docker App, a link to a migration guide is shown if available (<u:bug>43038</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Admin credentials are now passed to a preinst script during App installation / upgrade (<u:bug>44655</u:bug>).
+					Admin credentials are now passed to a <filename>preinst</filename> script during App installation / upgrade (<u:bug>44655</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					App Logos are linked to the UMC frontend immediately after the initial System setup (<u:bug>45748</u:bug>).
+					App Logos are linked to the UMC front-end immediately after the initial System setup (<u:bug>45748</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -329,28 +329,28 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The python API for UDM modules finds the superordinate object automatically if it is not given (<u:bug>43423</u:bug>).
+					The Python API for UDM modules finds the superordinate object automatically if it is not given (<u:bug>43423</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					An error was fixed that prevented syntax classes which were set via &ucsUCR; to be used with a ComboBox widget (<u:bug>43094</u:bug>).
+					An error was fixed that prevented syntax classes which were set via &ucsUCR; to be used with a <classname>ComboBox</classname> widget (<u:bug>43094</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					If a user template defined a default value for mailHomeServer, the value has not been set. This has been fixed (<u:bug>42903</u:bug>).
+					If a user template defined a default value for <property>mailHomeServer</property>, the value has not been set. This has been fixed (<u:bug>42903</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					UDM objects with the object flags synced and docker can now be deleted (<u:bug>44954</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Add missing dependency python-univention-license to fix error when using the univention.admin.license Python module (<u:bug>43298</u:bug>).
+					Add missing dependency <package>python-univention-license</package> to fix error when using the <classname>univention.admin.license</classname> Python module (<u:bug>43298</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Removing objects which don't have subelements is now possible even if the ldap admin size limit is reached (<u:bug>43236</u:bug>).
+					Removing objects which don't have sub-elements is now possible even if the LDAP admin size limit is reached (<u:bug>43236</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Objects underneath containers of superordinate entries like DHCP services are shown again in the tree view (<u:bug>43048</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Fixed a regression in UCS 4.1-3 Errata 319 which caused failures in the Asterisk4UCS App module (<u:bug>43423</u:bug>).
+					Fixed a regression in UCS 4.1-3 Erratum 319 which caused failures in the <application>Asterisk4UCS</application> App module (<u:bug>43423</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -362,10 +362,10 @@
 					DNS settings are updated correctly when using app appliances (<u:bug>42944</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The screensaver is now deactivated while configuring the system (<u:bug>42944</u:bug>).
+					The screen-saver is now deactivated while configuring the system (<u:bug>42944</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Install univention-welcome-screen earlier in the setup process (<u:bug>42915</u:bug>).
+					Install <package>univention-welcome-screen</package> earlier in the setup process (<u:bug>42915</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -383,7 +383,7 @@
 			<title>License module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					A fallback to the machine account has been added to univention_license_ldap_init() (<u:bug>35157</u:bug>).
+					A fallback to the machine account has been added to <function>univention_license_ldap_init()</function> (<u:bug>35157</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -392,7 +392,7 @@
 			<title>Software update module</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The updater message for UCS releases that receive extended maintenance was clarified (<u:bug>45671</u:bug>).
+					The updater message for UCS releases that receive extended maintenance was clarified (<u:bug>45671</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -428,7 +428,7 @@
 			<title>Mail services</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The package dependencies allow now to install Dovecot Pro instead of Dovecot from the Debian repositories (<u:bug>44567</u:bug>).
+					The package dependencies allow now to install <application>Dovecot Pro</application> instead of <application>Dovecot</application> from the Debian repositories (<u:bug>44567</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					LDAP queries are now escaped correctly, when checking access for a restricted mailing list (<u:bug>41055</u:bug>).
@@ -458,7 +458,7 @@
 					The Squid proxy server now uses STARTTLS to encrypt all LDAP connections (Bug #43675) (<u:bug>43675</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					&ucsUCR; variables to configure the cache settings have been added (<envar>squid/cache/format</envar>, <envar>squid/cache/directory</envar>, <envar>squid/cache/size</envar>, <envar>squid/cache/l1_size</envar>, <envar>squid/cache/l2_size</envar>) (<u:bug>37381</u:bug>).
+					&ucsUCR; variables <envar>squid/cache/format</envar>, <envar>squid/cache/directory</envar>, <envar>squid/cache/size</envar>, <envar>squid/cache/l1_size</envar>, <envar>squid/cache/l2_size</envar> to configure the cache settings have been added (<u:bug>37381</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -467,7 +467,7 @@
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Exceptions for the <envar>apache2/force_https</envar> configuration can now be configured via &ucsUCR;. When <envar>apache2/force_https</envar> is enabled, by default "localhost" will be excluded (<u:bug>43603</u:bug>).
+					Exceptions for the <envar>apache2/force_https</envar> configuration can now be configured via &ucsUCR;. When <envar>apache2/force_https</envar> is enabled, by default <systemitem class="systemname">localhost</systemitem> will be excluded (<u:bug>43603</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -512,7 +512,7 @@
 					The &ucsUCR; variables <envar>samba/client/min/protocol</envar>, <envar>samba/min/protocol</envar> and <envar>samba/client/max/protocol</envar> have been added. Please be aware that raising <envar>samba/min/protocol</envar> e.g. to SMB2 also requires raising <envar>samba/client/max/protocol</envar> to that value or higher (<u:bug>44646</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Samba 4.5 creates an DNS object _msdcs below the position CN=MicrosoftDNS,CN=System. If CN=System is still used by Bind9, the DRS replication will be stopped. This can only happen if Samba 4 was installed before UCS 4.0-4 and a Samba 4 system is installed or rejoined. This update removes the created DNS object and prevented its recreation (<u:bug>43288</u:bug>).
+					Samba 4.5 creates an DNS object <uri>_msdcs</uri> below the position <uri>CN=MicrosoftDNS,CN=System</uri>. If <uri>CN=System</uri> is still used by BIND9, the DRS replication will be stopped. This can only happen if Samba 4 was installed before UCS 4.0-4 and a Samba 4 system is installed or rejoined. This update removes the created DNS object and prevented its recreation (<u:bug>43288</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -530,19 +530,19 @@
 					The synchronization of DNS zones now also works in special setups, where <envar>samba4/ldap/base</envar> differs from <envar>ldap/base</envar> (<u:bug>42393</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					When adjusting a GPO security filter via Group Policy Management Console repeatedly in a short time, the S4-Connector could revert changes, depending on timing. Now the S4-Connector checks if a change has happened in Samba/AD since the last sync and avoids overwriting the attribute nTSecurityDescriptor in that case (<u:bug>41571</u:bug>).
+					When adjusting a GPO security filter via Group Policy Management Console repeatedly in a short time, the S4-Connector could revert changes, depending on timing. Now the S4-Connector checks if a change has happened in Samba/AD since the last sync and avoids overwriting the attribute <property>nTSecurityDescriptor</property> in that case (<u:bug>41571</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The init-script has been fixed to check for an already running instance of the S4 connector. The PID file is removed on shutdown. The <emphasis>status</emphasis> action has been added, too (<u:bug>40659</u:bug>).
+					The init-script has been fixed to check for an already running instance of the S4 connector. The PID file is removed on shutdown. The <option>status</option> action has been added, too (<u:bug>40659</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					An issue with renaming windows clients has been fixed (<u:bug>43321</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Rejects for DNs containing non-ASCII characters could not be saved, because python-sqlite3 doesn't accept UTF-8, causing rejects not to be visible but keeping the S4-Connector retrying endlessly, flooding the logs with rejects (<u:bug>44291</u:bug>).
+					Rejects for DNs containing non-ASCII characters could not be saved, because <package>python-sqlite3</package> doesn't accept UTF-8, causing rejects not to be visible but keeping the S4-Connector retrying endlessly, flooding the logs with rejects (<u:bug>44291</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Fix handling of Printer-Admins and searching for conflicting deleted objects by objectsid (<u:bug>44289</u:bug>).
+					Fix handling of <systemitem class="groupname">Printer-Admins</systemitem> and searching for conflicting deleted objects by <property>objectsid</property> (<u:bug>44289</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Added new &ucsUCR; variables <envar>connector/s4/mapping/{gpo,wmifilter,msprintconnectionpolicy}/syncmode</envar> (<u:bug>43629</u:bug>).
@@ -564,36 +564,26 @@
 			<title>Univention Active Directory Connection</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The AD-Connector can now handle <emphasis>sync_mode</emphasis> configuration on a per attribute granulatrity (<u:bug>42618</u:bug>).
+					The AD-Connector can now handle <emphasis>sync_mode</emphasis> configuration on a per attribute granularity (<u:bug>42618</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The LDAP modification list can now be logged in case of a traceback if the changes are synchronized from UCS to Active Directory (<u:bug>29988</u:bug>).
+					The LDAP modification list can now be logged in case of a trace-back if the changes are synchronized from UCS to Active Directory (<u:bug>29988</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The samAccountName sycnhronization for Windows clients has been set  to write only because a changed samAccountName attribute in Active  Directory is handled via the CN synchronization (<u:bug>43229</u:bug>).
+					The <property>samAccountName</property> synchronization for Windows clients has been set to write only because a changed <property>samAccountName</property> attribute in Active Directory is handled via the <property>CN</property> synchronization (<u:bug>43229</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The lookup for the LDAP base DN of the Active Directory server has  been fixed (<u:bug>40816</u:bug>).
+					The lookup for the LDAP base DN of the Active Directory server has been fixed (<u:bug>40816</u:bug>).
 				</simpara></listitem>
-
-				<listitem>
-					<itemizedlist>
-						<listitem><simpara>UDP: fast, but messages can get lost or get dropped in congested networks.</simpara></listitem>
-						<listitem><simpara>TCP: more reliable, but can block the sending syslog daemon.</simpara></listitem>
-						<listitem><simpara>RELP: reliable, but non standard; can also block the syslog daemon.</simpara></listitem>
-					</itemizedlist>
-				</listitem>
-
-
 				<listitem>
 					<simpara>
-						The mapping for the MS-Exchange related attribute <emphasis>proxyAddresses</emphasis>  has been revised to synchonize the OpenLDAP attribute <emphasis>mailPrimaryAddress</emphasis>  with the default value configured in <emphasis>proxyAddresses</emphasis> (<u:bug>43216</u:bug>). In detail:
+						The mapping for the MS-Exchange related attribute <property>proxyAddresses</property> has been revised to synchronize the OpenLDAP attribute <property>mailPrimaryAddress</property> with the default value configured in <property>proxyAddresses</property> (<u:bug>43216</u:bug>). In detail:
 					</simpara>
-					<itemizedlist>
-						<listitem><simpara>1. When reading from Active Directory, the value with <emphasis>SMTP:</emphasis> prefix is now written to the OpenLDAP attribute <emphasis>mailPrimaryAddress</emphasis>. Before this update <emphasis>mailPrimaryAddress</emphasis> used to be synchronized with the value of the Active Directory <emphasis>mail</emphasis>  attribute instead. The Active Directory <emphasis>mail</emphasis> attribute has informative character.</simpara></listitem>
-						<listitem><simpara>2. In the other direction, i.e. writing from OpenLDAP to Active Directory,  the value of <emphasis>mailPrimaryAddress</emphasis> continues to be written to the <emphasis>mail</emphasis> attribute and now additionally gets written into the <emphasis>proxyAddresses</emphasis> as default value, i.e. prefixed with <emphasis>SMTP:</emphasis>.</simpara></listitem>
-							<listitem><simpara>3. <emphasis>smtp:</emphasis> prefixed values in <emphasis>proxyAddresses</emphasis> continue to be synchronized  with OpenLDAP <emphasis>mailAlternativeAddress</emphasis></simpara></listitem>
-					</itemizedlist>
+					<orderedlist>
+						<listitem><simpara>When reading from Active Directory, the value with <literal>SMTP:</literal> prefix is now written to the OpenLDAP attribute <property>mailPrimaryAddress</property>. Before this update <property>mailPrimaryAddress</property> used to be synchronized with the value of the Active Directory <property>mail</property> attribute instead. The Active Directory <property>mail</property> attribute has informative character.</simpara></listitem>
+						<listitem><simpara>In the other direction, i.e. writing from OpenLDAP to Active Directory, the value of <property>mailPrimaryAddress</property> continues to be written to the <property>mail</property> attribute and now additionally gets written into the <property>proxyAddresses</property> as default value, i.e. prefixed with <literal>SMTP:</literal>.</simpara></listitem>
+						<listitem><simpara><literal>smtp:</literal> prefixed values in <property>proxyAddresses</property> continue to be synchronized with OpenLDAP <property>mailAlternativeAddress</property></simpara></listitem>
+					</orderedlist>
 				</listitem>
 				<listitem><simpara>
 					A race condition between writing and reading cached data has been fixed (<u:bug>42507</u:bug>).
@@ -606,7 +596,7 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
-				Add missing "INIT INFO" headers in variuos packages to help the update to UCS 4.2 (<u:bug>45109</u:bug>, ).
+				Add missing <literal>INIT INFO</literal> headers in various packages to help the update to UCS 4.2 (<u:bug>45109</u:bug>, ).
 			</simpara></listitem>
 			<listitem><simpara>
 				New leap second 2016-12-31 23:59:60 UTC as per IERS Bulletin C 52 in <package>tzdata</package> (<u:bug>42877</u:bug>).
@@ -624,11 +614,20 @@
 				<simpara>
 					The <package>syslog</package> configuration has been extended to allow logging to remote hosts. Several protocols are supported:
 				</simpara>
-				<itemizedlist>
-					<listitem><simpara>UDP: fast, but messages can get lost or get dropped in congested networks.</simpara></listitem>
-					<listitem><simpara>TCP: more reliable, but can block the sending syslog daemon.</simpara></listitem>
-					<listitem><simpara>RELP: reliable, but non standard; can also block the   syslog daemon.</simpara></listitem>
-				</itemizedlist>
+				<variablelist spacing="compact">
+					<varlistentry>
+						<term>UDP</term>
+						<listitem><simpara>fast, but messages can get lost or get dropped in congested networks.</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term>TCP</term>
+						<listitem><simpara>more reliable, but can block the sending syslog daemon.</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term>RELP</term>
+						<listitem><simpara>reliable, but non standard; can also block the syslog daemon.</simpara></listitem>
+					</varlistentry>
+				</variablelist>
 				<simpara>
 					Sending must be enabled explicitly. For this the new &ucsUCR; variables <envar>syslog/remote</envar>, <envar>syslog/remote/fallback</envar> and <envar>syslog/remote/selector</envar> have been added. Receiving must also be enabled explicitly. For this the new &ucsUCR; variables <envar>syslog/input/udp</envar>, <envar>syslog/input/tdp</envar> and <envar>syslog/input/relp</envar> have been added. Please note, that log messages are sent unencrypted and in clear text! It is recommended to use this only in protected networks, as passwords and other sensitive data might leak otherwise (<u:bug>15728</u:bug>).
 				</simpara>
@@ -640,23 +639,41 @@
 				<simpara>
 					Several new &ucsUCR; variables <envar>syslog/...</envar> have been added to enable/disable logging of events of certain facilities to the corresponding targets: 
 				</simpara>
-				<itemizedlist>
-					<listitem><simpara><envar>syslog/auth</envar> -> /var/log/auth.log</simpara></listitem>
-					<listitem><simpara><envar>syslog/cron</envar> -> /var/log/cron.log</simpara></listitem>
-					<listitem><simpara><envar>syslog/kern</envar> -> /var/log/kern.log</simpara></listitem>
-					<listitem><simpara><envar>syslog/daemon</envar> -> /var/log/daemon.log</simpara></listitem>
-					<listitem><simpara><envar>syslog/user</envar> -> /var/log/user.log</simpara></listitem>
-					<listitem><simpara><envar>syslog/lpr</envar> -> /var/log/lpr.log</simpara></listitem>
-					<listitem><simpara><envar>syslog/mail</envar> -> /var/log/mail.*</simpara></listitem>
-					<listitem><simpara><envar>syslog/news</envar> -> /var/log/news.*</simpara></listitem>
-					<listitem><simpara><envar>syslog/syslog</envar> -> /var/log/syslog (catch-all for all messages)</simpara></listitem>
-					<listitem><simpara><envar>syslog/debug</envar> -> /var/log/debug (only debug messages)</simpara></listitem>
-					<listitem><simpara><envar>syslog/messages</envar> -> /var/log/messages (all except debu  g and errors)</simpara></listitem>
-					<listitem><simpara><envar>syslog/xconsole</envar> -> /dev/xconsole (used by graphical console)</simpara></listitem>
-				</itemizedlist>
+				<variablelist>
+					<varlistentry><term><envar>syslog/auth</envar></term><listitem><simpara><filename>/var/log/auth.log</filename></simpara></listitem></varlistentry>
+					<varlistentry><term><envar>syslog/cron</envar></term><listitem><simpara><filename>/var/log/cron.log</filename></simpara></listitem></varlistentry>
+					<varlistentry><term><envar>syslog/kern</envar></term><listitem><simpara><filename>/var/log/kern.log</filename></simpara></listitem></varlistentry>
+					<varlistentry><term><envar>syslog/daemon</envar></term><listitem><simpara><filename>/var/log/daemon.log</filename></simpara></listitem></varlistentry>
+					<varlistentry><term><envar>syslog/user</envar></term><listitem><simpara><filename>/var/log/user.log</filename></simpara></listitem></varlistentry>
+					<varlistentry><term><envar>syslog/lpr</envar></term><listitem><simpara><filename>/var/log/lpr.log</filename></simpara></listitem></varlistentry>
+					<varlistentry><term><envar>syslog/mail</envar></term><listitem><simpara><filename>/var/log/mail.*</filename></simpara></listitem></varlistentry>
+					<varlistentry><term><envar>syslog/news</envar></term><listitem><simpara><filename>/var/log/news.*</filename></simpara></listitem></varlistentry>
+					<varlistentry><term><envar>syslog/syslog</envar></term><listitem><simpara><filename>/var/log/syslog</filename> (catch-all for all messages)</simpara></listitem></varlistentry>
+					<varlistentry><term><envar>syslog/debug</envar></term><listitem><simpara><filename>/var/log/debug</filename> (only debug messages)</simpara></listitem></varlistentry>
+					<varlistentry><term><envar>syslog/messages</envar></term><listitem><simpara><filename>/var/log/messages</filename> (all except debug and errors)</simpara></listitem></varlistentry>
+					<varlistentry><term><envar>syslog/xconsole</envar></term><listitem><simpara><filename>/dev/xconsole</filename> (used by graphical console)</simpara></listitem></varlistentry>
+				</variablelist>
 				<simpara>
-				The new &ucsUCR; variable <envar>syslog/syslog/avoid_duplicate_messages</envar> can be used to remove messages logged to other targets from '/var/log/syslog'. By default messages get logged multiple times. Further more the selector for certain files can now be customized through the following new &ucsUCR; variables 'syslog/.../selector': 'syslog' [*.*] 'debug' [*.=debug;auth,authpriv,news,mail.none] 'messages' [*.=info-warn;auth;authpriv;cron;daemon;mail;news.none] 'xconsole' [daemon,mail.*;news.err;*.debug-warn] (<u:bug>41815</u:bug>).
+					The new &ucsUCR; variable <envar>syslog/syslog/avoid_duplicate_messages</envar> can be used to remove messages logged to other targets from <filename>/var/log/syslog</filename>. By default messages get logged multiple times. Further more the selector for certain files can now be customized through the following new &ucsUCR; variables: (<u:bug>41815</u:bug>).
 				</simpara>
+				<variablelist spacing="compact">
+					<varlistentry>
+						<term><envar>syslog/syslog/selector</envar></term>
+						<listitem><simpara><literal>[*.*]</literal></simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>syslog/debug/selector</envar></term>
+						<listitem><simpara><literal>[*.=debug;auth,authpriv,news,mail.none]</literal></simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>syslog/messages/selector</envar> </term>
+						<listitem><simpara><literal>[*.=info-warn;auth;authpriv;cron;daemon;mail;news.none]</literal></simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>syslog/xconsole/selector</envar> </term>
+						<listitem><simpara><literal>[daemon,mail.*;news.err;*.debug-warn]</literal></simpara></listitem>
+					</varlistentry>
+				</variablelist>
 			</listitem>
 		</itemizedlist>
 	</section>
