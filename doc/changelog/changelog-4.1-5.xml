@@ -576,11 +576,13 @@
 					The lookup for the LDAP base DN of the Active Directory server has  been fixed (<u:bug>40816</u:bug>).
 				</simpara></listitem>
 
-                <itemizedlist>
-                    <listitem>UDP: fast, but messages can get lost or get dropped in congested networks.</listitem>
-                    <listitem>TCP: more reliable, but can block the sending syslog daemon.</listitem>
-                    <listitem>RELP: reliable, but non standard; can also block the   syslog daemon.</listitem>
-                </itemizedlist>
+				<listitem>
+					<itemizedlist>
+						<listitem>UDP: fast, but messages can get lost or get dropped in congested networks.</listitem>
+						<listitem>TCP: more reliable, but can block the sending syslog daemon.</listitem>
+						<listitem>RELP: reliable, but non standard; can also block the   syslog daemon.</listitem>
+					</itemizedlist>
+				</listitem>
 
 
 				<listitem>
