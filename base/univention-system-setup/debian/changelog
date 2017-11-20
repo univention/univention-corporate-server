@@ -1,3 +1,9 @@
+univention-system-setup (9.0.8-1) unstable; urgency=medium
+
+  * Bug #45748: Link App Center logos into the UMC frontend
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 20 Nov 2017 12:07:58 +0100
+
 univention-system-setup (9.0.7-5) unstable; urgency=medium
 
   * Bug #45109: Backport 4.2 LSB "INIT INFO" headers
