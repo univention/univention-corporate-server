@@ -3,9 +3,9 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: linux
-fix: 4.9.30-2A~4.2.0.201711191221
+fix: 4.9.30-2A~4.2.0.201711211801
 desc: |
- This update of the Linux kernel to version 4.9.63 addresses the following
+ This update of the Linux kernel to version 4.9.64 addresses the following
  issues:
  * [x86] drm/vmwgfx: limit the number of mip levels in
    vmw_gb_surface_define_ioctl() (CVE-2017-7346)
@@ -156,6 +156,8 @@ desc: |
    (CVE-2017-16528)
  * usb: usbtest: fix NULL pointer dereference (CVE-2017-16532)
  * Input: ims-psu - check if CDC union descriptor is sane (CVE-2017-16645)
+ * media: imon: Fix null-ptr-deref in imon_probe (CVE-2017-16537)
+ * media: dib0700: fix invalid dvb_detach argument (CVE-2017-16646)
 note: This is the first of three parts.
 bug: [45242]
 cve:
@@ -198,7 +200,9 @@ cve:
 - CVE-2017-13080
 - CVE-2017-16528
 - CVE-2017-16532
+- CVE-2017-16537
 - CVE-2017-16645
+- CVE-2017-16646
 - CVE-2017-1000111
 - CVE-2017-1000112
 - CVE-2017-1000252
