@@ -523,10 +523,9 @@ getent group
     ccache_type = 4
     forwardable = true
     proxiable = true
-    kdc_timesync = 1
 
 [realms]
-KERBEROSREAKM = {
+KERBEROSREALM = {
    kdc = MASTERIP MASTERFQDN
    admin_server = MASTERIP MASTERFQDN
    kpasswd_server = MASTERIP MASTERFQDN
