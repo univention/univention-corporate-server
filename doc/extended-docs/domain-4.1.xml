@@ -457,7 +457,7 @@ server backup.example.com
 				In the standard setting, only TLS-secured access is possible on UCS-LDAP
 				servers. The accessing Unix system must therefore use the root certificate of the
 				UCS-CA. The certificate can be found on the &ucsMaster; in the file
-				<filename>/etc/univention/ssl/udsCA/CAcert.pem</filename> and can be copied into any
+				<filename>/etc/univention/ssl/ucsCA/CAcert.pem</filename> and can be copied into any
 				directory, e.g., <filename>/etc/ucs-ssl/</filename>. The UCS root certificate must
 				then be configured in the LDAP configuration files. If the Unix system uses OpenLDAP
 				as the LDAP implementation, it is usually the file
@@ -525,10 +525,9 @@ getent group
     ccache_type = 4
     forwardable = true
     proxiable = true
-    kdc_timesync = 1
 
 [realms]
-KERBEROSREAKM = {
+KERBEROSREALM = {
    kdc = MASTERIP MASTERFQDN
    admin_server = MASTERIP MASTERFQDN
    kpasswd_server = MASTERIP MASTERFQDN
