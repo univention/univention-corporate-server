@@ -1,10 +1,18 @@
 product: ucs
 release: "4.1"
-version: [4]
-scope: ucs_4.1-0-errata4.1-4
+version: [4,5]
+scope: ucs_4.1-0-errata4.1-5
 src: samba
 fix: 2:4.5.1-1.866.201711161239
 desc: |
  This update addresses the following issue(s):
- * TODO                                                                                         
+ * Use-after-free vulnerability, where a malicious SMB1 request can be used
+   to control the contents of heap memory via a deallocated heap pointer.
+   It is possible this may be used to compromise the SMB server
+   (CVE-2017-14746)
+ * Server heap memory information leak, where server allocated heap memory
+   may be returned to the client without being cleared (CVE-2017-15275)
 bug: [45666]
+cve:
+- CVE-2017-14746
+- CVE-2017-15275
