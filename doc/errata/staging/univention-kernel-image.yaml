@@ -5,7 +5,7 @@ scope: ucs_4.2-0-errata4.2-2
 src: univention-kernel-image
 fix: 10.0.0-8A~4.2.0.201709281400
 desc: |
- This update of the Linux kernel to version 4.9.60 addresses the following
+ This update of the Linux kernel to version 4.9.63 addresses the following
  issues:
  * [x86] drm/vmwgfx: limit the number of mip levels in
    vmw_gb_surface_define_ioctl() (CVE-2017-7346)
@@ -150,6 +150,12 @@ desc: |
    and sound/core/seq/seq_ports.c. (CVE-2017-15265)
  * A flaw was found in the Linux kernel's implementation of associative arrays
    (CVE-2017-12193)
+ * mac80211: reinstallation of the group key in the Group Key handshake
+   (CVE-2017-13080)
+ * ALSA: seq: Cancel pending autoload work at unbinding device
+   (CVE-2017-16528)
+ * usb: usbtest: fix NULL pointer dereference (CVE-2017-16532)
+ * Input: ims-psu - check if CDC union descriptor is sane (CVE-2017-16645)
 note: This is the third of three parts.
 bug: [45242]
 cve:
@@ -189,6 +195,10 @@ cve:
 - CVE-2017-15265
 - CVE-2017-12188
 - CVE-2017-12193
+- CVE-2017-13080
+- CVE-2017-16528
+- CVE-2017-16532
+- CVE-2017-16645
 - CVE-2017-1000111
 - CVE-2017-1000112
 - CVE-2017-1000252
