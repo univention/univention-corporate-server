@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   width="394.69357"
+   height="261.96695"
+   id="svg2">
+  <defs
+     id="defs4">
+    <marker
+       refX="0"
+       refY="0"
+       orient="auto"
+       id="Arrow1Mend"
+       style="overflow:visible">
+      <path
+         d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z"
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         id="path3345"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none" />
+    </marker>
+    <marker
+       refX="0"
+       refY="0"
+       orient="auto"
+       id="Arrow1Mstart"
+       style="overflow:visible">
+      <path
+         d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z"
+         transform="matrix(0.4,0,0,0.4,4,0)"
+         id="path3342"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none" />
+    </marker>
+  </defs>
+  <g
+     transform="translate(-23.290573,-107.41141)"
+     id="layer1">
+    <path
+       d="M 122.92419,326.03568 L 178.58326,297.22621"
+       inkscape:connection-start="#g2531"
+       inkscape:connection-end="#g2681"
+       id="path4634"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:url(#Arrow1Mstart);marker-mid:none;marker-end:url(#Arrow1Mend);stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       d="M 216.58356,297.22621 L 211.44137,326.03568"
+       inkscape:connection-start="#g2681"
+       inkscape:connection-end="#g2559"
+       id="path2594"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:url(#Arrow1Mstart);marker-mid:none;marker-end:url(#Arrow1Mend);stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       d="M 262.43161,297.22621 L 318.23897,326.03568"
+       inkscape:connection-start="#g2681"
+       inkscape:connection-end="#g2569"
+       id="path2596"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:url(#Arrow1Mstart);marker-mid:none;marker-end:url(#Arrow1Mend);stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <g
+       transform="translate(118.22479,82.358227)"
+       id="g2614">
+      <rect
+         width="144.82941"
+         height="28.765659"
+         rx="6.2018828"
+         ry="4.8872128"
+         x="29.812168"
+         y="117.11875"
+         id="rect2616"
+         style="opacity:1;fill:#ffff99;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.10082078;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <text
+         x="101.75421"
+         y="135.50574"
+         id="text2618"
+         xml:space="preserve"
+         style="font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"><tspan
+           x="101.75421"
+           y="135.50574"
+           id="tspan2620"
+           style="font-weight:bold;text-align:center;text-anchor:middle">UMC HTTP server</tspan></text>
+    </g>
+    <g
+       transform="translate(-69.966657,105.70197)"
+       id="g2531">
+      <rect
+         width="114.4296"
+         height="42.241859"
+         rx="7.1767855"
+         ry="7.1767855"
+         x="93.80764"
+         y="220.88412"
+         id="rect3327"
+         style="opacity:1;fill:#ffff99;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.10082078;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <text
+         x="150.83713"
+         y="239.23088"
+         id="text3265"
+         xml:space="preserve"
+         style="font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"><tspan
+           x="150.83713"
+           y="239.23088"
+           id="tspan3267"
+           style="font-weight:bold;text-align:center;text-anchor:middle">UMC module</tspan><tspan
+           x="150.83713"
+           y="252.98088"
+           id="tspan2529"
+           style="text-align:center;text-anchor:middle">UCR</tspan></text>
+    </g>
+    <g
+       transform="translate(56.55083,105.70197)"
+       id="g2559">
+      <rect
+         width="114.4296"
+         height="42.241859"
+         rx="7.1767855"
+         ry="7.1767855"
+         x="93.80764"
+         y="220.88412"
+         id="rect2561"
+         style="opacity:1;fill:#ffff99;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.10082078;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <text
+         x="150.83713"
+         y="239.23088"
+         id="text2563"
+         xml:space="preserve"
+         style="font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"><tspan
+           x="150.83713"
+           y="239.23088"
+           id="tspan2565"
+           style="font-weight:bold;text-align:center;text-anchor:middle">UMC module</tspan><tspan
+           x="150.83713"
+           y="252.98088"
+           id="tspan2567"
+           style="text-align:center;text-anchor:middle">UVMM</tspan></text>
+    </g>
+    <g
+       transform="translate(209.19648,105.70197)"
+       id="g2569">
+      <rect
+         width="114.4296"
+         height="42.241859"
+         rx="7.1767855"
+         ry="7.1767855"
+         x="93.80764"
+         y="220.88412"
+         id="rect2571"
+         style="opacity:1;fill:#ffff99;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.10082078;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <text
+         x="150.83713"
+         y="239.23088"
+         id="text2573"
+         xml:space="preserve"
+         style="font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"><tspan
+           x="150.83713"
+           y="239.23088"
+           id="tspan2575"
+           style="font-weight:bold;text-align:center;text-anchor:middle">UMC module</tspan><tspan
+           x="150.83713"
+           y="252.98088"
+           id="tspan2577"
+           style="text-align:center;text-anchor:middle">UDM</tspan></text>
+    </g>
+    <text
+       x="283.90414"
+       y="348.38916"
+       id="text2630"
+       xml:space="preserve"
+       style="font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"><tspan
+         x="283.90414"
+         y="348.38916"
+         id="tspan2634"
+         style="text-align:center;text-anchor:middle">.....</tspan></text>
+    <path
+       d="M 220.45166,228.79305 L 220.45166,253.88353"
+       inkscape:connection-start="#g2614"
+       inkscape:connection-end="#g2681"
+       id="path2657"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:url(#Arrow1Mstart);marker-mid:none;marker-end:url(#Arrow1Mend);stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <g
+       transform="translate(118.22479,3.5663285)"
+       id="g2659" />
+    <g
+       transform="translate(68.371568,-112.9223)"
+       id="g2669">
+      <rect
+         width="144.82918"
+         height="42.241859"
+         rx="7.176785"
+         ry="7.1767855"
+         x="79.665504"
+         y="220.88412"
+         id="rect2671"
+         style="opacity:1;fill:#b3defd;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.10082078;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <text
+         x="152.14186"
+         y="239.23088"
+         id="text2673"
+         xml:space="preserve"
+         style="font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"><tspan
+           x="152.14186"
+           y="239.23088"
+           id="tspan2675"
+           style="font-weight:bold;text-align:center;text-anchor:middle">Web browser</tspan><tspan
+           x="152.14186"
+           y="252.98088"
+           id="tspan2677"
+           style="text-align:center;text-anchor:middle">Dojo/UMC JavaScript API</tspan></text>
+    </g>
+    <path
+       d="M 220.45166,198.92657 L 220.45166,150.75409"
+       inkscape:connection-start="#g2614"
+       inkscape:connection-end="#g2669"
+       id="path2679"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:url(#Arrow1Mstart);marker-mid:none;marker-end:url(#Arrow1Mend);stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <g
+       transform="translate(68.371568,33.549818)"
+       id="g2681">
+      <rect
+         width="144.82918"
+         height="42.241859"
+         rx="7.176785"
+         ry="7.1767855"
+         x="79.665504"
+         y="220.88412"
+         id="rect2683"
+         style="opacity:1;fill:#ffff99;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.10082078;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <text
+         x="152.14186"
+         y="239.23088"
+         id="text2685"
+         xml:space="preserve"
+         style="font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"><tspan
+           x="152.14186"
+           y="239.23088"
+           id="tspan2687"
+           style="font-weight:bold;text-align:center;text-anchor:middle">UMC server</tspan><tspan
+           x="152.14186"
+           y="252.98088"
+           id="tspan2689"
+           style="text-align:center;text-anchor:middle">UMC Python API</tspan></text>
+    </g>
+    <text
+       x="226.80093"
+       y="171.47272"
+       id="text2837"
+       xml:space="preserve"
+       style="font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"><tspan
+         x="226.80093"
+         y="171.47272"
+         id="tspan2839"
+         style="font-weight:normal;text-align:start;text-anchor:start">communcation </tspan><tspan
+         x="226.80093"
+         y="185.22272"
+         id="tspan2841"
+         style="font-weight:normal;text-align:start;text-anchor:start">via AJAX and JSON</tspan></text>
+  </g>
+</svg>
