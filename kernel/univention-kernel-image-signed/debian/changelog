@@ -1,3 +1,9 @@
+univention-kernel-image-signed (3.0.2-8) unstable; urgency=low
+
+  * Bug #45242: Resign linux-4.9.63-ucs105 with old key
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 21 Nov 2017 11:22:29 +0100
+
 univention-kernel-image-signed (3.0.2-7) unstable; urgency=low
 
   * Bug #45242: Update to linux-4.9.63-ucs105
