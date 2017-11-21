@@ -55,6 +55,7 @@ define([
 		//		display a meta category.
 		//		This class is used on the AppCenterPage.
 
+		category: null, // ID of this category, not used internally
 		label: null, // content as string
 		_label: null, // Text widget
 
@@ -152,6 +153,13 @@ define([
 			domClass.remove(this.grid.domNode, 'open');
 			this.button.set('label', _('More'));
 			this.set('allAppsDisplayed', false);
+		},
+
+		_setLabelAttr: function(label) {
+			if (this._label) {
+				this._label.set('content', label);
+			}
+			this._set('label', label);
 		},
 
 		_setStoreAttr: function(applications) {

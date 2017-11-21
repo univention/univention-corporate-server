@@ -1,5 +1,7 @@
 univention-appcenter (6.0.10-22) unstable; urgency=medium
 
+  * Bug #41010: Make it more clear that Apps shown as "Installed" are actually
+    installed in the domain, not necessarily the local host
   * Bug #44441: Better error message when MySQL connection cannot be
     established
   * Bug #45556: Check file existance when updating cache
