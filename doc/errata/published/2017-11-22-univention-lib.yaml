@@ -11,3 +11,5 @@ desc: |-
   * PackageManger now also holds the apt lock to prevent errors in the App
     Center.
 bug: [43745, 43619]
+erratum: 225
+announced: 2017-11-22
