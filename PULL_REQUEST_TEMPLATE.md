@@ -3,7 +3,7 @@ Thank you for providing a pull request!
 ## Please make sure you considered the following things
 
 - [ ] I read the [contribution guidelines](./CONTRIBUTING.md).
-- [ ] I read the [code of conduct](./CODE_OF_CONDUCT).
+- [ ] I read the [code of conduct](./CONTRIBUTING.md#code-of-conduct).
 - [ ] I created a bug report in the [Univention Bugzilla](https://forge.univention.org/bugzilla/index.cgi).
 - [ ] I will add a bugzilla comment about this pull request.
 
