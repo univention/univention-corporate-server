@@ -43,9 +43,8 @@
 
 	<para>
 		Die Single Sign-on Anmeldung an Office 365 erfolgt über die in UCS integrierte SAML-Implementierung, d.h. die Authentifizierung erfolgt dabei gegen den
-		UCS-Server und es werden keine Passwort-Hashes zu Microsofts Azure Cloud übertragen. UCS und Microsoft Azure Active
-		Directory müssen dafür keine direkte Verbindung herstellen können, da die Authentifikation ausschließlich über den
-		Webbrowser des Clients erfolgt. Dieser sollte aber die DNS-Namen der UCS-Domäne auflösen können, das ist insbesondere
+		UCS-Server und es werden keine Passwort-Hashes zu Microsofts Azure Cloud übertragen. Die Authentifikation des Benutzers erfolgt ausschließlich über den
+		Webbrowser des Clients. Dieser sollte aber die DNS-Namen der UCS-Domäne auflösen können, das ist insbesondere
 		für Mobilgeräte wichtig zu beachten.
 	</para>
 
@@ -94,7 +93,7 @@
 	<section id="idmcloud:o365:config">
 		<title>Konfiguration</title>
 		<para>
-			Nach der Einrichtung über den Einrichtungsassistenten kann auf dem Reiter <guimenu>Office 365</guimenu>
+			Nach der Einrichtung über den Einrichtungsassistenten kann über das Benutzermodul an jedem Benutzerobjekt auf dem Reiter <guimenu>Office 365</guimenu>
 			konfiguriert werden, dass dieser Benutzer ins Office 365 provisioniert wird. Der Verbrauch und die Zuweisung von
 			Lizenzen ist im <guimenu>Office 365 Admin Center</guimenu> zu erkennen.
 		</para>
@@ -115,7 +114,7 @@
 
 		<para>
 			Es ist notwendig in Office 365 ein Land für den Benutzer zu konfigurieren. Der Connector nutzt dafür die Angabe des
-			Landes aus den Kontaktdaten des Benutzer oder, wenn nicht gesetzt, die Einstellung des Servers. Mit Hilfe der &ucsUCRV;
+			Landes aus den Kontaktdaten des Benutzers oder, wenn nicht gesetzt, die Einstellung des Servers. Mit Hilfe der &ucsUCRV;
 			<envar>office365/attributes/usageLocation</envar> kann ein 2-Zeichen-Kürzel, bspw. DE vorgegeben werden.
 		</para>
 
