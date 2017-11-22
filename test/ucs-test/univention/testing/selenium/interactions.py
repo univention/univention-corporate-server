@@ -36,6 +36,7 @@ import json
 import logging
 
 from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import selenium.common.exceptions as selenium_exceptions
 
@@ -91,6 +92,27 @@ class Interactions(object):
 			% (tilename,),
 			**kwargs
 		)
+
+	def click_tile_menu_icon(self, tilename, **kwargs):
+		self.click_element(
+			'//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]/../*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryContextIcon ")]'
+			% (tilename,),
+			**kwargs
+		)
+
+	def click_tile_right_click(self, tilename, **kwargs):
+		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]' % (tilename,)
+		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
+			self.get_all_enabled_elements
+		)
+
+		if len(elems) != 1:
+			logger.warn(
+				"Found %d module tiles instead of 1. Trying to use the first "
+				"one." % (len(elems),)
+			)
+
+		ActionChains(self.driver).context_click(elems[0]).perform()
 
 	def click_tab(self, tabname, **kwargs):
 		logger.info("Clicking the tab %r", tabname)
