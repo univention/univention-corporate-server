@@ -13,7 +13,7 @@ The online demo of UCS is available under [demo.univention.de](http://demo.unive
 
 ## Documentation and Support
 
-The UCS documentation, including a Quickstart guide, can be found at [docs.software-univention.de](http://docs.software-univention.de/) .
+The UCS documentation, including a Quickstart guide, can be found at [docs.software-univention.de](http://docs.software-univention.de/).
 
 Another helpful resource is the [Univention Wiki](http://wiki.univention.de/index.php?title=Main_Page).
 
