@@ -16,3 +16,5 @@ desc: |
  * A warning is now shown when a UCS system tries to join into a domain with
    a lower UCS version on the UCS master
 bug: [43745, 45170, 42910, 42059]
+erratum: 227
+announced: 2017-11-22
