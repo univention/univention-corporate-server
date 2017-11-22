@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Adapt to code changes in univention-lib.
 bug: [43745]
+erratum: 226
+announced: 2017-11-22
