@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-4.2-2-de">
+<book lang="de" id="releasenotes-4.2-3-de">
 	<bookinfo>
-		<title>UCS 4.2-2 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.2-2</subtitle>
+		<title>UCS 4.2-3 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.2-3</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,32 +44,16 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit Univention Corporate Server 4.2-2 steht das zweite Point-Release für Univention Corporate Server (UCS) 4.2 zur
+			Mit Univention Corporate Server 4.2-3 steht das dritte Point-Release für Univention Corporate Server (UCS) 4.2 zur
 			Verfügung. Es umfasst eine Reihe Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie
 			diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				Das Portal ist nun auch einfach in Cloud Setups nutzbar. So sind die auf UCS installierten Dienste, ohne
-				weitere Konfigurationsschritte, direkt erreichbar. Dafür wandelt das Portal vorhandene Links in relative
-				Links um. Bei Portaleinträgen mit mehreren Links sorgen heuristische Verfahren für die Ermittlung der
-				besten Verlinkung.
 			</para></listitem>
 			<listitem><para>
-				Die Usability des Managementsystems wurde weiter ausgebaut. So können Benutzer und Gruppen kopiert werden,
-				die Fehlerbehandlung wurde an diversen Stellen verbessert und die Performance gesteigert.
-			</para></listitem>
-			<listitem><para>
-				Jeder App Anbieter kann sich nun über das App Provider Portal einfache App Appliances erstellen. App 
-				Appliances bündeln ein App mit UCS in eine sofort nutzbare virtuelle Maschine. Zusätzlich kann die
-				Integrationstiefe der Apps durch so genannte <wordasword>App Settings</wordasword> deutlich erhöht werden.
-				Diese können vom App Anbieter einfach über das Provider Portal ohne zusätzliche Programmierkenntnisse erstellt
-				werden.
-			</para></listitem>
-			<listitem><para>
-				Diverse Security Updates wurden in UCS 4.2-2 integriert, bspw. für OpenLDAP, den Linux Kernel, Samba, MySQL
-				und PostgreSQL.
+				Diverse Security Updates wurden in UCS 4.2-3 integriert, bspw. für OpenLDAP, den Linux Kernel, Samba, MySQL und PostgreSQL.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -114,7 +98,7 @@
 			Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist.
 			Eine Standard-Installation benötigt min. 6 GB Speicherplatz.
 			Das Update benötigt je nach Umfang der vorhanden Installation ungefähr 1 GB weiteren Speicherplatz zum Herunterladen und Installieren der Pakete.
-		</para> 
+		</para>
 		<para>
 			Für das Update sollte eine Anmeldung auf der lokalen Konsole des Systems mit dem Benutzer <systemitem class="username">root</systemitem> durchgeführt und das Update dort gestartet werden.
 			Alternativ kann das Update über &ucsUMC; durchgeführt werden.
@@ -210,10 +194,10 @@
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.2-1</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <wordasword>4.2-2</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-2.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-3.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

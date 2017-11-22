@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-4.2-2-en">
+<book lang="en" id="releasenotes-4.2-3-en">
 	<bookinfo>
-		<title>UCS 4.2-2 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.2-2</subtitle>
+		<title>UCS 4.2-3 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.2-3</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,30 +44,16 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With Univention Corporate Server 4.2-2, the second point release of Univention Corporate Server (UCS) 4.2 is now
+			With Univention Corporate Server 4.2-3, the third point release of Univention Corporate Server (UCS) 4.2 is now
 			available. It provides several feature improvements and extensions, new properties as well as
 			various improvements and bugfixes. An overview of the most important changes are:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				The portal is now also easily usable in cloud setups. The services installed on UCS are directly accessible
-				without further configuration steps. For this purpose, the portal converts existing links into relative
-				links. For portal entries with multiple links, heuristic procedures are used to determine the best link.
 			</para></listitem>
 			<listitem><para>
-				The usability of the management system has been improved further. Users and groups can be copied, the error
-				handling has been enhanced in various places and the performance has been increased.
-			</para></listitem>
-			<listitem><para>
-				Every app provider can now create simple app appliances through the App Provider Portal. App appliances
-				bundle an app with UCS into a directly usable virtual machine. In addition, the integration depth of the
-				apps can be significantly increased by so-called app settings. These can be created by the app provider
-				simply via the provider portal without additional programming knowledge.
-			</para></listitem>
-			<listitem><para>
-				Various security updates have been integrated into UCS 4.2-2, e.g. OpenLDAP, the Linux kernel, Samba, MySQL
-				and PostgreSQL.
+				Various security updates have been integrated into UCS 4.2-3, e.g. OpenLDAP, the Linux kernel, Samba, MySQL and PostgreSQL.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -211,7 +197,7 @@
 			Listed are the changes since UCS <wordasword>4.2-1</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-2.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-3.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
