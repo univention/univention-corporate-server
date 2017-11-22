@@ -11,8 +11,8 @@ desc: |
    reachable.
  * The detection of the domaincontroller master FQDN during the initial system
    configuration has been fixed if the nameserver is not the DC Master.
- * UCS appliances now check for a valid license before starting the join
+ * UCS App appliances now check for a valid license before starting the join
    process.
- * Trying to join a system with a lower UCS version than the domaincontroller
-   master is now detected early.
+ * A warning is now shown when a UCS system tries to join into a domain with
+   a lower UCS version on the UCS master
 bug: [43745, 45170, 42910, 42059]
