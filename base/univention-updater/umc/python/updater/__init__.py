@@ -232,7 +232,7 @@ class Instance(Base):
 			return {'show_warning': False}
 		except requests.exceptions.RequestException as exc:
 			MODULE.error("Querying maintenance information failed: %s" % (exc,))
-			return
+			return {'show_warning': False}
 
 		return {
 			'ucs_version': version,
