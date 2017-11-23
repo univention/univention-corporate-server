@@ -62,43 +62,6 @@ Lesum	UCS 4.2	https://de.wikipedia.org/wiki/Burglesum#Lesum
 __CODENAMES__
 
 if [ "$1" = "configure" ]; then
-	# Bug 39306: unset repository server for switch-over to https:// with UCS-4.1
-	if dpkg --compare-versions "$2" lt-nl 11.0.3
-	then
-		case "$(ucr get repository/online/server)" in
-		apt.univention.de|updates.software-univention.de)
-			ucr unset repository/online/server repository/online/port repository/online/prefix
-			;;
-		esac
-		case "$(ucr get repository/mirror/server)" in
-		apt.univention.de|updates.software-univention.de)
-			ucr unset repository/mirror/server repository/mirror/port repository/mirror/prefix
-			;;
-		esac
-	fi
-
-	# Bug #40142: The 4.1 image
-	# "Univention Corporate Server (UCS) 4.1 (official image) rev. 0 - ami-4e944e3d"
-	# uses updates-test.software-univention.de.
-	# only for updates (nl) from older (lt) versions
-	if dpkg --compare-versions "$2" lt-nl 11.0.7-3
-	then
-		# only if EC2
-		if [ "$(ucr get updater/identify)" = 'UCS (EC2)' ]
-		then
-			# only if EC2
-			if [ "$(ucr get server/amazon)" = 'true' ]
-			then
-				# only if incorrect
-				if [ "$(ucr get repository/online/server)" = 'https://updates-test.software-univention.de' ]
-				then
-					# unset, will be set via defaults below
-					ucr unset repository/online/server
-				fi
-			fi
-		fi
-	fi
-
 	# update cronjob-entries
 	if [ -x /usr/lib/univention-directory-policy/univention-policy-maintenance ]; then
 		/usr/lib/univention-directory-policy/univention-policy-maintenance
@@ -138,7 +101,7 @@ if [ "$1" = "configure" ]; then
 		update/check/boot/debug?no \
 		update/available?no \
 		version/version?4.2 \
-		version/patchlevel?2 \
+		version/patchlevel?3 \
 		version/erratalevel?0 \
 		version/releasename="$releasename"
 
