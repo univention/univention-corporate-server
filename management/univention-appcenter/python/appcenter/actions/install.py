@@ -55,6 +55,7 @@ class Install(InstallRemoveUpgrade):
 
 	def setup_parser(self, parser):
 		super(Install, self).setup_parser(parser)
+		parser.add_argument('--do-not-revert', action='store_false', dest='revert', help='Do not revert the installation when it fails. May leave the system in an undesired state')
 		parser.add_argument('--only-master-packages', action='store_true', help='Install only master packages')
 		parser.add_argument('--do-not-install-master-packages-remotely', action='store_false', dest='install_master_packages_remotely', help='Do not install master packages on DC master and DC backup systems')
 
@@ -172,6 +173,8 @@ class Install(InstallRemoveUpgrade):
 		return ret
 
 	def _revert(self, app, args):
+		if not args.revert:
+			return
 		try:
 			password = self._get_password(args, ask=False)
 			remove = get_action('remove')

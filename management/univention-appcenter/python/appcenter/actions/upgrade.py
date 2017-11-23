@@ -80,6 +80,7 @@ class Upgrade(Install):
 	def _revert(self, app, args):
 		try:
 			self.log('Trying to revert to old version. This may lead to problems, but it is better than leaving it the way it is now')
+			args.revert = False
 			self._do_it(self.old_app, args)
 		except Exception:
 			pass

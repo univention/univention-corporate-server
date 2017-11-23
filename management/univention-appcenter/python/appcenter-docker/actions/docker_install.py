@@ -33,11 +33,8 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from argparse import SUPPRESS
-
 from univention.appcenter.actions.install import Install
 from univention.appcenter.actions.docker_base import DockerActionMixin
-from univention.appcenter.actions import get_action
 from univention.appcenter.ucr import ucr_save
 from univention.appcenter.exceptions import InstallSetupFailed
 
@@ -47,7 +44,6 @@ class Install(Install, DockerActionMixin):
 	def setup_parser(self, parser):
 		super(Install, self).setup_parser(parser)
 		parser.add_argument('--do-not-pull-image', action='store_false', dest='pull_image', help='Do not pull the image of a Docker App. Instead, the image is assumed to be already in place')
-		parser.add_argument('--do-not-revert', action='store_false', dest='revert', help=SUPPRESS)  # debugging
 
 	def _install_app(self, app, args):
 		if not app.docker:
@@ -67,16 +63,6 @@ class Install(Install, DockerActionMixin):
 		if app.docker:
 			ucr_save({'appcenter/prudence/docker/%s' % app.id: None})
 		return ret
-
-	def _revert(self, app, args):
-		if not args.revert:
-			return
-		try:
-			password = self._get_password(args, ask=False)
-			remove = get_action('remove')
-			remove.call(app=app, noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[], backup=False)
-		except Exception:
-			pass
 
 	def _install_app_in_existing_container(self, app, args):
 		self._setup_docker_image(app, args)
