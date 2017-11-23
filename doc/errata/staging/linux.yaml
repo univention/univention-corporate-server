@@ -1,0 +1,214 @@
+product: ucs
+release: "4.2"
+version: [2,3]
+scope: ucs_4.2-0-errata4.2-2
+src: linux
+fix: 4.9.30-2A~4.2.0.201711211801
+desc: |
+ This update of the Linux kernel to version 4.9.64 addresses the following
+ issues:
+ * [x86] drm/vmwgfx: limit the number of mip levels in
+   vmw_gb_surface_define_ioctl() (CVE-2017-7346)
+ * rxrpc: Fix several cases where a padded len isn't checked in ticket decode
+   (CVE-2017-7482)
+ * brcmfmac: fix possible buffer overflow in brcmf_cfg80211_mgmt_tx()
+   (CVE-2017-7541)
+ * ipv6: avoid overflow of offset in ip6_find_1stfragopt (CVE-2017-7542)
+ * [x86] drm/vmwgfx: Make sure backup_handle is always valid (CVE-2017-9605)
+ * drm/virtio: don't leak bo on drm_gem_object_init failure (CVE-2017-10810)
+ * xen-blkback: don't leak stack data via response ring (CVE-2017-10911)
+ * mqueue: fix a use-after-free in sys_mq_notify() (CVE-2017-11176)
+ * fs/exec.c: account for argv/envp pointers (CVE-2017-1000365)
+ * dentry name snapshots (CVE-2017-7533)
+ * fs/namespace.c does not restrict how many mounts may exist in a mount
+   namespace, which allows local users to cause a denial of service (memory
+   consumption and deadlock) via MS_BIND mount system calls. (CVE-2016-6213)
+ * The filesystem implementation preserves the setgid bit during a setxattr
+   call, which allows local users to gain group privileges by leveraging the
+   existence of a setgid program with restrictions on execute permissions.
+   (CVE-2016-7097)
+ * An information disclosure vulnerability in kernel components including the
+   ION subsystem, Binder, USB driver and networking subsystem could enable a
+   local malicious application to access data outside of its permission
+   levels. This issue is rated as Moderate because it first requires
+   compromising a privileged process. (CVE-2016-8405)
+ * The cgroup offline implementation mishandles certain drain operations,
+   which allows local users to cause a denial of service (system hang) by
+   leveraging access to a container environment for executing a crafted
+   application. (CVE-2016-9191)
+ * The load_segment_descriptor implementation in arch/x86/kvm/emulate.c
+   improperly emulates a "MOV SS, NULL selector" instruction, which allows
+   guest OS users to cause a denial of service (guest OS crash) or gain guest
+   OS privileges via a crafted application. (CVE-2017-2583)
+ * arch/x86/kvm/emulate.c allows local users to obtain sensitive information
+   from kernel memory or cause a denial of service (use-after-free) via a
+   crafted application that leverages instruction emulation for fxrstor,
+   fxsave, sgdt, and sidt. (CVE-2017-2584)
+ * The keyring_search_aux function in security/keys/keyring.c allows local
+   users to cause a denial of service (NULL pointer dereference and OOPS) via
+   a request_key system call for the "dead" type. (CVE-2017-6951)
+ * The xfrm_replay_verify_len function in net/xfrm/xfrm_user.c does not
+   validate certain size data after an XFRM_MSG_NEWAE update, which allows
+   local users to obtain root privileges or cause a denial of service
+   (heap-based out-of-bounds access) by leveraging the CAP_NET_ADMIN
+   capability. (CVE-2017-7184)
+ * The KEYS subsystem allows local users to cause a denial of service (memory
+   consumption) via a series of KEY_REQKEY_DEFL_THREAD_KEYRING
+   keyctl_set_reqkey_keyring calls. (CVE-2017-7472)
+ * The saa7164_bus_get function in drivers/media/pci/saa7164/saa7164-bus.c
+   allows local users to cause a denial of service (out-of-bounds array
+   access) or possibly have unspecified other impact by changing a certain
+   sequence-number value, aka a "double fetch" vulnerability. (CVE-2017-8831)
+ * The sanity_check_ckpt function in fs/f2fs/super.c does not validate the
+   blkoff and segno arrays, which allows local users to gain privileges via
+   unspecified vectors. (CVE-2017-10663)
+ * Buffer overflow in the mp_override_legacy_irq() function in
+   arch/x86/kernel/acpi/boot.c allows local users to gain privileges via a
+   crafted ACPI table. (CVE-2017-11473)
+ * net/xfrm/xfrm_policy.c, when CONFIG_XFRM_MIGRATE is enabled, does not
+   ensure that the dir value of xfrm_userpolicy_id is XFRM_POLICY_MAX or less,
+   which allows local users to cause a denial of service (out-of-bounds
+   access) or possibly have unspecified other impact via an XFRM_MSG_MIGRATE
+   xfrm Netlink message. (CVE-2017-11600)
+ * In /drivers/isdn/i4l/isdn_net.c: A user-controlled buffer is copied into a
+   local buffer of constant size using strcpy without a length check which can
+   cause a buffer overflow. (CVE-2017-12762)
+ * An issue was discovered in the size of the stack guard page on Linux,
+   specifically a 4k stack guard page is not sufficiently large and can be
+   "jumped" over (the stack guard page is bypassed). (CVE-2017-1000364)
+ * The offset2lib patch contains a vulnerability that allows a PIE binary to
+   be execve()'ed with 1GB of arguments or environmental strings then the
+   stack occupies the address 0x80000000 and the PIE binary is mapped above
+   0x40000000 nullifying the protection of the offset2lib patch. This is a
+   different issue than CVE-2017-1000371. This issue appears to be limited to
+   i386 based systems. (CVE-2017-1000370)
+ * The offset2lib patch contains a vulnerability, if RLIMIT_STACK is set to
+   RLIM_INFINITY and 1 Gigabyte of memory is allocated (the maximum under the
+   1/4 restriction) then the stack will be grown down to 0x80000000, and as
+   the PIE binary is mapped above 0x80000000 the minimum distance between the
+   end of the PIE binary's read-write segment and the start of the stack
+   becomes small enough that the stack guard page can be jumped over by an
+   attacker. This is a different issue than CVE-2017-1000370 and
+   CVE-2017-1000365. This issue appears to be limited to i386 based systems.
+   (CVE-2017-1000371)
+ * A kernel data leak due to an out-of-bound read was found in the Linux
+   kernel in inet_diag_msg_sctp{,l}addr_fill() and sctp_get_sctp_info()
+   functions present since version 4.7-rc1 through version 4.13. A data leak
+   happens when these functions fill in sockaddr data structures used to
+   export socket's diagnostic information. As a result, up to 100 bytes of the
+   slab data could be leaked to a userspace. (CVE-2017-7558)
+ * A flaw was found in the Linux kernel's handling of clearing SELinux
+   attributes on /proc/pid/attr files. An empty (null) write to this file can
+   crash the system by causing the system to attempt to access unmapped kernel
+   memory. (CVE-2017-2618)
+ * A race condition issue leading to a use-after-free flaw was found in the
+   way the raw packet sockets are implemented in the Linux kernel networking
+   subsystem handling synchronization. A local user able to open a raw packet
+   socket (requires the CAP_NET_RAW capability) could use this flaw to elevate
+   their privileges on the system. (CVE-2017-1000111)
+ * Exploitable memory corruption due to UFO (UDP fragment offload) to non-UFO
+   path switch (CVE-2017-1000112)
+ * A security flaw was discovered in the nl80211_set_rekey_data() function in
+   net/wireless/nl80211.c. This function does not check whether the required
+   attributes are present in a Netlink request. This request can be issued by
+   a user with the CAP_NET_ADMIN capability and may result in a NULL pointer
+   dereference and system crash. (CVE-2017-12153)
+ * The prepare_vmcs02 function in arch/x86/kvm/vmx.c does not ensure that the
+   "CR8-load exiting" and "CR8-store exiting" L0 vmcs02 controls exist in
+   cases where L1 omits the "use TPR shadow" vmcs12 control, which allows KVM
+   L2 guest OS users to obtain read and write access to the hardware CR8
+   register. (CVE-2017-12154)
+ * The atyfb_ioctl function in drivers/video/fbdev/aty/atyfb_base.c does not
+   initialize a certain data structure, which allows local users to obtain
+   sensitive information from kernel stack memory by reading locations
+   associated with padding bytes. (CVE-2017-14156)
+ * The iscsi_if_rx function in drivers/scsi/scsi_transport_iscsi.c allows
+   local users to cause a denial of service (panic) by leveraging incorrect
+   length validation. (CVE-2017-14489)
+ * The sg_ioctl function in drivers/scsi/sg.c allows local users to obtain
+   sensitive information from uninitialized kernel heap-memory locations via
+   an SG_GET_REQUEST_TABLE ioctl call for /dev/sg0. (CVE-2017-14991)
+ * The KVM subsystem allows guest OS users to cause a denial of service
+   (assertion failure, and hypervisor hang or crash) via an out-of bounds
+   guest_irq value, related to arch/x86/kvm/vmx.c and virt/kvm/eventfd.c.
+   (CVE-2017-1000252)
+ * arch/x86/kvm/mmu.c when nested virtualisation is used, does not properly
+   traverse guest pagetable entries to resolve a guest virtual address, which
+   allows L1 guest OS users to execute arbitrary code on the host OS or cause
+   a denial of service (incorrect index during page walking, and host OS
+   crash), aka an "MMU potential stack buffer overrun." (CVE-2017-12188)
+ * The keyctl_read_key function in security/keys/keyctl.c in the Key
+   Management subcomponent. (CVE-2017-12192)
+ * A elevation of privilege vulnerability in the Broadcom wi-fi driver.
+   (CVE-2017-0786)
+ * KVM: x86: fix singlestepping over syscall (CVE-2017-7518)
+ * [PowerPC]: Arbitrary stack overwrite causing oops via crafted signal frame
+   (CVE-2017-1000255)
+ * Race condition in the ALSA subsystem allows local users to cause a denial
+   of service (use-after-free) or possibly have unspecified other impact via
+   crafted /dev/snd/seq ioctl calls, related to sound/core/seq/seq_clientmgr.c
+   and sound/core/seq/seq_ports.c. (CVE-2017-15265)
+ * A flaw was found in the Linux kernel's implementation of associative arrays
+   (CVE-2017-12193)
+ * mac80211: reinstallation of the group key in the Group Key handshake
+   (CVE-2017-13080)
+ * ALSA: seq: Cancel pending autoload work at unbinding device
+   (CVE-2017-16528)
+ * usb: usbtest: fix NULL pointer dereference (CVE-2017-16532)
+ * Input: ims-psu - check if CDC union descriptor is sane (CVE-2017-16645)
+ * media: imon: Fix null-ptr-deref in imon_probe (CVE-2017-16537)
+ * media: dib0700: fix invalid dvb_detach argument (CVE-2017-16646)
+note: This is the first of three parts.
+bug: [45242]
+cve:
+- CVE-2016-7097
+- CVE-2016-9191
+- CVE-2016-6213
+- CVE-2016-8405
+- CVE-2017-0786
+- CVE-2017-2583
+- CVE-2017-2584
+- CVE-2017-2618
+- CVE-2017-6951
+- CVE-2017-7184
+- CVE-2017-7346
+- CVE-2017-7472
+- CVE-2017-7482
+- CVE-2017-7518
+- CVE-2017-7533
+- CVE-2017-7541
+- CVE-2017-7542
+- CVE-2017-7558
+- CVE-2017-8831
+- CVE-2017-9605
+- CVE-2017-10663
+- CVE-2017-10810
+- CVE-2017-10911
+- CVE-2017-11176
+- CVE-2017-11473
+- CVE-2017-11600
+- CVE-2017-12153
+- CVE-2017-12154
+- CVE-2017-12192
+- CVE-2017-12762
+- CVE-2017-14156
+- CVE-2017-14489
+- CVE-2017-14991
+- CVE-2017-15265
+- CVE-2017-12188
+- CVE-2017-12193
+- CVE-2017-13080
+- CVE-2017-16528
+- CVE-2017-16532
+- CVE-2017-16537
+- CVE-2017-16645
+- CVE-2017-16646
+- CVE-2017-1000111
+- CVE-2017-1000112
+- CVE-2017-1000252
+- CVE-2017-1000255
+- CVE-2017-1000364
+- CVE-2017-1000365
+- CVE-2017-1000370
+- CVE-2017-1000371
+ignore: [version.scope]
