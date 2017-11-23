@@ -180,6 +180,18 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Improved the label in the App Center gallery: It is now more clear
+					that Apps may be installed on other servers than the local host
+					(<u:bug>41010</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The handling of cache files is now more careful, leading to less
+						error messages (<u:bug>45556</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						When connecting to the MySQL server fails during the installation
+						of Apps with Database integration, a helpful error message is shown
+						instead of a traceback (<u:bug>44441</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
