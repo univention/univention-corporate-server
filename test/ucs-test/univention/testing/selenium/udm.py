@@ -126,6 +126,19 @@ class UDMBase(object):
 		self.selenium.click_button(_('Add'))
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
+		try:
+			self.selenium.wait_for_text(_('This UCS system is part of an Active Directory domain'), timeout=1)
+		except TimeoutException:
+			pass
+		else:
+			self.selenium.click_button(_('Next'))
+			# FIXME: clicking Next on the page with the active directory warning
+			# cuts the dialog in half and the dom elements are not clickable/visible.
+			# This is a workaround
+			dialogs = self.selenium.driver.find_elements_by_class_name('umcUdmNewObjectDialog')
+			if len(dialogs):
+				self.selenium.driver.execute_script('dijit.byId("%s")._position()' % (dialogs[0].get_attribute('widgetid')))
+
 		click_next = False
 		try:
 			self.selenium.wait_for_text(_('Container'), timeout=1)
