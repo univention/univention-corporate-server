@@ -6,6 +6,7 @@ import ldb
 import time
 import socket
 import re
+import contextlib
 import sqlite3
 
 from univention.testing.utils import package_installed
@@ -14,6 +15,23 @@ import univention.config_registry as config_registry
 CONNECTOR_WAIT_INTERVAL = 12
 CONNECTOR_WAIT_SLEEP = 5
 CONNECTOR_WAIT_TIME = CONNECTOR_WAIT_SLEEP * CONNECTOR_WAIT_INTERVAL
+
+
+@contextlib.contextmanager
+def password_policy(complexity=False, minimum_password_age=0):
+    if not package_installed('univention-samba4'):
+        print 'skipping samba password policy adjustment'
+        yield
+        return
+    complexity = 'on' if complexity else 'off'
+    minimum_password_age = str(minimum_password_age)
+    min_pwd_age = int(subprocess.check_output('samba-tool domain passwordsettings show | grep "Minimum password age" | sed s/[^0-9]*/""/', shell=True).strip())
+    pwd_complexity = subprocess.check_output('samba-tool domain passwordsettings show | grep complexity | sed "s/Password complexity: //"', shell=True).strip()
+    if complexity != pwd_complexity or minimum_password_age != min_pwd_age:
+        subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', str(minimum_password_age), '--complexity', complexity])
+    yield
+    if complexity != pwd_complexity or minimum_password_age != min_pwd_age:
+        subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', min_pwd_age, '--complexity', pwd_complexity])
 
 
 def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1, verbose=True):

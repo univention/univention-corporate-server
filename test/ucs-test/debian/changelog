@@ -1,3 +1,9 @@
+ucs-test (7.0.23-95) unstable; urgency=medium
+
+  * Bug #44640: fix password quality check in Samba4
+
+ -- Florian Best <best@univention.de>  Thu, 23 Nov 2017 17:06:36 +0100
+
 ucs-test (7.0.23-94) unstable; urgency=low
 
   * Bug #44786: add tests for the asynchronous listener modules API

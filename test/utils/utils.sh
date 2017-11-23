@@ -335,7 +335,8 @@ install_with_unmaintained () {
 
 install_ucs_test () {
 	install_with_unmaintained ucs-test
-	install_selenium
+	install_selenium || install_selenium
+	# The AD Member Jenkins tests sometimes have network problems, so executing it twice.
 }
 
 install_ucs_test_checks_from_errata_test () {
