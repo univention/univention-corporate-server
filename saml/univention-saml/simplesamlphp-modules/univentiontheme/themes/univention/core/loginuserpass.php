@@ -5,7 +5,7 @@ $this->data['header'] = $this->t('{login:user_pass_header}');
 $this->data['autofocus'] = strlen($this->data['username']) > 0 ? 'password' : 'username';
 ?>
 		<div id="umcLoginWrapper">
-			<h1 style="text-align: center;"><?php echo htmlspecialchars(sprintf($this->t('{univentiontheme:login:loginat}'), $this->configuration->getValue('hostfqdn', ''))); ?></h1>
+			<h1 style="text-align: center;"><?php echo htmlspecialchars(sprintf($this->t('{univentiontheme:login:loginat}'), $this->configuration->getValue('domainname', ''))); ?></h1>
 <?php
 if (isset($this->data['SPMetadata']['privacypolicy'])) {
 	printf('<h3 style="text-align: center;"><a href="%s">%s</a></h3>', htmlspecialchars($this->data['SPMetadata']['privacypolicy']), htmlspecialchars($this->t('{consent:consent:consent_privacypolicy}')));

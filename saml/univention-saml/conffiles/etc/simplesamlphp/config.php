@@ -22,6 +22,7 @@ print "	'theme.use'		=> '%s'," % configRegistry.get('saml/idp/lookandfeel/theme'
 print "	'technicalcontact_name'		=> '%s'," % configRegistry.get('saml/idp/technicalcontactname', 'Administrator')
 print "	'technicalcontact_email'	=> '%s'," % configRegistry.get('saml/idp/technicalcontactemail', 'root@%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname')))
 print "	'hostfqdn'	=> '%s.%s'," % (configRegistry.get('hostname', ''),configRegistry.get('domainname', ''))
+print "	'domainname'	=> '%s'," % configRegistry.get('domainname', '')
 @!@
 	/**
 	 * Setup the following parameters to match the directory of your installation.

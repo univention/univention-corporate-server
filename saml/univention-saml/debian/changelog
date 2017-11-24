@@ -1,3 +1,9 @@
+univention-saml (4.0.14-12) unstable; urgency=medium
+
+  * Bug #44121: SSO login page now shows domainname instead of hostfqdn
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 24 Nov 2017 12:06:31 +0100
+
 univention-saml (4.0.14-11) unstable; urgency=medium
 
   * Bug #44704: The access permissions for the SAML Identify Provider
