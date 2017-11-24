@@ -38,11 +38,12 @@ define([
 	"dojo/dom",
 	"dijit/layout/StackContainer",
 	"dijit/layout/ContentPane",
+	"umc/dialog/NotificationDropDownButton",
 	"./PasswordForgotten",
 	"./ProtectAccountAccess",
 	"./NewPassword",
 	"./PasswordChange"
-], function(hash, ioQuery, topic, lang, array, put, dom, StackContainer, ContentPane, PasswordForgotten, ProtectAccountAccess, NewPassword, PasswordChange){
+], function(hash, ioQuery, topic, lang, array, put, dom, StackContainer, ContentPane, NotificationDropDownButton, PasswordForgotten, ProtectAccountAccess, NewPassword, PasswordChange){
 	return {
 		content_container: null,
 		backend_info: null,
@@ -62,6 +63,9 @@ define([
 			this._initContainer();
 			this._subscribeOnHashEvents();
 			this._addSubPages(Object.keys(this.subpages));
+			new NotificationDropDownButton({
+				iconClass: 'umcNotificationIcon'
+			}).placeAt('umcHeaderRight', 'first');
 		},
 
 		_subscribeOnHashEvents: function() {
