@@ -83,7 +83,7 @@
 					The <phrase lang="">Univention Blog</phrase> has been added to the help menu entries (<u:bug>45281</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					For privacy reasons the username is not stored anymore in a cookie or in a HTML5 local storage, to remember the last logged in user (<u:bug>45461</u:bug>, <u:bug>45390</u:bug>).
+					For privacy reasons the username is no longer stored in a cookie or in an HTML5 local storage, to remember the last logged in user (<u:bug>45461</u:bug>, <u:bug>45390</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					<filename>build-report.txt</filename> was removed from the Debian package <package>univention-web</package>(<u:bug>45391</u:bug>).
