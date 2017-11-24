@@ -171,14 +171,32 @@ define([
 			return [
 			{
 				label: _('Installed'),
-				category: 'installed',
 				query: function(app) {
-					return app.is_installed_anywhere;
+					var considerInstalled = false;
+					tools.forIn(app.installations, function(host, installation) {
+						if (installation.version && host == tools.status('hostname')) {
+							considerInstalled = true;
+							return false;
+						}
+					});
+					return considerInstalled;
+				}
+			},
+			{
+				label: _('Installed in domain'),
+				query: function(app) {
+					var considerInstalled = false;
+					tools.forIn(app.installations, function(host, installation) {
+						if (installation.version && host != tools.status('hostname')) {
+							considerInstalled = true;
+							return false;
+						}
+					});
+					return considerInstalled;
 				}
 			},
 			{
 				label: _('Available'),
-				category: 'available',
 				query: function(app) {
 					return !app.is_installed_anywhere;
 				}
@@ -255,22 +273,6 @@ define([
 			var updating = when(this.getApplications(quick)).then(lang.hitch(this, function(applications) {
 				var metaLabels = [];
 				array.forEach(this.metaCategories, function(metaObj) {
-					if (metaObj.category == 'installed') {
-						if (array.some(applications, function(application) {
-							var installedSomewhereElse = false;
-							tools.forIn(application.installations, function(host, installation) {
-								if (installation.version && host != tools.status('hostname')) {
-									installedSomewhereElse = true;
-									return false;
-								}
-							});
-							return installedSomewhereElse;
-						})) {
-							metaObj.set('label',_('Installed on any UCS server in the domain'));
-						} else {
-							metaObj.set('label',_('Installed'));
-						}
-					}
 					metaObj.set('store', applications);
 					metaLabels.push(metaObj.label);
 				});
