@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-20 17:08+0100\n"
+"POT-Creation-Date: 2017-11-24 13:33+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -257,7 +257,7 @@ msgstr "Nach dem Speichern wird die neue Datei hochgeladen werden."
 msgid "After that you can \"%(action)s\" \"%(app)s\" here on this system."
 msgstr "Danach können Sie \"%(app)s\" hier auf diesem System \"%(action)s\"."
 
-#: umc/js/appcenter/AppCenterPage.js:280 umc/js/appcenter/AppCenterPage.js:322
+#: umc/js/appcenter/AppCenterPage.js:292 umc/js/appcenter/AppCenterPage.js:334
 msgid "All"
 msgstr "Alle"
 
@@ -323,7 +323,7 @@ msgstr ""
 msgid "Autostart"
 msgstr "Autostart"
 
-#: umc/js/appcenter/SettingsPage.js:234 umc/js/appcenter/AppCenterPage.js:187
+#: umc/js/appcenter/SettingsPage.js:234 umc/js/appcenter/AppCenterPage.js:199
 msgid "Available"
 msgstr "Verfügbar"
 
@@ -407,7 +407,7 @@ msgstr "Kontakt"
 
 #: umc/js/appcenter/AppDetailsPage.js:817
 #: umc/js/appcenter/AppDetailsPage.js:873
-#: umc/js/appcenter/AppCenterPage.js:135
+#: umc/js/appcenter/AppCenterPage.js:133
 msgid "Continue"
 msgstr "Fortfahren"
 
@@ -467,7 +467,7 @@ msgid "Disabled"
 msgstr "Deaktiviert"
 
 #: umc/js/appcenter/AppDetailsPage.js:867
-#: umc/js/appcenter/AppCenterPage.js:129
+#: umc/js/appcenter/AppCenterPage.js:127
 msgid "Do not show this message again"
 msgstr "Diese Nachricht nicht wieder anzeigen"
 
@@ -600,16 +600,13 @@ msgid "Installation status"
 msgstr "Paketstatus"
 
 #: umc/js/appcenter/SettingsPage.js:238 umc/js/appcenter/AppDetailsPage.js:388
+#: umc/js/appcenter/AppCenterPage.js:173
 msgid "Installed"
 msgstr "Installiert"
 
-#: umc/js/appcenter/AppCenterPage.js:177
-msgid "Installed locally"
-msgstr "Installiert auf diesem RechnerLokal installiert"
-
-#: umc/js/appcenter/AppCenterPage.js:175
-msgid "Installed on any UCS server in the domain"
-msgstr "Installiert auf einem UCS-Server in der Domäne"
+#: umc/js/appcenter/AppCenterPage.js:186
+msgid "Installed in domain"
+msgstr "Installiert in der Domäne"
 
 #: umc/js/appcenter/PackagesPage.js:321 umc/js/appcenter/AppDetailsPage.js:635
 msgid "Installed version"
@@ -665,11 +662,11 @@ msgstr "Fortfahren nicht möglich"
 msgid "It is not recommended to continue"
 msgstr "Fortfahren nicht empfohlen"
 
-#: umc/js/appcenter/AppCenterMetaCategory.js:147
+#: umc/js/appcenter/AppCenterMetaCategory.js:148
 msgid "Less"
 msgstr "Weniger"
 
-#: umc/js/appcenter/AppCenterPage.js:97
+#: umc/js/appcenter/AppCenterPage.js:95
 msgid "Let us know if you you miss any application in Univention App Center!"
 msgstr ""
 "Teilen Sie uns mit, welche Anwendung Sie im Univention App Center vermissen!"
@@ -691,9 +688,9 @@ msgstr "Installationen in der Domäne verwalten"
 msgid "Manage local installation"
 msgstr "Installation lokal verwalten"
 
-#: umc/js/appcenter/AppCenterMetaCategory.js:85
-#: umc/js/appcenter/AppCenterMetaCategory.js:87
-#: umc/js/appcenter/AppCenterMetaCategory.js:153
+#: umc/js/appcenter/AppCenterMetaCategory.js:86
+#: umc/js/appcenter/AppCenterMetaCategory.js:88
+#: umc/js/appcenter/AppCenterMetaCategory.js:154
 msgid "More"
 msgstr "Mehr"
 
@@ -756,7 +753,7 @@ msgstr ""
 "ermöglicht es, diese zu installieren, zu deinstallieren oder zu "
 "aktualisieren."
 
-#: umc/js/appcenter/AppCenterMetaCategory.js:106 umc/js/appcenter/App.js:372
+#: umc/js/appcenter/AppCenterMetaCategory.js:107 umc/js/appcenter/App.js:372
 msgid "Open"
 msgstr "Öffnen"
 
@@ -894,7 +891,7 @@ msgstr "Aktualisieren"
 msgid "Refresh display to see current values"
 msgstr "Anzeige aktualisieren"
 
-#: umc/js/appcenter/AppCenterPage.js:246
+#: umc/js/appcenter/AppCenterPage.js:258
 msgid ""
 "Registration of the applications in the domain failed. It will be retried "
 "when opening this module again. This may also cause problems when installing "
@@ -925,7 +922,7 @@ msgstr "Repository-Server"
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: umc/js/appcenter/AppCenterPage.js:83
+#: umc/js/appcenter/AppCenterPage.js:81
 msgid "Search applications..."
 msgstr "Suche Applikationen..."
 
@@ -985,7 +982,7 @@ msgstr "Status"
 msgid "Stop the application"
 msgstr "Applikation stoppen"
 
-#: umc/js/appcenter/AppCenterPage.js:98
+#: umc/js/appcenter/AppCenterPage.js:96
 msgid "Suggest new app"
 msgstr "Neue App vorschlagen"
 
@@ -1275,7 +1272,7 @@ msgstr "Deinstalliere %s von diesem Rechner"
 msgid "Uninstalling %s will also remove the following plugins:"
 msgstr "Die Deinstallation von %s entfernt auch die folgenden Plugins:"
 
-#: umc/js/appcenter/AppCenterPage.js:119
+#: umc/js/appcenter/AppCenterPage.js:117
 msgid "Univention App Center"
 msgstr "Univention App Center"
 
@@ -1422,7 +1419,7 @@ msgstr "eine unbekannte Anzahl"
 msgid "https://docs.univention.de/manual.html#ad-connector:password-dienst"
 msgstr "https://docs.univention.de/handbuch.html#ad-connector:password-dienst"
 
-#: umc/js/appcenter/AppCenterPage.js:94
+#: umc/js/appcenter/AppCenterPage.js:92
 msgid "https://www.univention.com/products/univention-app-center/vote-for-app/"
 msgstr "https://www.univention.de/produkte/univention-app-center/vote-for-app/"
 
@@ -1519,6 +1516,12 @@ msgstr "{0} Pakete werden deinstalliert"
 #~ "Sie aufgefordert, einen aktualisierten Lizenzschlüssel direkt bei "
 #~ "Univention anzufordern. Anschließend kann der neue Schlüssel eingespielt "
 #~ "werden."
+
+#~ msgid "Installed locally"
+#~ msgstr "Installiert auf diesem RechnerLokal installiert"
+
+#~ msgid "Installed on any UCS server in the domain"
+#~ msgstr "Installiert auf einem UCS-Server in der Domäne"
 
 #~ msgid "Name of the installed application"
 #~ msgstr "Name der soeben installierten Applikation"

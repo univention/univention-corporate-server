@@ -1,3 +1,9 @@
+univention-appcenter (6.0.10-24) unstable; urgency=medium
+
+  * Bug #41010: Use a third category for installed Apps in domain
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 24 Nov 2017 13:35:28 +0100
+
 univention-appcenter (6.0.10-23) unstable; urgency=medium
 
   * Bug #41010: Make it more clear that Apps shown as "Installed" are actually
