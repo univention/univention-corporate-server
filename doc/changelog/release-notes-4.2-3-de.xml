@@ -51,9 +51,16 @@
 
 		<itemizedlist>
 			<listitem><para>
+				Für das UMC Diagnosemodul wurde eine große Zahl zusätzlicher Funktionstests hinzugefügt, die den Administrator dabei unterstützen den Gesundheitszustand des Servers und der gesamten Domäne zu prüfen.
 			</para></listitem>
 			<listitem><para>
-				Diverse Security Updates wurden in UCS 4.2-3 integriert, bspw. für OpenLDAP, den Linux Kernel, Samba, MySQL und PostgreSQL.
+				Die Usability und Konfigurierbarkeit des Managementsystems wurde weiter ausgebaut. So wurde das Design der Assistenten und Dialoge des Managementsystems im Hinblick auf Usability Aspekte überarbeitet. Zusätzlich wurden weitere Konfigurationsoptionen für das Single Sign-On des Managementsystems hinzugefügt, bspw. die Konfigurierbarkeit des verwendeten Zertifikats.
+			</para></listitem>
+			<listitem><para>
+				Beim Domänenbeitritt eines UCS-Systems zu einer Microsoft Active Directory Domäne werden nun mehr Prüfungen vorgenommen. Dadurch können Hinweise auf bekannte Probleme angezeigt werden inkl. Hinweise auf deren Behebung.
+			</para></listitem>
+			<listitem><para>
+				Diverse Security Updates wurden in UCS 4.2-3 integriert, bspw. für den Linux Kernel, Samba, Asterisk.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
