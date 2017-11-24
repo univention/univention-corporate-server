@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * The access permissions for the SAML Identify Provider certificate
    have been corrected.
-bug: [44704]
+ * On the single-sign on login page only the domainname instead of the servers
+   hostname is now shown.
+bug: [44704, 44121]
