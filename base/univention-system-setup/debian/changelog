@@ -1,3 +1,9 @@
+univention-system-setup (10.0.11-2) unstable; urgency=medium
+
+  * Bug #45461: don't store username in cookie/localstorage
+
+ -- Florian Best <best@univention.de>  Fri, 24 Nov 2017 13:03:41 +0100
+
 univention-system-setup (10.0.11-1) unstable; urgency=medium
 
   * Bug #45765: Link App Center logos into the UMC frontend

@@ -320,8 +320,7 @@ define([
 		authenticated: function(username) {
 			//console.debug('authenticated');
 
-			// save the username internally and as cookie
-			tools.setUsernameCookie(username, { expires: 100, path: '/univention/' });
+			// save the username internally
 			tools.status('username', username);
 
 			// start the timer for session checking

@@ -54,7 +54,7 @@ define([
 
 		start: function(props) {
 			login.onInitialLogin(lang.hitch(this, '_initWizard'));
-			login.start(props.username || tools.getCookies().username, props.password);
+			login.start(props.username, props.password);
 		},
 
 		standby: function(standby) {

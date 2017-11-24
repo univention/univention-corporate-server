@@ -153,24 +153,18 @@ define([
 		_regUUID: /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i,
 		_fakeUUID: '00000000-0000-0000-0000-000000000000',
 		isUUID: function(uuid) {
-			return this._regUUID.test(uuid) && uuid != this._fakeUUID;
+			return this._regUUID.test(uuid) && uuid !== this._fakeUUID;
 		},
 
 		getCookies: function() {
 			return {
 				sessionID: cookie('UMCSessionId-' + document.location.port) || cookie('UMCSessionId'),
-				username: localStorage.getItem('UMCUsername-' + document.location.port) || localStorage.getItem('UMCUsername')
 			};
 		},
 
 		setSessionCookie: function(value, params) {
 			var key = 'UMCSessionId' + (document.location.port ? '-' + document.location.port : '');
 			cookie(key, value, params);
-		},
-
-		setUsernameCookie: function(value) {
-			var key = 'UMCUsername' + (document.location.port ? '-' + document.location.port : '');
-			localStorage.setItem(key, value || '');
 		},
 
 		closeSession: function() {
@@ -210,7 +204,7 @@ define([
 				// if we receive a UMCUsername cookie, we need to immediately remove it and store it in a html5 Storage for privacy reasons
 				var key = 'UMCUsername' + (document.location.port ? '-' + document.location.port : '');
 				cookie(key, '', { expires: -1, path: '/univention/' });
-				this.setUsernameCookie(username);
+				this.status('username', username);
 			}
 		},
 

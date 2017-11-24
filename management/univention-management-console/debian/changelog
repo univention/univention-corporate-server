@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-81) unstable; urgency=medium
+
+  * Bug #45461: don't store username in cookie/localstorage
+
+ -- Florian Best <best@univention.de>  Fri, 24 Nov 2017 13:02:27 +0100
+
 univention-management-console (9.0.80-80) unstable; urgency=medium
 
   * Bug #45676: fix a UMC-Server crash caused by a threading issue during
