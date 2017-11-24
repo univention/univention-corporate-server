@@ -1,3 +1,9 @@
+univention-web (1.0.42-52) unstable; urgency=medium
+
+  * Bug #45461: fix typo
+
+ -- Florian Best <best@univention.de>  Fri, 24 Nov 2017 13:45:20 +0100
+
 univention-web (1.0.42-51) unstable; urgency=medium
 
   * Bug #45461: don't store username in cookie/localstorage

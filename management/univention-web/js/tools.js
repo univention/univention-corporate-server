@@ -158,7 +158,7 @@ define([
 
 		getCookies: function() {
 			return {
-				sessionID: cookie('UMCSessionId-' + document.location.port) || cookie('UMCSessionId'),
+				sessionID: cookie('UMCSessionId-' + document.location.port) || cookie('UMCSessionId')
 			};
 		},
 
