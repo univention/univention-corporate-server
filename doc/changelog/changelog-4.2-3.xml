@@ -179,7 +179,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 						When connecting to the MySQL server fails during the installation
-						of Apps with Database integration, a helpful error message is shown
+						of Apps with database integration, a helpful error message is shown
 						instead of a traceback (<u:bug>44441</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
