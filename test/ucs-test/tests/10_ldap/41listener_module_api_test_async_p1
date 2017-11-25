@@ -5,7 +5,7 @@
 ## roles: []
 ## exposure: dangerous
 ## packages:
-##   - univention-directory-listener
+##   - univention-directory-listener-async
 ## bugs: [44786]
 
 import os
