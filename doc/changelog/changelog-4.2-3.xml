@@ -167,6 +167,9 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
+					App Logos are linked to the UMC front-end immediately after the initial System setup (<u:bug>45765</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					Improved the label in the App Center gallery: It is now more clear
 					that Apps may be installed on other servers than the local host
 					(<u:bug>41010</u:bug>).
