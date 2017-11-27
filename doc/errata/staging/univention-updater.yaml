@@ -1,5 +1,6 @@
 product: ucs
 release: "4.2"
+<<<<<<< 6f1c62e6ec929476607dde1f4d27a92ea7fe8466
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-updater
@@ -7,4 +8,5 @@ fix: 12.0.11-14A~4.2.0.201711301135
 desc: |
  This update addresses the following issue(s):
  * A javascript error is prevented if receiving the maintenance status information is not possible.
-bug: [44080]
+ * Links in the log view during installing software upgrades via the UMC module can now be clicked.
+bug: [44080, 45060]
