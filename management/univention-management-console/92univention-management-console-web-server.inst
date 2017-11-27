@@ -79,20 +79,22 @@ udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-service
 	--set isActivated=TRUE \
 	--set simplesamlAttributes=TRUE \
 	--set attributesNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" \
-	--append LDAPattributes=uid || die
+	--append LDAPattributes=uid || die "Could not create SAML service provider."
 
-/usr/share/univention-management-console/saml/update_metadata "$@" || die
+/usr/share/univention-management-console/saml/update_metadata "$@" || die "Could not update SAML service provider metadata."
 
 ucr set ucs/server/sso/fqdn?"ucs-sso.$domainname"
 eval "$(ucr shell ucs/server/sso/fqdn)"
 
 /etc/init.d/apache2 reload  # make a apache reload for the next call:
 
-_cleanup_die () {
-	ucr unset umc/saml/idp-server; exit 3
+_cleanup () {
+	ucr unset umc/saml/idp-server;
+	joinscript_log_error "Could not configure SAML identity provider."
+	exit 3
 }
-ucr set umc/saml/idp-server?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || _cleanup_die
-[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || _cleanup_die
+ucr set umc/saml/idp-server?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || _cleanup
+[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || _cleanup
 
 /etc/init.d/univention-management-console-web-server restart
 /etc/init.d/slapd crestart
