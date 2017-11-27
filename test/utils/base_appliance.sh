@@ -971,6 +971,8 @@ __EOF__
 		echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
 	fi
 
+	rm -rf /root/shared-utils/
+
 	# Cleanup apt archive
 	apt-get clean
 	apt-get update
