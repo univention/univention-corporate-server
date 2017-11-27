@@ -1,3 +1,9 @@
+univention-join (9.0.3-11) unstable; urgency=medium
+
+  * Bug #42110: Add utilities to log error messages in joinscripts
+
+ -- Florian Best <best@univention.de>  Fri, 01 Dec 2017 18:19:26 +0100
+
 univention-join (9.0.3-10) unstable; urgency=medium
 
   * Bug #42505: memberOf test only for dc's

@@ -249,7 +249,35 @@ joinscript_init () {
 }
 
 die () {
-    exit $?
+	rc=$?
+    joinscript_log_error "$@"
+    exit $rc
+}
+
+exec_log_failure() {
+	local output
+	local rc
+
+	output=$("$@" 2>&1)
+	rc=$?
+	if [ 0 -ne "$rc" ]; then
+		joinscript_log_error "$ERRMSG\nCommand failed with $rc:\n$ouput"
+		unset ERRMSG
+		die
+	else
+		echo "$output"
+	fi
+
+	return $rc
+}
+
+joinscript_log_error() {
+	local line
+	echo -en "$1" | while read line; do
+		if [ -n "$line" ]; then
+			echo "__ERR__: $line"
+		fi
+	done
 }
 
 # vim:set ft=sh:
