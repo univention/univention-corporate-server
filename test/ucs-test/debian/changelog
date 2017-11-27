@@ -1,3 +1,9 @@
+ucs-test (7.0.23-97) unstable; urgency=medium
+
+  * Bug #44640: fix password max age
+
+ -- Florian Best <best@univention.de>  Mon, 27 Nov 2017 18:37:04 +0100
+
 ucs-test (7.0.23-96) unstable; urgency=low
 
   * Bug #44786: fix test dependency
