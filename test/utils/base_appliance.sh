@@ -803,7 +803,7 @@ uninstall_packages ()
 	fi
 
 	# Old kernels
-	for kernel in " linux-image-4.9.0-ucs103-amd64 linux-image-4.9.0-ucs103-amd64-signed"; do
+	for kernel in "linux-image-4.9.0-ucs103-amd64 linux-image-4.9.0-ucs103-amd64-signed linux-image-4.9.0-ucs104-amd64 linux-image-4.9.0-ucs104-amd64-signed"; do
 		DEBIAN_FRONTEND=noninteractive apt-get purge -y --force-yes ${kernel}
 	done
 }
