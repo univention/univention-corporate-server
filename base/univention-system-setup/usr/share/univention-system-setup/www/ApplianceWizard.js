@@ -2716,8 +2716,9 @@ define([
 			}
 
 			if (pageName == 'credentials-ad' || pageName == 'credentials-nonmaster') {
-				return this.standbyDuring(this._checkCredentials().then(lang.hitch(this, function(domain) {
-					this._domainName = domain;
+				return this.standbyDuring(this._checkCredentials().then(lang.hitch(this, function(result) {
+					this._domainName = result.domain;
+					this._install_memberof_overlay = result.install_memberof_overlay;
 				}), lang.hitch(this, function() {
 					// in case of errors don't switch the page
 					nextPage = pageName;
@@ -2993,6 +2994,10 @@ define([
 				vals['dns/forwarder1'] = _vals.nameserver1;
 				vals['dns/forwarder2'] = _vals.nameserver2;
 			}
+
+			// memberof overlay
+			vals.install_memberof_overlay = this._install_memberof_overlay;
+
 			return vals;
 		},
 

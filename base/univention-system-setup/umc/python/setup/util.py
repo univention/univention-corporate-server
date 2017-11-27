@@ -209,6 +209,11 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 	if isAdMember and newValues['server/role'] == 'domaincontroller_master':
 		selectedComponents.add('univention-ad-connector')
 
+	# make sure to install the memberof overlay if it is installed on the DC Master
+	if newValues['server/role'] not in ('domaincontroller_master', 'basesystem', 'memberserver'):
+		if newValues.pop('install_memberof_overlay', None):
+			selectedComponents.add('univention-ldap-overlay-memberof')
+
 	# add lists with all packages that should be removed/installed on the system
 	if selectedComponents:
 		currentComponents = set()
@@ -218,7 +223,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 					currentComponents = currentComponents.union(ipackages)
 
 		# set of all available software packages
-		allComponents = set()
+		allComponents = set(['univention-ldap-overlay-memberof'])
 		for iapp in get_apps():
 			for ipackages in (iapp['default_packages'], iapp['default_packages_master']):
 				allComponents = allComponents.union(ipackages)
@@ -1116,6 +1121,31 @@ def get_random_nameserver(country):
 		ipv4_nameserver=random.choice(ipv4_servers),
 		ipv6_nameserver=random.choice(ipv6_servers),
 	)
+
+
+def receive_domaincontroller_master_information(dns, nameserver, address, username, password):
+	result = {}
+	result['domain'] = check_credentials_nonmaster(dns, nameserver, address, username, password)
+	check_domain_has_activated_license(address, username, password)
+	check_domain_is_higher_or_equal_version(address, username, password)
+	result['install_memberof_overlay'] = check_memberof_overlay_is_installed(address, username, password)
+	return result
+
+
+def check_memberof_overlay_is_installed(address, username, password):
+	with _temporary_password_file(password) as password_file:
+		try:
+			return ucr.is_true(value=subprocess.check_output([
+				'univention-ssh',
+				password_file,
+				'%s@%s' % (username, address),
+				'/usr/sbin/univention-config-registry',
+				'get',
+				'ldap/overlay/memberof'
+			]).strip())
+		except subprocess.CalledProcessError as exc:
+			MODULE.error('Could not query DC Master for memberof overlay: %s' % (exc,))
+	return False
 
 
 def check_domain_has_activated_license(address, username, password):
