@@ -158,6 +158,7 @@ define([
 			array.forEach(assumedMetaCategories, lang.hitch(this, function(metaObj){
 				var metaCategory = new this.metaCategoryClass(metaObj);
 				metaCategory.on('showApp', lang.hitch(this, 'onShowApp'));
+				metaCategory.set('visible', false);
 				this.metaCategories.push(metaCategory);
 				this.addChild(metaCategory);
 				this.own(metaCategory);
@@ -274,6 +275,7 @@ define([
 				var metaLabels = [];
 				array.forEach(this.metaCategories, function(metaObj) {
 					metaObj.set('store', applications);
+					metaObj.set('visible', true);
 					metaLabels.push(metaObj.label);
 				});
 				metaLabels.push(''); // seperates meta and normal categories
