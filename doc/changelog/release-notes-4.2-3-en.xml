@@ -51,12 +51,11 @@
 
 		<itemizedlist>
 			<listitem><para>
-
-			</para></listitem>
 				The UMC system diagnostic module has been extended with a large amount of additional tests. They the administrator to check the system health of the UCS system and the whole domain.
-			<listitem><para>
 			</para></listitem>
+			<listitem><para>
 				The management system usability and configureability has been expanded. Wizards and dialogs have been redesigned regarding their useability. Additional configuration options for the single sign-on have been added, e.g. the certificate can now be configured.
+			</para></listitem>
 			<listitem><para>
 				When joining into an active directory domain, additional checks are now executed. This enables the detection of known issues which are shown to the user along with advice how to fix them.
 			</para></listitem>
