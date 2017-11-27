@@ -127,7 +127,6 @@ sqlite3
 univention-squid
 univention-nagios-squid
 univention-firewall
-univention-celery
 
 univention-virtual-machine-manager-daemon
 univention-nagios-uvmmd
