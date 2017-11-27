@@ -386,12 +386,6 @@ class UCSInstallation(object):
 		self.select_components()
 		self.click(_t['next'])
 
-		#for i in range(0, 4):
-		#	self.client.keyPress('up')
-		#if self.args.role == 'master':
-		#	self.client.waitForText(_t['confirm'])
-		#else:
-		#	self.client.waitForText(_t['confirm_non_master'])
 		time.sleep(5)
 		self.client.keyPress('enter')
 		time.sleep(1000)
@@ -429,9 +423,9 @@ class UCSInstallation(object):
 
 	def installation(self):
 		try:
-			#self.bootmenu()
-			#self.installer()
-			#self.setup()
+			self.bootmenu()
+			self.installer()
+			self.setup()
 			# TODO activate eth1 so that ucs-kvm-create can connect to instance
 			# this is done via login and setting interfaces/eth0/type, is there a better way?
 			self.configure_eth1()
