@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-app-appliance\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-08-30 23:33+0200\n"
+"POT-Creation-Date: 2017-11-28 12:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,24 +12,30 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: \n"
 
-#: usr/share/univention-web/js/umc/hooks/univention_demo.js:250
+#: usr/share/univention-web/js/umc/hooks/univention_demo.js:267
 msgid "Demo help"
 msgstr "Demo Hilfe"
 
-#: usr/share/univention-web/js/umc/hooks/univention_demo.js:214
+#: usr/share/univention-web/js/umc/hooks/univention_demo.js:84
+msgid "Download UCS"
+msgstr "UCS herunterladen"
+
+#: usr/share/univention-web/js/umc/hooks/univention_demo.js:231
 msgid "Dummy entries to apps that could be installed on UCS"
 msgstr "Pseudoeinträge von Apps, die mit UCS installiert werden könnten"
 
-#: usr/share/univention-web/js/umc/hooks/univention_demo.js:209
+#: usr/share/univention-web/js/umc/hooks/univention_demo.js:226
 msgid "The UCS web interface for administrating users, computers, etc."
 msgstr "Die UCS Weboberfläche zur Verwaltung von Benutzern, Computern etc."
 
-#: usr/share/univention-web/js/umc/hooks/univention_demo.js:219
+#: usr/share/univention-web/js/umc/hooks/univention_demo.js:236
 msgid ""
 "This help screen can be displayed again via <i>Help</i> in the user menu"
-msgstr "Diese Hilfeansicht kann erneut über <i>Hilfe</i> im Benutzermenü angezeigt werden"
+msgstr ""
+"Diese Hilfeansicht kann erneut über <i>Hilfe</i> im Benutzermenü angezeigt "
+"werden"
 
-#: usr/share/univention-web/js/umc/hooks/univention_demo.js:261
+#: usr/share/univention-web/js/umc/hooks/univention_demo.js:278
 msgid ""
 "Welcome to the online demo of Univention Corporate Server (UCS). You are now"
 " on the start site of the UCS system. Click on \"System and domain "
@@ -39,6 +45,10 @@ msgstr ""
 "befinden sich nun auf der Startseite des UCS-Systems. Klicken Sie auf "
 "\"System- und Domäneneinstellungen\", um einen Eindruck davon zu erhalten "
 "welche Möglichkeiten Ihnen UCS bietet."
+
+#: usr/share/univention-web/js/umc/hooks/univention_demo.js:87
+msgid "https://univention.com/download/ucs-download/"
+msgstr "https://www.univention.de/download/ucs-download/"
 
 #~ msgid "%s web interface"
 #~ msgstr "%s Weboberfläche"
