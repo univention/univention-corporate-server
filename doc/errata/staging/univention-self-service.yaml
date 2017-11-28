@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: univention-self-service
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Users from an Active Directory domain now can reset their password via the
+   Self Service. Therefore the UCR Variables ad/reset/username and
+   ad/reset/password needs to be set.
+bug: [44867]

@@ -1,3 +1,10 @@
+univention-self-service (2.0.16-9) unstable; urgency=medium
+
+  * Bug #44867: Make it possible for user from Active Directory to change
+  	their password.
+
+ -- Florian Best <best@univention.de>  Tue, 28 Nov 2017 17:39:51 +0100
+
 univention-self-service (2.0.16-8) unstable; urgency=medium
 
   * Bug #43999: Adjust styling of dialogs

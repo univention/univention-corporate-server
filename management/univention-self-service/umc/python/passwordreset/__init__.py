@@ -37,6 +37,8 @@ import random
 import string
 import atexit
 from functools import wraps
+from subprocess import Popen, PIPE, STDOUT
+
 from ldap.filter import filter_format
 import pylibmc
 
@@ -455,9 +457,28 @@ class Instance(Base):
 			MODULE.error("set_contact_data(): {}".format(traceback.format_exc()))
 			raise
 
+	def admember_set_password(self, username, password):
+		ldb_url = ucr.get('connector/ad/ldap/host')
+		ldb_url = 'ldaps://%s' % (ldb_url,) if ucr.is_true('connector/ad/ldap/ldaps') else 'ldap://%s' % (ldb_url,)
+		reset_username = ucr.get('ad/reset/username', '')
+		with open(ucr.get('ad/reset/password', '/dev/null')) as fd:
+			reset_password = fd.readline().strip()
+		process = Popen(['samba-tool', 'user', 'setpassword', '--username', reset_username, '--password', reset_password, '--filter', filter_format('samaccountname=%s', (username,)), '--newpassword', password, '-H', ldb_url], stdout=PIPE, stderr=STDOUT)
+		stdouterr = process.communicate()[0]
+
+		if stdouterr:
+			MODULE.process('samba-tool user setpassword: %s' % (stdouterr,))
+
+		if process.returncode:
+			MODULE.error("admember_set_password(): failed to set password. Return code: %s" % (process.returncode,))
+			return False
+		return True
+
 	def udm_set_password(self, username, password):
+		user = self.get_udm_user(username=username, admin=True)
+		if ucr.is_true('ad/member') and 'synced' in user.get('objectFlag', []):
+			return self.admember_set_password(username, password)
 		try:
-			user = self.get_udm_user(username=username, admin=True)
 			user["password"] = password
 			user["pwdChangeNextLogin"] = 0
 			user.modify()
