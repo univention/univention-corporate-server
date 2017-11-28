@@ -81,10 +81,10 @@ define([
 		topic.subscribe('/umc/started', function() {
 		query('.umcHeaderRight').forEach(function(w) {
 			new Button({
-				label: _('<span style="color: red">Download UCS now!</span>'),
+				label: '<span style="color: white; background-color: #74b627; padding: 0.5em; border-radius: 5px;">' + _('Download UCS') + '</span>',
 				style: 'box-shadow: none;',
 				onClick: function() {
-					window.location.href = 'https://univention.com/download/ucs-download/';
+					window.location.href = _('https://univention.com/download/ucs-download/');
 				}
 			}).placeAt(w, 'first');
 		});
