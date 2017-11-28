@@ -10,6 +10,7 @@
 ## exposure: dangerous
 
 from univention.admin import localization
+from univention.testing.utils import get_ldap_connection
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
@@ -28,16 +29,22 @@ class UMCTester(object):
 
 	def test_umc(self):
 		self.users = selenium_udm.Users(self.selenium)
-		userdn, username = self.udm.create_user()
+		userdn = self.udm.create_user()[0]
+		lo = get_ldap_connection()
+		user_object = lo.get(userdn)
+		user = {}
+		user['username'] = user_object['uid'][0]
+		user['lastname'] = user_object['sn'][0]
+
 		self.selenium.do_login()
 		self.selenium.open_module(self.users.name)
 		self.users.wait_for_main_grid_load()
 
-		self.move_user_into_containers_and_out_again(username)
+		self.move_user_into_containers_and_out_again(user)
 		self.test_options_effect_on_field_visibility()
 		self.test_user_templates()
 
-	def move_user_into_containers_and_out_again(self, username):
+	def move_user_into_containers_and_out_again(self, user):
 		print '*** move user into different container'
 		position = self.ucr.get('ldap/base')
 		cn_name = uts.random_string()
@@ -45,9 +52,9 @@ class UMCTester(object):
 		ou_name = uts.random_string()
 		self.udm.create_object('container/ou', position=position, name=ou_name)
 
-		self.move_user(username, cn_name)
-		self.move_user(username, ou_name)
-		self.move_user(username, 'users')
+		self.move_user(user, cn_name)
+		self.move_user(user, ou_name)
+		self.move_user(user, 'users')
 
 	def test_options_effect_on_field_visibility(self):
 		print '*** test if (de)selecting options works'
@@ -83,11 +90,11 @@ class UMCTester(object):
 		self.selenium.open_module(self.users.name)
 		self.users.wait_for_main_grid_load()
 
-		username_description_template = self.users.add(
+		user_description_template = self.users.add(
 			template=description_template, firstname=u'Bärbel', lastname='Edison'
 		)
 
-		self.users.open_details(username_description_template)
+		self.users.open_details(user_description_template)
 		expected_description = 'baerbel.Ed@test.com'
 		if self.users.get_description() != expected_description:
 			raise UmcUdmError(
@@ -97,7 +104,7 @@ class UMCTester(object):
 			)
 		self.users.close_details()
 
-		self.users.delete(username_description_template)
+		self.users.delete(user_description_template)
 
 	def test_group_template(self):
 		secondary_group_template = uts.random_string()
@@ -113,21 +120,21 @@ class UMCTester(object):
 		self.selenium.open_module(self.users.name)
 		self.users.wait_for_main_grid_load()
 
-		username_group_template = self.users.add(
+		user_group_template = self.users.add(
 			template=secondary_group_template, firstname='Thomas', lastname='Edison'
 		)
 
-		self.users.open_details(username_group_template)
+		self.users.open_details(user_group_template)
 		self.selenium.click_tab(_('Groups'))
 		self.selenium.wait_for_text(_('Domain Admins'))
 		self.users.close_details()
 
-		self.users.delete(username_group_template)
+		self.users.delete(user_group_template)
 
 	# container_name has to be a direct child of the LDAP-base.
-	def move_user(self, username, container_name):
-		print '*** moving user %s into %s' % (username, container_name)
-		self.selenium.click_checkbox_of_grid_entry(username)
+	def move_user(self, user, container_name):
+		print '*** moving user %s into %s' % (user['username'], container_name)
+		self.selenium.click_checkbox_of_grid_entry(self.users._get_grid_value(user))
 		self.selenium.click_text(_('more'))
 		self.selenium.click_text(_('Move to...'))
 		self.selenium.click_tree_entry(container_name, scroll_into_view=True)

@@ -40,6 +40,7 @@ from selenium.webdriver.common.keys import Keys
 
 from univention.admin import localization
 import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
 
 translator = localization.translation('ucs-test-framework')
 _ = translator.translate
@@ -50,14 +51,20 @@ class UDMBase(object):
 	def __init__(self, selenium):
 		self.selenium = selenium
 
+	def _get_search_value(self, objectname):
+		return objectname
+
+	def _get_grid_value(self, objectname):
+		return objectname
+
 	def exists(self, objectname):
 		print '*** check if object exists', objectname
 		# This method will work with *most* UDM modules.
-		self.search(objectname)
+		self.search(self._get_search_value(objectname))
 		time.sleep(5)
 		self.selenium.wait_until_all_standby_animations_disappeared()
 		try:
-			self.selenium.wait_for_text(objectname, timeout=1)
+			self.selenium.wait_for_text(self._get_grid_value(objectname), timeout=1)
 			return True
 		except TimeoutException:
 			pass
@@ -66,8 +73,8 @@ class UDMBase(object):
 	def open_details(self, objectname):
 		print '*** open detail page of object', objectname
 		# This method will work with *most* UDM modules.
-		self.search(objectname)
-		self.selenium.click_grid_entry(objectname)
+		self.search(self._get_search_value(objectname))
+		self.selenium.click_grid_entry(self._get_grid_value(objectname))
 		self.selenium.wait_for_text(_('Basic settings'))
 
 	def close_details(self):
@@ -83,9 +90,9 @@ class UDMBase(object):
 	def delete(self, objectname):
 		print '*** remove the object with name=', objectname
 		# This method will work with *most* UDM modules.
-		self.search(objectname)
+		self.search(self._get_search_value(objectname))
 
-		self.selenium.click_checkbox_of_grid_entry(objectname)
+		self.selenium.click_checkbox_of_grid_entry(self._get_grid_value(objectname))
 		self.selenium.click_button(_('Delete'))
 		self.selenium.wait_for_text(_("Please confirm the removal"))
 		self.selenium.click_element(
@@ -118,6 +125,19 @@ class UDMBase(object):
 		print '*** open the add dialog'
 		self.selenium.click_button(_('Add'))
 		self.selenium.wait_until_all_standby_animations_disappeared()
+
+		try:
+			self.selenium.wait_for_text(_('This UCS system is part of an Active Directory domain'), timeout=1)
+		except TimeoutException:
+			pass
+		else:
+			self.selenium.click_button(_('Next'))
+			# FIXME: clicking Next on the page with the active directory warning
+			# cuts the dialog in half and the dom elements are not clickable/visible.
+			# This is a workaround
+			dialogs = self.selenium.driver.find_elements_by_class_name('umcUdmNewObjectDialog')
+			if len(dialogs):
+				self.selenium.driver.execute_script('dijit.byId("%s")._position()' % (dialogs[0].get_attribute('widgetid')))
 
 		click_next = False
 		try:
@@ -198,13 +218,18 @@ class Policies(UDMBase):
 		return policyname
 
 	def open_details(self, objectname):
-		self.search(objectname)
-		self.selenium.click_grid_entry(objectname)
+		self.search(self._get_search_value(objectname))
+		self.selenium.click_grid_entry(self._get_grid_value(objectname))
 		self.selenium.wait_for_text(_('Advanced settings'))
 
 
 class Users(UDMBase):
 	name = _("Users")
+
+	def __init__(self, selenium):
+		super(Users, self).__init__(selenium)
+		self.ucr = ucr_test.UCSTestConfigRegistry()
+		self.ucr.load()
 
 	def get_description(self):
 		xpath = '//input[@name="description"]'
@@ -249,4 +274,10 @@ class Users(UDMBase):
 		self.selenium.click_button(_('Cancel'))
 		self.selenium.wait_until_all_dialogues_closed()
 
-		return username
+		return {'username': username, 'lastname': lastname}
+
+	def _get_search_value(self, user):
+		return user['username']
+
+	def _get_grid_value(self, user):
+		return user['lastname'] if self.ucr.get('ad/member') else user['username']
