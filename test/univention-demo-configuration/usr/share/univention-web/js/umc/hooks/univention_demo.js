@@ -84,7 +84,7 @@ define([
 				label: '<span style="color: white; background-color: #74b627; padding: 0.5em; border-radius: 5px;">' + _('Download UCS') + '</span>',
 				style: 'box-shadow: none;',
 				onClick: function() {
-					window.location.href = _('https://univention.com/download/ucs-download/');
+					window.open(_('https://univention.com/download/ucs-download/'), '_blank');
 				}
 			}).placeAt(w, 'first');
 		});
