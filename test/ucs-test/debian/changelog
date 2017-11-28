@@ -1,3 +1,9 @@
+ucs-test (7.0.23-99) unstable; urgency=medium
+
+  * Bug #44640: Adjust selenium tests for admember
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 28 Nov 2017 17:00:58 +0100
+
 ucs-test (7.0.23-98) unstable; urgency=medium
 
   * Bug #44640: Add test for favorite modules
