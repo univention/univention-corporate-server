@@ -9,4 +9,5 @@ desc: |
  * Users from an Active Directory domain now can reset their password via the
    Self Service. Therefore the UCR Variables ad/reset/username and
    ad/reset/password needs to be set.
-bug: [44867]
+ * Notifications about successful password changes are shown again.
+bug: [44867, 45457]
