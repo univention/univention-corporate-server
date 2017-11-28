@@ -1,3 +1,9 @@
+ucs-test (7.0.23-98) unstable; urgency=medium
+
+  * Bug #44640: Add test for favorite modules
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 28 Nov 2017 16:49:10 +0100
+
 ucs-test (7.0.23-97) unstable; urgency=medium
 
   * Bug #44640: fix password max age
