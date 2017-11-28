@@ -1,3 +1,9 @@
+univention-pkgdb (10.0.2-4) unstable; urgency=medium
+
+  * Bug #45623: fixed loading screen for pkgdb UMC module
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 28 Nov 2017 09:07:45 +0100
+
 univention-pkgdb (10.0.2-3) unstable; urgency=medium
 
   * Bug #44173: removed useless selection boxes from UMC module

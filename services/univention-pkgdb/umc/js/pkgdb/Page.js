@@ -76,16 +76,16 @@ define([
 
 		postCreate: function() {
 			this.inherited(arguments);
-			this._searchform.ready().then(lang.hitch(this, function() {
+			this.standbyDuring(this._searchform.ready()).then(lang.hitch(this, function() {
 				this._build_columns(this._searchform.getQuery());
 			}));
 		},
 
 		_execute_query: function(query) {
-			this.standbyDuring(this._build_columns(query).then(lang.hitch(this, function() {
+			this._build_columns(query).then(lang.hitch(this, function() {
 				// Execute the given query (a.k.a. filter) on the grid
 				this._grid.filter(lang.mixin({page: this.pageKey }, this._current_query));
-			})));
+			}));
 
 			topic.publish('/umc/actions', 'pkgdb', this.pageKey, query.key, 'search');
 		},
@@ -94,10 +94,10 @@ define([
 		_build_columns: function(query) {
 			this._current_query = query;
 
-			return tools.umcpCommand('pkgdb/columns', {
+			return this.standbyDuring(tools.umcpCommand('pkgdb/columns', {
 				page: this.pageKey,
 				key: this._current_query.key
-			}).then(lang.hitch(this, function(data) {
+			})).then(lang.hitch(this, function(data) {
 				return this._create_table(data.result);
 			}));
 		},
@@ -105,6 +105,8 @@ define([
 		// Creates the given result table. 'fields' is an array of column names.
 		// The corresponding query is already stored in this._current_query.
 		_create_table: function(fields) {
+			var deferred = new Deferred();
+			this.standbyDuring(deferred);
 			// determine if we have already a grid structured like that
 			var grid_usable = false;
 			var sig = fields.join(':');
@@ -150,7 +152,6 @@ define([
 
 			domClass.toggle(this._grid.domNode, 'dijitDisplayNone', false);
 
-			var deferred = new Deferred();
 			deferred.resolve(true);
 			return deferred;
 		}
