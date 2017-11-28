@@ -313,7 +313,7 @@ class UCSInstallation(object):
 			self.client.keyUp('alt')
 			self.client.keyUp('ctrl')
 		else:
-			self.client.waitForText('Univention Corporate Server')
+			self.client.waitForText('corporate server')
 			self.client.keyPress('enter')
 		time.sleep(3)
 		self.client.enterText('root')
