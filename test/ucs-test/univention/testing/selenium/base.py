@@ -81,7 +81,6 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		self.language = language
 		self.base_url = 'https://%s/' % (host or '%s.%s' % (self._ucr.get('hostname'), self._ucr.get('domainname')))
 		self.screenshot_path = os.path.abspath('selenium-screendumps/')
-		self.browser_log_path = os.path.abspath('selenium-browser-log-dumps/')
 		translator.set_language(self.language)
 		logging.basicConfig(level=logging.INFO)
 
@@ -108,8 +107,6 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 
 		if not os.path.exists(self.screenshot_path):
 			os.makedirs(self.screenshot_path)
-		if not os.path.exists(self.browser_log_path):
-			os.makedirs(self.browser_log_path)
 
 		self.driver.get(self.base_url + 'univention/login/?lang=%s' % (self.language,))
 		# FIXME: Workaround for Bug #44718.
@@ -172,7 +169,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		if append_timestamp:
 			timestamp = '_%s' % (datetime.datetime.now().strftime("%Y%m%d%H%M%S"),)
 
-		filename = '%s/%s_%s%s.txt' % (self.browser_log_path, name, self.language, timestamp)
+		filename = '%s/%s_%s_browserlog%s.txt' % (self.screenshot_path, name, self.language, timestamp)
 		logger.info('Saving browser log %r', filename)
 		with open(filename, 'w') as f:
 			for entry in self.driver.get_log('browser'):
