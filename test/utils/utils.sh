@@ -824,7 +824,13 @@ assert_app_master_packages () {
 run_app_appliance_tests () {
 	local app rv=0
 	for app in "$@"; do
+		assert_app_is_installed $app || return 1
 		echo $app >>/var/cache/appcenter-installed.txt
+		# check additinal apps too
+		for add in $(univention-app get $app ApplianceAdditionalApps | sed -ne 's|ApplianceAdditionalApps: ||p' | sed 's|,| |g'); do
+			assert_app_is_installed $add || return 1
+			echo $add >>/var/cache/appcenter-installed.txt
+		done
 	done
 	# install ucs-test from errata test
 	/root/activate-errata-test-scope.sh
