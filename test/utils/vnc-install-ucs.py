@@ -353,7 +353,7 @@ class UCSInstallation(object):
 			self.click(_t['preferred_dns'])
 			self.client.enterText(self.args.dns)
 			self.client.keyPress('enter')
-			time.sleep(60)
+			time.sleep(120)
 			self.click(_t['join_domain'])
 			self.click(_t['next'])
 			self.click(_t[self.args.role])
