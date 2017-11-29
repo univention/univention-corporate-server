@@ -201,7 +201,10 @@ def check_correct_domain_admin():
 
 
 join_ad()
-check_correct_passwords()
-check_correct_domain_admin()
+
+# don't do that, why?
+# tests/domainadmin/account and tests/domainadmin/pwd is the UCS account, why settings this to the windows account?
+#check_correct_passwords()
+#check_correct_domain_admin()
 
 exit(0)
