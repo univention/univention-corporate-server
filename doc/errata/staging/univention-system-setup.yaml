@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: univention-system-setup
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The package univention-ldap-overlay-memberof is now automatically installed
+   during the system configuration of DC Backup and DC Slave systems if the
+   memberOf overlay module is enabled on the domaincontroller master.
+bug: [44448]
