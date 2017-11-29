@@ -54,6 +54,7 @@ define([
 	"dojo/dom-class",
 	"dojo/dom-geometry",
 	"dojo/dom-construct",
+	"dojo/dom-style",
 	"put-selector/put",
 	"dojo/hash",
 	"dojox/html/styles",
@@ -88,7 +89,7 @@ define([
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseWin, win, on, mouse, touch, tap, aspect, has,
 		Evented, Deferred, all, cookie, topic, ioQuery, Memory, Observable,
-		dom, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, login, dialog, NotificationDropDownButton, NotificationSnackbar, store,
+		dom, domAttr, domClass, domGeometry, domConstruct, style, put, hash, styles, entities, gfx, registry, tools, login, dialog, NotificationDropDownButton, NotificationSnackbar, store,
 		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer, menu, MenuButton,
 		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, Text, _
 ) {
@@ -1256,6 +1257,7 @@ define([
 			this.renderCategories();
 			this._overviewPage.addChild(this._searchText);
 			this._overviewPage.addChild(this._grid);
+			this._addSummitBanner();
 			this._tabContainer.addChild(this._overviewPage, 0);
 			this._tabController.hideChild(this._overviewPage);
 
@@ -1267,6 +1269,61 @@ define([
 
 			// show the first visible category
 			this._updateQuery(this._lastCategory);
+		},
+
+		_addSummitBanner: function() {
+			if (new Date("February 01, 2018 00:00:00") < new Date() || (!app.getModule('updater') || !app.getModule('schoolrooms')) || cookie('hideSummit2018Banner')) {
+				return;
+			}
+			var isDE = (kernel.locale.toLowerCase().indexOf('de') === 0);
+			var linkTarget = isDE ? 'https://www.univention-summit.de/?pk_campaign=UMC%20Summit%20DE' : 'https://www.univention-summit.com/?pk_campaign=UMC%20Summit%20EN';
+			var banner  = isDE ? require.toUrl('umc/app/summit2018-banner-de.png') : require.toUrl('umc/app/summit2018-banner-en.png');
+
+			// build banner
+			var _outerContainer = domConstruct.create('div', {
+				style: {
+					'text-align': 'center',
+					'clear': 'both',
+					'padding-bottom': '10px'
+				}
+			});
+			var _innerContainer = domConstruct.create('div', {
+				style: {
+					'display': 'inline-block',
+					'position': 'relative'
+				}
+			}, _outerContainer);
+			var _link = domConstruct.create('a', {
+				target: '_blank',
+				href: linkTarget
+			}, _innerContainer);
+			domConstruct.create('img', {
+				src: banner
+			}, _link);
+			var _closeButton = domConstruct.create('div', {
+				'class': 'umcCloseIcon',
+				style: {
+					'position': 'absolute',
+					'top': '2px',
+					'right': '2px',
+					'cursor': 'pointer'
+				}
+			}, _innerContainer);
+
+			// event registration
+			on(_closeButton, mouse.enter, function() {
+				style.set(this, 'background-position-x', '-20px');
+			});
+			on(_closeButton, mouse.leave , function() {
+				style.set(this, 'background-position-x', '');
+			});
+			on(_closeButton, 'click', lang.hitch(this, function() {
+				_outerContainer.remove();
+				cookie('hideSummit2018Banner', 'true', {expires: 'Sat, 28 Jan 2018 00:00:00 GMT'});
+			}));
+
+			// place banner
+			domConstruct.place(_outerContainer, this._overviewPage.domNode, 'first');
 		},
 
 		renderCategories: function() {
