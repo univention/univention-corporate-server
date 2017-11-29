@@ -845,4 +845,9 @@ add_tech_key_authorized_keys() {
 	return 0
 }
 
+install_winrm() {
+	# TODO: move python-winrm to ucs
+	dpkg -i shared-utils/addons/python-winrm_*deb shared-utils/addons/python-isodate_*.deb  shared-utils/addons/python-xmltodict_*.deb
+}
+
 # vim:set filetype=sh ts=4:
