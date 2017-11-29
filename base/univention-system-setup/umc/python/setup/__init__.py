@@ -775,22 +775,18 @@ class Instance(Base, ProgressMixin):
 
 	@simple_response
 	def check_credentials(self, role, dns, nameserver, address, username, password):
+		result = {}
 		if role == 'ad':
 			domain = util.check_credentials_ad(nameserver, address, username, password)
+			result['domain'] = domain
 			if dns:  # "dns" means we don't want to replace the existing DC Master
 				ucs_master_fqdn = util.resolve_domaincontroller_master_srv_record(nameserver, domain)
 				if ucs_master_fqdn:
 					# if we found a _domaincontroller_master._tcp SRV record the system will be a DC Backup/Slave/Member.
 					# We need to check the credentials of this system, too, so we ensure that the System is reachable via SSH.
 					# Otherwise the join will fail with strange error like "ping to ..." failed.
-					util.check_credentials_nonmaster(False, nameserver, ucs_master_fqdn, username, password)
-					util.check_domain_has_activated_license(ucs_master_fqdn, username, password)
-					util.check_domain_is_higher_or_equal_version(ucs_master_fqdn, username, password)
-			return domain
+					result.update(util.receive_domaincontroller_master_information(False, nameserver, ucs_master_fqdn, username, password))
 		elif role == 'nonmaster':
-			domain = util.check_credentials_nonmaster(dns, nameserver, address, username, password)
-			util.check_domain_has_activated_license(address, username, password)
-			util.check_domain_is_higher_or_equal_version(address, username, password)
-			return domain
+			result.update(util.receive_domaincontroller_master_information(dns, nameserver, address, username, password))
 		# master? basesystem? no domain check necessary
-		return True
+		return result
