@@ -5,6 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 9),
  ucslint,
  stylus,
+ univention-config-dev,
  univention-management-console-dev,
  univention-ucs-translation-template,
  python-all

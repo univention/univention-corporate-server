@@ -1,4 +1,8 @@
 Type: file
+File: etc/apache2/sites-available/univention-portal.conf
+Variables: umc/web/piwik
+
+Type: file
 File: usr/share/univention-portal/apps.json
 Variables: appcenter/apps/.*/status
 Variables: appcenter/apps/.*/version
