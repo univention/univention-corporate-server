@@ -1,3 +1,9 @@
+univention-demo-configuration (5.0.2-21) unstable; urgency=medium
+
+  * Bug #45793: Use separate tracking id for piwik
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 29 Nov 2017 10:56:07 +0100
+
 univention-demo-configuration (5.0.2-20) unstable; urgency=medium
 
   * Bug #45706: enhance download UCS button

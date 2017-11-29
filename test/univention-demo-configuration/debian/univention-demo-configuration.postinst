@@ -91,6 +91,9 @@ case "$1" in
 				udm settings/portal_entry remove --dn "$dn"
 			done
 		fi
+
+		# Online Demo UMC has a unique piwik tracking id
+		sed -i 's|Piwik.getTracker("https://www.piwik.univention.de/piwik.php",14)|Piwik.getTracker("https://www.piwik.univention.de/piwik.php",37)|' /usr/share/univention-web/js/dojo/dojo.js
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 		;;
