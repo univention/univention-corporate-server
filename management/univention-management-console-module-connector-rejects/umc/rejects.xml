@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="rejects" version="1.0">
+	<name>Connector rejects</name>
+	<description>Analyse rejects of the Active Directory and Samba4 connectors</description>
+	<keywords>dummy</keywords>
+	<categories>
+	  <category name="domain"/>
+	</categories>
+	<command name="rejects/query" function="query"/>
+	<command name="rejects/remove" function="remove"/>
+  </module>
+</umc>

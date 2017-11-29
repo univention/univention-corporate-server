@@ -1,0 +1,5 @@
+univention-management-console-module-connector-rejects (0.1.0-1) unstable; urgency=medium
+
+  * Bug #45914: Initial Release
+
+ -- Jannik Ahlers <ahlers@univention.de>  Thu, 30 Nov 2017 13:29:01 +0100

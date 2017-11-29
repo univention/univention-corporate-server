@@ -1,0 +1,26 @@
+Source: univention-management-console-module-connector-rejects
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 7.0.50~),
+ python-support,
+ univention-management-console-dev,
+ python-all,
+ ucslint
+Standards-Version: 3.7.2
+XS-Python-Version: 2.7
+
+Package: univention-management-console-module-connector-rejects
+Architecture: all
+Depends: ${misc:Depends},
+ univention-join (>= 5.0.20-1),
+ univention-management-console-server,
+ univention-s4-connector
+Description: UMC module to analyse connector rejects
+ This package provides a UMC module to view and delete
+ rejects of the Samba4 and Active Directory connectors.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

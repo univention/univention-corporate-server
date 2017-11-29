@@ -1,0 +1,6 @@
+Module: rejects
+Python: umc/python
+Definition: umc/rejects.xml
+Category: umc/categories/rejects.xml
+Javascript: umc/js
+Icons: umc/icons

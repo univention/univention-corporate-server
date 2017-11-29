@@ -1,4 +1,11 @@
-univention-s4-connector (11.0.8-15) UNRELEASED; urgency=medium
+univention-s4-connector (11.0.8-16) unstable; urgency=medium
+
+  * Bug #45914: The functions to remove connector rejects now work properly
+  	again
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 22 Dec 2017 11:35:33 +0100
+
+univention-s4-connector (11.0.8-15) unstable; urgency=medium
 
   * Bug #44333: Fix postinst syntax
 

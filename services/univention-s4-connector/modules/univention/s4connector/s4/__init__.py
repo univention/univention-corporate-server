@@ -1080,12 +1080,12 @@ class s4(univention.s4connector.ucs):
 		_d = ud.function('ldap.save_rejected')
 		self._save_rejected(self.__get_change_usn(object), object['dn'])
 
-	def remove_rejected(self, object):
+	def remove_rejected(self, usn):
 		"""
-		remove object from rejected
+		remove object from rejected db by usn
 		"""
 		_d = ud.function('ldap.remove_rejected')
-		self._remove_rejected(self.__get_change_usn(object), object['dn'])
+		self._remove_rejected(usn)
 
 	def addToCreationList(self, dn):
 		if not dn.lower() in self.creation_list:

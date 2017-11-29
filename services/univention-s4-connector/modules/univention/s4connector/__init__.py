@@ -591,7 +591,16 @@ class ucs:
 
 	def _remove_rejected_ucs(self, filename):
 		_d = ud.function('ldap._remove_rejected_ucs')
+		try:
+			os.remove(os.path.join(filename))
+		except OSError:  # File not found
+			pass
 		self._remove_config_option('UCS rejected', filename)
+
+	def remove_rejected_ucs(self, filename):
+		# remove UCS rejections from db by filename
+		_d = ud.function('ldap._remove_rejected_ucs')
+		self._remove_rejected_ucs(filename)
 
 	def list_rejected_ucs(self, filter_noresync=False):
 		rejected = self._get_config_items('UCS rejected')
