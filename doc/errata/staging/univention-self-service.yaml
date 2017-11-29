@@ -10,4 +10,6 @@ desc: |
    Self Service. Therefore the UCR Variables ad/reset/username and
    ad/reset/password needs to be set.
  * Notifications about successful password changes are shown again.
-bug: [44867, 45457]
+ * The creation of postgresql database and users has been moved from the
+   post installation script into the joinscript.
+bug: [44867, 45457, 44393]
