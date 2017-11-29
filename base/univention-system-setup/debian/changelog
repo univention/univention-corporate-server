@@ -1,3 +1,11 @@
+univention-system-setup (10.0.11-3) unstable; urgency=medium
+
+  * Bug #44448: the univention-ldap-overlay-memberof package is now
+  	automatically installed during the System Setup if ldap/overlay/memberof
+  	if true on the DC Master
+
+ -- Florian Best <best@univention.de>  Wed, 29 Nov 2017 21:05:53 +0100
+
 univention-system-setup (10.0.11-2) unstable; urgency=medium
 
   * Bug #45461: don't store username in cookie/localstorage
