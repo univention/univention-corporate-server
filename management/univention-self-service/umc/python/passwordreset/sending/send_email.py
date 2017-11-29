@@ -47,6 +47,7 @@
 
 import os.path
 import smtplib
+import urllib
 from email.mime.nonmultipart import MIMENonMultipart
 from email.utils import formatdate
 import email.charset
@@ -103,7 +104,7 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 		fqdn = ".".join([self.ucr["hostname"], self.ucr["domainname"]])
 		frontend_server = self.ucr.get("umc/self-service/passwordreset/email/webserver_address", fqdn)
 		link = "https://{fqdn}/univention/self-service/#page=newpassword".format(fqdn=frontend_server)
-		tokenlink = "https://{fqdn}/univention/self-service/#page=newpassword&token={token}&username={username}".format(fqdn=frontend_server, username=self.data["username"], token=self.data["token"])
+		tokenlink = "https://{fqdn}/univention/self-service/#page=newpassword&token={token}&username={username}".format(fqdn=frontend_server, username=urllib.quote(self.data["username"]), token=urllib.quote(self.data["token"]))
 
 		txt = txt.format(username=self.data["username"], token=self.data["token"], link=link, tokenlink=tokenlink)
 

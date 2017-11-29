@@ -461,8 +461,8 @@ class Instance(Base):
 		ldb_url = ucr.get('connector/ad/ldap/host')
 		ldb_url = 'ldaps://%s' % (ldb_url,) if ucr.is_true('connector/ad/ldap/ldaps') else 'ldap://%s' % (ldb_url,)
 		try:
-			reset_username = ucr['ad/reset/username']
-			with open(ucr['ad/reset/password']) as fd:
+			reset_username = dict(ucr)['ad/reset/username']
+			with open(dict(ucr)['ad/reset/password']) as fd:
 				reset_password = fd.readline().strip()
 		except (EnvironmentError, KeyError):
 			raise UMC_Error(_('The configuration of the password reset service is not complete. The UCR variables "ad/reset/username" and "ad/reset/password" need to be set properly. Please inform an administration.'), status=500)
