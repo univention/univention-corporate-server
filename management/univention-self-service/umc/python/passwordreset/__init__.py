@@ -460,9 +460,12 @@ class Instance(Base):
 	def admember_set_password(self, username, password):
 		ldb_url = ucr.get('connector/ad/ldap/host')
 		ldb_url = 'ldaps://%s' % (ldb_url,) if ucr.is_true('connector/ad/ldap/ldaps') else 'ldap://%s' % (ldb_url,)
-		reset_username = ucr.get('ad/reset/username', '')
-		with open(ucr.get('ad/reset/password', '/dev/null')) as fd:
-			reset_password = fd.readline().strip()
+		try:
+			reset_username = ucr['ad/reset/username']
+			with open(ucr['ad/reset/password']) as fd:
+				reset_password = fd.readline().strip()
+		except (EnvironmentError, KeyError):
+			raise UMC_Error(_('The configuration of the password reset service is not complete. The UCR variables "ad/reset/username" and "ad/reset/password" need to be set properly. Please inform an administration.'), status=500)
 		process = Popen(['samba-tool', 'user', 'setpassword', '--username', reset_username, '--password', reset_password, '--filter', filter_format('samaccountname=%s', (username,)), '--newpassword', password, '-H', ldb_url], stdout=PIPE, stderr=STDOUT)
 		stdouterr = process.communicate()[0]
 

@@ -1,3 +1,9 @@
+univention-self-service (2.0.16-12) unstable; urgency=medium
+
+  * Bug #44867: improve error handling
+
+ -- Florian Best <best@univention.de>  Wed, 29 Nov 2017 15:05:53 +0100
+
 univention-self-service (2.0.16-11) unstable; urgency=medium
 
   * Bug #44393: don't check if any joinscript version was executed prior
