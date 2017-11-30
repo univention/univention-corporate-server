@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-saml
-fix: 4.0.14-11A~4.2.0.201711281801
+fix: 4.0.14-12A~4.2.0.201711301040
 desc: |
  This update addresses the following issue(s):
  * The access permissions for the SAML Identify Provider certificate
