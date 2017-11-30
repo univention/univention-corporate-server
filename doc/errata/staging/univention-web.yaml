@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-3
+src: univention-web
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The selection checkboxes which have no possible actions have been removed from
+   the UMC module.
+bug: [44173]
