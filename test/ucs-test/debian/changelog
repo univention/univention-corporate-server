@@ -1,3 +1,9 @@
+ucs-test (7.0.23-102) unstable; urgency=medium
+
+  * Bug #36480: disable test 55_adconnector/502_other_attribute_sync.py
+
+ -- Felix Botner <botner@univention.de>  Thu, 30 Nov 2017 15:55:33 +0100
+
 ucs-test (7.0.23-101) unstable; urgency=medium
 
   * Bug #44640: version bump
