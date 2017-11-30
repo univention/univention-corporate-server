@@ -6,7 +6,8 @@ src: univention-mail-dovecot
 fix: 3.0.1-4A~4.2.0.201711301454
 desc: |
  This update addresses the following issue(s):
- * Support for creating subfolders in shared folders was added. Please note that
-   during the update, ACLs specified in LDAP will be forcefully written to dovecot's
-   shared folders to fix possible missing access rights (Bug #41138).
+ * Support for creating subfolders in shared folders was added. Please note
+   that during the update, ACLs specified in LDAP will be forcefully written
+   to dovecot's shared folders to fix possible missing access rights
+   (Bug #41138).
 bug: [41138]
