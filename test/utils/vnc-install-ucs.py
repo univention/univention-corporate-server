@@ -345,14 +345,14 @@ class UCSInstallation(object):
 			self.click(_t['join_domain'])
 			self.click(_t['next'])
 			if self.args.role == 'backup':
-				self.client.keyPress('enter')
+				self.click(_t['next'])
 			if self.args.role == 'slave':
 				self.client.keyPress('down')
-				self.client.keyPress('enter')
+				self.click(_t['next'])
 			if self.args.role == 'member':
 				self.client.keyPress('down')
 				self.client.keyPress('down')
-				self.client.keyPress('enter')
+				self.click(_t['next'])
 			self.client.waitForText(_t['start_join'])
 			self.client.keyPress('tab')
 			self.client.keyPress('tab')
