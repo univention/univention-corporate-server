@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-self-service
-fix: 2.0.16-12A~4.2.0.201711291508
+fix: 2.0.17-14A~4.2.0.201711301428
 desc: |
  This update addresses the following issue(s):
  * Users from an Active Directory domain now can reset their password via the
