@@ -1,3 +1,9 @@
+univention-mail-dovecot (3.0.1-4) unstable; urgency=low
+
+  * Bug #41138: fix acl template
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 30 Nov 2017 09:09:38 +0100
+
 univention-mail-dovecot (3.0.1-3) unstable; urgency=low
 
   * Bug #41138: add support for creating subfolders in shared folders
