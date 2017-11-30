@@ -105,18 +105,6 @@ setup_translations = dict(
 		deu='Einer bestehenden UCS-Domane beitreten',
 		eng='Join into an existing UCS domain',
 	),
-	slave=dict(
-		deu='Slave',
-		eng='slave',
-	),
-	backup=dict(
-		deu='Backup',
-		eng='backup',
-	),
-	member=dict(
-		deu='Member-Server',
-		eng='Member server',
-	),
 	start_join=dict(
 		deu='Domanenbeitritt am Ende',
 		eng='Start join at the end',
@@ -356,8 +344,15 @@ class UCSInstallation(object):
 			time.sleep(120)
 			self.click(_t['join_domain'])
 			self.click(_t['next'])
-			self.click(_t[self.args.role])
-			self.client.keyPress('enter')
+			if self.args.role == 'backup':
+				self.client.keyPress('enter')
+			if self.args.role == 'slave':
+				self.client.keyPress('down')
+				self.client.keyPress('enter')
+			if self.args.role == 'member':
+				self.client.keyPress('down')
+				self.client.keyPress('down')
+				self.client.keyPress('enter')
 			self.client.waitForText(_t['start_join'])
 			self.client.keyPress('tab')
 			self.client.keyPress('tab')
