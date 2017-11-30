@@ -106,12 +106,12 @@ setup_translations = dict(
 		eng='Join into an existing UCS domain',
 	),
 	slave=dict(
-		deu='controller Slave',
-		eng='controller slave',
+		deu='Slave',
+		eng='slave',
 	),
 	backup=dict(
-		deu='controller Backup',
-		eng='controller backup',
+		deu='Backup',
+		eng='backup',
 	),
 	member=dict(
 		deu='Member-Server',
