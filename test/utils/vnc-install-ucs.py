@@ -383,9 +383,9 @@ class UCSInstallation(object):
 
 		time.sleep(5)
 		self.client.keyPress('enter')
-		time.sleep(1500)
+		time.sleep(1000)
 
-		self.client.waitForText(_t['setup_successful'], timeout=1000)
+		self.client.waitForText(_t['setup_successful'], timeout=1500)
 		self.click(_t['finish'])
 		time.sleep(200)
 
