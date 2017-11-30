@@ -106,12 +106,12 @@ setup_translations = dict(
 		eng='Join into an existing UCS domain',
 	),
 	slave=dict(
-		deu='Domanencontroller Slave',
-		eng='Domain controller slave',
+		deu='controller Slave',
+		eng='controller slave',
 	),
 	backup=dict(
-		deu='Domanencontroller Backup',
-		eng='Domain controller backup',
+		deu='controller Backup',
+		eng='controller backup',
 	),
 	member=dict(
 		deu='Member-Server',
@@ -388,7 +388,7 @@ class UCSInstallation(object):
 
 		time.sleep(5)
 		self.client.keyPress('enter')
-		time.sleep(1000)
+		time.sleep(1500)
 
 		self.client.waitForText(_t['setup_successful'], timeout=1000)
 		self.click(_t['finish'])
