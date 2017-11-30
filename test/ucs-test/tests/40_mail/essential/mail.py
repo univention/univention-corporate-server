@@ -171,6 +171,34 @@ class ImapMail(Mail):
 		s.close()
 		return quota, retval[0]
 
+	def copy(self, message_set, old_mailbox, new_mailbox):
+		rv, data = self.connection.select(old_mailbox)
+		assert rv == "OK"
+		rv, data = self.connection.copy(message_set, new_mailbox)
+		assert rv == "OK"
+
+	def create_subfolder(self, parent, child):
+		# find separator symbol
+		rv, data = self.connection.list()
+		assert rv == "OK"
+		separator = None
+		regex = re.compile(r'^\(.*\) "(?P<separator>.*)" (?P<folder>.*)$')
+		for s in data:
+			sep, folder_name = regex.match(s).groups()
+			if folder_name == parent:
+				separator = sep
+				break
+		assert separator is not None, 'Could not find parent folder.'
+		# create subfolder
+		subfolder_name = '{}{}{}'.format(parent, separator, child)
+		rv, data = self.connection.create(subfolder_name)
+		assert rv == "OK"
+		return subfolder_name
+
+	def delete_folder(self, folder_name):
+		rv, data = self.connection.delete(folder_name)
+		assert rv == "OK"
+
 
 class PopMail(Mail):
 
