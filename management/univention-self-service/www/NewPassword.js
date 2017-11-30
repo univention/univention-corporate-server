@@ -34,13 +34,14 @@ define([
 	"dojo/keys",
 	"dijit/form/Button",
 	"put-selector/put",
+	"dojox/html/entities",
 	"umc/tools",
 	"umc/dialog",
 	"./TextBox",
 	"./PasswordBox",
 	"./lib",
 	"umc/i18n!."
-], function(lang, on, keys, Button, put, tools, dialog, TextBox, PasswordBox, lib, _) {
+], function(lang, on, keys, Button, put, entities, tools, dialog, TextBox, PasswordBox, lib, _) {
 
 	return {
 		title: _("Set new password"),
@@ -258,11 +259,13 @@ define([
 					'password': credentials.password,
 					'token' : credentials.token
 				};
-				tools.umcpCommand('passwordreset/set_password', data).then(lang.hitch(this, function() {
-					var redirectUrl = lib._getUrlForRedirect();
-					if (redirectUrl) {
-						window.open(redirectUrl, "_self");
-					}
+				tools.umcpCommand('passwordreset/set_password', data).then(lang.hitch(this, function(result) {
+					dialog.confirm(entities.encode(result.message), [{label: _('OK'), name: 'submit'}]).then(function() {
+						var redirectUrl = lib._getUrlForRedirect();
+						if (redirectUrl) {
+							window.open(redirectUrl, "_self");
+						}
+					});
 				}), lang.hitch(this, function(){
 					this._disableInputs(false);
 				}));

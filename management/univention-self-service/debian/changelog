@@ -1,3 +1,9 @@
+univention-self-service (2.0.17-14) unstable; urgency=medium
+
+  * Bug #45457: display a confirmation dialog before redirecting
+
+ -- Florian Best <best@univention.de>  Thu, 30 Nov 2017 14:25:37 +0100
+
 univention-self-service (2.0.17-13) unstable; urgency=medium
 
   * Bug #44867: fix UCR usage; fix url encoding
