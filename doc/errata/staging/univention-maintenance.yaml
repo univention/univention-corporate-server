@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [2]
+scope: ucs_4.2-0-errata4.2-2
+src: univention-maintenance
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The statistics produced by mrtg are now access protected and delivered by the UMC backend to the UMC statistics module.
+bug: [45192]

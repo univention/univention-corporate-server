@@ -7,7 +7,6 @@
 		<categories>
 			<category name="system"/>
 		</categories>
-		<!-- CAUTION: this is a dummy command that is not implemented -->
-		<command name="mrtg/show" function="show" />
+		<command name="mrtg/statistic/get" function="get_statistic" />
 	</module>
 </umc>

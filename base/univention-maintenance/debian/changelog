@@ -1,3 +1,9 @@
+univention-maintenance (9.0.0-5) unstable; urgency=medium
+
+  * Bug #45192: mrtg statistics under /var/www/statistic are now access protected and get delivered to UMC via backend
+
+ -- Jannik Ahlers <ahlers@univention.de>  Mon, 20 Nov 2017 11:36:41 +0100
+
 univention-maintenance (9.0.0-4) unstable; urgency=medium
 
   * Bug #43988: merge postinst

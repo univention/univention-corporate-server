@@ -31,9 +31,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os
 import univention.info_tools as uit
 from univention.management.console import Translation
 from univention.management.console.base import Base
+from univention.management.console.modules.decorators import sanitize, allow_get_request
+from univention.management.console.modules.sanitizers import ChoicesSanitizer
+from univention.management.console.modules import UMC_Error
+from univention.management.console.log import MODULE
 
 _ = Translation('univention-management-console-modules-mrtg').translate
 
@@ -41,6 +46,17 @@ _ = Translation('univention-management-console-modules-mrtg').translate
 
 
 class Instance(Base):
+
+	@allow_get_request
+	@sanitize(filename=ChoicesSanitizer(choices=['ucs_0load-day.png', 'ucs_0load-year.png', 'ucs_2mem-week.png', 'ucs_3swap-month.png', 'ucs_0load-month.png', 'ucs_2mem-day.png', 'ucs_2mem-year.png', 'ucs_3swap-week.png', 'ucs_0load-week.png', 'ucs_2mem-month.png', 'ucs_3swap-day.png', 'ucs_3swap-year.png'], required=True))
+	def get_statistic(self, request):
+		path = '/usr/share/univention-maintenance/'
+		filename = os.path.join(path, os.path.basename(request.options['filename']))
+		try:
+			with open(filename) as fd:
+				self.finished(request.id, fd.read(), mimetype='image/png')
+		except EnvironmentError as exc:
+			raise UMC_Error(_('The file does not exist.'), status=404)
 
 	def init(self):
 		uit.set_language(str(self.locale))
