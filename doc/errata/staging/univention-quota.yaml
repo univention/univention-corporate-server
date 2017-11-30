@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: univention-quota
+fix: 11.0.0-7A~4.2.0.201711301716
+desc: |
+ This update addresses the following issue(s):
+ * The quota modul now supports paritions mounted with
+   the journaled quotas option.
+bug: [45668]
