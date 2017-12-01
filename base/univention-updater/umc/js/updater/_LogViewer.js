@@ -120,10 +120,12 @@ define([
 
 		},
 
-		// set content. Additionally checks if the current scroll position
+		// set content:
+		// -checks if the current scroll position
 		// (before setting content) is at bottom, and if it is -> set
 		// bottom position after setting content too.
-		// Also checks if the log file exceeds a certain limit
+		// -checks if the log file exceeds a certain limit
+		// -URLs get replaced with clickable links
 		setContentAttr: function(lines) {
 			this._all_lines = this._all_lines.concat(lines);
 			var printable_lines = this._all_lines;
@@ -140,6 +142,7 @@ define([
 				printable_lines = [logfile_exceeded].concat(this._all_lines);
 			}
 			var content = entities.encode(printable_lines.join('\n'));
+			content = content.replace(/https?:\/\/.[^&"> \n\t]+/gi, '<a href="$&" tagret="_blank" rel="noopener">$&</a>');
 			this._text.set('content', content);
 			this.scrollToBottom();
 		},
