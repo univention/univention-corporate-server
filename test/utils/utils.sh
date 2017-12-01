@@ -342,7 +342,7 @@ install_ucs_test () {
 install_ucs_test_checks_from_errata_test () {
 	local rv=0
 	bash /root/activate-errata-test-scope.sh || rv=$?
-	install_with_unmaintained ucs-test-checks || rv=$?
+	install_with_unmaintained ucs-test-checks "$@" || rv=$?
 	return $rv
 }
 
