@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check installation log files for errors, warnings and tracebacks
 ## bugs: [30751, 36160, 36902]
-## tags: [basic]
+## tags: [basic, SKIP]
 ## exposure: safe
 ## versions:
 ##  3.0-0: skip
