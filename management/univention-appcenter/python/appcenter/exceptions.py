@@ -81,11 +81,25 @@ class Abort(Exception):
 			self.message = ''
 		self.args = tuple(_args)
 
+	def get_exc_details(self):
+		return None
+
 	def __str__(self):
 		if self.message:
 			return self.message
 		else:
 			return self.default_error_msg % self.__dict__
+
+
+class AbortWithDetails(Abort):
+	def __init__(self, *args, **kwargs):
+		self._exc_details = (args, kwargs)
+		super(AbortWithDetails, self).__init__(*args, **kwargs)
+
+	def get_exc_details(self):
+		args, kwargs = self._exc_details
+		if args or kwargs:
+			return args, kwargs
 
 
 class NetworkError(Abort):
