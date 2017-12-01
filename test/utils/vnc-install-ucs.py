@@ -344,6 +344,7 @@ class UCSInstallation(object):
 			time.sleep(120)
 			self.click(_t['join_domain'])
 			self.click(_t['next'])
+			time.sleep(10)
 			if self.args.role == 'backup':
 				self.click(_t['next'])
 			if self.args.role == 'slave':
@@ -383,9 +384,9 @@ class UCSInstallation(object):
 
 		time.sleep(5)
 		self.client.keyPress('enter')
-		time.sleep(1000)
+		time.sleep(800)
 
-		self.client.waitForText(_t['setup_successful'], timeout=1500)
+		self.client.waitForText(_t['setup_successful'], timeout=1700)
 		self.click(_t['finish'])
 		time.sleep(200)
 
