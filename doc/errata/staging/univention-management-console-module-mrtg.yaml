@@ -1,7 +1,7 @@
 product: ucs
 release: "4.2"
-version: [2]
-scope: ucs_4.2-0-errata4.2-2
+version: [2, 3]
+scope: ucs_4.2-0-errata4.2-3
 src: univention-management-console-module-mrtg
 fix: 5.0.0-3A~4.2.0.201711301102
 desc: |
