@@ -89,6 +89,10 @@ setup_translations = dict(
 		deu='Erstellen einer neuen',
 		eng='Create a new UCS domain',
 	),
+	ad_domain=dict(
+		deu='bestehenden Microsoft Active-Directory',
+		eng='into an existing Microsoft Active',
+	),
 	no_dc_dns=dict(
 		deu='Unter der Adresse des DNS-Servers',
 		eng='No domain controller was found at',
@@ -116,6 +120,10 @@ setup_translations = dict(
 	account_information=dict(
 		deu='Kontoinformationen',
 		eng='Account information',
+	),
+	ad_account_information=dict(
+		deu='Active Directory-Kontoinformationen',
+		eng='Active Directory join information',
 	),
 	host_settings=dict(
 		deu='Rechnereinstellungen',
@@ -361,6 +369,28 @@ class UCSInstallation(object):
 			self.client.keyPress('tab')
 			self.client.enterText(self.args.join_password)
 			self.client.keyPress('enter')
+		elif self.args.role == 'admember':
+			self.click(_t['ad_domain'])
+			self.click(_t['next'])
+			self.client.waitForText(_t['no_dc_dns'], timeout=self.timeout)
+			self.client.keyPress('enter')
+			self.click(_t['preferred_dns'])
+			self.client.enterText(self.args.dns)
+			self.client.keyPress('enter')
+			time.sleep(120)
+			try:
+				self.client.waitForText('APIPA', timeout=self.timeout)
+				self.client.keyPress('enter')
+				time.sleep(60)
+			except VNCDoException:
+				self.connect()
+			self.click(_t['next'])
+			self.client.waitForText(_t['ad_account_information'], timeout=self.timeout)
+			self.client.keyPress('tab')
+			self.client.enterText(self.args.join_user)
+			self.client.keyPress('tab')
+			self.client.enterText(self.args.join_password)
+			self.click(_t['next'])
 		else:
 			raise NotImplemented
 
@@ -444,11 +474,11 @@ def main():
 	parser.add_argument('--join-user')
 	parser.add_argument('--join-password')
 	parser.add_argument('--language', default='deu', choices=['deu', 'eng', 'fra'])
-	parser.add_argument('--role', default='master', choices=['master', 'slave', 'member', 'backup'])
+	parser.add_argument('--role', default='master', choices=['master', 'slave', 'member', 'backup', 'admember'])
 	parser.add_argument('--components', default=[], choices=components.keys() + ['all'], action='append')
 	args = parser.parse_args()
 	assert args.vnc is not None
-	if args.role in ['slave', 'backup', 'member']:
+	if args.role in ['slave', 'backup', 'member', 'admember']:
 		assert args.dns is not None
 		assert args.join_user is not None
 		assert args.join_password is not None
