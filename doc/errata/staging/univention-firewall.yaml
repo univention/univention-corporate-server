@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: univention-firewall
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The iptables chains will not be erased anymore when univention-firewall is
+   stopped.
+bug: [45541]

@@ -68,10 +68,21 @@ case "$1" in
         fi
         ;;
     stop)
+        log_daemon_msg "Stopping $DESC"
+        ;;
+    restart|force-reload)
         if ! iptables --wait -t filter -L 2> /dev/null > /dev/null ; then
             log_warning_msg "$NAME: iptables --wait seems to be unsupported."
         else
-            log_daemon_msg "Stopping $DESC"
+            "$0" stop
+            "$0" start
+        fi
+        ;;
+    flush)
+        if ! iptables --wait -t filter -L 2> /dev/null > /dev/null ; then
+            log_warning_msg "$NAME: iptables --wait seems to be unsupported."
+        else
+            log_daemon_msg "Flushing all iptable chains"
             rc=0
             iptables --wait -P INPUT ACCEPT || rc=$?
             iptables --wait -P OUTPUT ACCEPT || rc=$?
@@ -87,14 +98,6 @@ case "$1" in
             log_action_end_msg $rc
         fi
         ;;
-    restart|force-reload)
-        if ! iptables --wait -t filter -L 2> /dev/null > /dev/null ; then
-            log_warning_msg "$NAME: iptables --wait seems to be unsupported."
-        else
-            "$0" stop
-            "$0" start
-        fi
-        ;;
     status)
         if is_ucr_true security/packetfilter/disabled
         then
@@ -106,7 +109,7 @@ case "$1" in
         fi
         ;;
     *)
-        log_action_msg "Usage: $0 {start|stop|restart|force-reload|status}"
+        log_action_msg "Usage: $0 {start|stop|restart|force-reload|flush|status}"
         exit 1
         ;;
 esac
