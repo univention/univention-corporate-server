@@ -67,20 +67,25 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	zone="$(univention-directory-manager dns/forward_zone list "$@" --filter zone=$domainname | grep ^DN:)"
 
 	if [ -z "$zone" ]; then
-		/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add zone "root@$domainname." 1 28800 7200 604800 10800 "$hostname.$domainname."
+		ERRMSG="Failed creating the DNS zone $domainname."
+		exec_log_failure /usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add zone "root@$domainname." 1 28800 7200 604800 10800 "$hostname.$domainname."
 		if [ $? != 0 ]; then exit 1; fi
 	fi
 
 	wait_for_dns
-	/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add a "$hostname" "$IP" || die
+	ERRMSG="Failed adding the DNS host record $hostname ($IP) to zone $domainname."
+	exec_log_failure /usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add a "$hostname" "$IP" || die
 
 	reversezone=$(univention-ipcalc6 --netmask "$NETMASK" --ip "$IP" --output reverse --calcdns)
 	if [ -z "$reversezone" ]; then exit 1; fi
 	ptr=$(univention-ipcalc6 --netmask "$NETMASK" --ip "$IP" --output pointer --calcdns)
 	if [ -z "$ptr" ]; then exit 1; fi
 
-	/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists --reverse "$reversezone" add zone "root@$domainname." 1 28800 7200 604800 10800 "$hostname.$domainname." || die
-	/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists --reverse "$reversezone" add ptr "$ptr" "$hostname.$domainname." || die
+	ERRMSG="Failed creating the DNS reverse zone $reversezone."
+	exec_log_failure /usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists --reverse "$reversezone" add zone "root@$domainname." 1 28800 7200 604800 10800 "$hostname.$domainname." || die
+
+	ERRMSG="Failed adding the DNS ptr record $ptr ($hostname.$domainname) to zone $reversezone."
+	exec_log_failure /usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists --reverse "$reversezone" add ptr "$ptr" "$hostname.$domainname." || die
 
 	univention-config-registry set dns/master/address=127.0.0.1 dns/master/port?7777
 
