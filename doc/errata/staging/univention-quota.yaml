@@ -6,6 +6,6 @@ src: univention-quota
 fix: 11.0.0-7A~4.2.0.201711301716
 desc: |
  This update addresses the following issue(s):
- * The quota modul now supports paritions mounted with
-   the journaled quotas option.
+ * The quota module now supports partitions mounted with
+   the journaled quota option.
 bug: [45668]
