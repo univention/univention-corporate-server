@@ -60,6 +60,7 @@ case "$1" in
             # always apply docker rules during start
             apply_docker_rules
         else
+            "$0" flush
             log_action_begin_msg "Starting $DESC"
             if [ -x /etc/security/packetfilter.d ] ; then
                 run-parts --regex='^[a-zA-Z0-9_-]+([.]sh)?$' /etc/security/packetfilter.d/
