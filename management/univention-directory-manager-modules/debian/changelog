@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.18-17) unstable; urgency=medium
+
+  * Bug #41865: fix PEP8 code style
+
+ -- Arvid Requate <requate@univention.de>  Mon, 04 Dec 2017 14:42:59 +0100
+
 univention-directory-manager-modules (12.0.18-16) unstable; urgency=medium
 
   * Bug #41865: New syntax to restrict sambaMaxPwdAge and sambaMinPwdAge
