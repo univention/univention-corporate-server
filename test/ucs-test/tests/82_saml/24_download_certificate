@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Download certificate
-## tags: [saml, SKIP]
+## tags: [saml]
 ## bugs: [44704]
 ## exposure: safe
 
