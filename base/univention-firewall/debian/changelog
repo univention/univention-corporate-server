@@ -1,3 +1,10 @@
+univention-firewall (9.0.1-7) unstable; urgency=medium
+
+  * Bug #45541: Flush iptables when stopping the service, if the
+    univention-firewall is enabled
+
+ -- Richard Ulmer <ulmer@univention.de>  Mon, 04 Dec 2017 16:34:26 +0100
+
 univention-firewall (9.0.1-6) unstable; urgency=medium
 
   * Bug #45541: Flush iptables before setting the firewall up

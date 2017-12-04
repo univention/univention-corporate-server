@@ -69,7 +69,14 @@ case "$1" in
         fi
         ;;
     stop)
-        log_daemon_msg "Stopping $DESC"
+        if ! iptables --wait -t filter -L 2> /dev/null > /dev/null ; then
+            log_warning_msg "$NAME: iptables --wait seems to be unsupported."
+        elif is_ucr_true security/packetfilter/disabled; then
+            log_warning_msg "$DESC has been disabled.\nUse 'service univention-firewall flush' to remove existing iptable chains."
+        else
+            "$0" flush
+            log_daemon_msg "Stopping $DESC"
+        fi
         ;;
     restart|force-reload)
         if ! iptables --wait -t filter -L 2> /dev/null > /dev/null ; then
