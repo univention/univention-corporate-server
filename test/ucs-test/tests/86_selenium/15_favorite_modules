@@ -14,6 +14,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 from univention.admin import localization
 import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
 from univention.testing import selenium
 
 translator = localization.translation('ucs-test-selenium')
@@ -50,7 +51,11 @@ class UMCTester(object):
 
 	def test_default_favorites(self):
 		# check if the default favorite modules are in the favorites category
-		default_favorites = ucr.get('umc/web/favorites/default').split(',')
+		default_favorites_string = ucr.get('umc/web/favorites/default')
+		if not utils.package_installed('univention-management-console-module-udm'):
+			default_favorites_string = re.sub(r'udm.*?(,|$)', '', default_favorites_string).rstrip(',')
+		default_favorites = default_favorites_string.split(',')
+
 		for favorite in default_favorites:
 			try:
 				self.selenium.driver.find_element_by_css_selector('.umcGalleryWrapperItem[moduleid^="%s"]' % (favorite,))

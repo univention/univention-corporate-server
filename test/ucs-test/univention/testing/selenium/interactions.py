@@ -94,6 +94,7 @@ class Interactions(object):
 		)
 
 	def click_tile_menu_icon(self, tilename, **kwargs):
+		logger.info("Clicking the menu icon of tile %r", tilename)
 		self.click_element(
 			'//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]/../*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryContextIcon ")]'
 			% (tilename,),
@@ -101,6 +102,7 @@ class Interactions(object):
 		)
 
 	def click_tile_right_click(self, tilename, **kwargs):
+		logger.info("Right-Clicking the tile %r", tilename)
 		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]' % (tilename,)
 		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
 			self.get_all_enabled_elements

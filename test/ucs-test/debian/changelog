@@ -1,3 +1,9 @@
+ucs-test (7.0.23-104) unstable; urgency=medium
+
+  * Bug #44640: Adjust selenium favorite modules test for nonmaster
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 04 Dec 2017 14:21:11 +0100
+
 ucs-test (7.0.23-103) unstable; urgency=medium
 
   * Bug 44804: skip 00_checks/99check_log_files, too unstable
