@@ -150,7 +150,7 @@ property_descriptions = {
 	'minPasswordAge': univention.admin.property(
 		short_description=_('Minimum password age'),
 		long_description='',
-		syntax=univention.admin.syntax.UNIX_TimeInterval,
+		syntax=univention.admin.syntax.SambaMinPwdAge,
 		multivalue=False,
 		options=[],
 		required=False,
@@ -180,7 +180,7 @@ property_descriptions = {
 	'maxPasswordAge': univention.admin.property(
 		short_description=_('Maximum password age'),
 		long_description='',
-		syntax=univention.admin.syntax.UNIX_TimeInterval,
+		syntax=univention.admin.syntax.SambaMaxPwdAge,
 		multivalue=False,
 		options=[],
 		required=False,

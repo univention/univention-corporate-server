@@ -1704,6 +1704,10 @@ msgstr ""
 "Ziffer oder einem Buchstaben beginnen und enden, und darf nicht \"admin\" "
 "sein."
 
+#: modules/univention/admin/syntax.py:1557
+msgid "Value out of bounds (%d - %d seconds)"
+msgstr "Wert außerhalb des erlaubten Bereichs (%d - %d Sekunden)."
+
 #: modules/univention/admin/uexceptions.py:97
 msgid "Values do not match."
 msgstr "Die Werte sind nicht gleich."

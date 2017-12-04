@@ -1577,6 +1577,43 @@ class UNIX_TimeInterval(complex):
 	subsyntaxes = (('', integer), ('', TimeUnits))
 	size = ('Half', 'Half')
 
+	@classmethod
+	def parse(cls, texts):
+		return super(UNIX_TimeInterval, cls).parse(texts)
+
+class UNIX_BoundedTimeInterval( UNIX_TimeInterval ):
+	lower_bound = -1 # in seconds, -1 unbounded
+	upper_bound = -1 # in seconds, -1 unbounded
+	error_message = _ ("Value out of bounds (%d - %d seconds)")
+
+	@classmethod
+	def parse(cls, texts):
+		parsed = super(UNIX_BoundedTimeInterval, cls).parse(texts)
+
+		in_seconds = int(parsed[0])
+		if len(parsed) > 1:
+			in_seconds = {
+				'seconds': lambda x: x,
+				'minutes': lambda x: x * 60,
+				'hours': lambda x: x * 60 * 60,
+				'days': lambda x: x * 24 * 60 * 60,
+			}[parsed[1]](in_seconds)
+
+		msg = cls.error_message % (cls.lower_bound, cls.upper_bound)
+		if cls.lower_bound != -1 and in_seconds < cls.lower_bound:
+			raise univention.admin.uexceptions.valueError(msg)
+		if cls.upper_bound != -1 and in_seconds > cls.upper_bound:
+			raise univention.admin.uexceptions.valueError(msg)
+
+		return parsed
+
+class SambaMinPwdAge( UNIX_BoundedTimeInterval ):
+	lower_bound = 0
+	upper_bound = 998 * 24 * 60 * 60 # 998 days in seconds
+
+class SambaMaxPwdAge( UNIX_BoundedTimeInterval ):
+	lower_bound = 0
+	upper_bound = 999 * 24 * 60 * 60 # 999 days in seconds
 
 class NetworkType(select):
 	choices = (('ethernet', _('Ethernet')), ('fddi', _('FDDI')), ('token-ring', _('Token-Ring')))
