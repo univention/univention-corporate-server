@@ -54,6 +54,7 @@
 		.dojoxGridView
 			border-top: none
 
+$umcGrid-edge-padding = 24px
 .umc .umcGrid
 	background-color: #fff
 	material-shadow(1)
@@ -93,7 +94,7 @@
 		float: right
 		font-size: 12px
 		color: rgba(0, 0, 0, 0.54)
-		padding-right: 24px
+		padding-right: $umcGrid-edge-padding
 
 
 	.dgrid
@@ -113,7 +114,7 @@
 			&.dgrid-selector
 				box-sizing: content-box
 				width: 20px !important
-				padding: 0 23px
+				padding: 0 $umcGrid-edge-padding 0 0
 				-webkit-user-select: none
 				-moz-user-select: none
 				-ms-user-select: none
@@ -135,6 +136,12 @@
 
 				input
 					display: none
+
+			&:first-child
+				padding-left: $umcGrid-edge-padding
+
+			&:last-child
+				padding-right: $umcGrid-edge-padding
 
 			div img
 				float: none !important

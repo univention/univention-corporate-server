@@ -1,6 +1,12 @@
+univention-web (1.0.42-54) unstable; urgency=medium
+
+  * Bug #44173: Adjust css for grid padding
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 04 Dec 2017 13:13:50 +0100
+
 univention-web (1.0.42-53) unstable; urgency=medium
 
-  * Bug #77173: disabling checkboxes in grid now disables selection counter as
+  * Bug #44173: disabling checkboxes in grid now disables selection counter as
     well
 
  -- Jannik Ahlers <ahlers@univention.de>  Thu, 30 Nov 2017 10:14:18 +0100
