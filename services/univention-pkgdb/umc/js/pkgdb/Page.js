@@ -32,18 +32,16 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/Deferred",
-	"dojo/aspect",
 	"dojo/topic",
 	"dojo/dom-class",
 	"umc/tools",
 	"umc/store",
 	"umc/widgets/Grid",
 	"umc/widgets/Page",
-	"umc/widgets/StandbyMixin",
 	"umc/modules/pkgdb/SearchForm",
 	"umc/modules/pkgdb/KeyTranslator",
 	"umc/i18n!umc/modules/pkgdb"
-], function(declare, lang, Deferred, aspect, topic, domClass, tools, store, Grid, Page, StandbyMixin, SearchForm, KeyTranslator, _) {
+], function(declare, lang, Deferred, topic, domClass, tools, store, Grid, Page, SearchForm, KeyTranslator, _) {
 
 	// Page with a unified layout
 	//
@@ -53,7 +51,7 @@ define([
 	// Which page ('flavor') to show is determined by the 'pageKey'
 	// attribute being set by the constructor call.
 	//
-	return declare("umc.modules.pkgdb.Page", [Page, StandbyMixin, KeyTranslator], {
+	return declare("umc.modules.pkgdb.Page", [Page, KeyTranslator], {
 
 		_grid: null,  // holds the results grid if query was invoked at least once
 		_last_table_structure: null,  // remember last table structure
@@ -94,10 +92,10 @@ define([
 		_build_columns: function(query) {
 			this._current_query = query;
 
-			return this.standbyDuring(tools.umcpCommand('pkgdb/columns', {
+			return tools.umcpCommand('pkgdb/columns', {
 				page: this.pageKey,
 				key: this._current_query.key
-			})).then(lang.hitch(this, function(data) {
+			}).then(lang.hitch(this, function(data) {
 				return this._create_table(data.result);
 			}));
 		},
@@ -106,7 +104,6 @@ define([
 		// The corresponding query is already stored in this._current_query.
 		_create_table: function(fields) {
 			var deferred = new Deferred();
-			this.standbyDuring(deferred);
 			// determine if we have already a grid structured like that
 			var grid_usable = false;
 			var sig = fields.join(':');

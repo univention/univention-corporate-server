@@ -1,3 +1,9 @@
+univention-pkgdb (10.0.2-5) unstable; urgency=medium
+
+  * Bug #45623: adjust standby for pkgdb UMC module
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 04 Dec 2017 16:10:15 +0100
+
 univention-pkgdb (10.0.2-4) unstable; urgency=medium
 
   * Bug #45623: fixed loading screen for pkgdb UMC module

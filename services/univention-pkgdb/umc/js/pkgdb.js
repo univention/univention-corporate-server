@@ -30,11 +30,13 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/lang",
 	"umc/modules/pkgdb/Page",
 	"umc/widgets/TabbedModule",
+	"umc/widgets/StandbyMixin",
 	"umc/i18n!umc/modules/pkgdb"
-], function(declare, Page, TabbedModule, _) {
-	return declare("umc.modules.pkgdb", [ TabbedModule ], {
+], function(declare, lang, Page, TabbedModule, StandbyMixin, _) {
+	return declare("umc.modules.pkgdb", [ TabbedModule, StandbyMixin ], {
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -44,13 +46,15 @@ define([
 
 			var syspage = new Page({
 				title: _("Search UCS systems"),
-				pageKey: 'systems'
+				pageKey: 'systems',
+				standbyDuring: lang.hitch(this, this.standbyDuring)
 			});
 			this.addTab(syspage);
 
 			var packpage = new Page({
 				title: _("Search software packages"),
-				pageKey: 'packages'
+				pageKey: 'packages',
+				standbyDuring: lang.hitch(this, this.standbyDuring)
 			});
 			this.addTab(packpage);
 		}
