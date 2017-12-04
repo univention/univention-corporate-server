@@ -920,14 +920,18 @@ define([
 				var showCounter = !this.gridOptions || !this.gridOptions.selectionMode || this.gridOptions.selectionMode !== 'none';
 				if (typeof this.footerFormatter === "function") {
 					msg = this.footerFormatter(nItems, nItemsTotal);
-				}
-				else if (showCounter) {
-					msg = _('%(num)d entries of %(total)d selected', {num: nItems, total: nItemsTotal});
+				} else {
+					if (showCounter) {
+						msg = _('%(num)d entries of %(total)d selected', {num: nItems, total: nItemsTotal});
+						if (1 === nItems) {
+							msg = _('1 entry of %d selected', nItemsTotal);
+						}
+					} else {
+						msg = _('%d entries found', nItemsTotal);
+					}
+
 					if (0 === nItemsTotal) {
 						msg = _('No entries could be found');
-					}
-					else if (1 === nItems) {
-						msg = _('1 entry of %d selected', nItemsTotal);
 					}
 				}
 				this._statusMessage.set('content', msg);
