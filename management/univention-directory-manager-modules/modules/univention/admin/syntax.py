@@ -1226,11 +1226,13 @@ class absolutePath(simple):
 		else:
 			raise univention.admin.uexceptions.valueError(_("Not an absolute path!"))
 
+
 class emailForwardSetting(select):
 	choices = [
 		('0', _('Redirect all e-mails to forward addresses')),
 		('1', _('Keep e-mails and forward a copy')),
 	]
+
 
 class emailAddress(simple):
 
@@ -1581,10 +1583,11 @@ class UNIX_TimeInterval(complex):
 	def parse(cls, texts):
 		return super(UNIX_TimeInterval, cls).parse(texts)
 
-class UNIX_BoundedTimeInterval( UNIX_TimeInterval ):
-	lower_bound = -1 # in seconds, -1 unbounded
-	upper_bound = -1 # in seconds, -1 unbounded
-	error_message = _ ("Value out of bounds (%d - %d seconds)")
+
+class UNIX_BoundedTimeInterval(UNIX_TimeInterval):
+	lower_bound = -1  # in seconds, -1 unbounded
+	upper_bound = -1  # in seconds, -1 unbounded
+	error_message = _("Value out of bounds (%d - %d seconds)")
 
 	@classmethod
 	def parse(cls, texts):
@@ -1607,13 +1610,16 @@ class UNIX_BoundedTimeInterval( UNIX_TimeInterval ):
 
 		return parsed
 
-class SambaMinPwdAge( UNIX_BoundedTimeInterval ):
-	lower_bound = 0
-	upper_bound = 998 * 24 * 60 * 60 # 998 days in seconds
 
-class SambaMaxPwdAge( UNIX_BoundedTimeInterval ):
+class SambaMinPwdAge(UNIX_BoundedTimeInterval):
 	lower_bound = 0
-	upper_bound = 999 * 24 * 60 * 60 # 999 days in seconds
+	upper_bound = 998 * 24 * 60 * 60  # 998 days in seconds
+
+
+class SambaMaxPwdAge(UNIX_BoundedTimeInterval):
+	lower_bound = 0
+	upper_bound = 999 * 24 * 60 * 60  # 999 days in seconds
+
 
 class NetworkType(select):
 	choices = (('ethernet', _('Ethernet')), ('fddi', _('FDDI')), ('token-ring', _('Token-Ring')))
