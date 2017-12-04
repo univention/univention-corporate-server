@@ -74,7 +74,7 @@ def create_empty_po(binary_pkg_name, new_po_path):
 		'--force-po',
 		'--sort-output',
 		'--package-name={}'.format(binary_pkg_name),
-		'--msgid-bugs-address=forge.univention.org',
+		'--msgid-bugs-address=packages@univention.de',
 		'--copyright-holder=Univention GmbH',
 		# Supress warning about /dev/null being an unknown source type
 		'--language', 'C',
