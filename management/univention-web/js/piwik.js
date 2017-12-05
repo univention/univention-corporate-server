@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require window Piwik*/
+/*global define,require,window,Piwik*/
 
 define([
 	"dojo/_base/lang",
@@ -42,7 +42,7 @@ define([
 	var storeId = 0;
 	var maxStoreItems = 1000;
 	var lastTimestamp = 0;
-	var piwikSendTimer = new dojox.timing.Timer(500);
+	var piwikSendTimer = new timing.Timer(500);
 	var piwikTracker = null;
 
 	var _buildSiteTitle = function(parts) {
