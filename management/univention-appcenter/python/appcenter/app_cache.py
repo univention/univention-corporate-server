@@ -107,7 +107,7 @@ class _AppCache(object):
 			if prevent_docker and _app.docker and not (_app.docker_migration_works or _app.docker_migration_link):
 				continue
 			if _app <= app:
-				break
+				continue
 			if _app.required_app_version_upgrade:
 				if LooseVersion(_app.required_app_version_upgrade) > app_version:
 					continue
