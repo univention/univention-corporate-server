@@ -81,6 +81,7 @@ class InstallRemoveUpgrade(Register):
 	def do_it(self, args):
 		app = args.app
 		status = 200
+		status_details = None
 		try:
 			action = self.get_action_name()
 			self.log('Going to %s %s (%s)' % (action, app.name, app.version))
@@ -105,8 +106,10 @@ class InstallRemoveUpgrade(Register):
 							status = 401
 						else:
 							status = exc.code
-					except Exception:
+							status_details = exc.get_exc_details()
+					except Exception as exc:
 						status = 500
+						status_details = repr(exc)
 						raise
 					else:
 						try:
@@ -131,7 +134,7 @@ class InstallRemoveUpgrade(Register):
 					self._revert(app, args)
 				if args.send_info:
 					try:
-						self._send_information(app, status)
+						self._send_information(app, status, status_details)
 					except NetworkError:
 						self.log('Ignoring this error...')
 				self._register_installed_apps_in_ucr()

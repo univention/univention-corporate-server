@@ -81,11 +81,24 @@ class Abort(Exception):
 			self.message = ''
 		self.args = tuple(_args)
 
+	def get_exc_details(self):
+		return None
+
 	def __str__(self):
 		if self.message:
 			return self.message
 		else:
 			return self.default_error_msg % self.__dict__
+
+
+class AbortWithDetails(Abort):
+	def __init__(self, *args, **kwargs):
+		self._exc_details = kwargs
+		super(AbortWithDetails, self).__init__(*args, **kwargs)
+
+	def get_exc_details(self):
+		if self._exc_details:
+			return self._exc_details
 
 
 class NetworkError(Abort):
@@ -155,11 +168,12 @@ class ShellAppNotRunning(Abort):
 	default_error_msg = 'Cannot run command: %(app)s is not running in a container'
 
 
-class InstallSetupFailed(Abort):
+class InstallSetupFailed(AbortWithDetails):
 	code = 416
 	default_error_msg = 'Setup script failed!'
 
 
+# TODO: AbortWithDetails
 class DockerCouldNotStartContainer(Abort):
 	code = 417
 	default_error_msg = 'Unable to start the container!'
@@ -168,12 +182,16 @@ class DockerCouldNotStartContainer(Abort):
 class DatabaseConnectorError(Abort):
 	code = 418
 
+	def get_exc_details(self):
+		return str(self)
+
 
 class InstallNonDockerVersionError(Abort):
 	code = 419
 	default_error_msg = 'Cannot use %(app)s as docker is to be ignored, yet, only non-docker versions could be found'
 
 
+# TODO: AbortWithDetails
 class InstallFailed(Abort):
 	code = 420
 	default_error_msg = 'Failed to install the App'
@@ -197,7 +215,7 @@ class RemovePluginUnsupported(Abort):
 	default_error_msg = 'Uninstallation of a plugin is not supported!'
 
 
-class RegisterSchemaFailed(Abort):
+class RegisterSchemaFailed(AbortWithDetails):
 	code = 425
 	default_error_msg = 'Registration of schema extension failed (Code: %(code)s)'
 

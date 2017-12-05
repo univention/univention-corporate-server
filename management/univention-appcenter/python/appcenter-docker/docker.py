@@ -292,10 +292,11 @@ class Docker(object):
 		args = list(args)
 		logger = kwargs.pop('_logger', self.logger)
 		logger = logger.getChild('container.%s' % self.container[:4])
+		tty = kwargs.pop('_tty', None)
 		logger.debug('Using container.%s for container %s' % (self.container[:4], self.container))
 		for key, value in kwargs.iteritems():
 			args.extend(['--%s' % key.replace('_', '-'), value])
-		return execute_with_process(self.container, args, logger=logger)
+		return execute_with_process(self.container, args, logger=logger, tty=tty)
 
 	def path(self, filename=''):
 		if self.container is None:

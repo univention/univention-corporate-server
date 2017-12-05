@@ -117,8 +117,20 @@ class StreamReader(object):
 class LogCatcher(object):
 
 	def __init__(self, logger=None):
+		self._original_name = None
 		self.logger = logger
+		if logger:
+			self._original_name = logger.name
 		self.logs = []
+
+	def getChild(self, name):
+		if self.logger:
+			self.logger.name = '%s.%s' % (self.logger.name, name)
+		return self
+
+	def __del__(self):
+		if self.logger and self._original_name:
+			self.logger.name = self._original_name
 
 	def debug(self, msg):
 		if self.logger:

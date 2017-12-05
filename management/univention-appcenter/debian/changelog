@@ -1,3 +1,15 @@
+univention-appcenter (6.0.11-5) unstable; urgency=medium
+
+  * Bug #45795: Find App upgrades through UCS version boundaries
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 05 Dec 2017 13:36:46 +0100
+
+univention-appcenter (6.0.11-4) unstable; urgency=medium
+
+  * Bug #45808: Details for errors of App installations
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 01 Dec 2017 11:49:34 +0100
+
 univention-appcenter (6.0.11-3) unstable; urgency=medium
 
   * Bug #41010: Hide categories until the Apps are loaded

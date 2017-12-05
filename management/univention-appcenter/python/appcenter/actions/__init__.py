@@ -280,9 +280,9 @@ class UniventionAppAction(object):
 		return call_process(args, logger, env)
 
 	@possible_network_error
-	def _send_information(self, app, status):
+	def _send_information(self, app, status, value=None):
 		action = self.get_action_name()
-		send_information(action, app, status)
+		send_information(action, app, status, value)
 
 
 def get_action(action_name):

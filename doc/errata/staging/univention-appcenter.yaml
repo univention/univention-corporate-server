@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: univention-appcenter
+fix:
+desc: |-
+  This update addresses the following issue(s):
+  * An upgrade path between a Docker image for UCS 4.1 and one for UCS 4.2 was
+    added.
+  * Univention now receives more detailed error messages when App
+    installations fail.
+bug: [45795, 45808]
