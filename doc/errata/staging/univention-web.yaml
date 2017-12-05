@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * The selection checkboxes which have no possible actions have been removed from
    the UMC module.
-bug: [44173]
+ * A notification about the advantages of using the Enterpise Edition of UCS
+   is displayed after the login on specific systems.
+bug: [44173, 45809]
