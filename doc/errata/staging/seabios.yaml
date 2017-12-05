@@ -1,0 +1,15 @@
+product: ucs
+release: "4.1"
+version: [4,5]
+scope: ucs_4.1-0-errata4.1-4
+src: seabios
+fix: 1.10.2-1
+desc: |
+ This update addresses the following issue:
+  * This is an update for the BIOS a virtual machine in UVMM uses. On reset
+    the original BIOS code was not copied back completely, which could
+    result in virtual machines getting stuck after reboots. In order for 
+    virtual machines to load the updated BIOS, the virtual machine has to be
+    shutdown and started again. A reboot does not suffice.
+bug: [44084]
+ignore: ['bug.44084.scope+version',]
