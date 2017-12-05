@@ -277,9 +277,6 @@ define([
 		if (array.indexOf(targets, tools.status('uuid/license')) === -1) {
 			return;
 		}
-		if (cookie('univentionSupportNotification') === 'no') {
-			return;
-		}
 		login.onLogin(function() {
 		topic.subscribe('/umc/started', function() {
 			if (!app.getModule('updater') || !app.getModule('schoolrooms') || !app.getModule('top')) {
@@ -295,6 +292,9 @@ define([
 					}
 				}).placeAt(w, 'first');
 			});
+			if (cookie('univentionSupportNotification') === 'no') {
+				return;
+			}
 
 			var tickImage = 'iVBORw0KGgoAAAANSUhEUgAAAA8AAAANCAYAAAB2HjRBAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsSAAALEgHS3X78AAABHElEQVQoz5XRPUtcQRSH8d9e1y+glSS93EItBAtbyyFNKjtBEGEbS7n4VukYkIQUgYClgigWgt5CFHutbMJ8gTT7AZIi4EszFxZ1jZ5mGA7/ec48p+WNVdWlGJKqLgfwGWPFO4OD2MEPXLfeQR7CKabQiSHtFv8j5nMEx5jGXgxpF9pvGHUUl/iIQyw0/XYW8AG/Y0j3DS0HJ3GOYdxgHncNoI0OvmILGzGkhjyOkxz8g9UY0t8mGENSoJsfWa/q8iAHJ3CbR4VvMaSLp18rcISVfJ+t6vIMV2g2sR9DWqvq8tlmWj2ClrH9pP8LMzGk7ktSix6zX7DZ0/uH7+g2El8jN4Z/YhE1PsWQHvqts+i1l2sJe5iLIT30o8IjGRJl2q1xe4EAAAAASUVORK5CYII=';
 			var message = '<ul style="list-style-position: inside; list-style-image: url(data:image/png;base64,' + tickImage + '); font-weight: bold; padding-left: 1em;">' +
