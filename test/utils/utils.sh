@@ -731,7 +731,7 @@ set_userpassword_for_administrator ()
 	local password="$1"
 	local user="${2:-Administrator}"
 
-	eval "$(ucr shell)"
+	eval "$(ucr shell ldap/base)"
 
 	local passwordhash="$(mkpasswd -m sha-512 $password)"
 	echo "dn: uid=$user,cn=users,$ldap_base
@@ -849,6 +849,12 @@ add_tech_key_authorized_keys() {
 install_winrm() {
 	# TODO: move python-winrm to ucs
 	dpkg -i shared-utils/addons/python-winrm_*deb shared-utils/addons/python-isodate_*.deb  shared-utils/addons/python-xmltodict_*.deb
+}
+
+assert_admember_mode () {
+	. /usr/share/univention-lib/admember.sh
+	is_localhost_in_admember_mode
+	return $?
 }
 
 # vim:set filetype=sh ts=4:
