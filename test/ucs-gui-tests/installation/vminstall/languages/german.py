@@ -75,5 +75,5 @@ strings = {
 	'do_update': 'System nach der Einrichtung aktualisieren',
 	'setup_successful': 'UCS-Einrichtung erfolgreich',
 	'finish': 'Fertigstellen',
-	'welcome': 'Willkommen auf Univention Corporate Server'
+	'welcome': 'Browser-Fenster'
 }

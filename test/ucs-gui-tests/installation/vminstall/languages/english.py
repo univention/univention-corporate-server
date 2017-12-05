@@ -75,5 +75,5 @@ strings = {
 	'do_update': 'Update system after setup',
 	'setup_successful': 'setup successful',
 	'finish': 'Finish',
-	'welcome': 'Welcome to Univention'
+	'welcome': 'browser window'
 }
