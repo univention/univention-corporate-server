@@ -82,7 +82,7 @@ define([
 		query('.umcHeaderRight').forEach(function(w) {
 			new Button({
 				label: '<span style="color: white; background-color: #74b627; padding: 0.5em; border-radius: 5px;">' + _('Download UCS') + '</span>',
-				style: 'box-shadow: none;',
+				style: 'box-shadow: none; margin: 0;',
 				onClick: function() {
 					window.open(_('https://univention.com/download/ucs-download/'), '_blank');
 				}

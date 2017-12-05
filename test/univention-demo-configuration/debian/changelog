@@ -1,3 +1,9 @@
+univention-demo-configuration (5.0.2-22) unstable; urgency=medium
+
+  * Bug #45706: Adjust download UCS button
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 05 Dec 2017 15:32:10 +0100
+
 univention-demo-configuration (5.0.2-21) unstable; urgency=medium
 
   * Bug #45793: Use separate tracking id for piwik
