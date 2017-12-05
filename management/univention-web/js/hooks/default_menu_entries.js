@@ -285,7 +285,7 @@ define([
 			query('.umcHeaderRight').forEach(function(w) {
 				new Button({
 					label: '<span style="color: white; background-color: rgba(0,0,0,0.178); padding: 0.5em; border-radius: 5px; text-transform: none;">' + _('Buy support package') + '</span>',
-					style: 'box-shadow: none;',
+					style: 'box-shadow: none; margin: 0;',
 					onClick: function() {
 						topic.publish('/umc/actions', 'enterprise-subskription', 'click', 'button');
 						window.open(_('https://www.univention.com/products/prices-and-subscriptions/'), '_blank');
