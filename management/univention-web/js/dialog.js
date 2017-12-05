@@ -270,7 +270,7 @@ define([
 			// 		String class: css classes for the confirmation dialog
 			// 		Object[] buttons: overwrite the default submit and cancel button
 			// 		String submit: the label for the default submit button (default: 'Submit')
-			// 		String cancel: the label for the default cancel button (default: 'Cancel')
+			// 		String close: the label for the default cancel button (default: 'Cancel')
 			// 		"submit"|"cancel" defaultAction: which default button should be the default? (default: 'submit')
 			// 		Object references: if set as empty object, it will be filled with references
 			// 		                   to the dialog and form

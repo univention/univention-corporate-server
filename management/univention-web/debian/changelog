@@ -1,3 +1,9 @@
+univention-web (1.0.42-58) unstable; urgency=medium
+
+  * Bug #45809: Further adjustments
+
+ -- Florian Best <best@univention.de>  Tue, 05 Dec 2017 13:56:58 +0100
+
 univention-web (1.0.42-57) unstable; urgency=medium
 
   * Bug #45809: Fix plural forms of de.po

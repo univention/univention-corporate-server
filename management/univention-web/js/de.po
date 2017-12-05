@@ -532,7 +532,7 @@ msgid ""
 "Starting at <b>290.- Euro/year</b> you can purchase a UCS Enterprise "
 "Edition. This license allows you to benefit from basic support services as "
 "well as individually bookable, additional support and professional services."
-msgstr "Bereits ab <b>290,-</b> Euro/Jahr können Sie eine der Enterprise Editionen von UCS erwerben. Damit profitieren Sie von einem Basis Support sowie individuell buchbaren weiteren Support- und Professional Service Leistungen."
+msgstr "Bereits ab <b>290,- Euro/Jahr</b> können Sie eine der Enterprise Editionen von UCS erwerben. Damit profitieren Sie von einem Basis Support sowie individuell buchbaren weiteren Support- und Professional Service Leistungen."
 
 #: js/widgets/UnixAccessRightsExtended.js:105
 msgid "Sticky bit"

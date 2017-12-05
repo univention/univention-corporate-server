@@ -317,7 +317,7 @@ define([
 //					label: submit
 //				}],
 				submit: submit,
-				cancel: _('Close'),
+				close: _('Close'),
 				widgets: [{
 					name: 'message',
 					type: Text,
