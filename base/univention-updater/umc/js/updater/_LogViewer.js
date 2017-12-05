@@ -142,7 +142,7 @@ define([
 				printable_lines = [logfile_exceeded].concat(this._all_lines);
 			}
 			var content = entities.encode(printable_lines.join('\n'));
-			content = content.replace(/https?:\/\/.[^&"> \n\t]+/gi, '<a href="$&" tagret="_blank" rel="noopener">$&</a>');
+			content = content.replace(/https?:\/\/.[^&"> \n\t]+/gi, '<a href="$&" target="_blank" rel="noopener noreferrer">$&</a>');
 			this._text.set('content', content);
 			this.scrollToBottom();
 		},
