@@ -134,6 +134,7 @@ class DockerActionMixin(object):
 				if output:
 					return docker.execute_with_output(interface_file, *cmd_args, **cmd_kwargs)
 				else:
+					cmd_kwargs['_tty'] = False
 					process = docker.execute(interface_file, *cmd_args, **cmd_kwargs)
 					if process.returncode != 0:
 						with open(error_file.name, 'r+b') as error_handle:

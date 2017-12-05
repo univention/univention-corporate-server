@@ -37,6 +37,7 @@ from univention.appcenter.actions.install import Install
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.ucr import ucr_save
 from univention.appcenter.exceptions import InstallSetupFailed
+from univention.appcenter.log import LogCatcher
 
 
 class Install(Install, DockerActionMixin):
@@ -72,7 +73,11 @@ class Install(Install, DockerActionMixin):
 	def _setup_docker_image(self, app, args):
 		self._execute_container_script(app, 'restore_data_before_setup', credentials=False)
 		if app.docker_script_setup:
-			process = self._execute_container_script(app, 'setup', args)
-			if not process or process.returncode != 0:
-				raise InstallSetupFailed()
+			logger = LogCatcher(self.logger)
+			try:
+				process = self._execute_container_script(app, 'setup', args, cmd_kwargs={'_logger': logger})
+				if not process or process.returncode != 0:
+					raise InstallSetupFailed(code=process.returncode, stderr=list(logger.stderr()))
+			finally:
+				del logger
 		self._execute_container_script(app, 'restore_data_after_setup', credentials=False)
