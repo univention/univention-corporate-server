@@ -174,6 +174,15 @@ def create(image, command, hostname=None, ports=None, volumes=None, env_file=Non
 	return check_output(['docker', 'create'] + _args + [image] + command).strip()
 
 
+def get_images():
+	images = check_output(['docker', 'images', '-q']).split()
+	return loads(check_output(['docker', 'inspect'] + images))
+
+
+def rmi(image):
+	return call(['docker', 'rmi', image])
+
+
 def rm(container):
 	return call(['docker', 'rm', container])
 

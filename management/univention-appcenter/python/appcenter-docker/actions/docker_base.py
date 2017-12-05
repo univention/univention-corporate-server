@@ -40,7 +40,7 @@ import time
 from ldap.dn import explode_dn
 
 from univention.appcenter.app_cache import Apps
-from univention.appcenter.docker import Docker
+from univention.appcenter.docker import Docker, rmi, get_images
 from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.actions import get_action
 from univention.appcenter.exceptions import DockerCouldNotStartContainer, DatabaseConnectorError, AppCenterErrorContainerStart, DockerImagePullFailed
@@ -83,15 +83,38 @@ class DockerActionMixin(object):
 			if not Stop.call(app=app):
 				self.fatal('Stopping the container for %s failed' % app)
 				return False
-			image_name = 'appcenter-backup-%s:%d' % (app.id, time.time())
-			if backup_data == 'copy':
-				shutil.copytree(app.get_data_dir(), os.path.join(BACKUP_DIR, image_name, 'data'), symlinks=True)
-				shutil.copytree(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'), symlinks=True)
-			elif backup_data == 'move':
-				shutil.move(app.get_data_dir(), os.path.join(BACKUP_DIR, image_name, 'data'))
-				shutil.move(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'))
-			image_id = docker.commit(image_name)
-			self.log('Backed up %s as %s. ID: %s' % (app, image_name, image_id))
+			try:
+				max_number_of_backups = int(ucr_get('appcenter/backups'))
+			except (TypeError, ValueError):
+				max_number_of_backups = 1
+			image_repo = 'appcenter-backup-%s' % app.id
+			if max_number_of_backups != 0:
+				image_name = '%s:%d' % (image_repo, time.time())
+				if backup_data == 'copy':
+					shutil.copytree(app.get_data_dir(), os.path.join(BACKUP_DIR, image_name, 'data'), symlinks=True)
+					shutil.copytree(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'), symlinks=True)
+				elif backup_data == 'move':
+					shutil.move(app.get_data_dir(), os.path.join(BACKUP_DIR, image_name, 'data'))
+					shutil.move(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'))
+				image_id = docker.commit(image_name)
+				self.log('Backed up %s as %s. ID: %s' % (app, image_name, image_id))
+			if max_number_of_backups >= 0:  # deactivated cleanup for backups < 0
+				images_backed_up = []
+				all_images = get_images()
+				for image in all_images:
+					if image.get('RepoTags') and image.get('RepoTags')[0].startswith('%s:' % image_repo):
+						images_backed_up.append((image['Created'], image['RepoTags'][0]))
+				self.debug('Found images: %r' % images_backed_up)
+				for _, image in sorted(images_backed_up, reverse=True)[max_number_of_backups:]:
+					self.log('Removing backup %s' % image)
+					if rmi(image) != 0:
+						self.warn('Unable to remove image %s' % image)
+						self.warn('Continuing anyway')
+					try:
+						shutil.rmtree(os.path.join(BACKUP_DIR, image_name))
+					except EnvironmentError as exc:
+						self.warn('Unable to remove backup directory: %s' % exc)
+						self.warn('Continuing anyway')
 			return image_id
 		else:
 			self.fatal('No container found. Unable to backup')

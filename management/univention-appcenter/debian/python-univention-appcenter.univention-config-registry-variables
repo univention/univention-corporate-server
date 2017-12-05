@@ -3,3 +3,9 @@ Description[de]=Mit dieser Variable lässt sich die Signaturprüfung für den Ap
 Description[en]=This variable allows deactivation of the signature verification for the Appcenter index. Default value is "true".
 Type=str
 Categories=management-umc
+
+[appcenter/backups]
+Description[de]=Anzahl an Backups, die pro Docker-App vorgehalten werden. Wird eine Docker-App deinstalliert, werden Docker Image und Datenverzeichnisse gespeichert. Bei einer Zahl < 0 wird kein Backup je gelöscht, bei 0 wird kein Backup angelegt. Standard: 1.
+Description[en]=Number of backups per Docker App. When uninstalling a Docker App, the Docker image and data directories will be backed up. If the number is < 0, no backup is ever cleaned up, if 0, no backup is created. Default: 1.
+Type=int
+Categories=management-umc
