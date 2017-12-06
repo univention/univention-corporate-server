@@ -92,9 +92,9 @@ class Upgrade(Install):
 	def _call_prescript(self, app, args):
 		return super(Upgrade, self)._call_prescript(app, args, old_version=self.old_app.version)
 
-	def _send_information(self, app, status):
+	def _send_information(self, app, status, value=None):
 		if app > self.original_app:
-			super(Upgrade, self)._send_information(app, status)
+			super(Upgrade, self)._send_information(app, status, value)
 
 	def _install_packages(self, packages, update=True):
 		super(Upgrade, self)._install_packages(packages, update=update)
