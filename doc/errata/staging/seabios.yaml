@@ -12,4 +12,4 @@ desc: |
     virtual machines to load the updated BIOS, the virtual machine has to be
     shutdown and started again. A reboot does not suffice.
 bug: [44084]
-ignore: ['bug.44084.scope+version',]
+ignore: ['bug.44084.scope+version','version.maintenance']
