@@ -6,8 +6,8 @@ src: univention-web
 fix: 1.0.42-61A~4.2.0.201712061315
 desc: |
  This update addresses the following issue(s):
- * The selection checkboxes which have no possible actions have been removed from
-   the UMC module.
+ * The selection checkboxes which have no possible actions have been removed
+   from the UMC module.
  * A notification about the advantages of using the Enterprise Edition of UCS
    is displayed after the login on specific systems.
 bug: [44173, 45809]
