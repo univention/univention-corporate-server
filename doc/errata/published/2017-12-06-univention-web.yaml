@@ -11,3 +11,5 @@ desc: |
  * A notification about the advantages of using the Enterprise Edition of UCS
    is displayed after the login on specific systems.
 bug: [44173, 45809]
+erratum: 241
+announced: 2017-12-06
