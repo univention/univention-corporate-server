@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The statistic graphics in the UMC module are now access protected.
 bug: [45192]
+erratum: 238
+announced: 2017-12-06
