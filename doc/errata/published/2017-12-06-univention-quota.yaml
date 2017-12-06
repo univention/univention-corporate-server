@@ -9,3 +9,5 @@ desc: |
  * The quota module now supports partitions mounted with
    the journaled quota option.
 bug: [45668]
+erratum: 235
+announced: 2017-12-06
