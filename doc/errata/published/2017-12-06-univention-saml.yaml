@@ -11,3 +11,5 @@ desc: |
  * On the single-sign on login page only the domainname instead of the servers
    hostname is now shown.
 bug: [44704, 44121]
+erratum: 236
+announced: 2017-12-06
