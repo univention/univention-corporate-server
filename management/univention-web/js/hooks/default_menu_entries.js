@@ -292,7 +292,7 @@ define([
 					}
 				}).placeAt(w, 'first');
 			});
-			if (cookie('univentionSupportNotification') === 'no') {
+			if (cookie('univentionSubscriptionNotification') === 'no') {
 				return;
 			}
 
