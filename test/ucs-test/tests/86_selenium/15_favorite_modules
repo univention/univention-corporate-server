@@ -51,12 +51,7 @@ class UMCTester(object):
 
 	def test_default_favorites(self):
 		# check if the default favorite modules are in the favorites category
-		default_favorites_string = ucr.get('umc/web/favorites/default')
-		if not utils.package_installed('univention-management-console-module-udm'):
-			default_favorites_string = re.sub(r'udm.*?(,|$)', '', default_favorites_string).rstrip(',')
-		default_favorites = default_favorites_string.split(',')
-
-		for favorite in default_favorites:
+		for favorite in self._get_default_favorites():
 			try:
 				self.selenium.driver.find_element_by_css_selector('.umcGalleryWrapperItem[moduleid^="%s"]' % (favorite,))
 			except NoSuchElementException:
@@ -106,11 +101,16 @@ class UMCTester(object):
 
 		# restore the default favorites
 		self.selenium.search_module('*')
-		default_favorites = ucr.get('umc/web/favorites/default').split(',')
-		for favorite in default_favorites:
+		for favorite in self._get_default_favorites():
 			module_name = self.selenium.driver.find_element_by_css_selector('.umcGalleryWrapperItem[moduleid^="%s"] .umcGalleryName' % (favorite,)).text
 			self.selenium.click_tile_menu_icon(module_name)
 			self.selenium.click_text('Add to favorites')
+
+	def _get_default_favorites(self):
+		default_favorites_string = ucr.get('umc/web/favorites/default')
+		if not utils.package_installed('univention-management-console-module-udm'):
+			default_favorites_string = re.sub(r'udm.*?(,|$)', '', default_favorites_string).rstrip(',')
+		return default_favorites_string.split(',')
 
 
 if __name__ == '__main__':
