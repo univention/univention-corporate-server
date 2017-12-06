@@ -7,8 +7,8 @@ fix: 2.0.17-14A~4.2.0.201711301428
 desc: |
  This update addresses the following issue(s):
  * Users from an Active Directory domain now can reset their password via the
-   Self Service. Therefore the UCR Variables ad/reset/username and
-   ad/reset/password needs to be set.
+   Self Service. To enable the feature, the UCR variables ad/reset/username
+   and ad/reset/password need to be set.
  * Notifications about successful password changes are shown again.
  * The creation of postgresql database and users has been moved from the
    post installation script into the joinscript.
