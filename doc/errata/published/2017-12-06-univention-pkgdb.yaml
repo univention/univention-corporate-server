@@ -10,3 +10,5 @@ desc: |
    from the pkgdb UMC module.
  * Loading animations are now shown in the UMC module.
 bug: [44173, 45623]
+erratum: 240
+announced: 2017-12-06
