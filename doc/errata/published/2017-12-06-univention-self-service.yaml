@@ -13,3 +13,5 @@ desc: |
  * The creation of postgresql database and users has been moved from the
    post installation script into the joinscript.
 bug: [44867, 45457, 44393]
+erratum: 237
+announced: 2017-12-06
