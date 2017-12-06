@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-82) unstable; urgency=medium
+
+  * Bug #45826: display Univention Summit banner in UMC
+
+ -- Florian Best <best@univention.de>  Wed, 06 Dec 2017 12:47:13 +0100
+
 univention-management-console (9.0.80-81) unstable; urgency=medium
 
   * Bug #45461: don't store username in cookie/localstorage
