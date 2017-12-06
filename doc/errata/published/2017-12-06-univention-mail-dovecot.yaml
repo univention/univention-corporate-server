@@ -11,3 +11,5 @@ desc: |
    to dovecot's shared folders to fix possible missing access rights
    (Bug #41138).
 bug: [41138]
+erratum: 234
+announced: 2017-12-06
