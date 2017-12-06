@@ -1,3 +1,9 @@
+ucs-test (7.0.23-105) unstable; urgency=medium
+
+  * Bug #44640: fix selenium dump path
+
+ -- Florian Best <best@univention.de>  Wed, 06 Dec 2017 13:17:45 +0100
+
 ucs-test (7.0.23-104) unstable; urgency=medium
 
   * Bug #44640: Adjust selenium favorite modules test for nonmaster

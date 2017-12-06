@@ -80,7 +80,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		self.selenium_grid = os.environ.get('UCSTEST_SELENIUM') != 'local'
 		self.language = language
 		self.base_url = 'https://%s/' % (host or '%s.%s' % (self._ucr.get('hostname'), self._ucr.get('domainname')))
-		self.screenshot_path = os.path.abspath('selenium-screendumps/')
+		self.screenshot_path = os.path.abspath('selenium/')
 		translator.set_language(self.language)
 		logging.basicConfig(level=logging.INFO)
 
