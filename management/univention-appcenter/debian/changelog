@@ -1,3 +1,9 @@
+univention-appcenter (6.0.11-7) unstable; urgency=medium
+
+  * Bug #45808: Fix forgotten method
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 06 Dec 2017 14:44:00 +0100
+
 univention-appcenter (6.0.11-6) unstable; urgency=medium
 
   * Bug #44480: Limit the number of backups
