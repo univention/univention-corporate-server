@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-web
-fix: 1.0.42-59A~4.2.0.201712051533
+fix: 1.0.42-60A~4.2.0.201712061233
 desc: |
  This update addresses the following issue(s):
  * The selection checkboxes which have no possible actions have been removed from
