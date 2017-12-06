@@ -9,3 +9,5 @@ desc: |
  * Segmentation fault of the rpc_server process when replicating
    as a non-admin with GUID_DRS_GET_CHANGES
 bug: [45800]
+erratum: 232
+announced: 2017-12-06
