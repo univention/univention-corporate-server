@@ -13,3 +13,5 @@ desc: |
    shutdown and started again. A reboot does not suffice.
 bug: [44084]
 ignore: [version.scope]
+erratum: 233
+announced: 2017-12-06
