@@ -1272,7 +1272,7 @@ define([
 		},
 
 		_addSummitBanner: function() {
-			if (new Date("February 01, 2018 00:00:00") < new Date() || (!app.getModule('updater') || !app.getModule('schoolrooms')) || cookie('hideSummit2018Banner')) {
+			if (new Date("February 01, 2018 00:00:00") < new Date() || (!app.getModule('updater') && !app.getModule('schoolrooms')) || cookie('hideSummit2018Banner')) {
 				return;
 			}
 			var isDE = (kernel.locale.toLowerCase().indexOf('de') === 0);
