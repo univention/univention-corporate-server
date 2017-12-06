@@ -1,3 +1,9 @@
+univention-web (1.0.42-60) unstable; urgency=medium
+
+  * Bug #45809: add an image
+
+ -- Florian Best <best@univention.de>  Wed, 06 Dec 2017 12:28:50 +0100
+
 univention-web (1.0.42-59) unstable; urgency=medium
 
   * Bug #45809: Adjust button in header

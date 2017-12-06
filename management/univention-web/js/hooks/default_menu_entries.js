@@ -308,14 +308,12 @@ define([
 			var title = _('Advantages of the Enterprise Edition');
 			var submit = _('Prices and support');
 
+			styles.insertCssRule('.umcSubscriptionDialog > div', 'background-color: transparent!important;');
 			topic.publish('/umc/actions', 'enterprise-subskription', 'show');
 			dialog.confirmForm({
 				title: title,
-//				buttons: [{
-//					name: 'submit',
-//					'default': true,
-//					label: submit
-//				}],
+				style: 'background: #ffffff url(' + require.toUrl('dijit/themes/umc/images/checkmark-enterprise-subscription.png') + ') 80% 2.7em no-repeat; background-size: 120px;',
+				'class': 'umcSubscriptionDialog',
 				submit: submit,
 				close: _('Close'),
 				widgets: [{
@@ -327,7 +325,7 @@ define([
 					type: CheckBox,
 					onChange: function(arg) {
 						topic.publish('/umc/actions', 'enterprise-subskription', 'disable', arg);
-						cookie('univentionSupportNotification', arg ? 'no': 'yes');
+						cookie('univentionSubscriptionNotification', arg ? 'no': 'yes');
 					},
 					label: _('Do not show this notification again')
 				}],
