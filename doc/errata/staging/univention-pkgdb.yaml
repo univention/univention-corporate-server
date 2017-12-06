@@ -7,6 +7,6 @@ fix: 10.0.2-5A~4.2.0.201712041617
 desc: |
  This update addresses the following issue(s):
  * The selection checkboxes which have no possible actions have been removed
-   from the UMC module.
+   from the pkgdb UMC module.
  * Loading animations are now shown in the UMC module.
 bug: [44173, 45623]
