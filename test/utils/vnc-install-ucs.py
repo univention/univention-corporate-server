@@ -93,6 +93,14 @@ setup_translations = dict(
 		deu='bestehenden Microsoft Active-Directory',
 		eng='into an existing Microsoft Active',
 	),
+	no_domain=dict(
+		deu='Keine Domane',
+		eng='Do not use any domain',
+	),
+	warning_no_domain=dict(
+		deu='Keine Domane',
+		eng='No domain',
+	),
 	no_dc_dns=dict(
 		deu='Unter der Adresse des DNS-Servers',
 		eng='No domain controller was found at',
@@ -362,7 +370,7 @@ class UCSInstallation(object):
 				self.client.keyPress('down')
 				self.client.keyPress('down')
 				self.click(_t['next'])
-			self.client.waitForText(_t['start_join'])
+			self.client.waitForText(_t['start_join'], timeout=self.timeout)
 			self.client.keyPress('tab')
 			self.client.keyPress('tab')
 			self.client.enterText(self.args.join_user)
@@ -391,9 +399,15 @@ class UCSInstallation(object):
 			self.client.keyPress('tab')
 			self.client.enterText(self.args.join_password)
 			self.click(_t['next'])
+		elif self.args.role == 'basesystem':
+			self.click(_t['no_domain'])
+			self.click(_t['next'])
+			self.client.waitForText(_t['warning_no_domain'], timeout=self.timeout)
+			self.click(_t['next'])
 		else:
 			raise NotImplemented
 
+		# name hostname
 		if self.args.role == 'master':
 			self.client.waitForText(_t['host_settings'], timeout=self.timeout)
 		else:
@@ -405,12 +419,14 @@ class UCSInstallation(object):
 		self.client.keyPress('tab')
 		self.click(_t['next'])
 
-		if self.args.role == 'master':
-			self.client.waitForText(_t['software_configuration'], timeout=self.timeout)
-		else:
-			self.client.waitForText(_t['software_configuration_non_master'], timeout=self.timeout)
-		self.select_components()
-		self.click(_t['next'])
+		# software configuration
+		if self.args.role != 'basesystem':
+			if self.args.role == 'master':
+				self.client.waitForText(_t['software_configuration'], timeout=self.timeout)
+			else:
+				self.client.waitForText(_t['software_configuration_non_master'], timeout=self.timeout)
+			self.select_components()
+			self.click(_t['next'])
 
 		time.sleep(5)
 		self.client.keyPress('enter')
@@ -474,7 +490,7 @@ def main():
 	parser.add_argument('--join-user')
 	parser.add_argument('--join-password')
 	parser.add_argument('--language', default='deu', choices=['deu', 'eng', 'fra'])
-	parser.add_argument('--role', default='master', choices=['master', 'slave', 'member', 'backup', 'admember'])
+	parser.add_argument('--role', default='master', choices=['master', 'slave', 'member', 'backup', 'admember', 'basesystem'])
 	parser.add_argument('--components', default=[], choices=components.keys() + ['all'], action='append')
 	args = parser.parse_args()
 	assert args.vnc is not None
