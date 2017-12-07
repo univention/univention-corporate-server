@@ -153,7 +153,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		old_container = old_docker.container
 		secret_on_host = os.path.join('/var/lib/univention-appcenter/apps', app.id, 'machine.secret')
 		old_docker.cp_from_container('/etc/machine.secret', secret_on_host)
-		if self._backup_container(self.old_app, backup_data='copy') is False:
+		if self._backup_container(self.old_app, backup_data=False) is False:
 			raise UpgradeBackupFailed()
 		self._had_image_upgrade = True
 		self.log('Setting up new container (%s)' % app)
