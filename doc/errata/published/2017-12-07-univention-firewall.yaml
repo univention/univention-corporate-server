@@ -9,3 +9,5 @@ desc: |
  * The iptables chains will not be erased anymore when univention-firewall is
    stopped, if the UCR-variable security/packetfilter/disabled is set.
 bug: [45541]
+erratum: 242
+announced: 2017-12-07
