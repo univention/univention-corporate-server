@@ -1298,7 +1298,10 @@ define([
 				href: linkTarget
 			}, _innerContainer);
 			domConstruct.create('img', {
-				src: banner
+				src: banner,
+				style: {
+					'width': '100%'
+				}
 			}, _link);
 			var _closeButton = domConstruct.create('div', {
 				'class': 'umcCloseIcon',

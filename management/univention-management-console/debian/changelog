@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-85) unstable; urgency=medium
+
+  * Bug #45826: resize summit banner with screen size
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 07 Dec 2017 13:26:54 +0100
+
 univention-management-console (9.0.80-84) unstable; urgency=medium
 
   * Bug #45826: make summit button larger
