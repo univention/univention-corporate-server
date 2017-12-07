@@ -257,16 +257,26 @@ define([
 			if (column.hasOwnProperty('sortFormatter')) {
 				sortFormatter = column.sortFormatter;
 			}
+			var stringCompare;
+			var hasIntl = typeof(Intl) === 'object';
+			var hasCollator = hasIntl && Intl.hasOwnProperty("Collator") && typeof(Intl.Collator) === 'function';
+			if (hasCollator) {
+				var intlCollator =  new Intl.Collator(kernel.locale, {numeric: true});
+				stringCompare = function(a, b) {
+					return intlCollator.compare(a, b) < 0;
+				};
+			} else {
+				stringCompare = function(a, b) {
+					return a.toLowerCase() < b.toLowerCase();
+				};
+			}
 			var compare = function(aValue, bValue) {
 				var a = sortFormatter(aValue);
 				var b = sortFormatter(bValue);
-				if (typeof(a.localeCompare) === 'function') {
-					return a.localeCompare(b, kernel.locale, {numeric: true}) < 0;
-				} else if (typeof(a.toLowerCase) === 'function') {
-					return a.toLowerCase() < b.toLowerCase();
-				} else {
-					return a < b;
+				if (typeof(a) === 'string' && typeof(b) === 'string') {
+					return stringCompare(a, b);
 				}
+				return a < b;
 			};
 			return function(data) {
 				var comparison;
