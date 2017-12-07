@@ -38,7 +38,6 @@ define([
 	"dojo/query",
 	"dojox/html/styles",
 	"login",
-	"umc/app",
 	"umc/menu",
 	"umc/tools",
 	"umc/dialog",
@@ -47,7 +46,7 @@ define([
 	"umc/widgets/CheckBox",
 	"umc/widgets/Button",
 	"umc/i18n!"
-], function(declare, lang, array, kernel, topic, cookie, query, styles, login, app, menu, tools, dialog, i18nTools, Text, CheckBox, Button, _) {
+], function(declare, lang, array, kernel, topic, cookie, query, styles, login, menu, tools, dialog, i18nTools, Text, CheckBox, Button, _) {
 	setupMenus();
 
 	function setupMenus() {
@@ -279,7 +278,8 @@ define([
 		}
 		login.onLogin(function() {
 		topic.subscribe('/umc/started', function() {
-			if (!app.getModule('updater') && !app.getModule('schoolrooms') && !app.getModule('top')) {
+			var app = require('umc/app');
+			if (!app.getModule('updater') && !app.getModule('sschoolrooms') && !app.getModule('stop')) {
 				return;
 			}
 			query('.umcHeaderRight').forEach(function(w) {
