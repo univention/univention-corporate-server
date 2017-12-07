@@ -1,3 +1,9 @@
+univention-web (1.0.42-63) unstable; urgency=medium
+
+  * Bug #45836: Fix import error
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 07 Dec 2017 19:38:05 +0100
+
 univention-web (1.0.42-62) unstable; urgency=medium
 
   * Bug #45826: fix typo
