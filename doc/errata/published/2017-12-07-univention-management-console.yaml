@@ -9,3 +9,5 @@ desc: |
  * The UMC overview page now shows a banner that links to the Univention
    Summit website.
 bug: [45826]
+erratum: 244
+announced: 2017-12-07
