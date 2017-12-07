@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-firewall
-fix: 9.0.1-7A~4.2.0.20171204165
+fix: 9.0.1-7A~4.2.0.201712041651
 desc: |
  This update addresses the following issue(s):
  * The iptables chains will not be erased anymore when univention-firewall is
