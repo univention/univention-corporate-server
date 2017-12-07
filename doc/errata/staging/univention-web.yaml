@@ -8,5 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * The UMC overview page now shows a banner that links to the Univention
    Summit website.
- * The sorting performance for lists on the UMC has been improved.
-bug: [45826, 45076]
+bug: [45826]
