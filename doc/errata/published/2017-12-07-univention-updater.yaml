@@ -11,3 +11,5 @@ desc: |
  * Links in the log view during installing software upgrades via the UMC
    module can now be clicked.
 bug: [44080, 45060]
+erratum: 243
+announced: 2017-12-07
