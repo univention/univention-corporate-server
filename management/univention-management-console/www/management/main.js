@@ -1304,8 +1304,8 @@ define([
 				'class': 'umcCloseIcon',
 				style: {
 					'position': 'absolute',
-					'top': '2px',
-					'right': '2px',
+					'top': '5px',
+					'right': '5px',
 					'cursor': 'pointer'
 				}
 			}, _innerContainer);
@@ -1319,7 +1319,7 @@ define([
 			});
 			on(_closeButton, 'click', lang.hitch(this, function() {
 				_outerContainer.remove();
-				cookie('hideSummit2018Banner', 'true', {expires: 'Sat, 28 Jan 2018 00:00:00 GMT'});
+				cookie('hideSummit2018Banner', 'true', {expires: 'Thu, 01 Feb 2018 00:00:00 GMT'});
 			}));
 
 			// place banner
