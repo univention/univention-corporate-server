@@ -316,6 +316,8 @@ class UCSInstallation(object):
 			self.client.keyPress('f1')
 			self.client.keyUp('alt')
 			self.client.keyUp('ctrl')
+		elif self.args.role == 'basesystem':
+			time.sleep(3)
 		else:
 			self.client.waitForText('corporate server')
 			self.client.keyPress('enter')
