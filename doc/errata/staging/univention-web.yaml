@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-web
-fix: 
+fix: 1.0.42-65A~4.2.0.201712080950
 desc: |
  This update addresses the following issue(s):
  * A javascript error that prevented the execution of startup hooks causing
