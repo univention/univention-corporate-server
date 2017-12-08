@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import json
+import copy
 import urllib
 import base64
 import binascii
@@ -534,10 +535,78 @@ class PropertyChoices(Ressource):
 class PolicyTypes(Ressource):
 	"""GET udm/users/user/$DN/policies/$policy_type (get the policies of policy-type for the given object)"""
 
+	def get(self, object_type, dn, policy_type):
+		"""Returns a list of policy types that apply to the given object type"""
+		module = self.get_module(object_type)
+		result = module.policies
+		self.write(json.dumps(result))
+		self.finish()
 
-class PolicyType(Ressource):
-	"""GET udm/users/user/container/$container/policies/$policy_type (get the possible policies of the policy-type for user objects located at the containter)"""
 
+class PolicyResult(Ressource):
+	"""GET udm/users/user/policies/$policy_type?container=...&policy=...&object=... (get the possible policies of the policy-type for user objects located at the containter)"""
+
+	def get(self, object_type, policy_type):
+		"""Returns a virtual policy object containing the values that
+		the given object or container inherits"""
+
+		container = self.get_query_argument('container', None)
+		is_container = bool(container)
+		policy_dn = self.get_query_argument('policy', None)
+		dn = container or self.get_query_argument('object', None)
+
+		if is_container:
+			# editing a new (i.e. non existing) object -> use the parent container
+			obj = self.get_object(get_module(None, dn).module, dn)
+		else:
+			# editing an exiting UDM object -> use the object itself
+			obj = self.get_object(object_type, dn)
+
+		policy_obj = self.get_object(policy_type, policy_dn or None)
+		policy_obj.clone(obj)
+
+		# There are 2x2x2 (=8) cases that may occur (c.f., Bug #31916):
+		# (1)
+		#   [edit] editing existing UDM object
+		#   -> the existing UDM object itself is loaded
+		#   [new]  virtually edit non-existing UDM object (when a new object is being created)
+		#   -> the parent container UDM object is loaded
+		# (2)
+		#   [w/pol]   UDM object has assigend policies in LDAP directory
+		#   [w/o_pol] UDM object has no policies assigend in LDAP directory
+		# (3)
+		#   [inherit] user request to (virtually) change the policy to 'inherited'
+		#   [set_pol] user request to (virtually) assign a particular policy
+		faked_policy_reference = None
+		if not is_container and not policy_dn:
+			# case: [edit; w/pol; inherit]
+			# -> current policy is (virtually) overwritten with 'None'
+			faked_policy_reference = [None]
+		elif is_container and policy_dn:
+			# cases:
+			# * [new; w/pol; inherit]
+			# * [new; w/pol; set_pol]
+			# -> old + temporary policy are both (virtually) set at the parent container
+			faked_policy_reference = obj.policies + [policy_dn]
+		else:
+			# cases:
+			# * [new; w/o_pol; inherit]
+			# * [new; w/o_pol; set_pol]
+			# * [edit; w/pol; set_pol]
+			# * [edit; w/o_pol; inherit]
+			# * [edit; w/o_pol; set_pol]
+			faked_policy_reference = [policy_dn]
+
+		policy_obj.policy_result(faked_policy_reference)
+		infos = copy.copy(policy_obj.polinfo_more)
+		for key, value in infos.items():
+			if key in policy_obj.polinfo:
+				if isinstance(infos[key], (tuple, list)):
+					continue
+				infos[key]['value'] = policy_obj.polinfo[key]
+
+		self.write(json.dumps(infos))
+		self.finish()
 
 class Operations(Ressource):
 	"""GET /udm/progress/$progress-id (get the progress of a started operation like move, report, maybe add/put?, ...)"""
@@ -559,8 +628,8 @@ if __name__ == "__main__":
 		(r"/udm/([a-z]+/[a-z]+)/report/([^/]+)", Report),
 		(r"/udm/([a-z]+/[a-z]+)/properties/([a-z]+)/default", DefaultValue),
 		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/property/([^/]*)/choices", PropertyChoices),
-		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/policies/([a-z]+/[a-z]+)", PolicyTypes),
-		(r"/udm/([a-z]+/[a-z]+)/container/([^/]*)/policies/([a-z]+/[a-z]+)", PolicyType),
+		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/policies/([a-z]+/[a-z]+)/types", PolicyTypes),
+		(r"/udm/([a-z]+/[a-z]+)/policies/([a-z]+/[a-z]+)/", PolicyResult),
 		(r"/udm/([a-z]+/[a-z]+)/", Objects),
 		(r"/udm/([a-z]+/[a-z]+)/([^/]*)", Object),
 		(r"/udm/networks/network/([^/]*)/next-free-ip-address", NextFreeIpAddress),
