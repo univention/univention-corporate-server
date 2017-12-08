@@ -216,6 +216,12 @@ class Containers(Ressource):
 class Policies(Ressource):
 	"""GET udm/users/user/policies (get the list of policy-types that apply for users/user object type)"""
 
+	def get(self, object_type):
+		module = self.get_module(object_type)
+		result = module.policies
+		self.write(json.dumps(result))
+		self.finish()
+
 
 class ReportingBase(Ressource):
 
