@@ -147,6 +147,12 @@ class Properties(Ressource):
 class Options(Ressource):
 	"""GET udm/users/user/options (get options of users/user object type)"""
 
+	def get(self, object_type):
+		"""Returns the options specified for the given object type"""
+		result = self.get_module(object_type).options
+		self.write(json.dumps(result))
+		self.finish()
+
 
 class Layout(Ressource):
 	"""GET udm/users/user/layout (get layout of users/user object type)"""
