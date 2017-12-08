@@ -41,7 +41,7 @@ from tornado.web import Application, RequestHandler
 from ldap.filter import filter_format
 
 from univention.management.console.ldap import get_user_connection, get_machine_connection
-from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices
+from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, UDM_Settings
 import univention.directory.reports as udr
 # TODO: PAM authentication ?
 # TODO: threads?
@@ -145,6 +145,25 @@ class Templates(Ressource):
 
 class Containers(Ressource):
 	"""GET udm/users/user/containers (get default containers for users/user)"""
+
+	def initialize(self):
+		self.settings = UDM_Settings()
+
+	def get(self, object_type):
+		"""Returns the list of default containers for the given object
+		type. Therefor the python module and the default object in the
+		LDAP directory are searched.
+		"""
+		module = self.get_module(object_type)
+		containers = module.containers
+
+		if self.settings is not None:
+			containers += self.settings.containers(object_type)
+
+		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
+
+		self.write(json.dumps(containers))
+		self.finish()
 
 
 class Policies(Ressource):
