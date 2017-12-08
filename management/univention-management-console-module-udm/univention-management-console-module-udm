@@ -36,6 +36,14 @@ import copy
 import urllib
 import base64
 import binascii
+import logging
+from logging.handlers import TimedRotatingFileHandler
+try:
+	from urlparse import urljoin, urlparse, parse_qs
+	from urllib import quote as url_quote
+except ImportError:
+	# Python 3
+	from urllib.parse import urljoin, quote as url_quote, urlparse, parse_qs
 
 import tornado.ioloop
 from tornado.web import Application, RequestHandler
@@ -50,6 +58,15 @@ import univention.admin.uexceptions as udm_errors
 # TODO: threads?
 # TODO: use http link header
 # TODO: set Last-Modified
+
+
+logger = logging.getLogger('umc-udm')
+if 'umc-udm-trfh' not in logger.handlers:
+	handler = TimedRotatingFileHandler('/var/log/univention/umc-udm.log', when='D', interval=7)
+	handler.set_name('umc-udm-trfh')
+	handler.setLevel(logging.DEBUG)  # TODO: set to info or warn
+	logger.addHandler(handler)
+	logger.setLevel(logging.DEBUG)  # TODO: set to info or warn
 
 
 class Ressource(RequestHandler):
@@ -338,6 +355,8 @@ class Objects(Ressource):
 				# This happens when concurrent a object is removed between the module.search() and get_module() call
 				# MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
 				continue
+
+			assert '/' not in obj.dn  # TODO: escape /
 			entry = {
 				'$dn$': obj.dn,
 				'$childs$': module.childs,
@@ -346,7 +365,8 @@ class Objects(Ressource):
 				'objectType': module.name,
 				'labelObjectType': module.subtitle,
 				'name': module.obj_description(obj),
-				'path': ldap_dn2path(obj.dn, include_rdn=False)
+				'path': ldap_dn2path(obj.dn, include_rdn=False),
+				'url': urljoin(self.request.path, obj.dn),
 			}
 			if '$value$' in fields:
 				entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
@@ -370,25 +390,25 @@ class Objects(Ressource):
 		properties = dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items()))
 
 		dn = module.create(properties, container=container, superordinate=superordinate)
-		self.set_header('Location', '%s%s' % (self.request.path, urllib.quote(dn)))
+		self.set_header('Location', urljoin(self.request.path, urllib.quote(dn)))
 		self.set_status(201)
 
 	def options(self, object_type):
 		self.set_header('Allow', 'GET, POST, OPTIONS')
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.request.path, 'search', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'add/'), 'create-form', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'edit/'), 'edit-form', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'favicon'), 'icon', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'properties'), 'udm/properties', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'options'), 'udm/options', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'layout'), 'udm/layout', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'templates'), 'udm/templates', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'containers'), 'udm/containers', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'policies'), 'udm/policies', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'report-types'), 'udm/report-types', ''))
-#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, ''), '', ''))
-#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, ''), '', ''))
-#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, ''), '', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'add/'), 'create-form', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'edit/'), 'edit-form', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'favicon'), 'icon', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'properties'), 'udm/properties', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'options'), 'udm/options', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'layout'), 'udm/layout', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'templates'), 'udm/templates', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'containers'), 'udm/containers', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'policies'), 'udm/policies', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'report-types'), 'udm/report-types', ''))
+#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, ''), '', ''))
+#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, ''), '', ''))
+#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, ''), '', ''))
 
 
 class Object(Ressource):
@@ -435,6 +455,8 @@ class Object(Ressource):
 		props['$flags$'] = obj.oldattr.get('univentionObjectFlag', [])
 		props['$operations$'] = module.operations
 		props['$references$'] = module.get_references(dn)
+		assert '/' not in obj.dn  # TODO: escape /
+		props['url'] = urljoin(self.request.path, obj.dn)
 		self.write(json.dumps(props))
 		self.finish()
 
@@ -613,10 +635,12 @@ class Operations(Ressource):
 if __name__ == "__main__":
 	application = Application([
 		(r"/udm/", MainHandler),
-		(r"/udm/users/", MainTypes),
-		(r"/udm/users/object-types/", ObjectTypes),
+		(r"/udm/([a-z]+)/", MainTypes),
+		(r"/udm/([a-z]+)/object-types", ObjectTypes),
 		(r"/udm/([a-z]+)/navigation/", Navigation),
+		(r"/udm/([a-z]+/[a-z]+)/properties", Properties),
 		(r"/udm/([a-z]+/[a-z]+)/options", Options),
+		(r"/udm/([a-z]+/[a-z]+)/layout", Layout),
 		(r"/udm/([a-z]+/[a-z]+)/templates", Templates),
 		(r"/udm/([a-z]+/[a-z]+)/containers", Containers),
 		(r"/udm/([a-z]+/[a-z]+)/policies", Policies),
