@@ -15,7 +15,9 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>= 9.0.16-1),
  univention-management-console-server,
- univention-directory-reports
+ univention-directory-reports,
+ python-tornado,
+ python-mimeparse,
 Provides: univention-directory-manager
 Replaces: univention-directory-manager (<< 9.0.0)
 Description: UMC module for UCS Directory Manager

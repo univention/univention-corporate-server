@@ -1,0 +1,423 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Univention Management Console
+#  Univention Directory Manager Module
+#
+# Copyright 2017 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import json
+import urllib
+import base64
+import binascii
+
+import tornado.ioloop
+from tornado.web import Application, RequestHandler
+from ldap.filter import filter_format
+
+from univention.management.console.ldap import get_user_connection, get_machine_connection
+from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices
+import univention.directory.reports as udr
+# TODO: PAM authentication ?
+# TODO: threads?
+# TODO: use http link header
+# TODO: set Last-Modified
+
+
+class Ressource(RequestHandler):
+
+	def force_authorization(self):
+		self.set_header('WWW-Authenticate', 'Basic realm="Univention Management Console"')
+		self.set_status(401)
+		self.finish()
+
+	def prepare(self):
+		authorization = self.request.headers.get('Authorization')
+		if not authorization:
+			return self.force_authorization()
+
+		try:
+			if not authorization.lower().startswith('basic '):
+				raise ValueError()
+			username, password = base64.decodestring(authorization.split(' ', 1)[1]).split(':', 1)
+		except (ValueError, IndexError, binascii.Error):
+			raise BadRequest()
+
+		# TODO: caching
+		lo, po = get_machine_connection()
+		try:
+			userdn = lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [username]), unique=True)[0]
+			self.ldap_connection, self.ldap_position = get_user_connection(bind=lambda lo: lo.bind(userdn, password))
+			set_bind_function(lambda lo: lo.bind(userdn, password))
+		except:
+			return self.force_authorization()
+
+	def get_module(self, object_type):
+		module = UDM_Module(object_type)
+		if not module or not module.module:
+			raise NotFound(object_type)
+		return module
+
+	def get_object(self, object_type, dn):
+		module = self.get_module(object_type)
+
+
+def xml_rendering():
+	import xml.etree.cElementTree as ET
+
+	root = ET.Element("root")
+	doc = ET.SubElement(root, "doc")
+
+	ET.SubElement(doc, "field1", name="blah").text = "some value1"
+	ET.SubElement(doc, "field2", name="asdfasd").text = "some vlaue2"
+
+	tree = ET.ElementTree(root)
+
+
+class MainHandler(Ressource):
+	def get(self):
+		for main_type in ('users', 'computers', 'groups', 'networks', 'dhcp', 'dns', 'shares', 'mail', 'nagios', 'policies'):  # ldap-navigation?
+			self.add_header('Link', '</udm/%s/>; rel="/udm/object-modules"; title=""' % (main_type,))
+		self.write("Hello, world")
+
+
+class MainTypes(Ressource):
+	def get(self, main_type):
+		sub_type = 'user'
+		self.add_header('Link', '</udm/%s/%s/>; rel="/udm/object-types"; title=""' % (main_type, sub_type))
+		self.write("Hello, world")
+
+
+class ObjectTypes(Ressource):
+	"""get the object types of a specific flavor"""
+
+
+class Navigation(Ressource):
+	"""GET udm/(dns|dhcp|)/navigation/ (the tree content of navigation/DNS/DHCP)"""
+	def get(self, *args, **kwargs):
+		self.write("Hello, world")
+
+
+class Properties(Ressource):
+	"""GET udm/users/user/properties (get properties of users/user object type)"""
+
+
+class Options(Ressource):
+	"""GET udm/users/user/options (get options of users/user object type)"""
+
+
+class Layout(Ressource):
+	"""GET udm/users/user/layout (get layout of users/user object type)"""
+
+
+class Templates(Ressource):
+	"""GET udm/users/user/templates (get the list of templates of users/user object type)"""
+
+
+class Containers(Ressource):
+	"""GET udm/users/user/containers (get default containers for users/user)"""
+
+
+class Policies(Ressource):
+	"""GET udm/users/user/policies (get the list of policy-types that apply for users/user object type)"""
+
+
+class ReportingBase(Ressource):
+
+	def initialize(self):
+		self.reports_cfg = udr.Config()
+
+
+class ReportTypes(ReportingBase):
+	"""GET udm/users/user/report-types (get report-types of users/*)"""
+
+	def get(self, object_type):
+		"""Returns a list of reports for the given object type"""
+		# i18n: translattion for univention-directory-reports
+		# _('PDF Document')
+		_ = lambda x: x
+		result = [{'id': name, 'label': _(name)} for name in sorted(self.reports_cfg.get_report_names(object_type))]
+		self.write(json.dumps(result))
+		self.finish()
+
+
+class Report(ReportingBase):
+	"""GET udm/users/user/report/$report_type (create a report of a users)"""
+
+	def get(self, object_type, report_type):
+		# TODO: POST ? with 202 accepted
+		try:
+			report_type in self.reports_cfg.get_report_names(object_type)
+		except KeyError:
+			raise NotFound(report_type)
+
+		dns = self.get_query_arguments('dn')
+		report = udr.Report(self.ldap_connection)
+		try:
+			report_file = report.create(object_type, report_type, dns)
+		except udr.ReportError as exc:
+			raise UMC_Error(str(exc))
+
+		with open(report_file) as fd:
+			self.set_header('Content-Type', 'text/csv' if report.endswith('.csv') else 'application/pdf')
+			self.write(fd.read())
+			self.finish()
+
+
+class NextFreeIpAddress(Ressource):
+	"""GET udm/networks/network/$DN/next-ip (get the next free IP in this network)"""
+
+
+class DefaultValue(Ressource):
+	"""GET udm/users/user/properties/$property/default (get the default value for the specified property)"""
+
+	def get(self, object_type, property_):
+		pass
+
+
+class Objects(Ressource):
+
+	def get(self, object_type):
+		"""GET udm/users/user/ (nach Benutzern suchen)"""
+		module = self.get_module(object_type)
+
+		# TODO: replace the superordinate concept by container
+		superordinate = self.get_query_argument('superordinate', None)
+
+		container = self.get_query_argument('container', None)
+		objectProperty = self.get_query_argument('objectProperty', None)
+		objectPropertyValue = self.get_query_argument('objectPropertyValue', None)
+		scope = self.get_query_argument('scope', 'sub')
+		hidden = self.get_query_argument('hidden', False)
+		fields = self.get_query_arguments('fields', [])
+		fields = (set(fields) | set([objectProperty])) - set(['name', 'None', None, ''])
+
+		if superordinate:
+			mod = get_module(superordinate, superordinate)
+			if not module:
+				raise SuperordinateDoesNotExist(superordinate)
+			superordinate = mod.get(superordinate)
+			container = container or superordinate
+
+		result = module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden) or []
+
+		entries = []
+		for obj in result:
+			if obj is None:
+				continue
+			module = get_module(object_type, obj.dn)
+			if module is None:
+				# This happens when concurrent a object is removed between the module.search() and get_module() call
+				# MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
+				continue
+			entry = {
+				'$dn$': obj.dn,
+				'$childs$': module.childs,
+				'$flags$': obj.oldattr.get('univentionObjectFlag', []),
+				'$operations$': module.operations,
+				'objectType': module.name,
+				'labelObjectType': module.subtitle,
+				'name': module.obj_description(obj),
+				'path': ldap_dn2path(obj.dn, include_rdn=False)
+			}
+			if '$value$' in fields:
+				entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
+			for field in fields - set(module.password_properties) - set(entry.keys()):
+				entry[field] = module.property_description(obj, field)
+			entries.append(entry)
+
+		self.write(json.dumps(entries))
+		self.finish()
+
+	def post(self, object_type):
+		"""POST udm/users/user/ (Benutzer hinzufügen)"""
+		module = self.get_module(object_type)
+		container = self.get_body_argument('container')
+		superordinate = self.get_body_argument('superordinate')
+		options = self.get_body_arguments('options')
+
+		obj = module.module.object(None, self.ldap_connection, self.ldap_position)
+		obj.open()
+		obj.options = options
+		properties = dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items()))
+
+		dn = module.create(properties, container=container, superordinate=superordinate)
+		self.set_header('Location', '%s%s' % (self.request.path, urllib.quote(dn)))
+		self.set_status(201)
+
+	def options(self, object_type):
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.request.path, 'search', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'add/'), 'create-form', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'edit/'), 'edit-form', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'favicon'), 'icon', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'properties'), 'udm/properties', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'options'), 'udm/options', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'layout'), 'udm/layout', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'templates'), 'udm/templates', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'containers'), 'udm/containers', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'policies'), 'udm/policies', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'report-types'), 'udm/report-types', ''))
+#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, ''), '', ''))
+#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, ''), '', ''))
+#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, ''), '', ''))
+		self.set_header('Allow', 'GET, PUT, DELETE, OPTIONS')
+
+class Object(Ressource):
+
+	def get(self, object_type, dn):
+		"""GET udm/users/user/$DN (get all properties/values of the user)"""
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.request.path, 'self', ''))
+		copy = bool(self.get_query_argument('copy', None))  # TODO: move into own ressource
+
+		def _remove_uncopyable_properties(obj):
+			if not copy:
+				return
+			for name, p in obj.descriptions.items():
+				if not p.copyable:
+					obj.info.pop(name, None)
+
+		if object_type == 'users/self' and dn != self._user_dn:
+			raise Forbidden()
+
+		module = get_module(object_type, dn)
+		obj = module.get(dn)
+		if not obj:
+			raise NotFound(dn)
+
+		_remove_uncopyable_properties(obj)
+		obj.set_defaults = True
+		obj.set_default_values()
+		_remove_uncopyable_properties(obj)
+		props = obj.info
+		for passwd in module.password_properties:
+			if passwd in props:
+				del props[passwd]
+		if not copy:
+			props['$dn$'] = obj.dn
+		props['$options$'] = {}
+		for opt in module.get_options(udm_object=obj):
+			props['$options$'][opt['id']] = opt['value']
+		props['$policies$'] = {}
+		for policy in obj.policies:
+			pol_mod = get_module(None, policy)
+			if pol_mod and pol_mod.name:
+				props['$policies$'].setdefault(pol_mod.name, []).append(policy)
+		props['$labelObjectType$'] = module.title
+		props['$flags$'] = obj.oldattr.get('univentionObjectFlag', [])
+		props['$operations$'] = module.operations
+		props['$references$'] = module.get_references(dn)
+		self.write(json.dumps(props))
+		self.finish()
+
+	def put(self, object_type, dn):
+		"""PUT udm/users/user/$DN (Benutzer hinzufügen / modifizieren)"""
+		module = get_module(object_type, dn)
+		if not module:
+			raise NotFound(object_type)  # FIXME: create
+
+		obj = module.module.object(None, self.ldap_connection, self.ldap_position, dn)
+		obj.open()
+		obj.options = self.get_body_arguments('$options$')
+		properties = dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items()))
+		try:
+			module._map_properties(obj, properties)
+			obj.modify()
+		except udm_errors.base as exc:
+			UDM_Error(exc).reraise()
+
+	def patch(self, object_type, dn):
+		pass
+
+	def delete(self, object_type, dn):
+		"""DELETE udm/users/user/$DN (Benutzer löschen)"""
+		module = get_module(object_type, dn)
+		if not module:
+			raise NotFound(object_type)
+
+		cleanup = bool(self.get_query_argument('cleanup', False))
+		recursive = bool(self.get_query_argument('recursive', False))
+		module.remove(dn, cleanup, recursive)
+
+	def options(self, object_type, dn):
+		self.set_header('Allow', 'GET, POST, OPTIONS')
+
+
+class PropertyChoices(Ressource):
+	"""GET udm/users/user/$DN/property/$name/choices (get possible values/choices for that property)"""
+
+	def get(self, object_type, dn, property_):
+		module = self.get_module(object_type)
+		try:
+			syntax = module.module.property_descriptions[property_].syntax
+		except KeyError:
+			raise NotFound()
+		request_body = {'syntax': syntax.name}  # FIXME
+		choices = read_syntax_choices(syntax, request_body)
+		self.write(json.dumps(choices))
+		self.finish()
+
+
+class PolicyTypes(Ressource):
+	"""GET udm/users/user/$DN/policies/$policy_type (get the policies of policy-type for the given object)"""
+
+
+class PolicyType(Ressource):
+	"""GET udm/users/user/container/$container/policies/$policy_type (get the possible policies of the policy-type for user objects located at the containter)"""
+
+
+class Operations(Ressource):
+	"""GET /udm/progress/$progress-id (get the progress of a started operation like move, report, maybe add/put?, ...)"""
+
+
+if __name__ == "__main__":
+	application = Application([
+		(r"/udm/", MainHandler),
+		(r"/udm/users/", MainTypes),
+		(r"/udm/users/object-types", ObjectTypes),
+		(r"/udm/([a-z]+)/navigation/", Navigation),
+		(r"/udm/([a-z]+/[a-z]+)/properties", Properties),
+		(r"/udm/([a-z]+/[a-z]+)/options", Options),
+		(r"/udm/([a-z]+/[a-z]+)/layout", Layout),
+		(r"/udm/([a-z]+/[a-z]+)/templates", Templates),
+		(r"/udm/([a-z]+/[a-z]+)/containers", Containers),
+		(r"/udm/([a-z]+/[a-z]+)/policies", Policies),
+		(r"/udm/([a-z]+/[a-z]+)/report-types", ReportTypes),
+		(r"/udm/([a-z]+/[a-z]+)/report/([^/]+)", Report),
+		(r"/udm/([a-z]+/[a-z]+)/properties/([a-z]+)/default", DefaultValue),
+		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/property/([^/]*)/choices", PropertyChoices),
+		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/policies/([a-z]+/[a-z]+)", PolicyTypes),
+		(r"/udm/([a-z]+/[a-z]+)/container/([^/]*)/policies/([a-z]+/[a-z]+)", PolicyType),
+		(r"/udm/([a-z]+/[a-z]+)/", Objects),
+		(r"/udm/([a-z]+/[a-z]+)/([^/]*)", Object),
+		(r"/udm/networks/network/([^/]*)/next-free-ip-address", NextFreeIpAddress),
+		(r"/udm/progress/$progress-id", Operations),  # operations?
+		# TODO: possible move locations
+		# TODO: meta info
+	])
+	application.listen(8888)
+	tornado.ioloop.IOLoop.current().start()
