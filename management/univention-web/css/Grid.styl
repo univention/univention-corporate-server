@@ -23,7 +23,7 @@
 
 			.dijitCheckBox
 				icon-image(0, -48, "", "-small", 12px, 12px)
-				
+
 				&.dijitCheckBoxChecked
 					background-position: -48px -48px
 
@@ -290,3 +290,139 @@ $umcGrid-edge-padding = 24px
 	padding-left: 0
 	width: 12px
 	height: 12px
+
+
+@keyframes spin {
+	0% {
+		tranform: rotate(0deg)
+	}
+	100% {
+		transform: rotate(360deg)
+	}
+}
+
+.umcGrid .dgrid-cell
+	.valueField .revertButton
+		display: inline-block
+		width: 20px
+		height: 20px
+		background: url("images/icons.svg") -300px -40px no-repeat
+		transform: rotateY(180deg)
+		cursor: pointer
+		opacity: 0.7
+		transition: opacity 0.2s
+		&:hover
+			opacity: 1
+
+	.valueField .dijitValidationTextBox
+		margin-right: 6px
+		width: calc(100% - 6px)
+
+		.dijitValidationContainer
+			display: none
+		.savingContainer
+			display: none
+			margin: 6px 6px 0 0
+			width: 0
+			height: 22px
+			position: relative
+			float: right
+			transition: width 0.25s
+
+			.border
+				width: 22px
+				height: 22px
+				box-sizing: border-box
+				display: inline-block
+				border-radius: 50%
+				border: 3px solid black
+				border-color: grey grey grey black
+				opacity: 0
+				transition: opacity 0.2s 0.1s
+				animation-name: spin
+				animation-duration: 1s
+				animation-iteration-count: infinite
+				animation-timing-function: linear
+
+			.tick
+				width: 22px
+				height: 22px
+				border-radius: 50%
+				background-color: green
+				position: absolute
+				top: 0
+				left: 0
+				transform: scale(0)
+				transition: transform 0.3s, opacity 0.4s 1.1s
+
+				.left
+					position: absolute
+					background-color: white
+					width: 3px
+					height: 10px
+					top: 7px
+					left: 7px
+					transform: rotate(-42deg)
+				.right
+					position: absolute
+					background-color: white
+					width: 3px
+					height: 12px
+					top: 5px
+					left: 12px
+					transform: rotate(33deg)
+
+	.valueField.shown .dijitValidationTextBox
+		.savingContainer
+			display: inline
+	.valueField.saving .dijitValidationTextBox
+		.savingContainer
+			width: 22px
+			.border
+				opacity: 1
+	.valueField.saved .dijitValidationTextBox
+		.savingContainer
+			width: 0px
+			transition: width 0.2s 1.35s
+			.border
+				opacity: 0
+				transition: opacity 0.2s
+			.tick
+				transform: scale(1)
+				opacity: 0
+
+	.valueField,
+	.dijitTextBox
+		display: inline-block
+	.dijitInputField
+		display: block
+
+	.templateText
+		color: rgba(0,0,0,0.54)
+		padding-left: 11px
+
+		&:hover
+			text-decoration: underline
+			cursor: pointer
+
+.umc .umcGrid .dgrid .dgrid-row
+	.dijitTextBox
+		border: 1px solid white
+		transition: background-color 0.2s, border-color 0.2s
+		border-radius: 4px
+
+		&:before,
+		&:after
+			border: none
+
+		^[-1]:hover ^[-1..-1]
+			border-color: #eee
+		^[-1].dgrid-selected ^[-1..-1]
+			border-color: #f5f5f5
+		&Hover
+			border-color: #b9b9b9 !important
+		&Focused
+			border-color: #424242 !important
+
+.umc .umcGrid .dgrid-cell
+	text-overflow: clip

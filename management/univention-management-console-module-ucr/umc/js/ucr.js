@@ -35,9 +35,12 @@ define([
 	"dojo/_base/array",
 	"dojo/aspect",
 	"dojo/sniff",
+	"dojo/on",
+	"dojo/dom-class",
 	"dojox/html/entities",
 	"dijit/Dialog",
 	"dijit/form/_TextBoxMixin",
+	"umc/store",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/Form",
@@ -52,9 +55,35 @@ define([
 	"umc/widgets/HiddenInput",
 	"umc/widgets/ComboBox",
 	"umc/widgets/Tooltip",
+	"umc/widgets/Button",
+	"umc/widgets/ContainerWidget",
+	"put-selector/put",
 	"umc/i18n!umc/modules/ucr",
 	"xstyle/css!./ucr.css"
-], function(declare, lang, kernel, array, aspect, has, entities, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, SearchBox, TextBox, Text, HiddenInput, ComboBox, Tooltip, _) {
+], function(declare, lang, kernel, array, aspect, has, on, domClass, entities, Dialog, _TextBoxMixin, umcStore, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, SearchBox, TextBox, Text, HiddenInput, ComboBox, Tooltip, Button, ContainerWidget, put, _) {
+
+	var MyValueField = declare([ContainerWidget], {
+		'class': 'valueField',
+		buildRendering: function() {
+			this.inherited(arguments);
+			var textbox = new TextBox({
+				value: this.value
+			});
+			put(textbox.domNode.firstChild, '- div.savingContainer div.border + div.tick div.left + div.right');
+			this.addChild(textbox);
+			this.textbox = textbox;
+			this.initialValue = this.value;
+			var revertButton = put(this.domNode, 'div.revertButton.dijitDisplayNone');
+			this.revertButton = revertButton;
+			on(revertButton, 'click', lang.hitch(this, function() {
+				this.onRevert(this.item, this);
+			}));
+		},
+
+		onRevert: function(item, valueField) {
+			// stub
+		}
+	});
 
 	var _DetailDialog = declare([Dialog, StandbyMixin], {
 		_form: null,
@@ -221,6 +250,15 @@ define([
 		moduleID: 'ucr',
 		idProperty: 'key',
 
+		changes: null,
+
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.changes = {};
+			// TODO is 'flavor' important
+			this.eventlessStore = umcStore(this.idProperty, this.moduleID, 'myflavor');
+		},
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -247,16 +285,7 @@ define([
 				iconClass: 'umcIconEdit',
 				isStandardAction: true,
 				isMultiAction: false,
-				callback: lang.hitch(this, function(ids, items) {
-					if (items[0].isTemplate) {
-						this._detailDialog.newVariable({
-							key: ids[0].replace(/\.\*/g, _('<your value>')),
-							description: items[0].description || ''
-						});
-					} else if (ids.length) {
-						this._detailDialog.loadVariable(ids[0]);
-					}
-				})
+				callback: lang.hitch(this, '_edit')
 			}, {
 				name: 'delete',
 				label: _( 'Delete' ),
@@ -293,7 +322,8 @@ define([
 			}, {
 				name: 'value',
 				label: _( 'Value' ),
-				description: _( 'Value of the UCR variable' )
+				description: _( 'Value of the UCR variable' ),
+				formatter: lang.hitch(this, '_valueFormatter')
 			}];
 
 			// generate the data grid
@@ -369,6 +399,18 @@ define([
 			this._detailDialog.startup();
 		},
 
+		_edit: function(ids, items) {
+			if (items[0].isTemplate) {
+				// TODO no check for multiedit yet
+				this._detailDialog.newVariable({
+					key: ids[0].replace(/\.\*/g, _('<your value>')),
+					description: items[0].description || ''
+				});
+			} else if (ids.length) {
+				this._detailDialog.loadVariable(ids[0]);
+			}
+		},
+
 		_selectInputText: function() {
 			// focus on input widget
 			var widget = this._searchForm.getWidget('pattern');
@@ -383,22 +425,131 @@ define([
 			}
 		},
 
-		_keyFormatter: function(label, rowIndex) {
+		_keyFormatter: function(label, item) {
 			var widget = new Text({
 				content: label
 			});
 			this.own(widget);
 
-			var item = this._grid.getRowValues(rowIndex);
+			var item = this._grid.getRowValues(item);
 			if (item.description) {
 				var tooltip = new Tooltip({
 					label: entities.encode(item.description),
 					connectId: [widget.domNode],
-					position: ['below']
+					position: ['below', 'above']
 				});
 				widget.own(tooltip);
 			}
 			return widget;
+		},
+
+		_valueFormatter: function(label, item) {
+			var ret;
+			if (item.isTemplate) {
+				ret = new Text({
+					content: _('Create variable'),
+					'class': 'templateText'
+				});
+				on(ret, 'click', lang.hitch(this, '_edit', [item.key], [item]));
+			} else {
+				ret =  MyValueField({
+					value: label,
+					item: item
+				});
+				on(ret, 'revert', lang.hitch(this, '_revert'));
+				var _item = this._grid.getRowValues(item);
+				if (_item.description) {
+					var tooltip = new Tooltip({
+						label: entities.encode(_item.description),
+						position: ['below', 'above']
+					});
+					ret.own(tooltip);
+				}
+				on(ret.textbox, 'focus', lang.hitch(this, function() {
+					tooltip.set('connectId', [ret.domNode]);
+				}));
+				on(ret.textbox, 'blur', lang.hitch(this, function() {
+					tooltip.set('connectId', []);
+				}));
+				on(ret, 'keydown', lang.hitch(this, function(evt) {
+					if (evt.key === 'Enter' || evt.key === 'Tab') {
+						if (evt.target.value === ret.initialValue || !ret.initialValue && evt.target.value === '') {
+							// TODO remove
+							console.log('noChange');
+							return;
+						}
+						this._inPlaceSave(item, evt.target.value, ret, true);
+					}
+				}));
+			}
+
+			return ret;
+		},
+
+		_inPlaceSave: function(item, newValue, valueField, addToHistory) {
+			domClass.add(valueField.domNode, 'shown');
+			valueField.textbox.set('disabled', true);
+
+			// have the loading animation play for at least 800ms
+			// so there are no quick animation switches
+			var defer = tools.defer(function() {}, 800);
+			setTimeout(function() {
+				domClass.add(valueField.domNode, 'saving');
+			}, 10);
+			return this._inPlaceEdit(item, newValue, addToHistory).then(lang.hitch(this, function() {
+				valueField.initialValue = newValue;
+				defer.then(lang.hitch(this, function() {
+					domClass.remove(valueField.domNode, 'saving');
+					domClass.add(valueField.domNode, 'saved');
+					setTimeout(lang.hitch(this, function() {
+						domClass.remove(valueField.domNode, 'saved');
+						domClass.remove(valueField.domNode, 'shown');
+						valueField.textbox.set('disabled', false);
+						if (this.changes[item.key]) {
+							domClass.remove(valueField.revertButton, 'dijitDisplayNone');
+						} else {
+							domClass.add(valueField.revertButton, 'dijitDisplayNone');
+						}
+						// valueField.textbox.focus();
+					}), 1550);
+				}));
+			}));
+		},
+
+		_inPlaceEdit: function(item, newValue, addToHistory) {
+			var oldValue = item.value;
+			item.value = newValue;
+			// this.moduleStore._noEvents = true;
+			var options = {};
+			var idProperty = lang.getObject('moduleStore.idProperty', false, this);
+			if (idProperty) {
+				options[idProperty] = item.key;
+			}
+			deferred = this.eventlessStore.put(item, options, false);
+
+			return deferred.then(lang.hitch(this, function() {
+				if (addToHistory) {
+					if (!this.changes[item.key]) {
+						this.changes[item.key] = [];
+					}
+					this.changes[item.key].push(oldValue);
+				}
+				this._grid.update();
+				// this.moduleStore._noEvents = false;
+			}), lang.hitch(this, function() {
+				// TODO error case
+				console.log('saving ucr variable failed');
+			}));
+		},
+
+		_revert: function(item, valueField) {
+			var value = this.changes[item.key].pop();
+			valueField.textbox.set('value', value);
+			this._inPlaceSave(item, value, valueField, false).then(lang.hitch(this, function() {
+				if (this.changes[item.key].length === 0) {
+					delete this.changes[item.key];
+				}
+			}));
 		}
 	});
 });
