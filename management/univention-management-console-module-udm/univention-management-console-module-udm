@@ -375,6 +375,7 @@ class Objects(Ressource):
 		self.set_status(201)
 
 	def options(self, object_type):
+		self.set_header('Allow', 'GET, POST, OPTIONS')
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.request.path, 'search', ''))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'add/'), 'create-form', ''))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, 'edit/'), 'edit-form', ''))
@@ -389,7 +390,7 @@ class Objects(Ressource):
 #		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, ''), '', ''))
 #		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, ''), '', ''))
 #		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % ('%s%s' % (self.request.path, ''), '', ''))
-		self.set_header('Allow', 'GET, PUT, DELETE, OPTIONS')
+
 
 class Object(Ressource):
 
@@ -468,7 +469,7 @@ class Object(Ressource):
 		module.remove(dn, cleanup, recursive)
 
 	def options(self, object_type, dn):
-		self.set_header('Allow', 'GET, POST, OPTIONS')
+		self.set_header('Allow', 'GET, PUT, DELETE, OPTIONS')
 
 
 class PropertyChoices(Ressource):
