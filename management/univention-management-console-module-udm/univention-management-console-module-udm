@@ -197,7 +197,10 @@ class DefaultValue(Ressource):
 	"""GET udm/users/user/properties/$property/default (get the default value for the specified property)"""
 
 	def get(self, object_type, property_):
-		pass
+		module = self.get_module(object_type)
+		result = module.get_default_values(property_)
+		self.write(json.dumps(result))
+		self.finish()
 
 
 class Objects(Ressource):
