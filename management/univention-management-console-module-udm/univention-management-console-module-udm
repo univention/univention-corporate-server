@@ -553,7 +553,9 @@ class PolicyResult(Ressource):
 		container = self.get_query_argument('container', None)
 		is_container = bool(container)
 		policy_dn = self.get_query_argument('policy', None)
-		dn = container or self.get_query_argument('object', None)
+		dn = self.get_query_argument('object', None)
+		if not dn and not policy_dn and not container:
+			raise NotFound()
 
 		if is_container:
 			# editing a new (i.e. non existing) object -> use the parent container
@@ -562,7 +564,10 @@ class PolicyResult(Ressource):
 			# editing an exiting UDM object -> use the object itself
 			obj = self.get_object(object_type, dn)
 
-		policy_obj = self.get_object(policy_type, policy_dn or None)
+		if policy_dn:
+			policy_obj = self.get_object(policy_type, policy_dn)
+		else:
+			policy_obj = self.get_module(policy_type).get(None)
 		policy_obj.clone(obj)
 
 		# There are 2x2x2 (=8) cases that may occur (c.f., Bug #31916):
@@ -629,7 +634,7 @@ if __name__ == "__main__":
 		(r"/udm/([a-z]+/[a-z]+)/properties/([a-z]+)/default", DefaultValue),
 		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/property/([^/]*)/choices", PropertyChoices),
 		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/policies/([a-z]+/[a-z]+)/types", PolicyTypes),
-		(r"/udm/([a-z]+/[a-z]+)/policies/([a-z]+/[a-z]+)/", PolicyResult),
+		(r"/udm/([a-z]+/[a-z]+)/(policies/[a-z]+)/", PolicyResult),
 		(r"/udm/([a-z]+/[a-z]+)/", Objects),
 		(r"/udm/([a-z]+/[a-z]+)/([^/]*)", Object),
 		(r"/udm/networks/network/([^/]*)/next-free-ip-address", NextFreeIpAddress),
