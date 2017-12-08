@@ -130,6 +130,12 @@ if ignore_filter:
 							con_attribute='givenName',
 							single_value=True,
 						),
+					'uidNumber' : univention.s4connector.attribute (
+							ucs_attribute='uidNumber',
+							ldap_attribute='uidNumber',
+							con_attribute='uidNumber',
+							single_value=True,
+						),
 					'displayName': univention.s4connector.attribute (
 							ucs_attribute='displayName',
 							ldap_attribute='displayName',
@@ -355,6 +361,12 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							con_attribute='sAMAccountName',
 							required=1,
 							compare_function=univention.s4connector.compare_lowercase,
+							single_value=True,
+						),
+					'gidNumber' : univention.s4connector.attribute (
+							ucs_attribute='gidNumber',
+							ldap_attribute='gidNumber',
+							con_attribute='gidNumber',
 							single_value=True,
 						),
 					'description': univention.s4connector.attribute (

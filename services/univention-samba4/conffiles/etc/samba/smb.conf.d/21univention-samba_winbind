@@ -19,3 +19,4 @@ if configRegistry.get('samba/winbind/enum/groups'):
 	
 	idmap config * : backend = tdb
 	idmap config * : range = 300000-400000
+	idmap_ldb:use rfc2307 = yes

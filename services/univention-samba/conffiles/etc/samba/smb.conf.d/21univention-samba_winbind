@@ -30,11 +30,15 @@ print '\tidmap config * : ldap_user_dn\t= %s' % (admindn)
 # replacement for deprecated samba/winbind/trusted/domains/only=yes
 if configRegistry.get('windows/domain'):
 	mydomain=configRegistry['windows/domain'].upper()
+	defaultbackend = 'nss'
+	backend = configRegistry.get('samba/idmap/%s/backend' % mydomain, configRegistry.get('samba/idmap/%s/backend' % mydomain.lower(), defaultbackend))
 	defaultrange = '1000-54999'
 	# try uppercase domain, then allow for lowercase, otherwise use defaultrange
 	range = configRegistry.get('samba/idmap/%s/range' % mydomain, configRegistry.get('samba/idmap/%s/range' % mydomain.lower(), defaultrange))
-	print '\tidmap config %s : backend = nss' % (mydomain, )
+	print '\tidmap config %s : backend = %s' % (mydomain, backend)
 	print '\tidmap config %s : range = %s' % (mydomain, range)
+	if backend == 'ad':
+		print '\tidmap config %s : schema_mode = rfc2307' % (mydomain, )
 	### </idmap config v6 for Samba 3.6.0>
 
 if configRegistry.get('samba/winbind/trusted/domains/only', 'no') in ('yes', 'true'):
