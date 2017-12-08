@@ -85,6 +85,10 @@ class Ressource(RequestHandler):
 
 	def get_object(self, object_type, dn):
 		module = self.get_module(object_type)
+		obj = module.get(dn)
+		if not obj:
+			raise NotFound(object_type, dn)
+		return obj
 
 
 def xml_rendering():
@@ -191,6 +195,31 @@ class Report(ReportingBase):
 
 class NextFreeIpAddress(Ressource):
 	"""GET udm/networks/network/$DN/next-ip (get the next free IP in this network)"""
+
+	def get(self, dn):
+		"""Returns the next IP configuration based on the given network object
+
+		requests.options = {}
+			'networkDN' -- the LDAP DN of the network object
+			'increaseCounter' -- if given and set to True, network object counter for IP addresses is increased
+
+		return: {}
+		"""
+		obj = self.get_object('networks/network', dn)
+		try:
+			obj.refreshNextIp()
+		except udm_errors.nextFreeIp:
+			raise NoIpLeft(dn)
+
+		result = {'ip': obj['nextIp'], 'dnsEntryZoneForward': obj['dnsEntryZoneForward'], 'dhcpEntryZone': obj['dhcpEntryZone'], 'dnsEntryZoneReverse': obj['dnsEntryZoneReverse']}
+
+		self.write(json.dumps(result))
+		self.finish()
+
+		if self.request.get_query_argument('increaseCounter'):
+			# increase the next free IP address
+			obj.stepIp()
+			obj.modify()
 
 
 class DefaultValue(Ressource):
