@@ -51,13 +51,15 @@ from ldap.filter import filter_format
 
 from univention.management.console.config import ucr
 from univention.management.console.ldap import get_user_connection, get_machine_connection
-from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, UDM_Settings, _get_syntax
+from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, UDM_Settings, _get_syntax, container_modules, UDM_Error
 import univention.directory.reports as udr
 import univention.admin.uexceptions as udm_errors
+import univention.admin.modules as udm_modules
 # TODO: PAM authentication ?
 # TODO: threads?
 # TODO: use http link header
 # TODO: set Last-Modified
+# FIXME: add_asterisks sanitizer
 
 
 logger = logging.getLogger('umc-udm')
@@ -141,10 +143,103 @@ class ObjectTypes(Ressource):
 	"""get the object types of a specific flavor"""
 
 
-class Navigation(Ressource):
+class ContainerQueryBase(Ressource):
+
+	def _container_query(self, object_type, container, modules, scope):
+		"""Get a list of containers or child objects of the specified container."""
+
+		if not container:
+			container = ucr['ldap/base']
+			defaults = {}
+			if object_type != 'navigation':
+				defaults['$operations$'] = ['search', ],  # disallow edit
+			if object_type in ('dns/dns', 'dhcp/dhcp'):
+				defaults.update({
+					'label': UDM_Module(object_type).title,
+					'icon': 'udm-%s' % (object_type.replace('/', '-'),),
+				})
+			return [dict({
+				'id': container,
+				'label': ldap_dn2path(container),
+				'icon': 'udm-container-dc',
+				'path': ldap_dn2path(container),
+				'objectType': 'container/dc',
+				'$operations$': UDM_Module('container/dc').operations,
+				'$flags$': [],
+				'$childs$': True,
+				'$isSuperordinate$': False,
+			}, **defaults)]
+
+		result = []
+		for xmodule in modules:
+			xmodule = UDM_Module(xmodule)
+			superordinate = None
+			if xmodule.superordinate_names:
+				for module_superordinate in xmodule.superordinate_names:
+					try:
+						superordinate = UDM_Module(module_superordinate).get(container)
+					except UDM_Error:  # the container is not a direct superordinate  # FIXME: get the "real" superordinate; Bug #40885
+						continue
+				if superordinate is None:
+					continue  # superordinate object could not be load -> ignore module
+			try:
+				for item in xmodule.search(container, scope=scope, superordinate=superordinate):
+					module = UDM_Module(item.module)
+					result.append({
+						'id': item.dn,
+						'label': item[module.identifies],
+						'icon': 'udm-%s' % (module.name.replace('/', '-')),
+						'path': ldap_dn2path(item.dn),
+						'objectType': module.name,
+						'$operations$': module.operations,
+						'$flags$': item.oldattr.get('univentionObjectFlag', []),
+						'$childs$': module.childs,
+						'$isSuperordinate$': udm_modules.isSuperordinate(module.module),
+					})
+			except UDM_Error as exc:
+				raise UMC_Error(str(exc))
+
+		return result
+
+
+class Navigation(ContainerQueryBase):
 	"""GET udm/(dns|dhcp|)/navigation/ (the tree content of navigation/DNS/DHCP)"""
-	def get(self, *args, **kwargs):
-		self.write("Hello, world")
+
+	def get(self, object_type):
+		ldap_base = ucr['ldap/base']
+		container = self.get_query_argument('container', None)
+
+		modules = container_modules()
+		scope = 'one'
+		if not container:
+			# get the tree root == the ldap base
+			scope = 'base'
+		elif object_type != 'navigation' and container and ldap_base.lower() == container.lower():
+			# this is the tree root of DNS / DHCP, show all zones / services
+			scope = 'sub'
+			modules = [object_type]
+
+		containers = self._container_query(object_type, container, modules, scope)
+		self.write(json.dumps(containers))
+		self.finish()
+
+
+class MoveDestinations(ContainerQueryBase):
+
+	def get(self, object_type):
+		scope = 'one'
+		modules = container_modules()
+		container = self.get_query_argument('container', None)
+		if not container:
+			scope = 'base'
+
+		containers = self._container_query(object_type, container, modules, scope)
+		self.write(json.dumps(containers))
+		self.finish()
+
+
+class LicenseRequest(Ressource):
+	pass
 
 
 class Properties(Ressource):
@@ -221,7 +316,9 @@ class Containers(Ressource):
 		containers = module.containers
 
 		if self.settings is not None:
-			containers += UDM_Settings().containers(object_type)
+			settings = UDM_Settings()
+			settings.user(self.user_dn)
+			containers += settings.containers(object_type)
 
 		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
 
@@ -637,7 +734,8 @@ if __name__ == "__main__":
 		(r"/udm/", MainHandler),
 		(r"/udm/([a-z]+)/", MainTypes),
 		(r"/udm/([a-z]+)/object-types/", ObjectTypes),
-		(r"/udm/([a-z]+)/navigation/", Navigation),
+		(r"/udm/((?:[a-z]+/[a-z]+)|navigation)/containers/", Navigation),
+		(r"/udm/(([a-z]+/[a-z]+)|navigation)/move-destinations/", MoveDestinations),
 		(r"/udm/([a-z]+/[a-z]+)/options", Options),
 		(r"/udm/([a-z]+/[a-z]+)/templates", Templates),
 		(r"/udm/([a-z]+/[a-z]+)/containers", Containers),
