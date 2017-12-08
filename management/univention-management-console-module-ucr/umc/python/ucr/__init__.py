@@ -224,4 +224,12 @@ class Instance(Base):
 					'description': var.get('description', None),
 				})
 
+		for name, var in base_info.describe_search_term(pattern.pattern).iteritems():
+			variables.append({
+				'key': name,
+				'value': '',
+				'description': var.get('description', None),
+				'isTemplate': True
+			})
+
 		return variables

@@ -170,10 +170,15 @@ define([
 			this._position();
 		},
 
-		newVariable: function() {
+		newVariable: function(item) {
 			this.set('title', _('Add UCR variable'));
 			this._form._widgets.key.set('disabled', false);
 			this.clearForm();
+			if (item) {
+				this._form._widgets.key.set('value', item.key);
+				this._form._widgets.description.set('visible', true);
+				this._form._widgets.description.set('content', item.description);
+			}
 			this.standby(false);
 			this.show();
 		},
@@ -242,8 +247,13 @@ define([
 				iconClass: 'umcIconEdit',
 				isStandardAction: true,
 				isMultiAction: false,
-				callback: lang.hitch(this, function(ids) {
-					if (ids.length) {
+				callback: lang.hitch(this, function(ids, items) {
+					if (items[0].isTemplate) {
+						this._detailDialog.newVariable({
+							key: ids[0].replace(/\.\*/g, _('<your value>')),
+							description: items[0].description || ''
+						});
+					} else if (ids.length) {
 						this._detailDialog.loadVariable(ids[0]);
 					}
 				})
@@ -254,6 +264,9 @@ define([
 				iconClass: 'umcIconDelete',
 				isStandardAction: true,
 				isMultiAction: true,
+				canExecute: function(item) {
+					return !item.isTemplate
+				},
 				callback: lang.hitch(this, function(ids) {
 					dialog.confirm(_('Are you sure to delete the %d selected UCR variable(s)?', ids.length), [{
 						label: _('Cancel'),
