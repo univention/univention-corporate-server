@@ -114,6 +114,13 @@ class Ressource(RequestHandler):
 			raise NotFound(object_type, dn)
 		return obj
 
+	def content_negotiation(self, response):
+		# TODO; parse Accept header
+		# TODO: implement XML
+		self.set_header('Content-Type', 'application/json')
+		self.write(json.dumps(response))
+		self.finish()
+
 
 def xml_rendering():
 	import xml.etree.cElementTree as ET
@@ -156,8 +163,7 @@ class ObjectTypes(Ressource):
 		if superordinate:
 			module = get_module(object_type, superordinate) or module  # FIXME: the object_type param is wrong?!
 		result = module.child_modules
-		self.write(json.dumps(result))
-		self.finish()
+		self.content_negotiation(result)
 
 
 class ObjectTypesNavigation(Ressource):
@@ -171,8 +177,7 @@ class ObjectTypesNavigation(Ressource):
 				'id': module[0],
 				'label': getattr(module[1], 'short_description', module[0])
 			} for module in udm_modules.modules.items()]
-			self.write(json.dumps(result))
-			self.finish()
+			self.content_negotiation(result)
 			return
 
 		if 'None' == container:
@@ -201,8 +206,7 @@ class ObjectTypesNavigation(Ressource):
 			'id': udm_modules.name(module),
 			'label': getattr(module, 'short_description', udm_modules.name(module))
 		} for module in allowed_modules]
-		self.write(json.dumps(result))
-		self.finish()
+		self.content_negotiation(result)
 
 
 class ContainerQueryBase(Ressource):
@@ -282,8 +286,7 @@ class Navigation(ContainerQueryBase):
 			modules = [object_type]
 
 		containers = self._container_query(object_type, container, modules, scope)
-		self.write(json.dumps(containers))
-		self.finish()
+		self.content_negotiation(containers)
 
 
 class MoveDestinations(ContainerQueryBase):
@@ -296,8 +299,7 @@ class MoveDestinations(ContainerQueryBase):
 			scope = 'base'
 
 		containers = self._container_query(object_type, container, modules, scope)
-		self.write(json.dumps(containers))
-		self.finish()
+		self.content_negotiation(containers)
 
 
 class LicenseRequest(Ressource):
@@ -316,8 +318,7 @@ class Properties(Ressource):
 		if searchable:
 			properties = [prop for prop in properties if prop.get('searchable', False)]
 
-		self.write(json.dumps(properties))
-		self.finish()
+		self.content_negotiation(properties)
 
 
 class Options(Ressource):
@@ -326,8 +327,7 @@ class Options(Ressource):
 	def get(self, object_type):
 		"""Returns the options specified for the given object type"""
 		result = self.get_module(object_type).options.keys()
-		self.write(json.dumps(result))
-		self.finish()
+		self.content_negotiation(result)
 
 
 class Layout(Ressource):
@@ -343,8 +343,7 @@ class Layout(Ressource):
 			dn = None
 
 		result = module.get_layout(dn)
-		self.write(json.dumps(result))
-		self.finish()
+		self.content_negotiation(result)
 
 
 class Templates(Ressource):
@@ -362,8 +361,7 @@ class Templates(Ressource):
 				obj.open()
 				result.append({'id': obj.dn, 'label': obj[template.identifies]})
 
-		self.write(json.dumps(result))
-		self.finish()
+		self.content_negotiation(result)
 
 
 class Containers(Ressource):
@@ -384,8 +382,7 @@ class Containers(Ressource):
 
 		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
 
-		self.write(json.dumps(containers))
-		self.finish()
+		self.content_negotiation(containers)
 
 
 class Policies(Ressource):
@@ -394,8 +391,7 @@ class Policies(Ressource):
 	def get(self, object_type):
 		module = self.get_module(object_type)
 		result = module.policies
-		self.write(json.dumps(result))
-		self.finish()
+		self.content_negotiation(result)
 
 
 class ReportingBase(Ressource):
@@ -413,8 +409,7 @@ class ReportTypes(ReportingBase):
 		# _('PDF Document')
 		_ = lambda x: x
 		result = [{'id': name, 'label': _(name)} for name in sorted(self.reports_cfg.get_report_names(object_type))]
-		self.write(json.dumps(result))
-		self.finish()
+		self.content_negotiation(result)
 
 
 class Report(ReportingBase):
@@ -436,8 +431,7 @@ class Report(ReportingBase):
 
 		with open(report_file) as fd:
 			self.set_header('Content-Type', 'text/csv' if report.endswith('.csv') else 'application/pdf')
-			self.write(fd.read())
-			self.finish()
+			self.content_negotiation(fd.read())
 
 
 class NextFreeIpAddress(Ressource):
@@ -460,8 +454,7 @@ class NextFreeIpAddress(Ressource):
 
 		result = {'ip': obj['nextIp'], 'dnsEntryZoneForward': obj['dnsEntryZoneForward'], 'dhcpEntryZone': obj['dhcpEntryZone'], 'dnsEntryZoneReverse': obj['dnsEntryZoneReverse']}
 
-		self.write(json.dumps(result))
-		self.finish()
+		self.content_negotiation(result)
 
 		if self.request.get_query_argument('increaseCounter'):
 			# increase the next free IP address
@@ -475,8 +468,7 @@ class DefaultValue(Ressource):
 	def get(self, object_type, property_):
 		module = self.get_module(object_type)
 		result = module.get_default_values(property_)
-		self.write(json.dumps(result))
-		self.finish()
+		self.content_negotiation(result)
 
 
 class Objects(Ressource):
@@ -539,8 +531,7 @@ class Objects(Ressource):
 				entry[field] = module.property_description(obj, field)
 			entries.append(entry)
 
-		self.write(json.dumps(entries))
-		self.finish()
+		self.content_negotiation(entries)
 
 	def post(self, object_type):
 		"""POST udm/users/user/ (Benutzer hinzufügen)"""
@@ -622,8 +613,7 @@ class Object(Ressource):
 		props['$references$'] = module.get_references(dn)
 		assert '/' not in obj.dn  # TODO: escape /
 		props['url'] = urljoin(self.request.path, obj.dn)
-		self.write(json.dumps(props))
-		self.finish()
+		self.content_negotiation(props)
 
 	def put(self, object_type, dn):
 		"""PUT udm/users/user/$DN (Benutzer hinzufügen / modifizieren)"""
@@ -712,8 +702,7 @@ class PropertyChoices(Ressource):
 			raise NotFound()
 		request_body = {'syntax': syntax.name}  # FIXME
 		choices = read_syntax_choices(_get_syntax(syntax.name), request_body)
-		self.write(json.dumps(choices))
-		self.finish()
+		self.content_negotiation(choices)
 
 
 class PolicyTypes(Ressource):
@@ -723,8 +712,7 @@ class PolicyTypes(Ressource):
 		"""Returns a list of policy types that apply to the given object type"""
 		module = self.get_module(object_type)
 		result = module.policies
-		self.write(json.dumps(result))
-		self.finish()
+		self.content_negotiation(result)
 
 
 class PolicyResult(Ressource):
@@ -790,8 +778,7 @@ class PolicyResult(Ressource):
 					continue
 				infos[key]['value'] = policy_obj.polinfo[key]
 
-		self.write(json.dumps(infos))
-		self.finish()
+		self.content_negotiation(infos)
 
 class Operations(Ressource):
 	"""GET /udm/progress/$progress-id (get the progress of a started operation like move, report, maybe add/put?, ...)"""
