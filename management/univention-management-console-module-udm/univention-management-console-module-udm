@@ -131,6 +131,18 @@ class Navigation(Ressource):
 class Properties(Ressource):
 	"""GET udm/users/user/properties (get properties of users/user object type)"""
 
+	def get(self, object_type, dn):
+		module = self.get_module(object_type)
+		module.load(force_reload=True)  # reload for instant extended attributes
+
+		properties = module.get_properties(dn)
+		searchable = self.get_query_argument('searchable')
+		if searchable:
+			properties = [prop for prop in properties if prop.get('searchable', False)]
+
+		self.write(json.dumps(properties))
+		self.finish()
+
 
 class Options(Ressource):
 	"""GET udm/users/user/options (get options of users/user object type)"""
