@@ -47,6 +47,9 @@ except ImportError:
 
 import tornado.ioloop
 from tornado.web import Application, RequestHandler
+from tornado.concurrent import run_on_executor
+from concurrent.futures import ThreadPoolExecutor
+
 from ldap.filter import filter_format
 
 from univention.management.console.config import ucr
@@ -62,6 +65,8 @@ import univention.admin.modules as udm_modules
 # FIXME: add_asterisks sanitizer
 
 
+MAX_WORKERS = 4
+
 logger = logging.getLogger('umc-udm')
 if 'umc-udm-trfh' not in logger.handlers:
 	handler = TimedRotatingFileHandler('/var/log/univention/umc-udm.log', when='D', interval=7)
@@ -72,6 +77,7 @@ if 'umc-udm-trfh' not in logger.handlers:
 
 
 class Ressource(RequestHandler):
+	executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
 	def force_authorization(self):
 		self.set_header('WWW-Authenticate', 'Basic realm="Univention Management Console"')
@@ -419,6 +425,11 @@ class DefaultValue(Ressource):
 
 class Objects(Ressource):
 
+	@run_on_executor
+	def mod_search(self, module, container, objectProperty, objectPropertyValue, superordinate, scope, hidden):
+		return module.search(container, objectProperty, objectPropertyValue, superordinate, scope, hidden) or []
+
+	@tornado.gen.coroutine
 	def get(self, object_type):
 		"""GET udm/users/user/ (nach Benutzern suchen)"""
 		module = self.get_module(object_type)
@@ -441,7 +452,8 @@ class Objects(Ressource):
 			superordinate = mod.get(superordinate)
 			container = container or superordinate
 
-		result = module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden) or []
+		# result = module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden) or []
+		result = yield self.mod_search(module, container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden) or []
 
 		entries = []
 		for obj in result:
