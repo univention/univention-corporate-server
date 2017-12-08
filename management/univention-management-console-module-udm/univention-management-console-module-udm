@@ -40,6 +40,7 @@ import tornado.ioloop
 from tornado.web import Application, RequestHandler
 from ldap.filter import filter_format
 
+from univention.management.console.config import ucr
 from univention.management.console.ldap import get_user_connection, get_machine_connection
 from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, UDM_Settings
 import univention.directory.reports as udr
@@ -141,6 +142,21 @@ class Layout(Ressource):
 
 class Templates(Ressource):
 	"""GET udm/users/user/templates (get the list of templates of users/user object type)"""
+
+	def get(self, object_type):
+		"""Returns the list of template objects for the given object"""
+
+		module = self.get_module(object_type)
+		result = []
+		if module.template:
+			template = UDM_Module(module.template)
+			objects = template.search(ucr.get('ldap/base'))
+			for obj in objects:
+				obj.open()
+				result.append({'id': obj.dn, 'label': obj[template.identifies]})
+
+		self.write(json.dumps(result))
+		self.finish()
 
 
 class Containers(Ressource):
