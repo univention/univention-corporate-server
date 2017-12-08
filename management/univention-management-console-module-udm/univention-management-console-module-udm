@@ -42,7 +42,7 @@ from ldap.filter import filter_format
 
 from univention.management.console.config import ucr
 from univention.management.console.ldap import get_user_connection, get_machine_connection
-from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, UDM_Settings
+from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, UDM_Settings, _get_syntax
 import univention.directory.reports as udr
 import univention.admin.uexceptions as udm_errors
 # TODO: PAM authentication ?
@@ -526,7 +526,7 @@ class PropertyChoices(Ressource):
 		except KeyError:
 			raise NotFound()
 		request_body = {'syntax': syntax.name}  # FIXME
-		choices = read_syntax_choices(syntax, request_body)
+		choices = read_syntax_choices(_get_syntax(syntax.name), request_body)
 		self.write(json.dumps(choices))
 		self.finish()
 
