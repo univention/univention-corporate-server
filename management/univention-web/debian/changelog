@@ -1,3 +1,9 @@
+univention-web (1.0.42-65) unstable; urgency=medium
+
+  * Bug #45836: fix typo
+
+ -- Florian Best <best@univention.de>  Fri, 08 Dec 2017 09:47:53 +0100
+
 univention-web (1.0.42-64) unstable; urgency=medium
 
   * Bug #45836: fix typo

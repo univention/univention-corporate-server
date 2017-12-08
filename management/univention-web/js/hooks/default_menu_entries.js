@@ -279,7 +279,7 @@ define([
 		login.onLogin(function() {
 		topic.subscribe('/umc/started', function() {
 			var app = require('umc/app');
-			if (!app.getModule('updater') && !app.getModule('schoolrooms') && !app.getModule('stop')) {
+			if (!app.getModule('updater') && !app.getModule('schoolrooms') && !app.getModule('top')) {
 				return;
 			}
 			query('.umcHeaderRight').forEach(function(w) {
