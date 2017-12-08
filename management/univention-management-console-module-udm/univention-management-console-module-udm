@@ -139,6 +139,19 @@ class Options(Ressource):
 class Layout(Ressource):
 	"""GET udm/users/user/layout (get layout of users/user object type)"""
 
+	def get(self, object_type, dn):
+		"""Returns the layout information for the given object type."""
+
+		module = self.get_module(object_type)
+		module.load(force_reload=True)  # reload for instant extended attributes
+
+		if object_type == 'users/self':
+			dn = None
+
+		result = module.get_layout(dn)
+		self.write(json.dumps(result))
+		self.finish()
+
 
 class Templates(Ressource):
 	"""GET udm/users/user/templates (get the list of templates of users/user object type)"""
