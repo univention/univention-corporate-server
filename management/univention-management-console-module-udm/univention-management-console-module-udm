@@ -636,11 +636,9 @@ if __name__ == "__main__":
 	application = Application([
 		(r"/udm/", MainHandler),
 		(r"/udm/([a-z]+)/", MainTypes),
-		(r"/udm/([a-z]+)/object-types", ObjectTypes),
+		(r"/udm/([a-z]+)/object-types/", ObjectTypes),
 		(r"/udm/([a-z]+)/navigation/", Navigation),
-		(r"/udm/([a-z]+/[a-z]+)/properties", Properties),
 		(r"/udm/([a-z]+/[a-z]+)/options", Options),
-		(r"/udm/([a-z]+/[a-z]+)/layout", Layout),
 		(r"/udm/([a-z]+/[a-z]+)/templates", Templates),
 		(r"/udm/([a-z]+/[a-z]+)/containers", Containers),
 		(r"/udm/([a-z]+/[a-z]+)/policies", Policies),
