@@ -6,6 +6,6 @@ src: univention-web
 fix: 
 desc: |
  This update addresses the following issue(s):
- * An error that prevented the menu content
-   from being loaded has been corrected
+ * A javascript error that prevented the execution of startup hooks causing
+   the menu to be empty on the portal site.
 bug: [45836]
