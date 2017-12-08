@@ -544,18 +544,14 @@ class PolicyTypes(Ressource):
 
 
 class PolicyResult(Ressource):
-	"""GET udm/users/user/policies/$policy_type?container=...&policy=...&object=... (get the possible policies of the policy-type for user objects located at the containter)"""
+	"""GET udm/users/user/policies/$policy_type/$dn?container=true...&policy=... (get the possible policies of the policy-type for user objects located at the containter)"""
 
-	def get(self, object_type, policy_type):
+	def get(self, object_type, policy_type, dn):
 		"""Returns a virtual policy object containing the values that
 		the given object or container inherits"""
 
-		container = self.get_query_argument('container', None)
-		is_container = bool(container)
+		is_container = bool(self.get_query_argument('container', None))
 		policy_dn = self.get_query_argument('policy', None)
-		dn = self.get_query_argument('object', None)
-		if not dn and not policy_dn and not container:
-			raise NotFound()
 
 		if is_container:
 			# editing a new (i.e. non existing) object -> use the parent container
@@ -633,8 +629,8 @@ if __name__ == "__main__":
 		(r"/udm/([a-z]+/[a-z]+)/report/([^/]+)", Report),
 		(r"/udm/([a-z]+/[a-z]+)/properties/([a-z]+)/default", DefaultValue),
 		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/property/([^/]*)/choices", PropertyChoices),
-		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/policies/([a-z]+/[a-z]+)/types", PolicyTypes),
-		(r"/udm/([a-z]+/[a-z]+)/(policies/[a-z]+)/", PolicyResult),
+		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/(policies/[a-z]+)/", PolicyTypes),
+		(r"/udm/([a-z]+/[a-z]+)/(policies/[a-z]+)/([^/]*)/", PolicyResult),
 		(r"/udm/([a-z]+/[a-z]+)/", Objects),
 		(r"/udm/([a-z]+/[a-z]+)/([^/]*)", Object),
 		(r"/udm/networks/network/([^/]*)/next-free-ip-address", NextFreeIpAddress),
