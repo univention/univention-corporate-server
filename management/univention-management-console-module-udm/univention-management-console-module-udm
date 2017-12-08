@@ -138,7 +138,7 @@ class Properties(Ressource):
 		module.load(force_reload=True)  # reload for instant extended attributes
 
 		properties = module.get_properties(dn)
-		searchable = self.get_query_argument('searchable')
+		searchable = self.get_query_argument('searchable', False)
 		if searchable:
 			properties = [prop for prop in properties if prop.get('searchable', False)]
 
@@ -151,13 +151,13 @@ class Options(Ressource):
 
 	def get(self, object_type):
 		"""Returns the options specified for the given object type"""
-		result = self.get_module(object_type).options
+		result = self.get_module(object_type).options.keys()
 		self.write(json.dumps(result))
 		self.finish()
 
 
 class Layout(Ressource):
-	"""GET udm/users/user/layout (get layout of users/user object type)"""
+	"""GET udm/users/user/$dn/layout (get layout of users/user object type)"""
 
 	def get(self, object_type, dn):
 		"""Returns the layout information for the given object type."""
@@ -195,9 +195,6 @@ class Templates(Ressource):
 class Containers(Ressource):
 	"""GET udm/users/user/containers (get default containers for users/user)"""
 
-	def initialize(self):
-		self.settings = UDM_Settings()
-
 	def get(self, object_type):
 		"""Returns the list of default containers for the given object
 		type. Therefor the python module and the default object in the
@@ -207,7 +204,7 @@ class Containers(Ressource):
 		containers = module.containers
 
 		if self.settings is not None:
-			containers += self.settings.containers(object_type)
+			containers += UDM_Settings().containers(object_type)
 
 		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
 
@@ -617,26 +614,27 @@ if __name__ == "__main__":
 	application = Application([
 		(r"/udm/", MainHandler),
 		(r"/udm/users/", MainTypes),
-		(r"/udm/users/object-types", ObjectTypes),
+		(r"/udm/users/object-types/", ObjectTypes),
 		(r"/udm/([a-z]+)/navigation/", Navigation),
-		(r"/udm/([a-z]+/[a-z]+)/properties", Properties),
 		(r"/udm/([a-z]+/[a-z]+)/options", Options),
-		(r"/udm/([a-z]+/[a-z]+)/layout", Layout),
 		(r"/udm/([a-z]+/[a-z]+)/templates", Templates),
 		(r"/udm/([a-z]+/[a-z]+)/containers", Containers),
 		(r"/udm/([a-z]+/[a-z]+)/policies", Policies),
 		(r"/udm/([a-z]+/[a-z]+)/report-types", ReportTypes),
 		(r"/udm/([a-z]+/[a-z]+)/report/([^/]+)", Report),
-		(r"/udm/([a-z]+/[a-z]+)/properties/([a-z]+)/default", DefaultValue),
-		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/property/([^/]*)/choices", PropertyChoices),
-		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/(policies/[a-z]+)/", PolicyTypes),
-		(r"/udm/([a-z]+/[a-z]+)/(policies/[a-z]+)/([^/]*)/", PolicyResult),
+		(r"/udm/([a-z]+/[a-z]+)/([^/]+)/properties/", Properties),
+		(r"/udm/([a-z]+/[a-z]+)/([^/]+)/properties/([^/]+)/choices", PropertyChoices),
+		(r"/udm/([a-z]+/[a-z]+)/properties/([^/]+)/default", DefaultValue),
+		(r"/udm/([a-z]+/[a-z]+)/([^/]+)/(policies/[a-z]+)/", PolicyTypes),
+		(r"/udm/([a-z]+/[a-z]+)/(policies/[a-z]+)/([^/]+)/", PolicyResult),
 		(r"/udm/([a-z]+/[a-z]+)/", Objects),
-		(r"/udm/([a-z]+/[a-z]+)/([^/]*)", Object),
-		(r"/udm/networks/network/([^/]*)/next-free-ip-address", NextFreeIpAddress),
+		(r"/udm/([a-z]+/[a-z]+)/([^/]+)", Object),
+		(r"/udm/([a-z]+/[a-z]+)/([^/]+)/layout", Layout),
+		(r"/udm/networks/network/([^/]+)/next-free-ip-address", NextFreeIpAddress),
 		(r"/udm/progress/$progress-id", Operations),  # operations?
 		# TODO: possible move locations
 		# TODO: meta info
+		# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
 	])
 	application.listen(8888)
 	tornado.ioloop.IOLoop.current().start()
