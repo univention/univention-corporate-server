@@ -44,6 +44,7 @@ from univention.management.console.config import ucr
 from univention.management.console.ldap import get_user_connection, get_machine_connection
 from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, UDM_Settings
 import univention.directory.reports as udr
+import univention.admin.uexceptions as udm_errors
 # TODO: PAM authentication ?
 # TODO: threads?
 # TODO: use http link header
@@ -470,6 +471,49 @@ class Object(Ressource):
 
 	def options(self, object_type, dn):
 		self.set_header('Allow', 'GET, PUT, DELETE, OPTIONS')
+
+	def _validate(self, object_type):
+		"""Validates the correctness of values for properties of the
+		given object type. Therefor the syntax definition of the properties is used.
+
+		return: [ { 'property' : <name>, 'valid' : (True|False), 'details' : <message> }, ... ]
+		"""
+
+		module = self.get_module(object_type)
+
+		result = []
+		for property_name, value in self.request.body_arguments.items():
+			# ignore special properties named like $.*$, e.g. $options$
+			if property_name.startswith('$') and property_name.endswith('$'):
+				continue
+			property_obj = module.get_property(property_name)
+
+			if property_obj is None:
+				raise BadRequest(_('Property %s not found') % property_name)
+
+			if not property_obj.multivalue:
+				value = value[0]
+
+			# check each element if 'value' is a list
+			if isinstance(value, (tuple, list)) and property_obj.multivalue:
+				subResults = []
+				subDetails = []
+				for ival in value:
+					try:
+						property_obj.syntax.parse(ival)
+						subResults.append(True)
+						subDetails.append('')
+					except (udm_errors.valueInvalidSyntax, udm_errors.valueError, TypeError) as exc:
+						subResults.append(False)
+						subDetails.append(str(exc))
+				result.append({'property': property_name, 'valid': subResults, 'details': subDetails})
+			# otherwise we have a single value
+			else:
+				try:
+					property_obj.syntax.parse(value)
+					result.append({'property': property_name, 'valid': True})
+				except (udm_errors.valueInvalidSyntax, udm_errors.valueError) as exc:
+					result.append({'property': property_name, 'valid': False, 'details': str(exc)})
 
 
 class PropertyChoices(Ressource):
