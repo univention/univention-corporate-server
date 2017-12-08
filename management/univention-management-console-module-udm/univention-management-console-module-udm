@@ -38,12 +38,7 @@ import base64
 import binascii
 import logging
 from logging.handlers import TimedRotatingFileHandler
-try:
-	from urlparse import urljoin, urlparse, parse_qs
-	from urllib import quote as url_quote
-except ImportError:
-	# Python 3
-	from urllib.parse import urljoin, quote as url_quote, urlparse, parse_qs
+from urlparse import urljoin
 
 import tornado.ioloop
 from tornado.web import Application, RequestHandler
@@ -63,6 +58,7 @@ import univention.admin.modules as udm_modules
 # TODO: use http link header
 # TODO: set Last-Modified
 # FIXME: add_asterisks sanitizer
+# FIXME: prevent in the javascript that navigation container quer is called with container=='None'
 
 
 MAX_WORKERS = 4
@@ -147,6 +143,66 @@ class MainTypes(Ressource):
 
 class ObjectTypes(Ressource):
 	"""get the object types of a specific flavor"""
+
+	def get(self, object_type):
+		"""Returns the list of object types matching the given flavor or container.
+
+		requests.options = {}
+			'superordinate' -- if available only types for the given superordinate are returned (not for the navigation)
+			'container' -- if available only types suitable for the given container are returned (only for the navigation)
+		"""
+		superordinate = self.get_query_argument('superordinate', None)
+		module = UDM_Module(object_type)
+		if superordinate:
+			module = get_module(object_type, superordinate) or module  # FIXME: the object_type param is wrong?!
+		result = module.child_modules
+		self.write(json.dumps(result))
+		self.finish()
+
+
+class ObjectTypesNavigation(Ressource):
+
+	def get(self):
+		superordinate = self.get_query_argument('superordinate', None)
+		container = self.get_query_argument('container', None) or superordinate
+		if not container:
+			# no container is specified, return all existing object types
+			result = [{
+				'id': module[0],
+				'label': getattr(module[1], 'short_description', module[0])
+			} for module in udm_modules.modules.items()]
+			self.write(json.dumps(result))
+			self.finish()
+			return
+
+		if 'None' == container:
+			# if 'None' is given, use the LDAP base
+			container = ucr.get('ldap/base')
+
+		# create a list of modules that can be created
+		# ... all container types except container/dc
+		allowed_modules = set([m for m in udm_modules.containers if udm_modules.name(m) != 'container/dc'])
+
+		# the container may be a superordinate or have one as its parent
+		# (or grandparent, ....)
+		superordinate = udm_modules.find_superordinate(container, None, self.ldap_connection)
+		if superordinate:
+			# there is a superordinate... add its subtypes to the list of allowed modules
+			allowed_modules.update(udm_modules.subordinates(superordinate))
+		else:
+			# add all types that do not have a superordinate
+			allowed_modules.update(mod for mod in udm_modules.modules.values() if not udm_modules.superordinates(mod))
+
+		# make sure that the object type can be created
+		allowed_modules = [mod for mod in allowed_modules if udm_modules.supports(mod, 'add')]
+
+		# return the final list of object types
+		result = [{
+			'id': udm_modules.name(module),
+			'label': getattr(module, 'short_description', udm_modules.name(module))
+		} for module in allowed_modules]
+		self.write(json.dumps(result))
+		self.finish()
 
 
 class ContainerQueryBase(Ressource):
@@ -745,7 +801,8 @@ if __name__ == "__main__":
 	application = Application([
 		(r"/udm/", MainHandler),
 		(r"/udm/([a-z]+)/", MainTypes),
-		(r"/udm/([a-z]+)/object-types/", ObjectTypes),
+		(r"/udm/([a-z]+/[a-z]+)/object-types/", ObjectTypes),
+		(r"/udm/navigation/object-types/", ObjectTypesNavigation),
 		(r"/udm/((?:[a-z]+/[a-z]+)|navigation)/containers/", Navigation),
 		(r"/udm/(([a-z]+/[a-z]+)|navigation)/move-destinations/", MoveDestinations),
 		(r"/udm/([a-z]+/[a-z]+)/options", Options),
