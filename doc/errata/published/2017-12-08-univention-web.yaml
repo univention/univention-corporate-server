@@ -9,3 +9,5 @@ desc: |
  * A javascript error that prevented the execution of startup hooks causing
    the menu to be empty on the portal site.
 bug: [45836]
+erratum: 246
+announced: 2017-12-08
