@@ -1,9 +1,3 @@
-crudesaml (2.0.0-1) unstable; urgency=medium
-
-  * Bug #45841: UCS-4.3 version bump
-
- -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:54 +0100
-
 crudesaml (1.8.0-3) unstable; urgency=medium
 
   * Bug #39355: Only patch what fixed the segfault 
