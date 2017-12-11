@@ -1,0 +1,20 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: icu
+fix: 52.1-8+deb8u6A~4.2.0.201712111856
+desc: |
+ This update addresses the folliwing issues:
+ * out-of-bounds write caused by a heap-based buffer overflow related to the
+   utf8TextAccess function in common/utext.cpp and the utext_setNativeIndex*
+   function (CVE-2017-7867)
+ * out-of-bounds write caused by a heap-based buffer overflow related to the
+   utf8TextAccess function in common/utext.cpp and the utext_moveIndex32*
+   function (CVE-2017-7868)
+ * double free in createMetazoneMappings() (CVE-2017-14952)
+bug: [44415]
+cve:
+- CVE-2017-7867
+- CVE-2017-7868
+- CVE-2017-14952
