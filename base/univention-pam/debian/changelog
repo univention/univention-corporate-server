@@ -1,3 +1,9 @@
+univention-pam (11.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:44 +0100
+
 univention-pam (10.0.0-4) unstable; urgency=low
 
   * Bug #43287: Switch to useing user_envfile=

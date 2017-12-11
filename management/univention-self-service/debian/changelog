@@ -1,3 +1,9 @@
+univention-self-service (3.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:28 +0100
+
 univention-self-service (2.0.17-14) unstable; urgency=medium
 
   * Bug #45457: display a confirmation dialog before redirecting

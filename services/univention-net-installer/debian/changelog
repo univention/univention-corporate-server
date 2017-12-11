@@ -1,3 +1,9 @@
+univention-net-installer (11.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:37 +0100
+
 univention-net-installer (10.0.0-6) unstable; urgency=medium
 
   * Bug #45739: Adapt to UCS-4.2-3

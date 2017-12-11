@@ -1,3 +1,9 @@
+univention-saml (5.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:54 +0100
+
 univention-saml (4.0.14-12) unstable; urgency=medium
 
   * Bug #44121: SSO login page now shows domainname instead of hostfqdn

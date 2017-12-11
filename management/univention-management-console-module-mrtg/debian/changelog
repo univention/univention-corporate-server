@@ -1,3 +1,9 @@
+univention-management-console-module-mrtg (6.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:27 +0100
+
 univention-management-console-module-mrtg (5.0.0-3) unstable; urgency=medium
 
   * Bug #45192: mrtg statistics under /var/www/statistic are now access protected and get delivered to UMC via backend

@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:28 +0100
+
 univention-management-console-module-diagnostic (3.0.1-26) unstable; urgency=medium
 
   * Bug #44876: diagnostic: add fix-button to 42_samba_tool_sysvolcheck.py

@@ -1,3 +1,9 @@
+univention-home-mounter (9.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:47 +0100
+
 univention-home-mounter (8.0.0-2) unstable; urgency=low
 
   * Bug #39394: debian/control: Add priority

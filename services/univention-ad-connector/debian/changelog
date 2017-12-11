@@ -1,3 +1,9 @@
+univention-ad-connector (12.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:33 +0100
+
 univention-ad-connector (11.0.6-33) unstable; urgency=medium
 
   * Bug #43745: depend on explicit version of univention-lib

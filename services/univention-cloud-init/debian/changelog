@@ -1,3 +1,9 @@
+univention-cloud-init (5.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:37 +0100
+
 univention-cloud-init (4.0.2-1) unstable; urgency=medium
 
   * Bug #43509: dijitHidden → dijitDisplayNone

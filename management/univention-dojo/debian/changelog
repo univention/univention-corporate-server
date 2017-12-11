@@ -1,3 +1,9 @@
+univention-dojo (11.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:25 +0100
+
 univention-dojo (10.0.0-4) unstable; urgency=medium
 
   * Bug #44059: Center standby animation relative to viewport

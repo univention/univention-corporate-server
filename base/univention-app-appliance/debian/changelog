@@ -1,3 +1,9 @@
+univention-app-appliance (2.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:51 +0100
+
 univention-app-appliance (1.0.2-34) unstable; urgency=medium
 
   * Bug #43999: Adjust styling of dialogs

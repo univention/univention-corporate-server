@@ -1,3 +1,9 @@
+univention-web (2.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:25 +0100
+
 univention-web (1.0.42-65) unstable; urgency=medium
 
   * Bug #45836: fix typo

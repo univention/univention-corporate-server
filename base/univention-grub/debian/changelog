@@ -1,3 +1,9 @@
+univention-grub (11.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:50 +0100
+
 univention-grub (10.0.0-2) unstable; urgency=low
 
   * Bug #44214: Depends directly on correct GRUB EFI package

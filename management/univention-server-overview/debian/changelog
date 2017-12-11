@@ -1,3 +1,9 @@
+univention-server-overview (1.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:24 +0100
+
 univention-server-overview (0.0.3-9) unstable; urgency=medium
 
   * Bug #44059: Add login button
