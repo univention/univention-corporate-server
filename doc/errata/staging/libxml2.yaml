@@ -1,0 +1,33 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: libxml2
+fix: 2.9.1+dfsg1-5+deb8u5A~4.2.0.201712111929
+desc: |
+ This update addresses the following issues:
+ * A remote code execution vulnerability in libxml2 could enable an attacker
+   using a specially crafted file to execute arbitrary code within the
+   context of an unprivileged process. This issue is rated as High due to
+   the possibility of remote code execution in an application that uses this
+   library (CVE-2017-0663)
+ * Missing validation for external entities in xmlParsePEReference
+   (CVE-2017-7375)
+ * Incorrect limit used for port values (CVE-2017-7376)
+ * Denial of Service (application crash) due to buffer overflow in function
+   xmlSnprintfElementContent in valid.c (CVE-2017-9047)
+ * Denial of Service (application crash) due to stack-based buffer overflow
+   in the function xmlSnprintfElementContent in valid.c (CVE-2017-9048)
+ * Denial of Service (application crash) due to heap-based buffer over-read
+   in the xmlDictComputeFastKey function in dict.c (CVE-2017-9049)
+ * Denial of Service (application crash) due to heap-based buffer over-read
+   in the xmlDictAddString function in dict.c (CVE-2017-9050)
+bug: [45355]
+cve:
+- CVE-2017-0663
+- CVE-2017-7375
+- CVE-2017-7376
+- CVE-2017-9047
+- CVE-2017-9048
+- CVE-2017-9049
+- CVE-2017-9050
