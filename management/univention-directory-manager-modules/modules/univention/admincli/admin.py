@@ -740,8 +740,10 @@ def _doit(arglist):
 
 			exists = 0
 			exists_msg = None
+			created = False
 			try:
 				dn = object.create()
+				created = True
 			except univention.admin.uexceptions.objectExists as exc:
 				exists_msg = '%s' % (exc,)
 				dn = exc.args[0]
@@ -789,8 +791,8 @@ def _doit(arglist):
 				out.append('E: The DHCP entry for this host should contain the zone dn, the ip address and the mac address.')
 				return out + ["OPERATION FAILED"]
 			except univention.admin.uexceptions.invalidOptions as e:
+				out.append('E: invalid Options: %s' % e)
 				if not ignore_exists:
-					out.append('E: invalid Options: %s' % e)
 					return out + ["OPERATION FAILED"]
 			except univention.admin.uexceptions.insufficientInformation as exc:
 				out.append('E: Insufficient information: %s' % (exc,))
@@ -814,7 +816,7 @@ def _doit(arglist):
 					out.append('Object exists: %s' % exists_msg)
 				else:
 					out.append('Object exists')
-			else:
+			elif created:
 				out.append('Object created: %s' % _2utf8(dn))
 
 	#+++# ACTION MODIFY #+++#
