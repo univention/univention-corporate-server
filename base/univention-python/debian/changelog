@@ -1,3 +1,9 @@
+univention-python (11.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:43 +0100
+
 univention-python (10.0.4-5) unstable; urgency=medium
 
   * Bug #45505: fix typo in modify_ext is called instead of modify_ext_s()

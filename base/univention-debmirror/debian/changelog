@@ -1,3 +1,9 @@
+univention-debmirror (9.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:50 +0100
+
 univention-debmirror (8.0.0-3) unstable; urgency=low
 
   * Bug #42296: fix apache config

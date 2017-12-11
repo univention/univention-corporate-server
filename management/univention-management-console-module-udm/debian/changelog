@@ -1,3 +1,9 @@
+univention-management-console-module-udm (8.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:25 +0100
+
 univention-management-console-module-udm (7.0.10-24) unstable; urgency=medium
 
   * Bug #45574: enable standby animation during loading of objects

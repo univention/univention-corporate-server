@@ -1,3 +1,9 @@
+univention-errata-level (5.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:51 +0100
+
 univention-errata-level (4.2.0-0) unstable; urgency=low
 
   * Bug #41963: Bump version to reset the errata level for UCS 4.2

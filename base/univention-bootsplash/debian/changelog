@@ -1,3 +1,9 @@
+univention-bootsplash (9.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:47 +0100
+
 univention-bootsplash (8.0.0-15) unstable; urgency=medium
 
   * Bug #45031: Aligned welcome screen header logo

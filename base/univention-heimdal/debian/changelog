@@ -1,3 +1,9 @@
+univention-heimdal (11.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:45 +0100
+
 univention-heimdal (10.0.0-8) unstable; urgency=low
 
   * Bug #43919: Remove pidfile annotation

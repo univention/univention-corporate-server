@@ -1,3 +1,9 @@
+univention-mail-cyrus (10.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:29 +0100
+
 univention-mail-cyrus (9.0.0-12) unstable; urgency=low
 
   * Bug #44594: Remove duplicate service file (patch by phahn)

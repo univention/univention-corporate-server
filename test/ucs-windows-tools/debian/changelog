@@ -1,3 +1,9 @@
+ucs-windows-tools (5.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:53 +0100
+
 ucs-windows-tools (4.0.1-10) unstable; urgency=medium
 
   * Bug #43974: move ucs-winrm to shared utils 

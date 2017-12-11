@@ -1,3 +1,9 @@
+univention-l10n-fr (2.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:50 +0100
+
 univention-l10n-fr (1.2.1-2) unstable; urgency=medium
 
   * Bug #44133: fixed a typo

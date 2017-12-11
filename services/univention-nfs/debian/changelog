@@ -1,3 +1,9 @@
+univention-nfs (10.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:37 +0100
+
 univention-nfs (9.0.0-3) unstable; urgency=low
 
   * Bug #32272: Remove remaining HA support

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (6.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:39 +0100
+
 univention-virtual-machine-manager-node (5.0.0-6) unstable; urgency=low
 
   * Bug #43470: Handle UCRV */autostart through systemd

@@ -1,3 +1,9 @@
+univention-portal (2.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:29 +0100
+
 univention-portal (1.0.12-13) unstable; urgency=medium
 
   * Bug #45688: don't crash if the portal name is not translated into en_US
