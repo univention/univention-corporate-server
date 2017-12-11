@@ -1,0 +1,42 @@
+product: ucs
+release: "4.1"
+version: [4,5]
+scope: ucs_4.1-0-errata4.1-5
+src: libxml2
+fix: 2.8.0+dfsg1-7.58.201712111940
+desc: |
+ This update addresses the following issues:
+ * A remote code execution vulnerability in libxml2 could enable an attacker
+   using a specially crafted file to execute arbitrary code within the
+   context of an unprivileged process. This issue is rated as High due to
+   the possibility of remote code execution in an application that uses this
+   library (CVE-2017-0663)
+ * heap overflow in memory debug code (CVE-2017-5130)
+ * Missing validation for external entities in xmlParsePEReference
+   (CVE-2017-7375)
+ * Incorrect limit used for port values (CVE-2017-7376)
+ * Denial of Service (application crash) due to buffer overflow in function
+   xmlSnprintfElementContent in valid.c (CVE-2017-9047)
+ * Denial of Service (application crash) due to stack-based buffer overflow
+   in the function xmlSnprintfElementContent in valid.c (CVE-2017-9048)
+ * Denial of Service (application crash) due to heap-based buffer over-read
+   in the xmlDictComputeFastKey function in dict.c (CVE-2017-9049)
+ * Denial of Service (application crash) due to heap-based buffer over-read
+   in the xmlDictAddString function in dict.c (CVE-2017-9050)
+ * parser.c mishandles parameter-entity references because the NEXTL macro
+   calls the xmlParserHandlePEReference function in the case of a '%'
+   character in a DTD name (CVE-2017-16931)
+ * parser.c does not prevent infinite recursion in parameter entities
+   (CVE-2017-16932)
+bug: [44971]
+cve:
+- CVE-2017-0663
+- CVE-2017-5130
+- CVE-2017-7375
+- CVE-2017-7376
+- CVE-2017-9047
+- CVE-2017-9048
+- CVE-2017-9049
+- CVE-2017-9050
+- CVE-2017-16931
+- CVE-2017-16932
