@@ -263,11 +263,16 @@ define([
 			if (hasCollator) {
 				var intlCollator =  new Intl.Collator(kernel.locale, {numeric: true});
 				stringCompare = function(a, b) {
-					return intlCollator.compare(a, b) < 0;
+					return intlCollator.compare(a, b);
 				};
 			} else {
 				stringCompare = function(a, b) {
-					return a.toLowerCase() < b.toLowerCase();
+					if (a.toLowerCase() < b.toLowerCase()) {
+						return -1;
+					} else if (a.toLowerCase() > b.toLowerCase()) {
+						return 1;
+					}
+					return 0;
 				};
 			}
 			var compare = function(aValue, bValue) {
@@ -276,20 +281,19 @@ define([
 				if (typeof(a) === 'string' && typeof(b) === 'string') {
 					return stringCompare(a, b);
 				}
-				return a < b;
+				if (a < b) {
+					return -1;
+				} else if (a > b) {
+					return 1;
+				}
+				return 0;
 			};
 			return function(data) {
-				var comparison;
 				data = data.slice();
 				data.sort(function(a,b) {
-					var descending = sorter.descending;
 					var aValue = a[sorter.property];
 					var bValue = b[sorter.property];
-					var isALessThanB = typeof bValue === 'undefined' ||
-						bValue === null && typeof aValue !== 'undefined' ||
-						aValue !== null && compare(aValue, bValue);
-					comparison = Boolean(descending) === isALessThanB ? 1 : -1;
-					return comparison;
+					return compare(aValue, bValue) * sorter.descending;
 				});
 				return data;
 			};
