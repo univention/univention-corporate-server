@@ -1,9 +1,3 @@
-npm (2.0.0-1) unstable; urgency=medium
-
-  * Bug #45841: UCS-4.3 version bump
-
- -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:24 +0100
-
 npm (1.4.27-1) unstable; urgency=medium
 
   * Bug #35654: version bump to corresponding npm version

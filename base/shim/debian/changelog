@@ -1,9 +1,3 @@
-shim (1.0.0-1) unstable; urgency=medium
-
-  * Bug #45841: UCS-4.3 version bump
-
- -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:48 +0100
-
 shim (0.7-5) unstable; urgency=medium
 
   * fix CVE-2014-3675 (Bug #36167)
