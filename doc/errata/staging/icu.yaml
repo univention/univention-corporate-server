@@ -1,0 +1,18 @@
+product: ucs
+release: "4.1"
+version: [4,5]
+scope: ucs_4.1-0-errata4.1-5
+src: icu
+fix: 4.8.1.1-12.33.201712111858
+desc: |
+ This update addresses the folliwing issues:
+ * out-of-bounds write caused by a heap-based buffer overflow related to the
+   utf8TextAccess function in common/utext.cpp and the utext_setNativeIndex*
+   function (CVE-2017-7867)
+ * out-of-bounds write caused by a heap-based buffer overflow related to the
+   utf8TextAccess function in common/utext.cpp and the utext_moveIndex32*
+   function (CVE-2017-7868)
+bug: [44665]
+cve:
+- CVE-2017-7867
+- CVE-2017-7868
