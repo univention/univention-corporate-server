@@ -80,9 +80,3 @@ echo "Test 123 Conf" >/var/lib/univention-appcenter/apps/%(app_name)s/conf/test1
 		res = lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app.app_name[:5])
 		if res:
 			fail('The LDAP object has not been removed: %s' % res)
-
-		# Check for the backup container
-		res = subprocess.call('docker images  | grep appcenter-backup-%s' % app.app_name, shell=True)
-		if res != 0:
-			subprocess.call('docker images' % app.app_name, shell=True)
-			fail('Backup container appcenter-backup-%s was not found' % app.app_name)
