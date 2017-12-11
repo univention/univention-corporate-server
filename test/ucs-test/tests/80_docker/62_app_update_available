@@ -48,8 +48,8 @@ if __name__ == '__main__':
 			app.execute_command_in_container('univention-run-join-scripts -dcaccount "%s" -dcpwd "/.pwd"' % admin_credentials.username)
 			app.execute_command_in_container('/usr/share/univention-updater/univention-updater-check')
 			res = app.execute_command_in_container('/usr/share/univention-docker-container-mode/update_available')
-			if res:
-				fail('update_available returned [%s] instead of []' % res)
+			if 'packages' in res:
+				fail('update_available returned [%s]' % res)
 
 			test_package_v2 = DebianPackage(name=package_name, version='0.2')
 			test_package_v2.build()
@@ -57,7 +57,7 @@ if __name__ == '__main__':
 			app.execute_command_in_container('/usr/share/univention-updater/univention-updater-check')
 			app.execute_command_in_container('ucr unset update/container/check/type update/container/check/last')
 			res = app.execute_command_in_container('/usr/share/univention-docker-container-mode/update_available')
-			if res != 'packages\n':
+			if 'packages' not in res:
 				fail('update_available returned [%s] instead of [packages\n]' % res)
 
 			app.execute_command_in_container('ucr set version/version=4.0 version/patchlevel=12')
