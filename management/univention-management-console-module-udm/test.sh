@@ -1,6 +1,13 @@
 #!/bin/bash
 # shortcut to test some requests
 
+# Folgende Apache Regel ist notwendig in univention.conf:
+# <LocationMatch "^/univention/(udm/.*)">
+#        ProxyPassMatch http://127.0.0.1:8888/$1 retry=0 timeout=311
+#</LocationMatch>
+
+
+
 base="http://Administrator:univention@10.200.27.130:8888/udm"
 
 _curl() {
