@@ -1,0 +1,55 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: openjdk-7
+fix: 7u151-2.6.11-2~deb8u1A~4.2.0.201712111344
+desc: |
+ This update addresses several unspecified issues, see
+ * http://www.oracle.com/technetwork/security-advisory/cpuapr2017verbose-3236619.html
+ * http://www.oracle.com/technetwork/security-advisory/cpujul2017verbose-3236625.html
+ * http://www.oracle.com/technetwork/security-advisory/cpuoct2017verbose-3236627.html
+bug: [44687]
+cve:
+- CVE-2017-3509
+- CVE-2017-3511
+- CVE-2017-3526
+- CVE-2017-3533
+- CVE-2017-3539
+- CVE-2017-3544
+- CVE-2017-10053
+- CVE-2017-10067
+- CVE-2017-10074
+- CVE-2017-10081
+- CVE-2017-10087
+- CVE-2017-10089
+- CVE-2017-10090
+- CVE-2017-10096
+- CVE-2017-10101
+- CVE-2017-10102
+- CVE-2017-10107
+- CVE-2017-10108
+- CVE-2017-10109
+- CVE-2017-10110
+- CVE-2017-10115
+- CVE-2017-10116
+- CVE-2017-10118
+- CVE-2017-10135
+- CVE-2017-10176
+- CVE-2017-10193
+- CVE-2017-10198
+- CVE-2017-10243
+- CVE-2017-10274
+- CVE-2017-10281
+- CVE-2017-10285
+- CVE-2017-10295
+- CVE-2017-10345
+- CVE-2017-10346
+- CVE-2017-10347
+- CVE-2017-10348
+- CVE-2017-10349
+- CVE-2017-10350
+- CVE-2017-10355
+- CVE-2017-10356
+- CVE-2017-10357
+- CVE-2017-10388
