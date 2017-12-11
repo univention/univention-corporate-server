@@ -496,7 +496,8 @@ define([
 			setTimeout(function() {
 				domClass.add(valueField.domNode, 'saving');
 			}, 10);
-			return this._inPlaceEdit(item, newValue, addToHistory).then(lang.hitch(this, function() {
+			var deferred = this._inPlaceEdit(item, newValue, addToHistory);
+			deferred.then(lang.hitch(this, function() {
 				valueField.initialValue = newValue;
 				defer.then(lang.hitch(this, function() {
 					domClass.remove(valueField.domNode, 'saving');
@@ -514,6 +515,7 @@ define([
 					}), 1550);
 				}));
 			}));
+			return deferred;
 		},
 
 		_inPlaceEdit: function(item, newValue, addToHistory) {
@@ -526,8 +528,7 @@ define([
 				options[idProperty] = item.key;
 			}
 			deferred = this.eventlessStore.put(item, options, false);
-
-			return deferred.then(lang.hitch(this, function() {
+			deferred.then(lang.hitch(this, function() {
 				if (addToHistory) {
 					if (!this.changes[item.key]) {
 						this.changes[item.key] = [];
@@ -540,6 +541,8 @@ define([
 				// TODO error case
 				console.log('saving ucr variable failed');
 			}));
+
+			return deferred;
 		},
 
 		_revert: function(item, valueField) {
