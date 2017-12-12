@@ -1,3 +1,9 @@
+univention-join (9.0.3-12) unstable; urgency=medium
+
+  * Bug #42110: style changes
+
+ -- Florian Best <best@univention.de>  Tue, 12 Dec 2017 16:16:10 +0100
+
 univention-join (9.0.3-11) unstable; urgency=medium
 
   * Bug #42110: Add utilities to log error messages in joinscripts

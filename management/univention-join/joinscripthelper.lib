@@ -47,7 +47,7 @@ JS_PACKAGE=
 JS_LAST_EXECUTED_VERSION=
 
 #Returns 0 if any version of the script has been previously executed, 1 otherwise
-joinscript_check_any_version_executed () {
+joinscript_check_any_version_executed() {
 	touch "$JS_STATUSFILE"
 	if grep -qs -E "^$JS_PACKAGE v[0-9]+ successful" "$JS_STATUSFILE"; then
 		return 0
@@ -60,7 +60,7 @@ joinscript_check_any_version_executed () {
 #
 #Returns 0 if the specified version of the script has been previously
 #executed, 1 otherwise.
-joinscript_check_specific_version_executed () {
+joinscript_check_specific_version_executed() {
 	local version="$1"
 
 	if ! joinscript_is_version "$version"; then
@@ -79,7 +79,7 @@ joinscript_check_specific_version_executed () {
 #
 #Returns 0 if any version of the script within the specified range has been previously
 #executed, 1 otherwise.
-joinscript_check_version_in_range_executed () {
+joinscript_check_version_in_range_executed() {
 	local min="$1"
 	local max="$2"
 
@@ -106,7 +106,7 @@ joinscript_check_version_in_range_executed () {
 }
 
 #Permanently stores the current execution of the script
-joinscript_save_current_version () {
+joinscript_save_current_version() {
 
 	echo "$(date --rfc-3339=ns) (in joinscript_save_current_version)"
 
@@ -119,7 +119,7 @@ joinscript_save_current_version () {
 	fi
 }
 
-joinscript_get_last_executed_version () {
+joinscript_get_last_executed_version() {
 
 	if [ -n "$JOIN_FORCE" ]; then
 		JS_LAST_EXECUTED_VERSION=0
@@ -145,12 +145,12 @@ joinscript_get_last_executed_version () {
 }
 
 # Removes a given join script from index file
-joinscript_remove_script_from_status_file () {
+joinscript_remove_script_from_status_file() {
 	local scriptname="$1"
 	sed -i "/^$scriptname v/d" $JS_STATUSFILE
 }
 
-joinscript_check_joinstatus () {
+joinscript_check_joinstatus() {
 	if [ ! -f "/var/univention-join/joined" ]; then
 		return 1
 	fi
@@ -158,7 +158,7 @@ joinscript_check_joinstatus () {
 	return 0
 }
 
-joinscript_check_already_executed () {
+joinscript_check_already_executed() {
 	if joinscript_check_specific_version_executed "$VERSION"; then
 		return 0
 	fi
@@ -166,7 +166,7 @@ joinscript_check_already_executed () {
 	return 1
 }
 
-joinscript_is_version () {
+joinscript_is_version() {
 	local var="$1"
 
 	if [ -z "$var" ] \
@@ -179,12 +179,12 @@ joinscript_is_version () {
 	return 0
 }
 
-joinscript_abort () {
+joinscript_abort() {
 	echo "$1"
 	exit 1
 }
 
-joinscript_get_package_name () {
+joinscript_get_package_name() {
 	if [ ! -f "$JS_SCRIPT_FULLNAME" ]; then
 		return 1
 	fi
@@ -197,7 +197,7 @@ joinscript_get_package_name () {
 	return 0
 }
 
-joinscript_extern_init () {
+joinscript_extern_init() {
 	JS_SCRIPT_FULLNAME="$1"
 
 	if ! joinscript_get_package_name; then
@@ -219,7 +219,7 @@ joinscript_extern_init () {
 	return 0
 }
 
-joinscript_init () {
+joinscript_init() {
 	JS_SCRIPT_FULLNAME="$(readlink -f "$JS_RUNNING_FILENAME")"
 
 	echo "$(date --rfc-3339=ns) (in joinscript_init)"
@@ -248,8 +248,8 @@ joinscript_init () {
 	fi
 }
 
-die () {
-	rc=$?
+die() {
+    rc=$?
     joinscript_log_error "$@"
     exit $rc
 }
