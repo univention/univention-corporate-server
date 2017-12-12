@@ -281,19 +281,33 @@ define([
 				if (typeof(a) === 'string' && typeof(b) === 'string') {
 					return stringCompare(a, b);
 				}
-				if (a < b) {
-					return -1;
-				} else if (a > b) {
+				if (a === b) {
+					return 0;
+				}
+				if (a === null && typeof(b) === 'undefined') {
 					return 1;
 				}
-				return 0;
+				if (typeof(a) === 'undefined' && b === null) {
+					return -1;
+				}
+				if (a === null || typeof(a) === 'undefined') {
+					return -1;
+				}
+				if (b === null || typeof(b) === 'undefined') {
+					return 1;
+				}
+				if (a > b) {
+					return 1;
+				} else {
+					return -1;
+				}
 			};
 			return function(data) {
 				data = data.slice();
 				data.sort(function(a,b) {
 					var aValue = a[sorter.property];
 					var bValue = b[sorter.property];
-					return compare(aValue, bValue) * sorter.descending;
+					return compare(aValue, bValue) * (sorter.descending ? -1 : 1);
 				});
 				return data;
 			};
