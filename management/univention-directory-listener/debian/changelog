@@ -1,3 +1,9 @@
+univention-directory-listener (12.0.0-4) unstable; urgency=medium
+
+  * Bug #45841: Add handlers symbols for tests
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 12 Dec 2017 15:02:36 +0100
+
 univention-directory-listener (12.0.0-3) unstable; urgency=medium
 
   * Bug #45841: Add cache symbols for tests
