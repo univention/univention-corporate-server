@@ -948,6 +948,9 @@ class simpleLdap(base):
 		that can not be done with the default mapping API"""
 		return modlist
 
+	def _ldap_addlist(self):
+		return []
+
 	def _ldap_modlist(self):
 		"""Builds the list of modifications when creating and modifying this object.
 
@@ -997,7 +1000,7 @@ class simpleLdap(base):
 	def _create(self, response=None, serverctrls=None):
 		"""Create the object. Should only be called by :func:`univention.admin.handlers.simpleLdap.create`."""
 		self.exceptions = []
-		self._ldap_pre_create()
+		self.__call_with_cancel(self._ldap_pre_create)
 		self._update_policies()
 		self.call_udm_property_hook('hook_ldap_pre_create', self)
 
