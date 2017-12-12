@@ -1,3 +1,9 @@
+univention-directory-listener (12.0.0-5) unstable; urgency=medium
+
+  * Bug #45841: Add python symbols for tests
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 12 Dec 2017 15:28:37 +0100
+
 univention-directory-listener (12.0.0-4) unstable; urgency=medium
 
   * Bug #45841: Add handlers symbols for tests
