@@ -1902,18 +1902,13 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return al
 
 	def _ldap_post_create(self):
-		univention.admin.allocators.confirm(self.lo, self.position, 'uid', self['username'])
-
-		# Samba
-		univention.admin.allocators.confirm(self.lo, self.position, 'sid', self.userSid)
-
-		if 'mail' in self.options and self['mailPrimaryAddress']:
-			univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailPrimaryAddress'])
-
-		# POSIX
-		univention.admin.allocators.confirm(self.lo, self.position, 'uidNumber', self['uidNumber'])
+		self.__confirm_locks()
 		self.__update_groups()
 		self.__primary_group()
+
+	def __confirm_locks(self):
+		for name, value in self.alloc:
+			univention.admin.allocators.confirm(self.lo, self.position, name, value)
 
 	def _ldap_post_modify(self):
 		# POSIX
