@@ -1558,13 +1558,8 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	def open(self, loadGroups=True):
 		univention.admin.handlers.simpleLdap.open(self)
 
-		self.newPrimaryGroupDn = 0
-		self.oldPrimaryGroupDn = 0
-
 		self.modifypassword = not self.exists()
 		self.is_auth_saslpassthrough = self.__pwd_is_auth_saslpassthrough(self['password'] or '')
-
-		self.save()
 
 		if self.exists():
 			self._unmap_mail_forward()
@@ -1573,12 +1568,35 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			if not self['password']:
 				self['password'] = '********'
 
-			# POSIX
+			self._unmap_groups()
+
+			if self['passwordexpiry']:
+				today = time.strftime('%Y-%m-%d').split('-')
+				expiry = self['passwordexpiry'].split('-')
+				# expiry.reverse()
+				# today.reverse()
+				if int(string.join(today, '')) >= int(string.join(expiry, '')):
+					self['pwdChangeNextLogin'] = '1'
+
+			# Samba
+			self.sambaMungedDialUnmap()
+			self.sambaMungedDialParse()
+			self._unmap_automount_information()
+
+			if 'pki' in self.options:
+				self.reload_certificate()
+
+		self._load_groups(loadGroups)
+		self.save()
+
+	def _load_groups(self, loadGroups):
+		self.newPrimaryGroupDn = 0
+		self.oldPrimaryGroupDn = 0
+		if self.exists():
+			self.groupsLoaded = loadGroups
 			if loadGroups:  # this is optional because it can take much time on larger installations, default is true
-				self.groupsLoaded = 1
 				self['groups'] = self.lo.searchDn(filter=filter_format('(&(cn=*)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [self.dn]))
 			else:
-				self.groupsLoaded = 0
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'user: open with loadGroups=false for user %s' % self['username'])
 			primaryGroupNumber = self.oldattr.get('gidNumber', [''])[0]
 			if primaryGroupNumber:
@@ -1600,31 +1618,11 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					self['primaryGroup'] = primaryGroup
 					self.newPrimaryGroupDn = primaryGroup
 					self.__primary_group()
-					self.save()
 			else:
 				self['primaryGroup'] = None
 				self.save()
-				raise univention.admin.uexceptions.primaryGroup
-
-			if self['passwordexpiry']:
-				today = time.strftime('%Y-%m-%d').split('-')
-				expiry = self['passwordexpiry'].split('-')
-				# expiry.reverse()
-				# today.reverse()
-				if int(string.join(today, '')) >= int(string.join(expiry, '')):
-					self['pwdChangeNextLogin'] = '1'
-
-			# Samba
-			self.sambaMungedDialUnmap()
-			self.sambaMungedDialParse()
-			self._unmap_automount_information()
-
-			if 'pki' in self.options:
-				self.reload_certificate()
-
-			self.save()
+				raise univention.admin.uexceptions.primaryGroup()
 		else:
-			# POSIX
 			primary_group_from_template = self['primaryGroup']
 			if not primary_group_from_template:
 				searchResult = self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
