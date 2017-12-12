@@ -359,6 +359,7 @@ class base(object):
 	def create(self, serverctrls=None, response=None):
 		"""
 			Creates the LDAP object if it does not exists by building the list of attributes (addlist) and write it to LDAP.
+			If this call raises an exception it is necessary to instanciate a new object before trying to create it again.
 
 			:raises: :class:`univention.admin.uexceptions.invalidOperation` if objects of this type do not support to be created.
 
