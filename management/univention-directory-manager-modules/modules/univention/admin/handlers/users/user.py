@@ -1433,7 +1433,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				pass
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-		self.pwhistory_active = 0
 		self.groupsLoaded = 1
 		self.password_length = 8
 
@@ -1887,8 +1886,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.userSid = self.__generate_user_sid(self['uidNumber'])
 		al.append(('sambaSID', [self.userSid]))
 
-		self.pwhistory_active = 1
-
 		# Kerberos
 		domain = univention.admin.uldap.domain(self.lo, self.position)
 		realm = domain.getKerberosRealm()
@@ -2012,8 +2009,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 		if self.modifypassword:
 			# if the password is going to be changed in ldap check password-history
-			if not self.pwhistory_active:
-				new_object_classes |= set(['univentionPWHistory', ])
 
 			pwhistory = self.oldattr.get('pwhistory', [''])[0]
 			# read policy
