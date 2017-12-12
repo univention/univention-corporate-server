@@ -379,7 +379,7 @@ class base(object):
 		if not isinstance(response, dict):
 			response = {}
 
-		self._ldap_pre_ready()
+		self.__call_with_cancel(self._ldap_pre_ready)
 		self.ready()
 
 		dn = self._create(response=response, serverctrls=serverctrls)
@@ -417,7 +417,7 @@ class base(object):
 		if not isinstance(response, dict):
 			response = {}
 
-		self._ldap_pre_ready()
+		self.__call_with_cancel(self._ldap_pre_ready)
 		self.ready()
 
 		dn = self._modify(modify_childs, ignore_license=ignore_license, response=response)
