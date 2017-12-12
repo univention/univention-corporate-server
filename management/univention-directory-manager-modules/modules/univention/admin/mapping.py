@@ -213,6 +213,8 @@ class mapping(object):
 	def __init__(self):
 		self._map = {}
 		self._unmap = {}
+		self._map_func = {}
+		self._unmap_func = {}
 
 	def register(self, map_name, unmap_name, map_value=None, unmap_value=None):
 		"""
@@ -225,6 +227,9 @@ class mapping(object):
 	def unregister(self, map_name):
 		self._map.pop(map_name, None)
 		# TODO: has it a reason that we don't remove the value from self._unmap?
+
+	def registerUnmapping(self, unmap_name, unmap_value):
+		self._unmap_func[unmap_name] = unmap_value
 
 	def mapName(self, map_name):
 		"""
@@ -304,6 +309,13 @@ class mapping(object):
 		"""
 		unmap_value = self._unmap[unmap_name][1]
 		return unmap_value(value) if unmap_value else value
+
+	def unmapValues(self, oldattr):
+		"""Unmaps LDAP attribute values to UDM property values"""
+		info = mapDict(self, oldattr)
+		for key, func in self._unmap_func.items():
+			info[key] = func(oldattr)
+		return info
 
 
 def mapCmp(mapping, key, old, new):
