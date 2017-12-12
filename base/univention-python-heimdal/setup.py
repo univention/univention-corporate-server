@@ -34,6 +34,11 @@
 from distutils.core import setup, Extension
 import platform as plat
 
+if '64bit' in plat.architecture():
+	libdir = '/usr/lib/x86_64-linux-gnu'
+else:
+	libdir = '/usr/lib/i386-linux-gnu'
+
 setup(
 	name='python-heimdal',
 	version='0.1',
@@ -49,7 +54,7 @@ setup(
 				'creds.c', 'ticket.c', 'keytab.c', 'ccache.c',
 				'salt.c', 'enctype.c', 'keyblock.c', 'asn1.c'],
 			libraries=['krb5', 'kadm5clnt', 'hdb', 'asn1', 'com_err', 'roken'],
-			library_dirs=['/usr/lib/{0}-linux-gnu/heimdal'.format(plat.machine())],
+			library_dirs=[libdir + '/heimdal'],
 			include_dirs=['/usr/include/heimdal']
 		)
 	],

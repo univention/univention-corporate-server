@@ -1,3 +1,9 @@
+univention-python-heimdal (8.0.0-3) unstable; urgency=medium
+
+  * Bug #45841: fix setup.py, second try ...
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Dec 2017 13:59:04 +0100
+
 univention-python-heimdal (8.0.0-2) unstable; urgency=medium
 
   * Bug #45841: fix setup.py
