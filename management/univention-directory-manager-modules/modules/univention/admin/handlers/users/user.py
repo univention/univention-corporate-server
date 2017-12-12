@@ -1411,6 +1411,10 @@ def unmapSambaRid(oldattr):
 	return sid[pos + 1:]
 
 
+def unmapPassword(oldattr):
+	return oldattr.get('userPassword', [''])[0]
+
+
 def mapKeyAndValue(old):
 	lst = []
 	for entry in old:
@@ -1476,6 +1480,7 @@ mapping.registerUnmapping('passwordexpiry', unmapPasswordExpiry)
 mapping.registerUnmapping('userexpiry', unmapUserExpiry)
 mapping.registerUnmapping('disabled', unmapDisabled)
 mapping.registerUnmapping('locked', unmapLocked)
+mapping.registerUnmapping('password', unmapLocked)  # TODO: register with regular mapping
 
 
 class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
@@ -1557,7 +1562,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.oldPrimaryGroupDn = 0
 
 		self.modifypassword = not self.exists()
-		self.is_auth_saslpassthrough = 'no'
+		self.is_auth_saslpassthrough = self.__pwd_is_auth_saslpassthrough(self['password'] or '')
 
 		self.save()
 
@@ -1573,13 +1578,8 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				self['mailForwardCopyToSelf'] = '0'
 
 			# TODO: remove
-			self['password'] = '********'
-
-			# POSIX Mail, LDAP
-			userPassword = self.oldattr.get('userPassword', [''])[0]
-			if userPassword:
-				self.info['password'] = userPassword
-				self.is_auth_saslpassthrough = self.__pwd_is_auth_saslpassthrough(userPassword)
+			if not self['password']:
+				self['password'] = '********'
 
 			# POSIX
 			if loadGroups:  # this is optional because it can take much time on larger installations, default is true
