@@ -1436,7 +1436,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.pwhistory_active = 0
 		self.groupsLoaded = 1
 		self.password_length = 8
-		self.old_username = None
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 		mungeddial.Support.__init__(self)
@@ -1881,9 +1880,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if self['primaryGroup']:
 			self.newPrimaryGroupDn = self['primaryGroup']
 
-		if self['unixhome'] == '/home/%s' % (self.old_username,):
-			self['unixhome'] = '/home/%s' % (self['username'],)
-
 		# Samba
 		self.userSid = self.__generate_user_sid(self['uidNumber'])
 		al.append(('sambaSID', [self.userSid]))
@@ -1939,7 +1935,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				self.oldinfo = {}
 				self.dn = None
 				self._exists = 0
-				self.old_username = username
 				univention.admin.allocators.release(self.lo, self.position, 'uid', username)
 				raise univention.admin.uexceptions.uidAlreadyUsed(': %s' % username)
 
