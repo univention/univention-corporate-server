@@ -29,6 +29,7 @@ desc: |
  * parser.c does not prevent infinite recursion in parameter entities
    (CVE-2017-16932)
 bug: [44971]
+ignore: ['version.maintenance']
 cve:
 - CVE-2017-0663
 - CVE-2017-5130
