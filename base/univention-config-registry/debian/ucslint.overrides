@@ -32,3 +32,4 @@
 # Broken ucslint Bug 42294
 0010-2: compile
 0010-2: tests/clib
+0013-2: ltmain.sh
