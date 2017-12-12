@@ -2356,7 +2356,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					raise univention.admin.uexceptions.noObject(_('Given DN is no share.'))
 
 			if not self['homeShare'] or not share['host'] or not share['path']:
-				new_object_classes |= set(['automount', ])
+				new_object_classes -= set(['automount', ])
 				am_old = self.oldattr.get('automountInformation', [''])[0]
 				if am_old:
 					ml.append(('automountInformation', am_old, ''))
