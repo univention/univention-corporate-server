@@ -1,3 +1,9 @@
+univention-runit (9.0.0-2) unstable; urgency=medium
+
+  * Bug #45861: change daemon path
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 12 Dec 2017 17:07:39 +0100
+
 univention-runit (9.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump

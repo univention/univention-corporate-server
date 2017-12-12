@@ -39,7 +39,7 @@
 . /lib/lsb/init-functions
 NAME='univention-runit'
 DESC=$(get_lsb_header_val "$0" Short-Description)
-DAEMON="/usr/sbin/runsvdir-start"
+DAEMON="/etc/runit/2"
 PIDFILE='/var/run/univention-runit.pid'
 
 case "$1" in
