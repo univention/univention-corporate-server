@@ -1,3 +1,9 @@
+univention-python-heimdal (8.0.0-2) unstable; urgency=medium
+
+  * Bug #45841: fix setup.py
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Dec 2017 13:49:49 +0100
+
 univention-python-heimdal (8.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
@@ -28,7 +34,7 @@ univention-python-heimdal (4.0.4-1) unstable; urgency=low
 
  -- Felix Botner <botner@univention.de>  Tue, 05 Mar 2013 17:33:37 +0100
 
-univention-python-heimdal (4.0.3-2.1) UNRELEASED; urgency=low
+univention-python-heimdal (4.0.3-2.1) unstable; urgency=low
 
   * Remove copyright block for code not present in univention-python-heimdal
     (Bug #26440)	
