@@ -1567,15 +1567,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.save()
 
 		if self.exists():
-			# mailForwardCopyToSelf is a "virtual" property. The boolean value is set to True, if
-			# the LDAP attribute mailForwardAddress contains the mailPrimaryAddress. The mailPrimaryAddress
-			# is removed from oldattr for correct display in CLI/UMC and for proper detection of changes.
-			if self.get('mailPrimaryAddress') in self.get('mailForwardAddress', []):
-				self.oldattr['mailForwardAddress'] = self.oldattr.get('mailForwardAddress', [])[:]
-				self['mailForwardAddress'].remove(self['mailPrimaryAddress'])
-				self['mailForwardCopyToSelf'] = '1'
-			else:
-				self['mailForwardCopyToSelf'] = '0'
+			self._unmap_mail_forward()
 
 			# TODO: remove
 			if not self['password']:
@@ -1646,6 +1638,17 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					if primaryGroupResult:
 						self['primaryGroup'] = primaryGroupResult[0]
 						self.newPrimaryGroupDn = primaryGroupResult[0]
+
+	def _unmap_mail_forward(self):
+		# mailForwardCopyToSelf is a "virtual" property. The boolean value is set to True, if
+		# the LDAP attribute mailForwardAddress contains the mailPrimaryAddress. The mailPrimaryAddress
+		# is removed from oldattr for correct display in CLI/UMC and for proper detection of changes.
+		if self.get('mailPrimaryAddress') in self.get('mailForwardAddress', []):
+			self.oldattr['mailForwardAddress'] = self.oldattr.get('mailForwardAddress', [])[:]
+			self['mailForwardAddress'].remove(self['mailPrimaryAddress'])
+			self['mailForwardCopyToSelf'] = '1'
+		else:
+			self['mailForwardCopyToSelf'] = '0'
 
 	def _unmap_automount_information(self):
 		if 'automountInformation' not in self.oldattr:
