@@ -87,23 +87,8 @@ options = {
 	'default': univention.admin.option(
 		short_description=_('POSIX, Samba and Kerberos account'),
 		default=True,
-		objectClasses=['posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry']
+		objectClasses=['top', 'person', 'univentionPWHistory', 'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry']
 	),
-	# 'posix': univention.admin.option(
-	# 	short_description=_('POSIX account'),
-	# 	default=1,
-	# 	objectClasses=['posixAccount', 'shadowAccount'],
-	# ),
-	# 'samba': univention.admin.option(
-	# 	short_description=_('Samba account'),
-	# 	default=1,
-	# 	objectClasses=['sambaSamAccount'],
-	# ),
-	# 'kerberos': univention.admin.option(
-	# 	short_description=_('Kerberos principal'),
-	# 	default=1,
-	# 	objectClasses=['krb5Principal', 'krb5KDCEntry'],
-	# ),
 	'mail': univention.admin.option(
 		short_description=_('Mail account'),
 		default=True,
@@ -1913,21 +1898,14 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		# Samba
 		self.userSid = self.__generate_user_sid(self.uidNum)
 
-		ocs = ['top', 'person', 'univentionPWHistory']
 		self.pwhistory_active = 1
 		al = [('uid', [uid])]
 
 		# POSIX
-		ocs.extend(['posixAccount', 'shadowAccount'])  # FIXME: remove... this should be automatically added by the selected options
 		al.append(('uidNumber', [self.uidNum]))
 		al.append(('gidNumber', [gidNum]))
 
 		if 'mail' in self.options:
-			if 'posix' not in self.options:
-				ocs.extend(['shadowAccount', 'univentionMail'])  # FIXME: remove... this should be automatically added by the selected options
-			else:
-				ocs.extend(['univentionMail'])  # FIXME: remove... this should be automatically added by the selected options
-
 			if self['mailPrimaryAddress']:
 				try:
 					self.alloc.append(('mailPrimaryAddress', self['mailPrimaryAddress']))
@@ -1936,20 +1914,12 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					raise univention.admin.uexceptions.mailAddressUsed
 
 		# Samba
-		ocs.extend(['sambaSamAccount'])  # FIXME: remove... this should be automatically added by the selected options
 		al.append(('sambaSID', [self.userSid]))
-
-		if 'person' in self.options:
-			ocs.extend(['organizationalPerson', 'inetOrgPerson'])  # FIXME: remove... this should be automatically added by the selected options
-
-		if 'ldap_pwd' in self.options:
-			ocs.extend(['simpleSecurityObject', 'uidObject'])  # FIXME: remove... this should be automatically added by the selected options
 
 		# Kerberos
 		domain = univention.admin.uldap.domain(self.lo, self.position)
 		realm = domain.getKerberosRealm()
 		if realm:
-			ocs.extend(['krb5Principal', 'krb5KDCEntry'])  # FIXME: remove... this should be automatically added by the selected options
 			al.append(('krb5PrincipalName', [uid + '@' + realm]))
 			al.append(('krb5MaxLife', '86400'))
 			al.append(('krb5MaxRenew', '604800'))
@@ -1958,10 +1928,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			# can't do kerberos
 			self.options.remove('kerberos')
 
-		if 'pki' in self.options:
-			ocs.extend(['pkiUser'])
-
-		al.insert(0, ('objectClass', ocs))
 		return al
 
 	def _ldap_post_create(self):
