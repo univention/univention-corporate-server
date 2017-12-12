@@ -804,7 +804,7 @@ class simpleLdap(base):
 			if not univention.admin.modules.recognize(self.module, self.dn, self.oldattr):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'object %s is not recognized as %s.' % (self.dn, self.module))
 				# raise univention.admin.uexceptions.wrongObjectType()
-			oldinfo = univention.admin.mapping.mapDict(self.mapping, self.oldattr)
+			oldinfo = self.mapping.unmapValues(self.oldattr)
 			oldinfo = self._post_unmap(oldinfo, self.oldattr)
 			oldinfo = self._falsy_boolean_extended_attributes(oldinfo)
 			self.info.update(oldinfo)
