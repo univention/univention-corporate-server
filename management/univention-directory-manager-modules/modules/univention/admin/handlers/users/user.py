@@ -1562,29 +1562,16 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.is_auth_saslpassthrough = self.__pwd_is_auth_saslpassthrough(self['password'] or '')
 
 		if self.exists():
-			self._unmap_mail_forward()
-
 			# TODO: remove
 			if not self['password']:
 				self['password'] = '********'
 
-			self._unmap_groups()
-
-			if self['passwordexpiry']:
-				today = time.strftime('%Y-%m-%d').split('-')
-				expiry = self['passwordexpiry'].split('-')
-				# expiry.reverse()
-				# today.reverse()
-				if int(string.join(today, '')) >= int(string.join(expiry, '')):
-					self['pwdChangeNextLogin'] = '1'
-
-			# Samba
+			self._unmap_mail_forward()
+			self._unmap_pwd_change_next_login()
 			self.sambaMungedDialUnmap()
 			self.sambaMungedDialParse()
 			self._unmap_automount_information()
-
-			if 'pki' in self.options:
-				self.reload_certificate()
+			self.reload_certificate()
 
 		self._load_groups(loadGroups)
 		self.save()
@@ -1636,6 +1623,15 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					if primaryGroupResult:
 						self['primaryGroup'] = primaryGroupResult[0]
 						self.newPrimaryGroupDn = primaryGroupResult[0]
+
+	def _unmap_pwd_change_next_login(self):
+		if self['passwordexpiry']:
+			today = time.strftime('%Y-%m-%d').split('-')
+			expiry = self['passwordexpiry'].split('-')
+			# expiry.reverse()
+			# today.reverse()
+			if int(string.join(today, '')) >= int(string.join(expiry, '')):
+				self['pwdChangeNextLogin'] = '1'
 
 	def _unmap_mail_forward(self):
 		# mailForwardCopyToSelf is a "virtual" property. The boolean value is set to True, if
@@ -1690,6 +1686,8 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 	def reload_certificate(self):
 		"""Reload user certificate."""
+		if 'pki' not in self.options:
+			return
 		self.info['certificateSubjectCountry'] = ''
 		self.info['certificateSubjectState'] = ''
 		self.info['certificateSubjectLocation'] = ''
