@@ -514,79 +514,71 @@ class object(univention.admin.handlers.simpleLdap):
 			self._check_uid_gid_uniqueness()
 
 	def _ldap_addlist(self):
+		if self['gidNumber']:
+			self.gidNum = univention.admin.allocators.acquireUnique(self.lo, self.position, 'gidNumber', self['gidNumber'], 'gidNumber', scope='base')
+		else:
+			self.gidNum = univention.admin.allocators.request(self.lo, self.position, 'gidNumber')
+		self.alloc.append(('gidNumber', self.gidNum))
+
+		if self['mailAddress']:
+			try:
+				self.alloc.append(('mailPrimaryAddress', self['mailAddress']))
+				univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailAddress'])
+			except:
+				raise univention.admin.uexceptions.mailAddressUsed
+
+		if 'samba' in self.options and self.gidNum:
+			self.groupSid = self.__generate_group_sid(self.gidNum)
+
+		error = 0
+		name = None
 
 		try:
-			if self['gidNumber']:
-				self.gidNum = univention.admin.allocators.acquireUnique(self.lo, self.position, 'gidNumber', self['gidNumber'], 'gidNumber', scope='base')
-			else:
-				self.gidNum = univention.admin.allocators.request(self.lo, self.position, 'gidNumber')
-			self.alloc.append(('gidNumber', self.gidNum))
+			self.alloc.append(('groupName', self['name']))
+			name = univention.admin.allocators.request(self.lo, self.position, 'groupName', value=self['name'])
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname without exception')
+		except univention.admin.uexceptions.permissionDenied, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with permissionDenied exception')
+			raise e
+		except univention.admin.uexceptions.licenseNotFound, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with licenseNotFound exception')
+			raise e
+		except univention.admin.uexceptions.licenseInvalid, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with licenseInvalid exception')
+			raise e
+		except univention.admin.uexceptions.licenseExpired, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with licenseExpired exception')
+			raise e
+		except univention.admin.uexceptions.licenseWrongBaseDn, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with licenseWrongbaseDn exception')
+			raise e
+		except univention.admin.uexceptions.licenseDisableModify, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with licenseDisableModify exception')
+			raise e
+		except univention.admin.uexceptions.base, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with base (%s) exception' % e)
+			error = 1
 
-			if self['mailAddress']:
-				try:
-					self.alloc.append(('mailPrimaryAddress', self['mailAddress']))
-					univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailAddress'])
-				except:
-					self.cancel()
-					raise univention.admin.uexceptions.mailAddressUsed
+		if not name or error:
+			name = self['name']
+			del(self.info['name'])
+			self.oldinfo = {}
+			self.dn = None
+			self._exists = 0
+			raise univention.admin.uexceptions.groupNameAlreadyUsed(': %s' % (name))
 
-			if 'samba' in self.options and self.gidNum:
-				self.groupSid = self.__generate_group_sid(self.gidNum)
+		ocs = ['top', 'univentionGroup']
+		al = [('objectClass', ocs)]
 
-			error = 0
-			name = None
+		if 'posix' not in self.options:
+			ocs.append('organizationalRole')  # any STRUCTURAL class with 'cn'
 
-			try:
-				self.alloc.append(('groupName', self['name']))
-				name = univention.admin.allocators.request(self.lo, self.position, 'groupName', value=self['name'])
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname without exception')
-			except univention.admin.uexceptions.permissionDenied, e:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with permissionDenied exception')
-				raise e
-			except univention.admin.uexceptions.licenseNotFound, e:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with licenseNotFound exception')
-				raise e
-			except univention.admin.uexceptions.licenseInvalid, e:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with licenseInvalid exception')
-				raise e
-			except univention.admin.uexceptions.licenseExpired, e:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with licenseExpired exception')
-				raise e
-			except univention.admin.uexceptions.licenseWrongBaseDn, e:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with licenseWrongbaseDn exception')
-				raise e
-			except univention.admin.uexceptions.licenseDisableModify, e:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with licenseDisableModify exception')
-				raise e
-			except univention.admin.uexceptions.base, e:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: requested groupname with base (%s) exception' % e)
-				error = 1
+		if set(('posix', 'samba')) & set(self.options):
+			al.append(('gidNumber', [self.gidNum]))
+		if 'samba' in self.options:
+			al.append(('sambaSID', [self.groupSid]))
 
-			if not name or error:
-				name = self['name']
-				del(self.info['name'])
-				self.oldinfo = {}
-				self.dn = None
-				self._exists = 0
-				self.cancel()
-				raise univention.admin.uexceptions.groupNameAlreadyUsed(': %s' % (name))
-				return []
-
-			ocs = ['top', 'univentionGroup']
-			al = [('objectClass', ocs)]
-
-			if 'posix' not in self.options:
-				ocs.append('organizationalRole')  # any STRUCTURAL class with 'cn'
-
-			if set(('posix', 'samba')) & set(self.options):
-				al.append(('gidNumber', [self.gidNum]))
-			if 'samba' in self.options:
-				al.append(('sambaSID', [self.groupSid]))
-
-			return al
-		except:
-			self.cancel()
-			raise
+		return al
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
@@ -613,7 +605,6 @@ class object(univention.admin.handlers.simpleLdap):
 					self.alloc.append(('mailPrimaryAddress', self['mailAddress']))
 					univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailAddress'])
 				except:
-					self.cancel()
 					raise univention.admin.uexceptions.mailAddressUsed
 
 		old = DN.set(self.oldinfo.get('users', []) + self.oldinfo.get('hosts', []) + self.oldinfo.get('nestedGroup', []))
@@ -714,7 +705,6 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.primaryGroupUsed
 
 	def _ldap_post_remove(self):
-
 		if 'posix' in self.options:
 			univention.admin.allocators.release(self.lo, self.position, 'gidNumber', self.gidNum)
 		if 'samba' in self.options:
@@ -732,7 +722,6 @@ class object(univention.admin.handlers.simpleLdap):
 			self.__set_membership_attributes(group, members, newmembers)
 
 	def _ldap_post_move(self, olddn):
-
 		settings_module = univention.admin.modules.get('settings/default')
 		settings_object = univention.admin.objects.get(settings_module, None, self.lo, position='', dn='cn=default,cn=univention,%s' % self.lo.base)
 		settings_object.open()

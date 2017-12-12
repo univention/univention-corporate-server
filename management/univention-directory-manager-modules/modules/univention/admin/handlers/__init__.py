@@ -45,8 +45,11 @@ import copy
 import types
 import re
 import time
-import ldap
+import sys
+import traceback
+
 import ipaddr
+import ldap
 from ldap.filter import filter_format
 from ldap.dn import explode_rdn, explode_dn, escape_dn_chars, str2dn, dn2str
 from ldap.controls.readentry import PostReadControl
@@ -980,6 +983,17 @@ class simpleLdap(base):
 
 		return ml
 
+	def __call_with_cancel(self, func, *args, **kwargs):
+		try:
+			return func(*args, **kwargs)
+		except:
+			exc = sys.exc_info()
+			try:
+				self.cancel()
+			except:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "cancel() failed: %s" % (traceback.format_exc(),))
+			raise exc[0], exc[1], exc[2]
+
 	def _create(self, response=None, serverctrls=None):
 		"""Create the object. Should only be called by :func:`univention.admin.handlers.simpleLdap.create`."""
 		self.exceptions = []
@@ -992,8 +1006,8 @@ class simpleLdap(base):
 		# iterate over all properties and call checkLdap() of corresponding syntax
 		self._call_checkLdap_on_all_property_syntaxes()
 
-		al = self._ldap_addlist()
-		al.extend(self._ldap_modlist())
+		al = self.__call_with_cancel(self._ldap_addlist)
+		al.extend(self.__call_with_cancel(self._ldap_modlist))
 		m = univention.admin.modules.get(self.module)
 
 		# evaluate extended attributes
@@ -1038,8 +1052,6 @@ class simpleLdap(base):
 			self._ldap_post_create()
 		except:
 			# ensure that there is no lock left
-			import traceback
-			import sys
 			exc = sys.exc_info()
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-Create operation failed: %s" % (traceback.format_exc(),))
 			try:
@@ -1073,7 +1085,7 @@ class simpleLdap(base):
 		# iterate over all properties and call checkLdap() of corresponding syntax
 		self._call_checkLdap_on_all_property_syntaxes()
 
-		ml = self._ldap_modlist()
+		ml = self.__call_with_cancel(self._ldap_modlist)
 		ml = self.call_udm_property_hook('hook_ldap_modlist', self, ml)
 		ml = self._ldap_object_classes(ml)
 

@@ -1870,117 +1870,112 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self._check_uid_gid_uniqueness()
 
 	def _ldap_addlist(self):
+		uid = None
+
+		# FIXME: remove?!
+		if not set(self.options) & set(['posix', 'samba', 'person', 'ldap_pwd']):
+			# no objectClass which provides uid...
+			raise univention.admin.uexceptions.invalidOptions(_('Need one of %(posix)s, %(samba)s, %(person)s or %(ldap)s in options to create user.') % {
+				'posix': options['posix'].short_description,
+				'samba': options['samba'].short_description,
+				'person': options['person'].short_description,
+				'ldap': options['ldap_pwd'].short_description
+			})
+
+		# Samba
+		if not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
+			raise univention.admin.uexceptions.primaryGroupWithoutSamba
+
+		# Samba, POSIX
+		gidNum = self.get_gid_for_primary_group()
+		if self['primaryGroup']:
+			self.newPrimaryGroupDn = self['primaryGroup']
+
+		prohibited_objects = univention.admin.handlers.settings.prohibited_username.lookup(self.co, self.lo, '') or []
+		for prohibited_object in prohibited_objects:
+			if self['username'] in prohibited_object['usernames']:
+				raise univention.admin.uexceptions.prohibitedUsername(': %s' % self['username'])
+
 		try:
-			uid = None
-
-			# FIXME: remove?!
-			if not set(self.options) & set(['posix', 'samba', 'person', 'ldap_pwd']):
-				# no objectClass which provides uid...
-				raise univention.admin.uexceptions.invalidOptions(_('Need one of %(posix)s, %(samba)s, %(person)s or %(ldap)s in options to create user.') % {
-					'posix': options['posix'].short_description,
-					'samba': options['samba'].short_description,
-					'person': options['person'].short_description,
-					'ldap': options['ldap_pwd'].short_description
-				})
-
-			# Samba
-			if not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
-				raise univention.admin.uexceptions.primaryGroupWithoutSamba
-
-			# Samba, POSIX
-			gidNum = self.get_gid_for_primary_group()
-			if self['primaryGroup']:
-				self.newPrimaryGroupDn = self['primaryGroup']
-
-			prohibited_objects = univention.admin.handlers.settings.prohibited_username.lookup(self.co, self.lo, '') or []
-			for prohibited_object in prohibited_objects:
-				if self['username'] in prohibited_object['usernames']:
-					raise univention.admin.uexceptions.prohibitedUsername(': %s' % self['username'])
-
-			try:
-				uid = univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])
-				# TODO: move?!
-				# POSIX
-				if self['unixhome'] == '/home/%s' % (self.old_username,):
-					self['unixhome'] = '/home/%s' % (self['username'],)
-			except univention.admin.uexceptions.noLock:
-				username = self['username']
-				del self.info['username']
-				self.oldinfo = {}
-				self.dn = None
-				self._exists = 0
-				self.old_username = username
-				univention.admin.allocators.release(self.lo, self.position, 'uid', username)
-				raise univention.admin.uexceptions.uidAlreadyUsed(': %s' % username)
-
-			self.alloc.append(('uid', uid))
-
-			self.uidNum = None
-			# POSIX, Samba
-			if self['uidNumber']:
-				self.alloc.append(('uidNumber', self['uidNumber']))
-				self.uidNum = univention.admin.allocators.acquireUnique(self.lo, self.position, 'uidNumber', self['uidNumber'], 'uidNumber', scope='base')
-			else:
-				self.uidNum = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
-				self.alloc.append(('uidNumber', self.uidNum))
-
-			# Samba
-			self.userSid = self.__generate_user_sid(self.uidNum)
-
-			ocs = ['top', 'person', 'univentionPWHistory']
-			self.pwhistory_active = 1
-			al = [('uid', [uid])]
-
+			uid = univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])
+			# TODO: move?!
 			# POSIX
-			ocs.extend(['posixAccount', 'shadowAccount'])  # FIXME: remove... this should be automatically added by the selected options
-			al.append(('uidNumber', [self.uidNum]))
-			al.append(('gidNumber', [gidNum]))
+			if self['unixhome'] == '/home/%s' % (self.old_username,):
+				self['unixhome'] = '/home/%s' % (self['username'],)
+		except univention.admin.uexceptions.noLock:
+			username = self['username']
+			del self.info['username']
+			self.oldinfo = {}
+			self.dn = None
+			self._exists = 0
+			self.old_username = username
+			univention.admin.allocators.release(self.lo, self.position, 'uid', username)
+			raise univention.admin.uexceptions.uidAlreadyUsed(': %s' % username)
 
-			if 'mail' in self.options:
-				if 'posix' not in self.options:
-					ocs.extend(['shadowAccount', 'univentionMail'])  # FIXME: remove... this should be automatically added by the selected options
-				else:
-					ocs.extend(['univentionMail'])  # FIXME: remove... this should be automatically added by the selected options
+		self.alloc.append(('uid', uid))
 
-				if self['mailPrimaryAddress']:
-					try:
-						self.alloc.append(('mailPrimaryAddress', self['mailPrimaryAddress']))
-						univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
-					except univention.admin.uexceptions.noLock:
-						raise univention.admin.uexceptions.mailAddressUsed
+		self.uidNum = None
+		# POSIX, Samba
+		if self['uidNumber']:
+			self.alloc.append(('uidNumber', self['uidNumber']))
+			self.uidNum = univention.admin.allocators.acquireUnique(self.lo, self.position, 'uidNumber', self['uidNumber'], 'uidNumber', scope='base')
+		else:
+			self.uidNum = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
+			self.alloc.append(('uidNumber', self.uidNum))
 
-			# Samba
-			ocs.extend(['sambaSamAccount'])  # FIXME: remove... this should be automatically added by the selected options
-			al.append(('sambaSID', [self.userSid]))
+		# Samba
+		self.userSid = self.__generate_user_sid(self.uidNum)
 
-			if 'person' in self.options:
-				ocs.extend(['organizationalPerson', 'inetOrgPerson'])  # FIXME: remove... this should be automatically added by the selected options
+		ocs = ['top', 'person', 'univentionPWHistory']
+		self.pwhistory_active = 1
+		al = [('uid', [uid])]
 
-			if 'ldap_pwd' in self.options:
-				ocs.extend(['simpleSecurityObject', 'uidObject'])  # FIXME: remove... this should be automatically added by the selected options
+		# POSIX
+		ocs.extend(['posixAccount', 'shadowAccount'])  # FIXME: remove... this should be automatically added by the selected options
+		al.append(('uidNumber', [self.uidNum]))
+		al.append(('gidNumber', [gidNum]))
 
-			# Kerberos
-			domain = univention.admin.uldap.domain(self.lo, self.position)
-			realm = domain.getKerberosRealm()
-			if realm:
-				ocs.extend(['krb5Principal', 'krb5KDCEntry'])  # FIXME: remove... this should be automatically added by the selected options
-				al.append(('krb5PrincipalName', [uid + '@' + realm]))
-				al.append(('krb5MaxLife', '86400'))
-				al.append(('krb5MaxRenew', '604800'))
-				self.kerberos_active = 1
-			else:  # FIXME: we have to remove this. it's not possible anymore to remove an option!
-				# can't do kerberos
-				self.options.remove('kerberos')
+		if 'mail' in self.options:
+			if 'posix' not in self.options:
+				ocs.extend(['shadowAccount', 'univentionMail'])  # FIXME: remove... this should be automatically added by the selected options
+			else:
+				ocs.extend(['univentionMail'])  # FIXME: remove... this should be automatically added by the selected options
 
-			if 'pki' in self.options:
-				ocs.extend(['pkiUser'])
+			if self['mailPrimaryAddress']:
+				try:
+					self.alloc.append(('mailPrimaryAddress', self['mailPrimaryAddress']))
+					univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
+				except univention.admin.uexceptions.noLock:
+					raise univention.admin.uexceptions.mailAddressUsed
 
-			al.insert(0, ('objectClass', ocs))
-			return al
+		# Samba
+		ocs.extend(['sambaSamAccount'])  # FIXME: remove... this should be automatically added by the selected options
+		al.append(('sambaSID', [self.userSid]))
 
-		except:  # TODO: move an layer upstream
-			self.cancel()
-			raise
+		if 'person' in self.options:
+			ocs.extend(['organizationalPerson', 'inetOrgPerson'])  # FIXME: remove... this should be automatically added by the selected options
+
+		if 'ldap_pwd' in self.options:
+			ocs.extend(['simpleSecurityObject', 'uidObject'])  # FIXME: remove... this should be automatically added by the selected options
+
+		# Kerberos
+		domain = univention.admin.uldap.domain(self.lo, self.position)
+		realm = domain.getKerberosRealm()
+		if realm:
+			ocs.extend(['krb5Principal', 'krb5KDCEntry'])  # FIXME: remove... this should be automatically added by the selected options
+			al.append(('krb5PrincipalName', [uid + '@' + realm]))
+			al.append(('krb5MaxLife', '86400'))
+			al.append(('krb5MaxRenew', '604800'))
+			self.kerberos_active = 1
+		else:  # FIXME: we have to remove this. it's not possible anymore to remove an option!
+			# can't do kerberos
+			self.options.remove('kerberos')
+
+		if 'pki' in self.options:
+			ocs.extend(['pkiUser'])
+
+		al.insert(0, ('objectClass', ocs))
+		return al
 
 	def _ldap_post_create(self):
 		univention.admin.allocators.confirm(self.lo, self.position, 'uid', self['username'])
