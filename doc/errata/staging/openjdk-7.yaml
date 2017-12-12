@@ -10,7 +10,7 @@ desc: |
  * http://www.oracle.com/technetwork/security-advisory/cpujul2017verbose-3236625.html
  * http://www.oracle.com/technetwork/security-advisory/cpuoct2017verbose-3236627.html
 bug: [44726]
-ignore: ['desc.line.', 'cve.']
+ignore: ['version.maintenance', 'desc.line.', 'cve.']
 cve:
 - CVE-2017-3509
 - CVE-2017-3511
