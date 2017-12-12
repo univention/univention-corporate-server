@@ -1348,6 +1348,8 @@ mapping.register('homedrive', 'sambaHomeDrive', None, univention.admin.mapping.L
 mapping.register('gecos', 'gecos', None, univention.admin.mapping.ListToString)
 mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
 mapping.register('birthday', 'univentionBirthday', None, univention.admin.mapping.ListToString)
+mapping.register('lastname', 'sn', None, univention.admin.mapping.ListToString)
+mapping.register('firstname', 'givenName', None, univention.admin.mapping.ListToString)
 
 
 def mapKeyAndValue(old):
@@ -1457,7 +1459,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 		# POSIX
 		# The shadowLastChange attribute is the amount of days between 1/1/1970 upto the day that password was modified,
-		# shadowMax is the number of days a password is valid. So the password expires on 1/1/1970+shadowLastChange+shadowMax.
+		# shadowMax is the number of days a password is valid. So the password expires on 1/1/1970 + shadowLastChange + shadowMax.
 		# shadowExpire contains the absolute date to expire the account.
 
 		if 'shadowExpire' in self.oldattr and len(self.oldattr['shadowExpire']) > 0:
@@ -1478,23 +1480,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			self.info['userexpiry'] = "%s-%s-%s" % (krb5validend[0:4], krb5validend[4:6], krb5validend[6:8])
 
 		# Samba
-		if 'sambaKickoffTime' in self.oldattr:
+		elif 'sambaKickoffTime' in self.oldattr:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaKickoffTime is: %s' % self.oldattr['sambaKickoffTime'][0])
 			self.info['userexpiry'] = time.strftime("%Y-%m-%d", time.gmtime(long(self.oldattr['sambaKickoffTime'][0]) + (3600 * 24)))
-
-		try:
-			givenName = self.oldattr.get('givenName', [''])[0]
-			if givenName:
-				self['firstname'] = givenName
-			sn = self.oldattr.get('sn', [''])[0]
-			if sn:
-				self['lastname'] = sn
-		except Exception as e:  # FIXME: we should NEVER catch all exceptions
-			# at least write some debuging output..
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Caught exception: %s' % e)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Continuing without dn..')
-			self.dn = None
-			return
 
 		self.save()
 
@@ -1504,7 +1492,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.newPrimaryGroupDn = 0
 		self.oldPrimaryGroupDn = 0
 
-		self.modifypassword = 1
+		self.modifypassword = not self.exists()
 		self.is_auth_saslpassthrough = 'no'
 
 		self['locked'] = 'none'
@@ -1523,14 +1511,13 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			else:
 				self['mailForwardCopyToSelf'] = '0'
 
-			self.modifypassword = 0
+			# TODO: remove
 			self['password'] = '********'
 
 			# POSIX Mail, LDAP
 			userPassword = self.oldattr.get('userPassword', [''])[0]
 			if userPassword:
 				self.info['password'] = userPassword
-				self.modifypassword = 0
 				if self.__pwd_is_locked(userPassword):
 					self['locked'] = 'posix'
 				self.is_auth_saslpassthrough = self.__pwd_is_auth_saslpassthrough(userPassword)
@@ -2065,10 +2052,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		ml.append(('cn', self.oldattr.get('cn', [''])[0], cn))
 
 		if self.hasChanged(['firstname', 'lastname']):
-			ml.append(('sn', self.oldattr.get('cn', [''])[0], self['lastname']))
-			if 'person' in self.options:
-				ml.append(('givenName', self.oldattr.get('givenName', [''])[0], self['firstname']))
-
 			# POSIX
 			prop = self.descriptions['gecos']
 			gecos = prop._replace(prop.base_default, self)
