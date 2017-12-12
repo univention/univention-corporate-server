@@ -412,3 +412,7 @@ class primaryGroupWithoutSamba(base):
 
 class wrongObjectType(base):
 	message = _('The object type of this object differs from the specified object type.')
+
+
+class noKerberosRealm(base):
+	message = _('There was no valid kerberos realm found.')

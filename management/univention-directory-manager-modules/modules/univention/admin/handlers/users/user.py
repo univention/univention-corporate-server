@@ -1433,7 +1433,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				pass
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-		self.kerberos_active = 0
 		self.pwhistory_active = 0
 		self.groupsLoaded = 1
 		self.password_length = 8
@@ -1894,14 +1893,11 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		# Kerberos
 		domain = univention.admin.uldap.domain(self.lo, self.position)
 		realm = domain.getKerberosRealm()
-		if realm:
-			al.append(('krb5PrincipalName', [self['username'] + '@' + realm]))
-			al.append(('krb5MaxLife', '86400'))
-			al.append(('krb5MaxRenew', '604800'))
-			self.kerberos_active = 1
-		else:  # FIXME: we have to remove this. it's not possible anymore to remove an option!
-			# can't do kerberos
-			self.options.remove('kerberos')
+		if not realm:
+			raise univention.admin.uexceptions.noKerberosRealm()
+		al.append(('krb5PrincipalName', [self['username'] + '@' + realm]))
+		al.append(('krb5MaxLife', '86400'))
+		al.append(('krb5MaxRenew', '604800'))
 
 		return al
 
@@ -2154,14 +2150,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			ml.append(('krb5Key', self.oldattr.get('krb5Key', []), krb_keys))
 			ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', []), krb_kdcflags))
 			ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
-
-			if 'krb5KDCEntry' not in old_object_classes and not self.kerberos_active:
-				domain = univention.admin.uldap.domain(self.lo, self.position)
-				realm = domain.getKerberosRealm()
-				if realm:
-					ml.append(('krb5PrincipalName', '', [self['username'] + '@' + realm]))
-					ml.append(('krb5MaxLife', '', '86400'))
-					ml.append(('krb5MaxRenew', '', '604800'))
 
 		# Kerberos
 		if self.hasChanged('disabled'):
