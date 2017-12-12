@@ -1373,7 +1373,19 @@ class simpleLdap(base):
 
 	def cancel(self):
 		"""Cancels the object creation or modification. This method can be subclassed to revert changes for example releasing locks."""
-		pass
+		self._release_locks()
+
+	def _release_locks(self):
+		"""Release all temporary done locks"""
+		while self.alloc:
+			name, value = self.alloc.pop()
+			univention.admin.allocators.release(self.lo, self.position, name, value)
+
+	def _confirm_locks(self):
+		"""Confirm all temporary done locks"""
+		while self.alloc:
+			name, value = self.alloc.pop()
+			univention.admin.allocators.confirm(self.lo, self.position, name, value)
 
 	def _call_checkLdap_on_all_property_syntaxes(self):
 		"""Calls checkLdap() method on every property if present.
