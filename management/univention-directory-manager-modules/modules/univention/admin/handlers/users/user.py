@@ -1839,68 +1839,49 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if self['mailPrimaryAddress']:
 			self['mailPrimaryAddress'] = self['mailPrimaryAddress'].lower()
 
-		# POSIX, Samba
+		# lock the uidNumber
 		if self['uidNumber']:
 			univention.admin.allocators.acquireUnique(self.lo, self.position, 'uidNumber', self['uidNumber'], 'uidNumber', scope='base')
 		else:
 			self['uidNumber'] = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
 		self.alloc.append(('uidNumber', self['uidNumber']))
 
+		self['gidNumber'] = self.get_gid_for_primary_group()
+
 		self._check_uid_gid_uniqueness()
 
-	def _ldap_addlist(self):
-		uid = None
-
-		# FIXME: remove?!
-		if not set(self.options) & set(['posix', 'samba', 'person', 'ldap_pwd']):
-			# no objectClass which provides uid...
-			raise univention.admin.uexceptions.invalidOptions(_('Need one of %(posix)s, %(samba)s, %(person)s or %(ldap)s in options to create user.') % {
-				'posix': options['posix'].short_description,
-				'samba': options['samba'].short_description,
-				'person': options['person'].short_description,
-				'ldap': options['ldap_pwd'].short_description
-			})
-
-		# Samba
+		# Ensure the primary Group has the samba option enabled
 		if not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
-			raise univention.admin.uexceptions.primaryGroupWithoutSamba
+			raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
 
-		# Samba, POSIX
-		gidNum = self.get_gid_for_primary_group()
-		if self['primaryGroup']:
-			self.newPrimaryGroupDn = self['primaryGroup']
-
-		prohibited_objects = univention.admin.handlers.settings.prohibited_username.lookup(self.co, self.lo, '') or []
-		for prohibited_object in prohibited_objects:
+		# check if the username is allowed
+		for prohibited_object in (univention.admin.handlers.settings.prohibited_username.lookup(self.co, self.lo, '') or []):
 			if self['username'] in prohibited_object['usernames']:
 				raise univention.admin.uexceptions.prohibitedUsername(': %s' % self['username'])
 
+		# lock the username
 		try:
-			uid = univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])
-			# TODO: move?!
-			# POSIX
-			if self['unixhome'] == '/home/%s' % (self.old_username,):
-				self['unixhome'] = '/home/%s' % (self['username'],)
+			self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])))
 		except univention.admin.uexceptions.noLock:
 			username = self['username']
-			del self.info['username']
-			self.oldinfo = {}
-			self.dn = None
-			self._exists = 0
-			self.old_username = username
-			univention.admin.allocators.release(self.lo, self.position, 'uid', username)
-			raise univention.admin.uexceptions.uidAlreadyUsed(': %s' % username)
+			univention.admin.allocators.release(self.lo, self.position, 'uid', username)  # FIXME: remove, as it releases a lock from another process
+			raise univention.admin.uexceptions.uidAlreadyUsed(username)
 
-		self.alloc.append(('uid', uid))
+	def _ldap_addlist(self):
+		al = super(object, self)._ldap_addlist()
+
+		# Samba, POSIX
+		if self['primaryGroup']:
+			self.newPrimaryGroupDn = self['primaryGroup']
+
+		if self['unixhome'] == '/home/%s' % (self.old_username,):
+			self['unixhome'] = '/home/%s' % (self['username'],)
 
 		# Samba
 		self.userSid = self.__generate_user_sid(self['uidNumber'])
+		al.append(('sambaSID', [self.userSid]))
 
 		self.pwhistory_active = 1
-		al = [('uid', [uid])]
-
-		# POSIX
-		al.append(('gidNumber', [gidNum]))
 
 		if 'mail' in self.options:
 			if self['mailPrimaryAddress']:
@@ -1910,14 +1891,11 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				except univention.admin.uexceptions.noLock:
 					raise univention.admin.uexceptions.mailAddressUsed
 
-		# Samba
-		al.append(('sambaSID', [self.userSid]))
-
 		# Kerberos
 		domain = univention.admin.uldap.domain(self.lo, self.position)
 		realm = domain.getKerberosRealm()
 		if realm:
-			al.append(('krb5PrincipalName', [uid + '@' + realm]))
+			al.append(('krb5PrincipalName', [self['username'] + '@' + realm]))
 			al.append(('krb5MaxLife', '86400'))
 			al.append(('krb5MaxRenew', '604800'))
 			self.kerberos_active = 1
