@@ -1839,7 +1839,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if self['mailPrimaryAddress']:
 			self['mailPrimaryAddress'] = self['mailPrimaryAddress'].lower()
 
-		# lock the uidNumber
+		# request a new uidNumber or get lock for manually set uidNumber
 		if self['uidNumber']:
 			univention.admin.allocators.acquireUnique(self.lo, self.position, 'uidNumber', self['uidNumber'], 'uidNumber', scope='base')
 		else:
@@ -1859,13 +1859,21 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			if self['username'] in prohibited_object['usernames']:
 				raise univention.admin.uexceptions.prohibitedUsername(': %s' % self['username'])
 
-		# lock the username
+		# get lock for username
 		try:
 			self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])))
 		except univention.admin.uexceptions.noLock:
 			username = self['username']
 			univention.admin.allocators.release(self.lo, self.position, 'uid', username)  # FIXME: remove, as it releases a lock from another process
 			raise univention.admin.uexceptions.uidAlreadyUsed(username)
+
+		# get lock for mailPrimaryAddress
+		if 'mail' in self.options:
+			if self['mailPrimaryAddress']:
+				try:
+					self.alloc.append(('mailPrimaryAddress', univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])))
+				except univention.admin.uexceptions.noLock:
+					raise univention.admin.uexceptions.mailAddressUsed(self['mailPrimaryAddress'])
 
 	def _ldap_addlist(self):
 		al = super(object, self)._ldap_addlist()
@@ -1882,14 +1890,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		al.append(('sambaSID', [self.userSid]))
 
 		self.pwhistory_active = 1
-
-		if 'mail' in self.options:
-			if self['mailPrimaryAddress']:
-				try:
-					self.alloc.append(('mailPrimaryAddress', self['mailPrimaryAddress']))
-					univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
-				except univention.admin.uexceptions.noLock:
-					raise univention.admin.uexceptions.mailAddressUsed
 
 		# Kerberos
 		domain = univention.admin.uldap.domain(self.lo, self.position)
