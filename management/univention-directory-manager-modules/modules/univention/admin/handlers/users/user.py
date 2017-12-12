@@ -1970,18 +1970,21 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		# set cn
 		cnAtts = univention.admin.baseConfig.get('directory/manager/usercn/attributes', "<firstname> <lastname>")
 		prop = univention.admin.property()
+		old_cn = self.oldattr.get('cn', [''])[0]
 		cn = prop._replace(cnAtts, self)
 		cn = cn.strip()
-		ml.append(('cn', self.oldattr.get('cn', [''])[0], cn))
+		if cn != old_cn:
+			ml.append(('cn', old_cn, cn))
 
 		if self.hasChanged(['firstname', 'lastname']):
 			# POSIX
 			prop = self.descriptions['gecos']
+			old_gecos = self.oldattr.get('gecos', [''])[0]
 			gecos = prop._replace(prop.base_default, self)
-			if self.oldinfo.get('gecos', ''):
-				old_gecos = prop._replace(prop.base_default, self.oldinfo)
-				if old_gecos == self.oldinfo.get('gecos', ''):
-					ml.append(('gecos', self.oldinfo.get('gecos', [''])[0], gecos))
+			if old_gecos:
+				current_gecos = prop._replace(prop.base_default, self.oldinfo)
+				if current_gecos == old_gecos:
+					ml.append(('gecos', old_gecos, gecos))
 
 		# update displayName automatically if no custom value has been entered by the user and the name changed
 		if self.info.get('displayName') == self.oldinfo.get('displayName') and (self.info.get('firstname') != self.oldinfo.get('firstname') or self.info.get('lastname') != self.oldinfo.get('lastname')):
@@ -1993,7 +1996,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				if self.oldinfo.get('displayName', '') == old_default_displayName:
 					# yes ==> update displayName automatically
 					new_displayName = prop_displayName._replace(prop_displayName.base_default, self)
-					ml.append(('displayName', self.oldinfo.get('displayName'), new_displayName))
+					ml.append(('displayName', self.oldattr.get('displayName', [''])[0], new_displayName))
 
 		# shadowlastchange=self.oldattr.get('shadowLastChange',[str(long(time.time())/3600/24)])[0]
 
@@ -2316,7 +2319,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		else:
 			mod_ = (
 				'mailForwardAddress',
-				self.oldattr.get('mailForwardAddress'),
+				self.oldattr.get('mailForwardAddress', []),
 				self['mailForwardAddress'][:]
 			)
 			if self['mailForwardAddress']:
