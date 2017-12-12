@@ -261,7 +261,7 @@ exec_log_failure() {
 	output=$("$@" 2>&1)
 	rc=$?
 	if [ 0 -ne "$rc" ]; then
-		joinscript_log_error "$ERRMSG\nCommand failed with $rc:\n$ouput"
+		joinscript_log_error "$ERRMSG\nCommand failed with $rc:\n$output"
 		unset ERRMSG
 		die
 	else
