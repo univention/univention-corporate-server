@@ -467,7 +467,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=superordinate, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionUserTemplate')])
 
@@ -483,5 +482,4 @@ def lookup(co, lo, filter_s, base='', superordinate=superordinate, scope='sub', 
 
 
 def identify(dn, attr, canonical=0):
-
 	return 'univentionUserTemplate' in attr.get('objectClass', [])
