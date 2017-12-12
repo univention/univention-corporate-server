@@ -1250,7 +1250,7 @@ def load_certificate(user_certificate):
 			'certificateVersion': str(x509.get_version()),
 			'certificateSerial': str(x509.get_serial_number()),
 		}
-		flags = X509.m2.XN_FLAG_SEP_MULTILINE & ~X509.m2.ASN1_STRFLGS_ESC_MSB | X509.m2.ASN1_STRFLGS_UTF8_CONVERT
+		X509.m2.XN_FLAG_SEP_MULTILINE & ~X509.m2.ASN1_STRFLGS_ESC_MSB | X509.m2.ASN1_STRFLGS_UTF8_CONVERT
 		for entity, prefix in (
 			(x509.get_issuer(), "certificateIssuer"),
 			(x509.get_subject(), "certificateSubject"),
@@ -1411,6 +1411,20 @@ def unmapSambaRid(oldattr):
 	return sid[pos + 1:]
 
 
+def mapKeyAndValue(old):
+	lst = []
+	for entry in old:
+		lst.append('%s=%s' % (entry[0], entry[1]))
+	return lst
+
+
+def unmapKeyAndValue(old):
+	lst = []
+	for entry in old:
+		lst.append(entry.split('=', 1))
+	return lst
+
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('username', 'uid', None, univention.admin.mapping.ListToString)
 mapping.register('uidNumber', 'uidNumber', None, univention.admin.mapping.ListToString)
@@ -1454,22 +1468,6 @@ mapping.register('displayName', 'displayName', None, univention.admin.mapping.Li
 mapping.register('birthday', 'univentionBirthday', None, univention.admin.mapping.ListToString)
 mapping.register('lastname', 'sn', None, univention.admin.mapping.ListToString)
 mapping.register('firstname', 'givenName', None, univention.admin.mapping.ListToString)
-
-
-def mapKeyAndValue(old):
-	lst = []
-	for entry in old:
-		lst.append('%s=%s' % (entry[0], entry[1]))
-	return lst
-
-
-def unmapKeyAndValue(old):
-	lst = []
-	for entry in old:
-		lst.append(entry.split('=', 1))
-	return lst
-
-
 mapping.register('userCertificate', 'userCertificate;binary', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('jpegPhoto', 'jpegPhoto', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('umcProperty', 'univentionUMCProperty', mapKeyAndValue, unmapKeyAndValue)
@@ -2069,7 +2067,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				# TODO: if checkbox "override pwhistory" is not set
 				if self.__pwAlreadyUsed(self['password'], pwhistory):
 					raise univention.admin.uexceptions.pwalreadyused
-				if pwhistoryPolicy and pwhistoryPolicy.has_key('length') and pwhistoryPolicy['length']:
+				if pwhistoryPolicy and pwhistoryPolicy.has_property('length') and pwhistoryPolicy['length']:
 					pwhlen = int(pwhistoryPolicy['length'])
 					newPWHistory = self.__getPWHistory(univention.admin.password.crypt(self['password']), pwhistory, pwhlen)
 					ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
