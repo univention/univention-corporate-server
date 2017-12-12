@@ -1865,9 +1865,12 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			univention.admin.allocators.release(self.lo, self.position, 'uid', username)  # FIXME: remove, as it releases a lock from another process
 			raise univention.admin.uexceptions.uidAlreadyUsed(username)
 
+	def _ldap_pre_ready(self):
+		super(object, self)._ldap_pre_ready()
+
 		# get lock for mailPrimaryAddress
-		if 'mail' in self.options:
-			if self['mailPrimaryAddress']:
+		if 'mail' in self.options and self['mailPrimaryAddress']:
+			if not self.exists() or self.hasChanged('mailPrimaryAddress'):
 				try:
 					self.alloc.append(('mailPrimaryAddress', univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])))
 				except univention.admin.uexceptions.noLock:
@@ -1898,13 +1901,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return al
 
 	def _ldap_post_create(self):
-		self.__confirm_locks()
+		self._confirm_locks()
 		self.__update_groups()
 		self.__primary_group()
-
-	def __confirm_locks(self):
-		for name, value in self.alloc:
-			univention.admin.allocators.confirm(self.lo, self.position, name, value)
 
 	def _ldap_post_modify(self):
 		# POSIX
@@ -2299,19 +2298,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				ml = [x for x in ml if x[0] != 'krb5PasswordEnd']
 				ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, krb5PasswordEnd))
 
-		if self.hasChanged('mailPrimaryAddress') and self['mailPrimaryAddress']:
-			for i, j in self.alloc:
-				if i == 'mailPrimaryAddress':
-					break
-			else:
-				try:
-					self.alloc.append(('mailPrimaryAddress', self['mailPrimaryAddress']))
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "LOCKING: %s" % self['mailPrimaryAddress'])
-					univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "LOCKING DONE: %s" % self['mailPrimaryAddress'])
-				except univention.admin.uexceptions.noLock:
-					raise univention.admin.uexceptions.mailAddressUsed
-
 		if self['mailForwardAddress'] and not self['mailPrimaryAddress']:
 				raise univention.admin.uexceptions.missingInformation(
 					_('Primary e-mail address must be set, if messages should be forwarded for it.'))
@@ -2424,21 +2410,13 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			ml.append(('sambaAcctFlags', old_flags, acctFlags.decode()))
 		return ml
 
-	def _ldap_pre_remove(self):
-		# Samba
-		self.sid = self.oldattr['sambaSID'][0]
-		# POSIX
-		self.uid = self.oldattr['uid'][0]
-
 	def _ldap_post_remove(self):
-		# Samba
-		univention.admin.allocators.release(self.lo, self.position, 'sid', self.sid)
-
-		# POSIX
-		univention.admin.allocators.release(self.lo, self.position, 'uidNumber', self.oldattr['uidNumber'][0])
+		self.alloc.append(('sid', self.oldattr['sambaSID'][0]))
+		self.alloc.append(('uid', self.oldattr['uid'][0]))
+		self.alloc.append(('uidNumber', self.oldattr['uidNumber'][0]))
 		if 'mail' in self.options and self['mailPrimaryAddress']:
-			univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', self['mailPrimaryAddress'])
-		univention.admin.allocators.release(self.lo, self.position, 'uid', self.uid)
+			self.alloc.append(('mailPrimaryAddress', self['mailPrimaryAddress']))
+		self._release_locks()
 
 		groupObjects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn]))
 		if groupObjects:
@@ -2634,10 +2612,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		# return byte values of a string (for smbPWHistory)
 		bytes = [int(string[i:i + 2], 16) for i in xrange(0, len(string), 2)]
 		return struct.pack("%iB" % len(bytes), *bytes)
-
-	def cancel(self):
-		for i, j in self.alloc:
-			univention.admin.allocators.release(self.lo, self.position, i, j)
 
 
 def rewrite(filter, mapping):
