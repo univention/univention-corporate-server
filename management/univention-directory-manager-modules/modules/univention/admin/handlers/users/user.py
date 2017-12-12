@@ -308,7 +308,8 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		show_in_lists=True
+		show_in_lists=True,
+		default='none',
 	),
 	'password': univention.admin.property(
 		short_description=_('Password'),
@@ -1380,6 +1381,30 @@ def _is_windows_disabled(disabled):
 	return disabled in ('all', 'windows', 'windows_posix', 'windows_kerberos')
 
 
+def unmapLocked(oldattr):
+	locked = 'none'
+	userPassword = oldattr.get('userPassword', [''])[0]
+	if userPassword and _pwd_is_locked(userPassword):
+		locked = 'posix'
+
+	flags = oldattr.get('sambaAcctFlags', None)
+	if flags:
+		acctFlags = univention.admin.samba.acctFlags(flags[0])
+		try:
+			if acctFlags['L'] == 1:
+				if locked == 'posix':
+					locked = 'all'
+				else:
+					locked = 'windows'
+		except KeyError:
+			pass
+	return locked
+
+
+def _pwd_is_locked(password):
+	return password and (password.startswith('{crypt}!') or password.startswith('{LANMAN}!'))
+
+
 def unmapSambaRid(oldattr):
 	sid = oldattr.get('sambaSID', [''])[0]
 	pos = sid.rfind('-')
@@ -1452,13 +1477,14 @@ mapping.registerUnmapping('sambaRID', unmapSambaRid)
 mapping.registerUnmapping('passwordexpiry', unmapPasswordExpiry)
 mapping.registerUnmapping('userexpiry', unmapUserExpiry)
 mapping.registerUnmapping('disabled', unmapDisabled)
+mapping.registerUnmapping('locked', unmapLocked)
 
 
 class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	module = module
 
 	def __pwd_is_locked(self, password):
-		return password and (password.startswith('{crypt}!') or password.startswith('{LANMAN}!'))
+		return _pwd_is_locked(password)
 
 	def __pwd_unlocked(self, password):
 		if self.__pwd_is_locked(password):
@@ -1535,8 +1561,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.modifypassword = not self.exists()
 		self.is_auth_saslpassthrough = 'no'
 
-		self['locked'] = 'none'
-
 		self.save()
 
 		if self.exists():
@@ -1557,8 +1581,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			userPassword = self.oldattr.get('userPassword', [''])[0]
 			if userPassword:
 				self.info['password'] = userPassword
-				if self.__pwd_is_locked(userPassword):
-					self['locked'] = 'posix'
 				self.is_auth_saslpassthrough = self.__pwd_is_auth_saslpassthrough(userPassword)
 
 			# POSIX
@@ -1605,18 +1627,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			# Samba
 			self.sambaMungedDialUnmap()
 			self.sambaMungedDialParse()
-
-			flags = self.oldattr.get('sambaAcctFlags', None)
-			if flags:
-				acctFlags = univention.admin.samba.acctFlags(flags[0])
-				try:
-					if acctFlags['L'] == 1:
-						if self['locked'] == 'posix':
-							self['locked'] = 'all'
-						else:
-							self['locked'] = 'windows'
-				except KeyError:
-					pass
 
 			if 'automountInformation' in self.oldattr:
 				unc = ''
