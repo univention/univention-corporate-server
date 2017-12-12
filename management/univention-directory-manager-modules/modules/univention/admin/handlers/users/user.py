@@ -1625,36 +1625,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			# Samba
 			self.sambaMungedDialUnmap()
 			self.sambaMungedDialParse()
-
-			if 'automountInformation' in self.oldattr:
-				unc = ''
-				try:
-					flags, unc = re.split(' *', self.oldattr['automountInformation'][0], 1)
-				except ValueError:
-					pass
-				if unc.find(':') > 1:
-					host, path = unc.split(':', 1)
-					sharepath = path
-					while len(sharepath) > 1:
-						filter_ = univention.admin.filter.conjunction('&', [
-							univention.admin.filter.expression('univentionShareHost', escape_filter_chars(host)),
-							univention.admin.filter.conjunction('|', [
-								univention.admin.filter.expression('univentionSharePath', escape_filter_chars(sharepath.rstrip('/'))),
-								univention.admin.filter.expression('univentionSharePath', escape_filter_chars('%s/' % (sharepath.rstrip('/')))),
-							])
-						])
-						res = univention.admin.modules.lookup(univention.admin.modules.get('shares/share'), None, self.lo, filter=filter_, scope='domain')
-						if len(res) == 1:
-							self['homeShare'] = res[0].dn
-							relpath = path.replace(sharepath, '')
-							if len(relpath) > 0 and relpath[0] == '/':
-								relpath = relpath[1:]
-							self['homeSharePath'] = relpath
-							break
-						elif len(res) > 1:
-							break
-						elif len(res) < 1:
-							sharepath = os.path.split(sharepath)[0]
+			self._unmap_automount_information()
 
 			if 'pki' in self.options:
 				self.reload_certificate()
@@ -1675,6 +1646,37 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					if primaryGroupResult:
 						self['primaryGroup'] = primaryGroupResult[0]
 						self.newPrimaryGroupDn = primaryGroupResult[0]
+
+	def _unmap_automount_information(self):
+		if 'automountInformation' not in self.oldattr:
+			return
+		try:
+			flags, unc = re.split(' *', self.oldattr['automountInformation'][0], 1)
+			host, path = unc.split(':', 1)
+		except ValueError:
+			return
+
+		sharepath = path
+		while len(sharepath) > 1:
+			filter_ = univention.admin.filter.conjunction('&', [
+				univention.admin.filter.expression('univentionShareHost', escape_filter_chars(host)),
+				univention.admin.filter.conjunction('|', [
+					univention.admin.filter.expression('univentionSharePath', escape_filter_chars(sharepath.rstrip('/'))),
+					univention.admin.filter.expression('univentionSharePath', escape_filter_chars('%s/' % (sharepath.rstrip('/')))),
+				])
+			])
+			res = univention.admin.modules.lookup(univention.admin.modules.get('shares/share'), None, self.lo, filter=filter_, scope='domain')
+			if len(res) == 1:
+				self['homeShare'] = res[0].dn
+				relpath = path.replace(sharepath, '')
+				if len(relpath) > 0 and relpath[0] == '/':
+					relpath = relpath[1:]
+				self['homeSharePath'] = relpath
+				break
+			elif len(res) > 1:
+				break
+			elif len(res) < 1:
+				sharepath = os.path.split(sharepath)[0]
 
 	def modify(self, *args, **kwargs):
 		try:
