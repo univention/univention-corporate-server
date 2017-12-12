@@ -84,40 +84,45 @@ long_description = ''
 
 
 options = {
-	'posix': univention.admin.option(
-		short_description=_('POSIX account'),
-		default=1,
-		objectClasses=['posixAccount', 'shadowAccount'],
+	'default': univention.admin.option(
+		short_description=_('POSIX, Samba and Kerberos account'),
+		default=True,
+		objectClasses=['posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry']
 	),
-	'samba': univention.admin.option(
-		short_description=_('Samba account'),
-		default=1,
-		objectClasses=['sambaSamAccount'],
-	),
-	'kerberos': univention.admin.option(
-		short_description=_('Kerberos principal'),
-		default=1,
-		objectClasses=['krb5Principal', 'krb5KDCEntry'],
-	),
+	# 'posix': univention.admin.option(
+	# 	short_description=_('POSIX account'),
+	# 	default=1,
+	# 	objectClasses=['posixAccount', 'shadowAccount'],
+	# ),
+	# 'samba': univention.admin.option(
+	# 	short_description=_('Samba account'),
+	# 	default=1,
+	# 	objectClasses=['sambaSamAccount'],
+	# ),
+	# 'kerberos': univention.admin.option(
+	# 	short_description=_('Kerberos principal'),
+	# 	default=1,
+	# 	objectClasses=['krb5Principal', 'krb5KDCEntry'],
+	# ),
 	'mail': univention.admin.option(
 		short_description=_('Mail account'),
-		default=1,
+		default=True,
 		objectClasses=['univentionMail'],
 	),
 	'pki': univention.admin.option(
 		short_description=_('Public key infrastructure account'),
-		default=0,
+		default=False,
 		editable=True,
 		objectClasses=['pkiUser'],
 	),
 	'person': univention.admin.option(
 		short_description=_('Personal information'),
-		default=1,
+		default=True,
 		objectClasses=['person', 'organizationalPerson', 'inetOrgPerson'],
 	),
 	'ldap_pwd': univention.admin.option(
 		short_description=_('Simple authentication account'),
-		default=0,
+		default=False,
 		editable=True,
 		objectClasses=['simpleSecurityObject', 'uidObject'],
 	)
@@ -1450,32 +1455,32 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 		mungeddial.Support.__init__(self)
 
-		if 'posix' in self.options:
+		# POSIX
+		# The shadowLastChange attribute is the amount of days between 1/1/1970 upto the day that password was modified,
+		# shadowMax is the number of days a password is valid. So the password expires on 1/1/1970+shadowLastChange+shadowMax.
+		# shadowExpire contains the absolute date to expire the account.
 
-			# The shadowLastChange attribute is the amount of days between 1/1/1970 upto the day that password was modified,
-			# shadowMax is the number of days a password is valid. So the password expires on 1/1/1970+shadowLastChange+shadowMax.
-			# shadowExpire contains the absolute date to expire the account.
+		if 'shadowExpire' in self.oldattr and len(self.oldattr['shadowExpire']) > 0:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'userexpiry: %s' % posixDaysToDate(self.oldattr['shadowExpire'][0]))
+			if self.oldattr['shadowExpire'][0] != '1':
+				self.info['userexpiry'] = posixDaysToDate(self.oldattr['shadowExpire'][0])
+		if 'shadowLastChange' in self.oldattr and 'shadowMax' in self.oldattr and len(self.oldattr['shadowLastChange']) > 0 and len(self.oldattr['shadowMax']) > 0:
+			try:
+				self.info['passwordexpiry'] = posixDaysToDate(int(self.oldattr['shadowLastChange'][0]) + int(self.oldattr['shadowMax'][0]))
+			except:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'users/user: failed to calculate password expiration correctly, use only shadowMax instead')
+				self.info['passwordexpiry'] = posixDaysToDate(int(self.oldattr['shadowMax'][0]))
 
-			if 'shadowExpire' in self.oldattr and len(self.oldattr['shadowExpire']) > 0:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'userexpiry: %s' % posixDaysToDate(self.oldattr['shadowExpire'][0]))
-				if self.oldattr['shadowExpire'][0] != '1':
-					self.info['userexpiry'] = posixDaysToDate(self.oldattr['shadowExpire'][0])
-			if 'shadowLastChange' in self.oldattr and 'shadowMax' in self.oldattr and len(self.oldattr['shadowLastChange']) > 0 and len(self.oldattr['shadowMax']) > 0:
-				try:
-					self.info['passwordexpiry'] = posixDaysToDate(int(self.oldattr['shadowLastChange'][0]) + int(self.oldattr['shadowMax'][0]))
-				except:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'users/user: failed to calculate password expiration correctly, use only shadowMax instead')
-					self.info['passwordexpiry'] = posixDaysToDate(int(self.oldattr['shadowMax'][0]))
+		# Kerberos
+		if 'krb5ValidEnd' in self.oldattr:
+			krb5validend = self.oldattr['krb5ValidEnd'][0]
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5validend is: %s' % krb5validend)
+			self.info['userexpiry'] = "%s-%s-%s" % (krb5validend[0:4], krb5validend[4:6], krb5validend[6:8])
 
-		if 'kerberos' in self.options:
-			if self.oldattr.has_key('krb5ValidEnd'):
-				krb5validend = self.oldattr['krb5ValidEnd'][0]
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5validend is: %s' % krb5validend)
-				self.info['userexpiry'] = "%s-%s-%s" % (krb5validend[0:4], krb5validend[4:6], krb5validend[6:8])
-		elif 'samba' in self.options:
-			if self.oldattr.has_key('sambaKickoffTime'):
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaKickoffTime is: %s' % self.oldattr['sambaKickoffTime'][0])
-				self.info['userexpiry'] = time.strftime("%Y-%m-%d", time.gmtime(long(self.oldattr['sambaKickoffTime'][0]) + (3600 * 24)))
+		# Samba
+		if 'sambaKickoffTime' in self.oldattr:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaKickoffTime is: %s' % self.oldattr['sambaKickoffTime'][0])
+			self.info['userexpiry'] = time.strftime("%Y-%m-%d", time.gmtime(long(self.oldattr['sambaKickoffTime'][0]) + (3600 * 24)))
 
 		try:
 			givenName = self.oldattr.get('givenName', [''])[0]
@@ -1520,51 +1525,48 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 			self.modifypassword = 0
 			self['password'] = '********'
-			if 'posix' in self.options or 'mail' in self.options or 'ldap_pwd' in self.options:
-				# if 'username' not in self.oldattr and 'username' in self.info and len(self.info['username'][0]) > 0:
-				#	self.info['username'][0] = self.info['username'][0].lower()
 
-				userPassword = self.oldattr.get('userPassword', [''])[0]
-				if userPassword:
-					self.info['password'] = userPassword
-					self.modifypassword = 0
-					if self.__pwd_is_locked(userPassword):
-						self['locked'] = 'posix'
-					self.is_auth_saslpassthrough = self.__pwd_is_auth_saslpassthrough(userPassword)
+			# POSIX Mail, LDAP
+			userPassword = self.oldattr.get('userPassword', [''])[0]
+			if userPassword:
+				self.info['password'] = userPassword
+				self.modifypassword = 0
+				if self.__pwd_is_locked(userPassword):
+					self['locked'] = 'posix'
+				self.is_auth_saslpassthrough = self.__pwd_is_auth_saslpassthrough(userPassword)
 
-				if 'posix' in self.options:
+			# POSIX
+			if loadGroups:  # this is optional because it can take much time on larger installations, default is true
+				self.groupsLoaded = 1
+				self['groups'] = self.lo.searchDn(filter=filter_format('(&(cn=*)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [self.dn]))
+			else:
+				self.groupsLoaded = 0
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'user: open with loadGroups=false for user %s' % self['username'])
+			primaryGroupNumber = self.oldattr.get('gidNumber', [''])[0]
+			if primaryGroupNumber:
+				primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(cn=*)(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber=%s))', [primaryGroupNumber]))
+				if primaryGroupResult:
+					self['primaryGroup'] = primaryGroupResult[0]
+				else:
+					try:
+						primaryGroup = self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
+						try:
+							primaryGroup = primaryGroup[0][1]["univentionDefaultGroup"][0]
+						except:
+							primaryGroup = None
+					except:
+						primaryGroup = None
 
-					if loadGroups:  # this is optional because it can take much time on larger installations, default is true
-						self.groupsLoaded = 1
-						self['groups'] = self.lo.searchDn(filter=filter_format('(&(cn=*)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [self.dn]))
-					else:
-						self.groupsLoaded = 0
-						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'user: open with loadGroups=false for user %s' % self['username'])
-					primaryGroupNumber = self.oldattr.get('gidNumber', [''])[0]
-					if primaryGroupNumber:
-						primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(cn=*)(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber=%s))', [primaryGroupNumber]))
-						if primaryGroupResult:
-							self['primaryGroup'] = primaryGroupResult[0]
-						else:
-							try:
-								primaryGroup = self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
-								try:
-									primaryGroup = primaryGroup[0][1]["univentionDefaultGroup"][0]
-								except:
-									primaryGroup = None
-							except:
-								primaryGroup = None
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'user: could not find primaryGroup, setting primaryGroup to %s' % primaryGroup)
 
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'user: could not find primaryGroup, setting primaryGroup to %s' % primaryGroup)
-
-							self['primaryGroup'] = primaryGroup
-							self.newPrimaryGroupDn = primaryGroup
-							self.__primary_group()
-							self.save()
-					else:
-						self['primaryGroup'] = None
-						self.save()
-						raise univention.admin.uexceptions.primaryGroup
+					self['primaryGroup'] = primaryGroup
+					self.newPrimaryGroupDn = primaryGroup
+					self.__primary_group()
+					self.save()
+			else:
+				self['primaryGroup'] = None
+				self.save()
+				raise univention.admin.uexceptions.primaryGroup
 
 			if self['passwordexpiry']:
 				today = time.strftime('%Y-%m-%d').split('-')
@@ -1574,41 +1576,41 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				if int(string.join(today, '')) >= int(string.join(expiry, '')):
 					self['pwdChangeNextLogin'] = '1'
 
-			if 'samba' in self.options:
-				sid = self.oldattr.get('sambaSID', [''])[0]
-				pos = sid.rfind('-')
-				self.info['sambaRID'] = sid[pos + 1:]
-				self.sambaMungedDialUnmap()
-				self.sambaMungedDialParse()
+			# Samba
+			sid = self.oldattr.get('sambaSID', [''])[0]
+			pos = sid.rfind('-')
+			self.info['sambaRID'] = sid[pos + 1:]
+			self.sambaMungedDialUnmap()
+			self.sambaMungedDialParse()
 
-				flags = self.oldattr.get('sambaAcctFlags', None)
-				if flags:
-					acctFlags = univention.admin.samba.acctFlags(flags[0])
-					try:
-						if acctFlags['D'] == 1:
-							self.__add_disabled('windows')
-					except KeyError:
-						pass
-					try:
-						if acctFlags['L'] == 1:
-							if self['locked'] == 'posix':
-								self['locked'] = 'all'
-							else:
-								self['locked'] = 'windows'
-					except KeyError:
-						pass
+			flags = self.oldattr.get('sambaAcctFlags', None)
+			if flags:
+				acctFlags = univention.admin.samba.acctFlags(flags[0])
+				try:
+					if acctFlags['D'] == 1:
+						self.__add_disabled('windows')
+				except KeyError:
+					pass
+				try:
+					if acctFlags['L'] == 1:
+						if self['locked'] == 'posix':
+							self['locked'] = 'all'
+						else:
+							self['locked'] = 'windows'
+				except KeyError:
+					pass
 
-			if 'kerberos' in self.options:
-				kdcflags = self.oldattr.get('krb5KDCFlags', ['0'])[0]
-				if kdcflags == '254':
-					self.__add_disabled('kerberos')
+			# Kerberos
+			kdcflags = self.oldattr.get('krb5KDCFlags', ['0'])[0]
+			if kdcflags == '254':
+				self.__add_disabled('kerberos')
 
-			if 'posix' in self.options:
-				shadowExpire = self.oldattr.get('shadowExpire', ['0'])[0]
-				if shadowExpire == '1' or (shadowExpire < int(time.time() / 3600 / 24) and (self._is_kerberos_disabled() or self._is_windows_disabled())):
-					self.__add_disabled('posix')
+			# POSIX
+			shadowExpire = self.oldattr.get('shadowExpire', ['0'])[0]
+			if shadowExpire == '1' or (shadowExpire < int(time.time() / 3600 / 24) and (self._is_kerberos_disabled() or self._is_windows_disabled())):
+				self.__add_disabled('posix')
 
-			if self.oldattr.has_key('automountInformation'):
+			if 'automountInformation' in self.oldattr:
 				unc = ''
 				try:
 					flags, unc = re.split(' *', self.oldattr['automountInformation'][0], 1)
@@ -1643,20 +1645,20 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 			self.save()
 		else:
-			if 'posix' in self.options:
-				primary_group_from_template = self['primaryGroup']
-				if not primary_group_from_template:
-					searchResult = self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
-					if not searchResult or not searchResult[0][1]:
-						self['primaryGroup'] = None
-						self.save()
-						raise univention.admin.uexceptions.primaryGroup
+			# POSIX
+			primary_group_from_template = self['primaryGroup']
+			if not primary_group_from_template:
+				searchResult = self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
+				if not searchResult or not searchResult[0][1]:
+					self['primaryGroup'] = None
+					self.save()
+					raise univention.admin.uexceptions.primaryGroup
 
-					for tmp, number in searchResult:
-						primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(cn=%s))', (univention.admin.uldap.explodeDn(number['univentionDefaultGroup'][0], 1)[0],)), base=self.position.getDomain(), scope='domain')
-						if primaryGroupResult:
-							self['primaryGroup'] = primaryGroupResult[0]
-							self.newPrimaryGroupDn = primaryGroupResult[0]
+				for tmp, number in searchResult:
+					primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(cn=%s))', (univention.admin.uldap.explodeDn(number['univentionDefaultGroup'][0], 1)[0],)), base=self.position.getDomain(), scope='domain')
+					if primaryGroupResult:
+						self['primaryGroup'] = primaryGroupResult[0]
+						self.newPrimaryGroupDn = primaryGroupResult[0]
 
 	def modify(self, *args, **kwargs):
 		try:
@@ -1824,10 +1826,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set gidNumber')
 		self.lo.modify(self.dn, [('gidNumber', 'None', primaryGroupNumber)])
 
-		if 'samba' in self.options:
-			primaryGroupSambaNumber = self.get_sid_for_primary_group()
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set sambaPrimaryGroupSID')
-			self.lo.modify(self.dn, [('sambaPrimaryGroupSID', 'None', primaryGroupSambaNumber)])
+		# Samba
+		primaryGroupSambaNumber = self.get_sid_for_primary_group()
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set sambaPrimaryGroupSID')
+		self.lo.modify(self.dn, [('sambaPrimaryGroupSID', 'None', primaryGroupSambaNumber)])
 
 		if univention.admin.baseConfig.is_true("directory/manager/user/primarygroup/update", True):
 			new_uid = self.info.get('username')
@@ -1846,11 +1848,11 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	def _check_uid_gid_uniqueness(self):
 		if not configRegistry.is_true("directory/manager/uid_gid/uniqueness", True):
 			return
-		if "posix" in self.options or "samba" in self.options:
-			fg = univention.admin.filter.expression('gidNumber', self['uidNumber'])
-			group_objects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=fg)
-			if group_objects:
-				raise univention.admin.uexceptions.uidNumberAlreadyUsedAsGidNumber('%r' % self["uidNumber"])
+		# POSIX, Samba
+		fg = univention.admin.filter.expression('gidNumber', self['uidNumber'])
+		group_objects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=fg)
+		if group_objects:
+			raise univention.admin.uexceptions.uidNumberAlreadyUsedAsGidNumber('%r' % self["uidNumber"])
 
 	def _ldap_pre_create(self):
 		_d = univention.debug.function('admin.handlers.users.user.object._ldap_pre_create')
@@ -1868,10 +1870,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self._check_uid_gid_uniqueness()
 
 	def _ldap_addlist(self):
-
 		try:
 			uid = None
 
+			# FIXME: remove?!
 			if not set(self.options) & set(['posix', 'samba', 'person', 'ldap_pwd']):
 				# no objectClass which provides uid...
 				raise univention.admin.uexceptions.invalidOptions(_('Need one of %(posix)s, %(samba)s, %(person)s or %(ldap)s in options to create user.') % {
@@ -1881,28 +1883,29 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					'ldap': options['ldap_pwd'].short_description
 				})
 
-			if 'samba' in self.options and not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
+			# Samba
+			if not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
 				raise univention.admin.uexceptions.primaryGroupWithoutSamba
 
-			if 'posix' in self.options or 'samba' in self.options:
-				gidNum = self.get_gid_for_primary_group()
-				if self['primaryGroup']:
-					self.newPrimaryGroupDn = self['primaryGroup']
+			# Samba, POSIX
+			gidNum = self.get_gid_for_primary_group()
+			if self['primaryGroup']:
+				self.newPrimaryGroupDn = self['primaryGroup']
 
-			prohibited_objects = univention.admin.handlers.settings.prohibited_username.lookup(self.co, self.lo, '')
-			if prohibited_objects and len(prohibited_objects) > 0:
-				for i in range(0, len(prohibited_objects)):
-					if self['username'] in prohibited_objects[i]['usernames']:
-						raise univention.admin.uexceptions.prohibitedUsername(': %s' % self['username'])
-						return []
+			prohibited_objects = univention.admin.handlers.settings.prohibited_username.lookup(self.co, self.lo, '') or []
+			for prohibited_object in prohibited_objects:
+				if self['username'] in prohibited_object['usernames']:
+					raise univention.admin.uexceptions.prohibitedUsername(': %s' % self['username'])
+
 			try:
 				uid = univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])
-				if 'posix' in self.options:
-					if self['unixhome'] == '/home/%s' % self.old_username:
-						self['unixhome'] = '/home/%s' % self['username']
+				# TODO: move?!
+				# POSIX
+				if self['unixhome'] == '/home/%s' % (self.old_username,):
+					self['unixhome'] = '/home/%s' % (self['username'],)
 			except univention.admin.uexceptions.noLock:
 				username = self['username']
-				del(self.info['username'])
+				del self.info['username']
 				self.oldinfo = {}
 				self.dn = None
 				self._exists = 0
@@ -1913,86 +1916,99 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			self.alloc.append(('uid', uid))
 
 			self.uidNum = None
-			if 'posix' in self.options or 'samba' in self.options:
-				if self['uidNumber']:
-					self.alloc.append(('uidNumber', self['uidNumber']))
-					self.uidNum = univention.admin.allocators.acquireUnique(self.lo, self.position, 'uidNumber', self['uidNumber'], 'uidNumber', scope='base')
-				else:
-					self.uidNum = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
-					self.alloc.append(('uidNumber', self.uidNum))
+			# POSIX, Samba
+			if self['uidNumber']:
+				self.alloc.append(('uidNumber', self['uidNumber']))
+				self.uidNum = univention.admin.allocators.acquireUnique(self.lo, self.position, 'uidNumber', self['uidNumber'], 'uidNumber', scope='base')
+			else:
+				self.uidNum = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
+				self.alloc.append(('uidNumber', self.uidNum))
 
-			if 'samba' in self.options:
-				self.userSid = self.__generate_user_sid(self.uidNum)
+			# Samba
+			self.userSid = self.__generate_user_sid(self.uidNum)
 
 			ocs = ['top', 'person', 'univentionPWHistory']
 			self.pwhistory_active = 1
 			al = [('uid', [uid])]
-			if 'posix' in self.options:
-				ocs.extend(['posixAccount', 'shadowAccount'])
-				al.append(('uidNumber', [self.uidNum]))
-				al.append(('gidNumber', [gidNum]))
+
+			# POSIX
+			ocs.extend(['posixAccount', 'shadowAccount'])  # FIXME: remove... this should be automatically added by the selected options
+			al.append(('uidNumber', [self.uidNum]))
+			al.append(('gidNumber', [gidNum]))
+
 			if 'mail' in self.options:
 				if 'posix' not in self.options:
-					ocs.extend(['shadowAccount', 'univentionMail'])
+					ocs.extend(['shadowAccount', 'univentionMail'])  # FIXME: remove... this should be automatically added by the selected options
 				else:
-					ocs.extend(['univentionMail'])
+					ocs.extend(['univentionMail'])  # FIXME: remove... this should be automatically added by the selected options
+
 				if self['mailPrimaryAddress']:
 					try:
 						self.alloc.append(('mailPrimaryAddress', self['mailPrimaryAddress']))
 						univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
 					except univention.admin.uexceptions.noLock:
-						self.cancel()
 						raise univention.admin.uexceptions.mailAddressUsed
-			if 'samba' in self.options:
-				ocs.extend(['sambaSamAccount'])
-				al.append(('sambaSID', [self.userSid]))
+
+			# Samba
+			ocs.extend(['sambaSamAccount'])  # FIXME: remove... this should be automatically added by the selected options
+			al.append(('sambaSID', [self.userSid]))
+
 			if 'person' in self.options:
-				ocs.extend(['organizationalPerson', 'inetOrgPerson'])
+				ocs.extend(['organizationalPerson', 'inetOrgPerson'])  # FIXME: remove... this should be automatically added by the selected options
+
 			if 'ldap_pwd' in self.options:
-				ocs.extend(['simpleSecurityObject', 'uidObject'])
-			if 'kerberos' in self.options:
-				domain = univention.admin.uldap.domain(self.lo, self.position)
-				realm = domain.getKerberosRealm()
-				if realm:
-					ocs.extend(['krb5Principal', 'krb5KDCEntry'])
-					al.append(('krb5PrincipalName', [uid + '@' + realm]))
-					al.append(('krb5MaxLife', '86400'))
-					al.append(('krb5MaxRenew', '604800'))
-					self.kerberos_active = 1
-				else:
-					# can't do kerberos
-					self.options.remove('kerberos')
+				ocs.extend(['simpleSecurityObject', 'uidObject'])  # FIXME: remove... this should be automatically added by the selected options
+
+			# Kerberos
+			domain = univention.admin.uldap.domain(self.lo, self.position)
+			realm = domain.getKerberosRealm()
+			if realm:
+				ocs.extend(['krb5Principal', 'krb5KDCEntry'])  # FIXME: remove... this should be automatically added by the selected options
+				al.append(('krb5PrincipalName', [uid + '@' + realm]))
+				al.append(('krb5MaxLife', '86400'))
+				al.append(('krb5MaxRenew', '604800'))
+				self.kerberos_active = 1
+			else:  # FIXME: we have to remove this. it's not possible anymore to remove an option!
+				# can't do kerberos
+				self.options.remove('kerberos')
+
 			if 'pki' in self.options:
 				ocs.extend(['pkiUser'])
 
 			al.insert(0, ('objectClass', ocs))
 			return al
 
-		except:
+		except:  # TODO: move an layer upstream
 			self.cancel()
 			raise
 
 	def _ldap_post_create(self):
 		univention.admin.allocators.confirm(self.lo, self.position, 'uid', self['username'])
-		if 'samba' in self.options:
-			univention.admin.allocators.confirm(self.lo, self.position, 'sid', self.userSid)
+
+		# Samba
+		univention.admin.allocators.confirm(self.lo, self.position, 'sid', self.userSid)
+
 		if 'mail' in self.options and self['mailPrimaryAddress']:
 			univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailPrimaryAddress'])
-		if 'posix' in self.options:
-			univention.admin.allocators.confirm(self.lo, self.position, 'uidNumber', self.uidNum)
-			self.__update_groups()
-			self.__primary_group()
+
+		# POSIX
+		univention.admin.allocators.confirm(self.lo, self.position, 'uidNumber', self.uidNum)
+		self.__update_groups()
+		self.__primary_group()
 
 	def _ldap_post_modify(self):
-		if 'posix' in self.options:
-			self.__update_groups()
-			self.__primary_group()
+		# POSIX
+		self.__update_groups()
+		self.__primary_group()
+
 		if 'mail' in self.options and self.hasChanged('mailPrimaryAddress'):
 			if self['mailPrimaryAddress']:
 				univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailPrimaryAddress'])
 			else:
 				univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', self.oldinfo['mailPrimaryAddress'])
-		if 'samba' in self.options and self.hasChanged('sambaRID'):
+
+		# Samba
+		if self.hasChanged('sambaRID'):
 			univention.admin.allocators.confirm(self.lo, self.position, 'sid', self.userSid)
 
 	def _ldap_pre_modify(self):
@@ -2002,10 +2018,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 		if self.hasChanged('username'):
 			try:
-				uid = univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])
+				univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])
 			except univention.admin.uexceptions.noLock:
 				username = self['username']
-				del(self.info['username'])
+				del self.info['username']
 				self.oldinfo = {}
 				self.dn = None
 				self._exists = 0
@@ -2031,22 +2047,14 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			# this should never happen, as uidNumber is marked as unchangeable
 			self._check_uid_gid_uniqueness()
 
-	def _remove_attr(self, ml, attr):
-		for m in ml:
-			if m[0] == attr:
-				ml.remove(m)
-		if self.oldattr.get(attr, []):
-			ml.insert(0, (attr, self.oldattr.get(attr, []), ''))
-		return ml
-
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
 		old_object_classes = self.oldattr.get('objectClass', [])
 		new_object_classes = set(old_object_classes)
 
-		# samba privileges
-		if self.hasChanged('sambaPrivileges') and 'samba' in self.options:
+		# Samba
+		if self.hasChanged('sambaPrivileges'):
 			# add univentionSambaPrivileges objectclass
 			if self['sambaPrivileges']:
 				new_object_classes |= set(['univentionSambaPrivileges'])
@@ -2066,13 +2074,13 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			if 'person' in self.options:
 				ml.append(('givenName', self.oldattr.get('givenName', [''])[0], self['firstname']))
 
-			if 'posix' in self.options:
-				prop = self.descriptions['gecos']
-				gecos = prop._replace(prop.base_default, self)
-				if self.oldinfo.get('gecos', ''):
-					old_gecos = prop._replace(prop.base_default, self.oldinfo)
-					if old_gecos == self.oldinfo.get('gecos', ''):
-						ml.append(('gecos', self.oldinfo.get('gecos', [''])[0], gecos))
+			# POSIX
+			prop = self.descriptions['gecos']
+			gecos = prop._replace(prop.base_default, self)
+			if self.oldinfo.get('gecos', ''):
+				old_gecos = prop._replace(prop.base_default, self.oldinfo)
+				if old_gecos == self.oldinfo.get('gecos', ''):
+					ml.append(('gecos', self.oldinfo.get('gecos', [''])[0], gecos))
 
 		# update displayName automatically if no custom value has been entered by the user and the name changed
 		if self.info.get('displayName') == self.oldinfo.get('displayName') and (self.info.get('firstname') != self.oldinfo.get('firstname') or self.info.get('lastname') != self.oldinfo.get('lastname')):
@@ -2094,9 +2102,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		elif self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0':
 			pwd_change_next_login = 2
 
+		# Kerberos
 		if self.hasChanged('username'):
-			if 'kerberos' in self.options:
-				ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
+			ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
 
 		if self.modifypassword:
 			# if the password is going to be changed in ldap check password-history
@@ -2143,51 +2151,54 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					# expiryInterval is empty or no legal int-string
 					pwhistoryPolicy['expiryInterval'] = ''
 					expiryInterval = -1
-				if 'posix' in self.options or 'mail' in self.options:
-					now = (long(time.time()) / 3600 / 24)
-					if pwd_change_next_login == 1:
-						if expiryInterval == -1 or expiryInterval == 0:
-							shadowMax = "1"
-						else:
-							shadowMax = "%d" % expiryInterval
 
-						shadowLastChangeValue = str(int(now) - int(shadowMax) - 1)
+				# POSIX Mail
+				now = (long(time.time()) / 3600 / 24)
+				if pwd_change_next_login == 1:
+					if expiryInterval == -1 or expiryInterval == 0:
+						shadowMax = "1"
 					else:
-						if expiryInterval == -1 or expiryInterval == 0:
-							shadowMax = ''
-						else:
-							shadowMax = "%d" % expiryInterval
+						shadowMax = "%d" % expiryInterval
 
-						shadowLastChangeValue = str(int(now))
+					shadowLastChangeValue = str(int(now) - int(shadowMax) - 1)
+				else:
+					if expiryInterval == -1 or expiryInterval == 0:
+						shadowMax = ''
+					else:
+						shadowMax = "%d" % expiryInterval
 
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'shadowMax: %s' % shadowMax)
-					old_shadowMax = self.oldattr.get('shadowMax', '')
-					if old_shadowMax != shadowMax:
-						ml.append(('shadowMax', self.oldattr.get('shadowMax', [''])[0], shadowMax))
-				if 'kerberos' in self.options:
-					if pwd_change_next_login == 1:
-						expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()))))
+					shadowLastChangeValue = str(int(now))
+
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'shadowMax: %s' % shadowMax)
+				old_shadowMax = self.oldattr.get('shadowMax', '')
+				if old_shadowMax != shadowMax:
+					ml.append(('shadowMax', self.oldattr.get('shadowMax', [''])[0], shadowMax))
+
+				# Kerberos
+				if pwd_change_next_login == 1:
+					expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()))))
+				else:
+					if expiryInterval == -1 or expiryInterval == 0:
+						expiry = '0'
 					else:
-						if expiryInterval == -1 or expiryInterval == 0:
-							expiry = '0'
-						else:
-							expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()) + (expiryInterval * 3600 * 24))))
-					if expiry == '0':
-						krb5PasswordEnd = ''
-					else:
-						krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
-					old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', '')
-					if old_krb5PasswordEnd != krb5PasswordEnd:
-						ml.append(('krb5PasswordEnd', self.oldattr.get('krb5PasswordEnd', [''])[0], krb5PasswordEnd))
+						expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()) + (expiryInterval * 3600 * 24))))
+				if expiry == '0':
+					krb5PasswordEnd = ''
+				else:
+					krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
+				old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', '')
+				if old_krb5PasswordEnd != krb5PasswordEnd:
+					ml.append(('krb5PasswordEnd', self.oldattr.get('krb5PasswordEnd', [''])[0], krb5PasswordEnd))
 			else:  # no pwhistoryPolicy['expiryInterval']
-				if 'posix' in self.options or 'mail' in self.options:
-					ml.append(('shadowMax', self.oldattr.get('shadowMax', [''])[0], ''))
-					shadowLastChangeValue = ''
-				if 'kerberos' in self.options:
-					old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', '')
-					if old_krb5PasswordEnd:
-						ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, '0'))
+				# POSIX, Mail
+				ml.append(('shadowMax', self.oldattr.get('shadowMax', [''])[0], ''))
+				shadowLastChangeValue = ''
+
+				# Kerberos
+				old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', '')
+				if old_krb5PasswordEnd:
+					ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, '0'))
 
 			disabled = ""
 			krb_kdcflags = '126'
@@ -2197,152 +2208,152 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			if self["locked"] in ['all', 'posix']:
 				disabled = "!"
 
-			# FIXME: required for join user root
-			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root') or 'mail' in self.options or 'ldap_pwd' in self.options:
-				if self.is_auth_saslpassthrough == 'no':
-					password_crypt = "{crypt}%s%s" % (disabled, univention.admin.password.crypt(self['password']))
-					# shadowlastchange=str(long(time.time())/3600/24)
-					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
-					# if 'posix' in self.options:
-					#	if pwd_change_next_login != 1:
-					#		shadowLastChangeValue = shadowlastchange
-			if 'samba' in self.options:
-				password_nt, password_lm = univention.admin.password.ntlm(self['password'])
-				ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
-				ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
-				sambaPwdLastSetValue = str(long(time.time()))
+			# POSIX
+			if self.is_auth_saslpassthrough == 'no':
+				password_crypt = "{crypt}%s%s" % (disabled, univention.admin.password.crypt(self['password']))
+				# shadowlastchange=str(long(time.time())/3600/24)
+				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
+				# if pwd_change_next_login != 1:
+				#	shadowLastChangeValue = shadowlastchange
 
-				smbpwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
-				if smbpwhistoryPolicy is not None and smbpwhistoryPolicy['length'] is not None and len(smbpwhistoryPolicy['length']) > 0:
-					smbpwhlen = int(smbpwhistoryPolicy['length'])
-					smbpwhistory = self.oldattr.get('sambaPasswordHistory', [''])[0]
-					newsmbPWHistory = self.__getsmbPWHistory(password_nt, smbpwhistory, smbpwhlen)
-					ml.append(('sambaPasswordHistory', self.oldattr.get('sambaPasswordHistory', [''])[0], newsmbPWHistory))
+			# Samba
+			password_nt, password_lm = univention.admin.password.ntlm(self['password'])
+			ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
+			ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
+			sambaPwdLastSetValue = str(long(time.time()))
 
-			if 'kerberos' in self.options:
-				krb_keys = univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
-				krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0]) + 1)
-				ml.append(('krb5Key', self.oldattr.get('krb5Key', []), krb_keys))
-				ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', []), krb_kdcflags))
-				ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
+			smbpwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
+			if smbpwhistoryPolicy is not None and smbpwhistoryPolicy['length'] is not None and len(smbpwhistoryPolicy['length']) > 0:
+				smbpwhlen = int(smbpwhistoryPolicy['length'])
+				smbpwhistory = self.oldattr.get('sambaPasswordHistory', [''])[0]
+				newsmbPWHistory = self.__getsmbPWHistory(password_nt, smbpwhistory, smbpwhlen)
+				ml.append(('sambaPasswordHistory', self.oldattr.get('sambaPasswordHistory', [''])[0], newsmbPWHistory))
 
-				if 'krb5KDCEntry' not in old_object_classes and not self.kerberos_active:
-					domain = univention.admin.uldap.domain(self.lo, self.position)
-					realm = domain.getKerberosRealm()
-					if realm:
-						ml.append(('krb5PrincipalName', '', [self['username'] + '@' + realm]))
-						ml.append(('krb5MaxLife', '', '86400'))
-						ml.append(('krb5MaxRenew', '', '604800'))
+			# Kerberos
+			krb_keys = univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
+			krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0]) + 1)
+			ml.append(('krb5Key', self.oldattr.get('krb5Key', []), krb_keys))
+			ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', []), krb_kdcflags))
+			ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
 
+			if 'krb5KDCEntry' not in old_object_classes and not self.kerberos_active:
+				domain = univention.admin.uldap.domain(self.lo, self.position)
+				realm = domain.getKerberosRealm()
+				if realm:
+					ml.append(('krb5PrincipalName', '', [self['username'] + '@' + realm]))
+					ml.append(('krb5MaxLife', '', '86400'))
+					ml.append(('krb5MaxRenew', '', '604800'))
+
+		# Kerberos
 		if self.hasChanged('disabled'):
-			if 'kerberos' in self.options:
-				if self.__is_kerberos_disabled():
-					# disable kerberos account
-					krb_kdcflags = '254'
-					ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', ['']), krb_kdcflags))
-				else:
-					# enable kerberos account
-					krb_kdcflags = '126'
-					ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', ['']), krb_kdcflags))
+			if self.__is_kerberos_disabled():
+				# disable kerberos account
+				krb_kdcflags = '254'
+				ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', ['']), krb_kdcflags))
+			else:
+				# enable kerberos account
+				krb_kdcflags = '126'
+				ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', ['']), krb_kdcflags))
 
 		if self.hasChanged('locked'):
-			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root'):
-				# if self.modifypassword is set the password was already locked
-				if not self.modifypassword:
-					if self['locked'] in ['all', 'posix']:
-						password_disabled = self.__pwd_locked(self['password'])
-						ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_disabled))
-					else:
-						password_enabled = self.__pwd_unlocked(self['password'])
-						ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_enabled))
-						pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
-						if pwdAccountLockedTime:
-							ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
+			# POSIX
+			# if self.modifypassword is set the password was already locked
+			if not self.modifypassword:
+				if self['locked'] in ['all', 'posix']:
+					password_disabled = self.__pwd_locked(self['password'])
+					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_disabled))
+				else:
+					password_enabled = self.__pwd_unlocked(self['password'])
+					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_enabled))
+					pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
+					if pwdAccountLockedTime:
+						ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
 
-			if 'samba' in self.options:
-				if self['locked'] not in ['all', 'windows']:
-					# reset bad pw count
-					ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [''])[0], "0"))
+			# Samba
+			if self['locked'] not in ['all', 'windows']:
+				# reset bad pw count
+				ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [''])[0], "0"))
 
 		ml = self.__modlist_sambaAcctFlags(ml)
 
 		if self.hasChanged(['userexpiry']):
-			if 'samba' in self.options:
-				sambaKickoffTime = ''
-				if self['userexpiry']:
-					sambaKickoffTime = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")))
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaKickoffTime: %s' % sambaKickoffTime)
-				old_sambaKickoffTime = self.oldattr.get('sambaKickoffTime', '')
-				if old_sambaKickoffTime != sambaKickoffTime:
-					ml.append(('sambaKickoffTime', self.oldattr.get('sambaKickoffTime', [''])[0], sambaKickoffTime))
-			if 'kerberos' in self.options:
-				krb5ValidEnd = ''
-				if self['userexpiry']:
-					krb5ValidEnd = "%s%s%s000000Z" % (self['userexpiry'][0:4], self['userexpiry'][5:7], self['userexpiry'][8:10])
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5ValidEnd: %s' % krb5ValidEnd)
-				old_krb5ValidEnd = self.oldattr.get('krb5ValidEnd', '')
-				if old_krb5ValidEnd != krb5ValidEnd:
-					if not self['userexpiry']:
-						ml.append(('krb5ValidEnd', old_krb5ValidEnd, '0'))
-					else:
-						ml.append(('krb5ValidEnd', self.oldattr.get('krb5ValidEnd', [''])[0], krb5ValidEnd))
+			# Samba
+			sambaKickoffTime = ''
+			if self['userexpiry']:
+				sambaKickoffTime = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")))
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaKickoffTime: %s' % sambaKickoffTime)
+			old_sambaKickoffTime = self.oldattr.get('sambaKickoffTime', '')
+			if old_sambaKickoffTime != sambaKickoffTime:
+				ml.append(('sambaKickoffTime', self.oldattr.get('sambaKickoffTime', [''])[0], sambaKickoffTime))
+
+			# Kerberos
+			krb5ValidEnd = ''
+			if self['userexpiry']:
+				krb5ValidEnd = "%s%s%s000000Z" % (self['userexpiry'][0:4], self['userexpiry'][5:7], self['userexpiry'][8:10])
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5ValidEnd: %s' % krb5ValidEnd)
+			old_krb5ValidEnd = self.oldattr.get('krb5ValidEnd', '')
+			if old_krb5ValidEnd != krb5ValidEnd:
+				if not self['userexpiry']:
+					ml.append(('krb5ValidEnd', old_krb5ValidEnd, '0'))
+				else:
+					ml.append(('krb5ValidEnd', self.oldattr.get('krb5ValidEnd', [''])[0], krb5ValidEnd))
 
 		if self.hasChanged('disabled') or self.hasChanged('userexpiry'):
-			if 'posix' in self.options or ('mail' in self.options and self.hasChanged('userexpiry')):
-				if self.__is_posix_disabled() and self.hasChanged('disabled') and not self.hasChanged('userexpiry'):
-					shadowExpire = '1'
-				elif self['userexpiry']:
-					shadowExpire = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")) / 3600 / 24 + 1)
-				elif self.__is_posix_disabled():
-					shadowExpire = '1'
-				else:
-					shadowExpire = ''
+			# POSIX / Mail
+			if self.__is_posix_disabled() and self.hasChanged('disabled') and not self.hasChanged('userexpiry'):
+				shadowExpire = '1'
+			elif self['userexpiry']:
+				shadowExpire = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")) / 3600 / 24 + 1)
+			elif self.__is_posix_disabled():
+				shadowExpire = '1'
+			else:
+				shadowExpire = ''
 
-				old_shadowExpire = self.oldattr.get('shadowExpire', '')
-				if old_shadowExpire != shadowExpire:
-					ml.append(('shadowExpire', old_shadowExpire, shadowExpire))
+			old_shadowExpire = self.oldattr.get('shadowExpire', '')
+			if old_shadowExpire != shadowExpire:
+				ml.append(('shadowExpire', old_shadowExpire, shadowExpire))
 
 		if pwd_change_next_login == 1:  # ! self.modifypassword or no pwhistoryPolicy['expiryInterval']
-			if 'posix' in self.options or 'mail' in self.options:
-				pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
-				if pwhistoryPolicy is not None and pwhistoryPolicy['expiryInterval'] is not None and len(pwhistoryPolicy['expiryInterval']) > 0:
-					try:
-						expiryInterval = int(pwhistoryPolicy['expiryInterval'])
-					except:
-						# expiryInterval is empty or no legal int-string
-						pwhistoryPolicy['expiryInterval'] = ''
-						expiryInterval = -1
-				else:
+			# POSIX / Mail
+			pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
+			if pwhistoryPolicy is not None and pwhistoryPolicy['expiryInterval'] is not None and len(pwhistoryPolicy['expiryInterval']) > 0:
+				try:
+					expiryInterval = int(pwhistoryPolicy['expiryInterval'])
+				except:
 					# expiryInterval is empty or no legal int-string
 					pwhistoryPolicy['expiryInterval'] = ''
 					expiryInterval = -1
+			else:
+				# expiryInterval is empty or no legal int-string
+				pwhistoryPolicy['expiryInterval'] = ''
+				expiryInterval = -1
 
-				if expiryInterval == -1 or expiryInterval == 0:
-					shadowMax = "1"
-				else:
-					shadowMax = "%d" % expiryInterval
+			if expiryInterval == -1 or expiryInterval == 0:
+				shadowMax = "1"
+			else:
+				shadowMax = "%d" % expiryInterval
 
-				now = (long(time.time()) / 3600 / 24)
-				shadowLastChangeValue = str(int(now) - int(shadowMax) - 1)
+			now = (long(time.time()) / 3600 / 24)
+			shadowLastChangeValue = str(int(now) - int(shadowMax) - 1)
 
-				old_shadowMax = self.oldattr.get('shadowMax', '')
-				if old_shadowMax != shadowMax:
-					ml = [x for x in ml if x[0] != 'shadowMax']
-					ml.append(('shadowMax', self.oldattr.get('shadowMax', [''])[0], shadowMax))
+			old_shadowMax = self.oldattr.get('shadowMax', '')
+			if old_shadowMax != shadowMax:
+				ml = [x for x in ml if x[0] != 'shadowMax']
+				ml.append(('shadowMax', self.oldattr.get('shadowMax', [''])[0], shadowMax))
 
-			if 'samba' in self.options:
-				# OLD: set sambaPwdLastSet to 1, see UCS Bug #8292 and Samba Bug #4313
-				# set sambaPwdLastSet to 0, see UCS Bug #17890
-				sambaPwdLastSetValue = '0'
+			# Samba
+			# OLD: set sambaPwdLastSet to 1, see UCS Bug #8292 and Samba Bug #4313
+			# set sambaPwdLastSet to 0, see UCS Bug #17890
+			sambaPwdLastSetValue = '0'
 
-			if 'kerberos' in self.options:
-				expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()))))
-				krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
-				old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', '')
-				if old_krb5PasswordEnd != krb5PasswordEnd:
-					ml = [x for x in ml if x[0] != 'krb5PasswordEnd']
-					ml.append(('krb5PasswordEnd', self.oldattr.get('krb5PasswordEnd', [''])[0], krb5PasswordEnd))
+			# Kerberos
+			expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()))))
+			krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
+			old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', '')
+			if old_krb5PasswordEnd != krb5PasswordEnd:
+				ml = [x for x in ml if x[0] != 'krb5PasswordEnd']
+				ml.append(('krb5PasswordEnd', self.oldattr.get('krb5PasswordEnd', [''])[0], krb5PasswordEnd))
 		elif pwd_change_next_login == 2:  # pwdChangeNextLogin changed from 1 to 0
 			# 1. determine expiryInterval (could be done once before "if self.modifypassword" above)
 			pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
@@ -2357,39 +2368,39 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				expiryInterval = -1
 
 			# 2. set posix attributes
-			if 'posix' in self.options or 'mail' in self.options:
-				if expiryInterval == -1 or expiryInterval == 0:
-					shadowMax = ''
-				else:
-					shadowMax = "%d" % expiryInterval
+			# POSIX Mail
+			if expiryInterval == -1 or expiryInterval == 0:
+				shadowMax = ''
+			else:
+				shadowMax = "%d" % expiryInterval
 
-				now = (long(time.time()) / 3600 / 24)
-				shadowLastChangeValue = str(int(now))
+			now = (long(time.time()) / 3600 / 24)
+			shadowLastChangeValue = str(int(now))
 
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'shadowMax: %s' % shadowMax)
-				old_shadowMax = self.oldattr.get('shadowMax', [''])[0]
-				if old_shadowMax != shadowMax:
-					ml = [x for x in ml if x[0] != 'shadowMax']
-					ml.append(('shadowMax', old_shadowMax, shadowMax))
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'shadowMax: %s' % shadowMax)
+			old_shadowMax = self.oldattr.get('shadowMax', [''])[0]
+			if old_shadowMax != shadowMax:
+				ml = [x for x in ml if x[0] != 'shadowMax']
+				ml.append(('shadowMax', old_shadowMax, shadowMax))
 
 			# 3. set samba attributes
-			if 'samba' in self.options:
-				sambaPwdLastSetValue = str(long(time.time()))
-				# transfered into ml below
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaPwdLastSetValue: %s' % sambaPwdLastSetValue)
+			# Samba
+			sambaPwdLastSetValue = str(long(time.time()))
+			# transfered into ml below
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaPwdLastSetValue: %s' % sambaPwdLastSetValue)
 
 			# 4. set kerberos attribute
-			if 'kerberos' in self.options:
-				if expiryInterval == -1 or expiryInterval == 0:
-					krb5PasswordEnd = ''
-				else:
-					expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()) + (expiryInterval * 3600 * 24))))
-					krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
-				old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', [''])[0]
-				if old_krb5PasswordEnd != krb5PasswordEnd:
-					ml = [x for x in ml if x[0] != 'krb5PasswordEnd']
-					ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, krb5PasswordEnd))
+			# Kerberos
+			if expiryInterval == -1 or expiryInterval == 0:
+				krb5PasswordEnd = ''
+			else:
+				expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()) + (expiryInterval * 3600 * 24))))
+				krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
+			old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', [''])[0]
+			if old_krb5PasswordEnd != krb5PasswordEnd:
+				ml = [x for x in ml if x[0] != 'krb5PasswordEnd']
+				ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, krb5PasswordEnd))
 
 		if self.hasChanged('mailPrimaryAddress') and self['mailPrimaryAddress']:
 			for i, j in self.alloc:
@@ -2402,7 +2413,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "LOCKING DONE: %s" % self['mailPrimaryAddress'])
 				except univention.admin.uexceptions.noLock:
-					self.cancel()
 					raise univention.admin.uexceptions.mailAddressUsed
 
 		if self['mailForwardAddress'] and not self['mailPrimaryAddress']:
@@ -2472,14 +2482,15 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				am_old = self.oldattr.get('automountInformation', [''])[0]
 				if am_old:
 					ml.append(('automountInformation', am_old, ''))
-		if 'samba' in self.options:
-			sambaMunged = self.sambaMungedDialMap()
-			if sambaMunged:
-				ml.append(('sambaMungedDial', self.oldattr.get('sambaMungedDial', ['']), [sambaMunged]))
 
-			if self.hasChanged('sambaRID') and not hasattr(self, 'userSid'):
-				self.userSid = self.__generate_user_sid(self.oldattr['uidNumber'][0])
-				ml.append(('sambaSID', self.oldattr.get('sambaSID', ['']), [self.userSid]))
+		# Samba
+		sambaMunged = self.sambaMungedDialMap()
+		if sambaMunged:
+			ml.append(('sambaMungedDial', self.oldattr.get('sambaMungedDial', ['']), [sambaMunged]))
+
+		if self.hasChanged('sambaRID') and not hasattr(self, 'userSid'):
+			self.userSid = self.__generate_user_sid(self.oldattr['uidNumber'][0])
+			ml.append(('sambaSID', self.oldattr.get('sambaSID', ['']), [self.userSid]))
 
 		if sambaPwdLastSetValue:
 			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
@@ -2493,8 +2504,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def __modlist_sambaAcctFlags(self, ml):
-		if 'samba' not in self.options:
-			return ml
 		if not self.modifypassword and not self.hasChanged('disabled') and not self.hasChanged('locked'):
 			return ml
 
@@ -2518,38 +2527,19 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			ml.append(('sambaAcctFlags', old_flags, acctFlags.decode()))
 		return ml
 
-	# FIXME: this functions seems deprecated, there is no call to it in any UCS package below dev/trunk/ucs
-	def __create_gecos(self, old_data=False):
-		if not old_data:
-			if self['firstname']:
-				gecos = "%s %s" % (self.info.get('firstname', ''), self.info.get('lastname', ''))
-			else:
-				gecos = "%s" % self.info.get('lastname', '')
-		else:
-			if self.oldinfo['firstname']:
-				gecos = "%s %s" % (self.oldinfo.get('firstname', ''), self.oldinfo.get('lastname', ''))
-			else:
-				gecos = "%s" % self.oldinfo.get('lastname', '')
-
-		# replace umlauts
-		_umlauts = {'ä': 'ae', 'Ä': 'Ae', 'ö': 'oe', 'Ö': 'Oe', 'ü': 'ue', 'Ü': 'Ue', 'ß': 'ss', 'Á': 'A', 'Â': 'A', 'Ã': 'A', 'Ä': 'A', 'Å': 'A', 'Æ': 'AE', 'Ç': 'C', 'È': 'E', 'É': 'E', 'Ê': 'E', 'Ë': 'E', 'Ì': 'I', 'Í': 'I', 'Î': 'I', 'Ï': 'I', 'Ð': 'D', 'Ñ': 'N', 'Ò': 'O', 'Ó': 'O', 'Ô': 'O', 'Õ': 'O', 'Ö': 'O', 'Ù': 'U', 'Ú': 'U', 'Û': 'U', 'à': 'a', 'â': 'a', 'á': 'a', 'ã': 'a', 'æ': 'ae', 'ç': 'c', 'è': 'e', 'é': 'e', 'ê': 'e', 'ë': 'e', 'ì': 'i', 'í': 'i', 'î': 'i', 'ï': 'i', 'ñ': 'n', 'ò': 'o', 'ó': 'o', 'ô': 'o', 'ù': 'u', 'ú': 'u', 'û': 'u', 'ý': 'y', 'ÿ': 'y', 'Ĉ': 'C', 'ĉ': 'c'}
-		for umlaut, code in _umlauts.items():
-			gecos = gecos.replace(umlaut, code)
-
-		return gecos.encode('ascii', 'replace')
-
 	def _ldap_pre_remove(self):
-		if 'samba' in self.options:
-			self.sid = self.oldattr['sambaSID'][0]
-		if 'posix' in self.options:
-			self.uidNum = self.oldattr['uidNumber'][0]
+		# Samba
+		self.sid = self.oldattr['sambaSID'][0]
+		# POSIX
+		self.uidNum = self.oldattr['uidNumber'][0]
 		self.uid = self.oldattr['uid'][0]
 
 	def _ldap_post_remove(self):
-		if 'samba' in self.options:
-			univention.admin.allocators.release(self.lo, self.position, 'sid', self.sid)
-		if 'posix' in self.options:
-			univention.admin.allocators.release(self.lo, self.position, 'uidNumber', self.uidNum)
+		# Samba
+		univention.admin.allocators.release(self.lo, self.position, 'sid', self.sid)
+
+		# POSIX
+		univention.admin.allocators.release(self.lo, self.position, 'uidNumber', self.uidNum)
 		if 'mail' in self.options and self['mailPrimaryAddress']:
 			univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', self['mailPrimaryAddress'])
 		univention.admin.allocators.release(self.lo, self.position, 'uid', self.uid)
@@ -2586,6 +2576,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				# subelements were already moved back to self
 				# stop moving and reraise
 				raise
+
 		try:
 			dn = super(object, self)._move(newdn, modify_childs, ignore_license)
 		except:
@@ -2593,6 +2584,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			# move back subelements and reraise
 			self.move_subelements(tmpdn, olddn, subelements, ignore_license)
 			raise
+
 		if subelements:
 			try:
 				moved = dict(self.move_subelements(tmpdn, newdn, subelements, ignore_license))
@@ -2604,6 +2596,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				super(object, self)._move(olddn, modify_childs, ignore_license)
 				self.move_subelements(tmpdn, olddn, subelements, ignore_license)
 				raise
+
 		return dn
 
 	def __pwAlreadyUsed(self, password, pwhistory):
