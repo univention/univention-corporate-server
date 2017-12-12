@@ -1,3 +1,9 @@
+univention-debug (10.0.0-2) unstable; urgency=medium
+
+  * Bug #45841: ignore bashism in ltmain.sh
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Dec 2017 14:14:37 +0100
+
 univention-debug (10.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
