@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-join
-fix: 9.0.3-12A~4.2.0.201712121626
+fix: 9.0.3-13A~4.2.0.201712122100
 desc: |
  This update addresses the following issue(s):
  * The logging of joinscript failures has been improved.
