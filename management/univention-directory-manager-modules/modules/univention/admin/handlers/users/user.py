@@ -1839,6 +1839,13 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if self['mailPrimaryAddress']:
 			self['mailPrimaryAddress'] = self['mailPrimaryAddress'].lower()
 
+		# POSIX, Samba
+		if self['uidNumber']:
+			univention.admin.allocators.acquireUnique(self.lo, self.position, 'uidNumber', self['uidNumber'], 'uidNumber', scope='base')
+		else:
+			self['uidNumber'] = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
+		self.alloc.append(('uidNumber', self['uidNumber']))
+
 		self._check_uid_gid_uniqueness()
 
 	def _ldap_addlist(self):
@@ -1886,23 +1893,13 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 		self.alloc.append(('uid', uid))
 
-		self.uidNum = None
-		# POSIX, Samba
-		if self['uidNumber']:
-			self.alloc.append(('uidNumber', self['uidNumber']))
-			self.uidNum = univention.admin.allocators.acquireUnique(self.lo, self.position, 'uidNumber', self['uidNumber'], 'uidNumber', scope='base')
-		else:
-			self.uidNum = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
-			self.alloc.append(('uidNumber', self.uidNum))
-
 		# Samba
-		self.userSid = self.__generate_user_sid(self.uidNum)
+		self.userSid = self.__generate_user_sid(self['uidNumber'])
 
 		self.pwhistory_active = 1
 		al = [('uid', [uid])]
 
 		# POSIX
-		al.append(('uidNumber', [self.uidNum]))
 		al.append(('gidNumber', [gidNum]))
 
 		if 'mail' in self.options:
@@ -1940,7 +1937,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailPrimaryAddress'])
 
 		# POSIX
-		univention.admin.allocators.confirm(self.lo, self.position, 'uidNumber', self.uidNum)
+		univention.admin.allocators.confirm(self.lo, self.position, 'uidNumber', self['uidNumber'])
 		self.__update_groups()
 		self.__primary_group()
 
@@ -2475,7 +2472,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		# Samba
 		self.sid = self.oldattr['sambaSID'][0]
 		# POSIX
-		self.uidNum = self.oldattr['uidNumber'][0]
 		self.uid = self.oldattr['uid'][0]
 
 	def _ldap_post_remove(self):
@@ -2483,7 +2479,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		univention.admin.allocators.release(self.lo, self.position, 'sid', self.sid)
 
 		# POSIX
-		univention.admin.allocators.release(self.lo, self.position, 'uidNumber', self.uidNum)
+		univention.admin.allocators.release(self.lo, self.position, 'uidNumber', self.oldattr['uidNumber'][0])
 		if 'mail' in self.options and self['mailPrimaryAddress']:
 			univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', self['mailPrimaryAddress'])
 		univention.admin.allocators.release(self.lo, self.position, 'uid', self.uid)
