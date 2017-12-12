@@ -297,6 +297,7 @@ property_descriptions = {
 		identifies=False,
 		show_in_lists=True,
 		copyable=True,
+		default='none',
 	),
 	'locked': univention.admin.property(
 		short_description=_('Locked login methods'),
@@ -1292,6 +1293,99 @@ def unmapHomePostalAddress(old):
 	return new
 
 
+def unmapUserExpiry(oldattr):
+	return unmapKrb5ValidEndToUserexpiry(oldattr) or unmapSambaKickoffTimeToUserexpiry(oldattr) or unmapShadowExpireToUserexpiry(oldattr)
+
+
+def unmapShadowExpireToUserexpiry(oldattr):
+	# The shadowLastChange attribute is the amount of days between 1/1/1970 upto the day that password was modified,
+	# shadowMax is the number of days a password is valid. So the password expires on 1/1/1970 + shadowLastChange + shadowMax.
+	# shadowExpire contains the absolute date to expire the account.
+
+	if 'shadowExpire' in oldattr and len(oldattr['shadowExpire']) > 0:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'userexpiry: %s' % posixDaysToDate(oldattr['shadowExpire'][0]))
+		if oldattr['shadowExpire'][0] != '1':
+			return posixDaysToDate(oldattr['shadowExpire'][0])
+
+
+def unmapKrb5ValidEndToUserexpiry(oldattr):
+	if 'krb5ValidEnd' in oldattr:
+		krb5validend = oldattr['krb5ValidEnd'][0]
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5validend is: %s' % krb5validend)
+		return "%s-%s-%s" % (krb5validend[0:4], krb5validend[4:6], krb5validend[6:8])
+
+
+def unmapSambaKickoffTimeToUserexpiry(oldattr):
+	if 'sambaKickoffTime' in oldattr:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaKickoffTime is: %s' % oldattr['sambaKickoffTime'][0])
+		return time.strftime("%Y-%m-%d", time.gmtime(long(oldattr['sambaKickoffTime'][0]) + (3600 * 24)))
+
+
+def unmapPasswordExpiry(oldattr):
+	if 'shadowLastChange' in oldattr and 'shadowMax' in oldattr and len(oldattr['shadowLastChange']) > 0 and len(oldattr['shadowMax']) > 0:
+		try:
+			return posixDaysToDate(int(oldattr['shadowLastChange'][0]) + int(oldattr['shadowMax'][0]))
+		except:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'users/user: failed to calculate password expiration correctly, use only shadowMax instead')
+		return posixDaysToDate(int(oldattr['shadowMax'][0]))
+
+
+def _add_disabled(disabled, new_disabled):
+	if disabled == 'none' or not disabled:
+		return new_disabled
+	elif (disabled == 'windows' and new_disabled == 'posix') or (new_disabled == 'windows' and disabled == 'posix'):
+		return 'windows_posix'
+	elif (disabled == 'windows' and new_disabled == 'kerberos') or (new_disabled == 'windows' and disabled == 'kerberos'):
+		return 'windows_kerberos'
+	elif (disabled == 'kerberos' and new_disabled == 'posix') or (new_disabled == 'kerberos' and disabled == 'posix'):
+		return 'posix_kerberos'
+	elif disabled == 'posix_kerberos' and new_disabled == 'windows':
+		return 'all'
+	elif disabled == 'windows_kerberos' and new_disabled == 'posix':
+		return 'all'
+	elif disabled == 'windows_posix' and new_disabled == 'kerberos':
+		return 'all'
+
+
+def unmapDisabled(oldattr):
+	disabled = 'none'
+	# Samba
+	flags = oldattr.get('sambaAcctFlags', None)
+	if flags:
+		acctFlags = univention.admin.samba.acctFlags(flags[0])
+		try:
+			if acctFlags['D'] == 1:
+				disabled = _add_disabled(disabled, 'windows')
+		except KeyError:
+			pass
+
+	# Kerberos
+	kdcflags = oldattr.get('krb5KDCFlags', ['0'])[0]
+	if kdcflags == '254':
+		disabled = _add_disabled(disabled, 'kerberos')
+
+	# POSIX
+	shadowExpire = oldattr.get('shadowExpire', ['0'])[0]
+	if shadowExpire == '1' or (shadowExpire < int(time.time() / 3600 / 24) and (_is_kerberos_disabled(disabled) or _is_windows_disabled(disabled))):
+		disabled = _add_disabled(disabled, 'posix')
+
+	return disabled
+
+
+def _is_kerberos_disabled(disabled):
+	return disabled in ('all', 'kerberos', 'posix_kerberos', 'windows_kerberos')
+
+
+def _is_windows_disabled(disabled):
+	return disabled in ('all', 'windows', 'windows_posix', 'windows_kerberos')
+
+
+def unmapSambaRid(oldattr):
+	sid = oldattr.get('sambaSID', [''])[0]
+	pos = sid.rfind('-')
+	return sid[pos + 1:]
+
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('username', 'uid', None, univention.admin.mapping.ListToString)
 mapping.register('uidNumber', 'uidNumber', None, univention.admin.mapping.ListToString)
@@ -1354,6 +1448,10 @@ def unmapKeyAndValue(old):
 mapping.register('userCertificate', 'userCertificate;binary', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('jpegPhoto', 'jpegPhoto', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('umcProperty', 'univentionUMCProperty', mapKeyAndValue, unmapKeyAndValue)
+mapping.registerUnmapping('sambaRID', unmapSambaRid)
+mapping.registerUnmapping('passwordexpiry', unmapPasswordExpiry)
+mapping.registerUnmapping('userexpiry', unmapUserExpiry)
+mapping.registerUnmapping('disabled', unmapDisabled)
 
 
 class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
@@ -1383,26 +1481,13 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return password
 
 	def __add_disabled(self, new):
-		if self['disabled'] == 'none' or not self['disabled']:
-			self['disabled'] = new
-		elif (self['disabled'] == 'windows' and new == 'posix') or (new == 'windows' and self['disabled'] == 'posix'):
-			self['disabled'] = 'windows_posix'
-		elif (self['disabled'] == 'windows' and new == 'kerberos') or (new == 'windows' and self['disabled'] == 'kerberos'):
-			self['disabled'] = 'windows_kerberos'
-		elif (self['disabled'] == 'kerberos' and new == 'posix') or (new == 'kerberos' and self['disabled'] == 'posix'):
-			self['disabled'] = 'posix_kerberos'
-		elif self['disabled'] == 'posix_kerberos' and new == 'windows':
-			self['disabled'] = 'all'
-		elif self['disabled'] == 'windows_kerberos' and new == 'posix':
-			self['disabled'] = 'all'
-		elif self['disabled'] == 'windows_posix' and new == 'kerberos':
-			self['disabled'] = 'all'
+		self['disabled'] = _add_disabled(self['disabled'], new)
 
 	def __is_kerberos_disabled(self):
-		return self['disabled'] in ('all', 'kerberos', 'posix_kerberos', 'windows_kerberos')
+		return _is_kerberos_disabled(self['disabled'])
 
 	def __is_windows_disabled(self):
-		return self['disabled'] in ('all', 'windows', 'windows_posix', 'windows_kerberos')
+		return _is_windows_disabled(self['disabled'])
 
 	def __is_posix_disabled(self):
 		return self['disabled'] in ('all', 'posix', 'posix_kerberos', 'windows_posix')
@@ -1439,36 +1524,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 		mungeddial.Support.__init__(self)
 
-		# POSIX
-		# The shadowLastChange attribute is the amount of days between 1/1/1970 upto the day that password was modified,
-		# shadowMax is the number of days a password is valid. So the password expires on 1/1/1970 + shadowLastChange + shadowMax.
-		# shadowExpire contains the absolute date to expire the account.
-
-		if 'shadowExpire' in self.oldattr and len(self.oldattr['shadowExpire']) > 0:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'userexpiry: %s' % posixDaysToDate(self.oldattr['shadowExpire'][0]))
-			if self.oldattr['shadowExpire'][0] != '1':
-				self.info['userexpiry'] = posixDaysToDate(self.oldattr['shadowExpire'][0])
-		if 'shadowLastChange' in self.oldattr and 'shadowMax' in self.oldattr and len(self.oldattr['shadowLastChange']) > 0 and len(self.oldattr['shadowMax']) > 0:
-			try:
-				self.info['passwordexpiry'] = posixDaysToDate(int(self.oldattr['shadowLastChange'][0]) + int(self.oldattr['shadowMax'][0]))
-			except:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'users/user: failed to calculate password expiration correctly, use only shadowMax instead')
-				self.info['passwordexpiry'] = posixDaysToDate(int(self.oldattr['shadowMax'][0]))
-
-		# Kerberos
-		if 'krb5ValidEnd' in self.oldattr:
-			krb5validend = self.oldattr['krb5ValidEnd'][0]
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5validend is: %s' % krb5validend)
-			self.info['userexpiry'] = "%s-%s-%s" % (krb5validend[0:4], krb5validend[4:6], krb5validend[6:8])
-
-		# Samba
-		elif 'sambaKickoffTime' in self.oldattr:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaKickoffTime is: %s' % self.oldattr['sambaKickoffTime'][0])
-			self.info['userexpiry'] = time.strftime("%Y-%m-%d", time.gmtime(long(self.oldattr['sambaKickoffTime'][0]) + (3600 * 24)))
-
 		self.save()
 
-	def open(self, loadGroups=1):
+	def open(self, loadGroups=True):
 		univention.admin.handlers.simpleLdap.open(self)
 
 		self.newPrimaryGroupDn = 0
@@ -1478,7 +1536,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.is_auth_saslpassthrough = 'no'
 
 		self['locked'] = 'none'
-		self['disabled'] = 'none'
 
 		self.save()
 
@@ -1546,20 +1603,12 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					self['pwdChangeNextLogin'] = '1'
 
 			# Samba
-			sid = self.oldattr.get('sambaSID', [''])[0]
-			pos = sid.rfind('-')
-			self.info['sambaRID'] = sid[pos + 1:]
 			self.sambaMungedDialUnmap()
 			self.sambaMungedDialParse()
 
 			flags = self.oldattr.get('sambaAcctFlags', None)
 			if flags:
 				acctFlags = univention.admin.samba.acctFlags(flags[0])
-				try:
-					if acctFlags['D'] == 1:
-						self.__add_disabled('windows')
-				except KeyError:
-					pass
 				try:
 					if acctFlags['L'] == 1:
 						if self['locked'] == 'posix':
@@ -1568,16 +1617,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 							self['locked'] = 'windows'
 				except KeyError:
 					pass
-
-			# Kerberos
-			kdcflags = self.oldattr.get('krb5KDCFlags', ['0'])[0]
-			if kdcflags == '254':
-				self.__add_disabled('kerberos')
-
-			# POSIX
-			shadowExpire = self.oldattr.get('shadowExpire', ['0'])[0]
-			if shadowExpire == '1' or (shadowExpire < int(time.time() / 3600 / 24) and (self._is_kerberos_disabled() or self._is_windows_disabled())):
-				self.__add_disabled('posix')
 
 			if 'automountInformation' in self.oldattr:
 				unc = ''
