@@ -39,7 +39,7 @@ tests: $(TESTS)
 test__filter__cache_entry_ldap_filter_match: ../src/filter.o
 test__utils__lower_utf8: ../src/utils.o
 test__utils__same_dn: ../src/utils.o
-test__change__same_rdn: ../src/utils.o
+test__change__same_rdn: ../src/utils.o ../src/cache.o
 
 include ../src/Makefile
 
