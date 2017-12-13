@@ -154,6 +154,17 @@ class object(univention.admin.handlers.simpleLdap):
 			except univention.admin.uexceptions.noLock:
 				raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
 
+		# The order here is important!
+		if not self.exists() or self.hasChanged('password'):
+			# 1. a new plaintext password is supplied
+			# make a crypt password out of it
+			self['password'] = "{crypt}%s" % (univention.admin.password.crypt(self['password']),)
+
+		if self['disabled']:
+			self['password'] = _get_locked_password(self['password'])
+		else:
+			self['password'] = _get_unlocked_password(self['password'])
+
 	def _ldap_post_create(self):
 		self._confirm_locks()
 
@@ -165,17 +176,6 @@ class object(univention.admin.handlers.simpleLdap):
 				self._move(newdn)
 			finally:
 				univention.admin.allocators.release(self.lo, self.position, 'uid', username)
-
-		# The order here is important!
-		if self.hasChanged('password'):
-			# 1. a new plaintext password is supplied
-			# make a crypt password out of it
-			self['password'] = "{crypt}%s" % (univention.admin.password.crypt(self['password']),)
-
-		if self['disabled']:
-			self['password'] = _get_locked_password(self['password'])
-		else:
-			self['password'] = _get_unlocked_password(self['password'])
 
 	def _ldap_post_remove(self):
 		univention.admin.allocators.release(self.lo, self.position, 'uid', self['username'])
