@@ -1,3 +1,9 @@
+univention-management-console (10.0.0-2) unstable; urgency=medium
+
+  * Bug #45424: Fix iframe error with IE 11
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 13 Dec 2017 18:54:34 +0100
+
 univention-management-console (10.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
