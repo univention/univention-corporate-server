@@ -1616,6 +1616,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		try:
 			return super(object, self).modify(*args, **kwargs)
 		except univention.admin.uexceptions.licenseDisableModify:
+			# it has to be possible to deactivate an user account when the license is exceeded
 			if 'all' not in self['disabled'] or not self.hasChanged('disabled'):
 				raise
 			kwargs['ignore_license'] = True
