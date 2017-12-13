@@ -56,7 +56,11 @@ class conjunction:
 		'(&(objectClass=*))'
 		>>> str(conjunction('|', '(objectClass=*)'))
 		'(|(objectClass=*))'
+		>>> str(conjunction('&', ''))
+		''
 		'''
+		if not self.expressions:
+			return ''
 		return '(%s%s)' % (self.type, ''.join(map(unicode, self.expressions)))
 
 	def __unicode__(self):

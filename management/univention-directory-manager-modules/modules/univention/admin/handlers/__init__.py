@@ -1428,7 +1428,17 @@ class simpleLdap(base):
 
 	@classmethod
 	def lookup_filter(cls, filter_s=None, lo=None):
-		return filter_s
+		filter_p = cls.unmapped_lookup_filter()
+		filter_p.append_unmapped_filter_string(filter_s, cls.rewrite_filter, univention.admin.modules.get(cls.module).mapping)
+		return filter_p
+
+	@classmethod
+	def unmapped_lookup_filter(cls):
+		return univention.admin.filter.conjunction('&', [])
+
+	@classmethod
+	def rewrite_filter(cls, filter, mapping):
+		univention.admin.mapping.mapRewrite(filter, mapping)
 
 
 class simpleComputer(simpleLdap):
