@@ -415,7 +415,8 @@ define([
 							deferred.resolve(data);
 						}
 					} catch(error) {
-						deferred.reject(error);
+						// the site cannot be opened, force regular login
+						deferred.cancel(error);
 					}
 				}
 			};
@@ -425,7 +426,12 @@ define([
 					deferred.cancel();
 				}, args.timeout);
 			}
-			deferred.promise.always(function() { _iframe.remove(); });
+			deferred.promise.always(function() {
+				// IE 11 does not have .remove()
+				if (_iframe && _iframe.remove) {
+					_iframe.remove();
+				}
+			});
 			return deferred.promise;
 		},
 
