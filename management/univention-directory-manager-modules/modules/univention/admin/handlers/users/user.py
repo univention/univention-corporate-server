@@ -2020,17 +2020,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 					shadowLastChangeValue = str(int(now) - int(shadowMax) - 1)
 				else:
-					if expiryInterval == -1 or expiryInterval == 0:
-						shadowMax = ''
-					else:
-						shadowMax = "%d" % expiryInterval
-
 					shadowLastChangeValue = str(int(now))
-
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'shadowMax: %s' % shadowMax)
-				old_shadowMax = self.oldattr.get('shadowMax', '')
-				if old_shadowMax != shadowMax:
-					ml.append(('shadowMax', self.oldattr.get('shadowMax', [''])[0], shadowMax))
 
 				# Kerberos
 				if pwd_change_next_login == 1:
@@ -2050,7 +2040,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					ml.append(('krb5PasswordEnd', self.oldattr.get('krb5PasswordEnd', [''])[0], krb5PasswordEnd))
 			else:  # no pwhistoryPolicy['expiryInterval']
 				# POSIX, Mail
-				ml.append(('shadowMax', self.oldattr.get('shadowMax', [''])[0], ''))
 				shadowLastChangeValue = ''
 
 				# Kerberos
@@ -2125,6 +2114,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [''])[0], "0"))
 
 		ml = self.__modlist_sambaAcctFlags(ml)
+		ml = self.__modlist_shadowMax(ml)
 
 		if self.hasChanged(['userexpiry']):
 			# Samba
@@ -2186,11 +2176,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			now = (long(time.time()) / 3600 / 24)
 			shadowLastChangeValue = str(int(now) - int(shadowMax) - 1)
 
-			old_shadowMax = self.oldattr.get('shadowMax', '')
-			if old_shadowMax != shadowMax:
-				ml = [x for x in ml if x[0] != 'shadowMax']
-				ml.append(('shadowMax', self.oldattr.get('shadowMax', [''])[0], shadowMax))
-
 			# Samba
 			# OLD: set sambaPwdLastSet to 1, see UCS Bug #8292 and Samba Bug #4313
 			# set sambaPwdLastSet to 0, see UCS Bug #17890
@@ -2219,19 +2204,8 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 			# 2. set posix attributes
 			# POSIX Mail
-			if expiryInterval == -1 or expiryInterval == 0:
-				shadowMax = ''
-			else:
-				shadowMax = "%d" % expiryInterval
-
 			now = (long(time.time()) / 3600 / 24)
 			shadowLastChangeValue = str(int(now))
-
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'shadowMax: %s' % shadowMax)
-			old_shadowMax = self.oldattr.get('shadowMax', [''])[0]
-			if old_shadowMax != shadowMax:
-				ml = [x for x in ml if x[0] != 'shadowMax']
-				ml.append(('shadowMax', old_shadowMax, shadowMax))
 
 			# 3. set samba attributes
 			# Samba
@@ -2338,6 +2312,30 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if set(old_object_classes) != new_object_classes:
 			ml.insert(0, ('objectClass', old_object_classes, list(new_object_classes)))
 
+		return ml
+
+	def __modlist_shadowMax(self, ml):
+		if not self.hasChanged('pwdChangeNextLogin') and not self.modifypassword:
+			return ml
+
+		expiryInterval = -1
+		pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
+		if pwhistoryPolicy and pwhistoryPolicy.get('expiryInterval'):
+			try:
+				expiryInterval = int(pwhistoryPolicy['expiryInterval'])
+			except ValueError:
+				pass
+
+		if expiryInterval <= 0:
+			shadowMax = ''
+			if self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1':
+				shadowMax = "1"
+		else:
+			shadowMax = "%d" % expiryInterval
+
+		old_shadowMax = self.oldattr.get('shadowMax', [''])[0]
+		if old_shadowMax != shadowMax:
+			ml.append(('shadowMax', old_shadowMax, shadowMax))
 		return ml
 
 	def __modlist_sambaAcctFlags(self, ml):
