@@ -1546,14 +1546,12 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			except ValueError:
 				pass
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
 		self.groupsLoaded = 1
 		self.password_length = 8
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 		mungeddial.Support.__init__(self)
-
-		self.save()
 
 	def open(self, loadGroups=True):
 		univention.admin.handlers.simpleLdap.open(self)
@@ -1860,6 +1858,8 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	def krb5_principal(self):
 		domain = univention.admin.uldap.domain(self.lo, self.position)
 		realm = domain.getKerberosRealm()
+		if not realm:
+			raise univention.admin.uexceptions.noKerberosRealm()
 		return self['username'] + '@' + realm
 
 	def _check_uid_gid_uniqueness(self):
@@ -1934,11 +1934,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		al.append(('sambaSID', [self.userSid]))
 
 		# Kerberos
-		domain = univention.admin.uldap.domain(self.lo, self.position)
-		realm = domain.getKerberosRealm()
-		if not realm:
-			raise univention.admin.uexceptions.noKerberosRealm()
-		al.append(('krb5PrincipalName', [self['username'] + '@' + realm]))
+		al.append(('krb5PrincipalName', [self.krb5_principal()]))
 		al.append(('krb5MaxLife', '86400'))
 		al.append(('krb5MaxRenew', '604800'))
 
