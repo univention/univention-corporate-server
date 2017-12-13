@@ -170,7 +170,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=Fa
 	])
 
 	if superordinate:
-		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone'])))
+		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone']), escape=True))
 
 	if filter_s:
 		filter_p = univention.admin.filter.parse(filter_s)

@@ -226,12 +226,12 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=Fa
 			univention.admin.filter.expression('aRecord', '*'),
 			univention.admin.filter.expression('aAAARecord', '*'),
 			univention.admin.filter.expression('mXRecord', '*'),
-			univention.admin.filter.expression('univentionObjectType', module),  # host record without any record
+			univention.admin.filter.expression('univentionObjectType', module, escape=True),  # host record without any record
 		]),
 	])
 
 	if superordinate:
-		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone'])))
+		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone']), escape=True))
 
 	if filter_s:
 		filter_p = univention.admin.filter.parse(filter_s)

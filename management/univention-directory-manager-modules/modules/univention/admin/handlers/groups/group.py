@@ -495,7 +495,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if not configRegistry.is_true("directory/manager/uid_gid/uniqueness", True):
 			return
 		if "posix" in self.options or "samba" in self.options:
-			fg = univention.admin.filter.expression('uidNumber', self['gidNumber'])
+			fg = univention.admin.filter.expression('uidNumber', self['gidNumber'], escape=True)
 			user_objects = univention.admin.handlers.users.user.lookup(self.co, self.lo, filter_s=fg)
 			if user_objects:
 				raise univention.admin.uexceptions.gidNumberAlreadyUsedAsUidNumber('%r' % self["gidNumber"])

@@ -41,7 +41,7 @@ import struct
 from M2Crypto import X509
 import ldap
 import base64
-from ldap.filter import filter_format, escape_filter_chars
+from ldap.filter import filter_format
 
 import univention.admin
 from univention.admin.layout import Tab, Group
@@ -1601,10 +1601,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		sharepath = path
 		while len(sharepath) > 1:
 			filter_ = univention.admin.filter.conjunction('&', [
-				univention.admin.filter.expression('univentionShareHost', escape_filter_chars(host)),
+				univention.admin.filter.expression('univentionShareHost', host, escape=True),
 				univention.admin.filter.conjunction('|', [
-					univention.admin.filter.expression('univentionSharePath', escape_filter_chars(sharepath.rstrip('/'))),
-					univention.admin.filter.expression('univentionSharePath', escape_filter_chars('%s/' % (sharepath.rstrip('/')))),
+					univention.admin.filter.expression('univentionSharePath', sharepath.rstrip('/'), escape=True),
+					univention.admin.filter.expression('univentionSharePath', '%s/' % (sharepath.rstrip('/')), escape=True),
 				])
 			])
 			res = univention.admin.modules.lookup(univention.admin.modules.get('shares/share'), None, self.lo, filter=filter_, scope='domain')

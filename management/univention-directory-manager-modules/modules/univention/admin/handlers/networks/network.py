@@ -235,7 +235,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_post_remove(self):
 		import univention.admin.handlers.computers.computer
-		filter_ = univention.admin.filter.expression('univentionNetworkLink', self.dn)
+		filter_ = univention.admin.filter.expression('univentionNetworkLink', self.dn, escape=True)
 		for computer in univention.admin.handlers.computers.computer.lookup(self.co, self.lo, filter_s=filter_):
 			try:
 				self.lo.modify(computer.dn, [('univentionNetworkLink', self.dn, '')])

@@ -109,7 +109,7 @@ class object(DHCPBase):
 	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 		filter_obj = cls.lookup_filter(filter_s)
 		if superordinate:
-			filter_obj.expressions.append(univention.admin.filter.expression('dhcpServiceDN', superordinate.dn))
+			filter_obj.expressions.append(univention.admin.filter.expression('dhcpServiceDN', superordinate.dn, escape=True))
 		filter_str = unicode(filter_obj)
 
 		return super(object, cls).lookup(co, lo, filter_str, base, superordinate, scope, unique, required, timeout, sizelimit)
