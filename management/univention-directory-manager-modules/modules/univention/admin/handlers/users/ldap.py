@@ -224,22 +224,15 @@ class object(univention.admin.handlers.simpleLdap):
 
 	@classmethod
 	def lookup_filter(cls, filter_s=None, lo=None):
-		lookup_filter_obj = \
-			univention.admin.filter.conjunction('&', [
-				univention.admin.filter.conjunction('|', [
-					univention.admin.filter.conjunction('&', [
-						univention.admin.filter.expression('objectClass', 'posixAccount'),
-						univention.admin.filter.expression('objectClass', 'shadowAccount'),
-					]),
-					univention.admin.filter.expression('objectClass', 'univentionMail'),
-					univention.admin.filter.expression('objectClass', 'sambaSamAccount'),
-					univention.admin.filter.expression('objectClass', 'simpleSecurityObject'),
-					univention.admin.filter.expression('objectClass', 'inetOrgPerson'),
-				]),
-				univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uidNumber', '0')]),
-				univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
-				univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectFlag', 'functional')]),
-			])
+		lookup_filter_obj = univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', 'simpleSecurityObject'),
+			univention.admin.filter.expression('objectClass', 'uidObject'),
+			univention.admin.filter.expression('objectClass', 'person'),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'posixAccount')]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uidNumber', '0')]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectFlag', 'functional')]),
+		])
 		lookup_filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
 		return lookup_filter_obj
 
@@ -249,23 +242,10 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=0):
-	if isinstance(attr.get('uid', []), type([])) and len(attr.get('uid', [])) > 0 and ('$' in attr.get('uid', [])[0]):
+	if '0' in attr.get('uidNumber', []) or '$' in attr.get('uid', [''])[0] or 'univentionHost' in attr.get('objectClass', []) or 'functional' in attr.get('univentionObjectFlag', []):
 		return False
 
-	return (
-		(
-			('posixAccount' in attr.get('objectClass', []) and 'shadowAccount' in attr.get('objectClass', [])) or
-			'univentionMail' in attr.get('objectClass', []) or
-			'sambaSamAccount' in attr.get('objectClass', []) or
-			'simpleSecurityObject' in attr.get('objectClass', []) or
-			(
-				'person' in attr.get('objectClass', []) and
-				'organizationalPerson' in attr.get('objectClass', []) and
-				'inetOrgPerson' in attr.get('objectClass', [])
-			)
-		) and
-		'0' not in attr.get('uidNumber', []) and
-		'$' not in attr.get('uid', []) and
-		'univentionHost' not in attr.get('objectClass', []) and
-		'functional' not in attr.get('univentionObjectFlag', [])
-	)
+	required_ocs = {'person', 'simpleSecurityObject', 'uidObject', }
+	forbidden_ocs = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'univentionMail', 'krb5Principal', 'krb5KDCEntry'}
+	ocs = set(attr.get('objectClass', []))
+	return (ocs & required_ocs == required_ocs) and not (ocs & forbidden_ocs)

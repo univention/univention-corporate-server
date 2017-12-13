@@ -2622,6 +2622,24 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		bytes = [int(string[i:i + 2], 16) for i in xrange(0, len(string), 2)]
 		return struct.pack("%iB" % len(bytes), *bytes)
 
+	@classmethod
+	def lookup_filter(cls, filter_s=None, lo=None):
+		lookup_filter_obj = univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', 'posixAccount'),
+			univention.admin.filter.expression('objectClass', 'shadowAccount'),
+			univention.admin.filter.expression('objectClass', 'univentionMail'),
+			univention.admin.filter.expression('objectClass', 'sambaSamAccount'),
+			univention.admin.filter.expression('objectClass', 'krb5Principal'),
+			univention.admin.filter.expression('objectClass', 'krb5KDCEntry'),
+			univention.admin.filter.expression('objectClass', 'inetOrgPerson'),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uidNumber', '0')]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectFlag', 'functional')]),
+		])
+		# ATTENTION: has its own rewrite function.
+		lookup_filter_obj.append_unmapped_filter_string(filter_s, rewrite, mapping)
+		return lookup_filter_obj
+
 
 def rewrite(filter, mapping):
 	if filter.variable == 'username':
@@ -2685,51 +2703,14 @@ def rewrite(filter, mapping):
 	else:
 		univention.admin.mapping.mapRewrite(filter, mapping)
 
-	@classmethod
-	def lookup_filter(cls, filter_s=None, lo=None):
-		lookup_filter_obj = \
-			univention.admin.filter.conjunction('&', [
-				univention.admin.filter.conjunction('|', [
-					univention.admin.filter.conjunction('&', [
-						univention.admin.filter.expression('objectClass', 'posixAccount'),
-						univention.admin.filter.expression('objectClass', 'shadowAccount'),
-					]),
-					univention.admin.filter.expression('objectClass', 'univentionMail'),
-					univention.admin.filter.expression('objectClass', 'sambaSamAccount'),
-					univention.admin.filter.expression('objectClass', 'simpleSecurityObject'),
-					univention.admin.filter.expression('objectClass', 'inetOrgPerson'),
-				]),
-				univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uidNumber', '0')]),
-				univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
-				univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectFlag', 'functional')]),
-			])
-		# ATTENTION: has its own rewrite function.
-		lookup_filter_obj.append_unmapped_filter_string(filter_s, rewrite, mapping)
-		return lookup_filter_obj
-
 
 lookup = object.lookup
 lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=0):
-	if isinstance(attr.get('uid', []), type([])) and len(attr.get('uid', [])) > 0 and ('$' in attr.get('uid', [])[0]):
+	if '0' in attr.get('uidNumber', []) or '$' in attr.get('uid', [''])[0] or 'univentionHost' in attr.get('objectClass', []) or 'functional' in attr.get('univentionObjectFlag', []):
 		return False
-
-	return (
-		(
-			('posixAccount' in attr.get('objectClass', []) and 'shadowAccount' in attr.get('objectClass', [])) or
-			'univentionMail' in attr.get('objectClass', []) or
-			'sambaSamAccount' in attr.get('objectClass', []) or
-			'simpleSecurityObject' in attr.get('objectClass', []) or
-			(
-				'person' in attr.get('objectClass', []) and
-				'organizationalPerson' in attr.get('objectClass', []) and
-				'inetOrgPerson' in attr.get('objectClass', [])
-			)
-		) and
-		'0' not in attr.get('uidNumber', []) and
-		'$' not in attr.get('uid', []) and
-		'univentionHost' not in attr.get('objectClass', []) and
-		'functional' not in attr.get('univentionObjectFlag', [])
-	)
+	required_ocs = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'person', 'organizationalPerson', 'inetOrgPerson', 'univentionMail', 'krb5KDCEntry', 'krb5Principal'}
+	ocs = set(attr.get('objectClass', []))
+	return ocs & required_ocs == required_ocs
