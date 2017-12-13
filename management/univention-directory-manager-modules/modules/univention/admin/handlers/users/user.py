@@ -1905,8 +1905,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
 			raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
 
-		check_prohibited_username(self.lo, self['username'])
-
 		# get lock for username
 		try:
 			self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])))
@@ -1917,6 +1915,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 	def _ldap_pre_ready(self):
 		super(object, self)._ldap_pre_ready()
+
+		if not self.exists() or self.hasChanged('username'):
+			check_prohibited_username(self.lo, self['username'])
 
 		# get lock for mailPrimaryAddress
 		if 'mail' in self.options and self['mailPrimaryAddress']:
