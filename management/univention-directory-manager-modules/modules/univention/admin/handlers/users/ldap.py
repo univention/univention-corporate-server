@@ -222,34 +222,30 @@ class object(univention.admin.handlers.simpleLdap):
 		for i, j in self.alloc:
 			univention.admin.allocators.release(self.lo, self.position, i, j)
 
-
-def lookup_filter(filter_s=None, lo=None):
-	lookup_filter_obj = \
-		univention.admin.filter.conjunction('&', [
-			univention.admin.filter.conjunction('|', [
-				univention.admin.filter.conjunction('&', [
-					univention.admin.filter.expression('objectClass', 'posixAccount'),
-					univention.admin.filter.expression('objectClass', 'shadowAccount'),
+	@classmethod
+	def lookup_filter(cls, filter_s=None, lo=None):
+		lookup_filter_obj = \
+			univention.admin.filter.conjunction('&', [
+				univention.admin.filter.conjunction('|', [
+					univention.admin.filter.conjunction('&', [
+						univention.admin.filter.expression('objectClass', 'posixAccount'),
+						univention.admin.filter.expression('objectClass', 'shadowAccount'),
+					]),
+					univention.admin.filter.expression('objectClass', 'univentionMail'),
+					univention.admin.filter.expression('objectClass', 'sambaSamAccount'),
+					univention.admin.filter.expression('objectClass', 'simpleSecurityObject'),
+					univention.admin.filter.expression('objectClass', 'inetOrgPerson'),
 				]),
-				univention.admin.filter.expression('objectClass', 'univentionMail'),
-				univention.admin.filter.expression('objectClass', 'sambaSamAccount'),
-				univention.admin.filter.expression('objectClass', 'simpleSecurityObject'),
-				univention.admin.filter.expression('objectClass', 'inetOrgPerson'),
-			]),
-			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uidNumber', '0')]),
-			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
-			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectFlag', 'functional')]),
-		])
-	lookup_filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
-	return lookup_filter_obj
+				univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uidNumber', '0')]),
+				univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
+				univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectFlag', 'functional')]),
+			])
+		lookup_filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
+		return lookup_filter_obj
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	filter = lookup_filter(filter_s)
-	res = []
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn, attributes=attrs))
-	return res
+lookup = object.lookup
+lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=0):
