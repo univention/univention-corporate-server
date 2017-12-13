@@ -84,8 +84,11 @@ assert response.status==200
 
 thread = threading.Thread(target=get_progress, args=(client,))
 thread.start()
-
-response = client.umc_command("adtakeover/run/copy", request_options)
+try:
+    response = client.umc_command("adtakeover/run/copy", request_options)
+except TimeoutError:
+    finished = True 
+    raise TimeoutError("Timeout: no request to umc")
 assert response.status==200
 
 #net -U Administrator%Univention.98  rpc share migrate files sysvol \
