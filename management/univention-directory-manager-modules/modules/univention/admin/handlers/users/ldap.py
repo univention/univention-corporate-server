@@ -223,8 +223,8 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.allocators.release(self.lo, self.position, i, j)
 
 	@classmethod
-	def lookup_filter(cls, filter_s=None, lo=None):
-		lookup_filter_obj = univention.admin.filter.conjunction('&', [
+	def unmapped_lookup_filter(cls):
+		return univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'simpleSecurityObject'),
 			univention.admin.filter.expression('objectClass', 'uidObject'),
 			univention.admin.filter.expression('objectClass', 'person'),
@@ -233,8 +233,6 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectFlag', 'functional')]),
 		])
-		lookup_filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
-		return lookup_filter_obj
 
 
 lookup = object.lookup

@@ -2623,8 +2623,8 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return struct.pack("%iB" % len(bytes), *bytes)
 
 	@classmethod
-	def lookup_filter(cls, filter_s=None, lo=None):
-		lookup_filter_obj = univention.admin.filter.conjunction('&', [
+	def unmapped_lookup_filter(cls):
+		return univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'posixAccount'),
 			univention.admin.filter.expression('objectClass', 'shadowAccount'),
 			univention.admin.filter.expression('objectClass', 'univentionMail'),
@@ -2636,72 +2636,69 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectFlag', 'functional')]),
 		])
-		# ATTENTION: has its own rewrite function.
-		lookup_filter_obj.append_unmapped_filter_string(filter_s, rewrite, mapping)
-		return lookup_filter_obj
 
-
-def rewrite(filter, mapping):
-	if filter.variable == 'username':
-		filter.variable = 'uid'
-	elif filter.variable == 'firstname':
-		filter.variable = 'givenName'
-	elif filter.variable == 'lastname':
-		filter.variable = 'sn'
-	elif filter.variable == 'primaryGroup':
-		filter.variable = 'gidNumber'
-
-	elif filter.variable == 'disabled':
-		if filter.value == 'none':
-			filter.variable = '&(!(shadowExpire=1))(!(krb5KDCFlags=254))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
-			filter.value = '[ULD       ])))'
-		elif filter.value == 'all':
-			filter.variable = '&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
-			filter.value = '[ULD       ]))'
-		elif filter.value == 'posix':
-			filter.variable = 'shadowExpire'
-			filter.value = '1'
-		elif filter.value == 'kerberos':
-			filter.variable = 'krb5KDCFlags'
-			filter.value = '254'
-		elif filter.value == 'windows':
-			filter.variable = '|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
-			filter.value = '=[ULD       ])'
-		elif filter.value == 'windows_kerberos':
-			filter.variable = '&(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
-			filter.value = '=[ULD       ]))'
-		elif filter.value == 'windows_posix':
-			filter.variable = '&(shadowExpire=1)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
-			filter.value = '=[ULD       ]))'
-		elif filter.value == 'posix_kerberos':
-			filter.variable = '&(shadowExpire=1)(krb5KDCFlags'
-			filter.value = '254)'
-		elif filter.value == '*':
+	@classmethod
+	def rewrite(cls, filter, mapping):
+		if filter.variable == 'username':
 			filter.variable = 'uid'
+		elif filter.variable == 'firstname':
+			filter.variable = 'givenName'
+		elif filter.variable == 'lastname':
+			filter.variable = 'sn'
+		elif filter.variable == 'primaryGroup':
+			filter.variable = 'gidNumber'
 
-	elif filter.variable == 'locked':
-		# substring match for userPassword is not possible
-		if filter.value in ['posix', 'windows', 'all', 'none']:
-			if filter.value == 'all':
-				filter.variable = '|(sambaAcctFlags=[UL       ])(sambaAcctFlags'
-				filter.value = '[ULD       ])'
-				# filter.variable='|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ])(userPassword'
-				# filter.value = '{crypt}!*)'
-			if filter.value == 'windows':
-				filter.variable = '|(sambaAcctFlags=[UL       ])(sambaAcctFlags'
-				filter.value = '[ULD       ])'
-			# if filter.value == 'posix':
-			#	filter.variable='userPassword'
-			#	filter.value = '{crypt}!*'
+		elif filter.variable == 'disabled':
 			if filter.value == 'none':
-				# filter.variable='&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ]))(!(userPassword'
-				# filter.value = '{crypt}!*))'
-				filter.variable = '&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags'
+				filter.variable = '&(!(shadowExpire=1))(!(krb5KDCFlags=254))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
+				filter.value = '[ULD       ])))'
+			elif filter.value == 'all':
+				filter.variable = '&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
 				filter.value = '[ULD       ]))'
-		elif filter.value == '*':
-			filter.variable = 'uid'
-	else:
-		univention.admin.mapping.mapRewrite(filter, mapping)
+			elif filter.value == 'posix':
+				filter.variable = 'shadowExpire'
+				filter.value = '1'
+			elif filter.value == 'kerberos':
+				filter.variable = 'krb5KDCFlags'
+				filter.value = '254'
+			elif filter.value == 'windows':
+				filter.variable = '|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
+				filter.value = '=[ULD       ])'
+			elif filter.value == 'windows_kerberos':
+				filter.variable = '&(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
+				filter.value = '=[ULD       ]))'
+			elif filter.value == 'windows_posix':
+				filter.variable = '&(shadowExpire=1)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
+				filter.value = '=[ULD       ]))'
+			elif filter.value == 'posix_kerberos':
+				filter.variable = '&(shadowExpire=1)(krb5KDCFlags'
+				filter.value = '254)'
+			elif filter.value == '*':
+				filter.variable = 'uid'
+
+		elif filter.variable == 'locked':
+			# substring match for userPassword is not possible
+			if filter.value in ['posix', 'windows', 'all', 'none']:
+				if filter.value == 'all':
+					filter.variable = '|(sambaAcctFlags=[UL       ])(sambaAcctFlags'
+					filter.value = '[ULD       ])'
+					# filter.variable='|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ])(userPassword'
+					# filter.value = '{crypt}!*)'
+				if filter.value == 'windows':
+					filter.variable = '|(sambaAcctFlags=[UL       ])(sambaAcctFlags'
+					filter.value = '[ULD       ])'
+				# if filter.value == 'posix':
+				#	filter.variable='userPassword'
+				#	filter.value = '{crypt}!*'
+				if filter.value == 'none':
+					# filter.variable='&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ]))(!(userPassword'
+					# filter.value = '{crypt}!*))'
+					filter.variable = '&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags'
+					filter.value = '[ULD       ]))'
+			elif filter.value == '*':
+				filter.variable = 'uid'
+		else:
+			univention.admin.mapping.mapRewrite(filter, mapping)
 
 
 lookup = object.lookup
