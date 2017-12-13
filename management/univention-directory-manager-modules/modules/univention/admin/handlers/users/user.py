@@ -1966,20 +1966,16 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				self['mailPrimaryAddress'] = self['mailPrimaryAddress'].lower()
 
 		if self.hasChanged('username'):
+			username = self['username']
 			try:
-				univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])
+				univention.admin.allocators.request(self.lo, self.position, 'uid', value=username)
 			except univention.admin.uexceptions.noLock:
-				username = self['username']
-				del self.info['username']
-				self.oldinfo = {}
-				self.dn = None
-				self._exists = 0
+				raise univention.admin.uexceptions.uidAlreadyUsed(username)
+			else:
+				newdn = 'uid=%s,%s' % (ldap.dn.escape_dn_chars(username), self.lo.parentDn(self.dn))
+				self._move(newdn)
+			finally:
 				univention.admin.allocators.release(self.lo, self.position, 'uid', username)
-				raise univention.admin.uexceptions.uidAlreadyUsed(': %s' % username)
-
-			newdn = 'uid=%s,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.parentDn(self.dn))
-			self._move(newdn)
-			univention.admin.allocators.release(self.lo, self.position, 'uid', self['username'])
 
 		if self.hasChanged('password'):
 			if not self['password']:
