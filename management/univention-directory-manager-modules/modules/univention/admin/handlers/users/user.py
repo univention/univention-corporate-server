@@ -65,21 +65,13 @@ import univention.password
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate
 
-
-class vacationResendDays(univention.admin.syntax.select):
-	name = 'vacationresendDays'
-	choices = [('1', '1 %s' % _('day'))]
-	for i in range(2, 60):
-		choices.append(("%s" % i, "%s %s" % (i, _('days'))))
-
-
 module = 'users/user'
 operations = ['add', 'edit', 'remove', 'search', 'move', 'copy']
 template = 'settings/usertemplate'
 
 childs = 0
 short_description = _('User')
-long_description = ''
+long_description = _('POSIX, Samba and Kerberos account')
 
 
 options = {
