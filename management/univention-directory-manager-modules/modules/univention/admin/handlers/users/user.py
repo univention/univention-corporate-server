@@ -1872,7 +1872,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			raise univention.admin.uexceptions.uidNumberAlreadyUsedAsGidNumber('%r' % self["uidNumber"])
 
 	def _ldap_pre_create(self):
-		_d = univention.debug.function('admin.handlers.users.user.object._ldap_pre_create')
 		super(object, self)._ldap_pre_create()
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: dn was set to %s' % self.dn)
 		if not self['password']:
