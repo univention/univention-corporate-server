@@ -1,0 +1,206 @@
+#!/usr/bin/python2.7
+
+import pprint
+import argparse
+
+import univention.admin.uldap
+import univention.admin.allocators
+import univention.admin.uexceptions
+from univention.lib.s4 import rids_for_well_known_security_identifiers
+from univention.config_registry import ConfigRegistry
+
+ucr = ConfigRegistry()
+ucr.load()
+
+lo, po = univention.admin.uldap.getAdminConnection()
+
+
+class Migration(object):
+
+	def __init__(self):
+		p = argparse.ArgumentParser()
+		p.add_argument('--check', action='store_true', help='Makes a dry run by printing out all modifications which would be done.')
+		p.add_argument('--set-kerberos-realm', help='Set the given kerberos realm in the domain if none is set.')
+		self.args = p.parse_args()
+		searchResult = lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr=['aRecord', 'aAAARecord'])
+		self.s4connector_present = any(ddn for (ddn, attr) in searchResult if set(['aAAARecord', 'aRecord']) & set(attr))
+		self.migrate()
+
+	def migrate(self):
+		"""
+		Posix:
+		posixAccount, shadowAccount, person, univentionPWHistory
+
+		Samba:
+		sambaSamAccount, person, univentionPWHistory
+
+		Kerberos:
+		krb5Principal, krb5KDCEntry, person, univentionPWHistory
+
+		Mail:
+		shadowAccount, univentionMail, person, univentionPWHistory
+
+		Person:
+		organizationalPerson, inetOrgPerson, person, univentionPWHistory
+
+		PKI:
+		pkiUser, person, univentionPWHistory
+
+		LDAP_Pwd:
+		simpleSecurityObject, uidObject, person, univentionPWHistory
+		"""
+
+		realm = self.get_kerberos_realm()
+		primary_group_gid = self.get_primary_gid_number()
+		self.alloc = []
+
+		# use the users/user filter from UCS 4.2 but remove "(!(univentionObjectFlag=functional))" because we have the "uid=sys-idp-user" account
+		user_filter = u'(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(objectClass=inetOrgPerson))(!(uidNumber=0))(!(uid=*$)))'
+		for dn, user in lo.search(user_filter):
+			ocs = set(user['objectClass'])
+			has_posix = ocs & {'posixAccount', }
+			has_shadow = ocs & {'shadowAccount', }
+			has_samba = ocs & {'sambaSamAccount', }
+			has_kerberos = ocs & {'krb5Principal', 'krb5KDCEntry', }
+			has_mail = ocs & {'univentionMail', }
+			has_org_person = ocs & {'organizationalPerson', }
+			has_inet_org_person = ocs & {'inetOrgPerson', }
+			has_pki = ocs & {'pkiUser', }
+			has_ldap = ocs & {'simpleSecurityObject', 'uidObject'}
+
+			is_ldap_only = has_ldap and not any([has_posix, has_shadow, has_samba, has_kerberos, has_mail, has_org_person, has_inet_org_person, has_pki])
+			remove_ldap = has_ldap and not is_ldap_only
+
+			if is_ldap_only:
+				self.modify(dn, [('univentionObjectType', 'users/user', 'users/ldap')])
+				# TODO: are there users without univentionObjectType? then we need error handling here!
+				continue
+
+			ml = []
+			if remove_ldap:
+				ml.append(('objectClass', ['uidObject', 'simpleSecurityObject'], []))
+
+			ocs_to_add = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'organizationalPerson', 'inetOrgPerson', } - ocs
+			if ocs_to_add:
+				ml.append(('objectClass', [], list(ocs_to_add)))
+			if not has_kerberos:
+				ml.extend([
+					('krb5PrincipalName', [], ['%s@%s' % (user['uid'][0], realm)]),
+					('krb5KeyVersionNumber', [], ['1']),
+				])
+			uidNumber = user.get('uidNumber', [None])[0]
+			if not has_posix:
+				uidNumber = self.allocate('uidNumber')
+				ml.extend([
+					('uidNumber', [], [uidNumber]),
+					('gidNumber', [], [primary_group_gid]),
+					('homeDirectory', [], ['/home/%s' % (user['uid'][0],)]),  # TODO: can this default value be overwritten by UCR?
+				])
+			if not has_samba:
+				ml.append(('sambaSID', [], [self.get_user_sid(user['uid'][0], uidNumber)]))
+
+			if ml:
+				self.modify(dn, ml)
+				self.confirm()
+
+	def modify(self, dn, ml):
+		print 'Modifying ', dn
+		pprint.pprint(ml)
+		print
+		if not self.args.check:
+			lo.modify(dn, ml, ignore_license=True)
+
+	def allocate(self, name, value=None):
+		if name == 'userSid':
+			value = univention.admin.allocators.requestUserSid(lo, po, value)
+			name = 'sid'
+		else:
+			value = univention.admin.allocators.request(lo, po, name, value)
+		self.alloc.append([name, value])
+		return value
+
+	def confirm(self):
+		while self.alloc:
+			name, value = self.alloc.pop()
+			if self.args.check:
+				univention.admin.allocators.release(lo, po, name, value)
+			else:
+				univention.admin.allocators.confirm(lo, po, name, value)
+
+	def get_kerberos_realm(self):
+		domain = univention.admin.uldap.domain(lo, po)
+		realm = domain.getKerberosRealm()
+		if not realm:
+			if self.args.set_kerberos_realm:
+				lo.modify(po.getBase(), [('krb5RealmName', None, self.args.set_kerberos_realm)], ignore_license=True)
+			else:
+				raise SystemExit('This domain has no kerberos realm defined. Please call this script with e.g. --set-kerberos-realm="%s".' % (ucr['domainname'].upper(),))
+			realm = domain.getKerberosRealm()
+		return realm
+
+	def get_primary_gid_number(self):
+		for dn, attr in lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + po.getDomain(), attr=['univentionDefaultGroup']):
+			primary_group = attr['univentionDefaultGroup'][0]
+			attr = lo.get(primary_group)
+			if 'posixGroup' in attr.get('objectClass', []) and attr.get('sambaSID'):
+				return attr['gidNumber'][0]
+		raise SystemExit('No Samba and POSIX primary group could be found.')
+
+	def get_user_sid(self, username, uidNumber):
+		rid = rids_for_well_known_security_identifiers.get(username.lower())
+		if rid:
+			return self.__allocate_rid(rid)
+
+		if self.s4connector_present:
+			# In this case Samba 4 must create the SID, the s4 connector will sync the
+			# new sambaSID back from Samba 4.
+			return 'S-1-4-%s' % uidNumber
+
+		sid = None
+		num = uidNumber
+		if not sid:  # TODO: deadlock forever?
+			try:
+				sid = self.allocate('userSid', num)
+			except univention.admin.uexceptions.noLock:
+				num = str(int(num) + 1)
+
+		return sid
+
+	def __allocate_rid(self, rid):
+		domainsid = lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])[0][1]['sambaSID'][0]
+		sid = domainsid + '-' + rid
+		try:
+			userSid = self.allocate('sid', sid)
+			self.alloc.append(('sid', userSid))
+		except univention.admin.uexceptions.noLock:
+			raise univention.admin.uexceptions.sidAlreadyUsed(rid)
+		return userSid
+
+
+#def get_all_must_attributes():
+#	from ldap.schema import SubSchema, ObjectClass
+#	import ldap
+#	all_object_classes = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'organizationalPerson', 'inetOrgPerson', 'pkiUser', 'simpleSecurityObject', 'uidObject', 'person', 'univentionPWHistory'}
+#	entry = lo.lo.lo.search_ext_s(base='cn=Subschema', scope=ldap.SCOPE_BASE, attrlist=['attributeTypes', 'objectClasses'])[0][1]
+#	subschema = SubSchema(entry)
+#	ocs = [subschema.get_obj(ObjectClass, oid) for oid in subschema.listall(ObjectClass)]
+#	return dict([(o.names[0], o.must) for o in ocs if set(o.names) & all_object_classes])
+#	{
+#		'inetOrgPerson': (),
+#		'krb5KDCEntry': ('krb5KeyVersionNumber',),
+#		'krb5Principal': ('krb5PrincipalName',),
+#		'organizationalPerson': (),
+#		'person': ('sn', 'cn'),
+#		'pkiUser': (),
+#		'posixAccount': ('cn', 'uid', 'uidNumber', 'gidNumber', 'homeDirectory'),
+#		'sambaSamAccount': ('uid', 'sambaSID'),
+#		'shadowAccount': ('uid',),
+#		'simpleSecurityObject': ('userPassword',),
+#		'uidObject': ('uid',),
+#		'univentionMail': ('uid',),
+#		'univentionPWHistory': ()
+#	}
+
+
+if __name__ == '__main__':
+	Migration()
