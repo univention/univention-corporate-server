@@ -123,13 +123,11 @@ class object(DHCPBase):
 		]
 
 	@staticmethod
-	def lookup_filter(filter_s=None, lo=None):
-		filter_obj = univention.admin.filter.conjunction('&', [
+	def unmapped_lookup_filter():
+		return univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'univentionDhcpSubnet'),
 			univention.admin.filter.expression('objectClass', 'univentionDhcpSharedSubnet')
 		])
-		filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
-		return filter_obj
 
 
 def identify(dn, attr):

@@ -100,12 +100,10 @@ class object(DHCPBase):
 		self.lo.modify(self.dn, [('dhcpServiceDN', oldServiceDN[0], shadow_object.dn)])
 
 	@staticmethod
-	def lookup_filter(filter_s=None, lo=None):
-		filter_obj = univention.admin.filter.conjunction('&', [
+	def unmapped_lookup_filter():
+		return univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'dhcpServer')
 		])
-		filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
-		return filter_obj
 
 	@classmethod
 	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
