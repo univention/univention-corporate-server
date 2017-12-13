@@ -376,12 +376,12 @@ class Support(object):
 	def sambaMungedDialMap(self):
 		changed = 0
 		for val in self.sambaMungedValues:
-			if self.info.has_key(val) and self.hasChanged(val):
+			if val in self.info and self.hasChanged(val):
 				changed = 1
 				break
 
 		for val in ['CtxStartprogramClient', 'CtxCfgTSLogon', 'CtxCfgClientDrivers', 'CtxCfgClientPrinters', 'CtxCfgDefaultClientPrinters', 'CtxReconnectSession', 'CtxBrokenSession', 'CtxRASDialin']:
-			if self.info.has_key(val) and self.hasChanged(val):
+			if val in self.info and self.hasChanged(val):
 				changed = 1
 				break
 
@@ -400,7 +400,7 @@ class Support(object):
 					enc[val] = self[val]
 
 			# sambaMungedDial=base64.decodestring('bQAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIABkAAkCAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAUAAQAA==')
-			if self.info.has_key('CtxRASDialin'):
+			if 'CtxRASDialin' in self.info:
 				dialin_val = self['CtxRASDialin']
 			else:
 				dialin_val = 'e'
@@ -423,27 +423,27 @@ class Support(object):
 					# 30 30 65 30 30 30 31 30
 					# FIXME: this should be done by bitwise OR and finally "%08X" % value
 					enc[k] = "00000000"
-					if self.info.has_key('CtxCfgTSLogon') and self['CtxCfgTSLogon'] == '1':
+					if 'CtxCfgTSLogon' in self.info and self['CtxCfgTSLogon'] == '1':
 						enc[k] = "%s0%s" % (enc[k][0:5], enc[k][6:])
 					else:
 						enc[k] = "%s1%s" % (enc[k][0:5], enc[k][6:])
 					val = 0
-					if self.info.has_key('CtxCfgClientDrivers') and self['CtxCfgClientDrivers'] == '1':
+					if 'CtxCfgClientDrivers' in self.info and self['CtxCfgClientDrivers'] == '1':
 						val = val | 8
-					if self.info.has_key('CtxCfgClientPrinters') and self['CtxCfgClientPrinters'] == '1':
+					if 'CtxCfgClientPrinters' in self.info and self['CtxCfgClientPrinters'] == '1':
 						val = val | 4
-					if self.info.has_key('CtxCfgDefaultClientPrinters') and self['CtxCfgDefaultClientPrinters'] == '1':
+					if 'CtxCfgDefaultClientPrinters' in self.info and self['CtxCfgDefaultClientPrinters'] == '1':
 						val = val | 2
 					enc[k] = "%s%s%s" % (enc[k][0:2], str(hex(val)[2]), enc[k][3:])
 
 					value = 0x00000000
 					for opt in ('CtxReconnectSession', 'CtxBrokenSession'):
-						if self.has_key(opt) and self[opt]:
+						if self.has_property(opt) and self[opt]:
 							value |= int(self[opt], 16)
 
 					enc[k] = "%08X" % (int(enc[k], 16) | value)
 
-					if self.info.has_key('CtxStartprogramClient') and self['CtxStartprogramClient'] == '1':
+					if 'CtxStartprogramClient' in self.info and self['CtxStartprogramClient'] == '1':
 						enc[k] = "%s1%s" % (enc[k][0:6], enc[k][7:])
 					value_len = 8
 				elif enc[k]:
@@ -525,11 +525,11 @@ class Support(object):
 			self.info['CtxRASDialin'] = dialin_val
 
 	def sambaMungedDialParse(self):
-		if self.info.has_key('CtxCfgFlags1') and len(self.info['CtxCfgFlags1']) > 7 and self.info['CtxCfgFlags1'][6] != '0':
+		if 'CtxCfgFlags1' in self.info and len(self.info['CtxCfgFlags1']) > 7 and self.info['CtxCfgFlags1'][6] != '0':
 			self.info['CtxStartprogramClient'] = '1'
 		else:
 			self.info['CtxStartprogramClient'] = '0'
-		if self.info.has_key('CtxCfgFlags1') and len(self.info['CtxCfgFlags1']) > 6 and self.info['CtxCfgFlags1'][5] == '1':
+		if 'CtxCfgFlags1' in self.info and len(self.info['CtxCfgFlags1']) > 6 and self.info['CtxCfgFlags1'][5] == '1':
 			self.info['CtxCfgTSLogon'] = '0'
 		else:
 			self.info['CtxCfgTSLogon'] = '1'
@@ -554,7 +554,7 @@ class Support(object):
 		self.info['CtxCfgClientDrivers'] = '0'
 		self.info['CtxCfgClientPrinters'] = '0'
 		self.info['CtxCfgDefaultClientPrinters'] = '0'
-		if self.info.has_key('CtxCfgFlags1'):
+		if 'CtxCfgFlags1' in self.info:
 			if len(self.info['CtxCfgFlags1']) > 3:
 				value = hex_value(self.info['CtxCfgFlags1'][2])
 				if (value & 8):
