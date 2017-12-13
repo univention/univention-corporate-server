@@ -76,7 +76,6 @@ class vacationResendDays(univention.admin.syntax.select):
 module = 'users/user'
 operations = ['add', 'edit', 'remove', 'search', 'move', 'copy']
 template = 'settings/usertemplate'
-uid_umlauts_mixedcase = 0
 
 childs = 0
 short_description = _('User')
