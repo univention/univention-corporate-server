@@ -609,6 +609,14 @@ class integer(simple):
 			raise univention.admin.uexceptions.valueError(_("Value must be a number!"))
 
 
+class integerOrEmpty(integer):
+	@classmethod
+	def parse(self, text):
+		if not text:
+			return
+		return super(integerOrEmpty, self).parse(text)
+
+
 class boolean(simple):
 
 	"""
@@ -1576,7 +1584,7 @@ class TimeString(simple):
 
 class UNIX_TimeInterval(complex):
 	min_elements = 1
-	subsyntaxes = (('', integer), ('', TimeUnits))
+	subsyntaxes = (('', integerOrEmpty), ('', TimeUnits))
 	size = ('Half', 'Half')
 
 	@classmethod
@@ -1592,6 +1600,8 @@ class UNIX_BoundedTimeInterval(UNIX_TimeInterval):
 	@classmethod
 	def parse(cls, texts):
 		parsed = super(UNIX_BoundedTimeInterval, cls).parse(texts)
+		if parsed[0] is None:
+			return [None, None]
 
 		in_seconds = int(parsed[0])
 		if len(parsed) > 1:

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.0-2) unstable; urgency=medium
+
+  * Bug #41865: fix unsetting time interval
+
+ -- Florian Best <best@univention.de>  Wed, 13 Dec 2017 11:01:33 +0100
+
 univention-directory-manager-modules (13.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
