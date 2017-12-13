@@ -199,8 +199,14 @@ Type=str
 Categories=service-ldap
 
 [ldap/tls/ciphersuite]
-Description[de]=Dies konfiguriert die kryptografischen Verfahren, die ein Client in der SSL-Handshake-Phase angeboten bekommt. Das Format ist unter <http://www.openldap.org/software/man.cgi?query=slapd.conf> beschrieben. Ist die Variable nicht gesetzt, wird 'HIGH:MEDIUM:!aNULL:!MD5:!RC4' verwendet.
-Description[en]=This configures the cryptopgraphic algorithms which are offered to clients during a SSL handshake. The format is described at <http://www.openldap.org/software/man.cgi?query=slapd.conf>. If the variable is unset, 'HIGH:MEDIUM:!aNULL:!MD5:!RC4' is used.
+Description[de]=Veraltete Variable, deren Wert nur für OpenSSL gültig ist. In UCS 4.3 OpenLDAP verwendet statt dessen GNUTLS. Die entsprechende für GNUTLS gültige Variable ist ldap/tls/priority. Die Variable konfigurierte die kryptografischen Verfahren, die ein Client in der SSL-Handshake-Phase angeboten bekommt. Das Format ist unter <http://www.openldap.org/software/man.cgi?query=slapd.conf> beschrieben. Der Default war 'HIGH:MEDIUM:!aNULL:!MD5:!RC4'.
+Description[en]=Legacy variable which was valid only for OpenSSL. In UCS 4.3 OpenLDAP uses GNUTLS instead. The corresponding variable for GNUTLS is ldap/tls/priority. This variable used to configure the cryptopgraphic algorithms which are offered to clients during a SSL handshake. The format is described at <http://www.openldap.org/software/man.cgi?query=slapd.conf>. The default was 'HIGH:MEDIUM:!aNULL:!MD5:!RC4'.
+Type=str
+Categories=service-ldap
+
+[ldap/tls/priority]
+Description[de]=Dies konfiguriert die kryptografischen Verfahren, die ein Client in der SSL-Handshake-Phase angeboten bekommt. Das Format ist unter <https://www.gnutls.org/manual/gnutls.html> beschrieben. Ist die Variable nicht gesetzt, wird 'SECURE256:+SECURE128:+AES-128-CCM-8:+AES-256-CCM-8:-3DES-CBC:-CAMELLIA-128-GCM:-CAMELLIA-256-GCM:+PSK:+ECDHE-PSK:+DHE-PSK:+RSA-PSK:+DHE-DSS:+DHE-PSK:+SRP:+SRP-DSS:+SRP-RSA' verwendet.
+Description[en]=This configures the cryptopgraphic algorithms which are offered to clients during a SSL handshake. The format is described at <https://www.gnutls.org/manual/gnutls.html>. If the variable is unset, 'SECURE256:+SECURE128:+AES-128-CCM-8:+AES-256-CCM-8:-3DES-CBC:-CAMELLIA-128-GCM:-CAMELLIA-256-GCM:+PSK:+ECDHE-PSK:+DHE-PSK:+RSA-PSK:+DHE-DSS:+DHE-PSK:+SRP:+SRP-DSS:+SRP-RSA' is used.
 Type=str
 Categories=service-ldap
 

@@ -1,3 +1,12 @@
+univention-ldap (14.0.0-3) unstable; urgency=medium
+
+  * Make GNUTLS default TLSCipherSuite simmilar to OpenSSL (Bug #45870)
+  * New UCR variable ldap/tls/priority for GNUTLS
+  * Warn if ldap/tls/ciphersuite has been set manually
+  * slapd ignores TLSDHParamFile for GNUTLS, so comment it out for now
+
+ -- Arvid Requate <requate@univention.de>  Wed, 13 Dec 2017 16:31:02 +0100
+
 univention-ldap (14.0.0-2) unstable; urgency=medium
 
   * Convert TLSCipherSuite from OpenSSL to GNUTLS (Bug #45870)
