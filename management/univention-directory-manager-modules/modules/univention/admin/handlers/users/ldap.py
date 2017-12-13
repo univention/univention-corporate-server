@@ -141,6 +141,12 @@ class object(univention.admin.handlers.simpleLdap):
 			self.info['disabled'] = _password_is_locked(self['password'])
 		self.save()
 
+	def _ldap_pre_ready(self):
+		super(object, self)._ldap_pre_ready()
+
+		if not self.exists() or self.hasChanged('username'):
+			check_prohibited_username(self.lo, self['username'])
+
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
 		if not self['password']:
@@ -148,8 +154,6 @@ class object(univention.admin.handlers.simpleLdap):
 			self.modifypassword = 0
 		else:
 			self.modifypassword = 1
-
-		check_prohibited_username(self.lo, self['username'])
 
 		# get lock for username
 		try:
