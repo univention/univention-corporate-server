@@ -1124,6 +1124,14 @@ layout = [
 layout.append(mungeddial.tab)
 
 
+def check_prohibited_username(lo, username):
+	"""check if the username is allowed"""
+	module = univention.admin.modules.get('settings/prohibited_username')
+	for prohibited_object in (module.lookup(None, lo, '') or []):
+		if username in prohibited_object['usernames']:
+			raise univention.admin.uexceptions.prohibitedUsername(username)
+
+
 def case_insensitive_in_list(dn, list):
 	for element in list:
 		if dn.decode('utf8').lower() == element.decode('utf8').lower():
@@ -1384,7 +1392,7 @@ def _is_windows_disabled(disabled):
 def unmapLocked(oldattr):
 	locked = 'none'
 	userPassword = oldattr.get('userPassword', [''])[0]
-	if userPassword and _pwd_is_locked(userPassword):
+	if userPassword and _password_is_locked(userPassword):
 		locked = 'posix'
 
 	flags = oldattr.get('sambaAcctFlags', None)
@@ -1401,8 +1409,30 @@ def unmapLocked(oldattr):
 	return locked
 
 
-def _pwd_is_locked(password):
+def _password_is_locked(password):
 	return password and (password.startswith('{crypt}!') or password.startswith('{LANMAN}!'))
+
+
+def _get_unlocked_password(password):
+	if _password_is_locked(password):
+		if password.startswith("{crypt}!"):
+			return password.replace("{crypt}!", "{crypt}")
+		elif password.startswith('{LANMAN}!'):
+			return password.replace("{LANMAN}!", "{LANMAN}")
+	return password
+
+
+def _get_locked_password(password):
+	# cleartext password?
+	if not password.startswith('{crypt}') and not password.startswith('{LANMAN}'):
+		return "{crypt}!%s" % (univention.admin.password.crypt('password'))
+
+	if not _password_is_locked(password):
+		if password.startswith("{crypt}"):
+			return password.replace("{crypt}", "{crypt}!")
+		elif password.startswith("{LANMAN}"):
+			return password.replace("{LANMAN}", "{LANMAN}!")
+	return password
 
 
 def unmapSambaRid(oldattr):
@@ -1485,29 +1515,6 @@ mapping.registerUnmapping('password', unmapLocked)  # TODO: register with regula
 
 class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	module = module
-
-	def __pwd_is_locked(self, password):
-		return _pwd_is_locked(password)
-
-	def __pwd_unlocked(self, password):
-		if self.__pwd_is_locked(password):
-			if password.startswith("{crypt}!"):
-				return password.replace("{crypt}!", "{crypt}")
-			elif password.startswith('{LANMAN}!'):
-				return password.replace("{LANMAN}!", "{LANMAN}")
-		return password
-
-	def __pwd_locked(self, password):
-		# cleartext password?
-		if not password.startswith('{crypt}') and not password.startswith('{LANMAN}'):
-			return "{crypt}!%s" % (univention.admin.password.crypt('password'))
-
-		if not self.__pwd_is_locked(password):
-			if password.startswith("{crypt}"):
-				return password.replace("{crypt}", "{crypt}!")
-			elif password.startswith("{LANMAN}"):
-				return password.replace("{LANMAN}", "{LANMAN}!")
-		return password
 
 	def __add_disabled(self, new):
 		self['disabled'] = _add_disabled(self['disabled'], new)
@@ -1758,16 +1765,16 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			if not password and not acctFlags:
 				return False
 			if self['locked'] == 'all':
-				return not self.__pwd_is_locked(password) or \
+				return not _password_is_locked(password) or \
 					'L' not in acctFlags
 			elif self['locked'] == 'windows':
-				return self.__pwd_is_locked(password) or \
+				return _password_is_locked(password) or \
 					'L' not in acctFlags
 			elif self['locked'] == 'posix':
-				return not self.__pwd_is_locked(password) or \
+				return not _password_is_locked(password) or \
 					'L' in acctFlags
 			else:
-				return self.__pwd_is_locked(password) or \
+				return _password_is_locked(password) or \
 					'L' in acctFlags
 
 		return super(object, self).hasChanged(key)
@@ -1876,7 +1883,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		super(object, self)._ldap_pre_create()
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: dn was set to %s' % self.dn)
 		if not self['password']:
-			self['password'] = self.oldattr.get('password', [''])[0]
+			self['password'] = self.oldattr.get('password', [''])[0]  # FIXME: this value is always empty! REMOVE
 			self.modifypassword = 0
 		else:
 			self.modifypassword = 1
@@ -1899,10 +1906,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
 			raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
 
-		# check if the username is allowed
-		for prohibited_object in (univention.admin.handlers.settings.prohibited_username.lookup(self.co, self.lo, '') or []):
-			if self['username'] in prohibited_object['usernames']:
-				raise univention.admin.uexceptions.prohibitedUsername(': %s' % self['username'])
+		check_prohibited_username(self.lo, self['username'])
 
 		# get lock for username
 		try:
@@ -2194,10 +2198,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			# if self.modifypassword is set the password was already locked
 			if not self.modifypassword:
 				if self['locked'] in ['all', 'posix']:
-					password_disabled = self.__pwd_locked(self['password'])
+					password_disabled = _get_locked_password(self['password'])
 					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_disabled))
 				else:
-					password_enabled = self.__pwd_unlocked(self['password'])
+					password_enabled = _get_unlocked_password(self['password'])
 					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_enabled))
 					pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
 					if pwdAccountLockedTime:

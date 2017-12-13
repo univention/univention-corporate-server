@@ -43,7 +43,7 @@ import univention.admin.allocators
 import univention.admin.localization
 import univention.admin.uexceptions
 import univention.admin.uldap
-import univention.admin.handlers.settings.prohibited_username
+from univention.admin.handlers.users.user import _password_is_locked, _get_locked_password, _get_unlocked_password, check_prohibited_username
 
 import univention.debug
 import univention.password
@@ -95,9 +95,8 @@ property_descriptions = {
 	'disabled': univention.admin.property(
 		short_description=_('Account deactivation'),
 		long_description='',
-		syntax=univention.admin.syntax.disabled,
+		syntax=univention.admin.syntax.boolean,
 		multivalue=False,
-		options=['posix', 'samba', 'kerberos'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -109,7 +108,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.userPasswd,
 		multivalue=False,
-		options=['posix', 'samba', 'kerberos', 'ldap_pwd'],
 		required=True,
 		may_change=True,
 		identifies=False,
@@ -137,124 +135,54 @@ mapping.register('password', 'userPassword', None, univention.admin.mapping.List
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	def __pwd_is_locked(self, password):
-		return password and (password.startswith('{crypt}!') or password.startswith('{LANMAN}!'))
-
-	def __pwd_unlocked(self, password):
-		if self.__pwd_is_locked(password):
-			if password.startswith("{crypt}!"):
-				return password.replace("{crypt}!", "{crypt}")
-			elif password.startswith('{LANMAN}!'):
-				return password.replace("{LANMAN}!", "{LANMAN}")
-		return password
-
-	def __pwd_locked(self, password):
-		# cleartext password?
-		if not password.startswith('{crypt}') and not password.startswith('{LANMAN}'):
-			return "{crypt}!%s" % (univention.admin.password.crypt('password'))
-
-		if not self.__pwd_is_locked(password):
-			if password.startswith("{crypt}"):
-				return password.replace("{crypt}", "{crypt}!")
-			elif password.startswith("{LANMAN}"):
-				return password.replace("{LANMAN}", "{LANMAN}!")
-		return password
-
-	def __pwd_is_auth_saslpassthrough(self, password):
-		if password.startswith('{SASL}') and univention.admin.baseConfig.get('directory/manager/web/modules/users/user/auth/saslpassthrough', 'no').lower() == 'keep':
-			return 'keep'
-		return 'no'
-
 	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
+		super(object, self).open()
 		if self.exists():
-			self.modifypassword = 0
-			self['password'] = '********'
-			userPassword = self.oldattr.get('userPassword', [''])[0]
-			if userPassword:
-				self.info['password'] = userPassword
-				self.modifypassword = 0
-				if self.__pwd_is_locked(userPassword):
-					self['locked'] = 'posix'
-				self.is_auth_saslpassthrough = self.__pwd_is_auth_saslpassthrough(userPassword)
+			self.info['disabled'] = _password_is_locked(self['password'])
 		self.save()
 
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: dn was set to %s' % self.dn)
 		if not self['password']:
 			self['password'] = self.oldattr.get('password', [''])[0]
 			self.modifypassword = 0
 		else:
 			self.modifypassword = 1
 
-		prohibited_objects = univention.admin.handlers.settings.prohibited_username.lookup(self.co, self.lo, '')
-		if prohibited_objects and len(prohibited_objects) > 0:
-			for i in range(0, len(prohibited_objects)):
-				if self['username'] in prohibited_objects[i]['usernames']:
-					raise univention.admin.uexceptions.prohibitedUsername(': %s' % self['username'])
+		check_prohibited_username(self.lo, self['username'])
+
+		# get lock for username
 		try:
-			uid = univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])
+			self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])))
 		except univention.admin.uexceptions.noLock:
-			username = self['username']
-			univention.admin.allocators.release(self.lo, self.position, 'uid', username)
-			raise univention.admin.uexceptions.uidAlreadyUsed(': %s' % username)
-
-		self.alloc.append(('uid', uid))
-
-#	def _ldap_addlist(self):
-#		return al
+			raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
 
 	def _ldap_post_create(self):
 		self._confirm_locks()
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('username'):
+			username = self['username']
 			try:
-				univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])
+				univention.admin.allocators.request(self.lo, self.position, 'uid', value=username)
 			except univention.admin.uexceptions.noLock:
-				username = self['username']
-				univention.admin.allocators.release(self.lo, self.position, 'uid', username)
-				raise univention.admin.uexceptions.uidAlreadyUsed(': %s' % username)
-
-			newdn = 'uid=%s,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.parentDn(self.dn))
-			self._move(newdn)
-			univention.admin.allocators.release(self.lo, self.position, 'uid', self['username'])
-
-		if self.hasChanged('password'):
-			if not self['password']:
-				self['password'] = self.oldattr.get('password', ['********'])[0]
-				self.modifypassword = 0
-			elif not self.info['password']:
-				self['password'] = self.oldattr.get('password', ['********'])[0]
-				self.modifypassword = 0
+				raise univention.admin.uexceptions.uidAlreadyUsed(username)
 			else:
-				self.modifypassword = 1
+				newdn = 'uid=%s,%s' % (ldap.dn.escape_dn_chars(username), self.lo.parentDn(self.dn))
+				self._move(newdn)
+			finally:
+				univention.admin.allocators.release(self.lo, self.position, 'uid', username)
 
-	def _ldap_modlist(self):
-		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
-
-		disabled = "!" if self['disabled'] else ''
-
+		# The order here is important!
 		if self.hasChanged('password'):
-			password_crypt = "{crypt}%s%s" % (disabled, univention.admin.password.crypt(self['password']))
-			ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
+			# 1. a new plaintext password is supplied
+			# make a crypt password out of it
+			self['password'] = "{crypt}%s" % (univention.admin.password.crypt(self['password']),)
 
-		if self.hasChanged('locked'):
-			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root'):
-				# if self.modifypassword is set the password was already locked
-				if not self.modifypassword:
-					if self['locked'] in ['all', 'posix']:
-						password_disabled = self.__pwd_locked(self['password'])
-						ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_disabled))
-					else:
-						password_enabled = self.__pwd_unlocked(self['password'])
-						ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_enabled))
-						pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
-						if pwdAccountLockedTime:
-							ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
-
-		return ml
+		if self['disabled']:
+			self['password'] = _get_locked_password(self['password'])
+		else:
+			self['password'] = _get_unlocked_password(self['password'])
 
 	def _ldap_post_remove(self):
 		univention.admin.allocators.release(self.lo, self.position, 'uid', self['username'])
