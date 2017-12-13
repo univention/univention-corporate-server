@@ -807,7 +807,9 @@ class UDM_Module(object):
 	@property
 	def options(self):
 		"""List of defined options"""
-		return getattr(self.module, 'options', {})
+		options = dict(getattr(self.module, 'options', {}))
+		options.pop('default', None)  # don't display the "default" pseudo option in UMC
+		return options
 
 	@property
 	def operations(self):

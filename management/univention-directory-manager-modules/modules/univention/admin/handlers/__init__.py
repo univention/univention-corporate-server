@@ -1024,7 +1024,7 @@ class simpleLdap(base):
 				ocs.add(prop.objClass)
 
 		# add object classes of (especially extended) options
-		for option in self.options:
+		for option in ['default'] + self.options:
 			try:
 				opt = m.options[option]
 			except KeyError:
