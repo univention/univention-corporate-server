@@ -1,3 +1,9 @@
+univention-dvd (3.0.0-2) unstable; urgency=medium
+
+  * Bug #45868: UCS-4.3-0 DVD 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 13 Dec 2017 18:07:04 +0100
+
 univention-dvd (3.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
