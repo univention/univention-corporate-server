@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from ldap.filter import escape_filter_chars as escapeForLdapFilter
+from ldap.filter import filter_format
 import re
 import univention.admin.uexceptions
 
@@ -88,7 +88,7 @@ class expression:
 	"""LDAP filter expression."""
 	_type_ = 'expression'
 
-	def __init__(self, variable='', value='', operator='='):
+	def __init__(self, variable='', value='', operator='=', escape=False):
 		'''Create LDAP filter expression.
 
 		>>> e = expression('objectClass', '*')
@@ -98,6 +98,7 @@ class expression:
 		self.variable = variable
 		self.value = value
 		self.operator = operator
+		self._escape = escape
 
 	def __str__(self):
 		'''Return string representation.
@@ -110,17 +111,22 @@ class expression:
 		'(!(uidNumber>=10))'
 		'''
 		if self.operator == '<=':
-			return '(%s<=%s)' % (self.variable, self.value)
+			return self.escape('(%s<=%s)', (self.variable, self.value))
 		elif self.operator == '<':
-			return '(!(%s>=%s))' % (self.variable, self.value)
+			return self.escape('(!(%s>=%s))', (self.variable, self.value))
 		elif self.operator == '>=':
-			return '(%s>=%s)' % (self.variable, self.value)
+			return self.escape('(%s>=%s)', (self.variable, self.value))
 		elif self.operator == '>':
-			return '(!(%s<=%s))' % (self.variable, self.value)
+			return self.escape('(!(%s<=%s))', (self.variable, self.value))
 		elif self.operator == '!=':
-			return '(!(%s=%s))' % (self.variable, self.value)
+			return self.escape('(!(%s=%s))', (self.variable, self.value))
 		else:
-			return '(%s=%s)' % (self.variable, self.value)
+			return self.escape('(%s=%s)', (self.variable, self.value))
+
+	def escape(self, string, args):
+		if self._escape:
+			return filter_format(string, args)
+		return string % args
 
 	def __unicode__(self):
 		return self.__str__()
