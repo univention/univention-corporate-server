@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: 
+fix: univention-management-console
+desc: |
+ This update addresses the following issue(s):
+ * A wrong redirect with Single Sign-On on IE 11
+   has been prevented.
+bug: [45424]
