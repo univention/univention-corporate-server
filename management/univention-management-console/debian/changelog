@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-86) unstable; urgency=medium
+
+  * Bug #45424: Fix iframe error with IE 11
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 13 Dec 2017 17:33:56 +0100
+
 univention-management-console (9.0.80-85) unstable; urgency=medium
 
   * Bug #45826: resize summit banner with screen size
