@@ -92,6 +92,7 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
+		dontsearch=True,
 		show_in_lists=True,
 		copyable=True,
 	),
