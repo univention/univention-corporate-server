@@ -36,29 +36,21 @@ import univention.admin
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.handlers.groups.group
 import univention.admin.password
-import univention.admin.samba
 import univention.admin.allocators
 import univention.admin.localization
 import univention.admin.uexceptions
-import univention.admin.uldap
 from univention.admin.handlers.users.user import _password_is_locked, _get_locked_password, _get_unlocked_password, check_prohibited_username
-
-import univention.debug
-import univention.password
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate
 
-
 module = 'users/ldap'
 operations = ['add', 'edit', 'remove', 'search', 'move', 'copy']
-uid_umlauts_mixedcase = 0
 
 childs = False
-short_description = _('Simple authentication Account')
-long_description = ''
+short_description = _('Simple authentication account')
+long_description = _('This user object can only simply do an LDAP bind. It is intended for functional purposes and is not counted as user object in the license.')
 
 # {'person': (('sn', 'cn'), ('userPassword', 'telephoneNumber', 'seeAlso', 'description')), 'uidObject': (('uid',), ()), 'univentionPWHistory': ((), ('pwhistory',)), 'simpleSecurityObject': (('userPassword',), ())}
 options = {
