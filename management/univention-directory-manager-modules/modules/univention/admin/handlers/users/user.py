@@ -1905,16 +1905,14 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
 			raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
 
+	def _ldap_pre_ready(self):
+		super(object, self)._ldap_pre_ready()
+
 		# get lock for username
 		try:
 			self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])))
 		except univention.admin.uexceptions.noLock:
-			username = self['username']
-			univention.admin.allocators.release(self.lo, self.position, 'uid', username)  # FIXME: remove, as it releases a lock from another process
-			raise univention.admin.uexceptions.uidAlreadyUsed(username)
-
-	def _ldap_pre_ready(self):
-		super(object, self)._ldap_pre_ready()
+			raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
 
 		if not self.exists() or self.hasChanged('username'):
 			check_prohibited_username(self.lo, self['username'])
@@ -1973,10 +1971,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if self.hasChanged('username'):
 			username = self['username']
 			try:
-				univention.admin.allocators.request(self.lo, self.position, 'uid', value=username)
-			except univention.admin.uexceptions.noLock:
-				raise univention.admin.uexceptions.uidAlreadyUsed(username)
-			else:
 				newdn = 'uid=%s,%s' % (ldap.dn.escape_dn_chars(username), self.lo.parentDn(self.dn))
 				self._move(newdn)
 			finally:

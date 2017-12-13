@@ -147,19 +147,12 @@ class object(univention.admin.handlers.simpleLdap):
 		if not self.exists() or self.hasChanged('username'):
 			check_prohibited_username(self.lo, self['username'])
 
-	def _ldap_pre_create(self):
-		super(object, self)._ldap_pre_create()
-		if not self['password']:
-			self['password'] = self.oldattr.get('password', [''])[0]
-			self.modifypassword = 0
-		else:
-			self.modifypassword = 1
-
 		# get lock for username
-		try:
-			self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])))
-		except univention.admin.uexceptions.noLock:
-			raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
+		if not self.exists() or self.hasChanged('username'):
+			try:
+				self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])))
+			except univention.admin.uexceptions.noLock:
+				raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
 
 	def _ldap_post_create(self):
 		self._confirm_locks()
@@ -168,10 +161,6 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged('username'):
 			username = self['username']
 			try:
-				univention.admin.allocators.request(self.lo, self.position, 'uid', value=username)
-			except univention.admin.uexceptions.noLock:
-				raise univention.admin.uexceptions.uidAlreadyUsed(username)
-			else:
 				newdn = 'uid=%s,%s' % (ldap.dn.escape_dn_chars(username), self.lo.parentDn(self.dn))
 				self._move(newdn)
 			finally:
