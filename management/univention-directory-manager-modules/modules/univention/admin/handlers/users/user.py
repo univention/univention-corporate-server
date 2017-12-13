@@ -1495,14 +1495,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	def open(self, loadGroups=True):
 		univention.admin.handlers.simpleLdap.open(self)
 
-		self.modifypassword = not self.exists()
 		self.is_auth_saslpassthrough = self.__pwd_is_auth_saslpassthrough(self['password'] or '')
 
 		if self.exists():
-			# TODO: remove
-			if not self['password']:
-				self['password'] = '********'
-
 			self._unmap_mail_forward()
 			self._unmap_pwd_change_next_login()
 			self.sambaMungedDialUnmap()
@@ -1814,11 +1809,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: dn was set to %s' % self.dn)
-		if not self['password']:
-			self['password'] = self.oldattr.get('password', [''])[0]  # FIXME: this value is always empty! REMOVE
-			self.modifypassword = 0
-		else:
-			self.modifypassword = 1
 
 		if self['mailPrimaryAddress']:
 			self['mailPrimaryAddress'] = self['mailPrimaryAddress'].lower()
@@ -1909,16 +1899,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			finally:
 				univention.admin.allocators.release(self.lo, self.position, 'uid', username)
 
-		if self.hasChanged('password'):
-			if not self['password']:
-				self['password'] = self.oldattr.get('password', ['********'])[0]
-				self.modifypassword = 0
-			elif not self.info['password']:
-				self['password'] = self.oldattr.get('password', ['********'])[0]
-				self.modifypassword = 0
-			else:
-				self.modifypassword = 1
-
 		if self.hasChanged("uidNumber"):
 			# this should never happen, as uidNumber is marked as unchangeable
 			self._check_uid_gid_uniqueness()
@@ -1980,6 +1960,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		# Kerberos
 		if self.hasChanged('username'):
 			ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
+
+		self.modifypassword = not self.exists()
+		if self.hasChanged('password'):
+			self.modifypassword = bool(self['password'])
 
 		if self.modifypassword:
 			# if the password is going to be changed in ldap check password-history
