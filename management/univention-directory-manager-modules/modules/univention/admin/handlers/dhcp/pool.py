@@ -208,26 +208,24 @@ class object(DHCPBase):
 		return ml
 
 	@staticmethod
-	def lookup_filter(filter_s=None, lo=None):
-		filter_obj = univention.admin.filter.conjunction('&', [
+	def unmapped_lookup_filter():
+		return univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'univentionDhcpPool')
 		])
-		filter_obj.append_unmapped_filter_string(filter_s, rewrite, mapping)
-		return filter_obj
 
-
-def rewrite(filter, mapping):
-	values = {
-		'known_clients': 'known clients',
-		'unknown_clients': 'unknown clients',
-		'dynamic_bootp_clients': 'dynamic bootp clients',
-		'all_clients': 'all clients'
-	}
-	if filter.variable in values:
-		filter.value = '%s %s' % (filter.value.strip('*'), values[filter.variable])
-		filter.variable = 'dhcpPermitList'
-	else:
-		univention.admin.mapping.mapRewrite(filter, mapping)
+	@classmethod
+	def rewrite_filter(cls, filter, mapping):
+		values = {
+			'known_clients': 'known clients',
+			'unknown_clients': 'unknown clients',
+			'dynamic_bootp_clients': 'dynamic bootp clients',
+			'all_clients': 'all clients'
+		}
+		if filter.variable in values:
+			filter.value = '%s %s' % (filter.value.strip('*'), values[filter.variable])
+			filter.variable = 'dhcpPermitList'
+		else:
+			univention.admin.mapping.mapRewrite(filter, mapping)
 
 
 def identify(dn, attr):
