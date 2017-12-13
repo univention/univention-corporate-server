@@ -1391,7 +1391,7 @@ def _is_windows_disabled(disabled):
 def unmapLocked(oldattr):
 	locked = 'none'
 	userPassword = oldattr.get('userPassword', [''])[0]
-	if userPassword and _password_is_locked(userPassword):
+	if userPassword and univention.admin.password.is_locked(userPassword):
 		locked = 'posix'
 
 	flags = oldattr.get('sambaAcctFlags', None)
@@ -1406,32 +1406,6 @@ def unmapLocked(oldattr):
 		except KeyError:
 			pass
 	return locked
-
-
-def _password_is_locked(password):
-	return password and (password.startswith('{crypt}!') or password.startswith('{LANMAN}!'))
-
-
-def _get_unlocked_password(password):
-	if _password_is_locked(password):
-		if password.startswith("{crypt}!"):
-			return password.replace("{crypt}!", "{crypt}")
-		elif password.startswith('{LANMAN}!'):
-			return password.replace("{LANMAN}!", "{LANMAN}")
-	return password
-
-
-def _get_locked_password(password):
-	# cleartext password?
-	if not password.startswith('{crypt}') and not password.startswith('{LANMAN}'):
-		return "{crypt}!%s" % (univention.admin.password.crypt('password'))
-
-	if not _password_is_locked(password):
-		if password.startswith("{crypt}"):
-			return password.replace("{crypt}", "{crypt}!")
-		elif password.startswith("{LANMAN}"):
-			return password.replace("{LANMAN}", "{LANMAN}!")
-	return password
 
 
 def unmapSambaRid(oldattr):
@@ -1763,16 +1737,16 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			if not password and not acctFlags:
 				return False
 			if self['locked'] == 'all':
-				return not _password_is_locked(password) or \
+				return not univention.admin.password.is_locked(password) or \
 					'L' not in acctFlags
 			elif self['locked'] == 'windows':
-				return _password_is_locked(password) or \
+				return univention.admin.password.is_locked(password) or \
 					'L' not in acctFlags
 			elif self['locked'] == 'posix':
-				return not _password_is_locked(password) or \
+				return not univention.admin.password.is_locked(password) or \
 					'L' in acctFlags
 			else:
-				return _password_is_locked(password) or \
+				return univention.admin.password.is_locked(password) or \
 					'L' in acctFlags
 
 		return super(object, self).hasChanged(key)
@@ -2191,10 +2165,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			# if self.modifypassword is set the password was already locked
 			if not self.modifypassword:
 				if self['locked'] in ['all', 'posix']:
-					password_disabled = _get_locked_password(self['password'])
+					password_disabled = univention.admin.password.lock_password(self['password'])
 					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_disabled))
 				else:
-					password_enabled = _get_unlocked_password(self['password'])
+					password_enabled = univention.admin.password.unlock_password(self['password'])
 					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_enabled))
 					pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
 					if pwdAccountLockedTime:
