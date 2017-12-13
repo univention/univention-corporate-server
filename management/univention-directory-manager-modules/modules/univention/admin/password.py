@@ -45,7 +45,8 @@ def crypt(password, method_id=None, salt=None):
 
 	if salt is None:
 		salt = ''
-		valid = ['.', '/', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+		valid = [
+			'.', '/', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
 			'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
 			'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
 			'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
@@ -101,3 +102,29 @@ def krb5_asn1(principal, password, krb5_context=None):
 		krb5_salt = heimdal.salt(krb5_context, krb5_principal)
 		list.append(heimdal.asn1_encode_key(krb5_keyblock, krb5_salt, 0))
 	return list
+
+
+def is_locked(password):
+	return password and (password.startswith('{crypt}!') or password.startswith('{LANMAN}!'))
+
+
+def unlock_password(password):
+	if is_locked(password):
+		if password.startswith("{crypt}!"):
+			return password.replace("{crypt}!", "{crypt}")
+		elif password.startswith('{LANMAN}!'):
+			return password.replace("{LANMAN}!", "{LANMAN}")
+	return password
+
+
+def lock_password(password):
+	# cleartext password?
+	if not password.startswith('{crypt}') and not password.startswith('{LANMAN}'):
+		return "{crypt}!%s" % (univention.admin.password.crypt('password'))
+
+	if not is_locked(password):
+		if password.startswith("{crypt}"):
+			return password.replace("{crypt}", "{crypt}!")
+		elif password.startswith("{LANMAN}"):
+			return password.replace("{LANMAN}", "{LANMAN}!")
+	return password

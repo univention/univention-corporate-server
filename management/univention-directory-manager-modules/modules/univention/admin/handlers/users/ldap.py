@@ -40,7 +40,7 @@ import univention.admin.password
 import univention.admin.allocators
 import univention.admin.localization
 import univention.admin.uexceptions
-from univention.admin.handlers.users.user import _password_is_locked, _get_locked_password, _get_unlocked_password, check_prohibited_username
+from univention.admin.handlers.users.user import check_prohibited_username
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate
@@ -130,7 +130,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		super(object, self).open()
 		if self.exists():
-			self.info['disabled'] = _password_is_locked(self['password'])
+			self.info['disabled'] = univention.admin.password.is_locked(self['password'])
 		self.save()
 
 	def _ldap_pre_ready(self):
@@ -153,9 +153,9 @@ class object(univention.admin.handlers.simpleLdap):
 			self['password'] = "{crypt}%s" % (univention.admin.password.crypt(self['password']),)
 
 		if self['disabled']:
-			self['password'] = _get_locked_password(self['password'])
+			self['password'] = univention.admin.password.lock_password(self['password'])
 		else:
-			self['password'] = _get_unlocked_password(self['password'])
+			self['password'] = univention.admin.password.unlock_password(self['password'])
 
 	def _ldap_post_create(self):
 		self._confirm_locks()
