@@ -1913,6 +1913,12 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		ml = self._modlist_krb_principal(ml)
 		ml = self.__modlist(ml)
 		ml = self.__modlist2(ml)
+		ml = self._modlist_samba_bad_pw_count(ml)
+		ml = self._modlist_sambaAcctFlags(ml)
+		ml = self._modlist_shadowMax(ml)
+		ml = self._modlist_samba_kickoff_time(ml)
+		ml = self._modlist_krb5_valid_end(ml)
+		ml = self._modlist_shadow_expire(ml)
 		ml = self._modlist_mail_forward(ml)
 		ml = self._modlist_univention_person(ml)
 		ml = self._modlist_home_share(ml)
@@ -1995,14 +2001,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
 			if pwhistoryPolicy is not None and pwhistoryPolicy['pwLength'] is not None and pwhistoryPolicy['pwLength'] != 0 and self['overridePWLength'] != '1':
 				if len(self['password']) < int(pwhistoryPolicy['pwLength']):
-					for i, j in self.alloc:
-						univention.admin.allocators.release(self.lo, self.position, i, j)
 					raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % int(pwhistoryPolicy['pwLength']))
 			else:
 				if self['overridePWLength'] != '1':
 					if len(self['password']) < self.password_length:
-						for i, j in self.alloc:
-							univention.admin.allocators.release(self.lo, self.position, i, j)
 						raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % self.password_length)
 			if pwhistoryPolicy is not None and pwhistoryPolicy['pwQualityCheck'] is not None and pwhistoryPolicy['pwQualityCheck'].lower() in ['true', '1']:
 				if self['overridePWLength'] != '1':
@@ -2098,12 +2100,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 		ml = self._modlist_krb5kdc_flags(ml)
 		ml = self._modlist_locked_password(ml)
-		ml = self._modlist_samba_bad_pw_count(ml)
-		ml = self._modlist_sambaAcctFlags(ml)
-		ml = self._modlist_shadowMax(ml)
-		ml = self._modlist_samba_kickoff_time(ml)
-		ml = self._modlist_krb5_valid_end(ml)
-		ml = self._modlist_shadow_expire(ml)
 
 		# shadowlastchange=self.oldattr.get('shadowLastChange',[str(long(time.time())/3600/24)])[0]
 		if pwd_change_next_login == 1:  # ! self.modifypassword or no pwhistoryPolicy['expiryInterval']
@@ -2249,7 +2245,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 	def _modlist_shadow_expire(self, ml):
 		if self.hasChanged('disabled') or self.hasChanged('userexpiry'):
-			# POSIX / Mail
 			if self.__is_posix_disabled() and self.hasChanged('disabled') and not self.hasChanged('userexpiry'):
 				shadowExpire = '1'
 			elif self['userexpiry']:
