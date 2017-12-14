@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The error return codes when joining computers have been improved.
 bug: [45263]
+erratum: 251
+announced: 2017-12-14
