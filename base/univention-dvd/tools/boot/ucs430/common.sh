@@ -1,1 +1,1 @@
-../jessie/common.sh
+../stretch/common.sh

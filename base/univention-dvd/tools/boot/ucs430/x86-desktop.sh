@@ -1,1 +1,1 @@
-../jessie/x86-desktop.sh
+../stretch/x86-desktop.sh

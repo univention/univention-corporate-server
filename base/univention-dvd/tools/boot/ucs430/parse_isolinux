@@ -33,6 +33,8 @@ my @menu_number = (1,0,0,0,0);
 my @menu_title = ('', '', '', '', '');
 my $menudepth = 0;
 my $pre = "";
+my $in_ifcpu = 0;
+my $amd64_label = "";
 my %menu;
 
 sub parse_file {
@@ -48,6 +50,31 @@ sub parse_file {
 	chomp $line;
 	if ($line =~ /^\s*include\ (.*\.cfg)/) {
 	    parse_file($1);
+	} elsif ($line =~ /label archdetect/) {
+	    # We don't have support for arch detection in Grub, so only
+	    # show the amd64 options
+	    $in_ifcpu = 1;
+	} elsif ($line =~ /kernel (.*c32)/) {
+	    # This tells us that the matching "append" data will have
+	    # the label we need to look for. Ugh!
+	    if ($1 =~ /ifcpu64/) {
+		$in_ifcpu = 2;
+	    }
+	} elsif ($line =~ /^\s*label (.*)/ && $1 =~ /$amd64_label/) {
+	    $in_ifcpu = 3;
+	} elsif ($line =~ /^\s*append\ (.*\.cfg)/) {
+	    if ($in_ifcpu == 3) {
+		parse_file($1);
+		$in_ifcpu = 1;
+	    }
+	} elsif ($line =~ /append (.*)$/ && $in_ifcpu == 2) {
+	    # Parse out the first entry - that's what we want to use
+	    # as a label elsewhere. Ugh!
+	    my @list = split(/ /, $1);
+	    $amd64_label = $list[0];
+	    $in_ifcpu = 1;
+	} elsif ($line =~ /default archdetect/) {
+	    $in_ifcpu = 0;
 	} else {
 	    push(@lines, $line);
 	}
@@ -69,24 +96,28 @@ sub print_kernel {
     my $t = shift;
     my %k = %{$t};
     my $initrd;
+    my $hotkey = "";
 
     # Only print 64-bit kernels
-    if ($k{"kernel"} =~ /amd/) {
+    next unless ($k{"kernel"} =~ /amd/);
+
+    if ($k{"label"} =~ m,\^(\S),) {
+	$hotkey = lc "--hotkey=$1 ";
 	$k{"label"} =~ s/\^//;
-	if ($k{"append"} =~ s? (initrd=\S+)??) {
-	    $initrd = $1;
-	    $initrd =~ s?^.*initrd=??;
-	}
-	print_indent "menuentry '$pre" . $k{"label"} . "' {\n";
-	print_indent "    set background_color=white\n";
-	print_indent "    linux    " . $k{"kernel"} . " " . $k{"append"} . "\n";
-	print_indent "    initrd   $initrd\n";
-	print_indent "}\n";
     }
+    if ($k{"append"} =~ s? (initrd=\S+)??) {
+	$initrd = $1;
+	$initrd =~ s?^.*initrd=??;
+    }
+    print_indent "menuentry $hotkey'$pre" . $k{"label"} . "' {\n";
+    print_indent "    set background_color=white\n";
+    print_indent "    linux    " . $k{"kernel"} . " " . $k{"append"} . "\n";
+    print_indent "    initrd   $initrd\n";
+    print_indent "}\n";
 }
 
 sub debug {
-#    print_indent $menudepth . " " . $menu{"number"} . ": " . $menu{"label"} .
+#    print_indent $menudepth . " " . $menu{"number"} . ": " . $menu{"label"} . 
 #	" '" . $menu{"title"} . "'\n";
 }
 
@@ -162,7 +193,7 @@ foreach my $line(@lines) {
 	    $pre = "... ";
 	} else {
 	    $pre = "";
-	}
+	}	    
     } elsif ($line =~ /^\s*menu title (.*$)/) {
 	if ($in_kernel) {
 	    print_kernel(\%kernel);
@@ -171,14 +202,19 @@ foreach my $line(@lines) {
 	}
 	$menu{"title"} = $1;
 	if ($new_menu) {
-	    print_indent "submenu '$pre" . $menu{"title"} . " ...' {\n";
+	    my $hotkey = "";
+	    if ($menu{"label"} =~ m,\^(\S),) {
+		$hotkey = lc "--hotkey=$1 ";
+		$menu{"label"} =~ s/\^//;
+	    }
+	    print_indent "submenu $hotkey'$pre" . $menu{"label"} . " ...' {\n";
 	    $menu_title[$menudepth] = $menu{"title"};
 	    $menudepth++;
 	    if ($menudepth > 1) {
 		$pre = "... ";
 	    } else {
 		$pre = "";
-	    }
+	    }	    
 	    debug();
 	    print_indent "set menu_color_normal=black/white\n";
 	    print_indent "set menu_color_highlight=green/white\n";
@@ -186,7 +222,7 @@ foreach my $line(@lines) {
 	    create_theme_file($menu{"number"});
 	    $new_menu = 0;
 	}
-    } elsif ($line =~ /^label (\S*(rescue|install|auto|expert)\S*)/) {
+    } elsif ($line =~ /^[ \t]*label (\S*(rescue|install|auto|expert)\S*)/) {
 	if ($in_kernel) {
 	    print_kernel(\%kernel);
 	    undef %kernel;
@@ -195,6 +231,8 @@ foreach my $line(@lines) {
 	$in_kernel = 1;
     } elsif ($line =~ /menu label (.*)$/ && $in_kernel) {
 	$kernel{"label"} = $1;
+    } elsif ($line =~ /menu label (.*)$/) {
+	$menu{"label"} = $1;
     } elsif ($line =~ /menu default/ && $in_kernel) {
 	$kernel{"default"} = 1;
     } elsif ($line =~ /kernel (.*)$/ && $in_kernel) {
