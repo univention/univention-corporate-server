@@ -1985,28 +1985,49 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if self.hasChanged('password'):
 			self.modifypassword = bool(self['password'])
 
+		pwhistoryLength = None
+		pwhistoryPasswordLength = 0
+		pwhistoryPasswordCheck = False
+		expiryInterval = -1
+		pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
+		if pwhistoryPolicy:
+			try:
+				pwhistoryLength = int(pwhistoryPolicy['length'] or 0)
+			except ValueError:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (history length): %r' % (pwhistoryPolicy.dn,))
+			try:
+				pwhistoryPasswordLength = int(pwhistoryPolicy['pwLength'] or 0)
+			except ValueError:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (password length): %r' % (pwhistoryPolicy.dn,))
+			pwhistoryPasswordCheck = (pwhistoryPolicy['pwQualityCheck'] or '').lower() in ['true', '1']
+			try:
+				expiryInterval = int(pwhistoryPolicy['expiryInterval'] or expiryInterval)
+			except ValueError:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (expiry interval): %r' % (pwhistoryPolicy.dn,))
+
 		if self.modifypassword:
 			# if the password is going to be changed in ldap check password-history
 
 			pwhistory = self.oldattr.get('pwhistory', [''])[0]
 			# read policy
-			pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
 			if self['overridePWHistory'] != '1':
 				# TODO: if checkbox "override pwhistory" is not set
 				if self.__pwAlreadyUsed(self['password'], pwhistory):
 					raise univention.admin.uexceptions.pwalreadyused
-				if pwhistoryPolicy and pwhistoryPolicy.has_property('length') and pwhistoryPolicy['length']:
-					pwhlen = int(pwhistoryPolicy['length'])
-					newPWHistory = self.__getPWHistory(univention.admin.password.crypt(self['password']), pwhistory, pwhlen)
+
+				if pwhistoryLength is not None:
+					newPWHistory = self.__getPWHistory(univention.admin.password.crypt(self['password']), pwhistory, pwhistoryLength)
 					ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
-			if pwhistoryPolicy is not None and pwhistoryPolicy['pwLength'] is not None and pwhistoryPolicy['pwLength'] != 0 and self['overridePWLength'] != '1':
-				if len(self['password']) < int(pwhistoryPolicy['pwLength']):
-					raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % int(pwhistoryPolicy['pwLength']))
+
+			if pwhistoryPasswordLength > 0 and self['overridePWLength'] != '1':
+				if len(self['password']) < pwhistoryPasswordLength:
+					raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % (pwhistoryPasswordLength,))
 			else:
 				if self['overridePWLength'] != '1':
 					if len(self['password']) < self.password_length:
 						raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % self.password_length)
-			if pwhistoryPolicy is not None and pwhistoryPolicy['pwQualityCheck'] is not None and pwhistoryPolicy['pwQualityCheck'].lower() in ['true', '1']:
+
+			if pwhistoryPasswordCheck:
 				if self['overridePWLength'] != '1':
 					pwdCheck = univention.password.Check(self.lo)
 					pwdCheck.enableQualityCheck = True
@@ -2018,13 +2039,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			if pwd_change_next_login == 1:
 				pass  # handled below
 			elif pwhistoryPolicy is not None and pwhistoryPolicy['expiryInterval'] is not None and len(pwhistoryPolicy['expiryInterval']) > 0:
-				try:
-					expiryInterval = int(pwhistoryPolicy['expiryInterval'])
-				except:
-					# expiryInterval is empty or no legal int-string
-					pwhistoryPolicy['expiryInterval'] = ''
-					expiryInterval = -1
-
 				# POSIX Mail
 				now = (long(time.time()) / 3600 / 24)
 				if pwd_change_next_login == 1:
@@ -2084,11 +2098,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 			sambaPwdLastSetValue = str(long(time.time()))
 
-			smbpwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
-			if smbpwhistoryPolicy is not None and smbpwhistoryPolicy['length'] is not None and len(smbpwhistoryPolicy['length']) > 0:
-				smbpwhlen = int(smbpwhistoryPolicy['length'])
+			if pwhistoryLength is not None:
 				smbpwhistory = self.oldattr.get('sambaPasswordHistory', [''])[0]
-				newsmbPWHistory = self.__getsmbPWHistory(password_nt, smbpwhistory, smbpwhlen)
+				newsmbPWHistory = self.__getsmbPWHistory(password_nt, smbpwhistory, pwhistoryLength)
 				ml.append(('sambaPasswordHistory', self.oldattr.get('sambaPasswordHistory', [''])[0], newsmbPWHistory))
 
 			# Kerberos
@@ -2103,20 +2115,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 		# shadowlastchange=self.oldattr.get('shadowLastChange',[str(long(time.time())/3600/24)])[0]
 		if pwd_change_next_login == 1:  # ! self.modifypassword or no pwhistoryPolicy['expiryInterval']
-			# POSIX / Mail
-			pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
-			if pwhistoryPolicy is not None and pwhistoryPolicy['expiryInterval'] is not None and len(pwhistoryPolicy['expiryInterval']) > 0:
-				try:
-					expiryInterval = int(pwhistoryPolicy['expiryInterval'])
-				except:
-					# expiryInterval is empty or no legal int-string
-					pwhistoryPolicy['expiryInterval'] = ''
-					expiryInterval = -1
-			else:
-				# expiryInterval is empty or no legal int-string
-				pwhistoryPolicy['expiryInterval'] = ''
-				expiryInterval = -1
-
 			if expiryInterval == -1 or expiryInterval == 0:
 				shadowMax = "1"
 			else:
@@ -2139,18 +2137,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				ml = [x for x in ml if x[0] != 'krb5PasswordEnd']
 				ml.append(('krb5PasswordEnd', self.oldattr.get('krb5PasswordEnd', [''])[0], krb5PasswordEnd))
 		elif pwd_change_next_login == 2:  # pwdChangeNextLogin changed from 1 to 0
-			# 1. determine expiryInterval (could be done once before "if self.modifypassword" above)
-			pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
-			if pwhistoryPolicy is not None and pwhistoryPolicy['expiryInterval'] is not None and len(pwhistoryPolicy['expiryInterval']) > 0:
-				try:
-					expiryInterval = int(pwhistoryPolicy['expiryInterval'])
-				except:
-					# expiryInterval is empty or no legal int-string
-					pwhistoryPolicy['expiryInterval'] = ''
-					expiryInterval = -1
-			else:  # no pwhistoryPolicy['expiryInterval']
-				expiryInterval = -1
-
 			# 2. set posix attributes
 			# POSIX Mail
 			now = (long(time.time()) / 3600 / 24)
@@ -2348,9 +2334,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 		expiryInterval = -1
 		pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
-		if pwhistoryPolicy and pwhistoryPolicy.get('expiryInterval'):
+		if pwhistoryPolicy:
 			try:
-				expiryInterval = int(pwhistoryPolicy['expiryInterval'])
+				expiryInterval = int(pwhistoryPolicy['expiryInterval'] or expiryInterval)
 			except ValueError:
 				pass
 
