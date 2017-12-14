@@ -456,6 +456,9 @@ define([
 					value: label,
 					item: item
 				});
+				if (item.key in this.changes) {
+					domClass.remove(ret.revertButton, 'dijitDisplayNone');
+				}
 				on(ret, 'revert', lang.hitch(this, '_revert'));
 				var _item = this._grid.getRowValues(item);
 				if (_item.description) {
@@ -464,13 +467,13 @@ define([
 						position: ['below', 'above']
 					});
 					ret.own(tooltip);
+					on(ret.textbox, 'focus', lang.hitch(this, function() {
+						tooltip.set('connectId', [ret.domNode]);
+					}));
+					on(ret.textbox, 'blur', lang.hitch(this, function() {
+						tooltip.set('connectId', []);
+					}));
 				}
-				on(ret.textbox, 'focus', lang.hitch(this, function() {
-					tooltip.set('connectId', [ret.domNode]);
-				}));
-				on(ret.textbox, 'blur', lang.hitch(this, function() {
-					tooltip.set('connectId', []);
-				}));
 				on(ret, 'keydown', lang.hitch(this, function(evt) {
 					if (evt.key === 'Enter' || evt.key === 'Tab') {
 						if (evt.target.value === ret.initialValue || !ret.initialValue && evt.target.value === '') {
@@ -493,6 +496,7 @@ define([
 			// have the loading animation play for at least 800ms
 			// so there are no quick animation switches
 			var defer = tools.defer(function() {}, 800);
+			var oldValue = item.value;
 			setTimeout(function() {
 				domClass.add(valueField.domNode, 'saving');
 			}, 10);
@@ -512,6 +516,14 @@ define([
 							domClass.add(valueField.revertButton, 'dijitDisplayNone');
 						}
 						// valueField.textbox.focus();
+					}), 1550);
+				}));
+			}), lang.hitch(this, function() {
+				defer.then(lang.hitch(this, function() {
+					domClass.remove(valueField.domNode, 'saving');
+					setTimeout(lang.hitch(this, function() {
+						domClass.remove(valueField.domNode, 'shown');
+						valueField.textbox.set('disabled', false);
 					}), 1550);
 				}));
 			}));
