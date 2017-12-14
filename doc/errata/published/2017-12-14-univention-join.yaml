@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The logging of joinscript failures has been improved.
 bug: [42110]
+erratum: 254
+announced: 2017-12-14
