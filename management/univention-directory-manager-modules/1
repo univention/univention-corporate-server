@@ -1,0 +1,85 @@
+diff --git a/management/univention-directory-manager-modules/modules/univention/admin/de.po b/management/univention-directory-manager-modules/modules/univention/admin/de.po
+index 06061d3cd3..a90ff446bc 100644
+--- a/management/univention-directory-manager-modules/modules/univention/admin/de.po
++++ b/management/univention-directory-manager-modules/modules/univention/admin/de.po
+@@ -1704,6 +1704,10 @@ msgstr ""
+ "Ziffer oder einem Buchstaben beginnen und enden, und darf nicht \"admin\" "
+ "sein."
+ 
++#: modules/univention/admin/uexceptions.py:84
++msgid "Value out of bounds (%d - %d seconds)"
++msgstr "Wert außerhalb des erlaubten Bereichs (%d - %d Sekunden)."
++
+ #: modules/univention/admin/uexceptions.py:97
+ msgid "Values do not match."
+ msgstr "Die Werte sind nicht gleich."
+diff --git a/management/univention-directory-manager-modules/modules/univention/admin/handlers/settings/sambadomain.py b/management/univention-directory-manager-modules/modules/univention/admin/handlers/settings/sambadomain.py
+index 2df7d22d8b..b03be29e41 100644
+--- a/management/univention-directory-manager-modules/modules/univention/admin/handlers/settings/sambadomain.py
++++ b/management/univention-directory-manager-modules/modules/univention/admin/handlers/settings/sambadomain.py
+@@ -150,7 +150,7 @@ property_descriptions = {
+ 	'minPasswordAge': univention.admin.property(
+ 		short_description=_('Minimum password age'),
+ 		long_description='',
+-		syntax=univention.admin.syntax.UNIX_TimeInterval,
++		syntax=univention.admin.syntax.SambaMinPwdAge,
+ 		multivalue=False,
+ 		options=[],
+ 		required=False,
+@@ -180,7 +180,7 @@ property_descriptions = {
+ 	'maxPasswordAge': univention.admin.property(
+ 		short_description=_('Maximum password age'),
+ 		long_description='',
+-		syntax=univention.admin.syntax.UNIX_TimeInterval,
++		syntax=univention.admin.syntax.SambaMaxPwdAge,
+ 		multivalue=False,
+ 		options=[],
+ 		required=False,
+diff --git a/management/univention-directory-manager-modules/modules/univention/admin/syntax.py b/management/univention-directory-manager-modules/modules/univention/admin/syntax.py
+index f19f0e9e71..38745536a8 100644
+--- a/management/univention-directory-manager-modules/modules/univention/admin/syntax.py
++++ b/management/univention-directory-manager-modules/modules/univention/admin/syntax.py
+@@ -1577,6 +1577,43 @@ class UNIX_TimeInterval(complex):
+ 	subsyntaxes = (('', integer), ('', TimeUnits))
+ 	size = ('Half', 'Half')
+ 
++	@classmethod
++	def parse(cls, texts):
++		return super(UNIX_TimeInterval, cls).parse(texts)
++
++class UNIX_BoundedTimeInterval( UNIX_TimeInterval ):
++	lower_bound = -1 # in seconds, -1 unbounded
++	upper_bound = -1 # in seconds, -1 unbounded
++	error_message = _ ("Value out of bounds (%d - %d seconds)")
++
++	@classmethod
++	def parse(cls, texts):
++		parsed = super(UNIX_BoundedTimeInterval, cls).parse(texts)
++
++		in_seconds = int(parsed[0])
++		if len(parsed) > 1:
++			in_seconds = {
++				'seconds': lambda x: x,
++				'minutes': lambda x: x * 60,
++				'hours': lambda x: x * 60 * 60,
++				'days': lambda x: x * 24 * 60 * 60,
++			}[parsed[1]](in_seconds)
++
++		msg = cls.error_message % (cls.lower_bound, cls.upper_bound)
++		if cls.lower_bound != -1 and in_seconds < cls.lower_bound:
++			raise univention.admin.uexceptions.valueError(msg)
++		if cls.upper_bound != -1 and in_seconds > cls.upper_bound:
++			raise univention.admin.uexceptions.valueError(msg)
++
++		return parsed
++
++class SambaMinPwdAge( UNIX_BoundedTimeInterval ):
++	lower_bound = 0
++	upper_bound = 998 * 24 * 60 * 60 # 998 days in seconds
++
++class SambaMaxPwdAge( UNIX_BoundedTimeInterval ):
++	lower_bound = 0
++	upper_bound = 999 * 24 * 60 * 60 # 999 days in seconds
+ 
+ class NetworkType(select):
+ 	choices = (('ethernet', _('Ethernet')), ('fddi', _('FDDI')), ('token-ring', _('Token-Ring')))
