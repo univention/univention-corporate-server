@@ -2072,10 +2072,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, '0'))
 
 			disabled = ""
-			krb_kdcflags = '126'
-			if self.__is_kerberos_disabled():
-				krb_kdcflags = '254'
-
 			if self["locked"] in ['all', 'posix']:
 				disabled = "!"
 
@@ -2102,7 +2098,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			krb_keys = univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
 			krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0]) + 1)
 			ml.append(('krb5Key', self.oldattr.get('krb5Key', []), krb_keys))
-			ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', []), krb_kdcflags))
 			ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
 
 		ml = self._modlist_krb5kdc_flags(ml)
@@ -2165,15 +2160,12 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_krb5kdc_flags(self, ml):
-		if self.hasChanged('disabled'):
-			if self.__is_kerberos_disabled():
-				# disable kerberos account
+		if self.hasChanged('disabled') or self.modifypassword:  # TODO: the check if self.modifypassword is not required IMHO
+			if self.__is_kerberos_disabled():  # disable kerberos account
 				krb_kdcflags = '254'
-				ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', ['']), krb_kdcflags))
-			else:
-				# enable kerberos account
+			else:  # enable kerberos account
 				krb_kdcflags = '126'
-				ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', ['']), krb_kdcflags))
+			ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', ['']), krb_kdcflags))
 		return ml
 
 	def _modlist_locked_password(self, ml):
