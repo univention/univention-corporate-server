@@ -12,3 +12,5 @@ desc: |
     installations fail.
   * Limit the number of backups created when uninstalling Docker Apps.
 bug: [45795, 45808, 44480]
+erratum: 250
+announced: 2017-12-14
