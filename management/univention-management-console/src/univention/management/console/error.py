@@ -42,13 +42,15 @@ _ = Translation('univention.management.console').translate
 class UMC_Error(Exception):
 	status = 400
 	msg = None
+	with_traceback = False
 
-	def __init__(self, message=None, status=None, result=None, headers=None):
+	def __init__(self, message=None, status=None, result=None, headers=None, traceback=None):
 		message = message or self.msg
 		super(UMC_Error, self).__init__(message)
 		self.msg = message
 		self.result = result
 		self.headers = headers
+		self.traceback = traceback
 		if isinstance(status, int):
 			self.status = status
 
