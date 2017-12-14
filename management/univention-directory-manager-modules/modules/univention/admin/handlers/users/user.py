@@ -1461,9 +1461,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return self['disabled'] in ('all', 'posix', 'posix_kerberos', 'windows_posix')
 
 	def __pwd_is_auth_saslpassthrough(self, password):
-		if password.startswith('{SASL}') and univention.admin.baseConfig.get('directory/manager/web/modules/users/user/auth/saslpassthrough', 'no').lower() == 'keep':
-			return 'keep'
-		return 'no'
+		return password.startswith('{SASL}') and univention.admin.baseConfig.get('directory/manager/web/modules/users/user/auth/saslpassthrough', 'no').lower() == 'keep'
 
 	@property
 	def __forward_copy_to_self(self):
@@ -1494,8 +1492,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 	def open(self, loadGroups=True):
 		univention.admin.handlers.simpleLdap.open(self)
-
-		self.is_auth_saslpassthrough = self.__pwd_is_auth_saslpassthrough(self['password'] or '')
 
 		if self.exists():
 			self._unmap_mail_forward()
@@ -1911,11 +1907,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		ml = self._modlist_gecos(ml)
 		ml = self._modlist_display_name(ml)
 		ml = self._modlist_krb_principal(ml)
-		ml = self.__modlist(ml)
-		ml = self.__modlist2(ml)
+		ml = self._modlist_krb5kdc_flags(ml)
+		ml = self._modlist_password_change(ml)
 		ml = self._modlist_samba_bad_pw_count(ml)
 		ml = self._modlist_sambaAcctFlags(ml)
-		ml = self._modlist_shadowMax(ml)
 		ml = self._modlist_samba_kickoff_time(ml)
 		ml = self._modlist_krb5_valid_end(ml)
 		ml = self._modlist_shadow_expire(ml)
@@ -1974,164 +1969,119 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
 		return ml
 
-	def __modlist(self, ml):
-		pwd_change_next_login = 0
-		if self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1':
-			pwd_change_next_login = 1
-		elif self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0':
-			pwd_change_next_login = 2
+	def _check_password_history(self, ml, pwhistoryPolicy):
+		if self['overridePWHistory'] != '1':
+			pwhistory = self.oldattr.get('pwhistory', [''])[0]
 
-		self.modifypassword = not self.exists()
-		if self.hasChanged('password'):
-			self.modifypassword = bool(self['password'])
+			if self.__pwAlreadyUsed(self['password'], pwhistory):
+				raise univention.admin.uexceptions.pwalreadyused()
 
-		pwhistoryLength = None
-		pwhistoryPasswordLength = 0
-		pwhistoryPasswordCheck = False
-		expiryInterval = -1
-		pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
-		if pwhistoryPolicy:
-			try:
-				pwhistoryLength = int(pwhistoryPolicy['length'] or 0)
-			except ValueError:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (history length): %r' % (pwhistoryPolicy.dn,))
-			try:
-				pwhistoryPasswordLength = int(pwhistoryPolicy['pwLength'] or 0)
-			except ValueError:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (password length): %r' % (pwhistoryPolicy.dn,))
-			pwhistoryPasswordCheck = (pwhistoryPolicy['pwQualityCheck'] or '').lower() in ['true', '1']
-			try:
-				expiryInterval = int(pwhistoryPolicy['expiryInterval'] or expiryInterval)
-			except ValueError:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (expiry interval): %r' % (pwhistoryPolicy.dn,))
+			if pwhistoryPolicy.pwhistoryLength is not None:
+				newPWHistory = self.__getPWHistory(univention.admin.password.crypt(self['password']), pwhistory, pwhistoryPolicy.pwhistoryLength)
+				ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
 
-		if self.modifypassword:
-			# if the password is going to be changed in ldap check password-history
+		return ml
 
-			if self['overridePWHistory'] != '1':
-				pwhistory = self.oldattr.get('pwhistory', [''])[0]
+	def _check_password_complexity(self, pwhistoryPolicy):
+		if self['overridePWLength'] != '1':
+			password_minlength = min(0, pwhistoryPolicy.pwhistoryPasswordLength) or self.password_length
+			if len(self['password']) < password_minlength:
+				raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % (password_minlength,))
 
-				if self.__pwAlreadyUsed(self['password'], pwhistory):
-					raise univention.admin.uexceptions.pwalreadyused()
+			if pwhistoryPolicy.pwhistoryPasswordCheck:
+				pwdCheck = univention.password.Check(self.lo)
+				pwdCheck.enableQualityCheck = True
+				try:
+					pwdCheck.check(self['password'])
+				except ValueError as e:
+					raise univention.admin.uexceptions.pwQuality(str(e).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))
 
-				if pwhistoryLength is not None:
-					newPWHistory = self.__getPWHistory(univention.admin.password.crypt(self['password']), pwhistory, pwhistoryLength)
-					ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
+	def _modlist_samba_password(self, ml, pwhistoryPolicy):
+		password_nt, password_lm = univention.admin.password.ntlm(self['password'])
+		ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
+		ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 
-			if self['overridePWLength'] != '1':
-				password_minlength = min(0, pwhistoryPasswordLength) or self.password_length
-				if len(self['password']) < password_minlength:
-					raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % (password_minlength,))
+		if pwhistoryPolicy.pwhistoryLength is not None:
+			smbpwhistory = self.oldattr.get('sambaPasswordHistory', [''])[0]
+			newsmbPWHistory = self.__getsmbPWHistory(password_nt, smbpwhistory, pwhistoryPolicy.pwhistoryLength)
+			ml.append(('sambaPasswordHistory', self.oldattr.get('sambaPasswordHistory', [''])[0], newsmbPWHistory))
+		return ml
 
-				if pwhistoryPasswordCheck:
-					pwdCheck = univention.password.Check(self.lo)
-					pwdCheck.enableQualityCheck = True
-					try:
-						pwdCheck.check(self['password'])
-					except ValueError as e:
-						raise univention.admin.uexceptions.pwQuality(str(e).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))
+	def _modlist_kerberos_password(self, ml):
+		if self.exists() and not self.hasChanged('password'):
+			return ml
 
-			# POSIX
-			if self.is_auth_saslpassthrough == 'no':
-				disabled = "!" if self["locked"] in ['all', 'posix'] else ""
-				password_crypt = "{crypt}%s%s" % (disabled, univention.admin.password.crypt(self['password']))
-				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
+		krb_keys = univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
+		krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0]) + 1)
+		ml.append(('krb5Key', self.oldattr.get('krb5Key', []), krb_keys))
+		ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
+		return ml
 
-			# Samba
-			password_nt, password_lm = univention.admin.password.ntlm(self['password'])
-			ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
-			ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
-			sambaPwdLastSetValue = str(long(time.time()))
+	def _modlist_password_change(self, ml):
+		ml = self._modlist_posix_password(ml)
+		ml = self._modlist_kerberos_password(ml)
 
-			if pwhistoryLength is not None:
-				smbpwhistory = self.oldattr.get('sambaPasswordHistory', [''])[0]
-				newsmbPWHistory = self.__getsmbPWHistory(password_nt, smbpwhistory, pwhistoryLength)
-				ml.append(('sambaPasswordHistory', self.oldattr.get('sambaPasswordHistory', [''])[0], newsmbPWHistory))
+		modifypassword = not self.exists() or self.hasChanged('password')
+		if not self.hasChanged('pwdChangeNextLogin') and not modifypassword:
+			return ml
 
-			# Kerberos
-			krb_keys = univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
-			krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0]) + 1)
-			ml.append(('krb5Key', self.oldattr.get('krb5Key', []), krb_keys))
-			ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
+		pwhistoryPolicy = _PasswortHistoryPolicy(self.loadPolicyObject('policies/pwhistory'))
 
-		ml = self._modlist_krb5kdc_flags(ml)
-		ml = self._modlist_locked_password(ml)
+		if modifypassword:
+			ml = self._check_password_history(ml, pwhistoryPolicy)
+			self._check_password_complexity(pwhistoryPolicy)
+			ml = self._modlist_samba_password(ml, pwhistoryPolicy)
 
-		now = (long(time.time()) / 3600 / 24)
+		pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1'
+		unset_pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0'
 
-		if self.modifypassword and pwd_change_next_login != 1:  # handled below
-			if pwhistoryPolicy is not None and pwhistoryPolicy['expiryInterval'] is not None and len(pwhistoryPolicy['expiryInterval']) > 0:
-				if pwd_change_next_login == 1:
-					if expiryInterval == -1 or expiryInterval == 0:
-						shadowMax = "1"
-					else:
-						shadowMax = "%d" % expiryInterval
+		if pwd_change_next_login:
+			# force user to change password on next login
+			shadowMax = "1"
+		elif not pwhistoryPolicy.expiryInterval or unset_pwd_change_next_login:
+			# 1. no pw expiry interval is defined or
+			# 2. remove that user has to change password on next login
+			shadowMax = ''
+		else:
+			shadowMax = pwhistoryPolicy.expiryInterval
 
-					shadowLastChangeValue = str(int(now) - int(shadowMax) - 1)
-				else:
-					shadowLastChangeValue = str(int(now))
+		old_shadowMax = self.oldattr.get('shadowMax', [''])[0]
+		if old_shadowMax != shadowMax:
+			ml.append(('shadowMax', old_shadowMax, shadowMax))
 
-				# Kerberos
-				if expiryInterval == -1 or expiryInterval == 0:
-					krb5PasswordEnd = ''
-				else:
-					expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()) + (expiryInterval * 3600 * 24))))
-					krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
-
-			else:  # no pwhistoryPolicy['expiryInterval']
-				# POSIX, Mail
-				shadowLastChangeValue = ''
-				krb5PasswordEnd = '0'
-		if pwd_change_next_login == 1:  # ! self.modifypassword or no pwhistoryPolicy['expiryInterval']
-			if expiryInterval == -1 or expiryInterval == 0:
-				shadowMax = "1"
-			else:
-				shadowMax = "%d" % expiryInterval
-
-			shadowLastChangeValue = str(int(now) - int(shadowMax) - 1)
-
-			# Samba
-			# OLD: set sambaPwdLastSet to 1, see UCS Bug #8292 and Samba Bug #4313
-			# set sambaPwdLastSet to 0, see UCS Bug #17890
-			sambaPwdLastSetValue = '0'
-
-			# Kerberos
-			expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()))))
+		krb5PasswordEnd = ''
+		if pwhistoryPolicy.expiryInterval or pwd_change_next_login:
+			expiry = long(time.time())
+			if not pwd_change_next_login:
+				expiry = expiry + (pwhistoryPolicy.expiryInterval * 3600 * 24)
+			expiry = time.strftime("%d.%m.%y", time.gmtime(expiry))
 			krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
-		elif pwd_change_next_login == 2:  # pwdChangeNextLogin changed from 1 to 0
-			# 2. set posix attributes
-			# POSIX Mail
-			shadowLastChangeValue = str(int(now))
-
-			# 3. set samba attributes
-			# Samba
-			sambaPwdLastSetValue = str(long(time.time()))
-			# transfered into ml below
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaPwdLastSetValue: %s' % sambaPwdLastSetValue)
-
-			# 4. set kerberos attribute
-			# Kerberos
-			if expiryInterval == -1 or expiryInterval == 0:
-				krb5PasswordEnd = ''
-			else:
-				expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()) + (expiryInterval * 3600 * 24))))
-				krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
 		old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', [''])[0]
 		if old_krb5PasswordEnd != krb5PasswordEnd:
 			ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, krb5PasswordEnd))
 
-		if sambaPwdLastSetValue:
-			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
+		now = (long(time.time()) / 3600 / 24)
+		shadowLastChange = ''
+		if pwhistoryPolicy.expiryInterval or unset_pwd_change_next_login:
+			shadowLastChange = str(int(now))
+		if pwd_change_next_login:
+			shadowLastChange = str(int(now) - int(shadowMax) - 1)
 
-		if shadowLastChangeValue:
-			ml.append(('shadowLastChange', self.oldattr.get('shadowLastChange', [''])[0], shadowLastChangeValue))
+		if shadowLastChange:  # FIXME: this check causes, that the value is not unset. Is this correct?
+			ml.append(('shadowLastChange', self.oldattr.get('shadowLastChange', [''])[0], shadowLastChange))
+
+		# if pwdChangeNextLogin has been set, set sambaPwdLastSet to 0 (see UCS Bug #17890)
+		# OLD behavior was: set sambaPwdLastSet to 1 (see UCS Bug #8292 and Samba Bug #4313)
+		sambaPwdLastSetValue = '0' if pwd_change_next_login else str(long(time.time()))
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaPwdLastSetValue: %s' % sambaPwdLastSetValue)
+		ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
 
 		return ml
 
 	def _modlist_krb5kdc_flags(self, ml):
-		if self.hasChanged('disabled') or self.modifypassword:  # TODO: the check if self.modifypassword is not required IMHO
+		if not self.exists() or self.hasChanged('disabled'):
 			if self.__is_kerberos_disabled():  # disable kerberos account
 				krb_kdcflags = '254'
 			else:  # enable kerberos account
@@ -2139,20 +2089,22 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', ['']), krb_kdcflags))
 		return ml
 
-	def _modlist_locked_password(self, ml):
-		if self.hasChanged('locked'):
-			# POSIX
-			# if self.modifypassword is set the password was already locked
-			if not self.modifypassword:
+	def _modlist_posix_password(self, ml):
+		if not self.exists() or self.hasChanged('locked', 'password'):
+			# FIXME: if self['password'] is not a crypted password (e.g. {SASL}, {KINIT}, etc.) and only the locked state changed we need to ignore this.
+			if not self.__pwd_is_auth_saslpassthrough(self.oldattr.get('userPassword', [''])[0]):
 				if self['locked'] in ['all', 'posix']:
-					password_disabled = univention.admin.password.lock_password(self['password'])
-					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_disabled))
+					password_crypt = univention.admin.password.lock_password(self['password'])
 				else:
-					password_enabled = univention.admin.password.unlock_password(self['password'])
-					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_enabled))
-					pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
-					if pwdAccountLockedTime:
-						ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
+					password_crypt = univention.admin.password.unlock_password(self['password'])
+				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
+
+		# remove pwdAccountLockedTime during unlocking
+		if self.hasChanged('locked') and self['locked'] not in ['all', 'posix']:
+			pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
+			if pwdAccountLockedTime:
+				ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
+
 		return ml
 
 	def _modlist_samba_bad_pw_count(self, ml):
@@ -2163,7 +2115,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_samba_kickoff_time(self, ml):
-		if self.hasChanged(['userexpiry']):
+		if self.hasChanged('userexpiry'):
 			sambaKickoffTime = ''
 			if self['userexpiry']:
 				sambaKickoffTime = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")))
@@ -2174,7 +2126,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_krb5_valid_end(self, ml):
-		if self.hasChanged(['userexpiry']):
+		if self.hasChanged('userexpiry'):
 			krb5ValidEnd = ''
 			if self['userexpiry']:
 				krb5ValidEnd = "%s%s%s000000Z" % (self['userexpiry'][0:4], self['userexpiry'][5:7], self['userexpiry'][8:10])
@@ -2284,30 +2236,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if self.hasChanged('sambaRID') and not hasattr(self, 'userSid'):
 			self.userSid = self.__generate_user_sid(self.oldattr['uidNumber'][0])
 			ml.append(('sambaSID', self.oldattr.get('sambaSID', ['']), [self.userSid]))
-		return ml
-
-	def _modlist_shadowMax(self, ml):
-		if not self.hasChanged('pwdChangeNextLogin') and not self.modifypassword:
-			return ml
-
-		expiryInterval = -1
-		pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
-		if pwhistoryPolicy:
-			try:
-				expiryInterval = int(pwhistoryPolicy['expiryInterval'] or expiryInterval)
-			except ValueError:
-				pass
-
-		if expiryInterval <= 0:
-			shadowMax = ''
-			if self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1':
-				shadowMax = "1"
-		else:
-			shadowMax = "%d" % expiryInterval
-
-		old_shadowMax = self.oldattr.get('shadowMax', [''])[0]
-		if old_shadowMax != shadowMax:
-			ml.append(('shadowMax', old_shadowMax, shadowMax))
 		return ml
 
 	def _modlist_sambaAcctFlags(self, ml):
@@ -2612,6 +2540,30 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				filter.variable = 'uid'
 		else:
 			univention.admin.mapping.mapRewrite(filter, mapping)
+
+
+class _PasswortHistoryPolicy(object):
+	pwhistoryLength = None
+	pwhistoryPasswordLength = 0
+	pwhistoryPasswordCheck = False
+	expiryInterval = 0
+
+	def __init__(self, pwhistoryPolicy):
+		self.pwhistoryPolicy = pwhistoryPolicy
+		if pwhistoryPolicy:
+			try:
+				self.pwhistoryLength = min(0, int(pwhistoryPolicy['length'] or 0))
+			except ValueError:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (history length): %r' % (pwhistoryPolicy.dn,))
+			try:
+				self.pwhistoryPasswordLength = min(0, int(pwhistoryPolicy['pwLength'] or 0))
+			except ValueError:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (password length): %r' % (pwhistoryPolicy.dn,))
+			self.pwhistoryPasswordCheck = (pwhistoryPolicy['pwQualityCheck'] or '').lower() in ['true', '1']
+			try:
+				self.expiryInterval = min(0, int(pwhistoryPolicy['expiryInterval'] or 0))
+			except ValueError:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (expiry interval): %r' % (pwhistoryPolicy.dn,))
 
 
 lookup = object.lookup
