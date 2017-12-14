@@ -59,7 +59,8 @@ Depends: ${misc:Depends}, ${python:Depends},
  univention-base-files,
  univention-directory-listener,
  shell-univention-lib,
- dnsutils
+ dnsutils,
+ lmdb-utils
 XB-Python-Version: ${python:Versions}
 Conflicts: nagios2 (<< 3.0)
 Breaks: nagios2 (<< 3.0)
