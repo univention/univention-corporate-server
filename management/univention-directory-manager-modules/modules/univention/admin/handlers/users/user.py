@@ -2096,84 +2096,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', []), krb_kdcflags))
 			ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
 
-	def _modlist_krb5kdc_flags(self, ml):
-		if self.hasChanged('disabled'):
-			if self.__is_kerberos_disabled():
-				# disable kerberos account
-				krb_kdcflags = '254'
-				ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', ['']), krb_kdcflags))
-			else:
-				# enable kerberos account
-				krb_kdcflags = '126'
-				ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', ['']), krb_kdcflags))
-		return ml
-
-	def _modlist_locked_password(self, ml):
-		if self.hasChanged('locked'):
-			# POSIX
-			# if self.modifypassword is set the password was already locked
-			if not self.modifypassword:
-				if self['locked'] in ['all', 'posix']:
-					password_disabled = univention.admin.password.lock_password(self['password'])
-					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_disabled))
-				else:
-					password_enabled = univention.admin.password.unlock_password(self['password'])
-					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_enabled))
-					pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
-					if pwdAccountLockedTime:
-						ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
-		return ml
-
-	def _modlist_samba_bad_pw_count(self, ml):
-		if self.hasChanged('locked'):
-			if self['locked'] not in ['all', 'windows']:
-				# reset bad pw count
-				ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [''])[0], "0"))
-		return ml
-
-	def _modlist_samba_kickoff_time(self, ml):
-		if self.hasChanged(['userexpiry']):
-			sambaKickoffTime = ''
-			if self['userexpiry']:
-				sambaKickoffTime = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")))
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaKickoffTime: %s' % sambaKickoffTime)
-			old_sambaKickoffTime = self.oldattr.get('sambaKickoffTime', '')
-			if old_sambaKickoffTime != sambaKickoffTime:
-				ml.append(('sambaKickoffTime', self.oldattr.get('sambaKickoffTime', [''])[0], sambaKickoffTime))
-		return ml
-
-	def _modlist_krb5_valid_end(self, ml):
-		if self.hasChanged(['userexpiry']):
-			krb5ValidEnd = ''
-			if self['userexpiry']:
-				krb5ValidEnd = "%s%s%s000000Z" % (self['userexpiry'][0:4], self['userexpiry'][5:7], self['userexpiry'][8:10])
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5ValidEnd: %s' % krb5ValidEnd)
-			old_krb5ValidEnd = self.oldattr.get('krb5ValidEnd', '')
-			if old_krb5ValidEnd != krb5ValidEnd:
-				if not self['userexpiry']:
-					ml.append(('krb5ValidEnd', old_krb5ValidEnd, '0'))
-				else:
-					ml.append(('krb5ValidEnd', self.oldattr.get('krb5ValidEnd', [''])[0], krb5ValidEnd))
-		return ml
-
-	def _modlist_shadow_expire(self, ml):
-		if self.hasChanged('disabled') or self.hasChanged('userexpiry'):
-			# POSIX / Mail
-			if self.__is_posix_disabled() and self.hasChanged('disabled') and not self.hasChanged('userexpiry'):
-				shadowExpire = '1'
-			elif self['userexpiry']:
-				shadowExpire = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")) / 3600 / 24 + 1)
-			elif self.__is_posix_disabled():
-				shadowExpire = '1'
-			else:
-				shadowExpire = ''
-
-			old_shadowExpire = self.oldattr.get('shadowExpire', '')
-			if old_shadowExpire != shadowExpire:
-				ml.append(('shadowExpire', old_shadowExpire, shadowExpire))
-		return ml
-
-	def __modlist2(self, ml):
 		ml = self._modlist_krb5kdc_flags(ml)
 		ml = self._modlist_locked_password(ml)
 		ml = self._modlist_samba_bad_pw_count(ml)
@@ -2182,17 +2104,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		ml = self._modlist_samba_kickoff_time(ml)
 		ml = self._modlist_krb5_valid_end(ml)
 		ml = self._modlist_shadow_expire(ml)
-		old_object_classes = self.oldattr.get('objectClass', [])
-		new_object_classes = set(old_object_classes)
-
-		shadowLastChangeValue = ''  # if is filled, it will be added to ml in the end
-		sambaPwdLastSetValue = ''  # if is filled, it will be added to ml in the end
-
-		pwd_change_next_login = 0
-		if self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1':
-			pwd_change_next_login = 1
-		elif self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0':
-			pwd_change_next_login = 2
 
 		# shadowlastchange=self.oldattr.get('shadowLastChange',[str(long(time.time())/3600/24)])[0]
 		if pwd_change_next_login == 1:  # ! self.modifypassword or no pwhistoryPolicy['expiryInterval']
@@ -2274,9 +2185,83 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if shadowLastChangeValue:
 			ml.append(('shadowLastChange', self.oldattr.get('shadowLastChange', [''])[0], shadowLastChangeValue))
 
-		if set(old_object_classes) != new_object_classes:
-			ml.insert(0, ('objectClass', old_object_classes, list(new_object_classes)))
+		return ml
 
+	def _modlist_krb5kdc_flags(self, ml):
+		if self.hasChanged('disabled'):
+			if self.__is_kerberos_disabled():
+				# disable kerberos account
+				krb_kdcflags = '254'
+				ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', ['']), krb_kdcflags))
+			else:
+				# enable kerberos account
+				krb_kdcflags = '126'
+				ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', ['']), krb_kdcflags))
+		return ml
+
+	def _modlist_locked_password(self, ml):
+		if self.hasChanged('locked'):
+			# POSIX
+			# if self.modifypassword is set the password was already locked
+			if not self.modifypassword:
+				if self['locked'] in ['all', 'posix']:
+					password_disabled = univention.admin.password.lock_password(self['password'])
+					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_disabled))
+				else:
+					password_enabled = univention.admin.password.unlock_password(self['password'])
+					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_enabled))
+					pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
+					if pwdAccountLockedTime:
+						ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
+		return ml
+
+	def _modlist_samba_bad_pw_count(self, ml):
+		if self.hasChanged('locked'):
+			if self['locked'] not in ['all', 'windows']:
+				# reset bad pw count
+				ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [''])[0], "0"))
+		return ml
+
+	def _modlist_samba_kickoff_time(self, ml):
+		if self.hasChanged(['userexpiry']):
+			sambaKickoffTime = ''
+			if self['userexpiry']:
+				sambaKickoffTime = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")))
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaKickoffTime: %s' % sambaKickoffTime)
+			old_sambaKickoffTime = self.oldattr.get('sambaKickoffTime', '')
+			if old_sambaKickoffTime != sambaKickoffTime:
+				ml.append(('sambaKickoffTime', self.oldattr.get('sambaKickoffTime', [''])[0], sambaKickoffTime))
+		return ml
+
+	def _modlist_krb5_valid_end(self, ml):
+		if self.hasChanged(['userexpiry']):
+			krb5ValidEnd = ''
+			if self['userexpiry']:
+				krb5ValidEnd = "%s%s%s000000Z" % (self['userexpiry'][0:4], self['userexpiry'][5:7], self['userexpiry'][8:10])
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5ValidEnd: %s' % krb5ValidEnd)
+			old_krb5ValidEnd = self.oldattr.get('krb5ValidEnd', '')
+			if old_krb5ValidEnd != krb5ValidEnd:
+				if not self['userexpiry']:
+					ml.append(('krb5ValidEnd', old_krb5ValidEnd, '0'))
+				else:
+					ml.append(('krb5ValidEnd', self.oldattr.get('krb5ValidEnd', [''])[0], krb5ValidEnd))
+		return ml
+
+	def _modlist_shadow_expire(self, ml):
+		if self.hasChanged('disabled') or self.hasChanged('userexpiry'):
+			# POSIX / Mail
+			if self.__is_posix_disabled() and self.hasChanged('disabled') and not self.hasChanged('userexpiry'):
+				shadowExpire = '1'
+			elif self['userexpiry']:
+				shadowExpire = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")) / 3600 / 24 + 1)
+			elif self.__is_posix_disabled():
+				shadowExpire = '1'
+			else:
+				shadowExpire = ''
+
+			old_shadowExpire = self.oldattr.get('shadowExpire', '')
+			if old_shadowExpire != shadowExpire:
+				ml.append(('shadowExpire', old_shadowExpire, shadowExpire))
 		return ml
 
 	def _modlist_mail_forward(self, ml):
