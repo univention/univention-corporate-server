@@ -1,3 +1,9 @@
+univention-dvd (3.0.0-5) unstable; urgency=low
+
+  * Bug #45868: Merge changes into debian-cd
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 14 Dec 2017 14:34:32 +0100
+
 univention-dvd (3.0.0-4) unstable; urgency=low
 
   * Bug #45868: Base UCS-4.3 on Debian-Stretch
