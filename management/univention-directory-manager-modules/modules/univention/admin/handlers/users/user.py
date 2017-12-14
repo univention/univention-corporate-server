@@ -1906,19 +1906,29 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
-		old_object_classes = self.oldattr.get('objectClass', [])
-		new_object_classes = set(old_object_classes)
+		ml = self._modlist_samba_privileges(ml)
+		ml = self._modlist_cn(ml)
+		ml = self._modlist_gecos(ml)
+		ml = self._modlist_display_name(ml)
+		ml = self._modlist_krb_principal(ml)
+		ml = self.__modlist(ml)
+		ml = self.__modlist2(ml)
+		ml = self._modlist_mail_forward(ml)
+		ml = self._modlist_univention_person(ml)
+		ml = self._modlist_home_share(ml)
+		ml = self._modlist_samba_mungeddial(ml)
+		ml = self._modlist_samba_sid(ml)
 
-		# Samba
+		return ml
+
+	def _modlist_samba_privileges(self, ml):
 		if self.hasChanged('sambaPrivileges'):
 			# add univentionSambaPrivileges objectclass
 			if self['sambaPrivileges']:
-				new_object_classes |= set(['univentionSambaPrivileges'])
+				ml.append(('objectClass', '', 'univentionSambaPrivileges'))  # TODO: check if exists already
+		return ml
 
-		shadowLastChangeValue = ''  # if is filled, it will be added to ml in the end
-		sambaPwdLastSetValue = ''  # if is filled, it will be added to ml in the end
-
-		# set cn
+	def _modlist_cn(self, ml):
 		cnAtts = univention.admin.baseConfig.get('directory/manager/usercn/attributes', "<firstname> <lastname>")
 		prop = univention.admin.property()
 		old_cn = self.oldattr.get('cn', [''])[0]
@@ -1926,9 +1936,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		cn = cn.strip()
 		if cn != old_cn:
 			ml.append(('cn', old_cn, cn))
+		return ml
 
+	def _modlist_gecos(self, ml):
 		if self.hasChanged(['firstname', 'lastname']):
-			# POSIX
 			prop = self.descriptions['gecos']
 			old_gecos = self.oldattr.get('gecos', [''])[0]
 			gecos = prop._replace(prop.base_default, self)
@@ -1936,7 +1947,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				current_gecos = prop._replace(prop.base_default, self.oldinfo)
 				if current_gecos == old_gecos:
 					ml.append(('gecos', old_gecos, gecos))
+		return ml
 
+	def _modlist_display_name(self, ml):
 		# update displayName automatically if no custom value has been entered by the user and the name changed
 		if self.info.get('displayName') == self.oldinfo.get('displayName') and (self.info.get('firstname') != self.oldinfo.get('firstname') or self.info.get('lastname') != self.oldinfo.get('lastname')):
 			prop_displayName = self.descriptions['displayName']
@@ -1948,18 +1961,19 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					# yes ==> update displayName automatically
 					new_displayName = prop_displayName._replace(prop_displayName.base_default, self)
 					ml.append(('displayName', self.oldattr.get('displayName', [''])[0], new_displayName))
+		return ml
 
-		# shadowlastchange=self.oldattr.get('shadowLastChange',[str(long(time.time())/3600/24)])[0]
+	def _modlist_krb_principal(self, ml):
+		if self.hasChanged('username'):
+			ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
+		return ml
 
+	def __modlist(self, ml):
 		pwd_change_next_login = 0
 		if self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1':
 			pwd_change_next_login = 1
 		elif self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0':
 			pwd_change_next_login = 2
-
-		# Kerberos
-		if self.hasChanged('username'):
-			ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
 
 		self.modifypassword = not self.exists()
 		if self.hasChanged('password'):
@@ -2082,7 +2096,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', []), krb_kdcflags))
 			ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
 
-		# Kerberos
+	def _modlist_krb5kdc_flags(self, ml):
 		if self.hasChanged('disabled'):
 			if self.__is_kerberos_disabled():
 				# disable kerberos account
@@ -2092,7 +2106,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				# enable kerberos account
 				krb_kdcflags = '126'
 				ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', ['']), krb_kdcflags))
+		return ml
 
+	def _modlist_locked_password(self, ml):
 		if self.hasChanged('locked'):
 			# POSIX
 			# if self.modifypassword is set the password was already locked
@@ -2106,17 +2122,17 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
 					if pwdAccountLockedTime:
 						ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
+		return ml
 
-			# Samba
+	def _modlist_samba_bad_pw_count(self, ml):
+		if self.hasChanged('locked'):
 			if self['locked'] not in ['all', 'windows']:
 				# reset bad pw count
 				ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [''])[0], "0"))
+		return ml
 
-		ml = self.__modlist_sambaAcctFlags(ml)
-		ml = self.__modlist_shadowMax(ml)
-
+	def _modlist_samba_kickoff_time(self, ml):
 		if self.hasChanged(['userexpiry']):
-			# Samba
 			sambaKickoffTime = ''
 			if self['userexpiry']:
 				sambaKickoffTime = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")))
@@ -2124,8 +2140,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			old_sambaKickoffTime = self.oldattr.get('sambaKickoffTime', '')
 			if old_sambaKickoffTime != sambaKickoffTime:
 				ml.append(('sambaKickoffTime', self.oldattr.get('sambaKickoffTime', [''])[0], sambaKickoffTime))
+		return ml
 
-			# Kerberos
+	def _modlist_krb5_valid_end(self, ml):
+		if self.hasChanged(['userexpiry']):
 			krb5ValidEnd = ''
 			if self['userexpiry']:
 				krb5ValidEnd = "%s%s%s000000Z" % (self['userexpiry'][0:4], self['userexpiry'][5:7], self['userexpiry'][8:10])
@@ -2136,7 +2154,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					ml.append(('krb5ValidEnd', old_krb5ValidEnd, '0'))
 				else:
 					ml.append(('krb5ValidEnd', self.oldattr.get('krb5ValidEnd', [''])[0], krb5ValidEnd))
+		return ml
 
+	def _modlist_shadow_expire(self, ml):
 		if self.hasChanged('disabled') or self.hasChanged('userexpiry'):
 			# POSIX / Mail
 			if self.__is_posix_disabled() and self.hasChanged('disabled') and not self.hasChanged('userexpiry'):
@@ -2151,7 +2171,30 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			old_shadowExpire = self.oldattr.get('shadowExpire', '')
 			if old_shadowExpire != shadowExpire:
 				ml.append(('shadowExpire', old_shadowExpire, shadowExpire))
+		return ml
 
+	def __modlist2(self, ml):
+		ml = self._modlist_krb5kdc_flags(ml)
+		ml = self._modlist_locked_password(ml)
+		ml = self._modlist_samba_bad_pw_count(ml)
+		ml = self._modlist_sambaAcctFlags(ml)
+		ml = self._modlist_shadowMax(ml)
+		ml = self._modlist_samba_kickoff_time(ml)
+		ml = self._modlist_krb5_valid_end(ml)
+		ml = self._modlist_shadow_expire(ml)
+		old_object_classes = self.oldattr.get('objectClass', [])
+		new_object_classes = set(old_object_classes)
+
+		shadowLastChangeValue = ''  # if is filled, it will be added to ml in the end
+		sambaPwdLastSetValue = ''  # if is filled, it will be added to ml in the end
+
+		pwd_change_next_login = 0
+		if self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1':
+			pwd_change_next_login = 1
+		elif self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0':
+			pwd_change_next_login = 2
+
+		# shadowlastchange=self.oldattr.get('shadowLastChange',[str(long(time.time())/3600/24)])[0]
 		if pwd_change_next_login == 1:  # ! self.modifypassword or no pwhistoryPolicy['expiryInterval']
 			# POSIX / Mail
 			pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
@@ -2225,12 +2268,22 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				ml = [x for x in ml if x[0] != 'krb5PasswordEnd']
 				ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, krb5PasswordEnd))
 
+		if sambaPwdLastSetValue:
+			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
+
+		if shadowLastChangeValue:
+			ml.append(('shadowLastChange', self.oldattr.get('shadowLastChange', [''])[0], shadowLastChangeValue))
+
+		if set(old_object_classes) != new_object_classes:
+			ml.insert(0, ('objectClass', old_object_classes, list(new_object_classes)))
+
+		return ml
+
+	def _modlist_mail_forward(self, ml):
 		if self['mailForwardAddress'] and not self['mailPrimaryAddress']:
-				raise univention.admin.uexceptions.missingInformation(
-					_('Primary e-mail address must be set, if messages should be forwarded for it.'))
+			raise univention.admin.uexceptions.missingInformation(_('Primary e-mail address must be set, if messages should be forwarded for it.'))
 		if self.__forward_copy_to_self and not self['mailPrimaryAddress']:
-				raise univention.admin.uexceptions.missingInformation(
-					_('Primary e-mail address must be set, if a copy of forwarded messages should be stored in its mailbox.'))
+			raise univention.admin.uexceptions.missingInformation(_('Primary e-mail address must be set, if a copy of forwarded messages should be stored in its mailbox.'))
 
 		# remove virtual property mailForwardCopyToSelf from modlist
 		ml = [(key_, old_, new_) for (key_, old_, new_) in ml if key_ != 'mailForwardCopyToSelf']
@@ -2256,11 +2309,14 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				self.__set_mpa_for_forward_copy_to_self(mod_[2])
 			if mod_[1] != mod_[2]:
 				ml.append(mod_)
+		return ml
 
+	def _modlist_univention_person(self, ml):
 		# make sure that univentionPerson is set as objectClass when needed
 		if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday')):
-			new_object_classes |= set(['univentionPerson', ])
+			ml.append(('objectClass', '', 'univentionPerson'))  # TODO: check if exists already
 
+	def _modlist_home_share(self, ml):
 		if self.hasChanged('homeShare') or self.hasChanged('homeSharePath'):
 			if self['homeShare']:
 				share_mod = univention.admin.modules.get('shares/share')
@@ -2271,7 +2327,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					raise univention.admin.uexceptions.noObject(_('DN given as share is not valid.'))
 
 				if share['host'] and share['path']:
-					new_object_classes |= set(['automount', ])
+					ml.append(('objectClass', '', 'automount'))  # TODO: check if exists already
 
 					am_host = share['host']
 					if not self['homeSharePath'] or type(self['homeSharePath']) not in [types.StringType, types.UnicodeType]:
@@ -2288,32 +2344,25 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					raise univention.admin.uexceptions.noObject(_('Given DN is no share.'))
 
 			if not self['homeShare'] or not share['host'] or not share['path']:
-				new_object_classes -= set(['automount', ])
+				ml.append(('objectClass', 'automount', ''))  # TODO: check if not exists
 				am_old = self.oldattr.get('automountInformation', [''])[0]
 				if am_old:
 					ml.append(('automountInformation', am_old, ''))
+		return ml
 
-		# Samba
+	def _modlist_samba_mungeddial(self, ml):
 		sambaMunged = self.sambaMungedDialMap()
 		if sambaMunged:
 			ml.append(('sambaMungedDial', self.oldattr.get('sambaMungedDial', ['']), [sambaMunged]))
+		return ml
 
+	def _modlist_samba_sid(self, ml):
 		if self.hasChanged('sambaRID') and not hasattr(self, 'userSid'):
 			self.userSid = self.__generate_user_sid(self.oldattr['uidNumber'][0])
 			ml.append(('sambaSID', self.oldattr.get('sambaSID', ['']), [self.userSid]))
-
-		if sambaPwdLastSetValue:
-			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
-
-		if shadowLastChangeValue:
-			ml.append(('shadowLastChange', self.oldattr.get('shadowLastChange', [''])[0], shadowLastChangeValue))
-
-		if set(old_object_classes) != new_object_classes:
-			ml.insert(0, ('objectClass', old_object_classes, list(new_object_classes)))
-
 		return ml
 
-	def __modlist_shadowMax(self, ml):
+	def _modlist_shadowMax(self, ml):
 		if not self.hasChanged('pwdChangeNextLogin') and not self.modifypassword:
 			return ml
 
@@ -2337,7 +2386,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			ml.append(('shadowMax', old_shadowMax, shadowMax))
 		return ml
 
-	def __modlist_sambaAcctFlags(self, ml):
+	def _modlist_sambaAcctFlags(self, ml):
 		if not self.modifypassword and not self.hasChanged('disabled') and not self.hasChanged('locked'):
 			return ml
 
