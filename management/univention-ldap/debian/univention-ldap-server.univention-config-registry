@@ -54,7 +54,6 @@ Type: subfile
 Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/30univention-ldap-server_head
 Variables: ldap/tls/ciphersuite
-Variables: ldap/tls/priority
 Variables: ldap/tls/minprotocol
 Variables: ldap/tls/dh/paramfile
 

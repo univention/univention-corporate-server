@@ -8,24 +8,16 @@ TLSCertificateFile	/etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/cert.pem
 TLSCertificateKeyFile	/etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/private.key
 TLSCACertificateFile	/etc/univention/ssl/ucsCA/CAcert.pem
 @!@
-openssl_ciphers = configRegistry.get("ldap/tls/ciphersuite")
-if openssl_ciphers:
-	print >> sys.stderr, "WARNING: UCR Variable ldap/tls/ciphersuite is not supported any more because OpenLDAP is now linked agains GNUTLS"
-	print >> sys.stderr, "         You may want to convert your defaults to GNUTLS format and configure them via UCR ldap/tls/priority"
-
-gnutls_ciphers = configRegistry.get("ldap/tls/priority", "SECURE256:+SECURE128:+AES-128-CCM-8:+AES-256-CCM-8:-3DES-CBC:-CAMELLIA-128-GCM:-CAMELLIA-256-GCM:+PSK:+ECDHE-PSK:+DHE-PSK:+RSA-PSK:+DHE-DSS:+DHE-PSK:+SRP:+SRP-DSS:+SRP-RSA")
-if gnutls_ciphers:
-	print 'TLSCipherSuite	%s' % (gnutls_ciphers,)
-
-## slapd ignores TLSProtocolMin for GNUTLS and TLS 1.0 is minimum in GNUTLS:
-# protocol = configRegistry.get("ldap/tls/minprotocol", "3.1")
-# if protocol:
-# 	print 'TLSProtocolMin	%s' % (protocol,)
-## slapd ignores TLSDHParamFile for GNUTLS:
-# from os.path import exists
-# filename = configRegistry.get("ldap/tls/dh/paramfile", "/etc/ldap/dh_2048.pem")
-# if filename and exists(filename):
-# 	print 'TLSDHParamFile	%s' % (filename,)
+ciphers = configRegistry.get("ldap/tls/ciphersuite", "HIGH:MEDIUM:!aNULL:!MD5:!RC4")
+if ciphers:
+	print 'TLSCipherSuite	%s' % (ciphers,)
+protocol = configRegistry.get("ldap/tls/minprotocol", "3.1")
+if protocol:
+	print 'TLSProtocolMin	%s' % (protocol,)
+from os.path import exists
+filename = configRegistry.get("ldap/tls/dh/paramfile", "/etc/ldap/dh_2048.pem")
+if filename and exists(filename):
+	print 'TLSDHParamFile	%s' % (filename,)
 @!@
 
 sizelimit		@%@ldap/sizelimit@%@
