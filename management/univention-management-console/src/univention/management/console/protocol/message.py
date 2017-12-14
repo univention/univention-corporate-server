@@ -169,6 +169,9 @@ class Message(object):
 	#: contains a human readable error message
 	message = property(lambda self: self._get_key('message'), lambda self, value: self._set_key('message', value))
 
+	#: contains error information
+	error = property(lambda self: self._get_key('error'), lambda self, value: self._set_key('error', value))
+
 	#: contains the data that represents the result of the request
 	result = property(lambda self: self._get_key('result'), lambda self, value: self._set_key('result', value))
 

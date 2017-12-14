@@ -194,6 +194,8 @@ class CLI_Client(Client):
 					else:
 						print '  OPTIONS  : %s' % ' '.join(['%s=%s' % (k, v) for k, v in msg.options.items()])
 			print '  MESSAGE  : %s' % msg.message
+			if msg.error:
+				print '  ERROR    : %r' % (msg.error,)
 			result = msg.result
 			if not result:
 				result = msg.body
