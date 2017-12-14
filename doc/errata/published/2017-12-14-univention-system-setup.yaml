@@ -10,3 +10,5 @@ desc: |
    during the system configuration of DC Backup and DC Slave systems if the
    memberOf overlay module is enabled on the domaincontroller master.
 bug: [44448]
+erratum: 252
+announced: 2017-12-14
