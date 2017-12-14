@@ -1,7 +1,7 @@
 product: ucs
 release: "4.2"
-version: [2]
-scope: ucs_4.2-0-errata4.2-2
+version: [2, 3]
+scope: ucs_4.2-0-errata4.2-3
 src: univention-ldb-modules
 fix: 5.0.9-4A~4.2.0.201712131043
 desc: |
