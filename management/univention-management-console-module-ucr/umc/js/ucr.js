@@ -62,16 +62,15 @@ define([
 	"xstyle/css!./ucr.css"
 ], function(declare, lang, kernel, array, aspect, has, on, domClass, entities, Dialog, _TextBoxMixin, umcStore, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, SearchBox, TextBox, Text, HiddenInput, ComboBox, Tooltip, Button, ContainerWidget, put, _) {
 
-	var MyValueField = declare([ContainerWidget], {
+	var ValueField = declare([ContainerWidget], {
 		'class': 'valueField',
 		buildRendering: function() {
 			this.inherited(arguments);
-			var textbox = new TextBox({
+			this.textbox = new TextBox({
 				value: this.value
 			});
-			put(textbox.domNode.firstChild, '- div.savingContainer div.border + div.tick div.left + div.right');
-			this.addChild(textbox);
-			this.textbox = textbox;
+			put(this.textbox.domNode.firstChild, '- div.savingContainer div.border + div.tick div.left + div.right');
+			this.addChild(this.textbox);
 			this.initialValue = this.value;
 			var revertButton = put(this.domNode, 'div.revertButton.dijitDisplayNone');
 			this.revertButton = revertButton;
@@ -255,8 +254,7 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.changes = {};
-			// TODO is 'flavor' important
-			this.eventlessStore = umcStore(this.idProperty, this.moduleID, 'myflavor');
+			this.eventlessStore = umcStore(this.idProperty, this.moduleID, 'eventlessStore');
 		},
 
 		buildRendering: function() {
@@ -452,7 +450,7 @@ define([
 				});
 				on(ret, 'click', lang.hitch(this, '_edit', [item.key], [item]));
 			} else {
-				ret =  MyValueField({
+				ret =  ValueField({
 					value: label,
 					item: item
 				});
@@ -477,8 +475,6 @@ define([
 				on(ret, 'keydown', lang.hitch(this, function(evt) {
 					if (evt.key === 'Enter' || evt.key === 'Tab') {
 						if (evt.target.value === ret.initialValue || !ret.initialValue && evt.target.value === '') {
-							// TODO remove
-							console.log('noChange');
 							return;
 						}
 						this._inPlaceSave(item, evt.target.value, ret, true);
@@ -533,7 +529,6 @@ define([
 		_inPlaceEdit: function(item, newValue, addToHistory) {
 			var oldValue = item.value;
 			item.value = newValue;
-			// this.moduleStore._noEvents = true;
 			var options = {};
 			var idProperty = lang.getObject('moduleStore.idProperty', false, this);
 			if (idProperty) {
@@ -548,10 +543,6 @@ define([
 					this.changes[item.key].push(oldValue);
 				}
 				this._grid.update();
-				// this.moduleStore._noEvents = false;
-			}), lang.hitch(this, function() {
-				// TODO error case
-				console.log('saving ucr variable failed');
 			}));
 
 			return deferred;
