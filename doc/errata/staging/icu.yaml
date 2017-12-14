@@ -1,6 +1,6 @@
 product: ucs
 release: "4.2"
-version: [3]
+version: [2,3]
 scope: ucs_4.2-0-errata4.2-3
 src: icu
 fix: 52.1-8+deb8u6A~4.2.0.201712111856

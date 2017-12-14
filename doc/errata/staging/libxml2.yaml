@@ -1,6 +1,6 @@
 product: ucs
 release: "4.2"
-version: [3]
+version: [2,3]
 scope: ucs_4.2-0-errata4.2-3
 src: libxml2
 fix: 2.9.1+dfsg1-5+deb8u5A~4.2.0.201712111935
