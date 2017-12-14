@@ -1,0 +1,103 @@
+#!/bin/bash
+#
+# Univention Nagios Plugin
+#  check slapd's mdb maxsize
+#
+# Copyright 2007-2017 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+
+eval "$(ucr shell ldap/database/mdb/maxsize ldap/database/type)"
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+
+nagios_exit() {
+	local state="$1"
+	local msg="$2"
+
+	case $state in
+	0)
+		echo "SLAPD MDB OK: $msg"
+		exit 0
+		;;
+	1)
+		echo "SLAPD MDB WARNING: $msg"
+		exit 1
+		;;
+	2)
+		echo "SLAPD MDB CRITICAL: $msg"
+		exit 2
+		;;
+	*)
+		echo "SLAPD MDB UNKNOWN: $msg"
+		exit 3
+		;;
+	esac
+}
+
+critical=90
+warn=75
+while test -n "$1"; do
+	case "$1" in
+		-w)
+			warn=$2
+			shift
+			;;
+		-c)
+			critical=$2
+			shift
+			;;
+	esac
+	shift
+done
+
+LC_ALL=C
+
+if [ "$ldap_database_type" = "mdb" ]; then
+	mdb_dir="/var/lib/univention-ldap/ldap"
+	mdb_file="$mdb_dir/data.mdb"
+	if [ -e "$mdb_file" ]; then
+		test -x /usr/bin/mdb_stat || nagios_exit "$STATE_WARNING" "mdb_stat not found, please install lmdb-utils"
+		max_pages="$(mdb_stat -e $mdb_dir | sed -ne 's| *Max pages: ||p')"
+		used_pages="$(mdb_stat -e $mdb_dir | sed -ne 's| *Number of pages used: ||p')"
+		in_use=$(($used_pages*100/$max_pages))	
+		if [ $in_use -ge $critical ]; then
+			nagios_exit $STATE_CRITICAL "More than $critical% (in fact $in_use%) of mdb database is use, please increase ldap/database/mdb/maxsize"
+			echo "cri"
+		elif [ $in_use -ge $warn ]; then
+			nagios_exit "$STATE_WARNING" "More than $warn% (fact $in_use%) of mdb database is use, consider consider increasing ldap/database/mdb/maxsize"
+		else
+			nagios_exit $STATE_OK "System operational"
+		fi
+	fi
+	nagios_exit $STATE_OK "Slapd database file $mdb_file not found"
+fi
+
+nagios_exit $STATE_OK "Slapd backend is not mdb"
