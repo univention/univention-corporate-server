@@ -17,3 +17,5 @@ ignore: ['version.maintenance']
 cve:
 - CVE-2017-7867
 - CVE-2017-7868
+erratum: 487
+announced: 2017-12-14
