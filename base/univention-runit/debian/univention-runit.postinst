@@ -34,6 +34,9 @@ if [ ! -L "/etc/service" ]
 then
 	rmdir /etc/service
 	ln -s /etc/runit/univention /etc/service
+elif [ "$(readlink /etc/service)" = "runit/runsvdir/default" ]; then
+	rm /etc/service
+	ln -s /etc/runit/univention /etc/service
 fi
 
 if grep -q '^SV:.*:respawn:/usr/sbin/runsvdir' /etc/inittab
