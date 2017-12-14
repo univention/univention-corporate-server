@@ -2008,27 +2008,22 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if self.modifypassword:
 			# if the password is going to be changed in ldap check password-history
 
-			pwhistory = self.oldattr.get('pwhistory', [''])[0]
-			# read policy
 			if self['overridePWHistory'] != '1':
-				# TODO: if checkbox "override pwhistory" is not set
+				pwhistory = self.oldattr.get('pwhistory', [''])[0]
+
 				if self.__pwAlreadyUsed(self['password'], pwhistory):
-					raise univention.admin.uexceptions.pwalreadyused
+					raise univention.admin.uexceptions.pwalreadyused()
 
 				if pwhistoryLength is not None:
 					newPWHistory = self.__getPWHistory(univention.admin.password.crypt(self['password']), pwhistory, pwhistoryLength)
 					ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
 
-			if pwhistoryPasswordLength > 0 and self['overridePWLength'] != '1':
-				if len(self['password']) < pwhistoryPasswordLength:
-					raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % (pwhistoryPasswordLength,))
-			else:
-				if self['overridePWLength'] != '1':
-					if len(self['password']) < self.password_length:
-						raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % self.password_length)
+			if self['overridePWLength'] != '1':
+				password_minlength = min(0, pwhistoryPasswordLength) or self.password_length
+				if len(self['password']) < password_minlength:
+					raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % (password_minlength,))
 
-			if pwhistoryPasswordCheck:
-				if self['overridePWLength'] != '1':
+				if pwhistoryPasswordCheck:
 					pwdCheck = univention.password.Check(self.lo)
 					pwdCheck.enableQualityCheck = True
 					try:
