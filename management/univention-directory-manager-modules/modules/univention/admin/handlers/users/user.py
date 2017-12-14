@@ -2031,57 +2031,11 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					except ValueError as e:
 						raise univention.admin.uexceptions.pwQuality(str(e).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))
 
-			if pwd_change_next_login == 1:
-				pass  # handled below
-			elif pwhistoryPolicy is not None and pwhistoryPolicy['expiryInterval'] is not None and len(pwhistoryPolicy['expiryInterval']) > 0:
-				# POSIX Mail
-				now = (long(time.time()) / 3600 / 24)
-				if pwd_change_next_login == 1:
-					if expiryInterval == -1 or expiryInterval == 0:
-						shadowMax = "1"
-					else:
-						shadowMax = "%d" % expiryInterval
-
-					shadowLastChangeValue = str(int(now) - int(shadowMax) - 1)
-				else:
-					shadowLastChangeValue = str(int(now))
-
-				# Kerberos
-				if pwd_change_next_login == 1:
-					expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()))))
-				else:
-					if expiryInterval == -1 or expiryInterval == 0:
-						expiry = '0'
-					else:
-						expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()) + (expiryInterval * 3600 * 24))))
-				if expiry == '0':
-					krb5PasswordEnd = ''
-				else:
-					krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
-				old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', '')
-				if old_krb5PasswordEnd != krb5PasswordEnd:
-					ml.append(('krb5PasswordEnd', self.oldattr.get('krb5PasswordEnd', [''])[0], krb5PasswordEnd))
-			else:  # no pwhistoryPolicy['expiryInterval']
-				# POSIX, Mail
-				shadowLastChangeValue = ''
-
-				# Kerberos
-				old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', '')
-				if old_krb5PasswordEnd:
-					ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, '0'))
-
-			disabled = ""
-			if self["locked"] in ['all', 'posix']:
-				disabled = "!"
-
 			# POSIX
 			if self.is_auth_saslpassthrough == 'no':
+				disabled = "!" if self["locked"] in ['all', 'posix'] else ""
 				password_crypt = "{crypt}%s%s" % (disabled, univention.admin.password.crypt(self['password']))
-				# shadowlastchange=str(long(time.time())/3600/24)
 				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
-				# if pwd_change_next_login != 1:
-				#	shadowLastChangeValue = shadowlastchange
 
 			# Samba
 			password_nt, password_lm = univention.admin.password.ntlm(self['password'])
@@ -2103,7 +2057,40 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		ml = self._modlist_krb5kdc_flags(ml)
 		ml = self._modlist_locked_password(ml)
 
-		# shadowlastchange=self.oldattr.get('shadowLastChange',[str(long(time.time())/3600/24)])[0]
+		if self.modifypassword:
+			if pwd_change_next_login != 1:  # handled below
+				if pwhistoryPolicy is not None and pwhistoryPolicy['expiryInterval'] is not None and len(pwhistoryPolicy['expiryInterval']) > 0:
+					now = (long(time.time()) / 3600 / 24)
+					if pwd_change_next_login == 1:
+						if expiryInterval == -1 or expiryInterval == 0:
+							shadowMax = "1"
+						else:
+							shadowMax = "%d" % expiryInterval
+
+						shadowLastChangeValue = str(int(now) - int(shadowMax) - 1)
+					else:
+						shadowLastChangeValue = str(int(now))
+
+					# Kerberos
+					if expiryInterval == -1 or expiryInterval == 0:
+						krb5PasswordEnd = ''
+					else:
+						expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()) + (expiryInterval * 3600 * 24))))
+						krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
+
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
+					old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', '')
+					if old_krb5PasswordEnd != krb5PasswordEnd:
+						ml.append(('krb5PasswordEnd', self.oldattr.get('krb5PasswordEnd', [''])[0], krb5PasswordEnd))
+				else:  # no pwhistoryPolicy['expiryInterval']
+					# POSIX, Mail
+					shadowLastChangeValue = ''
+
+					# Kerberos
+					old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', '')
+					if old_krb5PasswordEnd:
+						ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, '0'))
+
 		if pwd_change_next_login == 1:  # ! self.modifypassword or no pwhistoryPolicy['expiryInterval']
 			if expiryInterval == -1 or expiryInterval == 0:
 				shadowMax = "1"
@@ -2121,6 +2108,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			# Kerberos
 			expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()))))
 			krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
+
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
 			old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', '')
 			if old_krb5PasswordEnd != krb5PasswordEnd:
@@ -2145,6 +2133,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			else:
 				expiry = time.strftime("%d.%m.%y", time.gmtime((long(time.time()) + (expiryInterval * 3600 * 24))))
 				krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
+
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
 			old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', [''])[0]
 			if old_krb5PasswordEnd != krb5PasswordEnd:
