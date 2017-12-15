@@ -2239,7 +2239,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_sambaAcctFlags(self, ml):
-		if not self.modifypassword and not self.hasChanged('disabled') and not self.hasChanged('locked'):
+		if self.exists() and not self.hasChanged('disabled') and not self.hasChanged('locked'):
 			return ml
 
 		old_flags = self.oldattr.get("sambaAcctFlags", [''])[0]
