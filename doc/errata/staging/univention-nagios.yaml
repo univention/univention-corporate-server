@@ -1,0 +1,23 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: univention-nagios
+fix: 10.1.1-8A~4.2.0.201712151524
+desc: |
+ This update addresses the following issue(s):
+ * A nagios check for the LDAP database maximum size has been added.
+   With the LDAP mdb database backend, a maximum size is configured
+   for the database (ucrv ldap/database/mdb/maxsize). If this
+   maximum size is reached, write requests are no longer possible.
+   The new pluging checks the effective size of the database and
+   returns a warning if 75%, or critical if 90% are in use.
+   The plugin is activated for all DC's upon the installation of
+   the nagios packages.
+   For updates, the plugin has to be activated manually. This can
+   be done by executing the following commands on the nagios server
+   and the client.
+   -> univention-run-join-scripts --force  --run-scripts \
+        26univention-nagios-common.inst \
+        30univention-nagios-client.inst
+bug: [45685]
