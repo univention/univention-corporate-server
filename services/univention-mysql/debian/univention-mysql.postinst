@@ -33,17 +33,10 @@
 
 #DEBHELPER#
 
-case "$1" in
-    configure)
-	ucr set mysql/config/mysqld/bind_address?0.0.0.0 \
-		mysql/config/mysqld/max_connections?151 \
-		mysql/config/mysqld/max_allowed_packet?33554432 \
-		mysql/config/mysqld/query_cache_size?33554432 \
-		mysql/config/mysqld/query_cache_limit?2097152 \
-		mysql/config/mysqld/innodb_buffer_pool_size?157286400
-
-esac
-
-service mysql restart
+# Remove config from previous package version, templates are removed
+# in u-m.maintscript
+if dpkg --compare-versions "5.0.0" gt-nl "$2"; then
+	[ -e "/etc/mysql/conf.d/50ucr.cnf" ] && rm /etc/mysql/conf.d/50ucr.cnf
+fi
 
 exit 0

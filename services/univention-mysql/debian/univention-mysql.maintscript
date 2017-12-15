@@ -1,0 +1,2 @@
+rm_conffile /etc/univention/templates/info/univention-mysql.info 4.99.99~
+rm_conffile /etc/univention/templates/files/etc/mysql/conf.d/50ucr.cnf 4.99.99~
