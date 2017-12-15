@@ -89,10 +89,10 @@ if [ "$ldap_database_type" = "mdb" ]; then
 		used_pages="$(mdb_stat -e $mdb_dir | sed -ne 's| *Number of pages used: ||p')"
 		in_use=$(($used_pages*100/$max_pages))	
 		if [ $in_use -ge $critical ]; then
-			nagios_exit $STATE_CRITICAL "More than $critical% (in fact $in_use%) of mdb database is use, please increase ldap/database/mdb/maxsize"
+			nagios_exit $STATE_CRITICAL "More than $critical% (in fact $in_use%) of mdb database is use, please increase ldap/database/mdb/maxsize (and restart ldap server)"
 			echo "cri"
 		elif [ $in_use -ge $warn ]; then
-			nagios_exit "$STATE_WARNING" "More than $warn% (fact $in_use%) of mdb database is use, consider consider increasing ldap/database/mdb/maxsize"
+			nagios_exit "$STATE_WARNING" "More than $warn% (in fact $in_use%) of mdb database is use, consider increasing ldap/database/mdb/maxsize (and restart ldap server)"
 		else
 			nagios_exit $STATE_OK "System operational"
 		fi
