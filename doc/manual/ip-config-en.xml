@@ -2618,13 +2618,13 @@ dansguardian -g
 		  <title>Installation</title>
 		  <para>
 			RADIUS is available through the App Center (see <xref linkend="software:appcenter"/>)
-			and can be installed using the corresponding &ucsUMC; module App Center. It can be
+			and can be installed using the corresponding &ucsUMC; module <guimenu>App Center</guimenu>. It can be
 			installed on multiple machines. After the installation it runs a <ulink
 			url="http://freeradius.org/">FreeRADIUS</ulink> server. Clients (e.g.  access
 			points) can contact via RADIUS to check network access requests.
 		  </para>
 		  <para>
-			The RADIUS app can also be installed on UCS@school systems. In
+			The RADIUS app can also be installed on &ucsUAS; systems. In
 			this case, the network access can be given to users or groups regardless of the
 			Internet rule or computer room settings.
 		  </para>

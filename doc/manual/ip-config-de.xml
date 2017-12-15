@@ -2284,28 +2284,28 @@ dansguardian -g
 		<title>RADIUS</title>
 		<para>
 			Die RADIUS App erhöht die Sicherheit für mit UCS verwaltete IT-Infrastrukturen
-			durch Zugangskontrollen zu WiFi Netzwerken für Benutzer, Gruppen und Endgeräte
+			durch Zugangskontrollen zu WiFi-Netzen für Benutzer, Gruppen und Endgeräte
 			über das <ulink
 			url="https://de.wikipedia.org/wiki/Remote_Authentication_Dial-In_User_Service">RADIUS
 			Protokoll</ulink>. Die Konfiguration erfolgt über Blacklisten und Whitelisten
-			direkt am Benutzer-, Gruppen- oder Endgeräte-Objekt im UCS Managementsystem.
-			Registrierte Benutzer werden mit ihrem üblichen Domänenpasswort
-			authentisiert, so dass unter anderem Bring Your Own Device Konzepte ermöglicht
+			direkt am Benutzer-, Gruppen- oder Endgeräte-Objekt im UCS-Managementsystem.
+			Registrierte Benutzer authentisieren sich mit ihrem üblichen Domänenpasswort,
+			so dass unter anderem "Bring Your Own Device"-Konzepte ermöglicht
 			werden.
 		</para>
 		<section id="ip-config:radius:installation">
 			<title>Installation</title>
 			<para>
 				RADIUS steht über das App Center (siehe <xref linkend="software:appcenter"/>)
-				zur Verfügung und kann über das entsprechende &ucsUMC; Modul App Center
+				zur Verfügung und kann über das entsprechende &ucsUMC;-Modul <guimenu>App Center</guimenu>
 				installiert werden. Die App kann auf mehreren Systemen installiert werden. Nach
 				der Installation startet die App einen <ulink
-				url="http://freeradius.org/">FreeRADIUS</ulink> Server. Clients (z.B. Access
+				url="http://freeradius.org/">FreeRADIUS</ulink>-Server. Clients (z.B. Access
 				Points) können den Server via RADIUS kontaktieren und Netzwerkzugangsanfragen
 				prüfen.
 			</para>
 			<para>
-				Die RADIUS App kann auch auf UCS@school Systemen installiert werden. In diesem
+				Die RADIUS-App kann auch auf &ucsUAS;-Systemen installiert werden. In diesem
 				Fall kann der Netzwerkzugang unabhängig von Internetregeln oder
 				Computerraum-Einstellungen für Benutzer und Gruppen geregelt werden.
 			</para>
@@ -2315,8 +2315,8 @@ dansguardian -g
 			<section id="ip-config:radius:configuration:allowed-users">
 				<title>Erlaubte Benutzer</title>
 				<para>
-					Standardmäßig hat kein Benutzer Zugang zum Netzwerk. Indem die Checkbox für
-					<guimenu>Netzwerkzugriff erlaubt</guimenu> im <guimenu>RADIUS</guimenu> Reiter
+					Standardmäßig wird keinem Benutzer der Zugang zum Netzwerk gewährt. Indem die Checkbox für
+					<guimenu>Netzwerkzugriff erlaubt</guimenu> im Reiter <guimenu>RADIUS</guimenu>
 					aktiviert wird, erhält der Benutzer Zugriff auf das Netzwerk. Die Checkbox kann
 					auch für Gruppen gesetzt werden, so dass alle Benutzer in der Gruppe Zugang
 					erlangen.
@@ -2356,8 +2356,8 @@ client 192.168.100.101 {
 }
 </programlisting>
 					Die Access Points müssen so konfiguriert sein, dass sie 802.1x ("WPA
-					Enterprise") Authentisierung verwenden. Und die "RADIUS Server" Adresse sollte
-					auf die Adresse des Servers gesetzt sein, auf dem die RADIUS App installiert
+					Enterprise") Authentisierung verwenden. Und die "RADIUS Server"-Adresse sollte
+					auf die Adresse des Servers gesetzt sein, auf dem die RADIUS-App installiert
 					ist. Das Passwort muss auf den Wert für <literal>secret</literal> aus dem
 					Eintrag in der <filename>clients.conf</filename> gesetzt sein.
 				</para>
@@ -2365,7 +2365,7 @@ client 192.168.100.101 {
 			<section id="ip-config:radius:configuration:clients">
 				<title>Clients</title>
 				<para>
-					WiFi Clients müssen so konfiguriert sein, dass sie <emphasis>WPA</emphasis> mit
+					WiFi-Clients müssen so konfiguriert sein, dass sie <emphasis>WPA</emphasis> mit
 					<emphasis>PEAP</emphasis> und <emphasis>MSCHAPv2</emphasis> für die
 					Authentisierung verwenden.
 				</para>
@@ -2376,7 +2376,7 @@ client 192.168.100.101 {
 			<para>
 				Das Werkzeug <package>univention-radius-check-access</package> kann zur
 				Untersuchung der aktuellen Zugangsregeln für einen bestimmten Benutzer und/oder
-				eine MAC Adresse verwendet werden. Es kann als Benutzer root auf dem Server
+				eine MAC-Adresse verwendet werden. Es kann als Benutzer root auf dem Server
 				ausgeführt werden, wo das Paket <package>univention-radius</package>
 				installiert ist.
 <programlisting language="sh">
