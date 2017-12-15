@@ -18,7 +18,7 @@ import univention.testing.utils as utils
 if __name__ == '__main__':
 	date = time.gmtime(time.time())
 	with udm_test.UCSTestUDM() as udm:
-		user = udm.create_user(options=['kerberos', 'person'])[0]
+		user = udm.create_user()[0]
 		udm.modify_object('users/user', dn=user, pwdChangeNextLogin='1')
 
 		utils.verify_ldap_object(user, {'krb5PasswordEnd': [time.strftime('%Y%m%d', date) + '000000Z']})
