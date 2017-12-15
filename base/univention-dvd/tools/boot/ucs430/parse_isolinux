@@ -66,6 +66,8 @@ sub parse_file {
 	    if ($in_ifcpu == 3) {
 		parse_file($1);
 		$in_ifcpu = 1;
+	    } else {
+		push(@lines, $line);
 	    }
 	} elsif ($line =~ /append (.*)$/ && $in_ifcpu == 2) {
 	    # Parse out the first entry - that's what we want to use

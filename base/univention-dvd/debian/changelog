@@ -1,3 +1,9 @@
+univention-dvd (3.0.0-6) unstable; urgency=low
+
+  * Bug #45868: Fix isolinux.cfg parsing
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 15 Dec 2017 14:38:37 +0100
+
 univention-dvd (3.0.0-5) unstable; urgency=low
 
   * Bug #45868: Merge changes into debian-cd
