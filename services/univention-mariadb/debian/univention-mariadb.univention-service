@@ -1,0 +1,6 @@
+[mariadb]
+Description[de]=MariaDB-Server
+Description[en]=MariaDB Server
+programs=/usr/sbin/mysqld
+start_type=mariadb/autostart
+systemd=mariadb.service

@@ -1,0 +1,5 @@
+univention-mariadb (1.0.0-1) unstable; urgency=low
+
+  * Bug #45876: Initial package release
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 15 Dec 2017 14:32:52 +0100

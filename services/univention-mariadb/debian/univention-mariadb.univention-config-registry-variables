@@ -1,0 +1,11 @@
+[mariadb/autostart]
+Description[de]=Die Variable konfiguriert den Startmodus des MySQL-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the MySQL daemon. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
+Type=str
+Categories=service-base
+
+[mysql/config/.*/.*]
+Description[de]=Diese Variablen der Form 'mysql/config/$gruppe/$option=$wert' konfigurieren beliebige MariaDB-Einstellungen im Format für '/etc/mysql/my.cnf'. Endet der Optionsname mit einem '/', so wird der Wert ignoriert und nicht ausgegeben.
+Description[en]=These variables in the format 'mysql/config/$group/$option=$value' configure arbitrary MariaDB settings in the format for '/etc/mysql/my.cnf'. If the option name ends on a '/', the value is ignored and not printed.
+Type=str
+Categories=system
