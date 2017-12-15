@@ -11,7 +11,6 @@
 
 import univention.testing.utils as utils
 
-from univention.admin.handlers import simplePolicy
 import univention.admin.syntax as udm_syntax
 
 import pycountry

@@ -9,12 +9,11 @@
 
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
 
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		user = udm.create_user(options=['posix'])[0]
+		user = udm.create_user()[0]
 		udm.modify_object('users/user', dn=user, pwdChangeNextLogin='1')
 
 		utils.verify_ldap_object(user, {'shadowMax': ['1']})

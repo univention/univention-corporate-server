@@ -40,7 +40,6 @@ def modify_and_check(udm, dn, disabled_state, locked_state):
 		udm.modify_object('users/user', dn=dn, disabled=disabled_state, locked=locked_state)
 	else:
 		dn, username = udm.create_user(
-			options=['kerberos', 'posix', 'samba'],
 			position='cn=users,{}'.format(ldap_base),
 			disabled=disabled_state,
 			locked=locked_state

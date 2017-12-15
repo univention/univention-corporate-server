@@ -89,13 +89,14 @@ def explicit_group_creation():
 
 if __name__ == '__main__':
 	udm_modules.update()
-	TESTS = [consecutive_user_creation,
-				consecutive_group_creation,
-				explicit_user_creation,
-				explicit_group_creation]
+	TESTS = [
+		consecutive_user_creation,
+		consecutive_group_creation,
+		explicit_user_creation,
+		explicit_group_creation
+	]
 
-	TESTS_UNIQUENESS = [explicit_user_creation,
-						explicit_group_creation]
+	TESTS_UNIQUENESS = [explicit_user_creation, explicit_group_creation]
 
 	with udm_test.UCSTestUDM() as UDM:
 		# make sure UNIQUENESS is set right
