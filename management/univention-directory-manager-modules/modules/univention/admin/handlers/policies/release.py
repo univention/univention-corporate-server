@@ -68,6 +68,10 @@ short_description = _('Policy: Automatic updates')
 policy_short_description = _('Automatic updates')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPolicy', 'univentionPolicyUpdate'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -131,9 +135,6 @@ register_policy_mapping(mapping)
 
 class object(univention.admin.handlers.simplePolicy):
 	module = module
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyUpdate'])]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

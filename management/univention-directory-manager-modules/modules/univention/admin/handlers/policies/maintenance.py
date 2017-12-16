@@ -69,6 +69,10 @@ short_description = _('Policy: Maintenance')
 policy_short_description = _('Maintenance')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPolicy', 'univentionPolicyInstallationTime'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -245,9 +249,6 @@ class object(univention.admin.handlers.simplePolicy):
 
 			value = univention.admin.handlers.simplePolicy.__getitem__(self, key)  # need to reload
 		return value
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyInstallationTime'])]
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simplePolicy._ldap_modlist(self)

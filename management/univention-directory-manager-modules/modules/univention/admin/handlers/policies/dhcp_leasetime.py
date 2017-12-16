@@ -68,6 +68,10 @@ short_description = _('Policy: DHCP lease time')
 policy_short_description = _('Lease time')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpLeaseTime'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -148,11 +152,6 @@ class object(univention.admin.handlers.simplePolicy):
 		if value and value[0]:
 			if not ((key == 'lease_time_min' or key == 'lease_time_max' or key == 'lease_time_default') and value[0] == ''):
 				univention.admin.handlers.simplePolicy.__setitem__(self, key, value)
-
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyDhcpLeaseTime'])
-		]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

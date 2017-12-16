@@ -48,6 +48,10 @@ short_description = _('Settings: Extended options')
 long_description = _('Options for extended attributes')
 
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionUDMOption'],
+	),
 }
 
 property_descriptions = {
@@ -172,10 +176,6 @@ mapping.register('objectClass', 'univentionUDMOptionObjectClass')
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def _ldap_addlist(self):
-		"""Add initial objectClasses."""
-		return [('objectClass', ['top', 'univentionUDMOption'])]
 
 	def open(self):
 		"""Load and parse translations."""

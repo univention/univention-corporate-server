@@ -75,6 +75,13 @@ class syntax_timeperiod(univention.admin.syntax.simple):
 		raise univention.admin.uexceptions.valueError(_("No valid timeperiod list!"))
 
 
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionNagiosTimeperiodClass'],
+	),
+}
+
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
@@ -226,9 +233,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _update_policies(self):
 		pass
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionNagiosTimeperiodClass'])]
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)

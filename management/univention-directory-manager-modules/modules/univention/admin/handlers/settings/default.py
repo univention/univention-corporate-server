@@ -50,6 +50,10 @@ operations = ['search', 'edit']
 short_description = _('Preferences: Default')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionDefault'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -181,9 +185,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_dn(self):
 		return 'cn=default containers,cn=univention,%s' % (self.position.getDomain())
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionDefault'])]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

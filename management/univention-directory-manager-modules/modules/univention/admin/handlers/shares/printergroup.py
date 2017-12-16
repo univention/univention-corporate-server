@@ -47,6 +47,10 @@ childs = 0
 short_description = _('Printer share: Printer group')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPrinterGroup'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -165,9 +169,6 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
 		self.is_valid_printer_object()  # check all members
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionPrinterGroup'])]
 
 	def _ldap_modlist(self):  # check for membership in a quota-printerclass
 		if self.hasChanged('setQuota') and self.info.get('setQuota', '0') == '0':

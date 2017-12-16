@@ -46,7 +46,12 @@ childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Portal: Entry')
 long_description = _('One link in https://fqdn/univention/portal. Belongs to one (or more) settings/portal')
-options = {}
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', OC],
+	),
+}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Internal name'),
@@ -210,13 +215,6 @@ mapping.register('icon', 'univentionPortalEntryIcon', None, univention.admin.map
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def _ldap_addlist(self):
-		ocs = ['top', OC]
-
-		return [
-			('objectClass', ocs),
-		]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

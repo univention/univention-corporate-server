@@ -48,6 +48,10 @@ childs = 0
 short_description = _('DHCP: Host')
 long_description = _('Configure a host identified by its hardware MAC address.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionDhcpHost']
+	),
 }
 property_descriptions = {
 	'host': univention.admin.property(
@@ -123,11 +127,6 @@ add_dhcp_options(__name__)
 
 class object(DHCPBase):
 	module = module
-
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'univentionDhcpHost']),
-		]
 
 	@staticmethod
 	def unmapped_lookup_filter():

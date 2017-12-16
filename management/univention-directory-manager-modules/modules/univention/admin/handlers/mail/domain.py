@@ -51,6 +51,12 @@ long_description = ''
 module_search_filter = univention.admin.filter.conjunction('&', [
 	univention.admin.filter.expression('objectClass', 'univentionMailDomainname'),
 ])
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionMailDomainname'],
+	),
+}
 
 property_descriptions = {
 	'name': univention.admin.property(
@@ -84,15 +90,6 @@ class object(univention.admin.handlers.simpleLdap):
 		dn = ldap.dn.str2dn(super(object, self)._ldap_dn())
 		dn[0] = [(dn[0][0][0], dn[0][0][1].lower(), dn[0][0][2])]
 		return ldap.dn.dn2str(dn)
-
-	def _ldap_addlist(self):
-		ocs = []
-		al = []
-		ocs.append('top')
-		ocs.append('univentionMailDomainname')
-
-		al.insert(0, ('objectClass', ocs))
-		return al
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)

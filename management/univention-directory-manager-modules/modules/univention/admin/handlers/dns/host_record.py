@@ -49,7 +49,12 @@ superordinate = 'dns/forward_zone'
 childs = 0
 short_description = 'DNS: Host Record'
 long_description = _('Resolve the symbolic name to IP addresses.')
-
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'dNSZone'],
+	),
+	}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Hostname'),
@@ -170,7 +175,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', ['top', 'dNSZone']),
 			(self.superordinate.mapping.mapName('zone'), self.superordinate.mapping.mapValue('zone', self.superordinate['zone'])),
 		]
 

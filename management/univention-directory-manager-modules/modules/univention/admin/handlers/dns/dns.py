@@ -56,8 +56,7 @@ long_description = _('Manage the Domain Name System.')
 operations = ['search']
 childmodules = ['dns/forward_zone', 'dns/reverse_zone']
 virtual = 1
-options = {
-}
+options = {}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),

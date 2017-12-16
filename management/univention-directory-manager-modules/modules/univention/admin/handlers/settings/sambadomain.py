@@ -70,7 +70,12 @@ childs = 0
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: Samba Domain')
 long_description = ''
-options = {}
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['sambaDomain'],
+	),
+}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Samba domain name'),
@@ -360,13 +365,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if not props == int(self.get('domainPwdProperties', 0)):
 			self['domainPwdProperties'] = str(props)
-
-	def _ldap_addlist(self):
-		ocs = ['sambaDomain']
-
-		return [
-			('objectClass', ocs),
-		]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

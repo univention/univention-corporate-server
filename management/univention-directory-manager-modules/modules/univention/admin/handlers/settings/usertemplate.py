@@ -48,6 +48,10 @@ childs = 0
 short_description = _('Settings: User Template')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionUserTemplate'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -448,9 +452,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 		mungeddial.Support.__init__(self)
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionUserTemplate'])]
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)

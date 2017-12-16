@@ -51,6 +51,10 @@ childmodules = ['dns/alias', 'dns/host_record', 'dns/srv_record', 'dns/txt_recor
 short_description = _('DNS: Forward lookup zone')
 long_description = _('Map names to IP addresses (and other data).')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'dNSZone'],
+	),
 }
 property_descriptions = {
 	'zone': univention.admin.property(
@@ -272,7 +276,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', ['top', 'dNSZone']),
 			('relativeDomainName', ['@'])
 		]
 

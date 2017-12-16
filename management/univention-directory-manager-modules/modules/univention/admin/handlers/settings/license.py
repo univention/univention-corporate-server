@@ -49,6 +49,10 @@ childs = 0
 short_description = _('Settings: License')
 long_description = _('Univention License')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionLicense'],
+	),
 	'Version 1': univention.admin.option(
 		short_description=_('Version 1 license'),
 		editable=False,
@@ -349,9 +353,6 @@ class object(univention.admin.handlers.simpleLdap):
 			self.options = ['Version 1']
 
 		self.save()
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionLicense'])]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

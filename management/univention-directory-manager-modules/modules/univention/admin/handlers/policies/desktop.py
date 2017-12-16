@@ -68,6 +68,10 @@ short_description = _('Policy: Desktop')
 policy_short_description = _('Desktop settings')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPolicy', 'univentionPolicyDesktop'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -155,9 +159,6 @@ register_policy_mapping(mapping)
 
 class object(univention.admin.handlers.simplePolicy):
 	module = module
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyDesktop'])]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

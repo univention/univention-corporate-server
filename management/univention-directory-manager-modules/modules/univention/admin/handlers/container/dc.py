@@ -53,6 +53,10 @@ operations = ['search', 'edit']
 short_description = _('Container: Domain')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'domain', 'univentionDomain', 'univentionBase']
+	),
 	'kerberos': univention.admin.option(
 		short_description=_('Kerberos realm'),
 		objectClasses=['krb5Realm', ],
@@ -188,11 +192,6 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.exists():
 			self['dnsForwardZone'] = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(!(zoneName=*.in-addr.arpa)))')
 			self['dnsReverseZone'] = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(zoneName=*.in-addr.arpa))')
-
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'domain', 'univentionDomain', 'univentionBase'])
-		]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

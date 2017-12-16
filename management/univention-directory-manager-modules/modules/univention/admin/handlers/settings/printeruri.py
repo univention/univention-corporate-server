@@ -49,6 +49,10 @@ childs = 0
 short_description = _('Settings: Printer URI List')
 long_description = _('List of URIs for printers')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPrinterURIs'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -93,9 +97,6 @@ mapping.register('printeruri', 'printerURI')
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionPrinterURIs'])]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

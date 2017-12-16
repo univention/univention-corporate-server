@@ -52,8 +52,7 @@ long_description = ''
 operations = ['search']
 childmodules = ["mail/folder", "mail/domain", "mail/lists"]
 virtual = 1
-options = {
-}
+options = {}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),

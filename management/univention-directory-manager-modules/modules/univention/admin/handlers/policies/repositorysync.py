@@ -69,6 +69,10 @@ short_description = _('Policy: Repository synchronisation')
 policy_short_description = _('Repository synchronisation')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPolicy', 'univentionPolicyRepositorySync'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -198,9 +202,6 @@ class object(univention.admin.handlers.simplePolicy):
 
 			value = univention.admin.handlers.simplePolicy.__getitem__(self, key)  # need to reload
 		return value
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyRepositorySync'])]
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simplePolicy._ldap_modlist(self)

@@ -66,6 +66,10 @@ short_description = _('Policy: Univention Configuration Registry')
 policy_short_description = _('Univention Configuration Registry')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPolicy', 'univentionPolicyRegistry'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -168,11 +172,6 @@ class object(univention.admin.handlers.simplePolicy):
 
 		self.polinfo = univention.admin.mapping.mapDict(self.mapping, values)
 		self.polinfo = self._post_unmap(self.polinfo, values)
-
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyRegistry'])
-		]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

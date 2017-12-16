@@ -67,6 +67,10 @@ short_description = _('Policy: Print server')
 policy_short_description = _('Print server')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPolicy', 'univentionPolicyPrintServer'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -119,9 +123,6 @@ register_policy_mapping(mapping)
 
 class object(univention.admin.handlers.simplePolicy):
 	module = module
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyPrintServer'])]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

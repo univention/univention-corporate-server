@@ -49,7 +49,12 @@ superordinate = 'settings/cn'
 childs = 0
 short_description = _('Settings: UMC operation set')
 long_description = _('List of Operations for UMC')
-options = {}
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'umcOperationSet'],
+	),
+}
 
 property_descriptions = {
 	'name': univention.admin.property(
@@ -147,9 +152,6 @@ mapping.register('hosts', 'umcOperationSetHost')
 
 class object(simpleLdap):
 	module = module
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'umcOperationSet'])]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

@@ -71,6 +71,10 @@ short_description = _('Policy: DHCP statements')
 policy_short_description = _('DHCP statement')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpStatements'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -178,11 +182,6 @@ register_policy_mapping(mapping)
 
 class object(univention.admin.handlers.simplePolicy):
 	module = module
-
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyDhcpStatements'])
-		]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

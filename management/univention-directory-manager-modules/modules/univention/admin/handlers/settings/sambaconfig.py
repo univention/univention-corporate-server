@@ -67,7 +67,12 @@ childs = 0
 operations = ['edit', 'remove', 'search', 'move']
 short_description = _('Settings: Samba Configuration')
 long_description = ''
-options = {}
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionSambaConfig'],
+	),
+}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Configuration Name'),
@@ -212,16 +217,6 @@ mapping.register('refuseMachinePWChange', 'univentionSambaRefuseMachinePWChange'
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-
-	def _ldap_addlist(self):
-		ocs = ['top', 'univentionSambaConfig']
-
-		return [
-			('objectClass', ocs),
-		]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

@@ -59,6 +59,12 @@ ldap_search_maildomain = univention.admin.syntax.LDAP_Search(
 	attribute=['mail/domain: name'],
 	value='mail/domain: name')
 
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['univentionMailSharedFolder'],
+	),
+}
 
 property_descriptions = {
 	'name': univention.admin.property(
@@ -201,7 +207,6 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
 
 	def _ldap_addlist(self):
-		ocs = []
 		al = []
 
 		if self['mailPrimaryAddress']:
@@ -216,9 +221,6 @@ class object(univention.admin.handlers.simpleLdap):
 					univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
 					raise univention.admin.uexceptions.mailAddressUsed
 
-		ocs.append('univentionMailSharedFolder')
-
-		al.insert(0, ('objectClass', ocs))
 		al.append(('cn', "%s@%s" % (self.info['name'], self.info['mailDomain'])))
 
 		return al

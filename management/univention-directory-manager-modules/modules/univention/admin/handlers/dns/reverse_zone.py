@@ -49,6 +49,10 @@ childmodules = ['dns/ptr_record']
 short_description = _('DNS: Reverse lookup zone')
 long_description = _('Map IP addresses back to hostnames.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'dNSZone'],
+	),
 }
 property_descriptions = {
 	'subnet': univention.admin.property(
@@ -267,7 +271,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', ['top', 'dNSZone']),
 			('relativeDomainName', ['@'])
 		]
 

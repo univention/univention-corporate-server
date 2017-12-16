@@ -49,6 +49,10 @@ childs = 0
 short_description = _('DNS: Service record')
 long_description = _('Resolve well-known services to servers providing those services.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'dNSZone'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -144,7 +148,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', ['top', 'dNSZone']),
 			(self.superordinate.mapping.mapName('zone'), self.superordinate.mapping.mapValue('zone', self.superordinate['zone'])),
 		]
 
