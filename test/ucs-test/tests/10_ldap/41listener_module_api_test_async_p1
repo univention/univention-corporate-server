@@ -76,10 +76,9 @@ def main():
 		'LDAP_FILTER': filter_format('(&(objectClass=inetOrgPerson)(uid=%s))', (username,)),
 		'UID_ROOT_FILE': uid_root_file,
 		'UID_DEFAULT_FILE': uid_default_file,
-		'IMPORTS': 'from univention.listener.async import AsyncListenerModuleHandler, AsyncListenerModuleAdapter',
-		'ADAPTER_CLASS': 'AsyncListenerModuleAdapter',
+		'IMPORTS': 'from univention.listener.async import AsyncListenerModuleHandler',
 		'HANDLER_SUPER_CLASS': 'AsyncListenerModuleHandler',
-		'CONFIG_MODULE_ARGS': '\trun_asynchronously = True\n\tparallelism = {}\n'.format(parallelism)
+		'CONFIG_MODULE_ARGS': '\t\trun_asynchronously = True\n\t\tparallelism = {}\n'.format(parallelism)
 	}
 
 	# create test listener module
@@ -104,7 +103,7 @@ def main():
 
 	# create, modify, move, modify
 	with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr:
-		handler_set(['listener/module/{}/debug/level=4'.format(lm_name)])
+		# handler_set(['listener/module/{}/debug/level=4'.format(lm_name)])
 		print('Restarting celery-worker-async-listener-modules.service...')
 		subprocess.call(['systemctl', 'restart', 'celery-worker-async-listener-modules.service'])
 
@@ -130,7 +129,7 @@ def main():
 		print('Restarting univention-directory-listener...')
 		subprocess.call(['systemctl', 'restart', 'univention-directory-listener.service'])
 
-		lm_logger = get_logger(lm_name, target=lm_logger_path)
+		lm_logger = get_logger(lm_name, path=lm_logger_path)
 		lm_logger.addHandler(logging.StreamHandler())
 
 		lm_logger.info('*** Creating user...')

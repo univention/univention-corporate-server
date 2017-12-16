@@ -68,7 +68,7 @@ def create_modify_move_modify_remove(username, userdata, ucr):
 	uid_default_file = userdata['uid_default_file']
 	uid_root_file = userdata['uid_root_file']
 
-	lm_logger = get_logger(lm_name, target=lm_logger_path)
+	lm_logger = get_logger(lm_name, path=lm_logger_path)
 
 	with udm_test.UCSTestUDM() as udm:
 		lm_logger.info('*** Creating user...')
@@ -173,10 +173,9 @@ def main():
 		),
 		'UID_ROOT_FILE': uid_root_file,
 		'UID_DEFAULT_FILE': uid_default_file,
-		'IMPORTS': 'from univention.listener.async import AsyncListenerModuleHandler, AsyncListenerModuleAdapter',
-		'ADAPTER_CLASS': 'AsyncListenerModuleAdapter',
+		'IMPORTS': 'from univention.listener.async import AsyncListenerModuleHandler',
 		'HANDLER_SUPER_CLASS': 'AsyncListenerModuleHandler',
-		'CONFIG_MODULE_ARGS': '\trun_asynchronously = True\n\tparallelism = {}\n'.format(parallelism)
+		'CONFIG_MODULE_ARGS': '\t\trun_asynchronously = True\n\t\tparallelism = {}\n'.format(parallelism)
 	}
 
 	# create test listener module
@@ -227,7 +226,7 @@ def main():
 		print('Restarting univention-directory-listener...')
 		subprocess.call(['systemctl', 'restart', 'univention-directory-listener.service'])
 
-		lm_logger = get_logger(lm_name, target=lm_logger_path)
+		lm_logger = get_logger(lm_name, path=lm_logger_path)
 		lm_logger.addHandler(logging.StreamHandler())
 
 		pool = Pool(processes=6)
