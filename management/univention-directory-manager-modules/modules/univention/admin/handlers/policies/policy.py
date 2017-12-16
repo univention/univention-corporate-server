@@ -54,8 +54,6 @@ for pol in univention.admin.handlers.policies.policies:
 	if hasattr(pol, 'module'):
 		childmodules.append(pol.module)
 virtual = 1
-options = {
-}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),

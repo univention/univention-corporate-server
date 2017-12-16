@@ -52,6 +52,12 @@ operations = ['add', 'edit', 'remove', 'search']
 childs = 0
 short_description = _('Networks: Network')
 long_description = ''
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionNetworkClass'],
+	),
+}
 
 property_descriptions = {
 	'name': univention.admin.property(
@@ -246,9 +252,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if not self['nextIp']:
 			self.stepIp()
 
-		return [
-			('objectClass', ['top', 'univentionNetworkClass']),
-		]
+		return []
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)

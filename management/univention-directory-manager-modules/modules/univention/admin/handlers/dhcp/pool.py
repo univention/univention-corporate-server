@@ -51,6 +51,10 @@ childs = 0
 short_description = _('DHCP: Pool')
 long_description = _('A pool of dynamic addresses assignable to hosts.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionDhcpPool']
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -178,11 +182,6 @@ class object(DHCPBase):
 			for addr in addresses:
 				if ipaddr.IPAddress(addr) not in subnet:
 					raise univention.admin.uexceptions.rangeNotInNetwork(addr)
-
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'univentionDhcpPool']),
-		]
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)

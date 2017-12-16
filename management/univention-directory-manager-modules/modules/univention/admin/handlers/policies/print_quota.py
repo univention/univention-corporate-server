@@ -73,7 +73,12 @@ short_description = _('Policy: Print quota')
 policy_short_description = _('Print Quota')
 long_description = _('Print Quota for users/groups per printer')
 
-options = {}
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPolicy', 'univentionPolicySharePrintQuota'],
+	),
+}
 
 property_descriptions = {
 	'name': univention.admin.property(
@@ -169,9 +174,6 @@ class object(univention.admin.handlers.simplePolicy):
 
 	def _ldap_pre_modify(self):
 		self.check_entries()
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicySharePrintQuota'])]
 
 	def check_entries(self):
 		if self.hasChanged('quotaGroups') and self.info.get('quotaGroups'):

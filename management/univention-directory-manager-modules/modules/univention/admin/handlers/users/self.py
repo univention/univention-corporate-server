@@ -45,8 +45,7 @@ options = {}
 
 mapping = udm_user.mapping
 
-property_descriptions = {
-}
+property_descriptions = {}
 
 layout = [Tab(_('General'), layout=[])]
 

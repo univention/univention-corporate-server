@@ -49,6 +49,11 @@ childs = 0
 short_description = _('DHCP: Server')
 long_description = _('Associate a service with a server.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'dhcpServer'],
+	),
+
 }
 
 property_descriptions = {
@@ -86,7 +91,6 @@ class object(DHCPBase):
 			raise univention.admin.uexceptions.dhcpServerAlreadyUsed(self.info['server'])
 
 		return [
-			('objectClass', ['top', 'dhcpServer']),
 			('dhcpServiceDN', self.superordinate.dn),
 		]
 

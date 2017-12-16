@@ -46,7 +46,12 @@ childs = 0
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: Syntax Definition')
 long_description = ''
-options = {}
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionSyntax'],
+	),
+}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Syntax Name'),
@@ -222,9 +227,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_pre_modify(self):
 		self.__check()
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionSyntax']), ]
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)

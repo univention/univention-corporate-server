@@ -49,6 +49,10 @@ childs = 0
 short_description = _('Settings: Lock')
 long_description = _('Lock objects')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['lock'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(

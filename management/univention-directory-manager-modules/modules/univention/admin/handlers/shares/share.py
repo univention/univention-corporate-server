@@ -63,6 +63,10 @@ childs = 0
 short_description = _('Share: Directory')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionShare'],
+	),
 	'samba': univention.admin.option(
 		short_description=_('Export for Samba clients'),
 		editable=True,
@@ -834,9 +838,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if re.match("^/%s$|^/%s/" % (dir, dir), self['path']):
 				raise univention.admin.uexceptions.invalidOperation(_('It is not valid to set %s as a share.') % self['path'])
 
-		return [
-			('objectClass', ['top', 'univentionShare'])
-		]
+		return []
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)

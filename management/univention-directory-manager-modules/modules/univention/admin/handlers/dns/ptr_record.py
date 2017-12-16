@@ -50,6 +50,10 @@ childs = 0
 short_description = _('DNS: Pointer record')
 long_description = _('Map IP addresses back to hostnames.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'dNSZone'],
+	),
 }
 property_descriptions = {
 	'address': univention.admin.property(
@@ -197,7 +201,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', ['top', 'dNSZone']),
 			(self.superordinate.mapping.mapName('subnet'), self.superordinate.mapping.mapValue('subnet', self.superordinate['subnet'])),
 		]
 

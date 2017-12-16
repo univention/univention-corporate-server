@@ -51,6 +51,10 @@ childs = 0
 short_description = _('Settings: Printer Driver List')
 long_description = _('List of drivers for printers')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPrinterModels'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -106,9 +110,6 @@ mapping.register('printmodel', 'printerModel', mapDriverList, unmapDriverList)
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionPrinterModels'])]
 
 
 def rewrite(filter, mapping):

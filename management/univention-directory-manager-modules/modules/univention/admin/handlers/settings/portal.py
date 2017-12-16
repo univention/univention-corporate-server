@@ -48,7 +48,12 @@ childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Portal: Portal')
 long_description = _('Object that feeds everything in https://fqdn/univention/portal')
-options = {}
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', OC],
+	),
+}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Internal name'),
@@ -226,13 +231,6 @@ mapping.register('logo', 'univentionPortalLogo', None, univention.admin.mapping.
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def _ldap_addlist(self):
-		ocs = ['top', OC]
-
-		return [
-			('objectClass', ocs),
-		]
 
 	def _ldap_post_remove(self):
 		for obj in univention.admin.modules.lookup('settings/portal_entry', None, self.lo, scope='sub', filter=filter_format('portal=%s', [self.dn])):

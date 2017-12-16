@@ -52,8 +52,7 @@ short_description = _('Nagios object')
 long_description = ''
 operations = ['search']
 virtual = 1
-options = {
-}
+options = {}
 
 property_descriptions = {
 	'name': univention.admin.property(

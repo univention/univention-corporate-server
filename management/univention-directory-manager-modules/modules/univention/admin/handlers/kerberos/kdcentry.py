@@ -50,6 +50,12 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 childs = 0
 short_description = _('Kerberos: KDC Entry')
 long_description = ''
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'account', 'krb5Principal', 'krb5KDCEntry'],
+	),
+}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Principal name'),
@@ -205,11 +211,6 @@ class object(univention.admin.handlers.simpleLdap):
 			ml.append(('krb5Key', self.oldattr.get('krb5Key', []), krb_keys))
 
 		return ml
-
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'account', 'krb5Principal', 'krb5KDCEntry'])
-		]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

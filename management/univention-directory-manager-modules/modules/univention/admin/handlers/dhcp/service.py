@@ -47,6 +47,10 @@ childmodules = ('dhcp/host', 'dhcp/server', 'dhcp/shared', 'dhcp/subnet')
 short_description = _('DHCP: Service')
 long_description = _('The top-level container for a DHCP configuration.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionDhcpService'],
+	),
 }
 property_descriptions = {
 	'service': univention.admin.property(
@@ -83,11 +87,6 @@ class object(DHCPBase):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 		if not self.dn and not self.position:
 			raise univention.admin.uexceptions.insufficientInformation(_('Neither DN nor position given.'))
-
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'univentionDhcpService']),
-		]
 
 	@staticmethod
 	def unmapped_lookup_filter():

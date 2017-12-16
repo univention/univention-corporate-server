@@ -49,6 +49,10 @@ childs = 0
 short_description = _('Settings: Package List')
 long_description = _('List of Packages for UCS Systems')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPackageList'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -91,9 +95,6 @@ mapping.register('packageList', 'univentionPackageDefinition')
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionPackageList'])]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

@@ -49,6 +49,10 @@ childmodules = ('dhcp/sharedsubnet',)
 short_description = _('DHCP: Shared network')
 long_description = _('A shared physical network, where multiple IP address ranges are used.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'dhcpSharedNetwork'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -80,11 +84,6 @@ add_dhcp_options(__name__)
 
 class object(DHCPBase):
 	module = module
-
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'dhcpSharedNetwork'])
-		]
 
 	@staticmethod
 	def unmapped_lookup_filter():

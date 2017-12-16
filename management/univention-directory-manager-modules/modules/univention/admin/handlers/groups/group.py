@@ -55,6 +55,10 @@ childs = 0
 short_description = _('Group')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionGroup'],
+	),
 	'posix': univention.admin.option(
 		short_description=_('Posix group'),
 		default=1,
@@ -567,11 +571,9 @@ class object(univention.admin.handlers.simpleLdap):
 			self._exists = 0
 			raise univention.admin.uexceptions.groupNameAlreadyUsed(': %s' % (name))
 
-		ocs = ['top', 'univentionGroup']
-		al = [('objectClass', ocs)]
-
+		al = []
 		if 'posix' not in self.options:
-			ocs.append('organizationalRole')  # any STRUCTURAL class with 'cn'
+			al.append(['objectClass', 'organizationalRole'])  # any STRUCTURAL class with 'cn'
 
 		if set(('posix', 'samba')) & set(self.options):
 			al.append(('gidNumber', [self.gidNum]))

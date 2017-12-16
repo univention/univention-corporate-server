@@ -47,6 +47,12 @@ long_description = ''
 
 module_search_filter = univention.admin.filter.expression('objectClass', 'univentionMailList'),
 
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionMailList'],
+	),
+}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
@@ -159,9 +165,7 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailAddress'])
 
 	def _ldap_addlist(self):
-		ocs = ['top']
 		al = []
-		ocs.append('univentionMailList')
 		# mail address MUST be unique
 		if self['mailAddress']:
 			try:
@@ -171,7 +175,6 @@ class object(univention.admin.handlers.simpleLdap):
 				univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', value=self['mailAddress'])
 				raise univention.admin.uexceptions.mailAddressUsed
 
-		al.insert(0, ('objectClass', ocs))
 		return al
 
 	def _ldap_modlist(self):

@@ -49,7 +49,12 @@ childs = 0
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: UDM Module')
 long_description = ''
-options = {}
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionObjectMetadata', OC],
+	),
+}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('UDM module name'),
@@ -219,13 +224,6 @@ mapping.register('umcregistration', 'univentionUMCRegistrationData', univention.
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def _ldap_addlist(self):
-		ocs = ['top', 'univentionObjectMetadata', OC]
-
-		return [
-			('objectClass', ocs),
-		]
 
 	def _ldap_pre_modify(self):
 		diff_keys = [key for key in self.info.keys() if self.info.get(key) != self.oldinfo.get(key) and key not in ('active', 'appidentifier')]

@@ -50,8 +50,7 @@ short_description = _('Preferences')
 long_description = ''
 operations = ['search']
 virtual = 1
-options = {
-}
+options = {}
 property_descriptions = {
 }
 

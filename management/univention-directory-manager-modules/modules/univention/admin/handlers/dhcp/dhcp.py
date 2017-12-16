@@ -56,8 +56,7 @@ short_description = _('All DHCP services')
 long_description = _('Manage the Domain Host Configuration Protocol service.')
 operations = ['search']
 virtual = 1
-options = {
-}
+options = {}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),

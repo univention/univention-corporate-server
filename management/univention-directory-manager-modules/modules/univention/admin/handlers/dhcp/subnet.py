@@ -49,6 +49,10 @@ childmodules = ['dhcp/pool']
 short_description = _('DHCP: Subnet')
 long_description = _('The IP address range used in a dedicated (non-shared) physical network.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionDhcpSubnet'],
+	),
 }
 property_descriptions = {
 	'subnet': univention.admin.property(
@@ -120,11 +124,6 @@ class object(DHCPBase):
 		univention.admin.handlers.simpleLdap.open(self)
 		self.info['range'] = rangeUnmap(self.oldattr.get('dhcpRange', []))
 		self.oldinfo['range'] = rangeUnmap(self.oldattr.get('dhcpRange', []))
-
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'univentionDhcpSubnet']),
-		]
 
 	def _ldap_modlist(self):
 		ml = super(object, self)._ldap_modlist()

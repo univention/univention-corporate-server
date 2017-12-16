@@ -68,8 +68,12 @@ short_description = _('Policy: UMC')
 policy_short_description = _('Defines a set of allowed UMC operations')
 long_description = ''
 
-options = {}
-
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPolicy', 'umcPolicy'],
+	),
+}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
@@ -119,9 +123,6 @@ register_policy_mapping(mapping)
 
 class object(simplePolicy):
 	module = module
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionPolicy', 'umcPolicy'])]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

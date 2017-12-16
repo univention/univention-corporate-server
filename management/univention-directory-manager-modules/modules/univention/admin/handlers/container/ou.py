@@ -49,6 +49,10 @@ childs = 1
 short_description = _('Container: Organisational Unit')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'organizationalUnit']
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -193,7 +197,7 @@ layout = [
 			["name", "description"],
 		]),
 		Group(_('Container settings'), _('Default position when adding objects'), layout=[
-			["userPath" , "groupPath"],
+			["userPath", "groupPath"],
 			["computerPath", "policyPath"],
 			["dnsPath", "dhcpPath"],
 			["networkPath", "sharePath"],
@@ -306,11 +310,6 @@ class object(univention.admin.handlers.simpleLdap):
 			if self.oldinfo.get(prop) == '1':
 				changes.append((attr, self.dn, ''))
 		self.lo.modify(self.default_dn, changes)
-
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'organizationalUnit'])
-		]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

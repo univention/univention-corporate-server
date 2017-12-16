@@ -46,6 +46,10 @@ childs = 0
 short_description = _('Settings: Extended attribute')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionUDMProperty'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -472,9 +476,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if 'users/user' in self['module'] and self['valueRequired'] == '1' and not self.info.get('default'):
 			raise univention.admin.uexceptions.valueRequired(_('Extending the users module is only possible if a default value for a required value is given.'))
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionUDMProperty'])]
 
 	def open(self):
 		# univentionUDMPropertyTranslation;entry-de-de: Meine Kurzbeschreibung 9

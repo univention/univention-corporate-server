@@ -46,6 +46,10 @@ childs = 1
 short_description = _('Univention Settings')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'organizationalRole'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -71,11 +75,6 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'organizationalRole'])
-		]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

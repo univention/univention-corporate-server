@@ -49,6 +49,10 @@ childs = 0
 short_description = _('Settings: Prohibited user names')
 long_description = _('Univention Prohibited user names')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionProhibitedUsernames'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -91,9 +95,6 @@ mapping.register('usernames', 'prohibitedUsername', None, None)
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionProhibitedUsernames'])]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
