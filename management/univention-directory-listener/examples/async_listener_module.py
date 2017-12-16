@@ -33,11 +33,16 @@
 
 from __future__ import absolute_import
 import traceback
-from univention.listener import ListenerModuleConfiguration
-from univention.listener.async import AsyncListenerModuleAdapter, AsyncListenerModuleHandler
+from univention.listener.async import AsyncListenerModuleHandler
 
 
 class MyAsyncListenerModule(AsyncListenerModuleHandler):
+	class Configuration:
+		name = 'my_async_listener_module'
+		ldap_filter = '(objectClass=inetOrgPerson)'
+		attributes = ['firstname', 'lastname']
+		run_asynchronously = True
+
 	def __init__(self, listener_configuration, *args, **kwargs):
 		super(MyAsyncListenerModule, self).__init__(listener_configuration, *args, **kwargs)
 		self.logger.info('MyAsyncListenerModule.__init__()')
@@ -79,17 +84,6 @@ class MyAsyncListenerModule(AsyncListenerModuleHandler):
 	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
 		self.logger.error(
 			'An error occurred in listener module %r. dn=%r old={%d keys...} new={%d keys...} command=%r',
-			MyAsyncListenerModuleConfiguration.name, dn, len(old.keys()), len(new.keys()), command
+			self.config.name, dn, len(old.keys()), len(new.keys()), command
 		)
 		self.logger.error(''.join(traceback.format_exception(exc_type, exc_value, exc_traceback)))
-
-
-class MyAsyncListenerModuleConfiguration(ListenerModuleConfiguration):
-	name = 'my_async_listener_module'
-	listener_module_class = MyAsyncListenerModule
-	ldap_filter = '(objectClass=inetOrgPerson)'
-	attributes = ['firstname', 'lastname']
-	run_asynchronously = True
-
-
-globals().update(AsyncListenerModuleAdapter(MyAsyncListenerModuleConfiguration()).get_globals())
