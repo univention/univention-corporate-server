@@ -1316,27 +1316,34 @@ def _add_disabled(disabled, new_disabled):
 
 def unmapDisabled(oldattr):
 	disabled = 'none'
-	# Samba
+	if unmapSambaDisabled(oldattr):
+		disabled = _add_disabled(disabled, 'windows')
+	if unmapKerberosDisabled(oldattr):
+		disabled = _add_disabled(disabled, 'kerberos')
+	if unmapPosixDisabled(oldattr, disabled):
+		disabled = _add_disabled(disabled, 'posix')
+	return disabled
+
+
+def unmapSambaDisabled(oldattr):
 	flags = oldattr.get('sambaAcctFlags', None)
 	if flags:
 		acctFlags = univention.admin.samba.acctFlags(flags[0])
 		try:
-			if acctFlags['D'] == 1:
-				disabled = _add_disabled(disabled, 'windows')
+			return acctFlags['D'] == 1
 		except KeyError:
 			pass
 
-	# Kerberos
+
+def unmapKerberosDisabled(oldattr):
 	kdcflags = oldattr.get('krb5KDCFlags', ['0'])[0]
-	if kdcflags == '254':
-		disabled = _add_disabled(disabled, 'kerberos')
+	return kdcflags == '254'
 
-	# POSIX
+
+def unmapPosixDisabled(oldattr, disabled):
+	# TODO: is it correct to evaluate kerberos / windows here?
 	shadowExpire = oldattr.get('shadowExpire', ['0'])[0]
-	if shadowExpire == '1' or (shadowExpire < int(time.time() / 3600 / 24) and (_is_kerberos_disabled(disabled) or _is_windows_disabled(disabled))):
-		disabled = _add_disabled(disabled, 'posix')
-
-	return disabled
+	return shadowExpire == '1' or (shadowExpire < int(time.time() / 3600 / 24) and (_is_kerberos_disabled(disabled) or _is_windows_disabled(disabled)))
 
 
 def _is_kerberos_disabled(disabled):
