@@ -34,8 +34,11 @@ import json
 import base64
 import inspect
 import listener
+from univention.listener.exceptions import ListenerModuleConfigurationError
 from univention.listener.handler_configuration import ListenerModuleConfiguration
+from univention.listener.handler import ListenerModuleHandler
 from functools import wraps
+
 from listener import configRegistry
 try:
 	from typing import Dict, List, Tuple, Type, Union
@@ -106,12 +109,13 @@ def entry_uuid_var_name(entry_uuid):
 	return 'entryUUID_{}'.format(entry_uuid)
 
 
-def get_configuration_class(path):  # type: (str) -> Union[Type[ListenerModuleConfiguration], None]
+def get_configuration_object(path):  # type: (str) -> Union[ListenerModuleConfiguration, None]
 	"""
-	Load a ListenerModuleConfiguration from  a file.
+	Load a ListenerModuleConfiguration object from  a file if a
+	AsyncListenerModuleHandler is found.
 
 	:param path: str: Path to a Python module.
-	:return: ListenerModuleConfiguration or None
+	:return: ListenerModuleConfiguration object or None
 	"""
 	module_name = os.path.basename(path)[:-3]
 	directory = os.path.dirname(path)
@@ -120,16 +124,16 @@ def get_configuration_class(path):  # type: (str) -> Union[Type[ListenerModuleCo
 	sys.dont_write_bytecode = True
 	info = imp.find_module(module_name, [directory])
 
+	# prevent changing of UID in /usr/lib/univention-directory-listener/system/samba4-idmap.py
 	old_setuid = listener.setuid
 	old_unsetuid = listener.unsetuid
 	try:
-		# prevent changing of UID in /usr/lib/univention-directory-listener/system/samba4-idmap.py
 		listener.setuid = id
 		listener.unsetuid = lambda: id(0)
 
 		a_module = imp.load_module(module_name, *info)
 	except Exception as exc:
-		print('Error loading module {!r}: {}'.format(path, exc))
+		print('# Error loading module {!r}: {}'.format(path, exc))
 		return None
 	finally:
 		listener.setuid = old_setuid
@@ -140,27 +144,34 @@ def get_configuration_class(path):  # type: (str) -> Union[Type[ListenerModuleCo
 		candidate = getattr(a_module, thing)
 		if (
 				inspect.isclass(candidate) and
-				issubclass(candidate, ListenerModuleConfiguration) and
-				candidate is not ListenerModuleConfiguration
+				issubclass(candidate, ListenerModuleHandler) and
+				getattr(candidate, '_support_async', False)
 		):
-			return candidate
+			# found an async handler class
+			try:
+				return getattr(candidate, '_get_configuration', lambda: None)()
+			except ListenerModuleConfigurationError:
+				# found the AsyncListenerModuleHandler, and received exception
+				# "Missing AsyncListenerModuleHandler.Configuration class."
+				continue
 	return None
 
 
-def get_all_configuration_classes():  # type: () -> List[Type[ListenerModuleConfiguration]]
+def get_all_configuration_objects():  # type: () -> List[ListenerModuleConfiguration]
 	"""
-	Search and load ListenerModuleConfiguration classes in
+	Search and load ListenerModuleConfiguration objects of
+	AsyncListenerModuleHandler classes found in
 	/usr/lib/univention-directory-listener/system.
 
-	:return: list: ListenerModuleConfiguration
+	:return: list: ListenerModuleConfiguration objects
 	"""
-	conf_classes = list()
+	conf_objects = list()
 	for filename in os.listdir(__lm_path):
 		if filename.endswith('.py'):
-			a_class = get_configuration_class(os.path.join(__lm_path, filename))
-			if a_class:
-				conf_classes.append(a_class)
-	return conf_classes
+			conf_obj = get_configuration_object(os.path.join(__lm_path, filename))
+			if conf_obj:
+				conf_objects.append(conf_obj)
+	return conf_objects
 
 
 def get_listener_module_file_stats():  # type: () -> Dict[str, str]
@@ -199,9 +210,8 @@ def update_listener_module_cache():  # type: () -> Tuple(bool, Dict[str, Dict[st
 		if mtime != lm_cache.get(path, dict()).get('mtime'):
 			changed = True
 			lm_cache[path] = dict(mtime=mtime)
-			conf_class = get_configuration_class(path)
-			if conf_class:
-				conf_obj = conf_class()
+			conf_obj = get_configuration_object(path)
+			if conf_obj:
 				lm_cache[path].update({
 					'name': conf_obj.get_name(),
 					'run_asynchronously': conf_obj.get_run_asynchronously(),

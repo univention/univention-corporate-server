@@ -6,7 +6,11 @@ from univention.listener.async.utils import update_listener_module_cache
 changed, lm_cache = update_listener_module_cache()
 async_listener_modules = dict((k, v) for k, v in lm_cache.items() if v.get('run_asynchronously'))
 
-print('ENABLED="{}"'.format(str(bool(async_listener_modules)).lower()))
+if async_listener_modules:
+	print('ENABLED="true"')
+else:
+	print('# Service was disabled, because no installed async listener modules were found.')
+	print('ENABLED="false"')
 print('CELERYD_NODES="{}"'.format(' '.join(sorted(a['name'] for a in async_listener_modules.values()))))
 print('CELERYD_OPTS="{}"'.format(
 	' '.join(

@@ -30,14 +30,13 @@
 
 import pylibmc
 from univention.listener.handler_logging import info_to_syslog
-from univention.listener.async.utils import get_all_configuration_classes
+from univention.listener.async.utils import get_all_configuration_objects
 from univention.listener.async.memcached import MEMCACHED_SOCKET, TASK_TYPE_QUIT, TasksQueue
 
 
 memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True, behaviors={'tcp_nodelay': True, 'ketama': True})
 
-for conf_class in get_all_configuration_classes():
-	conf_obj = conf_class()
+for conf_obj in get_all_configuration_objects():
 	if conf_obj.get_run_asynchronously():
 		info_to_syslog('Removing quit jobs of listener module {!r}...'.format(conf_obj.get_name()))
 		tasks_queue = TasksQueue(memcache, conf_obj.get_name(), 'TasksQueue')

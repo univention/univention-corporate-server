@@ -31,7 +31,7 @@
 import json
 import pylibmc
 from univention.listener.handler_logging import info_to_syslog
-from univention.listener.async.utils import get_all_configuration_classes
+from univention.listener.async.utils import get_all_configuration_objects
 from univention.listener.async.memcached import (
 	ListenerJob, MEMCACHED_SOCKET, MemcachedQueue, MemcachedVariable, QueuedTask, TasksQueue
 )
@@ -44,8 +44,7 @@ memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True, behaviors={'tcp_nodel
 with open(__memcached_persistence_path, 'rb') as fp:
 	data = json.load(fp)
 
-for conf_class in get_all_configuration_classes():
-	conf_obj = conf_class()
+for conf_obj in get_all_configuration_objects():
 	if conf_obj.get_run_asynchronously():
 		lm_name = conf_obj.get_name()
 		if lm_name not in data:
