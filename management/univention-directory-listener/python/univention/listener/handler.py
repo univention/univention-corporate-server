@@ -32,6 +32,7 @@ from contextlib import contextmanager
 import listener
 import univention.admin.objects
 from univention.listener.exceptions import ListenerModuleConfigurationError
+from univention.listener.handler_logging import get_logger
 try:
 	from typing import Any, Dict, Iterable, Iterator, List, Tuple, Type, Optional
 	import logging
@@ -77,7 +78,7 @@ class ListenerModuleHandler(object):
 		:param module_configuration: ListenerModuleConfiguration object
 		"""
 		self.config = module_configuration  # type: ListenerModuleConfiguration
-		self.logger = self.config.logger  # type: logging.Logger
+		self.logger = get_logger(self.config.get_name())  # type: logging.Logger
 		self.ucr.load()
 		if self.config.get_run_asynchronously() and not self._support_async:
 			raise ListenerModuleConfigurationError(

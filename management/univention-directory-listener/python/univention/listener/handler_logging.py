@@ -52,7 +52,6 @@ import univention.debug as ud
 from univention.config_registry import ConfigRegistry
 try:
 	from typing import Any, Dict, IO, List, Tuple, Optional, Union
-	import univention.config_registry.ConfigRegistry
 except ImportError:
 	pass
 
@@ -65,7 +64,7 @@ class UniFileHandler(TimedRotatingFileHandler):
 	_adm_gid = grp.getgrnam('adm').gr_gid
 
 	def _open(self):  # type: () -> IO[str]
-		stream = super(UniFileHandler, self)._open()
+		stream = super(UniFileHandler, self)._open()  # type: IO[str]
 		file_stat = os.fstat(stream.fileno())
 		if file_stat.st_uid != self._listener_uid or file_stat.st_gid != self._adm_gid:
 			old_uid = os.geteuid()
@@ -136,8 +135,9 @@ UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL = {
 
 LOG_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
+_logger_cache = dict()  # type: Dict[str, logging.Logger]
 _handler_cache = dict()  # type: Dict[str, logging.Handler]
-_ucr = ConfigRegistry()  # type: univention.config_registry.ConfigRegistry
+_ucr = ConfigRegistry()  # type: ConfigRegistry
 _ucr.load()
 
 
@@ -155,7 +155,41 @@ listener_module_root_logger = logging.getLogger('listener module')  # type: logg
 listener_module_root_logger.setLevel(getattr(logging, _listener_debug_level_str))
 
 
-def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatter_kwargs=None):
+def get_logger(name, path=None):  # type: (str, Optional[str]) -> logging.Logger
+	if name not in _logger_cache:
+		file_name = name.replace('/', '_')
+		logger_name = name.replace('.', '_')
+		log_dir = '/var/log/univention/listener_modules'
+		file_path = path or os.path.join(log_dir, '{}.log'.format(file_name))
+		listener_uid = pwd.getpwnam('listener').pw_uid
+		adm_grp = grp.getgrnam('adm').gr_gid
+		if not os.path.isdir(log_dir):
+			old_uid = os.geteuid()
+			try:
+				if old_uid != 0:
+					listener.setuid(0)
+				os.mkdir(log_dir)
+				os.chown(log_dir, listener_uid, adm_grp)
+				os.chmod(
+					log_dir,
+					stat.S_ISGID | stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP
+				)
+			finally:
+				if old_uid != 0:
+					listener.unsetuid()
+		_logger_cache[name] = get_listener_logger(logger_name, target=file_path)
+	return _logger_cache[name]
+
+
+def calculate_loglevel(name):  # type: (str) -> str
+	# get the higher of listener/debug/level and listener/module/<name>/debug/level
+	# which is the lower log level
+	listener_module_debug_level = _get_ucr_int('listener/module/{}/debug/level'.format(name), 2)
+	# 0 <= ucr level <= 4
+	return UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL[min(4, max(0, _listener_debug_level, listener_module_debug_level))]
+
+
+def get_listener_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatter_kwargs=None):
 	# type: (str, Optional[str], Optional[Union[str, IO[str]]], Optional[dict], Optional[dict]) -> logging.Logger
 	"""
 	Get a logger object below the listener module root logger. The logger
@@ -179,7 +213,7 @@ def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatt
 
 	:param name: str: name of the logger instance will be <root loggers name>.name
 	:param level: str: loglevel (DEBUG, INFO etc) or if not set it will be chosen
-	automatcally (see above)
+	automatically (see above)
 	:param target: stream (open file, sys.stdout) or a str (file path)
 	:param handler_kwargs: dict: will be passed to the handlers constructor.
 	It cannot be used to modify a handler, as it is only used at creation time.
@@ -203,11 +237,7 @@ def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatt
 	_logger = logging.getLogger(logger_name)
 
 	if not level:
-		# get the higher of listener/debug/level and listener/module/<name>/debug/level
-		# which is the lower log level
-		listener_module_debug_level = _get_ucr_int('listener/module/{}/debug/level'.format(name), 2)
-		# 0 <= ucr level <= 4
-		level = UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL[min(4, max(0, _listener_debug_level, listener_module_debug_level))]
+		level = calculate_loglevel(name)
 
 	if cache_key in _handler_cache and getattr(logging, level) >= _handler_cache[cache_key].level:
 		return _logger
@@ -217,36 +247,41 @@ def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatt
 	if getattr(logging, level) < _logger.level:
 		_logger.setLevel(level)
 
-	if not isinstance(handler_kwargs, dict):
-		handler_kwargs = dict()
-	if not isinstance(formatter_kwargs, dict):
-		formatter_kwargs = dict()
-
-	if isinstance(target, file) or hasattr(target, 'write'):
-		handler_defaults = dict(cls=UniStreamHandler, stream=target)
-		fmt = CMDLINE_LOG_FORMATS[level]
-	else:
-		handler_defaults = dict(cls=UniFileHandler, filename=target, when='W6', backupCount=60)
-		fmt = FILE_LOG_FORMATS[level]
-	handler_defaults.update(handler_kwargs)
-	fmt_kwargs = dict(cls=logging.Formatter, fmt=fmt, datefmt=LOG_DATETIME_FORMAT)  # type: Dict[str, Any]
-	fmt_kwargs.update(formatter_kwargs)
-
 	if _logger.level == logging.NOTSET:
 		# fresh logger
 		_logger.setLevel(level)
+
+	if isinstance(target, file) or hasattr(target, 'write'):
+		fmt = CMDLINE_LOG_FORMATS[level]
+	else:
+		fmt = FILE_LOG_FORMATS[level]
+	fmt_kwargs = dict(cls=logging.Formatter, fmt=fmt, datefmt=LOG_DATETIME_FORMAT)  # type: Dict[str, Any]
+	if not isinstance(formatter_kwargs, dict):
+		formatter_kwargs = dict()
+	fmt_kwargs.update(formatter_kwargs)
 
 	if cache_key in _handler_cache:
 		# Check if loglevel from this request is lower than the one used in
 		# the cached loggers handler. We do only lower level, never raise it.
 		if getattr(logging, level) < _handler_cache[cache_key].level:
-			handler = _handler_cache[cache_key]
+			handler = _handler_cache[cache_key]  # type: logging.Handler
 			handler.setLevel(level)
-			formatter = fmt_kwargs.pop('cls')(**fmt_kwargs)
+			formatter_cls = fmt_kwargs.pop('cls')  # type: Type[logging.Formatter]
+			formatter = formatter_cls(**fmt_kwargs)
 			handler.setFormatter(formatter)
 	else:
 		# Create handler and formatter from scratch.
-		handler = handler_defaults.pop('cls')(**handler_defaults)
+		if not isinstance(handler_kwargs, dict):
+			handler_kwargs = dict()
+		if isinstance(target, file) or hasattr(target, 'write'):
+			try:
+				target = handler_kwargs['stream']
+			except KeyError:
+				pass
+			handler = UniStreamHandler(stream=target)
+		else:
+			assert isinstance(target, basestring)
+			handler = UniFileHandler(filename=target, when='W6', backupCount=60, **handler_kwargs)
 		handler.set_name(logger_name)
 		handler.setLevel(level)
 		formatter = fmt_kwargs.pop('cls')(**fmt_kwargs)
@@ -254,12 +289,11 @@ def get_logger(name, level=None, target=sys.stdout, handler_kwargs=None, formatt
 		_logger.addHandler(handler)
 		_handler_cache[cache_key] = handler
 	if _listener_module_handler not in listener_module_root_logger.handlers:
-		_listener_module_handler.module_name = name
 		listener_module_root_logger.addHandler(_listener_module_handler)
 	return _logger
 
 
-def _log_to_syslog(level, msg):
+def _log_to_syslog(level, msg):  # type (int, str) -> None
 	global __syslog_opened
 	if not __syslog_opened:
 		syslog.openlog('Listener', 0, syslog.LOG_SYSLOG)
@@ -267,5 +301,5 @@ def _log_to_syslog(level, msg):
 	syslog.syslog(level, msg)
 
 
-def info_to_syslog(msg):
+def info_to_syslog(msg):  # type (str) -> None
 	_log_to_syslog(syslog.LOG_INFO, msg)
