@@ -53,22 +53,23 @@ class ListenerModuleAdapter(object):
 		:param module_configuration: ListenerModuleConfiguration object
 		"""
 		self.config = module_configuration  # type: ListenerModuleConfiguration
-		if (self.config.get_run_asynchronously() or self.config.get_parallelism() > 1) and not self._support_async:
-			raise ListenerModuleConfigurationError(
-				'Loading of asynchronous listener modules must be done with an AsyncListenerModuleAdapter.'
-			)
-		if self.config.get_parallelism() > 1 and not self.config.get_run_asynchronously():
-			self.config.logger.warn(
-				'Configuration of "parallelism > 1" implies "run_asynchronously = True". To prevent this warning '
-				'configure it in your ListenerModuleConfiguration class.'
-			)
-			self.config.run_asynchronously = True
 		self._ldap_cred = dict()  # type: Dict[str, str]
 		self.__module_handler = None  # type: ListenerModuleHandler
 		self._saved_old = dict()  # type: Dict[str, List[str]]
 		self._saved_old_dn = None  # type: str
 		self._rename = False  # type: bool
 		self._renamed = False  # type: bool
+		self._run_checks()
+
+	def _run_checks(self):  # type: () -> None
+		if self.config.get_run_asynchronously() and not self._support_async:
+			raise ListenerModuleConfigurationError(
+				'Loading of asynchronous listener modules must be done with an AsyncListenerModuleAdapter.'
+			)
+		if not self.config.get_run_asynchronously() and self._support_async:
+			raise ListenerModuleConfigurationError(
+				'Loading of synchronous listener modules must be done with a non-async ListenerModuleAdapter.'
+			)
 
 	def get_globals(self):  # type: () -> Dict[str, Any]
 		"""
@@ -106,7 +107,7 @@ class ListenerModuleAdapter(object):
 	def _setdata(self, key, value):  # type: (str, str) -> None
 		self._ldap_cred[key] = value
 		if all(a in self._ldap_cred for a in ('basedn', 'basedn', 'bindpw', 'ldapserver')):
-			self.config.set_ldap_credentials(
+			self._module_handler._set_ldap_credentials(
 				self._ldap_cred['basedn'],
 				self._ldap_cred['binddn'],
 				self._ldap_cred['bindpw'],

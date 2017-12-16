@@ -34,13 +34,13 @@ To create a listener module (LM) with this API, create a Python file in
 /usr/lib/univention-directory-listener/system/ which includes:
 
 1. a subclass of ListenerModuleHandler
-2. a subclass of ListenerModuleConfiguration
-3. at the bottom write for a regular LM:
-		globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
-	or for asynchronously (optionally parallel) LM:
-		globals().update(AsyncListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
+2. with an inner class "Configuration" that has at least the class attributes
+   "name", "description" and "ldap_filter"
 
-For an asynchronously LM, the package univention-directory-listener-async must be installed.
+See /usr/share/doc/univention-directory-listener/examples/ for examples.
+
+For an asynchronously LM, the package univention-directory-listener-async must
+be installed and "AsyncListenerModuleHandler" be used instead.
 """
 
 from __future__ import absolute_import

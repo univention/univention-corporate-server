@@ -28,9 +28,9 @@
 
 from __future__ import absolute_import
 from univention.listener.handler import ListenerModuleHandler
+from univention.listener.async.async_api_adapter import AsyncListenerModuleAdapter
 try:
 	from typing import Any, Optional, Dict, List, Type
-	# from univention.listener.async.listener_task import ListenerTask
 	import types.TracebackType
 except ImportError:
 	pass
@@ -68,6 +68,7 @@ class AsyncListenerModuleHandler(ListenerModuleHandler):
 	The error_handler() in asynchronous listener must not raise an exception
 	itself!
 	"""
+	_adapter_class = AsyncListenerModuleAdapter
 	_support_async = True
 
 	def lock(self, key, timeout=60, sleep_duration=0.05):
@@ -107,19 +108,5 @@ class AsyncListenerModuleHandler(ListenerModuleHandler):
 		"""
 		pass  # implemented in listener_task.ListenerTask
 
-	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
-		# type: (str, Dict[str, List], Dict[str, List], str, Type[BaseException], BaseException, types.TracebackType) -> None
-		"""
-		Will be called for unhandled exceptions in create/modify/remove.
-
-		:param dn: str
-		:param old: dict
-		:param new: dict
-		:param command: str
-		:param exc_type: exception class
-		:param exc_value: exception object
-		:param exc_traceback: traceback object
-		:return: None
-		"""
-		self.logger.exception('dn=%r command=%r', dn, command)
-		raise exc_type, exc_value, exc_traceback
+	def _get_ldap_credentials(self):  # type: () -> Dict[str, str]
+		pass  # implemented in listener_task.ListenerTask

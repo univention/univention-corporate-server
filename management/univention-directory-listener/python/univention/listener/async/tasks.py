@@ -44,7 +44,7 @@ from univention.listener.async.memcached import (
 	ListenerJob, MemcachedVariable, MemcachedQueue, TasksQueue,
 	TASK_TYPE_CLEAN, TASK_TYPE_HANDLER, TASK_TYPE_INITILIZE, TASK_TYPE_PRE_RUN, TASK_TYPE_POST_RUN, TASK_TYPE_QUIT
 )
-from univention.listener.async.utils import decode_dicts, entry_uuid_var_name
+from univention.listener.async.utils import entry_uuid_var_name
 try:
 	from typing import Any, Dict, List, Union, Type
 	from multiprocessing.managers import SyncManager
@@ -67,7 +67,6 @@ def after_setup_task_logger_handler(sender=None, headers=None, body=None, **kwar
 
 
 @shared_task(base=ListenerTask, bind=True)
-@decode_dicts('new')
 def async_listener_job(self, filename, name):  # type: (ListenerTask, str, str) -> None
 	self.logger.info('*** Starting to observe task queue (task.id: %r, PID: %r, PPID: %r)...', self.request.id, os.getpid(), os.getppid())
 	while True:
@@ -133,6 +132,10 @@ def async_listener_job(self, filename, name):  # type: (ListenerTask, str, str) 
 		# run the users LM code
 		try:
 			self.run_listener_job(listener_job, self.get_lm_instance(filename, name))
+		except Exception:
+			# User wrote no custom error handler.
+			# run_listener_job() has already logged the traceback.
+			pass
 		finally:
 			# remove task from queues
 			with tasks_queue.lock():
