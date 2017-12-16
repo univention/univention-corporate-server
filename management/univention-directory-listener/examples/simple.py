@@ -28,24 +28,35 @@
 #
 
 from __future__ import absolute_import
-from univention.listener import ListenerModuleHandler
+from univention.listener.async import AsyncListenerModuleHandler
+# from univention.listener import ListenerModuleHandler
 
-
-class ListenerModuleTemplate(ListenerModuleHandler):
+# class ListenerModuleTemplate(ListenerModuleHandler):
+class ListenerModuleTemplate(AsyncListenerModuleHandler):
 	class Configuration:
 		name = 'unique_name'
 		description = 'listener module description'
 		ldap_filter = '(&(objectClass=inetOrgPerson)(uid=example))'
-		attributes = ['firstname', 'lastname']
+		attributes = ['sn', 'givenName']
+		run_asynchronously = True
 
 	def create(self, dn, new):
-		self.logger.debug('dn: %r', dn)
+		self.logger.debug('dn=%r', dn)
 
 	def modify(self, dn, old, new, old_dn):
-		self.logger.debug('dn: %r', dn)
+		self.logger.debug('dn=%r', dn)
 		if old_dn:
-			self.logger.debug('it is (also) a move! old_dn: %r', old_dn)
-		self.logger.debug('changed attributes: %r', self.diff(old, new))
+			self.logger.debug('it is (also) a move! old_dn=%r', old_dn)
+		self.logger.debug('self.diff(old, new)=%r', self.diff(old, new))
 
 	def remove(self, dn, old):
-		self.logger.debug('dn: %r', dn)
+		self.logger.debug('dn=%r', dn)
+		fail = {}['fail']
+	#
+	# def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
+	# 	self.logger.error('*** custom error handler ***')
+
+import pprint
+__globs = globals().copy()
+del __globs['__builtins__']
+open('/tmp/globals.txt', 'ab').write('globals: {!s}'.format(pprint.pformat(__globs, indent=2)))
