@@ -101,7 +101,7 @@ if [ -f "$CELERY_DEFAULTS" ]; then
 fi
 
 ENABLED=${ENABLED:-$DEFAULT_ENABLED}
-if [ "$ENABLED" != "true" ]; then
+if [ "$ENABLED" != "true" -a "$1" != "update-config" ]; then
     echo "celery daemon disabled - see $CELERY_DEFAULTS"
     exit 0
 fi
@@ -251,13 +251,14 @@ dryrun () {
 
 
 stop_workers () {
-    /sync/univention-directory-listener/share/stop-workers
+    /sync/univention-directory-listener/share/stop-workers || true
     _chuid stopwait $CELERYD_NODES --pidfile="$CELERYD_PID_FILE"
-    /sync/univention-directory-listener/share/stop-workers-remove-quit-jobs
-    # update /etc/default/${SCRIPT_NAME} only after shutting down, or workers cannot be sent stop signals
-    /usr/share/univention-directory-listener/update-celery-configuration
+    /sync/univention-directory-listener/share/stop-workers-remove-quit-jobs || true
 }
 
+update_config () {
+    /usr/share/univention-directory-listener/update-celery-configuration
+}
 
 #restart_workers () {
 #    _chuid restart $CELERYD_NODES $DAEMON_OPTS      \
@@ -340,6 +341,7 @@ case "$1" in
         check_dev_null
         check_paths
         stop_workers
+        update_config
     ;;
 
     reload|force-reload)
@@ -355,6 +357,13 @@ case "$1" in
 #        check_paths
 #        restart_workers
 #    ;;
+	restart)
+		check_dev_null
+        check_paths
+        stop_workers
+        update_config
+        start_workers
+	;;
 #
 #    graceful)
 #        check_dev_null
@@ -385,6 +394,14 @@ case "$1" in
     check-paths)
         check_dev_null
         check_paths
+    ;;
+
+    update-config)
+        # update /etc/default/${SCRIPT_NAME} only after shutting down, or workers cannot be sent stop signals
+        stop_workers
+        # force update
+        rm -f /var/cache/univention-directory-listener/modules_stats_cache.json
+        update_config
     ;;
 
     *)

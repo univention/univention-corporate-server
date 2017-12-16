@@ -33,18 +33,17 @@ import pylibmc
 from kombu.utils import uuid
 from univention.listener.handler_logging import info_to_syslog
 from univention.listener.async.tasks import async_listener_job
-from univention.listener.async.utils import get_all_configuration_classes
+from univention.listener.async.utils import get_all_configuration_objects
 from univention.listener.async.memcached import MEMCACHED_SOCKET, QueuedTask, TASK_TYPE_QUIT, TasksQueue
 
 
 memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True, behaviors={'tcp_nodelay': True, 'ketama': True})
 
-for conf_class in get_all_configuration_classes():
-	conf_obj = conf_class()
+for conf_obj in get_all_configuration_objects():
 	info_to_syslog('Stopping Celery workers of listener module {!r}...'.format(conf_obj.get_name()))
 	if conf_obj.get_run_asynchronously():
 		parallelism = conf_obj.get_parallelism()
-		lm_path = inspect.getsourcefile(conf_class)
+		lm_path = inspect.getsourcefile(conf_obj.get_listener_module_class())
 		TasksQueue(memcache, conf_obj.get_name(), 'TasksQueue').prepend(QueuedTask(TASK_TYPE_QUIT, uuid(), None))
 		result = async_listener_job.apply_async(args=[lm_path, conf_obj.get_name()], queue=conf_obj.get_name())
 		info_to_syslog('Queued stop signal for all workers of listener module {!r}.'.format(conf_obj.get_name()))

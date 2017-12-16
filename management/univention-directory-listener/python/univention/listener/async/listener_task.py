@@ -39,6 +39,7 @@ from celery import Task
 from celery.utils.log import get_task_logger
 from univention.listener import ListenerModuleConfiguration
 from univention.listener.async.utils import get_configuration_class
+from univention.listener.async.utils import get_configuration_object
 from univention.listener.async.memcached import (
 	get_mc_key, load_ldap_credentials, MemcachedLock, MEMCACHED_SOCKET, TASK_TYPE_HANDLER
 )
@@ -77,11 +78,10 @@ class ListenerTask(Task):
 	@classmethod
 	def get_lm_config_instance(cls, filename, name):  # type: (str, str) -> ListenerModuleConfiguration
 		if name not in cls.__listener_configs:
-			conf_cls = get_configuration_class(filename)
-			cls.__listener_configs[name] = conf_cls()
-			cls.__listener_configs[name].set_logger(cls.logger)
-		lm_config = cls.__listener_configs[name]
-		return lm_config
+			conf_obj = get_configuration_object(filename)
+			conf_obj.logger = cls.logger
+			cls.__listener_configs[name] = conf_obj
+		return cls.__listener_configs[name]
 
 	@classmethod
 	def get_lm_instance(cls, filename, name):  # type: (str, str) -> AsyncListenerModuleHandler

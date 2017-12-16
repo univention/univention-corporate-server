@@ -30,16 +30,15 @@
 
 import inspect
 from univention.listener.handler_logging import info_to_syslog
-from univention.listener.async.utils import get_all_configuration_classes
+from univention.listener.async.utils import get_all_configuration_objects
 from univention.listener.async.tasks import async_listener_job
 
 
-for conf_class in get_all_configuration_classes():
-	conf_obj = conf_class()
+for conf_obj in get_all_configuration_objects():
 	if conf_obj.get_run_asynchronously():
 		parallelism = conf_obj.get_parallelism()
 		info_to_syslog('Poking {!r} Celery workers of listener module {!r}...'.format(parallelism, conf_obj.get_name()))
-		lm_path = inspect.getsourcefile(conf_class)
+		lm_path = inspect.getsourcefile(conf_obj.get_listener_module_class())
 		for num in range(parallelism, ):
 			result = async_listener_job.apply_async(args=[lm_path, conf_obj.get_name()], queue=conf_obj.get_name())
 			info_to_syslog('Poked worker {}/{} with task ID {!r}.'.format(num + 1, parallelism, result.id))
