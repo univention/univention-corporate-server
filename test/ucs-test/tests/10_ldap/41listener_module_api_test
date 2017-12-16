@@ -63,8 +63,7 @@ def main():
 		'LDAP_FILTER': filter_format('(&(objectClass=inetOrgPerson)(uid=%s))', (username,)),
 		'UID_ROOT_FILE': uid_root_file,
 		'UID_DEFAULT_FILE': uid_default_file,
-		'IMPORTS': '',
-		'ADAPTER_CLASS': 'ListenerModuleAdapter',
+		'IMPORTS': 'from univention.listener import ListenerModuleHandler',
 		'HANDLER_SUPER_CLASS': 'ListenerModuleHandler',
 		'CONFIG_MODULE_ARGS': '',
 	}
@@ -95,7 +94,7 @@ def main():
 		print('Restarting univention-directory-listener...')
 		subprocess.call(['systemctl', 'restart', 'univention-directory-listener.service'])
 
-		lm_logger = get_logger(lm_name, target=lm_logger_path)
+		lm_logger = get_logger(lm_name, path=lm_logger_path)
 		lm_logger.addHandler(logging.StreamHandler())
 
 		lm_logger.info('*** Creating user...')
