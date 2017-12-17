@@ -14,40 +14,33 @@ See http://docs.software-univention.de/developer-reference-4.2.html#chap:listene
 To use this listener module interface copy `/usr/share/doc/univention-directory-listener/examples/listener_module_template.py` and modify the code to your needs, or:
 
 * subclass ListenerModuleHandler
-* subclass ListenerModuleConfiguration
-* at the bottom add:
-
-		globals().update(ListenerModuleAdapter(ListenerModuleConfiguration()).get_globals())
+* add an inner class "Configuration" that has at least the class attributes `name`, `description` and `ldap_filter`
 
 
 An example from `examples/listener_module_template.py`:
 
 	from __future__ import absolute_import
-	from univention.listener import ListenerModuleAdapter, ListenerModuleHandler, ListenerModuleConfiguration
-	
-	
+	from univention.listener import ListenerModuleHandler
+
+
 	class ListenerModuleTemplate(ListenerModuleHandler):
+		class Configuration:
+			name = 'unique_name'
+			description = 'listener module description'
+			ldap_filter = '(&(objectClass=inetOrgPerson)(uid=example))'
+			attributes = ['sn', 'givenName']
+
 		def create(self, dn, new):
-			self.logger.debug('dn=%r', dn)
-	
+			self.logger.debug('dn: %r', dn)
+
 		def modify(self, dn, old, new, old_dn):
-			self.logger.debug('dn=%r old_dn=%r', dn, old_dn)
+			self.logger.debug('dn: %r', dn)
 			if old_dn:
-				self.logger.info('it is (also) a move')
-	
+				self.logger.debug('it is (also) a move! old_dn: %r', old_dn)
+			self.logger.debug('changed attributes: %r', self.diff(old, new))
+
 		def remove(self, dn, old):
-			self.logger.debug('dn=%r', dn)
-	
-	
-	class ListenerModuleTemplateConfiguration(ListenerModuleConfiguration):
-		name = 'listener module template'
-		description = 'a listener module template'
-		ldap_filter = ''
-		attributes = []
-		listener_module_class = ListenerModuleTemplate
-	
-	
-	globals().update(ListenerModuleAdapter(ListenerModuleTemplateConfiguration()).get_globals())
+			self.logger.debug('dn: %r', dn)
 
 
 ### Asynchronous listener module API
@@ -69,34 +62,27 @@ An asynchronous listener module can be created using the same API as a synchrono
 The example above as an asynchronous listener modules:
 
 	from __future__ import absolute_import
-	from univention.listener import ListenerModuleConfiguration
-	from univention.listener.async import AsyncListenerModuleAdapter, AsyncListenerModuleHandler
+	from univention.listener.async import AsyncListenerModuleHandler
 
-	
-	
+
 	class ListenerModuleTemplate(AsyncListenerModuleHandler):
+		class Configuration:
+			name = 'listener module template'
+			description = 'a listener module template'
+			ldap_filter = ''
+			attributes = []
+			run_asynchronously = True
+
 		def create(self, dn, new):
-			self.logger.debug('dn=%r', dn)
-	
+			self.logger.debug('dn: %r', dn)
+
 		def modify(self, dn, old, new, old_dn):
-			self.logger.debug('dn=%r old_dn=%r', dn, old_dn)
+			self.logger.debug('dn: %r old_dn: %r', dn, old_dn)
 			if old_dn:
 				self.logger.info('it is (also) a move')
-	
+
 		def remove(self, dn, old):
-			self.logger.debug('dn=%r', dn)
-	
-	
-	class ListenerModuleTemplateConfiguration(ListenerModuleConfiguration):
-		name = 'listener module template'
-		description = 'a listener module template'
-		ldap_filter = ''
-		attributes = []
-		listener_module_class = ListenerModuleTemplate
-		run_asynchronously = True
-	
-	
-	globals().update(AsyncListenerModuleAdapter(ListenerModuleTemplateConfiguration()).get_globals())
+			self.logger.debug('dn: %r', dn)
 
 
 ## Static type checking new API code
