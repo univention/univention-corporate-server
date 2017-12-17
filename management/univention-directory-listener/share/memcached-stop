@@ -34,7 +34,7 @@ import stat
 import subprocess
 import pylibmc
 from univention.listener.handler_logging import info_to_syslog
-from univention.listener.async.utils import get_all_configuration_classes
+from univention.listener.async.utils import get_all_configuration_objects
 from univention.listener.async.memcached import (
 	ListenerJob, MEMCACHED_SOCKET, MemcachedQueue, MemcachedVariable, TasksQueue, TASK_TYPE_HANDLER
 )
@@ -48,8 +48,7 @@ __memcached_process_pattern = '/usr/bin/memcached.*/var/lib/univention-directory
 memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True, behaviors={'tcp_nodelay': True, 'ketama': True})
 data = dict()
 
-for conf_class in get_all_configuration_classes():
-	conf_obj = conf_class()
+for conf_obj in get_all_configuration_objects():
 	if conf_obj.get_run_asynchronously():
 		lm_name = conf_obj.get_name()
 		info_to_syslog('Reading memcached data of listener module {!r}...'.format(lm_name))

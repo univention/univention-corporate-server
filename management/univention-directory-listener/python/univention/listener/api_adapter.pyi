@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 #
+# Univention Directory Listener
+#  PEP 484 type hints stub file
+#
 # Copyright 2017 Univention GmbH
 #
 # http://www.univention.de/
@@ -26,30 +29,39 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
-"""
-Listener module API
-
-To create a listener module (LM) with this API, create a Python file in
-/usr/lib/univention-directory-listener/system/ which includes:
-
-1. a subclass of ListenerModuleHandler
-2. with an inner class "Configuration" that has at least the class attributes
-   "name", "description" and "ldap_filter"
-
-See /usr/share/doc/univention-directory-listener/examples/ for examples.
-
-For an asynchronously LM, the package univention-directory-listener-async must
-be installed and "AsyncListenerModuleHandler" be used instead.
-"""
-
 from __future__ import absolute_import
-from univention.listener.api_adapter import ListenerModuleAdapter
+from typing import Any, Dict, List, Tuple
 from univention.listener.handler_configuration import ListenerModuleConfiguration
 from univention.listener.handler import ListenerModuleHandler
-from univention.listener.exceptions import ListenerModuleConfigurationError, ListenerModuleRuntimeError
 
-__all__ = [
-	'ListenerModuleAdapter', 'ListenerModuleConfigurationError', 'ListenerModuleRuntimeError',
-	'ListenerModuleConfiguration', 'ListenerModuleHandler'
-]
+
+class ListenerModuleAdapter(object):
+	_support_async = False
+
+	def __init__(self, module_configuration: ListenerModuleConfiguration, *args: Tuple, **kwargs: Dict) -> None:
+		self.config = module_configuration  # type: ListenerModuleConfiguration
+		self._ldap_cred = dict()  # type: Dict[str, str]
+		self._module_handler_obj = ListenerModuleHandler()  # type: ListenerModuleHandler
+		self._saved_old = dict()  # type: Dict[str, List[str]]
+		self._saved_old_dn = ''  # type: str
+		self._rename = False  # type: bool
+		self._renamed = False  # type: bool
+	def _run_checks(self) -> None:
+		...
+	def get_globals(self) -> Dict[str, Any]:
+		...
+	def _setdata(self, key: str, value: str) -> None:
+		...
+	@property
+	def _module_handler(self) -> ListenerModuleHandler:
+		...
+	def _handler(self, dn: str, new: Dict[str, List[str]], old: Dict[str, List[str]], command: str) -> None:
+		...
+	def _lazy_initialize(self) -> None:
+		...
+	def _lazy_clean(self) -> None:
+		...
+	def _lazy_pre_run(self) -> None:
+		...
+	def _lazy_post_run(self) -> None:
+		...

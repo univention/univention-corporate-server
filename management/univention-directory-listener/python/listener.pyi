@@ -1,7 +1,9 @@
-#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
-# Copyright 2017 Univention GmbH
+# Univention Directory Listener
+#  stub file
+#
+# Copyright 2004-2017 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,19 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import pylibmc
-from univention.listener.handler_logging import info_to_syslog
-from univention.listener.async.utils import get_all_configuration_objects
-from univention.listener.async.memcached import MEMCACHED_SOCKET, TASK_TYPE_QUIT, TasksQueue
+from univention.config_registry import ConfigRegistry
+from typing import List, Union
+
+configRegistry = ConfigRegistry()  # type: ConfigRegistry
+baseConfig = configRegistry  # type: ConfigRegistry
 
 
-memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True, behaviors={'tcp_nodelay': True, 'ketama': True})
-
-for conf_obj in get_all_configuration_objects():
-	if conf_obj.get_run_asynchronously():
-		info_to_syslog('Removing quit jobs of listener module {!r}...'.format(conf_obj.get_name()))
-		tasks_queue = TasksQueue(memcache, conf_obj.get_name(), 'TasksQueue')
-		if tasks_queue.lock():
-			for task in tasks_queue.get():
-				if task.type == TASK_TYPE_QUIT:
-					tasks_queue.remove(task)
+def setuid(uid: Union[str, int]) -> None:
+	...
+def unsetuid()  -> None:
+	...
+def run(file: str, argv: List[str], uid: int = -1, wait: int = 1) -> int:
+	...

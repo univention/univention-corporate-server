@@ -28,12 +28,7 @@
 
 from __future__ import absolute_import
 from univention.listener.handler import ListenerModuleHandler
-try:
-	from typing import Any, Optional, Dict, List, Type
-	# from univention.listener.async.listener_task import ListenerTask
-	import types.TracebackType
-except ImportError:
-	pass
+from univention.listener.async.async_api_adapter import AsyncListenerModuleAdapter
 
 
 class AsyncListenerModuleHandler(ListenerModuleHandler):
@@ -68,10 +63,10 @@ class AsyncListenerModuleHandler(ListenerModuleHandler):
 	The error_handler() in asynchronous listener must not raise an exception
 	itself!
 	"""
+	_adapter_class = AsyncListenerModuleAdapter
 	_support_async = True
 
 	def lock(self, key, timeout=60, sleep_duration=0.05):
-		# type: (str, Optional[int], Optional[int]) -> ListenerTask.MemcachedLock
 		"""
 		Context manager to lock a critical section (aka "monitor").
 
@@ -87,7 +82,7 @@ class AsyncListenerModuleHandler(ListenerModuleHandler):
 		"""
 		pass  # implemented in listener_task.ListenerTask
 
-	def get_shared_var(self, var_name):  # type: (str) -> Any
+	def get_shared_var(self, var_name):
 		"""
 		Retrieve a variable previously stored by set_shared_var().
 
@@ -96,7 +91,7 @@ class AsyncListenerModuleHandler(ListenerModuleHandler):
 		"""
 		pass  # implemented in listener_task.ListenerTask
 
-	def set_shared_var(self, var_name, var_value):  # type: (str, Any) -> None
+	def set_shared_var(self, var_name, var_value):
 		"""
 		Store a variable, so other processes of the same listener module can
 		retrieve it.
@@ -107,19 +102,10 @@ class AsyncListenerModuleHandler(ListenerModuleHandler):
 		"""
 		pass  # implemented in listener_task.ListenerTask
 
-	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
-		# type: (str, Dict[str, List], Dict[str, List], str, Type[BaseException], BaseException, types.TracebackType) -> None
+	def _get_ldap_credentials(self):
 		"""
-		Will be called for unhandled exceptions in create/modify/remove.
+		Get the LDAP credentials that were passed to setdata().
 
-		:param dn: str
-		:param old: dict
-		:param new: dict
-		:param command: str
-		:param exc_type: exception class
-		:param exc_value: exception object
-		:param exc_traceback: traceback object
-		:return: None
+		:return: dict
 		"""
-		self.logger.exception('dn=%r command=%r', dn, command)
-		raise exc_type, exc_value, exc_traceback
+		pass  # implemented in listener_task.ListenerTask

@@ -34,9 +34,19 @@ To create a listener module (LM) with this API, create a Python file in
 /usr/lib/univention-directory-listener/system/ which includes:
 
 1. a subclass of AsyncListenerModuleHandler
-2. a subclass of ListenerModuleConfiguration
-3. at the bottom write:
-     globals().update(AsyncListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
+2. with an inner class "Configuration" that has at least the class attributes
+   "name", "description", "ldap_filter" and "run_asynchronously = True"
+
+See /usr/share/doc/univention-directory-listener/examples/ for an example.
+
+Then run:
+# service celery-worker-async-listener-modules update-config
+# service celery-worker-async-listener-modules start
+# service univention-directory-listener restart
+
+When the listener module code changes, restart
+celery-worker-async-listener-modules, not
+univention-directory-listener.
 """
 
 from __future__ import absolute_import

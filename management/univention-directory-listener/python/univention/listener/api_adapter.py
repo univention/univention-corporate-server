@@ -29,12 +29,6 @@
 from __future__ import absolute_import
 import sys
 from univention.listener.exceptions import ListenerModuleConfigurationError
-try:
-	from typing import Any, Callable, Dict, List, Tuple
-	from univention.listener.handler_configuration import ListenerModuleConfiguration
-	from univention.listener.handler import ListenerModuleHandler
-except ImportError:
-	pass
 
 
 class ListenerModuleAdapter(object):
@@ -48,29 +42,29 @@ class ListenerModuleAdapter(object):
 	_support_async = False
 
 	def __init__(self, module_configuration, *args, **kwargs):
-		# type: (ListenerModuleConfiguration, *Tuple, **Dict) -> None
 		"""
 		:param module_configuration: ListenerModuleConfiguration object
 		"""
-		self.config = module_configuration  # type: ListenerModuleConfiguration
-		if (self.config.get_run_asynchronously() or self.config.get_parallelism() > 1) and not self._support_async:
+		self.config = module_configuration
+		self._ldap_cred = dict()
+		self._module_handler_obj = None
+		self._saved_old = dict()
+		self._saved_old_dn = None
+		self._rename = False
+		self._renamed = False
+		self._run_checks()
+
+	def _run_checks(self):
+		if self.config.get_run_asynchronously() and not self._support_async:
 			raise ListenerModuleConfigurationError(
 				'Loading of asynchronous listener modules must be done with an AsyncListenerModuleAdapter.'
 			)
-		if self.config.get_parallelism() > 1 and not self.config.get_run_asynchronously():
-			self.config.logger.warn(
-				'Configuration of "parallelism > 1" implies "run_asynchronously = True". To prevent this warning '
-				'configure it in your ListenerModuleConfiguration class.'
+		if not self.config.get_run_asynchronously() and self._support_async:
+			raise ListenerModuleConfigurationError(
+				'Loading of synchronous listener modules must be done with a non-async ListenerModuleAdapter.'
 			)
-			self.config.run_asynchronously = True
-		self._ldap_cred = dict()  # type: Dict[str, str]
-		self.__module_handler = None  # type: ListenerModuleHandler
-		self._saved_old = dict()  # type: Dict[str, List[str]]
-		self._saved_old_dn = None  # type: str
-		self._rename = False  # type: bool
-		self._renamed = False  # type: bool
 
-	def get_globals(self):  # type: () -> Dict[str, Any]
+	def get_globals(self):
 		"""
 		Returns the variables to be written to the module namespace, that
 		make up the legacy listener module interface.
@@ -103,10 +97,10 @@ class ListenerModuleAdapter(object):
 			setdata=setdata
 		)
 
-	def _setdata(self, key, value):  # type: (str, str) -> None
+	def _setdata(self, key, value):
 		self._ldap_cred[key] = value
 		if all(a in self._ldap_cred for a in ('basedn', 'basedn', 'bindpw', 'ldapserver')):
-			self.config.set_ldap_credentials(
+			self._module_handler._set_ldap_credentials(
 				self._ldap_cred['basedn'],
 				self._ldap_cred['binddn'],
 				self._ldap_cred['bindpw'],
@@ -114,12 +108,12 @@ class ListenerModuleAdapter(object):
 			)
 
 	@property
-	def _module_handler(self):  # type: () -> ListenerModuleHandler
-		if not self.__module_handler:
+	def _module_handler(self):
+		if not self._module_handler_obj:
 			self.__module_handler = self.config.get_listener_module_instance()
-		return self.__module_handler
+		return self._module_handler_obj
 
-	def _handler(self, dn, new, old, command):  # type: (str, Dict[str, List[str]], Dict[str, List[str]], str) -> None
+	def _handler(self, dn, new, old, command):
 		if command == 'r':
 			self._saved_old = old
 			self._saved_old_dn = dn
@@ -148,14 +142,14 @@ class ListenerModuleAdapter(object):
 			exc_type, exc_value, exc_traceback = sys.exc_info()
 			self._module_handler.error_handler(dn, old, new, command, exc_type, exc_value, exc_traceback)
 
-	def _lazy_initialize(self):  # type: () -> Callable[None]
+	def _lazy_initialize(self):
 		return self._module_handler.initialize()
 
-	def _lazy_clean(self):  # type: () -> Callable[None]
+	def _lazy_clean(self):
 		return self._module_handler.clean()
 
-	def _lazy_pre_run(self):  # type: () -> Callable[None]
+	def _lazy_pre_run(self):
 		return self._module_handler.pre_run()
 
-	def _lazy_post_run(self):  # type: () -> Callable[None]
+	def _lazy_post_run(self):
 		return self._module_handler.post_run()

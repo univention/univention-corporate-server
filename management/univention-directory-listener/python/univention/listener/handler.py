@@ -28,24 +28,33 @@
 
 from __future__ import absolute_import
 import os
+import inspect
 from contextlib import contextmanager
 import listener
 import univention.admin.objects
-from univention.listener.exceptions import ListenerModuleConfigurationError
-try:
-	from typing import Any, Dict, Iterable, Iterator, List, Tuple, Type, Optional
-	import logging
-	import types.TracebackType
-	import univention.admin.uldap.access
-	import univention.admin.uldap.position
-	import univention.admin.handlers.simpleLdap
-	import univention.config_registry.ConfigRegistry
-	from univention.listener.handler_configuration import ListenerModuleConfiguration
-except ImportError:
-	pass
+from univention.admin.uldap import access, position
+from univention.listener.handler_logging import get_logger
+from univention.listener.exceptions import ListenerModuleConfigurationError, ListenerModuleRuntimeError
+from univention.listener.handler_configuration import ListenerModuleConfiguration
+from univention.listener.api_adapter import ListenerModuleAdapter
 
 
 listener.configRegistry.load()
+
+
+class HandlerMetaClass(type):
+	"""
+	Read handler configuration and invoke adapter.
+	"""
+	def __new__(cls, clsname, bases, attrs):
+		kls = super(HandlerMetaClass, cls).__new__(cls, clsname, bases, attrs)
+		if getattr(kls, '_is_listener_module', lambda: False)():
+			kls.config = kls._get_configuration()
+			lm_module = inspect.getmodule(kls)
+			adapter_cls = kls._adapter_class
+			for k, v in adapter_cls(kls.config).get_globals().items():
+				setattr(lm_module, k, v)
+		return kls
 
 
 class ListenerModuleHandler(object):
@@ -59,6 +68,7 @@ class ListenerModuleHandler(object):
 	This class is not intended to be used directly. It should only be
 	instantiated by ListenerModuleConfiguration.get_listener_module_instance().
 	"""
+	__metaclass__ = HandlerMetaClass
 
 	_metadata_attributes = (
 		'createTimestamp', 'creatorsName', 'entryCSN', 'entryDN', 'entryUUID',
@@ -66,29 +76,39 @@ class ListenerModuleHandler(object):
 		'structuralObjectClass', 'subschemaSubentry'
 	)
 	_support_async = False
-	_udm_module_cache = dict()  # type: Dict
-	ucr = listener.configRegistry    # type: univention.config_registry.ConfigRegistry
+	_udm_module_cache = dict()
+	_configuration_class = ListenerModuleConfiguration
+	_adapter_class = ListenerModuleAdapter
+	config = None
+	ucr = listener.configRegistry
 
-	def __init__(self, module_configuration, *args, **kwargs):
-		# type: (ListenerModuleConfiguration, *Tuple, **Dict) -> None
+	class Configuration(ListenerModuleConfiguration):
 		"""
-		When subclassing, call super()__init__() first!
+		Overwrite this with your own class of the same name. It can be an
+		any Python class with just the require attributes (name, description,
+		ldap_filter) or a subclass of ListenerModuleConfiguration.
+		"""
+		pass
 
-		:param module_configuration: ListenerModuleConfiguration object
+	def __init__(self, *args, **kwargs):
 		"""
-		self.config = module_configuration  # type: ListenerModuleConfiguration
-		self.logger = self.config.logger  # type: logging.Logger
+		When subclassing, in __init__() first call must be:
+		super(.., self).__init__(*args, **kwargs)
+
+		self.config will be set by the metaclass.
+		"""
+		if not self.config:
+			raise ListenerModuleConfigurationError('{}.config was not set by meta class.'.format(self.__class__.__name__))
+		self.logger = get_logger(self.config.get_name())
 		self.ucr.load()
-		if self.config.get_run_asynchronously() and not self._support_async:
-			raise ListenerModuleConfigurationError(
-				'Loading of asynchronous listener modules must be done with an AsyncListenerModuleAdapter.'
-			)
-		self.logger.debug('Starting with configuration: %r', module_configuration)
+		self._lo = None
+		self._ldap_credentials = None
+		self.logger.debug('Starting with configuration: %r', self.config)
 
 	def __repr__(self):
 		return '{}({})'.format(self.__class__.__name__, self.config.name)
 
-	def create(self, dn, new):  # type: (str, Dict[str, List[str]]) -> None
+	def create(self, dn, new):
 		"""
 		Called when a new object was created.
 
@@ -98,7 +118,7 @@ class ListenerModuleHandler(object):
 		"""
 		pass
 
-	def modify(self, dn, old, new, old_dn):  # type: (str, Dict[str, List[str]], Dict[str, List[str]], str) -> None
+	def modify(self, dn, old, new, old_dn):
 		"""
 		Called when an existing object was modified or moved.
 
@@ -113,7 +133,7 @@ class ListenerModuleHandler(object):
 		"""
 		pass
 
-	def remove(self, dn, old):  # type: (str, Dict[str, List[str]]) -> None
+	def remove(self, dn, old):
 		"""
 		Called when an object was deleted.
 
@@ -123,7 +143,7 @@ class ListenerModuleHandler(object):
 		"""
 		pass
 
-	def initialize(self):  # type: () -> None
+	def initialize(self):
 		"""
 		Called once when the Univention Directory Listener loads the module
 		for the first time or when a resync it triggered.
@@ -132,7 +152,7 @@ class ListenerModuleHandler(object):
 		"""
 		pass
 
-	def clean(self):  # type: () -> None
+	def clean(self):
 		"""
 		Called once when the Univention Directory Listener loads the module
 		for the first time or when a resync it triggered.
@@ -141,7 +161,7 @@ class ListenerModuleHandler(object):
 		"""
 		pass
 
-	def pre_run(self):  # type: () -> None
+	def pre_run(self):
 		"""
 		Called before create/modify/remove if either the Univention Directory
 		Listener has been restarted or when post_run() has run before.
@@ -152,7 +172,7 @@ class ListenerModuleHandler(object):
 		"""
 		pass
 
-	def post_run(self):  # type: () -> None
+	def post_run(self):
 		"""
 		Called only, when no change happens for 15 seconds - for *any* listener
 		module.
@@ -165,7 +185,7 @@ class ListenerModuleHandler(object):
 
 	@staticmethod
 	@contextmanager
-	def as_root():  # type: () -> Iterator[None]
+	def as_root():
 		"""
 		Temporarily change the UID of the current process to 0.
 
@@ -189,7 +209,6 @@ class ListenerModuleHandler(object):
 
 	@classmethod
 	def diff(cls, old, new, keys=None, ignore_metadata=True):
-		# type: (Dict[str, List], Dict[str, List], Optional[Iterable[str]], Optional[bool]) -> dict
 		"""
 		Find differences in old and new. Returns dict with keys pointing to old
 		and new values.
@@ -213,9 +232,12 @@ class ListenerModuleHandler(object):
 		return res
 
 	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
-		# type: (str, Dict[str, List], Dict[str, List], str, Type[BaseException], BaseException, types.TracebackType) -> None
 		"""
 		Will be called for unhandled exceptions in create/modify/remove.
+
+		The error_handler() in an asynchronous listener module must *not* raise
+		an exception itself, or the worker will exit and further replication
+		will cease!
 
 		:param dn: str
 		:param old: dict
@@ -226,12 +248,12 @@ class ListenerModuleHandler(object):
 		:param exc_traceback: traceback object
 		:return: None
 		"""
-		self.logger.exception('dn=%r command=%r', dn, command)
-		raise exc_type, exc_value, exc_traceback
+		self.logger.exception('dn=%r command=%r\n    old=%r\n    new=%r', dn, command, old, new)
+		if not self._support_async:
+			raise exc_type, exc_value, exc_traceback
 
 	@classmethod
 	def get_udm_objects(cls, module_name, filter_s, base_dn, lo, po, **kwargs):
-		# type: (str, str, str, univention.admin.uldap.access, univention.admin.uldap.position, **Dict) -> List[univention.admin.handlers.simpleLdap]
 		"""
 		Search LDAP for UDM objects.
 
@@ -253,19 +275,113 @@ class ListenerModuleHandler(object):
 		return udm_module.lookup(None, lo, filter_s=filter_s, base=base_dn, **kwargs)
 
 	@property
-	def lo(self):  # type: () -> univention.admin.uldap.access
+	def lo(self):
 		"""
 		LDAP connection object.
 
 		:return: univention.admin.uldap.access object
 		"""
-		return self.config.lo
+		if not self._lo:
+			ldap_credentials = self._get_ldap_credentials()
+			if not ldap_credentials:
+				raise ListenerModuleRuntimeError(
+					'LDAP connection of listener module {!r} has not yet been initialized.'.format(self.config.get_name())
+				)
+			self._lo = access(**ldap_credentials)
+		return self._lo
 
 	@property
-	def po(self):  # type: () -> univention.admin.uldap.position
+	def po(self):
 		"""
 		Get a LDAP position object for the base DN (ldap/base).
 
 		:return: univention.admin.uldap.position object
 		"""
-		return self.config.po
+		return position(self.lo.base)
+
+	def _get_ldap_credentials(self):
+		"""
+		Get the LDAP credentials received through setdata().
+
+		:return: dict: the LDAP credentials
+		"""
+		return self._ldap_credentials
+
+	def _set_ldap_credentials(self, base, binddn, bindpw, host):
+		"""
+		Store LDAP connection credentials for use by self.lo.
+
+		:param base: str
+		:param binddn: str
+		:param bindpw: str
+		:param host: str
+		:return: None
+		"""
+		old_credentials = self._ldap_credentials
+		self._ldap_credentials = dict(
+			host=host,
+			base=base,
+			binddn=binddn,
+			bindpw=bindpw
+		)
+		if old_credentials != self._ldap_credentials:
+			# force creation of new LDAP connection
+			self._lo = None
+
+	@classmethod
+	def _get_configuration(cls):
+		"""
+		Load configuration, optionally converting a plain Python class to a
+		ListenerModuleConfiguration object. Set cls._configuration_class to
+		a subclass of ListenerModuleConfiguration to change the returned
+		object type.
+
+		:return: ListenerModuleConfiguration object
+		"""
+		try:
+			conf_class = cls.Configuration
+		except AttributeError:
+			raise ListenerModuleConfigurationError('Class {!r} missing inner "Configuration" class.'.format(cls.__name__))
+		if not inspect.isclass(conf_class):
+			raise ListenerModuleConfigurationError('{!s}.Configuration must be a class.'.format(cls.__name__))
+		if conf_class is ListenerModuleHandler.Configuration:
+			raise ListenerModuleConfigurationError('Missing {!s}.Configuration class.'.format(cls.__name__))
+		if issubclass(cls.Configuration, cls._configuration_class):
+			cls.Configuration.listener_module_class = cls
+			return cls.Configuration()
+		else:
+			conf_obj = cls.Configuration()
+			attrs = cls._configuration_class.get_configuration_keys()
+			kwargs = dict(listener_module_class=cls)
+			for attr in attrs:
+				try:
+					get_method = getattr(conf_obj, 'get_{}'.format(attr))
+					if not callable(get_method):
+						raise ListenerModuleConfigurationError(
+							'Attribute {!r} of configuration class {!r} is not callable.'.format(
+								get_method, conf_obj.__class__)
+						)
+					kwargs[attr] = get_method()
+					continue
+				except AttributeError:
+					pass
+				try:
+					kwargs[attr] = getattr(conf_obj, attr)
+				except AttributeError:
+					pass
+				# Checking for required attributes is done in ListenerModuleConfiguration().
+			return cls._configuration_class(**kwargs)
+
+	@classmethod
+	def _is_listener_module(cls):
+		"""
+		Is this a listener module?
+
+		:return: bool: True id the file is in /usr/lib/univention-directory-listener.
+		"""
+		try:
+			path = inspect.getfile(cls)
+		except TypeError:
+			# loaded from interactive console: <module '__main__' (built-in)> is a built-in class
+			return False
+		return path.startswith('/usr/lib/univention-directory-listener')

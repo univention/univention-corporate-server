@@ -1,5 +1,7 @@
-#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
+#
+# Univention Directory Listener
+#  PEP 484 type hints stub file
 #
 # Copyright 2017 Univention GmbH
 #
@@ -15,10 +17,9 @@
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
-# you and Univention and not subject to the GNU AGPL V3.
+# you and Univention.
 #
-# In the case you use this program under the terms of the GNU AGPL V3,
-# the program is provided in the hope that it will be useful,
+# This program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
@@ -27,20 +28,17 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+#
 
-import pylibmc
-from univention.listener.handler_logging import info_to_syslog
-from univention.listener.async.utils import get_all_configuration_objects
-from univention.listener.async.memcached import MEMCACHED_SOCKET, TASK_TYPE_QUIT, TasksQueue
+from __future__ import absolute_import
+from celery import shared_task
+from celery.signals import after_setup_task_logger, Signal
+from univention.listener.async.listener_task import ListenerTask
 
 
-memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True, behaviors={'tcp_nodelay': True, 'ketama': True})
-
-for conf_obj in get_all_configuration_objects():
-	if conf_obj.get_run_asynchronously():
-		info_to_syslog('Removing quit jobs of listener module {!r}...'.format(conf_obj.get_name()))
-		tasks_queue = TasksQueue(memcache, conf_obj.get_name(), 'TasksQueue')
-		if tasks_queue.lock():
-			for task in tasks_queue.get():
-				if task.type == TASK_TYPE_QUIT:
-					tasks_queue.remove(task)
+@after_setup_task_logger.connect
+def after_setup_task_logger_handler(sender: Signal = None, headers=None, body=None, **kwargs: str) -> None:
+	...
+@shared_task(base=ListenerTask, bind=True)
+def async_listener_job(self: ListenerTask, filename: str, name: str) -> None:
+	...
