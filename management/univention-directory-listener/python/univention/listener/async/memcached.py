@@ -51,7 +51,7 @@ MEMCACHED_DATA_FILE = '/var/lib/univention-directory-listener/memcached_data.jso
 __MEMCACHED_KEYS = {
 	'user_lock': '__user_lock_{name}_{key}',
 	'shared_var': 'shared_var_{name}_{key}',
-}  # type: Dict[str, str]
+}
 TASK_TYPE_CLEAN = 'CLEAN'
 TASK_TYPE_HANDLER = 'HANDLER'
 TASK_TYPE_INITILIZE = 'INITIALIZE'
@@ -60,7 +60,7 @@ TASK_TYPE_POST_RUN = 'POST_RUN'
 TASK_TYPE_QUIT = 'QUIT'
 
 
-def get_mc_key(lock_type, lm_name, key):  # type: (str, str, str) -> str
+def get_mc_key(lock_type, lm_name, key):
 	return __MEMCACHED_KEYS[lock_type].format(
 		name=lm_name,
 		key=key
@@ -74,11 +74,10 @@ class MemcachedLock(object):
 	with MemcachedLock(memcached_client, 'lm_name', 'key'):
 		# critical section
 	"""
-	logger = get_task_logger('univention.listener.async.listener_task')  # type: logging.Logger
+	logger = get_task_logger('univention.listener.async.listener_task')
 
 	def __init__(self, client, lm_name, key, timeout=60, sleep_duration=0.05):
-		# type: (pylibmc.client.Client, str, str, Optional[int], Optional[float]) -> None
-		self._client = client  # type: pylibmc.client.Client
+		self._client = client
 		self.key = get_mc_key('user_lock', lm_name, key=key)
 		self.timeout = timeout
 		self.sleep_duration = sleep_duration
@@ -111,7 +110,6 @@ class MemcachedVariable(object):
 	_deserialize_func = str
 
 	def __init__(self, client, lm_name, var_name, serialize_func=None, deserialize_func=None):
-		# type: (pylibmc.client.Client, str, str, Callable) -> None
 		self._client = client
 		self.lm_name = lm_name
 		self.var_name = var_name
@@ -122,42 +120,42 @@ class MemcachedVariable(object):
 		return '{}({}/{}): {!r})'.format(self.__class__.__name__, self.lm_name, self.var_name, self.get())
 
 	@property
-	def key(self):  # type: () -> str
+	def key(self):
 		return '__{0._var_type}_{0.lm_name}_{0.var_name}'.format(self)
 
-	def get(self):  # type: () -> Any
+	def get(self):
 		res = self._client.get(self.key)
 		return self._deserialize_func(res) if res is not None else None
 
-	def append(self, value):  # type: (str) -> None
+	def append(self, value):
 		"""Atomic memcached operation, no need for a lock."""
 		value = self.serialize(value)
 		appended = self._client.append(self.key, value)
 		if not appended:
 			self._client.set(self.key, value)
 
-	def prepend(self, value):  # type: (str) -> None
+	def prepend(self, value):
 		"""Atomic memcached operation, no need for a lock."""
 		value = self.serialize(value)
 		prepended = self._client.prepend(self.key, value)
 		if not prepended:
 			self._client.set(self.key, value)
 
-	def set(self, value):  # type: (Any) -> None
+	def set(self, value):
 		"""Atomic memcached operation, no need for a lock."""
 		self._client.set(self.key, self.serialize(value))
 	
-	def drop(self):  # type: () -> None
+	def drop(self):
 		"""Atomic memcached operation, no need for a lock."""
 		self._client.delete(self.key)
 
-	def remove(self, value):  # type: (str) -> None
+	def remove(self, value):
 		"""Not an atomic operation - lock needed!"""
 		old_value = self.serialize()
 		new_value = old_value.replace(self.serialize(value), '')
 		self.set(new_value)
 
-	def serialize(self, value=None):  # type: (Optional[str]) -> str
+	def serialize(self, value=None):
 		if value is None:
 			value = self.get()
 		return self._serialize_func(value) if self._serialize_func else value
@@ -170,31 +168,31 @@ class MemcachedQueue(MemcachedVariable):
 	_var_type = 'queue'
 	delimiter = '|'
 
-	def get(self):  # type: () -> List[str]
+	def get(self):
 		return [s for s in (self._client.get(self.key) or '').split(self.delimiter) if s]
 
-	def append(self, value):  # type: (str) -> None
+	def append(self, value):
 		"""Atomic memcached operation, no need for a lock."""
 		value = self.serialize(value)
 		appended = self._client.append(self.key, '{!s}{!s}'.format(self.delimiter, value))
 		if not appended:
 			self._client.set(self.key, value)
 
-	def prepend(self, value):  # type: (str) -> None
+	def prepend(self, value):
 		"""Atomic memcached operation, no need for a lock."""
 		value = self.serialize(value)
 		prepended = self._client.prepend(self.key, '{!s}{!s}'.format(value, self.delimiter))
 		if not prepended:
 			self._client.set(self.key, value)
 
-	def remove(self, value):  # type: (str) -> None
+	def remove(self, value):
 		"""Not an atomic operation - lock needed!"""
 		cur_values = self.get()
 		while value in cur_values:
 			cur_values.remove(value)
 		self.set(self.delimiter.join(self.serialize(v) for v in cur_values))
 
-	def serialize(self, value=None):  # type: (Optional[str]) -> str
+	def serialize(self, value=None):
 		if value is None:
 			return self.delimiter.join(self.serialize(v) for v in self.get())
 		else:
@@ -210,7 +208,7 @@ QueuedTask.__eq__ = lambda self, o: self.id == o.id
 class TasksQueue(MemcachedQueue):
 	_var_type = 'tasks_queue'
 
-	def get(self):  # type: () -> List[QueuedTask]
+	def get(self):
 		q = super(TasksQueue, self).get()
 		return [QueuedTask(*s.split('.')) for s in q]
 
@@ -219,7 +217,6 @@ class ListenerJob(object):
 	_var_type = 'listener_job'
 
 	def __init__(self, client, lm_name, lm_func_type, lm_func, job_id, **kwargs):
-		# type: (pylibmc.client.Client, str, str, str, str, **Dict) -> None
 		assert lm_func_type in (
 			TASK_TYPE_CLEAN, TASK_TYPE_HANDLER, TASK_TYPE_INITILIZE, TASK_TYPE_PRE_RUN, TASK_TYPE_POST_RUN,
 			TASK_TYPE_QUIT
@@ -242,39 +239,39 @@ class ListenerJob(object):
 			', '.join('{!r}={!r}'.format(k, v) for k, v in self.__dict__.items() if not k.startswith('_'))
 		)
 
-	def as_json(self):  # type: () -> str
+	def as_json(self):
 		return json.dumps(dict((k, v) for k, v in self.__dict__.items() if not k.startswith('_')))
 
 	@property
-	def key(self):  # type: () -> str
+	def key(self):
 		return self._get_key(self.lm_name, self.job_id)
 
 	@classmethod
-	def _get_key(cls, lm_name, job_id):  # type: (str, str) -> str
+	def _get_key(cls, lm_name, job_id):
 		return '__{}_{}_{}'.format(cls._var_type, lm_name, job_id)
 
-	def store(self):  # type: () -> None
+	def store(self):
 		"""Atomic memcached operation, no need for a lock."""
 		self._client.set(self.key, self.as_json())
 
-	def drop(self):  # type: () -> None
+	def drop(self):
 		"""Atomic memcached operation, no need for a lock."""
 		self._client.delete(self._get_key(self.lm_name, self.job_id))
 
 	@classmethod
-	def drop_static(cls, client, lm_name, job_id):  # type: (pylibmc.client.Client, str, str) -> None
+	def drop_static(cls, client, lm_name, job_id):
 		"""Atomic memcached operation, no need for a lock."""
 		client.delete(cls._get_key(lm_name, job_id))
 
 	@classmethod
-	def from_memcache(cls, client, lm_name, job_id):  # type: (pylibmc.client.Client, str, str) -> ListenerJob
-		lj_json = client.get(cls._get_key(lm_name, job_id))  # type: str
-		lj = json.loads(lj_json)  # type: Dict[str, str]
+	def from_memcache(cls, client, lm_name, job_id):
+		lj_json = client.get(cls._get_key(lm_name, job_id))
+		lj = json.loads(lj_json)
 		assert lj['lm_name'] == lm_name and lj['job_id'] == job_id, 'Loaded ListenerJob has bad data: {!r}'.format(lj)
 		return cls(client, lj.pop('lm_name'), lj.pop('lm_func_type'), lj.pop('lm_func'), lj.pop('job_id'), **lj)
 
 
-def load_ldap_credentials(client, lm_name):  # type: (pylibmc.client.Client, str) -> Union[Dict[str, str], None]
+def load_ldap_credentials(client, lm_name):
 	try:
 		return MemcachedVariable(
 			client,
@@ -288,7 +285,6 @@ def load_ldap_credentials(client, lm_name):  # type: (pylibmc.client.Client, str
 
 
 def store_ldap_credentials(client, lm_name, ldap_credentials):
-	# type: (pylibmc.client.Client, str, Dict[str, str]) -> None
 	MemcachedVariable(
 		client,
 		lm_name,

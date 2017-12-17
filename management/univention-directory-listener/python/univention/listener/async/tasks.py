@@ -45,13 +45,6 @@ from univention.listener.async.memcached import (
 	TASK_TYPE_CLEAN, TASK_TYPE_HANDLER, TASK_TYPE_INITILIZE, TASK_TYPE_PRE_RUN, TASK_TYPE_POST_RUN, TASK_TYPE_QUIT
 )
 from univention.listener.async.utils import entry_uuid_var_name
-try:
-	from typing import Any, Dict, List, Union, Type
-	from multiprocessing.managers import SyncManager
-	from celery import Task
-	from univention.listener import ListenerModuleHandler
-except ImportError:
-	pass
 
 
 listener_uid = pwd.getpwnam('listener').pw_uid
@@ -67,7 +60,7 @@ def after_setup_task_logger_handler(sender=None, headers=None, body=None, **kwar
 
 
 @shared_task(base=ListenerTask, bind=True)
-def async_listener_job(self, filename, name):  # type: (ListenerTask, str, str) -> None
+def async_listener_job(self, filename, name):
 	self.logger.info('*** Starting to observe task queue (task.id: %r, PID: %r, PPID: %r)...', self.request.id, os.getpid(), os.getppid())
 	while True:
 		found_job = True

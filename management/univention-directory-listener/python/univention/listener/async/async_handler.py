@@ -29,11 +29,6 @@
 from __future__ import absolute_import
 from univention.listener.handler import ListenerModuleHandler
 from univention.listener.async.async_api_adapter import AsyncListenerModuleAdapter
-try:
-	from typing import Any, Optional, Dict, List, Type
-	import types.TracebackType
-except ImportError:
-	pass
 
 
 class AsyncListenerModuleHandler(ListenerModuleHandler):
@@ -72,7 +67,6 @@ class AsyncListenerModuleHandler(ListenerModuleHandler):
 	_support_async = True
 
 	def lock(self, key, timeout=60, sleep_duration=0.05):
-		# type: (str, Optional[int], Optional[int]) -> ListenerTask.MemcachedLock
 		"""
 		Context manager to lock a critical section (aka "monitor").
 
@@ -88,7 +82,7 @@ class AsyncListenerModuleHandler(ListenerModuleHandler):
 		"""
 		pass  # implemented in listener_task.ListenerTask
 
-	def get_shared_var(self, var_name):  # type: (str) -> Any
+	def get_shared_var(self, var_name):
 		"""
 		Retrieve a variable previously stored by set_shared_var().
 
@@ -97,7 +91,7 @@ class AsyncListenerModuleHandler(ListenerModuleHandler):
 		"""
 		pass  # implemented in listener_task.ListenerTask
 
-	def set_shared_var(self, var_name, var_value):  # type: (str, Any) -> None
+	def set_shared_var(self, var_name, var_value):
 		"""
 		Store a variable, so other processes of the same listener module can
 		retrieve it.
@@ -108,5 +102,10 @@ class AsyncListenerModuleHandler(ListenerModuleHandler):
 		"""
 		pass  # implemented in listener_task.ListenerTask
 
-	def _get_ldap_credentials(self):  # type: () -> Dict[str, str]
+	def _get_ldap_credentials(self):
+		"""
+		Get the LDAP credentials that were passed to setdata().
+
+		:return: dict
+		"""
 		pass  # implemented in listener_task.ListenerTask

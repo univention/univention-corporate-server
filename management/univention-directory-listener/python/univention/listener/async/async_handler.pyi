@@ -25,27 +25,22 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-#
 
 from __future__ import absolute_import
-from univention.listener import ListenerModuleHandler
+from typing import Any, Dict
+from univention.listener.handler import ListenerModuleHandler
+from univention.listener.async.memcached import MemcachedLock
+from univention.listener.async.async_api_adapter import AsyncListenerModuleAdapter
 
 
-class ListenerModuleTemplate(ListenerModuleHandler):
-	class Configuration:
-		name = 'unique_name'
-		description = 'listener module description'
-		ldap_filter = '(&(objectClass=inetOrgPerson)(uid=example))'
-		attributes = ['sn', 'givenName']
-
-	def create(self, dn, new):
-		self.logger.debug('dn=%r', dn)
-
-	def modify(self, dn, old, new, old_dn):
-		self.logger.debug('dn=%r', dn)
-		if old_dn:
-			self.logger.debug('it is (also) a move! old_dn=%r', old_dn)
-		self.logger.debug('self.diff(old, new)=%r', self.diff(old, new))
-
-	def remove(self, dn, old):
-		self.logger.debug('dn=%r', dn)
+class AsyncListenerModuleHandler(ListenerModuleHandler):
+	_adapter_class = AsyncListenerModuleAdapter
+	_support_async = True
+	def lock(self, key: str, timeout: int = 60, sleep_duration: float = 0.05) -> MemcachedLock:
+		...
+	def get_shared_var(self, var_name: str) -> Any:
+		...
+	def set_shared_var(self, var_name: str, var_value: Any) -> None:
+		...
+	def _get_ldap_credentials(self) -> Dict[str, str]:
+		...

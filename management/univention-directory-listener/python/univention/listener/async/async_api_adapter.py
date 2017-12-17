@@ -37,12 +37,6 @@ from univention.listener.async.memcached import (
 	store_ldap_credentials, MEMCACHED_SOCKET, ListenerJob, MemcachedLock, QueuedTask, TasksQueue,
 	TASK_TYPE_CLEAN, TASK_TYPE_HANDLER, TASK_TYPE_INITILIZE, TASK_TYPE_PRE_RUN, TASK_TYPE_POST_RUN
 )
-try:
-	from typing import Dict, List, Optional, Tuple, Union
-	import logging
-	from univention.listener import ListenerModuleConfiguration
-except ImportError:
-	pass
 
 
 class AsyncListenerModuleAdapter(ListenerModuleAdapter):
@@ -58,19 +52,18 @@ class AsyncListenerModuleAdapter(ListenerModuleAdapter):
 	_support_async = True
 
 	def __init__(self, module_configuration, *args, **kwargs):
-		# type: (ListenerModuleConfiguration, *Tuple, **Dict) -> None
 		"""
 		:param module_configuration: ListenerModuleConfiguration object
 		"""
 		super(AsyncListenerModuleAdapter, self).__init__(module_configuration, *args, **kwargs)
-		self.lm_name = self.config.get_name()  # type: str
-		self.logger = self.config.logger  # type: logging.Logger
-		self.lm_path = inspect.getsourcefile(self.config.get_listener_module_class())  # type: str
-		self._listener_ldap_cred = dict()  # type: Dict[str, Dict[str, str]]
-		self._memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True, behaviors={'tcp_nodelay': True, 'ketama': True})  # type: pylibmc.client.Client
+		self.lm_name = self.config.get_name()
+		self.logger = self.config.logger
+		self.lm_path = inspect.getsourcefile(self.config.get_listener_module_class())
+		self._listener_ldap_cred = dict()
+		self._memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True, behaviors={'tcp_nodelay': True, 'ketama': True})
 		self.task_queue = TasksQueue(self._memcache, self.lm_name, 'TasksQueue')
 
-	def _setdata(self, key, value):  # type: (str, str) -> None
+	def _setdata(self, key, value):
 		self._listener_ldap_cred.setdefault(self.lm_name, {})[key] = value
 		if all(a in self._listener_ldap_cred[self.lm_name] for a in ('basedn', 'binddn', 'bindpw', 'ldapserver')):
 			self.logger.debug('Saving LDAP credentials for workers...')
@@ -82,7 +75,6 @@ class AsyncListenerModuleAdapter(ListenerModuleAdapter):
 			))
 
 	def _handler(self, dn, new, old, command):
-		# type: (str, Dict[str, List[str]], Dict[str, List[str]], str) -> None
 		if command == 'r':
 			self._saved_old = old
 			self._saved_old_dn = dn
@@ -142,7 +134,7 @@ class AsyncListenerModuleAdapter(ListenerModuleAdapter):
 			exc_type, exc_value, exc_traceback = sys.exc_info()
 			self._module_handler.error_handler(dn, old, new, command, exc_type, exc_value, exc_traceback)
 
-	def _lazy_initialize(self):  # type: () -> None
+	def _lazy_initialize(self):
 		self.logger.debug('Queueing "initialize"...')
 		job_id = self._create_listener_job(
 			TASK_TYPE_INITILIZE,
@@ -151,7 +143,7 @@ class AsyncListenerModuleAdapter(ListenerModuleAdapter):
 		)
 		self.logger.debug('initialize job_id: %r', job_id)
 
-	def _lazy_clean(self):  # type: () -> None
+	def _lazy_clean(self):
 		self.logger.debug('Queueing "clean"...')
 		job_id = self._create_listener_job(
 			TASK_TYPE_CLEAN,
@@ -160,7 +152,7 @@ class AsyncListenerModuleAdapter(ListenerModuleAdapter):
 		)
 		self.logger.debug('clean job_id: %r', job_id)
 
-	def _lazy_pre_run(self):  # type: () -> None
+	def _lazy_pre_run(self):
 		self.logger.debug('Queueing "pre_run"...')
 		job_id = self._create_listener_job(
 			TASK_TYPE_PRE_RUN,
@@ -169,7 +161,7 @@ class AsyncListenerModuleAdapter(ListenerModuleAdapter):
 		)
 		self.logger.debug('pre_run job_id: %r', job_id)
 
-	def _lazy_post_run(self):  # type: () -> None
+	def _lazy_post_run(self):
 		self.logger.debug('Queueing "post_run"...')
 		job_id = self._create_listener_job(
 			TASK_TYPE_POST_RUN,
@@ -179,7 +171,6 @@ class AsyncListenerModuleAdapter(ListenerModuleAdapter):
 		self.logger.debug('initialize post_run: %r', job_id)
 
 	def _create_listener_job(self, task_type, lm_func, entry_uuid, prepend=False, **kwargs):
-		# type: (str, str, Union[str, None], Optional[bool], **Dict) -> str
 		job_id = uuid()
 		ListenerJob(
 			self._memcache,
