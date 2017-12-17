@@ -40,17 +40,9 @@ from celery.utils.log import get_task_logger
 from univention.listener.exceptions import ListenerModuleRuntimeError
 from univention.listener.handler_logging import calculate_loglevel
 from univention.listener.async.utils import get_configuration_object
-from univention.listener.handler_configuration import ListenerModuleConfiguration
 from univention.listener.async.memcached import (
 	get_mc_key, load_ldap_credentials, MemcachedLock, MEMCACHED_SOCKET, TASK_TYPE_HANDLER
 )
-try:
-	from typing import Any, Dict, List, Union, Type
-	from celery import Task
-	from univention.listener.async.async_handler import AsyncListenerModuleHandler
-	from univention.listener.async.memcached import ListenerJob
-except ImportError:
-	pass
 
 
 listener_uid = pwd.getpwnam('listener').pw_uid
@@ -68,16 +60,16 @@ class ListenerTask(Task):
 	set_shared_var() can be used in handler methods to read and write data.
 	"""
 	abstract = True
-	__listener_configs = dict()  # type: Dict[str, ListenerModuleConfiguration]
-	__listener_handlers = dict()  # type: Dict[str, AsyncListenerModuleHandler]
-	_memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True, behaviors={'tcp_nodelay': True, 'ketama': True})  # type: pylibmc.client.Client
+	__listener_configs = dict()
+	__listener_handlers = dict()
+	_memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True, behaviors={'tcp_nodelay': True, 'ketama': True})
 	_is_initialized = False
 	_loglevel = None
-	logger = get_task_logger(__name__)  # type: logging.Logger
+	logger = get_task_logger(__name__)
 	logger.setLevel(logging.INFO)
 
 	@classmethod
-	def get_lm_config_instance(cls, filename, name):  # type: (str, str) -> ListenerModuleConfiguration
+	def get_lm_config_instance(cls, filename, name):
 		cls._set_loglevel(name)
 		if name not in cls.__listener_configs:
 			conf_obj = get_configuration_object(filename)
@@ -86,7 +78,7 @@ class ListenerTask(Task):
 		return cls.__listener_configs[name]
 
 	@classmethod
-	def get_lm_instance(cls, filename, name):  # type: (str, str) -> AsyncListenerModuleHandler
+	def get_lm_instance(cls, filename, name):
 		cls._set_loglevel(name)
 		if name not in cls.__listener_handlers:
 			lm_config = cls.get_lm_config_instance(filename, name)
@@ -103,17 +95,15 @@ class ListenerTask(Task):
 		return cls.__listener_handlers[name]
 
 	@classmethod
-	def _get_shared_var(cls, name, var_name):  # type: (str, str) -> Dict[str, Any]
+	def _get_shared_var(cls, name, var_name):
 		return cls._memcache.get(get_mc_key('shared_var', name, key=var_name))
 
 	@classmethod
-	def _set_shared_var(cls, name, var_name, var_value):  # type: (str, str, Any) -> None
+	def _set_shared_var(cls, name, var_name, var_value):
 		return cls._memcache.set(get_mc_key('shared_var', name, key=var_name), var_value)
 
 	@classmethod
 	def _get_ldap_credentials(cls, lm_config, name):
-		# type: (ListenerModuleConfiguration, str) -> univention.admin.uldap.access
-
 		# When HandlerMetaClass initializes AsyncListenerModuleHandler
 		# through AsyncListenerModuleAdapter it doesn't load the LDAP
 		# credentials from memcache, but installs
@@ -136,7 +126,7 @@ class ListenerTask(Task):
 			cls._loglevel = calculate_loglevel(name)
 			cls.logger.setLevel(getattr(logging, cls._loglevel))
 
-	def run_listener_job(self, lj, lm_instance):  # type: (ListenerJob, AsyncListenerModuleHandler) -> None
+	def run_listener_job(self, lj, lm_instance):
 		self._set_loglevel(lm_instance.config.get_name())
 		func = getattr(lm_instance, lj.lm_func)
 		lm_method_args = inspect.getargspec(func).args

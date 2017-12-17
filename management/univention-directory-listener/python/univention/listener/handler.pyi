@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
-#  stub file
+#  PEP 484 type hints stub file
 #
 # Copyright 2017 Univention GmbH
 #
@@ -29,7 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from typing import Iterable, Iterator, List, Dict, Tuple, Type
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple, Union, Type
 import types
 import inspect
 import logging
@@ -47,13 +47,13 @@ class HandlerMetaClass(type):
 	"""
 	Read handler configuration and invoke adapter.
 	"""
-	def __new__(cls, clsname, bases, attrs):
-		# type: (HandlerMetaClass, str, Tuple[Type], dict) -> Type[ListenerModuleHandler]
-		kls = super(HandlerMetaClass, cls).__new__(cls, clsname, bases, attrs)  # type: Type[ListenerModuleHandler]
+	def __new__(cls, clsname: str, bases: List[Type[Any]], attrs: Dict[str, str]) -> Union[Type[Any], Type[ListenerModuleHandler]]:
+		kls = super(HandlerMetaClass, cls).__new__(cls, clsname, bases, attrs)  # type: Union[Type[Any], Type[ListenerModuleHandler]]
 		if getattr(kls, '_is_listener_module', lambda: False)():
-			kls.config = kls._get_configuration()  # type: ListenerModuleConfiguration
+			kls.config = kls._get_configuration()
 			lm_module = inspect.getmodule(kls)  # type: types.ModuleType
 			adapter_cls = kls._adapter_class  # type: Type[ListenerModuleAdapter]
+		return kls
 
 
 class ListenerModuleHandler(object):
@@ -65,7 +65,7 @@ class ListenerModuleHandler(object):
 		'structuralObjectClass', 'subschemaSubentry'
 	)
 	_support_async = False
-	_udm_module_cache = dict()  # type: Dict
+	_udm_module_cache = dict()  # type: Dict[Tuple[str, str, str, str], simpleLdap]
 	_configuration_class = ListenerModuleConfiguration  # type: Type[ListenerModuleConfiguration]
 	_adapter_class = ListenerModuleAdapter  # type: Type[ListenerModuleAdapter]
 	config = None  # type: ListenerModuleConfiguration
@@ -76,7 +76,7 @@ class ListenerModuleHandler(object):
 	def __init__(self, *args: str, **kwargs: str) -> None:
 		self._lo = None  # type: access
 		self.logger =  get_logger(self.config.get_name())  # type: logging.Logger
-		self._ldap_credentials = None  # type: Dict[str, str]
+		self._ldap_credentials = dict()  # type: Dict[str, str]
 	@classmethod
 	def _get_configuration(cls) -> ListenerModuleConfiguration:
 		...
@@ -99,7 +99,7 @@ class ListenerModuleHandler(object):
 	def as_root() -> Iterator[None]:
 		...
 	@classmethod
-	def diff(cls, old: Dict[str, List], new: Dict[str, List], keys: Iterable[str] = None, ignore_metadata:bool = True) -> dict:
+	def diff(cls, old: Dict[str, List], new: Dict[str, List], keys: Optional[Iterable[str]] = None, ignore_metadata:bool = True) -> dict:
 		...
 	def error_handler(self, dn: str, old: Dict[str, List], new: Dict[str, List], command: str, exc_type: Type[BaseException], exc_value: BaseException, exc_traceback: types.TracebackType) -> None:
 		...

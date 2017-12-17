@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 #
+# Univention Directory Listener
+#  PEP 484 type hints stub file
+#
 # Copyright 2017 Univention GmbH
 #
 # http://www.univention.de/
@@ -28,24 +31,14 @@
 #
 
 from __future__ import absolute_import
-from univention.listener import ListenerModuleHandler
+from celery import shared_task
+from celery.signals import after_setup_task_logger, Signal
+from univention.listener.async.listener_task import ListenerTask
 
 
-class ListenerModuleTemplate(ListenerModuleHandler):
-	class Configuration:
-		name = 'unique_name'
-		description = 'listener module description'
-		ldap_filter = '(&(objectClass=inetOrgPerson)(uid=example))'
-		attributes = ['sn', 'givenName']
-
-	def create(self, dn, new):
-		self.logger.debug('dn=%r', dn)
-
-	def modify(self, dn, old, new, old_dn):
-		self.logger.debug('dn=%r', dn)
-		if old_dn:
-			self.logger.debug('it is (also) a move! old_dn=%r', old_dn)
-		self.logger.debug('self.diff(old, new)=%r', self.diff(old, new))
-
-	def remove(self, dn, old):
-		self.logger.debug('dn=%r', dn)
+@after_setup_task_logger.connect
+def after_setup_task_logger_handler(sender: Signal = None, headers=None, body=None, **kwargs: str) -> None:
+	...
+@shared_task(base=ListenerTask, bind=True)
+def async_listener_job(self: ListenerTask, filename: str, name: str) -> None:
+	...

@@ -33,29 +33,22 @@ import sys
 import json
 import base64
 import inspect
+from functools import wraps
 import listener
 from univention.listener.exceptions import ListenerModuleConfigurationError
-from univention.listener.handler_configuration import ListenerModuleConfiguration
 from univention.listener.handler import ListenerModuleHandler
-from functools import wraps
-
-from listener import configRegistry
-try:
-	from typing import Dict, List, Tuple, Type, Union
-except ImportError:
-	pass
 
 
 __lm_stats_path = '/var/cache/univention-directory-listener/modules_stats_cache.json'
 __lm_path = '/usr/lib/univention-directory-listener/system'
-recode_attributes = (configRegistry.get('ldap/binaryattributes') or 'krb5Key,userCertificate;binary').split(',')
+recode_attributes = (listener.configRegistry.get('ldap/binaryattributes') or 'krb5Key,userCertificate;binary').split(',')
 
 
 class DecodeDictError(Exception):
 	pass
 
 
-def encode_dict(dic):  # type: (Dict[str, List[str, str]]) -> Dict[str, List[str, str]]
+def encode_dict(dic):
 	if dic:
 		for attr in recode_attributes:
 			try:
@@ -69,7 +62,7 @@ def encode_dict(dic):  # type: (Dict[str, List[str, str]]) -> Dict[str, List[str
 	return dic
 
 
-def decode_dict(dic):  # type: (Dict[str, List[str]]) -> Dict[str, List[str]]
+def decode_dict(dic):
 	if dic:
 		for attr in recode_attributes:
 			try:
@@ -109,7 +102,7 @@ def entry_uuid_var_name(entry_uuid):
 	return 'entryUUID_{}'.format(entry_uuid)
 
 
-def get_configuration_object(path):  # type: (str) -> Union[ListenerModuleConfiguration, None]
+def get_configuration_object(path):
 	"""
 	Load a ListenerModuleConfiguration object from  a file if a
 	AsyncListenerModuleHandler is found.
@@ -157,7 +150,7 @@ def get_configuration_object(path):  # type: (str) -> Union[ListenerModuleConfig
 	return None
 
 
-def get_all_configuration_objects():  # type: () -> List[ListenerModuleConfiguration]
+def get_all_configuration_objects():
 	"""
 	Search and load ListenerModuleConfiguration objects of
 	AsyncListenerModuleHandler classes found in
@@ -174,7 +167,7 @@ def get_all_configuration_objects():  # type: () -> List[ListenerModuleConfigura
 	return conf_objects
 
 
-def get_listener_module_file_stats():  # type: () -> Dict[str, str]
+def get_listener_module_file_stats():
 	res = dict()
 	for filename in os.listdir(__lm_path):
 		if filename.endswith('.py'):
@@ -182,7 +175,7 @@ def get_listener_module_file_stats():  # type: () -> Dict[str, str]
 	return res
 
 
-def load_listener_module_cache():  # type: () -> Dict[str, Dict[str, str]]
+def load_listener_module_cache():
 	try:
 		with open(__lm_stats_path, 'rb') as fp:
 			return json.load(fp)
@@ -190,7 +183,7 @@ def load_listener_module_cache():  # type: () -> Dict[str, Dict[str, str]]
 		return dict()
 
 
-def store_listener_module_cache(obj):  # type: (Dict[str, Dict[str, str]]) -> None
+def store_listener_module_cache(obj):
 	try:
 		os.mkdir(os.path.dirname(__lm_stats_path))
 	except OSError:
@@ -199,7 +192,7 @@ def store_listener_module_cache(obj):  # type: (Dict[str, Dict[str, str]]) -> No
 		json.dump(obj, fp, indent=4)
 
 
-def update_listener_module_cache():  # type: () -> Tuple(bool, Dict[str, Dict[str, str]])
+def update_listener_module_cache():
 	changed = False
 
 	lm_file_stats_new = get_listener_module_file_stats()

@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 #
+# Univention Directory Listener
+#  PEP 484 type hints stub file
+#
 # Copyright 2017 Univention GmbH
 #
 # http://www.univention.de/
@@ -25,27 +28,32 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-#
 
 from __future__ import absolute_import
-from univention.listener import ListenerModuleHandler
+from univention.listener.handler_configuration import ListenerModuleConfiguration
+from typing import Callable, Dict, List, Tuple, Union
 
 
-class ListenerModuleTemplate(ListenerModuleHandler):
-	class Configuration:
-		name = 'unique_name'
-		description = 'listener module description'
-		ldap_filter = '(&(objectClass=inetOrgPerson)(uid=example))'
-		attributes = ['sn', 'givenName']
+class DecodeDictError(Exception):
+	pass
 
-	def create(self, dn, new):
-		self.logger.debug('dn=%r', dn)
-
-	def modify(self, dn, old, new, old_dn):
-		self.logger.debug('dn=%r', dn)
-		if old_dn:
-			self.logger.debug('it is (also) a move! old_dn=%r', old_dn)
-		self.logger.debug('self.diff(old, new)=%r', self.diff(old, new))
-
-	def remove(self, dn, old):
-		self.logger.debug('dn=%r', dn)
+def encode_dict(dic: Dict[str, List[str]]) -> Dict[str, List[str]]:
+	...
+def decode_dict(dic: Dict[str, List[str]]) -> Dict[str, List[str]]:
+	...
+def decode_dicts(*dicts: str) -> Callable:
+	...
+def entry_uuid_var_name(entry_uuid: str) -> str:
+	...
+def get_configuration_object(path: str) -> Union[ListenerModuleConfiguration, None]:
+	...
+def get_all_configuration_objects() -> List[ListenerModuleConfiguration]:
+	...
+def get_listener_module_file_stats() -> Dict[str, str]:
+	...
+def load_listener_module_cache() -> Dict[str, Dict[str, str]]:
+	...
+def store_listener_module_cache(obj: Dict[str, Dict[str, str]]) -> None:
+	...
+def update_listener_module_cache() -> Tuple[bool, Dict[str, Dict[str, str]]]:
+	...

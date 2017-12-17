@@ -32,14 +32,6 @@ import inspect
 import listener
 from univention.listener.handler_logging import get_logger
 from univention.listener.exceptions import ListenerModuleConfigurationError
-try:
-	from typing import Any, Dict, List, Optional, Tuple, Type
-	import logging
-	import univention.admin.uldap.access
-	import univention.admin.uldap.position
-	from univention.listener.handler import ListenerModuleHandler
-except ImportError:
-	pass
 
 
 listener.configRegistry.load()
@@ -64,19 +56,19 @@ class ListenerModuleConfiguration(object):
 	2. get_listener_module_instance()
 	"""
 
-	name = ''  # type: str                       # (*) name of the listener module
-	description = ''  # type: str                # (*) description of the listener module
-	ldap_filter = ''  # type: str                # (*) LDAP filter, if matched will trigger the listener module
-	listener_module_class = None  # type: Type[ListenerModuleHandler]   # (**) class that implements the module
-	attributes = []  # type: List[str]           # only trigger module, if any of the listed attributes has changed
-	run_asynchronously = False  # type: bool     # run module in the background
-	parallelism = 1  # type: int                 # run multiple instances of module in parallel (implies run_asynchronously)
+	name = ''                     # (*) name of the listener module
+	description = ''              # (*) description of the listener module
+	ldap_filter = ''              # (*) LDAP filter, if matched will trigger the listener module
+	listener_module_class = None  # (**) class that implements the module
+	attributes = []               # only trigger module, if any of the listed attributes has changed
+	run_asynchronously = False    # run module in the background
+	parallelism = 1               # run multiple instances of module in parallel (implies run_asynchronously)
 	# (*) required
 	# (**) will be set automatically by the handlers metaclass
 
 	_mandatory_attributes = ('name', 'description', 'ldap_filter', 'listener_module_class')
 
-	def __init__(self, *args, **kwargs):  # type: (*Tuple, **Dict) -> None
+	def __init__(self, *args, **kwargs):
 		_keys = self.get_configuration_keys()
 		for k, v in kwargs.items():
 			if k in _keys:
@@ -84,13 +76,13 @@ class ListenerModuleConfiguration(object):
 		self.logger = get_logger(self.get_name())
 		self._run_checks()
 
-	def __repr__(self):  # type: () -> str
+	def __repr__(self):
 		return '{}({})'.format(
 			self.__class__.__name__,
 			', '.join('{}={!r}'.format(k, v) for k, v in self.get_configuration().items())
 		)
 
-	def _run_checks(self):  # type: () -> None
+	def _run_checks(self):
 		allowed_name_chars = string.ascii_letters + string.digits + ',.-_'
 
 		for attr in self._mandatory_attributes:
@@ -109,7 +101,7 @@ class ListenerModuleConfiguration(object):
 		if not inspect.isclass(self.get_listener_module_class()):
 			raise ListenerModuleConfigurationError('Attribute "listener_module_class" must be a class.')
 
-	def get_configuration(self):  # type: () -> dict
+	def get_configuration(self):
 		"""
 		Get the configuration of a listener module.
 
@@ -131,7 +123,7 @@ class ListenerModuleConfiguration(object):
 		return res
 
 	@classmethod
-	def get_configuration_keys(cls):  # type: () -> list
+	def get_configuration_keys(cls):
 		return [
 			'attributes',
 			'description',
@@ -142,26 +134,26 @@ class ListenerModuleConfiguration(object):
 			'run_asynchronously'
 		]
 
-	def get_name(self):  # type: () -> str
+	def get_name(self):
 		return self.name
 
-	def get_description(self):  # type: () -> str
+	def get_description(self):
 		return self.description
 
-	def get_ldap_filter(self):  # type: () -> str
+	def get_ldap_filter(self):
 		return self.ldap_filter
 
-	def get_attributes(self):  # type: () -> list
+	def get_attributes(self):
 		assert isinstance(self.attributes, list)
 		return self.attributes
 
-	def get_parallelism(self):  # type: () -> int
+	def get_parallelism(self):
 		return self.parallelism
 
-	def get_run_asynchronously(self):  # type: () -> bool
+	def get_run_asynchronously(self):
 		return self.run_asynchronously
 
-	def get_listener_module_instance(self, *args, **kwargs):  # type: (*Tuple, **Dict) -> ListenerModuleHandler
+	def get_listener_module_instance(self, *args, **kwargs):
 		"""
 		Get an instance of the listener module.
 
@@ -171,7 +163,7 @@ class ListenerModuleConfiguration(object):
 		"""
 		return self.get_listener_module_class()(self, *args, **kwargs)
 
-	def get_listener_module_class(self):  # type: () -> type
+	def get_listener_module_class(self):
 		"""
 		Get the class to instantiate for a listener module.
 
@@ -179,7 +171,7 @@ class ListenerModuleConfiguration(object):
 		"""
 		return self.listener_module_class
 
-	def get_active(self):  # type: () -> bool
+	def get_active(self):
 		"""
 		If this listener module should run. Detemined by the value of
 		listener/module/<name>/deactivate.
