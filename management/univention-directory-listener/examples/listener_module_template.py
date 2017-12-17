@@ -36,7 +36,7 @@ class ListenerModuleTemplate(ListenerModuleHandler):
 		name = 'unique_name'
 		description = 'listener module description'
 		ldap_filter = '(&(objectClass=inetOrgPerson)(uid=example))'
-		attributes = ['firstname', 'lastname']
+		attributes = ['sn', 'givenName']
 
 	def create(self, dn, new):
 		self.logger.debug('dn: %r', dn)

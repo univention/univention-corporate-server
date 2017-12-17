@@ -40,7 +40,7 @@ class MyAsyncListenerModule(AsyncListenerModuleHandler):
 	class Configuration:
 		name = 'my_async_listener_module'
 		ldap_filter = '(objectClass=inetOrgPerson)'
-		attributes = ['firstname', 'lastname']
+		attributes = ['sn', 'givenName']
 		run_asynchronously = True
 
 	def __init__(self, listener_configuration, *args, **kwargs):
