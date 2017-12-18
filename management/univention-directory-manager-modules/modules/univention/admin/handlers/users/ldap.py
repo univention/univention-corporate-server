@@ -74,6 +74,30 @@ property_descriptions = {
 		identifies=True,
 		readonly_when_synced=True,
 	),
+	'lastname': univention.admin.property(
+		short_description=_('Last name'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		required=True,
+		may_change=True,
+		identifies=False,
+		readonly_when_synced=True,
+		copyable=True,
+	),
+	'name': univention.admin.property(
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.TwoThirdsString,
+		multivalue=False,
+		include_in_default_search=True,
+		required=True,
+		may_change=True,
+		identifies=False,
+		readonly_when_synced=True,
+		copyable=True,
+	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
 		long_description='',
@@ -115,6 +139,7 @@ layout = [
 	Tab(_('General'), _('Basic settings'), layout=[
 		Group(_('User account'), layout=[
 			['username', 'description'],
+			['name', 'lastname'],
 			'password',
 			'disabled',
 		]),
@@ -123,6 +148,8 @@ layout = [
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('username', 'uid', None, univention.admin.mapping.ListToString)
+mapping.register('lastname', 'sn', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('password', 'userPassword', None, univention.admin.mapping.ListToString)
 
