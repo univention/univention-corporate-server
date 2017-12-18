@@ -1826,7 +1826,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			self['uidNumber'] = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
 		self.alloc.append(('uidNumber', self['uidNumber']))
 
-		self['gidNumber'] = self.get_gid_for_primary_group()
+		self.info['gidNumber'] = self.get_gid_for_primary_group()
 
 		self._check_uid_gid_uniqueness()
 
@@ -1837,14 +1837,14 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	def _ldap_pre_ready(self):
 		super(object, self)._ldap_pre_ready()
 
-		# get lock for username
-		try:
-			self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])))
-		except univention.admin.uexceptions.noLock:
-			raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
-
 		if not self.exists() or self.hasChanged('username'):
 			check_prohibited_username(self.lo, self['username'])
+
+			# get lock for username
+			try:
+				self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])))
+			except univention.admin.uexceptions.noLock:
+				raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
 
 		# get lock for mailPrimaryAddress
 		if 'mail' in self.options and self['mailPrimaryAddress']:
