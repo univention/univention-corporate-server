@@ -12,13 +12,14 @@
 import subprocess
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
+import univention.testing.strings as uts
 
 
 if __name__ == '__main__':
 	license_before = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
 
 	with udm_test.UCSTestUDM() as udm:
-		udm.create_user(options=['ldap_pwd'])  # FIXME
+		udm.create_object('users/ldap', username=uts.random_string(), password='univention', name=uts.random_string(), lastname=uts.random_string())
 		license_after = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
 
 	if license_before != license_after:
