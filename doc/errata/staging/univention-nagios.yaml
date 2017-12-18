@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issue(s):
  * A nagios check for the LDAP database maximum size has been added.
    With the LDAP mdb database backend, a maximum size is configured
-   for the database (ucrv ldap/database/mdb/maxsize). If this
+   for the database (ucrv ldap/database/mdb/maxsize). If the
    maximum size is reached, write requests are no longer possible.
    The new pluging checks the effective size of the database and
    returns a warning if 75%, or critical if 90% are in use.
