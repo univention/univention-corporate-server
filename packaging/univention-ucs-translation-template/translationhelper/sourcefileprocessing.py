@@ -62,7 +62,7 @@ class SourceFileSet(object):
 class SourceFilesXgettext(SourceFileSet):
 
 	def _create_po_template(self, gettext_lang, pot_path):
-		dh_umc.create_po_file(pot_path, self.binary_pkg_name, self.files)
+		dh_umc.create_po_file(pot_path, self.binary_pkg_name, self.files, language=gettext_lang)
 
 	def _compile(self, po_path, mo_output_path):
 		message_catalogs.compile_mo(po_path, mo_output_path)

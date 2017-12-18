@@ -1,3 +1,9 @@
+univention-ucs-translation-template (5.0.0-2) unstable; urgency=medium
+
+  * Bug #45885: use javascript xgettext dialect for javascript files
+
+ -- Florian Best <best@univention.de>  Mon, 18 Dec 2017 12:55:00 +0100
+
 univention-ucs-translation-template (5.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
