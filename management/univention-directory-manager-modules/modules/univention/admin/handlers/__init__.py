@@ -1422,7 +1422,7 @@ class simpleLdap(base):
 		for dn, attrs in lo.search(filter_str, base, scope, [], unique, required, timeout, sizelimit):
 			try:
 				result.append(cls(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs))
-			except univention.admin.uexception.base as exc:
+			except univention.admin.uexceptions.base as exc:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'lookup() of object %r failed: %s' % (dn, exc))
 		return result
 
