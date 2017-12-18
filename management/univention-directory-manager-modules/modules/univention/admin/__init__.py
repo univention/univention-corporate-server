@@ -40,14 +40,14 @@ from ldap.filter import filter_format
 import univention.config_registry
 import univention.debug
 
+__all__ = ('configRegistry', 'ucr_overwrite_properties', 'pattern_replace', 'property', 'option', 'ucr_overwrite_module_layout', 'ucr_overwrite_layout', 'extended_attribute', 'tab', 'field', 'policiesGroup', 'modules', 'objects', 'syntax', 'hook', 'mapping')
+
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
 # baseconfig legacy
 baseConfig = configRegistry
-
-# __path__.append("handlers")
 
 ucr_property_prefix = 'directory/manager/web/modules/%s/properties/'
 
@@ -56,7 +56,6 @@ def ucr_overwrite_properties(module, lo):
 	"""
 	Overwrite properties in property_descriptions by UCR variables
 	"""
-	prop_obj = property()
 	ucr_prefix = ucr_property_prefix % module.module
 	if not module:
 		return
@@ -175,16 +174,16 @@ def pattern_replace(pattern, object):
 
 class property:
 	UMLAUTS = {
-			'Ä': 'Ae',
-			'ä': 'ae',
-			'Ö': 'Oe',
-			'ö': 'oe',
-			'Ü': 'Ue',
-			'ü': 'ue',
-			'ß': 'ss',
-			'Æ': 'Ae',
-			'æ': 'ae',
-			'Ð': 'D'
+		'Ä': 'Ae',
+		'ä': 'ae',
+		'Ö': 'Oe',
+		'ö': 'oe',
+		'Ü': 'Ue',
+		'ü': 'ue',
+		'ß': 'ss',
+		'Æ': 'Ae',
+		'æ': 'ae',
+		'Ð': 'D'
 	}
 
 	def __init__(

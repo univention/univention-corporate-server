@@ -108,7 +108,7 @@ def ipv6(string):
 	'0123:4567:89ab:cdef:0123:4567:89ab:cdef'
 	"""
 	assert len(string) == 32, string
-	return ':'.join(string[i:i+4] for i in range(0, 32, 4))
+	return ':'.join(string[i:i + 4] for i in range(0, 32, 4))
 
 
 def calc_ip(rev, subnet):
