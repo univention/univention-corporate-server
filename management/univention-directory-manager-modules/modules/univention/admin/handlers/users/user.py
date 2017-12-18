@@ -1963,14 +1963,12 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		# update displayName automatically if no custom value has been entered by the user and the name changed
 		if self.info.get('displayName') == self.oldinfo.get('displayName') and (self.info.get('firstname') != self.oldinfo.get('firstname') or self.info.get('lastname') != self.oldinfo.get('lastname')):
 			prop_displayName = self.descriptions['displayName']
-			# check if options for property displayName are used
-			if any([x in self.options for x in prop_displayName.options]):
-				old_default_displayName = prop_displayName._replace(prop_displayName.base_default, self.oldinfo)
-				# does old displayName match with old default displayName?
-				if self.oldinfo.get('displayName', '') == old_default_displayName:
-					# yes ==> update displayName automatically
-					new_displayName = prop_displayName._replace(prop_displayName.base_default, self)
-					ml.append(('displayName', self.oldattr.get('displayName', [''])[0], new_displayName))
+			old_default_displayName = prop_displayName._replace(prop_displayName.base_default, self.oldinfo)
+			# does old displayName match with old default displayName?
+			if self.oldinfo.get('displayName', '') == old_default_displayName:
+				# yes ==> update displayName automatically
+				new_displayName = prop_displayName._replace(prop_displayName.base_default, self)
+				ml.append(('displayName', self.oldattr.get('displayName', [''])[0], new_displayName))
 		return ml
 
 	def _modlist_krb_principal(self, ml):
