@@ -183,7 +183,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		for transKey in ['ShortDescription', 'LongDescription']:
 			translations = []
-			keys = self.oldattr.keys()
 			for key in self.oldattr.keys():
 				if key.startswith('univentionUDMOptionTranslation%s;entry-' % transKey):
 					lang = '%s_%s' % (key[-5:-3].lower(), key[-2:].upper())

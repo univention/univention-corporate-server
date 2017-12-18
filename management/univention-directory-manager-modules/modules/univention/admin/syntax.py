@@ -1541,10 +1541,10 @@ class dnsSRVName(complex):
 class dnsPTR(simple):
 	regexp = re.compile(
 		r'''
-		 ^    (?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])
-		 (?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){0,2}$
+		^    (?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])
+		(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){0,2}$
 		|^    [0-9a-f]
-		 (?:\.[0-9a-f]){0,30}$
+		(?:\.[0-9a-f]){0,30}$
 		''', re.VERBOSE
 	)
 	error_message = _("The reversed host name for IPv4 consists of the reversed host address (example: \"4.3\") or for IPv6 in nibble format (example: \"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\").")
@@ -3057,9 +3057,11 @@ class listAttributes(string):
 class timeSpec(select):
 
 	"""Time format used by 'at'."""
-	_times = [(time, time) for hour in range(0, 24)
-				for minute in range(0, 60, 15)
-				for time in ('%02d:%02d' % (hour, minute),)]
+	_times = [
+		(time, time) for hour in range(0, 24)
+		for minute in range(0, 60, 15)
+		for time in ('%02d:%02d' % (hour, minute),)
+	]
 	choices = [
 		('', _('No Reboot')),
 		('now', _('Immediately')),
@@ -3426,11 +3428,9 @@ class policyName(string):
 	def parse(self, text):
 		if self._re.match(text):
 			return text
-		raise univention.admin.uexceptions.valueError(
-			_('May only contain letters (except umlauts), digits, space as well as the '
-			'characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit '
-			'and must not end with space.')
-		)
+		raise univention.admin.uexceptions.valueError(_(
+			'May only contain letters (except umlauts), digits, space as well as the characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit and must not end with space.'
+		))
 
 
 class Portals(UDM_Objects):

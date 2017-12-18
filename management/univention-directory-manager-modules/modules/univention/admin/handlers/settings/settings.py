@@ -34,14 +34,14 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
-translation = univention.admin.localization.translation('univention.admin.handlers.settings')
-_ = translation.translate
-
 import univention.admin.handlers.settings.directory
 import univention.admin.handlers.settings.default
 import univention.admin.handlers.settings.usertemplate
 import univention.admin.handlers.settings.license
 import univention.admin.handlers.settings.xconfig_choices
+
+translation = univention.admin.localization.translation('univention.admin.handlers.settings')
+_ = translation.translate
 
 module = 'settings/settings'
 superordinate = 'settings/cn'
