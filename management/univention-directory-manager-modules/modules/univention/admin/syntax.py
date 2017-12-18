@@ -3216,14 +3216,11 @@ class LDAP_Search(select):
 			self.__dn = dn
 			self.filter = attrs['univentionSyntaxLDAPFilter'][0]
 			self.attributes = attrs['univentionSyntaxLDAPAttribute']
-			if attrs.has_key('univentionSyntaxLDAPBase'):
+			if 'univentionSyntaxLDAPBase' in attrs:
 				self.base = attrs['univentionSyntaxLDAPBase'][0]
 			else:
 				self.__base = ''
-			if attrs.has_key('univentionSyntaxLDAPValue'):
-				self.value = attrs['univentionSyntaxLDAPValue'][0]
-			else:
-				self.value = 'dn'
+			self.value = attrs.get('univentionSyntaxLDAPValue', ['dn'])[0]
 			if attrs.get('univentionSyntaxViewOnly', ['FALSE'])[0] == 'TRUE':
 				self.viewonly = True
 				self.value = 'dn'

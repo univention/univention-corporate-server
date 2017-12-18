@@ -208,7 +208,7 @@ class License(object):
 	def isValidFor(self, module):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
 			'LICENSE: check license for module %s, "%s"' % (module, str(self.types)))
-		if licenses.modules.has_key(module):
+		if module in licenses.modules:
 			mlics = licenses.modules[module]
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
 				'LICENSE: module license: %s' % str(mlics))
@@ -218,7 +218,7 @@ class License(object):
 		return True
 
 	def modifyOptions(self, mod):
-		if licenses.modules.has_key(mod):
+		if mod in licenses.modules:
 			opts = licenses.modules[mod].options(self.types)
 			if opts:
 				module = univention.admin.modules.modules[mod]

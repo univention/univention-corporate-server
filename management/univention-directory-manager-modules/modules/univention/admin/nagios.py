@@ -194,12 +194,12 @@ class Support(object):
 
 	def nagios_ldap_modlist(self, ml):
 		if 'nagios' in self.options:
-			if (not self.info.has_key('ip')) or (not self.info['ip']) or (len(self.info['ip']) == 1 and self.info['ip'][0] == ''):
+			if ('ip' not in self.info) or (not self.info['ip']) or (len(self.info['ip']) == 1 and self.info['ip'][0] == ''):
 				for i, j in self.alloc:
 					univention.admin.allocators.release(self.lo, self.position, i, j)
 				raise univention.admin.uexceptions.nagiosARecordRequired
 			if not self.info.get('domain', None):
-				if (not self.info.has_key('dnsEntryZoneForward')) or (not self.info['dnsEntryZoneForward']) or (len(self.info['dnsEntryZoneForward']) == 1 and self.info['dnsEntryZoneForward'][0] == ''):
+				if ('dnsEntryZoneForward' not in self.info) or (not self.info['dnsEntryZoneForward']) or (len(self.info['dnsEntryZoneForward']) == 1 and self.info['dnsEntryZoneForward'][0] == ''):
 					for i, j in self.alloc:
 						univention.admin.allocators.release(self.lo, self.position, i, j)
 					raise univention.admin.uexceptions.nagiosDNSForwardZoneEntryRequired
@@ -256,7 +256,7 @@ class Support(object):
 				self.__change_fqdn(oldfqdn, newfqdn)
 
 		fqdn = '%s.%s' % (self['name'], configRegistry.get("domainname"))
-		if self.has_key('domain') and self['domain']:
+		if self.has_property('domain') and self['domain']:
 			fqdn = '%s.%s' % (self['name'], self['domain'])
 
 		# remove host from services

@@ -176,7 +176,7 @@ class object(univention.admin.handlers.simpleLdap):
 				# always empty, that is way searching for 'name' causes trouble
 				# we delete the 'name' key in oldinfo so that the "change test"
 				# succeeds
-				if self.oldinfo.has_key('name') and not self.oldinfo['name']:
+				if not self.oldinfo.get('name'):
 					del self.oldinfo['name']
 				self['name'] = cn[0].split('@')[0]
 				self['mailDomain'] = cn[0].split('@')[1]
