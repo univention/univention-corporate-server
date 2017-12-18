@@ -35,12 +35,12 @@
 import ldap
 import sys
 
-import univention.baseconfig
+import univention.config_registry
 
-baseConfig = univention.baseconfig.baseConfig()
-baseConfig.load()
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
 
-baseDN = baseConfig['ldap/base']
+baseDN = ucr['ldap/base']
 
 lo = ldap.open('localhost', 7389)
 bindpw = open('/etc/ldap.secret').read()

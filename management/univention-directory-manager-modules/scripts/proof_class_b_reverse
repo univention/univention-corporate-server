@@ -36,14 +36,14 @@ import ldap
 import string
 import sys
 
-import univention.baseconfig
+import univention.config_registry
 
-baseConfig = univention.baseconfig.baseConfig()
-baseConfig.load()
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
 
-baseDN = baseConfig['ldap/base']
+baseDN = ucr['ldap/base']
 
-if baseConfig['interfaces/eth0/netmask'] != "255.255.0.0":
+if ucr['interfaces/eth0/netmask'] != "255.255.0.0":
 	print 'Only for Class B'
 	sys.exit(1)
 
