@@ -145,9 +145,8 @@ def check_license(lo, dn, list_dns, expired):
 			max = [lo.get(dn)[_license.keys[v][type]][0] for type in types]
 		objs = [lo.searchDn(filter=_license.filters[v][type]) for type in types]
 		num = [mylen(obj) for obj in objs]
-		expired = _license.checkObjectCounts(max, num)
+		_license.checkObjectCounts(max, num)
 		for i in range(len(types)):
-			t = types[i]
 			m = max[i]
 			n = num[i]
 			odn = objs[i]
@@ -155,8 +154,7 @@ def check_license(lo, dn, list_dns, expired):
 				n -= _license.sysAccountsFound
 				if n < 0:
 					n = 0
-			e = i + 1
-			l = _license.names[v][i]
+			ln = _license.names[v][i]
 			if m:
 				if list_dns:
 					out.append("")
@@ -165,7 +163,7 @@ def check_license(lo, dn, list_dns, expired):
 				if v == '2' and i == License.SERVERS:
 					# Ignore the server count
 					ignored = True
-				out.append(format(l, n, m, 0, _license.compare, ignored))
+				out.append(format(ln, n, m, 0, _license.compare, ignored))
 				if list_dns and not max == 'unlimited':
 					for dnout in odn:
 						out.extend(["  %s" % dnout, ])
@@ -213,11 +211,11 @@ def main(argv):
 	out = ['Base DN: %s' % baseDN]
 	try:
 		_license.init_select(lo, 'admin')
-		out.extend(check_license(lo, None, options.has_key('list-dns'), 0))
+		out.extend(check_license(lo, None, 'list-dns' in options, 0))
 	except uexceptions.base:
 		dns = find_licenses(lo, baseDN, 'admin')
 		dn, expired = choose_license(lo, dns)
-		out.extend(check_license(lo, dn, options.has_key('list-dns'), expired))
+		out.extend(check_license(lo, dn, 'list-dns' in options, expired))
 	except Exception:
 		# output any other tracebacks
 		trace_out = traceback.format_exc().splitlines()

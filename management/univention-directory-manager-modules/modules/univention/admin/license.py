@@ -86,7 +86,7 @@ class License(object):
 
 	def __init__(self):
 		if _license:
-			raise 'never create this object directly'
+			raise Exception('never create this object directly')
 		self.new_license = False
 		self.disable_add = 0
 		self._expired = False
