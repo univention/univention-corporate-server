@@ -98,7 +98,7 @@ echo ""
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
-	if [ "$update42_ignoressh" != "yes" ]; then
+	if [ "$update43_ignoressh" != "yes" ]; then
 		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or re-run with \"--ignoressh\" to ignore it."
 		exit 1
@@ -106,7 +106,7 @@ if [ -n "$SSH_CLIENT" ]; then
 fi
 
 if [ "$TERM" = "xterm" ]; then
-	if [ "$update42_ignoreterm" != "yes" ]; then
+	if [ "$update43_ignoreterm" != "yes" ]; then
 		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or re-run with \"--ignoreterm\" to ignore it."
 		exit 1

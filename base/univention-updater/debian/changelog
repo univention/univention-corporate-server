@@ -1,3 +1,9 @@
+univention-updater (13.0.0-2) unstable; urgency=medium
+
+  * Bug #45881: Adapt preup checks for ssh and terminal upgrades
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 18 Dec 2017 09:55:04 +0100
+
 univention-updater (13.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
