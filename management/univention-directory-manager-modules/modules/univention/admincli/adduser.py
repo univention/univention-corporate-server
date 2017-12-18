@@ -155,19 +155,19 @@ def doit(arglist):
 			machine = args[0]
 			if machine[-1] == '$':
 				machine = machine[0:-1]
-			if configRegistry.has_key('samba/defaultcontainer/computer') and configRegistry['samba/defaultcontainer/computer']:
+			if configRegistry.get('samba/defaultcontainer/computer'):
 				position.setDn(configRegistry['samba/defaultcontainer/computer'])
 			else:
 				position.setDn(univention.admin.config.getDefaultContainer(lo, 'computers/windows'))
 		elif scope == 'group':
 			group = args[0]
-			if configRegistry.has_key('samba/defaultcontainer/group') and configRegistry['samba/defaultcontainer/group']:
+			if configRegistry.get('samba/defaultcontainer/group'):
 				position.setDn(configRegistry['samba/defaultcontainer/group'])
 			else:
 				position.setDn(univention.admin.config.getDefaultContainer(lo, 'groups/group'))
 		else:
 			user = args[0]
-			if configRegistry.has_key('samba/defaultcontainer/user') and configRegistry['samba/defaultcontainer/user']:
+			if configRegistry.get('samba/defaultcontainer/user'):
 				position.setDn(configRegistry['samba/defaultcontainer/user'])
 			else:
 				position.setDn(univention.admin.config.getDefaultContainer(lo, 'users/user'))
@@ -225,7 +225,7 @@ def doit(arglist):
 
 	elif action == 'addusertogroup':
 		ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group = 'samba/addusertogroup/filter/group'
-		if configRegistry.has_key(ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group) and configRegistry[ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group]:
+		if configRegistry.get(ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group):
 			if group in configRegistry[ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group].split(','):
 				out.append(status('addusertogroup: filter protects group "%s"' % (codecs.utf_8_encode(group)[0])))
 				return out
@@ -294,9 +294,9 @@ def doit(arglist):
 				userobject.options.remove('samba')
 		userobject.open()
 
-		if userobject.has_key('primaryGroup'):
+		if userobject.has_property('primaryGroup'):
 			userobject['primaryGroup'] = groupobject.dn
-		elif userobject.has_key('machineAccountGroup'):
+		elif userobject.has_property('machineAccountGroup'):
 			userobject['machineAccountGroup'] = groupobject.dn
 		else:
 			out.append('ERROR: unknown group attribute, nothing modified')
