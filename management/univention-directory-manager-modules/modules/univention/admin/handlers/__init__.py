@@ -379,10 +379,15 @@ class base(object):
 		if not isinstance(response, dict):
 			response = {}
 
-		self.__call_with_cancel(self._ldap_pre_ready)
-		self.ready()
+		try:
+			self._ldap_pre_ready()
+			self.ready()
 
-		dn = self._create(response=response, serverctrls=serverctrls)
+			dn = self._create(response=response, serverctrls=serverctrls)
+		except:
+			self._save_cancel()
+			raise
+
 		for c in response.get('ctrls', []):
 			if c.controlType == PostReadControl.controlType:
 				self.oldattr.update(c.entry)
@@ -417,10 +422,15 @@ class base(object):
 		if not isinstance(response, dict):
 			response = {}
 
-		self.__call_with_cancel(self._ldap_pre_ready)
-		self.ready()
+		try:
+			self._ldap_pre_ready()
+			self.ready()
 
-		dn = self._modify(modify_childs, ignore_license=ignore_license, response=response)
+			dn = self._modify(modify_childs, ignore_license=ignore_license, response=response)
+		except:
+			self._save_cancel()
+			raise
+
 		for c in response.get('ctrls', []):
 			if c.controlType == PostReadControl.controlType:
 				self.oldattr.update(c.entry)
@@ -688,6 +698,14 @@ class base(object):
 	def _ldap_post_remove(self):
 		"""Hook which is called after the object removal."""
 		pass
+
+	def _save_cancel(self):
+		try:
+			self.cancel()
+		except (KeyboardInterrupt, SystemExit, SyntaxError):
+			raise
+		except Exception:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "cancel() failed: %s" % (traceback.format_exc(),))
 
 
 def _not_implemented_method(attr):
@@ -987,21 +1005,10 @@ class simpleLdap(base):
 
 		return ml
 
-	def __call_with_cancel(self, func, *args, **kwargs):
-		try:
-			return func(*args, **kwargs)
-		except:
-			exc = sys.exc_info()
-			try:
-				self.cancel()
-			except:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "cancel() failed: %s" % (traceback.format_exc(),))
-			raise exc[0], exc[1], exc[2]
-
 	def _create(self, response=None, serverctrls=None):
 		"""Create the object. Should only be called by :func:`univention.admin.handlers.simpleLdap.create`."""
 		self.exceptions = []
-		self.__call_with_cancel(self._ldap_pre_create)
+		self._ldap_pre_create()
 		self._update_policies()
 		self.call_udm_property_hook('hook_ldap_pre_create', self)
 
@@ -1010,8 +1017,8 @@ class simpleLdap(base):
 		# iterate over all properties and call checkLdap() of corresponding syntax
 		self._call_checkLdap_on_all_property_syntaxes()
 
-		al = self.__call_with_cancel(self._ldap_addlist)
-		al.extend(self.__call_with_cancel(self._ldap_modlist))
+		al = self._ldap_addlist()
+		al.extend(self._ldap_modlist())
 		m = univention.admin.modules.get(self.module)
 
 		# evaluate extended attributes
@@ -1089,7 +1096,7 @@ class simpleLdap(base):
 		# iterate over all properties and call checkLdap() of corresponding syntax
 		self._call_checkLdap_on_all_property_syntaxes()
 
-		ml = self.__call_with_cancel(self._ldap_modlist)
+		ml = self._ldap_modlist()
 		ml = self.call_udm_property_hook('hook_ldap_modlist', self, ml)
 		ml = self._ldap_object_classes(ml)
 
