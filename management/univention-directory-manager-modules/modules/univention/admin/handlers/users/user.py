@@ -1934,8 +1934,8 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	def _modlist_samba_privileges(self, ml):
 		if self.hasChanged('sambaPrivileges'):
 			# add univentionSambaPrivileges objectclass
-			if self['sambaPrivileges']:
-				ml.append(('objectClass', '', 'univentionSambaPrivileges'))  # TODO: check if exists already
+			if self['sambaPrivileges'] and 'univentionSambaPrivileges' not in self.oldattr.get('objectClass', []):
+				ml.append(('objectClass', '', 'univentionSambaPrivileges'))
 		return ml
 
 	def _modlist_cn(self, ml):
@@ -2212,7 +2212,8 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					raise univention.admin.uexceptions.noObject(_('DN given as share is not valid.'))
 
 				if share['host'] and share['path']:
-					ml.append(('objectClass', '', 'automount'))  # TODO: check if exists already
+					if 'automount' not in self.oldattr.get('objectClass', []):
+						ml.append(('objectClass', '', 'automount'))
 
 					am_host = share['host']
 					if not self['homeSharePath'] or type(self['homeSharePath']) not in [types.StringType, types.UnicodeType]:
@@ -2229,7 +2230,8 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					raise univention.admin.uexceptions.noObject(_('Given DN is no share.'))
 
 			if not self['homeShare'] or not share['host'] or not share['path']:
-				ml.append(('objectClass', 'automount', ''))  # TODO: check if not exists
+				if 'automount' not in self.oldattr.get('objectClass', []):
+					ml.append(('objectClass', 'automount', ''))
 				am_old = self.oldattr.get('automountInformation', [''])[0]
 				if am_old:
 					ml.append(('automountInformation', am_old, ''))
