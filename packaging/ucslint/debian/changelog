@@ -1,3 +1,9 @@
+ucslint (7.0.0-2) unstable; urgency=medium
+
+  * Bug #45884: adjust dependency to flake8
+
+ -- Florian Best <best@univention.de>  Mon, 18 Dec 2017 12:40:49 +0100
+
 ucslint (7.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump

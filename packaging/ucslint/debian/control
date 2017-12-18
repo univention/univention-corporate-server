@@ -16,7 +16,7 @@ Depends:
  ${misc:Depends},
  devscripts,
  python-libtre,
- python-flake8,
+ flake8,
  python-apt,
 Conflicts: ucs-tools (<< 1.2.5)
 Description: Check packaging for UCS
