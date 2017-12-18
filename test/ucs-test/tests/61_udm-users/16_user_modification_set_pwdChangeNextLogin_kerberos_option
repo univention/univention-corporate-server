@@ -8,6 +8,7 @@
 ##   - univention-directory-manager-tools
 ## versions:
 ##  4.0-2: skip
+##  4.3-0: fixed
 
 import time
 import univention.testing.udm as udm_test
