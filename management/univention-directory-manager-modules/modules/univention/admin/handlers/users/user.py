@@ -1860,10 +1860,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if self['primaryGroup']:
 			self.newPrimaryGroupDn = self['primaryGroup']
 
-		# Samba
-		self.userSid = self.__generate_user_sid(self['uidNumber'])
-		al.append(('sambaSID', [self.userSid]))
-
 		# Kerberos
 		al.append(('krb5MaxLife', '86400'))
 		al.append(('krb5MaxRenew', '604800'))
@@ -1883,12 +1879,14 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if 'mail' in self.options and self.hasChanged('mailPrimaryAddress'):
 			if self['mailPrimaryAddress']:
 				univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailPrimaryAddress'])
-			else:
+			else:  # FIXME: why is this in the else block? it needs to be done always!
 				univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', self.oldinfo['mailPrimaryAddress'])
 
 		# Samba
 		if self.hasChanged('sambaRID'):
-			univention.admin.allocators.confirm(self.lo, self.position, 'sid', self.userSid)
+			old_sid = self.oldattr.get('sambaSID', [''])[0]
+			if old_sid:
+				univention.admin.allocators.release(self.lo, self.position, 'sid', old_sid)
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('mailPrimaryAddress'):
@@ -2241,9 +2239,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_samba_sid(self, ml):
-		if self.hasChanged('sambaRID') and not hasattr(self, 'userSid'):
-			self.userSid = self.__generate_user_sid(self.oldattr['uidNumber'][0])
-			ml.append(('sambaSID', self.oldattr.get('sambaSID', ['']), [self.userSid]))
+		if not self.exists() or self.hasChanged('sambaRID'):
+			sid = self.__generate_user_sid(self['uidNumber'])
+			ml.append(('sambaSID', self.oldattr.get('sambaSID', ['']), [sid]))
 		return ml
 
 	def _modlist_sambaAcctFlags(self, ml):
