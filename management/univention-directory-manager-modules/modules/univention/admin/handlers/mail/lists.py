@@ -146,13 +146,8 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
-		self['allowedEmailUsers'] = []
-		if self.oldattr.has_key('univentionAllowedEmailUsers'):
-			self['allowedEmailUsers'] = self.oldattr['univentionAllowedEmailUsers']
-
-		self['allowedEmailGroups'] = []
-		if self.oldattr.has_key('univentionAllowedEmailGroups'):
-			self['allowedEmailGroups'] = self.oldattr['univentionAllowedEmailGroups']
+		self['allowedEmailUsers'] = self.oldattr.get('univentionAllowedEmailUsers', [])
+		self['allowedEmailGroups'] = self.oldattr.get('univentionAllowedEmailGroups', [])
 
 		self.save()
 
