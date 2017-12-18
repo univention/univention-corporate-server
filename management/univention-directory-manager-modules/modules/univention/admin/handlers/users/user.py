@@ -1514,8 +1514,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.save()
 
 	def _load_groups(self, loadGroups):
-		self.newPrimaryGroupDn = 0
-		self.oldPrimaryGroupDn = 0
 		if self.exists():
 			self.groupsLoaded = loadGroups
 			if loadGroups:  # this is optional because it can take much time on larger installations, default is true
@@ -1540,7 +1538,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'user: could not find primaryGroup, setting primaryGroup to %s' % primaryGroup)
 
 					self['primaryGroup'] = primaryGroup
-					self.newPrimaryGroupDn = primaryGroup
 					self.__primary_group()
 			else:
 				self['primaryGroup'] = None
@@ -1559,7 +1556,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(cn=%s))', (univention.admin.uldap.explodeDn(number['univentionDefaultGroup'][0], 1)[0],)), base=self.position.getDomain(), scope='domain')
 					if primaryGroupResult:
 						self['primaryGroup'] = primaryGroupResult[0]
-						self.newPrimaryGroupDn = primaryGroupResult[0]
 
 	def _unmap_pwd_change_next_login(self):
 		if self['passwordexpiry']:
@@ -1768,14 +1764,8 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.lo.modify(group, [('memberUid', uids, new_uids)])
 
 	def __primary_group(self):
-		self.newPrimaryGroupDn = 0
-		self.oldPrimaryGroupDn = 0
 		if not self.hasChanged('primaryGroup'):
 			return
-
-		self.newPrimaryGroupDn = self['primaryGroup']
-		if 'primaryGroup' in self.oldinfo:
-			self.oldPrimaryGroupDn = self.oldinfo['primaryGroup']
 
 		primaryGroupNumber = self.get_gid_for_primary_group()
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set gidNumber')
@@ -1789,9 +1779,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if univention.admin.configRegistry.is_true("directory/manager/user/primarygroup/update", True):
 			new_uid = self.info.get('username')
 			group_mod = univention.admin.modules.get('groups/group')
-			grpobj = group_mod.object(None, self.lo, self.position, self.newPrimaryGroupDn)
+			grpobj = group_mod.object(None, self.lo, self.position, self['primaryGroup'])
 			grpobj.fast_member_add([self.dn], [new_uid])
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: adding to new primaryGroup %s (uid=%s)' % (self.newPrimaryGroupDn, new_uid))
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: adding to new primaryGroup %s (uid=%s)' % (self['primaryGroup'], new_uid))
 
 		self.save()
 
@@ -1855,10 +1845,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 	def _ldap_addlist(self):
 		al = super(object, self)._ldap_addlist()
-
-		# Samba, POSIX
-		if self['primaryGroup']:
-			self.newPrimaryGroupDn = self['primaryGroup']
 
 		# Kerberos
 		al.append(('krb5MaxLife', '86400'))
