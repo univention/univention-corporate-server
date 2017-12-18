@@ -80,9 +80,10 @@ class Migration(object):
 			if remove_ldap:
 				ml.append(('objectClass', ['uidObject', 'simpleSecurityObject'], []))
 
-			ocs_to_add = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'organizationalPerson', 'inetOrgPerson', } - ocs
+			ocs_to_add = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', } - ocs
+			ocs_to_remove = set()
 			if ocs_to_add:
-				ml.append(('objectClass', [], list(ocs_to_add)))
+				ml.append(('objectClass', list(ocs_to_remove), list(ocs_to_add)))
 			if not has_kerberos:
 				ml.extend([
 					('krb5PrincipalName', [], ['%s@%s' % (user['uid'][0], realm)]),
@@ -158,7 +159,7 @@ class Migration(object):
 
 		sid = None
 		num = uidNumber
-		if not sid:  # TODO: deadlock forever?
+		while not sid:  # TODO: deadlock forever?
 			try:
 				sid = self.allocate('userSid', num)
 			except univention.admin.uexceptions.noLock:
