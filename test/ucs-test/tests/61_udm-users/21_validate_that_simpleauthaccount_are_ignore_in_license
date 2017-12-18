@@ -18,7 +18,7 @@ if __name__ == '__main__':
 	license_before = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
 
 	with udm_test.UCSTestUDM() as udm:
-		udm.create_user(options=['ldap_pwd'])
+		udm.create_ldap_user()
 		license_after = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
 
 	if license_before != license_after:
