@@ -1468,7 +1468,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return self['disabled'] in ('all', 'posix', 'posix_kerberos', 'windows_posix')
 
 	def __pwd_is_auth_saslpassthrough(self, password):
-		return password.startswith('{SASL}') and univention.admin.baseConfig.get('directory/manager/web/modules/users/user/auth/saslpassthrough', 'no').lower() == 'keep'
+		return password.startswith('{SASL}') and univention.admin.configRegistry.get('directory/manager/web/modules/users/user/auth/saslpassthrough', 'no').lower() == 'keep'
 
 	@property
 	def __forward_copy_to_self(self):
@@ -1742,7 +1742,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				grpobj = group_mod.object(None, self.lo, self.position, group)
 				grpobj.fast_member_add([self.dn], [new_uid])
 
-		if univention.admin.baseConfig.is_true("directory/manager/user/primarygroup/update", True):
+		if univention.admin.configRegistry.is_true("directory/manager/user/primarygroup/update", True):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: check primaryGroup')
 			if not self.exists() and self.info.get('primaryGroup'):
 				grpobj = group_mod.object(None, self.lo, self.position, self.info.get('primaryGroup'))
@@ -1784,7 +1784,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set sambaPrimaryGroupSID')
 		self.lo.modify(self.dn, [('sambaPrimaryGroupSID', 'None', primaryGroupSambaNumber)])
 
-		if univention.admin.baseConfig.is_true("directory/manager/user/primarygroup/update", True):
+		if univention.admin.configRegistry.is_true("directory/manager/user/primarygroup/update", True):
 			new_uid = self.info.get('username')
 			group_mod = univention.admin.modules.get('groups/group')
 			grpobj = group_mod.object(None, self.lo, self.position, self.newPrimaryGroupDn)
@@ -1937,7 +1937,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_cn(self, ml):
-		cnAtts = univention.admin.baseConfig.get('directory/manager/usercn/attributes', "<firstname> <lastname>")
+		cnAtts = univention.admin.configRegistry.get('directory/manager/usercn/attributes', "<firstname> <lastname>")
 		prop = univention.admin.property()
 		old_cn = self.oldattr.get('cn', [''])[0]
 		cn = prop._replace(cnAtts, self)

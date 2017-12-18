@@ -39,12 +39,12 @@ import ldap
 import re
 import time
 
-import univention.baseconfig
+import univention.config_registry
 
-baseConfig = univention.baseconfig.baseConfig()
-baseConfig.load()
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
 
-baseDN = baseConfig['ldap/base']
+baseDN = ucr['ldap/base']
 
 print "using baseDN", baseDN
 
