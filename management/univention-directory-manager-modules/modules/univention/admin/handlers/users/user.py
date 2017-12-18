@@ -2100,7 +2100,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_posix_password(self, ml):
-		if not self.exists() or self.hasChanged('locked', 'password'):
+		if not self.exists() or self.hasChanged(['locked', 'password']):
 			# FIXME: if self['password'] is not a crypted password (e.g. {SASL}, {KINIT}, etc.) and only the locked state changed we need to ignore this.
 			if not self.__pwd_is_auth_saslpassthrough(self.oldattr.get('userPassword', [''])[0]):
 				if self['locked'] in ['all', 'posix']:
@@ -2150,7 +2150,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_shadow_expire(self, ml):
-		if self.hasChanged('disabled') or self.hasChanged('userexpiry'):
+		if self.hasChanged(['disabled', 'userexpiry']):
 			if self.__is_posix_disabled() and self.hasChanged('disabled') and not self.hasChanged('userexpiry'):
 				shadowExpire = '1'
 			elif self['userexpiry']:
@@ -2200,10 +2200,12 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	def _modlist_univention_person(self, ml):
 		# make sure that univentionPerson is set as objectClass when needed
 		if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday')):
-			ml.append(('objectClass', '', 'univentionPerson'))  # TODO: check if exists already
+			if 'univentionPerson' not in self.oldattr.get('objectClass', []):
+				ml.append(('objectClass', '', 'univentionPerson'))
+		return ml
 
 	def _modlist_home_share(self, ml):
-		if self.hasChanged('homeShare') or self.hasChanged('homeSharePath'):
+		if self.hasChanged(['homeShare', 'homeSharePath']):
 			if self['homeShare']:
 				share_mod = univention.admin.modules.get('shares/share')
 				try:
@@ -2251,7 +2253,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_sambaAcctFlags(self, ml):
-		if self.exists() and not self.hasChanged('disabled') and not self.hasChanged('locked'):
+		if self.exists() and not self.hasChanged(['disabled', 'locked']):
 			return ml
 
 		old_flags = self.oldattr.get("sambaAcctFlags", [''])[0]
