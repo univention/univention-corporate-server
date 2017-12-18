@@ -1865,7 +1865,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		al.append(('sambaSID', [self.userSid]))
 
 		# Kerberos
-		al.append(('krb5PrincipalName', [self.krb5_principal()]))
 		al.append(('krb5MaxLife', '86400'))
 		al.append(('krb5MaxRenew', '604800'))
 
@@ -1972,7 +1971,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_krb_principal(self, ml):
-		if self.hasChanged('username'):
+		if not self.exists() or self.hasChanged('username'):
 			ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
 		return ml
 
