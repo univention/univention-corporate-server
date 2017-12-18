@@ -100,7 +100,7 @@ def doit(arglist):
 			object.old_options.remove('samba')
 			object._ldap_object_classes = lambda ml: ml
 
-		if not configRegistry.has_key('samba/charset/unix'):
+		if 'samba/charset/unix' not in configRegistry:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'univention-passwd: no unix-charset given')
 			object['password'] = unicode(pwd, 'utf8')
 		elif configRegistry['samba/charset/unix'] in ['utf8', 'latin']:
@@ -127,8 +127,8 @@ def doit(arglist):
 
 	try:
 		# check for local ldap server connection
-		if configRegistry.has_key('ldap/replication/preferredpassword') and configRegistry['ldap/replication/preferredpassword'].lower() in ['true', 'yes']:
-			if configRegistry.has_key('ldap/server/type') and configRegistry['ldap/server/type'] == 'slave':
+		if configRegistry.is_true('ldap/replication/preferredpassword'):
+			if configRegistry.get('ldap/server/type') == 'slave':
 				if os.path.exists('/etc/ldap/rootpw.conf'):
 					bindpw = open('/etc/ldap/rootpw.conf').read()
 					bindpw = bindpw.split(' ')[1].strip('\n\r"')
@@ -141,7 +141,7 @@ def doit(arglist):
 					object = univention.admin.objects.get(module, co, lo, position=position, dn=dn[0])
 					object.open()
 
-					if not configRegistry.has_key('samba/charset/unix'):
+					if 'samba/charset/unix' not in configRegistry:
 						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'univention-passwd: no unix-charset given')
 						object['password'] = unicode(pwd, 'utf8')
 					elif configRegistry['samba/charset/unix'] in ['utf8', 'latin']:

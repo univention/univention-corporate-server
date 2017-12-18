@@ -271,7 +271,7 @@ def object_input(module, object, input, append=None, remove=None):
 							if j and j.rstrip().lstrip():
 								val.append(j.rstrip().lstrip())
 
-					if not object.has_key(key):
+					if not object.has_property(key):
 						object[key] = []
 					if val in object[key]:
 						out.append('WARNING: cannot append %s to %s, value exists' % (val, key))
@@ -528,14 +528,14 @@ def _doit(arglist):
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	if configRegistry.has_key('ldap/master') and configRegistry['ldap/master']:
+	if configRegistry.get('ldap/master'):
 		co = univention.admin.config.config(configRegistry['ldap/master'])
 	else:
 		co = univention.admin.config.config()
 
 	baseDN = configRegistry['ldap/base']
 
-	if configRegistry.has_key('directory/manager/cmd/debug/level'):
+	if configRegistry.get('directory/manager/cmd/debug/level'):
 		debug_level = configRegistry['directory/manager/cmd/debug/level']
 	else:
 		debug_level = 0
@@ -635,9 +635,9 @@ def _doit(arglist):
 
 			was_set = 0
 			for mod, (properties, options) in information.items():
-				if properties.has_key(name):
+				if name in properties:
 					if properties[name].multivalue:
-						if not input.has_key(name):
+						if name not in input:
 							input[name] = []
 							was_set = 1
 						if value:
@@ -655,9 +655,9 @@ def _doit(arglist):
 			value = _2utf8(val[pos + 1:])
 			was_set = 0
 			for mod, (properties, options) in information.items():
-				if properties.has_key(name):
+				if name in properties:
 					if properties[name].multivalue:
-						if not append.has_key(name):
+						if name not in append:
 							append[name] = []
 						if value:
 							append[name].append(value)
@@ -678,7 +678,7 @@ def _doit(arglist):
 				value = _2utf8(val[pos + 1:])
 			was_set = False
 			for mod, (properties, options) in information.items():
-				if properties.has_key(name):
+				if name in properties:
 					was_set = True
 					if properties[name].multivalue:
 						if value is None:
@@ -706,7 +706,6 @@ def _doit(arglist):
 				if 'univentionPolicy' not in oc['objectClass']:
 					out.append("Object to be referenced is no valid Policy:" + el)
 					return out + ["OPERATION FAILED"]
-
 
 	#+++# ACTION CREATE #+++#
 	if action == 'create' or action == 'new':
@@ -910,8 +909,7 @@ def _doit(arglist):
 					object_modified += 1
 				modlist = []
 				upr = lo.search(base=dn, scope='base', attr=['univentionPolicyReference'])[0][1]
-				if not upr.has_key('univentionPolicyReference'):
-					upr['univentionPolicyReference'] = []
+				upr.setdefault('univentionPolicyReference', [])
 				for el in policy_reference:
 					if val in upr['univentionPolicyReference']:
 						out.append('WARNING: cannot append %s to univentionPolicyReference, value exists' % val)
@@ -1083,7 +1081,7 @@ def _doit(arglist):
 													value.append(subsplit[1])
 											else:
 												subsplit = string.split(line.strip(), '=')
-												if not ddict.has_key(subsplit[0]):
+												if subsplit[0] not in ddict:
 													ddict[subsplit[0]] = []
 												ddict[subsplit[0]].append(subsplit[1])
 
@@ -1096,7 +1094,7 @@ def _doit(arglist):
 									out.append("  Merged Settings:")
 
 									for key in ddict.keys():
-										if not client.has_key(key):
+										if key not in client:
 											client[key] = ddict[key]
 
 									if policies_with_DN:
