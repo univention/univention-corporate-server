@@ -1,3 +1,10 @@
+univention-system-setup (11.0.1-1) unstable; urgency=medium
+
+  * Bug #45895: replace "invoke-rc.d" with "service" because systemd policy
+  	layer prevents starting services in a chroot environment
+
+ -- Florian Best <best@univention.de>  Tue, 19 Dec 2017 11:31:01 +0100
+
 univention-system-setup (11.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
