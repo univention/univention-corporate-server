@@ -37,10 +37,6 @@ eval "$(univention-config-registry shell)"
 # remove init script univention-system-setup-boot-prepare manually from run-level
 update-rc.d -f univention-system-setup-boot-prepare remove
 
-# Activate urandom init script, was deactivated when installing univention-system-setup-boot
-# Runlevel settings should equal initscripts.postinst values
-update-rc.d urandom start 55 S . start 30 0 6 . || exit $?
-
 pam-auth-update --force --package --remove univention-system-setup-boot
 ucr commit /etc/pam.d/*
 
