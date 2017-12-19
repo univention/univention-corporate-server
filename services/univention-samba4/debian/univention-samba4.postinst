@@ -398,6 +398,12 @@ secret: $machine_secret
 					/etc/init.d/bind9 restart
 				fi
 		fi
+
+		if dpkg --compare-versions "$2" lt-nl "7.0.0-1"; then
+				if [ -x /etc/init.d/bind9 ]; then
+					/etc/init.d/bind9 restart
+				fi
+		fi
 	fi
 
 	ntp_socket_dir='/var/lib/samba/ntp_signd'
