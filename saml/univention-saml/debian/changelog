@@ -1,3 +1,9 @@
+univention-saml (5.0.0-3) unstable; urgency=medium
+
+  * Bug #45882: workaround for stunnel start
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Dec 2017 11:11:16 +0100
+
 univention-saml (5.0.0-2) unstable; urgency=medium
 
   * Bug #45882: disbaled options = NO_SSLv2 for now
