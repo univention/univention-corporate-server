@@ -1,3 +1,11 @@
+univention-system-setup (11.0.2-2) unstable; urgency=medium
+
+  * Looks like the DVD has been renamed it a local branch which has been
+    used for a previous DVD build. Anyway, the trusted statement is now
+    always added (Bug #45896)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Dec 2017 21:53:32 +0100
+
 univention-system-setup (11.0.2-1) unstable; urgency=medium
 
   * Added a hack to make the UCS 4.3 DVD trusted (Bug #45896)
