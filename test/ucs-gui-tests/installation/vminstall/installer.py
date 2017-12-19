@@ -262,6 +262,10 @@ class Installer(object):
 
 	def confirm_config(self, expect_login_screen):
 		if not self.vm_config.update_ucs_after_install:
+			# The tab is needed to take away the focus from the text, because
+			# when focused the text is surrounded by a frame, which irritates
+			# tesseract-ocr, sometimes.
+			self.client.keyPress('tab')
 			self.client.mouseClickOnText(self.locale_strings['do_update'])
 		self.client.keyPress('enter')
 
