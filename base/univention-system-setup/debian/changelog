@@ -1,3 +1,9 @@
+univention-system-setup (11.0.2-1) unstable; urgency=medium
+
+  * Added a hack to make the UCS 4.3 DVD trusted (Bug #45896)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Dec 2017 19:56:46 +0100
+
 univention-system-setup (11.0.1-2) unstable; urgency=low
 
   * Bug #45896: Remove deprecated urandom handling

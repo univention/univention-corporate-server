@@ -107,6 +107,9 @@ fi
 ucr commit /etc/apt/sources.list.d/*
 apt-get update
 
+# Bug #45896: Make the UCS 4.3 DVD trusted
+sed -i 's|deb cdrom:\[UCS Linux 4.3 GNU/Linux 4.3-0 _Ucs430_ - Official amd64 DVD Binary-1|deb \[trusted=yes\] cdrom:\[UCS Linux 4.3 GNU/Linux 4.3-0 _Ucs430_ - Official amd64 DVD Binary-1|' /etc/apt/sources.list
+
 # Install the server package
 /usr/lib/univention-system-setup/scripts/05_role/10role
 
