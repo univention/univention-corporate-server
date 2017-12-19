@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import argparse
+import time
 
 from vncautomate import init_logger, VNCConnection
 from vncautomate.cli import add_config_options_to_parser, get_config_from_args
@@ -269,7 +270,12 @@ class Installer(object):
 			self.client.mouseClickOnText(self.locale_strings['do_update'])
 		self.client.keyPress('enter')
 
-		self.client.waitForText(self.locale_strings['setup_successful'], timeout=5000, prevent_screen_saver=True)
+		# The setup will probably take at least 20min, so this sleep reduces the
+		# load while waiting. This sleep is also needed to add to the timeout
+		# of the following waitForText(), where the maximum timeout is 3600s,
+		# due to limitations of vncdotool.
+		time.sleep(20 * 60)
+		self.client.waitForText(self.locale_strings['setup_successful'], timeout=3550, prevent_screen_saver=True)
 		self.client.mouseClickOnText(self.locale_strings['finish'])
 
 		if self.vm_config.role == "basesystem":
