@@ -20,6 +20,7 @@ Build-Depends: debhelper (>= 7.0.50~),
 Package: univention-web-js
 Architecture: all
 Depends: ${misc:Depends},
+ univention-apache,
 Description: Univention Javascript Library
  This package contains the uncompressed UMC Javascript source files
  .

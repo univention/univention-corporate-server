@@ -42,4 +42,9 @@ ucr set "ucs/server/languages/en_US?English" \
 	"ucs/server/languages/de_CH?Deutsch (Schweiz)" \
 	"umc/web/hooks/univention-web-js?default_menu_entries"
 
+if [ "$1" = "configure" && -z "$2" ]; then
+	# new installation
+	deb-systemd-invoke restart apache2.service
+fi
+
 exit 0
