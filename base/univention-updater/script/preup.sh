@@ -301,6 +301,14 @@ fail_if_role_package_will_be_removed ()
 	fi
 }
 
+# begin bug 45861 - create proper runit default link
+mkdir -p /etc/runit/runsvdir || true
+if [ "$(readlink /etc/runit/runsvdir/default)" != "/etc/runit/univention" ]; then
+	test -d /etc/runit/runsvdir/default && rmdir /etc/runit/runsvdir/default || true
+	test -h /etc/runit/runsvdir/default && rm /etc/runit/runsvdir/default || true
+	ln -s /etc/runit/univention /etc/runit/runsvdir/default || true
+fi
+# end bug 45861
 
 # move old initrd files in /boot
 initrd_backup=/var/backups/univention-initrd.bak/
