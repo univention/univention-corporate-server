@@ -1,3 +1,9 @@
+univention-system-setup (11.0.1-2) unstable; urgency=low
+
+  * Bug #45896: Remove deprecated urandom handling
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 19 Dec 2017 14:47:24 +0100
+
 univention-system-setup (11.0.1-1) unstable; urgency=medium
 
   * Bug #45895: replace "invoke-rc.d" with "service" because systemd policy
