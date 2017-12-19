@@ -53,7 +53,7 @@ wait_for_dns () {
 		else
 			echo -n "."
 			# restart bind every 200 seconds
-			expr $count % 200 >/dev/null || invoke-rc.d bind9 restart
+			expr $count % 200 >/dev/null || service bind9 restart
 			sleep 1
 		fi
 		count=$((count+1))
@@ -69,7 +69,7 @@ wait_for_dns () {
 			else
 				echo -n "."
 				# restart bind every 200 seconds
-				expr $count % 200 >/dev/null || invoke-rc.d bind9 restart
+				expr $count % 200 >/dev/null || service bind9 restart
 				sleep 1
 			fi;
 			count=$((count+1))
@@ -101,7 +101,7 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 fi
 
 # Restart the bind9 daemon and wait for a few seconds if the local nameserver should be used
-invoke-rc.d bind9 restart
+service bind9 restart
 if [ -z "$nameserver_external" ] || ! is_ucr_true nameserver/external; then
 	wait_for_dns
 fi

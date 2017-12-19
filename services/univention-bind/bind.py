@@ -223,8 +223,8 @@ def _reload(zones, restart=False, dns_backend='ldap'):
 	# Fall back to restart, which will temporarily interrupt the service
 	if restart:
 		ud.debug(ud.LISTENER, ud.INFO, 'DNS: Restarting BIND')
-		cmd = ['invoke-rc.d', 'bind9', 'restart']
-		pid = os.spawnv(os.P_NOWAIT, '/usr/sbin/invoke-rc.d', cmd)
+		cmd = ['service', 'bind9', 'restart']
+		pid = os.spawnv(os.P_NOWAIT, '/usr/sbin/service', cmd)
 		pids[pid] = cmd
 	return pids
 

@@ -33,6 +33,6 @@
 [ -e /etc/init.d/bind9 ] || exit 0
 
 # Always reload, even for loopback
-invoke-rc.d bind9 reload
+service bind9 reload
 
 exit 0
