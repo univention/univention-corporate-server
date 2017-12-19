@@ -2030,29 +2030,31 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1'
 		unset_pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0'
 
+		old_shadow_last_change = self.oldattr.get('shadowLastChange', [''])[0]
+		old_shadow_max = self.oldattr.get('shadowMax', [''])[0]
+		shadow_last_change = old_shadow_last_change
+		shadow_max = old_shadow_max
+
 		if pwd_change_next_login:
-			# force user to change password on next login
-			shadowMax = "1"
-		elif not pwhistoryPolicy.expiryInterval or unset_pwd_change_next_login:
-			# 1. no pw expiry interval is defined or
-			# 2. remove that user has to change password on next login
-			shadowMax = ''
+			shadow_last_change = '0'
+		elif modifypassword or (unset_pwd_change_next_login and old_shadow_last_change == '0') or (pwhistoryPolicy.expiryInterval and not old_shadow_last_change):
+			# 1. The password was changed
+			# 2. User doesn't need to change password on next login anymore
+			# 3. a password history policy exists but no last password change date
+			shadow_last_change = str(int(long(time.time()) / 3600 / 24))
+
+		if pwhistoryPolicy.expiryInterval:
+			# a password history policy exists
+			shadow_max = pwhistoryPolicy.expiryInterval
 		else:
-			shadowMax = pwhistoryPolicy.expiryInterval
+			# no password history policy exists anymore (could be removed)
+			shadow_max = ''
 
-		old_shadowMax = self.oldattr.get('shadowMax', [''])[0]
-		if old_shadowMax != shadowMax:
-			ml.append(('shadowMax', old_shadowMax, shadowMax))
+		if old_shadow_last_change != shadow_last_change:
+			ml.append(('shadowLastChange', old_shadow_last_change, shadow_last_change))
 
-		now = (long(time.time()) / 3600 / 24)
-		shadowLastChange = ''
-		if pwhistoryPolicy.expiryInterval or unset_pwd_change_next_login:
-			shadowLastChange = str(int(now))
-		if pwd_change_next_login:
-			shadowLastChange = str(int(now) - int(shadowMax) - 1)
-
-		if shadowLastChange:  # FIXME: this check causes, that the value is not unset. Is this correct?
-			ml.append(('shadowLastChange', self.oldattr.get('shadowLastChange', [''])[0], shadowLastChange))
+		if old_shadow_max != shadow_max:
+			ml.append(('shadowMax', old_shadow_max, shadow_max))
 
 		# if pwdChangeNextLogin has been set, set sambaPwdLastSet to 0 (see UCS Bug #17890)
 		# OLD behavior was: set sambaPwdLastSet to 1 (see UCS Bug #8292 and Samba Bug #4313)
