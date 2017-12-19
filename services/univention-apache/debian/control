@@ -10,6 +10,7 @@ Standards-Version: 3.8.2
 Package: univention-apache
 Architecture: all
 Depends: ${misc:Depends},
+ apache2,
  univention-config (>= 8.0.2),
  univention-ssl,
  libapache2-mod-authnz-pam,

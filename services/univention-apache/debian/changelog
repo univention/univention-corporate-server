@@ -1,3 +1,9 @@
+univention-apache (10.0.0-3) unstable; urgency=medium
+
+  * Bug #45893: add explicit dependency on apache2
+
+ -- Florian Best <best@univention.de>  Tue, 19 Dec 2017 11:03:13 +0100
+
 univention-apache (10.0.0-2) unstable; urgency=medium
 
   * Bug #45857: remove apache2-mpm-prefork dependency
