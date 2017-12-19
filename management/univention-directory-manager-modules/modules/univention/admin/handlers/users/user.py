@@ -2039,19 +2039,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if old_shadowMax != shadowMax:
 			ml.append(('shadowMax', old_shadowMax, shadowMax))
 
-		krb5PasswordEnd = ''
-		if pwhistoryPolicy.expiryInterval or pwd_change_next_login:
-			expiry = long(time.time())
-			if not pwd_change_next_login:
-				expiry = expiry + (pwhistoryPolicy.expiryInterval * 3600 * 24)
-			expiry = time.strftime("%d.%m.%y", time.gmtime(expiry))
-			krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
-
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
-		old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', [''])[0]
-		if old_krb5PasswordEnd != krb5PasswordEnd:
-			ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, krb5PasswordEnd))
-
 		now = (long(time.time()) / 3600 / 24)
 		shadowLastChange = ''
 		if pwhistoryPolicy.expiryInterval or unset_pwd_change_next_login:
@@ -2067,6 +2054,19 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		sambaPwdLastSetValue = '0' if pwd_change_next_login else str(long(time.time()))
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaPwdLastSetValue: %s' % sambaPwdLastSetValue)
 		ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
+
+		krb5PasswordEnd = ''
+		if pwhistoryPolicy.expiryInterval or pwd_change_next_login:
+			expiry = long(time.time())
+			if not pwd_change_next_login:
+				expiry = expiry + (pwhistoryPolicy.expiryInterval * 3600 * 24)
+			expiry = time.strftime("%d.%m.%y", time.gmtime(expiry))
+			krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
+
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
+		old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', [''])[0]
+		if old_krb5PasswordEnd != krb5PasswordEnd:
+			ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, krb5PasswordEnd))
 
 		return ml
 
