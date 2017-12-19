@@ -1,3 +1,10 @@
+univention-directory-notifier (12.0.1-1) unstable; urgency=medium
+
+  * Use service instead of invoke-rc.d since systemd policy layer
+    prevents starting services in a chroot environment (Bug #45905)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Dec 2017 22:18:04 +0100
+
 univention-directory-notifier (12.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump

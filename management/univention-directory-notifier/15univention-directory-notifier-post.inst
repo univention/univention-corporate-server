@@ -68,19 +68,19 @@ fi
 start_listener()
 {
 	test -x /etc/init.d/univention-directory-listener && \
-		invoke-rc.d univention-directory-listener start
+		service univention-directory-listener start
 }
 
 stop_listener()
 {
 	test -x /etc/init.d/univention-directory-listener && \
-		invoke-rc.d univention-directory-listener stop
+		service univention-directory-listener stop
 }
 
 restart_listener()
 {
 	test -x /etc/init.d/univention-directory-listener && \
-		invoke-rc.d univention-directory-listener restart
+		service univention-directory-listener restart
 }
 
 if [ "$server_role" = "domaincontroller_master" ]; then
