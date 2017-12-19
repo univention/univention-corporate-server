@@ -1291,12 +1291,14 @@ def unmapSambaKickoffTimeToUserexpiry(oldattr):
 
 
 def unmapPasswordExpiry(oldattr):
-	if 'shadowLastChange' in oldattr and 'shadowMax' in oldattr and len(oldattr['shadowLastChange']) > 0 and len(oldattr['shadowMax']) > 0:
+	if oldattr.get('shadowLastChange') and oldattr.get('shadowMax'):
+		shadow_max = int(oldattr['shadowMax'][0])
+		shadow_last_change = 0
 		try:
-			return posixDaysToDate(int(oldattr['shadowLastChange'][0]) + int(oldattr['shadowMax'][0]))
-		except:
+			shadow_last_change = int(oldattr['shadowLastChange'][0])
+		except ValueError:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'users/user: failed to calculate password expiration correctly, use only shadowMax instead')
-		return posixDaysToDate(int(oldattr['shadowMax'][0]))
+		return posixDaysToDate(shadow_last_change + shadow_max)
 
 
 def _add_disabled(disabled, new_disabled):
@@ -1558,12 +1560,14 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 						self['primaryGroup'] = primaryGroupResult[0]
 
 	def _unmap_pwd_change_next_login(self):
-		if self['passwordexpiry']:
+		if self.oldattr.get('shadowLastChange', [''])[0] == '0':
+			self['pwdChangeNextLogin'] = '1'
+		elif self['passwordexpiry']:
 			today = time.strftime('%Y-%m-%d').split('-')
 			expiry = self['passwordexpiry'].split('-')
 			# expiry.reverse()
 			# today.reverse()
-			if int(string.join(today, '')) >= int(string.join(expiry, '')):
+			if int(''.join(today)) >= int(''.join(expiry)):
 				self['pwdChangeNextLogin'] = '1'
 
 	def _unmap_mail_forward(self):
