@@ -77,8 +77,8 @@ readcontinue ()
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: https://docs.software-univention.de/release-notes-4.2-3-en.html"
-echo " German version:  https://docs.software-univention.de/release-notes-4.2-3-de.html"
+echo " English version: https://docs.software-univention.de/release-notes-4.3-0-en.html"
+echo " German version:  https://docs.software-univention.de/release-notes-4.3-0-de.html"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
@@ -152,12 +152,12 @@ hold_packages=$(LC_ALL=C dpkg -l | grep ^h | awk '{print $2}')
 if [ -n "$hold_packages" ]; then
 	echo "WARNING: Some packages are marked as hold -- this may interrupt the update and result in an inconsistent"
 	echo "system!"
-	echo "Please check the following packages and unmark them or set the UCR variable update42/ignore_hold to yes"
+	echo "Please check the following packages and unmark them or set the UCR variable update43/ignore_hold to yes"
 	for hp in $hold_packages; do
 		echo " - $hp"
 	done
-	if is_ucr_true update42/ignore_hold; then
-		echo "WARNING: update42/ignore_hold is set to true. Skipped as requested."
+	if is_ucr_true update43/ignore_hold; then
+		echo "WARNING: update43/ignore_hold is set to true. Skipped as requested."
 	else
 		exit 1
 	fi
@@ -172,9 +172,9 @@ if [ -e "$(which slapd)" -a "$server_role" = "memberserver" ]; then
 	echo "         or via the package management in the Univention Management Console."
 	echo "         Make sure that only the package slapd gets removed!"
 	echo "         This check can be disabled by setting the UCR variable"
-	echo "         update42/ignore_slapd_on_member to yes."
-	if is_ucr_true update42/ignore_slapd_on_member; then
-		echo "WARNING: update42/ignore_slapd_on_member is set to true. Skipped as requested."
+	echo "         update43/ignore_slapd_on_member to yes."
+	if is_ucr_true update43/ignore_slapd_on_member; then
+		echo "WARNING: update43/ignore_slapd_on_member is set to true. Skipped as requested."
 	else
 		exit 1
 	fi
@@ -218,7 +218,7 @@ pruneOldKernel () {
 		DEBIAN_FRONTEND=noninteractive xargs -r apt-get -o DPkg::Options::=--force-confold -y --force-yes purge
 }
 
-if [ "$update42_pruneoldkernel" = "yes" ]; then
+if [ "$update43_pruneoldkernel" = "yes" ]; then
 	echo -n "Purging old kernel... " | tee -a "$UPDATER_LOG"
 	for kernel_version in 2.6.* 3.2.0 3.10.0 3.16 3.16.0 4.1.0 4.9.0; do
 		pruneOldKernel "$kernel_version" >>"$UPDATER_LOG" 2>&1
@@ -255,12 +255,12 @@ check_space () {
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
 		echo "         This may interrupt the update and result in an inconsistent system!"
 		echo "         If necessary you can skip this check by setting the value of the"
-		echo "         config registry variable update42/checkfilesystems to \"no\"."
+		echo "         config registry variable update43/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
-		if [ "$partition" = "/boot" -a ! "$update42_pruneoldkernel" = "yes" ] ; then
+		if [ "$partition" = "/boot" -a ! "$update43_pruneoldkernel" = "yes" ] ; then
 			echo "         Old kernel versions on /boot can be pruned automatically during"
 			echo "         next update attempt by setting config registry variable"
-			echo "         update42/pruneoldkernel to \"yes\"."
+			echo "         update43/pruneoldkernel to \"yes\"."
 		fi
 		echo ""
 		# kill the running univention-updater process
@@ -310,7 +310,7 @@ fi
 mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
 
 # check space on filesystems
-if [ "$update42_checkfilesystems" != "no" ]
+if [ "$update43_checkfilesystems" != "no" ]
 then
 	check_space "/var/cache/apt/archives" "4000000" "4000 MB"
 	check_space "/boot" "100000" "100 MB"
@@ -385,11 +385,11 @@ if master <= me:
 				echo "         It is strongly recommended that the domain controller master is"
 				echo "         always the first system to be updated during a release update."
 
-				if is_ucr_true update42/ignore_version; then
-					echo "WARNING: update42/ignore_version is set to true. Skipped as requested."
+				if is_ucr_true update43/ignore_version; then
+					echo "WARNING: update43/ignore_version is set to true. Skipped as requested."
 				else
 					echo "This check can be skipped by setting the UCR"
-					echo "variable update42/ignore_version to yes."
+					echo "variable update43/ignore_version to yes."
 					exit 1
 				fi
 			fi
@@ -404,11 +404,11 @@ check_overwritten_umc_templates () {
 	if [ $? = 0 ]; then
 		echo "WARNING: There are modified Apache configuration files in /etc/univention/templates/files/etc/apache2/sites-available/."
 		echo "Please restore the original configuration files before upgrading and apply the manual changes again after the upgrade succeeded."
-		if is_ucr_true update42/ignore_apache_template_checks; then
-			echo "WARNING: update42/ignore_apache_template_checks is set to true. Skipped as requested."
+		if is_ucr_true update43/ignore_apache_template_checks; then
+			echo "WARNING: update43/ignore_apache_template_checks is set to true. Skipped as requested."
 		else
 			echo "This check can be skipped by setting the UCR"
-			echo "variable update42/ignore_apache_template_checks to yes."
+			echo "variable update43/ignore_apache_template_checks to yes."
 			exit 1
 		fi
 	fi
@@ -420,8 +420,8 @@ check_overwritten_umc_templates
 check_app_appliance () {
 	if dpkg -l univention-app-appliance >/dev/null 2>&1
 	then
-		echo "ERROR: The UCS 4.2 update is not yet available for UCS app appliances."
-		echo "       Please try to update your system to UCS 4.2 at a later point."
+		echo "ERROR: The UCS 4.3 update is not yet available for UCS app appliances."
+		echo "       Please try to update your system to UCS 4.3 at a later point."
 		exit 1
 	fi
 }
@@ -436,7 +436,7 @@ esac
 
 
 # autoremove before the update
-if ! is_ucr_true update42/skip/autoremove; then
+if ! is_ucr_true update43/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
 fi
 

@@ -1,3 +1,9 @@
+univention-updater (13.0.0-3) unstable; urgency=medium
+
+  * Bug #45881: changed version post/preup, postinst
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Dec 2017 10:32:17 +0100
+
 univention-updater (13.0.0-2) unstable; urgency=medium
 
   * Bug #45881: Adapt preup checks for ssh and terminal upgrades

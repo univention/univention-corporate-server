@@ -106,8 +106,8 @@ then
 	install univention-self-service-master
 fi
 
-# Update to UCS 4.2 autoremove
-if ! is_ucr_true update42/skip/autoremove; then
+# Update to UCS 4.3 autoremove
+if ! is_ucr_true update43/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
 fi
 
@@ -145,19 +145,19 @@ if [ -f /var/univention-join/joined -a "$server_role" != basesystem ]; then
 		--bindpwdfile "/etc/machine.secret" \
 		--dn "$ldap_hostdn" \
 		--set operatingSystem="Univention Corporate Server" \
-		--set operatingSystemVersion="4.2-3" >>"$UPDATER_LOG" 2>&1
+		--set operatingSystemVersion="4.3-0" >>"$UPDATER_LOG" 2>&1
 fi
 
 # Move to mirror mode for previous errata component
 ucr set \
-	repository/online/component/4.2-2-errata=false \
-	repository/online/component/4.2-2-errata/localmirror=true \
-	repository/online/component/4.2-3-errata=enabled \
-	repository/online/component/4.2-3-errata/description="Errata updates for UCS 4.2-3" \
-	repository/online/component/4.2-3-errata/version="4.2" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/4.2-3-errata=false \
+	repository/online/component/4.2-3-errata/localmirror=true \
+	repository/online/component/4.3-0-errata=enabled \
+	repository/online/component/4.3-0-errata/description="Errata updates for UCS 4.3-0" \
+	repository/online/component/4.3-0-errata/version="4.3" >>"$UPDATER_LOG" 2>&1
 
 # Bug 45328
-# update/register appcenter at this point because 4.2-0 postup still is in 4.1 mode
+# update/register appcenter at this point because 4.3-0 postup still is in 4.2 mode
 univention-app update || true
 univention-app register --app || true
 # Bug 45328
