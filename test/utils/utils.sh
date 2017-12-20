@@ -423,7 +423,7 @@ install_ucs_windows_tools () {
 }
 
 install_selenium () {
-	install_with_unmaintained chromium-browser chromedriver python-pip xvfb
+	install_with_unmaintained chromium-browser chromedriver chromium python-pip xvfb
 	pip install selenium==3.6.0
 }
 
