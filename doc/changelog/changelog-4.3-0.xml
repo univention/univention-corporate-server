@@ -179,6 +179,15 @@
 	<section id="changelog:service">
 		<title>System services</title>
 
+		<section id="changelog:service:mysql">
+			<title>MySQL and MariaDB</title>
+			<itemizedlist>
+				<listitem><simpara>
+						In UCS 4.3, MySQL was replaced with MariaDB. The package <package>univention-mysql</package> will not install a MariaDB server on UCS 4.3. The change is transparent, if the package <package>univention-mysql</package> was installed on UCS 4.2, MariaDB will be installed during the update (<u:bug>45876</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 		<section id="changelog:service:saml">
 			<title>SAML</title>
 			<itemizedlist>
