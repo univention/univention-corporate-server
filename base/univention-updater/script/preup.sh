@@ -310,6 +310,10 @@ if [ "$(readlink /etc/runit/runsvdir/default)" != "/etc/runit/univention" ]; the
 fi
 # end bug 45861
 
+# begin bug 45913 - remove univention-config-wrapper, can be removed after 4.3-0
+dpkg -P univention-config-wrapper >&3 2>&3
+# end bug 45913
+
 # move old initrd files in /boot
 initrd_backup=/var/backups/univention-initrd.bak/
 if [ ! -d "$initrd_backup" ]; then

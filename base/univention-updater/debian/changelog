@@ -1,3 +1,9 @@
+univention-updater (13.0.0-8) unstable; urgency=medium
+
+  * Bug #45913: remove univention-config-wrapper
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Dec 2017 15:21:36 +0100
+
 univention-updater (13.0.0-7) unstable; urgency=medium
 
   * Bug #45881: fixed release name
