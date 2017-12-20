@@ -70,7 +70,7 @@ rotate_logfiles () {
 }
 
 jenkins_updates () {
-	ucr set update42/checkfilesystems=no
+	ucr set update43/checkfilesystems=no
 	local version_version version_patchlevel version_erratalevel target rc=0
 	target="$(echo "${JOB_NAME:-}"|sed -rne 's,.*/UCS-([0-9]+\.[0-9]+-[0-9]+)/.*,\1,p')"
 	test -n "$TARGET_VERSION" && target="$TARGET_VERSION"
