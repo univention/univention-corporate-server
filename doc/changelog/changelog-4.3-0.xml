@@ -16,6 +16,7 @@
 				</para>
 				<itemizedlist>
 					<listitem><simpara>
+							Debian packages have been updated to Debian Stretch (<u:bug>45642</u:bug>, <u:bug>45709</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
@@ -29,6 +30,7 @@
 			<title>OpenLDAP</title>
 			<itemizedlist>
 				<listitem><simpara>
+						OpenLDAP has been updated to version 2.4.45 (<u:bug>44834</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 
@@ -221,7 +223,7 @@
 						The package <package>univention-apache</package> now depends on <package>apache2</package> (<u:bug>45893</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						The mpm_prefork handling in <package>univention-apache</package> has been adapted to debian strech (<u:bug>45857</u:bug>).
+						The mpm_prefork handling in <package>univention-apache</package> has been adapted to Debian Strech (<u:bug>45857</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -262,6 +264,7 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
+						Samba has been updated to version 4.7.3 (<u:bug>45326</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
