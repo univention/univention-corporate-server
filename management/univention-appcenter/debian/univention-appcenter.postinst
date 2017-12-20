@@ -48,9 +48,9 @@ if [ -x /etc/init.d/slapd ] &&
 then
 	if pidof slapd >/dev/null 2>/dev/null
 	then
-		invoke-rc.d slapd stop
+		service slapd stop
 		/usr/share/univention-ldap/ldap_setup_index --add-eq univentionAppID
-		invoke-rc.d slapd start
+		service slapd start
 	else
 		/usr/share/univention-ldap/ldap_setup_index --add-eq univentionAppID
 	fi
