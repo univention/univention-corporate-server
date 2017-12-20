@@ -49,6 +49,7 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The package <package>univention-web</package> now depends on <package>univention-apache</package> (<u:bug>45893</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -89,6 +90,7 @@
 			<title>Modules for system settings / setup wizard</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The script <package>startxwithfirefox</package> now starts services in a chroot environment during the installation (<u:bug>45895</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -216,6 +218,7 @@
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
+						The package <package>univention-apache</package> now depends on <package>apache2</package> (<u:bug>45893</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
