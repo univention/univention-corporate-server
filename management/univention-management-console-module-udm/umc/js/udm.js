@@ -171,7 +171,7 @@ define([
 
 		// internal variables for preloading a DetailPage Bug# 38190
 		_ldapNameDeferred: null,
-		_preloadedObjectType: 'users/user',
+		_preloadedObjectType: 'users/all',
 
 		// internal reference if Page is fully rendered
 		_pageRenderedDeferred: null,
@@ -405,7 +405,7 @@ define([
 					link: link
 				};
 				var warningText = {
-					'users/user'        : _('Users managed here are used by the application "%(name)s" which is currently not installed.', params),
+					'users/all'        : _('Users managed here are used by the application "%(name)s" which is currently not installed.', params),
 					'groups/group'      : _('Groups managed here are used by the application "%(name)s" which is currently not installed.', params),
 					'computers/computer': _('Computers managed here are used by the application "%(name)s" which is currently not installed.', params),
 					'networks/network'  : _('Network objects managed here are used by the application "%(name)s" which is currently not installed.', params),
@@ -549,7 +549,7 @@ define([
 			this.addChild(this._searchPage);
 			this._checkMissingApp();
 			this._loadUCRVariables().then(lang.hitch(this, '_preloadDetailPage'));
-			if (this.moduleFlavor === 'users/user') {
+			if (this.moduleFlavor === 'users/all') {
 				_loadGridViewPreference().then(lang.hitch(this, function(view) {
 					this._setGridView(view);
 				}));
@@ -559,7 +559,7 @@ define([
 		renderGrid: function() {
 			var _addDescriptionText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _('Add a new user.'),
+					'users/all'         : _('Add a new user.'),
 					'groups/group'      : _('Add a new group.'),
 					'computers/computer': _('Add a new computer.'),
 					'networks/network'  : _('Add a new network object.'),
@@ -578,7 +578,7 @@ define([
 			});
 			var _editDescriptionText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _('Edit the user.'),
+					'users/all'        : _('Edit the user.'),
 					'groups/group'      : _('Edit the group.'),
 					'computers/computer': _('Edit the computer.'),
 					'networks/network'  : _('Edit the network object.'),
@@ -597,7 +597,7 @@ define([
 			});
 			var _deleteDescriptionText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _('Delete the selected users.'),
+					'users/all'         : _('Delete the selected users.'),
 					'groups/group'      : _('Delete the selected groups.'),
 					'computers/computer': _('Delete the selected computers.'),
 					'networks/network'  : _('Delete the selected network objects.'),
@@ -619,7 +619,7 @@ define([
 				// generate the caption for the grid footer
 				if (0 === nItemsTotal) {
 					text = {
-						'users/user'        : _('No users could be found.'),
+						'users/all'         : _('No users could be found.'),
 						'groups/group'      : _('No groups could be found.'),
 						'computers/computer': _('No computers could be found.'),
 						'networks/network'  : _('No network objects could be found.'),
@@ -636,7 +636,7 @@ define([
 					}
 				} else {
 					text = {
-						'users/user'        : _.ngettext('One user of %d selected.', '%d users of %d selected.', nItems, nItemsTotal),
+						'users/all'        : _.ngettext('One user of %d selected.', '%d users of %d selected.', nItems, nItemsTotal),
 						'groups/group'      : _.ngettext('One group of %d selected.', '%d groups of %d selected.', nItems, nItemsTotal),
 						'computers/computer': _.ngettext('One computer of %d selected.', '%d computers of %d selected.', nItems, nItemsTotal),
 						'networks/network'  : _.ngettext('One network object of %d selected.', '%d network objects of %d selected.', nItems, nItemsTotal),
@@ -782,7 +782,7 @@ define([
 			}
 
 			var additionalGridViews = {};
-			if (this.moduleFlavor === 'users/user') {
+			if (this.moduleFlavor === 'users/all') {
 				additionalGridViews = {tile: new TileView()};
 			}
 
@@ -820,7 +820,7 @@ define([
 		renderSearchForm: function(containers, hasSuperordinates) {
 			var _objectPropertyInlineLabelText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _('Search users...'),
+					'users/all'        : _('Search users...'),
 					'groups/group'      : _('Search groups...'),
 					'computers/computer': _('Search computers...'),
 					'networks/network'  : _('Search network objects...'),
@@ -1039,7 +1039,7 @@ define([
 					})
 				});
 				layout[1].push('toggleSearch');
-				if (this.moduleFlavor === 'users/user') {
+				if (this.moduleFlavor === 'users/all') {
 					buttons.push({
 						name: 'changeView',
 						showLabel: false,
@@ -1089,7 +1089,7 @@ define([
 		renderTree: function() {
 			var _superordinateNameText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _('Users'),
+					'users/all'         : _('Users'),
 					'groups/group'      : _('Groups'),
 					'computers/computer': _('Computers'),
 					'networks/network'  : _('Network objects'),
@@ -1336,7 +1336,7 @@ define([
 		moveObjects: function(ids) {
 			var _selectLdapPosText = lang.hitch(this, function(n) {
 				var text = {
-					'users/user'        : _.ngettext('Please select an LDAP destination for the user:',
+					'users/all'         : _.ngettext('Please select an LDAP destination for the user:',
 					                                  'Please select an LDAP destination for the %d selected users:', n),
 					'groups/group'      : _.ngettext('Please select an LDAP destination for the group:',
 					                                  'Please select an LDAP destination for the %d selected groups:', n),
@@ -1367,7 +1367,7 @@ define([
 			});
 			var _moveLabelText = lang.hitch(this, function(n) {
 				var text = {
-					'users/user'        : _.ngettext('Move user', 'Move users', n),
+					'users/all'         : _.ngettext('Move user', 'Move users', n),
 					'groups/group'      : _.ngettext('Move group', 'Move groups', n),
 					'computers/computer': _.ngettext('Move computer', 'Move computers', n),
 					'networks/network'  : _.ngettext('Move network object', 'Move network objects', n),
@@ -1674,7 +1674,7 @@ define([
 		removeObjects: function(/*String|String[]*/ _ids, /*Boolean?*/ isContainer, /*Boolean?*/ cleanup, /*Boolean?*/ recursive) {
 			var _msg = lang.hitch(this, function(n) {
 				var text = {
-					'users/user'        : _.ngettext('Please confirm the removal of the user:',
+					'users/all'         : _.ngettext('Please confirm the removal of the user:',
 					                                  'Please confirm the removal of the %d selected users', n),
 					'groups/group'      : _.ngettext('Please confirm the removal of the group:',
 					                                  'Please confirm the removal of the %d selected groups', n),
@@ -1923,7 +1923,7 @@ define([
 
 		_setDetailPage: function(operation, objectType, ldapName, newObjOptions, /*Boolean*/ isClosable, /*String*/ note) {
 			this._destroyDetailPage();
-			var cssClass = this.moduleFlavor == 'users/user' ? 'umcUDMUsersModule' : '';
+			var cssClass = this.moduleFlavor == 'users/all' ? 'umcUDMUsersModule' : '';
 			this._detailPage = new DetailPage({
 				'class': cssClass,
 				umcpCommand: lang.hitch(this, 'umcpCommand'),

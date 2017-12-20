@@ -130,7 +130,7 @@ define([
 		buildRendering: function() {
 			var _labelText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _('Loading user...'),
+					'users/all'         : _('Loading user...'),
 					'groups/group'      : _('Loading group...'),
 					'computers/computer': _('Loading computer...'),
 					'networks/network'  : _('Loading network object...'),

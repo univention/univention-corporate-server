@@ -810,7 +810,7 @@ define([
 		addActiveDirectoryWarning: function() {
 			var _nameText = lang.hitch(this, function(n, value) {
 				var text = {
-					'users/user'        : _.ngettext('The user "%s" is part of the Active Directory domain.',
+					'users/all'         : _.ngettext('The user "%s" is part of the Active Directory domain.',
 					                                  'The users are part of the Active Directory domain.', n, value),
 					'groups/group'      : _.ngettext('The group "%s" is part of the Active Directory domain.',
 					                                  'The groups are part of the Active Directory domain.', n, value),
@@ -1139,7 +1139,7 @@ define([
 
 			// render widgets and full layout
 			var widgets = render.widgets(properties, this);
-			if (this.moduleFlavor === 'users/user' && widgets.username) {
+			if (this.moduleFlavor === 'users/all' && widgets.username) {
 				this.usernameMaxLengthChecker = new UsernameMaxLengthChecker({textBoxWidget: widgets.username});
 			}
 			this._autoUpdateTabTitle(widgets);
@@ -1219,7 +1219,7 @@ define([
 		getButtonDefinitions: function() {
 			var _createLabelText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _('Create user'),
+					'users/all'         : _('Create user'),
 					'groups/group'      : _('Create group'),
 					'computers/computer': _('Create computer'),
 					'networks/network'  : _('Create network object'),
@@ -1272,7 +1272,7 @@ define([
 			}];
 
 			var extendableModules = [
-				'users/user',
+				'users/all',
 				'groups/group',
 				'computers/computer'
 			];
@@ -1809,7 +1809,7 @@ define([
 		},
 
 		_showUsernameTooLongWarning: function(changedValues) {
-			if (this.moduleFlavor !== 'users/user') {
+			if (this.moduleFlavor !== 'users/all') {
 				return;
 			}
 
@@ -1898,7 +1898,7 @@ define([
 		getAlteredValues: function() {
 			var _consoleErrorText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _('Failed to retrieve the user from the server.'),
+					'users/all'         : _('Failed to retrieve the user from the server.'),
 					'groups/group'      : _('Failed to retrieve the group from the server.'),
 					'computers/computer': _('Failed to retrieve the computer from the server.'),
 					'networks/network'  : _('Failed to retrieve the network object from the server.'),

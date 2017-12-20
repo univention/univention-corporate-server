@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=4
+VERSION=5
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -41,7 +41,12 @@ joinscript_init
 umc_init
 umc_operation_create "udm-all" "UDM - All operations" "" "udm/*"
 
-umc_operation_create "udm-users" "UDM - Users" "users/user" "udm/*:objectType=users/user" "udm/*:!objectType" \
+if [ "$JS_LAST_EXECUTED_VERSION" = 4 ]; then
+	univention-directory-manager settings/umc_operationset remove "$@" \
+		--dn "cn=udm-users,cn=operations,cn=UMC,cn=univention,$ldap_base" || die
+fi
+
+umc_operation_create "udm-users" "UDM - Users" "users/all" "udm/*:objectType=users/user" "udm/*:objectType=users/ldap" "udm/*:!objectType" \
 	"udm/query:objectType=groups/group" "udm/properties:objectType=groups/group" "udm/values:objectType=groups/group" \
 	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 

@@ -37,46 +37,46 @@ eval "$(ucr shell ldap/base)"
 umc-acls allow -c "udm/*"
 
 # get a user
-umc-client -U root -P univention COMMAND udm/get -f users/user -l -o "uid=test1,cn=users,$ldap_base"
+umc-client -U root -P univention COMMAND udm/get -f users/all -l -o "uid=test1,cn=users,$ldap_base"
 
 # remove a user
-umc-client -t -U root -P univention COMMAND udm/remove -f users/user -l -o uid=crunchy,cn=users,dc=univention,dc=qa
+umc-client -t -U root -P univention COMMAND udm/remove -f users/all -l -o uid=crunchy,cn=users,dc=univention,dc=qa
 
 # search for ALL users
-umc-client -U root -P univention COMMAND udm/query -f users/user -o objectType=users/user -o objectProperty=name -o objectPropertyValue="*" -o container="cn=users,$ldap_base"
+umc-client -U root -P univention COMMAND udm/query -f users/all -o objectType=users/user -o objectProperty=name -o objectPropertyValue="*" -o container="cn=users,$ldap_base"
 
 # get users/user properties
-umc-client -U root -P univention COMMAND udm/properties -f users/user
+umc-client -U root -P univention COMMAND udm/properties -f users/all
 
 # list users/user containers
-umc-client -U root -P univention COMMAND udm/containers -f users/user
+umc-client -U root -P univention COMMAND udm/containers -f users/all
 
 # list users/user templates
-umc-client -U root -P univention COMMAND udm/templates -f users/user -o objectType=users/user
+umc-client -U root -P univention COMMAND udm/templates -f users/all -o objectType=users/user
 
 # create a user
-umc-client -U root -P univention command udm/add -f users/user -l -e -o '{ "options" : { "container" : "cn=users,dc=univention,dc=qa", "objectType" : "users/user" }, "object" : { "username" : "crunchy2" , "lastname" : "crunchy2", "password" : "univention" } }'
+umc-client -U root -P univention command udm/add -f users/all -l -e -o '{ "options" : { "container" : "cn=users,dc=univention,dc=qa", "objectType" : "users/user" }, "object" : { "username" : "crunchy2" , "lastname" : "crunchy2", "password" : "univention" } }'
 
 # modify a user
-umc-client -U root -P univention command udm/put -f users/user -l -e -o '{ "options" : {}, "object" : { "ldap-dn" : "uid=crunchy2,cn=users,dc=univention,dc=qa", "lastname" : "is cool" , "firstname" : "UMC" } }'
+umc-client -U root -P univention command udm/put -f users/all -l -e -o '{ "options" : {}, "object" : { "ldap-dn" : "uid=crunchy2,cn=users,dc=univention,dc=qa", "lastname" : "is cool" , "firstname" : "UMC" } }'
 
 # validate properties
-umc-client -U root -P univention command udm/validate -f users/user -e -o '{ "objectType" : "users/user", "properties" : { "username" : "admin", } }'
+umc-client -U root -P univention command udm/validate -f users/all -e -o '{ "objectType" : "users/user", "properties" : { "username" : "admin", } }'
 
 # return default search value for specific property
-umc-client -U root -P univention COMMAND udm/values -f users/user -o objectType=users/user -o objectProperty=overridePWHistory
+umc-client -U root -P univention COMMAND udm/values -f users/all -o objectType=users/user -o objectProperty=overridePWHistory
 
 # list dhcp superordinates
-umc-client -U root -P univention COMMAND udm/containers -f users/user
+umc-client -U root -P univention COMMAND udm/containers -f users/all
 
 # search for DHCP objects
 umc-client -U root -P univention COMMAND udm/query -f dhcp/dhcp -o objectProperty=name -o objectPropertyValue="*" -o superordinate=cn=univention.qa,cn=dhcp,dc=univention,dc=qa
 
 # list sub-container
-umc-client -U root -P univention COMMAND udm/nav/container/query -f users/user -o container=cn=univention,dc=univention,dc=qa
+umc-client -U root -P univention COMMAND udm/nav/container/query -f users/all -o container=cn=univention,dc=univention,dc=qa
 
 # list objects of a given container
-umc-client -U root -P univention COMMAND udm/nav/object/query -f users/user -o container=cn=univention,dc=univention,dc=qa
+umc-client -U root -P univention COMMAND udm/nav/object/query -f users/all -o container=cn=univention,dc=univention,dc=qa
 
 # policy types for given object type
 umc-client -t -U root -P univention COMMAND udm/policies -o objectType=users/user
@@ -85,10 +85,10 @@ umc-client -t -U root -P univention COMMAND udm/policies -o objectType=users/use
 umc-client -t -U root -P univention COMMAND udm/object/policies -o objectType=users/user -o policyType=policies/pwhistory -o objectDN=uid=Administrator,cn=users,dc=univention,dc=qa
 
 # list of reports
-umc-client -U Administrator -P univention command udm/reports/query -f users/user
+umc-client -U Administrator -P univention command udm/reports/query -f users/all
 
 # create report
-umc-client -U Administrator -P univention command udm/reports/create -f users/user -e -o '{ "report": "Standard Report", "objects" : [ "uid=crunchy,cn=users,dc=ucs3,dc=test", "uid=stefan,cn=users,dc=ucs3,dc=test" ] }'
+umc-client -U Administrator -P univention command udm/reports/create -f users/all -e -o '{ "report": "Standard Report", "objects" : [ "uid=crunchy,cn=users,dc=ucs3,dc=test", "uid=stefan,cn=users,dc=ucs3,dc=test" ] }'
 
 # move a user
 umc-client -U Administrator -P univention command udm/move -l -e -o "{ 'options' : { 'container' : 'cn=test,cn=users,dc=ucs3,dc=test' }, 'object' : 'uid=Müller,cn=users,dc=ucs3,dc=test' }"

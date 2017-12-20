@@ -232,7 +232,7 @@ define([
 		getCurrentObjectTypeName: function() {
 			var _returnText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _('users'),
+					'users/all'         : _('users'),
 					'groups/group'      : _('groups'),
 					'computers/computer': _('computers'),
 					'networks/network'  : _('network objects'),
@@ -311,7 +311,7 @@ define([
 		_getOptionSelectionPage: function() {
 			var _templateLabelText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _('User template'),
+					'users/all'         : _('User template'),
 					'groups/group'      : _('Group template'),
 					'computers/computer': _('Computer template'),
 					'networks/network'  : _('Network object template'),
@@ -468,7 +468,7 @@ define([
 		getObjectTypeName: function() {
 			var _defaultObjectTypeNameText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _('user'),
+					'users/all'         : _('user'),
 					'groups/group'      : _('group'),
 					'computers/computer': _('computer'),
 					'networks/network'  : _('network object'),

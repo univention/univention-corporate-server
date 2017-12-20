@@ -4,7 +4,7 @@
 		<name>Univention Directory Manager</name>
 		<description>Manages all UDM modules</description>
 		<keywords></keywords>
-		<flavor priority="50" id="users/user">
+		<flavor priority="50" id="users/all">
 			<name>Users</name>
 			<description>Management of domain users</description>
 			<keywords>users</keywords>

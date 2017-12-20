@@ -119,7 +119,7 @@ define([
 
 		_widgetsLabelText: function(n) {
 			var text = {
-				'users/user'        : _.ngettext('Report for user', 'Report for %d users', n),
+				'users/all'         : _.ngettext('Report for user', 'Report for %d users', n),
 				'groups/group'      : _.ngettext('Report for group', 'Report for %d groups', n),
 				'computers/computer': _.ngettext('Report for computer', 'Report for %d computers', n),
 				'networks/network'  : _.ngettext('Report for network object', 'Report for %d network objects', n),
@@ -140,7 +140,7 @@ define([
 		onDone: function(options) {
 			var _waitingContentText = lang.hitch(this, function(n) {
 				var text = {
-					'users/user'        : _.ngettext('Generating user report for one object.',
+					'users/all'         : _.ngettext('Generating user report for one object.',
 					                                 'Generating user report for %d objects.', n),
 					'groups/group'      : _.ngettext('Generating group report for one object.',
 					                                 'Generating group report for %d objects.', n),

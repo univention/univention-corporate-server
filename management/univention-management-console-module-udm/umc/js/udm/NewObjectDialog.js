@@ -88,7 +88,7 @@ define([
 
 			var _titleText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _('Add a new user.'),
+					'users/all'         : _('Add a new user.'),
 					'groups/group'      : _('Add a new group.'),
 					'computers/computer': _('Add a new computer.'),
 					'networks/network'  : _('Add a new network object.'),
@@ -217,7 +217,7 @@ define([
 							properties: detailsValues.properties,
 							autoHeight: true
 						});
-						if (this.moduleFlavor === 'users/user') {
+						if (this.moduleFlavor === 'users/all') {
 							new UsernameMaxLengthChecker({textBoxWidget: createWizard.getWidget('username')});
 						}
 						// insert at position 1. If another createWizard is added
