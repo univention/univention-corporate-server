@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
 joinscript_init
@@ -38,6 +38,7 @@ joinscript_init
 eval "$(univention-config-registry shell)"
 
 modules="users/user
+users/ldap
 groups/group
 computers/ipmanagedclient
 computers/trustaccount
@@ -71,6 +72,10 @@ univention-directory-manager settings/extended_attribute create "$@" \
 	--set disableUDMWeb=1 \
 	--set multivalue=1 \
 	$mods || die
+
+if [ "$JS_LAST_EXECUTED_VERSION" = 2 ]; then
+	univention-directory-manager settings/extended_attribute modify "$@" --dn "cn=objectFlag,cn=custom attributes,cn=univention,$ldap_base" --append modules="users/ldap"
+fi
 
 if [ "$JS_LAST_EXECUTED_VERSION" = 1 ]; then
 	univention-directory-manager settings/extended_attribute modify "$@" --dn "cn=objectFlag,cn=custom attributes,cn=univention,$ldap_base" --set multivalue=1
