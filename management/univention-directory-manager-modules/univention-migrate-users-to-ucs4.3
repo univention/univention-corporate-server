@@ -31,6 +31,8 @@
 import pprint
 import argparse
 
+import ldap.controls.simple
+
 import univention.admin.uldap
 import univention.admin.allocators
 import univention.admin.uexceptions
@@ -108,10 +110,13 @@ class Migration(object):
 			if remove_ldap:
 				ml.append(('objectClass', ['uidObject', 'simpleSecurityObject'], []))
 
-			ocs_to_add = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', } - ocs
+			serverctrls = None
+			ocs_to_add = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'inetOrgPerson', 'organizationalPerson'} - ocs
 			ocs_to_remove = set()
 			if ocs_to_add:
 				ml.append(('objectClass', list(ocs_to_remove), list(ocs_to_add)))
+			if ocs_to_add & {'inetOrgPerson', 'organizationalPerson'}:
+				serverctrls = [ldap.controls.simple.RelaxRulesControl()]
 			if not has_kerberos:
 				ml.extend([
 					('krb5PrincipalName', [], ['%s@%s' % (user['uid'][0], realm)]),
@@ -129,15 +134,15 @@ class Migration(object):
 				ml.append(('sambaSID', [], [self.get_user_sid(user['uid'][0], uidNumber)]))
 
 			if ml:
-				self.modify(dn, ml)
+				self.modify(dn, ml, serverctrls)
 				self.confirm()
 
-	def modify(self, dn, ml):
+	def modify(self, dn, ml, serverctrls=None):
 		print 'Modifying ', dn
 		pprint.pprint(ml)
 		print
 		if not self.args.check:
-			lo.modify(dn, ml, ignore_license=True)
+			lo.modify(dn, ml, serverctrls=serverctrls, ignore_license=True)
 
 	def allocate(self, name, value=None):
 		if name == 'userSid':
