@@ -1,3 +1,9 @@
+univention-samba4 (7.0.0-3) unstable; urgency=medium
+
+  * Bug #45326: Provide samba init script which used to be the samba package
+
+ -- Arvid Requate <requate@univention.de>  Wed, 20 Dec 2017 15:57:48 +0100
+
 univention-samba4 (7.0.0-2) unstable; urgency=medium
 
   * Bug #45326: Adjust to Samba 4.7 / bind 9.10

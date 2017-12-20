@@ -11,7 +11,8 @@ Build-Depends: debhelper (>> 7),
 
 Package: univention-samba4
 Architecture: any
-Conflicts: univention-samba
+Conflicts: univention-samba,
+ samba (<<2:4.7.3+dfsg-1)
 Depends: ${misc:Depends},
  univention-config (>= 8.0.2-1),
  univention-directory-manager-tools (>> 7.0.147),
