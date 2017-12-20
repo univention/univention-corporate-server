@@ -1,3 +1,10 @@
+univention-management-console (9.0.80-87) unstable; urgency=medium
+
+  * Bug #45395: Add UCR variable to remove tracebacks from
+    error messages
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 20 Dec 2017 16:57:09 +0100
+
 univention-management-console (9.0.80-86) unstable; urgency=medium
 
   * Bug #45424: Fix iframe error with IE 11
