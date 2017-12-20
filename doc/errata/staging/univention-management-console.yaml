@@ -3,9 +3,11 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-management-console
-fix: 9.0.80-86A~4.2.0.201712131742
+fix: 
 desc: |
  This update addresses the following issue(s):
  * A wrong redirect with Single Sign-On on IE 11
    has been prevented.
-bug: [45424]
+ * Displaying of python stack traces in UMC can now be prevented by setting
+   the UCR variable umc/http/show_tracebacks to false.
+bug: [45424, 45395]

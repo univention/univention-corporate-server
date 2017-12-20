@@ -132,15 +132,18 @@ _ = Translation('univention.management.console').translate
 
 
 class UMC_OptionTypeError(UMC_Error):
-	pass  # deprecated, please use .sanitizers instead!
+	"""deprecated, please use .sanitizers instead!"""
+	msg = _('An option has the wrong type.')
 
 
 class UMC_OptionMissing(UMC_Error):
-	pass  # deprecated, please use .sanitizers instead!
+	"""deprecated, please use .sanitizers instead!"""
+	msg = _('One or more options are missing.')
 
 
 class UMC_CommandError(UMC_Error):
-	pass  # deprecated, please use .sanitizers instead!
+	"""deprecated, please use .sanitizers instead!"""
+	msg = _('The command has failed.')
 
 
 class Base(signals.Provider, Translation):
@@ -300,6 +303,7 @@ class Base(signals.Provider, Translation):
 		message = ''
 		result = None
 		headers = None
+		error = None
 		try:
 			try:
 				self.error_handling(etype, exc, etraceback)
@@ -311,23 +315,22 @@ class Base(signals.Provider, Translation):
 			status = exc.status
 			result = exc.result
 			headers = exc.headers
-			if isinstance(exc, UMC_OptionTypeError):
-				message = self._('An option passed to %(method)s has the wrong type: %(exc)s') % {'method': method, 'exc': exc}
-			elif isinstance(exc, UMC_OptionMissing):
-				message = self._('One or more options to %(method)s are missing: %(exc)s') % {'method': method, 'exc': exc}
-			elif isinstance(exc, UMC_CommandError):
-				message = self._('The command has failed: %s') % (exc,)
-			else:
-				message = str(exc)
+			message = str(exc)
+			if not exc.traceback and exc.with_traceback:
+				exc.traceback = traceback.format_exc().decode('utf-8', 'replace')
+			error = {
+				'command': method,
+				'traceback': exc.traceback,
+			}
 		except:
 			status = MODULE_ERR_COMMAND_FAILED
-			message = self._("Execution of command '%(command)s' has failed:\n\n%(text)s")
-			message = message % {
-				'command': ('%s %s' % (' '.join(request.arguments), request.flavor or '')).strip().decode('utf-8', 'replace'),
-				'text': traceback.format_exc().decode('utf-8', 'replace')
+			error = {
+				'command': ('%s %s' % (' '.join(request.arguments), '(%s)' % (request.flavor,) if request.flavor else '')).strip().decode('utf-8', 'replace'),
+				'traceback': traceback.format_exc().decode('utf-8', 'replace')
 			}
+			message = self._('Internal server error during "%(command)".') % error
 		MODULE.process(str(message))
-		self.finished(request.id, result, message, status=status, headers=headers)
+		self.finished(request.id, result, message, status=status, headers=headers, error=error)
 
 	def default_response_headers(self):
 		headers = {
@@ -387,14 +390,14 @@ class Base(signals.Provider, Translation):
 		"""
 		missing = filter(lambda o: o not in request.options, options)
 		if missing:
-			raise UMC_OptionMissing(', '.join(missing))
+			raise UMC_OptionMissing('%s: %s' % (UMC_OptionMissing.msg, ', '.join(missing)))
 
 	def permitted(self, command, options, flavor=None):
 		if not self.__acls:
 			return False
 		return self.__acls.is_command_allowed(command, options=options, flavor=flavor)
 
-	def finished(self, id, response, message=None, success=True, status=None, mimetype=None, headers=None):
+	def finished(self, id, response, message=None, success=True, status=None, mimetype=None, headers=None, error=None):
 		"""Should be invoked by module to finish the processing of a request. 'id' is the request command identifier"""
 
 		if id not in self.__requests:
@@ -411,6 +414,7 @@ class Base(signals.Provider, Translation):
 				res.result = response
 				res.message = message
 				res.headers = dict(self.default_response_headers(), **headers or {})
+				res.error = error
 		else:
 			res = response
 

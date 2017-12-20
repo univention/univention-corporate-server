@@ -648,7 +648,7 @@ define([
 
 				displayTraceback: function(info) {
 					topic.publish('/umc/actions', 'error', 'traceback');
-					tools.showTracebackDialog(info.message + '\n\n' + info.traceback, info.title);
+					tools.showTracebackDialog(info.traceback, info.title + '\n\n' + info.message);
 				}
 			}, custom);
 			return errorHandler;
@@ -791,6 +791,7 @@ define([
 					message = error.response.data.message || '';
 					result = error.response.data.result || null;
 					title = error.response.data.title || null;
+					traceback = error.response.data.traceback || '';
 				} else {
 					// no JSON was returned, probably apache returned 502 proxy error
 					message = r.test(error.response.text) ? r.exec(error.response.text)[1] : '';
@@ -804,6 +805,7 @@ define([
 				message = error.data.message || '';
 				result = error.data.result || null;
 				title = error.data.title || null;
+				traceback = error.data.traceback || '';
 			} else if(error.text) {
 				message = r.test(error.text) ? r.exec(error.text)[1] : error.text;
 			} else if(error.message && error.status) {
@@ -812,21 +814,11 @@ define([
 				status = error.status;
 				result = error.result || null;
 				title = error.title || null;
+				traceback = error.traceback || '';
 			}
 
 			title = title || (status !== 401 ? tools._statusMessages[status] : '') || '';
 			message = message || '';
-
-			// TODO: move into the UMC-Server
-			// handle tracebacks: on 500 Internal Server Error they might not contain the word 'Traceback', because not all modules use the UMC-Server error handling yet
-			if (message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
-				var index = message.indexOf('Traceback');
-				if (index === -1) {
-					index = message.indexOf('File');
-				}
-				traceback = message.substring(index);
-				message = message.substring(0, index);
-			}
 
 			return {
 				status: this._parseStatus(status),
@@ -888,7 +880,7 @@ define([
 
 			var container = new ContainerWidget({});
 			container.addChild(new Text({
-				content: '<p>' + entities.encode(statusMessage) + '</p>'
+				content: '<p>' + entities.encode(statusMessage).replace('\n', '<br/>') + '</p>'
 			}));
 			container.addChild(titlePane);
 

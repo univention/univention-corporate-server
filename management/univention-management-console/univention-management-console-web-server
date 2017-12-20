@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import os
+import re
 import sys
 import time
 import uuid
@@ -410,10 +411,19 @@ class SAMLUser(object):
 		return self.time_remaining < 0
 
 
+traceback_pattern = re.compile('(Traceback.*most recent call|File.*line.*in.*\d)')
+
+
 @log_exceptions
 def default_error_page(status, message, traceback, version, result=None):
+	if not traceback and traceback_pattern.search(message):
+			index = message.find('Traceback') if 'Traceback' in message else message.find('File')
+			message, traceback = message[:index].strip(), message[index:].strip()
 	if traceback:
 		CORE.error('%s' % (traceback,))
+	if ucr.is_false('umc/http/show_tracebacks', False):
+		traceback = None
+
 	accept_json, accept_html = 0, 0
 	for accept in cherrypy.request.headers.elements('Accept'):
 		mimetype = accept.value
@@ -452,12 +462,11 @@ def default_error_page_json(status, message, traceback, version, result=None):
 	response = {
 		'status': status,
 		'message': message,
+		'traceback': traceback,
 		'location': location,
 	}
 	if result:
 		response['result'] = result
-	if traceback:
-		response['message'] = '%s\n\n%s' % (response['message'], traceback)
 	cherrypy.response.headers['Content-type'] = 'application/json'
 	return json.dumps(response)
 
@@ -466,15 +475,19 @@ class UMC_HTTPError(HTTPError):
 
 	""" HTTPError which sets a error result """
 
-	def __init__(self, status=500, message=None, body=None):
+	def __init__(self, status=500, message=None, body=None, error=None):
 		HTTPError.__init__(self, status, message)
 		self.body = body
+		self.error = error
 
 	def set_response(self):
 		cherrypy._cperror.clean_headers(self.status)
 
+		traceback = None
+		if isinstance(self.error, dict):
+			traceback = '%s\nRequest: %s\n\n%s' % (self._message, self.error.get('command'), self.error.get('traceback'))
 		cherrypy.response.status = self.status
-		content = default_error_page(self.status, self._message, None, None, self.body)
+		content = default_error_page(self.status, self._message, traceback.strip(), None, self.body)
 		cherrypy.response.body = content
 
 		cherrypy.response.headers['Content-Length'] = len(content)
@@ -797,10 +810,12 @@ class CPgeneric(Ressource):
 			raise HTTPRedirect(response.headers.get('Location', ''), status)
 
 		# something bad happened
-		self._log('error', 'response status code: %s' % response.status)
-		self._log('error', 'response message: %s' % response.message)
-		self._log('error', 'response result: %s' % response.result)
-		raise UMC_HTTPError(response.status, response.message, response.result)
+		self._log('error', 'response status code: %s' % (response.status,))
+		self._log('error', 'response message: %s' % (response.message,))
+		self._log('error', 'response result: %s' % (response.result,))
+		if response.error:
+			self._log('error', 'response error: %r' % (response.error,))
+		raise UMC_HTTPError(response.status, response.message, response.result, response.error)
 
 	def set_accept_language(self, request):
 		# set language based on Accept-Language header
@@ -1391,6 +1406,7 @@ def run_cherrypy(options):
 		'tools.fix_uri.on': True,
 		'tools.umcp_auth.on': True,
 		'error_page.default': default_error_page,
+		'request.show_tracebacks': ucr.is_true('umc/http/show_tracebacks', True),
 	})
 
 	cherrypy.quickstart(root=root)

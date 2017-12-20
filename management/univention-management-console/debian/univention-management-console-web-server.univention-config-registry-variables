@@ -75,3 +75,9 @@ Description[en]=Defines the Content-Security-Policy header of all UMC HTTP respo
 Description[de]=Definiert den Content-Security-Policy Header von allen UMC HTTP Antworten. Mögliche Untervariablen sind default-src, script-src, object-src, style-src, img-src, media-src, frame-src, child-src, font-src, connect-src, form-action, frame-ancestors.
 Type=str
 Categories=management-umc
+
+[umc/http/show_tracebacks]
+Description[de]=Definiert, ob Tracebacks in Fehlerfällen dem Benutzer angezeigt werden.
+Description[en]=Defines whether tracebacks are shown to the user in error cases.
+Type=bool
+Categories=management-umc
