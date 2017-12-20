@@ -220,6 +220,9 @@
 				<listitem><simpara>
 						The package <package>univention-apache</package> now depends on <package>apache2</package> (<u:bug>45893</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						The mpm_prefork handling in <package>univention-apache</package> has been adapted to debian strech (<u:bug>45857</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
