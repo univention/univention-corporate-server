@@ -1,3 +1,9 @@
+univention-samba (12.0.0-3) unstable; urgency=medium
+
+  * Bug #45326: Fix control Conflicts line
+
+ -- Arvid Requate <requate@univention.de>  Wed, 20 Dec 2017 16:49:32 +0100
+
 univention-samba (12.0.0-2) unstable; urgency=medium
 
   * Bug #45326: Provide samba init script which used to be the samba package

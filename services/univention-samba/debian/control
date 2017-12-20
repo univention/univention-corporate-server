@@ -10,7 +10,6 @@ XS-Python-Version: 2.6, 2.7
 
 Package: univention-samba
 Architecture: all
-Conflicts: samba (<<2:4.7.3+dfsg-1)
 Pre-Depends: univention-config
 Depends: ${misc:Depends},
  univention-config (>= 8.0.2),
@@ -29,7 +28,8 @@ Depends: ${misc:Depends},
  shell-univention-lib (>= 4.0.3-5),
  python-univention-lib (>= 3.0.26-45),
  python-netifaces
-Conflicts: samba-ad-dc
+Conflicts: samba-ad-dc,
+ samba (<<2:4.7.3+dfsg-1)
 Description: UCS - Samba domain controller
  This package contains the configuration for the Samba
  domain controller. It provides authentication, file and
