@@ -59,7 +59,7 @@ Borgfeld	UCS 3.2	https://de.wikipedia.org/wiki/Borgfeld
 Walle	UCS 4.0	https://de.wikipedia.org/wiki/Walle_%28Bremen%29
 Vahr	UCS 4.1	https://de.wikipedia.org/wiki/Vahr
 Lesum	UCS 4.2	https://de.wikipedia.org/wiki/Burglesum#Lesum
-Neustadt UCS 4.3 https://de.wikipedia.org/wiki/Neustadt_%28Bremen%29
+Neustadt	UCS 4.3 https://de.wikipedia.org/wiki/Neustadt_%28Bremen%29
 __CODENAMES__
 
 if [ "$1" = "configure" ]; then

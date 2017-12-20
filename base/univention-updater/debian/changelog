@@ -1,3 +1,9 @@
+univention-updater (13.0.0-7) unstable; urgency=medium
+
+  * Bug #45881: fixed release name
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Dec 2017 14:02:54 +0100
+
 univention-updater (13.0.0-5) unstable; urgency=medium
 
   * Bug #45861: symlink /etc/runit/runsvdir/default
