@@ -66,7 +66,7 @@ if [ -z "$samba4dcs" ] && ! local_is_ucr_false dns/register/srv_records/kerberos
 fi
 
 # Restart heimdal daemons
-test -x /etc/init.d/heimdal-kdc && invoke-rc.d heimdal-kdc restart
+test -x /etc/init.d/heimdal-kdc && service heimdal-kdc restart
 
 joinscript_save_current_version
 
