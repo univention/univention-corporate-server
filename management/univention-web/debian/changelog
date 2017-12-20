@@ -1,3 +1,10 @@
+univention-web (1.0.42-66) unstable; urgency=medium
+
+  * Bug #45395: Add UCR variable to remove tracebacks from
+    error messages
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 20 Dec 2017 17:28:35 +0100
+
 univention-web (1.0.42-65) unstable; urgency=medium
 
   * Bug #45836: fix typo
