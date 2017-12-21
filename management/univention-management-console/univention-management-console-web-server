@@ -486,8 +486,9 @@ class UMC_HTTPError(HTTPError):
 		traceback = None
 		if isinstance(self.error, dict):
 			traceback = '%s\nRequest: %s\n\n%s' % (self._message, self.error.get('command'), self.error.get('traceback'))
+			traceback = traceback.strip()
 		cherrypy.response.status = self.status
-		content = default_error_page(self.status, self._message, traceback.strip(), None, self.body)
+		content = default_error_page(self.status, self._message, traceback, None, self.body)
 		cherrypy.response.body = content
 
 		cherrypy.response.headers['Content-Length'] = len(content)
