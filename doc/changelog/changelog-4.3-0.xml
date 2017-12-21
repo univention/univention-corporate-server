@@ -125,6 +125,7 @@
 			<title>Process overview module</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The module has been adjusted to the new API of <package>python-psutil</package> (<u:bug>45927</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
