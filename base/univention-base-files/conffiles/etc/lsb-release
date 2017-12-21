@@ -1,4 +1,4 @@
-@%@UCRWARNINGASCII=# @%@
+@%@UCRWARNING_ASCII=# @%@
 
 DISTRIB_ID=Univention
 DISTRIB_RELEASE="@%@version/version@%@-@%@version/patchlevel@%@ errata@%@version/erratalevel@%@"
