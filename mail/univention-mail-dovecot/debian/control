@@ -9,7 +9,6 @@ Standards-Version: 3.8.2
 
 Package: univention-mail-dovecot
 Architecture: all
-XB-Python-Version: ${python:Versions}
 Depends: ${misc:Depends},
  ${python:Depends},
  univention-base-files,

@@ -8,7 +8,6 @@ Build-Depends: debhelper (>= 7.0.50~),
  python-support,
  ucslint-univention
 Standards-Version: 3.8.2
-XS-Python-Version: 2.6, 2.7
 
 Package: univention-nagios-server
 Architecture: any
@@ -33,7 +32,6 @@ Depends: ${misc:Depends}, ${python:Depends},
  shell-univention-lib,
 Provides: ${python:Provides},
  univention-nagios-group-access
-XB-Python-Version: ${python:Versions}
 Conflicts: nagios2 (<< 3.0),
  univention-nagios-group-access
 Breaks: nagios2 (<< 3.0)
@@ -61,7 +59,6 @@ Depends: ${misc:Depends}, ${python:Depends},
  shell-univention-lib,
  dnsutils,
  lmdb-utils
-XB-Python-Version: ${python:Versions}
 Conflicts: nagios2 (<< 3.0)
 Breaks: nagios2 (<< 3.0)
 Description: UCS: nagios client support
@@ -80,7 +77,6 @@ Depends: ${misc:Depends}, ${python:Depends},
  univention-config,
  univention-directory-listener,
  shell-univention-lib
-XB-Python-Version: ${python:Versions}
 Conflicts: nagios2 (<< 3.0)
 Breaks: nagios2 (<< 3.0)
 Description: UCS: nagios client support

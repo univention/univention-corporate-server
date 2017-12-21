@@ -1,3 +1,9 @@
+univention-updater (13.0.0-9) unstable; urgency=medium
+
+  * Bug #43336: remove XS-Python-Version
+
+ -- Florian Best <best@univention.de>  Thu, 21 Dec 2017 11:52:22 +0100
+
 univention-updater (13.0.0-8) unstable; urgency=medium
 
   * Bug #45913: remove univention-config-wrapper

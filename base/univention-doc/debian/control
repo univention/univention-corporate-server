@@ -4,7 +4,6 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
 Build-Depends: debhelper, univention-config-dev, ucslint-univention
-XS-Python-Version: 2.6, 2.7
 
 Package: univention-doc
 Architecture: all

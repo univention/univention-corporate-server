@@ -8,7 +8,6 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-config-dev,
  stylus,
  univention-ucs-translation-template
-XS-Python-Version: 2.6, 2.7
 
 Package: univention-demo-configuration
 Architecture: all

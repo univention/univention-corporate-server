@@ -7,13 +7,11 @@ Build-Depends: debhelper (>= 7.0.50~),
  python-support,
  python-all,
  ucslint-univention
-XS-Python-Version: 2.6, 2.7
 
 Package: python-univention-package-template
 Architecture: all
 Depends: ${python:Depends}, ${misc:Depends}
 Provides: ${python:Provides}
-XB-Python-Version: ${python:Versions}
 Description: UCS - python module template
  This package contains an example Python module.
  .

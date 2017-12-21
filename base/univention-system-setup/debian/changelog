@@ -1,3 +1,9 @@
+univention-system-setup (11.0.2-3) unstable; urgency=medium
+
+  * Bug #43336: remove XS-Python-Version
+
+ -- Florian Best <best@univention.de>  Thu, 21 Dec 2017 11:52:22 +0100
+
 univention-system-setup (11.0.2-2) unstable; urgency=medium
 
   * Looks like the DVD has been renamed it a local branch which has been

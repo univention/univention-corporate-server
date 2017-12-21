@@ -13,7 +13,6 @@ Build-Depends: debhelper,
 	samba-dev,
 	univention-config-dev
 Standards-Version: 3.9.1
-XS-Python-Version: 2.6,2.7
 
 Package: libunivention-ldb-modules
 Architecture: any
