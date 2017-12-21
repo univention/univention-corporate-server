@@ -30,6 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+override_dh_auto_install:
+	univention-install-config-registry
+	dh_auto_install
+
 override_dh_pysupport:
 	dh_pysupport
 ifneq (,$(findstring univention-samba-local-config, $(shell dh_listpackages)))

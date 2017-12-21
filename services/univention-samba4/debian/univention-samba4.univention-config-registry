@@ -101,3 +101,7 @@ Variables: samba4/backup/cron/options
 Type: file
 File: var/lib/samba/private/krb5.conf
 Variables: kerberos/realm
+
+Type: file
+File: etc/init.d/samba
+Mode: 755

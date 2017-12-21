@@ -1,3 +1,9 @@
+univention-samba4 (7.0.0-4) unstable; urgency=medium
+
+  * Bug #45326: Register samba init script as UCR template
+
+ -- Arvid Requate <requate@univention.de>  Thu, 21 Dec 2017 14:32:29 +0100
+
 univention-samba4 (7.0.0-3) unstable; urgency=medium
 
   * Bug #45326: Provide samba init script which used to be the samba package
