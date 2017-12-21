@@ -74,6 +74,10 @@ installer_translations = dict(
 		deu='Wenn Sie fortfahren',
 		eng='If you continue',
 	),
+	icontinue=dict(
+		eng='Continue',
+		deu='Weiter',
+	),
 )
 
 setup_translations = dict(
@@ -279,12 +283,13 @@ class UCSInstallation(object):
 		# network
 		time.sleep(30)
 		self.client.waitForText(_t['configure_network'], timeout=self.timeout)
-		self.client.enterText('eth0')
-		self.client.keyPress('enter')
+		# always use first interface
+		self.click(_t['icontinue'])
 		time.sleep(30)
 		# root
 		self.client.waitForText(_t['user_and_password'], timeout=self.timeout)
 		self.client.enterText(self.args.password)
+		self.client.keyPress('tab')
 		self.client.keyPress('tab')
 		self.client.enterText(self.args.password)
 		self.client.keyPress('enter')
