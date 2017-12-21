@@ -18,7 +18,7 @@ The UCS documentation, including a Quickstart guide, can be found at [docs.softw
 
 If you need direct help, the forum [Univention
 Help](https://help.univention.com) provides a very good community support. For commercial support, please have a look at our [support
-offerings](http://www.univention.com/download-and-support/support/commercial-support/).
+offerings](https://www.univention.com/download-and-support/support/commercial-support/).
 
 ## Contributing
 

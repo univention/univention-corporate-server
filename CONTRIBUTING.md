@@ -18,7 +18,7 @@ There are some requirements for submitting a Pull Request:
 
 * All commit messages should contain the bug number in the format `Bug #12345`.
 
-* The changes should be done in the current default branch, we are releasing changes only for [recent maintained UCS versions](http://wiki.univention.de/index.php?title=Maintenance_Cycle_for_UCS).
+* The changes should be done in the current default branch, we are releasing changes only for [recent maintained UCS versions](https://wiki.univention.de/index.php?title=Maintenance_Cycle_for_UCS).
 
 * Don't provide security fixes for issues which need to remain secret. Instead a patch can be submitted in [bugzilla bug tracker](https://forge.univention.org/bugzilla/enter_bug.cgi) which has the flag `univentionstaff` enabled.
 
