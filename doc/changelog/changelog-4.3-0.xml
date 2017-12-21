@@ -305,6 +305,10 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The following packages have been added to the maintained section of
+				the software repository:
+				<package>python-winrm</package>
+				(<u:bug>45783</u:bug>)
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
