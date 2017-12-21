@@ -1,7 +1,7 @@
 #!/bin/sh -e
 @%@UCRWARNING=# @%@
 #
-# Univention Postgrey
+# Univention Samba
 #  postinst script
 #
 # Copyright 2017-2018 Univention GmbH
@@ -45,16 +45,14 @@
 
 . /lib/lsb/init-functions
 
-# start nmbd, smbd and samba-ad-dc unconditionally
+# start nmbd and smbd unconditionally
 # the init scripts themselves check if they are needed or not
 case $1 in
 	start)
 		/etc/init.d/nmbd start
 		/etc/init.d/smbd start
-		/etc/init.d/samba-ad-dc start
 		;;
 	stop)
-		/etc/init.d/samba-ad-dc stop
 		/etc/init.d/smbd stop
 		/etc/init.d/nmbd stop
 		;;
@@ -70,15 +68,10 @@ case $1 in
 	status)
 		status=0
 		NMBD_DISABLED=`testparm -s --parameter-name='disable netbios' 2>/dev/null || true`
-		SERVER_ROLE=`samba-tool testparm --parameter-name="server role"  2>/dev/null | tail -1 || true`
-		if [ "$SERVER_ROLE" != "active directory domain controller" ]; then
-			if [ "$NMBD_DISABLED" != "Yes" ]; then
-				/etc/init.d/nmbd status || status=$?
-			fi
-			/etc/init.d/smbd status || status=$?
-		else
-			/etc/init.d/samba-ad-dc status || status=$?
+		if [ "$NMBD_DISABLED" != "Yes" ]; then
+			/etc/init.d/nmbd status || status=$?
 		fi
+		/etc/init.d/smbd status || status=$?
 		exit $status
 		;;
 	*)
