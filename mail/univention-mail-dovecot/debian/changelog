@@ -1,3 +1,9 @@
+univention-mail-dovecot (3.0.1-5) unstable; urgency=low
+
+  * Bug #45921: fix quoting of identifier in global ACL file
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 21 Dec 2017 10:53:49 +0100
+
 univention-mail-dovecot (3.0.1-4) unstable; urgency=low
 
   * Bug #41138: fix acl template
