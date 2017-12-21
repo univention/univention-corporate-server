@@ -1,3 +1,9 @@
+univention-lib (7.0.0-2) unstable; urgency=medium
+
+  * Bug #43336: remove pyversions
+
+ -- Florian Best <best@univention.de>  Thu, 21 Dec 2017 14:10:46 +0100
+
 univention-lib (7.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
