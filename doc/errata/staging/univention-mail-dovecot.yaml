@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: univention-mail-dovecot
+fix: 3.0.1-5A~4.2.0.201712211105
+desc: |
+ This update addresses the following issue(s):
+ * The creation of ACLs for shared folders with ACLs including users or
+   groups with a space character has been fixed (Bug #45921).
+bug: [45921]
