@@ -90,7 +90,7 @@ msgstr "Objekte aus Active-Directory-Domänen können nicht gelöscht werden."
 
 #: modules/univention/admin/handlers/__init__.py:302
 msgid "Objects of this object type can not be created."
-msgstr "Objekte dieses Objekttyps können nicht gelöscht werden."
+msgstr "Objekte dieses Objekttyps können nicht erstellt werden."
 
 #: modules/univention/admin/handlers/__init__.py:316
 msgid "Objects of this object type can not be modified."
