@@ -1,3 +1,9 @@
+univention-debug (10.0.0-3) unstable; urgency=medium
+
+  * Bug #43336: remove XS-Python-Version
+
+ -- Florian Best <best@univention.de>  Thu, 21 Dec 2017 11:52:22 +0100
+
 univention-debug (10.0.0-2) unstable; urgency=medium
 
   * Bug #45841: ignore bashism in ltmain.sh

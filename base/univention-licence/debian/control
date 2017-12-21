@@ -16,7 +16,6 @@ Build-Depends: debhelper,
  libunivention-policy-dev,
  libldap2-dev,
  ucslint-univention
-XS-Python-Version: 2.6,2.7
 
 Package: libunivention-license0
 Architecture: any
@@ -48,7 +47,6 @@ Replaces: python2.4-univention-license
 Depends: ${misc:Depends}, ${shlibs:Depends}, ${python:Depends},
  libunivention-license0
 Provides: ${python:Provides}
-XB-Python-Version: ${python:Versions}
 Conflicts: python2.3-univention-license,
  python2.4-univention-licenese
 Description: UCS - license validation library (Python interface)

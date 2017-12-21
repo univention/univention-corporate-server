@@ -46,7 +46,6 @@ Depends: ${misc:Depends},
  ${python:Depends},
  ${shlibs:Depends}
 Provides: ${python:Provides}
-XB-Python-Version: ${python:Versions}
 Description: UCS - debugging and logging library (Python interface)
  This package includes the Python interface to the
  UCS debugging and logging  library.

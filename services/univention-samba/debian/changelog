@@ -1,3 +1,9 @@
+univention-samba (12.0.0-4) unstable; urgency=medium
+
+  * Bug #43336: remove XS-Python-Version
+
+ -- Florian Best <best@univention.de>  Thu, 21 Dec 2017 11:52:27 +0100
+
 univention-samba (12.0.0-3) unstable; urgency=medium
 
   * Bug #45326: Fix control Conflicts line

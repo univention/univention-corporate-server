@@ -1,3 +1,9 @@
+ucslint (7.0.0-3) unstable; urgency=medium
+
+  * Bug #43336: remove XS-Python-Version
+
+ -- Florian Best <best@univention.de>  Thu, 21 Dec 2017 11:52:28 +0100
+
 ucslint (7.0.0-2) unstable; urgency=medium
 
   * Bug #45884: adjust dependency to flake8

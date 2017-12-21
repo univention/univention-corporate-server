@@ -1,3 +1,9 @@
+univention-radius (5.0.0-2) unstable; urgency=medium
+
+  * Bug #43336: remove XS-Python-Version
+
+ -- Florian Best <best@univention.de>  Thu, 21 Dec 2017 11:52:27 +0100
+
 univention-radius (5.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
