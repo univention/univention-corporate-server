@@ -57,12 +57,13 @@ INFO_DIR = '/etc/univention/templates/info'
 FILE_DIR = '/etc/univention/templates/files'
 SCRIPT_DIR = '/etc/univention/templates/scripts'
 MODULE_DIR = '/etc/univention/templates/modules'
+# only ascii in the WARNING_TEXT !!!
 WARNING_TEXT = '''\
 Warning: This file is auto-generated and might be overwritten by
          univention-config-registry.
          Please edit the following file(s) instead:
 Warnung: Diese Datei wurde automatisch generiert und kann durch
-         univention-config-registry überschrieben werden.
+         univention-config-registry ueberschrieben werden.
          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
 
 '''
