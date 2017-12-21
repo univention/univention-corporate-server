@@ -1,3 +1,9 @@
+univention-apache (10.0.0-4) unstable; urgency=medium
+
+  * Bug #45922: remove UCR variable "apache2/ssl/v3".
+
+ -- Florian Best <best@univention.de>  Thu, 21 Dec 2017 11:24:08 +0100
+
 univention-apache (10.0.0-3) unstable; urgency=medium
 
   * Bug #45893: add explicit dependency on apache2

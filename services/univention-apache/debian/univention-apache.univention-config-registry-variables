@@ -124,12 +124,6 @@ Description[en]=The path to a file containing CA certificates. They are sent to 
 Type=str
 Categories=service-apache
 
-[apache2/ssl/v3]
-Description[de]=Aktiviert das unsichere Protokoll SSL 3.0. Ist die Variable nicht gesetzt, ist SSL 3.0 deaktiviert. Von der Verwendung von SSL 3.0 wird abgeraten.
-Description[en]=Enables the insecure protocol SSL 3.0. If the variable is unset, SSL 3.0 is disabled. The use of SSL 3.0 is discouraged.
-Type=bool
-Categories=service-apache
-
 [apache2/ssl/tlsv11]
 Description[de]=Ist diese Option aktiviert, wird nur noch TLS 1.1 und TLS 1.2 von Apache unterstützt. Ist die Variable nicht gesetzt und keine weitere apache2/ssl/* Variable gesetzt, wird TLS 1.0 bis 1.2 unterstützt.
 Description[en]=If this option is enabled, only TLS 1.1 and TLS 1.2 is supported in Apache. If the variable is unset and no further apache2/ssl/* variable is set, TLS 1.0 to TLS 1.2 are supported.
