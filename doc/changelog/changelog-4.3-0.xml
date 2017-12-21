@@ -233,6 +233,9 @@
 				<listitem><simpara>
 						The mpm_prefork handling in <package>univention-apache</package> has been adapted to Debian Strech (<u:bug>45857</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The &ucsUCRV; <envar>apache2/ssl/v3</envar> has been removed (<u:bug>45922</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
