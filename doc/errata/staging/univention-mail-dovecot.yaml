@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-mail-dovecot
-fix: 3.0.1-5A~4.2.0.201712211105
+fix: 3.0.1-6A~4.2.0.201712211551
 desc: |
  This update addresses the following issue(s):
  * The creation of ACLs for shared folders with ACLs including users or
