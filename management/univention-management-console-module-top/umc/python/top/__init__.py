@@ -59,14 +59,14 @@ class Instance(Base):
 			except KeyError:  # fixed in psutil 2.2.0
 				username = str(process.uids().real)
 			try:
-				(user_time, system_time, ) = process.get_cpu_times()
+				cpu_time = process.cpu_times()
 				proc = {
 					'timestamp': time.time(),
-					'cpu_time': user_time + system_time,
+					'cpu_time': cpu_time.user + cpu_time.system,
 					'user': username,
 					'pid': process.pid,
 					'cpu': 0.0,
-					'mem': process.get_memory_percent(),
+					'mem': process.memory_percent(),
 					'command': ' '.join(process.cmdline() or []) or process.name(),
 				}
 			except psutil.NoSuchProcess:
@@ -83,11 +83,11 @@ class Instance(Base):
 		for process_entry in processes:
 			try:
 				process = psutil.Process(process_entry['pid'])
-				(user_time, system_time, ) = process.get_cpu_times()
+				cpu_time = process.cpu_times()
 			except psutil.NoSuchProcess:
 				continue
 			elapsed_time = time.time() - process_entry.pop('timestamp')
-			elapsed_cpu_time = user_time + system_time - process_entry.pop('cpu_time')
+			elapsed_cpu_time = cpu_time.user + cpu_time.system - process_entry.pop('cpu_time')
 			cpu_percent = (elapsed_cpu_time / elapsed_time) * 100
 			process_entry['cpu'] = cpu_percent
 

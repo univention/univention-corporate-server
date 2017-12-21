@@ -1,3 +1,9 @@
+univention-management-console-module-top (7.0.1-1) unstable; urgency=medium
+
+  * Bug #45927: adapt to API change of psutil
+
+ -- Florian Best <best@univention.de>  Thu, 21 Dec 2017 11:37:36 +0100
+
 univention-management-console-module-top (7.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
