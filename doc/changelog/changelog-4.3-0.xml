@@ -91,6 +91,7 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The values for the syntax class <package>Country</package> have been updated <u:bug>45926</u:bug>.
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
