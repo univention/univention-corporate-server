@@ -1,4 +1,5 @@
 libuniventionlicense.so.0 libunivention-license0 #MINVER#
+ univention_ldap_set_machine_connection@Base 9.0.0-2
  univention_licenseObject_free@Base 4.0.0
  univention_licenseObject_malloc@Base 4.0.0
  univention_licenseStrings_free@Base 4.0.0

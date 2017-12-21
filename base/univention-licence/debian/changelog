@@ -1,3 +1,9 @@
+univention-licence (9.0.0-3) unstable; urgency=medium
+
+  * Bug #43336: fix FTBS. ignore ucslint bashism checks for ltmain.sh
+
+ -- Florian Best <best@univention.de>  Thu, 21 Dec 2017 16:14:26 +0100
+
 univention-licence (9.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
