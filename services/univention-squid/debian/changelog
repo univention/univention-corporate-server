@@ -1,3 +1,9 @@
+univention-squid (11.0.0-2) unstable; urgency=medium
+
+  * Bug #45935: fix control
+
+ -- Felix Botner <botner@univention.de>  Thu, 21 Dec 2017 13:48:01 +0100
+
 univention-squid (11.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
