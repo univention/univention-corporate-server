@@ -54,6 +54,8 @@ dovecot_acls = {
 	"all": ("lrwspitekxa", ["lookup", "read", "write", "write-seen", "post", "insert", "write-deleted", "expunge", "create", "delete", "admin"]),
 }
 global_acl_path = '/etc/dovecot/global-acls'
+glocal_acl_pattern1 = re.compile(r'(?P<folder>.+) "(?P<id>.+)" (?P<acl>\w+)')
+glocal_acl_pattern2 = re.compile(r'(?P<folder>.+) (?P<id>.+) (?P<acl>\w+)')
 
 
 class DovecotFolderAclEntry(object):
@@ -70,7 +72,22 @@ class DovecotFolderAclEntry(object):
 		))
 
 	def __repr__(self):  # type: () -> str
-		return '{} {} {}'.format(self.folder_name, self.identifier, self.acl)
+		return '{} "{}" {}'.format(self.folder_name, self.identifier, self.acl)
+
+	@classmethod
+	def from_str(cls, line):  # type (str) -> DovecotFolderAclEntry
+		# try with quotation marks first
+		m = glocal_acl_pattern1.match(line.strip())
+		if m:
+			val = m.groupdict()
+			return cls(val['folder'], val['id'], val['acl'])
+		# try without quotation marks (created with univention-mail-dovecot 3.0.1-4)
+		m = glocal_acl_pattern2.match(line.strip())
+		if m:
+			val = m.groupdict()
+			return cls(val['folder'], val['id'], val['acl'])
+		else:
+			raise ValueError("Line {!r} doesn't match ACL pattern.".format(line))
 
 
 class DovecotGlobalAclFile(object):
@@ -114,7 +131,7 @@ class DovecotGlobalAclFile(object):
 		try:
 			self.listener.setuid(0)
 			for line in open(global_acl_path, 'rb'):
-				self._acls.append(DovecotFolderAclEntry(*line.split()))
+				self._acls.append(DovecotFolderAclEntry.from_str(line))
 		finally:
 			self.listener.unsetuid()
 
@@ -156,8 +173,8 @@ class DovecotSharedFolderListener(DovecotListener):
 				# use IMAP to set actual ACLs, so the shared mailbox list dictionary is updated
 				self.imap_set_mailbox_acls(new_mailbox, "INBOX", acls)
 				self.add_global_acls(new)
-			except:
-				self.log_e("Failed setting ACLs on new shared mailbox '%s'." % new_mailbox)
+			except Exception as exc:
+				self.log_e("Failed setting ACLs on new shared mailbox '%s': %s" % (new_mailbox, exc))
 				return
 			self.log_p("Created shared mailbox '%s'." % new_mailbox)
 		else:
@@ -273,9 +290,10 @@ class DovecotSharedFolderListener(DovecotListener):
 				self.doveadm_set_mailbox_acls("shared/%s" % new_mailbox, ["dovecotadmin all"])
 				# use IMAP to set actual ACLs, so the shared mailbox list dictionary is updated
 				self.imap_set_mailbox_acls(new_mailbox, "INBOX", acls)
+				self.remove_global_acls(old)
 				self.add_global_acls(new)
-			except:
-				self.log_e("Failed setting ACLs on moved shared mailbox ('%s' -> '%s')." % (old_mailbox, new_mailbox))
+			except Exception as exc:
+				self.log_e("Failed setting ACLs on moved shared mailbox ('%s' -> '%s'): %s" % (old_mailbox, new_mailbox, exc))
 				return
 			self.log_p("Set ACLs on '%s'." % new_mailbox)
 		else:
