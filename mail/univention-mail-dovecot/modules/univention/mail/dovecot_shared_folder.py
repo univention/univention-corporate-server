@@ -54,8 +54,8 @@ dovecot_acls = {
 	"all": ("lrwspitekxa", ["lookup", "read", "write", "write-seen", "post", "insert", "write-deleted", "expunge", "create", "delete", "admin"]),
 }
 global_acl_path = '/etc/dovecot/global-acls'
-glocal_acl_pattern1 = re.compile(r'(?P<folder>.+) "(?P<id>.+)" (?P<acl>\w+)')
-glocal_acl_pattern2 = re.compile(r'(?P<folder>.+) (?P<id>.+) (?P<acl>\w+)')
+glocal_acl_pattern1 = re.compile(r'(?P<folder>[^ ]+) "(?P<id>.+)" (?P<acl>\w+)')
+glocal_acl_pattern2 = re.compile(r'(?P<folder>[^ ]+) (?P<id>.+) (?P<acl>\w+)')
 
 
 class DovecotFolderAclEntry(object):
