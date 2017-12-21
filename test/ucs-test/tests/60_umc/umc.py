@@ -42,7 +42,7 @@ class UMCBase(object):
 		self.password = self.client.password
 		self.hostname = self.client.hostname
 
-	def check_obj_exists(self, name, obj_type):
+	def check_obj_exists(self, name, obj_type, flavor=None):
 		"""
 		Checks if user, group or policy object with provided 'name' exists
 		via UMC 'udm/query' request, returns True when exists.
@@ -55,7 +55,7 @@ class UMCBase(object):
 			"objectPropertyValue": "",
 			"hidden": True
 		}
-		for result in self.request('udm/query', options, obj_type):
+		for result in self.request('udm/query', options, flavor or obj_type):
 			if result['name'] == name:
 				return True
 

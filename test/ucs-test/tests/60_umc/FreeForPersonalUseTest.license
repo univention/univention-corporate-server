@@ -1,3 +1,4 @@
+dn: cn=admin,cn=license,cn=univention,
 objectClass: top
 objectClass: univentionLicense
 objectClass: univentionObject
@@ -21,5 +22,3 @@ univentionLicenseSignature: pOb0FqnaXildZ8j5URqnlc9n0LnQrGJBDEc8Mx3qGO69L5V1th
  d/uU0ZpvGSUANAdiL6FqTrMMugNLTJOXp36bn8RBYRtTLxEOWaIZtRjf5HsDfKPRrw00ogXhpBuoF
  p/eBy3IP+dfY2DZPW6Mbky8TGd4ZE5wOwrQGseGjU/sbvJ+ME+8oVTgTfTCeU0wOFTzWyk+NzegeP
  +DHw2l2WTvRCDnu1laJiWwraWSFZOc+yZQwiivwXPchzZqDHaIbGGUrpje2kg==
-dn: cn=admin,cn=license,cn=univention,
-
