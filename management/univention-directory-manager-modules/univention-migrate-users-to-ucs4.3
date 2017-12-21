@@ -28,9 +28,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import sys
 import pprint
 import argparse
 
+import ldap
 import ldap.controls.simple
 
 import univention.admin.uldap
@@ -48,6 +50,7 @@ lo, po = univention.admin.uldap.getAdminConnection()
 class Migration(object):
 
 	def __init__(self):
+		self.exceptions = []
 		p = argparse.ArgumentParser()
 		p.add_argument('--check', action='store_true', help='Makes a dry run by printing out all modifications which would be done.')
 		p.add_argument('--set-kerberos-realm', help='Set the given kerberos realm in the domain if none is set.')
@@ -55,6 +58,11 @@ class Migration(object):
 		searchResult = lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr=['aRecord', 'aAAARecord'])
 		self.s4connector_present = any(ddn for (ddn, attr) in searchResult if set(['aAAARecord', 'aRecord']) & set(attr))
 		self.migrate()
+		if self.exceptions:
+			print >> sys.stderr, '%d errors occurred.' % (len(self.exceptions),)
+			for dn, ml, exc in self.exceptions:
+				print >> sys.stderr, '%r: %s (modifications: %r)' % (dn, exc, ml)
+			raise SystemExit(1)
 
 	def migrate(self):
 		"""
@@ -101,6 +109,10 @@ class Migration(object):
 			is_ldap_only = has_ldap and not any([has_posix, has_shadow, has_samba, has_kerberos, has_mail, has_org_person, has_inet_org_person, has_pki])
 			remove_ldap = has_ldap and not is_ldap_only
 
+			if user.get('univentionObjectType') and 'users/user' not in user['univentionObjectType']:
+				print 'Ignoring non users/user account: %s' % (dn,)
+				continue
+
 			if is_ldap_only:
 				self.modify(dn, [('univentionObjectType', 'users/user', 'users/ldap')])
 				# TODO: are there users without univentionObjectType? then we need error handling here!
@@ -142,7 +154,10 @@ class Migration(object):
 		pprint.pprint(ml)
 		print
 		if not self.args.check:
-			lo.modify(dn, ml, serverctrls=serverctrls, ignore_license=True)
+			try:
+				lo.modify(dn, ml, exceptions=True, serverctrls=serverctrls, ignore_license=True)
+			except ldap.LDAPError as exc:
+				self.exceptions.append((dn, ml, exc))
 
 	def allocate(self, name, value=None):
 		if name == 'userSid':
