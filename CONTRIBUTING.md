@@ -1,8 +1,8 @@
 # Contributing to Univention
 
-:+1: :tada: Hello, we are happy that you want to contribute to UCS! :tada: :+1:
+:+1: :tada: Hello, we are happy that you want to contribute to Univention Corporate Server (UCS)! :tada: :+1:
 
-Before you start, please read the following guidelines about contributing to the packages of Univention Corporate Server (UCS).
+Before you start, please read the following guidelines about contributing to the packages of UCS.
 
 ## Pull Requests
 
