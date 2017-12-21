@@ -1,8 +1,8 @@
 #!/bin/sh -e
 @%@UCRWARNING=# @%@
 #
-# Univention Postgrey
-#  postinst script
+# Univention Samba4
+#  init script
 #
 # Copyright 2017-2018 Univention GmbH
 #
