@@ -9,3 +9,5 @@ desc: |
  * The creation of ACLs for shared folders with ACLs including users or
    groups with a space character has been fixed (Bug #45921).
 bug: [45921]
+erratum: 255
+announced: 2017-12-22
