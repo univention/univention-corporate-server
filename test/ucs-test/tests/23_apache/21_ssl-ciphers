@@ -9,7 +9,8 @@ set -e -u
 . "$TESTLIBPATH/base.sh" || exit 137
 
 # EXPORT and LOW(RC4) were removed from DEFAULT as of openssl-1.0.2g
-for cipher in LOW EXPORT aNULL MD5 RC4
+# aNULL and MD5 were removed as of 1.1.0f
+for cipher in LOW EXPORT RC4
 do
 	info "$cipher"
 	ciphers="$(openssl ciphers "$cipher")" ||
