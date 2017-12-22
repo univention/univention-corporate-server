@@ -30,6 +30,8 @@
 import subprocess
 import threading
 import socket
+import cherrypy
+
 from optparse import OptionParser
 from sys import exit
 from ldap.dn import escape_dn_chars
@@ -44,7 +46,7 @@ finished = False
 
 parser = OptionParser()
 parser.add_option('-H', '--host', dest='host', default='localhost', help='host to connect to', metavar='HOST')
-parser.add_option('-u', '--user', dest='username', help='username', metavar='UID', default='administrator')
+parser.add_option('-u', '--user', dest='username', help='username', metavar='UID', default='Administrator')
 parser.add_option('-p', '--password', dest='password', default='univention', help='password', metavar='PASSWORD')
 parser.add_option('-D', '--domain_host', dest='domain_host', default=None, help='domain controller to connect to', metavar='DOMAIN_HOST')
 parser.add_option('-A', '--domain_admin', dest='domain_admin', help='domain admin username', metavar='DOMAIN_UID', default='administrator')
@@ -65,10 +67,31 @@ def domainhost_unreachable(client):
                 return True
 
 
+
 def get_progress(client):
 	while not finished:
 		client.umc_command('adtakeover/progress')
 		sleep(1)
+
+def wait(client):
+    path = 'adtakeover/progress'
+    waited = 0
+    result = None
+    while waited <= 720:
+        sleep(10)
+        waited += 1
+        try:
+            result = client.umc_command(path).result
+        except univention.lib.umc.ConnectionError:
+            print('... Apache down? Ignoring...')
+            continue
+        for message in result.get('intermediate', []):
+            print('   {msg}'.format(msg=message.get('message')))
+        if result.get('finished', False):
+            break
+        else:
+            raise Exception("wait timeout")
+    print(result)
 
 
 client = Client(options.host, options.username, options.password, language='en-US')
@@ -82,17 +105,18 @@ response = client.umc_command("adtakeover/connect", request_options)
 print response.result
 assert response.status==200
 
-thread = threading.Thread(target=get_progress, args=(client,))
-thread.start()
+#thread = threading.Thread(target=get_progress, args=(client,))
+#thread.start()
 try:
     response = client.umc_command("adtakeover/run/copy", request_options)
-except TimeoutError:
-    finished = True 
-    raise TimeoutError("Timeout: no request to umc")
-assert response.status==200
+except Exception:
+    pass
+wait(client)
+#assert response.status==200
 
 #net -U Administrator%Univention.98  rpc share migrate files sysvol \
 #   -S 10.200.7.132 --destination=10.200.7.150 --acls -vvvv
+#both machines must have the same user and password for migration
 result = subprocess.call(["net", "-U", "%s%%%s" % (options.domain_admin, options.domain_password), "rpc", "share", "migrate", "files", "sysvol", "-S", options.domain_host, "--destination=%s" % (options.host), "--acls", "-vvvv"])
 print result
 assert result==0
@@ -106,7 +130,6 @@ result = subprocess.call(["net", "rpc", "shutdown", "-I", options.domain_host, "
 finished = True
 
 while not domainhost_unreachable(options.domain_host):
-   # print "check if old domain is offline"
     sleep(2)
 
 #waiting one last time to ensure winpc is off
