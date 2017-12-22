@@ -522,13 +522,13 @@ class Base64Bzip2XML(TextArea):
 		try:
 			compressed_data = base64.decodestring(text)
 		except:
-			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
+			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % (text,))
 		try:
 			data = bz2.decompress(compressed_data)
 		except:
-			raise univention.admin.uexceptions.valueError(_('Value must be bzip2 compressed and Base64 encoded: %s') % str(text))
-		if get_mime_type(data) != 'application/xml':
-			raise univention.admin.uexceptions.valueError(_('Not Base64 encoded XML data: %s') % str(text))
+			raise univention.admin.uexceptions.valueError(_('Value must be bzip2 compressed and Base64 encoded: %s') % (text,))
+		if get_mime_type(data) not in ('application/xml', 'text/xml'):
+			raise univention.admin.uexceptions.valueError(_('Not Base64 encoded XML data: %s') % (text,))
 		return text
 
 
