@@ -1,5 +1,6 @@
 ucs-test (8.0.3-1) unstable; urgency=medium
 
+  * Bug #45951: fix test case  60_umc/10_error_code_for_requests
   * Bug #45949: fix test case 23_apache/21_ssl-ciphers
 
  -- Florian Best <best@univention.de>  Fri, 22 Dec 2017 15:09:02 +0100
