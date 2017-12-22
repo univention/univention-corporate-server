@@ -11,11 +11,9 @@ RETVAL=100
 
 code_name="$(lsb_release -c -s)"
 
-# 4.2 Codename is Lesum
-if [ "$code_name" != "Lesum" ]; then
+# 4.3 Codename is Neustadt
+if [ "$code_name" != "Neustadt" ]; then
 	fail_test 110 "Codename is set to $code_name"
 fi
 
 exit $RETVAL
-
-

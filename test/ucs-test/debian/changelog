@@ -1,3 +1,9 @@
+ucs-test (8.0.2-3) unstable; urgency=medium
+
+  * Bug #45881: fix release name test
+
+ -- Felix Botner <botner@univention.de>  Fri, 22 Dec 2017 13:34:19 +0100
+
 ucs-test (8.0.2-2) unstable; urgency=medium
 
   * Bug #43336: remove pyversions
