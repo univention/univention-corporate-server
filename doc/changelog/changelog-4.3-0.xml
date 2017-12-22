@@ -28,6 +28,9 @@
 					<listitem><simpara>
 						XS-Python-Version and XB-Python-Version has been removed from all packages(<u:bug>43336</u:bug>).
 					</simpara></listitem>
+					<listitem><simpara>
+						The packages related to the DVD build process had to be updates to work with Debian Stretch (<u:bug>45868</u:bug>).
+					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
 		</itemizedlist>
