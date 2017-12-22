@@ -567,6 +567,36 @@ class _Commands:
 			raise CommandError('DOMAIN_CLONE', e)
 
 	@staticmethod
+	def DOMAIN_TARGETHOST_ADD(server, request):
+		"""Add a migration target host."""
+		if not isinstance(request.uri, basestring):
+			raise CommandError('DOMAIN_TARGETHOST_ADD', _('uri != string: %(uri)s'), uri=request.uri)
+		if not isinstance(request.domain, basestring):
+			raise CommandError('DOMAIN_TARGETHOST_ADD', _('domain != string: %(domain)s'), domain=request.domain)
+		if not isinstance(request.targethost, basestring):
+			raise CommandError('DOMAIN_TARGETHOST_ADD', _('targethost != string: %(targethost)s'), domain=request.targethost)
+		logger.debug('DOMAIN_TARGETHOST_ADD %s: add %s' % (request.domain, request.targethost))
+		try:
+			node.domain_targethost_add(request.uri, request.domain, request.targethost)
+		except node.NodeError as e:
+			raise CommandError('DOMAIN_TARGETHOST_ADD', e)
+
+	@staticmethod
+	def DOMAIN_TARGETHOST_REMOVE(server, request):
+		"""Remove a migration target host."""
+		if not isinstance(request.uri, basestring):
+			raise CommandError('DOMAIN_TARGETHOST_REMOVE', _('uri != string: %(uri)s'), uri=request.uri)
+		if not isinstance(request.domain, basestring):
+			raise CommandError('DOMAIN_TARGETHOST_REMOVE', _('domain != string: %(domain)s'), domain=request.domain)
+		if not isinstance(request.targethost, basestring):
+			raise CommandError('DOMAIN_TARGETHOST_REMOVE', _('targethost != string: %(targethost)s'), domain=request.targethost)
+		logger.debug('DOMAIN_TARGETHOST_REMOVE %s: remove %s' % (request.domain, request.targethost))
+		try:
+			node.domain_targethost_remove(request.uri, request.domain, request.targethost)
+		except node.NodeError as e:
+			raise CommandError('DOMAIN_TARGETHOST_REMOVE', e)
+
+	@staticmethod
 	def STORAGE_POOLS(server, request):
 		"""List all pools."""
 		if not isinstance(request.uri, basestring):
