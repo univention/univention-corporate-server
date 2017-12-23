@@ -1931,7 +1931,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		prop = univention.admin.property()
 		old_cn = self.oldattr.get('cn', [''])[0]
 		cn = prop._replace(cnAtts, self)
-		cn = cn.strip()
+		cn = cn.strip() or cn
 		if cn != old_cn:
 			ml.append(('cn', old_cn, cn))
 		return ml
