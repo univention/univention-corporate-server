@@ -124,13 +124,6 @@ def doit(arglist):
 
 	opts, args = getopt.getopt(arglist[1:], '', ['status-fd=', 'status-fifo='])
 
-	status_fd = None
-	for opt, val in opts:
-		if opt == '--status-fd':
-			status_fd = int(val)
-		elif opt == '--status-fifo':
-			status_fifo = os.open(val)
-
 	co = None
 	try:
 		lo, position = univention.admin.uldap.getAdminConnection()
@@ -187,7 +180,6 @@ def doit(arglist):
 	if action == 'adduser':
 		out.append(status('Adding user %s' % codecs.utf_8_encode(user)[0]))
 		object = univention.admin.handlers.users.user.object(co, lo, position=position)
-		object.options = ['posix', 'person', 'mail']
 		object.open()
 		object['username'] = user
 		try:
