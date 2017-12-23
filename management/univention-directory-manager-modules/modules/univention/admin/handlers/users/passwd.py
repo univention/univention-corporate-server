@@ -68,7 +68,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.userPasswd,
 		multivalue=False,
-		options=['posix', 'samba', 'kerberos', 'mail'],
 		required=True,
 		may_change=True,
 		identifies=False,
