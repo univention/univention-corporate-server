@@ -3157,11 +3157,7 @@ class timeSpec(select):
 
 class optionsUsersUser(select):
 	choices = [
-		('groupware', _('Groupware Account')),
-		('kerberos', _('Kerberos Principal')),
 		('person', _('Personal Information')),
-		('samba', _('Samba Account')),
-		('posix', _('POSIX Account')),
 		('mail', _('Mail Account')),
 	]
 

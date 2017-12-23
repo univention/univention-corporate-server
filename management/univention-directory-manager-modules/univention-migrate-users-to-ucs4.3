@@ -57,7 +57,8 @@ class Migration(object):
 		self.args = p.parse_args()
 		searchResult = lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr=['aRecord', 'aAAARecord'])
 		self.s4connector_present = any(ddn for (ddn, attr) in searchResult if set(['aAAARecord', 'aRecord']) & set(attr))
-		self.migrate()
+		self.migrate_users()
+		self.migrate_templates()
 		if self.exceptions:
 			print >> sys.stderr, '%d errors occurred.' % (len(self.exceptions),)
 			for dn, ml, exc in self.exceptions:
@@ -148,6 +149,12 @@ class Migration(object):
 			if ml:
 				self.modify(dn, ml, serverctrls)
 				self.confirm()
+
+	def migrate_templates(self):
+		for dn, attr in self.lo.search('(&(objectClass=univentionUserTemplate)(|(userOptionsPreset=groupware)(userOptionsPreset=kerberos)(userOptionsPreset=posix)(userOptionsPreset=samba)))'):
+			old = set(attr['userOptionsPreset'])
+			new = old & {'groupware', 'kerberos', 'posix', 'samba'}
+			self.modify(dn, [('userOptionsPreset', list(old), list(new))])
 
 	def modify(self, dn, ml, serverctrls=None):
 		print 'Modifying ', dn
