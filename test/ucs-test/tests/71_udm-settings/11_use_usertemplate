@@ -10,7 +10,6 @@ from univention.testing.strings import random_name, random_int
 from univention.testing.umc import Client
 from univention.admin.uldap import getAdminConnection
 import univention.admin.modules as udm_modules
-import sys
 
 
 PASSWORD = 'Univention@99'
@@ -42,7 +41,7 @@ if __name__ == '__main__':
 
 		properties = dict(
 			name=template_name,
-			_options=['samba', 'posix', 'person', 'mail'],  # 'kerberos',
+			_options=['person', 'mail'],
 			title=random_name(),
 			description=random_name(),
 			mailPrimaryAddress='<firstname>.<lastname>@%s' % (MAIL_DOMAIN,),
@@ -175,7 +174,7 @@ if __name__ == '__main__':
 			'l': [properties['city']],
 			# 'userDisabledPreset': [properties['disabled']],  # TODO
 			# 'userPwdMustChangePreset': [properties['pwdChangeNextLogin']],  # TODO
-			'automountInformation': ['-rw %s:%s/%s/%s' % (host, path, user_properties['username'][0], user_properties['username']),],
+			'automountInformation': ['-rw %s:%s/%s/%s' % (host, path, user_properties['username'][0], user_properties['username']), ],
 			# 'gidNumber': [properties['primaryGroup']],  # TODO
 			# 'userGroupsPreset': properties['groups'],  # TODO
 			'mailPrimaryAddress': ['%s.%s@%s' % (user_properties['firstname'], user_properties['lastname'], MAIL_DOMAIN)],
