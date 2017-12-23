@@ -98,7 +98,6 @@ class MassCreate(object):
 		"""Create user, which is itself member in groups."""
 		gdn = ["cn=%s,%s" % (escape_dn_chars(group), self.gp.getDn()) for group in groups]
 		u = self.uu.object(co=self.config, lo=self.access, position=self.up)
-		# u.options = ['posix', 'samba']
 		u.open()
 		u.info['username'] = name
 		u.info['password'] = 'univention'
@@ -187,18 +186,22 @@ def main():
 	"""Create users."""
 	description = 'Create may users and groups.'
 	parser = OptionParser(description=description)
-	parser.add_option('-g', '--group-only',
-			dest='groups', action='append', default=['Domain Users'],
-			help='Add all users these groups [%default]')
-	parser.add_option('-n', '--number',
-			dest='count', action='store', type='int', default=1 << 15,
-			help='Number of users to create [%default]')
-	parser.add_option('-s', '--suffix',
-			dest='suffix', action='store', default='',
-			help='Specify character set for random suffix')
-	parser.add_option('-f', '--fast',
-			dest='fast', action='store_false', default=True,
-			help='Disable intermediate clean groups to speed up user creation')
+	parser.add_option(
+		'-g', '--group-only',
+		dest='groups', action='append', default=['Domain Users'],
+		help='Add all users these groups [%default]')
+	parser.add_option(
+		'-n', '--number',
+		dest='count', action='store', type='int', default=1 << 15,
+		help='Number of users to create [%default]')
+	parser.add_option(
+		'-s', '--suffix',
+		dest='suffix', action='store', default='',
+		help='Specify character set for random suffix')
+	parser.add_option(
+		'-f', '--fast',
+		dest='fast', action='store_false', default=True,
+		help='Disable intermediate clean groups to speed up user creation')
 	options, args = parser.parse_args()
 
 	encoding = sys.getfilesystemencoding()
