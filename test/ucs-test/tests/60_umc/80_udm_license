@@ -131,10 +131,7 @@ class TestUMCLicenseManagement(UDMModule):
                 "CtxCfgClientDrivers": False,
                 "CtxCfgTSLogon": False,
                 "$options$": {
-                    "samba": True,
-                    "kerberos": True,
                     "person": True,
-                    "posix": True,
                     "mail": True,
                     "pki": False,
                     "ldap_pwd": False
@@ -142,7 +139,7 @@ class TestUMCLicenseManagement(UDMModule):
             },
             "options": {"container": "cn=users," + self.ldap_base, "objectType": "users/user"}
         }]
-        return self.request("udm/add", options, "users/user")
+        return self.request("udm/add", options, "users/all")
 
     def check_free_license_info(self):
         """

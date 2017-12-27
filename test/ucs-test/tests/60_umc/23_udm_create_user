@@ -84,13 +84,11 @@ class TestUMCUserCreation(UDMModule):
                 "displayName": username,
                 "CtxCfgClientDrivers": False,
                 "CtxCfgTSLogon": False,
-                "$options$": {"samba": True,
-                              "kerberos": True,
-                              "person": True,
-                              "posix": True,
-                              "mail": True,
-                              "pki": False,
-                              "ldap_pwd": False}
+                "$options$": {
+                    "person": True,
+                    "mail": True,
+                    "pki": False,
+                    "ldap_pwd": False}
             },
             "options": {
                 "container": "cn=users," + self.ldap_base,
@@ -98,7 +96,7 @@ class TestUMCUserCreation(UDMModule):
             }
         }]
         try:
-            request_result = self.client.umc_command('udm/add', options, 'users/user').result
+            request_result = self.client.umc_command('udm/add', options, 'users/all').result
             if not request_result:
                 utils.fail("Request 'udm/add' user failed. Response: %r\nRequest options: %r\n"
                            "hostname: %r" % (request_result, options, self.hostname))
