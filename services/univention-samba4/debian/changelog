@@ -1,3 +1,11 @@
+univention-samba4 (7.0.0-5) unstable; urgency=medium
+
+  * The UCR variable interfaces/primary is not set by default and the
+    fallback eth0 does not always work in UCS 4.3. Thus, it is
+    temporarily disabled for milestone 1 (Bug #45956)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 27 Dec 2017 19:56:13 +0100
+
 univention-samba4 (7.0.0-4) unstable; urgency=medium
 
   * Bug #45326: Register samba init script as UCR template
