@@ -1454,14 +1454,10 @@ univention-directory-manager users/user create \
 			<para>
 				<option>--option</option> definiert die LDAP-Objektklassen eines Objekts.
 				Wird bei einem Benutzerobjekt beispielsweise
-				nur <classname>posix</classname> und <classname>person</classname> als Option übergeben, so kann für
+				nur <classname>pki</classname> als Option übergeben, so kann für
 				diesen Benutzer keine <property>mailPrimaryAddress</property> angegeben werden, da dieses
 				Attribut Teil der Option <classname>mail</classname> ist:
 			</para>
-			<programlisting language="sh">
-univention-directory-manager users/user modify \
-    --option "posix" --option "mail" --option "kerberos"
-			</programlisting>
 		</listitem>
 		<listitem>
 			<simpara>
