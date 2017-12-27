@@ -34,6 +34,7 @@ import argparse
 
 import ldap
 import ldap.controls.simple
+from ldap.filter import filter_format
 
 import univention.admin.uldap
 import univention.admin.allocators
@@ -119,6 +120,15 @@ class Migration(object):
 				# TODO: are there users without univentionObjectType? then we need error handling here!
 				continue
 
+			if has_posix:
+				# migrate primary group to samba group
+				for groupdn, group in lo.search(filter_format('(&(objectClass=univentionGroup)(gidNumber=%s)(!(objectClass=sambaGroupMapping)))', [user['gidNumber'][0]])):
+					self.modify(groupdn, [
+						('objectClass', [], ['sambaGroupMapping']),
+						('sambaSID', '', self.get_group_sid(int(group['gidNumber'][0]))),
+						('sambaGroupType', '', '2')
+					])
+
 			ml = []
 			if remove_ldap:
 				ml.append(('objectClass', ['uidObject', 'simpleSecurityObject'], []))
@@ -167,8 +177,11 @@ class Migration(object):
 				self.exceptions.append((dn, ml, exc))
 
 	def allocate(self, name, value=None):
-		if name == 'userSid':
-			value = univention.admin.allocators.requestUserSid(lo, po, value)
+		if name in ('userSid', 'groupSid'):
+			if name == 'userSid':
+				value = univention.admin.allocators.requestUserSid(lo, po, value)
+			else:
+				value = univention.admin.allocators.requestGroupSid(lo, po, value)
 			name = 'sid'
 		else:
 			value = univention.admin.allocators.request(lo, po, name, value)
@@ -231,6 +244,21 @@ class Migration(object):
 		except univention.admin.uexceptions.noLock:
 			raise univention.admin.uexceptions.sidAlreadyUsed(rid)
 		return userSid
+
+	def get_group_sid(self, gidNum):
+		if self.s4connector_present:
+			# In this case Samba 4 must create the SID, the s4 connector will sync the
+			# new sambaSID back from Samba 4.
+			return 'S-1-4-%s' % gidNum
+
+		sid = None
+		num = gidNum
+		while not sid:
+			try:
+				sid = self.allocate('groupSid', num)
+			except univention.admin.uexceptions.noLock:
+				num = str(int(num) + 1)
+		return sid
 
 
 #def get_all_must_attributes():
