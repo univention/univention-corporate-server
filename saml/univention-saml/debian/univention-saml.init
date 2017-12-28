@@ -45,8 +45,8 @@ case "$1" in
 		# TODO: runit
 		log_daemon_msg "Starting $DESC" "$NAME"
 		install -m 770 -o samlcgi -g root -d /var/run/univention-saml
-		/etc/init.d/memcached start univention_saml
-		/etc/init.d/stunnel4 start
+		systemctl start stunnel4
+		systemctl start univention-saml
 		sleep 1
 		chmod 0600 /var/run/univention-saml/*.socket
 		chown samlcgi:root /var/run/univention-saml/*.socket
@@ -54,8 +54,8 @@ case "$1" in
 		;;
 	stop)
 		log_daemon_msg "Stopping $DESC" "$NAME"
-		/etc/init.d/memcached stop univention_saml
-		/etc/init.d/stunnel4 stop
+		sysetmctl stop univention-saml
+		systemctl stop stunnel4
 		rm -f -- /var/run/univention-saml/*.socket
 		log_end_msg 0
 		;;

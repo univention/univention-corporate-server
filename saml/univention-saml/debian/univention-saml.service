@@ -1,0 +1,10 @@
+[Unit]
+Description=memcached univention_saml daemon
+After=network.target stunnel4.service
+Documentation=man:memcached(1)
+
+[Service]
+ExecStart=/usr/share/memcached/scripts/systemd-memcached-wrapper /etc/memcached_univention_saml.conf
+
+[Install]
+WantedBy=multi-user.target
