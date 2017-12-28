@@ -1,3 +1,10 @@
+univention-java (10.0.0-2) unstable; urgency=medium
+
+  * Change dependency from openjdk-7-jre and icedtea-7-plugin to
+    openjdk-8-jre and icedtea-plugin (Bug #45959)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 Dec 2017 06:31:21 +0100
+
 univention-java (10.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
