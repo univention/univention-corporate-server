@@ -316,6 +316,11 @@
 				<package>python-winrm</package>
 				(<u:bug>45783</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				The dependency of <package>univention-java</package> has been changed from <package>openjdk-7-jre</package> and
+				</package>icedtea-7-plugin</package> to <package>openjdk-8-jre</package> and <package>icedtea-plugin</package>
+				(<u:bug>45959</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
