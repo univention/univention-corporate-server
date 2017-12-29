@@ -1,5 +1,8 @@
 @%@UCRWARNING=# @%@
 
+# This file is commonly accessed via passdb {} or userdb {} section in
+# conf.d/auth-ldap.conf.ext
+
 # This file is opened as root, so it should be owned by root and mode 0600.
 #
 # http://wiki2.dovecot.org/AuthDatabase/LDAP
@@ -38,8 +41,7 @@ else:
 @!@
 
 # Use SASL binding instead of the simple binding. Note that this changes
-# ldap_version automatically to be 3 if it's lower. Also note that SASL binds
-# and auth_bind=yes don't work together.
+# ldap_version automatically to be 3 if it's lower.
 #sasl_bind = no
 # SASL mechanism name to use.
 #sasl_mech =
