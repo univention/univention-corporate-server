@@ -214,6 +214,8 @@
 			<title>SAML</title>
 			<itemizedlist>
 				<listitem><simpara>
+					A systemd script for the <package>univention-saml</package> instance of <package>memcached</package>
+					has been added (<u:bug>45960</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
