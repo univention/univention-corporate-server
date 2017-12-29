@@ -1,3 +1,9 @@
+univention-kernel-image (11.0.1-1) unstable; urgency=medium
+
+  * Switch to Debian Kernel (Bug #45961)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Dec 2017 06:15:05 +0100
+
 univention-kernel-image (11.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
