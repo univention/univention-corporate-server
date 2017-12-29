@@ -366,6 +366,15 @@ class UCSTestUDM(object):
 
         return (self.create_object('users/user', wait_for_replication, check_for_drs_replication, **attr), attr['username'])
 
+    def create_ldap_user(self, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+        attr = self._set_module_default_attr(kwargs, (('position', 'cn=users,%s' % self.LDAP_BASE),
+                                                      ('password', 'univention'),
+                                                      ('username', uts.random_username()),
+                                                      ('lastname', uts.random_name()),
+                                                      ('name', uts.random_name())))
+
+        return (self.create_object('users/ldap', wait_for_replication, check_for_drs_replication, **attr), attr['username'])
+
     def remove_user(self, username, wait_for_replication=True):
         """Removes a user object from the ldap given it's username."""
 

@@ -110,6 +110,6 @@ class TestLDAPUsers(object):
 
 	def test_ldap_pwd_user_umc_authentication(self, udm, Client, random_string, Unauthorized):
 		password = random_string()
-		userdn, username = udm.create_user(options=['ldap_pwd'], password=password)
+		userdn, username = udm.create_ldap_user(password=password)
 		client = Client()
 		client.authenticate(username, password)

@@ -88,7 +88,7 @@ class TestUMCUserCreation(UDMModule):
                     "person": True,
                     "mail": True,
                     "pki": False,
-                    "ldap_pwd": False}
+                }
             },
             "options": {
                 "container": "cn=users," + self.ldap_base,

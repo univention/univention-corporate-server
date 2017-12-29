@@ -21,7 +21,7 @@ if __name__ == '__main__':
 	ucr.load()
 	with udm_test.UCSTestUDM() as udm:
 		password = 'univention'
-		dn, username = udm.create_user(options=['ldap_pwd'], password=password)  # FIXME
+		dn, username = udm.create_ldap_user(password=password)
 		utils.verify_ldap_object(dn)
 
 		print 'created user %r with dn=%r' % (username, dn)
