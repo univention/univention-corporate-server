@@ -1,3 +1,10 @@
+univention-samba4 (7.0.1-1) unstable; urgency=medium
+
+  * Open TCP port 49152 which seems to be used by default in Samba 4.7 /
+    Windows 2008 (Bug #45326)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Dec 2017 15:39:44 +0100
+
 univention-samba4 (7.0.0-5) unstable; urgency=medium
 
   * The UCR variable interfaces/primary is not set by default and the
