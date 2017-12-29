@@ -23,7 +23,7 @@ class SimpleSquid(object):
 	"""
 
 	def __init__(self, path=None):
-		self.path = path if path else "/etc/init.d/squid3"
+		self.path = path if path else "/etc/init.d/squid"
 		self.basename = os.path.basename(self.path)
 		self.conf = "/etc/%s/squid.conf" % self.basename
 
@@ -63,8 +63,7 @@ class SimpleSquid(object):
 		:return boolean:True if match, False if not match
 		"""
 		result = False
-		with ucr_test.UCSTestConfigRegistry() as ucr:
-			current_redirector = ucr.get('squid/redirect')
+		with ucr_test.UCSTestConfigRegistry():
 			config_lines = get_lines_containing(self.conf, 'url_rewrite_program')
 			if config_lines:
 				# in config file the first line setting the redirector is activated
