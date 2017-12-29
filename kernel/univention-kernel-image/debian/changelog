@@ -1,3 +1,10 @@
+univention-kernel-image (11.0.1-2) unstable; urgency=medium
+
+  * The Debian meta package doesn't include the kernel version
+    (Bug #45961)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Dec 2017 06:42:44 +0100
+
 univention-kernel-image (11.0.1-1) unstable; urgency=medium
 
   * Switch to Debian Kernel (Bug #45961)
