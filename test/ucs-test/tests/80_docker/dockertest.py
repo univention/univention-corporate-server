@@ -498,8 +498,9 @@ class Appcenter(object):
 		if not version:
 			self.add_ucs_version_to_appcenter('4.1')
 			self.add_ucs_version_to_appcenter('4.2')
-			self.versions = ['4.1', '4.2']
-			self._write_ucs_ini('[4.2]\nSupportedUCSVersions=4.2, 4.1\n')
+			self.add_ucs_version_to_appcenter('4.3')
+			self.versions = ['4.1', '4.2', '4.3']
+			self._write_ucs_ini('[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n')
 		else:
 			self.add_ucs_version_to_appcenter(version)
 			self.versions = [version]

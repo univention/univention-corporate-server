@@ -1,3 +1,9 @@
+ucs-test (8.0.5-1) unstable; urgency=medium
+
+  * Create UCS 4.3 Test App Center (Bug #45962)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Dec 2017 10:11:50 +0100
+
 ucs-test (8.0.4-1) unstable; urgency=medium
 
   * Bug #44640: show error messages of xvfb on stderr
