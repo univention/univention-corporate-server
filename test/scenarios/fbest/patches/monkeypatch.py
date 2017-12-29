@@ -8,6 +8,9 @@ from subprocess import call
 
 
 def main():
+	for script in ('./patches/enable-scope'):
+		call([script])
+
 	services = []
 	for patch in glob.glob('patches/*.patch'):
 		with open(patch) as fd:

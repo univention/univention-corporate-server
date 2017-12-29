@@ -1,0 +1,4 @@
+#/bin/bash
+
+ucr set repository/online/component/fbest/unmaintained=enabled repository/online/component/fbest/version=4.3 repository/online/component/fbest=enabled update/secure_apt=no repository/online/unmaintained=yes
+univention-upgrade --noninteractive
