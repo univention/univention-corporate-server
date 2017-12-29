@@ -1,3 +1,9 @@
+ucs-test (8.0.4-1) unstable; urgency=medium
+
+  * Bug #44640: show error messages of xvfb on stderr
+
+ -- Florian Best <best@univention.de>  Fri, 29 Dec 2017 09:44:29 +0100
+
 ucs-test (8.0.3-1) unstable; urgency=medium
 
   * Bug #45951: fix test case  60_umc/10_error_code_for_requests
