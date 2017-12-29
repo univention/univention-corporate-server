@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-4) unstable; urgency=medium
+
+  * Bug #45842: add diagnosis script for user options
+
+ -- Florian Best <best@univention.de>  Wed, 24 Jan 2018 17:12:20 +0100
+
 univention-management-console-module-diagnostic (4.0.0-3) unstable; urgency=medium
 
   * Bug #46070: fixed 22_kdc_service.py
