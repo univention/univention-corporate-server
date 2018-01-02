@@ -35,7 +35,7 @@ def used_memory():
 
 	:returns: used memory in bytes
 	"""
-	return psutil.phymem_usage()[1] / (1024 * 1024.0)
+	return psutil.virtual_memory().used / (1024 * 1024.0)
 
 
 def main():

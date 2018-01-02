@@ -154,6 +154,7 @@ Depends: ucs-test-libs (= ${source:Version}),
  swaks,
  python,
  python-pexpect,
+ python-netifaces,
  ${misc:Depends}
 Provides: ucs-test-module
 Description: Test scripts for mail

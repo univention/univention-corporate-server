@@ -5,10 +5,10 @@
 ## packages: [univention-mail-server]
 ## bugs: []
 
-from univention.config_registry import handler_set, handler_unset
+from univention.config_registry import handler_set
 import socket
 import subprocess
-import univention.testing.strings as uts
+import netifaces
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
@@ -23,19 +23,10 @@ def restart_postfix():
 	cmd = ['service', 'postfix', 'restart']
 	subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
 
-# ACTUAL_MYNETWORKS="$(postconf -nh mynetworks)"
-# def networks_set():
-# 	return True
 
-
-def get_eth0_ip():
-	ucr = ucr_test.UCSTestConfigRegistry()
-	ucr.load()
-	ip = ucr.get('interfaces/eth0/address')
-	if ip:
-		return ip
-	else:
-		utils.fail('IP address is not set for eth0')
+def get_ext_ip():
+	ifaces = [netifaces.ifaddresses(iface)[netifaces.AF_INET] for iface in netifaces.interfaces() if iface not in ('docker', 'lo')][0]
+	return [i['addr'] for i in ifaces][0]
 
 
 def reverse_dns_name(ip):
@@ -52,7 +43,7 @@ def create_bad_mailheader(mailfrom, rcptto):
 	ucr = ucr_test.UCSTestConfigRegistry()
 	ucr.load()
 	hostname = ucr.get('hostname')
-	sender_ip = get_eth0_ip()
+	sender_ip = get_ext_ip()
 	smtp_port = 25
 
 	def get_return_code(s):
@@ -119,9 +110,9 @@ def main():
 			header9 = "NULL sender vulnerability:"
 
 			test_cases = [
-				('%s@%s' % ('spambag', get_eth0_ip()), 'victim@mailinator.com', header0),
-				('%s@[%s]' % ('spambag', get_eth0_ip()), 'victim@mailinator.com', header0),
-				('%s@%s' % ('spambag', reverse_dns_name(get_eth0_ip())), 'victim@mailinator.com', header0),
+				('%s@%s' % ('spambag', get_ext_ip()), 'victim@mailinator.com', header0),
+				('%s@[%s]' % ('spambag', get_ext_ip()), 'victim@mailinator.com', header0),
+				('%s@%s' % ('spambag', reverse_dns_name(get_ext_ip())), 'victim@mailinator.com', header0),
 
 				("spambag@mailinator.com", "victim@mailinator.com", header1),
 
