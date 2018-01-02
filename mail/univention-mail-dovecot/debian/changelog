@@ -1,3 +1,9 @@
+univention-mail-dovecot (4.0.0-4) unstable; urgency=low
+
+  * Bug #45966: no SSL2 support anymore
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 02 Jan 2018 14:36:20 +0100
+
 univention-mail-dovecot (4.0.0-3) unstable; urgency=low
 
   * Bug #45966: update dovecot configuration for 2.2.27 in UCS 4.3
