@@ -1,3 +1,9 @@
+univention-mail-postfix (12.0.0-4) unstable; urgency=low
+
+  * Bug #45963: add missing UCR declaration
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 02 Jan 2018 17:55:15 +0100
+
 univention-mail-postfix (12.0.0-3) unstable; urgency=low
 
   * Bug #45963: update copyright
