@@ -1,8 +1,8 @@
 @%@UCRWARNING=# @%@
 
 # ==========================================================================
-# service type	private	unpriv	chroot	wakeup	maxproc	command + args
-# 		(yes)	(yes)	(yes)	(never)	(50)
+# service type  private unpriv  chroot  wakeup  maxproc command + args
+#               (yes)   (yes)   (no)    (never) (100)
 # ==========================================================================
 @!@
 opt_verbose = ''
@@ -53,7 +53,7 @@ relay    unix  -       -       n       -       -       smtp
 trace    unix  -       -       n       -       0       bounce
 proxymap  unix -       -       n       -       -       proxymap
 anvil    unix  -       -       n       -       1       anvil
-scache   unix  -       -       -       -       1       scache
+scache   unix  -       -       n       -       1       scache
 discard          unix  -       -       n       -       -       discard
 tlsmgr    unix  -       -       n       1000?   1       tlsmgr
 

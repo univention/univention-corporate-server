@@ -41,6 +41,13 @@ Description[en]=Relaying is permitted for e-mails from the network(s) specified 
 Type=str
 Categories=service-mail
 
+[mail/postfix/mynetworks_style]
+Description[de]=Die Methode den default Wert für den mynetworks Parameter zu setzen, siehe <http://www.postfix.org/postconf.5.html#mynetworks_style>. Wenn nicht gesetzt: "subnet".
+Für E-Mails aus den hier angegebenen Netz(en) ist Relaying erlaubt. Das Format ist unter <http://www.postfix.org/postconf.5.html#mynetworks> beschrieben. Ist die Variable nicht gesetzt, gilt '127.0.0.0/8'.
+Description[en]=The method to generate the default value for the mynetworks parameter, see <http://www.postfix.org/postconf.5.html#mynetworks_style>. Default when unset "subnet".
+Type=str
+Categories=service-mail
+
 [mail/relayhost]
 Description[de]=In der Grundeinstellung baut Postfix beim Versenden einer E-Mail an eine nicht-lokale Adresse eine direkte SMTP-Verbindung an den für diese Domain zuständigen Mailserver auf. Dieser Server wird durch eine Abfrage des MX-Records im DNS ermittelt. Alternativ kann ein Mail-Relay-Server zu Einsatz kommen, also ein Server der die Mails entgegen nimmt und den weiteren Versand abwickelt. Der Server muss in dieser Variable als vollqualifizierter Domänenname (FQDN) eingetragen werden.
 Description[en]=In the default setting, Postfix creates a direct SMTP connection to the mail server responsible for the domain when an e-mail is sent to a non-local address. This server is determined by querying the MX record in the DNS. Alternatively, a mail relay server can also be used, i.e., a server which receives the mails and takes over their further sending. The server must be entered as a fully qualified domain name(FQDN).
@@ -405,4 +412,10 @@ Categories=service-mail
 Description[de]=Die Domäne, von der lokal verschickte Mail zu kommen scheint, und an die lokal zugestellte Mail geschickt wird (siehe <http://www.postfix.org/postconf.5.html#myorigin>). Der Standard ist der vollqualifizierte Domänenname (FQDN).
 Description[en]=The domain name that locally-posted mail appears to come from, and that locally posted mail is delivered to (see <http://www.postfix.org/postconf.5.html#myorigin>). The default is the fully qualified domain name (FQDN).
 Type=str
+Categories=service-mail
+
+[mail/postfix/smtputf8_enable]
+Description[de]=Wenn aktiviert, weise nicht-ASCII Adressen von Clients zurück, die nicht SMTPUTF8 Support angefragt haben (siehe <http://www.postfix.org/postconf.5.html#smtputf8_enable>). Wenn nicht gesetzt ist der Standard: "no".
+Description[en]=Set to "yes" to rejects non-ASCII addresses from clients that don't request SMTPUTF8 support (see <http://www.postfix.org/postconf.5.html#smtputf8_enable>). The default when unset is "no".
+Type=bool
 Categories=service-mail

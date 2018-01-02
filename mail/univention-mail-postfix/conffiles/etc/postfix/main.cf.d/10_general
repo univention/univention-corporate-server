@@ -19,7 +19,7 @@ else:
 
 # some basic path definitions
 command_directory = /usr/sbin
-daemon_directory = /usr/lib/postfix
+daemon_directory = /usr/lib/postfix/sbin
 
 
 # some basic mail system settings
@@ -41,7 +41,7 @@ if configRegistry.get('mail/postfix/smtp/hostlookup'):
 	print 'smtp_host_lookup = %s' % configRegistry.get('mail/postfix/smtp/hostlookup')
 @!@
 
-append_dot_mydomain = no
+append_dot_mydomain = no  # default: Postfix ≥ 3.0: no, Postfix < 3.0: yes
 
 @!@
 import re
@@ -54,6 +54,8 @@ print
 
 print 'mydestination = %s' % configRegistry.get('mail/postfix/mydestination', '$myhostname, localhost.$mydomain, localhost')
 print 'mynetworks = %s' % configRegistry.get('mail/postfix/mynetworks', '127.0.0.0/8')
+# mynetworks_style default: Postfix ≥ 3.0: host, Postfix < 3.0: subnet
+print 'mynetworks_style = %s' % configRegistry.get('mail/postfix/mynetworks_style', 'subnet')
 
 print
 
@@ -67,8 +69,8 @@ if configRegistry.is_true('mail/postfix/transport/ldap/enabled',False):
 	transport_maps.append('ldap:/etc/postfix/ldap.transport')
 print 'transport_maps = %s' % ',\n        '.join(transport_maps)
 
-if configRegistry.get('mail/postfix/relay/domains'):
-	print 'relay_domains = %s' % configRegistry.get('mail/postfix/relay/domains')
+# relay_domains default: Postfix ≥ 3.0: empty, Postfix < 3.0: $mydestination
+print 'relay_domains = %s' % configRegistry.get('mail/postfix/relay/domains', '$mydestination')
 @!@
 
 # we need to name a smtp relay host to which we forward non-local
@@ -92,4 +94,7 @@ print 'disable_vrfy_command = %s' % yesno.get(configRegistry.is_true('mail/smtp/
 @!@
 if configRegistry.get('mail/postfix/smtpd/banner'):
 	print 'smtpd_banner = %s' % configRegistry['mail/postfix/smtpd/banner']
+
+# set to "smtputf8_enable=yes" to rejects non-ASCII addresses from clients that don't request SMTPUTF8 support
+print 'smtputf8_enable = %s' % configRegistry.get('mail/postfix/smtputf8_enable', 'no')
 @!@
