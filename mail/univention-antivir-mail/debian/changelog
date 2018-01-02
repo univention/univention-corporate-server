@@ -1,3 +1,9 @@
+univention-antivir-mail (9.0.0-2) unstable; urgency=low
+
+  * Bug #45969: adjust configuration for stretch
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 02 Jan 2018 14:35:18 +0100
+
 univention-antivir-mail (9.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
