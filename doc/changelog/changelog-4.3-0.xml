@@ -258,6 +258,22 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+
+		<section id="changelog:service:dovecot">
+			<title>Dovecot</title>
+			<itemizedlist>
+				<listitem><simpara>
+						The package <package>univention-mail-dovecot</package> has updated the configuration files of Dovecot to match those of upstream version 2.2.27 (<u:bug>45966</u:bug>). User interaction is only needed if a local configuration has touched the following configuration keys:
+				</simpara></listitem>
+				<listitem><simpara>
+						The configuration key <envar>sieve_dir</envar> has been removed, as it is now part of the configuration value of <envar>sieve</envar> (see <filename>conf.d/90-sieve.conf</filename>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The configuration key <envar>sieve_global_dir</envar> has been renamed to <envar>sieve_global</envar> (see <filename>conf.d/90-sieve.conf</filename>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 	</section>
 
 	<section id="changelog:virt">
