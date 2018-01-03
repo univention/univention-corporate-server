@@ -1,3 +1,11 @@
+univention-mail-dovecot (4.0.0-6) unstable; urgency=low
+
+  * Bug #45971: update regular expression for quoting in global ACL file (Bug
+    #45921)
+  * Bug #45971: fix quoting of identifier in global ACL file (Bug #45921)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 03 Jan 2018 10:39:48 +0100
+
 univention-mail-dovecot (4.0.0-5) unstable; urgency=low
 
   * Bug #45966: update copyright
