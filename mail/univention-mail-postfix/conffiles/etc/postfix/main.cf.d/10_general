@@ -41,7 +41,7 @@ if configRegistry.get('mail/postfix/smtp/hostlookup'):
 	print 'smtp_host_lookup = %s' % configRegistry.get('mail/postfix/smtp/hostlookup')
 @!@
 
-append_dot_mydomain = no  # default: Postfix ≥ 3.0: no, Postfix < 3.0: yes
+append_dot_mydomain = no
 
 @!@
 import re
