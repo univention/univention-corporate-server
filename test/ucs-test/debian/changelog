@@ -1,3 +1,9 @@
+ucs-test (7.0.23-110) unstable; urgency=low
+
+  * Bug #45963: fix mail tests
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 02 Jan 2018 18:14:13 +0100
+
 ucs-test (7.0.23-109) unstable; urgency=low
 
   * Bug #44786: adapt tests to API change
