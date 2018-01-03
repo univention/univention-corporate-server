@@ -327,7 +327,7 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-						Samba has been updated to version 4.7.3 (<u:bug>45326</u:bug>).
+						Samba has been updated to version 4.7.4 (<u:bug>45326</u:bug>). The UCS firewall has been adjusted to also ACCEPT port 49152, see <ulink url="https://wiki.samba.org/index.php/Samba_4.7_Features_added/changed#Dynamic_RPC_port_range">Samba 4.7 Features added/changed (Dynamic RPC port range)</ulink>.
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
