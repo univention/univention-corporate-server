@@ -390,14 +390,14 @@ def mail_delivered(token, user=None, mail_address=None, check_root=True):
 			with open(_file) as fi:
 				delivered = delivered or (token in fi.read())
 	if mail_address and '@' in mail_address:
-		mail_dir = get_cyrus_maildir(mail_address)
-		for _file in get_dir_files(mail_dir, recursive=True):
+		mail_dir = get_dovecot_maildir(mail_address)
+		for _file in get_dir_files(mail_dir, recursive=True, exclude=["tmp"]):
 			with open(_file) as fi:
 				delivered = delivered or (token in fi.read())
 				if delivered:
 					break
-		mail_dir = get_dovecot_maildir(mail_address)
-		for _file in get_dir_files(mail_dir, recursive=True, exclude=["tmp"]):
+		mail_dir = get_cyrus_maildir(mail_address)
+		for _file in get_dir_files(mail_dir, recursive=True):
 			with open(_file) as fi:
 				delivered = delivered or (token in fi.read())
 				if delivered:
@@ -794,6 +794,9 @@ Regards,
 	print '*** Sending mail: recipients=%r sender=%r subject=%r idstring=%r gtube=%r server=%r port=%r tls=%r username=%r password=%r HELO/EHLO=%r' % (
 		m_recipients, m_sender, m_subject, idstring, gtube, m_server, m_port, tls, username, password, m_ehlo)
 
+	if len(m_msg.split()) < 2:
+		print('*** Warning: A body with only one word will be rated with BODY_SINGLE_WORD=2.499 and probably lead to the message being identified as spam.')
+
 	# build message
 	# m_body = ''
 	# m_body += 'From: %s\n' % m_sender
@@ -862,7 +865,7 @@ def check_sending_mail(
 	allowed=True,
 	local=True
 ):
-	token = str(time.time())
+	token = 'The token is {}.'.format(time.time())
 	try:
 		ret_code = send_mail(
 			recipients=recipient_email,
