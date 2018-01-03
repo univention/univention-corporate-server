@@ -113,7 +113,7 @@ if [ "$TERM" = "xterm" ]; then
 	fi
 fi
 
-# shell-univention-lib is proberly not installed, so use a local function
+# shell-univention-lib is probably not installed, so use a local function
 is_ucr_true () {
 	local value
 	value="$(/usr/sbin/univention-config-registry get "$1")"
@@ -446,6 +446,10 @@ case "$available_locales" in
 	*) /usr/sbin/univention-config-registry set locale="$available_locales en_US.UTF-8:UTF-8";;
 esac
 
+# Bug #45968: let Postfix3 extension packages recreate /etc/postfix/dynamicmaps.cf with new format
+echo "Removing /etc/postfix/dynamicmaps.cf. Creating backup in"
+echo "/etc/postfix/dynamicmaps.cf.postfix2."
+mv -fv /etc/postfix/dynamicmaps.cf /etc/postfix/dynamicmaps.cf.postfix2
 
 # autoremove before the update
 if ! is_ucr_true update43/skip/autoremove; then

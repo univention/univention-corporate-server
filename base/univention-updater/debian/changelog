@@ -1,3 +1,10 @@
+univention-updater (13.0.0-10) unstable; urgency=low
+
+  * Bug #45968: remove /etc/postfix/dynamicmaps.cf in preup.sh to let
+    Postfix3 extension packages recreate it with new format
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 03 Jan 2018 08:48:06 +0100
+
 univention-updater (13.0.0-9) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
