@@ -1,3 +1,9 @@
+univention-directory-listener (12.0.0-8) unstable; urgency=medium
+
+  * Bug #45955: Add INIT_ONLY variable to tests/test__change__same_rdn.c
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 04 Jan 2018 17:01:07 +0100
+
 univention-directory-listener (12.0.0-7) unstable; urgency=medium
 
   * Bug #43336: version bump

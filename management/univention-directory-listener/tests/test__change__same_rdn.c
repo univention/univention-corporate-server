@@ -1,6 +1,8 @@
 #include "test.h"
 #include <ldap.h>
 
+/* Needed for "../src/change.c" */
+int INIT_ONLY = 0;
 #include "../src/change.c"
 
 static inline bool _test(const char *left, const char *right, bool expected) {
