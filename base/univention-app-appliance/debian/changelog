@@ -1,3 +1,9 @@
+univention-app-appliance (2.0.0-4) unstable; urgency=low
+
+  * Bug #45979: Fix ucslint
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 04 Jan 2018 17:18:43 +0100
+
 univention-app-appliance (2.0.0-3) unstable; urgency=low
 
   * Bug #45979: Use phantomjs from Debian-Stretch
