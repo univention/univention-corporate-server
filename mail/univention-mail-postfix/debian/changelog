@@ -1,3 +1,9 @@
+univention-mail-postfix (12.0.0-6) unstable; urgency=low
+
+  * Bug #45963: force init script to maintain chroot environment
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 04 Jan 2018 12:32:23 +0100
+
 univention-mail-postfix (12.0.0-5) unstable; urgency=low
 
   * Bug #45963: fix config

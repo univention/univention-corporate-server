@@ -53,7 +53,7 @@ relay    unix  -       -       n       -       -       smtp
 trace    unix  -       -       n       -       0       bounce
 proxymap  unix -       -       n       -       -       proxymap
 anvil    unix  -       -       n       -       1       anvil
-scache   unix  -       -       n       -       1       scache
+scache   unix  -       -       y       -       1       scache
 discard          unix  -       -       n       -       -       discard
 tlsmgr    unix  -       -       n       1000?   1       tlsmgr
 
