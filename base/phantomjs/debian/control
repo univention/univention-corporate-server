@@ -5,7 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
 Homepage: http://www.phantomjs.org/
 Build-Depends: debhelper (>= 7.0.50~),
- g++-4.7,
+ g++,
  binutils-gold,
  flex,
  bison,
