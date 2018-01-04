@@ -1,3 +1,9 @@
+ucs-test (8.0.7-6) unstable; urgency=medium
+
+  * Adjust testcase to new Samba return code (Bug #45326)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 04 Jan 2018 22:09:17 +0100
+
 ucs-test (8.0.7-5) unstable; urgency=medium
 
   * Bug #45980: fix 43access_sysvol checking invalid smbclient error code 

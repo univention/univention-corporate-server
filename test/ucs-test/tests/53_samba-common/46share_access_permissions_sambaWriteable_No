@@ -67,9 +67,9 @@ done
 
 echo "## Try to create a folder in a share with sambaWriteable=No"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder1" 2>&1)"
-echo "$output" | grep -q "NT_STATUS_MEDIA_WRITE_PROTECTED"
+echo "$output" | egrep -q "(NT_STATUS_MEDIA_WRITE_PROTECTED|NT_STATUS_ACCESS_DENIED)"
 if [ "$?" != 0 ]; then
-	fail_test 1 "Expected return value NT_STATUS_MEDIA_WRITE_PROTECTED, but received: $output"
+	fail_test 1 "Expected return value (NT_STATUS_MEDIA_WRITE_PROTECTED|NT_STATUS_ACCESS_DENIED), but received: $output"
 fi
 
 exit "$RETVAL"
