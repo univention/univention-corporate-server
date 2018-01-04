@@ -77,8 +77,8 @@ fi
 
 ##Remove GPT.ini of the default domain policies as a user
 echo "----Remove GPT.ini of the default domain policies as a user"
-output="$(smbclient //localhost/sysvol -U"$username%$password" -c "cd $s4_domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9};rm GPT.INI" 2>&1)"
-if [ "$?" = 0 ]; then
+output="$(LANG=C smbclient //localhost/sysvol -U"$username%$password" -c "cd $s4_domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9};rm GPT.INI" 2>&1)"
+if ! grep -q "NT_STATUS_ACCESS_DENIED deleting remote file" <<<"$output"; then
 	echo "$output"
 	fail_test 1 "GPT.ini of the default domain policies could be removed"
 fi

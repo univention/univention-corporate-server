@@ -1,3 +1,9 @@
+ucs-test (8.0.7-5) unstable; urgency=medium
+
+  * Bug #45980: fix 43access_sysvol checking invalid smbclient error code 
+
+ -- Arvid Requate <requate@univention.de>  Thu, 04 Jan 2018 16:41:17 +0100
+
 ucs-test (8.0.7-4) unstable; urgency=low
 
   * Bug #45963: fix mail tests
