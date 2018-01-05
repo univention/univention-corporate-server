@@ -1,3 +1,9 @@
+ucs-test (8.0.7-7) unstable; urgency=medium
+
+  * SMB2_GETINFO_QUOTA is NT_STATUS_NOT_SUPPORTED (Bug #45326)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 05 Jan 2018 01:46:12 +0100
+
 ucs-test (8.0.7-6) unstable; urgency=medium
 
   * Adjust testcase to new Samba return code (Bug #45326)
