@@ -1,4 +1,4 @@
-#include "test.h"
+#include "test.c"
 #include <ldap.h>
 #include "../src/cache_entry.c"
 

@@ -48,8 +48,9 @@ VERIFY_OBJS := verify.o dump_signals.o utils.o $(DB_OBJS)
 CONVERT_LDLIBS := $(LDAP_LDLIBS) $(DB_LDLIBS) -ldb3
 CONVERT_OBJS := convert.o cache_bdb.o dump_signals.o utils.o $(DB_OBJS)
 
+ALL ?= listener dump verify convert
 .PHONY: all
-all: listener dump verify convert
+all: $(ALL)
 
 listener: $(LISTENER_OBJS)
 	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS) $(LISTENER_LDLIBS)
@@ -70,5 +71,6 @@ cache_bdb.o: cache_bdb.c
 	$(CC) $(CFLAGS) -I/usr/include/db3 -DWITH_DB3 -c $^
 
 .PHONY: clean
-clean:
-	$(RM) *.o listener dump demo verify convert *.db3
+clean::
+	$(RM) *.o
+	$(RM) $(ALL)

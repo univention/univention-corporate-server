@@ -1,4 +1,4 @@
-#include "test.h"
+#include "test.c"
 #include "filter.h"
 
 static struct filter filter_base = {

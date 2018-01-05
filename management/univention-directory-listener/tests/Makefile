@@ -30,24 +30,22 @@
 # <http://www.gnu.org/licenses/>.
 #
 SOURCES := $(wildcard test__*.c)
-TESTS := $(patsubst  %.c,%,$(SOURCES))
+ALL ?= $(patsubst  %.c,%,$(SOURCES))
 
 .PHONY: tests
-tests: $(TESTS)
+tests: $(ALL)
 	run-parts --verbose --regex='test__[^.]*$$' .
 
 test__filter__cache_entry_ldap_filter_match: ../src/filter.o
 test__utils__lower_utf8: ../src/utils.o
 test__utils__same_dn: ../src/utils.o
-test__change__same_rdn: ../src/utils.o ../src/cache.o ../src/handlers.o
 
 include ../src/Makefile
 
-CFLAGS += -Wall -Werror -D_FILE_OFFSET_BITS=64 $(DB_CFLAGS) -I../src
-LDFLAGS += -Wl,--unresolved-symbols=ignore-all -Wl,--as-needed
-LDLIBS := -lldap -licuuc -lpython2.7
+CFLAGS += $(DB_CFLAGS) -I../src -fdata-sections -ffunction-sections
+LDFLAGS += -Wl,--as-needed -Wl,--gc-sections
+LDLIBS += -lldap -llber
 
 .PHONY: clean
-clean:
+clean::
 	$(RM) *.o
-	$(RM) $(TESTS)
