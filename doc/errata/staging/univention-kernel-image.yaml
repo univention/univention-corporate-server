@@ -1,0 +1,52 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: univention-kernel-image
+fix: 10.0.0-9A~4.2.0.201801081348
+desc: |
+ This update of the Linux kernel to version 4.9.75 addresses the following
+ issues:
+ * ALSA: pcm: prevent UAF in snd_pcm_info (CVE-2017-0861)
+ * "Dirty COW" variant on transparent huge pages (CVE-2017-1000405)
+ * KVM: DoS via write flood to I/O port 0x80 (CVE-2017-1000407)
+ * bpf: fix incorrect sign extension in check_alu_op() (CVE-2017-16995)
+ * memory corruption in USB core subsystem (CVE-2017-17558)
+ * crypto: salsa20 - fix blkcipher_walk API usage (CVE-2017-17805)
+ * crypto: hmac - require that the underlying hash algorithm is unkeyed
+   (CVE-2017-17806)
+ * KEYS: add missing permission check for request_key() destination
+   (CVE-2017-17807)
+ * bpf: fix branch pruning logic (CVE-2017-17862)
+ * sctp: use-after-free in sctp_cmp_addr_exact() (CVE-2017-15115)
+ * cx231xx-cards: fix NULL-deref on missing association descriptor
+   (CVE-2017-16536)
+ * net: usb: asix: fill null-ptr-deref in asix_suspend (CVE-2017-16647)
+ * net: cdc_ether: fix divide by 0 on bad descriptors (CVE-2017-16649)
+ * net: qmi_wwan: fix divide by 0 on bad descriptors (CVE-2017-16650)
+ * Information Leak in mincore() (CVE-2017-16994)
+ * bpf: reject out-of-bounds stack pointer calculation (CVE-2017-17863)
+ * Systems with microprocessors utilizing speculative execution and indirect
+   branch prediction may allow unauthorized disclosure of information to an
+   attacker with local user access via a side-channel analysis of the data
+   cache. (CVE-2017-5754)
+note: This is the third of three parts.
+bug: [45981]
+cve:
+- CVE-2017-0861
+- CVE-2017-1000405
+- CVE-2017-1000407
+- CVE-2017-16995
+- CVE-2017-17558
+- CVE-2017-17805
+- CVE-2017-17806
+- CVE-2017-17807
+- CVE-2017-17862
+- CVE-2017-15115
+- CVE-2017-16536
+- CVE-2017-16647
+- CVE-2017-16649
+- CVE-2017-16650
+- CVE-2017-16994
+- CVE-2017-17863
+- CVE-2017-5754
