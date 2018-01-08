@@ -1,3 +1,9 @@
+univention-mail-postfix (12.0.0-7) unstable; urgency=low
+
+  * Bug #45984: disable connection caching for amavis socket
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 08 Jan 2018 10:24:42 +0100
+
 univention-mail-postfix (12.0.0-6) unstable; urgency=low
 
   * Bug #45963: force init script to maintain chroot environment
