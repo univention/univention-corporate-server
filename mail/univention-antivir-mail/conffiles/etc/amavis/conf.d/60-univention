@@ -284,6 +284,8 @@ $inet_socket_bind = '127.0.0.1';  # limit socket bind to loopback interface
 #
 # See README.lookups for details on specifying access control lists.
 
+$smtp_connection_cache_enable = 0;
+$smtp_connection_cache_on_demand = 0;
 
 #
 # Section III - Logging
