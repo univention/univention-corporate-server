@@ -1,3 +1,9 @@
+univention-x-core (11.0.0-2) unstable; urgency=medium
+
+  * Bug #45943: added xserver-xorg-input-libinput
+
+ -- Felix Botner <botner@univention.de>  Mon, 08 Jan 2018 16:24:35 +0100
+
 univention-x-core (11.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
