@@ -26,6 +26,8 @@ desc: |
  * net: qmi_wwan: fix divide by 0 on bad descriptors (CVE-2017-16650)
  * Information Leak in mincore() (CVE-2017-16994)
  * bpf: reject out-of-bounds stack pointer calculation (CVE-2017-17863)
+ * netlink: Add netns check on taps (CVE-2017-17449)
+ * net: ipv4: fix for a race condition in raw_sendmsg (CVE-2017-17712)
  * Systems with microprocessors utilizing speculative execution and indirect
    branch prediction may allow unauthorized disclosure of information to an
    attacker with local user access via a side-channel analysis of the data
@@ -49,4 +51,6 @@ cve:
 - CVE-2017-16650
 - CVE-2017-16994
 - CVE-2017-17863
+- CVE-2017-17449
+- CVE-2017-17712
 - CVE-2017-5754
