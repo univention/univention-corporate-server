@@ -313,7 +313,7 @@ class UCSInstallation(object):
 		self.client.keyPress('enter')
 		time.sleep(600)
 
-	def configure_eth1(self):
+	def configure_kvm_network(self):
 		if 'all' in self.args.components or 'kde' in self.args.components:
 			time.sleep(10)
 			self.client.keyDown('alt')
@@ -324,21 +324,25 @@ class UCSInstallation(object):
 		elif self.args.role == 'basesystem':
 			time.sleep(3)
 		else:
-			self.client.waitForText('corporate server')
-			self.client.keyPress('enter')
+			# ignore missing welcome screen Bug #45939
+			try:
+				self.client.waitForText('corporate server')
+				self.client.keyPress('enter')
+			except VNCDoException:
+				self.connect()
 		time.sleep(3)
 		self.client.enterText('root')
 		self.client.keyPress('enter')
 		time.sleep(5)
 		self.client.enterText(self.args.password)
 		self.client.keyPress('enter')
-		self.client.enterText('ifconfig eth1 up')
+		self.client.enterText('ifconfig ens6 up')
 		self.client.keyPress('enter')
 		self.client.enterText('echo ')
 		self.client.keyDown('shift')
 		self.client.enterText('2')  # @
 		self.client.keyUp('shift')
-		self.client.enterText('reboot -sbin-ifconfig eth1 up ')
+		self.client.enterText('reboot -sbin-ifconfig ens6 up ')
 		self.client.keyDown('shift')
 		self.client.enterText("'")  # |
 		self.client.keyUp('shift')
@@ -475,9 +479,9 @@ class UCSInstallation(object):
 			self.bootmenu()
 			self.installer()
 			self.setup()
-			# TODO activate eth1 so that ucs-kvm-create can connect to instance
+			# TODO activate ens6 so that ucs-kvm-create can connect to instance
 			# this is done via login and setting interfaces/eth0/type, is there a better way?
-			self.configure_eth1()
+			self.configure_kvm_network()
 		except Exception:
 			self.connect()
 			self.screenshot('error.png')
