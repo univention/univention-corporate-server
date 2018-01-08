@@ -1,3 +1,9 @@
+univention-bootsplash (9.0.0-3) unstable; urgency=medium
+
+  * Bug #45819: Fix typo
+
+ -- Richard Ulmer <ulmer@univention.de>  Mon, 08 Jan 2018 15:14:25 +0100
+
 univention-bootsplash (9.0.0-2) unstable; urgency=medium
 
   * Bug #45939: fix keyboard detection
