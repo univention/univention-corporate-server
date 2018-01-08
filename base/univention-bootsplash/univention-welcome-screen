@@ -51,13 +51,13 @@ remove_welcome_screen () {
 
 check_capabilities () {
 	quit=false
-	tmp="$(LC_ALL=C dmesg | grep "keyboard as" | awk '{print $NF}')"
-	if [ -e /sys/"$tmp"/event*/uevent ]; then
-		input="$(cat /sys/"$tmp"/event*/uevent | grep 'DEVNAME=' | awk -F 'DEVNAME=' '{print $NF}')"
-		if [ -e "/dev/$input" ]; then
-			keyboards="/dev/$input"
+	event="$(grep -E 'Handlers|EV=' /proc/bus/input/devices | grep -B1 'EV=120013' | grep -Eo 'event[0-9]+')"
+	keyboards=""
+	for e in $event; do
+		if [ -e "/dev/input/$e" ]; then
+			keyboards+="/dev/input/$e "
 		fi
-	fi
+	done
 	test -z "$keyboards" && quit=true && msg="no keyboard found, exiting"
 	test -e /etc/X11/default-display-manager && quit=true && msg="a display-manager is installed/configured, exiting"
 	if ! grep -q -w splash /proc/cmdline; then
