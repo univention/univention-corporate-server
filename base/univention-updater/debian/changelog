@@ -1,3 +1,10 @@
+univention-updater (13.0.0-11) unstable; urgency=medium
+
+  * Bug #45996: reindex krb5PrincipalName in postup.sh if
+    update43/skip/ldap/reindex is not set
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Jan 2018 18:55:50 +0100
+
 univention-updater (13.0.0-10) unstable; urgency=low
 
   * Bug #45968: remove /etc/postfix/dynamicmaps.cf in preup.sh to let

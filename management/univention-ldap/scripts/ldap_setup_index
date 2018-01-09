@@ -61,10 +61,11 @@ class LdapIndex(object):
         self.autorebuild = None
         self.quick_mode = None
         self.index = {}
+        self.changes = {}
 
     @staticmethod
     def parse_args():
-        usage = '%(prog)s [options] [--(add|rm)-(eq|pres|sub|approx) ATTR ...]'
+        usage = '%(prog)s [options] [--(add|rm)-(eq|pres|sub|approx)|rebuild] [ATTR ...]'
         description = sys.modules[__name__].__doc__
         parser = ArgumentParser(usage=usage, description=description)
         parser.add_argument(
@@ -103,6 +104,9 @@ class LdapIndex(object):
         parser.add_argument(
             '--rm-approx', '-A', action='append', metavar='ATTR',
             help='Remove from approximation index')
+        parser.add_argument(
+            '--reindex', '-r', action='append', metavar='ATTR',
+            help='Re-index given attributes')
         return parser.parse_args()
 
     def setup_logging(self):
@@ -157,7 +161,6 @@ class LdapIndex(object):
                 attributes -= set(to_rm)
 
     def save_ucr(self, ucr):
-        changes = {}
         for (typ, attributes) in self.index.iteritems():
             oldv = self.split_ucr(ucr, typ)
             if oldv == attributes:
@@ -165,13 +168,15 @@ class LdapIndex(object):
             ucrv = self.ucrv(typ)
             old = ucr.get(ucrv)
             if old is None or self.autorebuild:
-                changes[ucrv] = ','.join(sorted(attributes))
-        LOG.info('Applying %s...', changes)
-        if not changes:
-            sys.exit(0)
-        ucr_update(ucr, changes)
+                self.changes[ucrv] = ','.join(sorted(attributes))
+        LOG.info('Applying %s...', self.changes)
+        if not self.changes:
+            return
+        ucr_update(ucr, self.changes)
 
     def validate_config(self, ucr):
+        if not self.changes:
+            return
         cmd = ('slaptest',)
         while True:
             proc = Popen(cmd, stderr=PIPE)
@@ -197,11 +202,20 @@ class LdapIndex(object):
         """Run slapindex and filter out unsettling warning from stderr"""
         if not self.autorebuild:
             return
+        to_reindex = getattr(self.args, 'reindex')
+        if not (self.changes or to_reindex):
+            return
         LOG.info('Generating indexes...')
         self.check_slapd()
         slapindex_cmd = ['/usr/sbin/slapindex']
         if self.quick_mode:
             slapindex_cmd.append('-q')
+        add_options_given = [x for x in vars(self.args).items() if x[0].startswith('add_') and x[1]]
+        if not (add_options_given or self.args.force_defaults):
+            to_reindex = getattr(self.args, 'reindex')
+            if to_reindex and not '*' in to_reindex:
+                LOG.info('Re-indexing %s', ",".join(to_reindex))
+                slapindex_cmd.append(" ".join(to_reindex))
         slapindex = Popen(slapindex_cmd, stderr=PIPE)
         beautify_cmd = (
             'sed', '-e',

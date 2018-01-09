@@ -170,6 +170,31 @@ fi
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >>"$UPDATER_LOG" 2>&1
 
+# Bug #45996
+def ldap_reindex() {
+	local slapd_was_running
+	if [ -x /usr/share/univention-ldap/ldap_setup_index ]; then
+		if [ -n "$(pidof slapd)" ]; then
+			slapd_was_running=yes
+			if [ -x /etc/init.d/slapd ]; then
+				/etc/init.d/slapd stop
+			fi
+		fi
+		/usr/share/univention-ldap/ldap_setup_index --reindex "$@"
+		if [ -n "$lapd_was_running" ]; then
+			if [ -x /etc/init.d/slapd ]; then
+				/etc/init.d/slapd start
+			fi
+		fi
+	fi
+}
+# also Bug #45996
+if ! is_ucr_true update43/skip/ldap/reindex; then
+	if ucr search --brief ldap/index/* | grep krb5PrincipalName; then
+		ldap_reindex krb5PrincipalName
+	fi
+fi
+
 echo "
 
 
