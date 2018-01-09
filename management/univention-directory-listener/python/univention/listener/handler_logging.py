@@ -46,6 +46,7 @@ import stat
 import syslog
 import logging
 from logging.handlers import TimedRotatingFileHandler
+from collections import Mapping
 import listener
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry
@@ -227,6 +228,11 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
 	if cache_key in _handler_cache and getattr(logging, level) >= _handler_cache[cache_key].level:
 		return _logger
 
+	if not isinstance(handler_kwargs, Mapping):
+		handler_kwargs = dict()
+	if not isinstance(formatter_kwargs, Mapping):
+		formatter_kwargs = dict()
+
 	# The logger objects level must be the lowest of all handlers, or handlers
 	# with a higher level will not be able to log anything.
 	if getattr(logging, level) < _logger.level:
@@ -238,8 +244,6 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
 
 	fmt = FILE_LOG_FORMATS[level]
 	fmt_kwargs = dict(cls=logging.Formatter, fmt=fmt, datefmt=LOG_DATETIME_FORMAT)
-	if not isinstance(formatter_kwargs, dict):
-		formatter_kwargs = dict()
 	fmt_kwargs.update(formatter_kwargs)
 
 	if cache_key in _handler_cache:
