@@ -110,7 +110,7 @@ class ListenerModuleAdapter(object):
 	@property
 	def _module_handler(self):
 		if not self._module_handler_obj:
-			self.__module_handler = self.config.get_listener_module_instance()
+			self._module_handler_obj = self.config.get_listener_module_instance()
 		return self._module_handler_obj
 
 	def _handler(self, dn, new, old, command):
