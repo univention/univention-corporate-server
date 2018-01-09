@@ -143,7 +143,7 @@ if __name__ == '__main__':
 	parser.add_option('--binddn', action='store', dest='binddn', help='LDAP bind dn for UDM CLI operation')
 	parser.add_option('--bindpwd', action='store', dest='bindpwd', help='LDAP bind password for bind dn')
 	parser.add_option('--name', action='store', dest='name', help='name of the settings/printermodel object to modify')
-	parser.add_option('--version', action='store', dest='version', help='only available in this version or older', default='4.1')
+	parser.add_option('--version', action='store', dest='version', help='only available in this version or older', default='4.2')
 	options, args = parser.parse_args()
 	if options.name and args:
 		upm = UpdatePrinterModels(options, args)

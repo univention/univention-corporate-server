@@ -1,3 +1,9 @@
+univention-printserver (11.0.0-3) unstable; urgency=medium
+
+  * Bug #45958: updated ppd list in join script for UCS 4.3
+
+ -- Felix Botner <botner@univention.de>  Tue, 09 Jan 2018 16:43:06 +0100
+
 univention-printserver (11.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
