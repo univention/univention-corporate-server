@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-3) unstable; urgency=medium
+
+  * Bug #45996: improve --reindex changes in scripts/ldap_setup_index
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Jan 2018 23:49:34 +0100
+
 univention-ldap (14.0.2-2) unstable; urgency=medium
 
   * Bug #45996: New --reindex option for scripts/ldap_setup_index

@@ -61,7 +61,8 @@ class LdapIndex(object):
         self.autorebuild = None
         self.quick_mode = None
         self.index = {}
-        self.changes = {}
+        self.new_ucr_settings = {}
+        self.changed_attrs = None
 
     @staticmethod
     def parse_args():
@@ -154,11 +155,14 @@ class LdapIndex(object):
             to_add = getattr(self.args, 'add_%s' % (typ,))
             if to_add:
                 LOG.debug('Adding %s to %s', to_add, typ)
-                attributes |= set(to_add)
+                added = set(to_add)
+                attributes |= added
             to_rm = getattr(self.args, 'rm_%s' % (typ,))
             if to_rm:
                 LOG.debug('Removing %s from %s', to_rm, typ)
-                attributes -= set(to_rm)
+                removed = set(to_rm)
+                attributes -= removed
+            self.changed_attrs |= added ^ removed
 
     def save_ucr(self, ucr):
         for (typ, attributes) in self.index.iteritems():
@@ -168,14 +172,14 @@ class LdapIndex(object):
             ucrv = self.ucrv(typ)
             old = ucr.get(ucrv)
             if old is None or self.autorebuild:
-                self.changes[ucrv] = ','.join(sorted(attributes))
-        LOG.info('Applying %s...', self.changes)
-        if not self.changes:
+                self.new_ucr_settings[ucrv] = ','.join(sorted(attributes))
+        LOG.info('Applying %s...', self.new_ucr_settings)
+        if not self.new_ucr_settings:
             return
-        ucr_update(ucr, self.changes)
+        ucr_update(ucr, self.new_ucr_settings)
 
     def validate_config(self, ucr):
-        if not self.changes:
+        if not self.new_ucr_settings:
             return
         cmd = ('slaptest',)
         while True:
@@ -203,17 +207,16 @@ class LdapIndex(object):
         if not self.autorebuild:
             return
         to_reindex = getattr(self.args, 'reindex')
-        if not (self.changes or to_reindex):
+        if not (self.new_ucr_settings or to_reindex):
             return
         LOG.info('Generating indexes...')
         self.check_slapd()
         slapindex_cmd = ['/usr/sbin/slapindex']
         if self.quick_mode:
             slapindex_cmd.append('-q')
-        add_options_given = [x for x in vars(self.args).items() if x[0].startswith('add_') and x[1]]
-        if not (add_options_given or self.args.force_defaults):
+        if not (self.changed_attrs or self.args.force_defaults):
             to_reindex = getattr(self.args, 'reindex')
-            if to_reindex and not '*' in to_reindex:
+            if to_reindex and '*' not in to_reindex:
                 LOG.info('Re-indexing %s', ",".join(to_reindex))
                 slapindex_cmd.append(" ".join(to_reindex))
         slapindex = Popen(slapindex_cmd, stderr=PIPE)
