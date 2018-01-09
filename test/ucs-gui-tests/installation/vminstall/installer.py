@@ -269,6 +269,7 @@ class Installer(object):
 			self.client.keyPress('tab')
 			# Pressing page down is needed, because the checkbox is off screen
 			# when the software components list is long.
+			time.sleep(3)
 			self.client.keyPress('pgdn')
 			self.client.mouseClickOnText(self.locale_strings['do_update'])
 		self.client.keyPress('enter')
