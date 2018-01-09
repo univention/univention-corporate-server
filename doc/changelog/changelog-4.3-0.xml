@@ -363,6 +363,10 @@
 				</package>icedtea-7-plugin</package> to <package>openjdk-8-jre</package> and <package>icedtea-plugin</package>
 				(<u:bug>45959</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The list of available PPD printer driver has been updated in <package>univention-printserver</package>.
+				No longer available drivers are marked as deprecated (<u:bug>45958</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
