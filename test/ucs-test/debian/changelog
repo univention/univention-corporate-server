@@ -1,3 +1,9 @@
+ucs-test (8.0.7-8) unstable; urgency=low
+
+  * Bug #44786: adapt tests
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 09 Jan 2018 08:48:23 +0100
+
 ucs-test (8.0.7-7) unstable; urgency=medium
 
   * SMB2_GETINFO_QUOTA is NT_STATUS_NOT_SUPPORTED (Bug #45326)
