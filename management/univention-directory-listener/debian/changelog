@@ -1,3 +1,9 @@
+univention-directory-listener (12.0.0-11) unstable; urgency=low
+
+  * Bug #44786: check type of arguments
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 09 Jan 2018 09:37:02 +0100
+
 univention-directory-listener (12.0.0-10) unstable; urgency=low
 
   * Bug #44786: simplify configuration
