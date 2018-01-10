@@ -1,3 +1,9 @@
+univention-demo-configuration (6.0.0-3) unstable; urgency=medium
+
+  * Bug #45706: Remove download UCS button after test is finished
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 10 Jan 2018 15:54:16 +0100
+
 univention-demo-configuration (6.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
