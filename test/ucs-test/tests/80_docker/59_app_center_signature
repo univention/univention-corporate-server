@@ -44,7 +44,7 @@ class SyncedAppcenter(Appcenter):
 		self.download('meta-inf/%s/index.json.gz' % self.vv)
 		self.download('meta-inf/%s/all.tar.zsync' % self.vv)
 		self.download('meta-inf/%s/all.tar.gz' % self.vv)
-		if self.vv == '4.2':
+		if self.vv == '4.3':
 			self.download('meta-inf/4.1/index.json.gz')
 			self.download('meta-inf/4.1/all.tar.zsync')
 			self.download('meta-inf/4.1/all.tar.gz')
@@ -52,7 +52,7 @@ class SyncedAppcenter(Appcenter):
 	def download_index_json_gpg(self):
 		self.download('meta-inf/%s/index.json.gz.gpg' % self.vv)
 		self.download('meta-inf/%s/all.tar.gpg' % self.vv)
-		if self.vv == '4.2':
+		if self.vv == '4.3':
 			self.download('meta-inf/4.1/index.json.gz.gpg')
 			self.download('meta-inf/4.1/all.tar.gpg')
 

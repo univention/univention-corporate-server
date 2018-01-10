@@ -19,7 +19,7 @@ class UCSTest_AppCenter_PackageIsInstalled(Exception):
 		pass
 
 
-def create_app(addapp=False):
+def create_app():
 
 		ucr = ConfigRegistry()
 		ucr.load()
@@ -66,10 +66,7 @@ def create_app(addapp=False):
 		try:
 			appcenter.update()
 
-			if addapp:
-				app.install_via_add_app()
-			else:
-				app.install()
+			app.install()
 
 			if ucr.get('server/role') == 'domaincontroller_master':
 				if not package_installed(package_name1):
@@ -108,6 +105,4 @@ def create_app(addapp=False):
 if __name__ == '__main__':
 	with Appcenter() as appcenter:
 		## Install via univention-app install
-		create_app(addapp=False)
-		## Install via univention-add-app
-		create_app(addapp=True)
+		create_app()
