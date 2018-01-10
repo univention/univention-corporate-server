@@ -77,20 +77,6 @@ define([
 	});
 	_fillLoginForm();
 
-	var addDownloadButton = function() {
-		topic.subscribe('/umc/started', function() {
-		query('.umcHeaderRight').forEach(function(w) {
-			new Button({
-				label: '<span style="color: white; background-color: #74b627; padding: 0.5em; border-radius: 5px;">' + _('Download UCS') + '</span>',
-				style: 'box-shadow: none; margin: 0;',
-				onClick: function() {
-					window.open(_('https://univention.com/download/ucs-download/'), '_blank');
-				}
-			}).placeAt(w, 'first');
-		});
-		});
-	};
-
 	var _InfoBoxWidget = new declare('umc.hooks.univention_demo._InfoBoxWidget', [ContainerWidget], {
 		'class': 'umcDemoInfoBox',
 
@@ -291,8 +277,6 @@ define([
 	// only do something on the portal page
 	if (window.location.pathname.indexOf('/univention/portal/') === 0) {
 		buildPortalOverlay();
-	} else if (window.location.pathname.indexOf('/univention/management/') === 0) {
-		login.onLogin(addDownloadButton);
 	}
 
 	return null;
