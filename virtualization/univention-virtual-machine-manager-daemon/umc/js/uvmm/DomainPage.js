@@ -352,8 +352,8 @@ define([
 			//
 
 			this._targethostPage = new Page({
-				headerText: _('Target host settings'),
-				title: _('Target Hosts')
+				headerText: _('Migration targethost settings'),
+				title: _('Migration targethosts')
 			});
 
 			// grid for the target hosts

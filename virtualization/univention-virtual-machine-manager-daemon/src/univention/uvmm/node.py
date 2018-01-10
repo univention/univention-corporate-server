@@ -108,11 +108,11 @@ class DomainTemplate(object):
 		"""Convert XML to list."""
 		capabilities_tree = ET.fromstring(xml)
 		result = []
-		for guest in capabilities_tree.findall('guest', ns):
-			os_type = guest.findtext('os_type', ns)
+		for guest in capabilities_tree.findall('guest'):
+			os_type = guest.findtext('os_type' )
 			f_names = DomainTemplate.__get_features(guest)
-			for arch in guest.findall('arch', ns):
-				for dom in arch.findall('domain', ns):
+			for arch in guest.findall('arch' ):
+				for dom in arch.findall('domain'):
 					dom = DomainTemplate(arch, dom, os_type, f_names)
 					result.append(dom)
 		return result
@@ -121,7 +121,7 @@ class DomainTemplate(object):
 	def __get_features(node):
 		"""Return list of features."""
 		f_names = []
-		features = node.find('features', ns)
+		features = node.find('features')
 		if features is not None:
 			for child in features:
 				if child.tag == 'pae':
@@ -140,22 +140,22 @@ class DomainTemplate(object):
 		self.arch = arch.attrib['name']
 		self.domain_type = domain_type.attrib['type']
 
-		self.emulator = domain_type.findtext('emulator', ns) or arch.findtext('emulator', ns)
+		self.emulator = domain_type.findtext('emulator') or arch.findtext('emulator')
 		for node in [domain_type, arch]:
-			self.emulator = node.findtext('emulator', ns)
+			self.emulator = node.findtext('emulator')
 			if self.emulator:
 				break
 		else:
 			logger.error('No emulator specified in %s/%s' % (self.arch, self.domain_type))
 
 		for node in [domain_type, arch]:
-			self.machines = [m.text for m in node.findall('machine', ns)]
+			self.machines = [m.text for m in node.findall('machine')]
 			if self.machines:
 				break
 		else:
 			logger.error('No machines specified in %s/%s' % (self.arch, self.domain_type))
 
-		self.loader = arch.findtext('loader', ns)
+		self.loader = arch.findtext('loader')
 
 	def __str__(self):
 		return 'DomainTemplate(arch=%s dom_type=%s os_type=%s): %s, %s, %s, %s' % (self.arch, self.domain_type, self.os_type, self.emulator, self.loader, self.machines, self.features)
@@ -312,9 +312,6 @@ class Domain(PersistentCached):
 		else:
 			self.pd.suspended = None
 
-		# TODO: Remove these default values
-		# self.pd.targethosts = ['testinst', 'testinst2']
-
 	def update_ldap(self):
 		"""Update annotations from LDAP."""
 		try:
@@ -439,10 +436,11 @@ class Domain(PersistentCached):
 
 
 		self.pd.targethosts = []
-		metadata = domain_tree.find('metadata', ns)
+		metadata = domain_tree.find('metadata')
 		if metadata:
 			for targethost in metadata.findall('uvmm:migrationtargethosts', ns):
-				self.pd.targethosts.append(targethost)
+				if targethost.text is not None:
+					self.pd.targethosts.extend(targethost.text.split())
 
 
 	def key(self):
@@ -947,7 +945,7 @@ def __update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
 			_node_parent.remove(node)
 	else:
 		if node is None:
-			node = ET.SubElement(_node_parent, _node_name)
+			node = ET.SubElement(_node_parent, _node_name, nsmap=ns)
 		new_text = _node_value or None
 		if node.text != new_text:
 			_changes.add(None)
@@ -1915,29 +1913,24 @@ def domain_targethost_add(uri, domain, targethost):
 	"""Add a migration target host"""
 	try:
 		node = node_query(uri)
-		if not node.pd.supports_snapshot:
-			raise NodeError(_('Snapshot not supported "%(node)s"'), node=uri)
 		conn = node.conn
-		logger.error("domain: %s" % domain)
 		domconn = conn.lookupByUUIDString(domain)
-		logger.error("domconn: %s" % domconn)
 		dom = node.domains[domain]
 		dom_xml = ET.fromstring(domconn.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE))
-		logger.error("domxml: %s" % dom_xml)
 		domain_metadata = dom_xml.find('metadata', ns)
-		logger.error("domain_metadata: %s" % domain_metadata)
 		domain_targethosts = []
+
 		if domain_metadata is None or domain_metadata == -1:
-			domain_metadata_sub = ET.SubElement(dom_xml, 'metadata')
+			domain_metadata_sub = ET.SubElement(dom_xml, 'metadata', nsmap=ns)
 			domain_metadata = __update_xml(dom_xml, 'metadata', domain_metadata_sub)
 		else:
-			domain_targethosts = domain_metadata.find('uvmm:migrationtargethosts', ns)
-			if not domain_targethosts:
-				domain_targethosts = []
+			elem_targethosts = domain_metadata.find('uvmm:migrationtargethosts', ns)
+			if elem_targethosts is not None and elem_targethosts.text is not None:
+				domain_targethosts = elem_targethosts.text.split()
 
 		domain_targethosts.append(targethost)
-		domain_metadata = __update_xml(domain_metadata, 'uvmm:migrationtargethosts', ' '.join(domain_targethosts))
-		logger.error("XML:\n%s" % ET.tostring(dom_xml))
+		th_set = set(domain_targethosts)
+		domain_metadata = __update_xml(domain_metadata, '{%s}migrationtargethosts' % ns['uvmm'], ' '.join(th_set))
 		conn.defineXML(ET.tostring(dom_xml))
 
 		dom.update(domconn)
@@ -1948,4 +1941,30 @@ def domain_targethost_add(uri, domain, targethost):
 
 def domain_targethost_remove(uri, domain, targethost):
 	"""Remove a migration target host"""
-	return
+	try:
+		node = node_query(uri)
+		conn = node.conn
+		domconn = conn.lookupByUUIDString(domain)
+		dom = node.domains[domain]
+		dom_xml = ET.fromstring(domconn.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE))
+		domain_metadata = dom_xml.find('metadata', ns)
+		domain_targethosts = []
+
+		if domain_metadata is None or domain_metadata == -1:
+			domain_metadata_sub = ET.SubElement(dom_xml, 'metadata', nsmap=ns)
+			domain_metadata = __update_xml(dom_xml, 'metadata', domain_metadata_sub)
+		else:
+			elem_targethosts = domain_metadata.find('uvmm:migrationtargethosts', ns)
+			if elem_targethosts is not None:
+				domain_targethosts = elem_targethosts.text.split()
+
+		th_set = set(domain_targethosts)
+		if targethost in th_set:
+			th_set.remove(targethost)
+		domain_metadata = __update_xml(domain_metadata, '{%s}migrationtargethosts' % ns['uvmm'], ' '.join(th_set))
+		conn.defineXML(ET.tostring(dom_xml))
+
+		dom.update(domconn)
+	except libvirt.libvirtError as ex:
+		logger.error(ex)
+		raise NodeError(_('Error removing migrationtargethost "%(targethost)s" "%(domain)s": %(error)s'), targethost=targethost, domain=domain, error=ex.get_error_message())

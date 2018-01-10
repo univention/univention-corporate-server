@@ -472,6 +472,27 @@ define([
 				}
 			}
 
+			// check if multiple machines with migration target hosts are defined
+			var th_count = 0;
+			var targethosts = [];
+			array.forEach( items, function( item ) {
+				var deferred = tools.umcpCommand('uvmm/targethost/query', { domainURI: item.id });
+
+				deferred.then(lang.hitch(this, function(th_results) {
+					var hostlist = [for (result of th_results.result) result.id];
+					if ( hostlist.length > 0 ) {
+						++th_count;
+					}
+					targethosts = hostlist;
+				}));
+
+			});
+
+			if ( th_count > 1 ) {
+				dialog.alert( _( 'Each virtual machine with defined migration targethosts has to be migrated separately. The migration will not be performed.' ) );
+				return;
+			}
+
 			var _cleanup = function() {
 				_dialog.hide();
 				_dialog.destroyRecursive();
@@ -507,7 +528,12 @@ define([
 					dynamicValues: function() {
 						return types.getNodes().then( function( items ) {
 							return array.filter( items, function( item ) {
-								return item.id != sourceURI && types.getNodeType( item.id ) == sourceScheme;
+								if (targethosts.length > 0) {
+									// if targethosts are defined, offline targethosts have to be filtered, too
+									return targethosts.indexOf(item.label) != -1 && item.available && item.id != sourceURI && types.getNodeType( item.id ) == sourceScheme;
+								} else {
+									return item.id != sourceURI && types.getNodeType( item.id ) == sourceScheme;
+								}
 							} );
 						} );
 					}
@@ -538,6 +564,7 @@ define([
 				content: form,
 				'class': 'umcPopup'
 			});
+
 			_dialog.show();
 		},
 

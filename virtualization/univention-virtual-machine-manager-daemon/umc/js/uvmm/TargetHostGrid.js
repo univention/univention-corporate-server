@@ -47,17 +47,11 @@ define([
 
 		domain: null,
 
-		sortIndex: -2,
-
 		postMixInProperties: function() {
 			lang.mixin(this, {
 				columns: [{
 					name: 'label',
-					label: _('Valid migration target hosts')
-				}, {
-					width: '11em',
-					name: 'target',
-					label: _('Host')
+					label: _('Valid migration targethosts')
 				}],
 				actions: [{
 					name: 'delete',
@@ -113,11 +107,17 @@ define([
 			});
 
 			var _getMigrationTargetHosts = lang.hitch(this, function() {
+				var curr_hosts = []
+				var deferred = tools.umcpCommand('uvmm/targethost/query', { domainURI: this.domain.domainURI });
+				deferred.then(lang.hitch(this, function(current_targethosts) {
+					curr_hosts = [for (result of current_targethosts.result) result.id];
+				}));
 				return tools.umcpCommand('uvmm/node/query', { nodePattern: '' }).then(lang.hitch(this, function(results) {
 					var servers = [];
 					array.forEach(results.result, lang.hitch(this, function(iresult) {
-						/* TODO: filter already added servers */
-						servers.push(iresult.label);
+						if (curr_hosts.indexOf(iresult.label) == -1) {
+							servers.push(iresult.label);
+						}
 					}));
 					return servers;
 				}));
@@ -127,9 +127,8 @@ define([
 				widgets: [{
 					name: 'name',
 					type: ComboBox,
-					label: _('Please select the new migration target host:'),
+					label: _('Please select the new migration targethost:'),
 					dynamicValues: _getMigrationTargetHosts,
-					/*staticValues: [ {id: '1', label: 'Testentry'}],*/
 				}],
 				buttons: [{
 					name: 'submit',
@@ -152,7 +151,7 @@ define([
 			});
 
 			_dialog = new Dialog({
-				title: _('Add new migration target host'),
+				title: _('Add new targethost'),
 				content: form
 			});
 			_dialog.show();
@@ -167,9 +166,9 @@ define([
 			}
 
 			// confirm removal of snapshot(s)
-			var msg = _('Are you sure to delete the selected %s target hosts?', ids.length);
+			var msg = _('Are you sure to delete the selected %s targethosts?', ids.length);
 			if (ids.length == 1) {
-				msg = _('Are you sure to delete the selected target host?');
+				msg = _('Are you sure to delete the selected targethost?');
 			}
 			dialog.confirm(msg, [{
 				name: 'cancel',
@@ -183,15 +182,15 @@ define([
 					return;
 				}
 
-				// chain the UMCP commands for removing the snapshot(s)
+				// chain the UMCP commands for removing the target hosts
 				var deferred = new Deferred();
 				deferred.resolve();
 				array.forEach(ids, function(iid, i) {
 					deferred = deferred.then(lang.hitch(this, function() {
 						this.onUpdateProgress(i, ids.length);
 						return tools.umcpCommand('uvmm/targethost/remove', {
-							domain: this.domain.domainURI,
-							targethost: iid
+							domainURI: this.domain.domainURI,
+							targethostName: iid
 						});
 					}));
 				}, this);
