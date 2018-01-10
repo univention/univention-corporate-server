@@ -62,7 +62,7 @@ class LdapIndex(object):
         self.quick_mode = None
         self.index = {}
         self.new_ucr_settings = {}
-        self.changed_attrs = None
+        self.changed_attrs = set()
 
     @staticmethod
     def parse_args():

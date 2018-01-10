@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-5) unstable; urgency=medium
+
+  * Bug #45996: Fix TypeError: unsupported operand type(s)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Jan 2018 16:39:18 +0100
+
 univention-ldap (14.0.2-4) unstable; urgency=medium
 
   * Bug #45996: Fix UnboundLocalError
