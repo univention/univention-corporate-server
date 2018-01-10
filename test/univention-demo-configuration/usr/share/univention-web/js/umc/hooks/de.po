@@ -16,10 +16,6 @@ msgstr ""
 msgid "Demo help"
 msgstr "Demo Hilfe"
 
-#: usr/share/univention-web/js/umc/hooks/univention_demo.js:84
-msgid "Download UCS"
-msgstr "UCS herunterladen"
-
 #: usr/share/univention-web/js/umc/hooks/univention_demo.js:231
 msgid "Dummy entries to apps that could be installed on UCS"
 msgstr "Pseudoeinträge von Apps, die mit UCS installiert werden könnten"
