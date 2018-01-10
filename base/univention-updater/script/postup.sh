@@ -181,7 +181,7 @@ ldap_reindex () {
 			fi
 		fi
 		/usr/share/univention-ldap/ldap_setup_index --reindex "$@"
-		if [ -n "$lapd_was_running" ]; then
+		if [ -n "$slapd_was_running" ]; then
 			if [ -x /etc/init.d/slapd ]; then
 				/etc/init.d/slapd start
 			fi

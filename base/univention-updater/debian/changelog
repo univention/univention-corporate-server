@@ -1,3 +1,9 @@
+univention-updater (13.0.1-2) unstable; urgency=medium
+
+  * Fixed typo in postup.sh (Bug #45996)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Jan 2018 18:37:15 +0100
+
 univention-updater (13.0.1-1) unstable; urgency=medium
 
   * Fixed syntax error in postup.sh (Bug #45996)
