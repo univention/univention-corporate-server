@@ -152,6 +152,8 @@ class LdapIndex(object):
 
     def modify_index(self):
         for typ, attributes in self.index.iteritems():
+            added = set()
+            removed = set()
             to_add = getattr(self.args, 'add_%s' % (typ,))
             if to_add:
                 LOG.debug('Adding %s to %s', to_add, typ)

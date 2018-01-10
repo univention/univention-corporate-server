@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-4) unstable; urgency=medium
+
+  * Bug #45996: Fix UnboundLocalError
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Jan 2018 15:05:56 +0100
+
 univention-ldap (14.0.2-3) unstable; urgency=medium
 
   * Bug #45996: improve --reindex changes in scripts/ldap_setup_index
