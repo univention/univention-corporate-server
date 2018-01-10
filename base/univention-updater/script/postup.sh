@@ -171,7 +171,7 @@ fi
 service univention-firewall restart >>"$UPDATER_LOG" 2>&1
 
 # Bug #45996
-def ldap_reindex() {
+ldap_reindex () {
 	local slapd_was_running
 	if [ -x /usr/share/univention-ldap/ldap_setup_index ]; then
 		if [ -n "$(pidof slapd)" ]; then
