@@ -1,3 +1,9 @@
+univention-kernel-image (10.0.0-10) unstable; urgency=low
+
+  * Bug #46009: Update to linux-4.9.76-ucs107
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 11 Jan 2018 11:30:00 +0100
+
 univention-kernel-image (10.0.0-9) unstable; urgency=low
 
   * Bug #45981: Update to linux-4.9.75-ucs106
