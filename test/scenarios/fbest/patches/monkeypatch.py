@@ -8,7 +8,7 @@ from subprocess import call
 
 
 def main():
-	for script in ('./patches/enable-scope'):
+	for script in ('./patches/enable-scope',):
 		call([script])
 
 	services = []
