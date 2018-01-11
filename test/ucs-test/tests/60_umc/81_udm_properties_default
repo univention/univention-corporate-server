@@ -13,6 +13,7 @@ from argparse import Namespace as N
 
 class FakeObject(dict):
 	set_defaults = True
+	has_property = dict.__contains__
 
 
 class TestProperty(unittest.TestCase):
