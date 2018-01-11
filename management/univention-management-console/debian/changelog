@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-91) unstable; urgency=medium
+
+  * Bug #45395: fix typo
+
+ -- Florian Best <best@univention.de>  Thu, 11 Jan 2018 14:05:52 +0100
+
 univention-management-console (9.0.80-90) unstable; urgency=medium
 
   * Bug #45940: hide summit banner on non core edition systems
