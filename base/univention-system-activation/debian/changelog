@@ -1,4 +1,4 @@
-univention-system-activation (2.0.2-13) unstable; urgency=medium
+univention-system-activation (2.0.2-14) unstable; urgency=medium
 
   * Bug #45899: Add information about blocking browser addons to system
     activation error message
