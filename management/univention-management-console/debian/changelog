@@ -1,3 +1,9 @@
+univention-management-console (10.0.1-1) unstable; urgency=medium
+
+  * Bug #45395: fix typo
+
+ -- Florian Best <best@univention.de>  Thu, 11 Jan 2018 14:15:25 +0100
+
 univention-management-console (10.0.0-5) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
