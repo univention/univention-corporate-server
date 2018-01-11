@@ -22,3 +22,4 @@ univention-cli-server usr/share/univention-directory-manager-tools/
 univention-sync-memberuid usr/share/univention-directory-manager-tools/
 etc/bash_completion.d/univention-directory-manager etc/bash_completion.d/
 univention-object-type-migrate usr/share/univention-directory-manager-tools/
+univention-migrate-users-to-ucs4.3 usr/share/univention-directory-manager-tools/
