@@ -169,8 +169,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if not self.exists() or self.hasChanged('username'):
 			check_prohibited_username(self.lo, self['username'])
 
-		# get lock for username
-		if not self.exists() or self.hasChanged('username'):
+			# get lock for username
 			try:
 				self.alloc.append(('uid', univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])))
 			except univention.admin.uexceptions.noLock:
