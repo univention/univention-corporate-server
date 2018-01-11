@@ -1,3 +1,9 @@
+univention-updater (13.0.1-3) unstable; urgency=medium
+
+  * Bug #45996: Revert matching rule change to krb5PrincipalName
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Jan 2018 11:47:44 +0100
+
 univention-updater (13.0.1-2) unstable; urgency=medium
 
   * Fixed typo in postup.sh (Bug #45996)

@@ -49,11 +49,7 @@
 						OpenLDAP has been updated to version 2.4.45 (<u:bug>44834</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						The equality matching roule for the LDAP attribute <literal>krb5PrincipalName</literal> changed
-						from <literal>octetStringMatch</literal> to <literal>caseExactIA5Match</literal>.
-						The index for that attribute is rebuilt during the update.
-						The automatic index rebuild can be skipped by setting &ucsUCRV; <envar>update43/skip/ldap/reindex</envar>
-						to <literal>true</literal> before the update (<u:bug>45996</u:bug>).
+						The <filename>krb5-kdc.schema</filename> has a new attribute <literal>krb5ExtendedAttributes</literal> (<u:bug>45996</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 

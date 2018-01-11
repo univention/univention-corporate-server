@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-6) unstable; urgency=medium
+
+  * Bug #45996: Revert Syntax and Matchingrule change in Kerberos schema
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Jan 2018 11:44:02 +0100
+
 univention-ldap (14.0.2-5) unstable; urgency=medium
 
   * Bug #45996: Fix TypeError: unsupported operand type(s)
