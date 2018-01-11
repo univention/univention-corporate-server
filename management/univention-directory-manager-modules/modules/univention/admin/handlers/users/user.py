@@ -1820,7 +1820,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			self['uidNumber'] = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
 		self.alloc.append(('uidNumber', self['uidNumber']))
 
-		self['gidNumber'] = self.get_gid_for_primary_group()
+		self.info['gidNumber'] = self.get_gid_for_primary_group()
 
 		self._check_uid_gid_uniqueness()
 
@@ -2186,6 +2186,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		# make sure that univentionPerson is set as objectClass when needed
 		if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday')):
 			ml.append(('objectClass', '', 'univentionPerson'))  # TODO: check if exists already
+		return ml
 
 	def _modlist_home_share(self, ml):
 		if self.hasChanged('homeShare') or self.hasChanged('homeSharePath'):
