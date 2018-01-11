@@ -5,8 +5,8 @@ scope: ucs_4.2-0-errata4.2-3
 src: univention-kernel-image
 fix: 10.0.0-10A~4.2.0.201801111139
 desc: |
- This update of the Linux kernel to version 4.9.76 addresses the following
- issues:
+ This update of the Linux kernel from version 4.1.38 to version 4.9.76
+ addresses the following issue:
  * Systems with microprocessors utilizing speculative execution and indirect
    branch prediction may allow unauthorized disclosure of information to an
    attacker with local user access via a side-channel analysis of the data
@@ -16,8 +16,8 @@ desc: |
  longer maintained and does no longer get any security updates! Backporting
  the patches for 'Meltdown' and 'Spectre' are considered too risky.
  The Linux kernel provides a stable ABI so user programs should not notice the
- upgrade in general. Low-level programs like 'udev' have been updated to support
- both old and new Linux kernels.
+ upgrade in general. Low-level programs like 'udev' have been updated to
+ support both old and new Linux kernels.
  On the other hand kernel internal details have changed, which might break
  external kernel modules.
 note: This is the third of five parts.

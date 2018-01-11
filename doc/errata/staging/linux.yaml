@@ -6,7 +6,7 @@ src: linux
 fix: 4.9.30-2A~4.2.0.201801110837
 desc: |
  This update of the Linux kernel from version 4.1.38 to version 4.9.76
- addresses the following issues:
+ addresses the following issue:
  * Systems with microprocessors utilizing speculative execution and indirect
    branch prediction may allow unauthorized disclosure of information to an
    attacker with local user access via a side-channel analysis of the data
