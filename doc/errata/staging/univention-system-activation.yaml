@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: univention-system-activation
+fix: 2.0.2-14A~4.2.0.201801111731
+desc: |
+ This update addresses the following issue:
+ * Add information about blocking browser addons to
+   system activation error message
+bug: [45899]
