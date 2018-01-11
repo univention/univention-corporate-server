@@ -11,7 +11,7 @@ desc: |
    branch prediction may allow unauthorized disclosure of information to an
    attacker with local user access via a side-channel analysis of the data
    cache. (CVE-2017-5754)
-note: This is the second of three parts.
+note: This is the second of five parts.
 bug: [45243]
 cve:
 - CVE-2017-5754

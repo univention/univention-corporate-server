@@ -11,7 +11,16 @@ desc: |
    branch prediction may allow unauthorized disclosure of information to an
    attacker with local user access via a side-channel analysis of the data
    cache. (CVE-2017-5754)
-note: This is the third of three parts.
+
+ This is a major update for the Linux kernel as Linux kernel version 4.1 is no
+ longer maintained and does no longer get any security updates! Backporting
+ the patches for 'Meltdown' and 'Spectre' are considered too risky.
+ The Linux kernel provides a stable ABI so user programs should not notice the
+ upgrade in general. Low-level programs like 'udev' have been updated to support
+ both old and new Linux kernels.
+ On the other hand kernel internal details have changed, which might break
+ external kernel modules.
+note: This is the third of five parts.
 bug: [45243]
 cve:
 - CVE-2017-5754
