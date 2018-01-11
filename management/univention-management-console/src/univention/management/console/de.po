@@ -157,8 +157,8 @@ msgid "Internal error"
 msgstr "Interner Fehler"
 
 #: src/univention/management/console/base.py:331
-msgid "Internal server error during \"%(command)\"."
-msgstr "Interner Server-Fehler in \"%(command)\"."
+msgid "Internal server error during \"%(command)s\"."
+msgstr "Interner Server-Fehler in \"%(command)s\"."
 
 #: src/univention/management/console/protocol/definitions.py:67
 msgid "Invalid command arguments"
