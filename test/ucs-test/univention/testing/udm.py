@@ -468,6 +468,9 @@ class UCSTestUDM(object):
             if signal == 15:
                 time.sleep(1)
 
+    def verify_udm_object(self, *args, **kwargs):
+        return verify_udm_object(*args, **kwargs)
+
     def __enter__(self):
         return self
 
@@ -490,6 +493,9 @@ def verify_udm_object(module, dn, expected_properties):
 	try:
 		position = univention.admin.uldap.position(lo.base)
 		udm_module = univention.admin.modules.get(module)
+		if not udm_module:
+			univention.admin.modules.update()
+			udm_module = univention.admin.modules.get(module)
 		udm_object = univention.admin.objects.get(udm_module, None, lo, position, dn)
 		udm_object.open()
 	except univention.admin.uexceptions.noObject:
