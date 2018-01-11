@@ -3,12 +3,9 @@
 import ldap
 import subprocess
 
-import univention.testing.utils as utils
 import univention.testing.strings as tstrings
+from univention.testing.udm import verify_udm_object
 
-import univention.admin.uldap
-import univention.admin.modules
-import univention.admin.objects
 import univention.config_registry
 
 configRegistry = univention.config_registry.ConfigRegistry()
@@ -193,7 +190,8 @@ def map_udm_user_to_con(user):
 	Note: This expects the properties from the UDM users/user modul and not
 	OpenLDAP-attributes!.
 	"""
-	mapping = {"username": "sAMAccountName",
+	mapping = {
+		"username": "sAMAccountName",
 		"firstname": "givenName",
 		"lastname": "sn",
 		"description": "description",
@@ -207,8 +205,7 @@ def map_udm_user_to_con(user):
 		"mobileTelephoneNumber": "mobile",
 		"pagerTelephoneNumber": "pager",
 		"sambaUserWorkstations": "userWorkstations"}
-	return {mapping.get(key): value for (key, value) in user.iteritems()
-			if key in mapping}
+	return {mapping.get(key): value for (key, value) in user.iteritems() if key in mapping}
 
 
 def map_udm_group_to_con(group):
@@ -218,50 +215,8 @@ def map_udm_group_to_con(group):
 	Note: This expects the properties from the UDM groups/group modul and not
 	OpenLDAP-attributes!.
 	"""
-	mapping = {"name": "sAMAccountName",
-		"description": "description"}
-	return {mapping.get(key): value for (key, value) in group.iteritems()
-			if key in mapping}
-
-
-def verify_udm_object(module, dn, expected_properties):
-	"""
-	Verify an object exists with the given `dn` in the given UDM `module` with
-	some properties. Setting `expected_properties` to `None` requires the
-	object to not exist. `expected_properties` is a dictionary of
-	`property`:`value` pairs.
-
-	This will throw an `AssertionError` in case of a mismatch.
-	"""
-	lo = utils.get_ldap_connection(admin_uldap=True)
-	try:
-		position = univention.admin.uldap.position(lo.base)
-		udm_module = univention.admin.modules.get(module)
-		udm_object = univention.admin.objects.get(udm_module, None, lo, position, dn)
-		udm_object.open()
-	except univention.admin.uexceptions.noObject as e:
-		if expected_properties is None:
-			return
-		raise e
-
-	if expected_properties is None:
-		raise AssertionError("UDM object {} should not exist".format(dn))
-
-	for (key, value) in expected_properties.iteritems():
-		udm_value = udm_object.info.get(key, [])
-		if isinstance(udm_value, basestring):
-			udm_value = set([udm_value])
-		if not isinstance(value, (tuple, list)):
-			value = set([value])
-		value = set(to_unicode(v).lower() for v in value)
-		udm_value = set(to_unicode(v).lower() for v in udm_value)
-		if udm_value != value:
-			try:
-				value = set(normalize_dn(dn) for dn in value)
-				udm_value = set(normalize_dn(dn) for dn in udm_value)
-			except ldap.DECODING_ERROR:
-				pass
-		assert udm_value == value, '{}: {} != expected {}'.format(key, udm_value, value)
+	mapping = {"name": "sAMAccountName", "description": "description"}
+	return {mapping.get(key): value for (key, value) in group.iteritems() if key in mapping}
 
 
 def create_udm_user(udm, con, user, wait_for_sync):
@@ -306,7 +261,8 @@ def delete_con_user(con, con_user_dn, udm_user_dn, wait_for_sync):
 def create_udm_group(udm, con, group, wait_for_sync):
 	print("\nCreating UDM group {}\n".format(group))
 	(udm_group_dn, groupname) = udm.create_group(**group.group)
-	con_group_dn = ldap.dn.dn2str([[("CN", groupname, ldap.AVA_STRING)],
+	con_group_dn = ldap.dn.dn2str([
+		[("CN", groupname, ldap.AVA_STRING)],
 		[("CN", "groups", ldap.AVA_STRING)]] + ldap.dn.str2dn(con.adldapbase))
 	wait_for_sync()
 	con.verify_object(con_group_dn, map_udm_group_to_con(group.group))
@@ -326,7 +282,8 @@ def create_con_group(con, udm_group, wait_for_sync):
 	print("\nCreating CON group {}\n".format(con_group))
 	groupname = udm_group.group.get("name")
 	con_group_dn = con.group_create(groupname, **con_group)
-	udm_group_dn = ldap.dn.dn2str([[("cn", groupname, ldap.AVA_STRING)],
+	udm_group_dn = ldap.dn.dn2str([
+		[("cn", groupname, ldap.AVA_STRING)],
 		[("CN", "groups", ldap.AVA_STRING)]] + ldap.dn.str2dn(configRegistry.get('ldap/base')))
 	wait_for_sync()
 	verify_udm_object("groups/group", udm_group_dn, udm_group.group)
