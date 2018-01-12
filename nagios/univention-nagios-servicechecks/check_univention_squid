@@ -61,7 +61,7 @@ if [ "$1" = "-h" -o "$1" = "--help" ] ; then
 fi
 
 # check for at least one squid process
-MSG="$(/usr/lib/nagios/plugins/check_procs -w 1: -c 1: -C squid3)"
+MSG="$(/usr/lib/nagios/plugins/check_procs -w 1: -c 1: -C squid)"
 RET="$?"
 if [ ! "$RET" = "0" ] ; then
 	nagiosExit "$RET" "$MSG"
@@ -69,7 +69,7 @@ fi
 
 # get local squid port
 port=3128
-squidCfg=/etc/squid3/squid.conf
+squidCfg=/etc/squid/squid.conf
 if [ -e "$squidCfg" ]; then
 	cfgPort=$(sed -nre 's/^\s*http_port\s+//p' "$squidCfg")
 	if [ -n "$cfgPort" ]; then
