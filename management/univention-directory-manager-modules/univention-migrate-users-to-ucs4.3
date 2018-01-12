@@ -45,6 +45,10 @@ from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
 ucr.load()
 
+if ucr.get('server/role') != 'domaincontroller_master':
+	print 'This script can only be executed on the Domaincontroller Master.'
+	sys.exit(0)
+
 lo, po = univention.admin.uldap.getAdminConnection()
 
 
