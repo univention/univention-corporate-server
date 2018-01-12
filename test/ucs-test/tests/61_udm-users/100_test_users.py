@@ -7,6 +7,7 @@
 
 import pytest
 import time
+import subprocess
 
 
 class TestUsers(object):
@@ -19,7 +20,6 @@ class TestUsers(object):
 			self._unmap_mail_forward()
 			self.sambaMungedDialUnmap()
 			self.sambaMungedDialParse()
-			self.reload_certificate()
 
 		3.
 		self._load_groups(loadGroups)
@@ -97,3 +97,29 @@ class TestUsers(object):
 		user = udm.create_user(homeShare=share, homeSharePath=homeSharePath)[0]
 		udm.verify_udm_object("users/user", user, {"homeShare": share, "homeSharePath": homeSharePath})
 		verify_ldap_object(user, {'automountInformation': ['-rw %s:%s/%s' % (host, path.rstrip('/'), homeSharePath)]})
+
+	def test_unmap_user_certificate(self, udm, ucr):
+		certificate = subprocess.check_output(['openssl', 'x509', '-inform', 'pem', '-in', '/etc/univention/ssl/%(hostname)s/cert.pem' % ucr, '-outform', 'der', '-out', '-']).encode('base64').replace('\n', '')
+		user = udm.create_user(options=['pki'], userCertificate=certificate)[0]
+		# FIXME: get the real values from the certificate!
+		udm.verify_udm_object('users/user', user, {
+			'userCertificate': certificate,
+			'certificateDateNotAfter': '2022-12-17',
+			'certificateDateNotBefore': '2017-12-18',
+			# 'certificateIssuerCommonName': 'Univention Corporate Server Root CA (ID=YRkLWLDu)',
+			'certificateIssuerCountry': 'DE',
+			'certificateIssuerLocation': 'DE',
+			'certificateIssuerMail': 'ssl@%s' % ucr.get('domainname'),
+			'certificateIssuerOrganisation': 'DE',
+			'certificateIssuerOrganisationalUnit': 'Univention Corporate Server',
+			'certificateIssuerState': 'DE',
+			'certificateSerial': '1',
+			'certificateSubjectCommonName': '%(hostname)s.%(domainname)s' % ucr,
+			'certificateSubjectCountry': 'DE',
+			'certificateSubjectLocation': 'DE',
+			'certificateSubjectMail': 'ssl@%s' % ucr.get('domainname'),
+			'certificateSubjectOrganisation': 'DE',
+			'certificateSubjectOrganisationalUnit': 'Univention Corporate Server',
+			'certificateSubjectState': 'DE',
+			'certificateVersion': '2',
+		})

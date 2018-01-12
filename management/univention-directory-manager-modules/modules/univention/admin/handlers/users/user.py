@@ -1690,8 +1690,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		certificate = self.info.get('userCertificate')
 		values = load_certificate(certificate)
 		if values:
-			for key, value in values.items():
-				self.info[key] = value
+			self.info.update(values)
 		else:
 			self.info['userCertificate'] = ''
 
