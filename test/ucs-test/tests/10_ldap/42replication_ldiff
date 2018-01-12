@@ -69,7 +69,7 @@ section "Now testing replication..."
 wait_for_replication
 
 tmpdir=$(mktemp -d)
-undo "rm -rf '$tmpdir'"
+undo rm -rf "$tmpdir"
 
 ldapsearch -x -LLL \
 	-h "$ldap_master" \
