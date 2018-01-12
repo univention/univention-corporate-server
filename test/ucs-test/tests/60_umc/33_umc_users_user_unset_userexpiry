@@ -44,19 +44,19 @@ class TestUMCUserAuthentication(UMCBase):
 		"""
 		Queries UDM's users/user from UMC
 		"""
-		return self.modify_object([{"object": {"userexpiry": None, "$dn$": self.test_user_dn}}], 'users/user')
+		return self.modify_object([{"object": {"userexpiry": None, "$dn$": self.test_user_dn}, "options": {"objectType": "users/user"}}], 'users/all')
 
 	def set_userexpiry_testval(self):
 		"""
 		Queries UDM's users/user from UMC
 		"""
-		return self.modify_object([{"object": {"userexpiry": "2015-02-02", "$dn$": self.test_user_dn}}], 'users/user')
+		return self.modify_object([{"object": {"userexpiry": "2015-02-02", "$dn$": self.test_user_dn}, "options": {"objectType": "users/user"}}], 'users/all')
 
 	def set_userexpiry_empty(self):
 		"""
 		Queries UDM's users/user from UMC
 		"""
-		return self.modify_object([{"object": {"userexpiry": "", "$dn$": self.test_user_dn}}], 'users/user')
+		return self.modify_object([{"object": {"userexpiry": "", "$dn$": self.test_user_dn}, "options": {"objectType": "users/user"}}], 'users/all')
 
 	def main(self):
 		"""
@@ -71,7 +71,7 @@ class TestUMCUserAuthentication(UMCBase):
 
 			prior_testval = utils.get_ldap_connection().get(self.test_user_dn)
 			self.set_userexpiry_testval()
-			response = self.get_object([self.test_user_dn], 'users/user')
+			response = self.get_object([self.test_user_dn], 'users/all')
 			try:
 				assert response[0]["userexpiry"] == "2015-02-02", "userexpiry not initialized properly: %s" % (response[0]["userexpiry"],)
 			except KeyError:  # Bug #37924

@@ -31,7 +31,7 @@ class TestUMCExtendedAttributes(UDMModule):
         Checks if the user object has the correct value after the modfication.
         """
         try:
-            user = self.get_object([user_dn], "users/user")[0]
+            user = self.get_object([user_dn], "users/all")[0]
             if user[attribute_key] not in old_value:
                 utils.fail("The test user (dn='%s') custom attribute '%s' "
                            "value was incorrect after user object creation, "
@@ -42,9 +42,9 @@ class TestUMCExtendedAttributes(UDMModule):
             options = [{"object": {attribute_key: new_value,
                                    "$dn$": user_dn},
                         "options": None}]
-            self.modify_object(options, "users/user")
+            self.modify_object(options, "users/all")
 
-            user = self.get_object([user_dn], "users/user")[0]
+            user = self.get_object([user_dn], "users/all")[0]
             if user[attribute_key] not in new_value:
                 utils.fail("The test user (dn='%s') custom attribute '%s' "
                            "value was not modified after the object "

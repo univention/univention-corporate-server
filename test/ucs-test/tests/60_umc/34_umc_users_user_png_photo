@@ -66,8 +66,8 @@ class TestUMCUserAuthentication(UMCBase):
 	def set_image(self, jpegPhoto):
 		if jpegPhoto:
 			jpegPhoto = jpegPhoto.encode('base64').rstrip()  # TODO: make umcp/upload request
-		self.modify_object([{"object": {"jpegPhoto": jpegPhoto, "$dn$": self.test_user_dn}}], 'users/user')
-		response = self.get_object([self.test_user_dn], 'users/user')
+		self.modify_object([{"object": {"jpegPhoto": jpegPhoto, "$dn$": self.test_user_dn}}], 'users/all')
+		response = self.get_object([self.test_user_dn], 'users/all')
 		return response[0].get('jpegPhoto')
 
 	def main(self):

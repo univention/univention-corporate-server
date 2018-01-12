@@ -43,9 +43,9 @@ class TestUMCUserAuthentication(UMCBase):
 
 	def query_udm(self):
 		"""
-		Queries UDM's users/user from UMC
+		Queries UDM's users/ldap from UMC
 		"""
-		response = self.request('udm/query', {'objectType': 'users/user', 'objectProperty': 'username', 'objectPropertyValue': self.test_username}, 'users/user')
+		response = self.request('udm/query', {'objectType': 'users/ldap', 'objectProperty': 'username', 'objectPropertyValue': self.test_username}, 'users/all')
 		if not response:  # udm/query not rejected but does not work
 			utils.fail("Cannot find myself with udm/query!")
 
@@ -60,9 +60,7 @@ class TestUMCUserAuthentication(UMCBase):
 			assert response.status == 200
 			return True
 		except Exception as exc:
-			utils.fail("An exception while trying to authenticate to UMC "
-				"with a 'username'=%s and 'password'=%s: %r"
-				% (self.test_username, password, exc))
+			utils.fail("An exception while trying to authenticate to UMC with a 'username'=%s and 'password'=%s: %r" % (self.test_username, password, exc))
 
 	def main(self):
 		"""

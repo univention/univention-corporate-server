@@ -249,8 +249,8 @@ class TestUMCLicenseManagement(UDMModule):
         list with a check if each of them exists
         """
         for user in self.users_to_delete:
-            if self.check_obj_exists(user, "users/user"):
-                self.delete_obj(user, 'users', 'users/user')
+            if self.check_obj_exists(user, "users/user", "users/all"):
+                self.delete_obj(user, 'users/user', 'users/all')
         self.users_to_delete = []
 
     def free_license_limits_check(self, obj_type):
