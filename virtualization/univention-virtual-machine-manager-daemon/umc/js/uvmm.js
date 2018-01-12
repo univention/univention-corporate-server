@@ -479,7 +479,11 @@ define([
 				var deferred = tools.umcpCommand('uvmm/targethost/query', { domainURI: item.id });
 
 				deferred.then(lang.hitch(this, function(th_results) {
-					var hostlist = [for (result of th_results.result) result.id];
+					var hostlist = [];
+					array.forEach(th_results.result, function(result) {
+						hostlist.push(result.id);
+					});
+
 					if ( hostlist.length > 0 ) {
 						++th_count;
 					}
