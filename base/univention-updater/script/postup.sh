@@ -170,6 +170,8 @@ fi
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >>"$UPDATER_LOG" 2>&1
 
+/usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3 >>"$UPDATER_LOG" 2>&1
+
 echo "
 
 
