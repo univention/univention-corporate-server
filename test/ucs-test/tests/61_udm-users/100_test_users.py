@@ -194,8 +194,14 @@ class TestUsers(object):
 		user = udm.modify_object('users/user', dn=user, **props)
 		verify_ldap_object(user, attrs, strict=False)
 
-	def test_modlist_gecos(self, udm):
-		pass
+	@pytest.mark.parametrize('props,gecos', [
+		({'firstname': 'X', 'lastname': 'Y'}, 'X Y'),
+		({'firstname': ' X ', 'lastname': ' Y '}, 'X   Y'),  # FIXME: current result looks broken!
+		({'firstname': 'H\xc3\xe4\xc3\xe4lo', 'lastname': 'W\xc3\xb6\xc3\xb6rld'}, 'HAaeAaelo Woeoerld'),  # FIXME: current result looks broken!
+	])
+	def test_modlist_gecos(self, udm, props, gecos, verify_ldap_object):
+		# '<firstname> <lastname><:umlauts,strip>'
+		self._test_modlist(udm, verify_ldap_object, props, {'gecos': [gecos]})
 
 	def test_modlist_display_name(self, udm):
 		pass
