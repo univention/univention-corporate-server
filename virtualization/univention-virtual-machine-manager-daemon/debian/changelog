@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (6.0.4-8) unstable; urgency=medium
+
+  * Bug #45846: Adjust javascript, do not use incompatible function
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 12 Jan 2018 10:38:21 +0100
+
 univention-virtual-machine-manager-daemon (6.0.4-7) unstable; urgency=medium
 
   * Bug #45846: Added the ability to define migration targethosts for VMs, to
