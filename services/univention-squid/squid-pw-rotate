@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 if [ "$1" = "postchange" ] ; then
-	dest="/etc/squid3.secret"
+	dest="/etc/squid.secret"
 	cp /etc/machine.secret "$dest"
 	chown proxy:root "$dest"
 	chmod 600  "$dest"

@@ -37,13 +37,7 @@
 # the proxy user needs to be in the group winbindd_priv to be able to access winbind
 adduser proxy winbindd_priv
 
-if [ -e /etc/squid/local.conf ] ; then
-    mv /etc/squid/local.conf /etc/squid3/local.conf
-fi
-
-rmdir /etc/squid 2> /dev/null
-
-LOCALINCLUDE=/etc/squid3/local.conf
+LOCALINCLUDE=/etc/squid/local.conf
 if [ ! -e "$LOCALINCLUDE" ]; then
 	echo "# add local config here" >> "$LOCALINCLUDE"
 fi
@@ -53,13 +47,12 @@ ucr set squid/transparentproxy?false \
 	squid/debug/level?ALL,1 \
 	squid/forwardedfor?off \
 	squid/cache/format?ufs \
-	squid/cache/directory?/var/spool/squid3 \
+	squid/cache/directory?/var/spool/squid \
 	squid/cache/size?512 \
 	squid/cache/l1_size?16 \
 	squid/cache/l2_size?256
 
-/etc/init.d/squid3 stop
-/etc/init.d/squid3 start
+invoke-rc.d squid restart
 
 # configure firewall
 ucr set security/packetfilter/package/univention-squid/tcp/3128/all="ACCEPT" \

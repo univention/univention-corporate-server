@@ -38,7 +38,7 @@ joinscript_init
 eval "$(univention-config-registry shell)"
 
 # copy machine.secret
-dest="/etc/squid3.secret"
+dest="/etc/squid.secret"
 cp /etc/machine.secret "$dest"
 chown proxy:root "$dest"
 chmod 600  "$dest"

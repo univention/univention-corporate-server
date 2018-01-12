@@ -40,17 +40,17 @@
 #   * http://www.koders.com/python/fidEE921E55A2EC9CF12BE39BFAA74346769EE6F2FF.aspx
 
 # auth negotiate
-# auth_param negotiate program /usr/lib/squid3/squid_ldap_ntlm_auth --gss-spnego
+# auth_param negotiate program /usr/lib/squid/squid_ldap_ntlm_auth --gss-spnego
 # auth_param negotiate children 10
 #
 # auth ntlm
-# auth_param ntlm program /usr/lib/squid3/squid_ldap_ntlm_auth
+# auth_param ntlm program /usr/lib/squid/squid_ldap_ntlm_auth
 # auth_param ntlm children 10
 # auth_param ntlm keep_alive on
 #
 # debug
 # squid/debug/level: ALL,1 29,9
-# /usr/lib/squid3/squid_ldap_ntlm_auth --debug
+# /usr/lib/squid/squid_ldap_ntlm_auth --debug
 
 import sys
 import time
@@ -365,7 +365,7 @@ def getNtHash(user):
 	ntHash = ""
 	ldapFilter = "(uid=%s)" % user
 	attr = ["sambaNTPassword", "sambaAcctFlags"]
-	ldap = univention.uldap.getMachineConnection(ldap_master=False, secret_file="/etc/squid3.secret")
+	ldap = univention.uldap.getMachineConnection(ldap_master=False, secret_file="/etc/squid.secret")
 	result = ldap.search(base=cr["ldap/base"], filter=ldapFilter, attr=attr)
 	if options.debug:
 		debug("  ldapsearch for sambaNTPassword of user %s" % user)
@@ -660,7 +660,7 @@ if __name__ == '__main__':
 	# open pipe to squid_kerb_auth for kerberos stuff
 	kerbPipe = None
 	if options.gssSpnego:
-		kerbPipe = subprocess.Popen(['/usr/lib/squid3/negotiate_kerberos_auth'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+		kerbPipe = subprocess.Popen(['/usr/lib/squid/negotiate_kerberos_auth'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
 	while True:
 

@@ -45,7 +45,7 @@ if [ "$1" = "remove" ]; then
 
 	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
-	[ -e "/etc/squid3.secret" ] && rm -f /etc/squid3.secret
+	[ -e "/etc/squid.secret" ] && rm -f /etc/squid.secret
 
 fi
 
