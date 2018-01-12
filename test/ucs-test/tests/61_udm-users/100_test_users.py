@@ -213,8 +213,9 @@ class TestUsers(object):
 		# TODO: test UCR variable overwrite of '<firstname> <lastname><:strip>'
 		self._test_modlist(udm, verify_ldap_object, props, {'displayName': [displayName]})
 
-	def test_modlist_krb_principal(self, udm):
-		pass
+	def test_modlist_krb_principal(self, udm, random_username, verify_ldap_object, ucr):
+		username = random_username()
+		self._test_modlist(udm, verify_ldap_object, {'username': username}, {'krb5PrincipalName': ['%s@%s' % (username, ucr['domainname'].upper())]})
 
 	def test_modlist_password_change(self, udm):
 		pass
