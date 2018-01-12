@@ -74,7 +74,7 @@ class ListenerModuleAdapter(object):
 		"""
 		name = self.config.get_name()
 		description = self.config.get_description()
-		filter_s = self.config.get_ldap_filter() if self.config.get_active() else '(listenerModule=deactivated)'
+		filter_s = self.config.get_ldap_filter() if self.config.get_active() else '(objectClass=listenerModuleDeactivated)'
 		attributes = self.config.get_attributes()
 		modrdn = 1
 		handler = self._handler
