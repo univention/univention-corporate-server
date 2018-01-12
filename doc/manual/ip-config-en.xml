@@ -2224,12 +2224,12 @@ closest to the object always applies.
 		command line:
 	  </para>
 		<programlisting language="sh">
-/etc/init.d/squid3 restart
+/etc/init.d/squid restart
 		</programlisting>
 	  <para>
 		In addition to the configuration possibilities via &ucsUCR; described
 		in this document, it is also possible to set additional Squid
-		configuration options in the <filename>/etc/squid3/local.conf</filename>.
+		configuration options in the <filename>/etc/squid/local.conf</filename>.
 	  </para>
 	  <para>
 		<emphasis>DansGuardian</emphasis> can be installed via the
@@ -2259,7 +2259,7 @@ closest to the object always applies.
 	  <title>Logging proxy accesses</title>
 	  <para>
 		All accesses performed via the proxy server are stored in the
-		logfile <filename>/var/log/squid3/access.log</filename>.
+		logfile <filename>/var/log/squid/access.log</filename>.
 		It can be used to follow which websites have been accessed by the users.
 	  </para>
 	  <para>

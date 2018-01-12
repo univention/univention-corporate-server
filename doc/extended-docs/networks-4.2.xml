@@ -75,7 +75,7 @@ sysctl -p
 				  <emphasis>yes</emphasis> on the proxy server. After that Univention Firewall and Squid need to be restarted:
 				  <programlisting lang="sh">
 /etc/init.d/univention-firewall restart
-/etc/init.d/squid3 restart
+/etc/init.d/squid restart
 				  </programlisting>
 
 				  This enables packet filter rules which redirect all queries for the web ports to the proxy server.

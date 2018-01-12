@@ -1887,12 +1887,12 @@
 		neu gestartet werden. Dies kann entweder über &ucsUMC;
 		oder auf der Kommandozeile erfolgen:
 		<programlisting language="sh">
-/etc/init.d/squid3 restart
+/etc/init.d/squid restart
 		</programlisting>
 	  </para>
 	  <para>
 		Neben den in diesem Dokument beschriebenen Konfigurationsmöglichkeiten
-		über &ucsUCR; können in der <filename>/etc/squid3/local.conf</filename> auch beliebige
+		über &ucsUCR; können in der <filename>/etc/squid/local.conf</filename> auch beliebige
 		weitere Squid-Optionen gesetzt werden.
 	  </para>
 	  <para>
@@ -1930,7 +1930,7 @@
 	  <title>Protokollierung von Zugriffen</title>
 	  <para>
 		Sämtliche Zugriffe, die über den Proxy-Server vorgenommen werden, werden
-		in der Logdatei <filename>/var/log/squid3/access.log</filename> erfasst. Anhand
+		in der Logdatei <filename>/var/log/squid/access.log</filename> erfasst. Anhand
 		dieser Logdatei ist es möglich, nachzuvollziehen auf welche Webseiten
 		zugegriffen wurde.
 	  </para>
