@@ -9,3 +9,5 @@ desc: |
  * Allow udev to be used with newer Linux kernel 4.9
 note: This is the fifths of five parts.
 bug: [45243]
+erratum: 494
+announced: 2018-01-12
