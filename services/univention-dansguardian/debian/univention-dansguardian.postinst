@@ -44,7 +44,7 @@ ucr set squid/virusscan?yes \
 	dansguardian/virusscanner?clamav \
 	clamav/freshclam/autostart?yes
 
-/etc/init.d/squid3 restart
+invoke-rc.d squid restart
 
 eval "$(ucr shell squid/virusscan squid/contentscan)"
 
