@@ -5,7 +5,7 @@ scope: ucs_4.2-0-errata4.2-3
 src: univention-kernel-image
 fix: 10.0.0-10A~4.2.0.201801111139
 desc: |
- This update of the Linux kernel to version 4.9.75 addresses the following
+ This update of the Linux kernel to version 4.9.76 addresses the following
  issues:
  * Systems with microprocessors utilizing speculative execution and indirect
    branch prediction may allow unauthorized disclosure of information to an
