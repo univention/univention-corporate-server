@@ -25,16 +25,7 @@ class TestUsers(object):
 		self._load_groups(loadGroups)
 
 		# TODO: test pre_create() / pre_modify() / pre_ready() method:
-		mail primary address gets lowered
 		primaryGroupWithoutSamba
-		check uid/gidnumber conflict
-
-		locks (change und create): uidNumber, uid, mailPrimaryAddress
-		locks confirmed after creation/modification
-		locks released after removal
-		prohibited usernames are checked during create(), modify()
-
-		locks funktionieren mit case-insensitive
 
 		create(): 'krb5PrincipalName', 'krb5MaxLife', 'krb5MaxRenew' are set
 
@@ -123,3 +114,29 @@ class TestUsers(object):
 			'certificateSubjectState': 'DE',
 			'certificateVersion': '2',
 		})
+
+	def test_mail_primary_group_gets_lowercased(self):
+		pass  # TODO: implement create() + modify()
+
+	def test_uid_gid_number_conflict_is_detected(self):
+		pass
+
+	def test_locking(self):
+		"""
+		locks (change und create): uidNumber, uid, mailPrimaryAddress
+		locks confirmed after creation/modification
+		locks released after removal
+		locks funktionieren mit case-insensitive
+		"""
+
+	def test_prohibited_username_are_checked(self, udm, random_username):
+		pass  # TODO: implement create() + modify()
+		username = random_username()
+		udm.create_object('settings/prohibited_username', name='forbidden', usernames=[username])
+
+		with pytest.raises(Exception):
+			udm.create_user(username=username)
+
+		user = udm.create_user()[0]
+		with pytest.raises(Exception):
+			udm.modify_object('user/user', dn=user, username=username)
