@@ -371,7 +371,7 @@ class base(object):
 		"""
 
 		if not univention.admin.modules.supports(self.module, 'add'):
-			raise univention.admin.uexceptions.invalidOperation(_('Objects of this object type can not be created.'))
+			raise univention.admin.uexceptions.invalidOperation(_('Objects of the "%s" object type can not be created.') % (self.module,))
 
 		if self.exists():
 			raise univention.admin.uexceptions.objectExists(self.dn)
@@ -414,7 +414,7 @@ class base(object):
 		if not univention.admin.modules.supports(self.module, 'edit'):
 			# if the licence is exceeded 'edit' is removed from the modules operations. Nevertheless we need a way to make modifications then.
 			if not ignore_license:
-				raise univention.admin.uexceptions.invalidOperation(_('Objects of this object type can not be modified.'))
+				raise univention.admin.uexceptions.invalidOperation(_('Objects of the "%s" object type can not be modified.') % (self.module,))
 
 		if not self.exists():
 			raise univention.admin.uexceptions.noObject(self.dn)
@@ -482,7 +482,7 @@ class base(object):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'move: called for %s to %s' % (self.dn, newdn))
 
 		if not (univention.admin.modules.supports(self.module, 'move') or univention.admin.modules.supports(self.module, 'subtree_move')):
-			raise univention.admin.uexceptions.invalidOperation(_('Objects of this object type can not be moved.'))
+			raise univention.admin.uexceptions.invalidOperation(_('Objects of the "%s" object type can not be moved.') % (self.module,))
 
 		if self.lo.compare_dn(self.dn, self.lo.whoami()):
 			raise univention.admin.uexceptions.invalidOperation(_('The own object cannot be moved.'))
@@ -626,7 +626,7 @@ class base(object):
 		"""
 
 		if not univention.admin.modules.supports(self.module, 'remove'):
-			raise univention.admin.uexceptions.invalidOperation(_('Objects of this object type can not be removed.'))
+			raise univention.admin.uexceptions.invalidOperation(_('Objects of the "%s" object type can not be removed.') % (self.module,))
 
 		if not self.dn or not self.lo.get(self.dn):
 			raise univention.admin.uexceptions.noObject(self.dn)

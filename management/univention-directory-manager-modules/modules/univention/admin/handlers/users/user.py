@@ -2085,7 +2085,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_posix_password(self, ml):
-		if not self.exists() or self.hasChanged('locked', 'password'):
+		if not self.exists() or self.hasChanged(['locked', 'password']):
 			# FIXME: if self['password'] is not a crypted password (e.g. {SASL}, {KINIT}, etc.) and only the locked state changed we need to ignore this.
 			if not self.__pwd_is_auth_saslpassthrough(self.oldattr.get('userPassword', [''])[0]):
 				if self['locked'] in ['all', 'posix']:
