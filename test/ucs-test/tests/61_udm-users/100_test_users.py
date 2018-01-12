@@ -9,6 +9,9 @@ import pytest
 import time
 import subprocess
 
+from univention.config_registry import handler_set
+from univention.testing.strings import random_username
+
 
 class TestUsers(object):
 	"""
@@ -171,8 +174,25 @@ class TestUsers(object):
 		with pytest.raises(Exception):
 			udm.modify_object('users/user', dn=user, sambaPrivileges=privileges)
 
-	def test_modlist_cn(self, udm):
-		pass
+	_modlist_cn_username = random_username()
+
+	@pytest.mark.parametrize('form,props,cn', [
+		('<firstname> <lastname>', {'firstname': 'X', 'lastname': 'Y'}, 'X Y'),
+		('<username> <firstname> <lastname>', {'username': _modlist_cn_username, 'firstname': 'X', 'lastname': 'Y'}, '%s X Y' % (_modlist_cn_username,)),
+	])
+	def test_modlist_cn(self, udm, ucr, form, props, cn, verify_ldap_object):
+		handler_set(['directory/manager/usercn/attributes=%s' % (form,)])
+		udm.stop_cli_server()
+		self._test_modlist(udm, verify_ldap_object, props, {'cn': [cn]})
+
+	def _test_modlist(self, udm, verify_ldap_object, props, attrs):
+		user = udm.create_user(**props)[0]
+		verify_ldap_object(user, attrs, strict=False)
+		udm.remove_object('users/user', dn=user)
+
+		user = udm.create_user()[0]
+		user = udm.modify_object('users/user', dn=user, **props)
+		verify_ldap_object(user, attrs, strict=False)
 
 	def test_modlist_gecos(self, udm):
 		pass
