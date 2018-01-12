@@ -1030,10 +1030,11 @@ class simpleLdap(base):
 			if self.has_property(prop.name) and self.info.get(prop.name):
 				ocs.add(prop.objClass)
 
+		module_options = univention.admin.modules.options(self.module)
 		# add object classes of (especially extended) options
 		for option in ['default'] + self.options:
 			try:
-				opt = m.options[option]
+				opt = module_options[option]
 			except KeyError:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, '%r does not specify option %r' % (m.module, option))
 				continue
