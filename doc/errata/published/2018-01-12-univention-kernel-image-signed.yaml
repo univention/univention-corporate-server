@@ -15,3 +15,5 @@ note: This is the second of three parts.
 bug: [46009]
 cve:
 - CVE-2017-5754
+erratum: 261
+announced: 2018-01-12
