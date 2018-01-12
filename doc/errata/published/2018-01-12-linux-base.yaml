@@ -9,3 +9,5 @@ desc: |
  * Support newer Linux kernel version 4.9
 note: This is the forth of five parts.
 bug: [45243]
+erratum: 493
+announced: 2018-01-12
