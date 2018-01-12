@@ -1,8 +1,8 @@
 #!/usr/share/ucs-test/runner python
 ## desc: install all packages from a release
 ## roles: [domaincontroller_backup]
-## tags: [apptest]
-## timeout: 7200
+## tags: [producttests]
+## timeout: 10800
 ## exposure: careful
 ## packages: []
 

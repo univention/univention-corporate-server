@@ -1,3 +1,10 @@
+ucs-test (8.0.9-1) unstable; urgency=medium
+
+  * 01_base/101_install_all_packages_from_a_release: Tag as producttest
+    test case and increase timeout (Bug #46014)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Jan 2018 07:38:30 +0100
+
 ucs-test (8.0.8-1) unstable; urgency=medium
 
   * Bug #45842: move verify_udm_object into univention.testing.udm
