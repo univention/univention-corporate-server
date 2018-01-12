@@ -150,7 +150,7 @@ def pattern_replace(pattern, object):
 				return ''
 
 		# make sure the key value exists
-		if object.has_property(key) and object[key]:
+		if key in object and object[key]:
 			val = modify_text(object[key], strCommands)
 			# try to apply the indexing instructions, indicated through '[...]'
 			if ext:
