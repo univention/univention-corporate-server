@@ -110,7 +110,9 @@ define([
 				var curr_hosts = []
 				var deferred = tools.umcpCommand('uvmm/targethost/query', { domainURI: this.domain.domainURI });
 				deferred.then(lang.hitch(this, function(current_targethosts) {
-					curr_hosts = [for (result of current_targethosts.result) result.id];
+					array.forEach(current_targethosts.result, function(result) {
+						curr_hosts.push(result.id);
+					});
 				}));
 				return tools.umcpCommand('uvmm/node/query', { nodePattern: '' }).then(lang.hitch(this, function(results) {
 					var servers = [];
