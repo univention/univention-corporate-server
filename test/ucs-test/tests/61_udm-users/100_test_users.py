@@ -241,8 +241,19 @@ class TestUsers(object):
 	def test_modlist_mail_forward(self, udm):
 		pass
 
-	def test_modlist_univention_person(self, udm):
-		pass
+	@pytest.mark.parametrize('birthday', [
+		['2009-213'],
+		['2009-05'],
+		['2009-05-13'],
+		['2009-W21'],
+		['2009-W21-4'],
+	])
+	def test_modlist_univention_person_birthday(self, udm, verify_ldap_object, birthday):
+		self._test_modlist(udm, verify_ldap_object, {'birthday': birthday[0]}, {'univentionBirthday': birthday, 'objectClass': ['univentionPerson']})
+
+	def test_modlist_univention_person(self, udm, verify_ldap_object):
+		self._test_modlist(udm, verify_ldap_object, {'umcProperty': ['foo bar'], 'birthday': '2009-05-13'}, {'univentionBirthday': ['2009-05-13'], 'univentionUMCProperty': ['foo=bar'], 'objectClass': ['univentionPerson']})
+		self._test_modlist(udm, verify_ldap_object, {'umcProperty': ['foo bar']}, {'univentionUMCProperty': ['foo=bar'], 'objectClass': ['univentionPerson']})
 
 	def test_modlist_home_share(self, udm):
 		pass
