@@ -1,3 +1,9 @@
+ucs-test (8.0.10-2) unstable; urgency=low
+
+  * Bug #46004: fix GPG signing in 09_updater/
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Jan 2018 17:52:41 +0100
+
 ucs-test (8.0.10-1) unstable; urgency=low
 
   * Bug #45964: Fix tests/10_ldap/4{2replication_ldiff,4replication_binary}

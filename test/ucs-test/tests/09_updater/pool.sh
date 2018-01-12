@@ -391,8 +391,8 @@ gpgsign () { # sign file
 	rm -f "${GPG_DIR}/out"
 	chroot "${GPG_DIR}" "${GPG_BIN}" \
 		--batch \
-		--keyring "${GPGPUB#${GPG_DIR}}" \
-		--secret-keyring "${GPGSEC#${GPG_DIR}}" \
+		--pinentry-mode=loopback \
+		--passphrase '' \
 		--armor \
 		--default-key "${GPGID}" \
 		"${sign}" \
@@ -431,31 +431,29 @@ mksrc () { # Create Sources files for ${1}. Optional arguments go to dpkg-scanso
 mkgpg () { # Create GPG-key for secure APT
 	GPG_BIN=/usr/bin/gpg
 	GPG_DIR="${BASEDIR}/gpg.chroot"
-	mkdir -p "${GPG_DIR}${HOME}/.gnupg"
+	install -m 0700 -d "${GPG_DIR}${HOME}/.gnupg"
+	echo 'allow-loopback-pinentry' >"${GPG_DIR}${HOME}/.gnupg/gpg-agent.conf"
 	# Non-blocking GnuPG using /dev/_u_random
 	(
 		echo "${GPG_BIN}"
 		ldd "${GPG_BIN}" | grep --only '/\S\+'
+		echo "${GPG_BIN}-agent"
+		ldd "${GPG_BIN}-agent" | grep --only '/\S\+'
 		echo /dev/urandom
-	) | cpio --pass-through --make-directories --dereference "${GPG_DIR}"
+		echo /dev/null
+	) | sort -u | cpio --pass-through --make-directories --dereference "${GPG_DIR}"
 	ln -s urandom "${GPG_DIR}/dev/random"
-	GPGREQ="${GPG_DIR}/test.req"
-	cat <<-EOF >"${GPGREQ}"
-	Key-Type: DSA
-	Key-Length: 1024
-	Name-Real: ucs-test-key
-	Name-Comment: internal only
-	Name-Email: ucs-test@univention.de
-	Expire-Date: 1d
-	%pubring test.pub
-	%secring test.sec
-	%commit
-	EOF
 	GPGSTATUS="${GPG_DIR}/test.status"
-	chroot "${GPG_DIR}" "${GPG_BIN}" --batch --status-fd 3 --gen-key "${GPGREQ#${GPG_DIR}}" 3>"${GPGSTATUS}"
+	chroot "${GPG_DIR}" "${GPG_BIN}" \
+		--batch \
+		--yes \
+		--pinentry-mode=loopback \
+		--passphrase '' \
+		--status-fd 3 \
+		--quick-generate-key 'ucs-test@univention.de' dsa default 1d 3>"${GPGSTATUS}"
 	GPGID=$(sed -ne 's/^\[GNUPG:\] KEY_CREATED P //p' "${GPGSTATUS}")
 	GPGPUB="${GPG_DIR}/test.pub"
-	GPGSEC="${GPG_DIR}/test.sec"
+	chroot "${GPG_DIR}" "${GPG_BIN}" --armor --export "$GPGID" >"$GPGPUB"
 	apt-key add "${GPGPUB}"
 	mkgpg () { true; }
 	return 0

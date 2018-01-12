@@ -32,10 +32,7 @@ apt-ftparchive \
 	-o "APT::FTPArchive::Release::Codename=./" \
 	release . >Release.tmp 2>&3
 mv Release.tmp Release
-if mkgpg
-then
-	chroot "${GPG_DIR}" "${GPG_BIN}" --batch --keyring "${GPGPUB#${GPG_DIR}}" --secret-keyring "${GPGSEC#${GPG_DIR}}" --detach-sign --armor --default-key "${GPGID}" <Release >Release.gpg
-fi
+gpgsign Release
 cd "${OLDPWD}"
 
 comp="repository/online/component/${compname}"
