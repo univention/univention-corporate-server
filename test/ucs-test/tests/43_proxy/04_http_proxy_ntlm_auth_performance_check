@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: http-proxy-ntlm-auth-perfomance-check (DISABLED fails regularly)
 ## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave]
-## tags: [apptest, SKIP]
+## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-squid]
 ## bugs: [26452,37931]
@@ -23,9 +23,9 @@ def max_duration():
 	apt_cache.open()
 	for pkg in meta_packages:
 		if pkg in apt_cache and apt_cache[pkg].is_installed:
-			return 130
+			return 180
 	else:
-		return 120  # EC2 m3.medium PV
+		return 150  # EC2 m3.medium PV
 
 
 def doJobs(job, num):
@@ -80,6 +80,7 @@ class Job(object):
 				return 1
 		finally:
 			c.close()
+		return 0
 
 
 def main():
