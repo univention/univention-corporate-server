@@ -13,7 +13,6 @@ import subprocess
 class TestUsers(object):
 	"""
 		# TODO: test open() method:
-		1. self.is_auth_saslpassthrough = self.__pwd_is_auth_saslpassthrough(self['password'] or '')
 
 		2.
 		if self.exists():
@@ -28,8 +27,6 @@ class TestUsers(object):
 		primaryGroupWithoutSamba
 
 		create(): 'krb5PrincipalName', 'krb5MaxLife', 'krb5MaxRenew' are set
-
-		modification of username → correct DN, correct krb principal name
 
 		modlist_samba_privileges
 		modlist_cn
@@ -130,7 +127,6 @@ class TestUsers(object):
 		"""
 
 	def test_prohibited_username_are_checked(self, udm, random_username):
-		pass  # TODO: implement create() + modify()
 		username = random_username()
 		udm.create_object('settings/prohibited_username', name='forbidden', usernames=[username])
 
@@ -140,3 +136,13 @@ class TestUsers(object):
 		user = udm.create_user()[0]
 		with pytest.raises(Exception):
 			udm.modify_object('user/user', dn=user, username=username)
+
+	def test_modification_of_username(self, udm, random_username, verify_ldap_object, ucr):
+		user, name = udm.create_user()
+		username = random_username()
+		assert name in user
+		assert username not in user
+		user = udm.modify_object('users/user', dn=user, username=username)
+		assert name not in user
+		assert username in user
+		verify_ldap_object(user, {'krb5PrincipalName': ['%s@%s' % (username, ucr['domainname'].upper())]})
