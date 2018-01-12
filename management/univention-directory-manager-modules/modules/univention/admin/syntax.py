@@ -1246,7 +1246,7 @@ class emailAddress(simple):
 
 	@classmethod
 	def parse(self, text):
-		if '@' not in text:
+		if '@' not in text or text.startswith('@'):
 			raise univention.admin.uexceptions.valueError(_('Not a valid email address! (No "@"-character to separate local-part and domain-part)'))
 		return text
 
@@ -1254,7 +1254,7 @@ class emailAddress(simple):
 class emailAddressTemplate(simple):
 	min_length = 4
 	max_length = 0
-	_re = re.compile("^.*@.*$")
+	_re = re.compile("^[^@]+@.*$")
 
 	@classmethod
 	def parse(self, text):
