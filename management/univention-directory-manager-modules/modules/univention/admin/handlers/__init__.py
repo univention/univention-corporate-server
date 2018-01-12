@@ -1065,13 +1065,13 @@ class simpleLdap(base):
 		except:
 			# ensure that there is no lock left
 			exc = sys.exc_info()
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-Create operation failed: %s" % (traceback.format_exc(),))
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Creating %r failed: %s" % (self.dn, traceback.format_exc(),))
 			try:
 				self.cancel()
 			except:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-create: cancel() failed: %s" % (traceback.format_exc(),))
 			try:
-				if self._exists:
+				if self._exists:  # add succeeded but _ldap_post_create failed!
 					self.remove()
 			except:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-create: remove() failed: %s" % (traceback.format_exc(),))
