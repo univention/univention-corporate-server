@@ -26,8 +26,6 @@ class TestUsers(object):
 		# TODO: test pre_create() / pre_modify() / pre_ready() method:
 		primaryGroupWithoutSamba
 
-		create(): 'krb5PrincipalName', 'krb5MaxLife', 'krb5MaxRenew' are set
-
 		modlist_samba_privileges
 		modlist_cn
 		modlist_gecos
@@ -146,3 +144,10 @@ class TestUsers(object):
 		assert name not in user
 		assert username in user
 		verify_ldap_object(user, {'krb5PrincipalName': ['%s@%s' % (username, ucr['domainname'].upper())]})
+
+	def test_kerberos_values_are_set(self, udm, verify_ldap_object):
+		user = udm.create_user()[0]
+		verify_ldap_object(user, {
+			'krb5MaxLife': ['86400'],
+			'krb5MaxRenew': ['604800'],
+		})
