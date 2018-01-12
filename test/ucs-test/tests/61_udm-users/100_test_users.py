@@ -19,7 +19,6 @@ class TestUsers(object):
 			self._unmap_mail_forward()
 			self.sambaMungedDialUnmap()
 			self.sambaMungedDialParse()
-			self._unmap_automount_information()
 			self.reload_certificate()
 
 		3.
@@ -88,3 +87,13 @@ class TestUsers(object):
 		if ml:
 			lo.modify(user, ml)
 		udm.verify_udm_object("users/user", user, {"pwdChangeNextLogin": pwd_change_next_login})
+
+	@pytest.mark.parametrize('path', ['/test', '/test2/'])
+	def test_unmap_automount_information(self, udm, path, random_name, lo, verify_ldap_object, verify_udm_object):
+		homeSharePath = random_name()
+		host = random_name()
+		share = udm.create_object('shares/share', name=random_name(), path=path, host=host)
+
+		user = udm.create_user(homeShare=share, homeSharePath=homeSharePath)[0]
+		udm.verify_udm_object("users/user", user, {"homeShare": share, "homeSharePath": homeSharePath})
+		verify_ldap_object(user, {'automountInformation': ['-rw %s:%s/%s' % (host, path.rstrip('/'), homeSharePath)]})
