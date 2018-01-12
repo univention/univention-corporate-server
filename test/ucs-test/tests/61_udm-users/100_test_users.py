@@ -200,11 +200,18 @@ class TestUsers(object):
 		({'firstname': 'H\xc3\xe4\xc3\xe4lo', 'lastname': 'W\xc3\xb6\xc3\xb6rld'}, 'HAaeAaelo Woeoerld'),  # FIXME: current result looks broken!
 	])
 	def test_modlist_gecos(self, udm, props, gecos, verify_ldap_object):
-		# '<firstname> <lastname><:umlauts,strip>'
+		# TODO: test UCR variable overwrite of '<firstname> <lastname><:umlauts,strip>'
+		# TODO: missing is a check where only lastname or only firstname changes
 		self._test_modlist(udm, verify_ldap_object, props, {'gecos': [gecos]})
 
-	def test_modlist_display_name(self, udm):
-		pass
+	@pytest.mark.parametrize('props,displayName', [
+		({'firstname': 'X', 'lastname': 'Y'}, 'X Y'),
+		({'firstname': ' X ', 'lastname': ' Y '}, 'X   Y'),
+		#({'firstname': ' H\xc3\xe4\xc3\xe4lo', 'lastname': 'W\xc3\xb6\xc3\xb6rld '}, 'Hlo W\xc3\xb6\xc3\xb6rld'),  # FIXME: pytest crashes!
+	])
+	def test_modlist_display_name(self, udm, props, displayName, verify_ldap_object):
+		# TODO: test UCR variable overwrite of '<firstname> <lastname><:strip>'
+		self._test_modlist(udm, verify_ldap_object, props, {'displayName': [displayName]})
 
 	def test_modlist_krb_principal(self, udm):
 		pass
