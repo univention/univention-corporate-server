@@ -1,3 +1,9 @@
+univention-system-activation (2.0.2-14) unstable; urgency=medium
+
+  * Bug #45899: Always open link in new browser tab
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 12 Jan 2018 14:33:51 +0100
+
 univention-system-activation (2.0.2-13) unstable; urgency=medium
 
   * Bug #45899: Add information about blocking browser addons to system
