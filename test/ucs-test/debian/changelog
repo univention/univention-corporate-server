@@ -1,3 +1,9 @@
+ucs-test (8.0.11-1) unstable; urgency=medium
+
+  * Bug #45842: add 61_udm-users/100_test_users.py
+
+ -- Florian Best <best@univention.de>  Fri, 12 Jan 2018 18:44:57 +0100
+
 ucs-test (8.0.10-2) unstable; urgency=low
 
   * Bug #46004: fix GPG signing in 09_updater/
