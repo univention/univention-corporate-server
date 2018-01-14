@@ -61,6 +61,16 @@
 				</itemizedlist>
 			</section>
 		</section>
+
+		<section id="changelog:domain:dnsserver">
+			<title>DNS server</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The <package>bind9</package> init script restarts the service only if the &ucsUCRV; <envar>dns/backend</envar> is set (<u:bug>45341</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 	</section>
 
 	<section id="changelog:umc">
