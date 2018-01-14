@@ -35,44 +35,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# Inject systemd
 . /lib/lsb/init-functions
 
 NAME='univention-saml'
 DESC=$(get_lsb_header_val "$0" Short-Description)
 
-case "$1" in
-	start)
-		# TODO: runit
-		log_daemon_msg "Starting $DESC" "$NAME"
-		install -m 770 -o samlcgi -g root -d /var/run/univention-saml
-		systemctl start stunnel4
-		systemctl start univention-saml
-		sleep 1
-		chmod 0600 /var/run/univention-saml/*.socket
-		chown samlcgi:root /var/run/univention-saml/*.socket
-		log_end_msg 0
-		;;
-	stop)
-		log_daemon_msg "Stopping $DESC" "$NAME"
-		sysetmctl stop univention-saml
-		systemctl stop stunnel4
-		rm -f -- /var/run/univention-saml/*.socket
-		log_end_msg 0
-		;;
-	restart|force-reload)
-		log_daemon_msg "Restarting $DESC" "$NAME"
-		"$0" stop
-		"$0" start
-		log_end_msg 0
-		;;
-	status)
-		rc=0
-		/etc/init.d/memcached status || rc=$?
-		/etc/init.d/stunnel4 status || rc=$?
-		exit $rc
-		;;
-	*)
-		echo "Usage: $0 {start|stop|restart|force-reload|status}"
-		exit 1
-		;;
-esac
+# This file can be removed if commands like
+#  test -x /etc/init.d/univention-saml && ..
+# have been replaced
+
+exit 0
+

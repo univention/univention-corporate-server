@@ -1,3 +1,11 @@
+univention-saml (5.0.1-2) unstable; urgency=medium
+
+  * Remove code from univention-saml.init since systemd is used. The
+    file can be removed once all 'test -x /etc/init.d/univention-saml
+    &&' code has been removed (Bug #45960)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 14 Jan 2018 19:24:22 +0100
+
 univention-saml (5.0.1-1) unstable; urgency=medium
 
   * Create a systemd script for the univention saml memcached
