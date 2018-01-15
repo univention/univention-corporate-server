@@ -1,3 +1,9 @@
+univention-squid (11.0.0-7) unstable; urgency=medium
+
+  * Bug #45935: squid3 -> squid, update
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Jan 2018 14:49:04 +0100
+
 univention-squid (11.0.0-6) unstable; urgency=medium
 
   * Bug #45935: squid3 -> squid, update
