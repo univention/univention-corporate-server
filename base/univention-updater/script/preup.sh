@@ -449,7 +449,7 @@ esac
 # Bug #45968: let Postfix3 extension packages recreate /etc/postfix/dynamicmaps.cf with new format
 echo "Removing /etc/postfix/dynamicmaps.cf. Creating backup in"
 echo "/etc/postfix/dynamicmaps.cf.postfix2."
-mv -fv /etc/postfix/dynamicmaps.cf /etc/postfix/dynamicmaps.cf.postfix2
+mv -fv /etc/postfix/dynamicmaps.cf /etc/postfix/dynamicmaps.cf.postfix2 >>"$UPDATER_LOG" 2>&1
 
 # autoremove before the update
 if ! is_ucr_true update43/skip/autoremove; then
