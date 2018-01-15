@@ -1,3 +1,9 @@
+univention-updater (13.0.1-5) unstable; urgency=medium
+
+  * Bug #45935: backup /etc/squid3 before update
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Jan 2018 19:39:10 +0100
+
 univention-updater (13.0.1-4) unstable; urgency=low
 
   * Bug #45968: redirect the output to log file

@@ -451,6 +451,12 @@ echo "Removing /etc/postfix/dynamicmaps.cf. Creating backup in"
 echo "/etc/postfix/dynamicmaps.cf.postfix2."
 mv -fv /etc/postfix/dynamicmaps.cf /etc/postfix/dynamicmaps.cf.postfix2 >>"$UPDATER_LOG" 2>&1
 
+# Bug 45935: backup squid conf before update
+if [ ! -d /etc/squid3-update-4.3 ]; then
+	test -d /etc/squid3 && cp -rf /etc/squid3 /etc/squid3-update-4.3
+	test -e /etc/univention/templates/files/etc/squid3/squid.conf && cp /etc/univention/templates/files/etc/squid3/squid.conf /etc/squid3-update-4.3/ucr.template
+fi
+
 # autoremove before the update
 if ! is_ucr_true update43/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
