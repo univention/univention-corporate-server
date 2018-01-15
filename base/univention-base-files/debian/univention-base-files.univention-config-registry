@@ -19,9 +19,7 @@ Variables: sshd/banner
 Variables: sshd/MACs
 Variables: sshd/Ciphers
 Variables: sshd/KexAlgorithms
-Variables: sshd/Protocol
 Variables: sshd/HostKey
-Variables: sshd/ServerKeyBits
 Variables: sshd/TCPKeepAlive
 Variables: sshd/config/.*
 

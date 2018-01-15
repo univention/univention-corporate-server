@@ -1,3 +1,9 @@
+univention-base-files (7.0.0-5) unstable; urgency=low
+
+  * Bug #46033: Update sshd_config
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Jan 2018 13:09:46 +0100
+
 univention-base-files (7.0.0-4) unstable; urgency=medium
 
   * Bug #45936: use UCRWARNING_ASCII in lsb-release
