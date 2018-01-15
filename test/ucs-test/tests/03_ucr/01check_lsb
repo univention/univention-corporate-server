@@ -1,0 +1,11 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Check UCS template for LSB does not contain non-ASCII characters
+## bugs: [45936]
+## packages:
+##  - lsb-release
+## exposure: safe
+## timeout: 0
+
+LC_ALL=C lsb_release -si
+# vim: set ft=sh :
