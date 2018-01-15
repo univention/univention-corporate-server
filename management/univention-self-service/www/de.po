@@ -146,6 +146,9 @@ msgstr ""
 msgid "You have mail!"
 msgstr "Sie haben eine neue E-Mail!"
 
+msgid "The password has been changed successfully."
+msgstr "Das Passwort wurde erfolgreich geändert."
+
 #~ msgid "</br><a href='/{0}'>Back to the overview.</a>"
 #~ msgstr "</br><a href='/{0}'>Zurück zur Übersicht.</a>"
 

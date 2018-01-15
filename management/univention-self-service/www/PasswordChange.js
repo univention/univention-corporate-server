@@ -37,6 +37,7 @@ define([
 	"dojo/Deferred",
 	"dojo/request/xhr",
 	"dijit/form/Button",
+	"dojox/html/entities",
 	"put-selector/put",
 	"login",
 	"umc/tools",
@@ -45,7 +46,7 @@ define([
 	"./PasswordBox",
 	"./lib",
 	"umc/i18n!."
-], function(lang, on, keys, dom, json, Deferred, xhr, Button, put, login, tools, dialog, TextBox, PasswordBox, lib, _) {
+], function(lang, on, keys, dom, json, Deferred, xhr, Button, entities, put, login, tools, dialog, TextBox, PasswordBox, lib, _) {
 
 	return {
 		title: _('Password change'),
@@ -292,7 +293,9 @@ define([
 			var _handleRedirect = lang.hitch(this, function(success) {
 				var redirectUrl = lib._getUrlForRedirect();
 				if (redirectUrl && success) {
-					window.open(redirectUrl, "_self");
+					dialog.confirm(entities.encode(_('The password has been changed successfully.')), [{label: _('OK'), name: 'submit'}]).then(function() {
+						window.open(redirectUrl, "_self");
+					});
 				}
 			});
 
