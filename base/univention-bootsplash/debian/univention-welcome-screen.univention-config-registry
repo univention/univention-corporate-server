@@ -1,0 +1,3 @@
+Type: file
+File: etc/systemd/system/getty@.service.d/nottyreset.conf
+Variables: getty/nottyreset

@@ -3,3 +3,9 @@ Description[de]=Die Variable konfiguriert den Startmodus des Willkommensbildschi
 Description[en]=This variable configures the start mode of the welcome screen service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, it can be enabled manually at a later point.
 Type=str
 Categories=service-base
+
+[getty/nottyreset]
+Description[de]=Wenn diese Variable nicht oder auf true gesetzt ist, wird der getty Service mit "TTYReset=no" gestartet.
+Description[en]=If this variable is unset or true, the getty service is started with "TTYReset=no".
+Type=bool
+Categories=service-base

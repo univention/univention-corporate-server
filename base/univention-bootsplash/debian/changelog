@@ -1,3 +1,10 @@
+univention-bootsplash (9.0.0-5) unstable; urgency=medium
+
+  * Bug #45939: added
+    conffiles/etc/systemd/system/getty@.service.d/nottyreset.conf
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Jan 2018 16:01:04 +0100
+
 univention-bootsplash (9.0.0-4) unstable; urgency=medium
 
   * Bug #45939: fix keyboard detection
