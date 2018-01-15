@@ -18,9 +18,6 @@ Depends: ${misc:Depends},
  python-ipaddr,
  python-crypto,
  python-univention-lib,
-Conflicts:
- squid3 (<< 3.5.23),
- squid3-common (<< 3.5.23),
 Recommends: univention-nagios-squid
 Suggests: univention-firewall
 Description: UCS Squid web proxy integration
