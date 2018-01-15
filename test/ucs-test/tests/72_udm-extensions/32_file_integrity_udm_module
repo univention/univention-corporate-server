@@ -10,6 +10,7 @@
 
 import os
 import hashlib
+import difflib
 
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import fail, wait_for_replication
@@ -77,7 +78,8 @@ def test_module():
 		print 'HASH BUFFER: %r' % hash_buffer
 		print 'HASH FILE: %r' % hash_file
 		if hash_buffer != hash_file:
-			fail('ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (target_fn, hash_file, hash_buffer))
+			print '\n'.join(difflib.context_diff(open(target_fn).read(), extension_buffer, fromfile='filename', tofile='buffer'))
+			fail('ERROR: sha1 sums of file and BUFFER DIffer (fn=%s ; file=%s ; buffer=%s)' % (target_fn, hash_file, hash_buffer))
 
 		for option_type, src_fn, filename in TEST_DATA:
 			filename = filename % extension_name.replace('/', '-')
@@ -86,6 +88,7 @@ def test_module():
 			hash_buffer = hashlib.sha1(buffers[src_fn]).hexdigest()
 			hash_file = hashlib.sha1(open(filename).read()).hexdigest()
 			if hash_buffer != hash_file:
+				print '\n'.join(difflib.context_diff(open(filename).read(), buffers[src_fn], fromfile='filename', tofile='buffer'))
 				fail('ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (filename, hash_file, hash_buffer))
 
 		call_unjoin_script('66%s-uninstall.uinst' % package_name)
