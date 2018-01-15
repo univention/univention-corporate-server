@@ -140,3 +140,9 @@ msgstr "Benutzer,Passwort"
 
 msgid "users"
 msgstr "Benutzer"
+
+msgid "Management of portals and their entries"
+msgstr "Verwaltung von Portalen und Portaleinträgen"
+
+msgid "Portal settings"
+msgstr "Portaleinstellungen"

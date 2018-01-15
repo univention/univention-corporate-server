@@ -79,7 +79,32 @@ define([
 
 		renderRow: function(item) {
 			var renderInfo = this.getRenderInfo(item);
-			return this.getDomForRenderRow(renderInfo);
+			var domNode = this.getDomForRenderRow(renderInfo);
+			this._addEventhandler(domNode, renderInfo);
+			return domNode;
+		},
+
+		_addEventhandler: function(domNode, item) {
+			on(domNode, mouse.enter, function() {
+				domClass.add(this, 'hover');
+			});
+
+			on(domNode, mouse.leave, function() {
+				// secondTouch is used in AppCenterMetaCategory
+				domClass.remove(this, 'hover secondTouch');
+			});
+
+			var statusIcon = query('.appStatusHoverIcon', domNode)[0];
+			on(statusIcon, 'click', function(evt) {
+				Tooltip.show(entities.encode(item.itemStatusTooltipMessage), statusIcon);
+				if (evt) {
+					dojoEvent.stop(evt);
+				}
+				on.once(kernel.body(), 'click', function(evt) {
+					Tooltip.hide(statusIcon);
+					dojoEvent.stop(evt);
+				});
+			});
 		},
 
 		getRenderInfo: function(item) {
@@ -127,30 +152,8 @@ define([
 			tools.forIn(item, function(key, value) {
 				item2[key] = entities.encode(value);
 			});
-			var domNode = domConstruct.toDom(lang.replace(domString, item2));
 
-			on(domNode, mouse.enter, function() {
-				domClass.add(this, 'hover');
-			});
-
-			on(domNode, mouse.leave, function() {
-				// secondTouch is used in AppCenterMetaCategory
-				domClass.remove(this, 'hover secondTouch');
-			});
-
-			var statusIcon = query('.appStatusHoverIcon', domNode)[0];
-			on(statusIcon, 'click', function(evt) {
-				Tooltip.show(entities.encode(item.itemStatusTooltipMessage), statusIcon);
-				if (evt) {
-					dojoEvent.stop(evt);
-				}
-				on.once(kernel.body(), 'click', function(evt) {
-					Tooltip.hide(statusIcon);
-					dojoEvent.stop(evt);
-				});
-			});
-
-			return domNode;
+			return domConstruct.toDom(lang.replace(domString, item2));
 		},
 
 		_resizeItemNames: function() {

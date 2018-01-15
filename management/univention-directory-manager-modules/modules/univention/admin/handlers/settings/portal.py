@@ -155,7 +155,7 @@ property_descriptions = {
 	),
 	'cssBackground': univention.admin.property(
 		short_description=_('CSS background'),
-		long_description='Style definition for CSS background property which will be applied to the portal page.',
+		long_description=_("Style definition for the CSS 'background' property which will be applied to the portal page, e.g. linear-gradient(black, white)"),
 		syntax=univention.admin.syntax.TwoString,
 		multivalue=False,
 		dontsearch=True,
@@ -166,11 +166,32 @@ property_descriptions = {
 	),
 	'fontColor': univention.admin.property(
 		short_description=_('Font color'),
-		long_description='Defines the color which is used for the fonts on the portal page as well as the icons in the header. Use any valid CSS color, e.g., #EA1100, rgba(255, 0, 123, 0.5)',
+		long_description=_('Defines the color which is used for the fonts on the portal page as well as the icons in the header.'),
 		syntax=univention.admin.syntax.PortalFontColor,
 		default='black',
 		multivalue=False,
 		dontsearch=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
+	'portalComputers': univention.admin.property(
+		short_description=_('Show on server'),
+		long_description=_('This portal will be used as start site for the given server'),
+		syntax=univention.admin.syntax.PortalComputer,
+		multivalue=True,
+		dontsearch=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
+	'portalEntriesOrder': univention.admin.property(
+		short_description=_('Portal entries order'),
+		long_description=_('The order in which the portal entries are shown on this portal'),
+		syntax=univention.admin.syntax.PortalEntries,
+		multivalue=True,
 		options=[],
 		required=False,
 		may_change=True,
@@ -183,6 +204,9 @@ layout = [
 		Group(_('Name'), layout=[
 			["name"],
 			["displayName"],
+		]),
+		Group(_('Visibility'), layout=[
+			["portalComputers"],
 		]),
 		Group(_('Appearance'), layout=[
 			["logo"],
@@ -227,24 +251,75 @@ mapping.register('background', 'univentionPortalBackground', None, univention.ad
 mapping.register('cssBackground', 'univentionPortalCSSBackground', None, univention.admin.mapping.ListToString)
 mapping.register('fontColor', 'univentionPortalFontColor', None, univention.admin.mapping.ListToString)
 mapping.register('logo', 'univentionPortalLogo', None, univention.admin.mapping.ListToString)
+mapping.register('portalEntriesOrder', 'univentionPortalEntriesOrder')
 
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
+	def open(self):
+		super(object, self).open()
+		self['portalComputers'] = self.lo.searchDn(filter=filter_format('(&(objectClass=univentionPortalComputer)(univentionComputerPortal=%s))', [self.dn]))
+		self.save()
+
+	def _ldap_addlist(self):
+		ocs = ['top', OC]
+
+		return [
+			('objectClass', ocs),
+		]
+
+	def _ldap_post_create(self):
+		self.__update_portal_computers()
+
+	def _ldap_post_modify(self):
+		self.__update_portal_computers()
+
+	def __update_portal_computers(self):
+		if self.exists():
+			# case coming from _ldap_post_modify
+			old_portal_computers = self.oldinfo.get('portalComputers', [])
+		else:
+			# case coming from _ldap_post_create
+			old_portal_computers = []
+		new_portal_computers = self.info.get('portalComputers', [])
+
+		# set portal attribute of old computers to blank
+		for computer in old_portal_computers:
+			if computer not in new_portal_computers:
+				try:
+					compobj = univention.admin.modules.lookup('computers/computer', None, self.lo, scope='base', base=computer)[0]
+				except univention.admin.uexceptions.noObject:
+					continue
+				compobj.open()
+				compobj['portal'] = ''
+				compobj.modify()
+
+		# set portal attribute of new computers to this portal
+		for computer in new_portal_computers:
+			if computer not in old_portal_computers:
+				try:
+					compobj = univention.admin.modules.lookup('computers/computer', None, self.lo, scope='base', base=computer)[0]
+				except univention.admin.uexceptions.noObject:
+					continue
+				compobj.open()
+				compobj['portal'] = self.dn
+				compobj.modify()
+
 	def _ldap_post_remove(self):
 		for obj in univention.admin.modules.lookup('settings/portal_entry', None, self.lo, scope='sub', filter=filter_format('portal=%s', [self.dn])):
+			obj.open()
 			obj['portal'] = [x for x in obj.info.get('portal', []) if not self.lo.compare_dn(x, self.dn)]
 			obj.modify()
 
 	def _ldap_post_move(self, olddn):
 		for obj in univention.admin.modules.lookup('settings/portal_entry', None, self.lo, scope='sub', filter=filter_format('portal=%s', [olddn])):
+			obj.open()
 			obj['portal'] = [x for x in obj.info.get('portal', []) + [self.dn] if not self.lo.compare_dn(x, olddn)]
 			obj.modify()
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', OC),
 	])
