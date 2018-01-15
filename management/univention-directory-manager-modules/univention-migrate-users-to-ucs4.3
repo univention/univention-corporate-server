@@ -70,7 +70,7 @@ class Migration(object):
 				print >> sys.stderr, '%r: %s (modifications: %r)' % (dn, exc, ml)
 			raise SystemExit(1)
 
-	def migrate(self):
+	def migrate_users(self):
 		"""
 		Posix:
 		posixAccount, shadowAccount, person, univentionPWHistory
