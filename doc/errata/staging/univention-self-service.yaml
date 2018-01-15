@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-self-service
-fix: 2.0.17-15A~4.2.0.201801111349
+fix: 2.0.17-16A~4.2.0.201801151431
 desc: |
  This update addresses the following issue(s):
  * Changing a password of a expired user account is possible again.
