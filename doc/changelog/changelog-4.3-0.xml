@@ -51,6 +51,9 @@
 				<listitem><simpara>
 						The <filename>krb5-kdc.schema</filename> has a new attribute <literal>krb5ExtendedAttributes</literal> (<u:bug>45996</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The test in the <package>slapd</package>'s update scripts, wheather the system is a UCS system, has been changed (<u:bug>45936</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:domain:openldap:acl">
