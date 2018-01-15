@@ -37,6 +37,11 @@ if [ "$1" = "configure" ]; then
 	systemctl restart univention-directory-listener
 fi
 
+if [ "$1" = "upgrade" -o "$1" = "configure" ] && dpkg --compare-versions "$2" lt 2.0.0-2; then
+	univention-directory-listener-ctrl resync portal
+	univention-directory-listener-ctrl resync portal_entry
+fi
+
 if [ ! -e "/usr/share/univention-portal/portal.json" ]; then
 	cp /usr/share/univention-portal/portal-unjoined.json /usr/share/univention-portal/portal.json
 fi

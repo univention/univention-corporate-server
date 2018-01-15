@@ -393,6 +393,10 @@ define([
 			// summary:
 			//		Custom view function that renders the file content that has been uploaded.
 			//		The default is empty.
+		},
+
+		focus: function() {
+			this._uploader.focus();
 		}
 	});
 });

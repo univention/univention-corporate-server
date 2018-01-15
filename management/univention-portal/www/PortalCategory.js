@@ -51,8 +51,6 @@ define([
 
 		query: null,
 
-		sorting: false,
-
 		_setQueryAttr: function(query) {
 			this.grid.set('query', query);
 			this._updateVisibility();
@@ -70,17 +68,11 @@ define([
 				data: this.apps
 			}));
 
-			var queryOptions = null;
-			if (this.sorting) {
-				queryOptions = {
-					sort: [{ attribute: 'name' }]
-				};
-			}
-
 			this.grid = new PortalGallery({
 				store: store,
 				domainName: this.domainName,
-				queryOptions: queryOptions
+				category: this.category,
+				useDnd: this.useDnd
 			});
 
 			domConstruct.place(heading, this.containerNode);
@@ -95,6 +87,10 @@ define([
 			var appsDisplayed = domQuery('div[class*="dgrid-row"]', this.grid.contentNode);
 			var hideCategory = appsDisplayed.length === 0;
 			domClass.toggle(this.domNode, 'dijitDisplayNone', hideCategory);
+		},
+
+		onAddEntry: function(category) {
+			// stub
 		}
 	});
 });

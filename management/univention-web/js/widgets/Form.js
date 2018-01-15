@@ -148,7 +148,8 @@ define([
 				this.buttons.push({
 					label: 'submit',
 					name: 'submit',
-					'class': 'dijitOffScreen'
+					'class': 'dijitOffScreen',
+					tabindex: '-1' // to not focus hidden button when tabbing
 				});
 			}
 

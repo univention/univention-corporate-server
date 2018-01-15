@@ -2183,6 +2183,12 @@ class GroupID(UDM_Objects):
 	use_objects = False
 
 
+class PortalComputer(UDM_Objects):
+	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
+	udm_filter = '!(univentionObjectFlag=docker)'
+	use_objects = False
+
+
 class IComputer_FQDN(UDM_Objects):
 	udm_modules = ()
 	key = '%(name)s.%(domain)s'  # '%(fqdn)s' optimized for LDAP lookup. Has to be in sync with the computer handlers' info['fqdn']
@@ -3514,6 +3520,12 @@ class policyName(string):
 
 class Portals(UDM_Objects):
 	udm_modules = ('settings/portal', )
+	label = '%(name)s'
+	empty_value = True
+
+
+class PortalEntries(UDM_Objects):
+	udm_modules = ('settings/portal_entry', )
 	label = '%(name)s'
 	empty_value = True
 

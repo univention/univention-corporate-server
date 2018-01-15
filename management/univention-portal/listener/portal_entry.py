@@ -124,6 +124,7 @@ def handler(dn, new, old):
 			# Add or Change
 			ud.debug(ud.LISTENER, ud.PROCESS, 'Add / change obj')
 			new_obj = _make_obj(new)
+			new_obj['dn'] = dn
 			idx = None
 			ud.debug(ud.LISTENER, ud.PROCESS, 'Talking about %s' % (new_obj['id']))
 			for i, obj in enumerate(objs):
