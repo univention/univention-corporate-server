@@ -184,8 +184,7 @@ Description: UCS - Test package
         self.create_debian_file_from_buffer('rules', rules)
 
     def _create_compat(self):
-        compat = '''7
-'''
+        compat = '10\n'
         self.create_debian_file_from_buffer('compat', compat)
 
     def _create_install(self):
