@@ -19,7 +19,7 @@ def main():
 				assert isinstance(params, dict)
 			except (SyntaxError, ValueError, AssertionError):
 				params = {}
-		call(['patch', '-p%s' % params.get('p', 0), '-d', params.get('d', '/'), '-i', os.path.join(os.getcwd(), patch)])
+		# call(['patch', '-p%s' % params.get('p', 0), '-d', params.get('d', '/'), '-i', os.path.join(os.getcwd(), patch)])
 		services.extend(params.get('restart_service', []))
 
 	for service in set(services):
