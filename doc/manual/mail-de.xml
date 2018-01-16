@@ -195,9 +195,9 @@
 		  <listitem>
 		    <simpara>
 		      Wenn <emphasis>Weiterleitungs-E-Mail-Adressen</emphasis> für einen Benutzer
-		      konfiguriert sind, werden E-Mails die er über die primäre oder über alternative
+		      konfiguriert sind, werden E-Mails, die er über die primäre oder über alternative
 		      E-Mail-Adressen empfängt, an diese weiter geleitet. Optional kann eine Kopie
-		      der Nachrichten in das Postfach des Benutzers zugestellt werden. Es können beliebig
+		      der eingehenden Nachrichten in das Postfach des Benutzers zugestellt werden. Es können beliebig
 		      viele Adressen angegeben werden. Weiterleitungs-E-Mail-Adressen müssen weder
 		      eindeutig, noch muss ihr Domänenanteil in &ucsUMC; registriert sein.
 		    </simpara>
