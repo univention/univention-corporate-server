@@ -1,3 +1,9 @@
+univention-mariadb (1.0.1-1) unstable; urgency=medium
+
+  * Bug #45876: Modify configfile to correct filename suffix '.cnf'
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 16 Jan 2018 10:39:53 +0100
+
 univention-mariadb (1.0.0-1) unstable; urgency=low
 
   * Bug #45876: Initial package release
