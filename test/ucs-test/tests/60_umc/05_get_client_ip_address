@@ -5,7 +5,6 @@
 ##    - univention-management-console-web-server (>= 3.0.152)
 
 from httplib import HTTPConnection
-import subprocess
 
 import ldap
 
@@ -21,19 +20,8 @@ class Client(Client):
 
 
 def get_ip_address(host, username, password):
-	debug(host)
 	client = Client(host, username, password)
 	return client.umc_get('ipaddress').data
-
-
-def debug(host='localhost'):
-	subprocess.call('iptables -L', shell=True)
-	subprocess.call('ip r', shell=True)
-	subprocess.call('ip a', shell=True)
-	subprocess.call('ip l', shell=True)
-	subprocess.call('nmap localhost', shell=True)
-	if host != 'localhost':
-		subprocess.call('nmap %s' % (host,), shell=True)
 
 
 def main():
@@ -44,7 +32,6 @@ def main():
 	usernamd_dn = ucr.get('tests/domainadmin/account', 'uid=Administrator,dc=foo')
 	username = ldap.explode_rdn(usernamd_dn)[0].split('=', 1)[-1]
 
-	debug()
 	with network.NetworkRedirector() as nethelper:
 		print '*** Check with different remote addresses'
 		for addr2 in ('4.3.2.1', '1.1.1.1', '2.2.2.2'):
