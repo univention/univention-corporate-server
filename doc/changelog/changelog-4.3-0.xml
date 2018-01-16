@@ -317,6 +317,19 @@
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:service:proxy">
+			<title>Proxy services</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The Squid proxy server has been updated to version 3.5.23. During this update all configuration files are moved from
+					<filename>/etc/squid3</filename> to <filename>/etc/squid</filename>. This includes the &ucsUCRV; template <filename>/etc/squid/squid.conf</filename>
+					but also user configs like <filename>/etc/squid/local.conf</filename>, <filename>/etc/squid/local_rules.conf</filename> etc..
+					All old configuration files are saved before the update in the directory <filename>/etc/squid3-update-4.3</filename> (<u:bug>45935</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+
 	</section>
 
 	<section id="changelog:virt">
@@ -379,7 +392,7 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				The dependency of <package>univention-java</package> has been changed from <package>openjdk-7-jre</package> and
-				</package>icedtea-7-plugin</package> to <package>openjdk-8-jre</package> and <package>icedtea-plugin</package>
+				<package>icedtea-7-plugin</package> to <package>openjdk-8-jre</package> and <package>icedtea-plugin</package>
 				(<u:bug>45959</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>

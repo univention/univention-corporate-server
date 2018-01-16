@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-4.2-3-en">
+<book lang="en" id="releasenotes-4.3-0-en">
 	<bookinfo>
-		<title>UCS 4.2-3 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.2-3</subtitle>
+		<title>UCS 4.3 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.3</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -17,7 +17,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2017 Univention GmbH
+				(c) 2002-2018 Univention GmbH
 			</para>
 
 			<para>
@@ -44,23 +44,14 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With Univention Corporate Server 4.2-3, the third point release of Univention Corporate Server (UCS) 4.2 is now
+			With Univention Corporate Server 4.3, the third minor release of Univention Corporate Server (UCS) 4 is now
 			available. It provides several feature improvements and extensions, new properties as well as
 			various improvements and bugfixes. An overview of the most important changes are:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				The UMC system diagnostic module has been extended with a large amount of additional tests. They the administrator to check the system health of the UCS system and the whole domain.
-			</para></listitem>
-			<listitem><para>
-				The management system usability and configurability have been expanded. Wizards and dialogs have been redesigned regarding their usability. Additional configuration options for the single sign-on have been added, e.g. the certificate can now be configured.
-			</para></listitem>
-			<listitem><para>
-				When joining into an active directory domain, additional checks are now executed. This enables the detection of known issues which are shown to the user along with advice how to fix them.
-			</para></listitem>
-			<listitem><para>
-				Various security updates have been integrated into UCS 4.2-3, e.g. OpenLDAP, the Linux kernel, Samba, MySQL and PostgreSQL.
+				UCS 4.3 is based on Debian GNU/Linux 9 (Stretch). 
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -102,7 +93,7 @@
 		<para>
 			It must be checked whether sufficient disk space is available.
 			A standard installation requires a minimum of 6 GB of disk space.
-			Depending on the scope of the existing installation, the update will require about another 1 GB of disk space for download and installation all packages.
+			Depending on the scope of the existing installation, the update will require about another 2 GB of disk space for download and installation all packages.
 		</para>
 
 		<para>
@@ -201,10 +192,10 @@
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <wordasword>4.2-2</wordasword>:
+			Listed are the changes since UCS <wordasword>4.2-3</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-3.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-0.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
