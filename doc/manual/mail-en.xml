@@ -176,7 +176,7 @@
 		  <listitem>
 			<para>
 			  E-mails to <emphasis>alternative e-mail addresses</emphasis> are also delivered to the
-			  users mailbox. As many addresses can be entered as you wish. The
+			  user's mailbox. As many addresses can be entered as you wish. The
 			  alternative e-mail addresses do not have to be unique: if two users
 			  have the same e-mail address, they both receive all the e-mails which
 			  are sent to this address. The domain part of the
@@ -191,7 +191,7 @@
 		      If <emphasis>forward e-mail addresses</emphasis> are configured for a user,
 		      e-mails received through the primary or alternative e-mail addresses are
 		      forwarded to them. A copy of the messages can optionally be stored in the
-		      users mailbox. Forward e-mail addresses do not have to be unique and their
+		      user's mailbox. Forward e-mail addresses do not have to be unique and their
 		      domain part does not have to be registered in &ucsUMC;.
 		    </simpara>
 		  </listitem>
