@@ -557,7 +557,7 @@ class base(object):
 						subobject.open()
 						subobject.move(subnewdn)
 						moved.append((subolddn, subnewdn))
-					self.remove()
+					univention.admin.objects.get(univention.admin.modules.get(self.module), None, self.lo, position='', dn=self.dn).remove()
 					self._delete_temporary_ou_if_empty(temporary_ou)
 				except BaseException:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'move: subtree move failed, trying to move back.')
