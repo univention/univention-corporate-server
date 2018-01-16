@@ -1,8 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Check if apache closes FDs after restart
 ## packages: [lsof]
-## bugs: [37952]
-## tags: [apptest]
+## bugs: [37952, 45924]
+## tags: [apptest, SKIP]
 ## exposure: dangerous
 set -e -u
 
