@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-s4-connector
-fix: 11.0.8-16A~4.2.0.201801151605
+fix: 11.0.8-17A~4.2.0.201801161454
 desc: |
  This update addresses the following issue(s):
  * Rejects for DNs containing non-ASCII characters could not be saved,
