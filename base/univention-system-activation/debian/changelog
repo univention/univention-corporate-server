@@ -1,3 +1,9 @@
+univention-system-activation (3.0.0-4) unstable; urgency=medium
+
+  * Bug #45899: Fix sentence
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 16 Jan 2018 12:07:20 +0100
+
 univention-system-activation (3.0.0-3) unstable; urgency=medium
 
   * Bug #45899: Merge to 4.3
