@@ -1,3 +1,9 @@
+univention-system-setup (11.0.2-4) unstable; urgency=medium
+
+  * Bug #46052: my tmp. cert files to /var/cache...
+
+ -- Felix Botner <botner@univention.de>  Tue, 16 Jan 2018 13:41:22 +0100
+
 univention-system-setup (11.0.2-3) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
