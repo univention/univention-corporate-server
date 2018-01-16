@@ -194,7 +194,7 @@ class configdb:
 				cur.close()
 				return
 			except lite.Error, e:
-				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
+				ud.debug(ud.LDAP, ud.ERROR, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = lite.connect(self.filename)
