@@ -1,3 +1,9 @@
+univention-dvd (3.0.0-7) unstable; urgency=low
+
+  * Bug #45868: Fix i386 DVD build
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 16 Jan 2018 20:09:26 +0100
+
 univention-dvd (3.0.0-6) unstable; urgency=low
 
   * Bug #45868: Fix isolinux.cfg parsing

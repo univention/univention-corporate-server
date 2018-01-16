@@ -101,7 +101,7 @@ sub print_kernel {
     my $hotkey = "";
 
     # Only print 64-bit kernels
-    next unless ($k{"kernel"} =~ /amd/);
+    return unless ($k{"kernel"} =~ /amd/);
 
     if ($k{"label"} =~ m,\^(\S),) {
 	$hotkey = lc "--hotkey=$1 ";
