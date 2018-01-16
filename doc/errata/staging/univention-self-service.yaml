@@ -6,5 +6,7 @@ src: univention-self-service
 fix: 2.0.17-16A~4.2.0.201801151431
 desc: |
  This update addresses the following issue(s):
- * Changing a password of a expired user account is possible again.
+ * Changing a password of a expired user account is possible again and
+   a confirmation dialog has been added which is shown after changing
+   the password.
 bug: [45813]
