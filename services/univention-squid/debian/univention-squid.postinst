@@ -43,7 +43,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.0-3; 
 		mv /etc/squid3.secret /etc/squid.secret
 	fi
 	if [ -e /etc/squid3/local.conf ] && [ ! -e /etc/squid/local.conf ]; then
-		cp /etc/squid3/local.conf /etc/squid/local.conf
+		mv /etc/squid3/local.conf /etc/squid/local.conf
 	fi
 fi
 
