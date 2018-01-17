@@ -1,0 +1,62 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check if main.cf.local is included
+## exposure: unsafe
+## packages: [univention-mail-postfix]
+
+import os
+import subprocess
+import tempfile
+import univention.testing.utils as utils
+
+
+def check_file(basename, snippet):  # type: (str, str) -> None
+	fn_base = basename
+	fn_base_local = '%s.local' % (basename,)
+	fn_moved_local = None
+	content = open(fn_base, 'r').read()
+	if snippet in content:
+		utils.fail('%r already contains the test snippet before starting the test' % (fn_base,))
+
+	try:
+		# rescue existing main.cf.local
+		if os.path.exists(fn_base_local):
+			fn_moved_local = tempfile.mkstemp(
+				prefix=os.path.basename(fn_base_local),
+				dir=os.path.dirname(fn_base_local))[1]
+			os.rename(fn_base_local, fn_moved_local)
+
+		# write snippet to main.cf.local
+		with open(fn_base_local, 'w') as fd:
+			fd.write(snippet)
+
+		# commit changes to main.cf.local
+		subprocess.call(['ucr', 'commit', fn_base])
+
+		content = open(fn_base, 'r').read()
+		if snippet not in content:
+			utils.fail('%r does not contain snippet!' % (fn_base,))
+
+	finally:
+		os.remove(fn_base_local)
+		if fn_moved_local:
+			os.rename(fn_moved_local, fn_base_local)
+		# commit changes to main.cf.local
+		subprocess.call(['ucr', 'commit', fn_base])
+
+
+def main():  # type: () -> None
+	snippet = '''smtp_tls_loglevel = 0
+# MY FUNNY TEST COMMENT
+smtpd_tls_loglevel = 0
+'''
+	check_file('/etc/postfix/main.cf', snippet)
+
+	snippet = '''#25252525      inet  n       -       n       -       -       smtpd --some-obscure-option --definitely-unknown-to-postfix
+'''
+	check_file('/etc/postfix/master.cf', snippet)
+
+
+if __name__ == '__main__':
+	main()
+
+# vim: set ft=python ts=4 sw=4 noet :
