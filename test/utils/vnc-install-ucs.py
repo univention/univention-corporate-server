@@ -324,12 +324,8 @@ class UCSInstallation(object):
 		elif self.args.role == 'basesystem':
 			time.sleep(3)
 		else:
-			# ignore missing welcome screen Bug #45939
-			try:
-				self.client.waitForText('corporate server')
-				self.client.keyPress('enter')
-			except VNCDoException:
-				self.connect()
+			self.client.waitForText('corporate server')
+			self.client.keyPress('enter')
 		time.sleep(3)
 		self.client.enterText('root')
 		self.client.keyPress('enter')
