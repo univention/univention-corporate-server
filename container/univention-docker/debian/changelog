@@ -1,3 +1,9 @@
+univention-docker (3.0.0-2) unstable; urgency=medium
+
+  * Bug #46013: enable docker.service in postinst
+
+ -- Felix Botner <botner@univention.de>  Wed, 17 Jan 2018 14:44:56 +0100
+
 univention-docker (3.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
