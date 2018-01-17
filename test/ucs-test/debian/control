@@ -22,6 +22,8 @@ Description: UCS test environment meta package
 
 Package: ucs-test-libs
 Architecture: all
+Depends: univention-config,
+ ${misc:Depends}
 Description: Libraries used by the UCS-test-framework.
  This package includes some common helper scripts used by other ucs-test
  packages.

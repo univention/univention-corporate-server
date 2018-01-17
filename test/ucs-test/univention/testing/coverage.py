@@ -153,7 +153,7 @@ class Coverage(object):
 				continue  # restarted in the same process (e.g. os.fork())
 			setattr(os, method, StopCoverageDecorator(getattr(os, method)))
 
-		# There are test cases which e.g. kill the unvention-cli-server.
+		# There are test cases which e.g. kill the univention-cli-server.
 		# The atexit-handler of coverage will not be called for SIGTERM, so we need to stop coverage manually
 		def sigterm(sig, frame):
 			cls.debug_message('signal handler', sig, argv)
