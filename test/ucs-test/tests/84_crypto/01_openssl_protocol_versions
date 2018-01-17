@@ -2,7 +2,6 @@
 ## desc: Check ssl_client support
 ## tags:
 ##  - basic
-##  - apptest
 ## exposure: safe
 
 . "$TESTLIBPATH/base.sh" || exit 137
