@@ -35,30 +35,20 @@ eval "$(ucr shell)"
 . /usr/share/univention-lib/base.sh
 . /usr/share/univention-lib/ucr.sh
 
+PYHTONLIB="/usr/lib/univention-welcome-screen"
 
 get_all_ip_addresses () {
-	PYTHONPATH=/usr/lib/pymodules/python2.7/univention/config_registry python2.7 2>/dev/null \
-	-c 'from interfaces import Interfaces;print(" https://".join([interface[1]["address"] for interface in Interfaces().all_interfaces]))'
+	PYTHONPATH=$PYHTONLIB python2.7 \
+		-c 'import lib;lib.print_all_umc_addresses()'
 }
 
 remove_welcome_screen () {
-	# plymouth quit --retain-splash lets the terminal stay in graphics mode.
-	# The terminal needs to be set into text mode again.
-	# See also "man console_ioctl" keyword: KDSETMODE.
-	python -c "from fcntl import ioctl; fd = open('/dev/tty0', 'r'); ioctl(fd, 0x4B3A, 0x00);"
-	chvt 1
+	PYTHONPATH=$PYHTONLIB python2.7 \
+		-c 'import lib;lib.set_terminal_to_text_mode()'
 }
 
 check_capabilities () {
 	quit=false
-	event="$(grep -E 'Handlers|EV=' /proc/bus/input/devices | grep -B1 'EV=120013' | grep -Eo 'event[0-9]+')"
-	keyboards=""
-	for e in $event; do
-		if [ -e "/dev/input/$e" ]; then
-			keyboards+="/dev/input/$e "
-		fi
-	done
-	test -z "$keyboards" && quit=true && msg="no keyboard found, exiting"
 	test -e /etc/X11/default-display-manager && quit=true && msg="a display-manager is installed/configured, exiting"
 	if ! grep -q -w splash /proc/cmdline; then
 		quit=true
@@ -100,12 +90,12 @@ show_welcome_screen () {
 	else
 		header="Univention Corporate Server"
 	fi
-	console="$(gettext -d univention-welcome-screen "[ Press any key to open text console ]")"
+	console="$(gettext -d univention-welcome-screen "[ Press ESC to open text console ]")"
 	message1="$(gettext -d univention-welcome-screen "Open a browser window")"
 	message2="$(gettext -d univention-welcome-screen "Navigate to the following address:")"
 	message3="$(gettext -d univention-welcome-screen "Open the web management interface")"
 	address="https://$(get_default_ip_address)"
-	addresses="https://$(get_all_ip_addresses)"
+	addresses="$(get_all_ip_addresses)"
 	# show welcome screen
 	plymouth --show-splash
 	plymouth update --status=univention-welcome
@@ -124,7 +114,9 @@ show_welcome_screen () {
 
 wait_for_key_press () {
 	trap remove_welcome_screen EXIT
-	hexdump -n 96 $keyboards >/dev/null
+	echo "wait for keypress"
+	PYTHONPATH=$PYHTONLIB python2.7 \
+		-c 'import lib;lib.wait_for_keypress()'
 	echo "key pressed, good bye"
 	exit 0
 }
