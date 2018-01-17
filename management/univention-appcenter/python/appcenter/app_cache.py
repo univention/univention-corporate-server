@@ -141,7 +141,7 @@ class AppCache(_AppCache):
 		self._cache_dir = cache_dir
 		self._cache_file = None
 		self._cache = []
-		self._cache_modified = None
+		self._cache_modified_mtime = None
 		self._lock = False
 
 	def copy(self, app_class=None, ucs_version=None, server=None, locale=None, cache_dir=None):
@@ -206,25 +206,20 @@ class AppCache(_AppCache):
 			try:
 				with open(cache_file, 'wb') as fd:
 					dump([app.attrs_dict() for app in self._cache], fd, indent=2)
+				cache_modified = self._cache_modified()
 			except (EnvironmentError, TypeError):
 				return False
 			else:
-				archive_modified = self._archive_modified()
-				if archive_modified is not None:
-					try:
-						os.utime(cache_file, (archive_modified, archive_modified))
-					except EnvironmentError:
-						return False
-				self._cache_modified = archive_modified
+				self._cache_modified_mtime = cache_modified
 				return True
 
 	def _load_cache(self):
 		cache_file = self.get_cache_file()
 		try:
-			cache_modified = os.stat(cache_file).st_mtime
+			cache_modified = self._cache_modified()
 			archive_modified = self._archive_modified()
-			if _cmp_mtimes(cache_modified, archive_modified) != 0:
-				cache_logger.debug('Cannot load cache: mtimes of cache files do not match: %r != %r' % (cache_modified, archive_modified))
+			if _cmp_mtimes(cache_modified, archive_modified) == -1:
+				cache_logger.debug('Cannot load cache: mtimes of cache files do not match: %r < %r' % (cache_modified, archive_modified))
 				return None
 			for master_file in self._relevant_master_files():
 				master_file_modified = os.stat(master_file).st_mtime
@@ -233,7 +228,7 @@ class AppCache(_AppCache):
 					return None
 			with open(cache_file, 'rb') as fd:
 				cache = load(fd)
-			self._cache_modified = cache_modified
+			self._cache_modified_mtime = cache_modified
 		except (EnvironmentError, ValueError, TypeError):
 			cache_logger.debug('Cannot load cache: getting mtimes failed')
 			return None
@@ -255,6 +250,13 @@ class AppCache(_AppCache):
 			return os.stat(os.path.join(self.get_cache_dir(), '.all.tar')).st_mtime
 		except (EnvironmentError, AttributeError) as exc:
 			cache_logger.debug('Unable to get mtime for archive: %s' % exc)
+			return None
+
+	def _cache_modified(self):
+		try:
+			return os.stat(self.get_cache_file()).st_mtime
+		except (EnvironmentError, AttributeError) as exc:
+			cache_logger.debug('Unable to get mtime for cache: %s' % exc)
 			return None
 
 	def _relevant_master_files(self):
@@ -298,7 +300,7 @@ class AppCache(_AppCache):
 	def clear_cache(self):
 		ucr_load()
 		self._cache[:] = []
-		self._cache_modified = None
+		self._cache_modified_mtime = None
 		self._invalidate_cache_files()
 
 	def _invalidate_cache_files(self):
@@ -328,9 +330,9 @@ class AppCache(_AppCache):
 		with self._locked():
 			cache_file = self.get_cache_file()
 			if cache_file:
-				cache_modified = self._archive_modified()
+				archive_modified = self._archive_modified()
 
-				if _cmp_mtimes(cache_modified, self._cache_modified) == 1:
+				if _cmp_mtimes(archive_modified, self._cache_modified_mtime) == 1:
 					cache_logger.debug('Cache outdated. Need to rebuild')
 					self._cache[:] = []
 			if not self._cache:
@@ -447,7 +449,7 @@ class AppCenterCache(_AppCache):
 			self._license_type_cache = LicenseType.all_from_file(cache_file)
 		for license in self._license_type_cache:
 			if license.name == license_name:
-				return license.get_description(self.get_locale())
+				return license.description
 
 	def get_ratings(self):
 		if self._ratings_cache is None:
@@ -520,33 +522,12 @@ class AppCenterVersion(IniSectionObject):
 
 
 class LicenseType(IniSectionObject):
-	description = IniSectionAttribute()
-	description_de = IniSectionAttribute()
-
-	def get_description(self, locale):
-		if locale == 'de':
-			return self.description_de or self.description
-		return self.description
+	description = IniSectionAttribute(localisable=True)
 
 
 class Rating(IniSectionObject):
-	label = IniSectionAttribute()
-	label_de = IniSectionAttribute()
-	description = IniSectionAttribute()
-	description_de = IniSectionAttribute()
-
-	def get_label(self, locale):
-		if locale == 'de':
-			return self.label_de or self.label
-		return self.label
-
-	def get_description(self, locale):
-		if locale == 'de':
-			return self.description_de or self.description
-		return self.description
-
-	def to_dict(self, locale):
-		return {'name': self.name, 'description': self.get_description(locale), 'label': self.get_label(locale)}
+	label = IniSectionAttribute(localisable=True)
+	description = IniSectionAttribute(localisable=True)
 
 
 def default_locale():
