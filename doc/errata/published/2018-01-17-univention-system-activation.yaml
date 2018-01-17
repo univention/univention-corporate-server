@@ -9,3 +9,5 @@ desc: |
  * Add information about blocking browser addons to
    system activation error message
 bug: [45899]
+erratum: 264
+announced: 2018-01-17
