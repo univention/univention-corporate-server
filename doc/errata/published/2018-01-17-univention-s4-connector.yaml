@@ -11,3 +11,5 @@ desc: |
    visible but keeping the S4-Connector retrying endlessly, flooding the
    logs with rejects.
 bug: [44369]
+erratum: 263
+announced: 2018-01-17
