@@ -1,3 +1,9 @@
+ucs-test (8.0.14-5) unstable; urgency=low
+
+  * Bug #46065: Fix Apache ciphers
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 17 Jan 2018 22:20:33 +0100
+
 ucs-test (8.0.14-4) unstable; urgency=medium
 
   * Bug #44473: add test for main.cf.local and master.cf.local

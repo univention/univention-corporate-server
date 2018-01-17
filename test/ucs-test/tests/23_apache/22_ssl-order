@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
-## desc: Test Apache2 SSL cipher order
-## bugs: [38632]
+## desc: Test Apache2 SSL honer cipher order
+## bugs: [38632,46065]
 ## packages:
 ##  - openssl
 ## exposure: dangerous
@@ -16,24 +16,52 @@ cleanup () {
 }
 trap cleanup EXIT
 
+# http://httpd.apache.org/docs/2.4/mod/mod_ssl.html#sslciphersuite>
 ciphers="$(ucr get apache2/ssl/ciphersuite)"
-[ -n "$ciphers" ] || ciphers='HIGH:MEDIUM:!aNULL:!MD5:!RC4'
-sorder="$(openssl ciphers "$ciphers")"
-corder="$(openssl ciphers "$ciphers" | tr : '\n' | tac | tr '\n' :)"
+[ -n "$ciphers" ] || ciphers='HIGH:MEDIUM:!aNULL:!eNULL:!EXP'
 
-for conf in yes="${sorder%%:*}" no="${corder%%:*}"
-do
-	ucr set apache2/ssl/honorcipherorder=${conf%=*}
-	apachectl configtest
-	apachectl graceful
-	openssl s_client \
+ucr set apache2/ssl/honorcipherorder=yes
+apachectl configtest
+apachectl graceful
+
+osc () {
+	local out
+	out="$(openssl s_client \
 		-CAfile /etc/univention/ssl/ucsCA/CAcert.pem \
 		-connect localhost:443 \
-		-cipher "$corder" \
-		-no_ign_eof </dev/null 2>&1 |
-	grep "Cipher *: *${conf#*=}" ||
-		fail_test 1 "$conf"
-done
+		-cipher "$1" \
+		-no_ign_eof -brief \
+		</dev/null 2>&1)"
+	echo "$out" | sed -ne 's/^Ciphersuite: //p;T;q'
+}
+
+s1order="$(openssl ciphers -s "$ciphers")"
+s1preferred="$(osc "$s1order")"
+info "Server 1st cipher '$s1preferred'"
+[ -n "$s1preferred" ] ||
+	fail_test 1 "No cipher chosen: $ciphers"
+
+s2order="$(openssl ciphers -s "$ciphers:-$s1preferred")"
+s2preferred="$(osc "$s2order")"
+info "Server 2nd cipher '$s2preferred'"
+[ -n "$s2preferred" ] ||
+	fail_test 77 "Server only allows one cipher: $ciphers"
+
+c1order="$(openssl ciphers -s "$ciphers" | tr : '\n' | tac | tr '\n' :)"
+c1preferred="$(osc "$c1order")"
+info "Server chose cipher '$c1preferred'"
+[ "$s1preferred" = "$c1preferred" ] ||
+	fail_test 1 "$s1preferred != $c1preferred"
+
+ucr set apache2/ssl/honorcipherorder=no
+apachectl configtest
+apachectl graceful
+
+c2order="$s2preferred:$s1preferred"
+c2preferred="$(osc "$c2order")"
+info "Server chose cipher '$c2preferred'"
+[ "$s2preferred" = "$c2preferred" ] ||
+	fail_test 1 "$s2preferred != $c2preferred"
 
 exit ${RETVAL:-0}
 # vim: set ft=sh :
