@@ -1,3 +1,9 @@
+univention-web (2.0.0-4) unstable; urgency=medium
+
+  * Bug #45076: improve localized sorting performance
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 17 Jan 2018 17:24:08 +0100
+
 univention-web (2.0.0-3) unstable; urgency=medium
 
   * Bug #45395: Add UCR variable to remove tracebacks from
