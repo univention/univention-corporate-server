@@ -111,7 +111,8 @@ Description: univention-lib tests
 Package: ucs-test-quota
 Architecture: all
 Recommends: ucs-test-framework
-Depends: ${misc:Depends}
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
 Provides: ucs-test-module
 Description: Quota tests
  This package includes some scripts for testing file quota.
@@ -131,7 +132,8 @@ Description: Test scripts for LDAP and replication
 #Package: ucs-test-dns
 #Architecture: all
 #Recommends: ucs-test-framework
-#Depends: python,
+#Depends: ucs-test-libs (= ${source:Version}),
+# python,
 # ${misc:Depends}
 #Provides: ucs-test-module
 #Description: Test scripts for DNS
@@ -223,7 +225,8 @@ Description: Test scripts for the S4 connector
 #Package: ucs-test-pkgdb
 #Architecture: all
 #Recommends: ucs-test-framework
-#Depends: python,
+#Depends: ucs-test-libs (= ${source:Version}),
+# python,
 # ${misc:Depends}
 #Provides: ucs-test-module
 #Description: Test scripts for pkgdb
@@ -284,7 +287,8 @@ Description: Test scripts for the groups/group-module of the UDM
 Package: ucs-test-udm-dns
 Architecture: all
 Recommends: ucs-test-framework
-Depends: ${misc:Depends}
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
 Provides: ucs-test-module
 Description: Test scripts for the dns/* modules of the UDM.
  This package includes some scripts for testing the functionality of the domain
@@ -363,7 +367,8 @@ Description: Test scripts for udm extensions.
 Package: ucs-test-updater
 Architecture: all
 Recommends: ucs-test-framework
-Depends: libwww-perl,
+Depends: ucs-test-libs (= ${source:Version}),
+ libwww-perl,
  univention-updater,
  dpkg-dev,
  ${misc:Depends}
@@ -413,8 +418,10 @@ Description: Test scripts for UMC
 
 Package: ucs-test-umc-module
 Architecture: all
-Recommends: univention-management-console-server,
-Depends: ${python:Depends},
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ univention-management-console-server,
+ ${python:Depends},
 Description: Test UMC modules
  This package includes some test UMC modules
 
@@ -429,7 +436,8 @@ Description: Test scripts for UMC
 
 #Package: ucs-test-system-setup
 #Architecture: all
-#Depends: ucs-test-framework (= ${source:Version}),
+#Recommends: ucs-test-framework
+#Depends: ucs-test-libs (= ${source:Version}),
 # ${misc:Depends}
 #Provides: ucs-test-module,
 #Description: Test scripts for univention-system-setup.
@@ -610,7 +618,8 @@ Description: Test scripts to check cryptography software in UCS
 
 Package: ucs-test-translation-template
 Architecture: all
-Depends: subversion,
+Depends: ucs-test-libs (= ${source:Version}),
+ subversion,
  univention-ucs-translation-template,
  ${misc:Depends}
 Recommends: ucs-test-framework

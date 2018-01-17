@@ -1,3 +1,9 @@
+ucs-test (8.0.14-1) unstable; urgency=low
+
+  * Bug #46004: fix Apache uing PrivateTmp=true
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 17 Jan 2018 14:42:05 +0100
+
 ucs-test (8.0.13-1) unstable; urgency=medium
 
   * Bug #45842: fix certificate check

@@ -32,10 +32,9 @@
 
 #DEBHELPER#
 
-if [ "$1" = purge ] && [ -d /var/lib/ucs-test ]
+if [ "$1" = purge ]
 then
-	rm -f /var/lib/ucs-test/pwdfile
-	rmdir /var/lib/ucs-test || true
+	rm -rf /var/lib/ucs-test /var/cache/ucs-test
 fi
 
 exit 0

@@ -45,7 +45,7 @@ case "${UT_VERBOSE-}" in
 esac
 
 unset TMPDIR # Unset user-defines base-directroy for mktemp
-BASEDIR="$(mktemp -d)"
+BASEDIR="$(mktemp -d -p /var/lib/ucs-test)"
 echo "BASEDIR=\"${BASEDIR}\"" >&3
 # Need to be accessible by apache2, otherwise 403 FORBIDDEN
 chmod 755 "${BASEDIR}"
