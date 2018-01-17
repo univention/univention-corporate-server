@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-3) unstable; urgency=medium
+
+  * Bug #46060: Fix ratings showing their label as their description
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Jan 2018 09:50:52 +0100
+
 univention-appcenter (7.0.1-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
