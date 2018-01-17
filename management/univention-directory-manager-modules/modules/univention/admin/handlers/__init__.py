@@ -89,15 +89,69 @@ def disable_ad_restrictions(disable=True):
 	_prevent_to_change_ad_properties = disable
 
 
-class base(object):
+class simpleLdap(object):
+	"""The base class for all UDM handler modules.
 
-	def __init__(self, co, lo, position, dn='', superordinate=None):
-		"""The basis for simpleLdap.
+		:param co:
+			*deprecated* parameter for a config. Please pass None.
+		:type co: None
 
-			.. warning:: Do not inherit from or instantiate this class directly.
-				Use :class:`univention.admin.handlers.simpleLdap` instead.
+		:param lo:
+			A required LDAP connection object which is used for all LDAP operations (search, create, modify).
+			It should be bind to a user which has the LDAP permissions to do the required operations.
 
-		"""
+		:type lo: :class:`univention.admin.uldap.access`
+
+		:param position:
+			The position where an object should be created or None for existing objects.
+
+		:type position: :class:`univention.admin.uldap.position` or None
+
+		:param dn:
+			The DN of an existing LDAP object. If a object should be created the DN must not be passed here!
+		:type dn: str or None
+
+		:param superordinate:
+			The superordinate object of this object. Can be ommited. It is automatically searched by the given DN or position.
+
+		:type superordinate: :class:`univention.admin.handlers.simpleLdap` or None
+
+		:param attributes:
+			The LDAP attributes of the LDAP object as dict. This should by default be ommited. To save performance when an LDAP search is done this can be used, e.g. by the lookup() method.
+
+		:type attributes: None or dict
+
+		The following attributes hold information about the state of this object:
+
+		:ivar dn:
+			A LDAP distringuished name (DN) of this object (if exists, otherwise None)
+		:ivar module: the UDM handlers name (e.g. users/user)
+		:ivar oldattr:
+			The LDAP attributes of this object as dict. If the object does not exists the dict is empty.
+		:ivar info:
+			A internal dictionary which holds the values for every property.
+		:ivar options:
+			A list of UDM options which are enabled on this object. Enabling options causes specific object classes and attributes to be added to the object.
+		:ivar policies:
+			A list of DNs containing references to assigned policies.
+		:ivar properties: a dict which maps all UDM properties to :class:`univention.admin.property` instances
+		:ivar mapping:
+			A :class:`univention.admin.mapping.mapping` instance containing a mapping of UDM property names to LDAP attribute names
+		:ivar oldinfo:
+			A private copy of :attr:`info` containing the original properties which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
+		:ivar old_options:
+			A private copy of :attr:`options` containing the original options which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
+		:ivar old_policies:
+			A private copy of :attr:`policies` containing the original policies which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
+
+		.. caution::
+			Do not operate on :attr:`info` directly because this would bypass syntax validations. This object should be used like a dict.
+			Properties should be assigned in the following way: obj['name'] = 'value'
+	"""
+
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
+		self._exists = False
+		self.exceptions = []
 		self.co = co
 		self.lo = lo
 		self.dn = dn
@@ -136,9 +190,52 @@ class base(object):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'using univention.uldap.access instance is deprecated. Use univention.admin.uldap.access instead.')
 			self.lo = univention.admin.uldap.access(lo=self.lo)
 
-	def open(self):
-		"""See :class:`univention.admin.handlers.simpleLdap.open()`"""
-		self._open = True
+		# s4connector_present is a global caching variable than can be
+		# None ==> ldap has not been checked for servers with service "S4 Connector"
+		# True ==> at least one server with IP address (aRecord) is present
+		# False ==> no server is present
+		global s4connector_present
+		if s4connector_present is None:
+			s4connector_present = False
+			searchResult = self.lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr=['aRecord', 'aAAARecord'])
+			s4connector_present = any(ddn for (ddn, attr) in searchResult if set(['aAAARecord', 'aRecord']) & set(attr))
+		self.s4connector_present = s4connector_present
+
+		if not univention.admin.modules.modules:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'univention.admin.modules.update() was not called')
+			univention.admin.modules.update()
+
+		m = univention.admin.modules.get(self.module)
+		if not hasattr(self, 'mapping'):
+			self.mapping = getattr(m, 'mapping', None)
+		if not hasattr(self, 'descriptions'):
+			self.descriptions = getattr(m, 'property_descriptions', None)
+
+		self.info = {}
+		self.oldattr = {}
+		if attributes:
+			self.oldattr = attributes
+		elif self.dn:
+			try:
+				self.oldattr = self.lo.get(self.dn, required=True)
+			except ldap.NO_SUCH_OBJECT:
+				raise univention.admin.uexceptions.noObject(self.dn)
+
+		if self.oldattr:
+			self._exists = True
+			if not univention.admin.modules.recognize(self.module, self.dn, self.oldattr):
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'object %s is not recognized as %s.' % (self.dn, self.module))
+				# raise univention.admin.uexceptions.wrongObjectType()
+			oldinfo = self.mapping.unmapValues(self.oldattr)
+			oldinfo = self._post_unmap(oldinfo, self.oldattr)
+			oldinfo = self._falsy_boolean_extended_attributes(oldinfo)
+			self.info.update(oldinfo)
+
+		self.policies = self.oldattr.get('univentionPolicyReference', [])
+		self.__set_options()
+		self.save()
+
+		self._validate_superordinate()
 
 	def save(self):
 		"""Saves the current internal object state as old state for later comparision when e.g. modifying this object.
@@ -652,9 +749,6 @@ class base(object):
 			raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
 		return sidNum
 
-	def _update_policies(self):
-		pass
-
 	def _ldap_pre_ready(self):
 		"""Hook which is called before :func:`univention.admin.handlers.simpleLdap.ready`."""
 		pass
@@ -706,132 +800,6 @@ class base(object):
 			raise
 		except Exception:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "cancel() failed: %s" % (traceback.format_exc(),))
-
-
-def _not_implemented_method(attr):
-	def _not_implemented_error(self, *args, **kwargs):
-		"""Not implemented. See :class:`univention.admin.handlers.simpleLdap`."""
-		raise NotImplementedError('%s() not implemented by %s.%s().' % (attr, self.__module__, self.__class__.__name__))
-	return _not_implemented_error
-
-
-# add some default abstract methods
-for _attr in ('_ldap_addlist', '_ldap_modlist', '_ldap_dellist', 'exists', '_move', 'cancel', '_remove', '_create', '_modify'):
-	if not hasattr(base, _attr):
-		setattr(base, _attr, _not_implemented_method(_attr))
-
-
-class simpleLdap(base):
-	"""The base class for all UDM handler modules.
-
-		:param co:
-			*deprecated* parameter for a config. Please pass None.
-		:type co: None
-
-		:param lo:
-			A required LDAP connection object which is used for all LDAP operations (search, create, modify).
-			It should be bind to a user which has the LDAP permissions to do the required operations.
-
-		:type lo: :class:`univention.admin.uldap.access`
-
-		:param position:
-			The position where an object should be created or None for existing objects.
-
-		:type position: :class:`univention.admin.uldap.position` or None
-
-		:param dn:
-			The DN of an existing LDAP object. If a object should be created the DN must not be passed here!
-		:type dn: str or None
-
-		:param superordinate:
-			The superordinate object of this object. Can be ommited. It is automatically searched by the given DN or position.
-
-		:type superordinate: :class:`univention.admin.handlers.simpleLdap` or None
-
-		:param attributes:
-			The LDAP attributes of the LDAP object as dict. This should by default be ommited. To save performance when an LDAP search is done this can be used, e.g. by the lookup() method.
-
-		:type attributes: None or dict
-
-		The following attributes hold information about the state of this object:
-
-		:ivar dn:
-			A LDAP distringuished name (DN) of this object (if exists, otherwise None)
-		:ivar module: the UDM handlers name (e.g. users/user)
-		:ivar oldattr:
-			The LDAP attributes of this object as dict. If the object does not exists the dict is empty.
-		:ivar info:
-			A internal dictionary which holds the values for every property.
-		:ivar options:
-			A list of UDM options which are enabled on this object. Enabling options causes specific object classes and attributes to be added to the object.
-		:ivar policies:
-			A list of DNs containing references to assigned policies.
-		:ivar properties: a dict which maps all UDM properties to :class:`univention.admin.property` instances
-		:ivar mapping:
-			A :class:`univention.admin.mapping.mapping` instance containing a mapping of UDM property names to LDAP attribute names
-		:ivar oldinfo:
-			A private copy of :attr:`info` containing the original properties which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
-		:ivar old_options:
-			A private copy of :attr:`options` containing the original options which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
-		:ivar old_policies:
-			A private copy of :attr:`policies` containing the original policies which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
-
-		.. caution::
-			Do not operate on :attr:`info` directly because this would bypass syntax validations. This object should be used like a dict.
-			Properties should be assigned in the following way: obj['name'] = 'value'
-	"""
-
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
-		self._exists = False
-		self.exceptions = []
-		base.__init__(self, co, lo, position, dn, superordinate)
-
-		# s4connector_present is a global caching variable than can be
-		# None ==> ldap has not been checked for servers with service "S4 Connector"
-		# True ==> at least one server with IP address (aRecord) is present
-		# False ==> no server is present
-		global s4connector_present
-		if s4connector_present is None:
-			s4connector_present = False
-			searchResult = self.lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr=['aRecord', 'aAAARecord'])
-			s4connector_present = any(ddn for (ddn, attr) in searchResult if set(['aAAARecord', 'aRecord']) & set(attr))
-		self.s4connector_present = s4connector_present
-
-		if not univention.admin.modules.modules:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'univention.admin.modules.update() was not called')
-			univention.admin.modules.update()
-
-		m = univention.admin.modules.get(self.module)
-		if not hasattr(self, 'mapping'):
-			self.mapping = getattr(m, 'mapping', None)
-		if not hasattr(self, 'descriptions'):
-			self.descriptions = getattr(m, 'property_descriptions', None)
-
-		self.info = {}
-		self.oldattr = {}
-		if attributes:
-			self.oldattr = attributes
-		elif self.dn:
-			try:
-				self.oldattr = self.lo.get(self.dn, required=True)
-			except ldap.NO_SUCH_OBJECT:
-				raise univention.admin.uexceptions.noObject(self.dn)
-
-		if self.oldattr:
-			self._exists = True
-			if not univention.admin.modules.recognize(self.module, self.dn, self.oldattr):
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'object %s is not recognized as %s.' % (self.dn, self.module))
-				# raise univention.admin.uexceptions.wrongObjectType()
-			oldinfo = self.mapping.unmapValues(self.oldattr)
-			oldinfo = self._post_unmap(oldinfo, self.oldattr)
-			oldinfo = self._falsy_boolean_extended_attributes(oldinfo)
-			self.info.update(oldinfo)
-
-		self.policies = self.oldattr.get('univentionPolicyReference', [])
-		self.__set_options()
-		self.save()
-
-		self._validate_superordinate()
 
 	def _falsy_boolean_extended_attributes(self, info):
 		m = univention.admin.modules.get(self.module)
@@ -913,7 +881,7 @@ class simpleLdap(base):
 				If your are going to do any modifications (such as creating, modifying, moving, removing this object)
 				this method must be called directly after the constructor and before modifying any property.
 		"""
-		base.open(self)
+		self._open = True
 		self.exceptions = []
 		self.call_udm_property_hook('hook_open', self)
 		self.save()
