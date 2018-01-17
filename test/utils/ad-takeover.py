@@ -138,6 +138,8 @@ sleep(5)
 response = client.umc_command("adtakeover/run/takeover", request_options)
 print response.status
 
+response = client.umc_command("adtakeover/status/done", request_options)
+print response.status
 #command = 'adtakeover/connect
 #command = 'adtakeover/run/copy'
 #command = 'adtakeover/check/sysvol'
