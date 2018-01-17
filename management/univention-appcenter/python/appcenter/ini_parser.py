@@ -172,14 +172,6 @@ class IniSectionObject(object):
 			ret[key] = getattr(self, value.name)
 		return ret
 
-	# TODO: REMOVE, nowhere used
-	@classmethod
-	def _find_attr(cls, name):
-		canonical_name = filter(str.isalnum, name).lower()
-		for attr in cls._attrs.values():
-			if attr.name.replace('_', '').lower() == canonical_name:
-				return attr
-
 	@classmethod
 	def from_parser(cls, parser, section, locale):
 		return cls.build(parser, section, locale)

@@ -293,7 +293,7 @@ class AppRatingAttribute(AppListAttribute):
 			except (ValueError, TypeError, NoSectionError, NoOptionError):
 				pass
 			else:
-				rating = rating.to_dict(app.get_locale())
+				rating = rating.to_dict()
 				rating['value'] = val
 				value.append(rating)
 		setattr(app, self.name, value)

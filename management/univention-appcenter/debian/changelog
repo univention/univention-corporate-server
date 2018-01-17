@@ -1,3 +1,11 @@
+univention-appcenter (7.0.1-4) unstable; urgency=medium
+
+  * Bug #45499: Fix license information not being translated
+  * Bug #44783: Improved caching behaviour after a package update but before
+    any ini update
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Jan 2018 14:46:10 +0100
+
 univention-appcenter (7.0.1-3) unstable; urgency=medium
 
   * Bug #46060: Fix ratings showing their label as their description
