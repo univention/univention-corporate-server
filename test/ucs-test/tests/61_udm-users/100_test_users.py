@@ -71,29 +71,38 @@ class TestUsers(object):
 
 	def test_unmap_user_certificate(self, udm, ucr):
 		certificate = subprocess.check_output(['openssl', 'x509', '-inform', 'pem', '-in', '/etc/univention/ssl/%(hostname)s/cert.pem' % ucr, '-outform', 'der', '-out', '-']).encode('base64').replace('\n', '')
-		user = udm.create_user(options=['pki'], userCertificate=certificate)[0]
-		# FIXME: get the real values from the certificate!
-		udm.verify_udm_object('users/user', user, {
+		certificate_ldap = {
 			'userCertificate': certificate,
-			'certificateDateNotAfter': '2022-12-17',
-			'certificateDateNotBefore': '2017-12-18',
-			# 'certificateIssuerCommonName': 'Univention Corporate Server Root CA (ID=YRkLWLDu)',
-			'certificateIssuerCountry': 'DE',
-			'certificateIssuerLocation': 'DE',
-			'certificateIssuerMail': 'ssl@%s' % ucr.get('domainname'),
-			'certificateIssuerOrganisation': 'DE',
-			'certificateIssuerOrganisationalUnit': 'Univention Corporate Server',
-			'certificateIssuerState': 'DE',
+			'certificateIssuerCommonName': ucr['ssl/common'],
+			'certificateIssuerCountry': ucr['ssl/country'],
+			'certificateIssuerLocation': ucr['ssl/locality'],
+			'certificateIssuerMail': ucr['ssl/email'],
+			'certificateIssuerOrganisation': ucr['ssl/organization'],
+			'certificateIssuerOrganisationalUnit': ucr['ssl/organizationalunit'],
+			'certificateIssuerState': ucr['ssl/state'],
 			'certificateSerial': '1',
 			'certificateSubjectCommonName': '%(hostname)s.%(domainname)s' % ucr,
-			'certificateSubjectCountry': 'DE',
-			'certificateSubjectLocation': 'DE',
-			'certificateSubjectMail': 'ssl@%s' % ucr.get('domainname'),
-			'certificateSubjectOrganisation': 'DE',
-			'certificateSubjectOrganisationalUnit': 'Univention Corporate Server',
-			'certificateSubjectState': 'DE',
+			'certificateSubjectCountry': ucr['ssl/country'],
+			'certificateSubjectLocation': ucr['ssl/locality'],
+			'certificateSubjectMail': ucr['ssl/email'],
+			'certificateSubjectOrganisation': ucr['ssl/organization'],
+			'certificateSubjectOrganisationalUnit': ucr['ssl/organizationalunit'],
+			'certificateSubjectState': ucr['ssl/state'],
 			'certificateVersion': '2',
-		})
+		}
+		try:
+			from dateutil import parser
+		except ImportError:
+			pass
+		else:
+			dates = subprocess.check_output('openssl x509 -startdate -enddate < /etc/univention/ssl/%(hostname)s/cert.pem' % ucr, shell=True)
+			dates = dict(x.split('=', 1) for x in dates.splitlines()[:2])
+			certificate_ldap.update({
+				'certificateDateNotAfter': parser.parse(dates['notAfter']).strftime('%Y-%m-%d'),
+				'certificateDateNotBefore': parser.parse(dates['notBefore']).strftime('%Y-%m-%d'),
+			})
+		user = udm.create_user(options=['pki'], userCertificate=certificate)[0]
+		udm.verify_udm_object('users/user', user, certificate_ldap)
 
 	def test_mail_primary_group_gets_lowercased(self):
 		pass  # TODO: implement create() + modify()
