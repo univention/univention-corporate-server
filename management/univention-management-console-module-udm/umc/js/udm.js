@@ -548,7 +548,7 @@ define([
 			this._searchPage.startup();
 			this.addChild(this._searchPage);
 			this._checkMissingApp();
-			this._loadUCRVariables().then(lang.hitch(this, '_preloadDetailPage'));
+			this._loadUCRVariables();//.then(lang.hitch(this, '_preloadDetailPage'));
 			if (this.moduleFlavor === 'users/all') {
 				_loadGridViewPreference().then(lang.hitch(this, function(view) {
 					this._setGridView(view);
@@ -2014,7 +2014,7 @@ define([
 
 			this._destroyDetailPage();
 			this.selectChild(this._searchPage);
-			this._preloadDetailPage();
+			//this._preloadDetailPage();
 			this.resetTitle();
 		},
 
