@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
 # -*- coding: utf-8 -*-
 ## desc: Rename a container/ou with subobjects with special characters
-## tags: [udm,apptest]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## bugs: [35959]
