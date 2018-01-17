@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 function create_user {
     for value in {1..10}
     do
@@ -7,4 +9,9 @@ function create_user {
     done
 }
 
-create_user
+function check_all_user {
+    for value in {1..10}
+    do
+        python shared-utils/ucs-winrm.py domain_user_validate_password --domain adtakeover.local --domainuser user$value --domainpassword Univention@$value
+    done
+}
