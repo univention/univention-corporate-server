@@ -194,7 +194,7 @@ class configdb:
 				cur.close()
 				return
 			except lite.Error, e:
-				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
+				ud.debug(ud.LDAP, ud.ERROR, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = lite.connect(self.filename)
@@ -582,8 +582,8 @@ class ucs:
 			# `_list_rejected_ucs()`.
 			dn = '<NORESYNC{}:{}>;{}'.format('=' + reason if reason else '',
 				os.path.basename(filename), dn)
-		modstring_dn = univention.s4connector.s4.compatible_modstring(dn)
-		self._set_config_option('UCS rejected', filename, modstring_dn)
+		unicode_dn = univention.s4connector.s4.encode_attrib(dn)
+		self._set_config_option('UCS rejected', filename, unicode_dn)
 
 	def _get_rejected_ucs(self, filename):
 		_d = ud.function('ldap._get_rejected_ucs')

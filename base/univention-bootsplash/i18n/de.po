@@ -21,8 +21,8 @@ msgstr "[ Drücken Sie eine beliebige Taste, um eine Text-Konsole zu öffnen ]"
 msgid "Open a browser window"
 msgstr "Öffnen Sie ein Browser-Fenster"
 
-msgid "Navigate to one of the following addresses:"
-msgstr "Öffnen Sie eine der folgenden Adressen:"
+msgid "Navigate to the following address:"
+msgstr "Öffnen Sie die folgende Adresse:"
 
 msgid "Open the web management interface"
 msgstr "Öffnen Sie das Web Management Interface"

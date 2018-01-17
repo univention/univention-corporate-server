@@ -328,7 +328,7 @@ class Base(signals.Provider, Translation):
 				'command': ('%s %s' % (' '.join(request.arguments), '(%s)' % (request.flavor,) if request.flavor else '')).strip().decode('utf-8', 'replace'),
 				'traceback': traceback.format_exc().decode('utf-8', 'replace')
 			}
-			message = self._('Internal server error during "%(command)".') % error
+			message = self._('Internal server error during "%(command)s".') % error
 		MODULE.process(str(message))
 		self.finished(request.id, result, message, status=status, headers=headers, error=error)
 

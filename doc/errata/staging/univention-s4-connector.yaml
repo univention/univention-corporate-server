@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: univention-s4-connector
+fix: 11.0.8-17A~4.2.0.201801161454
+desc: |
+ This update addresses the following issue(s):
+ * Rejects for DNs containing non-ASCII characters could not be saved,
+   because python-sqlite3 doesn't accept UTF-8, causing rejects not to be
+   visible but keeping the S4-Connector retrying endlessly, flooding the
+   logs with rejects.
+bug: [44369]

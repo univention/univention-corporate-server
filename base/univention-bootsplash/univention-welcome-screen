@@ -96,7 +96,7 @@ show_welcome_screen () {
 	fi
 	console="$(gettext -d univention-welcome-screen "[ Press any key to open text console ]")"
 	message1="$(gettext -d univention-welcome-screen "Open a browser window")"
-	message2="$(gettext -d univention-welcome-screen "Navigate to one of the following addresses:")"
+	message2="$(gettext -d univention-welcome-screen "Navigate to the following address:")"
 	message3="$(gettext -d univention-welcome-screen "Open the web management interface")"
 	address="https://$(get_default_ip_address)"
 	addresses="https://$(get_all_ip_addresses)"

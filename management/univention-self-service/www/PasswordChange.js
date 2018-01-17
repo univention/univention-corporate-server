@@ -37,6 +37,7 @@ define([
 	"dojo/Deferred",
 	"dojo/request/xhr",
 	"dijit/form/Button",
+	"dojox/html/entities",
 	"put-selector/put",
 	"login",
 	"umc/tools",
@@ -45,7 +46,7 @@ define([
 	"./PasswordBox",
 	"./lib",
 	"umc/i18n!."
-], function(lang, on, keys, dom, json, Deferred, xhr, Button, put, login, tools, dialog, TextBox, PasswordBox, lib, _) {
+], function(lang, on, keys, dom, json, Deferred, xhr, Button, entities, put, login, tools, dialog, TextBox, PasswordBox, lib, _) {
 
 	return {
 		title: _('Password change'),
@@ -218,32 +219,52 @@ define([
 				'username': this._username.get('value'),
 				'password': this._oldPassword.get('value')
 			};
-
-			var _login = lang.hitch(this, function() {
-				if (!tools.status('loggedIn')) {
-					// not logged in -> issue an authentication request
-					return tools.umcpCommand('auth', authData, {
-						// make sure to ignore all kinds of errors (including 401)
-						401: function() {}
-					});
-				}
-
-				// already logged in -> return a resolved deferred
-				var deferred = new Deferred();
-				deferred.resolve();
-				return deferred;
+			var authDataPassword = lang.mixin({}, authData, {
+				'new_password': this._newPassword.get('value')
 			});
 
 			var _changePassword = lang.hitch(this, function() {
-				var data = {
-					password: lang.mixin(authData, {
-						'new_password': this._newPassword.get('value')
-					})
-				};
-				return tools.umcpCommand('set', data).then(function() {
-					// return 'true' to indicate success
-					return true;
-				});
+				var deferred = new Deferred();
+				if (!tools.status('loggedIn')) {
+					// not logged in -> issue an authentication request
+					tools.umcpCommand('auth', authData, {
+						401: function(info) {
+							if (info.result && info.result.password_expired) {
+								tools.umcpCommand('auth', authDataPassword, { 401: function() {
+									// make sure to ignore all kinds of errors (including 401)
+								}}).then(function() {
+									// cancel deferred to not change password a second time
+									deferred.resolve(true);
+								}, function(error) {
+									deferred.reject(error);
+								});
+							} else {
+								deferred.reject(info);
+							}
+						}
+					}).then(function() {
+						deferred.resolve(false);
+					}, function(info) {
+						if (tools.parseError(info).status != 401) {
+							deferred.reject(info);
+						}
+					});
+
+				} else {
+					// already logged in -> return a resolved deferred
+					deferred.resolve(false);
+				}
+				return deferred.then(lang.hitch(this, function(cancel) {
+					if (cancel) {
+						return true;
+					}
+					return tools.umcpCommand('set', {
+						password: authDataPassword
+					}).then(function() {
+						// return 'true' to indicate success
+						return true;
+					});
+				}));
 			});
 
 			var _handleError = lang.hitch(this, function(err) {
@@ -272,15 +293,14 @@ define([
 			var _handleRedirect = lang.hitch(this, function(success) {
 				var redirectUrl = lib._getUrlForRedirect();
 				if (redirectUrl && success) {
-					window.open(redirectUrl, "_self");
+					dialog.confirm(entities.encode(_('The password has been changed successfully.')), [{label: _('OK'), name: 'submit'}]).then(function() {
+						window.open(redirectUrl, "_self");
+					});
 				}
 			});
 
 			// trigger chain of asynchronous actions
-			_login().then(_changePassword)
-				.then(null, _handleError)
-				.then(_resetForm)
-				.then(_handleRedirect);
+			_changePassword().then(null, _handleError).then(_resetForm).then(_handleRedirect);
 		},
 
 		/**

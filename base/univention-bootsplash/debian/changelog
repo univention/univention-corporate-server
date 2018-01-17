@@ -1,3 +1,9 @@
+univention-bootsplash (8.0.0-16) unstable; urgency=medium
+
+  * Bug #45819: Fix typo
+
+ -- Richard Ulmer <ulmer@univention.de>  Mon, 08 Jan 2018 15:25:04 +0100
+
 univention-bootsplash (8.0.0-15) unstable; urgency=medium
 
   * Bug #45031: Aligned welcome screen header logo

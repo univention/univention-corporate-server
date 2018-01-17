@@ -1,3 +1,16 @@
+univention-self-service (2.0.17-16) unstable; urgency=medium
+
+  * Bug #45813: add confirmation dialog which tells about successful password
+    change
+
+ -- Florian Best <best@univention.de>  Mon, 15 Jan 2018 14:20:44 +0100
+
+univention-self-service (2.0.17-15) unstable; urgency=medium
+
+  * Bug #45813: fix changing password if pwdChangeNextLogin=1
+
+ -- Florian Best <best@univention.de>  Thu, 11 Jan 2018 13:23:32 +0100
+
 univention-self-service (2.0.17-14) unstable; urgency=medium
 
   * Bug #45457: display a confirmation dialog before redirecting
