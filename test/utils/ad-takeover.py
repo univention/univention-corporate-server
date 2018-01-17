@@ -105,18 +105,12 @@ response = client.umc_command("adtakeover/connect", request_options)
 print response.result
 assert response.status==200
 
-#thread = threading.Thread(target=get_progress, args=(client,))
-#thread.start()
 try:
     response = client.umc_command("adtakeover/run/copy", request_options)
 except Exception:
     pass
 wait(client)
-#assert response.status==200
 
-#net -U Administrator%Univention.98  rpc share migrate files sysvol \
-#   -S 10.200.7.132 --destination=10.200.7.150 --acls -vvvv
-#both machines must have the same user and password for migration
 result = subprocess.call(["net", "-U", "%s%%%s" % (options.domain_admin, options.domain_password), "rpc", "share", "migrate", "files", "sysvol", "-S", options.domain_host, "--destination=%s" % (options.host), "--acls", "-vvvv"])
 print result
 assert result==0
@@ -132,7 +126,6 @@ finished = True
 while not domainhost_unreachable(options.domain_host):
     sleep(2)
 
-#waiting one last time to ensure winpc is off
 sleep(5)
 
 response = client.umc_command("adtakeover/run/takeover", request_options)
@@ -140,15 +133,3 @@ print response.status
 
 response = client.umc_command("adtakeover/status/done", request_options)
 print response.status
-#command = 'adtakeover/connect
-#command = 'adtakeover/run/copy'
-#command = 'adtakeover/check/sysvol'
-#command = 'adtakeover/run/takeover'; 				}
-# <command name="adtakeover/progress" function="poll" /> 		
-# <command name="adtakeover/check/status" function="check_status" /
-# <command name="adtakeover/status/done" function="set_status_done" /> 		
-# <command name="adtakeover/connect" function="connect" /> 		
-# <command name="adtakeover/run/copy" function="copy_domain_data" /> 		
-# <command name="adtakeover/sysvol_info" function="sysvol_info" /> 		
-# <command name="adtakeover/check/sysvol" function="check_sysvol" /> 		
-# <command name="adtakeover/run/takeover" function="take_over_domain" />
