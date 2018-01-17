@@ -1,3 +1,9 @@
+ucs-test (7.0.23-112) unstable; urgency=medium
+
+  * Bug #40372 (et al): Remove apptest flag
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Jan 2018 17:04:56 +0100
+
 ucs-test (7.0.23-111) unstable; urgency=low
 
   * Bug #45936: Add LSB test

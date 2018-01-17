@@ -29,8 +29,8 @@ with UCSTestConfigRegistry():
 
 	log_to_stream()
 
-	update = get_action('update')
-	update.call()
+	test_appcenter = get_action('dev-use-test-appcenter')
+	test_appcenter.call(revert=True)
 	register = get_action('register')
 
 	def _packages_to_install(app):
@@ -61,6 +61,8 @@ with UCSTestConfigRegistry():
 		print 'Checking app: %r' % app
 		if not _apt_get_simulate(app):
 			failed.append(app)
+
+	test_appcenter.call()
 
 	if failed:
 		print '\nTEST FAILED: the following apps cannot be installed due to broken packages...'
