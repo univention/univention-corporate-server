@@ -10,3 +10,5 @@ desc: |
    and a confirmation dialog has been added which is shown after
    changing the password.
 bug: [45813]
+erratum: 265
+announced: 2018-01-17
