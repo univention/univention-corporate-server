@@ -1,3 +1,9 @@
+univention-saml (5.0.2-1) unstable; urgency=medium
+
+  * Bug #45882: disable SSLv3
+
+ -- Florian Best <best@univention.de>  Wed, 17 Jan 2018 19:43:22 +0100
+
 univention-saml (5.0.1-2) unstable; urgency=medium
 
   * Remove code from univention-saml.init since systemd is used. The
