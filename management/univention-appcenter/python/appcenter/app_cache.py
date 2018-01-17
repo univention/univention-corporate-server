@@ -542,8 +542,8 @@ class Rating(IniSectionObject):
 
 	def get_description(self, locale):
 		if locale == 'de':
-			return self.label_de or self.label
-		return self.label
+			return self.description_de or self.description
+		return self.description
 
 	def to_dict(self, locale):
 		return {'name': self.name, 'description': self.get_description(locale), 'label': self.get_label(locale)}
