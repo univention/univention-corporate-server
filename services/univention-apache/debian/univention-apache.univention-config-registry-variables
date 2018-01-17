@@ -1,6 +1,6 @@
 [apache2/allowoverride]
-Description[de]=htaccess-Dateien erlauben verzeichnisspezifische Konfigurationseinstellungen. Diese Variable legt fest, welche Optionen der systemweiten Apache-Konfiguration durch htaccess-Dateien überschrieben werden können. Mögliche Einstellungen sind 'All', 'None' oder eine Aufstellung einzelner Konfigurationsgruppen (siehe <http://httpd.apache.org/docs/2.2/mod/core.html#allowoverride>). Ist die Variable nicht gesetzt, sind die Konfigurationsdirektiven 'AuthConfig Limit FileInfo' erlaubt.
-Description[en]=htaccess files allow the directory-specific configuration of settings. This variable configures which options of the systemwide Apache configuration can be overridden through htaccess files. Possible values are 'All', 'None' or a list of configuration directives (see <http://httpd.apache.org/docs/2.2/mod/core.html#allowoverride>). If the variable is unset, the configuration directives 'AuthConfig Limit FileInfo' are allowed.
+Description[de]=htaccess-Dateien erlauben verzeichnisspezifische Konfigurationseinstellungen. Diese Variable legt fest, welche Optionen der systemweiten Apache-Konfiguration durch htaccess-Dateien überschrieben werden können. Mögliche Einstellungen sind 'All', 'None' oder eine Aufstellung einzelner Konfigurationsgruppen (siehe <http://httpd.apache.org/docs/2.4/mod/core.html#allowoverride>). Ist die Variable nicht gesetzt, sind die Konfigurationsdirektiven 'AuthConfig Limit FileInfo' erlaubt.
+Description[en]=htaccess files allow the directory-specific configuration of settings. This variable configures which options of the systemwide Apache configuration can be overridden through htaccess files. Possible values are 'All', 'None' or a list of configuration directives (see <http://httpd.apache.org/docs/2.4/mod/core.html#allowoverride>). If the variable is unset, the configuration directives 'AuthConfig Limit FileInfo' are allowed.
 Type=str
 Categories=service-apache
 
@@ -77,20 +77,20 @@ Type=str
 Categories=service-apache,system-services
 
 [apache2/proxy/access/order]
-Description[de]=Diese Variable konfiguriert die Auswertungsreihenfolge der Zugriffsberechtigungen im mod_proxy-Modul. Eine detaillierte Beschreibung findet sich unter <http://httpd.apache.org/docs/2.2/mod/mod_proxy.html>. Ist die Variable nicht gesetzt, greift 'allow,deny'.
-Description[en]=This variable configures the evaluation order of access permissions in the mod_proxy module. A detailed description can be found at <http://httpd.apache.org/docs/2.2/mod/mod_proxy.html>. If the variable is unset, 'allow,deny' applies.
+Description[de]=Diese Variable konfiguriert die Auswertungsreihenfolge der Zugriffsberechtigungen im mod_proxy-Modul. Eine detaillierte Beschreibung findet sich unter <http://httpd.apache.org/docs/2.4/mod/mod_proxy.html>. Ist die Variable nicht gesetzt, greift 'allow,deny'.
+Description[en]=This variable configures the evaluation order of access permissions in the mod_proxy module. A detailed description can be found at <http://httpd.apache.org/docs/2.4/mod/mod_proxy.html>. If the variable is unset, 'allow,deny' applies.
 Type=str
 Categories=service-apache
 
 [apache2/proxy/access/allow]
-Description[de]=Diese Variable konfiguriert die Liste der zugriffsberechtigten Domänen im mod_proxy-Modul. Eine detaillierte Beschreibung findet sich unter <http://httpd.apache.org/docs/2.2/mod/mod_proxy.html>. Ist die Variable nicht gesetzt, greift 'all' (alle Domänen sind damit erlaubt).
-Description[en]=This variable configures the domains which are granted access to the mod_proxy module. A detailed description can be found at <http://httpd.apache.org/docs/2.2/mod/mod_proxy.html>. If the variable is unset, 'all' applies (i.e. all domains are allowed).
+Description[de]=Diese Variable konfiguriert die Liste der zugriffsberechtigten Domänen im mod_proxy-Modul. Eine detaillierte Beschreibung findet sich unter <http://httpd.apache.org/docs/2.4/mod/mod_proxy.html>. Ist die Variable nicht gesetzt, greift 'all' (alle Domänen sind damit erlaubt).
+Description[en]=This variable configures the domains which are granted access to the mod_proxy module. A detailed description can be found at <http://httpd.apache.org/docs/2.4/mod/mod_proxy.html>. If the variable is unset, 'all' applies (i.e. all domains are allowed).
 Type=str
 Categories=service-apache
 
 [apache2/proxy/access/deny]
-Description[de]=Diese Variable konfiguriert die Liste der zugriffsverweigerten Domänen im mod_proxy-Modul. Eine detaillierte Beschreibung findet sich unter <http://httpd.apache.org/docs/2.2/mod/mod_proxy.html>.
-Description[en]=This variable configures the domains which are denied access to the mod_proxy module. A detailed description can be found at <http://httpd.apache.org/docs/2.2/mod/mod_proxy.html>.
+Description[de]=Diese Variable konfiguriert die Liste der zugriffsverweigerten Domänen im mod_proxy-Modul. Eine detaillierte Beschreibung findet sich unter <http://httpd.apache.org/docs/2.4/mod/mod_proxy.html>.
+Description[en]=This variable configures the domains which are denied access to the mod_proxy module. A detailed description can be found at <http://httpd.apache.org/docs/2.4/mod/mod_proxy.html>.
 Type=str
 Categories=service-apache
 
@@ -149,8 +149,8 @@ Type=bool
 Categories=service-apache
 
 [apache2/ssl/ciphersuite]
-Description[de]=Dies konfiguriert die kryptografischen Verfahren, die ein Client in der SSL-Handshake-Phase angeboten bekommt. Das Format ist unter <http://httpd.apache.org/docs/2.2/mod/mod_ssl.html#sslciphersuite> beschrieben. Ist die Variable nicht gesetzt, wird 'HIGH:MEDIUM:!aNULL:!MD5:!RC4' verwendet.
-Description[en]=This configures the cryptopgraphic algorithms which are offered to clients during a SSL handshake. The format is described at <http://httpd.apache.org/docs/2.2/mod/mod_ssl.html#sslciphersuite>. If the variable is unset, 'HIGH:MEDIUM:!aNULL:!MD5:!RC4' is used.
+Description[de]=Dies konfiguriert die kryptografischen Verfahren, die ein Client in der SSL-Handshake-Phase angeboten bekommt. Das Format ist unter <http://httpd.apache.org/docs/2.4/mod/mod_ssl.html#sslciphersuite> beschrieben. Ist die Variable nicht gesetzt, wird 'HIGH:MEDIUM:!aNULL' verwendet.
+Description[en]=This configures the cryptopgraphic algorithms which are offered to clients during a SSL handshake. The format is described at <http://httpd.apache.org/docs/2.4/mod/mod_ssl.html#sslciphersuite>. If the variable is unset, 'HIGH:MEDIUM:!aNULL' is used.
 Type=str
 Categories=service-apache
 
