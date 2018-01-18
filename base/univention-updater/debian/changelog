@@ -1,3 +1,9 @@
+univention-updater (13.0.1-8) unstable; urgency=medium
+
+  * Bug 46066: disable memberOf for updates
+
+ -- Felix Botner <botner@univention.de>  Thu, 18 Jan 2018 18:23:02 +0100
+
 univention-updater (13.0.1-7) unstable; urgency=low
 
   * Bug #45968: remove dynamicmaps.cf only if it contains old paths
