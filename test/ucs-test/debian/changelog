@@ -1,3 +1,10 @@
+ucs-test (8.0.16-2) unstable; urgency=medium
+
+  * 52_s4connector$ vim 501test_group_sync.py: Increase timeout to two
+    hours (Bug #46079)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 18 Jan 2018 16:05:15 +0100
+
 ucs-test (8.0.16-1) unstable; urgency=medium
 
   * Bug #45961: disable 70_check_kernel_module_signing_setting

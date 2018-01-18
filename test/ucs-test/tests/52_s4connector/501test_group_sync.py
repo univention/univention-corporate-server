@@ -2,6 +2,7 @@
 # coding: utf-8
 ## desc: "Test the UCS<->AD sync in {read,write,sync} mode with groups"
 ## exposure: dangerous
+## timeout: 7200
 ## packages:
 ## - univention-s4-connector
 ## bugs:
