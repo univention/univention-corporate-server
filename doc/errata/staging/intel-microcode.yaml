@@ -1,0 +1,15 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: intel-microcode
+fix: 3.20180108.1~ucs4.2A~4.2.0.201801181821
+desc: |
+ This update addresses the following issue:
+ * Systems with microprocessors utilizing speculative execution and indirect
+   branch prediction may allow unauthorized disclosure of information to an
+   attacker with local user access via a side-channel analysis (CVE-2017-5715)
+note: This is the fourth of four parts.
+bug: [46029]
+cve:
+- CVE-2017-5715

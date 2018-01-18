@@ -1,0 +1,16 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: linux
+fix: 4.9.30-2A~4.2.0.201801171800
+desc: |
+ This update of the Linux kernel to version 4.9.77 addresses the following
+ issues:
+ * Systems with microprocessors utilizing speculative execution and indirect
+   branch prediction may allow unauthorized disclosure of information to an
+   attacker with local user access via a side-channel analysis (CVE-2017-5715)
+note: This is the first of four parts.
+bug: [46029]
+cve:
+- CVE-2017-5715
