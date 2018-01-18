@@ -327,13 +327,25 @@ install_apps_master_packages () {
 
 install_with_unmaintained () {
 	local rv=0
+	wait_for_repo_server || rv=$?
 	ucr set repository/online=true repository/online/unmaintained=yes
+	cat /etc/apt/sources.list.d/15_ucs-online-version.list
 	univention-install --yes "$@" || rv=$?
 	ucr set repository/online/unmaintained=no
 	return $rv
 }
 
+wait_for_repo_server () {
+        eval "$(ucr shell 'repository/online/server')"
+        for i in $(seq 1 300); do
+                ping -c 2 "$repository_online_server" && return 0
+                sleep 1
+        done
+        return 1
+}
+
 install_ucs_test () {
+	wait_for_repo_server || return 1
 	install_with_unmaintained ucs-test
 	install_selenium || install_selenium
 	# The AD Member Jenkins tests sometimes have network problems, so executing it twice.
@@ -858,3 +870,7 @@ assert_admember_mode () {
 }
 
 # vim:set filetype=sh ts=4:
+
+release_update='testing'
+errata_update='testing'
+JOB_NAME='UCS-4.3/UCS-4.3-0/ADMemberMultiEnv/Mode=module,Version=w2k12-german-other-join-user'
