@@ -34,19 +34,19 @@ import univention.config_registry
 import ldap
 import sys
 
-cr = univention.config_registry.ConfigRegistry()
-cr.load()
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
 
-if cr.get("server/role", "dummy") in ["domaincontroller_master", "domaincontroller_backup"]:
+if ucr.get("server/role", "dummy") in ["domaincontroller_master", "domaincontroller_backup", "domaincontroller_slave"]:
 
 	# ldap connection
 	try:
-		lo = univention.uldap.getAdminConnection()
+		lo = univention.uldap.getRootDnConnection()
 	except Exception as e:
 		print "failed to get ldap connection: %s" % e
 
 	# search groups and del/add uniqueMember
-	results = lo.search(base=cr.get("ldap/base"), attr=["uniqueMember"], filter="(&(objectClass=posixGroup)(uniqueMember=*))")
+	results = lo.search(attr=["uniqueMember"], filter="(&(objectClass=posixGroup)(uniqueMember=*))")
 	for result in results:
 		dn = result[0]
 		uniqueMember = result[1].get("uniqueMember", [""])
@@ -55,6 +55,7 @@ if cr.get("server/role", "dummy") in ["domaincontroller_master", "domaincontroll
 				# update groups
 				ml = []
 				ml.append((ldap.MOD_REPLACE, "uniqueMember", uniqueMember))
+				print('modify {0}'.format(dn))
 				lo.modify_s(dn, ml)
 			except Exception as e:
 				sys.stderr.write("E: modifing %s failed error with %s\n" % (dn, e))

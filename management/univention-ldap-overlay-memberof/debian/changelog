@@ -1,3 +1,9 @@
+univention-ldap-overlay-memberof (10.0.0-2) unstable; urgency=medium
+
+  * Bug #46066: fixed univention-update-memberof
+
+ -- Felix Botner <botner@univention.de>  Thu, 18 Jan 2018 17:49:08 +0100
+
 univention-ldap-overlay-memberof (10.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump

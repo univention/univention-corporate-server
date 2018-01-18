@@ -3,7 +3,7 @@
 # Univention overlay memberof
 #  preinst script
 #
-# Copyright 2012-2017 Univention GmbH
+# Copyright 2012-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,18 +29,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
-case "$1" in
-        install|upgrade)
-                # remove old templates for this update 3.0-2
-                if [ -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-1; then
-                        if [ ! -d /etc/univention/templates/removed/ ] ; then
-                                mkdir -p /etc/univention/templates/removed/
-                        fi
-						mytemplate=/etc/univention/templates/files/etc/ldap/slapd.conf.d/11univention-ldap-overlay-memberof
-                        mv $mytemplate "/etc/univention/templates/removed/$(basename $mytemplate).template.$(date +%Y%m%d_%H%M%S_%N)"
-                fi
-esac
 
 #DEBHELPER#
 
