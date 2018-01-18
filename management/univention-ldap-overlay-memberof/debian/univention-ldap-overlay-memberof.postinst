@@ -34,6 +34,8 @@
 
 eval "$(univention-config-registry shell)"
 
+. /usr/share/univention-lib/ucr.sh
+
 univention-config-registry set \
 	ldap/overlay/memberof?true \
 	ldap/overlay/memberof/member?uniqueMember \
@@ -43,5 +45,15 @@ univention-config-registry set \
 	ldap/overlay/memberof/modifiersname?"cn=admin,$ldap_base"
 
 test -x /etc/init.d/slapd && invoke-rc.d slapd crestart
+
+# new installations
+if [ "$1" = "configure" -a -z "$2" ]; then
+	# update groups if slapd is running, memberOf is activated and system is joined
+	if pidof slapd >/dev/null; then
+		if is_ucr_true ldap/overlay/memberof; then
+			test -e /var/univention-join/joined && /usr/share/univention-ldap-overlay-memberof/univention-update-memberof
+		fi
+	fi
+fi
 
 exit 0
