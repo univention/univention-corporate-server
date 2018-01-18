@@ -1,3 +1,9 @@
+univention-python (11.0.0-3) unstable; urgency=medium
+
+  * Bug #46066: added getRootDnConnection
+
+ -- Felix Botner <botner@univention.de>  Thu, 18 Jan 2018 17:27:10 +0100
+
 univention-python (11.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version

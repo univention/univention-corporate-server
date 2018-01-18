@@ -52,6 +52,20 @@ def explodeDn(dn, notypes=0):
 	return ldap.dn.explode_dn(dn, notypes)
 
 
+def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
+	ucr = ConfigRegistry()
+	ucr.load()
+	port = int(ucr.get('slapd/port', '7389').split(',')[0])
+	host = ucr['hostname'] + '.' + ucr['domainname']
+	if ucr.get('ldap/server/type', 'dummy') == 'master':
+		bindpw = open('/etc/ldap.secret').read().rstrip('\n')
+		binddn = 'cn=admin,{0}'.format(ucr['ldap/base'])
+	else:
+		bindpw = open('/etc/ldap/rootpw.conf').read().rstrip('\n').lstrip('rootpw "').rstrip('"')
+		binddn = 'cn=update,{0}'.format(ucr['ldap/base'])
+	return access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+
+
 def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	ucr = ConfigRegistry()
 	ucr.load()
