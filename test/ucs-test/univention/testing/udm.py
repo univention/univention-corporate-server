@@ -471,6 +471,9 @@ class UCSTestUDM(object):
     def verify_udm_object(self, *args, **kwargs):
         return verify_udm_object(*args, **kwargs)
 
+    def verify_ldap_object(self, *args, **kwargs):
+        return utils.verify_ldap_object(*args, **kwargs)
+
     def __enter__(self):
         return self
 
@@ -506,6 +509,7 @@ def verify_udm_object(module, dn, expected_properties):
 	if expected_properties is None:
 		raise AssertionError("UDM object {} should not exist".format(dn))
 
+	difference = {}
 	for (key, value) in expected_properties.iteritems():
 		udm_value = udm_object.info.get(key, [])
 		if isinstance(udm_value, basestring):
@@ -520,7 +524,9 @@ def verify_udm_object(module, dn, expected_properties):
 				udm_value = set(_normalize_dn(dn) for dn in udm_value)
 			except ldap.DECODING_ERROR:
 				pass
-		assert udm_value == value, '{}: {} != expected {}'.format(key, udm_value, value)
+		if udm_value != value:
+			difference[key] = (udm_value, value)
+	assert not difference, '\n'.join('{}: {} != expected {}'.format(key, udm_value, value) for key, (udm_value, value) in difference.items())
 
 
 def _prettify_cmd(cmd):
