@@ -76,7 +76,7 @@ EXCLUDE_ATTRIBUTES = [
 	'subschemaSubentry',
 	'hasSubordinates',
 	'entryDN',
-	'MEMBEROF',
+	'memberOf', 'MEMBEROF',
 	'pwdChangedTime', 'PWDCHANGEDTIME',
 	'pwdAccountLockedTime', 'PWDACCOUNTLOCKEDTIME',
 	'pwdFailureTime', 'PWDFAILURETIME',

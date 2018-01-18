@@ -1,3 +1,9 @@
+univention-directory-replication (11.0.0-2) unstable; urgency=medium
+
+  * Bug #46066: ignore memberOf in replication
+
+ -- Felix Botner <botner@univention.de>  Thu, 18 Jan 2018 17:56:48 +0100
+
 univention-directory-replication (11.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
