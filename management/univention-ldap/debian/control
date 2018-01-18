@@ -25,7 +25,8 @@ Depends: ${misc:Depends},
  shell-univention-lib (>= 6.0.9-8),
  python-univention-lib (>= 3.0.26-14),
  univention-newsid,
- univention-join
+ univention-join,
+ univention-ldap-overlay-memberof
 Conflicts: univention-5250 (<< 0.5),
  univention-mail-cyrus-quota-master
 Replaces: univention-mail-cyrus-quota-master

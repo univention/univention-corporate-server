@@ -1,3 +1,10 @@
+univention-ldap (14.0.2-7) unstable; urgency=medium
+
+  * Bug #46066: added univention-ldap-overlay-memberof to
+    univention-ldap-server
+
+ -- Felix Botner <botner@univention.de>  Thu, 18 Jan 2018 17:51:43 +0100
+
 univention-ldap (14.0.2-6) unstable; urgency=medium
 
   * Bug #45996: Revert Syntax and Matchingrule change in Kerberos schema
