@@ -6,7 +6,6 @@
 ## - univention-ad-connector
 ## tags:
 ## - skip_admember
-## - skip
 ## bugs:
 ##  - 36480
 

@@ -6,6 +6,10 @@
 from os import uname
 import univention.testing.utils as utils
 
+# skip test, see https://forge.univention.org/bugzilla/show_bug.cgi?id=45961
+from sys import exit
+from univention.testing.codes import TestCodes
+exit(TestCodes.RESULT_SKIP)
 
 MINIMUM_CONFIG = [
 	"CONFIG_MODULE_SIG=y",
