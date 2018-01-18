@@ -1,3 +1,9 @@
+univention-kernel-image-signed (3.0.2-12) unstable; urgency=low
+
+  * Bug #46029: Update to linux-4.9.77-ucs108
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 18 Jan 2018 16:50:04 +0100
+
 univention-kernel-image-signed (3.0.2-11) unstable; urgency=low
 
   * Bug #46009: Update to linux-4.9.76-ucs107
