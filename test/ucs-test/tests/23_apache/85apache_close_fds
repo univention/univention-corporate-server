@@ -2,7 +2,7 @@
 ## desc: Check if apache closes FDs after restart
 ## packages: [lsof]
 ## bugs: [37952, 45924]
-## tags: [apptest, SKIP]
+## tags: [apptest]
 ## exposure: dangerous
 set -e -u
 
