@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-3) unstable; urgency=medium
+
+  * Bug #46070: fixed 22_kdc_service.py
+
+ -- Felix Botner <botner@univention.de>  Thu, 18 Jan 2018 14:48:06 +0100
+
 univention-management-console-module-diagnostic (4.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version

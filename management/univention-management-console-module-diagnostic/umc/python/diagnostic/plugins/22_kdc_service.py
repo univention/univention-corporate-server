@@ -253,6 +253,12 @@ def probe_kdc(kdc, port, protocol, target_realm, user_name):
 	except KerberosException:
 		return False
 
+	if 'kdc-reachability-check' in received and target_realm in received:
+		return True
+
+	return False
+
+	# this no longer works with >= 4.3, ??
 	try:
 		(error, _sub) = pyasn1.codec.der.decoder.decode(received, asn1Spec=KrbError())
 	except pyasn1.error.PyAsn1Error:
