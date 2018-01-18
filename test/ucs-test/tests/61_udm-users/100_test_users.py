@@ -101,7 +101,8 @@ class TestUsers(object):
 				'certificateDateNotAfter': parser.parse(dates['notAfter']).strftime('%Y-%m-%d'),
 				'certificateDateNotBefore': parser.parse(dates['notBefore']).strftime('%Y-%m-%d'),
 			})
-		user = udm.create_user(options=['pki'], userCertificate=certificate)[0]
+		user = udm.create_user()[0]
+		udm.modify_object('users/user', dn=user, append_option=['pki'], userCertificate=certificate)
 		udm.verify_udm_object('users/user', user, certificate_ldap)
 
 	def test_mail_primary_group_gets_lowercased(self):

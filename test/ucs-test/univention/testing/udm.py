@@ -159,7 +159,7 @@ class UCSTestUDM(object):
         cmd = [UCSTestUDM.PATH_UDM_CLI_CLIENT_WRAPPED, modulename, action]
         args = copy.deepcopy(kwargs)
 
-        for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate', 'policy_reference', 'policy_dereference'):
+        for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate', 'policy_reference', 'policy_dereference', 'append_option'):
             if arg in args:
                 cmd.extend(['--%s' % arg.replace('_', '-'), args.pop(arg)])
 
