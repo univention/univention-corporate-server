@@ -9,11 +9,6 @@
 ## bugs:
 ##  - 36480
 
-# skip test, see http://forge.univention.org/bugzilla/show_bug.cgi?id=36480#c7
-from sys import exit
-from univention.testing.codes import TestCodes
-exit(TestCodes.RESULT_SKIP)
-
 import pytest
 
 import univention.testing.connector_common as tcommon
@@ -63,10 +58,9 @@ def random_number():
 # `telephoneNumber`.
 
 
+@pytest.mark.skip(reason="not yet implemented, see bug 36480")
 @pytest.mark.parametrize("attribute", MAPPINGS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
 def test_attribute_sync_from_udm_to_ad(attribute, sync_mode):
 	(ucs_attribute, con_attribute, con_other_attribute) = attribute
 	udm_user = NormalUser(selection=("username", "lastname", ucs_attribute))
@@ -126,10 +120,9 @@ def test_attribute_sync_from_udm_to_ad(attribute, sync_mode):
 		delete_udm_user(udm, AD, udm_user_dn, ad_user_dn, adconnector.wait_for_sync)
 
 
+@pytest.mark.skip(reason="not yet implemented, see bug 36480")
 @pytest.mark.parametrize("attribute", MAPPINGS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(),
-	reason="Univention AD Connector not configured.")
 def test_attribute_sync_from_ad_to_udm(attribute, sync_mode):
 	(ucs_attribute, con_attribute, con_other_attribute) = attribute
 	udm_user = NormalUser(selection=("username", "lastname", ucs_attribute))

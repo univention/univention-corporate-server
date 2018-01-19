@@ -1,3 +1,9 @@
+ucs-test (8.0.16-3) unstable; urgency=medium
+
+  * Bug #36480: skip 502_other_attribute_sync.py
+
+ -- Felix Botner <botner@univention.de>  Fri, 19 Jan 2018 16:36:01 +0100
+
 ucs-test (8.0.16-2) unstable; urgency=medium
 
   * 52_s4connector$ vim 501test_group_sync.py: Increase timeout to two
