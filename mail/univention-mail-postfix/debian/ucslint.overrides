@@ -1,2 +1,3 @@
-0004-16: etc/mailname
 0009-4: share/listfilter.py
+0004-16: conffiles/etc/listfilter.secret
+0004-16: conffiles/etc/mailname

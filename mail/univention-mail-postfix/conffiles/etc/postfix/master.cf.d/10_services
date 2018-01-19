@@ -16,44 +16,64 @@ def get_options(prefix):
 			result += ' -o %s=%s' % (key.split('/')[-1], configRegistry[key])
 	return result
 
-print '%s      inet  n       -       n       -       -       smtpd %s%s' % (
-	configRegistry.get('mail/smtpport', '25'),
+smtpd_port = configRegistry.get('mail/smtpport', 'smtp')
+smtpd_type = 'inet'
+smtpd_private = 'n'
+if configRegistry.is_true('mail/postfix/postscreen/enabled', False):
+	# if postscreen is used, postscreen owns the default smtp port and
+	# passes incoming connections to the actual smtpd process.
+	print '%s      inet  n       -       n       -       1       postscreen' % (
+		configRegistry.get('mail/smtpport', 'smtp'),
+	)
+	print 'dnsblog   unix  -       -       n       -       0       dnsblog'
+	print 'tlsproxy  unix  -       -       -       -       0       tlsproxy'
+	smtpd_port = 'smtpd'
+	smtpd_type = 'pass'
+	smtpd_private = '-'
+
+print '%-05s     %s  %s       -       n       -       -       smtpd %s%s' % (
+	smtpd_port,
+	smtpd_type,
+	smtpd_private,
 	opt_verbose,
 	get_options('mail/postfix/mastercf/options/smtp/'),
 )
 
-print '465       inet  n       -       n       -       -       smtpd %s%s' % (
+print 'smtps     inet  n       -       n       -       -       smtpd %s%s' % (
 	opt_verbose,
 	get_options('mail/postfix/mastercf/options/smtps/'),
 )
 
-print '587       inet  n       -       n       -       -       smtpd %s%s' % (
+print 'submission inet n       -       n       -       -       smtpd %s%s' % (
 	opt_verbose,
 	get_options('mail/postfix/mastercf/options/submission/'),
 )
 @!@
 #628      inet  n       -       n       -       -       qmqpd
-pickup    fifo  n       -       n       60      1       pickup
+pickup    unix  n       -       n       60      1       pickup
 cleanup   unix  n       -       n       -       0       cleanup
-qmgr      fifo  n       -       n       300     1       qmgr
-#qmgr     fifo  n       -       n       300     1       nqmgr
+qmgr      unix  n       -       n       300     1       qmgr
+#qmgr     unix  n       -       n       300     1       oqmgr
+tlsmgr    unix  -       -       n       1000?   1       tlsmgr
 rewrite   unix  -       -       n       -       -       trivial-rewrite
 bounce    unix  -       -       n       -       0       bounce
 defer     unix  -       -       n       -       0       bounce
+trace     unix  -       -       n       -       0       bounce
 verify    unix  -       -       n       -       1       verify
 flush     unix  n       -       n       1000?   0       flush
+proxymap  unix  -       -       n       -       -       proxymap
+proxywrite unix -       -       n       -       1       proxymap
 smtp      unix  -       -       n       -       -       smtp
+relay     unix  -       -       n       -       -       smtp
+#       -o smtp_helo_timeout=5 -o smtp_connect_timeout=5
 showq     unix  n       -       n       -       -       showq
 error     unix  -       -       n       -       -       error
+retry     unix  -       -       n       -       -       error
+discard   unix  -       -       n       -       -       discard
 local     unix  -       n       n       -       -       local
 #virtual   unix  -       n       n       -       -       virtual
 lmtp      unix  -       -       n       -       -       lmtp
-#587      inet  n       -       n       -       -       smtpd -v -o smtpd_enforce_tls=yes -o smtpd_sasl_auth_enable=yes
-relay    unix  -       -       n       -       -       smtp
-trace    unix  -       -       n       -       0       bounce
-proxymap  unix -       -       n       -       -       proxymap
-anvil    unix  -       -       n       -       1       anvil
-scache   unix  -       -       y       -       1       scache
-discard          unix  -       -       n       -       -       discard
-tlsmgr    unix  -       -       n       1000?   1       tlsmgr
+anvil     unix  -       -       n       -       1       anvil
+scache    unix  -       -       -       -       1       scache
+
 
