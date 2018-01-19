@@ -31,6 +31,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+#
+# Setup for development:
+#
+# univention-install python-concurrent.futures python-tornado
+# ./univention-management-console-module-udm
+#
+# curl -ik --user Administrator:univention http://<IP>:8888/udm/
+#
+
 import json
 import copy
 import urllib
@@ -43,6 +52,7 @@ from urlparse import urljoin
 import tornado.ioloop
 from tornado.web import Application, RequestHandler
 from tornado.concurrent import run_on_executor
+import tornado.gen
 from concurrent.futures import ThreadPoolExecutor
 
 from ldap.filter import filter_format
