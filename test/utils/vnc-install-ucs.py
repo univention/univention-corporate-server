@@ -248,7 +248,7 @@ class UCSInstallation(object):
 		self.args = args
 		self.config = OCRConfig()
 		self.config.update(lang=self.args.language)
-		self.timeout = 40
+		self.timeout = 60
 		self.connect()
 
 	def screenshot(self, filename):
@@ -281,11 +281,11 @@ class UCSInstallation(object):
 		self.client.enterText(_t['keyboard'])
 		self.client.keyPress('enter')
 		# network
-		time.sleep(30)
+		time.sleep(60)
 		self.client.waitForText(_t['configure_network'], timeout=self.timeout)
 		# always use first interface
 		self.click(_t['icontinue'])
-		time.sleep(30)
+		time.sleep(60)
 		# root
 		self.client.waitForText(_t['user_and_password'], timeout=self.timeout)
 		self.client.enterText(self.args.password)
@@ -298,7 +298,7 @@ class UCSInstallation(object):
 			self.client.enterText(_t['clock'])
 			self.client.keyPress('enter')
 		# hd
-		time.sleep(30)
+		time.sleep(60)
 		self.client.waitForText(_t['partition_disks'], timeout=self.timeout)
 		self.click(_t['entire_disk'])
 		self.client.keyPress('enter')
