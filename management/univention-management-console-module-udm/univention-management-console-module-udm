@@ -116,11 +116,22 @@ class Ressource(RequestHandler):
 		return obj
 
 	def content_negotiation(self, response):
-		# TODO; parse Accept header
+		# TODO; parse Accept header correctly with quality value
 		# TODO: implement XML
+		lang = 'html'
+		if 'application/json' in self.request.header.get('Accept', ''):
+			lang = 'json'
+		func = getattr(self, '%s_%s' % (self.request.method.lower(), lang), lambda x: x)
+		getattr(self, 'content_negotiation_%s' % (lang,))(func(response))
+		self.finish()
+
+	def content_negotiation_json(self, response):
 		self.set_header('Content-Type', 'application/json')
 		self.write(json.dumps(response))
-		self.finish()
+
+	def content_negotiation_html(self, response):
+		self.set_header('Content-Type', 'text/html')
+		self.write(response)
 
 
 def xml_rendering():
