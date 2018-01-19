@@ -52,3 +52,6 @@ country_data.json: countryInfo.txt alternateNames.txt
 city_data.json: cities15000.txt alternateNames.txt
 	./create_city_data.py "$@" $(LANGUAGES)
 
+alternateNames.zip:
+	wget https://updates.software-univention.de/download/large-build-files/alternateNames.zip
+	echo 'b2592ddda5484bb7a7b0724543ac7dbf5db9a3f5cb47dd1d4bc358e6afda324be55ed9a42355309e7a2ba20c710abd839daa4174cb97947c57abdbead132a1cf  alternateNames.zip' | sha512sum -c
