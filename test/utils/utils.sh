@@ -337,6 +337,9 @@ install_with_unmaintained () {
 
 wait_for_repo_server () {
         eval "$(ucr shell 'repository/online/server')"
+		repository_online_server=${repository_online_server#https://}
+		repository_online_server=${repository_online_server#http://}
+		repository_online_server=${repository_online_server%/}
         for i in $(seq 1 300); do
                 ping -c 2 "$repository_online_server" && return 0
                 sleep 1
