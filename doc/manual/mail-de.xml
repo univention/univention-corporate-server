@@ -938,6 +938,41 @@ postmap /etc/postfix/smtp_auth
 		</para>
 	</section>
 
+	<section id="mail::serverconfig::postscreen">
+		<title>Konfiguration zusätzlicher Prüfungen durch postscreen</title>
+		<para>
+			Bei der Verwendung eines Mailservers, der direkt vom Internet aus erreichbar ist, besteht immer die Gefahr,
+			dass Spammer, Spam-Bots oder defekte Mailserver kontinuierlich versuchen, auf dem UCS-System ungewollte
+			Mails (z.B. Spam) abzuliefern.
+		</para>
+		<para>
+			Um die Last des Mailservers für solche Fälle zu reduzieren, bringt Postfix einen eigenen Dienst mit dem Namen
+			<application>postscreen</application> mit, der Postfix vorgeschaltet wird und die eingehenden
+			SMTP-Verbindungen annimmt. Mit diesen Verbindungen werden zunächst einige leichtgewichtige Tests
+			durchgeführt. Ist das Ergebnis positiv, wird die Verbindung an Postfix durchgereicht. Im negativen Fall
+			wird die SMTP-Verbindung beendet und somit die eingehende Mail abgelehnt, bevor sie im Verantwortungsbereich
+			des UCS-Mailservers angekommen ist.
+		</para>
+		<para>
+			In der Standardeinstellung ist postscreen nicht aktiv. Durch das Setzen der &ucsUCRV;
+			<envar>mail/postfix/postscreen/enabled</envar> auf den Wert <literal>yes</literal> kann postscreen
+			aktiviert werden.
+		</para>
+		<para>
+			Über diverse UCR-Variablen mit dem Präfix <envar>mail/postfix/postscreen/</envar> können weitere
+			Einstellungen vorgenommen werden. Eine Liste der UCR-Variablen nebst Beschreibungen können z.B. auf
+			der Kommandozeile über den Befehl <command>ucr search --verbose mail/postfix/postscreen/</command>
+			abgerufen werden.
+		</para>
+		<note>
+			<para>
+				Nach jeder Änderung einer UCR-Variable für postscreen sollte die Konfiguration von Postfix und
+				postscreen neu geladen werden, was über den Befehl <command>service postfix reload</command>
+				ausgelöst werden kann.
+			</para>
+		</note>
+	</section>
+
 	<section id="mail::renamedusers">
 	  <title>Handhabung der Postfächer bei Änderung der E-Mail-Adresse und
 	  Löschung von Benutzerkonten</title>
