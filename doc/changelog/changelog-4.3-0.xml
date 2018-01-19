@@ -20,10 +20,10 @@
 					</simpara></listitem>
 					<listitem><simpara>
 							The packages <package>univention-ldap</package>, <package>univention-directory-notifier</package>,
-							<package>univention-bind</package>, <package>univention-heimdal</package> and
+							<package>univention-bind</package>, <package>univention-heimdal</package>, <package>univention-postgresql</package> and
 							<package>univention-appcenter</package> now use the command <command>service</command> instead
 							of <command>invoke-rc.d</command> to restart services. This is necessary for the services to be
-							restarted during the UCS installation (<u:bug>45905</u:bug>).
+							restarted during the UCS installation (<u:bug>45905</u:bug>, <u:bug>46055</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
 						<literal>XS-Python-Version</literal> and <literal>XB-Python-Version</literal> have been removed from all packages(<u:bug>43336</u:bug>).
