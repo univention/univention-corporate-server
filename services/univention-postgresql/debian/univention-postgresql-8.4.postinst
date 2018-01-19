@@ -54,7 +54,7 @@ case "$1" in
 		# restart postgresql to load correct configfiles (Bug #27786)
 		if [ -x "/etc/init.d/postgresql" ]
 		then
-			invoke-rc.d postgresql restart
+			service postgresql restart
 		fi
 
 		;;
