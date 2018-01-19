@@ -21,7 +21,7 @@ The following considerations are taken into mind when we create an API for autom
 The API is NOT driven by fixed URI path's and fixed parameters but taken from the data format.
 A client has no logic about the application, only about generic standardized response formats such as link relations, HTTP headers, methods, HTML or XML elements, javascript Code-On-Demand for the layout/design/usability and JSON.
 https://www.iana.org/assignments/link-relations/link-relations.xhtml
-collection, create-form, edit, edit-form, edit-media, icon, (help?), first, start, next, prev/previous, item, index, last, preload, (related), search, self, section, type, up, 
+collection, create-form, edit, edit-form, edit-media, icon, help, first, start, next, prev/previous, item, index, last, preload, (related), search, self, section, type, up, 
 
 Our client should be able to solve our specific use cases while gaining the advantages of the REST architectural style.
 
@@ -58,13 +58,13 @@ Get a form with all possible input values for a specific object type
 
 ## searchObjectForm(module)
 
-Get a form for searching for objects of the given module: possible selections are: (object-type, container, property-or-dn, search-value, checkbox-include-hidden-object, checkbox-do-not-substring-search, wanted-properties)
+Get a form for searching for objects of the given module: possible selections are: (object-type, container, property-or-dn, search-value, checkbox-include-hidden-object, checkbox-do-not-substring-search, wanted-properties, wanted-results)
 
 → form (with javascript instructions)
 
-## searchObject(module, object\_type, container, property\_name (or default: "dn"), search\_value, include\_hidden, do\_substring, wanted\_properties=None)
+## searchObject(module, object\_type, container, property\_name (or default: "dn"), search\_value, include\_hidden, do\_substring, wanted\_properties=None, wanted\_results)
 
-Return a list of objects, including the wanted properties (or a default selection = the "name"/identify-property with their possible actions (modify, move, remove)
+Return a list of objects, limited to number of wanted-results, including the wanted properties (or a default selection = the "name"/identify-property with their possible actions (modify, move, remove)
 
 → `<input name="" value="">` for each wanted property, `<form action="URI" method="DELETE" enctype="">`, `<link rel="edit-form">` (for both, edit&move) `<link rel="/udm/report">`
 
