@@ -47,4 +47,6 @@ install: $(SOURCE)
 .PHONY: get-orig-source
 get-orig-source: $(SOURCE)
 virtio-win-%.iso:
-	wget -O "$@" "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-$*-1/$@"
+	wget -O "$@" "https://updates.software-univention.de/download/large-build-files/virtio/$@"
+	echo "b57810f33746ed90420f12f6267903f595ddd02aecb8d3de58cd2d5c0b39ec2f31e0352c2548344e629827616bf2d3c284e1ff60d2132fdde39f2086b36af2e6  $@" | sha512sum -c
+	#wget -O "$@" "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-$*-1/$@"
