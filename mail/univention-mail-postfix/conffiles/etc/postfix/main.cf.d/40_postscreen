@@ -1,0 +1,22 @@
+@!@
+yesno = { True: 'yes', False: 'no' }
+print '\n# postscreen settings\n'
+print 'postscreen_dnsbl_action = %s' % (configRegistry.get('mail/postfix/postscreen/dnsbl/action', 'enforce'),)
+print 'postscreen_dnsbl_threshold = %s' % (configRegistry.get('mail/postfix/postscreen/dnsbl/threshold', '3'),)
+postscreen_dnsbl_sites = configRegistry.get('mail/postfix/postscreen/dnsbl/sites', '').replace(',', ' ').split()
+print 'postscreen_dnsbl_sites = %s' % ('\n        '.join(postscreen_dnsbl_sites),)
+print
+print 'postscreen_helo_required = %s' % (configRegistry.get('mail/postfix/postscreen/helo/required', 'no'),)
+print 'postscreen_greet_action = %s' % (configRegistry.get('mail/postfix/postscreen/greet/action', 'drop'),)
+print 'postscreen_greet_ttl = %s' % (configRegistry.get('mail/postfix/postscreen/greet/ttl', '1d'),)
+print
+print 'postscreen_non_smtp_command_enable = %s' % (yesno.get(configRegistry.is_true('mail/postfix/postscreen/non_smtp_command/enable', False)),)
+print 'postscreen_non_smtp_command_action = %s' % (configRegistry.get('mail/postfix/postscreen/non_smtp_command/action', 'ignore'),)
+print
+print 'postscreen_bare_newline_enable = %s' % (yesno.get(configRegistry.is_true('mail/postfix/postscreen/bare_newline/enable', False)),)
+print 'postscreen_bare_newline_action = %s' % (configRegistry.get('mail/postfix/postscreen/bare_newline/action', 'ignore'),)
+print
+print 'postscreen_blacklist_action = %s' % (configRegistry.get('mail/postfix/postscreen/blacklist/action', 'ignore'),)
+postscreen_access_list = configRegistry.get('mail/postfix/postscreen/access_list', 'permit_mynetworks, cidr:/etc/postfix/postscreen_access.cidr').replace(',', ' ').split()
+print 'postscreen_access_list = %s' % ('\n        '.join(postscreen_access_list),)
+@!@

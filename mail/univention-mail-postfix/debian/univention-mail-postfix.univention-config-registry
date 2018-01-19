@@ -45,6 +45,11 @@ Variables: mail/maps/canonical/recipient/classes
 
 Type: subfile
 Multifile: etc/postfix/main.cf
+Subfile: etc/postfix/main.cf.d/40_postscreen
+Variables: mail/postfix/postscreen/.*
+
+Type: subfile
+Multifile: etc/postfix/main.cf
 Subfile: etc/postfix/main.cf.d/50_restrictions
 Variables: mail/postfix/greylisting
 Variables: mail/postfix/smtpd/restrictions/recipient/.*
@@ -99,6 +104,7 @@ Variables: mail/postfix/smtpd/debug
 Variables: mail/postfix/mastercf/options/smtp/.*
 Variables: mail/postfix/mastercf/options/smtps/.*
 Variables: mail/postfix/mastercf/options/submission/.*
+Variables: mail/postfix/postscreen/enabled
 
 Type: subfile
 Multifile: etc/postfix/master.cf
