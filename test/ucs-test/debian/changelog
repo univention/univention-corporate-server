@@ -1,3 +1,10 @@
+ucs-test (8.0.16-4) unstable; urgency=medium
+
+  * 01_base/101_install_all_packages_from_a_release: fixed typo
+    s/producttests/producttest/ (Bug #46014)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Jan 2018 19:17:53 +0100
+
 ucs-test (8.0.16-3) unstable; urgency=medium
 
   * Bug #36480: skip 502_other_attribute_sync.py
