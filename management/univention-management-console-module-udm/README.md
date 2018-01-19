@@ -85,6 +85,7 @@ Get a form for editing an object
 → `<form method=POST enctype=multipart/x-www-form-urlencoded>` (if uploads are necessary, e.g. userPhoto) else application/x-www-form-urlencoded with a javascript overwritten JSON possibility
   `<input type=position>` for moving the object
   `<input>` for every property, containing information how to retrieve possible values, containig information about the data-type/syntax, requireness, editable
+  Javascript Code-On-Demand way to set If-Unmodified-Since/If-None-Match and a flag, to ignore server side inbetween modifications
 
 ## deleteObject(module, object\_type, dn)
 
