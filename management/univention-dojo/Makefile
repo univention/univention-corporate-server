@@ -48,9 +48,15 @@ all: install
 clean:
 	rm -rf dojo $(LIBDIR)
 	rm -rf univention-dojo-api-viewer
+	rm -rf dojo-*.tar.gz
+
+dojo: dojo-release-1.12.1-src.tar.gz
+dojo-release-1.12.1-src.tar.gz:
+	wget "https://updates.software-univention.de/download/large-build-files/dojo/$@"
+	echo "e3fe0075918ea60426397ce8f8445ad6ec35d4257233afbc254c811b1c544cf8bbaf1ca51ad83fe04a100ea7e3487648eecc3843bf073633b9a724af30c845c6  $@" | sha512sum -c
 
 # treat dojo JS package different
-dojo: dojo-*.tar.gz
+dojo:
 	tar -xzf $<
 	[ ! -d $@ ] && mv $@*/ $@ || true
 	cd dojo; \
@@ -69,4 +75,3 @@ libs/%: %-*.tar.gz
 	mkdir -p libs
 	tar -C libs --no-same-owner -xzf $<
 	if [ ! -d $@ ]; then mv $@*/ $@; fi
-
