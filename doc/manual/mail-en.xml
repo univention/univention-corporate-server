@@ -900,6 +900,38 @@ postmap /etc/postfix/smtp_auth
 		</para>
 	</section>
 
+	<section id="mail::serverconfig::postscreen">
+		<title>Configuration of additional checks by postscreen</title>
+		<para>
+			When using a mail server that is directly accessible from the Internet, there is always a risk
+			that spammers, spam bots or broken mail servers are continually trying to deliver unwanted emails
+			(for example spam) to the UCS system.
+		</para>
+		<para>
+			To reduce the load of the mail server for such cases, Postfix brings its own service with the name
+			<application>postscreen</application>, which is put in front of Postfix and accepts incoming SMTP
+			connections. On these incoming SMTP connections, some lightweight tests are first performed.
+			If the result is positive, the respective connection is passed on to Postfix. Otherwise the SMTP
+			connection is terminated and thus the incoming mail is rejected before being in the area of ​​responsibility
+			of the UCS mail server.
+		</para>
+		<para>
+			By default, postscreen is not active. By setting the &ucsUCRV; <envar>mail/postfix/postscreen/enabled</envar>
+			to the value <literal>yes</literal>, postscreen can be activated.
+		</para>
+		<para>
+			Various UCR variables with the prefix <envar>mail/postfix/postscreen/</envar> can be used to configure postscreen.
+			A list of all relevant UCR variables including descriptions can be retrieved e.g. on command line via the command
+			<command>ucr search --verbose mail/postfix/postscreen/</command>.
+		</para>
+		<note>
+			<para>
+				After each change of a UCR variable for postscreen the configuration of Postfix and postscreen should
+				be reloaded. This can be triggered e.g. via the command  <command>service postfix reload</command>.
+			</para>
+		</note>
+	</section>
+
 	<section id="mail::renamedusers">
 	  <title>Handling of mailboxes during e-mail changes and the deletion of user accounts</title>
 	  <para>
