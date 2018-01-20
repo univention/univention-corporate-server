@@ -1,3 +1,9 @@
+ucs-test (8.0.16-5) unstable; urgency=medium
+
+  * Bug #45842: support list and strings for --append-option
+
+ -- Florian Best <best@univention.de>  Sat, 20 Jan 2018 14:38:17 +0100
+
 ucs-test (8.0.16-4) unstable; urgency=medium
 
   * 01_base/101_install_all_packages_from_a_release: fixed typo

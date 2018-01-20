@@ -160,8 +160,13 @@ class UCSTestUDM(object):
         args = copy.deepcopy(kwargs)
 
         for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate', 'policy_reference', 'policy_dereference', 'append_option'):
-            if arg in args:
-                cmd.extend(['--%s' % arg.replace('_', '-'), args.pop(arg)])
+            if arg not in args:
+                continue
+            value = args.pop(arg)
+            if not isinstance(value, (list, tuple)):
+                value = (value,)
+            for item in value:
+                cmd.extend(['--%s' % arg.replace('_', '-'), item])
 
         for option in args.pop('options', ()):
             cmd.extend(['--option', option])
