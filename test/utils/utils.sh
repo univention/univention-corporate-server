@@ -76,6 +76,7 @@ jenkins_updates () {
 	test -n "$TARGET_VERSION" && target="$TARGET_VERSION"
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
 	echo "Starting from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
+	echo "release_update=$release_update"
 
 	case "${release_update:-}" in
 	public) upgrade_to_latest --updateto "$target" || rc=$? ;;
@@ -86,6 +87,7 @@ jenkins_updates () {
 
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
 	echo "Continuing from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
+	echo "errata_update=$errata_update"
 
 	case "${errata_update:-}" in
 	testing) upgrade_to_latest_test_errata || rc=$? ;;
@@ -387,12 +389,19 @@ install_ucs_test_appcenter_uninstall () {
 	install_with_unmaintained ucs-test-appcenter-uninstall
 }
 
+create_DONT_START_UCS_TEST () {
+	echo "-----------------------------------------------------------------------------------"
+	echo "$@"
+	echo "Creating /DONT_START_UCS_TEST"
+	echo "-----------------------------------------------------------------------------------"
+	touch /DONT_START_UCS_TEST
+}
+
 prevent_ucstest_on_fail () {
 	local rv=0
 	"$@" || rv=$?
 	if [ ! "$rv" = "0" ] ; then
-		echo "Creating /DONT_START_UCS_TEST"
-		touch /DONT_START_UCS_TEST
+		create_DONT_START_UCS_TEST "FAILED: prevent_ucstest_on_fail $@"
 	fi
 	return $rv
 }
@@ -500,7 +509,12 @@ run_ucsschool_tests () {
 }
 
 run_tests () {
-	[ -e /DONT_START_UCS_TEST ] && return 1
+	if [ -e /DONT_START_UCS_TEST ] ; then
+		echo "-----------------------------------------------------------------------------------"
+		echo "File /DONT_START_UCS_TEST exists - skipping ucs-test!"
+		echo "-----------------------------------------------------------------------------------"
+		return 1
+	fi
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
 }
 
@@ -545,8 +559,7 @@ assert_version () {
 	echo "Requested version $requested_version"
 	echo "Current version $version"
 	if [ "$requested_version" != "$version" ]; then
-		echo "Creating /DONT_START_UCS_TEST"
-		touch /DONT_START_UCS_TEST
+		create_DONT_START_UCS_TEST "FAILED: assert_version $requested_version == $version"
 		exit 1
 	fi
 	return 0
@@ -558,8 +571,7 @@ assert_minor_version () {
 	echo "Requested minor version $requested_version"
 	echo "Current minor version $version_version"
 	if [ "$requested_version" != "$version_version" ]; then
-		echo "Creating /DONT_START_UCS_TEST"
-		touch /DONT_START_UCS_TEST
+		create_DONT_START_UCS_TEST "FAILED: assert_minor_version $requested_version == $version_version"
 		exit 1
 	fi
 	return 0
@@ -567,8 +579,7 @@ assert_minor_version () {
 
 assert_join () {
 	if ! univention-check-join-status; then
-		echo "Creating /DONT_START_UCS_TEST"
-		touch /DONT_START_UCS_TEST
+		create_DONT_START_UCS_TEST "FAILED: univention-check-join-status"
 		exit 1
 	fi
 	return 0
@@ -576,8 +587,7 @@ assert_join () {
 
 assert_adconnector_configuration () {
 	if [ -z "$(ucr get connector/ad/ldap/host)" ]; then
-		echo "Creating /DONT_START_UCS_TEST"
-		touch /DONT_START_UCS_TEST
+		create_DONT_START_UCS_TEST "FAILED: assert_adconnector_configuration"
 		exit 1
 	fi
 	return 0
@@ -589,9 +599,7 @@ assert_packages () {
 	do
 		local installed=$(dpkg-query -W -f '${status}' "$package")
 		if [ "$installed" != "install ok installed" ]; then
-			echo "Failed: package status of $package is $installed"
-			echo "Creating /DONT_START_UCS_TEST"
-			touch /DONT_START_UCS_TEST
+			create_DONT_START_UCS_TEST "Failed: package status of $package is $installed"
 			exit 1
 		fi
 	done
