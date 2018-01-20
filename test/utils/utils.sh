@@ -489,6 +489,16 @@ run_windows_native_client_tests () {
 	run_tests -r native_win_client "$@"
 }
 
+run_ucsschool_tests () {
+	local test_group="$1"
+	declare -a test_args=()
+	# following list have to be in sync with EC2Tools.groovy ==> addUASSinglEnvAxes/addUASMultiEnvAxes
+	for i in base1 import1 import2 ; do
+		[ "$test_group" != "$i" ] && test_args+=("--prohibit=ucsschool_${i}")
+	done
+	run_apptests --prohibit=SKIP-UCSSCHOOL "${test_args[@]}"
+}
+
 run_tests () {
 	[ -e /DONT_START_UCS_TEST ] && return 1
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
