@@ -1,3 +1,9 @@
+ucs-test (8.0.16-6) unstable; urgency=medium
+
+  * Bug #46108: use custom group names in 51_samba4/30well-known-sids
+
+ -- Felix Botner <botner@univention.de>  Mon, 22 Jan 2018 17:10:08 +0100
+
 ucs-test (8.0.16-5) unstable; urgency=medium
 
   * Bug #45842: support list and strings for --append-option

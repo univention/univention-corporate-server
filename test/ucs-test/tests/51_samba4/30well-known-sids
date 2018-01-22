@@ -20,6 +20,8 @@ domainSid="$(univention-s4search -s base objectSid | sed -ne 's|^objectSid: ||p'
 
 test -z "$domainSid" && fail_test 110 "domainSid not found"
 
+. /usr/share/univention-lib/base.sh
+
 test_group_sid_openldap () {
 	group="$1"
 	expected_sid="$2"
@@ -59,36 +61,33 @@ test_user_sid () {
 	fi
 }
 
-test_user_sid "Administrator" "$domainSid-500"
-test_user_sid "KRBTGT" "$domainSid-502"
-test_user_sid "Guest" "$domainSid-501"
+test_user_sid "$(custom_username "Administrator")" "$domainSid-500"
+test_user_sid "$(custom_username "KRBTGT")" "$domainSid-502"
+test_user_sid "$(custom_username "Guest")" "$domainSid-501"
 
-test_group_sid "Domain Admins" "$domainSid-512"
-test_group_sid "Domain Users" "$domainSid-513"
-test_group_sid "Domain Guests" "$domainSid-514"
-test_group_sid "Domain Computers" "$domainSid-515"
-test_group_sid "Domain Controllers" "$domainSid-516"
-test_group_sid "Cert Publishers" "$domainSid-517"
-test_group_sid "Schema Admins" "$domainSid-518"
-test_group_sid "Enterprise Admins" "$domainSid-519"
-test_group_sid "Group Policy Creator Owners" "$domainSid-520"
-test_group_sid "RAS and IAS Servers" "$domainSid-553"
-test_group_sid "Administrators" S-1-5-32-544
-test_group_sid "Users" S-1-5-32-545
-test_group_sid "Guests" S-1-5-32-546
-# test_group_sid "Power Users" S-1-5-32-547
-test_group_sid "Account Operators" S-1-5-32-548
+test_group_sid "$(custom_groupname "Domain Admins")" "$domainSid-512"
+test_group_sid "$(custom_groupname "Domain Users")" "$domainSid-513"
+test_group_sid "$(custom_groupname "Domain Guests")" "$domainSid-514"
+test_group_sid "$(custom_groupname "Domain Computers")" "$domainSid-515"
+test_group_sid "$(custom_groupname "Domain Controllers")" "$domainSid-516"
+test_group_sid "$(custom_groupname "Cert Publishers")" "$domainSid-517"
+test_group_sid "$(custom_groupname "Schema Admins")" "$domainSid-518"
+test_group_sid "$(custom_groupname "Enterprise Admins")" "$domainSid-519"
+test_group_sid "$(custom_groupname "Group Policy Creator Owners")" "$domainSid-520"
+test_group_sid "$(custom_groupname "RAS and IAS Servers")" "$domainSid-553"
+test_group_sid "$(custom_groupname "Administrators")" S-1-5-32-544
+test_group_sid "$(custom_groupname "Users")" S-1-5-32-545
+test_group_sid "$(custom_groupname "Guests")" S-1-5-32-546
+test_group_sid "$(custom_groupname "Account Operators")" S-1-5-32-548
+test_group_sid "$(custom_groupname "Backup Operators")" S-1-5-32-551
+
 if getent group "Server Operators" >/dev/null; then
 	# Server Operators is not available on an updated 3.1 to 3.2 system
-	test_group_sid "Server Operators" S-1-5-32-549
+	test_group_sid "$(custom_groupname "Server Operators")" S-1-5-32-549
 fi
-test_group_sid "Backup Operators" S-1-5-32-551
 if getent group "Replicator" >/dev/null; then
 	# Replicator is not available on an updated 3.1 to 3.2 system
-	test_group_sid "Replicator" S-1-5-32-552
+	test_group_sid "$(custom_groupname "Replicator")" S-1-5-32-552
 fi
-
-test_group_sid_s4 "Print Operators" S-1-5-32-550
-test_group_sid_openldap "Printer-Admins" S-1-5-32-550
 
 exit $RETVAL
