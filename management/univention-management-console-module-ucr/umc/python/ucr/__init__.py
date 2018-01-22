@@ -175,10 +175,11 @@ class Instance(Base):
 		categories = []
 		for id, obj in ucrInfo.categories.iteritems():
 			name = obj['name']
-			categories.append({
-				'id': id,
-				'label': name
-			})
+			if ucrInfo.get_variables(id):
+				categories.append({
+					'id': id,
+					'label': name
+				})
 		self.finished(request.id, categories)
 
 	@sanitize(pattern=PatternSanitizer(default='.*'), key=ChoicesSanitizer(['all', 'key', 'value', 'description'], required=True))

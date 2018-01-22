@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (7.0.0-3) unstable; urgency=medium
+
+  * Bug #29733: Hide empty UCR categories
+
+ -- Jannik Ahlers <ahlers@univention.de>  Mon, 08 Jan 2018 13:48:00 +0100
+
 univention-management-console-module-ucr (7.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version

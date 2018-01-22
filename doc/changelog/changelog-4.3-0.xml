@@ -188,6 +188,7 @@
 			<title>Univention Configuration Registry module</title>
 			<itemizedlist>
 				<listitem><simpara>
+						Empty categories are now hidden in the module's search field (<u:bug>29733</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
