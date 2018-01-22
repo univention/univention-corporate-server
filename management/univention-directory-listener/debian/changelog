@@ -1,3 +1,10 @@
+univention-directory-listener (12.0.0-14) unstable; urgency=low
+
+  * Bug #44786: exception hierarchy, clear LDAP credentials for server
+    updates, remove UDM code
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 22 Jan 2018 15:39:29 +0100
+
 univention-directory-listener (12.0.0-13) unstable; urgency=low
 
   * Bug #44786: use indexed attribute
