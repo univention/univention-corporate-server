@@ -1,3 +1,9 @@
+univention-samba4 (7.0.1-2) unstable; urgency=medium
+
+  * Bug #46107: added pseudo group Console Logon (S-1-2-1)
+
+ -- Felix Botner <botner@univention.de>  Mon, 22 Jan 2018 17:29:08 +0100
+
 univention-samba4 (7.0.1-1) unstable; urgency=medium
 
   * Open TCP port 49152 which seems to be used by default in Samba 4.7 /

@@ -642,6 +642,7 @@ create_pseudo_groups()
 	_create_group_with_special_sid "Proxy" "S-1-5-8" "cn=Builtin" "$@"
 	_create_group_with_special_sid "IUSR" "S-1-5-17" "cn=Builtin" "$@"
 	_create_group_with_special_sid "Self" "S-1-5-10" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Console Logon" "S-1-2-1" "cn=Builtin" "$@"
 
 }
 
