@@ -1,3 +1,9 @@
+univention-pkgdb (11.0.0-2) unstable; urgency=medium
+
+  * Bug #46055: restart postgres in postinst
+
+ -- Felix Botner <botner@univention.de>  Mon, 22 Jan 2018 13:23:28 +0100
+
 univention-pkgdb (11.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump

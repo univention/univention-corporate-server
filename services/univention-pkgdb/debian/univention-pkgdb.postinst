@@ -75,7 +75,7 @@ case "$1" in
 			fi
 		fi
 
-		invoke-rc.d postgresql restart # TODO why?
+		service postgresql restart
 
 		# fix permissions (after postgresql sledgehammer-postinst )
 		if [ -e /etc/postgresql/pkgdb.secret ] ;then
