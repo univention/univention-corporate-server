@@ -74,7 +74,7 @@ class Instance(Base):
 
 			categories = [category]
 			if category == 'all':
-				categories = proc.keys()
+				categories = ['user', 'pid', 'command']
 			if any(pattern.match(str(proc[cat])) for cat in categories):
 				processes.append(proc)
 
