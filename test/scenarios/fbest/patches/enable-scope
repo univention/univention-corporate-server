@@ -2,7 +2,7 @@
 
 sed -i 's/raise univention.admin.uexceptions.primaryGroupWithoutSamba/pass/' /usr/share/pyshared/univention/admin/handlers/users/user.py
 pkill -f cli-server
-/root/patches/create_all_users.py
+#/root/patches/create_all_users.py
 
 ucr set repository/online/component/fbest/unmaintained=enabled repository/online/component/fbest/version=4.3 repository/online/component/fbest=enabled update/secure_apt=no repository/online/unmaintained=yes
 univention-upgrade --noninteractive
