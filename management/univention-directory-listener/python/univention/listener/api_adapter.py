@@ -106,6 +106,7 @@ class ListenerModuleAdapter(object):
 				self._ldap_cred['bindpw'],
 				self._ldap_cred['ldapserver']
 			)
+			self._ldap_cred.clear()
 
 	@property
 	def _module_handler(self):

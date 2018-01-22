@@ -31,7 +31,6 @@ import os
 import inspect
 from contextlib import contextmanager
 import listener
-import univention.admin.objects
 from univention.admin.uldap import access, position
 from univention.listener.handler_logging import get_logger
 from univention.listener.exceptions import ListenerModuleConfigurationError, ListenerModuleRuntimeError
@@ -76,7 +75,6 @@ class ListenerModuleHandler(object):
 		'structuralObjectClass', 'subschemaSubentry'
 	)
 	_support_async = False
-	_udm_module_cache = dict()
 	_configuration_class = ListenerModuleConfiguration
 	_adapter_class = ListenerModuleAdapter
 	config = None
@@ -102,6 +100,7 @@ class ListenerModuleHandler(object):
 		self.logger = get_logger(self.config.get_name())
 		self.ucr.load()
 		self._lo = None
+		self._po = None
 		self._ldap_credentials = None
 		self.logger.debug('Starting with configuration: %r', self.config)
 
@@ -252,28 +251,6 @@ class ListenerModuleHandler(object):
 		if not self._support_async:
 			raise exc_type, exc_value, exc_traceback
 
-	@classmethod
-	def get_udm_objects(cls, module_name, filter_s, base_dn, lo, po, **kwargs):
-		"""
-		Search LDAP for UDM objects.
-
-		:param module_name: str: UDM module ("users/user", "groups/group" etc)
-		:param filter_s: str: LDAP filter
-		:param base_dn: str: LDAP DN to start search from
-		:param lo: univention.admin.uldap.access object
-		:param po: univention.admin.uldap.position object
-		:param kwargs: dict: arguments to pass to udm_module.lookup()
-		:return: list of (not yet opened) univention.admin.handlers.simpleLdap objects
-		"""
-		key = (lo.base, lo.binddn, lo.bindpw, po.getDn())
-		if key not in cls._udm_module_cache:
-			univention.admin.modules.update()
-			udm_module = univention.admin.modules.get(module_name)
-			univention.admin.modules.init(lo, po, udm_module)
-			cls._udm_module_cache[key] = udm_module
-		udm_module = cls._udm_module_cache[key]
-		return udm_module.lookup(None, lo, filter_s=filter_s, base=base_dn, **kwargs)
-
 	@property
 	def lo(self):
 		"""
@@ -297,7 +274,9 @@ class ListenerModuleHandler(object):
 
 		:return: univention.admin.uldap.position object
 		"""
-		return position(self.lo.base)
+		if not self._po:
+			self._po = position(self.lo.base)
+		return self._po
 
 	def _get_ldap_credentials(self):
 		"""
@@ -309,7 +288,9 @@ class ListenerModuleHandler(object):
 
 	def _set_ldap_credentials(self, base, binddn, bindpw, host):
 		"""
-		Store LDAP connection credentials for use by self.lo.
+		Store LDAP connection credentials for use by self.lo. It is not
+		necessary to manually run this method. The listener will automatically
+		run it at startup.
 
 		:param base: str
 		:param binddn: str
@@ -326,7 +307,7 @@ class ListenerModuleHandler(object):
 		)
 		if old_credentials != self._ldap_credentials:
 			# force creation of new LDAP connection
-			self._lo = None
+			self._lo = self._po = None
 
 	@classmethod
 	def _get_configuration(cls):
