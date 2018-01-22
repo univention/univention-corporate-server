@@ -948,7 +948,7 @@ service postfix reload
 			</programlisting>
 		</para>
 		<para>
-			If a Postfix variable that has previously been set in <filename>main.cf</filename> is set again in <filename>main.cf.local</filename>, Postfix will issue a warnung to the log file <filename>/var/log/mail.log</filename>.
+			If a Postfix variable that has previously been set in <filename>main.cf</filename> is set again in <filename>main.cf.local</filename>, Postfix will issue a warning to the log file <filename>/var/log/mail.log</filename>.
 		</para>
 		<note>
 			<para>
