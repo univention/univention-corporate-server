@@ -979,7 +979,7 @@ postmap /etc/postfix/smtp_auth
 			Es ist möglich die Konfiguration von Postfix in der <filename>/etc/postfix/main.cf</filename>, über die per &ucsUCRV; einstellbaren Variablen hinaus, anzupassen.
 		</para>
 		<para>
-			Wenn eine Datei <filename>/etc/postfix/main.cf.local</filename> existiert, so wird ihr Inhalt an <filename>main.cf</filename> angehängt. Damit Änderungen an <filename>main.cf.local</filename> nach <filename>main.cf</filename> übernommen werden, muss folgendes ausgeführt werden:
+			Wenn eine Datei <filename>/etc/postfix/main.cf.local</filename> existiert, so wird ihr Inhalt an die Datei <filename>main.cf</filename> angehängt. Damit Änderungen an <filename>main.cf.local</filename> nach <filename>main.cf</filename> übernommen werden, muss folgendes ausgeführt werden:
 			<programlisting language="sh">
 ucr commit /etc/postfix/main.cf
 			</programlisting>
@@ -989,11 +989,11 @@ service postfix reload
 			</programlisting>
 		</para>
 		<para>
-			Wird in <filename>main.cf.local</filename> eine Postfix-Variable gesetzt, die zuvor in <filename>main.cf</filename> gesetzt wurde, so schreibt Postfix eine Warnung nach <filename>/var/log/mail.log</filename>.
+			Wird in der Datei <filename>main.cf.local</filename> eine Postfix-Variable gesetzt, die zuvor auch in <filename>main.cf</filename> gesetzt wurde, so schreibt Postfix eine Warnung in die Logdatei <filename>/var/log/mail.log</filename>.
 		</para>
 		<note>
 			<para>
-				Wenn das Verhalten des E-Mail-Servers nicht der Erwartung entspricht, sollten zu erst die Veränderungen durch die <filename>main.cf.local</filename> rückgängig gemacht werden (Inhalt auskommentieren). Die Konfiguration ist dann wieder eine durch die UCS Integration erzeugte und es sollte alles funktionieren.
+				Wenn das Verhalten des E-Mail-Servers nicht der Erwartung entspricht, sollten zuerst die Einstellungen die durch <filename>main.cf.local</filename> aktiviert wurden, rückgängig gemacht werden. Daszu muss die Datei umbenannt oder ihr  Inhalt auskommentiert und die beiden oben genannten Kommandos ausgeführt werden. Die Konfiguration entspricht dann wieder einer von UCS erstellten.
 			</para>
 		</note>
 	</section>
