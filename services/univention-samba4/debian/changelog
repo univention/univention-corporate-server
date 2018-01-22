@@ -1,4 +1,4 @@
-univention-samba4 (7.0.1-2) unstable; urgency=medium
+univention-samba4 (7.0.1-3) unstable; urgency=medium
 
   * Bug #46107: added pseudo group Console Logon (S-1-2-1)
 
