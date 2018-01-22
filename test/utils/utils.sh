@@ -74,7 +74,7 @@ jenkins_updates () {
 	local version_version version_patchlevel version_erratalevel target rc=0
 	target="$(echo "${JOB_NAME:-}"|sed -rne 's,.*/UCS-([0-9]+\.[0-9]+-[0-9]+)/.*,\1,p')"
 	# Update UCS@school instances always to latest patchlevel version
-	[ -z "$target" ] && target="$(echo "${JOB_NAME:-}"|sed -rne 's,.*/UCSschool-([0-9]+\.[0-9]+)/.*,\1-99,p')"
+	[ -z "$target" ] && target="$(echo "${JOB_NAME:-}"|sed -rne 's,^UCSschool-([0-9]+\.[0-9]+)/.*,\1-99,p')"
 
 	test -n "$TARGET_VERSION" && target="$TARGET_VERSION"
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
