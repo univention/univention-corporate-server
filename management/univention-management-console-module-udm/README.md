@@ -107,3 +107,21 @@ Renders a form which can be used to request a new license from univention
 ## getLicenseInformation()
 
 Render a HTML site containing information about the license
+
+# Caching
+
+`udm settings/extended_attribute create --set name=modifyTimestamp --set CLIName=modifyTimestamp --append module=users/user --set objectClass=top --set ldapMapping=modifyTimestamp --set shortDescription='Meta infos' --position="cn=custom attributes,cn=univention,$(ucr get ldap/base)"`
+
+# CLI Client
+
+Just an Idea:
+We could add a `<link rel="/univention/cli-client" href="/univention/cli-client.py"/>` which ships Code on Demand for a CLI Client.
+The client would be a python script offering the use cases in the style from the prior CLI client.
+
+```
+import requests
+from lxml.etree import parse
+URL_BASE = 'https://master120.dev.local/'
+content = requests.get(URL_BASE).content
+print '\n'.join(parse(stdin).xpath('//node()[@rel=\"/univention/module\"]/@href'))
+```
