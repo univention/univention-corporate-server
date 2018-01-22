@@ -154,6 +154,8 @@
 			<itemizedlist>
 				<listitem><simpara>
 					The module has been adjusted to the new API of <package>python-psutil</package> (<u:bug>45927</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					The module's search query produces better results (<u:bug>33198</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
