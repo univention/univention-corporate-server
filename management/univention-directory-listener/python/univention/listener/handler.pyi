@@ -36,7 +36,6 @@ import logging
 from contextlib import contextmanager
 import listener
 from univention.admin.uldap import access, position
-from univention.admin.handlers import simpleLdap
 from univention.config_registry import ConfigRegistry
 from univention.listener.handler_logging import get_logger
 from univention.listener.handler_configuration import ListenerModuleConfiguration
@@ -65,7 +64,6 @@ class ListenerModuleHandler(object):
 		'structuralObjectClass', 'subschemaSubentry'
 	)
 	_support_async = False
-	_udm_module_cache = dict()  # type: Dict[Tuple[str, str, str, str], simpleLdap]
 	_configuration_class = ListenerModuleConfiguration  # type: Type[ListenerModuleConfiguration]
 	_adapter_class = ListenerModuleAdapter  # type: Type[ListenerModuleAdapter]
 	config = None  # type: ListenerModuleConfiguration
@@ -102,9 +100,6 @@ class ListenerModuleHandler(object):
 	def diff(cls, old: Dict[str, List], new: Dict[str, List], keys: Optional[Iterable[str]] = None, ignore_metadata:bool = True) -> dict:
 		...
 	def error_handler(self, dn: str, old: Dict[str, List], new: Dict[str, List], command: str, exc_type: Type[BaseException], exc_value: BaseException, exc_traceback: types.TracebackType) -> None:
-		...
-	@classmethod
-	def get_udm_objects(cls, module_name: str, filter_s: str, base_dn: str, lo: access, po: position, **kwargs: str) -> List[simpleLdap]:
 		...
 	@property
 	def lo(self) -> access:
