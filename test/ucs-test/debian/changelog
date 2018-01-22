@@ -1,3 +1,9 @@
+ucs-test (8.0.16-7) unstable; urgency=medium
+
+  * Bug #46002: dpkg-buildpackage changes files. Use the generated file
+
+ -- Florian Best <best@univention.de>  Mon, 22 Jan 2018 20:30:31 +0100
+
 ucs-test (8.0.16-6) unstable; urgency=medium
 
   * Bug #46108: use custom group names in 51_samba4/30well-known-sids
