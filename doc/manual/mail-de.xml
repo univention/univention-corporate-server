@@ -973,6 +973,31 @@ postmap /etc/postfix/smtp_auth
 		</note>
 	</section>
 
+	<section id="mail::serverconfig::maincflocal">
+		<title>Eigene Anpassung der Postfix Konfiguration</title>
+		<para>
+			Es ist möglich die Konfiguration von Postfix in der <filename>/etc/postfix/main.cf</filename>, über die per &ucsUCRV; einstellbaren Variablen hinaus, anzupassen.
+		</para>
+		<para>
+			Wenn eine Datei <filename>/etc/postfix/main.cf.local</filename> existiert, so wird ihr Inhalt an <filename>main.cf</filename> angehängt. Damit Änderungen an <filename>main.cf.local</filename> nach <filename>main.cf</filename> übernommen werden, muss folgendes ausgeführt werden:
+			<programlisting language="sh">
+ucr commit /etc/postfix/main.cf
+			</programlisting>
+			Zum Übernehmen der Änderungen durch den Postfix-Dienst muss dieser neu geladen werden:
+			<programlisting language="sh">
+service postfix reload
+			</programlisting>
+		</para>
+		<para>
+			Wird in <filename>main.cf.local</filename> eine Postfix-Variable gesetzt, die zuvor in <filename>main.cf</filename> gesetzt wurde, so schreibt Postfix eine Warnung nach <filename>/var/log/mail.log</filename>.
+		</para>
+		<note>
+			<para>
+				Wenn das Verhalten des E-Mail-Servers nicht der Erwartung entspricht, sollten zu erst die Veränderungen durch die <filename>main.cf.local</filename> rückgängig gemacht werden (Inhalt auskommentieren). Die Konfiguration ist dann wieder eine durch die UCS Integration erzeugte und es sollte alles funktionieren.
+			</para>
+		</note>
+	</section>
+
 	<section id="mail::renamedusers">
 	  <title>Handhabung der Postfächer bei Änderung der E-Mail-Adresse und
 	  Löschung von Benutzerkonten</title>
