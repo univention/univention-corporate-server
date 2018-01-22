@@ -1824,12 +1824,13 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 		self._check_uid_gid_uniqueness()
 
-		# Ensure the primary Group has the samba option enabled
-		if not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
-			raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
-
 	def _ldap_pre_ready(self):
 		super(object, self)._ldap_pre_ready()
+
+		if not self.exists() or self.hasChanged('primaryGroup'):
+			# Ensure the primary Group has the samba option enabled
+			if self['primaryGroup'] and not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
+				raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
 
 		if not self.exists() or self.hasChanged('username'):
 			check_prohibited_username(self.lo, self['username'])
