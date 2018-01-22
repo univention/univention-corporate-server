@@ -993,7 +993,7 @@ service postfix reload
 		</para>
 		<note>
 			<para>
-				Wenn das Verhalten des E-Mail-Servers nicht der Erwartung entspricht, sollten zuerst die Einstellungen die durch <filename>main.cf.local</filename> aktiviert wurden, rückgängig gemacht werden. Daszu muss die Datei umbenannt oder ihr  Inhalt auskommentiert und die beiden oben genannten Kommandos ausgeführt werden. Die Konfiguration entspricht dann wieder einer von UCS erstellten.
+				Wenn das Verhalten des E-Mail-Servers nicht der Erwartung entspricht, sollten zuerst die Einstellungen die durch <filename>main.cf.local</filename> aktiviert wurden, rückgängig gemacht werden. Dazu muss die Datei umbenannt oder ihr  Inhalt auskommentiert und die beiden oben genannten Kommandos ausgeführt werden. Die Konfiguration entspricht dann wieder einer von UCS erstellten.
 			</para>
 		</note>
 	</section>
