@@ -6,8 +6,9 @@ src: univention-management-console
 fix: 9.0.80-91A~4.2.0.201801111436
 desc: |
  This update addresses the following issue(s):
- * A wrong redirect with Single Sign-On on IE 11
-   has been prevented.
+ * A problem when using Internet Explorer 11 has been corrected which lead to
+   broken redirections if the SAML identity provider is not resolvable during
+   login.
  * Displaying of python stack traces in UMC can now be prevented by setting
    the UCR variable umc/http/show_tracebacks to false.
 bug: [45424, 45395]
