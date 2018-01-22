@@ -792,6 +792,11 @@ monkeypatch () {
 }
 
 import_license () {
+	# wait for server
+	local server="license.univention.de"
+	for i in $(seq 1 100); do
+		nc -w 3 -z license.univention.de 443 && break
+	done
 	python -m shared-utils/license_client "$(ucr get ldap/base)" "$(date -d '+1 year' '+%d.%m.%Y')"
 	univention-license-import ./ValidTest.license && univention-license-check
 }
@@ -894,7 +899,3 @@ assert_admember_mode () {
 }
 
 # vim:set filetype=sh ts=4:
-
-release_update='testing'
-errata_update='testing'
-JOB_NAME='UCS-4.3/UCS-4.3-0/ADMemberMultiEnv/Mode=module,Version=w2k12-german-other-join-user'
