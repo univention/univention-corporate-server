@@ -27,9 +27,13 @@
 # <http://www.gnu.org/licenses/>.
 
 
-class ListenerModuleConfigurationError(Exception):
+class ListenerModuleError(Exception):
 	pass
 
 
-class ListenerModuleRuntimeError(Exception):
+class ListenerModuleConfigurationError(ListenerModuleError):
+	pass
+
+
+class ListenerModuleRuntimeError(ListenerModuleError):
 	pass
