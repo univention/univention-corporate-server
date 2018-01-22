@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.1-46) unstable; urgency=low
+
+  * Bug #44786: fix mypy hints file
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 22 Jan 2018 15:46:02 +0100
+
 univention-directory-listener (11.0.1-45) unstable; urgency=low
 
   * Bug #44786: exception hierarchy, clear LDAP credentials for server
