@@ -1,6 +1,0 @@
-@%@UCRWARNING=# @%@
-
-PATH=/usr/sbin:/usr/bin:/sbin:/bin
-
-# re-create squatter index
-@%@mail/cyrus/squatter/cron@%@	cyrus	[ -x /usr/lib/cyrus/bin/squatter ] && /usr/lib/cyrus/bin/squatter -C /etc/imapd/imapd.conf -r "*"

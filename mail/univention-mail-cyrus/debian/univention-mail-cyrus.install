@@ -1,8 +1,0 @@
-usr/sbin/univention-cyrus-* usr/sbin/
-cyrus.py usr/lib/univention-directory-listener/system/
-cyrus-shared-folder.py usr/lib/univention-directory-listener/system/
-19univention-mail-cyrus-uninstall.uinst usr/lib/univention-uninstall/
-81univention-mail-cyrus.inst usr/lib/univention-install/
-univention-mail-cyrus usr/lib/univention-server/server_password_change.d/
-univention-mail-valid-mboxname.py usr/share/univention-mail-cyrus/
-modules/univention/admin/handlers/policies/mailquota/*.py usr/share/univention-mail-cyrus

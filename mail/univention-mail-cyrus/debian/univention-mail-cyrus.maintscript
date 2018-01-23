@@ -1,1 +1,0 @@
-rm_conffile etc/univention/service.info/services/univention-mail-cyrus.cfg 9.0.0-12~
