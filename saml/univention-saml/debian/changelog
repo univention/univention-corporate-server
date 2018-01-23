@@ -1,4 +1,4 @@
-univention-saml (5.0.2-2) unstable; urgency=medium
+univention-saml (5.0.2-3) unstable; urgency=medium
 
   * Bug #46110: Update dependencies for UCS 4.3 with php7
 
