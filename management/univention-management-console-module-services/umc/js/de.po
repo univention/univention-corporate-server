@@ -115,7 +115,7 @@ msgid ""
 "all users to login again."
 msgstr ""
 "Warnung: Das Stoppen von Apache oder der UMC Dienste unterbricht alle bestehenden "
-"Verbindungen zur Univention Management Console. Eventuell müssen sich alle Benutzer neu anmelden."
+"Verbindungen zur Univention Management Console. Es ist gegebenfalls notwendig, dass Benutzer sich neu anmelden müssen."
 
 #: umc/js/services.js:155
 msgid "running"

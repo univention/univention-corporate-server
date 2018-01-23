@@ -200,7 +200,7 @@
 			<title>Other modules</title>
 			<itemizedlist>
 				<listitem><simpara>
-						In the services UMC module, there is a warning when stopping a service breaks the Univention Management Console (<u:bug>26477</u:bug>).
+						A warning has been added in the system services UMC module when stopping the service causes a interruption of the connection (<u:bug>26477</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>

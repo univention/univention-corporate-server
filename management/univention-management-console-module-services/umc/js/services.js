@@ -226,15 +226,16 @@ define([
 			confirmMessage += '<ul>';
 			//test if stopping this service breaks UMC
 			var umcRequirements = ['apache2', 'univention-management-console-web-server', 'univention-management-console-server'];
-			var breakUMC = false;
+			var umcDisablers = ['services/stop', 'services/restart', 'services/start_manual', 'services/start_never'];
+			var breaksUMC = false;
 			array.forEach(data, function(idata) {
-				if (umcRequirements.indexOf(idata) >= 0 && command === 'services/stop') {
-					breakUMC = true
+				if (umcRequirements.indexOf(idata) >= 0 && umcDisablers.indexOf(command) >= 0) {
+					breaksUMC = true;
 				}
 				confirmMessage += '<li>' + idata + '</li>';
 			});
 			confirmMessage += '</ul>';
-			if (breakUMC) {
+			if (breaksUMC) {
 				confirmMessage += '<b>' + _('Warning: Stopping apache or UMC services will interrupt all current connections to the Univention Management Console. It might be necessary for all users to login again.') + '</b>';
 			}
 
