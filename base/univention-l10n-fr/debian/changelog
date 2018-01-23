@@ -1,3 +1,9 @@
+univention-l10n-fr (2.0.0-4) unstable; urgency=low
+
+  * Bug #46102: remove leftover
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 23 Jan 2018 16:29:28 +0100
+
 univention-l10n-fr (2.0.0-3) unstable; urgency=low
 
   * Bug #46102: remove translations for univention-mail-cyrus

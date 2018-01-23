@@ -83,7 +83,6 @@ ALL_TARGETS = $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-c
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-saml-serviceprovider.mo \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-virtual-machine-manager-schema.mo \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-virtual-machine-manager.mo \
-	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-mailquota.mo \
 	$(DESTDIR)/usr/share/univention-system-setup-boot/www/i18n/fr/main.json \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-system-setup-scripts.mo \
 	$(DESTDIR)/usr/share/univention-system-setup/www/i18n/fr/main.json \
