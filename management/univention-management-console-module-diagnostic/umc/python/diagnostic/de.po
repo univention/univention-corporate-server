@@ -276,12 +276,6 @@ msgstr "Gateway ist nicht erreichbar"
 msgid "Host key for server does not match"
 msgstr "SSH Host-Key des Servers stimmt nicht überein"
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:81
-#, python-brace-format
-msgid "Identifier with whitespace: {ids}. This is not supported by Cyrus."
-msgstr ""
-"Es gibt Namen mit Leerzeichen: {ids}. Dies wird nicht von Cyrus unterstützt."
-
 #: umc/python/diagnostic/plugins/11_nameserver.py:17
 msgid ""
 "If the problem persists make sure the nameserver is connected to the network "

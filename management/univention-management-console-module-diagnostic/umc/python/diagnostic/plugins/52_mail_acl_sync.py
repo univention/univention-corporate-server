@@ -31,7 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import pexpect
 import subprocess
 import itertools as it
 
@@ -74,12 +73,6 @@ class DuplicateIdentifierACLError(ACLIdentifierError):
 	def __str__(self):
 		msg = _('Multiple ACL entries for {id!r} in UDM.')
 		return msg.format(id=self.identifier)
-
-
-class IdentifierWhitespaceACLError(ACLIdentifierError):
-	def __str__(self):
-		msg = _('Identifier with whitespace: {ids}. This is not supported by Cyrus.')
-		return msg.format(ids=', '.join(repr(i) for i in self.identifier))
 
 
 class ACLDifferenceError(ACLIdentifierError):
@@ -152,15 +145,7 @@ class ACL(object):
 					yield (identifier, udm_right)
 		return cls(dict(simplify(user_acl)), dict(simplify(group_acl)))
 
-	def check_names_for_whitespace(self):
-		identifier = self.user_acl.viewkeys() | self.group_acl.viewkeys()
-		with_whitespace = [i for i in identifier if any(c.isspace() for c in i)]
-		if with_whitespace:
-			raise IdentifierWhitespaceACLError(with_whitespace)
-
 	def difference(self, other):
-		if isinstance(other, CyrusACL):
-			self.check_names_for_whitespace()
 		user_diff = self._diff(UserACLError, self.user_acl, other.user_acl)
 		group_diff = self._diff(GroupACLError, self.group_acl, other.group_acl)
 		return it.chain(user_diff, group_diff)
@@ -210,59 +195,6 @@ class DovecotACL(ACL):
 			in (line.rsplit('  ', 1) for line in output)}
 
 
-class CyrusACL(ACL):
-	CYRUS_RIGHT_TRANSLATION = (
-		('all', set('lrswipcda')),
-		('write', set('lrswipcd')),
-		('append', set('lrsip')),
-		('post', set('lrps')),
-		('read', set('lrs')),
-		('none', set()),
-	)
-
-	@classmethod
-	def from_folder(cls, folder):
-		acl_list = cls._get_cyrus_acl(folder)
-		merged = dict()
-		for (identifier, rights) in acl_list.iteritems():
-			acl_type = 'group' if identifier.startswith('group:') else 'user'
-			udm_id = identifier.replace('user:', '', 1) if identifier.startswith('user:') \
-				else identifier.replace('group:', '', 1) if identifier.startswith('group:') \
-				else identifier
-			udm_right = next(udm_right for (udm_right, cyrus_rights)
-				in cls.CYRUS_RIGHT_TRANSLATION if rights.issuperset(cyrus_rights))
-			merged.setdefault(acl_type, dict())[udm_id] = udm_right
-		return cls(merged.get('user', {}), merged.get('group', {}))
-
-	@staticmethod
-	def _get_cyrus_acl(folder):
-		configRegistry = univention.config_registry.ConfigRegistry()
-		configRegistry.load()
-
-		hostname = configRegistry.get('mail/cyrus/murder/backend/hostname', 'localhost')
-		with open('/etc/cyrus.secret') as fob:
-			password = fob.read().rstrip()
-
-		cyradm = pexpect.spawn(' '.join(('cyradm', '-u', 'cyrus', hostname)))
-		cyradm.setecho(False)
-		index = cyradm.expect(['IMAP Password:', '(cannot connect)|(unknown host)',
-			pexpect.EOF], timeout=60)
-		if index == 0:
-			cyradm.sendline(password)
-			cyradm.expect('>')
-			cyradm.sendline('listacl shared/{}'.format(folder.common_name))
-			cyradm.sendline('disconnect')
-			cyradm.sendline('exit')
-			line_generator = (cyradm.readline().strip() for _ in it.repeat(None))
-			acl_lines = list(it.takewhile(lambda l: l and not l.endswith('cyradm>'),
-				line_generator))
-			if 'Mailbox does not exist' in acl_lines:
-				raise MailboxNotExistentError(folder.common_name)
-			return {identifier.strip(): set(rights.strip()) for (identifier, rights)
-				in (line.split() for line in acl_lines)}
-		return dict()
-
-
 def all_differences(acl_class):
 	for folder in MailFolder.from_udm():
 		try:
@@ -294,19 +226,17 @@ def run(_umc_instance):
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	if configRegistry.is_true('mail/cyrus'):
-		acl_class = CyrusACL
-	elif configRegistry.is_true('mail/dovecot'):
+	if configRegistry.is_true('mail/dovecot'):
 		acl_class = DovecotACL
 	else:
 		return
 
-	differerces = list(all_differences(acl_class))
+	differences = list(all_differences(acl_class))
 	ed = [_('Found differences in the ACLs for IMAP shared folders between UDM and IMAP.') + ' ' +
 		_('This is not necessarily a problem, if the the ACL got changed via IMAP.')]
 
 	modules = list()
-	for (folder, group) in it.groupby(differerces, lambda x: x[0]):
+	for (folder, group) in it.groupby(differences, lambda x: x[0]):
 		name = folder.common_name
 		ed.append('')
 		ed.append(_('In mail folder {name} (see {{udm:mail/mail}}):').format(name=name))
