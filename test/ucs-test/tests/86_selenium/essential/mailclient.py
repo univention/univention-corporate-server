@@ -96,46 +96,6 @@ class BaseMailClient(object):
 					result[i] = item
 		return result
 
-	def set_acl_cyrus(self, email, permission):
-		"""wrapper for setting /usr/sbin/univention0-cyrus-set-acl"""
-
-		ucr = univention.config_registry.ConfigRegistry()
-		ucr.load()
-
-		cyrus_user = 'cyrus'
-		password = open('/etc/cyrus.secret').read()
-		if password[-1] == '\n':
-			password = password[0:-1]
-
-		hostname = 'localhost'
-		shared_name = 'user/%s' % self.owner
-
-		if ucr.get('mail/cyrus/murder/backend/hostname'):
-			hostname = ucr['mail/cyrus/murder/backend/hostname']
-
-		# if we want to give acls to a group, a different syntax is needed
-		if email.find("@") == -1:
-			# no email address, so we are dealing with
-			# a group, with 'anyone' or 'anonymous'
-			if not (email == "anyone" or email == "anonymous"):
-				email = email.replace(" ", "\ ")
-				email = "group:%s" % email
-
-		time.sleep(20)
-		child = spawn('/usr/bin/cyradm -u %s %s' % (cyrus_user, hostname))
-		child.logfile = sys.stdout
-		i = 0
-		while not i == 3:
-			i = child.expect(['Password:', '>', 'cyradm: cannot connect to server', EOF], timeout=60)
-			if i == 0:
-				child.sendline(password)
-			elif i == 1:
-				child.sendline('sam %s %s %s' % (shared_name, email, permission))
-				child.sendline('disc')
-				child.sendline('exit')
-			elif i == 2:
-				return True
-
 	def get_acl(self, mailbox):
 		"""get the exact acls from getacl
 
@@ -191,31 +151,27 @@ class BaseMailClient(object):
 					raise WrongAcls('\nExpected = %s\nCurrent = %s\n' % (
 						expected_acls.get(mailbox).get(who), current.get(mailbox).get(who)))
 
-	def check_lookup(self, mailbox_owner, expected_result, dovecot=False):
+	def check_lookup(self, mailbox_owner, expected_result):
 		"""Checks the lookup access of a certain mailbox
 
 		:expected_result: dict{mailbox : bool}
 		"""
 		for mailbox, retcode in expected_result.items():
 			if mailbox_owner != self.owner:
-				mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
-			elif not dovecot and mailbox != 'INBOX':
-				mailbox = 'INBOX/%s' % mailbox
+				mailbox = self.mail_folder(mailbox_owner, mailbox)
 			data = self.getMailBoxes()
 			print 'Lookup :', mailbox, data
 			if (mailbox in data) != retcode:
 				raise LookupFail('Un-expected result for listing the mailbox %s' % mailbox)
 
-	def check_read(self, mailbox_owner, expected_result, dovecot=False):
+	def check_read(self, mailbox_owner, expected_result):
 		"""Checks the read access of a certain mailbox
 
 		:expected_result: dict{mailbox : bool}
 		"""
 		for mailbox, retcode in expected_result.items():
 			if mailbox_owner != self.owner:
-				mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
-			elif not dovecot and mailbox != 'INBOX':
-				mailbox = 'INBOX/%s' % mailbox
+				mailbox = self.mail_folder(mailbox_owner, mailbox)
 			self.select(mailbox)
 			typ, data = self.status(mailbox, '(MESSAGES RECENT UIDNEXT UIDVALIDITY UNSEEN)')
 			print 'Read Retcode:', typ, data
@@ -228,16 +184,14 @@ class BaseMailClient(object):
 				# 	print 'Message %s\n%s\n' % (num, data[0][1])
 				self.close()
 
-	def check_append(self, mailbox_owner, expected_result, dovecot=False):
+	def check_append(self, mailbox_owner, expected_result):
 		"""Checks the append access of a certain mailbox
 
 		:expected_result: dict{mailbox : bool}
 		"""
 		for mailbox, retcode in expected_result.items():
 			if mailbox_owner != self.owner:
-				mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
-			elif not dovecot and mailbox != 'INBOX':
-				mailbox = 'INBOX/%s' % mailbox
+				mailbox = self.mail_folder(mailbox_owner, mailbox)
 			self.select(mailbox)
 			typ, data = self.append(
 				mailbox, '',
@@ -250,7 +204,7 @@ class BaseMailClient(object):
 			if 'OK' in typ:
 				self.close()
 
-	def check_write(self, mailbox_owner, expected_result, dovecot=False):
+	def check_write(self, mailbox_owner, expected_result):
 		"""Checks the write access of a certain mailbox
 
 		:expected_result: dict{mailbox : bool}
@@ -258,13 +212,8 @@ class BaseMailClient(object):
 		for mailbox, retcode in expected_result.items():
 			# Actuall Permissions are given to shared/owner/INBOX
 			# This is different than listing
-			if mailbox_owner != self.owner:
-				if mailbox == 'INBOX' and dovecot:
-					mailbox = 'shared/%s/INBOX' % (mailbox_owner,)
-				else:
-					mailbox = self.mail_folder(mailbox_owner, mailbox, dovecot)
-			elif not dovecot and mailbox != 'INBOX':
-				mailbox = 'INBOX/%s' % mailbox
+			if mailbox_owner != self.owner and mailbox == 'INBOX':
+				mailbox = 'shared/%s/INBOX' % (mailbox_owner,)
 			subname = uts.random_name()
 			typ, data = self.create('%s/%s' % (mailbox, subname))
 			print 'Create Retcode:', typ, data
@@ -276,20 +225,14 @@ class BaseMailClient(object):
 				if (typ == 'OK') != retcode:
 					raise WriteFail('Unexpected delete sub result mailbox in %s' % mailbox)
 
-	def mail_folder(self, mailbox_owner, mailbox, dovecot=False):
-		if dovecot:
-			if mailbox == 'INBOX':
-				return 'shared/%s' % (mailbox_owner,)
-			if '/' not in mailbox:
-				return 'shared/%s/%s' % (mailbox_owner, mailbox)
-		else:
-			if 'INBOX' == mailbox:
-				return 'user/%s' % (mailbox_owner.split('@', 1)[0], )
-			if 'INBOX/' in mailbox:
-				return 'user/%s/%s' % (mailbox_owner.split('@', 1)[0], mailbox.split('/', 1)[1])
+	def mail_folder(self, mailbox_owner, mailbox):
+		if mailbox == 'INBOX':
+			return 'shared/%s' % (mailbox_owner,)
+		if '/' not in mailbox:
+			return 'shared/%s/%s' % (mailbox_owner, mailbox)
 		return mailbox
 
-	def check_permissions(self, owner_user, mailbox, permission, dovecot):
+	def check_permissions(self, owner_user, mailbox, permission):
 		"""Check Permissions all together"""
 		permissions = {
 			'lookup': 'l',
@@ -318,10 +261,10 @@ class BaseMailClient(object):
 		def all_OK(permission):
 			return set(permissions.get('all')).issubset(permission)
 
-		self.check_lookup(owner_user, {mailbox: lookup_OK(permission)}, dovecot)
-		self.check_read(owner_user, {mailbox: read_OK(permission)}, dovecot)
-		self.check_append(owner_user, {mailbox: append_OK(permission)}, dovecot)
-		self.check_write(owner_user, {mailbox: write_OK(permission)}, dovecot)
+		self.check_lookup(owner_user, {mailbox: lookup_OK(permission)})
+		self.check_read(owner_user, {mailbox: read_OK(permission)})
+		self.check_append(owner_user, {mailbox: append_OK(permission)})
+		self.check_write(owner_user, {mailbox: write_OK(permission)})
 
 
 class MailClient_SSL(imaplib.IMAP4_SSL, BaseMailClient):
