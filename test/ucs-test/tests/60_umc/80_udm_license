@@ -138,7 +138,7 @@ class TestUMCLicenseManagement(UDMModule):
             },
             "options": {"container": "cn=users," + self.ldap_base, "objectType": "users/user"}
         }]
-        return self.request("udm/add", options, "users/all")
+        return self.request("udm/add", options, "users/user")
 
     def check_free_license_info(self):
         """
@@ -249,8 +249,8 @@ class TestUMCLicenseManagement(UDMModule):
         list with a check if each of them exists
         """
         for user in self.users_to_delete:
-            if self.check_obj_exists(user, "users/user", "users/all"):
-                self.delete_obj(user, 'users/user', 'users/all')
+            if self.check_obj_exists(user, "users/user", "users/user"):
+                self.delete_obj(user, 'users/user', 'users/user')
         self.users_to_delete = []
 
     def free_license_limits_check(self, obj_type):
