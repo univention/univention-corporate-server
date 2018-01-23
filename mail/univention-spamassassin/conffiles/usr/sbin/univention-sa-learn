@@ -41,50 +41,37 @@ if [ ! -f /var/lib/amavis/.spamassassin/bayes_toks ]; then
 fi
 
 @!@
-if configRegistry.is_true("mail/dovecot"):
-	prod = "dovecot"
-else:
-	prod = "cyrus"
+spamFolder = configRegistry.get("mail/dovecot/folder/spam") or "Spam"
+hamFolder = configRegistry.get("mail/dovecot/folder/ham") or "Ham"
 
-spamFolder = configRegistry.get("mail/%s/folder/spam" % prod, "Spam")
-hamFolder = configRegistry.get("mail/%s/folder/ham" % prod, "Ham")
-
-if not spamFolder:
-	spamFolder = "Spam"
 if spamFolder.lower() == "none":
-	print "# learning from spam folder disabled via mail/%s/folder/spam" % prod
+	print "# learning from spam folder disabled via mail/dovecot/folder/spam"
 else:
 	print "# learing from spam folder %s" % spamFolder
 	spamFolder = spamFolder.strip("/").replace("/", ".")
 
-if not hamFolder:
-	hamFolder = "Ham"
 if hamFolder.lower() == "none":
-	print "# learing from ham folder disabled via mail/%s/folder/ham" % prod
+	print "# learing from ham folder disabled via mail/dovecot/folder/ham"
 else:
 	print "# learing from ham folder %s" % hamFolder
 	hamFolder = hamFolder.strip("/").replace("/", ".")
 
-if configRegistry.get("mail/dovecot"):
-	base_folder = "/var/spool/dovecot/private/"
-	user_folder = "\*/\*/Maildir/."
-	# find RFC 6154 flagged \Junk folders, add them if they are not there anyway
-	if spamFolder.lower() == "none":
-		junk = ""
-	else:
-		junk = "-wholename %s%s" % (user_folder, spamFolder)
-	for key, value in configRegistry.items():
-		if key.startswith("mail/dovecot/mailboxes/special/") and value == "\Junk":
-			_folder = key.split("/")[-1]
-			if _folder and _folder != spamFolder:
-				_folder = _folder.strip("/").replace("/", ".")
-				if junk:
-					junk += " -o "
-				junk += "-wholename \*/\*/Maildir/.%s" % _folder
+base_folder = "/var/spool/dovecot/private/"
+user_folder = "\*/\*/Maildir/."
+# find RFC 6154 flagged \Junk folders, add them if they are not there anyway
+if spamFolder.lower() == "none":
+	junk = ""
 else:
-	base_folder = "/var/spool/cyrus/mail/domain/"
-	user_folder = "\*/\*/\*/user/\*/"
 	junk = "-wholename %s%s" % (user_folder, spamFolder)
+for key, value in configRegistry.items():
+	if key.startswith("mail/dovecot/mailboxes/special/") and value == "\Junk":
+		_folder = key.split("/")[-1]
+		if _folder and _folder != spamFolder:
+			_folder = _folder.strip("/").replace("/", ".")
+			if junk:
+				junk += " -o "
+			junk += "-wholename \*/\*/Maildir/.%s" % _folder
+
 if junk:
 	print '''
 find %(base)s \( %(junk)s \) \\
