@@ -1588,14 +1588,14 @@ univention-directory-manager container/cn create \
 </programlisting>
 
 		<para>
-		  This command creates a mail quota policy with the name <emphasis>Default quota</emphasis>,
-		  in which a 1 GB quota is defined:
+		  This command creates a disk quota policy with soft and hard limits and the name <emphasis>Default quota</emphasis>:
 		</para>
 		<programlisting language="sh">
-univention-directory-manager policies/mailquota create \
+univention-directory-manager policies/share_userquota create \
     --position "cn=policies,dc=example,dc=com" \
     --set name="Default quota" \
-    --set MailQuota=1024
+    --set softLimitSpace=5GB \
+    --set hardLimitSpace=10GB
 </programlisting>
 
 		<para>
