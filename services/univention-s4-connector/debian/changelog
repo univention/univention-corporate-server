@@ -1,3 +1,14 @@
+univention-s4-connector (12.0.1-1) unstable; urgency=medium
+
+  * Bug #32014: Sync account locking *state* from Samba/AD to OpenLDAP:
+    sync Samba/AD (lockoutTime != 0)      ->  OpenLDAP sambaAcctFlags ("L")
+    and  Samba/AD badPasswordTime         ->  OpenLDAP sambaBadPasswordTime
+
+  * Bug #32014: Sync unlock *modification* from OpenLDAP to Samba/AD:
+    sync OpenLDAP (sambaAcctFlags != "L") ->  Samba/AD lockoutTime = 0
+
+ -- Arvid Requate <requate@univention.de>  Tue, 23 Jan 2018 22:59:21 +0100
+
 univention-s4-connector (12.0.0-4) unstable; urgency=medium
 
   * Bug #46107: Ignore builtin group Console Logon
