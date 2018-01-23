@@ -70,7 +70,6 @@ _ = translation.translate
 module = 'users/user'
 operations = ['add', 'edit', 'remove', 'search', 'move', 'copy']
 template = 'settings/usertemplate'
-childmodules = ['users/user', 'users/ldap', 'users/self']
 
 childs = 0
 short_description = _('User')
