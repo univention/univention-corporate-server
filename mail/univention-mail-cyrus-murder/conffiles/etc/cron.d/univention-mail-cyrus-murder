@@ -1,3 +1,0 @@
-@%@UCRWARNING=# @%@
-
-@%@mail/cyrus/murder/crontime@%@ root /usr/bin/python /usr/lib/univention-mail-cyrus-murder/coherence-check.py

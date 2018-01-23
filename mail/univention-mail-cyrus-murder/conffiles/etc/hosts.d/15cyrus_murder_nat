@@ -1,9 +1,0 @@
-@!@
-import re
-keyPattern = re.compile('mail/cyrus/murder/nat/\d+')
-if configRegistry.get('mail/cyrus/murder/master'):
-	items = [key for key in  configRegistry.keys() if keyPattern.search(key)]
-	hostentry = [configRegistry[key] for key in items]
-	for line in hostentry:
-		print "%s" % line
-@!@
