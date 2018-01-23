@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.19-15) unstable; urgency=low
+
+  * Bug #46102: remove deprecated cyrus related packaging code
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 23 Jan 2018 16:32:06 +0100
+
 univention-directory-manager-modules (13.0.19-14) unstable; urgency=medium
 
   * Bug #45842 Comment 52: Feedback from QA
