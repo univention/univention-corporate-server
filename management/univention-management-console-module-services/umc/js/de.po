@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-services\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-07-03 14:14+0200\n"
+"POT-Creation-Date: 2018-01-11 23:24+0100\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -16,7 +16,7 @@ msgstr ""
 msgid "Automatically"
 msgstr "Automatisch"
 
-#: umc/js/services.js:241
+#: umc/js/services.js:243
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -36,7 +36,7 @@ msgstr "Name"
 msgid "Never"
 msgstr "Nie"
 
-#: umc/js/services.js:233
+#: umc/js/services.js:245
 msgid "OK"
 msgstr "OK"
 
@@ -107,6 +107,15 @@ msgid ""
 msgstr ""
 "Dieses Modul zeigt die Systemdienste und ihren aktuellen Status. Einzelne "
 "Dienste können konfiguriert, gestartet und gestoppt werden."
+
+#: umc/js/services.js:238
+msgid ""
+"Warning: Stopping apache or UMC services will interrupt all current "
+"connections to the Univention Management Console. It might be necessary for "
+"all users to login again."
+msgstr ""
+"Warnung: Das Stoppen von Apache oder der UMC Dienste unterbricht alle bestehenden "
+"Verbindungen zur Univention Management Console. Eventuell müssen sich alle Benutzer neu anmelden."
 
 #: umc/js/services.js:155
 msgid "running"

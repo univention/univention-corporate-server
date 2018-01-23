@@ -1,3 +1,9 @@
+univention-management-console-module-services (7.0.0-3) unstable; urgency=medium
+
+  * Bug #26477: warn when stopping module breaks UMC
+
+ -- Jannik Ahlers <ahlers@univention.de>  Mon, 08 Jan 2018 11:08:36 +0100
+
 univention-management-console-module-services (7.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version

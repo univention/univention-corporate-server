@@ -215,7 +215,7 @@ define([
 			this._page.addChild(this._grid);
 
 			this._page.startup();
-    	},
+		},
 
 		reloadGrid: function() {
 			data = this._searchWidget.get('value');
@@ -224,10 +224,19 @@ define([
 
 		_changeState: function(data, command, confirmMessage) {
 			confirmMessage += '<ul>';
+			//test if stopping this service breaks UMC
+			var umcRequirements = ['apache2', 'univention-management-console-web-server', 'univention-management-console-server'];
+			var breakUMC = false;
 			array.forEach(data, function(idata) {
+				if (umcRequirements.indexOf(idata) >= 0 && command === 'services/stop') {
+					breakUMC = true
+				}
 				confirmMessage += '<li>' + idata + '</li>';
 			});
 			confirmMessage += '</ul>';
+			if (breakUMC) {
+				confirmMessage += '<b>' + _('Warning: Stopping apache or UMC services will interrupt all current connections to the Univention Management Console. It might be necessary for all users to login again.') + '</b>';
+			}
 
 			dialog.confirm(confirmMessage, [{
 				'default': true,
