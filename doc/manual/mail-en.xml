@@ -49,9 +49,8 @@
 		<note>
 			<para>
 				Since &ucsUCS; version 4.0-2 Dovecot is used as the default IMAP and
-				POP3 server. However, Cyrus is still available for this service.
-				More Information can be found in the Cyrus mail server documentation
-				<biblioref linkend="ext-doc-cyrus"/>.
+				POP3 server. Since &ucsUCS; version 4.3-0 the integration of Cyrus is
+				not available anymore.
 			</para>
 		</note>
 	</para>
