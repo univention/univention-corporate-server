@@ -42,15 +42,12 @@ description = 'update mail/hosteddomains'
 filter = '(objectClass=univentionMailDomainname)'
 attributes = []
 
-reload = False
-
 
 def initialize():
 	pass
 
 
 def handler(dn, new, old):
-	global reload
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
@@ -71,20 +68,5 @@ def handler(dn, new, old):
 			listener.setuid(0)
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "hosteddomains: %s" % u'mail/hosteddomains=%s' % ' '.join(hosteddomains))
 			univention.config_registry.handler_set([u'mail/hosteddomains=%s' % ' '.join(hosteddomains)])
-			reload = True
 		finally:
 			listener.unsetuid()
-
-
-def postrun():
-	global reload
-	if reload:
-		# reload cyrus-imapd if UCR variable changed
-		listener.setuid(0)
-		try:
-			for fn in ['/etc/init.d/cyrus-imapd', '/etc/init.d/cyrus2.2']:
-				if os.path.isfile(fn):
-					listener.run(fn, [os.path.basename(fn), 'reload'], uid=0)
-		finally:
-			listener.unsetuid()
-		reload = False

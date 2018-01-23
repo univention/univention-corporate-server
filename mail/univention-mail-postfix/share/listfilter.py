@@ -56,7 +56,6 @@ univention.admin.modules.update()
 usersmod = univention.admin.modules.get("users/user")
 check_sasl_username = ucr.is_true("mail/postfix/policy/listfilter/use_sasl_username", True)
 _do_debug = ucr.is_true("mail/postfix/policy/listfilter/debug", False)
-is_cyrus = ucr.is_true("mail/cyrus", False) or not ucr.is_true("mail/dovecot", False)
 
 
 def debug(msg, *args):
@@ -86,7 +85,6 @@ def listfilter(attrib):
 		return "REJECT Access denied for empty recipient."
 	else:
 		try:
-			# reuse secret file of univention-mail-cyrus
 			ldap = univention.uldap.getMachineConnection(ldap_master=False, secret_file="/etc/listfilter.secret")
 
 			user_dn = ""
@@ -120,16 +118,10 @@ def listfilter(attrib):
 
 					# get dn and groups of sender
 					if check_sasl_username:
-						if is_cyrus:
-							user_filter = filter_format(
-								'(|(uid=%s)(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))',
-								(sender, sender, sender, sender)
-							)
-						else:
-							user_filter = filter_format(
-								'(uid=%s)',
-								(sender,)
-							)
+						user_filter = filter_format(
+							'(uid=%s)',
+							(sender,)
+						)
 					else:
 						user_filter = filter_format(
 							'(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))',
