@@ -202,7 +202,6 @@ $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-root-login-notification.mo
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-saml-serviceprovider.mo: fr/saml/univention-saml/modules/univention/admin/handlers/saml/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-virtual-machine-manager-schema.mo: fr/virtualization/univention-virtual-machine-manager-schema/modules/univention/admin/handlers/uvmm/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-virtual-machine-manager.mo: fr/virtualization/univention-virtual-machine-manager-daemon/src/fr.po
-$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-mailquota.mo: fr/mail/univention-mail-cyrus/modules/univention/admin/handlers/policies/mailquota/fr.po
 $(DESTDIR)/usr/share/univention-system-setup-boot/www/i18n/fr/main.json: fr/base/univention-system-setup/usr/share/univention-system-setup-boot/www/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-system-setup-scripts.mo: fr/base/univention-system-setup/usr/share/locale/fr/LC_MESSAGES/univention-system-setup-scripts.po
 $(DESTDIR)/usr/share/univention-system-setup/www/i18n/fr/main.json: fr/base/univention-system-setup/usr/share/univention-system-setup/www/fr.po
