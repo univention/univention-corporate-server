@@ -581,11 +581,15 @@ assert_minor_version () {
 }
 
 assert_join () {
-	if ! univention-check-join-status; then
-		create_DONT_START_UCS_TEST "FAILED: univention-check-join-status"
-		exit 1
-	fi
-	return 0
+	# sometimes univention-check-join-status fails because the ldap server is restarted
+	# and not available at this moment, so try it three times
+	for i in $(seq 1 3); do
+		univention-check-join-status
+		test $? -eq 0 && return 0
+		sleep 10
+	done
+	create_DONT_START_UCS_TEST "FAILED: univention-check-join-status"
+	return 1
 }
 
 assert_adconnector_configuration () {
