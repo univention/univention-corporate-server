@@ -34,21 +34,6 @@
 
 eval "$(univention-config-registry shell)"
 
-# Bug #38473: workaround only required up to UCS 4.1-0
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 10.0.30; then
-	FN="/usr/share/pyshared/univention/admin/handlers/policies/mailquota.py"
-	FN_BACKUP="${FN}.udm_backup"
-	if [ -f "$FN_BACKUP" ] ; then
-		echo "Restoring $FN_BACKUP"
-		mv "$FN_BACKUP" "$FN"
-		if [ -f /usr/share/python-support/univentionUDMModule_policies_mailquota.public ] ; then
-			update-python-modules -v /usr/share/python-support/univentionUDMModule_policies_mailquota.public
-		else
-			echo "WARNING: univentionUDMModule_policies_mailquota.public not found"
-		fi
-	fi
-fi
-
 #DEBHELPER#
 
 if [ "$1" = "configure" ]; then
