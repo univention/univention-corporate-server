@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: gstreamer1.0
+fix: 1.4.4-2+deb8u1
+desc: |
+ This update addresses the following issue:
+ * CVE-2017-5838 gstreamer: Out-of-bounds read in
+   gst_date_time_new_from_iso8601_string()
+bug: [46124]
+cve:
+- CVE-2017-5838
