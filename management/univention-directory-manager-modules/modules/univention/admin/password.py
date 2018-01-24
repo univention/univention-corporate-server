@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import re
 import heimdal
 import types
 import smbpasswd
@@ -37,6 +38,8 @@ import univention.config_registry
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
+
+RE_PASSWORD_SCHEME = re.compile('^{(\w+)}(!?)(.*)', re.I)
 
 
 def crypt(password, method_id=None, salt=None):
@@ -105,26 +108,62 @@ def krb5_asn1(principal, password, krb5_context=None):
 
 
 def is_locked(password):
-	return password and (password.startswith('{crypt}!') or password.startswith('{LANMAN}!'))
+	"""
+	>>> is_locked('foo')
+	False
+	>>> is_locked('{crypt}$1$foo')
+	False
+	>>> is_locked('{crypt}!$1$foo')
+	True
+	>>> is_locked('{KINIT}')
+	False
+	>>> is_locked('{LANMAN}!')
+	True
+	"""
+	match = RE_PASSWORD_SCHEME.match(password or '')
+	return match is not None and '!' == match.group(2)
 
 
 def unlock_password(password):
+	"""
+	>>> unlock_password('{crypt}!$1$foo')
+	'{crypt}$1$foo'
+	>>> unlock_password('{LANMAN}!')
+	'{LANMAN}'
+	>>> unlock_password('{SASL}!')
+	'{SASL}'
+	>>> unlock_password('{KINIT}!')
+	'{KINIT}'
+	"""
 	if is_locked(password):
-		if password.startswith("{crypt}!"):
-			return password.replace("{crypt}!", "{crypt}")
-		elif password.startswith('{LANMAN}!'):
-			return password.replace("{LANMAN}!", "{LANMAN}")
+		match = RE_PASSWORD_SCHEME.match(password).groups()
+		password = '{%s}%s' % (match[0], match[2])
 	return password
 
 
 def lock_password(password):
+	"""
+	>>> lock_password('{crypt}$1$foo')
+	'{crypt}!$1$foo'
+	>>> lock_password('{LANMAN}')
+	'{LANMAN}!'
+	>>> lock_password('{SASL}')
+	'{SASL}!'
+	>>> lock_password('{KINIT}')
+	'{KINIT}!'
+	>>> lock_password('foo').startswith('{crypt}!$')
+	True
+	"""
 	# cleartext password?
-	if not password.startswith('{crypt}') and not password.startswith('{LANMAN}'):
+	if not RE_PASSWORD_SCHEME.match(password):
 		return "{crypt}!%s" % (univention.admin.password.crypt(password))
 
 	if not is_locked(password):
-		if password.startswith("{crypt}"):
-			return password.replace("{crypt}", "{crypt}!")
-		elif password.startswith("{LANMAN}"):
-			return password.replace("{LANMAN}", "{LANMAN}!")
+		match = RE_PASSWORD_SCHEME.match(password).groups()
+		password = '{%s}!%s' % (match[0], match[2])
 	return password
+
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()
