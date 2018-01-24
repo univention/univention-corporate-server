@@ -1,0 +1,16 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: asterisk
+fix: 1:11.13.1~dfsg-2+deb8u5
+desc: |
+ This update addresses the following issue:
+ * If the chan_skinny (aka SCCP protocol) channel driver is flooded with
+   certain requests, it can cause the asterisk process to use excessive
+   amounts of virtual memory, eventually causing asterisk to stop processing
+   requests of any kind. (CVE-2017-17090)
+ * Note: advisories AST-2017-009 - AST-2017-012 do not apply to asterisk 11
+bug: [46113]
+cve:
+- CVE-2017-17090
