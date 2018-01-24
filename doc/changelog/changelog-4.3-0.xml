@@ -100,6 +100,8 @@
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
+					In certain situtations after reloading the browser window the error message "There are no modules available for the currently authenticated user" was incorrectly displayed.
+					The behavior has been repaired (<u:bug>44068</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
