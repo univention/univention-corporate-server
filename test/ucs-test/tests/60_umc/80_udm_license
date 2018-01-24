@@ -13,7 +13,7 @@ from umc import UDMModule
 from os import path
 from shutil import rmtree, copy as file_copy
 from time import sleep, time, localtime, strftime
-from subprocess import Popen, PIPE, check_call
+from subprocess import Popen, PIPE, check_call, call
 from tempfile import mkdtemp
 
 import ldap.dn
@@ -325,6 +325,7 @@ class TestUMCLicenseManagement(UDMModule):
         """
         amount_created = self.create_many_users_computers(obj_type, 10)
         if amount_created != 10:
+            call(['/usr/sbin/univention-license-check'])
             utils.fail("Failed to create 10 '%s's with a valid license, "
                        "in fact were created: '%s'"
                        % (obj_type, amount_created))
