@@ -74,7 +74,7 @@ class TestPwdChangeNextLogin(object):
 
 	def assert_password_expired(self, exc):
 		assert exc.status == 401
-		assert exc.result['password_expired']
+		assert exc.result and exc.result.get('password_expired'), 'Password was not detected as expired: %s' % (exc.result,)
 		assert exc.message == "The password has expired and must be renewed."
 
 	@pytest.mark.parametrize('options', [
