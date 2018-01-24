@@ -116,10 +116,23 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The UDM options <package>posix</package>, <package>samba></package> and <package>kerberos</package> of users have been removed.
+					User objects now must have all object classes of these options.
+					After the upgrade to UCS 4.3 all existing user objects, groups and user templates are migrated into the new LDAP format.
+					It is necessary that the primary group of every user has the <package>samba</package> option enabled and the domain must have a kerberos realm defined.
+					A new UDM object type <package>users/ldap</package> has been added which can be used as a simple authentication account.
+					Objects of <package>users/ldap</package> may authenticate via an LDAP bind and are not counted into the license.
+					The UDM option <package>ldap_pwd</package> has been removed from user objects.
+					User objects which had only the <package>ldap_pwd</package> option enabled are migrated into <package>users/ldap</package> objects.
+					Note: UCS systems which are older than UCS 4.3-0 may create user objects in the old format and must be migrated.
+					The UMC module <package>System diagnosis</package> and the script <package>/usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3</package> can be used to detect necessary changes and migrate user objects.
+					<u:bug>45842</u:bug>.
+				</simpara></listitem>
+				<listitem><simpara>
 					The values for the syntax class <package>Country</package> have been updated <u:bug>45926</u:bug>.
 				</simpara></listitem>
 				<listitem><simpara>
-						The syntax class <package>Base64Bzip2XML</package> has been adjusted to allow text/xml input data (<u:bug>45941</u:bug>).
+					The syntax class <package>Base64Bzip2XML</package> has been adjusted to allow text/xml input data (<u:bug>45941</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
