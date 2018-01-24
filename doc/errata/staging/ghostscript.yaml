@@ -1,0 +1,24 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: ghostscript
+fix: 9.06~dfsg-2+deb8u6
+desc: |
+ This update addresses the following issues:
+ * Bounds check the array allocations methods (CVE-2017-9835)
+ * Bounds check zone pointer in Ins_MIRP() (CVE-2017-9611)
+ * Bounds check zone pointers in Ins_IP() (CVE-2017-9612)
+ * Bounds check zone pointer in Ins_MDRP (CVE-2017-9726)
+ * Make bounds check in gx_ttfReader__Read more robust (CVE-2017-9727)
+ * Bounds check Ins_JMPR (CVE-2017-9739)
+ * Prevent trying to reloc a freed object (CVE-2017-11714)
+bug: [45616]
+cve:
+- CVE-2017-9612
+- CVE-2017-9611
+- CVE-2017-9739
+- CVE-2017-9835
+- CVE-2017-11714
+- CVE-2017-9727
+- CVE-2017-9726
