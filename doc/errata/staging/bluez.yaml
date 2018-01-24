@@ -1,0 +1,16 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: bluez
+fix: 5.23-2+deb8u1
+desc: |
+ This update addresses the following issue:
+ * All versions of the SDP server in BlueZ 5.46 and earlier are vulnerable to
+   an information disclosure vulnerability which allows remote attackers to
+   obtain sensitive information from the bluetoothd process memory. This
+   vulnerability lies in the processing of SDP search attribute requests.
+   (CVE-2017-1000250)
+bug: [45551]
+cve:
+- CVE-2017-1000250
