@@ -137,7 +137,7 @@ class Junit(TestFormatInterface):
                 pass
             else:
                 xml.startElement('system-out', {})
-                xml.characters(content)
+                xml.characters(self.utf8(content))
                 xml.endElement('system-out')
 
             try:
@@ -146,7 +146,7 @@ class Junit(TestFormatInterface):
                 pass
             else:
                 xml.startElement('system-err', {})
-                xml.characters(content)
+                xml.characters(self.utf8(content))
                 xml.endElement('system-err')
 
             xml.endElement('testcase')
@@ -155,6 +155,13 @@ class Junit(TestFormatInterface):
         finally:
             f_report.close()
         super(Junit, self).end_test(result)
+
+    def utf8(self, data):
+        if isinstance(data, unicode):
+            data = data.encode('utf-8', 'replace').decode('utf-8')
+        elif isinstance(data, bytes):
+            data = data.decode('utf-8', 'replace').encode('utf-8')
+        return data
 
     def format(self, result):
         """
