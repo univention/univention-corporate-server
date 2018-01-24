@@ -89,7 +89,8 @@ class UMCBase(object):
 		"""
 		print "Deleting test object '%s' with a name: '%s'" % (obj_type, name)
 
-		if obj_type == 'users':
+		if obj_type in ('users', 'users/user', 'users/ldap'):
+			obj_type = 'users'
 			obj_identifier = "uid=" + name + ",cn=" + obj_type + ","
 		elif obj_type == 'policies':
 			obj_identifier = "cn=" + name + ",cn=UMC,cn=" + obj_type + ","

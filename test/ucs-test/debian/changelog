@@ -1,3 +1,9 @@
+ucs-test (8.0.18-1) unstable; urgency=medium
+
+  * Bug #45842: fix typo in test case
+
+ -- Florian Best <best@univention.de>  Wed, 24 Jan 2018 13:14:19 +0100
+
 ucs-test (8.0.17-1) unstable; urgency=medium
 
   * Bug #46126: enhance verbosity of 07_expired_password
