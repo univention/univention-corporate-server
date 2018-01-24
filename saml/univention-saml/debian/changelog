@@ -1,4 +1,4 @@
-univention-saml (5.1.2-3) unstable; urgency=medium
+univention-saml (5.0.3-1) unstable; urgency=medium
 
   * Bug #45842: migrate sys-idp-user to users/ldap
 
