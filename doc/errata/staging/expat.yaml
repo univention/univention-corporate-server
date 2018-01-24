@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: expat
+fix: 2.1.0-6+deb8u4
+desc: |
+ This update addresses the following issues:
+ * CVE-2017-9233: external entity infinite loop bug,
+ * CVE-2016-9063: undefined behavior from signed integer overflow.
+bug: [44859]
+cve:
+- CVE-2017-9233
+- CVE-2016-9063
