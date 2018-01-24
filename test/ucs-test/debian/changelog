@@ -1,3 +1,9 @@
+ucs-test (8.0.17-1) unstable; urgency=medium
+
+  * Bug #46126: enhance verbosity of 07_expired_password
+
+ -- Florian Best <best@univention.de>  Wed, 24 Jan 2018 11:49:11 +0100
+
 ucs-test (8.0.16-10) unstable; urgency=medium
 
   * Bug #45842: mark tests x-fail

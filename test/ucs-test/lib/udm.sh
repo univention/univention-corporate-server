@@ -111,6 +111,9 @@ udm_get_ldap_prefix () {
 		policies/mailquota)
 			echo "cn=mail,cn=policies,"
 			;;
+		policies/pwhistory)
+			echo "cn=pwhistory,cn=users,cn=policies,"
+			;;
 		*)
 			echo ""
 			;;
