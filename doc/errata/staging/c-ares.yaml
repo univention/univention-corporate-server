@@ -1,0 +1,15 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: c-ares
+fix: 1.10.0-2+deb8u2
+desc: |
+ This update addresses the following issue:
+ * The c-ares function `ares_parse_naptr_reply()`, which is used for parsing
+   NAPTR responses, could be triggered to read memory outside of the given
+   input buffer if the passed in DNS response packet was crafted in a
+   particular way. (CVE-2017-1000381)
+bug: [42556]
+cve:
+- CVE-2017-1000381
