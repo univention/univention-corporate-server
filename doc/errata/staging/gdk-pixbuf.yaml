@@ -1,0 +1,16 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: gdk-pixbuf
+fix: 2.31.1-2+deb8u7
+desc: |
+ This update addresses the following issue:
+ * An exploitable heap overflow vulnerability exists in the
+   gdk_pixbuf__jpeg_image_load_increment functionality. A specially crafted
+   jpeg file can cause a heap overflow resulting in remote code execution. An
+   attacker can send a file or url to trigger this vulnerability.
+   (CVE-2017-2862)
+bug: [45603]
+cve:
+- CVE-2017-2862
