@@ -1,0 +1,22 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: curl
+fix: 7.38.0-4+deb8u8
+desc: |
+ This update addresses the following issues:
+ * Fix NTLM buffer overflow via integer overflow as per CVE-2017-8816
+ * Fix FTP wildcard out of bounds read as per CVE-2017-8817
+ * Fix IMAP FETCH response out of bounds read as per CVE-2017-1000257
+ * Fix TFTP sends more than buffer size as per CVE-2017-1000100
+ * Fix URL globbing out of bounds read as per CVE-2017-1000101
+ * Fix FTP PWD response parser out of bounds read as per CVE-2017-1000254
+bug: [45604]
+cve:
+- CVE-2017-8817
+- CVE-2017-8816
+- CVE-2017-1000100
+- CVE-2017-1000101
+- CVE-2017-1000257
+- CVE-2017-1000254
