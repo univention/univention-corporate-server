@@ -765,9 +765,9 @@ class CPgeneric(Ressource):
 
 		user = self.get_user()
 		client = UMCP_Dispatcher.sessions.get(sessionid)
-		if user and user.password and not client or (client and (not client._auth_response or client._auth_response.status != 200)):
+		if user and (user.password or user.saml) and not client or (client and (not client._auth_response or client._auth_response.status != 200)):
 			auth = Request('AUTH')
-			auth.body = {'username': user.username, 'password': user.password, 'auth_type': "SAML" if user.saml else None}
+			auth.body = {'username': user.username, 'password': user.saml.message if user.saml else user.password, 'auth_type': "SAML" if user.saml else None}
 			try:
 				self.make_queue_request(sessionid, auth)
 				self.set_session(sessionid, user.username, password=user.password)
