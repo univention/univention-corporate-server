@@ -2120,13 +2120,22 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 	def _modlist_posix_password(self, ml):
 		if not self.exists() or self.hasChanged(['locked', 'password']):
-			# FIXME: if self['password'] is not a crypted password (e.g. {SASL}, {KINIT}, etc.) and only the locked state changed we need to ignore this.
-			if not self.__pwd_is_auth_saslpassthrough(self.oldattr.get('userPassword', [''])[0]):
-				if self['locked'] in ['all', 'posix']:
-					password_crypt = univention.admin.password.lock_password(self['password'])
-				else:
-					password_crypt = univention.admin.password.unlock_password(self['password'])
-				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
+			old_password = self.oldattr.get('userPassword', [''])[0]
+			password = self['password']
+
+			if self.hasChanged('password') and univention.admin.password.RE_PASSWORD_SCHEME.match(password):
+				# hacking attempt. user tries to change the password to e.g. {KINIT} or {crypt}$6$...
+				raise univention.admin.uexceptions.valueError(_('Invalid password.'))
+
+			if self.__pwd_is_auth_saslpassthrough(old_password):
+				# do not change {SASL} password, but lock it if necessary
+				password = old_password
+
+			if self['locked'] in ['all', 'posix']:
+				password_crypt = univention.admin.password.lock_password(password)
+			else:
+				password_crypt = univention.admin.password.unlock_password(password)
+			ml.append(('userPassword', old_password, password_crypt))
 
 		# remove pwdAccountLockedTime during unlocking
 		if self.hasChanged('locked') and self['locked'] not in ['all', 'posix']:
