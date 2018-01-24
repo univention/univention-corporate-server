@@ -5,7 +5,7 @@ scope: ucs_4.2-0-errata4.2-3
 src: univention-management-console
 fix: 9.0.80-91A~4.2.0.201801111436
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * A problem when using Internet Explorer 11 has been corrected which lead to
    broken redirections if the SAML identity provider is not resolvable during
    login.
