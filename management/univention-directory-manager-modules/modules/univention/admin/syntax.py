@@ -3368,27 +3368,27 @@ class I18N_GroupName(translationTuple):
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Translated group name'), string)]
 
 
-class disabled(select):
-	choices = (
-		('none', _('None')),
-		('all', _('All disabled')),
-		('none2', '----'),
-		('windows', _('Windows disabled')),
-		('kerberos', _('Kerberos disabled')),
-		('posix', _('POSIX disabled')),
-		('windows_posix', _('Windows and POSIX disabled')),
-		('windows_kerberos', _('Windows and Kerberos disabled')),
-		('posix_kerberos', _('POSIX and Kerberos disabled')),
-	)
+class disabled(boolean):
+
+	@classmethod
+	def parse(cls, text):
+		if text in ('none', 'none2'):
+			text = '0'
+		elif text in ('all', 'windows', 'kerberos', 'posix', 'windows_posix', 'windows_kerberos', 'posix_kerberos'):
+			text = '1'
+		return super(disabled, cls).parse(text)
 
 
-class locked(select):
-	choices = (
-		('none', _('None')),
-		('all', _('Lock all login methods')),
-		('windows', _('Lock Windows/Kerberos only')),
-		('posix', _('Lock POSIX/LDAP only')),
-	)
+class locked(boolean):
+
+	@classmethod
+	def parse(cls, text):
+		if text in ('all', 'windows', 'posix'):
+			text = '1'
+		elif text == 'none':
+			text = '0'
+		return super(locked, cls).parse(text)
+
 
 # printing stuff
 

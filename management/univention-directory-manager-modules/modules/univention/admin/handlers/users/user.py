@@ -231,7 +231,7 @@ property_descriptions = {
 	),
 	'userexpiry': univention.admin.property(
 		short_description=_('Account expiry date'),
-		long_description=_('Enter date as day.month.year.'),
+		long_description=_('Specifies the date from when the user is not allowed to login anymore. Enter date as "day.month.year".'),
 		syntax=univention.admin.syntax.date2,
 		multivalue=False,
 		required=False,
@@ -242,7 +242,7 @@ property_descriptions = {
 	),
 	'passwordexpiry': univention.admin.property(
 		short_description=_('Password expiry date'),
-		long_description=_('Enter date as day.month.year.'),
+		long_description=_('Specified the date from when the user must change his password. Enter date as "day.month.year".'),
 		syntax=univention.admin.syntax.date,
 		multivalue=False,
 		editable=False,
@@ -254,8 +254,8 @@ property_descriptions = {
 		copyable=True,
 	),
 	'pwdChangeNextLogin': univention.admin.property(
-		short_description=_('Change password on next login'),
-		long_description=_('Change password on next login'),
+		short_description=_('User has to change password on next login'),
+		long_description=_('If enabled, the user has to change his password the next time when he logs in.'),
 		syntax=univention.admin.syntax.boolean,
 		multivalue=False,
 		required=False,
@@ -266,7 +266,7 @@ property_descriptions = {
 	),
 	'disabled': univention.admin.property(
 		short_description=_('Account deactivation'),
-		long_description='',
+		long_description=_('Disable the user account for Windows, Kerberos and POSIX.'),
 		syntax=univention.admin.syntax.disabled,
 		multivalue=False,
 		required=False,
@@ -274,18 +274,56 @@ property_descriptions = {
 		identifies=False,
 		show_in_lists=True,
 		copyable=True,
-		default='none',
+		default='0',
 	),
 	'locked': univention.admin.property(
-		short_description=_('Locked login methods'),
-		long_description='',
+		short_description=_('User password is locked'),
+		long_description=_('Indicates that the user password is locked, e.g. due to too many login failures.'),
 		syntax=univention.admin.syntax.locked,
+		multivalue=False,
+		required=False,
+		may_change=False,  # caution! this gets overwritten by some scripts
+		editable=False,  # caution! this gets overwritten by some scripts
+		identifies=False,
+		show_in_lists=True,
+		default='0',
+	),
+	'unlock': univention.admin.property(
+		short_description=_('Unlock user password'),
+		long_description=_('Unlock the password if it is locked.'),
+		syntax=univention.admin.syntax.boolean,
 		multivalue=False,
 		required=False,
 		may_change=True,
 		identifies=False,
+		show_in_lists=False,
+		default='0',
+	),
+	'lockedTime': univention.admin.property(
+		short_description=_('Password locked date'),
+		long_description=_('Specifies the date when the password was locked.'),
+		syntax=univention.admin.syntax.string,
+		default=0,
+		multivalue=False,
+		required=False,
+		may_change=False,  # caution! this gets overwritten by some scripts
+		editable=False,  # caution! this gets overwritten by some scripts
+		identifies=False,
+		show_in_lists=False,
+		dontsearch=True,
+	),
+	'unlockTime': univention.admin.property(
+		short_description=_('Password unlock date'),
+		long_description=_('Specifies the date when the password gets unlocked automatically.'),
+		syntax=univention.admin.syntax.date,
+		default=0,
+		multivalue=False,
+		required=False,
+		may_change=False,
+		editable=False,
+		identifies=False,
 		show_in_lists=True,
-		default='none',
+		dontsearch=True,
 	),
 	'password': univention.admin.property(
 		short_description=_('Password'),
@@ -651,7 +689,7 @@ property_descriptions = {
 	),
 	'overridePWHistory': univention.admin.property(
 		short_description=_('Override password history'),
-		long_description='',
+		long_description=_('No check if the password was already used is performed.'),
 		syntax=univention.admin.syntax.boolean,
 		multivalue=False,
 		required=False,
@@ -663,7 +701,7 @@ property_descriptions = {
 	),
 	'overridePWLength': univention.admin.property(
 		short_description=_('Override password check'),
-		long_description='',
+		long_description=_('No check for password quality and minimum length is performed.'),
 		syntax=univention.admin.syntax.boolean,
 		multivalue=False,
 		required=False,
@@ -984,7 +1022,7 @@ layout = [
 			['title', 'firstname', 'lastname'],
 			['username', 'description'],
 			'password',
-			['overridePWHistory', 'overridePWLength'],
+			['pwdChangeNextLogin', 'overridePWHistory', 'overridePWLength'],
 			'mailPrimaryAddress',
 		]),
 		Group(_('Personal information'), layout=[
@@ -1007,10 +1045,14 @@ layout = [
 		]),
 	]),
 	Tab(_('Account'), _('Account settings'), layout=[
-		Group(_('Locking and deactivation'), layout=[
-			['disabled', 'locked'],
-			['userexpiry', 'passwordexpiry'],
-			'pwdChangeNextLogin',
+		Group(_('Deactivation'), layout=[
+			['disabled'],
+			['userexpiry'],
+		]),
+		Group(_('Locked password'), layout=[
+			['locked', 'unlock'],
+			['passwordexpiry'],
+			['unlockTime'],
 		]),
 		Group(_('Windows'), _('Windows account settings'), layout=[
 			['homedrive', 'sambahome'],
@@ -1301,32 +1343,24 @@ def unmapPasswordExpiry(oldattr):
 		return posixDaysToDate(shadow_last_change + shadow_max)
 
 
-def _add_disabled(disabled, new_disabled):
-	if disabled == 'none' or not disabled:
-		return new_disabled
-	elif (disabled == 'windows' and new_disabled == 'posix') or (new_disabled == 'windows' and disabled == 'posix'):
-		return 'windows_posix'
-	elif (disabled == 'windows' and new_disabled == 'kerberos') or (new_disabled == 'windows' and disabled == 'kerberos'):
-		return 'windows_kerberos'
-	elif (disabled == 'kerberos' and new_disabled == 'posix') or (new_disabled == 'kerberos' and disabled == 'posix'):
-		return 'posix_kerberos'
-	elif disabled == 'posix_kerberos' and new_disabled == 'windows':
-		return 'all'
-	elif disabled == 'windows_kerberos' and new_disabled == 'posix':
-		return 'all'
-	elif disabled == 'windows_posix' and new_disabled == 'kerberos':
-		return 'all'
-
-
 def unmapDisabled(oldattr):
-	disabled = 'none'
-	if unmapSambaDisabled(oldattr):
-		disabled = _add_disabled(disabled, 'windows')
-	if unmapKerberosDisabled(oldattr):
-		disabled = _add_disabled(disabled, 'kerberos')
-	if unmapPosixDisabled(oldattr, disabled):
-		disabled = _add_disabled(disabled, 'posix')
-	return disabled
+	if all([
+		unmapSambaDisabled(oldattr),
+		unmapKerberosDisabled(oldattr),
+		unmapPosixDisabled(oldattr) or isPosixLocked(oldattr),
+	]):
+		return '1'
+	return '0'
+
+
+def inconsistentDisabledState(oldattr):
+	disabled = [
+		unmapSambaDisabled(oldattr),
+		unmapKerberosDisabled(oldattr),
+		unmapPosixDisabled(oldattr),
+		isPosixLocked(oldattr),
+	]
+	return all(disabled) if any(disabled) else True
 
 
 def unmapSambaDisabled(oldattr):
@@ -1347,41 +1381,51 @@ def unmapKerberosDisabled(oldattr):
 	return kdcflags & (1 << 7) == (1 << 7)
 
 
-def unmapPosixDisabled(oldattr, disabled):
-	# TODO: is it correct to evaluate kerberos / windows here?
+def unmapPosixDisabled(oldattr):
 	try:
 		shadowExpire = int(oldattr.get('shadowExpire', ['0'])[0])
 	except ValueError:
 		return False
-	return shadowExpire == 1 or (shadowExpire < int(time.time() / 3600 / 24) and (_is_kerberos_disabled(disabled) or _is_windows_disabled(disabled)))
-
-
-def _is_kerberos_disabled(disabled):
-	return disabled in ('all', 'kerberos', 'posix_kerberos', 'windows_kerberos')
-
-
-def _is_windows_disabled(disabled):
-	return disabled in ('all', 'windows', 'windows_posix', 'windows_kerberos')
+	return shadowExpire == 1 or (shadowExpire < int(time.time() / 3600 / 24))
 
 
 def unmapLocked(oldattr):
-	locked = 'none'
-	userPassword = oldattr.get('userPassword', [''])[0]
-	if userPassword and univention.admin.password.is_locked(userPassword):
-		locked = 'posix'
+	if isSambaLocked(oldattr) or isKerberosLocked(oldattr):  # or isLDAPLocked(oldattr)
+		return '1'
+	return '0'
 
+
+def inconsistentLockedState(oldattr):
+	return isSambaLocked(oldattr) ^ isKerberosLocked(oldattr)
+
+
+def isPosixLocked(oldattr):
+	userPassword = oldattr.get('userPassword', [''])[0]
+	return userPassword and univention.admin.password.is_locked(userPassword)
+
+
+def isSambaLocked(oldattr):
 	flags = oldattr.get('sambaAcctFlags', None)
 	if flags:
 		acctFlags = univention.admin.samba.acctFlags(flags[0])
 		try:
-			if acctFlags['L'] == 1:
-				if locked == 'posix':
-					locked = 'all'
-				else:
-					locked = 'windows'
+			return acctFlags['L'] == 1
 		except KeyError:
 			pass
-	return locked
+	return False
+
+
+def isKerberosLocked(oldattr):
+	flags = oldattr.get('krb5KDCFlags', ['0'])[0]
+	try:
+		state = 1 << 17
+		return int(flags) & state == state
+	except ValueError:
+		return False
+
+
+def isLDAPLocked(oldattr):
+	return bool(oldattr.get('pwdAccountLockedTime', [''])[0])
 
 
 def unmapSambaRid(oldattr):
@@ -1402,6 +1446,13 @@ def unmapKeyAndValue(old):
 	for entry in old:
 		lst.append(entry.split('=', 1))
 	return lst
+
+
+def unmapSambaBadPasswordTime(old):
+	if old and old[0]:
+		d = 116444736000000000L  # difference between 1601 and 1970
+		return str((int(old[0]) - d) / 10000000)
+	return ''
 
 
 mapping = univention.admin.mapping.mapping()
@@ -1450,6 +1501,8 @@ mapping.register('firstname', 'givenName', None, univention.admin.mapping.ListTo
 mapping.register('userCertificate', 'userCertificate;binary', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('jpegPhoto', 'jpegPhoto', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('umcProperty', 'univentionUMCProperty', mapKeyAndValue, unmapKeyAndValue)
+mapping.register('lockedTime', 'sambaBadPasswordTime', None, unmapSambaBadPasswordTime)
+
 mapping.registerUnmapping('sambaRID', unmapSambaRid)
 mapping.registerUnmapping('passwordexpiry', unmapPasswordExpiry)
 mapping.registerUnmapping('userexpiry', unmapUserExpiry)
@@ -1460,18 +1513,6 @@ mapping.register('password', 'userPassword', univention.admin.mapping.dontMap(),
 
 class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	module = module
-
-	def __add_disabled(self, new):
-		self['disabled'] = _add_disabled(self['disabled'], new)
-
-	def __is_kerberos_disabled(self):
-		return _is_kerberos_disabled(self['disabled'])
-
-	def __is_windows_disabled(self):
-		return _is_windows_disabled(self['disabled'])
-
-	def __is_posix_disabled(self):
-		return self['disabled'] in ('all', 'posix', 'posix_kerberos', 'windows_posix')
 
 	def __pwd_is_auth_saslpassthrough(self, password):
 		return password.startswith('{SASL}') and univention.admin.configRegistry.get('directory/manager/web/modules/users/user/auth/saslpassthrough', 'no').lower() == 'keep'
@@ -1512,6 +1553,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			self.sambaMungedDialUnmap()
 			self.sambaMungedDialParse()
 			self._unmap_automount_information()
+			self._unmapUnlockTime()
 			self.reload_certificate()
 
 		self._load_groups(loadGroups)
@@ -1614,12 +1656,24 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			elif len(res) < 1:
 				sharepath = os.path.split(sharepath)[0]
 
+	def _unmapUnlockTime(self):
+		self.info['unlockTime'] = ''
+		locked_time = self['lockedTime']
+		if locked_time:
+			try:
+				locked_time = int(locked_time)
+				lockout_duration = int(self.lo.search(filter='objectClass=sambaDomain', attr=['sambaLockoutDuration'])[0][1]['sambaLockoutDuration'][0])
+			except ValueError:
+				lockout_duration = 1800
+
+			self.info['unlockTime'] = str(lockout_duration + locked_time)
+
 	def modify(self, *args, **kwargs):
 		try:
 			return super(object, self).modify(*args, **kwargs)
 		except univention.admin.uexceptions.licenseDisableModify:
 			# it has to be possible to deactivate an user account when the license is exceeded
-			if 'all' not in self['disabled'] or not self.hasChanged('disabled'):
+			if '1' != self['disabled'] or not self.hasChanged('disabled'):
 				raise
 			kwargs['ignore_license'] = True
 			return super(object, self).modify(*args, **kwargs)
@@ -1654,64 +1708,50 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			self.info['userCertificate'] = ''
 
 	def hasChanged(self, key):
-		if key == 'disabled':
-			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0]).decode()
-			krb5Flags = self.oldattr.get('krb5KDCFlags', [])
-			shadowExpire = self.oldattr.get('shadowExpire', [])
-
-			if not acctFlags and not krb5Flags and not shadowExpire:
-				return False
-			if self['disabled'] == 'all':
-				return 'D' not in acctFlags or \
-					'126' in krb5Flags or \
-					'1' not in shadowExpire
-			elif self['disabled'] == 'windows':
-				return 'D' not in acctFlags or \
-					'254' in krb5Flags or \
-					'1' in shadowExpire
-			elif self['disabled'] == 'kerberos':
-				return 'D' in acctFlags or \
-					'126' in krb5Flags or \
-					'1' in shadowExpire
-			elif self['disabled'] == 'posix':
-				return 'D' in acctFlags or \
-					'254' in krb5Flags or \
-					'1' not in shadowExpire
-			elif self['disabled'] == 'windows_kerberos':
-				return 'D' not in acctFlags or \
-					'126' in krb5Flags or \
-					'1' in shadowExpire
-			elif self['disabled'] == 'windows_posix':
-				return 'D' not in acctFlags or \
-					'254' in krb5Flags or \
-					'1' not in shadowExpire
-			elif self['disabled'] == 'posix_kerberos':
-				return 'D' in acctFlags or \
-					'126' in krb5Flags or \
-					'1' not in shadowExpire
-			else:  # enabled
-				return 'D' in acctFlags or \
-					'254' in krb5Flags or \
-					'1' in shadowExpire
-		elif key == 'locked':
-			password = self['password']
-			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0]).decode()
-			if not password and not acctFlags:
-				return False
-			if self['locked'] == 'all':
-				return not univention.admin.password.is_locked(password) or \
-					'L' not in acctFlags
-			elif self['locked'] == 'windows':
-				return univention.admin.password.is_locked(password) or \
-					'L' not in acctFlags
-			elif self['locked'] == 'posix':
-				return not univention.admin.password.is_locked(password) or \
-					'L' in acctFlags
-			else:
-				return univention.admin.password.is_locked(password) or \
-					'L' in acctFlags
-
+		if key == 'disabled' and inconsistentDisabledState(self.oldattr):
+			return True
+		if key == 'locked' and inconsistentLockedState(self.oldattr):
+			return True
 		return super(object, self).hasChanged(key)
+
+#		if key == 'disabled':
+#			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0]).decode()
+#			krb5Flags = self.oldattr.get('krb5KDCFlags', [])
+#			shadowExpire = self.oldattr.get('shadowExpire', [])
+#
+#			if not acctFlags and not krb5Flags and not shadowExpire:
+#				return False
+#			if self['disabled'] == 'all':
+#				return 'D' not in acctFlags or '126' in krb5Flags or '1' not in shadowExpire
+#			elif self['disabled'] == 'windows':
+#				return 'D' not in acctFlags or '254' in krb5Flags or '1' in shadowExpire
+#			elif self['disabled'] == 'kerberos':
+#				return 'D' in acctFlags or '126' in krb5Flags or '1' in shadowExpire
+#			elif self['disabled'] == 'posix':
+#				return 'D' in acctFlags or '254' in krb5Flags or '1' not in shadowExpire
+#			elif self['disabled'] == 'windows_kerberos':
+#				return 'D' not in acctFlags or '126' in krb5Flags or '1' in shadowExpire
+#			elif self['disabled'] == 'windows_posix':
+#				return 'D' not in acctFlags or '254' in krb5Flags or '1' not in shadowExpire
+#			elif self['disabled'] == 'posix_kerberos':
+#				return 'D' in acctFlags or '126' in krb5Flags or '1' not in shadowExpire
+#			else:  # enabled
+#				return 'D' in acctFlags or '254' in krb5Flags or '1' in shadowExpire
+#		elif key == 'locked':
+#			password = self['password']
+#			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0]).decode()
+#			if not password and not acctFlags:
+#				return False
+#			if self['locked'] == 'all':
+#				return not univention.admin.password.is_locked(password) or 'L' not in acctFlags
+#			elif self['locked'] == 'windows':
+#				return univention.admin.password.is_locked(password) or 'L' not in acctFlags
+#			elif self['locked'] == 'posix':
+#				return not univention.admin.password.is_locked(password) or 'L' in acctFlags
+#			else:
+#				return univention.admin.password.is_locked(password) or 'L' in acctFlags
+#
+#		return super(object, self).hasChanged(key)
 
 	def __update_groups(self):
 		if not self.groupsLoaded:
@@ -1832,7 +1872,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			# password property is required but LDAP ACL's disallow reading them
 			self.info['password'] = '*'
 			self.oldinfo['password'] = '*'
-			self.info['locked'] = self.oldinfo['locked']
+			self.info['disabled'] = self.oldinfo['disabled']
 
 		if not self.exists() or self.hasChanged('primaryGroup'):
 			# Ensure the primary Group has the samba option enabled
@@ -1907,6 +1947,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
+		ml = self._modlist_pwd_account_locked_time(ml)
 		ml = self._modlist_samba_privileges(ml)
 		ml = self._modlist_cn(ml)
 		ml = self._modlist_gecos(ml)
@@ -2108,7 +2149,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			require-pwchange(18), -- require a passwd change
 			do-not-store(31)-- Not to be modified and stored in HDB
 		"""
-		if not self.exists() or self.hasChanged('disabled'):
+		if not self.exists() or self.hasChanged(['disabled', 'unlock']):
 			try:
 				old_kdcflags = int(self.oldattr.get('krb5KDCFlags', ['0'])[0])
 			except ValueError:
@@ -2116,15 +2157,19 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			krb_kdcflags = old_kdcflags
 			if not self.exists():
 				krb_kdcflags |= 126
-			if self.__is_kerberos_disabled():  # disable kerberos account
+			if self['disabled'] == '1':
 				krb_kdcflags |= (1 << 7)
 			else:  # enable kerberos account
 				krb_kdcflags &= ~(1 << 7)
+
+			if self['unlock'] == '1':  # unlock kerberos password
+				krb_kdcflags &= ~(1 << 17)
+
 			ml.append(('krb5KDCFlags', str(old_kdcflags), str(krb_kdcflags)))
 		return ml
 
 	def _modlist_posix_password(self, ml):
-		if not self.exists() or self.hasChanged(['locked', 'password']):
+		if not self.exists() or self.hasChanged(['disabled', 'password']):
 			old_password = self.oldattr.get('userPassword', [''])[0]
 			password = self['password']
 
@@ -2137,12 +2182,14 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				password = old_password
 
 			password_crypt = univention.admin.password.lock_password(password)
-			if self['locked'] not in ['all', 'posix']:
+			if self['disabled'] != '1':
 				password_crypt = univention.admin.password.unlock_password(password_crypt)
 			ml.append(('userPassword', old_password, password_crypt))
+		return ml
 
+	def _modlist_pwd_account_locked_time(self, ml):
 		# remove pwdAccountLockedTime during unlocking
-		if self.hasChanged('locked') and self['locked'] not in ['all', 'posix']:
+		if self.hasChanged('unlock') and self['unlock'] == '1':
 			pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
 			if pwdAccountLockedTime:
 				ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
@@ -2150,10 +2197,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_samba_bad_pw_count(self, ml):
-		if self.hasChanged('locked'):
-			if self['locked'] not in ['all', 'windows']:
-				# reset bad pw count
-				ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [''])[0], "0"))
+		if self.hasChanged('unlock') and self['unlock'] == '1':
+			# reset bad pw count
+			ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [''])[0], "0"))
+			ml.append(('sambaBadPasswordTime', self.oldattr.get('sambaBadPasswordTime', [''])[0], '0'))
 		return ml
 
 	def _modlist_samba_kickoff_time(self, ml):
@@ -2183,11 +2230,11 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 	def _modlist_shadow_expire(self, ml):
 		if self.hasChanged('disabled') or self.hasChanged('userexpiry'):
-			if self.__is_posix_disabled() and self.hasChanged('disabled') and not self.hasChanged('userexpiry'):
+			if self['disabled'] == '1' and self.hasChanged('disabled') and not self.hasChanged('userexpiry'):
 				shadowExpire = '1'
 			elif self['userexpiry']:
 				shadowExpire = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")) / 3600 / 24 + 1)
-			elif self.__is_posix_disabled():
+			elif self['disabled'] == '1':
 				shadowExpire = '1'
 			else:
 				shadowExpire = ''
@@ -2284,22 +2331,19 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_sambaAcctFlags(self, ml):
-		if self.exists() and not self.hasChanged('disabled') and not self.hasChanged('locked'):
+		if self.exists() and not self.hasChanged('disabled') and not self.hasChanged('unlock'):
 			return ml
 
 		old_flags = self.oldattr.get("sambaAcctFlags", [''])[0]
 		acctFlags = univention.admin.samba.acctFlags(old_flags)
-		if self.__is_windows_disabled():
+		if self['disabled'] == '1':
 			# disable samba account
 			acctFlags.set('D')
 		else:
 			# enable samba account
 			acctFlags.unset('D')
 
-		if self["locked"] in ['all', 'windows']:
-			# lock samba account
-			acctFlags.set('L')
-		else:
+		if self["unlock"] == '1':
 			# unlock samba account
 			acctFlags.unset("L")
 
@@ -2535,23 +2579,30 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			filter.variable = 'gidNumber'
 
 		elif filter.variable == 'disabled':
+			# substring match for userPassword is not possible
+			if filter.value == '1':
+				filter.variable = '&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
+				filter.value = '[ULD       ]))'
+			elif filter.value == '0':
+				filter.variable = '&(!(shadowExpire=1))(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
+				filter.value = '[ULD       ])))'
 			if filter.value == 'none':
-				filter.variable = '&(!(shadowExpire=1))(!(krb5KDCFlags=254))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
+				filter.variable = '&(!(shadowExpire=1))(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
 				filter.value = '[ULD       ])))'
 			elif filter.value == 'all':
-				filter.variable = '&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
+				filter.variable = '&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
 				filter.value = '[ULD       ]))'
 			elif filter.value == 'posix':
 				filter.variable = 'shadowExpire'
 				filter.value = '1'
 			elif filter.value == 'kerberos':
-				filter.variable = 'krb5KDCFlags'
-				filter.value = '254'
+				filter.variable = 'krb5KDCFlags:1.2.840.113556.1.4.803:'
+				filter.value = '128'
 			elif filter.value == 'windows':
 				filter.variable = '|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
 				filter.value = '=[ULD       ])'
 			elif filter.value == 'windows_kerberos':
-				filter.variable = '&(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
+				filter.variable = '&(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
 				filter.value = '=[ULD       ]))'
 			elif filter.value == 'windows_posix':
 				filter.variable = '&(shadowExpire=1)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
@@ -2563,7 +2614,12 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				filter.variable = 'uid'
 
 		elif filter.variable == 'locked':
-			# substring match for userPassword is not possible
+			if filter.value == '1':
+				filter.variable = '|(krb5KDCFlags:1.2.840.113556.1.4.803:=131072)(sambaAcctFlags=[UL       ])(sambaAcctFlags'
+				filter.value = '[ULD       ])'
+			elif filter.value == '0':
+				filter.variable = '&(!(krb5KDCFlags:1.2.840.113556.1.4.803:=131072))(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags'
+				filter.value = '[ULD       ]))'
 			if filter.value in ['posix', 'windows', 'all', 'none']:
 				if filter.value == 'all':
 					filter.variable = '|(sambaAcctFlags=[UL       ])(sambaAcctFlags'
