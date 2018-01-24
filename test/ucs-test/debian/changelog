@@ -1,3 +1,9 @@
+ucs-test (8.0.16-10) unstable; urgency=medium
+
+  * Bug #45842: mark tests x-fail
+
+ -- Florian Best <best@univention.de>  Wed, 24 Jan 2018 01:47:00 +0100
+
 ucs-test (8.0.16-9) unstable; urgency=medium
 
   * Bug #46126: make test failing more robust
