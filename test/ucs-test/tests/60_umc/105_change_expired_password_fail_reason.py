@@ -39,7 +39,7 @@ def test_password_changing_failure_reason(options, new_password, reason, udm, Cl
 	print 'change password from %r to %r' % (password, new_password)
 	with pytest.raises(Unauthorized) as msg:
 		client.umc_auth(username, password, new_password=new_password)
-	assert msg.value.message == reason
+	assert reason == msg.value.message, 'Expected error %r but got %r' % (reason, msg.value.message)
 
 
 def pytest_generate_tests(metafunc):
