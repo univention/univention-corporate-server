@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: firebird2.5
+fix: 2.5.3.26778.ds4-5+deb8u1
+desc: |
+ This update addresses the following issue:
+ * Insufficient checks in the UDF subsystem allow remote authenticated users
+   to execute code by using a 'system' entrypoint from fbudf.so.
+   (CVE-2017-6369)
+bug: [44411]
+cve:
+- CVE-2017-6369
