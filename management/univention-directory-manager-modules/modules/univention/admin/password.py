@@ -120,7 +120,7 @@ def unlock_password(password):
 def lock_password(password):
 	# cleartext password?
 	if not password.startswith('{crypt}') and not password.startswith('{LANMAN}'):
-		return "{crypt}!%s" % (univention.admin.password.crypt('password'))
+		return "{crypt}!%s" % (univention.admin.password.crypt(password))
 
 	if not is_locked(password):
 		if password.startswith("{crypt}"):
