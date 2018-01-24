@@ -1,0 +1,16 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: augeas
+fix: 1.2.0-0.2+deb8u2
+desc: |
+ This update addresses the following issue:
+ * Augeas versions up to and including 1.8.0 are vulnerable to heap-based
+   buffer overflow due to improper handling of escaped strings. Attacker could
+   send crafted strings that would cause the application using augeas to copy
+   past the end of a buffer, leading to a crash or possible code execution.
+   (CVE-2017-7555)
+bug: [45356]
+cve:
+- CVE-2017-7555
