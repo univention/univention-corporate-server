@@ -1340,8 +1340,11 @@ def unmapSambaDisabled(oldattr):
 
 
 def unmapKerberosDisabled(oldattr):
-	kdcflags = oldattr.get('krb5KDCFlags', ['0'])[0]
-	return kdcflags == '254'
+	try:
+		kdcflags = int(oldattr.get('krb5KDCFlags', ['0'])[0])
+	except ValueError:
+		kdcflags = 0
+	return kdcflags & (1 << 7) == (1 << 7)
 
 
 def unmapPosixDisabled(oldattr, disabled):
@@ -2076,12 +2079,41 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_krb5kdc_flags(self, ml):
+		"""Set the krb5KDCFlags.
+			default = 1 << 6 | 1 << 5 | 1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 = 126
+
+			initial(0), -- require as-req
+			forwardable(1), -- may issue forwardable
+			proxiable(2), -- may issue proxiable
+			renewable(3), -- may issue renewable
+			postdate(4),-- may issue postdatable
+			server(5),-- may be server
+			client(6),-- may be client
+			invalid(7), -- entry is invalid
+			require-preauth(8), -- must use preauth
+			change-pw(9), -- change password service
+			require-hwauth(10), -- must use hwauth
+			ok-as-delegate(11), -- as in TicketFlags
+			user-to-user(12), -- may use user-to-user auth
+			immutable(13),-- may not be deleted
+			trusted-for-delegation(14), -- Trusted to print forwardabled tickets
+			allow-kerberos4(15),-- Allow Kerberos 4 requests
+			allow-digest(16), -- Allow digest requests
+			locked-out(17), -- Account is locked out, authentication will be denied
+			require-pwchange(18), -- require a passwd change
+			do-not-store(31)-- Not to be modified and stored in HDB
+		"""
 		if not self.exists() or self.hasChanged('disabled'):
+			try:
+				old_kdcflags = int(self.oldattr.get('krb5KDCFlags', ['126']))
+			except ValueError:
+				old_kdcflags = 126
+			krb_kdcflags = old_kdcflags
 			if self.__is_kerberos_disabled():  # disable kerberos account
-				krb_kdcflags = '254'
+				krb_kdcflags |= (1 << 7)
 			else:  # enable kerberos account
-				krb_kdcflags = '126'
-			ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', ['']), krb_kdcflags))
+				krb_kdcflags &= ~(1 << 7)
+			ml.append(('krb5KDCFlags', old_kdcflags, krb_kdcflags))
 		return ml
 
 	def _modlist_posix_password(self, ml):
