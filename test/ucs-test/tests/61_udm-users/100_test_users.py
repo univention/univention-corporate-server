@@ -227,6 +227,22 @@ class TestUsers(object):
 		username = random_username()
 		self._test_modlist(udm, verify_ldap_object, {'username': username}, {'krb5PrincipalName': ['%s@%s' % (username, ucr['domainname'].upper())]})
 
+	@pytest.mark.parametrize('password', [
+		'{KINIT}',
+		'{SASL}',
+		'{LANMAN}',
+		'{crypt}$6$foo',
+		'{foo}bar',
+		'{KINIT!}',
+		'{SASL}!',
+		'{LANMAN}!',
+		'{crypt}$6$foo!',
+		'{foo}bar!',
+	])
+	def test_invalid_password(self, password, udm):
+		with pytest.raises(Exception):
+			udm.create_user(password=password)
+
 	def test_modlist_password_change(self, udm):
 		pass
 
