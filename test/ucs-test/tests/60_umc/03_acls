@@ -53,7 +53,7 @@ assign_acl ()
 }
 test_acl ()
 {
-	umc-command -s $hostname.$domainname -U $USERNAME -P univention join/scripts/query
+	python -c "from univention.testing.umc import Client; data = Client(None, '$USERNAME', 'univention').umc_command('join/scripts/query').result; assert isinstance(data, list), data"
 }
 
 modify_acl ()
