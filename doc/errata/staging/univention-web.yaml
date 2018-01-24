@@ -5,8 +5,8 @@ scope: ucs_4.2-0-errata4.2-3
 src: univention-web
 fix: 1.0.42-67A~4.2.0.201801171648
 desc: |
- This update addresses the following issue(s):
- * Displaying of python stack traces in UMC can now be prevented by setting
+ This update addresses the following issues:
+ * Displaying of Python stack traces in UMC can now be prevented by setting
    the UCR variable umc/http/show_tracebacks to false.
  * The sorting performance for lists in UMC has been improved.
 bug: [45395, 45076]
