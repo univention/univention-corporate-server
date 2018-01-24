@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: exim4
+fix: 4.84.2-2+deb8u4A~4.2.3.201801211553
+desc: |
+ This update addresses the following issue:
+ * Exim supports the use of multiple "-p" command line arguments which are
+   malloc()'ed and never free()'ed, used in conjunction with other issues
+   allows attackers to cause arbitrary code execution. (CVE-2017-1000369)
+bug: [44861]
+cve:
+- CVE-2017-1000369
