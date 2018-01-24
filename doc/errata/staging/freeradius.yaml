@@ -1,0 +1,29 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: freeradius
+fix: 2.2.5+dfsg-0.2+deb8u1A~4.2.3.201801211553
+desc: |
+ This update addresses the following issues:
+ * FR-GV-205 issue allows "DHCP - Buffer over-read in
+   fr_dhcp_decode_options()" and a denial of service. (CVE-2017-10982)
+ * FR-GV-206 issue allows "DHCP - Read overflow when decoding option 63" and a
+   denial of service. (CVE-2017-10983)
+ * FR-GV-203 issue allows "DHCP - Memory leak in decode_tlv()" and a denial of
+   service. (CVE-2017-10980)
+ * FR-GV-202 issue allows "Write overflow in rad_coalesce()" - this allows
+   remote attackers to cause a denial of service (daemon crash) or possibly
+   execute arbitrary code. (CVE-2017-10979)
+ * FR-GV-204 issue allows "DHCP - Memory leak in fr_dhcp_decode()" and a
+   denial of service. (CVE-2017-10981)
+ * FR-GV-201 issue allows "Read / write overflow in make_secret()" and a
+   denial of service. (CVE-2017-10978)
+bug: [45232]
+cve:
+- CVE-2017-10982
+- CVE-2017-10983
+- CVE-2017-10980
+- CVE-2017-10979
+- CVE-2017-10981
+- CVE-2017-10978
