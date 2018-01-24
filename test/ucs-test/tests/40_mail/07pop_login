@@ -21,7 +21,6 @@ def main():
 				password=password,
 				mailPrimaryAddress=usermail,
 				mailHomeServer='{}.{}'.format(ucr.get('hostname'), ucr.get('domainname')),
-				option=['mail', 'person', 'posix', 'samba', 'pki']
 			)
 
 			pop = PopMail()

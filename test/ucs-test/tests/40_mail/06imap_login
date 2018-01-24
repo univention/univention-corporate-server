@@ -16,7 +16,8 @@ import univention.config_registry
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		if ucr.is_true('mail/dovecot'):
-			univention.config_registry.handler_set(['mail/dovecot/logging/auth_debug=yes',
+			univention.config_registry.handler_set([
+				'mail/dovecot/logging/auth_debug=yes',
 				'mail/dovecot/logging/auth_debug_passwords=yes', 'mail/dovecot/logging/auth_verbose=yes',
 				'mail/dovecot/logging/auth_verbose_passwords=yes', 'mail/dovecot/logging/mail_debug=yes'])
 			autocallcmd1 = ['doveadm', 'reload']
@@ -25,16 +26,16 @@ def main():
 		else:
 			autocallcmd1 = autocallcmd2 = ['true']
 			logfiles = ['/var/log/auth.log', '/var/log/univention/listener.log', '/var/log/mail.log']
-		with utils.AutoCallCommand(enter_cmd=autocallcmd1, exit_cmd=autocallcmd1) as acc1:
+
+		with utils.AutoCallCommand(enter_cmd=autocallcmd1, exit_cmd=autocallcmd1):
 			with udm_test.UCSTestUDM() as udm:
-				with utils.FollowLogfile(logfiles=logfiles) as flf:
-					with utils.AutoCallCommand(enter_cmd=autocallcmd2, exit_cmd=autocallcmd2) as acc2:
+				with utils.FollowLogfile(logfiles=logfiles):
+					with utils.AutoCallCommand(enter_cmd=autocallcmd2, exit_cmd=autocallcmd2):
 						password = uts.random_string()
 						mailAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
 						udm.create_user(
 							password=password,
 							mailPrimaryAddress=mailAddress,
-							option=['mail', 'person', 'posix', 'samba', 'pki']
 						)
 						try:
 							print '* Test imap login with the correct password:'

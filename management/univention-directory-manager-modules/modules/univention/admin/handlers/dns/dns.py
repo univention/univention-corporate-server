@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the DNS objects
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -56,8 +56,7 @@ long_description = _('Manage the Domain Name System.')
 operations = ['search']
 childmodules = ['dns/forward_zone', 'dns/reverse_zone']
 virtual = 1
-options = {
-}
+options = {}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),

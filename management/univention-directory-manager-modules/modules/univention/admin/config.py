@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  configuration basics
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -51,7 +51,10 @@ class config:
 		self.data[key] = value
 
 	def has_key(self, key):
-		return self.data.has_key(key)
+		return key in self
+
+	def __contains__(self, key):
+		return key in self.data
 
 	def items(self):
 		return self.data.items()

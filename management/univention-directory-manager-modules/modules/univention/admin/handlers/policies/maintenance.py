@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin policy for the client maintenance
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -69,6 +69,10 @@ short_description = _('Policy: Maintenance')
 policy_short_description = _('Maintenance')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPolicy', 'univentionPolicyInstallationTime'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -226,7 +230,7 @@ class object(univention.admin.handlers.simplePolicy):
 		cron = univention.admin.cron.cron_split(cronstring)
 		keys = ['minute', 'hour', 'day', 'month', 'weekday']
 		for key in keys:
-			if cron.has_key(key):
+			if key in cron:
 				self[key] = []
 				for i in range(0, len(cron[key])):
 					if str(cron[key][i]) != '*':
@@ -235,7 +239,7 @@ class object(univention.admin.handlers.simplePolicy):
 	def __getitem__(self, key):
 		value = univention.admin.handlers.simplePolicy.__getitem__(self, key)  # need this first to initialize policy-results
 		# set cron if we are in resultmode
-		if self.resultmode and hasattr(self, 'policy_attrs') and self.policy_attrs.has_key('univentionCron') \
+		if self.resultmode and hasattr(self, 'policy_attrs') and 'univentionCron' in self.policy_attrs \
 			and (not self.cron_parsed):
 			self.parse_cron(self.policy_attrs['univentionCron']['value'][0])
 			if not self.cron_parsed:
@@ -246,23 +250,20 @@ class object(univention.admin.handlers.simplePolicy):
 			value = univention.admin.handlers.simplePolicy.__getitem__(self, key)  # need to reload
 		return value
 
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyInstallationTime'])]
-
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simplePolicy._ldap_modlist(self)
 		if self.hasChanged(['minute', 'hour', 'day', 'month', 'weekday']):
 
 			list = {}
-			if self.has_key('minute'):
+			if self.has_property('minute'):
 				list['minute'] = self['minute']
-			if self.has_key('hour'):
+			if self.has_property('hour'):
 				list['hour'] = self['hour']
-			if self.has_key('day'):
+			if self.has_property('day'):
 				list['day'] = self['day']
-			if self.has_key('month'):
+			if self.has_property('month'):
 				list['month'] = self['month']
-			if self.has_key('weekday'):
+			if self.has_property('weekday'):
 				list['weekday'] = self['weekday']
 			cron = univention.admin.cron.cron_create(list)
 			ml.append(('univentionCron', self.oldattr.get('univentionCron', []), [cron]))

@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for dns reverse records
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -50,6 +50,10 @@ childs = 0
 short_description = _('DNS: Pointer record')
 long_description = _('Map IP addresses back to hostnames.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'dNSZone'],
+	),
 }
 property_descriptions = {
 	'address': univention.admin.property(
@@ -104,7 +108,7 @@ def ipv6(string):
 	'0123:4567:89ab:cdef:0123:4567:89ab:cdef'
 	"""
 	assert len(string) == 32, string
-	return ':'.join(string[i:i+4] for i in range(0, 32, 4))
+	return ':'.join(string[i:i + 4] for i in range(0, 32, 4))
 
 
 def calc_ip(rev, subnet):
@@ -197,7 +201,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', ['top', 'dNSZone']),
 			(self.superordinate.mapping.mapName('subnet'), self.superordinate.mapping.mapValue('subnet', self.superordinate['subnet'])),
 		]
 
@@ -224,7 +227,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=Fa
 	])
 
 	if superordinate:
-		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('subnet', superordinate['subnet'])))
+		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('subnet', superordinate['subnet']), escape=True))
 
 	if filter_s:
 		filter_p = univention.admin.filter.parse(filter_s)

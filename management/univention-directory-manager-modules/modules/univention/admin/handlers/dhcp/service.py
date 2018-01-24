@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the DHCP service
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -47,6 +47,10 @@ childmodules = ('dhcp/host', 'dhcp/server', 'dhcp/shared', 'dhcp/subnet')
 short_description = _('DHCP: Service')
 long_description = _('The top-level container for a DHCP configuration.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionDhcpService'],
+	),
 }
 property_descriptions = {
 	'service': univention.admin.property(
@@ -84,21 +88,14 @@ class object(DHCPBase):
 		if not self.dn and not self.position:
 			raise univention.admin.uexceptions.insufficientInformation(_('Neither DN nor position given.'))
 
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'univentionDhcpService']),
-		]
-
 	@staticmethod
-	def lookup_filter(filter_s=None, lo=None):
-		filter_obj = univention.admin.filter.conjunction('&', [
+	def unmapped_lookup_filter():
+		return univention.admin.filter.conjunction('&', [
 			univention.admin.filter.conjunction('|', [
 				univention.admin.filter.expression('objectClass', 'dhcpService'),
 				univention.admin.filter.expression('objectClass', 'univentionDhcpService')
 			])
 		])
-		filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
-		return filter_obj
 
 
 def identify(dn, attr):

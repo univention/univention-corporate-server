@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin policy for the DHCP dns settings
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -67,6 +67,10 @@ short_description = _('Policy: DHCP DNS')
 policy_short_description = _('DNS')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpDns'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -129,11 +133,6 @@ register_policy_mapping(mapping)
 
 class object(univention.admin.handlers.simplePolicy):
 	module = module
-
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyDhcpDns'])
-		]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

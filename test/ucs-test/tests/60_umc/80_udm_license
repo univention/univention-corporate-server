@@ -131,13 +131,9 @@ class TestUMCLicenseManagement(UDMModule):
                 "CtxCfgClientDrivers": False,
                 "CtxCfgTSLogon": False,
                 "$options$": {
-                    "samba": True,
-                    "kerberos": True,
                     "person": True,
-                    "posix": True,
                     "mail": True,
                     "pki": False,
-                    "ldap_pwd": False
                 }
             },
             "options": {"container": "cn=users," + self.ldap_base, "objectType": "users/user"}
@@ -253,8 +249,8 @@ class TestUMCLicenseManagement(UDMModule):
         list with a check if each of them exists
         """
         for user in self.users_to_delete:
-            if self.check_obj_exists(user, "users/user"):
-                self.delete_obj(user, 'users', 'users/user')
+            if self.check_obj_exists(user, "users/user", "users/user"):
+                self.delete_obj(user, 'users/user', 'users/user')
         self.users_to_delete = []
 
     def free_license_limits_check(self, obj_type):

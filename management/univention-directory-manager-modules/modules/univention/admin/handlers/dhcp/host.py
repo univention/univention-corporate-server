@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the DHCP hosts
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -48,6 +48,10 @@ childs = 0
 short_description = _('DHCP: Host')
 long_description = _('Configure a host identified by its hardware MAC address.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionDhcpHost']
+	),
 }
 property_descriptions = {
 	'host': univention.admin.property(
@@ -124,22 +128,14 @@ add_dhcp_options(__name__)
 class object(DHCPBase):
 	module = module
 
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'univentionDhcpHost']),
-		]
-
 	@staticmethod
-	def lookup_filter(filter_s=None, lo=None):
-		filter_obj = univention.admin.filter.conjunction('&', [
+	def unmapped_lookup_filter():
+		return univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'univentionDhcpHost')
 		])
-		filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
-		return filter_obj
 
 
 def identify(dn, attr):
-
 	return 'univentionDhcpHost' in attr.get('objectClass', [])
 
 

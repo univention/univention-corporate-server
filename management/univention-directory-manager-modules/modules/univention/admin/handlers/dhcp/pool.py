@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the DHCP pool
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -51,6 +51,10 @@ childs = 0
 short_description = _('DHCP: Pool')
 long_description = _('A pool of dynamic addresses assignable to hosts.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionDhcpPool']
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -179,11 +183,6 @@ class object(DHCPBase):
 				if ipaddr.IPAddress(addr) not in subnet:
 					raise univention.admin.uexceptions.rangeNotInNetwork(addr)
 
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'univentionDhcpPool']),
-		]
-
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 		if self.hasChanged(self.permits_udm2dhcp.keys()):
@@ -208,26 +207,24 @@ class object(DHCPBase):
 		return ml
 
 	@staticmethod
-	def lookup_filter(filter_s=None, lo=None):
-		filter_obj = univention.admin.filter.conjunction('&', [
+	def unmapped_lookup_filter():
+		return univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'univentionDhcpPool')
 		])
-		filter_obj.append_unmapped_filter_string(filter_s, rewrite, mapping)
-		return filter_obj
 
-
-def rewrite(filter, mapping):
-	values = {
-		'known_clients': 'known clients',
-		'unknown_clients': 'unknown clients',
-		'dynamic_bootp_clients': 'dynamic bootp clients',
-		'all_clients': 'all clients'
-	}
-	if filter.variable in values:
-		filter.value = '%s %s' % (filter.value.strip('*'), values[filter.variable])
-		filter.variable = 'dhcpPermitList'
-	else:
-		univention.admin.mapping.mapRewrite(filter, mapping)
+	@classmethod
+	def rewrite_filter(cls, filter, mapping):
+		values = {
+			'known_clients': 'known clients',
+			'unknown_clients': 'unknown clients',
+			'dynamic_bootp_clients': 'dynamic bootp clients',
+			'all_clients': 'all clients'
+		}
+		if filter.variable in values:
+			filter.value = '%s %s' % (filter.value.strip('*'), values[filter.variable])
+			filter.variable = 'dhcpPermitList'
+		else:
+			univention.admin.mapping.mapRewrite(filter, mapping)
 
 
 def identify(dn, attr):

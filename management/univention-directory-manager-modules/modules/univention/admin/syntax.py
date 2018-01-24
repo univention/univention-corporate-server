@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  syntax definitions
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -1541,10 +1541,10 @@ class dnsSRVName(complex):
 class dnsPTR(simple):
 	regexp = re.compile(
 		r'''
-		 ^    (?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])
-		 (?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){0,2}$
+		^    (?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])
+		(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){0,2}$
 		|^    [0-9a-f]
-		 (?:\.[0-9a-f]){0,30}$
+		(?:\.[0-9a-f]){0,30}$
 		''', re.VERBOSE
 	)
 	error_message = _("The reversed host name for IPv4 consists of the reversed host address (example: \"4.3\") or for IPv6 in nibble format (example: \"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\").")
@@ -3015,7 +3015,94 @@ class nfssync(select):
 
 class univentionAdminModules(select):
 	# we need a fallback
-	choices = [('computers/managedclient', 'Computer: Managed Client'), ('computers/domaincontroller_backup', 'Computer: Domain Controller Backup'), ('computers/domaincontroller_master', 'Computer: Domain Controller Master'), ('computers/domaincontroller_slave', 'Computer: Domain Controller Slave'), ('computers/trustaccount', 'Computer: Domain Trust Account'), ('computers/ipmanagedclient', 'Computer: IP Managed Client'), ('computers/macos', 'Computer: Mac OS X Client'), ('computers/memberserver', 'Computer: Member Server'), ('computers/mobileclient', 'Computer: Mobile Client'), ('computers/thinclient', 'Computer: Thin Client'), ('computers/windows', 'Computer: Windows'), ('container/cn', 'Container: Container'), ('container/dc', 'Container: Domain'), ('container/ou', 'Container: Organizational Unit'), ('dhcp/host', 'DHCP: Host'), ('dhcp/pool', 'DHCP: Pool'), ('dhcp/server', 'DHCP: Server'), ('dhcp/service', 'DHCP: Service'), ('dhcp/shared', 'DHCP: Shared Network'), ('dhcp/sharedsubnet', 'DHCP: Shared Subnet'), ('dhcp/subnet', 'DHCP: Subnet'), ('dns/alias', 'DNS: Alias Record'), ('dns/forward_zone', 'DNS: Forward Lookup Zone'), ('dns/host_record', 'DNS: Host Record'), ('dns/ptr_record', 'DNS: Pointer'), ('dns/reverse_zone', 'DNS: Reverse Lookup Zone'), ('dns/srv_record', 'DNS: Service Record'), ('dns/zone_mx_record', 'DNS: Zone Mail Exchanger'), ('dns/zone_txt_record', 'DNS: Zone Text'), ('groups/group', 'Group: Group'), ('mail/folder', 'Mail: IMAP Folder'), ('mail/domain', 'Mail: Mail Domains'), ('mail/lists', 'Mail: Mailing Lists'), ('networks/network', 'Networks: Network'), ('policies/autostart', 'Policy: Autostart'), ('policies/clientdevices', 'Policy: Client Devices'), ('policies/dhcp_scope', 'Policy: DHCP Allow/Deny'), ('policies/dhcp_boot', 'Policy: DHCP Boot'), ('policies/dhcp_dns', 'Policy: DHCP DNS'), ('policies/dhcp_dnsupdate', 'Policy: DHCP DNS Update'), ('policies/dhcp_leasetime', 'Policy: DHCP Lease Time'), ('policies/dhcp_netbios', 'Policy: DHCP Netbios'), ('policies/dhcp_routing', 'Policy: DHCP Routing'), ('policies/dhcp_statements', 'Policy: DHCP Statements'), ('policies/desktop', 'Policy: Desktop'), ('policies/xfree', 'Policy: Display'), ('policies/ldapserver', 'Policy: LDAP Server'), ('policies/maintenance', 'Policy: Maintenance'), ('policies/managedclientpackages', 'Policy: Packages Managed Client'), ('policies/masterpackages', 'Policy: Packages Master'), ('policies/memberpackages', 'Policy: Packages Member'), ('policies/mobileclientpackages', 'Policy: Packages Mobile Client'), ('policies/slavepackages', 'Policy: Packages Slave'), ('policies/pwhistory', 'Policy: Password Policy'), ('policies/print_quota', 'Policy: Print Quota'), ('policies/printserver', 'Policy: Print Server'), ('policies/release', 'Policy: Release'), ('policies/repositoryserver', 'Policy: Repository Server'), ('policies/repositorysync', 'Policy: Repository Sync'), ('policies/sound', 'Policy: Sound'), ('policies/thinclient', 'Policy: Thin Client'), ('policies/admin_container', 'Policy: Univention Admin Container Settings'), ('policies/share_userquota', 'Policy: Userquota-Policy'), ('settings/default', 'Preferences: Default'), ('settings/directory', 'Preferences: Path'), ('settings/admin', 'Preferences: Univention Admin Global Settings'), ('settings/user', 'Preferences: Univention Admin User Settings'), ('settings/xconfig_choices', 'Preferences: X Configuration Choices'), ('shares/printer', 'Print-Share: Printer'), ('shares/printergroup', 'Print-Share: Printer Group'), ('settings/license', 'Settings: License'), ('settings/lock', 'Settings: Lock'), ('settings/packages', 'Settings: Package List'), ('settings/printermodel', 'Settings: Printer Driver List'), ('settings/printeruri', 'Settings: Printer URI List'), ('settings/prohibited_username', 'Settings: Prohibited Usernames'), ('settings/sambaconfig', 'Settings: Samba Configuration'), ('settings/sambadomain', 'Settings: Samba Domain'), ('settings/service', 'Settings: Service'), ('settings/usertemplate', 'Settings: User Template'), ('shares/share', 'Share: Directory'), ('settings/cn', 'Univention Settings'), ('users/user', 'User'), ('users/passwd', 'User: Password'), ('users/self', 'User: Self')]
+	choices = [
+		('computers/managedclient', 'Computer: Managed Client'),
+		('computers/domaincontroller_backup', 'Computer: Domain Controller Backup'),
+		('computers/domaincontroller_master', 'Computer: Domain Controller Master'),
+		('computers/domaincontroller_slave', 'Computer: Domain Controller Slave'),
+		('computers/trustaccount', 'Computer: Domain Trust Account'),
+		('computers/ipmanagedclient', 'Computer: IP Managed Client'),
+		('computers/macos', 'Computer: Mac OS X Client'),
+		('computers/memberserver', 'Computer: Member Server'),
+		('computers/mobileclient', 'Computer: Mobile Client'),
+		('computers/thinclient', 'Computer: Thin Client'),
+		('computers/windows', 'Computer: Windows'),
+		('container/cn', 'Container: Container'),
+		('container/dc', 'Container: Domain'),
+		('container/ou', 'Container: Organizational Unit'),
+		('dhcp/host', 'DHCP: Host'),
+		('dhcp/pool', 'DHCP: Pool'),
+		('dhcp/server', 'DHCP: Server'),
+		('dhcp/service', 'DHCP: Service'),
+		('dhcp/shared', 'DHCP: Shared Network'),
+		('dhcp/sharedsubnet', 'DHCP: Shared Subnet'),
+		('dhcp/subnet', 'DHCP: Subnet'),
+		('dns/alias', 'DNS: Alias Record'),
+		('dns/forward_zone', 'DNS: Forward Lookup Zone'),
+		('dns/host_record', 'DNS: Host Record'),
+		('dns/ptr_record', 'DNS: Pointer'),
+		('dns/reverse_zone', 'DNS: Reverse Lookup Zone'),
+		('dns/srv_record', 'DNS: Service Record'),
+		('dns/zone_mx_record', 'DNS: Zone Mail Exchanger'),
+		('dns/zone_txt_record', 'DNS: Zone Text'),
+		('groups/group', 'Group: Group'),
+		('mail/folder', 'Mail: IMAP Folder'),
+		('mail/domain', 'Mail: Mail Domains'),
+		('mail/lists', 'Mail: Mailing Lists'),
+		('networks/network', 'Networks: Network'),
+		('policies/autostart', 'Policy: Autostart'),
+		('policies/clientdevices', 'Policy: Client Devices'),
+		('policies/dhcp_scope', 'Policy: DHCP Allow/Deny'),
+		('policies/dhcp_boot', 'Policy: DHCP Boot'),
+		('policies/dhcp_dns', 'Policy: DHCP DNS'),
+		('policies/dhcp_dnsupdate', 'Policy: DHCP DNS Update'),
+		('policies/dhcp_leasetime', 'Policy: DHCP Lease Time'),
+		('policies/dhcp_netbios', 'Policy: DHCP Netbios'),
+		('policies/dhcp_routing', 'Policy: DHCP Routing'),
+		('policies/dhcp_statements', 'Policy: DHCP Statements'),
+		('policies/desktop', 'Policy: Desktop'),
+		('policies/xfree', 'Policy: Display'),
+		('policies/ldapserver', 'Policy: LDAP Server'),
+		('policies/maintenance', 'Policy: Maintenance'),
+		('policies/managedclientpackages', 'Policy: Packages Managed Client'),
+		('policies/masterpackages', 'Policy: Packages Master'),
+		('policies/memberpackages', 'Policy: Packages Member'),
+		('policies/mobileclientpackages', 'Policy: Packages Mobile Client'),
+		('policies/slavepackages', 'Policy: Packages Slave'),
+		('policies/pwhistory', 'Policy: Password Policy'),
+		('policies/print_quota', 'Policy: Print Quota'),
+		('policies/printserver', 'Policy: Print Server'),
+		('policies/release', 'Policy: Release'),
+		('policies/repositoryserver', 'Policy: Repository Server'),
+		('policies/repositorysync', 'Policy: Repository Sync'),
+		('policies/sound', 'Policy: Sound'),
+		('policies/thinclient', 'Policy: Thin Client'),
+		('policies/admin_container', 'Policy: Univention Admin Container Settings'),
+		('policies/share_userquota', 'Policy: Userquota-Policy'),
+		('settings/default', 'Preferences: Default'),
+		('settings/directory', 'Preferences: Path'),
+		('settings/admin', 'Preferences: Univention Admin Global Settings'),
+		('settings/user', 'Preferences: Univention Admin User Settings'),
+		('settings/xconfig_choices', 'Preferences: X Configuration Choices'),
+		('shares/printer', 'Print-Share: Printer'),
+		('shares/printergroup', 'Print-Share: Printer Group'),
+		('settings/license', 'Settings: License'),
+		('settings/lock', 'Settings: Lock'),
+		('settings/packages', 'Settings: Package List'),
+		('settings/printermodel', 'Settings: Printer Driver List'),
+		('settings/printeruri', 'Settings: Printer URI List'),
+		('settings/prohibited_username', 'Settings: Prohibited Usernames'),
+		('settings/sambaconfig', 'Settings: Samba Configuration'),
+		('settings/sambadomain', 'Settings: Samba Domain'),
+		('settings/service', 'Settings: Service'),
+		('settings/usertemplate', 'Settings: User Template'),
+		('shares/share', 'Share: Directory'),
+		('settings/cn', 'Univention Settings'),
+		('users/user', 'User'),
+		('users/ldap', 'Simple authentication account'),
+		('users/passwd', 'User: Password'),
+		('users/self', 'User: Self')
+	]
 
 	@classmethod
 	def parse(self, text):
@@ -3057,9 +3144,11 @@ class listAttributes(string):
 class timeSpec(select):
 
 	"""Time format used by 'at'."""
-	_times = [(time, time) for hour in range(0, 24)
-				for minute in range(0, 60, 15)
-				for time in ('%02d:%02d' % (hour, minute),)]
+	_times = [
+		(time, time) for hour in range(0, 24)
+		for minute in range(0, 60, 15)
+		for time in ('%02d:%02d' % (hour, minute),)
+	]
 	choices = [
 		('', _('No Reboot')),
 		('now', _('Immediately')),
@@ -3068,11 +3157,7 @@ class timeSpec(select):
 
 class optionsUsersUser(select):
 	choices = [
-		('groupware', _('Groupware Account')),
-		('kerberos', _('Kerberos Principal')),
 		('person', _('Personal Information')),
-		('samba', _('Samba Account')),
-		('posix', _('POSIX Account')),
 		('mail', _('Mail Account')),
 	]
 
@@ -3216,14 +3301,11 @@ class LDAP_Search(select):
 			self.__dn = dn
 			self.filter = attrs['univentionSyntaxLDAPFilter'][0]
 			self.attributes = attrs['univentionSyntaxLDAPAttribute']
-			if attrs.has_key('univentionSyntaxLDAPBase'):
+			if 'univentionSyntaxLDAPBase' in attrs:
 				self.base = attrs['univentionSyntaxLDAPBase'][0]
 			else:
 				self.__base = ''
-			if attrs.has_key('univentionSyntaxLDAPValue'):
-				self.value = attrs['univentionSyntaxLDAPValue'][0]
-			else:
-				self.value = 'dn'
+			self.value = attrs.get('univentionSyntaxLDAPValue', ['dn'])[0]
 			if attrs.get('univentionSyntaxViewOnly', ['FALSE'])[0] == 'TRUE':
 				self.viewonly = True
 				self.value = 'dn'
@@ -3429,11 +3511,9 @@ class policyName(string):
 	def parse(self, text):
 		if self._re.match(text):
 			return text
-		raise univention.admin.uexceptions.valueError(
-			_('May only contain letters (except umlauts), digits, space as well as the '
-			'characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit '
-			'and must not end with space.')
-		)
+		raise univention.admin.uexceptions.valueError(_(
+			'May only contain letters (except umlauts), digits, space as well as the characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit and must not end with space.'
+		))
 
 
 class Portals(UDM_Objects):

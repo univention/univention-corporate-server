@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for user template objects
 #
-# Copyright 2002-2017 Univention GmbH
+# Copyright 2002-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -48,6 +48,10 @@ childs = 0
 short_description = _('Settings: User Template')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionUserTemplate'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -449,9 +453,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 		mungeddial.Support.__init__(self)
 
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionUserTemplate'])]
-
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 		sambaMunged = self.sambaMungedDialMap()
@@ -467,7 +468,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=superordinate, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionUserTemplate')])
 
@@ -483,5 +483,4 @@ def lookup(co, lo, filter_s, base='', superordinate=superordinate, scope='sub', 
 
 
 def identify(dn, attr, canonical=0):
-
 	return 'univentionUserTemplate' in attr.get('objectClass', [])

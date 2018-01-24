@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the DNS aliases
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -52,6 +52,10 @@ childs = 0
 short_description = _('DNS: Alias record')
 long_description = _('Assign additional names to a host.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'dNSZone'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -119,7 +123,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', ['top', 'dNSZone']),
 			(self.superordinate.mapping.mapName('zone'), self.superordinate.mapping.mapValue('zone', self.superordinate['zone'])),
 		]
 
@@ -147,7 +150,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=Fa
 	])
 
 	if superordinate:
-		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone'])))
+		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone']), escape=True))
 
 	if filter_s:
 		filter_p = univention.admin.filter.parse(filter_s)

@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for extended options
 #
-# Copyright 2011-2017 Univention GmbH
+# Copyright 2011-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -48,6 +48,10 @@ short_description = _('Settings: Extended options')
 long_description = _('Options for extended attributes')
 
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionUDMOption'],
+	),
 }
 
 property_descriptions = {
@@ -173,17 +177,12 @@ mapping.register('objectClass', 'univentionUDMOptionObjectClass')
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	def _ldap_addlist(self):
-		"""Add initial objectClasses."""
-		return [('objectClass', ['top', 'univentionUDMOption'])]
-
 	def open(self):
 		"""Load and parse translations."""
 		univention.admin.handlers.simpleLdap.open(self)
 
 		for transKey in ['ShortDescription', 'LongDescription']:
 			translations = []
-			keys = self.oldattr.keys()
 			for key in self.oldattr.keys():
 				if key.startswith('univentionUDMOptionTranslation%s;entry-' % transKey):
 					lang = '%s_%s' % (key[-5:-3].lower(), key[-2:].upper())

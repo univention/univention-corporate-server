@@ -29,7 +29,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 		self.intermediate_policy_dn = ''
 		self.user_policy_dn = ''
 
-		self.test_user_dn = ''
+		# self.test_user_dn = ''
 		self.test_user_2_dn = ''
 
 	def get_user_policy(self, user_dn, policy_dn=None, flavor="navigation"):
@@ -117,13 +117,13 @@ class TestUMCnonUCRpolicies(UMCBase):
 		first has own 'umc_test_user_policy' and is not a Samba user;
 		second has no own user policy, but being a Samba user.
 		"""
-		print("\nCreating a test user with no samba inside the 'intermediate_test_container' with the 'umc_test_user_policy' applied:\n")
-		self.test_user_dn = self.UDM.create_user(**{
-			'position': self.intermediate_container_dn,
-			'username': 'umc_test_user_' + random_username(),
-			'policy-reference': self.user_policy_dn,
-			'options': ['kerberos', 'posix', 'person', 'mail'],  # no Samba
-		})[0]
+		# print("\nCreating a test user with no samba inside the 'intermediate_test_container' with the 'umc_test_user_policy' applied:\n")
+		# self.test_user_dn = self.UDM.create_user(**{
+		# 	'position': self.intermediate_container_dn,
+		# 	'username': 'umc_test_user_' + random_username(),
+		# 	'policy-reference': self.user_policy_dn,
+		# 	'options': ['kerberos', 'posix', 'person', 'mail'],  # no Samba
+		# })[0]
 
 		print("\nCreating a second test user with samba and without user policy applied inside the 'intermediate_test_container':\n")
 		self.test_user_2_dn = self.UDM.create_user(
@@ -147,7 +147,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 
 		# First user with own 'umc_test_user_policy' winning over container
 		# policies as the closest policy:
-		self.check_policies('3', '3', self.test_user_dn, self.user_policy_dn)
+		# self.check_policies('3', '3', self.test_user_dn, self.user_policy_dn)
 
 		print("\nApplying a 'umc_test_policy_intermediate' to the 'intermediate_test_container', checking correct inheritance:\n")
 		self.UDM.modify_object('container/cn', **{'dn': self.intermediate_container_dn, 'policy_reference': self.intermediate_policy_dn})
@@ -158,7 +158,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 
 		# First user with own 'umc_test_user_policy' winning over container
 		# policies as the closest policy:
-		self.check_policies('3', '3', self.test_user_dn, self.user_policy_dn)
+		# self.check_policies('3', '3', self.test_user_dn, self.user_policy_dn)
 
 	def check_fixed_and_empty_attributes(self):
 		"""
@@ -171,7 +171,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 		# Both users should have pwLength=5 (Fixed attribute from the
 		# base container) and Length=4 (inherited from intermediate container)
 		self.check_policies('4', '5', self.test_user_2_dn)
-		self.check_policies('4', '5', self.test_user_dn)
+		# self.check_policies('4', '5', self.test_user_dn)
 
 		print("\nAdding an Empty attribute 'univentionPWLength' to the 'umc_test_policy_intermediate' and checking correct inheritance:\n")
 		self.UDM.modify_object('policies/pwhistory', **{'dn': self.intermediate_policy_dn, 'emptyAttributes': ['univentionPWLength']})
@@ -179,7 +179,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 		# Both users should have pwLength=5 (Even with empty attribute in
 		# intermediate container due to Fixed attribute on the base container)
 		self.check_policies('4', '5', self.test_user_2_dn)
-		self.check_policies('4', '5', self.test_user_dn)
+		# self.check_policies('4', '5', self.test_user_dn)
 
 		print "\nRemoving Fixed attribute from the 'umc_test_policy_base':\n"
 		self.UDM.modify_object('policies/pwhistory', **{'dn': self.base_policy_dn, 'set': {'fixedAttributes': ""}})
@@ -187,7 +187,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 		# Both users should have an empty pwLength (due to empty attribute
 		# on the intermediate container):
 		self.check_policies('4', '', self.test_user_2_dn)
-		self.check_policies('4', '', self.test_user_dn)
+		# self.check_policies('4', '', self.test_user_dn)
 
 	def check_required_excluded_object_classes(self):
 		"""
@@ -201,7 +201,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 		# (Length=4 and empty pwLength), first user (without Samba) should have
 		# own 'umc_test_user_policy' winning (Lenght=pwLength=3):
 		self.check_policies('4', '', self.test_user_2_dn)
-		self.check_policies('3', '3', self.test_user_dn, self.user_policy_dn)
+		# self.check_policies('3', '3', self.test_user_dn, self.user_policy_dn)
 
 		print("\nAdding 'sambaSamAccount' to the excluded object class of the 'umc_test_policy_base' and checking correct inheritance:\n")
 		self.UDM.modify_object('policies/pwhistory', **{'dn': self.base_policy_dn, 'prohibitedObjectClasses': ["sambaSamAccount"]})
@@ -210,7 +210,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 		# policy (Length=4 and an empty pwLength), first user (without Samba)
 		# should have base container policy inherited (Lenght=pwLength=5):
 		self.check_policies('4', '', self.test_user_2_dn)
-		self.check_policies('5', '5', self.test_user_dn)
+		# self.check_policies('5', '5', self.test_user_dn)
 
 	def assert_policies(self, should_be, in_fact):
 		"""

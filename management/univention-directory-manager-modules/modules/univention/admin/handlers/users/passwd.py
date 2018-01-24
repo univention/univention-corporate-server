@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for password part of the user
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -68,7 +68,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.userPasswd,
 		multivalue=False,
-		options=['posix', 'samba', 'kerberos', 'mail'],
 		required=True,
 		may_change=True,
 		identifies=False,

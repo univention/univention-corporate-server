@@ -4,7 +4,7 @@
 # Univention Nagios
 #  univention admin nagios module
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,11 +35,11 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
-translation = univention.admin.localization.translation('univention.admin.handlers.nagios')
-_ = translation.translate
-
 import univention.admin.handlers.nagios.service
 import univention.admin.handlers.nagios.timeperiod
+
+translation = univention.admin.localization.translation('univention.admin.handlers.nagios')
+_ = translation.translate
 
 module = 'nagios/nagios'
 help_link = _('http://docs.univention.de/manual.html#nagios:Configuration_of_the_Nagios_monitoring')
@@ -52,8 +52,7 @@ short_description = _('Nagios object')
 long_description = ''
 operations = ['search']
 virtual = 1
-options = {
-}
+options = {}
 
 property_descriptions = {
 	'name': univention.admin.property(

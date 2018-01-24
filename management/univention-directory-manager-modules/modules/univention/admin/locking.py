@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  LDAP locking methods
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -55,7 +55,6 @@ def lockDn(lo, position, type, value, scope):
 
 
 def lock(lo, position, type, value, scope='domain', timeout=300):
-
 	_d = univention.debug.function('admin.locking.lock type=%s value=%s scope=%s timeout=%d' % (type, value, scope, timeout))
 	dn = lockDn(lo, position, type, value, scope)
 
@@ -99,7 +98,6 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
 
 
 def relock(lo, position, type, value, scope='domain', timeout=300):
-
 	_d = univention.debug.function('admin.locking.relock type=%s value=%s scope=%s timeout=%d' % (type, value, scope, timeout))
 	dn = lockDn(lo, position, type, value, scope)
 
@@ -122,7 +120,6 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
 
 
 def unlock(lo, position, type, value, scope='domain'):
-
 	_d = univention.debug.function('admin.locking.unlock type=%s value=%s scope=%s' % (type, value, scope))
 	dn = lockDn(lo, position, type, value, scope)
 	try:

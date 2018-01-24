@@ -49,17 +49,16 @@ joinscript_add_simple_app_system_user () {
 
 	eval "$(ucr shell ldap/base)"
 
-	udm users/user create "$@" --ignore_exists \
+	udm users/ldap create "$@" --ignore_exists \
 		--position "cn=users,$ldap_base" \
 		--set username="$APP-systemuser" \
 		--set password="$password" \
 		--set firstname="$SERVICE Service" \
 		--set lastname="LDAP Account" \
 		--set description="Account used by $SERVICE to authenticate against LDAP directory" \
-		--set objectFlag="hidden" \
-		--option ldap_pwd || die
+		--set objectFlag="hidden" || die
 
-	udm users/user modify "$@" \
+	udm users/ldap modify "$@" \
 		--dn "uid=$APP-systemuser,cn=users,$ldap_base" \
 		--set password="$password"
 }

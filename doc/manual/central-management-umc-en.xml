@@ -1410,15 +1410,11 @@ univention-directory-manager users/user create \
 		<listitem>
 			<para>
 				<option>--option</option> defines the LDAP object classes of an
-				object. If, for example, only <classname>posix</classname> and <classname>person</classname>
-				are provided as options for a user object, it is not possible to
+				object. If, for example, only <classname>pki</classname>
+				is provided as options for a user object, it is not possible to
 				specify a <property>mailPrimaryAddress</property> for this user as this
 				attribute is part of the <classname>mail</classname> option:
 			</para>
-			<programlisting language="sh">
-univention-directory-manager users/user modify \
-    --option "posix" --option "mail" --option "kerberos"
-			</programlisting>
 		</listitem>
 		<listitem>
 			<simpara>

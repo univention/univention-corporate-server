@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  functions for creating cron entries
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -68,7 +68,7 @@ def cron_create(cronlist):
 	keys = ['minute', 'hour', 'day', 'month', 'weekday']
 	string = ''
 	for key in keys:
-		if cronlist.has_key(key):
+		if key in cronlist:
 			if len(cronlist[key]) == 0:
 				string += '* '
 				continue

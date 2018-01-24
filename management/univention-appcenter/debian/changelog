@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-5) unstable; urgency=medium
+
+  * Bug #45842: create users/ldap objects instead of users/user
+
+ -- Florian Best <best@univention.de>  Wed, 24 Jan 2018 17:13:26 +0100
+
 univention-appcenter (7.0.1-4) unstable; urgency=medium
 
   * Bug #45499: Fix license information not being translated

@@ -4,7 +4,7 @@
 # Univention Directory Manager Modules
 #  check for unused dhcp records
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,12 +34,12 @@
 
 import ldap
 
-import univention.baseconfig
+import univention.config_registry
 
-baseConfig = univention.baseconfig.baseConfig()
-baseConfig.load()
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
 
-baseDN = baseConfig['ldap/base']
+baseDN = ucr['ldap/base']
 
 lo = ldap.open('localhost', 7389)
 bindpw = open('/etc/ldap.secret').read()

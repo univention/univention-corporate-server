@@ -45,7 +45,9 @@ class TestUMCUserCreation(UDMModule):
                 "CtxReconnectSession": "0000",
                 "$dn$": "uid=" + username + ",cn=users," + self.ldap_base
             },
-            "options": {}
+            "options": {
+                "objectType": "users/user"
+            }
         }]
         request_result = self.client.umc_command('udm/put', options, 'users/user').result
         if not request_result:
@@ -84,13 +86,11 @@ class TestUMCUserCreation(UDMModule):
                 "displayName": username,
                 "CtxCfgClientDrivers": False,
                 "CtxCfgTSLogon": False,
-                "$options$": {"samba": True,
-                              "kerberos": True,
-                              "person": True,
-                              "posix": True,
-                              "mail": True,
-                              "pki": False,
-                              "ldap_pwd": False}
+                "$options$": {
+                    "person": True,
+                    "mail": True,
+                    "pki": False,
+                }
             },
             "options": {
                 "container": "cn=users," + self.ldap_base,
@@ -129,7 +129,7 @@ class TestUMCUserCreation(UDMModule):
             print("Creating a simple domain user with username '%s'"
                   % test_username)
             self.create_user(test_username, test_password, domain_users)
-            if not self.check_obj_exists(test_username, "users/user"):
+            if not self.check_obj_exists(test_username, "users/user", "users/user"):
                 utils.fail("Cannot query a simple test user '%s' that "
                            "was just created" % test_username)
 
@@ -137,7 +137,7 @@ class TestUMCUserCreation(UDMModule):
                   "'%s'" % test_username_admin)
             self.create_user(test_username_admin, test_password,
                              domain_admins)
-            if not self.check_obj_exists(test_username_admin, "users/user"):
+            if not self.check_obj_exists(test_username_admin, "users/user", "users/user"):
                 utils.fail("Cannot query an advanced test user '%s' that "
                            "was just created" % test_username_admin)
 
@@ -173,10 +173,10 @@ class TestUMCUserCreation(UDMModule):
                               test_groupnames))
         finally:
             print "Removing created test users if any"
-            if self.check_obj_exists(test_username, "users/user"):
-                self.delete_obj(test_username, "users", "users/user")
-            if self.check_obj_exists(test_username_admin, "users/user"):
-                self.delete_obj(test_username_admin, "users", "users/user")
+            if self.check_obj_exists(test_username, "users/user", "users/user"):
+                self.delete_obj(test_username, "users/user", "users/user")
+            if self.check_obj_exists(test_username_admin, "users/user", "users/user"):
+                self.delete_obj(test_username_admin, "users/user", "users/user")
 
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin policy for the memberserver packages
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -69,6 +69,10 @@ short_description = _('Policy: Member Server packages')
 policy_short_description = _('Member Server packages')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPolicy', 'univentionPolicyPackagesMember'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -132,9 +136,6 @@ register_policy_mapping(mapping)
 
 class object(univention.admin.handlers.simplePolicy):
 	module = module
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyPackagesMember'])]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

@@ -86,9 +86,9 @@ touch "/etc/$APP.secret"
 chown root:root "/etc/$APP.secret" # or so
 chmod 600 "/etc/$APP.secret"
 printf '%s' "$PASSWORD" > "/etc/$APP.secret"
-udm users/user create "$@" --position "cn=users,$ldap_base" \
+udm users/ldap create "$@" --position "cn=users,$ldap_base" \
 	--set username="$APP-user" --set lastname="$APP-user" \
-	--set password="$PASSWORD" --option ldap_pwd || die
+	--set password="$PASSWORD" || die
 		</programlisting>
 
 		<para>

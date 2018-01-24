@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for network objects
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -52,6 +52,12 @@ operations = ['add', 'edit', 'remove', 'search']
 childs = 0
 short_description = _('Networks: Network')
 long_description = ''
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionNetworkClass'],
+	),
+}
 
 property_descriptions = {
 	'name': univention.admin.property(
@@ -235,7 +241,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_post_remove(self):
 		import univention.admin.handlers.computers.computer
-		filter_ = univention.admin.filter.expression('univentionNetworkLink', self.dn)
+		filter_ = univention.admin.filter.expression('univentionNetworkLink', self.dn, escape=True)
 		for computer in univention.admin.handlers.computers.computer.lookup(self.co, self.lo, filter_s=filter_):
 			try:
 				self.lo.modify(computer.dn, [('univentionNetworkLink', self.dn, '')])
@@ -246,9 +252,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if not self['nextIp']:
 			self.stepIp()
 
-		return [
-			('objectClass', ['top', 'univentionNetworkClass']),
-		]
+		return []
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)

@@ -4,7 +4,7 @@
 # Univention Nagios
 #  univention admin nagios module
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -74,6 +74,13 @@ class syntax_timeperiod(univention.admin.syntax.simple):
 			return text
 		raise univention.admin.uexceptions.valueError(_("No valid timeperiod list!"))
 
+
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionNagiosTimeperiodClass'],
+	),
+}
 
 property_descriptions = {
 	'name': univention.admin.property(
@@ -226,9 +233,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _update_policies(self):
 		pass
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionNagiosTimeperiodClass'])]
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)

@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the user himself
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -45,8 +45,7 @@ options = {}
 
 mapping = udm_user.mapping
 
-property_descriptions = {
-}
+property_descriptions = {}
 
 layout = [Tab(_('General'), layout=[])]
 

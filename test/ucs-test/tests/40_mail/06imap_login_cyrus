@@ -22,7 +22,6 @@ def main():
 				password=password,
 				mailPrimaryAddress=mailAddress,
 				mailHomeServer='{}.{}'.format(ucr.get('hostname'), ucr.get('domainname')),
-				option=['mail', 'person', 'posix', 'samba', 'pki']
 			)
 
 			disable_mail_quota()

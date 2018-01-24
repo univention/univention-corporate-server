@@ -20,9 +20,7 @@ if __name__ == '__main__':
 		utils.stop_s4connector()
 
 	with udm_test.UCSTestUDM() as udm:
-		#########################################################
 		print '>>> create user with default settings'
-		#########################################################
 		firstname = random_string()
 		lastname = random_string()
 		userdn = udm.create_user(firstname=firstname, lastname=lastname, check_for_drs_replication=False)[0]
@@ -48,9 +46,7 @@ if __name__ == '__main__':
 		udm.modify_object('users/user', dn=userdn, firstname=firstname2, lastname=lastname2, check_for_drs_replication=False)
 		utils.verify_ldap_object(userdn, {'displayName': ['%s %s' % (firstname2, lastname2)]})
 
-		#########################################################
 		print '>>> create user with default settings'
-		#########################################################
 		lastname = random_string()
 		userdn = udm.create_user(firstname='', lastname=lastname, check_for_drs_replication=False)[0]
 		utils.verify_ldap_object(userdn, {'displayName': [lastname]})
@@ -60,9 +56,7 @@ if __name__ == '__main__':
 		udm.modify_object('users/user', dn=userdn, lastname=lastname2, check_for_drs_replication=False)
 		utils.verify_ldap_object(userdn, {'displayName': [lastname2]})
 
-		#########################################################
 		print '>>> create user with custom displayName'
-		#########################################################
 		firstname = random_string()
 		lastname = random_string()
 		displayName = random_string()

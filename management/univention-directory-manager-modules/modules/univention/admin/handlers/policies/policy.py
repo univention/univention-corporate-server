@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the policies
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -54,8 +54,6 @@ for pol in univention.admin.handlers.policies.policies:
 	if hasattr(pol, 'module'):
 		childmodules.append(pol.module)
 virtual = 1
-options = {
-}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),

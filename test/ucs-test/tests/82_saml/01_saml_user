@@ -19,6 +19,6 @@ if __name__ == '__main__':
 	attrs = {
 		'uid': ['sys-idp-user'],
 		'objectClass': ['top', 'person', 'univentionPWHistory', 'simpleSecurityObject', 'uidObject', 'univentionObject'],
-		'univentionObjectType': ['users/user'],
+		'univentionObjectType': ['users/ldap'],
 	}
 	utils.verify_ldap_object('uid=sys-idp-user,cn=users,%s' % (ucr['ldap/base'],), attrs)

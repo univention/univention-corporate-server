@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the dns host records
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -49,7 +49,12 @@ superordinate = 'dns/forward_zone'
 childs = 0
 short_description = 'DNS: Host Record'
 long_description = _('Resolve the symbolic name to IP addresses.')
-
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'dNSZone'],
+	),
+	}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Hostname'),
@@ -170,7 +175,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', ['top', 'dNSZone']),
 			(self.superordinate.mapping.mapName('zone'), self.superordinate.mapping.mapValue('zone', self.superordinate['zone'])),
 		]
 
@@ -226,12 +230,12 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=Fa
 			univention.admin.filter.expression('aRecord', '*'),
 			univention.admin.filter.expression('aAAARecord', '*'),
 			univention.admin.filter.expression('mXRecord', '*'),
-			univention.admin.filter.expression('univentionObjectType', module),  # host record without any record
+			univention.admin.filter.expression('univentionObjectType', module, escape=True),  # host record without any record
 		]),
 	])
 
 	if superordinate:
-		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone'])))
+		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone']), escape=True))
 
 	if filter_s:
 		filter_p = univention.admin.filter.parse(filter_s)

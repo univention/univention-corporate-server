@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the DNS TXT records
 #
-# Copyright 2011-2017 Univention GmbH
+# Copyright 2011-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -46,7 +46,12 @@ superordinate = 'dns/forward_zone'
 childs = 0
 short_description = 'DNS: TXT Record'
 long_description = _('Resolve the symbolic name to some textual data.')
-
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'dNSZone'],
+	),
+}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
@@ -112,7 +117,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', ['top', 'dNSZone']),
 			(self.superordinate.mapping.mapName('zone'), self.superordinate.mapping.mapValue('zone', self.superordinate['zone'])),
 		]
 
@@ -142,7 +146,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=Fa
 	])
 
 	if superordinate:
-		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone'])))
+		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone']), escape=True))
 
 	if filter_s:
 		filter_p = univention.admin.filter.parse(filter_s)

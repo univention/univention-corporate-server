@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for mail imap folders
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -59,6 +59,12 @@ ldap_search_maildomain = univention.admin.syntax.LDAP_Search(
 	attribute=['mail/domain: name'],
 	value='mail/domain: name')
 
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['univentionMailSharedFolder'],
+	),
+}
 
 property_descriptions = {
 	'name': univention.admin.property(
@@ -170,7 +176,7 @@ class object(univention.admin.handlers.simpleLdap):
 				# always empty, that is way searching for 'name' causes trouble
 				# we delete the 'name' key in oldinfo so that the "change test"
 				# succeeds
-				if self.oldinfo.has_key('name') and not self.oldinfo['name']:
+				if not self.oldinfo.get('name'):
 					del self.oldinfo['name']
 				self['name'] = cn[0].split('@')[0]
 				self['mailDomain'] = cn[0].split('@')[1]
@@ -201,7 +207,6 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
 
 	def _ldap_addlist(self):
-		ocs = []
 		al = []
 
 		if self['mailPrimaryAddress']:
@@ -216,9 +221,6 @@ class object(univention.admin.handlers.simpleLdap):
 					univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
 					raise univention.admin.uexceptions.mailAddressUsed
 
-		ocs.append('univentionMailSharedFolder')
-
-		al.insert(0, ('objectClass', ocs))
 		al.append(('cn', "%s@%s" % (self.info['name'], self.info['mailDomain'])))
 
 		return al

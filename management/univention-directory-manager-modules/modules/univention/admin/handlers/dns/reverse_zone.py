@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the dns reverse zones
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -49,6 +49,10 @@ childmodules = ['dns/ptr_record']
 short_description = _('DNS: Reverse lookup zone')
 long_description = _('Map IP addresses back to hostnames.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'dNSZone'],
+	),
 }
 property_descriptions = {
 	'subnet': univention.admin.property(
@@ -267,7 +271,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', ['top', 'dNSZone']),
 			('relativeDomainName', ['@'])
 		]
 

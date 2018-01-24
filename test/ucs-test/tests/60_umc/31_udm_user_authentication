@@ -68,7 +68,7 @@ class TestUMCUserAuthentication(UDMModule):
         a 'user_dn' in options to change the password.
         """
         print "\nChanging '%s' user password to '%s'" % (user_dn, new_password)
-        options = [{"object": {"password": new_password, "$dn$": user_dn}, "options": {}}]
+        options = [{"object": {"password": new_password, "$dn$": user_dn}, "options": {"objectType": "users/user"}}]
 
         request_result = self.request("udm/put", options, "users/user")
         if not request_result[0].get('success'):

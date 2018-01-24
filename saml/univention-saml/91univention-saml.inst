@@ -72,9 +72,8 @@ import univention.admin.handlers.users.user
 univention.admin.modules.update()
 lo, po = univention.admin.uldap.getAdminConnection()
 po.setDn('cn=users,%s' % (sys.argv[2]))
-user = univention.admin.handlers.users.user.object(None, lo, po)
+user = univention.admin.modules.get('users/ldap').object(None, lo, po)
 user.open()
-user.options = ['ldap_pwd']
 user['username'] = 'sys-idp-user'
 user['password'] = sys.argv[1]
 user['lastname'] = 'idp-user'

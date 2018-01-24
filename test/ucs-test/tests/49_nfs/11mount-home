@@ -40,7 +40,6 @@ if __name__ == '__main__':
 			primaryGroup='cn=Domain Admins,cn=groups,%(ldap/base)s' % ucr,
 			homeShare=share,
 			homeSharePath=user_name,
-			options=['posix'],
 		)
 		user, _user_name = udm.create_user(**user_prop)
 

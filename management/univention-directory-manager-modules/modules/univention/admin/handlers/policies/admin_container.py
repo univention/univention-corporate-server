@@ -3,7 +3,7 @@
 # Univention Directory Manager Modules
 #  admin module for the admin modules
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -66,6 +66,10 @@ short_description = _('Policy: Univention Directory Manager container settings')
 policy_short_description = _('Univention Directory Manager container settings')
 long_description = ''
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionPolicy', 'univentionPolicyAdminContainerSettings'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -116,9 +120,6 @@ register_policy_mapping(mapping)
 
 class object(univention.admin.handlers.simplePolicy):
 	module = module
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyAdminContainerSettings'])]
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

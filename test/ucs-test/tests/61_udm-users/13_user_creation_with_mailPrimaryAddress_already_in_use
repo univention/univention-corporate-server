@@ -18,9 +18,9 @@ if __name__ == '__main__':
 	emailaddr = uts.random_name()
 	with udm_test.UCSTestUDM() as udm:
 		udm.create_object('mail/domain', name=mailDomainName)
-		udm.create_user(mailPrimaryAddress='%s@%s' % (emailaddr, mailDomainName), options=['mail', 'posix'])
+		udm.create_user(mailPrimaryAddress='%s@%s' % (emailaddr, mailDomainName))
 		try:
-			udm.create_user(mailPrimaryAddress='%s@%s' % (emailaddr, mailDomainName), options=['mail', 'posix'])
+			udm.create_user(mailPrimaryAddress='%s@%s' % (emailaddr, mailDomainName))
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 

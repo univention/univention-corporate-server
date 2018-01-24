@@ -17,5 +17,5 @@ import univention.testing.udm as udm_test
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		user = udm.create_user(options=['person'])[0]
+		user = udm.create_user(options=['person'])[0]  # FIXME
 		utils.verify_ldap_object(user)

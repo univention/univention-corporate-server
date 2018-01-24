@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for mailinglists
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -47,6 +47,12 @@ long_description = ''
 
 module_search_filter = univention.admin.filter.expression('objectClass', 'univentionMailList'),
 
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionMailList'],
+	),
+}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
@@ -140,13 +146,8 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
-		self['allowedEmailUsers'] = []
-		if self.oldattr.has_key('univentionAllowedEmailUsers'):
-			self['allowedEmailUsers'] = self.oldattr['univentionAllowedEmailUsers']
-
-		self['allowedEmailGroups'] = []
-		if self.oldattr.has_key('univentionAllowedEmailGroups'):
-			self['allowedEmailGroups'] = self.oldattr['univentionAllowedEmailGroups']
+		self['allowedEmailUsers'] = self.oldattr.get('univentionAllowedEmailUsers', [])
+		self['allowedEmailGroups'] = self.oldattr.get('univentionAllowedEmailGroups', [])
 
 		self.save()
 
@@ -159,9 +160,7 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailAddress'])
 
 	def _ldap_addlist(self):
-		ocs = ['top']
 		al = []
-		ocs.append('univentionMailList')
 		# mail address MUST be unique
 		if self['mailAddress']:
 			try:
@@ -171,7 +170,6 @@ class object(univention.admin.handlers.simpleLdap):
 				univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', value=self['mailAddress'])
 				raise univention.admin.uexceptions.mailAddressUsed
 
-		al.insert(0, ('objectClass', ocs))
 		return al
 
 	def _ldap_modlist(self):

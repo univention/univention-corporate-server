@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for locking objects
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -49,6 +49,10 @@ childs = 0
 short_description = _('Settings: Lock')
 long_description = _('Lock objects')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['lock'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(

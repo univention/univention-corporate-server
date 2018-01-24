@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the DHCP server
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -49,6 +49,11 @@ childs = 0
 short_description = _('DHCP: Server')
 long_description = _('Associate a service with a server.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'dhcpServer'],
+	),
+
 }
 
 property_descriptions = {
@@ -86,7 +91,6 @@ class object(DHCPBase):
 			raise univention.admin.uexceptions.dhcpServerAlreadyUsed(self.info['server'])
 
 		return [
-			('objectClass', ['top', 'dhcpServer']),
 			('dhcpServiceDN', self.superordinate.dn),
 		]
 
@@ -100,18 +104,16 @@ class object(DHCPBase):
 		self.lo.modify(self.dn, [('dhcpServiceDN', oldServiceDN[0], shadow_object.dn)])
 
 	@staticmethod
-	def lookup_filter(filter_s=None, lo=None):
-		filter_obj = univention.admin.filter.conjunction('&', [
+	def unmapped_lookup_filter():
+		return univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'dhcpServer')
 		])
-		filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
-		return filter_obj
 
 	@classmethod
 	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 		filter_obj = cls.lookup_filter(filter_s)
 		if superordinate:
-			filter_obj.expressions.append(univention.admin.filter.expression('dhcpServiceDN', superordinate.dn))
+			filter_obj.expressions.append(univention.admin.filter.expression('dhcpServiceDN', superordinate.dn, escape=True))
 		filter_str = unicode(filter_obj)
 
 		return super(object, cls).lookup(co, lo, filter_str, base, superordinate, scope, unique, required, timeout, sizelimit)

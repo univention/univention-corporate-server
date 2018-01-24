@@ -8,7 +8,6 @@
 import pytest
 from univention.config_registry import handler_set
 from univention.testing import utils
-from univention.lib.umc import Unauthorized
 
 samba4_installed = utils.package_installed('univention-samba4')
 
@@ -26,10 +25,6 @@ def enabled_password_quality_checks(lo, ldap_base, ucr):
 
 
 def test_password_changing_failure_reason(options, new_password, reason, udm, Client, random_string, Unauthorized):
-	if samba4_installed and options and ('posix' not in options or 'kerberos' not in options):
-		pytest.skip('Objects without posix&kerberos &(objectClass=posixAccount)(objectClass=krb5Principal) are not synced to S4 and therefore cannot change their password via UMC.')
-	if not samba4_installed and options == ['posix']:
-		pytest.skip('Objects with only posix in S3 enviroments cannot change their password via UMC.')
 	print 'test_password_changing_failure_reason(%r, %r, %r)' % (options, new_password, reason)
 	password = random_string()
 	userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
@@ -62,25 +57,12 @@ def pytest_generate_tests(metafunc):
 	# pam_unix
 	for option in [
 		[],
-		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=44582', raises=Unauthorized)(['posix'])
 	]:
 		reasons[REASON_TOO_SHORT_AT_LEAST_CHARACTERS if samba4_installed else REASON_TOO_SHORT].append([option, 'Test'])
 		reasons[REASON_TOO_SHORT_AT_LEAST_CHARACTERS if samba4_installed else REASON_TOO_SHORT].append([option, 'ana'])
 
-	for option in [['posix', 'samba']]:
-		reasons[REASON_TOO_SHORT if samba4_installed else REASON_TOO_SIMPLE].append([option, 'Test'])
-		reasons[REASON_TOO_SHORT if samba4_installed else REASON_PALINDROME].append([option, 'ana'])
-
-	# pam_krb5
-	for option in [['kerberos', 'person']]:
-		reasons[REASON_TOO_SIMPLE if samba4_installed else REASON_TOO_SHORT].append([option, 'Test'])
-		reasons[REASON_PALINDROME if samba4_installed else REASON_TOO_SHORT].append([option, 'ana'])
-
 	for option in [
 		[],
-		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=44582', raises=Unauthorized)(['posix', 'samba']),
-		['kerberos', 'person'],
-		pytest.mark.xfail(reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=44582', raises=Unauthorized)(['posix'])
 	]:
 		reasons[REASON_TOO_SIMPLE if samba4_installed else REASON_DICTIONARY].append([option, 'chocolate'])
 

@@ -4,7 +4,7 @@
 # Univention Nagios
 #  univention admin nagios module
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -58,6 +58,12 @@ ldap_search_period = univention.admin.syntax.LDAP_Search(
 	attribute=['nagios/timeperiod: name'],
 	value='nagios/timeperiod: name')
 
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionNagiosServiceClass'],
+	),
+}
 
 property_descriptions = {
 	'name': univention.admin.property(
@@ -323,9 +329,6 @@ class object(univention.admin.handlers.simpleLdap):
 		self['assignedHosts'] = hostlist
 
 		self.save()
-
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionNagiosServiceClass'])]
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)

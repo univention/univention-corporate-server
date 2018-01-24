@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  exceptions
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -412,3 +412,7 @@ class primaryGroupWithoutSamba(base):
 
 class wrongObjectType(base):
 	message = _('The object type of this object differs from the specified object type.')
+
+
+class noKerberosRealm(base):
+	message = _('There was no valid kerberos realm found.')

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (8.0.1-0) unstable; urgency=medium
+
+  * Bug #45842: hide "default" option from UMC
+
+ -- Florian Best <best@univention.de>  Fri, 29 Dec 2017 12:59:05 +0100
+
 univention-management-console-module-udm (8.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version

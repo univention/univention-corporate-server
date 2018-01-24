@@ -37,15 +37,15 @@ class TestUsers(object):
 	"""
 
 	@pytest.mark.parametrize('shadowLastChange,shadowMax,pwd_change_next_login', [
-		pytest.mark.xfail(reason='UDM does not know shadowLastChange=0')(('0', '', '1')),
+		('0', '', '1'),
 		('0', '0', '1'),
 		('0', '1', '1'),
-		pytest.mark.xfail(reason='UDM does not know shadowLastChange=0')(('0', str(int(time.time()) + 86400 * 2), '1')),
+		('0', str(int(time.time()) + 86400 * 2), '1'),
 		('', str(int(time.time()) + 86400 * 2), []),
 		('', '', []),
 		('', str(int(time.time()) - 86400 * 2), []),
 		('1', str(int(time.time()) - 86400 * 2), []),
-		pytest.mark.xfail(reason='UDM does not know shadowLastChange=0')(('0', str(int(time.time()) - 86400 * 2), '1')),
+		('0', str(int(time.time()) - 86400 * 2), '1'),
 	])
 	def test_unmap_pwd_change_next_login(self, udm, lo, shadowLastChange, shadowMax, pwd_change_next_login):
 		user = udm.create_user()[0]

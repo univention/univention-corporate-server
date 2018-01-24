@@ -3,7 +3,7 @@
 # Univention Directory Manager Modules
 #  direcory manager module for LDAP schema extensions
 #
-# Copyright 2013-2017 Univention GmbH
+# Copyright 2013-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -49,7 +49,12 @@ childs = 0
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Settings: LDAP Schema Extension')
 long_description = ''
-options = {}
+options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'univentionObjectMetadata', OC],
+	),
+}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Schema name'),
@@ -156,13 +161,6 @@ mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univ
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def _ldap_addlist(self):
-		ocs = ['top', 'univentionObjectMetadata', OC]
-
-		return [
-			('objectClass', ocs),
-		]
 
 	def _ldap_pre_modify(self):
 		diff_keys = [key for key in self.info.keys() if self.info.get(key) != self.oldinfo.get(key) and key not in ('active', 'appidentifier')]

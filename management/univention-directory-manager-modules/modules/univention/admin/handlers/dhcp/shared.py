@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the dhcp shares
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -49,6 +49,10 @@ childmodules = ('dhcp/sharedsubnet',)
 short_description = _('DHCP: Shared network')
 long_description = _('A shared physical network, where multiple IP address ranges are used.')
 options = {
+	'default': univention.admin.option(
+		default=True,
+		objectClasses=['top', 'dhcpSharedNetwork'],
+	),
 }
 property_descriptions = {
 	'name': univention.admin.property(
@@ -81,18 +85,11 @@ add_dhcp_options(__name__)
 class object(DHCPBase):
 	module = module
 
-	def _ldap_addlist(self):
-		return [
-			('objectClass', ['top', 'dhcpSharedNetwork'])
-		]
-
 	@staticmethod
-	def lookup_filter(filter_s=None, lo=None):
-		filter_obj = univention.admin.filter.conjunction('&', [
+	def unmapped_lookup_filter():
+		return univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'dhcpSharedNetwork')
 		])
-		filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
-		return filter_obj
 
 
 def identify(dn, attr):
