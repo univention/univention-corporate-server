@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: emacs24
+fix: 24.4+1-5+deb8u1
+desc: |
+ This update addresses the following issue:
+ * Remove unsafe enriched mode translations (CVE-2017-14482)
+bug: [45612]
+cve:
+- CVE-2017-14482
