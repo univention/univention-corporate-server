@@ -74,8 +74,7 @@ class TestUMCUserAuthentication(UMCBase):
 			self.set_userexpiry_testval()
 			response = self.get_object([self.test_user_dn], 'users/user')
 			try:
-				if response[0]["userexpiry"] != "2015-02-02":
-					utils.fail("userexpiry not initialized properly")
+				assert response[0]["userexpiry"] == "2015-02-02", "userexpiry not initialized properly: %s" % (response[0]["userexpiry"],)
 			except KeyError:  # Bug #37924
 				print 'FAIL! https://forge.univention.org/bugzilla/show_bug.cgi?id=37924'
 				print 'PRIOR=%r' % (prior_testval,)
@@ -86,22 +85,17 @@ class TestUMCUserAuthentication(UMCBase):
 
 			self.set_userexpiry_empty()
 			response = self.get_object([self.test_user_dn], 'users/user')
-			if "userexpiry" in response[0]:
-				utils.fail("unset of userexpiry via empty string failed")
-			else:
-				print "OK: unset of userexpiry via empty string succeeded"
+			assert not response[0].get('userexpiry'), "unset of userexpiry via empty string failed"
+			print "OK: unset of userexpiry via empty string succeeded"
 
 			self.set_userexpiry_testval()
 			response = self.get_object([self.test_user_dn], 'users/user')
-			if response[0]["userexpiry"] != "2015-02-02":
-				utils.fail("userexpiry not initialized properly")
+			assert response[0]["userexpiry"] == "2015-02-02", "userexpiry not initialized properly"
 
 			self.set_userexpiry_None()
 			response = self.get_object([self.test_user_dn], 'users/user')
-			if "userexpiry" in response[0]:
-				utils.fail("unset of userexpiry via None failed")
-			else:
-				print "OK: unset of userexpiry via None succeeded"
+			assert not response[0].get('userexpiry'), "unset of userexpiry via None failed"
+			print "OK: unset of userexpiry via None succeeded"
 
 
 if __name__ == '__main__':
