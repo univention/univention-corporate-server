@@ -1,0 +1,20 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: gst-plugins-base1.0
+fix: 1.4.4-2+deb8u1
+desc: |
+ This update addresses the following issues:
+ * CVE-2016-9811: Out of bounds heap read in windows_icon_typefind
+ * CVE-2017-5837: Floating point exception in gst_riff_create_audio_caps
+ * CVE-2017-5839: Stack overflow in gst_riff_create_audio_caps
+ * CVE-2017-5842: Out-of-bounds heap read in html_context_handle_element
+ * CVE-2017-5844: Floating point exception in gst_riff_create_audio_caps
+bug: [44417]
+cve:
+- CVE-2017-5842
+- CVE-2017-5839
+- CVE-2017-5837
+- CVE-2017-5844
+- CVE-2016-9811
