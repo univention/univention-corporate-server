@@ -205,6 +205,10 @@ def BooleanUnMap(value):
 	return value
 
 
+class dontMap(object):
+	pass
+
+
 class mapping(object):
 	"""
 	Map LDAP atribute names and values to UDM property names and values and back.
@@ -317,6 +321,12 @@ class mapping(object):
 			info[key] = func(oldattr)
 		return info
 
+	def shouldMap(self, map_name):
+		return not isinstance(self._map[map_name][1], dontMap)
+
+	def shouldUnmap(self, unmap_name):
+		return not isinstance(self._unmap[unmap_name][1], dontMap)
+
 
 def mapCmp(mapping, key, old, new):
 	"""
@@ -338,7 +348,7 @@ def mapCmp(mapping, key, old, new):
 	"""
 	try:
 		map = mapping._map[key]
-		if map[1]:
+		if mapping.shouldMap(key) and map[1]:
 			return map[1](old) == map[1](new)
 		return old == new
 	except KeyError:
@@ -359,6 +369,8 @@ def mapDict(mapping, old):
 	if old:
 		for key, value in old.items():
 			try:
+				if not mapping.shouldUnmap(key):
+					continue
 				k = mapping.unmapName(key)
 				v = mapping.unmapValue(key, value)
 			except KeyError:
@@ -411,6 +423,8 @@ def mapDiff(mapping, diff):
 	if diff:
 		for key, oldvalue, newvalue in diff:
 			try:
+				if not mapping.shouldMap(key):
+					continue
 				k = mapping.mapName(key)
 				ov = mapping.mapValue(key, oldvalue)
 				nv = mapping.mapValue(key, newvalue)
@@ -438,6 +452,8 @@ def mapDiffAl(mapping, diff):  # UNUSED
 	if diff:
 		for key, oldvalue, newvalue in diff:
 			try:
+				if not mapping.shouldMap(key):
+					continue
 				k = mapping.mapName(key)
 				nv = mapping.mapValue(key, newvalue)
 			except KeyError:
@@ -459,8 +475,11 @@ def mapRewrite(filter, mapping):
 	('ldap', 'udm')
 	"""
 	try:
-		k = mapping.mapName(filter.variable)
-		v = mapping.mapValue(filter.variable, filter.value)
+		key = filter.variable
+		if not mapping.shouldMap(key):
+			return
+		k = mapping.mapName(key)
+		v = mapping.mapValue(key, filter.value)
 	except KeyError:
 		return
 	if k:
