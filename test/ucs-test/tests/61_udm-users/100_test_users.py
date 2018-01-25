@@ -292,8 +292,18 @@ class TestUsers(object):
 	def test_modlist_krb_password_end(self, udm):
 		pass
 
-	def test_modlist_samba_bad_pw_count(self, udm):
-		pass
+	@pytest.mark.parametrize('locked,unlocked', [
+		('all', 'none'),
+		('all', 'posix'),
+		('windows', 'none'),
+		('windows', 'posix'),
+	])
+	def test_modlist_samba_bad_pw_count(self, udm, lo, locked, unlocked):
+		user = udm.create_user()[0]
+		udm.modify_object('users/user', dn=user, locked=locked)
+		lo.modify(user, [('sambaBadPasswordCount', '', '20')])
+		udm.modify_object('users/user', dn=user, locked=unlocked)
+		udm.verify_ldap_object(user, {'sambaBadPasswordCount': ['0']})
 
 	def test_modlist_sambaAcctFlags(self, udm):
 		pass
