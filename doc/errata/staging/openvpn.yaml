@@ -1,0 +1,24 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: openvpn
+fix: 2.3.4-5+deb8u2
+desc: |
+ This update addresses the following issues:
+ * OpenVPN is vulnerable to remote denial-of-service when receiving malformed
+   IPv6 packet. (CVE-2017-7508)
+ * OpenVPN is vulnerable to remote denial-of-service due to memory exhaustion
+   caused by memory leaks and double-free issue in extract_x509_extension().
+   (CVE-2017-7521)
+ * OpenVPN is vulnerable to denial-of-service and/or possibly sensitive memory
+   leak triggered by man-in-the-middle attacker. (CVE-2017-7520)
+ * OpenVPN is vulnerable to reachable assertion when packet-ID counter rolls
+   over resulting into Denial of Service of server by authenticated attacker.
+   (CVE-2017-7479)
+bug: [44969]
+cve:
+- CVE-2017-7508
+- CVE-2017-7521
+- CVE-2017-7520
+- CVE-2017-7479
