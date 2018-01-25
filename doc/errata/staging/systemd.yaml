@@ -1,0 +1,15 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: systemd
+fix: 215-17+deb8u7A~4.2.3.201801211553
+desc: |
+ This update addresses the following issue:
+ * The manager_dispatch_notify_fd function in systemd allows local users to
+   cause a denial of service (system hang) via a zero-length message received
+   over a notify socket, which causes an error to be returned and the
+   notification handler to be disabled. (CVE-2016-7796)
+bug: [46134]
+cve:
+- CVE-2016-7796
