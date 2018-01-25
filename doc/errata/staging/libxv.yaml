@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: libxv
+fix: 2:1.0.10-1+deb8u1
+desc: |
+ This update addresses the following issue:
+ * libXv allow remote X servers to trigger out-of-bounds memory access
+   operations via vectors involving length specifications in received data.
+   (CVE-2016-5407)
+bug: [46150]
+cve:
+- CVE-2016-5407
