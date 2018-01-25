@@ -245,18 +245,18 @@ class TestUsers(object):
 		with pytest.raises(Exception):
 			udm.create_user(password=password)
 
-	@pytest.mark.parametrize('disabled,flag', [
-		# ('none', '126'),
-		('posix', '126'),
-		('windows', '126'),
-		('windows_posix', '126'),
-		('kerberos', '254'),
-		('windows_kerberos', '254'),
-		('posix_kerberos', '254'),
-		('all', '254'),
+	@pytest.mark.parametrize('disabled,flag,x', [
+		('none', '126', {'modify': False}),
+		('posix', '126', {}),
+		('windows', '126', {}),
+		('windows_posix', '126', {}),
+		('kerberos', '254', {}),
+		('windows_kerberos', '254', {}),
+		('posix_kerberos', '254', {}),
+		('all', '254', {}),
 	])
-	def test_modlist_krb5_kdc_flags(self, disabled, flag, udm):
-		self._test_modlist(udm, {'disabled': disabled}, {'krb5KDCFlags': [flag]})
+	def test_modlist_krb5_kdc_flags(self, disabled, flag, x, udm):
+		self._test_modlist(udm, {'disabled': disabled}, {'krb5KDCFlags': [flag]}, **x)
 
 	def test_modlist_krb5_key(self, udm):
 		pass
