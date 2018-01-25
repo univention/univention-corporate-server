@@ -2105,10 +2105,12 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		"""
 		if not self.exists() or self.hasChanged('disabled'):
 			try:
-				old_kdcflags = int(self.oldattr.get('krb5KDCFlags', ['126'])[0])
+				old_kdcflags = int(self.oldattr.get('krb5KDCFlags', ['0'])[0])
 			except ValueError:
-				old_kdcflags = 126
+				old_kdcflags = 0
 			krb_kdcflags = old_kdcflags
+			if not self.exists():
+				krb_kdcflags |= 126
 			if self.__is_kerberos_disabled():  # disable kerberos account
 				krb_kdcflags |= (1 << 7)
 			else:  # enable kerberos account
