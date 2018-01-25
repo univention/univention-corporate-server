@@ -1,0 +1,18 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: libraw
+fix: 0.16.0-9+deb8u3
+desc: |
+ This update addresses the following issues:
+ * A boundary error within the "parse_tiff_ifd()" function can be exploited to
+   cause a memory corruption via e.g. a specially crafted KDC file with model
+   set to "DSLR-A100" and containing multiple sequences of 0x100 and 0x14A
+   TAGs. (CVE-2017-6887)
+ * An error within the "parse_tiff_ifd()" function can be exploited to corrupt
+   memory. (CVE-2017-6886)
+bug: [45350]
+cve:
+- CVE-2017-6887
+- CVE-2017-6886
