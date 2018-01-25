@@ -1,0 +1,15 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: sensible-utils
+fix: 0.0.9+deb8u1
+desc: |
+ This update addresses the following issue:
+ * sensible-browser does not validate strings before launching the program
+   specified by the BROWSER environment variable, which allows remote
+   attackers to conduct argument-injection attacks via a crafted URL, as
+   demonstrated by a --proxy-pac-file argument. (CVE-2017-17512)
+bug: [46160]
+cve:
+- CVE-2017-17512
