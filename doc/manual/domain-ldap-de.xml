@@ -1580,9 +1580,9 @@ apt-get dselect-upgrade
 	<itemizedlist>
 		<listitem>
 			<simpara>
-			Prüfung der Umgebung - das System muss über &ucsUCR; verfügen, ein &ucsBackup; und der Domäne beigetreten sein,
-			der &ucsMaster; muss per DNS auflösbar und eine Verbindung zum Repositoryserver möglich sein. Zudem darf der
-			&ucsMaster; nicht mehr im Netzwerk erreichbar sein.
+			Prüfung der Umgebung: Bei dem System muss es sich um einen &ucsBackup; handeln, der der Domäne bereits beigetreten ist.
+			Zudem wird sichergestellt, dass der &ucsMaster; über DNS auflösbar sowie dass eine Verbindung zum Repositoryserver möglich ist.
+			Außerdem darf der &ucsMaster; nicht mehr im Netzwerk erreichbar sein.
 			</simpara>
 		</listitem>
 		<listitem>
