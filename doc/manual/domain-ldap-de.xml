@@ -1474,7 +1474,7 @@ univention-directory-listener-ctrl resync cups-printers
 </section>
 
 <section id="domain:backup2master">
-	<title>Umwandlung eines DC Backup zum neuen DC Master</title>
+	<title>Umwandlung eines &ucsBackup; zum neuen &ucsMaster;</title>
 	<para>
 		Eine UCS Domäne hat immer genau einen &ucsMaster;, kann aber beliebig viele
 		&ucsBackup; beinhalten. Ein &ucsBackup; speichert alle Domänendaten und alle
