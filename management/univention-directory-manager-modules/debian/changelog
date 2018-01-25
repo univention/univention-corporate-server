@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.4-2) unstable; urgency=medium
+
+  * Bug #45842: fix typo
+
+ -- Florian Best <best@univention.de>  Thu, 25 Jan 2018 14:41:09 +0100
+
 univention-directory-manager-modules (13.0.4-1) unstable; urgency=medium
 
   * Bug #46021: prevent empty local part or domain part in mail addresses

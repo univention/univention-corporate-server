@@ -1344,7 +1344,7 @@ def unmapKerberosDisabled(oldattr):
 		kdcflags = int(oldattr.get('krb5KDCFlags', ['0'])[0])
 	except ValueError:
 		kdcflags = 0
-	return kdcflags & (1 << 7) == (1 << 7)
+	return str(kdcflags & (1 << 7) == (1 << 7))
 
 
 def unmapPosixDisabled(oldattr, disabled):
@@ -2113,7 +2113,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				krb_kdcflags |= (1 << 7)
 			else:  # enable kerberos account
 				krb_kdcflags &= ~(1 << 7)
-			ml.append(('krb5KDCFlags', old_kdcflags, krb_kdcflags))
+			ml.append(('krb5KDCFlags', str(old_kdcflags), str(krb_kdcflags)))
 		return ml
 
 	def _modlist_posix_password(self, ml):
