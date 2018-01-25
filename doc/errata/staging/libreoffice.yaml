@@ -1,0 +1,20 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: libreoffice
+fix: 1:4.3.3-2+deb8u9
+desc: |
+ This update addresses the following issues:
+ * A vulnerability in OpenOffice's PPT file parser allows attackers to craft
+   malicious documents that cause denial of service (memory corruption and
+   application crash) potentially resulting in arbitrary code execution.
+   (CVE-2017-12607)
+ * A vulnerability in Apache OpenOffice Writer DOC file parser allows
+   attackers to craft malicious documents that cause denial of service (memory
+   corruption and application crash) potentially resulting in arbitrary code
+   execution. (CVE-2017-12608)
+bug: [45916]
+cve:
+- CVE-2017-12607
+- CVE-2017-12608
