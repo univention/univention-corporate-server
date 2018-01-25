@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: sudo
+fix: 1.8.10p3-1+deb8u5
+desc: |
+ This update addresses the following issue:
+ * sudo is vulnerable to an input validation (embedded newlines) in the
+   get_process_ttyname() function resulting in information disclosure and
+   command execution. (CVE-2017-1000368)
+bug: [46161]
+cve:
+- CVE-2017-1000368
