@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: spice
+fix: 0.12.5-1+deb8u5
+desc: |
+ This update addresses the following issue:
+ * CVE-2017-7506: Possible buffer overflow via invalid monitor configurations
+bug: [45143]
+cve:
+- CVE-2017-7506
