@@ -195,14 +195,16 @@ class TestUsers(object):
 		udm.stop_cli_server()
 		self._test_modlist(udm, props, {'cn': [cn]})
 
-	def _test_modlist(self, udm, props, attrs):
-		user = udm.create_user(**props)[0]
-		udm.verify_ldap_object(user, attrs, strict=False)
-		udm.remove_object('users/user', dn=user)
+	def _test_modlist(self, udm, props, attrs, **kwargs):
+		if kwargs.get('create', True):
+			user = udm.create_user(**props)[0]
+			udm.verify_ldap_object(user, attrs, strict=False)
+			udm.remove_object('users/user', dn=user)
 
-		user = udm.create_user()[0]
-		user = udm.modify_object('users/user', dn=user, **props)
-		udm.verify_ldap_object(user, attrs, strict=False)
+		if kwargs.get('modify', True):
+			user = udm.create_user()[0]
+			user = udm.modify_object('users/user', dn=user, **props)
+			udm.verify_ldap_object(user, attrs, strict=False)
 
 	@pytest.mark.parametrize('props,gecos', [
 		({'firstname': 'X', 'lastname': 'Y'}, 'X Y'),
@@ -302,8 +304,12 @@ class TestUsers(object):
 	def test_modlist_samba_kickoff_time(self, udm):
 		pass
 
-	def test_modlist_krb5_valid_end(self, udm):
-		pass
+	@pytest.mark.parametrize('userexpiry,valid_end,x', [
+		('2018-01-01', ['20180101000000Z'], {}),
+		('', [], {'modify': False}),
+	])
+	def test_modlist_krb5_valid_end(self, udm, userexpiry, valid_end, x):
+		self._test_modlist(udm, {'userexpiry': userexpiry}, {'krb5ValidEnd': valid_end}, **x)
 
 	@pytest.mark.parametrize('disabled,userexpiry,shadow_expire', [
 		('none', '2018-01-01', ['17532']),
