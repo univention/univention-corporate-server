@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: mysql-5.5
-fix: 5.5.58-0+deb8u1A~4.2.3.201801211553
+fix: 5.5.59-0+deb8u1A~4.2.3.201801251404
 desc: |
  This update addresses the following issues:
  * Difficult to exploit vulnerability allows high privileged attacker with
@@ -72,6 +72,32 @@ desc: |
    well as unauthorized read access to a subset of MySQL Server accessible
    data and unauthorized ability to cause a partial denial of service (partial
    DOS) of MySQL Server. (CVE-2017-3636)
+ * Easily exploitable vulnerability allows low privileged attacker with
+   network access via multiple protocols to compromise MySQL Server.
+   Successful attacks of this vulnerability can result in unauthorized ability
+   to cause a hang or frequently repeatable crash (complete DOS) of MySQL
+   Server as well as unauthorized update, insert or delete access to some of
+   MySQL Server accessible data. (CVE-2018-2562)
+ * Easily exploitable vulnerability allows low privileged attacker with
+   network access via multiple protocols to compromise MySQL Server.
+   Successful attacks of this vulnerability can result in unauthorized ability
+   to cause a hang or frequently repeatable crash (complete DOS) of MySQL
+   Server. (CVE-2018-2622)
+ * Easily exploitable vulnerability allows low privileged attacker with
+   network access via multiple protocols to compromise MySQL Server.
+   Successful attacks of this vulnerability can result in unauthorized ability
+   to cause a hang or frequently repeatable crash (complete DOS) of MySQL
+   Server. (CVE-2018-2640)
+ * Easily exploitable vulnerability allows low privileged attacker with
+   network access via multiple protocols to compromise MySQL Server.
+   Successful attacks of this vulnerability can result in unauthorized ability
+   to cause a hang or frequently repeatable crash (complete DOS) of MySQL
+   Server. (CVE-2018-2665)
+ * Easily exploitable vulnerability allows low privileged attacker with
+   network access via multiple protocols to compromise MySQL Server.
+   Successful attacks of this vulnerability can result in unauthorized ability
+   to cause a hang or frequently repeatable crash (complete DOS) of MySQL
+   Server. (CVE-2018-2668)
 bug: [45633]
 cve:
 - CVE-2017-10268
@@ -85,3 +111,8 @@ cve:
 - CVE-2017-10379
 - CVE-2017-10378
 - CVE-2017-3636
+- CVE-2018-2562
+- CVE-2018-2622
+- CVE-2018-2640
+- CVE-2018-2665
+- CVE-2018-2668
