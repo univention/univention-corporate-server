@@ -3,14 +3,14 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-kernel-image-signed
-fix: 3.0.2-13A~4.2.0.201801181701
+fix: 3.0.2-14A~4.2.0.201801251601
 desc: |
  This update of the Linux kernel to version 4.9.78 addresses the following
  issues:
  * Systems with microprocessors utilizing speculative execution and indirect
    branch prediction may allow unauthorized disclosure of information to an
    attacker with local user access via a side-channel analysis (CVE-2017-5715)
-note: This is the second of four parts.
+note: This is the second of three parts.
 bug: [46029]
 cve:
 - CVE-2017-5715

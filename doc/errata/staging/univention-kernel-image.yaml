@@ -10,7 +10,7 @@ desc: |
  * Systems with microprocessors utilizing speculative execution and indirect
    branch prediction may allow unauthorized disclosure of information to an
    attacker with local user access via a side-channel analysis (CVE-2017-5715)
-note: This is the third of four parts.
+note: This is the third of three parts.
 bug: [46029]
 cve:
 - CVE-2017-5715
