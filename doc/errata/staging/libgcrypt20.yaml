@@ -1,0 +1,15 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: libgcrypt20
+fix: 1.6.3-2+deb8u4
+desc: |
+ This update addresses the following issues:
+ * Mitigate a flush+reload side-channel attack on RSA secret keys dubbed
+   "Sliding right into disaster". (CVE-2017-7526)
+ * ecc: Store EdDSA session key in secure memory (CVE-2017-9526)
+bug: [44857]
+cve:
+- CVE-2017-9526
+- CVE-2017-7526
