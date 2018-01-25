@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: postgresql-common
+fix: 165+deb8u3A~4.2.3.201801251012
+desc: |
+ This update addresses the following issue:
+ * pg_ctlcluster, pg_createcluster, pg_upgradecluster: Use lchown instead of
+   chown to mitigate privilege escalation via symlinks. (CVE-2017-8806)
+bug: [45753]
+cve:
+- CVE-2017-8806
