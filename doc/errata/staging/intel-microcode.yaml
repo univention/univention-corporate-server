@@ -10,6 +10,6 @@ desc: |
    branch prediction may allow unauthorized disclosure of information to an
    attacker with local user access via a side-channel analysis (CVE-2017-5715)
 note: This is the fourth of four parts.
-bug: [46029]
+bug: []
 cve:
 - CVE-2017-5715
