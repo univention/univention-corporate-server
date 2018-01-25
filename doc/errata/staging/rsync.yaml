@@ -1,0 +1,28 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: rsync
+fix: 3.1.1-3+deb8u1A~4.2.3.201801251012
+desc: |
+ This update addresses the following issues:
+ * The recv_files function in receiver.c proceeds with certain file metadata
+   updates before checking for a filename in the daemon_filter_list data
+   structure, which allows remote attackers to bypass intended access
+   restrictions. (CVE-2017-17433)
+ * rsync does not check for fnamecmp filenames in the daemon_filter_list data
+   structure (in the recv_files function in receiver.c) and also does not
+   apply the sanitize_paths protection mechanism to pathnames found in "xname
+   follows" strings (in the read_ndx_and_attrs function in rsync.c), which
+   allows remote attackers to bypass intended access restrictions.
+   (CVE-2017-17434)
+ * The receive_xattr function in xattrs.c does not check for a trailing '\0'
+   character in an xattr name, which allows remote attackers to cause a denial
+   of service (heap-based buffer over-read and application crash) or possibly
+   have unspecified other impact by sending crafted data to the daemon.
+   (CVE-2017-16548)
+bug: [46159]
+cve:
+- CVE-2017-17433
+- CVE-2017-17434
+- CVE-2017-16548
