@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: smarty3
+fix: 3.1.21-1+deb8u1
+desc: |
+ This update addresses the following issue:
+ * Smarty 3 is vulnerable to a PHP code injection when calling fetch() or
+   display() functions on custom resources that does not sanitize template
+   name. (CVE-2017-1000480)
+bug: [46169]
+cve:
+- CVE-2017-1000480
