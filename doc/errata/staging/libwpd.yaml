@@ -1,0 +1,16 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: libwpd
+fix: 0.10.0-2+deb8u1
+desc: |
+ This update addresses the following issue:
+ * libwpd mishandles iterators, which allows remote attackers to cause a
+   denial of service (heap-based buffer over-read in the WPXTableList class in
+   WPXTable.cpp). This vulnerability can be triggered in LibreOffice before
+   5.3.7. It may lead to suffering a remote attack against a LibreOffice
+   application. (CVE-2017-14226)
+bug: [46141]
+cve:
+- CVE-2017-14226
