@@ -1,0 +1,19 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: pjproject
+fix: 2.1.0.0.ast20130823-1+deb8u1
+desc: |
+ This update addresses the following issues:
+ * PJSIP allows remote attackers to cause a denial of service (buffer overflow
+   and application crash) via a SIP packet with a crafted CSeq header in
+   conjunction with a Via header that lacks a branch parameter.
+   (CVE-2017-9372)
+ * The multi-part body parser in PJSIP allows remote attackers to cause a
+   denial of service (out-of-bounds read and application crash) via a crafted
+   packet. (CVE-2017-9359)
+bug: [45234]
+cve:
+- CVE-2017-9372
+- CVE-2017-9359
