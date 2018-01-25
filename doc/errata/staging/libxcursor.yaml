@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: libxcursor
+fix: 1:1.1.14-1+deb8u1
+desc: |
+ This update addresses the following issue:
+ * Fix heap overflows when parsing malicious files (CVE-2017-16612)
+bug: [46143]
+cve:
+- CVE-2017-16612
