@@ -1446,9 +1446,9 @@ univention-directory-listener-ctrl resync cups-printers
 <section id="domain:backup2master">
 	<title>Converting a &ucsBackup; backup to the new &ucsMaster;</title>
 	<para>
-		A &ucsBackup; stores all the domain data and all SSL security certificates as
-		read-only copies. However, in contrast to the &ucsMaster;, no writing changes
-		can be performed.
+		A UCS domain consists of only one &ucsMaster;, but is not limited in the number
+		of &ucsBackup;. A &ucsBackup; stores all the domain data and all SSL security certificates as
+		read-only copies. However, in contrast to the &ucsMaster;, writing changes are not allowed.
 	</para>
 	<para>
 		Any &ucsBackup; can be converted to a &ucsMaster;. There are two typical
@@ -1462,25 +1462,35 @@ univention-directory-listener-ctrl resync cups-printers
 		</listitem>
 		<listitem>
 			<simpara>
-			To replace a fully functional &ucsMaster; with new hardware
+			To replace a fully functional &ucsMaster; with new hardware or changing the 
+			architecture from i386 to amd64.
 			</simpara>
 		</listitem>
 	</itemizedlist>
 	<caution>
 		<para>
-	  The conversion cannot be reversed. If the previous &ucsMaster; is to be used again, it must be
-	  reinstalled and joined as a &ucsBackup; for it to be used again.
-	  The promotion of a &ucsBackup; to a &ucsMaster; is a far-reaching configuration step and
-	  should be prepared thoroughly!
+                The conversion of a &ucsBackup; to a &ucsMaster; is a serious configuration change and 
+		should be prepared carefully. The conversion cannot be reversed.
 		</para>
+                <para>
+		The &ucsMaster; that is going to be replaced has to be shut down before the conversion. It must not be
+		powered on during or after the conversion!
+                </para>
+                <para>
+		Before the conversion, the installed software packages and the current configuration has to be compared between the &ucsMaster; and &ucsBackup;.
+		If the &ucsMaster; is not available anymore, use a file backup.
+                After the conversion, all possibly remaining references of the old &ucsMaster; have to be removed or changed to the new &ucsMaster;.
+                </para>
 	</caution>
 	<para>
 		The conversion primarily involves the changeover of the services relevant for
-		authentication such as LDAP, Kerberos and Samba. The installed software needs to be adjusted
+		authentication such as LDAP, DNS, Kerberos and Samba. The installed software needs to be adjusted
 		manually (this can be done using the UMC modules <guimenu>App Center</guimenu>
 		or <guimenu>Package Management</guimenu>).
 		For example, if the mail component was installed on the previous &ucsMaster;,
 		it gets not automatically installed on the new &ucsMaster; after the conversion.
+		To minimize manual changes after the conversion, please consider <xref
+                linkend="domain:fault-tolerant"/>.
 	</para>
 	<para>
 		If additional LDAP schema packages were installed on the &ucsMaster;, they must
@@ -1488,15 +1498,35 @@ univention-directory-listener-ctrl resync cups-printers
 		The package list of the old &ucsMaster; should be saved prior to the promotion in order to
 		allow subsequent comparison of the installed packages. The package list can be created with
 		the following command:
+	</para>
 	  <programlisting language="sh">
-COLUMNS=200 dpkg --list &gt; packagelist.txt
+dpkg --get-selections \* &gt;> dpkg.selection
 	  </programlisting>
+        <para>
+		This file should be compared with the same output on the &ucsBackup;. Missing packages should 
+		then be installed on the &ucsBackup;. Especially those packages that install a LDAP schema
+		are absolutely necessary. The following command executed on the &ucsMaster; will list all affected packages:
+        </para>
+          <programlisting language="sh">
+ls -1 /etc/ldap/schema/*.schema /usr/share/univention-ldap/schema/*.schema | xargs dpkg -S
+                </programlisting>
+        <para>
+                To simply installl all packages of the &ucsMaster; also on the  &ucsBackup;, use the previously
+		created file <filename>dpkg.selection</filename> of the &ucsMaster; and run the following command 
+		on the &ucsBackup;:
+        </para>
+          <programlisting language="sh">
+dpkg --set-selections &lt; dpkg.selection
+apt-get dselect-upgrade
+          </programlisting>
+	<para>
 	  In addition, the &ucsUCR; inventory needs to be saved so that it is possible to compare the
 	  configuration adjustments on the new &ucsMaster;. This can be achieved with the following
 	  command:
 	</para>
 	  <programlisting language="sh">
-ucr dump &gt; ucr.txt
+/etc/univention/base.conf
+/etc/univention/base-forced.conf
 	  </programlisting>
 	<para>
 		The conversion of a &ucsBackup; to the new &ucsMaster; is performed by running the
