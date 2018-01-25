@@ -1,0 +1,19 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: libgd2
+fix: 2.1.0-5+deb8u11
+desc: |
+ This update addresses the following issues:
+ * The GIF decoding function gdImageCreateFromGifCtx does not zero colorMap
+   arrays before use. A specially crafted GIF image could use the
+   uninitialized tables to read ~700 bytes from the top of the stack,
+   potentially disclosing sensitive information. (CVE-2017-7890)
+ * Double free vulnerability in the gdImagePngPtr function allows remote
+   attackers to cause a denial of service via vectors related to a palette
+   with no colors. (CVE-2017-6362)
+bug: [45349]
+cve:
+- CVE-2017-7890
+- CVE-2017-6362
