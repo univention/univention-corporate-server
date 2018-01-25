@@ -1,0 +1,26 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: wireshark
+fix: 1.12.1+g01b65bf-4+deb8u12
+desc: |
+ This update addresses the following issues:
+ * The AMQP dissector could crash. This was addressed in
+   epan/dissectors/packet-amqp.c by checking for successful list dissection.
+   (CVE-2017-11408)
+ * The IWARP_MPA dissector could crash. This was addressed in
+   epan/dissectors/packet-iwarp-mpa.c by validating a ULPDU length.
+   (CVE-2017-17084)
+ * The CIP Safety dissector could crash. This was addressed in
+   epan/dissectors/packet-cipsafety.c by validating the packet length.
+   (CVE-2017-17085)
+ * The NetBIOS dissector could crash. This was addressed in
+   epan/dissectors/packet-netbios.c by ensuring that write operations are
+   bounded by the beginning of a buffer. (CVE-2017-17083)
+bug: [46164]
+cve:
+- CVE-2017-11408
+- CVE-2017-17084
+- CVE-2017-17085
+- CVE-2017-17083
