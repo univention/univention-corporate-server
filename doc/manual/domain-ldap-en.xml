@@ -1444,7 +1444,7 @@ univention-directory-listener-ctrl resync cups-printers
 </section>
 
 <section id="domain:backup2master">
-	<title>Converting a DC backup to the new DC master</title>
+	<title>Converting a &ucsBackup; backup to the new &ucsMaster;</title>
 	<para>
 		A &ucsBackup; stores all the domain data and all SSL security certificates as
 		read-only copies. However, in contrast to the &ucsMaster;, no writing changes
@@ -1452,7 +1452,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<para>
 		Any &ucsBackup; can be converted to a &ucsMaster;. There are two typical
-		application scenarios for this:
+		scenarios for this:
 	</para>
 	<itemizedlist>
 		<listitem>
@@ -1462,13 +1462,13 @@ univention-directory-listener-ctrl resync cups-printers
 		</listitem>
 		<listitem>
 			<simpara>
-			When the plan is to replace the &ucsMaster; with new hardware
+			To replace a fully functional &ucsMaster; with new hardware
 			</simpara>
 		</listitem>
 	</itemizedlist>
 	<caution>
 		<para>
-	  The conversion cannot be reversed. If the previous master is to be used again, it must be
+	  The conversion cannot be reversed. If the previous &ucsMaster; is to be used again, it must be
 	  reinstalled and joined as a &ucsBackup; for it to be used again.
 	  The promotion of a &ucsBackup; to a &ucsMaster; is a far-reaching configuration step and
 	  should be prepared thoroughly!
@@ -1479,8 +1479,8 @@ univention-directory-listener-ctrl resync cups-printers
 		authentication such as LDAP, Kerberos and Samba. The installed software needs to be adjusted
 		manually (this can be done using the UMC modules <guimenu>App Center</guimenu>
 		or <guimenu>Package Management</guimenu>).
-		For example, if the mail component was installed on the previous DC
-		master, it is not automatically on the new DC master after the conversion.
+		For example, if the mail component was installed on the previous &ucsMaster;,
+		it gets not automatically installed on the new &ucsMaster; after the conversion.
 	</para>
 	<para>
 		If additional LDAP schema packages were installed on the &ucsMaster;, they must
@@ -1499,10 +1499,10 @@ COLUMNS=200 dpkg --list &gt; packagelist.txt
 ucr dump &gt; ucr.txt
 	  </programlisting>
 	<para>
-		The conversion of a DC backup to the new DC master is performed by running the
+		The conversion of a &ucsBackup; to the new &ucsMaster; is performed by running the
 		<command>/usr/lib/univention-ldap/univention-backup2master</command> command.
-		The system must be rebooted after the conversion. The process is logged in the
-		<filename>/var/log/univention/backup2master.log</filename> log file.
+		The system must be rebooted after the conversion. The process is logged to
+		<filename>/var/log/univention/backup2master.log</filename>
 	</para>
 
 	<para>
