@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: procmail
+fix: 3.22-24+deb8u1
+desc: |
+ This update addresses the following issue:
+ * Fix buffer overflow in loadbuf(). (CVE-2017-16844)
+bug: [46155]
+cve:
+- CVE-2017-16844
