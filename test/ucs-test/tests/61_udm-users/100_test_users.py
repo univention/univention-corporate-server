@@ -60,14 +60,14 @@ class TestUsers(object):
 		udm.verify_udm_object("users/user", user, {"pwdChangeNextLogin": pwd_change_next_login})
 
 	@pytest.mark.parametrize('path', ['/test', '/test2/'])
-	def test_unmap_automount_information(self, udm, path, random_name, lo, verify_ldap_object, verify_udm_object):
+	def test_unmap_automount_information(self, udm, path, random_name, lo, verify_udm_object):
 		homeSharePath = random_name()
 		host = random_name()
 		share = udm.create_object('shares/share', name=random_name(), path=path, host=host)
 
 		user = udm.create_user(homeShare=share, homeSharePath=homeSharePath)[0]
 		udm.verify_udm_object("users/user", user, {"homeShare": share, "homeSharePath": homeSharePath})
-		verify_ldap_object(user, {'automountInformation': ['-rw %s:%s/%s' % (host, path.rstrip('/'), homeSharePath)]})
+		udm.verify_ldap_object(user, {'automountInformation': ['-rw %s:%s/%s' % (host, path.rstrip('/'), homeSharePath)]})
 
 	def test_unmap_user_certificate(self, udm, ucr):
 		certificate = subprocess.check_output(['openssl', 'x509', '-inform', 'pem', '-in', '/etc/univention/ssl/%(hostname)s/cert.pem' % ucr, '-outform', 'der', '-out', '-']).encode('base64').replace('\n', '')
@@ -130,7 +130,7 @@ class TestUsers(object):
 		with pytest.raises(Exception):
 			udm.modify_object('user/user', dn=user, username=username)
 
-	def test_modification_of_username(self, udm, random_username, verify_ldap_object, ucr):
+	def test_modification_of_username(self, udm, random_username, ucr):
 		user, name = udm.create_user()
 		username = random_username()
 		assert name in user
@@ -138,11 +138,11 @@ class TestUsers(object):
 		user = udm.modify_object('users/user', dn=user, username=username)
 		assert name not in user
 		assert username in user
-		verify_ldap_object(user, {'krb5PrincipalName': ['%s@%s' % (username, ucr['domainname'].upper())]})
+		udm.verify_ldap_object(user, {'krb5PrincipalName': ['%s@%s' % (username, ucr['domainname'].upper())]})
 
-	def test_kerberos_values_are_set(self, udm, verify_ldap_object):
+	def test_kerberos_values_are_set(self, udm):
 		user = udm.create_user()[0]
-		verify_ldap_object(user, {
+		udm.verify_ldap_object(user, {
 			'krb5MaxLife': ['86400'],
 			'krb5MaxRenew': ['604800'],
 		})
@@ -169,8 +169,8 @@ class TestUsers(object):
 			'SeDiskOperatorPrivilege',
 		]
 	])
-	def test_modlist_samba_privileges(self, udm, privileges, verify_ldap_object):
-		self._test_modlist(udm, verify_ldap_object, {'sambaPrivileges': privileges}, {'univentionSambaPrivilegeList': privileges, 'objectClass': ['univentionSambaPrivileges']})
+	def test_modlist_samba_privileges(self, udm, privileges):
+		self._test_modlist(udm, {'sambaPrivileges': privileges}, {'univentionSambaPrivilegeList': privileges, 'objectClass': ['univentionSambaPrivileges']})
 
 	@pytest.mark.parametrize('privileges', [
 		pytest.mark.xfail(['SeMachineAccountPrivilege', 'foobar'], reason='https://forge.univention.org/bugzilla/show_bug.cgi?id=46020'),
@@ -190,42 +190,42 @@ class TestUsers(object):
 		('<firstname> <lastname>', {'firstname': 'X', 'lastname': 'Y'}, 'X Y'),
 		('<username> <firstname> <lastname>', {'username': _modlist_cn_username, 'firstname': 'X', 'lastname': 'Y'}, '%s X Y' % (_modlist_cn_username,)),
 	])
-	def test_modlist_cn(self, udm, ucr, form, props, cn, verify_ldap_object):
+	def test_modlist_cn(self, udm, ucr, form, props, cn):
 		handler_set(['directory/manager/usercn/attributes=%s' % (form,)])
 		udm.stop_cli_server()
-		self._test_modlist(udm, verify_ldap_object, props, {'cn': [cn]})
+		self._test_modlist(udm, props, {'cn': [cn]})
 
-	def _test_modlist(self, udm, verify_ldap_object, props, attrs):
+	def _test_modlist(self, udm, props, attrs):
 		user = udm.create_user(**props)[0]
-		verify_ldap_object(user, attrs, strict=False)
+		udm.verify_ldap_object(user, attrs, strict=False)
 		udm.remove_object('users/user', dn=user)
 
 		user = udm.create_user()[0]
 		user = udm.modify_object('users/user', dn=user, **props)
-		verify_ldap_object(user, attrs, strict=False)
+		udm.verify_ldap_object(user, attrs, strict=False)
 
 	@pytest.mark.parametrize('props,gecos', [
 		({'firstname': 'X', 'lastname': 'Y'}, 'X Y'),
 		({'firstname': ' X ', 'lastname': ' Y '}, 'X   Y'),  # FIXME: current result looks broken!
 		({'firstname': 'H\xc3\xe4\xc3\xe4lo', 'lastname': 'W\xc3\xb6\xc3\xb6rld'}, 'HAaeAaelo Woeoerld'),  # FIXME: current result looks broken!
 	])
-	def test_modlist_gecos(self, udm, props, gecos, verify_ldap_object):
+	def test_modlist_gecos(self, udm, props, gecos):
 		# TODO: test UCR variable overwrite of '<firstname> <lastname><:umlauts,strip>'
 		# TODO: missing is a check where only lastname or only firstname changes
-		self._test_modlist(udm, verify_ldap_object, props, {'gecos': [gecos]})
+		self._test_modlist(udm, props, {'gecos': [gecos]})
 
 	@pytest.mark.parametrize('props,displayName', [
 		({'firstname': 'X', 'lastname': 'Y'}, 'X Y'),
 		({'firstname': ' X ', 'lastname': ' Y '}, 'X   Y'),
 		#({'firstname': ' H\xc3\xe4\xc3\xe4lo', 'lastname': 'W\xc3\xb6\xc3\xb6rld '}, 'Hlo W\xc3\xb6\xc3\xb6rld'),  # FIXME: pytest crashes!
 	])
-	def test_modlist_display_name(self, udm, props, displayName, verify_ldap_object):
+	def test_modlist_display_name(self, udm, props, displayName):
 		# TODO: test UCR variable overwrite of '<firstname> <lastname><:strip>'
-		self._test_modlist(udm, verify_ldap_object, props, {'displayName': [displayName]})
+		self._test_modlist(udm, props, {'displayName': [displayName]})
 
-	def test_modlist_krb_principal(self, udm, random_username, verify_ldap_object, ucr):
+	def test_modlist_krb_principal(self, udm, random_username, ucr):
 		username = random_username()
-		self._test_modlist(udm, verify_ldap_object, {'username': username}, {'krb5PrincipalName': ['%s@%s' % (username, ucr['domainname'].upper())]})
+		self._test_modlist(udm, {'username': username}, {'krb5PrincipalName': ['%s@%s' % (username, ucr['domainname'].upper())]})
 
 	@pytest.mark.parametrize('password', [
 		'{KINIT}',
@@ -243,14 +243,20 @@ class TestUsers(object):
 		with pytest.raises(Exception):
 			udm.create_user(password=password)
 
-	def test_modlist_krb5_kdc_flags(self, udm):
-		pass
+	@pytest.mark.parametrize('disabled', [('posix', '126'), ('kerberos', '254')])
+	def test_modlist_krb5_kdc_flags(self, disabled, udm):
+		self._test_modlist(udm, {'disabled': disabled[0]}, {'krb5KDCFlags': [disabled[1]]})
 
 	def test_modlist_krb5_key(self, udm):
 		pass
 
 	def test_modlist_krb5_key_version_number(self, udm):
-		pass
+		user = udm.create_user()[0]
+		udm.verify_ldap_object(user, {'krb5KeyVersionNumber': ['1']})
+		udm.modify_object('users/user', dn=user, password='univention2')
+		udm.verify_ldap_object(user, {'krb5KeyVersionNumber': ['2']})
+		udm.modify_object('users/user', dn=user, password='univention3')
+		udm.verify_ldap_object(user, {'krb5KeyVersionNumber': ['3']})
 
 	def test_modlist_check_password_history(self, udm):
 		pass
@@ -258,7 +264,18 @@ class TestUsers(object):
 	def test_modlist_check_password_complexity(self, udm):
 		pass
 
-	def test_modlist_samba_password(self, udm):
+	def test_modlist_samba_nt_password(self, udm):
+		user = udm.create_user()[0]
+		udm.verify_ldap_object(user, {'sambaNTPassword': ['CAA1239D44DA7EDF926BCE39F5C65D0F']})
+		udm.modify_object('users/user', dn=user, password='univention2')
+		udm.verify_ldap_object(user, {'sambaNTPassword': ['1471C3248018E4C973F304762AD312C0']})
+		udm.modify_object('users/user', dn=user, password='univention3')
+		udm.verify_ldap_object(user, {'sambaNTPassword': ['5F84B8886B7B0DA26E0A175FEE92A389']})
+
+	def test_modlist_samba_lm_password(self, udm):
+		pass
+
+	def test_modlist_samba_password_history(self, udm):
 		pass
 
 	def test_modlist_shadow_max(self, udm):
@@ -301,12 +318,12 @@ class TestUsers(object):
 		['2009-W21'],
 		['2009-W21-4'],
 	])
-	def test_modlist_univention_person_birthday(self, udm, verify_ldap_object, birthday):
-		self._test_modlist(udm, verify_ldap_object, {'birthday': birthday[0]}, {'univentionBirthday': birthday, 'objectClass': ['univentionPerson']})
+	def test_modlist_univention_person_birthday(self, udm, birthday):
+		self._test_modlist(udm, {'birthday': birthday[0]}, {'univentionBirthday': birthday, 'objectClass': ['univentionPerson']})
 
-	def test_modlist_univention_person(self, udm, verify_ldap_object):
-		self._test_modlist(udm, verify_ldap_object, {'umcProperty': ['foo bar'], 'birthday': '2009-05-13'}, {'univentionBirthday': ['2009-05-13'], 'univentionUMCProperty': ['foo=bar'], 'objectClass': ['univentionPerson']})
-		self._test_modlist(udm, verify_ldap_object, {'umcProperty': ['foo bar']}, {'univentionUMCProperty': ['foo=bar'], 'objectClass': ['univentionPerson']})
+	def test_modlist_univention_person(self, udm):
+		self._test_modlist(udm, {'umcProperty': ['foo bar'], 'birthday': '2009-05-13'}, {'univentionBirthday': ['2009-05-13'], 'univentionUMCProperty': ['foo=bar'], 'objectClass': ['univentionPerson']})
+		self._test_modlist(udm, {'umcProperty': ['foo bar']}, {'univentionUMCProperty': ['foo=bar'], 'objectClass': ['univentionPerson']})
 
 	def test_modlist_home_share(self, udm):
 		pass
