@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: libxfixes
+fix: 1:5.0.1-2+deb8u1
+desc: |
+ This update addresses the following issue:
+ * Integer overflow on illegal server response (CVE-2016-7944)
+bug: [46144]
+cve:
+- CVE-2016-7944
