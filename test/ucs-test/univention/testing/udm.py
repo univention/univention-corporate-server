@@ -438,6 +438,7 @@ class UCSTestUDM(object):
                     print('Failed to remove locking object "%s" during cleanup: %r' % (lockDN, ex))
         self._cleanupLocks = {}
 
+        self.stop_cli_server()
         print('UCSTestUDM cleanup done')
 
     def stop_cli_server(self):
