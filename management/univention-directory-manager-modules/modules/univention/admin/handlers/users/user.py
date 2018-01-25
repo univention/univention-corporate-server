@@ -2105,7 +2105,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		"""
 		if not self.exists() or self.hasChanged('disabled'):
 			try:
-				old_kdcflags = int(self.oldattr.get('krb5KDCFlags', ['126']))
+				old_kdcflags = int(self.oldattr.get('krb5KDCFlags', ['126'])[0])
 			except ValueError:
 				old_kdcflags = 126
 			krb_kdcflags = old_kdcflags

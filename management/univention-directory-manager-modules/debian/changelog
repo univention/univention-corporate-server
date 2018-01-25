@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.3-1) unstable; urgency=medium
+
+  * Bug #45842: fix typo
+
+ -- Florian Best <best@univention.de>  Thu, 25 Jan 2018 11:13:13 +0100
+
 univention-directory-manager-modules (13.0.2-1) unstable; urgency=medium
 
   * Bug #45842: remove user options posix, samba, kerberos and merge them into
