@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: libxml-libxml-perl
+fix: 2.0116+dfsg-1+deb8u2
+desc: |
+ This update addresses the following issue:
+ * CVE-2017-10672: Use-after-free by controlling the arguments to a
+   replaceChild call
+bug: [45754]
+cve:
+- CVE-2017-10672
