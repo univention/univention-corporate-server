@@ -305,8 +305,20 @@ class TestUsers(object):
 	def test_modlist_krb5_valid_end(self, udm):
 		pass
 
-	def test_modlist_shadow_expire(self, udm):
-		pass
+	@pytest.mark.parametrize('disabled,userexpiry,shadow_expire', [
+		('none', '2018-01-01', ['17532']),
+		('all', '2018-01-01', ['17532']),
+		('posix', '2018-01-01', ['17532']),
+		('posix_kerberos', '2018-01-01', ['17532']),
+		('windows_posix', '2018-01-01', ['17532']),
+		('kerberos', '', []),
+		('all', '', ['1']),
+		('posix', '', ['1']),
+		('posix_kerberos', '', ['1']),
+		('windows_posix', '', ['1']),
+	])
+	def test_modlist_shadow_expire(self, disabled, userexpiry, shadow_expire, udm):
+		self._test_modlist(udm, {'disabled': disabled, 'userexpiry': userexpiry}, {'shadowExpire': shadow_expire})
 
 	def test_modlist_mail_forward(self, udm):
 		pass
