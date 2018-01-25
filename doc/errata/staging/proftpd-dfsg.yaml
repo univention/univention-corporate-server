@@ -1,0 +1,16 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: proftpd-dfsg
+fix: 1.3.5-1.1+deb8u2
+desc: |
+ This update addresses the following issues:
+ * CVE-2017-7418: AllowChrootSymlinks off does not check entire DefaultRoot
+   path for symlinks.
+ * CVE-2016-3125: TLSDHParamFile directive appears ignored because unexpected
+   DH is chosen.
+bug: [46156]
+cve:
+- CVE-2017-7418
+- CVE-2016-3125
