@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: firefox-esr
-fix: 52.5.2esr-1~deb8u1
+fix: 52.6.0esr-1~deb8u1
 desc: |
  This update addresses the following issues:
  * CVE-2017-7753 Out-of-bounds read with cached style data and pseudo-elements
@@ -52,7 +52,23 @@ desc: |
  * CVE-2017-7830 Cross-origin URL information leak through Resource Timing API
    (MFSA 2017-25)
  * CVE-2017-7843 Web worker in Private Browsing mode can write IndexedDB data
-bug: [45611]
+ * CVE-2018-5089: Memory safety bugs fixed in Firefox 58 and Firefox ESR 52.6
+   (MFSA 2018-03)
+ * CVE-2018-5091: Use-after-free with DTMF timers (MFSA 2018-03)
+ * CVE-2018-5095: Integer overflow in Skia library during edge builder
+   allocation (MFSA 2018-03)
+ * CVE-2018-5096: Use-after-free while editing form elements (MFSA 2018-03)
+ * CVE-2018-5097: Use-after-free when source document is manipulated during
+   XSLT (MFSA 2018-03)
+ * CVE-2018-5098: Use-after-free while manipulating form input elements (MFSA
+   2018-03)
+ * CVE-2018-5099: Use-after-free with widget listener (MFSA 2018-03)
+ * CVE-2018-5102: Use-after-free in HTML media elements (MFSA 2018-03)
+ * CVE-2018-5103: Use-after-free during mouse event handling (MFSA 2018-03)
+ * CVE-2018-5104: Use-after-free during font face manipulation (MFSA 2018-03)
+ * CVE-2018-5117: URL spoofing with right-to-left text aligned left-to-right
+   (MFSA 2018-03)
+bug: [46170]
 cve:
 - CVE-2017-7843
 - CVE-2017-7828
@@ -81,3 +97,14 @@ cve:
 - CVE-2017-7803
 - CVE-2017-7807
 - CVE-2017-7809
+- CVE-2018-5091
+- CVE-2018-5095
+- CVE-2018-5096
+- CVE-2018-5097
+- CVE-2018-5098
+- CVE-2018-5099
+- CVE-2018-5102
+- CVE-2018-5103
+- CVE-2018-5104
+- CVE-2018-5117
+- CVE-2018-5089
