@@ -1,0 +1,124 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: tiff
+fix: 4.0.3-12.3+deb8u4
+desc: |
+ This update addresses the following issue(s):
+ * The TIFFWriteDirectoryTagLongLong8Array function in tif_dirwrite.c in the
+   tiffset tool allows remote attackers to cause a denial of service
+   (out-of-bounds read) via vectors involving the ma variable. (CVE-2016-3658)
+ * A memory leak vulnerability was found in the function
+   OJPEGReadHeaderInfoSecTablesQTable in tif_ojpeg.c, which allows attackers
+   to cause a denial of service via a crafted file. (CVE-2017-9404)
+ * A memory leak vulnerability was found in the function
+   TIFFReadDirEntryLong8Array in tif_dirread.c, which allows attackers to
+   cause a denial of service via a crafted file. (CVE-2017-9403)
+ * There is a memory leak in tif_jbig.c. A crafted TIFF document can lead to a
+   memory leak resulting in a remote denial of service attack. (CVE-2017-9936)
+ * LibTIFF allows remote attackers to cause a denial of service
+   (divide-by-zero error and application crash) via a crafted TIFF image,
+   related to libtiff/tif_read.c:351:22. (CVE-2016-10266)
+ * LibTIFF allows remote attackers to cause a denial of service
+   (divide-by-zero error and application crash) via a crafted TIFF image,
+   related to libtiff/tif_ojpeg.c:816:8. (CVE-2016-10267)
+ * LibTIFF allows remote attackers to cause a denial of service (heap-based
+   buffer over-read) or possibly have unspecified other impact via a crafted
+   TIFF image, related to "READ of size 512" and libtiff/tif_unix.c:340:2.
+   (CVE-2016-10269)
+ * tif_predict.h and tif_predict.c have assertions that can lead to assertion
+   failures in debug mode, or buffer overflows in release mode, when dealing
+   with unusual tile size like YCbCr with subsampling. Reported as MSVR 35105,
+   aka "Predictor heap-buffer-overflow." (CVE-2016-9535)
+ * tif_dirread.c might allow remote attackers to cause a denial of service
+   (divide-by-zero error and application crash) via a crafted image.
+   (CVE-2017-7598)
+ * LibTIFF has an "outside the range of representable values of type short"
+   undefined behavior issue, which might allow remote attackers to cause a
+   denial of service (application crash) or possibly have unspecified other
+   impact via a crafted image. (CVE-2017-7599)
+ * LibTIFF allows remote attackers to cause a denial of service (heap-based
+   buffer over-read) or possibly have unspecified other impact via a crafted
+   TIFF image, related to "READ of size 8" and libtiff/tif_read.c:523:22.
+   (CVE-2016-10270)
+ * The putagreytile function in tif_getimage.c has a left-shift undefined
+   behavior issue, which might allow remote attackers to cause a denial of
+   service (application crash) or possibly have unspecified other impact via a
+   crafted image. (CVE-2017-7592)
+ * tif_read.c does not ensure that tif_rawdata is properly initialized, which
+   might allow remote attackers to obtain sensitive information from process
+   memory via a crafted image. (CVE-2017-7593)
+ * LibTIFF has an "outside the range of representable values of type float"
+   undefined behavior issue, which might allow remote attackers to cause a
+   denial of service (application crash) or possibly have unspecified other
+   impact via a crafted image. (CVE-2017-7596)
+ * The OJPEGReadHeaderInfoSecTablesDcTable function in tif_ojpeg.c allows
+   remote attackers to cause a denial of service (memory leak) via a crafted
+   image. (CVE-2017-7594)
+ * The JPEGSetupEncode function in tiff_jpeg.c allows remote attackers to
+   cause a denial of service (divide-by-zero error and application crash) via
+   a crafted image. (CVE-2017-7595)
+ * Stack-based buffer overflow in the _TIFFVGetField function in tif_dir.c
+   4.0.7 allows remote attackers to cause a denial of service (crash) via a
+   crafted TIFF file. (CVE-2016-10095)
+ * LibTIFF has a signed integer overflow, which might allow remote attackers
+   to cause a denial of service (application crash) or possibly have
+   unspecified other impact via a crafted image. (CVE-2017-7602)
+ * LibTIFF has an "outside the range of representable values of type unsigned
+   char" undefined behavior issue, which might allow remote attackers to cause
+   a denial of service (application crash) or possibly have unspecified other
+   impact via a crafted image. (CVE-2017-7600)
+ * LibTIFF has a "shift exponent too large for 64-bit type long" undefined
+   behavior issue, which might allow remote attackers to cause a denial of
+   service (application crash) or possibly have unspecified other impact via a
+   crafted image. (CVE-2017-7601)
+ * There is a assertion abort in the TIFFWriteDirectoryTagCheckedLong8Array
+   function in tif_dirwrite.c. A crafted input will lead to a remote denial of
+   service attack. (CVE-2017-10688)
+ * tif_dirread.c has an "outside the range of representable values of type
+   float" undefined behavior issue, which might allow remote attackers to
+   cause a denial of service (application crash) or possibly have unspecified
+   other impact via a crafted image. (CVE-2017-7597)
+ * LibTIFF has an invalid read in the _TIFFVGetField function in tif_dir.c,
+   which might allow remote attackers to cause a denial of service (crash) via
+   a crafted TIFF file. (CVE-2017-9147)
+ * LibTIFF is vulnerable to a heap buffer overflow in the tools/tiffcp
+   resulting in DoS or code execution via a crafted BitsPerSample value.
+   (CVE-2017-5225)
+ * LibTIFF allows remote attackers to cause a denial of service (out-of-bounds
+   read and crash) via a crafted TIFF image to the (1) checkInkNamesString
+   function in tif_dir.c in the thumbnail tool, (2) compresscontig function in
+   tiff2bw.c in the tiff2bw tool, (3) putcontig8bitCIELab function in
+   tif_getimage.c in the tiff2rgba tool, LZWPreDecode function in tif_lzw.c in
+   the (4) tiff2ps or (5) tiffdither tool, (6) NeXTDecode function in
+   tif_next.c in the tiffmedian tool, or (7)
+   TIFFWriteDirectoryTagLongLong8Array function in tif_dirwrite.c in the
+   tiffset tool. (CVE-2014-8127)
+bug: [44571]
+cve:
+- CVE-2016-3658
+- CVE-2017-9404
+- CVE-2017-9403
+- CVE-2017-9936
+- CVE-2016-10266
+- CVE-2016-10267
+- CVE-2016-10269
+- CVE-2016-9535
+- CVE-2017-7598
+- CVE-2017-7599
+- CVE-2016-10270
+- CVE-2017-7592
+- CVE-2017-7593
+- CVE-2017-7596
+- CVE-2017-7594
+- CVE-2017-7595
+- CVE-2016-10095
+- CVE-2017-7602
+- CVE-2017-7600
+- CVE-2017-7601
+- CVE-2017-10688
+- CVE-2017-7597
+- CVE-2017-9147
+- CVE-2017-5225
+- CVE-2014-8127
