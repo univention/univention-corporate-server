@@ -243,7 +243,34 @@ class TestUsers(object):
 		with pytest.raises(Exception):
 			udm.create_user(password=password)
 
-	def test_modlist_password_change(self, udm):
+	def test_modlist_krb5_kdc_flags(self, udm):
+		pass
+
+	def test_modlist_krb5_key(self, udm):
+		pass
+
+	def test_modlist_krb5_key_version_number(self, udm):
+		pass
+
+	def test_modlist_check_password_history(self, udm):
+		pass
+
+	def test_modlist_check_password_complexity(self, udm):
+		pass
+
+	def test_modlist_samba_password(self, udm):
+		pass
+
+	def test_modlist_shadow_max(self, udm):
+		pass
+
+	def test_modlist_shadow_last_change(self, udm):
+		pass
+
+	def test_modlist_samba_pwd_last_set(self, udm):
+		pass
+
+	def test_modlist_krb_password_end(self, udm):
 		pass
 
 	def test_modlist_samba_bad_pw_count(self, udm):
