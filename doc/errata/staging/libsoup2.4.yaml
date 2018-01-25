@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: libsoup2.4
+fix: 2.48.0-1+deb8u1
+desc: |
+ This update addresses the following issue:
+ * stack based buffer overflow with HTTP Chunked Encoding (CVE-2017-2885)
+bug: [45230]
+cve:
+- CVE-2017-2885
