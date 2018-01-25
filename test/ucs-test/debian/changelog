@@ -1,3 +1,9 @@
+ucs-test (8.0.20-1) unstable; urgency=medium
+
+  * Bug #46021: add test for UDM syntax emailAddress
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 24 Jan 2018 14:53:45 +0100
+
 ucs-test (8.0.19-1) unstable; urgency=medium
 
   * Bug #45842: adjust tests for user options
