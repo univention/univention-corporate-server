@@ -301,8 +301,12 @@ class TestUsers(object):
 	def test_modlist_shadowMax(self, udm):
 		pass
 
-	def test_modlist_samba_kickoff_time(self, udm):
-		pass
+	@pytest.mark.parametrize('userexpiry,kick_off,x', [
+		('2018-01-01', ['1514761200'], {}),
+		('', [], {'modify': False}),
+	])
+	def test_modlist_samba_kickoff_time(self, userexpiry, kick_off, x, udm):
+		self._test_modlist(udm, {'userexpiry': userexpiry}, {'sambaKickoffTime': kick_off}, **x)
 
 	@pytest.mark.parametrize('userexpiry,valid_end,x', [
 		('2018-01-01', ['20180101000000Z'], {}),
