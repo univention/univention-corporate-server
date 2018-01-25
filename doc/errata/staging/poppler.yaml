@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: poppler
-fix: 0.26.5-2+deb8u2
+fix: 0.26.5-2+deb8u3
 desc: |
  This update addresses the following issues:
  * CVE-2017-9406: a memory leak vulnerability was found in the function
@@ -37,6 +37,9 @@ desc: |
    FoFiTrueType::getCFFBlock function in FoFiTrueType.cc
  * CVE-2017-15565: NULL Pointer Dereference in the
    GfxImageColorMap::getGrayLine() function in GfxState.cc
+ * CVE-2017-14929: Memory corruption via Gfx.cc infinite loop
+ * CVE-2017-1000456: Invalid read in TextPool::addWord() causes crash and can
+   lead to overflow in subsequent calculations
 bug: [46153]
 cve:
 - CVE-2017-9776
@@ -53,3 +56,5 @@ cve:
 - CVE-2017-9865
 - CVE-2017-14517
 - CVE-2017-14617
+- CVE-2017-1000456
+- CVE-2017-14929
