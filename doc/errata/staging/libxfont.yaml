@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: libxfont
+fix: 1:1.5.1-1+deb8u1
+desc: |
+ This update addresses the following issues:
+ * Check for end of string in PatternMatch (CVE-2017-13720)
+ * pcfGetProperties: Check string boundaries (CVE-2017-13722)
+bug: [45621]
+cve:
+- CVE-2017-13722
+- CVE-2017-13720
