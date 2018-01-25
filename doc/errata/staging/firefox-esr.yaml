@@ -68,7 +68,7 @@ desc: |
  * CVE-2018-5104: Use-after-free during font face manipulation (MFSA 2018-03)
  * CVE-2018-5117: URL spoofing with right-to-left text aligned left-to-right
    (MFSA 2018-03)
-bug: [46170]
+bug: [45611]
 cve:
 - CVE-2017-7843
 - CVE-2017-7828
