@@ -1243,24 +1243,20 @@ class emailForwardSetting(select):
 
 
 class emailAddress(simple):
-
-	@classmethod
-	def parse(self, text):
-		if '@' not in text or text.startswith('@'):
-			raise univention.admin.uexceptions.valueError(_('Not a valid email address! (No "@"-character to separate local-part and domain-part)'))
-		return text
-
-
-class emailAddressTemplate(simple):
-	min_length = 4
+	min_length = 3
 	max_length = 0
-	_re = re.compile("^[^@]+@.*$")
 
 	@classmethod
 	def parse(self, text):
-		if self._re.match(text) is not None:
+		if not text.startswith('@') and \
+			'@' in text and \
+			not text.endswith('@'):
 			return text
 		raise univention.admin.uexceptions.valueError(_("Not a valid email address!"))
+
+
+class emailAddressTemplate(emailAddress):
+	pass
 
 
 class emailAddressValidDomain(emailAddress):
