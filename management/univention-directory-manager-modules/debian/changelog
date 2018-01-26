@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.4-5) unstable; urgency=medium
+
+  * Bug #45877: Bug #45879: fix breaking and manipulation of user passwords
+
+ -- Florian Best <best@univention.de>  Fri, 26 Jan 2018 12:44:53 +0100
+
 univention-directory-manager-modules (13.0.4-4) unstable; urgency=medium
 
   * Bug #45842: fix typo
