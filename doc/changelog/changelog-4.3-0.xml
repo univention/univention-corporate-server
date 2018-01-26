@@ -136,6 +136,10 @@
 				<listitem><simpara>
 					The syntax class <package>Base64Bzip2XML</package> has been adjusted to allow text/xml input data (<u:bug>45941</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					In certain situations after locking and unlocking a user object the password was accidently modified to one of <package>password</package>, <package>********</package>, <package>{KINIT}</package> or <package>{SASL}</package>.
+					This problem has been corrected (<u:bug>45877</u:bug>, <u:bug>45879</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
