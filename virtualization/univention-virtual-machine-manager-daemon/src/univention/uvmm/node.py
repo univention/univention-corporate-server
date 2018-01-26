@@ -437,14 +437,7 @@ class Domain(PersistentCached):
 				logger.error('Unsupported graphics type: %s' % type)
 			self.pd.graphics.append(dev)
 
-
-		self.pd.targethosts = []
-		metadata = domain_tree.find('metadata')
-		if metadata:
-			for targethost in metadata.findall('uvmm:migrationtargethosts', namespaces=XMLNS):
-				if targethost.text is not None:
-					self.pd.targethosts.extend(targethost.text.split())
-
+		self.pd.targethosts = [host.text for host in domain_tree.findall('metadata/uvmm:migrationtargethosts/uvmm:hostname', namespaces=XMLNS)]
 
 	def key(self):
 		"""Return a unique key for this domain and generation."""
@@ -1909,62 +1902,43 @@ def domain_clone(uri, domain, name, subst):
 				logger.warning('Failed undo: %(error)s' % {'error': ex})
 
 
-def domain_targethost_add(uri, domain, targethost):
-	"""Add a migration target host"""
+def __domain_targethost(uri, domain):
+	"""Modify migration target host"""
 	try:
 		node = node_query(uri)
 		conn = node.conn
 		domconn = conn.lookupByUUIDString(domain)
 		dom = node.domains[domain]
-		dom_xml = ET.fromstring(domconn.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE))
-		domain_metadata = dom_xml.find('metadata', namespaces=XMLNS)
-		domain_targethosts = []
+		dom_xml = domconn.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
+		dom_tree = ET.fromstring(dom_xml)
+		dom_metadata = __update_xml(dom_tree, 'metadata', None, dummy='')
+		dom_migrationhosts = __update_xml(dom_metadata, 'uvmm:migrationtargethosts', None, dummy='')
+		domain_targethosts = set(elem.text for elem in dom_migrationhosts.findall('uvmm:hostname', namespaces=XMLNS))
 
-		if domain_metadata is None or domain_metadata == -1:
-			domain_metadata_sub = ET.SubElement(dom_xml, 'metadata', nsmap=XMLNS)
-			domain_metadata = __update_xml(dom_xml, 'metadata', domain_metadata_sub)
-		else:
-			elem_targethosts = domain_metadata.find('uvmm:migrationtargethosts', namespaces=XMLNS)
-			if elem_targethosts is not None and elem_targethosts.text is not None:
-				domain_targethosts = elem_targethosts.text.split()
+		logger.debug('Migration-target-host of "%s" before modification: %r', domain, domain_targethosts)
+		yield domain_targethosts
+		logger.debug('Migration-target-host of "%s" after modification: %r', domain, domain_targethosts)
 
-		domain_targethosts.append(targethost)
-		th_set = set(domain_targethosts)
-		domain_metadata = __update_xml(domain_metadata, 'uvmm:migrationtargethosts', ' '.join(th_set))
-		conn.defineXML(ET.tostring(dom_xml))
+		dom_migrationhosts.clear()
+		for hostname in domain_targethosts:
+			ET.SubElement(dom_migrationhosts, '{%(uvmm)s}hostname' % XMLNS, nsmap=XMLNS).text = hostname
+
+		dom_xml = ET.tostring(dom_tree)
+		conn.defineXML(dom_xml)
 
 		dom.update(domconn)
 	except libvirt.libvirtError as ex:
 		logger.error(ex)
-		raise NodeError(_('Error adding migrationtargethost "%(targethost)s" "%(domain)s": %(error)s'), targethost=targethost, domain=domain, error=ex.get_error_message())
+		raise NodeError(_('Error modifying migrationtargethost "%(domain)s": %(error)s'), domain=domain, error=ex.get_error_message())
+
+
+def domain_targethost_add(uri, domain, targethost):
+	"""Add a migration target host"""
+	for hosts in __domain_targethost(uri, domain):
+		hosts.add(targethost)
 
 
 def domain_targethost_remove(uri, domain, targethost):
 	"""Remove a migration target host"""
-	try:
-		node = node_query(uri)
-		conn = node.conn
-		domconn = conn.lookupByUUIDString(domain)
-		dom = node.domains[domain]
-		dom_xml = ET.fromstring(domconn.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE))
-		domain_metadata = dom_xml.find('metadata', namespaces=XMLNS)
-		domain_targethosts = []
-
-		if domain_metadata is None or domain_metadata == -1:
-			domain_metadata_sub = ET.SubElement(dom_xml, 'metadata', nsmap=XMLNS)
-			domain_metadata = __update_xml(dom_xml, 'metadata', domain_metadata_sub)
-		else:
-			elem_targethosts = domain_metadata.find('uvmm:migrationtargethosts', namespaces=XMLNS)
-			if elem_targethosts is not None:
-				domain_targethosts = elem_targethosts.text.split()
-
-		th_set = set(domain_targethosts)
-		if targethost in th_set:
-			th_set.remove(targethost)
-		domain_metadata = __update_xml(domain_metadata, 'uvmm:migrationtargethosts', ' '.join(th_set))
-		conn.defineXML(ET.tostring(dom_xml))
-
-		dom.update(domconn)
-	except libvirt.libvirtError as ex:
-		logger.error(ex)
-		raise NodeError(_('Error removing migrationtargethost "%(targethost)s" "%(domain)s": %(error)s'), targethost=targethost, domain=domain, error=ex.get_error_message())
+	for hosts in __domain_targethost(uri, domain):
+		hosts.discard(targethost)
