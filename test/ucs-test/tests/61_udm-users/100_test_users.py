@@ -7,6 +7,7 @@
 
 import pytest
 import time
+from datetime import datetime, timedelta
 import subprocess
 
 from univention.config_registry import handler_set
@@ -36,18 +37,18 @@ class TestUsers(object):
 		what if pwdChangeNextLogin = 1 and password=foo at the same time?
 	"""
 
-	@pytest.mark.parametrize('shadowLastChange,shadowMax,pwd_change_next_login', [
-		('0', '', '1'),
-		('0', '0', '1'),
-		('0', '1', '1'),
-		('0', str(int(time.time()) + 86400 * 2), '1'),
-		('', str(int(time.time()) + 86400 * 2), []),
-		('', '', []),
-		('', str(int(time.time()) - 86400 * 2), []),
-		('1', str(int(time.time()) - 86400 * 2), []),
-		('0', str(int(time.time()) - 86400 * 2), '1'),
+	@pytest.mark.parametrize('shadowLastChange,shadowMax,pwd_change_next_login,password_expiry', [
+		('0', '', '1', []),
+		('0', '0', '1', ['1970-01-01']),
+		('0', '1', '1', ['1970-01-02']),
+		('0', str(int(time.time()) / 3600 / 24 + 2), '1', (datetime.today() + timedelta(days=2)).strftime('%Y-%m-%d')),
+		('', str(int(time.time()) / 3600 / 24 + 2), [], []),
+		('', '', [], []),
+		('', str(int(time.time()) / 3600 / 24 - 2), [], []),
+		('1', str(int(time.time()) / 3600 / 24 - 2), '1', (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')),
+		('0', str(int(time.time()) / 3600 / 24 - 2), '1', (datetime.today() - timedelta(days=2)).strftime('%Y-%m-%d')),
 	])
-	def test_unmap_pwd_change_next_login(self, udm, lo, shadowLastChange, shadowMax, pwd_change_next_login):
+	def test_unmap_pwd_change_next_login_and_password_expiry(self, udm, lo, shadowLastChange, shadowMax, pwd_change_next_login, password_expiry):
 		user = udm.create_user()[0]
 		attr = lo.get(user)
 		ml = []
@@ -57,7 +58,7 @@ class TestUsers(object):
 			ml.append(('shadowMax', attr.get('shadowMax'), shadowMax))
 		if ml:
 			lo.modify(user, ml)
-		udm.verify_udm_object("users/user", user, {"pwdChangeNextLogin": pwd_change_next_login})
+		udm.verify_udm_object("users/user", user, {"pwdChangeNextLogin": pwd_change_next_login, 'passwordexpiry': password_expiry})
 
 	@pytest.mark.parametrize('path', ['/test', '/test2/'])
 	def test_unmap_automount_information(self, udm, path, random_name, lo, verify_udm_object):
@@ -104,6 +105,28 @@ class TestUsers(object):
 		user = udm.create_user()[0]
 		udm.modify_object('users/user', dn=user, append_option=['pki'], userCertificate=certificate)
 		udm.verify_udm_object('users/user', user, certificate_ldap)
+
+	def test_unmap_locked(self):
+		pass
+
+	def test_unmap_disabled(self):
+		pass
+
+	@pytest.mark.parametrize('samba_sid,samba_rid', [
+		('S-1-5-21-1290176872-3541151870-1783641248-14678', '14678'),
+	])
+	def test_unmap_samba_rid(self, udm, lo, samba_sid, samba_rid):
+		user = udm.create_user()[0]
+		lo.modify(user, [('sambaSID', [None], samba_sid)])
+		udm.verify_udm_object('users/user', user, {'sambaRID': samba_rid})
+
+	def test_unmap_user_expiry(self):
+		pass
+
+	def test_unmap_user_password(self, udm, lo):
+		user = udm.create_user(password='univention')[0]
+		password = lo.getAttr(user, 'userPassword')[0]
+		udm.verify_udm_object('users/user', user, {'password': password})
 
 	def test_mail_primary_group_gets_lowercased(self):
 		pass  # TODO: implement create() + modify()
