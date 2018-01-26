@@ -1,0 +1,17 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: libvirt
+fix: 3.0.0-4~bpo8+1A~4.2.0.201801261804
+desc: |
+ This update addresses the following issues:
+ * libvirt is vulnerable to a bad default configuration of "verify-peer=no"
+   passed to QEMU by libvirt resulting in a failure to validate SSL/TLS
+   certificates by default. (CVE-2017-1000256)
+ * Null pointer dereference when updating storage size on empty drives
+   (CVE-2017-2635)
+bug: [45635]
+cve:
+- CVE-2017-1000256
+- CVE-2017-2635
