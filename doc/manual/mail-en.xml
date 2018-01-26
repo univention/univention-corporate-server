@@ -952,7 +952,7 @@ service postfix reload
 		</para>
 		<note>
 			<para>
-				If Postfix' behavior is not as expected, first remove configuration settings made by <filename>main.cf.local</filename>. Rename the file or comment out its contents and run the two commands above. The configuration will then return to be one of UCS' making.
+				If Postfix' behavior is not as expected, first remove configuration settings made by <filename>main.cf.local</filename>. Rename the file or comment out its content. Next run the two commands above. The configuration will then return to UCS defaults.
 			</para>
 		</note>
 	</section>
