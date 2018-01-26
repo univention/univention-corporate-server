@@ -1,3 +1,10 @@
+ucs-test (8.0.21-1) unstable; urgency=medium
+
+  * Bug #45877: add test case test_lock_unlock_preserves_password and
+    test_disable_enable_preserves_password
+
+ -- Florian Best <best@univention.de>  Fri, 26 Jan 2018 13:22:42 +0100
+
 ucs-test (8.0.20-1) unstable; urgency=medium
 
   * Bug #46021: add test for UDM syntax emailAddress
