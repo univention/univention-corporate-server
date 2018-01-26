@@ -75,6 +75,8 @@ STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHE
 ns = {
 	'uvmm': 'https://univention.de/uvmm/1.0',
 }
+for prefix, uri in XMLNS.iteritems():
+	ET.register_namespace(prefix, uri)
 
 
 class NodeError(TranslatableException):
@@ -946,6 +948,9 @@ def __update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
 			_node_parent.remove(node)
 	else:
 		if node is None:
+			if ':' in _node_name:
+				prefix, local_name = _node_name.split(':', 1)
+				_node_name = '{%s}%s' % (ns[prefix], local_name)
 			node = ET.SubElement(_node_parent, _node_name, nsmap=ns)
 		new_text = _node_value or None
 		if node.text != new_text:
@@ -1928,7 +1933,7 @@ def domain_targethost_add(uri, domain, targethost):
 
 		domain_targethosts.append(targethost)
 		th_set = set(domain_targethosts)
-		domain_metadata = __update_xml(domain_metadata, '{%s}migrationtargethosts' % ns['uvmm'], ' '.join(th_set))
+		domain_metadata = __update_xml(domain_metadata, 'uvmm:migrationtargethosts', ' '.join(th_set))
 		conn.defineXML(ET.tostring(dom_xml))
 
 		dom.update(domconn)
@@ -1959,7 +1964,7 @@ def domain_targethost_remove(uri, domain, targethost):
 		th_set = set(domain_targethosts)
 		if targethost in th_set:
 			th_set.remove(targethost)
-		domain_metadata = __update_xml(domain_metadata, '{%s}migrationtargethosts' % ns['uvmm'], ' '.join(th_set))
+		domain_metadata = __update_xml(domain_metadata, 'uvmm:migrationtargethosts', ' '.join(th_set))
 		conn.defineXML(ET.tostring(dom_xml))
 
 		dom.update(domconn)
