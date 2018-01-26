@@ -62,7 +62,6 @@ try:
 	import cPickle as pickle
 except ImportError:
 	import pickle
-QEMU_URI = 'http://libvirt.org/schemas/domain/qemu/1.0'
 
 import univention.config_registry as ucr
 
