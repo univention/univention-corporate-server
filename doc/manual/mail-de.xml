@@ -974,12 +974,13 @@ postmap /etc/postfix/smtp_auth
 	</section>
 
 	<section id="mail::serverconfig::maincflocal">
-		<title>Eigene Anpassung der Postfix Konfiguration</title>
+		<title>Eigene Anpassung der Postfix-Konfiguration</title>
 		<para>
-			Es ist möglich die Konfiguration von Postfix in der <filename>/etc/postfix/main.cf</filename>, über die per &ucsUCRV; einstellbaren Variablen hinaus, anzupassen.
+			Die Konfiguration von Postfix, welche sich in der Datei <filename>/etc/postfix/main.cf</filename> befindet, wird über &ucsUCRV; definiert.
+			Eine Erweiterung der Konfiguration, die über die vorhandenen &ucsUCRV; hinaus geht, ist ebenso möglich.
 		</para>
 		<para>
-			Wenn eine Datei <filename>/etc/postfix/main.cf.local</filename> existiert, so wird ihr Inhalt an die Datei <filename>main.cf</filename> angehängt. Damit Änderungen an <filename>main.cf.local</filename> nach <filename>main.cf</filename> übernommen werden, muss folgendes ausgeführt werden:
+			Existiert die Datei <filename>/etc/postfix/main.cf.local</filename>, so wird ihr Inhalt an die Datei <filename>main.cf</filename> angehängt. Damit Änderungen an <filename>main.cf.local</filename> nach <filename>main.cf</filename> übernommen werden, muss der folgende Befehl ausgeführt werden:
 			<programlisting language="sh">
 ucr commit /etc/postfix/main.cf
 			</programlisting>
