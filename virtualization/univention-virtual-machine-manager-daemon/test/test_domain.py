@@ -50,6 +50,12 @@ class TestDomainKVM(_Domain):
 	<domain type='kvm'>
 		<name>ucs401</name>
 		<uuid>da33829a-4c56-4626-8d33-beec0580fc10</uuid>
+		<metadata>
+			<uvmm:migrationtargethosts xmlns:uvmm="https://univention.de/uvmm/1.0">
+				<uvmm:hostname>host5.phahn.dev</uvmm:hostname>
+				<uvmm:hostname>host6.phahn.dev</uvmm:hostname>
+			</uvmm:migrationtargethosts>
+		</metadata>
 		<description>https://forge.univention.org/bugzilla/show_bug.cgi?id=36640</description>
 		<memory unit='KiB'>1048576</memory>
 		<currentMemory unit='KiB'>1048576</currentMemory>
@@ -183,6 +189,10 @@ class TestDomainKVM(_Domain):
 		self.assertEqual('0.0.0.0', g.listen)
 		self.failIf(g.passwd)
 		self.assertEqual('en', g.keymap)
+
+	def test_metadata(self):
+		t = self.dom.pd.targethosts
+		self.assertEqual(['host5.phahn.dev', 'host6.phahn.dev'], t)
 
 
 class TestDomainXenHVM(_Domain):
