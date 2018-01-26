@@ -1827,7 +1827,7 @@ def domain_clone(uri, domain, name, subst):
 						yield old_name.replace(dom_stat.pd.name, name, 1)
 					yield '%s_%s%s' % (name, target_dev, suffix)
 					yield '%s_%d%s' % (name, domain_devices_disks.index(domain_devices_disk), suffix)
-					for _ in range(10):
+					for i in range(10):
 						yield '%s_%08x%s' % (name, random.getrandbits(32), suffix)
 				volumes = pool.listVolumes()
 				for new_name in new_names():
