@@ -2131,10 +2131,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				# do not change {SASL} password, but lock it if necessary
 				password = old_password
 
-			if self['locked'] in ['all', 'posix']:
-				password_crypt = univention.admin.password.lock_password(password)
-			else:
-				password_crypt = univention.admin.password.unlock_password(password)
+			password_crypt = univention.admin.password.lock_password(password)
+			if self['locked'] not in ['all', 'posix']:
+				password_crypt = univention.admin.password.unlock_password(password_crypt)
 			ml.append(('userPassword', old_password, password_crypt))
 
 		# remove pwdAccountLockedTime during unlocking

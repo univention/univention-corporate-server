@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.5-1) unstable; urgency=medium
+
+  * Bug #45877: make sure password is always crypted
+
+ -- Florian Best <best@univention.de>  Fri, 26 Jan 2018 13:22:00 +0100
+
 univention-directory-manager-modules (13.0.4-5) unstable; urgency=medium
 
   * Bug #45877: Bug #45879: fix breaking and manipulation of user passwords
