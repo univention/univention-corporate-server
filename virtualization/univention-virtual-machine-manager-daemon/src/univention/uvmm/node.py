@@ -267,7 +267,7 @@ class Domain(PersistentCached):
 	def update_expensive(self, domain):
 		"""Update statistics."""
 		# Full XML definition
-		xml = domain.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+		xml = domain.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
 		cache_id = hash(xml)
 		if self._cache_id != cache_id:
 			try:
@@ -417,10 +417,10 @@ class Domain(PersistentCached):
 			type = graphic.attrib['type']
 			dev.type = type
 			if dev.type == Graphic.TYPE_VNC:
-				dev.port = int(graphic.attrib['port'])
+				dev.port = int(graphic.attrib['port'])  # FIXME
 				dev.autoport = graphic.attrib['autoport'].lower() == 'yes'
 				try:
-					dev.listen = graphic.attrib['listen']
+					dev.listen = graphic.attrib['listen']  # FIXME
 				except LookupError:
 					pass
 				try:
@@ -909,7 +909,7 @@ def _domain_backup(dom, save=True):
 	"""Save domain definition to backup file."""
 	backup_dir = configRegistry.get('uvmm/backup/directory', '/var/backups/univention-virtual-machine-manager-daemon')
 	uuid = dom.UUIDString()
-	xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+	xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
 	if len(xml) < 300:  # minimal XML descriptor length
 		logger.error("Failed to backup domain %s: %s" % (uuid, xml))
 		raise NodeError(_("Failed to backup domain %(domain)s: %(xml)s"), domain=uuid, xml=xml)
@@ -1226,7 +1226,7 @@ def domain_define(uri, domain):
 		old_uuid = old_dom.UUIDString()
 		if old_uuid != domain.uuid:
 			raise NodeError(_('Domain name "%(domain)s" already used by "%(uuid)s"'), domain=domain.name, uuid=old_uuid)
-		old_xml = old_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+		old_xml = old_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
 	except libvirt.libvirtError as ex:
 		if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 			logger.error(ex)
@@ -1235,7 +1235,7 @@ def domain_define(uri, domain):
 		try:
 			if domain.uuid:
 				old_dom = conn.lookupByUUIDString(domain.uuid)
-				old_xml = old_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+				old_xml = old_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
 		except libvirt.libvirtError as ex:
 			if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 				logger.error(ex)
@@ -1553,7 +1553,7 @@ def domain_migrate(source_uri, domain, target_uri):
 			source_dom.migrate(target_conn, flags, None, None, 0)
 		elif source_state in (libvirt.VIR_DOMAIN_SHUTDOWN, libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
 			# for domains not running their definition is migrated
-			xml = source_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+			xml = source_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
 			target_conn.defineXML(xml)
 			source_dom.undefine()
 		else:
@@ -1728,7 +1728,7 @@ def domain_clone(uri, domain, name, subst):
 				warnings.append(warning)
 				annotations = {}
 
-			xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+			xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
 			# /domain
 			domain = ET.fromstring(xml)
 			# /domain/uuid
