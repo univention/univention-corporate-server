@@ -72,7 +72,10 @@ logger = logging.getLogger('uvmmd.node')
 
 STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED')
 
-ns = {'uvmm': 'https://univention.de/'}
+ns = {
+	'uvmm': 'https://univention.de/uvmm/1.0',
+}
+
 
 class NodeError(TranslatableException):
 	"""Error while handling node."""
