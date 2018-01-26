@@ -1344,7 +1344,7 @@ def unmapKerberosDisabled(oldattr):
 		kdcflags = int(oldattr.get('krb5KDCFlags', ['0'])[0])
 	except ValueError:
 		kdcflags = 0
-	return str(kdcflags & (1 << 7) == (1 << 7))
+	return kdcflags & (1 << 7) == (1 << 7)
 
 
 def unmapPosixDisabled(oldattr, disabled):

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.4-4) unstable; urgency=medium
+
+  * Bug #45842: fix typo
+
+ -- Florian Best <best@univention.de>  Fri, 26 Jan 2018 12:23:13 +0100
+
 univention-directory-manager-modules (13.0.4-3) unstable; urgency=medium
 
   * Bug #45842: fix typos
