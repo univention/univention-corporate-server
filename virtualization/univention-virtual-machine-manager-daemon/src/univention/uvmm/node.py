@@ -72,7 +72,7 @@ logger = logging.getLogger('uvmmd.node')
 
 STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED')
 
-ns = {
+XMLNS = {
 	'uvmm': 'https://univention.de/uvmm/1.0',
 }
 for prefix, uri in XMLNS.iteritems():
@@ -302,7 +302,7 @@ class Domain(PersistentCached):
 					domainsnap_tree = ET.fromstring(xml)
 				except ET.XMLSyntaxError:
 					continue
-				ctime = domainsnap_tree.findtext('creationTime', ns)
+				ctime = domainsnap_tree.findtext('creationTime', namespaces=XMLNS)
 				snap_stat = Data_Snapshot()
 				snap_stat.name = name
 				snap_stat.ctime = int(ctime)
@@ -328,42 +328,42 @@ class Domain(PersistentCached):
 			domain_tree = ET.fromstring(xml)
 		except ET.XMLSyntaxError:
 			return
-		devices = domain_tree.find('devices', ns)
+		devices = domain_tree.find('devices', namespaces=XMLNS)
 		self.pd.domain_type = domain_tree.attrib['type']
 		if not self.pd.domain_type:
 			logger.error("Failed /domain/@type from %s" % xml)
-		self.pd.uuid = domain_tree.findtext('uuid', ns)
-		self.pd.name = domain_tree.findtext('name', ns)
-		os_ = domain_tree.find('os', ns)
+		self.pd.uuid = domain_tree.findtext('uuid', namespaces=XMLNS)
+		self.pd.name = domain_tree.findtext('name', namespaces=XMLNS)
+		os_ = domain_tree.find('os', namespaces=XMLNS)
 		if os_ is not None:
-			typ = os_.find('type', ns)
+			typ = os_.find('type', namespaces=XMLNS)
 			if typ is not None:
 				self.pd.os_type = typ.text
 				if 'arch' in typ.attrib:
 					self.pd.arch = typ.attrib['arch']
-			self.pd.kernel = os_.findtext('kernel', ns)
-			self.pd.cmdline = os_.findtext('cmdline', ns)
-			self.pd.initrd = os_.findtext('initrd', ns)
-			self.pd.boot = [boot.attrib['dev'] for boot in os_.findall('boot', ns)]
-		bootloader = domain_tree.find('bootloader', ns)
+			self.pd.kernel = os_.findtext('kernel', namespaces=XMLNS)
+			self.pd.cmdline = os_.findtext('cmdline', namespaces=XMLNS)
+			self.pd.initrd = os_.findtext('initrd', namespaces=XMLNS)
+			self.pd.boot = [boot.attrib['dev'] for boot in os_.findall('boot', namespaces=XMLNS)]
+		bootloader = domain_tree.find('bootloader', namespaces=XMLNS)
 		if bootloader is not None:
 			self.pd.bootloader = bootloader.text
-			self.pd.bootloader_args = domain_tree.findtext('bootloader_args', ns)
-		clock = domain_tree.find('clock', ns)
+			self.pd.bootloader_args = domain_tree.findtext('bootloader_args', namespaces=XMLNS)
+		clock = domain_tree.find('clock', namespaces=XMLNS)
 		if clock is not None:
 			self.pd.rtc_offset = clock.attrib.get('offset')
 
 		self.pd.disks = []
-		for disk in devices.findall('disk', ns):
+		for disk in devices.findall('disk', namespaces=XMLNS):
 			dev = Disk()
 			dev.type = disk.attrib['type']
 			dev.device = disk.attrib['device']
-			driver = disk.find('driver', ns)
+			driver = disk.find('driver', namespaces=XMLNS)
 			if driver is not None:
 				dev.driver = driver.attrib.get('name')  # optional
 				dev.driver_type = driver.attrib.get('type')  # optional
 				dev.driver_cache = driver.attrib.get('cache', '')  # optional
-			source = disk.find('source', ns)
+			source = disk.find('source', namespaces=XMLNS)
 			if source is not None:
 				if dev.type == Disk.TYPE_FILE:
 					dev.source = source.attrib['file']
@@ -375,23 +375,23 @@ class Domain(PersistentCached):
 					dev.source = source.attrib['protocol']
 				else:
 					raise NodeError(_('Unknown disk type: %(type)d'), type=dev.type)
-			target = disk.find('target', ns)
+			target = disk.find('target', namespaces=XMLNS)
 			if target is not None:
 				dev.target_dev = target.attrib['dev']
 				dev.target_bus = target.attrib.get('bus')  # optional
-			if disk.find('readonly', ns) is not None:
+			if disk.find('readonly', namespaces=XMLNS) is not None:
 				dev.readonly = True
 
 			self.pd.disks.append(dev)
 
 		self.pd.interfaces = []
-		for iface in devices.findall('interface', ns):
+		for iface in devices.findall('interface', namespaces=XMLNS):
 			dev = Interface()
 			dev.type = iface.attrib['type']
-			mac = iface.find('mac', ns)
+			mac = iface.find('mac', namespaces=XMLNS)
 			if mac is not None:
 				dev.mac_address = mac.attrib['address']
-			source = iface.find('source', ns)
+			source = iface.find('source', namespaces=XMLNS)
 			if source is not None:
 				if dev.type == Interface.TYPE_BRIDGE:
 					dev.source = source.attrib['bridge']
@@ -399,20 +399,20 @@ class Domain(PersistentCached):
 					dev.source = source.attrib['network']
 				elif dev.type == Interface.TYPE_DIRECT:
 					dev.source = source.attrib['dev']
-			script = iface.find('script', ns)
+			script = iface.find('script', namespaces=XMLNS)
 			if script is not None:
 				dev.script = script.attrib['path']
-			target = iface.find('target', ns)
+			target = iface.find('target', namespaces=XMLNS)
 			if target is not None:
 				dev.target = target.attrib['dev']
-			model = iface.find('model', ns)
+			model = iface.find('model', namespaces=XMLNS)
 			if model is not None:
 				dev.model = model.attrib['type']
 
 			self.pd.interfaces.append(dev)
 
 		self.pd.graphics = []
-		for graphic in devices.findall('graphics', ns):
+		for graphic in devices.findall('graphics', namespaces=XMLNS):
 			dev = Graphic()
 			type = graphic.attrib['type']
 			dev.type = type
@@ -441,7 +441,7 @@ class Domain(PersistentCached):
 		self.pd.targethosts = []
 		metadata = domain_tree.find('metadata')
 		if metadata:
-			for targethost in metadata.findall('uvmm:migrationtargethosts', ns):
+			for targethost in metadata.findall('uvmm:migrationtargethosts', namespaces=XMLNS):
 				if targethost.text is not None:
 					self.pd.targethosts.extend(targethost.text.split())
 
@@ -941,7 +941,7 @@ def __update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
 	'''Create, update or delete node named '_node_name' of '_node_parent'.
 	If _node_value == None and all(attr == None), then node is deleted.
 	'''
-	node = _node_parent.find(_node_name, ns)
+	node = _node_parent.find(_node_name, namespaces=XMLNS)
 	if _node_value is None and not filter(lambda v: v is not None, attr.values()):
 		if node is not None:
 			_changes.add(None)
@@ -950,8 +950,8 @@ def __update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
 		if node is None:
 			if ':' in _node_name:
 				prefix, local_name = _node_name.split(':', 1)
-				_node_name = '{%s}%s' % (ns[prefix], local_name)
-			node = ET.SubElement(_node_parent, _node_name, nsmap=ns)
+				_node_name = '{%s}%s' % (XMLNS[prefix], local_name)
+			node = ET.SubElement(_node_parent, _node_name, nsmap=XMLNS)
 		new_text = _node_value or None
 		if node.text != new_text:
 			_changes.add(None)
@@ -997,7 +997,7 @@ def _domain_edit(node, dom_stat, xml):
 	description = dom_stat.annotations.get('description') or None
 	update(domain, 'description', description)
 	# /domain/os
-	domain_os = domain.find('os', ns)
+	domain_os = domain.find('os', namespaces=XMLNS)
 	if domain_os is None:
 		domain_os = ET.SubElement(domain, 'os')
 	# /domain/os/type @arch
@@ -1007,7 +1007,7 @@ def _domain_edit(node, dom_stat, xml):
 		update(domain_os, 'loader', template.loader)
 	if dom_stat.os_type == 'hvm':
 		# /domain/os/boot[]
-		domain_os_boots = domain_os.findall('boot', ns)
+		domain_os_boots = domain_os.findall('boot', namespaces=XMLNS)
 		boot = {}
 		for domain_os_boot in domain_os_boots:
 			dev = domain_os_boot.attrib['dev']
@@ -1028,7 +1028,7 @@ def _domain_edit(node, dom_stat, xml):
 		update(domain, 'bootloader_args', dom_stat.bootloader_args)
 	# /domain/memory
 	try:
-		old_maxMem = int(domain.find('memory', ns).text) << 10  # KiB
+		old_maxMem = int(domain.find('memory', namespaces=XMLNS).text) << 10  # KiB
 	except:
 		old_maxMem = -1
 	update(domain, 'memory', '%d' % (dom_stat.maxMem >> 10))  # KiB
@@ -1070,10 +1070,10 @@ def _domain_edit(node, dom_stat, xml):
 		update(domain_devices, 'emulator', template.emulator)
 
 	# /domain/devices/disk[]
-	domain_devices_disks = domain_devices.findall('disk', ns)
+	domain_devices_disks = domain_devices.findall('disk', namespaces=XMLNS)
 	disks = {}
 	for domain_devices_disk in domain_devices_disks:
-		domain_devices_disk_target = domain_devices_disk.find('target', ns)
+		domain_devices_disk_target = domain_devices_disk.find('target', namespaces=XMLNS)
 		bus = domain_devices_disk_target.attrib['bus']
 		dev = domain_devices_disk_target.attrib['dev']
 		key = (bus, dev)
@@ -1109,7 +1109,7 @@ def _domain_edit(node, dom_stat, xml):
 		else:
 			raise NodeError(_("Unknown disk/type='%(type)s'"), type=disk.type)
 		# /domain/devices/disk/readonly
-		domain_devices_disk_readonly = domain_devices_disk.find('readonly', ns)
+		domain_devices_disk_readonly = domain_devices_disk.find('readonly', namespaces=XMLNS)
 		if disk.readonly:
 			if domain_devices_disk_readonly is None:
 				ET.SubElement(domain_devices_disk, 'readonly')
@@ -1121,10 +1121,10 @@ def _domain_edit(node, dom_stat, xml):
 			live_updates.append(domain_devices_disk)
 
 	# /domain/devices/interface[]
-	domain_devices_interfaces = domain_devices.findall('interface', ns)
+	domain_devices_interfaces = domain_devices.findall('interface', namespaces=XMLNS)
 	interfaces = {}
 	for domain_devices_interface in domain_devices_interfaces:
-		domain_devices_interface_mac = domain_devices_interface.find('mac', ns)
+		domain_devices_interface_mac = domain_devices_interface.find('mac', namespaces=XMLNS)
 		key = domain_devices_interface_mac.attrib['address']
 		interfaces[key] = domain_devices_interface
 		domain_devices.remove(domain_devices_interface)
@@ -1166,7 +1166,7 @@ def _domain_edit(node, dom_stat, xml):
 	# /domain/devices/input @type @bus
 	if dom_stat.os_type == 'hvm':
 		# define a tablet usb device which has absolute cursor movement for a better VNC experience. Bug #19244
-		domain_devices_inputs = domain_devices.findall('input', ns)
+		domain_devices_inputs = domain_devices.findall('input', namespaces=XMLNS)
 		for domain_devices_input in domain_devices_inputs:
 			if domain_devices_input.attrib['type'] == 'tablet' and domain_devices_input.attrib['bus'] == 'usb':
 				break
@@ -1174,7 +1174,7 @@ def _domain_edit(node, dom_stat, xml):
 			domain_devices_input = ET.SubElement(domain_devices, 'input', type='tablet', bus='usb')
 
 	# /domain/devices/graphics[]
-	domain_devices_graphics = domain_devices.findall('graphics', ns)
+	domain_devices_graphics = domain_devices.findall('graphics', namespaces=XMLNS)
 	for domain_devices_graphic in domain_devices_graphics:
 		domain_devices.remove(domain_devices_graphic)
 	for graphics in dom_stat.graphics:
@@ -1197,7 +1197,7 @@ def _domain_edit(node, dom_stat, xml):
 		domain_devices_graphic.attrib['keymap'] = graphics.keymap
 		domain_devices_graphic.attrib['listen'] = graphics.listen or ''
 		if node.libvirt_version >= tuple2version((0, 9, 4)):
-			domain_devices_graphic_listens = domain_devices_graphic.findall('listen', ns)
+			domain_devices_graphic_listens = domain_devices_graphic.findall('listen', namespaces=XMLNS)
 			for listen in domain_devices_graphic_listens:
 				if listen.attrib['type'] != 'address':
 					continue
@@ -1749,11 +1749,11 @@ def domain_clone(uri, domain, name, subst):
 			domain_devices = __update_xml(domain, 'devices', '')
 
 			# /domain/devices/interface[]
-			domain_devices_interfaces = domain_devices.findall('interface', ns)
+			domain_devices_interfaces = domain_devices.findall('interface', namespaces=XMLNS)
 			default_mac = subst.get('mac', 'clone')  # clone or auto
 			for domain_devices_interface in domain_devices_interfaces:
 				# /domain/devices/interface/mac @address
-				domain_devices_interface_mac = domain_devices_interface.find('mac', ns)
+				domain_devices_interface_mac = domain_devices_interface.find('mac', namespaces=XMLNS)
 				mac_address = domain_devices_interface_mac.attrib['address']
 				key = 'mac#%s' % (mac_address,)
 				try:
@@ -1774,18 +1774,18 @@ def domain_clone(uri, domain, name, subst):
 						del domain_devices_interface_mac.attrib['address']
 
 			# /domain/devices/disk[]
-			domain_devices_disks = domain_devices.findall('disk', ns)
+			domain_devices_disks = domain_devices.findall('disk', namespaces=XMLNS)
 			for domain_devices_disk in domain_devices_disks:
 				# /domain/devices/disk @type @device
 				disk_type = domain_devices_disk.attrib['type']
 				disk_device = domain_devices_disk.attrib['device']
 				# /domain/devices/disk/driver @name @type @cache
-				domain_devices_disk_driver = domain_devices_disk.find('driver', ns)
+				domain_devices_disk_driver = domain_devices_disk.find('driver', namespaces=XMLNS)
 				driver_type = domain_devices_disk_driver.attrib.get('type', 'raw')
 				# /domain/devices/disk/readonly
-				readonly = domain_devices_disk.find('readony', ns) is not None
+				readonly = domain_devices_disk.find('readony', namespaces=XMLNS) is not None
 				# /domain/devices/disk/target @bus @dev
-				domain_devices_disk_target = domain_devices_disk.find('target', ns)
+				domain_devices_disk_target = domain_devices_disk.find('target', namespaces=XMLNS)
 				target_dev = domain_devices_disk_target.attrib['dev']
 
 				key = 'copy#%s' % (target_dev,)
@@ -1802,7 +1802,7 @@ def domain_clone(uri, domain, name, subst):
 					continue  # nothing to clone for shared disks
 
 				# /domain/devices/disk/source @file @dev
-				domain_devices_disk_source = domain_devices_disk.find('source', ns)
+				domain_devices_disk_source = domain_devices_disk.find('source', namespaces=XMLNS)
 				if disk_type == 'file':
 					source = domain_devices_disk_source.attrib['file']
 					suffix = '.%s' % (driver_type,)
@@ -1852,7 +1852,7 @@ def domain_clone(uri, domain, name, subst):
 				# /volume/source
 				__update_xml(volume, 'source', None)  # remove
 				# /volume/target
-				volume_target = volume.find('target', ns)
+				volume_target = volume.find('target', namespaces=XMLNS)
 				if volume_target:
 					# /volume/target/path
 					__update_xml(volume_target, 'path', None)  # remove
@@ -1920,14 +1920,14 @@ def domain_targethost_add(uri, domain, targethost):
 		domconn = conn.lookupByUUIDString(domain)
 		dom = node.domains[domain]
 		dom_xml = ET.fromstring(domconn.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE))
-		domain_metadata = dom_xml.find('metadata', ns)
+		domain_metadata = dom_xml.find('metadata', namespaces=XMLNS)
 		domain_targethosts = []
 
 		if domain_metadata is None or domain_metadata == -1:
-			domain_metadata_sub = ET.SubElement(dom_xml, 'metadata', nsmap=ns)
+			domain_metadata_sub = ET.SubElement(dom_xml, 'metadata', nsmap=XMLNS)
 			domain_metadata = __update_xml(dom_xml, 'metadata', domain_metadata_sub)
 		else:
-			elem_targethosts = domain_metadata.find('uvmm:migrationtargethosts', ns)
+			elem_targethosts = domain_metadata.find('uvmm:migrationtargethosts', namespaces=XMLNS)
 			if elem_targethosts is not None and elem_targethosts.text is not None:
 				domain_targethosts = elem_targethosts.text.split()
 
@@ -1950,14 +1950,14 @@ def domain_targethost_remove(uri, domain, targethost):
 		domconn = conn.lookupByUUIDString(domain)
 		dom = node.domains[domain]
 		dom_xml = ET.fromstring(domconn.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE))
-		domain_metadata = dom_xml.find('metadata', ns)
+		domain_metadata = dom_xml.find('metadata', namespaces=XMLNS)
 		domain_targethosts = []
 
 		if domain_metadata is None or domain_metadata == -1:
-			domain_metadata_sub = ET.SubElement(dom_xml, 'metadata', nsmap=ns)
+			domain_metadata_sub = ET.SubElement(dom_xml, 'metadata', nsmap=XMLNS)
 			domain_metadata = __update_xml(dom_xml, 'metadata', domain_metadata_sub)
 		else:
-			elem_targethosts = domain_metadata.find('uvmm:migrationtargethosts', ns)
+			elem_targethosts = domain_metadata.find('uvmm:migrationtargethosts', namespaces=XMLNS)
 			if elem_targethosts is not None:
 				domain_targethosts = elem_targethosts.text.split()
 
