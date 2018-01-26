@@ -318,6 +318,15 @@ class TestUsers(object):
 	def test_modlist_krb_password_end(self, udm):
 		pass
 
+	def test_user_password_is_cryped(self, udm, lo):
+		user = udm.create_user(password='univention')[0]
+		password = lo.getAttr(user, 'userPassword')[0]
+		assert password.startswith('{crypt}')
+		udm.modify_object('users/user', dn=user, password='univention2')
+		password2 = lo.getAttr(user, 'userPassword')[0]
+		assert password2.startswith('{crypt}')
+		assert password2 != password
+
 	@pytest.mark.parametrize('locked,unlocked', [
 		('all', 'none'),
 		('all', 'posix'),
