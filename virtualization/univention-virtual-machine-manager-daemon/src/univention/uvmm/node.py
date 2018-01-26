@@ -1027,10 +1027,7 @@ def _domain_edit(node, dom_stat, xml):
 		# /domain/bootloader_args
 		update(domain, 'bootloader_args', dom_stat.bootloader_args)
 	# /domain/memory
-	try:
-		old_maxMem = int(domain.find('memory', namespaces=XMLNS).text) << 10  # KiB
-	except:
-		old_maxMem = -1
+	old_maxMem = int(domain.findtext('memory', default=0, namespaces=XMLNS)) << 10  # KiB
 	update(domain, 'memory', '%d' % (dom_stat.maxMem >> 10))  # KiB
 	# On change, reset currentMemory to new maxMem as well
 	if old_maxMem != dom_stat.maxMem:
