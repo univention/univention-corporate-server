@@ -1779,7 +1779,6 @@ def domain_clone(uri, domain, name, subst):
 				readonly = domain_devices_disk.find('readony', ns) is not None
 				# /domain/devices/disk/target @bus @dev
 				domain_devices_disk_target = domain_devices_disk.find('target', ns)
-				target_bus = domain_devices_disk_target.attrib['bus']
 				target_dev = domain_devices_disk_target.attrib['dev']
 
 				key = 'copy#%s' % (target_dev,)
