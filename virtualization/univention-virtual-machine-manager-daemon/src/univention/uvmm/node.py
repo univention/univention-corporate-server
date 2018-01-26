@@ -76,7 +76,6 @@ STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHE
 ns = {'uvmm': 'https://univention.de/'}
 
 class NodeError(TranslatableException):
-
 	"""Error while handling node."""
 
 
@@ -109,9 +108,9 @@ class DomainTemplate(object):
 		capabilities_tree = ET.fromstring(xml)
 		result = []
 		for guest in capabilities_tree.findall('guest'):
-			os_type = guest.findtext('os_type' )
+			os_type = guest.findtext('os_type')
 			f_names = DomainTemplate.__get_features(guest)
-			for arch in guest.findall('arch' ):
+			for arch in guest.findall('arch'):
 				for dom in arch.findall('domain'):
 					dom = DomainTemplate(arch, dom, os_type, f_names)
 					result.append(dom)
@@ -1571,9 +1570,7 @@ def domain_migrate(source_uri, domain, target_uri):
 			pass
 		# target_node.domains[domain] = Domain(target_dom, node=target_node)
 		for t in range(20):
-			if (domain not in source_node.domains and
-					domain in target_node.domains and
-					target_node.domains[domain].pd.state != libvirt.VIR_DOMAIN_PAUSED):
+			if (domain not in source_node.domains and domain in target_node.domains and target_node.domains[domain].pd.state != libvirt.VIR_DOMAIN_PAUSED):
 				break
 			time.sleep(1)
 		else:
