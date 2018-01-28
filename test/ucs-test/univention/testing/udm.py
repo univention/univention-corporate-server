@@ -527,6 +527,8 @@ def verify_udm_object(module, dn, expected_properties):
 	difference = {}
 	for (key, value) in expected_properties.iteritems():
 		udm_value = udm_object.info.get(key, [])
+		if udm_value is None:
+			udm_value = []
 		if isinstance(udm_value, basestring):
 			udm_value = set([udm_value])
 		if not isinstance(value, (tuple, list)):
