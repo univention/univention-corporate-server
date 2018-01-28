@@ -1,0 +1,59 @@
+product: ucs
+release: "4.1"
+version: [5]
+scope: ucs_4.1-0-errata4.1-5
+src: clamav
+fix: 0.99.2+dfsg-0.160.201801280950
+desc: |
+ This update addresses the following issues:
+ * libclamav/message.c in allows remote attackers to cause a denial of service
+   (out-of-bounds read) via a crafted e-mail message. (CVE-2017-6418)
+ * The wwunpack function in libclamav/wwunpack.c allows remote attackers to
+   cause a denial of service (use-after-free) via a crafted PE file with
+   WWPack compression. (CVE-2017-6420)
+ * ClamAV has a use-after-free condition arising from a lack of input
+   validation. A remote attacker could exploit this vulnerability with a
+   crafted email message to cause a denial of service. (CVE-2017-12374)
+ * ClamAV has a buffer overflow vulnerability arising from a lack of input
+   validation. An unauthenticated remote attacker could send a crafted email
+   message to the affected device, triggering a buffer overflow and
+   potentially a denial of service when the malicious message is scanned.
+   (CVE-2017-12375)
+ * ClamAV has a buffer overflow vulnerability arising from improper input
+   validation when handling Portable Document Format (PDF) files. An
+   unauthenticated remote attacker could send a crafted PDF file to the
+   affected device, triggering a buffer overflow and potentially a denial of
+   service or arbitrary code execution when the malicious file is scanned.
+   (CVE-2017-12376)
+ * ClamAV has a heap overflow vulnerability arising from improper input
+   validation when handling mew packets. An attacker could exploit this by
+   sending a crafted message to the affected device, triggering a denial of
+   service or possible arbitrary code execution when the malicious file is
+   scanned. (CVE-2017-12377)
+ * ClamAV has a buffer overread vulnerability arising from improper input
+   validation when handling tape archive (TAR) files. An unauthenticated
+   remote attacker could send a crafted TAR file to the affected device,
+   triggering a buffer overread and potentially a denial of service when the
+   malicious file is scanned. (CVE-2017-12378)
+ * ClamAV has a buffer overflow vulnerability arising from improper input
+   validation in the message parsing function. An unauthenticated remote
+   attacker could send a crafted email message to the affected device,
+   triggering a buffer overflow and potentially a denial of service or
+   arbitrary code execution when the malicious message is scanned.
+   (CVE-2017-12379)
+ * ClamAV has a NULL dereference vulnerability arising from improper input
+   validation in the message parsing function. An unauthenticated remote
+   attacker could send a crafted email message to the affected device,
+   triggering a NULL pointer dereference, which may result in a denial of
+   service. (CVE-2017-12380)
+bug: [45615]
+cve:
+- CVE-2017-6418
+- CVE-2017-6420
+- CVE-2017-12374
+- CVE-2017-12375
+- CVE-2017-12376
+- CVE-2017-12377
+- CVE-2017-12378
+- CVE-2017-12379
+- CVE-2017-12380
