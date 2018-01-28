@@ -1,5 +1,6 @@
 univention-directory-manager-modules (13.0.6-1) unstable; urgency=medium
 
+  * Bug #45877: fix unmapping of mail/folder
   * Bug #45877: make modification of user object possible if LDAP permissions
     to read userPassword are missing.
 

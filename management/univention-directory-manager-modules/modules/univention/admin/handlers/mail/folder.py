@@ -163,35 +163,23 @@ mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.ad
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
-		self.open()
+	def _post_unmap(self, oldinfo, oldattr):
+		cn = oldattr.get('cn', [])
+		if cn:
+			oldinfo['name'] = cn[0].split('@', 1)[0]
+			oldinfo['mailDomain'] = cn[0].split('@', 1)[1]
 
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-		if self.exists():
-			cn = self.oldattr.get('cn', [])
-			if cn:
-				# 'name' is not a ldap attribute and oldinfo['name'] is
-				# always empty, that is way searching for 'name' causes trouble
-				# we delete the 'name' key in oldinfo so that the "change test"
-				# succeeds
-				if not self.oldinfo.get('name'):
-					del self.oldinfo['name']
-				self['name'] = cn[0].split('@')[0]
-				self['mailDomain'] = cn[0].split('@')[1]
-
-			# fetch values for ACLs
-			acls = self.oldattr.get('univentionMailACL', [])
-			self['sharedFolderUserACL'] = []
-			self['sharedFolderGroupACL'] = []
-			if acls:
-				for acl in acls:
-					if acl.find('@') > 0 or acl.startswith('anyone'):
-						self['sharedFolderUserACL'].append(acl.rsplit(' ', 1))
-					else:
-						self['sharedFolderGroupACL'].append(acl.rsplit(' ', 1))
-		self.save()
+		# fetch values for ACLs
+		acls = oldattr.get('univentionMailACL', [])
+		oldinfo['sharedFolderUserACL'] = []
+		oldinfo['sharedFolderGroupACL'] = []
+		if acls:
+			for acl in acls:
+				if acl.find('@') > 0 or acl.startswith('anyone'):
+					oldinfo['sharedFolderUserACL'].append(acl.rsplit(' ', 1))
+				else:
+					oldinfo['sharedFolderGroupACL'].append(acl.rsplit(' ', 1))
+		return oldinfo
 
 	def description(self):
 		"""Returns a name that identifies the object. This may be used
