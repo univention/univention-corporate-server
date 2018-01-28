@@ -1988,7 +1988,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 	def _check_password_complexity(self, pwhistoryPolicy):
 		if self['overridePWLength'] != '1':
-			password_minlength = min(0, pwhistoryPolicy.pwhistoryPasswordLength) or self.password_length
+			password_minlength = max(0, pwhistoryPolicy.pwhistoryPasswordLength) or self.password_length
 			if len(self['password']) < password_minlength:
 				raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % (password_minlength,))
 
@@ -2047,7 +2047,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			# 2. remove that user has to change password on next login
 			shadowMax = ''
 		else:
-			shadowMax = pwhistoryPolicy.expiryInterval
+			shadowMax = str(pwhistoryPolicy.expiryInterval)
 
 		old_shadowMax = self.oldattr.get('shadowMax', [''])[0]
 		if old_shadowMax != shadowMax:
@@ -2588,26 +2588,27 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			univention.admin.mapping.mapRewrite(filter, mapping)
 
 
-class _PasswortHistoryPolicy(object):
-	pwhistoryLength = None
-	pwhistoryPasswordLength = 0
-	pwhistoryPasswordCheck = False
-	expiryInterval = 0
+class _PasswortHistoryPolicy(type('', (), {}).mro()[-1]):
 
 	def __init__(self, pwhistoryPolicy):
+		super(_PasswortHistoryPolicy, self).__init__()
 		self.pwhistoryPolicy = pwhistoryPolicy
+		self.pwhistoryLength = None
+		self.pwhistoryPasswordLength = 0
+		self.pwhistoryPasswordCheck = False
+		self.expiryInterval = 0
 		if pwhistoryPolicy:
 			try:
-				self.pwhistoryLength = min(0, int(pwhistoryPolicy['length'] or 0))
+				self.pwhistoryLength = max(0, int(pwhistoryPolicy['length'] or 0))
 			except ValueError:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (history length): %r' % (pwhistoryPolicy.dn,))
 			try:
-				self.pwhistoryPasswordLength = min(0, int(pwhistoryPolicy['pwLength'] or 0))
+				self.pwhistoryPasswordLength = max(0, int(pwhistoryPolicy['pwLength'] or 0))
 			except ValueError:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (password length): %r' % (pwhistoryPolicy.dn,))
 			self.pwhistoryPasswordCheck = (pwhistoryPolicy['pwQualityCheck'] or '').lower() in ['true', '1']
 			try:
-				self.expiryInterval = min(0, int(pwhistoryPolicy['expiryInterval'] or 0))
+				self.expiryInterval = max(0, int(pwhistoryPolicy['expiryInterval'] or 0))
 			except ValueError:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (expiry interval): %r' % (pwhistoryPolicy.dn,))
 
