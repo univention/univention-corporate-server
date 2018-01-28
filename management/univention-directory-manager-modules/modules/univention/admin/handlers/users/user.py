@@ -1921,7 +1921,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			ml = self._check_password_history(ml, pwhistoryPolicy)
 			self._check_password_complexity(pwhistoryPolicy)
 			ml = self._modlist_samba_password(ml, pwhistoryPolicy)
-			ml = self._modlist_password_expiry(ml)
+			ml = self._modlist_password_expiry(ml, pwhistoryPolicy)
 		ml = self._modlist_samba_bad_pw_count(ml)
 		ml = self._modlist_sambaAcctFlags(ml)
 		ml = self._modlist_samba_kickoff_time(ml)
