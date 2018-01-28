@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: tiff
-fix: 4.0.3-12.3+deb8u4
+fix: 4.0.3-12.3+deb8u5
 desc: |
  This update addresses the following issue(s):
  * The TIFFWriteDirectoryTagLongLong8Array function in tif_dirwrite.c in the
@@ -95,6 +95,16 @@ desc: |
    tif_next.c in the tiffmedian tool, or (7)
    TIFFWriteDirectoryTagLongLong8Array function in tif_dirwrite.c in the
    tiffset tool. (CVE-2014-8127)
+ * CVE-2017-9935: Heap-based buffer overflow in t2p_write_pdf function
+ * CVE-2017-11335: Heap-based buffer overflow in tiff2pdf
+ * CVE-2017-12944: Mishandled memory allocation for short files in the
+   TIFFReadDirEntryArray function
+ * CVE-2017-13726: Reachable assertion abort in the function
+   TIFFWriteDirectorySec()
+ * CVE-2017-13727: Reachable assertion abort in the function
+   TIFFWriteDirectoryTagSubifd()
+ * CVE-2017-18013: NULL pointer dereference in
+   tif_print.c:TIFFPrintDirectory() causes crash
 bug: [44571]
 cve:
 - CVE-2016-3658
@@ -122,3 +132,9 @@ cve:
 - CVE-2017-9147
 - CVE-2017-5225
 - CVE-2014-8127
+- CVE-2017-9935
+- CVE-2017-11335
+- CVE-2017-12944
+- CVE-2017-13726
+- CVE-2017-13727
+- CVE-2017-18013
