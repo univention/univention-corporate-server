@@ -1,3 +1,9 @@
+ucs-test (7.0.23-115) unstable; urgency=medium
+
+  * Bug #45842: merge changes from UCS 4.3
+
+ -- Florian Best <best@univention.de>  Sun, 28 Jan 2018 18:31:43 +0100
+
 ucs-test (7.0.23-114) unstable; urgency=low
 
   * Bug #46021: add test for UDM syntax emailAddress
