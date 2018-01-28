@@ -1,4 +1,4 @@
-univention-directory-manager-modules (13.0.6-2) unstable; urgency=medium
+univention-directory-manager-modules (13.0.6-3) unstable; urgency=medium
 
   * Bug #45877: fix evaluation of expiry interval in password history policy
 
