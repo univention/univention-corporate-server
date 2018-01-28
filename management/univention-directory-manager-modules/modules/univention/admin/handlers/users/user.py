@@ -2039,26 +2039,23 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1'
 		unset_pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0'
 
+		now = (long(time.time()) / 3600 / 24)
+		shadowLastChange = str(int(now))
+		shadowMax = str(pwhistoryPolicy.expiryInterval or '')
 		if pwd_change_next_login:
 			# force user to change password on next login
-			shadowMax = str(pwhistoryPolicy.expiryInterval or "1")
-		elif not pwhistoryPolicy.expiryInterval or unset_pwd_change_next_login:
-			# 1. no pw expiry interval is defined or
-			# 2. remove that user has to change password on next login
+			shadowMax = shadowMax or '1'
+			shadowLastChange = str(int(now) - int(shadowMax) - 1)
+		elif unset_pwd_change_next_login:
 			shadowMax = ''
-		else:
-			shadowMax = str(pwhistoryPolicy.expiryInterval)
+
+		if not pwhistoryPolicy.expiryInterval and not self.hasChanged('pwdChangeNextLogin'):
+			# An empty field means that password aging features are disabled.
+			shadowLastChange = ''
 
 		old_shadowMax = self.oldattr.get('shadowMax', [''])[0]
 		if old_shadowMax != shadowMax:
 			ml.append(('shadowMax', old_shadowMax, shadowMax))
-
-		now = (long(time.time()) / 3600 / 24)
-		shadowLastChange = ''
-		if pwhistoryPolicy.expiryInterval or unset_pwd_change_next_login:
-			shadowLastChange = str(int(now))
-		if pwd_change_next_login:
-			shadowLastChange = str(int(now) - int(shadowMax) - 1)
 
 		if shadowLastChange:  # FIXME: this check causes, that the value is not unset. Is this correct?
 			ml.append(('shadowLastChange', self.oldattr.get('shadowLastChange', [''])[0], shadowLastChange))
@@ -2074,8 +2071,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			expiry = long(time.time())
 			if not pwd_change_next_login:
 				expiry = expiry + (pwhistoryPolicy.expiryInterval * 3600 * 24)
-			expiry = time.strftime("%d.%m.%y", time.gmtime(expiry))
-			krb5PasswordEnd = "%s" % "20" + expiry[6:8] + expiry[3:5] + expiry[0:2] + "000000Z"
+			krb5PasswordEnd = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
 		old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', [''])[0]
