@@ -1,3 +1,9 @@
+ucs-test (8.0.21-2) unstable; urgency=medium
+
+  * Bug #45842: add more tests
+
+ -- Florian Best <best@univention.de>  Sun, 28 Jan 2018 23:18:47 +0100
+
 ucs-test (8.0.21-1) unstable; urgency=medium
 
   * Bug #45877: add test case test_lock_unlock_preserves_password and

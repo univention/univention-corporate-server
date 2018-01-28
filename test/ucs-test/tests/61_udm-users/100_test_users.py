@@ -329,17 +329,58 @@ class TestUsers(object):
 	def test_modlist_samba_password_history(self, udm):
 		pass
 
-	def test_modlist_shadow_max(self, udm):
-		pass
+	@pytest.mark.parametrize('today,expiry_interval', [
+		(long(time.time()) / 3600 / 24, None),
+		(long(time.time()) / 3600 / 24, 7),
+	])
+	def test_modlist_shadow_max_and_last_change(self, today, expiry_interval, udm):
+		kw = dict(expiryInterval=expiry_interval) if expiry_interval is not None else {}
+		pwhistory = udm.create_object('policies/pwhistory', name='pw-test', **kw)
+		cn = udm.create_object('container/cn', name='testusers', policy_reference=pwhistory)
+		shadow_max_expiry = [str(expiry_interval)] if expiry_interval is not None else []
+		shadow_max_expiry_1 = [str(expiry_interval)] if expiry_interval is not None else ['1']
 
-	def test_modlist_shadow_last_change(self, udm):
-		pass
+		user1 = udm.create_user(position=cn)[0]
+		udm.verify_ldap_object(user1, {'shadowMax': shadow_max_expiry, 'shadowLastChange': [str(today)] if expiry_interval else []})
 
-	def test_modlist_samba_pwd_last_set(self, udm):
-		pass
+		user2 = udm.create_user(position=cn, pwdChangeNextLogin='0')[0]
+		# FIXME?: the following was possible in UCS 4.2
+#		udm.verify_ldap_object(user2, {'shadowMax': shadow_max_expiry, 'shadowLastChange': [str(today)]})
+
+		user3 = udm.create_user(position=cn, pwdChangeNextLogin='1')[0]
+		udm.verify_ldap_object(user3, {'shadowMax': shadow_max_expiry_1, 'shadowLastChange': [str(today - expiry_interval - 1) if expiry_interval else str(today - 2)]})
+
+		udm.modify_object('users/user', dn=user1, password='univention2')
+		udm.verify_ldap_object(user1, {'shadowMax': shadow_max_expiry, 'shadowLastChange': [str(today)] if expiry_interval else []})
+
+		udm.modify_object('users/user', dn=user2, password='univention2', pwdChangeNextLogin='1')
+		udm.verify_ldap_object(user2, {'shadowMax': shadow_max_expiry_1, 'shadowLastChange': [str(today - expiry_interval - 1) if expiry_interval else str(today - 2)]})
+
+		# Bug #46067:
+		udm.modify_object('users/user', dn=user3, password='univention2', pwdChangeNextLogin='1')
+		#udm.verify_ldap_object(user3, {'shadowMax': shadow_max_expiry_1, 'shadowLastChange': [str(today - expiry_interval - 1)]})
+
+	def test_modlist_samba_pwd_last_set(self, udm, lo):
+		self._test_modlist(udm, {'pwdChangeNextLogin': '1'}, {'sambaPwdLastSet': ['0']})
+		self._test_modlist(udm, {'password': 'univention2', 'pwdChangeNextLogin': '1'}, {'sambaPwdLastSet': ['0']})
+		prior = long(time.time())
+		user = udm.create_user()[0]
+		after = long(time.time())
+		last_set = long(lo.get(user)['sambaPwdLastSet'][0])
+		assert prior <= last_set <= after
 
 	def test_modlist_krb_password_end(self, udm):
-		pass
+		expiry_interval = 7
+		pwhistory = udm.create_object('policies/pwhistory', name='pw-test', expiryInterval=expiry_interval)
+		cn = udm.create_object('container/cn', name='testusers', policy_reference=pwhistory)
+		expiry = long(time.time())
+		password_end = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
+		password_end_policy = time.strftime("%Y%m%d000000Z", time.gmtime(expiry + expiry_interval * 3600 * 24))
+		self._test_modlist(udm, {'pwdChangeNextLogin': '1'}, {'krb5PasswordEnd': [password_end]})
+		self._test_modlist(udm, {'pwdChangeNextLogin': '0', 'password': 'univention2'}, {'krb5PasswordEnd': []})
+		self._test_modlist(udm, {'pwdChangeNextLogin': '1', 'position': cn}, {'krb5PasswordEnd': [password_end]})
+		# FIXME: correct would be: self._test_modlist(udm, {'pwdChangeNextLogin': '0', 'password': 'univention2', 'position': cn}, {'krb5PasswordEnd': [password_end_policy]})
+		self._test_modlist(udm, {'pwdChangeNextLogin': '0', 'password': 'univention2', 'position': cn}, {'krb5PasswordEnd': []})
 
 	def test_user_password_is_cryped(self, udm, lo):
 		user = udm.create_user(password='univention')[0]
@@ -363,11 +404,16 @@ class TestUsers(object):
 		udm.modify_object('users/user', dn=user, locked=unlocked)
 		udm.verify_ldap_object(user, {'sambaBadPasswordCount': ['0']})
 
-	def test_modlist_sambaAcctFlags(self, udm):
-		pass
-
-	def test_modlist_shadowMax(self, udm):
-		pass
+	@pytest.mark.parametrize('props,flags', [
+		({'locked': 'none', 'description': 'asdf'}, ['[U          ]']),
+		({'locked': 'all'}, ['[UL         ]']),
+		({'disabled': 'all'}, ['[UD         ]']),
+		({'disabled': 'none', 'description': 'asdf'}, ['[U          ]']),
+		({'locked': 'all', 'disabled': 'all'}, ['[UDL        ]']),
+		({'locked': 'none', 'disabled': 'none', 'description': 'asdf'}, ['[U          ]']),
+	])
+	def test_modlist_sambaAcctFlags(self, udm, props, flags):
+		self._test_modlist(udm, props, {'sambaAcctFlags': flags})
 
 	@pytest.mark.parametrize('userexpiry,kick_off,x', [
 		('2018-01-01', ['1514761200'], {}),
