@@ -275,8 +275,7 @@ class simpleLdap(object):
 
 		if isinstance(key, (list, tuple)):
 			return any(self.hasChanged(i) for i in key)
-		if (not self.oldinfo.get(key, '') or self.oldinfo[key] == [''] or self.oldinfo[key] == []) \
-			and (not self.info.get(key, '') or self.info[key] == [''] or self.info[key] == []):
+		if (not self.oldinfo.get(key, '') or self.oldinfo[key] == ['']) and (not self.info.get(key, '') or self.info[key] == ['']):
 			return False
 
 		return not univention.admin.mapping.mapCmp(self.mapping, key, self.oldinfo.get(key, ''), self.info.get(key, ''))

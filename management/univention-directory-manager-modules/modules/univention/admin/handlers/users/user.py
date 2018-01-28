@@ -1914,7 +1914,14 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		ml = self._modlist_display_name(ml)
 		ml = self._modlist_krb_principal(ml)
 		ml = self._modlist_krb5kdc_flags(ml)
-		ml = self._modlist_password_change(ml)
+		ml = self._modlist_posix_password(ml)
+		ml = self._modlist_kerberos_password(ml)
+		if not self.exists() or self.hasChanged(['password', 'pwdChangeNextLogin']):
+			pwhistoryPolicy = _PasswortHistoryPolicy(self.loadPolicyObject('policies/pwhistory'))
+			ml = self._check_password_history(ml, pwhistoryPolicy)
+			self._check_password_complexity(pwhistoryPolicy)
+			ml = self._modlist_samba_password(ml, pwhistoryPolicy)
+			ml = self._modlist_password_expiry(ml)
 		ml = self._modlist_samba_bad_pw_count(ml)
 		ml = self._modlist_sambaAcctFlags(ml)
 		ml = self._modlist_samba_kickoff_time(ml)
@@ -1974,33 +1981,44 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _check_password_history(self, ml, pwhistoryPolicy):
-		if self['overridePWHistory'] != '1':
-			pwhistory = self.oldattr.get('pwhistory', [''])[0]
+		if self.exists() and not self.hasChanged('password'):
+			return ml
+		if self['overridePWHistory'] == '1':
+			return ml
 
-			if self.__pwAlreadyUsed(self['password'], pwhistory):
-				raise univention.admin.uexceptions.pwalreadyused()
+		pwhistory = self.oldattr.get('pwhistory', [''])[0]
 
-			if pwhistoryPolicy.pwhistoryLength is not None:
-				newPWHistory = self.__getPWHistory(univention.admin.password.crypt(self['password']), pwhistory, pwhistoryPolicy.pwhistoryLength)
-				ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
+		if self.__pwAlreadyUsed(self['password'], pwhistory):
+			raise univention.admin.uexceptions.pwalreadyused()
+
+		if pwhistoryPolicy.pwhistoryLength is not None:
+			newPWHistory = self.__getPWHistory(univention.admin.password.crypt(self['password']), pwhistory, pwhistoryPolicy.pwhistoryLength)
+			ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
 
 		return ml
 
 	def _check_password_complexity(self, pwhistoryPolicy):
-		if self['overridePWLength'] != '1':
-			password_minlength = max(0, pwhistoryPolicy.pwhistoryPasswordLength) or self.password_length
-			if len(self['password']) < password_minlength:
-				raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % (password_minlength,))
+		if self.exists() and not self.hasChanged('password'):
+			return
+		if self['overridePWLength'] == '1':
+			return
 
-			if pwhistoryPolicy.pwhistoryPasswordCheck:
-				pwdCheck = univention.password.Check(self.lo)
-				pwdCheck.enableQualityCheck = True
-				try:
-					pwdCheck.check(self['password'])
-				except ValueError as e:
-					raise univention.admin.uexceptions.pwQuality(str(e).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))
+		password_minlength = max(0, pwhistoryPolicy.pwhistoryPasswordLength) or self.password_length
+		if len(self['password']) < password_minlength:
+			raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % (password_minlength,))
+
+		if pwhistoryPolicy.pwhistoryPasswordCheck:
+			pwdCheck = univention.password.Check(self.lo)
+			pwdCheck.enableQualityCheck = True
+			try:
+				pwdCheck.check(self['password'])
+			except ValueError as e:
+				raise univention.admin.uexceptions.pwQuality(str(e).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))
 
 	def _modlist_samba_password(self, ml, pwhistoryPolicy):
+		if self.exists() and not self.hasChanged('password'):
+			return ml
+
 		password_nt, password_lm = univention.admin.password.ntlm(self['password'])
 		ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
 		ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
@@ -2021,21 +2039,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
 		return ml
 
-	def _modlist_password_change(self, ml):
-		ml = self._modlist_posix_password(ml)
-		ml = self._modlist_kerberos_password(ml)
-
-		modifypassword = not self.exists() or self.hasChanged('password')
-		if not self.hasChanged('pwdChangeNextLogin') and not modifypassword:
-			return ml
-
-		pwhistoryPolicy = _PasswortHistoryPolicy(self.loadPolicyObject('policies/pwhistory'))
-
-		if modifypassword:
-			ml = self._check_password_history(ml, pwhistoryPolicy)
-			self._check_password_complexity(pwhistoryPolicy)
-			ml = self._modlist_samba_password(ml, pwhistoryPolicy)
-
+	def _modlist_password_expiry(self, ml, pwhistoryPolicy):
 		pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1'
 		unset_pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0'
 
