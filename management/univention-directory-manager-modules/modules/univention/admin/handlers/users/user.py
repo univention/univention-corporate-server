@@ -2041,7 +2041,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 		if pwd_change_next_login:
 			# force user to change password on next login
-			shadowMax = "1"
+			shadowMax = str(pwhistoryPolicy.expiryInterval or "1")
 		elif not pwhistoryPolicy.expiryInterval or unset_pwd_change_next_login:
 			# 1. no pw expiry interval is defined or
 			# 2. remove that user has to change password on next login

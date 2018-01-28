@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.6-2) unstable; urgency=medium
+
+  * Bug #45877: fix evaluation of expiry interval in password history policy
+
+ -- Florian Best <best@univention.de>  Sun, 28 Jan 2018 23:20:42 +0100
+
 univention-directory-manager-modules (13.0.6-1) unstable; urgency=medium
 
   * Bug #45877: fix unmapping of mail/folder
