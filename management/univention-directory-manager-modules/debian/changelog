@@ -1,3 +1,10 @@
+univention-directory-manager-modules (13.0.6-1) unstable; urgency=medium
+
+  * Bug #45877: make modification of user object possible if LDAP permissions
+    to read userPassword are missing.
+
+ -- Florian Best <best@univention.de>  Sun, 28 Jan 2018 15:50:54 +0100
+
 univention-directory-manager-modules (13.0.5-1) unstable; urgency=medium
 
   * Bug #45877: make sure password is always crypted

@@ -1829,6 +1829,12 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	def _ldap_pre_ready(self):
 		super(object, self)._ldap_pre_ready()
 
+		if self.exists() and not self.oldinfo.get('password') and not self['password']:
+			# password property is required but LDAP ACL's disallow reading them
+			self.info['password'] = '*'
+			self.oldinfo['password'] = '*'
+			self.info['locked'] = self.oldinfo['locked']
+
 		if not self.exists() or self.hasChanged('primaryGroup'):
 			# Ensure the primary Group has the samba option enabled
 			if self['primaryGroup'] and not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
