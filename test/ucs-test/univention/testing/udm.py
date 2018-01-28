@@ -44,18 +44,24 @@ The API is currently under heavy development and may/will change before next UCS
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import subprocess
 import os
 import sys
-import pipes
-import psutil
 import copy
+import time
+import pipes
+import subprocess
+
+import psutil
+import ldap
+import ldap.filter
+
+import univention.admin.uldap
+import univention.admin.modules
+import univention.admin.objects
+
 import univention.testing.ucr
 import univention.testing.strings as uts
 import univention.testing.utils as utils
-import ldap
-import ldap.filter
-import time
 from univention.testing.ucs_samba import wait_for_drs_replication
 
 
@@ -153,9 +159,14 @@ class UCSTestUDM(object):
         cmd = [UCSTestUDM.PATH_UDM_CLI_CLIENT_WRAPPED, modulename, action]
         args = copy.deepcopy(kwargs)
 
-        for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate', 'policy_reference', 'policy_dereference'):
-            if arg in args:
-                cmd.extend(['--%s' % arg.replace('_', '-'), args.pop(arg)])
+        for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate', 'policy_reference', 'policy_dereference', 'append_option'):
+            if arg not in args:
+                continue
+            value = args.pop(arg)
+            if not isinstance(value, (list, tuple)):
+                value = (value,)
+            for item in value:
+                cmd.extend(['--%s' % arg.replace('_', '-'), item])
 
         for option in args.pop('options', ()):
             cmd.extend(['--option', option])
@@ -463,6 +474,12 @@ class UCSTestUDM(object):
             if signal == 15:
                 time.sleep(1)
 
+    def verify_udm_object(self, *args, **kwargs):
+        return verify_udm_object(*args, **kwargs)
+
+    def verify_ldap_object(self, *args, **kwargs):
+        return utils.verify_ldap_object(*args, **kwargs)
+
     def __enter__(self):
         return self
 
@@ -472,11 +489,74 @@ class UCSTestUDM(object):
         self.cleanup()
 
 
+def verify_udm_object(module, dn, expected_properties):
+	"""
+	Verify an object exists with the given `dn` in the given UDM `module` with
+	some properties. Setting `expected_properties` to `None` requires the
+	object to not exist. `expected_properties` is a dictionary of
+	`property`:`value` pairs.
+
+	This will throw an `AssertionError` in case of a mismatch.
+	"""
+	lo = utils.get_ldap_connection(admin_uldap=True)
+	try:
+		position = univention.admin.uldap.position(lo.base)
+		udm_module = univention.admin.modules.get(module)
+		if not udm_module:
+			univention.admin.modules.update()
+			udm_module = univention.admin.modules.get(module)
+		udm_object = univention.admin.objects.get(udm_module, None, lo, position, dn)
+		udm_object.open()
+	except univention.admin.uexceptions.noObject:
+		if expected_properties is None:
+			return
+		raise
+
+	if expected_properties is None:
+		raise AssertionError("UDM object {} should not exist".format(dn))
+
+	difference = {}
+	for (key, value) in expected_properties.iteritems():
+		udm_value = udm_object.info.get(key, [])
+		if isinstance(udm_value, basestring):
+			udm_value = set([udm_value])
+		if not isinstance(value, (tuple, list)):
+			value = set([value])
+		value = set(_to_unicode(v).lower() for v in value)
+		udm_value = set(_to_unicode(v).lower() for v in udm_value)
+		if udm_value != value:
+			try:
+				value = set(_normalize_dn(dn) for dn in value)
+				udm_value = set(_normalize_dn(dn) for dn in udm_value)
+			except ldap.DECODING_ERROR:
+				pass
+		if udm_value != value:
+			difference[key] = (udm_value, value)
+	assert not difference, '\n'.join('{}: {} != expected {}'.format(key, udm_value, value) for key, (udm_value, value) in difference.items())
+
+
 def _prettify_cmd(cmd):
     cmd = ' '.join(pipes.quote(x) for x in cmd)
     if set(cmd) & set(['\x00', '\n']):
         cmd = repr(cmd)
     return cmd
+
+
+def _to_unicode(string):
+	if isinstance(string, unicode):
+		return string
+	return unicode(string, 'utf-8')
+
+
+def _normalize_dn(dn):
+	"""
+	Normalize a given dn. This removes some escaping of special chars in the
+	DNs. Note: The CON-LDAP returns DNs with escaping chars, OpenLDAP does not.
+
+	>>> normalize_dn("cn=peter\#,cn=groups")
+	'cn=peter#,cn=groups'
+	"""
+	return ldap.dn.dn2str(ldap.dn.str2dn(dn))
 
 
 if __name__ == '__main__':
