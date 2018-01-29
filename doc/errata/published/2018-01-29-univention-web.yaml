@@ -10,3 +10,5 @@ desc: |
    the UCR variable umc/http/show_tracebacks to false.
  * The sorting performance for lists in UMC has been improved.
 bug: [45395, 45076]
+erratum: 271
+announced: 2018-01-29
