@@ -46,9 +46,9 @@ if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join
 	fi
 fi
 
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.0-1; then
-	univention-config-registry set connector/s4/mapping/group/grouptype?false \
-				connector/s4/mapping/group/ignorelist?"${connector_s4_mapping_group_ignorelist},Remote Interactive Logon,SChannel Authentication,Digest Authentication,Terminal Server User,NTLM Authentication,Other Organization,This Organization,Anonymous Logon,Network Service,Creator Group,Creator Owner,Local Service,Owner Rights,Interactive,Restricted,Network,Service,Dialup,System,Batch,Proxy,IUSR,Self"
+# Bug 46107, add Console Logon builtin to group ignore list
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 12.0.0-3; then
+	univention-config-registry set connector/s4/mapping/group/ignorelist?"${connector_s4_mapping_group_ignorelist},Console Logon"
 fi
 
 univention-config-registry set connector/s4/listener/dir?/var/lib/univention-connector/s4 \
@@ -64,7 +64,7 @@ univention-config-registry set connector/s4/listener/dir?/var/lib/univention-con
 							   connector/s4/mapping/gpo?true \
 							   connector/s4/mapping/user/ignorelist?"root,ucs-s4sync" \
 							   connector/s4/mapping/group/grouptype?true \
-							   connector/s4/mapping/group/ignorelist?"Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody,Enterprise Domain Controllers,Remote Interactive Logon,SChannel Authentication,Digest Authentication,Terminal Server User,NTLM Authentication,Other Organization,This Organization,Anonymous Logon,Network Service,Creator Group,Creator Owner,Local Service,Owner Rights,Interactive,Restricted,Network,Service,Dialup,System,Batch,Proxy,IUSR,Self" \
+							   connector/s4/mapping/group/ignorelist?"Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody,Enterprise Domain Controllers,Remote Interactive Logon,SChannel Authentication,Digest Authentication,Terminal Server User,NTLM Authentication,Other Organization,This Organization,Anonymous Logon,Network Service,Creator Group,Creator Owner,Local Service,Owner Rights,Interactive,Restricted,Network,Service,Dialup,System,Batch,Proxy,IUSR,Self,Console Logon" \
 							   connector/s4/mapping/group/table/Printer-Admins?"Print Operators" \
 							   connector/s4/mapping/container/ignorelist?"mail,kerberos,MicrosoftDNS" \
 							   connector/s4/mapping/dns/ignorelist?"_ldap._tcp.Default-First-Site-Name._site"

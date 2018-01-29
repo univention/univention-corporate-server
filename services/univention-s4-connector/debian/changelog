@@ -1,3 +1,9 @@
+univention-s4-connector (12.0.0-4) unstable; urgency=medium
+
+  * Bug #46107: Ignore builtin group Console Logon
+
+ -- Felix Botner <botner@univention.de>  Mon, 29 Jan 2018 11:18:24 +0100
+
 univention-s4-connector (12.0.0-3) unstable; urgency=medium
 
   * Bug #44369: Rejects for DNs containing non-ASCII characters could
