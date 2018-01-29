@@ -1,3 +1,9 @@
+univention-kernel-image-signed (3.0.2-15) unstable; urgency=low
+
+  * Bug #46029: Rebuild with new gcc-4.9 for retpoline
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 29 Jan 2018 09:45:13 +0100
+
 univention-kernel-image-signed (3.0.2-14) unstable; urgency=low
 
   * Bug #46029: Update to linux-4.9.78-ucs108
