@@ -1349,8 +1349,11 @@ def unmapKerberosDisabled(oldattr):
 
 def unmapPosixDisabled(oldattr, disabled):
 	# TODO: is it correct to evaluate kerberos / windows here?
-	shadowExpire = oldattr.get('shadowExpire', ['0'])[0]
-	return shadowExpire == '1' or (shadowExpire < int(time.time() / 3600 / 24) and (_is_kerberos_disabled(disabled) or _is_windows_disabled(disabled)))
+	try:
+		shadowExpire = int(oldattr.get('shadowExpire', ['0'])[0])
+	except ValueError:
+		return False
+	return shadowExpire == 1 or (shadowExpire < int(time.time() / 3600 / 24) and (_is_kerberos_disabled(disabled) or _is_windows_disabled(disabled)))
 
 
 def _is_kerberos_disabled(disabled):

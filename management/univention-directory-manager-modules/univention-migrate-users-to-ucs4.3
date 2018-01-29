@@ -29,12 +29,15 @@
 # <http://www.gnu.org/licenses/>.
 
 import sys
+import time
 import pprint
 import argparse
+import binascii
 
 import ldap
 import ldap.controls.simple
 from ldap.filter import filter_format
+import heimdal
 
 import univention.admin.uldap
 import univention.admin.allocators
@@ -122,6 +125,10 @@ class Migration(object):
 				print 'Ignoring non users/user account: %s' % (dn,)
 				continue
 
+			if 'synced' in user.get('univentionObjectFlag', []):
+				print 'Ignoring user from active directory'
+				continue
+
 			if is_ldap_only:
 				self.modify(dn, [('univentionObjectType', 'users/user', 'users/ldap')])
 				# TODO: are there users without univentionObjectType? then we need error handling here!
@@ -140,6 +147,49 @@ class Migration(object):
 			if remove_ldap:
 				ml.append(('objectClass', ['uidObject', 'simpleSecurityObject'], []))
 
+			locked = 'L' in user.get('sambaAcctFlags', [''])[0]
+			disabled = 'D' in user.get('sambaAcctFlags', [''])[0]
+			if not disabled:
+				try:
+					disabled = int(user.get('shadowExpire', [''])[0]) < int(time.time() / 3600 / 24)
+				except (ValueError, TypeError):
+					pass
+
+				if not disabled:
+					disabled = univention.admin.password.is_locked(user.get('userPassword', [''])[0])
+			password_set_date = None
+			if user.get('krb5PasswordEnd', [None][0]):
+				password_set_date = time.strptime(user['krb5PasswordEnd'][0], "%Y%m%d000000Z")
+			elif user.get('sambaPwdLastSet', [None]):
+				try:
+					password_set_date = time.gmtime(user['sambaPwdLastSet'][0])
+				except ValueError:
+					pass
+			if not password_set_date and user.get('shadowLastChange', [None])[0]:
+				try:
+					password_set_date = time.gmtime(int(user['shadowLastChange'][0]) * 3600 * 24)
+				except ValueError:
+					pass
+
+			kickoff_time = None
+			if user.get('krb5ValidEnd', [None])[0]:
+				try:
+					kickoff_time = time.strftime("%Y%m%d000000Z", user['krb5ValidEnd'][0])
+				except (ValueError, TypeError):
+					pass
+			elif 'sambaKickoffTime' in user:
+				try:
+					kickoff_time = time.gmtime(long(user['sambaKickoffTime'][0]) + (3600 * 24))
+				except (ValueError, TypeError):
+					pass
+			elif user.get('shadowExpire', [''])[0] not in ('', '0'):
+				try:
+					kickoff_time = time.gmtime(long(user['shadowExpire'][0]) * 3600 * 24)
+				except (ValueError, TypeError):
+					pass
+
+			uidNumber = user.get('uidNumber', [None])[0]
+
 			serverctrls = None
 			ocs_to_add = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'inetOrgPerson', 'organizationalPerson'} - ocs
 			ocs_to_remove = set()
@@ -147,12 +197,26 @@ class Migration(object):
 				ml.append(('objectClass', list(ocs_to_remove), list(ocs_to_add)))
 			if ocs_to_add & {'inetOrgPerson', 'organizationalPerson'}:
 				serverctrls = [ldap.controls.simple.RelaxRulesControl()]
+
 			if not has_kerberos:
+				flags = '254' if disabled else '126'
 				ml.extend([
 					('krb5PrincipalName', [], ['%s@%s' % (user['uid'][0], realm)]),
 					('krb5KeyVersionNumber', [], ['1']),
+					('krb5KDCFlags', [], [flags]),
+					('krb5MaxLife', [], ['86400']),
+					('krb5MaxRenew', [], ['604800']),
 				])
-			uidNumber = user.get('uidNumber', [None])[0]
+
+				if kickoff_time:
+					ml.append(('krb5ValidEnd', [], [time.strftime("%Y%m%d000000Z", kickoff_time)]))
+
+				if user.get('sambaNTPassword', [None])[0]:
+					ml.append(('krb5Key', [], self.nt_password_to_arcfour_hmac_md5(user['sambaNTPassword'][0])))
+
+				if password_set_date:
+					ml.append(('krb5PasswordEnd', [], [time.strftime("%Y%m%d000000Z", password_set_date)]))
+
 			if not has_posix:
 				uidNumber = self.allocate('uidNumber')
 				ml.extend([
@@ -160,8 +224,38 @@ class Migration(object):
 					('gidNumber', [], [primary_group_gid]),
 					('homeDirectory', [], ['/home/%s' % (user['uid'][0],)]),  # TODO: can this default value be overwritten by UCR?
 				])
+
+			if not has_shadow or not has_posix and not user.get('userPassword'):
+				ml.append(('userPassword', [], ['{KINIT}']))
+
+			if not has_shadow:
+				# FIXME: 'shadowMax'
+				if kickoff_time:
+					ml.append(('shadowExpire', [], [str(int(time.strftime('%s', kickoff_time) / 3600 / 24))]))
+				elif disabled:
+					ml.append(('shadowExpire', [], ['1']))
+
+				if password_set_date:
+					ml.append(('shadowLastChange', [], [str(int(time.strftime('%s', password_set_date) / 3600 / 24))]))
+
 			if not has_samba:
-				ml.append(('sambaSID', [], [self.get_user_sid(user['uid'][0], uidNumber)]))
+				# FIXME: 'sambaNTPassword' if no kerberos user!
+				if 'krb5Key' in user:
+					nt_password = self.arcfour_hmac_md5_to_nt_password(user['krb5Key'])
+					if nt_password:
+						ml.append(('sambaNTPassword', '', [nt_password]))
+				f = univention.admin.samba.acctFlags()
+				if locked:
+					f.set('L')
+				if disabled:
+					f.set('D')
+				ml.extend([
+					('sambaSID', [], [self.get_user_sid(user['uid'][0], uidNumber)]),
+					('sambaAcctFlags', [], [f.decode()]),
+					('sambaPwdLastSet', [], [str(int(time.strftime('%s', password_set_date)))]),
+				])
+				if kickoff_time:
+					ml.append(('sambaKickoffTime', [], [str(int(time.strftime('%s', kickoff_time)))]))
 
 			if ml:
 				self.modify(dn, ml, serverctrls)
@@ -172,6 +266,25 @@ class Migration(object):
 			old = set(attr['userOptionsPreset'])
 			new = old & {'groupware', 'kerberos', 'posix', 'samba'}
 			self.modify(dn, [('userOptionsPreset', list(old), list(new))])
+
+	def nt_password_to_arcfour_hmac_md5(self, nt_password):
+		# all arcfour-hmac-md5 keys begin this way
+		key = '0\x1d\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10'
+
+		for i in range(0, 16):
+			o = nt_password[2 * i:2 * i + 2]
+			key += chr(int(o, 16))
+		return key
+
+	def arcfour_hmac_md5_to_nt_password(self, ucs_krb5key):
+		for k in ucs_krb5key:
+			(keyblock, salt, kvno) = heimdal.asn1_decode_key(k)
+
+			enctype = keyblock.keytype()
+			enctype_id = enctype.toint()
+			if enctype_id == 23:
+				krb5_arcfour_hmac_md5 = keyblock.keyvalue()
+				return binascii.b2a_hex(krb5_arcfour_hmac_md5)
 
 	def modify(self, dn, ml, serverctrls=None):
 		self.modifications = True
