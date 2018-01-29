@@ -40,36 +40,6 @@ Description[de]=Wendet die HSTS Richtlinie auch auf Subdomains an, wenn auf 'yes
 Type=bool
 Categories=service-apache
 
-[php/memory/limit]
-Description[de]=Der maximale Speicher, den ein PHP-Skript in Anspruch nehmen kann. Um z.B. 256 Megabyte zu konfigurieren, muss '256M' angegeben werden. Ist die Variable nicht gesetzt, können 128 MB benutzt werden.
-Description[en]=The maximum memory that a PHP script can use. E.g., to configure 256 megabytes, '256M' needs to be specified. If the variable is unset, 128 MB are permitted.
-Type=str
-Categories=service-apache
-
-[php/limit/postsize]
-Description[de]=Die maximale Größe von POST-Daten in einem PHP-Skript, d.h. die Datenmenge die maximal an einen HTTP-Server gesendet werden kann. Um z.B. 16 Megabyte zu konfigurieren, muss '16M' angegeben werden. Ist die Variable nicht gesetzt, können 8 MB gesendet werden.
-Description[en]=The maximum size of POST data in a PHP script, i.e. the maximum data that can be send to a HTTP server. E.g., to configure 16 megabytes, '16M' needs to be specified. If the variable is unset, 8 MB are permitted.
-Type=str
-Categories=service-apache
-
-[php/limit/filesize]
-Description[de]=Die maximale Größe für Datei-Uploads in einem PHP-Skript. Um z.B. 4 Megabyte zu konfigurieren, muss '4M' angegeben werden. Ist die Variable nicht gesetzt, können bis zu 2 MB große Dateien geladen werden.
-Description[en]=The maximum size for file uploads in a PHP script. E.g., to configure 4 megabytes, '4M' needs to be specified. If the variable is unset, uploads up to 2 MB are permitted.
-Type=str
-Categories=service-apache
-
-[php/limit/inputtime]
-Description[de]=Die maximale Zeit in Sekunden, die einem PHP-Skript erlaubt ist, um empfangene Eingaben zu verarbeiten. Ist die Variable nicht gesetzt, beträgt der Wert eine Minute.
-Description[en]=The maximum time in seconds granted to a PHP script to process received data. If the variable is unset, a minute applies.
-Type=int
-Categories=service-apache
-
-[php/limit/inputtime]
-Description[de]=Die maximale Zeit in Sekunden, die ein PHP-Skript auf Socketeingaben wartet. Ist die Variable nicht gesetzt, beträgt der Wert eine Minute.
-Description[en]=The maximum time in seconds a PHP script waits for input on sockets. If the variable is unset, a minute applies.
-Type=int
-Categories=service-apache
-
 [apache2/autostart]
 Description[de]=Die Variable konfiguriert den Startmodus des Apache-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
 Description[en]=This variable configures the start mode of the Apache service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.

@@ -14,8 +14,7 @@ Depends: ${misc:Depends},
  univention-config (>= 8.0.2),
  univention-ssl,
  libapache2-mod-authnz-pam,
- python2.7,
- php5,
+ python2.7
 Conflicts: apache
 Description: UCS - Apache2 configuration
  This packages provides the basic configuration for the
