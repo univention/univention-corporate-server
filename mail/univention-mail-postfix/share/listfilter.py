@@ -3,7 +3,7 @@
 # Univention mail Postfix Policy
 #  check allowed email senders for groups and distlist
 #
-# Copyright 2005-2017 Univention GmbH
+# Copyright 2005-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -39,6 +39,7 @@ import traceback
 import syslog
 from ldap.filter import filter_format
 from univention.config_registry import ConfigRegistry
+import univention.admin.modules
 
 usage = "help"
 parser = optparse.OptionParser(usage=usage)
@@ -51,6 +52,8 @@ options, args = parser.parse_args()
 syslog.openlog(ident="listfilter", logoption=syslog.LOG_PID, facility=syslog.LOG_MAIL)
 ucr = ConfigRegistry()
 ucr.load()
+univention.admin.modules.update()
+usersmod = univention.admin.modules.get("users/user")
 check_sasl_username = ucr.is_true("mail/postfix/policy/listfilter/use_sasl_username", True)
 _do_debug = ucr.is_true("mail/postfix/policy/listfilter/debug", False)
 is_cyrus = ucr.is_true("mail/cyrus", False) or not ucr.is_true("mail/dovecot", False)
@@ -116,29 +119,23 @@ def listfilter(attrib):
 							return "REJECT Access denied for empty sender to restricted list %s" % (recipient, )
 
 					# get dn and groups of sender
-					user_filter = (
-						'(&'
-						'(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))'
-						'(!(uidNumber=0))(!(uid=*$))(!(univentionObjectFlag=functional))'
-						'{}'
-						')'
-					)
 					if check_sasl_username:
 						if is_cyrus:
-							ldap_filter = filter_format(
-								user_filter.format('(|(uid=%s)(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))'),
+							user_filter = filter_format(
+								'(|(uid=%s)(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))',
 								(sender, sender, sender, sender)
 							)
 						else:
-							ldap_filter = filter_format(
-								user_filter.format('(uid=%s)'),
+							user_filter = filter_format(
+								'(uid=%s)',
 								(sender,)
 							)
 					else:
-						ldap_filter = filter_format(
-							user_filter.format('(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))'),
+						user_filter = filter_format(
+							'(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))',
 							(sender, sender, sender)
 						)
+					ldap_filter = usersmod.lookup_filter(user_filter)
 					user_result = ldap.search(base=options.ldap_base, filter=ldap_filter, attr=["dn"])
 					if user_result:
 						user_dn = user_result[0][0]
