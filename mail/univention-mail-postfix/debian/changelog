@@ -1,3 +1,10 @@
+univention-mail-postfix (11.0.1-21) unstable; urgency=low
+
+  * Bug #45422: use UDM users/user filter
+  * try possible result before next LDAP query
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 29 Jan 2018 09:35:32 +0100
+
 univention-mail-postfix (11.0.1-20) unstable; urgency=low
 
   * Bug #44473: mention filename in error message
