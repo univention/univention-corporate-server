@@ -1,3 +1,10 @@
+ucs-test (6.0.37-70) unstable; urgency=medium
+
+  * Bug #45615: SKIP a lot of appcenter tests as they are not important for
+    UCS 4.1.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 29 Jan 2018 13:31:23 +0100
+
 ucs-test (6.0.37-69) unstable; urgency=medium
 
   * Bug #43847: Use zsync when using our own App Center

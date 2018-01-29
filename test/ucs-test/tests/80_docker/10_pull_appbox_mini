@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Pull appbox docker image
-## tags: [docker]
+## tags: [SKIP, docker]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
