@@ -17,3 +17,5 @@ note: The compiler itself is NOT vulnerable.
 bug: [46029]
 cve:
  - CVE-2017-5715
+erratum: 270
+announced: 2018-01-29
