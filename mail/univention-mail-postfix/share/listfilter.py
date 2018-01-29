@@ -136,7 +136,7 @@ def listfilter(attrib):
 							(sender, sender, sender)
 						)
 					ldap_filter = usersmod.lookup_filter(user_filter)
-					user_result = ldap.search(base=options.ldap_base, filter=ldap_filter, attr=["dn"])
+					user_result = ldap.search(base=options.ldap_base, filter=str(ldap_filter), attr=["dn"])
 					if user_result:
 						user_dn = user_result[0][0]
 						debug("user_dn=%r", user_dn)
