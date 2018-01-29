@@ -140,17 +140,18 @@ def listfilter(attrib):
 					if user_result:
 						user_dn = user_result[0][0]
 						debug("user_dn=%r", user_dn)
+
+						# check userdn in univentionAllowedEmailUsers
+						if allowed_user_dns and \
+								user_dn and \
+								user_dn in allowed_user_dns:
+							return "DUNNO allowed per user dn"
+
 						ldap_filter = filter_format('(uniqueMember=%s)', (user_dn,))
 						group_result = ldap.search(base=options.ldap_base, filter=ldap_filter, attr=["dn"])
 						if group_result:
 							for i in group_result:
 								users_groups.append(i[0])
-
-					# check userdn in univentionAllowedEmailUsers
-					if allowed_user_dns:
-						if user_dn:
-							if user_dn in allowed_user_dns:
-								return "DUNNO allowed per user dn"
 
 					# check groups
 					if allowed_group_dns:
