@@ -12,3 +12,5 @@ desc: |
  * Displaying of python stack traces in UMC can now be prevented by setting
    the UCR variable umc/http/show_tracebacks to false.
 bug: [45424, 45395]
+erratum: 272
+announced: 2018-01-29
