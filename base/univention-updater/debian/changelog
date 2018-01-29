@@ -1,3 +1,9 @@
+univention-updater (13.0.1-7) unstable; urgency=low
+
+  * Bug #45968: remove dynamicmaps.cf only if it contains old paths
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 29 Jan 2018 10:39:57 +0100
+
 univention-updater (13.0.1-6) unstable; urgency=medium
 
   * Bug #45842: migrate users in postup.sh

@@ -447,9 +447,11 @@ case "$available_locales" in
 esac
 
 # Bug #45968: let Postfix3 extension packages recreate /etc/postfix/dynamicmaps.cf with new format
-echo "Removing /etc/postfix/dynamicmaps.cf. Creating backup in"
-echo "/etc/postfix/dynamicmaps.cf.postfix2."
-mv -fv /etc/postfix/dynamicmaps.cf /etc/postfix/dynamicmaps.cf.postfix2 >>"$UPDATER_LOG" 2>&1
+if grep -q 'usr/lib/postfix' /etc/postfix/dynamicmaps.cf; then
+	echo "Removing /etc/postfix/dynamicmaps.cf. Creating backup in"
+	echo "/etc/postfix/dynamicmaps.cf.postfix2."
+	mv -fv /etc/postfix/dynamicmaps.cf /etc/postfix/dynamicmaps.cf.postfix2 >>"$UPDATER_LOG" 2>&1
+fi
 
 # Bug 45935: backup squid conf before update
 if [ ! -d /etc/squid3-update-4.3 ]; then
