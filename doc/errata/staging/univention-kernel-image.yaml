@@ -10,7 +10,11 @@ desc: |
  * Systems with microprocessors utilizing speculative execution and indirect
    branch prediction may allow unauthorized disclosure of information to an
    attacker with local user access via a side-channel analysis (CVE-2017-5715)
+ * kvm: stack-based out-of-bounds read via vmcall instruction (CVE-2017-17741)
+ * Stack information leak in the EFS element (CVE-2017-1000410)
 note: This is the third of three parts.
 bug: [46029]
 cve:
 - CVE-2017-5715
+- CVE-2017-17741
+- CVE-2017-1000410
