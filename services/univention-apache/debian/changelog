@@ -1,6 +1,12 @@
+univention-apache (10.0.0-7) unstable; urgency=medium
+
+  * Bug #46121: remove template
+
+ -- Felix Botner <botner@univention.de>  Tue, 30 Jan 2018 10:17:57 +0100
+
 univention-apache (10.0.0-6) unstable; urgency=medium
 
-  * Bug #46121 : remove php from univention-apache
+  * Bug #46121: remove php from univention-apache
 
  -- Felix Botner <botner@univention.de>  Tue, 23 Jan 2018 17:15:56 +0100
 
