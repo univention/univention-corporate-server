@@ -49,10 +49,6 @@ class TestListenerModule(@@HANDLER_SUPER_CLASS@@):
 			raise Exception('self.lo.searchDn did not return a result')
 		if ldap_res[0] != dn and ldap_res[0]['uidNumber'] != new['uidNumber']:
 			raise Exception('self.lo.searchDn had unexpected result: {!r}'.format(ldap_res))
-		self.logger.info('create() test self.get_udm_objects')
-		udm_users = self.get_udm_objects('users/user', filter_s, self.lo.base, self.lo, self.po)
-		if len(udm_users) != 1 or udm_users[0].info['username'] != new['uid'][0]:
-			raise Exception('self.get_udm_objects has unexpected result: {!r}'.format(ldap_res))
 		time.sleep(random.uniform(0, 6))
 		self.test_log('create', new['uid'][0])
 		return
