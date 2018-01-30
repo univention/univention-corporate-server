@@ -1,0 +1,4 @@
+mv_conffile /etc/univention/templates/files/etc/nagios3/nagios.cfg /etc/univention/templates/removed/nagios3-nagios.cfg 11.0.1~
+mv_conffile /etc/univention/templates/files/etc/nagios3/apache2.conf /etc/univention/templates/removed/nagios3-apache2.conf 11.0.1~
+mv_conffile /etc/univention/templates/files/etc/nagios3/cgi.cfg /etc/univention/templates/removed/nagios3-cgi.cfg 11.0.1~
+mv_conffile /etc/univention/templates/files/etc/init.d/nagios3 /etc/univention/templates/removed/nagios3-nagios3-init 11.0.1~
