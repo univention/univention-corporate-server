@@ -432,7 +432,7 @@
 				No longer available drivers are marked as deprecated (<u:bug>45958</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The &ucsUCR; template file for <package>openssh</package> has been updates:
+				The &ucsUCR; template file for <package>openssh</package> has been updated:
 				The deprecated &ucsUCRV;s <envar>sshd/Protocol</envar> and <envar>sshd/ServerKeyBits</envar> have been removed.
 				The privilege separation mode has been changed to the new default <literal>sandbox</literal> (<u:bug>46033</u:bug>).
 			</simpara></listitem>
