@@ -72,7 +72,7 @@ define([
 			var disabled = values.disabled;
 			delete values.disabled;
 			if (disabled) {
-				values.disabled = 'all';
+				values.disabled = '1';
 			}
 			return values;
 		}

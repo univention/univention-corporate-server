@@ -6,6 +6,7 @@
 ## packages:
 ##   - univention-directory-manager-tools
 
+import subprocess
 import random
 import univention.admin.uldap
 import univention.testing.ucr as ucr_test
@@ -13,8 +14,8 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 
-disabled_states = ('all', 'kerberos', 'none', 'posix', 'posix_kerberos', 'windows', 'windows_kerberos', 'windows_posix')
-locked_states = ['all', 'none', 'posix', 'windows']
+disabled_states = ('1', '0')
+locked_states = ['1']
 
 with ucr_test.UCSTestConfigRegistry() as ucr:
 	ldap_base = ucr['ldap/base']
@@ -37,17 +38,20 @@ def fail(msg):
 def modify_and_check(udm, dn, disabled_state, locked_state):
 	print('*** disabled_state={!r} locked_state={!r}'.format(disabled_state, locked_state))
 	if dn:
-		udm.modify_object('users/user', dn=dn, disabled=disabled_state, locked=locked_state)
+		udm.modify_object('users/user', dn=dn, disabled=disabled_state, unlock='0' if locked_state == '1' else '1')
+		if locked_state == '1':
+			subprocess.call('python -m univention.lib.account lock --dn "%s" --lock-time "$(date --utc "+%Y%m%d%H%M%SZ")' % (dn,), shell=True)
 	else:
 		dn, username = udm.create_user(
 			position='cn=users,{}'.format(ldap_base),
 			disabled=disabled_state,
-			locked=locked_state
 		)
+		if locked_state == '1':
+			subprocess.call('python -m univention.lib.account lock --dn "%s" --lock-time "$(date --utc "+%Y%m%d%H%M%SZ")' % (dn,), shell=True)
 
-	krb_state = '254' if disabled_state == 'all' or 'kerberos' in disabled_state else '126'
-	smb_disabled = disabled_state == 'all' or 'windows' in disabled_state
-	smb_locked = locked_state in ('windows', 'all')
+	krb_state = '254' if disabled_state == '1' or 'kerberos' in disabled_state else '126'
+	smb_disabled = disabled_state == '1' or 'windows' in disabled_state
+	smb_locked = locked_state in ('1')
 	if transitions_log:
 		transitions_log[-1] += ' -> {:16} | {:8}'.format(disabled_state, locked_state)
 
@@ -60,7 +64,7 @@ def modify_and_check(udm, dn, disabled_state, locked_state):
 		fail('sambaAcctFlags: expected D in flags, found {!r}'.format(user['sambaAcctFlags']))
 	if smb_locked and 'L' not in user['sambaAcctFlags'][0]:
 		fail('sambaAcctFlags: expected L in flags, found {!r}'.format(user['sambaAcctFlags']))
-	if (disabled_state == 'all' or 'posix' in disabled_state) and user['shadowExpire'][0] != '1':
+	if (disabled_state == '1' or 'posix' in disabled_state) and user['shadowExpire'][0] != '1':
 		fail('shadowExpire: expected {!r} found {!r}'.format(['1'], user['shadowExpire']))
 	print('*** OK.')
 	if transitions_log:

@@ -116,13 +116,13 @@ if [ "$ssh_hostname" = "$hostname" ]; then
 	fail_test 110 "E: The login was successful, but the user should be locked"
 fi
 
-udm_locked=$(univention-directory-manager users/user list --filter "uid=$NAME" | grep "^  locked: all")
-if [ "$udm_locked" != "  locked: all" ]; then
+udm_locked=$(univention-directory-manager users/user list --filter "uid=$NAME" | grep "^  locked: 1")
+if [ "$udm_locked" != "  locked: 1" ]; then
 	fail_test 110 "E: user was not locked in UDM"
 	univention-directory-manager users/user list --filter "uid=$NAME"
 fi
 
-user_set_attr "$NAME" locked "" none
+user_set_attr "$NAME" unlock "" 1
 ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]; then
 	fail_test 110 "E: The login wasn't successful, but the fail counter should be resetted"

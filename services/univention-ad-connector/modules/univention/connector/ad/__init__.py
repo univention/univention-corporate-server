@@ -2028,13 +2028,13 @@ class ad(univention.connector.ucs):
 			# user enabled in AD
 			if not ucs_admin_object['disabled'].lower() in ['none', '0']:
 				# user disabled in UCS -> change
-				ucs_admin_object['disabled'] = 'none'
+				ucs_admin_object['disabled'] = '0'
 				modified = 1
 		else:
 			# user disabled in AD
 			if ucs_admin_object['disabled'].lower() in ['none', '0']:
 				# user enabled in UCS -> change
-				ucs_admin_object['disabled'] = 'all'
+				ucs_admin_object['disabled'] = '1'
 				modified = 1
 		if 'accountExpires' in ldap_object_ad and (long(ldap_object_ad['accountExpires'][0]) == long(9223372036854775807) or ldap_object_ad['accountExpires'][0] == '0'):
 			# ad account not expired

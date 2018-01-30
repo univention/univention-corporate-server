@@ -24,13 +24,13 @@ if __name__ == '__main__':
 	license_user_count = get_current_license_user_count()
 
 	with udm_test.UCSTestUDM() as udm:
-		udm.create_user(disabled='all')
+		udm.create_user(disabled='1')
 		new_license_user_count = get_current_license_user_count()
 
 		if new_license_user_count != license_user_count:
 			utils.fail('After creating a fully disabled user, the license user counter raised from %s to %s' % (license_user_count, new_license_user_count))
 
-		for disabled_types in ('none', 'windows', 'kerberos', 'posix', 'windows_posix', 'windows_kerberos', 'posix_kerberos'):
+		for disabled_types in ('0', '1'):
 			udm.create_user(disabled=disabled_types)
 			new_license_user_count = get_current_license_user_count()
 			if new_license_user_count != license_user_count + 1:

@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import time
+import argparse
 
 import univention.admin.uldap
 import univention.admin.objects
@@ -41,7 +43,10 @@ univention.admin.modules.update()
 
 def lock(userdn, lock_timestamp):
 	"""
-	Lock user account, used by ppolicy OpenLDAP overlay
+	Lock a user account
+
+	* used by ppolicy OpenLDAP overlay
+	* used by PAM tally
 
 	>>> import univention.lib.account
 	>>> univention.lib.account.lock('uid=user1,dc=example,dc=com', '20141006192950Z')
@@ -63,7 +68,28 @@ def lock(userdn, lock_timestamp):
 	univention.admin.modules.init(lo, pos, module)
 
 	object = module.object(co, lo, pos, userdn)
-
 	object.open()
-	object['locked'] = "all"
-	dn = object.modify()
+	object.descriptions['locked'].editable = True
+	object.descriptions['locked'].may_change = True
+	object['locked'] = "1"
+	if lock_timestamp:
+		lock_timestamp = time.strptime(lock_timestamp, '%Y%m%d%H%M%SZ')
+		d = 116444736000000000L  # difference between 1601 and 1970
+		lock_timestamp = long(time.mktime(lock_timestamp)) * 10000000 + d
+		object.descriptions['lockedTime'].editable = True
+		object.descriptions['lockedTime'].may_change = True
+		object['lockedTime'] = str(int(lock_timestamp))
+	object.modify()
+
+
+if __name__ == '__main__':
+	"""Usage:
+		python -m univention.lib.account lock --dn "$user_dn" --lock-time "$(date --utc '+%Y%m%d%H%M%SZ')"
+	"""
+	parser = argparse.ArgumentParser()
+	subparsers = parser.add_subparsers()
+	subparser = subparsers.add_parser('lock', help='Locks a user account')
+	subparser.add_argument('--dn', required=True, help='The DN of the user account to be locked.')
+	subparser.add_argument('--lock-time', required=True, help='The time when the user account was locked.')
+	args = parser.parse_args()
+	lock(args.dn, args.lock_time)

@@ -32,7 +32,7 @@ def main():
 					'password': password,
 					'mailHomeServer': host,
 					'mailPrimaryAddress': usermail1,
-					'disabled': 'all'
+					'disabled': '1'
 				}
 			)
 			usermail = '%s@%s' % (uts.random_name(), domain)

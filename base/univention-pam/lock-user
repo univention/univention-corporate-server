@@ -44,22 +44,14 @@ if [ "$auth_faillog" = "yes" -o "$auth_faillog" = "enabled" -o "$auth_faillog" =
 	if [ "$attempts" -gt "$max_attempts" ]; then
 		# max attempts reached
 
-		if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-			binddn="cn=admin,$ldap_base"
-			bindpw="/etc/ldap.secret"
-		else
-			binddn="$ldap_hostdn"
-			bindpw="/etc/machine.secret"
-		fi
-
-		user_dn=$(ldapsearch -x -D "$binddn" -w "$(cat $bindpw)" "(&(uid=$USER)(objectClass=shadowAccount))" -LLL dn | ldapsearch-wrapper | ldapsearch-decode64 |  sed -ne 's|dn: ||p')
+		user_dn=$(univention-ldapsearch "(&(uid=$USER)(objectClass=shadowAccount))" -LLL dn | ldapsearch-wrapper | ldapsearch-decode64 |  sed -ne 's|dn: ||p')
 
 		if [ -z "$user_dn" ]; then
 			echo "E: ldap dn for $USER not found"
 			exit 1
 		fi
 
-		HOME=/ univention-directory-manager users/user modify --binddn "$binddn" --bindpwd "$(cat $bindpw)" --logfile /dev/null --dn "$user_dn" --set locked=all
+		HOME=/ python -m univention.lib.account lock --dn "$user_dn" --lock-time "$(date --utc '+%Y%m%d%H%M%SZ')"
 
 		exit $?
 	else
