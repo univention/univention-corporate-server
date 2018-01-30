@@ -1,3 +1,9 @@
+univention-nagios (11.0.1-0) unstable; urgency=medium
+
+  * Bug #45942: nagios (4) update
+
+ -- Felix Botner <botner@univention.de>  Tue, 30 Jan 2018 14:40:55 +0100
+
 univention-nagios (11.0.0-3) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version

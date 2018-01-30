@@ -13,9 +13,9 @@ Package: univention-nagios-server
 Architecture: any
 Depends: ${misc:Depends}, ${python:Depends},
  univention-directory-manager-tools (>> 7.0.147),
- nagios3 (>= 3.0),
- nagios3-common (>= 3.0),
- nagios3-doc (>= 3.0),
+ nagios,
+ nagios-common,
+ nagios-doc,
  nagios-images,
  univention-nagios-client (= ${binary:Version}),
  univention-nagios-common (= ${binary:Version}),

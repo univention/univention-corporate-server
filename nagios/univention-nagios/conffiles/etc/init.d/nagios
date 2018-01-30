@@ -9,7 +9,7 @@
 #		nagios2 version by Marc Haber <mh+debian-packages@zugschlus.de>
 
 ### BEGIN INIT INFO
-# Provides:          nagios3
+# Provides:          nagios
 # Required-Start:    $local_fs $remote_fs $syslog $named $network $time
 # Required-Stop:     $local_fs $remote_fs $syslog $named $network
 # Should-Start:      
@@ -19,7 +19,7 @@
 # Short-Description: nagios host/service/network monitoring and management system
 # Description:       nagios is a monitoring and management system for hosts, services and networks.
 ### END INIT INFO
-# pidfile: /var/run/nagios3/nagios3.pid
+# pidfile: /var/run/nagios/nagios.pid
 
 set -e
 
@@ -30,15 +30,15 @@ else
   exit 1
 fi
 
-DAEMON=/usr/sbin/nagios3
-NAME="nagios3"
-DESC="nagios3 monitoring daemon"
-NAGIOSCFG="/etc/nagios3/nagios.cfg"
-CGICFG="/etc/nagios3/cgi.cfg"
+DAEMON=/usr/sbin/nagios
+NAME="nagios"
+DESC="nagios monitoring daemon"
+NAGIOSCFG="/etc/nagios/nagios.cfg"
+CGICFG="/etc/nagios/cgi.cfg"
 NICENESS=5
 
 [ -x "$DAEMON" ] || exit 0
-[ -r /etc/default/nagios3 ] && . /etc/default/nagios3
+[ -r /etc/default/nagios ] && . /etc/default/nagios
 
 # this is from madduck on IRC, 2006-07-06
 # There should be a better possibility to give daemon error messages
@@ -113,32 +113,32 @@ check_named_pipe () {
 }
 
 if [ ! -f "$NAGIOSCFG" ]; then
-  log_failure_msg "There is no configuration file for Nagios 3."
+  log_failure_msg "There is no configuration file for Nagios."
   exit 6
 fi
 
 THEPIDFILE=$(get_config "lock_file")
-[ -n "$THEPIDFILE" ] || THEPIDFILE='/var/run/nagios3/nagios.pid'
+[ -n "$THEPIDFILE" ] || THEPIDFILE='/var/run/nagios/nagios.pid'
 
 check_univentionConfigComplete () {
   # if univention-nagios-server is installed and at least 3 config files exist in
-  # /etc/nagios3/conf.univention.d/ then suppress nagios error msg about incomplete
+  # /etc/nagios/conf.univention.d/ then suppress nagios error msg about incomplete
   # nagios config
   set +e
   PKGCNT=$(COLUMNS=200 dpkg -l univention-nagios-server 2> /dev/null | grep -c ^ii)
   if [ ! "$PKGCNT" = "0" ] ; then
     eval "$(univention-config-registry shell)"
-    if [ "$(find /etc/nagios3/conf.univention.d/ -type f | wc -l)" -le 3 ] ; then
+    if [ "$(find /etc/nagios/conf.univention.d/ -type f | wc -l)" -le 3 ] ; then
       echo ""
-      echo "WARNING: nagios3 configuration seems to be incomplete yet - start of nagios3 aborted"
+      echo "WARNING: nagios configuration seems to be incomplete yet - start of nagios aborted"
       case $nagios_server_autostart in
          true|yes|1)
-         echo "HINT: nagios3 will be automatically started when nagios3 config has been"
+         echo "HINT: nagios will be automatically started when nagios config has been"
          echo "      successfully replicated"
          ;;
        *)
          echo "HINT: please set Univention Config Registry entry"
-         echo "      'nagios/server/autostart=yes' to start nagios3 automatically when nagios3"
+         echo "      'nagios/server/autostart=yes' to start nagios automatically when nagios"
          echo "      config has been successfully replicated"
       esac
       exit 0
@@ -150,7 +150,7 @@ check_univentionConfigComplete () {
 start () {
 
   if [ "$ENABLED" = "no"  ]; then
-	  log_warning_msg "Not starting Nagios3 - set ENABLED to yes in /etc/default/nagios3"
+	  log_warning_msg "Not starting Nagios - set ENABLED to yes in /etc/default/nagios"
 	  exit 0
   fi
 
@@ -181,13 +181,13 @@ start () {
 stop () {
     killproc -p $THEPIDFILE
     ret=$?
-    if [ `pidof nagios3 | wc -l ` -gt 0 ]; then
+    if [ `pidof nagios | wc -l ` -gt 0 ]; then
         echo -n "Waiting for $NAME daemon to die.."
         cnt=0
-        while [ `pidof nagios3 | wc -l ` -gt 0 ]; do
+        while [ `pidof nagios | wc -l ` -gt 0 ]; do
             cnt=`expr "$cnt" + 1`
             if [ "$cnt" -gt 15 ]; then
-                /bin/kill -9 `pidof nagios3`
+                /bin/kill -9 `pidof nagios`
                 break
             fi
             sleep 1

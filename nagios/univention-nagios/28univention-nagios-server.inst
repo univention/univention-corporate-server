@@ -45,7 +45,7 @@ if [ -x /usr/sbin/univention-certificate-check-validity ]; then
 	fi
 fi
 
-/etc/init.d/nagios3 restart 2> /dev/null > /dev/null || true
+service nagios restart 2> /dev/null > /dev/null || true
 
 univention-directory-manager container/cn create "$@" --ignore_exists --position cn="univention,$ldap_base" --set name=console || die
 univention-directory-manager container/cn create "$@" --ignore_exists --position cn="console,cn=univention,$ldap_base" --set name=acls || die

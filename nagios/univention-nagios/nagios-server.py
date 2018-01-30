@@ -44,18 +44,18 @@ filter = '(|(objectClass=univentionNagiosServiceClass)(objectClass=univentionNag
 
 __predefinedTimeperiod = 'Univention-Predefined-24x7'
 __fallbackContact = 'root@localhost'
-__initscript = '/etc/init.d/nagios3'
+__initscript = '/etc/init.d/nagios'
 
 #
-# /etc/nagios3/conf.univention.d/services/<SERVICENAME>,<HOSTFQDN>.cfg
-# /etc/nagios3/conf.univention.d/hosts/<HOSTFQDN>.cfg
-# /etc/nagios3/conf.univention.d/hostgrps/<GRPNAME>.cfg
-# /etc/nagios3/conf.univention.d/contacts/<EMAILADDR>.cfg
-# /etc/nagios3/conf.univention.d/contactgrps/<HOSTFQDN>.cfg
-# /etc/nagios3/conf.univention.d/timeperiods/<PERIODNAME>.cfg
+# /etc/nagios/conf.univention.d/services/<SERVICENAME>,<HOSTFQDN>.cfg
+# /etc/nagios/conf.univention.d/hosts/<HOSTFQDN>.cfg
+# /etc/nagios/conf.univention.d/hostgrps/<GRPNAME>.cfg
+# /etc/nagios/conf.univention.d/contacts/<EMAILADDR>.cfg
+# /etc/nagios/conf.univention.d/contactgrps/<HOSTFQDN>.cfg
+# /etc/nagios/conf.univention.d/timeperiods/<PERIODNAME>.cfg
 #
 
-__confdir = '/etc/nagios3/conf.univention.d/'
+__confdir = '/etc/nagios/conf.univention.d/'
 __confsubdirs = ['services', 'hosts', 'hostextinfo', 'hostgrps', 'contacts', 'contactgrps', 'timeperiods']
 
 __servicesdir = __confdir + 'services/'
@@ -724,7 +724,7 @@ def initialize():
 	dirs.extend(__confsubdirs)
 
 	for dir in dirs:
-		dirname = os.path.join('/etc/nagios3/conf.univention.d', dir)
+		dirname = os.path.join('/etc/nagios/conf.univention.d', dir)
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: creating dir: %s' % dirname)
 		if not os.path.exists(dirname):
 			listener.setuid(0)
@@ -747,7 +747,7 @@ def deleteTree(dirname):
 
 
 def clean():
-	dirname = '/etc/nagios3/conf.univention.d'
+	dirname = '/etc/nagios/conf.univention.d'
 	if os.path.exists(dirname):
 		listener.setuid(0)
 		try:
@@ -764,27 +764,27 @@ def postrun():
 		initscript = __initscript
 		# restart nagios if not running and nagios/server/autostart is set to yes/true/1
 		# otherwise if nagios is running, ask nagios to reload config
-		p = subprocess.Popen(('pidof', '/usr/sbin/nagios3'), stdout=subprocess.PIPE)
+		p = subprocess.Popen(('pidof', '/usr/sbin/nagios'), stdout=subprocess.PIPE)
 		pidlist, stderr = p.communicate()
 		listener.setuid(0)
 		null = open(os.path.devnull, 'w')
 		try:
-			retcode = subprocess.call(('nagios3', '-v', '/etc/nagios3/nagios.cfg'), stdout=null, stderr=null)
+			retcode = subprocess.call(('nagios', '-v', '/etc/nagios/nagios.cfg'), stdout=null, stderr=null)
 		finally:
 			null.close()
 		listener.unsetuid()
 		if not pidlist.strip():
 			if retcode == 0:
 				if listener.baseConfig.is_true("nagios/server/autostart", False):
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: nagios3 not running - restarting server')
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: nagios not running - restarting server')
 
 					listener.setuid(0)
 					try:
-						listener.run(initscript, ['nagios3', 'restart'], uid=0)
+						listener.run(initscript, ['nagios', 'restart'], uid=0)
 					finally:
 						listener.unsetuid()
 			else:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios3 reported an error in configfile /etc/nagios3/nagios.cfg. Please restart nagios3 manually: "%s restart".' % initscript)
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios reported an error in configfile /etc/nagios/nagios.cfg. Please restart nagios manually: "%s restart".' % initscript)
 				listener.unsetuid()
 
 		else:
@@ -792,10 +792,10 @@ def postrun():
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: reloading server')
 				listener.setuid(0)
 				try:
-					listener.run(initscript, ['nagios3', 'reload'], uid=0)
+					listener.run(initscript, ['nagios', 'reload'], uid=0)
 				finally:
 					listener.unsetuid()
 			else:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios3 reported an error in configfile /etc/nagios3/nagios.cfg. Please restart nagios3 manually: "%s restart".' % initscript)
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios reported an error in configfile /etc/nagios/nagios.cfg. Please restart nagios manually: "%s restart".' % initscript)
 				listener.unsetuid()
 		__reload = False
