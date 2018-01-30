@@ -1,3 +1,10 @@
+ucs-test (7.0.23-116) unstable; urgency=medium
+
+  * 01_base/101_install_all_packages_from_a_release: Tag as producttest
+    test case and increase timeout (Bug #46014)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Jan 2018 09:42:02 +0100
+
 ucs-test (7.0.23-115) unstable; urgency=medium
 
   * Bug #45842: merge changes from UCS 4.3
