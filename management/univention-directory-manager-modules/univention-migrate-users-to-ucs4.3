@@ -226,7 +226,7 @@ class Migration(object):
 				])
 
 			if not has_shadow or not has_posix and not user.get('userPassword'):
-				ml.append(('userPassword', [], ['{KINIT}']))
+				ml.append(('userPassword', [], ['{K5KEY}' if user.get('krb5Key') else '{KINIT}']))
 
 			if not has_shadow:
 				# FIXME: 'shadowMax'
