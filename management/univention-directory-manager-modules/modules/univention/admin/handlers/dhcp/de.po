@@ -309,9 +309,8 @@ msgid "IP range for dynamic assignment"
 msgstr "Dynamischer Bereich"
 
 #: modules/univention/admin/handlers/dhcp/__common.py:102
-#, fuzzy
 msgid "Low-level DHCP configuration"
-msgstr "Der übergeordnete Container für eine DHCP Konfiguration."
+msgstr "Systemnahe DHCP-Konfiguration"
 
 #: modules/univention/admin/handlers/dhcp/dhcp.py:56
 msgid "Manage the Domain Host Configuration Protocol service."
