@@ -256,9 +256,9 @@ class TestUsers(object):
 		user = udm.create_user(password='univention')[0]
 		password = lo.getAttr(user, 'userPassword')[0]
 		assert password.startswith('{crypt}')
-		udm.modify_object('users/user', dn=user, locked='1')
+		udm.modify_object('users/user', dn=user, disabled='1')
 		udm.verify_ldap_object(user, {'userPassword': [password.replace('{crypt}', '{crypt}!')]})
-		udm.modify_object('users/user', dn=user, locked='0')
+		udm.modify_object('users/user', dn=user, disabled='0')
 		udm.verify_ldap_object(user, {'userPassword': [password]})
 
 	def test_disable_enable_preserves_password(self, udm, lo):
@@ -391,16 +391,14 @@ class TestUsers(object):
 		assert password2.startswith('{crypt}')
 		assert password2 != password
 
-	@pytest.mark.parametrize('locked,unlocked', [
-		('1', '0'),
-	])
-	def test_modlist_samba_bad_pw_count(self, udm, lo, locked, unlocked):
+	def test_modlist_samba_bad_pw_count(self, udm, lo):
 		user = udm.create_user()[0]
-		udm.modify_object('users/user', dn=user, locked=locked)
+		subprocess.call('python -m univention.lib.account lock --dn "%s" --lock-time "$(date --utc "+%Y%m%d%H%M%SZ")' % (user,), shell=True)
 		lo.modify(user, [('sambaBadPasswordCount', '', '20')])
-		udm.modify_object('users/user', dn=user, locked=unlocked)
+		udm.modify_object('users/user', dn=user, unlock='1')
 		udm.verify_ldap_object(user, {'sambaBadPasswordCount': ['0']})
 
+	@pytest.mark.xfail(reason='Not migrated since Bug #39817')
 	@pytest.mark.parametrize('props,flags', [
 		({'locked': 'none', 'description': 'asdf'}, ['[U          ]']),
 		({'locked': 'all'}, ['[UL         ]']),
