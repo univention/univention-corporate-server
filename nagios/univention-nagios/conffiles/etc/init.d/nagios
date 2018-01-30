@@ -19,16 +19,10 @@
 # Short-Description: nagios host/service/network monitoring and management system
 # Description:       nagios is a monitoring and management system for hosts, services and networks.
 ### END INIT INFO
-# pidfile: /var/run/nagios/nagios.pid
 
 set -e
 
-if ! [ -x "/lib/lsb/init-functions" ]; then
-  . /lib/lsb/init-functions
-else
-  echo "E: /lib/lsb/init-functions not found, lsb-base (>= 3.0-6) needed"
-  exit 1
-fi
+. /lib/lsb/init-functions
 
 DAEMON=/usr/sbin/nagios
 NAME="nagios"
@@ -52,6 +46,16 @@ log()
   log_action_begin_msg "$1"; shift
   log_action_end_msg ${success:-0} "$*"
 }
+
+check_run () {
+    if [ ! -d '/var/run/nagios' ];
+    then
+        mkdir /var/run/nagios
+        chown nagios:nagios /var/run/nagios
+        chmod 0750 /var/run/nagios
+    fi
+}
+
 
 check_started () {
   check_cmd=$(get_config nagios_check_command $CGICFG)
@@ -107,6 +111,8 @@ check_named_pipe () {
   nagiospipe="$(get_config command_file)"
   if [ -p "$nagiospipe" ]; then
     return 1   # a named pipe exists
+  elif [ -e "$nagiospipe" ];then
+    return 1
   else
     return 0   # no named pipe exists
   fi
@@ -187,7 +193,7 @@ stop () {
         while [ `pidof nagios | wc -l ` -gt 0 ]; do
             cnt=`expr "$cnt" + 1`
             if [ "$cnt" -gt 15 ]; then
-                /bin/kill -9 `pidof nagios`
+                kill -9 `pidof nagios`
                 break
             fi
             sleep 1
@@ -237,11 +243,11 @@ reload () {
  fi
 }
 
-
 check() {
     $DAEMON -v $NAGIOSCFG
 }
 
+check_run
 
 case "$1" in
   start)
