@@ -291,6 +291,14 @@
 				<listitem><simpara>
 					The &ucsUCRV; <envar>apache2/ssl/v3</envar> has been removed (<u:bug>45922</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The <package>php</package> dependencies have been removed from the <package>univention-apache</package> package.
+					Also the &ucsUCRV;s <envar>php/memory/limit</envar>, <envar>php/limit/postsize</envar>, <envar>php/limit/filesize</envar>,
+					<envar>php/limit/inputtime</envar>, <envar>php/memory/executiontime</envar> and <envar>php/limit/sockettimeout</envar>
+					to configure the <filename>php.ini</filename> have been removed. To configure php settings
+					<filename>/etc/php/7.0/apache2/php.ini</filename> or <filename>/etc/php5/apache2/php.ini</filename>
+					can be modified manually (<u:bug>46121</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
