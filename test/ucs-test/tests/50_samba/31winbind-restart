@@ -21,10 +21,7 @@ killall -STOP winbindd
 sleep 3;
 wbinfo -p || fail_test 110
 
-if [ "$RETVAL" != 0 ]; then
-	killall -9 /usr/sbin/winbindd
-	/etc/init.d/winbind start
-fi
+/etc/init.d/winbind stop
+/etc/init.d/winbind start
 
 exit $RETVAL
-
