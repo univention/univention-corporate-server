@@ -1,3 +1,9 @@
+ucs-test (7.0.23-117) unstable; urgency=low
+
+  * Bug #44786: adapt test to API change
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 30 Jan 2018 10:01:52 +0100
+
 ucs-test (7.0.23-116) unstable; urgency=medium
 
   * 01_base/101_install_all_packages_from_a_release: Tag as producttest
