@@ -230,7 +230,9 @@ class mapping(object):
 
 	def unregister(self, map_name):
 		self._map.pop(map_name, None)
-		# TODO: has it a reason that we don't remove the value from self._unmap?
+		# unregister() is used by LDAP_Search syntax classes with viewonly=True.
+		# See SimpleLdap._init_ldap_search().
+		# So, don't remove the value from self._unmap.
 
 	def registerUnmapping(self, unmap_name, unmap_value):
 		self._unmap_func[unmap_name] = unmap_value
