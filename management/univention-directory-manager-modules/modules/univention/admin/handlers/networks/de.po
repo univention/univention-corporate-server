@@ -1,114 +1,113 @@
 # Copyright 2010-2018 Univention GmbH
-#
+# 
 # http://www.univention.de/
-#
+# 
 # All rights reserved.
-#
+# 
 # The source code of this program is made available
 # under the terms of the GNU Affero General Public License version 3
 # (GNU AGPL V3) as published by the Free Software Foundation.
-#
+# 
 # Binary versions of this program provided by Univention to you as
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
 # you and Univention and not subject to the GNU AGPL V3.
-#
+# 
 # In the case you use this program under the terms of the GNU AGPL V3,
 # the program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
-#
+# 
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-25 15:03+0200\n"
+"POT-Creation-Date: 2018-01-30 20:28+0100\n"
 "PO-Revision-Date: 2006-01-12 13:25+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
+"Language: de\n"
 
-#: network.py:49 network.py:68
-msgid "Networks"
-msgstr "Netzwerk"
-
-#: network.py:50
-msgid "Add, edit and delete networks"
-msgstr "Hinzufügen, Bearbeiten und Löschen von Netzwerken"
-
-#: network.py:51
-msgid "Add"
-msgstr "Hinzufügen"
-
-#: network.py:51
-msgid "Add network object"
-msgstr "Netz-Objekte hinzufügen"
-
-#: network.py:51
-msgid "Search"
-msgstr "Suchen"
-
-#: network.py:51
-msgid "Search network object(s)"
-msgstr "Netz-Objekt(e) suchen"
-
-#: network.py:54
-msgid "Networks: Network"
-msgstr "Netze: Netz"
-
-#: network.py:59
-msgid "Name"
-msgstr "Name"
-
-#: network.py:77
-msgid "Netmask"
-msgstr "Netzmaske"
-
-#: network.py:86
-msgid "Next IP address"
-msgstr "Nächste IP-Adresse"
-
-#: network.py:95
-msgid "IP address range"
-msgstr "IP-Adressbereich"
-
-#: network.py:105
-msgid "DNS forward lookup zone"
-msgstr "Forward Lookup Zone für DNS-Einträge"
-
-#: network.py:116
-msgid "DNS reverse lookup zone"
-msgstr "Reverse Lookup Zone für DNS-Einträge"
-
-#: network.py:127
-msgid "DHCP service"
-msgstr "DHCP-Einträge"
-
-#: network.py:140 network.py:141
-msgid "General"
-msgstr "Allgemein"
-
-#: network.py:140
+#: modules/univention/admin/handlers/networks/network.py:149
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: network.py:146
+#: modules/univention/admin/handlers/networks/network.py:159
+msgid "DHCP preferences"
+msgstr "DHCP-Einstellungen"
+
+#: modules/univention/admin/handlers/networks/network.py:136
+msgid "DHCP service"
+msgstr "DHCP-Einträge"
+
+#: modules/univention/admin/handlers/networks/network.py:114
+msgid "DNS forward lookup zone"
+msgstr "Forward Lookup Zone für DNS-Einträge"
+
+#: modules/univention/admin/handlers/networks/network.py:155
 msgid "DNS preferences"
 msgstr "DNS-Einstellungen"
 
-#: network.py:150
-msgid "DHCP preferences"
-msgstr "DHCP-Einstellungen"
+#: modules/univention/admin/handlers/networks/network.py:125
+msgid "DNS reverse lookup zone"
+msgstr "Reverse Lookup Zone für DNS-Einträge"
+
+#: modules/univention/admin/handlers/networks/network.py:149
+msgid "General"
+msgstr "Allgemein"
+
+#: modules/univention/admin/handlers/networks/network.py:150
+msgid "General network settings"
+msgstr "Grundeinstellungen - Netzwerk"
+
+#: modules/univention/admin/handlers/networks/network.py:104
+msgid "IP address range"
+msgstr "IP-Adressbereich"
+
+#: modules/univention/admin/handlers/networks/network.py:64
+msgid "Name"
+msgstr "Name"
+
+#: modules/univention/admin/handlers/networks/network.py:84
+msgid "Netmask"
+msgstr "Netzmaske"
+
+#: modules/univention/admin/handlers/networks/network.py:74
+msgid "Networks"
+msgstr "Netzwerk"
+
+#: modules/univention/admin/handlers/networks/network.py:53
+msgid "Networks: Network"
+msgstr "Netze: Netz"
+
+#: modules/univention/admin/handlers/networks/network.py:94
+msgid "Next IP address"
+msgstr "Nächste IP-Adresse"
+
+#~ msgid "Add"
+#~ msgstr "Hinzufügen"
+
+#~ msgid "Add network object"
+#~ msgstr "Netz-Objekte hinzufügen"
+
+#~ msgid "Add, edit and delete networks"
+#~ msgstr "Hinzufügen, Bearbeiten und Löschen von Netzwerken"
+
+#~ msgid "DHCP"
+#~ msgstr "DHCP"
+
+#~ msgid "DNS"
+#~ msgstr "DNS"
 
 #~ msgid "IP"
 #~ msgstr "IP"
@@ -116,17 +115,14 @@ msgstr "DHCP-Einstellungen"
 #~ msgid "IP address ranges"
 #~ msgstr "IP-Adressbereiche"
 
-#~ msgid "DNS"
-#~ msgstr "DNS"
-
-#~ msgid "DHCP"
-#~ msgstr "DHCP"
-
-#~ msgid "nextIp"
-#~ msgstr "nächste IP-Adresse"
-
 #~ msgid "Network Manager"
 #~ msgstr "Netzwerkverwaltung"
 
-msgid "General network settings"
-msgstr "Grundeinstellungen - Netzwerk"
+#~ msgid "Search"
+#~ msgstr "Suchen"
+
+#~ msgid "Search network object(s)"
+#~ msgstr "Netz-Objekt(e) suchen"
+
+#~ msgid "nextIp"
+#~ msgstr "nächste IP-Adresse"

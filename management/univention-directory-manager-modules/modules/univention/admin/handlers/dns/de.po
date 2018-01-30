@@ -1,44 +1,44 @@
 # Copyright 2010-2018 Univention GmbH
-#
+# 
 # http://www.univention.de/
-#
+# 
 # All rights reserved.
-#
+# 
 # The source code of this program is made available
 # under the terms of the GNU Affero General Public License version 3
 # (GNU AGPL V3) as published by the Free Software Foundation.
-#
+# 
 # Binary versions of this program provided by Univention to you as
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
 # you and Univention and not subject to the GNU AGPL V3.
-#
+# 
 # In the case you use this program under the terms of the GNU AGPL V3,
 # the program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
-#
+# 
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-11-02 16:30+0100\n"
+"POT-Creation-Date: 2018-01-30 20:28+0100\n"
 "PO-Revision-Date: 2016-11-02 16:32+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
+"Language: de\n"
 
-#: modules/univention/admin/handlers/dns/alias.py:57
+#: modules/univention/admin/handlers/dns/alias.py:62
 msgid "Alias"
 msgstr "Alias"
 
@@ -46,34 +46,34 @@ msgstr "Alias"
 msgid "All DNS zones"
 msgstr "Alle DNS-Zonen"
 
-#: modules/univention/admin/handlers/dns/alias.py:52
+#: modules/univention/admin/handlers/dns/alias.py:53
 msgid "Assign additional names to a host."
 msgstr "Weist einem Rechner weitere Namen zu."
 
-#: modules/univention/admin/handlers/dns/alias.py:91
-#: modules/univention/admin/handlers/dns/dns.py:74
-#: modules/univention/admin/handlers/dns/forward_zone.py:184
-#: modules/univention/admin/handlers/dns/ptr_record.py:75
-#: modules/univention/admin/handlers/dns/reverse_zone.py:155
-#: modules/univention/admin/handlers/dns/srv_record.py:87
+#: modules/univention/admin/handlers/dns/alias.py:96
+#: modules/univention/admin/handlers/dns/dns.py:73
+#: modules/univention/admin/handlers/dns/forward_zone.py:188
+#: modules/univention/admin/handlers/dns/ptr_record.py:93
+#: modules/univention/admin/handlers/dns/reverse_zone.py:159
+#: modules/univention/admin/handlers/dns/srv_record.py:91
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: modules/univention/admin/handlers/dns/host_record.py:106
-#: modules/univention/admin/handlers/dns/txt_record.py:86
+#: modules/univention/admin/handlers/dns/host_record.py:111
+#: modules/univention/admin/handlers/dns/txt_record.py:91
 msgid "Basic values"
 msgstr "Grundeinstellungen"
 
-#: modules/univention/admin/handlers/dns/alias.py:79
+#: modules/univention/admin/handlers/dns/alias.py:84
 msgid "Canonical name"
 msgstr "Kanonischer Name"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:79
-#: modules/univention/admin/handlers/dns/reverse_zone.py:77
+#: modules/univention/admin/handlers/dns/forward_zone.py:83
+#: modules/univention/admin/handlers/dns/reverse_zone.py:81
 msgid "Contact person"
 msgstr "Verantwortliche Person"
 
-#: modules/univention/admin/handlers/dns/alias.py:51
+#: modules/univention/admin/handlers/dns/alias.py:52
 msgid "DNS: Alias record"
 msgstr "DNS: Alias Record"
 
@@ -81,7 +81,7 @@ msgstr "DNS: Alias Record"
 msgid "DNS: Forward lookup zone"
 msgstr "DNS: Forward Lookup Zone"
 
-#: modules/univention/admin/handlers/dns/ptr_record.py:46
+#: modules/univention/admin/handlers/dns/ptr_record.py:50
 msgid "DNS: Pointer record"
 msgstr "DNS: Pointer Record"
 
@@ -93,96 +93,96 @@ msgstr "DNS: Reverse Lookup Zone"
 msgid "DNS: Service record"
 msgstr "DNS: Service Record"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:123
-#: modules/univention/admin/handlers/dns/reverse_zone.py:121
+#: modules/univention/admin/handlers/dns/forward_zone.py:127
+#: modules/univention/admin/handlers/dns/reverse_zone.py:125
 msgid "Expiry interval"
 msgstr "Ablaufintervall"
 
-#: modules/univention/admin/handlers/dns/ptr_record.py:64
+#: modules/univention/admin/handlers/dns/ptr_record.py:82
 msgid "FQDNs must end with a dot."
 msgstr "FQDNs müssen mit einem Punkt enden."
 
-#: modules/univention/admin/handlers/dns/alias.py:91
-#: modules/univention/admin/handlers/dns/dns.py:74
-#: modules/univention/admin/handlers/dns/forward_zone.py:184
-#: modules/univention/admin/handlers/dns/host_record.py:106
-#: modules/univention/admin/handlers/dns/ptr_record.py:75
-#: modules/univention/admin/handlers/dns/reverse_zone.py:155
-#: modules/univention/admin/handlers/dns/srv_record.py:87
-#: modules/univention/admin/handlers/dns/txt_record.py:86
+#: modules/univention/admin/handlers/dns/alias.py:96
+#: modules/univention/admin/handlers/dns/dns.py:73
+#: modules/univention/admin/handlers/dns/forward_zone.py:188
+#: modules/univention/admin/handlers/dns/host_record.py:111
+#: modules/univention/admin/handlers/dns/ptr_record.py:93
+#: modules/univention/admin/handlers/dns/reverse_zone.py:159
+#: modules/univention/admin/handlers/dns/srv_record.py:91
+#: modules/univention/admin/handlers/dns/txt_record.py:91
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/univention/admin/handlers/dns/txt_record.py:87
+#: modules/univention/admin/handlers/dns/txt_record.py:92
 msgid "General TXT record settings"
 msgstr "Grundeinstellungen - TXT Record"
 
-#: modules/univention/admin/handlers/dns/alias.py:92
+#: modules/univention/admin/handlers/dns/alias.py:97
 msgid "General alias record settings"
 msgstr "Grundeinstellungen - Alias Record"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:185
+#: modules/univention/admin/handlers/dns/forward_zone.py:189
 msgid "General forward lookup zone settings"
 msgstr "Grundeinstellungen - Forward Lookup Zone"
 
-#: modules/univention/admin/handlers/dns/host_record.py:107
+#: modules/univention/admin/handlers/dns/host_record.py:112
 msgid "General host record settings"
 msgstr "Grundeinstellungen - Host Record"
 
-#: modules/univention/admin/handlers/dns/ptr_record.py:76
+#: modules/univention/admin/handlers/dns/ptr_record.py:94
 msgid "General pointer record settings"
 msgstr "Grundeinstellungen - Pointer Record"
 
-#: modules/univention/admin/handlers/dns/reverse_zone.py:156
+#: modules/univention/admin/handlers/dns/reverse_zone.py:160
 msgid "General reverse lookup zone settings"
 msgstr "Grundeinstellungen - Reverse Lookup Zone"
 
-#: modules/univention/admin/handlers/dns/srv_record.py:88
+#: modules/univention/admin/handlers/dns/srv_record.py:92
 msgid "General service record settings"
 msgstr "Grundeinstellungen - Service Record"
 
-#: modules/univention/admin/handlers/dns/ptr_record.py:52
-msgid "Reverse address"
-msgstr "Umgekehrte Adresse"
-
-#: modules/univention/admin/handlers/dns/host_record.py:55
+#: modules/univention/admin/handlers/dns/host_record.py:60
 msgid "Hostname"
 msgstr "Rechnername"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:173
-#: modules/univention/admin/handlers/dns/forward_zone.py:199
-#: modules/univention/admin/handlers/dns/host_record.py:77
+#: modules/univention/admin/handlers/dns/ptr_record.py:71
+msgid "IP Address"
+msgstr "IP-Adresse"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:177
+#: modules/univention/admin/handlers/dns/forward_zone.py:203
+#: modules/univention/admin/handlers/dns/host_record.py:82
 msgid "IP addresses"
 msgstr "IP-Adressen"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:199
-#: modules/univention/admin/handlers/dns/forward_zone.py:200
+#: modules/univention/admin/handlers/dns/forward_zone.py:203
+#: modules/univention/admin/handlers/dns/forward_zone.py:204
 msgid "IP addresses of the zone"
 msgstr "IP-Adressen der Zone"
 
-#: modules/univention/admin/handlers/dns/srv_record.py:66
+#: modules/univention/admin/handlers/dns/srv_record.py:70
 msgid "Location"
 msgstr "Ort"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:204
-#: modules/univention/admin/handlers/dns/forward_zone.py:205
+#: modules/univention/admin/handlers/dns/forward_zone.py:208
+#: modules/univention/admin/handlers/dns/forward_zone.py:209
 msgid "MX records"
 msgstr "MX Records"
 
-#: modules/univention/admin/handlers/dns/host_record.py:113
+#: modules/univention/admin/handlers/dns/host_record.py:118
 msgid "Mail"
 msgstr "Mail"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:155
-#: modules/univention/admin/handlers/dns/host_record.py:86
+#: modules/univention/admin/handlers/dns/forward_zone.py:159
+#: modules/univention/admin/handlers/dns/host_record.py:91
 msgid "Mail exchanger host"
 msgstr "Mail Exchanger Rechner"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:204
+#: modules/univention/admin/handlers/dns/forward_zone.py:208
 msgid "Mail exchanger records"
 msgstr "Mailserver-Einträge"
 
-#: modules/univention/admin/handlers/dns/host_record.py:113
+#: modules/univention/admin/handlers/dns/host_record.py:118
 msgid "Mail exchangers for this host"
 msgstr "Mail Exchanger für diesen Rechner"
 
@@ -190,7 +190,7 @@ msgstr "Mail Exchanger für diesen Rechner"
 msgid "Manage the Domain Name System."
 msgstr "Verwaltung des Domänen Namen Systems."
 
-#: modules/univention/admin/handlers/dns/ptr_record.py:47
+#: modules/univention/admin/handlers/dns/ptr_record.py:51
 #: modules/univention/admin/handlers/dns/reverse_zone.py:50
 msgid "Map IP addresses back to hostnames."
 msgstr "Übersetzt IP-Adressen zurück zu Rechnernamen."
@@ -199,53 +199,53 @@ msgstr "Übersetzt IP-Adressen zurück zu Rechnernamen."
 msgid "Map names to IP addresses (and other data)."
 msgstr "Übersetzt Namen zu IP-Adressen (und anderen Daten)."
 
-#: modules/univention/admin/handlers/dns/dns.py:63
-#: modules/univention/admin/handlers/dns/srv_record.py:55
-#: modules/univention/admin/handlers/dns/txt_record.py:52
+#: modules/univention/admin/handlers/dns/dns.py:62
+#: modules/univention/admin/handlers/dns/srv_record.py:59
+#: modules/univention/admin/handlers/dns/txt_record.py:57
 msgid "Name"
 msgstr "Name"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:145
-#: modules/univention/admin/handlers/dns/reverse_zone.py:143
+#: modules/univention/admin/handlers/dns/forward_zone.py:149
+#: modules/univention/admin/handlers/dns/reverse_zone.py:147
 msgid "Name server"
 msgstr "Nameserver"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:134
-#: modules/univention/admin/handlers/dns/reverse_zone.py:132
+#: modules/univention/admin/handlers/dns/forward_zone.py:138
+#: modules/univention/admin/handlers/dns/reverse_zone.py:136
 msgid "Negative time to live"
 msgstr "Negative Time-to-Live"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:248
-#: modules/univention/admin/handlers/dns/reverse_zone.py:227
+#: modules/univention/admin/handlers/dns/forward_zone.py:253
+#: modules/univention/admin/handlers/dns/reverse_zone.py:232
 msgid "Neither DN nor position given."
 msgstr "Weder ein DN noch eine Position wurde angegeben."
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:174
-#: modules/univention/admin/handlers/dns/host_record.py:78
+#: modules/univention/admin/handlers/dns/forward_zone.py:178
+#: modules/univention/admin/handlers/dns/host_record.py:83
 msgid "One or more IP addresses, to which the name is resolved to."
 msgstr "Ein oder mehrere IP-Adressen, zu denen der Name aufgelöst wird."
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:165
-#: modules/univention/admin/handlers/dns/host_record.py:96
-#: modules/univention/admin/handlers/dns/txt_record.py:75
+#: modules/univention/admin/handlers/dns/forward_zone.py:169
+#: modules/univention/admin/handlers/dns/host_record.py:101
+#: modules/univention/admin/handlers/dns/txt_record.py:80
 msgid "One or more arbitrary text strings."
 msgstr "Ein oder mehrere willkürliche Zeichenketten."
 
-#: modules/univention/admin/handlers/dns/host_record.py:116
+#: modules/univention/admin/handlers/dns/host_record.py:121
 msgid "Optional text"
 msgstr "Optionaler Text"
 
-#: modules/univention/admin/handlers/dns/ptr_record.py:63
+#: modules/univention/admin/handlers/dns/ptr_record.py:81
 msgid "Pointer record"
 msgstr "Pointer Record"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:191
-#: modules/univention/admin/handlers/dns/reverse_zone.py:162
+#: modules/univention/admin/handlers/dns/forward_zone.py:195
+#: modules/univention/admin/handlers/dns/reverse_zone.py:166
 msgid "Primary name server information"
 msgstr "Primäre Nameserver Informationen"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:101
-#: modules/univention/admin/handlers/dns/reverse_zone.py:99
+#: modules/univention/admin/handlers/dns/forward_zone.py:105
+#: modules/univention/admin/handlers/dns/reverse_zone.py:103
 msgid "Refresh interval"
 msgstr "Aktualisierungsintervall"
 
@@ -261,157 +261,166 @@ msgstr "Löst den symbolischen Namen zu Zeichenketten auf."
 msgid "Resolve well-known services to servers providing those services."
 msgstr "Löst bekannt Dienste zu Rechnern auf, die diese Dienste anbieten."
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:112
-#: modules/univention/admin/handlers/dns/reverse_zone.py:110
+#: modules/univention/admin/handlers/dns/forward_zone.py:116
+#: modules/univention/admin/handlers/dns/reverse_zone.py:114
 msgid "Retry interval"
 msgstr "Intervall für erneute Versuche"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:90
-#: modules/univention/admin/handlers/dns/reverse_zone.py:88
+#: modules/univention/admin/handlers/dns/ptr_record.py:60
+msgid "Reverse address"
+msgstr "Umgekehrte Adresse"
+
+#: modules/univention/admin/handlers/dns/ptr_record.py:190
+msgid "Reverse zone and IP address are incompatible."
+msgstr "Reverse-Zone und IP-Adresse sind inkompatibel."
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:94
+#: modules/univention/admin/handlers/dns/reverse_zone.py:92
 msgid "Serial number"
 msgstr "Seriennummer"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:191
-#: modules/univention/admin/handlers/dns/forward_zone.py:192
-#: modules/univention/admin/handlers/dns/reverse_zone.py:162
-#: modules/univention/admin/handlers/dns/reverse_zone.py:163
+#: modules/univention/admin/handlers/dns/forward_zone.py:195
+#: modules/univention/admin/handlers/dns/forward_zone.py:196
+#: modules/univention/admin/handlers/dns/reverse_zone.py:166
+#: modules/univention/admin/handlers/dns/reverse_zone.py:167
 msgid "Start of authority"
 msgstr "Start of Authority Eintrag"
 
-#: modules/univention/admin/handlers/dns/reverse_zone.py:55
+#: modules/univention/admin/handlers/dns/reverse_zone.py:59
 msgid "Subnet"
 msgstr "Subnetz"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:209
-#: modules/univention/admin/handlers/dns/forward_zone.py:210
+#: modules/univention/admin/handlers/dns/forward_zone.py:213
+#: modules/univention/admin/handlers/dns/forward_zone.py:214
 msgid "TXT records"
 msgstr "TXT Records"
 
-#: modules/univention/admin/handlers/dns/host_record.py:116
+#: modules/univention/admin/handlers/dns/host_record.py:121
 msgid "Text"
 msgstr "Text"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:164
-#: modules/univention/admin/handlers/dns/host_record.py:95
-#: modules/univention/admin/handlers/dns/txt_record.py:74
+#: modules/univention/admin/handlers/dns/forward_zone.py:168
+#: modules/univention/admin/handlers/dns/host_record.py:100
+#: modules/univention/admin/handlers/dns/txt_record.py:79
 msgid "Text Record"
 msgstr "Text Record"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:209
+#: modules/univention/admin/handlers/dns/forward_zone.py:213
 msgid "Text records"
 msgstr "Text Records"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:156
-#: modules/univention/admin/handlers/dns/host_record.py:87
+#: modules/univention/admin/handlers/dns/forward_zone.py:160
+#: modules/univention/admin/handlers/dns/host_record.py:92
 msgid ""
 "The FQDNs of the hosts responsible for receiving mail for this DNS name."
 msgstr ""
 "Die FQDNs der Rechner, die für den E-Mail-Empfang für diesen DNS-Namen "
 "zuständig sind."
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:146
-#: modules/univention/admin/handlers/dns/reverse_zone.py:144
+#: modules/univention/admin/handlers/dns/forward_zone.py:150
+#: modules/univention/admin/handlers/dns/reverse_zone.py:148
 msgid "The FQDNs of the servers serving this zone."
 msgstr "Die FQDNs der Rechner, die diese Zone bereitstellen."
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:80
-#: modules/univention/admin/handlers/dns/reverse_zone.py:78
+#: modules/univention/admin/handlers/dns/forward_zone.py:84
+#: modules/univention/admin/handlers/dns/reverse_zone.py:82
 msgid "The email address of the person responsible for this zone."
 msgstr "Die E-Mail-Adresse der Person, die für diese Zone verantwortlich ist."
 
-#: modules/univention/admin/handlers/dns/ptr_record.py:53
+#: modules/univention/admin/handlers/dns/ptr_record.py:61
 msgid ""
-"The host part of the IP address in reverse notation (e.g. \"172.16.1.2/16\" -"
-"> \"2.1\" or \"2001:0db8:0100::0007:0008/96\" -> \"8.0.0.0.7.0.0.0\")."
+"The host part of the IP address in reverse notation (e.g. \"172.16.1.2/16\" "
+"-> \"2.1\" or \"2001:0db8:0100::0007:0008/96\" -> \"8.0.0.0.7.0.0.0\")."
 msgstr ""
 "Der Host-Anteil der IP-Adresse in umgekehrter Notation (z.B. "
 "\"172.16.1.2/16\" -> \"2.1\" or \"2001:0db8:0100::0007:0008/96\" -> "
 "\"8.0.0.0.7.0.0.0\")."
 
-#: modules/univention/admin/handlers/dns/srv_record.py:67
+#: modules/univention/admin/handlers/dns/srv_record.py:71
 msgid "The host providing the service."
 msgstr "Der Rechner, der diesen Dienst anbietet."
 
-#: modules/univention/admin/handlers/dns/srv_record.py:56
+#: modules/univention/admin/handlers/dns/srv_record.py:60
 msgid "The name and protocol of the service."
 msgstr "Der Name und das Protokoll des Dienstes."
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:58
+#: modules/univention/admin/handlers/dns/forward_zone.py:62
 msgid "The name of the domain."
 msgstr "Der Name der Domäne."
 
-#: modules/univention/admin/handlers/dns/alias.py:58
+#: modules/univention/admin/handlers/dns/alias.py:63
 msgid "The name of the entry relative to the domain."
 msgstr "Der Name des Eintrags relativ zur Domäne."
 
-#: modules/univention/admin/handlers/dns/host_record.py:56
-#: modules/univention/admin/handlers/dns/txt_record.py:53
+#: modules/univention/admin/handlers/dns/host_record.py:61
+#: modules/univention/admin/handlers/dns/txt_record.py:58
 msgid "The name of the host relative to the domain."
 msgstr "Der Name des Rechners relativ zur Domäne."
 
-#: modules/univention/admin/handlers/dns/alias.py:80
+#: modules/univention/admin/handlers/dns/alias.py:85
 msgid "The name this alias points to. A FQDN must end with a dot."
 msgstr ""
-"Der Name, auf den dieser Alias verweist. Der FQDN muss mit einem Punkt enden."
+"Der Name, auf den dieser Alias verweist. Der FQDN muss mit einem Punkt "
+"enden."
 
-#: modules/univention/admin/handlers/dns/reverse_zone.py:56
+#: modules/univention/admin/handlers/dns/reverse_zone.py:60
 msgid "The networks address in forward notation."
 msgstr "Die Netzwerkadresse in Vorwärtsnotation."
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:91
-#: modules/univention/admin/handlers/dns/reverse_zone.py:89
+#: modules/univention/admin/handlers/dns/forward_zone.py:95
+#: modules/univention/admin/handlers/dns/reverse_zone.py:93
 msgid "The sequence number for this zone. Updates automatically."
 msgstr "Die Sequenznummer dieser Zone. Wird automatisch aktualisiert."
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:135
-#: modules/univention/admin/handlers/dns/reverse_zone.py:133
+#: modules/univention/admin/handlers/dns/forward_zone.py:139
+#: modules/univention/admin/handlers/dns/reverse_zone.py:137
 msgid "The time interval \"not found\" answers are cached."
-msgstr ""
-"Die Dauer, die \"nicht gefunden\"-Antworten zwischengespeichert werden."
+msgstr "Die Dauer, die \"nicht gefunden\"-Antworten zwischengespeichert werden."
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:124
-#: modules/univention/admin/handlers/dns/reverse_zone.py:122
+#: modules/univention/admin/handlers/dns/forward_zone.py:128
+#: modules/univention/admin/handlers/dns/reverse_zone.py:126
 msgid ""
-"The time interval after which secondary DNS servers will expire failed zones."
+"The time interval after which secondary DNS servers will expire failed "
+"zones."
 msgstr ""
 "Die Dauer, nach der sekundäre DNS Server fehlgeschlagene Zonen verwerfen."
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:102
-#: modules/univention/admin/handlers/dns/reverse_zone.py:100
+#: modules/univention/admin/handlers/dns/forward_zone.py:106
+#: modules/univention/admin/handlers/dns/reverse_zone.py:104
 msgid ""
 "The time interval secondary DNS servers use to check the zone for updates."
 msgstr ""
 "Das Interval, in dem sekundäre DNS Server nach Updates der Zone suchen."
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:113
-#: modules/univention/admin/handlers/dns/reverse_zone.py:111
+#: modules/univention/admin/handlers/dns/forward_zone.py:117
+#: modules/univention/admin/handlers/dns/reverse_zone.py:115
 msgid ""
 "The time interval secondary DNS servers use to retry failed refresh updates."
 msgstr ""
 "Die Dauer, nach der sekundäre DNS server versuchen, fehlgeschlagene "
 "Zonentransfers zu wiederholen."
 
-#: modules/univention/admin/handlers/dns/alias.py:69
-#: modules/univention/admin/handlers/dns/forward_zone.py:69
-#: modules/univention/admin/handlers/dns/host_record.py:67
-#: modules/univention/admin/handlers/dns/reverse_zone.py:67
-#: modules/univention/admin/handlers/dns/srv_record.py:76
-#: modules/univention/admin/handlers/dns/txt_record.py:64
+#: modules/univention/admin/handlers/dns/alias.py:74
+#: modules/univention/admin/handlers/dns/forward_zone.py:73
+#: modules/univention/admin/handlers/dns/host_record.py:72
+#: modules/univention/admin/handlers/dns/reverse_zone.py:71
+#: modules/univention/admin/handlers/dns/srv_record.py:80
+#: modules/univention/admin/handlers/dns/txt_record.py:69
 msgid "The time this entry may be cached."
 msgstr "Die Dauer für die dieser Eintrag zwischengespeichert wird."
 
-#: modules/univention/admin/handlers/dns/alias.py:68
-#: modules/univention/admin/handlers/dns/host_record.py:66
-#: modules/univention/admin/handlers/dns/srv_record.py:75
-#: modules/univention/admin/handlers/dns/txt_record.py:63
+#: modules/univention/admin/handlers/dns/alias.py:73
+#: modules/univention/admin/handlers/dns/host_record.py:71
+#: modules/univention/admin/handlers/dns/srv_record.py:79
+#: modules/univention/admin/handlers/dns/txt_record.py:68
 msgid "Time to live"
 msgstr "Time-to-Live"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:57
+#: modules/univention/admin/handlers/dns/forward_zone.py:61
 msgid "Zone name"
 msgstr "Name der Zone"
 
-#: modules/univention/admin/handlers/dns/forward_zone.py:68
-#: modules/univention/admin/handlers/dns/reverse_zone.py:66
+#: modules/univention/admin/handlers/dns/forward_zone.py:72
+#: modules/univention/admin/handlers/dns/reverse_zone.py:70
 msgid "Zone time to live"
 msgstr "Zone Time-to-Live"
