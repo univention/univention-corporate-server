@@ -2153,13 +2153,13 @@ class s4(univention.s4connector.ucs):
 			# user enabled in S4
 			if not ucs_admin_object['disabled'].lower() in ['none', '0']:
 				# user disabled in UCS -> change
-				ucs_admin_object['disabled'] = 'none'
+				ucs_admin_object['disabled'] = '0'
 				modified = 1
 		else:
 			# user disabled in S4
 			if ucs_admin_object['disabled'].lower() in ['none', '0']:
 				# user enabled in UCS -> change
-				ucs_admin_object['disabled'] = 'all'
+				ucs_admin_object['disabled'] = '1'
 				modified = 1
 		if 'accountExpires' in ldap_object_s4 and (long(ldap_object_s4['accountExpires'][0]) == long(9223372036854775807) or ldap_object_s4['accountExpires'][0] == '0'):
 			# s4 account not expired
