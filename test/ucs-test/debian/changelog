@@ -1,3 +1,9 @@
+ucs-test (8.0.22-2) unstable; urgency=low
+
+  * Bug #44786: adapt test to API change
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 30 Jan 2018 10:03:03 +0100
+
 ucs-test (8.0.22-1) unstable; urgency=medium
 
   * Bug #45842: check for None values in verify_udm_object
