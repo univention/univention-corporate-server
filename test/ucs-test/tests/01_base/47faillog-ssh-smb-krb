@@ -53,8 +53,7 @@ krb_login () {
 udm mail/domain create --set name="$domainname"
 user_create "$NAME" \
 	--set password="$(<$tests_domainadmin_pwdfile)" \
-	--set primaryGroup="$(get_domain_admins_dn)" \
-	--set locked=none
+	--set primaryGroup="$(get_domain_admins_dn)"
 /usr/lib/univention-pam/ldap-group-to-file.py
 
 ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
@@ -88,42 +87,8 @@ then
 	fail_test 110 "krb login was successful, but the user should be locked"
 fi
 
-info "Lock windows"
-user_set_attr "$NAME" locked "" windows
-ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
-if [ "$ssh_hostname" != "$hostname" ]
-then
-	fail_test 110 "ssh login wasn't successful"
-fi
-if ! smb_login "$tests_domainadmin_pwdfile" | grep -q NT_STATUS_ACCOUNT_LOCKED_OUT
-then
-	fail_test 110 "smb login was successful, but the user should be locked"
-fi
-# Heimdal interprets Windows Lock
-if krb_login "$tests_domainadmin_pwdfile"
-then
-	fail_test 110 "krb login was successful, but the user should be locked"
-fi
-
-info "Lock posix"
-user_set_attr "$NAME" locked "" posix
-ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
-# 'Deny' from 'pam_unix' is 'ignored', 'ok' from 'pam_krb5.so' is sufficient -> OKAY
-if false && [ "$ssh_hostname" = "$hostname" ]
-then
-	fail_test 110 "ssh login was successful, but the user should be locked"
-fi
-if ! smb_login "$tests_domainadmin_pwdfile" | grep -q "^Disk|$NAME|"
-then
-	fail_test 110 "smb login wasn't successful"
-fi
-if ! krb_login "$tests_domainadmin_pwdfile"
-then
-	fail_test 110 "krb login wasn't successful"
-fi
-
 info "Lock all"
-user_set_attr "$NAME" locked "" all
+user_set_attr "$NAME" locked "" 1
 ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" = "$hostname" ]
 then

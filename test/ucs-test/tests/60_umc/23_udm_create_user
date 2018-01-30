@@ -64,7 +64,7 @@ class TestUMCUserCreation(UDMModule):
         """
         options = [{
             "object": {
-                "disabled": "none",
+                "disabled": "0",
                 "CtxRASDialin": "E",
                 "lastname": username,
                 "password": password,
@@ -76,7 +76,7 @@ class TestUMCUserCreation(UDMModule):
                 "username": username,
                 "shell": "/bin/bash",
                 "CtxBrokenSession": "0000",
-                "locked": "none",
+                "locked": "0",
                 "CtxReconnectSession": "0000",
                 "CtxCfgClientPrinters": False,
                 "homeSharePath": username,

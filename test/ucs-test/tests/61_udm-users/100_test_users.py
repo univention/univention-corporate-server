@@ -256,9 +256,9 @@ class TestUsers(object):
 		user = udm.create_user(password='univention')[0]
 		password = lo.getAttr(user, 'userPassword')[0]
 		assert password.startswith('{crypt}')
-		udm.modify_object('users/user', dn=user, locked='all')
+		udm.modify_object('users/user', dn=user, locked='1')
 		udm.verify_ldap_object(user, {'userPassword': [password.replace('{crypt}', '{crypt}!')]})
-		udm.modify_object('users/user', dn=user, locked='none')
+		udm.modify_object('users/user', dn=user, locked='0')
 		udm.verify_ldap_object(user, {'userPassword': [password]})
 
 	def test_disable_enable_preserves_password(self, udm, lo):
@@ -392,10 +392,7 @@ class TestUsers(object):
 		assert password2 != password
 
 	@pytest.mark.parametrize('locked,unlocked', [
-		('all', 'none'),
-		('all', 'posix'),
-		('windows', 'none'),
-		('windows', 'posix'),
+		('1', '0'),
 	])
 	def test_modlist_samba_bad_pw_count(self, udm, lo, locked, unlocked):
 		user = udm.create_user()[0]

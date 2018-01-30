@@ -149,7 +149,7 @@ class TestUMCUserAuthentication(UDMModule):
         print("\nDeactivating the test user '%s' account and " "trying to authenticate:\n" % self.test_username)
         # user modified two times as disabling account and
         # changing expiry date at the same time does not work:
-        self.UDM.modify_object('users/user', dn=self.test_user_dn, disabled="all")
+        self.UDM.modify_object('users/user', dn=self.test_user_dn, disabled="1")
 
         wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (self.test_username,)))
         if self.authenticate_to_umc(self.test_username, self.test_password_unicode):

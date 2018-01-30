@@ -108,7 +108,7 @@ class TestUMCLicenseManagement(UDMModule):
         """
         options = [{
             "object": {
-                "disabled": "none",
+                "disabled": "0",
                 "CtxRASDialin": "E",
                 "lastname": username,
                 "password": password,
@@ -120,7 +120,7 @@ class TestUMCLicenseManagement(UDMModule):
                 "username": username,
                 "shell": "/bin/bash",
                 "CtxBrokenSession": "0000",
-                "locked": "none",
+                "locked": "0",
                 "CtxReconnectSession": "0000",
                 "CtxCfgClientPrinters": False,
                 "homeSharePath": username,

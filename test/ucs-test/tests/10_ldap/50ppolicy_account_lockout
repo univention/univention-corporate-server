@@ -80,7 +80,7 @@ done
 wait_for_replication_and_postrun
 
 locked_state=$(udm-test users/user list --filter "username=$test_username" | sed -n 's/^  locked: //p')
-if [ "$locked_state" != 'all' ]; then
+if [ "$locked_state" != '1' ]; then
 	fail_test 1 "Account not locked: $locked_state"
 	univention-ldapsearch -LLL -b "$test_userdn" -s base +
 
@@ -92,7 +92,7 @@ if [ "$locked_state" != 'all' ]; then
 fi
 
 
-udm-test users/user modify --dn "$test_userdn" --set locked=none
+udm-test users/user modify --dn "$test_userdn" --set unlock=1
 
 wait_for_replication_and_postrun
 
