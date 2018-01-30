@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.9-1) unstable; urgency=medium
+
+  * Bug #45877: Make sure "default" option is always enabled during modify().
+
+ -- Florian Best <best@univention.de>  Tue, 30 Jan 2018 15:12:12 +0100
+
 univention-directory-manager-modules (13.0.8-1) unstable; urgency=medium
 
   * Bug #45877: use {K5KEY} instead of {KINIT} if krb5Key is available

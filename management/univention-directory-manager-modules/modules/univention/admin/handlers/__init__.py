@@ -1101,6 +1101,8 @@ class simpleLdap(object):
 		module_options = univention.admin.modules.options(self.module)
 		available_options = set(module_options.keys())
 		options = set(self.options)
+		if 'default' in available_options:
+			options |= {'default', }
 		old_options = set(self.old_options)
 		if options != old_options:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'options=%r; old_options=%r' % (options, old_options))
