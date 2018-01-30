@@ -1,3 +1,9 @@
+univention-saml (5.0.4-2) unstable; urgency=medium
+
+  * Bug #46110: Remove dependency on php5 package php-openid
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 30 Jan 2018 11:20:37 +0100
+
 univention-saml (5.0.4-1) unstable; urgency=medium
 
   * Bug #45842: add necessary "name" attribute
