@@ -1,3 +1,9 @@
+univention-runit (9.0.0-4) unstable; urgency=medium
+
+  * Bug #45861: Do not stop runsv processes if runsvdir is being stopped
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 30 Jan 2018 18:05:40 +0100
+
 univention-runit (9.0.0-3) unstable; urgency=medium
 
   * Bug #45861: link /etc/runit/univention -> /etc/service for 4.3-0
