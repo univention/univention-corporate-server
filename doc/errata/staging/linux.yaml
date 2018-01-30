@@ -1,0 +1,20 @@
+product: ucs
+release: "4.1"
+version: [5]
+scope: ucs_4.2-0-errata4.2-3
+src: linux
+fix: 4.9.30-2A~4.2.0.201801290155
+desc: |
+ This update of the Linux kernel to version 4.9.78 addresses the following
+ issues:
+ * Systems with microprocessors utilizing speculative execution and indirect
+   branch prediction may allow unauthorized disclosure of information to an
+   attacker with local user access via a side-channel analysis (CVE-2017-5715)
+ * kvm: stack-based out-of-bounds read via vmcall instruction (CVE-2017-17741)
+ * Stack information leak in the EFS element (CVE-2017-1000410)
+note: This is the first of three parts.
+bug: [46188]
+cve:
+- CVE-2017-5715
+- CVE-2017-17741
+- CVE-2017-1000410
