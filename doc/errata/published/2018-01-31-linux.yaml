@@ -21,3 +21,5 @@ cve:
 ignore:
   - release+scope.consistent
   - version.scope
+erratum: 496
+announced: 2018-01-31
