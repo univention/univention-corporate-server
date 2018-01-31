@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: wireshark
-fix: 1.12.1+g01b65bf-4+deb8u12
+fix: 1.12.1+g01b65bf-4+deb8u13
 desc: |
  This update addresses the following issues:
  * The AMQP dissector could crash. This was addressed in
@@ -18,9 +18,20 @@ desc: |
  * The NetBIOS dissector could crash. This was addressed in
    epan/dissectors/packet-netbios.c by ensuring that write operations are
    bounded by the beginning of a buffer. (CVE-2017-17083)
+ * The WCP dissector could crash. This was addressed in
+   epan/dissectors/packet-wcp.c by validating the available buffer length.
+   (CVE-2018-5335)
+ * The IxVeriWave file parser could crash. This was addressed in wiretap/vwr.c
+   by correcting the signature timestamp bounds checks. (CVE-2018-5334)
+ * The JSON, XML, NTP, XMPP, and GDB dissectors could crash. This was
+   addressed in epan/tvbparse.c by limiting the recursion depth.
+   (CVE-2018-5336)
 bug: [46164]
 cve:
 - CVE-2017-11408
 - CVE-2017-17084
 - CVE-2017-17085
 - CVE-2017-17083
+- CVE-2018-5335
+- CVE-2018-5334
+- CVE-2018-5336
