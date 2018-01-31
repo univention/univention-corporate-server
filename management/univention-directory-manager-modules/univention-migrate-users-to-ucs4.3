@@ -43,6 +43,7 @@ import univention.admin.uldap
 import univention.admin.allocators
 import univention.admin.uexceptions
 import univention.admin.password
+import univention.admin.samba
 from univention.lib.s4 import rids_for_well_known_security_identifiers
 from univention.config_registry import ConfigRegistry
 
@@ -161,7 +162,7 @@ class Migration(object):
 			password_set_date = None
 			if user.get('krb5PasswordEnd', [None][0]):
 				password_set_date = time.strptime(user['krb5PasswordEnd'][0], "%Y%m%d000000Z")
-			elif user.get('sambaPwdLastSet', [None]):
+			elif user.get('sambaPwdLastSet', [None])[0]:
 				try:
 					password_set_date = time.gmtime(int(user['sambaPwdLastSet'][0]))
 				except ValueError:
@@ -237,7 +238,7 @@ class Migration(object):
 					ml.append(('shadowExpire', [], ['1']))
 
 				if password_set_date:
-					ml.append(('shadowLastChange', [], [str(int(time.strftime('%s', password_set_date) / 3600 / 24))]))
+					ml.append(('shadowLastChange', [], [str(int(time.strftime('%s', password_set_date)) / 3600 / 24)]))
 
 			if not has_samba:
 				# FIXME: 'sambaNTPassword' if no kerberos user!
@@ -253,8 +254,9 @@ class Migration(object):
 				ml.extend([
 					('sambaSID', [], [self.get_user_sid(user['uid'][0], uidNumber)]),
 					('sambaAcctFlags', [], [f.decode()]),
-					('sambaPwdLastSet', [], [str(int(time.strftime('%s', password_set_date)))]),
 				])
+				if password_set_date:
+					ml.append(('sambaPwdLastSet', [], [str(int(time.strftime('%s', password_set_date)))]))
 				if kickoff_time:
 					ml.append(('sambaKickoffTime', [], [str(int(time.strftime('%s', kickoff_time)))]))
 
