@@ -4,9 +4,5 @@
 #pkill -f cli-server
 #/root/patches/create_all_users.py
 
-ucr set repository/online/component/fbest/unmaintained=enabled repository/online/component/fbest/version=4.3 repository/online/component/fbest=enabled update/secure_apt=no repository/online/unmaintained=yes
-univention-upgrade --noninteractive
-
-/usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3
-
-rm /usr/share/ucs-test/01_base/101_install_all_packages_from_a_release # takes 2 hours!
+#ucr set repository/online/component/fbest/unmaintained=enabled repository/online/component/fbest/version=4.3 repository/online/component/fbest=enabled update/secure_apt=no repository/online/unmaintained=yes
+#univention-upgrade --noninteractive
