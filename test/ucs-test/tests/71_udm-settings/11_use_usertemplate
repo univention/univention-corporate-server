@@ -183,6 +183,6 @@ if __name__ == '__main__':
 	#		'krb5PasswordEnd': [],
 	#		'krb5Key': [],
 			'krb5MaxRenew': ['604800'],
-			'krb5KDCFlags': ['126'],
+			'krb5KDCFlags': ['254'],
 			'krb5KeyVersionNumber': ['1'],
 		})

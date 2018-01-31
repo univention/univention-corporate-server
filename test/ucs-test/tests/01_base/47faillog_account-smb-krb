@@ -122,14 +122,8 @@ do
 	fi
 done <<EOF
 #udm	windows	kerberos	posix	comment
-none	0	0	0
-windows	1	0	0
-posix	0	0	1
-kerberos	0	1	0
-posix_kerberos	0	1	1
-windows_kerberos	1	1	0
-windows_posix	1	0	1
-all	1	1	1
+0	0	0	0
+1	1	1	1
 EOF
 
 exit $RETVAL
