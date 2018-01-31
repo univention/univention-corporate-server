@@ -265,7 +265,7 @@ property_descriptions = {
 		readonly_when_synced=True,
 	),
 	'disabled': univention.admin.property(
-		short_description=_('Account deactivation'),
+		short_description=_('Account is deactivated'),
 		long_description=_('Disable the user account for Windows, Kerberos and POSIX.'),
 		syntax=univention.admin.syntax.disabled,
 		multivalue=False,
@@ -278,25 +278,14 @@ property_descriptions = {
 	),
 	'locked': univention.admin.property(
 		short_description=_('User password is locked'),
-		long_description=_('Indicates that the user password is locked, e.g. due to too many login failures.'),
+		long_description=_('Indicates that the user password is locked, e.g. due to too many login failures. Unchecking causes that the user password gets unlocked.'),
 		syntax=univention.admin.syntax.locked,
 		multivalue=False,
 		required=False,
-		may_change=False,  # caution! this gets overwritten by some scripts
-		editable=False,  # caution! this gets overwritten by some scripts
+		may_change=True,
+		editable=True,
 		identifies=False,
 		show_in_lists=True,
-		default='0',
-	),
-	'unlock': univention.admin.property(
-		short_description=_('Unlock user password'),
-		long_description=_('Unlock the password if it is locked.'),
-		syntax=univention.admin.syntax.boolean,
-		multivalue=False,
-		required=False,
-		may_change=True,
-		identifies=False,
-		show_in_lists=False,
 		default='0',
 	),
 	'lockedTime': univention.admin.property(
@@ -1049,8 +1038,8 @@ layout = [
 			['disabled'],
 			['userexpiry'],
 		]),
-		Group(_('Locked password'), layout=[
-			['locked', 'unlock'],
+		Group(_('Locked login'), layout=[
+			['locked'],
 			['passwordexpiry'],
 			['unlockTime'],
 		]),
@@ -2151,7 +2140,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			require-pwchange(18), -- require a passwd change
 			do-not-store(31)-- Not to be modified and stored in HDB
 		"""
-		if not self.exists() or self.hasChanged(['disabled', 'unlock']):
+		if not self.exists() or self.hasChanged(['disabled', 'locked']):
 			try:
 				old_kdcflags = int(self.oldattr.get('krb5KDCFlags', ['0'])[0])
 			except ValueError:
@@ -2164,8 +2153,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			else:  # enable kerberos account
 				krb_kdcflags &= ~(1 << 7)
 
-			if self['unlock'] == '1':  # unlock kerberos password
+			if self['locked'] == '0':  # unlock kerberos password
 				krb_kdcflags &= ~(1 << 17)
+#			else:  # lock kerberos password
+#				krb_kdcflags |= (1 << 17)
 
 			ml.append(('krb5KDCFlags', str(old_kdcflags), str(krb_kdcflags)))
 		return ml
@@ -2191,7 +2182,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 	def _modlist_pwd_account_locked_time(self, ml):
 		# remove pwdAccountLockedTime during unlocking
-		if self.hasChanged('unlock') and self['unlock'] == '1':
+		if self.hasChanged('locked') and self['locked'] == '0':
 			pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
 			if pwdAccountLockedTime:
 				ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
@@ -2199,7 +2190,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_samba_bad_pw_count(self, ml):
-		if self.hasChanged('unlock') and self['unlock'] == '1':
+		if self.hasChanged('locked') and self['locked'] == '0':
 			# reset bad pw count
 			ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [''])[0], "0"))
 			ml.append(('sambaBadPasswordTime', self.oldattr.get('sambaBadPasswordTime', [''])[0], '0'))
@@ -2333,7 +2324,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_sambaAcctFlags(self, ml):
-		if self.exists() and not self.hasChanged(['disabled', 'locked', 'unlock']):
+		if self.exists() and not self.hasChanged(['disabled', 'locked']):
 			return ml
 
 		old_flags = self.oldattr.get("sambaAcctFlags", [''])[0]
@@ -2345,11 +2336,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			# enable samba account
 			acctFlags.unset('D')
 
-		if self["unlock"] == '1':
+		if self["locked"] == '0':
 			# unlock samba account
 			acctFlags.unset("L")
-		elif self['locked'] == '1':
-			# regulary the property is not editable but some scripts overwrite it
+		else:
 			acctFlags.set('L')
 
 		if str(old_flags) != str(acctFlags.decode()):
