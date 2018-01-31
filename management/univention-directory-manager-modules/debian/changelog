@@ -1,3 +1,11 @@
+univention-directory-manager-modules (13.0.17-1) unstable; urgency=medium
+
+  * Bug #39817: don't display unlocked time if sambaDomain object does not
+  	exists
+  * Bug #39817: revert layout changes
+
+ -- Florian Best <best@univention.de>  Wed, 31 Jan 2018 13:27:33 +0100
+
 univention-directory-manager-modules (13.0.16-1) unstable; urgency=medium
 
   * Bug #39817: remove "unlock" property and merge it back into "locked" again
@@ -13,7 +21,7 @@ univention-directory-manager-modules (13.0.15-1) unstable; urgency=medium
 
 univention-directory-manager-modules (13.0.14-1) unstable; urgency=medium
 
-  * Bug #45877: fix error in migrations script.
+  * Bug #45877: fix error in migration script
   * Bug #39817: Adjust layout
 
  -- Florian Best <best@univention.de>  Wed, 31 Jan 2018 11:02:46 +0100
