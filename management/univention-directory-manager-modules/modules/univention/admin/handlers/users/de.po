@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2018-01-31 12:31+0100\n"
+"POT-Creation-Date: 2018-01-31 13:32+0100\n"
 "PO-Revision-Date: 2015-07-17 12:46+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -38,13 +38,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de\n"
 
-#: modules/univention/admin/handlers/users/user.py:2294
+#: modules/univention/admin/handlers/users/user.py:2295
 #, python-format
 msgid "%(homeSharePath)s must be given if %(homeShare)s is given."
 msgstr ""
 "%(homeSharePath)s muss gesetzt sein, wenn %(homeShare)s gesetzt wurde."
 
-#: modules/univention/admin/handlers/users/user.py:2298
+#: modules/univention/admin/handlers/users/user.py:2299
 #, python-format
 msgid "%s: Invalid path"
 msgstr "%s: Ungültige Pfadangabe"
@@ -73,6 +73,10 @@ msgstr "Konto-Einstellungen"
 msgid "Additional groups"
 msgstr "Weitere Gruppen"
 
+#: modules/univention/admin/handlers/users/user.py:1062
+msgid "Advanced settings"
+msgstr "Erweiterte Einstellungen"
+
 #: modules/univention/admin/handlers/users/user.py:726
 msgid "Allow the authentication only on this Microsoft Windows host"
 msgstr "Anmeldung nur an diesem Microsoft Windows-Rechner zulassen"
@@ -90,11 +94,11 @@ msgstr "Grundeinstellungen"
 msgid "Birthdate"
 msgstr "Geburtsdatum"
 
-#: modules/univention/admin/handlers/users/user.py:1071
+#: modules/univention/admin/handlers/users/user.py:1072
 msgid "Business"
 msgstr "Geschäftlich"
 
-#: modules/univention/admin/handlers/users/user.py:1089
+#: modules/univention/admin/handlers/users/user.py:1090
 msgid "Certificate"
 msgstr "Zertifikat"
 
@@ -178,11 +182,11 @@ msgstr "Passwort ändern"
 msgid "City"
 msgstr "Stadt"
 
-#: modules/univention/admin/handlers/users/user.py:1070
+#: modules/univention/admin/handlers/users/user.py:1071
 msgid "Contact"
 msgstr "Kontakt"
 
-#: modules/univention/admin/handlers/users/user.py:1070
+#: modules/univention/admin/handlers/users/user.py:1071
 msgid "Contact information"
 msgstr "Kontaktinformationen"
 
@@ -190,7 +194,7 @@ msgstr "Kontaktinformationen"
 msgid "Country"
 msgstr "Land"
 
-#: modules/univention/admin/handlers/users/user.py:2286
+#: modules/univention/admin/handlers/users/user.py:2287
 msgid "DN given as share is not valid."
 msgstr "Der DN der Freigabe ist nicht zulässig."
 
@@ -250,15 +254,11 @@ msgstr "GECOS"
 #: modules/univention/admin/handlers/users/ldap.py:139
 #: modules/univention/admin/handlers/users/self.py:50
 #: modules/univention/admin/handlers/users/user.py:1009
-#: modules/univention/admin/handlers/users/user.py:1090
+#: modules/univention/admin/handlers/users/user.py:1091
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/univention/admin/handlers/users/user.py:1061
-msgid "General settings"
-msgstr "Allgemeine Einstellungen"
-
-#: modules/univention/admin/handlers/users/user.py:2304
+#: modules/univention/admin/handlers/users/user.py:2305
 msgid "Given DN is no share."
 msgstr "Der angegebene DN ist keine Freigabe."
 
@@ -272,13 +272,13 @@ msgid "Groups"
 msgstr "Gruppen"
 
 #: modules/univention/admin/handlers/users/user.py:704
-#: modules/univention/admin/handlers/users/user.py:2294
+#: modules/univention/admin/handlers/users/user.py:2295
 msgid "Home share"
 msgstr "Heimatverzeichnisfreigabe"
 
 #: modules/univention/admin/handlers/users/user.py:715
-#: modules/univention/admin/handlers/users/user.py:2294
-#: modules/univention/admin/handlers/users/user.py:2298
+#: modules/univention/admin/handlers/users/user.py:2295
+#: modules/univention/admin/handlers/users/user.py:2299
 msgid "Home share path"
 msgstr "Pfad zum Heimatverzeichnis"
 
@@ -308,13 +308,14 @@ msgid ""
 "failures. Unchecking causes that the user password gets unlocked."
 msgstr ""
 "Indiziert, dass das Benutzerpasswort gesperrt ist, z.B. durch zu viele "
-"fehlgeschlagene Anmeldeversuche. Das Passwort kann durch Entfernen des Häkchens entsperrt werden."
+"fehlgeschlagene Anmeldeversuche. Das Passwort kann durch Entfernen des "
+"Häkchens entsperrt werden."
 
-#: modules/univention/admin/handlers/users/user.py:2171
+#: modules/univention/admin/handlers/users/user.py:2172
 msgid "Invalid password."
 msgstr "Ungültiges Passwort."
 
-#: modules/univention/admin/handlers/users/user.py:1099
+#: modules/univention/admin/handlers/users/user.py:1100
 msgid "Issuer"
 msgstr "Aussteller"
 
@@ -363,7 +364,7 @@ msgstr "Gesperrte Anmeldung"
 msgid "Login shell"
 msgstr "Login-Shell"
 
-#: modules/univention/admin/handlers/users/user.py:1060
+#: modules/univention/admin/handlers/users/user.py:1061
 msgid "Mail"
 msgstr "Mail"
 
@@ -371,7 +372,7 @@ msgstr "Mail"
 msgid "Mail account"
 msgstr "Mail-Konto"
 
-#: modules/univention/admin/handlers/users/user.py:1065
+#: modules/univention/admin/handlers/users/user.py:1066
 msgid "Mail forwarding"
 msgstr "E-Mail Weiterleitung"
 
@@ -379,7 +380,7 @@ msgstr "E-Mail Weiterleitung"
 msgid "Mail home server"
 msgstr "Mail Home Server"
 
-#: modules/univention/admin/handlers/users/user.py:1060
+#: modules/univention/admin/handlers/users/user.py:1061
 msgid "Mail preferences"
 msgstr "Maileinstellungen"
 
@@ -387,7 +388,7 @@ msgstr "Maileinstellungen"
 msgid "Manage Samba privileges"
 msgstr "Samba-Privilegien verwalten"
 
-#: modules/univention/admin/handlers/users/user.py:1108
+#: modules/univention/admin/handlers/users/user.py:1109
 msgid "Misc"
 msgstr "Verschiedenes"
 
@@ -426,11 +427,11 @@ msgstr "Passwort-History ignorieren"
 msgid "PKI user certificate (DER format)"
 msgstr "PKI Benutzerzertifikat (DER Format)"
 
-#: modules/univention/admin/handlers/users/user.py:1054
+#: modules/univention/admin/handlers/users/user.py:1055
 msgid "POSIX (Linux/UNIX)"
 msgstr "POSIX (Linux/UNIX)"
 
-#: modules/univention/admin/handlers/users/user.py:1054
+#: modules/univention/admin/handlers/users/user.py:1055
 msgid "POSIX (Linux/UNIX) account settings"
 msgstr "POSIX (Linux/UNIX) Kontoeinstellungen"
 
@@ -490,7 +491,7 @@ msgstr "Postleitzahl"
 msgid "Primary e-mail address"
 msgstr "Primäre E-Mail-Adresse"
 
-#: modules/univention/admin/handlers/users/user.py:2244
+#: modules/univention/admin/handlers/users/user.py:2245
 msgid ""
 "Primary e-mail address must be set, if a copy of forwarded messages should "
 "be stored in its mailbox."
@@ -498,7 +499,7 @@ msgstr ""
 "Die primäre E-Mail-Adresse muss gesetzt sein, wenn eine Kopie der "
 "weitergeleiteten Nachrichten in ihrem Postfach gespeichert werden soll."
 
-#: modules/univention/admin/handlers/users/user.py:2242
+#: modules/univention/admin/handlers/users/user.py:2243
 msgid ""
 "Primary e-mail address must be set, if messages should be forwarded for it."
 msgstr ""
@@ -510,7 +511,7 @@ msgstr ""
 msgid "Primary group"
 msgstr "Primäre Gruppe"
 
-#: modules/univention/admin/handlers/users/user.py:1077
+#: modules/univention/admin/handlers/users/user.py:1078
 msgid "Private"
 msgstr "Privat"
 
@@ -594,7 +595,7 @@ msgstr "Spezifiziert das Datum, an dem das Passwort gesperrt wurde."
 msgid "Street"
 msgstr "Straße"
 
-#: modules/univention/admin/handlers/users/user.py:1093
+#: modules/univention/admin/handlers/users/user.py:1094
 msgid "Subject"
 msgstr "Inhaber"
 
@@ -662,7 +663,7 @@ msgstr ""
 "Heimatverzeichnis des Benutzers liegt, z.B. M:. Muss nur angegeben werden, "
 "wenn es sich von der Samba-Konfiguration unterscheidet."
 
-#: modules/univention/admin/handlers/users/user.py:2039
+#: modules/univention/admin/handlers/users/user.py:2040
 #, python-format
 msgid "The password is too short, at least %d characters needed!"
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
@@ -700,8 +701,8 @@ msgstr ""
 msgid "Title"
 msgstr "Anrede"
 
-#: modules/univention/admin/handlers/users/user.py:1084
 #: modules/univention/admin/handlers/users/user.py:1085
+#: modules/univention/admin/handlers/users/user.py:1086
 msgid "UMC preferences"
 msgstr "UMC-Einstellungen"
 
@@ -756,7 +757,7 @@ msgstr "Gültig ab"
 msgid "Valid until"
 msgstr "Gültig bis"
 
-#: modules/univention/admin/handlers/users/user.py:1105
+#: modules/univention/admin/handlers/users/user.py:1106
 msgid "Validity"
 msgstr "Gültigkeit"
 
@@ -764,11 +765,11 @@ msgstr "Gültigkeit"
 msgid "Version"
 msgstr "Version"
 
-#: modules/univention/admin/handlers/users/user.py:1046
+#: modules/univention/admin/handlers/users/user.py:1047
 msgid "Windows"
 msgstr "Windows"
 
-#: modules/univention/admin/handlers/users/user.py:1046
+#: modules/univention/admin/handlers/users/user.py:1047
 msgid "Windows account settings"
 msgstr "Windows-Kontoeinstellungen"
 
@@ -790,6 +791,9 @@ msgstr "Profilverzeichnis"
 
 #~ msgid "Enter date as day.month.year."
 #~ msgstr "Datum als Tag.Monat.Jahr eingeben."
+
+#~ msgid "General settings"
+#~ msgstr "Allgemeine Einstellungen"
 
 #~ msgid "Kerberos principal"
 #~ msgstr "Kerberos Prinzipal"

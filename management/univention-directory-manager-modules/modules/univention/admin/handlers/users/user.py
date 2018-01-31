@@ -1011,8 +1011,8 @@ layout = [
 			['title', 'firstname', 'lastname'],
 			['username', 'description'],
 			'password',
-			['pwdChangeNextLogin'],
 			['overridePWHistory', 'overridePWLength'],
+			'mailPrimaryAddress',
 		]),
 		Group(_('Personal information'), layout=[
 			'displayName',
@@ -1039,6 +1039,7 @@ layout = [
 			['userexpiry'],
 		]),
 		Group(_('Locked login'), layout=[
+			['pwdChangeNextLogin'],
 			['locked'],
 			['passwordexpiry'],
 			['unlockTime'],
@@ -1057,10 +1058,10 @@ layout = [
 			['homeShare', 'homeSharePath'],
 		]),
 	]),
-	Tab(_('Mail'), _('Mail preferences'), layout=[
-		Group(_('General settings'), layout=[
-			['mailPrimaryAddress', 'mailHomeServer'],
+	Tab(_('Mail'), _('Mail preferences'), advanced=True, layout=[
+		Group(_('Advanced settings'), layout=[
 			'mailAlternativeAddress',
+			'mailHomeServer',
 		], ),
 		Group(_('Mail forwarding'), layout=[
 			'mailForwardCopyToSelf',
