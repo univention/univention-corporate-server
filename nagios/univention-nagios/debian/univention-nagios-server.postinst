@@ -67,6 +67,7 @@ fi
 # nagios3 -> nagios update (UCS 4.3-0)
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.1-0; then
 	if [ -e /var/univention-join/joined ]; then
+		service nagios stop || true
 		test -e /var/cache/nagios3/objects.cache && mv /var/cache/nagios3/objects.cache /var/cache/nagios/objects.cache
 		test -e /var/cache/nagios3/status.dat && mv /var/cache/nagios3/status.dat /var/cache/nagios/status.dat
 		test -e /var/log/nagios3/nagios.log && mv /var/log/nagios3/nagios.log /var/log/nagios/nagios.log
