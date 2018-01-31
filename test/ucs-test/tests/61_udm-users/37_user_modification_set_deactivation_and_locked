@@ -38,7 +38,10 @@ def fail(msg):
 def modify_and_check(udm, dn, disabled_state, locked_state):
 	print('*** disabled_state={!r} locked_state={!r}'.format(disabled_state, locked_state))
 	if dn:
-		udm.modify_object('users/user', dn=dn, disabled=disabled_state, unlock='0' if locked_state == '1' else '1')
+		locked = {}
+		if locked_state == '0':
+			locked['locked'] = '0'
+		udm.modify_object('users/user', dn=dn, disabled=disabled_state, **locked)
 		if locked_state == '1':
 			subprocess.call('python -m univention.lib.account lock --dn "%s" --lock-time "$(date --utc "%s")' % (dn, '+%Y%m%d%H%M%SZ'), shell=True)
 	else:

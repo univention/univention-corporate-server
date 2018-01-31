@@ -92,7 +92,7 @@ if [ "$locked_state" != '1' ]; then
 fi
 
 
-udm-test users/user modify --dn "$test_userdn" --set unlock=1
+udm-test users/user modify --dn "$test_userdn" --set locked=0
 
 wait_for_replication_and_postrun
 

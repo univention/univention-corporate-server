@@ -395,7 +395,7 @@ class TestUsers(object):
 		user = udm.create_user()[0]
 		subprocess.call('python -m univention.lib.account lock --dn "%s" --lock-time "$(date --utc "%s")' % (user, '+%Y%m%d%H%M%SZ'), shell=True)
 		lo.modify(user, [('sambaBadPasswordCount', '', '20')])
-		udm.modify_object('users/user', dn=user, unlock='1')
+		udm.modify_object('users/user', dn=user, locked='0')
 		udm.verify_ldap_object(user, {'sambaBadPasswordCount': ['0']})
 
 	@pytest.mark.xfail(reason='Not migrated since Bug #39817')
