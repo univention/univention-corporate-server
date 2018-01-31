@@ -1,3 +1,9 @@
+univention-apache (10.0.2-0) unstable; urgency=medium
+
+  * Bug #45857: disable mpm_event
+
+ -- Felix Botner <botner@univention.de>  Wed, 31 Jan 2018 13:20:29 +0100
+
 univention-apache (10.0.1-0) unstable; urgency=medium
 
   * Bug #46121: remove template
