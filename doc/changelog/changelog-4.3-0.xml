@@ -278,6 +278,13 @@
 			<title>Nagios</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Nagios has been updated to version 4.3.4 (<u:bug>45942</u:bug>).
+					In this new version the default config directory has changed from <filename>/etc/nagios3</filename> to
+					<filename>/etc/nagios</filename>. Also the cache and log directories have been renamed to
+					<filename>/var/cache/nagios</filename> and <filename>/var/log/nagios</filename>. During the update
+					all files from <filename>/etc/nagios3/conf.local.d</filename> and <filename>/etc/nagios3/conf.univention.d</filename>
+					and the log and cache files are moved to the new directories to ensure a smooth transition. Nevertheless the
+					nagios config should be manually checked after the update (<command>nagios -v /etc/nagios/nagios.cfg</command>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
