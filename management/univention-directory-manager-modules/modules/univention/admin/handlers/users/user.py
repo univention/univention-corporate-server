@@ -1022,8 +1022,8 @@ layout = [
 			['title', 'firstname', 'lastname'],
 			['username', 'description'],
 			'password',
-			['pwdChangeNextLogin', 'overridePWHistory', 'overridePWLength'],
-			'mailPrimaryAddress',
+			['pwdChangeNextLogin'],
+			['overridePWHistory', 'overridePWLength'],
 		]),
 		Group(_('Personal information'), layout=[
 			'displayName',
@@ -1068,6 +1068,16 @@ layout = [
 			['homeShare', 'homeSharePath'],
 		]),
 	]),
+	Tab(_('Mail'), _('Mail preferences'), layout=[
+		Group(_('General settings'), layout=[
+			['mailPrimaryAddress', 'mailHomeServer'],
+			'mailAlternativeAddress',
+		], ),
+		Group(_('Mail forwarding'), layout=[
+			'mailForwardCopyToSelf',
+			'mailForwardAddress',
+		], ),
+	]),
 	Tab(_('Contact'), _('Contact information'), layout=[
 		Group(_('Business'), layout=[
 			'e-mail',
@@ -1081,16 +1091,6 @@ layout = [
 			'pagerTelephoneNumber',
 			'homePostalAddress'
 		]),
-	]),
-	Tab(_('Mail'), _('Mail preferences'), advanced=True, layout=[
-		Group(_('Advanced settings'), layout=[
-			'mailAlternativeAddress',
-			'mailHomeServer',
-		], ),
-		Group(_('Mail forwarding'), layout=[
-			'mailForwardCopyToSelf',
-			'mailForwardAddress',
-		], ),
 	]),
 	Tab(_('UMC preferences'), _('UMC preferences'), advanced=True, layout=[
 		Group(_('UMC preferences'), layout=[
