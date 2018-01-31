@@ -140,6 +140,9 @@
 					In certain situations after locking and unlocking a user object the password was accidently modified to one of <package>password</package>, <package>********</package>, <package>{KINIT}</package> or <package>{SASL}</package>.
 					This problem has been corrected (<u:bug>45877</u:bug>, <u:bug>45879</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The robustness of the <package>LDAP directory</package> module has been improved: Corrupt objects will simply be ignored in the listing (<u:bug>46193</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
