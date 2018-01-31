@@ -42,6 +42,7 @@ import heimdal
 import univention.admin.uldap
 import univention.admin.allocators
 import univention.admin.uexceptions
+import univention.admin.password
 from univention.lib.s4 import rids_for_well_known_security_identifiers
 from univention.config_registry import ConfigRegistry
 
@@ -162,7 +163,7 @@ class Migration(object):
 				password_set_date = time.strptime(user['krb5PasswordEnd'][0], "%Y%m%d000000Z")
 			elif user.get('sambaPwdLastSet', [None]):
 				try:
-					password_set_date = time.gmtime(user['sambaPwdLastSet'][0])
+					password_set_date = time.gmtime(int(user['sambaPwdLastSet'][0]))
 				except ValueError:
 					pass
 			if not password_set_date and user.get('shadowLastChange', [None])[0]:
