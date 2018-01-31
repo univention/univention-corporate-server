@@ -1,3 +1,9 @@
+univention-management-console-module-udm (8.0.4-1) unstable; urgency=medium
+
+  * Bug #39817: introduce LockedCheckbox
+
+ -- Florian Best <best@univention.de>  Wed, 31 Jan 2018 12:21:59 +0100
+
 univention-management-console-module-udm (8.0.3-1) unstable; urgency=medium
 
   * Bug #46193: make list_users() more robust if there are broken objects.
