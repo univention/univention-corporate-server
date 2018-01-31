@@ -1583,20 +1583,22 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'user: could not find primaryGroup, setting primaryGroup to %s' % primaryGroup)
 
-					self['primaryGroup'] = primaryGroup
+					if not primaryGroup:
+						raise univention.admin.uexceptions.primaryGroup(self.dn)
+					self.info['primaryGroup'] = primaryGroup
 					self.__primary_group()
 			else:
-				self['primaryGroup'] = None
+				self.info['primaryGroup'] = None
 				self.save()
-				raise univention.admin.uexceptions.primaryGroup()
+				raise univention.admin.uexceptions.primaryGroup(self.dn)
 		else:
 			primary_group_from_template = self['primaryGroup']
 			if not primary_group_from_template:
 				searchResult = self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
 				if not searchResult or not searchResult[0][1]:
-					self['primaryGroup'] = None
+					self.info['primaryGroup'] = None
 					self.save()
-					raise univention.admin.uexceptions.primaryGroup
+					raise univention.admin.uexceptions.primaryGroup(self.dn)
 
 				for tmp, number in searchResult:
 					primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(cn=%s))', (univention.admin.uldap.explodeDn(number['univentionDefaultGroup'][0], 1)[0],)), base=self.position.getDomain(), scope='domain')

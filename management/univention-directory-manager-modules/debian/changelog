@@ -1,3 +1,10 @@
+univention-directory-manager-modules (13.0.15-1) unstable; urgency=medium
+
+  * Bug #46193: raise correct exception (primaryGroup) instead of
+  	valueMayNotChange in open()
+
+ -- Florian Best <best@univention.de>  Wed, 31 Jan 2018 11:37:27 +0100
+
 univention-directory-manager-modules (13.0.14-1) unstable; urgency=medium
 
   * Bug #45877: fix error in migrations script.
