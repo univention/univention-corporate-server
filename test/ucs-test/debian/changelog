@@ -1,3 +1,9 @@
+ucs-test (8.0.26-1) unstable; urgency=medium
+
+  * Bug #39817: add verbosity to test case
+
+ -- Florian Best <best@univention.de>  Wed, 31 Jan 2018 21:11:37 +0100
+
 ucs-test (8.0.25-1) unstable; urgency=medium
 
   * Bug #39817: revert unlock=1 to locked=0

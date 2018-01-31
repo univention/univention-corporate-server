@@ -91,12 +91,24 @@ if [ "$locked_state" != '1' ]; then
 	echo "DEBUG: result: $locked_state"
 fi
 
+remove_ldif () {
+	rm ldif.1 ldif.2
+}
+undo remove_ldif
 
+univention-ldapsearch -LLLb "$test_userdn" | ldapsearch-wrapper > ldif.1
 udm-test users/user modify --dn "$test_userdn" --set locked=0
+univention-ldapsearch -LLLb "$test_userdn" | ldapsearch-wrapper > ldif.2
 
 wait_for_replication_and_postrun
 
 if ! ldapsearch -xLLL -D "$test_userdn" -w univention "uid=$test_username" dn >/dev/null; then
+	echo 'diff'
+	ldiff ldif.1 ldif.2
+	echo 'object'
+	cat ldif.2
+	python -c "import crypt, univention.uldap; lo = univention.uldap.getMachineConnection(); password = lo.getAttr('${test_userdn}', 'userPassword')[0].replace('{crypt}', ''); print 'Password valid?:', crypt.crypt('univention', password.rsplit('\$', 1)[0]) == password"
+
 	fail_test 1 "Authentication failure after unlock"
 fi
 
