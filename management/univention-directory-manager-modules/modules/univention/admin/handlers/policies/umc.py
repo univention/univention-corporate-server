@@ -60,7 +60,7 @@ module = 'policies/umc'
 operations = ('add', 'edit', 'remove', 'search')
 
 policy_oc = 'umcPolicy'
-policy_apply_to = ['users/user', 'groups/group']
+policy_apply_to = ['users/user', 'users/ldap', 'groups/group']
 policy_position_dn_prefix = 'cn=UMC'
 
 childs = 0
