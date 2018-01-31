@@ -27,3 +27,6 @@ cve:
 - CVE-2017-5715
 - CVE-2017-17741
 - CVE-2017-1000410
+ignore:
+  - release+scope.consistent
+  - version.scope
