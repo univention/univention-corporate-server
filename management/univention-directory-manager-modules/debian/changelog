@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.13-1) unstable; urgency=medium
+
+  * Bug #39817: set sambaAcctFlags=L again
+
+ -- Florian Best <best@univention.de>  Wed, 31 Jan 2018 09:23:03 +0100
+
 univention-directory-manager-modules (13.0.12-1) unstable; urgency=medium
 
   * Bug #39817: fix fuzzy

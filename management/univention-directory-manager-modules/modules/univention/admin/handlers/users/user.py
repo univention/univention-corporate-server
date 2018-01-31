@@ -1663,7 +1663,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			try:
 				locked_time = int(locked_time)
 				lockout_duration = int(self.lo.search(filter='objectClass=sambaDomain', attr=['sambaLockoutDuration'])[0][1]['sambaLockoutDuration'][0])
-			except ValueError:
+			except (ValueError, KeyError, IndexError):
 				lockout_duration = 1800
 
 			self.info['unlockTime'] = str(lockout_duration + locked_time)
@@ -2331,7 +2331,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_sambaAcctFlags(self, ml):
-		if self.exists() and not self.hasChanged('disabled') and not self.hasChanged('unlock'):
+		if self.exists() and not self.hasChanged(['disabled', 'locked', 'unlock']):
 			return ml
 
 		old_flags = self.oldattr.get("sambaAcctFlags", [''])[0]
@@ -2346,6 +2346,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if self["unlock"] == '1':
 			# unlock samba account
 			acctFlags.unset("L")
+		elif self['locked'] == '1':
+			# regulary the property is not editable but some scripts overwrite it
+			acctFlags.set('L')
 
 		if str(old_flags) != str(acctFlags.decode()):
 			ml.append(('sambaAcctFlags', old_flags, acctFlags.decode()))
