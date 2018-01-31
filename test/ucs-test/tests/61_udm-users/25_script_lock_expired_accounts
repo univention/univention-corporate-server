@@ -35,7 +35,7 @@ def main():
 			expiry_time = datetime.utcnow() + timedelta(days=expiry_days_delta)
 			userdn, username = udm.create_user(userexpiry=expiry_time.strftime("%Y-%m-%d"), check_for_drs_replication=False)
 			if locked_status == '1':
-				subprocess.call('python -m univention.lib.account lock --dn "%s" --lock-time "$(date --utc "+%Y%m%d%H%M%SZ")' % (userdn,), shell=True)
+				subprocess.call('python -m univention.lib.account lock --dn "%s" --lock-time "$(date --utc "%s")' % (userdn, '+%Y%m%d%H%M%SZ'), shell=True)
 			return username
 
 		userdata = {}
