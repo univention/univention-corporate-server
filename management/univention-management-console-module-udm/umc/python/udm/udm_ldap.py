@@ -35,6 +35,7 @@ import sys
 import copy
 import re
 import threading
+import traceback
 import gc
 import functools
 
@@ -1037,14 +1038,20 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
 				so_obj = so_module.get(container)
 				try:
 					yield (module, module.get(dn, so_obj, attributes=attrs))
-				except:
-					yield (module, module.get(dn, so_obj))
+				except BaseException:
+					try:
+						yield (module, module.get(dn, so_obj))
+					except (UDM_Error, udm_errors.base):
+						MODULE.error('Could not load object %r (%r) exception: %s' % (dn, module.module, traceback.format_exc()))
 				break
 		else:
 			try:
 				yield (module, module.get(dn, attributes=attrs))
-			except:
-				yield (module, module.get(dn))
+			except BaseException:
+				try:
+					yield (module, module.get(dn))
+				except (UDM_Error, udm_errors.base):
+					MODULE.error('Could not load object %r (%r) exception: %s' % (dn, module.module, traceback.format_exc()))
 
 
 def split_module_attr(value):
