@@ -30,3 +30,5 @@ cve:
 ignore:
   - release+scope.consistent
   - version.scope
+erratum: 498
+announced: 2018-01-31
