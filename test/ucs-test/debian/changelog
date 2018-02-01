@@ -1,3 +1,9 @@
+ucs-test (8.0.27-2) unstable; urgency=medium
+
+  * Bug #46211: adapt selenium test to simplified user options
+
+ -- Jannik Ahlers <ahlers@univention.de>  Thu, 01 Feb 2018 10:10:53 +0100
+
 ucs-test (8.0.27-1) unstable; urgency=medium
 
   * Bug #39817: fix some more test cases
