@@ -43,7 +43,7 @@ fi
 # Bug #45882 workaround, remove old stunnel config so that
 # the stunnel package can start the daemon
 if [ "$1" = upgrade ] && dpkg --compare-versions "$2" lt 5.0.0-3; then
-	mv /etc/stunnel/univention_saml.conf /etc/stunnel/univention_saml.conf.old
+	rm /etc/stunnel/univention_saml.conf
 fi
 
 exit 0

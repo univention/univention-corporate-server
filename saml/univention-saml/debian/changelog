@@ -1,3 +1,9 @@
+univention-saml (5.0.4-3) unstable; urgency=medium
+
+  * Bug #45882: restart stunnel4 to load new configuration
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 01 Feb 2018 15:16:15 +0100
+
 univention-saml (5.0.4-2) unstable; urgency=medium
 
   * Bug #46110: Remove dependency on php5 package php-openid
