@@ -1,3 +1,9 @@
+univention-runit (9.0.0-5) unstable; urgency=medium
+
+  * Bug #45861: Revert Init change (9.0.0-4); Cleanup
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 31 Jan 2018 18:18:57 +0100
+
 univention-runit (9.0.0-4) unstable; urgency=medium
 
   * Bug #45861: Do not stop runsv processes if runsvdir is being stopped

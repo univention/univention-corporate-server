@@ -30,13 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-if [ ! -L "/etc/service" ]
-then
-	rmdir /etc/service
-	ln -s /etc/runit/univention /etc/service
-elif [ "$(readlink /etc/service)" = "runit/runsvdir/default" ]; then
-	rm /etc/service
-	ln -s /etc/runit/univention /etc/service
+if [ ! -L "/etc/runit/runsvdir/default" ]; then
+	rmdir /etc/runit/runsvdir/default
+	ln -s /etc/runit/univention /etc/runit/runsvdir/default
 fi
 
 if grep -q '^SV:.*:respawn:/usr/sbin/runsvdir' /etc/inittab

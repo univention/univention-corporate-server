@@ -50,12 +50,12 @@ case "$1" in
 		;;
 	stop)
 		log_daemon_msg "Stopping $DESC" "$NAME"
-		start-stop-daemon --stop --quiet --oknodo --pidfile "$PIDFILE" --remove-pidfile --retry TERM/30/KILL/5 --name runsvdir
+		start-stop-daemon --stop --quiet --oknodo --pidfile "$PIDFILE" --remove-pidfile --retry HUP/30/KILL/5 --name runsvdir
 		log_end_msg $?
 		;;
 	restart|force-reload)
 		log_daemon_msg "Restarting $DESC" "$NAME"
-		start-stop-daemon --stop --quiet --oknodo --pidfile "$PIDFILE" --remove-pidfile --retry TERM/30/KILL/5 --name runsvdir
+		start-stop-daemon --stop --quiet --oknodo --pidfile "$PIDFILE" --remove-pidfile --retry HUP/30/KILL/5 --name runsvdir
 		sleep 1
 		start-stop-daemon --start --quiet --pidfile "$PIDFILE" --make-pidfile --background --exec "$DAEMON"
 		log_end_msg $?
