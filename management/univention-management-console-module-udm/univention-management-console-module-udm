@@ -158,9 +158,26 @@ def xml_rendering():
 
 class MainHandler(Ressource):
 
+	mapping = {
+		'users': 'users/user',
+		'computers': 'computers/computer',
+		'groups': 'groups/group',
+		'networks': 'networks/network',
+		'dhcp': 'dhcp/dhcp',
+		'dns': 'dns/dns',
+		'shares': 'shares/share',
+		'printers': 'shares/print',
+		'mail': 'mails/mail',
+		'nagios': 'nagios/nagios',
+		'policies': 'policies/policy',
+		'self': 'users/self',
+		'directory': 'navigation',
+	}
+
 	def get(self):
-		for main_type in ('users', 'computers', 'groups', 'networks', 'dhcp', 'dns', 'shares', 'mail', 'nagios', 'policies'):  # ldap-navigation?
+		for main_type in self.mapping:
 			self.add_header('Link', '</udm/%s/>; rel="/udm/object-modules"; title=""' % (main_type,))
+			# TODO: add license-import
 		self.write("Hello, world")
 
 
