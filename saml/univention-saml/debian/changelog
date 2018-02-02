@@ -1,3 +1,9 @@
+univention-saml (5.0.4-4) unstable; urgency=medium
+
+  * Bug #46212: Do not let dh_installinit restart the service on upgrade
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 02 Feb 2018 15:37:21 +0100
+
 univention-saml (5.0.4-3) unstable; urgency=medium
 
   * Bug #45882: restart stunnel4 to load new configuration
