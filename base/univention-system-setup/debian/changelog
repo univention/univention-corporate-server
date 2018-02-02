@@ -1,3 +1,9 @@
+univention-system-setup (11.0.2-5) unstable; urgency=medium
+
+  * Bug #45956: Added setup script to set ucr variable interfaces/primary
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 02 Feb 2018 12:00:19 +0100
+
 univention-system-setup (11.0.2-4) unstable; urgency=medium
 
   * Bug #46052: my tmp. cert files to /var/cache...

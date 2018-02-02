@@ -38,6 +38,10 @@ msgstr "Einrichten des DNS-Servers..."
 msgid "Configuring IPvX network interfaces"
 msgstr "Einrichten der IPvX-Netzwerkgeräte"
 
+#: usr/lib/univention-system-setup/scripts/30_net/11primary:42
+msgid "Setting primary network interface"
+msgstr "Setzen des primären Netzwerkgerätes"
+
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:86
 msgid "Configuring Kerberos settings..."
 msgstr "Einrichten von Kerberos-Einstellungen..."
