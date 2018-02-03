@@ -1395,7 +1395,10 @@ class simpleLdap(object):
 
 	@classmethod
 	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-		filter_str = unicode(cls.lookup_filter(filter_s, lo) or '')
+		filter_s = cls.lookup_filter(filter_s, lo)
+		if superordinate:
+			filter_s = cls.lookup_filter_superordinate(filter_s, superordinate)
+		filter_str = unicode(filter_s or '')
 		result = []
 		for dn, attrs in lo.search(filter_str, base, scope, [], unique, required, timeout, sizelimit):
 			try:
@@ -1409,6 +1412,10 @@ class simpleLdap(object):
 		filter_p = cls.unmapped_lookup_filter()
 		filter_p.append_unmapped_filter_string(filter_s, cls.rewrite_filter, univention.admin.modules.get(cls.module).mapping)
 		return filter_p
+
+	@classmethod
+	def lookup_filter_superordinate(cls, filter, superordinate):
+		return filter
 
 	@classmethod
 	def unmapped_lookup_filter(cls):
