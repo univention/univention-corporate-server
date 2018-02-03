@@ -1042,27 +1042,19 @@ class object(univention.admin.handlers.simpleLdap):
 				self.lo.modify(dn, [('sambaPrimaryGroupSID', attr.get('sambaPrimaryGroupSID', []), [newSid])])
 			self.update_sambaPrimaryGroupSid = False
 
-
-def lookup_filter(filter_s=None, lo=None):
-	lookup_filter_obj = \
-		univention.admin.filter.conjunction('&', [
+	@classmethod
+	def unmapped_lookup_filter(cls):
+		return univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('cn', '*'),
 			univention.admin.filter.conjunction('|', [
 				univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'univentionGroup'), ]),
 				univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'sambaGroupMapping'), ])
 			])
 		])
-	lookup_filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
-	return lookup_filter_obj
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-
-	filter = lookup_filter(filter_s)
-	res = []
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn, attributes=attrs))
-	return res
+lookup = object.lookup
+lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=0):
