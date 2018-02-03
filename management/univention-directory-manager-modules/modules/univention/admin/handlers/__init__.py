@@ -46,6 +46,7 @@ import types
 import re
 import time
 import sys
+import inspect
 import traceback
 
 import ipaddr
@@ -1599,7 +1600,18 @@ class simpleLdap(object):
 
 	@classmethod
 	def rewrite_filter(cls, filter, mapping):
+		property_ = univention.admin.modules.get(cls.module).property_descriptions.get(filter.variable)
+		if property_ and not isinstance(filter.value, (list, tuple)):
+			if property_.multivalue:
+				# special case: mutlivalue properties need to be a list when map()-ing
+				filter.value = [filter.value]
+			if issubclass(property_.syntax if inspect.isclass(property_.syntax) else type(property_.syntax), univention.admin.syntax.complex):
+				# special case: complex syntax properties need to be a list (of lists, if multivalue)
+				filter.value = [filter.value]
 		univention.admin.mapping.mapRewrite(filter, mapping)
+		if isinstance(filter.value, (list, tuple)) and filter.value:
+			# complex syntax
+			filter.value = filter.value[0]
 
 	@classmethod
 	def _ldap_attributes(cls):
