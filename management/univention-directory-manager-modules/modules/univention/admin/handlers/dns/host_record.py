@@ -54,7 +54,7 @@ options = {
 		default=True,
 		objectClasses=['top', 'dNSZone'],
 	),
-	}
+}
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Hostname'),
@@ -217,35 +217,30 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_post_remove(self):
 		self._updateZone()
 
+	@classmethod
+	def unmapped_lookup_filter(cls):
+		return univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', 'dNSZone'),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa')]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.ip6.arpa')]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('cNAMERecord', '*')]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sRVRecord', '*')]),
+			univention.admin.filter.conjunction('|', [
+				univention.admin.filter.expression('aRecord', '*'),
+				univention.admin.filter.expression('aAAARecord', '*'),
+				univention.admin.filter.expression('mXRecord', '*'),
+				univention.admin.filter.expression('univentionObjectType', module, escape=True),  # host record without any record
+			]),
+		])
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=False, required=False, timeout=-1, sizelimit=0):
-	filter = univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'dNSZone'),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.ip6.arpa')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('cNAMERecord', '*')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sRVRecord', '*')]),
-		univention.admin.filter.conjunction('|', [
-			univention.admin.filter.expression('aRecord', '*'),
-			univention.admin.filter.expression('aAAARecord', '*'),
-			univention.admin.filter.expression('mXRecord', '*'),
-			univention.admin.filter.expression('univentionObjectType', module, escape=True),  # host record without any record
-		]),
-	])
-
-	if superordinate:
+	@classmethod
+	def lookup_filter_superordinate(cls, filter, superordinate):
 		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone']), escape=True))
+		return filter
 
-	if filter_s:
-		filter_p = univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
 
-	res = []
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
-	return res
+lookup = object.lookup
 
 
 def identify(dn, attr, canonical=0):
