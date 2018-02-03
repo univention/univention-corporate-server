@@ -224,7 +224,7 @@ class object(DHCPBase):
 			filter.value = '%s %s' % (filter.value.strip('*'), values[filter.variable])
 			filter.variable = 'dhcpPermitList'
 		else:
-			univention.admin.mapping.mapRewrite(filter, mapping)
+			super(object, cls).rewrite_filter(filter, mapping)
 
 
 def identify(dn, attr):
