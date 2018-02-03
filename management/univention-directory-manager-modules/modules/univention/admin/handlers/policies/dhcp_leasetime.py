@@ -153,18 +153,14 @@ class object(univention.admin.handlers.simplePolicy):
 			if not ((key == 'lease_time_min' or key == 'lease_time_max' or key == 'lease_time_default') and value[0] == ''):
 				univention.admin.handlers.simplePolicy.__setitem__(self, key, value)
 
+	@classmethod
+	def unmapped_lookup_filter(cls):
+		return univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', 'univentionPolicyDhcpLeaseTime'),
+		])
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	filter = univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'univentionPolicyDhcpLeaseTime'),
-	])
 
-	if filter_s:
-		filter_p = univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
-	return object.lookup(co, lo, filter, base, superordinate, scope, unique, required, timeout, sizelimit)
+lookup = object.lookup
 
 
 def identify(dn, attr, canonical=0):

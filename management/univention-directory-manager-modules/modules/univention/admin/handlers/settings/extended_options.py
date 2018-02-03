@@ -223,19 +223,14 @@ class object(univention.admin.handlers.simpleLdap):
 
 		return ml
 
+	@classmethod
+	def unmapped_lookup_filter(cls):
+		return univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', 'univentionUDMOption')
+		])
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	filter = univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'univentionUDMOption')
-	])
 
-	if filter_s:
-		filter_p = univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
-	res = [object(co, lo, None, dn, attributes=attrs) for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit)]
-	return res
+lookup = object.lookup
 
 
 def identify(dn, attr, canonical=False):

@@ -53,7 +53,7 @@ class cscPolicy(univention.admin.syntax.select):
 module = 'shares/share'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 
-syntax_filter = univention.admin.filter.conjunction('&', [
+syntax_return univention.admin.filter.conjunction('&', [
 	univention.admin.filter.expression('objectClass', 'univentionShare'),
 	univention.admin.filter.expression('cn', '*'),
 	univention.admin.filter.expression('writeable', '1'),
@@ -884,23 +884,16 @@ class object(univention.admin.handlers.simpleLdap):
 				'samba': options['samba'].short_description,
 				'nfs': options['nfs'].short_description})
 
-
-def lookup_filter(filter_s=None, lo=None):
-	lookup_filter_obj = \
-		univention.admin.filter.conjunction('&', [
+	@classmethod
+	def unmapped_lookup_filter(cls):
+		return univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'univentionShare'),
 			univention.admin.filter.expression('cn', '*'),
 		])
-	lookup_filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
-	return lookup_filter_obj
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	filter = lookup_filter(filter_s)
-	res = []
-	for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn))
-	return res
+lookup = object.lookup
+lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=0):
