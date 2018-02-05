@@ -275,12 +275,6 @@
 		</para>
 		<para>
 			Bei einem Domänenbeitritt gegen einen Domänencontroller auf Basis von
-			Samba 3 muss sichergestellt werden, dass der NetBIOS-Name der Domäne auflösbar
-			ist. Dazu ist unter Umständen ein WINS-Server zu konfigurieren (siehe
-			<biblioref linkend="ext-doc-windows-nt"/>).
-		</para>
-		<para>
-			Bei einem Domänenbeitritt gegen einen Domänencontroller auf Basis von
 			Samba 4 muss die DNS-Konfiguration des Clients so eingerichtet sein, dass
 			DNS-Einträge aus der DNS-Zone der UCS-Domäne aufgelöst werden können. Außerdem
 			muss die Zeit auf dem Client-System mit der Zeit auf dem Domänencontroller
@@ -291,14 +285,6 @@
 			<title>Windows 8</title>
 			<para>
 			  Der Domänenbeitritt ist nur mit der Pro und Enterprise-Edition von Windows 8 möglich.
-			</para>
-			<para>
-			  Tritt der Client einer Domäne auf Basis von Samba 3 bei, müssen vor dem
-			  Domänenbeitritt einige Einstellungen in der Windows-Registry vorgenommen
-			  werden. Eine entsprechende REG-Datei kann unter
-			  <u:sdb>1102</u:sdb> heruntergeladen werden. Anschließend
-			  muss das System neu gestartet werden. Dieser Schritt ist unter Samba 4 nicht
-			  nötig.
 			</para>
 			<para>
 			  Die Systemsteuerung kann erreicht werden, indem der Mauszeiger in die rechte untere
@@ -327,14 +313,6 @@
 				Ultimate-Edition von Windows 7 möglich.
 			</para>
 			<para>
-				Tritt der Client einer Domäne auf Basis von Samba 3 bei, müssen vor dem
-				Domänenbeitritt einige Einstellungen in der Windows-Registry vorgenommen
-				werden. Eine entsprechende REG-Datei kann unter
-				<u:sdb>1102</u:sdb> heruntergeladen werden. Anschließend
-				muss das System neu gestartet werden. Dieser Schritt ist unter Samba 4 nicht
-				nötig.
-			</para>
-			<para>
 				Über <guimenu>Start &ar; Systemsteuerung &ar; System und Sicherheit &ar;
 				Computernamen anzeigen</guimenu> kann der Basiskonfigurationsdialog erreicht
 				werden. Unter <guimenu>Einstellungen für Computernamen, Domäne und
@@ -356,14 +334,6 @@
 
 		<section id="domain-ldap:win2012">
 		  <title>Windows Server 2012</title>
-		  <para>
-			Tritt der Server einer Domäne auf Basis von Samba 3 bei, müssen vor dem Domänenbeitritt
-			einige Einstellungen in der Windows-Registry vorgenommen werden. Eine entsprechende
-			REG-Datei kann unter <u:sdb>1102</u:sdb> heruntergeladen
-			werden. Anschließend muss das System neu gestartet werden. Dieser Schritt ist unter
-			Samba 4 nicht nötig.
-		  </para>
-
 		  <para>
 			Die Systemsteuerung kann erreicht werden, indem der Mauszeiger in die rechte untere
 			Bildschirmecke bewegt wird. Anschließend kann unter <guimenu>Suchen &ar; Apps</guimenu>

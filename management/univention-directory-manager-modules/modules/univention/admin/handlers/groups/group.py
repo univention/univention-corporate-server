@@ -109,7 +109,7 @@ property_descriptions = {
 		options=['samba']
 	),
 	'sambaGroupType': univention.admin.property(
-		short_description=_('NT group type'),
+		short_description=_('Windows group type'),
 		long_description='',
 		syntax=univention.admin.syntax.sambaGroupType,
 		multivalue=False,

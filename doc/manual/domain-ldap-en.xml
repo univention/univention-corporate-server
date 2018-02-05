@@ -267,12 +267,6 @@
 	  </para>
 
 	  <para>
-		For a domain join against a domain controller based on Samba 3, it must be ensured that the
-		NetBIOS name of the domain can be resolved. It may prove necessary to configure a WINS
-		server for this (see <biblioref linkend="ext-doc-windows-nt"/>).
-	  </para>
-
-	  <para>
 		For a domain join against a domain controller based on Samba 4, the DNS configuration of the
 		client must be set up in such a way that DNS entries from the DNS zone of the UCS domain can
 		also be resolved. In addition, the time on the client system must also be synchronized with
@@ -284,12 +278,6 @@
 			<para>
 			  The joining of domains is only possible with the Pro and Enterprise editions of
 			  Windows 8.
-			</para>
-			<para>
-			  When using Windows 8 to a domain based on Samba 3, certain settings must be
-			  made in the Windows registry before joining the domain. A corresponding REG
-			  file can be downloaded from <u:sdb>1102</u:sdb>. The
-			  system must then be restarted. This step is not necessary with Samba 4.
 			</para>
 			<para>
 			  The control panel can be reached by moving the cursor to the bottom right-hand corner
@@ -316,12 +304,6 @@
 				Ultimate editions of Windows 7.
 			</para>
 			<para>
-				When using Windows 7 to a domain based on Samba 3, certain settings must be
-				made in the Windows registry before joining the domain. A corresponding REG
-				file can be downloaded from <u:sdb>1102</u:sdb>. The
-				system must then be restarted. This step is not necessary with Samba 4.
-			</para>
-			<para>
 				The basic configuration dialogue is found under <guimenu>Start &ar; Control Panel
 				&ar; System and Security &ar; See the name of this computer</guimenu>.
 				<guimenu>Change settings</guimenu> must be selected and
@@ -342,12 +324,6 @@
 
 		<section id="domain-ldap:win2012">
 		  <title>Windows Server 2012</title>
-
-		  <para>
-			When using Windows 8 to a domain based on Samba 3, certain settings must be made in the
-			Windows registry before joining the domain. A corresponding REG file can be downloaded
-			from <u:sdb>1102</u:sdb>. The system must then be restarted. This step is not necessary with Samba 4.
-		  </para>
 
 		  <para>
 			The control panel can be reached by moving the cursor to the bottom right-hand corner of
