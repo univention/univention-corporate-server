@@ -1,3 +1,9 @@
+ucs-test (8.0.27-3) unstable; urgency=low
+
+  * Bug #46002: Do not strip non-determinism
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 05 Feb 2018 15:29:35 +0100
+
 ucs-test (8.0.27-2) unstable; urgency=medium
 
   * Bug #46211: adapt selenium test to simplified user options
