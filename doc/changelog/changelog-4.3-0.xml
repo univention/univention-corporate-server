@@ -100,7 +100,7 @@
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
-					In certain situtations after reloading the browser window the error message "There are no modules available for the currently authenticated user" was incorrectly displayed.
+					In certain situations after reloading the browser window the error message "There are no modules available for the currently authenticated user" was incorrectly displayed.
 					The behavior has been repaired (<u:bug>44068</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -121,7 +121,7 @@
 					The UDM options <package>posix</package>, <package>samba></package> and <package>kerberos</package> of users have been removed.
 					User objects now must have all object classes of these options.
 					After the upgrade to UCS 4.3 all existing user objects, groups and user templates are migrated into the new LDAP format.
-					It is necessary that the primary group of every user has the <package>samba</package> option enabled and the domain must have a kerberos realm defined.
+					It is necessary that the primary group of every user has the <package>samba</package> option enabled and the domain must have a Kerberos realm defined.
 					A new UDM object type <package>users/ldap</package> has been added which can be used as a simple authentication account.
 					Objects of <package>users/ldap</package> may authenticate via an LDAP bind and are not counted into the license.
 					The UDM option <package>ldap_pwd</package> has been removed from user objects.
@@ -134,10 +134,10 @@
 					The values for the syntax class <package>Country</package> have been updated <u:bug>45926</u:bug>.
 				</simpara></listitem>
 				<listitem><simpara>
-					The syntax class <package>Base64Bzip2XML</package> has been adjusted to allow text/xml input data (<u:bug>45941</u:bug>).
+					The syntax class <package>Base64Bzip2XML</package> has been adjusted to allow <code> >text/xml</code>> input data (<u:bug>45941</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					In certain situations after locking and unlocking a user object the password was accidently modified to one of <package>password</package>, <package>********</package>, <package>{KINIT}</package> or <package>{SASL}</package>.
+					In certain situations after locking and unlocking a user object the password was accidentally modified to one of <package>password</package>, <package>********</package>, <package>{KINIT}</package> or <package>{SASL}</package>.
 					This problem has been corrected (<u:bug>45877</u:bug>, <u:bug>45879</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -279,12 +279,12 @@
 			<itemizedlist>
 				<listitem><simpara>
 					Nagios has been updated to version 4.3.4 (<u:bug>45942</u:bug>).
-					In this new version the default config directory has changed from <filename>/etc/nagios3</filename> to
-					<filename>/etc/nagios</filename>. Also the cache and log directories have been renamed to
-					<filename>/var/cache/nagios</filename> and <filename>/var/log/nagios</filename>. During the update
-					all files from <filename>/etc/nagios3/conf.local.d</filename> and <filename>/etc/nagios3/conf.univention.d</filename>
+					In this new version the default configuration directory has changed from <filename class="directory">/etc/nagios3/</filename> to
+					<filename class="directory">/etc/nagios/</filename>. Also the cache and log directories have been renamed to
+					<filename class="directory">/var/cache/nagios/</filename> and <filename class="directory">/var/log/nagios/</filename>. During the update
+					all files from <filename class="directory">/etc/nagios3/conf.local.d/</filename> and <filename class="directory">/etc/nagios3/conf.univention.d/</filename>
 					and the log and cache files are moved to the new directories to ensure a smooth transition. Nevertheless the
-					nagios config should be manually checked after the update (<command>nagios -v /etc/nagios/nagios.cfg</command>).
+					Nagios configuration should be manually checked after the update (<command>nagios -v /etc/nagios/nagios.cfg</command>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -305,7 +305,7 @@
 					The <package>php</package> dependencies have been removed from the <package>univention-apache</package> package.
 					Also the &ucsUCRV;s <envar>php/memory/limit</envar>, <envar>php/limit/postsize</envar>, <envar>php/limit/filesize</envar>,
 					<envar>php/limit/inputtime</envar>, <envar>php/memory/executiontime</envar> and <envar>php/limit/sockettimeout</envar>
-					to configure the <filename>php.ini</filename> have been removed. To configure php settings
+					to configure the <filename>php.ini</filename> have been removed. To configure PHP settings
 					<filename>/etc/php/7.0/apache2/php.ini</filename> or <filename>/etc/php5/apache2/php.ini</filename>
 					can be modified manually (<u:bug>46121</u:bug>).
 				</simpara></listitem>
