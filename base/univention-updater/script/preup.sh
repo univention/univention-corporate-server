@@ -415,18 +415,6 @@ check_overwritten_umc_templates () {
 }
 check_overwritten_umc_templates
 
-# Bug 44281, block update for univention App appliances until appliance
-# package has been updated...
-check_app_appliance () {
-	if dpkg -l univention-app-appliance >/dev/null 2>&1
-	then
-		echo "ERROR: The UCS 4.2 update is not yet available for UCS app appliances."
-		echo "       Please try to update your system to UCS 4.2 at a later point."
-		exit 1
-	fi
-}
-check_app_appliance
-
 # ensure that en_US is included in list of available locales (Bug #44150)
 available_locales="$(/usr/sbin/univention-config-registry get locale)"
 case "$available_locales" in
