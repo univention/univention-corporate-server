@@ -1,6 +1,7 @@
 univention-directory-manager-modules (13.0.20-1) UNRELEASED; urgency=medium
 
   * Bug #46118: Remove references to "NT" DCs
+  * Remove support for Windows Terminal Server settings
 
  -- Arvid Requate <requate@univention.de>  Mon, 05 Feb 2018 17:38:43 +0100
 

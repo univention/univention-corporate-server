@@ -3167,51 +3167,6 @@ class optionsUsersUser(select):
 	]
 
 
-class CTX_BrokenTimedoutSession(select):
-
-	'''The keys of the choices are the hexdecimal values that represent
-	the options value within the munged dial flags'''
-	choices = (
-		('0000', _('Disconnect')),
-		('0400', _('Reset')),
-	)
-
-
-class CTX_ReconnectSession(select):
-
-	'''The keys of the choices are the hexdecimal values that represent
-	the options value within the munged dial flags'''
-	choices = (
-		('0000', _('All Clients')),
-		('0200', _('Previously used Client')),
-	)
-
-
-class CTX_Shadow(select):
-
-	'''The keys of the choices are the hexdecimal values that represent
-	the options value within the munged dial flags'''
-	choices = (
-		('00000000', _('Disabled')),
-		('01000000', _('Enabled: Input: on, Message: on')),
-		('02000000', _('Enabled: Input: on, Message: off')),
-		('03000000', _('Enabled: Input: off, Message: on')),
-		('04000000', _('Enabled: Input: off, Message: off')),
-	)
-
-
-class CTX_RASDialin(select):
-
-	'''The keys of the choices are the hexdecimal values that represent
-	the options value within the munged dial flags'''
-	choices = (
-		('E', _('Disabled')),
-		('w', _('Enabled: Set by Caller')),
-		('k', _('Enabled: No Call Back')),
-	)
-	#( ' ', _( 'Enabled: Preset To' ) ),
-
-
 class nagiosHostsEnabledDn(UDM_Objects):
 	udm_modules = ('computers/computer', )
 	udm_filter = '(&(!(univentionObjectFlag=docker))(objectClass=univentionNagiosHostClass)(univentionNagiosEnabled=1)(aRecord=*))'

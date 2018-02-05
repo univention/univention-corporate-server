@@ -87,10 +87,6 @@ msgstr "Benutzer und Gruppen hinzufügen"
 msgid "Address"
 msgstr "Adresse"
 
-#: modules/univention/admin/mungeddial.py:354
-msgid "Advanced"
-msgstr "Erweiterung"
-
 #: modules/univention/admin/syntax.py:2297
 msgid "Alias"
 msgstr "Alias"
@@ -103,9 +99,6 @@ msgstr "Alle"
 msgid "All Clients"
 msgstr "Von jedem Client"
 
-#: modules/univention/admin/mungeddial.py:55
-msgid "Allow Windows terminal server login"
-msgstr "Anmeldung am Terminalserver zulassen"
 
 #: modules/univention/admin/syntax.py:207
 #: modules/univention/admin/syntax.py:294
@@ -159,50 +152,6 @@ msgstr "Unter dem primären Monitor"
 msgid "Black"
 msgstr "Schwarz"
 
-#: modules/univention/admin/mungeddial.py:115
-msgid "CTX Callback"
-msgstr "CTX Callback"
-
-#: modules/univention/admin/mungeddial.py:307
-msgid "CTX Callback Number"
-msgstr "CTX Callback Number"
-
-#: modules/univention/admin/mungeddial.py:103
-msgid "CTX Flags1"
-msgstr "CTX Flags1"
-
-#: modules/univention/admin/mungeddial.py:127
-msgid "CTX Mirroring"
-msgstr "CTX Spiegelung"
-
-#: modules/univention/admin/mungeddial.py:235
-msgid "CTX NW Logon Server"
-msgstr "CTX NW Logon Server"
-
-#: modules/univention/admin/mungeddial.py:43
-msgid "CTX Present"
-msgstr "CTX Present"
-
-#: modules/univention/admin/mungeddial.py:319
-msgid "CTX RAS Dialin"
-msgstr "CTX RAS Einwahl"
-
-#: modules/univention/admin/mungeddial.py:163
-msgid "CTX maximum connection time"
-msgstr "CTX maximale Verbindungsdauer"
-
-#: modules/univention/admin/mungeddial.py:175
-msgid "CTX maximum disconnection time"
-msgstr "CTX maximale Verbindungsdauer"
-
-#: modules/univention/admin/mungeddial.py:187
-msgid "CTX maximum idle time"
-msgstr "CTX Maximale Untätigkeitsdauer"
-
-#: modules/univention/admin/mungeddial.py:211
-msgid "CTX minimal encryption level"
-msgstr "CTX minimales Verschlüssungslevel"
-
 #: modules/univention/admin/locking.py:78
 #: modules/univention/admin/locking.py:95
 #: modules/univention/admin/locking.py:116
@@ -222,25 +171,9 @@ msgstr "Zyklische Gruppen-Abhängigkeit festgestellt: "
 msgid "City"
 msgstr "Stadt"
 
-#: modules/univention/admin/mungeddial.py:342
-msgid "Client devices"
-msgstr "Client-Geräte"
-
 #: modules/univention/admin/syntax.py:1710
 msgid "Command pattern"
 msgstr "Kommandomuster"
-
-#: modules/univention/admin/mungeddial.py:67
-msgid "Connect client drives at login"
-msgstr "Client-Laufwerke beim Anmelden verbinden"
-
-#: modules/univention/admin/mungeddial.py:79
-msgid "Connect client printers at login"
-msgstr "Client-Drucker beim Anmelden verbinden"
-
-#: modules/univention/admin/mungeddial.py:347
-msgid "Connection"
-msgstr "Verbindung"
 
 #: modules/univention/admin/uexceptions.py:101
 msgid "Could not acquire lock."
@@ -320,10 +253,6 @@ msgstr "Beschreibung"
 #: modules/univention/admin/syntax.py:3471
 msgid "Destination"
 msgstr "Ziel"
-
-#: modules/univention/admin/mungeddial.py:333
-msgid "Directories"
-msgstr "Verzeichnisse"
 
 #: modules/univention/admin/syntax.py:3186
 #: modules/univention/admin/syntax.py:3199
@@ -514,14 +443,6 @@ msgstr "Gruppe"
 msgid "Hard limit (pages)"
 msgstr "Hard-Limit (Seiten)"
 
-#: modules/univention/admin/mungeddial.py:247
-msgid "Home directory for Windows terminal services"
-msgstr "Basisverzeichnis des Terminalservers"
-
-#: modules/univention/admin/mungeddial.py:259
-msgid "Home drive for Windows terminal services"
-msgstr "Laufwerksbuchstabe für das Basisverzeichnis des Terminalservers"
-
 #: modules/univention/admin/syntax.py:1725
 msgid "IMAP"
 msgstr "IMAP"
@@ -610,10 +531,6 @@ msgstr "E-Mails behalten und eine Kopie weiterleiten"
 msgid "Key"
 msgstr "Schlüssel"
 
-#: modules/univention/admin/mungeddial.py:199
-msgid "Keyboard layout"
-msgstr "Tastaturlayout"
-
 #: modules/univention/admin/uexceptions.py:57
 msgid "LDAP Error"
 msgstr "LDAP-Fehler"
@@ -676,13 +593,6 @@ msgstr "Mail Konto"
 #: modules/univention/admin/syntax.py:1520
 msgid "Mail server"
 msgstr "Mail-Server"
-
-#: modules/univention/admin/mungeddial.py:91
-msgid ""
-"Make client default printer the default printer for Windows terminal "
-"services"
-msgstr ""
-"Standard-Drucker des zugreifenden Clients als Standard-Drucker verwenden"
 
 #: modules/univention/admin/syntax.py:2966
 msgid "Manage auditing and security log"
@@ -1015,10 +925,6 @@ msgstr ""
 msgid "Priority"
 msgstr "Priorität"
 
-#: modules/univention/admin/mungeddial.py:271
-msgid "Profile directory for Windows terminal services"
-msgstr "Windows-Terminalserver Profilpfad"
-
 #: modules/univention/admin/uexceptions.py:163
 msgid "Prohibited username."
 msgstr "Verbotener Benutzername."
@@ -1035,10 +941,6 @@ msgstr "Protokoll und Ziel müssen angegeben werden."
 #: modules/univention/admin/syntax.py:1733
 msgid "Read"
 msgstr "Lesen"
-
-#: modules/univention/admin/mungeddial.py:151
-msgid "Reconnect session"
-msgstr "Wiederherstellung von beendeten Verbindungen"
 
 #: modules/univention/admin/syntax.py:1240
 msgid "Redirect all e-mails to forward addresses"
@@ -1098,11 +1000,6 @@ msgstr "Soft-Limit (Seiten)"
 msgid "Spaces are not allowed in the username!"
 msgstr "Der Benutzername darf keine Leerzeichen enthalten!"
 
-#: modules/univention/admin/mungeddial.py:295
-#: modules/univention/admin/mungeddial.py:337
-msgid "Startup command"
-msgstr "Startprogramm Befehlszeile"
-
 #: modules/univention/admin/syntax.py:1551
 msgid "Street"
 msgstr "Straße"
@@ -1118,10 +1015,6 @@ msgstr "Sonntag"
 #: modules/univention/admin/syntax.py:2967
 msgid "Take ownership of files or other objects"
 msgstr "Besitz von Dateien oder anderen Objekten übernehmen"
-
-#: modules/univention/admin/mungeddial.py:139
-msgid "Terminated or timed-out sessions"
-msgstr "Beendete oder abgelaufene Verbindungen"
 
 #: modules/univention/admin/syntax.py:3351
 msgid "Text"
@@ -1523,10 +1416,6 @@ msgstr "Universell (Typ: Verteilung)"
 msgid "Universal (Type: Security)"
 msgstr "Universell (Typ: Sicherheit)"
 
-#: modules/univention/admin/mungeddial.py:283
-msgid "Use client configuration for startup command"
-msgstr "Client-Konfiguration übernehmen für das Startprogramm"
-
 #: modules/univention/admin/syntax.py:1766
 #: modules/univention/admin/syntax.py:1774
 #: modules/univention/admin/syntax.py:3428
@@ -1705,18 +1594,6 @@ msgstr "Bekannte Gruppe"
 #: modules/univention/admin/syntax.py:3538
 msgid "White"
 msgstr "Weiß"
-
-#: modules/univention/admin/mungeddial.py:332
-msgid "Windows Terminal server settings"
-msgstr "Windows-Terminalservereinstellungen"
-
-#: modules/univention/admin/mungeddial.py:332
-msgid "Windows terminal server"
-msgstr "Windows-Terminalserver"
-
-#: modules/univention/admin/mungeddial.py:223
-msgid "Working directory for startup command"
-msgstr "Startprogramm Arbeitsverzeichnis"
 
 #: modules/univention/admin/syntax.py:1736
 msgid "Write"

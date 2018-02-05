@@ -21,8 +21,6 @@ class TestUsers(object):
 		2.
 		if self.exists():
 			self._unmap_mail_forward()
-			self.sambaMungedDialUnmap()
-			self.sambaMungedDialParse()
 
 		3.
 		self._load_groups(loadGroups)
@@ -458,9 +456,6 @@ class TestUsers(object):
 		self._test_modlist(udm, {'umcProperty': ['foo bar']}, {'univentionUMCProperty': ['foo=bar'], 'objectClass': ['univentionPerson']})
 
 	def test_modlist_home_share(self, udm):
-		pass
-
-	def test_modlist_samba_mungeddial(self, udm):
 		pass
 
 	def test_modlist_samba_sid(self, udm):
