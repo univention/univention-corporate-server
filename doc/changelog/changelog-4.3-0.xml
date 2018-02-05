@@ -442,9 +442,13 @@
 				No longer available drivers are marked as deprecated (<u:bug>45958</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The &ucsUCR; template file for <package>openssh</package> has been updated:
+				<application>OpenSSH</application> has been updated from version 6.7 to <ulink url="http://www.openssh.com/releasenotes.html#7.4p1">7.4</ulink> containing backward incompatible changes:
+				The old <systemitem class="protocol">SSH v.1 protocol</systemitem> has been removed.
+				Many <ulink url="http://www.openssh.com/legacy.html">legacy algorithms</ulink> have been disabled, as they are considered cryptographically weak nowadays.
+				The &ucsUCR; template file for <package>openssh</package> has been updated accordingly:
 				The deprecated &ucsUCRV;s <envar>sshd/Protocol</envar> and <envar>sshd/ServerKeyBits</envar> have been removed.
-				The privilege separation mode has been changed to the new default <literal>sandbox</literal> (<u:bug>46033</u:bug>).
+				The privilege separation mode has been changed to the new default <literal>sandbox</literal>.
+				All other settings have been reviewed and reset to their default value if appropriate (<u:bug>46033</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				Package dependencies have been updated in <package>univention-kde</package> (<u:bug>45943</u:bug>).
