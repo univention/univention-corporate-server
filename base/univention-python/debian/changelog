@@ -1,3 +1,9 @@
+univention-python (11.0.0-4) unstable; urgency=medium
+
+  * Bug #46066: version bump
+
+ -- Felix Botner <botner@univention.de>  Mon, 05 Feb 2018 12:53:12 +0100
+
 univention-python (11.0.0-3) unstable; urgency=medium
 
   * Bug #46066: added getRootDnConnection
