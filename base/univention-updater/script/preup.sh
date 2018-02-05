@@ -576,10 +576,10 @@ import sys
 app = AppManager.find("kopano-core")
 required_app_version = u"8.4.5.0"
 if app.is_installed():
-if app.version < required_app_version:
-	sys.exit(1)
-else:
-	sys.exit(0)
+	if app.version < required_app_version:
+		sys.exit(1)
+	else:
+		sys.exit(0)
 '
 
 	if [ $? != 0 ]; then
