@@ -9,8 +9,15 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 
 val="$(ucr get samba/role)"
+
+is_slave_pdc() {
+	dpkg -l univention-samba-slave-pdc | grep -q ^ii
+}
+
 if [ ! "$val" = "domaincontroller" -a ! "$val" = "memberserver" ] ; then
    fail_test 110 "UCR variable samba/role does not contain value 'domaincontroller' or 'memberserver'"
+elif [ "$val" = "domaincontroller" ] && ! is_slave_pdc; then
+   fail_test 110 "NT DCs are unsupported  since UCS 4.3"
 fi
 
 exit $RETVAL
