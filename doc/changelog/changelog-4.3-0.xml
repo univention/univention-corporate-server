@@ -453,6 +453,9 @@
 			<listitem><simpara>
 				Package dependencies have been updated in <package>univention-kde</package> (<u:bug>45943</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The <package>univention-runit</package> configuration has been adapted to Debian Stretch (<u:bug>45861</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
