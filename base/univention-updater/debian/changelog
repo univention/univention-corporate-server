@@ -4,7 +4,7 @@ univention-updater (12.0.10-10) unstable; urgency=medium
     App version is installed
   * Bug #45050: Allow App appliances to update to 4.2
 
- -- Erik Damrose <damrose@univention.de>  Mon, 05 Feb 2018 14:55:21 +0100
+ -- Erik Damrose <damrose@univention.de>  Mon, 05 Feb 2018 17:10:49 +0100
 
 univention-updater (12.0.10-9) unstable; urgency=medium
 
