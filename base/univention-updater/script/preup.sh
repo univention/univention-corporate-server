@@ -492,18 +492,6 @@ check_overwritten_umc_templates () {
 }
 check_overwritten_umc_templates
 
-# Bug 44281, block update for univention App appliances until appliance
-# package has been updated...
-check_app_appliance () {
-	if dpkg -l univention-app-appliance >/dev/null 2>&1
-	then
-		echo "ERROR: The UCS 4.2 update is not yet available for UCS app appliances."
-		echo "       Please try to update your system to UCS 4.2 at a later point."
-		exit 1
-	fi
-}
-check_app_appliance
-
 # Bug 41868, fix old computer objects, can be removed after 4.2-0
 if ! is_ucr_true update42/skip/computerobjectcheck; then
 	if [ "domaincontroller_master" = "$server_role" -a -e /etc/ldap.secret -a -e /var/univention-join/joined ]; then
@@ -583,20 +571,29 @@ check_qemu () {
 check_qemu
 
 check_kopano_repo () {
-	for repo in kopano/repo/kopano-core kopano/repo/kopano-webapp kopano/repo/kopano-webmeetings; do
-		if is_ucr_true "$repo"; then
-			echo "ERROR: An external repository for the Kopano Apps is currently configured."
-			echo "       There are known issues when updating to UCS 4.2 and using software"
-			echo "       from the Kopano software repository."
-			echo "       The update is blocked while Kopano and Univention are working"
-			echo "       on a solution."
-			if is_ucr_true update42/ignore_kopano_repo; then
-				echo "WARNING: update42/ignore_kopano_repo is set to true. Skipped as requested."
-			else
-				exit 1
-			fi
+	python -c 'from univention.appcenter.app import AppManager
+	import sys
+	app = AppManager.find("kopano-core")
+	required_app_version = u"8.4.5.0"
+	if app.is_installed():
+		if app.version < required_app_version:
+			sys.exit(1)
+		else:
+			sys.exit(0)
+	'
+
+	if [ $? != 0 ]; then
+		echo "The currently installed Kopano Core App blocks the update to UCS 4.2."
+		echo "The update is only supported if the Kopano Core App is installed"
+		echo "in version 8.4.5.0 or higher. Please update to version 8.4.5.0"
+		echo "and restart the update to UCS 4.2."
+
+		if is_ucr_true update42/ignore_kopano_version; then
+			echo "WARNING: update42/ignore_kopano_version is set to true. Skipped as requested."
+		else
+			exit 1
 		fi
-	done
+	fi
 }
 check_kopano_repo
 

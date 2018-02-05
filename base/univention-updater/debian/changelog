@@ -1,3 +1,11 @@
+univention-updater (12.0.10-10) unstable; urgency=medium
+
+  * Bug #46220: Modify kopano-core check, allow update if correct
+    App version is installed
+  * Bug #45050: Allow App appliances to update to 4.2
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 05 Feb 2018 14:55:21 +0100
+
 univention-updater (12.0.10-9) unstable; urgency=medium
 
   * Bug #45745: Remove settings from UCS 4.1-5 updater
