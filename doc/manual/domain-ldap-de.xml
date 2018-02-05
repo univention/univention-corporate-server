@@ -239,17 +239,11 @@
 			Beitritt ähnlich. Neben den Client-Versionen können auch Windows Server-Systeme der
 			Domäne beitreten. Windows-Server treten der Domäne als Memberserver bei, ein Beitritt
 			eines Windows-Systems als Domänencontroller wird nicht unterstützt.
+			Weitere Hinweise finden sich in <xref linkend="windows:general"/>.
 		</para>
 		<para>
 			Nur domänenfähige Windows-Versionen können der UCS-Domäne beitreten,
 			d.h. ein Domänenbeitritt mit den Home-Versionen von Windows ist nicht möglich.
-		</para>
-		<para>
-			Unter UCS können zwei verschiedene Versionen von Samba zum Einsatz
-			kommen: Samba 3 implementiert eine Windows-Domäne auf Basis von
-			NT-Domänentechnologie, während Samba 4 ein Active Directory-Verzeichnis
-			nachbildet. Weitere Hinweise finden sich in <xref
-			linkend="windows:general"/>.
 		</para>
 		<para>
 			Beim Domänenbeitritt wird automatisch ein Rechnerkonto für den

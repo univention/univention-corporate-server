@@ -230,16 +230,11 @@
 		Windows versions. In addition to the client versions, Windows server systems can also join
 		the domain. Windows servers join the domain as member servers; joining a Windows systems as
 		a domain controller is not supported.
+		Further information can be found in <xref linkend="windows:general"/>
 	  </para>
 
 	  <para>
 		Only domain-compatible Windows versions can join the UCS domain, i.e., it is not possible for the Home versions of Windows to join a domain.
-	  </para>
-
-	  <para>
-		Two different versions of Samba can be used in UCS: Samba 3 implements a Windows domain
-		based on NT domain technology, while Samba 4 implements an Active Directory
-		directory. Further information can be found in <xref linkend="windows:general"/>.
 	  </para>
 
 	  <para>

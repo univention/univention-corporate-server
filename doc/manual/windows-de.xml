@@ -46,12 +46,6 @@
 	</para>
 
 	<para>
-	  Die Migration von einer Samba-Domäne auf NT-Basis zu einer Domäne mit Active
-	  Directory-Diensten ist im Univention Wiki <biblioref linkend="wiki-samba-update"/>
-	  beschrieben.
-	</para>
-
-	<para>
 	  Microsoft Active Directory-Domänencontroller können aktuell nicht einer UCS-Samba-Domäne
 	  beitreten. Diese Funktionalität ist zu einem späteren Zeitpunkt geplant.
 	</para>
@@ -65,8 +59,8 @@
 	</para>
 
 	<note><para>
-	  Die Nutzung von UCS als Windows NT-kompatiblen Domänencontroller ist seit UCS 4 nicht mehr
-	  empfohlen. Weiterführende Informationen finden sich in <biblioref linkend="ext-doc-windows-nt"/>.
+	  Die Nutzung von UCS als Windows NT-kompatiblen Domänencontroller ist seit UCS 4.3 nicht mehr
+	  unterstützt.
 	</para></note>
 
   </section>
