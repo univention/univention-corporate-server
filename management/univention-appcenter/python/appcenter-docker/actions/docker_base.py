@@ -196,6 +196,8 @@ class DockerActionMixin(object):
 					pass
 		set_vars['docker/host/name'] = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 		set_vars['ldap/hostdn'] = hostdn
+		if app.docker_env_ldap_user:
+			set_vars[app.docker_env_ldap_user] = hostdn
 		set_vars['server/role'] = app.docker_server_role
 		set_vars['update/warning/releasenotes'] = 'no'
 		ucr_keys_list = list(ucr_keys())
