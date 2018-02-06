@@ -459,6 +459,9 @@
 			<listitem><simpara>
 				The <package>univention-runit</package> configuration has been adapted to Debian Stretch (<u:bug>45861</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+					The ntp init script has been removed from <package>univention-base-files</package>. Instead the init script provided by <package>ntp</package> is being used (<u:bug>46071</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
