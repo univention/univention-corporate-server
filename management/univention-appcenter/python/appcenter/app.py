@@ -1080,7 +1080,7 @@ class App(object):
 		app = english_cache.find_by_component_id(self.component_id)
 		if app is None:
 			# somehow the localized cache and the english cache split brains!
-			app_logger.warn('Split brains in %r and %r' % (self.get_app_cache_obj(), english_cache))
+			app_logger.warn('Could not find %r in %r' % (self, english_cache))
 			english_cache.clear_cache()
 			app = english_cache.find_by_component_id(self.component_id)
 			if app is None:
