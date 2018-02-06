@@ -17,6 +17,7 @@ Depends: ${misc:Depends},
  univention-base-files,
  univention-config (>= 7.0.31-1),
  python-univention-lib (>= 3.0.4-1),
+ python-univention-directory-manager,
  openssl
 Conflicts: univention-mail,
  exim4,
