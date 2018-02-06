@@ -12,7 +12,9 @@ desc: |
  * The content of the files main.cf.local and master.cf.local will now be
    appended to /etc/postfix/main.cf and /etc/postfix/master.cf respectively.
    After editing the *.local files, ucr commit /etc/postfix/*.cf must be
-   called (Bug # 44473).
- * The listfilter policy service now handles Cyrus SASL authentication
+   called (Bug #44473).
+ * If mail/postfix/policy/listfilter/use_sasl_username=yes was set, the
+   listfilter policy service rejected all mail unexpectedly. The listfilter
+   policy service has been fixed and now handles Cyrus SASL authentication
    correctly (Bug #45422).
 bug: [44473, 44922, 45422]
