@@ -13,7 +13,9 @@ desc: |
    appended to /etc/postfix/main.cf and /etc/postfix/master.cf respectively.
    After editing the *.local files, ucr commit /etc/postfix/*.cf must be
    called (Bug #44473).
- * The listfilter policy service now handles Cyrus SASL authentication
+ * If mail/postfix/policy/listfilter/use_sasl_username=yes was set, the
+   listfilter policy service rejected all mail unexpectedly. The listfilter
+   policy service has been fixed and now handles Cyrus SASL authentication
    correctly (Bug #45422).
  * Postfix' service postscreen has been integrated and can be configured
    via the UCR variables prefixed by mail/postfix/postscreen/. The service
