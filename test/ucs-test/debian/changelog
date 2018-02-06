@@ -1,3 +1,9 @@
+ucs-test (7.0.23-118) unstable; urgency=medium
+
+  * Bug #46186: fix 82_saml/24_download_certificate
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 06 Feb 2018 15:49:42 +0100
+
 ucs-test (7.0.23-117) unstable; urgency=low
 
   * Bug #44786: adapt test to API change
