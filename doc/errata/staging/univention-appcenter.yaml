@@ -9,4 +9,7 @@ desc: |-
   * Customize LDAP_HOSTDN env variable name.
   * Upgrading an App failed when required App Settings were used. This has
     been fixed.
-bug: [46223, 46222]
+  * Show the translated text for the license type of the App.
+  * Improved caching lookups to reduce startup time of the module.
+  * Show a rating's description when hovering over it.
+bug: [46223, 46222, 45499, 44783, 46060]
