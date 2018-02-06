@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: univention-appcenter
+fix:
+desc: |-
+  This update addresses the following issue(s):
+  * Customize LDAP_HOSTDN env variable name
+bug: [46223]
