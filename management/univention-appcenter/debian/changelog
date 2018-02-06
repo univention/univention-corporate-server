@@ -7,6 +7,7 @@ univention-appcenter (7.0.1-7) unstable; urgency=medium
 univention-appcenter (7.0.1-6) unstable; urgency=medium
 
   * Bug #46223: Make docker env for ldap/hostdn customizable
+  * Bug #46222: Pass settings to the installation routine when upgrading Apps
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Feb 2018 09:49:55 +0100
 
