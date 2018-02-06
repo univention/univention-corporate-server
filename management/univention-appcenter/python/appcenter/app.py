@@ -1076,8 +1076,16 @@ class App(object):
 			return packages_are_installed(self.default_packages, strict=False)
 
 	def is_ucs_component(self):
-		cache = self.get_app_cache_obj()
-		app = cache.copy(locale='en').find_by_component_id(self.component_id)
+		english_cache = self.get_app_cache_obj().copy(locale='en')
+		app = english_cache.find_by_component_id(self.component_id)
+		if app is None:
+			# somehow the localized cache and the english cache split brains!
+			app_logger.warn('Split brains in %r and %r' % (self.get_app_cache_obj(), english_cache))
+			english_cache.clear_cache()
+			app = english_cache.find_by_component_id(self.component_id)
+			if app is None:
+				# giving up. not really harmful
+				return False
 		return 'UCS components' in app.categories
 
 	def get_share_dir(self):
