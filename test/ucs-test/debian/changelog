@@ -1,3 +1,9 @@
+ucs-test (8.0.27-7) unstable; urgency=medium
+
+  * Bug #46066: added 10_ldap/92_memberOf
+
+ -- Felix Botner <botner@univention.de>  Tue, 06 Feb 2018 14:03:55 +0100
+
 ucs-test (8.0.27-6) unstable; urgency=medium
 
   * Bug #39817: Fix test cases
