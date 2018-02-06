@@ -33,7 +33,6 @@
 0004-16: conffiles/boot/boot.msg
 # No copyright claim for copied files
 0010-2: conffiles/etc/init.d/nscd
-0010-2: conffiles/etc/init.d/ntp
 0010-2: conffiles/etc/init.d/rdate
 0010-2: conffiles/etc/init.d/openbsd-inetd
 0010-2: conffiles/etc/init.d/rpcbind
