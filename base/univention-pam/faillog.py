@@ -39,27 +39,22 @@ attributes = []
 __package__ = ''  # workaround for PEP 366
 import listener
 import univention.debug as ud
+from univention.admin.handlers.users.user import unmapLocked
 
 
-def __pwd_is_locked(password):
-	if password.startswith('{crypt}!') or password.startswith('{LANMAN}!'):
-		return True
-	return False
-
+def __login_is_locked(attrs):
+	return unmapLocked(attrs) == '1'
 
 def handler(dn, new, old):
 	if new and old:
-		new_password = new.get('userPassword', [None])[0]
-		old_password = old.get('userPassword', [None])[0]
-		if new_password and old_password:
-			if __pwd_is_locked(old_password) and not __pwd_is_locked(new_password):
-				# reset bad password cound
-				listener.setuid(0)
-				try:
-					ud.debug(ud.LISTENER, ud.PROCESS, 'Reset faillog for user %s' % new['uid'][0])
-					listener.run('/sbin/pam_tally', ['pam_tally', '--user', new['uid'][0], '--reset'])
-				finally:
-					listener.unsetuid()
+		if __login_is_locked(old) and not __login_is_locked(new):
+			# reset local bad password count
+			listener.setuid(0)
+			try:
+				ud.debug(ud.LISTENER, ud.PROCESS, 'Reset faillog for user %s' % new['uid'][0])
+				listener.run('/sbin/pam_tally', ['pam_tally', '--user', new['uid'][0], '--reset'])
+			finally:
+				listener.unsetuid()
 
 
 def initialize():

@@ -1,3 +1,9 @@
+univention-pam (11.0.1-2) unstable; urgency=medium
+
+  * Bug #39817: adjust faillog.py listener to new locked definition
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Feb 2018 17:30:36 +0100
+
 univention-pam (11.0.1-1) unstable; urgency=medium
 
   * Bug #39817: unify disabled/locked
