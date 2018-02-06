@@ -6,5 +6,7 @@ src: univention-appcenter
 fix:
 desc: |-
   This update addresses the following issue(s):
-  * Customize LDAP_HOSTDN env variable name
-bug: [46223]
+  * Customize LDAP_HOSTDN env variable name.
+  * Upgrading an App failed when required App Settings were used. This has
+    been fixed.
+bug: [46223, 46222]

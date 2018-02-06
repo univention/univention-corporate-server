@@ -1,3 +1,9 @@
+univention-appcenter (6.0.11-12) unstable; urgency=medium
+
+  * Bug #46222: Pass settings to the installation routine when upgrading Apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Feb 2018 10:39:45 +0100
+
 univention-appcenter (6.0.11-11) unstable; urgency=medium
 
   * Bug #46223: Make docker env for ldap/hostdn customizable
