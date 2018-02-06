@@ -1,10 +1,11 @@
 product: ucs
 release: "4.2"
-version: [2]
-scope: ucs_4.2-0-errata4.2-2
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
 src: univention-config-registry
-fix: 12.0.1-8A~4.2.0.201711081048
+fix: 12.0.1-8A~4.2.0.201802061802
 desc: |
  This update addresses the following issue(s):
- * The service status of some mail related service has been fixed.
+ * The service status of some mail related services has been fixed and is
+   now shown correctly in UMC.
 bug: [43555]
