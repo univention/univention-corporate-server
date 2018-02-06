@@ -945,7 +945,7 @@
 		Sollen zu den durch das Listener-Module erstellten
 		Nagios-Server-Konfigurationsdateien Erweiterungen hinzugefügt werden,
 		können die manuell erstellten Konfigurationsdateien im
-		Verzeichnis <filename class="directory">/etc/nagios3/conf.local.d/</filename> abgelegt werden.
+		Verzeichnis <filename class="directory">/etc/nagios/conf.local.d/</filename> abgelegt werden.
 		Die hinzugefügten Konfigurationsdateien werden erst nach einem
 		Neustart des Nagios-Servers beachtet.
 		</para>
@@ -1058,7 +1058,7 @@ define command{
 	Nun muss der Nagios-Dienst neu gestartet werden:
   </para>
 <programlisting language="sh">
-/etc/init.d/nagios3 restart
+/etc/init.d/nagios restart
 </programlisting>
 
   <para>

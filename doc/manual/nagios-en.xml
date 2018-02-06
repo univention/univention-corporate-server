@@ -956,7 +956,7 @@
 		<para>
 		If you wish to add expansions to the Nagios server configuration files
 		created by the listener module, the manually created configuration
-		files can be stored in the <filename class="directory">/etc/nagios3/conf.local.d/</filename>
+		files can be stored in the <filename class="directory">/etc/nagios/conf.local.d/</filename>
 		directory. The added configuration files are only taken into account
 		after the next restart of the server.
 		</para>
@@ -1064,7 +1064,7 @@ define command{
 	The Nagios service must now be restarted:
   </para>
 <programlisting language="sh">
-/etc/init.d/nagios3 restart
+/etc/init.d/nagios restart
 </programlisting>
 
   <para>
