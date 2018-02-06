@@ -1,3 +1,9 @@
+ucs-test (8.0.27-4) unstable; urgency=medium
+
+  * Bug #39817: Fix test case
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Feb 2018 12:50:27 +0100
+
 ucs-test (8.0.27-3) unstable; urgency=low
 
   * Bug #46002: Do not strip non-determinism
