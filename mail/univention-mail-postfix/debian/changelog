@@ -1,3 +1,9 @@
+univention-mail-postfix (11.0.1-22) unstable; urgency=low
+
+  * Bug #45422: add missing dependency
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 06 Feb 2018 17:22:33 +0100
+
 univention-mail-postfix (11.0.1-21) unstable; urgency=low
 
   * Bug #45422: use UDM users/user filter
