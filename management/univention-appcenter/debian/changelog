@@ -1,3 +1,9 @@
+univention-appcenter (6.0.11-13) unstable; urgency=medium
+
+  * Bug #45796: Work around split brains in caches
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Feb 2018 11:05:08 +0100
+
 univention-appcenter (6.0.11-12) unstable; urgency=medium
 
   * Bug #46222: Pass settings to the installation routine when upgrading Apps

@@ -148,7 +148,9 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		docker.pull()
 		self.log('Saving data from old container (%s)' % self.old_app)
 		Start.call(app=self.old_app)
-		old_vars = self._get_configure_settings(self.old_app, filter_action=False)
+		settings = self._get_configure_settings(self.old_app, filter_action=False)
+		settings.update(args.set_vars)
+		args.set_vars = settings
 		old_docker = self._get_docker(self.old_app)
 		old_container = old_docker.container
 		secret_on_host = os.path.join('/var/lib/univention-appcenter/apps', app.id, 'machine.secret')
@@ -162,7 +164,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		args.configure = False
 		self._install_new_app(app, args)
 		args.configure = old_configure
-		args.set_vars = old_vars
+		args.set_vars = settings
 		self._configure(app, args)
 		self.log('Removing old container')
 		if old_container:
