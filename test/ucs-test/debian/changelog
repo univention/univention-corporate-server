@@ -1,3 +1,9 @@
+ucs-test (8.0.27-8) unstable; urgency=medium
+
+  * Bug #46037: Fix 01_base/81alternativessl
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 06 Feb 2018 14:19:16 +0100
+
 ucs-test (8.0.27-7) unstable; urgency=medium
 
   * Bug #46066: added 10_ldap/92_memberOf
