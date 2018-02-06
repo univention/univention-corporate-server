@@ -1,3 +1,9 @@
+ucs-test (8.0.27-10) unstable; urgency=medium
+
+  * Bug #46186: fix 82_saml/24_download_certificate
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 06 Feb 2018 15:54:39 +0100
+
 ucs-test (8.0.27-9) unstable; urgency=medium
 
   * Bug #46036: Fix 01_base/26check_logfiles_general
