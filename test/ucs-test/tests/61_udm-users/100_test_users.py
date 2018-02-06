@@ -393,7 +393,8 @@ class TestUsers(object):
 
 	def test_modlist_samba_bad_pw_count(self, udm, lo):
 		user = udm.create_user()[0]
-		subprocess.call('python -m univention.lib.account lock --dn "%s" --lock-time "$(date --utc "%s")' % (user, '+%Y%m%d%H%M%SZ'), shell=True)
+		locktime = time.strftime("%Y%m%d%H%M%SZ", time.gmtime())
+		subprocess.call(['python', '-m', 'univention.lib.account', 'lock', '--dn', user, '--lock-time', locktime])
 		lo.modify(user, [('sambaBadPasswordCount', '', '20')])
 		udm.modify_object('users/user', dn=user, locked='0')
 		udm.verify_ldap_object(user, {'sambaBadPasswordCount': ['0']})
