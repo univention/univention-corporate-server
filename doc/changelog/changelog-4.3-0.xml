@@ -54,6 +54,15 @@
 				<listitem><simpara>
 					The test in the <package>slapd</package>'s update scripts, whether the system is a UCS system, has been changed (<u:bug>45936</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Starting with UCS 4.3 the <package>openldap</package> overlay module for reverse group membership maintenance (memberOf) is activated by
+					default for new installations, see the <package>openldap</package> documentation
+					<ulink url="https://www.openldap.org/doc/admin24/overlays.html#Reverse%20Group%20Membership%20Maintenance">https://www.openldap.org/doc/admin24/overlays.html#Reverse Group Membership Maintenance</ulink>
+					for more information. This applies for new installations only, during the update to 4.3 the memberOf overlay module is installed but deactivated (if
+					not already activated).
+					Information on how to activate the memberOf overlay module can be found in <ulink url="https://help.univention.com/t/6439">https://help.univention.com/t/6439</ulink>
+					(<u:bug>46066</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:domain:openldap:acl">
