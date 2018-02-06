@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.19-2) unstable; urgency=medium
+
+  * Bug #39817: fix resetting of pwdAccountLockedTime
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Feb 2018 19:17:31 +0100
+
 univention-directory-manager-modules (13.0.19-1) unstable; urgency=medium
 
   * Bug #45877: fix typos in migration script
