@@ -37,6 +37,9 @@
 					<listitem><simpara>
 						The &ucsUCRV; <envar>interfaces/primary</envar> is set during the system setup (<u:bug>45956</u:bug>).
 					</simpara></listitem>
+					<listitem><simpara>
+						The update is stopped in case the system has a tls certificate with a md5 signature (<u:bug>46133</u:bug>). The hash algorithm can be set with <command>ucr set ssl/default/hashfunction=sha256</command>. The certificate needs to be renewed afterwards. For details see <ulink url="https://help.univention.com/t/renewing-the-ssl-certificates/37">Renewing the ssl certificate</ulink>.
+					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
 		</itemizedlist>

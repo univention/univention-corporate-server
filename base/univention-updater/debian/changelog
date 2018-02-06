@@ -1,3 +1,9 @@
+univention-updater (13.0.1-10) unstable; urgency=medium
+
+  * Bug #46133: check signature algorithm of the tls certificate in preup.sh
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 05 Feb 2018 16:23:46 +0100
+
 univention-updater (13.0.1-9) unstable; urgency=medium
 
   * Bug #46066: version bump
