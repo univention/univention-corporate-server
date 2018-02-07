@@ -217,7 +217,8 @@ class simpleLdap(object):
 			self.oldattr = attributes
 		elif self.dn:
 			try:
-				self.oldattr = self.lo.get(self.dn, required=True)
+				attr = self.__class__.oldattr_attributes()
+				self.oldattr = self.lo.get(self.dn, attr=attr, required=True)
 			except ldap.NO_SUCH_OBJECT:
 				raise univention.admin.uexceptions.noObject(self.dn)
 
@@ -1395,8 +1396,9 @@ class simpleLdap(object):
 	@classmethod
 	def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 		filter_str = unicode(cls.lookup_filter(filter_s, lo) or '')
+		attr = cls.oldattr_attributes()
 		result = []
-		for dn, attrs in lo.search(filter_str, base, scope, [], unique, required, timeout, sizelimit):
+		for dn, attrs in lo.search(filter_str, base, scope, attr, unique, required, timeout, sizelimit):
 			try:
 				result.append(cls(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs))
 			except univention.admin.uexceptions.base as exc:
@@ -1416,6 +1418,10 @@ class simpleLdap(object):
 	@classmethod
 	def rewrite_filter(cls, filter, mapping):
 		univention.admin.mapping.mapRewrite(filter, mapping)
+
+	@classmethod
+	def oldattr_attributes(cls):
+		return []
 
 
 class simpleComputer(simpleLdap):

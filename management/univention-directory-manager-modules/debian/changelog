@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.19-4) unstable; urgency=medium
+
+  * Bug #39817: more generic implementation of pwdAccountLockedTime lookup
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 15:17:23 +0100
+
 univention-directory-manager-modules (13.0.19-3) unstable; urgency=medium
 
   * Bug #45842: Fixes for QA feedback:

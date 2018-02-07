@@ -2184,13 +2184,9 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	def _modlist_pwd_account_locked_time(self, ml):
 		# remove pwdAccountLockedTime during unlocking
 		if self.hasChanged('locked') and self['locked'] == '0':
-			try:
-				# operational attribute, not in oldattr by default
-				pwdAccountLockedTime = self.lo.search(base=self.dn, scope='base', attr=['+'])[0][1].get('pwdAccountLockedTime', [''])[0]
-				if pwdAccountLockedTime:
-					ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
-			except univention.admin.uexceptions.noObject:
-				pass
+			pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
+			if pwdAccountLockedTime:
+				ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
 		return ml
 
 	def _modlist_samba_bad_pw_count(self, ml):
@@ -2565,6 +2561,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectFlag', 'functional')]),
 		])
+
+	@classmethod
+	def oldattr_attributes(cls):
+		return ['*', 'pwdAccountLockedTime']
 
 	@classmethod
 	def rewrite(cls, filter, mapping):
