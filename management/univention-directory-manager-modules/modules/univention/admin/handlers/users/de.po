@@ -588,8 +588,8 @@ msgstr ""
 "Zeigt den Zeitpunkt, ab dem das Konto regulär wieder entsperrt wird."
 
 #: modules/univention/admin/handlers/users/user.py:293
-msgid "Timestamp (seconds) when account lockout happend."
-msgstr "Zeitstempel (Sekunden), zu dem das Konto ausgesperrt wurde."
+msgid "Timestamp when account lockout happend."
+msgstr "Zeitstempel, zu dem das Konto ausgesperrt wurde."
 
 #: modules/univention/admin/handlers/users/user.py:329
 msgid "Street"
