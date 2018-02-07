@@ -1,0 +1,13 @@
+Kerberos, GSSAPI and KADM5 bindings
+
+Features:
++ An interface for maintaining credential caches (KRB5CCache),
+   that can be used for authenticating against a kerberos5 realm
++ Bindings for nearly the complete GSSAPI (RFC2744)
++ The administrative interface (KADM5)
++ Support for HTTP Negotiate authentication via GSSAPI
+
+Documentation:
++ see docs/ for the API documentation
++ there are several pieces of example code in the examples/ directory
++ see below for install instructions

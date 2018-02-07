@@ -1,0 +1,5 @@
+php-krb5 (1.1.2-1) unstable; urgency=low
+
+  * Bug #46237: Initial release
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 07 Feb 2018 14:44:25 +0100
