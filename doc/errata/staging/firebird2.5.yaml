@@ -9,6 +9,6 @@ desc: |
  * Insufficient checks in the UDF subsystem allow remote authenticated users
    to execute code by using a 'system' entrypoint from fbudf.so.
    (CVE-2017-6369)
-bug: [44411]
+bug: [46246]
 cve:
 - CVE-2017-6369
