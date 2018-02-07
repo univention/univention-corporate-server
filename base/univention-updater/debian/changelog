@@ -1,4 +1,4 @@
-univention-updater (12.0.10-10) unstable; urgency=medium
+univention-updater (12.0.10-11) unstable; urgency=medium
 
   * Bug #46220: Modify kopano-core check, allow update if correct
     App version is installed

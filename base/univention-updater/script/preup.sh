@@ -573,10 +573,11 @@ check_qemu
 check_kopano_repo () {
 	python -c 'from univention.appcenter.app import AppManager
 import sys
+from distutils.version import LooseVersion
 app = AppManager.find("kopano-core")
 required_app_version = u"8.4.5.0"
 if app.is_installed():
-	if app.version < required_app_version:
+	if LooseVersion(app.version) < LooseVersion(required_app_version):
 		sys.exit(1)
 	else:
 		sys.exit(0)
