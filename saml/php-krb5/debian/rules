@@ -26,7 +26,7 @@ override_dh_auto_configure:
 	dh_auto_configure
 
 override_dh_auto_install:
-	mkdir -p debian/$(BIN_PACKAGE_NAME)/$(EXT_DIR)
+	mkdir -m 644 -p debian/$(BIN_PACKAGE_NAME)/$(EXT_DIR)
 	install -m 644 -o root -g root src/modules$*/$(PECL_PKG_NAME).so debian/$(BIN_PACKAGE_NAME)/$(EXT_DIR)/$(PECL_PKG_NAME).so
 	dh_auto_install
 
