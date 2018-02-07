@@ -277,8 +277,8 @@ property_descriptions = {
 		default='0',
 	),
 	'locked': univention.admin.property(
-		short_description=_('User password is locked'),
-		long_description=_('Indicates that the user password is locked, e.g. due to too many login failures. Unchecking causes that the user password gets unlocked.'),
+		short_description=_('Reset lockout'),
+		long_description=_('If the account is locked out due to too many login failures, this checkbox allows unlocking.'),
 		syntax=univention.admin.syntax.locked,
 		multivalue=False,
 		required=False,
@@ -289,9 +289,9 @@ property_descriptions = {
 		default='0',
 	),
 	'lockedTime': univention.admin.property(
-		short_description=_('Password locked date'),
-		long_description=_('Specifies the date when the password was locked.'),
-		syntax=univention.admin.syntax.string,
+		short_description=_('Lockout time'),
+		long_description=_('Timestamp (seconds) when account lockout happend.'),
+		syntax=univention.admin.syntax.string, # unix timestamp
 		default=0,
 		multivalue=False,
 		required=False,
@@ -302,9 +302,9 @@ property_descriptions = {
 		dontsearch=True,
 	),
 	'unlockTime': univention.admin.property(
-		short_description=_('Password unlock date'),
-		long_description=_('Specifies the date when the password gets unlocked automatically.'),
-		syntax=univention.admin.syntax.date,
+		short_description=_('Lockout ends'),
+		long_description=_('Shows the time when the account gets unlocked again according to policy.'),
+		syntax=univention.admin.syntax.string, # see posixSecondsToDate
 		default=0,
 		multivalue=False,
 		required=False,
@@ -1040,8 +1040,8 @@ layout = [
 		]),
 		Group(_('Locked login'), layout=[
 			['pwdChangeNextLogin'],
-			['locked'],
 			['passwordexpiry'],
+			['locked'],
 			['unlockTime'],
 		]),
 		Group(_('Windows'), _('Windows account settings'), layout=[
@@ -1129,6 +1129,10 @@ def case_insensitive_in_list(dn, list):
 		if dn.decode('utf8').lower() == element.decode('utf8').lower():
 			return True
 	return False
+
+
+def posixSecondsToDate(seconds):
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(seconds))
 
 
 def posixDaysToDate(days):
@@ -1439,7 +1443,7 @@ def unmapKeyAndValue(old):
 
 
 def unmapSambaBadPasswordTime(old):
-	if old and old[0]:
+	if old and old[0] and old[0] != "0":
 		d = 116444736000000000L  # difference between 1601 and 1970
 		return str((int(old[0]) - d) / 10000000)
 	return ''
@@ -1658,7 +1662,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			except (ValueError, KeyError, IndexError, AttributeError):
 				return
 
-			self.info['unlockTime'] = str(lockout_duration + locked_time)
+			self.info['unlockTime'] = posixSecondsToDate(lockout_duration + locked_time)
 
 	def modify(self, *args, **kwargs):
 		try:

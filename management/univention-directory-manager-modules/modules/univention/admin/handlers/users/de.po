@@ -304,11 +304,11 @@ msgstr ""
 
 #: modules/univention/admin/handlers/users/user.py:281
 msgid ""
-"Indicates that the user password is locked, e.g. due to too many login "
-"failures. Unchecking causes that the user password gets unlocked."
+"If the account is locked out due to too many login failures, "
+"this checkbox allows unlocking."
 msgstr ""
-"Indiziert, dass das Benutzerpasswort gesperrt ist, z.B. durch zu viele "
-"fehlgeschlagene Anmeldeversuche. Das Passwort kann durch Entfernen des "
+"Wenn das Konto gesperrt ist, z.B. durch zu viele fehlgeschlagene "
+"Anmeldeversuche, dann kann es durch Entfernen des "
 "Häkchens entsperrt werden."
 
 #: modules/univention/admin/handlers/users/user.py:2172
@@ -455,12 +455,12 @@ msgid "Password expiry date"
 msgstr "Passwort-Ablaufdatum"
 
 #: modules/univention/admin/handlers/users/user.py:292
-msgid "Password locked date"
-msgstr "Passwort-Sperrdatum"
+msgid "Lockout time"
+msgstr "Zeitpunkt der Aussperrung"
 
 #: modules/univention/admin/handlers/users/user.py:305
-msgid "Password unlock date"
-msgstr "Datum der Passwort-Entsperrung"
+msgid "Lockout ends"
+msgstr "Aussperrung endet"
 
 #: modules/univention/admin/handlers/users/user.py:716
 msgid "Path to the home directory on the home share"
@@ -583,13 +583,13 @@ msgstr ""
 "Datum als Tag.Monat.Jahr eingeben."
 
 #: modules/univention/admin/handlers/users/user.py:306
-msgid "Specifies the date when the password gets unlocked automatically."
+msgid "Shows the time when the account gets unlocked again according to policy."
 msgstr ""
-"Spezifiziert das Datum, ab dem das Passwort automatisch entsperrt wird."
+"Zeigt den Zeitpunkt, ab dem das Konto regulär wieder entsperrt wird."
 
 #: modules/univention/admin/handlers/users/user.py:293
-msgid "Specifies the date when the password was locked."
-msgstr "Spezifiziert das Datum, an dem das Passwort gesperrt wurde."
+msgid "Timestamp (seconds) when account lockout happend."
+msgstr "Zeitstempel (Sekunden), zu dem das Konto ausgesperrt wurde."
 
 #: modules/univention/admin/handlers/users/user.py:329
 msgid "Street"
@@ -738,8 +738,8 @@ msgid "User name"
 msgstr "Benutzername"
 
 #: modules/univention/admin/handlers/users/user.py:280
-msgid "User password is locked"
-msgstr "Benutzer-Passwort ist gesperrt"
+msgid "Reset lockout"
+msgstr "Aussperrung zurücksetzen"
 
 #: modules/univention/admin/handlers/users/passwd.py:52
 msgid "User: Password"
