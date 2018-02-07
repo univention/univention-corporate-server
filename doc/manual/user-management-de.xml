@@ -242,124 +242,16 @@
                 </thead>
                 <tbody>
                     <row>
-                        <entry>Konto-Deaktivierung</entry>
+                        <entry>Konto is deaktiviert</entry>
                         <entry>
                             <para>
-                                Mit dem Auswahlfeld <guimenu>Konto-Deaktivierung</guimenu> kann das Benutzerkonto
-                                für ein oder mehrere Anmeldeverfahren deaktiviert werden. Solange der
-                                jeweilige Konto-Typ deaktiviert ist, kann sich der Benutzer nicht am System
-                                anmelden. Ein typischer Anwendungsfall ist ein Benutzer, der das Unternehmen
+                                Mir dem Auswahlkästchen <guimenu>Konto is deaktiviert</guimenu> kann das Benutzerkonto
+                                deaktiviert werden.
+				Wenn es aktiviert ist, kann sich der Benutzer nicht am System anmelden.
+				Das betrifft alle Authentifikationsmethoden.
+				Ein typischer Anwendungsfall ist ein Benutzer, der das Unternehmen
                                 verlassen hat. Eine Kontodeaktivierung kann in einer heterogenen Umgebung ggf. auch durch
-                                externe Tools ausgelöst werden, das Auswahlfeld spiegelt dann den Zustand
-                                des Kontos wider. Normalerweise sollten Benutzer immer für alle Konto-Typen
-                                deaktiviert werden. Folgende Deaktivierungszustände können umgesetzt werden:
-                                <itemizedlist>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Keine</guimenu> - Der Grundzustand; alle Anmeldungen sind möglich.
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Alle deaktiviert</guimenu> - Alle Kontotypen sind gesperrt.
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Windows deaktiviert</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Kerberos deaktiviert</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>POSIX deaktiviert</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Windows und POSIX deaktiviert</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Windows und Kerberos deaktiviert</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>POSIX und Kerberos deaktiviert</guimenu>
-										</simpara>
-                                    </listitem>
-                                </itemizedlist>
-                            </para>
-                            <para>
-                                Folgende Querbeziehungen zwischen den verschiedenen Anmeldeverfahren ergeben sich aus
-                                der UCS-PAM-Konfiguration:
-                                <itemizedlist>
-                                    <listitem>
-										<simpara>
-											Die Linux-Anmeldung (z.B. an <systemitem class="service">KDM</systemitem> oder einem <systemitem class="service">tty</systemitem>) wird nur deaktiviert,
-                                        wenn alle Anmeldeverfahren deaktiviert werden; ein deaktiviertes POSIX-Konto
-                                        reicht dazu nicht aus.
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        Samba setzt ein nicht deaktiviertes POSIX-Konto voraus, d.h. durch das
-                                        Deaktivieren des POSIX-Kontos wird auch Samba deaktiviert.
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        Die Kerberos-Bibliothek (Heimdal) wertet auch die Samba-Kontoeinstellungen aus, d.h. durch das
-                                        Deaktivieren des Windows-Kontos wird auch Kerberos deaktiviert.
-										</simpara>
-                                    </listitem>
-                                </itemizedlist>
-                            </para>
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Gesperrte Anmeldeverfahren</entry>
-                        <entry>
-                            <para>
-                                Mit diesem Auswahlfeld können einzelne Anmeldeverfahren gesperrt werden. Dies
-                                kann beispielsweise aus Sicherheitsgründen automatisch erfolgen, wenn ein
-                                Benutzer sein Passwort zu oft fehlerhaft eingegeben hat, siehe <xref linkend="users:faillog"/>.
-                            </para>
-                            <para>
-                                Normalerweise sollten Benutzer immer für alle Anmeldeverfahren gesperrt werden.
-                            </para>
-                            <para>
-                                Im Gegensatz zur <guimenu>Konto-Deaktivierung</guimenu> wird dabei nicht das Konto
-                                deaktiviert, sondern nur die Anmeldung verweigert. Folgende Anmeldeverfahren
-                                können eingeschränkt werden:
-                                <itemizedlist>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Kein gesperrtes Anmeldeverfahren</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Alle Anmeldeverfahren sind gesperrt</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Nur Windows/Kerberos gesperrt</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Nur POSIX/LDAP gesperrt</guimenu>
-										</simpara>
-                                    </listitem>
-                                </itemizedlist>
+                                externe Tools ausgelöst werden.
                             </para>
                         </entry>
                     </row>
@@ -375,6 +267,13 @@
                                 Wenn das Datum entfernt oder ein anderes, zukünftiges Datum
                                 eingetragen wird, kann sich der Benutzer wieder anmelden.
                             </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Passwort bei der nächsten Anmeldung ändern</entry>
+                        <entry>
+                            Wenn dieses Auswahlkästchen aktiviert ist, muss der Benutzer bei der nächsten
+                            Anmeldung an der Domäne sein Passwort ändern.
                         </entry>
                     </row>
                     <row>
@@ -396,10 +295,42 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Passwort bei der nächsten Anmeldung ändern</entry>
+                        <entry>Aussperrung zurücksetzen</entry>
                         <entry>
-                            Wenn dieses Auswahlkästchen aktiviert ist, muss der Benutzer bei der nächsten
-                            Anmeldung an der Domäne sein Passwort ändern.
+                            <para>
+				Wenn das Benutzerkonto aus Sicherheitsgründen automatisch gesperrt worden ist,
+				meist weil ein Benutzer sein Passwort zu oft fehlerhaft eingegeben hat,
+				kann dieses Auswahlkästchen dazu verwendet werden, um das Konto manuell schon
+				vor Ablauf der Sperrzeit zu entsperren.
+				Eine temporäre Aussperrung kann auftreten, wenn ein Administrator eine entsprechende
+				domänenweite Einstellung definiert wurde.
+				Es gibt drei unterschiedliche Mechanismen, die eine Aussperrung auslösen können,
+				falls die entsprechend konfiguriert wurden:
+                                <itemizedlist>
+                                    <listitem>
+                                        <simpara>
+                                            Fehlgeschlagene PAM-Authentifikation an einem UCS-Server (siehe <xref linkend="users:faillog"/>).
+                                        </simpara>
+                                        <simpara>
+                                            Fehlgeschlagene LDAP-Authentifikation (falls das ppolicy Overlay aktiviert und konfiguriert wurde).
+                                        </simpara>
+                                        <simpara>
+                                            Fehlgeschlagene Samba/AD-Authentifikation (falls die Samba domain passwordsettings konfiguriert wurden).
+                                        </simpara>
+                                    </listitem>
+                                </itemizedlist>
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Aussperrung endet</entry>
+                        <entry>
+                            <para>
+				Wenn das Benutzerkonto aus Sicherheitsgründen automatisch gesperrt worden ist,
+				meist weil ein Benutzer sein Passwort zu oft fehlerhaft eingegeben hat,
+				zeigt dieses Feld den Zeitpunkt an, ab dem das Konto regulär automatisch
+				entsperrt wird.
+                            </para>
                         </entry>
                     </row>
                     <row>

@@ -237,124 +237,15 @@
                 </thead>
                 <tbody>
                     <row>
-                        <entry>Account deactivation</entry>
+                        <entry>Account is deactivated</entry>
                         <entry>
                             <para>
-                                The <guimenu>Account deactivation</guimenu> selection field can be used to
-                                deactivate the user account for one or more login methods. As long as the
-                                respective account type is deactivated, the user cannot log into the system. This
-                                is typically used when a user leaves the company. In a heterogeneous
-                                environment, an account deactivation might also be caused by external tools; in that
-                                case the selection field reflects the account status. Normally users should
-                                always be deactivated for all account types. The following deactivation states can be
-                                realized:
+                                The <guimenu>Account is deactivated</guimenu> checkbox can be used to
+				deactivate the user account. If this is activated, the user cannot log
+				into the system. This affects all authentication methods.
+                                This is typically used when a user leaves the company. In a heterogeneous
+                                environment, an account deactivation might also be caused by external tools.
                             </para>
-                                <itemizedlist>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>None</guimenu> - Basic status; all logins are possible.
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>All disabled</guimenu> - All account types are blocked.
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Windows disabled</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Kerberos disabled</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>POSIX disabled</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Windows and POSIX disabled</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Windows and Kerberos disabled</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>POSIX and Kerberos disabled</guimenu>
-										</simpara>
-                                    </listitem>
-                                </itemizedlist>
-                            <para>
-                                The following interconnections between the different login methods are
-                                derived from the UCS PAM configuration:
-                            </para>
-                                <itemizedlist>
-                                    <listitem>
-										<simpara>
-											The Linux login (e.g., on <systemitem class="service">KDM</systemitem> or a <systemitem class="service">tty</systemitem>) is only deactivated if all
-                                        login methods are deactivated; a deactivated POSIX account alone is not enough.
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        Samba requires a not-deactivated POSIX account - that means that the
-                                        deactivation of the POSIX account automatically deactivates Samba as well.
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        The Kerberos library (Heimdal) also evaluates the Samba account settings - that means that the
-                                        deactivation of the Windows account will also deactivate Kerberos.
-										</simpara>
-                                    </listitem>
-                                </itemizedlist>
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Locked login methods</entry>
-                        <entry>
-                            <para>
-                                This selection field can be used to block individual login methods. This
-                                can happen automatically for security reasons, for example, if a user has
-                                entered his password incorrectly too often, see <xref linkend="users:faillog"/>.
-                            </para>
-                            <para>
-                                Normally users should always be blocked for all login methods.
-                            </para>
-                            <para>
-                                In contrast to <guimenu>Account deactivation</guimenu>, the account is not blocked,
-                                but the login is denied. The following login methods can be restricted:
-                            </para>
-                                <itemizedlist>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>None</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Locked all login methods</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Locked Windows/Kerberos only</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Locked POSIX/LDAP only</guimenu>
-										</simpara>
-                                    </listitem>
-                                </itemizedlist>
-                        </entry>
                     </row>
                     <row>
                         <entry>Account expiry date</entry>
@@ -369,6 +260,13 @@
                                 If the date is deleted or replaced by a different, future date, the user will
                                 regain the right to log in.
                             </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Change password on next login</entry>
+                        <entry>
+                            If this checkbox is ticked, then the user has to change his password during
+                            the next login procedure.
                         </entry>
                     </row>
                     <row>
@@ -390,10 +288,40 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Change password on next login</entry>
+                        <entry>Reset lockout</entry>
                         <entry>
-                            If this checkbox is ticked, then the user has to change his password during
-                            the next login procedure.
+                            <para>
+                                If the account has automatically been locked temporarily for security reasons,
+                                usually because the user has entered the password incorrectly too often,
+                                this checkbox can be used to unlock the account again manually before the lockout
+                                is lifted automatically when the lockout duration has passed.
+                                This temporary account lockout can happen if a corresponding domain wide policy
+                                setting has been defined by an administrator.
+                                There are three different mechanisms that may trigger lockout if configured properly:
+                                <itemizedlist>
+                                    <listitem>
+                                        <simpara>
+                                            Failed PAM authentication attempts to an UCS server (see <xref linkend="users:faillog"/>).
+                                        </simpara>
+                                        <simpara>
+                                            Failed LDAP authentication attempts (if the ppolicy overlay has been activated and configured).
+                                        </simpara>
+                                        <simpara>
+                                            Failed Samba/AD authentication attempts (if the Samba domain passwordsettings have been configured).
+                                        </simpara>
+                                    </listitem>
+                                </itemizedlist>
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Lockout ends</entry>
+                        <entry>
+                            <para>
+                                If the account has automatically been locked temporarily for security reasons,
+                                usually because the user has entered the password incorrectly too often,
+                                this field shows the time when the account automatically gets unlocked.
+                            </para>
                         </entry>
                     </row>
                     <row>

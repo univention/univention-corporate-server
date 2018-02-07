@@ -143,10 +143,13 @@
 					User objects which had only the <package>ldap_pwd</package> option enabled are migrated into <package>users/ldap</package> objects.
 					Note: UCS systems which are older than UCS 4.3-0 may create user objects in the old format and must be migrated.
 					The UMC module <package>System diagnosis</package> and the script <package>/usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3</package> can be used to detect necessary changes and migrate user objects.
-					<u:bug>45842</u:bug>.
+					(<u:bug>45842</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The values for the syntax class <package>Country</package> have been updated <u:bug>45926</u:bug>.
+						The <package>disabled</package> and <package>locked</package> choices in the <package>users/user</package> module have been simplified and adjusted to match Active Directory concepts. Now, when an administrator disables and account, all methods for authentication get disabled (LDAP/Posix, Kerberos, Samba). This is in line with the unification of UDM options for user accounts. The <package>locked</package> setting, which used to do simmilar things, has ben replaced to show if an account has been locked out temporarily and to allow administrative unlocking. Temporary lockout of an account can happen in case a user exceeds a number of failed authentication attempts, if a corresponding domain wide policy setting has been defined by an administrator (<u:bug>39817</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The values for the syntax class <package>Country</package> have been updated (<u:bug>45926</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The syntax class <package>Base64Bzip2XML</package> has been adjusted to allow <code> >text/xml</code>> input data (<u:bug>45941</u:bug>).
@@ -428,6 +431,7 @@
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
+						The S4-Connector now synchronizes the account lockout state (<u:bug>32014</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
