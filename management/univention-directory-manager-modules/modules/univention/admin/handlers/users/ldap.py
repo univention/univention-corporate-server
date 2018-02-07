@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  admin module for the user objects
+#  admin module for the simple authentication account objects
 #
 # Copyright 2004-2017 Univention GmbH
 #
@@ -82,6 +82,7 @@ property_descriptions = {
 		include_in_default_search=True,
 		required=True,
 		may_change=True,
+		default='<username><:umlauts,strip>',
 		identifies=False,
 		readonly_when_synced=True,
 		copyable=True,
@@ -94,6 +95,7 @@ property_descriptions = {
 		include_in_default_search=True,
 		required=True,
 		may_change=True,
+		default='<username><:umlauts,strip>',
 		identifies=False,
 		readonly_when_synced=True,
 		copyable=True,
@@ -133,18 +135,39 @@ property_descriptions = {
 		dontsearch=True,
 		readonly_when_synced=True,
 	),
+	'locked': univention.admin.property(
+		short_description=_('User password is locked'),
+		long_description=_('Indicates that the user password is locked, e.g. due to too many login failures. Unchecking causes that the user password gets unlocked.'),
+		syntax=univention.admin.syntax.locked,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		editable=True,
+		identifies=False,
+		show_in_lists=True,
+		default='0',
+	),
 }
 
 layout = [
 	Tab(_('General'), _('Basic settings'), layout=[
 		Group(_('User account'), layout=[
 			['username', 'description'],
-			['name', 'lastname'],
-			'password',
-			'disabled',
+			['password'],
+			['disabled'],
+			['locked'],
 		]),
 	]),
 ]
+
+def unmapLocked(oldattr):
+	if isLDAPLocked(oldattr):
+		return '1'
+	return '0'
+
+def isLDAPLocked(oldattr):
+	return bool(oldattr.get('pwdAccountLockedTime', [''])[0])
+
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('username', 'uid', None, univention.admin.mapping.ListToString)
@@ -153,6 +176,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('password', 'userPassword', None, univention.admin.mapping.ListToString)
 
+mapping.registerUnmapping('locked', unmapLocked)
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
@@ -160,7 +184,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		super(object, self).open()
 		if self.exists():
-			self.info['disabled'] = univention.admin.password.is_locked(self['password'])
+			self.info['disabled'] = '1' if univention.admin.password.is_locked(self['password']) else '0'
 		self.save()
 
 	def _ldap_pre_ready(self):
@@ -175,16 +199,17 @@ class object(univention.admin.handlers.simpleLdap):
 			except univention.admin.uexceptions.noLock:
 				raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
 
-		# The order here is important!
-		if not self.exists() or self.hasChanged('password'):
-			# 1. a new plaintext password is supplied
-			# make a crypt password out of it
-			self['password'] = "{crypt}%s" % (univention.admin.password.crypt(self['password']),)
+		if self['password']:
+			# The order here is important!
+			if not self.exists() or self.hasChanged('password'):
+				# 1. a new plaintext password is supplied
+				# make a crypt password out of it
+				self['password'] = "{crypt}%s" % (univention.admin.password.crypt(self['password']),)
 
-		if self['disabled']:
-			self['password'] = univention.admin.password.lock_password(self['password'])
-		else:
-			self['password'] = univention.admin.password.unlock_password(self['password'])
+			if self['disabled'] == '1':
+				self['password'] = univention.admin.password.lock_password(self['password'])
+			else:
+				self['password'] = univention.admin.password.unlock_password(self['password'])
 
 	def _ldap_post_create(self):
 		self._confirm_locks()
@@ -197,6 +222,37 @@ class object(univention.admin.handlers.simpleLdap):
 				self._move(newdn)
 			finally:
 				univention.admin.allocators.release(self.lo, self.position, 'uid', username)
+
+	def _ldap_modlist(self):
+		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
+
+		ml = self._modlist_lastname(ml)
+		ml = self._modlist_cn(ml)
+		ml = self._modlist_pwd_account_locked_time(ml)
+
+		return ml
+
+	def _modlist_lastname(self, ml):
+		if not self.exists() and not self['lastname']:
+			prop = self.descriptions['lastname']
+			sn = prop._replace(prop.base_default, self)
+			ml.append(('sn', '', sn))
+		return ml
+
+	def _modlist_cn(self, ml):
+		if not self.exists() and not self['name']:
+			prop = self.descriptions['name']
+			cn = prop._replace(prop.base_default, self)
+			ml.append(('cn', '', cn))
+		return ml
+
+	def _modlist_pwd_account_locked_time(self, ml):
+		# remove pwdAccountLockedTime during unlocking
+		if self.hasChanged('locked') and self['locked'] == '0':
+			pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
+			if pwdAccountLockedTime:
+				ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
+		return ml
 
 	def _ldap_post_remove(self):
 		univention.admin.allocators.release(self.lo, self.position, 'uid', self['username'])
@@ -247,10 +303,6 @@ class object(univention.admin.handlers.simpleLdap):
 				raise
 		return dn
 
-	def cancel(self):
-		for i, j in self.alloc:
-			univention.admin.allocators.release(self.lo, self.position, i, j)
-
 	@classmethod
 	def unmapped_lookup_filter(cls):
 		return univention.admin.filter.conjunction('&', [
@@ -262,6 +314,10 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectFlag', 'functional')]),
 		])
+
+	@classmethod
+	def oldattr_attributes(cls):
+		return ['*', '+']
 
 
 lookup = object.lookup
