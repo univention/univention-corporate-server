@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: bind9
+fix: 1:9.9.5.dfsg-9+deb8u15A~4.2.3.201802061643
+desc: |
+ This update addresses the following issues:
+ * Addresses could be referenced after being freed in resolver.c, causing an
+   assertion failure. (CVE-2017-3145)
+ * Import upcoming DNSSEC KSK-2017 from 9.10.5
+bug: [46238]
+cve:
+- CVE-2017-3145
