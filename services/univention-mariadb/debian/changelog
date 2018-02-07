@@ -1,3 +1,9 @@
+univention-mariadb (1.0.1-2) unstable; urgency=medium
+
+  * Bug #45876: Fix UCRv description
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 07 Feb 2018 16:14:05 +0100
+
 univention-mariadb (1.0.1-1) unstable; urgency=medium
 
   * Bug #45876: Modify configfile to correct filename suffix '.cnf'
