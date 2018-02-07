@@ -53,6 +53,18 @@ Variables: ldap/hostdn
 Variables: ldap/server/name
 Variables: ldap/server/port
 
+Type: subfile
+Multifile: etc/simplesamlphp/authsources.php
+Subfile: etc/simplesamlphp/01authsources-negotiate.php
+Variables: saml/idp/ldap/enable_tls
+Variables: ldap/base
+Variables: saml/idp/negotiate
+Variables: saml/idp/ldap/get_attributes
+Variables: saml/idp/ldap/user
+Variables: ldap/hostdn
+Variables: ldap/server/name
+Variables: ldap/server/port
+
 Type: file
 File: etc/apache2/sites-available/univention-saml.conf
 User: root

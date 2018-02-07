@@ -30,4 +30,4 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-exec /etc/alternatives/php-cgi "$@"
+exec /etc/alternatives/php-cgi -c /etc/php/7.0/apache2 "$@"

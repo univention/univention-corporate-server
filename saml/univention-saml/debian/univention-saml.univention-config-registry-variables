@@ -40,6 +40,12 @@ Description[en]=If this variable is set to 'true', the saml 2.0 identity provide
 Type=str
 Categories=saml
 
+[saml/idp/negotiate]
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird die Anmeldung per Kerberos / HTTP Negotiate ermöglicht.
+Description[en]=If this variable is set to 'true', the single sign on via kerberos / HTTP negotiate is possible.
+Type=bool
+Categories=saml
+
 [saml/idp/timezone]
 Description[de]=Zeitzone, in der der Identity Provider sich befindet. (default: Europe/Berlin)
 Description[en]=Timezone in which the identity provider operates. (default: Europe/Berlin)

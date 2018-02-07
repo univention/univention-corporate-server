@@ -54,7 +54,8 @@ configure)
 		saml/idp/lookandfeel/theme?"univentiontheme:univention" \
 		saml/idp/https?"true" \
 		saml/idp/show-errors?"true" \
-		ucs/server/sso/virtualhost?"true"
+		ucs/server/sso/virtualhost?"true" \
+		saml/idp/negotiate?"true"
 
 	for i in /var/www/saml /var/www/saml/php-cgi /var/lib/simplesamlphp/secrets.inc.php
 	do
