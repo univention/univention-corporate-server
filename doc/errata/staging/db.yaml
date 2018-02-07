@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: db
+fix: 5.1.29-9+deb8u1
+desc: |
+ This update addresses the following issue:
+ * CVE-2017-10140: Reads DB_CONFIG from the current working directory.
+bug: [46240]
+cve:
+- CVE-2017-10140
