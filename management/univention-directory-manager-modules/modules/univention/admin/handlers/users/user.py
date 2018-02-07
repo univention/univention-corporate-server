@@ -2567,7 +2567,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		])
 
 	@classmethod
-	def oldattr_attributes(cls):
+	def _ldap_attributes(cls):
 		return ['*', 'pwdAccountLockedTime']
 
 	@classmethod

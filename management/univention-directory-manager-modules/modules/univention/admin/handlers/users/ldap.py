@@ -316,8 +316,8 @@ class object(univention.admin.handlers.simpleLdap):
 		])
 
 	@classmethod
-	def oldattr_attributes(cls):
-		return ['*', '+']
+	def _ldap_attributes(cls):
+		return ['*', 'pwdAccountLockedTime']
 
 
 lookup = object.lookup
