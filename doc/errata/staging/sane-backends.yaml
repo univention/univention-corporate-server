@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: sane-backends
+fix: 1.0.24-8+deb8u2
+desc: |
+ This update addresses the following issue:
+ * CVE-2017-6318: fix memory corruption and information leakage.
+bug: [46244]
+cve:
+- CVE-2017-6318
