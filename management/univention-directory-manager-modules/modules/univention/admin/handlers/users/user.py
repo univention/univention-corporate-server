@@ -290,8 +290,8 @@ property_descriptions = {
 	),
 	'lockedTime': univention.admin.property(
 		short_description=_('Lockout time'),
-		long_description=_('Timestamp (seconds) when account lockout happend.'),
-		syntax=univention.admin.syntax.string, # unix timestamp
+		long_description=_('Timestamp when account lockout happend.'),
+		syntax=univention.admin.syntax.string,
 		default=0,
 		multivalue=False,
 		required=False,
@@ -1442,10 +1442,24 @@ def unmapKeyAndValue(old):
 	return lst
 
 
-def unmapSambaBadPasswordTime(old):
-	if old and old[0] and old[0] != "0":
+def mapWindowsFiletime(old):
+	if old:
+		if old == "0":
+			return [old]
+		unixtime = time.strptime(old, '%Y%m%d%H%M%SZ')
 		d = 116444736000000000L  # difference between 1601 and 1970
-		return str((int(old[0]) - d) / 10000000)
+		windows_filetime = long(time.mktime(unixtime)-time.timezone) * 10000000 + d
+		return [str(int(windows_filetime))]
+	return []
+
+
+def unmapWindowsFiletime(old):
+	if old and old[0]:
+		if old[0] == "0":
+			return old[0]
+		d = 116444736000000000L  # difference between 1601 and 1970
+		unixtime = (int(old[0]) - d) / 10000000
+		return time.strftime('%Y%m%d%H%M%SZ', time.gmtime(unixtime))
 	return ''
 
 
@@ -1495,7 +1509,7 @@ mapping.register('firstname', 'givenName', None, univention.admin.mapping.ListTo
 mapping.register('userCertificate', 'userCertificate;binary', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('jpegPhoto', 'jpegPhoto', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('umcProperty', 'univentionUMCProperty', mapKeyAndValue, unmapKeyAndValue)
-mapping.register('lockedTime', 'sambaBadPasswordTime', None, unmapSambaBadPasswordTime)
+mapping.register('lockedTime', 'sambaBadPasswordTime', mapWindowsFiletime, unmapWindowsFiletime)
 
 mapping.registerUnmapping('sambaRID', unmapSambaRid)
 mapping.registerUnmapping('passwordexpiry', unmapPasswordExpiry)
@@ -1655,14 +1669,14 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	def _unmapUnlockTime(self):
 		self.info['unlockTime'] = ''
 		locked_time = self['lockedTime']
-		if locked_time:
+		if locked_time and locked_time != "0":
 			try:
-				locked_time = int(locked_time)
+				locked_unixtime = long(time.mktime(time.strptime(locked_time, '%Y%m%d%H%M%SZ'))-time.timezone)
 				lockout_duration = int(self.lo.search(filter='objectClass=sambaDomain', attr=['sambaLockoutDuration'])[0][1].get('sambaLockoutDuration', [1800])[0])
 			except (ValueError, KeyError, IndexError, AttributeError):
 				return
 
-			self.info['unlockTime'] = posixSecondsToDate(lockout_duration + locked_time)
+			self.info['unlockTime'] = posixSecondsToDate(lockout_duration + locked_unixtime)
 
 	def modify(self, *args, **kwargs):
 		try:

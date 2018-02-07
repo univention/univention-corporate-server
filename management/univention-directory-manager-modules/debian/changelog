@@ -1,3 +1,14 @@
+univention-directory-manager-modules (13.0.19-7) unstable; urgency=medium
+
+  * Bug #39817: Fix conversion from UTC lockout time via unix timestamp
+    to windows filetime (mktime is inverse of localtime, not gmtime).
+  * rename unmapSambaBadPasswordTime to unmapWindowsFiletime
+  * Move sambaBadPasswordTime mapping logic from python-lib/account.py
+    to mapWindowsFiletime
+  * Fix unmap function for "0" value in sambaBadPasswordTime
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 22:16:36 +0100
+
 univention-directory-manager-modules (13.0.19-6) unstable; urgency=medium
 
   * Bug #39817: Feedback from external QA

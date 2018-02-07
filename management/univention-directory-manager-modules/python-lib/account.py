@@ -74,10 +74,7 @@ def lock(userdn, lock_timestamp):
 	object['locked'] = "1"
 	try:
 		if lock_timestamp:
-			lock_timestamp = time.strptime(lock_timestamp, '%Y%m%d%H%M%SZ')
-			d = 116444736000000000L  # difference between 1601 and 1970
-			lock_timestamp = long(time.mktime(lock_timestamp)) * 10000000 + d
-			object['lockedTime'] = str(int(lock_timestamp))
+			object['lockedTime'] = lock_timestamp
 		object.modify()
 	finally:
 		object.descriptions['locked'].editable, object.descriptions['locked'].may_change, object.descriptions['lockedTime'].editable, object.descriptions['lockedTime'].may_change = states
