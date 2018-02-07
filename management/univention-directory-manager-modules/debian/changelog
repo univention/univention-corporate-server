@@ -2,7 +2,7 @@ univention-directory-manager-modules (13.0.19-6) unstable; urgency=medium
 
   * Bug #39817: Feedback from external QA
 
- -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 20:38:52 +0100
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 20:38:53 +0100
 
 univention-directory-manager-modules (13.0.19-5) unstable; urgency=medium
 
