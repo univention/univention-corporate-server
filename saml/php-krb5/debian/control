@@ -2,7 +2,7 @@ Source: php-krb5
 Section: web
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7), po-debconf, xsltproc , php7.0-dev  
+Build-Depends: debhelper (>= 7), po-debconf, xsltproc , php7.0-dev, libkrb5-dev
 Standards-Version: 3.9.1
 
 Package: php-krb5
