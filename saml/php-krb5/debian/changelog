@@ -1,3 +1,9 @@
+php-krb5 (1.1.2-4) unstable; urgency=medium
+
+  * Bug #46237: skip dh_auto_install
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 07 Feb 2018 15:21:54 +0100
+
 php-krb5 (1.1.2-3) unstable; urgency=medium
 
   * Bug #46237: Modify debian/rules to fix permission error

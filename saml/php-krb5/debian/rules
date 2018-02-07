@@ -28,7 +28,6 @@ override_dh_auto_configure:
 override_dh_auto_install:
 	mkdir -m 644 -p debian/$(BIN_PACKAGE_NAME)/$(EXT_DIR)
 	install -m 644 -o root -g root src/modules$*/$(PECL_PKG_NAME).so debian/$(BIN_PACKAGE_NAME)/$(EXT_DIR)/$(PECL_PKG_NAME).so
-	dh_auto_install
 
 override_dh_auto_test:
 	export NO_INTERACTION dh_auto_test
