@@ -15,6 +15,16 @@ univention-directory-manager-modules (13.0.19-3) unstable; urgency=medium
 
  -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 15:08:45 +0100
 
+univention-directory-manager-modules (13.0.19-3) unstable; urgency=medium
+
+  * Bug #45842: Fixes for QA feedback:
+  * Automatically initialize "lastname" and "name" from "username"
+  * Don't show "lastname" and "name" properties in layout
+  * Fix handling of "disabled
+  * Fix cli traceback when not supplying a password during create
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 15:04:43 +0100
+
 univention-directory-manager-modules (13.0.19-2) unstable; urgency=medium
 
   * Bug #39817: fix resetting of pwdAccountLockedTime
