@@ -135,17 +135,39 @@ property_descriptions = {
 		dontsearch=True,
 		readonly_when_synced=True,
 	),
+	'locked': univention.admin.property(
+		short_description=_('User password is locked'),
+		long_description=_('Indicates that the user password is locked, e.g. due to too many login failures. Unchecking causes that the user password gets unlocked.'),
+		syntax=univention.admin.syntax.locked,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		editable=True,
+		identifies=False,
+		show_in_lists=True,
+		default='0',
+	),
 }
 
 layout = [
 	Tab(_('General'), _('Basic settings'), layout=[
 		Group(_('User account'), layout=[
 			['username', 'description'],
-			'password',
-			'disabled',
+			['password'],
+			['disabled'],
+			['locked'],
 		]),
 	]),
 ]
+
+def unmapLocked(oldattr):
+	if isLDAPLocked(oldattr):
+		return '1'
+	return '0'
+
+def isLDAPLocked(oldattr):
+	return bool(oldattr.get('pwdAccountLockedTime', [''])[0])
+
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('username', 'uid', None, univention.admin.mapping.ListToString)
@@ -154,6 +176,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('password', 'userPassword', None, univention.admin.mapping.ListToString)
 
+mapping.registerUnmapping('locked', unmapLocked)
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
@@ -202,8 +225,11 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
+
 		ml = self._modlist_lastname(ml)
 		ml = self._modlist_cn(ml)
+		ml = self._modlist_pwd_account_locked_time(ml)
+
 		return ml
 
 	def _modlist_lastname(self, ml):
@@ -218,6 +244,14 @@ class object(univention.admin.handlers.simpleLdap):
 			prop = self.descriptions['name']
 			cn = prop._replace(prop.base_default, self)
 			ml.append(('cn', '', cn))
+		return ml
+
+	def _modlist_pwd_account_locked_time(self, ml):
+		# remove pwdAccountLockedTime during unlocking
+		if self.hasChanged('locked') and self['locked'] == '0':
+			pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
+			if pwdAccountLockedTime:
+				ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
 		return ml
 
 	def _ldap_post_remove(self):
@@ -280,6 +314,10 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectFlag', 'functional')]),
 		])
+
+	@classmethod
+	def oldattr_attributes(cls):
+		return ['*', '+']
 
 
 lookup = object.lookup

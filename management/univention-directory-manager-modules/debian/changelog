@@ -5,8 +5,9 @@ univention-directory-manager-modules (13.0.19-3) unstable; urgency=medium
   * Don't show "lastname" and "name" properties in layout
   * Fix handling of "disabled
   * Fix cli traceback when not supplying a password during create
+  * Add "locked" property. No "lockedTime" display shown, yet.
 
- -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 15:04:43 +0100
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 15:08:45 +0100
 
 univention-directory-manager-modules (13.0.19-2) unstable; urgency=medium
 
