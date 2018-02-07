@@ -136,8 +136,8 @@ property_descriptions = {
 		readonly_when_synced=True,
 	),
 	'locked': univention.admin.property(
-		short_description=_('User password is locked'),
-		long_description=_('Indicates that the user password is locked, e.g. due to too many login failures. Unchecking causes that the user password gets unlocked.'),
+		short_description=_('Reset lockout'),
+		long_description=_('If the account is locked out due to too many login failures, this checkbox allows unlocking.'),
 		syntax=univention.admin.syntax.locked,
 		multivalue=False,
 		required=False,

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.19-5) unstable; urgency=medium
+
+  * Bug #39817: Fix wording and GUI layout
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 16:54:14 +0100
+
 univention-directory-manager-modules (13.0.19-4) unstable; urgency=medium
 
   * Bug #39817: more generic implementation of pwdAccountLockedTime lookup
