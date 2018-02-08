@@ -115,7 +115,8 @@ class Migration(object):
 		self.alloc = []
 
 		# use the users/user filter from UCS 4.2 but remove "(!(univentionObjectFlag=functional))" because we have the "uid=sys-idp-user" account
-		user_filter = u'(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(objectClass=inetOrgPerson))(!(uidNumber=0))(!(uid=*$)))'
+		default_user_filter = u'(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(objectClass=inetOrgPerson))(!(uidNumber=0))(!(uid=*$)))'
+		user_filter = ucr.get('update43/udm/migration/user/filter', default_user_filter)
 		for dn, user in lo.search(user_filter):
 			ocs = set(user['objectClass'])
 			has_posix = ocs & {'posixAccount', }
