@@ -198,6 +198,7 @@ class Migration(object):
 					pass
 
 			uidNumber = user.get('uidNumber', [None])[0]
+			sambaNTPassword = user.get('sambaNTPassword', [None])[0]
 
 			serverctrls = None
 			ocs_to_add = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'inetOrgPerson', 'organizationalPerson'} - ocs
@@ -220,8 +221,8 @@ class Migration(object):
 				if kickoff_time:
 					ml.append(('krb5ValidEnd', [], [time.strftime("%Y%m%d000000Z", kickoff_time)]))
 
-				if user.get('sambaNTPassword', [None])[0]:
-					ml.append(('krb5Key', [], self.nt_password_to_arcfour_hmac_md5(user['sambaNTPassword'][0])))
+				if sambaNTPassword:
+					ml.append(('krb5Key', [], self.nt_password_to_arcfour_hmac_md5(sambaNTPassword)))
 
 				if password_set_date:
 					ml.append(('krb5PasswordEnd', [], [time.strftime("%Y%m%d000000Z", password_set_date)]))
@@ -234,8 +235,10 @@ class Migration(object):
 					('homeDirectory', [], ['/home/%s' % (user['uid'][0],)]),  # TODO: can this default value be overwritten by UCR?
 				])
 
-			if not has_shadow or not has_posix and not user.get('userPassword'):
-				ml.append(('userPassword', [], ['{K5KEY}' if user.get('krb5Key') else '{KINIT}']))
+			if not user.get('userPassword'):
+				# Be nice and fix userPassword in the unlikely case that the attribute got lost but other credentials are present
+				if user.get('krb5Key') or sambaNTPassword:
+					ml.append(('userPassword', [], '{K5KEY}'))
 
 			if not has_shadow:
 				# FIXME: 'shadowMax'
