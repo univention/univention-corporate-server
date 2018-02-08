@@ -1,3 +1,3 @@
 Type: file
-File: etc/firefox-esr/firefox-esr.js
-Variables: firefox/prefs/conffile
+File: etc/firefox-esr/univention.js
+Variables: firefox/prefs/.*

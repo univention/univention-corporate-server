@@ -11,8 +11,8 @@ Type=str
 Categories=system-desktop
 
 [firefox/prefs/spellchecker/dictionary]
-Description[de]=Mit dieser Variable wird das Wörterbuch für die Rechtschreibkontrolle konfiguriert. Die verfügbaren Wörterbücher sind unter /usr/lib/firefox-esr/dictionaries/ zu finden. Ist die Variable nicht gesetzt, wird 'en-US' verwendet.
-Description[en]=This variable configures the dictionary for the spellchecker. The available dictionaries are stored below /usr/lib/firefox-esr/dictionaries/ If the variable is unset, 'en-US' is used.
+Description[de]=Mit dieser Variable wird das Wörterbuch für die Rechtschreibkontrolle konfiguriert. Die verfügbaren Wörterbücher sind unter /usr/lib/firefox-esr/dictionaries/ zu finden. Ist die Variable nicht gesetzt, wird 'de-DE' verwendet.
+Description[en]=This variable configures the dictionary for the spellchecker. The available dictionaries are stored below /usr/lib/firefox-esr/dictionaries/. If the variable is unset, 'en-US' is used.
 Type=str
 Categories=system-desktop
 
@@ -22,3 +22,8 @@ Description[en]=A URL can be defined here, which is used as a home page for the 
 Type=str
 Categories=system-desktop
 
+[firefox/prefs/print_command]
+Description[de]=Diese Variable konfiguriert das Programm zum Drucken, z.B. 'kprinter4' oder 'lpr'.
+Description[en]=This variable configures the program for printing, e.g. 'kprinter4' or 'lpr'.
+Type=str
+Categories=system-desktop

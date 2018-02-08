@@ -1,6 +1,7 @@
 univention-mozilla-firefox (12.0.0-2) unstable; urgency=low
 
   * Bug #45863: Fix location of UCR template
+  * Bug #46120: Update UCR templates for Debian Stretch
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 07 Feb 2018 18:20:41 +0100
 
