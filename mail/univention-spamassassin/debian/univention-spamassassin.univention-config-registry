@@ -1,5 +1,5 @@
 Type: file
-File: usr/share/spamassassin/10_misc.cf
+File: etc/spamassassin/90_univention.cf
 Variables: mail/antispam/requiredhits
 Variables: mail/antispam/learndaily
 

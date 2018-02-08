@@ -1,0 +1,1 @@
+rm_conffile /etc/univention/templates/files/usr/share/spamassassin/10_misc.cf 9.0.0-2~
