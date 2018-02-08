@@ -66,8 +66,15 @@ class Migration(object):
 		p.add_argument('--check', action='store_true', help='Makes a dry run by printing out all modifications which would be done.')
 		p.add_argument('--set-kerberos-realm', help='Set the given kerberos realm in the domain if none is set.')
 		self.args = p.parse_args()
-		searchResult = lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr=['aRecord', 'aAAARecord'])
-		self.s4connector_present = any(ddn for (ddn, attr) in searchResult if set(['aAAARecord', 'aRecord']) & set(attr))
+
+		if ucr.is_true('directory/manager/samba3/legacy', False):
+			self.s4connector_present = False
+		elif ucr.is_false('directory/manager/samba3/legacy', False):
+			self.s4connector_present = True
+		else:
+			searchResult = lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr=['aRecord', 'aAAARecord'])
+			self.s4connector_present = any(ddn for (ddn, attr) in searchResult if set(['aAAARecord', 'aRecord']) & set(attr))
+
 		self.migrate_users()
 		self.migrate_templates()
 		if self.exceptions:
