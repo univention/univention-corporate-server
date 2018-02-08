@@ -147,7 +147,7 @@ def file_and_permission_checks():
 		0750, must_exist=True)
 
 	yield check_file('/var/lib/univention-self-service-passwordreset-umc/memcached.socket', 'self-service-umc', 'nogroup', 0600)
-	yield check_file('/var/run/univention-saml/memcached.socket', 'samlcgi', 'root', 0600)
+	yield check_file('/var/run/univention-saml/memcached.socket', 'samlcgi', 'nogroup', 0700)
 	yield check_file('/var/run/uvmm.socket', 'root', 'root', 0755)
 	for path in glob.iglob('/var/run/univention-management-console/*.socket'):
 		yield check_file(path, 'root', 'root', 0700)

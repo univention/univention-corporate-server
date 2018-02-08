@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-7) unstable; urgency=medium
+
+  * Bug #46231: fixed 31_file_permissions.py
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 08 Feb 2018 16:53:04 +0100
+
 univention-management-console-module-diagnostic (4.0.0-6) unstable; urgency=medium
 
   * Bug #45842: Translations for 55_user_migration.py
