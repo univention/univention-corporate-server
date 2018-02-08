@@ -1,3 +1,9 @@
+univention-base-files (7.0.0-7) unstable; urgency=medium
+
+  * Bug #46071: Remove ucslint override for ntp init script
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 08 Feb 2018 17:00:34 +0100
+
 univention-base-files (7.0.0-6) unstable; urgency=medium
 
   * Bug #46071: Remove custom ntp init script

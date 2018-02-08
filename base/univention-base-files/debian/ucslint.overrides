@@ -13,7 +13,6 @@
 0004-56: conffiles/etc/init.d/klogd
 0004-56: conffiles/etc/init.d/networking
 0004-56: conffiles/etc/init.d/nscd
-0004-56: conffiles/etc/init.d/ntp
 0004-56: conffiles/etc/init.d/openbsd-inetd
 0004-56: conffiles/etc/init.d/rpcbind
 0004-56: conffiles/etc/init.d/rdate
