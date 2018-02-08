@@ -459,8 +459,8 @@ msgid "Lockout time"
 msgstr "Zeitpunkt der Aussperrung"
 
 #: modules/univention/admin/handlers/users/user.py:305
-msgid "Lockout ends"
-msgstr "Aussperrung endet"
+msgid "Lockout till"
+msgstr "Ausgesperrt bis"
 
 #: modules/univention/admin/handlers/users/user.py:716
 msgid "Path to the home directory on the home share"
@@ -713,6 +713,10 @@ msgstr "UMC-Benutzer-Einstellungen"
 #: modules/univention/admin/handlers/users/user.py:514
 msgid "Unix home directory"
 msgstr "UNIX-Heimatverzeichnis"
+
+#: modules/univention/admin/handlers/users/user.py:1680
+msgid "unlimited"
+msgstr "unbegrenzt"
 
 #: modules/univention/admin/handlers/users/user.py:75
 msgid "User"

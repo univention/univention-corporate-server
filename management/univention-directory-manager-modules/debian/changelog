@@ -1,3 +1,10 @@
+univention-directory-manager-modules (13.0.19-8) unstable; urgency=medium
+
+  * Bug #39817: Use calender.timegm() to convert UTC time to epoch properly
+  * Fix display of unlock time to show lockoutDuration == 0 as "unlimited"
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Feb 2018 09:33:51 +0100
+
 univention-directory-manager-modules (13.0.19-7) unstable; urgency=medium
 
   * Bug #39817: Fix conversion from UTC lockout time via unix timestamp
@@ -13,7 +20,7 @@ univention-directory-manager-modules (13.0.19-6) unstable; urgency=medium
 
   * Bug #39817: Feedback from external QA
 
- -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 20:38:53 +0100
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 20:38:52 +0100
 
 univention-directory-manager-modules (13.0.19-5) unstable; urgency=medium
 
@@ -32,7 +39,7 @@ univention-directory-manager-modules (13.0.19-3) unstable; urgency=medium
   * Bug #45842: Fixes for QA feedback:
   * Automatically initialize "lastname" and "name" from "username"
   * Don't show "lastname" and "name" properties in layout
-  * Fix handling of "disabled
+  * Fix handling of "disabled"
   * Fix cli traceback when not supplying a password during create
 
  -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 15:04:43 +0100
