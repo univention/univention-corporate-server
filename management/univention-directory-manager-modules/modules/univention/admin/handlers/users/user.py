@@ -40,6 +40,7 @@ import copy
 import time
 import types
 import struct
+import calendar
 from M2Crypto import X509
 import ldap
 import base64
@@ -302,9 +303,9 @@ property_descriptions = {
 		dontsearch=True,
 	),
 	'unlockTime': univention.admin.property(
-		short_description=_('Lockout ends'),
+		short_description=_('Lockout till'),
 		long_description=_('Shows the time when the account gets unlocked again according to policy.'),
-		syntax=univention.admin.syntax.string, # see posixSecondsToDate
+		syntax=univention.admin.syntax.string, # see posixSecondsToLocaltimeDate
 		default=0,
 		multivalue=False,
 		required=False,
@@ -1131,7 +1132,7 @@ def case_insensitive_in_list(dn, list):
 	return False
 
 
-def posixSecondsToDate(seconds):
+def posixSecondsToLocaltimeDate(seconds):
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(seconds))
 
 
@@ -1448,7 +1449,7 @@ def mapWindowsFiletime(old):
 			return [old]
 		unixtime = time.strptime(old, '%Y%m%d%H%M%SZ')
 		d = 116444736000000000L  # difference between 1601 and 1970
-		windows_filetime = long(time.mktime(unixtime)-time.timezone) * 10000000 + d
+		windows_filetime = long(calendar.timegm(unixtime)) * 10000000 + d
 		return [str(int(windows_filetime))]
 	return []
 
@@ -1668,15 +1669,18 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 	def _unmapUnlockTime(self):
 		self.info['unlockTime'] = ''
-		locked_time = self['lockedTime']
-		if locked_time and locked_time != "0":
+		locked_timestamp = self['lockedTime']
+		if locked_timestamp and locked_timestamp != "0":
 			try:
-				locked_unixtime = long(time.mktime(time.strptime(locked_time, '%Y%m%d%H%M%SZ'))-time.timezone)
-				lockout_duration = int(self.lo.search(filter='objectClass=sambaDomain', attr=['sambaLockoutDuration'])[0][1].get('sambaLockoutDuration', [1800])[0])
+				locked_unixtime = long(calendar.timegm(time.strptime(locked_timestamp, '%Y%m%d%H%M%SZ')))
+				lockout_duration = int(self.lo.search(filter='objectClass=sambaDomain', attr=['sambaLockoutDuration'])[0][1].get('sambaLockoutDuration', [0])[0])
 			except (ValueError, KeyError, IndexError, AttributeError):
 				return
 
-			self.info['unlockTime'] = posixSecondsToDate(lockout_duration + locked_unixtime)
+			if lockout_duration == 0:
+				self.info['unlockTime'] = _("unlimited")
+			else:
+				self.info['unlockTime'] = posixSecondsToLocaltimeDate(lockout_duration + locked_unixtime)
 
 	def modify(self, *args, **kwargs):
 		try:
