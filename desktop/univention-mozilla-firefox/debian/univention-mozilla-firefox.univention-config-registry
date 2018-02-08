@@ -1,14 +1,3 @@
 Type: file
-File: opt/firefox/defaults/pref/firefox.js
-Variables: firefox/prefs/conffile
-Variables: firefox/prefs/checkdefaultbrowser
-Variables: firefox/prefs/homepage
-Variables: firefox/prefs/spellchecker/dictionary
-
-Type: file
-File: etc/mozilla-firefox/pref/firefox.js
-Variables: firefox/prefs/conffile
-
-Type: file
-File: etc/firefox-esr/pref/firefox-esr.js
+File: etc/firefox-esr/firefox-esr.js
 Variables: firefox/prefs/conffile
