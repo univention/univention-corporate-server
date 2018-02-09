@@ -304,20 +304,22 @@ fail_if_role_package_will_be_removed ()
 # begin bug 46133 - stop if md5 based "Signature Algorithm" is used in tls certificate
 fail_if_md5_signature_is_used () {
 	local cert_path="/etc/univention/ssl/"$hostname"."$domainname"/cert.pem"
-	local md5_indicator="Signature Algorithm: md5WithRSAEncryption"
-	local certopt="no_header,no_version,no_serial,no_signame,no_subject,no_issuer,no_pubkey,no_aux,no_extensions,no_validity"
-	openssl x509 -in "$cert_path" -text -certopt "$certopt" | grep --quiet "$md5_indicator"
-	if [ $? -eq 0 ]; then
-		echo "ERROR: The pre-check of the update found that the certificate file:"
-		echo "       "$cert_path""
-		echo "       is using md5 as the signature algorithm. This is not supported in"
-		echo "       UCS 4.3 and later versions. The signature algorithm can be set"
-		echo "       on the domain controller master with:"
-		echo "       ucr set ssl/default/hashfunction=sha256"
-		echo "       The certificate needs to be renewed afterwards. Doing that is"
-		echo "       described at:"
-		echo "       https://help.univention.com/t/renewing-the-ssl-certificates/37"
-		exit 1
+	if [ -f "$cert_path" ]; then
+		local md5_indicator="Signature Algorithm: md5WithRSAEncryption"
+		local certopt="no_header,no_version,no_serial,no_signame,no_subject,no_issuer,no_pubkey,no_aux,no_extensions,no_validity"
+		openssl x509 -in "$cert_path" -text -certopt "$certopt" | grep --quiet "$md5_indicator"
+		if [ $? -eq 0 ]; then
+			echo "ERROR: The pre-check of the update found that the certificate file:"
+			echo "       "$cert_path""
+			echo "       is using md5 as the signature algorithm. This is not supported in"
+			echo "       UCS 4.3 and later versions. The signature algorithm can be set"
+			echo "       on the domain controller master with:"
+			echo "       ucr set ssl/default/hashfunction=sha256"
+			echo "       The certificate needs to be renewed afterwards. Doing that is"
+			echo "       described at:"
+			echo "       https://help.univention.com/t/renewing-the-ssl-certificates/37"
+			exit 1
+		fi
 	fi
 }
 fail_if_md5_signature_is_used
