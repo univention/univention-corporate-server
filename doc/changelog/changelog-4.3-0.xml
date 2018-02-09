@@ -193,6 +193,15 @@
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:umc:diagnostic">
+			<title>System diagnostic module</title>
+			<itemizedlist>
+				<listitem><simpara>
+						Various fixes for more reliable diagnsotic results (<u:bug>46231</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 		<section id="changelog:umc:top">
 			<title>Process overview module</title>
 			<itemizedlist>
