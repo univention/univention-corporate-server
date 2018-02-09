@@ -54,7 +54,9 @@ configure)
 		saml/idp/lookandfeel/theme?"univentiontheme:univention" \
 		saml/idp/https?"true" \
 		saml/idp/show-errors?"true" \
-		ucs/server/sso/virtualhost?"true"
+		ucs/server/sso/virtualhost?"true" \
+		saml/idp/negotiate?"true" \
+		kerberos/defaults/ignore_acceptor_hostname=true
 
 	for i in /var/www/saml /var/www/saml/php-cgi /var/lib/simplesamlphp/secrets.inc.php
 	do
@@ -65,10 +67,13 @@ configure)
 	done
 
 	call_joinscript 91univention-saml.inst
+	call_joinscript 99univention-saml-kerberos.inst
 
-	if [ ! -e /etc/simplesamlphp/metadata/metadata_include.php ]; then
-		touch /etc/simplesamlphp/metadata/metadata_include.php
-	fi
+	for file in /etc/simplesamlphp/metadata/metadata_include.php /usr/share/simplesamlphp/modules/negotiate/enable; do
+		if [ ! -e "$file" ]; then
+			touch "$file"
+		fi
+	done
 
 	chown -R root:samlcgi /etc/simplesamlphp
 

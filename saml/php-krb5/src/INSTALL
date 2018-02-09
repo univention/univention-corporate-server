@@ -1,0 +1,14 @@
+Installation:
++ When compiling this extension as shared module:
+  - run phpize in the extension directory
+  - run ./configure (optionally add --with-krb5kadm if you need this functionality)
+  - run make && make install
+  - optional: enable your new extension in you php.ini
+
++ When compiling statically into your php binary
+  - move this extension into your php distributions ext/ folder
+  - make sure that the directory is named "krb5"
+  - run ./buildconf --force in the root directory of you php distribution
+  - ./configure php with your common flags and add --with-krb5 and optionally
+  	--with-krb5kadm=<path>
+  - make && make install

@@ -21,6 +21,7 @@ Variables: kerberos/defaults/forwardable
 Variables: kerberos/defaults/proxiable
 Variables: kerberos/defaults/kdc_timesync
 Variables: kerberos/defaults/debug
+Variables: kerberos/defaults/ignore_acceptor_hostname
 Variables: windows/domain
 Variables: domainname
 Variables: server/role

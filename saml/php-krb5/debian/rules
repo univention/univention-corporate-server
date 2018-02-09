@@ -1,0 +1,37 @@
+#!/usr/bin/make -f
+# template debian/rules provided by dh-make-php.
+# GNU copyright 2005 by Uwe Steinmann.
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
+CFLAGS = -O2 -Wall
+CFLAGS += -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
+ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -g
+	DEBUG := --enable-debug
+else
+	DEBUG := --disable-debug
+endif
+
+PECL_PKG_NAME=krb5
+BIN_PACKAGE_NAME=php-krb5
+EXT_DIR=$(shell /usr/bin/php-config --extension-dir)
+
+override_dh_auto_configure:
+	cd src && phpize
+	dh_auto_configure
+
+override_dh_auto_install:
+	mkdir -m 644 -p debian/$(BIN_PACKAGE_NAME)/$(EXT_DIR)
+	install -m 644 -o root -g root src/modules$*/$(PECL_PKG_NAME).so debian/$(BIN_PACKAGE_NAME)/$(EXT_DIR)/$(PECL_PKG_NAME).so
+
+override_dh_auto_test:
+	export NO_INTERACTION dh_auto_test
+
+
+%:
+	dh $@ --sourcedirectory=src

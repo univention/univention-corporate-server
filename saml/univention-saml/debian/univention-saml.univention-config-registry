@@ -10,6 +10,7 @@ Subfile: etc/simplesamlphp/metadata/00_saml20-idp-hosted.php
 Variables: saml/idp/entityID
 Variables: saml/idp/certificate/privatekey
 Variables: saml/idp/certificate/certificate
+Variables: saml/idp/authsource
 Variables: apache2/ssl/key
 Variables: apache2/ssl/certificate
 Variables: hostname
@@ -48,6 +49,18 @@ Variables: ldap/base
 Variables: saml/idp/ldap/debug
 Variables: saml/idp/ldap/get_attributes
 Variables: saml/idp/ldap/search_attributes
+Variables: saml/idp/ldap/user
+Variables: ldap/hostdn
+Variables: ldap/server/name
+Variables: ldap/server/port
+
+Type: subfile
+Multifile: etc/simplesamlphp/authsources.php
+Subfile: etc/simplesamlphp/01authsources-negotiate.php
+Variables: saml/idp/ldap/enable_tls
+Variables: ldap/base
+Variables: saml/idp/negotiate
+Variables: saml/idp/ldap/get_attributes
 Variables: saml/idp/ldap/user
 Variables: ldap/hostdn
 Variables: ldap/server/name

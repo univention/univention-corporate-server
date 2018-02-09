@@ -1,0 +1,17 @@
+Source: php-krb5
+Section: web
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 7), po-debconf, xsltproc , php7.0-dev, libkrb5-dev
+Standards-Version: 3.9.1
+
+Package: php-krb5
+Architecture: any
+Depends: ${shlibs:Depends}, ${php:Depends}, ${misc:Depends}
+Description: krb5 module for PHP
+ Features:
+ + An interface for maintaining credential caches (KRB5CCache),
+    that can be used for authenticating against a kerberos5 realm
+ + Bindings for nearly the complete GSSAPI (RFC2744) + The
+ administrative interface (KADM5) + Support for HTTP Negotiate
+ authentication via GSSAPI
