@@ -100,3 +100,9 @@ Description[de]=Wird diese Variable auf 'true' gesetzt, werden zusätzliche Debu
 Description[en]=If this variable is set to 'true' additional debug statements are logged.
 Type=str
 Categories=service-heimdal
+
+[kerberos/defaults/ignore_acceptor_hostname]
+Description[de]=Wird diese Variable auf 'true' gesetzt, wird der hostname des aufrufenden Programms ignoriert, und Clients dürfen mit jedem Service Prinzipal in der keytab authentifizieren, der dem Service- und Realmnamen entspricht (sofern angegeben).
+Description[en]=If this variable is set to 'true', any hostname passed by the calling application is ignored, and clients are allowed to authenticate to any service principal in the keytab matching the service name and realm name (if given).
+Type=str
+Categories=service-heimdal
