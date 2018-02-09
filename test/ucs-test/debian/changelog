@@ -1,3 +1,9 @@
+ucs-test (8.0.28-5) unstable; urgency=medium
+
+  * Bug #46035: Revert: Fix broken translation in selenium tests
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 09 Feb 2018 16:26:36 +0100
+
 ucs-test (8.0.28-4) unstable; urgency=medium
 
   * Bug #46269: 82_saml/27_renewed_idp_cert: umc server needs to restarted
