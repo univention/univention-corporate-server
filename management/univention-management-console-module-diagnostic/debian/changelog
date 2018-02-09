@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-8) unstable; urgency=medium
+
+  * Bug #46231: fixed wrong syntax in 22_kdc_service.py
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 09 Feb 2018 10:52:01 +0100
+
 univention-management-console-module-diagnostic (4.0.0-7) unstable; urgency=medium
 
   * Bug #46231: fixed 31_file_permissions.py
