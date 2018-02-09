@@ -1,15 +1,20 @@
+ucs-test (8.0.27-13) unstable; urgency=medium
+
+  * Bug #46066: added 10_ldap/92_memberOf
+
+ -- Felix Botner <botner@univention.de>  Fri, 09 Feb 2018 12:03:06 +0100
+
 ucs-test (8.0.27-12) unstable; urgency=medium
 
   * Bug #40064: Adjust test cases for new installation routines
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 08 Feb 2018 17:36:27 +0100
 
-ucs-test (8.0.27-11ubuntu1) UNRELEASED; urgency=medium
+ucs-test (8.0.27-11) unstable; urgency=medium
 
   * 53_samba-common/30winbind: Samba is also required (Bug #46118)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 09 Feb 2018 11:43:53 +0100
-
 ucs-test (8.0.27-11) unstable; urgency=medium
 
   * Bug #39817: Fix test cases
