@@ -7,12 +7,13 @@
 ## packages: [univention-directory-manager-tools]
 ## exposure: dangerous
 
+. "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
 
 username=$(user_randomname)
 sshKnownHostsFile="$(mktemp)"
 user_create "$username" \
-	--set groups="cn=Administrators,cn=groups,$ldap_base"
+	--set groups="$(get_domain_admins_dn)"
 
 for((i=0;i<20;i++)); do
 	if univention-ldapsearch uid="$username" dn | grep ^dn:; then

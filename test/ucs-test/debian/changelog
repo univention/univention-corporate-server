@@ -1,3 +1,11 @@
+ucs-test (8.0.28-1) unstable; urgency=medium
+
+  * 01_base/21ssh_motd: Since UCS 4.3, the user creation fails if the
+    given group doesn't exist. Switch to domain admins in this test case
+    (Bug #45842)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 09 Feb 2018 12:37:08 +0100
+
 ucs-test (8.0.27-13) unstable; urgency=medium
 
   * Bug #46066: added 10_ldap/92_memberOf
