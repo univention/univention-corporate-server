@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-11-17 17:13+0100\n"
+"POT-Creation-Date: 2018-02-09 09:05-0500\n"
 "PO-Revision-Date: 2017-06-23 12:00+0200\n"
 "Last-Translator: <ulmer@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -12,469 +12,449 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: 110_product_test_do_rejoin:53
+#: tests/86_selenium/110_product_test_do_rejoin.py:53
 msgid "A reboot of the server is recommended"
 msgstr ""
 
-#: 151_udm_users:150 10_product_test_password_change:132
+#: tests/86_selenium/10_product_test_password_change.py:139
 msgid "Account"
 msgstr "Konto"
 
-#: 15_favorite_modules:62
+#: tests/86_selenium/15_favorite_modules.py:80
 msgid "Add to favorites"
 msgstr "Zu Favoriten hinzufügen"
 
-#: 132_miscellaneous_open_all_modules:32
-#: 131_miscellaneous_module_availability:56
-#: 131_miscellaneous_module_availability:100
-#: 131_miscellaneous_module_availability:130
-#: 131_miscellaneous_module_availability:160
+#: tests/86_selenium/131_miscellaneous_module_availability.py:56
+#: tests/86_selenium/131_miscellaneous_module_availability.py:100
+#: tests/86_selenium/131_miscellaneous_module_availability.py:130
+#: tests/86_selenium/131_miscellaneous_module_availability.py:160
+#: tests/86_selenium/132_miscellaneous_open_all_modules.py:32
 msgid "App Center"
 msgstr ""
 
-#: 12_product_test_ucr:148
+#: tests/86_selenium/12_product_test_ucr.py:148
 msgid "Base Settings"
 msgstr ""
 
-#: 131_miscellaneous_module_availability:47
-#: 131_miscellaneous_module_availability:64
+#: tests/86_selenium/131_miscellaneous_module_availability.py:47
+#: tests/86_selenium/131_miscellaneous_module_availability.py:64
 msgid "Certificate settings"
 msgstr "Benutzereinstellungen"
 
-#: 14_password_self-service:82 14_password_self-service:99
-#: 14_password_self-service:109 14_password_self-service:124
-#: 10_product_test_password_change:182 10_product_test_password_change:187
+#: tests/86_selenium/14_password_self-service.py:82
+#: tests/86_selenium/14_password_self-service.py:99
+#: tests/86_selenium/14_password_self-service.py:109
+#: tests/86_selenium/14_password_self-service.py:124
+#: tests/86_selenium/10_product_test_password_change.py:189
+#: tests/86_selenium/10_product_test_password_change.py:194
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: 10_product_test_password_change:133 10_product_test_password_change:134
+#: tests/86_selenium/10_product_test_password_change.py:140
+#: tests/86_selenium/10_product_test_password_change.py:141
 msgid "Change password on next login"
 msgstr "Passwort bei der nächsten Anmeldung ändern"
 
-#: 10_product_test_password_change:183
+#: tests/86_selenium/10_product_test_password_change.py:190
 msgid "Change the password of"
 msgstr "Passwort ändern für"
 
-#: 14_password_self-service:101
+#: tests/86_selenium/14_password_self-service.py:101
 msgid "Change your (expired) password."
 msgstr ""
 
-#: 132_miscellaneous_open_all_modules:37
+#: tests/86_selenium/132_miscellaneous_open_all_modules.py:37
 msgid "Close"
 msgstr ""
 
-#: 131_miscellaneous_module_availability:35
-#: 131_miscellaneous_module_availability:80
+#: tests/86_selenium/131_miscellaneous_module_availability.py:35
+#: tests/86_selenium/131_miscellaneous_module_availability.py:80
 msgid "Computers"
 msgstr ""
 
-#: 110_product_test_do_rejoin:48
+#: tests/86_selenium/110_product_test_do_rejoin.py:48
 msgid "Confirmation"
 msgstr ""
 
-#: 151_udm_users:152
-msgid "Contact"
-msgstr ""
-
-#: 131_miscellaneous_module_availability:38
-#: 131_miscellaneous_module_availability:83
+#: tests/86_selenium/131_miscellaneous_module_availability.py:38
+#: tests/86_selenium/131_miscellaneous_module_availability.py:83
 msgid "DHCP"
 msgstr ""
 
-#: 131_miscellaneous_module_availability:39
-#: 131_miscellaneous_module_availability:84
+#: tests/86_selenium/131_miscellaneous_module_availability.py:39
+#: tests/86_selenium/131_miscellaneous_module_availability.py:84
 msgid "DNS"
 msgstr ""
 
-#: 151_udm_users:122
+#: tests/86_selenium/151_udm_users.py:115
 msgid "Domain Admins"
 msgstr ""
 
-#: 111_product_test_execute_join_script:65 110_product_test_do_rejoin:44
-#: 131_miscellaneous_module_availability:40
-#: 131_miscellaneous_module_availability:63
-#: 131_miscellaneous_module_availability:85
-#: 131_miscellaneous_module_availability:107
-#: 131_miscellaneous_module_availability:121
-#: 131_miscellaneous_module_availability:137
-#: 131_miscellaneous_module_availability:151
-#: 131_miscellaneous_module_availability:167
+#: tests/86_selenium/131_miscellaneous_module_availability.py:40
+#: tests/86_selenium/131_miscellaneous_module_availability.py:63
+#: tests/86_selenium/131_miscellaneous_module_availability.py:85
+#: tests/86_selenium/131_miscellaneous_module_availability.py:107
+#: tests/86_selenium/131_miscellaneous_module_availability.py:121
+#: tests/86_selenium/131_miscellaneous_module_availability.py:137
+#: tests/86_selenium/131_miscellaneous_module_availability.py:151
+#: tests/86_selenium/131_miscellaneous_module_availability.py:167
+#: tests/86_selenium/110_product_test_do_rejoin.py:44
+#: tests/86_selenium/111_product_test_execute_join_script.py:65
 msgid "Domain join"
 msgstr ""
 
-#: 12_product_test_ucr:126
+#: tests/86_selenium/12_product_test_ucr.py:126
 msgid "Edit UCR variable"
 msgstr ""
 
-#: 111_product_test_execute_join_script:77
+#: tests/86_selenium/111_product_test_execute_join_script.py:77
 msgid "Execute"
 msgstr ""
 
-#: 15_favorite_modules:30 15_favorite_modules:74
-#: 10_product_test_password_change:169
+#: tests/86_selenium/15_favorite_modules.py:50
+#: tests/86_selenium/15_favorite_modules.py:92
+#: tests/86_selenium/10_product_test_password_change.py:176
 msgid "Favorites"
 msgstr "Favoriten"
 
-#: 131_miscellaneous_module_availability:32
-#: 131_miscellaneous_module_availability:62
-#: 131_miscellaneous_module_availability:77
-#: 131_miscellaneous_module_availability:106
-#: 131_miscellaneous_module_availability:120
-#: 131_miscellaneous_module_availability:136
-#: 131_miscellaneous_module_availability:150
-#: 131_miscellaneous_module_availability:166
+#: tests/86_selenium/131_miscellaneous_module_availability.py:32
+#: tests/86_selenium/131_miscellaneous_module_availability.py:62
+#: tests/86_selenium/131_miscellaneous_module_availability.py:77
+#: tests/86_selenium/131_miscellaneous_module_availability.py:106
+#: tests/86_selenium/131_miscellaneous_module_availability.py:120
+#: tests/86_selenium/131_miscellaneous_module_availability.py:136
+#: tests/86_selenium/131_miscellaneous_module_availability.py:150
+#: tests/86_selenium/131_miscellaneous_module_availability.py:166
 msgid "Filesystem quotas"
 msgstr ""
 
-#: 14_password_self-service:126
+#: tests/86_selenium/14_password_self-service.py:126
 msgid "Forgot your password"
 msgstr ""
 
-#: 151_udm_users:150 151_udm_users:155 151_udm_users:167
-msgid "General"
-msgstr ""
-
-#: 151_udm_users:121 151_udm_users:152 131_miscellaneous_module_availability:33
-#: 131_miscellaneous_module_availability:78
+#: tests/86_selenium/131_miscellaneous_module_availability.py:33
+#: tests/86_selenium/131_miscellaneous_module_availability.py:78
+#: tests/86_selenium/151_udm_users.py:114
 msgid "Groups"
 msgstr ""
 
-#: 131_miscellaneous_module_availability:48
-#: 131_miscellaneous_module_availability:65
-#: 131_miscellaneous_module_availability:92
-#: 131_miscellaneous_module_availability:108
-#: 131_miscellaneous_module_availability:122
-#: 131_miscellaneous_module_availability:138
-#: 131_miscellaneous_module_availability:152
-#: 131_miscellaneous_module_availability:168
+#: tests/86_selenium/131_miscellaneous_module_availability.py:48
+#: tests/86_selenium/131_miscellaneous_module_availability.py:65
+#: tests/86_selenium/131_miscellaneous_module_availability.py:92
+#: tests/86_selenium/131_miscellaneous_module_availability.py:108
+#: tests/86_selenium/131_miscellaneous_module_availability.py:122
+#: tests/86_selenium/131_miscellaneous_module_availability.py:138
+#: tests/86_selenium/131_miscellaneous_module_availability.py:152
+#: tests/86_selenium/131_miscellaneous_module_availability.py:168
 msgid "Hardware information"
 msgstr ""
 
-#: 151_udm_users:140
-msgid "Kerberos principal"
-msgstr ""
-
-#: 131_miscellaneous_module_availability:41
-#: 131_miscellaneous_module_availability:86
+#: tests/86_selenium/131_miscellaneous_module_availability.py:41
+#: tests/86_selenium/131_miscellaneous_module_availability.py:86
 msgid "LDAP directory"
 msgstr ""
 
-#: 131_miscellaneous_module_availability:49
-#: 131_miscellaneous_module_availability:66
-#: 131_miscellaneous_module_availability:93
-#: 131_miscellaneous_module_availability:109
-#: 131_miscellaneous_module_availability:123
-#: 131_miscellaneous_module_availability:139
-#: 131_miscellaneous_module_availability:153
-#: 131_miscellaneous_module_availability:169
+#: tests/86_selenium/131_miscellaneous_module_availability.py:49
+#: tests/86_selenium/131_miscellaneous_module_availability.py:66
+#: tests/86_selenium/131_miscellaneous_module_availability.py:93
+#: tests/86_selenium/131_miscellaneous_module_availability.py:109
+#: tests/86_selenium/131_miscellaneous_module_availability.py:123
+#: tests/86_selenium/131_miscellaneous_module_availability.py:139
+#: tests/86_selenium/131_miscellaneous_module_availability.py:153
+#: tests/86_selenium/131_miscellaneous_module_availability.py:169
 msgid "Language settings"
 msgstr "Benutzereinstellungen"
 
-#: 151_udm_users:156 151_udm_users:168
-msgid "Last name"
-msgstr ""
-
-#: 130_miscellaneous:43 130_miscellaneous:45
+#: tests/86_selenium/130_miscellaneous.py:43
+#: tests/86_selenium/130_miscellaneous.py:45
 msgid "Logout"
 msgstr ""
 
-#: 131_miscellaneous_module_availability:42
-#: 131_miscellaneous_module_availability:87
+#: tests/86_selenium/131_miscellaneous_module_availability.py:42
+#: tests/86_selenium/131_miscellaneous_module_availability.py:87
 msgid "Mail"
 msgstr ""
 
-#: 151_udm_users:140
-msgid "Mail account"
-msgstr ""
-
-#: 151_udm_users:132
+#: tests/86_selenium/151_udm_users.py:125
 msgid "Move to..."
 msgstr ""
 
-#: 151_udm_users:134
+#: tests/86_selenium/151_udm_users.py:127
 msgid "Move user"
 msgstr ""
 
-#: 131_miscellaneous_module_availability:36
-#: 131_miscellaneous_module_availability:81
+#: tests/86_selenium/131_miscellaneous_module_availability.py:36
+#: tests/86_selenium/131_miscellaneous_module_availability.py:81
 msgid "Nagios"
 msgstr ""
 
-#: 131_miscellaneous_module_availability:50
-#: 131_miscellaneous_module_availability:67
-#: 131_miscellaneous_module_availability:94
-#: 131_miscellaneous_module_availability:110
-#: 131_miscellaneous_module_availability:124
-#: 131_miscellaneous_module_availability:140
-#: 131_miscellaneous_module_availability:154
-#: 131_miscellaneous_module_availability:170
+#: tests/86_selenium/131_miscellaneous_module_availability.py:50
+#: tests/86_selenium/131_miscellaneous_module_availability.py:67
+#: tests/86_selenium/131_miscellaneous_module_availability.py:94
+#: tests/86_selenium/131_miscellaneous_module_availability.py:110
+#: tests/86_selenium/131_miscellaneous_module_availability.py:124
+#: tests/86_selenium/131_miscellaneous_module_availability.py:140
+#: tests/86_selenium/131_miscellaneous_module_availability.py:154
+#: tests/86_selenium/131_miscellaneous_module_availability.py:170
 msgid "Network settings"
 msgstr "Benutzereinstellungen"
 
-#: 131_miscellaneous_module_availability:43
-#: 131_miscellaneous_module_availability:88
+#: tests/86_selenium/131_miscellaneous_module_availability.py:43
+#: tests/86_selenium/131_miscellaneous_module_availability.py:88
 msgid "Networks"
 msgstr ""
 
-#: 14_password_self-service:88 14_password_self-service:128
-#: 14_password_self-service:130
+#: tests/86_selenium/14_password_self-service.py:88
+#: tests/86_selenium/14_password_self-service.py:128
+#: tests/86_selenium/14_password_self-service.py:130
 msgid "Next"
 msgstr ""
 
-#: 132_miscellaneous_open_all_modules:51
+#: tests/86_selenium/132_miscellaneous_open_all_modules.py:51
 msgid "OK"
 msgstr ""
 
-#: 10_product_test_password_change:174 10_product_test_password_change:209
+#: tests/86_selenium/10_product_test_password_change.py:181
+#: tests/86_selenium/10_product_test_password_change.py:216
 msgid "Ok"
 msgstr "Ok"
 
-#: 151_udm_users:141 151_udm_users:164
-msgid "POSIX account"
-msgstr ""
-
-#: 131_miscellaneous_module_availability:57
-#: 131_miscellaneous_module_availability:101
-#: 131_miscellaneous_module_availability:131
-#: 131_miscellaneous_module_availability:161
+#: tests/86_selenium/131_miscellaneous_module_availability.py:57
+#: tests/86_selenium/131_miscellaneous_module_availability.py:101
+#: tests/86_selenium/131_miscellaneous_module_availability.py:131
+#: tests/86_selenium/131_miscellaneous_module_availability.py:161
 msgid "Package Management"
 msgstr ""
 
-#: 14_password_self-service:100
+#: tests/86_selenium/14_password_self-service.py:100
 msgid "Password change"
 msgstr ""
 
-#: 14_password_self-service:125
+#: tests/86_selenium/14_password_self-service.py:125
 msgid "Password forgotten"
 msgstr ""
 
-#: 151_udm_users:141
-msgid "Personal information"
-msgstr ""
-
-#: 14_password_self-service:129
+#: tests/86_selenium/14_password_self-service.py:129
 msgid "Please choose an option"
 msgstr ""
 
-#: 111_product_test_execute_join_script:80
+#: tests/86_selenium/111_product_test_execute_join_script.py:80
 msgid "Please enter credentials"
 msgstr ""
 
-#: 131_miscellaneous_module_availability:44
-#: 131_miscellaneous_module_availability:89
+#: tests/86_selenium/131_miscellaneous_module_availability.py:44
+#: tests/86_selenium/131_miscellaneous_module_availability.py:89
 msgid "Policies"
 msgstr ""
 
-#: 131_miscellaneous_module_availability:37
-#: 131_miscellaneous_module_availability:82
+#: tests/86_selenium/131_miscellaneous_module_availability.py:37
+#: tests/86_selenium/131_miscellaneous_module_availability.py:82
 msgid "Printers"
 msgstr ""
 
-#: 130_miscellaneous:56 130_miscellaneous:127
-#: 131_miscellaneous_module_availability:51
-#: 131_miscellaneous_module_availability:68
-#: 131_miscellaneous_module_availability:95
-#: 131_miscellaneous_module_availability:111
-#: 131_miscellaneous_module_availability:125
-#: 131_miscellaneous_module_availability:141
-#: 131_miscellaneous_module_availability:155
-#: 131_miscellaneous_module_availability:171
+#: tests/86_selenium/131_miscellaneous_module_availability.py:51
+#: tests/86_selenium/131_miscellaneous_module_availability.py:68
+#: tests/86_selenium/131_miscellaneous_module_availability.py:95
+#: tests/86_selenium/131_miscellaneous_module_availability.py:111
+#: tests/86_selenium/131_miscellaneous_module_availability.py:125
+#: tests/86_selenium/131_miscellaneous_module_availability.py:141
+#: tests/86_selenium/131_miscellaneous_module_availability.py:155
+#: tests/86_selenium/131_miscellaneous_module_availability.py:171
+#: tests/86_selenium/130_miscellaneous.py:56
+#: tests/86_selenium/130_miscellaneous.py:127
 msgid "Process overview"
 msgstr ""
 
-#: 14_password_self-service:83
+#: tests/86_selenium/14_password_self-service.py:83
 msgid "Protect account"
 msgstr ""
 
-#: 110_product_test_do_rejoin:54
+#: tests/86_selenium/110_product_test_do_rejoin.py:54
 msgid "Reboot"
 msgstr ""
 
-#: 110_product_test_do_rejoin:46
+#: tests/86_selenium/110_product_test_do_rejoin.py:46
 msgid "Rejoin"
 msgstr ""
 
-#: 110_product_test_do_rejoin:51
+#: tests/86_selenium/110_product_test_do_rejoin.py:51
 msgid "Rejoin system"
 msgstr ""
 
-#: 15_favorite_modules:47
+#: tests/86_selenium/15_favorite_modules.py:66
+#: tests/86_selenium/15_favorite_modules.py:100
 msgid "Remove from favorites"
 msgstr "Aus Favoriten entfernen"
 
-#: 131_miscellaneous_module_availability:58
-#: 131_miscellaneous_module_availability:102
-#: 131_miscellaneous_module_availability:132
-#: 131_miscellaneous_module_availability:162
+#: tests/86_selenium/131_miscellaneous_module_availability.py:58
+#: tests/86_selenium/131_miscellaneous_module_availability.py:102
+#: tests/86_selenium/131_miscellaneous_module_availability.py:132
+#: tests/86_selenium/131_miscellaneous_module_availability.py:162
 msgid "Repository Settings"
 msgstr "Benutzereinstellungen"
 
-#: 111_product_test_execute_join_script:90
+#: tests/86_selenium/111_product_test_execute_join_script.py:90
 msgid "Restart"
 msgstr ""
 
-#: 111_product_test_execute_join_script:86
+#: tests/86_selenium/111_product_test_execute_join_script.py:86
 msgid "Run"
 msgstr ""
 
-#: 111_product_test_execute_join_script:82
+#: tests/86_selenium/111_product_test_execute_join_script.py:82
 msgid "Run join scripts"
 msgstr ""
 
-#: 131_miscellaneous_module_availability:46
-#: 131_miscellaneous_module_availability:91
+#: tests/86_selenium/131_miscellaneous_module_availability.py:46
+#: tests/86_selenium/131_miscellaneous_module_availability.py:91
 msgid "SAML identity provider"
 msgstr ""
 
-#: 151_udm_users:140
-msgid "Samba account"
-msgstr ""
-
-#: 150_udm_create_modify_delete_objects:59 12_product_test_ucr:129
-#: 14_password_self-service:94
+#: tests/86_selenium/14_password_self-service.py:94
+#: tests/86_selenium/150_udm_create_modify_delete_objects.py:59
+#: tests/86_selenium/12_product_test_ucr.py:129
 msgid "Save"
 msgstr "Speichern"
 
-#: 132_miscellaneous_open_all_modules:41 132_miscellaneous_open_all_modules:45
+#: tests/86_selenium/132_miscellaneous_open_all_modules.py:41
+#: tests/86_selenium/132_miscellaneous_open_all_modules.py:45
 msgid "Search query"
 msgstr "Suche Benutzer..."
 
-#: 131_miscellaneous_module_availability:45
-#: 131_miscellaneous_module_availability:90
+#: tests/86_selenium/131_miscellaneous_module_availability.py:45
+#: tests/86_selenium/131_miscellaneous_module_availability.py:90
 msgid "Shares"
 msgstr ""
 
-#: 131_miscellaneous_module_availability:59
-#: 131_miscellaneous_module_availability:72
-#: 131_miscellaneous_module_availability:103
-#: 131_miscellaneous_module_availability:115
-#: 131_miscellaneous_module_availability:133
-#: 131_miscellaneous_module_availability:145
-#: 131_miscellaneous_module_availability:163
-#: 131_miscellaneous_module_availability:175
+#: tests/86_selenium/131_miscellaneous_module_availability.py:59
+#: tests/86_selenium/131_miscellaneous_module_availability.py:72
+#: tests/86_selenium/131_miscellaneous_module_availability.py:103
+#: tests/86_selenium/131_miscellaneous_module_availability.py:115
+#: tests/86_selenium/131_miscellaneous_module_availability.py:133
+#: tests/86_selenium/131_miscellaneous_module_availability.py:145
+#: tests/86_selenium/131_miscellaneous_module_availability.py:163
+#: tests/86_selenium/131_miscellaneous_module_availability.py:175
 msgid "Software update"
 msgstr ""
 
-#: 131_miscellaneous_module_availability:52
-#: 131_miscellaneous_module_availability:69
-#: 131_miscellaneous_module_availability:96
-#: 131_miscellaneous_module_availability:112
-#: 131_miscellaneous_module_availability:126
-#: 131_miscellaneous_module_availability:142
-#: 131_miscellaneous_module_availability:156
-#: 131_miscellaneous_module_availability:172
+#: tests/86_selenium/131_miscellaneous_module_availability.py:52
+#: tests/86_selenium/131_miscellaneous_module_availability.py:69
+#: tests/86_selenium/131_miscellaneous_module_availability.py:96
+#: tests/86_selenium/131_miscellaneous_module_availability.py:112
+#: tests/86_selenium/131_miscellaneous_module_availability.py:126
+#: tests/86_selenium/131_miscellaneous_module_availability.py:142
+#: tests/86_selenium/131_miscellaneous_module_availability.py:156
+#: tests/86_selenium/131_miscellaneous_module_availability.py:172
 msgid "Statistics"
 msgstr ""
 
-#: 130_miscellaneous:160 130_miscellaneous:162
+#: tests/86_selenium/130_miscellaneous.py:160
+#: tests/86_selenium/130_miscellaneous.py:162
 msgid "Switch language"
 msgstr "Sprache ändern"
 
-#: 131_miscellaneous_module_availability:55
-#: 131_miscellaneous_module_availability:99
-#: 131_miscellaneous_module_availability:129
-#: 131_miscellaneous_module_availability:159
+#: tests/86_selenium/131_miscellaneous_module_availability.py:55
+#: tests/86_selenium/131_miscellaneous_module_availability.py:99
+#: tests/86_selenium/131_miscellaneous_module_availability.py:129
+#: tests/86_selenium/131_miscellaneous_module_availability.py:159
 msgid "System diagnostic"
 msgstr ""
 
-#: 131_miscellaneous_module_availability:53
-#: 131_miscellaneous_module_availability:70
-#: 131_miscellaneous_module_availability:97
-#: 131_miscellaneous_module_availability:113
-#: 131_miscellaneous_module_availability:127
-#: 131_miscellaneous_module_availability:143
-#: 131_miscellaneous_module_availability:157
-#: 131_miscellaneous_module_availability:173
+#: tests/86_selenium/131_miscellaneous_module_availability.py:53
+#: tests/86_selenium/131_miscellaneous_module_availability.py:70
+#: tests/86_selenium/131_miscellaneous_module_availability.py:97
+#: tests/86_selenium/131_miscellaneous_module_availability.py:113
+#: tests/86_selenium/131_miscellaneous_module_availability.py:127
+#: tests/86_selenium/131_miscellaneous_module_availability.py:143
+#: tests/86_selenium/131_miscellaneous_module_availability.py:157
+#: tests/86_selenium/131_miscellaneous_module_availability.py:173
 msgid "System services"
 msgstr ""
 
-#: 110_product_test_do_rejoin:45
+#: tests/86_selenium/110_product_test_do_rejoin.py:45
 msgid "This page shows the status of"
 msgstr ""
 
-#: 12_product_test_ucr:98 130_miscellaneous:54 130_miscellaneous:126
-#: 131_miscellaneous_module_availability:54
-#: 131_miscellaneous_module_availability:71
-#: 131_miscellaneous_module_availability:98
-#: 131_miscellaneous_module_availability:114
-#: 131_miscellaneous_module_availability:128
-#: 131_miscellaneous_module_availability:144
-#: 131_miscellaneous_module_availability:158
-#: 131_miscellaneous_module_availability:174
+#: tests/86_selenium/131_miscellaneous_module_availability.py:54
+#: tests/86_selenium/131_miscellaneous_module_availability.py:71
+#: tests/86_selenium/131_miscellaneous_module_availability.py:98
+#: tests/86_selenium/131_miscellaneous_module_availability.py:114
+#: tests/86_selenium/131_miscellaneous_module_availability.py:128
+#: tests/86_selenium/131_miscellaneous_module_availability.py:144
+#: tests/86_selenium/131_miscellaneous_module_availability.py:158
+#: tests/86_selenium/131_miscellaneous_module_availability.py:174
+#: tests/86_selenium/12_product_test_ucr.py:98
+#: tests/86_selenium/130_miscellaneous.py:54
+#: tests/86_selenium/130_miscellaneous.py:126
 msgid "Univention Configuration Registry"
 msgstr ""
 
-#: 14_password_self-service:95 14_password_self-service:110
+#: tests/86_selenium/14_password_self-service.py:95
+#: tests/86_selenium/14_password_self-service.py:110
 msgid "Univention Portal"
 msgstr ""
 
-#: 10_product_test_password_change:181
+#: tests/86_selenium/10_product_test_password_change.py:188
 msgid "User settings"
 msgstr "Benutzereinstellungen"
 
-#: 131_miscellaneous_module_availability:34
-#: 131_miscellaneous_module_availability:79 15_favorite_modules:57
-#: 10_product_test_password_change:88 10_product_test_password_change:126
+#: tests/86_selenium/131_miscellaneous_module_availability.py:34
+#: tests/86_selenium/131_miscellaneous_module_availability.py:79
+#: tests/86_selenium/15_favorite_modules.py:77
+#: tests/86_selenium/10_product_test_password_change.py:95
+#: tests/86_selenium/10_product_test_password_change.py:133
 msgid "Users"
 msgstr "Benutzer"
 
-#: 151_udm_users:150
-msgid "[Advanced settings]"
-msgstr ""
-
-#: 151_udm_users:138 151_udm_users:150 151_udm_users:163
-msgid "[Options]"
-msgstr ""
-
-#: 151_udm_users:150
-msgid "[Policies]"
-msgstr ""
-
-#: 12_product_test_ucr:99
+#: tests/86_selenium/12_product_test_ucr.py:99
 msgid "apache"
 msgstr ""
 
-#: 130_miscellaneous:57
+#: tests/86_selenium/130_miscellaneous.py:57
 msgid "generates an overview"
 msgstr ""
 
-#: 151_udm_users:131
+#: tests/86_selenium/151_udm_users.py:124
 msgid "more"
 msgstr ""
 
-#: 10_product_test_password_change:170 10_product_test_password_change:173
+#: tests/86_selenium/10_product_test_password_change.py:177
+#: tests/86_selenium/10_product_test_password_change.py:180
 msgid "no module available"
 msgstr "kein Modul verfügbar"
 
-#: 10_product_test_password_change:189
+#: tests/86_selenium/10_product_test_password_change.py:196
 msgid "password has been changed"
 msgstr "Passwort wurde erfolgreich geändert"
 
-#: 10_product_test_password_change:139
+#: tests/86_selenium/10_product_test_password_change.py:146
 msgid "password has expired and must be renewed"
 msgstr "password has expired and must be renewed"
 
-#: 10_product_test_password_change:191 10_product_test_password_change:205
+#: tests/86_selenium/10_product_test_password_change.py:198
+#: tests/86_selenium/10_product_test_password_change.py:212
 msgid "password is too short"
 msgstr "Passwort ist zu kurz"
 
-#: 10_product_test_password_change:192 10_product_test_password_change:200
+#: tests/86_selenium/10_product_test_password_change.py:199
+#: tests/86_selenium/10_product_test_password_change.py:207
 msgid "password is too simple"
 msgstr ""
 
-#: 10_product_test_password_change:190 10_product_test_password_change:195
+#: tests/86_selenium/10_product_test_password_change.py:197
+#: tests/86_selenium/10_product_test_password_change.py:202
 msgid "password was already used"
 msgstr "Passwort wurde bereits genutzt"
 
-#: 130_miscellaneous:44
+#: tests/86_selenium/130_miscellaneous.py:44
 msgid "really want to logout"
 msgstr ""
 
-#: 111_product_test_execute_join_script:89
+#: tests/86_selenium/111_product_test_execute_join_script.py:89
 msgid "restart of the UMC server"
 msgstr ""
 
-#: 12_product_test_ucr:128
+#: tests/86_selenium/12_product_test_ucr.py:128
 msgid "value"
 msgstr ""
 
