@@ -501,6 +501,7 @@ define([
 					// name should not be editable
 					this._generalForm._widgets.name.set( 'disabled', true );
 
+					this._targethostGrid.set( 'domainActive', domainActive );
 					this._advancedForm._widgets.arch.set( 'disabled', domainActive );
 					this._driveGrid.set( 'domainActive', domainActive );
 					this._interfaceGrid.set( 'disabled', domainActive );
@@ -517,6 +518,7 @@ define([
 					this._interfaceGrid.filter();
 					this._driveGrid.filter();
 					this._snapshotGrid.filter();
+					this._targethostGrid.filter();
 				}
 				this.standby(false);
 			}), lang.hitch(this, function() {
