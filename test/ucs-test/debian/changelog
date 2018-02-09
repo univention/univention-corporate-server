@@ -1,3 +1,9 @@
+ucs-test (8.0.27-11ubuntu1) UNRELEASED; urgency=medium
+
+  * 53_samba-common/30winbind: Samba is also required (Bug #46118)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 09 Feb 2018 11:43:53 +0100
+
 ucs-test (8.0.27-11) unstable; urgency=medium
 
   * Bug #39817: Fix test cases

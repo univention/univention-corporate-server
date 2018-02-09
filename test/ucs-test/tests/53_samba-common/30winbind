@@ -3,6 +3,7 @@
 ## exposure: safe
 ## packages:
 ##  - winbind
+##  - samba
 ## roles-not:
 ## - basesystem
 ## tags:
