@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.19-11) unstable; urgency=medium
+
+  * Bug #46270: Add UDM flavor for portals portal entries
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 09 Feb 2018 20:06:40 +0100
+
 univention-directory-manager-modules (13.0.19-10) unstable; urgency=medium
 
   * Bug #45842: Feedback from QA
