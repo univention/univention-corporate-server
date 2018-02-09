@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-virtual-machine-manager-daemon
-fix: 6.0.4-10A~4.2.0.201802070952
+fix: 6.0.4-11A~4.2.0.201802091611
 desc: |
  This update addresses the following issue:
  * It is now possible to limit the target hosts a VM can be migrated
