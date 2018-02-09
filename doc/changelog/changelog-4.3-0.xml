@@ -38,7 +38,10 @@
 						The &ucsUCRV; <envar>interfaces/primary</envar> is set during the system setup (<u:bug>45956</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						The update is stopped in case the system has a TLS certificate with a MD5 signature (<u:bug>46133</u:bug>). The hash algorithm can be set on the domain controler master with <command>ucr set ssl/default/hashfunction=sha256</command>. The certificate needs to be renewed afterwards. For details see <ulink url="https://help.univention.com/t/renewing-the-ssl-certificates/37">Renewing the SSL certificate</ulink>.
+						The update is stopped in case the system has a TLS certificate with a MD5 signature (<u:bug>46133</u:bug>).
+						The hash algorithm can be set on the &ucsMaster; with <command>ucr set ssl/default/hashfunction=sha256</command>.
+						The certificate needs to be renewed afterwards.
+						For details see <ulink url="https://help.univention.com/t/renewing-the-ssl-certificates/37">Renewing the SSL certificate</ulink>.
 					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
@@ -198,7 +201,7 @@
 			<title>System diagnostic module</title>
 			<itemizedlist>
 				<listitem><simpara>
-						Various fixes for more reliable diagnsotic results (<u:bug>46231</u:bug>).
+					Various fixes for more reliable diagnostic results (<u:bug>46231</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
