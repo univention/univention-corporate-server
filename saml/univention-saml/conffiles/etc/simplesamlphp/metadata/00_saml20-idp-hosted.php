@@ -27,7 +27,9 @@ print "	'certificate'	=> '%s'," % configRegistry.get('saml/idp/certificate/certi
 	 * 'config/authsources.php'.
 	 */
 	//'auth' => 'example-userpass',
-	'auth' => 'univention-ldap',
+@!@
+print "	'auth'	=> '%s'," % configRegistry.get('saml/idp/authsource', 'univention-negotiate')
+@!@
 
 	/* Uncomment the following to use the uri NameFormat on attributes. */
 	/*

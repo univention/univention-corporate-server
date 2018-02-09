@@ -10,6 +10,7 @@ Subfile: etc/simplesamlphp/metadata/00_saml20-idp-hosted.php
 Variables: saml/idp/entityID
 Variables: saml/idp/certificate/privatekey
 Variables: saml/idp/certificate/certificate
+Variables: saml/idp/authsource
 Variables: apache2/ssl/key
 Variables: apache2/ssl/certificate
 Variables: hostname

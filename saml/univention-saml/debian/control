@@ -27,6 +27,8 @@ Depends: ${misc:Depends},
  apache2-suexec-pristine,
  php-cgi,
  adduser,
+ php-krb5,
+ univention-heimdal-common,
 Breaks: univention-saml-schema (<< 3.0.16-1)
 Description: Integrates simpleSAMLphp Identity Provider into UCS
  This packages provides the basic configuration for the

@@ -136,6 +136,12 @@ Description[en]=If this variable is set to true, HTTP connections to /simplesaml
 Type=str
 Categories=saml
 
+[saml/idp/authsource]
+Description[de]=Die Quellkonfiguration die zur Authentifizierung von Benutzern aktiviert ist. Der Standardwert ist univention-negotiate, es kann auch univention-ldap verwendet werden.
+Description[en]=The source configuration used to authenticate users. Default is univention-negotiate, univention-ldap may also be used.
+Type=str
+Categories=saml
+
 [stunnel/debuglevel]
 Description[de]=Der Debuglevel des stunnel daemons. Gültige Werte 0-7 (default: 4)
 Description[en]=Debug level of the stunnel daemon. Valid values are 0-7 (default: 4)

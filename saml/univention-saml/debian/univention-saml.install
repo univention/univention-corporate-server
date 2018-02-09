@@ -3,4 +3,5 @@ listener/univention-saml-simplesamlphp-configuration.py usr/lib/univention-direc
 simplesamlphp-modules/* usr/share/simplesamlphp/modules
 24univention-saml-uninstall.uinst usr/lib/univention-uninstall
 91univention-saml.inst usr/lib/univention-install
+99univention-saml-kerberos.inst usr/lib/univention-install
 scripts/php-cgi /var/www/saml

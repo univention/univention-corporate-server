@@ -4,10 +4,10 @@ if configRegistry.is_true('saml/idp/negotiate'):
 	print '''
 $config['univention-negotiate'] = array(
 		'negotiate:Negotiate',
-		'keytab' => '/etc/simplesamlphp/krb5.keytab',
+		'keytab' => '/etc/simplesamlphp/simplesamlphp.keytab',
 		'fallback' => 'univention-ldap',
 	'''
-	print " 'attributes' => '%s'," % configRegistry.get('saml/idp/ldap/get_attributes', 'uid')
+	print "	'attributes' => array(%s)," % configRegistry.get('saml/idp/ldap/get_attributes', 'uid')
 	from univention.lib.misc import getLDAPURIs
 	hostname = getLDAPURIs()
 	print "	'hostname' => '%s'," % (hostname,)

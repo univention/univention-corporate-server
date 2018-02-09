@@ -67,10 +67,13 @@ configure)
 	done
 
 	call_joinscript 91univention-saml.inst
+	call_joinscript 99univention-saml-kerberos.inst
 
-	if [ ! -e /etc/simplesamlphp/metadata/metadata_include.php ]; then
-		touch /etc/simplesamlphp/metadata/metadata_include.php
-	fi
+	for file in /etc/simplesamlphp/metadata/metadata_include.php /usr/share/simplesamlphp/modules/negotiate/enable; do
+		if [ ! -e "$file" ]; then
+			touch "$file"
+		fi
+	done
 
 	chown -R root:samlcgi /etc/simplesamlphp
 
