@@ -35,6 +35,12 @@ from os import listdir
 import os.path
 import traceback
 
+# strptime import is not threadsafe
+# Workaround: import early
+# Upstream bug: https://bugs.python.org/issue7980
+# UCS bug: http://forge.univention.org/bugzilla/show_bug.cgi?id=45585
+import _strptime
+
 from univention.management.console.modules import Base
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import PatternSanitizer, DictSanitizer, StringSanitizer
