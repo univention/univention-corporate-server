@@ -1,3 +1,9 @@
+univention-appcenter (6.0.11-14) unstable; urgency=medium
+
+  * Bug #46222: Fix upgrade without app settings
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 09 Feb 2018 00:49:26 +0100
+
 univention-appcenter (6.0.11-13) unstable; urgency=medium
 
   * Bug #45796: Work around split brains in caches
