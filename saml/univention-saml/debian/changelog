@@ -1,3 +1,17 @@
+univention-saml (5.0.4-5) unstable; urgency=medium
+
+  * Bug #33214 Adjust univention-saml configuration
+  * Add joinscript to configure kerberos service principal
+  * Modify univention-saml apache config to work with negotiate module
+  * Adjust simplesaml negotiate config to use the same ldap parameters as
+    the fallback ldap connection (saml/idp/ldap/get_attributes)
+  * Make IdP auth source configureable via saml/idp/authsource, default
+    is univention-negotiate
+  * Add dependencies to php-krb5 and univention-heimdal-common
+  * Enable simplesamlphp negotiate module by default
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 09 Feb 2018 13:33:59 +0100
+
 univention-saml (5.0.4-4) unstable; urgency=medium
 
   * Bug #46212: Do not let dh_installinit restart the service on upgrade
