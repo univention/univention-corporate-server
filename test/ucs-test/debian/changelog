@@ -1,3 +1,9 @@
+ucs-test (8.0.28-6) unstable; urgency=medium
+
+  * Bug #33214: Adjust saml tests and use ldap auth backend for existing tests
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 09 Feb 2018 17:01:13 +0100
+
 ucs-test (8.0.28-5) unstable; urgency=medium
 
   * Bug #46035: Revert: Fix broken translation in selenium tests

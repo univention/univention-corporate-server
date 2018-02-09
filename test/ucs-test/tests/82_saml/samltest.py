@@ -225,3 +225,11 @@ class SamlTest(object):
 		print("Loging out at url: %s" % url)
 		self.position = "trying to logout"
 		self._request('GET', url, 200)
+
+class with_saml_ldap_auth_backend(object):
+	def __enter__(self):
+		subprocess.call(['ucr', 'set', 'saml/idp/authsource=univention-ldap'])
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		subprocess.call(['ucr', 'set', 'saml/idp/authsource=univention-negotiate'])
+

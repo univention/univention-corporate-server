@@ -56,31 +56,32 @@ def restart_umc_server():
 
 def main():
 
-	renew_sso_cert()
-	account = utils.UCSTestDomainAdminCredentials()
-	SamlSession = samltest.SamlTest(account.username, account.bindpw)
-	try:
-		# Previously umc had a segfault here
-		SamlSession.login_with_new_session_at_IdP()
-	except samltest.SamlError as exc:
-		expected_error = "The SAML authentication failed. This might be a temporary problem. Please login again.\\nFurther information can be found in the following logfiles:\\n* /var/log/univention/management-console-web-server.log\\n* /var/log/univention/management-console-server.log\\n"
-		if expected_error not in exc.message:
-			utils.fail(exc.message)
-	reload_idp_metadata()
-	try:
-		# Previously slapd had a segfault here
+	with samltest.with_saml_ldap_auth_backend():
+		renew_sso_cert()
+		account = utils.UCSTestDomainAdminCredentials()
+		SamlSession = samltest.SamlTest(account.username, account.bindpw)
+		try:
+			# Previously umc had a segfault here
+			SamlSession.login_with_new_session_at_IdP()
+		except samltest.SamlError as exc:
+			expected_error = "The SAML authentication failed. This might be a temporary problem. Please login again.\\nFurther information can be found in the following logfiles:\\n* /var/log/univention/management-console-web-server.log\\n* /var/log/univention/management-console-server.log\\n"
+			if expected_error not in exc.message:
+				utils.fail(exc.message)
+		reload_idp_metadata()
+		try:
+			# Previously slapd had a segfault here
+			SamlSession.test_slapd()
+		except samltest.SamlError as exc:
+			expected_error = "Wrong status code: 401, expected: 200"
+			if expected_error not in exc.message:
+				utils.fail(exc.message)
+		restart_umc_server()
+		restart_slapd()
+		SamlSession.login_with_existing_session_at_IdP()
 		SamlSession.test_slapd()
-	except samltest.SamlError as exc:
-		expected_error = "Wrong status code: 401, expected: 200"
-		if expected_error not in exc.message:
-			utils.fail(exc.message)
-	restart_umc_server()
-	restart_slapd()
-	SamlSession.login_with_existing_session_at_IdP()
-	SamlSession.test_slapd()
-	SamlSession.logout_at_IdP()
-	SamlSession.test_logout_at_IdP()
-	SamlSession.test_logout()
+		SamlSession.logout_at_IdP()
+		SamlSession.test_logout_at_IdP()
+		SamlSession.test_logout()
 
 
 if __name__ == '__main__':
