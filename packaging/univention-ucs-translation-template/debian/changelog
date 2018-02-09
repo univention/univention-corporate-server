@@ -1,3 +1,9 @@
+univention-ucs-translation-template (5.0.0-3) unstable; urgency=medium
+
+  * Bug #46035: Fix translation for selenium tests
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 09 Feb 2018 15:49:47 +0100
+
 univention-ucs-translation-template (5.0.0-2) unstable; urgency=medium
 
   * Bug #45885: use javascript xgettext dialect for javascript files
