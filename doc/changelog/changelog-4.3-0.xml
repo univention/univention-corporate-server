@@ -160,7 +160,7 @@
 					The values for the syntax class <package>Country</package> have been updated (<u:bug>45926</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The syntax class <package>Base64Bzip2XML</package> has been adjusted to allow <code> >text/xml</code>> input data (<u:bug>45941</u:bug>).
+					The syntax class <package>Base64Bzip2XML</package> has been adjusted to allow <literal>text/xml</literal> input data (<u:bug>45941</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					In certain situations after locking and unlocking a user object the password was accidentally modified to one of <package>password</package>, <package>********</package>, <package>{KINIT}</package> or <package>{SASL}</package>.
