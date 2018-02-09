@@ -38,7 +38,7 @@
 						The &ucsUCRV; <envar>interfaces/primary</envar> is set during the system setup (<u:bug>45956</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						The update is stopped in case the system has a tls certificate with a md5 signature (<u:bug>46133</u:bug>). The hash algorithm can be set with <command>ucr set ssl/default/hashfunction=sha256</command>. The certificate needs to be renewed afterwards. For details see <ulink url="https://help.univention.com/t/renewing-the-ssl-certificates/37">Renewing the ssl certificate</ulink>.
+						The update is stopped in case the system has a TLS certificate with a MD5 signature (<u:bug>46133</u:bug>). The hash algorithm can be set with <command>ucr set ssl/default/hashfunction=sha256</command>. The certificate needs to be renewed afterwards. For details see <ulink url="https://help.univention.com/t/renewing-the-ssl-certificates/37">Renewing the SSL certificate</ulink>.
 					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
@@ -61,12 +61,12 @@
 					The test in the <package>slapd</package>'s update scripts, whether the system is a UCS system, has been changed (<u:bug>45936</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Starting with UCS 4.3 the <package>openldap</package> overlay module for reverse group membership maintenance (memberOf) is activated by
+					Starting with UCS 4.3 the <package>openldap</package> overlay module for reverse group membership maintenance (<property>memberOf</property>) is activated by
 					default for new installations, see the <package>openldap</package> documentation
 					<ulink url="https://www.openldap.org/doc/admin24/overlays.html#Reverse%20Group%20Membership%20Maintenance">https://www.openldap.org/doc/admin24/overlays.html#Reverse Group Membership Maintenance</ulink>
-					for more information. This applies for new installations only, during the update to 4.3 the memberOf overlay module is installed but deactivated (if
+					for more information. This applies for new installations only, during the update to 4.3 the <property>memberOf</property> overlay module is installed but deactivated (if
 					not already activated).
-					Information on how to activate the memberOf overlay module can be found in <ulink url="https://help.univention.com/t/6439">https://help.univention.com/t/6439</ulink>
+					Information on how to activate the <property>memberOf</property> overlay module can be found in <ulink url="https://help.univention.com/t/6439">https://help.univention.com/t/6439</ulink>
 					(<u:bug>46066</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -146,7 +146,11 @@
 					(<u:bug>45842</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						The <package>disabled</package> and <package>locked</package> choices in the <package>users/user</package> module have been simplified and adjusted to match Active Directory concepts. Now, when an administrator disables and account, all methods for authentication get disabled (LDAP/Posix, Kerberos, Samba). This is in line with the unification of UDM options for user accounts. The <package>locked</package> setting, which used to do simmilar things, has ben replaced to show if an account has been locked out temporarily and to allow administrative unlocking. Temporary lockout of an account can happen in case a user exceeds a number of failed authentication attempts, if a corresponding domain wide policy setting has been defined by an administrator (<u:bug>39817</u:bug>).
+					The <package>disabled</package> and <package>locked</package> choices in the <package>users/user</package> module have been simplified and adjusted to match Active Directory concepts.
+					Now, when an administrator disables and account, all methods for authentication get disabled (LDAP/POSIX, Kerberos, Samba).
+					This is in line with the unification of UDM options for user accounts.
+					The <package>locked</package> setting, which used to do similar things, has been replaced to show if an account has been locked out temporarily and to allow administrative unlocking.
+					Temporary lockout of an account can happen in case a user exceeds a number of failed authentication attempts, if a corresponding domain wide policy setting has been defined by an administrator (<u:bug>39817</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The values for the syntax class <package>Country</package> have been updated (<u:bug>45926</u:bug>).
@@ -486,7 +490,8 @@
 				The <package>univention-runit</package> configuration has been adapted to Debian Stretch (<u:bug>45861</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-					The ntp init script has been removed from <package>univention-base-files</package>. Instead the init script provided by <package>ntp</package> is being used (<u:bug>46071</u:bug>).
+				The <systemitem class="service">ntp</systemitem> init script has been removed from <package>univention-base-files</package>.
+				Instead the <application>systemd</application> script provided by <package>ntp</package> is being used (<u:bug>46071</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
