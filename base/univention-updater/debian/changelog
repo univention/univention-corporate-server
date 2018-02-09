@@ -1,3 +1,9 @@
+univention-updater (13.0.1-11) unstable; urgency=medium
+
+  * Bug #46133: improve error message in preup.sh
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 09 Feb 2018 12:02:27 +0100
+
 univention-updater (13.0.1-10) unstable; urgency=medium
 
   * Bug #46133: check signature algorithm of the tls certificate in preup.sh

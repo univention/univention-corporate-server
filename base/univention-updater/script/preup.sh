@@ -310,9 +310,9 @@ fail_if_md5_signature_is_used () {
 	if [ $? -eq 0 ]; then
 		echo "ERROR: The pre-check of the update found that the certificate file:"
 		echo "       "$cert_path""
-		echo "       is using md5 as the signature algorithm. This is not"
-		echo "       supported in UCS 4.3 and later versions."
-		echo "       The signature algorithm used can be set with:"
+		echo "       is using md5 as the signature algorithm. This is not supported in"
+		echo "       UCS 4.3 and later versions. The signature algorithm can be set"
+		echo "       on the domain controller master with:"
 		echo "       ucr set ssl/default/hashfunction=sha256"
 		echo "       The certificate needs to be renewed afterwards. Doing that is"
 		echo "       described at:"
