@@ -402,6 +402,10 @@
 			<title>Univention Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
 				<listitem><simpara>
+					<application>Qemu</application> has been re-compiled to use newer libraries from <systemitem class="osname">UCS-4.3</systemitem>.
+					Profiles for <systemitem class="osname">Windows Server 2003</systemitem> are no longer created.
+					Individual profiles for previous <systemitem class="osname">UCS</systemitem> releases are no longer created in favor of a generic profile for <systemitem class="osname">UCS-4</systemitem>.
+					The default boot order has been swapped to hard-disk before CD-ROM.
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
