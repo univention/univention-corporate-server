@@ -39,6 +39,7 @@ import sys
 from contextlib import contextmanager
 import logging
 from base64 import encodestring
+from threading import Thread
 
 # related third party
 import notifier
@@ -47,7 +48,7 @@ import apt  # for independent apt.Cache
 
 # univention
 from univention.lib.package_manager import PackageManager, LockError
-from univention.lib.umc import Client, ConnectionError, HTTPError
+from univention.lib.umc import Client, ConnectionError, HTTPError, Forbidden
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response, require_password
 from univention.management.console.modules.mixins import ProgressMixin
@@ -58,15 +59,14 @@ import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.appcenter.actions import get_action
 from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError
-from univention.appcenter.packages import reload_package_manager, get_package_manager
+from univention.appcenter.packages import reload_package_manager, get_package_manager, package_lock
 from univention.appcenter.app_cache import Apps
-from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information, app_is_running
+from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information, app_is_running, find_hosts_for_master_packages, get_local_fqdn
 from univention.appcenter.log import get_base_logger, log_to_logfile
 from univention.appcenter.ucr import ucr_instance, ucr_save
 from univention.appcenter.settings import FileSetting, PasswordFileSetting
 
 # local application
-from univention.management.console.modules.appcenter.app_center import Application, LICENSE
 from univention.management.console.modules.appcenter.sanitizers import error_handling, AppSanitizer, basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
 from univention.management.console.modules.appcenter import constants
 from univention.management.console.modules.appcenter import util
@@ -75,18 +75,15 @@ _ = umc.Translation('univention-management-console-module-appcenter').translate
 
 
 class NoneCandidate(object):
-
 	''' Mock object if package has no candidate
 	(may happen without network connection)
 	'''
-
 	def __init__(self):
 		self.summary = self.version = self.description = self.priority = self.section = _('Package not found in repository')
 		self.installed_size = 0
 
 
 class UMCProgressHandler(logging.Handler):
-
 	def __init__(self, progress):
 		super(UMCProgressHandler, self).__init__()
 		self.progress = progress
@@ -100,7 +97,6 @@ class UMCProgressHandler(logging.Handler):
 
 
 class ProgressInfoHandler(logging.Handler):
-
 	def __init__(self, package_manager):
 		super(ProgressInfoHandler, self).__init__()
 		self.state = package_manager.progress_state
@@ -116,7 +112,6 @@ class ProgressInfoHandler(logging.Handler):
 
 
 class ProgressPercentageHandler(ProgressInfoHandler):
-
 	def emit(self, record):
 		percentage = float(record.msg)
 		self.state.percentage(percentage)
@@ -132,7 +127,6 @@ def require_apps_update(func):
 
 
 class Instance(umcm.Base, ProgressMixin):
-
 	def init(self):
 		os.umask(0o022)  # umc umask is too restrictive for app center as it creates a lot of files in docker containers
 		self.ucr = ucr_instance()
@@ -152,11 +146,13 @@ class Instance(umcm.Base, ProgressMixin):
 			MODULE.error(str(exc))
 			raise umcm.UMC_Error(str(exc), status=500)
 		self.package_manager.set_finished()  # currently not working. accepting new tasks
-		self.uu = UniventionUpdater(False)
-		self.component_manager = util.ComponentManager(self.ucr, self.uu)
 		get_package_manager._package_manager = self.package_manager
 
-		# in order to set the correct locale for Application
+		# not initialize here: error prone due to network errors and also kinda slow
+		self._uu = None
+		self._cm = None
+
+		# in order to set the correct locale
 		locale.setlocale(locale.LC_ALL, str(self.locale))
 
 		try:
@@ -175,14 +171,27 @@ class Instance(umcm.Base, ProgressMixin):
 		get_base_logger().getChild('actions.upgrade.progress').addHandler(percentage)
 		get_base_logger().getChild('actions.remove.progress').addHandler(percentage)
 
+	def get_updater(self):
+		if self._uu is None:
+			self._uu = UniventionUpdater(False)
+		return self._uu
+
+	def get_component_manager(self):
+		if self._cm is None:
+			self._cm = util.ComponentManager(self.ucr, self.get_updater())
+		return self._cm
+
 	def error_handling(self, etype, exc, etraceback):
 		error_handling(etype, exc, etraceback)
 		return super(Instance, self).error_handling(exc, etype, etraceback)
 
 	@simple_response
-	def version(self):
+	def version(self, version=None):
 		info = get_action('info')
-		return info.get_compatibility()
+		ret = info.get_compatibility()
+		if not info.is_compatible(version):
+			raise umcm.UMC_Error('The App Center version of the requesting host is not compatible with the version of %s (%s)' % (get_local_fqdn(), ret))
+		return ret
 
 	@simple_response
 	def query(self, quick=False):
@@ -220,7 +229,6 @@ class Instance(umcm.Base, ProgressMixin):
 				raise umcm.UMC_Error(str(err))
 			except Abort:
 				pass
-			Application._all_applications = None
 			self.update_applications_done = True
 
 	def _test_for_docker_service(self):
@@ -427,7 +435,7 @@ class Instance(umcm.Base, ProgressMixin):
 	@contextmanager
 	def locked(self):
 		try:
-			with self.package_manager.locked(reset_status=True, set_finished=True):
+			with package_lock(reset=True):
 				yield
 		except LockError:
 			raise umcm.UMC_Error(_('Another package operation is in progress'))
@@ -435,7 +443,7 @@ class Instance(umcm.Base, ProgressMixin):
 	@require_apps_update
 	@require_password
 	@sanitize(
-		function=ChoicesSanitizer(['install', 'uninstall', 'update', 'install-schema', 'update-schema'], required=True),
+		function=ChoicesSanitizer(['install', 'uninstall', 'update', 'install-schema', 'update-schema', 'upgrade', 'upgrade-schema', 'remove'], required=True),
 		application=StringSanitizer(minimum=1, required=True),
 		force=BooleanSanitizer(),
 		host=StringSanitizer(),
@@ -457,18 +465,20 @@ class Instance(umcm.Base, ProgressMixin):
 		if function.startswith('install'):
 			function = 'install'
 		if function.startswith('update'):
-			function = 'update'
+			function = 'upgrade'
+		if function == 'uninstall':
+			function = 'remove'
 
-		application_id = request.options.get('application')
-		Application.all(only_local=True)  # if not yet cached, cache. but use only local inis
-		application = Application.find(application_id)
-		if application is None:
-			raise umcm.UMC_Error(_('Could not find an application for %s') % (application_id,))
+		app_id = request.options.get('application')
+		app = Apps().find(app_id)
+		if app is None:
+			raise umcm.UMC_Error(_('Could not find an application for %s') % (app_id,))
 		force = request.options.get('force')
+		values = request.options.get('values')
 		only_dry_run = request.options.get('only_dry_run')
 		dont_remote_install = request.options.get('dont_remote_install')
 		only_master_packages = send_as.endswith('schema')
-		MODULE.process('Try to %s (%s) %s on %s. Force? %r. Only master packages? %r. Prevent installation on other systems? %r. Only dry run? %r.' % (function, send_as, application_id, host, force, only_master_packages, dont_remote_install, only_dry_run))
+		MODULE.process('Try to %s (%s) %s on %s. Force? %r. Only master packages? %r. Prevent installation on other systems? %r. Only dry run? %r.' % (function, send_as, app_id, host, force, only_master_packages, dont_remote_install, only_dry_run))
 
 		# REMOTE invocation!
 		if host and host != self.ucr.get('hostname'):
@@ -485,20 +495,23 @@ class Instance(umcm.Base, ProgressMixin):
 				}
 			else:
 				if result['can_continue']:
-					def _thread_remote(_client, _package_manager):
-						with _package_manager.locked(reset_status=True, set_finished=True):
-							_package_manager.unlock()   # not really locked locally, but busy, so "with locked()" is appropriate
-							Application._query_remote_progress(_client, _package_manager)
+					def _thread_remote(_client):
+						with self.locked():
+							get_package_manager().unlock()   # not really locked locally, but busy, so "with locked()" is appropriate
+							self._query_remote_progress(_client)
 
 					def _finished_remote(thread, result):
 						if isinstance(result, BaseException):
-							MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
-					thread = notifier.threads.Simple('invoke', notifier.Callback(_thread_remote, client, self.package_manager), _finished_remote)
+							MODULE.warn('Exception during %s %s: %s' % (function, app_id, str(result)))
+					thread = notifier.threads.Simple('invoke', notifier.Callback(_thread_remote, client), _finished_remote)
 					thread.run()
 			self.finished(request.id, result)
 			return
 
 		# make sure that the application can be installed/updated
+		action = get_action(function)()
+		args = action._build_namespace(app=app, username=self.username, password=self.password, noninteractive=True, skip_checks=['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation'], send_info=not only_master_packages, set_vars=values, dry_run=True, install_master_packages_remotely=False, only_master_packages=only_master_packages)
+
 		can_continue = True
 		delayed_can_continue = True
 		serious_problems = False
@@ -516,18 +529,23 @@ class Instance(umcm.Base, ProgressMixin):
 			'invokation_warning_details': {},
 			'software_changes_computed': False,
 		}
-		if not application:
-			MODULE.process('Application not found: %s' % application_id)
+		if not app:
+			MODULE.process('Application not found: %s' % app_id)
 			can_continue = False
 		if can_continue and not only_master_packages:
-			forbidden, warnings = application.check_invokation(function, self.package_manager)
+			if function == 'upgrade':
+				app = Apps().find_candidate(app)
+			if app is None:
+				forbidden, warnings = {'must_have_candidate': False}, {}
+			else:
+				forbidden, warnings = app.check(function)
 			if forbidden:
-				MODULE.process('Cannot %s %s: %r' % (function, application_id, forbidden))
+				MODULE.process('Cannot %s %s: %r' % (function, app_id, forbidden))
 				result['invokation_forbidden_details'] = forbidden
 				can_continue = False
 				serious_problems = True
 			if warnings:
-				MODULE.process('Warning trying to %s %s: %r' % (function, application_id, forbidden))
+				MODULE.process('Warning trying to %s %s: %r' % (function, app_id, forbidden))
 				result['invokation_warning_details'] = warnings
 				if not force:
 					# dont stop "immediately".
@@ -541,26 +559,18 @@ class Instance(umcm.Base, ProgressMixin):
 					# make it multi-tab safe (same session many buttons to be clicked)
 					raise LockError()
 				with self.package_manager.locked(reset_status=True):
-					previously_registered_by_dry_run = False
-					if can_continue and function in ('install', 'update'):
-						remove_component = only_dry_run
-						dry_run_result, previously_registered_by_dry_run = application.install_dry_run(self.package_manager, self.component_manager, remove_component=remove_component, username=self._username, password=self.password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, function=function, force=force)
-						result.update(dry_run_result)
+					if can_continue and function in ('install', 'upgrade'):
+						result.update(self._install_dry_run_remote(app, function, dont_remote_install, force))
+						serious_problems = bool(result['master_unreachable'] or result['serious_problems_with_hosts'])
+						if serious_problems:
+							args.dry_run = True
+						result.update(action.dry_run(app, args))
 						result['software_changes_computed'] = True
-						serious_problems = bool(result['broken'] or result['master_unreachable'] or result['serious_problems_with_hosts'])
+						serious_problems = bool(result['broken'] or serious_problems)
 						if serious_problems or (not force and (result['unreachable'] or result['install'] or result['remove'] or result['problems_with_hosts'])):
-							MODULE.process('Problems encountered or confirmation required. Removing component %s' % application.component_id)
-							if not remove_component:
-								# component was not removed automatically after dry_run
-								if application.candidate:
-									# operation on candidate failed. re-register original application
-									application.register(self.component_manager, self.package_manager)
-								else:
-									# operation on self failed. unregister all
-									application.unregister_all_and_register(None, self.component_manager, self.package_manager)
 							can_continue = False
-					elif can_continue and function in ('uninstall',) and not force:
-						result['remove'] = application.uninstall_dry_run(self.package_manager)
+					elif can_continue and function in ('remove',) and not force:
+						result.update(action.dry_run(app, args))
 						result['software_changes_computed'] = True
 						can_continue = False
 					can_continue = can_continue and delayed_can_continue and not only_dry_run
@@ -568,19 +578,24 @@ class Instance(umcm.Base, ProgressMixin):
 					result['can_continue'] = can_continue
 
 					if can_continue and not only_dry_run:
-						def _thread(module, application, function):
+						def _thread(module, app, function):
 							with module.package_manager.locked(set_finished=True):
+								if not dont_remote_install and function != 'remove':
+									self._install_master_packages_on_hosts(app, function)
 								with module.package_manager.no_umc_restart(exclude_apache=True):
-									if function in ('install', 'update'):
-										# dont have to add component: already added during dry_run
-										return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=send_as, username=self._username, password=self.password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, previously_registered_by_dry_run=previously_registered_by_dry_run)
-									else:
-										return application.uninstall(module.package_manager, module.component_manager, self._username, self.password)
+									try:
+										args.dry_run = False
+										args.install_master_packages_remotely = False
+										return action.main(args)
+									except AppCenterError as exc:
+										raise umcm.UMC_Error(str(exc), result=dict(
+											display_feedback=True,
+											title='%s %s' % (exc.title, exc.info)))
 
 						def _finished(thread, result):
 							if isinstance(result, BaseException):
-								MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
-						thread = notifier.threads.Simple('invoke', notifier.Callback(_thread, self, application, function), _finished)
+								MODULE.warn('Exception during %s %s: %s' % (function, app_id, str(result)))
+						thread = notifier.threads.Simple('invoke', notifier.Callback(_thread, self, app, function), _finished)
 						thread.run()
 					else:
 						self.package_manager.set_finished()  # nothing to do, ready to take new commands
@@ -589,6 +604,180 @@ class Instance(umcm.Base, ProgressMixin):
 			# make it thread safe: another process started a package manager
 			# this module instance already has a running package manager
 			raise umcm.UMC_Error(_('Another package operation is in progress'))
+
+	def _install_master_packages_on_hosts(self, app, function):
+		if function.startswith('upgrade'):
+			remote_function = 'update-schema'
+		else:
+			remote_function = 'install-schema'
+		master_packages = app.default_packages_master
+		if not master_packages:
+			return
+		hosts = find_hosts_for_master_packages()
+		all_hosts_count = len(hosts)
+		package_manager = get_package_manager()
+		package_manager.set_max_steps(all_hosts_count * 200)  # up to 50% if all hosts are installed
+		# maybe we already installed local packages (on master)
+		if self.ucr.get('server/role') == 'domaincontroller_master':
+			# TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
+			package_manager.progress_state._start_steps = all_hosts_count * 100
+		for host, host_is_master in hosts:
+			package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
+			try:
+				if not self._install_master_packages_on_host(app, remote_function, host):
+					error_message = 'Unable to install %r on %s. Check /var/log/univention/management-console-module-appcenter.log on the host and this server. All errata updates have been installed on %s?' % (master_packages, host, host)
+					raise Exception(error_message)
+			except Exception as e:
+				MODULE.error('%s: %s' % (host, e))
+				if host_is_master:
+					role = 'DC Master'
+				else:
+					role = 'DC Backup'
+				# ATTENTION: This message is not localised. It is parsed by the frontend to markup this message! If you change this message, be sure to do the same in AppCenterPage.js
+				package_manager.progress_state.error('Installing extension of LDAP schema for %s seems to have failed on %s %s' % (app.component_id, role, host))
+				if host_is_master:
+					raise  # only if host_is_master!
+			finally:
+				package_manager.add_hundred_percent()
+
+	def _install_master_packages_on_host(self, app, function, host):
+		client = Client(host, self.username, self.password)
+		result = client.umc_command('appcenter/invoke', {'function': function, 'application': app.id, 'force': True, 'dont_remote_install': True}).result
+		if result['can_continue']:
+			all_errors = self._query_remote_progress(client)
+			return len(all_errors) == 0
+		else:
+			MODULE.warn('%r' % result)
+			return False
+
+	def _install_dry_run_remote(self, app, function, dont_remote_install, force):
+		MODULE.process('Invoke install_dry_run_remote')
+		self.ucr.load()
+		if function.startswith('upgrade'):
+			remote_function = 'update-schema'
+		else:
+			remote_function = 'install-schema'
+
+		master_packages = app.default_packages_master
+
+		# connect to master/backups
+		unreachable = []
+		hosts_info = {}
+		remote_info = {
+			'master_unreachable': False,
+			'problems_with_hosts': False,
+			'serious_problems_with_hosts': False,
+		}
+		dry_run_threads = []
+		info = get_action('info')
+		if master_packages and not dont_remote_install:
+			hosts = find_hosts_for_master_packages()
+			# checking remote host is I/O heavy, so use threads
+			#   "global" variables: unreachable, hosts_info, remote_info
+
+			def _check_remote_host(app_id, host, host_is_master, username, password, force, remote_function):
+				MODULE.process('Starting dry_run for %s on %s' % (app_id, host))
+				MODULE.process('%s: Connecting...' % host)
+				try:
+					client = Client(host, username, password)
+				except (ConnectionError, HTTPError) as exc:
+					MODULE.warn('_check_remote_host: %s: %s' % (host, exc))
+					unreachable.append(host)
+					if host_is_master:
+						remote_info['master_unreachable'] = True
+				else:
+					MODULE.process('%s: ... done' % host)
+					host_info = {}
+					MODULE.process('%s: Getting version...' % host)
+					try:
+						host_version = client.umc_command('appcenter/version', {'version': info.get_compatibility()}).result
+					except Forbidden:
+						# command is not yet known (older app center)
+						MODULE.process('%s: ... forbidden!' % host)
+						host_version = None
+					except (ConnectionError, HTTPError) as exc:
+						MODULE.warn('%s: Could not get appcenter/version: %s' % (exc,))
+						raise
+					except Exception as exc:
+						MODULE.error('%s: Exception: %s' % (host, exc))
+						raise
+					MODULE.process('%s: ... done' % host)
+					host_info['compatible_version'] = info.is_compatible(host_version)
+					MODULE.process('%s: Invoking %s ...' % (host, remote_function))
+					try:
+						host_info['result'] = client.umc_command('appcenter/invoke_dry_run', {
+							'function': remote_function,
+							'application': app_id,
+							'force': force,
+							'dont_remote_install': True,
+						}).result
+					except Forbidden:
+						# command is not yet known (older app center)
+						MODULE.process('%s: ... forbidden!' % host)
+						host_info['result'] = {'can_continue': False, 'serious_problems': False}
+					except (ConnectionError, HTTPError) as exc:
+						MODULE.warn('Could not get appcenter/version: %s' % (exc,))
+						raise
+					MODULE.process('%s: ... done' % host)
+					if not host_info['compatible_version'] or not host_info['result']['can_continue']:
+						remote_info['problems_with_hosts'] = True
+						if host_info['result']['serious_problems'] or not host_info['compatible_version']:
+							remote_info['serious_problems_with_hosts'] = True
+					hosts_info[host] = host_info
+				MODULE.process('Finished dry_run for %s on %s' % (app_id, host))
+
+			for host, host_is_master in hosts:
+				thread = Thread(target=_check_remote_host, args=(app.id, host, host_is_master, self.username, self.password, force, remote_function))
+				thread.start()
+				dry_run_threads.append(thread)
+
+		result = {}
+
+		for thread in dry_run_threads:
+			thread.join()
+		MODULE.process('All %d threads finished' % (len(dry_run_threads)))
+
+		result['unreachable'] = unreachable
+		result['hosts_info'] = hosts_info
+		result.update(remote_info)
+		return result
+
+	def _query_remote_progress(self, client):
+		all_errors = set()
+		number_failures = 0
+		number_failures_max = 20
+		host = client.hostname
+		while True:
+			try:
+				result = client.umc_command('appcenter/progress').result
+			except (ConnectionError, HTTPError) as exc:
+				MODULE.warn('%s: appcenter/progress returned an error: %s' % (host, exc))
+				number_failures += 1
+				if number_failures >= number_failures_max:
+					MODULE.error('%s: Remote App Center cannot be contacted for more than %d seconds. Maybe just a long Apache Restart? Presume failure! Check logs on remote machine, maybe installation was successful.' % number_failures_max)
+					return False
+				time.sleep(1)
+				continue
+			else:
+				# everything okay. reset "timeout"
+				number_failures = 0
+			MODULE.info('Result from %s: %r' % (host, result))
+			info = result['info']
+			steps = result['steps']
+			errors = ['%s: %s' % (host, error) for error in result['errors']]
+			if info:
+				self.package_manager.progress_state.info(info)
+			if steps:
+				steps = float(steps)  # bug in package_manager in 3.1-0: int will result in 0 because of division and steps < max_steps
+				self.package_manager.progress_state.percentage(steps)
+			for error in errors:
+				if error not in all_errors:
+					self.package_manager.progress_state.error(error)
+					all_errors.add(error)
+			if result['finished'] is True:
+				break
+			time.sleep(0.1)
+		return all_errors
 
 	def keep_alive(self, request):
 		''' Fix for Bug #30611: UMC kills appcenter module
@@ -618,7 +807,7 @@ class Instance(umcm.Base, ProgressMixin):
 		if not app or not app.shop_url:
 			return None
 		ret = {}
-		ret['key_id'] = LICENSE.uuid
+		ret['key_id'] = self.ucr.get('license/uuid')
 		ret['ucs_version'] = self.ucr.get('version/version')
 		ret['app_id'] = app.id
 		ret['app_version'] = app.version
@@ -825,22 +1014,22 @@ class Instance(umcm.Base, ProgressMixin):
 		"""	Returns components list for the grid in the ComponentsPage.
 		"""
 		# be as current as possible.
-		self.uu.ucr_reinit()
+		self.get_updater().ucr_reinit()
 		self.ucr.load()
 
 		result = []
-		for comp in self.uu.get_all_components():
-			result.append(self.component_manager.component(comp))
+		for comp in self.get_updater().get_all_components():
+			result.append(self.get_component_manager().component(comp))
 		return result
 
 	@sanitize_list(StringSanitizer())
 	@multi_response(single_values=True)
 	def components_get(self, iterator, component_id):
 		# be as current as possible.
-		self.uu.ucr_reinit()
+		self.get_updater().ucr_reinit()
 		self.ucr.load()
 		for component_id in iterator:
-			yield self.component_manager.component(component_id)
+			yield self.get_component_manager().component(component_id)
 
 	@sanitize_list(DictSanitizer({'object': advanced_components_sanitizer}))
 	@multi_response
@@ -873,7 +1062,7 @@ class Instance(umcm.Base, ProgressMixin):
 		#	]
 		with util.set_save_commit_load(self.ucr) as super_ucr:
 			for object, in iterator:
-				yield self.component_manager.put(object, super_ucr)
+				yield self.get_component_manager().put(object, super_ucr)
 		self.package_manager.update()
 
 	# do the same as components_put (update)
@@ -885,7 +1074,7 @@ class Instance(umcm.Base, ProgressMixin):
 	@multi_response(single_values=True)
 	def components_del(self, iterator, component_id):
 		for component_id in iterator:
-			yield self.component_manager.remove(component_id)
+			yield self.get_component_manager().remove(component_id)
 		self.package_manager.update()
 
 	@multi_response
@@ -927,7 +1116,7 @@ class Instance(umcm.Base, ProgressMixin):
 
 		# Bug #24878: emit a warning if repository is not reachable
 		try:
-			updater = self.uu
+			updater = self.get_updater()
 			for line in updater.print_version_repositories().split('\n'):
 				if line.strip():
 					break

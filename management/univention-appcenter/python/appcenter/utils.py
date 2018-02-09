@@ -469,3 +469,21 @@ def send_information(action, app=None, status=200, value=None):
 		urlopen(request)
 	except Exception as exc:
 		utils_logger.info('Error sending app infos to the App Center server: %s' % exc)
+
+
+def find_hosts_for_master_packages():
+	from univention.appcenter.udm import get_machine_connection, search_objects
+	lo, pos = get_machine_connection()
+	hosts = []
+	for host in search_objects('computers/domaincontroller_master', lo, pos):
+		hosts.append((host.info.get('fqdn'), True))
+	for host in search_objects('computers/domaincontroller_backup', lo, pos):
+		hosts.append((host.info.get('fqdn'), False))
+	try:
+		local_fqdn = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
+		local_is_master = ucr_get('server/role') == 'domaincontroller_master'
+		hosts.remove((local_fqdn, local_is_master))
+	except ValueError:
+		# not in list
+		pass
+	return hosts

@@ -56,6 +56,7 @@ def ucr_save(values):
 			changed_values[k] = v
 	if changed_values:
 		ucr_update(_UCR, changed_values)
+	return changed_values
 
 
 def ucr_includes(key):

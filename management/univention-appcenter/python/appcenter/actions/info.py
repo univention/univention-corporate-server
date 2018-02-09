@@ -62,12 +62,16 @@ class Info(UniventionAppAction):
 
 	def _output(self):
 		self.log('UCS: %s' % self.get_ucs_version())
-		self.log('App Center compatibility: %s' % self.get_compatibility())
 		self.log('Installed: %s' % ' '.join(str(app) for app in self.get_installed_apps()))
 		self.log('Upgradable: %s' % ' '.join(app.id for app in self.get_upgradable_apps()))
 
-	def get_ucs_version(self):
+	@classmethod
+	def get_ucs_version(cls):
 		return '%s-%s errata%s' % (ucr_get('version/version'), ucr_get('version/patchlevel'), ucr_get('version/erratalevel'))
+
+	@classmethod
+	def is_compatible(cls, other_version):
+		return True
 
 	@classmethod
 	def get_compatibility(cls):
@@ -80,8 +84,9 @@ class Info(UniventionAppAction):
 		2: app center with remote installation 02/13 (not assigned, appcenter/version was not supported)
 		3: app center with version and only_dry_run 03/13
 		4: app center with docker support and new App class 11/15
+		Starting with UCS 4.3 (03/18): The full UCS version
 		'''
-		return 4
+		return cls.get_ucs_version()
 
 	def get_installed_apps(self):
 		return Apps().get_all_locally_installed_apps()

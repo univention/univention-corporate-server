@@ -42,6 +42,7 @@ from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.docker_install import Install
 from univention.appcenter.actions.service import Start
 from univention.appcenter.ucr import ucr_save
+from univention.appcenter.packages import update_packages
 
 import os
 
@@ -189,7 +190,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			action_args = remove._build_namespace(_namespace=args, app=self.old_app, send_info=False, skip_checks=['must_not_be_depended_on'])
 			remove._remove_app(self.old_app, action_args)
 			if remove._unregister_component(self.old_app):
-				remove._apt_get_update()
+				update_packages()
 			self._call_join_script(app, args)  # run again in case remove() called an installed unjoin script
 			self.old_app = app
 
@@ -205,3 +206,8 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 				pass
 		else:
 			Start.call_safe(app=self.old_app)
+
+	def dry_run(self, app, args):
+		if not app.docker:
+			return super(Upgrade, self).dry_run(app, args)
+		self.log('%s is a Docker App. No sane dry run is implemented' % app)
