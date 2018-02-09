@@ -24,36 +24,16 @@ member_of_available () {
 }
 
 member_of_not_available () {
-	univention-ldapsearch -ALLLL '(&(objectClass=posixAccount)(uid=*))' memberOf | grep '^memberOf:'
+	univention-ldapsearch -ALLLL '(&(objectClass=posixAccount)(uid=*))' + | grep -i '^memberOf:'
 	test $? -eq 0 && return 1
 	return 0
 }
 
-cleanup () {
-	ucr set ldap/overlay/memberof=$init_value
-	service slapd restart
-	if is_ucr_true ldap/overlay/memberof; then
-		/usr/share/univention-ldap-overlay-memberof/univention-update-memberof
-	fi
-}
-trap cleanup EXIT
-
-init_value=$(ucr get ldap/overlay/memberof)
-
 # activated by default, memberOf should be available
 if is_ucr_true ldap/overlay/memberof; then
 	member_of_available || fail_fast 1 "ldap/overlay/memberof=true, but memberOf not found"
+else
+	member_of_not_available || fail_fast 1 "ldap/overlay/memberof=false, but memberOf found"
 fi
-
-# deactivate
-ucr set ldap/overlay/memberof=false
-service slapd restart
-member_of_not_available || fail_fast 1 "ldap/overlay/memberof=false, but memberOf found"
-
-# re-activate
-ucr set ldap/overlay/memberof=true
-service slapd restart
-/usr/share/univention-ldap-overlay-memberof/univention-update-memberof
-member_of_available || fail_fast 1 "ldap/overlay/memberof=true, but memberOf not found"
 
 exit "$RETVAL"
