@@ -1,3 +1,9 @@
+univention-web (2.0.0-6) unstable; urgency=medium
+
+  * Bug #46270: Adjustments for UDM portal module
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 09 Feb 2018 20:20:44 +0100
+
 univention-web (2.0.0-5) unstable; urgency=medium
 
   * Bug #45893: fix typo
