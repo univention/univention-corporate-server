@@ -246,6 +246,7 @@
                                 This is typically used when a user leaves the company. In a heterogeneous
                                 environment, an account deactivation might also be caused by external tools.
                             </para>
+						</entry>
                     </row>
                     <row>
                         <entry>Account expiry date</entry>
