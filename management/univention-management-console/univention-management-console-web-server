@@ -848,6 +848,7 @@ class CPGet(CPgeneric):
 			raise UMC_HTTPError(UNAUTHORIZED)
 		info['username'] = user.username
 		info['auth_type'] = user.saml and 'SAML'
+		info['user_groups'] = user.data.get('user_groups')
 		info['remaining'] = user.time_remaining
 		info['validity'] = user.session_validity
 		return json.dumps({"status": 200, "result": info, "message": ""})
@@ -1049,11 +1050,13 @@ class CPAuth(CPgeneric):
 
 		username = req.body.get('username')
 		password = req.body.get('password')
+		user_groups = None
 		body = response.body
 		if response.mimetype == 'application/json':
-			username = response.body.get('username', username)
+			username = body.get('username', username)  # FIXME: body.get('result').get('username') ?
+			user_groups = body.get('result', {}).get('user_groups')
 			body = json.dumps(response.body)
-		self.set_session(sessionid, username, password=password)
+		self.set_session(sessionid, username, password=password, user_groups=user_groups)
 		return body
 
 	def basic(self):

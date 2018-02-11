@@ -1,3 +1,9 @@
+univention-portal (2.0.0-3) unstable; urgency=medium
+
+  * Bug 46270: Add user groups to portal entries
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 10 Feb 2018 17:21:43 +0100
+
 univention-portal (2.0.0-2) unstable; urgency=medium
 
   * Bug 46270: Enable portal administration through the portal

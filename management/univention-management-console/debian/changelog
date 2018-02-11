@@ -1,3 +1,9 @@
+univention-management-console (10.0.3-2) unstable; urgency=medium
+
+  * Bug #46270: Pass user groups to frontend in a auth request
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 11 Feb 2018 01:50:06 +0100
+
 univention-management-console (10.0.3-1) unstable; urgency=medium
 
   * Bug #44068: fix required authentication before sending requests to the

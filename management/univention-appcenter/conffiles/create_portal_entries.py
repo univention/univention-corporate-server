@@ -205,7 +205,6 @@ def _handler(ucr, changes):
 				attrs['link'] = my_links
 				attrs['portal'] = ['cn=domain,cn=portal,cn=univention,%s' % ucr_get('ldap/base')]
 				attrs['activated'] = True
-				attrs['authRestriction'] = 'anonymous'
 				try:
 					create_object_if_not_exists('settings/portal_entry', lo, pos, **attrs)
 				except udm_errors.insufficientInformation as exc:

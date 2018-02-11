@@ -99,6 +99,7 @@ def _make_obj(obj):
 		'activated': obj.get('univentionPortalEntryActivate', [''])[0] != 'FALSE',
 		'favorite': obj.get('univentionPortalEntryFavorite', [''])[0] == 'TRUE',
 		'authRestriction': obj.get('univentionPortalEntryAuthRestriction', [''])[0] or 'anonymous',
+		'userGroup': obj.get('univentionPortalEntryAllowedUserGroup', [''])[0],
 		'logo_name': _save_image(obj, 'univentionPortalEntryIcon', 'entries'),
 	}
 

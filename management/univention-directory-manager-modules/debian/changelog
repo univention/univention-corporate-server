@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.19-12) unstable; urgency=medium
+
+  * Bug #46270: Add udm attribute for portal entry user groups
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 11 Feb 2018 01:45:56 +0100
+
 univention-directory-manager-modules (13.0.19-11) unstable; urgency=medium
 
   * Bug #46270: Add UDM flavor for portals portal entries

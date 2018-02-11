@@ -128,9 +128,19 @@ property_descriptions = {
 	),
 	'authRestriction': univention.admin.property(
 		short_description=_('Authorization'),
-		long_description='',
+		long_description=_('Deprecated by userGroup'),
 		syntax=univention.admin.syntax.AuthRestriction,
 		default='anonymous',
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
+	'userGroup': univention.admin.property(
+		short_description=_('User group'),
+		long_description=_('Only visible for the specified user group. If not given, anonymous users may see the entry, too.'),
+		syntax=univention.admin.syntax.GroupDN,
 		multivalue=False,
 		options=[],
 		required=False,
@@ -179,6 +189,7 @@ layout = [
 		]),
 		Group(_('Advanced'), layout=[
 			["activated"],
+			["userGroup"],
 			#["authRestriction"],
 			#["favorite"],
 		]),
@@ -209,6 +220,7 @@ mapping.register('category', 'univentionPortalEntryCategory', None, univention.a
 mapping.register('link', 'univentionPortalEntryLink')
 mapping.register('portal', 'univentionPortalEntryPortal')
 mapping.register('activated', 'univentionPortalEntryActivate', None, univention.admin.mapping.ListToString)
+mapping.register('userGroup', 'univentionPortalEntryUserGroup', None, univention.admin.mapping.ListToString)
 mapping.register('authRestriction', 'univentionPortalEntryAuthRestriction', None, univention.admin.mapping.ListToString)
 mapping.register('icon', 'univentionPortalEntryIcon', None, univention.admin.mapping.ListToString)
 

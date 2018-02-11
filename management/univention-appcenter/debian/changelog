@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-9) unstable; urgency=medium
+
+  * Bug #46270: Do not use deprecated authRestriction
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 11 Feb 2018 01:45:07 +0100
+
 univention-appcenter (7.0.1-8) unstable; urgency=medium
 
   * Bug #46222: Fix upgrade without app settings
