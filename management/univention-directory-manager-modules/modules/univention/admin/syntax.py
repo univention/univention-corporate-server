@@ -2155,6 +2155,10 @@ class GroupDN(UDM_Objects):
 	use_objects = False
 
 
+class GroupDNOrEmpty(GroupDN):
+	empty_value = True
+
+
 class UserDN(UDM_Objects):
 	udm_modules = ('users/user', )
 	use_objects = False

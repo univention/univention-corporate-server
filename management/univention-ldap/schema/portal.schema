@@ -180,6 +180,7 @@ objectclass ( univentionPortalEntryObjectClass:1 NAME 'univentionPortalEntry'
 			$ univentionPortalEntryAuthRestriction
 			$ univentionPortalEntryIcon
 			$ univentionPortalEntryCategory
+			$ univentionPortalEntryAllowedUserGroup
 		)
 	)
 

@@ -140,7 +140,7 @@ property_descriptions = {
 	'userGroup': univention.admin.property(
 		short_description=_('User group'),
 		long_description=_('Only visible for the specified user group. If not given, anonymous users may see the entry, too.'),
-		syntax=univention.admin.syntax.GroupDN,
+		syntax=univention.admin.syntax.GroupDNOrEmpty,
 		multivalue=False,
 		options=[],
 		required=False,
@@ -220,7 +220,7 @@ mapping.register('category', 'univentionPortalEntryCategory', None, univention.a
 mapping.register('link', 'univentionPortalEntryLink')
 mapping.register('portal', 'univentionPortalEntryPortal')
 mapping.register('activated', 'univentionPortalEntryActivate', None, univention.admin.mapping.ListToString)
-mapping.register('userGroup', 'univentionPortalEntryUserGroup', None, univention.admin.mapping.ListToString)
+mapping.register('userGroup', 'univentionPortalEntryAllowedUserGroup', None, univention.admin.mapping.ListToString)
 mapping.register('authRestriction', 'univentionPortalEntryAuthRestriction', None, univention.admin.mapping.ListToString)
 mapping.register('icon', 'univentionPortalEntryIcon', None, univention.admin.mapping.ListToString)
 

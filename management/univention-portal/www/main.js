@@ -1338,6 +1338,10 @@ define([
 				var apps = this._getApps(installedApps, locale, protocol, isIPv4, isIPv6);
 				this._addCategory(_('Local Apps'), apps, 'localApps');
 			}
+			var userGroups = [];
+			array.forEach(tools.status('userGroups'), function(group) {
+				userGroups.push(group.toLowerCase());
+			});
 			array.forEach(['service', 'admin'], lang.hitch(this, function(category) {
 				var categoryEntries = array.filter(entries, function(entry) {
 					if (entry.category != category) {
@@ -1346,7 +1350,7 @@ define([
 					if (! entry.activated) {
 						return false;
 					}
-					if (entry.userGroup && (! tools.status('userGroups') || tools.status('userGroups').indexOf(entry.userGroup) == -1)) {
+					if (entry.user_group && userGroups.indexOf(entry.user_group.toLowerCase()) == -1) {
 						return false;
 					}
 					if (!entry.portals || entry.portals.indexOf(portal.dn) == -1) {
