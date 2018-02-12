@@ -289,7 +289,8 @@ class Migration(object):
 		for dn, attr in lo.search('(&(objectClass=univentionUserTemplate)(|(userOptionsPreset=groupware)(userOptionsPreset=kerberos)(userOptionsPreset=posix)(userOptionsPreset=samba)))'):
 			old = set(attr['userOptionsPreset'])
 			new = old & {'groupware', 'kerberos', 'posix', 'samba'}
-			self.modify(dn, [('userOptionsPreset', list(old), list(new))])
+			if new != old:
+				self.modify(dn, [('userOptionsPreset', list(old), list(new))])
 
 	def nt_password_to_arcfour_hmac_md5(self, nt_password):
 		# all arcfour-hmac-md5 keys begin this way
