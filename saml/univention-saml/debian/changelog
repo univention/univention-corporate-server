@@ -1,3 +1,10 @@
+univention-saml (5.0.4-6) unstable; urgency=medium
+
+  * Bug #46110 Change dependency from php-xml-parser to php-xml to remove
+    php5 dependency
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 12 Feb 2018 14:11:23 +0100
+
 univention-saml (5.0.4-5) unstable; urgency=medium
 
   * Bug #33214 Adjust univention-saml configuration
