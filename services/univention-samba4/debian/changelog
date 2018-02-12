@@ -1,3 +1,9 @@
+univention-samba4 (7.0.1-6) unstable; urgency=medium
+
+  * Bug #45326: Bump version
+
+ -- Arvid Requate <requate@univention.de>  Mon, 12 Feb 2018 16:33:33 +0100
+
 univention-samba4 (7.0.1-5) unstable; urgency=medium
 
   * Bug #45326: Register samba init script as UCR template
