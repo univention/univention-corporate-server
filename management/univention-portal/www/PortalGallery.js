@@ -151,16 +151,26 @@ define([
 						return;
 					}
 
-					// if the placeholder tile is not placed yet, put it in the place
-					// of the tile where the drag event was started
+					// if the placeholder tile is not placed yet, ...
 					if (this.dndPlaceholderHideout.firstChild === this.dndPlaceholder) {
-						put(target, '-', this.dndPlaceholder);
+						// and we come from outside the dndSource,
+						// place the placeholder in place of hovered tile
+						if (!this.dndSource.current && this.dndSource.anchor /* check for anchor to see if we are in the same category as the dragged tile */) {
+							var putCombinator = query(lang.replace('#{0} ~ #{1}', [this.dndSource.anchor.id, target.id]), this.dndSource.parent).length ? '+' : '-';
+							put(target, putCombinator, this.dndPlaceholder);
+						} else {
+							// this case is when the drag event ist started.
+							// Put the placeholder in the place of the dragged tile
+							put(target, '-', this.dndPlaceholder);
+						}
 						return;
 					}
 
 					// if we hover over a different tile while dragging and while the placeholder tile is placed
 					// we move the placeholder tile to the hovered tile
 					if (cssClass === 'Over') {
+						// if we hover a tile to the right of the placeholder we want to place the placeholder to the right of the hovered tile
+						// and vice versa
 						var putCombinator = query(lang.replace('#{0} ~ .dndPlaceholder', [target.id]), this.dndSource.parent).length ? '-' : '+';
 						put(target, putCombinator, this.dndPlaceholder);
 					}
