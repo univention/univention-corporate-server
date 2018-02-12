@@ -164,7 +164,6 @@ define([
 						var putCombinator = query(lang.replace('#{0} ~ .dndPlaceholder', [target.id]), this.dndSource.parent).length ? '-' : '+';
 						put(target, putCombinator, this.dndPlaceholder);
 					}
-					console.log(cssClass);
 				}
 			}), true);
 			aspect.before(this.dndSource, 'onDropInternal', lang.hitch(this, function() {
@@ -345,7 +344,7 @@ define([
 					domStyle.set(inode, 'font-size', fontSize + 'px');
 				}
 			}));
-			wrapper.remove();
+			dojo.body().removeChild(wrapper);
 		}
 	});
 });
