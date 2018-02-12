@@ -1,3 +1,9 @@
+univention-directory-listener (12.0.0-16) unstable; urgency=medium
+
+  * Bug #46276: stop listener before starting
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Feb 2018 16:35:11 +0100
+
 univention-directory-listener (12.0.0-15) unstable; urgency=low
 
   * Bug #44786: fix mypy hints file
