@@ -43,7 +43,7 @@
 # Short-Description: ensure Samba daemons are started (nmbd and smbd)
 ### END INIT INFO
 
-## This is a conventience script, not a real init script,
+## This is a convenience script, not a real init script,
 ## so don't load /lib/lsb/init-functions.d/40-systemd
 # . /lib/lsb/init-functions
 
