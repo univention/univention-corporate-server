@@ -169,7 +169,7 @@ setup_translations = dict(
 
 components = dict(
 	samba4=dict(
-		deu='Active Directory-kompatibler Dom',
+		deu='Active Directory-kompatibler',
 		eng='Active Directory-compatible Domain',
 		steps=0,
 	),
@@ -267,48 +267,45 @@ class UCSInstallation(object):
 		self.client.updateOCRConfig(self.config)
 
 	def installer(self):
-		_t = dict()
-		for string in installer_translations:
-			_t[string] = installer_translations[string][self.args.language]
 		# language
 		self.client.waitForText('Select a language', timeout=self.timeout)
-		self.client.enterText(_t['language'])
+		self.client.enterText(self._i['language'])
 		self.click('Continue')
-		self.client.waitForText(_t['select_location'], timeout=self.timeout)
-		self.client.enterText(_t['location'])
+		self.client.waitForText(self._i['select_location'], timeout=self.timeout)
+		self.client.enterText(self._i['location'])
 		self.client.keyPress('enter')
-		self.client.waitForText(_t['select_keyboard'], timeout=self.timeout)
-		self.client.enterText(_t['keyboard'])
+		self.client.waitForText(self._i['select_keyboard'], timeout=self.timeout)
+		self.client.enterText(self._i['keyboard'])
 		self.client.keyPress('enter')
 		# network
 		time.sleep(60)
-		self.client.waitForText(_t['configure_network'], timeout=self.timeout)
+		self.client.waitForText(self._i['configure_network'], timeout=self.timeout)
 		# always use first interface
-		self.click(_t['icontinue'])
+		self.click(self._i['icontinue'])
 		time.sleep(60)
 		# root
-		self.client.waitForText(_t['user_and_password'], timeout=self.timeout)
+		self.client.waitForText(self._i['user_and_password'], timeout=self.timeout)
 		self.client.enterText(self.args.password)
 		self.client.keyPress('tab')
 		self.client.keyPress('tab')
 		self.client.enterText(self.args.password)
 		self.client.keyPress('enter')
 		if self.args.language == 'eng':
-			self.client.waitForText(_t['configure_clock'], timeout=self.timeout)
-			self.client.enterText(_t['clock'])
+			self.client.waitForText(self._i['configure_clock'], timeout=self.timeout)
+			self.client.enterText(self._i['clock'])
 			self.client.keyPress('enter')
 		# hd
 		time.sleep(60)
-		self.client.waitForText(_t['partition_disks'], timeout=self.timeout)
-		self.click(_t['entire_disk'])
+		self.client.waitForText(self._i['partition_disks'], timeout=self.timeout)
+		self.click(self._i['entire_disk'])
 		self.client.keyPress('enter')
 		time.sleep(3)
 		self.client.keyPress('enter')
-		self.click(_t['all_files_on_partition'])
+		self.click(self._i['all_files_on_partition'])
 		self.client.keyPress('enter')
-		self.click(_t['finish_partition'])
+		self.click(self._i['finish_partition'])
 		self.client.keyPress('enter')
-		self.client.waitForText(_t['continue_partition'], timeout=self.timeout)
+		self.client.waitForText(self._i['continue_partition'], timeout=self.timeout)
 		self.client.keyPress('down')
 		self.client.keyPress('enter')
 		time.sleep(600)
@@ -346,38 +343,35 @@ class UCSInstallation(object):
 		self.client.keyPress('enter')
 
 	def setup(self):
-		_t = dict()
-		for string in setup_translations:
-			_t[string] = setup_translations[string][self.args.language]
-		self.client.waitForText(_t['domain'], timeout=self.timeout)
+		self.client.waitForText(self._s['domain'], timeout=self.timeout)
 		if self.args.role == 'master':
-			self.click(_t['new_domain'])
-			self.click(_t['next'])
-			self.client.waitForText(_t['account_information'], timeout=self.timeout)
+			self.click(self._s['new_domain'])
+			self.click(self._s['next'])
+			self.client.waitForText(self._s['account_information'], timeout=self.timeout)
 			self.client.enterText('home')
-			self.click(_t['next'])
+			self.click(self._s['next'])
 		elif self.args.role in ['slave', 'backup', 'member']:
-			self.click(_t['join_domain'])
-			self.click(_t['next'])
-			self.client.waitForText(_t['no_dc_dns'])
-			self.click(_t['no_dc_dns_adapt'])
-			self.click(_t['preferred_dns'])
+			self.click(self._s['join_domain'])
+			self.click(self._s['next'])
+			self.client.waitForText(self._s['no_dc_dns'])
+			self.click(self._s['no_dc_dns_adapt'])
+			self.click(self._s['preferred_dns'])
 			self.client.enterText(self.args.dns)
 			self.client.keyPress('enter')
 			time.sleep(120)
-			self.click(_t['join_domain'])
-			self.click(_t['next'])
+			self.click(self._s['join_domain'])
+			self.click(self._s['next'])
 			time.sleep(10)
 			if self.args.role == 'backup':
-				self.click(_t['next'])
+				self.click(self._s['next'])
 			if self.args.role == 'slave':
 				self.client.keyPress('down')
-				self.click(_t['next'])
+				self.click(self._s['next'])
 			if self.args.role == 'member':
 				self.client.keyPress('down')
 				self.client.keyPress('down')
-				self.click(_t['next'])
-			self.client.waitForText(_t['start_join'], timeout=self.timeout)
+				self.click(self._s['next'])
+			self.client.waitForText(self._s['start_join'], timeout=self.timeout)
 			self.client.keyPress('tab')
 			self.client.keyPress('tab')
 			self.client.enterText(self.args.join_user)
@@ -385,11 +379,11 @@ class UCSInstallation(object):
 			self.client.enterText(self.args.join_password)
 			self.client.keyPress('enter')
 		elif self.args.role == 'admember':
-			self.click(_t['ad_domain'])
-			self.click(_t['next'])
-			self.client.waitForText(_t['no_dc_dns'], timeout=self.timeout)
+			self.click(self._s['ad_domain'])
+			self.click(self._s['next'])
+			self.client.waitForText(self._s['no_dc_dns'], timeout=self.timeout)
 			self.client.keyPress('enter')
-			self.click(_t['preferred_dns'])
+			self.click(self._s['preferred_dns'])
 			self.client.enterText(self.args.dns)
 			self.client.keyPress('enter')
 			time.sleep(120)
@@ -399,49 +393,51 @@ class UCSInstallation(object):
 				time.sleep(60)
 			except VNCDoException:
 				self.connect()
-			self.click(_t['next'])
-			self.client.waitForText(_t['ad_account_information'], timeout=self.timeout)
+			self.click(self._s['next'])
+			self.client.waitForText(self._s['ad_account_information'], timeout=self.timeout)
 			self.client.keyPress('tab')
 			self.client.enterText(self.args.join_user)
 			self.client.keyPress('tab')
 			self.client.enterText(self.args.join_password)
-			self.click(_t['next'])
+			self.click(self._s['next'])
 		elif self.args.role == 'basesystem':
-			self.click(_t['no_domain'])
-			self.click(_t['next'])
-			self.client.waitForText(_t['warning_no_domain'], timeout=self.timeout)
-			self.click(_t['next'])
+			self.click(self._s['no_domain'])
+			self.click(self._s['next'])
+			self.client.waitForText(self._s['warning_no_domain'], timeout=self.timeout)
+			self.click(self._s['next'])
 		else:
 			raise NotImplemented
 
+	def hostname(self):
 		# name hostname
 		if self.args.role == 'master':
-			self.client.waitForText(_t['host_settings'], timeout=self.timeout)
+			self.client.waitForText(self._s['host_settings'], timeout=self.timeout)
 		else:
-			self.client.waitForText(_t['system_name'])
+			self.client.waitForText(self._s['system_name'])
 		self.client.keyPress('end')
 		for i in range(1, 200):
 			self.client.keyPress('bsp')
 		self.client.enterText(self.args.fqdn)
 		self.client.keyPress('tab')
-		self.click(_t['next'])
+		self.click(self._s['next'])
 
+	def finish(self):
+		self.client.waitForText(self._s['setup_successful'], timeout=1700)
+		self.click(self._s['finish'])
+		time.sleep(200)
+
+	def software_configuration(self):
 		# software configuration
 		if self.args.role != 'basesystem':
 			if self.args.role == 'master':
-				self.client.waitForText(_t['software_configuration'], timeout=self.timeout)
+				self.client.waitForText(self._s['software_configuration'], timeout=self.timeout)
 			else:
-				self.client.waitForText(_t['software_configuration_non_master'], timeout=self.timeout)
+				self.client.waitForText(self._s['software_configuration_non_master'], timeout=self.timeout)
 			self.select_components()
-			self.click(_t['next'])
-
+			self.click(self._s['next'])
 		time.sleep(5)
 		self.client.keyPress('enter')
 		time.sleep(800)
-
-		self.client.waitForText(_t['setup_successful'], timeout=1700)
-		self.click(_t['finish'])
-		time.sleep(200)
 
 	def select_components(self):
 		# this is needed to make the down button work
@@ -471,10 +467,19 @@ class UCSInstallation(object):
 			self.connect()
 
 	def installation(self):
+		self._i = dict()
+		for string in installer_translations:
+			self._i[string] = installer_translations[string][self.args.language]
+		self._s = dict()
+		for string in setup_translations:
+			self._s[string] = setup_translations[string][self.args.language]
 		try:
 			self.bootmenu()
 			self.installer()
 			self.setup()
+			self.hostname()
+			self.software_configuration()
+			self.finish()
 			# TODO activate ens6 so that ucs-kvm-create can connect to instance
 			# this is done via login and setting interfaces/eth0/type, is there a better way?
 			self.configure_kvm_network()
