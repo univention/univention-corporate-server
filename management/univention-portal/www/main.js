@@ -1813,6 +1813,7 @@ define([
 					description: _('Change order of portal entries via drag and drop'),
 					// callback: lang.hitch(this, 'setDndMode', true)
 					callback: lang.hitch(this, function() {
+						saveEntryOrderButton.focus();
 						entryOrderButton._tooltip.close();
 						setTimeout(lang.hitch(this, function() {
 							this.setDndMode(true);
@@ -1881,6 +1882,10 @@ define([
 		},
 
 		setDndMode: function(active) {
+			if (this.dndMode === active) {
+				return;
+			}
+
 			var scrollY = window.scrollY;
 			this.dndMode = active;
 			domClass.toggle(dom.byId('portal'), 'dndMode', this.dndMode);
