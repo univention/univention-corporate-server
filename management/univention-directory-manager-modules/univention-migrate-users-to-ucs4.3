@@ -288,7 +288,7 @@ class Migration(object):
 	def migrate_templates(self):
 		for dn, attr in lo.search('(&(objectClass=univentionUserTemplate)(|(userOptionsPreset=groupware)(userOptionsPreset=kerberos)(userOptionsPreset=posix)(userOptionsPreset=samba)))'):
 			old = set(attr['userOptionsPreset'])
-			new = old & {'groupware', 'kerberos', 'posix', 'samba'}
+			new = old - {'groupware', 'kerberos', 'posix', 'samba'}
 			if new != old:
 				self.modify(dn, [('userOptionsPreset', list(old), list(new))])
 
