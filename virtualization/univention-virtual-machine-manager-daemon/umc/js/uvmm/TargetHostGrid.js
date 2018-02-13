@@ -40,9 +40,10 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/TextBox",
 	"umc/widgets/ComboBox",
+	"umc/widgets/Button",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Deferred, Dialog, tools, dialog, Grid, Form, TextBox, ComboBox, types, _) {
+], function(declare, lang, array, Deferred, Dialog, tools, dialog, Grid, Form, TextBox, ComboBox, Button, types, _) {
 	return declare("umc.modules.uvmm.TargetHostGrid", [ Grid ], {
 
 		domain: null,
