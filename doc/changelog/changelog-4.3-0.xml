@@ -386,7 +386,7 @@
 					The package <package>univention-mail-postfix</package> has updated the configuration files and start script of Postfix to match those of upstream version 3.1.6 (<u:bug>45963</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The format of the configuration file <filename>/etc/postfix/dynamicmaps.cf</filename> has changed in Postfix 3. The file will be saved to <filename>/etc/postfix/dynamicmaps.cf.postfix2</filename> and removed before upgrading. The Postfix 3 packages will recreate it in the new format during the upgrade to UCS 4.3 (<u:bug>45968</u:bug>).
+					The format of the configuration file <filename>/etc/postfix/dynamicmaps.cf</filename> has changed in Postfix 3. The file will be saved to <filename>/etc/postfix/dynamicmaps.cf.postfix2.XXXXXXXX</filename> (with <replaceable>XXXXXXXX</replaceable> being a random string) and removed before upgrading. The Postfix 3 packages will recreate it in the new format during the upgrade to UCS 4.3 (<u:bug>45968</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
