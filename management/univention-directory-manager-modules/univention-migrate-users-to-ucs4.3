@@ -215,7 +215,7 @@ class Migration(object):
 			sambaNTPassword = user.get('sambaNTPassword', [None])[0]
 
 			serverctrls = None
-			ocs_to_add = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry'} - ocs
+			ocs_to_add = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'inetOrgPerson', 'organizationalPerson'} - ocs
 			ocs_to_remove = set()
 			if ocs_to_add:
 				ml.append(('objectClass', list(ocs_to_remove), list(ocs_to_add)))

@@ -437,8 +437,8 @@ msgstr "POSIX (Linux/UNIX) Kontoeinstellungen"
 
 #: modules/univention/admin/handlers/users/user.py:76
 #: modules/univention/admin/handlers/users/user.py:81
-msgid "POSIX, Samba and Kerberos account"
-msgstr "POSIX, Samba und Kerberos Konto"
+msgid "POSIX, Samba, Kerberos and mail account"
+msgstr "POSIX, Samba, Kerberos und Mail Konto"
 
 #: modules/univention/admin/handlers/users/user.py:491
 msgid "Pager telephone number"

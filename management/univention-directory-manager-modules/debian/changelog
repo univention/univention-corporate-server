@@ -1,3 +1,12 @@
+univention-directory-manager-modules (13.0.19-19) unstable; urgency=medium
+
+  * Bug #46067: Decision: user accounts will always have 'univentionMail',
+    'organizationalPerson' and 'inetOrgPerson' objectClass. The previous
+    user options 'mail' and 'person' are removed. The last modification
+    of the migration script has been reverted too.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Feb 2018 17:19:16 +0100
+
 univention-directory-manager-modules (13.0.19-18) unstable; urgency=medium
 
   * Bug #46067: The univention-migrate-users-to-ucs4.3 script should just

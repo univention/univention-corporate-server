@@ -74,30 +74,20 @@ template = 'settings/usertemplate'
 
 childs = 0
 short_description = _('User')
-long_description = _('POSIX, Samba and Kerberos account')
+long_description = _('POSIX, Samba, Kerberos and mail account')
 
 
 options = {
 	'default': univention.admin.option(
-		short_description=_('POSIX, Samba and Kerberos account'),
+		short_description=_('POSIX, Samba, Kerberos and mail account'),
 		default=True,
-		objectClasses=['top', 'person', 'univentionPWHistory', 'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry']
-	),
-	'mail': univention.admin.option(
-		short_description=_('Mail account'),
-		default=True,
-		objectClasses=['univentionMail'],
+		objectClasses=['top', 'person', 'univentionPWHistory', 'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'organizationalPerson', 'inetOrgPerson']
 	),
 	'pki': univention.admin.option(
 		short_description=_('Public key infrastructure account'),
 		default=False,
 		editable=True,
 		objectClasses=['pkiUser'],
-	),
-	'person': univention.admin.option(
-		short_description=_('Personal information'),
-		default=True,
-		objectClasses=['person', 'organizationalPerson', 'inetOrgPerson'],
 	),
 }
 property_descriptions = {
@@ -140,7 +130,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.TwoThirdsString,
 		multivalue=False,
 		include_in_default_search=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -223,7 +212,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string64,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -331,7 +319,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -343,7 +330,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.emailAddress,
 		multivalue=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -354,7 +340,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.OneThirdString,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -366,7 +351,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.TwoThirdsString,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -378,7 +362,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Country,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -390,7 +373,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.phone,
 		multivalue=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -403,7 +385,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		include_in_default_search=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -414,7 +395,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.OneThirdString,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -425,7 +405,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.UserDN,
 		multivalue=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -436,7 +415,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.OneThirdString,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -447,7 +425,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -458,7 +435,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.postalAddress,
 		multivalue=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -469,7 +445,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.phone,
 		multivalue=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -481,7 +456,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.phone,
 		multivalue=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -493,7 +467,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.phone,
 		multivalue=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -505,7 +478,6 @@ property_descriptions = {
 		long_description=_('Date of birth'),
 		syntax=univention.admin.syntax.iso8601Date,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -618,7 +590,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.MailHomeServer,
 		nonempty_is_default=True,
 		multivalue=False,
-		options=['mail'],
 		required=False,
 		dontsearch=False,
 		may_change=True,
@@ -631,7 +602,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.primaryEmailAddressValidDomain,
 		multivalue=False,
 		include_in_default_search=True,
-		options=['mail'],
 		required=False,
 		dontsearch=False,
 		may_change=True,
@@ -643,7 +613,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.emailAddressValidDomain,
 		multivalue=True,
-		options=['mail'],
 		required=False,
 		dontsearch=False,
 		may_change=True,
@@ -656,7 +625,6 @@ property_descriptions = {
 		long_description=_("Incoming e-mails for this user are copied/redirected to the specified forward e-mail adresses. Depending on the forwarding setting, a local copy of each e-mail is kept. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox."),
 		syntax=univention.admin.syntax.emailAddress,
 		multivalue=True,
-		options=['mail'],
 		required=False,
 		dontsearch=False,
 		may_change=True,
@@ -669,7 +637,6 @@ property_descriptions = {
 		long_description=_("Specifies if a local copy of each incoming e-mail is kept for this user. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox."),
 		syntax=univention.admin.syntax.emailForwardSetting,
 		multivalue=False,
-		options=['mail'],
 		required=False,
 		dontsearch=True,
 		may_change=True,
@@ -755,7 +722,6 @@ property_descriptions = {
 		required=False,
 		dontsearch=True,
 		may_change=True,
-		options=['person'],
 		identifies=False,
 		copyable=True,
 	),
@@ -1903,7 +1869,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
 
 		# get lock for mailPrimaryAddress
-		if 'mail' in self.options and self['mailPrimaryAddress']:
+		if self['mailPrimaryAddress']:
 			if not self.exists() or self.hasChanged('mailPrimaryAddress'):
 				try:
 					self.alloc.append(('mailPrimaryAddress', univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])))
@@ -1929,7 +1895,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.__update_groups()
 		self.__primary_group()
 
-		if 'mail' in self.options and self.hasChanged('mailPrimaryAddress'):
+		if self.hasChanged('mailPrimaryAddress'):
 			if self['mailPrimaryAddress']:
 				univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailPrimaryAddress'])
 			else:  # FIXME: why is this in the else block? it needs to be done always!
@@ -2372,7 +2338,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.alloc.append(('sid', self.oldattr['sambaSID'][0]))
 		self.alloc.append(('uid', self.oldattr['uid'][0]))
 		self.alloc.append(('uidNumber', self.oldattr['uidNumber'][0]))
-		if 'mail' in self.options and self['mailPrimaryAddress']:
+		if self['mailPrimaryAddress']:
 			self.alloc.append(('mailPrimaryAddress', self['mailPrimaryAddress']))
 		self._release_locks()
 
