@@ -3163,8 +3163,7 @@ class timeSpec(select):
 
 class optionsUsersUser(select):
 	choices = [
-		('person', _('Personal Information')),
-		('mail', _('Mail Account')),
+		('pki', _('Public key infrastructure account')),
 	]
 
 
