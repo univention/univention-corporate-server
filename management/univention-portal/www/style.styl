@@ -225,9 +225,15 @@ material-shadow(level)
 	.portalPropertiesDialog
 		.umcMultiObjectSelect
 			min-width: 300px
+
 	.umcMultiSelect
 		min-width: 300px
 
+	.portalEntryDialog .umcAppGallery .umcGalleryWrapperItem
+		&:active .boxShadow
+			material-shadow(1)
+		.appInnerWrapper
+			cursor: initial
 	.portalEntryDialog
 		width: 650px
 
