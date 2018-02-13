@@ -65,7 +65,6 @@ define([
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/MultiInput",
-	"umc/modules/udm/cache",
 	"put-selector/put",
 	"./PortalCategory",
 	"umc/i18n/tools",
@@ -74,7 +73,7 @@ define([
 	// apps.json -> contains all locally installed apps
 	"umc/json!/univention/portal/apps.json",
 	"umc/i18n!portal"
-], function(declare, lang, array, Deferred, aspect, when, on, dojoQuery, dom, domClass, domGeometry, domStyle, mouse, all, sprintf, Standby, styles, dijitFocus, a11y, registry, Dialog, Tooltip, _WidgetBase, _TemplatedMixin, tools, store, json, dialog, NotificationSnackbar, Button, Form, Wizard, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, cache, put, PortalCategory, i18nTools, portalContent, installedApps, _) {
+], function(declare, lang, array, Deferred, aspect, when, on, dojoQuery, dom, domClass, domGeometry, domStyle, mouse, all, sprintf, Standby, styles, dijitFocus, a11y, registry, Dialog, Tooltip, _WidgetBase, _TemplatedMixin, tools, store, json, dialog, NotificationSnackbar, Button, Form, Wizard, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, PortalCategory, i18nTools, portalContent, installedApps, _) {
 
 	// convert IPv6 addresses to their canonical form:
 	//   ::1:2 -> 0000:0000:0000:0000:0000:0000:0001:0002
@@ -1066,7 +1065,7 @@ define([
 			var formDialog = null; // block scope variable
 
 			// load all properties for a portal object
-			cache.get('settings/portal_all').getProperties('settings/portal', portalContent.portal.dn).then(lang.hitch(this, function(portalProps) {
+			this.moduleCache.getProperties('settings/portal', portalContent.portal.dn).then(lang.hitch(this, function(portalProps) {
 				// filter all portal properties for the ones we want to edit
 				var props = array.filter(lang.clone(portalProps), function(iprop) {
 					return array.indexOf(propNames, iprop.id) >= 0;
@@ -1081,7 +1080,7 @@ define([
 					var form = new Form({
 						widgets: props,
 						layout: propNames,
-						moduleStore: store('$dn$', 'udm', 'settings/portal_all')
+						moduleStore: this.moduleStore
 					});
 
 					// save altered values when form is submitted
@@ -1472,11 +1471,9 @@ define([
 		editPortalEntry: function(category, dn) {
 			var standbyWidget = this.standbyWidget;
 			standbyWidget.show();
-			var moduleStore = store('$dn$', 'udm', 'settings/portal_all');
-			var moduleCache = cache.get('settings/portal_all');
 			var _initialDialogTitle = dn ? _('Edit entry') : _('Create entry');
 
-			moduleCache.getProperties('settings/portal_entry').then(lang.hitch(this, function(portalEntryProps) {
+			this.moduleCache.getProperties('settings/portal_entry').then(lang.hitch(this, function(portalEntryProps) {
 				portalEntryProps = lang.clone(portalEntryProps);
 
 				this._requireWidgets(portalEntryProps).then(lang.hitch(this, function() {
@@ -1485,7 +1482,7 @@ define([
 					var tile = new PortalEntryWizardPreviewTile();
 					var wizard = new PortalEntryWizard({
 						portalEntryProps: portalEntryProps,
-						moduleStore: moduleStore
+						moduleStore: this.moduleStore
 					});
 
 					wizard.own(on(wizard, 'loadEntry', function() {
@@ -1619,7 +1616,7 @@ define([
 							portal: [portalContent.portal.dn],
 						});
 
-						moduleStore.add(values, {
+						wizard.moduleStore.add(values, {
 							objectType: 'settings/portal_entry'
 						}).then(lang.hitch(this, function(result) {
 							// see whether creating the portal entry was succesful
@@ -1782,95 +1779,103 @@ define([
 
 		_setupEditMode: function() {
 			this._checkEditAuthorization().then(lang.hitch(this, function() {
-				// create standby widget that covers the whole screen when loading form dialogs
-				this.standbyWidget = new Standby({
-					target: dom.byId('portal'),
-					zIndex: 100,
-					image: require.toUrl("dijit/themes/umc/images/standbyAnimation.svg").toString(),
-					duration: 200
-				});
-				put(dom.byId('portal'), this.standbyWidget.domNode);
-				this.standbyWidget.startup();
+				// require cache only here because member servers and slaved do not have
+				// the univention-management-console-module-udm installed
+				require(['umc/modules/udm/cache'], lang.hitch(this, function(cache) {
+					this.moduleCache = cache.get('settings/portal_all');
+					this.moduleStore = store('$dn$', 'udm', 'settings/portal_all');
 
-				// create floating button to enter edit mode
-				this.portalEditFloatingButton = put(dom.byId('portal'), 'div.portalEditFloatingButton div.icon <');
-				// TODO is tooltip necessary? it is kind of unaesthetic
-				new Tooltip({
-					label: _("Edit this portal"),
-					connectId: [this.portalEditFloatingButton],
-					position: ['above']
-				});
-				on(this.portalEditFloatingButton, 'click', lang.hitch(this, 'setEditMode', true));
+					// create standby widget that covers the whole screen when loading form dialogs
+					this.standbyWidget = new Standby({
+						target: dom.byId('portal'),
+						zIndex: 100,
+						image: require.toUrl("dijit/themes/umc/images/standbyAnimation.svg").toString(),
+						duration: 200
+					});
+					put(dom.byId('portal'), this.standbyWidget.domNode);
+					this.standbyWidget.startup();
 
-				// create toolbar at bottom to exit edit mode
-				// and have options to edit portal properties
-				this.portalEditBar = new ContainerWidget({
-					'class': 'portalEditBar'
-				});
-				var entryOrderButton = new Button({
-					iconClass: '',
-					'class': 'portalEditBarEntryOrderButton umcFlatButton',
-					description: _('Change order of portal entries via drag and drop'),
-					// callback: lang.hitch(this, 'setDndMode', true)
-					callback: lang.hitch(this, function() {
-						entryOrderButton._tooltip.close();
-						setTimeout(lang.hitch(this, function() {
-							this.setDndMode(true);
-						}), 200);
-					})
-				});
-				var allocationButton = new Button({
-					iconClass: '',
-					'class': 'portalEditBarAllocationButton umcFlatButton',
-					description: _('Portal visibility'),
-					callback: lang.hitch(this, '_editPortalProperties', ['portalComputers'], _('Portal visibility'))
-				});
-				var headerButton = new Button({
-					iconClass: '',
-					'class': 'portalEditBarHeaderButton umcFlatButton',
-					description: _('Portal header'),
-					callback: lang.hitch(this, '_editPortalProperties', ['logo', 'displayName'], _('Portal header'))
-				});
-				var appearanceButton = new Button({
-					iconClass: '',
-					'class': 'portalEditBarAppearanceButton umcFlatButton',
-					description: _('Portal appearance'),
-					callback: lang.hitch(this, '_editPortalProperties', ['fontColor', 'background', 'cssBackground'], _('Portal appearance'))
-				});
-				var closeButton = new Button({
-					iconClass: 'umcCrossIcon',
-					'class': 'portalEditBarCloseButton umcFlatButton',
-					callback: lang.hitch(this, 'setEditMode', false)
-				});
-				this.portalEditBar.addChild(entryOrderButton);
-				this.portalEditBar.addChild(allocationButton);
-				this.portalEditBar.addChild(headerButton);
-				this.portalEditBar.addChild(appearanceButton);
-				this.portalEditBar.addChild(closeButton);
+					// create floating button to enter edit mode
+					this.portalEditFloatingButton = put(dom.byId('portal'), 'div.portalEditFloatingButton div.icon <');
+					// TODO is tooltip necessary? it is kind of unaesthetic
+					new Tooltip({
+						label: _("Edit this portal"),
+						connectId: [this.portalEditFloatingButton],
+						position: ['above']
+					});
+					on(this.portalEditFloatingButton, 'click', lang.hitch(this, 'setEditMode', true));
 
-				// create bar to save entry order and leave dnd mode
-				this.portalEntryOrderBar = new ContainerWidget({
-					'class': 'portalEntryOrderBar'
-				});
-				var cancelEntryOrderButton = new Button({
-					label: _('Cancel'),
-					'class': 'portalEntryOrderBarCancelButton umcFlatButton',
-					callback: lang.hitch(this, function() {
-						this.setDndMode(false);
-					})
-				});
-				var saveEntryOrderButton = new Button({
-					label: _('Save entry order'),
-					'class': 'portalEntryOrderBarSaveButton umcFlatButton',
-					callback: lang.hitch(this, function() {
-						this.saveEntryOrder();
-					})
-				});
-				this.portalEntryOrderBar.addChild(cancelEntryOrderButton);
-				this.portalEntryOrderBar.addChild(saveEntryOrderButton);
+					// create toolbar at bottom to exit edit mode
+					// and have options to edit portal properties
+					this.portalEditBar = new ContainerWidget({
+						'class': 'portalEditBar'
+					});
+					var entryOrderButton = new Button({
+						iconClass: '',
+						'class': 'portalEditBarEntryOrderButton umcFlatButton',
+						description: _('Change order of portal entries via drag and drop'),
+						// callback: lang.hitch(this, 'setDndMode', true)
+						callback: lang.hitch(this, function() {
+							saveEntryOrderButton.focus();
+							entryOrderButton._tooltip.close();
+							setTimeout(lang.hitch(this, function() {
+								this.setDndMode(true);
+							}), 200);
+						})
+					});
+					var allocationButton = new Button({
+						iconClass: '',
+						'class': 'portalEditBarAllocationButton umcFlatButton',
+						description: _('Portal visibility'),
+						callback: lang.hitch(this, '_editPortalProperties', ['portalComputers'], _('Portal visibility'))
+					});
+					var headerButton = new Button({
+						iconClass: '',
+						'class': 'portalEditBarHeaderButton umcFlatButton',
+						description: _('Portal header'),
+						callback: lang.hitch(this, '_editPortalProperties', ['logo', 'displayName'], _('Portal header'))
+					});
+					var appearanceButton = new Button({
+						iconClass: '',
+						'class': 'portalEditBarAppearanceButton umcFlatButton',
+						description: _('Portal appearance'),
+						callback: lang.hitch(this, '_editPortalProperties', ['fontColor', 'background', 'cssBackground'], _('Portal appearance'))
+					});
+					var closeButton = new Button({
+						iconClass: 'umcCrossIcon',
+						'class': 'portalEditBarCloseButton umcFlatButton',
+						callback: lang.hitch(this, 'setEditMode', false)
+					});
+					this.portalEditBar.addChild(entryOrderButton);
+					this.portalEditBar.addChild(allocationButton);
+					this.portalEditBar.addChild(headerButton);
+					this.portalEditBar.addChild(appearanceButton);
+					this.portalEditBar.addChild(closeButton);
 
-				put(dom.byId('portal'), this.portalEditBar.domNode);
-				put(dom.byId('portal'), this.portalEntryOrderBar.domNode);
+					// create bar to save entry order and leave dnd mode
+					this.portalEntryOrderBar = new ContainerWidget({
+						'class': 'portalEntryOrderBar'
+					});
+					var cancelEntryOrderButton = new Button({
+						label: _('Cancel'),
+						'class': 'portalEntryOrderBarCancelButton umcFlatButton',
+						callback: lang.hitch(this, function() {
+							this.setDndMode(false);
+						})
+					});
+					var saveEntryOrderButton = new Button({
+						label: _('Save entry order'),
+						'class': 'portalEntryOrderBarSaveButton umcFlatButton',
+						callback: lang.hitch(this, function() {
+							this.saveEntryOrder();
+						})
+					});
+					this.portalEntryOrderBar.addChild(cancelEntryOrderButton);
+					this.portalEntryOrderBar.addChild(saveEntryOrderButton);
+
+					put(dom.byId('portal'), this.portalEditBar.domNode);
+					put(dom.byId('portal'), this.portalEntryOrderBar.domNode);
+				}));
 			}));
 		},
 
@@ -1881,6 +1886,10 @@ define([
 		},
 
 		setDndMode: function(active) {
+			if (this.dndMode === active) {
+				return;
+			}
+
 			var scrollY = window.scrollY;
 			this.dndMode = active;
 			domClass.toggle(dom.byId('portal'), 'dndMode', this.dndMode);
@@ -1922,7 +1931,6 @@ define([
 
 		saveEntryOrder: function() {
 			this.standbyWidget.show();
-			var moduleStore = store('$dn$', 'udm', 'settings/portal_all');
 
 			var categories = array.filter(this.portalCategories, function(iPortalCategory) {
 				return array.indexOf(['service', 'admin'], iPortalCategory.category) >= 0;
@@ -1936,7 +1944,7 @@ define([
 			tools.forIn(entriesToUpdate, lang.hitch(this, function(dn, newCategory) {
 				var deferred = new Deferred();
 				deferreds.push(deferred);
-				moduleStore.put({
+				this.moduleStore.put({
 					'$dn$': dn,
 					category: newCategory
 				}).then(lang.hitch(this, function(result) {
@@ -1975,12 +1983,12 @@ define([
 				}));
 
 				var portalEntriesOrderDeferred = new Deferred();
-				moduleStore.put({
+				this.moduleStore.put({
 					'$dn$': portalContent.portal.dn,
 					portalEntriesOrder: []
 				}).then(lang.hitch(this, function(result) {
 					if (result.success) {
-						moduleStore.put({
+						this.moduleStore.put({
 							'$dn$': portalContent.portal.dn,
 							portalEntriesOrder: portalEntriesOrder
 						}).then(lang.hitch(this, function(result) {
