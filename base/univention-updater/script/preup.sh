@@ -487,6 +487,18 @@ fi
 # Bug 46066: disable memberOf for updates
 ucr set ldap/overlay/memberof?false >>"$UPDATER_LOG" 2>&1
 
+# Bug #46102: Remove Cyrus integration
+if LC_ALL=C dpkg -l 'univention-mail-cyrus' 2>/dev/null | grep ^i >>"$UPDATER_LOG" 2>&1; then
+	if is_ucr_true update43/ignore_cyrus_check; then
+		echo "WARNING: Ignoring installed Cyrus integration package."
+	else
+		echo "ERROR: The Cyrus integration package was found. Cyrus is not"
+		echo "supported anymore by UCS 4.3. Aborting the upgrade. For instructions how to"
+		echo "proceed, please refer to https://help.univention.com/t/7957"
+		exit 1
+	fi
+fi
+
 # autoremove before the update
 if ! is_ucr_true update43/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
