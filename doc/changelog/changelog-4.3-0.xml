@@ -171,6 +171,9 @@
 				<listitem><simpara>
 					The robustness of the <package>LDAP directory</package> module has been improved: Corrupt objects will simply be ignored in the listing (<u:bug>46193</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The <package>pwdChangeNextLogin</package> user attribute toggled when a password was modified twice (<u:bug>46067</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
