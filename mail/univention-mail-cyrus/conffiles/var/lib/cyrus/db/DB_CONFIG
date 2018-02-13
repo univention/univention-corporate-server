@@ -1,8 +1,0 @@
-@%@UCRWARNING=# @%@
-
-@!@
-for key, value in configRegistry.items():
-	if key.startswith("mail/cyrus/bdb/dbconfig/"):
-		key = key.replace("mail/cyrus/bdb/dbconfig/", "")
-		print "%s %s" % (key, value)
-@!@

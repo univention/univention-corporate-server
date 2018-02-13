@@ -371,18 +371,6 @@ slapadd -l ldif
 		</para>
 	</section>
 
-	<section id="mailserver">
-		<title>Cyrus mailserver</title>
-		<para>
-			In the default configuration the UCS mail stack uses the SASL authentication daemon
-			for authentication. The SASL daemon has its own authentication credentials
-			cache to reduce the need for rechecking the credentials via PAM (LDAP). The default
-			timeout for this cache is 1800 seconds but can be increased by setting the &ucsUCRV;
-			<envar>mail/saslauthd/cache/timeout</envar> in case of too much authentication
-			requests.
-		</para>
-	</section>
-
 	<section id="dovecot::highperformance">
 		<title>Dovecot high-performance mode</title>
 		<para>

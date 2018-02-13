@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-11) unstable; urgency=low
+
+  * Bug #46102: remove support for Cyrus from ACL test
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 23 Jan 2018 14:26:16 +0100
+
 univention-management-console-module-diagnostic (4.0.0-10) unstable; urgency=medium
 
   * Bug #46264: fix typo in 55_user_migration.py

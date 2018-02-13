@@ -1,3 +1,9 @@
+univention-spamassassin (9.0.0-2) unstable; urgency=low
+
+  * Bug #46102: remove cyrus related code
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 23 Jan 2018 13:32:40 +0100
+
 univention-spamassassin (9.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump

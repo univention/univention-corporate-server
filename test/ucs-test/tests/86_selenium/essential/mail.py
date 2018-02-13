@@ -57,25 +57,15 @@ from univention.testing.decorators import WaitForNonzeroResultOrTimeout
 COMMASPACE = ', '
 
 
-def disable_mail_quota():
-	handler_set(['mail/cyrus/imap/quota=no'])
-	subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/null', 'w'))
-
-
-def enable_mail_quota():
-	handler_set(['mail/cyrus/imap/quota=yes'])
-	subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/null', 'w'))
-
-
 class Mail(object):
 
 	def __init__(self, timeout=10):
 		self.timeout = timeout
 
 	def get_reply(self, s):
+		reply = ''
 		try:
 			buff_size = 1024
-			reply = ''
 			while(True):
 				part = s.recv(buff_size)
 				reply += part
@@ -170,6 +160,34 @@ class ImapMail(Mail):
 		self.send_and_receive_quota(s, 'a003', 'logout\r\n')
 		s.close()
 		return quota, retval[0]
+
+	def copy(self, message_set, old_mailbox, new_mailbox):
+		rv, data = self.connection.select(old_mailbox)
+		assert rv == "OK"
+		rv, data = self.connection.copy(message_set, new_mailbox)
+		assert rv == "OK"
+
+	def create_subfolder(self, parent, child):
+		# find separator symbol
+		rv, data = self.connection.list()
+		assert rv == "OK"
+		separator = None
+		regex = re.compile(r'^\(.*\) "(?P<separator>.*)" (?P<folder>.*)$')
+		for s in data:
+			sep, folder_name = regex.match(s).groups()
+			if folder_name == parent:
+				separator = sep
+				break
+		assert separator is not None, 'Could not find parent folder.'
+		# create subfolder
+		subfolder_name = '{}{}{}'.format(parent, separator, child)
+		rv, data = self.connection.create(subfolder_name)
+		assert rv == "OK"
+		return subfolder_name
+
+	def delete_folder(self, folder_name):
+		rv, data = self.connection.delete(folder_name)
+		assert rv == "OK"
 
 
 class PopMail(Mail):
@@ -292,14 +310,13 @@ def reload_amavis_postfix():
 
 def get_spam_folder_name():
 	"""
-	Returns the name of the current spam folder (for dovecot and cyrus).
+	Returns the name of the current spam folder
 	"""
-	folder = None
-	if ucr.is_true('mail/cyrus'):
-		folder = ucr.get('mail/cyrus/folder/spam', 'Spam')
-	elif ucr.is_true('mail/dovecot'):
+	if ucr.is_true('mail/dovecot'):
 		folder = ucr.get('mail/dovecot/folder/spam', 'Spam')
-	if folder and folder.lower() == 'none':
+		if folder and folder.lower() == 'none':
+			folder = None
+	else:
 		folder = None
 	return folder
 
@@ -309,21 +326,7 @@ def spam_delivered(token, mail_address):
 	delivered = False
 	spam = False
 	with ucr_test.UCSTestConfigRegistry() as ucr:
-		dovecot_spam = ucr.get('mail/dovecot/folder/spam')
-		cyrus_spam = ucr.get('mail/cyrus/folder/spam')
-	# cyrus
-	spam_folder = cyrus_spam or 'Spam'
-	mail_dir = os.path.join(get_cyrus_maildir(mail_address), spam_folder)
-	for _file in get_dir_files(mail_dir, recursive=True):
-		with open(_file) as fi:
-			content = fi.read()
-		delivered = delivered or (token in content)
-		if delivered:
-			if 'X-Spam-Flag: YES' in content:
-				spam = spam or True
-			break
-	# dovecot
-	spam_folder = dovecot_spam or 'Spam'
+		spam_folder = ucr.get('mail/dovecot/folder/spam') or 'Spam'
 	mail_dir = get_dovecot_maildir(mail_address, folder=spam_folder)
 	if not os.path.isdir(mail_dir):
 		print 'Warning: maildir %r does not exist!' % (mail_dir,)
@@ -346,13 +349,12 @@ def mail_delivered(token, user=None, mail_address=None, check_root=True):
 	mail header. The mail spool may be specified via multiple ways:
 	"check_root": (boolean) checks /var/mail/systemmail for the requested token/messageid
 	"user": (string) checks /var/mail/%s for the requested token/messageid
-	"mail_address": (string) checks directly within the cyrus mail spool directory
-                    (/var/spool/cyrus/mail/domain/...) of the specified mail address for
-                    the requested token/messageid
+	"mail_address": (string) checks directly within the mail spool directory
+		of the specified mail address for the requested token/messageid
 	"""
 	delivered = False
 	if check_root:
-		_file = ('/var/mail/systemmail')
+		_file = '/var/mail/systemmail'
 		if os.path.isfile(_file):
 			with open(_file) as fi:
 				delivered = delivered or (token in fi.read())
@@ -362,12 +364,6 @@ def mail_delivered(token, user=None, mail_address=None, check_root=True):
 			with open(_file) as fi:
 				delivered = delivered or (token in fi.read())
 	if mail_address and '@' in mail_address:
-		mail_dir = get_cyrus_maildir(mail_address)
-		for _file in get_dir_files(mail_dir, recursive=True):
-			with open(_file) as fi:
-				delivered = delivered or (token in fi.read())
-				if delivered:
-					break
 		mail_dir = get_dovecot_maildir(mail_address)
 		for _file in get_dir_files(mail_dir, recursive=True, exclude=["tmp"]):
 			with open(_file) as fi:
@@ -384,7 +380,7 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
 	mail header. The mail spool may be specified via multiple ways:
 	tokenlist: list of strings: list of strings that all have to be found within a mail
 	user: string: if username is specified, a check of /var/mail/%s is performed
-	mail_address: string: checks directly within the cyrus/dovecot mail spool directory
+	mail_address: string: checks directly within the mail spool directory
 	folder: string: if mail_address is specified and folder is not specified, file_search_mail
 					searches only in the INBOX, if folder is specified too, the given folder
 					is checked.
@@ -409,12 +405,8 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
 						result += 1
 
 		if mail_address:
-			if ucr.is_true('mail/cyrus'):
-				mail_dir = get_cyrus_maildir(mail_address, folder=folder)
-				files = get_dir_files(mail_dir, recursive=False)
-			elif ucr.is_true('mail/dovecot'):
-				mail_dir = get_dovecot_maildir(mail_address, folder=folder)
-				files = get_maildir_filenames(mail_dir)
+			mail_dir = get_dovecot_maildir(mail_address, folder=folder)
+			files = get_maildir_filenames(mail_dir)
 
 			if not os.path.isdir(mail_dir):
 				print 'Warning: maildir %r does not exist!' % (mail_dir,)
@@ -586,84 +578,10 @@ def get_dovecot_shared_folder_maildir(foldername):
 	return '/var/spool/dovecot/public/%s/%s/.%s' % (domain, localpart.lower(), folderpath)
 
 
-def get_cyrus_maildir(mail_address, folder=None):
-	"""
-	Returns directory name for specified mail address.
-
-	>>> get_cyrus_maildir('testuser@example.com')
-	'/var/spool/cyrus/mail/domain/e/example.com/t/user/testuser'
-
-	>>> get_cyrus_maildir('someuser@foobar.com')
-	'/var/spool/cyrus/mail/domain/f/foobar.com/s/user/someuser'
-
-	>>> get_cyrus_maildir('testuser@example.com', folder='Spam')
-	'/var/spool/cyrus/mail/domain/e/example.com/t/user/testuser/Spam'
-
-	>>> get_cyrus_maildir('testuser@example.com', folder='Spam/subspam')
-	'/var/spool/cyrus/mail/domain/e/example.com/t/user/testuser/Spam.subspam'
-
-	>>> get_cyrus_maildir('only-localpart')
-	Traceback (most recent call last):
-	...
-	UCSTest_Mail_InvalidMailAddress
-
-	>>> get_cyrus_maildir('')
-	Traceback (most recent call last):
-	...
-	UCSTest_Mail_InvalidMailAddress
-	"""
-
-	if not mail_address:
-		raise UCSTest_Mail_InvalidMailAddress()
-	if '@' not in mail_address:
-		raise UCSTest_Mail_InvalidMailAddress()
-
-	# FIXME cyrus uses a special UTF-7 encoding for umlauts for example - this encoding is currently missing
-	mail_address, domain = mail_address.rsplit('@', 1)
-	if '.' in mail_address:
-		mail_address = mail_address.replace('.', '^')
-	# mail_address = re.sub("[0-9]", 'q', s)
-	result = '/var/spool/cyrus/mail/domain/%s/%s/%s/user/%s' % (domain[0].lower(), domain.lower(), re.sub("[0-9]", "q", mail_address[0].lower()), mail_address.lower())
-	if folder:
-		result = '%s/%s' % (result, folder.lstrip('/').replace('/', '.'))
-	return result
-
-
-def wait_for_mailboxes(mailboxes, timeout=90):
-	"""
-	Wait for cyrus listener module to create IMAP folders for specified mail addresses.
-	Raises an exception if creation takes longer than <timeout> seconds.
-
-	>>> wait_for_mailboxes(['foo1@example.com', 'bar@example.com'], timeout=2)
-	Traceback (most recent call last):
-	...
-	UCSTest_Mail_MissingMailbox: (['foo1@example.com', 'bar@example.com'], ['foo1@example.com', 'bar@example.com'])
-	"""
-	print 'Waiting for up to %ds for new mailboxes (%r)' % (timeout, mailboxes)
-
-	for i in xrange(timeout):
-		missing_mailboxes = []
-		for addr in mailboxes:
-			if not os.path.isdir(get_cyrus_maildir(addr)):
-				missing_mailboxes.append(addr)
-		if not missing_mailboxes:
-			break
-
-		sys.stdout.write('.')
-		sys.stdout.flush()
-		time.sleep(1)
-	else:
-		print
-		print 'not all mailboxes have been found within %d seconds (missing=%r)' % (timeout, missing_mailboxes)
-		raise UCSTest_Mail_MissingMailbox(mailboxes, missing_mailboxes)
-	print
-
-
 def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permission=None, group_permission=None):
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		domain = ucr.get('domainname').lower()  # lower() can be removed, when #39721 is fixed
 		basedn = ucr.get('ldap/base')
-		dovecat = ucr.is_true('mail/dovecot')
 	name = uts.random_name()
 	folder_mailaddress = ''
 	if isinstance(mailAddress, str):
@@ -685,13 +603,10 @@ def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permiss
 			'sharedFolderGroupACL': group_permission or [],
 		}
 	)
-	if dovecat:
-		if mailAddress:
-			folder_name = 'shared/%s' % folder_mailaddress
-		else:
-			folder_name = '%s@%s/INBOX' % (name, domain)
+	if mailAddress:
+		folder_name = 'shared/%s' % folder_mailaddress
 	else:
-		folder_name = 'shared/%s' % name
+		folder_name = '%s@%s/INBOX' % (name, domain)
 	return folder_dn, folder_name, folder_mailaddress
 
 
@@ -721,7 +636,7 @@ def send_mail(recipients=None, sender=None, subject=None, msg=None, idstring='no
 	username:   [optional] authenticate against mailserver if username and password are set
 	password:	[optional] authenticate against mailserver if username and password are set
 	debuglevel: [optional] SMTP client debug level (default: 1)
-    messageid:  [optional] message id (defaults to a random value)
+	messageid:  [optional] message id (defaults to a random value)
 	"""
 
 	# default values
@@ -765,6 +680,9 @@ Regards,
 
 	print '*** Sending mail: recipients=%r sender=%r subject=%r idstring=%r gtube=%r server=%r port=%r tls=%r username=%r password=%r HELO/EHLO=%r' % (
 		m_recipients, m_sender, m_subject, idstring, gtube, m_server, m_port, tls, username, password, m_ehlo)
+
+	if len(m_msg.split()) < 2:
+		print('*** Warning: A body with only one word will be rated with BODY_SINGLE_WORD=2.499 and probably lead to the message being identified as spam.')
 
 	# build message
 	# m_body = ''
@@ -834,7 +752,7 @@ def check_sending_mail(
 	allowed=True,
 	local=True
 ):
-	token = str(time.time())
+	token = 'The token is {}.'.format(time.time())
 	try:
 		ret_code = send_mail(
 			recipients=recipient_email,
@@ -845,7 +763,7 @@ def check_sending_mail(
 			username=username,
 			password=password
 		)
-		if (bool(ret_code) == allowed):
+		if bool(ret_code) == allowed:
 			utils.fail('Sending allowed = %r, but return code = %r\n {} means there are no refused recipient' % (allowed, ret_code))
 		if local:
 			check_delivery(token, recipient_email, allowed)

@@ -1,7 +1,0 @@
-[cyrus-imapd]
-Description[de]=Cyrus IMAP-Server
-Description[en]=Cyrus IMAP server
-icon=service/cyrus-imapd
-programs=/usr/sbin/cyrmaster
-start_type=mail/cyrus/autostart
-systemd=cyrus-imapd.service

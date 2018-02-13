@@ -52,9 +52,8 @@
 		<note>
 			<para>
 				Seit &ucsUCS; Version 4.0-2 wird standardmäßig Dovecot als IMAP- und
-				POP3-Server verwendet. Cyrus ist jedoch weiterhin verfügbar, um diese
-				Dienste bereit zu stellen. Weiteres zur Cyrus-Integration findet sich
-				in der Cyrus-Mail-Server Dokumentation <biblioref linkend="ext-doc-cyrus"/>.
+				POP3-Server verwendet. Die Integration von Cyrus ist seit &ucsUCS;
+				Version 4.3-0 nicht mehr verfügbar.
 			</para>
 		</note>
 		</para>

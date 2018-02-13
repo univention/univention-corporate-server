@@ -11,7 +11,6 @@ Type: file
 File: usr/sbin/univention-sa-learn
 Variables: mail/.*/folder/spam
 Variables: mail/.*/folder/ham
-Variables: mail/dovecot
 Variables: mail/dovecot/mailboxes/special/.*
 
 Type: file

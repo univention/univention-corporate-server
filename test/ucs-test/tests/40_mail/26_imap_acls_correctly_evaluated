@@ -23,29 +23,19 @@ def main():
 		ucr_tmp.load()
 		domain = ucr_tmp.get('domainname').lower()  # remove lower() when Bug #39721 is fixed
 		host = '%s.%s' % (ucr_tmp.get('hostname'), domain)
-		dovecot = ucr_tmp.is_true('mail/dovecot')
 
-		if dovecot:
-			cmd = ['/etc/init.d/dovecot', 'restart']
-		else:
-			cmd = ['/etc/init.d/cyrus-imapd', 'restart']
+		cmd = ['/etc/init.d/dovecot', 'restart']
 		with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')) as acc:
 			with ucr_test.UCSTestConfigRegistry() as ucr:
-				if dovecot:
-					univention.config_registry.handler_set(['mail/dovecot/mailbox/delete=yes',
-						'mail/dovecot/logging/auth_debug=yes', 'mail/dovecot/logging/auth_debug_passwords=yes',
-						'mail/dovecot/logging/auth_verbose=yes', 'mail/dovecot/logging/auth_verbose_passwords=yes',
-						'mail/dovecot/logging/mail_debug=yes'])
-					autocallcmd1 = ['doveadm', 'reload']
-					autocallcmd2 = ['doveadm', 'log', 'reopen']
-					logfiles = ['/var/log/auth.log', '/var/log/univention/listener.log', '/var/log/dovecot.log']
+				univention.config_registry.handler_set(['mail/dovecot/mailbox/delete=yes',
+					'mail/dovecot/logging/auth_debug=yes', 'mail/dovecot/logging/auth_debug_passwords=yes',
+					'mail/dovecot/logging/auth_verbose=yes', 'mail/dovecot/logging/auth_verbose_passwords=yes',
+					'mail/dovecot/logging/mail_debug=yes'])
+				autocallcmd1 = ['doveadm', 'reload']
+				autocallcmd2 = ['doveadm', 'log', 'reopen']
+				logfiles = ['/var/log/auth.log', '/var/log/univention/listener.log', '/var/log/dovecot.log']
 
-					subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
-				else:
-					autocallcmd1 = autocallcmd2 = ['true']
-					logfiles = ['/var/log/auth.log', '/var/log/univention/listener.log', '/var/log/mail.log']
-					univention.config_registry.handler_set(['mail/cyrus/mailbox/delete=yes'])
-					subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/null', 'w'))
+				subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
 				with utils.AutoCallCommand(enter_cmd=autocallcmd1, exit_cmd=autocallcmd1) as acc1:
 					with utils.FollowLogfile(logfiles=logfiles) as flf:
 						with utils.AutoCallCommand(enter_cmd=autocallcmd2, exit_cmd=autocallcmd2) as acc2:
@@ -102,27 +92,23 @@ def main():
 									imap.setacl(mailbox, independent_user, permission)
 									imap2 = MailClient_SSL(host)
 									imap2.log_in(independent_user, password)
-									imap2.check_permissions(owner_user, mailbox, permission, dovecot)
+									imap2.check_permissions(owner_user, mailbox, permission)
 									imap2.logout()
 								imap.logout()
 
 							group_user = mails[1]
-							if dovecot:
-								groupname = '$%s' % groupname
+							groupname = '$%s' % groupname
 							for permission in [permissions.get(x) for x in permissions]:
 								imap = MailClient_SSL(host)
 								imap.log_in(owner_user, password)
 								mailbox = 'INBOX'
 								print '** %s Mailbox = %s, Setting %s -> %s' % (
 									owner_user, mailbox, groupname, permission)
-								if dovecot:
-									imap.setacl(mailbox, groupname, permission)
-									time.sleep(20)
-								else:
-									imap.set_acl_cyrus(groupname, permission)
+								imap.setacl(mailbox, groupname, permission)
+								time.sleep(20)
 								imap2 = MailClient_SSL(host)
 								imap2.log_in(group_user, password)
-								imap2.check_permissions(owner_user, mailbox, permission, dovecot)
+								imap2.check_permissions(owner_user, mailbox, permission)
 								imap2.logout()
 								imap.logout()
 

@@ -1,5 +1,0 @@
-81univention-mail-cyrus-murder.inst usr/lib/univention-install/
-usr/lib/univention-directory-listener/system/cyrusMurderServers.py usr/lib/univention-directory-listener/system/
-usr/sbin/univention-cyrus-murder-movemailbox usr/sbin/
-usr/lib/univention-mail-cyrus-murder/coherence-check.py usr/lib/univention-mail-cyrus-murder/
-usr/lib/univention-server/server_password_change.d/univention-mail-cyrus-murder usr/lib/univention-server/server_password_change.d/

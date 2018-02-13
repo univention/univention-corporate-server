@@ -52,17 +52,13 @@ def main():
 					'mailPrimaryAddress': usermail
 				}
 			)
-			if ucr.is_true('mail/cyrus'):
-				handler_set(['mail/cyrus/imap/maxchilds=1501'])
-				run_cmd(['/etc/init.d/cyrus-imapd', 'restart'])
-			else:
-				handler_set([
-					'mail/dovecot/limits/default_process_limit=2000',
-					'mail/dovecot/limits/default_client_limit=2000',
-					'mail/dovecot/limits/auth/client_limit=10000',
-					'mail/dovecot/limits/anvil/client_limit=8003',
-				])
-				run_cmd(['/etc/init.d/dovecot', 'restart'])
+			handler_set([
+				'mail/dovecot/limits/default_process_limit=2000',
+				'mail/dovecot/limits/default_client_limit=2000',
+				'mail/dovecot/limits/auth/client_limit=10000',
+				'mail/dovecot/limits/anvil/client_limit=8003',
+			])
+			run_cmd(['/etc/init.d/dovecot', 'restart'])
 			set_openfiles_limit((2048, 2048))
 			mem_start = used_memory()
 			servers = []
