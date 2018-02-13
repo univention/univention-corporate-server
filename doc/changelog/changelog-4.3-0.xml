@@ -110,6 +110,8 @@
 			<title>Univention Portal</title>
 			<itemizedlist>
 				<listitem><simpara>
+					A module for easier configuration of portal and portal entry objects has been added to the UMC.
+					Additionally portals can now be edited directly on the portal site itself (<u:bug>46270</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
