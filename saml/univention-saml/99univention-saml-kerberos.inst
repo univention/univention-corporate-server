@@ -59,6 +59,7 @@ eval "$(ucr shell)"
 
 spn_account_name="ucs-sso"
 servicePrincipalName="HTTP/$spn_account_name.$domainname"
+krb5PrincipalName="$servicePrincipalName@$kerberos_realm"
 privateKeytab_filename="simplesamlphp.keytab"
 privateKeytab_path="/etc/simplesamlphp/$privateKeytab_filename"
 
@@ -78,7 +79,7 @@ ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" -D "$binddn" -w "
 dn: uid=ucs-sso,cn=users,$ldap_base
 changetype: modify
 replace: krb5PrincipalName
-krb5PrincipalName: $servicePrincipalName
+krb5PrincipalName: $krb5PrincipalName
 %EOF
 
 if [ -n "$samba4_role" ]; then
