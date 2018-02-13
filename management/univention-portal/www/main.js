@@ -67,13 +67,14 @@ define([
 	"umc/widgets/MultiInput",
 	"put-selector/put",
 	"./PortalCategory",
+	"./tools",
 	"umc/i18n/tools",
 	// portal.json -> contains entries of this portal as specified in the LDAP directory
 	"umc/json!/univention/portal/portal.json",
 	// apps.json -> contains all locally installed apps
 	"umc/json!/univention/portal/apps.json",
 	"umc/i18n!portal"
-], function(declare, lang, array, Deferred, aspect, when, on, dojoQuery, dom, domClass, domGeometry, domStyle, mouse, all, sprintf, Standby, styles, dijitFocus, a11y, registry, Dialog, Tooltip, _WidgetBase, _TemplatedMixin, tools, store, json, dialog, NotificationSnackbar, Button, Form, Wizard, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, PortalCategory, i18nTools, portalContent, installedApps, _) {
+], function(declare, lang, array, Deferred, aspect, when, on, dojoQuery, dom, domClass, domGeometry, domStyle, mouse, all, sprintf, Standby, styles, dijitFocus, a11y, registry, Dialog, Tooltip, _WidgetBase, _TemplatedMixin, tools, store, json, dialog, NotificationSnackbar, Button, Form, Wizard, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, PortalCategory, portalTools, i18nTools, portalContent, installedApps, _) {
 
 	// convert IPv6 addresses to their canonical form:
 	//   ::1:2 -> 0000:0000:0000:0000:0000:0000:0001:0002
@@ -342,17 +343,8 @@ define([
 
 
 	var _getLogoName = function(logo) {
-		if (logo) {
-			if (hasAbsolutePath(logo)) {
-				// make sure that the path starts with http[s]:// ...
-				// just to make tools.getIconClass() leaving the URL untouched
-				logo = window.location.origin + logo;
-
-				if (!hasImageSuffix(logo)) {
-					// an URL starting with http[s]:// needs also to have a .svg suffix
-					logo = logo + '.svg';
-				}
-			}
+		if (logo && !hasImageSuffix(logo)) {
+			logo = logo + '.svg'; // the logos for the entries from apps.json do not have a suffix
 		}
 		return logo;
 	};
@@ -360,10 +352,6 @@ define([
 	var _regHasImageSuffix = /\.(svg|jpg|jpeg|png|gif)$/i;
 	var hasImageSuffix = function(path) {
 		return path && _regHasImageSuffix.test(path);
-	};
-
-	var hasAbsolutePath = function(path) {
-		return path && path.indexOf('/') === 0;
 	};
 
 	var _PortalPropertiesDialog = declare('PortalPropertiesDialog', [ConfirmDialog, StandbyMixin]);
@@ -753,6 +741,10 @@ define([
 									}]).then(lang.hitch(this, function(choice) {
 										if (choice === 'load') {
 											this.loadEntry(entryToLoad['$dn$']).then(lang.hitch(this, function() {
+												// if we load an existing portal entry we want to save the
+												// portal and category attribute on the portal entry object
+												// even if none of the loaded form values (e.g. displayName)
+												// have changed.
 												this._forceSave = true;
 												this.inherited(origArgs);
 											}));
@@ -803,7 +795,7 @@ define([
 
 	var PortalEntryWizardPreviewTile = declare('Tile', [_WidgetBase, _TemplatedMixin], {
 		templateString: '' +
-			'<div class="umcAppGallery col-xs-4" data-dojo-attach-point="domNode">' +
+			'<div class="previewTile umcAppGallery col-xs-4" data-dojo-attach-point="domNode">' +
 				'<div class="umcGalleryWrapperItem" data-dojo-attach-point="wrapperNode">' +
 					'<div class="cornerPiece boxShadow bl">' +
 						'<div class="hoverBackground"></div>' +
@@ -812,7 +804,9 @@ define([
 						'<div class="hoverBackground"></div>' +
 					'</div>' +
 					'<div class="cornerPiece boxShadowCover bl"></div>' +
-					'<div class="appIcon umcGalleryIcon"></div>' +
+					'<div class="appIcon umcGalleryIcon" data-dojo-attach-point="iconNode">' +
+						'<img data-dojo-attach-point="imgNode"/>' +
+					'</div>' +
 					'<div class="appInnerWrapper umcGalleryItem">' +
 						'<div class="contentWrapper">' +
 							'<div class="appContent">' +
@@ -837,18 +831,9 @@ define([
 		},
 
 		icon: null,
-		iconStyle: null,
 		_setIconAttr: function(iconUri) {
-			if (this.iconStyle) {
-				styles.removeCssRule(this.iconStyle.selector, this.iconStyle.declaration);
-			}
-			if (iconUri) {
-				this.iconStyle = {
-					selector: lang.replace('#{0} .appIcon', [this.id]),
-					declaration: lang.replace('background-image: url("{0}") !important;', [iconUri])
-				};
-				styles.insertCssRule(this.iconStyle.selector, this.iconStyle.declaration);
-			}
+			this.imgNode.src = iconUri;
+			domClass.toggle(this.iconNode, 'iconLoaded', iconUri);
 			this._set('icon', iconUri);
 		},
 
@@ -957,17 +942,13 @@ define([
 			// changes made after the first site load
 
 			// reload the portal.css file
-			var re = /.*\/portal.css\??\d*$/;
-			var links = document.getElementsByTagName('link');
-			var link = array.filter(links, function(ilink) {
-				return re.test(ilink.href);
-			})[0];
-			var href = link.href;
+			var sheet = styles.getStyleSheet('portal.css');
+			var href = sheet.href;
 			if (href.indexOf('?') !== -1) {
 				href = href.substr(0, href.indexOf('?'));
 			}
-			href += lang.replace('?{0}', [Date.now()]);
-			link.href = href;
+			href = lang.replace('{0}?{1}', [href, Date.now()]);
+			sheet.ownerNode.href = href;
 		},
 
 		// FIXME reloading the portal.json to update the content
@@ -986,7 +967,7 @@ define([
 						loadDeferred.resolve();
 						return;
 					}
-					if (result.portal && result.entries) {
+					if (result && result.portal && result.entries) {
 						if (tools.isEqual(result, portalContent)) {
 							_load();
 						} else {
@@ -1660,7 +1641,8 @@ define([
 						}, this);
 
 						// check if the values in the form have changed
-						// and if not return and close without saving
+						// and we do not force saving.
+						// In that case return and close without saving
 						if (!wizard._forceSave && Object.keys(alteredValues).length === 0) {
 							wizardDialog.hide().then(function() {
 								wizardDialog.destroyRecursive();
@@ -1681,7 +1663,18 @@ define([
 						wizard.moduleStore.put(alteredValues).then(lang.hitch(this, function(result) {
 							// see whether creating the portal entry was succesful
 							if (result.success) {
-								// everything ok, close the wizard
+								// if the icon for the entry was changed we want a new iconClass
+								// to display the new icon
+								if (formValues.icon) {
+									var entry = array.filter(portalContent.entries, function(ientry) {
+										return ientry.dn === wizard.dn;
+									})[0];
+									if (entry) {
+										portalTools.requestNewIconClass(entry.logo_name);
+									}
+								}
+
+								// reload categories and close wizard dialog
 								this._refreshAfterPortalEntryEdit().then(function() {
 									wizardDialog.hide().then(function() {
 										wizardDialog.destroyRecursive();

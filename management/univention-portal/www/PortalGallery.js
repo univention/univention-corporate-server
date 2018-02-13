@@ -44,8 +44,9 @@ define([
 	"dojo/dnd/Source",
 	"put-selector/put",
 	"umc/tools",
-	"umc/widgets/AppGallery"
-], function(declare, lang, array, on, aspect, query, domClass, domConstruct, domGeometry, domStyle, Memory, Observable, Source, put, tools, AppGallery) {
+	"umc/widgets/AppGallery",
+	"./tools"
+], function(declare, lang, array, on, aspect, query, domClass, domConstruct, domGeometry, domStyle, Memory, Observable, Source, put, tools, AppGallery, portalTools) {
 	var _regIPv6Brackets = /^\[.*\]$/;
 
 	var find = function(list, testFunc) {
@@ -223,6 +224,10 @@ define([
 			return lang.mixin(this.inherited(arguments), {
 				itemSubName: item.host_name
 			});
+		},
+
+		getIconClass: function(logoUrl) {
+			return portalTools.getIconClass(logoUrl);
 		},
 
 		renderRow: function(item) {
