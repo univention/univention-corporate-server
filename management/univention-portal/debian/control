@@ -16,7 +16,6 @@ Breaks: python-univention-appcenter (<< 6.0.3-23)
 Replaces: python-univention-appcenter (<< 6.0.3-23)
 Depends: univention-management-console-server,
  univention-config,
- univention-ldap-server,
  python-univention-appcenter (>= 6.0.3-23),
  ${misc:Depends},
 Description: Univention Portal - Central portal web page for a UCS domain
