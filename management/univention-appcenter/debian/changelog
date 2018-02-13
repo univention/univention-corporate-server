@@ -1,3 +1,10 @@
+univention-appcenter (7.0.1-10) unstable; urgency=medium
+
+  * Bug #46278: Improve error handling when searching for App upgrades.
+  * Bug #46274: Add logrotate for appcenter.log
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 Feb 2018 17:08:48 +0100
+
 univention-appcenter (7.0.1-9) unstable; urgency=medium
 
   * Bug #46270: Do not use deprecated authRestriction

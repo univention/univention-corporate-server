@@ -132,6 +132,9 @@
 				<listitem><simpara>
 						Non-Docker Apps are installed with a new functions. These functions support a wider range of integration (<u:bug>40064</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						The file /var/log/univention/appcenter.log is now rotated (<u:bug>46274</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 

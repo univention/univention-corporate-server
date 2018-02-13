@@ -81,8 +81,17 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			return 'docker', None
 		if not Start.call(app=self.old_app):
 			raise UpgradeStartContainerFailed()
-		mode = self._execute_container_script(self.old_app, 'update_available', credentials=False, output=True) or ''
-		mode = mode.strip()
+		result = self._execute_container_script(app, 'update_available', credentials=False, output=True)
+		if result is not None:
+			process, log = result
+			if process.returncode != 0:
+				self.fatal('%s: Searching for App upgrade failed!' % app)
+				return None, None
+			mode = '\n'.join(log.stdout())
+			if mode:
+				mode = mode.strip()
+		else:
+			mode = ''
 		if mode.startswith('release:'):
 			mode, detail = 'release', mode[8:].strip()
 		if mode not in ['packages', 'release']:

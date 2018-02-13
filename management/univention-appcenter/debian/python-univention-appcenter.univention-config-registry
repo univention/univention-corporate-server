@@ -3,6 +3,10 @@ File: etc/univention/service.info/services/univention-appcenter.cfg
 Variables: appcenter/apps/.*/status
 Variables: appcenter/apps/.*/version
 
+Type: file
+File: etc/logrotate.d/appcenter
+Variables: logrotate/.*
+
 Type: subfile
 Multifile: etc/postgresql/9.1/main/pg_hba.conf
 Subfile: etc/postgresql/9.1/main/pg_hba.conf.d/10-appcenter

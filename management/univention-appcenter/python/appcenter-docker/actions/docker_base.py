@@ -48,6 +48,7 @@ from univention.appcenter.exceptions import DockerCouldNotStartContainer, Databa
 from univention.appcenter.actions.service import Start, Stop
 from univention.appcenter.utils import mkdir  # get_locale
 from univention.appcenter.ucr import ucr_keys, ucr_get, ucr_is_true
+from univention.appcenter.log import LogCatcher
 
 
 BACKUP_DIR = '/var/lib/univention-appcenter/backups'
@@ -150,16 +151,18 @@ class DockerActionMixin(object):
 				# locale = get_locale()
 				# if locale:
 				#	cmd_kwargs['locale'] = locale
+				cmd_kwargs['_tty'] = False
 				if output:
-					return docker.execute_with_output(interface_file, *cmd_args, **cmd_kwargs)
-				else:
-					cmd_kwargs['_tty'] = False
-					process = docker.execute(interface_file, *cmd_args, **cmd_kwargs)
-					if process.returncode != 0:
-						with open(error_file.name, 'r+b') as error_handle:
-							for line in error_handle:
-								self.fatal(line)
-					return process
+					logger = LogCatcher(self.logger)
+					cmd_kwargs['_logger'] = logger
+				process = docker.execute(interface_file, *cmd_args, **cmd_kwargs)
+				if process.returncode != 0:
+					with open(error_file.name, 'r+b') as error_handle:
+						for line in error_handle:
+							self.fatal(line)
+				if output:
+					return process, logger
+				return process
 
 	def _copy_files_into_container(self, app, *filenames):
 		docker = self._get_docker(app)
