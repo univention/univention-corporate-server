@@ -2094,7 +2094,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		return ml
 
 	def _modlist_password_expiry(self, ml, pwhistoryPolicy):
-		pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1'
+		pwd_change_next_login = self['pwdChangeNextLogin'] == '1'
 		unset_pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0'
 
 		now = (long(time.time()) / 3600 / 24)
