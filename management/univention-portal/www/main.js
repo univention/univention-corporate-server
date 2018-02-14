@@ -465,7 +465,7 @@ define([
 				name: 'remove',
 				label: _('Remove from this portal'),
 				align: 'right',
-				callback: lang.hitch(this, '_removeEntry')
+				callback: lang.hitch(this, 'onRemove')
 			}, {
 				name: 'previous',
 				label: _('Back'),
@@ -645,8 +645,9 @@ define([
 		loadEntry: function(dn) {
 			var deferred = new Deferred();
 			this.moduleStore.get(dn).then(lang.hitch(this, function(result) {
+				console.log(result);
 				this.dn = dn;
-				this._portals = result['portal'];
+				this.loadedEntryPortals = result['portal'] || [];
 				this.onLoadEntry();
 				//// populate all widgets with the loaded portal entry data
 				//// and store the initial form values
@@ -659,7 +660,9 @@ define([
 					}));
 				}));
 
-				//// we only want to show languages that are visible in the menu
+				//// we only want to show languages that are visible in the menu.
+				//// seperate languages that are in the menu and other lanuages and
+				//// merge them back when saving
 				var availableLanguageCodes = array.map(i18nTools.availableLanguages, function(ilanguage) {
 					return ilanguage.id.replace(/-/, '_');
 				});
@@ -781,14 +784,7 @@ define([
 			// event stub
 		},
 
-		_removeEntry: function() {
-			var newPortals = array.filter(this._portals, function(iportal) {
-				return iportal !== portalContent.portal.dn;
-			});
-			this.onRemove(this.dn, newPortals);
-		},
-
-		onRemove: function(dn, portals) {
+		onRemove: function() {
 			// stub
 		}
 	});
@@ -1467,6 +1463,12 @@ define([
 					});
 
 					wizard.own(on(wizard, 'loadEntry', function() {
+						// FIXME this is not really clear
+						// if we click on a tile of an existing portal entry,
+						// loadEntry is called before the wizardDialog exists.
+						// This case is for when we click on the tile
+						// to create a new portal entry and then load an
+						// existing entry by entering an existing portal entry name.
 						if (wizardDialog) {
 							wizardDialog._initialTitle = _('Edit entry');
 						}
@@ -1582,12 +1584,15 @@ define([
 					}, true);
 
 
-					// add listener for cancelling / finishing the wizard
+					//// listener for save / finish / cancel
+					// close wizard on cancel
 					wizard.own(on(wizard, 'cancel', lang.hitch(this, function() {
 						wizardDialog.hide().then(function() {
 							wizardDialog.destroyRecursive();
 						});
 					})));
+
+					// create a new portal entry object
 					wizard.own(on(wizard, 'finished', lang.hitch(this, function(values) {
 						wizardDialog.standby(true);
 
@@ -1618,6 +1623,8 @@ define([
 							wizardDialog.standby(false);
 						});
 					})));
+
+					// save changes made to an existing portal entry object
 					wizard.own(on(wizard, 'save', lang.hitch(this, function(formValues) {
 						wizardDialog.standby(true);
 
@@ -1650,15 +1657,30 @@ define([
 							return;
 						}
 
-						// save the altered values
+						//// save the altered values
+						// concatenate the altered form values for displayName and description
+						// with the ones filtered out when loading the portal entry object
 						array.forEach(['displayName', 'description'], lang.hitch(this, function(ipropName) {
 							if (alteredValues[ipropName]) {
 								alteredValues[ipropName] = alteredValues[ipropName].concat(wizard.initialFormValues[ipropName + '_remaining']);
 							}
 						}));
+
+						// if the edited portal entry was not part of this portal before,
+						// add it to this portal
+						var portals = lang.clone(wizard.loadedEntryPortals);
+						var entryIsPartOfPortal = array.some(portals, function(iportal) {
+							return iportal === portalContent.portal.dn;
+						});
+						if (!entryIsPartOfPortal) {
+							portals.push(portalContent.portal.dn);
+						}
+
+						// save changes
 						var putParams = lang.mixin(alteredValues, {
 							'$dn$': wizard.dn,
-							category: category
+							category: category,
+							portal: portals
 						});
 						wizard.moduleStore.put(alteredValues).then(lang.hitch(this, function(result) {
 							// see whether creating the portal entry was succesful
@@ -1690,12 +1712,17 @@ define([
 							wizardDialog.standby(false);
 						});
 					})));
-					wizard.own(on(wizard, 'remove', lang.hitch(this, function(dn, portal) {
+
+					// remove portal entry object from this portal
+					wizard.own(on(wizard, 'remove', lang.hitch(this, function() {
 						wizardDialog.standby(true);
 
+						var newPortals = array.filter(wizard.loadedEntryPortals, function(iportal) {
+							return iportal !== portalContent.portal.dn;
+						});
 						wizard.moduleStore.put({
-							'$dn$': dn,
-							portal: portal
+							'$dn$': wizard.dn,
+							portal: newPortals
 						}).then(lang.hitch(this, function(result) {
 							if (result.success) {
 								this._refreshAfterPortalEntryEdit().then(function() {
@@ -1727,10 +1754,10 @@ define([
 						on(wizard, 'nameQuery', function() {
 							wizardDialog.standby(true);
 						});
-						on(wizard, 'entryLoaded', function() {
+						on(wizard, 'nameQueryEnd', function() {
 							wizardDialog.standby(false);
 						});
-						on(wizard, 'nameQueryEnd', function() {
+						on(wizard, 'entryLoaded', function() {
 							wizardDialog.standby(false);
 						});
 						wizardDialog.startup();
