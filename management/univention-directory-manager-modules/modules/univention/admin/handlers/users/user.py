@@ -1869,8 +1869,8 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
 
 		# get lock for mailPrimaryAddress
-		if self['mailPrimaryAddress']:
-			if not self.exists() or self.hasChanged('mailPrimaryAddress'):
+		if not self.exists() or self.hasChanged('mailPrimaryAddress'):
+			if self['mailPrimaryAddress']:
 				try:
 					self.alloc.append(('mailPrimaryAddress', univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])))
 				except univention.admin.uexceptions.noLock:

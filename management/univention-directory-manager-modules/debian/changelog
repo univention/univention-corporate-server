@@ -1,3 +1,10 @@
+univention-directory-manager-modules (13.0.19-21) unstable; urgency=medium
+
+  * Bug #46067: Work around Bug #44944 which now hit QA due to the
+    restructured code (_ldap_pre_ready).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Feb 2018 13:16:41 +0100
+
 univention-directory-manager-modules (13.0.19-20) unstable; urgency=medium
 
   * Bug #46067: Adjust settings/usertemplate as well to not offer 'mail'
