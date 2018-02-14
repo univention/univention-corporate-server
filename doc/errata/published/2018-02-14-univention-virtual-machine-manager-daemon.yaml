@@ -10,3 +10,5 @@ desc: |
    to. The setting can be configured in the virtual machine detail
    view.
 bug: [45846]
+erratum: 291
+announced: 2018-02-14
