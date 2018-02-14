@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (7.0.0-4) unstable; urgency=medium
+
+  * Bug #46001: Merge to UCS 4.3
+  * Merge feature to limit selection of available target KVM hosts of individual
+    VMs, original Bug #45846
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 14 Feb 2018 14:05:20 +0100
+
 univention-virtual-machine-manager-daemon (7.0.0-3) unstable; urgency=low
 
   * Bug #46119: Update UVMM profiles
