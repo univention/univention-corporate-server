@@ -454,7 +454,7 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-						Samba has been updated to version 4.7.4 (<u:bug>45326</u:bug>). The UCS firewall has been adjusted to also ACCEPT port 49152. For details see <ulink url="https://wiki.samba.org/index.php/Samba_4.7_Features_added/changed#Changes_since_4.7.3:">Samba 4.7 Features added/changed</ulink>.
+						Samba has been updated to version 4.7.5 (<u:bug>45326</u:bug>). The UCS firewall has been adjusted to also ACCEPT port 49152. For details see <ulink url="https://wiki.samba.org/index.php/Samba_4.7_Features_added/changed#Changes_since_4.7.4:">Samba 4.7 Features added/changed</ulink>.
 				</simpara></listitem>
 				<listitem><simpara>
 						The Active Directory builtin account <package>Console Logon</package> is created now in OpenLDAP too (<u:bug>46107</u:bug>).
