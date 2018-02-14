@@ -1,3 +1,9 @@
+univention-updater (13.0.1-18) unstable; urgency=medium
+
+  * Bug #46278: Configure logging only for the "updater" logger (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 14 Feb 2018 16:21:48 +0100
+
 univention-updater (13.0.1-17) unstable; urgency=medium
 
   * Bug #46278: Configure logging only for the "updater" logger

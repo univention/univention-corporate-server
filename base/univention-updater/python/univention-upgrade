@@ -386,13 +386,14 @@ def main():
     options = parse_args()
 
     try:
+        logfd = open(LOGFN, 'a+')
         FORMAT = "%(asctime)-15s " + logging.BASIC_FORMAT
-	logger = logging.getLogger('updater')
-	handler = logging.FileHandler(LOGFN, mode='a+')
-	formatter = logging.Formatter(FORMAT)
-	handler.setFormatter(formatter)
-	logger.addHandler(handler)
-	logger.setLevel(logging.ERROR)
+        logger = logging.getLogger('updater')
+        handler = logging.StreamHandler(logfd)
+        formatter = logging.Formatter(FORMAT)
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        logger.setLevel(logging.ERROR)
     except:
         print 'Cannot open %s for writing' % LOGFN
         sys.exit(1)
