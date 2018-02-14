@@ -12,3 +12,5 @@ desc: |
  * It is now prevented to set mail addresses without local part or without
    domain part.
 bug: [41865, 46021]
+erratum: 287
+announced: 2018-02-14
