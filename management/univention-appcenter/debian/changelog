@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-11) unstable; urgency=medium
+
+  * Bug #46274: Rename logrotate config file
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 14 Feb 2018 14:27:06 +0100
+
 univention-appcenter (7.0.1-10) unstable; urgency=medium
 
   * Bug #46278: Improve error handling when searching for App upgrades.

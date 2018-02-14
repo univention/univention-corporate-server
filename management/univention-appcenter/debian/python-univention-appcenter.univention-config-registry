@@ -4,7 +4,7 @@ Variables: appcenter/apps/.*/status
 Variables: appcenter/apps/.*/version
 
 Type: file
-File: etc/logrotate.d/appcenter
+File: etc/logrotate.d/univention-appcenter
 Variables: logrotate/.*
 
 Type: subfile
