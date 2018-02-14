@@ -1,3 +1,9 @@
+univention-updater (12.0.10-12) unstable; urgency=medium
+
+  * Bug #46220: Account for non-existing app in preup check
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 14 Feb 2018 10:13:03 +0100
+
 univention-updater (12.0.10-11) unstable; urgency=medium
 
   * Bug #46220: Modify kopano-core check, allow update if correct
