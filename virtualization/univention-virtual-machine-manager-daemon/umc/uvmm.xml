@@ -47,5 +47,8 @@
 		<command name="uvmm/instance/remove" function="instance_remove"/>
 		<command name="uvmm/instance/add" function="instance_add"/>
 		<command name="uvmm/cloudtype/get" function="cloudtype_get"/>
+		<command name="uvmm/targethost/add" function="targethost_add"/>
+		<command name="uvmm/targethost/remove" function="targethost_remove"/>
+		<command name="uvmm/targethost/query" function="targethost_query"/>
 	</module>
 </umc>
