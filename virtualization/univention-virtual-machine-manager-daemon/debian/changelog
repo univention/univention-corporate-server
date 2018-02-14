@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (6.0.4-13) unstable; urgency=medium
+
+  * Bug #Bug #45846: Fix traceback when migrating a VM
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 14 Feb 2018 12:36:55 +0100
+
 univention-virtual-machine-manager-daemon (6.0.4-12) unstable; urgency=medium
 
   * Bug #45846: Deactivate 'Migrate' button if the host selection is empty

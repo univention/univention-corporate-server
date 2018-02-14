@@ -497,7 +497,7 @@ define([
 				return;
 			}
 
-			types.getNodes().then( function( items ) {
+			types.getNodes().then(lang.hitch(this, function(items) {
 				var _cleanup = function() {
 					_dialog.hide();
 					_dialog.destroyRecursive();
@@ -575,7 +575,7 @@ define([
 				}
 
 				_dialog.show();
-			} );
+			}));
 		},
 
 		_removeDomain: function( ids, items ) {
