@@ -6,7 +6,7 @@ src: catdoc
 fix: 0.94.4-1.1.A~4.2.3.201801211553
 desc: |
  This update addresses the following issue:
- * The ole_init function in ole.c in catdoc 0.95 allows remote attackers to
+ * The ole_init function in ole.c in catdoc allows remote attackers to
    cause a denial of service (heap-based buffer underflow and application
    crash) or possibly have unspecified other impact via a crafted file, i.e.,
    data is written to memory addresses before the beginning of the tmpBuf
