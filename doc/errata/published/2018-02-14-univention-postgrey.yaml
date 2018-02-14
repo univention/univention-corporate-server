@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The service status is now correctly detected and shown in UMC.
 bug: [43555]
+erratum: 290
+announced: 2018-02-14
