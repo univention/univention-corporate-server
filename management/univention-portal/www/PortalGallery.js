@@ -220,6 +220,17 @@ define([
 			}
 		},
 
+		startup: function() {
+			// calling startup causes the entries to be rendered 3 times from
+			// somewhere in the inheritence chain.
+			// We actally do not need (want) any of the startup code from the
+			// inheritance chain. It is just resizing which does not matter
+			// with the portal tile design and issuing the first rendering of
+			// the entries which is triggered by setting the store in
+			// this.postCreate 
+			return;
+		},
+
 		getRenderInfo: function(item) {
 			return lang.mixin(this.inherited(arguments), {
 				itemSubName: item.host_name

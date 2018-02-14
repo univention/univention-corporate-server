@@ -645,7 +645,6 @@ define([
 		loadEntry: function(dn) {
 			var deferred = new Deferred();
 			this.moduleStore.get(dn).then(lang.hitch(this, function(result) {
-				console.log(result);
 				this.dn = dn;
 				this.loadedEntryPortals = result['portal'] || [];
 				this.onLoadEntry();
@@ -1393,7 +1392,6 @@ define([
 				useDnd: (category === 'service' || category === 'admin'),
 				category: category
 			});
-			portalCategory.startup();
 			portalCategory.own(aspect.after(portalCategory.grid, 'onAddEntry', lang.hitch(this, function(category) {
 				if (this.dndMode) {
 					return;
@@ -1415,6 +1413,10 @@ define([
 				this.editPortalEntry(category, item.dn);
 			}), true));
 			this.content.appendChild(portalCategory.domNode);
+			// resize the item names after adding the category to the site.
+			// the grid items are already rendered at this point (by creating the portalCategory)
+			// but they weren't in the dom tree yet
+			portalCategory.grid._resizeItemNames();
 			this.portalCategories.push(portalCategory);
 		},
 
