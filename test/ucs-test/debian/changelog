@@ -1,4 +1,10 @@
-ucs-test (8.0.28-9) unstable; urgency=medium
+ucs-test (8.0.28-10) unstable; urgency=low
+
+  * Bug #46191: raise timeout of IMAP tests
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 14 Feb 2018 15:53:00 +0100
+
+ ucs-test (8.0.28-9) unstable; urgency=medium
 
   * Bug #46067: Adjust test: settings/usertemplate doesn't offer
     'mail' and 'person' options any more but 'pki'.
