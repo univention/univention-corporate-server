@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
 		properties = dict(
 			name=template_name,
-			_options=['person', 'mail'],
+			_options=['pki'],
 			title=random_name(),
 			description=random_name(),
 			mailPrimaryAddress='<firstname>.<lastname>@%s' % (MAIL_DOMAIN,),
@@ -118,7 +118,7 @@ if __name__ == '__main__':
 			'password': PASSWORD,
 			'username': random_name(),
 		}
-		if False:  # FIXME: UMC does the template in JS at the frontent
+		if False:  # FIXME: UMC does the template in JS at the frontend
 			umc = Client.get_test_connection()
 			options = [{
 				'object': user_properties,
