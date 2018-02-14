@@ -22,3 +22,5 @@ desc: |
    performs lightweight checks on incoming SMTP connections to reject e.g.
    spam early (Bug #45607).
 bug: [44473, 44922, 45422, 45607]
+erratum: 288
+announced: 2018-02-14
