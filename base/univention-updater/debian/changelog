@@ -1,3 +1,9 @@
+univention-updater (13.0.1-16) unstable; urgency=low
+
+  * Bug #45968: redirect output to logfile
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 14 Feb 2018 10:57:26 +0100
+
 univention-updater (13.0.1-15) unstable; urgency=medium
 
   * Bug #46278: Lower the noise of the App Center in updater.log
