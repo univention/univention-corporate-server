@@ -21,3 +21,5 @@ desc: |
         26univention-nagios-common.inst \
         30univention-nagios-client.inst
 bug: [45685]
+erratum: 289
+announced: 2018-02-14
