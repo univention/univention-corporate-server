@@ -9,3 +9,5 @@ desc: |
  * The service status of some mail related services has been fixed and is
    now shown correctly in UMC.
 bug: [43555]
+erratum: 286
+announced: 2018-02-14
