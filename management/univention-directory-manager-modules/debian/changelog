@@ -1,3 +1,11 @@
+univention-directory-manager-modules (13.0.19-22) unstable; urgency=medium
+
+  * Bug #45842: New user objects were not added to the univentionDefaultGroup
+    any more because self.save() had been moved to end of self.open()
+  * Cleanup initialization of self.groupsLoaded
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Feb 2018 16:57:00 +0100
+
 univention-directory-manager-modules (13.0.19-21) unstable; urgency=medium
 
   * Bug #46067: Work around Bug #44944 which now hit QA due to the

@@ -1513,7 +1513,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				pass
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
-		self.groupsLoaded = 1
+		self.groupsLoaded = True
 		self.password_length = 8
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
@@ -1521,6 +1521,11 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 	def open(self, loadGroups=True):
 		univention.admin.handlers.simpleLdap.open(self)
+
+		# self.save() traditionally must happen before self._load_groups(),
+		# otherwise self.__primary_group doesn't add a new user to the
+		# univentionDefaultGroup because "not self.hasChanged('primaryGroup')"
+		self.save()
 
 		if self.exists():
 			self._unmap_mail_forward()
@@ -1532,15 +1537,14 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			self.reload_certificate()
 
 		self._load_groups(loadGroups)
-		self.save()
 
 	def _load_groups(self, loadGroups):
 		if self.exists():
-			self.groupsLoaded = loadGroups
 			if loadGroups:  # this is optional because it can take much time on larger installations, default is true
 				self['groups'] = self.lo.searchDn(filter=filter_format('(&(cn=*)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [self.dn]))
 			else:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'user: open with loadGroups=false for user %s' % self['username'])
+			self.groupsLoaded = loadGroups
 			primaryGroupNumber = self.oldattr.get('gidNumber', [''])[0]
 			if primaryGroupNumber:
 				primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(cn=*)(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber=%s))', [primaryGroupNumber]))
