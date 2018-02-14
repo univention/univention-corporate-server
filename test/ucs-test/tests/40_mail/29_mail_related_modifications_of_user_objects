@@ -3,8 +3,6 @@
 ## desc: check mail related modifications of user objects
 ## exposure: dangerous
 ## packages: [univention-mail-server]
-## versions:
-##  4.1-3: skip
 
 from essential.mailclient import MailClient_SSL
 import univention.config_registry
@@ -22,6 +20,8 @@ def check_login_lookup(host, mail, password, expected_result):
 	An exception is thrown if the result of either the login or the lookup
 	was not expected.
 	"""
+	print('check_login_lookup() host={!r} mail={!r} password={!r} expected_result={!r}'.format(
+		host, mail, password, expected_result))
 	imap = MailClient_SSL(host)
 	try:
 		imap.log_in(mail, password)
@@ -56,7 +56,7 @@ def main():
 					'mail/dovecot/mailbox/delete=no',
 					'mail/dovecot/auth/cache_size=0'
 				])
-				subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
+				subprocess.call(['service', 'dovecot', 'restart'], stderr=open('/dev/null', 'w'))
 				host = '%s.%s' % (ucr.get('hostname'), domain)
 				password = 'univention'
 				account = utils.UCSTestDomainAdminCredentials()

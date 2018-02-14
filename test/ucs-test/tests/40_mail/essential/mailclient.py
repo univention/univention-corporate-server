@@ -51,6 +51,7 @@ class BaseMailClient(object):
 		:usermail: string, user mail
 		:password: string, user password
 		"""
+		print('Logging in with username={!r} and password={!r}'.format(usermail, password))
 		try:
 			self.login(usermail, password)
 			self.owner = usermail
@@ -156,6 +157,7 @@ class BaseMailClient(object):
 
 		:expected_result: dict{mailbox : bool}
 		"""
+		print('check_lookup() mailbox_owner={!r} expected_result={!r}'.format(mailbox_owner, expected_result))
 		for mailbox, retcode in expected_result.items():
 			if mailbox_owner != self.owner:
 				mailbox = self.mail_folder(mailbox_owner, mailbox)
