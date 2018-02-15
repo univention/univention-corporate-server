@@ -130,7 +130,7 @@
 		<section id="relnotes:mariadb">
 			<title>MariaDB ersetzt MySQL</title>
 			<para>
-				Um konsistent zur <wordasword>Upstream</wordasword> Debian Version zu sein, ersetzt UCS 4.3 MySQL mit MariaDB.
+				Um konsistent zur <wordasword>Upstream</wordasword> Debian Version zu sein, wird in UCS 4.3 MySQL mit MariaDB ersetzt.
 				Die Integration wird über das neue Paket <package>univention-mariadb</package> bereitgestellt.
 				Das Paket <package>univention-mysql</package> ist nun ein Meta Paket und installiert <package>univention-mariadb</package>.
 				Bestehende Daten werden ohne Benutzerinteraktion bei einem Update auf UCS 4.3 migriert.
