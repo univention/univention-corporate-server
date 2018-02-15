@@ -1,3 +1,9 @@
+univention-base-files (7.0.0-8) unstable; urgency=medium
+
+  * Bug #46224: Add man-db to recommended packages
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 15 Feb 2018 10:09:43 +0100
+
 univention-base-files (7.0.0-7) unstable; urgency=medium
 
   * Bug #46071: Remove ucslint override for ntp init script
