@@ -229,15 +229,30 @@ material-shadow(level)
 	.umcMultiSelect
 		min-width: 300px
 
-	.portalEntryDialog .umcAppGallery .umcGalleryWrapperItem
-		&:active .boxShadow
-			material-shadow(1)
-		.appInnerWrapper
-			cursor: initial
+	.portalEntryDialog .previewTile
+		.umcGalleryWrapperItem
+			&:active .boxShadow
+				material-shadow(1)
+
+			.appInnerWrapper
+				cursor: initial
+
+			.appIcon
+				text-align: center
+
+				img
+					height: 100%
+
+				&.iconLoaded
+					background: none
+
+				&:not(.iconLoaded) img
+					display: none
+
 	.portalEntryDialog
 		width: 650px
 
-		.umcAppGallery:not(.editMode)
+		.previewTile:not(.editMode)
 			.cornerPiece
 				transition: background-color 0.2s
 			.umcGalleryName

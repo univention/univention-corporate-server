@@ -67,13 +67,14 @@ define([
 	"umc/widgets/MultiInput",
 	"put-selector/put",
 	"./PortalCategory",
+	"./tools",
 	"umc/i18n/tools",
 	// portal.json -> contains entries of this portal as specified in the LDAP directory
 	"umc/json!/univention/portal/portal.json",
 	// apps.json -> contains all locally installed apps
 	"umc/json!/univention/portal/apps.json",
 	"umc/i18n!portal"
-], function(declare, lang, array, Deferred, aspect, when, on, dojoQuery, dom, domClass, domGeometry, domStyle, mouse, all, sprintf, Standby, styles, dijitFocus, a11y, registry, Dialog, Tooltip, _WidgetBase, _TemplatedMixin, tools, store, json, dialog, NotificationSnackbar, Button, Form, Wizard, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, PortalCategory, i18nTools, portalContent, installedApps, _) {
+], function(declare, lang, array, Deferred, aspect, when, on, dojoQuery, dom, domClass, domGeometry, domStyle, mouse, all, sprintf, Standby, styles, dijitFocus, a11y, registry, Dialog, Tooltip, _WidgetBase, _TemplatedMixin, tools, store, json, dialog, NotificationSnackbar, Button, Form, Wizard, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, PortalCategory, portalTools, i18nTools, portalContent, installedApps, _) {
 
 	// convert IPv6 addresses to their canonical form:
 	//   ::1:2 -> 0000:0000:0000:0000:0000:0000:0001:0002
@@ -342,17 +343,8 @@ define([
 
 
 	var _getLogoName = function(logo) {
-		if (logo) {
-			if (hasAbsolutePath(logo)) {
-				// make sure that the path starts with http[s]:// ...
-				// just to make tools.getIconClass() leaving the URL untouched
-				logo = window.location.origin + logo;
-
-				if (!hasImageSuffix(logo)) {
-					// an URL starting with http[s]:// needs also to have a .svg suffix
-					logo = logo + '.svg';
-				}
-			}
+		if (logo && !hasImageSuffix(logo)) {
+			logo = logo + '.svg'; // the logos for the entries from apps.json do not have a suffix
 		}
 		return logo;
 	};
@@ -360,10 +352,6 @@ define([
 	var _regHasImageSuffix = /\.(svg|jpg|jpeg|png|gif)$/i;
 	var hasImageSuffix = function(path) {
 		return path && _regHasImageSuffix.test(path);
-	};
-
-	var hasAbsolutePath = function(path) {
-		return path && path.indexOf('/') === 0;
 	};
 
 	var _PortalPropertiesDialog = declare('PortalPropertiesDialog', [ConfirmDialog, StandbyMixin]);
@@ -477,7 +465,7 @@ define([
 				name: 'remove',
 				label: _('Remove from this portal'),
 				align: 'right',
-				callback: lang.hitch(this, '_removeEntry')
+				callback: lang.hitch(this, 'onRemove')
 			}, {
 				name: 'previous',
 				label: _('Back'),
@@ -658,7 +646,7 @@ define([
 			var deferred = new Deferred();
 			this.moduleStore.get(dn).then(lang.hitch(this, function(result) {
 				this.dn = dn;
-				this._portals = result['portal'];
+				this.loadedEntryPortals = result['portal'] || [];
 				this.onLoadEntry();
 				//// populate all widgets with the loaded portal entry data
 				//// and store the initial form values
@@ -671,7 +659,9 @@ define([
 					}));
 				}));
 
-				//// we only want to show languages that are visible in the menu
+				//// we only want to show languages that are visible in the menu.
+				//// seperate languages that are in the menu and other lanuages and
+				//// merge them back when saving
 				var availableLanguageCodes = array.map(i18nTools.availableLanguages, function(ilanguage) {
 					return ilanguage.id.replace(/-/, '_');
 				});
@@ -753,6 +743,10 @@ define([
 									}]).then(lang.hitch(this, function(choice) {
 										if (choice === 'load') {
 											this.loadEntry(entryToLoad['$dn$']).then(lang.hitch(this, function() {
+												// if we load an existing portal entry we want to save the
+												// portal and category attribute on the portal entry object
+												// even if none of the loaded form values (e.g. displayName)
+												// have changed.
 												this._forceSave = true;
 												this.inherited(origArgs);
 											}));
@@ -789,21 +783,14 @@ define([
 			// event stub
 		},
 
-		_removeEntry: function() {
-			var newPortals = array.filter(this._portals, function(iportal) {
-				return iportal !== portalContent.portal.dn;
-			});
-			this.onRemove(this.dn, newPortals);
-		},
-
-		onRemove: function(dn, portals) {
+		onRemove: function() {
 			// stub
 		}
 	});
 
 	var PortalEntryWizardPreviewTile = declare('Tile', [_WidgetBase, _TemplatedMixin], {
 		templateString: '' +
-			'<div class="umcAppGallery col-xs-4" data-dojo-attach-point="domNode">' +
+			'<div class="previewTile umcAppGallery col-xs-4" data-dojo-attach-point="domNode">' +
 				'<div class="umcGalleryWrapperItem" data-dojo-attach-point="wrapperNode">' +
 					'<div class="cornerPiece boxShadow bl">' +
 						'<div class="hoverBackground"></div>' +
@@ -812,7 +799,9 @@ define([
 						'<div class="hoverBackground"></div>' +
 					'</div>' +
 					'<div class="cornerPiece boxShadowCover bl"></div>' +
-					'<div class="appIcon umcGalleryIcon"></div>' +
+					'<div class="appIcon umcGalleryIcon" data-dojo-attach-point="iconNode">' +
+						'<img data-dojo-attach-point="imgNode"/>' +
+					'</div>' +
 					'<div class="appInnerWrapper umcGalleryItem">' +
 						'<div class="contentWrapper">' +
 							'<div class="appContent">' +
@@ -837,18 +826,9 @@ define([
 		},
 
 		icon: null,
-		iconStyle: null,
 		_setIconAttr: function(iconUri) {
-			if (this.iconStyle) {
-				styles.removeCssRule(this.iconStyle.selector, this.iconStyle.declaration);
-			}
-			if (iconUri) {
-				this.iconStyle = {
-					selector: lang.replace('#{0} .appIcon', [this.id]),
-					declaration: lang.replace('background-image: url("{0}") !important;', [iconUri])
-				};
-				styles.insertCssRule(this.iconStyle.selector, this.iconStyle.declaration);
-			}
+			this.imgNode.src = iconUri;
+			domClass.toggle(this.iconNode, 'iconLoaded', iconUri);
 			this._set('icon', iconUri);
 		},
 
@@ -957,17 +937,13 @@ define([
 			// changes made after the first site load
 
 			// reload the portal.css file
-			var re = /.*\/portal.css\??\d*$/;
-			var links = document.getElementsByTagName('link');
-			var link = array.filter(links, function(ilink) {
-				return re.test(ilink.href);
-			})[0];
-			var href = link.href;
+			var sheet = styles.getStyleSheet('portal.css');
+			var href = sheet.href;
 			if (href.indexOf('?') !== -1) {
 				href = href.substr(0, href.indexOf('?'));
 			}
-			href += lang.replace('?{0}', [Date.now()]);
-			link.href = href;
+			href = lang.replace('{0}?{1}', [href, Date.now()]);
+			sheet.ownerNode.href = href;
 		},
 
 		// FIXME reloading the portal.json to update the content
@@ -986,7 +962,7 @@ define([
 						loadDeferred.resolve();
 						return;
 					}
-					if (result.portal && result.entries) {
+					if (result && result.portal && result.entries) {
 						if (tools.isEqual(result, portalContent)) {
 							_load();
 						} else {
@@ -1416,7 +1392,6 @@ define([
 				useDnd: (category === 'service' || category === 'admin'),
 				category: category
 			});
-			portalCategory.startup();
 			portalCategory.own(aspect.after(portalCategory.grid, 'onAddEntry', lang.hitch(this, function(category) {
 				if (this.dndMode) {
 					return;
@@ -1438,6 +1413,10 @@ define([
 				this.editPortalEntry(category, item.dn);
 			}), true));
 			this.content.appendChild(portalCategory.domNode);
+			// resize the item names after adding the category to the site.
+			// the grid items are already rendered at this point (by creating the portalCategory)
+			// but they weren't in the dom tree yet
+			portalCategory.grid._resizeItemNames();
 			this.portalCategories.push(portalCategory);
 		},
 
@@ -1486,6 +1465,12 @@ define([
 					});
 
 					wizard.own(on(wizard, 'loadEntry', function() {
+						// FIXME this is not really clear
+						// if we click on a tile of an existing portal entry,
+						// loadEntry is called before the wizardDialog exists.
+						// This case is for when we click on the tile
+						// to create a new portal entry and then load an
+						// existing entry by entering an existing portal entry name.
 						if (wizardDialog) {
 							wizardDialog._initialTitle = _('Edit entry');
 						}
@@ -1601,12 +1586,15 @@ define([
 					}, true);
 
 
-					// add listener for cancelling / finishing the wizard
+					//// listener for save / finish / cancel
+					// close wizard on cancel
 					wizard.own(on(wizard, 'cancel', lang.hitch(this, function() {
 						wizardDialog.hide().then(function() {
 							wizardDialog.destroyRecursive();
 						});
 					})));
+
+					// create a new portal entry object
 					wizard.own(on(wizard, 'finished', lang.hitch(this, function(values) {
 						wizardDialog.standby(true);
 
@@ -1637,6 +1625,8 @@ define([
 							wizardDialog.standby(false);
 						});
 					})));
+
+					// save changes made to an existing portal entry object
 					wizard.own(on(wizard, 'save', lang.hitch(this, function(formValues) {
 						wizardDialog.standby(true);
 
@@ -1660,7 +1650,8 @@ define([
 						}, this);
 
 						// check if the values in the form have changed
-						// and if not return and close without saving
+						// and we do not force saving.
+						// In that case return and close without saving
 						if (!wizard._forceSave && Object.keys(alteredValues).length === 0) {
 							wizardDialog.hide().then(function() {
 								wizardDialog.destroyRecursive();
@@ -1668,20 +1659,46 @@ define([
 							return;
 						}
 
-						// save the altered values
+						//// save the altered values
+						// concatenate the altered form values for displayName and description
+						// with the ones filtered out when loading the portal entry object
 						array.forEach(['displayName', 'description'], lang.hitch(this, function(ipropName) {
 							if (alteredValues[ipropName]) {
 								alteredValues[ipropName] = alteredValues[ipropName].concat(wizard.initialFormValues[ipropName + '_remaining']);
 							}
 						}));
+
+						// if the edited portal entry was not part of this portal before,
+						// add it to this portal
+						var portals = lang.clone(wizard.loadedEntryPortals);
+						var entryIsPartOfPortal = array.some(portals, function(iportal) {
+							return iportal === portalContent.portal.dn;
+						});
+						if (!entryIsPartOfPortal) {
+							portals.push(portalContent.portal.dn);
+						}
+
+						// save changes
 						var putParams = lang.mixin(alteredValues, {
 							'$dn$': wizard.dn,
-							category: category
+							category: category,
+							portal: portals
 						});
 						wizard.moduleStore.put(alteredValues).then(lang.hitch(this, function(result) {
 							// see whether creating the portal entry was succesful
 							if (result.success) {
-								// everything ok, close the wizard
+								// if the icon for the entry was changed we want a new iconClass
+								// to display the new icon
+								if (formValues.icon) {
+									var entry = array.filter(portalContent.entries, function(ientry) {
+										return ientry.dn === wizard.dn;
+									})[0];
+									if (entry) {
+										portalTools.requestNewIconClass(entry.logo_name);
+									}
+								}
+
+								// reload categories and close wizard dialog
 								this._refreshAfterPortalEntryEdit().then(function() {
 									wizardDialog.hide().then(function() {
 										wizardDialog.destroyRecursive();
@@ -1697,12 +1714,17 @@ define([
 							wizardDialog.standby(false);
 						});
 					})));
-					wizard.own(on(wizard, 'remove', lang.hitch(this, function(dn, portal) {
+
+					// remove portal entry object from this portal
+					wizard.own(on(wizard, 'remove', lang.hitch(this, function() {
 						wizardDialog.standby(true);
 
+						var newPortals = array.filter(wizard.loadedEntryPortals, function(iportal) {
+							return iportal !== portalContent.portal.dn;
+						});
 						wizard.moduleStore.put({
-							'$dn$': dn,
-							portal: portal
+							'$dn$': wizard.dn,
+							portal: newPortals
 						}).then(lang.hitch(this, function(result) {
 							if (result.success) {
 								this._refreshAfterPortalEntryEdit().then(function() {
@@ -1734,10 +1756,10 @@ define([
 						on(wizard, 'nameQuery', function() {
 							wizardDialog.standby(true);
 						});
-						on(wizard, 'entryLoaded', function() {
+						on(wizard, 'nameQueryEnd', function() {
 							wizardDialog.standby(false);
 						});
-						on(wizard, 'nameQueryEnd', function() {
+						on(wizard, 'entryLoaded', function() {
 							wizardDialog.standby(false);
 						});
 						wizardDialog.startup();
