@@ -1,3 +1,11 @@
+univention-directory-manager-modules (13.0.19-23) unstable; urgency=medium
+
+  * Bug #45842: Fix regression in users/user open if self.exists(),
+    amending 13.0.19-22 by considering the refactoring steps of 13.0.2-1
+    in more detail.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Feb 2018 12:24:48 +0100
+
 univention-directory-manager-modules (13.0.19-22) unstable; urgency=medium
 
   * Bug #45842: New user objects were not added to the univentionDefaultGroup

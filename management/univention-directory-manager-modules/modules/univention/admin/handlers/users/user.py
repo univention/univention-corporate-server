@@ -1522,11 +1522,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 	def open(self, loadGroups=True):
 		univention.admin.handlers.simpleLdap.open(self)
 
-		# self.save() traditionally must happen before self._load_groups(),
-		# otherwise self.__primary_group doesn't add a new user to the
-		# univentionDefaultGroup because "not self.hasChanged('primaryGroup')"
-		self.save()
-
 		if self.exists():
 			self._unmap_mail_forward()
 			self._unmap_pwd_change_next_login()
@@ -1585,6 +1580,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(cn=%s))', (univention.admin.uldap.explodeDn(number['univentionDefaultGroup'][0], 1)[0],)), base=self.position.getDomain(), scope='domain')
 					if primaryGroupResult:
 						self['primaryGroup'] = primaryGroupResult[0]
+						# self.save() must not be called after this point in self.open()
+						# otherwise self.__primary_group doesn't add a new user to the
+						# univentionDefaultGroup because "not self.hasChanged('primaryGroup')"
+
 
 	def _unmap_pwd_change_next_login(self):
 		if self.oldattr.get('shadowLastChange', [''])[0] == '0':
