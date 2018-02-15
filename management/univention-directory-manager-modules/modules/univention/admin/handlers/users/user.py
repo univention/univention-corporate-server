@@ -1535,6 +1535,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			self._unmap_automount_information()
 			self._unmapUnlockTime()
 			self.reload_certificate()
+			self.save()
 
 		self._load_groups(loadGroups)
 
@@ -1566,6 +1567,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 						raise univention.admin.uexceptions.primaryGroup(self.dn)
 					self.info['primaryGroup'] = primaryGroup
 					self.__primary_group()
+					self.save()
 			else:
 				self.info['primaryGroup'] = None
 				self.save()
