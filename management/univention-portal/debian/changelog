@@ -1,3 +1,9 @@
+univention-portal (2.0.0-6) unstable; urgency=medium
+
+  * Bug #46270: Fix changed logos not being displayed without page refresh
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 15 Feb 2018 16:58:42 +0100
+
 univention-portal (2.0.0-5) unstable; urgency=medium
 
   * Bug #46270: Remove dependency on univention-ldap-server
