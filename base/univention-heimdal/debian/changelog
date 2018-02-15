@@ -1,3 +1,11 @@
+univention-heimdal (11.0.1-5) unstable; urgency=medium
+
+  * Bug #36542 / Bug #46292: Also keep MIT Kerberos options for
+    compatibility with clients that are linked against libkrb5-dev
+    instead of against heimdal-dev
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Feb 2018 18:50:28 +0100
+
 univention-heimdal (11.0.1-4) unstable; urgency=medium
 
   * Bug #36542 / Bug #46292: Use Heimdal supported configuration options
