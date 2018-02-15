@@ -1,3 +1,9 @@
+univention-heimdal (11.0.1-6) unstable; urgency=medium
+
+  * Bug #36542 / Bug #46292: Simplify python syntax of previous commit
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Feb 2018 21:22:56 +0100
+
 univention-heimdal (11.0.1-5) unstable; urgency=medium
 
   * Bug #36542 / Bug #46292: Also keep MIT Kerberos options for
