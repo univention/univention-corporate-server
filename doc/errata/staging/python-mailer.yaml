@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.0-0
+src: python-mailer
+fix: 0.7-1.4.201403130738
+maintained: true
+desc: Move to maintained for univention-celery.
+ignore: [version.scope]
+bug: [45030]

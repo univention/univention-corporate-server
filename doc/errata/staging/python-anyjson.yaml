@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0
+src: python-anyjson
+fix: 0.3.3-1
+maintained: true
+desc: Move to maintained for univention-celery.
+ignore: [version.scope]
+bug: [45030]
