@@ -1,3 +1,9 @@
+univention-kernel-image-signed (3.0.2-16) unstable; urgency=medium
+
+  * Bug #46209: Update to linux-4.9.81-ucs109
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 Feb 2018 11:23:03 +0100
+
 univention-kernel-image-signed (3.0.2-15) unstable; urgency=low
 
   * Bug #46029: Rebuild with new gcc-4.9 for retpoline
