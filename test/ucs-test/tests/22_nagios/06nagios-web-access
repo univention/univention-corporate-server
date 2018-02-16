@@ -3,103 +3,40 @@
 ## bugs: [18684]
 ## packages:
 ##  - univention-nagios-server
-##  - univention-nagios-group-access
 ## exposure: dangerous
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
 . "$TESTLIBPATH/group.sh" || exit 137
 
+. /usr/share/univention-lib/base.sh || exit 137
+
 ###################
 ###  Information  #
 ###################
-### This script tests, if users of specified group get access to Nagios web interface
+### This script tests, if users of Domain Admins can access the nagios webinterface
 ###################
 
-testWebAccess() {
-	local user="$1" output rc
-	output=$(wget -q -O - "http://${user}:univention@${hostname}.${domainname}/nagios/")
-	rc=$?
-	[ -n "$output" -a $rc -eq 0 ] && :
-}
+eval "$(hostname domainname)"
 
-RETVAL=100
-# save old settings
-old_nagios_server_webaccess_groups="$nagios_server_webaccess_groups"
-
-# create new groups
-G_ACCESS=$(group_randomname)
-if ! group_create "$G_ACCESS" ; then
-	fail_test 140 "cannot create G_ACCESS group $G_ACCESS"
-fi
-
-GG_ACCESS=$(group_randomname)
-if ! group_create "$GG_ACCESS" ; then
-	fail_test 140 "cannot create GG_ACCESS group $GG_ACCESS"
-fi
-# add $GG_ACCESS to $G_ACCESS
-udm groups/group modify --dn "$(group_dn "$G_ACCESS")" --append nestedGroup="$(group_dn "$GG_ACCESS")"
-
-G_NOACCESS=$(group_randomname)
-if ! group_create "$G_NOACCESS" ; then
-	fail_test 140 "cannot create G_NOACCESS group $G_NOACCESS"
-fi
-
-U_ACCESS=$(user_randomname)
-if ! user_create "$U_ACCESS" ; then
-	fail_test 140 "cannot create U_ACCESS user $U_ACCESS"
-fi
-# add user to corresponding group
-udm groups/group modify --dn "$(group_dn $G_ACCESS)" --append users="$(user_dn "$U_ACCESS")"
-
-U_ACCESS_B=$(user_randomname)
-if ! user_create "$U_ACCESS_B" ; then
-	fail_test 140 "cannot create U_ACCESS_B user $U_ACCESS_B"
-fi
-# add user to corresponding group
-udm groups/group modify --dn "$(group_dn "$GG_ACCESS")" --append users="$(user_dn "$U_ACCESS_B")"
-
-U_NOACCESS=$(user_randomname)
-if ! createtestuser "$U_NOACCESS" ; then
-	fail_test 140 "cannot create U_NOACCESS user $U_NOACCESS"
-fi
-# add user to corresponding group
-udm groups/group modify --dn "$(group_dn "$G_NOACCESS")" --append users="$(user_dn "$U_NOACCESS")"
-
-# enable group $G_ACCESS for nagios web access
-ucr set nagios/server/webaccess/groups="$G_ACCESS"
+username=$(user_randomname)
 
 cleanup () {
-	if [ -n "$old_nagios_server_webaccess_groups" ]
-	then
-		ucr set nagios/server/webaccess/groups="$old_nagios_server_webaccess_groups"
-	elif [ -z "$old_nagios_server_webaccess_groups" ]
-	then
-		ucr unset nagios/server/webaccess/groups
-	fi
-
-	for user in "$U_ACCESS" "$U_ACCESS_B" "$U_NOACCESS" ; do
-		user_remove "$user"
-	done
-
-	for grp in "$G_ACCESS" "$GG_ACCESS" "$G_NOACCESS" ; do
-		group_remove "$grp"
-	done
+	user_remove "$username"
 }
 trap cleanup EXIT
-[ $RETVAL -eq 100 ] || exit $RETVAL
 
-# perform web access tests
-if ! testWebAccess "$U_ACCESS" ; then
-	fail_test 110 "U_ACCESS user $U_ACCESS cannot access nagios web interface"
-fi
+user_create "$username" || fail_fast 140 "can not create test user"
+group_adduser "$username" "$(custom_groupname "Domain Admins")" || fail_fast 140 "can add $username to Domain Admins group"
+wait_for_replication
+/usr/lib/univention-pam/ldap-group-to-file.py --check_member
+nscd -i group
+nscd -i passwd
+sleep 15
 
-if ! testWebAccess "$U_ACCESS_B" ; then
-	fail_test 110 "U_ACCESS_B user $U_ACCESS_B cannot access nagios web interface"
-fi
-
-if testWebAccess "$U_NOACCESS" ; then
-	fail_test 110 "U_NOACCESS user $U_NOACCESS can access nagios web interface"
-fi
+output=$(wget -O - "https://${username}:univention@${hostname}.${domainname}/nagios/" 2>&1)
+test $? -eq 0 || fail_fast 140 "nagios login failed: $output"
+echo $output
 
 exit $RETVAL
+# vim:set filetype=sh noexpandtab ts=4
