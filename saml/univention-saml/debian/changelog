@@ -1,3 +1,9 @@
+univention-saml (5.0.4-8) unstable; urgency=medium
+
+  * Bug #46212: Cleanup daemon start, use dh_installinit
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 16 Feb 2018 17:37:07 +0100
+
 univention-saml (5.0.4-7) unstable; urgency=medium
 
   * Bug #33214: Set correct SPN in OpenLDAP

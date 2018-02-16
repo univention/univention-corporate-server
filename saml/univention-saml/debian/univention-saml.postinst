@@ -88,8 +88,6 @@ configure)
 	done
 	chmod 640 /var/log/stunnel4/stunnel.log
 
-	deb-systemd-invoke enable univention-saml.service
-	deb-systemd-invoke restart univention-saml.service
 	deb-systemd-invoke restart stunnel4.service
 
 	a2ensite univention-saml
