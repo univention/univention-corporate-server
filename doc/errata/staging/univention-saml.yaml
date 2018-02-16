@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: univention-saml 
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Restart the univention-saml daemon after an upgrade to prevent timeouts
+bug: [46212]

@@ -1,3 +1,9 @@
+univention-saml (4.0.14-13) unstable; urgency=medium
+
+  * Bug #46212: Restart univention-saml after upgrades to prevent timeouts
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 16 Feb 2018 16:44:05 +0100
+
 univention-saml (4.0.14-12) unstable; urgency=medium
 
   * Bug #44121: SSO login page now shows domainname instead of hostfqdn

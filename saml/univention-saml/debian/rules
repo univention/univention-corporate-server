@@ -40,5 +40,8 @@ override_dh_auto_test:
 	dh_auto_test
 	ucslint
 
+override_dh_installinit:
+	dh_installinit --restart-after-upgrade
+
 %:
 	dh $@ --with 'python_support'
