@@ -187,8 +187,8 @@
 					The script <package>startxwithfirefox</package> now starts services in a change root environment during the installation (<u:bug>45895</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					During the setup <package>apache</package> certificates are created in the directory <filename class="directory">/var/cache/univention-system-setup</filename>
-					due to the PrivateTmp default setting of the <package>apache</package> <package>systemd</package> service (<u:bug>46052</u:bug>).
+					During the setup <package>apache2</package> certificates are created in the directory <filename class="directory">/var/cache/univention-system-setup</filename>
+					due to the PrivateTmp default setting of the <package>apache2</package> <package>systemd</package> service (<u:bug>46052</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
