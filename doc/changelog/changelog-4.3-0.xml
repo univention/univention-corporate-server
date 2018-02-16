@@ -463,6 +463,9 @@
 				<listitem><simpara>
 						The Active Directory builtin account <package>Console Logon</package> is created now in OpenLDAP too (<u:bug>46107</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						Support for <literal>NT style domain control</literal> has been removed in most parts. The update for these domains is blocked and the domain needs to be migrated to <literal>Samba/AD</literal> following the update guide <ulink url="https://wiki.univention.de/index.php/Migration_from_Samba_3_to_Samba_4">Migration from Samba 3 to Samba 4</ulink>. See also <ulink url="https://wiki.univention.de/index.php/Best_Practice_Samba_4_Migration">Best practices for Samba 4 Migration</ulink> (<u:bug>46118</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
