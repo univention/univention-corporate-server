@@ -46,6 +46,13 @@ import heimdal
 from ldap.controls import LDAPControl
 import traceback
 
+class Krb5Context(object):
+	def __init__(self):
+		self.ctx = heimdal.context()
+		self.etypes = self.ctx.get_permitted_enctypes()
+		self.etype_ids = [et.toint() for et in self.etypes]
+
+krb5_context = Krb5Context()
 
 def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 	up_blob = unicodePwd
@@ -168,11 +175,14 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 	krb_ctr4_salt = ''
 	for k in ucs_krb5key:
 		(keyblock, salt, kvno) = heimdal.asn1_decode_key(k)
-
 		key_data = keyblock.keyvalue()
 		saltstring = salt.saltvalue()
 		enctype = keyblock.keytype()
 		enctype_id = enctype.toint()
+		if enctype_id not in krb5_context.etype_ids:
+			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ignoring unsupported krb5_keytype: (%d)" % (enctype_id,))
+			continue
+
 		ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: krb5_keytype: %s (%d)" % (enctype, enctype_id))
 		if enctype_id == 18:
 			krb5_aes256 = key_data
