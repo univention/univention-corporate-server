@@ -16,6 +16,7 @@ class SyncedAppcenter(Appcenter):
 	def __init__(self):
 		Appcenter.__init__(self)
 		self.vv = self.ucr.get('version/version')
+		self.all_versions = ['4.1', '4.2', '4.3']
 		self.upstream_appcenter = 'https://appcenter.software-univention.de'
 		handler_set([
 			'appcenter/index/verify=true',
@@ -41,20 +42,15 @@ class SyncedAppcenter(Appcenter):
 		call('wget -O /var/www/%s %s/%s' % (f, self.upstream_appcenter, f), shell=True)
 
 	def download_index_json(self):
-		self.download('meta-inf/%s/index.json.gz' % self.vv)
-		self.download('meta-inf/%s/all.tar.zsync' % self.vv)
-		self.download('meta-inf/%s/all.tar.gz' % self.vv)
-		if self.vv == '4.3':
-			self.download('meta-inf/4.1/index.json.gz')
-			self.download('meta-inf/4.1/all.tar.zsync')
-			self.download('meta-inf/4.1/all.tar.gz')
+		for version in self.all_versions:
+			self.download('meta-inf/%s/index.json.gz' % version)
+			self.download('meta-inf/%s/all.tar.zsync' % version)
+			self.download('meta-inf/%s/all.tar.gz' % version)
 
 	def download_index_json_gpg(self):
-		self.download('meta-inf/%s/index.json.gz.gpg' % self.vv)
-		self.download('meta-inf/%s/all.tar.gpg' % self.vv)
-		if self.vv == '4.3':
-			self.download('meta-inf/4.1/index.json.gz.gpg')
-			self.download('meta-inf/4.1/all.tar.gpg')
+		for version in self.all_versions:
+			self.download('meta-inf/%s/index.json.gz.gpg' % version)
+			self.download('meta-inf/%s/all.tar.gpg' % version)
 
 	def remove_from_cache(self, f):
 		if os.path.exists(os.path.join('/var/cache/univention-appcenter/', f)):

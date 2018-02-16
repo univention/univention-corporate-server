@@ -1,3 +1,9 @@
+ucs-test (8.0.28-14) unstable; urgency=medium
+
+  * Bug #46304: fixed 80_docker/59_app_center_signature
+
+ -- Felix Botner <botner@univention.de>  Fri, 16 Feb 2018 12:24:10 +0100
+
 ucs-test (8.0.28-13) unstable; urgency=medium
 
   * Bug #46118: Check for unsupported Samba NT DCs
