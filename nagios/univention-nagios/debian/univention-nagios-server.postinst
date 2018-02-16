@@ -28,7 +28,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell ldap/hostdn ldap/base server/role hostname domainname lilo/root)"
+eval "$(ucr shell)"
+
+. /usr/share/univention-lib/all.sh
+create_logfile /var/log/nagios/nagios.log "nagios:nagios" 640
 
 # set default baseconfig settings
 univention-config-registry set \
