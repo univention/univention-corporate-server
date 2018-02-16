@@ -88,7 +88,7 @@
 				<listitem><simpara>
 					For the update of Debian Heimdal to version 7.1, the &ucsUCR; Template for <filename>/etc/krb5.conf</filename> has been adjusted to also set Heimdal specific options like <literal>default_etypes></literal>. This ensures compatibility with domain controllers in the UCS domain that have not been updated to UCS 4.3 yet (<u:bug>36542</u:bug>).
 				</simpara></listitem>
-			</section>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:domain:dnsserver">
