@@ -347,6 +347,9 @@
 					and the log and cache files are moved to the new directories to ensure a smooth transition. Nevertheless the
 					Nagios configuration should be manually checked after the update (<command>nagios -v /etc/nagios/nagios.cfg</command>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Permissions for the <filename>nagios.log</filename> have been changed to 640 (<u:bug>46306</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
