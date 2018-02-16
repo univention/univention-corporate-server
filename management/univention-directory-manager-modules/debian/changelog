@@ -1,4 +1,13 @@
-univention-directory-manager-modules (13.0.20-1) UNRELEASED; urgency=medium
+univention-directory-manager-modules (13.0.20-2) unstable; urgency=medium
+
+  * Bug #45842: Fix a re-regression in users/user open if self.exists(),
+    amending 13.0.19-23 by considering the refactoring steps of 13.0.2-1
+    in more detail. If self.exists in open() then we need to save()
+    after _load_groups(). If not, then not (that was 13.0.19-22).
+
+ -- Arvid Requate <requate@univention.de>  Fri, 16 Feb 2018 14:12:18 +0100
+
+univention-directory-manager-modules (13.0.20-1) unstable; urgency=medium
 
   * Bug #46118: Remove references to "NT" DCs
   * Remove support for Windows Terminal Server settings

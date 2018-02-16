@@ -1519,9 +1519,15 @@ class object(univention.admin.handlers.simpleLdap):
 			self._unmap_automount_information()
 			self._unmapUnlockTime()
 			self.reload_certificate()
-			self.save()
 
 		self._load_groups(loadGroups)
+		if self.exists():
+			self.save()
+		else:
+			pass
+			# In this case self.save() must not be called at the end of self.open()
+			# otherwise self.__primary_group doesn't add a new user to the
+			# univentionDefaultGroup because "not self.hasChanged('primaryGroup')"
 
 	def _load_groups(self, loadGroups):
 		if self.exists():
@@ -1551,7 +1557,6 @@ class object(univention.admin.handlers.simpleLdap):
 						raise univention.admin.uexceptions.primaryGroup(self.dn)
 					self.info['primaryGroup'] = primaryGroup
 					self.__primary_group()
-					self.save()
 			else:
 				self.info['primaryGroup'] = None
 				self.save()
