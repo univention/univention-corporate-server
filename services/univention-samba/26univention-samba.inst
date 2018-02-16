@@ -94,6 +94,10 @@ configure_ldapmaster_as_winsserver ()
 	univention-config-registry set windows/wins-support=no windows/wins-server="${ldap_master}"
 }
 
+is_slave_pdc() {
+	dpkg -l univention-samba-slave-pdc | grep -q ^ii
+}
+
 configure_samba_role() {
 	if is_ucr_true ad/member; then
 		univention-config-registry set samba/role="memberserver"
@@ -101,6 +105,12 @@ configure_samba_role() {
 	else
 		case "${server_role}" in
 			domaincontroller_*)
+				if ! is_slave_pdc; then
+					printf "%0.s#" {1..78}
+					echo "WARNING: Samba/NT (samba3) Domain Controller is not supported any more."
+					echo "         Please also note that the migration to Samba/AD is not supported any more after updating to UCS 4.3."
+					printf "%0.s#" {1..78}
+				fi
 				univention-config-registry set samba/role?"domaincontroller"
 				;;
 			*)

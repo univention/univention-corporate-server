@@ -338,6 +338,43 @@ fi
 dpkg -P univention-config-wrapper >&3 2>&3
 # end bug 45913
 
+# begin bug 46118 - Remove support for NT DC
+is_slave_pdc() {
+	dpkg -l univention-samba-slave-pdc | grep -q ^ii
+}
+
+is_samba3_installed() {
+	dpkg -l univention-samba | grep -q ^ii
+}
+
+block_update_of_NT_DC() {
+	if [ "${samba_role}" = "domaincontroller" ]; then
+		if ! is_samba3_installed; then
+			return
+		fi
+		if [ "${server_role}" = "domaincontroller_slave" ]; then
+			if is_slave_pdc; then
+				return
+			fi
+		fi
+		echo "WARNING: Samba/NT (samba3) Domain Controller is not supported any more."
+		echo "         Please migrate this domain to Samba/AD before updating."
+		echo "         See https://wiki.univention.de/index.php/Migration_from_Samba_3_to_Samba_4"
+		echo "         and https://wiki.univention.de/index.php/Best_Practice_Samba_4_Migration"
+		echo "         "
+		echo "         This check can be disabled by setting the UCR variable"
+		echo "         update43/ignore_samba_nt_dc to yes."
+		if is_ucr_true update43/ignore_samba_nt_dc; then
+			echo "WARNING: update43/ignore_samba_nt_dc is set to true. Skipped as requested."
+		else
+			exit 1
+		fi
+	fi
+}
+
+block_update_of_NT_DC
+# end bug 46118
+
 # move old initrd files in /boot
 initrd_backup=/var/backups/univention-initrd.bak/
 if [ ! -d "$initrd_backup" ]; then

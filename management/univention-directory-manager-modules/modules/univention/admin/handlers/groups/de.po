@@ -125,8 +125,8 @@ msgid "Membership in other groups"
 msgstr "Mitgliedschaft in weiteren Gruppen"
 
 #: modules/univention/admin/handlers/groups/group.py:112
-msgid "NT group type"
-msgstr "NT Gruppentyp"
+msgid "Windows group type"
+msgstr "Windows Gruppentyp"
 
 #: modules/univention/admin/handlers/groups/group.py:80
 msgid "Name"

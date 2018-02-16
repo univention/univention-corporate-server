@@ -178,11 +178,10 @@
 					</row>
 
 					<row>
-					  <entry>Windows &ar; NT Gruppentyp</entry>
+					  <entry>Windows &ar; Gruppentyp</entry>
 					  <entry>
 						Dieser Gruppentyp wird ausgewertet, wenn der Benutzer sich an einer Domäne
-						auf Basis von Samba 3 anmeldet (das NT-Domänendienste bereitstellt). Man
-						unterscheidet zwischen drei NT-Gruppentypen:
+						auf Basis von Samba/AD anmeldet. Man unterscheidet zwischen drei Windows-Gruppentypen:
 
 						<itemizedlist>
 						  <listitem><simpara>
@@ -196,7 +195,7 @@
 							Windows-Servern von Bedeutung. Wird auf einem Windows-Server eine lokale
 							Gruppe erstellt, ist sie nur dem Server bekannt und ist nicht
 							domänenweit verfügbar. UCS hingegen unterscheidet nicht zwischen lokalen
-							und globalen Gruppen. Von einer NT-Domäne übernommene lokale Gruppen
+							und globalen Gruppen. Von einer AD-Domäne übernommene lokale Gruppen
 							werden in UCS wie globale Gruppen verwaltet.
 						  </simpara></listitem>
 

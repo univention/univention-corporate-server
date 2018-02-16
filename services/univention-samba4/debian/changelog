@@ -1,3 +1,9 @@
+univention-samba4 (7.0.2-1) unstable; urgency=medium
+
+  * Bug #46118: Remove code for Samba/NT to Samba/AD migration
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Feb 2018 15:30:26 +0100
+
 univention-samba4 (7.0.1-6) unstable; urgency=medium
 
   * Bug #45326: Bump version

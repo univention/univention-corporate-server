@@ -45,8 +45,6 @@ override_dh_fixperms:
 	dh_fixperms
 	chmod 755 debian/univention-samba/usr/share/univention-samba/kerberize_user
 	chmod 755 debian/univention-samba/usr/lib/univention-directory-listener/system/samba-shares.py
-	chmod 755 debian/univention-samba/usr/share/univention-samba/remove-samba-account
-	chmod 755 debian/univention-samba/usr/share/univention-samba/slave-sync
 	chmod 755 debian/univention-samba/usr/lib/univention-directory-listener/system/samba-privileges.py
 	chmod 755 debian/univention-samba/usr/share/univention-samba/addmachine.sh
 

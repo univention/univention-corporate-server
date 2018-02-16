@@ -57,7 +57,6 @@ import univention.admin.allocators
 import univention.admin.localization
 import univention.admin.uexceptions
 import univention.admin.uldap
-import univention.admin.mungeddial as mungeddial
 import univention.admin.handlers.settings.prohibited_username
 from univention.admin import configRegistry
 from univention.lib.s4 import rids_for_well_known_security_identifiers
@@ -966,10 +965,6 @@ property_descriptions = {
 	),
 }
 
-# append CTX properties
-for key, value in mungeddial.properties.items():
-	property_descriptions[key] = value
-
 default_property_descriptions = copy.deepcopy(property_descriptions)  # for later reset of descriptions
 
 layout = [
@@ -1078,9 +1073,6 @@ layout = [
 		])
 	])
 ]
-
-# append tab with CTX flags
-layout.append(mungeddial.tab)
 
 
 def check_prohibited_username(lo, username):
@@ -1486,7 +1478,7 @@ mapping.registerUnmapping('locked', unmapLocked)
 mapping.register('password', 'userPassword', univention.admin.mapping.dontMap(), univention.admin.mapping.ListToString)
 
 
-class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
+class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	def __pwd_is_auth_saslpassthrough(self, password):
@@ -1517,7 +1509,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.password_length = 8
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
-		mungeddial.Support.__init__(self)
 
 	def open(self, loadGroups=True):
 		univention.admin.handlers.simpleLdap.open(self)
@@ -1525,8 +1516,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if self.exists():
 			self._unmap_mail_forward()
 			self._unmap_pwd_change_next_login()
-			self.sambaMungedDialUnmap()
-			self.sambaMungedDialParse()
 			self._unmap_automount_information()
 			self._unmapUnlockTime()
 			self.reload_certificate()
@@ -1955,7 +1944,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		ml = self._modlist_mail_forward(ml)
 		ml = self._modlist_univention_person(ml)
 		ml = self._modlist_home_share(ml)
-		ml = self._modlist_samba_mungeddial(ml)
 		ml = self._modlist_samba_sid(ml)
 
 		return ml
@@ -2302,12 +2290,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				am_old = self.oldattr.get('automountInformation', [''])[0]
 				if am_old:
 					ml.append(('automountInformation', am_old, ''))
-		return ml
-
-	def _modlist_samba_mungeddial(self, ml):
-		sambaMunged = self.sambaMungedDialMap()
-		if sambaMunged:
-			ml.append(('sambaMungedDial', self.oldattr.get('sambaMungedDial', ['']), [sambaMunged]))
 		return ml
 
 	def _modlist_samba_sid(self, ml):

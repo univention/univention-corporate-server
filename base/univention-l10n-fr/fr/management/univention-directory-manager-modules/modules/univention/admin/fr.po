@@ -93,10 +93,6 @@ msgstr "Ajouter des utilisateurs et des groupes au domaine"
 msgid "Address"
 msgstr "Adresse"
 
-#: modules/univention/admin/mungeddial.py:354
-msgid "Advanced"
-msgstr "Avancé"
-
 #: modules/univention/admin/syntax.py:2243
 msgid "Alias"
 msgstr "Alias"
@@ -112,10 +108,6 @@ msgstr "Tous les clients"
 #: modules/univention/admin/syntax.py:3238
 msgid "All disabled"
 msgstr "Tous les désactivés"
-
-#: modules/univention/admin/mungeddial.py:55
-msgid "Allow Windows terminal server login"
-msgstr "Autoriser la connexion Windows terminal server"
 
 #: modules/univention/admin/syntax.py:207
 #: modules/univention/admin/syntax.py:294
@@ -165,50 +157,6 @@ msgstr "Sauvegarder les fichiers et répertoires"
 msgid "Below primary display"
 msgstr "En-dessous de l'affichage principal"
 
-#: modules/univention/admin/mungeddial.py:115
-msgid "CTX Callback"
-msgstr "Fonction de rappel CTX"
-
-#: modules/univention/admin/mungeddial.py:307
-msgid "CTX Callback Number"
-msgstr "Numéro de rappel CTX"
-
-#: modules/univention/admin/mungeddial.py:103
-msgid "CTX Flags1"
-msgstr "Drapeaux1 CTX"
-
-#: modules/univention/admin/mungeddial.py:127
-msgid "CTX Mirroring"
-msgstr "Miroir CTX"
-
-#: modules/univention/admin/mungeddial.py:235
-msgid "CTX NW Logon Server"
-msgstr "Serveur de connexion CTX NW"
-
-#: modules/univention/admin/mungeddial.py:43
-msgid "CTX Present"
-msgstr "CTX présent"
-
-#: modules/univention/admin/mungeddial.py:319
-msgid "CTX RAS Dialin"
-msgstr "Connexion entrante CTX RAS"
-
-#: modules/univention/admin/mungeddial.py:163
-msgid "CTX maximum connection time"
-msgstr "Durée de connexion CTX maximale"
-
-#: modules/univention/admin/mungeddial.py:175
-msgid "CTX maximum disconnection time"
-msgstr "Durée de déconnexion CTX maximale"
-
-#: modules/univention/admin/mungeddial.py:187
-msgid "CTX maximum idle time"
-msgstr "Durée d'inoccupation CTX maximale"
-
-#: modules/univention/admin/mungeddial.py:211
-msgid "CTX minimal encryption level"
-msgstr "Niveau minimal de chiffrement CTX"
-
 #: modules/univention/admin/locking.py:79
 #: modules/univention/admin/locking.py:96
 #: modules/univention/admin/locking.py:118
@@ -228,25 +176,9 @@ msgstr "Dépendance circulaire de groupe détectée :"
 msgid "City"
 msgstr "Ville"
 
-#: modules/univention/admin/mungeddial.py:342
-msgid "Client devices"
-msgstr "Périphériques des clients"
-
 #: modules/univention/admin/syntax.py:1656
 msgid "Command pattern"
 msgstr "Motif de la commande"
-
-#: modules/univention/admin/mungeddial.py:67
-msgid "Connect client drives at login"
-msgstr "Mettre en place les disques client à la connexion"
-
-#: modules/univention/admin/mungeddial.py:79
-msgid "Connect client printers at login"
-msgstr "Mettre en place les imprimantes client à la connexion"
-
-#: modules/univention/admin/mungeddial.py:347
-msgid "Connection"
-msgstr "Connexion"
 
 #: modules/univention/admin/uexceptions.py:101
 msgid "Could not acquire lock."
@@ -326,10 +258,6 @@ msgstr "Description"
 #: modules/univention/admin/syntax.py:3335
 msgid "Destination"
 msgstr "Destination"
-
-#: modules/univention/admin/mungeddial.py:333
-msgid "Directories"
-msgstr "Répertoires"
 
 #: modules/univention/admin/syntax.py:3047
 #: modules/univention/admin/syntax.py:3060
@@ -524,14 +452,6 @@ msgstr "Compte du collecticiel"
 msgid "Hard limit (pages)"
 msgstr "Limite dure (pages)"
 
-#: modules/univention/admin/mungeddial.py:247
-msgid "Home directory for Windows terminal services"
-msgstr "Répertoire personnel utilisé par les services de terminal Windows"
-
-#: modules/univention/admin/mungeddial.py:259
-msgid "Home drive for Windows terminal services"
-msgstr "Disque utilisé par les services de terminal Windows"
-
 #: modules/univention/admin/syntax.py:1671
 msgid "IMAP"
 msgstr "IMAP"
@@ -626,10 +546,6 @@ msgstr "Kerberos est désactivé"
 msgid "Key"
 msgstr "Clé"
 
-#: modules/univention/admin/mungeddial.py:199
-msgid "Keyboard layout"
-msgstr "Disposition du clavier"
-
 #: modules/univention/admin/uexceptions.py:57
 msgid "LDAP Error"
 msgstr "Erreur LDAP"
@@ -704,13 +620,6 @@ msgstr "Compte de courriel"
 #: modules/univention/admin/syntax.py:1509
 msgid "Mail server"
 msgstr "Serveur de courriel"
-
-#: modules/univention/admin/mungeddial.py:91
-msgid ""
-"Make client default printer the default printer for Windows terminal services"
-msgstr ""
-"Faire de l'imprimante par défaut du client celle des services de terminal "
-"Windows"
 
 #: modules/univention/admin/syntax.py:2912
 msgid "Manage auditing and security log"
@@ -1071,10 +980,6 @@ msgstr ""
 msgid "Priority"
 msgstr "Priorité"
 
-#: modules/univention/admin/mungeddial.py:271
-msgid "Profile directory for Windows terminal services"
-msgstr "Répertoire du profil pour les services de terminal Windows"
-
 #: modules/univention/admin/uexceptions.py:163
 msgid "Prohibited username."
 msgstr "Nom d'utilisateur interdit."
@@ -1091,10 +996,6 @@ msgstr "Le protocole et la destination doivent être précisés."
 #: modules/univention/admin/syntax.py:1679
 msgid "Read"
 msgstr "Lecture"
-
-#: modules/univention/admin/mungeddial.py:151
-msgid "Reconnect session"
-msgstr "Reconnecter la session"
 
 #: modules/univention/admin/policy.py:60
 msgid "Required object class"
@@ -1154,11 +1055,6 @@ msgstr "Limite douce (pages)"
 msgid "Spaces are not allowed in the username!"
 msgstr "Les espaces ne sont pas autorisés dans le nom d'utilisateur !"
 
-#: modules/univention/admin/mungeddial.py:295
-#: modules/univention/admin/mungeddial.py:337
-msgid "Startup command"
-msgstr "Commande de démarrage"
-
 #: modules/univention/admin/syntax.py:1540
 msgid "Street"
 msgstr "Rue"
@@ -1174,10 +1070,6 @@ msgstr "Dimanche"
 #: modules/univention/admin/syntax.py:2913
 msgid "Take ownership of files or other objects"
 msgstr "Prendre le contrôle sur les fichiers ou d'autres objets"
-
-#: modules/univention/admin/mungeddial.py:139
-msgid "Terminated or timed-out sessions"
-msgstr "Sessions terminées ou dont le délai était dépassé"
 
 #: modules/univention/admin/syntax.py:3215
 msgid "Text"
@@ -1572,10 +1464,6 @@ msgstr "Universel (type : distribution)"
 msgid "Universal (Type: Security)"
 msgstr "Universel (type : sécurité)"
 
-#: modules/univention/admin/mungeddial.py:283
-msgid "Use client configuration for startup command"
-msgstr "Utiliser la configuration du client pour la commande de démarrage"
-
 #: modules/univention/admin/syntax.py:1712
 #: modules/univention/admin/syntax.py:1720
 #: modules/univention/admin/syntax.py:3292
@@ -1746,10 +1634,6 @@ msgstr "Pondération"
 msgid "Well-Known Group"
 msgstr "Groupe connu"
 
-#: modules/univention/admin/mungeddial.py:332
-msgid "Windows Terminal server settings"
-msgstr "Réglages de Windows Terminal server"
-
 #: modules/univention/admin/syntax.py:3244
 msgid "Windows and Kerberos disabled"
 msgstr "Windows et Kerberos désactivés"
@@ -1761,14 +1645,6 @@ msgstr "Windows et POSIX désactivés"
 #: modules/univention/admin/syntax.py:3240
 msgid "Windows disabled"
 msgstr "Windows désactivé"
-
-#: modules/univention/admin/mungeddial.py:332
-msgid "Windows terminal server"
-msgstr "Windows terminal server"
-
-#: modules/univention/admin/mungeddial.py:223
-msgid "Working directory for startup command"
-msgstr "Répertoire de travail pour la commande de démarrage"
 
 #: modules/univention/admin/syntax.py:1682
 msgid "Write"
