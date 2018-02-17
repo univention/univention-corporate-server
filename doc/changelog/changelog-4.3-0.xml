@@ -141,7 +141,7 @@
 						Non-Docker Apps are installed with a new functions. These functions support a wider range of integration (<u:bug>40064</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						The file /var/log/univention/appcenter.log is now rotated (<u:bug>46274</u:bug>).
+						The file <filename>/var/log/univention/appcenter.log</filename> is now rotated (<u:bug>46274</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -196,7 +196,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					During the setup <package>apache2</package> certificates are created in the directory <filename class="directory">/var/cache/univention-system-setup</filename>
-					due to the PrivateTmp default setting of the <package>apache2</package> <package>systemd</package> service (<u:bug>46052</u:bug>).
+					due to the <property>PrivateTmp</property> default setting of the <package>apache2</package> <package>systemd</package> service (<u:bug>46052</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
