@@ -938,10 +938,10 @@ postmap /etc/postfix/smtp_auth
 	</section>
 
 	<section id="mail::serverconfig::postscreen">
-		<title>Konfiguration zusätzlicher Prüfungen durch postscreen</title>
+		<title>Konfiguration zusätzlicher Prüfungen durch <application>postscreen</application></title>
 		<para>
 			Bei der Verwendung eines Mailservers, der direkt vom Internet aus erreichbar ist, besteht immer die Gefahr,
-			dass Spammer, Spam-Bots oder defekte Mailserver kontinuierlich versuchen, auf dem UCS-System ungewollte
+			dass Versender von Spam oder defekte Mailserver kontinuierlich versuchen, auf dem UCS-System ungewollte
 			Mails (z.B. Spam) abzuliefern.
 		</para>
 		<para>
@@ -950,11 +950,11 @@ postmap /etc/postfix/smtp_auth
 			SMTP-Verbindungen annimmt. Mit diesen Verbindungen werden zunächst einige leichtgewichtige Tests
 			durchgeführt. Ist das Ergebnis positiv, wird die Verbindung an Postfix durchgereicht. Im negativen Fall
 			wird die SMTP-Verbindung beendet und somit die eingehende Mail abgelehnt, bevor sie im Verantwortungsbereich
-			des UCS-Mailservers angekommen ist.
+			des UCS Mailservers angekommen ist.
 		</para>
 		<para>
-			In der Standardeinstellung ist postscreen nicht aktiv. Durch das Setzen der &ucsUCRV;
-			<envar>mail/postfix/postscreen/enabled</envar> auf den Wert <literal>yes</literal> kann postscreen
+			In der Standardeinstellung ist <application>postscreen</application> nicht aktiv. Durch das Setzen der &ucsUCRV;
+			<envar>mail/postfix/postscreen/enabled</envar> auf den Wert <literal>yes</literal> kann <application>postscreen</application>
 			aktiviert werden.
 		</para>
 		<para>
@@ -965,15 +965,15 @@ postmap /etc/postfix/smtp_auth
 		</para>
 		<note>
 			<para>
-				Nach jeder Änderung einer UCR-Variable für postscreen sollte die Konfiguration von Postfix und
-				postscreen neu geladen werden, was über den Befehl <command>service postfix reload</command>
+				Nach jeder Änderung einer UCR-Variable für <application>postscreen</application> sollte die Konfiguration von Postfix und
+				<application>postscreen</application> neu geladen werden, was über den Befehl <command>service postfix reload</command>
 				ausgelöst werden kann.
 			</para>
 		</note>
 	</section>
 
 	<section id="mail::serverconfig::maincflocal">
-		<title>Eigene Anpassung der Postfix-Konfiguration</title>
+		<title>Eigene Anpassung der Postfix Konfiguration</title>
 		<para>
 			Die Konfiguration von Postfix, welche sich in der Datei <filename>/etc/postfix/main.cf</filename> befindet, wird über &ucsUCR;-Variablen definiert.
 			Eine Erweiterung der Konfiguration, die über die vorhandenen &ucsUCR;-Variablen hinaus geht, ist ebenso möglich.
@@ -983,17 +983,20 @@ postmap /etc/postfix/smtp_auth
 			<programlisting language="sh">
 ucr commit /etc/postfix/main.cf
 			</programlisting>
-			Zum Übernehmen der Änderungen durch den Postfix-Dienst muss dieser neu geladen werden:
+			Zum Übernehmen der Änderungen durch den Postfix Dienst muss dieser neu geladen werden:
 			<programlisting language="sh">
 service postfix reload
 			</programlisting>
 		</para>
 		<para>
-			Wird in der Datei <filename>main.cf.local</filename> eine Postfix-Variable gesetzt, die zuvor auch in <filename>main.cf</filename> gesetzt wurde, so schreibt Postfix eine Warnung in die Logdatei <filename>/var/log/mail.log</filename>.
+			Wird in der Datei <filename>main.cf.local</filename> eine Postfix Variable gesetzt, die zuvor auch in <filename>main.cf</filename> gesetzt wurde, so schreibt Postfix eine Warnung in die Logdatei <filename>/var/log/mail.log</filename>.
 		</para>
 		<note>
 			<para>
-				Wenn das Verhalten des E-Mail-Servers nicht der Erwartung entspricht, sollten zuerst die Einstellungen, die durch <filename>main.cf.local</filename> aktiviert wurden, rückgängig gemacht werden. Dazu muss die Datei umbenannt oder ihr Inhalt auskommentiert werden. Im Anschluss müssen die beiden oben genannten Kommandos ausgeführt werden. Die Konfiguration entspricht dann wieder der UCS-Standardkonfiguration.
+				Wenn das Verhalten des E-Mail-Servers nicht der Erwartung entspricht, sollten zuerst die Einstellungen, die durch <filename>main.cf.local</filename> aktiviert wurden, rückgängig gemacht werden.
+				Dazu muss die Datei umbenannt oder ihr Inhalt auskommentiert werden.
+				Im Anschluss müssen die beiden oben genannten Kommandos ausgeführt werden.
+				Die Konfiguration entspricht dann wieder der Standardkonfiguration von UCS.
 			</para>
 		</note>
 	</section>

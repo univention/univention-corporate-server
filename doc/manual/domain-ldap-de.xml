@@ -1545,14 +1545,14 @@ apt-get dselect-upgrade
 		<listitem>
 			<simpara>
 			Prüfung der Umgebung: Bei dem System muss es sich um einen &ucsBackup; handeln, der der Domäne bereits beigetreten ist.
-			Zudem wird sichergestellt, dass der &ucsMaster; über DNS auflösbar sowie dass eine Verbindung zum Repositoryserver möglich ist.
+			Zudem wird sichergestellt, dass der &ucsMaster; über DNS auflösbar sowie dass eine Verbindung zum Repository-Server möglich ist.
 			Außerdem darf der &ucsMaster; nicht mehr im Netzwerk erreichbar sein.
 			</simpara>
 		</listitem>
 		<listitem>
 			<simpara>
 			Nun werden die wichtigsten Dienste OpenLDAP, Samba, Kerberos sowie Univention Directory Notifier und Listener gestoppt,
-			elementare &ucsUCRV; wie <envar>ldap/master</envar> und <envar>server/role</envar> umgestellt, das UCS Root CA Zertifikat
+			elementare &ucsUCRV; wie <envar>ldap/master</envar> und <envar>server/role</envar> umgestellt, das UCS Root-Zertifikat
 			vom Webserver des &ucsBackup; abrufbar gemacht und die oben genannten Dienste wieder gestartet.
 			</simpara>
 		</listitem>
@@ -1569,7 +1569,7 @@ apt-get dselect-upgrade
 		</listitem>
 		<listitem>
 			<simpara>
-			Im OpenLDAP wird die Serverrolle des neuen &ucsMaster; auf "domaincontroller_master" geändert.
+			Im OpenLDAP wird die Serverrolle des neuen &ucsMaster; auf <classname>domaincontroller_master</classname> geändert.
 			Ebenfalls wird der DNS SRV Eintrag <literal>_domaincontroller_master._tcp</literal> korrigiert.
 			</simpara>
 		</listitem>

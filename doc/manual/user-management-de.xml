@@ -242,13 +242,13 @@
                 </thead>
                 <tbody>
                     <row>
-                        <entry>Konto is deaktiviert</entry>
+                        <entry>Konto ist deaktiviert</entry>
                         <entry>
                             <para>
                                 Mir dem Auswahlkästchen <guimenu>Konto is deaktiviert</guimenu> kann das Benutzerkonto
                                 deaktiviert werden.
 				Wenn es aktiviert ist, kann sich der Benutzer nicht am System anmelden.
-				Das betrifft alle Authentifikationsmethoden.
+				Das betrifft alle Methoden für die Authentifikation.
 				Ein typischer Anwendungsfall ist ein Benutzer, der das Unternehmen
                                 verlassen hat. Eine Kontodeaktivierung kann in einer heterogenen Umgebung ggf. auch durch
                                 externe Tools ausgelöst werden.
@@ -309,13 +309,13 @@
                                 <itemizedlist>
                                     <listitem>
                                         <simpara>
-                                            Fehlgeschlagene PAM-Authentifikation an einem UCS-Server (siehe <xref linkend="users:faillog"/>).
+                                            Fehlgeschlagene Authentifikation per PAM an einem UCS-Server (siehe <xref linkend="users:faillog"/>).
                                         </simpara>
                                         <simpara>
-                                            Fehlgeschlagene LDAP-Authentifikation (falls das ppolicy Overlay aktiviert und konfiguriert wurde).
+                                            Fehlgeschlagene Authentifikation per LDAP (falls das Overlay-Modul <filename>ppolicy</filename> aktiviert und konfiguriert wurde).
                                         </simpara>
                                         <simpara>
-                                            Fehlgeschlagene Samba/AD-Authentifikation (falls die Samba domain passwordsettings konfiguriert wurden).
+                                            Fehlgeschlagene Authentifikation per Samba/AD (falls die Samba domain <property>passwordsettings</property> konfiguriert wurden).
                                         </simpara>
                                     </listitem>
                                 </itemizedlist>

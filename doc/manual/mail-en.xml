@@ -900,11 +900,11 @@ postmap /etc/postfix/smtp_auth
 	</section>
 
 	<section id="mail::serverconfig::postscreen">
-		<title>Configuration of additional checks by postscreen</title>
+		<title>Configuration of additional checks by <application>postscreen</application></title>
 		<para>
 			When using a mail server that is directly accessible from the Internet, there is always a risk
-			that spammers, spam bots or broken mail servers are continually trying to deliver unwanted emails
-			(for example spam) to the UCS system.
+			that Spam sender, Spam bots or broken mail servers are continually trying to deliver unwanted emails
+			(for example Spam) to the UCS system.
 		</para>
 		<para>
 			To reduce the load of the mail server for such cases, Postfix brings its own service with the name
@@ -915,17 +915,17 @@ postmap /etc/postfix/smtp_auth
 			of the UCS mail server.
 		</para>
 		<para>
-			By default, postscreen is not active. By setting the &ucsUCRV; <envar>mail/postfix/postscreen/enabled</envar>
-			to the value <literal>yes</literal>, postscreen can be activated.
+			By default, <application>postscreen</application> is not active. By setting the &ucsUCRV; <envar>mail/postfix/postscreen/enabled</envar>
+			to the value <literal>yes</literal>, <application>postscreen</application> can be activated.
 		</para>
 		<para>
-			Various UCR variables with the prefix <envar>mail/postfix/postscreen/</envar> can be used to configure postscreen.
+			Various UCR variables with the prefix <envar>mail/postfix/postscreen/</envar> can be used to configure <application>postscreen</application>.
 			A list of all relevant UCR variables including descriptions can be retrieved e.g. on command line via the command
 			<command>ucr search --verbose mail/postfix/postscreen/</command>.
 		</para>
 		<note>
 			<para>
-				After each change of a UCR variable for postscreen the configuration of Postfix and postscreen should
+				After each change of a UCR variable for <application>postscreen</application> the configuration of Postfix and <application>postscreen</application> should
 				be reloaded. This can be triggered e.g. via the command  <command>service postfix reload</command>.
 			</para>
 		</note>

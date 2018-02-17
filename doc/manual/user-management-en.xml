@@ -305,10 +305,10 @@
                                             Failed PAM authentication attempts to an UCS server (see <xref linkend="users:faillog"/>).
                                         </simpara>
                                         <simpara>
-                                            Failed LDAP authentication attempts (if the ppolicy overlay has been activated and configured).
+                                            Failed LDAP authentication attempts (if the <filename>ppolicy</filename> overlay has been activated and configured).
                                         </simpara>
                                         <simpara>
-                                            Failed Samba/AD authentication attempts (if the Samba domain passwordsettings have been configured).
+                                            Failed Samba/AD authentication attempts (if the Samba domain <property>passwordsettings</property> have been configured).
                                         </simpara>
                                     </listitem>
                                 </itemizedlist>
