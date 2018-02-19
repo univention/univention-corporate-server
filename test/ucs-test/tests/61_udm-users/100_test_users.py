@@ -262,9 +262,9 @@ class TestUsers(object):
 	def test_disable_enable_preserves_password(self, udm, lo):
 		user = udm.create_user(password='univention')[0]
 		password = lo.getAttr(user, 'userPassword')[0]
-		udm.modify_object('users/user', dn=user, disabled='all')
-		udm.verify_ldap_object(user, {'userPassword': [password]})
-		udm.modify_object('users/user', dn=user, disabled='none')
+		udm.modify_object('users/user', dn=user, disabled='1')
+		udm.verify_ldap_object(user, {'userPassword': [password.replace('{crypt}', '{crypt}!')]})
+		udm.modify_object('users/user', dn=user, disabled='0')
 		udm.verify_ldap_object(user, {'userPassword': [password]})
 
 	@pytest.mark.parametrize('password', [
@@ -273,7 +273,6 @@ class TestUsers(object):
 		'{LANMAN}',
 		'{crypt}$6$foo',
 		'{foo}bar',
-		'{KINIT!}',
 		'{SASL}!',
 		'{LANMAN}!',
 		'{crypt}$6$foo!',
@@ -284,10 +283,12 @@ class TestUsers(object):
 			udm.create_user(password=password)
 
 	@pytest.mark.parametrize('disabled,flag,x', [
+		('1', '254', {}),
+		('0', '126', {'modify': False}),
 		('none', '126', {'modify': False}),
-		('posix', '126', {}),
-		('windows', '126', {}),
-		('windows_posix', '126', {}),
+		('posix', '254', {}),
+		('windows', '254', {}),
+		('windows_posix', '254', {}),
 		('kerberos', '254', {}),
 		('windows_kerberos', '254', {}),
 		('posix_kerberos', '254', {}),
@@ -393,7 +394,7 @@ class TestUsers(object):
 		user = udm.create_user()[0]
 		locktime = time.strftime("%Y%m%d%H%M%SZ", time.gmtime())
 		subprocess.call(['python', '-m', 'univention.lib.account', 'lock', '--dn', user, '--lock-time', locktime])
-		lo.modify(user, [('sambaBadPasswordCount', '', '20')])
+		lo.modify(user, [('sambaBadPasswordCount', '0', '20')])
 		udm.modify_object('users/user', dn=user, locked='0')
 		udm.verify_ldap_object(user, {'sambaBadPasswordCount': ['0']})
 

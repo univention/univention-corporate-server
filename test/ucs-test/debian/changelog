@@ -1,3 +1,9 @@
+ucs-test (8.0.28-20) unstable; urgency=medium
+
+  * Bug #46316: fixed 61_udm-users/100_test_users.py
+
+ -- Felix Botner <botner@univention.de>  Mon, 19 Feb 2018 13:07:47 +0100
+
 ucs-test (8.0.28-19) unstable; urgency=medium
 
   * Bug #46118: Remove Windows Terminal Server properties from tests
