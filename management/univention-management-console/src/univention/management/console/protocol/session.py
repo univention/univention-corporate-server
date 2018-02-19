@@ -169,13 +169,6 @@ class ProcessorBase(Base):
 		self.password = password
 		self.auth_type = auth_type
 		self._search_user_dn()
-		self.user_groups = None
-		try:
-			if self._user_dn:
-				user_groups = self.lo.search(base=self._user_dn, scope='base', attr=['memberOf'])
-				self.user_groups = user_groups[0][1]['memberOf']
-		except Exception:  # (ldap.LDAPError, udm_errors.base): # exceptions here may crash umc-server...
-			CORE.error('Could not get groups for %r: %s' % (self.username, traceback.format_exc()))
 		self._reload_acls_and_permitted_commands()
 		self.update_module_passwords()
 
@@ -969,7 +962,6 @@ class SessionHandler(ProcessorBase):
 				self.processor.set_credentials(**self.__credentials)
 			else:
 				self.initalize_processor(request)
-			result.result['user_groups'] = self.processor.user_groups
 			self.processor.request(request)
 		else:
 			self.request(request)
