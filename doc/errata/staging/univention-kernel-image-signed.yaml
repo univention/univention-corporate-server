@@ -3,9 +3,9 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-kernel-image-signed
-fix: 3.0.2-16A~4.2.0.201802151124
+fix: 3.0.2-17A~4.2.0.201802190840
 desc: |
- This update of the Linux kernel to version 4.9.81 addresses the following
+ This update of the Linux kernel to version 4.9.82 addresses the following
  issues:
  * CVE-2017-5753 cpu: speculative execution bounds-check bypass
  * CVE-2017-16911: vhci_cd driver in usbip/vhci_sysfs.c:port_show_vhci()
@@ -19,6 +19,9 @@ desc: |
    serialization allowing denial-of-service
  * CVE-2018-1000028: Improper sorting of GIDs in nfsd can lead to incorrect
    permissions being applied
+ * CVE-2017-8824: Use-after-free vulnerability in DCCP socket
+ * CVE-2017-13166: An elevation of privilege vulnerability in the kernel v4l2
+   video driver.
 note: This is the second of three parts.
 bug: [46209]
 cve:
@@ -28,3 +31,5 @@ cve:
 - CVE-2017-17450
 - CVE-2018-5344
 - CVE-2018-1000028
+- CVE-2017-8824
+- CVE-2017-13166
