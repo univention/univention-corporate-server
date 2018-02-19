@@ -42,6 +42,36 @@ installer_translations = dict(
 		deu='Netzwerk einrichten',
 		eng='Configure the network'
 	),
+	not_using_dhcp=dict(
+		deu='Ihr Netzwerk benutzt möglicherweise nicht',
+		eng='probably not using',
+		fra='Le protocole DHCP'
+	),
+	manual_network_config=dict(
+		deu='Netzwerk manuell einrichten',
+		eng='Configure network manually',
+		fra='Configurer vous-même le réseau'
+	),
+	ip_address=dict(
+		deu='Die IP-Adresse ist für ihren Rechner eindeutig und',
+		eng='The IP address is unique',
+		fra='L\'adresse IP est propre'
+	),
+	netmask=dict(
+		deu='Durch die Netzmaske kann bestimmt',
+		eng='The netmask is used to',
+		fra='Le masque-réseau'
+	),
+	gateway=dict(
+		deu='Geben Sie hier die IP-Adresse',
+		eng='The gateway is an IP address',
+		fra='La passerelle'
+	),
+	name_server=dict(
+		deu='um Rechnernamen im Internet aufzulösen',
+		eng='The name servers are used',
+		fra='Les serveurs de noms'
+	),
 	user_and_password=dict(
 		deu='Benutzer und Passworter',
 		eng='Set up users and passwords',
@@ -285,12 +315,9 @@ class UCSInstallation(object):
 		self.client.waitForText(self._i['select_keyboard'], timeout=self.timeout)
 		self.client.enterText(self._i['keyboard'])
 		self.client.keyPress('enter')
-		# network
-		time.sleep(60)
-		self.client.waitForText(self._i['configure_network'], timeout=self.timeout)
-		# always use first interface
-		self.click(self._i['icontinue'])
-		time.sleep(60)
+
+		self.network_setup()
+
 		# root
 		self.client.waitForText(self._i['user_and_password'], timeout=self.timeout)
 		self.client.enterText(self.args.password)
@@ -317,6 +344,35 @@ class UCSInstallation(object):
 		self.client.keyPress('down')
 		self.client.keyPress('enter')
 		time.sleep(600)
+
+	def network_setup(self):
+		time.sleep(60)
+		self.client.waitForText(self._i['configure_network'], timeout=self.timeout)
+		if self.args.ip:
+			self.client.waitForText(self._i['not_using_dhcp'], timeout=self.timeout)
+			self.client.keyPress('enter')
+
+			self.client.waitForText(self._i['manual_network_config'], timeout=self.timeout)
+			self.client.mouseClickOnText(self._i['manual_network_config'])
+			self.client.keyPress('enter')
+			self.client.waitForText(self._i['ip_address'], timeout=self.timeout)
+			self.client.enterText(self.args.ip)
+			self.client.keyPress('enter')
+
+			self.client.waitForText(self._i['netmask'], timeout=self.timeout)
+			self.client.keyPress('enter')
+
+			self.client.waitForText(self._i['gateway'], timeout=self.timeout)
+			self.client.keyPress('enter')
+
+			self.client.waitForText(self._i['name_server'], timeout=self.timeout)
+			if self.args.dns:
+				self.client.enterText(self.args.dns)
+			self.client.keyPress('enter')
+		else:
+			# always use first interface
+			self.click(self._i['icontinue'])
+			time.sleep(60)
 
 	def configure_kvm_network(self):
 		if 'all' in self.args.components or 'kde' in self.args.components:
@@ -497,6 +553,7 @@ def main():
 	parser = ArgumentParser(description=description)
 	parser.add_argument('--vnc', required=True)
 	parser.add_argument('--fqdn', default='master.ucs.local')
+	parser.add_argument('--ip', help='Give an IP address, if DHCP is unavailable.')
 	parser.add_argument('--password', default='univention')
 	parser.add_argument('--organisation', default='ucs')
 	parser.add_argument('--screenshot-dir', default='../screenshots')
