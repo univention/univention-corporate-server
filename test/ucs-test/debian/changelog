@@ -1,3 +1,10 @@
+ucs-test (8.0.28-22) unstable; urgency=medium
+
+  * Bug #46126: Fix Bash quoting in 60_umc/07_expired_password and avoid
+    manually locking the test account.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Feb 2018 20:51:06 +0100
+
 ucs-test (8.0.28-21) unstable; urgency=medium
 
   * Bug #46307: fixed 22nagios tests, again ...
