@@ -271,6 +271,14 @@ class UCSInstallation(object):
 	def disconnect(self):
 		self.conn.__exit__()
 
+	def text_is_visible(self, text, timeout=30):
+		try:
+			self.client.waitForText(text, timeout=timeout)
+			return True
+		except VNCDoException:
+			self.connect()
+			return False
+
 	def installer(self):
 		# language
 		self.client.waitForText('Select a language', timeout=self.timeout)
@@ -392,12 +400,9 @@ class UCSInstallation(object):
 			self.client.enterText(self.args.dns)
 			self.client.keyPress('enter')
 			time.sleep(120)
-			try:
-				self.client.waitForText('APIPA', timeout=self.timeout)
+			if self.text_is_visible('APIPA', timeout=self.timeout):
 				self.client.keyPress('enter')
 				time.sleep(60)
-			except VNCDoException:
-				self.connect()
 			self.click(self._s['next'])
 			self.client.waitForText(self._s['ad_account_information'], timeout=self.timeout)
 			self.client.keyPress('tab')
@@ -465,11 +470,8 @@ class UCSInstallation(object):
 					self.click(com[self.args.language])
 
 	def bootmenu(self):
-		try:
-			self.client.waitForText('Univention Corporate Server Installer', timeout=120)
+		if self.text_is_visible('Univention Corporate Server Installer', timeout=120):
 			self.client.keyPress('enter')
-		except VNCDoException:
-			self.connect()
 
 	def installation(self):
 		self._i = dict()
