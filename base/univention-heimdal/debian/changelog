@@ -1,3 +1,9 @@
+univention-heimdal (11.0.1-7) unstable; urgency=medium
+
+  * Bug #33214: Gather and mark MIT Kerberos libdefaults in krb5.conf
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Feb 2018 17:07:51 +0100
+
 univention-heimdal (11.0.1-6) unstable; urgency=medium
 
   * Bug #36542 / Bug #46292: Simplify python syntax of previous commit
