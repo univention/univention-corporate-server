@@ -1,3 +1,9 @@
+ucs-test (8.0.28-21) unstable; urgency=medium
+
+  * Bug #46307: fixed 22nagios tests, again ...
+
+ -- Felix Botner <botner@univention.de>  Mon, 19 Feb 2018 19:05:06 +0100
+
 ucs-test (8.0.28-20) unstable; urgency=medium
 
   * Bug #46316: fixed 61_udm-users/100_test_users.py
