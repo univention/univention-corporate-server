@@ -292,7 +292,7 @@ property_descriptions = {
 	'unlockTime': univention.admin.property(
 		short_description=_('Lockout till'),
 		long_description=_('Shows the time when the account gets unlocked again according to policy.'),
-		syntax=univention.admin.syntax.string, # see posixSecondsToLocaltimeDate
+		syntax=univention.admin.syntax.string,  # see posixSecondsToLocaltimeDate
 		default=None,
 		multivalue=False,
 		required=False,
@@ -1091,7 +1091,7 @@ def case_insensitive_in_list(dn, list):
 
 
 def posixSecondsToLocaltimeDate(seconds):
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(seconds))
+	return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(seconds))
 
 
 def posixDaysToDate(days):
@@ -1519,15 +1519,11 @@ class object(univention.admin.handlers.simpleLdap):
 			self._unmap_automount_information()
 			self._unmapUnlockTime()
 			self.reload_certificate()
+			self._load_groups(loadGroups)
 
-		self._load_groups(loadGroups)
-		if self.exists():
-			self.save()
-		else:
-			pass
-			# In this case self.save() must not be called at the end of self.open()
-			# otherwise self.__primary_group doesn't add a new user to the
-			# univentionDefaultGroup because "not self.hasChanged('primaryGroup')"
+		self.save()
+		if not self.exists():  # TODO: move this block into _ldap_pre_create!
+			self._set_default_group()
 
 	def _load_groups(self, loadGroups):
 		if self.exists():
@@ -1561,23 +1557,23 @@ class object(univention.admin.handlers.simpleLdap):
 				self.info['primaryGroup'] = None
 				self.save()
 				raise univention.admin.uexceptions.primaryGroup(self.dn)
-		else:
-			primary_group_from_template = self['primaryGroup']
-			if not primary_group_from_template:
-				searchResult = self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
-				if not searchResult or not searchResult[0][1]:
-					self.info['primaryGroup'] = None
-					self.save()
-					raise univention.admin.uexceptions.primaryGroup(self.dn)
 
-				for tmp, number in searchResult:
-					primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(cn=%s))', (univention.admin.uldap.explodeDn(number['univentionDefaultGroup'][0], 1)[0],)), base=self.position.getDomain(), scope='domain')
-					if primaryGroupResult:
-						self['primaryGroup'] = primaryGroupResult[0]
-						# self.save() must not be called after this point in self.open()
-						# otherwise self.__primary_group doesn't add a new user to the
-						# univentionDefaultGroup because "not self.hasChanged('primaryGroup')"
+	def _set_default_group(self):
+		primary_group_from_template = self['primaryGroup']
+		if not primary_group_from_template:
+			searchResult = self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
+			if not searchResult or not searchResult[0][1]:
+				self.info['primaryGroup'] = None
+				self.save()
+				raise univention.admin.uexceptions.primaryGroup(self.dn)
 
+			for tmp, number in searchResult:
+				primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(cn=%s))', (univention.admin.uldap.explodeDn(number['univentionDefaultGroup'][0], 1)[0],)), base=self.position.getDomain(), scope='domain')
+				if primaryGroupResult:
+					self['primaryGroup'] = primaryGroupResult[0]
+					# self.save() must not be called after this point in self.open()
+					# otherwise self.__primary_group doesn't add a new user to the
+					# univentionDefaultGroup because "not self.hasChanged('primaryGroup')"
 
 	def _unmap_pwd_change_next_login(self):
 		if self.oldattr.get('shadowLastChange', [''])[0] == '0':
