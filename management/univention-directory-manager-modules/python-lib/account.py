@@ -37,8 +37,29 @@ import univention.admin.uldap
 import univention.admin.objects
 import univention.admin.modules
 import univention.admin.handlers.users.user
+import univention.debug as ud
 
 univention.admin.modules.update()
+
+# Ensure unviention debug is initialized
+def initialize_debug():
+	# Use a little hack to determine if univention.debug has been initialized
+	# get_level(..) returns always ud.ERROR if univention.debug is not initialized
+	with open("/tmp/3", "a") as f:
+		f.write("ud.ADMIN: %s\n" % (ud.ADMIN,))
+	oldLevel = ud.get_level(ud.ADMIN)
+	if oldLevel == ud.PROCESS:
+		ud.set_level(ud.ADMIN, ud.DEBUG)
+		is_ready = (ud.get_level(ud.ADMIN) == ud.DEBUG)
+	else:
+		ud.set_level(ud.ADMIN, ud.PROCESS)
+		is_ready = (ud.get_level(ud.ADMIN) == ud.PROCESS)
+	if not is_ready:
+		ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
+		ud.set_level(ud.LDAP, ud.PROCESS)
+		ud.set_level(ud.ADMIN, ud.PROCESS)
+	else:
+		ud.set_level(ud.ADMIN, oldLevel)
 
 
 def lock(userdn, lock_timestamp):
@@ -56,6 +77,9 @@ def lock(userdn, lock_timestamp):
 
 	if not lock_timestamp:  # timed unlocking via ppolicy not implemented yet, so block it.
 		return
+
+	initialize_debug()
+	ud.debug(ud.ADMIN, ud.PROCESS, "univention.lib.account.lock was called for %s" % (userdn,))
 
 	co = None
 	try:

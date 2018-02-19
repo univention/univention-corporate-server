@@ -1,3 +1,11 @@
+univention-directory-manager-modules (13.0.20-4) unstable; urgency=medium
+
+  * Bug #39817: Make univention.lib.account.lock issue a log message
+    to /var/log/univention/directory-manager-cmd.log, otherwise this
+    LDAP modification is nearly invisible and hard to debug.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Feb 2018 20:45:05 +0100
+
 univention-directory-manager-modules (13.0.20-3) unstable; urgency=medium
 
   * Bug #45842: Feedback / patch from original author
