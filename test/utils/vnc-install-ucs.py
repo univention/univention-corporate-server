@@ -262,14 +262,9 @@ class UCSInstallation(object):
 		self.client.mouseClickOnText(text)
 
 	def connect(self):
-		if hasattr(self, 'conn') and self.conn:
-			self.disconnect()
 		self.conn = VNCConnection(self.args.vnc)
 		self.client = self.conn.__enter__()
 		self.client.updateOCRConfig(self.config)
-
-	def disconnect(self):
-		self.conn.__exit__()
 
 	def text_is_visible(self, text, timeout=30):
 		try:
@@ -490,11 +485,9 @@ class UCSInstallation(object):
 			# TODO activate ens6 so that ucs-kvm-create can connect to instance
 			# this is done via login and setting interfaces/eth0/type, is there a better way?
 			self.configure_kvm_network()
-			self.disconnect()
 		except Exception:
 			self.connect()
 			self.screenshot('error.png')
-			self.disconnect()
 			raise
 
 
