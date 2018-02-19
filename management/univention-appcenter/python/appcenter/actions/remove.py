@@ -70,7 +70,7 @@ class Remove(InstallRemoveUpgrade):
 
 	def _remove_app(self, app, args):
 		self._configure(app, args)
-		return remove_packages(app.get_packages(additional=False), with_auto_remove=True)
+		return remove_packages(app.get_packages(additional=False))
 
 	def _dry_run(self, app, args):
-		return remove_packages_dry_run(app.get_packages(additional=False), with_auto_remove=True)
+		return remove_packages_dry_run(app.get_packages(additional=False))

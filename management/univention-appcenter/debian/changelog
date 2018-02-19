@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-12) unstable; urgency=medium
+
+  * Bug #43660: Use apt-get instead of package manager for installation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 16 Feb 2018 01:42:49 +0100
+
 univention-appcenter (7.0.1-11) unstable; urgency=medium
 
   * Bug #46274: Rename logrotate config file

@@ -59,7 +59,7 @@ import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.appcenter.actions import get_action
 from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError
-from univention.appcenter.packages import reload_package_manager, get_package_manager, package_lock
+from univention.appcenter.packages import reload_package_manager, get_package_manager, package_lock, LOCK_FILE
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information, app_is_running, find_hosts_for_master_packages, get_local_fqdn
 from univention.appcenter.log import get_base_logger, log_to_logfile
@@ -410,32 +410,33 @@ class Instance(umcm.Base, ProgressMixin):
 			'software_changes_computed': False,
 		}
 		if can_continue:
-			with self.locked():
-				kwargs = {'noninteractive': True, 'skip_checks': ['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation'], 'set_vars': values}
-				if function == 'install':
-					progress.title = _('Installing %s') % (app.name,)
-				elif function == 'uninstall':
-					progress.title = _('Uninstalling %s') % (app.name,)
-				elif function == 'upgrade':
-					progress.title = _('Upgrading %s') % (app.name,)
-				action = get_action(function)
-				handler = UMCProgressHandler(progress)
-				handler.setLevel(logging.INFO)
-				action.logger.addHandler(handler)
-				try:
-					result['success'] = action.call(app=app, username=self.username, password=self.password, **kwargs)
-				except AppCenterError as exc:
-					raise umcm.UMC_Error(str(exc), result=dict(
-						display_feedback=True,
-						title='%s %s' % (exc.title, exc.info)))
-				finally:
-					action.logger.removeHandler(handler)
+			kwargs = {'noninteractive': True, 'skip_checks': ['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation'], 'set_vars': values}
+			if function == 'install':
+				progress.title = _('Installing %s') % (app.name,)
+			elif function == 'uninstall':
+				progress.title = _('Uninstalling %s') % (app.name,)
+			elif function == 'upgrade':
+				progress.title = _('Upgrading %s') % (app.name,)
+			action = get_action(function)
+			handler = UMCProgressHandler(progress)
+			handler.setLevel(logging.INFO)
+			action.logger.addHandler(handler)
+			try:
+				result['success'] = action.call(app=app, username=self.username, password=self.password, **kwargs)
+			except AppCenterError as exc:
+				raise umcm.UMC_Error(str(exc), result=dict(
+					display_feedback=True,
+					title='%s %s' % (exc.title, exc.info)))
+			finally:
+				action.logger.removeHandler(handler)
 		return result
 
 	@contextmanager
 	def locked(self):
 		try:
-			with package_lock(reset=True):
+			if self._working():
+				raise LockError()
+			with package_lock():
 				yield
 		except LockError:
 			raise umcm.UMC_Error(_('Another package operation is in progress'))
@@ -497,7 +498,6 @@ class Instance(umcm.Base, ProgressMixin):
 				if result['can_continue']:
 					def _thread_remote(_client):
 						with self.locked():
-							get_package_manager().unlock()   # not really locked locally, but busy, so "with locked()" is appropriate
 							self._query_remote_progress(_client)
 
 					def _finished_remote(thread, result):
@@ -553,57 +553,45 @@ class Instance(umcm.Base, ProgressMixin):
 					delayed_can_continue = False
 		result['serious_problems'] = serious_problems
 		result['can_continue'] = can_continue
-		try:
-			if can_continue:
-				if self._working():
-					# make it multi-tab safe (same session many buttons to be clicked)
-					raise LockError()
-				with self.package_manager.locked(reset_status=True):
-					if can_continue and function in ('install', 'upgrade'):
-						result.update(self._install_dry_run_remote(app, function, dont_remote_install, force))
-						serious_problems = bool(result['master_unreachable'] or result['serious_problems_with_hosts'])
-						if serious_problems:
-							args.dry_run = True
-						result.update(action.dry_run(app, args))
-						result['software_changes_computed'] = True
-						serious_problems = bool(result['broken'] or serious_problems)
-						if serious_problems or (not force and (result['unreachable'] or result['install'] or result['remove'] or result['problems_with_hosts'])):
-							can_continue = False
-					elif can_continue and function in ('remove',) and not force:
-						result.update(action.dry_run(app, args))
-						result['software_changes_computed'] = True
+		if can_continue:
+			with self.locked():
+				if can_continue and function in ('install', 'upgrade'):
+					result.update(self._install_dry_run_remote(app, function, dont_remote_install, force))
+					serious_problems = bool(result['master_unreachable'] or result['serious_problems_with_hosts'])
+					if serious_problems:
+						args.dry_run = True
+					result.update(action.dry_run(app, args))
+					result['software_changes_computed'] = True
+					serious_problems = bool(result['broken'] or serious_problems)
+					if serious_problems or (not force and (result['unreachable'] or result['install'] or result['remove'] or result['problems_with_hosts'])):
 						can_continue = False
-					can_continue = can_continue and delayed_can_continue and not only_dry_run
-					result['serious_problems'] = serious_problems
-					result['can_continue'] = can_continue
+				elif can_continue and function in ('remove',) and not force:
+					result.update(action.dry_run(app, args))
+					result['software_changes_computed'] = True
+					can_continue = False
+				can_continue = can_continue and delayed_can_continue and not only_dry_run
+				result['serious_problems'] = serious_problems
+				result['can_continue'] = can_continue
 
-					if can_continue and not only_dry_run:
-						def _thread(module, app, function):
-							with module.package_manager.locked(set_finished=True):
-								if not dont_remote_install and function != 'remove':
-									self._install_master_packages_on_hosts(app, function)
-								with module.package_manager.no_umc_restart(exclude_apache=True):
-									try:
-										args.dry_run = False
-										args.install_master_packages_remotely = False
-										return action.main(args)
-									except AppCenterError as exc:
-										raise umcm.UMC_Error(str(exc), result=dict(
-											display_feedback=True,
-											title='%s %s' % (exc.title, exc.info)))
-
-						def _finished(thread, result):
-							if isinstance(result, BaseException):
-								MODULE.warn('Exception during %s %s: %s' % (function, app_id, str(result)))
-						thread = notifier.threads.Simple('invoke', notifier.Callback(_thread, self, app, function), _finished)
-						thread.run()
-					else:
-						self.package_manager.set_finished()  # nothing to do, ready to take new commands
-			self.finished(request.id, result)
-		except LockError:
-			# make it thread safe: another process started a package manager
-			# this module instance already has a running package manager
-			raise umcm.UMC_Error(_('Another package operation is in progress'))
+				if can_continue and not only_dry_run:
+					def _thread(module, app, function):
+						if not dont_remote_install and function != 'remove':
+							self._install_master_packages_on_hosts(app, function)
+						with module.package_manager.no_umc_restart(exclude_apache=True):
+							try:
+								args.dry_run = False
+								args.install_master_packages_remotely = False
+								return action.call_with_namespace(args)
+							except AppCenterError as exc:
+								raise umcm.UMC_Error(str(exc), result=dict(
+									display_feedback=True,
+									title='%s %s' % (exc.title, exc.info)))
+					def _finished(thread, result):
+						if isinstance(result, BaseException):
+							MODULE.warn('Exception during %s %s: %s' % (function, app_id, str(result)))
+					thread = notifier.threads.Simple('invoke', notifier.Callback(_thread, self, app, function), _finished)
+					thread.run()
+		self.finished(request.id, result)
 
 	def _install_master_packages_on_hosts(self, app, function):
 		if function.startswith('upgrade'):
@@ -786,7 +774,7 @@ class Instance(umcm.Base, ProgressMixin):
 		this function will be run by the frontend to always have one connection open
 		to prevent killing the module. '''
 		def _thread():
-			while not self.package_manager.progress_state._finished:
+			while self._working():
 				time.sleep(1)
 
 		def _finished(thread, result):
@@ -928,7 +916,7 @@ class Instance(umcm.Base, ProgressMixin):
 			raise umcm.UMC_Error(_('Another package operation is in progress'))
 
 	def _working(self):
-		return not self.package_manager.progress_state._finished
+		return os.path.exists(LOCK_FILE) or not self.package_manager.progress_state._finished
 
 	@simple_response
 	def working(self):
@@ -940,7 +928,9 @@ class Instance(umcm.Base, ProgressMixin):
 	@simple_response
 	def custom_progress(self):
 		timeout = 5
-		return self.package_manager.poll(timeout)
+		ret = self.package_manager.poll(timeout)
+		ret['finished'] = not self._working()
+		return ret
 
 	def _package_to_dict(self, package, full):
 		""" Helper that extracts properties from a 'apt_pkg.Package' object

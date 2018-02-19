@@ -32,16 +32,22 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+import os
+import fcntl
+import re
 from logging import Handler
 from contextlib import contextmanager
 
 from univention.lib.package_manager import PackageManager, LockError  # LockError is actually imported from other files!
 
-from univention.appcenter.log import get_base_logger
+from univention.appcenter.log import get_base_logger, LogCatcher
 from univention.appcenter.utils import call_process
 
 
 package_logger = get_base_logger().getChild('packages')
+
+
+LOCK_FILE = '/var/run/univention-appcenter.lock'
 
 
 class _PackageManagerLogHandler(Handler):
@@ -95,57 +101,92 @@ def packages_are_installed(pkgs, strict=True):
 
 
 @contextmanager
-def package_lock(reset):
+def package_lock():
 	try:
-		with get_package_manager().locked(reset_status=reset, set_finished=reset):
+		fd = open(LOCK_FILE, 'w')
+		fcntl.lockf(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+	except EnvironmentError:
+		raise LockError('Could not acquire lock!')
+	else:
+		package_logger.debug('Holding LOCK')
+		try:
 			yield
-	except LockError:
-		package_logger.warn('Could not aquire lock!')
-		raise
+		finally:
+			package_logger.debug('Releasing LOCK')
+			try:
+				os.unlink(LOCK_FILE)
+			except EnvironmentError:
+				pass
+			fd.close()
 
 
-def install_packages_dry_run(pkgs, with_dist_upgrade):
-	package_manager = get_package_manager()
-	to_install = package_manager.get_packages(pkgs)
-	if with_dist_upgrade:
-		package_manager.cache.upgrade(dist_upgrade=True)
-	package_changes = get_package_manager().mark(to_install, [], dry_run=True)
-	return dict(zip(['install', 'remove', 'broken'], package_changes))
+def _apt_args(dry_run=False):
+	apt_args = ['-o', 'DPkg::Options::=--force-confold', '-o', 'DPkg::Options::=--force-overwrite', '-o', 'DPkg::Options::=--force-overwrite-dir', '--trivial-only=no', '--assume-yes', '--auto-remove']
+	return apt_args
 
-
-def install_packages(pkgs, with_dist_upgrade):
-	with package_lock(reset=False):
-		return get_package_manager().commit(install=pkgs, dist_upgrade=with_dist_upgrade)
-
-
-def remove_packages_dry_run(pkgs, with_auto_remove):
-	package_manager = get_package_manager()
+def _apt_get(action, pkgs):
+	env = os.environ.copy()
+	env['DEBIAN_FRONTEND'] = 'noninteractive'
+	apt_args = _apt_args()
+	ret = call_process(['/usr/bin/apt-get'] + apt_args + [action] + pkgs, logger=package_logger, env=env).returncode == 0
 	reload_package_manager()
-	to_uninstall = package_manager.get_packages(pkgs)
-	for package in to_uninstall:
-		package.mark_delete()
-	packages = [pkg.name for pkg in package_manager.packages() if pkg.marked_delete or (with_auto_remove and pkg.is_auto_removable)]
-	reload_package_manager()
-	return dict(zip(['install', 'remove', 'broken'], [[], packages, []]))
+	return ret
+
+def _apt_get_dry_run(action, pkgs):
+	apt_args = _apt_args()
+	logger = LogCatcher(package_logger)
+	success = call_process(['/usr/bin/apt-get'] + apt_args + [action, '-s'] + pkgs, logger=logger).returncode == 0
+	install, remove, broken = [], [], []
+	install_regex = re.compile('^Inst (.*?) \((.*?) ')
+	remove_regex = re.compile('^Remv (.*?) \[(.*?)\]')
+	for line in logger.stdout():
+		match = install_regex.match(line)
+		if match:
+			pkg_name, version = match.groups()
+			install.append(pkg_name)
+		else:
+			match = remove_regex.match(line)
+			if match:
+				pkg_name, version = match.groups()
+				remove.append(pkg_name)
+	if not success:
+		for pkg in pkgs:
+			if action == 'install' and pkg not in install:
+				broken.append(pkg)
+			if action == 'remove' and pkg not in remove:
+				broken.append(pkg)
+	return dict(zip(['install', 'remove', 'broken'], [install, remove, broken]))
 
 
-def remove_packages(pkgs, with_auto_remove):
-	with package_lock(reset=False):
-		success = get_package_manager().commit(remove=pkgs)
-		if success and with_auto_remove:
-			get_package_manager().autoremove()
-		return success
+def install_packages_dry_run(pkgs):
+	return _apt_get_dry_run('install', pkgs)
+
+
+def dist_upgrade_dry_run(pkgs):
+	return _apt_get_dry_run('dist-upgrade', [])
+
+
+def install_packages(pkgs):
+	return _apt_get('install', pkgs)
+
+
+def remove_packages_dry_run(pkgs):
+	return _apt_get_dry_run('remove', pkgs)
+
+
+def remove_packages(pkgs):
+	return _apt_get('remove', pkgs)
 
 
 def dist_upgrade(pkgs):
-	with package_lock(reset=False):
-		return get_package_manager().dist_upgrade()
+	return _apt_get('dist-upgrade', [])
 
 
 def update_packages():
-	call_process(['apt-get', 'update'], logger=package_logger)
+	call_process(['/usr/bin/apt-get', 'update'], logger=package_logger)
 	reload_package_manager()
 
 
 def mark_packages_as_manually_installed(pkgs):
-	return get_package_manager().mark_auto(False, *pkgs)
+	call_process(['/usr/bin/apt-mark', 'manual'] + pkgs, logger=package_logger)
+	reload_package_manager()

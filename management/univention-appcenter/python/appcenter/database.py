@@ -116,7 +116,7 @@ class DatabaseConnector(object):
 			else:
 				database_logger.info('Installing/upgrading %s' % ', '.join(packages))
 				update_packages()
-				if not install_packages(packages, with_dist_upgrade=False):
+				if not install_packages(packages):
 					raise DatabaseCreationFailed('Could not install software packages')
 
 	@classmethod

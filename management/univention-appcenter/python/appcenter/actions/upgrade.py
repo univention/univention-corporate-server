@@ -35,7 +35,7 @@
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions.install import Install
 from univention.appcenter.ucr import ucr_is_true
-from univention.appcenter.packages import install_packages
+from univention.appcenter.packages import install_packages, dist_upgrade
 
 
 class Upgrade(Install):
@@ -98,7 +98,7 @@ class Upgrade(Install):
 			super(Upgrade, self)._send_information(app, status, value)
 
 	def _install_packages(self, packages):
-		return install_packages(packages, with_dist_upgrade=True)
+		return install_packages(packages) and dist_upgrade()
 
 	@classmethod
 	def iter_upgradable_apps(self):

@@ -38,7 +38,7 @@ from univention.appcenter.exceptions import Abort, InstallMasterPackagesPassword
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 from univention.appcenter.ucr import ucr_get, ucr_save
 from univention.appcenter.utils import find_hosts_for_master_packages
-from univention.appcenter.packages import update_packages, install_packages_dry_run, install_packages
+from univention.appcenter.packages import update_packages, install_packages_dry_run, install_packages, dist_upgrade_dry_run
 
 
 class ControlScriptException(Exception):
@@ -96,7 +96,7 @@ class Install(InstallRemoveUpgrade):
 				raise InstallFailed()
 
 	def _install_packages(self, packages):
-		return install_packages(packages, with_dist_upgrade=False)
+		return install_packages(packages)
 
 	def _install_master_packages(self, app, unregister_if_uninstalled=False):
 		old_app = Apps().find(app.id)
@@ -185,7 +185,9 @@ class Install(InstallRemoveUpgrade):
 		else:
 			pkgs = app.get_packages(additional=True)
 		self.debug('Dry running with %r' % pkgs)
-		ret = install_packages_dry_run(pkgs, with_dist_upgrade=with_dist_upgrade)
+		ret = install_packages_dry_run(pkgs)
+		if with_dist_upgrade:
+			ret.update(dist_upgrade_dry_run())
 		if args.install_master_packages_remotely:
 			# TODO: should test remotely
 			self.log('Not testing package changes of remote packages!')
