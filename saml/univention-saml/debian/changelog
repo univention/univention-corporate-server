@@ -1,3 +1,9 @@
+univention-saml (5.0.4-9) unstable; urgency=medium
+
+  * Bug #46212: Add systemd addon to dh because compat level is set to 9
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 19 Feb 2018 17:39:06 +0100
+
 univention-saml (5.0.4-8) unstable; urgency=medium
 
   * Bug #46212: Cleanup daemon start, use dh_installinit
