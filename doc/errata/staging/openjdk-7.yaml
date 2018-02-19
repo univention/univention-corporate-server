@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: openjdk-7
+fix: 7u151-2.6.11-2.A4.2.0.201712111344
+desc: |
+ This update addresses the following issue:
+ * OpenJDK-7 was recompiled for UCS-4.2 to fix a package version conflict with
+   UCS-4.1.
+bug: [46320]
