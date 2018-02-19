@@ -377,7 +377,7 @@ class User(object):
 		try:
 			lo = _get_ldap_connection()
 			user_dn = lo.searchDn(ldap.filter.filter_format('(&(uid=%s)(objectClass=person))', (self.username,)))[0]
-			user_groups = lo.search(user_dn, scope='base', attr=['memberOf'])
+			user_groups = lo.search(base=user_dn, scope='base', attr=['memberOf'])
 			return user_groups[0][1]['memberOf']
 		except KeyError:
 			CORE.error('Could not get groups for %r: Maybe memberof overlay module is inactive' % (self.username,))
