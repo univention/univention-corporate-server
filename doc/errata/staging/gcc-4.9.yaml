@@ -1,0 +1,17 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: gcc-4.9
+fix: 4.9.2-10+deb8u1
+desc: |
+ This update addresses the following issue:
+ * Systems with microprocessors utilizing speculative execution and indirect
+   branch prediction may allow unauthorized disclosure of information to an
+   attacker with local user access via a side-channel analysis (CVE-2017-5715)
+ This update adds the infrastructure to the C compiler for using "retpoline".
+ The compiler can be used to mitigate the "Spectre 2" vulnerability by
+ re-compiling susceptible binaries until fixed CPUs or fixed CPU micro code
+ updates are available from the CPU vendors.
+note: The compiler itself is NOT vulnerable.
+bug: [46209]
