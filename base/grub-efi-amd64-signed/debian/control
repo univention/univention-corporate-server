@@ -2,10 +2,9 @@ Source: grub-efi-amd64-signed
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7),
- lsb-release,
- grub-efi-amd64-bin (>= 2.00-18),
- sbsigntool,
+Build-Depends: debhelper (>= 9),
+ grub-efi-amd64-bin (>= 2.02~beta3),
+ pesign,
  ucslint-univention
 Standards-Version: 3.9.4
 
