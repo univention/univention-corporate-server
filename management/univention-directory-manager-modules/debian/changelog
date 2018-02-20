@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.20-5) unstable; urgency=medium
+
+  * Bug #46067: Revert regressive change of 13.0.19-17
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Feb 2018 11:37:07 +0100
+
 univention-directory-manager-modules (13.0.20-4) unstable; urgency=medium
 
   * Bug #39817: Make univention.lib.account.lock issue a log message
