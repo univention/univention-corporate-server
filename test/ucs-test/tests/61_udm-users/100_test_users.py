@@ -7,6 +7,7 @@
 
 import pytest
 import time
+import calendar
 from datetime import datetime, timedelta
 import subprocess
 
@@ -35,16 +36,19 @@ class TestUsers(object):
 		what if pwdChangeNextLogin = 1 and password=foo at the same time?
 	"""
 
+	def utc_days_since_epoch():
+		return calendar.timegm(time.gmtime()) / 3600 / 24
+
 	@pytest.mark.parametrize('shadowLastChange,shadowMax,pwd_change_next_login,password_expiry', [
 		('0', '', '1', []),
 		('0', '0', '1', ['1970-01-01']),
 		('0', '1', '1', ['1970-01-02']),
-		('0', str(int(time.time()) / 3600 / 24 + 2), '1', (datetime.today() + timedelta(days=2)).strftime('%Y-%m-%d')),
-		('', str(int(time.time()) / 3600 / 24 + 2), [], []),
+		('0', str(utc_days_since_epoch() + 2), '1', (datetime.utcnow() + timedelta(days=2)).strftime('%Y-%m-%d')),
+		('', str(utc_days_since_epoch() + 2), [], []),
 		('', '', [], []),
-		('', str(int(time.time()) / 3600 / 24 - 2), [], []),
-		('1', str(int(time.time()) / 3600 / 24 - 2), '1', (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')),
-		('0', str(int(time.time()) / 3600 / 24 - 2), '1', (datetime.today() - timedelta(days=2)).strftime('%Y-%m-%d')),
+		('', str(utc_days_since_epoch() - 2), [], []),
+		('1', str(utc_days_since_epoch() - 2), '1', (datetime.utcnow() - timedelta(days=1)).strftime('%Y-%m-%d')),
+		('0', str(utc_days_since_epoch() - 2), '1', (datetime.utcnow() - timedelta(days=2)).strftime('%Y-%m-%d')),
 	])
 	def test_unmap_pwd_change_next_login_and_password_expiry(self, udm, lo, shadowLastChange, shadowMax, pwd_change_next_login, password_expiry):
 		user = udm.create_user()[0]
@@ -411,7 +415,7 @@ class TestUsers(object):
 		self._test_modlist(udm, props, {'sambaAcctFlags': flags})
 
 	@pytest.mark.parametrize('userexpiry,kick_off,x', [
-		('2018-01-01', ['1514761200'], {}),
+		('2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d"))))], {}),
 		('', [], {'modify': False}),
 	])
 	def test_modlist_samba_kickoff_time(self, userexpiry, kick_off, x, udm):
@@ -425,11 +429,11 @@ class TestUsers(object):
 		self._test_modlist(udm, {'userexpiry': userexpiry}, {'krb5ValidEnd': valid_end}, **x)
 
 	@pytest.mark.parametrize('disabled,userexpiry,shadow_expire', [
-		('none', '2018-01-01', ['17532']),
-		('all', '2018-01-01', ['17532']),
-		('posix', '2018-01-01', ['17532']),
-		('posix_kerberos', '2018-01-01', ['17532']),
-		('windows_posix', '2018-01-01', ['17532']),
+		('none', '2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24 + 1))]),
+		('all', '2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24 + 1))]),
+		('posix', '2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24 + 1))]),
+		('posix_kerberos', '2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24 + 1))]),
+		('windows_posix', '2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24 + 1))]),
 		('kerberos', '', []),
 		('all', '', ['1']),
 		('posix', '', ['1']),
