@@ -936,14 +936,21 @@ define([
 			// use styles.insertCssRule to display the style
 			// changes made after the first site load
 
-			// reload the portal.css file
-			var sheet = styles.getStyleSheet('portal.css');
-			var href = sheet.href;
-			if (href.indexOf('?') !== -1) {
-				href = href.substr(0, href.indexOf('?'));
+ 			// reload the portal.css file
+			var re = /.*\/portal.css\??\d*$/;
+			var links = document.getElementsByTagName('link');
+			var link = array.filter(links, function(ilink) {
+				return re.test(ilink.href);
+			})[0];
+			if (!link) {
+				return;
 			}
-			href = lang.replace('{0}?{1}', [href, Date.now()]);
-			sheet.ownerNode.href = href;
+			var href = link.href;
+ 			if (href.indexOf('?') !== -1) {
+ 				href = href.substr(0, href.indexOf('?'));
+ 			}
+			href += lang.replace('?{0}', [Date.now()]);
+			link.href = href;
 		},
 
 		// FIXME reloading the portal.json to update the content
