@@ -348,6 +348,9 @@ class UCSInstallation(object):
 	def network_setup(self):
 		time.sleep(60)
 		self.client.waitForText(self._i['configure_network'], timeout=self.timeout)
+		# always use first interface
+		self.click(self._i['icontinue'])
+		time.sleep(60)
 		if self.args.ip:
 			self.client.waitForText(self._i['not_using_dhcp'], timeout=self.timeout)
 			self.client.keyPress('enter')
@@ -369,10 +372,6 @@ class UCSInstallation(object):
 			if self.args.dns:
 				self.client.enterText(self.args.dns)
 			self.client.keyPress('enter')
-		else:
-			# always use first interface
-			self.click(self._i['icontinue'])
-			time.sleep(60)
 
 	def configure_kvm_network(self):
 		if 'all' in self.args.components or 'kde' in self.args.components:
