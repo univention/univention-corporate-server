@@ -37,7 +37,7 @@ import univention.admin.uldap
 import univention.admin.objects
 import univention.admin.modules
 import univention.admin.handlers.users.user
-import univention.debug as ud
+import univention.debug as ud1
 
 univention.admin.modules.update()
 
@@ -45,21 +45,19 @@ univention.admin.modules.update()
 def initialize_debug():
 	# Use a little hack to determine if univention.debug has been initialized
 	# get_level(..) returns always ud.ERROR if univention.debug is not initialized
-	with open("/tmp/3", "a") as f:
-		f.write("ud.ADMIN: %s\n" % (ud.ADMIN,))
-	oldLevel = ud.get_level(ud.ADMIN)
-	if oldLevel == ud.PROCESS:
-		ud.set_level(ud.ADMIN, ud.DEBUG)
-		is_ready = (ud.get_level(ud.ADMIN) == ud.DEBUG)
+	oldLevel = ud1.get_level(ud1.ADMIN)
+	if oldLevel == ud1.PROCESS:
+		ud1.set_level(ud1.ADMIN, ud1.DEBUG)
+		is_ready = (ud1.get_level(ud1.ADMIN) == ud1.DEBUG)
 	else:
-		ud.set_level(ud.ADMIN, ud.PROCESS)
-		is_ready = (ud.get_level(ud.ADMIN) == ud.PROCESS)
+		ud1.set_level(ud1.ADMIN, ud1.PROCESS)
+		is_ready = (ud1.get_level(ud1.ADMIN) == ud1.PROCESS)
 	if not is_ready:
-		ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
-		ud.set_level(ud.LDAP, ud.PROCESS)
-		ud.set_level(ud.ADMIN, ud.PROCESS)
+		ud1.init('/var/log/univention/directory-manager-cmd.log', ud1.FLUSH, 0)
+		ud1.set_level(ud1.LDAP, ud1.PROCESS)
+		ud1.set_level(ud1.ADMIN, ud1.PROCESS)
 	else:
-		ud.set_level(ud.ADMIN, oldLevel)
+		ud1.set_level(ud1.ADMIN, oldLevel)
 
 
 def lock(userdn, lock_timestamp):
@@ -77,9 +75,6 @@ def lock(userdn, lock_timestamp):
 
 	if not lock_timestamp:  # timed unlocking via ppolicy not implemented yet, so block it.
 		return
-
-	initialize_debug()
-	ud.debug(ud.ADMIN, ud.PROCESS, "univention.lib.account.lock was called for %s" % (userdn,))
 
 	co = None
 	try:
@@ -114,4 +109,7 @@ if __name__ == '__main__':
 	subparser.add_argument('--dn', required=True, help='The DN of the user account to be locked.')
 	subparser.add_argument('--lock-time', required=True, help='The time when the user account was locked.')
 	args = parser.parse_args()
+
+	initialize_debug()
+	ud1.debug(ud1.ADMIN, ud1.PROCESS, "univention.lib.account.lock was called for %s (%s)" % (args.dn, args.lock_time))
 	lock(args.dn, args.lock_time)
