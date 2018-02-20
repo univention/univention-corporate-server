@@ -1,3 +1,10 @@
+ucs-test (8.0.28-23) unstable; urgency=medium
+
+  * Bug #46067: Add 13_set_pwdChangeNextLogin_again_during_password_change,
+    , marked as SKIP, because it only documents the existing behavior.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Feb 2018 15:09:17 +0100
+
 ucs-test (8.0.28-22) unstable; urgency=medium
 
   * Bug #46126: Fix Bash quoting in 60_umc/07_expired_password and avoid
