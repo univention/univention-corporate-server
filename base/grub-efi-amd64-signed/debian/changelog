@@ -1,26 +1,8 @@
-grub-efi-amd64-signed (4.0.0-3) unstable; urgency=low
+grub-efi-amd64-signed (2.0.0-1) unstable; urgency=low
 
-  * Bug #46325: Copyright update
-
- -- Philipp Hahn <hahn@univention.de>  Tue, 20 Feb 2018 14:26:17 +0100
-
-grub-efi-amd64-signed (4.0.0-2) unstable; urgency=low
-
-  * Bug #46325: Rebuild signed grub2
+  * Bug #46325: Rebuild signed GRUB 2.02~beta3-5
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 20 Feb 2018 12:36:21 +0100
-
-grub-efi-amd64-signed (4.0.0-1) unstable; urgency=medium
-
-  * Bug #45841: UCS-4.3 version bump
-
- -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:45 +0100
-
-grub-efi-amd64-signed (3.0.0-1) unstable; urgency=medium
-
-  * Bug #41963: UCS-4.2 version bump
-
- -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:57:46 +0200
 
 grub-efi-amd64-signed (2.0-7) unstable; urgency=medium
 
