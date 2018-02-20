@@ -11,10 +11,6 @@
 	<section id="changelog:general">
 		<title>General</title>
 		<itemizedlist>
-			<listitem>
-				<para>
-				</para>
-				<itemizedlist>
 					<listitem><simpara>
 							Debian packages have been updated to Debian Stretch (<u:bug>45642</u:bug>, <u:bug>45709</u:bug>).
 					</simpara></listitem>
@@ -43,8 +39,6 @@
 						The certificate needs to be renewed afterwards.
 						For details see <ulink url="https://help.univention.com/t/renewing-the-ssl-certificates/37">Renewing the SSL certificate</ulink>.
 					</simpara></listitem>
-				</itemizedlist>
-			</listitem>
 		</itemizedlist>
 	</section>
 
@@ -539,6 +533,11 @@
 			<listitem><simpara>
 				The package <package>univention-bacula</package> has been updates to the new versions of <application>Bacula</application> and <application>PostgreSQL-9.6</application> from Debian.
 				Support for old version of <application>PostgreSQL</application> has been removed.
+			</simpara></listitem>
+			<listitem><simpara>
+				GRUB has been updated to a new version.
+				Support for para-virtualized Xen domains has been removed.
+				The SHIM binary has been renamed to follow the upstream naming schema.
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
