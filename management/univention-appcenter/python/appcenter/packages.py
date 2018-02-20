@@ -161,7 +161,7 @@ def install_packages_dry_run(pkgs):
 	return _apt_get_dry_run('install', pkgs)
 
 
-def dist_upgrade_dry_run(pkgs):
+def dist_upgrade_dry_run():
 	return _apt_get_dry_run('dist-upgrade', [])
 
 
@@ -177,7 +177,7 @@ def remove_packages(pkgs):
 	return _apt_get('remove', pkgs)
 
 
-def dist_upgrade(pkgs):
+def dist_upgrade():
 	return _apt_get('dist-upgrade', [])
 
 

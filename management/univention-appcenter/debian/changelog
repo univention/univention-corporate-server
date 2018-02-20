@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-14) unstable; urgency=medium
+
+  * Bug #46339: fixed dist_upgrade_dry_run and dist_upgrade
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Feb 2018 11:24:14 +0100
+
 univention-appcenter (7.0.1-13) unstable; urgency=medium
 
   * Bug #43660: Use apt-get instead of package manager for installation (2)
