@@ -77,6 +77,7 @@ class Remove(Remove, DockerActionMixin):
 			Stop.call(app=app)
 			docker.stop()
 			docker.rm()
+		return True
 
 	def dry_run(self, app, args):
 		if not app.docker:

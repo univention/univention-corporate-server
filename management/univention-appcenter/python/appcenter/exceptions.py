@@ -282,6 +282,12 @@ class DockerImagePullFailed(Abort):
 	default_error_msg = 'Downloading Docker image %(image)s failed.'
 
 
+# TODO: AbortWithDetails
+class RemoveFailed(Abort):
+	code = 436
+	default_error_msg = 'Failed to uninstall the App'
+
+
 class AppCenterError(Exception):
 	'''A "real" exception that developers cannot handle very well.
 	The difference between AppCenterError and Abort is that Abort is a

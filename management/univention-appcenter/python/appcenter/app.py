@@ -1071,8 +1071,6 @@ class App(object):
 			if not self.without_repository:
 				if not ucr_includes(self.ucr_component_key):
 					return False
-			if ucr_get(self.ucr_ucs_version_key, self.get_ucs_version()) != self.get_ucs_version():
-				return False
 			return packages_are_installed(self.default_packages, strict=False)
 
 	def is_ucs_component(self):
