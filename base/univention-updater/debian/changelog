@@ -1,3 +1,9 @@
+univention-updater (13.0.1-19) unstable; urgency=medium
+
+  * Bug #46118: Rebuild updater for new preup.sh
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Feb 2018 21:58:49 +0100
+
 univention-updater (13.0.1-18) unstable; urgency=medium
 
   * Bug #46278: Configure logging only for the "updater" logger (2)
