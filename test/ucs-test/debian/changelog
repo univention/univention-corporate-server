@@ -1,3 +1,9 @@
+ucs-test (8.0.28-25) unstable; urgency=medium
+
+  * Bug #46067: Make ucs-lint happy
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Feb 2018 17:32:49 +0100
+
 ucs-test (8.0.28-24) unstable; urgency=medium
 
   * Bug #46316: fixed 61_udm-users/100_test_users.py
@@ -7,7 +13,7 @@ ucs-test (8.0.28-24) unstable; urgency=medium
 ucs-test (8.0.28-23) unstable; urgency=medium
 
   * Bug #46067: Add 13_set_pwdChangeNextLogin_again_during_password_change,
-    , marked as SKIP, because it only documents the existing behavior.
+    marked as SKIP, because it only documents the existing behavior.
 
  -- Arvid Requate <requate@univention.de>  Tue, 20 Feb 2018 15:09:17 +0100
 
