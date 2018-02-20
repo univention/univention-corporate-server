@@ -1,3 +1,11 @@
+univention-samba4 (7.0.2-4) unstable; urgency=medium
+
+  * Bug #33214: User creation for saml-kerberos was split into
+    a saml and samba4 specific part. Samba4 specific user settings
+    have been moved to 98univention-samba4-saml-kerberos.inst
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 20 Feb 2018 11:35:54 +0100
+
 univention-samba4 (7.0.2-3) unstable; urgency=medium
 
   * Bug #46292: Avoid s4search-decode segfault on krb5Key with unsupported
