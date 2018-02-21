@@ -115,6 +115,10 @@
 					A module for easier configuration of portal and portal entry objects has been added to the UMC.
 					Additionally portals can now be edited directly on the portal site itself (<u:bug>46270</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The visibility of individual portal entries may now be restricted to
+					logged in users of a specific group (<u:bug>46336</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
