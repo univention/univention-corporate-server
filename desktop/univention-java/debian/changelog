@@ -1,3 +1,9 @@
+univention-java (10.0.0-4) unstable; urgency=low
+
+  * Bug #45959: Switch to Architecture: all
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 21 Feb 2018 11:49:43 +0100
+
 univention-java (10.0.0-3) unstable; urgency=low
 
   * Bug #45959: Switch to default-jre
