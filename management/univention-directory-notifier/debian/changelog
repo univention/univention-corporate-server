@@ -1,6 +1,6 @@
 univention-directory-notifier (11.0.0-5) unstable; urgency=medium
 
-  * Bug #46321: increase runsv timeout to 30 seconds
+  * Bug #46312: increase runsv timeout to 30 seconds
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 21 Feb 2018 15:16:46 +0100
 
