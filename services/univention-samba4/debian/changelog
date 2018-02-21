@@ -1,3 +1,10 @@
+univention-samba4 (7.0.2-5) unstable; urgency=medium
+
+  * Bug #33214: Only create saml-kerberos user on DC Master
+  * Remove debug output
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 21 Feb 2018 17:07:25 +0100
+
 univention-samba4 (7.0.2-4) unstable; urgency=medium
 
   * Bug #33214: User creation for saml-kerberos was split into

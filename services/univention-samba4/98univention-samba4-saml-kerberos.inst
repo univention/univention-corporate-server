@@ -38,16 +38,16 @@ joinscript_init
 
 eval "$(ucr shell)"
 
-set -x
 spn_account_name="ucs-sso"
 servicePrincipalName="HTTP/$spn_account_name.$domainname"
 privateKeytab_filename="simplesamlphp.keytab"
 privateKeytab_path="/etc/simplesamlphp/$privateKeytab_filename"
 
-[ ! -f "/etc/simplesamlphp/ucs-sso-kerberos.secret" ] && die "could not obtain current kerberos secret for sso user"
-spn_account_name_password=$(</etc/simplesamlphp/ucs-sso-kerberos.secret)
 
-if [ -n "$samba4_role" ]; then
+if [ "$server_role" == "domaincontroller_master" ]; then
+	[ ! -f "/etc/simplesamlphp/ucs-sso-kerberos.secret" ] && die "could not obtain current kerberos secret for sso user"
+	spn_account_name_password=$(</etc/simplesamlphp/ucs-sso-kerberos.secret)
+
 	spn_secrets_ldif=$(ldbsearch -H /var/lib/samba/private/secrets.ldb "(servicePrincipalName=$servicePrincipalName)" \
 			| ldapsearch-wrapper | ldapsearch-decode64)
 	previous_spn_secrets_password=$(sed -n 's/^secret: //p' <<<"$spn_secrets_ldif")
@@ -91,17 +91,6 @@ if [ -n "$samba4_role" ]; then
 	
 	spn_secrets_dn=$(sed -n 's/^dn: //p' <<<"$spn_secrets_ldif")
 	if [ -z "$spn_secrets_dn" ]; then
-			echo "		dn: samAccountName=$spn_account_name,CN=Principals
-objectClass: kerberosSecret
-privateKeytab: $privateKeytab_filename
-realm: $kerberos_realm
-sAMAccountName: $spn_account_name
-secret: $spn_account_name_password
-servicePrincipalName: $servicePrincipalName
-name: $spn_account_name
-msDS-KeyVersionNumber: $msdsKeyVersion
-saltPrincipal: $servicePrincipalName@$kerberos_realm
-"
 		ldbadd -H /var/lib/samba/private/secrets.ldb <<-%EOF
 		dn: samAccountName=$spn_account_name,CN=Principals
 		objectClass: kerberosSecret
@@ -129,7 +118,7 @@ saltPrincipal: $servicePrincipalName@$kerberos_realm
 	fi
 
 	touch "$privateKeytab_path" || die
-	chown root:samlcgi "$privateKeytab_path" || die
+	chown samlcgi:"DC Backup Hosts" "$privateKeytab_path" || die
 	chmod 640 "$privateKeytab_path" || die
 	cp "/var/lib/samba/private/$privateKeytab_filename" "$privateKeytab_path" || die
 fi
