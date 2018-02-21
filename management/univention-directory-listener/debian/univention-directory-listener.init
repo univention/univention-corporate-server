@@ -53,12 +53,12 @@ case "$1" in
 			check_autostart listener listener/autostart
 		fi
 		log_daemon_msg "Starting $DESC" "$NAME"
-		sv start "$NAME" >/dev/null
+		sv -w 30 start "$NAME" >/dev/null
 		log_end_msg $?
 		;;
 	stop)
 		log_daemon_msg "Stopping $DESC" "$NAME"
-		sv stop "$NAME" >/dev/null
+		sv -w 30 stop "$NAME" >/dev/null
 		log_end_msg $?
 		;;
 	restart|force-reload)
@@ -68,7 +68,7 @@ case "$1" in
 			check_autostart listener listener/autostart
 		fi
 		log_daemon_msg "Restarting $DESC" "$NAME"
-		sv restart "$NAME"
+		sv -w 30 restart "$NAME"
 		log_end_msg $?
 		;;
 	status)
