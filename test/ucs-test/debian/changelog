@@ -1,3 +1,9 @@
+ucs-test (8.0.28-28) unstable; urgency=medium
+
+  * Bug #46126: 105_change_expired_password_fail_reason.py
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Feb 2018 12:27:07 +0100
+
 ucs-test (8.0.28-27) unstable; urgency=medium
 
   * Bug #46359: fixed 09_extended_attribute_override_default_tabs.test
