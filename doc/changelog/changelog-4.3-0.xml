@@ -135,6 +135,9 @@
 						Non-Docker Apps are installed with a new functions. These functions support a wider range of integration (<u:bug>40064</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+						Packages are now installed via <command>apt-get</command> directly, instead of using a library and implement the functionality (<u:bug>43660</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 						The file <filename>/var/log/univention/appcenter.log</filename> is now rotated (<u:bug>46274</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
