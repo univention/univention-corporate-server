@@ -1,3 +1,9 @@
+univention-dhcp (11.0.0-10) unstable; urgency=medium
+
+  * Bug #46311: increase runsv timeout to 30 seconds
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 21 Feb 2018 15:31:03 +0100
+
 univention-dhcp (11.0.0-9) unstable; urgency=low
 
   * Bug #45065: Always start DHCP runsv service
