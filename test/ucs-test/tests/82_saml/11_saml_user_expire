@@ -19,9 +19,8 @@ import samltest
 
 
 def main():
-	with samltest.with_saml_ldap_auth_backend():
-		test_expired_account()
-		test_unexpired_account()
+	test_expired_account()
+	test_unexpired_account()
 
 
 def test_expired_account():

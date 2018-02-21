@@ -1,3 +1,9 @@
+ucs-test (8.0.28-29) unstable; urgency=medium
+
+  * Bug #46361: 82_saml: support for kerberos in saml
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 21 Feb 2018 11:55:21 +0100
+
 ucs-test (8.0.28-28) unstable; urgency=medium
 
   * Bug #46126: 105_change_expired_password_fail_reason.py
