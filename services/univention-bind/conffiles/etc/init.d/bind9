@@ -47,7 +47,7 @@ DESC=$(get_lsb_header_val "$0" Short-Description)
 
 sv_action () { # Silently toggle runit state: $action $service_name
 	if [ -e "/etc/runit/univention/$2" ]; then
-		 sv "$1" "$2" >>/var/log/daemon.log
+		 sv -w 30 "$1" "$2" >>/var/log/daemon.log
 	fi
 }
 
