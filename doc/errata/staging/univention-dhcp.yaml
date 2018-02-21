@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: univention-bind
+fix: 11.0.0-10A~4.2.0.201802211609
+desc: |
+ This update addresses the following issue(s):
+ * To prevent systemctl from reporting a wrong status for the univention-dhcp
+   service, the runsv timeout has been increased to 30 seconds.
+bug: [46311]
