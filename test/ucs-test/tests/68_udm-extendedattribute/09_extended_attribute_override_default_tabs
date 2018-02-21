@@ -35,8 +35,13 @@ def main():
 			if module_help_text[i] == '  %s:' % properties['tabName']:
 				if not properties['CLIName'] in module_help_text[i + 1]:
 					utils.fail('Could not find attribute CLI name under tab')
-				if not module_help_text[i + 2].endswith(':'):
-					utils.fail('Tab not overridden')
+				try:
+					if not module_help_text[i + 2].endswith(':'):
+						print '--> ', module_help_text[i + 2]
+						utils.fail('Tab not overridden')
+				except IndexError:
+					# no more help, tab is overwritten
+					pass
 				return
 
 		utils.fail('Tab not found')
