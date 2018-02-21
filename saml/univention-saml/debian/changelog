@@ -1,3 +1,9 @@
+univention-saml (5.0.4-11) unstable; urgency=medium
+
+  * Bug #33214: On DC Backup, copy keytab from master
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 21 Feb 2018 17:10:33 +0100
+
 univention-saml (5.0.4-10) unstable; urgency=medium
 
   * Bug #33214: Create ucs-sso user in u-saml joinscript
