@@ -1,6 +1,6 @@
 univention-directory-listener (11.0.1-47) unstable; urgency=low
 
-  * Bug #46313: increase runsv timeout to 30
+  * Bug #46313: increase runsv timeout to 30 seconds
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 21 Feb 2018 15:03:04 +0100
 
