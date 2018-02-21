@@ -1,3 +1,9 @@
+univention-directory-listener (12.0.0-17) unstable; urgency=medium
+
+  * Bug #46313: increase runsv timeout to 30
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 21 Feb 2018 15:03:04 +0100
+
 univention-directory-listener (12.0.0-16) unstable; urgency=medium
 
   * Bug #46276: stop listener before starting
