@@ -66,6 +66,11 @@ class TestPwdChangeNextLogin(object):
 			utils.wait_for_connector_replication()
 
 		client = Client()
+		print 'check login with pwdChangeNextLogin=1'
+		with pytest.raises(Unauthorized) as msg:
+			client.umc_auth(username, password)
+
+		client = Client()
 		print 'change password from %r to %r' % (password, new_password)
 		client.umc_auth(username, password, new_password=new_password)
 

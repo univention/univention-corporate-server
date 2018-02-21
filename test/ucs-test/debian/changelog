@@ -1,3 +1,10 @@
+ucs-test (8.0.28-30) unstable; urgency=medium
+
+  * Bug #46126: 104_expired_password.py, check if login
+    is denied with pwdChangeNextLogin=1
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Feb 2018 12:50:26 +0100
+
 ucs-test (8.0.28-29) unstable; urgency=medium
 
   * Bug #46361: 82_saml: support for kerberos in saml
