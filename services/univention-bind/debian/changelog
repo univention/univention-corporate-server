@@ -1,3 +1,9 @@
+univention-bind (12.0.1-2) unstable; urgency=medium
+
+  * Bug #46310: increase runsv timeout to 30 seconds
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 21 Feb 2018 15:44:22 +0100
+
 univention-bind (12.0.1-1) unstable; urgency=medium
 
   * Use service instead of invoke-rc.d since systemd policy layer
