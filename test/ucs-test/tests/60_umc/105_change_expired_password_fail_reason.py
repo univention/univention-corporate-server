@@ -26,6 +26,9 @@ def enabled_password_quality_checks():
 		lo.modify(dn, [('univentionPWQualityCheck', old, new)])
 		yield
 		lo.modify(dn, [('univentionPWQualityCheck', new, old)])
+        else:
+            yield
+            pass
 
 
 def test_password_changing_failure_reason(options, new_password, reason, udm, Client, random_string, Unauthorized, enabled_password_quality_checks):
