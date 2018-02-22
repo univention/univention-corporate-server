@@ -2153,7 +2153,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 			if self['locked'] == '0':  # unlock kerberos password
 				krb_kdcflags &= ~(1 << 17)
-#			else:  # lock kerberos password
+#			elif self['locked'] == '1':  # lock kerberos password
 #				krb_kdcflags |= (1 << 17)
 
 			ml.append(('krb5KDCFlags', str(old_kdcflags), str(krb_kdcflags)))
@@ -2327,11 +2327,11 @@ class object(univention.admin.handlers.simpleLdap):
 			# enable samba account
 			acctFlags.unset('D')
 
-		if self['locked'] == '0':
-			# unlock samba account
-			acctFlags.unset('L')
-		else:
+		if self['locked'] == '1':
+			# lock samba account
 			acctFlags.set('L')
+		else:
+			acctFlags.unset('L')
 
 		if str(old_flags) != str(acctFlags.decode()):
 			ml.append(('sambaAcctFlags', old_flags, acctFlags.decode()))
