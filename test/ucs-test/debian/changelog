@@ -1,3 +1,9 @@
+ucs-test (8.0.28-34) unstable; urgency=medium
+
+  * Bug #39817: Minor improvements for 47faillog-global and 47faillog
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Feb 2018 12:50:36 +0100
+
 ucs-test (8.0.28-33) unstable; urgency=medium
 
   * Bug #39817: Split 47faillog-global from 47faillog and adjust it

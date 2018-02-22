@@ -100,7 +100,9 @@ if [ "$ssh_hostname" != "$hostname" ]; then
 fi
 failCount=$(pam_tally --user="$NAME" | awk '{print $NF}')
 if [ "$failCount" != "0" ]; then
-	fail_fast 110 "E: failCount should be empty"
+	fail_test 110 "E: failCount should be empty"
+	faillog -u "$NAME"
+	exit $RETVAL
 fi
 
 exit $RETVAL
