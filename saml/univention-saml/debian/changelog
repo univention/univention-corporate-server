@@ -1,3 +1,9 @@
+univention-saml (5.0.4-12) unstable; urgency=medium
+
+  * Bug #33214: Create ucs-sso user as functional and hidden
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 22 Feb 2018 12:24:38 +0100
+
 univention-saml (5.0.4-11) unstable; urgency=medium
 
   * Bug #33214: On DC Backup, copy keytab from master
