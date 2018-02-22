@@ -31,7 +31,7 @@
 	</para>
 
 	<para>
-	  Auf den Desktops kommt durchgehend Microsoft Windows 7 zum Einsatz. Die
+	  Auf den Desktops kommt durchgehend Microsoft Windows 10 zum Einsatz. Die
 	  Softwareverteilung und Installation von Sicherheitsupdates erfolgt
 	  zentralisiert.
 	</para>
@@ -212,12 +212,11 @@
 	  Auf den Windows-Clients läuft die Open Source-Softwareverteilung
 	  opsi. Sie ermöglicht auf den Windows-Clients eine weitgehend
 	  automatisierte Verteilung von Sicherheitsupdates und Windows-Updates
-	  sowie den Rollout von Software-Paketen. Die Konfiguration von opsi
-	  integriert sich durch opsi4UCS in das UCS-Managementsystem.
+	  sowie den Rollout von Software-Paketen.
 	</para>
 
 	<para>
-	  OPSI wird auch für den Rollout neuer Windows-Systeme verwendet. Diese
+	  opsi wird auch für den Rollout neuer Windows-Systeme verwendet. Diese
 	  werden über PXE automatisch installiert.
 	</para>
   </section>
@@ -227,7 +226,7 @@
 	<para>
 	  Der UCS Active Directory Connector (kurz AD Connector)
 	  ermöglicht eine Synchronisation von Verzeichnisdienstobjekten zwischen
-	  einem Microsoft Windows 2000/2003/2008/2012 Server mit Microsoft Active Directory (AD) und dem
+	  einem Microsoft Windows 2008/2012/2016 Server mit Microsoft Active Directory (AD) und dem
 	  OpenLDAP-Verzeichnisdienst in &ucsUCS;.
 	</para>
 
@@ -258,9 +257,9 @@
   <section id="insurance:groupware">
 	<title>Groupware</title>
 	<para>
-	  Die Groupware wird in Form von Exchange Server 2010 komplett durch
+	  Die Groupware wird in Form von Exchange Server 2016 komplett durch
 	  die Konzernmutter Vigil Insurances bereitgestellt, auf das die
-	  Benutzer mit Outlook 2010 und Outlook WebAccess zugreifen.
+	  Benutzer mit Outlook 2010 und Outlook on the web zugreifen.
 	</para>
 
 	<para>
@@ -378,12 +377,13 @@
   <section id="insurance:backup">
 	<title>Backup</title>
 	<para>
-	  Für die Datensicherung kommt SEP sesam zum Einsatz. Es bietet ein
-	  verteiltes Sicherungskonzept mit verschiedenen Backup-Agenten, die
-	  sowohl komplette Systeme als auch Daten sichern können. Für die
-	  Sicherung von Datenbanken stehen etwa gesonderte Agenten zur Verfügung.
-	  Alle Daten werden von den Standort-Servern in die Zentrale kopiert und
-	  dort auf Bandmedien gesichert. Die Installation erfolgt mit wenigen Klicks aus dem App Center.
+	  Für die Datensicherung kommt SEP sesam Backup Server aus dem App Center
+	  zum Einsatz. Es bietet ein verteiltes Sicherungskonzept mit verschiedenen
+	  Backup-Agenten, die sowohl komplette Systeme als auch Daten sichern
+	  können. Für die Sicherung von Datenbanken stehen etwa gesonderte Agenten
+	  zur Verfügung.  Alle Daten werden von den Standort-Servern in die
+	  Zentrale kopiert und dort auf Bandmedien gesichert. Die Installation
+	  erfolgt mit wenigen Klicks aus dem App Center.
 	</para>
 
 	<para>
@@ -399,11 +399,12 @@
   </section>
 
   <section id="insurance:crm">
-	<title>Integration von SugarCRM</title>
+	<title>Integration von SuiteCRM</title>
 	<para>
-	  Als CRM-Lösung für Vertriebsmitarbeiter wird SugarCRM
-	  eingesetzt. Die Verwaltung der SugarCRM-Benutzer- und -rollen
-	  integriert sich direkt in die &ucsUMC;. Die Installation erfolgt mit wenigen Klicks aus dem App Center.
+	  Als CRM-Lösung für Vertriebsmitarbeiter wird SuiteCRM eingesetzt. Die
+	  Verwaltung der SuiteCRM-Benutzer- und -rollen integriert sich direkt in
+	  die &ucsUMC;. Die Installation erfolgt mit wenigen Klicks aus dem App
+	  Center.
 	</para>
 
 	<para>
@@ -422,9 +423,8 @@
 		<listitem><simpara><ulink url="http://wiki.univention.de/index.php?title=Opsi_%28open_pc_server_integration%29"/></simpara></listitem>
 		<listitem><simpara><ulink url="https://docs.software-univention.de/ucc-manual-1.0.html"/> (Univention Corporate Client-Handbuch)</simpara></listitem>
 		<listitem><simpara><ulink url="https://docs.software-univention.de/installation.html"/> (Erweiterte Installations-Dokumentation)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.de/produkte/univention-app-center/app-katalog/drbd/"/> (DRBD)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.de/produkte/univention-app-center/app-katalog/sep-sesam/"/> (SEP sesam Backup)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.de/produkte/univention-app-center/app-katalog/sugarcrm/"/> (SugarCRM)</simpara></listitem>
+		<listitem><simpara><ulink url="https://www.univention.de/appid/sep-sesam/"/> (SEP sesam Backup)</simpara></listitem>
+		<listitem><simpara><ulink url="https://www.univention.de/appid/digitec-suitecrm/"/> (SugarCRM)</simpara></listitem>
 	  </itemizedlist>
   </section>
 </chapter>
