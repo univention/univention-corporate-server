@@ -1,3 +1,11 @@
+ucs-test (8.0.28-33) unstable; urgency=medium
+
+  * Bug #39817: Split 47faillog-global from 47faillog and adjust it
+    to new behavior of faillog/lock_global: UDM users now get disabled
+    by univention-pam/lock-user when the pam_tally threshold is reached.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Feb 2018 11:51:28 +0100
+
 ucs-test (8.0.28-32) unstable; urgency=medium
 
   * Bug #46126: 104_expired_password.py, better password
