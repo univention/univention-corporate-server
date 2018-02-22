@@ -15,7 +15,7 @@
 	<para>
 	  Ganupa Technologies ist einer der wichtigsten Hersteller für Walzstahlfräsen. Am Firmensitz in
 	  Deutschland arbeiten 260 Mitarbeiter in Produktion, Verwaltung, Konstruktion und
-	  Vertrieb. Außerdem gibt es in den USA, Argentinien und Indien lokale Standorte mit 5-10
+	  Vertrieb. Außerdem gibt es in den USA, Argentinien und Indien lokale Standorte mit je 5-10
 	  Mitarbeitern.
 	</para>
 
@@ -216,7 +216,9 @@
 	<para>
 	  Außerdem ist jedem Drucker ein Seitenpreis zugeordnet. Dadurch können pro Benutzer die
 	  angefallenen Druckkosten ermittelt werden. Dies kann auch mit einer Limitierung von zu
-	  druckenden Seiten verbunden werden, die aber in der Umgebung nicht zum Einsatz kommt.
+	  druckenden Seiten verbunden werden, die aber in der Umgebung nicht zum
+	  Einsatz kommt. Über die App Print Server Quota können Druckquotas auch
+	  auf Benutzergruppenbasis ausgedehnt werden.
 	</para>
   </section>
 
@@ -271,7 +273,7 @@
   <section id="engineering:groupware">
 	<title>Groupware</title>
 	<para>
-	  Ganupa Technologies verwendet die Groupwarelösung Open-Xchange Server Edition zur Abstimmung
+	  Ganupa Technologies verwendet die Groupwarelösung Open-Xchange App Suite zur Abstimmung
 	  von Terminen, Kontakten und Aufgaben.
 	</para>
 
@@ -283,7 +285,7 @@
 
 	<para>
 	  Die Verwaltung der Groupware-relavanten Attribute integriert sich nahtlos in die &ucsUMC;. Die
-	  Mitarbeiter greifen auf die Groupware über den Open-Xchange-Web-Client und Mozilla Thunderbird
+	  Mitarbeiter greifen auf die Groupware über den OX App Suite Web-Client und Mozilla Thunderbird
 	  zu.
 	</para>
 
