@@ -1,3 +1,9 @@
+univention-s4-connector (12.0.2-4) unstable; urgency=medium
+
+  * Bug #32014: Fix whitespace indentation
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Feb 2018 17:08:36 +0100
+
 univention-s4-connector (12.0.2-3) unstable; urgency=medium
 
   * Bug #32014: Log the modlist in lockout_sync_ucs_to_s4 too.
