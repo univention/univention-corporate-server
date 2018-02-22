@@ -108,3 +108,6 @@ class Upgrade(Install):
 
 	def _dry_run(self, app, args):
 		return self._install_packages_dry_run(app, args, with_dist_upgrade=True)
+
+	def _get_packages_for_dry_run(self, app, args):
+		return app.get_packages(additional=True)
