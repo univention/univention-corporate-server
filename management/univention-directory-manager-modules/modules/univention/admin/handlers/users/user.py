@@ -264,7 +264,7 @@ property_descriptions = {
 		copyable=True,
 		default='0',
 	),
-        'locked': univention.admin.property(  # This property only serves two purposes: 1) filtering 2) artificial simulation of lockout
+	'locked': univention.admin.property(  # This property only serves two purposes: 1) filtering 2) artificial simulation of lockout
 		short_description=_('Locked state of account'),
 		long_description=_('This indicates if the account is locked out due to too many authentication failures.'),
 		syntax=univention.admin.syntax.locked,
@@ -1883,8 +1883,8 @@ class object(univention.admin.handlers.simpleLdap):
 				except univention.admin.uexceptions.noLock:
 					raise univention.admin.uexceptions.mailAddressUsed(self['mailPrimaryAddress'])
 
-                if self['unlock'] == '1':
-                    self['locked'] = '0'
+		if self['unlock'] == '1':
+			self['locked'] = '0'
 
 	def _ldap_addlist(self):
 		al = super(object, self)._ldap_addlist()
