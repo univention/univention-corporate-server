@@ -534,7 +534,7 @@
 				The <package>univention-runit</package> configuration has been adapted to Debian Stretch (<u:bug>45861</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				To prevent systemctl from reporting a wrong status for the univention-bind, univention-dhcp, univention-directory-notifier and univention-directory-listener services, the runsv timeout has been increased to 30 seconds.
+				To prevent <command>systemctl</command> from reporting a wrong status for the services <systemitem class="service">univention-bind</systemitem>, <systemitem class="service">univention-dhcp</systemitem>, <systemitem class="service">univention-directory-notifier</systemitem> and <systemitem class="service">univention-directory-listener</systemitem>, the <command>runsv</command> timeout has been increased to 30 seconds (<u:bug>46310</u:bug>, <u:bug>46311</u:bug>, <u:bug>46312</u:bug>, <u:bug>46313</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The <systemitem class="service">ntp</systemitem> init script has been removed from <package>univention-base-files</package>.
