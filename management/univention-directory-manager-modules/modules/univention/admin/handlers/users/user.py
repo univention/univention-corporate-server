@@ -1885,6 +1885,8 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if self['unlock'] == '1':
 			self['locked'] = '0'
+		if self['disabled'] == '1':
+			self['locked'] = '0'  # Samba/AD behavior
 
 	def _ldap_addlist(self):
 		al = super(object, self)._ldap_addlist()

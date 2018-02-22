@@ -1,3 +1,12 @@
+univention-directory-manager-modules (13.0.20-8) unstable; urgency=medium
+
+  * Bug #39817: Disabling an account in Samba/AD directly "unlocks" it;
+    makes sense, that way it is directly usable when enabled again.
+    This also works better for local pam_tally unlocking in case
+    auth/faillog/lock_global is enabled.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Feb 2018 11:30:25 +0100
+
 univention-directory-manager-modules (13.0.20-7) unstable; urgency=medium
 
   * Bug #39817: Feedback from QA: Add an "unlock" trigger checkbox and
