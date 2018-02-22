@@ -42,12 +42,12 @@ from tempfile import NamedTemporaryFile
 
 from univention.appcenter.app import App
 from univention.appcenter.actions import StoreAppAction, get_action
-from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError
+from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError, ParallelOperationInProgress
 from univention.appcenter.actions.register import Register
 from univention.appcenter.utils import get_locale
 from univention.appcenter.ucr import ucr_get
 from univention.appcenter.settings import SettingValueError
-from univention.appcenter.packages import package_lock
+from univention.appcenter.packages import package_lock, LockError
 
 
 class StoreConfigAction(Action):
@@ -80,73 +80,76 @@ class InstallRemoveUpgrade(Register):
 	main = None  # no action by itself
 
 	def do_it(self, args):
-		with package_lock():
-			app = args.app
-			status = 200
-			status_details = None
-			try:
-				action = self.get_action_name()
-				self.log('Going to %s %s (%s)' % (action, app.name, app.version))
-				errors, warnings = app.check(action)
-				can_continue = self._handle_errors(app, args, errors, True)
-				can_continue = self._handle_errors(app, args, warnings, fatal=not can_continue) and can_continue
-				if not can_continue or not self._call_prescript(app, args):
-					status = 0
-					self.fatal('Unable to %s %s. Aborting...' % (action, app.id))
-				else:
-					try:
-						self._show_license(app, args)
-						self._show_pre_readme(app, args)
-						try:
-							if args.dry_run:
-								self.dry_run(app, args)
-							else:
-								self._do_it(app, args)
-						except (Abort, KeyboardInterrupt) as exc:
-							msg = str(exc)
-							if msg:
-								self.fatal(msg)
-							self.warn('Aborting...')
-							if exc.__class__ is KeyboardInterrupt:
-								status = 401
-							else:
-								status = exc.code
-								status_details = exc.get_exc_details()
-						except Exception as exc:
-							status = 500
-							status_details = repr(exc)
-							raise
-						else:
-							try:
-								self._show_post_readme(app, args)
-							except Abort:
-								pass
-					except Abort:
-						self.warn('Cancelled...')
-						status = 0
-			except AppCenterError as exc:
-				status = exc.code
-				raise
-			except Exception:
-				raise
+		app = args.app
+		status = 200
+		status_details = None
+		try:
+			action = self.get_action_name()
+			self.log('Going to %s %s (%s)' % (action, app.name, app.version))
+			errors, warnings = app.check(action)
+			can_continue = self._handle_errors(app, args, errors, True)
+			can_continue = self._handle_errors(app, args, warnings, fatal=not can_continue) and can_continue
+			if not can_continue or not self._call_prescript(app, args):
+				status = 0
+				self.fatal('Unable to %s %s. Aborting...' % (action, app.id))
 			else:
-				return status == 200
-			finally:
-				if args.dry_run:
-					pass
-				elif status == 0:
-					pass
-				else:
-					if status != 200:
-						self._revert(app, args)
-					if args.send_info:
+				try:
+					self._show_license(app, args)
+					self._show_pre_readme(app, args)
+					try:
 						try:
-							self._send_information(app, status, status_details)
-						except NetworkError:
-							self.log('Ignoring this error...')
-					self._register_installed_apps_in_ucr()
-					upgrade_search = get_action('upgrade-search')
-					upgrade_search.call_safe(app=[app], update=False)
+							with package_lock():
+								if args.dry_run:
+									self.dry_run(app, args)
+								else:
+									self._do_it(app, args)
+						except LockError:
+							raise ParallelOperationInProgress()
+					except (Abort, KeyboardInterrupt) as exc:
+						msg = str(exc)
+						if msg:
+							self.fatal(msg)
+						self.warn('Aborting...')
+						if exc.__class__ is KeyboardInterrupt:
+							status = 401
+						else:
+							status = exc.code
+							status_details = exc.get_exc_details()
+					except Exception as exc:
+						status = 500
+						status_details = repr(exc)
+						raise
+					else:
+						try:
+							self._show_post_readme(app, args)
+						except Abort:
+							pass
+				except Abort:
+					self.warn('Cancelled...')
+					status = 0
+		except AppCenterError as exc:
+			status = exc.code
+			raise
+		except Exception:
+			raise
+		else:
+			return status == 200
+		finally:
+			if args.dry_run:
+				pass
+			elif status == 0:
+				pass
+			else:
+				if status != 200:
+					self._revert(app, args)
+				if args.send_info:
+					try:
+						self._send_information(app, status, status_details)
+					except NetworkError:
+						self.log('Ignoring this error...')
+				self._register_installed_apps_in_ucr()
+				upgrade_search = get_action('upgrade-search')
+				upgrade_search.call_safe(app=[app], update=False)
 
 	def _handle_errors(self, app, args, errors, fatal):
 		can_continue = True
@@ -316,7 +319,7 @@ class InstallRemoveUpgrade(Register):
 			for pkg in ret['install']:
 				self.log(' * %s' % pkg)
 		if ret['remove']:
-			self.log('The following packages would be UPGRADED:')
+			self.log('The following packages would be REMOVED:')
 			for pkg in ret['remove']:
 				self.log(' * %s' % pkg)
 		if ret['broken']:

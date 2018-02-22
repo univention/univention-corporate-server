@@ -138,9 +138,9 @@ def _apt_get_dry_run(action, pkgs):
 	success = call_process(['/usr/bin/apt-get'] + apt_args + [action, '-s'] + pkgs, logger=logger).returncode == 0
 	install, remove, broken = [], [], []
 	install_regex = re.compile('^(Inst) (.*?) \((.*?) ')
-	remove_regex = re.compile('^(Remv|Inst) (.*?) \[(.*?)\]')
+	upgrade_remove_regex = re.compile('^(Remv|Inst) (.*?) \[(.*?)\]')
 	for line in logger.stdout():
-		for regex in [install_regex, remove_regex]:
+		for regex in [install_regex, upgrade_remove_regex]:
 			match = regex.match(line)
 			if match:
 				operation, pkg_name, version = match.groups()
@@ -148,6 +148,7 @@ def _apt_get_dry_run(action, pkgs):
 					install.append(pkg_name)
 				elif operation == 'Remv':
 					remove.append(pkg_name)
+				break
 	if not success:
 		for pkg in pkgs:
 			if action == 'install' and pkg not in install:

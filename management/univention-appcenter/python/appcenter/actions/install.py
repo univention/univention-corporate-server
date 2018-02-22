@@ -187,7 +187,10 @@ class Install(InstallRemoveUpgrade):
 		self.debug('Dry running with %r' % pkgs)
 		ret = install_packages_dry_run(pkgs)
 		if with_dist_upgrade:
-			ret.update(dist_upgrade_dry_run())
+			upgrade_ret = dist_upgrade_dry_run()
+			ret['install'] = sorted(set(ret['install']).union(set(upgrade_ret['install'])))
+			ret['remove'] = sorted(set(ret['remove']).union(set(upgrade_ret['remove'])))
+			ret['broken'] = sorted(set(ret['broken']).union(set(upgrade_ret['broken'])))
 		if args.install_master_packages_remotely:
 			# TODO: should test remotely
 			self.log('Not testing package changes of remote packages!')
