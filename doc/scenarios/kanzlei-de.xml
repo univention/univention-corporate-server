@@ -15,7 +15,7 @@
 	<para>
 	  Die Anwaltskanzlei Hemmerlein &amp; Söhne verfügt über insgesamt zehn Mitarbeiter. Die Mitarbeiter
 	  arbeiten im Wesentlichen mit Office-Applikationen und einer juristischen Vorgangsbearbeitung,
-	  die nur für Microsoft Windows verfügbar ist. Als Client-Betriebssystem wird Microsoft Windows 8
+	  die nur für Microsoft Windows verfügbar ist. Als Client-Betriebssystem wird Microsoft Windows 10
 	  eingesetzt. Alle Daten sollen zentral auf einem Server gespeichert und gesichert werden. Da nur
 	  geringes technisches Know-How verfügbar und eigenes technisches Personal nicht finanzierbar ist,
 	  wird Wert auf eine einfache Administration gelegt. Die nachfolgend beschriebenen administrativen
@@ -49,11 +49,12 @@
   <section id="lawyer:users">
 	<title>Verwaltung der Benutzerdaten</title>
 	<para>
-	  Für die zehn Mitarbeiter werden im Web-Interface der &ucsUMC; Benutzerkonten angelegt. Jeder
-	  Mitarbeiter erhält dabei ein Passwort, das - wie alle Benutzerdaten - in einem
-	  LDAP-Verzeichnisdienst gespeichert und bei der Anmeldung am Windows-Client abgefragt wird.
+	  Für die zehn Mitarbeiter werden im Web-Interface der &ucsUMC;
+	  Benutzerkonten angelegt. Jeder Mitarbeiter kann sich über die Benutzer
+	  Self-Service App aus dem App Center sein Passwort selbst setzen, das -
+	  wie alle Benutzerdaten - in einem LDAP-Verzeichnisdienst gespeichert und
+	  bei der Anmeldung am Windows-Client abgefragt wird.
 	</para>
-
 	<para>
 	  <figure id="umc-anlegen">
 		<title>Anlegen eines Benutzers in der Univention Management Console</title>
@@ -132,11 +133,12 @@
   <section id="lawyer:groupware">
 	<title>Groupware</title>
 	<para>
-	  Auf dem UCS-System wird über das App Center Zarafa4UCS installiert, eine Integration der Groupware
-	  <emphasis>Zarafa Collaboration Platform</emphasis> in UCS. Zarafa greift dabei auf die
-	  Benutzerkontoinformationen des UCS-Verzeichnisdienstes zu. Die Verwaltung integriert sich
-	  nahtlos in die &ucsUMC;. Die Mitarbeiter verwenden zur Terminabstimmung Microsoft Outlook
-	  2010.
+	  Auf dem UCS-System wird über das App Center Kopano installiert, eine
+	  Groupware mit Integration in UCS. Kopano greift dabei auf die
+	  Benutzerkontoinformationen des UCS-Verzeichnisdienstes zu. Die Verwaltung
+	  integriert sich nahtlos in die &ucsUMC;. Die Mitarbeiter verwenden zur
+	  Terminabstimmung die webbasierte Kopano WebApp, auch als App im App
+	  Center verfügbar.
 	</para>
 
 	<para>
@@ -158,10 +160,13 @@
   <section id="lawyer:backup">
 	<title>Backup</title>
 	<para>
-	  Alle Daten (sowohl die Daten der Benutzer im Heimatverzeichnis als auch die Daten auf der
-	  zentralen Freigabe für Fachliteratur) liegen auf dem UCS-System und können deshalb zentral
-	  auf einen Streamer gesichert werden. UCS bringt dafür die Backup-Software Bacula mit, die
-	  flexibel auf verschiedene Sicherungs- und Archivierungsstrategien angewendet werden kann.
+	  Alle Daten (sowohl die Daten der Benutzer im Heimatverzeichnis als auch
+	  die Daten auf der zentralen Freigabe für Fachliteratur) liegen auf dem
+	  UCS-System und können deshalb zentral auf einen Streamer gesichert
+	  werden. Im App Center von UCS gibt es dazu verschiedene Backup-Lösungen
+	  wie zum Beispiel Bareos Backup Server und SEP sesam Backup Server, die flexibel auf
+	  verschiedene Sicherungs- und Archivierungsstrategien angewendet werden
+	  können.
 	</para>
   </section>
 
@@ -185,7 +190,10 @@
 	<title>Referenzen</title>
 	  <itemizedlist>
 		<listitem><simpara><ulink url="https://docs.software-univention.de/handbuch.html"/> (UCS-Handbuch)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.de/produkte/univention-app-center/app-katalog/zarafa/"/> (Zarafa Collaboration Platform)</simpara></listitem>
+        <listitem><simpara><ulink url="https://www.univention.de/appid/kopano-core"/> (Kopano Core)</simpara></listitem>
+		<listitem><simpara><ulink url="https://www.univention.de/appid/kopano-webapp"/> (Kopano WebApp)</simpara></listitem>
+		<listitem><simpara><ulink url="https://www.univention.de/appid/bareos"/> (Bareos Backup Server)</simpara></listitem>
+		<listitem><simpara><ulink url="https://www.univention.de/appid/sep-sesam"/> (SEP sesam Backup Server)</simpara></listitem>
 		<listitem><simpara><ulink url="https://docs.software-univention.de/handbuch.html#windows:adtakeover"/></simpara></listitem>
 	  </itemizedlist>
   </section>
