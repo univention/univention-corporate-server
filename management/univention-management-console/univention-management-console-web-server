@@ -484,7 +484,7 @@ class UMC_HTTPError(HTTPError):
 		cherrypy._cperror.clean_headers(self.status)
 
 		traceback = None
-		if isinstance(self.error, dict):
+		if isinstance(self.error, dict) and self.error.get('traceback'):
 			traceback = '%s\nRequest: %s\n\n%s' % (self._message, self.error.get('command'), self.error.get('traceback'))
 			traceback = traceback.strip()
 		cherrypy.response.status = self.status
