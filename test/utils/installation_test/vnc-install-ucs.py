@@ -259,10 +259,10 @@ class UCSInstallation(object):
 			for name, steps in components.iteritems():
 				if name in self.args.components:
 					# go to the top
-					for steps in range(1, 20):
+					for step in range(1, 20):
 						self.client.keyPress('up')
 						time.sleep(0.2)
-					for steps in range(1, steps):
+					for step in range(1, steps):
 						self.client.keyPress('down')
 						time.sleep(0.2)
 					self.click(self._[name])
