@@ -929,6 +929,7 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 		# Require a change in the pickled state
 		return
 
+	modlist = []
 	if not is_locked:
 		s4_object_attributes = s4connector.lo_s4.get(compatible_modstring(object['dn']), ['lockoutTime', 'badPasswordTime'])
 		if 'lockoutTime' not in s4_object_attributes:
@@ -960,10 +961,9 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 		# Ok here we have:
 		# 1. Account currently not locked in OpenLDAP but in Samba/AD
 		# 2. Lockout state has changed to unlocked at some pickled point in the past
-		modlist = [(ldap.MOD_REPLACE, "lockoutTime", "0")]
+		modlist.append((ldap.MOD_REPLACE, "lockoutTime", "0"))
 		modlist.append((ldap.MOD_REPLACE, "badPasswordTime", "0"))
 		ud.debug(ud.LDAP, ud.PROCESS, "%s: Marking account as unlocked in Samba/AD" % (function_name,))
-		s4connector.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), modlist)
 	else:
 		s4_object_attributes = s4connector.lo_s4.get(compatible_modstring(object['dn']), ['lockoutTime', 'badPasswordTime'])
 		lockoutTime = s4_object_attributes.get('lockoutTime', ['0'])[0]
@@ -995,8 +995,11 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 		# Ok here we have:
 		# 1. Account currently locked in OpenLDAP but not in Samba/AD
 		# 2. Lockout state has changed to locked at some pickled point in the past
-		modlist = [(ldap.MOD_REPLACE, "lockoutTime", sambaBadPasswordTime)]
+		modlist.append((ldap.MOD_REPLACE, "lockoutTime", sambaBadPasswordTime))
 		modlist.append((ldap.MOD_REPLACE, "badPasswordTime", sambaBadPasswordTime))
 		ud.debug(ud.LDAP, ud.PROCESS, "%s: Marking account as locked in Samba/AD" % (function_name,))
 		ud.debug(ud.LDAP, ud.INFO, "%s: Setting lockoutTime to the value of sambaBadPasswordTime: %s" % (function_name, sambaBadPasswordTime))
-		s4connector.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), modlist)
+
+        if modlist:
+            ud.debug(ud.LDAP, ud.ALL, "%s: modlist: %s" % (function_name, modlist))
+            s4connector.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), modlist)
