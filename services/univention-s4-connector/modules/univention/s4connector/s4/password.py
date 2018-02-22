@@ -1000,6 +1000,6 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 		ud.debug(ud.LDAP, ud.PROCESS, "%s: Marking account as locked in Samba/AD" % (function_name,))
 		ud.debug(ud.LDAP, ud.INFO, "%s: Setting lockoutTime to the value of sambaBadPasswordTime: %s" % (function_name, sambaBadPasswordTime))
 
-        if modlist:
-            ud.debug(ud.LDAP, ud.ALL, "%s: modlist: %s" % (function_name, modlist))
-            s4connector.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), modlist)
+		if modlist:
+			ud.debug(ud.LDAP, ud.ALL, "%s: modlist: %s" % (function_name, modlist))
+			s4connector.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), modlist)
