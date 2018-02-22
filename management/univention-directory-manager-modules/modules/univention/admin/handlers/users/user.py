@@ -264,9 +264,9 @@ property_descriptions = {
 		copyable=True,
 		default='0',
 	),
-	'locked': univention.admin.property(
-		short_description=_('Reset lockout'),
-		long_description=_('If the account is locked out due to too many login failures, this checkbox allows unlocking.'),
+        'locked': univention.admin.property(  # This property only serves two purposes: 1) filtering 2) artificial simulation of lockout
+		short_description=_('Locked state of account'),
+		long_description=_('This indicates if the account is locked out due to too many authentication failures.'),
 		syntax=univention.admin.syntax.locked,
 		multivalue=False,
 		required=False,
@@ -288,6 +288,18 @@ property_descriptions = {
 		identifies=False,
 		show_in_lists=False,
 		dontsearch=True,
+	),
+	'unlock': univention.admin.property(  # Just a trigger to reset self['locked']
+		short_description=_('Unlock account'),
+		long_description=_('If the account is locked out due to too many login failures, this checkbox allows unlocking.'),
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		editable=True,
+		identifies=False,
+		show_in_lists=True,
+		default='0',
 	),
 	'unlockTime': univention.admin.property(
 		short_description=_('Lockout till'),
@@ -1003,7 +1015,7 @@ layout = [
 		Group(_('Locked login'), layout=[
 			['pwdChangeNextLogin'],
 			['passwordexpiry'],
-			['locked'],
+			['unlock'],
 			['unlockTime'],
 		]),
 		Group(_('Windows'), _('Windows account settings'), layout=[
@@ -1871,6 +1883,9 @@ class object(univention.admin.handlers.simpleLdap):
 				except univention.admin.uexceptions.noLock:
 					raise univention.admin.uexceptions.mailAddressUsed(self['mailPrimaryAddress'])
 
+                if self['unlock'] == '1':
+                    self['locked'] = '0'
+
 	def _ldap_addlist(self):
 		al = super(object, self)._ldap_addlist()
 
@@ -2312,9 +2327,9 @@ class object(univention.admin.handlers.simpleLdap):
 			# enable samba account
 			acctFlags.unset('D')
 
-		if self["locked"] == '0':
+		if self['locked'] == '0':
 			# unlock samba account
-			acctFlags.unset("L")
+			acctFlags.unset('L')
 		else:
 			acctFlags.set('L')
 

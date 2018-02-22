@@ -302,13 +302,19 @@ msgstr ""
 "Nachricht behalten. Sind keine Adressen zur Weiterleitung angegeben, werden "
 "die E-Mails in der Mailbox des Benutzers aufbewahrt."
 
-#: modules/univention/admin/handlers/users/user.py:281
+#: modules/univention/admin/handlers/users/user.py:289
+msgid ""
+"Temporary account lockout due to too many authentication failures."
+msgstr ""
+"Temporäre Kontosperrung durch zu viele fehlgeschlagene Anmeldeversuche."
+
+#: modules/univention/admin/handlers/users/user.py:294
 msgid ""
 "If the account is locked out due to too many login failures, "
 "this checkbox allows unlocking."
 msgstr ""
 "Wenn das Konto gesperrt ist, z.B. durch zu viele fehlgeschlagene "
-"Anmeldeversuche, dann kann es durch Entfernen des "
+"Anmeldeversuche, dann kann es durch Setzen des "
 "Häkchens entsperrt werden."
 
 #: modules/univention/admin/handlers/users/user.py:2172
@@ -741,8 +747,12 @@ msgstr "Benutzer muss das Passwort bei der nächsten Anmeldung ändern"
 msgid "User name"
 msgstr "Benutzername"
 
-#: modules/univention/admin/handlers/users/user.py:280
-msgid "Reset lockout"
+#: modules/univention/admin/handlers/users/user.py:288
+msgid "Account lockout state"
+msgstr "Kontoseprrungszustand"
+
+#: modules/univention/admin/handlers/users/user.py:293
+msgid "Unlock account"
 msgstr "Aussperrung zurücksetzen"
 
 #: modules/univention/admin/handlers/users/passwd.py:52
