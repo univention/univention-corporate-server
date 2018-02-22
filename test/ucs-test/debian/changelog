@@ -1,3 +1,10 @@
+ucs-test (8.0.28-35) unstable; urgency=medium
+
+  * Bug #46352: 25_script_lock_expired_passwords: Add debug messages
+    and fail if ldap/shadowbind is disabled
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Feb 2018 16:44:45 +0100
+
 ucs-test (8.0.28-34) unstable; urgency=medium
 
   * Bug #39817: Minor improvements for 47faillog-global and 47faillog
