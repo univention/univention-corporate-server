@@ -1,3 +1,9 @@
+univention-s4-connector (12.0.2-5) unstable; urgency=medium
+
+  * Bug #41574: fixed unix2s4_time, s42unix_time, samba2s4_time
+
+ -- Felix Botner <botner@univention.de>  Thu, 22 Feb 2018 17:19:48 +0100
+
 univention-s4-connector (12.0.2-4) unstable; urgency=medium
 
   * Bug #32014: Fix whitespace indentation
