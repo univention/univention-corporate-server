@@ -537,6 +537,9 @@
 				To prevent <command>systemctl</command> from reporting a wrong status for the services <systemitem class="service">univention-bind</systemitem>, <systemitem class="service">univention-dhcp</systemitem>, <systemitem class="service">univention-directory-notifier</systemitem> and <systemitem class="service">univention-directory-listener</systemitem>, the <command>runsv</command> timeout has been increased to 30 seconds (<u:bug>46310</u:bug>, <u:bug>46311</u:bug>, <u:bug>46312</u:bug>, <u:bug>46313</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
+				The <systemitem class="service">univention-directory-listener</systemitem> is now properly re-started in <command>univention-directory-replication-resync</command> (<u:bug>46372</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
 				The <systemitem class="service">ntp</systemitem> init script has been removed from <package>univention-base-files</package>.
 				Instead the <application>systemd</application> script provided by <package>ntp</package> is being used (<u:bug>46071</u:bug>).
 			</simpara></listitem>
