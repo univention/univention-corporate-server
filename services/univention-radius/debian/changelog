@@ -1,6 +1,6 @@
 univention-radius (5.0.0-3) unstable; urgency=medium
 
-  * Bug #46263: add /etc/freeradius/ssl directory creation to join script
+  * Bug #46263: update config files for freeradius 3
 
  -- Jürn Brodersen <brodersen@univention.de>  Thu, 22 Feb 2018 14:44:21 +0100
 
