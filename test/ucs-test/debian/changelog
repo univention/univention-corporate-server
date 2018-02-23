@@ -1,3 +1,10 @@
+ucs-test (8.0.28-38) unstable; urgency=medium
+
+  * Bug #46316: 10_ldap/27reconnect_uldap_2 stop/start
+    instead of restart slapd
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Feb 2018 13:01:04 +0100
+
 ucs-test (8.0.28-37) unstable; urgency=medium
 
   * Bug #46066: fixed 10_ldap/92_memberOf

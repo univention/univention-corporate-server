@@ -24,12 +24,15 @@ from ldap import INSUFFICIENT_ACCESS
 
 def delayed_slapd_restart():
 	global restart_finished
+	subprocess.call(['systemctl', 'daemon-reload'])
 	time.sleep(3)
 	print 'Restarting slapd'
-	subprocess.call(['service', 'slapd', 'restart'])
+	subprocess.call(['service', 'slapd', 'stop'])
+	subprocess.call(['service', 'slapd', 'start'])
 	time.sleep(5)
 	print 'Restarting slapd again'
-	subprocess.call(['service', 'slapd', 'restart'])
+	subprocess.call(['service', 'slapd', 'stop'])
+	subprocess.call(['service', 'slapd', 'start'])
 	time.sleep(3)
 	print 'Restart finished'
 	restart_finished = True
