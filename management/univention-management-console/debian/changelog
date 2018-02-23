@@ -1,3 +1,9 @@
+univention-management-console (10.0.3-5) unstable; urgency=medium
+
+  * Bug #46319: Fix non-traceback error shown as traceback
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 23 Feb 2018 13:48:27 +0100
+
 univention-management-console (10.0.3-4) unstable; urgency=medium
 
   * Bug #46270: Pass user groups to frontend in a auth request (3)
