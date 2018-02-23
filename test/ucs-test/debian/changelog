@@ -1,3 +1,9 @@
+ucs-test (8.0.28-40) unstable; urgency=medium
+
+  * Bug #46171: fixed 86_selenium/10_product_test_password_change
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 23 Feb 2018 15:04:00 +0100
+
 ucs-test (8.0.28-39) unstable; urgency=medium
 
   * Bug #46316: skip smb test if samba is not installed in
@@ -20,7 +26,7 @@ ucs-test (8.0.28-37) unstable; urgency=medium
 
 ucs-test (8.0.28-36) unstable; urgency=medium
 
-  * fixed 86_selenium/10_product_test_password_change
+  * Bug #46171: fixed 86_selenium/10_product_test_password_change
 
  -- Jannik Ahlers <ahlers@univention.de>  Fri, 23 Feb 2018 10:09:59 +0100
 
