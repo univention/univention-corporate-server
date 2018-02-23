@@ -6,7 +6,7 @@
 ##  - domaincontroller_slave
 ## packages:
 ##  - univention-ldap-overlay-memberof
-## exposure: dangerous
+## exposure: safe
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . /usr/share/univention-lib/ucr.sh || exit 137
@@ -15,11 +15,11 @@ set -x
 
 member_of_available () {
 	while read dn; do
-		if ! univention-ldapsearch -LLL -b "${dn#dn: }" memberOf | grep "^memberOf:"; then
+		if ! univention-ldapsearch -LLL -b "$dn" memberOf | grep "^memberOf:"; then
 			echo "memberOf missing on $dn"
 			return 1
 		fi
-	done < <(univention-ldapsearch -ALLLL '(&(objectClass=posixAccount)(uid=*)(gidNumber=*))' dn | grep '^dn: ')
+	done < <(univention-ldapsearch -LLL objectClass=univentionGroup uniqueMember | grep '^uniqueMember: uid='  | sort -u | sed -ne 's/uniqueMember: //p')
 	return 0
 }
 
