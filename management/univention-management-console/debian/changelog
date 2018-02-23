@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-92) unstable; urgency=medium
+
+  * Bug #46319: Fix non-traceback error shown as traceback
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 23 Feb 2018 12:14:54 +0100
+
 univention-management-console (9.0.80-91) unstable; urgency=medium
 
   * Bug #45395: fix typo
