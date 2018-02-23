@@ -1,3 +1,9 @@
+univention-directory-replication (11.0.0-4) unstable; urgency=medium
+
+  * Bug #46372: start listener with at job in u-d-r-resync
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Feb 2018 11:33:04 +0100
+
 univention-directory-replication (11.0.0-3) unstable; urgency=medium
 
   * Bug #46066: version bump
