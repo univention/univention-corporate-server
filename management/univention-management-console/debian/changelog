@@ -1,3 +1,10 @@
+univention-management-console (10.0.4-1) unstable; urgency=medium
+
+  * By default, getMachineConnection connects to the DC master. This
+    leads to timeouts if the DC master is not available (Bug #46376)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Feb 2018 20:40:12 +0100
+
 univention-management-console (10.0.3-5) unstable; urgency=medium
 
   * Bug #46319: Fix non-traceback error shown as traceback

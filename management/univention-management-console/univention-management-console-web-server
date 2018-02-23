@@ -81,7 +81,7 @@ _session_timeout = get_int('umc/http/session/timeout', 300)
 
 def _get_ldap_connection():
 	if _get_ldap_connection._lo is None:
-		_get_ldap_connection._lo = getMachineConnection()[0]
+		_get_ldap_connection._lo = getMachineConnection(ldap_master=False)[0]
 	return _get_ldap_connection._lo
 _get_ldap_connection._lo = None
 
