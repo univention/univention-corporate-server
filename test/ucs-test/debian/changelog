@@ -1,3 +1,9 @@
+ucs-test (8.0.28-36) unstable; urgency=medium
+
+  * fixed 86_selenium/10_product_test_password_change
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 23 Feb 2018 10:09:59 +0100
+
 ucs-test (8.0.28-35) unstable; urgency=medium
 
   * Bug #46352: 25_script_lock_expired_passwords: Add debug messages
