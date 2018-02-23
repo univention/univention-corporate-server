@@ -5,7 +5,7 @@
 ## packages:
 ##   - univention-management-console-module-appcenter
 ##   - univention-appcenter-dev
-## tags: [appcenter]
+## tags: [appcenter, xx]
 from __future__ import print_function
 
 import os
@@ -111,6 +111,7 @@ def test_uninstall_postrm_error(app_center, application):
 
 
 def cleanup(application):
+	subprocess.check_call(['univention-app', 'register', application, '--undo-it'])
 	ext = application.split('-')[2]
 	try:
 		os.unlink('/var/lib/dpkg/info/%s.%s' % (application, ext))

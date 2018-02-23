@@ -1,3 +1,9 @@
+ucs-test (8.0.28-41) unstable; urgency=medium
+
+  * Bug #46008: Fix tests not cleaning up
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 23 Feb 2018 23:41:21 +0100
+
 ucs-test (8.0.28-40) unstable; urgency=medium
 
   * Bug #46171: fixed 86_selenium/10_product_test_password_change
