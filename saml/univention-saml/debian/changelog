@@ -1,3 +1,10 @@
+univention-saml (5.0.4-13) unstable; urgency=medium
+
+  * Bug #33214: Partly revert previous version, only create ucs-sso user as
+    hidden
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 23 Feb 2018 09:56:43 +0100
+
 univention-saml (5.0.4-12) unstable; urgency=medium
 
   * Bug #33214: Create ucs-sso user as functional and hidden

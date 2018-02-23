@@ -78,7 +78,6 @@ create_krb_apache2_user() {
 				--set username="$spn_account_name" \
 				--set lastname="SSO" \
 				--set password="$spn_account_name_password" \
-				--append objectFlag=functional \
 				--append objectFlag=hidden || die
 
 		extract_binddn_and_bindpwd_from_args "$@"
