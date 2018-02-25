@@ -1,3 +1,9 @@
+univention-mail-postfix (12.0.0-13) unstable; urgency=low
+
+  * Bug #45963: fix UCR variable descriptions
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 25 Feb 2018 22:16:02 +0100
+
 univention-mail-postfix (12.0.0-12) unstable; urgency=low
 
   * Bug #46102: remove cyrus related code
