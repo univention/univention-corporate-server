@@ -5,8 +5,7 @@
 ## packages: [openssl, univention-mail-server, univention-mail-postfix]
 ## bugs: [35924]
 
-import os
-import tempfile
+
 from subprocess import Popen, PIPE
 
 import univention.testing.utils as utils
@@ -61,12 +60,8 @@ def run_openssl():
            '-crlf', '-connect', '127.0.0.1:25', '-reconnect')
 
     # run the openssl client:
-    fd, filename = tempfile.mkstemp()  # pipe something into openssl client, so it returns
-    try:
-        proc = Popen(cmd, stdin=fd, stdout=PIPE, stderr=PIPE)
-        stdout, stderr = proc.communicate()
-    finally:
-        os.remove(filename)
+    proc = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    stdout, stderr = proc.communicate()
 
     if stderr:
         print "The following message(s) appeared in STDERR:\n", stderr
