@@ -535,6 +535,13 @@ if LC_ALL=C dpkg -l 'univention-mail-cyrus' 2>/dev/null | grep ^i >>"$UPDATER_LO
 	fi
 fi
 
+# Bug 46388 - Ensure atd doesn't kill the UMC update process
+install -d /etc/systemd/system/atd.service.d && \
+if ! test -e /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf; then
+	printf '[Service]\nKillMode=process\n' > /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf
+	systemctl daemon-reload
+fi
+
 # autoremove before the update
 if ! is_ucr_true update43/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1

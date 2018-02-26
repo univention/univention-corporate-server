@@ -170,6 +170,13 @@ fi
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >>"$UPDATER_LOG" 2>&1
 
+# Bug 46388 - Ensure atd doesn't kill the UMC update process - remove file
+if test -e /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf; then
+	rm /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf
+	systemctl daemon-reload
+fi
+
+
 /usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3 >>"$UPDATER_LOG" 2>&1
 
 echo "
