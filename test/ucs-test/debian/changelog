@@ -1,3 +1,9 @@
+ucs-test (8.0.28-47) unstable; urgency=medium
+
+  * Bug #46431: Don't run 10_ldap/50ppolicy_account_lockout on a DC Backup
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Feb 2018 18:54:28 +0100
+
 ucs-test (8.0.28-46) unstable; urgency=medium
 
   * Bug #46430: fixed 01_base.45udm-cli.test and 50_samba.40password-policies.test
