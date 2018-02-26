@@ -160,7 +160,7 @@
 					User objects which had only the <package>ldap_pwd</package> option enabled are migrated into <package>users/ldap</package> objects.
 					The UDM option <package>ldap_pwd</package> has been removed from user objects.
 					Objects of <package>users/ldap</package> may authenticate via an LDAP bind.
-					A new UDM object type <package>users/contact</package> has been added for addressbook objects.
+					A new UDM object type <package>users/contact</package> has been added for address book objects.
 					User objects which had only the <package>person</package> option enabled are migrated into <package>users/contact</package> objects.
 					Objects of type <package>users/contact</package> and <package>users/ldap</package> are not counted into the license.
 					Note: UCS systems which are older than UCS 4.3-0 may still create user objects in the old format and must be migrated.
@@ -557,7 +557,7 @@
 				The SHIM binary has been renamed to follow the upstream naming schema.
 			</simpara></listitem>
 			<listitem><simpara>
-				The atd child processes are no longer terminated during the release upgrade (<u:bug>46388</u:bug>).
+				The at daemon child processes are no longer terminated during the release upgrade (<u:bug>46388</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
