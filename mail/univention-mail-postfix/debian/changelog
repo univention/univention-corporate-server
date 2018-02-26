@@ -1,3 +1,9 @@
+univention-mail-postfix (12.0.0-14) unstable; urgency=low
+
+  * Bug #46425: remove AGPL notice
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 26 Feb 2018 09:24:50 +0100
+
 univention-mail-postfix (12.0.0-13) unstable; urgency=low
 
   * Bug #45963: fix UCR variable descriptions
