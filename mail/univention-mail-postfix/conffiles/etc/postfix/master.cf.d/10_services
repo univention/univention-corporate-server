@@ -74,6 +74,6 @@ local     unix  -       n       n       -       -       local
 #virtual   unix  -       n       n       -       -       virtual
 lmtp      unix  -       -       n       -       -       lmtp
 anvil     unix  -       -       n       -       1       anvil
-scache    unix  -       -       -       -       1       scache
+scache    unix  -       -       y       -       1       scache
 
 
