@@ -190,6 +190,9 @@
 				<listitem><simpara>
 					The <package>pwdChangeNextLogin</package> user attribute toggled when a password was modified twice (<u:bug>46067</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The system user account <package>ucs-sso</package> will not consume a user license (<u:bug>46385</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
