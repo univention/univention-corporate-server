@@ -1,3 +1,10 @@
+univention-directory-manager-modules (13.0.20-9) unstable; urgency=medium
+
+  * Bug #46357: Don't upgrade user accounts with "person" only option,
+    just change their univentionObjectType to users/contact
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Feb 2018 13:20:13 +0100
+
 univention-directory-manager-modules (13.0.20-8) unstable; urgency=medium
 
   * Bug #39817: Disabling an account in Samba/AD directly "unlocks" it;
