@@ -5,6 +5,8 @@
 
 RETVAL=100
 
+sleep 100
+
 set -e
 tmp=$(mktemp -d)
 trap "rm -rf '$tmp'" EXIT

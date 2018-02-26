@@ -1,3 +1,9 @@
+ucs-test (8.0.28-46) unstable; urgency=medium
+
+  * Bug #46430: fixed 01_base.45udm-cli.test and 50_samba.40password-policies.test
+
+ -- Felix Botner <botner@univention.de>  Mon, 26 Feb 2018 18:43:54 +0100
+
 ucs-test (8.0.28-45) unstable; urgency=medium
 
   * Bug #46316: 10_ldap/27reconnect_uldap_2 also
