@@ -1,3 +1,9 @@
+univention-ad-connector (12.0.0-5) unstable; urgency=medium
+
+  * Bug #41574: fixed unix2ad_time, ad2unix_time revert
+
+ -- Felix Botner <botner@univention.de>  Mon, 26 Feb 2018 14:37:20 +0100
+
 univention-ad-connector (12.0.0-4) unstable; urgency=medium
 
   * Bug #41574: fixed unix2ad_time, ad2unix_time

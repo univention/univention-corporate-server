@@ -186,12 +186,12 @@ def encode_ad_resultlist(ad_resultlist):
 
 def unix2ad_time(l):
 	d = 116444736000000000L  # difference between 1601 and 1970
-	return long(time.mktime(time.strptime(l, "%Y-%m-%d"))) * 10000000 + d
+	return long(time.mktime(time.gmtime(time.mktime(time.strptime(l, "%Y-%m-%d")) + 90000))) * 10000000 + d  # 90000s are one day and one hour
 
 
 def ad2unix_time(l):
 	d = 116444736000000000L  # difference between 1601 and 1970
-	return time.strftime("%Y-%m-%d", time.localtime((l - d) / 10000000))
+	return time.strftime("%d.%m.%y", time.gmtime((l - d) / 10000000))
 
 
 def samba2ad_time(l):
