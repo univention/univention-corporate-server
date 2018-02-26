@@ -18,7 +18,7 @@ desc: |
  * Invalid json_populate_recordset or jsonb_populate_recordset function calls
    can crash the server or disclose a few bytes of server memory.
    (CVE-2017-15098)
-bug: [45752]
+bug: [45752, 45753]
 cve:
 - CVE-2017-12172
 - CVE-2017-15098

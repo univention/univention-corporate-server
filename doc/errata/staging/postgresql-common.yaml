@@ -8,6 +8,6 @@ desc: |
  This update addresses the following issue:
  * pg_ctlcluster, pg_createcluster, pg_upgradecluster: Use lchown instead of
    chown to mitigate privilege escalation via symlinks. (CVE-2017-8806)
-bug: [45753]
+bug: [45752, 45753]
 cve:
 - CVE-2017-8806
