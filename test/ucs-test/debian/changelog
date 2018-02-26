@@ -1,3 +1,10 @@
+ucs-test (8.0.28-45) unstable; urgency=medium
+
+  * Bug #46316: 10_ldap/27reconnect_uldap_2 also
+    restart 26reconnect_univention_ldapsearch
+
+ -- Felix Botner <botner@univention.de>  Mon, 26 Feb 2018 17:38:20 +0100
+
 ucs-test (8.0.28-44) unstable; urgency=medium
 
   * Bug #39817: Fix test expectation
