@@ -151,15 +151,19 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The UDM options <package>posix</package>, <package>samba></package> and <package>kerberos</package> of users have been removed.
-					User objects now must have all object classes of these options.
+					The UDM <package>users/user</package> options have been simplified by removing <package>posix</package>, <package>samba</package>, <package>kerberos</package>, <package>mail</package> and <package>person</package>.
+					All objects handled by this UDM module will now have all object classes of these options.
 					After the upgrade to UCS 4.3 all existing user objects, groups and user templates are migrated into the new LDAP format.
 					It is necessary that the primary group of every user has the <package>samba</package> option enabled and the domain must have a Kerberos realm defined.
+					The two previous options <package>ldap_pwd</package> and <package>person</package> are now handled as separate object types: 
 					A new UDM object type <package>users/ldap</package> has been added which can be used as a simple authentication account.
-					Objects of <package>users/ldap</package> may authenticate via an LDAP bind and are not counted into the license.
-					The UDM option <package>ldap_pwd</package> has been removed from user objects.
 					User objects which had only the <package>ldap_pwd</package> option enabled are migrated into <package>users/ldap</package> objects.
-					Note: UCS systems which are older than UCS 4.3-0 may create user objects in the old format and must be migrated.
+					The UDM option <package>ldap_pwd</package> has been removed from user objects.
+					Objects of <package>users/ldap</package> may authenticate via an LDAP bind.
+					A new UDM object type <package>users/contact</package> has been added for addressbook objects.
+					User objects which had only the <package>person</package> option enabled are migrated into <package>users/contact</package> objects.
+					Objects of type <package>users/contact</package> and <package>users/ldap</package> are not counted into the license.
+					Note: UCS systems which are older than UCS 4.3-0 may still create user objects in the old format and must be migrated.
 					The UMC module <package>System diagnosis</package> and the script <package>/usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3</package> can be used to detect necessary changes and migrate user objects.
 					(<u:bug>45842</u:bug>).
 				</simpara></listitem>
