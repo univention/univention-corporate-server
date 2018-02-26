@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.20-10) unstable; urgency=medium
+
+  * Bug #46385: Exclude ucs-sso user from licence count
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 26 Feb 2018 17:23:57 +0100
+
 univention-directory-manager-modules (13.0.20-9) unstable; urgency=medium
 
   * Bug #46357: Don't upgrade user accounts with "person" only option,
