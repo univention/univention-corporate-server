@@ -1,5 +1,5 @@
 [firefox/prefs/conffile]
-Description[de]=Hier kann eine weitere Firefox-Konfigurationdatei angegeben werden, die beim Programmstart ausgewertet wird. Die angebene Datei muss im Verzeichnis /usr/lib/firefox-esr/ liegen.
+Description[de]=Hier kann eine weitere Firefox-Konfigurationsdatei angegeben werden, die beim Programmstart ausgewertet wird. Die angegebene Datei muss im Verzeichnis /usr/lib/firefox-esr/ liegen.
 Description[en]=An additional Firefox configuration file can be specified here, which is sourced during program startup. The specified file must reside in the /usr/lib/firefox-esr/ directory.
 Type=str
 Categories=system-desktop

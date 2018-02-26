@@ -1,7 +1,13 @@
+univention-mozilla-firefox (12.0.0-3) unstable; urgency=medium
+
+  * Bug #45863: Fix typo ucr variable description
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 26 Feb 2018 13:41:05 +0100
+
 univention-mozilla-firefox (12.0.0-2) unstable; urgency=low
 
   * Bug #45863: Fix location of UCR template
-  * Bug #46120: Update UCR templates for Debian Stretch
+  * Bug #45863: Update UCR templates for Debian Stretch
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 07 Feb 2018 18:20:41 +0100
 
