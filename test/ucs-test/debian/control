@@ -574,6 +574,17 @@ Provides: ucs-test-module
 Description: Test scripts to test the SAML integration
  This package includes test-cases for SAML.
 
+Package: ucs-test-radius
+Architecture: all
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+ univention-radius,
+ eapol
+Recommends: ucs-test-framework
+Provides: ucs-test-module
+Description: Test scripts to test the radius integration
+ This package includes test-cases for freeradius.
+
 Package: ucs-test-self-service
 Architecture: all
 Depends: ucs-test-libs (= ${source:Version}),
