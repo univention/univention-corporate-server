@@ -556,6 +556,9 @@
 				Support for para-virtualized Xen domains has been removed.
 				The SHIM binary has been renamed to follow the upstream naming schema.
 			</simpara></listitem>
+			<listitem><simpara>
+				The atd child processes are no longer terminated during the release upgrade (<u:bug>46388</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
