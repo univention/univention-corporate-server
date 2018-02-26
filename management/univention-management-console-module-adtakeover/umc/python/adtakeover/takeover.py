@@ -1358,8 +1358,8 @@ class AD_Takeover():
 				self.samdb.modify(delta)
 
 	def resync_s4connector_listener(self, progress):
-		log.info("Waiting for listener to finish (max. 180 seconds)")
-		if not wait_for_listener_replication(progress, 180):
+		log.info("Waiting for listener to finish (max. 10 minutes)")
+		if not wait_for_listener_replication(progress, 600):
 			log.warn("Warning: Stopping Listener now anyway.")
 
 		# Restart Univention Directory Listener for S4 Connector
@@ -2054,7 +2054,7 @@ def wait_for_listener_replication(progress=None, max_time=None):
 	notifier_id_cached_value = None
 	static_count = 0
 	t_last_feedback = t_1 = t_0 = time.time()
-	while static_count < 3:
+	while static_count < 5:
 		if notifier_id_cached_value:
 			time.sleep(0.7)
 		last_id = get_stable_last_id(progress)
@@ -2077,7 +2077,7 @@ def wait_for_listener_replication(progress=None, max_time=None):
 		delta_t_last_feedback = t_1 - t_last_feedback
 		if progress and delta_t_last_feedback >= 1:
 			t_last_feedback = t_last_feedback + delta_t_last_feedback
-			progress.percentage_increment_scaled(1.0 / 32)
+			progress.percentage_increment_scaled(0.6 / 32)
 
 	return True
 

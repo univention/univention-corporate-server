@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (5.0.1-1) unstable; urgency=medium
+
+  * Bug #46105: Increase timeout for listener replication
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Feb 2018 19:59:06 +0100
+
 univention-management-console-module-adtakeover (5.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
