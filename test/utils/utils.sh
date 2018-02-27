@@ -803,6 +803,7 @@ import_license () {
 	local server="license.univention.de"
 	for i in $(seq 1 100); do
 		nc -w 3 -z license.univention.de 443 && break
+		sleep 1
 	done
 	python -m shared-utils/license_client "$(ucr get ldap/base)" "$(date -d '+1 year' '+%d.%m.%Y')"
 	univention-license-import ./ValidTest.license && univention-license-check
