@@ -2,7 +2,7 @@ product: ucs
 release: "4.2"
 version: [3]
 scope: ucs_4.2-0
-src: python-billiard
+src: billiard
 fix: 3.3.0.18-2
 maintained: true
 desc: Move to maintained for univention-celery.
