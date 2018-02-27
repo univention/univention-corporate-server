@@ -1,3 +1,9 @@
+univention-samba (12.0.1-1) unstable; urgency=medium
+
+  * Bug #46437: Improve lsb header in init script
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Feb 2018 15:40:03 +0100
+
 univention-samba (12.0.1-0) unstable; urgency=medium
 
   * Bug #46118: Issue a deprecation warning in joinscript when system
