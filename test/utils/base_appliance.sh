@@ -734,7 +734,7 @@ php5-ldap
 php5-mcrypt
 php5-memcache
 poppler-data
-postgresql-client-9.4
+postgresql-client-9.6
 postgresql-client-common
 preview-latex-style
 python-ecdsa
