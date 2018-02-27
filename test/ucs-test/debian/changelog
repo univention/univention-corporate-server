@@ -1,3 +1,9 @@
+ucs-test (8.0.28-54) unstable; urgency=medium
+
+  * Bug #46316: more debug in 61_udm-users/100_test_users.py
+
+ -- Felix Botner <botner@univention.de>  Tue, 27 Feb 2018 18:37:35 +0100
+
 ucs-test (8.0.28-53) unstable; urgency=low
 
   * Bug #46102: UDM property UniventionDovecotUserQuota was renamed to
