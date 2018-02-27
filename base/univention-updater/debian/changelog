@@ -1,3 +1,9 @@
+univention-updater (13.0.1-23) unstable; urgency=medium
+
+  * Bug #46270: Resync portal and portal_entry in postup
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 27 Feb 2018 16:12:16 +0100
+
 univention-updater (13.0.1-22) unstable; urgency=medium
 
   * Bug #46435: Run mysql_upgrade in postup

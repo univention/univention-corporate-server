@@ -1,3 +1,9 @@
+univention-portal (2.0.0-8) unstable; urgency=medium
+
+  * Bug #46270: Move resync of portal and portal_entry to postup
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 27 Feb 2018 16:11:43 +0100
+
 univention-portal (2.0.0-7) unstable; urgency=medium
 
   * Bug #46270: Fix reloading portal.css
