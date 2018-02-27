@@ -63,4 +63,6 @@ strings = {
 	'radius': 'RADIUS',
 	'pkgdb': 'Software installation monitor',
 	'uvmm': 'Manager',
+
+	'appliance_modus': 'Appliance-Modus',
 }

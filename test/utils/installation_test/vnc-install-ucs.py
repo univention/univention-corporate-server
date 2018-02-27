@@ -213,6 +213,15 @@ class UCSInstallation(object):
 			self.click(self._['next'])
 			self.client.waitForText(self._['warning_no_domain'], timeout=self.timeout)
 			self.click(self._['next'])
+		elif self.args.role == 'appliance':
+			self.client.keyDown('ctrl')
+			self.client.keyPress('q')
+			self.client.keyUp('ctrl')
+			time.sleep(300)
+			self.client.waitForText(self._['appliance_modus'], timeout=self.timeout)
+			self.click(self._['next'])
+			time.sleep(300)
+			sys.exit(0)
 		else:
 			raise NotImplemented
 
@@ -307,7 +316,7 @@ def main():
 	parser.add_argument('--join-user')
 	parser.add_argument('--join-password')
 	parser.add_argument('--language', default='deu', choices=['deu', 'eng', 'fra'])
-	parser.add_argument('--role', default='master', choices=['master', 'slave', 'member', 'backup', 'admember', 'basesystem'])
+	parser.add_argument('--role', default='master', choices=['master', 'slave', 'member', 'backup', 'admember', 'basesystem', 'appliance'])
 	parser.add_argument('--components', default=[], choices=components.keys() + ['all'], action='append')
 	args = parser.parse_args()
 	if args.role in ['slave', 'backup', 'member', 'admember']:
