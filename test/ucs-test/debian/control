@@ -578,7 +578,6 @@ Package: ucs-test-radius
 Architecture: all
 Depends: ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
- univention-radius,
  eapol
 Recommends: ucs-test-framework
 Provides: ucs-test-module

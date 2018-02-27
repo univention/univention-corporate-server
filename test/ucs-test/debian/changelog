@@ -1,3 +1,9 @@
+ucs-test (8.0.28-49) unstable; urgency=medium
+
+  * Bug #46263: remove univention-radius dependency from debian/control
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 27 Feb 2018 09:48:11 +0100
+
 ucs-test (8.0.28-48) unstable; urgency=medium
 
   * 61_udm-users/50_udm_users_ldap_password: Added a test case for

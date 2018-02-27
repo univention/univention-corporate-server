@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner python
 ## desc: check if the radius inner-tunnel is working
 ## tags: [radius]
+## packages:
+##   - univention-radius
 ## join: true
 ## exposure: dangerous
 
