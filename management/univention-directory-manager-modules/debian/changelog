@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-2) unstable; urgency=low
+
+  * Bug #46102: rename UDM mail/folder "cyrus-userquota" to "mailQuota"
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 27 Feb 2018 17:25:22 +0100
+
 univention-directory-manager-modules (13.0.21-1) unstable; urgency=medium
 
   * Support password policy for users/ldap (Bug #46261)
