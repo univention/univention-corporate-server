@@ -27,9 +27,7 @@ Depends: ${misc:Depends},
  univention-newsid,
  univention-join,
  univention-ldap-overlay-memberof
-Conflicts: univention-5250 (<< 0.5),
- univention-mail-cyrus-quota-master
-Replaces: univention-mail-cyrus-quota-master
+Conflicts: univention-5250 (<< 0.5)
 Description: UCS - LDAP server configuration
  This package contains the configuration for the OpenLDAP
  server.
@@ -62,9 +60,7 @@ Architecture: all
 Pre-Depends: slapd
 Depends: ${misc:Depends}
 Conflicts: univention-5250 (<< 0.5.23),
- univention-5250-powerterm (<< 1.4.11),
- univention-mail-cyrus-quota-master
-Replaces: univention-mail-cyrus-quota-master
+ univention-5250-powerterm (<< 1.4.11)
 Description: UCS - common LDAP configuration
  This package contains the general configuration for the
  OpenLDAP server such as the base LDIF file and the
