@@ -16,7 +16,7 @@ desc: |
    denial-of-service attack caused by exponential XML entity expansion. The
    attack can cause the targeted process to consume an excessive amount of CPU
    resources or memory. (CVE-2016-8734)
-bug: [45233]
+bug: [44776, 45233]
 cve:
 - CVE-2017-9800
 - CVE-2016-8734
