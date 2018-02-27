@@ -12,4 +12,7 @@ Type: file
 File: usr/share/univention-kde-profiles/kde4-menu/.kde/share/config/kickoffrc
 
 Type: file
-File: usr/share/kde4/apps/desktoptheme/default/metadata.desktop
+File: usr/share/plasma/shells/org.kde.plasma.desktop/contents/defaults
+
+Type: file
+File: conffiles/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/desktop-base.js
