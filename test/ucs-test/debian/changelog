@@ -1,3 +1,9 @@
+ucs-test (8.0.28-51) unstable; urgency=medium
+
+  * Bug #46171: Fix more things in 86_selenium/10_product_test_password_change
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Feb 2018 12:26:52 +0100
+
 ucs-test (8.0.28-50) unstable; urgency=medium
 
   * Bug #46171: Fix missing import

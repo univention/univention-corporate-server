@@ -25,6 +25,7 @@ def password_policy(complexity=False, minimum_password_age=0, maximum_password_a
         return
     complexity = 'on' if complexity else 'off'
     minimum_password_age = str(minimum_password_age)
+    maximum_password_age = str(maximum_password_age)
     min_pwd_age = int(subprocess.check_output('samba-tool domain passwordsettings show | grep "Minimum password age" | sed s/[^0-9]*/""/', shell=True).strip())
     max_pwd_age = int(subprocess.check_output('samba-tool domain passwordsettings show | grep "Maximum password age" | sed s/[^0-9]*/""/', shell=True).strip())
     pwd_complexity = subprocess.check_output('samba-tool domain passwordsettings show | grep complexity | sed "s/Password complexity: //"', shell=True).strip()
