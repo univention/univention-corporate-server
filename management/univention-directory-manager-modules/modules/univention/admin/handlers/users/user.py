@@ -1493,9 +1493,6 @@ mapping.register('password', 'userPassword', univention.admin.mapping.dontMap(),
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	def __pwd_is_auth_saslpassthrough(self, password):
-		return password.startswith('{SASL}') and univention.admin.configRegistry.get('directory/manager/web/modules/users/user/auth/saslpassthrough', 'no').lower() == 'keep'
-
 	@property
 	def __forward_copy_to_self(self):
 		return self.get('mailForwardCopyToSelf') == '1'
@@ -1949,7 +1946,7 @@ class object(univention.admin.handlers.simpleLdap):
 		ml = self._modlist_posix_password(ml)
 		ml = self._modlist_kerberos_password(ml)
 		if not self.exists() or self.hasChanged(['password', 'pwdChangeNextLogin']):
-			pwhistoryPolicy = _PasswortHistoryPolicy(self.loadPolicyObject('policies/pwhistory'))
+			pwhistoryPolicy = univention.admin.password.PasswortHistoryPolicy(self.loadPolicyObject('policies/pwhistory'))
 			ml = self._check_password_history(ml, pwhistoryPolicy)
 			self._check_password_complexity(pwhistoryPolicy)
 			ml = self._modlist_samba_password(ml, pwhistoryPolicy)
@@ -2011,6 +2008,7 @@ class object(univention.admin.handlers.simpleLdap):
 			ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
 		return ml
 
+	## If you change anything here, please also check users/ldap.py
 	def _check_password_history(self, ml, pwhistoryPolicy):
 		if self.exists() and not self.hasChanged('password'):
 			return ml
@@ -2019,15 +2017,16 @@ class object(univention.admin.handlers.simpleLdap):
 
 		pwhistory = self.oldattr.get('pwhistory', [''])[0]
 
-		if self.__pwAlreadyUsed(self['password'], pwhistory):
+		if univention.admin.password.password_already_used(self['password'], pwhistory):
 			raise univention.admin.uexceptions.pwalreadyused()
 
 		if pwhistoryPolicy.pwhistoryLength is not None:
-			newPWHistory = self.__getPWHistory(univention.admin.password.crypt(self['password']), pwhistory, pwhistoryPolicy.pwhistoryLength)
+			newPWHistory = univention.admin.password.get_password_history(univention.admin.password.crypt(self['password']), pwhistory, pwhistoryPolicy.pwhistoryLength)
 			ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
 
 		return ml
 
+	## If you change anything here, please also check users/ldap.py
 	def _check_password_complexity(self, pwhistoryPolicy):
 		if self.exists() and not self.hasChanged('password'):
 			return
@@ -2161,6 +2160,7 @@ class object(univention.admin.handlers.simpleLdap):
 			ml.append(('krb5KDCFlags', str(old_kdcflags), str(krb_kdcflags)))
 		return ml
 
+	## If you change anything here, please also check users/ldap.py
 	def _modlist_posix_password(self, ml):
 		if not self.exists() or self.hasChanged(['disabled', 'password']):
 			old_password = self.oldattr.get('userPassword', [''])[0]
@@ -2170,7 +2170,7 @@ class object(univention.admin.handlers.simpleLdap):
 				# hacking attempt. user tries to change the password to e.g. {KINIT} or {crypt}$6$...
 				raise univention.admin.uexceptions.valueError(_('Invalid password.'))
 
-			if self.__pwd_is_auth_saslpassthrough(old_password):
+			if univention.admin.password.password_is_auth_saslpassthrough(old_password):
 				# do not change {SASL} password, but lock it if necessary
 				password = old_password
 
@@ -2402,49 +2402,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		return dn
 
-	def __pwAlreadyUsed(self, password, pwhistory):
-		for line in pwhistory.split(" "):
-			linesplit = line.split("$")  # $method_id$salt$password_hash
-			try:
-				password_hash = univention.admin.password.crypt(password, linesplit[1], linesplit[2])
-			except IndexError:  # old style password history entry, no method id/salt in there
-				hash_algorithm = hashlib.new("sha1")
-				hash_algorithm.update(password.encode("utf-8"))
-				password_hash = hash_algorithm.hexdigest().upper()
-			if password_hash == line:
-				return True
-		return False
-
-	def __getPWHistory(self, newpwhash, pwhistory, pwhlen):
-		# split the history
-		if len(string.strip(pwhistory)):
-			pwlist = string.split(pwhistory, ' ')
-		else:
-			pwlist = []
-
-		# this preserves a temporary disabled history
-		if pwhlen > 0:
-			if len(pwlist) < pwhlen:
-				pwlist.append(newpwhash)
-			else:
-				# calc entries to cut out
-				cut = 1 + len(pwlist) - pwhlen
-				pwlist[0:cut] = []
-				if pwhlen > 1:
-					# and append to shortened history
-					pwlist.append(newpwhash)
-				else:
-					# or replace the history completely
-					if len(pwlist) > 0:
-						pwlist[0] = newpwhash
-						# just to be sure...
-						pwlist[1:] = []
-					else:
-						pwlist.append(newpwhash)
-		# and build the new history
-		res = string.join(pwlist)
-		return res
-
 	def __getsmbPWHistory(self, newpassword, smbpwhistory, smbpwhlen):
 		# split the history
 		if len(string.strip(smbpwhistory)):
@@ -2633,31 +2590,6 @@ class object(univention.admin.handlers.simpleLdap):
 				filter.variable = 'uid'
 		else:
 			univention.admin.mapping.mapRewrite(filter, mapping)
-
-
-class _PasswortHistoryPolicy(type('', (), {}).mro()[-1]):
-
-	def __init__(self, pwhistoryPolicy):
-		super(_PasswortHistoryPolicy, self).__init__()
-		self.pwhistoryPolicy = pwhistoryPolicy
-		self.pwhistoryLength = None
-		self.pwhistoryPasswordLength = 0
-		self.pwhistoryPasswordCheck = False
-		self.expiryInterval = 0
-		if pwhistoryPolicy:
-			try:
-				self.pwhistoryLength = max(0, int(pwhistoryPolicy['length'] or 0))
-			except ValueError:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (history length): %r' % (pwhistoryPolicy.dn,))
-			try:
-				self.pwhistoryPasswordLength = max(0, int(pwhistoryPolicy['pwLength'] or 0))
-			except ValueError:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (password length): %r' % (pwhistoryPolicy.dn,))
-			self.pwhistoryPasswordCheck = (pwhistoryPolicy['pwQualityCheck'] or '').lower() in ['true', '1']
-			try:
-				self.expiryInterval = max(0, int(pwhistoryPolicy['expiryInterval'] or 0))
-			except ValueError:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (expiry interval): %r' % (pwhistoryPolicy.dn,))
 
 
 lookup = object.lookup

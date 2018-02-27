@@ -1,3 +1,10 @@
+ucs-test (8.0.28-48) unstable; urgency=medium
+
+  * 61_udm-users/50_udm_users_ldap_password: Added a test case for
+    users/ldap password handling (Bug #46261)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Feb 2018 08:47:42 +0100
+
 ucs-test (8.0.28-47) unstable; urgency=medium
 
   * Bug #46431: Don't run 10_ldap/50ppolicy_account_lockout on a DC Backup

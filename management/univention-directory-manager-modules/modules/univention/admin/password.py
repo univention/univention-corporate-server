@@ -31,9 +31,11 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
+import hashlib
 import heimdal
 import types
 import smbpasswd
+import string
 import univention.config_registry
 
 configRegistry = univention.config_registry.ConfigRegistry()
@@ -163,6 +165,76 @@ def lock_password(password):
 		password = '{%s}!%s' % (match[0], match[2])
 	return password
 
+def password_is_auth_saslpassthrough(password):
+	return password.startswith('{SASL}') and configRegistry.get('directory/manager/web/modules/users/user/auth/saslpassthrough', 'no').lower() == 'keep'
+
+def get_password_history(newpwhash, pwhistory, pwhlen):
+	# split the history
+	if len(string.strip(pwhistory)):
+		pwlist = string.split(pwhistory, ' ')
+	else:
+		pwlist = []
+
+	# this preserves a temporary disabled history
+	if pwhlen > 0:
+		if len(pwlist) < pwhlen:
+			pwlist.append(newpwhash)
+		else:
+			# calc entries to cut out
+			cut = 1 + len(pwlist) - pwhlen
+			pwlist[0:cut] = []
+			if pwhlen > 1:
+				# and append to shortened history
+				pwlist.append(newpwhash)
+			else:
+				# or replace the history completely
+				if len(pwlist) > 0:
+					pwlist[0] = newpwhash
+					# just to be sure...
+					pwlist[1:] = []
+				else:
+					pwlist.append(newpwhash)
+	# and build the new history
+	res = string.join(pwlist)
+	return res
+
+def password_already_used(password, pwhistory):
+	for line in pwhistory.split(" "):
+		linesplit = line.split("$")  # $method_id$salt$password_hash
+		try:
+			password_hash = univention.admin.password.crypt(password, linesplit[1], linesplit[2])
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, '\n== [%s]\n== [%s]' % (password_hash, line))
+		except IndexError:  # old style password history entry, no method id/salt in there
+			hash_algorithm = hashlib.new("sha1")
+			hash_algorithm.update(password.encode("utf-8"))
+			password_hash = hash_algorithm.hexdigest().upper()
+		if password_hash == line:
+			return True
+	return False
+
+class PasswortHistoryPolicy(type('', (), {}).mro()[-1]):
+
+	def __init__(self, pwhistoryPolicy):
+		super(PasswortHistoryPolicy, self).__init__()
+		self.pwhistoryPolicy = pwhistoryPolicy
+		self.pwhistoryLength = None
+		self.pwhistoryPasswordLength = 0
+		self.pwhistoryPasswordCheck = False
+		self.expiryInterval = 0
+		if pwhistoryPolicy:
+			try:
+				self.pwhistoryLength = max(0, int(pwhistoryPolicy['length'] or 0))
+			except ValueError:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (history length): %r' % (pwhistoryPolicy.dn,))
+			try:
+				self.pwhistoryPasswordLength = max(0, int(pwhistoryPolicy['pwLength'] or 0))
+			except ValueError:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (password length): %r' % (pwhistoryPolicy.dn,))
+			self.pwhistoryPasswordCheck = (pwhistoryPolicy['pwQualityCheck'] or '').lower() in ['true', '1']
+			try:
+				self.expiryInterval = max(0, int(pwhistoryPolicy['expiryInterval'] or 0))
+			except ValueError:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (expiry interval): %r' % (pwhistoryPolicy.dn,))
 
 if __name__ == '__main__':
 	import doctest

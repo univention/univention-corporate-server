@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-1) unstable; urgency=medium
+
+  * Support password policy for users/ldap (Bug #46261)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Feb 2018 08:48:25 +0100
+
 univention-directory-manager-modules (13.0.20-10) unstable; urgency=medium
 
   * Bug #46385: Exclude ucs-sso user from licence count

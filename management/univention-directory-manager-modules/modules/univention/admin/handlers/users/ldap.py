@@ -147,6 +147,30 @@ property_descriptions = {
 		show_in_lists=True,
 		default='0',
 	),
+	'overridePWHistory': univention.admin.property(
+		short_description=_('Override password history'),
+		long_description=_('No check if the password was already used is performed.'),
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		required=False,
+		dontsearch=True,
+		may_change=True,
+		identifies=False,
+		readonly_when_synced=True,
+		copyable=True,
+	),
+	'overridePWLength': univention.admin.property(
+		short_description=_('Override password check'),
+		long_description=_('No check for password quality and minimum length is performed.'),
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		required=False,
+		dontsearch=True,
+		may_change=True,
+		identifies=False,
+		readonly_when_synced=True,
+		copyable=True,
+	),
 }
 
 layout = [
@@ -154,6 +178,7 @@ layout = [
 		Group(_('User account'), layout=[
 			['username', 'description'],
 			['password'],
+			['overridePWHistory', 'overridePWLength'],
 			['disabled'],
 			['locked'],
 		]),
@@ -174,7 +199,7 @@ mapping.register('username', 'uid', None, univention.admin.mapping.ListToString)
 mapping.register('lastname', 'sn', None, univention.admin.mapping.ListToString)
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('password', 'userPassword', None, univention.admin.mapping.ListToString)
+mapping.register('password', 'userPassword', univention.admin.mapping.dontMap(), univention.admin.mapping.ListToString)
 
 mapping.registerUnmapping('locked', unmapLocked)
 
@@ -199,18 +224,6 @@ class object(univention.admin.handlers.simpleLdap):
 			except univention.admin.uexceptions.noLock:
 				raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
 
-		if self['password']:
-			# The order here is important!
-			if not self.exists() or self.hasChanged('password'):
-				# 1. a new plaintext password is supplied
-				# make a crypt password out of it
-				self['password'] = "{crypt}%s" % (univention.admin.password.crypt(self['password']),)
-
-			if self['disabled'] == '1':
-				self['password'] = univention.admin.password.lock_password(self['password'])
-			else:
-				self['password'] = univention.admin.password.unlock_password(self['password'])
-
 	def _ldap_post_create(self):
 		self._confirm_locks()
 
@@ -229,7 +242,33 @@ class object(univention.admin.handlers.simpleLdap):
 		ml = self._modlist_lastname(ml)
 		ml = self._modlist_cn(ml)
 		ml = self._modlist_pwd_account_locked_time(ml)
+		ml = self._modlist_posix_password(ml)
 
+		if self.hasChanged(['password']):
+			pwhistoryPolicy = univention.admin.password.PasswortHistoryPolicy(self.loadPolicyObject('policies/pwhistory'))
+			ml = self._check_password_history(ml, pwhistoryPolicy)
+			self._check_password_complexity(pwhistoryPolicy)
+
+		return ml
+
+	## If you change anything here, please also check users/user.py
+	def _modlist_posix_password(self, ml):
+		if not self.exists() or self.hasChanged(['disabled', 'password']):
+			old_password = self.oldattr.get('userPassword', [''])[0]
+			password = self['password']
+
+			if self.hasChanged('password') and univention.admin.password.RE_PASSWORD_SCHEME.match(password):
+				# hacking attempt. user tries to change the password to e.g. {KINIT} or {crypt}$6$...
+				raise univention.admin.uexceptions.valueError(_('Invalid password.'))
+
+			if univention.admin.password.password_is_auth_saslpassthrough(old_password):
+				# do not change {SASL} password, but lock it if necessary
+				password = old_password
+
+			password_crypt = univention.admin.password.lock_password(password)
+			if self['disabled'] != '1':
+				password_crypt = univention.admin.password.unlock_password(password_crypt)
+			ml.append(('userPassword', old_password, password_crypt))
 		return ml
 
 	def _modlist_lastname(self, ml):
@@ -253,6 +292,44 @@ class object(univention.admin.handlers.simpleLdap):
 			if pwdAccountLockedTime:
 				ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
 		return ml
+
+	## If you change anything here, please also check users/user.py
+	def _check_password_history(self, ml, pwhistoryPolicy):
+		if not self.hasChanged('password'):
+			return ml
+		if self['overridePWHistory'] == '1':
+			return ml
+
+		pwhistory = self.oldattr.get('pwhistory', [''])[0]
+
+		if univention.admin.password.password_already_used(self['password'], pwhistory):
+			raise univention.admin.uexceptions.pwalreadyused()
+
+		if pwhistoryPolicy.pwhistoryLength is not None:
+			newPWHistory = univention.admin.password.get_password_history(univention.admin.password.crypt(self['password']), pwhistory, pwhistoryPolicy.pwhistoryLength)
+			ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
+
+		return ml
+
+	## If you change anything here, please also check users/user.py
+	def _check_password_complexity(self, pwhistoryPolicy):
+		if  not self.hasChanged('password'):
+			return
+		if self['overridePWLength'] == '1':
+			return
+
+		password_minlength = max(0, pwhistoryPolicy.pwhistoryPasswordLength) or self.password_length
+		if len(self['password']) < password_minlength:
+			raise univention.admin.uexceptions.pwToShort(_('The password is too short, at least %d characters needed!') % (password_minlength,))
+
+		if pwhistoryPolicy.pwhistoryPasswordCheck:
+			pwdCheck = univention.password.Check(self.lo)
+			pwdCheck.enableQualityCheck = True
+			try:
+				pwdCheck.check(self['password'])
+			except ValueError as e:
+				raise univention.admin.uexceptions.pwQuality(str(e).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))
+
 
 	def _ldap_post_remove(self):
 		univention.admin.allocators.release(self.lo, self.position, 'uid', self['username'])
