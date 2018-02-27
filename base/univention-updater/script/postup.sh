@@ -167,6 +167,12 @@ if [ -x "/usr/bin/mysql_upgrade" ]; then
 	/usr/bin/mysql_upgrade --defaults-extra-file=/etc/mysql/debian.cnf >>"$UPDATER_LOG" 2>&1
 fi
 
+# Bug #46270
+if [ -x "/usr/sbin/univention-directory-listener-ctrl" ]; then
+	/usr/sbin/univention-directory-listener-ctrl resync portal >>"$UPDATER_LOG" 2>&1
+	/usr/sbin/univention-directory-listener-ctrl resync portal_entry >>"$UPDATER_LOG" 2>&1
+fi
+
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-run-join-scripts >>"$UPDATER_LOG" 2>&1

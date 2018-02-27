@@ -1368,7 +1368,7 @@ define([
 				apps.push(app);
 			});
 			var entryOrder = portalContent.portal.portalEntriesOrder;
-			if (entryOrder.length) {
+			if (entryOrder && entryOrder.length) {
 				var newapps = [];
 				array.forEach(entryOrder, function() {
 					newapps.push(null);
