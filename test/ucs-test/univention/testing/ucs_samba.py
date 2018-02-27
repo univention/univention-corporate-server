@@ -26,11 +26,11 @@ def password_policy(complexity=False, minimum_password_age=0, maximum_password_a
     complexity = 'on' if complexity else 'off'
     minimum_password_age = str(minimum_password_age)
     maximum_password_age = str(maximum_password_age)
-    min_pwd_age = int(subprocess.check_output('samba-tool domain passwordsettings show | grep "Minimum password age" | sed s/[^0-9]*/""/', shell=True).strip())
-    max_pwd_age = int(subprocess.check_output('samba-tool domain passwordsettings show | grep "Maximum password age" | sed s/[^0-9]*/""/', shell=True).strip())
+    min_pwd_age = subprocess.check_output('samba-tool domain passwordsettings show | grep "Minimum password age" | sed s/[^0-9]*/""/', shell=True).strip()
+    max_pwd_age = subprocess.check_output('samba-tool domain passwordsettings show | grep "Maximum password age" | sed s/[^0-9]*/""/', shell=True).strip()
     pwd_complexity = subprocess.check_output('samba-tool domain passwordsettings show | grep complexity | sed "s/Password complexity: //"', shell=True).strip()
     if complexity != pwd_complexity or minimum_password_age != min_pwd_age or maximum_password_age != max_pwd_age:
-        subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', str(minimum_password_age), '--max-pwd-age', str(maximum_password_age), '--complexity', complexity])
+        subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', minimum_password_age, '--max-pwd-age', maximum_password_age, '--complexity', complexity])
     yield
     if complexity != pwd_complexity or minimum_password_age != min_pwd_age:
         subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', min_pwd_age, '--max-pwd-age', max_pwd_age, '--complexity', pwd_complexity])
