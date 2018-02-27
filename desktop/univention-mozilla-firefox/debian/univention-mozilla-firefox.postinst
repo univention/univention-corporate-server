@@ -48,6 +48,7 @@ then
 	if [ -z "$2" ]
 	then
 		mkdir -p /etc/univention/skel/Downloads
+		firefox_prefs_homepage="https://www.univention.$tld/"
 	fi
 
 	univention-config-registry set \
