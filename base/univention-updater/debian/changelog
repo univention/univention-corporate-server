@@ -1,4 +1,4 @@
-univention-updater (13.0.1-21) unstable; urgency=medium
+univention-updater (13.0.1-22) unstable; urgency=medium
 
   * Bug #46435: Run mysql_upgrade in postup
 
