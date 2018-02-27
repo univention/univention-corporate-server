@@ -31,39 +31,51 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=3
+VERSION=4
 
 . /usr/share/univention-join/joinscripthelper.lib
 
 joinscript_init
 
 eval "$(ucr shell)"
-udm settings/extended_attribute create "$@" --ignore_exists \
-	--position "cn=custom attributes,cn=univention,$ldap_base" \
-	--set name="UniventionDovecotUserQuota" \
-	--set CLIName="UniventionDovecotUserQuota" \
-	--set shortDescription="Mail quota (MB)" \
-	--set translationShortDescription='"de_DE" "E-Mail-Quota (MB)"' \
-	--set longDescription="Mail quota for the user in megabytes (0=no quota)" \
-	--set translationLongDescription='"de_DE" "E-Mail-Quota des Benutzers in Megabytes (0=kein Quota)"' \
-	--set tabAdvanced=1 \
-	--set tabName="Mail" \
-	--set translationTabName='"de_DE" "Mail"' \
-	--set module="users/user" \
-	--set syntax=integer \
-	--set default=0 \
-	--set multivalue=0 \
-	--set valueRequired=0 \
-	--set mayChange=1 \
-	--set doNotSearch=0 \
-	--set objectClass=univentionMail \
-	--set ldapMapping=univentionMailUserQuota \
-	--set deleteObjectClass=0 \
-	--set overwriteTab=0 \
-	--set groupName="Advanced settings" \
-	--set translationGroupName='"de_DE" "Erweiterte Einstellungen"' \
-	--set fullWidth=1 \
-	--set tabPosition=4
+
+# Bug #46102: rename CLIName from "UniventionDovecotUserQuota" to "mailUserQuota"
+cli_name="$(univention-ldapsearch -LLL cn=UniventionDovecotUserQuota -b "cn=custom attributes,cn=univention,$ldap_base" univentionUDMPropertyCLIName | egrep ^univentionUDMPropertyCLIName | cut -f 2 -d ' ')"
+if [ -n "$cli_name" ] && [ "$cli_name" = "UniventionDovecotUserQuota" ]; then
+	echo 'Renaming UDM property "UniventionDovecotUserQuota" to "mailUserQuota".'
+	udm settings/extended_attribute modify "$@" \
+		--dn "cn=UniventionDovecotUserQuota,cn=custom attributes,cn=univention,$ldap_base" \
+		--set CLIName="mailUserQuota" || die
+	deb-systemd-invoke restart univention-management-console-server
+	deb-systemd-invoke restart univention-directory-listener
+else
+	udm settings/extended_attribute create "$@" --ignore_exists \
+		--position "cn=custom attributes,cn=univention,$ldap_base" \
+		--set name="UniventionDovecotUserQuota" \
+		--set CLIName="mailUserQuota" \
+		--set shortDescription="Mail quota (MB)" \
+		--set translationShortDescription='"de_DE" "E-Mail-Quota (MB)"' \
+		--set longDescription="Mail quota for the user in megabytes (0=no quota)" \
+		--set translationLongDescription='"de_DE" "E-Mail-Quota des Benutzers in Megabytes (0=kein Quota)"' \
+		--set tabAdvanced=1 \
+		--set tabName="Mail" \
+		--set translationTabName='"de_DE" "Mail"' \
+		--set module="users/user" \
+		--set syntax=integer \
+		--set default=0 \
+		--set multivalue=0 \
+		--set valueRequired=0 \
+		--set mayChange=1 \
+		--set doNotSearch=0 \
+		--set objectClass=univentionMail \
+		--set ldapMapping=univentionMailUserQuota \
+		--set deleteObjectClass=0 \
+		--set overwriteTab=0 \
+		--set groupName="Advanced settings" \
+		--set translationGroupName='"de_DE" "Erweiterte Einstellungen"' \
+		--set fullWidth=1 \
+		--set tabPosition=4 || die
+fi
 
 . /usr/share/univention-lib/ldap.sh
 ucs_addServiceToLocalhost "IMAP" "$@"
@@ -80,7 +92,7 @@ fi
 
 /usr/lib/univention-server/server_password_change.d/univention-mail-dovecot postchange
 
-invoke-rc.d dovecot restart
+deb-systemd-invoke restart dovecot
 
 joinscript_save_current_version
 

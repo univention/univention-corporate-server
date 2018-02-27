@@ -460,7 +460,7 @@ class DovecotSharedFolderListener(DovecotListener):
 					self.listener.unsetuid()
 			emails_quota = ["%s@%s:%s" % (pf["name"] or pf.dn.split("@")[0].split("=")[1],
 				pf["mailDomain"],
-				pf.get("univentionMailUserQuota", 0) or pf.get("cyrus-userquota", 0))
+				pf.get("mailQuota", 0) or pf.get("cyrus-userquota", 0))  # handle old UDM property "cyrus-userquota" during upgrade from 4.2 to 4.3, remove in 4.3-errata>0
 				for pf in public_folders]
 		try:
 			self.listener.setuid(0)
