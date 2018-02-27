@@ -1,3 +1,9 @@
+univention-mozilla-firefox (12.0.0-5) unstable; urgency=medium
+
+  * Bug #45864: import ucsCA and configure firefox for saml with kerberos
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 01 Mar 2018 10:54:48 +0100
+
 univention-mozilla-firefox (12.0.0-4) unstable; urgency=medium
 
   * Bug #45863: Set firefox startpage on first installation

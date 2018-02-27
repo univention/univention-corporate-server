@@ -1,5 +1,6 @@
 @%@UCRWARNING=// @%@
 
+pref("general.config.obscure_value", 0);
 @!@
 for ffconf, ucrv in {
 	'general.config.filename': 'firefox/prefs/conffile',
@@ -10,6 +11,7 @@ for ffconf, ucrv in {
 	'startup.homepage_welcome_url': 'firefox/prefs/homepage',
 	'print.print_command': 'firefox/prefs/print_command',
 	'print.postscript.print_command': 'firefox/prefs/print_command',
+	'network.negotiate-auth.trusted-uris': 'domainname',
 }.iteritems():
 	value = configRegistry.get(ucrv)
 	if value:
