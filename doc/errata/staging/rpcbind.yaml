@@ -10,6 +10,6 @@ desc: |
    allocation for XDR strings, which allows remote attackers to cause a denial
    of service (memory consumption with no subsequent free) via a crafted UDP
    packet to port 111, aka rpcbomb. (CVE-2017-8779)
-bug: [46158]
+bug: [44674, 46158]
 cve:
 - CVE-2017-8779
