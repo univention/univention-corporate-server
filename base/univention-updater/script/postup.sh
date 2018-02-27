@@ -162,6 +162,11 @@ univention-app update || true
 univention-app register --app || true
 # Bug 45328
 
+# Bug #46435
+if [ -x "/usr/bin/mysql_upgrade" ]; then
+	/usr/bin/mysql_upgrade --defaults-extra-file=/etc/mysql/debian.cnf
+fi
+
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-run-join-scripts >>"$UPDATER_LOG" 2>&1

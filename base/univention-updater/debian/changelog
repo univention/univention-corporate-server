@@ -1,3 +1,9 @@
+univention-updater (13.0.1-21) unstable; urgency=medium
+
+  * Bug #46435: Run mysql_upgrade in postup
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 27 Feb 2018 13:26:07 +0100
+
 univention-updater (13.0.1-20) unstable; urgency=medium
 
   * Ensure the at daemon is not restared during the release upgrade.
