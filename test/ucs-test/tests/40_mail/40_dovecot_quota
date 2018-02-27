@@ -39,7 +39,7 @@ def main():
 					password=pw,
 					set={"mailHomeServer": '%s.%s' % (ucr.get("hostname"), domain),
 						"mailPrimaryAddress": mail,
-						"UniventionDovecotUserQuota": str(quota01)})
+						"mailUserQuota": str(quota01)})
 
 				#
 				# quota set with UDM should be reflected by IMAP4.getquota()
@@ -58,7 +58,7 @@ def main():
 					utils.fail('Wrong quota, expected: %d, got %r' % (quota01 * 1024, quota))
 
 				# modify quota
-				udm.modify_object(modulename='users/user', dn=userdn, UniventionDovecotUserQuota=str(quota02))
+				udm.modify_object(modulename='users/user', dn=userdn, mailUserQuota=str(quota02))
 
 				quota, response = imap.get_imap_quota(mail, pw)
 				if not response == 'OK':
@@ -67,7 +67,7 @@ def main():
 					utils.fail('Wrong quota, expected: %d, got %r' % (quota02 * 1024, quota))
 
 				# remove quota
-				udm.modify_object(modulename='users/user', dn=userdn, UniventionDovecotUserQuota=str(quota03))
+				udm.modify_object(modulename='users/user', dn=userdn, mailUserQuota=str(quota03))
 
 				quota, response = imap.get_imap_quota(mail, pw)
 				if not response == 'OK':
@@ -84,7 +84,7 @@ def main():
 				token_body = "my_message %s" % str(time.time())
 				univention.config_registry.handler_set(["mail/dovecot/quota/warning/text/%d=%s" % (percent, token_body)])
 				subprocess.call(["/usr/bin/doveadm", "reload"])
-				udm.modify_object(modulename='users/user', dn=userdn, UniventionDovecotUserQuota=str(quota04))
+				udm.modify_object(modulename='users/user', dn=userdn, mailUserQuota=str(quota04))
 				msg = str(email.message_from_string("Lorem ipsum dolor sit amet, consetetur sadipscing " * quota04 * 12000))
 				imap = MailClient("localhost")
 				imap.login(mail, pw)

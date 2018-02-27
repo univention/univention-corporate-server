@@ -37,7 +37,7 @@ def main():
 				set={
 					"mailHomeServer": '%s.%s' % (ucr.get("hostname"), domain),
 					"mailPrimaryAddress": mail,
-					"UniventionDovecotUserQuota": str(quota01),
+					"mailUserQuota": str(quota01),
 				})
 
 			#

@@ -1,3 +1,10 @@
+ucs-test (8.0.28-53) unstable; urgency=low
+
+  * Bug #46102: UDM property UniventionDovecotUserQuota was renamed to
+    mailUserQuota
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 27 Feb 2018 18:17:12 +0100
+
 ucs-test (8.0.28-52) unstable; urgency=medium
 
   * Bug #46171: Fix for univention/testing/ucs_samba.py
