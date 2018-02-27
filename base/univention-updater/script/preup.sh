@@ -392,6 +392,22 @@ else
 	echo "WARNING: skipped disk-usage-test as requested"
 fi
 
+## Check for postgresql-9.1 (Bug #44160)
+check_for_postgresql91 () {
+	case "$(dpkg-query -W -f '${Status}' postgresql-9.1 2>/dev/null)" in
+	install*) ;;
+	*) return 0 ;;
+	esac
+	echo "WARNING: PostgreSQL-9.1 is no longer supported by UCS-4.3 and must be migrated to"
+	echo "         a newer version of PostgreSQL. See https://help.univention.com/t/8073 for"
+	echo "         more details."
+	if is_ucr_true update43/ignore_postgresql91; then
+		echo "WARNING: update43/ignore_postgresql91 is set to true. Skipped as requested."
+	else
+		exit 1
+	fi
+}
+check_for_postgresql91
 
 echo -n "Checking for package status: "
 if dpkg -l 2>&1 | LC_ALL=C grep "^[a-zA-Z][A-Z] " >&3 2>&3

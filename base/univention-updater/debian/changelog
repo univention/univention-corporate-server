@@ -1,3 +1,9 @@
+univention-updater (13.0.1-24) unstable; urgency=medium
+
+  * Bug #44160: Add check_for_postgresql91
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Feb 2018 17:37:34 +0100
+
 univention-updater (13.0.1-23) unstable; urgency=medium
 
   * Bug #46270: Resync portal and portal_entry in postup
