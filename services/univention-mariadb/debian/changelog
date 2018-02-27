@@ -1,3 +1,9 @@
+univention-mariadb (1.0.1-3) unstable; urgency=medium
+
+  * Bug #46434: Create a working debian.cnf file on initial setup
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 27 Feb 2018 13:43:20 +0100
+
 univention-mariadb (1.0.1-2) unstable; urgency=medium
 
   * Bug #45876: Fix UCRv description

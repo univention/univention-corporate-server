@@ -61,6 +61,9 @@ EOF
 	mysql --no-defaults -u root -h localhost <$tfile >/dev/null
 	retval=$?
 
+	# Create a working debian.cnf so tools can connect to the database
+	sed -i -e "s/password = .*/password = $(</etc/mysql.secret)/g" /etc/mysql/debian.cnf
+
 	rm -f $tfile
 
 	return $retval
