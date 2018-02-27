@@ -230,13 +230,6 @@ if [ "$server_role" != "basesystem" ]; then
 	ln -sf /etc/univention/ssl/$hostname.$new_domainname /etc/univention/ssl/$hostname
 
 	if [ -d "/etc/univention/ssl/$hostname.$new_domainname" ]; then
-		echo `date` : "Include new host certificate for Cyrus"  >> /var/log/univention/setup.log
-		for file in cert.pem private.key; do
-			cp /etc/univention/ssl/$hostname.$new_domainname/$file /var/lib/cyrus/$file
-			chown cyrus: /var/lib/cyrus/$file
-			chmod 600 /var/lib/cyrus/$file
-		done
-
 		echo `date` : "Include new host certificate for CUPS"  >> /var/log/univention/setup.log
 		if [ -d /etc/cups/ssl ]; then
 			rm -f /etc/cups/ssl/server.crt
@@ -313,12 +306,6 @@ set_baseconfig_variable_mail "cups/quota/admin/mail" "$cups_quota_admin_mail"
 
 echo `date` : "Configure e-mail alias for root in baseconfig : " $mail_alias_root  >> /var/log/univention/setup.log
 set_baseconfig_variable_mail "mail/alias/root" "$mail_alias_root"
-
-echo `date` : "Configure the mail cyrus caluser in baseconfig : " $mail_cyrus_caluser  >> /var/log/univention/setup.log
-set_baseconfig_variable_mail "mail/cyrus/caluser" "$mail_cyrus_caluser"
-
-echo `date` : "Configure the mail cyrus admins in baseconfig : " $mail_cyrus_imap_admins  >> /var/log/univention/setup.log
-set_baseconfig_variable_part_mail "mail/cyrus/imap/admins" "$mail_cyrus_imap_admins"
 
 echo `date` : "Configure the virus admin email address in baseconfig : " $mail_antivir_virus_admin  >> /var/log/univention/setup.log
 set_baseconfig_variable_mail "mail/antivir/virus_admin" "$mail_antivir_virus_admin"

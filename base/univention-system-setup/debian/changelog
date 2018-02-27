@@ -1,3 +1,9 @@
+univention-system-setup (11.0.2-6) unstable; urgency=low
+
+  * Bug #46102: remove cyrus related code from system setup scripts
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 23 Feb 2018 18:06:40 +0100
+
 univention-system-setup (11.0.2-5) unstable; urgency=medium
 
   * Bug #45956: Added setup script to set ucr variable interfaces/primary
