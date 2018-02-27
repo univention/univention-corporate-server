@@ -10,7 +10,7 @@ rotate_conf = """	daily
 	delaycompress"""
 rsyslog_conf = """
 	postrotate
-		invoke-rc.d rsyslog rotate > /dev/null
+		service rsyslog rotate > /dev/null
 	endscript
 }"""
 regfile_conf = """
