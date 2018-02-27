@@ -1,3 +1,9 @@
+univention-pkgdb (11.0.0-3) unstable; urgency=medium
+
+  * Bug #44160: Update to PostreSQL-9.6 and drop PostreSQL-9.1
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Feb 2018 18:23:36 +0100
+
 univention-pkgdb (11.0.0-2) unstable; urgency=medium
 
   * Bug #46055: restart postgres in postinst
