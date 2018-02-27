@@ -15,4 +15,4 @@ Type: file
 File: usr/share/plasma/shells/org.kde.plasma.desktop/contents/defaults
 
 Type: file
-File: conffiles/usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/desktop-base.js
+File: usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/desktop-base.js
