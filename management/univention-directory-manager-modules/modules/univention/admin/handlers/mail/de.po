@@ -141,6 +141,10 @@ msgstr "Name"
 msgid "Quota in MB"
 msgstr "Maximale Quota in MB"
 
+#: modules/univention/admin/handlers/mail/folder.py:110
+msgid "How many MB of emails can be stored in the shared folder (independent of the users that stored them)."
+msgstr "Wie viele E-Mails in MB im gemeinsamen Ordner gespeichert werden dürfen (unabhängig vom speichernden User)."
+
 #: modules/univention/admin/handlers/mail/folder.py:91
 msgid "User ACL"
 msgstr "Benutzer ACL"
