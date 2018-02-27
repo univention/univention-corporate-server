@@ -3,6 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: openbios
+maintained: false
 fix: 1.1.git20160820-1~bpo8+1
 desc: |
  This update provides an updated version of OpenBIOS, which is required
