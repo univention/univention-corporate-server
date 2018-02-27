@@ -36,6 +36,7 @@ import subprocess
 
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 from univention.appcenter.actions.docker_base import DockerActionMixin
+from univention.appcenter.exceptions import ShellAppNotRunning
 
 class Logs(UniventionAppAction, DockerActionMixin):
 
@@ -66,4 +67,6 @@ class Logs(UniventionAppAction, DockerActionMixin):
 			docker_logs.append(args.tail)
 		if args.timestamps:
 			docker_logs.append('--timestamps')
-		return subprocess.call(docker_logs + [docker.container])
+		if not args.app.docker:
+                        raise ShellAppNotRunning(args.app)
+                return subprocess.call(docker_logs + [docker.container])
