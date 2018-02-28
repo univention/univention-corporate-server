@@ -1398,11 +1398,10 @@ class AD_Takeover():
 		#	print_progress()
 		# print
 
-	def start_s4_connector(self, progress):	
-                old_mode = self.ucr.get("connector/s4/mapping/syncmode", "sync")
-                old_sleep = self.ucr.get("connector/s4/poll/sleep", "5")
+	def start_s4_connector(self, progress):
+		old_sleep = self.ucr.get("connector/s4/poll/sleep", "5")
 		old_retry = self.ucr.get("connector/s4/retryrejected", "10")
-		run_and_output_to_log(["univention-config-registry", "set", "connector/s4/mapping/syncmode=read", "connector/s4/poll/sleep=1", "connector/s4/retryrejected=2"], log.debug)
+		run_and_output_to_log(["univention-config-registry", "set", "connector/s4/poll/sleep=1", "connector/s4/retryrejected=2"], log.debug)
 
 		# turn off the legacy position_mapping:
 		run_and_output_to_log(["univention-config-registry", "unset", "connector/s4/mapping/dns/position"], log.debug)
@@ -1423,7 +1422,7 @@ class AD_Takeover():
 		wait_for_s4_connector_replication(self.ucr, self.lp, progress)
 
 		# Reset normal relication intervals
-		run_and_output_to_log(["univention-config-registry", "set", "connector/s4/mapping/syncmode=%s" % old_mode, "connector/s4/poll/sleep=%s" % old_sleep, "connector/s4/retryrejected=%s" % old_retry], log.debug)
+		run_and_output_to_log(["univention-config-registry", "set", "connector/s4/poll/sleep=%s" % old_sleep, "connector/s4/retryrejected=%s" % old_retry], log.debug)
 		returncode = run_and_output_to_log(["/etc/init.d/univention-s4-connector", "restart"], log.debug)
 		if returncode != 0:
 			log.error("Restart of univention-s4-connector failed. See %s for details." % (LOGFILE_NAME,))
