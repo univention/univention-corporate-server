@@ -12,7 +12,7 @@
 		<title>General</title>
 		<itemizedlist>
 					<listitem><simpara>
-							Debian packages have been updated to Debian Stretch (<u:bug>45642</u:bug>, <u:bug>45709</u:bug>).
+							Debian packages have been updated to Debian Stretch (<u:bug>45642</u:bug>, <u:bug>45709</u:bug>, <u:bug>46328</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
 							The packages <package>univention-ldap</package>, <package>univention-directory-notifier</package>,
