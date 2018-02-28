@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Restart the univention-saml daemon after an upgrade to prevent timeouts
 bug: [46212]
+erratum: 309
+announced: 2018-02-28
