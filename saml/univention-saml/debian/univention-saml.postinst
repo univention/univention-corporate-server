@@ -38,16 +38,6 @@ configure)
 		rm /usr/lib/univention-install/24univention-saml-uninstall.uinst
 	fi
 
-	# update to UCS 4.2
-	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1; then
-		a2dissite univention-saml
-	fi
-
-	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.0-1; then
-		ucr unset saml/idp/certificate/privatekey \
-			saml/idp/certificate/certificate
-	fi
-
 	ucr set saml/idp/enableSAML20-IdP?true \
 		saml/idp/ldap/get_attributes?"'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'" \
 		saml/idp/ldap/search_attributes?"'uid', 'mailPrimaryAddress'" \
@@ -88,6 +78,12 @@ configure)
 	chmod 640 /var/log/stunnel4/stunnel.log
 
 	deb-systemd-invoke restart stunnel4.service
+
+	# update to UCS 4.3
+	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.4-13; then
+		a2dismod php5
+		a2enmod  php7.0
+	fi
 
 	a2ensite univention-saml
 	a2enmod headers

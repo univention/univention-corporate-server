@@ -47,7 +47,7 @@ find / \
 		-o -path "/run/umc-web-server.pid.lock" \
 		-o -path "/run/umc-server.pid.lock" \
 		-o -path "/run/*.MainThread-*" \
-		-o -path "/var/lib/php5" \
+		-o -path "/var/lib/php" \
 		-o -path "/lock" \
 		-o -path "/var/run/clamav/clamd.ctl" \
 		-o -path "/var/run/gdm_socket" \
@@ -82,7 +82,7 @@ exit $RETVAL
 # "/var/run/saslauthd/mux"                   : Standard daemon control/communication socket
 # "/tmp/.X11-unix/*" "/tmp/.ICE-unix"        : Standard daemon control/communication socket
 # "/tmp/.X11-unix" "/tmp/.gdm_socket"        : Standard daemon control/communication socket
-# "/var/lib/php5"                            : PHP session path, needs to be writable by all web apps
+# "/var/lib/php"                             : PHP session path, needs to be writable by all web apps
 # "/var/spool/samba"                         : Samba printing spooler path
 # "/var/lib/univention-client-root/ramdisk/*": RAM disk on thin client
 # "/var/run/postgresql"                      : PostgreSQL spool directory

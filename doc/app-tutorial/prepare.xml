@@ -72,7 +72,7 @@ univention-install build-essential debhelper
 
 			<para>
 				Depending on your app you may furthermore require several development libraries
-				(e.g. <package>libc-dev</package>, <package>php5-dev</package>). For UCS integration packages, we recommend
+				(e.g. <package>libc-dev</package>, <package>php-dev</package>). For UCS integration packages, we recommend
 			</para>
 
 			<programlisting language="sh">

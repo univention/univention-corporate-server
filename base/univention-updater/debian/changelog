@@ -1,3 +1,9 @@
+univention-updater (13.0.1-25) unstable; urgency=medium
+
+  * Bug #46267: Deactivate php5 module in apache on update
+
+ -- Arvid Requate <requate@univention.de>  Wed, 28 Feb 2018 16:00:21 +0100
+
 univention-updater (13.0.1-24) unstable; urgency=medium
 
   * Bug #44160: Add check_for_postgresql91

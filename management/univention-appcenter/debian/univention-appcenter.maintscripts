@@ -1,0 +1,1 @@
+rm_conffile /etc/univention/templates/files/etc/postgresql/9.1/main/pg_hba.conf.d/10-appcenter 7.0.1-18~

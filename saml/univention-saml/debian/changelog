@@ -1,3 +1,9 @@
+univention-saml (5.0.4-14) unstable; urgency=medium
+
+  * Bug #46267: switch to libapache2-mod-php7.0
+
+ -- Arvid Requate <requate@univention.de>  Wed, 28 Feb 2018 15:20:26 +0100
+
 univention-saml (5.0.4-13) unstable; urgency=medium
 
   * Bug #33214: Partly revert previous version, only create ucs-sso user as

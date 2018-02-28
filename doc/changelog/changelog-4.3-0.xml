@@ -12,7 +12,7 @@
 		<title>General</title>
 		<itemizedlist>
 					<listitem><simpara>
-							Debian packages have been updated to Debian Stretch (<u:bug>45642</u:bug>, <u:bug>45709</u:bug>).
+							Debian packages have been updated to Debian Stretch (<u:bug>45642</u:bug>, <u:bug>45709</u:bug>, <u:bug>46328</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
 							The packages <package>univention-ldap</package>, <package>univention-directory-notifier</package>,
@@ -20,6 +20,9 @@
 							<package>univention-appcenter</package> now use the command <command>service</command> instead
 							of <command>invoke-rc.d</command> to restart services. This is necessary for the services to be
 							restarted during the UCS installation (<u:bug>45905</u:bug>, <u:bug>46055</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+							The Linux kernel from Debian is now used <u:bug>45961</u:bug>.
 					</simpara></listitem>
 					<listitem><simpara>
 						<literal>XS-Python-Version</literal> and <literal>XB-Python-Version</literal> have been removed from all packages(<u:bug>43336</u:bug>).
@@ -331,7 +334,7 @@
 						The <package>univention-saml</package> configuration for <package>stunnel4</package> has been adapted to Debian Stretch (<u:bug>45882</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						Dependencies for the <package>univention-saml</package> have been adapted for <package>php7.0</package> compatibility (<u:bug>46110</u:bug>).
+						Dependencies for the <package>univention-saml</package> have been adapted for <package>php7.0</package> compatibility (<u:bug>46110</u:bug>, <u:bug>46267</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -487,7 +490,7 @@
 						Support for <literal>NT style domain control</literal> has been removed in most parts. The update for these domains is blocked and the domain needs to be migrated to <literal>Samba/AD</literal> following the update guide <ulink url="https://wiki.univention.de/index.php/Migration_from_Samba_3_to_Samba_4">Migration from Samba 3 to Samba 4</ulink>. See also <ulink url="https://wiki.univention.de/index.php/Best_Practice_Samba_4_Migration">Best practices for Samba 4 Migration</ulink> (<u:bug>46118</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						The dependency hints in the <literal>init.d</literal> script for <literal>smbd</literal> in univention-samba have been improved (<u:bug>46437</u:bug>).
+						The dependency hints in the <literal>init.d</literal> script for <literal>smbd</literal> in <package>univention-samba</package> have been improved (<u:bug>46437</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						A timeout in AD-Takeover has been increased and <literal>samba_dnsupdate</literal> is run during the takeover (<u:bug>46105</u:bug>).
