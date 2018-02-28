@@ -3,12 +3,10 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-directory-listener
-fix: 11.0.1-47A~4.2.0.201802211651
+fix: 
 desc: |
  This update addresses the following issue(s):
- * A new API for programming of Univention Directory Listener modules was
-   added.
  * To prevent systemctl from reporting a wrong status for the
    univention-directory-notifier service, the runsv timeout has been increased
    to 30 seconds.
-bug: [44786, 46313]
+bug: [46313]
