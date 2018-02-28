@@ -1,3 +1,9 @@
+univention-kernel-image-signed (4.0.0-2) unstable; urgency=low
+
+  * Bug #45961: Sign Debian Linux kernel 4.9.0-6
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Feb 2018 17:19:29 +0100
+
 univention-kernel-image-signed (4.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
