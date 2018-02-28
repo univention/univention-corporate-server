@@ -365,7 +365,7 @@ install_ucs_test () {
 install_ucs_test_checks_from_errata_test () {
 	local rv=0
 	bash /root/activate-errata-test-scope.sh || rv=$?
-	install_with_unmaintained ucs-test-checks ucs-test-saml "$@" || rv=$?
+	install_with_unmaintained ucs-test-checks "$@" || rv=$?
 	return $rv
 }
 
@@ -474,7 +474,7 @@ run_apptests () {
 }
 
 run_minimal_tests () {
-	run_tests -s saml -s checks "$@"
+	run_tests -s checks "$@"
 }
 
 run_minimal_apptests () {
