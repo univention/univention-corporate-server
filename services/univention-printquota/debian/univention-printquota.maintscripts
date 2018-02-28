@@ -1,0 +1,4 @@
+rm_conffile /etc/univention/templates/files/etc/postgresql/7.4/main/pg_hba.conf.d/11-pg_hba.conf 10.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/postgresql/8.1/main/pg_hba.conf.d/11-pg_hba.conf 10.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/postgresql/8.4/main/pg_hba.conf.d/11-pg_hba.conf 10.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/postgresql/9.1/main/pg_hba.conf.d/11-pg_hba.conf 10.0.0-3~
