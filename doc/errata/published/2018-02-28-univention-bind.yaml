@@ -9,3 +9,5 @@ desc: |
  * To prevent systemctl from reporting a wrong status for the univention-bind
    service, the runsv timeout has been increased to 30 seconds.
 bug: [46310]
+erratum: 306
+announced: 2018-02-28
