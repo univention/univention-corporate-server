@@ -1,3 +1,9 @@
+univention-base-files (7.0.0-9) unstable; urgency=low
+
+  * Bug #46120: Fix naming of .maintscript[-s-]
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Feb 2018 23:09:09 +0100
+
 univention-base-files (7.0.0-8) unstable; urgency=medium
 
   * Bug #46224: Add man-db to recommended packages
