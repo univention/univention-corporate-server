@@ -28,7 +28,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 import subprocess
-import threading
 import socket
 import cherrypy
 
@@ -90,7 +89,8 @@ def wait(client):
         if result.get('finished', False):
             break
         else:
-            raise Exception("wait timeout")
+            print(result)
+#            raise Exception("wait timeout")
     print(result)
 
 
