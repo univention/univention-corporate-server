@@ -3,7 +3,7 @@
 # Univention bacula
 #  postinst script for the debian package
 #
-# Copyright 2012-2017 Univention GmbH
+# Copyright 2012-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,23 +33,9 @@
 #DEBHELPER#
 
 if [ "$1" = "configure" ]; then
-
-	# defaults 
 	ucr set \
 		bacula/psql/user?bacula \
-		bacula/psql/database?bacula
-
-	if dpkg --compare-versions "$2" lt '7.0.1-3'
-	then
-		# let UCR remove the generated files for the multifile templates
-		univention-config-registry update
-	fi
-
-	# restart postgres
-	invoke-rc.d postgresql restart
-
-	# firewall exceptions
-	ucr set \
+		bacula/psql/database?bacula \
 		security/packetfilter/package/univention-bacula/tcp/9101/all="ACCEPT" \
 		security/packetfilter/package/univention-bacula/tcp/9101/all/en="bacula-dir" \
 		security/packetfilter/package/univention-bacula/tcp/9102/all="ACCEPT" \
@@ -57,7 +43,7 @@ if [ "$1" = "configure" ]; then
 		security/packetfilter/package/univention-bacula/tcp/9103/all="ACCEPT" \
 		security/packetfilter/package/univention-bacula/tcp/9103/all/en="bacula-sd"
 	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
-
+	[ -x "/etc/init.d/postgresql" ] && invoke-rc.d postgresql force-reload
 fi
 
 exit 0

@@ -4,12 +4,12 @@
 ##  - replication
 ## roles:
 ##  - domaincontroller_master
-##  - domaincontroller_backup
 ## packages:
 ##  - univention-config
 ##  - univention-directory-manager-tools
 ##  - ldap-utils
 ## exposure: dangerous
+## bugs: [46431, 39817]
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
@@ -96,9 +96,9 @@ remove_ldif () {
 }
 undo remove_ldif
 
-univention-ldapsearch -LLLb "$test_userdn" | ldapsearch-wrapper > ldif.1
-udm-test users/user modify --dn "$test_userdn" --set locked=0
-univention-ldapsearch -LLLb "$test_userdn" | ldapsearch-wrapper > ldif.2
+univention-ldapsearch -o ldif-wrap=no -LLLb "$test_userdn" > ldif.1
+udm-test users/user modify --dn "$test_userdn" --set unlock=1
+univention-ldapsearch -o ldif-wrap=no -LLLb "$test_userdn" > ldif.2
 
 wait_for_replication_and_postrun
 

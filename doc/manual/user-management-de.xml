@@ -242,124 +242,16 @@
                 </thead>
                 <tbody>
                     <row>
-                        <entry>Konto-Deaktivierung</entry>
+                        <entry>Konto ist deaktiviert</entry>
                         <entry>
                             <para>
-                                Mit dem Auswahlfeld <guimenu>Konto-Deaktivierung</guimenu> kann das Benutzerkonto
-                                für ein oder mehrere Anmeldeverfahren deaktiviert werden. Solange der
-                                jeweilige Konto-Typ deaktiviert ist, kann sich der Benutzer nicht am System
-                                anmelden. Ein typischer Anwendungsfall ist ein Benutzer, der das Unternehmen
+                                Mir dem Auswahlkästchen <guimenu>Konto is deaktiviert</guimenu> kann das Benutzerkonto
+                                deaktiviert werden.
+				Wenn es aktiviert ist, kann sich der Benutzer nicht am System anmelden.
+				Das betrifft alle Methoden für die Authentifikation.
+				Ein typischer Anwendungsfall ist ein Benutzer, der das Unternehmen
                                 verlassen hat. Eine Kontodeaktivierung kann in einer heterogenen Umgebung ggf. auch durch
-                                externe Tools ausgelöst werden, das Auswahlfeld spiegelt dann den Zustand
-                                des Kontos wider. Normalerweise sollten Benutzer immer für alle Konto-Typen
-                                deaktiviert werden. Folgende Deaktivierungszustände können umgesetzt werden:
-                                <itemizedlist>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Keine</guimenu> - Der Grundzustand; alle Anmeldungen sind möglich.
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Alle deaktiviert</guimenu> - Alle Kontotypen sind gesperrt.
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Windows deaktiviert</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Kerberos deaktiviert</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>POSIX deaktiviert</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Windows und POSIX deaktiviert</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Windows und Kerberos deaktiviert</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>POSIX und Kerberos deaktiviert</guimenu>
-										</simpara>
-                                    </listitem>
-                                </itemizedlist>
-                            </para>
-                            <para>
-                                Folgende Querbeziehungen zwischen den verschiedenen Anmeldeverfahren ergeben sich aus
-                                der UCS-PAM-Konfiguration:
-                                <itemizedlist>
-                                    <listitem>
-										<simpara>
-											Die Linux-Anmeldung (z.B. an <systemitem class="service">KDM</systemitem> oder einem <systemitem class="service">tty</systemitem>) wird nur deaktiviert,
-                                        wenn alle Anmeldeverfahren deaktiviert werden; ein deaktiviertes POSIX-Konto
-                                        reicht dazu nicht aus.
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        Samba setzt ein nicht deaktiviertes POSIX-Konto voraus, d.h. durch das
-                                        Deaktivieren des POSIX-Kontos wird auch Samba deaktiviert.
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        Die Kerberos-Bibliothek (Heimdal) wertet auch die Samba-Kontoeinstellungen aus, d.h. durch das
-                                        Deaktivieren des Windows-Kontos wird auch Kerberos deaktiviert.
-										</simpara>
-                                    </listitem>
-                                </itemizedlist>
-                            </para>
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Gesperrte Anmeldeverfahren</entry>
-                        <entry>
-                            <para>
-                                Mit diesem Auswahlfeld können einzelne Anmeldeverfahren gesperrt werden. Dies
-                                kann beispielsweise aus Sicherheitsgründen automatisch erfolgen, wenn ein
-                                Benutzer sein Passwort zu oft fehlerhaft eingegeben hat, siehe <xref linkend="users:faillog"/>.
-                            </para>
-                            <para>
-                                Normalerweise sollten Benutzer immer für alle Anmeldeverfahren gesperrt werden.
-                            </para>
-                            <para>
-                                Im Gegensatz zur <guimenu>Konto-Deaktivierung</guimenu> wird dabei nicht das Konto
-                                deaktiviert, sondern nur die Anmeldung verweigert. Folgende Anmeldeverfahren
-                                können eingeschränkt werden:
-                                <itemizedlist>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Kein gesperrtes Anmeldeverfahren</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Alle Anmeldeverfahren sind gesperrt</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Nur Windows/Kerberos gesperrt</guimenu>
-										</simpara>
-                                    </listitem>
-                                    <listitem>
-										<simpara>
-                                        <guimenu>Nur POSIX/LDAP gesperrt</guimenu>
-										</simpara>
-                                    </listitem>
-                                </itemizedlist>
+                                externe Tools ausgelöst werden.
                             </para>
                         </entry>
                     </row>
@@ -375,6 +267,13 @@
                                 Wenn das Datum entfernt oder ein anderes, zukünftiges Datum
                                 eingetragen wird, kann sich der Benutzer wieder anmelden.
                             </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Passwort bei der nächsten Anmeldung ändern</entry>
+                        <entry>
+                            Wenn dieses Auswahlkästchen aktiviert ist, muss der Benutzer bei der nächsten
+                            Anmeldung an der Domäne sein Passwort ändern.
                         </entry>
                     </row>
                     <row>
@@ -396,10 +295,42 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Passwort bei der nächsten Anmeldung ändern</entry>
+                        <entry>Aussperrung zurücksetzen</entry>
                         <entry>
-                            Wenn dieses Auswahlkästchen aktiviert ist, muss der Benutzer bei der nächsten
-                            Anmeldung an der Domäne sein Passwort ändern.
+                            <para>
+				Wenn das Benutzerkonto aus Sicherheitsgründen automatisch gesperrt worden ist,
+				meist weil ein Benutzer sein Passwort zu oft fehlerhaft eingegeben hat,
+				kann dieses Auswahlkästchen dazu verwendet werden, um das Konto manuell schon
+				vor Ablauf der Sperrzeit zu entsperren.
+				Eine temporäre Aussperrung kann auftreten, wenn ein Administrator eine entsprechende
+				domänenweite Einstellung definiert wurde.
+				Es gibt drei unterschiedliche Mechanismen, die eine Aussperrung auslösen können,
+				falls die entsprechend konfiguriert wurden:
+                                <itemizedlist>
+                                    <listitem>
+                                        <simpara>
+                                            Fehlgeschlagene Authentifikation per PAM an einem UCS-Server (siehe <xref linkend="users:faillog"/>).
+                                        </simpara>
+                                        <simpara>
+                                            Fehlgeschlagene Authentifikation per LDAP (falls das Overlay-Modul <filename>ppolicy</filename> aktiviert und konfiguriert wurde).
+                                        </simpara>
+                                        <simpara>
+                                            Fehlgeschlagene Authentifikation per Samba/AD (falls die Samba domain <property>passwordsettings</property> konfiguriert wurden).
+                                        </simpara>
+                                    </listitem>
+                                </itemizedlist>
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Aussperrung endet</entry>
+                        <entry>
+                            <para>
+				Wenn das Benutzerkonto aus Sicherheitsgründen automatisch gesperrt worden ist,
+				meist weil ein Benutzer sein Passwort zu oft fehlerhaft eingegeben hat,
+				zeigt dieses Feld den Zeitpunkt an, ab dem das Konto regulär automatisch
+				entsperrt wird.
+                            </para>
                         </entry>
                     </row>
                     <row>
@@ -627,147 +558,6 @@
                                 Die Einstellungen sind in <xref linkend="mail::management::users"/>
                                 beschrieben.
                             </para>
-                        </entry>
-                    </row>
-                </tbody>
-            </tgroup>
-        </table>
-
-		<para>
-		  Die folgende Karteikarte konfiguriert Einstellungen für Anmeldungen an Windows-Terminalservern.
-		</para>
-        <table>
-            <title>Karteikarte 'Windows-Terminalserver' (erweiterte Einstellungen)</title>
-            <tgroup cols="2">
-                <colspec colnum="1" colname="col1" colwidth="1*"/>
-                <colspec colnum="2" colname="col2" colwidth="2*"/>
-                <thead>
-                    <row>
-                        <entry>Attribut</entry>
-                        <entry>Beschreibung</entry>
-                    </row>
-                </thead>
-                <tbody>
-                    <row>
-                        <entry>Basisverzeichnis des Terminalservers</entry>
-                        <entry>
-                            Hier kann der Pfad zu einem Verzeichnis angegeben werden, das als
-                            Windows-Heimatverzeichnis für den Benutzer am Terminalserver dienen
-                            soll, z.B <filename class="directory">\\ucs-file-server\ts\user</filename>.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Laufwerksbuchstabe für das Basisverzeichnis des Terminalservers</entry>
-                        <entry>
-                            Wenn das Windows-Heimatverzeichnis bei diesem Benutzer auf einem anderen
-                            Windows-Laufwerk erscheinen soll, als in der Samba-Konfiguration vorgegeben,
-                            so kann der entsprechende Laufwerksbuchstabe mit anschließendem Doppelpunkt
-                            hier eingetragen werden, z.B: <filename class="partition">M:</filename>.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Startprogramm Befehlszeile</entry>
-                        <entry>
-                            Pfad zu einem Programm, das beim Starten der Terminal-Sitzung ausgeführt
-                            werden soll.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Startprogramm Arbeitsverzeichnis</entry>
-                        <entry>
-                            Arbeitsverzeichnis des Programms, das unter <guimenu>Startprogramm Befehlszeile</guimenu>
-                            eingetragen ist.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Client-Konfiguration übernehmen für das Startprogramm</entry>
-                        <entry>
-                            Die beiden Einstellungen <guimenu>Startprogramm Befehlszeile</guimenu> und
-                            <guimenu>Startprogramm Arbeitsverzeichnis</guimenu> können von der Client-Anwendung
-                            überschrieben werden. Wird dieses Auswahlkästchen aktiviert, so wird die
-                            Client-Konfiguration verwendet.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Client-Laufwerke beim Anmelden verbinden</entry>
-                        <entry>
-                            Die Laufwerke des zugreifenden Clients werden in der Terminalserver-Sitzung zur Verfügung
-                            gestellt, wenn diese Option aktiviert ist.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Client-Drucker beim Anmelden verbinden</entry>
-                        <entry>
-                            Die Client-Drucker werden bei der Anmeldung am Terminalserver verbunden und
-                            stehen somit in der Terminalserver-Sitzung zur Verfügung.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Standard-Drucker des zugreifenden Clients als Standard-Drucker verwenden</entry>
-                        <entry>
-                            Wird dieses Auswahlkästchen aktiviert, so wird der Client Standard-Drucker zum
-                            Standard-Drucker für diese Terminalserver-Sitzung deklariert.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Anmeldung am Terminalserver zulassen</entry>
-                        <entry>
-                            Ist dieses Auswahlkästchen aktiviert, so darf sich der Benutzer an einem
-                            Terminalserver anmelden.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>CTX Spiegelung</entry>
-                        <entry>
-                            Diese Auswahlliste gibt an, ob eine Benutzersitzung gespiegelt werden kann.
-                            Wenn <guimenu>deaktiviert</guimenu> ausgewählt ist, so kann diese Sitzung nicht
-                            gespiegelt werden.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Beendete oder abgelaufene Verbindungen</entry>
-                        <entry>
-                            In dieser Auswahlliste kann ausgewählt werden, ob beendete oder abgelaufene
-                            Verbindungen <guimenu>getrennt</guimenu> oder <guimenu>zurückgesetzt</guimenu> werden sollen.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Wiederherstellung von beendeten Verbindungen</entry>
-                        <entry>
-                            Hier wird ausgewählt, ob die beendete Verbindung von jedem Client oder nur vom
-                            vorherigen Client wieder aufgebaut werden kann.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry lang="">CTX RAS Dialin</entry>
-                        <entry>
-                            <para>
-                                Diese Option konfiguriert die Callback-Funktion eines Remote Access
-                                Servers. Dabei wird die Einwahlleitung des Benutzer nach Authentifizierung
-                                unterbrochen und der Benutzer zurückgerufen.
-                            </para>
-                            <para>
-                                Wird ein Eintrag mit der Option <guimenu>Eingabe EIN</guimenu> ausgewählt, wird
-                                dem Benutzer, welcher die Spiegelung veranlasst hat, die Erlaubnis erteilt,
-                                Tastatureingaben und Mausaktionen in der gespiegelten Sitzung vorzunehmen.
-                                Sollte ein Eintrag mit der Option <guimenu>Benachrichtigung EIN</guimenu>
-                                ausgewählt sein, so wird auf dem Client eine Meldung angezeigt, in der um die
-                                Berechtigung zum Spiegeln der Sitzung gebeten wird.
-                            </para>
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Windows-Terminalserver Profilpfad</entry>
-                        <entry>
-                            Der Pfad zum Windows-Profil, das in der Terminalserver-Sitzung verwendet
-                            werden soll, ist hier anzugeben. Wird hier kein Wert angegeben, so wird der
-                            Standard-Profilpfad verwendet.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Tastaturlayout</entry>
-                        <entry>
-                            Das Tastaturlayout für die Terminalserver-Sitzung.
                         </entry>
                     </row>
                 </tbody>

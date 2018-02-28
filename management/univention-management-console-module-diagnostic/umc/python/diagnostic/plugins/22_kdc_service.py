@@ -220,7 +220,7 @@ def send_and_receive(kdc, port, protocol, as_req):
 	try:
 		sock.connect((kdc, port))
 		sock.sendall(packed)
-	except socket.error, socket.timeout:
+	except (socket.error, socket.timeout):
 		sock.close()
 		raise ServerUnreachable()
 
@@ -232,7 +232,7 @@ def send_and_receive(kdc, port, protocol, as_req):
 	while num_received < 128:
 		try:
 			(buf, addr) = sock.recvfrom(128)
-		except socket.error, socket.timeout:
+		except (socket.error, socket.timeout):
 			buf = ''
 		if not buf:
 			break
@@ -253,12 +253,15 @@ def probe_kdc(kdc, port, protocol, target_realm, user_name):
 	except KerberosException:
 		return False
 
-	if 'kdc-reachability-check' in received and target_realm in received:
+	if target_realm in received:
 		return True
 
 	return False
 
 	# this no longer works with >= 4.3, ??
+	# I think the new pyasn1 version might need the full asn1Spec to work?:
+	# http://snmplabs.com/pyasn1/changelog.html
+	# Keyword: require strict two-zeros sentinel encoding
 	try:
 		(error, _sub) = pyasn1.codec.der.decoder.decode(received, asn1Spec=KrbError())
 	except pyasn1.error.PyAsn1Error:

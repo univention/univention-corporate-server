@@ -12,11 +12,8 @@ Architecture: all
 Pre-Depends: univention-postgresql
 Depends: bacula,
  bacula-client,
- bacula-server,
- bacula-common,
  bacula-director-pgsql,
- bacula-common-pgsql,
- bacula-sd-pgsql,
+ bacula-server,
  ${misc:Depends}
 Description: UCS - Bacula package
  This packages provides the meta packages for the backup software bacula.

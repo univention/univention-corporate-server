@@ -54,7 +54,9 @@ configure)
 		saml/idp/lookandfeel/theme?"univentiontheme:univention" \
 		saml/idp/https?"true" \
 		saml/idp/show-errors?"true" \
-		ucs/server/sso/virtualhost?"true"
+		ucs/server/sso/virtualhost?"true" \
+		saml/idp/negotiate?"true" \
+		kerberos/defaults/ignore_acceptor_hostname=true
 
 	for i in /var/www/saml /var/www/saml/php-cgi /var/lib/simplesamlphp/secrets.inc.php
 	do
@@ -66,9 +68,11 @@ configure)
 
 	call_joinscript 91univention-saml.inst
 
-	if [ ! -e /etc/simplesamlphp/metadata/metadata_include.php ]; then
-		touch /etc/simplesamlphp/metadata/metadata_include.php
-	fi
+	for file in /etc/simplesamlphp/metadata/metadata_include.php /usr/share/simplesamlphp/modules/negotiate/enable; do
+		if [ ! -e "$file" ]; then
+			touch "$file"
+		fi
+	done
 
 	chown -R root:samlcgi /etc/simplesamlphp
 
@@ -83,8 +87,6 @@ configure)
 	done
 	chmod 640 /var/log/stunnel4/stunnel.log
 
-	deb-systemd-invoke enable univention-saml.service
-	deb-systemd-invoke restart univention-saml.service
 	deb-systemd-invoke restart stunnel4.service
 
 	a2ensite univention-saml

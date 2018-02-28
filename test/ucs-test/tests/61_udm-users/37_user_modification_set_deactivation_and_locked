@@ -8,6 +8,7 @@
 
 import subprocess
 import random
+import time
 import univention.admin.uldap
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
@@ -15,7 +16,7 @@ import univention.testing.utils as utils
 
 
 disabled_states = ('1', '0')
-locked_states = ['1']
+locked_states = ['0', '1']
 
 with ucr_test.UCSTestConfigRegistry() as ucr:
 	ldap_base = ucr['ldap/base']
@@ -43,14 +44,16 @@ def modify_and_check(udm, dn, disabled_state, locked_state):
 			locked['locked'] = '0'
 		udm.modify_object('users/user', dn=dn, disabled=disabled_state, **locked)
 		if locked_state == '1':
-			subprocess.call('python -m univention.lib.account lock --dn "%s" --lock-time "$(date --utc "%s")' % (dn, '+%Y%m%d%H%M%SZ'), shell=True)
+			locktime = time.strftime("%Y%m%d%H%M%SZ", time.gmtime())
+			subprocess.call(['python', '-m', 'univention.lib.account', 'lock', '--dn', dn, '--lock-time', locktime])
 	else:
 		dn, username = udm.create_user(
 			position='cn=users,{}'.format(ldap_base),
 			disabled=disabled_state,
 		)
 		if locked_state == '1':
-			subprocess.call('python -m univention.lib.account lock --dn "%s" --lock-time "$(date --utc "%s")' % (dn, '+%Y%m%d%H%M%SZ'), shell=True)
+			locktime = time.strftime("%Y%m%d%H%M%SZ", time.gmtime())
+			subprocess.call(['python', '-m', 'univention.lib.account', 'lock', '--dn', dn, '--lock-time', locktime])
 
 	krb_state = '254' if disabled_state == '1' or 'kerberos' in disabled_state else '126'
 	smb_disabled = disabled_state == '1' or 'windows' in disabled_state
@@ -65,8 +68,10 @@ def modify_and_check(udm, dn, disabled_state, locked_state):
 		fail('krb5KDCFlags: expected {!r} found {!r}'.format(krb_state, user['krb5KDCFlags']))
 	if smb_disabled and 'D' not in user['sambaAcctFlags'][0]:
 		fail('sambaAcctFlags: expected D in flags, found {!r}'.format(user['sambaAcctFlags']))
-	if smb_locked and 'L' not in user['sambaAcctFlags'][0]:
+	if (smb_locked and not smb_disabled) and 'L' not in user['sambaAcctFlags'][0]:
 		fail('sambaAcctFlags: expected L in flags, found {!r}'.format(user['sambaAcctFlags']))
+	if (smb_locked and smb_disabled) and 'L' in user['sambaAcctFlags'][0]:
+		fail('sambaAcctFlags: unexpected L in flags: {!r}'.format(user['sambaAcctFlags']))
 	if (disabled_state == '1' or 'posix' in disabled_state) and user['shadowExpire'][0] != '1':
 		fail('shadowExpire: expected {!r} found {!r}'.format(['1'], user['shadowExpire']))
 	print('*** OK.')

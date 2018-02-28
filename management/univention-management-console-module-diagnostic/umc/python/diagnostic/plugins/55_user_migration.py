@@ -37,7 +37,7 @@ def migrate_users(_umc_instance):
 
 
 actions = {
-	'migrate_user': migrate_users,
+	'migrate_users': migrate_users,
 }
 
 

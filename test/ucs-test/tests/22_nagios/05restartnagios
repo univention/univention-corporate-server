@@ -14,31 +14,26 @@
 ### This script tests, if there is only one instance of Nagios after a restart of Nagios
 ###################
 
-# ensure, there is only one instance of nagios. If there are more, kill 
-# remaining old processes and start exact one instance
-if [ 1 -lt $(pgrep -c nagios3) ]
-then
-	pkill nagios3
-	if ! invoke-rc.d nagios3 start
-	then # if the script wasn't able to start Nagios (perhaps error in config)
-		exit 140
-	fi
+set -x
+
+trap "service nagios stop; pkill nagios; service nagios start" EXIT
+
+# ensure nagios is started
+if [ "$(pgrep -c nagios)" -eq 0 ]; then
+	service nagios start
+	sleep 3
 fi
+nagios_pid="$(nagiostats | grep -i "Nagios PID:" | sed -ne 's/Nagios PID: *//p')"
 
 # restart Nagios
 echo "Restarting Nagios"
-invoke-rc.d nagios3 restart >/dev/null
-# give nagios a little time to restart
-sleep 2
+service nagios restart
+sleep 3
+new_nagios_pid="$(nagiostats | grep -i "Nagios PID:" | sed -ne 's/Nagios PID: *//p')"
 
-# Check that there is only one instance of Nagios left.
-if [ 1 -lt $(pgrep -c nagios3) ]
-then 
-	echo "After a restart of Nagios, there is more than one instance of Nagios (Bug: #10849)"
-	pkill nagios3 # trying to ensure, there is only one instance of Nagios after this script, even if the test failed
-	invoke-rc.d nagios3 start
-	exit 111
-else
-	exit 101
-fi
+# make sure old pid is no longer running
+test -d /proc/$nagios_pid && exit 111
+test ! -d /proc/$new_nagios_pid && exit 111
+
+exit 101
 # vim:set filetype=sh ts=4:

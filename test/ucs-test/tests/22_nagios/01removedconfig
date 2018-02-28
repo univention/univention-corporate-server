@@ -59,7 +59,7 @@ wait_for_replication
 # check, whether the script was able to create the Nagios-Config
 info  "Remove the Host, checking the existence of the corresponding config"
 
-if [ ! -f "/etc/nagios3/conf.univention.d/services/UNIVENTION_PING,$HOSTNAME.$domainname.cfg" ]
+if [ ! -f "/etc/nagios/conf.univention.d/services/UNIVENTION_PING,$HOSTNAME.$domainname.cfg" ]
 then
 	RETVAL=140
 fi
@@ -73,7 +73,7 @@ udm "computers/$server_role" remove \
 wait_for_replication
 
 # check, wether Bug #8620 is still there
-if [ -f /etc/nagios3/conf.univention.d/services/$NAGIOSSERVICE,$HOSTNAME.$domainname.cfg ]
+if [ -f /etc/nagios/conf.univention.d/services/$NAGIOSSERVICE,$HOSTNAME.$domainname.cfg ]
 then
 	RETVAL=111
 fi

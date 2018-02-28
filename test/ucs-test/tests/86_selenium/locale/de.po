@@ -48,8 +48,8 @@ msgid "Change password"
 msgstr "Passwort ändern"
 
 #: 10_product_test_password_change:133 10_product_test_password_change:134
-msgid "Change password on next login"
-msgstr "Passwort bei der nächsten Anmeldung ändern"
+msgid "User has to change password on next login"
+msgstr "Benutzer muss das Passwort bei der nächsten Anmeldung ändern"
 
 #: 10_product_test_password_change:183
 msgid "Change the password of"

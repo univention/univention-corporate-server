@@ -1,3 +1,92 @@
+univention-appcenter (7.0.1-19) unstable; urgency=medium
+
+  * Bug #44160: Update to PostreSQL-9.6 and drop PostreSQL-9.1
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Feb 2018 18:32:57 +0100
+
+univention-appcenter (7.0.1-18) unstable; urgency=medium
+
+  * Bug #44160: Update to PostreSQL-9.6 and drop PostreSQL-9.1
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Feb 2018 18:22:22 +0100
+
+univention-appcenter (7.0.1-17) unstable; urgency=medium
+
+  * Bug #43661: Fix double package list in dry-run, fix wording (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 22 Feb 2018 16:12:14 +0100
+
+univention-appcenter (7.0.1-16) unstable; urgency=medium
+
+  * Bug #40064: Fix removing apps always seemed to fail
+  * Bug #43661: Fix double package list in dry-run, fix wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 22 Feb 2018 15:52:23 +0100
+
+univention-appcenter (7.0.1-15) unstable; urgency=medium
+
+  * Bug #40064: Fail when apt-get remove fails
+  * Do not check ucs version in UCR when testing non-docker Apps' installation
+    status
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 20 Feb 2018 11:53:27 +0100
+
+univention-appcenter (7.0.1-14) unstable; urgency=medium
+
+  * Bug #46339: fixed dist_upgrade_dry_run and dist_upgrade
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Feb 2018 11:24:14 +0100
+
+univention-appcenter (7.0.1-13) unstable; urgency=medium
+
+  * Bug #43660: Use apt-get instead of package manager for installation (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 19 Feb 2018 13:05:22 +0100
+
+univention-appcenter (7.0.1-12) unstable; urgency=medium
+
+  * Bug #43660: Use apt-get instead of package manager for installation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 16 Feb 2018 01:42:49 +0100
+
+univention-appcenter (7.0.1-11) unstable; urgency=medium
+
+  * Bug #46274: Rename logrotate config file
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 14 Feb 2018 14:27:06 +0100
+
+univention-appcenter (7.0.1-10) unstable; urgency=medium
+
+  * Bug #46278: Improve error handling when searching for App upgrades.
+  * Bug #46274: Add logrotate for appcenter.log
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 Feb 2018 17:08:48 +0100
+
+univention-appcenter (7.0.1-9) unstable; urgency=medium
+
+  * Bug #46270: Do not use deprecated authRestriction
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 11 Feb 2018 01:45:07 +0100
+
+univention-appcenter (7.0.1-8) unstable; urgency=medium
+
+  * Bug #46222: Fix upgrade without app settings
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 09 Feb 2018 00:49:26 +0100
+
+univention-appcenter (7.0.1-7) unstable; urgency=medium
+
+  * Bug #45796: Work around split brains in caches
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Feb 2018 11:05:08 +0100
+
+univention-appcenter (7.0.1-6) unstable; urgency=medium
+
+  * Bug #46223: Make docker env for ldap/hostdn customizable
+  * Bug #46222: Pass settings to the installation routine when upgrading Apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Feb 2018 09:49:55 +0100
+
 univention-appcenter (7.0.1-5) unstable; urgency=medium
 
   * Bug #45842: create users/ldap objects instead of users/user

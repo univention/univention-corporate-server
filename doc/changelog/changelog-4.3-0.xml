@@ -11,10 +11,6 @@
 	<section id="changelog:general">
 		<title>General</title>
 		<itemizedlist>
-			<listitem>
-				<para>
-				</para>
-				<itemizedlist>
 					<listitem><simpara>
 							Debian packages have been updated to Debian Stretch (<u:bug>45642</u:bug>, <u:bug>45709</u:bug>).
 					</simpara></listitem>
@@ -34,8 +30,15 @@
 					<listitem><simpara>
 						A typing error in the welcome screen has been corrected (<u:bug>45819</u:bug>).
 					</simpara></listitem>
-				</itemizedlist>
-			</listitem>
+					<listitem><simpara>
+						The &ucsUCRV; <envar>interfaces/primary</envar> is set during the system setup (<u:bug>45956</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						The update is stopped in case the system has a TLS certificate with a MD5 signature (<u:bug>46133</u:bug>).
+						The hash algorithm can be set on the &ucsMaster; with <command>ucr set ssl/default/hashfunction=sha256</command>.
+						The certificate needs to be renewed afterwards.
+						For details see <ulink url="https://help.univention.com/t/renewing-the-ssl-certificates/37">Renewing the SSL certificate</ulink>.
+					</simpara></listitem>
 		</itemizedlist>
 	</section>
 
@@ -54,6 +57,15 @@
 				<listitem><simpara>
 					The test in the <package>slapd</package>'s update scripts, whether the system is a UCS system, has been changed (<u:bug>45936</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Starting with UCS 4.3 the <package>openldap</package> overlay module for reverse group membership maintenance (<property>memberOf</property>) is activated by
+					default for new installations, see the <package>openldap</package> documentation
+					<ulink url="https://www.openldap.org/doc/admin24/overlays.html#Reverse%20Group%20Membership%20Maintenance">https://www.openldap.org/doc/admin24/overlays.html#Reverse Group Membership Maintenance</ulink>
+					for more information. This applies for new installations only, during the update to 4.3 the <property>memberOf</property> overlay module is installed but deactivated (if
+					not already activated).
+					Information on how to activate the <property>memberOf</property> overlay module can be found in <ulink url="https://help.univention.com/t/6439">https://help.univention.com/t/6439</ulink>
+					(<u:bug>46066</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:domain:openldap:acl">
@@ -63,6 +75,14 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+		</section>
+		<section id="changelog:domain:kerberos">
+			<title>Kerberos</title>
+			<itemizedlist>
+				<listitem><simpara>
+						For the update of Debian Heimdal to version 7.1, the &ucsUCR; Template for <filename>/etc/krb5.conf</filename> has been adjusted to also set Heimdal specific options like <literal>default_etypes></literal>. This ensures compatibility with domain controllers in the UCS domain that have not been updated to UCS 4.3 yet (<u:bug>36542</u:bug>, <u:bug>46292</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:domain:dnsserver">
@@ -92,6 +112,12 @@
 			<title>Univention Portal</title>
 			<itemizedlist>
 				<listitem><simpara>
+					A module for easier configuration of portal and portal entry objects has been added to the UMC.
+					Additionally portals can now be edited directly on the portal site itself (<u:bug>46270</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The visibility of individual portal entries may now be restricted to
+					logged in users of a specific group (<u:bug>46336</u:bug>, <u:bug>46376</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -110,6 +136,13 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
+						Non-Docker Apps are installed with a new functions. These functions support a wider range of integration (<u:bug>40064</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Packages are now installed via <command>apt-get</command> directly, instead of using a library and implement the functionality (<u:bug>43660</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The file <filename>/var/log/univention/appcenter.log</filename> is now rotated (<u:bug>46274</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -118,23 +151,34 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The UDM options <package>posix</package>, <package>samba></package> and <package>kerberos</package> of users have been removed.
-					User objects now must have all object classes of these options.
+					The UDM <package>users/user</package> options have been simplified by removing <package>posix</package>, <package>samba</package>, <package>kerberos</package>, <package>mail</package> and <package>person</package>.
+					All objects handled by this UDM module will now have all object classes of these options.
 					After the upgrade to UCS 4.3 all existing user objects, groups and user templates are migrated into the new LDAP format.
 					It is necessary that the primary group of every user has the <package>samba</package> option enabled and the domain must have a Kerberos realm defined.
+					The two previous options <package>ldap_pwd</package> and <package>person</package> are now handled as separate object types: 
 					A new UDM object type <package>users/ldap</package> has been added which can be used as a simple authentication account.
-					Objects of <package>users/ldap</package> may authenticate via an LDAP bind and are not counted into the license.
-					The UDM option <package>ldap_pwd</package> has been removed from user objects.
 					User objects which had only the <package>ldap_pwd</package> option enabled are migrated into <package>users/ldap</package> objects.
-					Note: UCS systems which are older than UCS 4.3-0 may create user objects in the old format and must be migrated.
+					The UDM option <package>ldap_pwd</package> has been removed from user objects.
+					Objects of <package>users/ldap</package> may authenticate via an LDAP bind.
+					A new UDM object type <package>users/contact</package> has been added for address book objects.
+					User objects which had only the <package>person</package> option enabled are migrated into <package>users/contact</package> objects.
+					Objects of type <package>users/contact</package> and <package>users/ldap</package> are not counted into the license.
+					Note: UCS systems which are older than UCS 4.3-0 may still create user objects in the old format and must be migrated.
 					The UMC module <package>System diagnosis</package> and the script <package>/usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3</package> can be used to detect necessary changes and migrate user objects.
-					<u:bug>45842</u:bug>.
+					(<u:bug>45842</u:bug>, <u:bug>46261</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The values for the syntax class <package>Country</package> have been updated <u:bug>45926</u:bug>.
+					The <package>disabled</package> and <package>locked</package> choices in the <package>users/user</package> module have been simplified and adjusted to match Active Directory concepts.
+					Now, when an administrator disables and account, all methods for authentication get disabled (LDAP/POSIX, Kerberos, Samba).
+					This is in line with the unification of UDM options for user accounts.
+					The <package>locked</package> setting, which used to do similar things, has been replaced to show if an account has been locked out temporarily and to allow administrative unlocking.
+					Temporary lockout of an account can happen in case a user exceeds a number of failed authentication attempts, if a corresponding domain wide policy setting has been defined by an administrator (<u:bug>39817</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The syntax class <package>Base64Bzip2XML</package> has been adjusted to allow <code> >text/xml</code>> input data (<u:bug>45941</u:bug>).
+					The values for the syntax class <package>Country</package> have been updated (<u:bug>45926</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The syntax class <package>Base64Bzip2XML</package> has been adjusted to allow <literal>text/xml</literal> input data (<u:bug>45941</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					In certain situations after locking and unlocking a user object the password was accidentally modified to one of <package>password</package>, <package>********</package>, <package>{KINIT}</package> or <package>{SASL}</package>.
@@ -142,6 +186,12 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The robustness of the <package>LDAP directory</package> module has been improved: Corrupt objects will simply be ignored in the listing (<u:bug>46193</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The <package>pwdChangeNextLogin</package> user attribute toggled when a password was modified twice (<u:bug>46067</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The system user account <package>ucs-sso</package> will not consume a user license (<u:bug>46385</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -152,6 +202,10 @@
 				<listitem><simpara>
 					The script <package>startxwithfirefox</package> now starts services in a change root environment during the installation (<u:bug>45895</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					During the setup <package>apache2</package> certificates are created in the directory <filename class="directory">/var/cache/univention-system-setup</filename>
+					due to the <property>PrivateTmp</property> default setting of the <package>apache2</package> <package>systemd</package> service (<u:bug>46052</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -159,6 +213,7 @@
 			<title>Domain join module</title>
 			<itemizedlist>
 				<listitem><simpara>
+					It is now ensured that the <package>univention-directory-listener</package> is properly restarted during the join process (<u:bug>46276</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -167,6 +222,15 @@
 			<title>Univention Directory Reports</title>
 			<itemizedlist>
 				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:diagnostic">
+			<title>System diagnostic module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Various fixes for more reliable diagnostic results (<u:bug>46231</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -251,7 +315,7 @@
 			<title>MySQL and MariaDB</title>
 			<itemizedlist>
 				<listitem><simpara>
-						In UCS 4.3, MySQL was replaced with MariaDB. The package <package>univention-mysql</package> will not install a MariaDB server on UCS 4.3. The change is transparent, if the package <package>univention-mysql</package> was installed on UCS 4.2, MariaDB will be installed during the update (<u:bug>45876</u:bug>).
+						MySQL has been replaced with MariaDB. The package <package>univention-mysql</package> will now install a MariaDB server on UCS 4.3. The change is transparent, if the package <package>univention-mysql</package> was installed on UCS 4.2, MariaDB will be installed during the update (<u:bug>45876</u:bug>, <u:bug>46434</u:bug>, <u:bug>46435</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -262,6 +326,12 @@
 				<listitem><simpara>
 					A <application>systemd</application> script for the <package>univention-saml</package> instance of <package>memcached</package>
 					has been added (<u:bug>45960</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The <package>univention-saml</package> configuration for <package>stunnel4</package> has been adapted to Debian Stretch (<u:bug>45882</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Dependencies for the <package>univention-saml</package> have been adapted for <package>php7.0</package> compatibility (<u:bug>46110</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -285,6 +355,9 @@
 					all files from <filename class="directory">/etc/nagios3/conf.local.d/</filename> and <filename class="directory">/etc/nagios3/conf.univention.d/</filename>
 					and the log and cache files are moved to the new directories to ensure a smooth transition. Nevertheless the
 					Nagios configuration should be manually checked after the update (<command>nagios -v /etc/nagios/nagios.cfg</command>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Permissions for the <filename>nagios.log</filename> have been changed to 640 (<u:bug>46306</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -345,7 +418,7 @@
 					The package <package>univention-mail-postfix</package> has updated the configuration files and start script of Postfix to match those of upstream version 3.1.6 (<u:bug>45963</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The format of the configuration file <filename>/etc/postfix/dynamicmaps.cf</filename> has changed in Postfix 3. The file will be saved to <filename>/etc/postfix/dynamicmaps.cf.postfix2</filename> and removed before upgrading. The Postfix 3 packages will recreate it in the new format during the upgrade to UCS 4.3 (<u:bug>45968</u:bug>).
+					The format of the configuration file <filename>/etc/postfix/dynamicmaps.cf</filename> has changed in Postfix 3. The file will be saved to <filename>/etc/postfix/dynamicmaps.cf.postfix2.XXXXXXXX</filename> (with <replaceable>XXXXXXXX</replaceable> being a random string) and removed before upgrading. The Postfix 3 packages will recreate it in the new format during the upgrade to UCS 4.3 (<u:bug>45968</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -381,6 +454,10 @@
 			<title>Univention Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
 				<listitem><simpara>
+					<application>Qemu</application> has been re-compiled to use newer libraries from <systemitem class="osname">UCS-4.3</systemitem>.
+					Profiles for <systemitem class="osname">Windows Server 2003</systemitem> are no longer created.
+					Individual profiles for previous <systemitem class="osname">UCS</systemitem> releases are no longer created in favor of a generic profile for <systemitem class="osname">UCS-4</systemitem>.
+					The default boot order has been swapped to hard-disk before CD-ROM.
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -401,7 +478,19 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-						Samba has been updated to version 4.7.4 (<u:bug>45326</u:bug>). The UCS firewall has been adjusted to also ACCEPT port 49152. For details see <ulink url="https://wiki.samba.org/index.php/Samba_4.7_Features_added/changed#Changes_since_4.7.3:">Samba 4.7 Features added/changed</ulink>.
+						Samba has been updated to version 4.7.5 (<u:bug>45326</u:bug>). The UCS firewall has been adjusted to also ACCEPT port 49152. For details see <ulink url="https://wiki.samba.org/index.php/Samba_4.7_Features_added/changed#Changes_since_4.7.4:">Samba 4.7 Features added/changed</ulink>.
+				</simpara></listitem>
+				<listitem><simpara>
+						The Active Directory builtin account <package>Console Logon</package> is created now in OpenLDAP too (<u:bug>46107</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Support for <literal>NT style domain control</literal> has been removed in most parts. The update for these domains is blocked and the domain needs to be migrated to <literal>Samba/AD</literal> following the update guide <ulink url="https://wiki.univention.de/index.php/Migration_from_Samba_3_to_Samba_4">Migration from Samba 3 to Samba 4</ulink>. See also <ulink url="https://wiki.univention.de/index.php/Best_Practice_Samba_4_Migration">Best practices for Samba 4 Migration</ulink> (<u:bug>46118</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The dependency hints in the <literal>init.d</literal> script for <literal>smbd</literal> in univention-samba have been improved (<u:bug>46437</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						A timeout in AD-Takeover has been increased and <literal>samba_dnsupdate</literal> is run during the takeover (<u:bug>46105</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -410,6 +499,7 @@
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
+						The S4-Connector now synchronizes the account lockout state (<u:bug>32014</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -434,7 +524,7 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				The dependency of <package>univention-java</package> has been changed from <package>openjdk-7-jre</package> and
-				<package>icedtea-7-plugin</package> to <package>openjdk-8-jre</package> and <package>icedtea-plugin</package>
+				<package>icedtea-7-plugin</package> to <package>default-jre</package> and <package>icedtea-plugin</package>
 				(<u:bug>45959</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -455,6 +545,31 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				The <package>univention-runit</package> configuration has been adapted to Debian Stretch (<u:bug>45861</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				To prevent <command>systemctl</command> from reporting a wrong status for the services <systemitem class="service">univention-bind</systemitem>, <systemitem class="service">univention-dhcp</systemitem>, <systemitem class="service">univention-directory-notifier</systemitem> and <systemitem class="service">univention-directory-listener</systemitem>, the <command>runsv</command> timeout has been increased to 30 seconds (<u:bug>46310</u:bug>, <u:bug>46311</u:bug>, <u:bug>46312</u:bug>, <u:bug>46313</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The <systemitem class="service">univention-directory-listener</systemitem> is now properly re-started in <command>univention-directory-replication-resync</command> (<u:bug>46372</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The <systemitem class="service">ntp</systemitem> init script has been removed from <package>univention-base-files</package>.
+				Instead the <application>systemd</application> script provided by <package>ntp</package> is being used (<u:bug>46071</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				UCS 4.3 adds support for <application>PostgreSQL-9.6</application> and drops <application>PostgreSQL-9.1</application>. If <application>PostgreSQL-9.1</application> is installed, it needs to be migrated to the UCS 4.2 default <application>PostgreSQL-9.4</application> before the update. The required steps for migration are described in <ulink url="https://help.univention.com/t/8073">Updating from PostgreSQL 9.1 to PostgreSQL 9.4</ulink>. UCS Debian packages depending on the old version have been updated (<u:bug>44160</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The package <package>univention-bacula</package> has been updates to the new versions of <application>Bacula</application> and <application>PostgreSQL-9.6</application> from Debian.
+				Support for old version of <application>PostgreSQL</application> has been removed (<u:bug>46327</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				GRUB has been updated to a new version.
+				Support for para-virtualized Xen domains has been removed.
+				The SHIM binary has been renamed to follow the upstream naming schema.
+			</simpara></listitem>
+			<listitem><simpara>
+				The at daemon child processes are no longer terminated during the release upgrade (<u:bug>46388</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>

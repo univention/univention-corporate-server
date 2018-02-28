@@ -152,7 +152,7 @@ if [ -n "$S3_DCS" ]; then
 		echo "WARNING: The following Samba 3 domaincontroller have been found:"
 		echo "         $S3_DCS"
 		echo "         It is not possible to install a samba 4 domaincontroller "
-		echo "         into a samba 3 environment.samba4/ignore/mixsetup is true."
+		echo "         into a samba 3 environment. samba4/ignore/mixsetup is true."
 		echo "         Continue as requested"
 	else
 		echo "ERROR: The following Samba 3 domaincontroller have been found:"
@@ -167,9 +167,6 @@ if [ -z "$binddn" ]; then
 	if [ -r "/etc/ldap.secret" ]; then
 		binddn="cn=admin,$ldap_base"
 		bindpwd=$(< /etc/ldap.secret)
-	else
-		echo "ERROR: Options --binddn and --bindpwd not given for samba3upgrade"
-		exit 1
 	fi
 fi
 ## store the binddn and bindpwd options in UDM_ARGV
@@ -276,79 +273,8 @@ then
 	fi
 
 else
-	## Before starting the upgrade check for Samba accounts that are not POSIX accounts:
-	non_posix_sambaSamAccount_dns=$(univention-ldapsearch -LLL "(&(objectClass=sambaSamAccount)(!(objectClass=posixAccount)))" dn | ldapsearch-wrapper | sed -n 's/^dn: \(.*\)/\1/p')
-	if [ -n "$non_posix_sambaSamAccount_dns" ]; then
-		echo "ERROR: Found Samba accounts in LDAP that are not POSIX accounts, please remove these before updating to Samba 4" >&2
-		echo "$non_posix_sambaSamAccount_dns" | while read dn; do
-			echo "DN: $dn" >&2
-		done
-		exit 1
-	fi
-
-	## Before starting the upgrade check for group names colliding with user names
-	uid_ldap_check_function() {
-		local filter="$1"
-		collision=$(univention-ldapsearch -LLL "(&(objectClass=posixAccount)(|$filter))" uid | ldapsearch-wrapper | sed -n 's/^uid: \(.*\)/\1/p')
-		if [ -n "$collision" ]; then
-			echo "ERROR: Group names and user names must be unique, please rename these before updating to Samba 4" >&2
-			echo "The following user names are also present as group names:" >&2
-			echo "$collision" >&2
-			exit 1
-		fi
-	}
-
-	filter_maxsize=10000	## approximate limit for the LDAP filter string size
-	while read name; do
-		if [ "$((${#filter} + ${#name}))" -lt "$filter_maxsize" ]; then
-			filter="$filter(uid=$name)"
-		else
-			uid_ldap_check_function "$filter"
-			filter="(uid=$name)"
-		fi
-	done < <(univention-ldapsearch -LLL "(objectClass=posixGroup)" cn | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')
-	if [ -n "$filter" ]; then
-		uid_ldap_check_function "$filter"
-	fi
-
-	## Preparations for the samba3update:
-	extract_binddn_and_bindpwd_from_args "$@"
-	groups=("Windows Hosts" "DC Backup Hosts" "DC Slave Hosts" "Computers" "Power Users")
-	for group in "${groups[@]}"; do
-		record=$(univention-ldapsearch -LLL "(&(cn=$group)(objectClass=univentionGroup))" dn description | ldapsearch-wrapper)
-		description=$(echo "$record" | sed -n 's/^description: \(.*\)/\1/p')
-		if [ -z "$description" ]; then
-			dn=$(echo "$record" | sed -n 's/^dn: \(.*\)/\1/p')
-			univention-directory-manager groups/group modify "$@" --dn "$dn" --set description="$group"
-		fi
-	done
-
-	## commit samba3 smb.conf
-	mkdir -p /var/lib/samba3/etc/samba
-	cat /usr/share/univention-samba4/samba3upgrade/smb.conf.d/* | ucr filter > /var/lib/samba3/etc/samba/smb.conf
-	## fix up /var/lib/samba3/smb.conf for samba-tool
-	touch /etc/samba/base.conf /etc/samba/installs.conf /etc/samba/printers.conf /etc/samba/shares.conf
-
-	# The upgrade tool uses /var/lib/samba3/ for these files
-	#  https://forge.univention.org/bugzilla/show_bug.cgi?id=33251
-	for tdbfile in schannel_store.tdb idmap2.tdb passdb.tdb secrets.tdb; do
-		if [ -e /var/lib/samba3/private/$tdbfile -a ! -e /var/lib/samba3/$tdbfile ]; then
-			cp /var/lib/samba3/private/$tdbfile /var/lib/samba3/$tdbfile
-		fi
-	done
-
-	## move  univention-samba4 default smb.conf out of the way
-	mv /etc/samba/smb.conf /var/tmp/univention-samba4_smb.conf
-	### run samba-tool domain samba3upgrade
-	samba-tool domain classicupgrade /var/lib/samba3/etc/samba/smb.conf --dbdir /var/lib/samba3 | tee -a "$LOGFILE"
-	## move univention-samba4 config back again, overwriting minimal smb.conf created by samba3upgrade
-	mv /var/tmp/univention-samba4_smb.conf /etc/samba/smb.conf
-
-	## set the samba4 machine account secret in secrets.ldb to /etc/machine.secret
-	set_machine_secret
-
-	## finally set the Administrator password, which samba3upgrade did not migrate
-	samba-tool user setpassword Administrator --newpassword="$adminpw"
+	echo "ERROR: Samba/NT (samba3) Domain Controller migration to Samba/AD is not supported any more."
+	exit 1
 fi
 
 ### Next adjust OpenLDAP ports before starting Samba4

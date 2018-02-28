@@ -104,6 +104,7 @@ if test -e "/var/lib/univention-directory-listener/handlers/replication"; then
 fi
 
 # The samba join script needs a running listener. Bug #19128
+/etc/init.d/univention-directory-listener stop
 /etc/init.d/univention-directory-listener start
 
 test -x /usr/sbin/nscd && /usr/sbin/nscd -i passwd

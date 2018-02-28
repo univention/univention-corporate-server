@@ -4,7 +4,7 @@
 # UCS Virtual Machine Manager Daemon
 #  postinst script
 #
-# Copyright 2010-2017 Univention GmbH
+# Copyright 2010-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,6 +35,7 @@ uinst=/usr/lib/univention-install/55univention-management-console-module-uvmm.ui
 [ -e "$uinst" ] && rm "$uinst"
 
 #DEBHELPER#
+service univention-management-console-server restart
 
 exit 0
 # vim:set ft=sh ts=4 sw=4 noet:

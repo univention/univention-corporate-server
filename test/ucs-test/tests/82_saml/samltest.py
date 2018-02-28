@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import re
 import requests
+from requests_kerberos import HTTPKerberosAuth, OPTIONAL
 import subprocess
 import socket
 import json
@@ -56,13 +57,16 @@ class GuaranteedIdP(object):
 
 
 class SamlTest(object):
-	def __init__(self, username, password):
+	def __init__(self, username, password, use_kerberos=False):
 		self.ucr = configRegistry.ConfigRegistry()
 		self.ucr.load()
+		self.use_kerberos = use_kerberos
 		self.target_sp_hostname = '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
 		self.username = username
 		self.password = password
 		self.session = requests.Session()
+		if use_kerberos:
+			self.session.auth = HTTPKerberosAuth(mutual_authentication=OPTIONAL)
 		self.page = None
 		self.position = 'Init...'
 
@@ -181,7 +185,7 @@ class SamlTest(object):
 		print("Test logout at IdP...")
 		try:
 			self.login_with_existing_session_at_IdP()
-		except SamlLoginError:
+		except SamlError:
 			print("Logout success at IdP")
 		else:
 			utils.fail("Session not closed at IdP after logout")
@@ -209,11 +213,21 @@ class SamlTest(object):
 		url = "https://%s/univention/saml/" % self.target_sp_hostname
 		print("GET SAML login form at: %s" % url)
 		self.position = "reaching login dialog"
-		self._request('GET', url, 200)
-		print('SAML message recieved from %s' % self.page.url)
-
 		# Login at IdP. IdP answers with SAML message and url to SP in body
-		self._login_at_idp_with_credentials()
+		if self.use_kerberos:
+			self._request('GET', url, 200)
+		else:
+			try:
+				self._request('GET', url, 200)
+			except SamlError as E:
+				# The kerberos backend adds a manual redirect
+				if not self.page.status_code == 401:
+					raise E
+				login_link = re.search('<a href="([^"]+)">', bytes(self.page.text)).group(1)
+				self._request('GET', login_link, 200)
+			self._login_at_idp_with_credentials()
+
+		print('SAML message recieved from %s' % self.page.url)
 		url = self._extract_sp_url()
 		saml_msg = self._extract_saml_msg()
 		relay_state = self._extract_relay_state()

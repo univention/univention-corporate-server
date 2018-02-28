@@ -42,9 +42,8 @@ Type=str
 Categories=service-mail
 
 [mail/postfix/mynetworks_style]
-Description[de]=Die Methode den default Wert für den mynetworks Parameter zu setzen, siehe <http://www.postfix.org/postconf.5.html#mynetworks_style>. Wenn nicht gesetzt: "subnet".
-Für E-Mails aus den hier angegebenen Netz(en) ist Relaying erlaubt. Das Format ist unter <http://www.postfix.org/postconf.5.html#mynetworks> beschrieben. Ist die Variable nicht gesetzt, gilt '127.0.0.0/8'.
-Description[en]=The method to generate the default value for the mynetworks parameter, see <http://www.postfix.org/postconf.5.html#mynetworks_style>. Default when unset "subnet".
+Description[de]=Diese Variable definiert die Methode, über den der Defaultwert für den Parameter "mynetworks" ermittelt word, siehe <http://www.postfix.org/postconf.5.html#mynetworks_style>. Wenn nicht gesetzt: "subnet".
+Description[en]=This variable defines the method to generate the default value for the "mynetworks" parameter, see <http://www.postfix.org/postconf.5.html#mynetworks_style>. Default is "subnet" if variable is unset.
 Type=str
 Categories=service-mail
 
@@ -415,8 +414,8 @@ Type=str
 Categories=service-mail
 
 [mail/postfix/smtputf8_enable]
-Description[de]=Wenn aktiviert, weise nicht-ASCII Adressen von Clients zurück, die nicht SMTPUTF8 Support angefragt haben (siehe <http://www.postfix.org/postconf.5.html#smtputf8_enable>). Wenn nicht gesetzt ist der Standard: "no".
-Description[en]=Set to "yes" to rejects non-ASCII addresses from clients that don't request SMTPUTF8 support (see <http://www.postfix.org/postconf.5.html#smtputf8_enable>). The default when unset is "no".
+Description[de]=Wenn aktiviert, weist Postfix nicht-ASCII-Adressen von Clients zurück, die den SMTPUTF8-Support nicht explizit angefragt haben (siehe <http://www.postfix.org/postconf.5.html#smtputf8_enable>). Ist die Variable nicht gesetzt, ist der Standard "no".
+Description[en]=Set this variable to "yes" to reject non-ASCII addresses from clients that don't request SMTPUTF8 support (see <http://www.postfix.org/postconf.5.html#smtputf8_enable>). The default is "no" if the variable is unset.
 Type=bool
 Categories=service-mail
 

@@ -1,3 +1,240 @@
+univention-directory-manager-modules (13.0.21-2) unstable; urgency=low
+
+  * Bug #46102: rename UDM mail/folder "cyrus-userquota" to "mailQuota"
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 27 Feb 2018 17:25:22 +0100
+
+univention-directory-manager-modules (13.0.21-1) unstable; urgency=medium
+
+  * Support password policy for users/ldap (Bug #46261)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Feb 2018 08:48:25 +0100
+
+univention-directory-manager-modules (13.0.20-10) unstable; urgency=medium
+
+  * Bug #46385: Exclude ucs-sso user from licence count
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 26 Feb 2018 17:23:57 +0100
+
+univention-directory-manager-modules (13.0.20-9) unstable; urgency=medium
+
+  * Bug #46357: Don't upgrade user accounts with "person" only option,
+    just change their univentionObjectType to users/contact
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Feb 2018 13:20:13 +0100
+
+univention-directory-manager-modules (13.0.20-8) unstable; urgency=medium
+
+  * Bug #39817: Disabling an account in Samba/AD directly "unlocks" it;
+    makes sense, that way it is directly usable when enabled again.
+    This also works better for local pam_tally unlocking in case
+    auth/faillog/lock_global is enabled.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Feb 2018 11:30:25 +0100
+
+univention-directory-manager-modules (13.0.20-7) unstable; urgency=medium
+
+  * Bug #39817: Feedback from QA: Add an "unlock" trigger checkbox and
+    don't show the "locked" state as a checkbox.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Feb 2018 10:36:41 +0100
+
+univention-directory-manager-modules (13.0.20-6) unstable; urgency=medium
+
+  * Bug #39817: Fix univention.lib.account.lock log message change
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Feb 2018 19:59:49 +0100
+
+univention-directory-manager-modules (13.0.20-5) unstable; urgency=medium
+
+  * Bug #46067: Revert regressive change of 13.0.19-17
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Feb 2018 11:37:07 +0100
+
+univention-directory-manager-modules (13.0.20-4) unstable; urgency=medium
+
+  * Bug #39817: Make univention.lib.account.lock issue a log message
+    to /var/log/univention/directory-manager-cmd.log, otherwise this
+    LDAP modification is nearly invisible and hard to debug.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Feb 2018 20:45:05 +0100
+
+univention-directory-manager-modules (13.0.20-3) unstable; urgency=medium
+
+  * Bug #45842: Feedback / patch from original author
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Feb 2018 13:33:49 +0100
+
+univention-directory-manager-modules (13.0.20-2) unstable; urgency=medium
+
+  * Bug #45842: Fix a re-regression in users/user open if self.exists(),
+    amending 13.0.19-23 by considering the refactoring steps of 13.0.2-1
+    in more detail. If self.exists in open() then we need to save()
+    after _load_groups(). If not, then not (that was 13.0.19-22).
+
+ -- Arvid Requate <requate@univention.de>  Fri, 16 Feb 2018 14:12:18 +0100
+
+univention-directory-manager-modules (13.0.20-1) unstable; urgency=medium
+
+  * Bug #46118: Remove references to "NT" DCs
+  * Remove support for Windows Terminal Server settings
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Feb 2018 17:38:43 +0100
+
+univention-directory-manager-modules (13.0.19-23) unstable; urgency=medium
+
+  * Bug #45842: Fix regression in users/user open if self.exists(),
+    amending 13.0.19-22 by considering the refactoring steps of 13.0.2-1
+    in more detail.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Feb 2018 12:24:48 +0100
+
+univention-directory-manager-modules (13.0.19-22) unstable; urgency=medium
+
+  * Bug #45842: New user objects were not added to the univentionDefaultGroup
+    any more because self.save() had been moved to end of self.open()
+  * Cleanup initialization of self.groupsLoaded
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Feb 2018 16:57:00 +0100
+
+univention-directory-manager-modules (13.0.19-21) unstable; urgency=medium
+
+  * Bug #46067: Work around Bug #44944 which now hit QA due to the
+    restructured code (_ldap_pre_ready).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Feb 2018 13:16:41 +0100
+
+univention-directory-manager-modules (13.0.19-20) unstable; urgency=medium
+
+  * Bug #46067: Adjust settings/usertemplate as well to not offer 'mail'
+    and 'person' options. Offer 'pki' instead, which was missing until now.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Feb 2018 17:35:57 +0100
+
+univention-directory-manager-modules (13.0.19-19) unstable; urgency=medium
+
+  * Bug #46067: Decision: user accounts will always have 'univentionMail',
+    'organizationalPerson' and 'inetOrgPerson' objectClass. The previous
+    user options 'mail' and 'person' are removed. The last modification
+    of the migration script has been reverted too.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Feb 2018 17:19:16 +0100
+
+univention-directory-manager-modules (13.0.19-18) unstable; urgency=medium
+
+  * Bug #46067: The univention-migrate-users-to-ucs4.3 script should just
+    unify "posix", "samba" and "kerberos" and not add "mail" or "person".
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Feb 2018 16:27:46 +0100
+
+univention-directory-manager-modules (13.0.19-17) unstable; urgency=medium
+
+  * Bug #46067: UDM flag pwdChangeNextLogin=1 should not toggle
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Feb 2018 15:35:52 +0100
+
+univention-directory-manager-modules (13.0.19-16) unstable; urgency=medium
+
+  * Bug #45842 Comment 54: Feedback from QA
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Feb 2018 15:00:19 +0100
+
+univention-directory-manager-modules (13.0.19-15) unstable; urgency=low
+
+  * Bug #46102: remove deprecated cyrus related packaging code
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 23 Jan 2018 16:32:06 +0100
+
+univention-directory-manager-modules (13.0.19-14) unstable; urgency=medium
+
+  * Bug #45842 Comment 52: Feedback from QA
+
+ -- Arvid Requate <requate@univention.de>  Mon, 12 Feb 2018 18:55:03 +0100
+
+univention-directory-manager-modules (13.0.19-13) unstable; urgency=medium
+
+  * Bug #46270: Add udm attribute for portal entry user groups (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 11 Feb 2018 02:53:30 +0100
+
+univention-directory-manager-modules (13.0.19-12) unstable; urgency=medium
+
+  * Bug #46270: Add udm attribute for portal entry user groups
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 11 Feb 2018 01:45:56 +0100
+
+univention-directory-manager-modules (13.0.19-11) unstable; urgency=medium
+
+  * Bug #46270: Add UDM flavor for portals portal entries
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 09 Feb 2018 20:06:40 +0100
+
+univention-directory-manager-modules (13.0.19-10) unstable; urgency=medium
+
+  * Bug #45842: Feedback from QA
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Feb 2018 20:17:27 +0100
+
+univention-directory-manager-modules (13.0.19-9) unstable; urgency=medium
+
+  * Bug #39817: Fix default for unlockTime to avoid this error message:
+    "The LDAP object could not be saved: Value may not change.
+     key=unlockTime old=None new=0"
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Feb 2018 16:23:38 +0100
+
+univention-directory-manager-modules (13.0.19-8) unstable; urgency=medium
+
+  * Bug #39817: Use calender.timegm() to convert UTC time to epoch properly
+  * Fix display of unlock time to show lockoutDuration == 0 as "unlimited"
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Feb 2018 09:33:51 +0100
+
+univention-directory-manager-modules (13.0.19-7) unstable; urgency=medium
+
+  * Bug #39817: Fix conversion from UTC lockout time via unix timestamp
+    to windows filetime (mktime is inverse of localtime, not gmtime).
+  * rename unmapSambaBadPasswordTime to unmapWindowsFiletime
+  * Move sambaBadPasswordTime mapping logic from python-lib/account.py
+    to mapWindowsFiletime
+  * Fix unmap function for "0" value in sambaBadPasswordTime
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 22:16:36 +0100
+
+univention-directory-manager-modules (13.0.19-6) unstable; urgency=medium
+
+  * Bug #39817: Feedback from external QA
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 20:38:52 +0100
+
+univention-directory-manager-modules (13.0.19-5) unstable; urgency=medium
+
+  * Bug #39817: Fix wording and GUI layout
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 16:54:14 +0100
+
+univention-directory-manager-modules (13.0.19-4) unstable; urgency=medium
+
+  * Bug #39817: more generic implementation of pwdAccountLockedTime lookup
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 15:17:23 +0100
+
+univention-directory-manager-modules (13.0.19-3) unstable; urgency=medium
+
+  * Bug #45842: Fixes for QA feedback:
+  * Automatically initialize "lastname" and "name" from "username"
+  * Don't show "lastname" and "name" properties in layout
+  * Fix handling of "disabled"
+  * Fix cli traceback when not supplying a password during create
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Feb 2018 15:04:43 +0100
+
+univention-directory-manager-modules (13.0.19-2) unstable; urgency=medium
+
+  * Bug #39817: fix resetting of pwdAccountLockedTime
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Feb 2018 19:17:31 +0100
+
 univention-directory-manager-modules (13.0.19-1) unstable; urgency=medium
 
   * Bug #45877: fix typos in migration script

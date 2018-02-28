@@ -162,6 +162,17 @@ univention-app update || true
 univention-app register --app || true
 # Bug 45328
 
+# Bug #46435
+if [ -x "/usr/bin/mysql_upgrade" ]; then
+	/usr/bin/mysql_upgrade --defaults-extra-file=/etc/mysql/debian.cnf >>"$UPDATER_LOG" 2>&1
+fi
+
+# Bug #46270
+if [ -x "/usr/sbin/univention-directory-listener-ctrl" ]; then
+	/usr/sbin/univention-directory-listener-ctrl resync portal >>"$UPDATER_LOG" 2>&1
+	/usr/sbin/univention-directory-listener-ctrl resync portal_entry >>"$UPDATER_LOG" 2>&1
+fi
+
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-run-join-scripts >>"$UPDATER_LOG" 2>&1
@@ -169,6 +180,13 @@ fi
 
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >>"$UPDATER_LOG" 2>&1
+
+# Bug 46388 - Ensure atd doesn't kill the UMC update process - remove file
+if test -e /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf; then
+	rm /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf
+	systemctl daemon-reload
+fi
+
 
 /usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3 >>"$UPDATER_LOG" 2>&1
 

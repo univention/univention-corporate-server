@@ -16,7 +16,6 @@ NAME=root
 
 ucr set \
 	auth/faillog=yes \
-	auth/faillog/lock_global=yes \
 	auth/faillog/limit=6 \
 	auth/faillog/root=yes \
 	sshd/challengeresponse=yes \

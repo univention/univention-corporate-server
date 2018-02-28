@@ -36,17 +36,4 @@ if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 10.0.29-53; then
 	ln -s /usr/share/pyshared/univention/admin/policy.py /usr/lib/pymodules/python2.7/univention/admin/policy.py
 fi
 
-# Bug #38473: workaround only required up to UCS 4.1-0
-if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt-nl 10.0.30; then
-	FN="/usr/share/pyshared/univention/admin/handlers/policies/mailquota.py"
-	FN_BACKUP="${FN}.udm_backup"
-	if [ -f "$FN" ] ; then
-		CUR_MD5="$(md5sum "$FN" | cut -d' ' -f1)"
-		PKG_MD5="$(sed -nre 's,^([a-f0-9]+)\s+usr/share/pyshared/univention/admin/handlers/policies/mailquota.py,\1,p' /var/lib/dpkg/info/python-univention-directory-manager.md5sums)"
-		if [ -n "$PKG_MD5" -a -n "$CUR_MD5" -a ! "$PKG_MD5" = "$CUR_MD5" ] ; then
-			cp "$FN" "$FN_BACKUP"
-		fi
-	fi
-fi
-
 exit 0

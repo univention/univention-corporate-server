@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Daemon
 #  join script
 #
-# Copyright 2010-2017 Univention GmbH
+# Copyright 2010-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION="12"
+VERSION="13"
 
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
@@ -121,8 +121,8 @@ create_hvm_profile() {
 		--set ram="${ram}" \
 		--set diskspace="${diskspace}" \
 		--set interface=br0 \
-		--append bootdev=cdrom \
 		--append bootdev=hd \
+		--append bootdev=cdrom \
 		--set rtcoffset="$rtcoffset" \
 		--set vnc=1 \
 		--set kblayout="${locale_keymap}" \
@@ -167,22 +167,6 @@ create_hvm_profile "Microsoft Windows 7 (64 Bit)" "win7-64-" "kvm" "x86_64" "204
 #   16 GB available hard disk space (32-bit) or 20 GB (64-bit) 
 create_hvm_profile "Microsoft Windows 8" "win8-" "kvm" "automatic" "1024MB" "0" "0" "0" "32GB" "localtime"
 create_hvm_profile "Microsoft Windows 8 (64 Bit)" "win8-64-" "kvm" "x86_64" "2048MB" "0" "0" "0" "32GB" "localtime"
-
-# http://technet.microsoft.com/de-de/windowsserver/bb430827.aspx
-#   Speicher
-#        mindestens 128 MB Arbeitsspeicher erforderlich; Maximum: 32 GB für x86-basierte PCs mit der 32-Bit-Version und 64 GB für Itanium-basierte PCs mit der 64-Bit-Version
-#   Festplatte
-#        1,5 GB verfügbarer Speicherplatz auf der Festplatte bei x86-basierten PCs; 2 GB für Itanium-basierte PCs; wenn die Installation über ein Netzwerk erfolgt, ist zusätzlicher Speicherplatz erforderlich
-# http://technet.microsoft.com/de-de/library/cc739866%28WS.10%29.aspx
-#   64bit: Speicher Mindestens 1 GB, höchstens 1024 GB (1 TB) RAM.
-create_hvm_profile "Microsoft Windows 2003" "w2k3-" "kvm" "automatic" "1024MB" "0" "0" "0" "20GB" "localtime"
-
-# http://technet.microsoft.com/de-de/windowsserver/bb430827.aspx
-# Speicher
-#    mindestens 128 MB Arbeitsspeicher erforderlich; 256 MB oder mehr empfohlen; höchstens 64 GB für x86-basierte Computer; höchstens 2 TB für x64- und ia64-Computer
-# Festplatte
-#    1,2 GB für Netzwerkinstallation; 2,9 GB für Installation von CD
-create_hvm_profile "Microsoft Windows 2003 R2 (64 Bit)" "w2k3r2-" "kvm" "x86_64" "768MB" "0" "0" "0" "20GB" "localtime"
 
 # http://msdn.microsoft.com/en-us/windowsserver/cc196364.aspx
 #   Memory
@@ -229,14 +213,7 @@ create_hvm_profile "Microsoft Windows 10 (64 Bit)" "win10-64-" "kvm" "x86_64" "2
 #   32 GB available hard disk space
 create_hvm_profile "Microsoft Windows 2016 (64 Bit)" "win2016-" "kvm" "x86_64" "2048MB" "0" "0" "0" "32GB" "localtime"
 
-create_hvm_profile "UCS 3.2" "ucs32-" "kvm" "automatic" "1024MB" "1" "0" "1" "20GB" "utc"
-create_hvm_profile "UCS 3.2 (64 Bit)" "ucs32-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
-
-create_hvm_profile "UCS 4.0 (64 Bit)" "ucs40-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
-
-create_hvm_profile "UCS 4.1 (64 Bit)" "ucs41-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
-
-create_hvm_profile "UCS 4.2 (64 Bit)" "ucs42-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
+create_hvm_profile "UCS 4 (64 Bit)" "ucs4-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
 
 create_hvm_profile "Other" "other-" "kvm" "automatic" "512MB" "0" "0" "0" "20GB" "utc"
 

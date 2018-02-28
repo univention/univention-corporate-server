@@ -1,14 +1,8 @@
-shim-signed (4.0.0-1) unstable; urgency=medium
+shim-signed (2.0.0-1) unstable; urgency=medium
 
-  * Bug #45841: UCS-4.3 version bump
+  * Bug #46325: Adapto to new GRUB in UCS-4.3
 
- -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:49 +0100
-
-shim-signed (3.0.0-1) unstable; urgency=medium
-
-  * Bug #41963: UCS-4.2 version bump
-
- -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:57:44 +0200
+ -- Philipp Hahn <hahn@univention.de>  Tue, 20 Feb 2018 15:45:33 +0100
 
 shim-signed (2.0-1) unstable; urgency=medium
 

@@ -98,6 +98,7 @@ class License(object):
 		self.searchResult = None
 		self.sysAccountNames = (
 			custom_username('Administrator'),
+			'ucs-sso',
 			'join-backup',
 			'join-slave',
 			'spam',

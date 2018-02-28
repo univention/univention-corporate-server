@@ -1,5 +1,5 @@
 Type: file
-File: etc/freeradius/radiusd.conf
+File: etc/freeradius/3.0/radiusd.conf
 User: root
 Group: freerad
 Mode: 640
@@ -12,8 +12,6 @@ Variables: freeradius/conf/log/auth
 Variables: freeradius/conf/log/auth/badpass
 Variables: freeradius/conf/log/auth/goodpass
 Variables: freeradius/conf/max_requests
-Variables: freeradius/conf/port
-Variables: freeradius/conf/accountingport
 Variables: freeradius/conf/servers/start
 Variables: freeradius/conf/servers/max
 Variables: freeradius/conf/servers/spare/min
@@ -22,7 +20,7 @@ Variables: freeradius/conf/servers/maxrequests
 Variables: ldap/hostdn
 
 Type: file
-File: etc/freeradius/eap.conf
+File: etc/freeradius/3.0/mods-available/eap
 User: root
 Group: freerad
 Mode: 640
@@ -36,7 +34,7 @@ Variables: freeradius/conf/certificate/file
 Variables: freeradius/conf/ca/file
 
 Type: file
-File: etc/freeradius/modules/ldap
+File: etc/freeradius/3.0/mods-available/ldap
 User: root
 Group: freerad
 Mode: 640
@@ -48,7 +46,7 @@ Variables: freeradius/conf/auth-type/mschap
 Variables: freeradius/conf/auth-type/mschap/.*
 
 Type: file
-File: etc/freeradius/modules/mschap
+File: etc/freeradius/3.0/mods-available/mschap
 User: root
 Group: freerad
 Mode: 640
@@ -58,7 +56,7 @@ Variables: freeradius/conf/auth-type/mschap
 Variables: freeradius/conf/auth-type/mschap/.*
 
 Type: file
-File: etc/freeradius/sites-available/default
+File: etc/freeradius/3.0/sites-available/default
 User: root
 Group: freerad
 Mode: 640
@@ -66,9 +64,11 @@ Variables: freeradius/conf/auth-type/mschap
 Variables: freeradius/conf/auth-type/mschap/.*
 Variables: freeradius/conf/realm
 Variables: freeradius/conf/users
+Variables: freeradius/conf/port
+Variables: freeradius/conf/accountingport
 
 Type: file
-File: etc/freeradius/sites-available/inner-tunnel
+File: etc/freeradius/3.0/sites-available/inner-tunnel
 User: root
 Group: freerad
 Mode: 640
@@ -76,10 +76,3 @@ Variables: freeradius/conf/auth-type/mschap
 Variables: freeradius/conf/auth-type/mschap/.*
 Variables: freeradius/conf/realm
 Variables: freeradius/conf/users
-
-Type: file
-File: etc/freeradius/ldap.attrmap
-User: root
-Group: freerad
-Mode: 640
-Variables: freeradius/conf/auth-type/mschap

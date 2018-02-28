@@ -34,6 +34,8 @@
 
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 from univention.appcenter.ucr import ucr_save
+from univention.appcenter.packages import remove_packages, remove_packages_dry_run, update_packages
+from univention.appcenter.exceptions import RemoveFailed
 
 
 class Remove(InstallRemoveUpgrade):
@@ -52,14 +54,15 @@ class Remove(InstallRemoveUpgrade):
 		pass
 
 	def _do_it(self, app, args):
-		self._remove_app(app, args)
+		if not self._remove_app(app, args):
+			raise RemoveFailed()
 		self.percentage = 45
 		self._unregister_app(app, args)
 		self.percentage = 50
 		self._unregister_attributes(app, args)
 		self.percentage = 60
 		if self._unregister_component(app):
-			self._apt_get_update()
+			update_packages()
 		self.percentage = 70
 		self._unregister_files(app)
 		self.percentage = 80
@@ -69,4 +72,7 @@ class Remove(InstallRemoveUpgrade):
 
 	def _remove_app(self, app, args):
 		self._configure(app, args)
-		self._apt_get('remove', app.get_packages(additional=False), update=False)
+		return remove_packages(app.get_packages(additional=False))
+
+	def _dry_run(self, app, args):
+		return remove_packages_dry_run(app.get_packages(additional=False))

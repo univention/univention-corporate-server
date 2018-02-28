@@ -50,6 +50,7 @@ zip
 bridge-utils
 ifenslave
 vlan
+man-db
 
 /* Role Packages */
 univention-server-master

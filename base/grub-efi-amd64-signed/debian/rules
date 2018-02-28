@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 #
-# Copyright 2013-2017 Univention GmbH
+# Copyright 2013-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,8 +27,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION_PREFIX := $(shell LC_ALL=C dpkg-parsechangelog | sed -nre 's/^Version: ([0-9]+[.][0-9]+-[0-9]+)([.][0-9]+[.][0-9]+)?/\1/p')
-VERSION_SUFFIX := $(shell LC_ALL=C dpkg-parsechangelog | sed -nre 's/^Version: [-.0-9]+([.][0-9]+[.][0-9]+)/\1/p')
+VERSION_PREFIX := $(shell LC_ALL=C dpkg-parsechangelog | sed -nre 's/^Version: ([.0-9]+-[0-9]+)([.][0-9]+[.][0-9]{12}|A~[0-9]+[.][0-9]+[.][0-9]+.[0-9]{12})?/\1/p')
+VERSION_SUFFIX := $(shell LC_ALL=C dpkg-parsechangelog | sed -nre 's/^Version: ([.0-9]+-[0-9]+)([.][0-9]+[.][0-9]{12}|A~[0-9]+[.][0-9]+[.][0-9]+.[0-9]{12})?/\2/p')
 GRUB_VERSION := $(shell dpkg-query -f '$${Version}\n' -W grub-efi-amd64-bin)
 GRUB_MAIN_VERSION := $(shell dpkg-query -f '$${Version}\n' -W grub-efi-amd64-bin | sed -re 's/([-.0-9]+)[.][0-9]+[.][0-9]+/\1/')
 

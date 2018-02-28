@@ -2155,6 +2155,10 @@ class GroupDN(UDM_Objects):
 	use_objects = False
 
 
+class GroupDNOrEmpty(GroupDN):
+	empty_value = True
+
+
 class UserDN(UDM_Objects):
 	udm_modules = ('users/user', )
 	use_objects = False
@@ -2180,6 +2184,12 @@ class GroupID(UDM_Objects):
 	label = '%(name)s'
 	regex = re.compile('^[0-9]+$')
 	static_values = (('0', 'root'), )
+	use_objects = False
+
+
+class PortalComputer(UDM_Objects):
+	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
+	udm_filter = '!(univentionObjectFlag=docker)'
 	use_objects = False
 
 
@@ -3153,54 +3163,8 @@ class timeSpec(select):
 
 class optionsUsersUser(select):
 	choices = [
-		('person', _('Personal Information')),
-		('mail', _('Mail Account')),
+		('pki', _('Public key infrastructure account')),
 	]
-
-
-class CTX_BrokenTimedoutSession(select):
-
-	'''The keys of the choices are the hexdecimal values that represent
-	the options value within the munged dial flags'''
-	choices = (
-		('0000', _('Disconnect')),
-		('0400', _('Reset')),
-	)
-
-
-class CTX_ReconnectSession(select):
-
-	'''The keys of the choices are the hexdecimal values that represent
-	the options value within the munged dial flags'''
-	choices = (
-		('0000', _('All Clients')),
-		('0200', _('Previously used Client')),
-	)
-
-
-class CTX_Shadow(select):
-
-	'''The keys of the choices are the hexdecimal values that represent
-	the options value within the munged dial flags'''
-	choices = (
-		('00000000', _('Disabled')),
-		('01000000', _('Enabled: Input: on, Message: on')),
-		('02000000', _('Enabled: Input: on, Message: off')),
-		('03000000', _('Enabled: Input: off, Message: on')),
-		('04000000', _('Enabled: Input: off, Message: off')),
-	)
-
-
-class CTX_RASDialin(select):
-
-	'''The keys of the choices are the hexdecimal values that represent
-	the options value within the munged dial flags'''
-	choices = (
-		('E', _('Disabled')),
-		('w', _('Enabled: Set by Caller')),
-		('k', _('Enabled: No Call Back')),
-	)
-	#( ' ', _( 'Enabled: Preset To' ) ),
 
 
 class nagiosHostsEnabledDn(UDM_Objects):
@@ -3514,6 +3478,12 @@ class policyName(string):
 
 class Portals(UDM_Objects):
 	udm_modules = ('settings/portal', )
+	label = '%(name)s'
+	empty_value = True
+
+
+class PortalEntries(UDM_Objects):
+	udm_modules = ('settings/portal_entry', )
 	label = '%(name)s'
 	empty_value = True
 

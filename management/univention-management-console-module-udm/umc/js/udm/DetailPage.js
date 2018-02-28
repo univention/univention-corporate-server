@@ -40,6 +40,7 @@ define([
 	"dojo/dom-class",
 	"dojo/topic",
 	"dojo/json",
+	"dojox/html/entities",
 	"dijit/TitlePane",
 	"umc/render",
 	"umc/tools",
@@ -63,7 +64,7 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/_all"
-], function(declare, lang, array, on, Deferred, all, when, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, LabelPane, Template, OverwriteLabel, UMCPBundle, UsernameMaxLengthChecker, cache, _) {
+], function(declare, lang, array, on, Deferred, all, when, construct, domClass, topic, json, entities, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, LabelPane, Template, OverwriteLabel, UMCPBundle, UsernameMaxLengthChecker, cache, _) {
 
 	var _StandbyPage = declare([Page, StandbyMixin], {});
 
@@ -810,28 +811,30 @@ define([
 		addActiveDirectoryWarning: function() {
 			var _nameText = lang.hitch(this, function(n, value) {
 				var text = {
-					'users/user'        : _.ngettext('The user "%s" is part of the Active Directory domain.',
-					                                  'The users are part of the Active Directory domain.', n, value),
-					'groups/group'      : _.ngettext('The group "%s" is part of the Active Directory domain.',
-					                                  'The groups are part of the Active Directory domain.', n, value),
-					'computers/computer': _.ngettext('The computer "%s" is part of the Active Directory domain.',
-					                                  'The computers are part of the Active Directory domain.', n, value),
-					'networks/network'  : _.ngettext('The network object "%s" is part of the Active Directory domain.',
-					                                  'The network objects are part of the Active Directory domain.', n, value),
-					'dns/dns'           : _.ngettext('The DNS object "%s" is part of the Active Directory domain.',
-					                                  'The DNS objects are part of the Active Directory domain.', n, value),
-					'dhcp/dhcp'         : _.ngettext('The DHCP object "%s" is part of the Active Directory domain.',
-					                                  'The DHCP objects are part of the Active Directory domain.', n, value),
-					'shares/share'      : _.ngettext('The share "%s" is part of the Active Directory domain.',
-					                                  'The shares are part of the Active Directory domain.', n, value),
-					'shares/print'      : _.ngettext('The printer "%s" is part of the Active Directory domain.',
-					                                  'The printers are part of the Active Directory domain.', n, value),
-					'mail/mail'         : _.ngettext('The mail object "%s" is part of the Active Directory domain.',
-					                                  'The mail objects are part of the Active Directory domain.', n, value),
-					'nagios/nagios'     : _.ngettext('The Nagios object "%s" is part of the Active Directory domain.',
-					                                  'The Nagios objects are part of the Active Directory domain.', n, value),
-					'policies/policy'   : _.ngettext('The policy "%s" is part of the Active Directory domain.',
-					                                  'The policies are part of the Active Directory domain.', n, value)
+					'users/user'          : _.ngettext('The user "%s" is part of the Active Directory domain.',
+					                                    'The users are part of the Active Directory domain.', n, value),
+					'groups/group'        : _.ngettext('The group "%s" is part of the Active Directory domain.',
+					                                    'The groups are part of the Active Directory domain.', n, value),
+					'computers/computer'  : _.ngettext('The computer "%s" is part of the Active Directory domain.',
+					                                    'The computers are part of the Active Directory domain.', n, value),
+					'networks/network'    : _.ngettext('The network object "%s" is part of the Active Directory domain.',
+					                                    'The network objects are part of the Active Directory domain.', n, value),
+					'dns/dns'             : _.ngettext('The DNS object "%s" is part of the Active Directory domain.',
+					                                    'The DNS objects are part of the Active Directory domain.', n, value),
+					'dhcp/dhcp'           : _.ngettext('The DHCP object "%s" is part of the Active Directory domain.',
+					                                    'The DHCP objects are part of the Active Directory domain.', n, value),
+					'shares/share'        : _.ngettext('The share "%s" is part of the Active Directory domain.',
+					                                    'The shares are part of the Active Directory domain.', n, value),
+					'shares/print'        : _.ngettext('The printer "%s" is part of the Active Directory domain.',
+					                                    'The printers are part of the Active Directory domain.', n, value),
+					'mail/mail'           : _.ngettext('The mail object "%s" is part of the Active Directory domain.',
+					                                    'The mail objects are part of the Active Directory domain.', n, value),
+					'nagios/nagios'       : _.ngettext('The Nagios object "%s" is part of the Active Directory domain.',
+					                                    'The Nagios objects are part of the Active Directory domain.', n, value),
+					'policies/policy'     : _.ngettext('The policy "%s" is part of the Active Directory domain.',
+					                                    'The policies are part of the Active Directory domain.', n, value),
+					'settings/portal_all' : _.ngettext('The portal object "%s" is part of the Active Directory domain.',
+					                                    'The portal objects are part of the Active Directory domain.', n, value)
 				}[this.moduleFlavor];
 				if (!text) {
 					text = _.ngettext('The LDAP object "%s" is part of the Active Directory domain.',
@@ -1231,6 +1234,12 @@ define([
 					'nagios/nagios'     : _('Create Nagios object'),
 					'policies/policy'   : _('Create policy')
 				}[this.moduleFlavor];
+				if (!text && this.moduleFlavor === 'settings/portal_all') {
+					text = {
+						'settings/portal'       : _('Create portal'),
+						'settings/portal_entry' : _('Create portal entry')
+					}[this.objectType];
+				}
 				if (!text) {
 					text = _('Create LDAP object');
 				}
@@ -1898,17 +1907,18 @@ define([
 		getAlteredValues: function() {
 			var _consoleErrorText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _('Failed to retrieve the user from the server.'),
-					'groups/group'      : _('Failed to retrieve the group from the server.'),
-					'computers/computer': _('Failed to retrieve the computer from the server.'),
-					'networks/network'  : _('Failed to retrieve the network object from the server.'),
-					'dns/dns'           : _('Failed to retrieve the DNS object from the server.'),
-					'dhcp/dhcp'         : _('Failed to retrieve the DHCP object from the server.'),
-					'shares/share'      : _('Failed to retrieve the share from the server.'),
-					'shares/print'      : _('Failed to retrieve the printer from the server.'),
-					'mail/mail'         : _('Failed to retrieve the mail object from the server.'),
-					'nagios/nagios'     : _('Failed to retrieve the Nagios object from the server.'),
-					'policies/policy'   : _('Failed to retrieve the policy from the server.')
+					'users/user'          : _('Failed to retrieve the user from the server.'),
+					'groups/group'        : _('Failed to retrieve the group from the server.'),
+					'computers/computer'  : _('Failed to retrieve the computer from the server.'),
+					'networks/network'    : _('Failed to retrieve the network object from the server.'),
+					'dns/dns'             : _('Failed to retrieve the DNS object from the server.'),
+					'dhcp/dhcp'           : _('Failed to retrieve the DHCP object from the server.'),
+					'shares/share'        : _('Failed to retrieve the share from the server.'),
+					'shares/print'        : _('Failed to retrieve the printer from the server.'),
+					'mail/mail'           : _('Failed to retrieve the mail object from the server.'),
+					'nagios/nagios'       : _('Failed to retrieve the Nagios object from the server.'),
+					'policies/policy'     : _('Failed to retrieve the policy from the server.'),
+					'settings/portal_all' : _('Failed to retrieve the portal object from the server.')
 				}[this.moduleFlavor];
 				if (!text) {
 					text = _('Failed to retrieve the LDAP object from the server.');

@@ -108,9 +108,6 @@ udm_get_ldap_prefix () {
 		policies/dhcp_*)
 			echo "cn=${module#policies/dhcp_},cn=dhcp,cn=policies,"
 			;;
-		policies/mailquota)
-			echo "cn=mail,cn=policies,"
-			;;
 		policies/pwhistory)
 			echo "cn=pwhistory,cn=users,cn=policies,"
 			;;

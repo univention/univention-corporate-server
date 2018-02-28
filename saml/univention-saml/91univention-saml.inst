@@ -30,13 +30,90 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION="5"
+VERSION="6"
 
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
 eval "$(ucr shell)"
+
+spn_account_name="ucs-sso"
+servicePrincipalName="HTTP/$spn_account_name.$domainname"
+krb5PrincipalName="$servicePrincipalName@$kerberos_realm"
+privateKeytab_filename="simplesamlphp.keytab"
+privateKeytab_path="/etc/simplesamlphp/$privateKeytab_filename"
+
+extract_binddn_and_bindpwd_from_args() {
+	## parse binddn and bindpwd from command line arguments into shell variables
+	while [ $# -gt 0 ]; do
+		case "$1" in
+			"--binddn")
+							binddn="${2:?missing binddn}"
+							shift 2 || exit 2
+							;;
+			"--bindpwd")
+							bindpwd="${2:?missing bindpwd}"
+							shift 2 || exit 2
+							;;
+			*)
+				shift
+				;;
+		esac
+	done
+}
+
+create_krb_apache2_user() {
+	# Create and manage ucs-sso user only on dcmaster
+	if [ "$server_role" == "domaincontroller_master" ]; then
+		spn_account_name_password=$(create_machine_password)
+		# save password in file, samba joinscript needs it to set the password
+		touch /etc/simplesamlphp/ucs-sso-kerberos.secret
+		chown root:root /etc/simplesamlphp/ucs-sso-kerberos.secret
+		chmod 600 /etc/simplesamlphp/ucs-sso-kerberos.secret
+		echo -n "$spn_account_name_password" > /etc/simplesamlphp/ucs-sso-kerberos.secret
+
+		udm users/user create "$@" --ignore_exists \
+				--position "cn=users,$ldap_base" \
+				--set username="$spn_account_name" \
+				--set lastname="SSO" \
+				--set password="$spn_account_name_password" \
+				--append objectFlag=hidden || die
+
+		extract_binddn_and_bindpwd_from_args "$@"
+		test -z "$binddn" && binddn="cn=admin,$ldap_base"
+		test -z "$bindpwd" && bindpwd="$(cat /etc/ldap.secret)"
+
+		# modify attribute directly
+		ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" -D "$binddn" -w "$bindpwd" <<%EOF
+dn: uid=$spn_account_name,cn=users,$ldap_base
+changetype: modify
+replace: krb5PrincipalName
+krb5PrincipalName: $krb5PrincipalName
+%EOF
+	fi
+}
+
+create_sso_kerberos_keytab() {
+	if [ "$server_role" == "domaincontroller_master" ]; then
+		# extract keytab
+		kadmin -l ext --keytab="$privateKeytab_path" "$servicePrincipalName" || die
+		chown samlcgi:"DC Backup Hosts" "$privateKeytab_path" || die
+		chmod 660 "$privateKeytab_path" || die
+	fi
+
+	if [ "$server_role" == "domaincontroller_backup" ]; then
+		# get keytab from master
+		HOSTPWD="/etc/machine.secret"
+		HOSTACCOUNT="$hostname\$"
+
+		touch "$privateKeytab_path" || die
+		chown samlcgi:"DC Backup Hosts" "$privateKeytab_path" || die
+		chmod 640 "$privateKeytab_path" || die
+		univention-scp $HOSTPWD "$HOSTACCOUNT@$ldap_master:$privateKeytab_path $privateKeytab_path" || die
+		echo "Successfully downloaded the ucs-sso keytab file"
+	fi
+}
 
 ucs_server_sso_fqdn="${ucs_server_sso_fqdn:-ucs-sso.$domainname}"
 
@@ -139,6 +216,10 @@ if [ -z "$ucs_server_sso_autoregistraton" ] || is_ucr_true ucs/server/sso/autore
 		fi
 	fi
 fi
+
+# Create ucs-sso krb user for apache2
+create_krb_apache2_user
+create_sso_kerberos_keytab
 
 ucr set security/packetfilter/package/univention-saml/tcp/11212/all?ACCEPT \
 	security/packetfilter/package/univention-saml/tcp/11212/all/en?memcached

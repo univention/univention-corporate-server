@@ -7,6 +7,7 @@
 
 import pytest
 import time
+import calendar
 from datetime import datetime, timedelta
 import subprocess
 
@@ -21,8 +22,6 @@ class TestUsers(object):
 		2.
 		if self.exists():
 			self._unmap_mail_forward()
-			self.sambaMungedDialUnmap()
-			self.sambaMungedDialParse()
 
 		3.
 		self._load_groups(loadGroups)
@@ -37,16 +36,19 @@ class TestUsers(object):
 		what if pwdChangeNextLogin = 1 and password=foo at the same time?
 	"""
 
+	def utc_days_since_epoch():
+		return calendar.timegm(time.gmtime()) / 3600 / 24
+
 	@pytest.mark.parametrize('shadowLastChange,shadowMax,pwd_change_next_login,password_expiry', [
 		('0', '', '1', []),
 		('0', '0', '1', ['1970-01-01']),
 		('0', '1', '1', ['1970-01-02']),
-		('0', str(int(time.time()) / 3600 / 24 + 2), '1', (datetime.today() + timedelta(days=2)).strftime('%Y-%m-%d')),
-		('', str(int(time.time()) / 3600 / 24 + 2), [], []),
+		('0', str(utc_days_since_epoch() + 2), '1', (datetime.utcnow() + timedelta(days=2)).strftime('%Y-%m-%d')),
+		('', str(utc_days_since_epoch() + 2), [], []),
 		('', '', [], []),
-		('', str(int(time.time()) / 3600 / 24 - 2), [], []),
-		('1', str(int(time.time()) / 3600 / 24 - 2), '1', (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')),
-		('0', str(int(time.time()) / 3600 / 24 - 2), '1', (datetime.today() - timedelta(days=2)).strftime('%Y-%m-%d')),
+		('', str(utc_days_since_epoch() - 2), [], []),
+		('1', str(utc_days_since_epoch() - 2), '1', (datetime.utcnow() - timedelta(days=1)).strftime('%Y-%m-%d')),
+		('0', str(utc_days_since_epoch() - 2), '1', (datetime.utcnow() - timedelta(days=2)).strftime('%Y-%m-%d')),
 	])
 	def test_unmap_pwd_change_next_login_and_password_expiry(self, udm, lo, shadowLastChange, shadowMax, pwd_change_next_login, password_expiry):
 		user = udm.create_user()[0]
@@ -264,9 +266,9 @@ class TestUsers(object):
 	def test_disable_enable_preserves_password(self, udm, lo):
 		user = udm.create_user(password='univention')[0]
 		password = lo.getAttr(user, 'userPassword')[0]
-		udm.modify_object('users/user', dn=user, disabled='all')
-		udm.verify_ldap_object(user, {'userPassword': [password]})
-		udm.modify_object('users/user', dn=user, disabled='none')
+		udm.modify_object('users/user', dn=user, disabled='1')
+		udm.verify_ldap_object(user, {'userPassword': [password.replace('{crypt}', '{crypt}!')]})
+		udm.modify_object('users/user', dn=user, disabled='0')
 		udm.verify_ldap_object(user, {'userPassword': [password]})
 
 	@pytest.mark.parametrize('password', [
@@ -275,7 +277,6 @@ class TestUsers(object):
 		'{LANMAN}',
 		'{crypt}$6$foo',
 		'{foo}bar',
-		'{KINIT!}',
 		'{SASL}!',
 		'{LANMAN}!',
 		'{crypt}$6$foo!',
@@ -286,10 +287,12 @@ class TestUsers(object):
 			udm.create_user(password=password)
 
 	@pytest.mark.parametrize('disabled,flag,x', [
+		('1', '254', {}),
+		('0', '126', {'modify': False}),
 		('none', '126', {'modify': False}),
-		('posix', '126', {}),
-		('windows', '126', {}),
-		('windows_posix', '126', {}),
+		('posix', '254', {}),
+		('windows', '254', {}),
+		('windows_posix', '254', {}),
 		('kerberos', '254', {}),
 		('windows_kerberos', '254', {}),
 		('posix_kerberos', '254', {}),
@@ -393,8 +396,19 @@ class TestUsers(object):
 
 	def test_modlist_samba_bad_pw_count(self, udm, lo):
 		user = udm.create_user()[0]
-		subprocess.call('python -m univention.lib.account lock --dn "%s" --lock-time "$(date --utc "%s")' % (user, '+%Y%m%d%H%M%SZ'), shell=True)
-		lo.modify(user, [('sambaBadPasswordCount', '', '20')])
+		locktime = time.strftime("%Y%m%d%H%M%SZ", time.gmtime())
+		old = lo.get(user)
+		subprocess.call(['python', '-m', 'univention.lib.account', 'lock', '--dn', user, '--lock-time', locktime])
+		lo.modify(user, [('sambaBadPasswordCount', '0', '20')])
+		new = lo.get(user)
+		print locktime
+		for i in old:
+			if not i in new:
+				print i
+				print old[i], None
+			elif not old[i] == new[i]:
+				print i
+				print old[i], new[i]
 		udm.modify_object('users/user', dn=user, locked='0')
 		udm.verify_ldap_object(user, {'sambaBadPasswordCount': ['0']})
 
@@ -411,7 +425,7 @@ class TestUsers(object):
 		self._test_modlist(udm, props, {'sambaAcctFlags': flags})
 
 	@pytest.mark.parametrize('userexpiry,kick_off,x', [
-		('2018-01-01', ['1514761200'], {}),
+		('2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d"))))], {}),
 		('', [], {'modify': False}),
 	])
 	def test_modlist_samba_kickoff_time(self, userexpiry, kick_off, x, udm):
@@ -425,11 +439,11 @@ class TestUsers(object):
 		self._test_modlist(udm, {'userexpiry': userexpiry}, {'krb5ValidEnd': valid_end}, **x)
 
 	@pytest.mark.parametrize('disabled,userexpiry,shadow_expire', [
-		('none', '2018-01-01', ['17532']),
-		('all', '2018-01-01', ['17532']),
-		('posix', '2018-01-01', ['17532']),
-		('posix_kerberos', '2018-01-01', ['17532']),
-		('windows_posix', '2018-01-01', ['17532']),
+		('none', '2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24 + 1))]),
+		('all', '2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24 + 1))]),
+		('posix', '2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24 + 1))]),
+		('posix_kerberos', '2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24 + 1))]),
+		('windows_posix', '2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24 + 1))]),
 		('kerberos', '', []),
 		('all', '', ['1']),
 		('posix', '', ['1']),
@@ -457,9 +471,6 @@ class TestUsers(object):
 		self._test_modlist(udm, {'umcProperty': ['foo bar']}, {'univentionUMCProperty': ['foo=bar'], 'objectClass': ['univentionPerson']})
 
 	def test_modlist_home_share(self, udm):
-		pass
-
-	def test_modlist_samba_mungeddial(self, udm):
 		pass
 
 	def test_modlist_samba_sid(self, udm):

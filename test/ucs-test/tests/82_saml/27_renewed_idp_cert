@@ -9,6 +9,8 @@
 ##   - python-requests
 
 import subprocess
+import time
+
 import samltest
 import univention.testing.utils as utils
 import univention.config_registry
@@ -47,6 +49,11 @@ def restart_slapd():
 	subprocess.check_call(["systemctl", "restart", "slapd"])
 
 
+def restart_umc_server():
+	subprocess.check_call(["systemctl", "restart", "univention-management-console-server"])
+	time.sleep(5)
+
+
 def main():
 
 	renew_sso_cert()
@@ -60,7 +67,6 @@ def main():
 		if expected_error not in exc.message:
 			utils.fail(exc.message)
 	reload_idp_metadata()
-	SamlSession.test_login()
 	try:
 		# Previously slapd had a segfault here
 		SamlSession.test_slapd()
@@ -68,6 +74,7 @@ def main():
 		expected_error = "Wrong status code: 401, expected: 200"
 		if expected_error not in exc.message:
 			utils.fail(exc.message)
+	restart_umc_server()
 	restart_slapd()
 	SamlSession.login_with_existing_session_at_IdP()
 	SamlSession.test_slapd()
@@ -82,6 +89,6 @@ if __name__ == '__main__':
 	finally:
 		# Make sure everything is in a working state again
 		reload_idp_metadata()
-		subprocess.check_call(["systemctl", "restart", "univention-management-console-server"])
+		restart_umc_server()
 		restart_slapd()
 	print("####Success: Neither umc nor slapd have a segfault because of a renewed certificate.####")

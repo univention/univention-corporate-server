@@ -158,12 +158,6 @@ Variables: ldap/server/port
 Variables: ldap/server/addition
 Variables: ldap/hostdn
 
-Type: module
-Module: create-archivefolder.py
-Variables: mail/archivefolder
-Variables: mail/cyrus
-Variables: mail/hosteddomains
-
 Type: multifile
 Multifile: etc/postfix/ldap.groups
 User: root
@@ -369,8 +363,6 @@ Variables: mail/postfix/ldaptable/tlscacertfile
 Variables: mail/postfix/ldaptable/debuglevel
 Variables: mail/postfix/ldaptable/starttls
 Variables: mail/postfix/ldaptable/tlsrequirecert
-Variables: mail/cyrus
-Variables: mail/dovecot
 
 Type: multifile
 Multifile: etc/postfix/ldap.sharedfolderlocal_aliases
@@ -393,8 +385,6 @@ Variables: mail/postfix/ldaptable/tlscacertfile
 Variables: mail/postfix/ldaptable/debuglevel
 Variables: mail/postfix/ldaptable/starttls
 Variables: mail/postfix/ldaptable/tlsrequirecert
-Variables: mail/cyrus
-Variables: mail/dovecot
 
 Type: multifile
 Multifile: etc/postfix/ldap.canonicalrecipient

@@ -6,25 +6,32 @@
 ## tags: [skip_admember]
 
 import pytest
-from univention.config_registry import handler_set
+from univention.config_registry import ConfigRegistry
+from univention.admin.uldap import getAdminConnection
 from univention.testing import utils
 
 samba4_installed = utils.package_installed('univention-samba4')
-
+ucr = ConfigRegistry()
+ucr.load()
+lo, pos = getAdminConnection()
 
 @pytest.yield_fixture()
-def enabled_password_quality_checks(lo, ldap_base, ucr):
+def enabled_password_quality_checks():
 	# TODO: from 07_expired_password: only if univention-samba4 is not installed
-	dn = 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,%s' % (ldap_base,)
-	old = lo.getAttr(dn, 'univentionPWQualityCheck')
-	new = ['TRUE']
-	lo.modify(dn, [('univentionPWQualityCheck', old, new)])
-	handler_set(['password/quality/credit/lower=1', 'password/quality/credit/upper=1', 'password/quality/credit/other=1', 'password/quality/credit/digits=1'])
-	yield
-	lo.modify(dn, [('univentionPWQualityCheck', new, old)])
+	if not samba4_installed:
+		ldap_base = ucr.get('ldap/base')
+		dn = 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,%s' % (ucr['ldap/base'])
+		old = lo.getAttr(dn, 'univentionPWQualityCheck')
+		new = ['TRUE']
+		lo.modify(dn, [('univentionPWQualityCheck', old, new)])
+		yield
+		lo.modify(dn, [('univentionPWQualityCheck', new, old)])
+        else:
+            yield
+            pass
 
 
-def test_password_changing_failure_reason(options, new_password, reason, udm, Client, random_string, Unauthorized):
+def test_password_changing_failure_reason(options, new_password, reason, udm, Client, random_string, Unauthorized, enabled_password_quality_checks):
 	print 'test_password_changing_failure_reason(%r, %r, %r)' % (options, new_password, reason)
 	password = random_string()
 	userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)

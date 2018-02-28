@@ -155,6 +155,7 @@ def _make_obj(obj):
 		'showServers': obj.get('univentionPortalShowServers', [''])[0] == 'TRUE',
 		'logo': _save_image(obj, 'univentionPortalLogo', 'logos'),
 		'fontColor': obj.get('univentionPortalFontColor', [''])[0],
+		'portalEntriesOrder': obj.get('univentionPortalEntriesOrder', []),
 	}
 
 

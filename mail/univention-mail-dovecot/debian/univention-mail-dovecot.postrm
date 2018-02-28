@@ -50,7 +50,7 @@ case "$1" in
 esac
 
 if [ -x /etc/init.d/univention-directory-listener ]; then
-	invoke-rc.d univention-directory-listener crestart
+	deb-systemd-invoke restart univention-directory-listener
 fi
 
 case "$1" in
@@ -60,7 +60,7 @@ case "$1" in
 esac
 
 if [ -x "/etc/init.d/univention-firewall" ]; then
-	invoke-rc.d univention-firewall restart
+	deb-systemd-invoke restart univention-firewall
 fi
 
 if [ "$1" = "remove" ]

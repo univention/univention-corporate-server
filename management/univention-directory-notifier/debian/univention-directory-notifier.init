@@ -51,17 +51,17 @@ case "$1" in
 		    check_autostart notifier notifier/autostart
 		fi
 		log_daemon_msg "Starting $DESC" "$NAME"
-		sv start "$NAME"
+		sv -w 30 start "$NAME"
 		log_end_msg $?
 		;;
 	stop)
 		log_daemon_msg "Stopping $DESC" "$NAME"
-		sv stop "$NAME"
+		sv -w 30 stop "$NAME"
 		log_end_msg $?
 		;;
 	restart|force-reload)
 		log_daemon_msg "Restarting $DESC" "$NAME"
-		sv restart "$NAME"
+		sv -w 30 restart "$NAME"
 		log_end_msg $?
 		;;
 	status)

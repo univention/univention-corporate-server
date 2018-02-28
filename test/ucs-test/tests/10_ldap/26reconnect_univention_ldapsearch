@@ -188,6 +188,11 @@ def main():
         perform_univention_ldapsearch(True)  # fail on success
     finally:
         restore_retry_count()
+        # try to restore slapd systemd status
+        Popen(('systemctl', 'daemon-reload')).wait()
+        Popen(('service', 'slapd', 'stop')).wait()
+        Popen(('service', 'slapd', 'start')).wait()
+        sleep(5)
 
 
 if __name__ == '__main__':

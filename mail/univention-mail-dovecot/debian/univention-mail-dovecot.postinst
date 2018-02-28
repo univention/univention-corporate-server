@@ -116,15 +116,15 @@ if [ ! -f /etc/dovecot/master-users ]; then
 fi
 
 if [ -x "/etc/init.d/univention-firewall" ]; then
-	/etc/init.d/univention-firewall restart
+	deb-systemd-invoke restart univention-firewall
 fi
 
 if [ "$(ucr get mail/dovecot/logging/log_path)" = "syslog" -a -x /etc/init.d/rsyslog ]; then
-	invoke-rc.d rsyslog force-reload
+	deb-systemd-invoke force-reload rsyslog
 fi
 
-invoke-rc.d dovecot restart
-invoke-rc.d postfix restart
+deb-systemd-invoke restart dovecot
+deb-systemd-invoke restart postfix
 
 TIME_RUNNING=0
 TIMEOUT=180
@@ -153,7 +153,7 @@ fi
 chown listener:root /var/spool/univention-mail-dovecot
 
 if [ -x /etc/init.d/univention-directory-listener ]; then
-	invoke-rc.d univention-directory-listener crestart
+	deb-systemd-invoke restart univention-directory-listener
 fi
 
 if [ "$1" = "configure" ]

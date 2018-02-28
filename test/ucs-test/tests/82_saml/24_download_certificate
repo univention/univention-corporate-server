@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Download certificate
 ## tags: [saml]
+## roles: [domaincontroller_master, domaincontroller_backup]
 ## bugs: [44704]
 ## exposure: safe
 

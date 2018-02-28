@@ -1,3 +1,51 @@
+univention-management-console-module-diagnostic (4.0.0-12) unstable; urgency=low
+
+  * Bug #46363: add univention-ox cache directory to file permissions test
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 21 Feb 2018 14:21:23 +0100
+
+univention-management-console-module-diagnostic (4.0.0-11) unstable; urgency=low
+
+  * Bug #46102: remove support for Cyrus from ACL test
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 23 Jan 2018 14:26:16 +0100
+
+univention-management-console-module-diagnostic (4.0.0-10) unstable; urgency=medium
+
+  * Bug #46264: fix typo in 55_user_migration.py
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 09 Feb 2018 12:50:46 +0100
+
+univention-management-console-module-diagnostic (4.0.0-9) unstable; urgency=medium
+
+  * Bug #46231: fixed _strptime import for 02_certificate_check.py
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 09 Feb 2018 11:28:24 +0100
+
+univention-management-console-module-diagnostic (4.0.0-8) unstable; urgency=medium
+
+  * Bug #46231: fixed wrong syntax in 22_kdc_service.py
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 09 Feb 2018 10:52:01 +0100
+
+univention-management-console-module-diagnostic (4.0.0-7) unstable; urgency=medium
+
+  * Bug #46231: fixed 31_file_permissions.py
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 08 Feb 2018 16:53:04 +0100
+
+univention-management-console-module-diagnostic (4.0.0-6) unstable; urgency=medium
+
+  * Bug #45842: Translations for 55_user_migration.py
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 08 Feb 2018 15:00:36 +0100
+
+univention-management-console-module-diagnostic (4.0.0-5) unstable; urgency=medium
+
+  * Bug #46231: fixed 22_kdc_service.py
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 08 Feb 2018 14:12:22 +0100
+
 univention-management-console-module-diagnostic (4.0.0-4) unstable; urgency=medium
 
   * Bug #45842: add diagnosis script for user options

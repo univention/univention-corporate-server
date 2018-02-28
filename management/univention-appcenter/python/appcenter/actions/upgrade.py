@@ -35,6 +35,7 @@
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions.install import Install
 from univention.appcenter.ucr import ucr_is_true
+from univention.appcenter.packages import install_packages, dist_upgrade
 
 
 class Upgrade(Install):
@@ -96,12 +97,17 @@ class Upgrade(Install):
 		if app > self.original_app:
 			super(Upgrade, self)._send_information(app, status, value)
 
-	def _install_packages(self, packages, update=True):
-		super(Upgrade, self)._install_packages(packages, update=update)
-		return self._apt_get('dist-upgrade', [], update=False)
+	def _install_packages(self, packages):
+		return install_packages(packages) and dist_upgrade()
 
 	@classmethod
 	def iter_upgradable_apps(self):
 		for app in Apps().get_all_locally_installed_apps():
 			if ucr_is_true(app.ucr_upgrade_key):
 				yield app
+
+	def _dry_run(self, app, args):
+		return self._install_packages_dry_run(app, args, with_dist_upgrade=True)
+
+	def _get_packages_for_dry_run(self, app, args):
+		return app.get_packages(additional=True)

@@ -42,12 +42,12 @@ from tempfile import NamedTemporaryFile
 
 from univention.appcenter.app import App
 from univention.appcenter.actions import StoreAppAction, get_action
-from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError
+from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError, ParallelOperationInProgress
 from univention.appcenter.actions.register import Register
 from univention.appcenter.utils import get_locale
 from univention.appcenter.ucr import ucr_get
-from univention.appcenter.packages import reload_package_manager
 from univention.appcenter.settings import SettingValueError
+from univention.appcenter.packages import package_lock, LockError
 
 
 class StoreConfigAction(Action):
@@ -74,6 +74,7 @@ class InstallRemoveUpgrade(Register):
 		parser.add_argument('--skip-checks', nargs='*', choices=[req.name for req in App._requirements if self.get_action_name() in req.actions], help=SUPPRESS)
 		parser.add_argument('--do-not-configure', action='store_false', dest='configure', help=SUPPRESS)
 		parser.add_argument('--do-not-send-info', action='store_false', dest='send_info', help=SUPPRESS)
+		parser.add_argument('--dry-run', action='store_true', dest='dry_run', help='Perform only a dry-run. App state is not touched')
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the App')
 
 	main = None  # no action by itself
@@ -96,7 +97,14 @@ class InstallRemoveUpgrade(Register):
 					self._show_license(app, args)
 					self._show_pre_readme(app, args)
 					try:
-						self._do_it(app, args)
+						try:
+							with package_lock():
+								if args.dry_run:
+									self.dry_run(app, args)
+								else:
+									self._do_it(app, args)
+						except LockError:
+							raise ParallelOperationInProgress()
 					except (Abort, KeyboardInterrupt) as exc:
 						msg = str(exc)
 						if msg:
@@ -127,7 +135,9 @@ class InstallRemoveUpgrade(Register):
 		else:
 			return status == 200
 		finally:
-			if status == 0:
+			if args.dry_run:
+				pass
+			elif status == 0:
 				pass
 			else:
 				if status != 200:
@@ -302,16 +312,21 @@ class InstallRemoveUpgrade(Register):
 	def _reload_apache(self):
 		self._call_script('/etc/init.d/apache2', 'reload')
 
-	def _apt_get_update(self):
-		self._subprocess(['/usr/bin/apt-get', 'update'])
-		reload_package_manager()
+	def dry_run(self, app, args):
+		ret = self._dry_run(app, args)
+		if ret['install']:
+			self.log('The following packages would be INSTALLED/UPGRADED:')
+			for pkg in ret['install']:
+				self.log(' * %s' % pkg)
+		if ret['remove']:
+			self.log('The following packages would be REMOVED:')
+			for pkg in ret['remove']:
+				self.log(' * %s' % pkg)
+		if ret['broken']:
+			self.log('The following packages are BROKEN:')
+			for pkg in ret['broken']:
+				self.log(' * %s' % pkg)
+		return ret
 
-	def _apt_get(self, command, packages, update=True):
-		env = os.environ.copy()
-		env['DEBIAN_FRONTEND'] = 'noninteractive'
-		if update:
-			self._apt_get_update()
-		try:
-			return self._subprocess(['/usr/bin/apt-get', '-o', 'DPkg::Options::=--force-confold', '-o', 'DPkg::Options::=--force-overwrite', '-o', 'DPkg::Options::=--force-overwrite-dir', '--trivial-only=no', '--assume-yes', '--auto-remove', command] + packages, env=env)
-		finally:
-			reload_package_manager()
+	def _dry_run(self, app, args):
+		raise NotImplementedError()

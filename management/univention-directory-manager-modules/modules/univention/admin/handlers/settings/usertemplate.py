@@ -30,13 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import copy
-
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-import univention.admin.mungeddial as mungeddial
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
@@ -350,11 +347,6 @@ property_descriptions = {
 	),
 }
 
-# append CTX properties
-for key, value in mungeddial.properties.items():
-	property_descriptions[key] = copy.deepcopy(value)
-	property_descriptions[key].options = []
-
 layout = [
 	Tab(_('General'), _('Basic values'), layout=[
 		Group(_('General user template settings'), layout=[
@@ -405,9 +397,6 @@ layout = [
 	]),
 ]
 
-# append tab with CTX flags
-layout.append(mungeddial.tab)
-
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('title', 'title', None, univention.admin.mapping.ListToString)
@@ -446,25 +435,14 @@ mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
 mapping.register('_options', 'userOptionsPreset')
 
 
-class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
+class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
-		mungeddial.Support.__init__(self)
-
-	def _ldap_modlist(self):
-		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
-		sambaMunged = self.sambaMungedDialMap()
-		if sambaMunged:
-			ml.append(('sambaMungedDial', self.oldattr.get('sambaMungedDial', ['']), [sambaMunged]))
-
-		return ml
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
-		self.sambaMungedDialUnmap()
-		self.sambaMungedDialParse()
 
 
 def lookup(co, lo, filter_s, base='', superordinate=superordinate, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

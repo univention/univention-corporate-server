@@ -1,3 +1,9 @@
+univention-bacula (9.0.0-2) unstable; urgency=low
+
+  * Bug #46327: Fix Bacula-SD dependency
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 17 Feb 2018 11:56:38 +0100
+
 univention-bacula (9.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump

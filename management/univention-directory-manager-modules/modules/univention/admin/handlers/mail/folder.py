@@ -105,9 +105,9 @@ property_descriptions = {
 		may_change=True,
 		identifies=False,
 	),
-	'cyrus-userquota': univention.admin.property(
+	'mailQuota': univention.admin.property(
 		short_description=_('Quota in MB'),
-		long_description='',
+		long_description=_('How many MB of emails can be stored in the shared folder (independent of the users that stored them).'),
 		syntax=univention.admin.syntax.integer,
 		multivalue=False,
 		required=False,
@@ -142,7 +142,7 @@ layout = [
 		Group(_('General IMAP mail folder settings'), layout=[
 			["name", "mailDomain"],
 			["mailHomeServer"],
-			["cyrus-userquota"],
+			["mailQuota"],
 			["mailPrimaryAddress"],
 		]),
 	]),
@@ -155,7 +155,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('cyrus-userquota', 'univentionMailUserQuota', None, univention.admin.mapping.ListToString)
+mapping.register('mailQuota', 'univentionMailUserQuota', None, univention.admin.mapping.ListToString)
 mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.admin.mapping.ListToString)
 mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
 

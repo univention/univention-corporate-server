@@ -8,11 +8,14 @@
 ##  - univention-directory-manager-tools
 
 import os
+import time
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import univention.testing.strings as uts
 from essential.mail import check_delivery, create_shared_mailfolder, get_dovecot_shared_folder_maildir, random_email, send_mail, ImapMail
+
+TIMEOUT_MAIL = 120
 
 
 def main():
@@ -58,7 +61,18 @@ def main():
 
 			imap = ImapMail()
 			imap.get_connection('localhost', user_addr1, 'univention')
-			imap.copy('1', 'INBOX', folder_name)
+			retry = TIMEOUT_MAIL
+			while True:
+				try:
+					imap.copy('1', 'INBOX', folder_name)
+					break
+				except AssertionError as exc:
+					if retry > 0:
+						print('*** Error, retrying ({}/{}): {}'.format(retry, TIMEOUT_MAIL, exc))
+						time.sleep(5)
+						retry -= 5
+					else:
+						raise
 			imap.connection.logout()
 
 			print('*** OK: user1 can write to shared folder')

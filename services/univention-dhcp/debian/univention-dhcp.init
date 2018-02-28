@@ -82,12 +82,12 @@ case "$1" in
 		fi
 		test_config
 		log_daemon_msg "Starting $DESC" "$NAME"
-		sv start univention-dhcp
+		sv -w 30 start univention-dhcp
 		log_end_msg $?
 		;;
 	stop)
 		log_daemon_msg "Stopping $DESC" "$NAME"
-		sv stop univention-dhcp
+		sv -w 30 stop univention-dhcp
 		log_end_msg $?
 		;;
 	restart|force-reload)
@@ -98,7 +98,7 @@ case "$1" in
 		fi
 		test_config
 		log_daemon_msg "Restarting $DESC" "$NAME"
-		sv restart univention-dhcp 1>/dev/null
+		sv -w 30 restart univention-dhcp 1>/dev/null
 		log_end_msg $?
 		;;
 	crestart)

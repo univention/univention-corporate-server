@@ -1,0 +1,26 @@
+<?php
+
+// you have to configure two prinicipals to get this working
+// the client principal with a password, the server principal with a keytab
+$client_principal = '';
+$client_password = '';
+$server_principal = '';
+$server_keytab = dirname(__FILE__) . '/server.keytab';
+
+if(!$client_principal || !$server_principal) {
+	echo "skip unconfigured";
+	return false;
+}
+
+if(!file_exists($server_keytab)) {
+	echo "skip keytab missing";
+	return false;
+}
+
+$use_config = false;
+if(file_exists(dirname(__FILE__) . '/krb5.ini')) {
+	$use_config = true;
+}
+
+return true;
+?>

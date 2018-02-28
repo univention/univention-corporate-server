@@ -46,6 +46,13 @@ import heimdal
 from ldap.controls import LDAPControl
 import traceback
 
+class Krb5Context(object):
+	def __init__(self):
+		self.ctx = heimdal.context()
+		self.etypes = self.ctx.get_permitted_enctypes()
+		self.etype_ids = [et.toint() for et in self.etypes]
+
+krb5_context = Krb5Context()
 
 def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 	up_blob = unicodePwd
@@ -168,11 +175,14 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 	krb_ctr4_salt = ''
 	for k in ucs_krb5key:
 		(keyblock, salt, kvno) = heimdal.asn1_decode_key(k)
-
 		key_data = keyblock.keyvalue()
 		saltstring = salt.saltvalue()
 		enctype = keyblock.keytype()
 		enctype_id = enctype.toint()
+		if enctype_id not in krb5_context.etype_ids:
+			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ignoring unsupported krb5_keytype: (%d)" % (enctype_id,))
+			continue
+
 		ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: krb5_keytype: %s (%d)" % (enctype, enctype_id))
 		if enctype_id == 18:
 			krb5_aes256 = key_data
@@ -919,6 +929,7 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 		# Require a change in the pickled state
 		return
 
+	modlist = []
 	if not is_locked:
 		s4_object_attributes = s4connector.lo_s4.get(compatible_modstring(object['dn']), ['lockoutTime', 'badPasswordTime'])
 		if 'lockoutTime' not in s4_object_attributes:
@@ -950,10 +961,9 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 		# Ok here we have:
 		# 1. Account currently not locked in OpenLDAP but in Samba/AD
 		# 2. Lockout state has changed to unlocked at some pickled point in the past
-		modlist = [(ldap.MOD_REPLACE, "lockoutTime", "0")]
+		modlist.append((ldap.MOD_REPLACE, "lockoutTime", "0"))
 		modlist.append((ldap.MOD_REPLACE, "badPasswordTime", "0"))
 		ud.debug(ud.LDAP, ud.PROCESS, "%s: Marking account as unlocked in Samba/AD" % (function_name,))
-		s4connector.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), modlist)
 	else:
 		s4_object_attributes = s4connector.lo_s4.get(compatible_modstring(object['dn']), ['lockoutTime', 'badPasswordTime'])
 		lockoutTime = s4_object_attributes.get('lockoutTime', ['0'])[0]
@@ -985,8 +995,11 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 		# Ok here we have:
 		# 1. Account currently locked in OpenLDAP but not in Samba/AD
 		# 2. Lockout state has changed to locked at some pickled point in the past
-		modlist = [(ldap.MOD_REPLACE, "lockoutTime", sambaBadPasswordTime)]
+		modlist.append((ldap.MOD_REPLACE, "lockoutTime", sambaBadPasswordTime))
 		modlist.append((ldap.MOD_REPLACE, "badPasswordTime", sambaBadPasswordTime))
 		ud.debug(ud.LDAP, ud.PROCESS, "%s: Marking account as locked in Samba/AD" % (function_name,))
 		ud.debug(ud.LDAP, ud.INFO, "%s: Setting lockoutTime to the value of sambaBadPasswordTime: %s" % (function_name, sambaBadPasswordTime))
+
+	if modlist:
+		ud.debug(ud.LDAP, ud.ALL, "%s: modlist: %s" % (function_name, modlist))
 		s4connector.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), modlist)

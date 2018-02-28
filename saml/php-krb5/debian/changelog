@@ -1,0 +1,24 @@
+php-krb5 (1.1.2-4) unstable; urgency=medium
+
+  * Bug #46237: skip dh_auto_install
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 07 Feb 2018 15:21:54 +0100
+
+php-krb5 (1.1.2-3) unstable; urgency=medium
+
+  * Bug #46237: Modify debian/rules to fix permission error
+  * Remove old rules file
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 07 Feb 2018 15:15:35 +0100
+
+php-krb5 (1.1.2-2) unstable; urgency=medium
+
+  * Bug #46237: Add libkrb5-dev to build dependencies
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 07 Feb 2018 14:58:35 +0100
+
+php-krb5 (1.1.2-1) unstable; urgency=low
+
+  * Bug #46237: Initial release
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 07 Feb 2018 14:44:25 +0100

@@ -19,19 +19,12 @@ def main():
 	with udm_test.UCSTestUDM() as udm:
 		ucr_tmp = univention.config_registry.ConfigRegistry()
 		ucr_tmp.load()
-		cmd = ['/etc/init.d/cyrus-imapd', 'restart']
-		if ucr_tmp.is_true('mail/dovecot'):
-			cmd = ['/etc/init.d/dovecot', 'restart']
+		cmd = ['/etc/init.d/dovecot', 'restart']
 		with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')) as acc:
 			with ucr_test.UCSTestConfigRegistry() as ucr:
 				domain = ucr.get('domainname')
-				dovecot = ucr.is_true('mail/dovecot')
-				if dovecot:
-					univention.config_registry.handler_set(['mail/dovecot/mailbox/delete=yes'])
-					subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
-				else:
-					univention.config_registry.handler_set(['mail/cyrus/mailbox/delete=yes'])
-					subprocess.call(['/etc/init.d/cyrus-imapd', 'restart'], stderr=open('/dev/null', 'w'))
+				univention.config_registry.handler_set(['mail/dovecot/mailbox/delete=yes'])
+				subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
 				host = '%s.%s' % (ucr.get('hostname'), domain)
 				password = 'univention'
 				mails = []

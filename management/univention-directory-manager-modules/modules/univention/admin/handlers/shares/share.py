@@ -328,7 +328,7 @@ property_descriptions = {
 	),
 	'sambaSecurityMode': univention.admin.property(
 		short_description=_('Security mode'),
-		long_description=_('This parameter controls what UNIX permission bits can be modified when a Windows NT client is manipulating the UNIX permission on a file using the native NT security dialog box. This parameter is applied as a mask (AND\'ed with) to the changed permission bits, thus preventing any bits not in this mask from being modified. Essentially, zero bits in this mask may be treated as a set of bits the user is not allowed to change.'),
+		long_description=_('This parameter controls what UNIX permission bits can be modified when an SMB client is manipulating the UNIX permission on a file using the native Windows security dialog box. This parameter is applied as a mask (AND\'ed with) to the changed permission bits, thus preventing any bits not in this mask from being modified. Essentially, zero bits in this mask may be treated as a set of bits the user is not allowed to change.'),
 		syntax=univention.admin.syntax.UNIX_AccessRight,
 		multivalue=False,
 		options=['samba'],
@@ -340,7 +340,7 @@ property_descriptions = {
 	),
 	'sambaDirectorySecurityMode': univention.admin.property(
 		short_description=_('Directory security mode'),
-		long_description=_('This parameter controls what UNIX permission bits can be modified when a Windows NT client is manipulating the UNIX permission on a directory using the native NT security dialog box. This parameter is applied as a mask (AND\'ed with) to the changed permission bits, thus preventing any bits not in this mask from being modified. Essentially, zero bits in this mask may be treated as a set of bits the user is not allowed to change.'),
+		long_description=_('This parameter controls what UNIX permission bits can be modified when an SMB client is manipulating the UNIX permission on a directory using the native Windows security dialog box. This parameter is applied as a mask (AND\'ed with) to the changed permission bits, thus preventing any bits not in this mask from being modified. Essentially, zero bits in this mask may be treated as a set of bits the user is not allowed to change.'),
 		syntax=univention.admin.syntax.UNIX_AccessRight,
 		multivalue=False,
 		options=['samba'],
@@ -352,7 +352,7 @@ property_descriptions = {
 	),
 	'sambaForceSecurityMode': univention.admin.property(
 		short_description=_('Force security mode'),
-		long_description=_('This parameter controls what UNIX permission bits can be modified when a Windows NT client is manipulating the UNIX permission on a file using the native NT security dialog box. This parameter is applied as a mask (OR\'ed with) to the changed permission bits, thus forcing any bits in this mask that the user may have modified to be on. Essentially, one bits in this mask may be treated as a set of bits that, when modifying security on a file, the user has always set to be \'on\'.'),
+		long_description=_('This parameter controls what UNIX permission bits can be modified when an SMB client is manipulating the UNIX permission on a file using the native Windows security dialog box. This parameter is applied as a mask (OR\'ed with) to the changed permission bits, thus forcing any bits in this mask that the user may have modified to be on. Essentially, one bits in this mask may be treated as a set of bits that, when modifying security on a file, the user has always set to be \'on\'.'),
 		syntax=univention.admin.syntax.UNIX_AccessRight,
 		multivalue=False,
 		options=['samba'],
@@ -364,7 +364,7 @@ property_descriptions = {
 	),
 	'sambaForceDirectorySecurityMode': univention.admin.property(
 		short_description=_('Force directory security mode'),
-		long_description=_('This parameter controls what UNIX permission bits can be modified when a Windows NT client is manipulating the UNIX permission on a directory using the native NT security dialog box. This parameter is applied as a mask (OR\'ed with) to the changed permission bits, thus forcing any bits in this mask that the user may have modified to be on. Essentially, one bits in this mask may be treated as a set of bits that, when modifying security on a directory, the user has always set to be \'on\'.'),
+		long_description=_('This parameter controls what UNIX permission bits can be modified when an SMB client is manipulating the UNIX permission on a directory using the native Windows security dialog box. This parameter is applied as a mask (OR\'ed with) to the changed permission bits, thus forcing any bits in this mask that the user may have modified to be on. Essentially, one bits in this mask may be treated as a set of bits that, when modifying security on a directory, the user has always set to be \'on\'.'),
 		syntax=univention.admin.syntax.UNIX_AccessRight,
 		multivalue=False,
 		options=['samba'],
@@ -409,7 +409,7 @@ property_descriptions = {
 	),
 	'sambaOplocks': univention.admin.property(
 		short_description=_('Oplocks'),
-		long_description=_('This boolean option tells Samba whether to issue oplocks (opportunistic locks) to file open requests on this share. The oplock code can dramatically (approx. 30% or more) improve the speed of access to files on Samba servers. It allows the clients to aggressively cache files locally and you may want to disable this option for unreliable network environments (it is turned on by default in Windows NT Servers).'),
+		long_description=_('This boolean option tells Samba whether to issue oplocks (opportunistic locks) to file open requests on this share. The oplock code can dramatically (approx. 30% or more) improve the speed of access to files on Samba servers. It allows the clients to aggressively cache files locally and you may want to disable this option for unreliable network environments (it is turned on by default in Windows Servers).'),
 		syntax=univention.admin.syntax.boolean,
 		multivalue=False,
 		options=['samba'],
@@ -420,7 +420,7 @@ property_descriptions = {
 	),
 	'sambaLevel2Oplocks': univention.admin.property(
 		short_description=_('Level 2 oplocks'),
-		long_description=_('This parameter controls whether Samba supports level2 (read-only) oplocks on a share. Level2, or read-only oplocks allow Windows NT clients that have an oplock on a file to downgrade from a read-write oplock to a read-only oplock once a second client opens the file (instead of releasing all oplocks on a second open, as in traditional, exclusive oplocks). This allows all openers of the file that support level2 oplocks to cache the file for read-ahead only (ie. they may not cache writes or lock requests) and increases performance for many accesses of files that are not commonly written (such as application .EXE files). Once one of the clients which have a read-only oplock writes to the file all clients are notified (no  reply  is  needed or waited for) and told to break their oplocks to "none" and delete any read-ahead caches. It is recommended that this parameter be turned on to speed access to shared executables.'),
+		long_description=_('This parameter controls whether Samba supports level2 (read-only) oplocks on a share. Level2, or read-only oplocks allow SMB clients that have an oplock on a file to downgrade from a read-write oplock to a read-only oplock once a second client opens the file (instead of releasing all oplocks on a second open, as in traditional, exclusive oplocks). This allows all openers of the file that support level2 oplocks to cache the file for read-ahead only (ie. they may not cache writes or lock requests) and increases performance for many accesses of files that are not commonly written (such as application .EXE files). Once one of the clients which have a read-only oplock writes to the file all clients are notified (no  reply  is  needed or waited for) and told to break their oplocks to "none" and delete any read-ahead caches. It is recommended that this parameter be turned on to speed access to shared executables.'),
 		syntax=univention.admin.syntax.boolean,
 		multivalue=False,
 		options=['samba'],

@@ -1,3 +1,39 @@
+univention-mail-postfix (12.0.0-16) unstable; urgency=low
+
+  * Bug #45984: don't disable connection caching on postfix' amavis port
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 26 Feb 2018 10:38:43 +0100
+
+univention-mail-postfix (12.0.0-15) unstable; urgency=low
+
+  * Bug #46425: ignore ucslint error
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 26 Feb 2018 09:29:18 +0100
+
+univention-mail-postfix (12.0.0-14) unstable; urgency=low
+
+  * Bug #46425: remove AGPL notice
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 26 Feb 2018 09:24:50 +0100
+
+univention-mail-postfix (12.0.0-13) unstable; urgency=low
+
+  * Bug #45963: fix UCR variable descriptions
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 25 Feb 2018 22:16:02 +0100
+
+univention-mail-postfix (12.0.0-12) unstable; urgency=low
+
+  * Bug #46102: remove cyrus related code
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 23 Jan 2018 13:25:16 +0100
+
+ univention-mail-postfix (12.0.0-11) unstable; urgency=low
+
+  * Bug #45422: add missing dependency
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 06 Feb 2018 17:22:33 +0100
+
 univention-mail-postfix (12.0.0-10) unstable; urgency=low
 
   * Bug #45422: fix typo

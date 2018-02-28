@@ -151,22 +151,12 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 	)
 	progress_next_step 9
 
-	# copy certificates for cyrus
-	for file in cert.pem private.key; do
-		if [ -e "/var/lib/cyrus/$file" ]
-		then
-			cp "/etc/univention/ssl/$hostname.$domainname/$file" "/var/lib/cyrus/$file"
-			chown cyrus "/var/lib/cyrus/$file"
-			chmod 600 "/var/lib/cyrus/$file"
-		fi
+	# restart services
+	for service in slapd apache2 postfix; do
+		invoke-rc.d --quiet "$service" restart
 	done
 
 	progress_next_step 10
-
-	# restart services
-	for service in slapd apache2 cyrus postfix; do
-		invoke-rc.d --quiet "$service" restart
-	done
 fi
 
 exit 0

@@ -220,7 +220,7 @@ define([
 				content: label + '<ul><li>' + array.map(unreachable, function(v) { return entities.encode(v); }).join('</li><li>') + '</li></ul>'
 			}));
 			if (!masterUnreachable) {
-				var cmdLine = lang.replace('univention-add-app {component_id} -m', {component_id: entities.encode(componentID)});
+				var cmdLine = lang.replace('univention-app install {app_id} --only-master-packages', {app_id: entities.encode(this.app.id)});
 				var commandHint = '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following command as root on all of these backup servers <em>after</em> installing the application.') + '</td></tr><tr><td colspan="2"><pre>' + cmdLine + '</pre>';
 				this._container.addChild(new Text({
 					content: commandHint

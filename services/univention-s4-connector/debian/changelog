@@ -1,3 +1,34 @@
+univention-s4-connector (12.0.2-6) unstable; urgency=medium
+
+  * Bug #41574: fixed unix2s4_time, s42unix_time, samba2s4_time revert
+
+ -- Felix Botner <botner@univention.de>  Mon, 26 Feb 2018 14:37:02 +0100
+
+univention-s4-connector (12.0.2-5) unstable; urgency=medium
+
+  * Bug #41574: fixed unix2s4_time, s42unix_time, samba2s4_time
+
+ -- Felix Botner <botner@univention.de>  Thu, 22 Feb 2018 17:19:48 +0100
+
+univention-s4-connector (12.0.2-4) unstable; urgency=medium
+
+  * Bug #32014: Fix whitespace indentation
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Feb 2018 17:08:36 +0100
+
+univention-s4-connector (12.0.2-3) unstable; urgency=medium
+
+  * Bug #32014: Log the modlist in lockout_sync_ucs_to_s4 too.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Feb 2018 11:56:44 +0100
+
+univention-s4-connector (12.0.2-2) unstable; urgency=medium
+
+  * Bug #46292: Avoid segfault on krb5Key with unsupported
+    Kerberos encryption type
+
+ -- Arvid Requate <requate@univention.de>  Fri, 16 Feb 2018 13:06:44 +0100
+
 univention-s4-connector (12.0.2-1) unstable; urgency=medium
 
   * Bug #32014: Sync account locking *state* from Samba/AD to OpenLDAP:

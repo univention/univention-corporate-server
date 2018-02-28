@@ -1,3 +1,21 @@
+univention-kde (12.0.0-4) unstable; urgency=medium
+
+  * Bug #46253: fix path in univention-config-registry
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 27 Feb 2018 16:59:08 +0100
+
+univention-kde (12.0.0-3) unstable; urgency=medium
+
+  * Bug #46253: Register new files in univention-config-registry
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 27 Feb 2018 16:40:22 +0100
+
+univention-kde (12.0.0-2) unstable; urgency=medium
+
+  * Bug #46253: Updates for debian stretch
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 27 Feb 2018 16:29:50 +0100
+
 univention-kde (12.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump

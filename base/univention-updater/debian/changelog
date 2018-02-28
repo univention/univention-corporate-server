@@ -1,3 +1,89 @@
+univention-updater (13.0.1-24) unstable; urgency=medium
+
+  * Bug #44160: Add check_for_postgresql91
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Feb 2018 17:37:34 +0100
+
+univention-updater (13.0.1-23) unstable; urgency=medium
+
+  * Bug #46270: Resync portal and portal_entry in postup
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 27 Feb 2018 16:12:16 +0100
+
+univention-updater (13.0.1-22) unstable; urgency=medium
+
+  * Bug #46435: Run mysql_upgrade in postup
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 27 Feb 2018 13:26:07 +0100
+
+univention-updater (13.0.1-20) unstable; urgency=medium
+
+  * Ensure the at daemon is not restared during the release upgrade.
+    Otherwise the upgrade is killed if it was started via UMC
+    (Bug #46388)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Feb 2018 15:31:52 +0100
+
+univention-updater (13.0.1-19) unstable; urgency=medium
+
+  * Bug #46118: Rebuild updater for new preup.sh
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Feb 2018 21:58:49 +0100
+
+univention-updater (13.0.1-18) unstable; urgency=medium
+
+  * Bug #46278: Configure logging only for the "updater" logger (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 14 Feb 2018 16:21:48 +0100
+
+univention-updater (13.0.1-17) unstable; urgency=medium
+
+  * Bug #46278: Configure logging only for the "updater" logger
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 14 Feb 2018 14:27:26 +0100
+
+univention-updater (13.0.1-16) unstable; urgency=low
+
+  * Bug #45968: redirect output to logfile
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 14 Feb 2018 10:57:26 +0100
+
+univention-updater (13.0.1-15) unstable; urgency=medium
+
+  * Bug #46278: Lower the noise of the App Center in updater.log
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 Feb 2018 17:12:26 +0100
+
+univention-updater (13.0.1-14) unstable; urgency=low
+
+  * Bug #46102: abort if cyrus integration is installed
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 13 Feb 2018 11:53:50 +0100
+
+univention-updater (13.0.1-13) unstable; urgency=low
+
+  * Bug #45968: use random filename for backup
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 13 Feb 2018 09:33:37 +0100
+
+univention-updater (13.0.1-12) unstable; urgency=medium
+
+  * Bug #46133: check if certificate exists
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 09 Feb 2018 16:15:37 +0100
+
+univention-updater (13.0.1-11) unstable; urgency=medium
+
+  * Bug #46133: improve error message in preup.sh
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 09 Feb 2018 12:02:27 +0100
+
+univention-updater (13.0.1-10) unstable; urgency=medium
+
+  * Bug #46133: check signature algorithm of the tls certificate in preup.sh
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 05 Feb 2018 16:23:46 +0100
+
 univention-updater (13.0.1-9) unstable; urgency=medium
 
   * Bug #46066: version bump

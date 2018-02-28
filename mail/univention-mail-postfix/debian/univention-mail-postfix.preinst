@@ -43,4 +43,7 @@ createLogfile /var/log/mail.info root:adm 640
 createLogfile /var/log/mail.log root:adm 640
 createLogfile /var/log/mail.warn root:root 640
 
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/create-archivefolder.py 11.0.1-99 -- "$@"
+rm -f /etc/univention/templates/modules/create-archivefolder.pyc /etc/univention/templates/modules/create-archivefolder.pyo
+
 exit 0

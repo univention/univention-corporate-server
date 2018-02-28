@@ -98,7 +98,7 @@ def _make_obj(obj):
 		'portals': obj.get('univentionPortalEntryPortal'),
 		'activated': obj.get('univentionPortalEntryActivate', [''])[0] != 'FALSE',
 		'favorite': obj.get('univentionPortalEntryFavorite', [''])[0] == 'TRUE',
-		'authRestriction': obj.get('univentionPortalEntryAuthRestriction', [''])[0] or 'anonymous',
+		'user_group': obj.get('univentionPortalEntryAllowedUserGroup', [''])[0],
 		'logo_name': _save_image(obj, 'univentionPortalEntryIcon', 'entries'),
 	}
 
@@ -124,6 +124,7 @@ def handler(dn, new, old):
 			# Add or Change
 			ud.debug(ud.LISTENER, ud.PROCESS, 'Add / change obj')
 			new_obj = _make_obj(new)
+			new_obj['dn'] = dn
 			idx = None
 			ud.debug(ud.LISTENER, ud.PROCESS, 'Talking about %s' % (new_obj['id']))
 			for i, obj in enumerate(objs):

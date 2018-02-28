@@ -60,10 +60,15 @@ class TestPwdChangeNextLogin(object):
 	def test_change_password(self, options, udm, Client, random_string, Unauthorized, wait_for_replication):
 		print 'test_change_password(%r)' % (options,)
 		password = random_string()
-		new_password = random_string(5) + random_string(5).upper()
+		new_password = random_string(5) + random_string(5).upper() + '@99'
 		userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
 		if samba4_installed:
 			utils.wait_for_connector_replication()
+
+		client = Client()
+		print 'check login with pwdChangeNextLogin=1'
+		with pytest.raises(Unauthorized) as msg:
+			client.umc_auth(username, password)
 
 		client = Client()
 		print 'change password from %r to %r' % (password, new_password)

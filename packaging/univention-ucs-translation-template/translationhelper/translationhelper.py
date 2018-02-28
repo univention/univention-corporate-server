@@ -248,7 +248,11 @@ class MIMEChecker():
 		with open(file_path, 'rb') as fd:
 			mime = self._ms.buffer(fd.read(4096))
 		if 'text/plain' in mime:
-			mime = mimetypes.guess_type(file_path)[0]
+			with open(file_path) as source_file:
+				if 'ucs-test/selenium' in source_file.readline():
+					mime = 'text/x-python'
+				else:
+					mime = mimetypes.guess_type(file_path)[0]
 		return mime
 
 

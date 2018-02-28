@@ -96,6 +96,14 @@
 				<requiredCommand name="udm/license/import"/>
 			</requiredCommands>
 		</flavor>
+		<flavor priority="50" id="settings/portal_all">
+			<name>Portal settings</name>
+			<description>Management of portals and their entries</description>
+			<keywords>portal</keywords>
+			<categories>
+				<category name="domain"/>
+			</categories>
+		</flavor>
 		<categories>
 			<category name="domain"/>
 		</categories>

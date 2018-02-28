@@ -1,3 +1,15 @@
+univention-management-console-module-adtakeover (5.0.1-2) unstable; urgency=medium
+
+  * Bug #46105: Additionally call samba_dnsupdate during takeover
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Feb 2018 14:19:04 +0100
+
+univention-management-console-module-adtakeover (5.0.1-1) unstable; urgency=medium
+
+  * Bug #46105: Increase timeout for listener replication
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Feb 2018 19:59:06 +0100
+
 univention-management-console-module-adtakeover (5.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump

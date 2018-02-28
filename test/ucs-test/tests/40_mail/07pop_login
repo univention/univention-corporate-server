@@ -5,7 +5,7 @@
 ## packages: [univention-mail-server]
 ## bugs: []
 
-from essential.mail import disable_mail_quota, enable_mail_quota, PopMail
+from essential.mail import PopMail
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test

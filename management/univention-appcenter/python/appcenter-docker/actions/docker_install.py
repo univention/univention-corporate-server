@@ -81,3 +81,8 @@ class Install(Install, DockerActionMixin):
 			finally:
 				del logger
 		self._execute_container_script(app, 'restore_data_after_setup', credentials=False)
+
+	def dry_run(self, app, args):
+		if not app.docker:
+			return super(Install, self).dry_run(app, args)
+		self.log('%s is a Docker App. No sane dry run is implemented' % app)

@@ -100,11 +100,14 @@ do
 
 	sleep 5 # wait for replication
 
-	smb_login "$tests_domainadmin_pwdfile"
-	result=$?
-	if [ "$result" -ne "$windows" ]
-	then
-		fail_test 110 "Failed Windows login: expected $windows, got $result"
+	# this on only if univention-samba? is installed
+	if [ -n "$(ucr get samba/share/home)" ]; then
+		smb_login "$tests_domainadmin_pwdfile"
+		result=$?
+		if [ "$result" -ne "$windows" ]
+		then
+			fail_test 110 "Failed Windows login: expected $windows, got $result"
+		fi
 	fi
 
 	krb_login "$tests_domainadmin_pwdfile"

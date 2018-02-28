@@ -17,7 +17,7 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from essential.mail import send_mail, random_email, imap_search_mail, get_dovecot_maildir, create_shared_mailfolder
 
-TIMEOUT_MAIL = 10
+TIMEOUT_MAIL = 120
 
 
 class Bunch(object):

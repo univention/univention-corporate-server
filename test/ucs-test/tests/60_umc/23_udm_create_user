@@ -41,8 +41,6 @@ class TestUMCUserCreation(UDMModule):
         options = [{
             "object": {
                 "groups": groupnames,
-                "CtxBrokenSession": "0000",
-                "CtxReconnectSession": "0000",
                 "$dn$": "uid=" + username + ",cn=users," + self.ldap_base
             },
             "options": {
@@ -65,27 +63,18 @@ class TestUMCUserCreation(UDMModule):
         options = [{
             "object": {
                 "disabled": "0",
-                "CtxRASDialin": "E",
                 "lastname": username,
                 "password": password,
-                "CtxShadow": "00000000",
                 "overridePWHistory": False,
                 "pwdChangeNextLogin": False,
                 "primaryGroup": "cn=" + groupname + ",cn=" + group_container + "," + self.ldap_base,
-                "CtxStartprogramClient": False,
                 "username": username,
                 "shell": "/bin/bash",
-                "CtxBrokenSession": "0000",
                 "locked": "0",
-                "CtxReconnectSession": "0000",
-                "CtxCfgClientPrinters": False,
                 "homeSharePath": username,
                 "unixhome": "/home/" + username,
                 "overridePWLength": False,
-                "CtxCfgDefaultClientPrinters": False,
                 "displayName": username,
-                "CtxCfgClientDrivers": False,
-                "CtxCfgTSLogon": False,
                 "$options$": {
                     "person": True,
                     "mail": True,

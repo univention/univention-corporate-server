@@ -1,4 +1,0 @@
-etc/cron.d
-etc/freeradius
-usr/lib/univention-freeradius
-etc/freeradius/ssl

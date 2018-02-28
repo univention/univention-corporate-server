@@ -1,3 +1,21 @@
+univention-directory-listener (12.0.0-18) unstable; urgency=low
+
+  * Bug #44786: temporarily remove new listener module API from binary package
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 28 Feb 2018 10:29:09 +0100
+
+univention-directory-listener (12.0.0-17) unstable; urgency=medium
+
+  * Bug #46313: increase runsv timeout to 30 seconds
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 21 Feb 2018 15:03:04 +0100
+
+univention-directory-listener (12.0.0-16) unstable; urgency=medium
+
+  * Bug #46276: stop listener before starting
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Feb 2018 16:35:11 +0100
+
 univention-directory-listener (12.0.0-15) unstable; urgency=low
 
   * Bug #44786: fix mypy hints file

@@ -60,12 +60,12 @@ class Remove(Remove, DockerActionMixin):
 
 	def _remove_app(self, app, args):
 		if not app.docker:
-			super(Remove, self)._remove_app(app, args)
+			return super(Remove, self)._remove_app(app, args)
 		else:
 			if app.plugin_of:
 				raise RemovePluginUnsupported()
 			else:
-				self._remove_docker_container(app, args)
+				return self._remove_docker_container(app, args)
 
 	def _remove_docker_container(self, app, args):
 		self._configure(app, args)
@@ -77,3 +77,9 @@ class Remove(Remove, DockerActionMixin):
 			Stop.call(app=app)
 			docker.stop()
 			docker.rm()
+		return True
+
+	def dry_run(self, app, args):
+		if not app.docker:
+			return super(Remove, self).dry_run(app, args)
+		self.log('%s is a Docker App. No sane dry run is implemented' % app)

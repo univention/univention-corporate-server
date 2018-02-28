@@ -41,6 +41,6 @@ nochange)
 postchange)
 	# change config and make Dovecot reload after password was changed
 	univention-config-registry commit /etc/dovecot/dovecot-ldap.conf.ext
-	invoke-rc.d dovecot reload
+	deb-systemd-invoke reload dovecot
 	;;
 esac

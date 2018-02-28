@@ -276,12 +276,6 @@ msgstr "Gateway ist nicht erreichbar"
 msgid "Host key for server does not match"
 msgstr "SSH Host-Key des Servers stimmt nicht überein"
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:81
-#, python-brace-format
-msgid "Identifier with whitespace: {ids}. This is not supported by Cyrus."
-msgstr ""
-"Es gibt Namen mit Leerzeichen: {ids}. Dies wird nicht von Cyrus unterstützt."
-
 #: umc/python/diagnostic/plugins/11_nameserver.py:17
 msgid ""
 "If the problem persists make sure the nameserver is connected to the network "
@@ -330,6 +324,38 @@ msgstr ""
 #: umc/python/diagnostic/plugins/22_kdc_service.py:58
 msgid "KDC service check"
 msgstr "KDC Erreichbarkeit"
+
+#: umc/python/diagnostic/plugins/55_user_migration.py:13
+msgid ""
+"With UCS 4.3 the LDAP format of user objects changed. After upgrading the "
+"domaincontroller master all user objects are migrated into the new format."
+msgstr ""
+"Mit UCS 4.3 hat sich das LDAP format von Nutzer Objekten geändert. "
+"Nach Upgrade des Domänencontroller Master werden all Nutzer Objekte "
+"in das neue Format migriert."
+
+#: umc/python/diagnostic/plugins/55_user_migration.py:14
+msgid ""
+"When a user object is created by a system which is not yet on UCS 4.3 it "
+"will have the old format. These user objects need to migrated again."
+msgstr ""
+"Wenn ein Nutzer auf System erstellt wurde, welches noch nicht auf UCS 4.3 "
+"ist, wird dieser im alten Format sein. Diese Nutzer Objekte müssen erneut "
+"migriert werden."
+
+#: umc/python/diagnostic/plugins/55_user_migration.py:11
+msgid "User objects which are not migrated"
+msgstr ""
+"Noch nicht migrierte Nutzer Objekte"
+
+#: umc/python/diagnostic/plugins/55_user_migration.py:35
+#, python-format
+msgid "The migration failed: %s"
+msgstr "Die Migration schlug fehl: %s"
+
+#: umc/python/diagnostic/plugins/55_user_migration.py:27
+msgid "Migrate user objects"
+msgstr "Migriere Nutzer Objekte"
 
 #: umc/python/diagnostic/plugins/01_ssh_connection.py:59
 #, python-format

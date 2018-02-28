@@ -1,3 +1,9 @@
+univention-server (13.0.0-2) unstable; urgency=medium
+
+  * Bug #46224: add man-db to univention-role-common recommends
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 20 Feb 2018 13:31:22 +0100
+
 univention-server (13.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump

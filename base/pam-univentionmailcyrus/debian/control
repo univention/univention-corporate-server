@@ -10,7 +10,7 @@ Architecture: any
 Depends: ${shlibs:Depends}
 Description: UCS - PAM module to use e-mail address for Cyrus
  This module allows to use the e-mail address as username for
- Cyrus IMAP and POP authentication.
+ Cyrus/Dovecot/Postfix IMAP, POP and SMTP authentication.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

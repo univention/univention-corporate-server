@@ -1,0 +1,25 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create users/user
+## tags: [udm,apptest,SKIP]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+from univention.testing.strings import random_string
+
+if __name__ == '__main__':
+	lo = utils.get_ldap_connection()
+	with udm_test.UCSTestUDM() as udm:
+		groupdn = udm.create_object('groups/group', name=random_string())
+		userdn, uid = udm.create_user(groups=[groupdn])
+
+		utils.verify_ldap_object(groupdn, {'uniqueMember': [userdn]})
+		utils.verify_ldap_object(groupdn, {'memberUid': [uid]})
+		udm.modify_object('users/user', dn=userdn, remove={'groups': [groupdn]})
+		utils.verify_ldap_object(groupdn, {'uniqueMember': []})
+		utils.verify_ldap_object(groupdn, {'memberUid': []})

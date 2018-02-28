@@ -42,6 +42,7 @@ from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.docker_install import Install
 from univention.appcenter.actions.service import Start
 from univention.appcenter.ucr import ucr_save
+from univention.appcenter.packages import update_packages
 
 import os
 
@@ -80,8 +81,17 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			return 'docker', None
 		if not Start.call(app=self.old_app):
 			raise UpgradeStartContainerFailed()
-		mode = self._execute_container_script(self.old_app, 'update_available', credentials=False, output=True) or ''
-		mode = mode.strip()
+		result = self._execute_container_script(app, 'update_available', credentials=False, output=True)
+		if result is not None:
+			process, log = result
+			if process.returncode != 0:
+				self.fatal('%s: Searching for App upgrade failed!' % app)
+				return None, None
+			mode = '\n'.join(log.stdout())
+			if mode:
+				mode = mode.strip()
+		else:
+			mode = ''
 		if mode.startswith('release:'):
 			mode, detail = 'release', mode[8:].strip()
 		if mode not in ['packages', 'release']:
@@ -148,7 +158,9 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		docker.pull()
 		self.log('Saving data from old container (%s)' % self.old_app)
 		Start.call(app=self.old_app)
-		old_vars = self._get_configure_settings(self.old_app, filter_action=False)
+		settings = self._get_configure_settings(self.old_app, filter_action=False)
+		settings.update(args.set_vars or {})
+		args.set_vars = settings
 		old_docker = self._get_docker(self.old_app)
 		old_container = old_docker.container
 		secret_on_host = os.path.join('/var/lib/univention-appcenter/apps', app.id, 'machine.secret')
@@ -162,7 +174,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		args.configure = False
 		self._install_new_app(app, args)
 		args.configure = old_configure
-		args.set_vars = old_vars
+		args.set_vars = settings
 		self._configure(app, args)
 		self.log('Removing old container')
 		if old_container:
@@ -187,7 +199,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			action_args = remove._build_namespace(_namespace=args, app=self.old_app, send_info=False, skip_checks=['must_not_be_depended_on'])
 			remove._remove_app(self.old_app, action_args)
 			if remove._unregister_component(self.old_app):
-				remove._apt_get_update()
+				update_packages()
 			self._call_join_script(app, args)  # run again in case remove() called an installed unjoin script
 			self.old_app = app
 
@@ -203,3 +215,8 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 				pass
 		else:
 			Start.call_safe(app=self.old_app)
+
+	def dry_run(self, app, args):
+		if not app.docker:
+			return super(Upgrade, self).dry_run(app, args)
+		self.log('%s is a Docker App. No sane dry run is implemented' % app)

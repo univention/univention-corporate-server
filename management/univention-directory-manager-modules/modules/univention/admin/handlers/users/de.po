@@ -302,13 +302,19 @@ msgstr ""
 "Nachricht behalten. Sind keine Adressen zur Weiterleitung angegeben, werden "
 "die E-Mails in der Mailbox des Benutzers aufbewahrt."
 
-#: modules/univention/admin/handlers/users/user.py:281
+#: modules/univention/admin/handlers/users/user.py:289
 msgid ""
-"Indicates that the user password is locked, e.g. due to too many login "
-"failures. Unchecking causes that the user password gets unlocked."
+"Temporary account lockout due to too many authentication failures."
 msgstr ""
-"Indiziert, dass das Benutzerpasswort gesperrt ist, z.B. durch zu viele "
-"fehlgeschlagene Anmeldeversuche. Das Passwort kann durch Entfernen des "
+"Temporäre Kontosperrung durch zu viele fehlgeschlagene Anmeldeversuche."
+
+#: modules/univention/admin/handlers/users/user.py:294
+msgid ""
+"If the account is locked out due to too many login failures, "
+"this checkbox allows unlocking."
+msgstr ""
+"Wenn das Konto gesperrt ist, z.B. durch zu viele fehlgeschlagene "
+"Anmeldeversuche, dann kann es durch Setzen des "
 "Häkchens entsperrt werden."
 
 #: modules/univention/admin/handlers/users/user.py:2172
@@ -437,8 +443,8 @@ msgstr "POSIX (Linux/UNIX) Kontoeinstellungen"
 
 #: modules/univention/admin/handlers/users/user.py:76
 #: modules/univention/admin/handlers/users/user.py:81
-msgid "POSIX, Samba and Kerberos account"
-msgstr "POSIX, Samba und Kerberos Konto"
+msgid "POSIX, Samba, Kerberos and mail account"
+msgstr "POSIX, Samba, Kerberos und Mail Konto"
 
 #: modules/univention/admin/handlers/users/user.py:491
 msgid "Pager telephone number"
@@ -455,12 +461,12 @@ msgid "Password expiry date"
 msgstr "Passwort-Ablaufdatum"
 
 #: modules/univention/admin/handlers/users/user.py:292
-msgid "Password locked date"
-msgstr "Passwort-Sperrdatum"
+msgid "Lockout time"
+msgstr "Zeitpunkt der Aussperrung"
 
 #: modules/univention/admin/handlers/users/user.py:305
-msgid "Password unlock date"
-msgstr "Datum der Passwort-Entsperrung"
+msgid "Lockout till"
+msgstr "Ausgesperrt bis"
 
 #: modules/univention/admin/handlers/users/user.py:716
 msgid "Path to the home directory on the home share"
@@ -583,13 +589,13 @@ msgstr ""
 "Datum als Tag.Monat.Jahr eingeben."
 
 #: modules/univention/admin/handlers/users/user.py:306
-msgid "Specifies the date when the password gets unlocked automatically."
+msgid "Shows the time when the account gets unlocked again according to policy."
 msgstr ""
-"Spezifiziert das Datum, ab dem das Passwort automatisch entsperrt wird."
+"Zeigt den Zeitpunkt, ab dem das Konto regulär wieder entsperrt wird."
 
 #: modules/univention/admin/handlers/users/user.py:293
-msgid "Specifies the date when the password was locked."
-msgstr "Spezifiziert das Datum, an dem das Passwort gesperrt wurde."
+msgid "Timestamp when account lockout happend."
+msgstr "Zeitstempel, zu dem das Konto ausgesperrt wurde."
 
 #: modules/univention/admin/handlers/users/user.py:329
 msgid "Street"
@@ -714,6 +720,10 @@ msgstr "UMC-Benutzer-Einstellungen"
 msgid "Unix home directory"
 msgstr "UNIX-Heimatverzeichnis"
 
+#: modules/univention/admin/handlers/users/user.py:1680
+msgid "unlimited"
+msgstr "unbegrenzt"
+
 #: modules/univention/admin/handlers/users/user.py:75
 msgid "User"
 msgstr "Benutzer"
@@ -737,9 +747,13 @@ msgstr "Benutzer muss das Passwort bei der nächsten Anmeldung ändern"
 msgid "User name"
 msgstr "Benutzername"
 
-#: modules/univention/admin/handlers/users/user.py:280
-msgid "User password is locked"
-msgstr "Benutzer-Passwort ist gesperrt"
+#: modules/univention/admin/handlers/users/user.py:288
+msgid "Account lockout state"
+msgstr "Kontoseprrungszustand"
+
+#: modules/univention/admin/handlers/users/user.py:293
+msgid "Unlock account"
+msgstr "Aussperrung zurücksetzen"
 
 #: modules/univention/admin/handlers/users/passwd.py:52
 msgid "User: Password"

@@ -1,3 +1,22 @@
+univention-mozilla-firefox (12.0.0-4) unstable; urgency=medium
+
+  * Bug #45863: Set firefox startpage on first installation
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 27 Feb 2018 10:25:01 +0100
+
+univention-mozilla-firefox (12.0.0-3) unstable; urgency=medium
+
+  * Bug #45863: Fix typo ucr variable description
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 26 Feb 2018 13:41:05 +0100
+
+univention-mozilla-firefox (12.0.0-2) unstable; urgency=low
+
+  * Bug #45863: Fix location of UCR template
+  * Bug #45863: Update UCR templates for Debian Stretch
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 07 Feb 2018 18:20:41 +0100
+
 univention-mozilla-firefox (12.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump

@@ -1,3 +1,9 @@
+univention-nagios (11.0.1-5) unstable; urgency=medium
+
+  * Bug #46306: fix nagios.log permissions
+
+ -- Felix Botner <botner@univention.de>  Fri, 16 Feb 2018 13:18:16 +0100
+
 univention-nagios (11.0.1-4) unstable; urgency=medium
 
   * Bug #45942: make sure nagios is stopped before moving files

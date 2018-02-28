@@ -36,20 +36,20 @@ Type=str
 Categories=service-heimdal
 
 [kerberos/defaults/enctypes/tgs]
-Description[de]=Diese Variable konfiguriert die verfügbaren Verschlüsselungsverfahren für Service-Tickets. Ist die Variable nicht gesetzt, wird 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-  cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' verwendet.
-Description[en]=This variable configures the available encryption methods for service tickets. If the variable is unset, 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-  cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' is used.
+Description[de]=Diese Variable konfiguriert die verfügbaren Verschlüsselungsverfahren für Service-Tickets. Ist die Variable nicht gesetzt, wird 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' verwendet.
+Description[en]=This variable configures the available encryption methods for service tickets. If the variable is unset, 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' is used.
 Type=str
 Categories=service-heimdal
 
 [kerberos/defaults/enctypes/tkt]
-Description[de]=Diese Variable konfiguriert die verfügbaren Verschlüsselungsverfahren für Ticket-Granting-Tickets. Ist die Variable nicht gesetzt, wird 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-  cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' verwendet.
-Description[en]=This variable configures the available encryption methods for ticket granting tickets. If the variable is unset, 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-  cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' is used.
+Description[de]=Diese Variable konfiguriert die verfügbaren Verschlüsselungsverfahren für Ticket-Granting-Tickets. Ist die Variable nicht gesetzt, wird 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' verwendet.
+Description[en]=This variable configures the available encryption methods for ticket granting tickets. If the variable is unset, 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des- cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' is used.
 Type=str
 Categories=service-heimdal
 
 [kerberos/defaults/enctypes/permitted]
-Description[de]=Die unterstützten Verschlüsselungsverfahren: Bei der Aushandlung eines Session-Keys werden die vom Client unterstützten Verschlüsselungsverfahren mit den hier konfigurierten Verfahren abgeglichen. Ist die Variable nicht gesetzt, wird 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-  cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' verwendet.
-Description[en]=The supported encryption methods. During negotiation of a session the methods supported by the client are matched with the methods configured in this variable. If the variable is unset, 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-  cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' is used.
+Description[de]=Die unterstützten Verschlüsselungsverfahren: Bei der Aushandlung eines Session-Keys werden die vom Client unterstützten Verschlüsselungsverfahren mit den hier konfigurierten Verfahren abgeglichen. Ist die Variable nicht gesetzt, wird 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' verwendet.
+Description[en]=The supported encryption methods. During negotiation of a session the methods supported by the client are matched with the methods configured in this variable. If the variable is unset, 'aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1' is used.
 Type=str
 Categories=service-heimdal
 
@@ -98,5 +98,17 @@ Categories=service-heimdal
 [kerberos/defaults/debug]
 Description[de]=Wird diese Variable auf 'true' gesetzt, werden zusätzliche Debugausgaben protokolliert.
 Description[en]=If this variable is set to 'true' additional debug statements are logged.
+Type=str
+Categories=service-heimdal
+
+[kerberos/defaults/ignore_acceptor_hostname]
+Description[de]=Wird diese Variable auf 'true' gesetzt, wird der hostname des aufrufenden Programms ignoriert, und Clients dürfen mit jedem Service Prinzipal in der keytab authentifizieren, der dem Service- und Realmnamen entspricht (sofern angegeben). Falls die Variable nicht gesetzt ist, dann gilt  die Voreinstellung der MIT Kerberos Bibliothek ('false').
+Description[en]=If this variable is set to 'true', any hostname passed by the calling application is ignored, and clients are allowed to authenticate to any service principal in the keytab matching the service name and realm name (if given). If the variable is unset the default of the MIT Kerberos library applies ('false').
+Type=str
+Categories=service-heimdal
+
+[kerberos/defaults/rdns]
+Description[de]=Wird diese Variable auf 'true' gesetzt, dann werden beim Anfordern eines Service Tickets Hostnamen nicht nur mit Hilfe von DNS in FQDNs umgewandelt, sondern zusätzlich auch noch rückwärts aufelöst. Für Dienste, die über DNS-Aliase angesprochen werden, kann das nicht gewünscht sein. Falls die Variable nicht gesetzt ist, dann gilt die Voreinstellung der MIT Kerberos Bibliothek ('true').
+Description[en]=If this variable is set to 'true', reverse DNS lookup will be used in addition to forward DNS lookup to canonicalizing hostnames for use in service principal names. This may be undesirable for serices accessed via DNS alias. If the variable is unset the default of the MIT Kerberos library applies ('true').
 Type=str
 Categories=service-heimdal

@@ -37,8 +37,27 @@ import univention.admin.uldap
 import univention.admin.objects
 import univention.admin.modules
 import univention.admin.handlers.users.user
+import univention.debug as ud1
 
 univention.admin.modules.update()
+
+# Ensure unviention debug is initialized
+def initialize_debug():
+	# Use a little hack to determine if univention.debug has been initialized
+	# get_level(..) returns always ud.ERROR if univention.debug is not initialized
+	oldLevel = ud1.get_level(ud1.ADMIN)
+	if oldLevel == ud1.PROCESS:
+		ud1.set_level(ud1.ADMIN, ud1.DEBUG)
+		is_ready = (ud1.get_level(ud1.ADMIN) == ud1.DEBUG)
+	else:
+		ud1.set_level(ud1.ADMIN, ud1.PROCESS)
+		is_ready = (ud1.get_level(ud1.ADMIN) == ud1.PROCESS)
+	if not is_ready:
+		ud1.init('/var/log/univention/directory-manager-cmd.log', ud1.FLUSH, 0)
+		ud1.set_level(ud1.LDAP, ud1.PROCESS)
+		ud1.set_level(ud1.ADMIN, ud1.PROCESS)
+	else:
+		ud1.set_level(ud1.ADMIN, oldLevel)
 
 
 def lock(userdn, lock_timestamp):
@@ -74,10 +93,7 @@ def lock(userdn, lock_timestamp):
 	object['locked'] = "1"
 	try:
 		if lock_timestamp:
-			lock_timestamp = time.strptime(lock_timestamp, '%Y%m%d%H%M%SZ')
-			d = 116444736000000000L  # difference between 1601 and 1970
-			lock_timestamp = long(time.mktime(lock_timestamp)) * 10000000 + d
-			object['lockedTime'] = str(int(lock_timestamp))
+			object['lockedTime'] = lock_timestamp
 		object.modify()
 	finally:
 		object.descriptions['locked'].editable, object.descriptions['locked'].may_change, object.descriptions['lockedTime'].editable, object.descriptions['lockedTime'].may_change = states
@@ -93,4 +109,7 @@ if __name__ == '__main__':
 	subparser.add_argument('--dn', required=True, help='The DN of the user account to be locked.')
 	subparser.add_argument('--lock-time', required=True, help='The time when the user account was locked.')
 	args = parser.parse_args()
+
+	initialize_debug()
+	ud1.debug(ud1.ADMIN, ud1.PROCESS, "univention.lib.account.lock was called for %s (%s)" % (args.dn, args.lock_time))
 	lock(args.dn, args.lock_time)

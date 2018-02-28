@@ -1,3 +1,27 @@
+univention-ldap (14.0.2-12) unstable; urgency=low
+
+  * Bug #46102: remove deprecated package dependency
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 27 Feb 2018 17:26:42 +0100
+
+univention-ldap (14.0.2-11) unstable; urgency=medium
+
+  * Bug #46270: Add ldap attribute for portal entry user groups (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 11 Feb 2018 02:53:11 +0100
+
+univention-ldap (14.0.2-10) unstable; urgency=medium
+
+  * Bug #46270: Add ldap attribute for portal entry user groups
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 10 Feb 2018 16:49:21 +0100
+
+univention-ldap (14.0.2-9) unstable; urgency=medium
+
+  * Bug #46270: Add ldap attribute for portal entries ordering
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 09 Feb 2018 20:19:43 +0100
+
 univention-ldap (14.0.2-8) unstable; urgency=medium
 
   * Bug #46066: version bump

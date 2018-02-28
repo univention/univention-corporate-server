@@ -1,3 +1,27 @@
+univention-l10n-fr (2.0.0-5) unstable; urgency=medium
+
+  * Bug #46118: Updated translation for univention-directory-manager-modules
+
+ -- Arvid Requate <requate@univention.de>  Fri, 16 Feb 2018 10:58:34 +0100
+
+univention-l10n-fr (2.0.0-4) unstable; urgency=low
+
+  * Bug #46102: remove leftover
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 23 Jan 2018 16:29:28 +0100
+
+univention-l10n-fr (2.0.0-3) unstable; urgency=low
+
+  * Bug #46102: remove translations for univention-mail-cyrus
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 23 Jan 2018 11:38:57 +0100
+
+univention-l10n-fr (2.0.0-2) unstable; urgency=low
+
+  * Bug #46102: remove translations for univention-mail-cyrus
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 23 Jan 2018 10:56:55 +0100
+
 univention-l10n-fr (2.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump

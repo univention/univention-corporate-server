@@ -1358,8 +1358,8 @@ class AD_Takeover():
 				self.samdb.modify(delta)
 
 	def resync_s4connector_listener(self, progress):
-		log.info("Waiting for listener to finish (max. 180 seconds)")
-		if not wait_for_listener_replication(progress, 180):
+		log.info("Waiting for listener to finish (max. 10 minutes)")
+		if not wait_for_listener_replication(progress, 600):
 			log.warn("Warning: Stopping Listener now anyway.")
 
 		# Restart Univention Directory Listener for S4 Connector
@@ -1595,6 +1595,10 @@ class AD_Takeover_Finalize():
 	def create_DNS_alias_for_AD_hostname(self):
 		# Add DNS records to UDM:
 		run_and_output_to_log(["/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh", "--dc", "--pdc", "--gc", "--site=%s" % self.sitename], log.info)
+
+		wait_for_s4_connector_replication(self.ucr, self.lp)
+		# Let samba_dnsupdate check DNS records
+		run_and_output_to_log(["/usr/sbin/samba_dnsupdate", ], log.info)
 
 		# remove local enty for AD DC from /etc/hosts
 		run_and_output_to_log(["univention-config-registry", "unset", "hosts/static/%s" % self.ad_server_ip], log.debug)
@@ -2055,7 +2059,7 @@ def wait_for_listener_replication(progress=None, max_time=None):
 	notifier_id_cached_value = None
 	static_count = 0
 	t_last_feedback = t_1 = t_0 = time.time()
-	while static_count < 3:
+	while static_count < 5:
 		if notifier_id_cached_value:
 			time.sleep(0.7)
 		last_id = get_stable_last_id(progress)
@@ -2078,7 +2082,7 @@ def wait_for_listener_replication(progress=None, max_time=None):
 		delta_t_last_feedback = t_1 - t_last_feedback
 		if progress and delta_t_last_feedback >= 1:
 			t_last_feedback = t_last_feedback + delta_t_last_feedback
-			progress.percentage_increment_scaled(1.0 / 32)
+			progress.percentage_increment_scaled(0.6 / 32)
 
 	return True
 

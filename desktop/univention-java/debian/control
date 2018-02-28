@@ -6,8 +6,8 @@ Standards-Version: 3.8.2
 Build-Depends: debhelper, ucslint-univention
 
 Package: univention-java
-Architecture: any
-Depends: openjdk-8-jre, icedtea-plugin
+Architecture: all
+Depends: default-jre, icedtea-plugin
 Description: UCS - Java support
  This package provides Java support for UCS.
  .

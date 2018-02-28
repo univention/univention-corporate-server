@@ -1,3 +1,415 @@
+ucs-test (8.0.28-55) unstable; urgency=low
+
+  * Bug #44786: temporarily deactivate tests for new listener module API
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 28 Feb 2018 10:32:30 +0100
+
+ucs-test (8.0.28-54) unstable; urgency=medium
+
+  * Bug #46316: more debug in 61_udm-users/100_test_users.py
+
+ -- Felix Botner <botner@univention.de>  Tue, 27 Feb 2018 18:37:35 +0100
+
+ucs-test (8.0.28-53) unstable; urgency=low
+
+  * Bug #46102: UDM property UniventionDovecotUserQuota was renamed to
+    mailUserQuota
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 27 Feb 2018 18:17:12 +0100
+
+ucs-test (8.0.28-52) unstable; urgency=medium
+
+  * Bug #46171: Fix for univention/testing/ucs_samba.py
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Feb 2018 12:31:00 +0100
+
+ucs-test (8.0.28-51) unstable; urgency=medium
+
+  * Bug #46171: Fix more things in 86_selenium/10_product_test_password_change
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Feb 2018 12:26:52 +0100
+
+ucs-test (8.0.28-50) unstable; urgency=medium
+
+  * Bug #46171: Fix missing import
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Feb 2018 11:08:36 +0100
+
+ucs-test (8.0.28-49) unstable; urgency=medium
+
+  * Bug #46263: remove univention-radius dependency from debian/control
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 27 Feb 2018 09:48:11 +0100
+
+ucs-test (8.0.28-48) unstable; urgency=medium
+
+  * 61_udm-users/50_udm_users_ldap_password: Added a test case for
+    users/ldap password handling (Bug #46261)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Feb 2018 08:47:42 +0100
+
+ucs-test (8.0.28-47) unstable; urgency=medium
+
+  * Bug #46431: Don't run 10_ldap/50ppolicy_account_lockout on a DC Backup
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Feb 2018 18:54:28 +0100
+
+ucs-test (8.0.28-46) unstable; urgency=medium
+
+  * Bug #46430: fixed 01_base.45udm-cli.test and 50_samba.40password-policies.test
+
+ -- Felix Botner <botner@univention.de>  Mon, 26 Feb 2018 18:43:54 +0100
+
+ucs-test (8.0.28-45) unstable; urgency=medium
+
+  * Bug #46316: 10_ldap/27reconnect_uldap_2 also
+    restart 26reconnect_univention_ldapsearch
+
+ -- Felix Botner <botner@univention.de>  Mon, 26 Feb 2018 17:38:20 +0100
+
+ucs-test (8.0.28-44) unstable; urgency=medium
+
+  * Bug #39817: Fix test expectation
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Feb 2018 14:58:58 +0100
+
+ucs-test (8.0.28-43) unstable; urgency=medium
+
+  * Bug #46263: add radius test section
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 26 Feb 2018 10:42:24 +0100
+
+ucs-test (8.0.28-42) unstable; urgency=low
+
+  * Bug #45963: handle not-returning openssl call
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 25 Feb 2018 21:46:03 +0100
+
+ucs-test (8.0.28-41) unstable; urgency=medium
+
+  * Bug #46008: Fix tests not cleaning up
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 23 Feb 2018 23:41:21 +0100
+
+ucs-test (8.0.28-40) unstable; urgency=medium
+
+  * Bug #46171: fixed 86_selenium/10_product_test_password_change
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 23 Feb 2018 15:04:00 +0100
+
+ucs-test (8.0.28-39) unstable; urgency=medium
+
+  * Bug #46316: skip smb test if samba is not installed in
+    01_base/47faillog_account-smb-krb
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Feb 2018 13:28:15 +0100
+
+ucs-test (8.0.28-38) unstable; urgency=medium
+
+  * Bug #46316: 10_ldap/27reconnect_uldap_2 stop/start
+    instead of restart slapd
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Feb 2018 13:01:04 +0100
+
+ucs-test (8.0.28-37) unstable; urgency=medium
+
+  * Bug #46066: fixed 10_ldap/92_memberOf
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Feb 2018 12:48:37 +0100
+
+ucs-test (8.0.28-36) unstable; urgency=medium
+
+  * Bug #46171: fixed 86_selenium/10_product_test_password_change
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 23 Feb 2018 10:09:59 +0100
+
+ucs-test (8.0.28-35) unstable; urgency=medium
+
+  * Bug #46352: 25_script_lock_expired_passwords: Add debug messages
+    and fail if ldap/shadowbind is disabled
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Feb 2018 16:44:45 +0100
+
+ucs-test (8.0.28-34) unstable; urgency=medium
+
+  * Bug #39817: Minor improvements for 47faillog-global and 47faillog
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Feb 2018 12:50:36 +0100
+
+ucs-test (8.0.28-33) unstable; urgency=medium
+
+  * Bug #39817: Split 47faillog-global from 47faillog and adjust it
+    to new behavior of faillog/lock_global: UDM users now get disabled
+    by univention-pam/lock-user when the pam_tally threshold is reached.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Feb 2018 11:51:28 +0100
+
+ucs-test (8.0.28-32) unstable; urgency=medium
+
+  * Bug #46126: 104_expired_password.py, better password
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Feb 2018 13:57:40 +0100
+
+ucs-test (8.0.28-31) unstable; urgency=medium
+
+  * Bug #46126: 105_change_expired_password_fail_reason.py
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Feb 2018 13:08:26 +0100
+
+ucs-test (8.0.28-30) unstable; urgency=medium
+
+  * Bug #46126: 104_expired_password.py, check if login
+    is denied with pwdChangeNextLogin=1
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Feb 2018 12:50:26 +0100
+
+ucs-test (8.0.28-29) unstable; urgency=medium
+
+  * Bug #46361: 82_saml: support for kerberos in saml
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 21 Feb 2018 11:55:21 +0100
+
+ucs-test (8.0.28-28) unstable; urgency=medium
+
+  * Bug #46126: 105_change_expired_password_fail_reason.py
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Feb 2018 12:27:07 +0100
+
+ucs-test (8.0.28-27) unstable; urgency=medium
+
+  * Bug #46359: fixed 09_extended_attribute_override_default_tabs.test
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Feb 2018 10:31:57 +0100
+
+ucs-test (8.0.28-26) unstable; urgency=medium
+
+  * Bug #46352: 25_script_lock_expired_passwords
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Feb 2018 18:47:44 +0100
+
+ucs-test (8.0.28-25) unstable; urgency=medium
+
+  * Bug #46067: Make ucs-lint happy
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Feb 2018 17:32:49 +0100
+
+ucs-test (8.0.28-24) unstable; urgency=medium
+
+  * Bug #46316: fixed 61_udm-users/100_test_users.py
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Feb 2018 16:23:19 +0100
+
+ucs-test (8.0.28-23) unstable; urgency=medium
+
+  * Bug #46067: Add 13_set_pwdChangeNextLogin_again_during_password_change,
+    marked as SKIP, because it only documents the existing behavior.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Feb 2018 15:09:17 +0100
+
+ucs-test (8.0.28-22) unstable; urgency=medium
+
+  * Bug #46126: Fix Bash quoting in 60_umc/07_expired_password and avoid
+    manually locking the test account.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Feb 2018 20:51:06 +0100
+
+ucs-test (8.0.28-21) unstable; urgency=medium
+
+  * Bug #46307: fixed 22nagios tests, again ...
+
+ -- Felix Botner <botner@univention.de>  Mon, 19 Feb 2018 19:05:06 +0100
+
+ucs-test (8.0.28-20) unstable; urgency=medium
+
+  * Bug #46316: fixed 61_udm-users/100_test_users.py
+
+ -- Felix Botner <botner@univention.de>  Mon, 19 Feb 2018 13:07:47 +0100
+
+ucs-test (8.0.28-19) unstable; urgency=medium
+
+  * Bug #46118: Remove Windows Terminal Server properties from tests
+
+ -- Arvid Requate <requate@univention.de>  Sun, 18 Feb 2018 11:54:39 +0100
+
+ucs-test (8.0.28-18) unstable; urgency=medium
+
+  * Bug #46126: fixed 60_umc/07_expired_password
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 16 Feb 2018 15:39:03 +0100
+
+ucs-test (8.0.28-17) unstable; urgency=medium
+
+  * Bug #46315: fixed 01_base/01_ignore_disabled_users_in_license_count
+
+ -- Felix Botner <botner@univention.de>  Fri, 16 Feb 2018 15:16:28 +0100
+
+ucs-test (8.0.28-16) unstable; urgency=medium
+
+  * Bug #46307: fixed 22nagios tests
+
+ -- Felix Botner <botner@univention.de>  Fri, 16 Feb 2018 14:47:42 +0100
+
+ucs-test (8.0.28-15) unstable; urgency=medium
+
+  * Bug #45842: Check that membership attributes get removed
+    from additional groups the group membership is removed from the user.
+
+ -- Arvid Requate <requate@univention.de>  Fri, 16 Feb 2018 14:15:07 +0100
+
+ucs-test (8.0.28-14) unstable; urgency=medium
+
+  * Bug #46304: fixed 80_docker/59_app_center_signature
+
+ -- Felix Botner <botner@univention.de>  Fri, 16 Feb 2018 12:24:10 +0100
+
+ucs-test (8.0.28-13) unstable; urgency=medium
+
+  * Bug #46118: Check for unsupported Samba NT DCs
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Feb 2018 15:22:38 +0100
+
+ucs-test (8.0.28-12) unstable; urgency=medium
+
+  * Bug #45842: Check that user objects are added to the univentionDefaultGroup
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Feb 2018 18:56:49 +0100
+
+ucs-test (8.0.28-11) unstable; urgency=low
+
+  * Bug #40199: reenable mail test
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 14 Feb 2018 16:30:15 +0100
+
+ucs-test (8.0.28-10) unstable; urgency=low
+
+  * Bug #46191: raise timeout of IMAP tests
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 14 Feb 2018 15:53:00 +0100
+
+ucs-test (8.0.28-9) unstable; urgency=medium
+
+  * Bug #46067: Adjust test: settings/usertemplate doesn't offer
+    'mail' and 'person' options any more but 'pki'.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Feb 2018 13:50:40 +0100
+
+ucs-test (8.0.28-8) unstable; urgency=low
+
+  * Bug #46102: remove test code branches for cyrus
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 23 Jan 2018 11:58:08 +0100
+
+ucs-test (8.0.28-7) unstable; urgency=medium
+
+  * Bug #43927: Attempt to stabilize 50_samba/41password_change
+
+ -- Arvid Requate <requate@univention.de>  Mon, 12 Feb 2018 15:16:50 +0100
+
+ucs-test (8.0.28-6) unstable; urgency=medium
+
+  * Bug #33214: Adjust saml tests and use ldap auth backend for existing tests
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 09 Feb 2018 17:01:13 +0100
+
+ucs-test (8.0.28-5) unstable; urgency=medium
+
+  * Bug #46035: Revert: Fix broken translation in selenium tests
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 09 Feb 2018 16:26:36 +0100
+
+ucs-test (8.0.28-4) unstable; urgency=medium
+
+  * Bug #46269: 82_saml/27_renewed_idp_cert: umc server needs to restarted
+    after certificate is renewed
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 09 Feb 2018 15:35:05 +0100
+
+ucs-test (8.0.28-3) unstable; urgency=medium
+
+  * Bug #46035: Fix broken translation in selenium tests
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 09 Feb 2018 15:18:15 +0100
+
+ucs-test (8.0.28-2) unstable; urgency=medium
+
+  * 01_base/21ssh_motd: Since UCS 4.3, the user creation fails if the
+    given group doesn't exist. Switch to domain admins in this test case
+    (Bug #45842)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 09 Feb 2018 12:37:08 +0100
+
+ucs-test (8.0.27-14) unstable; urgency=medium
+
+  * Bug #46066: added 10_ldap/92_memberOf
+
+ -- Felix Botner <botner@univention.de>  Fri, 09 Feb 2018 14:08:45 +0100
+
+ucs-test (8.0.27-13) unstable; urgency=medium
+
+  * Bug #46066: added 10_ldap/92_memberOf
+
+ -- Felix Botner <botner@univention.de>  Fri, 09 Feb 2018 12:03:06 +0100
+
+ucs-test (8.0.27-12) unstable; urgency=medium
+
+  * Bug #40064: Adjust test cases for new installation routines
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 08 Feb 2018 17:36:27 +0100
+
+ucs-test (8.0.27-11) unstable; urgency=medium
+
+  * 53_samba-common/30winbind: Samba is also required (Bug #46118)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 09 Feb 2018 11:43:53 +0100
+
+ucs-test (8.0.27-11) unstable; urgency=medium
+
+  * Bug #39817: Fix test cases
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Feb 2018 17:22:06 +0100
+
+ucs-test (8.0.27-10) unstable; urgency=medium
+
+  * Bug #46186: fix 82_saml/24_download_certificate
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 06 Feb 2018 15:54:39 +0100
+
+ucs-test (8.0.27-9) unstable; urgency=medium
+
+  * Bug #46036: Fix 01_base/26check_logfiles_general
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 06 Feb 2018 15:31:33 +0100
+
+ucs-test (8.0.27-8) unstable; urgency=medium
+
+  * Bug #46037: Fix 01_base/81alternativessl
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 06 Feb 2018 14:19:16 +0100
+
+ucs-test (8.0.27-7) unstable; urgency=medium
+
+  * Bug #46066: added 10_ldap/92_memberOf
+
+ -- Felix Botner <botner@univention.de>  Tue, 06 Feb 2018 14:03:55 +0100
+
+ucs-test (8.0.27-6) unstable; urgency=medium
+
+  * Bug #39817: Fix test cases
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Feb 2018 13:56:30 +0100
+
+ucs-test (8.0.27-5) unstable; urgency=medium
+
+  * Bug #39817: Fix test cases
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Feb 2018 13:43:26 +0100
+
+ucs-test (8.0.27-4) unstable; urgency=medium
+
+  * Bug #39817: Fix test case
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Feb 2018 12:50:27 +0100
+
 ucs-test (8.0.27-3) unstable; urgency=low
 
   * Bug #46002: Do not strip non-determinism

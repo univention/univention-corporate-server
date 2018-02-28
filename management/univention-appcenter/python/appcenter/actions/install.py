@@ -36,8 +36,9 @@ from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import get_action
 from univention.appcenter.exceptions import Abort, InstallMasterPackagesPasswordError, InstallMasterPackagesNoninteractiveError, InstallFailed, InstallNonDockerVersionError
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
-from univention.appcenter.udm import search_objects
 from univention.appcenter.ucr import ucr_get, ucr_save
+from univention.appcenter.utils import find_hosts_for_master_packages
+from univention.appcenter.packages import update_packages, install_packages_dry_run, install_packages, dist_upgrade_dry_run
 
 
 class ControlScriptException(Exception):
@@ -94,23 +95,24 @@ class Install(InstallRemoveUpgrade):
 			else:
 				raise InstallFailed()
 
-	def _install_packages(self, packages, update=True):
-		return self._apt_get('install', packages, update=update)
+	def _install_packages(self, packages):
+		return install_packages(packages)
 
 	def _install_master_packages(self, app, unregister_if_uninstalled=False):
 		old_app = Apps().find(app.id)
 		was_installed = old_app.is_installed()
-		self._register_component(app)
+		if self._register_component(app):
+			update_packages()
 		ret = self._install_packages(app.default_packages_master)
 		if was_installed:
 			if old_app != app:
 				self.log('Re-registering component for %s' % old_app)
-				self._register_component(old_app)
-				self._apt_get_update()
+				if self._register_component(old_app):
+					update_packages()
 		elif unregister_if_uninstalled:
 			self.log('Unregistering component for %s' % app)
-			self._unregister_component(app)
-			self._apt_get_update()
+			if self._unregister_component(app):
+				update_packages()
 		return ret
 
 	def _install_only_master_packages_remotely(self, app, host, is_master, args):
@@ -138,37 +140,19 @@ class Install(InstallRemoveUpgrade):
 			else:
 				self.warn('This is a DC backup. Continuing anyway, please rerun univention-app install %s --only-master-packages there later!' % (app.id))
 
-	def _find_hosts_for_master_packages(self, args):
-		lo, pos = self._get_ldap_connection(args, allow_machine_connection=True)
-		hosts = []
-		for host in search_objects('computers/domaincontroller_master', lo, pos):
-			hosts.append((host.info.get('fqdn'), True))
-		for host in search_objects('computers/domaincontroller_backup', lo, pos):
-			hosts.append((host.info.get('fqdn'), False))
-		try:
-			local_fqdn = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
-			local_is_master = ucr_get('server/role') == 'domaincontroller_master'
-			hosts.remove((local_fqdn, local_is_master))
-		except ValueError:
-			# not in list
-			pass
-		return hosts
-
 	def _install_app(self, app, args):
-		self._register_component(app)
-		install_master = False
+		if self._register_component(app):
+			update_packages()
 		if app.default_packages_master:
 			if ucr_get('server/role') == 'domaincontroller_master':
 				self._install_master_packages(app)
 				self.percentage = 30
-				install_master = True
-			for host, is_master in self._find_hosts_for_master_packages(args):
+			for host, is_master in find_hosts_for_master_packages():
 				self._install_only_master_packages_remotely(app, host, is_master, args)
 			if ucr_get('server/role') == 'domaincontroller_backup':
 				self._install_master_packages(app)
 				self.percentage = 30
-				install_master = True
-		ret = self._install_packages(app.get_packages(), update=not install_master).returncode == 0
+		ret = self._install_packages(app.get_packages())
 		self.percentage = 80
 		return ret
 
@@ -181,3 +165,48 @@ class Install(InstallRemoveUpgrade):
 			remove.call(app=app, noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[], backup=False)
 		except Exception:
 			pass
+
+	def _dry_run(self, app, args):
+		return self._install_packages_dry_run(app, args, with_dist_upgrade=False)
+
+	def _install_packages_dry_run(self, app, args, with_dist_upgrade):
+		original_app = Apps().find(app.id)
+		if original_app.is_installed():
+			was_installed = True
+		else:
+			was_installed = False
+		self.log('Dry run for %s' % app)
+		if self._register_component(app):
+			self.debug('Updating packages')
+			update_packages()
+		self.debug('Component %s registered' % app.component_id)
+		pkgs = self._get_packages_for_dry_run(app, args)
+		self.debug('Dry running with %r' % pkgs)
+		ret = install_packages_dry_run(pkgs)
+		if with_dist_upgrade:
+			upgrade_ret = dist_upgrade_dry_run()
+			ret['install'] = sorted(set(ret['install']).union(set(upgrade_ret['install'])))
+			ret['remove'] = sorted(set(ret['remove']).union(set(upgrade_ret['remove'])))
+			ret['broken'] = sorted(set(ret['broken']).union(set(upgrade_ret['broken'])))
+		if args.install_master_packages_remotely:
+			# TODO: should test remotely
+			self.log('Not testing package changes of remote packages!')
+			pass
+		if args.dry_run or ret['broken']:
+			if was_installed:
+				if self._register_component(original_app):
+					self.debug('Updating packages')
+					update_packages()
+				self.debug('Component %s reregistered' % original_app.component_id)
+			else:
+				if self._unregister_component(app):
+					self.debug('Updating packages')
+					update_packages()
+				self.debug('Component %s unregistered' % app.component_id)
+		return ret
+
+	def _get_packages_for_dry_run(self, app, args):
+		if args.only_master_packages:
+			return app.default_packages_master
+		else:
+			return app.get_packages(additional=True)

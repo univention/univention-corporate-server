@@ -152,10 +152,10 @@ class LogCatcher(object):
 		self.logs.append(('ERR', msg))
 
 	def has_stdout(self):
-		return any(msg for msg in self.stdout())
+		return any(self.stdout())
 
 	def has_stderr(self):
-		return any(msg for msg in self.stderr())
+		return any(self.stderr())
 
 	def stdout(self):
 		for level, msg in self.logs:

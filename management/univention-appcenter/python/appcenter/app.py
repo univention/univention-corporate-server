@@ -863,6 +863,7 @@ class App(object):
 
 	user_activation_required = AppBooleanAttribute()
 	generic_user_activation = AppAttributeOrTrueOrNone()
+	docker_env_ldap_user = AppAttribute()
 
 	ports_exclusive = AppListAttribute(regex='^\d+$')
 	ports_redirection = AppListAttribute(regex='^\d+:\d+$')
@@ -1070,13 +1071,19 @@ class App(object):
 			if not self.without_repository:
 				if not ucr_includes(self.ucr_component_key):
 					return False
-			if ucr_get(self.ucr_ucs_version_key, self.get_ucs_version()) != self.get_ucs_version():
-				return False
 			return packages_are_installed(self.default_packages, strict=False)
 
 	def is_ucs_component(self):
-		cache = self.get_app_cache_obj()
-		app = cache.copy(locale='en').find_by_component_id(self.component_id)
+		english_cache = self.get_app_cache_obj().copy(locale='en')
+		app = english_cache.find_by_component_id(self.component_id)
+		if app is None:
+			# somehow the localized cache and the english cache split brains!
+			app_logger.warn('Could not find %r in %r' % (self, english_cache))
+			english_cache.clear_cache()
+			app = english_cache.find_by_component_id(self.component_id)
+			if app is None:
+				# giving up. not really harmful
+				return False
 		return 'UCS components' in app.categories
 
 	def get_share_dir(self):

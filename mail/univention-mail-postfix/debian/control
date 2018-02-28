@@ -17,6 +17,7 @@ Depends: ${misc:Depends},
  univention-base-files,
  univention-config (>= 7.0.31-1),
  python-univention-lib (>= 3.0.4-1),
+ python-univention-directory-manager,
  openssl
 Conflicts: univention-mail,
  exim4,
@@ -55,7 +56,7 @@ Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-mail-postfix (= ${binary:Version}),
  univention-sasl,
- univention-mail-dovecot | univention-mail-cyrus
+ univention-mail-dovecot
 Recommends: bsd-mailx,
  univention-spamassassin,
  univention-antivir-mail

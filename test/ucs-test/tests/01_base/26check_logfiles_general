@@ -49,6 +49,7 @@ find /var/log \
 		-path "/var/log" \
 		-o -path "/var/log/aptitude*" \
 		-o -path "/var/log/apt/history.log" \
+		-o -path "/var/log/apt/eipp.log.xz" \
 		-o -path "/var/log/autoupdate.log" \
 		-o -path "/var/log/alternatives.log*" \
 		-o -path "/var/log/boot.log" \

@@ -40,6 +40,7 @@ import copy
 import time
 import types
 import struct
+import calendar
 from M2Crypto import X509
 import ldap
 import base64
@@ -56,7 +57,6 @@ import univention.admin.allocators
 import univention.admin.localization
 import univention.admin.uexceptions
 import univention.admin.uldap
-import univention.admin.mungeddial as mungeddial
 import univention.admin.handlers.settings.prohibited_username
 from univention.admin import configRegistry
 from univention.lib.s4 import rids_for_well_known_security_identifiers
@@ -73,30 +73,20 @@ template = 'settings/usertemplate'
 
 childs = 0
 short_description = _('User')
-long_description = _('POSIX, Samba and Kerberos account')
+long_description = _('POSIX, Samba, Kerberos and mail account')
 
 
 options = {
 	'default': univention.admin.option(
-		short_description=_('POSIX, Samba and Kerberos account'),
+		short_description=_('POSIX, Samba, Kerberos and mail account'),
 		default=True,
-		objectClasses=['top', 'person', 'univentionPWHistory', 'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry']
-	),
-	'mail': univention.admin.option(
-		short_description=_('Mail account'),
-		default=True,
-		objectClasses=['univentionMail'],
+		objectClasses=['top', 'person', 'univentionPWHistory', 'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'organizationalPerson', 'inetOrgPerson']
 	),
 	'pki': univention.admin.option(
 		short_description=_('Public key infrastructure account'),
 		default=False,
 		editable=True,
 		objectClasses=['pkiUser'],
-	),
-	'person': univention.admin.option(
-		short_description=_('Personal information'),
-		default=True,
-		objectClasses=['person', 'organizationalPerson', 'inetOrgPerson'],
 	),
 }
 property_descriptions = {
@@ -139,7 +129,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.TwoThirdsString,
 		multivalue=False,
 		include_in_default_search=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -222,7 +211,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string64,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -276,9 +264,9 @@ property_descriptions = {
 		copyable=True,
 		default='0',
 	),
-	'locked': univention.admin.property(
-		short_description=_('User password is locked'),
-		long_description=_('Indicates that the user password is locked, e.g. due to too many login failures. Unchecking causes that the user password gets unlocked.'),
+	'locked': univention.admin.property(  # This property only serves two purposes: 1) filtering 2) artificial simulation of lockout
+		short_description=_('Locked state of account'),
+		long_description=_('This indicates if the account is locked out due to too many authentication failures.'),
 		syntax=univention.admin.syntax.locked,
 		multivalue=False,
 		required=False,
@@ -289,8 +277,8 @@ property_descriptions = {
 		default='0',
 	),
 	'lockedTime': univention.admin.property(
-		short_description=_('Password locked date'),
-		long_description=_('Specifies the date when the password was locked.'),
+		short_description=_('Lockout time'),
+		long_description=_('Timestamp when account lockout happend.'),
 		syntax=univention.admin.syntax.string,
 		default=0,
 		multivalue=False,
@@ -301,11 +289,23 @@ property_descriptions = {
 		show_in_lists=False,
 		dontsearch=True,
 	),
+	'unlock': univention.admin.property(  # Just a trigger to reset self['locked']
+		short_description=_('Unlock account'),
+		long_description=_('If the account is locked out due to too many login failures, this checkbox allows unlocking.'),
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		editable=True,
+		identifies=False,
+		show_in_lists=True,
+		default='0',
+	),
 	'unlockTime': univention.admin.property(
-		short_description=_('Password unlock date'),
-		long_description=_('Specifies the date when the password gets unlocked automatically.'),
-		syntax=univention.admin.syntax.date,
-		default=0,
+		short_description=_('Lockout till'),
+		long_description=_('Shows the time when the account gets unlocked again according to policy.'),
+		syntax=univention.admin.syntax.string,  # see posixSecondsToLocaltimeDate
+		default=None,
 		multivalue=False,
 		required=False,
 		may_change=False,
@@ -330,7 +330,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -342,7 +341,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.emailAddress,
 		multivalue=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -353,7 +351,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.OneThirdString,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -365,7 +362,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.TwoThirdsString,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -377,7 +373,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.Country,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -389,7 +384,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.phone,
 		multivalue=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -402,7 +396,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		include_in_default_search=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -413,7 +406,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.OneThirdString,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -424,7 +416,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.UserDN,
 		multivalue=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -435,7 +426,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.OneThirdString,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -446,7 +436,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -457,7 +446,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.postalAddress,
 		multivalue=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -468,7 +456,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.phone,
 		multivalue=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -480,7 +467,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.phone,
 		multivalue=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -492,7 +478,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.phone,
 		multivalue=True,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -504,7 +489,6 @@ property_descriptions = {
 		long_description=_('Date of birth'),
 		syntax=univention.admin.syntax.iso8601Date,
 		multivalue=False,
-		options=['person'],
 		required=False,
 		may_change=True,
 		identifies=False,
@@ -617,7 +601,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.MailHomeServer,
 		nonempty_is_default=True,
 		multivalue=False,
-		options=['mail'],
 		required=False,
 		dontsearch=False,
 		may_change=True,
@@ -630,7 +613,6 @@ property_descriptions = {
 		syntax=univention.admin.syntax.primaryEmailAddressValidDomain,
 		multivalue=False,
 		include_in_default_search=True,
-		options=['mail'],
 		required=False,
 		dontsearch=False,
 		may_change=True,
@@ -642,7 +624,6 @@ property_descriptions = {
 		long_description='',
 		syntax=univention.admin.syntax.emailAddressValidDomain,
 		multivalue=True,
-		options=['mail'],
 		required=False,
 		dontsearch=False,
 		may_change=True,
@@ -655,7 +636,6 @@ property_descriptions = {
 		long_description=_("Incoming e-mails for this user are copied/redirected to the specified forward e-mail adresses. Depending on the forwarding setting, a local copy of each e-mail is kept. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox."),
 		syntax=univention.admin.syntax.emailAddress,
 		multivalue=True,
-		options=['mail'],
 		required=False,
 		dontsearch=False,
 		may_change=True,
@@ -668,7 +648,6 @@ property_descriptions = {
 		long_description=_("Specifies if a local copy of each incoming e-mail is kept for this user. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox."),
 		syntax=univention.admin.syntax.emailForwardSetting,
 		multivalue=False,
-		options=['mail'],
 		required=False,
 		dontsearch=True,
 		may_change=True,
@@ -754,7 +733,6 @@ property_descriptions = {
 		required=False,
 		dontsearch=True,
 		may_change=True,
-		options=['person'],
 		identifies=False,
 		copyable=True,
 	),
@@ -999,10 +977,6 @@ property_descriptions = {
 	),
 }
 
-# append CTX properties
-for key, value in mungeddial.properties.items():
-	property_descriptions[key] = value
-
 default_property_descriptions = copy.deepcopy(property_descriptions)  # for later reset of descriptions
 
 layout = [
@@ -1040,8 +1014,8 @@ layout = [
 		]),
 		Group(_('Locked login'), layout=[
 			['pwdChangeNextLogin'],
-			['locked'],
 			['passwordexpiry'],
+			['unlock'],
 			['unlockTime'],
 		]),
 		Group(_('Windows'), _('Windows account settings'), layout=[
@@ -1112,9 +1086,6 @@ layout = [
 	])
 ]
 
-# append tab with CTX flags
-layout.append(mungeddial.tab)
-
 
 def check_prohibited_username(lo, username):
 	"""check if the username is allowed"""
@@ -1129,6 +1100,10 @@ def case_insensitive_in_list(dn, list):
 		if dn.decode('utf8').lower() == element.decode('utf8').lower():
 			return True
 	return False
+
+
+def posixSecondsToLocaltimeDate(seconds):
+	return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(seconds))
 
 
 def posixDaysToDate(days):
@@ -1438,10 +1413,24 @@ def unmapKeyAndValue(old):
 	return lst
 
 
-def unmapSambaBadPasswordTime(old):
-	if old and old[0]:
+def mapWindowsFiletime(old):
+	if old:
+		if old == "0":
+			return [old]
+		unixtime = time.strptime(old, '%Y%m%d%H%M%SZ')
 		d = 116444736000000000L  # difference between 1601 and 1970
-		return str((int(old[0]) - d) / 10000000)
+		windows_filetime = long(calendar.timegm(unixtime)) * 10000000 + d
+		return [str(int(windows_filetime))]
+	return []
+
+
+def unmapWindowsFiletime(old):
+	if old and old[0]:
+		if old[0] == "0":
+			return old[0]
+		d = 116444736000000000L  # difference between 1601 and 1970
+		unixtime = (int(old[0]) - d) / 10000000
+		return time.strftime('%Y%m%d%H%M%SZ', time.gmtime(unixtime))
 	return ''
 
 
@@ -1491,7 +1480,7 @@ mapping.register('firstname', 'givenName', None, univention.admin.mapping.ListTo
 mapping.register('userCertificate', 'userCertificate;binary', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('jpegPhoto', 'jpegPhoto', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('umcProperty', 'univentionUMCProperty', mapKeyAndValue, unmapKeyAndValue)
-mapping.register('lockedTime', 'sambaBadPasswordTime', None, unmapSambaBadPasswordTime)
+mapping.register('lockedTime', 'sambaBadPasswordTime', mapWindowsFiletime, unmapWindowsFiletime)
 
 mapping.registerUnmapping('sambaRID', unmapSambaRid)
 mapping.registerUnmapping('passwordexpiry', unmapPasswordExpiry)
@@ -1501,11 +1490,8 @@ mapping.registerUnmapping('locked', unmapLocked)
 mapping.register('password', 'userPassword', univention.admin.mapping.dontMap(), univention.admin.mapping.ListToString)
 
 
-class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
+class object(univention.admin.handlers.simpleLdap):
 	module = module
-
-	def __pwd_is_auth_saslpassthrough(self, password):
-		return password.startswith('{SASL}') and univention.admin.configRegistry.get('directory/manager/web/modules/users/user/auth/saslpassthrough', 'no').lower() == 'keep'
 
 	@property
 	def __forward_copy_to_self(self):
@@ -1528,11 +1514,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				pass
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
-		self.groupsLoaded = 1
+		self.groupsLoaded = True
 		self.password_length = 8
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
-		mungeddial.Support.__init__(self)
 
 	def open(self, loadGroups=True):
 		univention.admin.handlers.simpleLdap.open(self)
@@ -1540,22 +1525,22 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		if self.exists():
 			self._unmap_mail_forward()
 			self._unmap_pwd_change_next_login()
-			self.sambaMungedDialUnmap()
-			self.sambaMungedDialParse()
 			self._unmap_automount_information()
 			self._unmapUnlockTime()
 			self.reload_certificate()
+			self._load_groups(loadGroups)
 
-		self._load_groups(loadGroups)
 		self.save()
+		if not self.exists():  # TODO: move this block into _ldap_pre_create!
+			self._set_default_group()
 
 	def _load_groups(self, loadGroups):
 		if self.exists():
-			self.groupsLoaded = loadGroups
 			if loadGroups:  # this is optional because it can take much time on larger installations, default is true
 				self['groups'] = self.lo.searchDn(filter=filter_format('(&(cn=*)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [self.dn]))
 			else:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'user: open with loadGroups=false for user %s' % self['username'])
+			self.groupsLoaded = loadGroups
 			primaryGroupNumber = self.oldattr.get('gidNumber', [''])[0]
 			if primaryGroupNumber:
 				primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(cn=*)(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber=%s))', [primaryGroupNumber]))
@@ -1581,19 +1566,23 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				self.info['primaryGroup'] = None
 				self.save()
 				raise univention.admin.uexceptions.primaryGroup(self.dn)
-		else:
-			primary_group_from_template = self['primaryGroup']
-			if not primary_group_from_template:
-				searchResult = self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
-				if not searchResult or not searchResult[0][1]:
-					self.info['primaryGroup'] = None
-					self.save()
-					raise univention.admin.uexceptions.primaryGroup(self.dn)
 
-				for tmp, number in searchResult:
-					primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(cn=%s))', (univention.admin.uldap.explodeDn(number['univentionDefaultGroup'][0], 1)[0],)), base=self.position.getDomain(), scope='domain')
-					if primaryGroupResult:
-						self['primaryGroup'] = primaryGroupResult[0]
+	def _set_default_group(self):
+		primary_group_from_template = self['primaryGroup']
+		if not primary_group_from_template:
+			searchResult = self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
+			if not searchResult or not searchResult[0][1]:
+				self.info['primaryGroup'] = None
+				self.save()
+				raise univention.admin.uexceptions.primaryGroup(self.dn)
+
+			for tmp, number in searchResult:
+				primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(cn=%s))', (univention.admin.uldap.explodeDn(number['univentionDefaultGroup'][0], 1)[0],)), base=self.position.getDomain(), scope='domain')
+				if primaryGroupResult:
+					self['primaryGroup'] = primaryGroupResult[0]
+					# self.save() must not be called after this point in self.open()
+					# otherwise self.__primary_group doesn't add a new user to the
+					# univentionDefaultGroup because "not self.hasChanged('primaryGroup')"
 
 	def _unmap_pwd_change_next_login(self):
 		if self.oldattr.get('shadowLastChange', [''])[0] == '0':
@@ -1650,15 +1639,18 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 	def _unmapUnlockTime(self):
 		self.info['unlockTime'] = ''
-		locked_time = self['lockedTime']
-		if locked_time:
+		locked_timestamp = self['lockedTime']
+		if locked_timestamp and locked_timestamp != "0":
 			try:
-				locked_time = int(locked_time)
-				lockout_duration = int(self.lo.search(filter='objectClass=sambaDomain', attr=['sambaLockoutDuration'])[0][1].get('sambaLockoutDuration', [1800])[0])
+				locked_unixtime = long(calendar.timegm(time.strptime(locked_timestamp, '%Y%m%d%H%M%SZ')))
+				lockout_duration = int(self.lo.search(filter='objectClass=sambaDomain', attr=['sambaLockoutDuration'])[0][1].get('sambaLockoutDuration', [0])[0])
 			except (ValueError, KeyError, IndexError, AttributeError):
 				return
 
-			self.info['unlockTime'] = str(lockout_duration + locked_time)
+			if lockout_duration == 0:
+				self.info['unlockTime'] = _("unlimited")
+			else:
+				self.info['unlockTime'] = posixSecondsToLocaltimeDate(lockout_duration + locked_unixtime)
 
 	def modify(self, *args, **kwargs):
 		try:
@@ -1881,12 +1873,17 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
 
 		# get lock for mailPrimaryAddress
-		if 'mail' in self.options and self['mailPrimaryAddress']:
-			if not self.exists() or self.hasChanged('mailPrimaryAddress'):
+		if not self.exists() or self.hasChanged('mailPrimaryAddress'):
+			if self['mailPrimaryAddress']:
 				try:
 					self.alloc.append(('mailPrimaryAddress', univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])))
 				except univention.admin.uexceptions.noLock:
 					raise univention.admin.uexceptions.mailAddressUsed(self['mailPrimaryAddress'])
+
+		if self['unlock'] == '1':
+			self['locked'] = '0'
+		if self['disabled'] == '1':
+			self['locked'] = '0'  # Samba/AD behavior
 
 	def _ldap_addlist(self):
 		al = super(object, self)._ldap_addlist()
@@ -1907,7 +1904,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.__update_groups()
 		self.__primary_group()
 
-		if 'mail' in self.options and self.hasChanged('mailPrimaryAddress'):
+		if self.hasChanged('mailPrimaryAddress'):
 			if self['mailPrimaryAddress']:
 				univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailPrimaryAddress'])
 			else:  # FIXME: why is this in the else block? it needs to be done always!
@@ -1949,7 +1946,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		ml = self._modlist_posix_password(ml)
 		ml = self._modlist_kerberos_password(ml)
 		if not self.exists() or self.hasChanged(['password', 'pwdChangeNextLogin']):
-			pwhistoryPolicy = _PasswortHistoryPolicy(self.loadPolicyObject('policies/pwhistory'))
+			pwhistoryPolicy = univention.admin.password.PasswortHistoryPolicy(self.loadPolicyObject('policies/pwhistory'))
 			ml = self._check_password_history(ml, pwhistoryPolicy)
 			self._check_password_complexity(pwhistoryPolicy)
 			ml = self._modlist_samba_password(ml, pwhistoryPolicy)
@@ -1962,7 +1959,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		ml = self._modlist_mail_forward(ml)
 		ml = self._modlist_univention_person(ml)
 		ml = self._modlist_home_share(ml)
-		ml = self._modlist_samba_mungeddial(ml)
 		ml = self._modlist_samba_sid(ml)
 
 		return ml
@@ -2012,6 +2008,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
 		return ml
 
+	## If you change anything here, please also check users/ldap.py
 	def _check_password_history(self, ml, pwhistoryPolicy):
 		if self.exists() and not self.hasChanged('password'):
 			return ml
@@ -2020,15 +2017,16 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 		pwhistory = self.oldattr.get('pwhistory', [''])[0]
 
-		if self.__pwAlreadyUsed(self['password'], pwhistory):
+		if univention.admin.password.password_already_used(self['password'], pwhistory):
 			raise univention.admin.uexceptions.pwalreadyused()
 
 		if pwhistoryPolicy.pwhistoryLength is not None:
-			newPWHistory = self.__getPWHistory(univention.admin.password.crypt(self['password']), pwhistory, pwhistoryPolicy.pwhistoryLength)
+			newPWHistory = univention.admin.password.get_password_history(univention.admin.password.crypt(self['password']), pwhistory, pwhistoryPolicy.pwhistoryLength)
 			ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
 
 		return ml
 
+	## If you change anything here, please also check users/ldap.py
 	def _check_password_complexity(self, pwhistoryPolicy):
 		if self.exists() and not self.hasChanged('password'):
 			return
@@ -2156,12 +2154,13 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 
 			if self['locked'] == '0':  # unlock kerberos password
 				krb_kdcflags &= ~(1 << 17)
-#			else:  # lock kerberos password
+#			elif self['locked'] == '1':  # lock kerberos password
 #				krb_kdcflags |= (1 << 17)
 
 			ml.append(('krb5KDCFlags', str(old_kdcflags), str(krb_kdcflags)))
 		return ml
 
+	## If you change anything here, please also check users/ldap.py
 	def _modlist_posix_password(self, ml):
 		if not self.exists() or self.hasChanged(['disabled', 'password']):
 			old_password = self.oldattr.get('userPassword', [''])[0]
@@ -2171,7 +2170,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				# hacking attempt. user tries to change the password to e.g. {KINIT} or {crypt}$6$...
 				raise univention.admin.uexceptions.valueError(_('Invalid password.'))
 
-			if self.__pwd_is_auth_saslpassthrough(old_password):
+			if univention.admin.password.password_is_auth_saslpassthrough(old_password):
 				# do not change {SASL} password, but lock it if necessary
 				password = old_password
 
@@ -2187,7 +2186,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
 			if pwdAccountLockedTime:
 				ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
-
 		return ml
 
 	def _modlist_samba_bad_pw_count(self, ml):
@@ -2312,12 +2310,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 					ml.append(('automountInformation', am_old, ''))
 		return ml
 
-	def _modlist_samba_mungeddial(self, ml):
-		sambaMunged = self.sambaMungedDialMap()
-		if sambaMunged:
-			ml.append(('sambaMungedDial', self.oldattr.get('sambaMungedDial', ['']), [sambaMunged]))
-		return ml
-
 	def _modlist_samba_sid(self, ml):
 		if not self.exists() or self.hasChanged('sambaRID'):
 			sid = self.__generate_user_sid(self['uidNumber'])
@@ -2337,11 +2329,11 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 			# enable samba account
 			acctFlags.unset('D')
 
-		if self["locked"] == '0':
-			# unlock samba account
-			acctFlags.unset("L")
-		else:
+		if self['locked'] == '1':
+			# lock samba account
 			acctFlags.set('L')
+		else:
+			acctFlags.unset('L')
 
 		if str(old_flags) != str(acctFlags.decode()):
 			ml.append(('sambaAcctFlags', old_flags, acctFlags.decode()))
@@ -2351,7 +2343,7 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		self.alloc.append(('sid', self.oldattr['sambaSID'][0]))
 		self.alloc.append(('uid', self.oldattr['uid'][0]))
 		self.alloc.append(('uidNumber', self.oldattr['uidNumber'][0]))
-		if 'mail' in self.options and self['mailPrimaryAddress']:
+		if self['mailPrimaryAddress']:
 			self.alloc.append(('mailPrimaryAddress', self['mailPrimaryAddress']))
 		self._release_locks()
 
@@ -2409,49 +2401,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				raise
 
 		return dn
-
-	def __pwAlreadyUsed(self, password, pwhistory):
-		for line in pwhistory.split(" "):
-			linesplit = line.split("$")  # $method_id$salt$password_hash
-			try:
-				password_hash = univention.admin.password.crypt(password, linesplit[1], linesplit[2])
-			except IndexError:  # old style password history entry, no method id/salt in there
-				hash_algorithm = hashlib.new("sha1")
-				hash_algorithm.update(password.encode("utf-8"))
-				password_hash = hash_algorithm.hexdigest().upper()
-			if password_hash == line:
-				return True
-		return False
-
-	def __getPWHistory(self, newpwhash, pwhistory, pwhlen):
-		# split the history
-		if len(string.strip(pwhistory)):
-			pwlist = string.split(pwhistory, ' ')
-		else:
-			pwlist = []
-
-		# this preserves a temporary disabled history
-		if pwhlen > 0:
-			if len(pwlist) < pwhlen:
-				pwlist.append(newpwhash)
-			else:
-				# calc entries to cut out
-				cut = 1 + len(pwlist) - pwhlen
-				pwlist[0:cut] = []
-				if pwhlen > 1:
-					# and append to shortened history
-					pwlist.append(newpwhash)
-				else:
-					# or replace the history completely
-					if len(pwlist) > 0:
-						pwlist[0] = newpwhash
-						# just to be sure...
-						pwlist[1:] = []
-					else:
-						pwlist.append(newpwhash)
-		# and build the new history
-		res = string.join(pwlist)
-		return res
 
 	def __getsmbPWHistory(self, newpassword, smbpwhistory, smbpwhlen):
 		# split the history
@@ -2564,6 +2513,10 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 		])
 
 	@classmethod
+	def _ldap_attributes(cls):
+		return ['*', 'pwdAccountLockedTime']
+
+	@classmethod
 	def rewrite(cls, filter, mapping):
 		if filter.variable == 'username':
 			filter.variable = 'uid'
@@ -2637,31 +2590,6 @@ class object(univention.admin.handlers.simpleLdap, mungeddial.Support):
 				filter.variable = 'uid'
 		else:
 			univention.admin.mapping.mapRewrite(filter, mapping)
-
-
-class _PasswortHistoryPolicy(type('', (), {}).mro()[-1]):
-
-	def __init__(self, pwhistoryPolicy):
-		super(_PasswortHistoryPolicy, self).__init__()
-		self.pwhistoryPolicy = pwhistoryPolicy
-		self.pwhistoryLength = None
-		self.pwhistoryPasswordLength = 0
-		self.pwhistoryPasswordCheck = False
-		self.expiryInterval = 0
-		if pwhistoryPolicy:
-			try:
-				self.pwhistoryLength = max(0, int(pwhistoryPolicy['length'] or 0))
-			except ValueError:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (history length): %r' % (pwhistoryPolicy.dn,))
-			try:
-				self.pwhistoryPasswordLength = max(0, int(pwhistoryPolicy['pwLength'] or 0))
-			except ValueError:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (password length): %r' % (pwhistoryPolicy.dn,))
-			self.pwhistoryPasswordCheck = (pwhistoryPolicy['pwQualityCheck'] or '').lower() in ['true', '1']
-			try:
-				self.expiryInterval = max(0, int(pwhistoryPolicy['expiryInterval'] or 0))
-			except ValueError:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Corrupt Password history policy (expiry interval): %r' % (pwhistoryPolicy.dn,))
 
 
 lookup = object.lookup

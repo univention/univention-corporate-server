@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2017 Univention GmbH
+ * Copyright 2011-2018 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -56,12 +56,13 @@ define([
 	"umc/widgets/CheckBox",
 	"umc/widgets/PasswordBox",
 	"umc/modules/uvmm/SnapshotGrid",
+	"umc/modules/uvmm/TargetHostGrid",
 	"umc/modules/uvmm/InterfaceGrid",
 	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
 ], function(declare, lang, array, topic, on, domAttr, Memory, Observable, MappedTextBox, tools, dialog, store, Page, Form, ContainerWidget, TabController, StackContainer, TitlePane, StandbyMixin,
-	TextBox, TextArea, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, InterfaceGrid, DriveGrid, types, _) {
+	TextBox, TextArea, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, TargetHostGrid, InterfaceGrid, DriveGrid, types, _) {
 
 	return declare("umc.modules.uvmm.DomainPage", [ Page, StandbyMixin ], {
 		nested: true,
@@ -73,6 +74,7 @@ define([
 		_advancedPage: null,
 		_devicesPage: null,
 		_snapshotPage: null,
+		_targethostPage: null,
 
 		_driveStore: null,
 		_driveGrid: null,
@@ -80,6 +82,8 @@ define([
 		_interfaceGrid: null,
 		_snapshotStore: null,
 		_snapshotGrid: null,
+		_targethostGrid: null,
+		_targethostStore: null,
 
 		_domain: null,
 
@@ -343,11 +347,29 @@ define([
 			});
 			this._snapshotPage.addChild(this._snapshotGrid);
 
+			//
+			// target host page
+			//
+
+			this._targethostPage = new Page({
+				headerText: _('Migration targethost settings'),
+				title: _('Migration targethosts')
+			});
+
+			// grid for the target hosts
+			this._targethostStore = store('id', 'uvmm/targethost');
+			this._targethostGrid = new TargetHostGrid({
+				moduleStore: this._targethostStore,
+				onUpdateProgress: lang.hitch(this, 'onUpdateProgress')
+			});
+			this._targethostPage.addChild(this._targethostGrid);
+
 			this._stack = new StackContainer({});
 			// add pages in the correct order
 			this.addSubPage(this._generalPage);
 			this.addSubPage(this._devicesPage);
 			this.addSubPage(this._snapshotPage);
+			this.addSubPage(this._targethostPage);
 			this.addSubPage(this._advancedPage);
 			this.addChild(this._stack);
 		},
@@ -432,6 +454,7 @@ define([
 						this.addNotification( _( '<p>For fail over the virtual machine can be migrated to another physical server re-using the last known configuration and all disk images. This can result in <strong>data corruption</strong> if the images are <strong>concurrently used</strong> by multiple running machines! Therefore the failed server <strong>must be blocked from accessing the image files</strong>, for example by blocking access to the shared storage or by disconnecting the network.</p><p>When the server is restored, all its previous virtual machines will be shown again. Any duplicates have to be cleaned up manually by migrating the machines back to the server or by deleting them. Make sure that shared images are not delete.</p>' ) );
 						this.hideChild( this._devicesPage );
 						this.hideChild( this._snapshotPage );
+						this.hideChild( this._targethostPage );
 						this.hideChild( this._advancedPage );
 						this._headerButtons.save.set( 'disabled', true );
 						// name should not be editable
@@ -459,6 +482,7 @@ define([
 					});
 
 					// update the stores
+					this._targethostGrid.set('domain', this._domain);
 					this._snapshotGrid.set('domain', this._domain);
 					this._driveGrid.set('domain', this._domain);
 					this._interfaceGrid.set('domain', this._domain);
@@ -466,6 +490,7 @@ define([
 					this._driveStore.setData(this._domain.disks);
 
 					this.showChild( this._snapshotPage );
+					this.showChild( this._targethostPage );
 
 					// set visibility of the VNC-Port
 					this._advancedForm._widgets.vnc_port.set('visible', Boolean(this._advancedForm._widgets.vnc_port.get('value')));
@@ -476,6 +501,7 @@ define([
 					// name should not be editable
 					this._generalForm._widgets.name.set( 'disabled', true );
 
+					this._targethostGrid.set( 'domainActive', domainActive );
 					this._advancedForm._widgets.arch.set( 'disabled', domainActive );
 					this._driveGrid.set( 'domainActive', domainActive );
 					this._interfaceGrid.set( 'disabled', domainActive );
@@ -492,6 +518,7 @@ define([
 					this._interfaceGrid.filter();
 					this._driveGrid.filter();
 					this._snapshotGrid.filter();
+					this._targethostGrid.filter();
 				}
 				this.standby(false);
 			}), lang.hitch(this, function() {

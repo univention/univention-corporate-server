@@ -33,6 +33,7 @@ import time
 import pprint
 import argparse
 import binascii
+import calendar
 
 import ldap
 import ldap.controls.simple
@@ -66,8 +67,15 @@ class Migration(object):
 		p.add_argument('--check', action='store_true', help='Makes a dry run by printing out all modifications which would be done.')
 		p.add_argument('--set-kerberos-realm', help='Set the given kerberos realm in the domain if none is set.')
 		self.args = p.parse_args()
-		searchResult = lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr=['aRecord', 'aAAARecord'])
-		self.s4connector_present = any(ddn for (ddn, attr) in searchResult if set(['aAAARecord', 'aRecord']) & set(attr))
+
+		if ucr.is_true('directory/manager/samba3/legacy', False):
+			self.s4connector_present = False
+		elif ucr.is_false('directory/manager/samba3/legacy', False):
+			self.s4connector_present = True
+		else:
+			searchResult = lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr=['aRecord', 'aAAARecord'])
+			self.s4connector_present = any(ddn for (ddn, attr) in searchResult if set(['aAAARecord', 'aRecord']) & set(attr))
+
 		self.migrate_users()
 		self.migrate_templates()
 		if self.exceptions:
@@ -107,7 +115,8 @@ class Migration(object):
 		self.alloc = []
 
 		# use the users/user filter from UCS 4.2 but remove "(!(univentionObjectFlag=functional))" because we have the "uid=sys-idp-user" account
-		user_filter = u'(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(objectClass=inetOrgPerson))(!(uidNumber=0))(!(uid=*$)))'
+		default_user_filter = u'(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(objectClass=inetOrgPerson))(!(uidNumber=0))(!(uid=*$)))'
+		user_filter = ucr.get('update43/udm/migration/user/filter', default_user_filter)
 		for dn, user in lo.search(user_filter):
 			ocs = set(user['objectClass'])
 			has_posix = ocs & {'posixAccount', }
@@ -121,6 +130,7 @@ class Migration(object):
 			has_ldap = ocs & {'simpleSecurityObject', 'uidObject'}
 
 			is_ldap_only = has_ldap and not any([has_posix, has_shadow, has_samba, has_kerberos, has_mail, has_org_person, has_inet_org_person, has_pki])
+			is_contact_only = has_inet_org_person and has_org_person and not any([has_posix, has_shadow, has_samba, has_kerberos, has_mail, has_ldap, has_pki])
 			remove_ldap = has_ldap and not is_ldap_only
 
 			if user.get('univentionObjectType') and 'users/user' not in user['univentionObjectType']:
@@ -133,6 +143,11 @@ class Migration(object):
 
 			if is_ldap_only:
 				self.modify(dn, [('univentionObjectType', 'users/user', 'users/ldap')])
+				# TODO: are there users without univentionObjectType? then we need error handling here!
+				continue
+
+			if is_contact_only:
+				self.modify(dn, [('univentionObjectType', 'users/user', 'users/contact')])
 				# TODO: are there users without univentionObjectType? then we need error handling here!
 				continue
 
@@ -159,38 +174,51 @@ class Migration(object):
 
 				if not disabled:
 					disabled = univention.admin.password.is_locked(user.get('userPassword', [''])[0])
-			password_set_date = None
-			if user.get('krb5PasswordEnd', [None][0]):
-				password_set_date = time.strptime(user['krb5PasswordEnd'][0], "%Y%m%d000000Z")
-			elif user.get('sambaPwdLastSet', [None])[0]:
+
+
+			shadowLastChange = user.get('shadowLastChange', [None])[0]
+			shadowMax = user.get('shadowMax', [None])[0]
+			sambaPwdLastSet = user.get('sambaPwdLastSet', [None])[0]
+			sambaMaxPwdAge = self.get_sambaMaxPwdAge()
+
+			password_end_date = None
+			if not password_end_date and sambaPwdLastSet and sambaMaxPwdAge:
 				try:
-					password_set_date = time.gmtime(int(user['sambaPwdLastSet'][0]))
+					password_end_date = time.gmtime(int(sambaPwdLastSet) + int(sambaMaxPwdAge))
 				except ValueError:
 					pass
-			if not password_set_date and user.get('shadowLastChange', [None])[0]:
+			if not password_end_date and shadowLastChange and shadowMax:
 				try:
-					password_set_date = time.gmtime(int(user['shadowLastChange'][0]) * 3600 * 24)
+					password_end_date = time.gmtime((int(shadowLastChange) + int(shadowMax)) * 3600 * 24)
 				except ValueError:
 					pass
 
-			kickoff_time = None
-			if user.get('krb5ValidEnd', [None])[0]:
+			password_set_date = None
+			if not password_set_date and sambaPwdLastSet:
 				try:
-					kickoff_time = time.strftime("%Y%m%d000000Z", user['krb5ValidEnd'][0])
+					password_set_date = time.gmtime(int(sambaPwdLastSet))
+				except ValueError:
+					pass
+			if not password_set_date and shadowLastChange:
+				try:
+					password_set_date = time.gmtime(int(shadowLastChange) * 3600 * 24)
+				except ValueError:
+					pass
+
+			expiration_date = None
+			if not expiration_date and user.get('krb5ValidEnd', [None])[0]:
+				try:
+					expiration_date = time.strftime("%Y%m%d%H%M%SZ", user['krb5ValidEnd'][0])
 				except (ValueError, TypeError):
 					pass
-			elif 'sambaKickoffTime' in user:
+			if not expiration_date and user.get('shadowExpire', [''])[0] not in ('', '0'):
 				try:
-					kickoff_time = time.gmtime(long(user['sambaKickoffTime'][0]) + (3600 * 24))
-				except (ValueError, TypeError):
-					pass
-			elif user.get('shadowExpire', [''])[0] not in ('', '0'):
-				try:
-					kickoff_time = time.gmtime(long(user['shadowExpire'][0]) * 3600 * 24)
+					expiration_date = time.gmtime(long(user['shadowExpire'][0]) * 3600 * 24)
 				except (ValueError, TypeError):
 					pass
 
 			uidNumber = user.get('uidNumber', [None])[0]
+			sambaNTPassword = user.get('sambaNTPassword', [None])[0]
 
 			serverctrls = None
 			ocs_to_add = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'inetOrgPerson', 'organizationalPerson'} - ocs
@@ -210,14 +238,14 @@ class Migration(object):
 					('krb5MaxRenew', [], ['604800']),
 				])
 
-				if kickoff_time:
-					ml.append(('krb5ValidEnd', [], [time.strftime("%Y%m%d000000Z", kickoff_time)]))
+				if expiration_date:
+					ml.append(('krb5ValidEnd', [], [time.strftime("%Y%m%d000000Z", expiration_date)]))
 
-				if user.get('sambaNTPassword', [None])[0]:
-					ml.append(('krb5Key', [], self.nt_password_to_arcfour_hmac_md5(user['sambaNTPassword'][0])))
+				if sambaNTPassword:
+					ml.append(('krb5Key', [], self.nt_password_to_arcfour_hmac_md5(sambaNTPassword)))
 
-				if password_set_date:
-					ml.append(('krb5PasswordEnd', [], [time.strftime("%Y%m%d000000Z", password_set_date)]))
+				if password_end_date:
+					ml.append(('krb5PasswordEnd', [], [time.strftime("%Y%m%d000000Z", password_end_date)]))
 
 			if not has_posix:
 				uidNumber = self.allocate('uidNumber')
@@ -227,18 +255,19 @@ class Migration(object):
 					('homeDirectory', [], ['/home/%s' % (user['uid'][0],)]),  # TODO: can this default value be overwritten by UCR?
 				])
 
-			if not has_shadow or not has_posix and not user.get('userPassword'):
-				ml.append(('userPassword', [], ['{K5KEY}' if user.get('krb5Key') else '{KINIT}']))
+			if not user.get('userPassword'):
+				# Be nice and fix userPassword in the unlikely case that the attribute got lost but other credentials are present
+				if user.get('krb5Key') or sambaNTPassword:
+					ml.append(('userPassword', [], '{K5KEY}'))
 
 			if not has_shadow:
-				# FIXME: 'shadowMax'
-				if kickoff_time:
-					ml.append(('shadowExpire', [], [str(int(time.strftime('%s', kickoff_time) / 3600 / 24))]))
+				if expiration_date:
+					ml.append(('shadowExpire', [], [str(int(calendar.timegm(expiration_date)) / 3600 / 24)]))
 				elif disabled:
 					ml.append(('shadowExpire', [], ['1']))
 
 				if password_set_date:
-					ml.append(('shadowLastChange', [], [str(int(time.strftime('%s', password_set_date)) / 3600 / 24)]))
+					ml.append(('shadowLastChange', [], [str(int(calendar.timegm(password_set_date)) / 3600 / 24)]))
 
 			if not has_samba:
 				# FIXME: 'sambaNTPassword' if no kerberos user!
@@ -257,18 +286,17 @@ class Migration(object):
 				])
 				if password_set_date:
 					ml.append(('sambaPwdLastSet', [], [str(int(time.strftime('%s', password_set_date)))]))
-				if kickoff_time:
-					ml.append(('sambaKickoffTime', [], [str(int(time.strftime('%s', kickoff_time)))]))
 
 			if ml:
 				self.modify(dn, ml, serverctrls)
 				self.confirm()
 
 	def migrate_templates(self):
-		for dn, attr in lo.search('(&(objectClass=univentionUserTemplate)(|(userOptionsPreset=groupware)(userOptionsPreset=kerberos)(userOptionsPreset=posix)(userOptionsPreset=samba)))'):
+		for dn, attr in lo.search('(&(objectClass=univentionUserTemplate)(|(userOptionsPreset=groupware)(userOptionsPreset=kerberos)(userOptionsPreset=posix)(userOptionsPreset=samba)(userOptionsPreset=person)(userOptionsPreset=mail)))'):
 			old = set(attr['userOptionsPreset'])
-			new = old & {'groupware', 'kerberos', 'posix', 'samba'}
-			self.modify(dn, [('userOptionsPreset', list(old), list(new))])
+			new = old - {'groupware', 'kerberos', 'posix', 'samba', 'person', 'mail'}
+			if new != old:
+				self.modify(dn, [('userOptionsPreset', list(old), list(new))])
 
 	def nt_password_to_arcfour_hmac_md5(self, nt_password):
 		# all arcfour-hmac-md5 keys begin this way
@@ -330,6 +358,13 @@ class Migration(object):
 				raise SystemExit('This domain has no kerberos realm defined. Please call this script with e.g. --set-kerberos-realm="%s".' % (ucr['domainname'].upper(),))
 			realm = domain.getKerberosRealm()
 		return realm
+
+	def get_sambaMaxPwdAge(self):
+		windows_domain = ucr.get('windows/domain')
+		if not windows_domain:
+			return
+		for dn, attr in lo.search(filter='(&(objectClass=sambaDomain)(sambaDomainName=%s))' % windows_domain, attr=['sambaMaxPwdAge']):
+			return attr.get('sambaMaxPwdAge', [None])[0] # pick the first match
 
 	def get_primary_gid_number(self):
 		for dn, attr in lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + po.getDomain(), attr=['univentionDefaultGroup']):

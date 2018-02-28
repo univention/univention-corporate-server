@@ -95,6 +95,6 @@ print 'disable_vrfy_command = %s' % yesno.get(configRegistry.is_true('mail/smtp/
 if configRegistry.get('mail/postfix/smtpd/banner'):
 	print 'smtpd_banner = %s' % configRegistry['mail/postfix/smtpd/banner']
 
-# set to "smtputf8_enable=yes" to rejects non-ASCII addresses from clients that don't request SMTPUTF8 support
+# set to "smtputf8_enable=yes" to reject non-ASCII addresses from clients that don't request SMTPUTF8 support
 print 'smtputf8_enable = %s' % configRegistry.get('mail/postfix/smtputf8_enable', 'no')
 @!@

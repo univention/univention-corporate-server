@@ -3,7 +3,7 @@
 # Univention Java
 #  java tool: demonstration of UCR
 #
-# Copyright 2004-2017 Univention GmbH
+# Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,5 +30,4 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-cd /usr/share/univention-java
-java baseconfigdump
+exec java -classpath /usr/share/univention-java baseconfigdump

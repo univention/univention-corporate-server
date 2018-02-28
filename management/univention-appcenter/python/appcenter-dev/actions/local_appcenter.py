@@ -48,13 +48,14 @@ import tarfile
 from tempfile import mkdtemp
 from distutils.version import LooseVersion
 
+from univention.config_registry.interfaces import Interfaces
 
 from univention.appcenter.app import App, AppAttribute, AppFileAttribute, CaseSensitiveConfigParser
 from univention.appcenter.app_cache import default_server
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action
 from univention.appcenter.exceptions import LocalAppCenterError
 from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase, call_process
-from univention.appcenter.ucr import ucr_save, ucr_get
+from univention.appcenter.ucr import ucr_save, ucr_get, ucr_instance
 from univention.appcenter.ini_parser import read_ini_file
 
 
@@ -623,13 +624,14 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 
 
 class DevSetupLocalAppcenter(LocalAppcenterAction):
-
 	'''Use this host as an App Center server'''
 	help = 'Sets up this host as an App Center server and configures the App Center module to use it. WARNING: the actual app server is overwritten'
 
 	def setup_parser(self, parser):
+		interfaces = Interfaces(ucr_instance())
+		ip_address = interfaces.get_default_ip_address()
 		super(DevSetupLocalAppcenter, self).setup_parser(parser)
-		parser.add_argument('--appcenter-host', default=ucr_get('interfaces/eth0/address'), help='The hostname of the new App Center. Default: %(default)s')
+		parser.add_argument('--appcenter-host', default=ip_address.ip, help='The hostname of the new App Center. Default: %(default)s')
 		parser.add_argument('--revert', action='store_true', help='Reverts the changes of a previous dev-setup-local-appcenter')
 
 	def main(self, args):

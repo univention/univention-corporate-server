@@ -114,7 +114,7 @@ class Register(CredentialsAction):
 			self.log('No repository to register')
 			return {}
 		updates = {}
-		self.log('Registering component for %s' % app.id)
+		self.log('Registering component for %s' % app)
 		for _app in Apps().get_all_apps_with_id(app.id):
 			if _app == app:
 				updates.update(self._register_component_dict(_app))
@@ -122,7 +122,8 @@ class Register(CredentialsAction):
 				updates.update(self._unregister_component_dict(_app))
 		if not delay:
 			with catch_stdout(self.logger):
-				ucr_save(updates)
+				if not ucr_save(updates):
+					updates = {}
 		return updates
 
 	def _register_component_dict(self, app):
@@ -140,9 +141,10 @@ class Register(CredentialsAction):
 	def _unregister_component(self, app):
 		if app.without_repository:
 			self.log('No repository to unregister')
-			return
+			return {}
 		updates = self._unregister_component_dict(app)
-		ucr_save(updates)
+		if not ucr_save(updates):
+			updates = {}
 		return updates
 
 	def _unregister_component_dict(self, app):

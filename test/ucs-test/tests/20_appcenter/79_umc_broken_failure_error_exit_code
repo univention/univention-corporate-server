@@ -5,7 +5,7 @@
 ## packages:
 ##   - univention-management-console-module-appcenter
 ##   - univention-appcenter-dev
-## tags: [appcenter]
+## tags: [appcenter, xx]
 from __future__ import print_function
 
 import os
@@ -14,6 +14,29 @@ import subprocess
 
 import appcentertest as app_test
 
+
+def _test_app_installation_fails(test):
+	try:
+		with test.test_install_safe(test_installed=False) as dpkg_errors:
+			if dpkg_errors:
+				print("OK - Errors reported:", *dpkg_errors, sep="\n\t")
+			else:
+				app_test.fail("Install of broken app did not produce dpkg errors.")
+			if test.app_center.is_installed(test.application):
+				app_test.fail("Broken application remained on the system.")
+	finally:
+		cleanup(test.application)
+
+def _test_app_uninstallation_fails(test):
+	try:
+		with test.test_install_safe():
+			dpkg_errors = test.test_uninstall(test_uninstalled=False)
+			if dpkg_errors:
+				print("OK - Errors reported:", *dpkg_errors, sep="\n\t")
+			else:
+				app_test.fail("Uninstall of broken app did not produce dpkg errors.")
+	finally:
+		cleanup(test.application)
 
 @app_test.test_case
 def test_install_preinst_error(app_center, application):
@@ -30,34 +53,7 @@ def test_install_preinst_error(app_center, application):
 	app.remove_tempdir()
 
 	test = app_test.TestOperations(app_center, app.app_id)
-	try:
-		with test.test_install_safe(test_installed=False) as dpkg_errors:
-			if dpkg_errors:
-				print("OK - Errors reported:", *dpkg_errors, sep="\n\t")
-			else:
-				app_test.fail("Install of broken app did not produce dpkg errors.")
-
-			try:
-				test.test_uninstall()
-			except app_test.AppCenterCheckError:
-				#  FIXME (APPCENTER-SWITCH): Normally we want to remove this
-				#  try/except block as the app-center should be able to remove
-				#  broken apps. But this test captures the state before the
-				#  app-center-switch, so we expect an error and fail otherwise.
-				pass
-			else:
-				app_test.fail("Uninstall of broken app didnt fail (APPCENTER-SWITCH)")
-	finally:
-		cleanup(application)
-
-	#  FIXME (APPCENTER-SWITCH): Normally we want to test if the app-center is
-	#  in a state where we can reinstall this broken app. But this test
-	#  captures the state before the app-center-switch, so we just dont.
-	#try:
-	#	with test.test_install_safe(test_installed=False):
-	#		test.test_uninstall()
-	#except app_test.AppCenterCheckError as e:
-	#	app_test.fail("Reinstall of broken app failed: " + str(e))
+	_test_app_installation_fails(test)
 
 
 @app_test.test_case
@@ -75,21 +71,7 @@ def test_install_postinst_error(app_center, application):
 	app.remove_tempdir()
 
 	test = app_test.TestOperations(app_center, app.app_id)
-	try:
-		with test.test_install_safe(test_installed=False) as dpkg_errors:
-			if dpkg_errors:
-				print("OK - Errors reported:", *dpkg_errors, sep="\n\t")
-			else:
-				app_test.fail("Install of broken app did not produce dpkg errors.")
-			test.test_uninstall()
-		try:
-			test.test_install(test_installed=False)
-		except app_test.AppCenterCheckError as e:
-			app_test.fail("Reinstall of broken app failed: " + str(e))
-		else:
-			test.test_uninstall()
-	finally:
-		cleanup(application)
+	_test_app_installation_fails(test)
 
 
 @app_test.test_case
@@ -107,30 +89,7 @@ def test_uninstall_prerm_error(app_center, application):
 	app.remove_tempdir()
 
 	test = app_test.TestOperations(app_center, app.app_id)
-	try:
-		with test.test_install_safe():
-			dpkg_errors = test.test_uninstall(test_uninstalled=False)
-			if dpkg_errors:
-				print("OK - Errors reported:", *dpkg_errors, sep="\n\t")
-			else:
-				app_test.fail("Uninstall of broken app did not produce dpkg errors.")
-
-		try:
-			test.test_install(test_installed=False)
-		except app_test.AppCenterCheckError as e:
-			#  FIXME (APPCENTER-SWITCH): Normally we want to fail this test at this
-			#  point, as the app-center should be able to reinstall broken apps.
-			#  But this test captures the state before the app-center-switch, so we
-			#  expect an error and fail otherwise
-			#app_test.fail("Reinstall of broken app failed: " + str(e))
-			pass
-		else:
-			#  FIXME (APPCENTER-SWITCH): Uncomment the following statement and
-			#  remove the app_test.fail()
-			#test.test_uninstall()
-			app_test.fail("Reinstall of broken app didnt fail (APPCENTER-SWITCH)")
-	finally:
-		cleanup(application)
+	_test_app_uninstallation_fails(test)
 
 
 @app_test.test_case
@@ -148,33 +107,11 @@ def test_uninstall_postrm_error(app_center, application):
 	app.remove_tempdir()
 
 	test = app_test.TestOperations(app_center, app.app_id)
-	try:
-		with test.test_install_safe():
-			dpkg_errors = test.test_uninstall(test_uninstalled=False)
-			if dpkg_errors:
-				print("OK - Errors reported:", *dpkg_errors, sep="\n\t")
-			else:
-				app_test.fail("Install of broken app did not produce dpkg errors.")
-
-		try:
-			test.test_install(test_installed=False)
-		except app_test.AppCenterCheckError as e:
-			#  FIXME (APPCENTER-SWITCH): Normally we want to fail this test at this
-			#  point, as the app-center should be able to reinstall broken apps.
-			#  But this test captures the state before the app-center-switch, so we
-			#  expect an error and fail otherwise
-			#app_test.fail("Reinstall of broken app failed: " + str(e))
-			pass
-		else:
-			#  FIXME (APPCENTER-SWITCH): Uncomment the following statement and
-			#  remove the app_test.fail()
-			#test.test_uninstall()
-			app_test.fail("Reinstall of broken app didnt fail (APPCENTER-SWITCH)")
-	finally:
-		cleanup(application)
+	_test_app_uninstallation_fails(test)
 
 
 def cleanup(application):
+	subprocess.check_call(['univention-app', 'register', application, '--undo-it'])
 	ext = application.split('-')[2]
 	try:
 		os.unlink('/var/lib/dpkg/info/%s.%s' % (application, ext))

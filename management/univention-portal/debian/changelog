@@ -1,3 +1,46 @@
+univention-portal (2.0.0-8) unstable; urgency=medium
+
+  * Bug #46270: Move resync of portal and portal_entry to postup
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 27 Feb 2018 16:11:43 +0100
+
+univention-portal (2.0.0-7) unstable; urgency=medium
+
+  * Bug #46270: Fix reloading portal.css
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 20 Feb 2018 15:16:26 +0100
+
+univention-portal (2.0.0-6) unstable; urgency=medium
+
+  * Bug #46270: Fix changed logos not being displayed without page refresh
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 15 Feb 2018 16:58:42 +0100
+
+univention-portal (2.0.0-5) unstable; urgency=medium
+
+  * Bug #46270: Remove dependency on univention-ldap-server
+    and improve dnd
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 13 Feb 2018 12:24:32 +0100
+
+univention-portal (2.0.0-4) unstable; urgency=medium
+
+  * Bug 46270: Add user groups to portal entries (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 11 Feb 2018 02:52:54 +0100
+
+univention-portal (2.0.0-3) unstable; urgency=medium
+
+  * Bug 46270: Add user groups to portal entries
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 10 Feb 2018 17:21:43 +0100
+
+univention-portal (2.0.0-2) unstable; urgency=medium
+
+  * Bug 46270: Enable portal administration through the portal
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 09 Feb 2018 20:05:06 +0100
+
 univention-portal (2.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump

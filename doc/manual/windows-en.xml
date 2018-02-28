@@ -45,11 +45,6 @@
 	</para>
 
 	<para>
-	  The migration from an NT-based Samba domain to an AD-based domain is documented in the
-	  Univention Wiki <biblioref linkend="wiki-samba-update"/>.
-	</para>
-
-	<para>
 	  Microsoft Active Directory domain controllers cannot join the Samba domain. This functionality is
 	  planned at a later point in time.
 	</para>
@@ -63,8 +58,7 @@
 	</para>
 
 	<note><para>
-	  The usage of UCS as a Windows NT-compatible domain controller is deprecated since UCS 4.
-	  Further information can be found in <biblioref linkend="ext-doc-windows-nt"/>.
+	  The usage of UCS as a Windows NT-compatible domain controller is unsupported since UCS 4.3.
 	</para></note>
 
   </section>
@@ -263,11 +257,6 @@ instanceType: 4
 
 		<para>
 			Additional information on troubleshooting replication problems can be found in <u:sdb>1235</u:sdb>.
-		</para>
-
-		<para>
-		  Samba NT domains access the data in the OpenLDAP directory data, which are distributed via
-		  listener-notifier replication (see <xref linkend="domain:listenernotifier"/>).
 		</para>
 	  </section>
 

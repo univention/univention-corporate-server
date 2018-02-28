@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2017 Univention GmbH
+ * Copyright 2011-2018 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -472,73 +472,110 @@ define([
 				}
 			}
 
-			var _cleanup = function() {
-				_dialog.hide();
-				_dialog.destroyRecursive();
-			};
+			// check if multiple machines with migration target hosts are defined
+			var th_count = 0;
+			var targethosts = [];
+			array.forEach( items, function( item ) {
+				var deferred = tools.umcpCommand('uvmm/targethost/query', { domainURI: item.id });
 
-			var _migrate = lang.hitch(this, function(name) {
-				// send the UMCP command
-				this.showProgress();
-				tools.umcpCommand('uvmm/domain/migrate', {
-					domainURI: ids[ 0 ],
-					targetNodeURI: name
-				}).then(lang.hitch(this, function() {
-					this.moduleStore.onChange();
-					this.hideProgress();
-				}), lang.hitch(this, function() {
-					this.moduleStore.onChange();
-					this.hideProgress();
+				deferred.then(lang.hitch(this, function(th_results) {
+					var hostlist = [];
+					array.forEach(th_results.result, function(result) {
+						hostlist.push(result.id);
+					});
+
+					if ( hostlist.length > 0 ) {
+						++th_count;
+					}
+					targethosts = hostlist;
 				}));
+
 			});
 
-			var sourceURI = ids[ 0 ].slice( 0, ids[ 0 ].indexOf( '#' ) );
-			var sourceScheme = types.getNodeType( sourceURI );
-			form = new Form({
-				style: 'max-width: 500px;',
-				widgets: [ {
-					type: Text,
-					name: 'warning',
-					content: _( '<p>For fail over the virtual machine can be migrated to another physical server re-using the last known configuration and all disk images. This can result in <strong>data corruption</strong> if the images are <strong>concurrently used</strong> by multiple running machines! Therefore the failed server <strong>must be blocked from accessing the image files</strong>, for example by blocking access to the shared storage or by disconnecting the network.</p><p>When the server is restored, all its previous virtual machines will be shown again. Any duplicates have to be cleaned up manually by migrating the machines back to the server or by deleting them. Make sure that shared images are not delete.</p>' )
-				}, {
-					name: 'name',
-					type: ComboBox,
-					label: _('Please select the destination server:'),
-					dynamicValues: function() {
-						return types.getNodes().then( function( items ) {
-							return array.filter( items, function( item ) {
-								return item.id != sourceURI && types.getNodeType( item.id ) == sourceScheme;
-							} );
-						} );
+			if ( th_count > 1 ) {
+				dialog.alert( _( 'Each virtual machine with defined migration targethosts has to be migrated separately. The migration will not be performed.' ) );
+				return;
+			}
+
+			types.getNodes().then(lang.hitch(this, function(items) {
+				var _cleanup = function() {
+					_dialog.hide();
+					_dialog.destroyRecursive();
+				};
+
+				var _migrate = lang.hitch(this, function(name) {
+					// send the UMCP command
+					this.showProgress();
+					tools.umcpCommand('uvmm/domain/migrate', {
+						domainURI: ids[ 0 ],
+						targetNodeURI: name
+					}).then(lang.hitch(this, function() {
+						this.moduleStore.onChange();
+						this.hideProgress();
+					}), lang.hitch(this, function() {
+						this.moduleStore.onChange();
+						this.hideProgress();
+					}));
+				});
+
+				var sourceURI = ids[ 0 ].slice( 0, ids[ 0 ].indexOf( '#' ) );
+				var sourceScheme = types.getNodeType( sourceURI );
+
+				var validHosts = array.filter( items, function( item ) {
+					if (targethosts.length > 0) {
+					// if targethosts are defined, offline targethosts have to be filtered, too
+					return targethosts.indexOf(item.label) != -1 && item.available && item.id != sourceURI && types.getNodeType( item.id ) == sourceScheme;
+					} else {
+						return item.id != sourceURI && types.getNodeType( item.id ) == sourceScheme;
 					}
-				}],
-				buttons: [{
-					name: 'submit',
-					label: _( 'Migrate' ),
-					style: 'float: right;',
-					callback: function() {
-						var nameWidget = form.getWidget('name');
-						if (nameWidget.isValid()) {
-							var name = nameWidget.get('value');
-							_cleanup();
-							_migrate( name );
+				} );
+				var numberOfValidHosts = validHosts.length;
+
+				form = new Form({
+					style: 'max-width: 500px;',
+					widgets: [ {
+						type: Text,
+						name: 'warning',
+							content: _( '<p>For fail over the virtual machine can be migrated to another physical server re-using the last known configuration and all disk images. This can result in <strong>data corruption</strong> if the images are <strong>concurrently used</strong> by multiple running machines! Therefore the failed server <strong>must be blocked from accessing the image files</strong>, for example by blocking access to the shared storage or by disconnecting the network.</p><p>When the server is restored, all its previous virtual machines will be shown again. Any duplicates have to be cleaned up manually by migrating the machines back to the server or by deleting them. Make sure that shared images are not delete.</p>' )
+					}, {
+						name: 'name',
+						type: ComboBox,
+						label: _('Please select the destination server:'),
+						staticValues: validHosts
+					}],
+					buttons: [{
+						name: 'submit',
+						label: _( 'Migrate' ),
+						style: 'float: right;',
+						callback: function() {
+							var nameWidget = form.getWidget('name');
+							if (nameWidget.isValid()) {
+								var name = nameWidget.get('value');
+								_cleanup();
+								_migrate( name );
+							}
 						}
-					}
-				}, {
-					name: 'cancel',
-					label: _('Cancel'),
-					callback: _cleanup
-				}],
-				layout: [ 'warning', 'name' ]
-			});
+					}, {
+						name: 'cancel',
+						label: _('Cancel'),
+							callback: _cleanup
+					}],
+					layout: [ 'warning', 'name' ]
+				});
 
-			form._widgets.warning.set( 'visible', unavailable );
-			_dialog = new Dialog({
-				title: _('Migrate domain'),
-				content: form,
-				'class': 'umcPopup'
-			});
-			_dialog.show();
+				form._widgets.warning.set( 'visible', unavailable );
+				_dialog = new Dialog({
+					title: _('Migrate domain'),
+					content: form,
+					'class': 'umcPopup'
+				});
+
+				if (numberOfValidHosts == 0) {
+					form._buttons.submit.set('disabled', true);
+				}
+
+				_dialog.show();
+			}));
 		},
 
 		_removeDomain: function( ids, items ) {

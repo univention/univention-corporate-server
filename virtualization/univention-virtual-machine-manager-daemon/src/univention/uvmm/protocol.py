@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Daemon
 #  listener module
 #
-# Copyright 2010-2017 Univention GmbH
+# Copyright 2010-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -318,6 +318,24 @@ class Request_DOMAIN_CLONE(Request):
 		self.subst = {}  # key -> value
 
 
+class Request_DOMAIN_TARGETHOST_ADD(Request):
+	"""Add a migration target host"""
+	def _default(self):
+		self.command = 'DOMAIN_TARGETHOST_ADD'
+		self.uri = None
+		self.domain = None
+		self.targethost = None
+
+
+class Request_DOMAIN_TARGETHOST_REMOVE(Request):
+	"""Remove a migration target host"""
+	def _default(self):
+		self.command = 'DOMAIN_TARGETHOST_REMOVE'
+		self.uri = None
+		self.domain = None
+		self.targethost = None
+
+
 class Request_STORAGE_POOLS(Request):
 
 	"""List all pools."""
@@ -593,6 +611,7 @@ class Data_Domain(object):
 		self.snapshots = None  # ID: Data_Snapshot
 		self.suspended = None  # True|False
 		self.available = None  # None: not set, (True|False) -> node availability
+		self.targethosts = None  # List of node hostnames
 
 
 class Data_Node(object):
