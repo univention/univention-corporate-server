@@ -22,6 +22,9 @@
 							restarted during the UCS installation (<u:bug>45905</u:bug>, <u:bug>46055</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
+							The Linux kernel from Debian is now used <u:bug>45961</u:bug>.
+					</simpara></listitem>
+					<listitem><simpara>
 						<literal>XS-Python-Version</literal> and <literal>XB-Python-Version</literal> have been removed from all packages(<u:bug>43336</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
