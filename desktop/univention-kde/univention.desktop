@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Univention - be open
-Exec=firefox localhost
+Exec=firefox https://$(hostname --fqdn)
 Icon=/usr/share/icons/hicolor/scalable/apps/univention.svg
 Type=Application
 Categories=System;

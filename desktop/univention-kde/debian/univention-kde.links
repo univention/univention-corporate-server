@@ -5,3 +5,4 @@ usr/share/univention-kde-profiles/ucs-4.0  /usr/share/univention-kde-profiles/uc
 usr/share/univention-kde-profiles/kde4-menu /usr/share/univention-kde-profiles/ucs-23-kde-menu
 usr/share/univention-kde-profiles/kde4-menu /usr/share/univention-kde-profiles/ucs-kde-menu21
 usr/share/applications/firefox-esr.desktop /usr/share/kio_desktop/DesktopLinks/firefox-esr.desktop
+usr/share/applications/univention.desktop /usr/share/kio_desktop/DesktopLinks/univention.desktop
