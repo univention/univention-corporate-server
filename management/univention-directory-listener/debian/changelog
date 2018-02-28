@@ -1,3 +1,9 @@
+univention-directory-listener (12.0.0-18) unstable; urgency=low
+
+  * Bug #44786: temporarily remove new listener module API from binary package
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 28 Feb 2018 10:29:09 +0100
+
 univention-directory-listener (12.0.0-17) unstable; urgency=medium
 
   * Bug #46313: increase runsv timeout to 30 seconds
