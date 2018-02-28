@@ -9,4 +9,4 @@ desc: |
  * To prevent systemctl from reporting a wrong status for the
    univention-directory-notifier service, the runsv timeout has been increased
    to 30 seconds.
-bug: [46313]
+bug: [46313, 44786]
