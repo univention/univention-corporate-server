@@ -331,7 +331,7 @@
 						The <package>univention-saml</package> configuration for <package>stunnel4</package> has been adapted to Debian Stretch (<u:bug>45882</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						Dependencies for the <package>univention-saml</package> have been adapted for <package>php7.0</package> compatibility (<u:bug>46110</u:bug>).
+						Dependencies for the <package>univention-saml</package> have been adapted for <package>php7.0</package> compatibility (<u:bug>46110</u:bug>, <u:bug>46267</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
