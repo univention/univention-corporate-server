@@ -55,16 +55,16 @@ Description: debugging symbols for univention-directory-listener
  .
  This package contains the debugging symbols for univention-directory-listener.
 
-Package: univention-directory-listener-async
-Architecture: any
-Depends: univention-directory-listener (= ${binary:Version}),
- ${misc:Depends},
- ${python:Depends},
- python-univention,
- python-univention-debug,
- memcached,
- python-pylibmc,
- univention-celery
-Description: UCS - Directory Listener asynchronous module support
- API and shared variable support for creating asynchronous and parallel
- listener modules.
+# Package: univention-directory-listener-async
+# Architecture: any
+# Depends: univention-directory-listener (= ${binary:Version}),
+#  ${misc:Depends},
+#  ${python:Depends},
+#  python-univention,
+#  python-univention-debug,
+#  memcached,
+#  python-pylibmc,
+#  univention-celery
+# Description: UCS - Directory Listener asynchronous module support
+#  API and shared variable support for creating asynchronous and parallel
+#  listener modules.
