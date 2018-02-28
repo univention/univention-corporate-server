@@ -1,3 +1,9 @@
+univention-pkgdb (11.0.0-6) unstable; urgency=medium
+
+  * Bug #44160: Remove PostreSQL-9.1 and older Debian conffiles
+
+ -- Arvid Requate <requate@univention.de>  Wed, 28 Feb 2018 22:51:55 +0100
+
 univention-pkgdb (11.0.0-5) unstable; urgency=medium
 
   * Bug #44160: Remove PostreSQL-9.1 and older Debian conffiles
