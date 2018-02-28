@@ -1,3 +1,9 @@
+univention-bacula (9.0.0-4) unstable; urgency=low
+
+  * Bug #46327: Fix template names
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Feb 2018 23:02:22 +0100
+
 univention-bacula (9.0.0-3) unstable; urgency=low
 
   * Bug #46327: Fix name of maintainer scripts
