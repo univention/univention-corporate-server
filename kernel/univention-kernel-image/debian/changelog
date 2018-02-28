@@ -1,3 +1,9 @@
+univention-kernel-image (11.0.1-5) unstable; urgency=low
+
+  * Bug #45961: Use signed Debian Linux kernel
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Feb 2018 17:26:43 +0100
+
 univention-kernel-image (11.0.1-4) unstable; urgency=low
 
   * Bug #45961: Down-prio ipw2x00
