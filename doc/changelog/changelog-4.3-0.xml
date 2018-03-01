@@ -427,7 +427,7 @@
 							The quota property of the IMAP folder module (<literal>mail/folder</literal>) has been renamed from <literal>cyrus-userquota</literal> to <literal>mailQuota</literal>.
 						</simpara></listitem>
 					</itemizedlist>
-					<note>If custom shell or Python scripts that change quota setting using UDM are in use, they <emphasis>must</emphasis> be modified to use the new names or they will not work anymore.</note>
+					<note><simpara>If custom shell or Python scripts that change quota setting using UDM are in use, they <emphasis>must</emphasis> be modified to use the new names or they will not work anymore.</simpara></note>
 				</para></listitem>
 			</itemizedlist>
 		</section>
