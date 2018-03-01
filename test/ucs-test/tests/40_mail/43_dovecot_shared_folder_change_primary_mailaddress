@@ -9,6 +9,7 @@
 
 import time
 import os
+import sys
 import syslog
 from univention.config_registry import handler_set
 import univention.testing.strings as uts
@@ -31,6 +32,11 @@ class Bunch(object):
 
 def main():
 	logfiles = ['/var/log/dovecot.log', '/var/log/mail.log']
+
+	if utils.package_installed('univention-samba4'):
+		print 'Skip test case in case Samba 4 is installed, see https://forge.univention.org/bugzilla/show_bug.cgi?id=46190'
+		sys.exit(137)
+
 	with utils.AutomaticListenerRestart() as alr, \
 			udm_test.UCSTestUDM() as udm, \
 			ucr_test.UCSTestConfigRegistry() as ucr, \

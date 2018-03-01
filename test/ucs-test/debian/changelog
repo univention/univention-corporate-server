@@ -1,3 +1,11 @@
+ucs-test (8.0.28-59) unstable; urgency=medium
+
+  * Disable 43_dovecot_shared_folder_create_subfolder_with_acls and
+    43_dovecot_shared_folder_change_primary_mailaddress in Samba 4
+    setups (Bug #46190 + Bug #46191)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 01 Mar 2018 15:52:59 +0100
+
 ucs-test (8.0.28-58) unstable; urgency=medium
 
   * 86_selenium: skip more tests in AD member mode (Bug #46449)
