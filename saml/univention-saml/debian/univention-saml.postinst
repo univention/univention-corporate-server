@@ -79,12 +79,6 @@ configure)
 
 	deb-systemd-invoke restart stunnel4.service
 
-	# update to UCS 4.3
-	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.4-13; then
-		a2dismod php5
-		a2enmod  php7.0
-	fi
-
 	a2ensite univention-saml
 	a2enmod headers
 	a2enmod actions

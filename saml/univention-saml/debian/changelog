@@ -1,3 +1,10 @@
+univention-saml (5.0.4-16) unstable; urgency=medium
+
+  * Bug #46267: php5 gets disabled in preup and libapache2-mod-php7.0
+    enables php7.0, so we don't nee to do it here
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Mar 2018 21:04:37 +0100
+
 univention-saml (5.0.4-15) unstable; urgency=medium
 
   * Bug #46451: Move simplesamlphp.keytab to /etc to avoid permission issues
