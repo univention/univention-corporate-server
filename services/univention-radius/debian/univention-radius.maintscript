@@ -1,0 +1,7 @@
+rm_conffile /etc/univention/templates/files/etc/freeradius/eap.conf 5.0.0~
+rm_conffile /etc/univention/templates/files/etc/freeradius/ldap.attrmap 5.0.0~
+rm_conffile /etc/univention/templates/files/etc/freeradius/modules/ldap 5.0.0~
+rm_conffile /etc/univention/templates/files/etc/freeradius/modules/mschap 5.0.0~
+rm_conffile /etc/univention/templates/files/etc/freeradius/radiusd.conf 5.0.0~
+rm_conffile /etc/univention/templates/files/etc/freeradius/sites-available/default 5.0.0~
+rm_conffile /etc/univention/templates/files/etc/freeradius/sites-available/inner-tunnel 5.0.0~
