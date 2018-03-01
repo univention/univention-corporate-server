@@ -6,7 +6,7 @@ univention-mail-postfix (12.0.0-17) unstable; urgency=low
 
 univention-mail-postfix (12.0.0-16) unstable; urgency=low
 
-  * Bug #46102: enable chroot'ing of scache service
+  * Bug #45963: reenable chroot'ing of scache service
 
  -- Daniel Troeder <troeder@univention.de>  Mon, 26 Feb 2018 10:38:43 +0100
 
