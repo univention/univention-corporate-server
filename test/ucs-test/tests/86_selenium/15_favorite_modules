@@ -4,6 +4,8 @@
 ##  Test favorite modules
 ## roles-not:
 ##  - basesystem
+## tags:
+##  - skip_admember
 ## join: true
 ## exposure: dangerous
 

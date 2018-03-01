@@ -5,6 +5,8 @@
 ##  users, with different join-states.
 ## roles-not:
 ##  - basesystem
+## tags:
+##  - skip_admember
 ## join: true
 ## exposure: dangerous
 
