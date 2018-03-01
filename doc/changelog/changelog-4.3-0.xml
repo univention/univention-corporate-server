@@ -401,10 +401,10 @@
 			<itemizedlist>
 				<listitem><simpara>
 					The integration of the Cyrus IMAP and POP3 server has been removed from UCS.
-					The Dovecots integration has reached feature parity and will be the only one supported from UCS 4.3 on.
+					The integration of Dovecot has reached feature parity and will be the only one supported from UCS 4.3 on.
 				</simpara></listitem>
 				<listitem><simpara>
-					If you are using Cyrus on UCS 4.2 and wish to upgrade to UCS 4.3, please refer to <ulink url="https://help.univention.com/t/7957">How to remove Cyrus integration for update to UCS 4.3</ulink>.
+					If you are using Cyrus on UCS 4.2 and wish to upgrade to UCS 4.3, please refer to the article <ulink url="https://help.univention.com/t/7957" />.
 					The article includes a link to instructions for migrating from Cyrus to Dovecot.
 				</simpara></listitem>
 				<listitem><simpara>
