@@ -1,3 +1,9 @@
+univention-samba4 (7.0.2-6) unstable; urgency=medium
+
+  * Bug #46451: Move simplesamlphp.keytab to /etc to avoid permission issues
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 01 Mar 2018 15:59:25 +0100
+
 univention-samba4 (7.0.2-5) unstable; urgency=medium
 
   * Bug #33214: Only create saml-kerberos user on DC Master
