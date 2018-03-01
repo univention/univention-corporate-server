@@ -4,6 +4,8 @@
 ##  Test if all available modules can be opened and closed without a problem.
 ## roles-not:
 ##  - basesystem
+## tags:
+##  - skip_admember
 ## join: true
 ## exposure: dangerous
 
