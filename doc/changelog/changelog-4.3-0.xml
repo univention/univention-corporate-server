@@ -413,6 +413,22 @@
 					Be advised that such a system is not supported by Univention.
 					Such a system may not be able to store received email, even if Cyrus is still running, as the legacy Cyrus integration will not create mailboxes for new users.
 				</simpara></listitem>
+				<listitem><simpara>
+					As part of the cleanup, following the removal of Cyrus from UCS, the <literal>mailquota</literal> policy and its associated UDM module have been removed.
+					The Dovecot integration requires the quota information be set directly on the user object (see <ulink url="http://docs.software-univention.de/manual-4.2.html#mail:Mail_quota">UCS manual, section "Mail quota"</ulink>).
+				</simpara></listitem>
+				<listitem><para>
+					The names of the UDM properties for the mail quota have been changed to be vendor neutral. This is only noticeable when setting the quota via command line or via Python.
+					<itemizedlist>
+						<listitem><simpara>
+							The quota property of the users module (<literal>users/user</literal>) has been renamed from <literal>UniventionDovecotUserQuota</literal> to <literal>mailUserQuota</literal>.
+						</simpara></listitem>
+						<listitem><simpara>
+							The quota property of the IMAP folder module (<literal>mail/folder</literal>) has been renamed from <literal>cyrus-userquota</literal> to <literal>mailQuota</literal>.
+						</simpara></listitem>
+					</itemizedlist>
+					<note>If custom shell or Python scripts that change quota setting using UDM are in use, they <emphasis>must</emphasis> be modified to use the new names or they will not work anymore.</note>
+				</para></listitem>
 			</itemizedlist>
 		</section>
 
