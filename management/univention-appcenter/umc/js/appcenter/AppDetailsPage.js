@@ -1102,6 +1102,7 @@ define([
 
 		markupErrors: function() {
 			var installMasterPackagesOnHostFailedRegex = (/Installing extension of LDAP schema for (.+) seems to have failed on (DC Master|DC Backup) (.+)/);
+			var logHintGiven = false;
 			var errors = array.map(this._progressBar._errors, function(error) {
 				var match = installMasterPackagesOnHostFailedRegex.exec(error);
 				if (match) {
@@ -1115,6 +1116,10 @@ define([
 					error += '<p>' + _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/management-console-module-appcenter.log</em>') + '</p>';
 				} else {
 					error = entities.encode(error);
+					if (! logHintGiven) {
+						error += '<p>' + _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/appcenter.log</em>') + '</p>';
+						logHintGiven = true;
+					}
 				}
 				return error;
 			});
