@@ -1,3 +1,10 @@
+univention-mail-dovecot (4.0.0-8) unstable; urgency=low
+
+  * Bug #46102: no need for restart in join script
+  * require newer UDM, then no need to handle old property
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 01 Mar 2018 17:19:57 +0100
+
 univention-mail-dovecot (4.0.0-7) unstable; urgency=low
 
   * Bug #46102: rename UDM users/user property "UniventionDovecotUserQuota"

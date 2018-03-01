@@ -12,7 +12,7 @@ Architecture: all
 Depends: ${misc:Depends},
  ${python:Depends},
  univention-base-files,
- univention-directory-manager-tools (>> 7.0.147),
+ univention-directory-manager-tools (>> 13.0.21),
  univention-directory-listener (>> 6.0.0),
  univention-config (>= 8.0.2),
  python-univention,

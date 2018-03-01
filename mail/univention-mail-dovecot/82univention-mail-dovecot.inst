@@ -46,8 +46,6 @@ if [ -n "$cli_name" ] && [ "$cli_name" = "UniventionDovecotUserQuota" ]; then
 	udm settings/extended_attribute modify "$@" \
 		--dn "cn=UniventionDovecotUserQuota,cn=custom attributes,cn=univention,$ldap_base" \
 		--set CLIName="mailUserQuota" || die
-	deb-systemd-invoke restart univention-management-console-server
-	deb-systemd-invoke restart univention-directory-listener
 else
 	udm settings/extended_attribute create "$@" --ignore_exists \
 		--position "cn=custom attributes,cn=univention,$ldap_base" \
