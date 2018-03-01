@@ -2270,7 +2270,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _modlist_univention_person(self, ml):
 		# make sure that univentionPerson is set as objectClass when needed
-		if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday')):
+		if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday')) and 'univentionPerson' not in self.oldattr.get('objectClass', []):
 			ml.append(('objectClass', '', 'univentionPerson'))  # TODO: check if exists already
 		return ml
 

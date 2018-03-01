@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-3) unstable; urgency=medium
+
+  * Bug #45842 Comment 70: Feedback from UCS@school tests
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Mar 2018 13:03:43 +0100
+
 univention-directory-manager-modules (13.0.21-2) unstable; urgency=low
 
   * Bug #46102: rename UDM mail/folder "cyrus-userquota" to "mailQuota"
