@@ -51,10 +51,14 @@ then
 		firefox_prefs_homepage="https://www.univention.$tld/"
 	fi
 
+
+	# kerberos/defaults/rdns?false is set for saml with kerberos
 	univention-config-registry set \
 		firefox/prefs/spellchecker/dictionary="$Lang" \
 		${firefox_prefs_homepage:+firefox/prefs/homepage="$firefox_prefs_homepage"} \
-		firefox/prefs/checkdefaultbrowser?false
+		firefox/prefs/conffile?univention.cfg \
+		firefox/prefs/checkdefaultbrowser?false \
+		kerberos/defaults/rdns?false
 fi
 
 exit 0
