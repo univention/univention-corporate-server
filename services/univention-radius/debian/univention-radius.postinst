@@ -73,6 +73,7 @@ esac
 . /usr/share/univention-lib/base.sh
 call_joinscript 80univention-radius.inst
 
+deb-systemd-helper enable freeradius
 invoke-rc.d freeradius restart
 
 exit 0
