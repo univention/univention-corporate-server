@@ -1,3 +1,9 @@
+univention-updater (13.0.1-26) unstable; urgency=medium
+
+  * Bug #46267: Deactivate php5 module already at the end of preup
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Mar 2018 21:01:59 +0100
+
 univention-updater (13.0.1-25) unstable; urgency=medium
 
   * Bug #46267: Deactivate php5 module in apache on update

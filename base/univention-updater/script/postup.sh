@@ -187,11 +187,6 @@ if test -e /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf; then
 	systemctl daemon-reload
 fi
 
-# Bug #46267: Pave the way for php7.0:
-if [ -x /usr/sbin/a2dismod ]; then
-	a2dismod php5 || true
-fi
-
 /usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3 >>"$UPDATER_LOG" 2>&1
 
 echo "

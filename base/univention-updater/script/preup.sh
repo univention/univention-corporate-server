@@ -584,6 +584,11 @@ apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade >&3 2>&3
 
 fail_if_role_package_will_be_removed
 
+# Bug #46267: Pave the way for php7.0:
+if [ -x /usr/sbin/a2query ] && /usr/sbin/a2query -m php5; then
+	/usr/sbin/a2dismod php5 || true
+fi >>"$UPDATER_LOG" 2>&1
+
 echo ""
 echo "Starting update process, this may take a while."
 echo "Check /var/log/univention/updater.log for more information."
