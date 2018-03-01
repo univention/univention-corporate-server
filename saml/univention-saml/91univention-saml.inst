@@ -42,7 +42,7 @@ spn_account_name="ucs-sso"
 servicePrincipalName="HTTP/$spn_account_name.$domainname"
 krb5PrincipalName="$servicePrincipalName@$kerberos_realm"
 privateKeytab_filename="simplesamlphp.keytab"
-privateKeytab_path="/etc/simplesamlphp/$privateKeytab_filename"
+privateKeytab_path="/etc/$privateKeytab_filename"
 
 extract_binddn_and_bindpwd_from_args() {
 	## parse binddn and bindpwd from command line arguments into shell variables

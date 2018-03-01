@@ -1,3 +1,9 @@
+univention-saml (5.0.4-15) unstable; urgency=medium
+
+  * Bug #46451: Move simplesamlphp.keytab to /etc to avoid permission issues
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 01 Mar 2018 15:54:27 +0100
+
 univention-saml (5.0.4-14) unstable; urgency=medium
 
   * Bug #46267: switch to libapache2-mod-php7.0
