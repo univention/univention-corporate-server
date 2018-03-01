@@ -806,6 +806,15 @@ import_license () {
 		sleep 1
 	done
 	python -m shared-utils/license_client "$(ucr get ldap/base)" "$(date -d '+1 year' '+%d.%m.%Y')"
+	# It looks like we have in some AD member setups problems with the DNS resolution. Try to use
+	# the static variante (Bug #46448)
+	if [ ! -e ./ValidTest.license ]; then
+		ucr set hosts/static/85.184.250.151=license.univention.de
+		nscd -i hosts
+		python -m shared-utils/license_client "$(ucr get ldap/base)" "$(date -d '+1 year' '+%d.%m.%Y')"
+		ucr unset hosts/static/85.184.250.151
+		nscd -i hosts
+	fi
 	univention-license-import ./ValidTest.license && univention-license-check
 }
 
