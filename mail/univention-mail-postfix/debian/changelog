@@ -1,6 +1,12 @@
-univention-mail-postfix (12.0.0-16) unstable; urgency=low
+univention-mail-postfix (12.0.0-17) unstable; urgency=low
 
   * Bug #45984: don't disable connection caching on postfix' amavis port
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 01 Mar 2018 08:59:47 +0100
+
+univention-mail-postfix (12.0.0-16) unstable; urgency=low
+
+  * Bug #46102: enable chroot'ing of scache service
 
  -- Daniel Troeder <troeder@univention.de>  Mon, 26 Feb 2018 10:38:43 +0100
 
