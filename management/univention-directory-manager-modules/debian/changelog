@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-4) unstable; urgency=medium
+
+  * Bug #46117: Add users/contact object type
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 02 Mar 2018 15:43:13 +0100
+
 univention-directory-manager-modules (13.0.21-3) unstable; urgency=medium
 
   * Bug #45842 Comment 70: Feedback from UCS@school tests

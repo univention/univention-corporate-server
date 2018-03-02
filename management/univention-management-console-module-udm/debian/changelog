@@ -1,3 +1,9 @@
+univention-management-console-module-udm (8.0.5-3) unstable; urgency=medium
+
+  * Bug #46117: Add users/contact udm module to frontend
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 02 Mar 2018 15:44:51 +0100
+
 univention-management-console-module-udm (8.0.5-2) unstable; urgency=medium
 
   * Bug #46270: Add UDM module to edit portals and portal entries
