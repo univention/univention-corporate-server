@@ -74,6 +74,8 @@ if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 	# Remove existing sqlite DB while re-joining
 	internal_db="/etc/univention/connector/s4internal.sqlite"
 	test -e "$internal_db" && mv "$internal_db" "${internal_db}_$(date +%Y%m%d%H%M%S)"
+	locking_db="/etc/univention/connector/lockingdb.sqlite"
+	test -e "$locking_db" && mv "$locking_db" "${locking_db}_$(date +%Y%m%d%H%M%S)"
 fi
 
 if [ -z "$samba4_ldap_base" ]; then

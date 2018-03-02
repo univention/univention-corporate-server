@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.8-18) unstable; urgency=medium
+
+  * Bug #40773: move lockingdb.sqlite while rejoining.
+
+ -- Eduard Mai <mai@univention.de>  Thu, 01 Mar 2018 16:55:33 +0100
+
 univention-s4-connector (11.0.8-17) unstable; urgency=medium
 
   * Bug #44369: Merge lost patch hunk
