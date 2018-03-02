@@ -38,9 +38,6 @@ To create a listener module (LM) with this API, create a Python file in
    "name", "description" and "ldap_filter"
 
 See /usr/share/doc/univention-directory-listener/examples/ for examples.
-
-For an asynchronously LM, the package univention-directory-listener-async must
-be installed and "AsyncListenerModuleHandler" be used instead.
 """
 
 from __future__ import absolute_import

@@ -28,7 +28,6 @@
 
 from __future__ import absolute_import
 import sys
-from univention.listener.exceptions import ListenerModuleConfigurationError
 
 
 class ListenerModuleAdapter(object):
@@ -39,8 +38,6 @@ class ListenerModuleAdapter(object):
 	Use in a classic listener module like this:
 	globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
 	"""
-	_support_async = False
-
 	def __init__(self, module_configuration, *args, **kwargs):
 		"""
 		:param module_configuration: ListenerModuleConfiguration object
@@ -55,14 +52,7 @@ class ListenerModuleAdapter(object):
 		self._run_checks()
 
 	def _run_checks(self):
-		if self.config.get_run_asynchronously() and not self._support_async:
-			raise ListenerModuleConfigurationError(
-				'Loading of asynchronous listener modules must be done with an AsyncListenerModuleAdapter.'
-			)
-		if not self.config.get_run_asynchronously() and self._support_async:
-			raise ListenerModuleConfigurationError(
-				'Loading of synchronous listener modules must be done with a non-async ListenerModuleAdapter.'
-			)
+		pass
 
 	def get_globals(self):
 		"""

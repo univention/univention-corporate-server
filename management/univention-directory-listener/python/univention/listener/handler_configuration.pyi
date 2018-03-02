@@ -41,8 +41,6 @@ class ListenerModuleConfiguration(object):
 	ldap_filter = ''  # type: str
 	listener_module_class = None  # type: Type[ListenerModuleHandler]
 	attributes = []  # type: List[str]
-	run_asynchronously = False  # type: bool
-	parallelism = 1  # type: int
 	_mandatory_attributes = ('name', 'description', 'ldap_filter', 'listener_module_class')  # type: Tuple[str, ...]
 
 	def __init__(self, *args: Tuple[str], **kwargs: Dict[str, str]) -> None:
@@ -63,10 +61,6 @@ class ListenerModuleConfiguration(object):
 	def get_ldap_filter(self) -> str:
 		...
 	def get_attributes(self) -> list:
-		...
-	def get_parallelism(self) -> int:
-		...
-	def get_run_asynchronously(self) -> bool:
 		...
 	def get_listener_module_instance(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> ListenerModuleHandler:
 		...

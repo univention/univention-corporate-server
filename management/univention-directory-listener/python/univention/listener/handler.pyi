@@ -63,7 +63,6 @@ class ListenerModuleHandler(object):
 		'hasSubordinates', 'modifiersName', 'modifyTimestamp',
 		'structuralObjectClass', 'subschemaSubentry'
 	)
-	_support_async = False
 	_configuration_class = ListenerModuleConfiguration  # type: Type[ListenerModuleConfiguration]
 	_adapter_class = ListenerModuleAdapter  # type: Type[ListenerModuleAdapter]
 	config = None  # type: ListenerModuleConfiguration

@@ -36,8 +36,6 @@ from univention.listener.handler import ListenerModuleHandler
 
 
 class ListenerModuleAdapter(object):
-	_support_async = False
-
 	def __init__(self, module_configuration: ListenerModuleConfiguration, *args: Tuple, **kwargs: Dict) -> None:
 		self.config = module_configuration  # type: ListenerModuleConfiguration
 		self._ldap_cred = dict()  # type: Dict[str, str]

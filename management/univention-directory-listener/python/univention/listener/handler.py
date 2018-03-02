@@ -74,7 +74,6 @@ class ListenerModuleHandler(object):
 		'hasSubordinates', 'modifiersName', 'modifyTimestamp',
 		'structuralObjectClass', 'subschemaSubentry'
 	)
-	_support_async = False
 	_configuration_class = ListenerModuleConfiguration
 	_adapter_class = ListenerModuleAdapter
 	config = None
@@ -234,10 +233,6 @@ class ListenerModuleHandler(object):
 		"""
 		Will be called for unhandled exceptions in create/modify/remove.
 
-		The error_handler() in an asynchronous listener module must *not* raise
-		an exception itself, or the worker will exit and further replication
-		will cease!
-
 		:param dn: str
 		:param old: dict
 		:param new: dict
@@ -248,8 +243,7 @@ class ListenerModuleHandler(object):
 		:return: None
 		"""
 		self.logger.exception('dn=%r command=%r\n    old=%r\n    new=%r', dn, command, old, new)
-		if not self._support_async:
-			raise exc_type, exc_value, exc_traceback
+		raise exc_type, exc_value, exc_traceback
 
 	@property
 	def lo(self):
