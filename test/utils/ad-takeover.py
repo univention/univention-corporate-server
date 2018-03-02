@@ -27,18 +27,16 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+
 import subprocess
 import socket
-import cherrypy
+import univention.lib.umc
 
 from optparse import OptionParser
-from sys import exit
-from ldap.dn import escape_dn_chars
-
 from univention.lib.umc import Client
-
 from time import sleep
 from univention.config_registry import ConfigRegistry
+
 ucr = ConfigRegistry()
 client = None
 finished = False
@@ -56,15 +54,15 @@ parser.add_option('-P', '--domain_password', dest='domain_password', default='Un
 if not options.domain_host:
 	parser.error('Please specify an AD DC host address!')
 
-def domainhost_unreachable(client):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)           
-        s.settimeout(2)             
-        try:
-                s.connect((client, 53))
-                return False
-        except socket.error:
-                return True
 
+def domainhost_unreachable(client):
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	s.settimeout(2)
+	try:
+		s.connect((client, 53))
+		return False
+	except socket.error:
+		return True
 
 
 def get_progress(client):
@@ -72,26 +70,26 @@ def get_progress(client):
 		client.umc_command('adtakeover/progress')
 		sleep(1)
 
+
 def wait(client):
-    path = 'adtakeover/progress'
-    waited = 0
-    result = None
-    while waited <= 720:
-        sleep(10)
-        waited += 1
-        try:
-            result = client.umc_command(path).result
-        except univention.lib.umc.ConnectionError:
-            print('... Apache down? Ignoring...')
-            continue
-        for message in result.get('intermediate', []):
-            print('   {msg}'.format(msg=message.get('message')))
-        if result.get('finished', False):
-            break
-        else:
-            print(result)
-#            raise Exception("wait timeout")
-    print(result)
+	path = 'adtakeover/progress'
+	waited = 0
+	result = None
+	while waited <= 720:
+		sleep(10)
+		waited += 1
+		try:
+			result = client.umc_command(path).result
+		except univention.lib.umc.ConnectionError:
+			print('... Apache down? Ignoring...')
+			continue
+		print(result)
+		if result.get('finished', False):
+			break
+	else:
+		raise Exception("wait timeout")
+	print(result)
+	assert not result['errors']
 
 
 client = Client(options.host, options.username, options.password, language='en-US')
@@ -101,35 +99,42 @@ request_options = {
 	"password": options.domain_password
 }
 
+print('starting connect')
 response = client.umc_command("adtakeover/connect", request_options)
-print response.result
-assert response.status==200
+print(response.result)
+assert response.status == 200
 
 try:
-    response = client.umc_command("adtakeover/run/copy", request_options)
+	print('starting copy')
+	response = client.umc_command("adtakeover/run/copy", request_options)
 except Exception:
-    pass
+	pass
 wait(client)
 
+print('starting rpc copy')
 result = subprocess.call(["net", "-U", "%s%%%s" % (options.domain_admin, options.domain_password), "rpc", "share", "migrate", "files", "sysvol", "-S", options.domain_host, "--destination=%s" % (options.host), "--acls", "-vvvv"])
-print result
-assert result==0
+assert result == 0
 
+print('starting sysvol check')
 response = client.umc_command("adtakeover/check/sysvol", request_options)
-assert response.status==200
+assert response.status == 200
 
-
-result = subprocess.call(["net", "rpc", "shutdown", "-I", options.domain_host, "-U", "%s%%%s" % (options.domain_admin, options.domain_password),])
-
+print('starting shutdown')
+result = subprocess.call(["net", "rpc", "shutdown", "-I", options.domain_host, "-U", "%s%%%s" % (options.domain_admin, options.domain_password)])
+assert result == 0
 finished = True
 
 while not domainhost_unreachable(options.domain_host):
-    sleep(2)
+	sleep(2)
 
 sleep(5)
 
+print('starting takeover')
 response = client.umc_command("adtakeover/run/takeover", request_options)
-print response.status
+print(response.status)
+assert response.status == 200
 
+print('starting done')
 response = client.umc_command("adtakeover/status/done", request_options)
-print response.status
+print(response.status)
+assert response.status == 200
