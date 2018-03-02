@@ -2,7 +2,7 @@
 # PAM Univention Mail Cyrus
 #  Makefile for the pam-univentionmailcyrus debian package
 #
-# Copyright 2005-2017 Univention GmbH
+# Copyright 2005-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
