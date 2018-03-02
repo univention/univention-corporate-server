@@ -3,7 +3,7 @@
 # Univention helper script
 #  to remove computer with DC objects from Samba 4 and UDM
 #
-# Copyright 2012-2017 Univention GmbH
+# Copyright 2012-2018 Univention GmbH
 #
 # http://www.univention.de/
 #

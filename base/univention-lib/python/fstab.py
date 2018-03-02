@@ -4,7 +4,7 @@
 # Univention Management Console
 #  quota module: reads and writes /etc/fstab
 #
-# Copyright 2006-2017 Univention GmbH
+# Copyright 2006-2018 Univention GmbH
 #
 # http://www.univention.de/
 #

@@ -4,7 +4,7 @@
 # Univention nscd Updater
 #  Univention Listener Module
 #
-# Copyright 2001-2017 Univention GmbH
+# Copyright 2001-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
