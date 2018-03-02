@@ -1,6 +1,6 @@
 # Univention admember Shell Library
 #
-# Copyright 2014-2017 Univention GmbH
+# Copyright 2014-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
