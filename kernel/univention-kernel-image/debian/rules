@@ -30,11 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-ABI := ucs105
+ABI := 6
 
 SOURCEVERSION := 4.9
-amd64_VERSION := amd64
-i386_VERSION := 686-pae
+amd64_VERSION := ${SOURCEVERSION}.0-${ABI}-amd64
+i386_VERSION := ${SOURCEVERSION}.0-${ABI}-686-pae
 
 DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
 
@@ -48,6 +48,4 @@ override_dh_auto_test:
 	ucslint
 
 override_dh_gencontrol:
-	dh_gencontrol -punivention-kernel-image -u-VF:KernelVersion="${KERNELVERSION}"
-	dh_gencontrol -punivention-kernel-headers -u-VF:KernelVersion="${KERNELVERSION}"
-	dh_gencontrol -punivention-kernel-source -u-VF:KernelVersion="${SOURCEVERSION}"
+	dh_gencontrol -- -VF:BinaryVersion="${KERNELVERSION}" -VF:SourceVersion="${SOURCEVERSION}"

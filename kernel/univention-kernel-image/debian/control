@@ -7,14 +7,10 @@ Standards-Version: 3.8.2
 
 Package: univention-kernel-image
 Architecture: any
-Pre-Depends:
- univention-initrd,
- kmod,
 Depends:
- linux-image-${F:KernelVersion}-signed [amd64],
- linux-image-${F:KernelVersion},
+ linux-image-${F:BinaryVersion}-signed [amd64],
+ linux-image-${F:BinaryVersion},
  univention-initrd (>= 6.0.0-2),
- xfsprogs,
  libc6-i686 [i386],
  univention-config,
 Recommends:
@@ -34,6 +30,7 @@ Recommends:
  firmware-ti-connectivity,
  amd64-microcode,
  intel-microcode,
+ xfsprogs,
 Suggests:
  firmware-intel-sound,
  firmware-ipw2x00,
@@ -53,7 +50,7 @@ Description: UCS - Linux kernel (standard)
 
 Package: univention-kernel-headers
 Architecture: any
-Depends: linux-headers-${F:KernelVersion}
+Depends: linux-headers-${F:BinaryVersion}
 Description: UCS - Linux kernel headers (standard)
  This meta-package depends on the latest UCS kernel headers.
  .
@@ -63,11 +60,10 @@ Description: UCS - Linux kernel headers (standard)
  refer to: http://www.univention.de/
 
 Package: univention-kernel-source
-Architecture: any
-Depends: linux-source-${F:KernelVersion}
+Architecture: all
+Depends: linux-source-${F:SourceVersion}
 Description: UCS - Linux kernel source (standard)
- This meta-package depends on the latest UCS kernel source suitable for 32 bit
- systems with up to 4 GiB RAM.
+ This meta-package depends on the latest UCS kernel source.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
