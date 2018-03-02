@@ -6,7 +6,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="ucs-4.2">
+<book lang="en" id="ucs-4.3">
   <bookinfo>
     <title>
       Univention Corporate Server
@@ -16,13 +16,13 @@
     </subtitle>
     <legalnotice>
       <literallayout>
-Version 4.2-3
-Date: November 28th, 2017
+Version 4.3-0
+Date: March 6th, 2018
       </literallayout>
 
       <literallayout lang="">
 Alle Rechte vorbehalten./ All rights reserved.
-(c) 2002-2017
+(c) 2002-2018
 Univention GmbH
 Mary-Somerville-Straße 1
 28359 Bremen
