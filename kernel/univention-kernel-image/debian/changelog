@@ -1,3 +1,9 @@
+univention-kernel-image (11.0.1-6) unstable; urgency=low
+
+  * Bug #45961: Always install signed Debian Linux kernel on amd64
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 02 Mar 2018 11:47:35 +0100
+
 univention-kernel-image (11.0.1-5) unstable; urgency=low
 
   * Bug #45961: Use signed Debian Linux kernel

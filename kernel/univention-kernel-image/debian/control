@@ -11,7 +11,8 @@ Pre-Depends:
  univention-initrd,
  kmod,
 Depends:
- linux-image-${F:KernelVersion}-signed | linux-image-${F:KernelVersion},
+ linux-image-${F:KernelVersion}-signed [amd64],
+ linux-image-${F:KernelVersion},
  univention-initrd (>= 6.0.0-2),
  xfsprogs,
  libc6-i686 [i386],
