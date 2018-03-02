@@ -400,15 +400,10 @@ class object(univention.admin.handlers.simpleLdap):
 	def unique_dn(self):
 		candidate_dn = self.get_candidate_dn()
 		try:
-			if univention.admin.allocators.request(self.lo, self.position, 'dn', value=candidate_dn):
-				self.alloc.append(('dn', candidate_dn))
-				return True
-		except univention.admin.uexceptions.noLock:
-			univention.admin.allocators.release(self.lo, self.position, 'dn', value=candidate_dn)
-			return False  ## this dn is not unique according to acquireUnique
-		except:
-			# FIXME
-			univention.admin.allocators.release(self.lo, self.position, 'dn', value=candidate_dn)
+			lo.searchDn(base=candidate_dn, scope='base')
+		except univention.admin.uexceptions.noObject:
+			return True
+		else:
 			return False
 
 	def acquire_unique_dn(self):
@@ -442,12 +437,6 @@ class object(univention.admin.handlers.simpleLdap):
 				new_displayName = prop_displayName._replace(prop_displayName.base_default, self)
 				ml.append(('displayName', self.oldattr.get('displayName', [''])[0], new_displayName))
 		return ml
-
-	def _ldap_post_create(self):
-		self._confirm_locks()
-
-	def _ldap_post_modify(self):
-		self._confirm_locks()
 
 	@classmethod
 	def unmapped_lookup_filter(cls):

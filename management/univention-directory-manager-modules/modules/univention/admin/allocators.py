@@ -52,8 +52,7 @@ _type2attr = {
 	'mailPrimaryAddress': 'mailPrimaryAddress',
 	'aRecord': 'aRecord',
 	'mac': 'macAddress',
-	'groupName': 'cn',
-	'dn': 'dn'
+	'groupName': 'cn'
 }
 _type2scope = {
 	'uidNumber': 'base',
@@ -65,8 +64,7 @@ _type2scope = {
 	'mailPrimaryAddress': 'domain',
 	'aRecord': 'domain',
 	'mac': 'domain',
-	'groupName': 'domain',
-	'dn': 'base'
+	'groupName': 'domain'
 }
 
 
@@ -180,13 +178,6 @@ def acquireUnique(lo, position, type, value, attr, scope='base'):
 	elif type == "groupName":  # search filter is more complex then in general case
 		univention.admin.locking.lock(lo, position, type, value, scope=scope)
 		if not lo.searchDn(base=searchBase, filter=filter_format('(&(%s=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))', (attr, value))):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE return %s' % value)
-			return value
-	elif type == "dn":
-		univention.admin.locking.lock(lo, position, type, value, scope=scope)
-		try:
-			lo.searchDn(base=value, scope=scope)
-		except univention.admin.uexceptions.noObject:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE return %s' % value)
 			return value
 	else:
