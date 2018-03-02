@@ -1,6 +1,7 @@
 univention-directory-listener (12.0.0-19) unstable; urgency=low
 
   * Bug #44786: reactivate new listener module api
+  * remove async listener module api
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 02 Mar 2018 12:15:56 +0100
 
