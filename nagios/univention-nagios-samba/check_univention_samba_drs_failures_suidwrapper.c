@@ -1,6 +1,6 @@
 // Univention Nagios Plugin
 //
-// Copyright 2016-2017 Univention GmbH
+// Copyright 2016-2018 Univention GmbH
 //
 // http://www.univention.de/
 //
