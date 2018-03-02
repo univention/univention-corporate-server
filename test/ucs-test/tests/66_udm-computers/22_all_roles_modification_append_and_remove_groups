@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test appending and removing groups for all computer roles (except computers/ipmanagedclient)
-## tags: [udm-computers,apptest]
+## tags: [udm-computers]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
