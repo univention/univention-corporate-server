@@ -524,7 +524,7 @@ case "$available_locales" in
 esac
 
 # Bug #45968: let Postfix3 extension packages recreate /etc/postfix/dynamicmaps.cf with new format
-if grep -q 'usr/lib/postfix' /etc/postfix/dynamicmaps.cf; then
+if [ -a /etc/postfix/dynamicmaps.cf ] && grep -q 'usr/lib/postfix' /etc/postfix/dynamicmaps.cf; then
 	PF2_BACKUP="$(mktemp /etc/postfix/dynamicmaps.cf.backup-postfix2.XXXXXXXX)"
 	echo "Removing /etc/postfix/dynamicmaps.cf. Creating backup in $PF2_BACKUP." >>"$UPDATER_LOG" 2>&1
 	mv -fv /etc/postfix/dynamicmaps.cf "$PF2_BACKUP" >>"$UPDATER_LOG" 2>&1
