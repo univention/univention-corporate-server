@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 #
-# Copyright 2015-2017 Univention GmbH
+# Copyright 2015-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
