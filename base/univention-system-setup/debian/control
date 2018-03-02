@@ -82,8 +82,10 @@ Description: Starting univention-system-setup on next boot
  refer to: http://www.univention.de/
 
 Package: di-univention-system-setup
+Package-Type: udeb
 Architecture: any
 Section: debian-installer
+Priority: standard
 XB-Subarchitecture: ${subarch}
 Provides: configured-ucs
 Depends: cdebconf-udeb,
@@ -94,7 +96,6 @@ Depends: cdebconf-udeb,
  bootable-system,
  ${misc:Depends},
 XB-Installer-Menu-Item: 7650
-Package-Type: udeb
 Description: Start Univention System Setup
  This package is used to lauch Univention System Setup in boot mode from
  the Debian based UCS installer.

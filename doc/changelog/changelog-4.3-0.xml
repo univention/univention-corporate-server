@@ -628,6 +628,9 @@
 			<listitem><simpara>
 					The program <package>makepasswd</package> uses <filename>/dev/urandom</filename> again instead of <filename>/dev/random</filename> (<u:bug>46260</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+					The package priority of package <package>di-univention-system-setup</package> has been changed to standard (<u:bug>46464</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 

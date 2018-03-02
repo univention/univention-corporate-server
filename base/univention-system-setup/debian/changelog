@@ -1,3 +1,9 @@
+univention-system-setup (11.0.2-7) unstable; urgency=low
+
+  * Bug #46464: Set Priority:standard for Package:di-univention-system-setup
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 02 Mar 2018 15:43:48 +0100
+
 univention-system-setup (11.0.2-6) unstable; urgency=low
 
   * Bug #46102: remove cyrus related code from system setup scripts
