@@ -12,6 +12,14 @@
 				<category name="users"/>
 			</categories>
 		</flavor>
+		<flavor priority="50" id="users/contact">
+			<name>Contacts</name>
+			<description>Management of contacts</description>
+			<keywords>contacts</keywords>
+			<categories>
+				<category name="users"/>
+			</categories>
+		</flavor>
 		<flavor priority="50" id="groups/group">
 			<name>Groups</name>
 			<description>Management of user and computer groups in the domain</description>

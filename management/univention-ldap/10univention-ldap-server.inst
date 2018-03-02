@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=5
+VERSION=6
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -262,6 +262,17 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 			pwdLockout: TRUE
 			pwdMaxFailure: 5
 			pwdFailureCountInterval: 900
+			%EOR
+	fi
+
+	if [ $JS_LAST_EXECUTED_VERSION -lt 6 ]; then
+		ldapadd -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<-%EOR
+			dn: cn=dn,cn=temporary,cn=univention,$ldap_base
+			objectClass: top
+			objectClass: organizationalRole
+			objectClass: univentionObject
+			univentionObjectType: container/cn
+			cn: dn
 			%EOR
 	fi
 fi

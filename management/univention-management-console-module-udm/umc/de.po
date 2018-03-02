@@ -146,3 +146,12 @@ msgstr "Verwaltung von Portalen und Portaleinträgen"
 
 msgid "Portal settings"
 msgstr "Portaleinstellungen"
+
+msgid "Contacts"
+msgstr "Kontakte"
+
+msgid "contacts"
+msgstr "Kontakte"
+
+msgid "Management of contacts"
+msgstr "Verwaltung von Kontakten"
