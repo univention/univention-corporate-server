@@ -395,6 +395,7 @@
 			<title>Radius</title>
 			<itemizedlist>
 				<listitem><simpara>
+						The <package>univention-radius</package> configuration has been adapted to Debian Stretch. Please check your radius configuraton after the upgrade, <package>freeradius</package> changed some config parameters. It might be neccessary to readd your radius clients (<u:bug>46263</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
