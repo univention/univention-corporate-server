@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-5) unstable; urgency=medium
+
+  * Bug #46117: Remove locking for users/contact dn
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 02 Mar 2018 17:11:28 +0100
+
 univention-directory-manager-modules (13.0.21-4) unstable; urgency=medium
 
   * Bug #46117: Add users/contact object type

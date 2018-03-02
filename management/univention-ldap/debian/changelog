@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-14) unstable; urgency=medium
+
+  * Bug #46117: Revert locking for dn
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 02 Mar 2018 17:10:57 +0100
+
 univention-ldap (14.0.2-13) unstable; urgency=medium
 
   * Bug #46117: Add temporary container for locking dn(s)
