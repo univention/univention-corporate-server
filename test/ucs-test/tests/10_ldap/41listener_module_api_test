@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## -*- coding: utf-8 -*-
 ## desc: New listener module API test
-## tags: [SKIP]
+## tags: []
 ## roles: []
 ## exposure: dangerous
 ## packages:
