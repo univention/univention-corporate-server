@@ -128,6 +128,8 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 	--set ldapMapping=univentionNetworkAccess \
 	--set deleteObjectClass=1 || exit "$?"
 
+# In case radius was installed during systemsetup the machine secret is missing in the radius ldap module
+univention-config-registry commit /etc/freeradius/3.0/mods-available/ldap
 invoke-rc.d freeradius restart
 
 stop_udm_cli_server
