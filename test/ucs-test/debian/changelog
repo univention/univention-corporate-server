@@ -1,3 +1,9 @@
+ucs-test (8.0.28-61) unstable; urgency=low
+
+  * Bug #46191: add additonal debug output in essential/mail.py
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 02 Mar 2018 18:00:48 +0100
+
 ucs-test (8.0.28-60) unstable; urgency=low
 
   * Bug #44786: reactivate new listener module api test
