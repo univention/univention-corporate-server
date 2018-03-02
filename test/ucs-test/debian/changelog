@@ -1,6 +1,7 @@
 ucs-test (8.0.28-60) unstable; urgency=low
 
   * Bug #44786: reactivate new listener module api test
+  * remove async listener module API tests
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 02 Mar 2018 12:15:24 +0100
 
