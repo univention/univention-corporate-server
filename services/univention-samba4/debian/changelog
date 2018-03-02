@@ -1,6 +1,8 @@
 univention-samba4 (6.0.10-45) unstable; urgency=medium
 
   * Bug #40814: check for sysvol lock in univention-samba4-backup
+  * Bug #37342: Don not start multiple univention-samba4-backup processes and
+    kill hanging tdbbackup processes
 
  -- Eduard Mai <mai@univention.de>  Fri, 02 Mar 2018 14:12:46 +0100
 

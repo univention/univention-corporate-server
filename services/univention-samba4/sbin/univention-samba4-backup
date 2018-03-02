@@ -79,6 +79,10 @@ DAYS=""
 DIRS="private sysvol"
 WHEN="$(date +%Y-%m-%d)"
 SYSVOL_LOCKFILE="/var/lock/sysvol-sync-dir"
+PROCESS_LOCK="/var/lock/univention-samba4-backup"
+
+# Only run one process at a time.
+(
 
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -120,10 +124,13 @@ if [ ! -d $FROMWHERE ]; then
 	exit 1
 fi
 
-
 (
+# Exit if process is already running.
+if ! flock -n 21; then
+	echo "univention-samba4-backup already running."
+	exit 1
 # Check whether sysvol is locked by sysvol-sync
-if ! flock -sn 200; then
+elif ! flock -sn 20; then
 	echo "Couldn't execute backup as sysvol is currently locked."
 	exit 1
 fi
@@ -136,11 +143,15 @@ for d in $DIRS; do
 		for db in tdb ldb; do
 			find $relativedirname -name "*.$db.bak" -exec rm {} \;
 			for file in `find $relativedirname -name "*.$db"`; do
-				tdbbackup $file
+				timeout -s9 15m tdbbackup $file
 				Status=$?
-				if [ $Status -ne 0 ]; then
-					echo "Error while backing up $file with tdbbackup - status $Status"
+				# GNU timeout returns 137 when signal 9 was send.
+				if [ $Status -eq 137 ];then
+					echo "tdbbackup timed out. Backup aborted."
 					exit 1
+				elif [ $Status -ne 0 ]; then
+					echo "Error while backing up $file with tdbbackup - status $Status"
+					exit $Status
 				fi
 			done
 		done
@@ -180,6 +191,6 @@ for d in $DIRS; do
 	fi
 done
 # Exit with the subshell return code on error.
-) 200>"$SYSVOL_LOCKFILE" || exit "$?"
+) 20>"$SYSVOL_LOCKFILE" 21>"$PROCESS_LOCK" || exit "$?"
 
 clean_old_backups 'samba/\(samba4_\|sysvol\).*.bz2' "$DAYS"
