@@ -48,7 +48,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'users/contact'
-operations = ['add', 'edit', 'remove', 'search'] # TODO no move for now
+operations = ['add', 'edit', 'remove', 'search', 'move']
 
 childs = 0
 short_description = _('Contact')
@@ -400,7 +400,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def unique_dn(self):
 		candidate_dn = self.get_candidate_dn()
 		try:
-			lo.searchDn(base=candidate_dn, scope='base')
+			self.lo.searchDn(base=candidate_dn, scope='base')
 		except univention.admin.uexceptions.noObject:
 			return True
 		else:
@@ -414,6 +414,7 @@ class object(univention.admin.handlers.simpleLdap):
 			nonce += 1
 			cn = '%s %s %d' % (self['firstname'] or '', self['lastname'], nonce,)
 			self['cn'] = cn.strip()
+		return self.get_candidate_dn()
 
 	def _ldap_pre_ready(self):
 		super(object, self)._ldap_pre_ready()
@@ -437,6 +438,29 @@ class object(univention.admin.handlers.simpleLdap):
 				new_displayName = prop_displayName._replace(prop_displayName.base_default, self)
 				ml.append(('displayName', self.oldattr.get('displayName', [''])[0], new_displayName))
 		return ml
+
+	def _move(self, newdn, modify_childs=True, ignore_license=False):
+		olddn = self.dn
+
+		# acquire unique dn in new position
+		self.dn = newdn
+		newdn = self.acquire_unique_dn()
+		self.dn = olddn
+
+		self.lo.rename(self.dn, newdn)
+		self.dn = newdn
+
+		try:
+			self._move_in_groups(olddn)  # can be done always, will do nothing if oldinfo has no attribute 'groups'
+			self._move_in_subordinates(olddn)
+			self._ldap_post_move(olddn)
+		except:
+			# move back
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'simpleLdap._move: self._ldap_post_move failed, move object back to %s' % olddn)
+			self.lo.rename(self.dn, olddn)
+			self.dn = olddn
+			raise
+		return self.dn
 
 	@classmethod
 	def unmapped_lookup_filter(cls):
