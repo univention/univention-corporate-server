@@ -5,7 +5,7 @@
 #  univention-app module for updating the list of available apps
 #  (Docker version)
 #
-# Copyright 2017 Univention GmbH
+# Copyright 2017-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
