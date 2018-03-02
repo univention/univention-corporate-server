@@ -1,0 +1,5 @@
+rm_conffile /etc/univention/templates/files/usr/share/apps/kdesktop/DesktopLinks/OpenOffice.desktop 12.0.0-2~
+rm_conffile /etc/univention/templates/files/usr/share/apps/kdesktop/DesktopLinks/konqbrowser.desktop 12.0.0-2~
+rm_conffile /etc/univention/templates/files/usr/share/apps/kdesktop/DesktopLinks/mozilla.desktop 12.0.0-2~
+rm_conffile /etc/univention/templates/files/usr/share/kde4/apps/desktoptheme/default/metadata.desktop 12.0.0-2~
+rm_conffile /etc/univention/templates/files/etc/mozilla-firefox/pref/firefox.js 12.0.0-2~

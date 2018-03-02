@@ -1,3 +1,9 @@
+univention-kde (12.0.0-6) unstable; urgency=medium
+
+  * Bug #46253: add maintscript for old templates
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 02 Mar 2018 12:27:25 +0100
+
 univention-kde (12.0.0-5) unstable; urgency=medium
 
   * Bug #46253: change umc desktop link to https
