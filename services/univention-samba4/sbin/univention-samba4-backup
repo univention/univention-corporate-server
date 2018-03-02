@@ -78,6 +78,7 @@ WHERE=/var/univention-backup/samba
 DAYS=""
 DIRS="private sysvol"
 WHEN="$(date +%Y-%m-%d)"
+SYSVOL_LOCKFILE="/var/lock/sysvol-sync-dir"
 
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -116,6 +117,14 @@ fi
 
 if [ ! -d $FROMWHERE ]; then
 	echo "Missing or wrong provision directory $FROMWHERE"
+	exit 1
+fi
+
+
+(
+# Check whether sysvol is locked by sysvol-sync
+if ! flock -sn 200; then
+	echo "Couldn't execute backup as sysvol is currently locked."
 	exit 1
 fi
 
@@ -170,5 +179,7 @@ for d in $DIRS; do
 		fi
 	fi
 done
+# Exit with the subshell return code on error.
+) 200>"$SYSVOL_LOCKFILE" || exit "$?"
 
 clean_old_backups 'samba/\(samba4_\|sysvol\).*.bz2' "$DAYS"
