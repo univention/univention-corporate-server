@@ -61,8 +61,6 @@ class ListenerModuleConfiguration(object):
 	ldap_filter = ''              # (*) LDAP filter, if matched will trigger the listener module
 	listener_module_class = None  # (**) class that implements the module
 	attributes = []               # only trigger module, if any of the listed attributes has changed
-	run_asynchronously = False    # run module in the background
-	parallelism = 1               # run multiple instances of module in parallel (implies run_asynchronously)
 	# (*) required
 	# (**) will be set automatically by the handlers metaclass
 
@@ -92,12 +90,6 @@ class ListenerModuleConfiguration(object):
 			raise ListenerModuleConfigurationError(
 				'The "name" of a listener module may only contain the following characters: {!r}'.format(allowed_name_chars)
 			)
-		if self.get_parallelism() > 1 and not self.get_run_asynchronously():
-			self.logger.warn(
-				'Configuration of "parallelism > 1" implies "run_asynchronously = True". To prevent this warning '
-				'configure it in your "Configuration" class.'
-			)
-			self.run_asynchronously = True
 		if not inspect.isclass(self.get_listener_module_class()):
 			raise ListenerModuleConfigurationError('Attribute "listener_module_class" must be a class.')
 
@@ -130,8 +122,6 @@ class ListenerModuleConfiguration(object):
 			'ldap_filter',
 			'listener_module_class',
 			'name',
-			'parallelism',
-			'run_asynchronously'
 		]
 
 	def get_name(self):
@@ -146,12 +136,6 @@ class ListenerModuleConfiguration(object):
 	def get_attributes(self):
 		assert isinstance(self.attributes, list)
 		return self.attributes
-
-	def get_parallelism(self):
-		return self.parallelism
-
-	def get_run_asynchronously(self):
-		return self.run_asynchronously
 
 	def get_listener_module_instance(self, *args, **kwargs):
 		"""

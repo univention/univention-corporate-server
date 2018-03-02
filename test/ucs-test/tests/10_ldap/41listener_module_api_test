@@ -85,7 +85,6 @@ def main():
 	print('Listener module log file: {!r}'.format(lm_logger_path))
 	print('UID default (listener) file: {!r}'.format(uid_default_file))
 	print('UID root file: {!r}'.format(uid_root_file))
-	print('run_asynchronously: False')
 
 
 	# create, modify, move, modify
