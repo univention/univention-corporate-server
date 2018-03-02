@@ -85,19 +85,19 @@ class ImapMail(Mail):
 	def get_mails(self, filter='ALL', mailbox='INBOX'):
 		msgs = []
 		rv, data = self.connection.select(mailbox)
-		assert rv == "OK"
+		assert rv == "OK", (rv, data)
 		rv, msg_ids = self.connection.search(None, filter)
-		assert rv == "OK"
+		assert rv == "OK", (rv, msg_ids)
 		for num in msg_ids[0].split():
 			rv, msg = self.connection.fetch(num, '(RFC822)')
-			assert rv == "OK"
+			assert rv == "OK", (rv, msg)
 			msgs.append(email.message_from_string(msg[0][1]))
 		return msgs
 
 	def get_connection(self, host, user, password):
 		self.connection = imaplib.IMAP4_SSL(host)
 		rv, data = self.connection.login(user, password)
-		assert rv == "OK"
+		assert rv == "OK", (rv, data)
 
 	def get_return_code(self, id, response):
 		regex = '%s (.*?) .*$' % id
@@ -163,14 +163,14 @@ class ImapMail(Mail):
 
 	def copy(self, message_set, old_mailbox, new_mailbox):
 		rv, data = self.connection.select(old_mailbox)
-		assert rv == "OK"
+		assert rv == "OK", (rv, data)
 		rv, data = self.connection.copy(message_set, new_mailbox)
-		assert rv == "OK"
+		assert rv == "OK", (rv, data)
 
 	def create_subfolder(self, parent, child):
 		# find separator symbol
 		rv, data = self.connection.list()
-		assert rv == "OK"
+		assert rv == "OK", (rv, data)
 		separator = None
 		regex = re.compile(r'^\(.*\) "(?P<separator>.*)" (?P<folder>.*)$')
 		for s in data:
@@ -182,12 +182,12 @@ class ImapMail(Mail):
 		# create subfolder
 		subfolder_name = '{}{}{}'.format(parent, separator, child)
 		rv, data = self.connection.create(subfolder_name)
-		assert rv == "OK"
+		assert rv == "OK", (rv, data)
 		return subfolder_name
 
 	def delete_folder(self, folder_name):
 		rv, data = self.connection.delete(folder_name)
-		assert rv == "OK"
+		assert rv == "OK", (rv, data)
 
 
 class PopMail(Mail):
@@ -459,7 +459,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 	foundcnt = 0
 	if messageid:
 		status, result = conn.search(None, '(HEADER Message-ID "%s")' % (messageid,))
-		assert status == 'OK'
+		assert status == 'OK', (status, result)
 		result = result[0]
 		if result:
 			result = result.split()
@@ -468,7 +468,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 
 	if token:
 		status, result = conn.search(None, 'ALL')
-		assert status == 'OK'
+		assert status == 'OK', (status, result)
 		if result:
 			msgids = result.split()
 			print 'Folder contains %d messages' % (len(msgids),)
@@ -482,7 +482,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 
 	if not token and not messageid:
 		status, result = conn.search(None, 'ALL')
-		assert status == 'OK'
+		assert status == 'OK', (status, result)
 		if result:
 			msgids = result.split()
 			foundcnt = len(msgids)
