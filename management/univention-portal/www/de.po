@@ -1,153 +1,155 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-server-overview\n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2018-01-24 22:12+0100\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2018-03-02 12:40+0100\n"
 "PO-Revision-Date: 2017-03-22 16:49+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 
-#: www/main.js:1360
+#: main.js:736
+msgid "A portal entry with the given name already exists."
+msgstr "Es existiert bereits ein Portal-Eintrag mit dem angegebenen Namen."
+
+#: main.js:1346
 msgid "Administration"
 msgstr "Verwaltung"
 
-#: www/main.js:1362
+#: main.js:1348
 msgid "Applications"
 msgstr "Applikationen"
 
-#: www/main.js:492
+#: main.js:471
 msgid "Back"
 msgstr "Zurück"
 
-#: www/main.js:502 www/main.js:759 www/main.js:1308 www/main.js:1853
+#: main.js:481 main.js:738 main.js:1279 main.js:1889
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: www/main.js:1810
+#: main.js:1845
 msgid "Change order of portal entries via drag and drop"
-msgstr ""
+msgstr "Ändere die Reihenfolge der Portal-Einträge per Drag and Drop"
 
-#: www/main.js:1198 www/main.js:1688 www/main.js:1711 www/main.js:1998
+#: main.js:1169 main.js:1712 main.js:1740 main.js:2038
 msgid "Changes saved"
 msgstr "Änderungen gespeichert"
 
-#: www/main.js:1473
+#: main.js:1460
 msgid "Create entry"
 msgstr "Eintrag erstellen"
 
-#: www/main.js:1473 www/main.js:1489
+#: main.js:1460 main.js:1482
 msgid "Edit entry"
 msgstr "Eintrag bearbeiten"
 
-#: www/main.js:1796
+#: main.js:1831
 msgid "Edit this portal"
 msgstr "Dieses Portal bearbeiten"
 
-#: www/main.js:512
+#: main.js:491
 msgid "Finish"
 msgstr "Fertigstellen"
 
-#: www/main.js:763
+#: main.js:742
 msgid "Load entry"
 msgstr "Eintrag laden"
 
-#: www/main.js:1350
+#: main.js:1321
 msgid "Local Apps"
 msgstr "Lokale Apps"
 
-#: www/main.js:1428
+#: main.js:1413
 msgid "Local apps can not be edited"
 msgstr "Lokale Apps können nicht bearbeitet werden"
 
-#: www/main.js:498
+#: main.js:477
 msgid "Next"
 msgstr "Weiter"
 
-#: www/main.js:1834 www/main.js:1835
+#: main.js:1870 main.js:1871
 msgid "Portal appearance"
 msgstr "Portal Aussehen"
 
-#: www/main.js:1828 www/main.js:1829
+#: main.js:1623
+msgid "Portal entry was successfully created"
+msgstr "Portal-Eintrag wurde erfolgreich erstellt"
+
+#: main.js:1864 main.js:1865
 msgid "Portal header"
 msgstr "Portal Header"
 
-#: www/main.js:917 www/main.js:927
+#: main.js:886 main.js:896
 msgid "Portal logo"
 msgstr "Portal Logo"
 
-#: www/main.js:924 www/main.js:932
+#: main.js:893 main.js:901
 msgid "Portal title"
 msgstr "Portal Titel"
 
-#: www/main.js:1822 www/main.js:1823
+#: main.js:1858 main.js:1859
 msgid "Portal visibility"
 msgstr "Portal Sichtbarkeit"
 
-#: www/main.js:487
+#: main.js:466
 msgid "Remove from this portal"
 msgstr "Aus diesem Portal entfernen"
 
-#: www/main.js:507 www/main.js:1314
+#: main.js:486 main.js:1285
 msgid "Save"
 msgstr "Speichern"
 
-#: www/main.js:1860
+#: main.js:1896
 msgid "Save entry order"
 msgstr "Reihenfolge der Einträge Speichern"
 
-#: www/main.js:2001
+#: main.js:2041
 msgid "Saving entry order failed"
 msgstr "Speichern der Eintragsreihenfolge ist fehlgeschlagen"
 
-#: www/main.js:1206
+#: main.js:1177
 msgid "The changes to the portal object could not be saved"
 msgstr "Die Änderungen am Portal Objekt konnten nicht gespeichert werden "
 
-#: www/main.js:1202
-#, python-format
+#: main.js:1173
 msgid "The changes to the portal object could not be saved: %(details)s"
 msgstr ""
-"Die Änderungen am Portal Objekt konnten nicht gespeichert werden: "
-"%(details)s"
+"Die Änderungen am Portal Objekt konnten nicht gespeichert werden: %(details)s"
 
-#: www/main.js:1432
+#: main.js:1417
 msgid "The dn for this entry could not be found"
-msgstr ""
+msgstr "Die DN für diesen Eintrag konnte nicht gefunden werden"
 
-#: www/main.js:1696
+#: main.js:1720
 msgid "The editing of the portal entry object failed."
-msgstr ""
+msgstr "Das Bearbeiten des Portal-Eintrages ist fehlgeschlagen."
 
-#: www/main.js:1692
-#, python-format
+#: main.js:1716
 msgid "The editing of the portal entry object failed: %(details)s"
-msgstr ""
+msgstr "Das Bearbeiten des Portal-Eintrages ist fehlgeschlagen: %(details)s"
 
-#: www/main.js:1715
-#, python-format
+#: main.js:1744
 msgid "The entry could not be removed: %(details)s"
 msgstr "Der Eintrag konnte nicht entfernt werden: %(details)s"
 
-#: www/main.js:1951
+#: main.js:1991
 msgid "The new category for the following portal entries could not be saved:"
-msgstr ""
+msgstr "Die Kategorie für die folgenden Portal-Einträge konnte nicht geändert werden:"
 
-#: www/main.js:1635
+#: main.js:1631
 msgid "The portal entry object could not be saved."
 msgstr "Die Änderungen am Portal Objekt konnten nicht gespeichert werden."
 
-#: www/main.js:1631
-#, python-format
+#: main.js:1627
 msgid "The portal entry object could not be saved: %(details)s"
 msgstr ""
-"Die Änderungen am Portal Objekt konnten nicht gespeichert werden: "
-"%(details)s"
+"Die Änderungen am Portal Objekt konnten nicht gespeichert werden: %(details)s"
 
-#: www/main.js:611 www/main.js:1144
+#: main.js:590 main.js:1115
 msgid "This value is required"
 msgstr "Dieser Wert ist erforderlich"

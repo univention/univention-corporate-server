@@ -733,7 +733,7 @@ define([
 									this.inherited(origArgs);
 									this.onNameQueryEnd();
 								} else {
-									dialog.confirm('A portal entry with the given name already exists.', [{
+									dialog.confirm(_('A portal entry with the given name already exists.'), [{
 										'name': 'cancel',
 										'label': _('Cancel'),
 										'default': true
@@ -1620,7 +1620,7 @@ define([
 								this._refreshAfterPortalEntryEdit().then(function() {
 									wizardDialog.hide().then(function() {
 										wizardDialog.destroyRecursive();
-										dialog.contextNotify('Portal entry was successfully created');
+										dialog.contextNotify(_('Portal entry was successfully created'));
 									});
 								});
 							} else {

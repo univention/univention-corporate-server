@@ -1,3 +1,9 @@
+univention-portal (2.0.0-9) unstable; urgency=medium
+
+  * Bug #46270: Add missing translations
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 02 Mar 2018 13:06:44 +0100
+
 univention-portal (2.0.0-8) unstable; urgency=medium
 
   * Bug #46270: Move resync of portal and portal_entry to postup
