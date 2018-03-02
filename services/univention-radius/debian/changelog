@@ -1,3 +1,9 @@
+univention-radius (5.0.0-6) unstable; urgency=medium
+
+  * Bug #46263: remove old diverts
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 02 Mar 2018 12:02:54 +0100
+
 univention-radius (5.0.0-5) unstable; urgency=medium
 
   * Bug #46263: add maintscript for old templates

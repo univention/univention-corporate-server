@@ -44,13 +44,6 @@ case "$1" in
 			security/packetfilter/package/univention-radius/udp/1814/all/en
 		[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
-		rm -f /etc/freeradius/modules/ldap
-		rm -f /etc/freeradius/modules/mschap
-		dpkg-divert --divert /etc/freeradius/modules.ldap.debian \
-			--rename --remove /etc/freeradius/modules/ldap
-		dpkg-divert --divert /etc/freeradius/modules.mschap.debian \
-			--rename --remove /etc/freeradius/modules/mschap
-
 		. /usr/share/univention-lib/all.sh
 		call_unjoinscript 20univention-radius.uinst
 		;;
