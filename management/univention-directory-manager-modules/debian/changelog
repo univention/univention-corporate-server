@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-7) unstable; urgency=medium
+
+  * Bug #46117: Version bump
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 02 Mar 2018 19:44:37 +0100
+
 univention-directory-manager-modules (13.0.21-6) unstable; urgency=medium
 
   * Bug #46117: Fix typo and enable move for users/contact
