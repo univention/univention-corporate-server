@@ -81,9 +81,6 @@ WHEN="$(date +%Y-%m-%d)"
 SYSVOL_LOCKFILE="/var/lock/sysvol-sync-dir"
 PROCESS_LOCK="/var/lock/univention-samba4-backup"
 
-# Only run one process at a time.
-(
-
 while [ $# -gt 0 ]; do
 	case "$1" in
 		"--from-where"|"-f")
@@ -143,6 +140,8 @@ for d in $DIRS; do
 		for db in tdb ldb; do
 			find $relativedirname -name "*.$db.bak" -exec rm {} \;
 			for file in `find $relativedirname -name "*.$db"`; do
+				# Mitigation for multiple hanging tdbbackup processes seen in Bugs
+				# #40185, #37342 and #36728
 				timeout -s9 15m tdbbackup $file
 				Status=$?
 				# GNU timeout returns 137 when signal 9 was send.
