@@ -620,7 +620,7 @@
 			<listitem><simpara>
 				GRUB has been updated to a new version.
 				Support for para-virtualized Xen domains has been removed.
-				The SHIM binary has been renamed to follow the upstream naming schema.
+				The SHIM binary has been renamed to follow the upstream naming schema (<u:bug>46342</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The at daemon child processes are no longer terminated during the release upgrade (<u:bug>46388</u:bug>).
