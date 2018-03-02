@@ -613,6 +613,9 @@
 			<listitem><simpara>
 				The at daemon child processes are no longer terminated during the release upgrade (<u:bug>46388</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+					The package <package>makepasswd<package> is adjusted from upstream to use <filename>/dev/urandom<filename> (<u:bug>46260</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
