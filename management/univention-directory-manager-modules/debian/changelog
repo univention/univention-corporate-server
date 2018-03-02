@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-6) unstable; urgency=medium
+
+  * Bug #46117: Fix typo and enable move for users/contact
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 02 Mar 2018 19:26:42 +0100
+
 univention-directory-manager-modules (13.0.21-5) unstable; urgency=medium
 
   * Bug #46117: Remove locking for users/contact dn
