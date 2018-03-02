@@ -1595,9 +1595,10 @@ class AD_Takeover_Finalize():
 		# Add DNS records to UDM:
 		run_and_output_to_log(["/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh", "--dc", "--pdc", "--gc", "--site=%s" % self.sitename], log.info)
 
-		wait_for_s4_connector_replication(self.ucr, self.lp)
-		# Let samba_dnsupdate check DNS records
-		run_and_output_to_log(["/usr/sbin/samba_dnsupdate", ], log.info)
+		# wait_for_s4_connector_replication hangs forever in the sqlite query
+		##wait_for_s4_connector_replication(self.ucr, self.lp)
+		## Let samba_dnsupdate check DNS records
+		#run_and_output_to_log(["/usr/sbin/samba_dnsupdate", ], log.info)
 
 		# remove local enty for AD DC from /etc/hosts
 		run_and_output_to_log(["univention-config-registry", "unset", "hosts/static/%s" % self.ad_server_ip], log.debug)
