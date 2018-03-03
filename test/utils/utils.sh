@@ -299,7 +299,7 @@ install_apps () {
 				univention-app upgrade "$app" --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
 			fi
 		else
-			univention-app install "$app" || rv=$?
+			univention-app install --noninteractive "$app" || rv=$?
 			univention-run-join-scripts -dcaccount "$username" -dcpwd "$(ucr get tests/domainadmin/pwdfile)"
 		fi
 	done
@@ -326,7 +326,7 @@ install_apps_master_packages () {
 	for app in "$@"
 	do
 		[ -n "$(univention-app get "$app" DockerImage)" ] && continue
-		univention-app install --only-master-packages "$app" || rv=$?
+		univention-app install --noninteractive --only-master-packages "$app" || rv=$?
 	done
 	username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
 	univention-app register --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)"
