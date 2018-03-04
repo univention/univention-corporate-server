@@ -916,4 +916,22 @@ assert_admember_mode () {
 	return $?
 }
 
+postgres91_update () {
+	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod -x /usr/sbin/univention-pkgdb-scan
+	service postgresql stop
+	rm -rf /etc/postgresql/9.4
+	apt-get install --reinstall postgresql-9.4
+	pg_dropcluster 9.4 main --stop
+	service postgresql start
+	test -e /var/lib/postgresql/9.4/main && mv /var/lib/postgresql/9.4/main /var/lib/postgresql/9.4/main.old
+	pg_upgradecluster 9.1 main
+	ucr commit /etc/postgresql/9.4/main/*
+	chown -R postgres:postgres /var/lib/postgresql/9.4
+	service postgresql restart
+	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod +x /usr/sbin/univention-pkgdb-scan
+	univention-install --yes univention-postgresql-9.4
+	pg_dropcluster 9.1 main --stop
+	apt-get purge postgresql-9.1
+}
+
 # vim:set filetype=sh ts=4:
