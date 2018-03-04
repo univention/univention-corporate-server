@@ -38,7 +38,7 @@ if __name__ == '__main__':
 			assert 'ND' not in codes_old, 'Wrong old Codes: %r' % codes_old
 
 			app_docker1.install()
-			subprocess.call(['univention-add-app', '-la', app_nondocker.app_name])
+			app_nondocker.install()
 
 			ucr.load()
 			codes_new = ucr.get('repository/app_center/installed').split('-')

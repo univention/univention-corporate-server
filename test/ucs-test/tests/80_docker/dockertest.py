@@ -320,6 +320,7 @@ class App(object):
 			raise UCTTest_DockerApp_UMCInstallFailed(None, errors)
 
 	def install_via_add_app(self):
+		raise RuntimeError('"univention-add-app" is NOT supported!')
 		self._update()
 		# ret = subprocess.call('univention-app install --noninteractive --do-not-revert --username=%s --pwdfile=%s %s' %
 		cmd = 'univention-add-app -a -l %s' % self.app_name

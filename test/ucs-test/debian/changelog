@@ -1,3 +1,9 @@
+ucs-test (8.0.28-64) unstable; urgency=medium
+
+  * Bug #46474: univention-add-app is deprecated
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 04 Mar 2018 12:32:42 +0100
+
 ucs-test (8.0.28-63) unstable; urgency=medium
 
   * Bug #46472: Disabled App Test
