@@ -1935,6 +1935,8 @@ define([
 
 		setEditMode: function(active) {
 			this.editMode = active;
+			this.search.set('value', ''); // reset search
+			this.search.collapseSearch();
 			this._updateStyling();
 			this._updateCategories();
 		},
@@ -1946,6 +1948,8 @@ define([
 
 			var scrollY = window.scrollY;
 			this.dndMode = active;
+			this.search.set('value', ''); // reset search
+			this.search.collapseSearch();
 			domClass.toggle(dom.byId('portal'), 'dndMode', this.dndMode);
 
 
@@ -1981,6 +1985,10 @@ define([
 				}
 			}));
 
+			// make a fresh filter if we exit dnd mode
+			if (!this.dndMode) {
+				this.filterPortal();
+			}
 			window.scrollTo(0, scrollY);
 		},
 
