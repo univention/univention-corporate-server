@@ -1,3 +1,9 @@
+ucs-test (7.0.23-121) unstable; urgency=low
+
+  * Bug #46477: fix mail relay test
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 05 Mar 2018 14:10:32 +0100
+
 ucs-test (7.0.23-120) unstable; urgency=low
 
   * Bug #44786: reactivate new listener module api test
