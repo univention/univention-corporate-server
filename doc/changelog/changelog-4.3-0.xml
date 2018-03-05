@@ -487,6 +487,14 @@
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:service:celery">
+			<title>Celery services</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The package <package>univention-celery</package> provides dependencies and templates for software that wants to use the Celery service (an asynchronous task queue, <ulink url="http://www.celeryproject.org/"/>,  <u:bug>45030</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
 
 	</section>
 
