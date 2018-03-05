@@ -112,53 +112,112 @@ material-shadow(level)
 		background-color: #fff
 		material-shadow(2)
 		transition: transform 0.2s
+		height: 100px
+		background-color: rgb(250, 200, 0)
 
 	.portalEntryOrderBar
 		z-index: 27
 		.portalEntryOrderBarSaveButton .dijitButtonText
 			color: #7ab51d
 
+		.portalEntryOrderBarSaveButton,
+		.portalEntryOrderBarCancelButton
+			&.dijitButtonActive,
+			&.dijitButtonFocused,
+			&.dijitButtonHover
+				.dijitButtonNode
+					background-color: #ffffff
+
 	.portalEditBar
 		z-index: 26
 	
 		.portalEditBarEntryOrderButton,
-		.portalEditBarAllocationButton,
+		.portalEditBarVisibilityButton,
 		.portalEditBarHeaderButton,
 		.portalEditBarAppearanceButton,
 		.portalEditBarCloseButton
+			margin: 8px 12px
 			.dijitIcon
-				margin: 0 8px
+				margin: 0 0 0 8px
+				height: 24px
+				background-size: contain
+				background-repeat: no-repeat
+				background-position: center
+
+			&.dijitButtonActive,
+			&.dijitButtonFocused,
+			&.dijitButtonHover
+				.dijitButtonNode
+					background-color: #ffffff
+
+		.portalEditBarEntryOrderButton
+			.dijitIcon
+				background-image: url(/univention/portal/editBar_entryOrder.svg)
+				^[-1].dijitButtonHover ^[-1..-1]
+					background-image: url(/univention/portal/editBar_entryOrder.svg)
+				width: 71px
+
+		.portalEditBarVisibilityButton
+			.dijitIcon
+				background-image: url(/univention/portal/editBar_visibility.svg)
+				^[-1].dijitButtonHover ^[-1..-1]
+					background-image: url(/univention/portal/editBar_visibility.svg)
+				width: 41px
+
+		.portalEditBarAppearanceButton
+			.dijitIcon
+				background-image: url(/univention/portal/editBar_appearance.svg)
+				^[-1].dijitButtonHover ^[-1..-1]
+					background-image: url(/univention/portal/editBar_appearance.svg)
+				width: 61px
+	
+		.portalEditBarCloseButton
+			margin-left: 36px
+
+			.dijitIcon
 				background-image: url(/univention/js/dijit/themes/umc/images/icons.svg)
+				^[-1].dijitButtonHover ^[-1..-1]
+					background-image: url(/univention/js/dijit/themes/umc/images/icons.svg)
 				background-repeat: no-repeat
 				background-size: 320px 260px
-				width: 20px
+				background-position: -300px -100px
 				height: 20px
+				margin: 0 8px
 
 			.dijitButtonText
 				display: none
 
-		.portalEditBarEntryOrderButton .dijitIcon
-			background-position: -260px -120px
-			width: 60px
-
-		.portalEditBarAllocationButton .dijitIcon
-			background-position: -200px -100px
-
-		.portalEditBarHeaderButton .dijitIcon
-			background-position: -220px -100px
-			width: 40px
-
-		.portalEditBarAppearanceButton .dijitIcon
-			background-position: -260px -100px
-			width: 40px
-	
-		.portalEditBarCloseButton .dijitIcon
-			background-position: -300px -100px
-
-	&.editMode
+	&.dndMode .umcHeader
+		cursor: initial
+		pointer-events: none
+	&.editMode:not(.dndMode)
 		#portalLogo,
 		#portalTitle
 			cursor: pointer
+		.portalLogoWrapper
+			display: inline
+			position: relative
+
+			#portalLogoEdit
+				cursor: pointer
+				top: -6px
+				right: -6px
+		#portalTitle
+			position: relative
+
+			&:after
+				content: ''
+				display: block
+				top: -18px
+				right: -40px
+		#portalTitle:after,
+		#portalLogoEdit
+			position: absolute
+			transform: scale(0.7)
+			background-image: url(/univention/portal/statusIcons.svg)
+			height: 40px
+			width: 40px
+	&.editMode
 		.content
 			margin-bottom: 52px
 		.portalEditFloatingButton
@@ -223,6 +282,14 @@ material-shadow(level)
 			display: none
 
 	.portalPropertiesDialog
+		min-width: 350px
+
+		.umcLabelPane-umcUploader
+			width: 100%
+
+			.umcImage
+				min-height: 100px
+
 		.umcMultiObjectSelect
 			min-width: 300px
 
@@ -317,8 +384,12 @@ material-shadow(level)
 			.umcMultiInputRemoveButton
 				display: none
 	
+
+	&.dojoDndMove
+		cursor: move
+
 	.dojoDndTarget
-		min-height: 155px
+		min-height: 189px
 		&:after
 			content: ''
 			display: block
@@ -328,6 +399,10 @@ material-shadow(level)
 			padding: 0
 			border: none
 			float: left
+			cursor: move
+			.umcGalleryWrapperItem,
+			.appInnerWrapper
+				cursor: move
 
 		.dojoDndItemSelected,
 		.dojoDndItemOver,
@@ -385,3 +460,14 @@ material-shadow(level)
 		.umcGalleryWrapperItem
 			margin: 12px 20px
 			transition: transform 0.3s
+
+	.umcGalleryWrapperItem
+		.appStatusIcon
+			background-image: url("/univention/portal/statusIcons.svg")
+
+			&.editIcon
+				background-position: 0 0
+
+		.appStatusHoverIcon
+			&.editIcon
+				background-position: -40px 0

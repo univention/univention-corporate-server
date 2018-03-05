@@ -241,6 +241,10 @@ define([
 			return portalTools.getIconClass(logoUrl);
 		},
 
+		getStatusIconClass: function() {
+			return (this.editMode && !this.dndMode) ? 'editIcon' : 'noStatus';
+		},
+
 		renderRow: function(item) {
 			if (item.portalEditAddEntryDummy) {
 				var domString = '' +
