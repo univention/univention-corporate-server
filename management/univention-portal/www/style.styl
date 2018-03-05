@@ -349,8 +349,12 @@ material-shadow(level)
 			.umcMultiInputRemoveButton
 				display: none
 	
+
+	&.dojoDndMove
+		cursor: move
+
 	.dojoDndTarget
-		min-height: 155px
+		min-height: 189px
 		&:after
 			content: ''
 			display: block
@@ -360,6 +364,10 @@ material-shadow(level)
 			padding: 0
 			border: none
 			float: left
+			cursor: move
+			.umcGalleryWrapperItem,
+			.appInnerWrapper
+				cursor: move
 
 		.dojoDndItemSelected,
 		.dojoDndItemOver,
