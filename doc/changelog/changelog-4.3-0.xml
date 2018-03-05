@@ -168,7 +168,7 @@
 					Objects of type <package>users/contact</package> and <package>users/ldap</package> are not counted into the license.
 					Note: UCS systems which are older than UCS 4.3-0 may still create user objects in the old format and must be migrated.
 					The UMC module <package>System diagnosis</package> and the script <package>/usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3</package> can be used to detect necessary changes and migrate user objects.
-					(<u:bug>45842</u:bug>, <u:bug>46261</u:bug>, <u:bug>46117</u:bug>).
+					(<u:bug>45842</u:bug>, <u:bug>46261</u:bug>, <u:bug>46117</u:bug>, <u:bug>46357</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The <package>disabled</package> and <package>locked</package> choices in the <package>users/user</package> module have been simplified and adjusted to match Active Directory concepts.
