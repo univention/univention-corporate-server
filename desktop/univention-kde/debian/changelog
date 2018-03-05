@@ -1,3 +1,10 @@
+univention-kde (12.0.0-7) unstable; urgency=medium
+
+  * Bug #46253: fix splash because ksplashx is deprecated
+  * Bug #46253: add umc desktop link to favorites
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 05 Mar 2018 18:04:52 +0100
+
 univention-kde (12.0.0-6) unstable; urgency=medium
 
   * Bug #46253: add maintscript for old templates

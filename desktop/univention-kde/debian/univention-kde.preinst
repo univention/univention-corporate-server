@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention KDE
-#  postrm script for the debian package
+#  postinst script for the debian package
 #
-# Copyright 2004-2018 Univention GmbH
+# Copyright 2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,28 +32,30 @@
 
 #DEBHELPER#
 
-if [ "$1" = "remove" ]; then
-	univention-config-registry unset auth/kdeprofile
-fi
-
-_undivert() {
-	# make sure an already 'un-diverted' file is not removed again
-	[ -e "$1" -a -e "$2" ] && rm -f "$1"
-	dpkg-divert --package univention-kde --remove --rename "$1"
-}
-
-_list_diverted_files() {
-	LC_ALL=C dpkg-divert --list univention-kde | sed 's/diversion of \(.*\) to \(.*\) by.*/\1 \2/'
+# create a diversion for particular file
+# arg1: path to the file to be diverted
+# arg2: diversion filename (without path), defaults to <filename>.real
+_divert() {
+	local src_file="$1"
+	local path="${1%/*}"
+	# if no second parameter is given as destination filename, default to <filename>.real
+	local dest_file="${2:-${1##*/}.real}"
+	dpkg-divert --package univention-kde --add --rename --divert "$path/$dest_file" "$src_file"
 }
 
 case "$1" in
-	remove|disappear|failed-upgrade|abort-install)
-
-		# remove all diversions associated with this package
-		_list_diverted_files | while read orig_path diversion_path
-		do
-			_undivert "$orig_path" "$diversion_path"
-		done
+	install|upgrade)
+		# create necessary diversions
+		_divert /usr/share/plasma/look-and-feel/org.kde.breeze.desktop/contents/splash/Splash.qml Splash.qml.debian
+		_divert /usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/desktop-base.js desktop-base.js.debian
+		_divert /usr/share/plasma/plasmoids/org.kde.plasma.kickoff/contents/config/main.xml main.xml.debian
+		;;
+	abort-upgrade)
+		;;
+	*)
+		echo "preinst called with unknown argument \`$1'" >&2
+		exit 1
+		;;
 esac
 
 exit 0

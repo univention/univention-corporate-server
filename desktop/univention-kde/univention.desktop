@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Univention - be open
 Exec=firefox https://$(hostname --fqdn)
-Icon=/usr/share/icons/hicolor/scalable/apps/univention.svg
+Icon=univention
 Type=Application
 Categories=System;
 GenericName=Server Administration
