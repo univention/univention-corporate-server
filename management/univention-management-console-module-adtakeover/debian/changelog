@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (5.0.1-5) unstable; urgency=medium
+
+  * Bug #46105: restart bind9
+
+ -- Felix Botner <botner@univention.de>  Mon, 05 Mar 2018 17:08:28 +0100
+
 univention-management-console-module-adtakeover (5.0.1-4) unstable; urgency=medium
 
   * Bug #46105: added _get_primary_interface()

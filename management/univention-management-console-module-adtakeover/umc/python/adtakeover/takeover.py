@@ -1867,6 +1867,7 @@ class AD_Takeover_Finalize():
 		run_and_output_to_log(["univention-config-registry", "set", "univention/ad/takeover/completed=yes"], log.debug)
 		run_and_output_to_log(["univention-config-registry", "unset", "univention/ad/takeover/ad/server/ip"], log.debug)
 		run_and_output_to_log(["samba-tool", "dbcheck", "--fix", "--yes"], log.debug)
+		run_and_output_to_log(["/etc/init.d/bind9", "restart"], log.debug)
 
 
 def check_gpo_presence():
