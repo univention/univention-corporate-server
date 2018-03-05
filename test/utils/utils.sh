@@ -929,9 +929,9 @@ postgres91_update () {
 	chown -R postgres:postgres /var/lib/postgresql/9.4
 	service postgresql restart
 	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod +x /usr/sbin/univention-pkgdb-scan
-	univention-install --yes univention-postgresql-9.4
+	DEBIAN_FRONTEND='noninteractive'  univention-install --yes univention-postgresql-9.4
 	pg_dropcluster 9.1 main --stop
-	apt-get purge --yes postgresql-9.1
+	DEBIAN_FRONTEND='noninteractive' apt-get purge --yes postgresql-9.1
 }
 
 # vim:set filetype=sh ts=4:
