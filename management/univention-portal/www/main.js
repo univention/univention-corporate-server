@@ -354,6 +354,14 @@ define([
 		return path && _regHasImageSuffix.test(path);
 	};
 
+	var _Button = declare([Button], {
+		_setDescriptionAttr: function(description) {
+			this.inherited(arguments);
+			this._tooltip.showDelay = 0;
+			this._tooltip.hideDelay = 0;
+		}
+	});
+
 	var _PortalPropertiesDialog = declare('PortalPropertiesDialog', [ConfirmDialog, StandbyMixin]);
 	var _WizardDialog = declare('WizardDialog', [Dialog, StandbyMixin]);
 
@@ -1828,7 +1836,9 @@ define([
 					this.portalEditFloatingButton = put(dom.byId('portal'), 'div.portalEditFloatingButton div.icon <');
 					// TODO is tooltip necessary? it is kind of unaesthetic
 					new Tooltip({
-						label: _("Edit this portal"),
+						label: _('Edit this portal'),
+						showDelay: 0,
+						hideDelay: 0,
 						connectId: [this.portalEditFloatingButton],
 						position: ['above']
 					});
@@ -1839,45 +1849,46 @@ define([
 					this.portalEditBar = new ContainerWidget({
 						'class': 'portalEditBar'
 					});
-					var entryOrderButton = new Button({
+					var entryOrderButton = new _Button({
 						iconClass: '',
-						'class': 'portalEditBarEntryOrderButton umcFlatButton',
+						'class': 'portalEditBarEntryOrderButton',
+						label: _('Order'),
 						description: _('Change order of portal entries via drag and drop'),
 						// callback: lang.hitch(this, 'setDndMode', true)
 						callback: lang.hitch(this, function() {
 							saveEntryOrderButton.focus();
-							entryOrderButton._tooltip.close();
-							setTimeout(lang.hitch(this, function() {
-								this.setDndMode(true);
-							}), 200);
+							this.setDndMode(true);
 						})
 					});
-					var allocationButton = new Button({
+					var visibilityButton = new _Button({
 						iconClass: '',
-						'class': 'portalEditBarAllocationButton umcFlatButton',
-						description: _('Portal visibility'),
+						'class': 'portalEditBarVisibilityButton',
+						label: _('Visibility'),
+						description: _('Edit the visibility of this portal'),
 						callback: lang.hitch(this, '_editPortalProperties', ['portalComputers'], _('Portal visibility'))
 					});
-					var headerButton = new Button({
+					// var headerButton = new _Button({
+						// iconClass: '',
+						// 'class': 'portalEditBarHeaderButton umcFlatButton',
+						// // description: _('Portal header'),
+						// callback: lang.hitch(this, '_editPortalProperties', ['logo', 'displayName'], _('Portal header'))
+					// });
+					var appearanceButton = new _Button({
 						iconClass: '',
-						'class': 'portalEditBarHeaderButton umcFlatButton',
-						description: _('Portal header'),
-						callback: lang.hitch(this, '_editPortalProperties', ['logo', 'displayName'], _('Portal header'))
-					});
-					var appearanceButton = new Button({
-						iconClass: '',
-						'class': 'portalEditBarAppearanceButton umcFlatButton',
-						description: _('Portal appearance'),
+						'class': 'portalEditBarAppearanceButton',
+						label: _('Appearance'),
+						description: _('Edit the font color and background for this portal'),
 						callback: lang.hitch(this, '_editPortalProperties', ['fontColor', 'background', 'cssBackground'], _('Portal appearance'))
 					});
-					var closeButton = new Button({
+					var closeButton = new _Button({
 						iconClass: 'umcCrossIcon',
-						'class': 'portalEditBarCloseButton umcFlatButton',
+						'class': 'portalEditBarCloseButton',
+						description: _('Stop editing this portal'),
 						callback: lang.hitch(this, 'setEditMode', false)
 					});
 					this.portalEditBar.addChild(entryOrderButton);
-					this.portalEditBar.addChild(allocationButton);
-					this.portalEditBar.addChild(headerButton);
+					this.portalEditBar.addChild(visibilityButton);
+					// this.portalEditBar.addChild(headerButton);
 					this.portalEditBar.addChild(appearanceButton);
 					this.portalEditBar.addChild(closeButton);
 
@@ -1885,16 +1896,16 @@ define([
 					this.portalEntryOrderBar = new ContainerWidget({
 						'class': 'portalEntryOrderBar'
 					});
-					var cancelEntryOrderButton = new Button({
+					var cancelEntryOrderButton = new _Button({
 						label: _('Cancel'),
-						'class': 'portalEntryOrderBarCancelButton umcFlatButton',
+						'class': 'portalEntryOrderBarCancelButton',
 						callback: lang.hitch(this, function() {
 							this.setDndMode(false);
 						})
 					});
-					var saveEntryOrderButton = new Button({
+					var saveEntryOrderButton = new _Button({
 						label: _('Save entry order'),
-						'class': 'portalEntryOrderBarSaveButton umcFlatButton',
+						'class': 'portalEntryOrderBarSaveButton',
 						callback: lang.hitch(this, function() {
 							this.saveEntryOrder();
 						})
