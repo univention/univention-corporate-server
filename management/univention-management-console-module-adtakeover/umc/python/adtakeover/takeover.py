@@ -1504,6 +1504,7 @@ class AD_Takeover_Finalize():
 			raise TakeoverError(_("Active Directory takeover finished already."))
 
 		self.local_fqdn = '.'.join((self.ucr["hostname"], self.ucr["domainname"]))
+		self.primary_interface = None
 
 	def ping_AD(self, progress):
 		# Ping the IP
@@ -1658,6 +1659,53 @@ class AD_Takeover_Finalize():
 
 		run_and_output_to_log(["univention-config-registry", "commit", "/etc/samba/smb.conf"], log.debug)
 
+	def _get_primary_interface(self, ipv4=True):
+		# from dedicated ucs var
+		if self.ucr.get('adtakeover/interface', None):
+			primary_interface = self.ucr['adtakeover/interface']
+			log.info('got primary interface %s from ucr adtakeover/interface' % primary_interface)
+			return primary_interface
+		# from routing
+		primary_interface = None
+		p = subprocess.Popen(['ip', 'route', 'get', self.ad_server_ip], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		(stdout, stderr) = p.communicate()
+		if stdout:
+			for line in stdout.splitlines():
+				if 'dev ' in line:
+					try:
+						primary_interface = line.split('dev')[1].split()[0]
+						if primary_interface != 'lo':
+							log.info('got primary interface %s from ip route' % primary_interface)
+							return primary_interface
+					except IndexError:
+						pass
+		# from ucr primary
+		if self.ucr.get('interfaces/primary', None):
+			primary_interface = self.ucr['interfaces/primary']
+			log.info('got primary interface %s from ucr interfaces/primary' % primary_interface)
+			return primary_interface
+		# from ucr interfaces
+		ipv4_interfaces = list()
+		ipv6_interfaces = list()
+		for k in self.ucr.keys():
+			m = re.match('interfaces/([^/]+)/address', k)
+			if m:
+				ipv4_interfaces.append(m.group(1))
+			m = re.match('interfaces/([^/]+)/ipv6/default/address', k)
+			if m:
+				ipv6_interfaces.append(m.group(1))
+		if ipv4 and ipv4_interfaces:
+			primary_interface = sorted(ipv4_interfaces)[0]
+			log.info('got primary interface %s from ucr interfaces/.*/address' % primary_interface)
+			return primary_interface
+		elif not ipv4 and ipv6_interfaces:
+			primary_interface = sorted(ipv6_interfaces)[0]
+			log.info('got primary interface %s from ucr interfaces/.*/ipv6/default/address' % primary_interface)
+			return primary_interface
+		else:
+			log.error('could not find primary interface, using eth0, check interfaces/primary or adtakeover/interface ucr variables!')
+			return 'eth0'
+
 	def create_virtual_IP_alias(self):
 		# Assign AD IP to a virtual network interface
 		# Determine primary network interface, UCS 3.0-2 style:
@@ -1670,15 +1718,12 @@ class AD_Takeover_Finalize():
 			msg.append("       Failed to setup a virtual network interface with the AD IP address.")
 			log.error("\n".join(msg))
 		elif ip_version == 4:
-			for i in xrange(4):
-				if "interfaces/eth%s/address" % i in self.ucr:
-					for j in xrange(4):
-						if not "interfaces/eth%s_%s/address" % (i, j) in self.ucr and j > 0:
-							self.primary_interface = "eth%s" % i
-							new_interface_ucr = "eth%s_%s" % (i, j)
-							new_interface = "eth%s:%s" % (i, j)
-							break
-
+			self.primary_interface = self._get_primary_interface(ipv4=True)
+			for j in xrange(1, 6):
+				if not "interfaces/%s_%s/address" % (self.primary_interface, j) in self.ucr:
+					new_interface_ucr = "%s_%s" % (self.primary_interface, j)
+					new_interface = "%s:%s" % (self.primary_interface, j)
+					break
 			if new_interface:
 				guess_network = self.ucr["interfaces/%s/network" % self.primary_interface]
 				guess_netmask = self.ucr["interfaces/%s/netmask" % self.primary_interface]
@@ -1699,14 +1744,12 @@ class AD_Takeover_Finalize():
 				msg.append("         Failed to setup a virtual IPv4 network interface with the AD IP address.")
 				log.warn("\n".join(msg))
 		elif ip_version == 6:
-			for i in xrange(4):
-				if "interfaces/eth%s/ipv6/default/address" % i in self.ucr:
-					for j in xrange(4):
-						if not "interfaces/eth%s_%s/ipv6/default/address" % (i, j) in self.ucr and j > 0:
-							self.primary_interface = "eth%s" % i
-							new_interface_ucr = "eth%s_%s" % (i, j)
-							new_interface = "eth%s:%s" % (i, j)
-							break
+			self.primary_interface = self._get_primary_interface(ipv4=False)
+			for j in xrange(1, 6):
+				if not "interfaces/eth%s_%s/ipv6/default/address" % (self.primary_interface, j) in self.ucr:
+					new_interface_ucr = "%s_%s" % (self.primary_interface, j)
+					new_interface = "%s:%s" % (self.primary_interface, j)
+					break
 
 			if new_interface:
 				guess_prefix = self.ucr["interfaces/%s/ipv6/default/prefix" % self.primary_interface]
