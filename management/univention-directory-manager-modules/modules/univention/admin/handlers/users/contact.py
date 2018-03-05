@@ -425,6 +425,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 		ml = self._modlist_display_name(ml)
+		ml = self._modlist_univention_person(ml)
 		return ml
 
 	def _modlist_display_name(self, ml):
@@ -437,6 +438,16 @@ class object(univention.admin.handlers.simpleLdap):
 				# yes ==> update displayName automatically
 				new_displayName = prop_displayName._replace(prop_displayName.base_default, self)
 				ml.append(('displayName', self.oldattr.get('displayName', [''])[0], new_displayName))
+		return ml
+
+	def _modlist_univention_person(self, ml):
+		if self.hasChanged('birthday'):
+			# make sure that univentionPerson is set as objectClass when birthday is set
+			if self['birthday'] and 'univentionPerson' not in self.oldattr.get('objectClass', []):
+				ml.append(('objectClass', '', 'univentionPerson'))
+			# remove univentionPerson as objectClass when birthday is unset
+			elif not self['birthday'] and 'univentionPerson' in self.oldattr.get('objectClass', []):
+				ml.append(('objectClass', 'univentionPerson', ''))
 		return ml
 
 	def _move(self, newdn, modify_childs=True, ignore_license=False):
