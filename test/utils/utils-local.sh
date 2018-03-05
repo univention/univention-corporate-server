@@ -51,6 +51,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 	mkdir -p "$TARGETDIR/selenium"
 	declare -a FILES=(
 		'artifacts'
+		'packages-under-test.log'
 		'test-reports'
 		'ucs-test.log'
 		'/usr/share/ucs-test/*/selenium'

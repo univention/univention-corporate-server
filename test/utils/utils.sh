@@ -521,6 +521,7 @@ run_tests () {
 		echo "-----------------------------------------------------------------------------------"
 		return 1
 	fi
+	dpkg-query -W -f '${Status}\t${binary:Package}\t${Version}\n' > "packages-under-test.log"
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
 }
 
