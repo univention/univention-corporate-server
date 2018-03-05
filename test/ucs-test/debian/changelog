@@ -1,3 +1,9 @@
+ucs-test (8.0.28-68) unstable; urgency=low
+
+  * Bug #46477: fix mail relay test
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 05 Mar 2018 14:08:02 +0100
+
 ucs-test (8.0.28-67) unstable; urgency=medium
 
   * Bug #46477: 40_mail.05open_relay.test is not stable enough to be an App
