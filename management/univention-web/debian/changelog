@@ -1,3 +1,9 @@
+univention-web (2.0.0-9) unstable; urgency=medium
+
+  * Bug #46463: Remove portal specific icons
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 05 Mar 2018 17:46:58 +0100
+
 univention-web (2.0.0-8) unstable; urgency=medium
 
   * Bug #46267: Remove unnecessary dependency on php5-cli
