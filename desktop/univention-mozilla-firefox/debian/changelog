@@ -1,3 +1,9 @@
+univention-mozilla-firefox (12.0.0-6) unstable; urgency=medium
+
+  * Bug #45863: fix univention.cfg
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 05 Mar 2018 16:31:34 +0100
+
 univention-mozilla-firefox (12.0.0-5) unstable; urgency=medium
 
   * Bug #45864: import ucsCA and configure firefox for saml with kerberos
