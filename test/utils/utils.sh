@@ -524,12 +524,12 @@ run_tests () {
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
 }
 
-run_tests_with_parameters() {
+run_tests_with_parameters () {
 	local s="${test_section:-}"
 	case "$s" in
 	all_sections|all*) s= ;;
 	esac
-	ucs-test ${s:+-s "$s"} -E dangerous -F junit -l "ucs-test.log" "$@"
+	run_tests ${s:+-s "$s"} "$@"
 }
 
 run_join_scripts () {

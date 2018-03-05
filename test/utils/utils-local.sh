@@ -29,58 +29,63 @@
 
 : ${SSH_KEY:=$HOME/ec2/keys/tech.pem}
 
-fetch-files () {
-	# fetch-files <IP-ADDRESS> <REMOTE-FILE(S)> <DESTINATION> [SCP-ARGS]
-	#
-	# Enclose globs in <REMOTE-FILE(S)> in single ticks to prevent shell
-	# expansion on the client side.
-	local ADDR="$1"
+fetch-files () { # [<USER>@]<IP-ADDRESS> <REMOTE-FILE(S)> <DESTINATION> [SCP-ARGS...]
+	local ADDR="${1#*@}"
+	local USER="${1%$ADDR}"
 	local FILES="$2"
 	local TARGET="$3"
-	local SCP_ARGS=${4:-"-i $SSH_KEY -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"}
+	shift 3
+	[ $# -eq 0 ] && set -- -i "$SSH_KEY" -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 
-	echo "scp $SCP_ARGS $ADDR:$FILES $TARGET"
-	echo "scp $SCP_ARGS $ADDR:$FILES $TARGET" | sh
+	case "$ADDR" in [![]*:*:*[!]]) ADDR="[$ADDR]" ;; esac
+
+	set -- scp "$@" "${USER:-root@}${ADDR}:${FILES}" "$TARGET"
+	echo "$*"
+	"$@"
 }
 
-fetch-results () {
-	# fetch-results <IP-ADDRESS> [TARGET-DIR]
+fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 	local ADDR="$1"
 	local TARGETDIR="${2:-.}"
 	mkdir -p "$TARGETDIR"
+	mkdir -p "$TARGETDIR/selenium"
 	declare -a FILES=(
-		ucs-test.log
-		test-reports
-		artifacts
-		'/var/log/univention/management*'
-		'/var/log/univention/{join,setup,listener,appcenter,actualise,system-stats,updater,directory-manager-cmd}.log'
-		'/var/log/{syslog,auth.log}'
-		'/var/log/univention/connector*'
-		'/var/log/samba/*'
-		'/var/log/{mail,dovecot,daemon}.log'
+		'artifacts'
+		'test-reports'
+		'ucs-test.log'
+		'/usr/share/ucs-test/*/selenium'
+		'/var/log/apache2/error.log'='apache2-error.log'
+		'/var/log/auth.log'
+		'/var/log/daemon.log'
+		'/var/log/dovecot.log'
+		'/var/log/mail.log'
+		'/var/log/samba/*'=
+		'/var/log/syslog'
+		'/var/log/univention/actualise.log'
+		'/var/log/univention/appcenter.log'
+		'/var/log/univention/config-registry.replog'='config-registry.replog.log'
+		'/var/log/univention/connector*'=
+		'/var/log/univention/directory-manager-cmd.log'
+		'/var/log/univention/join.log'
+		'/var/log/univention/listener.log'
+		'/var/log/univention/management*'=
+		'/var/log/univention/setup.log'
+		'/var/log/univention/system-stats.log'
 		'/var/log/univention/ucs-windows-tools.log'
+		'/var/log/univention/updater.log'
 	)
-	local FILE
-    # ipv6 !
-    if [[ $ADDR =~ .*:.* ]]; then
-        ADDR="\\[$ADDR\\]"
-    fi
+	local FILE rc=0
 	for FILE in "${FILES[@]}"; do
-		fetch-files root@${ADDR} "$FILE" "$TARGETDIR"
+		fetch-files "root@${ADDR}" "${FILE%=*}" "${TARGETDIR}/${FILE##*[/=]}" || rc=$?
 	done
-	fetch-files root@${ADDR} /var/log/univention/config-registry.replog "$TARGETDIR/config-registry.replog.log"
-	fetch-files root@${ADDR} /var/log/apache2/error.log "$TARGETDIR/apache2-error.log"
-	# selenium
-	mkdir -p "$TARGETDIR/selenium/"
-	fetch-files root@${ADDR} "/usr/share/ucs-test/*/selenium/*" "$TARGETDIR/selenium/"
-	return 0
+	return 0  # $rc
 }
 
 fetch-coverage () {
 	local ADDR="$1"
 	local TARGETDIR="${2:-.}"
 	mkdir -p "$TARGETDIR"
-	fetch-files root@${ADDR} "htmlcov/" "$TARGETDIR"
+	fetch-files "root@${ADDR}" "htmlcov/" "$TARGETDIR"
 }
 
 ec2-start-job-async () {
