@@ -1,3 +1,10 @@
+univention-directory-manager-modules (13.0.21-9) unstable; urgency=medium
+
+  * Bug #46357: rename uid= to cn= When migrating a users/user object to
+    users/contact.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Mar 2018 17:28:29 +0100
+
 univention-directory-manager-modules (13.0.21-8) unstable; urgency=medium
 
   * Bug #46117: Fix birthday not being savable for users/contact

@@ -147,7 +147,20 @@ class Migration(object):
 				continue
 
 			if is_contact_only:
-				self.modify(dn, [('univentionObjectType', 'users/user', 'users/contact')])
+				uid = user.get('uid')[0]
+				ldapdn = ldap.dn.str2dn(dn)
+				newldaprdn = []
+				for attr, val, ava_type in ldapdn[0]:
+					if attr.lower() == 'uid':
+						attr = 'cn'
+						val = uid
+					elif attr.lower() == 'cn' and val.lower() == uid:
+						continue
+					newldaprdn.append((attr, val, ava_type))
+				ldapdn[0] = newldaprdn
+				newdn = ldap.dn.dn2str(ldapdn)
+				self.rename(dn, newdn)
+				self.modify(newdn, [('univentionObjectType', 'users/user', 'users/contact')])
 				# TODO: are there users without univentionObjectType? then we need error handling here!
 				continue
 
@@ -327,6 +340,15 @@ class Migration(object):
 				lo.modify(dn, ml, exceptions=True, serverctrls=serverctrls, ignore_license=True)
 			except ldap.LDAPError as exc:
 				self.exceptions.append((dn, ml, exc))
+
+	def rename(self, dn, newdn, serverctrls=None):
+		self.modifications = True
+		print 'Renaming', dn, 'to', newdn
+		if not self.args.check:
+			try:
+				lo.rename(dn, newdn, serverctrls=serverctrls, ignore_license=True)
+			except ldap.LDAPError as exc:
+				self.exceptions.append((dn, newdn, exc))
 
 	def allocate(self, name, value=None):
 		if name in ('userSid', 'groupSid'):
