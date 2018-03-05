@@ -886,13 +886,16 @@ define([
 		editMode: false,
 
 		_initStyling: function() {
-			on(dom.byId('portalLogo'), 'click', lang.hitch(this, function() {
+			var editPortalLogo = lang.hitch(this, function() {
 				if (!this.editMode) {
 					return;
 				}
 
 				this._editPortalProperties(['logo'], _('Portal logo'));
-			}));
+			});
+			on(dom.byId('portalLogoEdit'), 'click', editPortalLogo);
+			on(dom.byId('portalLogo'), 'click', editPortalLogo);
+
 			on(dom.byId('portalTitle'), 'click', lang.hitch(this, function() {
 				if (!this.editMode) {
 					return;
@@ -900,6 +903,7 @@ define([
 
 				this._editPortalProperties(['displayName'], _('Portal title'));
 			}));
+
 			this._portalLogoTooltip = new Tooltip({
 				label: _('Portal logo'),
 				connectId: [dom.byId('portalLogo')],
@@ -1949,6 +1953,7 @@ define([
 			});
 			array.forEach(categories, lang.hitch(this, function(iCategory) {
 				domClass.toggle(iCategory.grid.contentNode, 'dijitOffScreen', this.dndMode);
+				iCategory.grid.dndMode = this.dndMode;
 				if (this.dndMode) {
 					var apps = iCategory.grid.store.query(function(app) {
 						return !app.portalEditAddEntryDummy;

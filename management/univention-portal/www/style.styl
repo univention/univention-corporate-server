@@ -187,10 +187,37 @@ material-shadow(level)
 			.dijitButtonText
 				display: none
 
-	&.editMode
+	&.dndMode .umcHeader
+		cursor: initial
+		pointer-events: none
+	&.editMode:not(.dndMode)
 		#portalLogo,
 		#portalTitle
 			cursor: pointer
+		.portalLogoWrapper
+			display: inline
+			position: relative
+
+			#portalLogoEdit
+				cursor: pointer
+				top: -6px
+				right: -6px
+		#portalTitle
+			position: relative
+
+			&:after
+				content: ''
+				display: block
+				top: -18px
+				right: -40px
+		#portalTitle:after,
+		#portalLogoEdit
+			position: absolute
+			transform: scale(0.7)
+			background-image: url(/univention/portal/statusIcons.svg)
+			height: 40px
+			width: 40px
+	&.editMode
 		.content
 			margin-bottom: 52px
 		.portalEditFloatingButton
@@ -425,3 +452,14 @@ material-shadow(level)
 		.umcGalleryWrapperItem
 			margin: 12px 20px
 			transition: transform 0.3s
+
+	.umcGalleryWrapperItem
+		.appStatusIcon
+			background-image: url("/univention/portal/statusIcons.svg")
+
+			&.editIcon
+				background-position: 0 0
+
+		.appStatusHoverIcon
+			&.editIcon
+				background-position: -40px 0
