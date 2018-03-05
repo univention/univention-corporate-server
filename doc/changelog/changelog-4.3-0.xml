@@ -505,7 +505,7 @@
 					The package <package>univention-kde</package> has been adapted for KDE Plasma 5.
 			</simpara></listitem>
 			<listitem><simpara>
-					The package <package>univention-mozilla-firefox</package> has been adapted for Firefox 52.
+					The package <package>univention-mozilla-firefox</package> has been adapted for Firefox 52 (<u:bug>45863</u:bug>, <u:bug>45864</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
