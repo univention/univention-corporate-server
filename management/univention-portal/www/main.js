@@ -473,7 +473,17 @@ define([
 				name: 'remove',
 				label: _('Remove from this portal'),
 				align: 'right',
-				callback: lang.hitch(this, 'onRemove')
+				callback: lang.hitch(this, function() {
+					dialog.confirm(_('Do you really want to remove this entry from this portal'), [{
+						name: 'cancel',
+						label: _('Cancel')
+					}, {
+						name: 'remove',
+						label: _('Remove'),
+						'default': true,
+						callback: lang.hitch(this, 'onRemove')
+					}]);
+				})
 			}, {
 				name: 'previous',
 				label: _('Back'),
