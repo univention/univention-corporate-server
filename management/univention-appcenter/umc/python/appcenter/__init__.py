@@ -133,6 +133,7 @@ class Instance(umcm.Base, ProgressMixin):
 
 		self.update_applications_done = False
 		util.install_opener(self.ucr)
+		self._is_working = False
 		self._remote_progress = {}
 
 		try:
@@ -575,17 +576,18 @@ class Instance(umcm.Base, ProgressMixin):
 
 				if can_continue and not only_dry_run:
 					def _thread(module, app, function):
-						if not dont_remote_install and function != 'remove':
-							self._install_master_packages_on_hosts(app, function)
-						with module.package_manager.no_umc_restart(exclude_apache=True):
-							try:
-								args.dry_run = False
-								args.install_master_packages_remotely = False
-								return action.call_with_namespace(args)
-							except AppCenterError as exc:
-								raise umcm.UMC_Error(str(exc), result=dict(
-									display_feedback=True,
-									title='%s %s' % (exc.title, exc.info)))
+						with module.is_working():
+							if not dont_remote_install and function != 'remove':
+								self._install_master_packages_on_hosts(app, function)
+							with module.package_manager.no_umc_restart(exclude_apache=True):
+								try:
+									args.dry_run = False
+									args.install_master_packages_remotely = False
+									return action.call_with_namespace(args)
+								except AppCenterError as exc:
+									raise umcm.UMC_Error(str(exc), result=dict(
+										display_feedback=True,
+										title='%s %s' % (exc.title, exc.info)))
 					def _finished(thread, result):
 						if isinstance(result, BaseException):
 							MODULE.warn('Exception during %s %s: %s' % (function, app_id, str(result)))
@@ -915,8 +917,14 @@ class Instance(umcm.Base, ProgressMixin):
 			# this module instance already has a running package manager
 			raise umcm.UMC_Error(_('Another package operation is in progress'))
 
+	@contextmanager
+	def is_working(self):
+		self._is_working = True
+		yield
+		self._is_working = False
+
 	def _working(self):
-		return os.path.exists(LOCK_FILE) or not self.package_manager.progress_state._finished
+		return self._is_working or os.path.exists(LOCK_FILE) or not self.package_manager.progress_state._finished
 
 	@simple_response
 	def working(self):

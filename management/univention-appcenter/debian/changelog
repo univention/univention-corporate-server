@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-23) unstable; urgency=medium
+
+  * Bug #40064: Fix working state of module
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 05 Mar 2018 12:47:59 +0100
+
 univention-appcenter (7.0.1-22) unstable; urgency=medium
 
   * Bug #46341: Point user to appcenter.log in case of failure

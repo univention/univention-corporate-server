@@ -1103,7 +1103,7 @@ define([
 		markupErrors: function() {
 			var installMasterPackagesOnHostFailedRegex = (/Installing extension of LDAP schema for (.+) seems to have failed on (DC Master|DC Backup) (.+)/);
 			var logHintGiven = false;
-			var errors = array.map(this._progressBar._errors, function(error) {
+			var errors = array.map(this._progressBar._errors, lang.hitch(this, function(error) {
 				var match = installMasterPackagesOnHostFailedRegex.exec(error);
 				if (match) {
 					var component = match[1];
@@ -1122,7 +1122,7 @@ define([
 					}
 				}
 				return error;
-			});
+			}));
 			this._progressBar._errors = errors;
 			this._progressBar.allowHTMLErrors = true;
 			this._progressBar.stop(lang.hitch(this, 'restartOrReload'), undefined, true);
