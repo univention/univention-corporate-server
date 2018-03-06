@@ -1,3 +1,9 @@
+univention-dhcp (12.0.0-3) unstable; urgency=low
+
+  * Bug #46515: Create initial DHCP subnet
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Mar 2018 17:22:13 +0100
+
 univention-dhcp (12.0.0-2) unstable; urgency=medium
 
   * Bug #46311: increase runsv timeout to 30 seconds
