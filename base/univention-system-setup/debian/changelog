@@ -1,3 +1,10 @@
+univention-system-setup (11.0.2-8) unstable; urgency=medium
+
+  * Ensure apache is up and running during the installation process
+    (Bug #46467)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Mar 2018 09:15:07 +0100
+
 univention-system-setup (11.0.2-7) unstable; urgency=low
 
   * Bug #46464: Set Priority:standard for Package:di-univention-system-setup
