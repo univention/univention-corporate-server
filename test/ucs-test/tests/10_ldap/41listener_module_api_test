@@ -15,7 +15,6 @@ import logging
 import subprocess
 
 from ldap.filter import filter_format
-from ldap.filter import escape_filter_chars
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
@@ -100,7 +99,7 @@ def main():
 		userdn, username = udm.create_user(
 			username=username
 		)
-		wait_for_drs_replication('cn={}'.format(escape_filter_chars(username)))
+		wait_for_drs_replication(filter_format('cn=%s', (username,)))
 		verify_ldap_object(userdn, should_exist=True)
 
 		lm_logger.info('*** Checking setuid()...')
@@ -147,10 +146,14 @@ def main():
 			roomNumber=roomNumber
 		)
 
+		# wait for s4 connector to catch up, before deleting the user
+		wait_for_drs_replication(filter_format('cn=%s', (username,)))
+		wait_for_s4connector()
+
 		lm_logger.info('*** Deleting user...')
 
 	# wait for UCSTestUDM context manager to delete user
-	wait_for_drs_replication('(!(cn={}))'.format(escape_filter_chars(username)))
+	wait_for_drs_replication(filter_format('(!(cn=%s))', (username,)))
 	wait_for_s4connector()
 	verify_ldap_object(new_dn, should_exist=False)
 	time.sleep(15)  # give listener time to settle: wait for post_run()
