@@ -148,19 +148,34 @@ class Migration(object):
 
 			if is_contact_only:
 				uid = user.get('uid')[0]
+				cn_list = user.get('cn')
+				firstname = user.get('givenName', [''])[0]
+				lastname = user.get('sn')[0]
+				default_cn = '%s %s' % (firstname, lastname)
+				default_cn = default_cn.strip()
+				new_cn = '%s %s (%s)' % (firstname, lastname, uid)
+				new_cn = new_cn.strip()
+
 				ldapdn = ldap.dn.str2dn(dn)
 				newldaprdn = []
 				for attr, val, ava_type in ldapdn[0]:
 					if attr.lower() == 'uid':
 						attr = 'cn'
-						val = uid
-					elif attr.lower() == 'cn' and val.lower() == uid:
+						val = new_cn
+					if attr.lower() == 'cn' and val == default_cn:
 						continue
 					newldaprdn.append((attr, val, ava_type))
 				ldapdn[0] = newldaprdn
 				newdn = ldap.dn.dn2str(ldapdn)
 				self.rename(dn, newdn)
-				self.modify(newdn, [('univentionObjectType', 'users/user', 'users/contact')])
+
+				ml = []
+				if default_cn in cn_list:
+					new_cn_list = [cn for cn in cn_list if cn != default_cn]
+					new_cn_list.append(new_cn)
+					ml.append(('cn', cn_list + [new_cn], new_cn_list))
+				ml.append(('univentionObjectType', 'users/user', 'users/contact'))
+				self.modify(newdn, ml)
 				# TODO: are there users without univentionObjectType? then we need error handling here!
 				continue
 

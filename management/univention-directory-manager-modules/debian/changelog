@@ -1,3 +1,10 @@
+univention-directory-manager-modules (13.0.21-11) unstable; urgency=medium
+
+  * Bug #46357: name uid= to cn= when migrating a users/user object to
+    users/contact.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Mar 2018 17:25:17 +0100
+
 univention-directory-manager-modules (13.0.21-10) unstable; urgency=medium
 
   * Bug #46270: Initialize computer module to get extended attributes
