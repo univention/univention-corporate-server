@@ -1,3 +1,9 @@
+univention-system-setup (11.0.4-1) unstable; urgency=medium
+
+  * Ensure apache is started in startxwithfirefox (Bug #46467)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Mar 2018 11:46:51 +0100
+
 univention-system-setup (11.0.3-1) unstable; urgency=medium
 
   * Move apache start to startxwithfirefox (Bug #46467)
