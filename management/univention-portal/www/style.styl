@@ -128,6 +128,47 @@ material-shadow(level)
 				.dijitButtonNode
 					background-color: #ffffff
 
+	@media (min-width: 550px) and (max-width: 750px)
+		.portalEditBar
+			.portalEditBarEntryOrderButton,
+			.portalEditBarVisibilityButton,
+			.portalEditBarAppearanceButton
+				.dijitButtonContents
+					display: flex
+					flex-flow: column
+
+					.dijitIcon
+						margin-bottom: 5px
+						margin-right: 16px
+	@media (min-width: 350px) and (max-width: 550px)
+		.portalEditBar
+			height: auto
+
+			.dijitButton.portalEditBarEntryOrderButton,
+			.dijitButton.portalEditBarVisibilityButton,
+			.dijitButton.portalEditBarAppearanceButton
+				width: 100%
+
+				.dijitButtonNode
+					justify-content: flex-start
+
+			.portalEditBarCloseButton
+				position: absolute
+				right: 0
+				top: 0
+				height: 100%
+		&.dndMode .portalEditBar
+			transform: translateY(100%)
+	@media (max-width: 350px)
+		.portalEntryOrderBar,
+		.portalEditBar
+			height: auto
+
+			.dijitButton
+				width: 100% !important
+		&.dndMode .portalEditBar
+			transform: translateY(100%)
+
 	.portalEntryOrderBar,
 	.portalEditBar
 		.dijitButton
@@ -200,8 +241,8 @@ material-shadow(level)
 
 			#portalLogoEdit
 				cursor: pointer
-				top: -6px
-				right: -6px
+				top: -3px
+				right: -3px
 		#portalTitle
 			position: relative
 
