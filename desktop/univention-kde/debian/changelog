@@ -1,3 +1,9 @@
+univention-kde (12.0.0-9) unstable; urgency=medium
+
+  * Bug #46253: only show dolphin and umc desktop link in favorites
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 06 Mar 2018 10:09:32 +0100
+
 univention-kde (12.0.0-8) unstable; urgency=medium
 
   * Bug #46253: add usr/ to  univention-kde.install
