@@ -1868,7 +1868,6 @@ define([
 						'class': 'portalEditBarEntryOrderButton',
 						label: _('Order'),
 						description: _('Change order of portal entries via drag and drop'),
-						// callback: lang.hitch(this, 'setDndMode', true)
 						callback: lang.hitch(this, function() {
 							saveEntryOrderButton.focus();
 							this.setDndMode(true);
@@ -1881,12 +1880,6 @@ define([
 						description: _('Edit the visibility of this portal'),
 						callback: lang.hitch(this, '_editPortalProperties', ['portalComputers'], _('Portal visibility'))
 					});
-					// var headerButton = new _Button({
-						// iconClass: '',
-						// 'class': 'portalEditBarHeaderButton umcFlatButton',
-						// // description: _('Portal header'),
-						// callback: lang.hitch(this, '_editPortalProperties', ['logo', 'displayName'], _('Portal header'))
-					// });
 					var appearanceButton = new _Button({
 						iconClass: '',
 						'class': 'portalEditBarAppearanceButton',
@@ -1895,14 +1888,13 @@ define([
 						callback: lang.hitch(this, '_editPortalProperties', ['fontColor', 'background', 'cssBackground'], _('Portal appearance'))
 					});
 					var closeButton = new _Button({
-						iconClass: 'umcCrossIcon',
+						iconClass: 'umcCrossIconWhite',
 						'class': 'portalEditBarCloseButton',
 						description: _('Stop editing this portal'),
 						callback: lang.hitch(this, 'setEditMode', false)
 					});
 					this.portalEditBar.addChild(entryOrderButton);
 					this.portalEditBar.addChild(visibilityButton);
-					// this.portalEditBar.addChild(headerButton);
 					this.portalEditBar.addChild(appearanceButton);
 					this.portalEditBar.addChild(closeButton);
 

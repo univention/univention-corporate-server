@@ -128,62 +128,62 @@ material-shadow(level)
 				.dijitButtonNode
 					background-color: #ffffff
 
+	.portalEntryOrderBar,
 	.portalEditBar
-		z-index: 26
-	
-		.portalEditBarEntryOrderButton,
-		.portalEditBarVisibilityButton,
-		.portalEditBarHeaderButton,
-		.portalEditBarAppearanceButton,
-		.portalEditBarCloseButton
-			margin: 8px 12px
-			.dijitIcon
-				margin: 0 0 0 8px
-				height: 24px
-				background-size: contain
-				background-repeat: no-repeat
-				background-position: center
+		.dijitButton
+			margin: 0
+			height: 100%
+			box-shadow: none
+
+			.dijitButtonNode
+				background-color: rgb(250, 200, 0)
+				padding: 6px
+				height: 100%
+				display: flex
+				align-items: center
+				justify-content: center
+
+				.dijitButtonText
+					color: white
 
 			&.dijitButtonActive,
 			&.dijitButtonFocused,
 			&.dijitButtonHover
 				.dijitButtonNode
-					background-color: #ffffff
+					background-color: rgba(0, 0, 0, 0.078)
+
+	.portalEditBar
+		z-index: 26
+	
+		.portalEditBarEntryOrderButton,
+		.portalEditBarVisibilityButton,
+		.portalEditBarAppearanceButton
+			.dijitIcon
+				margin: 0 0 0 16px
+				height: 24px
+				background-size: contain
+				background-repeat: no-repeat
+				background-position: center
 
 		.portalEditBarEntryOrderButton
 			.dijitIcon
-				background-image: url(/univention/portal/editBar_entryOrder.svg)
-				^[-1].dijitButtonHover ^[-1..-1]
-					background-image: url(/univention/portal/editBar_entryOrder.svg)
-				width: 71px
+				background-image: url(/univention/portal/editBar_entryOrder_white.svg)
+				width: 60px
 
 		.portalEditBarVisibilityButton
 			.dijitIcon
-				background-image: url(/univention/portal/editBar_visibility.svg)
-				^[-1].dijitButtonHover ^[-1..-1]
-					background-image: url(/univention/portal/editBar_visibility.svg)
-				width: 41px
+				background-image: url(/univention/portal/editBar_visibility_white.svg)
+				width: 40px
 
 		.portalEditBarAppearanceButton
 			.dijitIcon
-				background-image: url(/univention/portal/editBar_appearance.svg)
-				^[-1].dijitButtonHover ^[-1..-1]
-					background-image: url(/univention/portal/editBar_appearance.svg)
-				width: 61px
+				background-image: url(/univention/portal/editBar_appearance_white.svg)
+				width: 60px
 	
 		.portalEditBarCloseButton
-			margin-left: 36px
-
+			width: 100px
 			.dijitIcon
-				background-image: url(/univention/js/dijit/themes/umc/images/icons.svg)
-				^[-1].dijitButtonHover ^[-1..-1]
-					background-image: url(/univention/js/dijit/themes/umc/images/icons.svg)
-				background-repeat: no-repeat
-				background-size: 320px 260px
-				background-position: -300px -100px
-				height: 20px
-				margin: 0 8px
-
+				transform: scale(1.7)
 			.dijitButtonText
 				display: none
 
