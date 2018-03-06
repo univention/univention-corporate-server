@@ -561,7 +561,10 @@
 						The dependency hints in the <literal>init.d</literal> script for <literal>smbd</literal> in <package>univention-samba</package> have been improved (<u:bug>46437</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						A timeout in AD-Takeover has been increased and <literal>samba_dnsupdate</literal> is run during the takeover (<u:bug>46105</u:bug>).
+						A timeout in AD-Takeover has been increased and the DNS service is restarted after the takeover (<u:bug>46105</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						In the AD-Takeover the detection of the network interface, used to take over the AD server address, has been fixed (<u:bug>46105</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
