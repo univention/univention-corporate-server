@@ -215,6 +215,8 @@ material-shadow(level)
 			position: absolute
 			transform: scale(0.7)
 			background-image: url(/univention/portal/statusIcons.svg)
+			border-radius: 50%
+			box-shadow: 0 2px 4px rgba(1,0,0,0.157), 0 2px 7px rgba(0,1,0,0.227)
 			height: 40px
 			width: 40px
 	&.editMode
@@ -464,10 +466,11 @@ material-shadow(level)
 	.umcGalleryWrapperItem
 		.appStatusIcon
 			background-image: url("/univention/portal/statusIcons.svg")
+			border-radius: 50%
+			box-shadow: 0 2px 4px rgba(1,0,0,0.157), 0 2px 7px rgba(0,1,0,0.227)
 
 			&.editIcon
 				background-position: 0 0
 
 		.appStatusHoverIcon
-			&.editIcon
-				background-position: -40px 0
+			display: none
