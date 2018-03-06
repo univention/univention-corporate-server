@@ -6,7 +6,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="printers-4.2">
+<book lang="en" id="printers-4.3">
   <bookinfo>
 	<title>Univention Corporate Server</title>
 	<subtitle>Extended print services documentation</subtitle>
@@ -83,7 +83,7 @@
 
 		<figure id="printquota-enable">
 		  <title>Enabling quota support</title>
-		  <graphic scalefit="1" width="80%" fileref="illustrations42/enable-print-quota-support.png"/>
+		  <graphic scalefit="1" width="80%" fileref="illustrations43/enable-print-quota-support.png"/>
 		</figure>
 
 		<note>
@@ -150,7 +150,7 @@
 
 		  <figure id="printquota-listprinters">
 			<title>List of available printers</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations42/printquota-umc1.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations43/printquota-umc1.png"/>
 		  </figure>
 
 		  <para>
@@ -165,7 +165,7 @@
 
 		  <figure id="printquota-listquota">
 			<title>List of configured print quotas</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations42/printquota-umc2.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations43/printquota-umc2.png"/>
 		  </figure>
 
 		</section>

@@ -45,11 +45,11 @@
         </para>
 		<figure id="user-create">
 			<title>Anlegen eines Benutzers in UMC</title>
-			<graphic scalefit="1" width="65%" align="center" fileref="illustrations42/users_user_de.png"/>
+			<graphic scalefit="1" width="65%" align="center" fileref="illustrations43/users_user_de.png"/>
 		</figure>
 		<figure id="user-create-advanced">
 			<title>Erweiterte Benutzeransicht</title>
-			<graphic scalefit="1" width="90%" align="center" fileref="illustrations42/users_user_advanced_de.png"/>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations43/users_user_advanced_de.png"/>
 		</figure>
         <table>
             <title>Karteikarte 'Allgemein'</title>
@@ -679,7 +679,7 @@
 		</para>
             <figure id="password-policy">
                 <title>Konfiguration einer Passwort-Richtlinie</title>
-                <graphic scalefit="1" width="100%" fileref="illustrations42/users_policy_password_de.png"/>
+                <graphic scalefit="1" width="100%" fileref="illustrations43/users_policy_password_de.png"/>
             </figure>
             <itemizedlist>
                 <listitem>
@@ -954,7 +954,7 @@
         </para>
         <figure id="user-create-template">
             <title>Auswahl einer Benutzervorlage</title>
-            <graphic scalefit="1" width="70%" align="center" fileref="illustrations42/users_usertemplate_de.png"/>
+            <graphic scalefit="1" width="70%" align="center" fileref="illustrations43/users_usertemplate_de.png"/>
         </figure>
         <para>
             Benutzervorlagen werden im UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu>

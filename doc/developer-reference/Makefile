@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-MAIN := developer-reference-4.2
+MAIN := developer-reference-4.3
 STYLESHEET := univention
 OPTIONS += --stringparam show.comments 0
 OPTIONS += --stringparam keep.relative.image.uris 1

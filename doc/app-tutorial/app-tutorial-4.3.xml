@@ -6,7 +6,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="app-developer-tutorial-4.2">
+<book lang="en" id="app-developer-tutorial-4.3">
 	<bookinfo>
 		<title>App Tutorial</title>
 		<subtitle>Building Apps for the Univention App Center</subtitle>
@@ -19,6 +19,7 @@
 		</address>
 		<copyright>
 			<year>2015</year>
+			<year>2018</year>
 		</copyright>
 		<legalnotice>
 			<para lang="">

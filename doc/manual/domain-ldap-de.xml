@@ -258,7 +258,7 @@
 		</para>
 		<figure id="domain-ldap:join:win7">
 			<title>Domänenbeitritt eines Windows 7-Systems</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations42/win7-join_2-de.png"/>
+			<graphic scalefit="1" width="80%" fileref="illustrations43/win7-join_2-de.png"/>
 		</figure>
 		<para>
 			Der Domänenbeitritt dauert einige Zeit und sollte nicht vorzeitig
@@ -409,7 +409,7 @@
 
 		<figure id="domain-ldap:join:osx">
 			<title>Domänenbeitritt eines Mac OS X-Systems</title>
-			<graphic scalefit="1" width="60%" fileref="illustrations42/macosx-bind_de.png"/>
+			<graphic scalefit="1" width="60%" fileref="illustrations43/macosx-bind_de.png"/>
 		</figure>
 
 		  <para>
@@ -966,7 +966,7 @@ slapcat &gt; ldapdaten.txt
 
 	  <figure id="domain-join:listener-notifier">
 		<title>Listener/Notifier-Mechanismus</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations42/administration-overview.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations43/administration-overview.png"/>
 	  </figure>
 
 	  <para>
@@ -1262,7 +1262,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<figure id="domain:saml:samllogin">
 		<title>Die <foreignphrase>Single Sign-On</foreignphrase>-Anmeldeseite</title>
-		<graphic scalefit="1" width="70%" fileref="illustrations42/sso_login_de.png"/>
+		<graphic scalefit="1" width="70%" fileref="illustrations43/sso_login_de.png"/>
 	</figure>
 	<para>
 		Der SAML 2.0 kompatible UCS Identity Provider wird durch die Integration von <package>simplesamlphp</package> bereitgestellt.

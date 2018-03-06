@@ -15,7 +15,7 @@
 	<title>Einführung</title>
 	<figure id="fig-ucs-portal">
 		<title>UCS Portalseite</title>
-		<graphic align="center" width="100%" fileref="illustrations42/portal_de.png"/>
+		<graphic align="center" width="100%" fileref="illustrations43/portal_de.png"/>
 	</figure>
 		<para>
 		Die &ucsWeb; ist das zentrale Werkzeug zur Verwaltung der UCS-Domäne sowie für den Zugriff auf installierte Applikationen derselben.
@@ -125,7 +125,7 @@
 
 	<figure id="umc-login">
 		<title>UCS Anmeldeseite</title>
-		<graphic align="center" width="35%" fileref="illustrations42/umc_login_de.png"/>
+		<graphic align="center" width="35%" fileref="illustrations43/umc_login_de.png"/>
 	</figure>
 
 	<para>
@@ -195,7 +195,7 @@
 	</para>
 	<figure id="portal-schema">
 		<title>Schema des Portal-Konzepts in UCS: Portale können frei definiert und UCS-Systemen als Startseite zugewiesen werden; ein Verweis kann auf mehreren Portalen angezeigt werden.</title>
-		<graphic align="center" width="60%" fileref="illustrations42/portal-schema.png"/>
+		<graphic align="center" width="60%" fileref="illustrations43/portal-schema.png"/>
 	</figure>
 </section>
 
@@ -246,7 +246,7 @@
 	</para>
 	<figure id="umc-license">
 		<title>Anzeige der UCS-Lizenz</title>
-		<graphic scalefit="1" width="70%" align="center" fileref="illustrations42/umc_coreedition_de.png"/>
+		<graphic scalefit="1" width="70%" align="center" fileref="illustrations43/umc_coreedition_de.png"/>
 	</figure>
 
 	<para>
@@ -292,7 +292,7 @@
 
 		<figure id="umc-modules">
 			<title>Modulübersicht in &ucsUMC;</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations42/umc-favorites-tab-de.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations43/umc-favorites-tab-de.png"/>
 		</figure>
 		<para>
 			Die inhaltlichen Eigenschaften/Konfigurationsmöglichkeiten der
@@ -359,7 +359,7 @@
 			</para>
 			<figure id="umc-search">
 			<title>Suche nach Benutzern</title>
-				<graphic scalefit="1" width="100%" fileref="illustrations42/umc_user_de.png"/>
+				<graphic scalefit="1" width="100%" fileref="illustrations43/umc_user_de.png"/>
 			</figure>
 		</section>
 
@@ -466,7 +466,7 @@
 	</para>
 	<figure id="umc-navigation">
 		<title>Navigation im LDAP-Verzeichnis</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations42/umc_navigation_de.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations43/umc_navigation_de.png"/>
 	</figure>
 	<para>
 		In der linken Bildschirmhälfte ist das LDAP-Verzeichnis in einer
@@ -488,7 +488,7 @@
 	</para>
 	<figure id="umc-container-edit">
 		<title>Bearbeiten von LDAP-Container-Einstellungen</title>
-		<graphic scalefit="1" width="30%" fileref="illustrations42/umc_navigation_edit_de.png"/>
+		<graphic scalefit="1" width="30%" fileref="illustrations43/umc_navigation_edit_de.png"/>
 	</figure>
 	<para>
 		Durch Rechtsklick auf ein Element der Baumstruktur können über
@@ -690,7 +690,7 @@
 
 	<figure id="umc-extended-attr">
 	  <title>Erweitertes Attribut zur Verwaltung von KFZ-Kennzeichen</title>
-	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations42/umc_extended_attribute_de.png"/>
+	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations43/umc_extended_attribute_de.png"/>
 	</figure>
 
 	<para>
@@ -1860,7 +1860,7 @@ univention-directory-manager settings/extended_attribute create \
 
 	  <figure id="umc-report">
 		<title>Erstellen eines Reports</title>
-		<graphic width="45%" align="center" fileref="illustrations42/umc_report_de2.png"/>
+		<graphic width="45%" align="center" fileref="illustrations43/umc_report_de2.png"/>
 	  </figure>
 
 	  <para>

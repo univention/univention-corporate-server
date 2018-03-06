@@ -406,7 +406,7 @@ instanceType: 4
 		  </para>
 
 			<figure id="windows:gpo:activate"><title>Activating the Group Policy Management tools</title>
-			<graphic scalefit="1" width="90%" align="center" fileref="illustrations42/gpo-activate-en.png"/>
+			<graphic scalefit="1" width="90%" align="center" fileref="illustrations43/gpo-activate-en.png"/>
 			</figure>
 
 		  <para>
@@ -465,7 +465,7 @@ instanceType: 4
 		  </para>
 
 			<figure id="windows:gpo:edit"><title>Editing a policy</title>
-			<graphic scalefit="1" width="80%" align="center" fileref="illustrations42/gpo-edit-policy-en.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations43/gpo-edit-policy-en.png"/>
 			</figure>
 
 		  <para>
@@ -507,7 +507,7 @@ instanceType: 4
 		  </para>
 
 			<figure id="windows:gpo:user"><title>Evaluating the GPO for the user <systemitem class="username">user01</systemitem></title>
-			<graphic scalefit="1" width="80%" align="center" fileref="illustrations42/gpo-gpresult-en.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations43/gpo-gpresult-en.png"/>
 			</figure>
 
 		  <para>
@@ -614,7 +614,7 @@ END CATEGORY
 		  </para>
 
 			<figure id="windows:gpo:admin"><title>The activated administrative template</title>
-			<graphic scalefit="1" width="80%" align="center" fileref="illustrations42/gpo-adm-template-en.png"/>
+			<graphic scalefit="1" width="80%" align="center" fileref="illustrations43/gpo-adm-template-en.png"/>
 			</figure>
 
 		  <para>
@@ -794,7 +794,7 @@ END CATEGORY
   </note>
 
     <figure id="windows:gpo:mode"><title>Configuration of the operating mode as part of an AD domain</title>
-      <graphic scalefit="1" width="100%" align="center" fileref="illustrations42/admember_1-en.png"/>
+      <graphic scalefit="1" width="100%" align="center" fileref="illustrations43/admember_1-en.png"/>
     </figure>
 
   <para>
@@ -808,7 +808,7 @@ END CATEGORY
   </para>
 
     <figure id="windows:ad:join"><title>Domain join of an AD domain</title>
-      <graphic scalefit="1" width="100%" align="center" fileref="illustrations42/admember_2-en.png"/>
+      <graphic scalefit="1" width="100%" align="center" fileref="illustrations43/admember_2-en.png"/>
     </figure>
 
   <para>
@@ -966,7 +966,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
 	</para>
 
 	<figure id="windows:ad:connector"><title>Configuration of the UCS AD Connector in UMC</title>
-	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations42/adconnector_1-en.png"/>
+	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations43/adconnector_1-en.png"/>
 	</figure>
 
   <para>
@@ -1030,7 +1030,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
   </note>
 
     <figure id="windows:ad:dialog"><title>Administration dialogue for the Active Directory Connection</title>
-      <graphic scalefit="1" width="90%" align="center" fileref="illustrations42/adconnector_2-en.png"/>
+      <graphic scalefit="1" width="90%" align="center" fileref="illustrations43/adconnector_2-en.png"/>
     </figure>
 
 </section>
@@ -1083,7 +1083,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	</para>
 
 	  <figure id="windows:2008:ca"><title>Exporting the root certificate on Windows 2008</title>
-	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations42/adconnector_23-en.png"/>
+	  <graphic scalefit="1" width="90%" align="center" fileref="illustrations43/adconnector_23-en.png"/>
 	  </figure>
 
 	<para>
@@ -1616,7 +1616,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<figure id="windows:ad:takeover1">
 	  <title>First phase of domain migration</title>
-	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations42/takeover1-en.png"/>
+	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations43/takeover1-en.png"/>
 	</figure>
 
 	<para>
@@ -1625,7 +1625,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	<figure id="windows:ad:takeover2">
 	  <title>Overview of the data to be migrated</title>
-	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations42/takeover2-en.png"/>
+	  <graphic scalefit="1" width="100%" align="center" fileref="illustrations43/takeover2-en.png"/>
 	</figure>
 	</para>
 
@@ -1682,7 +1682,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	  <figure id="windows:ad:sysvol">
 		<title>Copying the SYSVOL share</title>
-		<graphic scalefit="1" width="100%" align="center" fileref="illustrations42/takeover3-en.png"/>
+		<graphic scalefit="1" width="100%" align="center" fileref="illustrations43/takeover3-en.png"/>
 	  </figure>
 
 	  It may be necessary to install the required <command>robocopy</command> tool, which is part of the Windows Server
@@ -1703,7 +1703,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	  <figure id="windows:ad:shutdown">
 		<title>Shutdown of the AD server(s)</title>
-		<graphic scalefit="1" width="100%" align="center" fileref="illustrations42/takeover4-en.png"/>
+		<graphic scalefit="1" width="100%" align="center" fileref="illustrations43/takeover4-en.png"/>
 	  </figure>
 	</para>
 

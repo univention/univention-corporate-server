@@ -6,7 +6,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="developer-reference-4.2">
+<book lang="en" id="developer-reference-4.3">
 	<bookinfo>
 		<title>Univention Developer Reference</title>
 		<subtitle>Manual for developers</subtitle>
@@ -21,6 +21,9 @@
 			<year>2013</year>
 			<year>2014</year>
 			<year>2015</year>
+			<year>2016</year>
+			<year>2017</year>
+			<year>2018</year>
 		</copyright>
 		<legalnotice>
 			<para lang="">
