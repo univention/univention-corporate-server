@@ -1,3 +1,10 @@
+univention-apache (10.0.2-1) unstable; urgency=medium
+
+  * Restart apache2 in postinst only if configtest is successful
+    (Bug #46467)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Mar 2018 06:44:56 +0100
+
 univention-apache (10.0.2-0) unstable; urgency=medium
 
   * Bug #45857: disable mpm_event

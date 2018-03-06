@@ -110,7 +110,7 @@ else
 	a2dissite default-ssl.conf|| true
 fi
 
-if [ -x /etc/init.d/apache2 ]; then
+if [ -x /etc/init.d/apache2 ] && apache2ctl --configtest; then
 	# better stop&start, as this behaves differently to restart
 	invoke-rc.d apache2 stop
 	sleep 3
