@@ -24,6 +24,8 @@ if __name__ == '__main__':
 
 	returnCode = 100
 
+	create_ous(['schule3'])
+
 	if not execute_timing('user import', MAX_SECONDS_IMPORT, import_users, CSV_IMPORT_FILE):
 		returnCode = 1
 

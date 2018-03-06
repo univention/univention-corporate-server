@@ -1,3 +1,10 @@
+ucs-test (8.0.28-73) unstable; urgency=medium
+
+  * 02_import-performance/10_import500: ou must be created manually
+    (Bug #46413)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Mar 2018 19:59:45 +0100
+
 ucs-test (8.0.28-72) unstable; urgency=low
 
   * Bug #44786: wait for s4 connector before deleting user
