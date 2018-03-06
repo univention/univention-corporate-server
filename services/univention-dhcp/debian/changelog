@@ -1,6 +1,7 @@
 univention-dhcp (12.0.0-3) unstable; urgency=low
 
   * Bug #46515: Create initial DHCP subnet
+  * Bug #46120: Update UCR templates for Debian Stretch
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 06 Mar 2018 17:22:13 +0100
 
