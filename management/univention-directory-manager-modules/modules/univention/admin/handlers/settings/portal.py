@@ -289,6 +289,10 @@ class object(univention.admin.handlers.simpleLdap):
 			if computer not in new_portal_computers:
 				try:
 					compobj = univention.admin.modules.lookup('computers/computer', None, self.lo, scope='base', base=computer)[0]
+					# initialize module of the computer obj for extended attributes
+					compmod = univention.admin.modules.get(compobj.module)
+					if not compmod.initialized:
+						univention.admin.modules.init(self.lo, self.position, compmod)
 				except univention.admin.uexceptions.noObject:
 					continue
 				compobj.open()
@@ -300,6 +304,10 @@ class object(univention.admin.handlers.simpleLdap):
 			if computer not in old_portal_computers:
 				try:
 					compobj = univention.admin.modules.lookup('computers/computer', None, self.lo, scope='base', base=computer)[0]
+					# initialize module of the computer obj for extended attributes
+					compmod = univention.admin.modules.get(compobj.module)
+					if not compmod.initialized:
+						univention.admin.modules.init(self.lo, self.position, compmod)
 				except univention.admin.uexceptions.noObject:
 					continue
 				compobj.open()

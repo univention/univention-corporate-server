@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-10) unstable; urgency=medium
+
+  * Bug #46270: Initialize computer module to get extended attributes
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 06 Mar 2018 15:37:36 +0100
+
 univention-directory-manager-modules (13.0.21-9) unstable; urgency=medium
 
   * Bug #46357: rename uid= to cn= When migrating a users/user object to
