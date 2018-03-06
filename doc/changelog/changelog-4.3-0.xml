@@ -651,6 +651,9 @@
 			<listitem><simpara>
 					The package priority of package <package>di-univention-system-setup</package> has been changed to standard (<u:bug>46464</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The package <package>univention-dhcp</package> was adapted to handle incomplete network configurations missing &ucsUCRV;s <envar>interfaces/*/network</envar> and <envar>interfaces/*/broadcast</envar> (<u:bug>46515</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
