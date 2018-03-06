@@ -1,3 +1,9 @@
+univention-management-console (10.0.4-2) unstable; urgency=medium
+
+  * Restart Apache only if configtest is successful (Bug #46467)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Mar 2018 07:49:41 +0100
+
 univention-management-console (10.0.4-1) unstable; urgency=medium
 
   * By default, getMachineConnection connects to the DC master. This
