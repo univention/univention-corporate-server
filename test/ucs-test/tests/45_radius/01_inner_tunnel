@@ -27,11 +27,11 @@ def radtest(username):
 
 def main():
 	print(subprocess.check_output(
-		"cat /etc/freeradius/3.0/mods-available/ldap",
+		"cat /var/log/freeradius/radius.log",
 		stderr=subprocess.STDOUT,
 		shell=True))
 	print(subprocess.check_output(
-		"journalctl -u freeradius",
+		"netstat -unpl",
 		stderr=subprocess.STDOUT,
 		shell=True))
 	print(subprocess.check_output(
