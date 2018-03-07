@@ -39,10 +39,10 @@ joinscript_init
 ucs_addServiceToLocalhost 'RADIUS' "$@"
 
 hostname="$(univention-config-registry get hostname)"
-mkdir /etc/freeradius/ssl
+mkdir -p /etc/freeradius/ssl
 cp /etc/univention/ssl/$(hostname)/private.key /etc/freeradius/ssl/private.key
 cp /etc/univention/ssl/$(hostname)/cert.pem /etc/freeradius/ssl/cert.pem
-openssl gendh -out /etc/freeradius/ssl/dh 1024
+openssl dhparam -out /etc/freeradius/ssl/dh 1024
 chgrp freerad /etc/freeradius/ssl/private.key
 chgrp freerad /etc/freeradius/ssl/cert.pem
 chmod 440 /etc/freeradius/ssl/private.key
@@ -130,7 +130,7 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 
 # In case radius was installed during systemsetup the machine secret is missing in the radius ldap module
 univention-config-registry commit /etc/freeradius/3.0/mods-available/ldap
-invoke-rc.d freeradius restart
+systemctl restart freeradius
 
 stop_udm_cli_server
 

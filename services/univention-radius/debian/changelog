@@ -1,3 +1,9 @@
+univention-radius (5.0.0-8) unstable; urgency=medium
+
+  * Bug #46528: fix multiple errors and path
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 07 Mar 2018 13:06:39 +0100
+
 univention-radius (5.0.0-7) unstable; urgency=medium
 
   * Bug #46263: ensure radius knows the ldap secret to be able to bind
