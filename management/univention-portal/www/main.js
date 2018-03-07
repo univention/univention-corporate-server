@@ -913,17 +913,6 @@ define([
 
 				this._editPortalProperties(['displayName'], _('Portal title'));
 			}));
-
-			this._portalLogoTooltip = new Tooltip({
-				label: _('Portal logo'),
-				connectId: [dom.byId('portalLogo')],
-				position: ['below']
-			});
-			this._portalTitleTooltip = new Tooltip({
-				label: _('Portal title'),
-				connectId: [dom.byId('portalTitle')],
-				position: ['below']
-			});
 		},
 
 		_updateStyling: function() {
@@ -944,10 +933,6 @@ define([
 			// changes made after the first site load
 			logoNode.src = portal.logo ? lang.replace('{0}?{1}', [portal.logo, Date.now()]) : '/univention/portal/portal-logo-dummy.svg';
 			domClass.toggle(logoNode, 'dijitDisplayNone', (!portal.logo && !this.editMode));
-
-			// update header tooltips
-			this._portalLogoTooltip.set('connectId', (this.editMode ? dom.byId('portalLogo') : [] ));
-			this._portalTitleTooltip.set('connectId', (this.editMode ? dom.byId('portalTitle') : [] ));
 
 			// update color of header icons
 			domClass.toggle(dom.byId('umcHeader'), 'umcWhiteIcons', lang.getObject('portal.fontColor', false, portalContent) === 'white');
@@ -1868,7 +1853,6 @@ define([
 						'class': 'portalEditBarEntryOrderButton',
 						label: _('Order'),
 						description: _('Change order of portal entries via drag and drop'),
-						// callback: lang.hitch(this, 'setDndMode', true)
 						callback: lang.hitch(this, function() {
 							saveEntryOrderButton.focus();
 							this.setDndMode(true);
@@ -1881,12 +1865,6 @@ define([
 						description: _('Edit the visibility of this portal'),
 						callback: lang.hitch(this, '_editPortalProperties', ['portalComputers'], _('Portal visibility'))
 					});
-					// var headerButton = new _Button({
-						// iconClass: '',
-						// 'class': 'portalEditBarHeaderButton umcFlatButton',
-						// // description: _('Portal header'),
-						// callback: lang.hitch(this, '_editPortalProperties', ['logo', 'displayName'], _('Portal header'))
-					// });
 					var appearanceButton = new _Button({
 						iconClass: '',
 						'class': 'portalEditBarAppearanceButton',
@@ -1895,14 +1873,18 @@ define([
 						callback: lang.hitch(this, '_editPortalProperties', ['fontColor', 'background', 'cssBackground'], _('Portal appearance'))
 					});
 					var closeButton = new _Button({
-						iconClass: 'umcCrossIcon',
+						iconClass: 'umcCrossIconWhite',
 						'class': 'portalEditBarCloseButton',
 						description: _('Stop editing this portal'),
-						callback: lang.hitch(this, 'setEditMode', false)
+						callback: lang.hitch(this, function() {
+							this.setEditMode(false);
+							if (closeButton.focusNode.blur) {
+								closeButton.focusNode.blur();
+							}
+						})
 					});
 					this.portalEditBar.addChild(entryOrderButton);
 					this.portalEditBar.addChild(visibilityButton);
-					// this.portalEditBar.addChild(headerButton);
 					this.portalEditBar.addChild(appearanceButton);
 					this.portalEditBar.addChild(closeButton);
 

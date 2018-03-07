@@ -128,62 +128,103 @@ material-shadow(level)
 				.dijitButtonNode
 					background-color: #ffffff
 
+	@media (min-width: 550px) and (max-width: 750px)
+		.portalEditBar
+			.portalEditBarEntryOrderButton,
+			.portalEditBarVisibilityButton,
+			.portalEditBarAppearanceButton
+				.dijitButtonContents
+					display: flex
+					flex-flow: column
+
+					.dijitIcon
+						margin-bottom: 5px
+						margin-right: 16px
+	@media (min-width: 350px) and (max-width: 550px)
+		.portalEditBar
+			height: auto
+
+			.dijitButton.portalEditBarEntryOrderButton,
+			.dijitButton.portalEditBarVisibilityButton,
+			.dijitButton.portalEditBarAppearanceButton
+				width: 100%
+
+				.dijitButtonNode
+					justify-content: flex-start
+
+			.portalEditBarCloseButton
+				position: absolute
+				right: 0
+				top: 0
+				height: 100%
+		&.dndMode .portalEditBar
+			transform: translateY(100%)
+	@media (max-width: 350px)
+		.portalEntryOrderBar,
+		.portalEditBar
+			height: auto
+
+			.dijitButton
+				width: 100% !important
+		&.dndMode .portalEditBar
+			transform: translateY(100%)
+
+	.portalEntryOrderBar,
 	.portalEditBar
-		z-index: 26
-	
-		.portalEditBarEntryOrderButton,
-		.portalEditBarVisibilityButton,
-		.portalEditBarHeaderButton,
-		.portalEditBarAppearanceButton,
-		.portalEditBarCloseButton
-			margin: 8px 12px
-			.dijitIcon
-				margin: 0 0 0 8px
-				height: 24px
-				background-size: contain
-				background-repeat: no-repeat
-				background-position: center
+		.dijitButton
+			margin: 0
+			height: 100%
+			box-shadow: none
+
+			.dijitButtonNode
+				background-color: rgb(250, 200, 0)
+				padding: 6px
+				height: 100%
+				display: flex
+				align-items: center
+				justify-content: center
+
+				.dijitButtonText
+					color: white
 
 			&.dijitButtonActive,
 			&.dijitButtonFocused,
 			&.dijitButtonHover
 				.dijitButtonNode
-					background-color: #ffffff
+					background-color: rgba(0, 0, 0, 0.078)
+
+	.portalEditBar
+		z-index: 26
+	
+		.portalEditBarEntryOrderButton,
+		.portalEditBarVisibilityButton,
+		.portalEditBarAppearanceButton
+			.dijitIcon
+				margin: 0 0 0 16px
+				height: 24px
+				background-size: contain
+				background-repeat: no-repeat
+				background-position: center
 
 		.portalEditBarEntryOrderButton
 			.dijitIcon
-				background-image: url(/univention/portal/editBar_entryOrder.svg)
-				^[-1].dijitButtonHover ^[-1..-1]
-					background-image: url(/univention/portal/editBar_entryOrder.svg)
-				width: 71px
+				background-image: url(editBar_entryOrder_white.svg)
+				width: 60px
 
 		.portalEditBarVisibilityButton
 			.dijitIcon
-				background-image: url(/univention/portal/editBar_visibility.svg)
-				^[-1].dijitButtonHover ^[-1..-1]
-					background-image: url(/univention/portal/editBar_visibility.svg)
-				width: 41px
+				background-image: url(editBar_visibility_white.svg)
+				width: 40px
 
 		.portalEditBarAppearanceButton
 			.dijitIcon
-				background-image: url(/univention/portal/editBar_appearance.svg)
-				^[-1].dijitButtonHover ^[-1..-1]
-					background-image: url(/univention/portal/editBar_appearance.svg)
-				width: 61px
+				background-image: url(editBar_appearance_white.svg)
+				width: 60px
 	
 		.portalEditBarCloseButton
-			margin-left: 36px
-
+			width: 100px
 			.dijitIcon
-				background-image: url(/univention/js/dijit/themes/umc/images/icons.svg)
-				^[-1].dijitButtonHover ^[-1..-1]
-					background-image: url(/univention/js/dijit/themes/umc/images/icons.svg)
-				background-repeat: no-repeat
-				background-size: 320px 260px
-				background-position: -300px -100px
-				height: 20px
-				margin: 0 8px
-
+				transform: scale(1.7)
 			.dijitButtonText
 				display: none
 
@@ -200,8 +241,8 @@ material-shadow(level)
 
 			#portalLogoEdit
 				cursor: pointer
-				top: -6px
-				right: -6px
+				top: -3px
+				right: -3px
 		#portalTitle
 			position: relative
 
@@ -214,7 +255,9 @@ material-shadow(level)
 		#portalLogoEdit
 			position: absolute
 			transform: scale(0.7)
-			background-image: url(/univention/portal/statusIcons.svg)
+			background-image: url(editIcon.svg)
+			border-radius: 50%
+			box-shadow: 0 2px 4px rgba(1,0,0,0.157), 0 2px 7px rgba(0,1,0,0.227)
 			height: 40px
 			width: 40px
 	&.editMode
@@ -248,9 +291,6 @@ material-shadow(level)
 		opacity: 1
 		visibility: visible
 		transition: $material-shadow-transition-value, opacity 0.2s, visibility 0s 0s
-		// transition: $material-shadow-transition-value, transform 0.3s cubic-bezier(0.4, 0.0, 0.6, 1) // fade out transition
-		// transform: scale(0)
-		// overflow: hidden
 		background-color: rgb(250, 200, 0)
 
 		&:hover
@@ -260,12 +300,12 @@ material-shadow(level)
 			material-shadow(5)
 
 		.icon
-			// icon-image(-200, -40, '../', '-white')	
 			background: url(/univention/js/dijit/themes/umc/images/icons-white.svg) -200px -40px no-repeat
 			background-size: 320px 260px
 			width: 20px
 			height: 20px
 			margin: 18px;
+			transform: scale(1.4)
 	
 	.portalEditAddEntryDummy
 		.cornerPiece
@@ -274,7 +314,7 @@ material-shadow(level)
 			position: relative
 			width: 100%
 			height: 100%
-			background: url('/univention/portal/portal-add-entry-plus.svg') no-repeat center
+			background: url(portal-add-entry-plus.svg) no-repeat center
 			background-size: 39px
 
 	.portalEntryWizard
@@ -308,10 +348,14 @@ material-shadow(level)
 				text-align: center
 
 				img
-					height: 100%
+					max-height: 100%
+					max-width: 100%
 
 				&.iconLoaded
 					background: none
+					display: flex
+					align-items: center
+					justify-content: center
 
 				&:not(.iconLoaded) img
 					display: none
@@ -463,11 +507,12 @@ material-shadow(level)
 
 	.umcGalleryWrapperItem
 		.appStatusIcon
-			background-image: url("/univention/portal/statusIcons.svg")
+			background-image: url(editIcon.svg)
+			border-radius: 50%
+			box-shadow: 0 2px 4px rgba(1,0,0,0.157), 0 2px 7px rgba(0,1,0,0.227)
 
 			&.editIcon
 				background-position: 0 0
 
 		.appStatusHoverIcon
-			&.editIcon
-				background-position: -40px 0
+			display: none

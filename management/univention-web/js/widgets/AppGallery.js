@@ -94,17 +94,19 @@ define([
 				domClass.remove(this, 'hover secondTouch');
 			});
 
-			var statusIcon = query('.appStatusHoverIcon', domNode)[0];
-			on(statusIcon, 'click', function(evt) {
-				Tooltip.show(entities.encode(item.itemStatusTooltipMessage), statusIcon);
-				if (evt) {
-					dojoEvent.stop(evt);
-				}
-				on.once(kernel.body(), 'click', function(evt) {
-					Tooltip.hide(statusIcon);
-					dojoEvent.stop(evt);
+			if (item.itemStatusTooltipMessage) {
+				var statusIcon = query('.appStatusHoverIcon', domNode)[0];
+				on(statusIcon, 'click', function(evt) {
+					Tooltip.show(entities.encode(item.itemStatusTooltipMessage), statusIcon);
+					if (evt) {
+						dojoEvent.stop(evt);
+					}
+					on.once(kernel.body(), 'click', function(evt) {
+						Tooltip.hide(statusIcon);
+						dojoEvent.stop(evt);
+					});
 				});
-			});
+			}
 		},
 
 		getRenderInfo: function(item) {
