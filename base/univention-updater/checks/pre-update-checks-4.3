@@ -329,6 +329,56 @@ update_check_cyrus_integration () {
 	fi
 }
 
+# simulate 4.3 user migration, can be removed after 4.3-0
+simulate_user_migration () {
+	python - <<'PYTHON'
+import univention.admin.uldap
+import sys
+from univention.config_registry import ConfigRegistry
+
+ucr = ConfigRegistry()
+ucr.load()
+lo, po = univention.admin.uldap.getAdminConnection()
+default_user_filter = u'(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(objectClass=inetOrgPerson))(!(uidNumber=0))(!(uid=*$)))'
+user_filter = ucr.get('update43/udm/migration/user/filter', default_user_filter)
+ldap_only = 0
+contact_only = 0
+to_user = 0
+
+for dn, user in lo.search(user_filter):
+	ocs = set(user['objectClass'])
+	has_posix = ocs & {'posixAccount', }
+	has_shadow = ocs & {'shadowAccount', }
+	has_samba = ocs & {'sambaSamAccount', }
+	has_kerberos = ocs & {'krb5Principal', 'krb5KDCEntry', }
+	has_mail = ocs & {'univentionMail', }
+	has_org_person = ocs & {'organizationalPerson', }
+	has_inet_org_person = ocs & {'inetOrgPerson', }
+	has_pki = ocs & {'pkiUser', }
+	has_ldap = ocs & {'simpleSecurityObject', 'uidObject'}
+	is_ldap_only = has_ldap and not any([has_posix, has_shadow, has_samba, has_kerberos, has_mail, has_org_person, has_inet_org_person, has_pki])
+	is_contact_only = has_inet_org_person and has_org_person and not any([has_posix, has_shadow, has_samba, has_kerberos, has_mail, has_ldap, has_pki])
+	ocs_to_add = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'inetOrgPerson', 'organizationalPerson'} - ocs
+	if is_ldap_only:
+		sys.stderr.write('object {0} would be migrated to users/ldap object\n'.format(dn))
+		ldap_only += 1
+	elif is_contact_only:
+		sys.stderr.write('object {0} would be migrated to users/contact object\n'.format(dn))
+		contact_only += 1
+	elif ocs_to_add:
+		sys.stderr.write('object {0} would be migrated to a full users/user object\n'.format(dn))
+		to_user += 1
+
+if ldap_only or contact_only or to_user:
+	print('\t{0} objects would be migrated to users/ldap objects'.format(ldap_only))
+if contact_only:
+	print('\t{0} objects would be migrated to users/contact objects'.format(contact_only))
+if to_user:
+	print('\t{0} objects would be migrated to full users/user objects'.format(to_user))
+PYTHON
+}
+
+
 ########
 # main #
 ########
@@ -361,6 +411,7 @@ for f in $(declare -F); do
 done
 
 # summary
+RET=0
 if ! $success; then
 	echo
 	echo "The system can not be updated to UCS $VERSION_NAME due to the following reasons:"
@@ -370,7 +421,20 @@ if ! $success; then
 		echo "${messages[$key]}" | fmt -u 
 	done 
 	echo
-	exit 1
+	RET=1
 fi
 
-exit 0
+if [ "$server_role" = "domaincontroller_master" ]; then
+
+	echo
+	echo "Simulating 4.3 user migration ($(date)):"
+	echo
+	echo -e "\tAfter the upgrade to UCS 4.3 all existing user objects are migrated into a new \
+		LDAP format. This check simulates what would happen after the upgrade \
+		(which objects would be modified). \
+		Please check the $UPDATER_LOG for a complete list of objects." | fmt -u
+	echo
+	simulate_user_migration
+fi
+
+exit $RET
