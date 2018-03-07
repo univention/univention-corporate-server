@@ -28,6 +28,7 @@
 # <http://www.gnu.org/licenses/>.
 
 VERSION="43"
+VERSION_NAME="4.3"
 MIN_VERSION="4.2-3"
 UPDATER_LOG="/var/log/univention/updater.log"
 
@@ -362,7 +363,7 @@ done
 # summary
 if ! $success; then
 	echo
-	echo "Pre-update checks summary:"
+	echo "The system can not be updated to UCS $VERSION_NAME due to the following reasons:"
 	for key in "${!messages[@]}"; do
 		echo
 		echo "$key:"
