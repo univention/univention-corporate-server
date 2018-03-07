@@ -1,3 +1,10 @@
+ucs-test (8.0.28-77) unstable; urgency=medium
+
+  * Bug #46477: 40_mail.05open_relay.test is not stable enough to be an App
+    test
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 07 Mar 2018 15:47:52 +0100
+
 ucs-test (8.0.28-76) unstable; urgency=medium
 
   * Bug #46478: more debuging for radius tests
