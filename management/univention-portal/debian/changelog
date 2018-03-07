@@ -1,3 +1,9 @@
+univention-portal (2.0.0-11) unstable; urgency=medium
+
+  * Bug #46463: Implement design improvements (2)
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 07 Mar 2018 12:22:09 +0100
+
 univention-portal (2.0.0-10) unstable; urgency=medium
 
   * Bug #46463: Implement design improvements
