@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test changing disabled and locked simultaneously
-## tags: [udm,apptest]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
