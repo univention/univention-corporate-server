@@ -422,7 +422,7 @@ def handler(dn, new, old):
 			listener.unsetuid()
 
 		if need_to_reload_cups:
-			reload_daemon('cups', 'cups-printers: ')
+			reload_cups_daemon()
 
 		if need_to_reload_samba:
 			reload_smbd()
@@ -430,13 +430,18 @@ def handler(dn, new, old):
 			reload_smbd()
 
 
-def reload_daemon(daemon, prefix):
-	script = os.path.join('/etc/init.d', daemon)
+def reload_cups_daemon():
+	script = '/etc/init.d/cups'
+	daemon = 'cups'
 	if os.path.exists(script):
-		ud.debug(ud.LISTENER, ud.INFO, "%s %s reload" % (prefix, daemon))
-		listener.run(script, [daemon, 'reload'], uid=0)
+		ud.debug(ud.LISTENER, ud.PROCESS, "cups-printers: cups stop/start")
+		# Bug #46525, stop/start cups instead of reload, reload triggers
+		# "Scheduler shutting down due to program error." in cups
+		listener.run(script, [daemon, 'stop'], uid=0)
+		time.sleep(1)
+		listener.run(script, [daemon, 'start'], uid=0)
 	else:
-		ud.debug(ud.LISTENER, ud.INFO, "%s no %s to reload found" % (prefix, daemon))
+		ud.debug(ud.LISTENER, ud.PROCESS, "cups-printers: no %s to init script found")
 
 
 def reload_smbd():

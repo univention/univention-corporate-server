@@ -1,3 +1,9 @@
+univention-printserver (11.0.0-4) unstable; urgency=medium
+
+  * Bug #46525: stop/start cups instead of reload
+
+ -- Felix Botner <botner@univention.de>  Wed, 07 Mar 2018 16:01:12 +0100
+
 univention-printserver (11.0.0-3) unstable; urgency=medium
 
   * Bug #45958: updated ppd list in join script for UCS 4.3
