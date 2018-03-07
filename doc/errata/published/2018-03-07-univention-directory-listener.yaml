@@ -9,3 +9,5 @@ desc: |
  * A new API for programming of Univention Directory Listener modules was
    added.
 bug: [44786]
+erratum: 311
+announced: 2018-03-07
