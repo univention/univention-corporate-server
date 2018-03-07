@@ -254,6 +254,7 @@ define([
 			if (password) {
 				tools.status('password', password);
 			}
+			var authenticatedDeferred = this._waitForNextAuthentication();
 			this.autologin().otherwise(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
 				//console.debug('no active session found');
 				if (tools.isFalse(tools.status('umc/web/sso/enabled') || 'yes')) {
@@ -270,7 +271,7 @@ define([
 				}));
 			}));
 
-			return this._waitForNextAuthentication();
+			return authenticatedDeferred;
 		},
 
 		redirectToLogin: function(saml) {
@@ -336,7 +337,11 @@ define([
 
 		autorelogin: function(args) {
 			if (tools.status('authType') === 'SAML') {
-				return this.passiveSingleSignOn(args);
+				var passiveLogin = this.passiveSingleSignOn(args);
+				passiveLogin.then(lang.hitch(this, function(response) {
+					return this.authenticated(response.result.username);
+				}));
+				return passiveLogin;
 			}
 			return this.autologin();
 		},
