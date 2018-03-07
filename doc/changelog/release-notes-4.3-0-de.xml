@@ -107,6 +107,33 @@
 			Sollte dennoch eine Aktualisierung über eine Netzverbindung durchgeführt werden, ist sicherzustellen, dass das Update bei Unterbrechung der Netzverbindung trotzdem weiterläuft.
 			Hierfür können beispielsweise die Tools <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen UCS Systemrollen installiert sind.
 		</para>
+
+		<para>
+			Mit UCS 4.3 bietet Univention ein Script an, mit dem Probleme, die das Update des UCS Systems verhindern würden, schon vor dem Update erkannt werden können.
+			Diese Script kann vor dem Update manuell auf das System geladen und ausgeführt werden:
+			<programlisting language="sh"><![CDATA[
+# download
+-> curl -OOs http://univention-repository.knut.univention.de/download/univention-update-checks/pre-update-checks-4.3{,.gpg}
+
+# run script
+-> gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg pre-update-checks-4.3.gpg pre-update-checks-4.3 && bash pre-update-checks-4.3
+
+gpgv: Unterschrift vom Mi 07 Mär 2018 11:44:19 CET mittels RSA-Schlüssel ID 6B8BFD3C
+gpgv: Korrekte Unterschrift von "Univention Corporate Server 4.x <packages@univention.de>"
+
+Starting pre-update checks (Di 6. Mär 13:07:33 CET 2018):
+
+Checking app_appliance ...                        OK
+Checking block_update_of_NT_DC ...                OK
+Checking cyrus_integration ...                    OK
+Checking disk_space ...                           OK
+Checking hold_packages ...                        OK
+Checking ldap_connection ...                      OK
+Checking ldap_schema ...                          OK
+...
+			]]></programlisting>
+		</para>
+
 	</chapter>
 
 	<chapter id="relnotes:post">
