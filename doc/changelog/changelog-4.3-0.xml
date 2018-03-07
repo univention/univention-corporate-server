@@ -582,7 +582,7 @@
 			<title>Univention Active Directory Connection</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The Univention Active Directory Connector supports now Windows 2016 domains (<u:bug>45305</u:bug>).
+					The Univention Active Directory Connector now supports Windows 2016 domains (<u:bug>45305</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
