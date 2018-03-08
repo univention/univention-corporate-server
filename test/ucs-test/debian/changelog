@@ -1,3 +1,9 @@
+ucs-test (8.0.28-82) unstable; urgency=low
+
+  * Bug #46408: reenable test 33_smart_host_configuration
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 08 Mar 2018 16:12:19 +0100
+
 ucs-test (8.0.28-81) unstable; urgency=medium
 
   * Bug #46478: remove debuging from radius tests
