@@ -26,18 +26,6 @@ def radtest(username):
 
 
 def main():
-	print(subprocess.check_output(
-		"cat /var/log/freeradius/radius.log",
-		stderr=subprocess.STDOUT,
-		shell=True))
-	print(subprocess.check_output(
-		"netstat -unpl",
-		stderr=subprocess.STDOUT,
-		shell=True))
-	print(subprocess.check_output(
-		"systemctl restart freeradius",
-		stderr=subprocess.STDOUT,
-		shell=True))
 	with udm_test.UCSTestUDM() as udm:
 		username_allowed = udm.create_user(networkAccess=1)[1]
 		username_forbidden = udm.create_user(networkAccess=0)[1]
