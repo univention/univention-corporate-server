@@ -53,9 +53,15 @@ if [ "$1" = "configure" ]; then
 		fi
 	# installation
 	else
-		# update spamassassin rules
-		umask 022
-		/etc/cron.daily/spamassassin || echo "ERROR: Update of spamassassin rules failed. Please run sa-update manually."
+		if is_ucr_true mail/antispam/rules/autoupdate ; then
+			# update spamassassin rules
+			umask 022
+			echo "Updating spamassassin rules..."
+			/etc/cron.daily/spamassassin && echo "done" || echo "ERROR: the update of the spamassassin rules failed. Please run 'sa-update' manually."
+		else
+			echo "WARNING: the automatic update of the spamassassin rules has been deactivated."
+			echo "WARNING: for the correct function of spamassassin you may have to call sa-update manually."
+		fi
 	fi
 fi
 

@@ -1,3 +1,9 @@
+univention-spamassassin (9.0.0-5) unstable; urgency=low
+
+  * Bug #46555: improve handling of sa-update call
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 08 Mar 2018 21:26:22 +0100
+
 univention-spamassassin (9.0.0-4) unstable; urgency=low
 
   * Bug #46555: install UCR templates first and then call sa-update via
