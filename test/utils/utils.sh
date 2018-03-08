@@ -508,8 +508,9 @@ run_ucsschool_tests () {
 	local test_group="$1"
 	declare -a test_args=()
 	# following list have to be in sync with EC2Tools.groovy ==> addUASSinglEnvAxes/addUASMultiEnvAxes
-	for i in base1 import1 import2 import3 ; do
+	for i in base1 import1 import2 import3 import4 ; do
 		[ "$test_group" != "$i" ] && test_args+=("--prohibit=ucsschool_${i}")
+		[ "$(echo "$test_group" | sed -re 's/[0-9]+$//')" == "import" ] && test_args+=("--section=ucsschool")
 	done
 	run_apptests --prohibit=SKIP-UCSSCHOOL "${test_args[@]}"
 }
