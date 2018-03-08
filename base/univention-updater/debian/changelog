@@ -1,3 +1,9 @@
+univention-updater (13.0.1-29) unstable; urgency=medium
+
+  * Bug #46542: force new ntp init script, ensure runlevel links
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Mar 2018 17:26:22 +0100
+
 univention-updater (13.0.1-28) unstable; urgency=medium
 
   * Bug #46435: Also check for /etc/mysql/debian.cnf before calling
