@@ -123,10 +123,10 @@ import univention.admin.uexceptions as udm_errors
 
 from univention.management.console.protocol.message import Response, MIMETYPE_JSON
 from univention.management.console.protocol.definitions import MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS
-from univention.management.console.ldap import get_user_connection
+from univention.management.console.ldap import get_user_connection, reset_cache as reset_ldap_connection_cache
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE, CORE
-from univention.management.console.error import UMC_Error, NotAcceptable, PasswordRequired, LDAP_ServerDown, LDAP_ConnectionFailed
+from univention.management.console.error import UMC_Error, NotAcceptable, PasswordRequired, LDAP_ServerDown, LDAP_ConnectionFailed, Unauthorized
 
 _ = Translation('univention.management.console').translate
 
@@ -294,10 +294,15 @@ class Base(signals.Provider, Translation):
 	def error_handling(self, etype, exc, etraceback):
 		if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), ldap.SERVER_DOWN):
 			exc = exc.original_exception
+		if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), ldap.INVALID_CREDENTIALS):
+			exc = exc.original_exception
 		if isinstance(exc, ldap.SERVER_DOWN):
 			raise LDAP_ServerDown()
 		if isinstance(exc, ldap.CONNECT_ERROR):
 			raise LDAP_ConnectionFailed(exc)
+		if isinstance(exc, ldap.INVALID_CREDENTIALS):
+			reset_ldap_connection_cache()
+			raise Unauthorized
 
 	def __error_handling(self, request, method, etype, exc, etraceback):
 		message = ''
