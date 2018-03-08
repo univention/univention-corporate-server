@@ -1,3 +1,9 @@
+univention-updater (13.0.1-30) unstable; urgency=medium
+
+  * Redirect output of univention-app (Bug #46558)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Mar 2018 20:20:34 +0100
+
 univention-updater (13.0.1-29) unstable; urgency=medium
 
   * Bug #46542: force new ntp init script, ensure runlevel links

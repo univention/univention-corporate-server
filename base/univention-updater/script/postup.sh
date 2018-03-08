@@ -158,8 +158,8 @@ ucr set \
 
 # Bug 45328
 # update/register appcenter at this point because 4.3-0 postup still is in 4.2 mode
-univention-app update || true
-univention-app register --app || true
+univention-app update >>"$UPDATER_LOG" 2>&1 || true
+univention-app register --app >>"$UPDATER_LOG" 2>&1 || true
 # Bug 45328
 
 # Bug #46435
