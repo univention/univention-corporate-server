@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-93) unstable; urgency=medium
+
+  * Bug #44621: Fix LDAP INVALID_CREDENTIALS with SAML
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 08 Mar 2018 10:25:45 +0100
+
 univention-management-console (9.0.80-92) unstable; urgency=medium
 
   * Bug #46319: Fix non-traceback error shown as traceback
