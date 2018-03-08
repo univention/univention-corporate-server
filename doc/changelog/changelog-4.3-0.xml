@@ -311,6 +311,8 @@
 		<title>Software deployment</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename>
+				have been adapted to the needs of UCS 4.3 (<u:bug>45881</u:bug>, <u:bug>46558</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
