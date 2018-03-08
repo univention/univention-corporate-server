@@ -5,9 +5,6 @@
 UCS installation via vnc
 """
 
-import sys
-sys.path.insert(0, "/home/edamrose/git/u/vnc-automate")
-
 from argparse import ArgumentParser
 from vncautomate import init_logger, VNCConnection
 from vncautomate.config import OCRConfig
@@ -18,6 +15,7 @@ from languages import english
 from languages import german
 
 import time
+import sys
 import os
 
 
