@@ -52,8 +52,8 @@ class PrimaryInterfaceSetup(SetupScript):
 		try:
 			primary_interface = self._choose_primary_interface()
 		except NoConfiguredInterfaceError:
-			self.error("No possible primary interface found")
-			return False
+			self.message("No configured interface found. No primary interface set.")
+			return True
 		self.message("Setting primary interface to: {}".format(primary_interface))
 		self.ucr.set("interfaces/primary", primary_interface)
 		return True
@@ -61,6 +61,8 @@ class PrimaryInterfaceSetup(SetupScript):
 	def _choose_primary_interface(self):
 		for interface in self.interfaces.all_interfaces:
 			if "address" in interface[1] and interface[1]["address"]:
+				return interface[0]
+			if "ipv6/default/address" in interface[1] and interface[1]["ipv6/default/address"]:
 				return interface[0]
 		raise NoConfiguredInterfaceError
 

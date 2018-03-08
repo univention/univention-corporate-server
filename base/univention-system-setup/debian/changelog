@@ -1,3 +1,9 @@
+univention-system-setup (11.0.4-2) unstable; urgency=medium
+
+  * Bug #46551: Adapt 30_net/11primary for ipv6 and be less strict
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 08 Mar 2018 15:09:23 +0100
+
 univention-system-setup (11.0.4-1) unstable; urgency=medium
 
   * Ensure apache is started in startxwithfirefox (Bug #46467)
