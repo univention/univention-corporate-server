@@ -163,7 +163,7 @@ univention-app register --app || true
 # Bug 45328
 
 # Bug #46435
-if [ -x "/usr/bin/mysql_upgrade" ]; then
+if [ -x "/usr/bin/mysql_upgrade" -a -e "/etc/mysql/debian.cnf" ]; then
 	/usr/bin/mysql_upgrade --defaults-extra-file=/etc/mysql/debian.cnf >>"$UPDATER_LOG" 2>&1
 fi
 
