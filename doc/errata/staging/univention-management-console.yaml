@@ -3,9 +3,10 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-management-console
-fix: 9.0.80-92A~4.2.0.201802231346
+fix: 9.0.80-93A~4.2.0.201803081035
 desc: |
  This update addresses the following issue(s):
- * Messages directed to the user are not displayed
-   as an error anymore.
-bug: [46319]
+ * Messages directed to the user are not displayed as an error anymore.
+ * SAML sesion handling with ldap connections is improved and should not
+   throw server tracebacks anymore.
+bug: [46319, 44621]
