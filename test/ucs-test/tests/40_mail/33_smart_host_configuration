@@ -1,16 +1,14 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test smart host configuration
 ## exposure: dangerous
-## versions:
-##  4.1-0: skip
 
+import tempfile
+import time
+import dns.resolver
 from essential.mail import send_mail, check_delivery, restart_postfix
 from univention.testing.mail import MailSink
 from univention.config_registry import handler_set
 from univention.testing.network import NetworkRedirector
-import tempfile
-import time
-import dns.resolver
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
 import univention.testing.ucr as ucr_test
@@ -35,13 +33,13 @@ def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
 
 def wait_for_dns(hosts):
 	for host, ip in hosts:
+		found = None
 		for i in xrange(TIMEOUT):
 			try:
-				dns.resolver.query(host, 'A')
+				found = dns.resolver.query(host, 'A')[0].address
 				break
 			except dns.resolver.NXDOMAIN:
 				time.sleep(1)
-		found = dns.resolver.query(host, 'A')[0].address
 		if found != ip:
 			utils.fail('DNS query answer address found = %s, expected = %s' % (found, ip))
 
