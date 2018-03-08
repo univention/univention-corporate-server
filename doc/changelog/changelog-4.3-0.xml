@@ -655,6 +655,9 @@
 			<listitem><simpara>
 				The package <package>univention-dhcp</package> was adapted to handle incomplete network configurations missing &ucsUCRV;s <envar>interfaces/*/network</envar> and <envar>interfaces/*/broadcast</envar> (<u:bug>46515</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The <filename>cups-printers</filename> listener handler now restarts (instead of reload) the <application>cups</application> daemon(<u:bug>46525</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
