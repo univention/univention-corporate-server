@@ -88,6 +88,7 @@ class UCSInstallation(object):
 			self.click(self._['all_files_on_partition'])
 			self.client.keyPress('enter')
 			self.click(self._['finish_partition'])
+			self.client.keyPress('down')
 			self.client.keyPress('enter')
 			self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
 			self.client.keyPress('down')
