@@ -1519,9 +1519,28 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
+	def simulate_legacy_options(self):
+		'''simulate old options behavior to provide backward compatibility for udm extensions'''
+		options = dict(
+			posix='posixAccount',
+			samba='sambaSamAccount',
+			kerberos='krb5Principal',
+			mail='univentionMail',
+			person='person',
+		)
+		for opt, oc in options.iteritems():
+			# existing object
+			if self.oldattr:
+				if oc in self.oldattr.get('objectClass', []):
+					self.options.append(opt)
+			# new object
+			else:
+				self.options.append(opt)
+
 	def open(self, loadGroups=True):
 		univention.admin.handlers.simpleLdap.open(self)
-
+		# legacy options to make old hooks happy (46539)
+		self.simulate_legacy_options()
 		if self.exists():
 			self._unmap_mail_forward()
 			self._unmap_pwd_change_next_login()

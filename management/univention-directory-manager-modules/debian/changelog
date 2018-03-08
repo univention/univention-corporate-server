@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-12) unstable; urgency=medium
+
+  * Bug #46539: simulate_legacy_options
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Mar 2018 11:32:51 +0100
+
 univention-directory-manager-modules (13.0.21-11) unstable; urgency=medium
 
   * Bug #46357: name uid= to cn= when migrating a users/user object to
