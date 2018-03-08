@@ -1,3 +1,9 @@
+ucs-test (7.0.23-123) unstable; urgency=low
+
+  * Bug #44786: handle post_run because of waiting for s4 connector
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 08 Mar 2018 09:29:46 +0100
+
 ucs-test (7.0.23-122) unstable; urgency=low
 
   * Bug #44786: wait for s4 connector before deleting user
