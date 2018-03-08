@@ -322,7 +322,7 @@
 			<title>MySQL and MariaDB</title>
 			<itemizedlist>
 				<listitem><simpara>
-						MySQL has been replaced with MariaDB. The package <package>univention-mysql</package> will now install a MariaDB server on UCS 4.3. The change is transparent, if the package <package>univention-mysql</package> was installed on UCS 4.2, MariaDB will be installed during the update (<u:bug>45876</u:bug>, <u:bug>46434</u:bug>, <u:bug>46435</u:bug>).
+						MySQL has been replaced with MariaDB. The package <package>univention-mysql</package> will now install a MariaDB server on UCS 4.3. The change is transparent, if the package <package>univention-mysql</package> was installed on UCS 4.2, MariaDB will be installed during the update. In contrast to the debian defaults, UCS uses the MariaDB default values for the configuration options character-set-server (latin1) and collation-server (latin1_swedish_ci) (<u:bug>45876</u:bug>, <u:bug>46434</u:bug>, <u:bug>46435</u:bug>, <u:bug>46537</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
