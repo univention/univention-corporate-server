@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-13) unstable; urgency=medium
+
+  * Bug #46544: Workaround syntax.date2 parsing of 1970 as 2070
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Mar 2018 13:12:44 +0100
+
 univention-directory-manager-modules (13.0.21-12) unstable; urgency=medium
 
   * Bug #46539: simulate_legacy_options
