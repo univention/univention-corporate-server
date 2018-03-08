@@ -179,7 +179,7 @@
 					Now, when an administrator disables and account, all methods for authentication get disabled (LDAP/POSIX, Kerberos, Samba).
 					This is in line with the unification of UDM options for user accounts.
 					The <package>locked</package> setting, which used to do similar things, has been replaced to show if an account has been locked out temporarily and to allow administrative unlocking.
-					Temporary lockout of an account can happen in case a user exceeds a number of failed authentication attempts, if a corresponding domain wide policy setting has been defined by an administrator (<u:bug>39817</u:bug>).
+					Temporary lockout of an account can happen in case a user exceeds a number of failed authentication attempts, if a corresponding domain wide policy setting has been defined by an administrator (<u:bug>39817</u:bug>, <u:bug>46544</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The values for the syntax class <package>Country</package> have been updated (<u:bug>45926</u:bug>).
