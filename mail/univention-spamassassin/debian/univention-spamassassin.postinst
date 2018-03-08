@@ -43,6 +43,8 @@ univention-config-registry set mail/antivir/spam?yes \
 	mail/antispam/rules/autoupdate?yes \
 	mail/antispam/autostart?yes
 
+#DEBHELPER#
+
 if [ "$1" = "configure" ]; then
 	# update
 	if [ -n "$2" ]; then
@@ -53,13 +55,11 @@ if [ "$1" = "configure" ]; then
 	else
 		# update spamassassin rules
 		umask 022
-		su debian-spamd -c "sa-update --gpghomedir /var/lib/spamassassin/sa-update-keys"
+		/etc/cron.daily/spamassassin || echo "ERROR: Update of spamassassin rules failed. Please run sa-update manually."
 	fi
 fi
 
 test -x /etc/init.d/amavis && invoke-rc.d amavis restart
-
-#DEBHELPER#
 
 exit 0
 
