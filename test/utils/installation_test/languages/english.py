@@ -24,6 +24,7 @@ strings = {
 	'clock': 'Eastern',
 	'partition_disks': 'Partition disks',
 	'entire_disk': 'use entire disk',
+	'entire_disk_with_lvm': 'gesamte Platte verwenden und LVM',
 	'all_files_on_partition': 'All files in one partition',
 	'finish_partition': 'Finish partitioning and',
 	'continue_partition': 'If you continue',
@@ -64,5 +65,5 @@ strings = {
 	'pkgdb': 'Software installation monitor',
 	'uvmm': 'Manager',
 
-	'appliance_modus': 'Appliance-Modus',
+	'appliance_modus': 'appliance mode',
 }

@@ -750,16 +750,6 @@ simplesamlphp
 stunnel4
 sudo
 sysvinit
-tex-common
-texlive
-texlive-base
-texlive-binaries
-texlive-fonts-recommended
-texlive-lang-german
-texlive-latex-base
-texlive-latex-extra
-texlive-latex-recommended
-texlive-pictures
 unzip
 update-inetd
 vim
@@ -963,7 +953,7 @@ __EOF__
 	/usr/sbin/univention-certificate-check-validity
 
 	# Set official update server, deactivate online repository until system setup script 90_postjoin/20upgrade
-	ucr set repository/online=no \
+	ucr set repository/online=false \
 		repository/online/server='https://updates.software-univention.de'
 	# ucr set repository/online/server=univention-repository.knut.univention.de
 
@@ -992,6 +982,10 @@ __EOF__
 	for dir in python-cherrypy3 libwibble-dev texlive-base texlive-lang-german texmf texlive-latex-recommended groff-base libept-dev texlive-doc; do
 		[ -d "/usr/share/doc/$dir" ] && rm -rf "/usr/share/doc/$dir"
 	done
+
+	: > /var/lib/logrotate/status
+	: > /var/mail/systemmail
+	rm -r /var/univention-backup/*
 
 	# fill up HDD with ZEROs to maximize possible compression
 	dd if=/dev/zero of=/fill-it-up bs=1M; rm /fill-it-up
@@ -1118,6 +1112,110 @@ __EOF__
 	fi
 }
 
+
+setup_ec2 ()
+{
+	ucr set grub/append="$(ucr get grub/append) console=tty0 console=ttyS0"
+
+	DEV='/dev/xvda' GRUB='(hd0)'
+    echo "${GRUB} ${DEV}" >/boot/grub/device.map
+	debconf-communicate <<<"set grub-pc/install_devices $DEV"
+
+	append="$(ucr get grub/append |
+	    sed -re "s|/dev/sda|${DEV}|g;s|(no)?splash||g")"
+
+	ucr set server/amazon=true \
+		updater/identify="UCS (EC2)" \
+		locale="en_US.UTF-8:UTF-8 de_DE.UTF-8:UTF-8" \
+		grub/bootsplash=no \
+		grub/quiet=no \
+		grub/append="${append}" \
+		grub/boot=${DEV} \
+		grub/root=${DEV}1 \
+		grub/grub1root=${GRUB} \
+		grub/rootdelay=0 \
+		grub/timeout=0 \
+		grub/generate-menu-lst=no \
+		grub/terminal="console serial" \
+		grub/serialcommand="serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1"
+
+	rm -f /boot/grub/menu.lst # This still is evaluated by AWS-EC2 if it exists!
+	update-grub
+
+	apt-get purge -y univention-firewall univention-ifplugd univention-basesystem ifplugd libdaemon0
+	univention-install -y cloud-initramfs-growroot patch gdisk
+	mv /usr/share/initramfs-tools/scripts/local-bottom/growroot /usr/share/initramfs-tools/scripts/init-premount/
+	###### cp growroot.patch
+	cat > /root/growroot.patch <<__EOF__
+--- /usr/share/initramfs-tools/scripts/init-premount/growroot.orig  2017-09-06 11:21:31.340000000 -0400
++++ /usr/share/initramfs-tools/scripts/init-premount/growroot   2017-09-06 11:21:51.044000000 -0400
+@@ -1,5 +1,7 @@
+ #!/bin/sh
+  set -e
+
++udevadm settle --timeout $\{ROOTDELAY:-30}
++ 
+ PREREQS=""
+ case \$1 in
+@@ -73,10 +73,6 @@
+*) msg "exited '\$ret'" "\${out}"; exit 1;;
+esac
+
+-# There was something to do, unmount and resize
+-umount "\${rootmnt}" ||
+-   fail "failed to umount \${rootmnt}";
+-
+ # Wait for any of the initial udev events to finish
+ # This is to avoid any other processes using the block device that the
+ # root partition is on, which would cause the sfdisk 'BLKRRPART' to fail.
+@@ -98,19 +94,4 @@
+ # so that the root partition is available when we try and mount it.
+ udevadm settle --timeout \${ROOTDELAY:-30}
+
+-# this is taken from 'mountroot' function
+-#   see /usr/share/initramfs-tools/scripts/local
+-if [ -z "\${ROOTFSTYPE}" ]; then
+-   FSTYPE=\$(get_fstype "\${ROOT}")
+-else
+-   FSTYPE=\${ROOTFSTYPE}
+-fi
+-roflag="-r"
+-[ "\${readonly}" = "y" ] || roflag="-w"
+-mount \${roflag} \${FSTYPE:+-t \${FSTYPE} }\${ROOTFLAGS} \${ROOT} \${rootmnt} ||
+-   fail "failed to re-mount \${ROOT}. this is bad!"
+-
+-# write to /etc/grownroot-grown. most likely this wont work (readonly)
+-{ date --utc > "\${rootmnt}/etc/growroot-grown" ; } >/dev/null 2>&1 || :
+-
+ # vi: ts=4 noexpandtab
+__EOF__
+
+	patch -p1 -d/ < growroot.patch
+	rm growroot.patch
+	update-initramfs -uk all
+
+	# resize2fs
+	cat > /etc/init.d/resize2fs <<__EOF__
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          resize2fs
+# Required-Start:    \$local_fs
+# Required-Stop:
+# Default-Start:     2
+# Default-Stop:
+# Short-Description: resize filesystem upon boot
+### END INIT INFO
+
+resize2fs /dev/xvda1 &
+disown
+__EOF__
+	chmod +x /etc/init.d/resize2fs
+	update-rc.d resize2fs defaults
+
+	univention-system-setup-boot start
+	ucr set apache2/startsite="univention/initialsetup/"
+}
+
 install_appreport ()
 {
 	ucr set repository/online/component/appreport=yes \
@@ -1146,7 +1244,7 @@ disable_root_login_and_poweroff ()
 		ucr set --force auth/sshd/user/root=no
 		echo "root:$appliance_default_password" | chpasswd
 	fi
-	rm /root/*
+	rm -r /root/*
 	rm /root/.bash_history
 	history -c
 	halt -p
@@ -1154,7 +1252,7 @@ disable_root_login_and_poweroff ()
 
 appliance_poweroff ()
 {
-	rm /root/*
+	rm -r /root/*
 	rm /root/.bash_history
 	history -c
 	halt -p

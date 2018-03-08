@@ -22,6 +22,7 @@ strings = {
 	'user_and_password': 'Benutzer und Passwörter einrichten',
 	'partition_disks': 'Festplatten partitionieren',
 	'entire_disk': 'Festplatte verwenden',
+	'entire_disk_with_lvm': 'gesamte Platte verwenden und LVM',
 	'all_files_on_partition': 'Alle Dateien auf eine Partition',
 	'finish_partition': 'Partitionierung beenden und',
 	'continue_partition': 'Wenn Sie fortfahren',

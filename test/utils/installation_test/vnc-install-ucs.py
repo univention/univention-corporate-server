@@ -5,6 +5,9 @@
 UCS installation via vnc
 """
 
+import sys
+sys.path.insert(0, "/home/edamrose/git/u/vnc-automate")
+
 from argparse import ArgumentParser
 from vncautomate import init_logger, VNCConnection
 from vncautomate.config import OCRConfig
@@ -15,7 +18,6 @@ from languages import english
 from languages import german
 
 import time
-import sys
 import os
 
 
@@ -80,17 +82,30 @@ class UCSInstallation(object):
 		# hd
 		time.sleep(60)
 		self.client.waitForText(self._['partition_disks'], timeout=self.timeout)
-		self.click(self._['entire_disk'])
-		self.client.keyPress('enter')
-		time.sleep(3)
-		self.client.keyPress('enter')
-		self.click(self._['all_files_on_partition'])
-		self.client.keyPress('enter')
-		self.click(self._['finish_partition'])
-		self.client.keyPress('enter')
-		self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
-		self.client.keyPress('down')
-		self.client.keyPress('enter')
+		if self.args.role == 'applianceLVM':
+			self.click(self._['entire_disk_with_lvm'])
+			self.client.keyPress('enter')
+			time.sleep(3)
+			self.client.keyPress('enter')
+			self.click(self._['all_files_on_partition'])
+			self.client.keyPress('enter')
+			self.click(self._['finish_partition'])
+			self.client.keyPress('enter')
+			self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
+			self.client.keyPress('down')
+			self.client.keyPress('enter')
+		else:
+			self.click(self._['entire_disk'])
+			self.client.keyPress('enter')
+			time.sleep(3)
+			self.client.keyPress('enter')
+			self.click(self._['all_files_on_partition'])
+			self.client.keyPress('enter')
+			self.click(self._['finish_partition'])
+			self.client.keyPress('enter')
+			self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
+			self.client.keyPress('down')
+			self.client.keyPress('enter')
 		time.sleep(600)
 
 	def network_setup(self):
@@ -213,14 +228,14 @@ class UCSInstallation(object):
 			self.click(self._['next'])
 			self.client.waitForText(self._['warning_no_domain'], timeout=self.timeout)
 			self.click(self._['next'])
-		elif self.args.role == 'appliance':
+		elif self.args.role == 'applianceEC2' or self.args.role == 'applianceLVM':
 			self.client.keyDown('ctrl')
 			self.client.keyPress('q')
 			self.client.keyUp('ctrl')
 			time.sleep(300)
 			self.client.waitForText(self._['appliance_modus'], timeout=self.timeout)
-			self.click(self._['next'])
-			time.sleep(300)
+			self.click(self._['continue'])
+			time.sleep(60)
 			sys.exit(0)
 		else:
 			raise NotImplemented
@@ -316,7 +331,7 @@ def main():
 	parser.add_argument('--join-user')
 	parser.add_argument('--join-password')
 	parser.add_argument('--language', default='deu', choices=['deu', 'eng', 'fra'])
-	parser.add_argument('--role', default='master', choices=['master', 'slave', 'member', 'backup', 'admember', 'basesystem', 'appliance'])
+	parser.add_argument('--role', default='master', choices=['master', 'slave', 'member', 'backup', 'admember', 'basesystem', 'applianceEC2', 'applianceLVM'])
 	parser.add_argument('--components', default=[], choices=components.keys() + ['all'], action='append')
 	args = parser.parse_args()
 	if args.role in ['slave', 'backup', 'member', 'admember']:
