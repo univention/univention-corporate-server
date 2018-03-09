@@ -2663,7 +2663,7 @@ dansguardian -g
 			  <title>Access points</title>
 			  <para>
 				All access points must be registered in the configuration file
-				<filename>/etc/freeradius/clients.conf</filename>. For each access point a
+				<filename>/etc/freeradius/3.0/clients.conf</filename>. For each access point a
 				random password should be created. (For example using the command
 				<command>makepasswd</command>). The <literal>shortname</literal> can be chosen
 				at will. Example entry for an access point:

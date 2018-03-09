@@ -2345,7 +2345,7 @@ dansguardian -g
 				<title>Access Points</title>
 				<para>
 					Alle Access Points (Netzwerkzugangspunkte) müssen in der Konfigurationsdatei
-					<filename>/etc/freeradius/clients.conf</filename> eingetragen sein. Für jeden
+					<filename>/etc/freeradius/3.0/clients.conf</filename> eingetragen sein. Für jeden
 					Access Point sollte ein zufälliges Passwort erzeugt werden. (Zum Beispiel über
 					den Befehl <command>makepasswd</command>.) Der <literal>shortname</literal>
 					kann frei gewählt werden. Beispiel für einen Eintrag für einen Access Point:
