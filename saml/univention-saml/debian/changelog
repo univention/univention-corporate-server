@@ -1,3 +1,9 @@
+univention-saml (5.0.4-17) unstable; urgency=medium
+
+  * Bug #46576: Change auth default module to univention-ldap
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 09 Mar 2018 17:23:53 +0100
+
 univention-saml (5.0.4-16) unstable; urgency=medium
 
   * Bug #46267: php5 gets disabled in preup and libapache2-mod-php7.0

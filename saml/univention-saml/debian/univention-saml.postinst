@@ -46,7 +46,8 @@ configure)
 		saml/idp/show-errors?"true" \
 		ucs/server/sso/virtualhost?"true" \
 		saml/idp/negotiate?"true" \
-		kerberos/defaults/ignore_acceptor_hostname=true
+		kerberos/defaults/ignore_acceptor_hostname=true \
+		saml/idp/authsource?univention-ldap
 
 	for i in /var/www/saml /var/www/saml/php-cgi /var/lib/simplesamlphp/secrets.inc.php
 	do
