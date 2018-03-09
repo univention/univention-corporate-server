@@ -1,3 +1,9 @@
+univention-updater (13.0.1-32) unstable; urgency=medium
+
+  * Bug #46542: force new ntp init script, ensure runlevel links
+
+ -- Felix Botner <botner@univention.de>  Fri, 09 Mar 2018 09:24:25 +0100
+
 univention-updater (13.0.1-31) unstable; urgency=medium
 
   * Stop nrpe daemon before starting the upgrade to UCS 4.3 (Bug #46559)
