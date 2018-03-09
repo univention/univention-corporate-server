@@ -589,6 +589,11 @@ if [ -x /usr/sbin/a2query ] && /usr/sbin/a2query -m php5; then
 	/usr/sbin/a2dismod php5 || true
 fi >>"$UPDATER_LOG" 2>&1
 
+# Bug 46559: Stop nrpe daemon
+if [ -x /etc/init.d/nagios-nrpe-server ]; then
+	/etc/init.d/nagios-nrpe-server stop >>"$UPDATER_LOG" 2>&1
+fi
+
 echo ""
 echo "Starting update process, this may take a while."
 echo "Check /var/log/univention/updater.log for more information."
