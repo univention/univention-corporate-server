@@ -111,7 +111,7 @@
 		<para>
 			With UCS 4.3 Univention provides a script that checks for problems which would prevent the successful update of the system. Prior to the update this script
 			can be downloaded and executed on the UCS system.
-			<programlisting language="sh"><![CDATA[
+			<screen><![CDATA[
 # download
 -> curl -OOs http://updates.software-univention.de/download/univention-update-checks/pre-update-checks-4.3{,.gpg}
 
@@ -131,7 +131,7 @@ Checking hold_packages ...                        OK
 Checking ldap_connection ...                      OK
 Checking ldap_schema ...                          OK
 ...
-			]]></programlisting>
+			]]></screen>
 		</para>
 
 	</chapter>

@@ -111,7 +111,7 @@
 		<para>
 			Mit UCS 4.3 bietet Univention ein Skript an, mit dem Probleme, die das Update des UCS Systems verhindern würden, schon vor dem Update erkannt werden können.
 			Diese Skript kann vor dem Update manuell auf das System geladen und ausgeführt werden:
-			<programlisting language="sh"><![CDATA[
+			<screen><![CDATA[
 # download
 -> curl -OOs http://updates.software-univention.de/download/univention-update-checks/pre-update-checks-4.3{,.gpg}
 
@@ -131,7 +131,7 @@ Checking hold_packages ...                        OK
 Checking ldap_connection ...                      OK
 Checking ldap_schema ...                          OK
 ...
-			]]></programlisting>
+			]]></screen>
 		</para>
 
 	</chapter>
