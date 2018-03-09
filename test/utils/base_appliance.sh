@@ -894,7 +894,7 @@ setup_appliance ()
 	univention-install -y --force-yes univention-management-console-server=9.0.80-59A~4.2.0.201707241109 python-univention-management-console=9.0.80-59A~4.2.0.201707241109 univention-management-console=9.0.80-59A~4.2.0.201707241109  univention-management-console-web-server=9.0.80-59A~4.2.0.201707241109 firefox-esr=45.7.0esr-1~deb8u1
 
 	# shrink appliance image size
-	appliance_preinstall_non_univention_packages
+	# appliance_preinstall_non_univention_packages
 	rm /etc/apt/sources.list.d/05univention-system-setup.list
 	rm -r /var/cache/univention-system-setup/packages/
 
