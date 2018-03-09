@@ -341,7 +341,7 @@
 			<title>SAML</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The single sign-on provider integration in UCS, <application>simplesamlphp</application>, now supports authentication with a valid domain Kerberos ticket (<u:bug>33214</u:bug>, <u:bug>46451</u:bug>,).
+					The single sign-on provider integration in UCS, <application>simplesamlphp</application>, now supports authentication with a valid domain Kerberos ticket (<u:bug>33214</u:bug>, <u:bug>46451</u:bug>, <u:bug>46576</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					A <application>systemd</application> script for the <package>univention-saml</package> instance of <package>memcached</package>
