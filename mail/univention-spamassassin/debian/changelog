@@ -1,3 +1,9 @@
+univention-spamassassin (9.0.0-6) unstable; urgency=low
+
+  * Bug #46555: assign pseudo pty to call of sa-update
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 09 Mar 2018 14:03:34 +0100
+
 univention-spamassassin (9.0.0-5) unstable; urgency=low
 
   * Bug #46555: improve handling of sa-update call
