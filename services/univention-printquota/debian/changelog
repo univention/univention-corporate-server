@@ -1,3 +1,9 @@
+univention-printquota (10.0.0-6) unstable; urgency=medium
+
+  * Bug #46570: used fixed psql file
+
+ -- Felix Botner <botner@univention.de>  Fri, 09 Mar 2018 13:40:55 +0100
+
 univention-printquota (10.0.0-5) unstable; urgency=medium
 
   * Bug #44160: Remove PostreSQL-9.1 and older Debian conffiles
