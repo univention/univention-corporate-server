@@ -120,10 +120,6 @@ class UCSTestUDM_CannotModifyExistingObject(UCSTestUDM_Exception):
 
 
 class UCSTestUDM(object):
-    _lo = utils.get_ldap_connection()
-    _ucr = univention.testing.ucr.UCSTestConfigRegistry()
-    _ucr.load()
-
     PATH_UDM_CLI_SERVER = '/usr/share/univention-directory-manager-tools/univention-cli-server'
     PATH_UDM_CLI_CLIENT = '/usr/sbin/udm'
     PATH_UDM_CLI_CLIENT_WRAPPED = '/usr/sbin/udm-test'
@@ -139,10 +135,37 @@ class UCSTestUDM(object):
                         'computers/macos',
                         'computers/ipmanagedclient')
 
-    LDAP_BASE = _ucr['ldap/base']
-    FQHN = '%(hostname)s.%(domainname)s.' % _ucr
-    UNIVENTION_CONTAINER = 'cn=univention,%s' % LDAP_BASE
-    UNIVENTION_TEMPORARY_CONTAINER = 'cn=temporary,cn=univention,%s' % LDAP_BASE
+    __lo = None
+    __ucr = None
+
+    @property
+    def _lo(self):
+        if self.__lo is None:
+            self.__lo = utils.get_ldap_connection()
+        return self.__lo
+
+    @property
+    def _ucr(self):
+        if self.__ucr is None:
+            self.__ucr = univention.testing.ucr.UCSTestConfigRegistry()
+            self.__ucr.load()
+        return self.__ucr
+
+    @property
+    def LDAP_BASE(self):
+        return self.__ucr['ldap/base']
+
+    @property
+    def FQHN(self):
+        return '%(hostname)s.%(domainname)s.' % self.__ucr
+
+    @property
+    def UNIVENTION_CONTAINER(self):
+        return 'cn=univention,%(ldap/base)s' % self.__ucr
+
+    @property
+    def UNIVENTION_TEMPORARY_CONTAINER(self):
+        return 'cn=temporary,cn=univention,%(ldap/base)s' % self.__ucr
 
     def __init__(self):
         self._cleanup = {}
