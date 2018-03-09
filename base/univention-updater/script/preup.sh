@@ -375,6 +375,27 @@ block_update_of_NT_DC() {
 block_update_of_NT_DC
 # end bug 46118
 
+# begin bug 46562
+block_update_if_system_date_is_too_old() {
+	let system_year=$(date +%Y)
+	if [ "$system_year" -lt 2018 ] ; then
+		echo "WARNING: The system date ($(date +%Y-%m-%d)) does not seem to be correct."
+		echo "         Please set a current system time before the update, otherwise the"
+		echo "         update will fail if Spamassassin is installed."
+		echo "         "
+		echo "         This check can be disabled by setting the UCR variable"
+		echo "         update43/ignore_system_date to yes."
+		if is_ucr_true update43/ignore_system_date; then
+			echo "WARNING: update43/ignore_system_date is set to true. Skipped as requested."
+		else
+			exit 1
+		fi
+	fi
+}
+block_update_if_system_date_is_too_old
+# end bug 46562
+
+
 # move old initrd files in /boot
 initrd_backup=/var/backups/univention-initrd.bak/
 if [ ! -d "$initrd_backup" ]; then
