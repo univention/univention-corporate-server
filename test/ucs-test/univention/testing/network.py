@@ -78,17 +78,18 @@ class NetworkRedirector(object):
     The NetworkRedirector is able to establish port/connection redirections via
     iptables. It has to be used via the with-statement.
 
-    with NetworkRedirector() as nethelper:
-            nethelper.add_loop('1.2.3.4', '4.3.2.1')
-            nethelper.add_redirection('1.1.1.1', 25, 60025)
-            ...
-            # the following lines are optional! NetworkRedirector does automatic cleanup!
-            nethelper.remove_loop('1.2.3.4', '4.3.2.1')
-            nethelper.remove_redirection('1.1.1.1', 25, 60025)
+    >>> with NetworkRedirector() as nethelper:
+    >>>     nethelper.add_loop('1.2.3.4', '4.3.2.1')
+    >>>     nethelper.add_redirection('1.1.1.1', 25, 60025)
+    >>>     ...
+    >>>     # the following lines are optional! NetworkRedirector does automatic cleanup!
+    >>>     nethelper.remove_loop('1.2.3.4', '4.3.2.1')
+    >>>     nethelper.remove_redirection('1.1.1.1', 25, 60025)
 
     It is also possible to redirect all traffic to a specific port.
     The trailing "/0" is important, otherwise the redirection won't work!
-            nethelper.add_redirection('0.0.0.0/0', 25, 60025)
+
+    >>>    nethelper.add_redirection('0.0.0.0/0', 25, 60025)
     """
 
     BIN_IPTABLES = '/sbin/iptables'
@@ -144,7 +145,7 @@ class NetworkRedirector(object):
         """
         Start all commands in cmdlist and replace formatstrings with arguments in argdict.
 
-        run_commands([['/bin/echo', '%(msg)s'], ['/bin/echo', 'World']], {'msg': 'Hello'})
+        >>> run_commands([['/bin/echo', '%(msg)s'], ['/bin/echo', 'World']], {'msg': 'Hello'})
         """
         for cmd in cmdlist:
             cmd = copy.deepcopy(cmd)

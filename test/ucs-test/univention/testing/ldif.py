@@ -29,21 +29,18 @@ VERSION = '%prog 1.0'
 
 
 class LdifError(Exception):
-
     """
     Error in input processing.
     """
 
 
 class SlapError(Exception):
-
     """
     Error in slapcat processing.
     """
 
 
 class LdifSource(object):
-
     """
     Abstract class for LDIF source.
     """
@@ -109,6 +106,13 @@ class LdifSource(object):
     def split(self, line):
         """
         Split attribute and value.
+        Options are stripped.
+        Base64 encoded values are decoded.
+
+        :param str line: The line to split.
+        :return: A tuple (name, value).
+        :rtype: tuple
+
         >>> LdifSource().split('')
         >>> LdifSource().split('a:')
         ('a', None)
@@ -146,10 +150,10 @@ class LdifSource(object):
 
 
 class LdifFile(LdifSource):
-
     """
     LDIF source from local file.
     """
+
     @classmethod
     def create(cls, arg, options):
         return cls(arg)
@@ -169,10 +173,10 @@ class LdifFile(LdifSource):
 
 
 class LdifSlapcat(LdifSource):
-
     """
     LDIF source from local LDAP.
     """
+
     @classmethod
     def create(cls, arg, options):
         return cls()
@@ -200,10 +204,10 @@ class LdifSlapcat(LdifSource):
 
 
 class LdifSsh(LdifSlapcat):
-
     """
     LDIF source from remote LDAP.
     """
+
     @classmethod
     def create(cls, hostname, options):
         return cls(hostname, options.ssh)
@@ -222,10 +226,11 @@ class LdifSsh(LdifSlapcat):
     def wait_for_data(self):
         """
         Wait for the remote process to send data.
+
         >>> x=LdifSsh('', 'echo');x.start_reading();x.wait_for_data()
         >>> x=LdifSsh('', 'false');x.start_reading();x.wait_for_data()
         Traceback (most recent call last):
-                ...
+        ...
         SlapError: ('Error executing', ('false', '', 'slapcat', '-d0'), 1)
         """
         while True:
@@ -258,6 +263,11 @@ def __test(_option, _opt_str, _value, _parser):
 def stream2object(ldif):
     """
     Convert LDIF stream to dictionary of objects.
+
+    :param LdifSource ldif: A LDIF stream.
+    :return: A dictionary mapping distinguished names to a dictionary of key-values.
+    :rtype: dict(str, dict(str, list[str])
+
     >>> stream2object([{'dn': ['dc=test']}])
     {'dc=test': {}}
     """
@@ -276,6 +286,11 @@ def stream2object(ldif):
 def sort_dn(dname):
     """
     Sort by reversed dn.
+
+    :param str dname: distinguished name.
+    :return: tuple of relative distinguised names.
+    :rtype: tuple(tuple[str])
+
     >>> sort_dn('a=1')
     (('a=1',),)
     >>> sort_dn('b=1,a=1')
@@ -289,7 +304,12 @@ def sort_dn(dname):
 def compare_ldif(lldif, rldif, options):
     """
     Compare two LDIF files.
+
+    :param LdifSource ldif1: first LDIF to compare.
+    :param LdifSource ldif2: second LDIF to compare.
+    :param Namespace options: command line options.
     """
+
     lefts = stream2object(lldif)
     rights = stream2object(rldif)
 
@@ -333,6 +353,11 @@ def compare_ldif(lldif, rldif, options):
 def compare_keys(ldata, rdata):
     """
     Compare and return attributes of two LDAP objects.
+
+    :param dict ldata: the first LDAP object.
+    :param dict rdata: the second LDAP object.
+    :return: an iterator of differences as 3-tuples (comparison, key, value).
+
     >>> list(compare_keys({}, {}))
     []
     >>> list(compare_keys({'a': [1]}, {}))
@@ -373,6 +398,11 @@ def compare_keys(ldata, rdata):
 def compare_values(attr, lvalues, rvalues):
     """
     Compare and return values of two multi-valued LDAP attributes.
+
+    :param list lvalues: the first values.
+    :param list rvalues: the second values.
+    :return: an iterator of differences as 3-tuples (comparison, key, value), where comparison<0 if key is missing in lvalues, comparison>0 if key is missing in rvalues, otherwise 0.
+
     >>> list(compare_values('attr', [], []))
     []
     >>> list(compare_values('attr', [1, 2], [2, 3]))
@@ -492,6 +522,11 @@ def main():
 def run_compare(ldif1, ldif2, options):
     """
     UNIX correct error handling.
+    Termination by signal is propagaed as signal.
+
+    :param LdifSource ldif1: first LDIF to compare.
+    :param LdifSource ldif2: second LDIF to compare.
+    :param Namespace options: command line options.
     """
     ret = 2
     try:

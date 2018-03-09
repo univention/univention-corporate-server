@@ -176,6 +176,28 @@ class UCSTestUDM(object):
         """
         Pass modulename, action (create, modify, delete) and a bunch of keyword arguments
         to _build_udm_cmdline to build a command for UDM CLI.
+
+        :param str modulename: name of UDM module (e.g. 'users/user')
+        :param str action: An action, like 'create', 'modify', 'delete'.
+        :param dict kwargs: A dictionary containing properties or one of the following special keys:
+
+        :param str binddn: The LDAP simple-bind DN.
+        :param str bindpwd: The LDAP simple-bind password.
+        :param str bindpwdfile: A pathname to a file containing the LDAP simple-bind password.
+        :param str dn: The LDAP distinguished name to operate on.
+        :param str position: The LDAP distinguished name of the parent container.
+        :param str superordinate: The LDAP distinguished name of the logical parent.
+        :param str policy_reference: The LDAP distinguished name of the UDM policy to add.
+        :param str policy_dereference: The LDAP distinguished name of the UDM policy to remove.
+        :param str append_option: The name of an UDM option group to add.
+        :param list options: A list of UDM option group to set.
+        :param str_or_list set: A list or one single *name=value* property.
+        :param list append: A list of *name=value* properties to add.
+        :param list remove: A list of *name=value* properties to add.
+        :param boolean remove_referring: Remove other LDAP entries referred by this entry.
+        :param boolean ignore_exists: Ignore error on creation if entry already exists.
+        :param boolean ignore_not_exists: Ignore error on deletion if entry does not exists.
+
         >>> UCSTestUDM._build_udm_cmdline('users/user', 'create', {'username': 'foobar'})
         ['/usr/sbin/udm-test', 'users/user', 'create', '--set', 'username=foobar']
         """
@@ -226,12 +248,14 @@ class UCSTestUDM(object):
         return cmd
 
     def create_object(self, modulename, wait_for_replication=True, check_for_drs_replication=False, **kwargs):
-        """
+        r"""
         Creates a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
         only and have to exactly match UDM property names (case-sensitive!).
 
-        modulename: name of UDM module (e.g. 'users/user')
-
+        :param str modulename: name of UDM module (e.g. 'users/user')
+        :param bool wait_for_replication: delay return until Listener has settled.
+        :param bool check_for_drs_replication: delay return until Samab4 has settled.
+        :param \*\*kwargs:
         """
         if not modulename:
             raise UCSTestUDM_MissingModulename()
@@ -269,8 +293,7 @@ class UCSTestUDM(object):
         only and have to exactly match UDM property names (case-sensitive!).
         Please note: the object has to be created by create_object otherwise this call will raise an exception!
 
-        modulename: name of UDM module (e.g. 'users/user')
-
+        :param str modulename: name of UDM module (e.g. 'users/user')
         """
         if not modulename:
             raise UCSTestUDM_MissingModulename()
@@ -370,15 +393,13 @@ class UCSTestUDM(object):
         """
         Creates a user via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
         have to exactly match UDM property names (case-sensitive!). Some properties have default values:
-        position: 'cn=users,$ldap_base'
-        password: 'univention'
-        firstname: 'Foo Bar'
-        lastname: <random string>
-        username: <random string>
 
-        If username is missing, a random user name will be used.
-
-        Return value: (dn, username)
+        :param str position: 'cn=users,$ldap_base'
+        :param str password: 'univention'
+        :param str firstname: 'Foo Bar'
+        :param str lastname: <random string>
+        :param str username: <random string> If username is missing, a random user name will be used.
+        :return: (dn, username)
         """
 
         attr = self._set_module_default_attr(kwargs, (('position', 'cn=users,%s' % self.LDAP_BASE),
@@ -400,7 +421,6 @@ class UCSTestUDM(object):
 
     def remove_user(self, username, wait_for_replication=True):
         """Removes a user object from the ldap given it's username."""
-
         kwargs = {
             'dn': 'uid=%s,cn=users,%s' % (username, self.LDAP_BASE)
         }
@@ -410,12 +430,12 @@ class UCSTestUDM(object):
         """
         Creates a group via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
         have to exactly match UDM property names (case-sensitive!). Some properties have default values:
-        position: 'cn=users,$ldap_base'
-        name: <random value>
+
+        :param str position: `cn=users,$ldap_base`
+        :param str name: <random value>
+        :return: (dn, groupname)
 
         If "groupname" is missing, a random group name will be used.
-
-        Return value: (dn, groupname)
         """
         attr = self._set_module_default_attr(kwargs, (('position', 'cn=groups,%s' % self.LDAP_BASE),
                                                       ('name', uts.random_groupname())))
@@ -425,7 +445,8 @@ class UCSTestUDM(object):
     def _set_module_default_attr(self, attributes, defaults):
         """
         Returns the given attributes, extented by every property given in defaults if not yet set.
-        "defaults" should be a tupel containing tupels like "('username', <default_value>)".
+
+        :param tuple defaults: should be a tupel containing tupels like "('username', <default_value>)".
         """
         attr = copy.deepcopy(attributes)
         for prop, value in defaults:
@@ -439,7 +460,6 @@ class UCSTestUDM(object):
         """
         Automatically removes LDAP objects via UDM CLI that have been created before.
         """
-
         failedObjects = {}
         print('Performing UCSTestUDM cleanup...')
         objects = []
@@ -525,10 +545,10 @@ def verify_udm_object(module, dn, expected_properties):
 	"""
 	Verify an object exists with the given `dn` in the given UDM `module` with
 	some properties. Setting `expected_properties` to `None` requires the
-	object to not exist. `expected_properties` is a dictionary of
-	`property`:`value` pairs.
+	object to not exist.
+	:param dict expected_properties: is a dictionary of (property,value) pairs.
 
-	This will throw an `AssertionError` in case of a mismatch.
+	:raises AssertionError: in case of a mismatch.
 	"""
 	lo = utils.get_ldap_connection(admin_uldap=True)
 	try:
