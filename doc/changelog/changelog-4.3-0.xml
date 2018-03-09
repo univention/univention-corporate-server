@@ -94,6 +94,9 @@
 				<listitem><simpara>
 					The <package>bind9</package> init script restarts the service only if the &ucsUCRV; <envar>dns/backend</envar> is set (<u:bug>45341</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					A memory leak  and server crash was fixed in the DNS server <package>bind9</package> (<u:bug>46526</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
