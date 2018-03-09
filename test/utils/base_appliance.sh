@@ -597,47 +597,13 @@ install_app_in_prejoined_setup ()
 appliance_preinstall_non_univention_packages ()
 {
 	packages="
-adwaita-icon-theme
-apache2-suexec-pristine
-bc
-bind9
-bind9utils
-dconf-gsettings-backend
-dconf-service
-dictionaries-common
-dpt-i2o-raidutils
-elinks
-elinks-data
-emacs24
-emacs24-bin-common
-emacs24-common
-emacsen-common
-fbcat
-fbi
-fping
-gconf-service
-gconf2-common
-ghostscript
-glib-networking
-glib-networking-common
-glib-networking-services
-gsettings-desktop-schemas
-gsfonts
-heimdal-kdc
-heimdal-servers
-ifplugd
-imagemagick-common
-libatk-bridge2.0-0
-libatspi2.0-0
 libblas-common
 libblas3
-libcairo-gobject2
-libcolord2
+libcap2-bin
 libcupsfilters1
 libcupsimage2
 libdaemon0
-libdconf1
-libexif12
+libdbi1
 libfftw3-double3
 libfile-copy-recursive-perl
 libfribidi0
@@ -645,29 +611,26 @@ libfsplib0
 libgconf-2-4
 libgd3
 libgfortran3
+libgnutls-dane0
 libgomp1
 libgpm2
 libgs9
 libgs9-common
-libgtk-3-0
-libgtk-3-bin
-libgtk-3-common
-libharfbuzz-icu0
 libijs-0.35
 libio-socket-inet6-perl
+libirs141
 libjbig2dec0
-libjson-glib-1.0-0
-libjson-glib-1.0-common
 libkdc2-heimdal
-libkpathsea6
-liblinear1
+liblinear3
 liblqr-1-0
 libltdl7
-liblua5.2-0
+liblua5.1-0
+liblua5.3-0
 libm17n-0
-libmagickcore-6.q16-2
-libmagickwand-6.q16-2
+libmagickcore-6.q16-3
+libmagickwand-6.q16-3
 libmcrypt4
+libnet-snmp-perl
 libnetpbm10
 libnfsidmap2
 libnl-3-200
@@ -675,92 +638,39 @@ libnl-genl-3-200
 libnss-extrausers
 libnss-ldap
 libodbc1
-libopenjpeg5
+libopenjp2-7
 libopts25
 libotf0
+libpam-cap
 libpam-cracklib
 libpam-heimdal
 libpam-ldap
 libpaper-utils
 libpaper1
 libpcap0.8
-libperl5.20
-libpoppler46
-libpotrace0
 libpq5
-libproxy1
-libptexenc1
 libquadmath0
-librest-0.7-0
-libslp1
+libradcli4
+libsnmp-base
 libsnmp-session-perl
+libsnmp30
 libsocket6-perl
-libsoup-gnome2.4-1
-libsoup2.4-1
-libsynctex1
 libtirpc1
 libtre5
-libvpx1
-libwayland-cursor0
-libxkbcommon0
+libunbound2
 libyaml-0-2
-libzzip-0-13
-locate
-m17n-db
-memcached
-monitoring-plugins
-monitoring-plugins-basic
-monitoring-plugins-common
-monitoring-plugins-standard
-mrtg
-nagios-nrpe-server
-nagios-plugins-basic
-netpbm
-nfs-common
-nfs-kernel-server
-nmap
-nscd
+bind9
+emacs24
+ifplugd
 ntp
-ntpdate
-openbsd-inetd
-pam-runasroot
-php-openid
-php-pear
-php-xml-parser
-php-cgi
-php-curl
-php-gmp
-php-ldap
-php-mcrypt
-php-memcache
-poppler-data
-postgresql-client-9.6
-postgresql-client-common
-preview-latex-style
-python-ecdsa
-python-egenix-mxdatetime
-python-egenix-mxtools
-python-paramiko
-python-pycurl
-python-pygresql
-python-yaml
-quota
-rpcbind
-simplesamlphp
-stunnel4
 sudo
-sysvinit
-unzip
-update-inetd
 vim
-vim-runtime
-wamerican
-wngerman
-xdg-utils
 zip"
+	local instpackages=
 	for p in $packages; do
-		DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends "$p"
+		instpackages="$instpackages $p"
 	done
+	DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends $instpackages
 }
 
 install_haveged ()
@@ -894,7 +804,7 @@ setup_appliance ()
 	univention-install -y --force-yes univention-management-console-server=9.0.80-59A~4.2.0.201707241109 python-univention-management-console=9.0.80-59A~4.2.0.201707241109 univention-management-console=9.0.80-59A~4.2.0.201707241109  univention-management-console-web-server=9.0.80-59A~4.2.0.201707241109 firefox-esr=45.7.0esr-1~deb8u1
 
 	# shrink appliance image size
-	# appliance_preinstall_non_univention_packages
+	appliance_preinstall_non_univention_packages
 	rm /etc/apt/sources.list.d/05univention-system-setup.list
 	rm -r /var/cache/univention-system-setup/packages/
 
