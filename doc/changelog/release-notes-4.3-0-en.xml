@@ -57,8 +57,8 @@
 			</para></listitem>
 			<listitem><para>
     			The portal pages introduced with the UCS 4.2 give users access to the company applications. With UCS 4.3,
-				administrators can easily build and manage these portals in Visual Composer mode and drag and drop.
-				Depending on permission, department, branch or school, users or groups will see different content.
+				administrators can easily build and manage these portals in visual composer mode and drag and drop.
+				Depending on permissions, department, branch or school, users or groups will see different content.
 			</para></listitem>
 			<listitem><para>
  				With UCS 4.3, SAML authentication is linked to the Kerberos login. Users logged in to Windows or
@@ -71,7 +71,7 @@
 						Normal users, they have all the features.
 					</para></listitem>
 					<listitem><para>
-						Simple authentication accounts, these can only connect to the LDAP, but have no possibility to log in elsewhere.
+						Simple authentication accounts, these can only connect to LDAP, but have no possibility to log in elsewhere.
 					</para></listitem>
 					<listitem><para>
 						Address book entries for maintaining contact information.
