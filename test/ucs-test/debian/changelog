@@ -1,3 +1,10 @@
+ucs-test (8.0.28-87) unstable; urgency=medium
+
+  * tests/10_ldap/27reconnect_uldap_2: Skip test case since it is not
+    stable (Bug #45828)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 10 Mar 2018 20:35:39 +0100
+
 ucs-test (8.0.28-86) unstable; urgency=medium
 
   * Bug #46477: Fix bug in is_arch not catching all allowed values
