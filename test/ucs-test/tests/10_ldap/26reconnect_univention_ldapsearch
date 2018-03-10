@@ -205,3 +205,6 @@ if __name__ == '__main__':
     base_dn = UCR.get('ldap/base')
 
     main()
+
+    # Wait for some seconds otherwise the following test case will fail Bug #45828
+    sleep(5)
