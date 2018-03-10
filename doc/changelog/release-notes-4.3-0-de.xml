@@ -57,11 +57,11 @@
 			</para></listitem>
             <listitem><para>
 				Über die mit dem UCS 4.2 eingeführte Portalseiten erhalten Nutzer von überall Zugriff auf die Anwendungen im Unternehmen.
-				Mit UCS 4.3 können Administratoren diese Portale in einem Visual Composer Modus und via Drag-and-Drop einfach aufbauen und verwalten.
+				Mit UCS 4.3 können Administratoren diese Portale in einem Visual Composer Modus und via Drag and Drop einfach aufbauen und verwalten.
 				Je nach Berechtigung, Abteilung, Niederlassung oder Schule werden den Nutzern oder Gruppen unterschiedliche Inhalte angezeigt
             </para></listitem>
             <listitem><para>
-				Mit UCS 4.3 ist die SAML-Authentifizierung mit der Kerberos Anmeldung verknüpft. An Windows oder Ubuntu Desktop angemeldte
+				Mit UCS 4.3 ist die SAML-Authentifizierung mit der Kerberos Anmeldung verknüpft. An Windows oder Ubuntu Desktop angemeldete
 				Nutzer können ohne eine erneute Authentifizierung auf Web-Applikationen zugreifen, die SAML unterstützen.
 			</para></listitem>
             <listitem><para>
