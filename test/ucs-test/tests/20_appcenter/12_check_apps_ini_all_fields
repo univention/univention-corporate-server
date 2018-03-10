@@ -8,6 +8,7 @@
 ## exposure: safe
 
 import os
+import re
 from sys import stderr, exit
 from optparse import OptionParser
 from re import compile as regex_compile
