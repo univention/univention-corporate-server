@@ -1,3 +1,9 @@
+ucs-test (8.0.28-86) unstable; urgency=medium
+
+  * Bug #46477: Fix bug in is_arch not catching all allowed values
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 10 Mar 2018 16:14:58 +0100
+
 ucs-test (8.0.28-85) unstable; urgency=medium
 
   * 86_selenium/10_product_test_password_change: disable test case
