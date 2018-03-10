@@ -1,3 +1,9 @@
+univention-portal (2.0.1-1) unstable; urgency=medium
+
+  * Use nc -z instead of nc -w 10 to check the LDAP server (Bug #45129)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 10 Mar 2018 11:54:13 +0100
+
 univention-portal (2.0.0-11) unstable; urgency=medium
 
   * Bug #46463: Implement design improvements (2)

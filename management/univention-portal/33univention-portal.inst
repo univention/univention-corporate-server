@@ -41,7 +41,7 @@ joinscript_init
 ldap_master="$(ucr get ldap/master)"
 ldap_master_port="$(ucr get ldap/master/port)"
 
-if ! nc -w 10 "$ldap_master" "${ldap_master_port:-7389}"; then
+if ! nc -z "$ldap_master" "${ldap_master_port:-7389}"; then
 	echo "LDAP master is not available. Please try again later."
 	die
 fi
