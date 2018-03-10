@@ -34,7 +34,7 @@
 						A typing error in the welcome screen has been corrected (<u:bug>45819</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						The &ucsUCRV; <envar>interfaces/primary</envar> is set during the system setup (<u:bug>45956</u:bug>).
+						The &ucsUCRV; <envar>interfaces/primary</envar> is set during the system setup (<u:bug>45956</u:bug>, <u:bug>46551</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
 						The update is stopped in case the system has a TLS certificate with a MD5 signature (<u:bug>46133</u:bug>).
