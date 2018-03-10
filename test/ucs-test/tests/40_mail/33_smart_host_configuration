@@ -1,5 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test smart host configuration
+## roles-not: [memberserver]
 ## exposure: dangerous
 
 import tempfile
