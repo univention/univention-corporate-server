@@ -129,6 +129,10 @@
 					The visibility of individual portal entries may now be restricted to
 					logged in users of a specific group (<u:bug>46336</u:bug>, <u:bug>46376</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The portal join script now checks the availability of the LDAP server much faster
+					(<u:bug>45129</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
