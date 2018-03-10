@@ -51,7 +51,37 @@
 
 		<itemizedlist>
 			<listitem><para>
-				UCS 4.3 is based on Debian GNU/Linux 9 (Stretch). 
+				UCS 4.3 is based on Debian GNU/Linux 9 (Stretch). More than 20,000 source packages have
+				been updated and adapted to the needs of UCS administrators. The Linux kernel of Debian GNU/Linux is
+				now used directly. New in UCS 4.3 are e.g. MariaDB and Nagios 4.
+			</para></listitem>
+			<listitem><para>
+    			The portal pages introduced with the UCS 4.2 give users access to the company applications. With UCS 4.3,
+				administrators can easily build and manage these portals in Visual Composer mode and drag and drop.
+				Depending on permission, department, branch or school, users or groups will see different content.
+			</para></listitem>
+			<listitem><para>
+ 				With UCS 4.3, SAML authentication is linked to the Kerberos login. Users logged in to Windows or
+				Ubuntu can access Web applications that support SAML without reauthentication.
+			</para></listitem>
+			<listitem><para>
+				The different user options have been standardized. There are three different user types with UCS 4.3:
+				<itemizedlist>
+					<listitem><para>
+						Normal users, they have all the features.
+					</para></listitem>
+					<listitem><para>
+						Simple authentication accounts, these can only connect to the LDAP, but have no possibility to log in elsewhere.
+					</para></listitem>
+					<listitem><para>
+						Address book entries for maintaining contact information.
+					</para></listitem>
+				</itemizedlist>
+			</para></listitem>
+			<listitem><para>
+				Samba has been updated to version 4.7. The new Samba release contains important enhancements to the Active Directory
+				domain controller. For example, the multi process implementation of the Samba LDAP server will significantly improve
+				performance. Additionally, replicating group memberships now uses significantly fewer resources.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
