@@ -64,7 +64,7 @@
 			</para></listitem>
 			<listitem><para>
  				With UCS 4.3, SAML authentication is linked to the Kerberos login. Users logged in to Windows or
-				Linux (Ubuntu) can access Web applications that support SAML without reauthentication.
+				Linux (Ubuntu) can access Web applications that support SAML without re-authentication.
 			</para></listitem>
 			<listitem><para>
 				The different account types for users have been simplified. There are now three different account types with UCS 4.3:
