@@ -79,7 +79,7 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
-			--!>
+			-->
 		</section>
 		<section id="changelog:domain:kerberos">
 			<title>Kerberos</title>
@@ -248,7 +248,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-			--!>
+			-->
 
 		<section id="changelog:umc:diagnostic">
 			<title>System diagnostic module</title>
@@ -279,7 +279,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-			--!>
+			-->
 
 		<!--
 		<section id="changelog:umc:mail">
@@ -299,7 +299,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-			--!>
+			-->
 
 		<section id="changelog:umc:ucr">
 			<title>Univention Configuration Registry module</title>
@@ -328,7 +328,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
-			--!>
+			-->
 
 	<section id="changelog:deployment">
 		<title>Software deployment</title>
@@ -387,7 +387,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-			--!>
+			-->
 
 		<section id="changelog:service:nagios">
 			<title>Nagios</title>
@@ -598,7 +598,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 	</section>
-			--!>
+			-->
 
 	<section id="changelog:win">
 		<title>Services for Windows</title>
