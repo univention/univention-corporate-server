@@ -544,6 +544,9 @@
 					Individual profiles for previous <systemitem class="osname">UCS</systemitem> releases are no longer created in favor of a generic profile for <systemitem class="osname">UCS-4</systemitem>.
 					The default boot order has been swapped to hard-disk before CD-ROM.
 				</simpara></listitem>
+				<listitem><simpara>
+					The UVMM unjoin script can now be executed on a DC Slave (<u:bug>46578</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
