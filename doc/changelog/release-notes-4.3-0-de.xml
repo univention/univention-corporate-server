@@ -210,7 +210,7 @@ Checking ldap_schema ...                          OK
 		</section>
 
 		<section id="relnotes:cyrus">
-			<title>Cyrus IMAPd</title>
+			<title>Cyrus IMAP-Server</title>
 			<para>
 				Die Integration des Cyrus IMAP- und POP3-Servers wurde aus UCS entfernt. Die Integration von Dovecot wird die einzige sein, die ab UCS 4.3 unterstützt wird.
 				Wenn Sie Cyrus unter UCS 4.2 verwenden und ein Upgrade auf UCS 4.3 durchführen möchten, lesen Sie den Artikel <ulink url = "https://help.univention.com/t/7957" />.
@@ -223,7 +223,7 @@ Checking ldap_schema ...                          OK
 			<para>
 				Unterstützung für <literal> NT-Stil Domänensteuerung </literal> wurde aus UCS 4.3 entfernt.
 				Unterstützung für <literal>Windows NT Domänen</literal> wurde aus UCS 4.3 entfernt. Das Update für diese Domains
-				ist blockiert und die Domäne muss nach dem Update-Guide <ulink url = "https://wiki.univention.de/index.php/Migration_from_Samba_3_to_Samba_4">
+				ist blockiert und die Domäne muss nach der Anleitung <ulink url = "https://wiki.univention.de/index.php/Migration_from_Samba_3_to_Samba_4">
 				Migration von Samba 3 nach Samba 4 </ulink> auf <literal>Samba/AD</literal> migriert werden.
 				Siehe auch <ulink url = "https://wiki.univention.de/index.php/Best_Practice_Samba_4_Migration"> Best Practices für Samba 4 Migration </ulink>.
 			</para>

@@ -53,7 +53,7 @@
 			<listitem><para>
 				UCS 4.3 is based on Debian GNU/Linux 9 (Stretch). More than 20,000 source packages have
 				been updated and and some have been adapted to the needs of UCS users. The Linux kernel of Debian GNU/Linux is
-				now used unmodified. This greatly improves compatability to hardware and software which has been certified for
+				now used unmodified. This greatly improves compatibility to hardware and software which has been certified for
 				Debian 9. Also new in UCS 4.3 are e.g. MariaDB and Nagios 4.
 			</para></listitem>
 			<listitem><para>
@@ -209,7 +209,7 @@ Checking ldap_schema ...                          OK
 		</section>
 
 		<section id="relnotes:cyrus">
-			<title>Cyrus IMAPd</title>
+			<title>Cyrus IMAP daemon</title>
 			<para>
 				The integration of the Cyrus IMAP and POP3 server has been removed from UCS.
 				The integration of Dovecot will be the only one supported from UCS 4.3 on.
