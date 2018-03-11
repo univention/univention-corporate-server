@@ -46,32 +46,34 @@
 		<para>
 			With Univention Corporate Server 4.3, the third minor release of Univention Corporate Server (UCS) 4 is now
 			available. It provides several feature improvements and extensions, new properties as well as
-			various improvements and bugfixes. An overview of the most important changes are:
+			various improvements and bugfixes. Here is an overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
 				UCS 4.3 is based on Debian GNU/Linux 9 (Stretch). More than 20,000 source packages have
-				been updated and adapted to the needs of UCS administrators. The Linux kernel of Debian GNU/Linux is
-				now used directly. New in UCS 4.3 are e.g. MariaDB and Nagios 4.
+				been updated and and some have been adapted to the needs of UCS users. The Linux kernel of Debian GNU/Linux is
+				now used unmodified. This greatly improves compatability to hardware and software which has been certified for
+				Debian 9. Also new in UCS 4.3 are e.g. MariaDB and Nagios 4.
 			</para></listitem>
 			<listitem><para>
-    			The portal pages introduced with the UCS 4.2 give users access to the company applications. With UCS 4.3,
-				administrators can easily build and manage these portals in visual composer mode and drag and drop.
-				Depending on permissions, department, branch or school, users or groups will see different content.
+				The portal pages introduced with the UCS 4.2 give users a simple way to access applications relevant to them. With UCS 4.3,
+				administrators can easily build and manage these portals in visual composer mode and via drag and drop.
+				It is now also possible to show different content to different users, depending on their group membership, permissions,
+				department, branch or school.
 			</para></listitem>
 			<listitem><para>
  				With UCS 4.3, SAML authentication is linked to the Kerberos login. Users logged in to Windows or
-				Ubuntu can access Web applications that support SAML without reauthentication.
+				Linux (Ubuntu) can access Web applications that support SAML without reauthentication.
 			</para></listitem>
 			<listitem><para>
-				The different user options have been standardized. There are three different user types with UCS 4.3:
+				The different account types for users have been simplified. There are now three different account types with UCS 4.3:
 				<itemizedlist>
 					<listitem><para>
-						Normal users, they have all the features.
+						Normal accounts containing all features.
 					</para></listitem>
 					<listitem><para>
-						Simple authentication accounts, these can only connect to LDAP, but have no possibility to log in elsewhere.
+						Simple authentication accounts, these can only connect to LDAP servers, but have no possibility to log in elsewhere.
 					</para></listitem>
 					<listitem><para>
 						Address book entries for maintaining contact information.
@@ -79,7 +81,7 @@
 				</itemizedlist>
 			</para></listitem>
 			<listitem><para>
-				Samba has been updated to version 4.7. The new Samba release contains important enhancements to the Active Directory
+				Samba has been updated to version 4.7. This new Samba release contains important enhancements to the Active Directory
 				domain controller. For example, the multi process implementation of the Samba LDAP server will significantly improve
 				performance. Additionally, replicating group memberships now uses significantly fewer resources.
 			</para></listitem>

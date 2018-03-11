@@ -45,44 +45,45 @@
 
 		<para>
 			Mit Univention Corporate Server 4.3 steht das dritte Minor Release für Univention Corporate Server (UCS) 4 zur
-			Verfügung. Es umfasst eine Reihe Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie
+			Verfügung. Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie
 			diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
 				UCS 4.3 basiert auf Debian GNU/Linux 9 (<wordasword>Stretch</wordasword>). Mehr als 20.000 Source Pakete wurden aktualisiert und
-                an die Bedürfnisse der UCS-Administratoren angepasst. Als Linux Kernel wird nun direkt der Kernel von Debian GNU/Linux
-				verwendet. Neu in UCS 4.3 sind u.a. MariaDB und Nagios 4.
+				zum Teil an die Bedürfnisse der Nutzer von UCS angepasst. Als Linux Kernel wird nun der unveränderte Kernel von Debian GNU/Linux
+				verwendet. Das erhöht die Kompatibilität zu Hard- und Softwaresystemenen, die für Debian zertifiziert sind. Neu in UCS 4.3 sind außerdem
+				u.a. MariaDB und Nagios 4.
 			</para></listitem>
-            <listitem><para>
-				Über die mit dem UCS 4.2 eingeführte Portalseiten erhalten Nutzer von überall Zugriff auf die Anwendungen im Unternehmen.
+			<listitem><para>
+				Über die mit UCS 4.2 eingeführten Portalseiten erhalten Nutzer von überall einfachen Zugriff auf relevante Anwendungen.
 				Mit UCS 4.3 können Administratoren diese Portale in einem Visual Composer Modus und via Drag and Drop einfach aufbauen und verwalten.
-				Je nach Berechtigung, Abteilung, Niederlassung oder Schule werden den Nutzern oder Gruppen unterschiedliche Inhalte angezeigt
-            </para></listitem>
-            <listitem><para>
-				Mit UCS 4.3 ist die SAML-Authentifizierung mit der Kerberos Anmeldung verknüpft. An Windows oder Ubuntu Desktop angemeldete
+				Je nach Berechtigung, Abteilung, Niederlassung oder Schule können den Nutzern oder Gruppen unterschiedliche Inhalte angezeigt werden.
+			</para></listitem>
+			<listitem><para>
+				Mit UCS 4.3 ist die SAML-Authentifizierung mit der Kerberos Anmeldung verknüpft. An Windows oder Linux (Ubuntu) angemeldete
 				Nutzer können ohne eine erneute Authentifizierung auf Web-Applikationen zugreifen, die SAML unterstützen.
 			</para></listitem>
-            <listitem><para>
-				Die unterschiedlichen Benutzeroptionen wurden vereinheitlicht. So gibt es mit UCS 4.3 drei unterschiedliche Benutzertypen:
+			<listitem><para>
+				Die unterschiedlichen Kontooptionen für Benutzer wurden vereinheitlicht. So gibt es mit UCS 4.3 drei unterschiedliche Kontotypen:
 				<itemizedlist>
 					<listitem><para>
-						Normale vollwertige Benutzer, diese haben sämtliche Eigenschaften.
+						Normale, vollwertige Konten, diese haben sämtliche Eigenschaften.
 					</para></listitem>
 					<listitem><para>
-						Einfache Authentisierungskonten, diese können sich lediglich mit dem LDAP verbinden, haben aber keine Möglichkeit sich auch anderweitig anzumelden.
+						Einfache Authentisierungskonten, diese können sich lediglich mit dem LDAP-Server verbinden, haben aber keine Möglichkeit sich auch anderweitig anzumelden.
 					</para></listitem>
 					<listitem><para>
 						Adressbucheinträge für die Pflege von Kontaktinformationen.
 					</para></listitem>
 				</itemizedlist>
-            </para></listitem>
-            <listitem><para>
-                Samba wurde auf Version 4.7 aktualisiert. In der neuen Samba Version sind wichtige Verbesserungen im Bereich des Active Directory Domänencontroller
-				vorhanden. So wird durch die Multi-Process-Implementierung des Samba LDAP Servers eine deutliche Performanceverbesserung eintreten. Zusätzlich kommt
+			</para></listitem>
+			<listitem><para>
+				Samba wurde auf Version 4.7 aktualisiert. In der neuen Samba Version sind wichtige Verbesserungen im Bereich des Active Directory Domänencontroller
+				vorhanden. So wird durch die Multi-Process-Implementierung des Samba LDAP-Servers eine deutliche Performanceverbesserung eintreten. Zusätzlich kommt
 				die Replikation von Gruppenmitgliedschaften nun mit deutlich weniger Ressourcen aus.
-            </para></listitem>
+			</para></listitem>
 		</itemizedlist>
 	</chapter>
 
