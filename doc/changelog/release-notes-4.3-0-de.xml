@@ -196,7 +196,7 @@ Checking ldap_schema ...                          OK
 			</para>
 		</section>
 
-		<section id="relnotes:mariadb">
+		<section id="relnotes:useroptions">
 			<title>Vereinheitlichung der Benutzeroptionen</title>
 			<para>
 				Bisher konnten den Benutzern vom Administrator in UMC bestimmte Eigenschaften zugeordnet werden.

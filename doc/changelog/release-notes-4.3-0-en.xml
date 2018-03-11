@@ -197,8 +197,8 @@ Checking ldap_schema ...                          OK
 			</para>
 		</section>
 
-		<section id="relnotes:mariadb">
-			<title>Unification of user options</title>
+		<section id="relnotes:useroptions">
+			<title>Simplify user options</title>
 			<para>
 				Previously, UMC administrators could assign certain properties to users. That were e.g. Samba, Kerberos, POSIX and Mail.
 				With UCS 4.3, the existing users will be migrated into three different user types:
