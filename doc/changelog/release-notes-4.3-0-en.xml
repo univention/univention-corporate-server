@@ -139,7 +139,7 @@
 		</para>
 
 		<para>
-			With UCS 4.3 Univention provides a script that checks for problems which would prevent the successful update of the system. Prior to the update this script
+			With UCS 4.3, Univention provides a script that checks for problems which would prevent the successful update of the system. Prior to the update, this script
 			can be downloaded and executed on the UCS system.
 			<screen><![CDATA[
 # download
@@ -172,7 +172,8 @@ Checking ldap_schema ...                          OK
 		<para>
 			Following the update, new or updated join scripts need to be executed.
 			This can be done in two ways:
-			Either using the UMC module  <guimenu>Domain join</guimenu> or by running the command <command>univention-run-join-scripts</command> as user <systemitem class="username">root</systemitem>.
+			Either using the UMC module  <guimenu>Domain join</guimenu> or by running the command
+			<command>univention-run-join-scripts</command> as user <systemitem class="username">root</systemitem>.
 		</para>
 
 		<para>
@@ -187,17 +188,48 @@ Checking ldap_schema ...                          OK
 		<section id="relnotes:mariadb">
 			<title>MariaDB replaces MySQL</title>
 			<para>
-				MySQL has been replaced with MariaDB to stay consistent with the upstream Debian version.
+				UCS 4.3 replaces MySQL with MariaDB.
 				The new package <package>univention-mariadb</package> provides the integration into UCS.
 				The package <package>univention-mysql</package> is now a meta package and installs <package>univention-mariadb</package>.
 				Existing data is migrated without user interaction when updating to UCS 4.3.
 			</para>
 		</section>
 
+		<section id="relnotes:mariadb">
+			<title>Unification of user options</title>
+			<para>
+				Previously, UMC administrators could assign certain properties to users. That were e.g. Samba, Kerberos, POSIX and Mail.
+				With UCS 4.3, the existing users will be migrated into three different user types:
+                 1. Normal full-fledged users, these have all the features.
+                 2. Simple authentication accounts, these can only connect to LDAP, but can't log in elsewhere.
+                 3. Address book entries, internal or external identities can be maintained here, e.g. to create address lists.
+			</para>
+		</section>
+
+		<section id="relnotes:cyrus">
+			<title>Cyrus IMAPd</title>
+			<para>
+				The integration of the Cyrus IMAP and POP3 server has been removed from UCS.
+				The integration of Dovecot will be the only one supported from UCS 4.3 on.
+				If you are using Cyrus on UCS 4.2 and wish to upgrade to UCS 4.3, please refer to the article <ulink url="https://help.univention.com/t/7957" />.
+				The article includes a link to instructions for migrating from Cyrus to Dovecot.
+			</para>
+		</section>
+
+		<section id="relnotes:nt">
+			<title>Samba as Windows NT DC</title>
+			<para>
+				Support for <literal>NT style domain control</literal> has been removed from UCS 4.3. The update for
+				these domains is blocked and the domain needs to be migrated to <literal>Samba/AD</literal>
+				following the update guide <ulink url="https://wiki.univention.de/index.php/Migration_from_Samba_3_to_Samba_4">Migration from Samba 3 to Samba 4</ulink>.
+				See also <ulink url="https://wiki.univention.de/index.php/Best_Practice_Samba_4_Migration">Best practices for Samba 4 Migration</ulink> .
+			</para>
+		</section>
+
 		<section id="relnotes:usage">
 			<title>Collection of usage statistics</title>
 			<para>
-				Anonymous usage statistics on the use of &ucsUMC; are collected when using the <emphasis>UCS Core Edition</emphasis> (which is generally used for evaluating UCS).
+				Anonymous usage statistics on the use of &ucsUMC; are collected when using the <emphasis>UCS Core Edition</emphasis>.
 				The modules opened are logged in an instance of the web traffic analysis tool Piwik.
 				This makes it possible for Univention to tailor the development of &ucsUMC; better to customer needs and carry out usability improvements.
 			</para>
