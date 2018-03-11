@@ -254,7 +254,7 @@
 			<title>System diagnostic module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The robustness of the diagnistic modules have been increased (<u:bug>46231</u:bug>).
+					The robustness of the diagnostic modules have been increased (<u:bug>46231</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
