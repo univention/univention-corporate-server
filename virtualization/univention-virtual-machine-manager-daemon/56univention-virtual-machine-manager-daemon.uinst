@@ -67,7 +67,7 @@ parse_credentials () {
 }
 
 get_credentials () {
-	parse_credentials
+	parse_credentials "$@"
 	[ -n "$binddn" ] && [ -n "$bindpwdfile" ] && return 0
 	[ -n "$binddn" ] && [ -n "$bindpwd" ] && return 0
 	case "$server_role" in
@@ -85,7 +85,7 @@ if ucs_isServiceUnused "$SERVICE" "$@"
 then
 	eval "$(univention-config-registry shell)"
 
-	get_credentials
+	get_credentials "$@"
 
 	uvmm_base="cn=Virtual Machine Manager,$ldap_base"
 	master="$(ucr get ldap/master)"
