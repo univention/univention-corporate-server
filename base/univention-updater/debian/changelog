@@ -1,4 +1,4 @@
-univention-updater (13.0.1-35) unstable; urgency=medium
+univention-updater (13.0.1-36) unstable; urgency=medium
 
   * Bug #46605: Block if single-server SSO is configured
 

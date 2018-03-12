@@ -413,6 +413,7 @@ block_update_if_reconfigured_sso_is_detected() {
 		else
 			exit 1
 		fi
+	fi
 }
 block_update_if_reconfigured_sso_is_detected
 
