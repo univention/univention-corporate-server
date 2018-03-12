@@ -11,9 +11,8 @@
 <chapter id="users:general">
     <title>Benutzerverwaltung</title>
     <para>
-        UCS integriert ein zentrales Identity-Management nach dem <emphasis>Same
-        User, Same Password</emphasis>-Prinzip. Alle Benutzerinformationen werden in UCS
-        zentral über &ucsUMC; verwaltet und im LDAP-Verzeichnisdienst
+        UCS integriert ein zentrales Identity-Management. Alle Benutzerinformationen
+        werden in UCS zentral über &ucsUMC; verwaltet und im LDAP-Verzeichnisdienst
         gespeichert.
     </para>
     <para>

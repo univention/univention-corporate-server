@@ -11,10 +11,8 @@
 <chapter id="users:general">
     <title>User management</title>
     <para>
-        UCS integrates central identity management according to the
-        <emphasis>same user, same password</emphasis> principle.
-        All user information are managed
-        centrally in UCS via &ucsUMC; and stored in the LDAP directory
+        UCS integrates central identity management. All user information are
+        managed centrally in UCS via &ucsUMC; and stored in the LDAP directory
         service.
     </para>
     <para>
