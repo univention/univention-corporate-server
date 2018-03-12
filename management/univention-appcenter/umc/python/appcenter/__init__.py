@@ -214,7 +214,7 @@ class Instance(umcm.Base, ProgressMixin):
 					ret.append(None)
 				else:
 					short_info = {}
-					for attr in ['id', 'name', 'vendor', 'maintainer', 'description', 'long_description', 'categories', 'end_of_life', 'update_available', 'logo_name', 'is_installed_anywhere', 'is_installed', 'installations']:
+					for attr in ['id', 'name', 'vendor', 'maintainer', 'description', 'long_description', 'categories', 'end_of_life', 'update_available', 'logo_name', 'is_installed_anywhere', 'is_installed', 'installations', 'rating']:
 						short_info[attr] = app[attr]
 					ret.append(short_info)
 			return ret
