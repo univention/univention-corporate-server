@@ -184,7 +184,7 @@
 	</para>
 	<para>
 		Standardmäßig ist UCS so voreingestellt, dass es zwei Portale gibt.
-		Das Portal <foreignphrase>domain</foreignphrase> ist mit dem &ucsMaster; der Domäne verknüpft.
+		Das Portal <foreignphrase>domain</foreignphrase> ist mit den Domänencontroller Master und Backup Systemen der Domäne verknüpft.
 		Neben allen installierten Applikationen in der Domäne werden hier auch Verweise zu &ucsUMC; sowie zur Serverübersicht angezeigt.
 		Das Portal <foreignphrase>local</foreignphrase> ist allen anderen Rechnerrollen in der Domäne zugewiesen.
 		Hier wird neben den lokal installierten Apps ein Verweis auf die lokal verfügbare &ucsUMC; Instanz sowie ein Verweis zurück auf den &ucsMaster; der Domäne dargestellt.
@@ -195,14 +195,14 @@
 	</para>
 	<para>
 		Mitglieder der Gruppe <systemitem class="groupname">Domain Admins</systemitem> können nach der Anmeldung am Portal auf dem DC Master oder DC Backup nach einem Klick auf das gelbe Bearbeitungs-Icon neue
-		Einträge auf dem Portal erstellen, vorhandene Einträge modifizieren, die Reihenfolge oder das Design modifizieren.
+		Einträge auf dem Portal erstellen, vorhandene Einträge modifizieren, sowie die Reihenfolge oder das Design modifizieren.
 	</para>
 	<para>
 		Weiterführende Einstellungen, wie das Hinzufügen neuer Portale oder die Einstellung, welche Gruppenmitglieder welche Portaleinträge sehen dürfen, können über das UMC-Modul
 		Portaleinstellungen durchgeführt werden.
 	</para>
 	<para>
-		Standardmäßig werden alle Portaleinträge für alle angezeigt. Die Limitierung von Einträgen für bestimmte Gruppen erfordert das LDAP-Attribut <property>mmemberOf</property>.
+		Standardmäßig werden alle Portaleinträge für jeden angezeigt. Die Limitierung von Einträgen für bestimmte Gruppen erfordert das LDAP-Attribut <property>memberOf</property>.
 		Eine Auswertung von verschachtelten Gruppenmitgliedsschaften (also Gruppen in Gruppen) findet nicht statt.
 	</para>
 	<figure id="portal-schema">

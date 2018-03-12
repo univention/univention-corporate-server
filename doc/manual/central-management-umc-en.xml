@@ -184,7 +184,7 @@
 	</para>
 	<para>
 		By default, UCS is configured to have two portals.
-		The portal <emphasis>domain</emphasis> is assigned to the &ucsMaster; of the domain.
+		The portal <emphasis>domain</emphasis> is assigned to the master and backup domain controllers of the domain.
 		In addition to all installed applications of the domain, links to &ucsUMC; as well as the server overview are shown on this portal page.
 		The portal <emphasis>local</emphasis> is assigned to all other server roles in the domain.
 		Herein, links to locally installed Apps, to the local &ucsUMC; instance, as well as a link back to the &ucsMaster; are shown.
@@ -200,7 +200,7 @@
 		Advanced settings, such as adding new portals or setting which group members can see which portal entries can be made using the UMC portal settings module.
 	</para>
 	<para>
-		By default, all portal entries are displayed for everyone. Limiting entries for specific groups requires the LDAP attribute <property>mmemberOf</property>.
+		By default, all portal entries are displayed to everyone. Limiting entries for specific groups requires the LDAP attribute <property>memberOf</property>.
 		Nested group memberships (i.e., groups in groups) are not evaluated.
 	</para>
 	<figure id="portal-schema">
