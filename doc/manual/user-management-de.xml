@@ -30,9 +30,9 @@
     </para>
     <para>
         In UCS gibt es drei unterschiedliche Arten von Benutzern:
-        <itemizedlist>
+        <orderedlist>
              <listitem><simpara>
-                  <envar>Vollwertige Benutzerkonten</envar>:
+                  <emphasis>Vollwertige Benutzerkonten</emphasis>:
                   Normale, vollwertige Benutzerkonten haben sämtliche verfügbaren Eigenschaften.
                   Diese Benutzer können sich an UCS- oder Windows-Systemen anmelden und je nach
                   Konfiguration auch an den installierten Apps. Die Benutzer können über das 
@@ -41,7 +41,7 @@
              </simpara></listitem>
 
              <listitem><simpara>
-                  <envar>Adressbucheinträge</envar>:
+                  <emphasis>Adressbucheinträge</emphasis>:
                   Adressbucheinträge werden für die Pflege von internen oder externen
                   Kontaktinformationen verwenden. Diese Kontakte können sich nicht an UCS- oder
                   Windows-Systemen anmelden. Adressbucheinträge können über das UMC-Modul
@@ -49,7 +49,7 @@
              </simpara></listitem>
 
              <listitem><simpara>
-                  <envar>Einfaches Authentisierungskonto</envar>:
+                  <emphasis>Einfaches Authentisierungskonto</emphasis>:
                   Mit einem einfachen Authentisierungskonto wird ein Benutzer-Objekt angelegt, welches
                   ausschließlich einen Benutzernamen und ein Passwort hat. Mit diesem Konto ist
                   ausschließlich eine Authentisierung gegen den LDAP-Verzeichnisdienst möglich, aber
@@ -57,7 +57,7 @@
                   können über das UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu>
                   (siehe <xref linkend="central:navigation"/>) erstellt werden.
              </simpara></listitem>
-        </itemizedlist>
+        </orderedlist>
     </para>
     <section id="users::management">
         <title>Verwaltung von Benutzern mit Univention Management Console</title>

@@ -28,9 +28,9 @@
     </para>
     <para>
         There are three different types of users in UCS:
-        <itemizedlist>
+        <orderedlist>
              <listitem><simpara>
-                  <envar>Normal user account</envar>:
+                  <emphasis>Normal user account</emphasis>:
                   Normal user accounts have all available properties. These users
                   can log on to UCS or Windows systems and, depending on the configuration, also
                   to the installed Apps. The users can be administered via the UMC module
@@ -38,21 +38,21 @@
              </simpara></listitem>
 
              <listitem><simpara>
-                  <envar>Address book entries</envar>:
+                  <emphasis>Address book entries</emphasis>:
                   Address book entries will be used to maintain internal or external contact information.
                   These contacts can not log on to UCS or Windows systems. Address book entries can be
                   managed via the UMC module <guimenu>Contacts</guimenu>.
              </simpara></listitem>
 
              <listitem><simpara>
-                  <envar>Simple authentication account</envar>:
+                  <emphasis>Simple authentication account</emphasis>:
                   With a simple authentication account, a user object is created, which has only a user
                   name and a password. With this account, only authentication against the LDAP directory
                   service is possible, but no logon to UCS or Windows systems. Simple authentication accounts
                   can be accessed via the UMC module <guimenu>LDAP directory</guimenu>
                   (see <xref linkend="central:navigation"/>).
              </simpara></listitem>
-        </itemizedlist>
+        </orderedlist>
     </para>
     <section id="users::management">
         <title>User management with Univention Management Console</title>
