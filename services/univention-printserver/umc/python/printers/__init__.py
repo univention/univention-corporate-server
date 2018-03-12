@@ -316,7 +316,8 @@ class Instance(Base):
 		# appending user names to the args array -> spaces in user names
 		# don't confuse edpykota (In 2.4, this was a problem)
 		for user in users:
-			cmd.append(user)
+			if user:
+				cmd.append(user)
 		(stdout, stderr, status) = self._shell_command(cmd, {'LANG': 'C'})
 
 		if status or stderr:

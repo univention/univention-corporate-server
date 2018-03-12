@@ -1,3 +1,9 @@
+univention-printserver (11.0.0-6) unstable; urgency=medium
+
+  * Bug #44721: fix printers/quota/reset
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Mar 2018 10:59:12 +0100
+
 univention-printserver (11.0.0-4) unstable; urgency=medium
 
   * Bug #46525: stop/start cups instead of reload
