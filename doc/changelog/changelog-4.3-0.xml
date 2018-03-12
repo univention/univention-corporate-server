@@ -738,6 +738,9 @@
 			<listitem><simpara>
 				The packages <package>pykota</package> and <package>univention-printquota</package> have been adapted to the needs of UCS 4.3 (<u:bug>46570</u:bug>, <u:bug>46575</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The network installation profiles were updates for UCS 4.3 (<u:bug>45747</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
