@@ -36,7 +36,7 @@
                   Normale, vollwertige Benutzerkonten haben sämtliche verfügbaren Eigenschaften.
                   Diese Benutzer können sich an UCS- oder Windows-Systemen anmelden und je nach
                   Konfiguration auch an den installierten Apps. Die Benutzer können über das 
-                  UMC-Modul <guimenu>Benutzer</guimenu> (siehe <xref linkend="users:management"/>)
+                  UMC-Modul <guimenu>Benutzer</guimenu> (siehe <xref linkend="users::management"/>)
                   administriert werden.
              </simpara></listitem>
 
