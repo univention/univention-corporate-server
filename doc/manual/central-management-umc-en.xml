@@ -173,7 +173,6 @@
 <section id="central:portal">
 	<title>UCS portal page</title>
 	<para>
-		The concept of portal pages replaces the previous start sites of UCS 4.1.
 		Portal pages offer a central view of all available services in a UCS domain.
 		Requirements strongly differ from small to large environments in organizations, public authorities, or even schools.
 		Therefore, UCS implemented a very flexible and individually customizable concept for portal pages.
@@ -191,7 +190,18 @@
 		Herein, links to locally installed Apps, to the local &ucsUMC; instance, as well as a link back to the &ucsMaster; are shown.
 	</para>
 	<para>
-		Custom portals and portal entries can be defined and managed via the UMC module <guimenu>LDAP directory</guimenu> (cf. <xref linkend="central:navigation"/>) below the container <uri>cn=portal,cn=univention</uri>.
+		Custom portals and portal entries can be defined and managed either via the UMC module <guimenu>Portal settings</guimenu> or directly on the portal site.
+	</para>
+	<para>
+		After logging in to the portal on the DC Master or DC Backup, members of the Domain Admins group can create new entries on the portal, modify existing entries, modify
+		the order or the design after clicking on the yellow edit icon.
+	</para>
+	<para>
+		Advanced settings, such as adding new portals or setting which group members can see which portal entries can be made using the UMC portal settings module.
+	</para>
+	<para>
+		By default, all portal entries are displayed for everyone. Limiting entries for specific groups requires the LDAP attribute <property>mmemberOf</property>.
+		Nested group memberships (i.e., groups in groups) are not evaluated.
 	</para>
 	<figure id="portal-schema">
 		<title>Schema of the portal concept in UCS: Portals can be independently defined and assigned to UCS systems as start site; a link entry can be displayed on multiple portals.</title>

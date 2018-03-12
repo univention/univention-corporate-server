@@ -174,8 +174,7 @@
 <section id="central:portal">
 	<title>UCS Portalseite</title>
 	<para>
-		Das Konzept der Portalseiten löst die bisherige Startseite von UCS 4.1 ab.
-		Dabei dienen Portalseiten der zentralen Darstellung aller verfügbaren Dienste in einer UCS-Domäne.
+		Die Portalseiten dienen der zentralen Darstellung aller verfügbaren Dienste in einer UCS-Domäne.
 		Da sich die Anforderung von kleinen bis hin zu großen Umgebungen in Organisationen, Behörden oder auch im Schulbetrieb stark voneinander unterscheiden, bringt UCS ein sehr flexibles und individuell anpassbares Konzept für Portalseiten mit.
 	</para>
 	<para>
@@ -191,7 +190,20 @@
 		Hier wird neben den lokal installierten Apps ein Verweis auf die lokal verfügbare &ucsUMC; Instanz sowie ein Verweis zurück auf den &ucsMaster; der Domäne dargestellt.
 	</para>
 	<para>
-		Eigene Portale und Portaleinträge können über das UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu> (siehe <xref linkend="central:navigation"/>) unterhalb des Containers <uri>cn=portal,cn=univention</uri> angelegt und verwaltet werden.
+		Eigene Portale und Portaleinträge können entweder über das UMC-Modul <guimenu>Portaleinstellungen</guimenu> oder
+		direkt auf der Portalseite angelegt und verwaltet werden.
+	</para>
+	<para>
+		Mitglieder der Gruppe Domain Admins können nach der Anmeldung am Portal auf dem DC Master oder DC Backup nach einem Klick auf das gelbe Bearbeitungs-Icon neue
+		Einträge auf dem Portal erstellen, vorhandene Einträge modifizieren, die Reihenfolge oder das Design modifizieren.
+	</para>
+	<para>
+		Weiterführende Einstellungen, wie das Hinzufügen neuer Portale oder die Einstellung, welche Gruppenmitglieder welche Portaleinträge sehen dürfen, können über das UMC-Modul
+		Portaleinstellungen durchgeführt werden.
+	</para>
+	<para>
+		Standardmäßig werden alle Portaleinträge für alle angezeigt. Die Limitierung von Einträgen für bestimmte Gruppen erfordert das LDAP-Attribut <property>mmemberOf</property>.
+		Eine Auswertung von verschachtelten Gruppenmitgliedsschaften (also Gruppen in Gruppen) findet nicht statt.
 	</para>
 	<figure id="portal-schema">
 		<title>Schema des Portal-Konzepts in UCS: Portale können frei definiert und UCS-Systemen als Startseite zugewiesen werden; ein Verweis kann auf mehreren Portalen angezeigt werden.</title>
