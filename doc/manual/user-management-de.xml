@@ -28,6 +28,37 @@
 		dies Folgefehler, die sich durch Inkonsistenzen zwischen den einzelnen
 		Datenbeständen ergeben können.
     </para>
+    <para>
+        In UCS gibt es drei unterschiedliche Arten von Benutzern:
+        <itemizedlist>
+             <listitem><simpara>
+                  <envar>Vollwertige Benutzerkonten</envar>:
+                  Normale, vollwertige Benutzerkonten haben sämtliche verfügbaren Eigenschaften.
+                  Diese Benutzer können sich an UCS- oder Windows-Systemen anmelden und je nach
+                  Konfiguration auch an den installierten Apps. Die Benutzer können über das 
+                  UMC-Modul <guimenu>Benutzer</guimenu> (siehe <xref linkend="users:management"/>)
+                  administriert werden.
+             </simpara></listitem>
+
+             <listitem><simpara>
+                  <envar>Adressbucheinträge</envar>:
+                  Adressbucheinträge werden für die Pflege von internen oder externen
+                  Kontaktinformationen verwenden. Diese Kontakte können sich nicht an UCS- oder
+                  Windows-Systemen anmelden. Adressbucheinträge können über das UMC-Modul
+                  <guimenu>Kontakte</guimenu> verwaltet werden.
+             </simpara></listitem>
+
+             <listitem><simpara>
+                  <envar>Einfaches Authentisierungskonto</envar>:
+                  Mit einem einfachen Authentisierungskonto wird ein Benutzer-Objekt angelegt, welches
+                  ausschließlich einen Benutzernamen und ein Passwort hat. Mit diesem Konto ist
+                  ausschließlich eine Authentisierung gegen den LDAP-Verzeichnisdienst möglich, aber
+                  keine Anmeldung an UCS- oder Windows-Systemen. Einfache Authentisierungskonten
+                  können über das UMC-Modul <guimenu>LDAP-Verzeichnis</guimenu>
+                  (siehe <xref linkend="central:navigation"/>) erstellt werden.
+             </simpara></listitem>
+        </itemizedlist>
+    </para>
     <section id="users::management">
         <title>Verwaltung von Benutzern mit Univention Management Console</title>
         <para>
@@ -576,56 +607,10 @@
                 <tbody>
 
                     <row>
-                        <entry>Mail-Konto</entry>
-                        <entry>
-                            Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklasse <classname>univentionMail</classname> nicht.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Kerberos Prinzipal</entry>
-                        <entry>
-                            Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklassen <classname>krb5Principal</classname> und <classname>krb5KDCEntry</classname> nicht.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Samba-Konto</entry>
-                        <entry>
-                            Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklasse <classname>sambaSamAccount</classname> nicht.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>POSIX-Konto</entry>
-                        <entry>
-                            Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklassen <classname>posixAccount</classname> und <classname>shadowAccount</classname> nicht.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Persönliche Informationen</entry>
-                        <entry>
-                            Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklassen <classname>organizationalPerson</classname> und <classname>inetOrgPerson</classname> nicht.
-                        </entry>
-                    </row>
-                    <row>
                         <entry>Public Key Infrastruktur-Konto</entry>
                         <entry>
                             Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
                             Objektklasse <classname>pkiUser</classname> nicht.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Einfaches Authentisierungskonto</entry>
-                        <entry>
-                            Diese Option kann verwendet werden, um Benutzer-Objekte anzulegen, die
-                            ausschließlich einen Benutzernamen und ein Passwort haben. Mit diesen
-                            Benutzern ist ausschließlich eine Authentisierung gegen den LDAP-Verzeichnisdienst
-                            möglich, aber keine Anmeldung an UCS- oder Windows-Systemen. Wird diese
-                            Option gesetzt, dann werden die Objektklassen <classname>uidObject</classname> und
-                            <classname>simpleSecurityObject</classname> verwendet.
                         </entry>
                     </row>
                 </tbody>

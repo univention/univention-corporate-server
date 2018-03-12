@@ -26,6 +26,34 @@
 		different individual systems. Moreover, this also avoids subsequent errors
 		arising from inconsistencies between the individual datasets.
     </para>
+    <para>
+        There are three different types of users in UCS:
+        <itemizedlist>
+             <listitem><simpara>
+                  <envar>Normal user account</envar>:
+                  Normal user accounts have all available properties. These users
+                  can log on to UCS or Windows systems and, depending on the configuration, also
+                  to the installed Apps. The users can be administered via the UMC module
+                  <guimenu>Users </guimenu> (see <xref linkend="users:management"/>).
+             </simpara></listitem>
+
+             <listitem><simpara>
+                  <envar>Address book entries</envar>:
+                  Address book entries will be used to maintain internal or external contact information.
+                  These contacts can not log on to UCS or Windows systems. Address book entries can be
+                  managed via the UMC module <guimenu>Contacts</guimenu>.
+             </simpara></listitem>
+
+             <listitem><simpara>
+                  <envar>Simple authentication account</envar>:
+                  With a simple authentication account, a user object is created, which has only a user
+                  name and a password. With this account, only authentication against the LDAP directory
+                  service is possible, but no logon to UCS or Windows systems. Simple authentication accounts
+                  can be accessed via the UMC module <guimenu>LDAP directory</guimenu>
+                  (see <xref linkend="central:navigation"/>).
+             </simpara></listitem>
+        </itemizedlist>
+    </para>
     <section id="users::management">
         <title>User management with Univention Management Console</title>
         <para>
@@ -567,55 +595,10 @@
                 </thead>
                 <tbody>
                     <row>
-                        <entry>Mail account</entry>
-                        <entry>
-                            If this checkbox is not ticked, the user will not be assigned the object class
-                            <classname>univentionMail</classname>.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Kerberos principal</entry>
-                        <entry>
-                            If this checkbox is not ticked, the user will not be assigned the object
-                            classes <classname>krb5Principal</classname> and <classname>krb5KDCEntry</classname>.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Samba account</entry>
-                        <entry>
-                            If this checkbox is not ticked, the user will not be assigned the object class
-                            <classname>sambaSamAccount</classname>.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>POSIX account</entry>
-                        <entry>
-                            If this checkbox is not ticked, the user will not be assigned the object
-                            classes <classname>posixAccount</classname> and <classname>shadowAccount</classname>.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Personal information</entry>
-                        <entry>
-                            If this checkbox is not ticked, the user will not be assigned the object
-                            classes <classname>organizationalPerson</classname> and <classname>inetOrgPerson</classname>.
-                        </entry>
-                    </row>
-                    <row>
                         <entry>Public key infrastructure account</entry>
                         <entry>
                             If this checkbox is not ticked, the user will not be assigned the object class
                             <classname>pkiUser</classname>.
-                        </entry>
-                    </row>
-                    <row>
-                        <entry>Simple authentication account</entry>
-                        <entry>
-                            This option can be used for creating user objects which have only a username
-                            and a password. With these users, authentication is possible against the
-                            LDAP directory service exclusively; logging into UCS or Windows systems is not
-                            possible. If this option is activated, the object classes <classname>uidObject</classname> and
-                            <classname>simpleSecurityObject</classname> will be used.
                         </entry>
                     </row>
                 </tbody>
