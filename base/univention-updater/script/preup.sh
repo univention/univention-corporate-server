@@ -395,6 +395,26 @@ block_update_if_system_date_is_too_old() {
 block_update_if_system_date_is_too_old
 # end bug 46562
 
+# Bug #46605: Block if single-server SSO is configured
+block_update_if_reconfigured_sso_is_detected() {
+	# The default sso nameserver entry is ucs-sso.$domainname
+	# If the configuration is different,
+	# https://help.univention.com/t/6681 was probably used.
+	# Default config in UCS 4.2 is done in univention-saml/91univention-saml.inst
+	if [ "$ucs_server_sso_fqdn" != "ucs-sso.$domainname" ]; then
+		echo "WARNING: Single-Sign on was reconfigured and is not using the default"
+		echo "         DNS settings. When continued, there will be issues using UMC"
+		echo "         after the update."
+		echo "         "
+		echo "         This check can be disabled by setting the UCR variable"
+		echo "         update43/ignore_sso_domain to yes."
+		if is_ucr_true update43/ignore_sso_domain; then
+			echo "WARNING: update43/ignore_sso_domain is set to true. Skipped as requested."
+		else
+			exit 1
+		fi
+}
+block_update_if_reconfigured_sso_is_detected
 
 # move old initrd files in /boot
 initrd_backup=/var/backups/univention-initrd.bak/
