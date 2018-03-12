@@ -434,12 +434,8 @@ def reload_cups_daemon():
 	script = '/etc/init.d/cups'
 	daemon = 'cups'
 	if os.path.exists(script):
-		ud.debug(ud.LISTENER, ud.PROCESS, "cups-printers: cups stop/start")
-		# Bug #46525, stop/start cups instead of reload, reload triggers
-		# "Scheduler shutting down due to program error." in cups
-		listener.run(script, [daemon, 'stop'], uid=0)
-		time.sleep(1)
-		listener.run(script, [daemon, 'start'], uid=0)
+		ud.debug(ud.LISTENER, ud.PROCESS, "cups-printers: cups reload")
+		listener.run(script, [daemon, 'reload'], uid=0)
 	else:
 		ud.debug(ud.LISTENER, ud.PROCESS, "cups-printers: no %s to init script found")
 
