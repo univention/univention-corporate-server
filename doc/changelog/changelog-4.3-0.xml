@@ -530,6 +530,16 @@
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:service:spamassassin">
+			<title>Spamassassin</title>
+			<itemizedlist>
+				<listitem><simpara>
+					In the package <package>univention-spamassassassin</package> the call of sa-update has been improved, which is done automatically during the installation of the package,
+					to ensure that a current ruleset for Spamassassassin is available after the installation (<u:bug>46555</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 		<section id="changelog:service:proxy">
 			<title>Proxy services</title>
 			<itemizedlist>
