@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-14) unstable; urgency=medium
+
+  * Bug #46539: do not treat legacy options as error
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Mar 2018 10:06:05 +0100
+
 univention-directory-manager-modules (13.0.21-13) unstable; urgency=medium
 
   * Bug #46544: Workaround syntax.date2 parsing of 1970 as 2070

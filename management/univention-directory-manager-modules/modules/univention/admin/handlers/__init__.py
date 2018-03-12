@@ -1004,7 +1004,7 @@ class simpleLdap(object):
 			try:
 				opt = module_options[option]
 			except KeyError:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, '%r does not specify option %r' % (m.module, option))
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '%r does not specify option %r' % (m.module, option))
 				continue
 			ocs |= set(opt.objectClasses)
 
@@ -1109,7 +1109,8 @@ class simpleLdap(object):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'options=%r; old_options=%r' % (options, old_options))
 		unavailable_options = (options - available_options) | (old_options - available_options)
 		if unavailable_options:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, '%r does not provide options: %r' % (self.module, unavailable_options))
+			# Bug #46586: as we simulate legacy options, this is no longer an error
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '%r does not provide options: %r' % (self.module, unavailable_options))
 		added_options = options - old_options - unavailable_options
 		removed_options = old_options - options - unavailable_options
 
