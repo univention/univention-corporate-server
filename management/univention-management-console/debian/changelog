@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-97) unstable; urgency=medium
+
+  * Bug #47109: Improve situation where the client loses its session
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 01 Aug 2018 14:19:56 +0200
+
 univention-management-console (9.0.80-96) unstable; urgency=medium
 
   * Bug #46998: fix required authentication before sending requests to the
