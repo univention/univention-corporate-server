@@ -33,7 +33,7 @@ class KerberosTicket(object):
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		hostname = ucr['hostname']
-		handler_set(['kerberos/defaults/rdns=false'])
+		handler_set(['kerberos/defaults/rdns=false', "saml/idp/authsource=univention-negotiate"])
 		with KerberosTicket(hostname):
 			SamlSession = samltest.SamlTest('', '', use_kerberos=True)
 			try:
