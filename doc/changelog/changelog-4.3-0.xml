@@ -736,9 +736,6 @@
 				missing &ucsUCRV;s <envar>interfaces/*/network</envar> and <envar>interfaces/*/broadcast</envar> (<u:bug>46515</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The <filename>cups-printers</filename> listener handler now restarts (instead of reload) the <application>cups</application> daemon(<u:bug>46525</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
 				The packages <package>pykota</package> and <package>univention-printquota</package> have been adapted to the needs of UCS 4.3 (<u:bug>46570</u:bug>, <u:bug>46575</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
