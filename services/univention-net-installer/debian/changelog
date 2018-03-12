@@ -1,3 +1,9 @@
+univention-net-installer (11.0.0-2) unstable; urgency=low
+
+  * Bug #45747: Update PXE profile for UCS-4.3
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 12 Mar 2018 12:36:55 +0100
+
 univention-net-installer (11.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
