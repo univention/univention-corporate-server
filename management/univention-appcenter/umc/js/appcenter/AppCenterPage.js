@@ -248,7 +248,10 @@ define([
 					if (quick) {
 						tools.umcpCommand('appcenter/sync_ldap', {}, false).then(
 							lang.hitch(this, function() {
-								this.updateApplications(false);
+								this.updateApplications(false).then(lang.hitch(this, function() {
+									this.filterApplications();
+									window.scrollTo(0, this._scrollYBeforeUpdateApplications);
+								}));
 							}),
 							lang.hitch(this, function(err) {
 								err = tools.parseError(err);
@@ -273,6 +276,7 @@ define([
 			this._applications = null;
 			var updating = when(this.getApplications(quick)).then(lang.hitch(this, function(applications) {
 				var metaLabels = [];
+				this._scrollYBeforeUpdateApplications = dojo.docScroll().y;
 				array.forEach(this.metaCategories, function(metaObj) {
 					metaObj.set('store', applications);
 					metaObj.set('visible', true);

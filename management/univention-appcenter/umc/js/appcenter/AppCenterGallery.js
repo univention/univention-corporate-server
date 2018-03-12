@@ -30,12 +30,13 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/array",
 	"dojo/dom-class",
 	"dojox/html/entities",
 	"umc/tools",
 	"umc/widgets/AppGallery",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, domClass, entities, tools, AppGallery, _) {
+], function(declare, array, domClass, entities, tools, AppGallery, _) {
 	return declare("umc.modules.appcenter.AppCenterGallery", [ AppGallery ], {
 		iconClassPrefix: 'umcAppCenter',
 
@@ -75,6 +76,14 @@ define([
 						return false;
 					}
 				});
+			}
+			if (!iconClass) {
+				var isRecommendedApp = array.some(item.rating, function(iRating) {
+					return iRating.name === 'RecommendedApp';
+				});
+				if (isRecommendedApp) {
+					iconClass = 'appRecommendedAppIcon';
+				}
 			}
 			return iconClass || this.inherited(arguments);
 		},
