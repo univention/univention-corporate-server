@@ -1,3 +1,10 @@
+univention-updater (13.0.1-37) unstable; urgency=medium
+
+  * Don't block the upgrade if ucs/server/sso/fqdn is not set
+    (Bug #46605)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Mar 2018 21:47:19 +0100
+
 univention-updater (13.0.1-36) unstable; urgency=medium
 
   * Bug #46605: Block if single-server SSO is configured

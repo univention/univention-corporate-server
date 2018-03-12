@@ -401,7 +401,7 @@ block_update_if_reconfigured_sso_is_detected() {
 	# If the configuration is different,
 	# https://help.univention.com/t/6681 was probably used.
 	# Default config in UCS 4.2 is done in univention-saml/91univention-saml.inst
-	if [ "$ucs_server_sso_fqdn" != "ucs-sso.$domainname" ]; then
+	if [ -n "$ucs_server_sso_fqdn" ] && [ "$ucs_server_sso_fqdn" != "ucs-sso.$domainname" ]; then
 		echo "WARNING: Single-Sign on was reconfigured and is not using the default"
 		echo "         DNS settings. When continued, there will be issues using UMC"
 		echo "         after the update."
