@@ -271,15 +271,14 @@
 			</itemizedlist>
 		</section>
 
-			<!--
 		<section id="changelog:umc:printer">
 			<title>Printers module</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Resting user quota for printers via UMC has been fixed (<u:bug>44721</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-			-->
 
 		<!--
 		<section id="changelog:umc:mail">
