@@ -194,7 +194,7 @@
 		direkt auf der Portalseite angelegt und verwaltet werden.
 	</para>
 	<para>
-		Mitglieder der Gruppe Domain Admins können nach der Anmeldung am Portal auf dem DC Master oder DC Backup nach einem Klick auf das gelbe Bearbeitungs-Icon neue
+		Mitglieder der Gruppe <systemitem class="groupname">Domain Admins</systemitem> können nach der Anmeldung am Portal auf dem DC Master oder DC Backup nach einem Klick auf das gelbe Bearbeitungs-Icon neue
 		Einträge auf dem Portal erstellen, vorhandene Einträge modifizieren, die Reihenfolge oder das Design modifizieren.
 	</para>
 	<para>
