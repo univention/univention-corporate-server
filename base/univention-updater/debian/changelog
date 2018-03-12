@@ -1,3 +1,9 @@
+univention-updater (13.0.1-34) unstable; urgency=medium
+
+  * Bug #45892: switch back to updates.software...
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Mar 2018 15:52:27 +0100
+
 univention-updater (13.0.1-33) unstable; urgency=low
 
   * Bug #44290: check in preup.sh if system date is up to date
