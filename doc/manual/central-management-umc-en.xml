@@ -193,7 +193,7 @@
 		Custom portals and portal entries can be defined and managed either via the UMC module <guimenu>Portal settings</guimenu> or directly on the portal site.
 	</para>
 	<para>
-		After logging in to the portal on the DC Master or DC Backup, members of the <systemitem class="groupname">Domain Admins</systemitems> group can create new
+		After logging in to the portal on the DC Master or DC Backup, members of the <systemitem class="groupname">Domain Admins</systemitem> group can create new
 		entries on the portal, modify existing entries, modify the order or the design after clicking on the yellow edit icon.
 	</para>
 	<para>
