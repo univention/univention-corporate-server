@@ -375,6 +375,9 @@
 					Dependencies for the <package>univention-saml</package> have been adapted for <package>php7.0</package> compatibility.
 					The <package>php5</package> module will get disabled on update, to avoid conflicts (<u:bug>46110</u:bug>, <u:bug>46267</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						The update to UCS 4.3 is currently blocked if an adapted Single-Sign on configuration is detected. This is the case after the SDB article to configure <ulink url="https://help.univention.com/t/6681">SAML Single Sign-On as single server solution</ulink> has been followed (<u:bug>46605</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
