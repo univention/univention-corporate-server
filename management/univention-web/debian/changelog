@@ -1,3 +1,9 @@
+univention-web (2.0.0-11) unstable; urgency=medium
+
+  * Bug #46582: Add tooltip for recommended app badge
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 12 Mar 2018 16:12:10 +0100
+
 univention-web (2.0.0-10) unstable; urgency=medium
 
   * Bug #46463: Improve click responsiveness for app tiles

@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-26) unstable; urgency=medium
+
+  * Bug #46582: Add tooltip for recommended app badge"
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 12 Mar 2018 16:11:27 +0100
+
 univention-appcenter (7.0.1-25) unstable; urgency=medium
 
   * Bug #46582: Add badge to recommended apps in the gallery

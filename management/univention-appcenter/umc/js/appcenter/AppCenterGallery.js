@@ -99,6 +99,8 @@ define([
 				}
 			} else if (statusIconClass.indexOf('Update') !== -1) {
 				tooltipMessage = _("Update available");
+			} else if (statusIconClass.indexOf('RecommendedApp') !== -1) {
+				tooltipMessage = _("<p>This App meets all <a target='_blank' href='https://wiki.univention.de/index.php/Criteria_Recommended_Apps'>Univention's quality criteria</a> for use in a professional environment. These include, among other things, timely updates, commercial support offerings, integration in the UCS identity management and support of the current UCS version.</p>");
 			}
 			return tooltipMessage || this.inherited(arguments);
 		}
