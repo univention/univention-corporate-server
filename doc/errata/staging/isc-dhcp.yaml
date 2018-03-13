@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: isc-dhcp
+fix: 4.3.5-3+deb9u1A~4.3.0.201803131309
+desc: |
+ This update addresses the following issue:
+ * Fix DHCP failover configuration.
+bug: [46607]
