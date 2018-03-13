@@ -54,7 +54,7 @@ def main():
 		lo.bind(binddn, password)
 		lo = lo.lo
 		print 'I am', lo.whoami_s()
-		dn = 'uid=%s,cn=admin-settings,%s' % (ldap.dn.escape_dn_chars(uid), udm_test.UCSTestUDM.UNIVENTION_CONTAINER)
+		dn = 'uid=%s,cn=admin-settings,%s' % (ldap.dn.escape_dn_chars(uid), udm.UNIVENTION_CONTAINER)
 
 		valid = [{
 			'objectClass': ('univentionAdminUserSettings',),
