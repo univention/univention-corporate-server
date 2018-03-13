@@ -1,0 +1,14 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: libreoffice
+fix: 1:5.2.7-1+deb9u3
+desc: |
+ This update addresses the following issues:
+ * Improvement to not throw more errors than neccessary (use the right error
+   code) on WEBSERVICE() failures.
+ * Do another replacement of FormulaError::NoValue to formula::errNoValue for
+   clarity.
+ * Backport from 5.4 branch to let FunctionAccess execute WEBSERVICE.
+bug: [46634]
