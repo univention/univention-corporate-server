@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: dbus
+fix: 1.10.26-0+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Raise file descriptor limit sooner, while we still can (before we drop
+   privileges), fixing a regression in 1.10.18 which negated a previous fix
+   for local denial of service via resource exhaustion.
+bug: [46630]
