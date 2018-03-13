@@ -1519,7 +1519,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
-	def simulate_legacy_options(self):
+	def _simulate_legacy_options(self):
 		'''simulate old options behavior to provide backward compatibility for udm extensions'''
 		options = dict(
 			posix='posixAccount',
@@ -1539,8 +1539,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def open(self, loadGroups=True):
 		univention.admin.handlers.simpleLdap.open(self)
-		# legacy options to make old hooks happy (46539)
-		self.simulate_legacy_options()
 		if self.exists():
 			self._unmap_mail_forward()
 			self._unmap_pwd_change_next_login()
@@ -1548,7 +1546,6 @@ class object(univention.admin.handlers.simpleLdap):
 			self._unmapUnlockTime()
 			self.reload_certificate()
 			self._load_groups(loadGroups)
-
 		self.save()
 		if not self.exists():  # TODO: move this block into _ldap_pre_create!
 			self._set_default_group()
@@ -1903,6 +1900,9 @@ class object(univention.admin.handlers.simpleLdap):
 			self['locked'] = '0'
 		if self['disabled'] == '1':
 			self['locked'] = '0'  # Samba/AD behavior
+
+		# legacy options to make old hooks happy (46539)
+		self._simulate_legacy_options()
 
 	def _ldap_addlist(self):
 		al = super(object, self)._ldap_addlist()
