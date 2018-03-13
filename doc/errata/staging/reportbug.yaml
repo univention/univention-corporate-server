@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: reportbug
+fix: 7.1.7+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Don't CC secure-testing-team@lists.alioth.debian.org anymore. The testing
+   security team didn't exist for a long time and the mailinglist will
+   disappear when Alioth will be decomissioned.
+bug: [46638]
