@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: java-atk-wrapper
+fix: 0.33.3-13+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Fix iterator initialization.
+ * Fix missing reference for children.
+bug: [46633]
