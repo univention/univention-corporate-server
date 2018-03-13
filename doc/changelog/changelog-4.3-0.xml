@@ -162,6 +162,9 @@
 				<listitem><simpara>
 					The file <filename>/var/log/univention/appcenter.log</filename> is now rotated (<u:bug>46274</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Recommended Apps are now displayed with a badge in the App Center (<u:bug>46582</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
