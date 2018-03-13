@@ -1,0 +1,23 @@
+product: ucs
+release: "4.1"
+version: [5]
+scope: ucs_4.1-0-errata4.1-5
+src: samba
+fix: 2:4.5.1-1.867.201803051416
+desc: |
+ This update addresses the following issue:
+ * Samba is vulnerable to a denial of service attack when the RPC spoolss
+   service is configured to be run as an external daemon. Missing input
+   sanitization checks on some of the input parameters to spoolss RPC calls
+   could cause the print spooler service to crash. There is no known
+   vulnerability associated with this error, merely a denial of service.
+   If the RPC spoolss service is left by default as an internal service,
+   all a client can do is crash its own authenticated connection
+   (CVE-2018-1050).
+ * On a Samba/AD DC the LDAP server incorrectly validates permissions to
+   modify passwords over LDAP allowing authenticated users to change any
+   other users passwords, including administrative users (CVE-2018-1057).
+bug: [46491]
+cve: 
+- CVE-2018-1050
+- CVE-2018-1057
