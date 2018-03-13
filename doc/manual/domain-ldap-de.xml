@@ -1279,6 +1279,31 @@ univention-directory-listener-ctrl resync cups-printers
 		Das für diesen Eintrag vorgesehene TLS Zertifikat wird auf allen beteiligten Systemen der Domäne vorgehalten.
 		Es wird empfohlen, das Wurzelzertifikat der UCS Domäne auf allen Rechnern, die <foreignphrase>Single Sign-On</foreignphrase> nutzen, zu installieren.
 	</para>
+	<para>
+		Es besteht die Möglichkeit, die SAML-Authentifizierung mit der Kerberos Anmeldung zu verknüpfen. Das bedeutet, dass sich Nutzer mit einem gültigen Kerberos Ticket,
+		bspw. nach einer Anmeldung an Windows oder Linux, ohne eine erneute Authentifizierung am Identity Provider anmelden können.
+	</para>
+	<para>
+		Um die Kerberos Authentifizierung am Identity Provider zuzulassen, muss die &ucsUCRV; <envar>saml/idp/authsource</envar> von <option>univention-ldap</option>
+		auf <option>univention-negotiate</option> gesetzt werden. Die Webbrowser müssen entsprechend so konfiguriert werden, so dass das Kerberos Ticket an den SAML Identity
+		Provider übertragen wird. Im folgenden beispielhaft für Firefox und den Internet Explorer bzw. Microsoft Edge:
+		<itemizedlist>
+			<listitem>
+				<simpara>
+					<envar>Firefox></envar>:
+						In der erweiterten Firefox Konfiguration, diese ist erreichbar über die Eingabe von <guimenu>about:config</guimenu> in der Firefox Adresszeile,
+						muss bei der Option <guimenu>network.negotiate-auth.trusted-uris</guimenu> die Adresse des Identity Providers eingetragen werden, also in der
+						Standardeinstellung <uri>ucs-sso.<replaceable>domainname</replaceable></uri>.
+				</simpara>
+				<simpara>
+					<envar>Internet Explorder / Microsoft Edge></envar>:
+						In der Systemsteuerung müssen die <guimenu>Internetoptionen</guimenu> geöffnet werden und dort wird unter <guimenu>Sicherheit</guimenu>,
+						<guimenu>Lokales Intranet</guimenu>, <guimenu>Sites</guimenu>, <guimenu>Erweitert</guimenu> die Adresse des Identity Providers hinzuegfügt,
+						also in der Standardeinstellung <uri>ucs-sso.<replaceable>domainname</replaceable></uri>.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+	</para>
 
 	<section id="domain:saml:ssologin">
 	<title>Anmelden per <foreignphrase>Single Sign-On</foreignphrase></title>
