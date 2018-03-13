@@ -12,10 +12,11 @@ desc: |
    could cause the print spooler service to crash. There is no known
    vulnerability associated with this error, merely a denial of service.
    If the RPC spoolss service is left by default as an internal service,
-   all a client can do is crash its own authenticated connection.
+   all a client can do is crash its own authenticated connection
+   (CVE-2018-1050).
  * On a Samba/AD DC the LDAP server incorrectly validates permissions to
    modify passwords over LDAP allowing authenticated users to change any
-   other users passwords, including administrative users.
+   other users passwords, including administrative users (CVE-2018-1057).
 bug: [46485]
 cve: 
 - CVE-2018-1050
