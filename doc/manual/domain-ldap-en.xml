@@ -1267,7 +1267,7 @@ univention-directory-listener-ctrl resync cups-printers
 				</simpara>
 				<simpara>
 					<envar>Internet Explorder / Microsoft Edge></envar>:
-						In the Control Panel, the <guimenu>Internet Options</guimenu> must be opened, followed by <guimenu>Security</guimenu>, <guimenu>Local Intranet</guimneu>,
+						In the Control Panel, the <guimenu>Internet Options</guimenu> must be opened, followed by <guimenu>Security</guimenu>, <guimenu>Local Intranet</guimenu>,
 						<guimenu>Sites</guimenu>, <guimenu>Advanced</guimenu>. The address of the identity provider has to be added, which is
 						<uri>ucs-sso.<replaceable>domainname</replaceable></uri> by default.
 				</simpara>
