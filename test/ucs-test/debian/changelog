@@ -1,3 +1,9 @@
+ucs-test (8.0.28-90) unstable; urgency=low
+
+  * Bug #27547: Fix Python module load
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Mar 2018 15:03:54 +0100
+
 ucs-test (8.0.28-89) unstable; urgency=medium
 
   * 40_mail/33_smart_host_configuration: skip in ad member mode

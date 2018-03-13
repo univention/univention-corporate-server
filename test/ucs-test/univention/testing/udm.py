@@ -153,19 +153,19 @@ class UCSTestUDM(object):
 
     @property
     def LDAP_BASE(self):
-        return self.__ucr['ldap/base']
+        return self._ucr['ldap/base']
 
     @property
     def FQHN(self):
-        return '%(hostname)s.%(domainname)s.' % self.__ucr
+        return '%(hostname)s.%(domainname)s.' % self._ucr
 
     @property
     def UNIVENTION_CONTAINER(self):
-        return 'cn=univention,%(ldap/base)s' % self.__ucr
+        return 'cn=univention,%(ldap/base)s' % self._ucr
 
     @property
     def UNIVENTION_TEMPORARY_CONTAINER(self):
-        return 'cn=temporary,cn=univention,%(ldap/base)s' % self.__ucr
+        return 'cn=temporary,cn=univention,%(ldap/base)s' % self._ucr
 
     def __init__(self):
         self._cleanup = {}
