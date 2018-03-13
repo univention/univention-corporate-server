@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: ntp
+fix: 1:4.2.8p10+dfsg-3+deb9u2
+desc: |
+ This update addresses the following issue:
+ * Cherry-pick patch from upstream to increase stack size.
+bug: [46635]
