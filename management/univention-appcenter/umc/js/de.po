@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2018-03-12 15:41+0100\n"
+"POT-Creation-Date: 2018-03-13 12:08+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -156,20 +156,6 @@ msgstr ""
 "<p><b>Hinweis:</b> Diese Informationen wurden aktualisiert. Bitte lesen Sie "
 "sie erneut.</p>"
 
-#: umc/js/appcenter/AppCenterGallery.js:104
-msgid ""
-"<p>This App meets all <a target='_blank' href='https://wiki.univention.de/"
-"index.php/Criteria_Recommended_Apps'>Univention's quality criteria</a> for "
-"use in a professional environment. These include, among other things, timely "
-"updates, commercial support offerings, integration in the UCS identity "
-"management and support of the current UCS version.</p>"
-msgstr ""
-"<p>Diese App erfüllt alle <a target='_blank' href='https://wiki.univention.de/"
-"index.php/Criteria_Recommended_Apps'>Qualitätskriterien von Univention</a> für den "
-"Einsatz im professionellen Umfeld. Dazu zählen unter anderem zeitnahe Updates, "
-"kommerzielle Support-Angebote, Integration mit UCS Identity Management sowie "
-"die Unterstützung der aktuellen UCS Version.</p>"
-
 #: umc/js/appcenter/AppDetailsPage.js:100
 msgid ""
 "<p>Univention App Center is designed for easy and comfortable administration "
@@ -265,7 +251,7 @@ msgstr "Nach dem Speichern wird die neue Datei hochgeladen werden."
 msgid "After that you can \"%(action)s\" \"%(app)s\" here on this system."
 msgstr "Danach können Sie \"%(app)s\" hier auf diesem System \"%(action)s\"."
 
-#: umc/js/appcenter/AppCenterPage.js:298 umc/js/appcenter/AppCenterPage.js:340
+#: umc/js/appcenter/AppCenterPage.js:294 umc/js/appcenter/AppCenterPage.js:336
 msgid "All"
 msgstr "Alle"
 
@@ -882,7 +868,7 @@ msgstr "Aktualisieren"
 msgid "Refresh display to see current values"
 msgstr "Anzeige aktualisieren"
 
-#: umc/js/appcenter/AppCenterPage.js:262
+#: umc/js/appcenter/AppCenterPage.js:259
 msgid ""
 "Registration of the applications in the domain failed. It will be retried "
 "when opening this module again. This may also cause problems when installing "
@@ -1155,12 +1141,12 @@ msgstr ""
 "Diese Applikation setzt den App-Anbieter über eine (De)Installation in "
 "Kenntnis. Der App-Anbieter wird Sie ggf. kontaktieren."
 
-#: umc/js/appcenter/AppCenterGallery.js:99
+#: umc/js/appcenter/AppCenterGallery.js:98
 msgid "This application will not get any further updates."
 msgstr "Diese Applikation wird keine weiteren Aktualisierungen erhalten."
 
 #: umc/js/appcenter/AppDetailsPage.js:1292
-#: umc/js/appcenter/AppCenterGallery.js:97
+#: umc/js/appcenter/AppCenterGallery.js:96
 msgid ""
 "This application will not get any further updates. We suggest to uninstall "
 "%(app)s and search for an alternative application."
@@ -1264,7 +1250,7 @@ msgid "Unknown"
 msgstr "Unbekannt"
 
 #: umc/js/appcenter/AppDetailsPage.js:408
-#: umc/js/appcenter/AppCenterGallery.js:102
+#: umc/js/appcenter/AppCenterGallery.js:101
 msgid "Update available"
 msgstr "Aktualisierung verfügbar"
 
@@ -1447,6 +1433,20 @@ msgstr "{0} Pakete werden installiert / aktualisiert"
 #: umc/js/appcenter/AppDetailsDialog.js:266
 msgid "{0} packages will be removed"
 msgstr "{0} Pakete werden deinstalliert"
+
+#~ msgid ""
+#~ "<p>This App meets all <a target='_blank' href='https://wiki.univention.de/"
+#~ "index.php/Criteria_Recommended_Apps'>Univention's quality criteria</a> "
+#~ "for use in a professional environment. These include, among other things, "
+#~ "timely updates, commercial support offerings, integration in the UCS "
+#~ "identity management and support of the current UCS version.</p>"
+#~ msgstr ""
+#~ "<p>Diese App erfüllt alle <a target='_blank' href='https://wiki."
+#~ "univention.de/index.php/Criteria_Recommended_Apps'>Qualitätskriterien von "
+#~ "Univention</a> für den Einsatz im professionellen Umfeld. Dazu zählen "
+#~ "unter anderem zeitnahe Updates, kommerzielle Support-Angebote, "
+#~ "Integration mit UCS Identity Management sowie die Unterstützung der "
+#~ "aktuellen UCS Version.</p>"
 
 #~ msgid "After saving, the file length will be %d bytes"
 #~ msgstr "Nach dem Speichern wird die Dateigröße %d Bytes sein."
