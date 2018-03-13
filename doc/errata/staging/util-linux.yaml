@@ -1,0 +1,16 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: util-linux
+fix: 2.29.2-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * bash-completion for umount allows local users to gain privileges by
+   embedding shell commands in a mountpoint name, which is mishandled during a
+   umount command (within Bash) by a different user, as demonstrated by
+   logging in as root and entering umount followed by a tab character for
+   autocompletion. (CVE-2018-7738)
+bug: [46622]
+cve:
+- CVE-2018-7738
