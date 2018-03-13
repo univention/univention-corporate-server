@@ -329,6 +329,25 @@ update_check_cyrus_integration () {
 	fi
 }
 
+# Bug #46605: Block if single-server SSO is configured
+# The default sso nameserver entry is ucs-sso.$domainname
+# If the configuration is different,
+# https://help.univention.com/t/6681 was probably used.
+# Default config in UCS 4.2 is done in univention-saml/91univention-saml.inst
+update_check_reconfigured_sso () {
+	local var="update$VERSION/ignore_sso_domain"
+	ignore_check "$var" && return 100
+	if [ "$ucs_server_sso_fqdn" != "ucs-sso.$domainname" ]; then
+		echo -e "\tSingle-Sign on was reconfigured and is not using the default"
+		echo -e "\tDNS settings. When continued, there will be issues using UMC"
+		echo -e "\tafter the update."
+		echo
+		echo -e "\tThis check can be disabled by setting the UCR variable"
+		echo -e "\tupdate43/ignore_sso_domain to yes."
+		return 1
+	fi
+}
+
 # simulate 4.3 user migration, can be removed after 4.3-0
 simulate_user_migration () {
 	python - <<'PYTHON'
