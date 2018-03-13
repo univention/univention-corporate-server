@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: openssh
+fix: 1:7.4p1-10+deb9u3
+desc: |
+ This update addresses the following issue:
+ * CVE-2017-15906: In read-only mode, sftp-server was incorrectly permitting
+   creation of zero-length files.
+bug: [46619]
+cve:
+- CVE-2017-15906
