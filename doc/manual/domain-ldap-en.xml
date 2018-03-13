@@ -1261,13 +1261,13 @@ univention-directory-listener-ctrl resync cups-printers
 			<listitem>
 				<simpara>
 					<envar>Firefox></envar>:
-                        In the extended Firefox configuration, which can be reached by entering <guimenu>about:config</guimenu> in the Firefox address line, the address
+						In the extended Firefox configuration, which can be reached by entering <guimenu>about:config</guimenu> in the Firefox address line, the address
 						of the identity provider must be entered in the option <guimenu>network.negotiate-auth.trusted-uris</guimenu>, which is
 						<uri>ucs-sso.<replaceable>domainname</replaceable></uri> by default.
 				</simpara>
 				<simpara>
 					<envar>Internet Explorder / Microsoft Edge></envar>:
-                        In the Control Panel, the <guimenu>Internet Options</guimenu> must be opened, followed by <guimenu>Security</guimenu>, </guimenu>Local Intranet</guimneu>,
+						In the Control Panel, the <guimenu>Internet Options</guimenu> must be opened, followed by <guimenu>Security</guimenu>, <guimenu>Local Intranet</guimneu>,
 						<guimenu>Sites</guimenu>, <guimenu>Advanced</guimenu>. The address of the identity provider has to be added, which is
 						<uri>ucs-sso.<replaceable>domainname</replaceable></uri> by default.
 				</simpara>
