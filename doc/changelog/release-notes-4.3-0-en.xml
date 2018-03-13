@@ -148,12 +148,13 @@
 -> curl -OOs http://updates.software-univention.de/download/univention-update-checks/pre-update-checks-4.3{,.gpg}
 
 # run script
--> gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg pre-update-checks-4.3.gpg pre-update-checks-4.3 && bash pre-update-checks-4.3
+-> gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg \
+        pre-update-checks-4.3.gpg pre-update-checks-4.3 && bash pre-update-checks-4.3
 
-gpgv: Signature made Wed Mar  7 12:09:25 2018 CET using RSA key ID 6B8BFD3C
+gpgv: Signature made Wed Mar  7 13:36:51 2018 CET using RSA key ID 6B8BFD3C
 gpgv: Good signature from "Univention Corporate Server 4.x <packages@univention.de>"
 
-Starting pre-update checks (Di 6. Mär 13:07:33 CET 2018):
+Starting pre-update checks (Mon Mar 12 09:15:34 CET 2018):
 
 Checking app_appliance ...                        OK
 Checking block_update_of_NT_DC ...                OK
@@ -185,7 +186,7 @@ Checking ldap_schema ...                          OK
 	</chapter>
 
 	<chapter id="relnotes:packages">
-		<title>Further notes on selected packages</title>
+		<title>Notes on selected packages</title>
 
 		<section id="relnotes:mariadb">
 			<title>MariaDB replaces MySQL</title>
@@ -200,11 +201,11 @@ Checking ldap_schema ...                          OK
 		<section id="relnotes:useroptions">
 			<title>Simplify user options</title>
 			<para>
-				Previously, UMC administrators could assign certain properties to users. That were e.g. Samba, Kerberos, POSIX and Mail.
-				With UCS 4.3, the existing users will be migrated into three different user types:
-                 1. Normal full-fledged users, these have all the features.
-                 2. Simple authentication accounts, these can only connect to LDAP, but can't log in elsewhere.
-                 3. Address book entries, internal or external identities can be maintained here, e.g. to create address lists.
+				Previously, UMC administrators could assign certain properties to users, e.g. Samba, Kerberos, POSIX and Mail.
+				With UCS 4.3, the existing users will be migrated to three different user types:
+                 1. Normal full-fledged users, these have all features.
+                 2. Simple authentication accounts, these can only connect to LDAP, but cannot log in elsewhere.
+                 3. Address book entries - internal or external identities can be maintained here, e.g. to create address lists.
 			</para>
 		</section>
 
@@ -221,7 +222,7 @@ Checking ldap_schema ...                          OK
 		<section id="relnotes:nt">
 			<title>Samba as Windows NT DC</title>
 			<para>
-				Support for <literal>NT style domain control</literal> has been removed from UCS 4.3. The update for
+				Support for <literal>Windows NT style domain control</literal> has been removed from UCS 4.3. The update for
 				these domains is blocked and the domain needs to be migrated to <literal>Samba/AD</literal>
 				following the update guide <ulink url="https://wiki.univention.de/index.php/Migration_from_Samba_3_to_Samba_4">Migration from Samba 3 to Samba 4</ulink>.
 				See also <ulink url="https://wiki.univention.de/index.php/Best_Practice_Samba_4_Migration">Best practices for Samba 4 Migration</ulink> .
@@ -232,7 +233,7 @@ Checking ldap_schema ...                          OK
 			<title>Collection of usage statistics</title>
 			<para>
 				Anonymous usage statistics on the use of &ucsUMC; are collected when using the <emphasis>UCS Core Edition</emphasis>.
-				The modules opened are logged in an instance of the web traffic analysis tool Piwik.
+				The modules opened get logged to an instance of the web traffic analysis tool Piwik.
 				This makes it possible for Univention to tailor the development of &ucsUMC; better to customer needs and carry out usability improvements.
 			</para>
 			<para>
@@ -284,7 +285,7 @@ Checking ldap_schema ...                          OK
 			</itemizedlist>
 
 			<para>
-				Users with older browsers may experience display or performance issues.
+				Users running older browsers may experience display or performance issues.
 			</para>
 		</section>
 

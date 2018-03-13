@@ -80,8 +80,8 @@
 				</itemizedlist>
 			</para></listitem>
 			<listitem><para>
-				Samba wurde auf Version 4.7 aktualisiert. In der neuen Samba Version sind wichtige Verbesserungen im Bereich des Active Directory Domänencontroller
-				vorhanden. So wird durch die Multi-Process-Implementierung des Samba LDAP-Servers eine deutliche Performanceverbesserung eintreten. Zusätzlich kommt
+				Samba wurde auf Version 4.7 aktualisiert. In der neuen Samba Version gibt es wichtige Verbesserungen im Bereich Active Directory Domänencontroller.
+				So wird durch die Multi-Process-Implementierung des Samba LDAP-Servers eine deutliche Performanceverbesserung eintreten. Zusätzlich kommt
 				die Replikation von Gruppenmitgliedschaften nun mit deutlich weniger Ressourcen aus.
 			</para></listitem>
 		</itemizedlist>
@@ -126,7 +126,7 @@
 		<para>
 			Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist.
 			Eine Standard-Installation benötigt min. 6 GB Speicherplatz.
-			Das Update benötigt je nach Umfang der vorhanden Installation ungefähr 2 GB weiteren Speicherplatz zum Herunterladen und Installieren der Pakete.
+			Das Update benötigt je nach Umfang der vorhanden Installation ungefähr 2 GB zusätzlichen Speicherplatz zum Herunterladen und Installieren der Pakete.
 		</para>
 		<para>
 			Für das Update sollte eine Anmeldung auf der lokalen Konsole des Systems mit dem Benutzer <systemitem class="username">root</systemitem> durchgeführt und das Update dort gestartet werden.
@@ -147,12 +147,13 @@
 -> curl -OOs http://updates.software-univention.de/download/univention-update-checks/pre-update-checks-4.3{,.gpg}
 
 # run script
--> gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg pre-update-checks-4.3.gpg pre-update-checks-4.3 && bash pre-update-checks-4.3
+-> gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg pre-update-checks-4.3.gpg \
+        pre-update-checks-4.3 && bash pre-update-checks-4.3
 
-gpgv: Unterschrift vom Mi 07 Mär 2018 11:44:19 CET mittels RSA-Schlüssel ID 6B8BFD3C
+gpgv: Unterschrift vom Mi 07 Mär 2018 13:36:51 CET mittels RSA-Schlüssel ID 6B8BFD3C
 gpgv: Korrekte Unterschrift von "Univention Corporate Server 4.x <packages@univention.de>"
 
-Starting pre-update checks (Di 6. Mär 13:07:33 CET 2018):
+Starting pre-update checks (Mo 12. Mär 09:15:34 CET 2018):
 
 Checking app_appliance ...                        OK
 Checking block_update_of_NT_DC ...                OK
@@ -205,7 +206,7 @@ Checking ldap_schema ...                          OK
 				1. Normale vollwertige Benutzer, diese haben sämtliche Eigenschaften.
 				2. Einfache Authentisierungskonten, diese können sich lediglich mit dem LDAP verbinden, haben aber keine
 				Möglichkeit sich auch anderweitig anzumelden.
-				3. Reine Adressbucheinträge. Hier können neben internen auch externe Identitäten gepflegt werden, z.B. um Adresslisten zu erstellen.
+				3. Reine Adressbucheinträge - hier können neben internen auch externe Identitäten gepflegt werden, z.B. um Adresslisten zu erstellen.
 			</para>
 		</section>
 
@@ -221,10 +222,9 @@ Checking ldap_schema ...                          OK
 		<section id="relnotes:nt">
 			<title>Samba als Windows NT DC</title>
 			<para>
-				Unterstützung für <literal> NT-Stil Domänensteuerung </literal> wurde aus UCS 4.3 entfernt.
-				Unterstützung für <literal>Windows NT Domänen</literal> wurde aus UCS 4.3 entfernt. Das Update für diese Domains
+				Unterstützung für <literal>Windows-NT-Domänen</literal> wurde aus UCS 4.3 entfernt. Das Update für diese Domänen
 				ist blockiert und die Domäne muss nach der Anleitung <ulink url = "https://wiki.univention.de/index.php/Migration_from_Samba_3_to_Samba_4">
-				Migration von Samba 3 nach Samba 4 </ulink> auf <literal>Samba/AD</literal> migriert werden.
+				Migration von Samba 3 nach Samba 4 </ulink> zu <literal>Samba/AD</literal> migriert werden.
 				Siehe auch <ulink url = "https://wiki.univention.de/index.php/Best_Practice_Samba_4_Migration">Best Practices für Samba 4 Migration</ulink>.
 			</para>
 		</section>
@@ -284,7 +284,7 @@ Checking ldap_schema ...                          OK
 			</itemizedlist>
 
 			<para>
-				Auf älteren Browsern können Darstellungs- oder Performanceprobleme auftreten.
+				Mit älteren Browsern können Darstellungs- oder Performanceprobleme auftreten.
 			</para>
 		</section>
 
