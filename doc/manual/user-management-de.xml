@@ -35,15 +35,15 @@
                   <emphasis>Vollwertige Benutzerkonten</emphasis>:
                   Normale, vollwertige Benutzerkonten haben sämtliche verfügbaren Eigenschaften.
                   Diese Benutzer können sich an UCS- oder Windows-Systemen anmelden und je nach
-                  Konfiguration auch an den installierten Apps. Die Benutzer können über das 
+                  Konfiguration auch an den installierten Apps. Die Benutzer können über das
                   UMC-Modul <guimenu>Benutzer</guimenu> (siehe <xref linkend="users::management"/>)
                   administriert werden.
              </simpara></listitem>
 
              <listitem><simpara>
                   <emphasis>Adressbucheinträge</emphasis>:
-                  Adressbucheinträge werden für die Pflege von internen oder externen
-                  Kontaktinformationen verwenden. Diese Kontakte können sich nicht an UCS- oder
+                  Adressbucheinträge können für die Pflege von internen oder externen
+                  Kontaktinformationen verwendet werden. Diese Kontakte können sich nicht an UCS- oder
                   Windows-Systemen anmelden. Adressbucheinträge können über das UMC-Modul
                   <guimenu>Kontakte</guimenu> verwaltet werden.
              </simpara></listitem>
