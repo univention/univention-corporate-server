@@ -360,6 +360,16 @@
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:service:docker">
+			<title>Docker</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The Docker package differs from the upstream package.
+					The Docker daemon process' code has been modified to keep the default policy of the <wordasword>packetfilters</wordasword> <wordasword>FORWARD</wordasword> chain (<envar>Accept</envar>). The daemon in upstreams version sets it to <envar>Drop</envar> (<u:bug>46612</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 		<section id="changelog:service:saml">
 			<title>SAML</title>
 			<itemizedlist>
