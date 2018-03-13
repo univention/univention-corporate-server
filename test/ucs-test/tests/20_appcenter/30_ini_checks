@@ -45,11 +45,12 @@ for app in Application.all():
 			print ' FAIL: Unsupported category: %s!' % category
 			returncode = 1
 		# logo files
-		for logo_attr in ['ApplianceLogo',
+		for logo_attr in [
+			'ApplianceLogo',
 			'ApplianceBootsplashLogo',
 			'ApplianceUmcHeaderLogo',
 			'ApplianceWelcomeScreenLogo',
-			'ApplianceUmcCategoryLogo']:
+			]:
 			logo_name = ver.get(logo_attr)
 			if logo_name:
 				url = '%s/%s/%s' % (meta_inf, ver.id, logo_name)
