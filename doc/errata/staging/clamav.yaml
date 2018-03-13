@@ -1,0 +1,29 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: clamav
+fix: 0.99.4+dfsg-1+deb9u1
+desc: |
+ This update addresses the following issues:
+ * libclamav/message.c allows remote attackers to cause a denial of service
+   (out-of-bounds read) via a crafted e-mail message. (CVE-2017-6418)
+ * mspack/lzxd.c allows remote attackers to cause a denial of service
+   (heap-based buffer overflow and application crash) or possibly have
+   unspecified other impact via a crafted CHM file. (CVE-2017-6419)
+ * Out-of-bounds heap read in XAR parser (CVE-2018-1000085)
+ * The cabd_read_string function allows remote attackers to cause a denial of
+   service (stack-based buffer over-read and application crash) via a crafted
+   CAB file. (CVE-2017-11423)
+ * The wwunpack function allows remote attackers to cause a denial of service
+   (use-after-free) via a crafted PE file with WWPack compression.
+   (CVE-2017-6420)
+ * Out-of-bounds access in the PDF parser (CVE-2018-0202)
+bug: [46616]
+cve:
+- CVE-2017-6418
+- CVE-2017-6419
+- CVE-2018-1000085
+- CVE-2017-11423
+- CVE-2017-6420
+- CVE-2018-0202
