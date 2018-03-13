@@ -1,0 +1,84 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: webkit2gtk
+fix: 2.18.6-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * A cross-site scripting (XSS) vulnerability allows remote attackers to
+   inject arbitrary web script or HTML via crafted web content that
+   incorrectly interacts with the Application Cache policy. (CVE-2017-7109)
+ * An issue allows attackers to bypass the Safari Private Browsing protection
+   mechanism, and consequently obtain sensitive information about visited web
+   sites. (CVE-2017-7142)
+ * An issue allows remote attackers to bypass the Same Origin Policy and
+   obtain sensitive cookie information via a custom URL scheme.
+   (CVE-2017-7090)
+ * An issue allows remote attackers to conduct Universal XSS (UXSS) attacks
+   via a crafted web site that is mishandled during parent-tab processing.
+   (CVE-2017-7089)
+ * An issue allows remote attackers to execute arbitrary code or cause a
+   denial of service (memory corruption and application crash via a crafted
+   web site. (CVE-2017-13783 CVE-2017-13784 CVE-2017-13785 CVE-2017-13788
+   CVE-2017-13791 CVE-2017-13792 CVE-2017-13793 CVE-2017-13794 CVE-2017-13795
+   CVE-2017-13796 CVE-2017-13798 CVE-2017-13802 CVE-2017-13803 CVE-2017-13856
+   CVE-2017-13866 CVE-2017-13870 CVE-2017-7081 CVE-2017-7087 CVE-2017-7091
+   CVE-2017-7092 CVE-2017-7093 CVE-2017-7094 CVE-2017-7095 CVE-2017-7096
+   CVE-2017-7098 CVE-2017-7099 CVE-2017-7100 CVE-2017-7102 CVE-2017-7104
+   CVE-2017-7107 CVE-2017-7111 CVE-2017-7117 CVE-2017-7120 CVE-2017-7156
+   CVE-2017-7157 CVE-2017-7160)
+ * Multiple memory corruption issues were addressed with improved memory
+   handling. (CVE-2017-13884 CVE-2017-13885 CVE-2018-4088 CVE-2018-4089
+   CVE-2018-4096)
+ * This includes fixes to mitigate the effects of the Spectre vulnerability
+   (CVE-2017-5753 and CVE-2017-5715).
+bug: [46624]
+cve:
+- CVE-2017-7109
+- CVE-2017-7142
+- CVE-2017-7090
+- CVE-2017-7089
+- CVE-2017-13783
+- CVE-2017-13784
+- CVE-2017-13785
+- CVE-2017-13788
+- CVE-2017-13791
+- CVE-2017-13792
+- CVE-2017-13793
+- CVE-2017-13794
+- CVE-2017-13795
+- CVE-2017-13796
+- CVE-2017-13798
+- CVE-2017-13802
+- CVE-2017-13803
+- CVE-2017-13856
+- CVE-2017-13866
+- CVE-2017-13870
+- CVE-2017-7081
+- CVE-2017-7087
+- CVE-2017-7091
+- CVE-2017-7092
+- CVE-2017-7093
+- CVE-2017-7094
+- CVE-2017-7095
+- CVE-2017-7096
+- CVE-2017-7098
+- CVE-2017-7099
+- CVE-2017-7100
+- CVE-2017-7102
+- CVE-2017-7104
+- CVE-2017-7107
+- CVE-2017-7111
+- CVE-2017-7117
+- CVE-2017-7120
+- CVE-2017-7156
+- CVE-2017-7157
+- CVE-2017-7160
+- CVE-2017-13884
+- CVE-2017-13885
+- CVE-2018-4088
+- CVE-2018-4089
+- CVE-2018-4096
+- CVE-2017-5753
+- CVE-2017-5715
