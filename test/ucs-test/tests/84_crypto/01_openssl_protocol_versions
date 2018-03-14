@@ -2,6 +2,7 @@
 ## desc: Check ssl_client support
 ## tags:
 ##  - basic
+##  - skip_admember
 ## exposure: safe
 
 . "$TESTLIBPATH/base.sh" || exit 137
