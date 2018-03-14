@@ -1,3 +1,9 @@
+univention-management-console (10.0.4-5) unstable; urgency=medium
+
+  * Bug #45599: Remove deprecated child-src from Content-Security-Policy
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 14 Mar 2018 10:43:35 +0100
+
 univention-management-console (10.0.4-4) unstable; urgency=medium
 
   * Bug #46574: Improve situation where the client loses its session

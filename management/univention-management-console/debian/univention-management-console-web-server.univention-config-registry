@@ -10,7 +10,6 @@ Variables: umc/http/content-security-policy/style-src
 Variables: umc/http/content-security-policy/img-src
 Variables: umc/http/content-security-policy/media-src
 Variables: umc/http/content-security-policy/frame-src
-Variables: umc/http/content-security-policy/child-src
 Variables: umc/http/content-security-policy/font-src
 Variables: umc/http/content-security-policy/connect-src
 Variables: umc/http/content-security-policy/form-action
