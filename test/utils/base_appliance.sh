@@ -882,7 +882,7 @@ __EOF__
 	ucr unset gateway
 	 
 	# Set a default nameserver and remove all local configured nameserver
-	ucr set nameserver1=208.67.222.222 dns/forwarder1=208.67.222.222
+	ucr set nameserver1=208.67.222.222
 	ucr unset nameserver2 nameserver3
 	ucr unset dns/forwarder2 dns/forwarder3
 
