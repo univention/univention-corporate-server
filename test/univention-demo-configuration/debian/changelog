@@ -1,3 +1,9 @@
+univention-demo-configuration (6.0.0-4) unstable; urgency=medium
+
+  * Bug #46426: Allow nagios stylesheets and add users/contact module
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 14 Mar 2018 13:17:03 +0100
+
 univention-demo-configuration (6.0.0-3) unstable; urgency=medium
 
   * Bug #45706: Remove download UCS button after test is finished
