@@ -127,7 +127,7 @@ def test_user_sync_from_ad_to_udm_with_rename(user_class, sync_mode):
 		tcommon.verify_udm_object("users/user", udm_user_dn, None)
 		udm_user_dn = ldap.dn.dn2str([
 			[("uid", udm_user.rename.get("username"), ldap.AVA_STRING)],
-			[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(UCSTestUDM.LDAP_BASE))
+			[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(tcommon.configRegistry['ldap/base']))
 		tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.rename)
 
 		delete_con_user(AD, ad_user_dn, udm_user_dn, adconnector.wait_for_sync)
@@ -151,7 +151,7 @@ def test_user_sync_from_ad_to_udm_with_move(user_class, sync_mode):
 		tcommon.verify_udm_object("users/user", udm_user_dn, None)
 		udm_user_dn = ldap.dn.dn2str([
 			[("uid", udm_user.basic.get("username"), ldap.AVA_STRING)],
-			[("CN", udm_user.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(UCSTestUDM.LDAP_BASE))
+			[("CN", udm_user.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(tcommon.configRegistry['ldap/base']))
 		tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.basic)
 
 		delete_con_user(AD, ad_user_dn, udm_user_dn, adconnector.wait_for_sync)

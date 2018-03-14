@@ -121,7 +121,7 @@ def test_group_sync_from_s4_to_udm_with_rename(group_class, sync_mode):
 		tcommon.verify_udm_object("groups/group", udm_group_dn, None)
 		udm_group_dn = ldap.dn.dn2str([
 			[("CN", udm_group.rename.get("name"), ldap.AVA_STRING)],
-			[("CN", "groups", ldap.AVA_STRING)]] + ldap.dn.str2dn(UCSTestUDM.LDAP_BASE))
+			[("CN", "groups", ldap.AVA_STRING)]] + ldap.dn.str2dn(tcommon.configRegistry['ldap/base']))
 		tcommon.verify_udm_object("groups/group", udm_group_dn, udm_group.rename)
 
 		delete_con_group(s4, s4_group_dn, udm_group_dn, s4connector.wait_for_sync)
@@ -145,7 +145,7 @@ def test_group_sync_from_s4_to_udm_with_move(group_class, sync_mode):
 		tcommon.verify_udm_object("groups/group", udm_group_dn, None)
 		udm_group_dn = ldap.dn.dn2str([
 			[("CN", udm_group.group.get("name"), ldap.AVA_STRING)],
-			[("CN", udm_group.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(UCSTestUDM.LDAP_BASE))
+			[("CN", udm_group.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(tcommon.configRegistry['ldap/base']))
 		tcommon.verify_udm_object("groups/group", udm_group_dn, udm_group.group)
 
 		delete_con_group(s4, s4_group_dn, udm_group_dn, s4connector.wait_for_sync)

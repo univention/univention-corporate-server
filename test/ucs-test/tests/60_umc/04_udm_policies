@@ -13,7 +13,6 @@ from univention.testing.utils import fail
 from univention.testing.umc import Client
 from univention.testing.strings import random_name
 
-ldap_base = UCSTestUDM.LDAP_BASE
 USERNAME = None
 PASSWORD = 'univention'
 
@@ -59,7 +58,7 @@ def main():
 		# create an UMC operation set to allow the udm/object/policies command
 		operation_set_dn = udm.create_object(
 			'settings/umc_operationset',
-			position="cn=operations,cn=UMC,cn=univention,%s" % ldap_base,
+			position="cn=operations,cn=UMC,cn=univention,%s" % udm.LDAP_BASE,
 			name='test-umc-opset',
 			description="policy result test op set",
 			operation=["udm/object/policies"],
@@ -70,7 +69,7 @@ def main():
 		# containing the UMC operating set
 		umc_policy_dn = udm.create_object(
 			'policies/umc',
-			position="cn=UMC,cn=policies,%s" % ldap_base,
+			position="cn=UMC,cn=policies,%s" % udm.LDAP_BASE,
 			name='test-umc-policy',
 			allow=operation_set_dn
 		)
@@ -92,7 +91,7 @@ def main():
 		for name, kwargs in policies.items():
 			policies[name] = udm.create_object(
 				'policies/registry',
-				position="cn=policies,%s" % ldap_base,
+				position="cn=policies,%s" % udm.LDAP_BASE,
 				name='test-%s-ucr-policy' % name,
 				**kwargs
 			)
@@ -101,7 +100,7 @@ def main():
 		root_dn = udm.create_object(
 			'container/cn',
 			name='root',
-			position=ldap_base
+			position=udm.LDAP_BASE
 		)
 		container_dn = udm.create_object(
 			'container/cn',
