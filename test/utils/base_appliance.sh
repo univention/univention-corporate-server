@@ -886,6 +886,14 @@ __EOF__
 	ucr unset nameserver2 nameserver3
 	ucr unset dns/forwarder2 dns/forwarder3
 
+	ucr unset interfaces/ens3/address \
+			interfaces/ens3/broadcast \
+			interfaces/ens3/netmask \
+			interfaces/ens3/network \
+			interfaces/ens3/type
+
+	ucr unset interfaces/primary
+
     ucr set update/secure_apt=yes
 	# Manual cleanup
 	rm -rf /tmp/*
@@ -1063,17 +1071,17 @@ setup_ec2 ()
  #!/bin/sh
   set -e
 
-+udevadm settle --timeout $\{ROOTDELAY:-30}
++udevadm settle --timeout \${ROOTDELAY:-30}
 + 
  PREREQS=""
  case \$1 in
 @@ -73,10 +73,6 @@
-*) msg "exited '\$ret'" "\${out}"; exit 1;;
-esac
+ 	*) msg "exited '\$ret'" "\${out}"; exit 1;;
+ esac
 
 -# There was something to do, unmount and resize
 -umount "\${rootmnt}" ||
--   fail "failed to umount \${rootmnt}";
+-	fail "failed to umount \${rootmnt}";
 -
  # Wait for any of the initial udev events to finish
  # This is to avoid any other processes using the block device that the
@@ -1085,14 +1093,14 @@ esac
 -# this is taken from 'mountroot' function
 -#   see /usr/share/initramfs-tools/scripts/local
 -if [ -z "\${ROOTFSTYPE}" ]; then
--   FSTYPE=\$(get_fstype "\${ROOT}")
+-	FSTYPE=\$(get_fstype "\${ROOT}")
 -else
--   FSTYPE=\${ROOTFSTYPE}
+-	FSTYPE=\${ROOTFSTYPE}
 -fi
 -roflag="-r"
 -[ "\${readonly}" = "y" ] || roflag="-w"
 -mount \${roflag} \${FSTYPE:+-t \${FSTYPE} }\${ROOTFLAGS} \${ROOT} \${rootmnt} ||
--   fail "failed to re-mount \${ROOT}. this is bad!"
+-	fail "failed to re-mount \${ROOT}. this is bad!"
 -
 -# write to /etc/grownroot-grown. most likely this wont work (readonly)
 -{ date --utc > "\${rootmnt}/etc/growroot-grown" ; } >/dev/null 2>&1 || :
