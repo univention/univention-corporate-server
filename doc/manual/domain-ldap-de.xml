@@ -1287,25 +1287,30 @@ univention-directory-listener-ctrl resync cups-printers
 		Um die Kerberos Authentifizierung am Identity Provider zuzulassen, muss die &ucsUCRV; <envar>saml/idp/authsource</envar> von <option>univention-ldap</option>
 		auf <option>univention-negotiate</option> gesetzt werden. Die Webbrowser müssen entsprechend so konfiguriert werden, so dass das Kerberos Ticket an den SAML Identity
 		Provider übertragen wird. Im folgenden beispielhaft für Firefox und den Internet Explorer / Microsoft Edge:
-		<itemizedlist>
+	</para>
+	<variablelist>
+		<varlistentry>
+			<term>MozillaFirefox</term>
 			<listitem>
 				<simpara>
-					<guimenu>Firefox</guimenu>:
 						In der erweiterten Firefox Konfiguration, diese ist erreichbar über die Eingabe von <guimenu>about:config</guimenu> in der Firefox Adresszeile,
 						muss bei der Option <guimenu>network.negotiate-auth.trusted-uris</guimenu> die Adresse des Identity Providers eingetragen werden, also in der
 						Standardeinstellung <uri>ucs-sso.<replaceable>domainname</replaceable></uri>.
 				</simpara>
 			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Microsoft Internet Explorer</term>
+			<term>Microsoft Edge</term>
 			<listitem>
 				<simpara>
-					<guimenu>Internet Explorer / Microsoft Edge></guimenu>:
 						In der Systemsteuerung müssen die <guimenu>Internetoptionen</guimenu> geöffnet werden und dort wird unter <guimenu>Sicherheit</guimenu>,
 						<guimenu>Lokales Intranet</guimenu>, <guimenu>Sites</guimenu>, <guimenu>Erweitert</guimenu> die Adresse des Identity Providers hinzugefügt,
 						also in der Standardeinstellung <uri>ucs-sso.<replaceable>domainname</replaceable></uri>.
 				</simpara>
 			</listitem>
-		</itemizedlist>
-	</para>
+		</varlistentry>
+	</variablelist>
 
 	<section id="domain:saml:ssologin">
 	<title>Anmelden per <foreignphrase>Single Sign-On</foreignphrase></title>
