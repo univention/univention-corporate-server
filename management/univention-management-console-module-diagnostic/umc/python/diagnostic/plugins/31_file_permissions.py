@@ -154,6 +154,8 @@ def file_and_permission_checks():
 		cf_type('/var/cache/univention-samba4', 'root', 'root', 0755, False),
 		cf_type('/var/cache/univention-quota', 'root', 'root', 0750, False),
 		cf_type('/var/cache/univention-ox', 'listener', 'root', 0770, False),
+		cf_type('/var/mail', 'root', 'mail', 0o2775, True),
+		cf_type('/var/mail/systemmail', 'systemmail', 'mail', 0o600, False),
 		cf_type('/var/tmp/univention-management-console-frontend', 'root', 'root', 0755, False),
 	]
 
