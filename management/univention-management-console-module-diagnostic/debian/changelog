@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-13) unstable; urgency=low
+
+  * Bug #46677: check permissions of system mail
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 15 Mar 2018 15:44:50 +0100
+
 univention-management-console-module-diagnostic (4.0.0-12) unstable; urgency=low
 
   * Bug #46363: add univention-ox cache directory to file permissions test
