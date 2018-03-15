@@ -92,4 +92,8 @@ for app in Apps().get_all_apps():
 '
 fi
 
+if dpkg --compare-versions "$2" lt-nl 7.0.1-29; then
+	univention-app register --app
+fi
+
 exit 0
