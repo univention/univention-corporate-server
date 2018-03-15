@@ -126,44 +126,44 @@ def file_and_permission_checks():
 	cf_type = namedtuple('check_file_kwargs', ('path', 'owner', 'group', 'mode', 'must_exist'))
 
 	check_file_args = [
-		cf_type('/etc/ldap.secret', 'root', 'DC Backup Hosts', 0640, must_exist=is_primary),
-		cf_type('/etc/machine.secret', 'root', 'root', 0600, must_exist=True),
-		cf_type('/etc/pam_ldap.secret', 'root', 'root', 0600, must_exist=True),
-		cf_type('/etc/idp-ldap-user.secret', 'root', 'DC Backup Hosts', 0640, must_exist=is_primary),
-		cf_type('/etc/libnss-ldap.conf', 'messagebus', 'root', 0440, must_exist=True),
-		cf_type('/var/run/slapd/ldapi', 'root', 'root', 0700, False),
-		cf_type('/etc/univention/ssl', 'root', 'DC Backup Hosts' if is_dc else 'root', 0755, must_exist=True),
-		cf_type('/etc/univention/ssl/openssl.cnf', 'root', 'DC Backup Hosts', 0660, must_exist=is_primary),
-		cf_type('/etc/univention/ssl/password', 'root', 'DC Backup Hosts', 0660, must_exist=is_primary),
-		cf_type('/etc/univention/ssl/ucsCA', 'root', 'DC Backup Hosts' if is_dc else 'root', 0775 if is_dc else 0755, must_exist=True),
-		cf_type('/etc/univention/ssl/ucs-sso.{}'.format(domain), 'root', 'DC Backup Hosts', 0750, must_exist=is_primary),
-		cf_type('/etc/univention/ssl/{}.{}'.format(host, domain), '{}$'.format(host) if is_primary else 'root', 'DC Backup Hosts' if is_dc else 'root', 0750, must_exist=True),
-		cf_type('/var/lib/univention-self-service-passwordreset-umc/memcached.socket', 'self-service-umc', 'nogroup', 0600, False),
-		cf_type('/var/run/univention-saml/memcached.socket', 'samlcgi', 'nogroup', 0700, False),
-		cf_type('/var/run/uvmm.socket', 'root', 'root', 0755, False),
-		cf_type('/var/lock/sysvol-sync-dir', 'root', 'DC Slave Hosts', 0664, False),
-		cf_type('/var/cache/univention-ad-connector', 'root', 'root', 0755, False),
-		cf_type('/var/cache/univention-appcenter', 'root', 'root', 0755, False),
-		cf_type('/var/cache/univention-bind-proxy', 'root', 'root', 0755, False),
-		cf_type('/var/cache/univention-config', 'root', 'root', 0755, False),
-		cf_type('/var/cache/univention-directory-listener', 'root', 'root', 0755, False),
-		cf_type('/var/cache/univention-directory-reports', 'root', 'root', 0755, False),
-		cf_type('/var/cache/univention-management-console', 'root', 'root', 0755, False),
-		cf_type('/var/cache/univention-management-console-module-diagnostic', 'root', 'root', 0755, False),
-		cf_type('/var/cache/univention-printserver', 'root', 'root', 0755, False),
-		cf_type('/var/cache/univention-samba4', 'root', 'root', 0755, False),
-		cf_type('/var/cache/univention-quota', 'root', 'root', 0750, False),
-		cf_type('/var/cache/univention-ox', 'listener', 'root', 0770, False),
+		cf_type('/etc/ldap.secret', 'root', 'DC Backup Hosts', 0o640, must_exist=is_primary),
+		cf_type('/etc/machine.secret', 'root', 'root', 0o600, must_exist=True),
+		cf_type('/etc/pam_ldap.secret', 'root', 'root', 0o600, must_exist=True),
+		cf_type('/etc/idp-ldap-user.secret', 'root', 'DC Backup Hosts', 0o640, must_exist=is_primary),
+		cf_type('/etc/libnss-ldap.conf', 'messagebus', 'root', 0o440, must_exist=True),
+		cf_type('/var/run/slapd/ldapi', 'root', 'root', 0o700, False),
+		cf_type('/etc/univention/ssl', 'root', 'DC Backup Hosts' if is_dc else 'root', 0o755, must_exist=True),
+		cf_type('/etc/univention/ssl/openssl.cnf', 'root', 'DC Backup Hosts', 0o660, must_exist=is_primary),
+		cf_type('/etc/univention/ssl/password', 'root', 'DC Backup Hosts', 0o660, must_exist=is_primary),
+		cf_type('/etc/univention/ssl/ucsCA', 'root', 'DC Backup Hosts' if is_dc else 'root', 0o775 if is_dc else 0o755, must_exist=True),
+		cf_type('/etc/univention/ssl/ucs-sso.{}'.format(domain), 'root', 'DC Backup Hosts', 0o750, must_exist=is_primary),
+		cf_type('/etc/univention/ssl/{}.{}'.format(host, domain), '{}$'.format(host) if is_primary else 'root', 'DC Backup Hosts' if is_dc else 'root', 0o750, must_exist=True),
+		cf_type('/var/lib/univention-self-service-passwordreset-umc/memcached.socket', 'self-service-umc', 'nogroup', 0o600, False),
+		cf_type('/var/run/univention-saml/memcached.socket', 'samlcgi', 'nogroup', 0o700, False),
+		cf_type('/var/run/uvmm.socket', 'root', 'root', 0o755, False),
+		cf_type('/var/lock/sysvol-sync-dir', 'root', 'DC Slave Hosts', 0o664, False),
+		cf_type('/var/cache/univention-ad-connector', 'root', 'root', 0o755, False),
+		cf_type('/var/cache/univention-appcenter', 'root', 'root', 0o755, False),
+		cf_type('/var/cache/univention-bind-proxy', 'root', 'root', 0o755, False),
+		cf_type('/var/cache/univention-config', 'root', 'root', 0o755, False),
+		cf_type('/var/cache/univention-directory-listener', 'root', 'root', 0o755, False),
+		cf_type('/var/cache/univention-directory-reports', 'root', 'root', 0o755, False),
+		cf_type('/var/cache/univention-management-console', 'root', 'root', 0o755, False),
+		cf_type('/var/cache/univention-management-console-module-diagnostic', 'root', 'root', 0o755, False),
+		cf_type('/var/cache/univention-printserver', 'root', 'root', 0o755, False),
+		cf_type('/var/cache/univention-samba4', 'root', 'root', 0o755, False),
+		cf_type('/var/cache/univention-quota', 'root', 'root', 0o750, False),
+		cf_type('/var/cache/univention-ox', 'listener', 'root', 0o770, False),
 		cf_type('/var/mail', 'root', 'mail', 0o2775, True),
 		cf_type('/var/mail/systemmail', 'systemmail', 'mail', 0o600, False),
-		cf_type('/var/tmp/univention-management-console-frontend', 'root', 'root', 0755, False),
+		cf_type('/var/tmp/univention-management-console-frontend', 'root', 'root', 0o755, False),
 	]
 
 	iglob_paths = [
-		('/var/run/univention-management-console/*.socket', ('root', 'root', 0700, False)),
-		('/var/cache/univention-*', ('root', 'root', 0700, False)),
-		('/var/tmp/univention-management-console-frontend/*', ('root', 'root', 0600, False)),
-		('/etc/univention/connector/*.sqlite', ('root', 'root', 0644, False)),
+		('/var/run/univention-management-console/*.socket', ('root', 'root', 0o700, False)),
+		('/var/cache/univention-*', ('root', 'root', 0o700, False)),
+		('/var/tmp/univention-management-console-frontend/*', ('root', 'root', 0o600, False)),
+		('/etc/univention/connector/*.sqlite', ('root', 'root', 0o644, False)),
 	]
 
 	for glob_path, args in iglob_paths:
@@ -174,7 +174,7 @@ def file_and_permission_checks():
 
 	saml_key = configRegistry.get('saml/idp/certificate/privatekey')
 	if saml_key:
-		check_file_args.append(cf_type(saml_key, 'root', 'samlcgi', 0640, must_exist=True))
+		check_file_args.append(cf_type(saml_key, 'root', 'samlcgi', 0o640, must_exist=True))
 
 	for kwarg in check_file_args:
 		yield check_file(*kwarg)
