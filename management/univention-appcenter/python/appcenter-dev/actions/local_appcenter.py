@@ -305,6 +305,8 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 				index_json.write(dumps(apps, sort_keys=True, indent=4))
 		if appcenter_host.startswith('https'):
 			appcenter_host = 'http://%s' % appcenter_host[8:]
+		if not appcenter_host.startswith('http://'):
+			appcenter_host = 'http://%s' % appcenter_host
 		call_process(['zsyncmake', '-u', '%s/meta-inf/%s/all.tar.gz' % (appcenter_host, ucs_version), '-q', '-z', '-o', archive_name + '.zsync', archive_name])
 
 	def main(self, args):
