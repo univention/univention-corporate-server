@@ -1,3 +1,12 @@
+univention-appcenter (7.0.1-29) unstable; urgency=medium
+
+  * Bug #46440: Register Apps again (to fix wrong registration status after
+    4.3 upgrade
+  * Bug #45830: Always start with http:// when using zsyncmake in the dev
+    tools
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 15 Mar 2018 14:11:19 +0100
+
 univention-appcenter (7.0.1-28) unstable; urgency=medium
 
   * Bug #46582: Use existing description for recommended app tooltip
