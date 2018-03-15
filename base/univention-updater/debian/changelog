@@ -1,3 +1,9 @@
+univention-updater (13.0.1-38) unstable; urgency=low
+
+  * Bug #46669: Disable Predictable Network Interface Names" on upgrades
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 Mar 2018 09:45:41 +0100
+
 univention-updater (13.0.1-37) unstable; urgency=medium
 
   * Don't block the upgrade if ucs/server/sso/fqdn is not set
