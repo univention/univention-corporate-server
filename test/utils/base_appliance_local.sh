@@ -37,7 +37,7 @@
 # KVM_USER needs password less ssh access from IMAGE_CONVERT_SERVER to APPS_SERVER
 # KVM_USER needs password less ssh access from KVM_BUILD_SERVER to APPS_SERVER
 
-KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_app-appliance-app-appliance-${APP_ID}.qcow2"
+KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_app-appliance-${APP_ID}.qcow2"
 APPS_BASE="/var/univention/buildsystem2/mirror/appcenter.test/univention-apps/${UCS_VERSION}/${APP_ID}"
 APPS_SERVER="omar.knut.univention.de"
 IMAGE_CONVERT_SERVER="docker.knut.univention.de"
