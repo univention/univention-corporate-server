@@ -29,8 +29,8 @@
 
 appliance_default_password="zRMtAmGIb3"
 
-set -x
-set -e
+#set -x
+#set -e
 
 check_returnvalue ()
 {
@@ -1195,4 +1195,11 @@ appliance_poweroff ()
 	rm /root/.bash_history
 	history -c
 	halt -p
+}
+
+appliance_test_appcenter () {
+	if $1; then
+		univention-install --yes univention-appcenter-dev
+		univention-app dev-use-test-appcenter
+	fi
 }
