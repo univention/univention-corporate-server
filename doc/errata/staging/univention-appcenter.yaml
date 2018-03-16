@@ -3,11 +3,13 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-appcenter
-fix: 7.0.1-29A~4.3.0.201803151413
+fix: 7.0.1-30A~4.3.0.201803161532
 desc: |-
   This update addresses the following issue(s):
   * The development tools did not prepend http:// to the call for "zsyncmake".
     This caused problems and has been fixed.
   * While updating from UCS 4.2 to UCS 4.3, some Apps changed their version.
     This requires a re-registration of the Apps.
-bug: [45830, 46440]
+  * Calling univention-upgrade noninteractively may have caused an error while
+    upgrading Apps when run on a DC Master.
+bug: [45830, 46440, 46684]
