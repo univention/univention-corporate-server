@@ -1,3 +1,9 @@
+univention-lib (7.0.0-3) unstable; urgency=medium
+
+  * Bug #45967: Assign variable before referencing it
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 16 Mar 2018 15:55:40 +0100
+
 univention-lib (7.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove pyversions

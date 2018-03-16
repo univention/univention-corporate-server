@@ -1350,7 +1350,8 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, username, password, ucr=None):
 			fd.write('send\n')
 			fd.write('quit\n')
 			fd.flush()
-			p1 = subprocess.Popen(['kinit', '--password-file=%s' % (fd2.name,), username, 'nsupdate', '-v', '-g', fd.name], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			cmd = ['kinit', '--password-file=%s' % (fd2.name,), username, 'nsupdate', '-v', '-g', fd.name]
+			p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			stdout, stderr = p1.communicate()
 			ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
 			if p1.returncode:
