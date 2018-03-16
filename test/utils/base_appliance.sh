@@ -806,7 +806,10 @@ setup_appliance ()
 
 	# Disable kernel mode set
 	# ucr set grub/append="nomodeset $(ucr get grub/append)"
-	 
+	
+	# Disable interface renaming	
+	ucr set grub/append="$(ucr get grub/append) net.ifnames=0"
+
 	# Show bootscreen in 800x600
 	ucr set grub/gfxmode=800x600@16
 	 
