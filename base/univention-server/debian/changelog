@@ -1,3 +1,10 @@
+univention-server (13.0.0-3) unstable; urgency=medium
+
+  * Bug #45909: Remove univention-system-setup from
+    univention-container-role-common
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 16 Mar 2018 15:06:36 +0100
+
 univention-server (13.0.0-2) unstable; urgency=medium
 
   * Bug #46224: add man-db to univention-role-common recommends
