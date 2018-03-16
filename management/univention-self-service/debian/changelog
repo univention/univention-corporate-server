@@ -1,3 +1,9 @@
+univention-self-service (3.0.0-5) unstable; urgency=medium
+
+  * Bug #?????: added support for Android App
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sat, 26 Aug 2017 21:07:40 +0200
+
 univention-self-service (3.0.0-4) unstable; urgency=medium
 
   * Bug #45813: add confirmation dialog which tells about successful password
