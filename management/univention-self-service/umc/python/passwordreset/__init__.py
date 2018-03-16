@@ -268,19 +268,31 @@ class Instance(Base):
 		} for p in self.send_plugins.values() if p.udm_property in user]
 
 	@forward_to_master
+#	@prevent_denial_of_service    # TODO FIXME fix DoS check
+	@sanitize(
+		apptoken=StringSanitizer(required=True))
+	@simple_response
+	def check_app_token(self, apptoken):
+		MODULE.info("check_app_token(): apptoken: {}".format(apptoken))
+		if self.is_app_token_registered(apptoken, admin=False):
+			raise UMC_Error(_("Specified app token is registered."), status=200, result=True)
+		raise UMC_Error(_("Specified app token is not registered."), status=200, result=False)
+
+	@forward_to_master
 	@prevent_denial_of_service
 	@sanitize(
 		username=StringSanitizer(required=True),
 		password=StringSanitizer(required=True),
 		email=StringSanitizer(required=False),
-		mobile=StringSanitizer(required=False))
+		mobile=StringSanitizer(required=False),
+		apptoken=StringSanitizer(required=False))
 	@simple_response
-	def set_contact(self, username, password, email=None, mobile=None):
-		MODULE.info("set_contact(): username: {} password: ***** email: {} mobile: {}".format(username, email, mobile))
+	def set_contact(self, username, password, email=None, mobile=None, apptoken=None):
+		MODULE.info("set_contact(): username: {} password: ***** email: {} mobile: {} apptoken: {}".format(username, email, mobile, apptoken))
 		dn, username = self.auth(username, password)
 		if self.is_blacklisted(username):
 			raise ServiceForbidden()
-		if self.set_contact_data(dn, email, mobile):
+		if self.set_contact_data(dn, email, mobile, apptoken):
 			raise UMC_Error(_("Successfully changed your contact data."), status=200)
 		raise UMC_Error(_('Changing contact data failed.'), status=500)
 
@@ -331,7 +343,7 @@ class Instance(Base):
 					method=method, username=username))
 				self.db.delete_tokens(username=username)
 				raise
-			raise UMC_Error(_("Successfully send token.").format(method), status=200)
+			raise UMC_Error(_("Token sent successfully.").format(method), status=200)
 
 		# no contact info
 		raise MissingContactInformation()
@@ -441,7 +453,7 @@ class Instance(Base):
 			raise ServiceForbidden()
 		return binddn, userdict["uid"][0]
 
-	def set_contact_data(self, dn, email, mobile):
+	def set_contact_data(self, dn, email, mobile, apptoken):
 		try:
 			user = self.get_udm_user_dn(userdn=dn, admin=True)
 			if email is not None and email.lower() != user["PasswordRecoveryEmail"].lower():
@@ -451,6 +463,8 @@ class Instance(Base):
 					raise UMC_Error(err)
 			if mobile is not None and mobile.lower() != user["PasswordRecoveryMobile"].lower():
 				user["PasswordRecoveryMobile"] = mobile
+			if apptoken is not None:
+				user["PasswordRecoveryAppToken"] = apptoken
 			user.modify()
 			return True
 		except Exception:
@@ -566,6 +580,18 @@ class Instance(Base):
 			group = self.get_udm_group(groupdn)
 			names.append(group["name"])
 		return names
+
+	def is_app_token_registered(self, apptoken, admin=False):
+		if admin:
+			lo, po = get_admin_connection()
+		else:
+			lo, po = get_machine_connection()
+		filter_s = filter_format('(&(objectClass=univentionPasswordSelfService)(uid=*)(univentionPasswordSelfServiceAppToken=%s))', (apptoken,))
+		base = ucr["ldap/base"]
+
+		lo, po = get_machine_connection()
+		result = lo.searchDn(filter=filter_s, base=base)
+		return len(result) > 0
 
 	def get_udm_user_dn(self, userdn, admin=False):
 		if admin:

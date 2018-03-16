@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-passwordreset\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2017-11-29 15:01+0100\n"
-"PO-Revision-Date: 2015-09-22 09:23+0200\n"
+"PO-Revision-Date: 2018-03-16 13:41+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -73,7 +73,7 @@ msgid "Successfully changed your password."
 msgstr "Ihr Passwort wurde erfolgreich geändert."
 
 #: umc/python/passwordreset/__init__.py:334
-msgid "Successfully send token."
+msgid "Token sent successfully."
 msgstr "Der Token wurde erfolgreich versendet."
 
 #: umc/python/passwordreset/__init__.py:170
