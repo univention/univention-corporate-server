@@ -156,7 +156,7 @@ if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 "
 	binddn=($(univention-ssh --no-split "$DCPWD" "$DCACCOUNT"@"$ldap_master" \
 		/usr/sbin/udm users/user list --filter "'uid=$DCACCOUNT'" --logfile /dev/null |
-		sed -ne 's|DN: ||p'))
+		sed -ne 's|^DN: ||p'))
 	if [ -z "$binddn" ]; then
 		# Next check is the local ldapi interface
 		binddn=($(univention-ssh --no-split "$DCPWD" "$DCACCOUNT"@"$ldap_master" \
