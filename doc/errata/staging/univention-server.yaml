@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-server
+fix:
+desc: |-
+  This update addresses the following issue(s):
+  * univention-system-setup has been removed from the list of packages to be
+    installed along with univention-container-role-common. This role is used
+    for Docker Apps and does not need univention-system-setup.
+bug: [45909]
