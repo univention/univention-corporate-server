@@ -575,18 +575,35 @@ __EOF__
 
 install_app_in_prejoined_setup ()
 {
-	main_app="$1"
+
+	local fastdemomode="unknown"
+	local main_app="$1"
+
+	if app_appliance_AllowPreconfiguredSetup $1; then
+		fastdemomode="yes"
+	fi
+	# TODO $FORCEFASTDEMOMODE
+	if [ "ignore" != "$FORCEFASTDEMOMODE" ]; then
+		fastdemomode="$FORCEFASTDEMOMODE"
+	fi
+	if [ "yes" != "$fastdemomode" ]; then
+		return 0
+	fi
+
+
 	apps="$main_app $(get_app_attr $main_app ApplianceAdditionalApps)"
 
 	# Only for non docker apps
-	if ! app_appliance_IsDockerApp $app; then
+	if ! app_appliance_IsDockerApp $main_app; then
 		eval "$(ucr shell update/commands/install)"
 		export DEBIAN_FRONTEND=noninteractive
 
 		for app in $apps; do
 			packages=""
 			packages="$(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
-			$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages
+			if [ -n "$packages" ]; then
+				$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages
+			fi
 			univention-run-join-scripts
 		done
 	fi
@@ -857,7 +874,7 @@ __EOF__
 	# deactivate kernel module; prevents bootsplash from freezing in vmware
 	ucr set kernel/blacklist="$(ucr get kernel/blacklist);vmwgfx"
 
- # Do network stuff
+	# Do network stuff
 
 	# set initial values for UCR ssl variables
 	/usr/sbin/univention-certificate-check-validity
