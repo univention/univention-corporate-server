@@ -901,8 +901,8 @@ __EOF__
 		[ -d "/usr/share/doc/$dir" ] && rm -rf "/usr/share/doc/$dir"
 	done
 
-	: > /var/lib/logrotate/status
-	: > /var/mail/systemmail
+	[ -e /var/lib/logrotate/status ] && :> /var/lib/logrotate/status
+	[ -e /var/mail/systemmail ] && :> /var/mail/systemmail; chown systemmail:mail /var/mail/systemmail; chmod 600 /var/mail/systemmail
 	rm -r /var/univention-backup/*
 
 	# fill up HDD with ZEROs to maximize possible compression
