@@ -29,8 +29,8 @@
 
 appliance_default_password="zRMtAmGIb3"
 
-#set -x
-#set -e
+set -x
+set -e
 
 check_returnvalue ()
 {
@@ -891,7 +891,7 @@ __EOF__
 		echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
 	fi
 
-	rm -rf /root/shared-utils/
+	rm -rf /root/shared-utils/ || true
 
 	# Cleanup apt archive
 	apt-get clean
@@ -922,7 +922,7 @@ __EOF__
 	done
 
 	[ -e /var/lib/logrotate/status ] && :> /var/lib/logrotate/status
-	[ -e /var/mail/systemmail ] && :> /var/mail/systemmail; chown systemmail:mail /var/mail/systemmail; chmod 600 /var/mail/systemmail
+	test -e /var/mail/systemmail && rm /var/mail/systemmail
 	rm -r /var/univention-backup/* || true
 
 	# fill up HDD with ZEROs to maximize possible compression
@@ -1179,14 +1179,14 @@ appliance_reset_servers ()
 
 disable_root_login_and_poweroff ()
 {
-	if [ "${1}" = "DISABLE_ROOTLOGIN" ]; then
+	if ! $1; then
 		ucr set --force auth/sshd/user/root=no
 		echo "root:$appliance_default_password" | chpasswd
 	fi
-	rm -r /root/*
-	rm /root/.bash_history
+	rm -r /root/* || true
+	rm /root/.bash_history || true
 	history -c
-	halt -p || true
+	echo "halt -p" | at now || true
 }
 
 appliance_poweroff ()

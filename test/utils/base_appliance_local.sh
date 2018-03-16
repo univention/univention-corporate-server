@@ -56,7 +56,7 @@ ESX_IMAGE="Univention-App-${APP_ID}-ESX.ova"
 TMP_ESX_IMAGE="$TMPDIR/$ESX_IMAGE"
 
 set -x
-#set -e
+set -e
 
 _ssh () {
 	ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o BatchMode=yes -n "$@"
@@ -66,20 +66,15 @@ _scp () {
 	scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "$@"
 }
 
-_cleanup () {
-	_ssh -l "$KVM_USER" "$KVM_BUILD_SERVER" "rm -f $TMP_KVM"
-	_ssh -l "$KVM_USER" "$IMAGE_CONVERT_SERVER" "rm -f $TMP_KVM"
-}
-
 _kvm_image () {
-	# copy KVM image
-	_ssh -l "$KVM_USER" "$APPS_SERVER" "mkdir -p $APPS_BASE"
-	_scp ${KVM_USER}@${KVM_BUILD_SERVER}:${TMP_KVM_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/$KVM_IMAGE"
-	_ssh -l "$KVM_USER" "${KVM_BUILD_SERVER}" "rm -f ${TMP_KVM_IMAGE}"
+	_ssh -l "$KVM_USER" "${IMAGE_CONVERT_SERVER}" "
+guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'Univention App ${UCS_VERSION} Appliance ${APP_ID} \(KVM\)\'\";
+"
+	_scp ${KVM_USER}@${IMAGE_CONVERT_SERVER}:${TMP_KVM_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/$KVM_IMAGE"
 	_ssh -l "$KVM_USER" "$APPS_SERVER" "
 cd $APPS_BASE;
-md5sum $KVM_IMAGE > $KVM_IMAGE.md5;
-chmod 644 $KVM_IMAGE*;
+md5sum ${KVM_IMAGE} > ${KVM_IMAGE}.md5
+chmod 644 ${KVM_IMAGE}*
 "
 }
 
@@ -137,19 +132,23 @@ virt-cat -a ${TMP_KVM_IMAGE} /.memory 2>/dev/null || echo 1024
 create_app_images () {
 	# convert image
 
-#	_ssh -l "$KVM_USER" "$KVM_BUILD_SERVER" "
-#test -d $TMPDIR && rm -rf $TMPDIR
-#mkdir -p $TMPDIR
-#qemu-img convert -p -c -O qcow2 $KT_CREATE_IMAGE $TMP_KVM_IMAGE
-#"
+	_ssh -l "$KVM_USER" "$KVM_BUILD_SERVER" "
+test -d $TMPDIR && rm -rf $TMPDIR
+mkdir -p $TMPDIR
+qemu-img convert -p -c -O qcow2 $KT_CREATE_IMAGE $TMP_KVM_IMAGE
+"
 	# copy to image convert server for later steps
-#	_scp -r ${KVM_USER}@${KVM_BUILD_SERVER}:/${TMPDIR} ${KVM_USER}@${IMAGE_CONVERT_SERVER}:/tmp
+	_scp -r ${KVM_USER}@${KVM_BUILD_SERVER}:/${TMPDIR} ${KVM_USER}@${IMAGE_CONVERT_SERVER}:/tmp
+	_ssh -l "$KVM_USER" "${KVM_BUILD_SERVER}" "rm -rf ${TMPDIR}"
+
+	# create apps dir
+	_ssh -l "$KVM_USER" "$APPS_SERVER" "mkdir -p $APPS_BASE"
 
 	# get memory specification (is saved in /tmp/.memory in image)
 	export MEMORY=$(_get_memory)
-	#_kvm_image
-	#_vmplayer_image
+	_kvm_image
+	_vmplayer_image
 	_virtualbox_image
 	_esxi
-	#_cleanup
+	_ssh -l "$KVM_USER" "${IMAGE_CONVERT_SERVER}" "rm -rf ${TMPDIR}"
 }
