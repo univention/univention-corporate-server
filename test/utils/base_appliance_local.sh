@@ -41,21 +41,29 @@ KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_app-appliance-${APP_ID}.qco
 APPS_BASE="/var/univention/buildsystem2/mirror/appcenter.test/univention-apps/${UCS_VERSION}/${APP_ID}"
 APPS_SERVER="omar.knut.univention.de"
 IMAGE_CONVERT_SERVER="docker.knut.univention.de"
-KVM_IMAGE="Univention-App-${APP_ID}-KVM.qcow2"
-VMPLAYER_IMAGE="Univention-App-${APP_ID}-vmware.zip"
 TMPDIR="/tmp/build-${APP_ID}"
+
+VMPLAYER_IMAGE="Univention-App-${APP_ID}-vmware.zip"
 TMP_VMPLAYER_IMAGE="$TMPDIR/$VMPLAYER_IMAGE"
+
+KVM_IMAGE="Univention-App-${APP_ID}-KVM.qcow2"
 TMP_KVM_IMAGE="$TMPDIR/master.qcow2"
 
+VBOX_IMAGE="Univention-App-${APP_ID}-virtualbox.ova"
+TMP_VBOX_IMAGE="$TMPDIR/$VBOX_IMAGE"
+
+ESX_IMAGE="Univention-App-${APP_ID}-ESX.ova"
+TMP_ESX_IMAGE="$TMPDIR/$ESX_IMAGE"
+
 set -x
-set -e
+#set -e
 
 _ssh () {
-	ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -n "$@"
+	ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o BatchMode=yes -n "$@"
 }
 
 _scp () {
-	scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+	scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "$@"
 }
 
 _cleanup () {
@@ -67,6 +75,7 @@ _kvm_image () {
 	# copy KVM image
 	_ssh -l "$KVM_USER" "$APPS_SERVER" "mkdir -p $APPS_BASE"
 	_scp ${KVM_USER}@${KVM_BUILD_SERVER}:${TMP_KVM_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/$KVM_IMAGE"
+	_ssh -l "$KVM_USER" "${KVM_BUILD_SERVER}" "rm -f ${TMP_KVM_IMAGE}"
 	_ssh -l "$KVM_USER" "$APPS_SERVER" "
 cd $APPS_BASE;
 md5sum $KVM_IMAGE > $KVM_IMAGE.md5;
@@ -76,9 +85,9 @@ chmod 644 $KVM_IMAGE*;
 
 _vmplayer_image () {
 	_ssh -l "$KVM_USER" "${IMAGE_CONVERT_SERVER}" "
-guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'Univention App ${UCS_VERSION} Appliance APP_ID \(VMware\)\'\";
+guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'Univention App ${UCS_VERSION} Appliance ${APP_ID} \(VMware\)\'\";
 test -e ${TMP_VMPLAYER_IMAGE} && rm ${TMP_VMPLAYER_IMAGE} || true;
-generate_appliance -m '$(< /tmp/ucsmaster-${APP_ID}.memory)' -p UCS -v ${UCS_VERSION}-with-${APP_ID} -o --vmware -s $TMP_KVM_IMAGE -f Univention-App-${APP_ID}
+generate_appliance -m $MEMORY -p UCS -v ${UCS_VERSION}-with-${APP_ID} -o --vmware -s $TMP_KVM_IMAGE -f Univention-App-${APP_ID}
 "
 	_scp ${KVM_USER}@${IMAGE_CONVERT_SERVER}:${VMPLAYER_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${VMPLAYER_IMAGE}"
 	_ssh -l "$KVM_USER" "${IMAGE_CONVERT_SERVER}" "rm -f ${VMPLAYER_IMAGE}"
@@ -89,69 +98,58 @@ chmod 644 ${VMPLAYER_IMAGE}*
 "
 }
 
-create_app_images () {
-	# convert image
-	_ssh -l "$KVM_USER" "$KVM_BUILD_SERVER" "
-mkdir -p $TMP_KVM
-qemu-img convert -p -c -O qcow2 $KT_CREATE_IMAGE $TMP_KVM_IMAGE
+_virtualbox_image () {
+	_ssh -l "$KVM_USER" "${IMAGE_CONVERT_SERVER}" "
+guestfish add /tmp/build-APP_ID/master.qcow2 : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'Univention App ${UCS_VERSION} Appliance ${APP_ID} \(VirtualBox\)\'\"
+test -e ${TMP_VBOX_IMAGE} && rm ${TMP_VBOX_IMAGE} || true
+generate_appliance -m $MEMORY -p UCS -v ${UCS_VERSION}-with-${APP_ID} -o --ova-virtualbox -s $TMP_KVM_IMAGE -f Univention-App-${APP_ID}
 "
-	# copy to image convert server for later steps
-	_scp ${KVM_USER}@${KVM_BUILD_SERVER}:/${TMP_KVM} ${KVM_USER}@${IMAGE_CONVERT_SERVER}:/tmp
-
-	_kvm_image
-	_vmplayer_image
-	_cleanup
+	_scp ${KVM_USER}@${IMAGE_CONVERT_SERVER}:${VBOX_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${VBOX_IMAGE}"
+	_ssh -l "$KVM_USER" "${IMAGE_CONVERT_SERVER}" "rm -f ${VBOX_IMAGE}"
+	_ssh -l "$KVM_USER" "$APPS_SERVER" "
+cd $APPS_BASE;
+md5sum ${VBOX_IMAGE} > ${VBOX_IMAGE}.md5
+chmod 644  ${VBOX_IMAGE}*
+"
 }
 
+_esxi () {
+	_ssh -l "$KVM_USER" "${IMAGE_CONVERT_SERVER}" "
+guestfish add /tmp/build-APP_ID/master.qcow2 : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'Univention App ${UCS_VERSION} Appliance ${APP_ID} \(ESX\)\'\"
+test -e ${TMP_ESX_IMAGE} && rm ${TMP_ESX_IMAGE} || true
+generate_appliance -m $MEMORY -p UCS -v ${UCS_VERSION}-with-${APP_ID} -o --ova-esxi -s $TMP_KVM_IMAGE -f Univention-App-${APP_ID}
+"
+	_scp ${KVM_USER}@${IMAGE_CONVERT_SERVER}:${ESX_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${ESX_IMAGE}"
+	_ssh -l "$KVM_USER" "${IMAGE_CONVERT_SERVER}" "rm -f ${ESX_IMAGE}"
+	_ssh -l "$KVM_USER" "$APPS_SERVER" "
+cd $APPS_BASE;
+md5sum ${ESX_IMAGE} > ${ESX_IMAGE}.md5
+chmod 644  ${ESX_IMAGE}*
+"
+}
 
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@KVM_BUILD_SERVER mkdir -p /tmp/build-APP_ID/
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@KVM_BUILD_SERVER qemu-img convert -p -c -O qcow2 /var/lib/libvirt/images/build_ucsmaster-APP_ID.qcow2 /tmp/build-APP_ID/master.qcow2
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@KVM_BUILD_SERVER ucs-kt-remove build_ucsmaster-APP_ID
-# LOCAL scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -r build@KVM_BUILD_SERVER:/tmp/build-APP_ID /tmp/
-# LOCAL scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -r /tmp/build-APP_ID build@docker.knut.univention.de:/tmp/
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@omar.knut.univention.de mkdir -p /var/univention/buildsystem2/mirror/appcenter.test/univention-apps/4.2/APP_ID/
-# LOCAL scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no /tmp/build-APP_ID/master.qcow2 build@omar.knut.univention.de:/var/univention/buildsystem2/mirror/appcenter.test/univention-apps/4.2/APP_ID/Univention-App-APP_ID-KVM.qcow2
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@omar.knut.univention.de "(cd /var/univention/buildsystem2/mirror/appcenter.test/univention-apps/4.2/APP_ID/; md5sum Univention-App-APP_ID-KVM.qcow2 >Univention-App-APP_ID-KVM.qcow2.md5; chmod 644 Univention-App-APP_ID-KVM.qcow2*)"
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@KVM_BUILD_SERVER rm -f /tmp/build-APP_ID/master.qcow2
-# LOCAL rm -f /tmp/build-APP_ID/master.qcow2
-#command5:
+_get_memory () {
+	_ssh -l "$KVM_USER" "${IMAGE_CONVERT_SERVER}" "
+virt-cat -a ${TMP_KVM_IMAGE} /.memory 2>/dev/null || echo 1024
+"
+}
 
+create_app_images () {
+	# convert image
 
+#	_ssh -l "$KVM_USER" "$KVM_BUILD_SERVER" "
+#test -d $TMPDIR && rm -rf $TMPDIR
+#mkdir -p $TMPDIR
+#qemu-img convert -p -c -O qcow2 $KT_CREATE_IMAGE $TMP_KVM_IMAGE
+#"
+	# copy to image convert server for later steps
+#	_scp -r ${KVM_USER}@${KVM_BUILD_SERVER}:/${TMPDIR} ${KVM_USER}@${IMAGE_CONVERT_SERVER}:/tmp
 
-## vmware player
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de guestfish add /tmp/build-APP_ID/master.qcow2 : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'Univention App 4.2 Appliance APP_ID \(VMware\)\'\"
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de "test -e /tmp/build-APP_ID/Univention-App-APP_ID-vmware.zip && rm /tmp/build-APP_ID/Univention-App-APP_ID-vmware.zip || true"
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de generate_appliance -m '$(< /tmp/ucsmaster-APP_ID.memory)' -p UCS -v 4.2-with-APP_ID -o --vmware -s /tmp/build-APP_ID/master.qcow2 -f "Univention-App-APP_ID"
-# LOCAL scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de:Univention-App-APP_ID-vmware.zip /tmp/build-APP_ID/
-# LOCAL scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no /tmp/build-APP_ID/Univention-App-APP_ID-vmware.zip build@omar.knut.univention.de:/var/univention/buildsystem2/mirror/appcenter.test/univention-apps/4.2/APP_ID/Univention-App-APP_ID-vmware.zip
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@omar.knut.univention.de "(cd /var/univention/buildsystem2/mirror/appcenter.test/univention-apps/4.2/APP_ID/; md5sum Univention-App-APP_ID-vmware.zip >Univention-App-APP_ID-vmware.zip.md5; chmod 644 Univention-App-APP_ID-vmware.zip*)"
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de rm -f Univention-App-APP_ID-vmware.zip
-# LOCAL rm /tmp/build-APP_ID/Univention-App-APP_ID-vmware.zip
-#command6:
-
-## virtualbox
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de guestfish add /tmp/build-APP_ID/master.qcow2 : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'Univention App 4.2 Appliance APP_ID \(VirtualBox\)\'\"
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de "test -e Univention-App-APP_ID-virtualbox.ova && rm Univention-App-APP_ID-virtualbox.ova || true"
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de generate_appliance -m '$(< /tmp/ucsmaster-APP_ID.memory)' -p UCS -v 4.2-with-APP_ID -o --ova-virtualbox -s /tmp/build-APP_ID/master.qcow2 -f "Univention-App-APP_ID"
-# LOCAL scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de:Univention-App-APP_ID-virtualbox.ova /tmp/build-APP_ID/
-# LOCAL scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no /tmp/build-APP_ID/Univention-App-APP_ID-virtualbox.ova build@omar.knut.univention.de:/var/univention/buildsystem2/mirror/appcenter.test/univention-apps/4.2/APP_ID/Univention-App-APP_ID-virtualbox.ova
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@omar.knut.univention.de "(cd /var/univention/buildsystem2/mirror/appcenter.test/univention-apps/4.2/APP_ID/; md5sum Univention-App-APP_ID-virtualbox.ova >Univention-App-APP_ID-virtualbox.ova.md5; chmod 644 Univention-App-APP_ID-virtualbox.ova*)"
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de rm -f Univention-App-APP_ID-virtualbox.ova
-# LOCAL rm -f /tmp/build-APP_ID/Univention-App-APP_ID-virtualbox.ova
-#command7:
-## vmware esxi
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de guestfish add /tmp/build-APP_ID/master.qcow2 : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'Univention App 4.2 Appliance APP_ID \(ESX\)\'\"
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de "test -e Univention-App-APP_ID-ESX.ova && rm Univention-App-APP_ID-ESX.ova || true"
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de generate_appliance -m '$(< /tmp/ucsmaster-APP_ID.memory)' -p UCS -v 4.2-with-APP_ID -o --ova-esxi -s /tmp/build-APP_ID/master.qcow2 -f "Univention-App-APP_ID"
-# LOCAL scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de:Univention-App-APP_ID-ESX.ova /tmp/build-APP_ID/
-# LOCAL scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no /tmp/build-APP_ID/Univention-App-APP_ID-ESX.ova build@omar.knut.univention.de:/var/univention/buildsystem2/mirror/appcenter.test/univention-apps/4.2/APP_ID/Univention-App-APP_ID-ESX.ova
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@omar.knut.univention.de "(cd /var/univention/buildsystem2/mirror/appcenter.test/univention-apps/4.2/APP_ID/; md5sum Univention-App-APP_ID-ESX.ova >Univention-App-APP_ID-ESX.ova.md5; chmod 644 Univention-App-APP_ID-ESX.ova*)"
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de rm -f Univention-App-APP_ID-ESX.ova
-# LOCAL rm -f /tmp/build-APP_ID/Univention-App-APP_ID-ESX.ova
-#command8:
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@docker.knut.univention.de rm -r /tmp/build-APP_ID/
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@omar.knut.univention.de "(cd /var/univention/buildsystem2/mirror/appcenter.test/univention-apps/current/; test -L APP_ID && rm APP_ID; ln -s ../4.2/APP_ID/ APP_ID)"
-# LOCAL ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no build@omar.knut.univention.de sudo update_mirror.sh appcenter.test/univention-apps/4.2/APP_ID appcenter.test/univention-apps/current/APP_ID
-#files:
-# utils/*sh /root/
-# ~/ec2/scripts/activate-errata-test-scope.sh /root/
+	# get memory specification (is saved in /tmp/.memory in image)
+	export MEMORY=$(_get_memory)
+	#_kvm_image
+	#_vmplayer_image
+	_virtualbox_image
+	_esxi
+	#_cleanup
+}
