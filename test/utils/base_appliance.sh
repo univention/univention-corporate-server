@@ -920,10 +920,11 @@ __EOF__
 
 	[ -e /var/lib/logrotate/status ] && :> /var/lib/logrotate/status
 	[ -e /var/mail/systemmail ] && :> /var/mail/systemmail; chown systemmail:mail /var/mail/systemmail; chmod 600 /var/mail/systemmail
-	rm -r /var/univention-backup/*
+	rm -r /var/univention-backup/* || true
 
 	# fill up HDD with ZEROs to maximize possible compression
-	dd if=/dev/zero of=/fill-it-up bs=1M; rm /fill-it-up
+	dd if=/dev/zero of=/fill-it-up bs=1M || true
+	rm /fill-it-up
 
 	# Remove persistent net rule
 	rm -f /etc/udev/rules.d/70-persistent-net.rules
@@ -1182,7 +1183,7 @@ disable_root_login_and_poweroff ()
 	rm -r /root/*
 	rm /root/.bash_history
 	history -c
-	halt -p
+	halt -p || true
 }
 
 appliance_poweroff ()
