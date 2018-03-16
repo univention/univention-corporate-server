@@ -138,7 +138,7 @@ class DockerActionMixin(object):
 		with docker.tmp_file() as error_file:
 			with docker.tmp_file() as password_file:
 				if credentials:
-					self._get_ldap_connection(args)  # to get a working username/password
+					self._get_ldap_connection(args, allow_machine_connection=False, allow_admin_connection=False)  # to get a working username/password
 					username = self._get_username(args)
 					password = self._get_password(args)
 					with open(password_file.name, 'w') as f:

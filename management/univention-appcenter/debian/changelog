@@ -1,3 +1,10 @@
+univention-appcenter (7.0.1-30) unstable; urgency=medium
+
+  * Bug #46684: Fix traceback in App upgrades via noninteractive
+    univention-upgrade on DC Master
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 16 Mar 2018 15:30:57 +0100
+
 univention-appcenter (7.0.1-29) unstable; urgency=medium
 
   * Bug #46440: Register Apps again (to fix wrong registration status after
