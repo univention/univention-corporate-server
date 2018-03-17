@@ -3,21 +3,19 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: firefox-esr
-fix: 52.7.1esr-1~deb8u1
+fix: 52.7.2esr-1~deb8u1
 desc: |
  This update addresses the following issues:
  * CVE-2018-5125: Memory safety bugs fixed in Firefox 59 and Firefox ESR 52.7
-   (MFSA 2018-07)
- * CVE-2018-5127: Buffer overflow manipulating SVG animatedPathSegList (MFSA
-   2018-07)
- * CVE-2018-5129: Out-of-bounds write with malformed IPC messages (MFSA
-   2018-07)
+ * CVE-2018-5127: Buffer overflow manipulating SVG animatedPathSegList
+ * CVE-2018-5129: Out-of-bounds write with malformed IPC messages
  * CVE-2018-5130: Mismatched RTP payload type can trigger memory corruption
-   (MFSA 2018-07)
  * CVE-2018-5131: Fetch API improperly returns cached copies of
-   no-store/no-cache resources (MFSA 2018-07)
- * CVE-2018-5144: Integer overflow during Unicode conversion (MFSA 2018-07)
- * CVE-2018-5145: Memory safety bugs fixed in Firefox ESR 52.7 (MFSA 2018-07)
+   no-store/no-cache resources
+ * CVE-2018-5144: Integer overflow during Unicode conversion
+ * CVE-2018-5145: Memory safety bugs fixed in Firefox ESR 52.7
+ * CVE-2018-5146: Vorbis audio processing out of bounds write
+ * CVE-2018-5147: Out of bounds memory write in libtremor
 bug: [46689]
 cve:
 - CVE-2018-5127
@@ -27,3 +25,5 @@ cve:
 - CVE-2018-5144
 - CVE-2018-5125
 - CVE-2018-5145
+- CVE-2018-5146
+- CVE-2018-5147
