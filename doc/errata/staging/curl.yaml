@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: curl
-fix: 7.38.0-4+deb8u9
+fix: 7.38.0-4+deb8u10
 desc: |
  This update addresses the following issues:
  * Fix NTLM buffer overflow via integer overflow (CVE-2017-8816)
@@ -14,6 +14,10 @@ desc: |
  * Fix FTP PWD response parser out of bounds read (CVE-2017-1000254)
  * Out-of-bounds read in code handling HTTP/2 trailers (CVE-2018-1000005)
  * HTTP authentication leak in redirects (CVE-2018-1000007)
+ * Fix NIL byte out of bounds write due to FTP path trickery as per
+   CVE-2018-1000120
+ * Fix LDAP NULL pointer dereference as per CVE-2018-1000121
+ * Fix RTSP RTP buffer over-read as per CVE-2018-1000122
 bug: [45604]
 cve:
 - CVE-2017-8817
@@ -24,3 +28,6 @@ cve:
 - CVE-2017-1000254
 - CVE-2018-1000005
 - CVE-2018-1000007
+- CVE-2018-1000120
+- CVE-2018-1000121
+- CVE-2018-1000122
