@@ -3,8 +3,9 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-management-console-module-diagnostic
-fix: 4.0.0-13A~4.3.0.201803151549
+fix: 4.0.0-14A~4.3.0.201803191742
 desc: |
  This update addresses the following issue(s):
  * Check file system permissions of system mail diretory (Bug #46677).
-bug: [46677]
+ * nsupdate checks in UCS@school did not use the Slave PDCs (Bug #45584).
+bug: [46677, 45584]
