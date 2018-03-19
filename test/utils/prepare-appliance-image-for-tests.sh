@@ -6,13 +6,14 @@ set -e
 export KVM_SERVER="$KVM_SERVER"
 export APP_ID="$APP_ID"
 export KVM_USER="$KVM_USER"
+export UCS_VERSION="$UCS_VERSION"
 
 _ssh () {
 	ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -n -l "$KVM_USER" "$KVM_SERVER" "$@"
 }
 
 # update the appliance image on the kvm server and exit
-appliance_template="/var/univention/buildsystem2/mirror/appcenter.test/univention-apps/current/$APP_ID/Univention-App-${APP_ID}-KVM.qcow2"
+appliance_template="/var/univention/buildsystem2/mirror/appcenter.test/univention-apps/$UCS_VERSION/$APP_ID/Univention-App-${APP_ID}-KVM.qcow2"
 template_name="$(basename $appliance_template)"
 kvm_template_dir="/var/lib/libvirt/templates/single/Others/appliance_${APP_ID}_amd64/"
 kvm_template="$kvm_template_dir/$template_name"
