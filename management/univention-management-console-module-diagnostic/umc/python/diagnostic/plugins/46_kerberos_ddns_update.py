@@ -117,10 +117,6 @@ def check_dns_server_principal(hostname, domainname):
 
 
 def check_nsupdate(config_registry):
-	if config_registry.get('appcenter/apps/ucsschool/status') == 'installed':
-		server = config_registry.get('ldap/server/name')
-	else:
-		server = config_registry.get('ldap/master')
 	server = get_server(config_registry)
 	hostname = config_registry.get('hostname')
 	domainname = config_registry.get('domainname')
