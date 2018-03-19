@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-join
+fix:
+desc: |-
+  This update addresses the following issue(s):
+  * Bind DNs are now determined in a more robust way.
+bug: [36097]
