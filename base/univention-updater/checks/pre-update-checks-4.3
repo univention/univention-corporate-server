@@ -348,6 +348,20 @@ update_check_reconfigured_sso () {
 	fi
 }
 
+# Bug #46699
+update_check_kopano_repo () {
+	for repo in kopano/repo/kopano-core kopano/repo/kopano-webapp kopano/repo/kopano-webmeetings; do
+		if is_ucr_true "$repo"; then
+			echo -e "\tERROR: An external repository for the Kopano Apps is currently configured."
+			echo -e "\tThere are known issues when updating to UCS 4.3 and using software"
+			echo -e "\tfrom the Kopano software repository."
+			echo -e "\tThe update is blocked while Kopano and Univention are working"
+			echo -e "\ton a solution."
+			return 1
+		fi
+	done
+}
+
 # simulate 4.3 user migration, can be removed after 4.3-0
 simulate_user_migration () {
 	python - <<'PYTHON'
