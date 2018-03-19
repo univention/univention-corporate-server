@@ -180,6 +180,68 @@ is_localhost_education() {
 	grep -q "^dn: " <<<"$ldif"
 }
 
+# copied from ucs-school-lib/shell/base.sh
+school_ou() {
+	# syntax: school_ou [hostdn]
+	#
+	# Tries to determine the LDAP name of the host's OU.
+	# The OU name is derived from the given host DN. If no DN has been passed to
+	# the function, the hostdn of the system is used as fallback.
+	# PLEASE NOTE: This function works only on domaincontroller_slave systems!
+	#              Other systems will return an empty value!
+	#
+	# example:
+	# $ ucr get ldap/hostdn
+	# cn=myslave,cn=dc,cn=server,cn=computers,ou=gymmitte,dc=example,dc=com
+	# $ school_ou
+	# gymmitte
+	# $ school_ou cn=myslave,cn=dc,cn=server,cn=computers,ou=foobar,dc=example,dc=com
+	# foobar
+	# $ school_ou cn=myslave,cn=dc,cn=server,cn=computers,ou=foo,ou=bar,dc=example,dc=com
+	# foo
+
+	local ldap_hostdn
+
+	if [ -n "$1" ] ; then
+		ldap_hostdn=",$1" # add leading comma, in case only the DN of the OU is given
+	else
+		ldap_hostdn="$(/usr/sbin/univention-config-registry get ldap/hostdn)"
+	fi
+
+	echo "$ldap_hostdn" | grep -oiE ',ou=.*$' | sed -nre 's/^,[oO][uU]=([^,]+),.*/\1/p'
+}
+
+# copied from ucs-school-lib/shell/base.sh
+school_dn() {
+	# syntax: school_dn [hostdn]
+	#
+	# Tries to determine the LDAP DN of the host's OU.
+	# The OU DN is derived from the given host DN. If no DN has been passed to
+	# the function, the hostdn of the system is used as fallback.
+	# PLEASE NOTE: This function works only on domaincontroller_slave systems!
+	#              Other systems will return an empty value!
+	#
+	# example:
+	# $ ucr get ldap/hostdn
+	# cn=myslave,cn=dc,cn=server,cn=computers,ou=gymmitte,dc=example,dc=com
+	# $ school_dn
+	# ou=gymmitte,dc=example,dc=com
+	# $ school_dn cn=myslave,cn=dc,cn=server,cn=computers,ou=foobar,dc=example,dc=com
+	# ou=foobar,dc=example,dc=com
+	# $ school_dn cn=myslave,cn=dc,cn=server,cn=computers,ou=foo,ou=bar,dc=example,dc=com
+	# ou=foo,ou=bar,dc=example,dc=com
+
+	local ldap_hostdn
+
+	if [ -n "$1" ] ; then
+		ldap_hostdn=",$1" # add leading comma, in case only the DN of the OU is given
+	else
+		ldap_hostdn="$(/usr/sbin/univention-config-registry get ldap/hostdn)"
+	fi
+
+	echo "$ldap_hostdn" | grep -oiE ',ou=.*$' | cut -b2-
+}
+
 get_available_s4connector_dc() {
 	local s4cldapbase
 	local s4cldapfilter
@@ -193,35 +255,28 @@ get_available_s4connector_dc() {
 	s4cldapbase="$ldap_base"
 	s4cldapfilter="(&(univentionService=S4 Connector)(objectClass=univentionDomainController))"
 	if is_ucs_school_domain; then
-		if [ -f /usr/share/ucs-school-lib/base.sh ]; then
-			. /usr/share/ucs-school-lib/base.sh
-			OU=$(school_ou "$ldap_hostdn")
-			if [ -z "$OU" ]; then
-				## We are in a central school department, ignore all S4 SlavePDC:
-				s4cldapfilter="(&(!(univentionService=S4 SlavePDC))(univentionService=S4 Connector)(objectClass=univentionDomainController))"
-				## or alternatively, defacto this should give the same result:
-				## s4cldapfilter="(&(univentionService=S4 Connector)(univentionServerRole=master)(univentionServerRole=backup))"
-			else
-				## We are in a school department
-				## this can either be the administration or the education section,
-				## both have separate samba domains, so ignore the other section
-				if is_localhost_education; then
-					s4cldapfilter="(&(univentionService=S4 SlavePDC)(univentionService=S4 Connector)(objectClass=univentionDomainController)(univentionService=UCS@school Education))"
-				elif is_localhost_administration; then
-					s4cldapfilter="(&(univentionService=S4 SlavePDC)(univentionService=S4 Connector)(objectClass=univentionDomainController)(univentionService=UCS@school Administration))"
-				else
-					## unsupported, a school slave with UCS@school Administration or UCS@school Education service
-					echo "ERROR: This seems to be a UCS@school school department server," 1>&2
-					echo "ERROR: but is neither a administrative nor a educative server." 1>&2
-					echo "ERROR: This is not supported, make sure that UCS@school metapackages are installed properly" 1>&2
-					return 1
-				fi
-				s4cldapbase=$(school_dn "$ldap_hostdn")
-			fi
+		OU=$(school_ou "$ldap_hostdn")
+		if [ -z "$OU" ]; then
+			## We are in a central school department, ignore all S4 SlavePDC:
+			s4cldapfilter="(&(!(univentionService=S4 SlavePDC))(univentionService=S4 Connector)(objectClass=univentionDomainController))"
+			## or alternatively, defacto this should give the same result:
+			## s4cldapfilter="(&(univentionService=S4 Connector)(univentionServerRole=master)(univentionServerRole=backup))"
 		else
-			echo "ERROR: We are joining to an UCS@school domain but shell-ucs-school is not installed" 1>&2
-			echo "ERROR: Make sure that UCS@school metapackages are installed properly" 1>&2
-			return 1	## this is fatal
+			## We are in a school department
+			## this can either be the administration or the education section,
+			## both have separate samba domains, so ignore the other section
+			if is_localhost_education; then
+				s4cldapfilter="(&(univentionService=S4 SlavePDC)(univentionService=S4 Connector)(objectClass=univentionDomainController)(univentionService=UCS@school Education))"
+			elif is_localhost_administration; then
+				s4cldapfilter="(&(univentionService=S4 SlavePDC)(univentionService=S4 Connector)(objectClass=univentionDomainController)(univentionService=UCS@school Administration))"
+			else
+				## unsupported, a school slave with UCS@school Administration or UCS@school Education service
+				echo "ERROR: This seems to be a UCS@school school department server," 1>&2
+				echo "ERROR: but is neither a administrative nor a educative server." 1>&2
+				echo "ERROR: This is not supported, make sure that UCS@school metapackages are installed properly" 1>&2
+				return 1
+			fi
+			s4cldapbase=$(school_dn "$ldap_hostdn")
 		fi
 	fi
 
