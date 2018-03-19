@@ -1,3 +1,9 @@
+univention-updater (13.0.1-39) unstable; urgency=medium
+
+  * Bug #46699: Block update if external kopano repository is used
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 19 Mar 2018 16:52:16 +0100
+
 univention-updater (13.0.1-38) unstable; urgency=low
 
   * Bug #46669: Disable Predictable Network Interface Names" on upgrades
