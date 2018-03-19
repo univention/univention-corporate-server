@@ -29,6 +29,9 @@
 
 appliance_default_password="zRMtAmGIb3"
 
+set -x
+set -e
+
 check_returnvalue ()
 {
 	rval=$1
