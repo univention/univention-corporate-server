@@ -66,14 +66,14 @@ class KinitError(UpdateError):
 
 
 class NSUpdateError(UpdateError):
-	def __init__(self, hostname, domainname):
-		super(NSUpdateError, self).__init__(hostname, domainname)
-		self.hostname = hostname
+	def __init__(self, server, domainname):
+		super(NSUpdateError, self).__init__(server, domainname)
+		self.server = server
 		self.domainname = domainname
 
 	def __str__(self):
-		msg = _('`nsupdate` check for domain {domain} failed.')
-		return msg.format(domain=self.domainname)
+		msg = _('`nsupdate` check for domain {domain} failed. Server: {server}.')
+		return msg.format(domain=self.domainname, server=self.server)
 
 
 @contextlib.contextmanager
@@ -90,7 +90,7 @@ def kinit(principal, keytab=None, password_file=None):
 
 
 def nsupdate(server, hostname, domainname):
-	process = subprocess.Popen(('nsupdate', '-g' , '-t', '15'), stdin=subprocess.PIPE,
+	process = subprocess.Popen(('nsupdate', '-g', '-t', '15'), stdin=subprocess.PIPE,
 		stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	cmd = 'server {server}\nprereq yxdomain {host}.{domain}\nsend\n'
 	_ = process.communicate(cmd.format(server=server, host=hostname, domain=domainname))
@@ -99,7 +99,12 @@ def nsupdate(server, hostname, domainname):
 
 
 def get_server(config_registry):
-	server = config_registry.get('ldap/master')
+	cmd = ["bash", "-c", ". /usr/share/univention-samba4/lib/base.sh; get_available_s4connector_dc"]
+	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+	server, err = p1.communicate()
+	if p1.returncode != 0:
+		domainname = config_registry.get('domainname')
+		raise NSUpdateError("detection failed", domainname)
 	if config_registry.is_true('ad/member'):
 		ad_domain_info = univention.lib.admember.lookup_adds_dc()
 		return ad_domain_info.get('DC IP', server)
