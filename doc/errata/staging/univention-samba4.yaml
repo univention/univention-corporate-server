@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-samba4
+fix: 7.0.2-7A~4.3.0.201803191715
+desc: |
+ This update addresses the following issue(s):
+ * A dependency to ucs@school in the univention-samba join script has
+   been removed.
+bug: [46006]
