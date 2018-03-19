@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-15) unstable; urgency=medium
+
+  * Bug #45584: Update translation
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Mar 2018 17:46:10 +0100
+
 univention-management-console-module-diagnostic (4.0.0-14) unstable; urgency=medium
 
   * Bug #45584: Run nsupdate checks against the S4-Connector host
