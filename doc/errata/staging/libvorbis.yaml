@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: libvorbis
+fix: 1.3.4-2+deb8u1
+desc: |
+ This update addresses the following issue:
+ * Prevent out-of-bounds write in codebook decoding (CVE-2018-5146)
+bug: [46693]
+cve:
+- CVE-2018-5146
