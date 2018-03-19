@@ -1,6 +1,6 @@
 univention-s4-connector (11.0.8-18) unstable; urgency=medium
 
-  * Bug #46292: Avoid segfault on krb5Key with unsupported
+  * Bug #46301: Avoid segfault on krb5Key with unsupported
     Kerberos encryption type
 
  -- Arvid Requate <requate@univention.de>  Fri, 16 Feb 2018 13:06:44 +0100

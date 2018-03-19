@@ -1,6 +1,6 @@
-univention-samba4 (6.0.10-45) unstable; urgency=medium
+univention-samba4 (6.0.10-46) unstable; urgency=medium
 
-  * Bug #46292: Avoid s4search-decode segfault on krb5Key with unsupported
+  * Bug #46301: Avoid s4search-decode segfault on krb5Key with unsupported
     Kerberos encryption type
 
  -- Arvid Requate <requate@univention.de>  Fri, 16 Feb 2018 12:57:40 +0100
