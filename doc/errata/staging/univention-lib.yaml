@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-lib
-fix:
+fix: 7.0.0-3A~4.3.0.201803161600
 desc: |-
   This update addresses the following issue(s):
   * An error message when joining an AD domain was not printed correctly
