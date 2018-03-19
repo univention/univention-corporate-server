@@ -1,3 +1,9 @@
+univention-join (10.0.0-4) unstable; urgency=medium
+
+  * Bug #36097: Refine sed command for filtering the DN out of an UDM output
+
+ -- Richard Ulmer <ulmer@univention.de>  Mon, 19 Mar 2018 09:44:19 +0100
+
 univention-join (10.0.0-3) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
