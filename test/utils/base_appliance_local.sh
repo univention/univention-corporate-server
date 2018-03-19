@@ -27,34 +27,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# ENV VARS:
-# APP_ID
-# KVM_USER
-# UCS_VERSION
-# KVM_BUILD_SERVER
-#
-# KVM_USER needs password less ssh access to APPS_SERVER, KVM_BUILD_SERVER and IMAGE_CONVERT_SERVER
-# KVM_USER needs password less ssh access from IMAGE_CONVERT_SERVER to APPS_SERVER
-# KVM_USER needs password less ssh access from KVM_BUILD_SERVER to APPS_SERVER
-
-KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_app-appliance-${APP_ID}.qcow2"
-APPS_BASE="/var/univention/buildsystem2/mirror/appcenter.test/univention-apps/${UCS_VERSION}/${APP_ID}"
-APPS_SERVER="omar.knut.univention.de"
-IMAGE_CONVERT_SERVER="docker.knut.univention.de"
-TMPDIR="/tmp/build-${APP_ID}"
-
-VMPLAYER_IMAGE="Univention-App-${APP_ID}-vmware.zip"
-TMP_VMPLAYER_IMAGE="$TMPDIR/$VMPLAYER_IMAGE"
-
-KVM_IMAGE="Univention-App-${APP_ID}-KVM.qcow2"
-TMP_KVM_IMAGE="$TMPDIR/master.qcow2"
-
-VBOX_IMAGE="Univention-App-${APP_ID}-virtualbox.ova"
-TMP_VBOX_IMAGE="$TMPDIR/$VBOX_IMAGE"
-
-ESX_IMAGE="Univention-App-${APP_ID}-ESX.ova"
-TMP_ESX_IMAGE="$TMPDIR/$ESX_IMAGE"
-
 set -x
 set -e
 
@@ -95,7 +67,7 @@ chmod 644 ${VMPLAYER_IMAGE}*
 
 _virtualbox_image () {
 	_ssh -l "$KVM_USER" "${IMAGE_CONVERT_SERVER}" "
-guestfish add /tmp/build-APP_ID/master.qcow2 : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'Univention App ${UCS_VERSION} Appliance ${APP_ID} \(VirtualBox\)\'\"
+guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'Univention App ${UCS_VERSION} Appliance ${APP_ID} \(VirtualBox\)\'\"
 test -e ${TMP_VBOX_IMAGE} && rm ${TMP_VBOX_IMAGE} || true
 generate_appliance -m $MEMORY -p UCS -v ${UCS_VERSION}-with-${APP_ID} -o --ova-virtualbox -s $TMP_KVM_IMAGE -f Univention-App-${APP_ID}
 "
@@ -110,7 +82,7 @@ chmod 644  ${VBOX_IMAGE}*
 
 _esxi () {
 	_ssh -l "$KVM_USER" "${IMAGE_CONVERT_SERVER}" "
-guestfish add /tmp/build-APP_ID/master.qcow2 : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'Univention App ${UCS_VERSION} Appliance ${APP_ID} \(ESX\)\'\"
+guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'Univention App ${UCS_VERSION} Appliance ${APP_ID} \(ESX\)\'\"
 test -e ${TMP_ESX_IMAGE} && rm ${TMP_ESX_IMAGE} || true
 generate_appliance -m $MEMORY -p UCS -v ${UCS_VERSION}-with-${APP_ID} -o --ova-esxi -s $TMP_KVM_IMAGE -f Univention-App-${APP_ID}
 "
@@ -130,8 +102,37 @@ virt-cat -a ${TMP_KVM_IMAGE} /.memory 2>/dev/null || echo 1024
 }
 
 create_app_images () {
-	# convert image
+	local APP_ID=$1
+	local KVM_USER=$2
+	local KVM_BUILD_SERVER=$3
+	local UCS_VERSION=$4
 
+	# KVM_USER needs password less ssh access to APPS_SERVER, KVM_BUILD_SERVER and IMAGE_CONVERT_SERVER
+	# KVM_USER needs password less ssh access from IMAGE_CONVERT_SERVER to APPS_SERVER
+	# KVM_USER needs password less ssh access from KVM_BUILD_SERVER to APPS_SERVER
+
+	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_app-appliance-${APP_ID}.qcow2"
+	APPS_BASE="/var/univention/buildsystem2/mirror/appcenter.test/univention-apps/${UCS_VERSION}/${APP_ID}"
+	APPS_SERVER="omar.knut.univention.de"
+	IMAGE_CONVERT_SERVER="docker.knut.univention.de"
+	TMPDIR="/tmp/build-${APP_ID}"
+
+	VMPLAYER_IMAGE="Univention-App-${APP_ID}-vmware.zip"
+	TMP_VMPLAYER_IMAGE="$TMPDIR/$VMPLAYER_IMAGE"
+
+	KVM_IMAGE="Univention-App-${APP_ID}-KVM.qcow2"
+	TMP_KVM_IMAGE="$TMPDIR/master.qcow2"
+
+	VBOX_IMAGE="Univention-App-${APP_ID}-virtualbox.ova"
+	TMP_VBOX_IMAGE="$TMPDIR/$VBOX_IMAGE"
+
+	ESX_IMAGE="Univention-App-${APP_ID}-ESX.ova"
+	TMP_ESX_IMAGE="$TMPDIR/$ESX_IMAGE"
+
+	export APP_ID KVM_USER KVM_BUILD_SERVER UCS_VERSION KT_CREATE_IMAGE APPS_BASE APPS_SERVER IMAGE_CONVERT_SERVER
+	export TMPDIR VMPLAYER_IMAGE TMP_VMPLAYER_IMAGE KVM_IMAGE TMP_KVM_IMAGE VBOX_IMAGE TMP_VBOX_IMAGE ESX_IMAGE TMP_ESX_IMAGE
+
+	# convert image
 	_ssh -l "$KVM_USER" "$KVM_BUILD_SERVER" "
 test -d $TMPDIR && rm -rf $TMPDIR
 mkdir -p $TMPDIR
