@@ -350,9 +350,11 @@ update_check_reconfigured_sso () {
 
 # Bug #46699
 update_check_kopano_repo () {
+	local var="update$VERSION/ignore_kopano_repo"
+	ignore_check "$var" && return 100
 	for repo in kopano/repo/kopano-core kopano/repo/kopano-webapp kopano/repo/kopano-webmeetings; do
 		if is_ucr_true "$repo"; then
-			echo -e "\tERROR: An external repository for the Kopano Apps is currently configured."
+			echo -e "\tAn external repository for the Kopano Apps is currently configured."
 			echo -e "\tThere are known issues when updating to UCS 4.3 and using software"
 			echo -e "\tfrom the Kopano software repository."
 			echo -e "\tThe update is blocked while Kopano and Univention are working"
