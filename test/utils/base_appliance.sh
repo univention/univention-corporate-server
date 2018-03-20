@@ -203,11 +203,18 @@ appliance_app_has_external_docker_image ()
 prepare_docker_app_container ()
 {
 	local app="$1"
+	local extra_packages=""
 	# TODO: build functionality for non appbox docker apps
 	if app_appliance_IsDockerApp "$app"; then
 		php7_required=false
-		if [ "$app" == "owncloud82" ]; then
-			php7_required=true
+		for i in "owncloud82" "egroupware"; do
+			if [ "$app" == "owncloud82" ]; then
+				php7_required=true
+			fi
+		done
+
+		if [ "$app" == "egroupware" ]; then
+			extra_packages="libapache2-mod-php php-tidy php-gd php-imap php-ldap php-xsl php-mysql php-common apache2-mpm-prefork php-mbstring"
 		fi
 
 		dockerimage="$(get_app_attr $app DockerImage)"
@@ -250,15 +257,15 @@ prepare_docker_app_container ()
 					fi
 				done
 
-				"$php7_required" && docker exec "$container_id" ucr set repository/online/component/php7=enabled \
+				"$php7_required" && docker exec "$container_id" ucr set \
+					repository/online/component/php7=enabled \
 					repository/online/component/php7/version=current \
-					repository/online/component/php7/server=http://updates-test.software-univention.de \
-					repository/online/component/php7/description="PHP 7 for UCS" \
-					repository/online/unmaintained=yes
+					repository/online/component/php7/server=https://updates.software-univention.de \
+					repository/online/component/php7/description="PHP 7 for UCS"
 
 				# provide required packages inside container
 				docker exec "$container_id" apt-get update
-				docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)
+				docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster) $extra_packages
 				docker exec "$container_id" apt-get update
 
 				# shutdown container and use it as app base
