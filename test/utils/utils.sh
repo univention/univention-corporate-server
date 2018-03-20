@@ -327,13 +327,29 @@ install_apps_master_packages () {
 
 install_with_unmaintained () {
 	local rv=0
+	wait_for_repo_server || rv=$?
 	ucr set repository/online=true repository/online/unmaintained=yes
+	cat /etc/apt/sources.list.d/15_ucs-online-version.list
 	univention-install --yes "$@" || rv=$?
 	ucr set repository/online/unmaintained=no
 	return $rv
 }
 
+wait_for_repo_server () {
+	eval "$(ucr shell 'repository/online/server')"
+	repository_online_server=${repository_online_server#https://}
+	repository_online_server=${repository_online_server#http://}
+	repository_online_server=${repository_online_server%/}
+	for i in $(seq 1 300); do
+		ping -c 2 "$repository_online_server" && return 0
+		sleep 1
+	done
+	return 1
+}
+
+
 install_ucs_test () {
+	wait_for_repo_server || return 1
 	install_with_unmaintained ucs-test
 	install_selenium || install_selenium
 	# The AD Member Jenkins tests sometimes have network problems, so executing it twice.
@@ -759,7 +775,22 @@ monkeypatch () {
 }
 
 import_license () {
+	# wait for server
+	local server="license.univention.de"
+	for i in $(seq 1 100); do
+		nc -w 3 -z license.univention.de 443 && break
+		sleep 1
+	done
 	python -m shared-utils/license_client "$(ucr get ldap/base)" "$(date -d '+1 year' '+%d.%m.%Y')"
+	# It looks like we have in some AD member setups problems with the DNS resolution. Try to use
+	# the static variante (Bug #46448)
+	if [ ! -e ./ValidTest.license ]; then
+		ucr set hosts/static/85.184.250.151=license.univention.de
+		nscd -i hosts
+		python -m shared-utils/license_client "$(ucr get ldap/base)" "$(date -d '+1 year' '+%d.%m.%Y')"
+		ucr unset hosts/static/85.184.250.151
+		nscd -i hosts
+	fi
 	univention-license-import ./ValidTest.license && univention-license-check
 }
 
