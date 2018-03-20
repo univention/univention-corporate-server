@@ -208,7 +208,7 @@ prepare_docker_app_container ()
 	if app_appliance_IsDockerApp "$app"; then
 		php7_required=false
 		for i in "owncloud82" "egroupware"; do
-			if [ "$app" == "owncloud82" ]; then
+			if [ "$i" == "$app" ]; then
 				php7_required=true
 			fi
 		done
@@ -267,6 +267,11 @@ prepare_docker_app_container ()
 				docker exec "$container_id" apt-get update
 				docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster) $extra_packages
 				docker exec "$container_id" apt-get update
+
+				# check if packages are downloaded
+				for i in $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster); do
+					docker exec "$container_id" ls /var/cache/univention-system-setup/packages/ | grep $i
+				done
 
 				# shutdown container and use it as app base
 				docker stop "$container_id"
