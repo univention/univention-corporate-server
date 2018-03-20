@@ -25,8 +25,8 @@ modules/univention/updater/mirror.py#UniventionMiror
 
 Repository layout
 =================
-* [SDB 91](http://sdb.univention.de/content/12/91/de/wie-koennen-eigene-pakete-fuer-ucs-bereitgestellt-werden.html)
-* [SDB 135](http://sdb.univention.de/content/12/135/de/wie-kann-ein-repository-fuer-ucs-bereitgestellt-werden.html)
+* [SDB 91](http://docs.software-univention.de/manual-4.3.html#computers::softwaremanagement::installsoftware)
+* [SDB 135](http://docs.software-univention.de/manual-4.3.html#software::configrepo)
 
 Repository Server
 -----------------

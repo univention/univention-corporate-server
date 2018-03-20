@@ -1,3 +1,9 @@
+univention-updater (13.0.1-40) unstable; urgency=medium
+
+  * Bug #46166: update dead links from sdb to documentation
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 20 Mar 2018 11:20:06 +0100
+
 univention-updater (13.0.1-39) unstable; urgency=medium
 
   * Bug #46699: Block update if external kopano repository is used

@@ -984,24 +984,6 @@ msgstr ""
 msgid "http://sdb.univention.de/1298"
 msgstr ""
 
-#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:47
-msgid ""
-"http://sdb.univention.de/content/14/295/en/troubleshooting-"
-"listener__notifier.html"
-msgstr ""
-
-#: umc/python/diagnostic/plugins/00_check_server_password.py:56
-msgid ""
-"http://sdb.univention.de/content/24/330/en/manually-trigger-server-password-"
-"change.html"
-msgstr ""
-
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:48
-msgid ""
-"http://sdb.univention.de/content/6/294/en/how-to-deal-with-s4_connector-"
-"rejects.html"
-msgstr ""
-
 #: umc/python/diagnostic/plugins/51_hostname_check.py:46
 msgid "https://tools.ietf.org/html/rfc1123#section-2"
 msgstr ""

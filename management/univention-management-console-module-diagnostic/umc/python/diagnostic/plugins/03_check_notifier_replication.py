@@ -44,7 +44,7 @@ description = _('No problems found with UDN replication.')
 
 links = [{
 	'name': 'sdb',
-	'href': _('http://sdb.univention.de/content/14/295/en/troubleshooting-listener__notifier.html'),
+	'href': 'https://help.univention.com/t/troubleshooting-listener-notifier/6430',
 	'label': _('Univention Support Database - Troubleshooting: Listener-/Notifier')
 }]
 

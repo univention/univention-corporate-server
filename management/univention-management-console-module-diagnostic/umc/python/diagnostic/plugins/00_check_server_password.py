@@ -53,7 +53,7 @@ title = _('Check machine password')
 description = _('Authentication with machine password against LDAP successful.')
 links = [{
 	'name': 'sdb',
-	'href': _('http://sdb.univention.de/content/24/330/en/manually-trigger-server-password-change.html'),
+	'href': 'https://help.univention.com/t/manually-trigger-server-password-change/6376',
 	'label': _('Univention Support Database - Manually trigger server password change')
 }]
 

@@ -45,7 +45,7 @@ title = _('S4 Connector rejects')
 description = _('No S4 Connector rejects were found.')
 links = [{
 	'name': 'sdb',
-	'href': _('http://sdb.univention.de/content/6/294/en/how-to-deal-with-s4_connector-rejects.html'),
+	'href': 'https://help.univention.com/t/how-to-deal-with-s4-connector-rejects/33',
 	'label': _('Univention Support Database - How to deal with s4-connector rejects')
 }]
 

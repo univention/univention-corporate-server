@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-26) unstable; urgency=medium
+
+  * Bug #46166: fix broken links to univention support database
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 20 Mar 2018 11:30:58 +0100
+
 univention-management-console-module-diagnostic (4.0.0-25) unstable; urgency=medium
 
   * Bug #46039: samba-tool-dbcheck --fix always returns != 0 when something
