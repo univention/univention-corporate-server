@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-18) unstable; urgency=medium
+
+  * Bug #46034: Adjust wording
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Mar 2018 14:08:57 +0100
+
 univention-management-console-module-diagnostic (4.0.0-17) unstable; urgency=medium
 
   * Bug #45343: Workaround for Python paramiko hangs
