@@ -10,4 +10,5 @@ desc: |
  * nsupdate checks in UCS@school did not use the Slave PDCs (Bug #45584).
  * Sometimes the 01_ssh_connection check was hanging (Bug #45343).
  * The german name of the module was adjusted (Bug #46034).
-bug: [46677, 45584, 45343, 46034]
+ * Run nsupdate check only on Samba/Samba4 systems (Bug #45904).
+bug: [46677, 45584, 45343, 46034, 45904]
