@@ -926,6 +926,7 @@ start_portal_in_local_firefox () {
 	sleep 1
 	DISPLAY=:0 firefox http://$(hostname -f)/univention/portal &
 	sleep 10
+	chvt 1
 }
 
 postgres91_update () {
