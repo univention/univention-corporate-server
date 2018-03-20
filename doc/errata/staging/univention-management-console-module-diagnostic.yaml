@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Check file system permissions of system mail diretory (Bug #46677).
  * nsupdate checks in UCS@school did not use the Slave PDCs (Bug #45584).
-bug: [46677, 45584]
+ * Sometimes the 01_ssh_connection check was hanging (Bug #45343).
+bug: [46677, 45584, 45343]
