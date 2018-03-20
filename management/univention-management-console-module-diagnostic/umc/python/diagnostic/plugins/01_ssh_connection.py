@@ -75,7 +75,7 @@ def run(_umc_instance):
 		# check both, hostname and fqdn
 		for dest in [host, host + '.' + ucr['domainname']]:
 			try:
-				client.connect(dest, port=22, username=ucr['hostname'] + '$', password=password, timeout=1, allow_agent=False)
+				client.connect(dest, port=22, username=ucr['hostname'] + '$', password=password, timeout=2, auth_timeout=2, allow_agent=False)
 				client.close()
 			except paramiko.BadHostKeyException as err:
 				if dest:

@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-17) unstable; urgency=medium
+
+  * Bug #45343: Workaround for Python paramiko hangs
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Mar 2018 13:59:51 +0100
+
 univention-management-console-module-diagnostic (4.0.0-16) unstable; urgency=medium
 
   * Bug #45904: Run nsupdate check only on Samba/Samba4 systems
