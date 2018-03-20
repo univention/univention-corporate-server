@@ -47,11 +47,10 @@ def is_service_active(service, hostname=socket.gethostname()):
 	return False
 
 
-def active_services(hostname=socket.gethostname()):
-	lo = univention.uldap.getMachineConnection()
-	raw_filter = '(uid=%s$)'
-	filter_expr = ldap.filter.filter_format(raw_filter, (hostname,))
-	res = lo.search(filter_expr, attr=['univentionService'])
+def active_services(lo=None):
+	if not lo:
+		lo = univention.uldap.getMachineConnection()
+	res = lo.search(base=lo.binddn, scope='base', attr=['univentionService'])
 	if res:
 		dn, attr = res[0]
 		return attr.get('univentionService', [])

@@ -108,12 +108,8 @@ def get_dns_server(config_registry, active_services):
 		if set(active_services) >= {'Samba 4', 'DNS'}:
 			server = ".".join([hostname, domainname])
 		else:
-			cmd = ["bash", "-c", ". /usr/share/univention-samba4/lib/base.sh; get_available_s4connector_dc"]
-			p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE) #, close_fds=True)
-			out, err = p1.communicate()
-			if p1.returncode != 0:
-				raise NSUpdateError(err, domainname)
-			server = ".".join([out, domainname])
+			## TODO: Memberserver in Samba 4 domain
+			server = None
 	return server
 
 
@@ -127,17 +123,16 @@ def check_dns_server_principal(hostname, domainname):
 		nsupdate(hostname, domainname)
 
 
-def check_nsupdate(config_registry):
+def check_nsupdate(config_registry, server):
 	hostname = config_registry.get('hostname')
 	domainname = config_registry.get('domainname')
-	is_dc = config_registry.get('samba4/role') == 'DC'
 
 	try:
 		check_dns_machine_principal(server, hostname, domainname)
 	except UpdateError as error:
 		yield error
 
-	if is_dc:
+	if config_registry.get('samba4/role') == 'DC':
 		try:
 			check_dns_server_principal(hostname, domainname)
 		except UpdateError as error:
@@ -148,17 +143,18 @@ def run(_umc_instance):
 	config_registry = univention.config_registry.ConfigRegistry()
 	config_registry.load()
 
-	hostname = config_registry.get('hostname')
-	active_services = util.active_services(hostname)
-	if not set(active_services) & {'Samba 4', 'Samba'}:
+	active_services = util.active_services()
+	if not set(active_services) & {'Samba 4', 'Samba 3'}:
 		return  # ddns updates are not possible
 
 	try:
 		server = get_dns_server(config_registry, active_services)
+		if not server:
+			return
 	except NSUpdateError:
 		return  # ddns updates are not possible
 
-	problems = list(check_nsupdate(config_registry))
+	problems = list(check_nsupdate(config_registry, server))
 	if problems:
 		ed = [_('Errors occured while running `kinit` or `nsupdate`.')]
 		ed.extend(str(error) for error in problems)
