@@ -47,6 +47,17 @@ def is_service_active(service, hostname=socket.gethostname()):
 	return False
 
 
+def active_services(hostname=socket.gethostname()):
+	lo = univention.uldap.getMachineConnection()
+	raw_filter = '(uid=%s$)'
+	filter_expr = ldap.filter.filter_format(raw_filter, (hostname,))
+	res = lo.search(filter_expr, attr=['univentionService'])
+	if res:
+		dn, attr = res[0]
+		return attr.get('univentionService', [])
+	return None
+
+
 def run_with_output(cmd):
 	output = list()
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)

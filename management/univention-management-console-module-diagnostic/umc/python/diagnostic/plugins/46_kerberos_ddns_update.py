@@ -66,14 +66,14 @@ class KinitError(UpdateError):
 
 
 class NSUpdateError(UpdateError):
-	def __init__(self, server, domainname):
-		super(NSUpdateError, self).__init__(server, domainname)
-		self.server = server
+	def __init__(self, details, domainname):
+		super(NSUpdateError, self).__init__(details, domainname)
+		self.details = details
 		self.domainname = domainname
 
 	def __str__(self):
-		msg = _('`nsupdate` check for domain {domain} failed. Server: {server}.')
-		return msg.format(domain=self.domainname, server=self.server)
+		msg = _('`nsupdate` check for domain {domain} failed ({details}).')
+		return msg.format(domain=self.domainname, details=self.details)
 
 
 @contextlib.contextmanager
@@ -89,40 +89,45 @@ def kinit(principal, keytab=None, password_file=None):
 		subprocess.call(('kdestroy',))
 
 
-def nsupdate(server, hostname, domainname):
+def nsupdate(server, domainname):
 	process = subprocess.Popen(('nsupdate', '-g', '-t', '15'), stdin=subprocess.PIPE,
 		stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	cmd = 'server {server}\nprereq yxdomain {host}.{domain}\nsend\n'
-	_ = process.communicate(cmd.format(server=server, host=hostname, domain=domainname))
+	cmd = 'server {server}\nprereq yxdomain {domain}\nsend\nquit\n'
+	_ = process.communicate(cmd.format(server=server, domain=domainname))
 	if process.poll() != 0:
 		raise NSUpdateError(server, domainname)
 
 
-def get_server(config_registry):
-	cmd = ["bash", "-c", ". /usr/share/univention-samba4/lib/base.sh; get_available_s4connector_dc"]
-	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-	server, err = p1.communicate()
-	if p1.returncode != 0:
-		domainname = config_registry.get('domainname')
-		raise NSUpdateError("detection failed", domainname)
+def get_dns_server(config_registry, active_services):
 	if config_registry.is_true('ad/member'):
 		ad_domain_info = univention.lib.admember.lookup_adds_dc()
-		return ad_domain_info.get('DC IP', server)
+		server = ad_domain_info.get('DC IP')
+	else:
+		hostname = config_registry.get('hostname')
+		domainname = config_registry.get('domainname')
+		if set(active_services) >= {'Samba 4', 'DNS'}:
+			server = ".".join([hostname, domainname])
+		else:
+			cmd = ["bash", "-c", ". /usr/share/univention-samba4/lib/base.sh; get_available_s4connector_dc"]
+			p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE) #, close_fds=True)
+			out, err = p1.communicate()
+			if p1.returncode != 0:
+				raise NSUpdateError(err, domainname)
+			server = ".".join([out, domainname])
 	return server
 
 
 def check_dns_machine_principal(server, hostname, domainname):
 	with kinit('{}$'.format(hostname), password_file='/etc/machine.secret'):
-		nsupdate(server, hostname, domainname)
+		nsupdate(server, domainname)
 
 
 def check_dns_server_principal(hostname, domainname):
 	with kinit('dns-{}'.format(hostname), keytab='/var/lib/samba/private/dns.keytab'):
-		nsupdate(hostname, hostname, domainname)
+		nsupdate(hostname, domainname)
 
 
 def check_nsupdate(config_registry):
-	server = get_server(config_registry)
 	hostname = config_registry.get('hostname')
 	domainname = config_registry.get('domainname')
 	is_dc = config_registry.get('samba4/role') == 'DC'
@@ -143,8 +148,14 @@ def run(_umc_instance):
 	config_registry = univention.config_registry.ConfigRegistry()
 	config_registry.load()
 
-	master_hostname = config_registry.get('ldap/master').split('.')[0]
-	if not util.is_service_active('Samba 4', master_hostname):
+	hostname = config_registry.get('hostname')
+	active_services = util.active_services(hostname)
+	if not set(active_services) & {'Samba 4', 'Samba'}:
+		return  # ddns updates are not possible
+
+	try:
+		server = get_dns_server(config_registry, active_services)
+	except NSUpdateError:
 		return  # ddns updates are not possible
 
 	problems = list(check_nsupdate(config_registry))
