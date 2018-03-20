@@ -55,6 +55,7 @@ def run(_umc_instance):
 
 
 def adjust(_umc_instance):
+	MODULE.process('Setting samba/max_open_files')
 	handler_set([
 		'samba/max_open_files=%d' % (suggested_max_open_files,)
 	])

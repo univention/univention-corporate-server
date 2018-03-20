@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.management.console.modules.diagnostic import Warning, ProblemFixed
+from univention.management.console.modules.diagnostic import Warning, ProblemFixed, MODULE
 from univention.management.console.modules.diagnostic import util
 
 from univention.lib.i18n import Translation
@@ -47,10 +47,15 @@ def run_samba_tool_ntacl_sysvolreset(umc_instance):
 
 	cmd = ['samba-tool', 'ntacl', 'sysvolreset']
 	(success, output) = util.run_with_output(cmd)
+
+	cmd_string = ' '.join(cmd)
 	if success:
-		fix_log = [_('`{cmd}` succeeded.').format(cmd=' '.join(cmd))]
+		fix_log = [_('`{cmd}` succeeded.').format(cmd=cmd_string)]
+		MODULE.process('Output of %s:\n%s' % (cmd_string, output))
 	else:
-		fix_log = [_('`{cmd}` failed.').format(cmd=' '.join(cmd))]
+		fix_log = [_('`{cmd}` failed.').format(cmd=cmd_string)]
+		MODULE.error('Error running %s:\n%s' % (cmd_string, output))
+
 	fix_log.append(output.decode('utf-8', 'replace'))
 	run(umc_instance, rerun=True, fix_log='\n'.join(fix_log))
 

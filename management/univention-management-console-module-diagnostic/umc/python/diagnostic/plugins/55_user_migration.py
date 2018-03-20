@@ -3,7 +3,7 @@
 
 from subprocess import Popen, PIPE, STDOUT
 from univention.management.console.config import ucr
-from univention.management.console.modules.diagnostic import Critical, ProblemFixed
+from univention.management.console.modules.diagnostic import Critical, ProblemFixed, MODULE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -32,7 +32,10 @@ def migrate_users(_umc_instance):
 	process = Popen(['/usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3'], stderr=STDOUT, stdout=PIPE)
 	stdout, stderr = process.communicate()
 	if process.returncode:
+		MODULE.error('Error running univention-migrate-users-to-ucs4.3:\n%s' % (stdout,))
 		raise Critical(_('The migration failed: %s') % (stdout,))
+	else:
+		MODULE.process('Output of univention-migrate-users-to-ucs4.3:\n%s' % (stdout,))
 	raise ProblemFixed(buttons=[])
 
 

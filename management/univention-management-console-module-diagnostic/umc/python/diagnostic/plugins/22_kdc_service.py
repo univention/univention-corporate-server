@@ -49,7 +49,7 @@ import pyasn1.error
 
 from univention.config_registry import handler_set as ucr_set
 import univention.config_registry
-from univention.management.console.modules.diagnostic import Warning, Critical, ProblemFixed
+from univention.management.console.modules.diagnostic import Warning, Critical, ProblemFixed, MODULE
 from univention.management.console.modules.diagnostic import util
 
 from univention.lib.i18n import Translation
@@ -90,11 +90,13 @@ def add_lo_to_samba_interfaces(umc_instance):
 
 	interfaces = configRegistry.get('samba/interfaces', '').split()
 	interfaces.append('lo')
+	MODULE.process('Setting samba/interfaces')
 	ucr_set(['samba/interfaces={}'.format(' '.join(interfaces))])
 	return run(umc_instance, retest=True)
 
 
 def reset_kerberos_kdc(umc_instance):
+	MODULE.process('Resetting kerberos/kdc=127.0.0.1')
 	ucr_set(['kerberos/kdc=127.0.0.1'])
 	return run(umc_instance, retest=True)
 
