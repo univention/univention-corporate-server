@@ -1,3 +1,10 @@
+univention-appcenter (6.0.11-15) unstable; urgency=medium
+
+  * Bug #46703: Fix traceback in App upgrades via noninteractive
+    univention-upgrade on DC Master
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 20 Mar 2018 11:45:09 +0100
+
 univention-appcenter (6.0.11-14) unstable; urgency=medium
 
   * Bug #46222: Fix upgrade without app settings
