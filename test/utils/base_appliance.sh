@@ -343,7 +343,7 @@ app=Apps().find('\$APP')
 app.docker_image='${local_app_docker_image}'
 
 install = get_action('install')
-install.call(app=app, noninteractive=True, skip_checks=['must_have_valid_license'],pwdfile='/tmp/joinpwd')
+install.call(app=app, noninteractive=True, skip_checks=['must_have_valid_license'], pwdfile='/tmp/joinpwd', pull_image=False)
 "
 fi
 [ -e /tmp/joinpwd ] && rm /tmp/joinpwd
