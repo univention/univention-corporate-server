@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-21) unstable; urgency=medium
+
+  * Bug #45370: Only use FQDNs for the SSH connection checks
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Mar 2018 20:07:44 +0100
+
 univention-management-console-module-diagnostic (4.0.0-20) unstable; urgency=medium
 
   * Bug #46039: Log output of actions
