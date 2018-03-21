@@ -311,6 +311,8 @@ samba_domain_join() {
 	samba_join_options+=( --realm="$kerberos_realm" )
 	samba_join_options+=( --machinepass="$(cat /etc/machine.secret)" )
 
+	local server_fail_message="Make sure the server is online or if this server is no longer in use,\nplease completely remove the server object from the domain."
+
 	if [ -n "$SITE_OPTION" ]; then
 		samba_join_options+=( "${SITE_OPTION[@]}" )
 	fi
@@ -324,6 +326,7 @@ samba_domain_join() {
 			success=true
 		else
 			echo "Failed to join the server $samba4_dc."
+			echo -e "$server_fail_message"
 			exit 1
 		fi
 	else
@@ -341,9 +344,11 @@ samba_domain_join() {
 					success=true
 				else
 					echo "Failed to join against the S4 Connector server ${s4connector_dc}."
+					echo -e "$server_fail_message"
 				fi
 			else
 				echo "Samba currently not available on S4 Connector server ${s4connector_dc}."
+				echo -e "$server_fail_message"
 			fi
 		fi
 
@@ -355,6 +360,7 @@ samba_domain_join() {
 					success=true
 				else
 					echo "Failed to join the domain $domainname."
+					echo -e "$server_fail_message"
 					exit 1
 				fi
 			fi
@@ -374,6 +380,7 @@ samba_domain_join() {
 						break
 					else
 						echo "Failed to join the server $name.$domainname."
+						echo -e "$server_fail_message"
 						exit 1
 					fi
 				fi

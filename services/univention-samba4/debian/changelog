@@ -1,3 +1,9 @@
+univention-samba4 (6.0.11-1) unstable; urgency=medium
+
+  * Bug #43223: more detailed error message for the domain join
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Mar 2018 14:34:27 +0100
+
 univention-samba4 (6.0.10-46) unstable; urgency=medium
 
   * Bug #46301: Avoid s4search-decode segfault on krb5Key with unsupported
