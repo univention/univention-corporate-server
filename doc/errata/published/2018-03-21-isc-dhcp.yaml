@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Fix DHCP failover configuration.
 bug: [46607]
+erratum: 1
+announced: 2018-03-21
