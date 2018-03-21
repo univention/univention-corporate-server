@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-23) unstable; urgency=medium
+
+  * Bug #45343: paramico doesn't support documented auth_timeout option
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Mar 2018 11:44:29 +0100
+
 univention-management-console-module-diagnostic (4.0.0-22) unstable; urgency=medium
 
   *  Bug #46708: Avoid paramico log messages winding up in connector-s4.log

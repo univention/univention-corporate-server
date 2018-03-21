@@ -80,7 +80,7 @@ def run(_umc_instance):
 
 		fqdn = host + '.' + ucr['domainname']
 		try:
-			client.connect(fqdn, port=22, username=ucr['hostname'] + '$', password=password, timeout=2, auth_timeout=2, allow_agent=False)
+			client.connect(fqdn, port=22, username=ucr['hostname'] + '$', password=password, timeout=2, allow_agent=False)
 			client.close()
 		except paramiko.BadHostKeyException as err:
 			bad[fqdn] = key_msg + '!'
