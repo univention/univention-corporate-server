@@ -920,13 +920,15 @@ assert_admember_mode () {
 
 # start a local firefox and open umc portal page
 start_portal_in_local_firefox () {
+	service  univention-welcome-screen stop
 	install_with_unmaintained --no-install-recommends univention-x-core univention-mozilla-firefox openbox
 	X &
 	DISPLAY=:0 openbox --config-file /etc/xdg/openbox/rc_no_shortcuts.xml &
 	sleep 1
 	DISPLAY=:0 firefox http://$(hostname -f)/univention/portal &
 	sleep 10
-	chvt 1
+	chvt 2
+	sleep 1
 }
 
 postgres91_update () {
