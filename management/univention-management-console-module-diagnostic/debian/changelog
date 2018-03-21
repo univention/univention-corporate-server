@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-22) unstable; urgency=medium
+
+  *  Bug #46708: Avoid paramico log messages winding up in connector-s4.log
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Mar 2018 09:59:57 +0100
+
 univention-management-console-module-diagnostic (4.0.0-21) unstable; urgency=medium
 
   * Bug #45370: Only use FQDNs for the SSH connection checks

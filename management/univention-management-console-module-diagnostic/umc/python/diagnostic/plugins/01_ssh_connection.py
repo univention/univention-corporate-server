@@ -8,6 +8,7 @@ from univention.admin import uldap
 from univention.admin import modules
 
 import paramiko
+import logging
 import socket
 
 from univention.lib.i18n import Translation
@@ -24,6 +25,11 @@ class IgnorePolicy(paramiko.MissingHostKeyPolicy):
 
 def run(_umc_instance):
 	ucr.load()
+	# Now a workaround for paramico logging to connector-s4.log
+	# because one of the diagnostic plugins instanciates s4connector.s4.s4()
+	# which initializes univention.debug2, which initializes logging.basicConfig
+	logger = paramiko.util.logging.getLogger()
+	logger.setLevel(logging.CRITICAL)
 
 	try:
 		lo, position = uldap.getMachineConnection(ldap_master=False)
@@ -66,6 +72,7 @@ def run(_umc_instance):
 		fqdn=ucr['hostname'] + '.' + ucr['domainname'],
 		uid=ucr['hostname'] + '$',
 		hostname=ucr['hostname'])
+
 	for host in ucs_hosts:
 		client = paramiko.SSHClient()
 		client.load_system_host_keys()
