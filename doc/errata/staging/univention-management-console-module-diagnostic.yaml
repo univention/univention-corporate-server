@@ -13,4 +13,5 @@ desc: |
  * Run nsupdate check only on Samba/Samba4 systems (Bug #45904).
  * Log output of actions (Bug #46039).
  * Only use FQDNs for the SSH connection checks (Bug #45370).
-bug: [46677, 45584, 45343, 46034, 45904, 46039, 45370]
+ * Avoid paramico log messages winding up in connector-s4.log (Bug #46708).
+bug: [46677, 45584, 45343, 46034, 45904, 46039, 45370, 46708]
