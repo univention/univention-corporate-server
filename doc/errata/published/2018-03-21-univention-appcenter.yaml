@@ -13,3 +13,5 @@ desc: |-
   * Calling univention-upgrade noninteractively may have caused an error while
     upgrading Apps when run on a DC Master.
 bug: [45830, 46440, 46684]
+erratum: 2
+announced: 2018-03-21
