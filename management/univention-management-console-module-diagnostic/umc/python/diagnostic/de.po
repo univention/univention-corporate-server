@@ -950,12 +950,15 @@ msgstr ""
 "Einträgen."
 
 #: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:51
+#, python-brace-format
+msgid "Output of `{cmd}`:"
+msgstr "Ausgabe von `{cmd}`:"
+
 #: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:53
 #, python-brace-format
 msgid "`{cmd}` failed."
 msgstr "`{cmd}` ist fehlgeschlagen."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:53
 #: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:51
 #, python-brace-format
 msgid "`{cmd}` succeeded."
