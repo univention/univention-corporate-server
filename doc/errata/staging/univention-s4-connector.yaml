@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-s4-connector
+fix: 12.0.2-7A~4.3.0.201803211615
+desc: |
+ This update addresses the following issue(s):
+ * A mismatch between the samba and openldap SID for the host object after
+   the connector initialization in ucs@school has been fixed (Bug #40419).
+bug: [40419]
