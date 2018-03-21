@@ -9,3 +9,5 @@ desc: |-
   * An error message when joining an AD domain was not printed correctly
     because a variable was used before its assignment.
 bug: [45967]
+erratum: 3
+announced: 2018-03-21
