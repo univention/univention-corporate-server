@@ -1,3 +1,9 @@
+univention-s4-connector (12.0.2-7) unstable; urgency=medium
+
+  * Bug #40419: resync host object to s4 in sid_to_s4 mode
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Mar 2018 16:13:53 +0100
+
 univention-s4-connector (12.0.2-6) unstable; urgency=medium
 
   * Bug #41574: fixed unix2s4_time, s42unix_time, samba2s4_time revert

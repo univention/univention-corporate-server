@@ -168,6 +168,18 @@ fi
 if [ -z "$s4connector_dc" ] \
 	|| [ "$s4connector_dc" = "$hostname" ]; then
 
+	##
+	## This branch runs in case
+	##   a) we are first system to provide this service
+	## or
+	##   b) connector/s4/allow/secondary is true
+	##
+	## Note that connector/s4/allow/secondary is set in these cases:
+	## 1. automatically on UCS@school Samba/AD Slave PDCs
+	## 2. manually on Multischool Master where S4-Connector was installed
+	##    later, after UCS@school Samba/AD Slave PDCs have been joined.
+	##
+
 	## we are first or only system to provide this service
 
 	LDB_URI="tdb:///var/lib/samba/private/sam.ldb"
@@ -288,18 +300,12 @@ if [ -z "$s4connector_dc" ] \
 
 	# Restart the connector to use the new values for connector/s4/poll/sleep and connector/s4/retryrejected
 	/etc/init.d/univention-s4-connector restart
+
+	# fix samba SID in case to ucs SID takes precedence
+	if is_ucr_true 'connector/s4/mapping/sid_to_s4'; then
+		/usr/share/univention-s4-connector/resync_object_from_ucs.py "$ldap_hostdn"
+	fi
 else
-	##
-	## This branch runs in case
-	##   a) we are first system to provide this service
-	## or
-	##   b) connector/s4/allow/secondary is true
-	##
-	## Note that connector/s4/allow/secondary is set in these cases:
-	## 1. automatically on UCS@school Samba/AD Slave PDCs
-	## 2. manually on Multischool Master where S4-Connector was installed
-	##    later, after UCS@school Samba/AD Slave PDCs have been joined.
-	##
 
 	if this_is_initial_or_rejoin \
 		&& this_host_is_not_registered_as_s4_connector; then
