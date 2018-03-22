@@ -95,6 +95,42 @@ class UCSInstallation(object):
 			self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
 			self.client.keyPress('down')
 			self.client.keyPress('enter')
+		elif self.args.role == 'applianceEC2':
+			self.click(self._['manual']) # Manuell
+			self.client.keyPress('enter')
+			time.sleep(3)
+			self.click(self._['virtual_disk_1']) # Virtuelle Festplatte 1
+			time.sleep(3)
+			self.client.keyPress('enter')
+			time.sleep(3)
+			self.client.keyPress('down')
+			time.sleep(3)
+			self.client.keyPress('enter')
+			time.sleep(3)
+			self.click(self._['free_space']) # FREIER SPEICHER
+			self.client.keyPress('enter')
+			time.sleep(3)
+			self.client.keyPress('enter') # neue partition erstellen
+			time.sleep(3)
+			self.client.keyPress('enter') # enter: ganze festplattengröße ist eingetragen
+			time.sleep(3)
+			self.client.keyPress('enter') # enter: primär
+			time.sleep(3)
+			self.click(self._['boot_flag']) # "Boot-Flag"
+			self.client.keyPress('enter') # enter: boot-flag aktivieren
+			time.sleep(3)
+			self.click(self._['finish_create_partition']) # "Anlegen der Partition beenden"
+			self.client.keyPress('enter')
+			time.sleep(3)
+			self.click(self._['finish_partition'])
+			self.client.keyPress('enter')
+			time.sleep(3)
+			self.click(self._['no']) # Nein (kein swap speicher)
+			self.client.keyPress('enter')
+			self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
+			self.client.keyPress('down')
+			self.client.keyPress('enter')
+			self.client.keyPress('enter')
 		else:
 			self.click(self._['entire_disk'])
 			self.client.keyPress('enter')

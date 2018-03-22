@@ -80,8 +80,12 @@ _esxi () {
 	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${ESX_IMAGE} > ${ESX_IMAGE}.md5 && chmod 644  ${ESX_IMAGE}*"
 }
 
+_ec2_image () {
+	# Identifier already set
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance --only --ec2-ebs -s $TMP_KVM_IMAGE"
+}
 
-create_app_images () {
+set_global_vars () {
 	local APP_ID=$1
 	local KVM_USER=$2
 	local KVM_SERVER=$3
@@ -100,6 +104,10 @@ create_app_images () {
 
 	export APP_ID KVM_USER KVM_SERVER UCS_VERSION KT_CREATE_IMAGE APPS_BASE APPS_SERVER IMAGE_SERVER
 	export TMP_DIR VMPLAYER_IMAGE KVM_IMAGE TMP_KVM_IMAGE VBOX_IMAGE ESX_IMAGE
+}
+
+create_app_images () {
+	_set_global_vars "$@"
 
 	# convert image
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "test -d $TMP_DIR && rm -rf $TMP_DIR || true"
@@ -120,6 +128,24 @@ create_app_images () {
 	_vmplayer_image
 	_virtualbox_image
 	_esxi
+
+	# cleanup
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -rf ${TMP_DIR}"
+}
+
+create_ec2_image () {
+	_set_global_vars "$@"
+
+	# convert image
+	_ssh -l "$KVM_USER" "$KVM_SERVER" "test -d $TMP_DIR && rm -rf $TMP_DIR || true"
+	_ssh -l "$KVM_USER" "$KVM_SERVER" "mkdir -p $TMP_DIR"
+	_ssh -l "$KVM_USER" "$KVM_SERVER" "qemu-img convert -p -c -O qcow2 $KT_CREATE_IMAGE $TMP_KVM_IMAGE"
+
+	# copy to image convert server for later steps and remove tmp image from kvm server
+	_scp -r ${KVM_USER}@${KVM_SERVER}:/${TMP_DIR} ${KVM_USER}@${IMAGE_SERVER}:/tmp
+	_ssh -l "$KVM_USER" "${KVM_SERVER}" "rm -rf ${TMP_DIR}"
+
+	_ec2_image
 
 	# cleanup
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -rf ${TMP_DIR}"

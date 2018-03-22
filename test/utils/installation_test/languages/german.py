@@ -26,6 +26,12 @@ strings = {
 	'all_files_on_partition': 'Alle Dateien auf eine Partition',
 	'finish_partition': 'Partitionierung beenden und',
 	'continue_partition': 'Wenn Sie fortfahren',
+	'manual': 'Manuell',
+	'virtual_disk_1': 'Virtuelle Festplatte 1',
+	'free_space': 'FREIER SPEICHER',
+	'boot_flag': 'Boot-Flag',
+	'finish_create_partition': 'Anlegen der Partition beenden',
+	'no': 'Nein',
 
 	'domain_setup': 'Domäneneinstellungen',
 	'new_domain': 'Erstellen einer neuen UCS-Domäne',
