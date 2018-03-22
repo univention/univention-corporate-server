@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner bash
-## desc: Checking for the existence of the patch, that delays the mount of NFS-shares until all interfaces are configured
+## desc: Checking for the existence of the patch, that delays the mount of NFS-shares until all interfaces are configured (invalid with systemd)
 ## bugs: [11973]
 ## exposure: safe
+## tags: [SKIP]
 grep -Fq "exit_unless_last_interface()" /etc/network/if-up.d/mountnfs
 # vim:set ft=sh:
