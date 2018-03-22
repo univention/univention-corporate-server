@@ -42,7 +42,7 @@ _scp () {
 
 _kvm_image () {
 	local identify="Univention App ${UCS_VERSION} Appliance ${APP_ID} (KVM)"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'$identify\'\";"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=$identify\";"
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${TMP_KVM_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/$KVM_IMAGE"
 	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${KVM_IMAGE} > ${KVM_IMAGE}.md5 && chmod 644 ${KVM_IMAGE}*"
 }
@@ -50,7 +50,7 @@ _kvm_image () {
 
 _vmplayer_image () {
 	local identify="Univention App ${UCS_VERSION} Appliance ${APP_ID} (VMware)"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'$identify\'\";"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=$identify\";"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "test -e ${VMPLAYER_IMAGE} && rm ${VMPLAYER_IMAGE} || true;"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance -m $MEMORY -p UCS -v ${UCS_VERSION}-with-${APP_ID} -o --vmware -s $TMP_KVM_IMAGE -f Univention-App-${APP_ID}"
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${VMPLAYER_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${VMPLAYER_IMAGE}"
@@ -61,7 +61,7 @@ _vmplayer_image () {
 
 _virtualbox_image () {
 	local identify="Univention App ${UCS_VERSION} Appliance ${APP_ID} (VirtualBox)"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'$identify\'\""
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=$identify\""
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "test -e ${VBOX_IMAGE} && rm ${VBOX_IMAGE} || true"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance -m $MEMORY -p UCS -v ${UCS_VERSION}-with-${APP_ID} -o --ova-virtualbox -s $TMP_KVM_IMAGE -f Univention-App-${APP_ID}"
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${VBOX_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${VBOX_IMAGE}"
@@ -72,7 +72,7 @@ _virtualbox_image () {
 
 _esxi () {
 	local identify="Univention App ${UCS_VERSION} Appliance ${APP_ID} (ESX)"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=\'$identify\'\""
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify=$identify\""
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "test -e ${ESX_IMAGE} && rm ${ESX_IMAGE} || true"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance -m $MEMORY -p UCS -v ${UCS_VERSION}-with-${APP_ID} -o --ova-esxi -s $TMP_KVM_IMAGE -f Univention-App-${APP_ID}"
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${ESX_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${ESX_IMAGE}"
@@ -85,7 +85,7 @@ _ec2_image () {
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance --only --ec2-ebs -s $TMP_KVM_IMAGE"
 }
 
-set_global_vars () {
+_set_global_vars () {
 	local APP_ID=$1
 	local KVM_USER=$2
 	local KVM_SERVER=$3
