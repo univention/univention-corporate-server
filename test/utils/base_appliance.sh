@@ -180,16 +180,9 @@ app_appliance_IsDockerApp ()
 {
 	local app="$1"
 	[ -z "$app" ] && return 1
-	python -c "
-import sys
-from univention.appcenter.app_cache import Apps; \
-app = Apps().find('$app')
-dockerimage = app.get_docker_image_name()
-if dockerimage:
-	sys.exit(0)
-else:
-	sys.exit(1)
-"
+	local image="$(get_app_attr $app dockerimage)"
+	test -n "$image" && return 0
+	return 1
 }
 
 appliance_app_has_external_docker_image ()
