@@ -38,6 +38,7 @@ find / \
 		-o -path /var/spool/postfix/public \
 		-o -path /var/spool/postfix/dev \
 		-o -path /var/run/postgresql \
+		-o -path /var/lib/collectd/rrd \
 	\) -prune \
 	-o -perm /o+w \
 	! \( -type d -perm /+t \) \
