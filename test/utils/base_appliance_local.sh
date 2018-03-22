@@ -135,6 +135,7 @@ create_app_images () {
 
 create_ec2_image () {
 	_set_global_vars "$@"
+	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_${APP_ID}.qcow2"
 
 	# convert image
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "test -d $TMP_DIR && rm -rf $TMP_DIR || true"
