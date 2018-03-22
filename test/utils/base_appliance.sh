@@ -1203,10 +1203,10 @@ disable_root_login_and_poweroff ()
 
 appliance_poweroff ()
 {
-	rm -r /root/*
-	rm /root/.bash_history
+	rm -r /root/* || true
+	rm /root/.bash_history || true
 	history -c
-	halt -p
+	echo "halt -p" | at now || true
 }
 
 appliance_test_appcenter () {
