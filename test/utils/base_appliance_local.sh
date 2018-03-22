@@ -86,10 +86,10 @@ _ec2_image () {
 }
 
 _set_global_vars () {
-	local APP_ID=$1
-	local KVM_USER=$2
-	local KVM_SERVER=$3
-	local UCS_VERSION=$4
+	APP_ID=$1
+	KVM_USER=$2
+	KVM_SERVER=$3
+	UCS_VERSION=$4
 
 	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_app-appliance-${APP_ID}.qcow2"
 	APPS_BASE="/var/univention/buildsystem2/mirror/appcenter.test/univention-apps/${UCS_VERSION}/${APP_ID}"
