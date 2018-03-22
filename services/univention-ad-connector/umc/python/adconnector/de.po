@@ -98,10 +98,10 @@ msgstr "Einrichten der Zeitsynchronisation..."
 #, python-format
 msgid ""
 "Could not connect to AD Server %s. Please verify that the specified address "
-"is correct."
+"is correct. (%s)"
 msgstr ""
 "Eine Verbindung zum AD-Server %s konnte nicht hergestellt werden. Bitte "
-"überprüfen Sie, ob die angegebene Adresse korrekt ist."
+"überprüfen Sie, ob die angegebene Adresse korrekt ist. (%s)"
 
 #: umc/python/adconnector/__init__.py:384
 #: umc/python/adconnector/__init__.py:503

@@ -1,3 +1,9 @@
+univention-ad-connector (12.0.0-6) unstable; urgency=medium
+
+  * Bug #44478: Output exception details in check_domain and admember_join
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Mar 2018 19:58:42 +0100
+
 univention-ad-connector (12.0.0-5) unstable; urgency=medium
 
   * Bug #41574: fixed unix2ad_time, ad2unix_time revert
