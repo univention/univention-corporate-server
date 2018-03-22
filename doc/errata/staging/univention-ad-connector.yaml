@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-ad-connector
+fix:
+desc: |-
+  This update addresses the following issue(s):
+  * Output exception details in check_domain and admember_join
+bug: [44478]

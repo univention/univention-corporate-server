@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-lib
+fix:
+desc: |-
+  This update addresses the following issue(s):
+  * Improve debug output in lib.admember.lookup_adds_dc()
+bug: [44478]
