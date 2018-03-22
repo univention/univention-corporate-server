@@ -702,9 +702,11 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 		ips.append(ad_server)
 	except ValueError:
 		dig_sources = []
+		dig_sources_ucr = []
 		for source in ['dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3', 'nameserver1', 'nameserver2', 'nameserver3']:
 			if source in ucr:
 				dig_sources.append("@%s" % ucr[source])
+				dig_sources_ucr.append(source)
 		for dig_source in dig_sources:
 			try:
 				cmd = ['dig', dig_source, ad_server, '+short']
@@ -724,15 +726,17 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 
 	# no ip addresses
 	if not ips:
-		raise failedADConnect(["Connection to AD Server %s failed" % (ad_server)])
+		raise failedADConnect(["DNS lookup of AD Server %s failed. Sources: %s" % (ad_server, ", ".join(dig_sources_ucr))])
 
 	ad_server_ip = None
+	check_results = []
 	for ip in ips:
 		try:  # check cldap
 			net = Net(creds=None, lp=lp)
 			cldap_res = net.finddc(address=ip, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
 		except RuntimeError as ex:
 			ud.debug(ud.MODULE, ud.ERROR, "Connection to AD Server %s failed: %s" % (ip, ex.args[0]))
+			check_result.append("CLDAP: %s", ex.args[0])
 		else:
 			if not check_dns:
 				ad_server_ip = ip
@@ -749,9 +753,10 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 					break
 			except OSError as ex:
 				ud.debug(ud.MODULE, ud.ERROR, "%s failed: %s" % (cmd, ex.args[1]))
+				check_result.append("DNS: %s", ex.args[1])
 
 	if ad_server_ip is None:
-		raise failedADConnect(["Connection to AD Server %s failed" % (ad_server)])
+		raise failedADConnect(["Connection to AD Server %s failed (%s)" % (ad_server, ",".join(check_results))])
 
 	ad_ldap_base = None
 	remote_ldb = ldb.Ldb()
@@ -759,7 +764,7 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 		remote_ldb.connect(url="ldap://%s" % ad_server_ip)
 		ad_ldap_base = str(remote_ldb.get_default_basedn())
 	except ldb.LdbError as ex:
-		raise failedADConnect(["Could not detect LDAP base on %s: %s" % (ad_server, ex.args[1])])
+		raise failedADConnect(["Could not detect LDAP base on %s: %s" % (ad_server_ip, ex.args[1])])
 
 	ad_domain_info = {
 		"Forest": cldap_res.forest,
