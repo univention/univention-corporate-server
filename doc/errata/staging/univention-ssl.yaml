@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-ssl
+fix: 12.0.0-2A~4.3.0.201803221229
+desc: |
+ This update addresses the following issue(s):
+ * Renewed certificates were not readable by DC Backups
+bug: [46203]
