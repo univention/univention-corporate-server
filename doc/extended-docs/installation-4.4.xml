@@ -1232,26 +1232,6 @@ univention-system-setup-boot uss/server/role string memberserver
 			In addition, DHCP, TFTP and WWW servers are required.
 			If the DHCP server and the PXE server of the Univention Net Installer are operated on separate systems, the PXE server must be assigned via a DHCP boot policy.
 		</para>
-		<para>
-			Univention Net Installer supports both the interactive and profile-based installation.
-			Any questions not answered in the pre-seed file forces the installer to interactive mode.
-		</para>
-		<para>
-			Univention Net Installer requires a local repository as a package source.
-		</para>
-		<important>
-			<para>
-				The repository must be created using the DVD (image) of the targeted UCS release.
-				This is done by running the command <command>univention-repository-create</command>, which copies the corresponding PXE kernel and installer to <filename class="directory">/var/lib/univention-client-boot/installer/<replaceable>release</replaceable>/</filename>.
-			</para>
-		</important>
-		<para>
-			It is safe to run <command>univention-repository-create</command> again, which is for example required to update the installer to a newer version of UCS.
-			For more information on local repositories see the software deployment chapter of the <biblioref linkend="ucs-manual"/>.
-		</para>
-		<para>
-			The profiles should be copied into the directory <filename class="directory">/var/lib/univention-client-boot/preseed/</filename> on the repository server, which is accessible through <uri>http://<replaceable>HOST-NAME</replaceable>/univention-client-boot/preseed/</uri>.
-		</para>
 		<note>
 			<para>
 				The installation process consists of multiple steps, which contact different services and servers:
@@ -1281,11 +1261,142 @@ univention-system-setup-boot uss/server/role string memberserver
 				</listitem>
 				<listitem>
 					<simpara>
-						The package files are fetched from the <emphasis>local repository server</emphasis>, which is configured through the &ucsUCRV; <envar>repository/online/server</envar> on the PXE server.
+						The package files are fetched from the <emphasis>repository server</emphasis>, which is configured through the &ucsUCRV; <envar>repository/online/server</envar> on the PXE server.
 					</simpara>
 				</listitem>
 			</orderedlist>
 		</note>
+		<para>
+			Univention Net Installer supports both the interactive and profile-based installation.
+			Any questions not answered in the pre-seed file forces the installer to interactive mode.
+		</para>
+		<para>
+			Profiles should be copied into the directory <filename class="directory">/var/lib/univention-client-boot/preseed/</filename> on the PXE server, which is accessible through <uri>http://<replaceable>HOST-NAME</replaceable>/univention-client-boot/preseed/</uri>.
+		</para>
+		<para>
+			Univention Net Installer can either directly use the repository server <ulink url="https://updates.software-univention.de/"/> or a local repository server.
+			The later one is advisable as it reduces the amount of data needing to be downloaded for each installation.
+		</para>
+
+		<section id="profile:netinstaller:local">
+			<title>Local repository</title>
+		<para>
+			The local repository must be initialized using the DVD (image) of the targeted UCS release.
+			This is done by running the command <command>univention-repository-create</command>, which copies the corresponding PXE kernel and installer to <filename class="directory">/var/lib/univention-client-boot/installer/<replaceable>release</replaceable>/</filename>.
+		</para>
+		<para>
+			It is safe to run <command>univention-repository-create</command> again, which is for example required to update the installer to a newer version of UCS.
+			For more information on local repositories see the software deployment chapter of the <biblioref linkend="ucs-manual"/>.
+		</para>
+		<important>
+			<para>
+				Afterwards the repository must be updated at least once using the command <command>univention-repository-update net</command>.
+				This is required as the DVD does not contain the <filename>Release</filename> files and their cryptographic signatures.
+			</para>
+			<para>
+				The command will download all previous UCS minor and patch-level releases of the same major branch.
+				Each minor release requires several gigabytes of storage space in <filename class="directory">/var/lib/univention-repository/</filename>.
+				Even more space is required if the section <emphasis>unmaintained</emphasis> is enabled!
+			</para>
+			<para>
+				Verify the &ucsUCRV; <envar>repository/mirror/recreate_packages</envar> is set to <literal>no</literal>.
+				Otherwise the <filename>Packages</filename> files will be re-build, which invalidates the cryptographic signatures.
+				Locally re-build index files will also have different package priorities as the <emphasis>overwrite</emphasis> information is not publicly available.
+			</para>
+		</important>
+		</section>
+
+		<section id="profile:netinstaller:public">
+			<title>Public repository</title>
+			<para>
+				Even when the public repository server <ulink url="https://updates.software-univention.de/"/> is used, some services and files must be available inside the local network.
+				At minimum this includes the <systemitem class="service">DHCP</systemitem> service, which assigns the client its IP address and tells it to continue fetching files from the next server.
+				Historically this had to be a <systemitem class="service">TFTP</systemitem> server, but nowadays this also can be any <systemitem class="service">HTTP</systemitem> server.
+				This has the benefit, that <systemitem class="service">HTTP</systemitem> is faster and more reliable and also works over the Internet.
+			</para>
+			<procedure id="profile:netinstaller:public:proc">
+				<title>Setup network installation using public repository</title>
+				<step>
+					<para>
+						Install the <systemitem class="service">HTTP</systemitem> capable boot loader <filename>lpxelinux.0</filename>
+					</para>
+					<programlisting language="sh">
+univention-install univention-dhcp univention-net-installer
+ln -s /usr/lib/PXELINUX/lpxelinux.0 \
+	/var/lib/univention-client-boot/
+					</programlisting>
+				</step>
+				<step>
+					<para>
+						Setup the <emphasis>DHCP Boot</emphasis> policy to use <filename>lpxelinux.0</filename>.
+						Depending on the capabilities of the network card boot code the boot loader can either be fetched over the <systemitem class="service">HTTP</systemitem> or <systemitem class="service">TFTP</systemitem> protocol:
+					</para>
+					<stepalternatives>
+						<step>
+							<substeps>
+								<step>
+									<para>
+										For <systemitem class="service">HTTP</systemitem> configure the absolute URL as the <property>boot filename</property>:
+									</para>
+									<programlisting language="sh">
+HOST="$(hostname -f)"
+LDAP="$(ucr get ldap/base)"
+HTTP="http://$HOST/univention-client-boot/lpxelinux.0"
+udm policies/dhcp_boot modify \
+	--dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$LDAP" \
+	--set boot_filename="$HTTP" \
+	--set boot_server=
+									</programlisting>
+								</step>
+								<step>
+									<para>
+										The installer performs its own second DHCP request.
+										This again retrievs the DHCP option <property>boot filename</property>, which now contains the <emphasis>URL</emphasis> to the PXE loader.
+										The installer wrongly interprets this as the URL for the profile <filename>preseed</filename>, which breaks the installation.
+										Therefor the option needs to be overwritten when the installer performs this second query:
+									</para>
+									<programlisting language="sh">
+STMT='if substring (option vendor-class-identifier, 0, 3) = "d-i" { filename ""; }'
+udm dhcp/subnet list |
+	sed -ne 's/^DN: //p' |
+	xargs -d '\n' -n1 udm dhcp/subnet modify \
+		--option options \
+		--append statements="$STMT" \
+		--dn
+									</programlisting>
+								</step>
+							</substeps>
+						</step>
+						<step>
+							<para>
+								For <systemitem class="service">TFTP</systemitem> change <property>boot filename</property> to point to <filename>lpxelinux.0</filename>:
+							</para>
+							<programlisting language="sh">
+HOST="$(hostname -f)"
+LDAP="$(ucr get ldap/base)"
+udm policies/dhcp_boot modify \
+	--dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$LDAP" \
+	--set boot_filename='lpxelinux.0' \
+	--set boot_server="$HOST"
+							</programlisting>
+						</step>
+					</stepalternatives>
+				</step>
+				<step>
+					<para>
+						Configure the boot loader to load the Linux kernel and initial ram disk from the public repository server:
+					</para>
+					<programlisting language="sh">
+PXE='http://updates.software-univention.de/pxe'
+PXE="$PXE/4.4-0/amd64/gtk/debian-installer/amd64"
+ucr set \
+	pxe/installer/kernel="$PXE/linux" \
+	pxe/installer/initrd="$PXE/initrd.gz" \
+	pxe/installer/ipappend=3
+					</programlisting>
+				</step>
+			</procedure>
+		</section>
 
 		<section id="profile:assign">
 			<title>Assignment of a computer for automatic installation</title>
