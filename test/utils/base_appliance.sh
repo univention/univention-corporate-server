@@ -515,6 +515,8 @@ fi
 \$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
 joinscript_save_current_version
 univention-app register --do-it ${ucsversion}/${app}=${version}
+
+exit 0
 __EOF__
 			chmod 755 /usr/lib/univention-install/99setup_package_${app}.inst
 		fi
@@ -525,7 +527,13 @@ __EOF__
 	cat >/usr/lib/univention-install/99x_ensure_join.inst <<__EOF__
 #!/bin/bash
 
+. /usr/share/univention-join/joinscripthelper.lib
+
 set -x
+
+VERSION="1"
+joinscript_init
+joinscript_save_current_version
 
 if [ \$# -gt 1 ]; then
 	. /usr/share/univention-lib/ldap.sh
@@ -543,6 +551,8 @@ if [ \$# -gt 1 ]; then
 else
 	univention-run-join-scripts
 fi
+
+exit 0
 __EOF__
 	chmod 755 /usr/lib/univention-install/99x_ensure_join.inst
 }
@@ -946,8 +956,8 @@ docker cp /etc/univention/ssl/ucsCA/CAcert.pem \$CONTAINER:/usr/local/share/ca-c
 # update host certificates in container
 CONTAINER_HOSTNAME=\$(ucs_getAttrOfDN cn \$(ucr get \$(univention-app get "\$APP" ucr_hostdn_key --values-only)))
 if [ -n "\$CONTAINER_HOSTNAME" ]; then
-	docker cp /etc/univention/ssl/"\$CONTAINER_HOSTNAME"/* \$CONTAINER:/etc/univention/ssl/"\$CONTAINER_HOSTNAME/"
-	docker cp /etc/univention/ssl/"\$CONTAINER_HOSTNAME"/* \$CONTAINER:/etc/univention/ssl/"\$CONTAINER_HOSTNAME"."\$domainname/"
+	docker cp /etc/univention/ssl/"\$CONTAINER_HOSTNAME"/cert.pem \$CONTAINER:/etc/univention/ssl/"\$CONTAINER_HOSTNAME/"
+	docker cp /etc/univention/ssl/"\$CONTAINER_HOSTNAME"/cert.pem \$CONTAINER:/etc/univention/ssl/"\$CONTAINER_HOSTNAME"."\$domainname/"
 fi
 
 # Fix container nameserver entries
