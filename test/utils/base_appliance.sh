@@ -929,10 +929,11 @@ appliance_basesettings ()
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/umc-favorites <<__EOF__
 #!/bin/bash
 
-set -x
-
 . /usr/share/univention-lib/base.sh
 eval "\$(ucr shell)"
+
+set -x
+
 fav="favorites $app_fav_list"
 admin_uid=\$(custom_username Administrator)
 udm users/user modify --dn "uid=\$admin_uid,cn=users,\$ldap_base" --set umcProperty="\$fav"
