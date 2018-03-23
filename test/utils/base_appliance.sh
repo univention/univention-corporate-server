@@ -589,6 +589,12 @@ install_app_in_prejoined_setup ()
 	done
 }
 
+appliance_preinstall_common_role ()
+{
+	DEBIAN_FRONTEND=noninteractive univention-install -y univention-role-common
+	DEBIAN_FRONTEND=noninteractive univention-install -y univention-role-server-common
+}
+
 appliance_preinstall_non_univention_packages ()
 {
 	packages="
