@@ -69,7 +69,7 @@
 			
 			<para>
 				You should then log in with a <guimenu>Office 365 Administrator Account</guimenu>. In the
-				<guimenu>Office 365 Admin Center</guimenu>,at the bottom left of the navigation bar select <guimenu>Azure
+				<guimenu>Office 365 Admin Center</guimenu>, at the bottom left of the navigation bar select <guimenu>Azure
 				AD</guimenu>. This opens <guimenu>Azure Management Portal</guimenu> in a new window.
 			</para>
 			
@@ -118,7 +118,7 @@
 				&ucsUCRV; <envar>office365/attributes/usageLocation</envar> can be used to specify a 2-character abbreviation, e.g. US.
 			</para>
 			<para>
-				Through &ucsUCRV; <envar>office365/attributes/sync</envar>,the LDAP attributes (eg first name, last
+				Through &ucsUCRV; <envar>office365/attributes/sync</envar>, the LDAP attributes (e.g. first name, last
 				name, etc.) of a user's account which is to be synchronized are configured. This deals with a comma-separated list of
 				LDAP attributes. Thus making adaptation to personal needs easily possible.
 			</para>
