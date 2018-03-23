@@ -37,8 +37,6 @@ import subprocess
 import itertools
 import logging
 from operator import itemgetter
-from debian.deb822 import Packages
-from apt import apt_pkg
 
 from tools import UniventionUpdater, NullHandler
 from ucs_version import UCS_Version
@@ -208,178 +206,12 @@ class UniventionMirror(UniventionUpdater):
 
         return result
 
-    def update_dists_files(self):
-        """
-        Rewrite from
-        | /var/lib/univention-repository/mirror/
-        |  4.0/
-        |   maintained/ >>>
-        |    4.0-1/     <<<
-        |     amd64/
-        |      Packages (relative to <<<)
-        |      *.deb
-        to
-        |     dists/
-        |      ucs401/
-        |       main/
-        |        binary-amd64/
-        |         Packages (relative to >>>)
-        |         Release
-        |        debian-installer/
-        |         binary-amd64/
-        |          Packages (relative to >>>)
-        |       Release
-
-        >> from sys import stderr
-        >> logging.basicConfig(stream=stderr, level=logging.DEBUG)
-        >> m = UniventionMirror(False)
-        >> m.update_dists_files()
-        """
-        # iterate over all local repositories
-        repos = self.list_local_repositories(start=self.version_start, end=self.version_end, unmaintained=False)
-        for outdir, version, is_maintained in repos:
-            self.log.info('Processing %s...', version)
-            start_version = UCS_Version((version.major, 0, 0))
-
-            dist = 'univention' if version.major < 4 else 'ucs%(major)d%(minor)d%(patchlevel)d' % version
-
-            archs = []
-            for arch in self.architectures:
-                prev = [
-                    (dir2, os.path.join(dir2, arch2, 'Packages'))
-                    for (dir2, ver2, maint2) in repos
-                    for arch2 in (arch, 'all')
-                    if (
-                        start_version <= ver2 <= version and
-                        os.path.exists(os.path.join(dir2, arch2, 'Packages'))
-                    )
-                ]
-                if not prev:
-                    self.log.warn('No file "Packages" found for %s', arch)
-                    continue
-                prev.reverse()
-                archs.append(arch)
-
-                main_name = os.path.join(outdir, 'dists', dist, 'main', 'binary-%s' % arch, 'Packages')
-                inst_name = os.path.join(outdir, 'dists', dist, 'main', 'debian-installer', 'binary-%s' % arch, 'Packages')
-                self.log.debug('Generating %s and %s ...', main_name, inst_name)
-                makedirs(os.path.dirname(main_name))
-                makedirs(os.path.dirname(inst_name))
-                main = open(main_name + '.tmp', 'w')
-                inst = open(inst_name + '.tmp', 'w')
-                try:
-                    for dir2, src_name in prev:
-                        self.log.debug('Appending %s ...', src_name)
-                        indir = os.path.dirname(dir2)
-                        with open(src_name, 'r') as src:
-                            for pkg in Packages.iter_paragraphs(src):
-                                abs_deb = os.path.join(indir, pkg['Filename'])
-                                pkg['Filename'] = os.path.relpath(abs_deb, outdir)
-                                dst = inst if pkg['Section'] == 'debian-installer' else main
-                                pkg.dump(dst)
-                                dst.write('\n')
-                finally:
-                    main.close()
-                    inst.close()
-
-                self._compress(main_name)
-                self._compress(inst_name)
-
-                rel_name = os.path.join(outdir, 'dists', dist, 'main', 'binary-%s' % arch, 'Release')
-                self.log.debug('Generating %s ...', rel_name)
-                with open(rel_name, 'w') as rel:
-                    print >> rel, 'Archive: stable'
-                    print >> rel, 'Origin: Univention'
-                    print >> rel, 'Label: Univention'
-                    print >> rel, 'Version: %(major)d.%(minor)d.%(patchlevel)d' % version
-                    print >> rel, 'Component: main'
-                    print >> rel, 'Architecture: %s' % (arch,)
-
-            if archs:
-                self._release(outdir, dist, archs, version)
-
-    def _compress(self, filename):
-        """
-        Compress given file.
-
-        :param str filename: The name of the file to compress.
-        """
-        self.log.debug('Compressing %s ...', filename)
-        sorter = subprocess.Popen(
-            ('apt-sortpkgs', filename + '.tmp'),
-            stdout=subprocess.PIPE,
-        )
-        tee = subprocess.Popen(
-            ('tee', filename),
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-        )
-        gzip = subprocess.Popen(
-            ('gzip',),
-            stdin=tee.stdout,
-            stdout=open(filename + '.gz', 'wb'),
-        )
-        tee.stdout.close()
-        prev = None
-        for pkg in Packages.iter_paragraphs(sorter.stdout):
-            if prev:
-                if prev["Package"] != pkg["Package"]:
-                    tee.stdin.write("%s\n" % prev)
-                elif prev["Filename"].startswith('../') and not pkg["Filename"].startswith('../'):
-                    pass
-                elif not prev["Filename"].startswith('../') and pkg["Filename"].startswith('../'):
-                    continue
-                elif apt_pkg.version_compare(prev["Version"], pkg["Version"]) >= 0:
-                    continue
-            prev = pkg
-        if prev:
-            tee.stdin.write("%s\n" % prev)
-        tee.stdin.close()
-        rc_sorter, rc_tee, rc_gzip = sorter.wait(), tee.wait(), gzip.wait()
-        self.log.debug('sorter=%d tee=%d gzip=%d', rc_sorter, rc_tee, rc_gzip)
-        os.remove(filename + '.tmp')
-
-    def _release(self, outdir, dist, archs, version):
-        """
-        Generate a new :file:`Release` file.
-
-        :param str outdir: The name of the output directory.
-        :param str dist: The name of the distribution.
-        :param archs: The list of architectures.
-        :type archs: list(str)
-        :param UCS_Version version: The UCS release version.
-        """
-        rel_name = os.path.join(outdir, 'dists', dist, 'Release')
-        self.log.info('Generating %s ...', rel_name)
-        cmd = (
-            'apt-ftparchive',
-            '-o', 'APT::FTPArchive::Release::Origin=Univention',
-            '-o', 'APT::FTPArchive::Release::Label=Univention',
-            '-o', 'APT::FTPArchive::Release::Suite=stable',
-            '-o', 'APT::FTPArchive::Release::Version=%(major)d.%(minor)d.%(patchlevel)d' % version,
-            '-o', 'APT::FTPArchive::Release::Codename=%s' % (dist,),
-            '-o', 'APT::FTPArchive::Release::Architectures=%s' % (' '.join(archs),),
-            '-o', 'APT::FTPArchive::Release::Components=main',
-            'release',
-            os.path.join('dists', dist),
-        )
-        self.log.debug('%r @ %s', cmd, outdir)
-        try:
-            os.remove(rel_name)
-        except OSError as ex:
-            if ex.errno != errno.ENOENT:
-                raise
-        tmp_name = rel_name + '.tmp'
-        subprocess.call(cmd, stdout=open(tmp_name, 'wb'), cwd=outdir)
-        os.rename(tmp_name, rel_name)
-
     def run(self):
         """
         starts the mirror process.
         """
         self.mirror_repositories()
         self.mirror_update_scripts()
-        self.update_dists_files()
 
 
 if __name__ == '__main__':
