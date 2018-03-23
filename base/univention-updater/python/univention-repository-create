@@ -240,10 +240,6 @@ def setup_pxe(options):
                 if os.path.islink(symlinkfn):
                     os.remove(symlinkfn)
                 os.symlink(os.path.relpath(dstfn, pxedir), symlinkfn)
-
-        print '  generating Package files for installer ...',
-        mirror = UniventionMirror(False)
-        mirror.update_dists_files()
     else:
         print 'WARNING: The usage of this DVD for PXE reinstallation is not possible.'
         print '         Please use an UCS installation DVD with UCS 4.0-0 or later.'
