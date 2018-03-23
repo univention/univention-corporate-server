@@ -131,6 +131,10 @@ create_app_images () {
 
 	# cleanup
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -rf ${TMP_DIR}"
+
+	# sync test mirror
+	_ssh -l "$KVM_USER" "$APPS_SERVER" "sudo update_mirror.sh -v appcenter.test/univention-apps/${UCS_VERSION}/${APP_ID} appcenter.test/univention-apps/current/${APP_ID}"
+
 }
 
 create_ec2_image () {
