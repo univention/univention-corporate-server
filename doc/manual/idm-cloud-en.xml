@@ -158,8 +158,8 @@
 			
 			<para>
 				In case of synchronization problems, the log file of the Univention Directory Listener should be
-				examined: <Filename>/var/log/univention/listener.log</filename>. With the help of
-				&ucsUCRV;<Envar>Office365/debug/werror</envar>. More debug output can also be activated.
+				examined: <filename>/var/log/univention/listener.log</filename>. With the help of
+				&ucsUCRV;<envar>Office365/debug/werror</envar>. More debug output can also be activated.
 			</para>
 
 		</section>
