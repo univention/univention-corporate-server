@@ -5,7 +5,7 @@ scope: ucs_4.2-0-errata4.2-3
 src: univention-kernel-image
 fix: 10.0.0-12A~4.2.0.201802151039
 desc: |
- This update of the Linux kernel to version 4.9.86 addresses the following
+ This update of the Linux kernel to version 4.9.89 addresses the following
  issues:
  * CVE-2017-5753 cpu: speculative execution bounds-check bypass
  * CVE-2017-16911: vhci_cd driver in usbip/vhci_sysfs.c:port_show_vhci()
@@ -24,6 +24,8 @@ desc: |
    video driver.
  * CVE-2017-18193: Mishandled extent trees in fs/f2fs/extent_cache.c can allow
    a local user to cause a denial of service video driver.
+ * CVE-2018-7480: Double free in block/blk-cgroup.c:blkcg_init_queue() can
+   allow a local user to cause a denial of service
 note: This is the third of three parts.
 bug: [46209]
 cve:
@@ -36,3 +38,4 @@ cve:
 - CVE-2017-8824
 - CVE-2017-13166
 - CVE-2017-18193
+- CVE-2018-7480
