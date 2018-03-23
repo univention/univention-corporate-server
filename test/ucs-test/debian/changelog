@@ -1,3 +1,9 @@
+ucs-test (8.0.28-100) unstable; urgency=medium
+
+  * Bug #46665: Use appbox:4.3-0 for tests
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 23 Mar 2018 18:40:31 +0100
+
 ucs-test (8.0.28-99) unstable; urgency=medium
 
   * Bug #46727: ignore /var/lib/collectd/rrd in 01_base.25check-permissions.test
