@@ -15,7 +15,7 @@
 		<para>
 			UCS offers an integrated Identity Management System. Through Univention Management Console, users and groups among others
 			can easily be administered. Depending on the installed services, these identities are made available through
-			different interfaces e.g.via LDAP.
+			different interfaces e.g. via LDAP.
 		</para>
 
 		<para>
@@ -115,7 +115,7 @@
 			<para>
 				It is necessary to configure a country for the user in Office 365. The connector uses the specification
 				of the Country from the contact data of the user if not set, it uses the setting of the server. With the help of
-				&ucsUCRV; <envar>office365/attributes/usageLocation</envar> can be used to specify a 2-character abbreviation, eg US.
+				&ucsUCRV; <envar>office365/attributes/usageLocation</envar> can be used to specify a 2-character abbreviation, e.g. US.
 			</para>
 			<para>
 				Through &ucsUCRV; <envar>office365/attributes/sync</envar>,the LDAP attributes (eg first name, last
