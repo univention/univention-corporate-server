@@ -6,7 +6,8 @@ src: univention-management-console-module-diagnostic
 fix: 4.0.0-25A~4.3.0.201803211244
 desc: |
  This update addresses the following issue(s):
- * Check file system permissions of system mail diretory (Bug #46677).
+ * Check of the file system permissions of local mail directory has been
+   added (Bug #46677).
  * nsupdate checks in UCS@school did not use the Slave PDCs (Bug #45584).
  * Sometimes the 01_ssh_connection check was hanging (Bug #45343).
  * The german name of the module was adjusted (Bug #46034).
