@@ -1,3 +1,10 @@
+univention-directory-manager-modules (13.0.21-16) unstable; urgency=medium
+
+  * Bug #41372: Do not count container accounts in the license
+  * Bug #46334: Do not count opsi users in the license
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 23 Mar 2018 11:06:30 +0100
+
 univention-directory-manager-modules (13.0.21-15) unstable; urgency=medium
 
   * Bug #46539: simulate_legacy_options
