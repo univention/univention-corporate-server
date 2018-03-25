@@ -281,6 +281,15 @@ Subsystem	sftp	/usr/lib/openssh/sftp-server
 #	PermitTTY no
 #	ForceCommand cvs server
 
+@!@
+if configRegistry.get('sshd/MACs'):
+	print "MACs %(sshd/MACs)s" % configRegistry
+if configRegistry.get('sshd/Ciphers'):
+	print "Ciphers %(sshd/Ciphers)s" % configRegistry
+if configRegistry.get('sshd/KexAlgorithms'):
+	print "KexAlgorithms %(sshd/KexAlgorithms)s" % configRegistry
+@!@
+
 # Start of additional configuration options defined via ucr 'sshd/config/.*'
 @!@
 PREFIX = 'sshd/config/'
