@@ -607,6 +607,18 @@ def subschema_sort(subschema, ldap_type):
 
 
 def update_schema(attr):
+
+	def _insert_linebereak(obj):
+		# Bug 46743: Ensure lines are not longer than 2000 characters or slapd fails to start
+		max_length = 2000
+		obj_lines = []
+		while len(obj) > max_length:
+			linebreak_postion = obj.rindex(' ', 0, max_length)
+			obj_lines.append(obj[:linebreak_postion])
+			obj = obj[linebreak_postion + 1:]
+		obj_lines.append(obj)
+		return '\n '.join(obj_lines)
+
 	listener.setuid(0)
 	try:
 		fp = open('/var/lib/univention-ldap/schema.conf.new', 'w')
@@ -620,13 +632,13 @@ def update_schema(attr):
 	for oid in subschema_sort(subschema, ldap.schema.AttributeType):
 		if oid in BUILTIN_OIDS:
 			continue
-		obj = subschema.get_obj(ldap.schema.AttributeType, oid)
+		obj = _insert_linebereak(str(subschema.get_obj(ldap.schema.AttributeType, oid)))
 		print >>fp, 'attributetype %s' % (obj,)
 
 	for oid in subschema_sort(subschema, ldap.schema.ObjectClass):
 		if oid in BUILTIN_OIDS:
 			continue
-		obj = subschema.get_obj(ldap.schema.ObjectClass, oid)
+		obj = _insert_linebereak(str(subschema.get_obj(ldap.schema.ObjectClass, oid)))
 		print >>fp, 'objectclass %s' % (obj,)
 
 	fp.close()

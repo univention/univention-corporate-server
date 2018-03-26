@@ -1,3 +1,9 @@
+univention-directory-replication (10.0.0-2) unstable; urgency=medium
+
+  * Bug #46743: Break long lines in schema.conf
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 26 Mar 2018 18:39:43 +0200
+
 univention-directory-replication (10.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
