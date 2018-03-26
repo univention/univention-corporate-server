@@ -1,3 +1,9 @@
+univention-directory-replication (11.0.0-5) unstable; urgency=medium
+
+  * Bug #46743: Break long lines in schema.conf
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 26 Mar 2018 18:39:43 +0200
+
 univention-directory-replication (11.0.0-4) unstable; urgency=medium
 
   * Bug #46372: start listener with at job in u-d-r-resync
