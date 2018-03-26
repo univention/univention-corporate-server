@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2018-03-13 12:08+0100\n"
+"POT-Creation-Date: 2018-03-26 15:14+0200\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -217,7 +217,7 @@ msgstr ""
 
 #: umc/js/appcenter/AppDetailsPage.js:1062
 msgid "Activation of UCS"
-msgstr "Aktivierung von UCS"
+msgstr "UCS-Aktivierung"
 
 #: umc/js/appcenter/SettingsPage.js:121
 msgid "Add"
@@ -1197,13 +1197,13 @@ msgstr ""
 
 #: umc/js/appcenter/AppDetailsPage.js:1065
 msgid ""
-"To do this please log in on %(host)s as an administrator. Click on the gear-"
-"wheel symbol in the top right line of the screen and choose \"%(dialogName)s"
+"To do this please log in on %(host)s as an administrator. Open the menu in "
+"the top right corner of the screen and choose \"License\" > \"%(dialogName)s"
 "\". There you can request the new license."
 msgstr ""
-"Melden Sie sich dazu bitte als ein Administrator auf %(host)s an. Klicken "
-"Sie in der oberen rechten Bildschirmzeile auf das Zahnrad-Symbol und wählen "
-"Sie den Punkt \"%(dialogName)s\". Dort können Sie eine neue Lizenz anfordern."
+"Melden Sie sich dazu bitte als ein Administrator auf %(host)s an. Öffnen "
+"Sie das Menü in der oberen rechten Bildschirmecke und wählen Sie den Punkt "
+"\"Lizenz\" > \"%(dialogName)s\" aus. Dort können Sie eine neue Lizenz anfordern."
 
 #: umc/js/appcenter/AppDetailsPage.js:309
 #: umc/js/appcenter/AppDetailsPage.js:715

@@ -1062,7 +1062,7 @@ define([
 					var dialogName = _('Activation of UCS');
 					msg =
 						'<p>' + _('You need to request and install a new license in order to use the Univention App Center.') + '</p>' +
-						'<p>' + _('To do this please log in on %(host)s as an administrator. Click on the gear-wheel symbol in the top right line of the screen and choose "%(dialogName)s". There you can request the new license.', {host: hostLink, dialogName: dialogName}) + '</p>' +
+						'<p>' + _('To do this please log in on %(host)s as an administrator. Open the menu in the top right corner of the screen and choose "License" > "%(dialogName)s". There you can request the new license.', {host: hostLink, dialogName: dialogName}) + '</p>' +
 						'<p>' + _('After that you can "%(action)s" "%(app)s" here on this system.', {action: action, app: entities.encode(this.app.name)}) + '</p>';  // TODO: html escape action?
 				}
 				dialog.alert(msg);
