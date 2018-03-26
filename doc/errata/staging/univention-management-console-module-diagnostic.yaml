@@ -15,5 +15,6 @@ desc: |
  * Log output of actions (Bug #46039).
  * Only use FQDNs for the SSH connection checks (Bug #45370).
  * Avoid paramico log messages winding up in connector-s4.log (Bug #46708).
- * Links to knowledge base articles now point to the correct addresses (Bug #46166).
+ * Links to knowledge base articles now point to the correct addresses
+   (Bug #46166).
 bug: [46677, 45584, 45343, 46034, 45904, 46039, 45370, 46708, 46166]

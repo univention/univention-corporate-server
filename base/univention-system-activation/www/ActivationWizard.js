@@ -64,6 +64,7 @@ define([
 					}, {
 						type: TextBox,
 						inlineLabel: _('E-mail address'),
+						label: _('With the activation of UCS you agree to our <a href="https://www.univention.com/privacy-statement/" target="_blank">privacy statement</a>.'),
 						regExp: '.+@.+',
 						invalidMessage: _('No valid email address.'),
 						required: true,

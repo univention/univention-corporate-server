@@ -847,3 +847,12 @@ msgstr ""
 
 msgid "Documentation and Support"
 msgstr "Dokumentation und Support"
+
+msgid ""
+"With the activation of UCS you agree to our <a "
+"href=\"https://www.univention.com/privacy-statement/\" "
+"target=\"_blank\">privacy statement</a>."
+msgstr ""
+"Mit der Inbetriebnahme von UCS willigen Sie in unsere "
+"<a href=\"https://www.univention.de/datenschutzerklaerung/\" "
+"target=\"_blank\">Datenschutzbestimmung</a> ein."
