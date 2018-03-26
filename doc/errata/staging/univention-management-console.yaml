@@ -7,4 +7,4 @@ fix: 10.0.4-5A~4.3.0.201803141605
 desc: |
  This update addresses the following issue(s):
  * Remove deprecated child-src from Content-Security-Policy
-bug: [45599]
+bug: [45599, 46742]

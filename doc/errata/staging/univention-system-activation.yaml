@@ -2,9 +2,9 @@ product: ucs
 release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
-src: univention-system-setup
+src: univention-system-activation
 fix: 
 desc: |
  This update addresses the following issue(s):
- *
+ * 
 bug: [46742]
