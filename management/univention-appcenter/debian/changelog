@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-31) unstable; urgency=medium
+
+  * Bug #46742: Adjust text for license request on non master
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 26 Mar 2018 16:11:25 +0200
+
 univention-appcenter (7.0.1-30) unstable; urgency=medium
 
   * Bug #46684: Fix traceback in App upgrades via noninteractive
