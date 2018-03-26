@@ -316,7 +316,6 @@ install = get_action('install')
 install.call(app=app, noninteractive=True, skip_checks=['must_have_valid_license'], pwdfile='/tmp/joinpwd', pull_image=False)
 "
 fi
-[ -e /tmp/joinpwd ] && rm /tmp/joinpwd
 
 # fix docker app image name
 ucr unset --force appcenter/index/verify
