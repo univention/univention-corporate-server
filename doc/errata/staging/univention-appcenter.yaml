@@ -2,10 +2,9 @@ product: ucs
 release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
-src: univention-system-setup
+src: univention-appcenter
 fix: 
 desc: |
  This update addresses the following issue(s):
- * A link pointing to the Univention Privacy Policy
-   has been added to the UCS activation process.
+ * A text referring to the activation of UCS has been updated.
 bug: [46742]

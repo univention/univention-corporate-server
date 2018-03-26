@@ -6,5 +6,6 @@ src: univention-system-activation
 fix: 
 desc: |
  This update addresses the following issue(s):
- * 
+ * A link pointing to the Univention Privacy Policy
+   has been added to the UCS activation process.
 bug: [46742]
