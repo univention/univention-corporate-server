@@ -391,6 +391,7 @@ test -n "$admember_password" && echo "$admember_password" > /tmp/joinpwd
 exit 0
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/scripts/10_basis/01_save_root_password
+	sed -i 's|\(.*/18root_password.*\)|\n/usr/lib/univention-system-setup/scripts/10_basis/01_save_root_password\n\1|' /usr/lib/univention-system-setup/scripts/setup-join.sh
 
 	# ensure join and delete setup password
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/99_ensure_join_and_remove_password <<'__EOF__'
