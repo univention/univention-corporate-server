@@ -207,7 +207,7 @@ prepare_package_app ()
 	for i in oxseforucs egroupware horde tine20 fortnox kolab-enterprise zarafa kopano-core kix2016; do
 		test "$i" = "$app" && close_fds=TRUE
 	done
-	cat >/usr/lib/univention-system-setup/appliance-hooks.d/05setup_package_${app}.inst <<__EOF__
+	cat >/usr/lib/univention-system-setup/appliance-hooks.d/06_setup_package_${app}.inst <<__EOF__
 #!/bin/bash
 
 set -x
@@ -225,7 +225,7 @@ univention-app register --do-it ${ucsversion}/${app}=${version}
 
 exit 0
 __EOF__
-	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/05setup_package_${app}.inst
+	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/06_setup_package_${app}.inst
 
 }
 
@@ -324,7 +324,7 @@ __EOF__
 	chmod 755 /usr/lib/univention-system-setup/scripts/00_system_setup/20remove_docker_app_${app}
 
 	# reinstall the app
-	cat >/usr/lib/univention-system-setup/appliance-hooks.d/05setup_docker_${app}.inst <<__EOF__
+	cat >/usr/lib/univention-system-setup/appliance-hooks.d/06_setup_docker_${app}.inst <<__EOF__
 #!/bin/bash
 
 . /usr/share/univention-lib/ucr.sh
@@ -333,11 +333,9 @@ __EOF__
 APP="$app"
 USER="\$(custom_username Administrator)"
 
-# Only install the app if joinscript is run during system-setup
-if [ -n "\$(pgrep -f /usr/lib/univention-system-setup/scripts/setup-join.sh)" ]; then
-	# install app, without index verification (needs internet)
-	ucr set --force appcenter/index/verify=false
-	python -c "from univention.appcenter.app_cache import Apps
+# install app, without index verification (needs internet)
+ucr set --force appcenter/index/verify=false
+python -c "from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import get_action
 from univention.appcenter.log import log_to_logfile, log_to_stream
 
@@ -349,7 +347,6 @@ app.docker_image='${local_app_docker_image}'
 install = get_action('install')
 install.call(app=app, noninteractive=True, skip_checks=['must_have_valid_license'], pwdfile='/tmp/joinpwd', pull_image=False, username='\$USER')
 "
-fi
 
 # fix docker app image name
 ucr unset --force appcenter/index/verify
@@ -360,7 +357,7 @@ univention-app shell ${app} ucr set repository/online=yes || true
 
 exit 0
 __EOF__
-	chmod 755 /
+	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/06_setup_docker_${app}.inst
 }
 
 prepare_apps ()
@@ -394,8 +391,6 @@ test -n "$admember_password" && echo "$admember_password" > /tmp/joinpwd
 exit 0
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/scripts/10_basis/01_save_root_password
-
-__EOF__
 
 	# ensure join and delete setup password
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/99_ensure_join_and_remove_password <<'__EOF__'
