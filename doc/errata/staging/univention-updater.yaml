@@ -2,7 +2,7 @@ product: ucs
 release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
-src: base/univention-updater
+src: univention-updater
 fix: 13.0.1-40A~4.3.0.201803231033
 desc: |
  This update addresses the following issue(s):
