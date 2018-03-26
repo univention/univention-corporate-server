@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-directory-replication
-fix: 10.0.0-2A~4.2.0.201803261847
+fix: 11.0.0-5A~4.3.0.201803261842
 desc: |
  This update addresses the following issue(s):
  * Very big ldap schema definitions could prevent the ldap server on
