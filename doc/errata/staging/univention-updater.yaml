@@ -6,5 +6,5 @@ src: base/univention-updater
 fix: 13.0.1-40A~4.3.0.201803231033
 desc: |
  This update addresses the following issue(s):
- * Links to knowledge base articles now point to the correct addresses
+ * Links to knowledge base articles now point to the correct addresses.
 bug: [46166]
