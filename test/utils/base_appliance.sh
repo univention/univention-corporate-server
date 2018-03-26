@@ -222,10 +222,14 @@ prepare_docker_app_container ()
 			docker login -e invalid -u ucs -p readonly docker.software-univention.de
 			docker pull "$dockerimage"
 			local local_app_docker_image="$dockerimage"
+			# appbox image
 			if ! appliance_app_has_external_docker_image $app; then
 					container_id=$(docker create "$dockerimage")
 					docker start "$container_id"
 					sleep 5 # some startup time...
+					# update to latest version
+					v=$(docker exec $container_id ucr get version/version)
+					docker exec $container_id univention-upgrade --ignoressh --ignoreterm --noninteractive --disable-app-updates --updateto="${v}-99"
 					docker exec "$container_id" ucr set repository/online/server="$(ucr get repository/online/server)" \
 						repository/app_center/server="$(ucr get repository/app_center/server)" \
 						appcenter/index/verify="$(ucr get appcenter/index/verify)" \
@@ -259,6 +263,7 @@ prepare_docker_app_container ()
 					for i in $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster); do
 						docker exec "$container_id" ls /var/cache/univention-system-setup/packages/ | grep $i
 					done
+					docker exec "$container_id" ucr set repository/online=false
 					# shutdown container and use it as app base
 					docker stop "$container_id"
 					local_app_docker_image=$(docker commit "$container_id" "${app}-app-image")
@@ -320,6 +325,11 @@ fi
 # fix docker app image name
 ucr unset --force appcenter/index/verify
 ucr set appcenter/apps/${app}/image="${dockerimage}"
+
+# re activate repo
+univention-app shell ${app} ucr set repository/online=yes || true
+
+exit 0
 __EOF__
 			chmod 755 /usr/lib/univention-install/99setup_docker_${app}.inst
 
