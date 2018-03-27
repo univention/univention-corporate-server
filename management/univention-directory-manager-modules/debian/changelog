@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-17) unstable; urgency=medium
+
+  * Bug #45581: E-mail should not default to mailPrimaryAddress
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Mar 2018 11:39:31 +0200
+
 univention-directory-manager-modules (13.0.21-16) unstable; urgency=medium
 
   * Bug #41372: Do not count container accounts in the license

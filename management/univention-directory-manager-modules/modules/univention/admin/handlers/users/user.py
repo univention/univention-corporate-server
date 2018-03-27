@@ -344,7 +344,6 @@ property_descriptions = {
 		required=False,
 		may_change=True,
 		identifies=False,
-		default=['<mailPrimaryAddress>'],
 	),
 	'postcode': univention.admin.property(
 		short_description=_('Postal code'),
