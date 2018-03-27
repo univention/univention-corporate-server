@@ -1,3 +1,9 @@
+univention-base-files (6.0.0-17) unstable; urgency=medium
+
+  * Bug #46750: allow to set journald SplitMode by UCRV
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 27 Mar 2018 13:47:23 +0200
+
 univention-base-files (6.0.0-16) unstable; urgency=medium
 
   * Bug #38554: u-base-files: fix shell-univention-lib dependency
