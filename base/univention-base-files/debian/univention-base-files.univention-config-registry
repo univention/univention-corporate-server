@@ -38,6 +38,7 @@ Variables: auth/methods
 
 Type: file
 File: etc/systemd/journald.conf
+Variables: systemd/journald/SplitMode
 Variables: systemd/journald/Storage
 Variables: systemd/journald/SystemMaxUse
 Variables: systemd/journald/SystemKeepFree
