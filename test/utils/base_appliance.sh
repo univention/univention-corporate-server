@@ -200,6 +200,7 @@ appliance_app_has_external_docker_image ()
 prepare_package_app ()
 {
 	local app=$1
+	local counter=$2
 	local packages="$(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
 	local version="$(get_app_attr $app Version)"
 	local ucsversion="$(app_get_ini $app | awk -F / '{print $(NF-1)}')"
@@ -207,10 +208,12 @@ prepare_package_app ()
 	for i in oxseforucs egroupware horde tine20 fortnox kolab-enterprise zarafa kopano-core kix2016; do
 		test "$i" = "$app" && close_fds=TRUE
 	done
-	cat >/usr/lib/univention-system-setup/appliance-hooks.d/06_setup_package_${app}.inst <<__EOF__
+	cat >/usr/lib/univention-system-setup/appliance-hooks.d/06_${counter}_setup_${app}.inst <<__EOF__
 #!/bin/bash
 
 set -x
+
+. /usr/share/univention-lib/base.sh
 
 eval "\$(ucr shell update/commands/install)"
 export DEBIAN_FRONTEND=noninteractive
@@ -223,9 +226,14 @@ fi
 \$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
 univention-app register --do-it ${ucsversion}/${app}=${version}
 
+uid="$(custom_username Administrator)"
+dn="$(univention-ldapsearch uid=$uid dn | sed -ne 's|dn: ||p')"
+
+univention-run-join-scripts -dcaccount "$dn" -dcpwd /tmp/joinpwd
+
 exit 0
 __EOF__
-	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/06_setup_package_${app}.inst
+	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/06_${counter}_setup_${app}.inst
 
 }
 
@@ -233,6 +241,7 @@ __EOF__
 
 prepare_docker_app () {
 	local app=$1
+	local counter=$2
 	local php7_required=false
 	local extra_packages=""
 	for i in "owncloud82" "egroupware"; do
@@ -324,7 +333,7 @@ __EOF__
 	chmod 755 /usr/lib/univention-system-setup/scripts/00_system_setup/20remove_docker_app_${app}
 
 	# reinstall the app
-	cat >/usr/lib/univention-system-setup/appliance-hooks.d/06_setup_docker_${app}.inst <<__EOF__
+	cat >/usr/lib/univention-system-setup/appliance-hooks.d/06_${counter}_setup_${app}.inst <<__EOF__
 #!/bin/bash
 
 . /usr/share/univention-lib/ucr.sh
@@ -357,20 +366,22 @@ univention-app shell ${app} ucr set repository/online=yes || true
 
 exit 0
 __EOF__
-	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/06_setup_docker_${app}.inst
+	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/06_${counter}_setup_${app}.inst
 }
 
 prepare_apps ()
 {
 	local main_app="$1"
 	local extra_packages=""
+	local counter=0
 
 	for app in $main_app $(get_app_attr $main_app ApplianceAdditionalApps); do
 		if app_appliance_IsDockerApp "$app"; then
-			prepare_docker_app "$app"
+			prepare_docker_app "$app" "$counter"
 		else
-			prepare_package_app "$app"
+			prepare_package_app "$app" "$counter"
 		fi
+		counter=$((counter+1))
 	done
 
 	# save setup password
@@ -393,6 +404,16 @@ __EOF__
 	chmod 755 /usr/lib/univention-system-setup/scripts/10_basis/01_save_root_password
 	sed -i 's|\(.*/18root_password.*\)|\n/usr/lib/univention-system-setup/scripts/10_basis/01_save_root_password\n\1|' /usr/lib/univention-system-setup/scripts/setup-join.sh
 
+	# deactivate online repo during app installation
+	cat >/usr/lib/univention-system-setup/appliance-hooks.d/01_repo_settings <<'__EOF__'
+#!/bin/bash
+
+ucr set repository/online=no
+
+exit 0
+__EOF__
+	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/01_repo_settings
+
 	# ensure join and delete setup password
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/99_ensure_join_and_remove_password <<'__EOF__'
 #!/bin/bash
@@ -409,6 +430,9 @@ univention-run-join-scripts -dcaccount "$dn" -dcpwd /tmp/joinpwd
 [ -e /tmp/joinpwd ] && rm /tmp/joinpwd
 
 invoke-rc.d ntp restart
+
+# reactivate repo
+ucr set repository/online=yes
 
 exit 0
 __EOF__
