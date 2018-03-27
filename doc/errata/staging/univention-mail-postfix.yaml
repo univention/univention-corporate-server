@@ -3,7 +3,7 @@ release: "4.2"
 version: [2]
 scope: ucs_4.2-0-errata4.2-2
 src: univention-mail-postfix
-fix: 11.0.1-20A~4.2.0.201710171246
+fix: 
 desc: |
  This update addresses the following issue(s):
  * The listfilter policy service can now write debugging information to the
@@ -13,4 +13,7 @@ desc: |
    appended to /etc/postfix/main.cf and /etc/postfix/master.cf respectively.
    After editing the *.local files, ucr commit /etc/postfix/*.cf must be
    called (Bug # 44473).
-bug: [44473, 44922]
+ * When upgrading from a system that previously used Cyrus, the now
+   deprecated mail quota policies can be removed using the script
+   /usr/share/univention-mail-postfix/remove_mail_quota_policy (Bug #46454).
+bug: [44473, 44922, 46454]
