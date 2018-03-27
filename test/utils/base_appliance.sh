@@ -226,10 +226,10 @@ fi
 \$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
 univention-app register --do-it ${ucsversion}/${app}=${version}
 
-uid="$(custom_username Administrator)"
-dn="$(univention-ldapsearch uid=$uid dn | sed -ne 's|dn: ||p')"
+uid="\$(custom_username Administrator)"
+dn="\$(univention-ldapsearch uid=\$uid dn | sed -ne 's|dn: ||p')"
 
-univention-run-join-scripts -dcaccount "$dn" -dcpwd /tmp/joinpwd
+univention-run-join-scripts -dcaccount "\$dn" -dcpwd /tmp/joinpwd
 
 exit 0
 __EOF__
@@ -375,7 +375,7 @@ prepare_apps ()
 	local extra_packages=""
 	local counter=0
 
-	for app in $main_app $(get_app_attr $main_app ApplianceAdditionalApps); do
+	for app in $(get_app_attr $main_app ApplianceAdditionalApps) $main_app; do
 		if app_appliance_IsDockerApp "$app"; then
 			prepare_docker_app "$app" "$counter"
 		else
