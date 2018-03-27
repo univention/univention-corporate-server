@@ -1,3 +1,9 @@
+univention-base-files (7.0.0-11) unstable; urgency=medium
+
+  * Bug #46279: allow to set journald SplitMode by UCRV
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 27 Mar 2018 13:34:13 +0200
+
 univention-base-files (7.0.0-10) unstable; urgency=medium
 
   * Bug #45950: Update broken template for UCRV update/secure_apt
