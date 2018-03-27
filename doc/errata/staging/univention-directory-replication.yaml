@@ -9,4 +9,4 @@ desc: |
  * Very big ldap schema definitions could prevent the ldap server on
    backup and slave system to fail to start. The fix ensures that such
    schemas are handled correctly.
-bug: [46743]
+bug: [46747]
