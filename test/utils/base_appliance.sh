@@ -204,6 +204,7 @@ prepare_package_app ()
 	local packages="$(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
 	local version="$(get_app_attr $app Version)"
 	local ucsversion="$(app_get_ini $app | awk -F / '{print $(NF-1)}')"
+	local install_cmd="$(univention-config-registry get update/commands/install)"
 	# Due to dovect: https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
 	for i in oxseforucs egroupware horde tine20 fortnox kolab-enterprise zarafa kopano-core kix2016; do
 		test "$i" = "$app" && close_fds=TRUE
@@ -211,9 +212,9 @@ prepare_package_app ()
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/06_${counter}_setup_${app}.inst <<__EOF__
 #!/bin/bash
 
-set -x
-
 . /usr/share/univention-lib/base.sh
+
+set -x
 
 eval "\$(ucr shell update/commands/install)"
 export DEBIAN_FRONTEND=noninteractive
@@ -235,9 +236,21 @@ exit 0
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/06_${counter}_setup_${app}.inst
 
+	# default packages for non-docker apps
+	mkdir -p /var/cache/univention-system-setup/packages/
+	if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
+		echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
+	fi
+	cd /var/cache/univention-system-setup/packages/
+	echo "Try to download: $packages"
+	for package in $packages; do
+		LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} |
+		apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages \
+			$(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
+	done
+	apt-ftparchive packages . >Packages
+	apt-get update
 }
-
-
 
 prepare_docker_app () {
 	local app=$1
@@ -339,6 +352,8 @@ __EOF__
 . /usr/share/univention-lib/ucr.sh
 . /usr/share/univention-lib/base.sh
 
+set -x
+
 APP="$app"
 USER="\$(custom_username Administrator)"
 
@@ -367,6 +382,12 @@ univention-app shell ${app} ucr set repository/online=yes || true
 exit 0
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/06_${counter}_setup_${app}.inst
+
+	# database packages for docker app
+	local packages="$(app_get_database_packages_for_docker_host $app)"
+	if [ -n "$packages" ]; then
+		DEBIAN_FRONTEND=noninteractive apt-get -y install $packages
+	fi
 }
 
 prepare_apps ()
@@ -374,14 +395,22 @@ prepare_apps ()
 	local main_app="$1"
 	local extra_packages=""
 	local counter=0
+	local packages=""
 
 	for app in $(get_app_attr $main_app ApplianceAdditionalApps) $main_app; do
 		if app_appliance_IsDockerApp "$app"; then
 			prepare_docker_app "$app" "$counter"
 		else
 			prepare_package_app "$app" "$counter"
+
 		fi
 		counter=$((counter+1))
+		# pre installed packages
+		packages="$(get_app_attr $app AppliancePreInstalledPackages)"
+		if [ -n "$packages" ]; then
+			DEBIAN_FRONTEND=noninteractive apt-get -y install $packages
+
+		fi
 	done
 
 	# save setup password
@@ -471,44 +500,6 @@ register_apps ()
 	univention-install -y univention-app-appliance
 	ucr set repository/online/unmaintained='no'
 	apt-get update
-}
-
-download_packages_and_dependencies ()
-{
-	local main_app=$1
-
-	for app in $main_app $(get_app_attr $main_app ApplianceAdditionalApps); do
-
-		# pre installed packages
-		packages="$(get_app_attr $app AppliancePreInstalledPackages)"
-		if [ -n "$packages" ]; then
-			DEBIAN_FRONTEND=noninteractive apt-get -y install $packages
-
-		fi
-		# database packages for docker app
-		if app_appliance_IsDockerApp $app; then
-			DEBIAN_FRONTEND=noninteractive apt-get -y install "$(app_get_database_packages_for_docker_host $app)"
-		fi
-
-		# default packages for non-docker apps
-		if ! app_appliance_IsDockerApp $app; then
-			mkdir -p /var/cache/univention-system-setup/packages/
-			if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
-				echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
-			fi
-			cd /var/cache/univention-system-setup/packages/
-			local install_cmd="$(univention-config-registry get update/commands/install)"
-			local packages="$(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
-			echo "Try to download: $packages"
-			for package in $packages; do
-				LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | 
-				apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages \
-					$(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
-			done
-			apt-ftparchive packages . >Packages
-			apt-get update
-		fi
-	done
 }
 
 download_system_setup_packages ()
@@ -719,12 +710,14 @@ setup_pre_joined_environment ()
 {
 	# $1 = appid
 	# $2 = domainname / derived ldapbase
-	fastdemomode="unknown"
+	# $3 = fastdemomode ?
+	local fastdemomode="unknown"
+	local mode=$3
 	if app_appliance_AllowPreconfiguredSetup $1; then
 			fastdemomode="yes"
 	fi
-	if [ "ignore" != "$FORCEFASTDEMOMODE" ]; then
-			fastdemomode="$FORCEFASTDEMOMODE"
+	if [ "ignore" != "$mode" ]; then
+			fastdemomode="$mode"
 			ucr set --force umc/web/appliance/fast_setup_mode="$fastdemomode"
 	fi
 	if [ "yes" = "$fastdemomode" ]; then
