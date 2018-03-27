@@ -34,8 +34,10 @@ import os
 import grp
 import stat
 import sys
+import copy
 import logging
 from argparse import ArgumentParser
+from ldap import explode_dn
 from ldap.filter import filter_format
 from univention.admin import uldap
 from univention.config_registry import ConfigRegistry
@@ -51,7 +53,7 @@ ucr.load()
 
 def parse_cmdline():
 	defaults = dict(
-		dry_run=True,
+		modify=False,
 		verbose=False
 	)
 	parser = ArgumentParser(
@@ -59,11 +61,11 @@ def parse_cmdline():
 		epilog='All output (incl. debugging statements) is written to logfile {!r}.'.format(LOGFILE)
 	)
 	parser.add_argument(
-		'-n',
-		'--dry-run',
-		dest='dry_run',
+		'-m',
+		'--modify',
+		dest='modify',
 		action='store_true',
-		help="Dry run: don't actually commit changes to LDAP [default: %(default)s].")
+		help="Commit changes to LDAP [default: %(default)s (dry run)].")
 	parser.add_argument(
 		'-v',
 		'--verbose',
@@ -78,12 +80,13 @@ class QuotaRemoval(object):
 	_module_cache = {}
 
 	def __init__(self, args):
-		self.dry_run = args.dry_run
+		self.modify = args.modify
 		self.verbose = args.verbose
+		self.mail_quota_ldap_objs = []
 		self.logger = self.setup_logging()
 		self.lo, _po = uldap.getAdminConnection()
 		univention.admin.modules.update()
-		self.logger.debug('Starting with dry_run=%r.', self.dry_run)
+		self.logger.debug('Starting with modify=%r%s.', self.modify, '' if self.modify else ' (a dry-run)')
 
 	def setup_logging(self):
 		open(LOGFILE, "a").close()  # touch
@@ -110,56 +113,99 @@ class QuotaRemoval(object):
 				cls._module_cache[module_name] = None
 		return cls._module_cache[module_name]
 
+	def search_policies(self):
+		self.logger.info('Searching Cyrus mail quota objects in LDAP.')
+		self.mail_quota_ldap_objs = self.lo.search('objectClass=univentionMailQuota')
+		if not self.mail_quota_ldap_objs:
+			self.logger.info('    none found.')
+			return self.mail_quota_ldap_objs
+		for dn, attr in self.mail_quota_ldap_objs:
+			self.logger.info('    %s', attr['cn'][0])
+			self.logger.info('        Quota: %s', attr['univentionMailQuotaMB'][0])
+			self.logger.info('        DN: %r', dn)
+			attr['__referenced_by'] = self.lo.search(filter_format('univentionPolicyReference=%s', (dn,)))
+			for ref_dn, ref_attr in attr['__referenced_by']:
+				self.logger.info('        referenced by %r.', ref_dn)
+		return self.mail_quota_ldap_objs
+
 	def remove_policies(self):
-		mail_quota_ldap_objs = self.lo.search('objectClass=univentionMailQuota')
-		if not mail_quota_ldap_objs:
-			self.logger.info('No Cyrus mail quota objects found in LDAP.')
-			return
-		self.logger.info('Found the following Cyrus mail quota objects in LDAP:')
-		for dn, attr in mail_quota_ldap_objs:
-			self.logger.info('* %s\n    Quota: %s\n    DN: %r', attr['cn'][0], attr['univentionMailQuotaMB'][0], dn)
-			for ref_dn in self.lo.searchDn('univentionPolicyReference={}'.format(dn)):
-				self.logger.info('    Referenced by %r', ref_dn)
-		if self.dry_run:
-			self.logger.info('Skipping quota objects removal (dry-run).')
-			return
-		for dn, attr in mail_quota_ldap_objs:
-			for ref_dn, ref_attr in self.lo.search('univentionPolicyReference={}'.format(dn)):
-				self.logger.info('Removing policy reference from %r', ref_dn)
-				self.logger.debug('    univentionObjectType=%r', ref_attr.get('univentionObjectType'))
+		for dn, attr in self.mail_quota_ldap_objs:
+			self.logger.info('* %s: removing policy references.', attr['cn'][0])
+			if not attr['__referenced_by']:
+				self.logger.info('    no policy references.')
+			for ref_dn, ref_attr in attr['__referenced_by']:
+				self.logger.info('    removing policy reference from %r.', ref_dn)
 				try:
 					module_name = ref_attr['univentionObjectType'][0]
+					self.logger.debug('        univentionObjectType=%r', module_name)
 					mod = self.get_udm_module(module_name)
 				except (IndexError, KeyError):
 					mod = None
 				if mod:
-					self.logger.debug('    using UDM module %r', mod)
-					obj = mod.lookup(None, self.lo, 'uid=test1', base='cn=users,dc=uni,dc=dtr')[0]
-					obj.policies.remove(dn)  # TODO: does this work?
-					obj.modify()
+					self.logger.debug('        using UDM.')
+					filter_s = explode_dn(ref_dn, 0)[0]
+					base = ','.join(explode_dn(ref_dn, 0)[1:])
+					obj = mod.lookup(None, self.lo, filter_s, base=base)[0]
+					obj.policies.remove(dn)
+					if self.modify:
+						obj.modify()
+						self.logger.info('        done.')
+					else:
+						self.logger.info('        skipping (dry-run).')
 				else:
-					self.logger.debug('    got no UDM module, removing policy reference directly')
-					pr = list(ref_attr['univentionPolicyReference'])
-					pr.remove(dn)
-					self.lo.modify(ref_dn, [('univentionPolicyReference', ref_attr['univentionPolicyReference'], pr)])
+					self.logger.debug('        no UDM module, removing directly from LDAP.')
+					pr_new = list(ref_attr['univentionPolicyReference'])
+					pr_new.remove(dn)
+					if self.modify:
+						self.lo.modify(
+							ref_dn,
+							[('univentionPolicyReference', ref_attr['univentionPolicyReference'], pr_new)]
+						)
+						self.logger.info('        done.')
+					else:
+						self.logger.info('        skipping (dry-run).')
 
-
-
-
+			self.logger.info('* %s: removing policy (%r).', attr['cn'][0], dn)
+			mod = self.get_udm_module('policies/mailquota')
+			if mod:
+				self.logger.debug('    using UDM')
+				filter_s = explode_dn(dn, 0)[0]
+				base = ','.join(explode_dn(dn, 0)[1:])
+				obj = mod.lookup(None, self.lo, filter_s, base=base)[0]
+				if self.modify:
+					obj.remove()
+					self.logger.info('    done.')
+				else:
+					self.logger.info('    skipping (dry-run).')
+			else:
+				if self.modify:
+					self.logger.debug('    no UDM module, removing directly from LDAP.')
+					self.lo.delete(dn)
+					self.logger.info('    done.')
+				else:
+					self.logger.info('    skipping (dry-run).')
 
 	def remove_udm_module(self):
+		self.logger.info('Removing UDM mailquota module.')
 		mod = self.get_udm_module('settings/udm_module')
 		quota_udm_modules = mod.lookup(None, self.lo, 'cn=policies/mailquota')
+		if not quota_udm_modules:
+			self.logger.info('    no module found.')
 		for qum in quota_udm_modules:
-			self.logger.info('Found UDM module %r, removing it.', qum['name'])
-			if self.dry_run:
-				self.logger.info('Skipping UDM module removal (dry-run).')
-			else:
+			self.logger.info('    removing UDM module %r (%r).', qum['name'], qum.dn)
+			module_data = copy.deepcopy(qum.info)
+			del module_data['data']
+			self.logger.debug('    UDM module data: %r', module_data)
+			if self.modify:
 				qum.remove()
+				self.logger.info('    done.')
+			else:
+				self.logger.info('    skipping (dry-run).')
 
 
 if __name__ == '__main__':
 	args = parse_cmdline()
 	qr = QuotaRemoval(args)
+	qr.search_policies()
 	qr.remove_policies()
 	qr.remove_udm_module()
