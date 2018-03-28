@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-directory-manager-modules
+fix:
+desc: |-
+  This update addresses the following issue(s):
+  * The email field in the Contacts tab of a user no longer has its value
+    prefilled with the value of the mailPrimaryAddress field. As the prefilled
+    value was not saved to LDAP, this led to undesired inconsistencies in the
+    display of the actual data.
+bug: [45581]
