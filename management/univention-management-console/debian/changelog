@@ -1,3 +1,10 @@
+univention-management-console (10.0.4-7) unstable; urgency=medium
+
+  * Bug #46742: Move univention privacy statement link to the
+    summary page of the system setup
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 28 Mar 2018 12:56:25 +0200
+
 univention-management-console (10.0.4-6) unstable; urgency=medium
 
   * Bug #46742: Add link to univention privacy statement when
