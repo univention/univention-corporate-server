@@ -1,0 +1,56 @@
+product: ucs
+release: "4.1"
+version: [5]
+scope: ucs_4.1-0-errata4.1-5
+src: simplesamlphp
+fix: 1.13.2-1.15.201803281531
+desc: |
+ This update addresses the following issues:
+ * CVE-2017-12867: The SimpleSAML_Auth_TimeLimitedToken class allows attackers
+   with access to a secret token to extend its validity period by manipulating
+   the prepended time offset.
+ * CVE-2017-12869: The multiauth module allows remote attackers to bypass
+   authentication context restrictions and use an authentication source
+   defined in config/authsources.php via vectors related to improper
+   validation of user input.
+ * CVE-2017-12873: SimpleSAMLphp might allow attackers to obtain sensitive
+   information, gain unauthorized access, or have unspecified other impacts by
+   leveraging incorrect persistent NameID generation when an Identity Provider
+   (IdP) is misconfigured.
+ * CVE-2017-12874: The InfoCard module allows attackers to spoof XML messages
+   by leveraging an incorrect check of return values in signature validation
+   utilities.
+ * CVE-2017-18121: The consentAdmin module is vulnerable to a Cross-Site
+   Scripting attack, allowing an attacker to craft links that could execute
+   arbitrary JavaScript code on the victim's web browser.
+ * CVE-2017-18122: A signature-validation bypass issue was discovered. A
+   SimpleSAMLphp Service Provider using SAML 1.1 will regard as valid any
+   unsigned SAML response containing more than one signed assertion, provided
+   that the signature of at least one of the assertions is valid. Attributes
+   contained in all the assertions received will be merged and the entityID of
+   the first assertion received will be used, allowing an attacker to
+   impersonate any user of any IdP given an assertion signed by the targeted
+   IdP.
+ * CVE-2018-6519: The SAML2 library has a Regular Expression Denial of Service
+   vulnerability for fraction-of-seconds data in a timestamp.
+ * CVE-2018-6521: The sqlauth module relies on the MySQL utf8 charset, which
+   truncates queries upon encountering four-byte characters. There might be a
+   scenario in which this allows remote attackers to bypass intended access
+   restrictions.
+ * CVE-2018-7644: The XmlSecLibs library in SimpleSAMLphp before 1.15.3
+   incorrectly verifies signatures on SAML assertions, allowing a remote
+   attacker to construct a crafted SAML assertion on behalf of an Identity
+   Provider that would pass as cryptographically valid, thereby allowing them
+   to impersonate a user from that Identity Provider, aka a key confusion
+   issue.
+bug: [46755]
+cve:
+- CVE-2017-12867
+- CVE-2017-12869
+- CVE-2017-12873
+- CVE-2017-12874
+- CVE-2017-18121
+- CVE-2017-18122
+- CVE-2018-6519
+- CVE-2018-6521
+- CVE-2018-7644
