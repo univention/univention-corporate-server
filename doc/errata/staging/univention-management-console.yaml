@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-management-console
-fix: 10.0.4-6A~4.3.0.201803261648
+fix: 10.0.4-7A~4.3.0.201803281310
 desc: |
  This update addresses the following issue(s):
  * Remove deprecated child-src from Content-Security-Policy

@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-system-activation
-fix: 3.0.0-5A~4.3.0.201803261647
+fix: 3.0.0-6A~4.3.0.201803281314
 desc: |
  This update addresses the following issue(s):
  * A link pointing to the Univention Privacy Policy
