@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Ignore unsupported Kerberos encryption types (Bug #46301).
 bug: [46301]
+erratum: 315
+announced: 2018-03-28
