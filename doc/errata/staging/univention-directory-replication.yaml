@@ -6,7 +6,7 @@ src: univention-directory-replication
 fix: 10.0.0-2A~4.2.0.201803261847
 desc: |
  This update addresses the following issue(s):
- * Very big ldap schema definitions could prevent the ldap server on
-   backup and slave system to fail to start. The fix ensures that such
+ * Very large ldap schema definitions could prevent the ldap server on
+   backup and slave systems from starting. The fix ensures that such
    schemas are handled correctly.
 bug: [46743]
