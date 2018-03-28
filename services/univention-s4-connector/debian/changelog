@@ -1,3 +1,9 @@
+univention-s4-connector (12.0.2-8) unstable; urgency=medium
+
+  * Bug #40419: resync object in postinst too
+
+ -- Felix Botner <botner@univention.de>  Wed, 28 Mar 2018 10:52:54 +0200
+
 univention-s4-connector (12.0.2-7) unstable; urgency=medium
 
   * Bug #40419: resync host object to s4 in sid_to_s4 mode
