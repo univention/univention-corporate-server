@@ -919,6 +919,7 @@ appliance_basesettings ()
 	local main_app=$1
 	
 	/usr/sbin/univention-app-appliance --not-configure-portal $main_app
+	ucr set grub/title="Start $main_app"
 
 	# Set UMC favourites for administrator user
 	local app_fav_list="appcenter:appcenter,updater"
