@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-32) unstable; urgency=medium
+
+  * Bug #46752: Do not trace when setup script was not found
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 28 Mar 2018 12:42:06 +0200
+
 univention-appcenter (7.0.1-31) unstable; urgency=medium
 
   * Bug #46742: Adjust text for license request on non master
