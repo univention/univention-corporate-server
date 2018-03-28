@@ -11,3 +11,5 @@ desc: |
  * Locking in the sysvol-sync.sh has been fixed (Bug #46486).
  * Added a more detailed error message for the domain join (Bug #43223).
 bug: [46006,46486,43223]
+erratum: 5
+announced: 2018-03-28
