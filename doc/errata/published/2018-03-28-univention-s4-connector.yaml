@@ -9,3 +9,5 @@ desc: |
  * A mismatch between the samba and openldap SID for the host object after
    the connector initialization in ucs@school has been fixed (Bug #40419).
 bug: [40419]
+erratum: 4
+announced: 2018-03-28
