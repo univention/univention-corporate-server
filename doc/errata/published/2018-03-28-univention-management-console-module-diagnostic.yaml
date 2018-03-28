@@ -18,3 +18,5 @@ desc: |
  * Links to knowledge base articles now point to the correct addresses
    (Bug #46166).
 bug: [46677, 45584, 45343, 46034, 45904, 46039, 45370, 46708, 46166]
+erratum: 6
+announced: 2018-03-28
