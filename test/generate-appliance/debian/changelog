@@ -1,3 +1,9 @@
+generate-appliance (4.0.0-2) unstable; urgency=medium
+
+  * Bug #39140: Revert
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 28 Mar 2018 13:45:35 +0200
+
 generate-appliance (4.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
