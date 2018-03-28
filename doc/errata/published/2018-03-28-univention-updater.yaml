@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Links to knowledge base articles now point to the correct addresses.
 bug: [46166]
+erratum: 7
+announced: 2018-03-28
