@@ -151,16 +151,6 @@ msgstr "Der Webserver antwortet nicht. Bitte starten Sie das System neu."
 msgid "Upload license file"
 msgstr "Lizenzdatei hochladen"
 
-#: www/ActivationWizard.js:67
-msgid ""
-"With the activation of UCS you agree to our <a "
-"href=\"https://www.univention.com/privacy-statement/\" "
-"target=\"_blank\">privacy statement</a>."
-msgstr ""
-"Mit der Inbetriebnahme von UCS willigen Sie in unsere "
-"<a href=\"https://www.univention.de/datenschutzerklaerung/\" "
-"target=\"_blank\">Datenschutzbestimmung</a> ein."
-
 #: www/ActivationWizard.js:93
 msgid "your email address"
 msgstr "Ihre E-Mail-Adresse"

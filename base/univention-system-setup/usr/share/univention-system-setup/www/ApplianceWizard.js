@@ -681,8 +681,7 @@ define([
 					label: credentialsMasterEmailLabel +
 						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'email\');">' +
 						_('more information') +
-						'</a>)<br>' +
-						_('With the activation of UCS you agree to our <a href="https://www.univention.com/privacy-statement/" target="_blank">privacy statement</a>.'),
+						'</a>)',
 					validator: _validateEmailAddress,
 					invalidMessage: _invalidEmailAddressMessage
 				}, {
@@ -858,6 +857,10 @@ define([
 					name: 'update/system/after/setup',
 					value: true,
 					label: _('Update system after setup')
+				}, {
+					type: Text,
+					name: 'privacyStatement',
+					content: _('With the activation of UCS you agree to our <a href="https://www.univention.com/privacy-statement/" target="_blank">privacy statement</a>.')
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'error',
