@@ -3,8 +3,10 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-appcenter
-fix: 7.0.1-31A~4.3.0.201803261659
-desc: |
- This update addresses the following issue(s):
- * A text referring to the activation of UCS has been updated.
-bug: [46742]
+fix:
+desc: |-
+  This update addresses the following issue(s):
+  * A text referring to the activation of UCS has been updated.
+  * When the meta data of an App pointed to a setup script but it was missing,
+    an error occurred. This has been fixed.
+bug: [46742, 46752]
