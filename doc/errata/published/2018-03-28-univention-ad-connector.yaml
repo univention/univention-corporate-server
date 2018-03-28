@@ -8,3 +8,5 @@ desc: |-
   This update addresses the following issue(s):
   * Output exception details in check_domain and admember_join
 bug: [44478]
+erratum: 9
+announced: 2018-03-28
