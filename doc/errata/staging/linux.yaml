@@ -5,7 +5,7 @@ scope: ucs_4.2-0-errata4.2-3
 src: linux
 fix: 4.9.30-2A~4.2.0.201803221415
 desc: |
- This update of the Linux kernel to version 4.9.86 addresses the following
+ This update of the Linux kernel to version 4.9.89 addresses the following
  issues:
  * CVE-2017-5753 cpu: speculative execution bounds-check bypass
  * CVE-2017-16911: vhci_cd driver in usbip/vhci_sysfs.c:port_show_vhci()
