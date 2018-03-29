@@ -3,8 +3,8 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-join
-fix:
+fix: 10.0.0-4A~4.3.0.201803190957
 desc: |-
   This update addresses the following issue(s):
-  * Bind DNs are now determined in a more robust way.
+  * The binddn of the DC Master Account is determined in a more robust way.
 bug: [36097]
