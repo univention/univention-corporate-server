@@ -2287,16 +2287,24 @@ class DNS_ReverseZone(UDM_Objects):
 	use_objects = False
 
 
+class DNS_ReverseZoneNonempty(DNS_ReverseZone):
+	empty_value = False
+
+
+class DNS_ForwardZoneNonempty(DNS_ForwardZone):
+	empty_value = False
+
+
 class dnsEntry(complex):
 	description = _('DNS Entry')
-	subsyntaxes = ((_('DNS forward zone'), DNS_ForwardZone), (_('IP address'), IP_AddressList))
+	subsyntaxes = ((_('DNS forward zone'), DNS_ForwardZoneNonempty), (_('IP address'), IP_AddressList))
 	size = ('One', 'One')
 	min_elements = 1
 
 
 class dnsEntryReverse(complex):
 	description = _('DNS Entry Reverse')
-	subsyntaxes = ((_('DNS reverse zone'), DNS_ReverseZone), (_('IP address'), IP_AddressList))
+	subsyntaxes = ((_('DNS reverse zone'), DNS_ReverseZoneNonempty), (_('IP address'), IP_AddressList))
 	size = ('One', 'One')
 	min_elements = 1
 
