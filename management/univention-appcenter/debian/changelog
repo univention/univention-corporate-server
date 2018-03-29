@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-33) unstable; urgency=medium
+
+  * Bug #46752: Fix typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 29 Mar 2018 12:33:49 +0200
+
 univention-appcenter (7.0.1-32) unstable; urgency=medium
 
   * Bug #46752: Do not trace when setup script was not found
