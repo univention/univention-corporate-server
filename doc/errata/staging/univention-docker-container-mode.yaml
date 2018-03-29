@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-docker-container-mode
+fix: 3.0.0-2A~4.3.0.201803291104
+desc: |-
+  This update addresses the following issue(s):
+  * Appbox images refused to install unauthenticated packages even when a UCR
+    variable should have allowed it.
+bug: [46758]
