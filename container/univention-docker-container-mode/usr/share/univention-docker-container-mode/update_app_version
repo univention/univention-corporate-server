@@ -45,10 +45,19 @@ univention-app register "$APP_ARG" --component --do-it || die "Could not registe
 app_packages="$(univention-app get "$APP_ARG" default_packages --values-only --shell)"
 if [ -n "$app_packages" ]; then
 	if [ -n "$ERROR_FILE" ]; then
-		univention-install -y $app_packages 2>> "$ERROR_FILE"
+		if [ "$(ucr get update/secure_apt)" = "no" ]; then
+			univention-install -y --allow-unauthenticated $app_packages 2>> "$ERROR_FILE"
+		else
+			univention-install -y $app_packages 2>> "$ERROR_FILE"
+		fi
 	else
-		univention-install -y $app_packages
+		if [ "$(ucr get update/secure_apt)" = "no" ]; then
+			univention-install -y --allow-unauthenticated $app_packages
+		else
+			univention-install -y $app_packages
+		fi
 	fi
+
 	if [ "$?" -ne 0 ]; then
 		die "Could not install the app packages"
 	fi

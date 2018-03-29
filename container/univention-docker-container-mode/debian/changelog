@@ -1,3 +1,9 @@
+univention-docker-container-mode (3.0.0-2) unstable; urgency=medium
+
+  * Bug #46758: Install unauthenticated packages from test appcenter
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 29 Mar 2018 11:01:11 +0200
+
 univention-docker-container-mode (3.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
