@@ -73,13 +73,12 @@ class DockerActionMixin(object):
 				return False
 		return True
 
-	def _backup_container(self, app, backup_data=False, commit_image=True):
+	def _backup_container(self, app, remove=False):
 		docker = self._get_docker(app)
 		if docker.exists():
 			# New backup
 			image_repo = 'appcenter-backup-%s' % app.id
 			image_name = '%s:%d' % (image_repo, time.time())
-
 			if not Start.call(app=app):
 				self.fatal('Starting the container for %s failed' % app)
 				return False
@@ -89,32 +88,10 @@ class DockerActionMixin(object):
 			if not Stop.call(app=app):
 				self.fatal('Stopping the container for %s failed' % app)
 				return False
-
-			if backup_data == 'copy':
-				# not used atm
-				shutil.copytree(app.get_data_dir(), os.path.join(BACKUP_DIR, image_name, 'data'), symlinks=True)
-				shutil.copytree(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'), symlinks=True)
-			elif backup_data == 'move':
-				shutil.move(app.get_data_dir(), os.path.join(BACKUP_DIR, image_name, 'data'))
+			if remove:
 				shutil.move(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'))
-
-			# Cleanup old backups
-			max_number_of_backups = 1
-			backed_up_dirs = glob(os.path.join(BACKUP_DIR, image_repo + ':*'))
-			self.debug('Found dirs: %r' % backed_up_dirs)
-			for dirname in sorted(backed_up_dirs, reverse=True)[max_number_of_backups:]:
-				self.log('Removing backup %s' % dirname)
-				try:
-					shutil.rmtree(dirname)
-				except EnvironmentError as exc:
-					self.warn('Unable to remove backup directory: %s' % exc)
-					self.warn('Continuing anyway')
-				image = os.path.basename(dirname)
-				if rmi(image) != 0:
-					self.log('Unable to remove image %s' % image)
-					self.log('Probably never created')
 		else:
-			self.fatal('No container found. Unable to backup')
+			self.fatal('No container found. Unable to run store_data!')
 
 	def _execute_container_script(self, app, interface, args=None, credentials=True, output=False, cmd_args=None, cmd_kwargs=None):
 		cmd_args = cmd_args or []
