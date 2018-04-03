@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: univention-samba4
+fix: 6.0.11-1A~4.2.0.201804031120
+desc: |
+ This update addresses the following issue(s):
+ * Added a more detailed error message for the domain join (Bug #43223).
+bug: [43223]
