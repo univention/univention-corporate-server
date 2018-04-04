@@ -10,3 +10,5 @@ desc: |
    backup and slave systems from starting. The fix ensures that such
    schemas are handled correctly.
 bug: [46747]
+erratum: 10
+announced: 2018-04-04
