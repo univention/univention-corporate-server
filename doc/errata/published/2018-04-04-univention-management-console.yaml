@@ -10,3 +10,5 @@ desc: |
  * SAML sesion handling with ldap connections is improved and should not
    throw server tracebacks anymore.
 bug: [46319, 44621]
+erratum: 317
+announced: 2018-04-04
