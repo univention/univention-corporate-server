@@ -358,6 +358,8 @@ define([
 			}));
 		},
 
+		_switch_to_maintenance_page: function() {
+		},
 
 		// Switches to the progress view: all tabs but the 'update in progess' will disappear.
 		// Remembers the currently selected tab and will restore it when finished.
