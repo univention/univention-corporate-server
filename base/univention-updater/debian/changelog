@@ -72,6 +72,12 @@ univention-updater (13.0.1-42) unstable; urgency=medium
 
  -- Erik Damrose <damrose@univention.de>  Wed, 18 Apr 2018 17:50:45 +0200
 
+univention-updater (13.0.1-41) unstable; urgency=medium
+
+  * Bug #37223: Activate and deactivate univention-maintenance-mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 04 Apr 2018 17:54:05 +0200
+
 univention-updater (13.0.1-40) unstable; urgency=medium
 
   * Bug #46166: update dead links from sdb to documentation

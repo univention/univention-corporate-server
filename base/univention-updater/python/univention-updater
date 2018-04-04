@@ -584,6 +584,17 @@ def main():
     os.execv(sys.argv[0], sys.argv)
 
 
+def start_maintenance_mode():
+    returncode = subprocess.call(['service', 'univention-maintenance-mode', 'status'])
+    if returncode == 3:
+        returncode = subprocess.call(['service', 'univention-maintenance-mode', 'start'])
+        return returncode == 0
+
+
+def stop_maintenance_mode():
+    subprocess.call(['service', 'univention-maintenance-mode', 'stop'])
+
+
 if __name__ == '__main__':
     if '-h' in sys.argv or '-?' in sys.argv or '--help' in sys.argv:
         usage()
@@ -592,6 +603,7 @@ if __name__ == '__main__':
     do_ucr_update = True
 
     fd_log = open(LOGNAME, 'a+')
+    maintenance_mode = start_maintenance_mode()
     try:
         try:
             try:
@@ -663,6 +675,8 @@ if __name__ == '__main__':
             do_ucr_update = False
             raise
     finally:
+        if maintenance_mode:
+            stop_maintenance_mode()
         if do_ucr_update:
             update_ucr_updatestatus()
         fd_log.close()
