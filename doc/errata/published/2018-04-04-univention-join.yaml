@@ -8,3 +8,5 @@ desc: |-
   This update addresses the following issue(s):
   * The binddn of the DC Master Account is determined in a more robust way.
 bug: [36097]
+erratum: 11
+announced: 2018-04-04
