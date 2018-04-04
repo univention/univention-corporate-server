@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: firefox-esr
-fix: 52.7.2esr-1~deb8u1
+fix: 52.7.3esr-1~deb8u1
 desc: |
  This update addresses the following issues:
  * CVE-2018-5125: Memory safety bugs fixed in Firefox 59 and Firefox ESR 52.7
@@ -16,6 +16,8 @@ desc: |
  * CVE-2018-5145: Memory safety bugs fixed in Firefox ESR 52.7
  * CVE-2018-5146: Vorbis audio processing out of bounds write
  * CVE-2018-5147: Out of bounds memory write in libtremor
+ * CVE-2018-5148: Use-after-free in compositor potentially allows code
+   execution
 bug: [46689]
 cve:
 - CVE-2018-5127
@@ -27,3 +29,4 @@ cve:
 - CVE-2018-5145
 - CVE-2018-5146
 - CVE-2018-5147
+- CVE-2018-5148
