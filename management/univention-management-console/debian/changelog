@@ -1,3 +1,9 @@
+univention-management-console (10.0.4-8) unstable; urgency=medium
+
+  * Bug #45599: remove ucr variable
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 04 Apr 2018 10:25:37 +0200
+
 univention-management-console (10.0.4-7) unstable; urgency=medium
 
   * Bug #46742: Move univention privacy statement link to the

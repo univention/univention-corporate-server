@@ -55,6 +55,11 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 9.0.80-67; then
 	univention-config-registry set umc/http/content-security-policy/script-src="$(univention-config-registry get umc/http/content-security-policy/script-src | sed  's#https://www.piwik.univention.de/ ##g')"
 fi
 
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 10.0.4-5; then
+	univention-config-registry unset umc/http/content-security-policy/script-src
+fi
+
+
 # provide new settings
 univention-config-registry set \
 	umc/http/session/timeout?28800 \
