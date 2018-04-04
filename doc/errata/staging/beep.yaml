@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: beep
+fix: 1.3-4+deb9u1
+desc: |
+ This update addresses the following issue:
+ * beep, if setuid, has a race condition that allows local privilege
+   escalation. (CVE-2018-0492)
+bug: [46773]
+cve:
+- CVE-2018-0492
