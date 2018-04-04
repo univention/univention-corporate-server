@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [3]
+scope: ucs_4.2-0-errata4.2-3
+src: icu
+fix: 52.1-8+deb8u7
+desc: |
+ This update addresses the following issue:
+ * CVE-2017-15422: Fix Persian calendar integer overflow.
+bug: [46768]
+cve:
+- CVE-2017-15422
