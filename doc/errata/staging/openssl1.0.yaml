@@ -1,0 +1,16 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: openssl1.0
+fix: 1.0.2l-2+deb9u3
+desc: |
+ This update addresses the following issue:
+ * Constructed ASN.1 types with a recursive definition (such as can be found
+   in PKCS7) could eventually exceed the stack given malicious input with
+   excessive recursion. This could result in a Denial Of Service attack. There
+   are no such structures used within SSL/TLS that come from untrusted sources
+   so this is considered safe. (CVE-2018-0739)
+bug: [46776]
+cve:
+- CVE-2018-0739
