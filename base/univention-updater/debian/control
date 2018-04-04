@@ -45,6 +45,7 @@ Package: univention-management-console-module-updater
 Architecture: all
 Depends: ${misc:Depends},
  ${python:Depends},
+ univention-maintenance-mode,
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server,
  univention-updater (= ${source:Version}),
