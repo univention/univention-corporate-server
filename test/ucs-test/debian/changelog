@@ -1,3 +1,9 @@
+ucs-test (8.0.28-105) unstable; urgency=low
+
+  * Bug #45961: disable 70_check_kernel_module_signing_setting
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 05 Apr 2018 06:55:49 +0200
+
 ucs-test (8.0.28-104) unstable; urgency=medium
 
   * Bug #46665: Upgrade from 4.1-4 to 4.3-0 appbox
