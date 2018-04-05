@@ -274,6 +274,7 @@ prepare_docker_app () {
 	docker login -e invalid -u ucs -p readonly docker.software-univention.de
 	docker pull "$dockerimage"
 	local local_app_docker_image="$dockerimage"
+	local local_app_component_id=$(app_get_component $app)""
 	# appbox image
 	if ! appliance_app_has_external_docker_image $app; then
 			container_id=$(docker create "$dockerimage")
@@ -365,7 +366,7 @@ from univention.appcenter.log import log_to_logfile, log_to_stream
 
 log_to_stream()
 
-app=Apps().find('\$APP')
+app=Apps().find_by_component_id('$local_app_component_id')
 app.docker_image='${local_app_docker_image}'
 
 install = get_action('install')
