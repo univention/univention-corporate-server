@@ -205,6 +205,18 @@ prepare_package_app ()
 	local version="$(get_app_attr $app Version)"
 	local ucsversion="$(app_get_ini $app | awk -F / '{print $(NF-1)}')"
 	local install_cmd="$(univention-config-registry get update/commands/install)"
+	# register component
+	if ! app_has_no_repository $app; then
+		local name=$(get_app_attr $app Name)
+		local component=$(app_get_component $app)
+		local component_prefix="repository/online/component/"
+		ucr set ${component_prefix}${component}/description="$name" \
+			${component_prefix}${component}/localmirror=false \
+			${component_prefix}${component}/server="$(ucr get repository/app_center/server)" \
+			${component_prefix}${component}/unmaintained=disabled \
+			${component_prefix}${component}/version=current \
+			${component_prefix}${component}=enabled
+	fi
 	# Due to dovect: https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
 	for i in oxseforucs egroupware horde tine20 fortnox kolab-enterprise zarafa kopano-core kix2016; do
 		test "$i" = "$app" && close_fds=TRUE
@@ -468,39 +480,11 @@ exit 0
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/99_ensure_join_and_remove_password
 
-}
+	# TODO licence stuff
+	#if [ -e "/var/cache/univention-appcenter/${component}.LICENSE_AGREEMENT" ]; then
+	#	ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
+	#fi
 
-register_apps ()
-{
-	local main_app=$1
-
-	# No docker app: Add app components manually
-	for app in $main_app $(get_app_attr $main_app ApplianceAdditionalApps); do
-		if ! app_appliance_IsDockerApp $app; then
-			if app_has_no_repository $app; then
-				continue
-			fi
-			name=$(get_app_attr $app Name)
-			component=$(app_get_component $app)
-			component_prefix="repository/online/component/"
-			ucr set ${component_prefix}${component}/description="$name" \
-					${component_prefix}${component}/localmirror=false \
-					${component_prefix}${component}/server="$(ucr get repository/app_center/server)" \
-					${component_prefix}${component}/unmaintained=disabled \
-					${component_prefix}${component}/version=current \
-					${component_prefix}${component}=enabled
-			# TODO license stuff
-			#if [ -e "/var/cache/univention-appcenter/${component}.LICENSE_AGREEMENT" ]; then
-			#	ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
-			#fi
-		fi
-	done
-
-	ucr set repository/online/unmaintained='yes'
-	ucr set umc/web/appliance/id?${main_app}
-	univention-install -y univention-app-appliance
-	ucr set repository/online/unmaintained='no'
-	apt-get update
 }
 
 download_system_setup_packages ()
@@ -890,6 +874,12 @@ __EOF__
 appliance_basesettings ()
 {
 	local main_app=$1
+
+	ucr set repository/online/unmaintained='yes'
+	ucr set umc/web/appliance/id?${main_app}
+	univention-install -y univention-app-appliance
+	ucr set repository/online/unmaintained='no'
+	apt-get update
 	
 	/usr/sbin/univention-app-appliance --not-configure-portal $main_app
 	ucr set grub/title="Start $main_app"
