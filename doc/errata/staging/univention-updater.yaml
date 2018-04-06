@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [5]
+scope: ucs_4.1-0-errata4.1-5
+src: univention-updater
+fix: 11.0.14-2.1519.201804061016
+desc: |
+ This update addresses the following issue(s):
+ * UCS 4.1 is out of maintenance. With this update a
+   warning is shown on all UCS systems.
+bug: [46785]
