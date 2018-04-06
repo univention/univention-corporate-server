@@ -12,4 +12,8 @@ desc: |-
     display of the actual data.
   * DNS entries on Computers are no longer allowed to have an empty forward or
     reverse zone. Setting it empty led to tracebacks.
-bug: [45581, 44389]
+  * The App opsi does add system users during the installation. These do not
+    count against the license anymore.
+  * Every installation of a Docker Apps adds one machine account. These do not
+    count against the license anymore.
+bug: [45581, 44389, 46334, 41372]
