@@ -243,6 +243,18 @@ class ShortNameFormatter(logging.Formatter):
 		return super(ShortNameFormatter, self).format(record)
 
 
+def get_logfile_logger(name):
+	mylogger = logging.getLogger(name)
+	mylogger.handlers = list()
+	log_format = '%(process)6d %(short_name)-32s %(asctime)s [%(levelname)8s]: %(message)s'
+	log_format_time = '%y-%m-%d %H:%M:%S'
+	formatter = ShortNameFormatter(log_format, log_format_time)
+	handler = logging.FileHandler(LOG_FILE)
+	handler.setFormatter(formatter)
+	mylogger.addHandler(handler)
+	mylogger.setLevel(logging.DEBUG)
+	return mylogger
+
 def log_to_logfile():
 	'''Call this function to log to /var/log/univention/appcenter.log
 	Needs rights to write to it (i.e. should be root)

@@ -73,6 +73,7 @@ class InstallRemoveUpgrade(Register):
 		parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
 		parser.add_argument('--skip-checks', nargs='*', choices=[req.name for req in App._requirements if self.get_action_name() in req.actions], help=SUPPRESS)
 		parser.add_argument('--do-not-configure', action='store_false', dest='configure', help=SUPPRESS)
+		parser.add_argument('--do-not-update-certificates', action='store_false', dest='update_certificates', help=SUPPRESS)
 		parser.add_argument('--do-not-send-info', action='store_false', dest='send_info', help=SUPPRESS)
 		parser.add_argument('--dry-run', action='store_true', dest='dry_run', help='Perform only a dry-run. App state is not touched')
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the App')
@@ -298,6 +299,12 @@ class InstallRemoveUpgrade(Register):
 				value = setting.get_initial_value()
 			set_vars[setting.name] = value
 		return set_vars
+
+	def _update_certificates(self, app, args):
+		if not args.update_certificates:
+			return
+		uc = get_action('update-certificates')
+		uc.call(app=app)
 
 	def _configure(self, app, args, run_script=None):
 		if not args.configure:
