@@ -391,12 +391,9 @@ __EOF__
 	fi
 }
 
-prepare_apps ()
+register_app_components ()
 {
 	local main_app="$1"
-	local extra_packages=""
-	local counter=0
-	local packages=""
 
 	# register all non-docker components before package download
 	for app in $(get_app_attr $main_app ApplianceAdditionalApps) $main_app; do
@@ -416,6 +413,16 @@ prepare_apps ()
 		fi
 	done
 	apt-get update
+}
+
+prepare_apps ()
+{
+	local main_app="$1"
+	local extra_packages=""
+	local counter=0
+	local packages=""
+
+	register_app_components "$main_app"
 
 	for app in $(get_app_attr $main_app ApplianceAdditionalApps) $main_app; do
 		if app_appliance_IsDockerApp "$app"; then
@@ -717,6 +724,9 @@ __EOF__
 	echo "root:univention" | chpasswd
 	# We still need u-s-s-boot, so reinstall it
 	univention-install -y --force-yes --reinstall univention-system-setup-boot
+
+	register_app_components "$main_app"
+
 	# install apps
 	for app in $main_app $(get_app_attr $main_app ApplianceAdditionalApps); do
 		if ! app_appliance_IsDockerApp $app; then
