@@ -3,9 +3,41 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: openjdk-7
-fix: 7u151-2.6.11-2.A4.2.0.201712111344
+fix: 7u171-2.6.13-1~deb8u1A~4.2.0.201804061203
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * OpenJDK-7 was recompiled for UCS-4.2 to fix a package version conflict with
    UCS-4.1.
+ * CVE-2018-2579: unsynchronized access to encryption key data.
+ * CVE-2018-2588: LdapLoginModule insufficient username encoding in LDAP
+   query.
+ * CVE-2018-2599: DnsClient missing source port randomization.
+ * CVE-2018-2602: loading of classes from untrusted locations.
+ * CVE-2018-2603: DerValue unbounded memory allocation.
+ * CVE-2018-2618: insufficient strength of key agreement.
+ * CVE-2018-2629: GSS context use-after-free.
+ * CVE-2018-2633: LDAPCertStore insecure handling of LDAP referrals.
+ * CVE-2018-2634: use of global credentials for HTTP/SPNEGO.
+ * CVE-2018-2637: SingleEntryRegistry incorrect setup of deserialization
+   filter.
+ * CVE-2018-2641: GTK library loading use-after-free.
+ * CVE-2018-2663: ArrayBlockingQueue deserialization to an inconsistent state.
+ * CVE-2018-2677: unbounded memory allocation during deserialization.
+ * CVE-2018-2678: unbounded memory allocation in BasicAttributes
+   deserialization.
 bug: [46320]
+cve:
+- CVE-2018-2579
+- CVE-2018-2588
+- CVE-2018-2599
+- CVE-2018-2602
+- CVE-2018-2603
+- CVE-2018-2618
+- CVE-2018-2629
+- CVE-2018-2633
+- CVE-2018-2634
+- CVE-2018-2637
+- CVE-2018-2641
+- CVE-2018-2663
+- CVE-2018-2677
+- CVE-2018-2678
