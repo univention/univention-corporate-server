@@ -555,38 +555,6 @@ download_system_setup_packages ()
 	)
 }
 
-install_app_in_prejoined_setup ()
-{
-
-	local fastdemomode="unknown"
-	local main_app="$1"
-	local mode="$2"
-	if app_appliance_AllowPreconfiguredSetup "$main_app"; then
-		fastdemomode="yes"
-	fi
-	if [ "ignore" != "$mode" ]; then
-		fastdemomode="$mode"
-	fi
-	if [ "yes" != "$fastdemomode" ]; then
-		return 0
-	fi
-	for app in $main_app $(get_app_attr $main_app ApplianceAdditionalApps); do
-		if ! app_appliance_IsDockerApp $app; then
-			# Only for non docker apps
-			eval "$(ucr shell update/commands/install)"
-			export DEBIAN_FRONTEND=noninteractive
-			local packages="$(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
-			if [ -n "$packages" ]; then
-				$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages
-			fi
-			univention-run-join-scripts
-		fi
-		local version="$(get_app_attr $app Version)"	
-		local ucsversion="$(app_get_ini $app | awk -F / '{print $(NF-1)}')"
-		univention-app register --do-it ${ucsversion}/${app}=${version}
-	done
-}
-
 appliance_preinstall_common_role ()
 {
 	DEBIAN_FRONTEND=noninteractive univention-install -y univention-role-common
@@ -712,64 +680,68 @@ setup_pre_joined_environment ()
 	# $1 = appid
 	# $2 = domainname / derived ldapbase
 	# $3 = fastdemomode ?
+	local main_app="$1"
+	local domainname="$2"
+	local mode="$3"
 	local fastdemomode="unknown"
-	local mode=$3
-	if app_appliance_AllowPreconfiguredSetup $1; then
+	local ldapbase="dc=${domainname//./,dc=}" # VERY simple ldap base derivation test.domain => dc=test,dc=domain
+	if app_appliance_AllowPreconfiguredSetup $main_app; then
 			fastdemomode="yes"
 	fi
 	if [ "ignore" != "$mode" ]; then
 			fastdemomode="$mode"
 			ucr set --force umc/web/appliance/fast_setup_mode="$fastdemomode"
 	fi
-	if [ "yes" = "$fastdemomode" ]; then
-		[ -z "${2}" ] && set -- "$1" "ucs.example"
-		local domainname="${2}"
-		local ldapbase="dc=${domainname//./,dc=}" # VERY simple ldap base derivation test.domain => dc=test,dc=domain
-		cat >/var/cache/univention-system-setup/profile <<__EOF__
+	if [ "yes" != "$fastdemomode" ]; then
+		ucr set umc/web/appliance/fast_setup_mode=false
+		echo "No prejoined environment configured (ApplianceAllowPreconfiguredSetup)"
+		return 0
+	fi
+	cat >/var/cache/univention-system-setup/profile <<__EOF__
 hostname="master"
 domainname="${domainname}"
 server/role="domaincontroller_master"
 locale="en_US.UTF-8:UTF-8 de_DE.UTF-8:UTF-8"
-interfaces/eth0/type="static"
 timezone="Europe/Berlin"
-gateway="10.203.0.1"
 ssl/organizationalunit="Univention Corporate Server"
 windows/domain="UCS"
 packages_install=""
-interfaces/eth0/start="true"
 ad/member="False"
 xorg/keyboard/options/XkbLayout="en"
-interfaces/primary="eth0"
-interfaces/eth0/broadcast="10.203.255.255"
 packages_remove=""
 ssl/organization="EN"
 root_password="$appliance_default_password"
 ssl/email="ssl@${domainname}"
 ldap/base="${ldapbase}"
 locale/default="en_US.UTF-8:UTF-8"
-nameserver1="192.168.0.3"
 ssl/state="EN"
-interfaces/eth0/ipv6/acceptRA="false"
 ssl/locality="EN"
-interfaces/eth0/netmask="255.255.0.0"
-interfaces/eth0/network="10.203.0.0"
 update/system/after/setup="True"
 components=""
-interfaces/eth0/address="10.203.10.40"
 __EOF__
-		ucr set umc/web/appliance/fast_setup_mode=true
-		# may have been set to false if u-s-s has been removed
-		ucr set system/setup/boot/start=true
-		/usr/lib/univention-system-setup/scripts/setup-join.sh 2>&1 | tee /var/log/univention/setup.log
-		echo "root:univention" | chpasswd
-		# set same address as in the profile, otherwise the ldap will not be updated
-		ucr set system/setup/boot/old_ipv4=10.203.10.40
-		# We still need u-s-s-boot, so reinstall it
-		univention-install -y --force-yes --reinstall univention-system-setup-boot
-	else
-		ucr set umc/web/appliance/fast_setup_mode=false
-		echo "No prejoined environment configured (ApplianceAllowPreconfiguredSetup)"
-	fi
+	ucr set umc/web/appliance/fast_setup_mode=true
+	# may have been set to false if u-s-s has been removed
+	ucr set system/setup/boot/start=true
+	/usr/lib/univention-system-setup/scripts/setup-join.sh 2>&1 | tee /var/log/univention/setup.log
+	echo "root:univention" | chpasswd
+	# We still need u-s-s-boot, so reinstall it
+	univention-install -y --force-yes --reinstall univention-system-setup-boot
+	# install apps
+	for app in $main_app $(get_app_attr $main_app ApplianceAdditionalApps); do
+		if ! app_appliance_IsDockerApp $app; then
+			# Only for non docker apps
+			eval "$(ucr shell update/commands/install)"
+			export DEBIAN_FRONTEND=noninteractive
+			local packages="$(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster)"
+			if [ -n "$packages" ]; then
+				$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages
+			fi
+			univention-run-join-scripts
+		fi
+		local version="$(get_app_attr $app Version)"
+		local ucsversion="$(app_get_ini $app | awk -F / '{print $(NF-1)}')"
+		univention-app register --do-it ${ucsversion}/${app}=${version}
+	done
 }
 
 setup_appliance ()
