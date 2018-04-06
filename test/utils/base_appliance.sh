@@ -205,19 +205,6 @@ prepare_package_app ()
 	local version="$(get_app_attr $app Version)"
 	local ucsversion="$(app_get_ini $app | awk -F / '{print $(NF-1)}')"
 	local install_cmd="$(univention-config-registry get update/commands/install)"
-	# register component
-	if ! app_has_no_repository $app; then
-		local name=$(get_app_attr $app Name)
-		local component=$(app_get_component $app)
-		local component_prefix="repository/online/component/"
-		ucr set ${component_prefix}${component}/description="$name" \
-			${component_prefix}${component}/localmirror=false \
-			${component_prefix}${component}/server="$(ucr get repository/app_center/server)" \
-			${component_prefix}${component}/unmaintained=disabled \
-			${component_prefix}${component}/version=current \
-			${component_prefix}${component}=enabled
-		apt-get update
-	fi
 	# Due to dovect: https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
 	for i in oxseforucs egroupware horde tine20 fortnox kolab-enterprise zarafa kopano-core kix2016; do
 		test "$i" = "$app" && close_fds=TRUE
@@ -410,6 +397,25 @@ prepare_apps ()
 	local extra_packages=""
 	local counter=0
 	local packages=""
+
+	# register all non-docker components before package download
+	for app in $(get_app_attr $main_app ApplianceAdditionalApps) $main_app; do
+		if ! app_appliance_IsDockerApp $app; then
+			if app_has_no_repository $app; then
+				continue
+			fi
+			local name=$(get_app_attr $app Name)
+			local component=$(app_get_component $app)
+			local component_prefix="repository/online/component/"
+			ucr set ${component_prefix}${component}/description="$name" \
+				${component_prefix}${component}/localmirror=false \
+				${component_prefix}${component}/server="$(ucr get repository/app_center/server)" \
+				${component_prefix}${component}/unmaintained=disabled \
+				${component_prefix}${component}/version=current \
+				${component_prefix}${component}=enabled
+		fi
+	done
+	apt-get update
 
 	for app in $(get_app_attr $main_app ApplianceAdditionalApps) $main_app; do
 		if app_appliance_IsDockerApp "$app"; then
