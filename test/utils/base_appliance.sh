@@ -216,6 +216,7 @@ prepare_package_app ()
 			${component_prefix}${component}/unmaintained=disabled \
 			${component_prefix}${component}/version=current \
 			${component_prefix}${component}=enabled
+		apt-get update
 	fi
 	# Due to dovect: https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
 	for i in oxseforucs egroupware horde tine20 fortnox kolab-enterprise zarafa kopano-core kix2016; do
