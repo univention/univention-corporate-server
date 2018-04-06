@@ -1,3 +1,9 @@
+univention-updater (11.0.14-2) unstable; urgency=medium
+
+  * Bug #46785: Show maintenance information for every system
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 06 Apr 2018 10:13:55 +0200
+
 univention-updater (11.0.14-1) unstable; urgency=medium
 
   * Bug #45745: Adapt updater message for 4.1-5 errata
