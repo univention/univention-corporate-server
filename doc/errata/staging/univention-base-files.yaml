@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-base-files
-fix: 7.0.0-11A~4.3.0.201803271335
+fix: 7.0.0-12A~4.3.0.201804091142
 desc: |
  This update addresses the following issue:
  * Fix the template for the UCR variable update/secure_apt
