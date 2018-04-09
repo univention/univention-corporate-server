@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-s4-connector
+fix: 12.0.2-9A~4.3.0.201804091546
+desc: |
+ This update addresses the following issue(s):
+ * connector-tracebacks.log is not written any longer (Bug #46798)
+bug: [46798]
