@@ -9,3 +9,5 @@ desc: |
  * UCS 4.1 is out of maintenance. With this update a
    warning is shown on all UCS systems.
 bug: [46785]
+erratum: 502
+announced: 2018-04-09
