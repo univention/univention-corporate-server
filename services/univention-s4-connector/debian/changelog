@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.8-19) unstable; urgency=medium
+
+  * Bug #38140: connector-tracebacks.log is not written any longer
+
+ -- Arvid Requate <requate@univention.de>  Mon, 09 Apr 2018 15:30:42 +0200
+
 univention-s4-connector (11.0.8-18) unstable; urgency=medium
 
   * Bug #46301: Avoid segfault on krb5Key with unsupported
