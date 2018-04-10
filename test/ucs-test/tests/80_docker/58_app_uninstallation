@@ -50,12 +50,11 @@ echo "Test 123 Conf" >/var/lib/univention-appcenter/apps/%(app_name)s/conf/test1
 			app.uninstall()
 			app.remove()
 
-		fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/data/test123' % app.app_name)
+		#fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/data/test123' % app.app_name)
 		fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/conf/test123' % app.app_name)
 		fail_if_file_exists('/var/lib/univention-appcenter/apps/%s/conf/base.conf' % app.app_name)
 
 		found_conf = False
-		found_data = False
 		backup_dir = '/var/lib/univention-appcenter/backups/'
 		for d in os.listdir(backup_dir):
 			if d.startswith('appcenter-backup-%s:' % app.app_name):
@@ -65,16 +64,8 @@ echo "Test 123 Conf" >/var/lib/univention-appcenter/apps/%(app_name)s/conf/test1
 					res = f.readlines()
 					if res == ['Test 123 Conf\n']:
 						found_conf = True
-				datafile = os.path.join(backup_dir, d, 'data', 'test123')
-				if os.path.exists(datafile):
-					f = open(datafile)
-					res = f.readlines()
-					if res == ['Test 123 Data\n']:
-						found_data = True
 		if not found_conf:
 			fail('Conf backup file not found')
-		if not found_data:
-			fail('Data backup file not found')
 
 		lo = get_ldap_connection()
 		res = lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app.app_name[:5])

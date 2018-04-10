@@ -13,24 +13,22 @@ from univention.config_registry import ConfigRegistry
 if __name__ == '__main__':
 
 	with Appcenter() as appcenter:
-		appcenter.add_ucs_version_to_appcenter('4.0')
-
 		app_name = get_app_name()
 		package_name = get_app_name()
 
-		# The UCS 4.0-3 image needs a 4.0-3 App Center
 		app = App(name=app_name, version='1', package_name=package_name)
-		app.ucs_version = '4.0'
+		app.ucs_version = '4.1'
 		app.add_to_local_appcenter()
 		app_directory_suffix = app.app_directory_suffix
 
 		# Since we are installing on a 4.1, a 4.1 ini entry is needed
 		app = App(name=app_name, version='1', container_version='4.1', package_name=package_name, build_package=False)
 		app.set_ini_parameter(
-			DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.0-3',
+			DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-4',
 			WebInterface='/%s' % app_name,
 			WebInterfacePortHTTP='80',
 			WebInterfacePortHTTPS='443',
+			SupportedUCSVersions='4.1-0, 4.2-0, 4.3-0',
 			AutoModProxy='True',
 			DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
 			DockerScriptStoreData='/usr/share/univention-appcenter/app/%s/store_data' % app_name,
@@ -63,13 +61,14 @@ if __name__ == '__main__':
 			ucr_test = app.execute_command_in_container('ucr get test1')
 
 			# app = App(name=app_name, version='2', package_name=package_name, app_directory_suffix=app_directory_suffix)
-			app = App(name=app_name, version='2', container_version='4.1', package_name=package_name)
+			app = App(name=app_name, version='2', container_version='4.3', package_name=package_name)
 			app.set_ini_parameter(
 				DockerImage=get_docker_appbox_image(),
 				WebInterface='/%s' % app_name,
 				WebInterfacePortHTTP='80',
 				WebInterfacePortHTTPS='443',
 				AutoModProxy='True',
+				SupportedUCSVersions='4.1-0, 4.2-0, 4.3-0',
 				DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
 				## For debugging and testing of store_data and restore_data
 				# DockerScriptStoreData='/usr/share/univention-appcenter/app/%s/store_data' % app_name,
@@ -104,10 +103,10 @@ if __name__ == '__main__':
 
 			if machine_secret != machine_secret_new:
 				fail('machine.secret has been changed')
-			if version_version.strip() != '4.0':
-				fail('old container was not 4.0')
-			if version_version_new.strip() != '4.1':
-				fail('new container was not 4.1')
+			if version_version.strip() != '4.1':
+				fail('old container was not 4.1')
+			if version_version_new.strip() != '4.3':
+				fail('new container was not 4.3')
 			if ucr_test != ucr_test_new:
 				fail('UCR variable test1 differes')
 			if test_secret != test_secret_new:
