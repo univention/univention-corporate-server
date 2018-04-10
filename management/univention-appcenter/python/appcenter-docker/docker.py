@@ -324,6 +324,7 @@ class Docker(object):
 			if os.path.exists(self.app.get_cache_file('env')):
 				with open(self.app.get_cache_file('env'), 'r') as infile:
 					outfile.write(ucr_run_filter(infile.read()))
+					outfile.write('\n')
 			# env variables from appcenter
 			for key, value in env.iteritems():
 				outfile.write('%s=%s\n' % (shell_safe(key), value))

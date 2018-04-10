@@ -107,13 +107,13 @@ class Domain(CredentialsAction):
 				ret.append(None)
 			else:
 				app_dict = get.to_dict(app)
-				app_dict['installations'] = self._get_installations(app, hosts, app_ldap_objects, lo, pos)
+				app_dict['installations'] = self._get_installations(app, hosts, app_ldap_objects)
 				app_dict['is_installed_anywhere'] = any(inst['version'] for inst in app_dict['installations'].itervalues())
 				app_dict['fully_loaded'] = True
 				ret.append(app_dict)
 		return ret
 
-	def _get_installations(self, app, hosts, app_ldap_objects, lo, pos):
+	def _get_installations(self, app, hosts, app_ldap_objects):
 		ret = {}
 		local_ucs_version = ucr_get('version/version')
 		for host in hosts:
