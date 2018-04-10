@@ -9,6 +9,6 @@ desc: |-
   * A text referring to the activation of UCS has been updated.
   * When the meta data of an App pointed to a setup script but it was missing,
     an error occurred. This has been fixed.
-  * The data directory is no longer moved to the backup dirctory during the
-    deinstallation of an app.
+  * The data directory is no longer moved to the backup directory during the
+    uninstallation of an App.
 bug: [46742, 46752, 45670]
