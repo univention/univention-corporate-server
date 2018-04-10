@@ -54,7 +54,7 @@ class UCSInstallation(object):
 
 	def installer(self):
 		# language
-		self.client.waitForText('Select a language', timeout=self.timeout)
+		self.client.waitForText('Select a language', timeout=self.timeout, prevent_screen_saver=True)
 		self.client.enterText(self._['english_language_name'])
 		self.click('Continue')
 		self.client.waitForText(self._['select_location'], timeout=self.timeout)
