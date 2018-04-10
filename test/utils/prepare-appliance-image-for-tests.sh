@@ -51,6 +51,7 @@ _ssh "APP='$APP_ID' envsubst <'$xml_template' >'$kvm_xml'"
 _ssh "guestfish add $kvm_template  : run : mount /dev/mapper/vg_ucs-root / : \
 	command 'ucr unset --force auth/sshd/user/root' : \
 	command 'ucr set umc/module/debug/level=4 umc/server/debug/level=4' : \
+	command 'ucr set interfaces/eth1/type=dhcp' : \
 	mkdir-p /root/.ssh/ : \
 	write /root/.ssh/authorized_keys 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKxi4dwmF9K7gV4JbQUmQ4ufRHcxYOYUHWoIRuj8jLmP1hMOqEmZ43rSRoe2E3xTNg+RAjwkX1GQmWQzzjRIYRpUfwLo+yEXtER1DCDTupLPAT5ulL6uPd5mK965vbE46g50LHRyTGZTbsh1A/NPD7+LNBvgm5dTo/KtMlvJHWDN0u4Fwix2uQfvCSOpF1n0tDh0b+rr01orITJcjuezIbZsArTszA+VVJpoMyvu/I3VQVDSoHB+7bKTPwPQz6OehBrFNZIp4zl18eAXafDoutTXSOUyiXcrViuKukRmvPAaO8u3+r+OAO82xUSQZgIWQgtsja8vsiQHtN+EtR8mIn tech'"
 
