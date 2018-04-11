@@ -309,9 +309,13 @@ define([
 					}, this);
 				}));
 
-				if (this.operation === 'add') {  // don't show when copying objects
-					// var objecttype = vals.$labelObjectType$;
-					var path = tools.ldapDn2Path( this.ldapName, this.ldapBase);
+				// show type and position of the object
+				if (this.operation !== 'add') {
+					var ldapName = this.ldapName
+					if (this.operation === 'copy') {
+						ldapName = lang.replace('{0},{1}', [tools.explodeDn(this.ldapName)[0], this.newObjectOptions.container]);
+					}
+					var path = tools.ldapDn2Path(ldapName, this.ldapBase);
 					var objecttype = _('Type: <i>%(type)s</i>', { type: vals.$labelObjectType$ });
 					var position = _('Position: <i>%(path)s</i>', { path: path });
 					var position_text = lang.replace('{0}<br>{1}', [objecttype, position]);
@@ -321,6 +325,7 @@ define([
 						}
 					}));
 				}
+
 				return this._form.ready();
 			}));
 		},
