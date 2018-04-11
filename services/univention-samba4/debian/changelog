@@ -1,3 +1,9 @@
+univention-samba4 (7.0.2-10) unstable; urgency=medium
+
+  * Bug #46809: Adjust firewall to Samba 4.7 dynamic port range
+
+ -- Arvid Requate <requate@univention.de>  Wed, 11 Apr 2018 19:13:03 +0200
+
 univention-samba4 (7.0.2-9) unstable; urgency=medium
 
   * Bug #43223: more detailed error message for the domain join

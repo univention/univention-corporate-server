@@ -208,8 +208,8 @@ ucr set security/packetfilter/package/univention-samba4/tcp/389/all="ACCEPT" \
 		security/packetfilter/package/univention-samba4/tcp/3268/all/en="LDAP GC (Samba)" \
 		security/packetfilter/package/univention-samba4/tcp/3269/all="ACCEPT" \
 		security/packetfilter/package/univention-samba4/tcp/3269/all/en="LDAP GC SSL (Samba)" \
-		security/packetfilter/package/univention-samba4/tcp/49152/all="ACCEPT" \
-		security/packetfilter/package/univention-samba4/tcp/49152/all/en="Dynamic RPC Ports (Samba)" \
+		security/packetfilter/package/univention-samba4/tcp/49152:65535/all="ACCEPT" \
+		security/packetfilter/package/univention-samba4/tcp/49152:65535/all/en="Dynamic RPC Ports (Samba)" \
 		security/packetfilter/package/univention-samba4/tcp/88/all="ACCEPT" \
 		security/packetfilter/package/univention-samba4/tcp/88/all/en="Kerberos" \
 		security/packetfilter/package/univention-samba4/udp/88/all="ACCEPT" \
@@ -220,6 +220,15 @@ ucr set security/packetfilter/package/univention-samba4/tcp/389/all="ACCEPT" \
 		security/packetfilter/package/univention-samba4/udp/464/all/en="Kerberos change/set password" \
 		security/packetfilter/package/univention-samba4/tcp/749/all="ACCEPT" \
 		security/packetfilter/package/univention-samba4/tcp/749/all/en="Kerberos admin"
+
+if [ "$1" = "configure" ]; then
+	if dpkg --compare-versions "$2" lt-nl "7.0.2-10"; then
+		ucr unset \
+			security/packetfilter/package/univention-samba4/tcp/49152/all \
+			security/packetfilter/package/univention-samba4/tcp/49152/all/en
+	fi
+fi
+
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 divert_univention_heimdal_service_cfg() {
