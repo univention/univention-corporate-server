@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-samba4
+fix: 7.0.2-10A~4.3.0.201804111913
+desc: |
+ This update addresses the following issue(s):
+ * Adjust firewall to Samba 4.7 dynamic port range (Bug #46809)
+bug: [46809]
