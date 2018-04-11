@@ -1,3 +1,9 @@
+univention-server-overview (1.0.0-3) unstable; urgency=medium
+
+  * Bug #45423: Add CSP to server-overview site
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 11 Apr 2018 18:30:08 +0200
+
 univention-server-overview (1.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version

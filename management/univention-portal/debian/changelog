@@ -1,3 +1,9 @@
+univention-portal (2.0.1-2) unstable; urgency=medium
+
+  * Bug #45423: Add CSP to portal site
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 11 Apr 2018 18:29:04 +0200
+
 univention-portal (2.0.1-1) unstable; urgency=medium
 
   * Use nc -z instead of nc -w 10 to check the LDAP server (Bug #45129)
