@@ -49,5 +49,11 @@ check_gen_crl () {
 }
 check_gen_crl || rv=$?
 
+if [ "$(ucr get server/role)" = domaincontroller_master ]; then
+	if ! is_ucr_false ssl/update/expired; then
+		univention-certificate update-expired
+	fi
+fi
+
 [ 0 -eq $rv ] || cat "$tmp"
 exit $rv

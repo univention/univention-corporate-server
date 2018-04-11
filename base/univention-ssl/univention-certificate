@@ -46,7 +46,9 @@ usage () {
 	echo "        check"
 	echo "        dump"
 	echo "        list"
+	echo "        list-all (list all, including revoked and expired)"
 	echo "        sign"
+	echo "        update-expired (updates db for expired certificates)"
 	echo ""
 	echo "Options:"
 	echo "        -name <name>"
@@ -89,6 +91,8 @@ do
 	renew) command="$1" ;;
 	check) command="$1" ;;
 	list) command="$1" ;;
+	list-all) command="list_all" ;;
+	update-expired) command="update_expired" ;;
 	dump) command="$1" ;;
 	sign) command="$1" ;;
 	-name|--name) name="${2:?Missing argument to -name}" ; shift ;;
@@ -104,7 +108,8 @@ done
 case "$command" in
 new|revoke|renew|check|dump) : ${name:?Missing argument '-name'} ;;
 sign) : ${request:?Missing argument '-request'} ;;
-list) ;;
+list|list_all|update_expired) ;;
+*) usage "Unknown command: '$1'" >&2 ;;
 esac
 
 . "${MAKE_CERTIFICATES_SH_INCLUDE:=/usr/share/univention-ssl/make-certificates.sh}"
@@ -159,6 +164,18 @@ list () {
 		run_only backup shared
 		echo "List all certificates"
 		list_cert_names
+}
+
+list_all () {
+		run_only backup shared
+		echo "List all certificates (including revoked and expired certificates)"
+		list_cert_names_all
+}
+
+update_expired () {
+		run_only master exclusive
+		echo "Updating db for expired certificates"
+		update_db
 }
 
 dump () {

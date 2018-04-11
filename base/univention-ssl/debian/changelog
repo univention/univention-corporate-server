@@ -1,3 +1,9 @@
+univention-ssl (12.0.0-3) unstable; urgency=medium
+
+  * Bug #45472: handle expired certificates
+
+ -- Felix Botner <botner@univention.de>  Wed, 11 Apr 2018 17:02:58 +0200
+
 univention-ssl (12.0.0-2) unstable; urgency=medium
 
   * Bug #46203: Fix file permissions after certificate renewal

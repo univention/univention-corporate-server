@@ -64,6 +64,12 @@ Description[en]=If this option is activated, the validity of the SSL certificate
 Type=bool
 Categories=system-ssl
 
+[ssl/update/expired]
+Description[de]=Ist diese Option aktiviert, werden durch einen täglichen Cron-Job abgelaufene SSL-Zertifikate markiert.
+Description[en]=If this option is activated, expired SSL certificates ark marked.
+Type=bool
+Categories=system-ssl
+
 [ssl/validity/host]
 Description[de]=Diese Variable speichert die Gültigkeitsdauer des Rechner-Zertifikats in Tagen seit dem 1. Januar 1970. Dieser Wert wird automatisch generiert und sollte nicht geändert werden.
 Description[en]=This variable stores the validity length of the host certificate in days since the 1st of January 1970. This value is generated automatically and should not be modified.

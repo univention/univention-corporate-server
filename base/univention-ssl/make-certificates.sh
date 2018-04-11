@@ -328,6 +328,23 @@ list_cert_names () {
 	}' <"${SSLBASE}/${CA}/index.txt"
 }
 
+list_cert_names_all () {
+	awk -F '\t' '
+	{
+		split ( $6, X, "/" );
+		for ( i=2; X[i] != ""; i++ ) {
+			if ( X[i] ~ /^CN=/ ) {
+				split ( X[i], Y, "=" );
+				print $4 "\t" Y[2] " (" $1 ")";
+			}
+		}
+	}' <"${SSLBASE}/${CA}/index.txt"
+}
+
+update_db () {
+	openssl ca -updatedb -config "${SSLBASE}/openssl.cnf" -passin "file:${SSLBASE}/password"
+}
+
 has_valid_cert () { # returns 0 if yes, 1 if not found, 2 if revoked, 3 if expired
 	local cn="${1:?Missing argument: common name}"
 
@@ -341,6 +358,27 @@ has_valid_cert () { # returns 0 if yes, 1 if not found, 2 if revoked, 3 if expir
 				if ( name == Y[2] ) {
 					seq = $4;
 					ret = ( $1 != "R" ) ? ( $1 == "V" && $2 >= now ? 0 : 3 ) : 2;
+				}
+			}
+		}
+	}
+	END { print seq; exit ret; }' <"${SSLBASE}/${CA}/index.txt"
+}
+
+has_cert () { # returns 0 if cert exists and is not revoked, 1 if not found or revoked
+	local cn="${1:?Missing argument: common name}"
+	awk -F '\t' -v name="$cn" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
+	BEGIN { ret=1; seq=""; }
+	{
+		if ( $1 != "R" ) {
+			split ( $6, X, "/" );
+			for ( i=2; X[i] != ""; i++ ) {
+				if ( X[i] ~ /^CN=/ ) {
+					split ( X[i], Y, "=" );
+					if ( name == Y[2] ) {
+						seq = $4;
+						ret = 0;
+					}
 				}
 			}
 		}
@@ -368,7 +406,7 @@ revoke_cert () {
 	local cn NUM
 	[ ${#fqdn} -gt 64 ] && cn="${fqdn%%.*}" || cn="$fqdn"
 
-	if ! NUM="$(has_valid_cert "$cn")"
+	if ! NUM="$(has_cert "$cn")"
 	then
 		echo "no certificate for $1 registered" >&2
 		return 2

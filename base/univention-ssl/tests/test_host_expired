@@ -1,0 +1,28 @@
+#!/bin/bash
+set -e -u
+. ${0%/*}/common.sh
+
+init
+
+# renew with updatedb before renew
+name="cert1"
+id="01"
+faketime 'last week' univention-certificate new -name "$name" -days 1
+univention-certificate list | grep $name
+univention-certificate update-expired
+univention-certificate list | grep $name && exit 1
+univention-certificate list-all | grep "$id.*$name.*(E)"
+univention-certificate renew -name "$name" -days 1000
+univention-certificate list | grep $name
+univention-certificate list-all | grep "$id.*$name.*(R)"
+
+# renew without updatedb
+name="cert2"
+id="03"
+faketime 'last week' univention-certificate new -name "$name" -days 1
+univention-certificate list | grep $name
+univention-certificate renew -name "$name" -days 1000
+univention-certificate list | grep $name
+univention-certificate list-all | grep "$id.*$name.*(R)"
+
+:
