@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * connector-tracebacks.log is not written any longer (Bug #46798)
 bug: [46798]
+erratum: 12
+announced: 2018-04-11
