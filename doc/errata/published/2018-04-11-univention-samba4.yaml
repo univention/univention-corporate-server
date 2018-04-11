@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Added a more detailed error message for the domain join (Bug #46762).
 bug: [46762]
+erratum: 323
+announced: 2018-04-11
