@@ -14,3 +14,4 @@
 0010-2: tests/test_role
 0010-2: tests/test_defaults
 0010-2: tests/test_sign_req
+0010-2: tests/test_host_expired
