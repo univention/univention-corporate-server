@@ -1,3 +1,10 @@
+ucs-test (8.0.28-106) unstable; urgency=medium
+
+  * Bug #46171: enable 86_selenium/10_product_test_password_change
+    and remove samba password complexity for the test
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 12 Apr 2018 13:10:47 +0200
+
 ucs-test (8.0.28-105) unstable; urgency=low
 
   * Bug #45961: disable 70_check_kernel_module_signing_setting
