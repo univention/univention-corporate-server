@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 """
-Univention Updater: UCR Release version
+Univention Updater: UCS Release version
 """
 # Copyright 2008-2018 Univention GmbH
 #
@@ -34,8 +34,9 @@ import re
 
 
 class UCS_Version(object):
-
-    '''Version object consisting of major-, minor-number and patch-level'''
+    """
+    Version object consisting of major-, minor-number and patch-level
+    """
 
     FORMAT = '%(major)d.%(minor)d'
     FULLFORMAT = '%(major)d.%(minor)d-%(patchlevel)d'
@@ -43,9 +44,13 @@ class UCS_Version(object):
     _regexp = re.compile('(?P<major>[0-9]+)\.(?P<minor>[0-9]+)-(?P<patch>[0-9]+)')
 
     def __init__(self, version):
-        '''
+        """
         version must a string matching the pattern X.Y-Z or a triple
         with major, minor and patchlevel.
+
+        :param version: A UCS release version.
+        :type version: list(int) or tuple(int) or str or UCS_Version
+        :raises TypeError: if the version cannot be parsed.
 
         >>> v = UCS_Version((2,3,1))
         >>> UCS_Version([2,3,1]) == v
@@ -56,7 +61,7 @@ class UCS_Version(object):
         True
         >>> UCS_Version(v) == v
         True
-        '''
+        """
         if isinstance(version, basestring):
             self.set(version)
         elif isinstance(version, UCS_Version):
@@ -68,6 +73,9 @@ class UCS_Version(object):
 
     @property
     def mmp(self):
+        """
+        3-tuple (major, minor, patch-level) version
+        """
         return (self.major, self.minor, self.patchlevel)
 
     @mmp.setter
@@ -75,7 +83,7 @@ class UCS_Version(object):
         (self.major, self.minor, self.patchlevel) = mmp
 
     def __cmp__(self, right):
-        '''
+        """
         Compare to UCS versions. The method returns 0 if the versions
         are equal, <0 if the left is less than the right and >0 of the
         left is greater than the right.
@@ -84,27 +92,33 @@ class UCS_Version(object):
         True
         >>> UCS_Version((1, 10, 0)) < UCS_Version((1, 2, 0))
         False
-        '''
+        """
         return cmp(self.mmp, right.mmp)
 
     def set(self, version):
-        '''Parse string and set version.'''
+        """
+        Parse string and set version.
+
+        :param str UCS release version.
+        """
         match = UCS_Version._regexp.match(version)
         if not match:
             raise ValueError('string does not match UCS version pattern')
         self.mmp = map(int, match.groups())
 
     def __getitem__(self, k):
-        '''Dual natured dictionary: retrieve value from attribute.'''
+        """
+        Dual natured dictionary: retrieve value from attribute.
+        """
         return self.__dict__[k]
 
     def __str__(self):
-        '''
+        """
         Return full version string.
 
         >>> str(UCS_Version((1,2,3)))
         '1.2-3'
-        '''
+        """
         return UCS_Version.FULLFORMAT % self
 
     def __hash__(self):
@@ -114,12 +128,12 @@ class UCS_Version(object):
         return self.mmp == other.mmp
 
     def __repr__(self):
-        '''
+        """
         Return canonical string representation.
 
         >>> UCS_Version((1,2,3))
         UCS_Version((1,2,3))
-        '''
+        """
         return 'UCS_Version((%d,%d,%r))' % self.mmp
 
 

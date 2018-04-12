@@ -1,9 +1,8 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Updater
-"""Python tools for updater and repository maintenance."""
-#
+"""
+Python tools for updater and repository maintenance.
+"""
 # Copyright 2009-2018 Univention GmbH
 #
 # http://www.univention.de/

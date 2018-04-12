@@ -33,13 +33,15 @@
 
 
 class UpdaterException(Exception):
-
-    """The root of all updater excptions."""
+    """
+    The root of all updater exceptions.
+    """
 
 
 class RequiredComponentError(UpdaterException):
-
-    """Signal required component not available."""
+    """
+    Signal required component not available.
+    """
 
     def __init__(self, version, components):
         self.version = version
@@ -60,42 +62,47 @@ class RequiredComponentError(UpdaterException):
 
 
 class PreconditionError(UpdaterException):
-
     """
     Signal abort by release or component pre-/post-update script.
-    args=(phase=preup|postup, order=pre|main|post, component, script-filename)."""
+
+    args=(phase=preup|postup, order=pre|main|post, component, script-filename).
+    """
 
     def __init__(self, phase, order, component, script):
         Exception.__init__(self, phase, order, component, script)
 
 
 class DownloadError(UpdaterException):
-
-    """Signal temporary error in network communication."""
+    """
+    Signal temporary error in network communication.
+    """
 
     def __str__(self):
         return "Error downloading %s: %d" % self.args
 
 
 class ConfigurationError(UpdaterException):
-
-    """Signal permanent error in configuration."""
+    """
+    Signal permanent error in configuration.
+    """
 
     def __str__(self):
         return "Configuration error: %s" % self.args[1]
 
 
 class VerificationError(ConfigurationError):
-
-    """Signal permanent error in script verification."""
+    """
+    Signal permanent error in script verification.
+    """
 
     def __str__(self):
         return "Verification error: %s" % self.args[1]
 
 
 class CannotResolveComponentServerError(ConfigurationError):
-
-    """Signal permanent error in component configuration."""
+    """
+    Signal permanent error in component configuration.
+    """
 
     def __init__(self, component, for_mirror_list):
         self.component = component
@@ -106,16 +113,18 @@ class CannotResolveComponentServerError(ConfigurationError):
 
 
 class ProxyError(ConfigurationError):
-
-    """Signal permanent error in proxy configuration."""
+    """
+    Signal permanent error in proxy configuration.
+    """
 
     def __str__(self):
         return "Proxy configuration error: %s %s" % (self.args[1], self.args[0])
 
 
 class LockingError(UpdaterException):
-
-    """Signal other updater process running."""
+    """
+    Signal other updater process running.
+    """
 
     def __str__(self):
         return "Another updater process is currently running - abort\n%s" % self.args[0]

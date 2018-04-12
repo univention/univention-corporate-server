@@ -51,6 +51,12 @@ except ImportError:
 
 
 def makedirs(dirname, mode=0o755):
+    """
+    Recursively create directory hierarchy will all parent directories.
+
+    :param str dirname: Name of the directory to create.
+    :param int mode: Directory permissions.
+    """
     try:
         os.makedirs(dirname, mode)
     except OSError as ex:
@@ -61,6 +67,12 @@ def makedirs(dirname, mode=0o755):
 class UniventionMirror(UniventionUpdater):
 
     def __init__(self, check_access=True):
+        """
+        Create new mirror with settings from UCR.
+
+        :param bool check_access: Check if repository server is reachable on init.
+        :raises ConfigurationError: if configured server is not available immediately.
+        """
         UniventionUpdater.__init__(self, check_access)
         self.log = logging.getLogger('updater.Mirror')
         self.log.addHandler(NullHandler())
@@ -76,7 +88,9 @@ class UniventionMirror(UniventionUpdater):
             self.architectures = archs.split(' ')
 
     def config_repository(self):
-        """ Retrieve configuration to access repository. Overrides UniventionUpdater. """
+        """
+        Retrieve configuration to access repository. Overrides :py:class:`univention.updater.UniventionUpdater`.
+        """
         self.online_repository = self.configRegistry.is_true('repository/mirror', True)
         self.repourl = UcsRepoUrl(self.configRegistry, 'repository/mirror')
         self.sources = self.configRegistry.is_true('repository/mirror/sources', False)
@@ -85,13 +99,22 @@ class UniventionMirror(UniventionUpdater):
         self.script_verify = self.configRegistry.is_true('repository/mirror/verify', True)
 
     def release_update_available(self, ucs_version=None, errorsto='stderr'):
-        '''Check if an update is available for the ucs_version'''
+        """
+        Check if an update is available for the `ucs_version`.
+
+        :param str ucs_version: The UCS release to check.
+        :param str errorsto: Select method of reporting errors; on of 'stderr', 'exception', 'none'.
+        :returns: The next UCS release or None.
+        :rtype: str or None
+        """
         if not ucs_version:
             ucs_version = self.current_version
         return self.get_next_version(UCS_Version(ucs_version), [], errorsto)
 
     def mirror_repositories(self):
-        '''uses apt-mirror to copy a repository'''
+        """
+        Uses :command:`apt-mirror` to copy a repository.
+        """
         # check if the repository directory structure exists, otherwise create it
         makedirs(self.repository_path)
 
@@ -113,7 +136,9 @@ class UniventionMirror(UniventionUpdater):
             log.close()
 
     def mirror_update_scripts(self):
-        '''mirrors the preup.sh and postup.sh scripts'''
+        """
+        Mirrors the :file:`preup.sh` and :file:`postup.sh` scripts.
+        """
         start = self.version_start
         end = self.version_end
         parts = self.parts
@@ -153,14 +178,18 @@ class UniventionMirror(UniventionUpdater):
                 fd.close()
 
     def list_local_repositories(self, start=None, end=None, maintained=True, unmaintained=False):
-        '''
+        """
         This function returns a sorted list of local (un)maintained repositories.
-        Arguments: start: smallest version that shall be returned (type: UCS_Version)
-                           end:   largest version that shall be returned (type: UCS_Version)
-                           maintained:   True if list shall contain maintained repositories
-                           unmaintained: True if list shall contain unmaintained repositories
-        Returns: a list of ( directory, UCS_Version, is_maintained ) tuples.
-        '''
+
+        :param start: smallest version that shall be returned.
+        :type start: UCS_Version or None
+        :param end: largest version that shall be returned.
+        :type end: UCS_Version or None
+        :param bool maintained: True if list shall contain maintained repositories.
+        :param bool unmaintained: True if list shall contain unmaintained repositories.
+        :returns: A sorted list of repositories as (directory, UCS_Version, is_maintained) tuples.
+        :rtype: list[tuple(str, UCS_Version, bool)]
+        """
         result = []
         repobase = os.path.join(self.repository_path, 'mirror')
         RErepo = re.compile('^%s/(\d+[.]\d)/(maintained|unmaintained)/(\d+[.]\d+-\d+)$' % (re.escape(repobase),))
@@ -275,6 +304,11 @@ class UniventionMirror(UniventionUpdater):
                 self._release(outdir, dist, archs, version)
 
     def _compress(self, filename):
+        """
+        Compress given file.
+
+        :param str filename: The name of the file to compress.
+        """
         self.log.debug('Compressing %s ...', filename)
         sorter = subprocess.Popen(
             ('apt-sortpkgs', filename + '.tmp'),
@@ -311,6 +345,15 @@ class UniventionMirror(UniventionUpdater):
         os.remove(filename + '.tmp')
 
     def _release(self, outdir, dist, archs, version):
+        """
+        Generate a new :file:`Release` file.
+
+        :param str outdir: The name of the output directory.
+        :param str dist: The name of the distribution.
+        :param archs: The list of architectures.
+        :type archs: list(str)
+        :param UCS_Version version: The UCS release version.
+        """
         rel_name = os.path.join(outdir, 'dists', dist, 'Release')
         self.log.info('Generating %s ...', rel_name)
         cmd = (
@@ -336,7 +379,9 @@ class UniventionMirror(UniventionUpdater):
         os.rename(tmp_name, rel_name)
 
     def run(self):
-        '''starts the mirror process'''
+        """
+        starts the mirror process.
+        """
         self.mirror_repositories()
         self.mirror_update_scripts()
         self.update_dists_files()

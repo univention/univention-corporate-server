@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 """
-Univention Updater: Locking
+Univention Updater locking
 """
 # Copyright 2008-2018 Univention GmbH
 #
@@ -38,9 +38,8 @@ from errors import LockingError
 
 
 class UpdaterLock(object):
-
     """
-    Context wrapper for updaer-lock.
+    Context wrapper for updater-lock :file:`/var/lock/univention-updater`.
     """
 
     __UPDATER_LOCK_FILE_NAME = '/var/lock/univention-updater'
@@ -63,9 +62,10 @@ class UpdaterLock(object):
     def updater_lock_acquire(self):
         '''
         Acquire the updater-lock.
-        Returns 0 if it could be acquired within <timeout> seconds.
-        Returns a value >= 1 if locked by parent.
-        Returns LockingError otherwise.
+
+        :returns: 0 if it could be acquired within <timeout> seconds, >= 1 if locked by parent.
+        :rtype: int
+        :raises LockingError: otherwise.
         '''
         deadline = time() + self.timeout
         my_pid = "%d\n" % os.getpid()
@@ -135,8 +135,9 @@ class UpdaterLock(object):
     def updater_lock_release(self):
         '''
         Release the updater-lock.
-        Returns True if it has been unlocked (or decremented when nested).
-        Returns False if it was already unlocked.
+
+        :returns: True if it has been unlocked (or decremented when nested), False if it was already unlocked.
+        :rtype: bool
         '''
         if self.lock > 0:
             # parent process still owns the lock, do nothing and just return success

@@ -36,8 +36,9 @@ from copy import copy
 
 
 class UcsRepoUrl(object):
-
-    """UCS repository server base URL."""
+    """
+    UCS repository server base URL.
+    """
 
     DEFAULT = 'https://updates.software-univention.de/'
 
