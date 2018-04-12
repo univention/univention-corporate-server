@@ -119,7 +119,7 @@ Type=bool
 Categories=service-ssh
 
 [systemd/journald/SplitMode]
-Description[de]=Definiert, wie journald die Protokolldateien aufteilt. Standard: uid. Siehe `man journald.conf für Details.
+Description[de]=Definiert, wie journald die Protokolldateien aufteilt. Standard: uid. Siehe `man journald.conf` für Details.
 Description[en]=Specifices how journald splits up journal files. Default: uid. See man `man journald.conf` for details.
 Type=str
 Categories=system-base
