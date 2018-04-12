@@ -51,6 +51,12 @@ except ImportError:
 
 
 def makedirs(dirname, mode=0o755):
+    """
+    Recursively create directory hierarchy will all parent directories.
+
+    :param str dirname: Name of the directory to create.
+    :param int mode: Directory permissions.
+    """
     try:
         os.makedirs(dirname, mode)
     except OSError as ex:
@@ -61,6 +67,12 @@ def makedirs(dirname, mode=0o755):
 class UniventionMirror(UniventionUpdater):
 
     def __init__(self, check_access=True):
+        '''
+        Create new mirror with settings from UCR.
+
+        :param bool check_access: Check if repository server is reachable on init.
+        :raises ConfigurationError: if configured server is not available immediately.
+        '''
         UniventionUpdater.__init__(self, check_access)
         self.log = logging.getLogger('updater.Mirror')
         self.log.addHandler(NullHandler())
@@ -85,7 +97,14 @@ class UniventionMirror(UniventionUpdater):
         self.script_verify = self.configRegistry.is_true('repository/mirror/verify', True)
 
     def release_update_available(self, ucs_version=None, errorsto='stderr'):
-        '''Check if an update is available for the ucs_version'''
+        '''
+        Check if an update is available for the ucs_version.
+
+        :param str ucs_version: The UCS release to check.
+        :param str errorsto: Select method of reporting errors; on of 'stderr', 'exception', 'none'.
+        :returns: The next UCS release or None.
+        :rtype: str or None
+        '''
         if not ucs_version:
             ucs_version = self.current_version
         return self.get_next_version(UCS_Version(ucs_version), [], errorsto)
@@ -155,11 +174,15 @@ class UniventionMirror(UniventionUpdater):
     def list_local_repositories(self, start=None, end=None, maintained=True, unmaintained=False):
         '''
         This function returns a sorted list of local (un)maintained repositories.
-        Arguments: start: smallest version that shall be returned (type: UCS_Version)
-                           end:   largest version that shall be returned (type: UCS_Version)
-                           maintained:   True if list shall contain maintained repositories
-                           unmaintained: True if list shall contain unmaintained repositories
-        Returns: a list of ( directory, UCS_Version, is_maintained ) tuples.
+
+        :param start: smallest version that shall be returned.
+        :type start: UCS_Version or None
+        :param end: largest version that shall be returned.
+        :type end: UCS_Version or None
+        :param bool maintained: True if list shall contain maintained repositories.
+        :param bool unmaintained: True if list shall contain unmaintained repositories.
+        :returns: A sorted list of repositories as (directory, UCS_Version, is_maintained) tuples.
+        :rtype: list[tuple(str, UCS_Version, bool)]
         '''
         result = []
         repobase = os.path.join(self.repository_path, 'mirror')

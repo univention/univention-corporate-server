@@ -47,25 +47,40 @@ ARCHITECTURES = ('i386', 'amd64', 'all')
 
 
 class TeeFile(object):
-
     '''
-    Writes the given string to serveral files at once. Could by used
+    Writes the given string to several files at once. Could by used
     with the print statement
     '''
 
     def __init__(self, fds=[]):
+        """
+        Register multiple file descriptors, to which the data is written.
+
+        :param fds: A list of files.
+        :type fds: list(File)
+        """
         if not fds:
             self.fds = [sys.stdout]
         else:
             self._fds = fds
 
     def write(self, str):
+        """
+        Write string to all registered files.
+
+        :param str str: The string to write.
+        """
         for fd in self._fds:
             fd.write(str)
             fd.flush()
 
 
 def gzip_file(filename):
+    """
+    Compress file.
+
+    :param str filename: The file name of the file to compress.
+    """
     f_in = open(filename, 'rb')
     f_out = gzip.open('%s.gz' % filename, 'wb')
     f_out.writelines(f_in)
@@ -74,7 +89,12 @@ def gzip_file(filename):
 
 
 def copy_package_files(source_dir, dest_dir):
-    # copy package files
+    """
+    Copy all Debian binary package files and signed updater scripts from `source_dir` to `dest_dir`.
+
+    :param str source_dir: Source directory.
+    :param str dest_dir: Destination directory.
+    """
     for filename in os.listdir(source_dir):
         if os.path.isfile(os.path.join(source_dir, filename)) and (filename.endswith('.deb') or filename.endswith('.udeb')):
             try:
@@ -99,6 +119,15 @@ def copy_package_files(source_dir, dest_dir):
 
 
 def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr=None):
+    """
+    Re-generate Debian `Packages` files.
+
+    :param str base_dir: Base directory, which contains the per architecture sub directories.
+    :param bool update_only: Only update already existing files - skip missing files.
+    :param bool dists: Also generate `Packages` files in `dists/` subdirectory.
+    :param file stdout: Override standard output. Defaults to :py:obj:`sys.stdout`.
+    :param file stderr: Override standard error output. Defaults to :py:obj:`sys.stderr`.
+    """
     # redirekt output
     if not stdout:
         stdout = sys.stdout
@@ -150,6 +179,12 @@ def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr
 
 
 def create_packages(base_dir, source_dir):
+    """
+    Re-generate Debian `Packages` file.
+
+    :param str base_dir: Base directory. From here `apt-ftparchive` is called.
+    :param str source_dir: A sub directory. For this `apt-ftparchive` is called.
+    """
     # recreate Packages file
     if not os.path.isdir(os.path.join(base_dir, source_dir)) or not os.path.isfile(os.path.join(base_dir, source_dir, 'Packages')):
         return
@@ -192,6 +227,14 @@ def create_packages(base_dir, source_dir):
 
 
 def get_repo_basedir(packages_dir):
+    """
+    Check if a file path is a UCS package repository.
+
+    :param str package_dir: A directory path.
+    :returns: The canonicalized path without the architecture sub directory.
+    :rtype: str
+    """
+
     # cut off trailing '/'
     if packages_dir[-1] == '/':
         packages_dir = packages_dir[: -1]
@@ -223,6 +266,12 @@ def get_repo_basedir(packages_dir):
 
 
 def is_debmirror_installed():
+    """
+    Check if the package `univention-debmirror` is installed.
+
+    :returns: a 2-tuple (status, error) where status is a boolean representing the state and error a optional error string - None otherwise.
+    :rtype: tuple(bool, str or None)
+    """
     devnull = open(os.path.devnull, 'w')
     p = subprocess.Popen(['dpkg-query', '-s', 'univention-debmirror'], stdout=subprocess.PIPE, stderr=devnull)
     output = p.communicate()[0]
@@ -242,6 +291,12 @@ def is_debmirror_installed():
 
 
 def get_installation_version():
+    """
+    Return UCS release version of local repository mirror.
+
+    :returns: The UCS releases which was last copied into the local repository.
+    :rtype: str
+    """
     try:
         fd = open(os.path.join(configRegistry.get('repository/mirror/basepath'), '.univention_install'))
     except:
