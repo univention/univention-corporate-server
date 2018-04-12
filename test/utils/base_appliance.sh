@@ -365,6 +365,7 @@ from univention.appcenter.actions import get_action
 from univention.appcenter.log import log_to_logfile, log_to_stream
 
 log_to_stream()
+get_action('update')()._update_local_files()
 
 app=Apps().find_by_component_id('$local_app_component_id')
 app.docker_image='${local_app_docker_image}'
