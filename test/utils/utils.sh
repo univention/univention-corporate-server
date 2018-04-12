@@ -413,29 +413,31 @@ prevent_ucstest_on_fail () {
 }
 
 install_ucsschool () {
+	local rv=0
 	case "${ucsschool_release:-scope}" in
 		appcenter.test)
-			switch_to_test_app_center
-			install_apps ucsschool
+			switch_to_test_app_center || rv=$?
+			install_apps ucsschool || rv=$?
 			;;
 		public)
-			install_apps ucsschool
+			install_apps ucsschool || rv=$?
 			;;
 		scope|*)
 			local component="repository/online/component/ucsschool_DEVEL"
 			ucr set "$component"/description="Development version of UCS@school packages" \
 				"$component"/version="$(ucr get version/version)" \
-				"$component"/server=updates-test.software-univention.de \
-				"$component"=enabled
+				"$component"/server=https://updates-test.software-univention.de \
+				"$component"=enabled || rv=$?
 			echo "install_ucsschool - DEBUG1"
 			# Ensure ucsschool is a registered app
 			echo "ucsschool" >>/var/cache/appcenter-installed.txt
 			cat /etc/apt/sources.list.d/20_ucs-online-component.list
-			univention-app install --noninteractive ucsschool
+			univention-app install --noninteractive ucsschool || rv=$?
 			echo "install_ucsschool - DEBUG2"
 			cat /etc/apt/sources.list.d/20_ucs-online-component.list
 			;;
 	esac
+	return $rv
 }
 
 install_coverage () {
