@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-management-console-module-udm
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The type and position of an UDM object are
+   displayed again on the detail page.
+bug: [46371]

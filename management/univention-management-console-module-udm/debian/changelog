@@ -1,3 +1,9 @@
+univention-management-console-module-udm (8.0.5-5) unstable; urgency=medium
+
+  * Bug #46371: Show type and position of UDM object in DetailPage
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 11 Apr 2018 13:42:41 +0200
+
 univention-management-console-module-udm (8.0.5-4) unstable; urgency=medium
 
   * Bug #46117: Add grid icon for users/contact
