@@ -13,10 +13,6 @@ desc: |
    authentication context restrictions and use an authentication source
    defined in config/authsources.php via vectors related to improper
    validation of user input.
- * CVE-2017-12873: SimpleSAMLphp might allow attackers to obtain sensitive
-   information, gain unauthorized access, or have unspecified other impacts by
-   leveraging incorrect persistent NameID generation when an Identity Provider
-   (IdP) is misconfigured.
  * CVE-2017-12874: The InfoCard module allows attackers to spoof XML messages
    by leveraging an incorrect check of return values in signature validation
    utilities.
@@ -47,7 +43,6 @@ bug: [46480]
 cve:
 - CVE-2017-12867
 - CVE-2017-12869
-- CVE-2017-12873
 - CVE-2017-12874
 - CVE-2017-18121
 - CVE-2017-18122
