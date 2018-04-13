@@ -56,9 +56,13 @@ class FakeApp(object):
 		self.version = version
 
 
-def _get_module(module, lo, pos):
+def _update_modules():
 	if not _initialized:
 		udm_modules.update()
+
+
+def _get_module(module, lo, pos):
+	_update_modules()
 	mod = udm_modules.get(module)
 	if module not in _initialized:
 		udm_modules.init(lo, pos, mod)

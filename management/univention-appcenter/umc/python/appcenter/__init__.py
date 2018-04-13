@@ -61,6 +61,7 @@ from univention.appcenter.actions import get_action
 from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError
 from univention.appcenter.packages import reload_package_manager, get_package_manager, package_lock, LOCK_FILE
 from univention.appcenter.app_cache import Apps
+from univention.appcenter.udm import _update_modules
 from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information, app_is_running, find_hosts_for_master_packages, get_local_fqdn
 from univention.appcenter.log import get_base_logger, log_to_logfile
 from univention.appcenter.ucr import ucr_instance, ucr_save
@@ -148,6 +149,10 @@ class Instance(umcm.Base, ProgressMixin):
 			raise umcm.UMC_Error(str(exc), status=500)
 		self.package_manager.set_finished()  # currently not working. accepting new tasks
 		get_package_manager._package_manager = self.package_manager
+
+		# build cache
+		_update_modules()
+		get_action('list').get_apps()
 
 		# not initialize here: error prone due to network errors and also kinda slow
 		self._uu = None
