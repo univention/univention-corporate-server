@@ -39,7 +39,6 @@ import os
 import os.path
 import shlex
 from json import loads
-import requests
 from tempfile import NamedTemporaryFile
 from contextlib import contextmanager
 
@@ -117,6 +116,7 @@ def verify(app, image):
 		_logger.error('Error looking up DockerImage checksum for %s from index.json' % app.id)
 		return  # Nothing we can do here, this is the case of ISV Docker repos
 
+	import requests
 	https_request_auth = requests.auth.HTTPBasicAuth(DOCKER_READ_USER_CRED['username'], DOCKER_READ_USER_CRED['password'])
 	https_request_answer = requests.get(docker_image_manifest_url, auth=https_request_auth)
 	if not https_request_answer.ok:

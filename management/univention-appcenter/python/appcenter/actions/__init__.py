@@ -286,15 +286,19 @@ class UniventionAppAction(object):
 
 
 def get_action(action_name):
+	_import()
 	return _ACTIONS.get(action_name)
 
 
 def all_actions():
+	_import()
 	for action_name in sorted(_ACTIONS):
 		yield action_name, _ACTIONS[action_name]
 
-
-path = os.path.dirname(__file__)
-for pymodule in glob(os.path.join(path, '*.py')):
-	pymodule_name = os.path.basename(pymodule)[:-3]  # without .py
-	__import__('univention.appcenter.actions.%s' % pymodule_name)
+def _import():
+	if _ACTIONS:
+		return
+	path = os.path.dirname(__file__)
+	for pymodule in glob(os.path.join(path, '*.py')):
+		pymodule_name = os.path.basename(pymodule)[:-3]  # without .py
+		__import__('univention.appcenter.actions.%s' % pymodule_name)
