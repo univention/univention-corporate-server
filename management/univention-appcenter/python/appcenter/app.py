@@ -913,11 +913,14 @@ class App(object):
 
 	host_certificate_access = AppBooleanAttribute()
 
-	def __init__(self, **kwargs):
+	def __init__(self, _attrs, _cache, **kwargs):
+		if kwargs:
+			_attrs.update(kwargs)
 		self._weak_ref_app_cache = None
-		self.set_app_cache_obj(kwargs.pop('_cache', None))
+		self._supports_ucs_version = None
+		self.set_app_cache_obj(_cache)
 		for attr in self._attrs:
-			setattr(self, attr.name, kwargs.get(attr.name))
+			setattr(self, attr.name, _attrs.get(attr.name))
 		self.ucs_version = self.get_ucs_version()  # compatibility
 		if self.docker:
 			self.supported_architectures = ['amd64']
@@ -992,9 +995,7 @@ class App(object):
 				app_logger.warning('Ignoring %s because of %s: %s' % (ini_file, attr.name, e))
 				return
 			attr_values[attr.name] = value
-		if cache:
-			attr_values['_cache'] = cache
-		return cls(**attr_values)
+		return cls(attr_values, cache)
 
 	@property
 	def docker(self):
@@ -1066,12 +1067,15 @@ class App(object):
 		return packages
 
 	def supports_ucs_version(self):
-		if not self.supported_ucs_versions:
-			return self.get_ucs_version() == ucr_get('version/version')
-		for supported_version in self.supported_ucs_versions:
-			if supported_version.startswith('%s-' % ucr_get('version/version')):
-				return True
-		return False
+		if self._supports_ucs_version is None:
+			self._supports_ucs_version = False
+			if not self.supported_ucs_versions:
+				self._supports_ucs_version = self.get_ucs_version() == ucr_get('version/version')
+			else:
+				for supported_version in self.supported_ucs_versions:
+					if supported_version.startswith('%s-' % ucr_get('version/version')):
+						self._supports_ucs_version = True
+		return self._supports_ucs_version
 
 	def is_installed(self):
 		if self.docker and not container_mode():
