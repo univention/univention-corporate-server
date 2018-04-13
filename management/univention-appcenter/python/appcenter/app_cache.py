@@ -287,9 +287,7 @@ class AppCache(_AppCache):
 		return glob(os.path.join(self.get_cache_dir(), '*.ini'))
 
 	def _build_app_from_attrs(self, attrs):
-		attrs = attrs.copy()
-		attrs['_cache'] = self
-		app = self.get_app_class()(**attrs)
+		app = self.get_app_class()(attrs, self)
 		return app
 
 	def _build_app_from_ini(self, ini):
