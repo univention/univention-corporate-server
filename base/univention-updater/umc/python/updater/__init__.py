@@ -589,11 +589,9 @@ class Instance(Base):
 
 		MODULE.info("Creating job: %r" % (command,))
 		command = '''
-/usr/sbin/service univention-maintenance-mode start
 /usr/share/univention-updater/disable-apache2-umc
 %s < /dev/null
-/usr/share/univention-updater/enable-apache2-umc --no-restart
-/usr/sbin/service univention-maintenance-mode stop''' % (command,)
+/usr/share/univention-updater/enable-apache2-umc --no-restart''' % (command,)
 		atjobs.add(command, comments=dict(lines=self._logfile_start_line))
 
 		return {'status': 0}

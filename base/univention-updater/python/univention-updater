@@ -554,11 +554,13 @@ def main():
                     time.sleep(1)
                     count -= 1
 
-                resultCode = os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive %s >>%s 2>&1' % (cmd_dist_upgrade, LOGNAME))
-                if os.path.exists('/var/run/apt-get.lock'):
-                    os.unlink('/var/run/apt-get.lock')
-                if resultCode != 0:
-                    raise UpdateError('Failed to execute "%s"' % cmd_dist_upgrade, errorsource='UPDATE')
+                detailed_status = FN_STATUS + '.details'
+                with open(detailed_status, 'w+b') as detailed_status_fd:
+                    resultCode = os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive %s -o APT::Status-FD=%s >>%s 2>&1' % (cmd_dist_upgrade, detailed_status_fd.fileno(), LOGNAME))
+                    if os.path.exists('/var/run/apt-get.lock'):
+                        os.unlink('/var/run/apt-get.lock')
+                    if resultCode != 0:
+                        raise UpdateError('Failed to execute "%s"' % cmd_dist_upgrade, errorsource='UPDATE')
     except:
         if phase == 'preup' or (phase == 'update' and order == 'pre'):
             remove_temporary_sources_list()
