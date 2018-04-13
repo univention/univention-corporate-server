@@ -46,8 +46,6 @@ from univention.admin.uldap import getMachineConnection, getAdminConnection, acc
 
 from univention.appcenter.ucr import ucr_get
 
-udm_modules.update()
-
 _initialized = set()
 
 
@@ -59,6 +57,8 @@ class FakeApp(object):
 
 
 def _get_module(module, lo, pos):
+	if not _initialized:
+		udm_modules.update()
 	mod = udm_modules.get(module)
 	if module not in _initialized:
 		udm_modules.init(lo, pos, mod)
