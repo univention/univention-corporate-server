@@ -115,13 +115,15 @@ class _AppCache(object):
 			return _app
 
 	def get_all_apps(self):
-		ret = []
-		ids = set()
+		apps = {}
 		for app in self.get_every_single_app():
-			ids.add(app.id)
-		for app_id in sorted(ids):
-			ret.append(self.find(app_id))
-		return ret
+			if app.id in apps:
+				old_app, old_is_installed = apps[app.id]
+				if not old_is_installed and old_app < app:
+					apps[app.id] = (app, app.is_installed())
+			else:
+				apps[app.id] = (app, app.is_installed())
+		return sorted(app for (app, is_installed) in apps.itervalues())
 
 	def find_by_component_id(self, component_id):
 		for app in self.get_every_single_app():
@@ -494,11 +496,8 @@ class AppCenterCache(_AppCache):
 		self._license_type_cache = None
 		self._ratings_cache = None
 		self._categories_cache = None
-		for fname in glob(self.get_cache_dir()):
-			if os.path.isdir(fname):
-				ucs_version = os.path.basename(fname)
-				app_cache = self._build_app_cache(ucs_version)
-				app_cache.clear_cache()
+		for app_cache in self.get_app_caches():
+			app_cache.clear_cache()
 
 	def __repr__(self):
 		return 'AppCenterCache(app_cache_class=%r, server=%r, ucs_versions=%r, locale=%r, cache_dir=%r)' % (self.get_app_cache_class(), self.get_server(), self.get_ucs_versions(), self.get_locale(), self.get_cache_dir())
@@ -537,6 +536,10 @@ class Apps(_AppCache):
 
 	def include_app(self, app):
 		return app.supports_ucs_version()
+
+	def clear_cache(self):
+		for app_cache in self.get_appcenter_caches():
+			app_cache.clear_cache()
 
 
 class AllApps(Apps):
