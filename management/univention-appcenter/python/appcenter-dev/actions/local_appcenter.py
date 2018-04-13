@@ -50,19 +50,13 @@ from distutils.version import LooseVersion
 
 from univention.config_registry.interfaces import Interfaces
 
-from univention.appcenter.app import App, AppAttribute, AppFileAttribute, CaseSensitiveConfigParser
+from univention.appcenter.app import App, AppFileAttribute, CaseSensitiveConfigParser
 from univention.appcenter.app_cache import default_server
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action
 from univention.appcenter.exceptions import LocalAppCenterError
 from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase, call_process
 from univention.appcenter.ucr import ucr_save, ucr_get, ucr_instance
 from univention.appcenter.ini_parser import read_ini_file
-
-
-# re-include Screenshot for ini files targetting UCS < 4.1
-_screenshot_attribute = AppAttribute(localisable=True)
-_screenshot_attribute.set_name('screenshot')
-App._attrs.append(_screenshot_attribute)
 
 
 class StoreAttrActions(Action):
