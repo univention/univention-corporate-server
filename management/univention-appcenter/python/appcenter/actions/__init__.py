@@ -293,12 +293,15 @@ def get_action(action_name):
 def all_actions():
 	_import()
 	for action_name in sorted(_ACTIONS):
+		if action_name.startswith('_'):
+			continue
 		yield action_name, _ACTIONS[action_name]
 
 def _import():
-	if _ACTIONS:
+	if '__imported__' in _ACTIONS:
 		return
 	path = os.path.dirname(__file__)
 	for pymodule in glob(os.path.join(path, '*.py')):
 		pymodule_name = os.path.basename(pymodule)[:-3]  # without .py
 		__import__('univention.appcenter.actions.%s' % pymodule_name)
+	_ACTIONS['__imported__'] = True

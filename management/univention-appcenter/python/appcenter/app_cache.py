@@ -474,10 +474,28 @@ class AppCenterCache(_AppCache):
 		return 'AppCenterCache(app_cache_class=%r, server=%r, ucs_versions=%r, locale=%r, cache_dir=%r)' % (self.get_app_cache_class(), self.get_server(), self.get_ucs_versions(), self.get_locale(), self.get_cache_dir())
 
 
-class Apps(_AppCache):
+class Apps(object):
+	_apps_cache = {}
+
+	def __init__(self, cache_class=None, locale=None):
+		self._apps = self._get_apps_obj(cache_class, locale)
+
+	@classmethod
+	def _get_apps_obj(cls, cache_class, locale):
+		key = (cache_class, locale)
+		if key not in cls._apps_cache:
+			cls._apps_cache[key] = CompleteApps(cache_class, locale)
+		return cls._apps_cache[key]
+
+	def __getattr__(self, name):
+		return getattr(self._apps, name)
+
+
+class CompleteApps(_AppCache):
 	def __init__(self, cache_class=None, locale=None):
 		self._cache_class = cache_class
 		self._locale = locale
+		self._cache = None
 
 	def get_appcenter_cache_class(self):
 		if self._cache_class is None:
@@ -498,17 +516,20 @@ class Apps(_AppCache):
 		return self.get_appcenter_cache_class()(server=server, ucs_versions=ucs_versions, locale=self.get_locale())
 
 	def get_every_single_app(self):
-		ret = []
-		for app_cache in self.get_appcenter_caches():
-			for app in app_cache.get_every_single_app():
-				if self.include_app(app):
-					ret.append(app)
-		return ret
+		if self._cache is None:
+			ret = []
+			for app_cache in self.get_appcenter_caches():
+				for app in app_cache.get_every_single_app():
+					if self.include_app(app):
+						ret.append(app)
+			self._cache = ret
+		return self._cache
 
 	def include_app(self, app):
 		return app.supports_ucs_version()
 
 	def clear_cache(self):
+		self._cache = None
 		for app_cache in self.get_appcenter_caches():
 			app_cache.clear_cache()
 
