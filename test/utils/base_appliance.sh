@@ -826,8 +826,8 @@ exit 0
 __EOF__
 	chmod +x /usr/lib/univention-system-setup/appliance-hooks.d/20_remove_xorg_config
 	 
-	# deactivate kernel module; prevents bootsplash from freezing in vmware
-	ucr set kernel/blacklist="$(ucr get kernel/blacklist);vmwgfx"
+	# deactivate kernel module; prevents bootsplash from appearing/freezing in vmware and virtualbox
+	ucr set kernel/blacklist="$(ucr get kernel/blacklist);vmwgfx;vboxvideo"
 
 	# Do network stuff
 
