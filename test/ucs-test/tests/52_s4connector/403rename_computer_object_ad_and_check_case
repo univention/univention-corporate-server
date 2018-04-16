@@ -1,0 +1,61 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check case after renaming a windows computer via udm"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## bugs:
+##  - 46741
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "s4connector.sh" || exit 137
+
+RETVAL=100
+
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+CN="CASE123"
+
+trap cleanup EXIT
+
+cleanup () {
+	udm computers/windows remove --dn "cn=${CN},${ldap_base}"
+	ad_wait_for_synchronization; fail_bool 0 110
+}
+
+section "create computer object CN=$CN in samba"
+
+ldbadd -H /var/lib/samba/private/sam.ldb <<EOF
+dn: CN=${CN},CN=Computers,${connector_s4_ldap_base}
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: user
+objectClass: computer
+userAccountControl: 4096
+sAMAccountName: ${CN}$
+userPrincipalName: host/${CN}.${domainname}@${kerberos_realm}
+cn: ${CN}
+name: ${CN}
+EOF
+test $? -eq 0 || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ucs_dn="$(univention-ldapsearch "cn=${CN}" dn| sed -n 's/dn: //p')"
+
+section "move computer object via UDM, $ucs_dn -> $ldap_base"
+
+udm computers/windows move --dn "$ucs_dn" --position "$ldap_base" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+dn="$(univention-s4search cn="$CN" dn | grep ^dn:)"
+
+section "check case in samba object $dn"
+univention-s4search cn="$CN" | grep "dn: CN=${CN}" || fail_test 110
+
+exit "$RETVAL"

@@ -1,3 +1,9 @@
+ucs-test (8.0.28-107) unstable; urgency=medium
+
+  * Bug #46741: added 52_s4connector/403rename_computer_object_ad_and_check_case
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Apr 2018 13:13:24 +0200
+
 ucs-test (8.0.28-106) unstable; urgency=medium
 
   * Bug #46171: enable 86_selenium/10_product_test_password_change
