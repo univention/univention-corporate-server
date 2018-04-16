@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: poppler
-fix: 0.26.5-2+deb8u3
+fix: 0.26.5-2+deb8u4
 desc: |
  This update addresses the following issues:
  * CVE-2017-9406: a memory leak vulnerability was found in the function
