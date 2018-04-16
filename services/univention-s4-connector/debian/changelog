@@ -1,3 +1,9 @@
+univention-s4-connector (12.0.2-10) unstable; urgency=medium
+
+  * Bug #46741: fixed dn handling in move
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Apr 2018 13:10:35 +0200
+
 univention-s4-connector (12.0.2-9) unstable; urgency=medium
 
   * Bug #46798: connector-tracebacks.log is not written any longer
