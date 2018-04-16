@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-37) unstable; urgency=medium
+
+  * Bug #46823: fix machine.secret permission in container
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Apr 2018 17:49:30 +0200
+
 univention-appcenter (7.0.1-36) unstable; urgency=medium
 
   * Bug #46779: Fix env file

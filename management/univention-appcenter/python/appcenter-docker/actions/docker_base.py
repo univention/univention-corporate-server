@@ -248,7 +248,9 @@ docker inspect:
 			)
 			raise AppCenterErrorContainerStart(msg)
 		if password:
-			with open(docker.path('/etc/machine.secret'), 'w+b') as f:
+			f_name = docker.path('/etc/machine.secret')
+			with open(f_name, 'w+b') as f:
+				os.chmod(f_name, 0o600)
 				f.write(password)
 		docker.cp_to_container('/etc/timezone', '/etc/timezone')
 		docker.cp_to_container('/etc/localtime', '/etc/localtime')
