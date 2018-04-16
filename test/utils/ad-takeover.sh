@@ -11,12 +11,45 @@ set -e
 #  done:  Beide Domänen sollten sich DNS-technisch zunächst nicht "sehen", d.h. im AD z.B. sollte nicht das UCS-DNS eingetragen sein.
 #  done:  Im AD sollten 1500 Benutzern und 40 Gruppen angelegt werden. Die Benutzer sollten auf die Gruppen verteilt werden.
 #  done:  Ein Benutzer sollte zusätzlich in die Gruppe "Domain Admins" / "Domänen Administratoren" aufgenommen werden.
-
 #  done:  Im AD sollten jeweils eine GPO, mit Benutzer bzw. Windows-Client verknüpft werden, z.B.: done
 #  done:      Benutzerkonfiguration -> Administrative Vorlagen -> Startmenü und Taskleiste -> Lautstärkesymbol entfernen -> aktivieren/Ok
 #        Computerkonfiguration -> Administrative Vorlagen -> System/Anmelden -> Diese Programme bei der Benutzeranmeldung ausführen -> Auszuführende Elemente -> notepad -> aktivieren/Ok
 #    Zusätzlich sollte etwas erkennbar an der AD Default-Domänen-Policy geändert werden, z.B. done
 #  done:      Benutzerkonfiguration -> Administrative Vorlagen -> "Liste "Alle Programme" aus dem Menü Start entfernen"
+
+
+prepare_ad_takeover_product_test () {
+
+	. env_vars
+
+	# Im AD sollten 1500 Benutzern und 40 Gruppen angelegt werden. Die Benutzer sollten auf die Gruppen verteilt werden.
+	# in Benutzer sollte zusätzlich in die Gruppe "Domain Admins" / "Domänen Administratoren" aufgenommen werden.
+	# Ein Benutzer sollte zusätzlich in die Gruppe "Domain Admins" / "Domänen Administratoren" aufgenommen werden.
+	python shared-utils/ucs-winrm.py create-multiple-user --user-prefix benutzer --user-amount 1500 --user-password "Univention@99"
+	python shared-utils/ucs-winrm.py create-multiple-adgroup --group-prefix gruppe --group-amount 40 --path "$LDAP_BASE"
+	python shared-utils/ucs-winrm.py random-user-in-group
+	python shared-utils/ucs-winrm.py create-ou --name TestContainer --path "$LDAP_BASE"
+	python shared-utils/ucs-winrm.py add-user-to-domainadmin --username benutzer1
+	python shared-utils/ucs-winrm.py add-user-to-domainadmin --username benutzer2
+
+	# ein client vor dem takeover
+	python shared-utils/ucs-winrm.py domain-join --dnsserver "$AD" --client "$WIN1" --user "$WIN1_ADMIN" --password "$WIN1_PASSWORD" --domainpassword "$AD_PASSWORD" --domainuser "$AD_ADMIN"
+
+	# Im AD sollten jeweils eine GPO, mit Benutzer bzw. Windows-Client verknüpft werden
+	python shared-utils/ucs-winrm.py create-gpo --name TestGPOUser --comment "testing new GPO in domain"
+	python shared-utils/ucs-winrm.py run-ps --cmd \
+		'set-GPPrefRegistryValue -Name TestGPOUser -Context User -key "HKCU\Environment" -ValueName TestGPOUser -Type String -value TestGPOUser -Action Update'
+	python shared-utils/ucs-winrm.py link-gpo --name TestGPOUser --target "$LDAP_BASE"
+	python shared-utils/ucs-winrm.py create-gpo --name TestGPOMachine --comment "testing new GPO in domain"
+	python shared-utils/ucs-winrm.py run-ps --cmd \
+		'set-GPPrefRegistryValue -Name TestGPOMachine -Context Computer -key "HKLM\Environment" -ValueName TestGPOMachine -Type String -value TestGPOMachine -Action Update'
+	python shared-utils/ucs-winrm.py link-gpo --name TestGPOMachine --target "$LDAP_BASE"
+	# Zusätzlich sollte etwas erkennbar an der AD Default-Domänen-Policy geändert werden
+	python shared-utils/ucs-winrm.py run-ps --cmd \
+		'set-GPPrefRegistryValue -Name "Default Domain Policy" -Context User -key "HKCU\Environment" -ValueName DefaultUserGPO -Type String -value TestGPOUser -Action Update'
+	python shared-utils/ucs-winrm.py run-ps --cmd \
+		'set-GPPrefRegistryValue -Name "Default Domain Policy" -Context Computer -key "HKLM\Environment" -ValueName DefaultMachineGPO -Type String -value TestMachineUser -Action Update'
+}
 
 #    Nach der erfolgreichen Durchführung des AD Takeover, wie in der Wiki-Dokumentation beschrieben, sollten folgende Punkte geprüft werden:
 #  done via WinRM:      Login am übernommenen Windows-Client mit einem übernommenen Benutzer
@@ -32,49 +65,10 @@ set -e
 #  done:      Joinen eines weiteren Windows Clients in die (UCS-)Domäne, Anmeldung als übernommener Benutzer
 
 
-prepare_ad_for_takeover () {
 
-	local ldap_base="$1"
-	local ad=$2
-	local win1=$3
-	local win2=$4
+check_ad_takeover_product_test () {
 
-	# Im AD sollten 1500 Benutzern und 40 Gruppen angelegt werden. Die Benutzer sollten auf die Gruppen verteilt werden.
-	# in Benutzer sollte zusätzlich in die Gruppe "Domain Admins" / "Domänen Administratoren" aufgenommen werden.
-	# Ein Benutzer sollte zusätzlich in die Gruppe "Domain Admins" / "Domänen Administratoren" aufgenommen werden.
-	python shared-utils/ucs-winrm.py create-multiple-user --user-prefix benutzer --user-amount 1500 --user-password "Univention@99"
-	python shared-utils/ucs-winrm.py create-multiple-adgroup --group-prefix gruppe --group-amount 40 --path "$ldap_base"
-	python shared-utils/ucs-winrm.py random-user-in-group
-	python shared-utils/ucs-winrm.py create-ou --name TestContainer --path "$ldap_base"
-	python shared-utils/ucs-winrm.py add-user-to-domainadmin --username benutzer1 --domain adtakeover
-	python shared-utils/ucs-winrm.py add-user-to-domainadmin --username benutzer2 --domain adtakeover
-
-	# ein client vor dem takeover
-	python shared-utils/ucs-winrm.py domain-join --dnsserver "$ad" --client "$win1"
-
-	# Im AD sollten jeweils eine GPO, mit Benutzer bzw. Windows-Client verknüpft werden
-	python shared-utils/ucs-winrm.py create-gpo --name TestGPOUser --comment "testing new GPO in domain"
-	python shared-utils/ucs-winrm.py run-ps --cmd 'set-GPPrefRegistryValue -Name TestGPOUser -Context User -key "HKCU\Environment" \
-		-ValueName TestGPOUser -Type String -value TestGPOUser -Action Update'
-	python shared-utils/ucs-winrm.py link-gpo --name TestGPOUser --target "$ldap_base"
-	python shared-utils/ucs-winrm.py create-gpo --name TestGPOMachine --comment "testing new GPO in domain"
-	python shared-utils/ucs-winrm.py run-ps --cmd 'set-GPPrefRegistryValue -Name TestGPOMachine -Context Computer -key "HKLM\Environment" \
-		-ValueName TestGPOMachine -Type String -value TestGPOMachine -Action Update'
-	python shared-utils/ucs-winrm.py link-gpo --name TestGPOMachine --target "$ldap_base"
-	# Zusätzlich sollte etwas erkennbar an der AD Default-Domänen-Policy geändert werden
-	python shared-utils/ucs-winrm.py run-ps --cmd 'set-GPPrefRegistryValue -Name "Default Domain Policy" -Context User -key "HKCU\Environment" \
-		-ValueName DefaultUserGPO -Type String -value TestGPOUser -Action Update'
-	python shared-utils/ucs-winrm.py run-ps --cmd 'set-GPPrefRegistryValue -Name "Default Domain Policy" -Context Computer -key "HKLM\Environment" \
-		-ValueName DefaultMachineGPO -Type String -value TestMachineUser -Action Update'
-}
-
-check_ad_takeover () {
-
-	local ldap_base="$1"
-	local ad=$2
-	local win1=$3
-	local win2=$4
-
+	. env_vars
  #. ad-takeover.sh; check_GPO TestGPO
 
  #udm users/user modify --dn uid=benutzer1,cn=users,dc=adtakeover,dc=local --set password='univention' --set overridePWHistory=1 --set overridePWLength=1
