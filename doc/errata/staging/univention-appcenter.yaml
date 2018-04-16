@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-appcenter
-fix: 7.0.1-36A~4.3.0.201804102134
+fix: 7.0.1-37A~4.3.0.201804161750
 desc: |-
   This update addresses the following issue(s):
   * A text referring to the activation of UCS has been updated.
@@ -12,4 +12,5 @@ desc: |-
   * The data directory is no longer moved to the backup directory during the
     uninstallation of an App.
   * The UCR variables ldap/base and ldap/server/.* are passed to Docker Apps.
-bug: [46742, 46752, 45670, 46779]
+  * Permission of the /etc/machine.secret in the container has been fixed.
+bug: [46742, 46752, 45670, 46779, 46823]
