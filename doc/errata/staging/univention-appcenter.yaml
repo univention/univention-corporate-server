@@ -12,5 +12,5 @@ desc: |-
   * The data directory is no longer moved to the backup directory during the
     uninstallation of an App.
   * The UCR variables ldap/base and ldap/server/.* are passed to Docker Apps.
-  * Permission of the /etc/machine.secret in the container has been fixed.
+  * File permissions for /etc/machine.secret in app containers have been fixed.
 bug: [46742, 46752, 45670, 46779, 46823]
