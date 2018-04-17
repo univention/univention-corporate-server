@@ -163,7 +163,7 @@ _upgrade_to_latest () {
 
 # temp. patch to retry source.list commit and apt-get update after error
 patch_setup_join () {
-	local script='if [ $? -ne 0 ]; then cat /etc/apt/sources.list.d/15_ucs-online-version.list; ifconfig; ping -c 4 "$(ucr get repository/online/server)"; nslookup "$(ucr get repository/online/server)"; sleep 15; ucr commit /etc/apt/sources.list.d/*; apt-get update; cat /etc/apt/sources.list.d/15_ucs-online-version.list; fi'
+	local script='if [ $? -ne 0 ]; then set -x; cat /etc/apt/sources.list.d/15_ucs-online-version.list; ifconfig; ping -c 4 "$(ucr get repository/online/server)"; nslookup "$(ucr get repository/online/server)"; sleep 15; ucr commit /etc/apt/sources.list.d/*; apt-get update; cat /etc/apt/sources.list.d/15_ucs-online-version.list; fi; cat /etc/apt/sources.list.d/15_ucs-online-version.list'
 	sed -i "s|apt-get update|apt-get update\n$script|" /usr/lib/univention-system-setup/scripts/setup-join.sh
 }
 
