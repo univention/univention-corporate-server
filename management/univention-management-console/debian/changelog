@@ -1,3 +1,9 @@
+univention-management-console (10.0.4-9) unstable; urgency=medium
+
+  * Bug #45599: fix typo
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 17 Apr 2018 10:11:50 +0200
+
 univention-management-console (10.0.4-8) unstable; urgency=medium
 
   * Bug #45599: remove ucr variable
