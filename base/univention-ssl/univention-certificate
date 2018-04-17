@@ -120,7 +120,7 @@ new () {
 		run_only master exclusive
 		echo "Creating certificate: $name"
 		gencert "$SSLBASE/$name" "$name" "$days"
-		if getent group "DC Backup Hosts" 2>&1 >/dev/null
+		if getent group "DC Backup Hosts" >/dev/null 2>&1
 		then
 			chgrp -R "DC Backup Hosts" "$SSLBASE/$name"
 			chmod -R g+rX "$SSLBASE/$name"
@@ -138,7 +138,7 @@ renew () {
 		: ${days:?Missing argument -days}
 		echo "Renew certificate: $name"
 		renew_cert "$name" "$days"
-		if getent group "DC Backup Hosts" 2>&1 >/dev/null
+		if getent group "DC Backup Hosts" >/dev/null 2>&1
 		then
 			chgrp -R "DC Backup Hosts" "$SSLBASE/$name"
 			chmod -R g+rX "$SSLBASE/$name"
@@ -193,7 +193,7 @@ sign () {
 	[ -n "$name" ] || die "Can not find CN in request '$request'"
 	echo "Signing request: $name"
 	EXTERNAL_REQUEST_FILE=$request gencert "$SSLBASE/$name" "$name" "$days"
-	if getent group "DC Backup Hosts" 2>&1 >/dev/null
+	if getent group "DC Backup Hosts" >/dev/null 2>&1
 	then
 		chgrp -R "DC Backup Hosts" "$SSLBASE/$name"
 		chmod -R g+rX "$SSLBASE/$name"
