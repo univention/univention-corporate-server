@@ -37,8 +37,8 @@ attributetype ( 1.3.6.1.4.1.10176.1001.12.1.2 NAME 'userHomeSharePreset'
 
 attributetype ( 1.3.6.1.4.1.10176.1001.12.1.3 NAME 'userPrimaryGroupPreset'
     DESC 'Preset primaryGroup in univentionUserTemplate'
-	EQUALITY caseExactIA5Match
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
 
 attributetype ( 1.3.6.1.4.1.10176.1001.12.1.4 NAME 'userGroupsPreset'
     DESC 'Preset groups in univentionUserTemplate'
