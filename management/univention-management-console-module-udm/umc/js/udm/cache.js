@@ -217,7 +217,8 @@ define([
 			var allInfoLoaded = array.every(allInfo, function(i) {
 				return i;
 			});
-			if (allInfoLoaded && !forceLoad) {
+			var isPolicyModule = this.superModule.indexOf('policies/') === 0;
+			if (!isPolicyModule && allInfoLoaded && !forceLoad) {
 				// return the cached information
 				return allInfo;
 			}
