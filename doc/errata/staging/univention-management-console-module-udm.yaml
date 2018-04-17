@@ -3,9 +3,11 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-management-console-module-udm
-fix: 8.0.5-5A~4.3.0.201804121351
+fix: 8.0.5-6A~4.3.0.201804171051
 desc: |
  This update addresses the following issue(s):
  * The type and position of an UDM object are
    displayed again on the detail page.
-bug: [46371]
+ * Fixed referencing objects not always being
+   shown in the policies module.
+bug: [46371, 38674]
