@@ -161,8 +161,15 @@ _upgrade_to_latest () {
 	done
 }
 
+# temp. patch to retry source.list commit and apt-get update after error
+patch_setup_join () {
+	local script='if [ $? -ne 0 ]; then cat /etc/apt/sources.list.d/15_ucs-online-version.list; ifconfig; ping -c 4 "$(ucr get repository/online/server)"; nslookup "$(ucr get repository/online/server)"; sleep 15; ucr commit /etc/apt/sources.list.d/*; apt-get update; cat /etc/apt/sources.list.d/15_ucs-online-version.list; fi'
+	sed -i "s|apt-get update|apt-get update\n$script|" /usr/lib/univention-system-setup/scripts/setup-join.sh
+}
+
 run_setup_join () {
 	local srv rv=0
+	patch_setup_join # temp. remove me
 	/usr/lib/univention-system-setup/scripts/setup-join.sh || rv=$?
 	ucr set apache2/startsite='univention/' # Bug #31682
 	for srv in univention-management-console-server univention-management-console-web-server apache2
@@ -178,6 +185,7 @@ run_setup_join_on_non_master () {
 	local srv rv=0
 	ucr set nameserver1="$(sed -ne 's|^nameserver=||p' /var/cache/univention-system-setup/profile)"
 	echo -n "$admin_password" >/tmp/univention
+	patch_setup_join # temp. remove me
 	/usr/lib/univention-system-setup/scripts/setup-join.sh --dcaccount Administrator --password_file /tmp/univention || rv=$?
 	ucr set apache2/startsite='univention/' # Bug #31682
 	for srv in univention-management-console-server univention-management-console-web-server apache2
