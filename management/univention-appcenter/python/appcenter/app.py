@@ -54,6 +54,7 @@ from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_loa
 from univention.appcenter.settings import Setting
 from univention.appcenter.ini_parser import read_ini_file
 
+from univention.timer import Timer
 
 CACHE_DIR = '/var/cache/univention-appcenter'
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/archives/all.tar.gz'
@@ -63,6 +64,8 @@ DATA_DIR = '/var/lib/univention-appcenter/apps'
 CONTAINER_SCRIPTS_PATH = '/usr/share/univention-docker-container-mode/'
 
 app_logger = get_base_logger().getChild('apps')
+
+timer = Timer()
 
 
 class CaseSensitiveConfigParser(RawConfigParser):
@@ -971,6 +974,7 @@ class App(object):
 
 	@classmethod
 	def from_ini(cls, ini_file, locale=True, cache=None):
+		timer.add_timing('App.from_ini() start')
 		# app_logger.debug('Loading app from %s' % ini_file)
 		if locale is True:
 			locale = get_locale()
@@ -986,6 +990,7 @@ class App(object):
 				app_logger.warning('Ignoring %s because of %s: %s' % (ini_file, attr.name, e))
 				return
 			attr_values[attr.name] = value
+		timer.add_timing('App.from_ini() end')
 		return cls(attr_values, cache)
 
 	@property
@@ -1653,6 +1658,7 @@ class AppManager(object):
 
 	@classmethod
 	def _get_every_single_app(cls):
+		timer.add_timing('AppManager._get_every_single_app() start')
 		if not cls._cache:
 			cls._locale = get_locale() or 'en'
 			try:
@@ -1672,12 +1678,15 @@ class AppManager(object):
 						app_logger.warn('Unable to cache apps')
 			finally:
 				cls._locale = None
+		timer.add_timing('AppManager._get_every_single_app() end')
 		return cls._cache
 
 	@classmethod
 	def get_all_apps(cls):
+		timer.add_timing('AppManager.get_all_apps() start')
 		ids = set(app.id for app in cls._get_every_single_app())
 		ret = [cls.find(app_id) for app_id in sorted(ids)]
+		timer.add_timing('AppManager.get_all_apps() end')
 		return ret
 
 	@classmethod
@@ -1696,19 +1705,23 @@ class AppManager(object):
 
 	@classmethod
 	def find(cls, app_id, app_version=None, latest=False):
+		timer.add_timing('AppManager.find() start')
 		if isinstance(app_id, cls._AppClass):
 			app_id = app_id.id
 		apps = list(reversed(cls.get_all_apps_with_id(app_id)))
 		if app_version:
 			for app in apps:
 				if app.version == app_version:
+					timer.add_timing('AppManager.find() end')
 					return app
 			return None
 		elif not latest:
 			for app in apps:
 				if app.is_installed():
+					timer.add_timing('AppManager.find() end')
 					return app
 		if apps:
+			timer.add_timing('AppManager.find() end')
 			return apps[0]
 
 	@classmethod

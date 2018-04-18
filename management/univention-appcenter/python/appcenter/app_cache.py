@@ -43,7 +43,7 @@ from json import dump, load
 from urlparse import urlsplit
 from distutils.version import LooseVersion
 
-from univention.appcenter.app import App
+from univention.appcenter.app import App, timer
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.utils import mkdir, get_locale
 from univention.appcenter.ini_parser import IniSectionListAttribute, IniSectionAttribute, IniSectionObject
@@ -72,23 +72,29 @@ class _AppCache(object):
 		return [app for app in self.get_every_single_app() if app.is_installed()]
 
 	def find(self, app_id, app_version=None, latest=False):
+		timer.add_timing('_AppCache.find() start')
 		apps = self.get_all_apps_with_id(app_id)
 		if app_version:
 			for app in apps:
 				if app.version == app_version:
+					timer.add_timing('_AppCache.find() end')
 					return app
+			timer.add_timing('_AppCache.find() end')
 			return None
 		elif not latest:
 			for app in apps:
 				if app.is_installed():
+					timer.add_timing('_AppCache.find() end')
 					return app
 		if apps:
 			latest_app = sorted(apps)[-1]
 			for app in apps:
 				if app == latest_app:
+					timer.add_timing('_AppCache.find() end')
 					return app
 
 	def find_candidate(self, app, prevent_docker=None):
+		timer.add_timing('_AppCache.find_candidate() start')
 		if prevent_docker is None:
 			prevent_docker = ucr_is_true('appcenter/prudence/docker/%s' % app.id)
 		if app.docker:
@@ -103,22 +109,29 @@ class _AppCache(object):
 			if _app.required_app_version_upgrade:
 				if LooseVersion(_app.required_app_version_upgrade) > app_version:
 					continue
+			timer.add_timing('_AppCache.find_candidate() end')
 			return _app
+		timer.add_timing('_AppCache.find_candidate() end')
 
 	def get_all_apps(self):
+		every_single_app = self.get_every_single_app()
+		timer.add_timing('_AppCache.get_all_apps() start')
 		apps = {}
-		for app in self.get_every_single_app():
+		for app in every_single_app:
 			if app.id in apps:
 				old_app, old_is_installed = apps[app.id]
 				if not old_is_installed and old_app < app:
 					apps[app.id] = (app, app.is_installed())
 			else:
 				apps[app.id] = (app, app.is_installed())
+		timer.add_timing('_AppCache.get_all_apps() end')
 		return sorted(app for (app, is_installed) in apps.itervalues())
 
 	def find_by_component_id(self, component_id):
+		timer.add_timing('_AppCache.find_by_component_id() start')
 		for app in self.get_every_single_app():
 			if app.component_id == component_id:
+				timer.add_timing('_AppCache.find_by_component_id() end')
 				return app
 
 
@@ -195,6 +208,7 @@ class AppCache(_AppCache):
 		return AppCenterCache(server=self.get_server(), ucs_versions=[self.get_ucs_version()], locale=self.get_locale())
 
 	def _save_cache(self):
+		timer.add_timing('AppCache._save_cache() start')
 		cache_file = self.get_cache_file()
 		if cache_file:
 			try:
@@ -202,42 +216,53 @@ class AppCache(_AppCache):
 					dump([app.attrs_dict() for app in self._cache], fd, indent=2)
 				cache_modified = self._cache_modified()
 			except (EnvironmentError, TypeError):
+				timer.add_timing('AppCache._save_cache() end')
 				return False
 			else:
 				self._cache_modified_mtime = cache_modified
+				timer.add_timing('AppCache._save_cache() end')
 				return True
+		timer.add_timing('AppCache._save_cache() end')
 
 	def _load_cache(self):
+		timer.add_timing('AppCache._load_cache() start')
 		cache_file = self.get_cache_file()
 		try:
 			cache_modified = self._cache_modified()
 			archive_modified = self._archive_modified()
 			if _cmp_mtimes(cache_modified, archive_modified) == -1:
 				cache_logger.debug('Cannot load cache: mtimes of cache files do not match: %r < %r' % (cache_modified, archive_modified))
+				timer.add_timing('AppCache._load_cache() end')
 				return None
 			for master_file in self._relevant_master_files():
 				master_file_modified = os.stat(master_file).st_mtime
 				if _cmp_mtimes(cache_modified, master_file_modified) == -1:
 					cache_logger.debug('Cannot load cache: %s is newer than cache' % master_file)
+					timer.add_timing('AppCache._load_cache() end')
 					return None
 			with open(cache_file, 'rb') as fd:
 				cache = load(fd)
 			self._cache_modified_mtime = cache_modified
 		except (EnvironmentError, ValueError, TypeError):
 			cache_logger.debug('Cannot load cache: getting mtimes failed')
+			timer.add_timing('AppCache._load_cache() end')
 			return None
 		else:
 			try:
 				cache_attributes = set(cache[0].keys())
 			except (TypeError, AttributeError, IndexError, KeyError):
 				cache_logger.debug('Cannot load cache: Getting cached attributes failed')
+				timer.add_timing('AppCache._load_cache() end')
 				return None
 			else:
 				code_attributes = set(attr.name for attr in self.get_app_class()._attrs)
 				if cache_attributes != code_attributes:
 					cache_logger.debug('Cannot load cache: Attributes in cache file differ from attribute in code')
+					timer.add_timing('AppCache._load_cache() end')
 					return None
-				return [self._build_app_from_attrs(attrs) for attrs in cache]
+				res = [self._build_app_from_attrs(attrs) for attrs in cache]
+				timer.add_timing('AppCache._load_cache() end')
+				return res
 
 	def _archive_modified(self):
 		try:
@@ -279,14 +304,18 @@ class AppCache(_AppCache):
 		return glob(os.path.join(self.get_cache_dir(), '*.ini'))
 
 	def _build_app_from_attrs(self, attrs):
+		timer.add_timing('AppCache._build_app_from_attrs() start')
 		app = self.get_app_class()(attrs, self)
+		timer.add_timing('AppCache._build_app_from_attrs() end')
 		return app
 
 	def _build_app_from_ini(self, ini):
+		timer.add_timing('AppCache._build_app_from_ini() start')
 		app = self.get_app_class().from_ini(ini, locale=self.get_locale(), cache=self)
 		if app:
 			for attr in app._attrs:
 				attr.post_creation(app)
+		timer.add_timing('AppCache._build_app_from_ini() end')
 		return app
 
 	def clear_cache(self):
@@ -319,7 +348,9 @@ class AppCache(_AppCache):
 			self._lock = False
 
 	def get_every_single_app(self):
+		timer.add_timing('AppCache.get_every_single_app() start')
 		with self._locked():
+			timer.add_timing('AppCache.get_every_single_app() got lock')
 			cache_file = self.get_cache_file()
 			if cache_file:
 				archive_modified = self._archive_modified()
@@ -327,8 +358,10 @@ class AppCache(_AppCache):
 				if _cmp_mtimes(archive_modified, self._cache_modified_mtime) == 1:
 					cache_logger.debug('Cache outdated. Need to rebuild')
 					self._cache[:] = []
+			timer.add_timing('AppCache.get_every_single_app() after if cache_file')
 			if not self._cache:
 				cached_apps = self._load_cache()
+				timer.add_timing('AppCache.get_every_single_app() cache loaded')
 				if cached_apps is not None:
 					self._cache = cached_apps
 					cache_logger.debug('Loaded %d apps from cache' % len(self._cache))
@@ -342,6 +375,7 @@ class AppCache(_AppCache):
 						cache_logger.debug('Saved %d apps into cache' % len(self._cache))
 					else:
 						cache_logger.warn('Unable to cache apps')
+		timer.add_timing('AppCache.get_every_single_app() end')
 		return self._cache
 
 	def get_app_class(self):
@@ -364,6 +398,7 @@ class AppCenterCache(_AppCache):
 		self._ratings_cache = None
 
 	def _get_current_ucs_version(self):
+		timer.add_timing('AppCenterCache._get_current_ucs_version() start')
 		try:
 			still_running = False
 			next_version = None
@@ -379,9 +414,11 @@ class AppCenterCache(_AppCache):
 							next_version = value.split('-')[0]
 					if still_running and next_version:
 						cache_logger.debug('Using UCS %s. Apparently an updater is running' % next_version)
+						timer.add_timing('AppCenterCache._get_current_ucs_version() end')
 						return next_version
 		except (EnvironmentError, ValueError) as exc:
 			cache_logger.warn('Could not parse univention-updater.status: %s' % exc)
+		timer.add_timing('AppCenterCache._get_current_ucs_version() end')
 		return ucr_get('version/version')
 
 	def get_app_cache_class(self):
@@ -398,6 +435,7 @@ class AppCenterCache(_AppCache):
 		return urlsplit(self.get_server()).netloc
 
 	def get_ucs_versions(self):
+		timer.add_timing('AppCenterCache.get_ucs_versions() start')
 		if self._ucs_versions is None:
 			cache_file = self.get_cache_file('.ucs.ini')
 			ucs_version = self._get_current_ucs_version()
@@ -408,6 +446,7 @@ class AppCenterCache(_AppCache):
 					break
 			else:
 				self._ucs_versions = [ucs_version]
+		timer.add_timing('AppCenterCache.get_ucs_versions() end')
 		return self._ucs_versions
 
 	def get_locale(self):
@@ -429,8 +468,13 @@ class AppCenterCache(_AppCache):
 		return [self._build_app_cache(ucs_version) for ucs_version in self.get_ucs_versions()]
 
 	def _build_app_cache(self, ucs_version):
+		timer.add_timing('AppCenterCache._build_app_cache() start')
 		cache_dir = self.get_cache_file(ucs_version)
-		return self.get_app_cache_class().build(ucs_version=ucs_version, server=self.get_server(), locale=self.get_locale(), cache_dir=cache_dir)
+		res = self.get_app_cache_class().build(
+			ucs_version=ucs_version, server=self.get_server(), locale=self.get_locale(), cache_dir=cache_dir
+		)
+		timer.add_timing('AppCenterCache._build_app_cache() end')
+		return res
 
 	def get_license_description(self, license_name):
 		if self._license_type_cache is None:
@@ -497,14 +541,17 @@ class CompleteApps(_AppCache):
 		return self._locale
 
 	def get_appcenter_caches(self):
+		timer.add_timing('CompleteApps.get_appcenter_caches() start')
 		server = default_server()
 		cache = self._build_appcenter_cache(server, None)
+		timer.add_timing('CompleteApps.get_appcenter_caches() end')
 		return [cache]
 
 	def _build_appcenter_cache(self, server, ucs_versions):
 		return self.get_appcenter_cache_class()(server=server, ucs_versions=ucs_versions, locale=self.get_locale())
 
 	def get_every_single_app(self):
+		timer.add_timing('CompleteApps.get_every_single_app() start')
 		if self._cache is None:
 			ret = []
 			for app_cache in self.get_appcenter_caches():
@@ -512,10 +559,14 @@ class CompleteApps(_AppCache):
 					if self.include_app(app):
 						ret.append(app)
 			self._cache = ret
+		timer.add_timing('CompleteApps.get_every_single_app() end')
 		return self._cache
 
 	def include_app(self, app):
-		return app.supports_ucs_version()
+		timer.add_timing('CompleteApps.include_app() start')
+		res = app.supports_ucs_version()
+		timer.add_timing('CompleteApps.include_app() end')
+		return res
 
 	def clear_cache(self):
 		self._cache = None

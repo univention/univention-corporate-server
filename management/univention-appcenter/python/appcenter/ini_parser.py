@@ -40,7 +40,7 @@ from copy import deepcopy
 from univention.appcenter.utils import get_locale
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
 from univention.appcenter.log import get_base_logger
-
+from univention.appcenter.app import timer
 
 ini_logger = get_base_logger().getChild('ini')
 
@@ -65,6 +65,7 @@ class ParseError(Exception):
 
 
 def read_ini_file(filename, parser_class=RawConfigParser):
+	timer.add_timing('read_ini_file() start')
 	parser = parser_class()
 	try:
 		with open(filename, 'rb') as f:
@@ -77,8 +78,10 @@ def read_ini_file(filename, parser_class=RawConfigParser):
 		ini_logger.warn('Could not parse %s' % filename)
 		ini_logger.warn(str(exc))
 	else:
+		timer.add_timing('read_ini_file() end')
 		return parser
 	# in case of error return empty parser
+	timer.add_timing('read_ini_file() end')
 	return parser_class()
 
 
