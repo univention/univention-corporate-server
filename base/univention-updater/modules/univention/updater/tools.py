@@ -90,18 +90,11 @@ except AttributeError:
 
 
 def verify_script(script, signature):
-    '''
-    Verify detached signature of script::
-
-        > gpg -a -u 2CBDA4B0 --passphrase-file /etc/archive-keys/ucs3.0.txt -o script.sh.gpg -b script.sh
-
-        >>> verify_script(open("script.sh", "r").read(), open("script.sh.gpg", "r").read())
-
-    :param str script: The scipt text to verify.
-    :param str signature: The detached signature.
-    :return: None or the error output.
-    :rtype: None or str
-    '''
+    """
+    Verify detached signature of script.
+    > gpg -a -u 2CBDA4B0 --passphrase-file /etc/archive-keys/ucs3.0.txt -o script.sh.gpg -b script.sh
+    > verify_script(open("script.sh", "r").read(), open("script.sh.gpg", "r").read())
+    """
     # write signature to temporary file
     sig_fd, sig_name = tempfile.mkstemp()
     os.write(sig_fd, signature)
@@ -329,13 +322,6 @@ class UCSHttpServer(object):
                 return None
 
     def __init__(self, baseurl, user_agent=None, timeout=None):
-        '''
-        Setup URL handler for accessing a UCS repository server.
-
-        :param str baseurl: the base URL.
-        :param str user_agent: optional user agent string.
-        :param int timeout: optional timeout for network access.
-        '''
         self.log.addHandler(NullHandler())
         self.baseurl = baseurl
         self.user_agent = user_agent
@@ -365,11 +351,6 @@ class UCSHttpServer(object):
 
     @classmethod
     def load_credentials(self, ucr):
-        '''
-        Load credentials from UCR.
-
-        :param ConfigRegistry ucr: An UCR instance.
-        '''
         uuid = ucr.get('uuid/license', UUID_NULL)
 
         groups = {}
@@ -407,41 +388,17 @@ class UCSHttpServer(object):
         )
 
     def __add__(self, rel):
-        '''
-        Append relative path component.
-
-        :param str rel: Relative path.
-        :return: A clone of this instance using the new base path.
-        :rtype: UCSHttpServer
-        '''
+        '''Append relative path component.'''
         uri = copy.copy(self)
         uri.baseurl += rel
         return uri
 
     def join(self, rel):
-        '''
-        Return joind URI without credential.
-
-        :param str rel: relative URI.
-        :return: The joined URI.
-        :rtype: str
-        '''
+        '''Return joind URI without credential.'''
         return (self.baseurl + rel).public()
 
     def access(self, repo, filename=None, get=False):
-        '''
-        Access URI and optionally get data.
-
-        :param UCSRepo repo: the URI to access as an instance of :py:class:`UCSRepo`.
-        :param str filename: An optional relative path.
-        :param bool get: Fetch data if True - otheriwse check only.
-        :return: a 3-tuple (code, size, content) or None on errors.
-        :rtype: tuple(int, int, str) or None
-        :raises DownloadError: if the server is unreachable.
-        :raises ValueError: if the credentials use an invalid encoding.
-        :raises ConfigurationError: if a permanent error in the configuration occurrs, e.g. the credentials are invalid or the host is unresolvable.
-        :raises ProxyError: if the HTTP proxy returned an error.
-        '''
+        '''Access URI and optionally get data. Return None on errors.'''
         rel = filename if repo is None else repo.path(filename)
         if self.user_agent:
             UCSHttpServer.opener.addheaders = [('User-agent', self.user_agent)]
@@ -542,11 +499,6 @@ class UCSLocalServer(object):
     '''Access to UCS compatible local update server.'''
 
     def __init__(self, prefix):
-        '''
-        Setup URL handler for accessing a UCS repository server.
-
-        :param str prefix: The local path of the repository.
-        '''
         self.log = logging.getLogger('updater.UCSFile')
         self.log.addHandler(NullHandler())
         prefix = str(prefix).strip('/')
@@ -557,11 +509,6 @@ class UCSLocalServer(object):
 
     @classmethod
     def load_credentials(self, ucr):
-        '''
-        Load credentials from UCR.
-
-        :param ConfigRegistry ucr: An UCR instance.
-        '''
         pass
 
     def __str__(self):
@@ -573,43 +520,19 @@ class UCSLocalServer(object):
         return 'UCSLocalServer(prefix=%r)' % (self.prefix,)
 
     def __add__(self, rel):
-        '''
-        Append relative path component.
-
-        :param str rel: Relative path.
-        :return: A clone of this instance using the new base path.
-        :rtype: UCSLocalServer
-        '''
+        '''Append relative URI.'''
         uri = copy.copy(self)
         uri.prefix += str(rel).lstrip('/')
         return uri
 
     def join(self, rel):
-        '''
-        Return joind URI without credential.
-
-        :param str rel: relative URI.
-        :return: The joined URI.
-        :rtype: str
-        '''
+        '''Return joind URI without credential.'''
         uri = self.__str__()
         uri += str(rel).lstrip('/')
         return uri
 
     def access(self, repo, filename=None, get=False):
-        '''
-        Access URI and optionally get data.
-
-        :param UCSRepo repo: the URI to access as an instance of :py:class:`UCSRepo`.
-        :param str filename: An optional relative path.
-        :param bool get: Fetch data if True - otheriwse check only.
-        :return: a 3-tuple (code, size, content) or None on errors.
-        :rtype: tuple(int, int, str) or None
-        :raises DownloadError: if the server is unreachable.
-        :raises ValueError: if the credentials use an invalid encoding.
-        :raises ConfigurationError: if a permanent error in the configuration occurrs, e.g. the credentials are invalid or the host is unresolvable.
-        :raises ProxyError: if the HTTP proxy returned an error.
-        '''
+        '''Access URI and optionally get data. Return None on errors.'''
         rel = filename if repo is None else repo.path(filename)
         uri = self.join(rel)
         ud.debug(ud.NETWORK, ud.ALL, "updater: %s" % (uri,))
@@ -644,12 +567,10 @@ class UniventionUpdater:
     FN_UPDATER_APTSOURCES_COMPONENT = '/etc/apt/sources.list.d/20_ucs-online-component.list'
 
     def __init__(self, check_access=True):
-        '''
-        Create new updater with settings from UCR.
-
-        :param bool check_access: Check if repository server is reachable on init.
-        :raises ConfigurationError: if configured server is not available immediately.
-        '''
+        """
+        Create new updater with settings from UCS.
+        Throws ConfigurationError when configured server is not available immediately.
+        """
         self.log = logging.getLogger('updater.Updater')
         self.log.addHandler(NullHandler())
         self.check_access = check_access
@@ -752,14 +673,7 @@ class UniventionUpdater:
         '''
         Check if a new patchlevel, minor or major release is available for the given version.
         Components must be available for the same major.minor version.
-
-        :param UCS_Version version: A UCS release version.
-        :param components: A list of component names, which must be available for the next release.
-        :type components: list[str]
-        :param str errorsto: Select method of reporting errors; on of 'stderr', 'exception', 'none'.
-        :returns: The next UCS release or None.
-        :rtype: str or None
-        :raises RequiredComponentError: if a required component is missing
+        errorsto: stderr|exception|none
         '''
         debug = (errorsto == 'stderr')
 
@@ -803,12 +717,12 @@ class UniventionUpdater:
         '''
         Returns a list of all available release updates - the function takes required components into account
         and stops if a required component is missing
-
-        :param ucs_version: starts travelling through available version from version.
-        :type ucs_version: UCS_Version or None
-        :returns: a list of 2-tuple `(versions, blocking_component)`, where `versions` is a UCS release and `blocking_component` is the first missing component blocking the update.
-        :rtype: tuple(list[str], str or None)
-        '''
+        Arguments:
+            ucs_version: starts travelling through available version from version 'ucs_version'
+        Return value: tuple(versions, blocking component)
+            versions: available UCS versions (list of strings)
+            blocking component: None or name of update blocking component
+         '''
 
         if not ucs_version:
             ucs_version = self.current_version
@@ -830,14 +744,7 @@ class UniventionUpdater:
         return result, None
 
     def release_update_available(self, ucs_version=None, errorsto='stderr'):
-        '''
-        Check if an update is available for the ucs_version.
-
-        :param str ucs_version: The UCS release to check.
-        :param str errorsto: Select method of reporting errors; on of 'stderr', 'exception', 'none'.
-        :returns: The next UCS release or None.
-        :rtype: str or None
-        '''
+        '''Check if an update is available for the ucs_version'''
         if not ucs_version:
             ucs_version = self.current_version
 
@@ -846,15 +753,7 @@ class UniventionUpdater:
         return self.get_next_version(UCS_Version(ucs_version), components, errorsto)
 
     def release_update_temporary_sources_list(self, version, components=None):
-        '''
-        Return list of Debian repository statements for the release update including all enabled components.
-
-        :param str version: The UCS release.
-        :param components: A list of required component names or None.
-        :type components: list or None
-        :returns: A list of Debian APT `sources.list` lines.
-        :rtype: list[str]
-        '''
+        '''Return list of Debian repository statements for the release update including all enabled components.'''
         if components is None:
             components = self.get_components()
 
@@ -884,15 +783,9 @@ class UniventionUpdater:
     def get_all_available_security_updates(self):
         '''
         Returns a list of all available security updates for current major.minor version
-        as integer::
-
-            >>> updater.get_all_available_security_updates()
-            [3, 4, 5]
-
-        :returns: A list of security updates.
-        :rtype: list[int]
-
-        .. deprecated:: 3.1
+        as integer
+        > updater.get_all_available_security_updates()
+        [3, 4, 5]
         '''
         result = []
         for sp in xrange(self.security_patchlevel + 1, 100):
@@ -908,13 +801,9 @@ class UniventionUpdater:
     def get_all_available_errata_updates(self):
         '''
         Returns a list of all available errata updates for current major.minor version
-        as integer::
-
-            >>> updater.get_all_available_errata_updates()
-            [3, 4, 5]
-
-        :returns: A list of errata updates.
-        :rtype: list[int]
+        as integer
+        > updater.get_all_available_errata_updates()
+        [3, 4, 5]
         '''
         result = []
         for el in xrange(self.erratalevel + 1, 1000):
@@ -931,11 +820,7 @@ class UniventionUpdater:
         '''
         Returns the errata level for a component and UCS-version
         installed on the system.
-
-        :param str component: The name of the component.
-        :param str version: The UCR release. If no version is given, the current_version is taken.
-        :return: The errata level of the component.
-        :rtype: int
+        If no version is given, the current_version is taken.
         '''
         if version is None:
             version = self.current_version
@@ -945,17 +830,13 @@ class UniventionUpdater:
     def get_all_available_errata_component_updates(self):
         '''
         Returns a list of all available errata updates for current major.minor version
-        as integer::
-
-            >>> updater.get_all_available_errata_component_updates()
-            [
+        as integer
+        > updater.get_all_available_errata_component_updates()
+        [
                 ('component1', {'2.3': [2, 3], '2.4': [5]}),
                 ('component2', {'3.0': [1], '3.1': []}),
                 ('component3', {'3.0': [1]}),
-            ]
-
-        :returns: A list of 2-tuples `(component, dict)`, where `dict` maps each `major.minor` version to a list of vailable patch-level-versions.
-        :rtype: list[str, dict(str, list[int])]
+        ]
         '''
         result = []
         for component in self.get_all_components():
@@ -981,12 +862,6 @@ class UniventionUpdater:
         '''
         Check for the security version for the current version.
         Returns next available security update number (integer) or False if no security update is available.
-
-        :param UCS_Version version: The UCS release to check.
-        :returns: The next security update or False
-        :rtype: int or False
-
-        .. deprecated:: 3.1
         '''
         if version:
             start = end = version
@@ -1001,10 +876,6 @@ class UniventionUpdater:
         '''
         Check for the errata version for the current version.
         Returns next available security update number (integer) or False if no security update is available.
-
-        :param UCS_Version version: The UCS release to check.
-        :returns: The next security update or False
-        :rtype: int or False
         '''
         if version:
             start = end = version
@@ -1017,31 +888,22 @@ class UniventionUpdater:
 
     @property
     def current_version(self):
-        '''
-        Return current (major.minor-patchlevel) version.
-
-        :returns: The current UCS release.
-        :rtype: UCS_Version
-        '''
+        '''Return current (major.minor-patchlevel) version.'''
         return UCS_Version((self.version_major, self.version_minor, self.patchlevel))
 
     def get_ucs_version(self):
-        '''
-        Return current (major.minor-patchlevel) version as string.
-
-        :returns: The current UCS release.
-        :rtype: str
-        '''
+        '''Return current (major.minor-patchlevel) version as string.'''
         return str(self.current_version)
 
     def get_components(self, only_localmirror_enabled=False):
         '''
         Retrieve all enabled components from registry as set().
         By default, only "enabled" components will be returned (repository/online/component/%s=$TRUE).
+        If only_localmirror_enabled is True, then all components with
+        repository/online/component/%s/localmirror=$TRUE will be returned.
 
-        :param bool only_localmirror_enabled: Only the components enabled for local mirroring. If only_localmirror_enabled is True, then all components with `repository/online/component/%s/localmirror=$TRUE` will be returned. If `repository/online/component/%s/localmirror` is not set, then the value of `repository/online/component/%s` is used for backward compatibility.
-        :returns: The set of enabled components.
-        :rtype: set(str)
+        If repository/online/component/%s/localmirror is not set, then the value of
+        repository/online/component/%s is used (backward compatibility).
         '''
         components = set()
         for key, value in self.configRegistry.items():
@@ -1057,12 +919,7 @@ class UniventionUpdater:
         return components
 
     def get_current_components(self):
-        '''
-        Return set() of all components marked as current.
-
-        :returns: Set of component names marked as current.
-        :rtype: set(str)
-        '''
+        '''Return set() of all components marked as current.'''
         all_components = self.get_components()
         components = set()
         for component in all_components:
@@ -1074,12 +931,7 @@ class UniventionUpdater:
         return components
 
     def get_all_components(self):
-        '''
-        Retrieve all configured components from registry as set().
-
-        :returns: Set of component names.
-        :rtype: set(str)
-        '''
+        '''Retrieve all configured components from registry as set().'''
         components = set()
         for key in self.configRegistry.keys():
             if key.startswith('repository/online/component/'):
@@ -1089,13 +941,7 @@ class UniventionUpdater:
         return components
 
     def get_component(self, name):
-        '''
-        Retrieve named component from registry as hash.
-
-        :param str name: The name of the component.
-        :return: A dictionary containsing the component specific settions.
-        :rtype: dict(str, str)
-        '''
+        '''Retrieve named component from registry as hash'''
         component = {
             'name': name,
             'activated': self.configRegistry.is_true('repository/online/component/%s' % name, False)
@@ -1109,23 +955,13 @@ class UniventionUpdater:
 
     def get_current_component_status(self, name):
         """
-        Returns the current status of specified component based on `/etc/apt/sources.list.d/20_ucs-online-component.list`
-
-        :param str name: The name of the component.
-        :returns: One of the strings:
-
-            :py:const:`COMPONENT_DISABLED`
-                component has been disabled via UCR
-            :py:const:`COMPONENT_AVAILABLE`
-                component is enabled and at least one valid repo string has been found in .list file
-            :py:const:`COMPONENT_NOT_FOUND`
-                component is enabled but no valid repo string has been found in .list file
-            :py:const:`COMPONENT_PERMISSION_DENIED`
-                component is enabled but authentication failed
-            :py:const:`COMPONENT_UNKNOWN`
-                component's status is unknown
-
-        :rtype: str
+        returns the current status of specified component based on /etc/apt/sources.list.d/20_ucs-online-component.list
+        return value: <string>
+              COMPONENT_DISABLED              component has been disabled via UCR
+                  COMPONENT_AVAILABLE             component is enabled and at least one valid repo string has been found in .list file
+                  COMPONENT_NOT_FOUND             component is enabled but no valid repo string has been found in .list file
+                  COMPONENT_PERMISSION_DENIED     component is enabled but authentication failed
+                  COMPONENT_UNKNOWN				  component's status is unknown
         """
         if name not in self.get_components():
             return self.COMPONENT_DISABLED
@@ -1153,11 +989,9 @@ class UniventionUpdater:
 
     def get_component_defaultpackage(self, componentname):
         """
-        Returns a set of (meta) package names to be installed for this component.
-
-        :param str componentname: The name of the component.
-        :returns: a set of package names.
-        :rtype: set(str)
+        returns a set of (meta) package names to be installed for this component
+        return value:
+                set([ <string>, ... ])
         """
         lst = set()
         for var in ('defaultpackages', 'defaultpackage'):
@@ -1170,21 +1004,12 @@ class UniventionUpdater:
 
     def is_component_defaultpackage_installed(self, componentname, ignore_invalid_package_names=True):
         """
-        Returns installation status of component's default packages
-
-        :param str componentname: The name of the component.
-        :param bool ignore_invalid_package_names: Ignore invalid package names.
-        :returns: On of the values:
-
-            None
-                no default packages are defined
-            True
-                all default packages are installed
-            False
-                at least one package is not installed
-
-        :rtype: None or bool
-        :raises ValueError: if UCR variable contains invalid package names if ignore_invalid_package_names=False
+        returns installation status of component's default packages
+        return value:
+            None  ==> no default packages are defined
+                True  ==> all default packages are installed
+                False ==> at least one package is not installed
+        function raises an ValueError exception if UCR variable contains invalid package names if ignore_invalid_package_names=False
         """
         pkglist = self.get_component_defaultpackage(componentname)
         if not pkglist:
@@ -1208,22 +1033,12 @@ class UniventionUpdater:
         return len(pkglist) == installed_correctly
 
     def component_update_available(self):
-        """
-        Check if any component has new or upgradeable packages available.
-
-        :returns: True if updates are pending, False otherwise.
-        :rtype: bool
-        """
+        """Check if any component has new or upgradeable packages available."""
         new, upgrade, removed = self.component_update_get_packages()
         return bool(new + upgrade + removed)
 
     def component_update_get_packages(self):
-        """
-        Return tuple with list of (new, upgradeable, removed) packages.
-
-        :return: A 3-tuple (new, upgraded, removed).
-        :rtype: tuple(list[str], list[str], list[str])
-        """
+        """Return tuple with list of (new, upgradeable) packages."""
         p1 = subprocess.Popen(
             ['univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list; LC_ALL=C %s >/dev/null; LC_ALL=C %s' % (cmd_update, cmd_dist_upgrade_sim)],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -1266,32 +1081,13 @@ class UniventionUpdater:
         return (new_packages, upgraded_packages, removed_packages)
 
     def run_dist_upgrade(self):
-        """
-        Run `apt-get dist-upgrade` command.
-
-        :returns: a 3-tuple (return_code, stdout, stderr)
-        :rtype: tuple(int, str, str)
-        """
         cmd = 'export DEBIAN_FRONTEND=noninteractive;%s >>/var/log/univention/updater.log 2>&1' % cmd_dist_upgrade
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         stdout, stderr = p.communicate()
         return p.returncode, stdout, stderr
 
     def _iterate_versions(self, ver, start, end, parts, archs, server):
-        '''
-        Iterate through all versions of repositories between start and end.
-
-        :param UCS_Version ver: An instance of :py:class:`UCS_Version` used for iteration.
-        :param UCS_Version start: The UCS release to start from.
-        :param UCS_Version end: The UCS release where to stop.
-        :param parts: List of `maintained` and/or `unmaintained`.
-        :type parts: list[str]
-        :param archs: List of architectures.
-        :type archs: list[str]
-        :param UCSHttpServer server: The UCS repository server to use.
-        :returns: A iterator throug all UCS releases between `start` and `end` returning `ver`.
-        :raises ProxyError: if the repository server is blocked by the proxy.
-        '''
+        '''Iterate through all versions of repositories between start and end.'''
         self.log.info('Searching %s:%r [%s..%s) in %s and %s', server, ver, start, end, parts, archs)
         (ver.major, ver.minor, ver.patchlevel) = (start.major, start.minor, start.patchlevel)
 
@@ -1347,18 +1143,7 @@ class UniventionUpdater:
                 ver.minor = 0
 
     def _iterate_version_repositories(self, start, end, parts, archs, dists=False):
-        '''
-        Iterate over all UCS releases and return (server, version).
-
-        :param UCS_Version start: The UCS release to start from.
-        :param UCS_Version end: The UCS release where to stop.
-        :param parts: List of `maintained` and/or `unmaintained`.
-        :type parts: list[str]
-        :param archs: List of architectures.
-        :type archs: list[str]
-        :param bool dists: Also return :py:class:`UCSRepoDist` repositories before :py:class:`UCSRepoPool`
-        :returns: A iterator returning 2-tuples (server, ver).
-        '''
+        '''Iterate over all releases and return (server, version).'''
         self.log.info('Searching releases [%s..%s), dists=%s', start, end, dists)
         server = self.server
         if dists:
@@ -1370,20 +1155,7 @@ class UniventionUpdater:
             yield server, ver
 
     def _iterate_security_repositories(self, start, end, parts, archs, hotfixes=False):
-        '''
-        Iterate over all UCS security releases and return (server, version).
-
-        :param UCS_Version start: The UCS release to start from.
-        :param UCS_Version end: The UCS release where to stop.
-        :param parts: List of `maintained` and/or `unmaintained`.
-        :type parts: list[str]
-        :param archs: List of architectures.
-        :type archs: list[str]
-        :param bool hotfixes: Also return hot-fixes repositories.
-        :returns: A iterator returning 2-tuples (server, ver).
-
-        .. deprecated:: 3.0
-        '''
+        '''Iterate over all security releases and return (server, version).'''
         self.log.info('Searching security [%s..%s), hotfix=%s', start, end, hotfixes)
         server = self.server
         struct = UCSRepoPool(prefix=self.server, patch="sec%(patchlevel)d", patchlevel_reset=1)
@@ -1397,19 +1169,7 @@ class UniventionUpdater:
                 yield server, ver
 
     def _iterate_errata_repositories(self, start, end, parts, archs):
-        '''
-        Iterate over all UCS errata releases and return (server, version).
-
-        :param UCS_Version start: The UCS release to start from.
-        :param UCS_Version end: The UCS release where to stop.
-        :param parts: List of `maintained` and/or `unmaintained`.
-        :type parts: list[str]
-        :param archs: List of architectures.
-        :type archs: list[str]
-        :returns: A iterator returning 2-tuples (server, ver).
-
-        .. deprecated:: 3.1
-        '''
+        '''Iterate over all errata releases and return (server, version).'''
         self.log.info('Searching errata [%s..%s)', start, end)
         server = self.server
         struct = UCSRepoPool(prefix=self.server, patch="errata%(patchlevel)d", patchlevel_reset=1, patchlevel_max=999)
@@ -1419,15 +1179,10 @@ class UniventionUpdater:
     def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False, errata_level=None, iterate_errata=True):
         '''
         Iterate over all components and return (server, version).
-
-        :param UCS_Version start: The UCS release to start from.
-        :param UCS_Version end: The UCS release where to stop.
-        :param archs: List of architectures.
-        :type archs: list[str]
-        :param bool for_mirror_list: Use the settings for mirroring.
-        :param bool iterate_errata: Include associated errata component, too.
-        :returns: A iterator returning 2-tuples (server, ver).
+        for_mirror_list shall be True if the code shall iterate over component
+        repositories for mirror.list.
         '''
+
         self.log.info('Searching components %r [%s..%s)', components, start, end)
         # Components are ... different:
         for component in components:
@@ -1488,12 +1243,10 @@ class UniventionUpdater:
         Return a string of Debian repository statements for all UCS versions
         between start and end.
 
-        :param bool clean: Add additional `clean` statements for `apt-mirror`.
-        :param bool dists: Also return :py:class:`UCSRepoDist` repositories before :py:class:`UCSRepoPool`
-        :param UCS_Version start: Start UCS release. Defaults to (major, 0, 0).
-        :param UCS_Version end: End UCS release. Defaults to (major, minor, patchlevel).
-        :returns: A string with APT statement lines.
-        :rtype: str
+        For dists=True, additional entries for the parts below dists/ are also added.
+        With clean=True, online/repository/clean controls if additional clean statements for apt-mirror are added.
+        Default for start: (major, 0, 0)
+        Default for end: (major, minor, patchlevel)
         '''
         if not self.online_repository:
             return ''
@@ -1531,14 +1284,10 @@ class UniventionUpdater:
         Return a string of Debian repository statements for all UCS security
         updates for UCS versions between start and end.
 
-        :param bool clean: Add additional `clean` statements for `apt-mirror`.
-        :param UCS_Version start: Start UCS release. Defaults to (major, minor).
-        :param UCS_Version end: End UCS release. Defaults to (major, minor).
-        :param bool all_security_updates: Return all available instead of all needed statements for security updates.
-        :returns: A string with APT statement lines.
-        :rtype: str
-
-        .. deprecated:: 3.0
+        Default for start: (major, minor)
+        Default for end: (major, minor)
+        With clean=True, online/repository/clean controls if additional clean statements for apt-mirror are added.
+        For all_security_updates=True, all available instead of all needed statements for security updates are returned.
         '''
         # NOTE: Here "patchlevel" is used for the "security patchlevel"
         if not self.online_repository:
@@ -1585,14 +1334,10 @@ class UniventionUpdater:
         Return a string of Debian repository statements for all UCS errata
         updates for UCS versions between start and end.
 
-        :param bool clean: Add additional `clean` statements for `apt-mirror`.
-        :param UCS_Version start: Start UCS release. Defaults to (major, minor).
-        :param UCS_Version end: End UCS release. Defaults to (major, minor).
-        :param bool all_errata_updates: Return all available instead of all needed statements for errata updates.
-        :returns: A string with APT statement lines.
-        :rtype: str
-
-        .. deprecated:: 3.1
+        Default for start: (major, minor)
+        Default for end: (major, minor)
+        With clean=True, online/repository/clean controls if additional clean statements for apt-mirror are added.
+        For all_errata_updates=True, all available instead of all needed statements for errata updates are returned.
         '''
         # NOTE: Here "patchlevel" is used for the "erratalevel"
         if not self.online_repository:
@@ -1643,55 +1388,35 @@ class UniventionUpdater:
 
     def _get_component_baseurl(self, component, for_mirror_list=False):
         """
-        Calculate the base URL for a component.
+        CS = value of repository/online/component/%s/server
+        MS = value of repository/mirror/server
+        RS = value of repository/online/server
+        Y = value is "True"
+        N = value is "False"
+        - = value is unset or no entry
+        ? = value is irrelevant
 
-        :param str component: Name of the component.
-        :param bool for_mirror_list: Use external or local repository.
+                     component  component    component |        R E S U L T
+        isRepoServer enabled    localmirror  server    | sources.list  mirror.list
+        ===============================================|==========================
+            N           N          N           -       |      -             -
+            N           Y          ?           -       |      RS            -
+            N           Y          ?           CS      |      CS            -
+        --------------------------------------------------------------------------
+            Y           N          N           ?       |      -             -
+            Y           N          Y           -       |      -             MS
+            Y           N          Y           CS      |      -             CS
+            Y           Y          N           -       |      MS            -
+            Y           Y          N           CS      |      CS            -
+            Y           Y          Y           -       |      RS            MS
+            Y           Y          Y           CS      |      RS            CS
+        --------------------------------------------------------------------------
+            Y           N =======>(-)          -       |      -             -
+            Y           Y =======>(-)          -       |      RS            MS
+            Y           Y =======>(-)          CS      |      RS            CS
 
-        CS (component server)
-            value of `repository/online/component/%s/server`
-        MS (mirror server)
-            value of `repository/mirror/server`
-        RS (repository server)
-            value of `repository/online/server`
-        \-
-            value is unset or no entry
-        /blank/
-            value is irrelevant
-
-        +-------------+----------+------------+---------+------------+------------+-------------+
-        | UCR configuration                             |Result                   |             |
-        +-------------+----------+------------+---------+------------+------------+             |
-        | isRepoServer|enabled   |localmirror |server   |sources.list mirror.list |             |
-        +=============+==========+============+=========+============+============+=============+
-        | False       |False     |False       |\-       |\-          |\-          |no           |
-        +             +----------+------------+---------+------------+------------+local        |
-        |             |True      |            |\-       |RS          |\-          |repository   |
-        +             +----------+------------+---------+------------+------------+mirror       |
-        |             |True      |            |CS       |CS          |\-          |             |
-        +-------------+----------+------------+---------+------------+------------+-------------+
-        | True        |False     |False       |         |\-          |\-          |local        |
-        +             +----------+------------+---------+------------+------------+repository   |
-        |             |False     |True        |\-       |\-          |MS          |mirror       |
-        +             +----------+------------+---------+------------+------------+             |
-        |             |False     |True        |CS       |\-          |CS          |             |
-        +             +----------+------------+---------+------------+------------+             |
-        |             |True      |False       |\-       |MS          |\-          |             |
-        +             +----------+------------+---------+------------+------------+             |
-        |             |True      |False       |CS       |CS          |\-          |             |
-        +             +----------+------------+---------+------------+------------+             |
-        |             |True      |True        |\-       |RS          |MS          |             |
-        +             +----------+------------+---------+------------+------------+             |
-        |             |True      |True        |CS       |RS          |CS          |             |
-        +             +----------+------------+---------+------------+------------+-------------+
-        |             |False     |\-          |\-       |\-          |\-          |backward     |
-        +             +----------+            +---------+------------+------------+compabibility|
-        |             |True      |            |\-       |RS          |MS          |[1]_         |
-        +             +----------+            +---------+------------+------------+             |
-        |             |True      |            |CS       |RS          |CS          |             |
-        +-------------+----------+------------+---------+------------+------------+-------------+
-
-        .. [1] if `repository/online/component/%s/localmirror` is unset, then the value of `repository/online/component/%s` will be used to achieve backward compatibility.
+        if repository/online/component/%s/localmirror is unset, then the value of
+        repository/online/component/%s will be used to achieve backward compatibility.
         """
 
         c_prefix = 'repository/online/component/%s' % component
@@ -1716,14 +1441,9 @@ class UniventionUpdater:
 
     def _get_component_server(self, component, for_mirror_list=False):
         '''
-        Return :py:class:`UCSHttpServer` for component as configures via UCR.
-
-        :param str component: Name of the component.
-        :param bool for_mirror_list: component entries for `mirror.list` will be returned, otherwise component entries for local `sources.list`.
-        :returns: The repository server for the component.
-        :rtype: UCSHttpServer
-        :raises ConfigurationError: if the configured server is not useable.
+        Return UCSServer as configures via UCR.
         '''
+
         c_url = copy.copy(self._get_component_baseurl(component, for_mirror_list))
         c_url.path = ''
         prefix = self.configRegistry.get('repository/online/component/%s/prefix' % component, '')
@@ -1769,22 +1489,10 @@ class UniventionUpdater:
     def _get_component_versions(self, component, start, end):
         '''
         Return configured versions for component.
-
-        :param str component: Name of the component.
-        :param UCS_Version start: smallest version that shall be returned.
-        :param UCS_Version end: largest version that shall be returned.
-        :returns: A set of UCR release versions for which the component is enabled.
-        :rtype: set(UCS_Version)
-
-        For each component the UCR variable `repository/online/component/%s/version`
-        is evaluated, which can be a space/comma separated combination of the following values:
-
-            current
-                required component; must exist for requested version.
-            /empty/
-                optional component; used when exists for requested version.
-            /major.minor/
-                use exactly this version.
+         'current'=required component; must exist for requested version.
+         ''=optional component; used when exists for requested version.
+         'major.minor'=use exactly this version.
+        Can be a space/comma separated combination of above.
         '''
         str = self.configRegistry.get('repository/online/component/%s/version' % component, '')
         versions = set()
@@ -1806,16 +1514,9 @@ class UniventionUpdater:
 
     def get_component_repositories(self, component, versions, clean=False, debug=True, for_mirror_list=False, errata_level=None):
         '''
-        Return list of Debian repository statements for requested component.
-
-        :param str component: The name of the component.
-        :param versions: A list of UCS releases.
-        :type versions: list[str] or list[UCS_Version].
-        :param bool clean: Add additional `clean` statements for `apt-mirror`.
-        :param bool debug: UNUSED.
-        :param bool for_mirror_list: component entries for `mirror.list` will be returned, otherwise component entries for local `sources.list`.
-        :returns: A list of strings with APT statements.
-        :rtype: list(str)
+        Return array of Debian repository statements for requested component.
+        With clean=True, additional clean statements for apt-mirror are added.
+        Component repositories for mirror.list are returned if for_mirror_list=True.
         '''
         archs = ['all'] + self.architectures
         result = []
@@ -1859,14 +1560,7 @@ class UniventionUpdater:
         return result
 
     def _releases_in_range(self, start=None, end=None):
-        '''
-        Find all $major.$minor releases between start [$major.0] and end [$major.$minor] including.
-
-        :param UCS_Version start: The start UCS release.
-        :param UCS_Version end: The last UCS release.
-        :returns: A list of available UCS releases between `start` and `end`.
-        :rtype: list[UCS_Version]
-        '''
+        '''Find all $major.$minor releases between start [$major.0] and end [$major.$minor] including.'''
         if not start:
             start = UCS_Version((self.version_major, 0, 0))
 
@@ -1897,13 +1591,8 @@ class UniventionUpdater:
     def print_component_repositories(self, clean=False, start=None, end=None, for_mirror_list=False):
         '''
         Return a string of Debian repository statements for all enabled components.
-
-        :param bool clean: Add additional `clean` statements for `apt-mirror` if enabled by UCRV `repository/online/component/%s/clean`.
-        :param UCS_Version start: optional smallest UCS release to return.
-        :param UCS_Version end: optional largest UCS release to return.
-        :param bool for_mirror_list: component entries for `mirror.list` will be returned, otherwise component entries for local `sources.list`.
-        :returns: A string with APT statement lines.
-        :rtype: str
+        With clean=True, repository/online/component/%s/clean controls if additional clean statements for apt-mirror are added.
+        With for_mirror_list=True, component entries for mirror.list will be returned, otherwise component entries for local sources.list.
         '''
         if not self.online_repository:
             return ''
@@ -1928,12 +1617,6 @@ class UniventionUpdater:
         return '\n'.join(result)
 
     def _get_user_agent_string(self):
-        """
-        Return the HTTP user agent string encoding the enabled components.
-
-        :returns: A HTTP user agent string.
-        :rtype: str
-        """
         # USER_AGENT='updater/identify - version/version-version/patchlevel errata version/erratalevel - uuid/system - uuid/license'
         # USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 4c52d2da-d04d-4b05-a593-1974ee851fc8'
         # USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 00000000-0000-0000-0000-000000000000'
@@ -1950,23 +1633,19 @@ class UniventionUpdater:
     @staticmethod
     def call_sh_files(scripts, logname, *args):
         '''
-        Get pre- and postup.sh files and call them in the right order::
+        Get pre- and postup.sh files and call them in the right order.
 
-            u = UniventionUpdater()
-            ver = u.current_version
-            struct = u._iterate_version_repositories(ver, ver, u.parts, u.architectures)
-            struct = u._iterate_component_repositories(['ucd'], ver, ver, u.architectures)
-            sec_ver = UCS_Version((u.version_major, u.version_minor, 1))
-            struct = u._iterate_security_repositories(sec_ver, sec_ver, u.parts, u.architectures)
-            scripts = u.get_sh_files(struct)
-            next_ver = u.get_next_version(u.current_version)
-            for phase, order in u.call_sh_files(scripts, '/var/log/univention/updater.log', next_ver):
-              if (phase, order) == ('update', 'main'):
-                pass
-
-        :param scripts: A generator returing the script to call, e.g. :py:meth:`get_sh_files`
-        :param str logname: The file name of the log file.
-        :param args: Additional arguments to pass through to the scripts.
+        > u = UniventionUpdater()
+        > ver = u.current_version
+        > struct = u._iterate_version_repositories(ver, ver, u.parts, u.architectures)
+        > struct = u._iterate_component_repositories(['ucd'], ver, ver, u.architectures)
+        > sec_ver = UCS_Version((u.version_major, u.version_minor, 1))
+        > struct = u._iterate_security_repositories(sec_ver, sec_ver, u.parts, u.architectures)
+        > scripts = u.get_sh_files(struct)
+        > next_ver = u.get_next_version(u.current_version)
+        > for phase, order in u.call_sh_files(scripts, '/var/log/univention/updater.log', next_ver):
+        >   if (phase, order) == ('update', 'main'):
+        >     ...
         '''
         # create temporary directory for scripts
         tempdir = tempfile.mkdtemp()
@@ -2054,11 +1733,8 @@ class UniventionUpdater:
     def get_sh_files(repositories, verify=False):
         '''
         Return all preup- and postup-scripts of repositories.
-
-        :param repositories: iteratable (server, struct)s
-        :returns: iteratable (server, struct, phase, path, script)
-
-        See :py:meth:`call_sh_files` for an example.
+        repositories: iteratable (server, struct)s
+        Returns: iteratable (server, struct, phase, path, script)
         '''
         for server, struct in repositories:
             for phase in ('preup', 'postup'):
