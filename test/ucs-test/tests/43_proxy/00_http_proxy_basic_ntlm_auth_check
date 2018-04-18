@@ -41,7 +41,7 @@ def checkNTLM(host, passwd, url, http_code):
 
 
 def setAuthVariables(squid, (basic, ntlm)):
-	"""set ucr variables according to the auth states, and restart Squid"""
+	"""set ucr variables according to the auth states, and reconfigure Squid"""
 	if basic:
 		handler_set(['squid/basicauth=yes'])
 	else:
@@ -50,7 +50,7 @@ def setAuthVariables(squid, (basic, ntlm)):
 		handler_set(['squid/ntlmauth=yes'])
 	else:
 		handler_unset(['squid/ntlmauth'])
-	squid.restart()
+	squid.reconfigure()
 
 
 def printHeader(state, passwd, expect_wrong_password):
@@ -87,8 +87,7 @@ def main():
 
 				# Perform the checks
 				checkAuths(host, passwd, url, state, expect_wrong_password)
-
-	squid.restart()
+	squid.reconfigure()
 
 
 if __name__ == '__main__':

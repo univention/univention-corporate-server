@@ -4,8 +4,6 @@
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-squid]
-## versions:
-##  4.0-2: skip
 
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 from essential.simplecurl import SimpleCurl
@@ -48,7 +46,7 @@ def perform_test(test_case):
 		used_value = value
 		used_value2 = "%s%s%s" % (uts.random_string(2), value, uts.random_string(2))
 		if "dstdomain" in acl_type:
-			used_value = "http://download.univention.de"
+			used_value = "http://mail.univention.de"
 			used_value2 = "http://updates.software-univention.de/"
 		sub_case.extend([
 			(permission, expected_response, acl_type, value_type, used_value, value),
@@ -58,7 +56,7 @@ def perform_test(test_case):
 	if value_type == 'substring':
 		used_value = "%s%s%s" % (uts.random_string(2), value, uts.random_string(2))
 		if "dstdomain" in acl_type:
-			used_value = "http://download.univention.de"
+			used_value = "http://mail.univention.de"
 		sub_case.append(
 			(permission, expected_response, acl_type, value_type, used_value, value)
 		)
@@ -73,7 +71,7 @@ def perform_test(test_case):
 	if value_type == 'regex':
 		used_value = "%s%s" % (value[1:-3], uts.random_string(3))
 		if "dstdomain" in acl_type:
-			used_value = "http://download.univention.de"
+			used_value = "http://mail.univention.de"
 		sub_case.append(
 			(permission, expected_response, acl_type, value_type, used_value, value)
 		)
@@ -127,7 +125,7 @@ def do_test(test_case):
 		if 'browser' in acl_type:
 			curl = SimpleCurl(proxy=ucr.get('hostname'), auth=auth, user_agent=used_value)
 
-		url = 'http://download.univention.de'
+		url = 'http://mail.univention.de'
 		if "dstdomain" in acl_type:
 			url = used_value
 
@@ -147,7 +145,7 @@ def set_ucr_variables(name, permission, acl_type, value_type, value):
 	handler_set(['squid/acl/%s/%s/%s/%s=%s' % (name, permission, acl_type, value_type, value),
 				'squid/basicauth=yes'])
 
-	squid.restart()
+	squid.reconfigure()
 
 
 def main():
@@ -178,9 +176,9 @@ def main():
 		# Test dstdomain variable with univention related sites
 		acl_types = ['dstdomain', 'dstdomain-i']
 		values = [
-			'download.univention.de',
-			'download',
-			'^download.univention.de.*$'
+			'mail.univention.de',
+			'mail',
+			'^mail.univention.de.*$'
 		]
 		tests = itertools.product(zip(permissions, responses), acl_types, zip(value_types, values))
 		for i in xrange(itertion_length):
@@ -190,6 +188,7 @@ def main():
 		# Adding network redirection (82.198.197.8:21 <--> 127.0.0.1:60025)
 		with NetworkRedirector() as nethelper:
 			nethelper.add_redirection('82.198.197.8', 21, 60025)
+			nethelper.add_redirection('82.198.197.8', 443, 60025)
 
 			# start http server in a different thread on (127.0.0.1:60025)
 			p = Process(target=startHttpServer, kwargs={'port': 60025})
@@ -216,7 +215,7 @@ def main():
 
 	finally:
 		squid = SimpleSquid()
-		squid.restart()
+		squid.reconfigure()
 
 
 if __name__ == '__main__':

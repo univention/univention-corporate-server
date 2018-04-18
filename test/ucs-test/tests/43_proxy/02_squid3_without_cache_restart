@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Check squid redirecor written to gonfig file
+## desc: Check squid restart without cache
 ## tags: [apptest]
 ## exposure: careful
 ## packages: [univention-squid]

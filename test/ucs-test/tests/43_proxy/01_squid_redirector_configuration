@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Check squid redirector written to gonfig file
+## desc: Check squid redirector written to config file
 ## tags: [apptest]
 ## exposure: safe
 ## bugs: [32429]
