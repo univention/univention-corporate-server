@@ -1,8 +1,8 @@
-univention-updater (13.0.1-41) unstable; urgency=medium
+univention-updater (13.0.1-42) unstable; urgency=medium
 
   * Bug #46847: Fix path to dpkg-statoverride in UCS 4.3
 
- -- Erik Damrose <damrose@univention.de>  Wed, 18 Apr 2018 17:25:54 +0200
+ -- Erik Damrose <damrose@univention.de>  Wed, 18 Apr 2018 17:50:45 +0200
 
 univention-updater (13.0.1-40) unstable; urgency=medium
 
