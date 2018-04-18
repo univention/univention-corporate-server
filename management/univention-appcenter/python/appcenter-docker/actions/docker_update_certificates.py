@@ -48,7 +48,7 @@ class UpdateCertificates(UpdateCertificates, DockerActionMixin):
 		fqdn = hostname + '.' + domain
 		if app.docker:
 			docker = self._get_docker(app)
-			if docker.is_running:
+			if docker.is_running():
 				# update-ca-certificates, debian, ubuntu, appbox
 				if docker.execute('which', 'update-ca-certificates', _logger=self.logfile_logger).returncode == 0:
 					if os.path.isfile('/etc/univention/ssl/ucsCA/CAcert.pem'):
@@ -60,12 +60,6 @@ class UpdateCertificates(UpdateCertificates, DockerActionMixin):
 				if docker.execute('test', '-e', '/etc/univention/ssl/ucsCA/CAcert.pem', _logger=self.logfile_logger).returncode == 0:
 					if os.path.isfile(ca_path):
 						docker.cp_to_container(ca_path, ca_path, _logger=self.logfile_logger)
-				# appbox computer certs
-				if docker.execute('test', '-d', '/etc/univention/ssl/{0}'.format(fqdn), _logger=self.logfile_logger).returncode == 0:
-					for c_file in ['cert.pem', 'private.key']:
-						c_path = '/etc/univention/ssl/{0}/{1}'.format(fqdn, c_file)
-						if os.path.isfile(c_path):
-							docker.cp_to_container(c_path, c_path, _logger=self.logfile_logger)
 			else:
 				self.warn('Could not update certificates for {0}, app is not running'.format(app))
 		super(UpdateCertificates, self).update_certificates(app)
