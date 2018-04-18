@@ -17,3 +17,5 @@ desc: |-
   * Every installation of a Docker Apps adds one machine account. These do not
     count against the license anymore.
 bug: [45581, 44389, 46334, 41372]
+erratum: 13
+announced: 2018-04-18
