@@ -1,3 +1,9 @@
+univention-squid (11.0.0-13) unstable; urgency=medium
+
+  * Bug #34154: utf8 and latin1 basic auth wrapper
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 18 Apr 2018 12:36:45 +0200
+
 univention-squid (11.0.0-12) unstable; urgency=medium
 
   * Bug #45935: squid3 -> squid, update

@@ -18,6 +18,7 @@ Depends: ${misc:Depends},
  python-ipaddr,
  python-crypto,
  python-univention-lib,
+ python-pexpect,
 Recommends: univention-nagios-squid
 Suggests: univention-firewall
 Description: UCS Squid web proxy integration

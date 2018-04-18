@@ -1,0 +1,78 @@
+#!/usr/bin/python2.7
+# -*- coding: utf8 -*-
+# Univention Squid
+#   basic auth encoding wrapper
+#
+# Copyright 2018 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+
+# This is a wrapper script that tries to login using both utf8 and latin-1 encodings
+# utf8 is used by Chrome and Firefox while IE uses latin-1
+
+import pexpect
+import sys
+import urllib
+
+
+def check_user(input__):
+	basic_ldap_auth.sendline(input__)
+	basic_ldap_auth.expect('.*\r\n')  # The input is mirrored
+	basic_ldap_auth.expect('.*\r\n')  # The actual check result
+
+
+def main():
+	try:
+		raw = raw_input()
+	except EOFError:
+		# closed by squid
+		sys.exit(0)
+	check_user(raw)  # maybe it just works
+
+	if basic_ldap_auth.after == 'ERR Success\r\n':
+		raw_unquoted = urllib.unquote(raw)
+		try:
+			# "auth_param basic utf8 off" default -> decode is needed for IE
+			decoded = raw_unquoted.decode('iso-8859-1')
+			check_user(decoded)
+		except UnicodeDecodeError:
+			pass
+	if basic_ldap_auth.after == 'ERR Success\r\n':
+		try:
+			# "auth_param basic utf8 on" -> encode is needed for Chrome/Firefox
+			encoded = raw_unquoted.encode('iso-8859-1')
+			check_user(encoded)
+		except UnicodeDecodeError:
+			pass
+	print(basic_ldap_auth.after)
+	sys.stdout.flush()  # Squid needs a flush
+
+
+if __name__ == '__main__':
+	basic_ldap_auth = pexpect.spawn('/usr/lib/squid/basic_ldap_auth' + ' ' + ' '.join(sys.argv[1:]))
+	while True:
+		main()
