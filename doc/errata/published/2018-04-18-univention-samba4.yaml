@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Adjust firewall to Samba 4.7 dynamic port range (Bug #46809)
 bug: [46809]
+erratum: 15
+announced: 2018-04-18
