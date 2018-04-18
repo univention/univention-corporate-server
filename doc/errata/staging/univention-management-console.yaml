@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-management-console
+fix: 10.0.5-1A~4.3.0.201804181755
+desc: |
+ This update addresses the following issue(s):
+ * Fix umc-server executable permissions when updating the package
+   during system setup.
+bug: [48647]
