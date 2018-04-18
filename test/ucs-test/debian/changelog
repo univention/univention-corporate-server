@@ -1,3 +1,9 @@
+ucs-test (8.0.28-108) unstable; urgency=medium
+
+  * bug #46171: fix typo in 86_selenium/10_product_test_password_change
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 18 Apr 2018 12:54:41 +0200
+
 ucs-test (8.0.28-107) unstable; urgency=medium
 
   * Bug #46741: added 52_s4connector/403rename_computer_object_ad_and_check_case
