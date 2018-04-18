@@ -46,7 +46,7 @@ fi
 
 for prog in $PROGS; do
 	if [ -x "/usr/sbin/$prog" ]; then
-		/usr/sbin/dpkg-statoverride --add root root 0644 "/usr/sbin/$prog" >/dev/null 2>&1
+		/usr/bin/dpkg-statoverride --add root root 0644 "/usr/sbin/$prog" 2>&1
 		/bin/chmod a-x "/usr/sbin/$prog"
 	fi
 done

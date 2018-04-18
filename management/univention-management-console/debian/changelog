@@ -1,3 +1,10 @@
+univention-management-console (10.0.5-1) unstable; urgency=medium
+
+  * Bug #46847: Catch update from previous package versions which cause
+    issues in system setup, and apply settings to avoid those issues
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 18 Apr 2018 17:06:52 +0200
+
 univention-management-console (10.0.4-9) unstable; urgency=medium
 
   * Bug #45599: fix typo
