@@ -5,51 +5,19 @@ scope: ucs_4.2-0-errata4.2-3
 src: mysql-5.5
 fix: 5.5.59-0+deb8u1A~4.2.3.201801251404
 desc: |
+ Multiple security issues have been fixed in MySQL 5.5.57.
+ Since Oracle does not disclose sufficient information to provide backported
+ patches, MySQL is updated to the new release.
+ * https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-58.html
+ * https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-59.html
+ * http://www.oracle.com/technetwork/security-advisory/cpuoct2017-3236626.html
+ * http://www.oracle.com/technetwork/security-advisory/cpujan2018-3236628.html
  This update addresses the following issues:
  * Difficult to exploit vulnerability allows high privileged attacker with
    logon to the infrastructure where MySQL Server executes to compromise MySQL
    Server. Successful attacks of this vulnerability can result in unauthorized
    access to critical data or complete access to all MySQL Server accessible
    data. (CVE-2017-10268)
- * Easily exploitable vulnerability allows low privileged attacker with
-   network access via multiple protocols to compromise MySQL Server.
-   Successful attacks of this vulnerability can result in unauthorized update,
-   insert or delete access to some of MySQL Server accessible data.
-   (CVE-2017-3651)
- * Difficult to exploit vulnerability allows low privileged attacker with
-   network access via multiple protocols to compromise MySQL Server.
-   Successful attacks of this vulnerability can result in unauthorized update,
-   insert or delete access to some of MySQL Server accessible data.
-   (CVE-2017-3653)
- * Difficult to exploit vulnerability allows low privileged attacker with
-   network access via multiple protocols to compromise MySQL Server.
-   Successful attacks of this vulnerability can result in unauthorized update,
-   insert or delete access to some of MySQL Server accessible data as well as
-   unauthorized read access to a subset of MySQL Server accessible data.
-   (CVE-2017-3652)
- * Difficult to exploit vulnerability allows low privileged attacker with
-   network access via multiple protocols to compromise MySQL Connectors.
-   Successful attacks of this vulnerability can result in unauthorized ability
-   to cause a hang or frequently repeatable crash (complete DOS) of MySQL
-   Connectors. Note: The documentation has also been updated for the correct
-   way to use mysql_stmt_close(). Please see:
-   https://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-execute.html,
-   https://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-fetch.html,
-   https://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-close.html,
-   https://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-error.html,
-   https://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-errno.html, and
-   https://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-sqlstate.html.
-   (CVE-2017-3635)
- * Easily exploitable vulnerability allows high privileged attacker with
-   network access via multiple protocols to compromise MySQL Server.
-   Successful attacks of this vulnerability can result in unauthorized ability
-   to cause a hang or frequently repeatable crash (complete DOS) of MySQL
-   Server. (CVE-2017-3641)
- * Difficult to exploit vulnerability allows high privileged attacker with
-   network access via multiple protocols to compromise MySQL Server.
-   Successful attacks of this vulnerability can result in unauthorized ability
-   to cause a hang or frequently repeatable crash (complete DOS) of MySQL
-   Server. (CVE-2017-3648)
  * Easily exploitable vulnerability allows low privileged attacker with
    network access via multiple protocols to compromise MySQL Server.
    Successful attacks of this vulnerability can result in unauthorized ability
@@ -65,13 +33,6 @@ desc: |
    Successful attacks of this vulnerability can result in unauthorized ability
    to cause a hang or frequently repeatable crash (complete DOS) of MySQL
    Server. (CVE-2017-10378)
- * Easily exploitable vulnerability allows low privileged attacker with logon
-   to the infrastructure where MySQL Server executes to compromise MySQL
-   Server. Successful attacks of this vulnerability can result in unauthorized
-   update, insert or delete access to some of MySQL Server accessible data as
-   well as unauthorized read access to a subset of MySQL Server accessible
-   data and unauthorized ability to cause a partial denial of service (partial
-   DOS) of MySQL Server. (CVE-2017-3636)
  * Easily exploitable vulnerability allows low privileged attacker with
    network access via multiple protocols to compromise MySQL Server.
    Successful attacks of this vulnerability can result in unauthorized ability
@@ -101,16 +62,9 @@ desc: |
 bug: [45633]
 cve:
 - CVE-2017-10268
-- CVE-2017-3651
-- CVE-2017-3653
-- CVE-2017-3652
-- CVE-2017-3635
-- CVE-2017-3641
-- CVE-2017-3648
 - CVE-2017-10384
 - CVE-2017-10379
 - CVE-2017-10378
-- CVE-2017-3636
 - CVE-2018-2562
 - CVE-2018-2622
 - CVE-2018-2640
