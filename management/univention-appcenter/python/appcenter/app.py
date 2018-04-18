@@ -1338,10 +1338,10 @@ class App(object):
 	@hard_requirement('install', 'upgrade')
 	def must_have_no_conflicts_packages(self, package_manager):
 		'''The application conflicts with the following packages: %r'''
-		conflict_packages = []
-		for pkgname in self.conflicted_system_packages:
-			if package_manager.is_installed(pkgname):
-				conflict_packages.append(pkgname)
+		conflict_packages = [
+			pkgname for pkgname in self.conflicted_system_packages
+			if package_manager.is_installed(pkgname)
+		]
 		if conflict_packages:
 			return conflict_packages
 		return True
@@ -1362,11 +1362,8 @@ class App(object):
 				if app.is_installed():
 					conflictedapps.add(app.id)
 		# check port conflicts
-		ports = []
-		for i in self.ports_exclusive:
-			ports.append(i)
-		for i in self.ports_redirection:
-			ports.append(i.split(':', 1)[0])
+		ports = list(self.ports_exclusive)
+		ports.extend(i.split(':', 1)[0] for i in self.ports_redirection)
 		for app_id, container_port, host_port in app_ports():
 			if app_id != self.id and str(host_port) in ports:
 				conflictedapps.add(app_id)
@@ -1379,14 +1376,13 @@ class App(object):
 	def must_have_no_unmet_dependencies(self):
 		'''The application requires the following applications: %r'''
 		from univention.appcenter.app_cache import Apps
-		unmet_apps = []
 
 		apps_cache = Apps()
 		# RequiredApps
-		for app in apps_cache.get_all_apps():
-			if app.id in self.required_apps:
-				if not app.is_installed():
-					unmet_apps.append({'id': app.id, 'name': app.name, 'in_domain': False})
+		unmet_apps = [
+			{'id': app.id, 'name': app.name, 'in_domain': False} for app in apps_cache.get_all_apps()
+			if app.id in self.required_apps and not app.is_installed()
+		]
 
 		# Plugin
 		if self.plugin_of:
@@ -1414,14 +1410,13 @@ class App(object):
 		'''The application is required for the following applications
 		to work: %r'''
 		from univention.appcenter.app_cache import Apps
-		depending_apps = []
 
 		apps_cache = Apps()
 		# RequiredApps
-		# RequiredApps
-		for app in apps_cache.get_all_apps():
-			if self.id in app.required_apps and app.is_installed():
-				depending_apps.append({'id': app.id, 'name': app.name})
+		depending_apps = [
+			{'id': app.id, 'name': app.name} for app in apps_cache.get_all_apps()
+			if self.id in app.required_apps and app.is_installed()
+		]
 
 		# Plugin
 		if not self.docker:
@@ -1463,13 +1458,13 @@ class App(object):
 		'''Uninstalling the App will also remove the following plugins:
 		%r'''
 		from univention.appcenter.app_cache import Apps
-		depending_apps = []
 		if self.docker:
-			for app in Apps().get_all_apps():
-				if self.id == app.plugin_of:
-					depending_apps.append({'id': app.id, 'name': app.name})
-		if depending_apps:
-			return depending_apps
+			depending_apps = [
+				{'id': app.id, 'name': app.name} for app in Apps().get_all_apps()
+				if self.id == app.plugin_of
+			]
+			if depending_apps:
+				return depending_apps
 		return True
 
 	@soft_requirement('install', 'upgrade')
@@ -1681,21 +1676,13 @@ class AppManager(object):
 
 	@classmethod
 	def get_all_apps(cls):
-		ret = []
-		ids = set()
-		for app in cls._get_every_single_app():
-			ids.add(app.id)
-		for app_id in sorted(ids):
-			ret.append(cls.find(app_id))
+		ids = set(app.id for app in cls._get_every_single_app())
+		ret = [cls.find(app_id) for app_id in sorted(ids)]
 		return ret
 
 	@classmethod
 	def get_all_locally_installed_apps(cls):
-		ret = []
-		for app in cls._get_every_single_app():
-			if app.is_installed():
-				ret.append(app)
-		return ret
+		return [app for app in cls._get_every_single_app() if app.is_installed()]
 
 	@classmethod
 	def find_by_component_id(cls, component_id):
@@ -1705,11 +1692,7 @@ class AppManager(object):
 
 	@classmethod
 	def get_all_apps_with_id(cls, app_id):
-		ret = []
-		for app in cls._get_every_single_app():
-			if app.id == app_id:
-				ret.append(app)
-		return ret
+		return [app for app in cls._get_every_single_app() if app.id == app_id]
 
 	@classmethod
 	def find(cls, app_id, app_version=None, latest=False):

@@ -66,18 +66,10 @@ class _AppCache(object):
 		raise NotImplementedError()
 
 	def get_all_apps_with_id(self, app_id):
-		ret = []
-		for app in self.get_every_single_app():
-			if app.id == app_id:
-				ret.append(app)
-		return ret
+		return [app for app in self.get_every_single_app() if app.id == app_id]
 
 	def get_all_locally_installed_apps(self):
-		ret = []
-		for app in self.get_every_single_app():
-			if app.is_installed():
-				ret.append(app)
-		return ret
+		return [app for app in self.get_every_single_app() if app.is_installed()]
 
 	def find(self, app_id, app_version=None, latest=False):
 		apps = self.get_all_apps_with_id(app_id)
@@ -434,10 +426,7 @@ class AppCenterCache(_AppCache):
 		return os.path.join(self.get_cache_dir(), fname)
 
 	def get_app_caches(self):
-		ret = []
-		for ucs_version in self.get_ucs_versions():
-			ret.append(self._build_app_cache(ucs_version))
-		return ret
+		return [self._build_app_cache(ucs_version) for ucs_version in self.get_ucs_versions()]
 
 	def _build_app_cache(self, ucs_version):
 		cache_dir = self.get_cache_file(ucs_version)
