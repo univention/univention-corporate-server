@@ -73,17 +73,17 @@ check_ad_takeover_product_test () {
 	# Login am übernommenen Windows-Client mit einem übernommenen Benutzer
 	# GPOs müssen korrekt angewendet werden.
 	# Login am übernommenen Windows-Client als "Domänen\Administrator"
-	python shared-utils/ucs-winrm.py check-applied-gpos --client "$WIN1" --username 'Administrator' --userpwd "$AD_PASSWORD" --domain "$DOMAIN" \
+	python shared-utils/ucs-winrm.py check-applied-gpos --client "$WIN1" --username 'Administrator' --userpwd "$AD_PASSWORD" \
 		--usergpo 'TestGPOUser' --usergpo 'Default Domain Policy' --computergpo 'TestGPOMachine' --computergpo 'Default Domain Policy'
 	for user in 150 3 1000 1500; do
-		python shared-utils/ucs-winrm.py check-applied-gpos --client "$WIN1" --username "benutzer$user" --userpwd 'Univention@99' --domain "$DOMAIN" \
+		python shared-utils/ucs-winrm.py check-applied-gpos --client "$WIN1" --username "benutzer$user" --userpwd 'Univention@99' \
 		--usergpo 'TestGPOUser' --usergpo 'Default Domain Policy'
 	done
 
 	# Passwortänderung muss funktionieren. TODO
-	#local new_password='üUnivention@90809098798'
-	#python shared-utils/ucs-winrm.py change-user-password --domainuser benutzer11 --userpassword "$new_password" --client "$WIN1"
-	#python shared-utils/ucs-winrm.py domain-user-validate-password --domainuser benutzer11 --domainpassword "$new_password" --client "$WIN1"
+	local new_password='üUnivention@90809098798'
+	python shared-utils/ucs-winrm.py change-user-password --domainuser benutzer11 --userpassword "$new_password" --client "$WIN1"
+	python shared-utils/ucs-winrm.py domain-user-validate-password --domainuser benutzer11 --domainpassword "$new_password" --client "$WIN1"
 
 	# Gruppenrichtlinienverwaltung (GPMC) starten, neue GPO anlegen.
 	# AD Benutzer&Computer: Neuen Benutzer anlegen.
