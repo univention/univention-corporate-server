@@ -40,7 +40,7 @@ class ListenerModuleAdapter(object):
 	"""
 	def __init__(self, module_configuration, *args, **kwargs):
 		"""
-		:param module_configuration: ListenerModuleConfiguration object
+		:param ListenerModuleConfiguration module_configuration: configuration object
 		"""
 		self.config = module_configuration
 		self._ldap_cred = dict()
@@ -59,8 +59,10 @@ class ListenerModuleAdapter(object):
 		Returns the variables to be written to the module namespace, that
 		make up the legacy listener module interface.
 
-		:return: dict(name, description, filter_s, attributes, modrdn,
-		handler, initialize, clean, prerun, postrun, setdata, ..)
+		:return: a mapping with keys: `name`, `description`, `filter_s`,
+		`attributes`, `modrdn`, `handler`, `initialize`, `clean`, `prerun`,
+		`postrun`, `setdata`, ..
+		:rtype: dict
 		"""
 		name = self.config.get_name()
 		description = self.config.get_description()
@@ -88,6 +90,16 @@ class ListenerModuleAdapter(object):
 		)
 
 	def _setdata(self, key, value):
+		"""
+		Store LDAP connection credentials passes by the listener (one by one)
+		to the listener module. Passes them to the handler object once they
+		are complete.
+
+		:param str key: one of `basedn`, `basedn`, `bindpw`, `ldapserver`
+		:param str value: credentials
+		:return: None
+		:rtype: None
+		"""
 		self._ldap_cred[key] = value
 		if all(a in self._ldap_cred for a in ('basedn', 'basedn', 'bindpw', 'ldapserver')):
 			self._module_handler._set_ldap_credentials(
@@ -100,11 +112,23 @@ class ListenerModuleAdapter(object):
 
 	@property
 	def _module_handler(self):
+		"""Make sure to not create more than one instance of a listener module."""
 		if not self._module_handler_obj:
 			self._module_handler_obj = self.config.get_listener_module_instance()
 		return self._module_handler_obj
 
 	def _handler(self, dn, new, old, command):
+		"""
+		Function called by listener when a LDAP object matching the filter is
+		created/modified/moved/deleted.
+
+		:param str dn: the objects DN
+		:param dict new: new LDAP objects attributes
+		:param dict old: previous LDAP objects attributes
+		:param str command: LDAP modification type
+		:return: None
+		:rtype: None
+		"""
 		if command == 'r':
 			self._saved_old = old
 			self._saved_old_dn = dn

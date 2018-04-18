@@ -97,7 +97,8 @@ class ListenerModuleConfiguration(object):
 		"""
 		Get the configuration of a listener module.
 
-		:return: dict
+		:return: configuration of listener module
+		:rtype: dict
 		"""
 		res = dict()
 		for key in self.get_configuration_keys():
@@ -116,6 +117,13 @@ class ListenerModuleConfiguration(object):
 
 	@classmethod
 	def get_configuration_keys(cls):
+		"""
+		List of known configuration keys. Subclasses can expand this to support
+		additional attributes.
+
+		:return: list of known configuration keys
+		:rtype: list(str)
+		"""
 		return [
 			'attributes',
 			'description',
@@ -125,15 +133,32 @@ class ListenerModuleConfiguration(object):
 		]
 
 	def get_name(self):
+		"""
+		:return: name of module
+		:rtype: str
+		"""
 		return self.name
 
 	def get_description(self):
+		"""
+		:return: description string of module
+		:rtype: str
+		"""
 		return self.description
 
 	def get_ldap_filter(self):
+		"""
+		:return: LDAP filter of module
+		:rtype: str
+		"""
 		return self.ldap_filter
 
 	def get_attributes(self):
+		"""
+		:return: attributes of matching LDAP objects the module will be
+		notified about if changed
+		:rtype: list(str)
+		"""
 		assert isinstance(self.attributes, list)
 		return self.attributes
 
@@ -141,9 +166,10 @@ class ListenerModuleConfiguration(object):
 		"""
 		Get an instance of the listener module.
 
-		:param args: tuple: passed to __init__ of ListenerModuleHandler
-		:param kwargs: dict: : passed to __init__ of ListenerModuleHandler
+		:param tuple args: passed to __init__ of ListenerModuleHandler
+		:param dict kwargs: : passed to __init__ of ListenerModuleHandler
 		:return: instance of ListenerModuleHandler
+		:rtype: ListenerModuleHandler
 		"""
 		return self.get_listener_module_class()(self, *args, **kwargs)
 
@@ -151,15 +177,17 @@ class ListenerModuleConfiguration(object):
 		"""
 		Get the class to instantiate for a listener module.
 
-		:return: type: subclass of univention.listener.ListenerModuleHandler
+		:return: subclass of univention.listener.ListenerModuleHandler
+		:rtype: ListenerModuleHandler
 		"""
 		return self.listener_module_class
 
 	def get_active(self):
 		"""
-		If this listener module should run. Detemined by the value of
+		If this listener module should run. Determined by the value of
 		listener/module/<name>/deactivate.
 
-		:return: bool
+		:return: whether the listener module should be activated
+		:rtype: bool
 		"""
 		return not listener.configRegistry.is_true('listener/module/{}/deactivate'.format(self.get_name()), False)

@@ -110,9 +110,10 @@ class ListenerModuleHandler(object):
 		"""
 		Called when a new object was created.
 
-		:param dn: str
-		:param new: dict
+		:param str dn: current objects DN
+		:param dict new: new LDAP objects attributes
 		:return: None
+		:rtype: None
 		"""
 		pass
 
@@ -123,11 +124,13 @@ class ListenerModuleHandler(object):
 		A move can be be detected by looking at old_dn. Attributes can be
 		modified during a move.
 
-		:param dn: str
-		:param old: dict
-		:param new: dict
-		:param old_dn: str if object was moved/renamed, None otherwise
+		:param str dn: current objects DN
+		:param dict old: previous LDAP objects attributes
+		:param dict new: new LDAP objects attributes
+		:param old_dn: previous DN if object was moved/renamed, None otherwise
+		:type old_dn: str or None
 		:return: None
+		:rtype: None
 		"""
 		pass
 
@@ -135,9 +138,10 @@ class ListenerModuleHandler(object):
 		"""
 		Called when an object was deleted.
 
-		:param dn: str
-		:param old: dict
+		:param str dn: current objects DN
+		:param dict old: previous LDAP objects attributes
 		:return: None
+		:rtype: None
 		"""
 		pass
 
@@ -147,6 +151,7 @@ class ListenerModuleHandler(object):
 		for the first time or when a resync it triggered.
 
 		:return: None
+		:rtype: None
 		"""
 		pass
 
@@ -156,6 +161,7 @@ class ListenerModuleHandler(object):
 		for the first time or when a resync it triggered.
 
 		:return: None
+		:rtype: None
 		"""
 		pass
 
@@ -167,6 +173,7 @@ class ListenerModuleHandler(object):
 		Use for example to open an LDAP connection.
 
 		:return: None
+		:rtype: None
 		"""
 		pass
 
@@ -178,6 +185,7 @@ class ListenerModuleHandler(object):
 		Use for example to close an LDAP connection.
 
 		:return: None
+		:rtype: None
 		"""
 		pass
 
@@ -185,16 +193,18 @@ class ListenerModuleHandler(object):
 	@contextmanager
 	def as_root():
 		"""
-		Temporarily change the UID of the current process to 0.
+		Contextmanager to temporarily change the effective UID of the current
+		process to 0.
 
 		with self.as_root():
 			do something
 
-		Use listener.setuid(<int|str>) for any other user that root. But be
-		aware that listener.unsetuid() will not be possible afterwards, as
-		that requires root privileges.
+		Use :py:func:`listener.setuid()` for any other user than `root`. But be
+		aware that :py:func:`listener.unsetuid()` will not be possible
+		afterwards, as that requires root privileges.
 
 		:return: None
+		:rtype: None
 		"""
 		old_uid = os.geteuid()
 		try:
@@ -211,11 +221,12 @@ class ListenerModuleHandler(object):
 		Find differences in old and new. Returns dict with keys pointing to old
 		and new values.
 
-		:param old: dict
-		:param new: dict
-		:param keys: list: consider only those keys in comparison
-		:param ignore_metadata: bool: ignore changed metadata attributes (if `keys` is not set)
-		:return: dict: key -> (old[key], new[key])
+		:param dict old: previous LDAP objects attributes
+		:param dict new: new LDAP objects attributes
+		:param list keys: consider only those keys in comparison
+		:param bool ignore_metadata: ignore changed metadata attributes (if `keys` is not set)
+		:return: key -> (old[key], new[key]) mapping
+		:rtype: dict
 		"""
 		res = dict()
 		if keys:
@@ -233,14 +244,15 @@ class ListenerModuleHandler(object):
 		"""
 		Will be called for unhandled exceptions in create/modify/remove.
 
-		:param dn: str
-		:param old: dict
-		:param new: dict
-		:param command: str
-		:param exc_type: exception class
-		:param exc_value: exception object
-		:param exc_traceback: traceback object
+		:param str dn: current objects DN
+		:param dict old: previous LDAP objects attributes
+		:param dict new: new LDAP objects attributes
+		:param str command: LDAP modification type
+		:param Exception exc_type: exception class
+		:param Exception exc_value: exception object
+		:param traceback exc_traceback: traceback object
 		:return: None
+		:rtype: None
 		"""
 		self.logger.exception('dn=%r command=%r\n    old=%r\n    new=%r', dn, command, old, new)
 		raise exc_type, exc_value, exc_traceback
@@ -250,7 +262,8 @@ class ListenerModuleHandler(object):
 		"""
 		LDAP connection object.
 
-		:return: univention.admin.uldap.access object
+		:return: uldap.access object
+		:rtype: univention.admin.uldap.access
 		"""
 		if not self._lo:
 			ldap_credentials = self._get_ldap_credentials()
@@ -266,7 +279,8 @@ class ListenerModuleHandler(object):
 		"""
 		Get a LDAP position object for the base DN (ldap/base).
 
-		:return: univention.admin.uldap.position object
+		:return: uldap.position object
+		:rtype: univention.admin.uldap.position
 		"""
 		if not self._po:
 			self._po = position(self.lo.base)
@@ -276,7 +290,8 @@ class ListenerModuleHandler(object):
 		"""
 		Get the LDAP credentials received through setdata().
 
-		:return: dict: the LDAP credentials
+		:return: the LDAP credentials
+		:rtype: dict(str, str)
 		"""
 		return self._ldap_credentials
 
@@ -286,11 +301,12 @@ class ListenerModuleHandler(object):
 		necessary to manually run this method. The listener will automatically
 		run it at startup.
 
-		:param base: str
-		:param binddn: str
-		:param bindpw: str
-		:param host: str
+		:param str base: base DN
+		:param str binddn: bind DB
+		:param str bindpw: bind password
+		:param str host: LDAP server
 		:return: None
+		:rtype: None
 		"""
 		old_credentials = self._ldap_credentials
 		self._ldap_credentials = dict(
@@ -311,7 +327,8 @@ class ListenerModuleHandler(object):
 		a subclass of ListenerModuleConfiguration to change the returned
 		object type.
 
-		:return: ListenerModuleConfiguration object
+		:return: configuration object
+		:rtype: ListenerModuleConfiguration
 		"""
 		try:
 			conf_class = cls.Configuration
@@ -352,7 +369,8 @@ class ListenerModuleHandler(object):
 		"""
 		Is this a listener module?
 
-		:return: bool: True id the file is in /usr/lib/univention-directory-listener.
+		:return: True id the file is in /usr/lib/univention-directory-listener.
+		:rtype: bool
 		"""
 		try:
 			path = inspect.getfile(cls)

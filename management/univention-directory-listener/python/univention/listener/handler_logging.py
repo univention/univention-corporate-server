@@ -56,6 +56,12 @@ __syslog_opened = False
 
 
 class UniFileHandler(TimedRotatingFileHandler):
+	"""
+	Used by listener modules using the :py:mod:`univention.listener` API to
+	write log files below `/var/log/univention/listener_log/`.
+	Configuration can be done through the `handler_kwargs` argument of
+	:py:func:`get_listener_logger`.
+	"""
 	_listener_uid = pwd.getpwnam('listener').pw_uid
 	_adm_gid = grp.getgrnam('adm').gr_gid
 
@@ -76,6 +82,11 @@ class UniFileHandler(TimedRotatingFileHandler):
 
 
 class ModuleHandler(logging.Handler):
+	"""
+	Used by listener modules using the :py:mod:`univention.listener` API to
+	write log messages through :py:mod:`univention.debug` to
+	`/var/log/univention/listener.log`
+	"""
 	LOGGING_TO_UDEBUG = dict(
 		CRITICAL=ud.ERROR,
 		ERROR=ud.ERROR,
@@ -147,6 +158,16 @@ listener_module_root_logger.setLevel(getattr(logging, _listener_debug_level_str)
 
 
 def get_logger(name, path=None):
+	"""
+	Get a logging instance. Caching wrapper for
+	:py:func:`get_listener_logger()`.
+
+	:param str name: name of the logger instance will be <root loggers name>.name
+	:param str path: path to log file to create. If unset will be
+	`/var/log/univention/listener_modules/<name>.log`.
+	:return: a python logging object
+	:rtype: logging.Logger
+	"""
 	if name not in _logger_cache:
 		file_name = name.replace('/', '_')
 		logger_name = name.replace('.', '_')
@@ -173,8 +194,14 @@ def get_logger(name, path=None):
 
 
 def calculate_loglevel(name):
-	# get the higher of listener/debug/level and listener/module/<name>/debug/level
-	# which is the lower log level
+	"""
+	Returns the higher of listener/debug/level and listener/module/<name>/debug/level
+	which is the lower log level.
+
+	:param str name: name of logger instance
+	:return: log level
+	:rtype: int
+	"""
 	listener_module_debug_level = _get_ucr_int('listener/module/{}/debug/level'.format(name), 2)
 	# 0 <= ucr level <= 4
 	return UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL[min(4, max(0, _listener_debug_level, listener_module_debug_level))]
@@ -200,18 +227,19 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
 	* Using custom handler and formatter classes is possible by configuring
 	the 'cls' key of handler_kwargs and formatter_kwargs.
 
-	:param name: str: name of the logger instance will be <root loggers name>.name
-	:param level: str: loglevel (DEBUG, INFO etc) or if not set it will be chosen
+	:param str name: name of the logger instance will be <root loggers name>.name
+	:param str level: loglevel (DEBUG, INFO etc) or if not set it will be chosen
 	automatically (see above)
-	:param target: str (file path)
-	:param handler_kwargs: dict: will be passed to the handlers constructor.
+	:param str target: (file path)
+	:param dict handler_kwargs: will be passed to the handlers constructor.
 	It cannot be used to modify a handler, as it is only used at creation time.
 	If it has a key 'cls' it will be used as handler instead of UniFileHandler
 	or UniStreamHandler. It should be a subclass of one of those!
-	:param formatter_kwargs: dict: will be passed to the formatters constructor,
+	:param dict formatter_kwargs: will be passed to the formatters constructor,
 	if it has a key 'cls' it will be used to create a formatter instead of
 	logging.Formatter.
 	:return: a python logging object
+	:rtype: logging.Logger
 	"""
 	assert isinstance(filename, basestring)
 	assert isinstance(name, basestring)
@@ -267,6 +295,7 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
 	if _listener_module_handler not in listener_module_root_logger.handlers:
 		listener_module_root_logger.addHandler(_listener_module_handler)
 	return _logger
+
 
 def _log_to_syslog(level, msg):
 	global __syslog_opened
