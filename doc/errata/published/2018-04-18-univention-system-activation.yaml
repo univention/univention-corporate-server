@@ -9,3 +9,5 @@ desc: |
  * A link pointing to the Univention Privacy Policy
    has been added to the UCS activation process.
 bug: [46742]
+erratum: 19
+announced: 2018-04-18
