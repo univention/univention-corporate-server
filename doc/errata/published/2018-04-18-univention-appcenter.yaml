@@ -14,3 +14,5 @@ desc: |-
   * The UCR variables ldap/base and ldap/server/.* are passed to Docker Apps.
   * File permissions for /etc/machine.secret in app containers have been fixed.
 bug: [46742, 46752, 45670, 46779, 46823]
+erratum: 16
+announced: 2018-04-18
