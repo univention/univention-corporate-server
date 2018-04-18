@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Preserve case in DN during move sync from ucs to samba.
 bug: [46741]
+erratum: 14
+announced: 2018-04-18
