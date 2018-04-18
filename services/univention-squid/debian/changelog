@@ -1,6 +1,7 @@
 univention-squid (11.0.0-13) unstable; urgency=medium
 
   * Bug #34154: utf8 and latin1 basic auth wrapper
+  * Bug #46567: remove obsolete 'hierarchy_stoplist' directive
 
  -- Jürn Brodersen <brodersen@univention.de>  Wed, 18 Apr 2018 12:36:45 +0200
 
