@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-#
-# Univention Debug2
-#  debug2.py
-#
+"""
+Python native Univention debugging library.
+
+See :py:mod:`univention.debug` for an alternative being a wrapper for the C
+implementation.
+"""
 # Copyright 2008-2018 Univention GmbH
 #
 # http://www.univention.de/
@@ -108,6 +110,14 @@ for key in _map_id_old2new.values():
 
 
 def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
+	"""
+	Initialize debugging library for logging to 'logfile', forcing 'flush' and tracing 'function's.
+
+	:param str logfilename:  name of the logfile, or 'stderr', or 'stdout'.
+	:param bool do_flush: force flushing of messages (True).
+	:param bool enable_function: enable (True) or disable (False) function tracing.
+	:param bool enable_syslog: enable (True) or disable (False) logging to SysLog.
+	"""
 	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 
 	_logfilename = logfilename
@@ -171,12 +181,21 @@ def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 
 
 def reopen():
+	"""
+	Close and re-open the debug logfile.
+	"""
 	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 	logging.getLogger('MAIN').log(100, 'DEBUG_REINIT')
 	init(_logfilename, _do_flush, _enable_function, _enable_syslog)
 
 
 def set_level(id, level):
+	"""
+	Set minimum required severity 'level' for facility 'id'.
+
+	:param int id: ID of the category, e.g. MAIN, LDAP, USERS, ...
+	:param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL
+	"""
 	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 	new_id = _map_id_old2new.get(id, 'MAIN')
 	if level > ALL:
@@ -188,11 +207,24 @@ def set_level(id, level):
 
 
 def set_function(activated):
+	"""
+	Enable or disable the logging of function begins and ends.
+
+	:param bool activated: enable (True) or disable (False) function tracing.
+	"""
 	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 	_enable_function = activated
 
 
 def debug(id, level, msg, utf8=True):
+	"""
+	Log message 'message' of severity 'level' to facility 'category'.
+
+	:param int id: ID of the category, e.g. MAIN, LDAP, USERS, ...
+	:param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL
+	:param str msg: The message to log
+	:param bool utf8: Assume the message is UTF-8 encoded.
+	"""
 	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 	new_id = _map_id_old2new.get(id, 'MAIN')
 	new_level = _map_lvl_old2new[level]
@@ -208,6 +240,12 @@ def debug(id, level, msg, utf8=True):
 class function:
 
 	def __init__(self, text, utf8=True):
+		"""
+		Log the begin of function 'function'.
+
+		:param str text: name of the function starting.
+		:param bool utf8: Assume the message is UTF-8 encoded.
+		"""
 		global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 		self.text = text
 		if _enable_function:
@@ -219,6 +257,9 @@ class function:
 						handler.flush()
 
 	def __del__(self):
+		"""
+		Log the end of function.
+		"""
 		global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 		if _enable_function:
 			logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_END   : ' + self.text)
