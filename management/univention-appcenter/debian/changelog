@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-38) unstable; urgency=medium
+
+  * Bug #46789: certificate management
+
+ -- Felix Botner <botner@univention.de>  Thu, 19 Apr 2018 14:43:20 +0200
+
 univention-appcenter (7.0.1-37) unstable; urgency=medium
 
   * Bug #46823: fix machine.secret permission in container
@@ -12,7 +18,7 @@ univention-appcenter (7.0.1-36) unstable; urgency=medium
 
 univention-appcenter (7.0.1-35) unstable; urgency=medium
 
-  * Bug #46779: Pass UCRVs ldap/server/.* to Docker Containers 
+  * Bug #46779: Pass UCRVs ldap/server/.* to Docker Containers
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 10 Apr 2018 20:18:56 +0200
 
