@@ -300,6 +300,7 @@ property_descriptions = {
 		identifies=False,
 		show_in_lists=True,
 		default='0',
+		prevent_umc_default_popup=True,
 	),
 	'unlockTime': univention.admin.property(
 		short_description=_('Lockout till'),
@@ -698,7 +699,8 @@ property_descriptions = {
 		dontsearch=True,
 		may_change=True,
 		identifies=False,
-		default='<username>'
+		default='<username>',
+		prevent_umc_default_popup=True,
 	),
 	'sambaUserWorkstations': univention.admin.property(
 		short_description=_('Allow the authentication only on this Microsoft Windows host'),
