@@ -136,7 +136,7 @@ def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 	:param bool enable_syslog: enable (True) or disable (False) logging to SysLog.
 	:returns: output file or None.
 	"""
-	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
+	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog
 
 	result = None
 	_logfilename = logfilename
@@ -216,7 +216,6 @@ def reopen():
 	"""
 	Close and re-open the debug logfile.
 	"""
-	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 	logging.getLogger('MAIN').log(100, 'DEBUG_REINIT')
 	init(_logfilename, _do_flush, _enable_function, _enable_syslog)
 
@@ -228,7 +227,6 @@ def set_level(id, level):
 	:param int id: ID of the category, e.g. MAIN, LDAP, USERS, ...
 	:param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL
 	"""
-	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 	new_id = _map_id_old2new.get(id, 'MAIN')
 	if level > ALL:
 		level = ALL
@@ -255,7 +253,7 @@ def set_function(activated):
 
 	:param bool activated: enable (True) or disable (False) function tracing.
 	"""
-	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
+	global _enable_function
 	_enable_function = activated
 
 
@@ -268,7 +266,6 @@ def debug(id, level, msg, utf8=True):
 	:param str msg: The message to log
 	:param bool utf8: Assume the message is UTF-8 encoded.
 	"""
-	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 	new_id = _map_id_old2new.get(id, 'MAIN')
 	if level <= _logger_level[new_id]:
 		new_level = _map_lvl_old2new[level]
@@ -289,7 +286,6 @@ class function(object):
 		:param str text: name of the function starting.
 		:param bool utf8: Assume the message is UTF-8 encoded.
 		"""
-		global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 		self.text = text
 		if _enable_function:
 			logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_BEGIN : ' + self.text)
@@ -303,7 +299,6 @@ class function(object):
 		"""
 		Log the end of function.
 		"""
-		global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 		if _enable_function:
 			logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_END   : ' + self.text)
 			# flush if requested
