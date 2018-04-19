@@ -92,6 +92,7 @@ class Install(InstallRemoveUpgrade):
 				self.percentage = 80
 				self._call_join_script(app, args)
 				ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})
+				self._update_certificates(app, args)
 			else:
 				raise InstallFailed()
 

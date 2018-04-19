@@ -378,7 +378,9 @@ class Docker(object):
 		return dockerd_logs(logger=self.logger)
 
 	def cp_to_container(self, src, dest, **kwargs):
-		return docker_cp(src, self.container + ':' + dest, logger=self.logger, **kwargs)
+		logger = kwargs.pop('_logger', self.logger)
+		return docker_cp(src, self.container + ':' + dest, logger=logger, **kwargs)
 
 	def cp_from_container(self, src, dest, **kwargs):
-		return docker_cp(self.container + ':' + src, dest, logger=self.logger, **kwargs)
+		logger = kwargs.pop('_logger', self.logger)
+		return docker_cp(self.container + ':' + src, dest, logger=logger, **kwargs)
