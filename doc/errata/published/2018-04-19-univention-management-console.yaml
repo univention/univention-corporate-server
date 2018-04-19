@@ -9,3 +9,5 @@ desc: |
  * Fix umc-server executable permissions when updating the package
    during system setup.
 bug: [46847]
+erratum: 21
+announced: 2018-04-19
