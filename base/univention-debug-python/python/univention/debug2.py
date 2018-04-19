@@ -228,6 +228,18 @@ def set_level(id, level):
 	_logger_level[new_id] = level
 
 
+def get_level(id):
+	"""
+	Get minimum required severity for facility 'category'.
+
+	:param int id: ID of the category, e.g. MAIN, LDAP, USERS, ...
+	:return: Return debug level of category.
+	:rtype: int
+	"""
+	new_id = _map_id_old2new.get(id, 'MAIN')
+	return _logger_level[new_id]
+
+
 def set_function(activated):
 	"""
 	Enable or disable the logging of function begins and ends.
