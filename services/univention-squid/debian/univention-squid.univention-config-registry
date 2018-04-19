@@ -10,6 +10,8 @@ Variables: squid/contentscan
 Variables: squid/ntlmauth
 Variables: squid/basicauth
 Variables: squid/basicauth/children
+Variables: squid/basicauth/encoding_wrapper
+Variables: squid/basicauth/utf8
 Variables: squid/allowfrom
 Variables: squid/allow/localnet
 Variables: squid/parent/host

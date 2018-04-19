@@ -46,6 +46,18 @@ Description[en]=The maximum amount of authentication processes for LDAP authenti
 Type=int
 Categories=service-webproxy
 
+[squid/basicauth/encoding_wrapper]
+Description[de]=Internet Explorer sendet Login Daten latin-1 encodiert, Firefox und Chrome senden sie utf-8 encodiert. Dies führt zu Problemen bei Passwörten mit Zeichen ausserhalb des ASCII Raumes. Ist diese Variable gesetzt testet squid den Login sowohl mit latin-1 als auch mit utf-8 encodierung.
+Description[en]=Internet Explorer sends login data latin-1 encoded. Firefox and Chrome are sending them utf-8 encoded. This is a problem if password contain non ASCII characters. If this variable is set squid is testing the login both latin-1 and utf-8 encoded.
+Type=bool
+
+Categories=service-webproxy
+[squid/basicauth/utf8]
+Description[de]=Ist diese Variable gesetzt, funktionieren Passwörtern mit Zeichen ausserhalb des ASCII Raumes im Internet Explorer, jedoch nicht mehr in Firefox und Chrome. Diese Variable hat keine Auswirkung auf Funktion von "squid/basicauth/encoding_wrapper".
+Description[en]=If this variable is set passwords with non ASCII characters work in Internet Explorer but not in Firefox and Chrome. This variable has no effect on the function of "squid/basicauth/encoding_wrapper".
+Type=bool
+Categories=service-webproxy
+
 [squid/auth/allowed_groups]
 Description[de]=Mit dieser Variable kann der Proxy-Zugriff auf eine oder mehrere Gruppen beschränkt werden. Bei Angabe mehrerer Gruppen sind diese durch Semikolon zu trennen. Ist diese Variable leer oder nicht gesetzt, können alle Benutzer auf den Proxy zugreifen.
 Description[en]=This variable can be used to limit the proxy access to one or several groups. If several groups are specified, they must be separated by semicolons. If this variable is empty or unset, all users can access the proxy.

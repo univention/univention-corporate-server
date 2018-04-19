@@ -60,7 +60,8 @@ ucr set squid/transparentproxy?false \
 	squid/cache/directory?/var/spool/squid \
 	squid/cache/size?512 \
 	squid/cache/l1_size?16 \
-	squid/cache/l2_size?256
+	squid/cache/l2_size?256 \
+	squid/basicauth/encoding_wrapper?true
 
 invoke-rc.d squid restart
 
