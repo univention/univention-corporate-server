@@ -9,3 +9,5 @@ desc: |
  * Fix the path to the dpkg-statoverride tool which is called
    during system setup.
 bug: [46847]
+erratum: 20
+announced: 2018-04-19
