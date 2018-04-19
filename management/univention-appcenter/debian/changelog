@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-39) unstable; urgency=medium
+
+  * Bug #46789: certificate management
+
+ -- Felix Botner <botner@univention.de>  Thu, 19 Apr 2018 17:31:31 +0200
+
 univention-appcenter (7.0.1-38) unstable; urgency=medium
 
   * Bug #46789: certificate management
