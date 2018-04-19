@@ -22,15 +22,21 @@ def get_basic_auth_header(base64_encoded_creds):
 
 
 def get_base64_encoded_creds(username, password, encoding):
-	return base64.b64encode('{}:{}'.format(username, password).decode(encoding))
+	return base64.b64encode('{}:{}'.format(username, password).encode(encoding))
 
 
 def check_proxy(user, encoding):
-	url = 'http://www.univention.de'
-	credentials = get_base64_encoded_creds(user['username'], user['password'], encoding)
-	basic_auth_header = get_basic_auth_header(credentials)
 	print('Now checking encoding: {}'.format(encoding))
 	print('Username: {}, Password: {}'.format(user['username'], user['password']))
+	url = 'http://www.univention.de'
+	try:
+		credentials = get_base64_encoded_creds(user['username'], user['password'], encoding)
+	except UnicodeEncodeError:
+		print("Warning can't encode username or passwrd")
+		print("IE would just send a question mark. Nothing we can do. Pass this test.")
+		print('##########################')
+		return
+	basic_auth_header = get_basic_auth_header(credentials)
 	print('Using credentials: {}'.format(credentials))
 	subprocess.check_call([
 		'curl',
@@ -77,6 +83,7 @@ def main():
 				# Login at proxy failed as expected
 				pass
 		print('Success: No login possible wit wrong password')
+		print('##########################')
 
 	squid.reconfigure()
 

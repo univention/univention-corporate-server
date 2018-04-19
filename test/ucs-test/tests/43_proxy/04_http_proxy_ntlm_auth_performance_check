@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: http-proxy-ntlm-auth-perfomance-check (DISABLED fails regularly)
+## desc: http-proxy-ntlm-auth-perfomance-check
 ## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave]
 ## tags: [apptest]
 ## exposure: dangerous
