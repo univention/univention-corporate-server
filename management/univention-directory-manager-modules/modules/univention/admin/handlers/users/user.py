@@ -2324,7 +2324,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 			if not self['homeShare'] or not share['host'] or not share['path']:
 				if 'automount' not in self.oldattr.get('objectClass', []):
-					ml.append(('objectClass', 'automount', ''))
+					ml.append(('objectClass', '', 'automount'))
 				am_old = self.oldattr.get('automountInformation', [''])[0]
 				if am_old:
 					ml.append(('automountInformation', am_old, ''))
