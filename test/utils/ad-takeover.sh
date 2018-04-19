@@ -79,16 +79,28 @@ check_ad_takeover_product_test () {
 		python shared-utils/ucs-winrm.py check-applied-gpos --client "$WIN1" --username "benutzer$user" --userpwd 'Univention@99' \
 		--usergpo 'TestGPOUser' --usergpo 'Default Domain Policy'
 	done
+	# TODO check ucs
 
-	# Passwortänderung muss funktionieren. TODO
+	# Passwortänderung muss funktionieren
 	local new_password='üUnivention@90809098798'
 	python shared-utils/ucs-winrm.py change-user-password --domainuser benutzer11 --userpassword "$new_password" --client "$WIN1"
 	python shared-utils/ucs-winrm.py domain-user-validate-password --domainuser benutzer11 --domainpassword "$new_password" --client "$WIN1"
+	# TODO check ucs
 
 	# Gruppenrichtlinienverwaltung (GPMC) starten, neue GPO anlegen.
+	# Name des Windows-Clients ändern, dann reboot
+	python shared-utils/ucs-winrm.py create-gpo --name NewGPO --comment "testing new GPO in domain" --client "$WIN1" --credssp
+	python shared-utils/ucs-winrm.py link-gpo --name NewGPO --target "$LDAP_BASE" --client "$WIN1" --credssp
+	python shared-utils/ucs-winrm.py run-ps --client "$WIN1" --credssp \
+		--cmd 'set-GPPrefRegistryValue -Name NewGPO -Context User -key "HKCU\Environment" -ValueName NewGPO -Type String -value NewGPO -Action Update' --client "$WIN1" --credssp
+	python shared-utils/ucs-winrm.py rename-computer --name mycom --domainmode --credssp --client "$WIN1"
 	# AD Benutzer&Computer: Neuen Benutzer anlegen.
-	# Name des Windows-Clients ändern, dann reboot, Client-Anmeldung als neuer Benutzer: GPO Auswertung OK?
-	# TODO
+	# Client-Anmeldung als neuer Benutzer: GPO Auswertung OK?
+	python shared-utils/ucs-winrm.py create-user --user-name "new1" --directory-entry --client "$WIN1" --credssp --user-password "Univention@99"
+	python shared-utils/ucs-winrm.py check-applied-gpos --client "$WIN1" --username 'new1' --userpwd "Univention@99" \
+		--usergpo 'TestGPOUser' --usergpo 'Default Domain Policy' --usergpo 'NewGPO' \
+		--computergpo 'TestGPOMachine' --computergpo 'Default Domain Policy'
+	# TODO check ucs
 
 	# Login an UMC als weiteres Mitglied der AD-Gruppe "Domain Admins" / "Domänen Administratoren".
 	# TODO
@@ -96,8 +108,13 @@ check_ad_takeover_product_test () {
 	# Anlegen eines neuen Benutzers per UMC, Anmeldung mit dem neuen Benutzer am Windows Client
 	# TODO
 
-	# Joinen eines weiteren Windows Clients in die (UCS-)Domäne, Anmeldung als übernommener Benutzer
-	python shared-utils/ucs-winrm.py domain-join --dnsserver "$AD" --client "$WIN2" --user "$WIN2_ADMIN" --password "$WIN2_PASSWORD" --domainpassword "$AD_PASSWORD" --domainuser "$AD_ADMIN"
+	# Joinen eines weiteren Windows Clients in die (UCS-)Domäne
+	python shared-utils/ucs-winrm.py domain-join --dnsserver "$UCS" --client "$WIN2" --user "$WIN2_ADMIN" --password "$WIN2_PASSWORD" --domainpassword "$AD_PASSWORD" --domainuser "$AD_ADMIN"
+
+	# Anmeldung als übernommener Benutzer, GPO's?
+	python shared-utils/ucs-winrm.py check-applied-gpos --client "$WIN2" --username 'benutzer13' --userpwd "Univention@99" \
+		--usergpo 'TestGPOUser' --usergpo 'Default Domain Policy' --usergpo 'NewGPO' \
+		--computergpo 'TestGPOMachine' --computergpo 'Default Domain Policy'
 
  #. ad-takeover.sh; check_GPO TestGPO
 
