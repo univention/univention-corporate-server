@@ -39,14 +39,16 @@ def run(_umc_instance):
 	modules.update()
 	ucs_hosts = []
 	roles = ['computers/domaincontroller_backup',
-		'computers/domaincontroller_master',
-		'computers/domaincontroller_slave',
-		'computers/memberserver']
+			 'computers/domaincontroller_master',
+			 'computers/domaincontroller_slave',
+			 'computers/memberserver']
 	for role in roles:
 		udm_obj = modules.get(role)
 		modules.init(lo, position, udm_obj)
 		for host in udm_obj.lookup(None, lo, 'cn=*'):
 			if 'docker' in host.oldattr.get('univentionObjectFlag', []):
+				continue
+			if not host.get('ip'):
 				continue
 			host.open()
 			ucs_hosts.append(host['name'])

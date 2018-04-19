@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-27) unstable; urgency=medium
+
+  * Bug #43403: disable ssh test for computer objects without ip
+
+ -- Jannik Ahlers <ahlers@univention.de>  Thu, 19 Apr 2018 12:50:44 +0200
+
 univention-management-console-module-diagnostic (4.0.0-26) unstable; urgency=medium
 
   * Bug #46166: fix broken links to univention support database
