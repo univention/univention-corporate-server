@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * Fix the path to the dpkg-statoverride tool which is called
    during system setup.
-bug: [48647]
+bug: [46847]
