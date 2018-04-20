@@ -30,6 +30,7 @@
 $ucs-green ?= #7ab51d
 $text-color ?= #282828
 $header-color ?= #787878
+$header-height = 48px
 
 .umc
 	min-height: 100%
@@ -52,7 +53,7 @@ $header-color ?= #787878
 	/* styling of headers and page */
 	.umcHeader,
 	.umcHeader .umcHeaderLeft
-		height: 42px
+		height: $header-height
 
 	.umcHeader
 		background-color: $header-color
@@ -323,4 +324,47 @@ $header-color ?= #787878
 		overflow: auto
 		height: 350px !important
 
+	.privacyStatementOverlay
+		position: absolute
+		top: 0
+		left: 0
+		height: 100%
+		width: 100%
+		background: white
+		z-index: 1
+		display: flex
+		flex-flow: column
+		transition: opacity 0.25s, visibility 0s
+		opacity: 1
 
+		&.privacyStatementOverlayHidden
+			opacity: 0
+			visibility: hidden
+			transition: opacity 0.25s, visibility 0s 0.3s
+			pointer-events: none
+
+		&.privacyStatementOverlayLocalMode
+			top: $header-height
+			height: "calc(100% - %s)" % @top
+
+		.privacyStatementOverlayTitle
+			padding: 24px 24px 19px 24px
+			font-size: 20px
+			font-weight: 500
+
+		.privacyStatementOverlayContent
+			flex-grow: 1
+			overflow: auto
+			padding: 0 24px
+
+			.privacyStatementOverlayTextWrapper
+				column-width: 35em
+
+		.privacyStatementOverlayFooter
+			text-align: right
+
+			.privacyStatementOverlayFooterButton
+				margin: 24px 8px 8px 8px
+
+				.dijitButtonText
+					color: $ucs-green

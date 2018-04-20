@@ -35,7 +35,6 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/event",
 	"dojo/dom-class",
-	"dojo/dom-construct",
 	"dojo/on",
 	"dojo/Evented",
 	"dojo/topic",
@@ -70,7 +69,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, domClass, domConstruct, on, Evented, topic, Deferred, all, Memory, Observable, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, TextBox, CheckBox, ComboBox, ContainerWidget, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Observable, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, TextBox, CheckBox, ComboBox, ContainerWidget, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
 
 	var _Grid = declare(Grid, {
 		_onRowClick: function(evt) {
@@ -862,7 +861,7 @@ define([
 				}, {
 					type: Text,
 					name: 'privacyStatement',
-					content: _('With the activation of UCS you agree to our <a href="https://www.univention.com/privacy-statement/" target="_blank">privacy statement</a>.')
+					content: ''
 				}]
 			}), lang.mixin({}, pageConf, {
 				name: 'error',
