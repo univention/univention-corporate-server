@@ -39,7 +39,6 @@ from univention.appcenter.log import get_logfile_logger
 
 from tempfile import NamedTemporaryFile
 
-import os
 
 class UpdateCertificates(UniventionAppAction):
 

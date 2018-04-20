@@ -74,6 +74,7 @@ class InstallRemoveUpgrade(Register):
 		parser.add_argument('--skip-checks', nargs='*', choices=[req.name for req in App._requirements if self.get_action_name() in req.actions], help=SUPPRESS)
 		parser.add_argument('--do-not-configure', action='store_false', dest='configure', help=SUPPRESS)
 		parser.add_argument('--do-not-update-certificates', action='store_false', dest='update_certificates', help=SUPPRESS)
+		parser.add_argument('--do-not-call-join-scripts', action='store_false', dest='call_join_scripts', help=SUPPRESS)
 		parser.add_argument('--do-not-send-info', action='store_false', dest='send_info', help=SUPPRESS)
 		parser.add_argument('--dry-run', action='store_true', dest='dry_run', help='Perform only a dry-run. App state is not touched')
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the App')
@@ -258,6 +259,8 @@ class InstallRemoveUpgrade(Register):
 		return self._call_join_script(app, args, unjoin=True)
 
 	def _call_join_script(self, app, args, unjoin=False):
+		if not args.call_join_scripts:
+			return
 		other_script = self._get_joinscript_path(app, unjoin=not unjoin)
 		any_number_basename = os.path.basename(other_script)
 		any_number_basename = '[0-9][0-9]%s' % any_number_basename[2:]
