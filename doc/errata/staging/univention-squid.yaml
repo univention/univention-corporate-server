@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue:
  * A wrapper is added to support non ascii characters in passwords with
    basic authentication. Previously non ascii characters did not work with IE.
-bug: [34154]
+ * Remove obsolet 'hierarchy_stoplist' directive.
+ * Fix warning during squid config reload.
+bug: [34154, 46567, 46565]
