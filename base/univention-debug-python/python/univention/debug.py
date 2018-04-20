@@ -47,18 +47,44 @@ from univention import _debug
 from univention._debug import *  # noqa F403
 
 
-def debug(id, level, ustring, utf8=True):
-	_debug.debug(id, level, ustring)
+def debug(category, level, message, utf8=True):
+	"""
+	Log message 'message' of severity 'level' to facility 'category'.
+
+	:param int category: ID of the category, e.g. MAIN, LDAP, USERS, ...
+	:param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL
+	:param str message: The message to log.
+	:param bool utf8: Assume the message is UTF-8 encoded.
+
+	>>> debug(LISTENER, ERROR, 'Fatal error: var=%s' % 42) #doctest: +ELLIPSIS
+	... ...  LISTENER    ( ERROR   ) : Fatal error: var=42
+	"""
+	_debug.debug(category, level, message)
 
 
 class function(object):
+	"""
+	Log function call begin and end.
 
-	def __init__(self, text, utf8=True):
-		self.text = text
-		_debug.begin(self.text)
+	:param str fname: name of the function starting.
+	:param bool utf8: Assume the message is UTF-8 encoded.
+
+	>>> def my_func(agr1, agr2=None):
+	...    _d = function('my_func(...)')
+	...    return 'yes'
+	>>> my_func(42)
+	'yes'
+	"""
+
+	def __init__(self, fname, utf8=True):
+		self.fname = fname
+		_debug.begin(self.fname)
 
 	def __del__(self):
-		_debug.end(self.text)
+		"""
+		Log the end of function.
+		"""
+		_debug.end(self.fname)
 
 
 if __name__ == '__main__':

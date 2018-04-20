@@ -126,20 +126,20 @@ _enable_syslog = False
 _logger_level = dict((key, DEFAULT) for key in _map_id_old2new.values())
 
 
-def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
+def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
 	"""
-	Initialize debugging library for logging to 'logfile', forcing 'flush' and tracing 'function's.
+	Initialize debugging library for logging to 'logfile'.
 
-	:param str logfilename:  name of the logfile, or 'stderr', or 'stdout'.
-	:param bool do_flush: force flushing of messages (True).
-	:param bool enable_function: enable (True) or disable (False) function tracing.
+	:param str logfile:  name of the logfile, or 'stderr', or 'stdout'.
+	:param bool force_flush: force flushing of messages (True).
+	:param bool trace_function: enable (True) or disable (False) function tracing.
 	:param bool enable_syslog: enable (True) or disable (False) logging to SysLog.
 	:returns: output file or None.
 	"""
 	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog
 
 	result = None
-	_logfilename = logfilename
+	_logfilename = logfile
 
 	# create root logger
 	logging.basicConfig(level=logging.DEBUG,
@@ -149,9 +149,9 @@ def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 
 	formatter = logging.Formatter(_outfmt, _datefmt)
 	exit()
-	if logfilename == 'stderr' or logfilename == 'stdout':
+	if logfile == 'stderr' or logfile == 'stdout':
 		# add stderr or stdout handler
-		_handler_console = logging.StreamHandler(sys.stdout if logfilename == 'stdout' else sys.stderr)
+		_handler_console = logging.StreamHandler(sys.stdout if logfile == 'stdout' else sys.stderr)
 		_handler_console.setLevel(logging.DEBUG)
 		_handler_console.setFormatter(formatter)
 		logging.getLogger('').addHandler(_handler_console)
@@ -159,13 +159,13 @@ def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 	else:
 		try:
 			# add file handler
-			_handler_file = logging.FileHandler(logfilename, 'a+')
+			_handler_file = logging.FileHandler(logfile, 'a+')
 			_handler_file.setLevel(logging.DEBUG)
 			_handler_file.setFormatter(formatter)
 			logging.getLogger('').addHandler(_handler_file)
 			result = _handler_file.stream
 		except EnvironmentError as ex:
-			print('opening %s failed: %s' % (logfilename, ex))
+			print('opening %s failed: %s' % (logfile, ex))
 
 # 	if enable_syslog:
 # 		try:
@@ -184,7 +184,7 @@ def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 
 	logging.getLogger('MAIN').log(100, 'DEBUG_INIT')
 
-	_do_flush = do_flush
+	_do_flush = force_flush
 	_enable_function = enable_function
 	_enable_syslog = enable_syslog
 
@@ -214,14 +214,14 @@ def reopen():
 	init(_logfilename, _do_flush, _enable_function, _enable_syslog)
 
 
-def set_level(id, level):
+def set_level(category, level):
 	"""
-	Set minimum required severity 'level' for facility 'id'.
+	Set minimum required severity 'level' for facility 'category'.
 
-	:param int id: ID of the category, e.g. MAIN, LDAP, USERS, ...
+	:param int category: ID of the category, e.g. MAIN, LDAP, USERS, ...
 	:param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL
 	"""
-	new_id = _map_id_old2new.get(id, 'MAIN')
+	new_id = _map_id_old2new.get(category, 'MAIN')
 	if level > ALL:
 		level = ALL
 	elif level < ERROR:
@@ -229,56 +229,62 @@ def set_level(id, level):
 	_logger_level[new_id] = level
 
 
-def get_level(id):
+def get_level(category):
 	"""
 	Get minimum required severity for facility 'category'.
 
-	:param int id: ID of the category, e.g. MAIN, LDAP, USERS, ...
+	:param int category: ID of the category, e.g. MAIN, LDAP, USERS, ...
 	:return: Return debug level of category.
 	:rtype: int
 	"""
-	new_id = _map_id_old2new.get(id, 'MAIN')
+	new_id = _map_id_old2new.get(category, 'MAIN')
 	return _logger_level[new_id]
 
 
-def set_function(activated):
+def set_function(activate):
 	"""
 	Enable or disable the logging of function begins and ends.
 
-	:param bool activated: enable (True) or disable (False) function tracing.
+	:param bool activate: enable (True) or disable (False) function tracing.
 	"""
 	global _enable_function
-	_enable_function = activated
+	_enable_function = activate
 
 
-def debug(id, level, msg, utf8=True):
+def debug(category, level, message, utf8=True):
 	"""
 	Log message 'message' of severity 'level' to facility 'category'.
 
-	:param int id: ID of the category, e.g. MAIN, LDAP, USERS, ...
+	:param int category: ID of the category, e.g. MAIN, LDAP, USERS, ...
 	:param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL
-	:param str msg: The message to log
+	:param str message: The message to log.
 	:param bool utf8: Assume the message is UTF-8 encoded.
 	"""
-	new_id = _map_id_old2new.get(id, 'MAIN')
+	new_id = _map_id_old2new.get(category, 'MAIN')
 	if level <= _logger_level[new_id]:
 		new_level = _map_lvl_old2new[level]
-		logging.getLogger(new_id).log(new_level, msg)
+		logging.getLogger(new_id).log(new_level, message)
 		_flush()
 
 
 class function(object):
+	"""
+	Log function call begin and end.
 
-	def __init__(self, text, utf8=True):
-		"""
-		Log the begin of function 'function'.
+	:param str fname: name of the function starting.
+	:param bool utf8: Assume the message is UTF-8 encoded.
 
-		:param str text: name of the function starting.
-		:param bool utf8: Assume the message is UTF-8 encoded.
-		"""
-		self.text = text
+	>>> def my_func(agr1, agr2=None):
+	...    _d = function('my_func(...)')
+	...    return 'yes'
+	>>> my_func(42)
+	'yes'
+	"""
+
+	def __init__(self, fname, utf8=True):
+		self.fname = fname
 		if _enable_function:
-			logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_BEGIN : ' + self.text)
+			logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_BEGIN : ' + self.fname)
 			_flush()
 
 	def __del__(self):
@@ -286,7 +292,7 @@ class function(object):
 		Log the end of function.
 		"""
 		if _enable_function:
-			logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_END   : ' + self.text)
+			logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_END   : ' + self.fname)
 			_flush()
 
 
