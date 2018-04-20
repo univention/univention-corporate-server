@@ -1,3 +1,9 @@
+ucs-test (8.0.28-110) unstable; urgency=medium
+
+  * Bug #34154: added 43_proxy/07_basic_auth_encoding and fixes for 43_proxy  
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 20 Apr 2018 16:16:11 +0200
+
 ucs-test (8.0.28-109) unstable; urgency=medium
 
   * Bug #46789: added 80_docker/72_app_update_certificates
