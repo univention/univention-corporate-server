@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-squid
+fix: 11.0.0-13A~4.3.0.201804201627
+desc: |
+ This update addresses the following issue:
+ * A wrapper is added to support non ascii characters in passwords with
+   basic authentication. Previously non ascii characters did not work with IE.
+bug: [34154]
