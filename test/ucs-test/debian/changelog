@@ -1,3 +1,9 @@
+ucs-test (8.0.28-109) unstable; urgency=medium
+
+  * Bug #46789: added 80_docker/72_app_update_certificates
+
+ -- Felix Botner <botner@univention.de>  Fri, 20 Apr 2018 12:27:49 +0200
+
 ucs-test (8.0.28-108) unstable; urgency=medium
 
   * bug #46171: fix typo in 86_selenium/10_product_test_password_change

@@ -133,6 +133,7 @@ class App(object):
 			'settings',
 			'configure',
 			'configure_host',
+			'update_certificates',
 			'setup',
 			'store_data',
 			'restore_data_before_setup',

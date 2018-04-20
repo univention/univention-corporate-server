@@ -167,9 +167,10 @@ def copy_package_to_appcenter(ucs_version, app_directory, package_name):
 
 class App(object):
 
-	def __init__(self, name, version, container_version=None, app_directory_suffix=None, package_name=None, build_package=True):
+	def __init__(self, name, version, container_version=None, app_directory_suffix=None, package_name=None, build_package=True, call_join_scripts=True):
 		self.app_name = name
 		self.app_version = version
+		self.call_join_scripts = call_join_scripts
 
 		if not app_directory_suffix:
 			self.app_directory_suffix = random_version()
@@ -243,11 +244,15 @@ class App(object):
 	def install(self):
 		print 'App.install()'
 		self._update()
-		admin_user = self.ucr.get('tests/domainadmin/account').split(',')[0][len('uid='):]
-		# ret = subprocess.call('univention-app install --noninteractive --do-not-revert --username=%s --pwdfile=%s %s' %
-		cmd = 'univention-app install --noninteractive --username=%s --pwdfile=%s %s=%s' % (admin_user, self.ucr.get('tests/domainadmin/pwdfile'), self.app_name, self.app_version)
+		cmd = ['univention-app', 'install']
+		if self.call_join_scripts is False:
+			cmd.append('--do-not-call-join-scripts')
+		cmd.append('--noninteractive')
+		cmd.append('--username=%s' % self.admin_user)
+		cmd.append('--pwdfile=%s' % self.admin_pwdfile)
+		cmd.append('%s=%s' % (self.app_name, self.app_version))
 		print cmd
-		ret = subprocess.call(cmd, shell=True)
+		ret = subprocess.call(' '.join(cmd), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_InstallationFailed()
 
@@ -340,8 +345,15 @@ class App(object):
 	def upgrade(self):
 		print 'App.upgrade()'
 		self._update()
-		ret = subprocess.call('univention-app upgrade --noninteractive --username=%s --pwdfile=%s %s=%s' %
-			(self.admin_user, self.admin_pwdfile, self.app_name, self.app_version), shell=True)
+		cmd = ['univention-app', 'upgrade']
+		if self.call_join_scripts is False:
+			cmd.append('--do-not-call-join-scripts')
+		cmd.append('--noninteractive')
+		cmd.append('--username=%s' % self.admin_user)
+		cmd.append('--pwdfile=%s' % self.admin_pwdfile)
+		cmd.append('%s=%s' % (self.app_name, self.app_version))
+		print cmd
+		ret = subprocess.call(' '.join(cmd), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_UpgradeFailed()
 		self.ucr.load()
@@ -372,8 +384,15 @@ class App(object):
 	def uninstall(self):
 		print 'App.uninstall()'
 		if self.installed:
-			ret = subprocess.call('univention-app remove --noninteractive --username=%s --pwdfile=%s %s=%s' %
-				(self.admin_user, self.admin_pwdfile, self.app_name, self.app_version), shell=True)
+			cmd = ['univention-app', 'remove']
+			if self.call_join_scripts is False:
+				cmd.append('--do-not-call-join-scripts')
+			cmd.append('--noninteractive')
+			cmd.append('--username=%s' % self.admin_user)
+			cmd.append('--pwdfile=%s' % self.admin_pwdfile)
+			cmd.append('%s=%s' % (self.app_name, self.app_version))
+			print cmd
+			ret = subprocess.call(' '.join(cmd), shell=True)
 			if ret != 0:
 				raise UCSTest_DockerApp_RemoveFailed()
 
