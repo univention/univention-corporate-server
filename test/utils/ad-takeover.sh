@@ -70,6 +70,10 @@ check_ad_takeover_product_test () {
 
 	. env_vars
 
+	# Bug 46858 (missing samba restart) -> TODO
+	/etc/init.d/samba restart
+	sleep 20
+
 	# Login am übernommenen Windows-Client mit einem übernommenen Benutzer
 	# GPOs müssen korrekt angewendet werden.
 	# Login am übernommenen Windows-Client als "Domänen\Administrator"
