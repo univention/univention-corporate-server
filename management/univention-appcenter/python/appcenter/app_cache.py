@@ -504,7 +504,7 @@ class Apps(_AppCache):
 			for app in app_cache.get_every_single_app():
 				if self.include_app(app):
 					ret.append(app)
-		self._cache = ret
+		return ret
 
 	def include_app(self, app):
 		return app.supports_ucs_version()
