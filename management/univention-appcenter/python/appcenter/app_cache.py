@@ -45,7 +45,7 @@ from distutils.version import LooseVersion
 
 from univention.appcenter.app import App
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.utils import mkdir, get_locale
+from univention.appcenter.utils import mkdir, get_locale, call_process
 from univention.appcenter.ini_parser import IniSectionListAttribute, IniSectionAttribute, IniSectionObject
 from univention.appcenter.ucr import ucr_load, ucr_get, ucr_is_true
 
@@ -202,12 +202,12 @@ class AppCache(_AppCache):
 	def get_appcenter_cache_obj(self):
 		return AppCenterCache(server=self.get_server(), ucs_versions=[self.get_ucs_version()], locale=self.get_locale())
 
-	def _save_cache(self):
+	def _save_cache(self, cache):
 		cache_file = self.get_cache_file()
 		if cache_file:
 			try:
 				with open(cache_file, 'wb') as fd:
-					dump([app.attrs_dict() for app in self._cache], fd, indent=2)
+					dump([app.attrs_dict() for app in cache], fd, indent=2)
 				cache_modified = self._cache_modified()
 			except (EnvironmentError, TypeError):
 				return False
@@ -341,16 +341,28 @@ class AppCache(_AppCache):
 					self._cache = cached_apps
 					cache_logger.debug('Loaded %d apps from cache' % len(self._cache))
 				else:
-					for ini in self._relevant_ini_files():
-						app = self._build_app_from_ini(ini)
-						if app is not None:
-							self._cache.append(app)
-					self._cache.sort()
-					if self._save_cache():
-						cache_logger.debug('Saved %d apps into cache' % len(self._cache))
-					else:
-						cache_logger.warn('Unable to cache apps')
+					self._cache = self._refresh_cache()
 		return self._cache
+
+	def _refresh_cache(self):
+		if os.environ.get('APPCENTER_PERFORMANCE_TEST') == '1':
+			cache_logger.info('Using external tool')
+			if call_process(['/usr/share/univention-appcenter-recreate-cache', self.get_cache_dir(), self.get_locale(), self.get_cache_file()], logger=cache_logger).returncode == 0:
+				self._cache_modified_mtime = self._cache_modified()
+				return self._load_cache()
+		elif os.environ.get('APPCENTER_PERFORMANCE_TEST') == '2':
+			pass
+		cache = []
+		for ini in self._relevant_ini_files():
+			app = self._build_app_from_ini(ini)
+			if app is not None:
+				cache.append(app)
+		cache.sort()
+		if self._save_cache(cache):
+			cache_logger.debug('Saved %d apps into cache' % len(self._cache))
+		else:
+			cache_logger.warn('Unable to cache apps')
+		return cache
 
 	def get_app_class(self):
 		if self._app_class is None:
