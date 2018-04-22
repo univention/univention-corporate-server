@@ -1290,7 +1290,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<variablelist>
 		<varlistentry>
-			<term>MozillaFirefox</term>
+			<term>Mozilla Firefox</term>
 			<listitem>
 				<simpara>
 						In der erweiterten Firefox Konfiguration, diese ist erreichbar über die Eingabe von <guimenu>about:config</guimenu> in der Firefox Adresszeile,
