@@ -1,3 +1,9 @@
+univention-management-console-module-ipchange (6.0.0-3) unstable; urgency=medium
+
+  * Bug #41052: ignore link local in ip/change (mostly Florian Best's patch)
+
+ -- Felix Botner <botner@univention.de>  Mon, 23 Apr 2018 13:00:47 +0200
+
 univention-management-console-module-ipchange (6.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
