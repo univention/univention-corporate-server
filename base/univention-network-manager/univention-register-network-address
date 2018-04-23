@@ -67,7 +67,9 @@ if __name__ == '__main__':
 	else:
 		ifaces = [options.interface]
 
-	ifaces.remove('lo')
+	for ignore in ['lo', 'docker0']:
+		if ignore in ifaces:
+			ifaces.remove(ignore)
 	if not ifaces:
 		print 'ERROR: no valid interface was given. Try --interface'
 		sys.exit(1)

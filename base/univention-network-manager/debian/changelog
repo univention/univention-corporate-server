@@ -1,3 +1,9 @@
+univention-network-manager (10.0.0-3) unstable; urgency=medium
+
+  * Bug #41052: ignore lo and docker0 in univention-register-network-address
+
+ -- Felix Botner <botner@univention.de>  Mon, 23 Apr 2018 13:05:06 +0200
+
 univention-network-manager (10.0.0-2) unstable; urgency=medium
 
   * Bug #45858: fix path in debian/univention-network-common.maintscript 
