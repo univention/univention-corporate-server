@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-system-setup
+fix: 11.0.4-5A~4.3.0.201804231442
+desc: |
+ This update addresses the following issue(s):
+ * The syntax check for the "Hostname of the domain controller master"
+   field on the "Domain join information" page in the setup has been
+   changed to FQDN (ip addresses are no longer valid).
+bug: [43276]
