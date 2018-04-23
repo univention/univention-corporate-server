@@ -974,7 +974,7 @@ postmap /etc/postfix/smtp_auth
 	</section>
 
 	<section id="mail::serverconfig::maincflocal">
-		<title>Eigene Anpassung der Postfix-Konfiguration</title>
+		<title>Eigene Anpassung der Postfix Konfiguration</title>
 		<para>
 			Die Konfiguration von Postfix, welche sich in der Datei <filename>/etc/postfix/main.cf</filename> befindet, wird über &ucsUCR;-Variablen definiert.
 			Eine Erweiterung der Konfiguration, die über die vorhandenen &ucsUCR;-Variablen hinaus geht, ist ebenso möglich.
@@ -994,7 +994,10 @@ service postfix reload
 		</para>
 		<note>
 			<para>
-				Wenn das Verhalten des E-Mail-Servers nicht der Erwartung entspricht, sollten zuerst die Einstellungen, die durch <filename>main.cf.local</filename> aktiviert wurden, rückgängig gemacht werden. Dazu muss die Datei umbenannt oder ihr Inhalt auskommentiert werden. Im Anschluss müssen die beiden oben genannten Kommandos ausgeführt werden. Die Konfiguration entspricht dann wieder der UCS-Standardkonfiguration.
+				Wenn das Verhalten des E-Mail-Servers nicht der Erwartung entspricht, sollten zuerst die Einstellungen, die durch <filename>main.cf.local</filename> aktiviert wurden, rückgängig gemacht werden.
+				Dazu muss die Datei umbenannt oder ihr Inhalt auskommentiert werden.
+				Im Anschluss müssen die beiden oben genannten Kommandos ausgeführt werden.
+				Die Konfiguration entspricht dann wieder der UCS Standardkonfiguration.
 			</para>
 		</note>
 	</section>
