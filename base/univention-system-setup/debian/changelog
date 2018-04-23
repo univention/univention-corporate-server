@@ -1,3 +1,9 @@
+univention-system-setup (11.0.4-5) unstable; urgency=medium
+
+  * Bug #43276: fixed syntax for _ucs_address (FQDN, not IP)
+
+ -- Felix Botner <botner@univention.de>  Mon, 23 Apr 2018 14:41:17 +0200
+
 univention-system-setup (11.0.4-4) unstable; urgency=medium
 
   * Bug #46742: Move univention privacy statement link to the

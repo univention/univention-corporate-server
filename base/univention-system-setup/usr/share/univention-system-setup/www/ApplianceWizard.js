@@ -745,7 +745,9 @@ define([
 					name: '_ucs_address',
 					label: _('Hostname of the domain controller master'),
 					required: true,
-					disabled: true
+					disabled: true,
+					validator: _validateFQDN,
+					invalidMessage: _invalidFQDNMessage
 				}, {
 					type: TextBox,
 					name: '_ucs_user',
