@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: libreoffice
-fix: 1:4.3.3-2+deb8u10
+fix: 1:4.3.3-2+deb8u11
 desc: |
  This update addresses the following issues:
  * A vulnerability in OpenOffice's PPT file parser allows attackers to craft
@@ -16,8 +16,14 @@ desc: |
    execution. (CVE-2017-12608)
  * Remote arbitrary file disclosure vulnerability via WEBSERVICE formula
    (CVE-2018-6871)
+ * Use after free in sdstor/stgstrms.cxx:StgSmallStrm class allows for denial
+   of service with crafted document. (CVE-2018-10119)
+ * Out of bounds write in filter/ww8/ww8toolbar.cxx:SwCTBWrapper class allows
+   for denial of service with crafted document. (CVE-2018-10120)
 bug: [45916]
 cve:
 - CVE-2017-12607
 - CVE-2017-12608
 - CVE-2018-6871
+- CVE-2018-10120
+- CVE-2018-10119
