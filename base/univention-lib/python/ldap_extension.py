@@ -537,6 +537,17 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 		if not listener.configRegistry.get('ldap/server/type'):
 			return
 
+		if not listener.configRegistry.get('server/role') in ('domaincontroller_master'):
+			# new, ignore first appearance, has to be activated on master first
+			if new and not old:
+				ud.debug(ud.LISTENER, ud.PROCESS, '%s: ignore first appearance of %s, not yet activated' % (name, dn))
+				return
+			# ignore change unless (re) activated
+			if new and old:
+				if not new.get('univentionLDAPACLActive', ['FALSE'])[0] == 'TRUE':
+					ud.debug(ud.LISTENER, ud.PROCESS, '%s: ignore modify of %s, not yet activated' % (name, dn))
+					return
+
 		# Check UCS version requirements first and skip new if they are not met.
 		if new:
 			univentionUCSVersionStart = new.get('univentionUCSVersionStart', [None])[0]
@@ -558,11 +569,15 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 			if not new_pkgname:
 				return
 
+			ud.debug(ud.LISTENER, ud.PROCESS, '%s: %s active? %s' % (name, dn, new.get('univentionLDAPACLActive')))
+
 			if old:  # check for trivial changes
 				diff_keys = [key for key in new.keys() if new.get(key) != old.get(key) and key not in ('entryCSN', 'modifyTimestamp', 'modifiersName')]
 				if diff_keys == ['univentionLDAPACLActive'] and new.get('univentionLDAPACLActive')[0] == 'TRUE':
-					ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: activation status changed.' % (name, new['cn'][0]))
-					return
+					# ignore status change on master, already activated
+					if listener.configRegistry.get('server/role') in ('domaincontroller_master'):
+						ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: activation status changed.' % (name, new['cn'][0]))
+						return
 				elif diff_keys == ['univentionAppIdentifier']:
 					ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: App identifier changed.' % (name, new['cn'][0]))
 					return
