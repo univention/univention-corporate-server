@@ -1,3 +1,9 @@
+univention-lib (7.0.0-6) unstable; urgency=medium
+
+  * Bug #45033: reload slapd on non-master system after acl remove
+
+ -- Felix Botner <botner@univention.de>  Tue, 24 Apr 2018 16:48:22 +0200
+
 univention-lib (7.0.0-5) unstable; urgency=medium
 
   * Bug #45033: Fixed ldap acl registration for non-master systems

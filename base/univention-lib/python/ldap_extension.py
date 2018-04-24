@@ -769,10 +769,13 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 					ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 
 					self._do_reload = True
-					if dn in self._todo_list:
-						self._todo_list = [x for x in self._todo_list if x != dn]
-						if not self._todo_list:
-							self._do_reload = False
+					if listener.configRegistry.get('server/role') == 'domaincontroller_master':
+						if dn in self._todo_list:
+							self._todo_list = [x for x in self._todo_list if x != dn]
+							if not self._todo_list:
+								self._do_reload = False
+					else:
+						self._todo_list.append(dn)
 
 				finally:
 					listener.unsetuid()
