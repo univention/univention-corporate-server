@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-lib
+fix: 7.0.0-5A~4.3.0.201804241510
+desc: |
+ This update addresses the following issue(s):
+ * A problem when simultaneously registering LDAP acl and schema
+   extension has been fixed.
+bug: [45033]
