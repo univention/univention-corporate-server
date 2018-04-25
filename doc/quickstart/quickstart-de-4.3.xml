@@ -92,6 +92,8 @@
                 Das System kann einer vorhandenen Active Directory Domäne
                 beitreten. Wählen Sie diese Option, wenn UCS keine eigene
                 Domäne aufbauen soll. UCS übernimmt die Rolle eines AD Members.
+                Der Beitritt kann auch zu einem späteren Zeitpunkt nach der
+                System-Einrichtung erfolgen.
         </simpara></listitem>
         <listitem><simpara>
                 Alle weiteren Systeme treten bei Ihrer Installation der
@@ -375,7 +377,7 @@
   <bibliomixed id="ucs-portal"/>
   <bibliomixed id="ucs-udm"/>
   <bibliomixed id="ucs-join"/>
-  <bibliomixed id="wiki-saml"/>
+  <bibliomixed id="domain-saml"/>
   <bibliomixed id="integrate-other-linux"/>
 </bibliography>
 </book>
