@@ -359,8 +359,8 @@
 	<section id="ubuntu-domaenenbeitritt">
 		<title>Ubuntu-Domänenbeitritt</title>
 		<para>
-			Die Integration von Ubuntu-Clients in eine UCS-Domäne ist in
-			<xref linkend="computers:ubuntu"/> beschrieben.
+			Univention stellt den <wordasword>Univention Domain Join Assistant</wordasword> für die Integration von Ubuntu-Clients in eine UCS-Domäne bereit.
+			Die Dokumentation und Installationshinweise sind auf <ulink url="http://www.bacula.org/">github</ulink><xref linkend="computers:ubuntu"/> zu finden.
 		</para>
 	</section>
 

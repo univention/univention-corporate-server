@@ -347,8 +347,8 @@
 	<section id="ubuntu-domaenenbeitritt">
 		<title>Ubuntu domain joins</title>
 		<para>
-			The integration of Ubuntu clients into a UCS domain is described in
-			<xref linkend="computers:ubuntu"/>.
+			Univention provides the <wordasword>Univention Domain Join Assistant</wordasword> to integrate Ubuntu clients into a UCS domain.
+			Documentation and installation instructions are available at <ulink url="http://www.bacula.org/">github</ulink><xref linkend="computers:ubuntu"/>.
 		</para>
 	</section>
 
