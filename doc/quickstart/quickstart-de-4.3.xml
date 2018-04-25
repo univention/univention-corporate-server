@@ -78,16 +78,42 @@
   </figure>
 
   <para>
-	Während der Installation kann ausgewählt werden, ob das System das erste System in einer neuen
-	UCS-Domäne sein soll, ob das System einer vorhandenen Active Directory Domäne oder einer
-	UCS-Domäne beitreten soll.
-	Sofern das System das erste in einer neuen UCS-Domäne ist oder als erstes UCS-System einer
-	vorhandenen Active Directory-Domäne beitritt, wird als Systemrolle implizit &ucsMaster;
-	gewählt. Alle weiteren Systeme treten dann bei Ihrer Installation der UCS-Domäne bei. Eine
-	Ausnahme stellt das Basissystem dar, dieses System tritt keiner Domäne bei und bietet auch kein
-	Managementsystem. Es kommt daher nur in wenigen Szenarien zum Einsatz, bspw. als Firewall-System.
+      Während der Installation kann das System für verschiedene Einsatzzwecke
+      konfiguriert werden, die nur an dieser Stelle des Einrichtungsprozesse
+      vorgenommen werden können.
+
+	<itemizedlist>
+        <listitem><simpara>
+                Das System soll das erste System für eine eigene UCS-Domäne
+                werden und es wird implizit als Systemrolle &ucsMaster;
+                aufgesetzt.
+        </simpara></listitem>
+        <listitem><simpara>
+                Das System kann einer vorhandenen Active Directory Domäne
+                beitreten. Wählen Sie diese Option, wenn UCS keine eigene
+                Domäne aufbauen soll. UCS übernimmt die Rolle eines AD Members.
+        </simpara></listitem>
+        <listitem><simpara>
+                Alle weiteren Systeme treten bei Ihrer Installation der
+                UCS-Domäne bei.
+        </simpara></listitem>
+        <listitem><simpara>
+                Eine Ausnahme stellt das Basissystem dar, dieses System tritt
+                keiner Domäne bei und bietet auch kein Managementsystem. Es
+                kommt daher nur in wenigen Szenarien zum Einsatz, bspw. als
+                Firewall-System.
+        </simpara></listitem>
+    </itemizedlist>
+
 	Eine Übersicht über die verschiedenen weiteren Systemrollen findet sich in <biblioref
 	linkend="ucs-systemrole"/>.
+  </para>
+
+  <para>
+      Mit UCS und der App <guimenu>Active Directory Takeover</guimenu> kann
+      eine bestehende Active Directory Domäne vollständig nach UCS migriert
+      werden. Wie das UCS-System dafür aufgesetzt wird, lesen Sie in <biblioref
+      linkend="ad-takeover"/>.
   </para>
 
   <para>
@@ -335,6 +361,7 @@
 <bibliography id="bibliography">
   <bibliomixed id="ucs-handbuch"/>
   <bibliomixed id="ucs-systemrole"/>
+  <bibliomixed id="ad-takeover"/>
   <bibliomixed id="ucs-winjoin"/>
   <bibliomixed id="ucs-macjoin"/>
   <bibliomixed id="ucc-manual"/>
