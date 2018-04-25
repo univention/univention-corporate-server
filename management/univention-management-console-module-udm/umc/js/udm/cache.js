@@ -218,6 +218,17 @@ define([
 				return i;
 			});
 			var isPolicyModule = this.superModule.indexOf('policies/') === 0;
+			// The referencing objects for a policies/* object are only in
+			// the layout if an objectDN was provided.
+			// - When adding a new policies/* object the "Referencing objects"
+			// tab is/should not be shown -
+			// This causes the issue that when for example a policies/pwhistory
+			// object is added the layout without the referencing objects is cached.
+			// When after that the detailpage for a policies/pwhistory is opened
+			// the cached layout is used and no referencing objects tab is shown.
+			// Or the same issue in reverse: First detailpage -> layout with referencing objects
+			// cached. sTthen adding new object of same type -> referencing objects tab is shown
+			// instead of being hidden. Do not return cached values for polcies/* types (Bug #38674)
 			if (!isPolicyModule && allInfoLoaded && !forceLoad) {
 				// return the cached information
 				return allInfo;
