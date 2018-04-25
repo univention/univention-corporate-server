@@ -91,9 +91,9 @@
         <listitem><simpara>
                 Das System kann einer vorhandenen Active Directory Domäne
                 beitreten. Wählen Sie diese Option, wenn UCS keine eigene
-                Domäne aufbauen soll. UCS übernimmt die Rolle eines AD Members.
-                Der Beitritt kann auch zu einem späteren Zeitpunkt nach der
-                System-Einrichtung erfolgen.
+                Domäne aufbauen soll. UCS übernimmt die Rolle eines Mitglieds
+                in einer AD-Domäne.  Der Beitritt kann auch zu einem späteren
+                Zeitpunkt nach der System-Einrichtung erfolgen.
         </simpara></listitem>
         <listitem><simpara>
                 Alle weiteren Systeme treten bei Ihrer Installation der
@@ -204,7 +204,7 @@
 
 	<itemizedlist>
 	  <listitem><simpara>
-        Weitere UCS-Software, wie zum Bespiel die Active Directory-Verbindung,
+        Weitere UCS-Software, wie zum Beispiel die Active Directory-Verbindung,
         kann über die Kategorie <guimenu>UCS-Komponenten</guimenu> nachträglich
         installiert oder entfernt werden.
 	  </simpara></listitem>
@@ -353,7 +353,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Fragen zu UCS können auch auf Univention Help <ulink url="https://help.univention.com/"/>
+		Fragen zu UCS können auch im Univention Forum <ulink url="https://help.univention.com/"/>
 		gestellt werden.
 	  </simpara></listitem>
 	</itemizedlist>
