@@ -11,3 +11,5 @@ desc: |
  * Fixed referencing objects not always being
    shown in the policies module.
 bug: [46371, 38674]
+erratum: 22
+announced: 2018-04-25
