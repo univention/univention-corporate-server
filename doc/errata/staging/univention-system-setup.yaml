@@ -9,4 +9,6 @@ desc: |
  * The syntax check for the "Hostname of the domain controller master"
    field on the "Domain join information" page in the setup has been
    changed to FQDN (ip addresses are no longer valid).
-bug: [43276]
+ * The privacy statement is now displayed directly in the system
+   setup wizard.
+bug: [43276, 46852]

@@ -1,3 +1,10 @@
+univention-system-setup (11.0.4-6) unstable; urgency=medium
+
+  * Bug #46852: The privacy statement is now displayed locally
+    in the system setup wizard
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 25 Apr 2018 18:25:01 +0200
+
 univention-system-setup (11.0.4-5) unstable; urgency=medium
 
   * Bug #43276: fixed syntax for _ucs_address (FQDN, not IP)

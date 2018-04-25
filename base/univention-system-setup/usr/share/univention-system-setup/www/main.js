@@ -35,17 +35,24 @@ define([
 	"dojo/_base/xhr",
 	"dojo/dom",
 	"dojo/dom-class",
+	"dojo/dom-style",
+	"dijit/focus",
 	"dojo/topic",
 	"dojo/promise/all",
 	"dojox/html/styles",
+	"dijit/layout/ContentPane",
 	"login",
 	"umc/tools",
+	"umc/widgets/Text",
+	"umc/widgets/Button",
 	"umc/widgets/ProgressBar",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/ContainerWidget",
 	"./ApplianceWizard",
+	"umc/json!/univention/setup/privacy_statement.json",
+	"umc/i18n/tools",
 	"umc/i18n!setup"
-], function(declare, lang, array, xhr, dom, domClass, topic, all, styles, login, tools, ProgressBar, Standby, ContainerWidget, ApplianceWizard, _) {
+], function(declare, lang, array, xhr, dom, domClass, domStyle, focusUtil, topic, all, styles, ContentPane, login, tools, Text, Button, ProgressBar, Standby, ContainerWidget, ApplianceWizard, privacyStatementContent, i18nTools, _) {
 	return {
 		_container: null,
 		wizard: null,
@@ -101,6 +108,7 @@ define([
 				this._orgValues = lang.clone(values);
 
 				this._renderWizard(values, data.ucr);
+				this._renderPrivacyStatementOverlay();
 
 				tools.defer(lang.hitch(this, 'standby', false), 500);
 			}));
@@ -176,6 +184,57 @@ define([
 			this._container.startup();
 		},
 
+		_renderPrivacyStatementOverlay: function() {
+			var previousFocusNode;
+			var overlay = new ContainerWidget({
+				'class': 'privacyStatementOverlay privacyStatementOverlayHidden',
+				show: lang.hitch(this, function() {
+					previousFocusNode = focusUtil.curNode;
+					domClass.remove(overlay.domNode, 'privacyStatementOverlayHidden');
+					focusUtil.focus(closeButton);
+					if (this.local_mode) {
+						domStyle.set(dojo.body(), 'overflow', 'hidden');
+					}
+				})
+			});
+			var title = new Text({
+				'class': 'privacyStatementOverlayTitle',
+				content: _('Privacy Statement')
+			});
+			var content = new ContentPane({
+				'class': 'privacyStatementOverlayContent',
+				content: privacyStatementContent[i18nTools.defaultLang()] || privacyStatementContent['en-US']
+			});
+			var footer = new ContainerWidget({
+				'class': 'privacyStatementOverlayFooter'
+			});
+			var closeButton = new Button({
+				'class': 'privacyStatementOverlayFooterButton umcFlatButton',
+				defaultButton: true,
+				label: _('Close'),
+				callback: function() {
+					domClass.add(overlay.domNode, 'privacyStatementOverlayHidden');
+					domStyle.set(dojo.body(), 'overflow', '');
+					focusUtil.focus(previousFocusNode);
+				}
+			});
+
+			overlay.addChild(title);
+			overlay.addChild(content);
+			overlay.addChild(footer);
+			footer.addChild(closeButton);
+
+			domClass.toggle(overlay.domNode, 'privacyStatementOverlayLocalMode', this.local_mode);
+			var target = this.local_mode ? this._container : this.wizard;
+			target.domNode.appendChild(overlay.domNode);
+
+			var link = lang.replace('<a href="javascript:require(\'dijit/registry\').byId(\'{0}\').show();">{1}</a>', [overlay.id, _('privacy statement')]);
+			var content = _('With the activation of UCS you agree to our %s.', link);
+			this.wizard.getWidget('privacyStatement').set('content', content);
+
+			this.privacyStatementOverlay = overlay;
+		},
+
 		_reloadWizard: function(values, ucr, newLocale) {
 			// update internal locale settings
 			var _setLocale = lang.hitch(this, function() {
@@ -197,6 +256,8 @@ define([
 				this._container.removeChild(this.wizard);
 				this.wizard.destroy();
 				this._renderWizard(this._orgValues, ucr);
+				this.privacyStatementOverlay.destroy();
+				this._renderPrivacyStatementOverlay();
 			});
 
 			// chain tasks with some time in between to allow a smooth standby animation
