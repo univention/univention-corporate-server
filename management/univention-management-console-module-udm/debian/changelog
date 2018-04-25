@@ -1,3 +1,9 @@
+univention-management-console-module-udm (8.0.5-7) unstable; urgency=medium
+
+  * Bug #38674: add comment for ignoring policies/* in cache.js
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 25 Apr 2018 10:46:43 +0200
+
 univention-management-console-module-udm (8.0.5-6) unstable; urgency=medium
 
   * Bug #38674: Disable cache for policy properties request
