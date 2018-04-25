@@ -75,17 +75,44 @@
 	<graphic scalefit="1" width="80%" align="center" fileref="illustrations43/systemrole-en.png"/>
   </figure>
 
+  <para>
+      During installation, the system can be used for various purposes which
+      can only be configured at this point in the setup process can be made.
+
+	<itemizedlist>
+        <listitem><simpara>
+                The system is to be the first system for its own UCS domain
+                and it is implicitly called the system role &ucsMaster;
+                on the ground.
+        </simpara></listitem>
+        <listitem><simpara>
+                The system can be assigned to an existing Active Directory
+                domain join. Select this option if UCS does not have its own to
+                set up a domain. UCS takes on the role of an AD member. The
+                join may also take place at a later date after the system
+                setup.
+        </simpara></listitem>
+        <listitem><simpara>
+                All other systems are included in your installation of the
+                UCS domain.
+        </simpara></listitem>
+        <listitem><simpara>
+                The base system is the exception here; this system does not
+                join any domain and also does not offer a management system. As
+                such, it is only used in a few scenarios – as a firewall
+                system, for example.
+        </simpara></listitem>
+    </itemizedlist>
+
+    An overview of the other different system roles can be found in <biblioref
+    linkend="ucs-systemrole"/>.
+  </para>
 
   <para>
-	During the installation, it is possible to select whether the system should be the first system
-	in a new UCS domain, whether the system should join an existing Active Directory domain or
-	whether it should join a UCS domain.
-	In cases where the system is the first in a new UCS domain or the first UCS system to join an
-	existing Active Directory domain, the &ucsMaster; system role is selected implicitly. All further
-	systems then join the UCS domain when they are installed. The base system is the exception here;
-	this system does not join any domain and also does not offer a management system. As such, it is
-	only used in a few scenarios – as a firewall system, for example. An overview of the other different
-	system roles can be found in <biblioref linkend="ucs-systemrole"/>.
+      With UCS and the <guimenu>Active Directory Takeover</guimenu> an existing
+      Active Directory domain can be migrated completely to UCS. For
+      information on how to set up the UCS system for this, see <biblioref
+      linkend="ad-takeover"/>.
   </para>
 
   <para>
@@ -101,7 +128,7 @@
 	The <guimenu>LDAP base</guimenu> is suggested based on the fully qualified host name and
 	only needs to be adjusted in exceptional cases. The root password must be at least eight
 	characters long and is also set as the password for the user <emphasis>Administrator</emphasis>
-	during the installation of the first UCS server (&ucsMaster;).
+	during the installation of the first UCS system (&ucsMaster;).
   </para>
 
   <para>
@@ -169,8 +196,9 @@
   </para>
 
   <para>
-	Additional software can be installed using the Univention App Center in the Univention
-	Management Console:
+    Additional software, like for example Active Directory Connection, can be
+    installed using the Univention App Center in the Univention Management
+    Console:
 
 	<itemizedlist>
 	  <listitem><simpara>
@@ -220,12 +248,12 @@
   <title>Clients</title>
 
 	<para>
-	  In addition to the UCS servers, a UCS domain can also integrate different clients. The
+	  In addition to the UCS systems, a UCS domain can also integrate different clients. The
 	  following clients are supported:
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Windows clients can join an AD-compatible Windows domain provided by the <emphasis>Active
+		  Microsoft Windows clients can join an AD-compatible Windows domain provided by the <emphasis>Active
 		  Directory compatible domain controller</emphasis> component (implemented using the software Samba).
 		  Further information on setting up Samba and the domain join of Windows clients
 		  can be found in the UCS manual <biblioref linkend="ucs-winjoin"/>.
@@ -268,7 +296,7 @@
 
 	<itemizedlist>
 	  <listitem><simpara>
-		Single-sign-on with web services using a SAML identity provider <biblioref linkend="wiki-saml"/>
+		Single-sign-on with web services using a SAML identity provider <biblioref linkend="domain-saml"/>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -314,11 +342,11 @@
 
 	  <listitem><simpara>
 		Answers to frequently asked questions can be found in the support and knowledge database (SDB)
-		(<ulink url="http://sdb.univention.de/"/>).
+		(<ulink url="https://help.univention.com/c/knowledge-base/supported/"/>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Questions on UCS can be asked in the Univention Forum <ulink url="http://forum.univention.de/"/>.
+		Questions on UCS can be asked at Univention Help <ulink url="https://help.univention.com/"/>.
 	  </simpara></listitem>
 	</itemizedlist>
   </para>
@@ -329,6 +357,7 @@
 <bibliography id="bibliography">
   <bibliomixed id="ucs-handbuch"/>
   <bibliomixed id="ucs-systemrole"/>
+  <bibliomixed id="ad-takeover"/>
   <bibliomixed id="ucs-winjoin"/>
   <bibliomixed id="ucs-macjoin"/>
   <bibliomixed id="ucc-manual"/>
@@ -341,7 +370,7 @@
   <bibliomixed id="ucs-portal"/>
   <bibliomixed id="ucs-udm"/>
   <bibliomixed id="ucs-join"/>
-  <bibliomixed id="wiki-saml"/>
+  <bibliomixed id="domain-saml"/>
   <bibliomixed id="integrate-other-linux"/>
 </bibliography>
 </book>
