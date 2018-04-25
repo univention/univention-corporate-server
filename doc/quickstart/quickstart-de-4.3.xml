@@ -128,7 +128,7 @@
 	Basis des vollständigen Rechnernamens vorgeschlagen und muss nur in Ausnahmefällen angepasst
 	werden.  Bei allen anderen Systemrollen reicht es in der Regel nur den Rechnernamen anzugeben. Der
 	Domänenname wird während des Domänenbeitritt vom &ucsMaster; bezogen.  Das Passwort muss mindestens acht
-	Zeichen umfassen und wird bei der Installation des ersten UCS-Servers (&ucsMaster;) auch als
+	Zeichen umfassen und wird bei der Installation des ersten UCS-Systems (&ucsMaster;) auch als
 	Passwort für den <emphasis>Administrator</emphasis>-Benutzer gesetzt.
   </para>
 
@@ -202,8 +202,9 @@
 
 	<itemizedlist>
 	  <listitem><simpara>
-		Weitere UCS-Software kann über die Kategorie <guimenu>UCS-Komponenten</guimenu>
-		nachträglich installiert oder entfernt werden.
+        Weitere UCS-Software, wie zum Bespiel die Active Directory-Verbindung,
+        kann über die Kategorie <guimenu>UCS-Komponenten</guimenu> nachträglich
+        installiert oder entfernt werden.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -249,12 +250,12 @@
   <title>Clients</title>
 
   <para>
-	Eine UCS-Domäne kann neben den UCS-Servern auf verschiedene Clients integrieren. Die folgenden
+	Eine UCS-Domäne kann neben UCS-Systemen auch verschiedene Clients integrieren. Die folgenden
 	Clients werden unterstützt:
 
 	<itemizedlist>
 	  <listitem><simpara>
-		Windows-Clients können einer AD-kompatiblen Windows-Domäne beitreten, die durch die
+		Microsoft Windows-Clients können einer AD-kompatiblen Windows-Domäne beitreten, die durch die
 		Komponente <emphasis>Active Directory-kompatibler Domänencontroller</emphasis> (umgesetzt
 		durch die Software Samba) bereitgestellt wird. Weitere Informationen zur Einrichtung von
 		Samba und dem Domänenbeitritt von Windows-Clients findet sich im UCS-Handbuch <biblioref
@@ -290,7 +291,7 @@
   <para>
 	Dieser Quickstart Guide beschreibt nur einen Einsteig in UCS. UCS ist sehr skalierbar, weitere
 	Dienste können einfach auf weiteren Systemen installiert werden. Der Domänenbeitritt weiterer
-	UCS-Server ist in <biblioref linkend="ucs-join"/> beschrieben.
+	UCS-Systeme ist in <biblioref linkend="ucs-join"/> beschrieben.
   </para>
 
   <para>
