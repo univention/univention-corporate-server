@@ -300,7 +300,7 @@
 
 	<itemizedlist>
 	  <listitem><simpara>
-		Single Sign On mit Webdiensten über einen SAML Identity Providers <biblioref linkend="wiki-saml"/>
+		Single Sign On mit Webdiensten über einen SAML Identity Providers <biblioref linkend="domain-saml"/>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
