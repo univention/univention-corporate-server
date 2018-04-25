@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-management-console-module-udm
-fix: 8.0.5-6A~4.3.0.201804171051
+fix: 8.0.5-7A~4.3.0.201804251048
 desc: |
  This update addresses the following issue(s):
  * The type and position of an UDM object are
