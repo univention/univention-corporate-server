@@ -6,5 +6,6 @@ src: univention-ldap
 fix: 14.0.2-15A~4.3.0.201804171157
 desc: |
  This update addresses the following issue(s):
- * The LDAP syntax for userPrimaryGroupPreset has been changed to DirectoryString.
+ * The LDAP syntax for userPrimaryGroupPreset has been changed
+   to DirectoryString.
 bug: [46288]
