@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: univention-management-console
-fix: 
+fix: 9.0.80-94A~4.2.0.201804261233
 desc: |
  This update addresses the following issue(s):
  * Set Login button of requirePassword dialog as default to allow submitting with Enter
