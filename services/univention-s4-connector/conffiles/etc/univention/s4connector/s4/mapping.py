@@ -187,8 +187,10 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 @!@
 							univention.s4connector.s4.password.password_sync_s4_to_ucs,
 							univention.s4connector.s4.password.lockout_sync_s4_to_ucs,
-							univention.s4connector.s4.primary_group_sync_to_ucs,
-							univention.s4connector.s4.object_memberships_sync_to_ucs,
+							univention.s4connector.s4.primary_group_sync_to_ucs,@!@
+if configRegistry.get('connector/s4/mapping/group/syncmode') != 'write':
+	print '\t\t\t\t\t\t\tunivention.s4connector.s4.object_memberships_sync_to_ucs,'
+@!@
 							univention.s4connector.s4.disable_user_to_ucs,
 							],
 
