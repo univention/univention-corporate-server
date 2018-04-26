@@ -465,6 +465,7 @@ define([
 				}],
 				buttons: [{
 					name: 'submit',
+					default: true,
 					label: _('Login')
 				}]
 			}).then(lang.hitch(this, function(data) {
