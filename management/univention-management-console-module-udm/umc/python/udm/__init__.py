@@ -489,6 +489,15 @@ class Instance(Base, ProgressMixin):
 					obj.set_default_values()
 					_remove_uncopyable_properties(obj)
 					props = obj.info
+					empty_props_with_default_set = {}
+					for key in obj.info.keys():
+						if obj.hasChanged(key):
+							empty_props_with_default_set[key] = {
+								'default_value': obj.info[key],
+								'prevent_umc_default_popup': obj.descriptions[key].prevent_umc_default_popup
+							}
+					props['$empty_props_with_default_set$'] = empty_props_with_default_set
+
 					for passwd in module.password_properties:
 						if passwd in props:
 							del props[passwd]

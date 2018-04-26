@@ -202,6 +202,7 @@ class property:
 		identifies=False,
 		unique=False,
 		default=None,
+		prevent_umc_default_popup=False,
 		dontsearch=False,
 		show_in_lists=False,
 		editable=True,
@@ -230,6 +231,7 @@ class property:
 		self.identifies = identifies
 		self.unique = unique
 		self.base_default = default
+		self.prevent_umc_default_popup = prevent_umc_default_popup
 		self.dontsearch = dontsearch
 		self.show_in_lists = show_in_lists
 		self.editable = editable

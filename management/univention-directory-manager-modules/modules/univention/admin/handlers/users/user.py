@@ -300,6 +300,7 @@ property_descriptions = {
 		identifies=False,
 		show_in_lists=True,
 		default='0',
+		prevent_umc_default_popup=True,
 	),
 	'unlockTime': univention.admin.property(
 		short_description=_('Lockout till'),
@@ -698,7 +699,8 @@ property_descriptions = {
 		dontsearch=True,
 		may_change=True,
 		identifies=False,
-		default='<username>'
+		default='<username>',
+		prevent_umc_default_popup=True,
 	),
 	'sambaUserWorkstations': univention.admin.property(
 		short_description=_('Allow the authentication only on this Microsoft Windows host'),
@@ -2322,7 +2324,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 			if not self['homeShare'] or not share['host'] or not share['path']:
 				if 'automount' not in self.oldattr.get('objectClass', []):
-					ml.append(('objectClass', 'automount', ''))
+					ml.append(('objectClass', '', 'automount'))
 				am_old = self.oldattr.get('automountInformation', [''])[0]
 				if am_old:
 					ml.append(('automountInformation', am_old, ''))

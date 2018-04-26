@@ -392,13 +392,18 @@ define([
 			// a direct call to haveValuesChanged() will yield true...
 			// therefore we add a call to Form::ready()
 			this._form.ready().then(lang.hitch(this, function() {
-				var valuesChanged = this.haveValuesChanged() || this.havePolicyReferencesChanged();
+				var valuesChanged = this.hasEmptyPropsWithDefaultValues() || this.haveValuesChanged() || this.havePolicyReferencesChanged();
 				if (valuesChanged) {
 					var changes = [];
-					tools.forIn(this.getAlteredValues(), lang.hitch(this, function(key, value) {
+					var alteredValues = lang.mixin(this.getEmptyPropsWithDefaultValues(), this.getAlteredValues()); // order is important. overwrite default values from getEmptyPropsWithDefaultValues with altered values
+					tools.forIn(alteredValues, lang.hitch(this, function(key, value) {
 						if (key === '$dn$') {
 							return;
 						}
+						if (this.shouldPreventPopupForEmptyPropWithDefault(key)) {
+							return;
+						}
+
 						var widget = this._form.getWidget(key);
 						if (widget && widget.get('visible')) {
 							value = widget.get('value');
@@ -1667,7 +1672,7 @@ define([
 			}
 
 			// get all values that have been altered
-			var vals = this.getAlteredValues();
+			var vals = lang.mixin(this.getEmptyPropsWithDefaultValues(), this.getAlteredValues()); // order is important. overwrite default values from getEmptyPropsWithDefaultValues with altered values
 
 			// reset changed headings
 			array.forEach(this._detailPages, function(ipage) {
@@ -1714,7 +1719,7 @@ define([
 			}, this);
 			errMessage += '</ul>';
 
-			if (!this.haveValuesChanged() && !this.havePolicyReferencesChanged()) {
+			if (!this.hasEmptyPropsWithDefaultValues() && !this.haveValuesChanged() && !this.havePolicyReferencesChanged()) {
 				this.onCloseTab();
 				return;  // no changes are made, no need to save an empty dict
 			}
@@ -1961,7 +1966,7 @@ define([
 				tools.forIn(vals, function(iname, ival) {
 					var oldVal = this._receivedObjFormData[iname];
 
-					// check whether old values and new values differ...
+					// check whether old and new values differ...
 					if (!tools.isEqual(ival,oldVal)) {
 						newVals[iname] = ival;
 					}
@@ -1972,6 +1977,27 @@ define([
 			}
 
 			return newVals;
+		},
+
+		getEmptyPropsWithDefaultValues: function() {
+			var emptyPropsWithDefaultValues = {};
+			tools.forIn(lang.getObject('$empty_props_with_default_set$', false, this._receivedObjOrigData) || {}, function(key, value) {
+				emptyPropsWithDefaultValues[key] = value.default_value;
+			});
+			return emptyPropsWithDefaultValues;
+		},
+
+		hasEmptyPropsWithDefaultValues: function() {
+			var hasEmptyPropsWithDefaultValues = false;
+			tools.forIn(lang.getObject('$empty_props_with_default_set$', false, this._receivedObjOrigData) || {}, function() {
+				hasEmptyPropsWithDefaultValues = true;
+				return false; // short circuit forIn()
+			});
+			return hasEmptyPropsWithDefaultValues
+		},
+
+		shouldPreventPopupForEmptyPropWithDefault: function(propName) {
+			return this._receivedObjOrigData.$empty_props_with_default_set$[propName].prevent_umc_default_popup;
 		},
 
 		confirmClose: function() {
