@@ -1,3 +1,10 @@
+univention-s4-connector (11.0.8-20) unstable; urgency=medium
+
+  * Bug #46971: skip object_memberships_sync_to_ucs
+    if group syncmode is write
+
+ -- Arvid Requate <requate@univention.de>  Thu, 26 Apr 2018 19:27:48 +0200
+
 univention-s4-connector (11.0.8-19) unstable; urgency=medium
 
   * Bug #38140: connector-tracebacks.log is not written any longer
