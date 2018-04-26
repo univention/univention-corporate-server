@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-server
-fix:
+fix: 13.0.0-3A~4.3.0.201803161509
 desc: |-
   This update addresses the following issue(s):
   * univention-system-setup has been removed from the list of packages to be
