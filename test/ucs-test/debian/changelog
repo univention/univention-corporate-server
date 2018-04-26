@@ -1,6 +1,13 @@
+ucs-test (8.0.28-111) unstable; urgency=medium
+
+  * Bug #41052: 60_umc/75_ipchange_basic (oldip is string not list)
+                80_docker/64_app_container_upgrade
+
+ -- Felix Botner <botner@univention.de>  Thu, 26 Apr 2018 10:37:56 +0200
+
 ucs-test (8.0.28-110) unstable; urgency=medium
 
-  * Bug #34154: added 43_proxy/07_basic_auth_encoding and fixes for 43_proxy  
+  * Bug #34154: added 43_proxy/07_basic_auth_encoding and fixes for 43_proxy
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 20 Apr 2018 16:16:11 +0200
 
