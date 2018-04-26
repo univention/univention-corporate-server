@@ -454,10 +454,11 @@ define([
 					content: text
 				}, {
 					name: 'username',
-					type: TextBox,
-					disabled: true,
-					placeHolder: _('Username'),
-					value: tools.status('username')
+					type: Text,
+					//disabled: true,
+					//placeHolder: _('Username'),
+					//value: tools.status('username')
+					content: tools.status('username')
 				}, {
 					name: 'password',
 					type: PasswordBox,
