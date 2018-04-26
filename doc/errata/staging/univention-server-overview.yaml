@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-server-overview
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * A Content-Security-Policy has been added to the server overview site.
+bug: [45423]

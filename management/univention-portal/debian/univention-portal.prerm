@@ -1,9 +1,9 @@
-#! /bin/sh
+#!/bin/sh
 #
-# Univention Portal
-#  postinst script for the univention-portal debian package
+# Univention Management Console
+#  prerm script for the debian package
 #
-# Copyright 2017-2018 Univention GmbH
+# Copyright 2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,15 +32,6 @@
 
 #DEBHELPER#
 
-a2ensite univention-portal.conf
-
-if [ "$1" = "configure" ]; then
-	systemctl reload apache2
-	systemctl restart univention-directory-listener
-fi
-
-if [ ! -e "/usr/share/univention-portal/portal.json" ]; then
-	cp /usr/share/univention-portal/portal-unjoined.json /usr/share/univention-portal/portal.json
-fi
+a2dissite univention-portal.conf
 
 exit 0

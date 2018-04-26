@@ -31,7 +31,10 @@
 
 #DEBHELPER#
 
+a2ensite univention-server-overview.conf
+
 if [ "$1" = "configure" ]; then
+	systemctl reload apache2
 	invoke-rc.d univention-directory-listener crestart
 fi
 
