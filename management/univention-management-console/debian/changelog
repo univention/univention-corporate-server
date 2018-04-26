@@ -1,3 +1,9 @@
+univention-management-console (10.0.6-1) unstable; urgency=medium
+
+  * Bug #46735: Improve usability of requirePassword login dialog
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Thu, 26 Apr 2018 10:31:52 +0200
+
 univention-management-console (10.0.5-1) unstable; urgency=medium
 
   * Bug #46847: Catch update from previous package versions which cause
