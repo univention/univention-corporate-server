@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: 
-fix: 
+fix: 13.0.21-19A~4.3.0.201804261637
 desc: |
  This update addresses the following issue(s):
  * Properties that have been set to default values are no
