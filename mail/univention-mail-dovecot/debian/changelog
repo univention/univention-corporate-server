@@ -1,3 +1,9 @@
+univention-mail-dovecot (3.0.1-7) unstable; urgency=low
+
+  * Bug #46893: set UID and GID on move target
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 27 Apr 2018 10:12:11 +0200
+
 univention-mail-dovecot (3.0.1-6) unstable; urgency=low
 
   * Bug #45921: update regular expression for quoting in global ACL file
