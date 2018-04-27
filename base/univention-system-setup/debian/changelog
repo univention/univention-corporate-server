@@ -1,3 +1,10 @@
+univention-system-setup (11.0.4-7) unstable; urgency=medium
+
+  * Bug #46852: Scroll to top when viewing privacy statement in
+    local mode
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 27 Apr 2018 16:14:09 +0200
+
 univention-system-setup (11.0.4-6) unstable; urgency=medium
 
   * Bug #46852: The privacy statement is now displayed locally
