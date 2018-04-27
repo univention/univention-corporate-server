@@ -1,3 +1,9 @@
+univention-mail-dovecot (3.0.1-8) unstable; urgency=low
+
+  * Bug #46893: chown only if necessary
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 27 Apr 2018 11:05:30 +0200
+
 univention-mail-dovecot (3.0.1-7) unstable; urgency=low
 
   * Bug #46893: set UID and GID on move target
