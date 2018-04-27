@@ -4,7 +4,7 @@ wait_for_domaincontroller_to_be_online () {
 		echo "Waiting for domaincontroller $1 to be online."
 		sleep 60;
 		if curl "http://$1/univention/management/" &> /dev/null; then
-			sleep 50
+			sleep 100
 			echo "Domaincontroller $1 is now online."
 			return 0
 		fi
