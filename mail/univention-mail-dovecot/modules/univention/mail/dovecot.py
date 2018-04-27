@@ -37,6 +37,7 @@ import traceback
 import pwd
 import grp
 import shutil
+import stat
 
 import univention.debug as ud
 
@@ -166,7 +167,9 @@ class DovecotListener(object):
 			return
 		try:
 			self.listener.setuid(0)
+			st = os.stat(old_path)
 			shutil.move(old_path, new_path)
+			self.chown_r(new_path, st[stat.ST_UID], st[stat.ST_GID])
 		except:
 			self.log_e("Failed to move mail home (of mail '%s') from '%s' to '%s'.\n%s" % (
 				email, old_path, new_path, traceback.format_exc()))
@@ -255,3 +258,21 @@ class DovecotListener(object):
 			raise
 		finally:
 			self.listener.unsetuid()
+
+	@classmethod
+	def chown_r(cls, path, uid, gid):  # type: (str, int, int) -> None
+		"""
+		Recursively set owner and group on a file/directory and its
+		subdirectories.
+
+		:param str path: file/directory (and its subdirectories) to change ownership on
+		:param int uid: UID to set
+		:param int gid: GID to set
+		:return: None
+		"""
+		os.chown(path, uid, gid)
+		for dirpath, dirnames, filenames in os.walk(path):
+			for dirname in dirnames:
+				cls.chown_r(os.path.join(dirpath, dirname), uid, gid)
+			for filename in filenames:
+				os.chown(os.path.join(dirpath, filename), uid, gid)
