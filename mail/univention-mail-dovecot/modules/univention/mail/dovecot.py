@@ -270,9 +270,14 @@ class DovecotListener(object):
 		:param int gid: GID to set
 		:return: None
 		"""
-		os.chown(path, uid, gid)
+		def chown_if_different(path_, uid_, gid_):
+			st = os.stat(path_)
+			if st[stat.ST_UID] != uid_ or st[stat.ST_GID] != gid_:
+				os.chown(path_, uid_, gid_)
+
+		chown_if_different(path, uid, gid)
 		for dirpath, dirnames, filenames in os.walk(path):
 			for dirname in dirnames:
 				cls.chown_r(os.path.join(dirpath, dirname), uid, gid)
 			for filename in filenames:
-				os.chown(os.path.join(dirpath, filename), uid, gid)
+				chown_if_different(os.path.join(dirpath, filename), uid, gid)
