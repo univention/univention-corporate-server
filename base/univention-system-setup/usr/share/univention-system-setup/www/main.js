@@ -193,6 +193,7 @@ define([
 					domClass.remove(overlay.domNode, 'privacyStatementOverlayHidden');
 					focusUtil.focus(closeButton);
 					if (this.local_mode) {
+						window.scrollTo(0, 0);
 						domStyle.set(dojo.body(), 'overflow', 'hidden');
 					}
 				})
