@@ -1,3 +1,9 @@
+univention-mail-dovecot (4.0.0-9) unstable; urgency=low
+
+  * Bug #46892: set UID and GID on move target
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 27 Apr 2018 10:10:58 +0200
+
 univention-mail-dovecot (4.0.0-8) unstable; urgency=low
 
   * Bug #46102: no need for restart in join script
