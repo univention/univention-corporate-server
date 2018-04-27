@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-mail-dovecot
+fix: 4.0.0-9A~4.3.0.201804271013
+desc: |
+ This update addresses the following issue(s):
+ * When moving a mailbox to a different filesystem, set owner and group on the target directory.
+bug: [46892]
