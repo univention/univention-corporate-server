@@ -1,7 +1,11 @@
 #!/bin/bash
 VERSION=1
 . /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/ldap.sh
 joinscript_init
+
+# register LDAP schema for new extended attribute
+ucs_registerLDAPExtension "$@" --schema /usr/share/extended-attribute/extended-attribute.schema
 
 # Register new service entry for this host
 eval "$(ucr shell)"

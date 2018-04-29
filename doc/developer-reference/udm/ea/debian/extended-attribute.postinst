@@ -3,9 +3,6 @@
 #DEBHELPER#
 
 . /usr/share/univention-lib/base.sh
-. /usr/share/univention-lib/ldap.sh
-
-ucs_registerLDAPSchema /usr/share/extended-attribute/extended-attribute.schema
 
 call_joinscript 50extended-attribute.inst
 
