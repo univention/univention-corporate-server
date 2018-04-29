@@ -451,7 +451,7 @@ w				The schema is shipped as <filename>/usr/share/extended-attribute/extended-a
 					The static list of available selections is defined once and can not be modified interactively through <acronym>UMC</acronym>.
 					Such a list is best implemented though a custom syntax class.
 					As the implementation must be available on all system roles, the new syntax is best registered in <acronym>LDAP</acronym>.
-					This can be done by using <command>ucs_registerLDAPSchema</command> which is described in <xref linkend="join:libraries:shell"/>.
+					This can be done by using <command>ucs_registerLDAPExtension</command> which is described in <xref linkend="join:libraries:shell"/>.
 				</para>
 				<para>
 					As an alternative the file can be put into the directory <filename class="directory">/usr/share/pyshared/univention/admin/syntax.d/</filename> and linked into the directory <filename class="directory">/usr/lib/pymodules/python2.6/univention/admin/syntax.d/</filename>.
@@ -1437,7 +1437,7 @@ udm settings/syntax create "$@" --ignore_exists \
 		</para>
 		<para>
 			The module <classname>settings/udm_hook</classname> requires several parameters.
-			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="join:libraries:shell"/>).
+			Since many of these are determined automatically by the <command>ucs_registerLDAPExtension</command> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="join:libraries:shell"/>).
 		</para>
 		<variablelist>
 			<varlistentry><term><literal>name</literal> (required)</term>
@@ -1523,7 +1523,7 @@ udm settings/syntax create "$@" --ignore_exists \
 		</para>
 		<para>
 			The module <classname>settings/udm_module</classname> requires several parameters.
-			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="join:libraries:shell"/>).
+			Since many of these are determined automatically by the <command>ucs_registerLDAPExtension</command> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="join:libraries:shell"/>).
 		</para>
 		<variablelist>
 			<varlistentry><term><literal>name</literal> (required)</term>
@@ -1630,7 +1630,7 @@ udm settings/syntax create "$@" --ignore_exists \
 		</para>
 		<para>
 			The module <classname>settings/udm_syntax</classname> requires several parameters.
-			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="join:libraries:shell"/>).
+			Since many of these are determined automatically by the <command>ucs_registerLDAPExtension</command> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="join:libraries:shell"/>).
 		</para>
 		<variablelist>
 			<varlistentry><term><literal>name</literal> (required)</term>
