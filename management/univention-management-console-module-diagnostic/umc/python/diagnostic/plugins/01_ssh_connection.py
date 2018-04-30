@@ -39,9 +39,9 @@ def run(_umc_instance):
 	modules.update()
 	ucs_hosts = []
 	roles = ['computers/domaincontroller_backup',
-			 'computers/domaincontroller_master',
-			 'computers/domaincontroller_slave',
-			 'computers/memberserver']
+		'computers/domaincontroller_master',
+		'computers/domaincontroller_slave',
+		'computers/memberserver']
 	for role in roles:
 		udm_obj = modules.get(role)
 		modules.init(lo, position, udm_obj)
