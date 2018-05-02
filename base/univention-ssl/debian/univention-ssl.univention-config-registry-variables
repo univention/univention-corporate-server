@@ -47,8 +47,8 @@ Type=int
 Categories=system-ssl
 
 [ssl/default/hashfunction]
-Description[de]=Diese Hash-Funktion (Message Digest) wird in neu ausgestellten SSL-Zertifikaten verwendet: 'md5', 'sha1', ...
-Description[en]=This hash function (message digest) is used in newly created SSL certificates: 'md5', 'sha1', ...
+Description[de]=Diese Hash-Funktion (Message Digest) wird in neu ausgestellten SSL-Zertifikaten verwendet: 'md5', 'sha1', 'sha256',...
+Description[en]=This hash function (message digest) is used in newly created SSL certificates: 'md5', 'sha1', 'sha256', ...
 Type=str
 Categories=system-ssl
 
@@ -65,8 +65,8 @@ Type=bool
 Categories=system-ssl
 
 [ssl/update/expired]
-Description[de]=Ist diese Option aktiviert, werden durch einen täglichen Cron-Job abgelaufene SSL-Zertifikate markiert.
-Description[en]=If this option is activated, expired SSL certificates ark marked.
+Description[de]=Ist diese Option aktiviert, werden durch einen täglichen Cron-Job abgelaufene SSL-Zertifikate entfernt.
+Description[en]=If this option is activated, expired SSL certificates are purged through a daily cron job.
 Type=bool
 Categories=system-ssl
 
