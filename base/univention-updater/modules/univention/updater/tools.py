@@ -691,7 +691,7 @@ class UCSLocalServer(object):
                     f.close()
                 self.log.info("Got %s: %d", path, len(data))
                 return (httplib.OK, len(data), data)  # 200
-        self.log.error("Failed %", path)
+        self.log.error("Failed %s", path)
         raise DownloadError(uri, -1)
 
 
