@@ -10,3 +10,5 @@ desc: |-
     installed along with univention-container-role-common. This role is used
     for Docker Apps and does not need univention-system-setup.
 bug: [45909]
+erratum: 25
+announced: 2018-05-02
