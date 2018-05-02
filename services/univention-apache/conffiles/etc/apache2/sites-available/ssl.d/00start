@@ -8,6 +8,7 @@
 	SSLProxyEngine on
 	SSLProxyCheckPeerCN off
 	SSLProxyCheckPeerName off
+	SSLProxyCheckPeerExpire off
 @!@
 if configRegistry.get('apache2/ssl/certificate'):
 	print '	SSLCertificateFile %s' % configRegistry.get('apache2/ssl/certificate')
