@@ -188,6 +188,7 @@ def main():
 		# Adding network redirection (82.198.197.8:21 <--> 127.0.0.1:60025)
 		with NetworkRedirector() as nethelper:
 			nethelper.add_redirection('82.198.197.8', 21, 60025)
+			nethelper.add_redirection('82.198.197.8', 80, 60025)
 			nethelper.add_redirection('82.198.197.8', 443, 60025)
 
 			# start http server in a different thread on (127.0.0.1:60025)

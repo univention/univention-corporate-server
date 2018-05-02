@@ -135,7 +135,7 @@ class NetworkRedirector(object):
 
     def revert_network_settings(self):
         print '*** NetworkRedirector.revert_network_settings()'
-        for entry in self.cleanup_rules:
+        for entry in copy.deepcopy(self.cleanup_rules):
             if entry[0] == 'loop':
                 self.remove_loop(entry[1], entry[2], ignore_errors=True)
             elif entry[0] == 'redirection':
