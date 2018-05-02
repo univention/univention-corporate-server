@@ -1,0 +1,81 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  secure-apt should work with DVDs
+## bugs: [45950]
+## packages:
+##  - python-apt
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+grep -q 'APT::Authentication::TrustCDROM "true";' '/etc/apt/apt.conf.d/00trustcdrom'
+
+# Build a dummy DVD for `apt-cdrom`
+dvd="$BASEDIR/dvd"
+install -m 755 -d "$dvd/.disk"
+echo 'Bug45950' >"$dvd/.disk/info"
+install -m 755 -d "$dvd/dummy/DEBIAN"
+cat >"$dvd/dummy/DEBIAN/control" <<__DEB__
+Package: dummy
+Version: 1
+Architecture: all
+Maintainer: Univention GmbH <packages@univention.de>
+Installed-Size: 1
+Section: univention
+Priority: optional
+Description: dummy package
+__DEB__
+install -m 755 -d "$dvd/all"
+dpkg-deb -b "$dvd/dummy" "$dvd/all/dummy_1_all.deb"
+rm -rf "$dvd/dummy"
+install -m 755 -d "$dvd/dists/ucs430/main/binary-amd64"
+ln -s ucs430 "$dvd/dists/stable"
+( cd "$dvd" && apt-ftparchive packages all /dev/null / ) >"$dvd/dists/ucs430/main/binary-amd64/Packages"
+gzip -9 -n "$dvd/dists/ucs430/main/binary-amd64/Packages"
+cat >$dvd/dists/ucs430/main/binary-amd64/Release <<__APT__
+Archive: stable
+Origin: Univention
+Label: Univention Corporate Server
+Version: 4.3.0
+Component: main
+Architecture: amd64
+__APT__
+apt-ftparchive \
+	-o APT::FTPArchive::Release::Origin="Univention" \
+	-o APT::FTPArchive::Release::Label="Univention Corporate Server" \
+	-o APT::FTPArchive::Release::Version="4.3.0" \
+	-o APT::FTPArchive::Release::Codename="ucs430" \
+	-o APT::FTPArchive::Release::Architectures="amd64" \
+	-o APT::FTPArchive::Release::Components="main" \
+	-o APT::FTPArchive::Release::Suite="stable" \
+	release "$dvd/dists/ucs430" >"$dvd/Release"
+mv "$dvd/Release" "$dvd/dists/ucs430/Release"
+
+cleanup2 () {
+	set +e
+	trap - EXIT
+	sed -i -e '/ "Bug45950";$/d' /var/lib/apt/cdroms.list
+	sed -i -e '/deb cdrom:\[Bug45950\]\/ ucs430 main/d' /etc/apt/sources.list
+	cleanup "$@"
+}
+trap 'cleanup2' EXIT
+
+(
+	set -e
+	ucr set local/repository=no repository/mirror=no repository/online=no update/secure_apt=no
+	LANG=C apt-cdrom add --no-auto-detect --no-mount --cdrom "$dvd" </dev/null
+
+	# Always okay:
+	apt-get -qq update
+	have dselect && dselect update
+
+	# Need Bug #45950 fixed:
+	apt -qq update
+	python -c 'exit(0 if __import__("apt").Cache().update() else 1)'
+	have aptitude && aptitude --no-gui update
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+
+exit ${RETVAL}
+# vim: set ft=sh :
