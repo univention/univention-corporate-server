@@ -9,3 +9,5 @@ desc: |
  * The LDAP syntax for userPrimaryGroupPreset has been changed
    to DirectoryString.
 bug: [46288]
+erratum: 24
+announced: 2018-05-02
