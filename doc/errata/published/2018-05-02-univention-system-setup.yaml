@@ -12,3 +12,5 @@ desc: |
  * The privacy statement is now displayed directly in the system
    setup wizard.
 bug: [43276, 46852]
+erratum: 26
+announced: 2018-05-02
