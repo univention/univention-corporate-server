@@ -239,6 +239,8 @@ allminors () { # All ${major}.0-0 ... ${major}.${minor}-0 ... ${major}.${minor}-
 	allpatchlevels "${1}.${2}-${3}"
 }
 
+have () { command -v "$1" >/dev/null 2>&1; }
+
 declare -a DIRS
 mkpdir () { # Create pool directory ${dir}
 	declare -a versions parts archs

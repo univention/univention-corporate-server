@@ -1,0 +1,67 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  secure-apt should be honored by all Debian tools
+## bugs: [45950]
+## packages:
+##  - python-apt
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+setup_apache "${repoprefix}"
+
+mkpdir "${_version_version}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkpkg "${DIR}"
+
+config_repo version/patchlevel=0 version/erratalevel=0
+
+pos () { "$@" && return 0 || return $?; }
+neg () { "$@" && return 1 || return 0; }
+tests () {
+	local cmd
+	for cmd in _aptget _pyapt _apt _aptitude  # _dselect
+	do
+		have "$cmd" || continue
+		rm -f /var/lib/apt/lists/*_Release*
+		echo "=== $1 $cmd ==="
+		"$cmd" "$1"
+	done
+}
+_aptget () { "$1" apt-get -qq update; }
+_pyapt () { "$1" python -c 'exit(0 if __import__("apt").Cache().update() else 1)'; }
+have apt && _apt () { "$1" apt -qq update; }
+have aptitude && _aptitude () {
+	# aptitude does not report unsigned repositories in the return value
+	local log="$BASEDIR/out"
+	aptitude --no-gui update >"$log" 2>&1
+	"$1" neg grep "E: The repository '[^']* Release' is not signed." "$log"
+}
+have dselect && _dselect () { "$1" dselect update; }
+
+(
+	set -e
+	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
+
+	echo "=== sec=yes key=yes ==="
+	ucr set update/secure_apt=yes
+	tests pos
+
+	echo "=== sec=no  key=yes ==="
+	ucr set update/secure_apt=no
+	tests pos
+
+	echo "=== sec=no  key=no ==="
+	apt-key del "${GPGPUB}"
+	rm "${DIR}/Release.gpg"
+	tests pos
+
+	echo "=== sec=yes  key=no ==="
+	ucr set update/secure_apt=yes
+	tests neg
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+
+exit ${RETVAL}
+# vim: set ft=sh :
