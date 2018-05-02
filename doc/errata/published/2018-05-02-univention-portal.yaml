@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * A Content-Security-Policy has been added to the portal site.
 bug: [45423]
+erratum: 28
+announced: 2018-05-02
