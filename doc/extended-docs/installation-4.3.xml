@@ -794,7 +794,7 @@ univention-system-setup-boot uss/server/role string memberserver
 				</para>
 				<itemizedlist spacing="compact">
 					<listitem><simpara>
-						The parameter <varname>auto-install/enable</varname> is used to switch to order of some installer modules:
+						The parameter <varname>auto-install/enable</varname> is used to switch the order of some installer modules:
 						The network should be configured and the <filename>preseed.cfg</filename> should be loaded <emphasis>before</emphasis> the first questions about the locale settings are asked.
 					</simpara></listitem>
 					<listitem><simpara>
