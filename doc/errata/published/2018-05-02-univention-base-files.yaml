@@ -10,3 +10,5 @@ desc: |
  * The SplitMode setting of systemd-journald can now be set with the UCR
    variable systemd/journald/SplitMode (Bug #46279).
 bug: [45950, 46279]
+erratum: 23
+announced: 2018-05-02
