@@ -1,3 +1,9 @@
+univention-join (10.0.0-5) unstable; urgency=medium
+
+  * Bug #46731: added joinscript_check_status_file
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 May 2018 17:15:34 +0200
+
 univention-join (10.0.0-4) unstable; urgency=medium
 
   * Bug #36097: Refine sed command for filtering the DN out of an UDM output

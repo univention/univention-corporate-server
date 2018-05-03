@@ -119,7 +119,18 @@ joinscript_save_current_version() {
 	fi
 }
 
+# check if status file is plain text
+joinscript_check_status_file() {
+	if [ -f "$JS_STATUSFILE" ]; then
+		if [ "text/plain" != "$(file -b --mime-type "$JS_STATUSFILE")" ]; then
+			joinscript_abort "The status file $JS_STATUSFILE seems to be corrupt (mime type is $(file -b --mime-type "$JS_STATUSFILE"), should be text/plain). Please make sure this file is a plain text file."
+		fi
+	fi
+}
+
 joinscript_get_last_executed_version() {
+
+	joinscript_check_status_file
 
 	if [ -n "$JOIN_FORCE" ]; then
 		JS_LAST_EXECUTED_VERSION=0

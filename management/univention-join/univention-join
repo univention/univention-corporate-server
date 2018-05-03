@@ -37,6 +37,7 @@ export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin"
 
 eval "$(univention-config-registry shell)"
 
+. /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
 
 SIMPLEGUI=""
@@ -189,6 +190,7 @@ check_ldap_tls_connection () {
 run_join_scripts () {
 
 	LC_COLLATE="C"
+	joinscript_check_status_file
 	if test -d "/usr/lib/univention-install/"; then
 		for i in /usr/lib/univention-install/*.{inst,uinst}; do
 			test -e "$i" || continue
