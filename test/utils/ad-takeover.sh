@@ -141,7 +141,7 @@ function check_all_user {
 }
 
 function check_user_in_winclient {
-	python shared-utils/ucs-winrm.py domain_user_validate_password --domain adtakeover.local --domainuser $1 --domainpassword $2
+	python shared-utils/ucs-winrm.py domain-user-validate-password --domain adtakeover.local --domainuser $1 --domainpassword $2
 }
 
 function check_user_in_ucs {
