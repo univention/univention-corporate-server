@@ -5,6 +5,6 @@ scope: ucs_4.3-0-errata4.3-0
 src: univention-management-console-module-ipchange
 fix: 6.0.0-3A~4.3.0.201804231303
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Ignore link local addresses in the UMC ip/change module.
 bug: [41052]
