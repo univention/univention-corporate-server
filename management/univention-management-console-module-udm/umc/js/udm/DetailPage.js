@@ -1981,7 +1981,7 @@ define([
 
 		getEmptyPropsWithDefaultValues: function() {
 			var emptyPropsWithDefaultValues = {};
-			tools.forIn(lang.getObject('$empty_props_with_default_set$', false, this._receivedObjOrigData) || {}, function(key, value) {
+			tools.forIn(lang.getObject('_receivedObjOrigData.$empty_props_with_default_set$', false, this) || {}, function(key, value) {
 				emptyPropsWithDefaultValues[key] = value.default_value;
 			});
 			return emptyPropsWithDefaultValues;
@@ -1989,7 +1989,7 @@ define([
 
 		hasEmptyPropsWithDefaultValues: function() {
 			var hasEmptyPropsWithDefaultValues = false;
-			tools.forIn(lang.getObject('$empty_props_with_default_set$', false, this._receivedObjOrigData) || {}, function() {
+			tools.forIn(lang.getObject('_receivedObjOrigData.$empty_props_with_default_set$', false, this) || {}, function() {
 				hasEmptyPropsWithDefaultValues = true;
 				return false; // short circuit forIn()
 			});
@@ -1997,7 +1997,8 @@ define([
 		},
 
 		shouldPreventPopupForEmptyPropWithDefault: function(propName) {
-			return this._receivedObjOrigData.$empty_props_with_default_set$[propName].prevent_umc_default_popup;
+			var emptyProps = lang.getObject('_receivedObjOrigData.$empty_props_with_default_set$', false, this) || {};
+			return (emptyProps[propName] && emptyProps[propName].prevent_umc_default_popup) || false;
 		},
 
 		confirmClose: function() {
