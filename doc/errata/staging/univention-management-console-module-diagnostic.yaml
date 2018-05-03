@@ -6,5 +6,6 @@ src: univention-management-console-module-diagnostic
 fix: 3.0.1-27A~4.2.0.201802211414
 desc: |
  This update addresses the following issue(s):
- * The diagnostics module now correctly detects the file permissions of the Open-Xchange apps cache directory.
+ * The diagnostics module now correctly detects the file permissions of the
+   Open-Xchange apps cache directory.
 bug: [46363]
