@@ -1,11 +1,13 @@
-HWPrinterproduct: ucs
+product: ucs
 release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-management-console
 fix: 10.0.6-1A~4.3.0.201804261158
 desc: |
- This update addresses the following issue(s):
- * Set Login button of requirePassword dialog as default to allow submitting with Enter
- * Set password field of requirePassword dialog as focused element by changing username field into simple Text
+ This update addresses the following issues:
+ * Set Login button of requirePassword dialog as default to allow submitting
+   with Enter
+ * Set password field of requirePassword dialog as focused element by changing
+   username field into simple Text
 bug: [46735]
