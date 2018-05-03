@@ -231,6 +231,9 @@ joinscript_extern_init() {
 }
 
 joinscript_init() {
+
+	joinscript_check_status_file
+
 	JS_SCRIPT_FULLNAME="$(readlink -f "$JS_RUNNING_FILENAME")"
 
 	echo "$(date --rfc-3339=ns) (in joinscript_init)"

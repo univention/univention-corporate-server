@@ -1,3 +1,9 @@
+univention-join (10.0.0-6) unstable; urgency=medium
+
+  * Bug #46731: added joinscript_check_status_file to joinscript_init
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 May 2018 17:23:18 +0200
+
 univention-join (10.0.0-5) unstable; urgency=medium
 
   * Bug #46731: added joinscript_check_status_file
