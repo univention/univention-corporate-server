@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
-"Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-09-19 15:36+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-05-03 16:31+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -35,19 +35,19 @@ msgstr ""
 "Eine Zeitüberschreitung trat beim Erreichen des Nameservers auf (ist er "
 "online?)."
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:100
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:93
 msgid "ACL right for group {id!r} is {udm!r} in UDM, but {imap!r} in IMAP."
 msgstr ""
 "ACL Berechtigung für die Gruppe {id!r} ist {udm!r} in UDM, aber {imap!r} in "
 "IMAP."
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:94
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:87
 msgid "ACL right for user {id!r} is {udm!r} in UDM, but {imap!r} in IMAP."
 msgstr ""
 "ACL Berechtigung für den Nutzer {id!r} ist {udm!r} in UDM, aber {imap!r} in "
 "IMAP."
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:332
+#: umc/python/diagnostic/plugins/22_kdc_service.py:343
 msgid "Add lo to samba/interfaces"
 msgstr "Füge lo zu samba/interfaces hinzu"
 
@@ -63,7 +63,7 @@ msgstr "Alle SIDs existieren und die Namen sind konsistent."
 msgid "All SSL certificates valid."
 msgstr "Alle SSL Zertifikate sind gültig."
 
-#: umc/python/diagnostic/plugins/31_file_permissions.py:47
+#: umc/python/diagnostic/plugins/31_file_permissions.py:48
 #: umc/python/diagnostic/plugins/54_sources_list_check.py:44
 msgid "All files ok."
 msgstr "Alle Dateien in Ordnung."
@@ -72,17 +72,17 @@ msgstr "Alle Dateien in Ordnung."
 msgid "All nameserver entries are ok."
 msgstr "Alle Nameserver Einträge sind in Ordnung."
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:50
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:49
 msgid "All shared folder ACLs are in sync with UDM."
 msgstr "Alle ACL Einträge der globalen IMAP Ordner stimmen mit UDM überein."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:150
+#: umc/python/diagnostic/plugins/00_check_server_password.py:157
 msgid "Authentication against the local LDAP failed with the machine password."
 msgstr ""
 "Authentifizierung gegen das lokale LDAP mit dem Password für das "
 "Rechnerkonto ist fehlgeschlagen."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:154
+#: umc/python/diagnostic/plugins/00_check_server_password.py:161
 msgid ""
 "Authentication against the master LDAP failed with the machine password."
 msgstr ""
@@ -93,7 +93,7 @@ msgstr ""
 msgid "Authentication with machine password against LDAP successful."
 msgstr "Authentifizierung mit dem Password für das Rechnerkonto erfolgreich."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:111
+#: umc/python/diagnostic/plugins/00_check_server_password.py:117
 msgid "Calling /usr/lib/univention-server/server_password_change failed."
 msgstr ""
 "Aufruf von /usr/lib/univention-server/server_password_change ist "
@@ -107,7 +107,7 @@ msgstr "Zertifikat {path!r} wird in {days} Tagen ablaufen."
 msgid "Check Heimdal KDC on Samba 4 DC"
 msgstr "Überprüfe Heimdal KDC auf Samba 4 DC"
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:49
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:48
 msgid "Check IMAP shared folder ACLs"
 msgstr "Überprüfe ACL Einträge der globalen IMAP Ordner"
 
@@ -123,7 +123,7 @@ msgstr "Überprüfe die Samba SYSVOL ACL Einträge auf Fehler"
 msgid "Check errors in sources.list files"
 msgstr "Überprüfe Fehler in den sources.list Dateien"
 
-#: umc/python/diagnostic/plugins/31_file_permissions.py:46
+#: umc/python/diagnostic/plugins/31_file_permissions.py:47
 msgid "Check file permissions"
 msgstr "Überprüfe Datei Berechtigungen"
 
@@ -187,29 +187,29 @@ msgstr "Fehler beim Abrufen der letzten Transaktions ID vom UDN."
 msgid "Errors found by `univention-check-templates`."
 msgstr "Es wurden Fehler durch `univention-check-templates` gefunden."
 
-#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:147
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:159
 msgid "Errors occured while running `kinit` or `nsupdate`."
 msgstr "Fehler traten auf bei der Ausführung von `kinit` oder `nsupdate`."
 
-#: umc/python/diagnostic/plugins/31_file_permissions.py:57
+#: umc/python/diagnostic/plugins/31_file_permissions.py:58
 msgid "File {path!r} does not exist."
 msgstr "Datei {path!r} existiert nicht."
 
-#: umc/python/diagnostic/plugins/31_file_permissions.py:80
+#: umc/python/diagnostic/plugins/31_file_permissions.py:81
 msgid "File {path!r} has mode {actual:o}, {expected:o} was expected."
 msgstr "Datei {path!r} hat Datei-Modus {actual:o}, {expected:o} war erwartet."
 
-#: umc/python/diagnostic/plugins/31_file_permissions.py:67
+#: umc/python/diagnostic/plugins/31_file_permissions.py:68
 msgid "File {path!r} has owner {actual!r} while {expected!r} was expected."
 msgstr ""
 "Datei {path!r} hat den Besitzer {actual!r}, während {expected!r} erwartet "
 "war."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:145
+#: umc/python/diagnostic/plugins/00_check_server_password.py:152
 msgid "Fix machine password"
 msgstr "Korrigiere Password für das Rechnerkonto"
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:305
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:235
 msgid ""
 "Found differences in the ACLs for IMAP shared folders between UDM and IMAP."
 msgstr ""
@@ -272,7 +272,7 @@ msgstr ""
 msgid "Gateway is not reachable"
 msgstr "Gateway ist nicht erreichbar"
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:54
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:62
 msgid "Host key for server does not match"
 msgstr "SSH Host-Key des Servers stimmt nicht überein"
 
@@ -295,7 +295,7 @@ msgstr ""
 msgid "In forward zone {name} (see {{{link}}}):"
 msgstr "In der Forward-Zone {name} (siehe {{{link}}}):"
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:312
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:242
 #, python-brace-format
 msgid "In mail folder {name} (see {{udm:mail/mail}}):"
 msgstr "Im globalen Mail Ordner {name} (siehe {{udm:mail/mail}}):"
@@ -325,39 +325,7 @@ msgstr ""
 msgid "KDC service check"
 msgstr "KDC Erreichbarkeit"
 
-#: umc/python/diagnostic/plugins/55_user_migration.py:13
-msgid ""
-"With UCS 4.3 the LDAP format of user objects changed. After upgrading the "
-"domaincontroller master all user objects are migrated into the new format."
-msgstr ""
-"Mit UCS 4.3 hat sich das LDAP format von Nutzer Objekten geändert. "
-"Nach Upgrade des Domänencontroller Master werden all Nutzer Objekte "
-"in das neue Format migriert."
-
-#: umc/python/diagnostic/plugins/55_user_migration.py:14
-msgid ""
-"When a user object is created by a system which is not yet on UCS 4.3 it "
-"will have the old format. These user objects need to migrated again."
-msgstr ""
-"Wenn ein Nutzer auf System erstellt wurde, welches noch nicht auf UCS 4.3 "
-"ist, wird dieser im alten Format sein. Diese Nutzer Objekte müssen erneut "
-"migriert werden."
-
-#: umc/python/diagnostic/plugins/55_user_migration.py:11
-msgid "User objects which are not migrated"
-msgstr ""
-"Noch nicht migrierte Nutzer Objekte"
-
-#: umc/python/diagnostic/plugins/55_user_migration.py:35
-#, python-format
-msgid "The migration failed: %s"
-msgstr "Die Migration schlug fehl: %s"
-
-#: umc/python/diagnostic/plugins/55_user_migration.py:27
-msgid "Migrate user objects"
-msgstr "Migriere Nutzer Objekte"
-
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:59
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:67
 #, python-format
 msgid ""
 "Login to the remote server with the uid %(uid)s and the password from /etc/"
@@ -374,11 +342,11 @@ msgstr ""
 "Um den Paketstatus zu korrigieren loggen Sie sich am System per ssh als root "
 "ein und führen Sie das Kommando \"dpkg --configure -a\" aus."
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:58
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:66
 msgid "Machine authentication failed"
 msgstr "Authentifizierung mit dem Maschinen-Konto ist fehlgeschlagen"
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:63
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:62
 msgid "Mail folder {folder!r} does not exist in IMAP."
 msgstr "Globaler IMAP Order {folder!r} existiert nicht in IMAP."
 
@@ -392,6 +360,10 @@ msgstr ""
 msgid "Manual: Analysis of listener/notifier problems"
 msgstr "Handbuch: Analyse von Listener/Notifier-Problemen"
 
+#: umc/python/diagnostic/plugins/55_user_migration.py:27
+msgid "Migrate user objects"
+msgstr "Migriere Nutzer Objekte"
+
 #: umc/python/diagnostic/plugins/53_package_status.py:15
 msgid ""
 "More information about the cause can be gained by executing \"dpkg --audit\"."
@@ -399,7 +371,7 @@ msgstr ""
 "Weitere Informationen über die Ursache können durch Ausführen von \"dpkg --"
 "audit\" erhalten werden."
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:75
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:74
 msgid "Multiple ACL entries for {id!r} in UDM."
 msgstr "Mehrere ACL Einträge für {id!r} in UDM."
 
@@ -437,7 +409,7 @@ msgstr "Keine Probleme mit modifizierten UCR Vorlagen gefunden."
 msgid "No problems were found while resolving update respositories."
 msgstr "Es wurden keine Probleme beim Auflösen der Repository-Server gefunden."
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:339
+#: umc/python/diagnostic/plugins/22_kdc_service.py:350
 msgid "No reachable KDCs were found."
 msgstr "Keine erreichbaren KDCs gefunden."
 
@@ -447,7 +419,7 @@ msgstr ""
 "Kein Nutzer oder keine Gruppe mit SID {sid} gefunden, {expected!r} war "
 "erwartet."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:163
+#: umc/python/diagnostic/plugins/00_check_server_password.py:170
 msgid ""
 "Note that password rotation is disabled via the UCR variable server/password/"
 "change."
@@ -455,7 +427,7 @@ msgstr ""
 "Beachten Sie, dass die Passwordrotation durch die UCR Variable server/"
 "password/change deaktiviert ist."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:164
+#: umc/python/diagnostic/plugins/00_check_server_password.py:171
 msgid "Note that server/password/interval is set to {}."
 msgstr "Beachten Sie, dass server/password/interval auf {} gesetzt ist."
 
@@ -465,11 +437,16 @@ msgstr ""
 "In ausgehend {nc!r}: Fehler während der DRS Replikation nach {source} "
 "({estring})."
 
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:53
+#, python-brace-format
+msgid "Output of `{cmd}`:"
+msgstr "Ausgabe von `{cmd}`:"
+
 #: umc/python/diagnostic/plugins/53_package_status.py:11
 msgid "Package status corrupt"
 msgstr "Paketstatus korrupt"
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:60
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:68
 msgid ""
 "Please check /var/log/auth.log on the remote server for further information."
 msgstr ""
@@ -498,7 +475,7 @@ msgstr "Siehe {rfc1123} für die Syntax von Rechnernamen."
 msgid "Please refer to {sdb} for further information."
 msgstr "Siehe {sdb} für weitere Informationen."
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:56
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:64
 #, python-format
 msgid ""
 "Please repair the host key of the remote server in /root/.ssh/known_hosts on "
@@ -507,7 +484,7 @@ msgstr ""
 "Der SSH Host-Key in /root/.ssh/known_hosts des entfernten Rechners muss auf "
 "%(fqdn)s repariert werden."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:112
+#: umc/python/diagnostic/plugins/00_check_server_password.py:118
 #, python-brace-format
 msgid "Please see {sdb} for more information."
 msgstr "Siehe {sdb} für weitere Informationen."
@@ -534,15 +511,24 @@ msgstr ""
 msgid "Regenerate sources.list"
 msgstr "Source-Listen neu generieren"
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:335
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:98
+msgid "Repair identity provider certificate"
+msgstr "Identity Provider-Zertifikat wiederherstellen"
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:123
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:133
+msgid "Repair service provider certificate"
+msgstr "Service Provider-Zertifikat wiederherstellen"
+
+#: umc/python/diagnostic/plugins/22_kdc_service.py:346
 msgid "Reset kerberos/kdc to 127.0.0.1"
 msgstr "Setze kerberos/kdc auf 127.0.0.1 zurück"
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:73
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:74
 msgid "Run `samba-tool dbcheck --fix --cross-ncs --yes`"
 msgstr "Führe `samba-tool dbcheck --fix --cross-ncs --yes` aus"
 
-#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:73
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:78
 msgid "Run `samba-tool ntacl sysvolreset`"
 msgstr "Führe `samba-tool ntacl sysvolreset` aus"
 
@@ -559,7 +545,11 @@ msgstr ""
 msgid "S4 rejected:"
 msgstr "Nicht synchronisierte S4 Objekte:"
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:16
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:54
+msgid "SAML certificate verification failed!"
+msgstr "Überprüfung der SAML-Zertifikate fehlgeschlagen!"
+
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:17
 msgid "SSH connection to UCS server failed!"
 msgstr "SSH-Verbindung zu anderem UCS Server fehlgeschlagen!"
 
@@ -578,18 +568,18 @@ msgstr ""
 "Siehe {erroranalysis} oder führen Sie ausstehende JOIN-Skripte via {join} "
 "aus."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:167
+#: umc/python/diagnostic/plugins/00_check_server_password.py:174
 #, python-brace-format
 msgid "See {sdb} for information on manual server password change."
 msgstr ""
 "Siehe {sdb} für weitere Informationen für einen manuellen Tausch des "
 "Passwords für das Rechnerkonto."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:174
+#: umc/python/diagnostic/plugins/00_check_server_password.py:181
 msgid "Set server/password/change=True"
 msgstr "Setze server/password/change=True"
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:180
+#: umc/python/diagnostic/plugins/00_check_server_password.py:187
 msgid "Set server/password/interval=21"
 msgstr "Setze server/password/interval=21"
 
@@ -597,7 +587,7 @@ msgstr "Setze server/password/interval=21"
 msgid "Some disks are nearly full:"
 msgstr "Einige Festplatten sind beinahe voll:"
 
-#: umc/python/diagnostic/__init__.py:280
+#: umc/python/diagnostic/__init__.py:287
 msgid "Test again"
 msgstr "Erneut testen"
 
@@ -607,6 +597,15 @@ msgid ""
 msgstr ""
 "Die UCR Variable {variable!r} ist nicht gesetzt, aber notwendig für den S4 "
 "Connector."
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:96
+msgid "The certificate of the SAML identity provider does not match."
+msgstr "Das Zertifikat des SAML Identity Providers stimmt nicht überein."
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:121
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:131
+msgid "The certificate of the SAML service provider does not match."
+msgstr "Das Zertifikat des SAML Service Providers stimmt nicht überein."
 
 #: umc/python/diagnostic/plugins/22_kdc_service.py:59
 msgid "The check for the KDC reachability was succesful."
@@ -630,7 +629,7 @@ msgstr "Die Dateien sollten auf Unterschiede geprüft werden."
 msgid "The following FQDNs were not resolvable:"
 msgstr "Die folgenden FQDNs waren nicht auflösbar:"
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:309
+#: umc/python/diagnostic/plugins/22_kdc_service.py:320
 msgid "The following KDCs were unreachable: {}"
 msgstr "Die folgenden KDCs waren nicht erreichbar: {}"
 
@@ -638,7 +637,7 @@ msgstr "Die folgenden KDCs waren nicht erreichbar: {}"
 msgid "The following UCR files are modified locally."
 msgstr "Die folgenden UCR Vorlagen wurden lokal verändert."
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:52
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:60
 msgid ""
 "The following list shows the affected remote servers and the reason for the "
 "failed ssh connection:"
@@ -671,9 +670,14 @@ msgstr ""
 "Der Rechnername des Proxies konnte nicht aufgelöst werden. Bitte DNS-"
 "Konfiguration überprüfen."
 
-#: umc/python/diagnostic/plugins/32_security_limits.py:61
+#: umc/python/diagnostic/plugins/32_security_limits.py:62
 msgid "The limits have been adjusted to the suggested value."
 msgstr "Die Limits wurden auf die empfohlenen Werte erhöht."
+
+#: umc/python/diagnostic/plugins/55_user_migration.py:36
+#, python-format
+msgid "The migration failed: %s"
+msgstr "Die Migration schlug fehl: %s"
 
 #: umc/python/diagnostic/plugins/11_nameserver.py:43
 #, python-format
@@ -721,13 +725,13 @@ msgstr ""
 "Der Server antwortete nicht innerhalb von %d Sekunden. Bitte "
 "Netzwerkeinstellungen überprüfen."
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:51
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:59
 msgid "The ssh connection to at least one other UCS server failed. "
 msgstr ""
 "Die SSH-Verbindung zu mindestens einem anderen UCS Server ist "
 "fehlgeschlagen. "
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:55
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:63
 msgid ""
 "The ssh host key of the remote server has changed (maybe the host was "
 "reinstalled). "
@@ -764,7 +768,7 @@ msgstr ""
 "Dies ist ein Samba 4 DC, aber `samba-tool processes` zeigt keinen "
 "`kdc_server` an."
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:306
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:236
 msgid "This is not necessarily a problem, if the the ACL got changed via IMAP."
 msgstr ""
 "Dies ist nicht notwendigerweise ein Problem, wenn die ACL Einträge per IMAP "
@@ -853,6 +857,10 @@ msgstr ""
 msgid "Updated versions will be named FILENAME.dpkg-*."
 msgstr "Aktualisierte Versionen werden DATEINAME.dpkg-* genannt."
 
+#: umc/python/diagnostic/plugins/55_user_migration.py:11
+msgid "User objects which are not migrated"
+msgstr "Noch nicht migrierte Nutzer Objekte"
+
 #: umc/python/diagnostic/plugins/44_well_known_sid_check.py:84
 msgid ""
 "User or group with SID {sid} has name {actual!r}, but should be {expected!r}."
@@ -867,12 +875,30 @@ msgstr ""
 "Der Nutzer oder die Gruppe mit dem Namen {name!r} hat die SID {actual_sid}, "
 "sollte aber {sid} haben."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:83
+#: umc/python/diagnostic/plugins/55_user_migration.py:14
+msgid ""
+"When a user object is created by a system which is not yet on UCS 4.3 it "
+"will have the old format. These user objects need to migrated again."
+msgstr ""
+"Wenn ein Nutzer auf System erstellt wurde, welches noch nicht auf UCS 4.3 "
+"ist, wird dieser im alten Format sein. Diese Nutzer Objekte müssen erneut "
+"migriert werden."
+
+#: umc/python/diagnostic/plugins/55_user_migration.py:13
+msgid ""
+"With UCS 4.3 the LDAP format of user objects changed. After upgrading the "
+"domaincontroller master all user objects are migrated into the new format."
+msgstr ""
+"Mit UCS 4.3 hat sich das LDAP format von Nutzer Objekten geändert. Nach "
+"Upgrade des Domänencontroller Master werden all Nutzer Objekte in das neue "
+"Format migriert."
+
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:84
 msgid "You can run `samba-tool dbcheck --fix` to fix the issue."
 msgstr ""
 "Sie können `samba-tool dbcheck --fix` ausführen um die Probleme zu beheben."
 
-#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:83
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:88
 msgid "You can run `samba-tool ntacl sysvolreset` to fix the issue."
 msgstr ""
 "Sie können `samba-tool ntacl sysvolreset` ausführen um die Probleme zu "
@@ -922,16 +948,16 @@ msgstr ""
 #: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:75
 #, python-brace-format
 msgid "`nsupdate` check for domain {domain} failed ({details})."
-msgstr "`nsupdate` Prüfung für die Domänne {domain} ist fehlgeschlagen "
-"({details})."
+msgstr ""
+"`nsupdate` Prüfung für die Domänne {domain} ist fehlgeschlagen ({details})."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:88
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:89
 msgid "`samba-tool dbcheck` found no problems with the local AD database."
 msgstr ""
 "`samba-tool dbcheck` hat keine Probleme mit der lokalen AD Datenbank "
 "gefunden."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:79
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:80
 msgid "`samba-tool dbcheck` returned a problem with the local AD database."
 msgstr "`samba-tool dbcheck` fand Probleme mit der lokalen AD Datenbank."
 
@@ -939,27 +965,22 @@ msgstr "`samba-tool dbcheck` fand Probleme mit der lokalen AD Datenbank."
 msgid "`samba-tool drs showrepl` returned a problem with the replication."
 msgstr "`samba-tool drs showrepl` gibt ein Problem mit der Replikation zurück."
 
-#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:88
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:93
 msgid "`samba-tool ntacl sysvolcheck` found no problems."
 msgstr "`samba-tool ntacl sysvolcheck` hat keine Probleme gefunden."
 
-#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:79
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:84
 msgid "`samba-tool ntacl sysvolcheck` returned a problem with the sysvol ACLs."
 msgstr ""
 "`samba-tool ntacl sysvolcheck` meldet ein Problem mit den SYSVOL ACL "
 "Einträgen."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:51
-#, python-brace-format
-msgid "Output of `{cmd}`:"
-msgstr "Ausgabe von `{cmd}`:"
-
-#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:53
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:56
 #, python-brace-format
 msgid "`{cmd}` failed."
 msgstr "`{cmd}` ist fehlgeschlagen."
 
-#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:51
+#: umc/python/diagnostic/plugins/42_samba_tool_sysvolcheck.py:53
 #, python-brace-format
 msgid "`{cmd}` succeeded."
 msgstr "`{cmd}` war erfolgreich."
@@ -993,7 +1014,7 @@ msgstr ""
 msgid "not found"
 msgstr "nicht gefunden"
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:326
+#: umc/python/diagnostic/plugins/22_kdc_service.py:337
 msgid "samba/interfaces does not contain lo, 127.0.0.1 or 0.0.0.0."
 msgstr "samba/interfaces enthält weder lo noch 127.0.0.1 noch 0.0.0.0."
 

@@ -99,6 +99,7 @@ class Instance(Base, ProgressMixin):
 	@simple_response
 	def run(self, plugin, args=None):
 		plugin = self.get(plugin)
+		MODULE.process('Running %r' % (plugin,))
 		args = args or {}
 
 		def thread(self, request):

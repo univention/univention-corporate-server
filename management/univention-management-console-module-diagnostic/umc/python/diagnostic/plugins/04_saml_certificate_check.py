@@ -51,13 +51,16 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 
+title = _('SAML certificate verification failed!')
+
+
 @contextlib.contextmanager
 def download_tempfile(url, headers=None):
 	with tempfile.NamedTemporaryFile() as fob:
 		response = requests.get(url, headers=headers, stream=True)
 		shutil.copyfileobj(response.raw, fob)
 		fob.flush()
-		yield fob.name
+		yield fob
 
 
 def find_node(node, element):
@@ -79,9 +82,12 @@ def test_identity_provider_certificate():
 	# download from all ip addresses of ucs-sso. the IDP certificate (/etc/simplesamlphp/*-idp-certificate.crt)
 	# compare this with /usr/share/univention-management-console/saml/idp/*.xml
 	# If it fails: univention-run-joinscripts --force --run-scripts 92univention-management-console-web-server
-	for host in socket.gethostbyname_ex(ucr['ucs/server/sso/fqdn'])[2]:
+	sso_fqdn = ucr.get('ucs/server/sso/fqdn')
+	if not sso_fqdn:
+		return
+	for host in socket.gethostbyname_ex(sso_fqdn)[2]:
 		try:
-			with download_tempfile('https://%s/simplesamlphp/saml2/idp/certificate' % (host,), {'host': ucr['ucs/server/sso/fqdn']}) as certificate:
+			with download_tempfile('https://%s/simplesamlphp/saml2/idp/certificate' % (host,), {'host': sso_fqdn}) as certificate:
 				certificate = certificate.read()
 				for idp in glob.glob('/usr/share/univention-management-console/saml/idp/*.xml'):
 					with open(idp) as fd:
@@ -97,11 +103,13 @@ def test_identity_provider_certificate():
 			pass
 
 
-def fix_identity_provider_certificate(_umc_instance):
-	# FIXME: DC Slave needs credentials
-	subprocess.call(['univention-run-joinscripts', '--force', '--run-scripts', '92univention-management-console-web-server'])
-	test_identity_provider_certificate()
-	raise ProblemFixed()
+def fix_identity_provider_certificate(umc_instance):
+	with tempfile.NamedTemporaryFile() as password_file:
+		password_file.write(umc_instance.password)
+		password_file.flush()
+		subprocess.call(['univention-run-join-scripts', '--force', '--run-scripts', '92univention-management-console-web-server', '-dcaccount', umc_instance.username, '-dcpwd', password_file.name])
+		test_identity_provider_certificate()
+		raise ProblemFixed()
 
 
 def test_service_provider_certificate():
@@ -110,6 +118,10 @@ def test_service_provider_certificate():
 	# If it fails: /usr/share/univention-management-console/saml/update_metadata
 	#
 	# fails because https://help.univention.com/t/renewing-the-ssl-certificates/37 was not used. https://help.univention.com/t/renewing-the-complete-ssl-certificate-chain/36
+	raise Critical(_('The certificate of the SAML service provider does not match.'), buttons=[{
+		'action': 'fix_service_provider_certificate',
+		'label': _('Repair service provider certificate')
+	}])
 	lo = univention.uldap.getMachineConnection()
 	certs = lo.search(filter_format('(&(serviceProviderMetadata=*)(univentionObjectType=saml/serviceprovider)(SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata))', ['%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))]), attr=['serviceProviderMetadata'])
 	with open('/etc/univention/ssl/%s.%s/cert.pem' % (ucr.get('hostname'), ucr.get('domainname'))) as fd:
@@ -122,11 +134,13 @@ def test_service_provider_certificate():
 				}])
 
 
-def fix_service_provider_certificate(_umc_instance):
-	# FIXME: DC Slave needs credentials
-	subprocess.call(['univention-run-joinscripts', '--force', '--run-scripts', '92univention-management-console-web-server'])
-	test_identity_provider_certificate()
-	raise ProblemFixed()
+def fix_service_provider_certificate(umc_instance):
+	with tempfile.NamedTemporaryFile() as password_file:
+		password_file.write(umc_instance.password)
+		password_file.flush()
+		subprocess.call(['univention-run-join-scripts', '--force', '--run-scripts', '92univention-management-console-web-server', '-dcaccount', umc_instance.username, '-dcpwd', password_file.name])
+		test_service_provider_certificate()
+		raise ProblemFixed()
 
 
 actions = {
