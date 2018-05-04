@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: clamav
-fix: 0.99.4+dfsg-1+deb9u1
+fix: 0.99.4+dfsg-1+deb9u1A~4.3.0.201805042157
 desc: |
  This update addresses the following issues:
  * libclamav/message.c allows remote attackers to cause a denial of service
