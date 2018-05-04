@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: openjdk-8
-fix: 8u162-b12-1~deb9u1
+fix: 8u171-b11-1~deb9u1
 desc: |
  This update addresses the following issues:
  * CVE-2016-10165: Improve CMS header processing. Missing bounds check could
@@ -64,6 +64,23 @@ desc: |
  * CVE-2018-2677: unbounded memory allocation during deserialization
  * CVE-2018-2678: unbounded memory allocation in BasicAttributes
    deserialization
+ * CVE-2018-2790: incorrect merging of sections in the JAR manifest
+ * CVE-2018-2794: unrestricted deserialization of data from JCEKS key stores
+ * CVE-2018-2795: insufficient consistency checks in deserialization of
+   multiple classes
+ * CVE-2018-2796: unbounded memory allocation during deserialization in
+   PriorityBlockingQueue
+ * CVE-2018-2797: unbounded memory allocation during deserialization in
+   TabularDataSupport
+ * CVE-2018-2798: unbounded memory allocation during deserialization in
+   Container
+ * CVE-2018-2799: unbounded memory allocation during deserialization in
+   NamedNodeMapImpl
+ * CVE-2018-2800: RMI HTTP transport enabled by default
+ * CVE-2018-2814: incorrect handling of Reference clones can lead to sandbox
+   bypass
+ * CVE-2018-2815: unbounded memory allocation during deserialization in
+   StubIORImpl
 bug: [46695]
 cve:
 - CVE-2018-2633
@@ -97,3 +114,13 @@ cve:
 - CVE-2017-10356
 - CVE-2016-10165
 - CVE-2016-9841
+- CVE-2018-2800
+- CVE-2018-2815
+- CVE-2018-2814
+- CVE-2018-2799
+- CVE-2018-2790
+- CVE-2018-2796
+- CVE-2018-2797
+- CVE-2018-2794
+- CVE-2018-2795
+- CVE-2018-2798
