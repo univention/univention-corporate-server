@@ -6,5 +6,6 @@ src: univention-mail-dovecot
 fix: 3.0.1-8A~4.2.0.201804271108
 desc: |
  This update addresses the following issue(s):
- * When moving a mailbox to a different filesystem, set owner and group on the target directory.
+ * When moving a user's mailbox to a different filesystem, set owner and
+   group for all files on the target filesystem.
 bug: [46893]
