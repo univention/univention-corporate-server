@@ -1,3 +1,10 @@
+univention-management-console (10.0.6-2) unstable; urgency=medium
+
+  * Bug #46476: Reduce loglevel of failed group request for disabled memberof
+  	overlay
+
+ -- Jannik Ahlers <ahlers@univention.de>  Mon, 07 May 2018 16:45:18 +0200
+
 univention-management-console (10.0.6-1) unstable; urgency=medium
 
   * Bug #46735: Improve usability of requirePassword login dialog

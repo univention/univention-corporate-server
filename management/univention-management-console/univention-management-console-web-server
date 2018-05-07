@@ -380,7 +380,7 @@ class User(object):
 			user_groups = lo.search(base=user_dn, scope='base', attr=['memberOf'])
 			return user_groups[0][1]['memberOf']
 		except KeyError:
-			CORE.error('Could not get groups for %r: Maybe memberof overlay module is inactive' % (self.username,))
+			CORE.info('Could not get groups for %r: Maybe memberof overlay module is inactive' % (self.username,))
 		except Exception:
 			CORE.error('Could not get groups for %r: %s' % (self.username, traceback.format_exc()))
 
