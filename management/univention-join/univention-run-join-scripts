@@ -216,6 +216,8 @@ fi
 # Save STDOUT to fd3, redirect to logfile
 exec 3>&1 >>/var/log/univention/join.log 2>&1
 
+joinscript_create_credentialfiles "$binddn" "$DCPWD"
+
 echo
 echo "univention-run-join-scripts started"
 date
@@ -241,7 +243,15 @@ then
 		fi
 
 		if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
-			"$i" --binddn "$binddn" --bindpwd "$(cat "$DCPWD")" 3>&-
+			args=()
+			if joinscript_check_api_bindpwdfile "$i"; then
+				args=(--binddn "$binddn" --bindpwdfile "$DCPWD")
+			elif joinscript_check_api_nocredentials "$i" || joinscript_check_api_credentialfiles "$i"; then
+				args=()
+			else
+				args=(--binddn "$binddn" --bindpwd "$(<"$DCPWD")")
+			fi
+			"$i" "${args[@]}" 3>&-
 		else
 			"$i" 3>&-
 		fi
@@ -255,6 +265,8 @@ then
 		fi
 	done
 fi
+
+joinscript_remove_credentialfiles
 
 echo
 date

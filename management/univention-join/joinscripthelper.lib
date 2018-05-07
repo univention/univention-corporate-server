@@ -121,7 +121,7 @@ joinscript_save_current_version() {
 
 # check if status file is plain text
 joinscript_check_status_file() {
-	if [ -f "$JS_STATUSFILE" ]; then
+	if [ -s "$JS_STATUSFILE" ]; then
 		if [ "text/plain" != "$(file -b --mime-type "$JS_STATUSFILE")" ]; then
 			joinscript_abort "The status file $JS_STATUSFILE seems to be corrupt (mime type is $(file -b --mime-type "$JS_STATUSFILE"), should be text/plain). Please make sure this file is a plain text file."
 		fi
@@ -292,6 +292,47 @@ joinscript_log_error() {
 			echo "__ERR__: $line"
 		fi
 	done
+}
+
+# 1 binddn, 2 bindpwdfile, create join credential files /var/univention-join/binddn and /var/univention-join/bindpwd
+joinscript_create_credentialfiles () {
+	mkdir -p /var/univention-join
+	touch /var/univention-join/binddn
+	chmod 600 /var/univention-join/binddn
+	echo "$1" > /var/univention-join/binddn
+	touch /var/univention-join/bindpwd
+	chmod 600 /var/univention-join/bindpwd
+	cp "$2" /var/univention-join/bindpwd
+}
+
+# remove join credential files
+joinscript_remove_credentialfiles () {
+	test -e /var/univention-join/bindpwd && rm /var/univention-join/bindpwd
+	test -e /var/univention-join/binddn && rm /var/univention-join/binddn
+}
+
+# join script can be called with --bindpwdfile
+joinscript_check_api_bindpwdfile () {
+	if grep -r '^## joinscript api: bindpwdfile$' "$1"; then
+		return 0
+	fi
+	return 1
+}
+
+# join script does not need domain credentials at all
+joinscript_check_api_nocredentials () {
+	if grep -r '^## joinscript api: nocredentials$' "$1"; then
+		return 0
+	fi
+	return 1
+}
+
+# join script gets credentials from /var/univention-join/binddn and /var/univention-join/bindpwd by itself
+joinscript_check_api_credentialfiles () {
+	if grep -r '^## joinscript api: credentialfiles$' "$1"; then
+		return 0
+	fi
+	return 1
 }
 
 # vim:set ft=sh:

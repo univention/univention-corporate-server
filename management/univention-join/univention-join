@@ -179,7 +179,7 @@ check_ldap_tls_connection () {
 
 	eval "$(ucr shell ldap/master/port)"
 
-	univention-ldapsearch -p "$ldap_master_port" -s base -h "$DCNAME" -D "$binddn" -w "$(<"$DCPWD")" dn >/dev/null
+	univention-ldapsearch -p "$ldap_master_port" -s base -h "$DCNAME" -D "$binddn" -y "$DCPWD" dn >/dev/null
 	if  [ $? != 0 ]; then
  		failed_message "Establishing a TLS connection with $DCNAME failed. Maybe you didn't specify a FQDN."
 	fi
@@ -191,6 +191,8 @@ run_join_scripts () {
 
 	LC_COLLATE="C"
 	joinscript_check_status_file
+	joinscript_create_credentialfiles "$binddn" "$DCPWD"
+
 	if test -d "/usr/lib/univention-install/"; then
 		for i in /usr/lib/univention-install/*.{inst,uinst}; do
 			test -e "$i" || continue
@@ -201,7 +203,17 @@ run_join_scripts () {
 			if [ -n "$VERBOSE" -a "$VERBOSE" = "true" ]; then
 				bashVerbose="bash -x"
 			fi
-			$bashVerbose "$i" --binddn "$binddn" --bindpwd "$(<"$DCPWD")" >>/var/log/univention/join.log 2>&1
+
+			local args=()
+			if joinscript_check_api_bindpwdfile "$i"; then
+				args=(--binddn "$binddn" --bindpwdfile "$DCPWD")
+			elif joinscript_check_api_nocredentials "$i" || joinscript_check_api_credentialfiles "$i"; then
+				args=()
+			else
+				args=(--binddn "$binddn" --bindpwd "$(<"$DCPWD")")
+			fi
+			$bashVerbose "$i" "${args[@]}" >>/var/log/univention/join.log 2>&1
+
 			if [ $? -ne 0 ]; then
 				echo -e "\033[60Gfailed"
 				failed_message "FAILED: $(basename "$i")"
@@ -245,7 +257,7 @@ run_join_scripts () {
 			fi
 		done
 	fi
-
+	joinscript_remove_credentialfiles
 }
 
 check_and_configure_ad_member_mode () {
