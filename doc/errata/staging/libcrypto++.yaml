@@ -6,12 +6,12 @@ src: libcrypto++
 fix: 5.6.1-6.A~4.2.3.201801211553
 desc: |
  This update addresses the following issues:
- * CVE-2016-9939: possible DoS in ASN.1 decoders.
- * CVE-2016-3995: Rijndael timing attack counter measure.
- * CVE-2015-2141: misuse of blinding technique that is aimed at preventing
-   timing attacks.
+ * misuse of blinding technique that is aimed at preventing timing attacks
+   (CVE-2015-2141)
+ * Rijndael timing attack counter measure (CVE-2016-3995)
+ * possible DoS in ASN.1 decoders (CVE-2016-9939)
 bug: [46137]
 cve:
-- CVE-2016-3995
 - CVE-2015-2141
+- CVE-2016-3995
 - CVE-2016-9939
