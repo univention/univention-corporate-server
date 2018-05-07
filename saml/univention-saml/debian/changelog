@@ -1,3 +1,9 @@
+univention-saml (5.0.4-18) unstable; urgency=medium
+
+  * Bug #46842: pwdfile support in join script
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 May 2018 15:29:56 +0200
+
 univention-saml (5.0.4-17) unstable; urgency=medium
 
   * Bug #46576: Change auth default module to univention-ldap
