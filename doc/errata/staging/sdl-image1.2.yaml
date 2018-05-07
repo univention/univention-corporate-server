@@ -7,10 +7,44 @@ fix: 1.2.12-5+deb8u1
 desc: |
  This update addresses the following issue:
  * An exploitable buffer overflow vulnerability exists in the XCF property
-   handling functionality: A specially crafted xcf file can cause a
+   handling functionality. A specially crafted xcf file can cause a
    stack-based buffer overflow resulting in potential code execution. An
    attacker can provide a specially crafted XCF file to trigger this
    vulnerability. (CVE-2017-2887)
+ * An exploitable code execution vulnerability exists in the ILBM image
+   rendering functionality of SDL2_image-2.0.2. A specially crafted ILBM image
+   can cause a heap overflow resulting in code execution. An attacker can
+   display a specially crafted image to trigger this vulnerability.
+   (CVE-2017-12122)
+ * An exploitable code execution vulnerability exists in the ILBM image
+   rendering functionality of SDL2_image-2.0.2. A specially crafted ILBM image
+   can cause a stack overflow resulting in code execution. An attacker can
+   display a specially crafted image to trigger this vulnerability.
+   (CVE-2017-14440)
+ * An exploitable code execution vulnerability exists in the ICO image
+   rendering functionality of SDL2_image-2.0.2. A specially crafted ICO image
+   can cause an integer overflow, cascading to a heap overflow resulting in
+   code execution. An attacker can display a specially crafted image to
+   trigger this vulnerability. (CVE-2017-14441)
+ * An exploitable code execution vulnerability exists in the BMP image
+   rendering functionality of SDL2_image-2.0.2. A specially crafted BMP image
+   can cause a stack overflow resulting in code execution. An attacker can
+   display a specially crafted image to trigger this vulnerability.
+   (CVE-2017-14442)
+ * An exploitable code execution vulnerability exists in the XCF image
+   rendering functionality of SDL2_image-2.0.2. A specially crafted XCF image
+   can cause a heap overflow resulting in code execution. An attacker can
+   display a specially crafted image to trigger this vulnerability.
+   (CVE-2017-14448)
+ * A buffer overflow vulnerability exists in the GIF image parsing
+   functionality of SDL2_image-2.0.2. A specially crafted GIF image can lead
+   to a buffer overflow on a global section. An attacker can display an image
+   to trigger this vulnerability. (CVE-2017-14450)
+ * An exploitable information disclosure vulnerability exists in the PCX image
+   rendering functionality of Simple DirectMedia Layer SDL2_image-2.0.2. A
+   specially crafted PCX image can cause an out-of-bounds read on the heap,
+   resulting in information disclosure . An attacker can display a specially
+   crafted image to trigger this vulnerability. (CVE-2018-3837)
  * An exploitable information vulnerability exists in the XCF image rendering
    functionality of Simple DirectMedia Layer SDL2_image-2.0.2. A specially
    crafted XCF image can cause an out-of-bounds read on the heap, resulting in
@@ -21,54 +55,15 @@ desc: |
    specially crafted XCF image can cause an out-of-bounds write on the heap,
    resulting in code execution. An attacker can display a specially crafted
    image to trigger this vulnerability. (CVE-2018-3839)
- * An exploitable code execution vulnerability exists in the XCF image
-   rendering functionality of SDL2_image-2.0.2. A specially crafted XCF image
-   can cause a heap overflow resulting in code execution. An attacker can
-   display a specially crafted image to trigger this vulnerability.
-   (CVE-2017-14448)
- * An exploitable buffer overflow vulnerability exists in the XCF property
-   handling functionality of SDL_image 2.0.1. A specially crafted xcf file can
-   cause a stack-based buffer overflow resulting in potential code execution.
-   An attacker can provide a specially crafted XCF file to trigger this
-   vulnerability. (CVE-2017-2887)
- * An exploitable information disclosure vulnerability exists in the PCX image
-   rendering functionality of Simple DirectMedia Layer SDL2_image-2.0.2. A
-   specially crafted PCX image can cause an out-of-bounds read on the heap,
-   resulting in information disclosure . An attacker can display a specially
-   crafted image to trigger this vulnerability. (CVE-2018-3837)
- * An exploitable code execution vulnerability exists in the BMP image
-   rendering functionality of SDL2_image-2.0.2. A specially crafted BMP image
-   can cause a stack overflow resulting in code execution. An attacker can
-   display a specially crafted image to trigger this vulnerability.
-   (CVE-2017-14442)
- * An exploitable code execution vulnerability exists in the ICO image
-   rendering functionality of SDL2_image-2.0.2. A specially crafted ICO image
-   can cause an integer overflow, cascading to a heap overflow resulting in
-   code execution. An attacker can display a specially crafted image to
-   trigger this vulnerability. (CVE-2017-14441)
- * An exploitable code execution vulnerability exists in the ILBM image
-   rendering functionality of SDL2_image-2.0.2. A specially crafted ILBM image
-   can cause a stack overflow resulting in code execution. An attacker can
-   display a specially crafted image to trigger this vulnerability.
-   (CVE-2017-14440)
- * A buffer overflow vulnerability exists in the GIF image parsing
-   functionality of SDL2_image-2.0.2. A specially crafted GIF image can lead
-   to a buffer overflow on a global section. An attacker can display an image
-   to trigger this vulnerability. (CVE-2017-14450)
- * An exploitable code execution vulnerability exists in the ILBM image
-   rendering functionality of SDL2_image-2.0.2. A specially crafted ILBM image
-   can cause a heap overflow resulting in code execution. An attacker can
-   display a specially crafted image to trigger this vulnerability.
-   (CVE-2017-12122)
 bug: [45620]
 cve:
 - CVE-2017-2887
+- CVE-2017-12122
+- CVE-2017-14440
+- CVE-2017-14441
+- CVE-2017-14442
+- CVE-2017-14448
+- CVE-2017-14450
+- CVE-2018-3837
 - CVE-2018-3838
 - CVE-2018-3839
-- CVE-2017-14448
-- CVE-2018-3837
-- CVE-2017-14442
-- CVE-2017-14441
-- CVE-2017-14440
-- CVE-2017-14450
-- CVE-2017-12122
