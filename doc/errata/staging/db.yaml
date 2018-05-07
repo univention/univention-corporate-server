@@ -6,7 +6,8 @@ src: db
 fix: 5.1.29-9+deb8u1
 desc: |
  This update addresses the following issue:
- * CVE-2017-10140: Reads DB_CONFIG from the current working directory.
+ * Possible vulnerability due to db 5.1 reading DB_CONFIG from the current
+   working directory (CVE-2017-10140).
 bug: [46240]
 cve:
 - CVE-2017-10140
