@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-join
-fix: 10.0.0-7A~4.3.0.201805071338
+fix: 10.0.0-8A~4.3.0.201805071419
 desc: |
  This update addresses the following issue(s):
  * The join tools now check if the join status file is a proper text file.
