@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-saml
+fix: 5.0.4-18A~4.3.0.201805071530
+desc: |
+ This update addresses the following issue(s):
+ * Added pwdfile support in join script.
+bug: [46842]
