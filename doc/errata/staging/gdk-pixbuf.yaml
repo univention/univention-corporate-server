@@ -11,6 +11,9 @@ desc: |
    jpeg file can cause a heap overflow resulting in remote code execution. An
    attacker can send a file or url to trigger this vulnerability.
    (CVE-2017-2862)
+ * Several integer overflow issues in the gif_get_lzw function resulting in
+   memory corruptioa and potential code execution (CVE-2017-1000422)
 bug: [45603]
 cve:
 - CVE-2017-2862
+- CVE-2017-1000422
