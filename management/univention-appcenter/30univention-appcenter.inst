@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+## joinscript api: bindpwdfile
+
 VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
@@ -79,8 +81,8 @@ getarg() {
 	done
 }
 username="$(getarg --binddn | sed -e 's/uid=//' -e 's/,.*//')"
-password="$(getarg --bindpwd)"
-univention-app register --noninteractive --username="$username" --password="$password"
+pwdfile="$(getarg --bindpwdfile)"
+univention-app register --noninteractive --username="$username" --pwdfile="$pwdfile"
 
 joinscript_save_current_version
 
