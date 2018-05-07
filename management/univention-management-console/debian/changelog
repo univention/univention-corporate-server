@@ -1,3 +1,10 @@
+univention-management-console (9.0.80-95) unstable; urgency=medium
+
+  * Bug #47109: fix hanging auth command which could happen in some rare cases
+    in combination with saml
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 15 Jun 2018 15:12:07 +0200
+
 univention-management-console (9.0.80-94) unstable; urgency=medium
 
   * Bug #46882: Improve usability of requirePassword login dialog
