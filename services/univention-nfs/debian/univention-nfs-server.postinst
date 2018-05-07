@@ -69,10 +69,7 @@ case "$1" in
 		[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 		# Bug #46587: Disable rpc-svcgssd.service for now
-		eval "$(ucr shell hostname domainname kerberos/realm)"
-		if dpkg --compare-versions "$2" lt 10.0.0-2 &&
-			[ -s /etc/krb5.keytab ] &&
-			! ktutil -k /etc/krb5.keytab list | grep -Fq "nfs/${hostname}.${domainname}@${kerberos_realm}"
+		if dpkg --compare-versions "$2" lt 10.0.0-3
 		then
 			systemctl mask rpc-svcgssd.service
 		fi

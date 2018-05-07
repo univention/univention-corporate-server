@@ -1,3 +1,9 @@
+univention-nfs (10.0.0-3) unstable; urgency=low
+
+  * Bug #46587: Forcefully disable rpc-svcgssd.service for now
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 07 May 2018 16:20:00 +0200
+
 univention-nfs (10.0.0-2) unstable; urgency=low
 
   * Bug #46587: Forcefully disable rpc-svcgssd.service for now
