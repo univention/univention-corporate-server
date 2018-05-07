@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-4.2-3-de">
+<book lang="de" id="releasenotes-4.2-4-de">
 	<bookinfo>
-		<title>UCS 4.2-3 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.2-3</subtitle>
+		<title>UCS 4.2-4 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.2-4</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -17,7 +17,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2017 Univention GmbH
+				(c) 2002-2018 Univention GmbH
 			</para>
 
 			<para>
@@ -44,7 +44,7 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit Univention Corporate Server 4.2-3 steht das dritte Point-Release für Univention Corporate Server (UCS) 4.2 zur
+			Mit Univention Corporate Server 4.2-4 steht das vierte Point-Release für Univention Corporate Server (UCS) 4.2 zur
 			Verfügung. Es umfasst eine Reihe Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie
 			diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten Änderungen im Überblick:
 		</para>
@@ -60,7 +60,7 @@
 				Beim Domänenbeitritt eines UCS-Systems zu einer Microsoft Active Directory Domäne werden nun mehr Prüfungen vorgenommen. Dadurch können Hinweise auf bekannte Probleme angezeigt werden inkl. Hinweise auf deren Behebung.
 			</para></listitem>
 			<listitem><para>
-				Diverse Security Updates wurden in UCS 4.2-3 integriert, bspw. für OpenLDAP, den Linux Kernel, Samba, MySQL, PostgreSQL, und <application>Asterisk</application>.
+				Diverse Security Updates wurden in UCS 4.2-4 integriert, bspw. für OpenLDAP, den Linux Kernel, Samba, MySQL, PostgreSQL, und <application>Asterisk</application>.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -201,10 +201,10 @@
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.2-2</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <wordasword>4.2-3</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-3.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-4.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

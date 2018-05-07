@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-4.2-3-en">
+<book lang="en" id="releasenotes-4.2-4-en">
 	<bookinfo>
-		<title>UCS 4.2-3 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.2-3</subtitle>
+		<title>UCS 4.2-4 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.2-4</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -17,7 +17,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2017 Univention GmbH
+				(c) 2002-2018 Univention GmbH
 			</para>
 
 			<para>
@@ -44,7 +44,7 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With Univention Corporate Server 4.2-3, the third point release of Univention Corporate Server (UCS) 4.2 is now
+			With Univention Corporate Server 4.2-4, the forth point release of Univention Corporate Server (UCS) 4.2 is now
 			available. It provides several feature improvements and extensions, new properties as well as
 			various improvements and bugfixes. An overview of the most important changes are:
 		</para>
@@ -60,7 +60,7 @@
 				When joining into an active directory domain, additional checks are now executed. This enables the detection of known issues which are shown to the user along with advice how to fix them.
 			</para></listitem>
 			<listitem><para>
-				Various security updates have been integrated into UCS 4.2-3, e.g. OpenLDAP, the Linux kernel, Samba, MySQL, PostgreSQL, and <application>Asterisk</application>.
+				Various security updates have been integrated into UCS 4.2-4, e.g. OpenLDAP, the Linux kernel, Samba, MySQL, PostgreSQL, and <application>Asterisk</application>.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -161,7 +161,6 @@
 				WebKit is primarily used for displaying HTML help pages etc.
 				Firefox should be used as web browser.
 			</para>
-
 		</section>
 
 		<section id="relnotes:browsers">
@@ -201,10 +200,10 @@
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <wordasword>4.2-2</wordasword>:
+			Listed are the changes since UCS <wordasword>4.2-3</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-3.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-4.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
