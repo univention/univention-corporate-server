@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-nfs
-fix: 10.0.0-2A~4.3.0.201803231239
+fix: 10.0.0-3A~4.3.0.201805071622
 desc: |
  This update addresses the following issue:
  * Mask the service `rpc-svcgssd` for handling Kerberos tickers for NFS.
