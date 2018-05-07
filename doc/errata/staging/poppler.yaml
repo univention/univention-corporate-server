@@ -30,6 +30,7 @@ desc: |
  * CVE-2017-14520: Floating point exception in Splash::scaleImageYuXd()
  * CVE-2017-14617: Floating point exception in the ImageStream class in
    Stream.cc
+ * CVE-2017-14929: Memory corruption via Gfx.cc infinite loop
  * CVE-2017-14975: NULL pointer dereference vulnerability in the
    FoFiType1C::convertToType0 function in FoFiType1C.cc
  * CVE-2017-14976: Heap-based buffer over-read vulnerability in the
@@ -37,24 +38,23 @@ desc: |
    FoFiTrueType::getCFFBlock function in FoFiTrueType.cc
  * CVE-2017-15565: NULL Pointer Dereference in the
    GfxImageColorMap::getGrayLine() function in GfxState.cc
- * CVE-2017-14929: Memory corruption via Gfx.cc infinite loop
  * CVE-2017-1000456: Invalid read in TextPool::addWord() causes crash and can
    lead to overflow in subsequent calculations
 bug: [46153]
 cve:
-- CVE-2017-9776
-- CVE-2017-14519
-- CVE-2017-14518
-- CVE-2017-15565
 - CVE-2017-9406
 - CVE-2017-9408
 - CVE-2017-9775
-- CVE-2017-14977
-- CVE-2017-14976
-- CVE-2017-14975
-- CVE-2017-14520
+- CVE-2017-9776
 - CVE-2017-9865
 - CVE-2017-14517
+- CVE-2017-14518
+- CVE-2017-14519
+- CVE-2017-14520
 - CVE-2017-14617
-- CVE-2017-1000456
 - CVE-2017-14929
+- CVE-2017-14975
+- CVE-2017-14976
+- CVE-2017-14977
+- CVE-2017-15565
+- CVE-2017-1000456
