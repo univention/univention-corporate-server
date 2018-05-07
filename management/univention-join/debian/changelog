@@ -1,3 +1,9 @@
+univention-join (10.0.0-9) unstable; urgency=medium
+
+  * Bug 46842: grep without output
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 May 2018 15:52:02 +0200
+
 univention-join (10.0.0-8) unstable; urgency=medium
 
   * Bug 46842: fixed DCPWD permissions
