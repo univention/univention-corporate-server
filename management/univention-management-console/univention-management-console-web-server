@@ -152,6 +152,7 @@ class SessionClient(object):
 	def _authenticated(self, success, response):
 		"""Callback function for 'authenticated' from UMCP-Server."""
 		CORE.process('SessionClient(0x%x): _authenticated: success=%s  status=%s  message=%s' % (id(self), success, response.status, response.message))
+		self._auth_response = self._auth_response_in
 		self._auth_response.status = response.status
 		self._auth_response.result = response.result
 		self._auth_response.message = response.message
@@ -162,7 +163,7 @@ class SessionClient(object):
 	def authenticate_user(self, request, response_queue):
 		"""Send authentication request to UMC server."""
 		CORE.info('SessionClient(0x%x): authenticate_user: sending authentication request for user %r' % (id(self), request.body.get('username')))
-		self._auth_response = Response(request)
+		self._auth_response_in = Response(request)
 		self._auth_response_queue = response_queue
 		self.client.authenticate(request)
 
