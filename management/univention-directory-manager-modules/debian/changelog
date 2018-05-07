@@ -1,3 +1,10 @@
+univention-directory-manager-modules (13.0.21-20) unstable; urgency=medium
+
+  * Bug #46842: joinscript api bindpwdfile in join script,
+    added pwdfile support in univention-dnsedit
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 May 2018 14:52:09 +0200
+
 univention-directory-manager-modules (13.0.21-19) unstable; urgency=medium
 
   * Bug #46529: Properties that were set to default values

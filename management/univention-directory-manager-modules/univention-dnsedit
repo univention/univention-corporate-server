@@ -93,9 +93,14 @@ def parse():
 	parser.add_option('--bindpwd',
 			action='store', dest='bindpwd',
 			help='bind password')
+	parser.add_option('--bindpwdfile',
+			action='store', dest='bindpwdfile',
+			help='bind password file')
 
 	options, arguments = parser.parse_args()
 	msg = None
+	if options.bindpwdfile:
+		options.bindpwd = open(options.bindpwdfile).read().strip()
 	if options.binddn and not options.bindpwd:
 		msg = 'authentication error: missing --bindpwd'
 	elif not options.binddn and options.bindpwd:
