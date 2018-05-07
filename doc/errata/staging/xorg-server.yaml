@@ -6,33 +6,36 @@ src: xorg-server
 fix: 2:1.16.4-1+deb8u2
 desc: |
  This update addresses the following issues:
- * CVE-2015-3164: Xwayland allows unconditional open access to display
- * CVE-2017-2624: timing attack against MIT Cookie
- * CVE-2017-10971: Stack overflow in the endianness conversion of X Events
- * CVE-2017-10972: Unitialized data in endianness conversion in the XEvent
-   handling
- * CVE-2017-12176: Unvalidated extra length in ProcEstablishConnection
- * CVE-2017-12177: Unvalidated variable-length request in ProcDbeGetVisualInfo
- * CVE-2017-12178: wrong extra length check in ProcXIChangeHierarchy
- * CVE-2017-12179: Integer overflow and unvalidated length in
-   (S)ProcXIBarrierReleasePointer
- * CVE-2017-12180: unvalidated lengths in XFree86 VidModeExtension
- * CVE-2017-12181: unvalidated lengths in XFree86 DGA extension
- * CVE-2017-12182: unvalidated lengths in XFree86 DRI extension
- * CVE-2017-12183: unvalidated lengths in XFIXES extension
- * CVE-2017-12184: unvalidated lengths in XINERAMA extension
- * CVE-2017-12185: unvalidated lengths in MIT-SCREEN-SAVER extension
- * CVE-2017-12186: unvalidated lengths in X-Resource extension
- * CVE-2017-12187: unvalidated lengths in RENDER extension
- * CVE-2017-13721: Insufficient validation of shmseg resource id
- * CVE-2017-13723: Global buffer overflow in xkbtext.c
+ * Xwayland allows unconditional open access to display (CVE-2015-3164)
+ * timing attack against MIT Cookie (CVE-2017-2624)
+ * Stack overflow in the endianness conversion of X Events (CVE-2017-10971) 
+ * Unitialized data in endianness conversion in the XEvent handling
+   (CVE-2017-10972)
+ * Unvalidated extra length in ProcEstablishConnection (CVE-2017-12176)
+ * Unvalidated variable-length request in ProcDbeGetVisualInfo (CVE-2017-12177)
+ * wrong extra length check in ProcXIChangeHierarchy (CVE-2017-12178)
+ * Integer overflow and unvalidated length in (S)ProcXIBarrierReleasePointer
+   (CVE-2017-12179)
+ * unvalidated lengths in XFree86 VidModeExtension (CVE-2017-12180)
+ * unvalidated lengths in XFree86 DGA extension (CVE-2017-12181)
+ * unvalidated lengths in XFree86 DRI extension (CVE-2017-12182)
+ * unvalidated lengths in XFIXES extension (CVE-2017-12183)
+ * unvalidated lengths in XINERAMA extension (CVE-2017-12184)
+ * unvalidated lengths in MIT-SCREEN-SAVER extension (CVE-2017-12185)
+ * unvalidated lengths in X-Resource extension (CVE-2017-12186)
+ * unvalidated lengths in RENDER extension (CVE-2017-12187)
+ * Insufficient validation of shmseg resource id (CVE-2017-13721)
+ * Global buffer overflow in xkbtext.c (CVE-2017-13723)
 bug: [44973]
 cve:
-- CVE-2017-10971
-- CVE-2017-13723
-- CVE-2017-10972
-- CVE-2017-13721
 - CVE-2015-3164
+- CVE-2017-2624
+- CVE-2017-10971
+- CVE-2017-10972
+- CVE-2017-12176
+- CVE-2017-12177
+- CVE-2017-12178
+- CVE-2017-12179
 - CVE-2017-12180
 - CVE-2017-12181
 - CVE-2017-12182
@@ -41,8 +44,5 @@ cve:
 - CVE-2017-12185
 - CVE-2017-12186
 - CVE-2017-12187
-- CVE-2017-12179
-- CVE-2017-12178
-- CVE-2017-12177
-- CVE-2017-12176
-- CVE-2017-2624
+- CVE-2017-13721
+- CVE-2017-13723
