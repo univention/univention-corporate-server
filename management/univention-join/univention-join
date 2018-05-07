@@ -395,6 +395,7 @@ if [ ! -f "$DCPWD" ]; then
 	echo ""
 	echo ""
 fi
+chmod 600 "$DCPWD"
 
 if [ -n "$TYPE" ]; then
 	server_role="$TYPE"
@@ -712,7 +713,7 @@ do
 	then
 		echo -n "Stopping $service daemon: "
 		sv force-stop "$service" >>"$LOG" 2>&1
-		echo " done"
+		echo -e "\033[60Gdone"
 	fi
 done
 rm -Rf /var/lib/univention-directory-listener/*
