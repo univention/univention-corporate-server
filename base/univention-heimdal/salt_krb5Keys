@@ -94,9 +94,10 @@ class ldapconnection:
 
 def main():
 	from optparse import OptionParser
-	parser = OptionParser(usage="%prog [-h|--help] [--binddn <binddn>] [--bindpwd <bindpwd>]")
+	parser = OptionParser(usage="%prog [-h|--help] [--binddn <binddn>] [--bindpwd <bindpwd>] [--bindpwdfile <bindpwdfile>]")
 	parser.add_option("--binddn", action="store", dest="binddn", help="binddn")
 	parser.add_option("--bindpwd", action="store", dest="bindpwd", help="bindpwd")
+	parser.add_option("--bindpwdfile", action="store", dest="bindpwdfile", help="bindpwdfile")
 	(options, args) = parser.parse_args()
 
 	ucr = univention.config_registry.ConfigRegistry()
@@ -110,6 +111,9 @@ def main():
 		else:
 			options.binddn = "cn=admin,%s" % ldap_base
 			options.bindpwd = open('/etc/ldap.secret').read().strip()
+
+	if options.bindpwdfile:
+		options.bindpwd = open(options.bindpwdfile).read().strip()
 
 	ldapfilter = "(objectClass=krb5Principal)"
 	attrlist = ['krb5PrincipalName', 'krb5Key']

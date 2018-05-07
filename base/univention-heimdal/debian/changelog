@@ -1,3 +1,10 @@
+univention-heimdal (11.0.1-8) unstable; urgency=medium
+
+  * Bug #46842: join script without credentials,
+    pwdfile support in salt_krb5Keys
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 May 2018 14:25:20 +0200
+
 univention-heimdal (11.0.1-7) unstable; urgency=medium
 
   * Bug #33214: Gather and mark MIT Kerberos libdefaults in krb5.conf
