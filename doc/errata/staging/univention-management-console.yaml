@@ -11,4 +11,5 @@ desc: |
  * Set password field of requirePassword dialog as focused element by changing
    username field into simple Text
  * Enhance logging for disabled memberof overlay
-bug: [46735, 46476]
+ * Modify description of umc/web/piwik ucr variable to better explain actual behavior
+bug: [46735, 46476, 46791]
