@@ -150,7 +150,7 @@ if len(sys.argv) < oiterator + 1:
 	usage()
 	sys.exit(1)
 
-filter = replace_filter(sys.argv[oiterator].decode('latin'))
+filter = replace_filter(sys.argv[oiterator])
 
 
 if len(sys.argv) > oiterator + 1:
@@ -255,7 +255,7 @@ n_referrals = 0
 
 print "#"
 print "# univention-adsearch"
-print "# filter: %s" % filter.encode('latin')
+print "# filter: %s" % filter
 print "#"
 
 for r in res:
@@ -263,7 +263,7 @@ for r in res:
 		n_referrals += 1
 		continue
 	print ""
-	print "%s: %s" % ('DN', unicode(r[0], 'utf8').encode('latin'))
+	print "DN: %s" % r[0]
 	for key in r[1]:
 		if key in ["objectGUID", 'ipsecData', 'repsFrom', 'replUpToDateVector']:
 			print "%s: %s" % (key, r[1][key])
@@ -283,10 +283,7 @@ for r in res:
 					sid += "-%u" % res
 				print "%s: %s" % (key, sid)
 			else:
-				try:
-					print "%s: %s" % (key, unicode(val, 'utf8').encode('latin'))
-				except:
-					print "failed: %s" % key
+				print "%s: %s" % (key, val)
 
 print ""
 print "#"

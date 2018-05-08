@@ -1,3 +1,9 @@
+univention-ad-connector (12.0.0-8) unstable; urgency=medium
+
+  * Bug #45779: fix econding issues in getting/setting rejects
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 May 2018 13:45:09 +0200
+
 univention-ad-connector (12.0.0-7) unstable; urgency=medium
 
   * Bug #45760: update shadowMax, shadowLastChange and krb5PasswordEnd
