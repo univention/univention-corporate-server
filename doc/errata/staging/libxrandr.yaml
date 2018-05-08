@@ -6,11 +6,11 @@ src: libxrandr
 fix: 2:1.4.2-1+deb8u1
 desc: |
  This update addresses the following issues:
- * libXrandr allows remote X servers to trigger out-of-bounds write operations
-   by leveraging mishandling of reply data. (CVE-2016-7948)
  * Multiple integer overflows in libXrandr allow remote X servers to trigger
    out-of-bounds write operations via a crafted response. (CVE-2016-7947)
+ * libXrandr allows remote X servers to trigger out-of-bounds write operations
+   by leveraging mishandling of reply data. (CVE-2016-7948)
 bug: [46146]
 cve:
-- CVE-2016-7948
 - CVE-2016-7947
+- CVE-2016-7948
