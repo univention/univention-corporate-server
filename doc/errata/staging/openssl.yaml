@@ -6,10 +6,11 @@ src: openssl
 fix: 1.0.2n-0A~4.2.0.201801262211
 desc: |
  This update addresses the following issues:
- * CVE-2017-3735: Malformed X.509 IPAdressFamily could cause OOB read
- * CVE-2017-3736: bn_sqrx8x_internal carry bug on x86_64
- * CVE-2017-3737: Read/write after SSL object in error state
- * CVE-2017-3738: rsaz_1024_mul_avx2 overflow bug on x86_64
+ * Malformed X.509 IPAdressFamily could cause out of bounds read
+   (CVE-2017-3735)
+ * Carry propagating bug on x86_64 in bn_sqrx8x_internal (CVE-2017-3736)
+ * Read/write after SSL object in error state (CVE-2017-3737)
+ * Overflow bug on x86_64 in rsaz_1024_mul_avx2 (CVE-2017-3738)
 bug: [45750]
 cve:
 - CVE-2017-3735
