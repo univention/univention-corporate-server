@@ -9,3 +9,5 @@ desc: |
  * The diagnostics module now correctly detects the file permissions of the
    Open-Xchange apps cache directory.
 bug: [46363]
+erratum: 409
+announced: 2018-05-08
