@@ -30,3 +30,5 @@ desc: |
 note: No CVE were assigned.
 bug: [46243]
 debian: https://security-tracker.debian.org/tracker/TEMP-0850432-8BD66F
+erratum: 412
+announced: 2018-05-08
