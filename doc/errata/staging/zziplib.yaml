@@ -6,32 +6,32 @@ src: zziplib
 fix: 0.13.62-3+deb8u1
 desc: |
  This update addresses the following issues:
- * Heap-based buffer overflow in the zzip_mem_entry_extra_block function in
-   memdisk.c allows remote attackers to cause a denial of service (crash) via
-   a crafted ZIP file. (CVE-2017-5976)
  * Heap-based buffer overflow in the __zzip_get32 function in fetch.c allows
    remote attackers to cause a denial of service (crash) via a crafted ZIP
    file. (CVE-2017-5974)
  * Heap-based buffer overflow in the __zzip_get64 function in fetch.c allows
    remote attackers to cause a denial of service (crash) via a crafted ZIP
    file. (CVE-2017-5975)
- * seeko.c allows remote attackers to cause a denial of service (assertion
-   failure and crash) via a crafted ZIP file. (CVE-2017-5981)
- * The zzip_mem_entry_new function in memdisk.c allows remote attackers to
-   cause a denial of service (NULL pointer dereference and crash) via a
-   crafted ZIP file. (CVE-2017-5980)
+ * Heap-based buffer overflow in the zzip_mem_entry_extra_block function in
+   memdisk.c allows remote attackers to cause a denial of service (crash) via
+   a crafted ZIP file. (CVE-2017-5976)
  * The zzip_mem_entry_new function in memdisk.c allows remote attackers to
    cause a denial of service (out-of-bounds read and crash) via a crafted ZIP
    file. (CVE-2017-5978)
  * The prescan_entry function in fseeko.c allows remote attackers to cause a
    denial of service (NULL pointer dereference and crash) via a crafted ZIP
    file. (CVE-2017-5979)
+ * The zzip_mem_entry_new function in memdisk.c allows remote attackers to
+   cause a denial of service (NULL pointer dereference and crash) via a
+   crafted ZIP file. (CVE-2017-5980)
+ * seeko.c allows remote attackers to cause a denial of service (assertion
+   failure and crash) via a crafted ZIP file. (CVE-2017-5981)
 bug: [44856]
 cve:
-- CVE-2017-5976
 - CVE-2017-5974
 - CVE-2017-5975
-- CVE-2017-5981
-- CVE-2017-5980
+- CVE-2017-5976
 - CVE-2017-5978
 - CVE-2017-5979
+- CVE-2017-5980
+- CVE-2017-5981
