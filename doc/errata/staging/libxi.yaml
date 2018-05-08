@@ -6,12 +6,12 @@ src: libxi
 fix: 2:1.7.4-1+deb8u1
 desc: |
  This update addresses the following issues:
- * libXi allows remote X servers to cause a denial of service (infinite loop)
-   via vectors involving length fields. (CVE-2016-7946)
  * Multiple integer overflows in libXi allow remote X servers to cause a
    denial of service (out-of-bounds memory access or infinite loop) via
    vectors involving length fields. (CVE-2016-7945)
+ * libXi allows remote X servers to cause a denial of service (infinite loop)
+   via vectors involving length fields. (CVE-2016-7946)
 bug: [46145]
 cve:
-- CVE-2016-7946
 - CVE-2016-7945
+- CVE-2016-7946
