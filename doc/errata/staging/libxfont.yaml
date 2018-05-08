@@ -10,5 +10,5 @@ desc: |
  * pcfGetProperties: Check string boundaries (CVE-2017-13722)
 bug: [45621]
 cve:
-- CVE-2017-13722
 - CVE-2017-13720
+- CVE-2017-13722
