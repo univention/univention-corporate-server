@@ -37,6 +37,7 @@ import univention.connector.ad
 
 import hashlib
 import binascii
+import time
 
 from struct import pack
 from Crypto.Cipher import DES, ARC4
@@ -405,19 +406,43 @@ def password_sync(connector, key, ucs_object):
 				modlist.append(('sambaNTPassword', ntPwd_ucs, str(ntPwd.upper())))
 				if krb5Principal:
 					connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'krb5Key', nt_password_to_arcfour_hmac_md5(ntPwd.upper()))])
-		if pwd_changed:
-			connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'userPassword', '{K5KEY}')])
-			# Remove the POSIX and Kerberos password expiry interval
-			if 'shadowLastChange' in ucs_result[0][1]:
-				modlist.append(('shadowLastChange', ucs_result[0][1]['shadowLastChange'][0], None))
-			if 'shadowMax' in ucs_result[0][1]:
-				modlist.append(('shadowMax', ucs_result[0][1]['shadowMax'][0], None))
-			if 'krb5PasswordEnd' in ucs_result[0][1]:
-				modlist.append(('krb5PasswordEnd', ucs_result[0][1]['krb5PasswordEnd'][0], None))
 
+		if pwd_changed:
+
+			connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'userPassword', '{K5KEY}')])
+
+			# update shadowLastChange
+			old_shadowLastChange = ucs_result[0][1].get('shadowLastChange', [None])[0]
+			new_shadowLastChange = str(long(time.time()) / 3600 / 24)
+			modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
+			ud.debug(ud.LDAP, ud.INFO, "password_sync: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
+
+			# get pw policy
+			new_shadowMax = None
+			new_krb5end = None
+			old_shadowMax = ucs_result[0][1].get('shadowMax', [None])[0]
+			old_krb5end = ucs_result[0][1].get('krb5PasswordEnd', [None])[0]
+			policies = connector.lo.getPolicies(ucs_object['dn'])
+			policy = policies.get('univentionPolicyPWHistory', {}).get('univentionPWExpiryInterval')
+			if policy:
+				ud.debug(ud.LDAP, ud.INFO, "password_sync: password expiry for %s is %s" % (ucs_object['dn'], policy))
+				policy_value = policy.get('value', [None])[0]
+				if policy_value:
+					new_shadowMax = policy_value
+					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime((long(time.time()) + (int(policy_value) * 3600 * 24))))
+
+			# update shadowMax (set to value of univentionPWExpiryInterval, otherwise delete) and
+			# krb5PasswordEnd (set to today + univentionPWExpiryInterval, otherwise delete)
+			if old_shadowMax or new_shadowMax:
+				ud.debug(ud.LDAP, ud.INFO, "password_sync: update shadowMax to %s for %s" % (new_shadowMax, ucs_object['dn']))
+				modlist.append(('shadowMax', old_shadowMax, new_shadowMax))
+			if old_krb5end or new_krb5end:
+				ud.debug(ud.LDAP, ud.INFO, "password_sync: update krb5PasswordEnd to %s for %s" % (new_krb5end, ucs_object['dn']))
+				modlist.append(('krb5PasswordEnd', old_krb5end, new_krb5end))
+
+			# update sambaPwdLastSet
 			if pwdLastSet or pwdLastSet == 0:
 				newSambaPwdLastSet = str(univention.connector.ad.ad2samba_time(pwdLastSet))
-
 				if sambaPwdLastSet:
 					if sambaPwdLastSet != newSambaPwdLastSet:
 						modlist.append(('sambaPwdLastSet', sambaPwdLastSet, newSambaPwdLastSet))
