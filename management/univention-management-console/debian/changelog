@@ -1,3 +1,9 @@
+univention-management-console (10.0.6-3) unstable; urgency=medium
+
+  * Bug #46791: Modify description of umc/web/piwik ucr variable to better explain actual behavior
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Tue, 08 May 2018 09:42:11 +0200
+
 univention-management-console (10.0.6-2) unstable; urgency=medium
 
   * Bug #46476: Reduce loglevel of failed group request for disabled memberof
