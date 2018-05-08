@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-management-console
-fix: 10.0.6-2A~4.3.0.201805071652
+fix: 10.0.6-3A~4.3.0.201805080947
 desc: |
  This update addresses the following issues:
  * Set Login button of requirePassword dialog as default to allow submitting
