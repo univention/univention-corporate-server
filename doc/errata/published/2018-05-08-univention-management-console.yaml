@@ -9,3 +9,5 @@ desc: |
  * The password dialog that is shown upfront some functions in UMC when using
    a Single Sign On (SAML) session can now be submitted by pressing Enter.
 bug: [46882]
+erratum: 410
+announced: 2018-05-08
