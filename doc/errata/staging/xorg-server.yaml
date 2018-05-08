@@ -12,7 +12,8 @@ desc: |
  * Unitialized data in endianness conversion in the XEvent handling
    (CVE-2017-10972)
  * Unvalidated extra length in ProcEstablishConnection (CVE-2017-12176)
- * Unvalidated variable-length request in ProcDbeGetVisualInfo (CVE-2017-12177)
+ * Unvalidated variable-length request in ProcDbeGetVisualInfo
+   (CVE-2017-12177)
  * wrong extra length check in ProcXIChangeHierarchy (CVE-2017-12178)
  * Integer overflow and unvalidated length in (S)ProcXIBarrierReleasePointer
    (CVE-2017-12179)
