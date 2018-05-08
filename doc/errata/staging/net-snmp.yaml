@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: net-snmp
-fix: 5.7.2.1+dfsg-1+deb8u1+b1
+fix: 5.7.2.1+dfsg-1+deb8u1
 desc: |
  This update addresses the following issues:
  * The snmp_pdu_parse function in net-snmp does not remove the varBind
