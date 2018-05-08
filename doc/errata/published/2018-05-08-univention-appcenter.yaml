@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * File permissions for /etc/machine.secret in app containers have been fixed.
 bug: [46835]
+erratum: 407
+announced: 2018-05-08
