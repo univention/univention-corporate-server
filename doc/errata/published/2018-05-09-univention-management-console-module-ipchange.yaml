@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Ignore link local addresses in the UMC ip/change module.
 bug: [41052]
+erratum: 34
+announced: 2018-05-09
