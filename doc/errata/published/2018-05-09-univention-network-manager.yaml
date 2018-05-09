@@ -9,3 +9,5 @@ desc: |
  * Ignore loop-back network interfaces 'lo' and 'docker0' in
    univention-register-network-address.
 bug: [41052]
+erratum: 35
+announced: 2018-05-09
