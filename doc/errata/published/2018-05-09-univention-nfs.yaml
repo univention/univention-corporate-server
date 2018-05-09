@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Mask the service `rpc-svcgssd` for handling Kerberos tickets for NFS.
 bug: [46587]
+erratum: 31
+announced: 2018-05-09
