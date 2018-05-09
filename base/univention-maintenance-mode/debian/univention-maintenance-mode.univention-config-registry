@@ -1,0 +1,3 @@
+Type: script
+Script: univention-maintenance-mode-service
+Variables: updater/maintenance

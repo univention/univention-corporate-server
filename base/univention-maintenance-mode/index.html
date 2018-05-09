@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+    <title>UCS maintenance</title>
+  </head>
+  <body>
+    <div class="jumbotron">
+      <h1 class="display-4">UCS in maintenance mode</h1>
+      <p class="lead">Univention Corporate Server is currently in maintenance mode. It should be available again in a few moments.</p>
+      <hr class="my-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="progress">
+            <div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+						</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="lead">
+				<button type="button" class="btn btn-secondary btn-lg mt-3" data-toggle="modal" data-target="#stopMaintenanceMode">
+					Stop maintenance mode early
+				</button>
+      </p>
+    </div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="stopMaintenanceMode" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalLabel">Are you sure?</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						Stopping the maintenance mode before the update is finished may result in temporarily broken web pages or errors in web services. The update will continue and eventually, all issues, if any, should go away. Yet, we recommend you wait until the update is finished.
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Stay here</button>
+						<button type="button" class="btn btn-secondary">Stop maintenance mode</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+		<script>
+			failed = 0;
+			warnUser = function() {
+				$("#progressbar").removeClass("progress-bar-animated");
+				console.warn("Okay, this is enough!");
+				failed = 0;
+				poll();
+			};
+			setProgress = function(percentage) {
+				$("#progressbar").attr("style", "width: " + percentage + "%");
+				$("#progressbar").attr("aria-valuenow", percentage);
+				if (percentage == 100) {
+					$("#progressbar").removeClass("progress-bar-animated");
+				} else {
+					$("#progressbar").addClass("progress-bar-animated");
+				}
+			};
+			poll = function() {
+				$.getJSON("/univention/maintenance/updater.json")
+					.done(function(json) {
+						$("#progressbar").addClass("progress-bar-animated");
+						setProgress(json.v1.percentage);
+						failed = 0;
+					})
+					.fail(function(handler, errorType, errorDetails) {
+						failed += 1;
+						console.warn("Unable to get information from updater.json:", errorType, errorDetails);
+					})
+					.always(function() {
+						if (failed >= 60) {
+							warnUser();
+						} else {
+							setTimeout(poll, 1000);
+						}
+					});
+			};
+			poll();
+		</script>
+  </body>
+</html>

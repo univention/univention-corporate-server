@@ -1,6 +1,7 @@
-#!/usr/bin/make -f
+#!/bin/bash
 #
-#  rules file for the debian package
+# Univention Maintenance Mode
+#  start/stop service
 #
 # Copyright 2018 Univention GmbH
 #
@@ -29,13 +30,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
+. /usr/share/univention-lib/ucr.sh
+if is_ucr_true updater/maintenance; then
+	true
+	#systemctl start univention-maintenance-mode.service
+else
+	true
+	#systemctl stop univention-maintenance-mode.service
+fi
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install
+# has to be done here because the updater/maintenance trigger executes first the script
+# and then the file...
+ucr commit /etc/apache2/sites-available/univention-proxy.conf
+systemctl reload apache2.service
 
-%:
-	dh $@
+exit 0

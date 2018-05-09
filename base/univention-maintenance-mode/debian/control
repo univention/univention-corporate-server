@@ -3,6 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper,
+ univention-config-dev,
  ucslint,
  docker.io
 Standards-Version: 4.0.0

@@ -555,6 +555,7 @@ def main():
                     count -= 1
 
                 detailed_status = FN_STATUS + '.details'
+                subprocess.call(('univention-config-registry', 'set', 'updater/maintenance=true'), stdout=fp_debug, stderr=fp_debug)
                 with open(detailed_status, 'w+b') as detailed_status_fd:
                     resultCode = os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive %s -o APT::Status-FD=%s >>%s 2>&1' % (cmd_dist_upgrade, detailed_status_fd.fileno(), LOGNAME))
                     if os.path.exists('/var/run/apt-get.lock'):
@@ -562,6 +563,7 @@ def main():
                     if resultCode != 0:
                         raise UpdateError('Failed to execute "%s"' % cmd_dist_upgrade, errorsource='UPDATE')
     except:
+	subprocess.call(('univention-config-registry', 'unset', 'updater/maintenance'), stdout=fp_debug, stderr=fp_debug)
         if phase == 'preup' or (phase == 'update' and order == 'pre'):
             remove_temporary_sources_list()
         raise

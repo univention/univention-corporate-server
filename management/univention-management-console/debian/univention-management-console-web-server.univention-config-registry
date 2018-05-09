@@ -22,6 +22,7 @@ Variables: ucs/server/sso/fqdn
 Variables: hostname
 Variables: domainname
 Variables: ucs/server/sso/virtualhost
+Variables: updater/maintenance
 
 Type: module
 Module: setup_saml_sp.py
