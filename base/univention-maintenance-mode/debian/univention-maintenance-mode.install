@@ -1,3 +1,2 @@
-bin/univention-maintenance-mode usr/bin
 univention-maintenance-mode.service /lib/systemd/system
 index.html /var/www/univention/maintenance
