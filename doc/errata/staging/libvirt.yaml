@@ -3,7 +3,7 @@ release: "4.2"
 version: [3]
 scope: ucs_4.2-0-errata4.2-3
 src: libvirt
-fix: 3.0.0-4+deb9u2~bpo8+1A~4.2.0.201805081928
+fix: 3.0.0-4~bpo8+deb9u2A~4.2.0.201805091348
 desc: |
  This update addresses the following issues:
  * Null pointer dereference when updating storage size on empty drives
