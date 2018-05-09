@@ -9,3 +9,5 @@ desc: |
  * When moving a user's mailbox to a different filesystem, set owner and
    group for all files on the target filesystem.
 bug: [46892]
+erratum: 30
+announced: 2018-05-09
