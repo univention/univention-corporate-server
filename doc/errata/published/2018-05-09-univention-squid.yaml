@@ -11,3 +11,5 @@ desc: |
  * Remove obsolet 'hierarchy_stoplist' directive.
  * Fix warning during squid config reload.
 bug: [34154, 46567, 46565]
+erratum: 32
+announced: 2018-05-09
