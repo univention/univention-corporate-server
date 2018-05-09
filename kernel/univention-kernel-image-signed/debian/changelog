@@ -1,3 +1,9 @@
+univention-kernel-image-signed (4.0.0-3) unstable; urgency=medium
+
+  * Bug #46984: Update to linux-4.9.88
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 09 May 2018 13:05:07 +0200
+
 univention-kernel-image-signed (4.0.0-2) unstable; urgency=low
 
   * Bug #45961: Sign Debian Linux kernel 4.9.0-6
