@@ -9,3 +9,5 @@ desc: |
  * Renewed certificates were not readable by DC Backups.
  * Fixed handling of expired certificates.
 bug: [46203,45472]
+erratum: 33
+announced: 2018-05-09
