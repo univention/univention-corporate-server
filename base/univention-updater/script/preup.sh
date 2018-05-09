@@ -417,6 +417,18 @@ block_update_if_reconfigured_sso_is_detected() {
 }
 block_update_if_reconfigured_sso_is_detected
 
+# Bug #46850: Block if failed.ldif exists
+block_update_if_failed_ldif_exists() {
+	if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
+		echo "WARNING: A failed.ldif exists."
+		echo "Please check https://help.univention.com/t/what-to-do-if-a-failed-ldif-is-found/6432 for further information."
+		echo "The update can be started after the failed.ldif has been removed."
+		exit 1
+	fi
+}
+block_update_if_failed_ldif_exists
+
+
 # move old initrd files in /boot
 initrd_backup=/var/backups/univention-initrd.bak/
 if [ ! -d "$initrd_backup" ]; then

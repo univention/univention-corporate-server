@@ -348,6 +348,16 @@ update_check_reconfigured_sso () {
 	fi
 }
 
+# Bug #46850: Block if failed.ldif exists
+update_check_failed_ldif_exists() {
+	if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
+		echo "WARNING: A failed.ldif exists."
+		echo "Please check https://help.univention.com/t/what-to-do-if-a-failed-ldif-is-found/6432 for further information."
+		echo "The update can be started after the failed.ldif has been removed."
+		exit 1
+	fi
+}
+
 # Bug #46699
 update_check_kopano_repo () {
 	local var="update$VERSION/ignore_kopano_repo"
