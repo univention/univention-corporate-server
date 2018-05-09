@@ -2,8 +2,8 @@ product: ucs
 release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
-src: linux
-fix: 4.9.88-1+deb9u1
+src: univention-kernel-image-signed
+fix: 4.0.0-3A~4.3.0.201805091310
 desc: |
  This update of the Linux kernel to version 4.9.88 addresses the following
  issues:
@@ -63,7 +63,7 @@ desc: |
    operating on crafted xfs image allows denial of service (CVE-2018-10323)
  * ptrace() incorrect error handling leads to corruption and DoS
    (CVE-2018-1000199)
-note: This is the first of two parts.
+note: This is the second of two parts.
 bug: [46984]
 cve:
 - CVE-2017-17975
