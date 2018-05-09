@@ -51,6 +51,21 @@
 
 		<itemizedlist>
 			<listitem><para>
+				Unterstützung für das Erzeugen von Unterordnern wurde zur Dovecot Integration hinzugefügt.
+			</para></listitem>
+			<listitem><para>
+				Das Paket <package>univention-ldap-overlay-memberof</package> wird nun automatisch installiert
+				während der Konfiguration von DC Backup und DC Slave Systemen installiert, wenn das
+				<wordasword>memberOf overlay</wordasword> Modul auf dem Domänencontroller Master aktiviert ist.
+			</para></listitem>
+			<listitem><para>
+				Es wird nun unterstützt, eigene Änderungen für postfix in den Dateien <filename>main.cf.local</filename> und <filename>master.cf.local</filename> hinzuzufügen.
+			</para></listitem>
+			<listitem><para>
+				Es ist wird ein Bestätigungsdialog angezeigt, nachdem ein Benutzer sein Passwort im Self-Service Modul geändert hat.
+			</para></listitem>
+			<listitem><para>
+				Es wurde eine neue API für die Entwicklung von Univention Directory Listener Modulen hinzugefügt.
 			</para></listitem>
 			<listitem><para>
 				Diverse Security Updates wurden in UCS 4.2-4 integriert, bspw. für OpenLDAP, den Linux Kernel, Samba, MySQL, PostgreSQL, und <application>Asterisk</application>.
