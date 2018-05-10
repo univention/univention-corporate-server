@@ -1,8 +1,8 @@
 #!/usr/share/ucs-test/runner python
 ## -*- coding: utf-8 -*-
 ## desc: test automatic reconnect of uldap.py
-## tags: [skip_admember,SKIP]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave]
+## tags: [skip_admember]
+## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
 ##   - python-univention-directory-manager

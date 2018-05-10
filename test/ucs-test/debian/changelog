@@ -1,3 +1,10 @@
+ucs-test (8.0.28-114) unstable; urgency=medium
+
+  * 10_ldap/27reconnect_uldap_2: Limited test case on DC master and re-
+    enable it (Bug #45828)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 May 2018 19:27:21 +0200
+
 ucs-test (8.0.28-113) unstable; urgency=medium
 
   * Bug #34154: Fix 43_proxy/05_custom_ACL_snippets_in_squidconf 
