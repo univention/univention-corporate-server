@@ -47,6 +47,13 @@ basic_setup () {
 		sleep 10 # just wait a few seconds to give the amazone cloud some time
 		# set dns/forwarder*, this should prevent a later bind restart (Bug #39807)
 		i=1; cat /etc/resolv.conf | sed -ne 's|^nameserver ||p' | while read ns; do ucr set dns/forwarder$i=$ns; i="$((i+1))"; done
+
+		# Re-create /etc/resolv.conf
+		# https://forge.univention.org/bugzilla/show_bug.cgi?id=46993
+		cat /etc/resolv.conf
+		ucr commit /etc/resolv.conf
+		cat /etc/resolv.conf
+
 		ucr set --force updater/identify="UCS (EC2 Test)"
 		if grep -F /dev/vda /boot/grub/device.map && [ -b /dev/xvda ] # Bug 36256
 		then
