@@ -1,0 +1,20 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: wavpack
+fix: 5.0.0-2+deb9u2
+desc: |
+ This update addresses the following issues:
+ * out of bounds write in ParseRiffHeaderConfig in riff.c (CVE-2018-10536)
+ * out of bounds write in ParseWave64HeaderConfig in wave64.c (CVE-2018-10537)
+ * out of bounds write in ParseRiffHeaderConfig in riff.c (CVE-2018-10538)
+ * out of bounds write in ParseDsdiffHeaderConfig in dsdiff.c (CVE-2018-10539)
+ * out of bounds write in ParseWave64HeaderConfig in wave64.c (CVE-2018-10540)
+bug: [46996]
+cve:
+- CVE-2018-10536
+- CVE-2018-10537
+- CVE-2018-10538
+- CVE-2018-10539
+- CVE-2018-10540
