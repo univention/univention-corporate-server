@@ -1,3 +1,9 @@
+univention-management-console-module-udm (8.0.5-10) unstable; urgency=medium
+
+  * Bug #45944: Do not show server count in license information dialog
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 11 May 2018 18:58:23 +0200
+
 univention-management-console-module-udm (8.0.5-9) unstable; urgency=medium
 
   * Bug #46529: make shouldPreventPopupForEmptyPropWithDefault call safe
