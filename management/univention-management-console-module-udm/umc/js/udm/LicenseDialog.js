@@ -165,7 +165,7 @@ define([
 					entries = [
 						[_('License type'), licenseTypeLabel],
 						[_('LDAP base'), this.licenseInfo.baseDN],
-						[_('Servers'), this._limitInfo('servers')],
+						// [_('Servers'), this._limitInfo('servers')], // Do not show server count. See Bug #45944
 						[_('User accounts'), this._limitInfo('users')],
 						[_('Managed Clients'), this._limitInfo('managedclients')],
 						[_('Corporate Clients'), this._limitInfo('corporateclients')],
