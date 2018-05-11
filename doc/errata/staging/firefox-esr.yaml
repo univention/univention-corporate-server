@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: firefox-esr
-fix: 52.7.3esr-1~deb9u1
+fix: 52.8.0esr-1~deb9u1
 desc: |
  This update addresses the following issues:
  * CVE-2018-5125: Memory safety bugs fixed in Firefox 59 and Firefox ESR 52.7
@@ -18,6 +18,16 @@ desc: |
  * CVE-2018-5147: Out of bounds memory write in libtremor
  * CVE-2018-5148: Use-after-free in compositor potentially allows code
    execution
+ * CVE-2018-5150: Memory safety bugs fixed in Firefox 60 and Firefox ESR 52.8
+ * CVE-2018-5154: Use-after-free with SVG animations and clip paths
+ * CVE-2018-5155: Use-after-free with SVG animations and text paths
+ * CVE-2018-5157: Same-origin bypass of PDF Viewer to view protected PDF files
+ * CVE-2018-5158: Malicious PDF can inject JavaScript into PDF Viewer
+ * CVE-2018-5159: Integer overflow and out-of-bounds write in Skia
+ * CVE-2018-5168: Lightweight themes can be installed without user interaction
+ * CVE-2018-5178: Buffer overflow during UTF-8 to Unicode string conversion
+   through legacy extension
+ * CVE-2018-5183: Backport critical security fixes in Skia
 bug: [46686]
 cve:
 - CVE-2018-5127
@@ -30,3 +40,12 @@ cve:
 - CVE-2018-5146
 - CVE-2018-5147
 - CVE-2018-5148
+- CVE-2018-5183
+- CVE-2018-5154
+- CVE-2018-5155
+- CVE-2018-5157
+- CVE-2018-5158
+- CVE-2018-5159
+- CVE-2018-5168
+- CVE-2018-5178
+- CVE-2018-5150
