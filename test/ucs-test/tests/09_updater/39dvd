@@ -74,6 +74,8 @@ trap 'cleanup2' EXIT
 	apt -qq update
 	python -c 'exit(0 if __import__("apt").Cache().update() else 1)'
 	have aptitude && aptitude --no-gui update
+
+	:
 )
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 

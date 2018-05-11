@@ -1,3 +1,9 @@
+ucs-test (8.0.28-115) unstable; urgency=low
+
+  * Bug #45950: 09_updater/39dvd: fix exit code
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 11 May 2018 15:23:26 +0200
+
 ucs-test (8.0.28-114) unstable; urgency=medium
 
   * 10_ldap/27reconnect_uldap_2: Limited test case on DC master and re-
