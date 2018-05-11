@@ -8,4 +8,7 @@ desc: |
  This update addresses the following issue(s):
  * Properties that have been set to default values are no
    longer ignored when saving from the UDM detail page.
-bug: [46529]
+ * The server count is no longer shown in the license
+   information dialog because of confusion with the
+   number of physical and virtual servers.
+bug: [46529, 45944]
