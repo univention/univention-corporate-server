@@ -74,6 +74,31 @@ installer_translations = dict(
 		deu='Wenn Sie fortfahren',
 		eng='If you continue',
 	),
+	not_using_dhcp=dict(
+		eng='probably not using',
+		deu='Ihr Netzwerk benutzt möglicherweise nicht',
+	),
+	manual_network_config=dict(
+		eng='Configure the network',
+		deu='Netzwerk manuell einrichten',
+	),
+	ip_address=dict(
+		eng='The IP address is unique',
+		deu='Die IP-Adresse ist für ihren Rechner eindeutig',
+	),
+	netmask=dict(
+		eng='The netmask is used to',
+		deu='Durch die Netzmaske kann bestimmt',
+	),
+	gateway=dict(
+		eng='The gateway is an IP address',
+		deu='Geben Sie hier die IP-Adresse',
+	),
+	name_server=dict(
+		eng='The name servers are used',
+		deu='um Rechnernamen im Internet aufzulösen',
+	),
+
 )
 
 setup_translations = dict(
@@ -277,11 +302,28 @@ class UCSInstallation(object):
 		self.client.enterText(_t['keyboard'])
 		self.client.keyPress('enter')
 		# network
-		time.sleep(30)
+		time.sleep(60)
 		self.client.waitForText(_t['configure_network'], timeout=self.timeout)
 		self.client.enterText('eth0')
 		self.client.keyPress('enter')
-		time.sleep(30)
+		time.sleep(60)
+		if self.args.ip:
+			self.client.waitForText(_t['not_using_dhcp'], timeout=self.timeout)
+			self.client.keyPress('enter')
+			self.client.waitForText(_t['manual_network_config'], timeout=self.timeout)
+			self.client.mouseClickOnText(_t['manual_network_config'])
+			self.client.keyPress('enter')
+			self.client.waitForText(_t['ip_address'], timeout=self.timeout)
+			self.client.enterText(self.args.ip)
+			self.client.keyPress('enter')
+			self.client.waitForText(_t['netmask'], timeout=self.timeout)
+			self.client.keyPress('enter')
+			self.client.waitForText(_t['gateway'], timeout=self.timeout)
+			self.client.keyPress('enter')
+			self.client.waitForText(_t['name_server'], timeout=self.timeout)
+			if self.args.dns:
+				self.client.enterText(self.args.dns)
+			self.client.keyPress('enter')
 		# root
 		self.client.waitForText(_t['user_and_password'], timeout=self.timeout)
 		self.client.enterText(self.args.password)
@@ -494,6 +536,7 @@ def main():
 	parser.add_argument('--language', default='deu', choices=['deu', 'eng', 'fra'])
 	parser.add_argument('--role', default='master', choices=['master', 'slave', 'member', 'backup', 'admember', 'basesystem'])
 	parser.add_argument('--components', default=[], choices=components.keys() + ['all'], action='append')
+	parser.add_argument('--ip', help='Give an IP address, if DHCP is unavailable.')
 	args = parser.parse_args()
 	assert args.vnc is not None
 	if args.role in ['slave', 'backup', 'member', 'admember']:
