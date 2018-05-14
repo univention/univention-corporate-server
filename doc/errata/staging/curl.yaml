@@ -6,10 +6,10 @@ src: curl
 fix: 7.52.1-5+deb9u5
 desc: |
  This update addresses the following issues:
- * Fix NIL byte out of bounds write due to FTP path trickery as per
-   CVE-2018-1000120
- * Fix LDAP NULL pointer dereference as per CVE-2018-1000121
- * Fix RTSP RTP buffer over-read as per CVE-2018-1000122
+ * Fix NIL byte out of bounds write due to FTP path trickery
+   (CVE-2018-1000120)
+ * Fix LDAP NULL pointer dereference (CVE-2018-1000121)
+ * Fix RTSP RTP buffer over-read (CVE-2018-1000122)
 bug: [46675]
 cve:
 - CVE-2018-1000120
