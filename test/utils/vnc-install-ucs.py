@@ -472,7 +472,8 @@ class UCSInstallation(object):
 			self.select_components()
 			self.click(_t['next'])
 
-		time.sleep(5)
+		time.sleep(10)
+		self.client.keyPress('enter')
 		self.client.keyPress('enter')
 		time.sleep(800)
 
