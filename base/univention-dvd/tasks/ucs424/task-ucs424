@@ -58,6 +58,9 @@ univention-server-slave
 univention-server-member
 univention-basesystem
 univention-container-role-common
+
+univention-ldap-overlay-memberof
+
 /* Recommends */
 openssh-server
 openssh-blacklist

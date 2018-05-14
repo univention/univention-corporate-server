@@ -1,3 +1,9 @@
+univention-dvd (2.0.0-16) unstable; urgency=medium
+
+  * Bug #46091: Add package univention-ldap-overlay-memberof to DVD
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 14 May 2018 10:38:37 +0200
+
 univention-dvd (2.0.0-15) unstable; urgency=medium
 
   * Bug #46953: UCS- DVD
