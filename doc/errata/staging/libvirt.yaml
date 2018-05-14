@@ -10,5 +10,5 @@ desc: |
  * CVE-2018-6764: virlog: determine the hostname on startup
 bug: [46676]
 cve:
-- CVE-2018-6764
 - CVE-2018-1064
+- CVE-2018-6764
