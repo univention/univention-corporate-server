@@ -11,19 +11,19 @@ desc: |
  * mspack/lzxd.c allows remote attackers to cause a denial of service
    (heap-based buffer overflow and application crash) or possibly have
    unspecified other impact via a crafted CHM file. (CVE-2017-6419)
- * Out-of-bounds heap read in XAR parser (CVE-2018-1000085)
- * The cabd_read_string function allows remote attackers to cause a denial of
-   service (stack-based buffer over-read and application crash) via a crafted
-   CAB file. (CVE-2017-11423)
  * The wwunpack function allows remote attackers to cause a denial of service
    (use-after-free) via a crafted PE file with WWPack compression.
    (CVE-2017-6420)
+ * The cabd_read_string function allows remote attackers to cause a denial of
+   service (stack-based buffer over-read and application crash) via a crafted
+   CAB file. (CVE-2017-11423)
  * Out-of-bounds access in the PDF parser (CVE-2018-0202)
+ * Out-of-bounds heap read in XAR parser (CVE-2018-1000085)
 bug: [46616]
 cve:
 - CVE-2017-6418
 - CVE-2017-6419
-- CVE-2018-1000085
-- CVE-2017-11423
 - CVE-2017-6420
+- CVE-2017-11423
 - CVE-2018-0202
+- CVE-2018-1000085
