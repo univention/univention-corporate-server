@@ -444,7 +444,7 @@ download_system_setup_packages ()
 		install_cmd="$(univention-config-registry get update/commands/install)"
 
 		# server role packages
-		packages="server-master server-backup server-slave server-member basesystem"
+		packages="server-master server-backup server-slave server-member basesystem ldap-overlay-memberof"
 
 		# ad member mode
 		packages="$packages ad-connector samba"
