@@ -13,7 +13,7 @@
 		<itemizedlist>
 			<listitem>
 				<para>
-					The UCS setup now detects if the LDAP <wordasword>memberof</wordasword> overlay module is activated on the DC master and installs the package if applicable (<u:bug>46091</u:bug>).
+					When &ucsUSS; detects that the LDAP overlay module <property>memberOf</property> is activated on the &ucsMaster; the package <package>univention-ldap-overlay-memberof</package> is automatically installed (<u:bug>46091</u:bug>).
 				</para>
 			</listitem>
 			<listitem>
@@ -483,7 +483,7 @@
 		<section id="changelog:umc:server">
 			<title>Univention Management Console server</title>
 			<itemizedlist>
-				<listitem><simpara>The password dialog that is shown upfront some functions in UMC when using  a Single Sign On (SAML) session can now be submitted by pressing Enter (<u:bug>46882</u:bug>).</simpara></listitem>
+				<listitem><simpara>The password dialog that is shown upfront some functions in UMC when using a Single Sign On (SAML) session can now be submitted by pressing <keycap function="enter">Enter</keycap> (<u:bug>46882</u:bug>).</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -497,7 +497,7 @@
 		<section id="changelog:umc:diagnostic">
 			<title>System diagnostic module</title>
 			<itemizedlist>
-				<listitem><simpara>The diagnostics module now correctly detects the file permissions of the  Open-Xchange apps cache directory (<u:bug>46363</u:bug>).</simpara></listitem>
+				<listitem><simpara>The diagnostics module now correctly detects the file permissions of the Open-Xchange apps cache directory (<u:bug>46363</u:bug>).</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
@@ -508,7 +508,7 @@
 		<section id="changelog:service:dovecot">
 			<title>Dovecot</title>
 			<itemizedlist>
-				<listitem><simpara>When moving a user's mailbox to a different filesystem, set owner and  group for all files on the target filesystem (<u:bug>46893</u:bug>).</simpara></listitem>
+				<listitem><simpara>When moving a user's mailbox to a different filesystem, set owner and group for all files on the target filesystem (<u:bug>46893</u:bug>).</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
