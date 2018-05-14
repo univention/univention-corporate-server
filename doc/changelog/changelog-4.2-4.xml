@@ -13,6 +13,11 @@
 		<itemizedlist>
 			<listitem>
 				<para>
+					The UCS setup now detects if the LDAP <wordasword>memberof</wordasword> overlay module is activated on the DC master and installs the package if applicable (<u:bug>46091</u:bug>).
+				</para>
+			</listitem>
+			<listitem>
+				<para>
 					All security updates issued for UCS 4.2-3 are included:
 				</para>
 				<itemizedlist>
