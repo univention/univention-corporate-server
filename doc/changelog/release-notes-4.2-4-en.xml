@@ -68,7 +68,7 @@
 				A new API for programming of &ucsUDL; modules was added.
 			</para></listitem>
 			<listitem><para>
-				Various security updates have been integrated into UCS 4.2-4, e.g. OpenLDAP, the Linux kernel, Samba, MySQL, PostgreSQL, and <application>Asterisk</application>.
+				Various security updates have been integrated into UCS 4.2-4, e.g. OpenLDAP, the Linux kernel, Samba, MySQL and PostgreSQL. A complete list is available in the changelog below.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
