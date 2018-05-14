@@ -18,5 +18,5 @@ desc: |
    with crafted document
 bug: [46634]
 cve:
-- CVE-2018-10120
 - CVE-2018-10119
+- CVE-2018-10120
