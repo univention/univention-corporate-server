@@ -292,7 +292,7 @@ class UCSInstallation(object):
 		for string in installer_translations:
 			_t[string] = installer_translations[string][self.args.language]
 		# language
-		self.client.waitForText('Select a language', timeout=self.timeout)
+		self.client.waitForText('Select a language', timeout=self.timeout, prevent_screen_saver=True)
 		self.client.enterText(_t['language'])
 		self.click('Continue')
 		self.client.waitForText(_t['select_location'], timeout=self.timeout)
