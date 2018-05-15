@@ -12,7 +12,7 @@ desc: |
  * CVE-2018-1000099: Null Pointer vulnerability in pjmedia SDP parsing
 bug: [46811]
 cve:
-- CVE-2017-16875
-- CVE-2018-1000099
-- CVE-2018-1000098
 - CVE-2017-16872
+- CVE-2017-16875
+- CVE-2018-1000098
+- CVE-2018-1000099
