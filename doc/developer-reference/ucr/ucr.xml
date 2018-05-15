@@ -958,7 +958,7 @@ Depends: ..., ${misc:Depends}, ...
 				A &ucsUCRV; <envar>print/papersize</envar> is registered, which can be used to configure the papersize.
 			</para>
 			<para>
-				Source code: <ulink url="&websvn;doc/developer-reference/ucr/papersize/"/>
+				Source code: <u:src>doc/developer-reference/ucr/papersize/</u:src>
 			</para>
 			<variablelist>
 				<varlistentry>
@@ -1034,7 +1034,7 @@ Depends: ..., ${misc:Depends}, ...
 				See <citerefentry><refentrytitle>hosts_access</refentrytitle><manvolnum>5</manvolnum></citerefentry> for more details.
 			</para>
 			<para>
-				Source code: <ulink url="&websvn;doc/developer-reference/ucr/hosts/"/>
+				Source code: <u:src>doc/developer-reference/ucr/hosts/</u:src>
 			</para>
 			<variablelist>
 				<varlistentry>
@@ -1091,7 +1091,7 @@ Depends: ..., ${misc:Depends}, ...
 				This example provides a template to control the <command>atd</command> service through an &ucsUCRV; <envar>atd/autostart</envar>.
 			</para>
 			<para>
-				Source code: <ulink url="&websvn;doc/developer-reference/ucr/service/"/>
+				Source code: <u:src>doc/developer-reference/ucr/service/</u:src>
 			</para>
 			<variablelist>
 				<varlistentry>

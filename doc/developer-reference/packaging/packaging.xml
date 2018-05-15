@@ -53,7 +53,7 @@
 			<indexterm><primary>Packaging</primary><secondary>Modifying existing package</secondary></indexterm>
 		</title>
 		<para>
-			Source code: <ulink url="&websvn;doc/developer-reference/packaging/testdeb/"/>
+			Source code: <u:src>doc/developer-reference/packaging/testdeb/</u:src>
 		</para>
 		<procedure id="pkg:procedure">
 			<title>Checking out and building a UCS package</title>

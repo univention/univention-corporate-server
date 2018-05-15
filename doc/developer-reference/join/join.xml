@@ -156,7 +156,7 @@
 				They demonstrate some commonly used functions.
 			</para>
 			<para>
-				Source code: <ulink url="&websvn;doc/developer-reference/join/join-template/"/>
+				Source code: <u:src>doc/developer-reference/join/join-template/</u:src>
 			</para>
 			<variablelist>
 				<varlistentry>
