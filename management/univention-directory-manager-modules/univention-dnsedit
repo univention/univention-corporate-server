@@ -102,7 +102,7 @@ def parse():
 	if options.bindpwdfile:
 		options.bindpwd = open(options.bindpwdfile).read().strip()
 	if options.binddn and not options.bindpwd:
-		msg = 'authentication error: missing --bindpwd'
+		msg = 'authentication error: missing any of --bindpwdfile or --bindpwd'
 	elif not options.binddn and options.bindpwd:
 		msg = 'authentication error: missing --binddn'
 	if msg:

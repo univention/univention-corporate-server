@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-21) unstable; urgency=medium
+
+  * Bug #46842: fixes after qa
+
+ -- Felix Botner <botner@univention.de>  Tue, 15 May 2018 17:25:35 +0200
+
 univention-directory-manager-modules (13.0.21-20) unstable; urgency=medium
 
   * Bug #46842: joinscript api bindpwdfile in join script,
