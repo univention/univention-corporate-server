@@ -315,7 +315,7 @@ def setdata(key, value): pass
 				It does not handle renames and moves explicitly, but only as the removal of the object at the old <abbrev>dn</abbrev> and the following addition at the new <abbrev>dn</abbrev>.
 			</para>
 			<para>
-				Source code: <ulink url="&websvn;doc/developer-reference/listener/simple.py"/>
+				Source code: <u:src>doc/developer-reference/listener/simple.py</u:src>
 			</para>
 			<programlisting language="python"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="simple.py" parse="text"/></programlisting>
 		</section>
@@ -328,7 +328,7 @@ def setdata(key, value): pass
 				In case rename and move actions should be handled separately, the following code may be used:
 			</para>
 			<para>
-				Source code: <ulink url="&websvn;doc/developer-reference/listener/modrdn.py"/>
+				Source code: <u:src>doc/developer-reference/listener/modrdn.py</u:src>
 			</para>
 			<programlisting language="python"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="modrdn.py" parse="text"/></programlisting>
 			<warning>
@@ -345,7 +345,7 @@ def setdata(key, value): pass
 				The following example shows a listener module, which logs all changes to users into the file <filename>/root/UserList.txt</filename>.
 			</para>
 			<para>
-				Source code: <ulink url="&websvn;doc/developer-reference/listener/printusers/"/>
+				Source code: <u:src>doc/developer-reference/listener/printusers/</u:src>
 			</para>
 			<programlisting language="python"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="printusers/printusers.py" parse="text"/></programlisting>
 			<para>
@@ -412,7 +412,7 @@ def setdata(key, value): pass
 				For larger modules it might be preferable to use a more object oriented design like the following example, which logs referential integrity violations into a file.
 			</para>
 			<para>
-				Source code: <ulink url="&websvn;doc/developer-reference/listener/obj.py"/>
+				Source code: <u:src>doc/developer-reference/listener/obj.py</u:src>
 			</para>
 			<programlisting language="python"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="obj.py" parse="text"/></programlisting>
 		</section>
