@@ -6,11 +6,11 @@ src: openjdk-8
 fix: 8u171-b11-1~deb9u1
 desc: |
  This update addresses the following issues:
- * CVE-2016-10165: Improve CMS header processing. Missing bounds check could
-   lead to leaked memory contents.
  * CVE-2016-9841: Upgrade compression library. There were four off by one
    errors found in the zlib library. Two of them are long typed which could
    lead to RCE.
+ * CVE-2016-10165: Improve CMS header processing. Missing bounds check could
+   lead to leaked memory contents.
  * CVE-2017-10274: Handle smartcard clean up better. If a CardImpl can be
    recovered via finalization, then separate instances pointing to the same
    device can be created.
@@ -83,44 +83,44 @@ desc: |
    StubIORImpl
 bug: [46695]
 cve:
-- CVE-2018-2633
-- CVE-2018-2634
-- CVE-2018-2603
-- CVE-2018-2629
-- CVE-2018-2579
-- CVE-2018-2641
-- CVE-2018-2618
-- CVE-2018-2602
-- CVE-2018-2637
-- CVE-2018-2599
-- CVE-2018-2677
-- CVE-2018-2678
-- CVE-2018-2663
-- CVE-2018-2582
-- CVE-2018-2588
+- CVE-2016-9841
+- CVE-2016-10165
 - CVE-2017-10274
 - CVE-2017-10281
 - CVE-2017-10285
 - CVE-2017-10295
-- CVE-2017-10388
-- CVE-2017-10346
-- CVE-2017-10350
-- CVE-2017-10347
-- CVE-2017-10349
 - CVE-2017-10345
+- CVE-2017-10346
+- CVE-2017-10347
 - CVE-2017-10348
-- CVE-2017-10357
+- CVE-2017-10349
+- CVE-2017-10350
 - CVE-2017-10355
 - CVE-2017-10356
-- CVE-2016-10165
-- CVE-2016-9841
-- CVE-2018-2800
-- CVE-2018-2815
-- CVE-2018-2814
-- CVE-2018-2799
+- CVE-2017-10357
+- CVE-2017-10388
+- CVE-2018-2579
+- CVE-2018-2582
+- CVE-2018-2588
+- CVE-2018-2599
+- CVE-2018-2602
+- CVE-2018-2603
+- CVE-2018-2618
+- CVE-2018-2629
+- CVE-2018-2633
+- CVE-2018-2634
+- CVE-2018-2637
+- CVE-2018-2641
+- CVE-2018-2663
+- CVE-2018-2677
+- CVE-2018-2678
 - CVE-2018-2790
-- CVE-2018-2796
-- CVE-2018-2797
 - CVE-2018-2794
 - CVE-2018-2795
+- CVE-2018-2796
+- CVE-2018-2797
 - CVE-2018-2798
+- CVE-2018-2799
+- CVE-2018-2800
+- CVE-2018-2814
+- CVE-2018-2815
