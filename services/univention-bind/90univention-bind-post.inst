@@ -83,10 +83,12 @@ univention-config-registry set dns/backend?ldap
 
 if [ ! -e /etc/runit/univention/univention-bind-proxy ]; then
 	ln -s /etc/runit/univention-bind-proxy /etc/runit/univention/univention-bind-proxy
+	sleep 5  # This sleep is needed, because /etc/runit/ is only scanned every five seconds (see man runsvdir).
 fi
 
 if [ ! -e /etc/runit/univention/univention-bind-samba4 ]; then
 	ln -s /etc/runit/univention-bind-samba4 /etc/runit/univention/univention-bind-samba4
+	sleep 5  # This sleep is needed, because /etc/runit/ is only scanned every five seconds (see man runsvdir).
 fi
 
 if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
