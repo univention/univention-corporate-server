@@ -294,21 +294,22 @@ joinscript_log_error() {
 	done
 }
 
-# 1 binddn, 2 bindpwdfile, create join credential files /var/univention-join/binddn and /var/univention-join/bindpwd
+# 1 binddn, 2 bindpwdfile, create join credential files /var/run/univention-join/binddn and /var/run/univention-join/bindpwd
 joinscript_create_credentialfiles () {
-	mkdir -p /var/univention-join
-	touch /var/univention-join/binddn
-	chmod 600 /var/univention-join/binddn
-	echo "$1" > /var/univention-join/binddn
-	touch /var/univention-join/bindpwd
-	chmod 600 /var/univention-join/bindpwd
-	cp "$2" /var/univention-join/bindpwd
+	mkdir -p /var/run/univention-join
+	chmod 700 /var/run/univention-join
+	touch /var/run/univention-join/binddn
+	chmod 600 /var/run/univention-join/binddn
+	echo "$1" > /var/run/univention-join/binddn
+	touch /var/run/univention-join/bindpwd
+	chmod 600 /var/run/univention-join/bindpwd
+	cp "$2" /var/run/univention-join/bindpwd
 }
 
 # remove join credential files
 joinscript_remove_credentialfiles () {
-	test -e /var/univention-join/bindpwd && rm /var/univention-join/bindpwd
-	test -e /var/univention-join/binddn && rm /var/univention-join/binddn
+	test -e /var/run/univention-join/bindpwd && rm /var/run/univention-join/bindpwd
+	test -e /var/run/univention-join/binddn && rm /var/run/univention-join/binddn
 }
 
 # join script can be called with --bindpwdfile
@@ -319,17 +320,9 @@ joinscript_check_api_bindpwdfile () {
 	return 1
 }
 
-# join script does not need domain credentials at all
+# join script does not require domain credentials to be passed
 joinscript_check_api_nocredentials () {
 	if grep -q '^## joinscript api: nocredentials$' "$1"; then
-		return 0
-	fi
-	return 1
-}
-
-# join script gets credentials from /var/univention-join/binddn and /var/univention-join/bindpwd by itself
-joinscript_check_api_credentialfiles () {
-	if grep -q '^## joinscript api: credentialfiles$' "$1"; then
 		return 0
 	fi
 	return 1

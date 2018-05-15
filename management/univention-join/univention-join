@@ -52,6 +52,7 @@ CONTAINERADMEMBERMODE=false
 
 trapOnExit() {
 	rm -rf "$USERTMP"
+	joinscript_remove_credentialfiles
 	if [ -n "$VERBOSE" -a "$VERBOSE" = "true" ]; then
 		if [ -n "$old_listener_debug_level" ]; then
 			ucr set listener/debug/level="$old_listener_debug_level" >>/var/log/univention/join.log 2>&1
@@ -207,7 +208,7 @@ run_join_scripts () {
 			local args=()
 			if joinscript_check_api_bindpwdfile "$i"; then
 				args=(--binddn "$binddn" --bindpwdfile "$DCPWD")
-			elif joinscript_check_api_nocredentials "$i" || joinscript_check_api_credentialfiles "$i"; then
+			elif joinscript_check_api_nocredentials "$i"; then
 				args=()
 			else
 				args=(--binddn "$binddn" --bindpwd "$(<"$DCPWD")")

@@ -143,7 +143,7 @@ if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 		echo -n "Enter DC Master Password: "
 		read -s password
 		DCPWD=$(mktemp)
-		trap "rm -f '$DCPWD'" EXIT
+		trap "rm -f '$DCPWD' /var/run/univention-join/binddn /var/run/univention-join/bindpwd" EXIT
 		echo -n "$password" >>"$DCPWD"
 		echo ""
 		echo ""
@@ -246,7 +246,7 @@ then
 			args=()
 			if joinscript_check_api_bindpwdfile "$i"; then
 				args=(--binddn "$binddn" --bindpwdfile "$DCPWD")
-			elif joinscript_check_api_nocredentials "$i" || joinscript_check_api_credentialfiles "$i"; then
+			elif joinscript_check_api_nocredentials "$i"; then
 				args=()
 			else
 				args=(--binddn "$binddn" --bindpwd "$(<"$DCPWD")")
