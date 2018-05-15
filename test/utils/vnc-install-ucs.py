@@ -474,7 +474,6 @@ class UCSInstallation(object):
 
 		time.sleep(10)
 		self.client.keyPress('enter')
-		self.client.keyPress('enter')
 		time.sleep(800)
 
 		self.client.waitForText(_t['setup_successful'], timeout=1700)
