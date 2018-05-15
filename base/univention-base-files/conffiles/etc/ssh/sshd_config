@@ -18,8 +18,7 @@ if configRegistry.get('sshd/AddressFamily'):
 else:
 	print '#AddressFamily any'
 if configRegistry.get('sshd/ListenAddress'):
-	listenaddresses = configRegistry.get('sshd/ListenAddress','').split(' ')
-	for ip in listenaddresses:
+	for ip in filter(None, configRegistry.get('sshd/ListenAddress', '').split(',')):
 		print 'ListenAddress %s' % ip
 else:
 	print '#ListenAddress 0.0.0.0'

@@ -119,8 +119,8 @@ Type=str
 Categories=service-ssh
 
 [sshd/ListenAddress]
-Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'ListenAddress' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
-Description[en]=Specifies the OpenSSH deamon configuration value 'ListenAddress': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Description[de]=Komma separierte Liste. Legt die OpenSSH Deamon Konfigurationsvariable 'ListenAddress' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Comma separated list. Specifies the OpenSSH deamon configuration value 'ListenAddress': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
 Type=str
 Categories=service-ssh
 
