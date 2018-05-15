@@ -85,7 +85,7 @@ check_ad_takeover_product_test () {
 		check_user_in_ucs "benutzer$user" "Univention@99"
 	done
 	for i in $(seq 1 1500); do
-		udm users/user list --filter username="uid=benutzer$i" | grep "^DN: "
+		udm users/user list --filter username="benutzer$i" | grep "^DN: "
 	done
 	for i in $(seq 1 40); do
 		udm groups/group list --filter name="gruppe$i" | grep "^DN: "
