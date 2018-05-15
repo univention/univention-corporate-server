@@ -7,7 +7,7 @@ fix: 11.0.1-48A~4.2.0.201802281040
 desc: |
  This update addresses the following issue(s):
  * To prevent systemctl from reporting a wrong status for the
-   univention-directory-notifier service, the runsv timeout has been increased
+   univention-directory-listener service, the runsv timeout has been increased
    to 30 seconds.
 bug: [46313]
 erratum: 310
