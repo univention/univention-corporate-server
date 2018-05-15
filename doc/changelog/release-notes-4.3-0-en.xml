@@ -6,7 +6,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-4.3-0-en">
+<book lang="en" id="releasenotes-en-4.3-0">
 	<bookinfo>
 		<title>UCS 4.3 Release Notes</title>
 		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.3</subtitle>
