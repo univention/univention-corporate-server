@@ -7,8 +7,10 @@ fix: 3.0.0-4+deb9u3A~4.3.0.201803150704
 desc: |
  This update addresses the following issues:
  * CVE-2018-1064: avoid denial of service reading from QEMU guest agent
+ * CVE-2018-5748: qemu: avoid denial of service reading from QEMU monitor
  * CVE-2018-6764: virlog: determine the hostname on startup
 bug: [46676]
 cve:
 - CVE-2018-1064
+- CVE-2018-5748
 - CVE-2018-6764
