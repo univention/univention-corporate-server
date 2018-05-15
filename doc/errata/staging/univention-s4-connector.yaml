@@ -3,10 +3,12 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-s4-connector
-fix: 12.0.2-11A~4.3.0.201804261933
+fix: 12.0.2-12A~4.3.0.201805151914
 desc: |
  This update addresses the following issue(s):
  * In case connector/s4/mapping/group/syncmode is set to "write" in UCR,
    the S4-Connector would still modify groups in OpenLDAP when a user
    was modified. This affected UCS@school.
-bug: [46682]
+ * Rejects for non-ascii Samba/AD accounts are not handled properly due
+   to sqlite encoding problem. This has been fixed.
+bug: [46682,47013]
