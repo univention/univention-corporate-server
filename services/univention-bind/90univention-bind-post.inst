@@ -101,6 +101,7 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 fi
 
 # Restart the bind9 daemon and wait for a few seconds if the local nameserver should be used
+sleep 5  # This sleep is needed, because possible updates in /etc/runit/ are only scanned every five seconds (see man runsvdir).
 service bind9 restart
 if [ -z "$nameserver_external" ] || ! is_ucr_true nameserver/external; then
 	wait_for_dns
