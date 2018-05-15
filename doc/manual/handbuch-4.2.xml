@@ -6,7 +6,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="ucs-4.2">
+<book lang="de" id="ucs-de-4.2">
   <bookinfo>
     <title>
       Univention Corporate Server

@@ -6,7 +6,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id='scenarios'>
+<book lang="en" id='scenarios-en-4.2'>
 <bookinfo>
   <title>Scenarios for Univention Corporate Server</title>
 </bookinfo>

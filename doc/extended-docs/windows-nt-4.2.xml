@@ -6,7 +6,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="windows:ntdomain">
+<book lang="en" id="windows-ntdomain-4.2">
     <bookinfo>
       <title>Univention Corporate Server</title>
 		<subtitle>Operation of a Samba domain based on Windows NT domain services</subtitle>
