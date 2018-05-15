@@ -1050,7 +1050,7 @@ class s4(univention.s4connector.ucs):
 	def _save_rejected(self, id, dn):
 		_d = ud.function('ldap._save_rejected')
 		try:
-			self._set_config_option('S4 rejected', str(id), compatible_modstring(dn))
+			self._set_config_option('S4 rejected', str(id), encode_attrib(dn))
 		except UnicodeEncodeError, msg:
 			self._set_config_option('S4 rejected', str(id), 'unknown')
 			self._debug_traceback(ud.WARN, "failed to set dn in configfile (S4 rejected)")
@@ -2216,11 +2216,7 @@ class s4(univention.s4connector.ucs):
 		sys.stdout.flush()
 		if rejected:
 			for id, dn in rejected:
-				try:
-					premapped_s4_dn = unicode(dn, 'utf8')
-				except TypeError:
-					premapped_s4_dn = dn
-				ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs: Resync rejected dn: %s' % (premapped_s4_dn))
+				ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs: Resync rejected dn: %s' % (dn))
 				try:
 					sync_successfull = False
 					elements = self.__search_s4_changeUSN(id, show_deleted=True)
@@ -2235,7 +2231,7 @@ class s4(univention.s4connector.ucs):
 						mapped_object = self._object_mapping(property_key, object)
 						try:
 							if not self._ignore_object(property_key, mapped_object) and not self._ignore_object(property_key, object):
-								sync_successfull = self.sync_to_ucs(property_key, mapped_object, premapped_s4_dn, object)
+								sync_successfull = self.sync_to_ucs(property_key, mapped_object, dn, object)
 							else:
 								sync_successfull = True
 						except (ldap.SERVER_DOWN, SystemExit):
