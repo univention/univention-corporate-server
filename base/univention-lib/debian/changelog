@@ -1,3 +1,9 @@
+univention-lib (7.0.0-7) unstable; urgency=medium
+
+  * Bug #45033: todo_list changes as suggested by qa
+
+ -- Felix Botner <botner@univention.de>  Tue, 15 May 2018 13:47:27 +0200
+
 univention-lib (7.0.0-6) unstable; urgency=medium
 
   * Bug #45033: reload slapd on non-master system after acl remove
