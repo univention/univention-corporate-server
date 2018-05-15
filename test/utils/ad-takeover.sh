@@ -27,7 +27,7 @@ prepare_ad_takeover_product_test () {
 	# Ein Benutzer sollte zusätzlich in die Gruppe "Domain Admins" / "Domänen Administratoren" aufgenommen werden.
 	python shared-utils/ucs-winrm.py create-multiple-user --user-prefix benutzer --user-amount 1500 --user-password "Univention@99"
 	python shared-utils/ucs-winrm.py create-multiple-adgroup --group-prefix gruppe --group-amount 40 --path "$LDAP_BASE"
-	python shared-utils/ucs-winrm.py random-user-in-group
+	python shared-utils/ucs-winrm.py add-modulo-user-in-group
 	python shared-utils/ucs-winrm.py create-ou --name TestContainer --path "$LDAP_BASE"
 	python shared-utils/ucs-winrm.py add-user-to-domainadmin --username benutzer1
 	python shared-utils/ucs-winrm.py add-user-to-domainadmin --username benutzer2
@@ -86,6 +86,8 @@ check_ad_takeover_product_test () {
 	done
 	for i in $(seq 1 1500); do
 		udm users/user list --filter username="benutzer$i" | grep "^DN: "
+		local groupindex=$(($i % 40 + 1))
+		check_user_in_group "benutzer$i" "gruppe$groupindex"
 	done
 	for i in $(seq 1 40); do
 		udm groups/group list --filter name="gruppe$i" | grep "^DN: "
@@ -154,4 +156,15 @@ check_admin_umc () {
 	local password="$2"
 	local binddn="$(univention-ldapsearch uid="$username" dn | sed -ne 's|dn: ||p')"
 	umc-command -U "$username" -P "$password" udm/get -f users/user -l -o "$binddn"
+}
+
+check_user_in_group () {
+	local username="$1"
+	local groupname="$2"
+	udm groups/group list --filter name="$groupname" | grep "$username"
+	local exitcode=$?
+	if [ "$exitcode" -ne 0 ]; then
+		printf '%s\n' 'user in group not found' >&2
+		exit 1
+	fi
 }
