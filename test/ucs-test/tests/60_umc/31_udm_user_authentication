@@ -134,31 +134,30 @@ class TestUMCUserAuthentication(UDMModule):
         # approx. amount of seconds in 1 month is 2630000
         expiry_date = self.generate_expiry_date(-2630000)
 
-        print("\nSetting an expiry date in the past for the " "test user '%s' account and trying to authenticate:\n" % self.test_username)
+        print("\nSetting an expiry date in the past for the test user '%s' account and trying to authenticate:\n" % self.test_username)
         self.UDM.modify_object('users/user', dn=self.test_user_dn, userexpiry=expiry_date)
-
+        utils.wait_for_connector_replication()
         wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (self.test_username,)))
         if self.authenticate_to_umc(self.test_username, self.test_password_unicode):
-            utils.fail("Authentication with an expired user account "
-                       "succeeded.")
+            utils.fail("Authentication with an expired user account succeeded.")
 
         # approx. amount of seconds in 1 month is 2630000
         expiry_date = self.generate_expiry_date(2630000)
         self.UDM.modify_object('users/user', dn=self.test_user_dn, userexpiry=expiry_date)
 
-        print("\nDeactivating the test user '%s' account and " "trying to authenticate:\n" % self.test_username)
+        print("\nDeactivating the test user '%s' account and trying to authenticate:\n" % self.test_username)
         # user modified two times as disabling account and
         # changing expiry date at the same time does not work:
         self.UDM.modify_object('users/user', dn=self.test_user_dn, disabled="1")
 
         wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (self.test_username,)))
+        utils.wait_for_connector_replication()
         if self.authenticate_to_umc(self.test_username, self.test_password_unicode):
-            utils.fail("Authentication with a deactivated user account " "succeeded.")
+            utils.fail("Authentication with a deactivated user account succeeded.")
 
-        print("\nRemoving the test user '%s' account and " "trying to authenticate:\n" % self.test_username)
+        print("\nRemoving the test user '%s' account and trying to authenticate:\n" % self.test_username)
         self.UDM.remove_object('users/user', dn=self.test_user_dn)
-
-        sleep(50)  # should be changed after Bug #35634 is resolved
+        utils.wait_for_connector_replication()
         if self.authenticate_to_umc(self.test_username, self.test_password_unicode):
             utils.fail("Authentication with a removed user account succeeded.")
 
@@ -172,7 +171,6 @@ class TestUMCUserAuthentication(UDMModule):
         with UCSTestUDM() as self.UDM:
             self.create_user_and_group()
             self.create_connection_authenticate()
-
             self.check_random_and_valid_passwords()
             self.check_change_old_new_unicode_passwords()
             self.check_expired_deactivated_removed_account()

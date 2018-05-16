@@ -1,3 +1,9 @@
+ucs-test (8.0.28-118) unstable; urgency=medium
+
+  * Bug #47016: fixed 60_umc/31_udm_user_authentication
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 May 2018 13:39:07 +0200
+
 ucs-test (8.0.28-117) unstable; urgency=medium
 
   * Bug #47003: 20_appcenter.18_check_app_links use python requests
