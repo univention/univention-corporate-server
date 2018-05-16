@@ -279,7 +279,7 @@ prepare_docker_app () {
 	if ! appliance_app_has_external_docker_image $app; then
 			container_id=$(docker create "$dockerimage")
 			docker start "$container_id"
-			sleep 5 # some startup time...
+			sleep 60 # some startup time...
 			# update to latest version
 			v=$(docker exec $container_id ucr get version/version)
 			docker exec $container_id univention-upgrade --ignoressh --ignoreterm --noninteractive --disable-app-updates --updateto="${v}-99"
