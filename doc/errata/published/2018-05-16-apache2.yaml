@@ -52,3 +52,5 @@ cve:
 - CVE-2018-1301
 - CVE-2018-1303
 - CVE-2018-1312
+erratum: 41
+announced: 2018-05-16
