@@ -189,8 +189,8 @@ def run_join_scripts(scripts, force, username, password, info_handler=_dummyFunc
 
 
 def run(cmd, stepsPerScript, info_handler=_dummyFunc, error_handler=_dummyFunc, critical_handler=_dummyFunc, step_handler=_dummyFunc, component_handler=_dummyFunc):
-	# disable UMC/apache restart
-	MODULE.info('disabling UMC and apache server restart')
+	# disable restart of UMC server/web-server
+	MODULE.info('disabling restart of UMC server/web-server')
 	subprocess.call(CMD_DISABLE_EXEC)
 
 	try:
