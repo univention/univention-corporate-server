@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Fix architecture-based filter to actually install drivers.
 bug: [46631]
+erratum: 49
+announced: 2018-05-16
