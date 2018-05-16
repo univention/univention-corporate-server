@@ -9,3 +9,5 @@ desc: |
  * Properly transition system jobs to system_cronjob_t SELinux context and
    stop relying on refpolicy specific identifiers.
 bug: [46629]
+erratum: 45
+announced: 2018-05-16
