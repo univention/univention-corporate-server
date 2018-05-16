@@ -1,3 +1,9 @@
+univention-join (10.0.0-12) unstable; urgency=medium
+
+  * Bug #42986: Adjust comment and log message
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 16 May 2018 16:23:16 +0200
+
 univention-join (10.0.0-11) unstable; urgency=medium
 
   * Bug #46842: fixes after qa
