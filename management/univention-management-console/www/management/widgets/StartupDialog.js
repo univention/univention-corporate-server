@@ -75,7 +75,7 @@ define([
 				autoHeight: true,
 				autoValidate: true,
 				onFinished: lang.hitch(this, 'close', true),
-				onCancel: lang.hitch(this, 'close', false)
+				canCancel: function(pageName) { return false; },
 			});
 
 			// create a progress bar widget
@@ -93,14 +93,14 @@ define([
 				},
 
 				next: function(pageName) {
-					topic.publish('/umc/actions', 'startup-wizard', pageName, 'next');
+					topic.publish('/umc/actions', 'startup-wizard-exp', pageName, 'next');
 					var nextPage = this.inherited(arguments);
 					var deferred = null;
 					if (pageName == 'activation') {
 						deferred = when(lang.hitch(thisDialog, '_evaluateActivation')()).then(function(success) {
 							// only advance if no error occurred
 							var actionLabel = success === true ? 'success' : success === false ? 'failure' : 'empty-email';
-							topic.publish('/umc/actions', 'startup-wizard', 'activation', actionLabel);
+							topic.publish('/umc/actions', 'startup-wizard-exp', 'activation', actionLabel);
 							return success !== false ? nextPage : 'help';
 						});
 						thisDialog._progressBar.setInfo(_('Sending activation email...'), null, Infinity);
@@ -111,7 +111,7 @@ define([
 				},
 
 				previous: function(pageName) {
-					topic.publish('/umc/actions', 'startup-wizard', pageName, 'previous');
+					topic.publish('/umc/actions', 'startup-wizard-exp', pageName, 'previous');
 					return this.inherited(arguments);
 				}
 			});
@@ -121,14 +121,14 @@ define([
 			var licenseUploader = this._wizard.getWidget('licenseImport', 'licenseUpload');
 			licenseUploader.onImportLicense = lang.hitch(this, function(deferred) {
 				this._progressBar.setInfo(_('Importing license data...'), null, Infinity);
-				topic.publish('/umc/actions', 'startup-wizard', 'licenseImport', 'upload');
+				topic.publish('/umc/actions', 'startup-wizard-exp', 'licenseImport', 'upload');
 				this._wizard.standbyDuring(deferred, this._progressBar);
 				deferred.then(lang.hitch(this, function() {
 					// advance to next page
-					topic.publish('/umc/actions', 'startup-wizard', 'licenseImport', 'success');
+					topic.publish('/umc/actions', 'startup-wizard-exp', 'licenseImport', 'success');
 					this._wizard._next('licenseImport');
 				}), function(errMsg) {
-					topic.publish('/umc/actions', 'startup-wizard', 'licenseImport', 'failure');
+					topic.publish('/umc/actions', 'startup-wizard-exp', 'licenseImport', 'failure');
 					var msg = '<p>' + _('The import of the license failed. Check the integrity of the original file given to you.') + '</p>';
 					if (errMsg) {
 						msg += '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + errMsg + '</p>';
@@ -191,7 +191,7 @@ define([
 			if (installationOK || installationNotOK) {
 				label = installationOK ? 'positive' : 'negative';
 			}
-			topic.publish('/umc/actions', 'startup-wizard', 'installation-feedback', label);
+			topic.publish('/umc/actions', 'startup-wizard-exp', 'installation-feedback', label);
 		},
 
 		_evaluateHardwareStatistics: function() {
@@ -235,7 +235,7 @@ define([
 
 		_evaluateWizardCompleted: function() {
 			var label = this._wizardCompleted ? 'completed' : 'canceled';
-			topic.publish('/umc/actions', 'startup-wizard', label);
+			topic.publish('/umc/actions', 'startup-wizard-exp', label);
 		}
 	});
 });

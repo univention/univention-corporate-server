@@ -29,10 +29,14 @@
 
 /*global define*/
 define([
+	"dojo/topic",
 	"umc/widgets/Text",
+	"dijit/layout/ContentPane",
+	"put-selector/put",
 	"umc/i18n!management"
-], function(Text, _) {
+], function(topic, Text, ContentPane, put, _) {
 	return {
+
 		name: 'help',
 		headerText: _('Further Information'),
 		'class': 'umcAppDialogPage umcAppDialogPage-help',
@@ -41,11 +45,77 @@ define([
 		widgets: [{
 			type: Text,
 			name: 'text',
-			content: _('<p>Detailed usage information on Univention Management Console can be found in the UCS manual. The manual as well as further important information are available via the following links:</p>')
+			content: _('<p>You can find detailed information on how to use UMC for specific scenarios in the UCS manual. We have linked the most frequent ones of them here:</p>')
 		}, {
-			type: Text,
-			name: 'links',
-			content: _('<ul><li><a href="http://docs.univention.de/en/ucs.html" target="_blank">Online documentation</a></li><li><a href="http://wiki.univention.de/index.php?title=Hauptseite" target="_blank">Univention Wiki</a></li><li><a href="https://www.univention.com/products/support/community-support/" target="_blank">Community and support</a></li></ul>')
+			type: ContentPane,
+			name: 'links2',
+			content: (function() {
+				var _openPageWithTracking = function(url, key) {
+<<<<<<< b6e4169225773a664bfe9dbf63df22239d02408c
+						topic.publish('/umc/actions', 'startup-wizard', 'help', key);
+=======
+						topic.publish('/umc/actions', 'startup-wizard-exp', 'help', key);
+>>>>>>> Bug #46983: StartupWizard test version
+						var w = window.open(url);
+						w.focus();
+				}
+
+				var ul = put('ul');
+
+				var manual = put('a', {
+					href: _('https://docs.univention.de/en/ucs.html'), // have correct link in href for browser support, but ignore via onclick: evt.preventDefault()
+					target: '_blank',
+					onmousedown: function(evt) {
+						evt.preventDefault();
+						_openPageWithTracking(this.href, 'ucs-manual');
+					},
+					innerHTML: _('UCS manual')
+				});
+				var win_domainjoin = put('a', {
+						href: _('https://docs.software-univention.de/quickstart-en-4.3.html#quickstart:clients'),
+						target: '_blank',
+						onmousedown: function(evt) {
+						evt.preventDefault();
+						_openPageWithTracking(this.href, 'win_domainjoin');
+					},
+					innerHTML: _('Join a Windows 10 client into a UCS domain')
+				});
+				var win_adconnector = put('a', {
+						href: _('https://docs.software-univention.de/manual-4.3.html#ad-connector:ad-connector-einrichtung'),
+						target: '_blank',
+						onmousedown: function(evt) {
+						evt.preventDefault();
+						_openPageWithTracking(this.href, 'win_adconnector');
+					},
+					innerHTML: _('Use UCS synchronized with an Active Directory domain')
+				});
+				var win_admember = put('a', {
+						href: _('https://docs.software-univention.de/manual-4.3.html#ad-connector:ad-member-einrichtung'),
+						target: '_blank',
+						onmousedown: function(evt) {
+						evt.preventDefault();
+						_openPageWithTracking(this.href, 'win_admember');
+					},
+					innerHTML: _('Join UCS into an existing Active Directory domain')
+				});
+				var appcenter = put('a', {
+						href: _('https://docs.software-univention.de/quickstart-en-4.3.html#quickstart:updatesinstall'),
+						target: '_blank',
+						onmousedown: function(evt) {
+						evt.preventDefault();
+						_openPageWithTracking(this.href, 'appcenter');
+					},
+					innerHTML: _('Install and use apps from Univention App Center')
+				});
+				put(ul, 'li', win_domainjoin);
+				put(ul, 'li', win_adconnector);
+				put(ul, 'li', win_admember);
+				put(ul, 'li', appcenter);
+				put(ul, 'br');
+				put(ul, 'li', manual);
+
+				return ul;
+			})()
 		}]
 	};
 });
