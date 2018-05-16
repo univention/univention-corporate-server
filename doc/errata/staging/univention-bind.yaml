@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-bind
+fix: 12.0.1-3A~4.3.0.201805160957
+desc: |
+ This update addresses the following issue(s):
+ * The BIND9 service was sometimes not started by the join script.
+ * There was a traceback in the join.log file.
+bug: [46206]
