@@ -81,13 +81,13 @@
 
 	<itemizedlist>
         <listitem><simpara>
-                The system is to be the first system a new UCS domain
+                The system is to be the first system in a new UCS domain
                 and it is implicitly configured with the system role &ucsMaster;
         </simpara></listitem>
         <listitem><simpara>
                 The system can be joined into an existing Active Directory
                 domain. Select this option if UCS should not create a new domain.
-				UCS then takes on the role of an AD memberserver.
+				UCS then takes on the role of an Active Directory member server.
 		</simpara></listitem>
         <listitem><simpara>
                 All other systems are joining the UCS domain when they are installed.
