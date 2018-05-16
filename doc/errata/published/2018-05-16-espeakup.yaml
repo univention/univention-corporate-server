@@ -12,3 +12,5 @@ desc: |
  * Use card id in installed system to avoid issues with card detection
    ordering.
 bug: [46632]
+erratum: 50
+announced: 2018-05-16
