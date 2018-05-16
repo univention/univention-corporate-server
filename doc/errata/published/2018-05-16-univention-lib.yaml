@@ -9,3 +9,5 @@ desc: |
  * A problem when simultaneously registering LDAP acl and schema
    extension has been fixed.
 bug: [45033]
+erratum: 37
+announced: 2018-05-16
