@@ -6,6 +6,6 @@ src: univention-heimdal
 fix: 11.0.1-8A~4.3.0.201805071428
 desc: |
  This update addresses the following issue(s):
- * Join script does not need credentials and added pwdfile parameter
+ * Join script does not need credentials and added bindpwdfile parameter
    to salt_krb5Keys.
 bug: [46842]

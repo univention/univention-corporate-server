@@ -8,6 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * Properties that have been set to default values are no
    longer ignored when saving from the UDM detail page.
- * Join script uses pwdfile option, added pwdfile support
+ * Join script uses bindpwdfile option, added bindpwdfile support
    in univention-dnsedit.
 bug: [46529, 46842]

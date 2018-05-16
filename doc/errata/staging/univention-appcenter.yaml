@@ -7,5 +7,5 @@ fix: 7.0.1-42A~4.3.0.201805071514
 desc: |
  This update addresses the following issue(s):
  * Added "update-certificates" command to univention-appcenter.
- * Join script now uses pwdfile options.
+ * Join script now uses bindpwdfile options.
 bug: [46789, 46842]
