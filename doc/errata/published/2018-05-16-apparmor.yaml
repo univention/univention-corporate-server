@@ -12,3 +12,5 @@ desc: |
    shipped in Stretch. Otherwise they would experience breakage due to new
    AppArmor mediation features introduced in recent kernels.
 bug: [46628]
+erratum: 42
+announced: 2018-05-16
