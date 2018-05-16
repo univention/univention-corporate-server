@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The update from 4.2 to 4.3 is now stopped if a failed.ldif is found.
 bug: [46850]
+erratum: 40
+announced: 2018-05-16
