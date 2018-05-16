@@ -32,3 +32,5 @@ cve:
 - CVE-2017-3738
 - CVE-2018-0733
 - CVE-2018-0739
+erratum: 64
+announced: 2018-05-16
