@@ -9,3 +9,5 @@ desc: |
  * Copy to maintained as a new dependency of libdatetime-timezone-perl.
 bug: [46639]
 ignore: [release+scope.consistent, version.scope]
+erratum: 82
+announced: 2018-05-16
