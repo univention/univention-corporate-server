@@ -106,14 +106,18 @@ class DevUseTestAppcenter(UniventionAppAction):
 			ucr_save({'repository/app_center/server': args.appcenter_host, 'update/secure_apt': 'no', 'appcenter/index/verify': 'no'})
 		update = get_action('update')
 		update.call()
-		if not container_mode():
-			self._update_apps(args)
+		self._update_apps(args)
 
 	def _update_apps(self, args):
 		self.log('Updating all installed Apps to use the new App Center server')
 		for app in Apps().get_all_locally_installed_apps():
 			self.log('Updating %s' % app)
-			if app.docker:
+			register = get_action('register')
+			# we should only use ['component'] in container_mode()
+			# and None otherwise, because it is more correct. however,
+			# this would require credentials (for potential schema updates etc)
+			register.call(apps=[app], register_task=['component'])
+			if app.docker and not container_mode():
 				try:
 					from univention.appcenter.docker import Docker
 				except ImportError:
@@ -121,19 +125,16 @@ class DevUseTestAppcenter(UniventionAppAction):
 					self.log('univention-appcenter-docker is not installed')
 					continue
 				docker = Docker(app, self.logger)
+				self.log('Updating container... (checking for appbox)')
 				if docker.execute('which', 'univention-app').returncode == 0:
-					self.log('Setting the new App Center inside the container')
+					self.log('... setting the new App Center inside the container')
 					docker.execute('univention-install', 'univention-appcenter-dev')
 					if args.revert:
 						docker.execute('univention-app', 'dev-use-test-appcenter', '--revert')
 					else:
 						docker.execute('univention-app', 'dev-use-test-appcenter', '--appcenter-host', args.appcenter_host)
 				else:
-					self.log('Nothing to do here')
-			else:
-				self.log('Re-registering App')
-				register = get_action('register')
-				register.call(apps=[app])
+					self.log('... nothing to do here')
 
 
 class LocalAppcenterAction(UniventionAppAction):
