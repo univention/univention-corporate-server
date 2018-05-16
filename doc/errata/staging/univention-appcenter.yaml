@@ -3,10 +3,12 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-appcenter
-fix: 7.0.1-44A~4.3.0.201805162111
+fix:
 desc: |-
   This update addresses the following issue(s):
   * Added "update-certificates" command to univention-appcenter.
   * Join script now uses bindpwdfile options.
   * When changing the App Center server, update all installed Apps, too.
-bug: [46789, 46842, 43434]
+  * univention-app update now accepts --cache-dir to use a different directory
+    for downloaded meta files.
+bug: [46789, 46842, 43434, 47021]

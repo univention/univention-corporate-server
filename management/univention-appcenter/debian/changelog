@@ -1,3 +1,10 @@
+univention-appcenter (7.0.1-45) unstable; urgency=medium
+
+  * Bug #47021: univention-app update now accepts --cache-dir to use a
+    different directory for downloaded meta files.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 16 May 2018 21:15:32 +0200
+
 univention-appcenter (7.0.1-44) unstable; urgency=medium
 
   * Bug #43434: When changing the App Center server, update all installed
