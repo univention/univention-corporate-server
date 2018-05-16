@@ -9,3 +9,5 @@ desc: |
  * The ssh test does not fail anymore for computer objects that are not
  joined
 bug: [43403]
+erratum: 39
+announced: 2018-05-16
