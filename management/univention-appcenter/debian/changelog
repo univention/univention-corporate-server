@@ -1,3 +1,10 @@
+univention-appcenter (7.0.1-43) unstable; urgency=medium
+
+  * Bug #43434: When changing the App Center server, update all installed
+    Apps, too.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 16 May 2018 20:38:26 +0200
+
 univention-appcenter (7.0.1-42) unstable; urgency=medium
 
   * Bug #46789: pwdfile support in join script
