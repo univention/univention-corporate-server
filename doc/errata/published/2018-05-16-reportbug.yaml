@@ -10,3 +10,5 @@ desc: |
    security team didn't exist for a long time and the mailinglist will
    disappear when Alioth will be decomissioned.
 bug: [46638]
+erratum: 71
+announced: 2018-05-16
