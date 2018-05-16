@@ -51,10 +51,10 @@ from distutils.version import LooseVersion
 from univention.config_registry.interfaces import Interfaces
 
 from univention.appcenter.app import App, AppAttribute, AppFileAttribute, CaseSensitiveConfigParser
-from univention.appcenter.app_cache import default_server
+from univention.appcenter.app_cache import Apps, default_server
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action
 from univention.appcenter.exceptions import LocalAppCenterError
-from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase, call_process
+from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase, call_process, container_mode
 from univention.appcenter.ucr import ucr_save, ucr_get, ucr_instance
 from univention.appcenter.ini_parser import read_ini_file
 
@@ -106,6 +106,34 @@ class DevUseTestAppcenter(UniventionAppAction):
 			ucr_save({'repository/app_center/server': args.appcenter_host, 'update/secure_apt': 'no', 'appcenter/index/verify': 'no'})
 		update = get_action('update')
 		update.call()
+		if not container_mode():
+			self._update_apps(args)
+
+	def _update_apps(self, args):
+		self.log('Updating all installed Apps to use the new App Center server')
+		for app in Apps().get_all_locally_installed_apps():
+			self.log('Updating %s' % app)
+			if app.docker:
+				try:
+					from univention.appcenter.docker import Docker
+				except ImportError:
+					# should not happen
+					self.log('univention-appcenter-docker is not installed')
+					continue
+				docker = Docker(app, self.logger)
+				if docker.execute('which', 'univention-app').returncode == 0:
+					self.log('Setting the new App Center inside the container')
+					docker.execute('univention-install', 'univention-appcenter-dev')
+					if args.revert:
+						docker.execute('univention-app', 'dev-use-test-appcenter', '--revert')
+					else:
+						docker.execute('univention-app', 'dev-use-test-appcenter', '--appcenter-host', args.appcenter_host)
+				else:
+					self.log('Nothing to do here')
+			else:
+				self.log('Re-registering App')
+				register = get_action('register')
+				register.call(apps=[app])
 
 
 class LocalAppcenterAction(UniventionAppAction):
