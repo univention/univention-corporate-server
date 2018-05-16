@@ -34,7 +34,6 @@
 
 import os
 import os.path
-import shutil
 from argparse import SUPPRESS
 from glob import glob
 from gzip import open as gzip_open
@@ -49,7 +48,7 @@ from univention.appcenter.app import LOCAL_ARCHIVE_DIR
 from univention.appcenter.app_cache import Apps, AppCenterCache
 from univention.appcenter.actions import UniventionAppAction, possible_network_error
 from univention.appcenter.exceptions import UpdateUnpackArchiveFailed, UpdateSignatureVerificationFailed
-from univention.appcenter.utils import urlopen, get_md5_from_file, gpg_verify, container_mode, mkdir
+from univention.appcenter.utils import urlopen, gpg_verify, mkdir
 from univention.appcenter.ucr import ucr_save, ucr_is_false
 
 
@@ -57,13 +56,6 @@ class Update(UniventionAppAction):
 
 	'''Updates the list of all available applications by asking the App Center server'''
 	help = 'Updates the list of apps'
-
-	def __init__(self):
-		super(Update, self).__init__()
-		self._cache_dir = None
-		self._ucs_version = None
-		self._appcenter_server = None
-		self._files_downloaded = {}
 
 	def setup_parser(self, parser):
 		parser.add_argument('--ucs-version', help=SUPPRESS)
@@ -121,10 +113,10 @@ class Update(UniventionAppAction):
 		for appcenter_cache in self._appcenter_caches(args):
 			for app_cache in appcenter_cache.get_app_caches():
 				if args.ucs_version:
-					yield app_cache.copy(ucs_version=args.ucs_version)
+					yield app_cache.copy(ucs_version=args.ucs_version, cache_dir=args.cache_dir)
 					break
 				else:
-					yield app_cache
+					yield app_cache.copy(cache_dir=args.cache_dir)
 
 	def _get_etags(self, etags_file):
 		ret = {}
@@ -230,40 +222,6 @@ class Update(UniventionAppAction):
 
 	def _update_local_files(self):
 		self.debug('Updating app files...')
-
-		if container_mode():
-			self.debug('do not update files in container mode...')
-			return
-		update_files = {
-			'inst': lambda x: self._get_joinscript_path(x, unjoin=False),
-			'schema': lambda x: x.get_share_file('schema'),
-			'univention-config-registry-variables': lambda x: x.get_share_file('univention-config-registry-variables'),
-		}
-		for app in Apps().get_all_locally_installed_apps():
-			for file in update_files:
-				src = app.get_cache_file(file)
-				dest = update_files[file](app)
-				if not os.path.exists(src):
-					if app.docker:
-						# remove files that do not exist on server anymore
-						if os.path.exists(dest):
-							self.log('Deleting obsolete app file %s' % dest)
-							os.unlink(dest)
-				else:
-					# update local files if downloaded
-					component_file = '%s.%s' % (app.component_id, file)
-					if component_file not in self._files_downloaded:
-						continue
-					src_md5 = self._files_downloaded[component_file]
-					dest_md5 = None
-					if os.path.exists(dest):
-						dest_md5 = get_md5_from_file(dest)
-					if dest_md5 is None or src_md5 != dest_md5:
-						self.log('Copying %s to %s' % (src, dest))
-						shutil.copy2(src, dest)
-						if file == 'inst':
-							os.chmod(dest, 0o755)
-
 		# some variables could change UCR templates
 		# e.g. Name, Description
 		self._update_conffiles()
