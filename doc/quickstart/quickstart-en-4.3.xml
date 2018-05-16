@@ -77,24 +77,20 @@
 
   <para>
       During installation, the system can be used for various purposes which
-      can only be configured at this point in the setup process can be made.
+      can only be configured at this point in the setup process.
 
 	<itemizedlist>
         <listitem><simpara>
-                The system is to be the first system for its own UCS domain
-                and it is implicitly called the system role &ucsMaster;
-                on the ground.
+                The system is to be the first system a new UCS domain
+                and it is implicitly configured with the system role &ucsMaster;
         </simpara></listitem>
         <listitem><simpara>
-                The system can be assigned to an existing Active Directory
-                domain join. Select this option if UCS does not have its own to
-                set up a domain. UCS takes on the role of an AD member. The
-                join may also take place at a later date after the system
-                setup.
-        </simpara></listitem>
+                The system can be joined into an existing Active Directory
+                domain. Select this option if UCS should not create a new domain.
+				UCS then takes on the role of an AD memberserver.
+		</simpara></listitem>
         <listitem><simpara>
-                All other systems are included in your installation of the
-                UCS domain.
+                All other systems are joining the UCS domain when they are installed.
         </simpara></listitem>
         <listitem><simpara>
                 The base system is the exception here; this system does not
@@ -111,7 +107,7 @@
   <para>
       With UCS and the <guimenu>Active Directory Takeover</guimenu> an existing
       Active Directory domain can be migrated completely to UCS. For
-      information on how to set up the UCS system for this, see <biblioref
+      information on how to set up the UCS system for this scenario, see <biblioref
       linkend="ad-takeover"/>.
   </para>
 
@@ -196,7 +192,7 @@
   </para>
 
   <para>
-    Additional software, like for example Active Directory Connection, can be
+    Additional software, like for example the Active Directory Connection, can be
     installed using the Univention App Center in the Univention Management
     Console:
 
