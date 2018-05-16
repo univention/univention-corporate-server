@@ -6,11 +6,9 @@ src: univention-management-console
 fix: 10.0.6-3A~4.3.0.201805080947
 desc: |
  This update addresses the following issues:
- * Set Login button of requirePassword dialog as default to allow submitting
-   with Enter
- * Set password field of requirePassword dialog as focused element by changing
-   username field into simple Text
- * Enhance logging for disabled memberof overlay
+ * The password dialog that is shown upfront some functions in UMC when using
+   a Single Sign On (SAML) session can now be submitted by pressing Enter.
+ * Enhance logging for disabled memberof overlay.
  * The description of the UCR variable umc/web/piwik has
    been adjusted to better reflect the actual behavior.
 bug: [46735, 46476, 46791]
