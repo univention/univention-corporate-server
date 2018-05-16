@@ -1,3 +1,9 @@
+univention-nagios (11.0.1-6) unstable; urgency=medium
+
+  * Bug #47015: fix nagios.log permissions, again
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 May 2018 09:48:13 +0200
+
 univention-nagios (11.0.1-5) unstable; urgency=medium
 
   * Bug #46306: fix nagios.log permissions

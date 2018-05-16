@@ -31,7 +31,6 @@
 eval "$(ucr shell)"
 
 . /usr/share/univention-lib/all.sh
-create_logfile /var/log/nagios/nagios.log "nagios:nagios" 640
 
 # set default baseconfig settings
 univention-config-registry set \
@@ -81,6 +80,8 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.1-0
 	fi
 	update-rc.d nagios3 remove >/dev/null
 fi
+
+create_logfile /var/log/nagios/nagios.log "nagios:nagios" 640
 
 #DEBHELPER#
 
