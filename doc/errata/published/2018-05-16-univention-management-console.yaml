@@ -12,3 +12,5 @@ desc: |
  * The description of the UCR variable umc/web/piwik has
    been adjusted to better reflect the actual behavior.
 bug: [46735, 46476, 46791]
+erratum: 38
+announced: 2018-05-16
