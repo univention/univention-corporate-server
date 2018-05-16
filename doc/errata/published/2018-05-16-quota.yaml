@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Prevent quotacheck from running into an endless loop.
 bug: [46637]
+erratum: 70
+announced: 2018-05-16
