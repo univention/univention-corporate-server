@@ -9,3 +9,5 @@ desc: |
  * Fix iterator initialization.
  * Fix missing reference for children.
 bug: [46633]
+erratum: 54
+announced: 2018-05-16
