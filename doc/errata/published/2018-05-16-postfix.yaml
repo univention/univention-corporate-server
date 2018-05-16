@@ -24,3 +24,5 @@ desc: |
  * Incorrect mailbox seek-to-end error message in the virtual(8) delivery
    agent.
 bug: [46636]
+erratum: 68
+announced: 2018-05-16
