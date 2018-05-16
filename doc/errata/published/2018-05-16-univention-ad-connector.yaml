@@ -10,3 +10,5 @@ desc: |
    password sync from ad to ucs too.
  * Some enconding in the context of rejects have been fixed.
 bug: [45760, 45779]
+erratum: 36
+announced: 2018-05-16
