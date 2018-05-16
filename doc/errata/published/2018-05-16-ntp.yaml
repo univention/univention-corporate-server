@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Cherry-pick patch from upstream to increase stack size.
 bug: [46635]
+erratum: 61
+announced: 2018-05-16
