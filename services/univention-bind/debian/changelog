@@ -1,9 +1,3 @@
-univention-bind (11.0.1-6) unstable; urgency=medium
-
-  * Bug #46206: Fix two problems in 90univention-bind-post.inst
-
- -- Richard Ulmer <ulmer@univention.de>  Tue, 15 May 2018 15:47:18 +0200
-
 univention-bind (11.0.1-5) unstable; urgency=medium
 
   * Bug #46310: increase runsv timeout to 30 seconds
