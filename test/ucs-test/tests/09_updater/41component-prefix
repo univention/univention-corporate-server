@@ -9,8 +9,12 @@
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
 
+UT_VERBOSE=/tmp/a
+
 RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
+
+set -x
 
 compname="test${RANDOM}"
 repoprefix="univention-repository-$$-${RANDOM}"
@@ -23,6 +27,8 @@ mkpkg "${DIR}"
 
 comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/prefix=${repoprefix}"
+
+cat /etc/apt/sources.list.d/*
 
 (
 	set -e

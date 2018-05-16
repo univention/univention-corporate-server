@@ -1,3 +1,9 @@
+ucs-test (8.0.28-119) unstable; urgency=medium
+
+  * Bug 47000#: 09_updater/41component-prefix added debug
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 May 2018 14:18:52 +0200
+
 ucs-test (8.0.28-118) unstable; urgency=medium
 
   * Bug #47016: fixed 60_umc/31_udm_user_authentication
