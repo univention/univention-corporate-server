@@ -1,2 +1,3 @@
+univention-maintenance-mode-available-updates /usr/share
 univention-maintenance-mode.service /lib/systemd/system
 index.html /var/www/univention/maintenance

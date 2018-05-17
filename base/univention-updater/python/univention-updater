@@ -120,7 +120,8 @@ def update_status(**kwargs):
     Keys:
     - current_version ==> UCS_Version ==> 2.3-1
     - next_version    ==> UCS_Version ==> 2.3-2
-    - updatetype      ==> (LOCAL|NET|CDROM)
+    - target_version  ==> UCS_Version ==> 2.4-0
+    - type            ==> (LOCAL|NET|CDROM)
     - status          ==> (RUNNING|FAILED|DONE)
     - errorsource     ==> (SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)
     '''
@@ -489,6 +490,8 @@ def main():
 
     dprint('Update to = %s' % nextversion)
     update_status(next_version=nextversion)
+    if updateto:
+	    update_status(target_version=updateto)
 
     if ignorereleasenotes:
         os.putenv('update_warning_releasenotes_internal', 'no')
@@ -563,7 +566,6 @@ def main():
                     if resultCode != 0:
                         raise UpdateError('Failed to execute "%s"' % cmd_dist_upgrade, errorsource='UPDATE')
     except:
-	subprocess.call(('univention-config-registry', 'unset', 'updater/maintenance'), stdout=fp_debug, stderr=fp_debug)
         if phase == 'preup' or (phase == 'update' and order == 'pre'):
             remove_temporary_sources_list()
         raise
@@ -670,3 +672,4 @@ if __name__ == '__main__':
         if do_ucr_update:
             update_ucr_updatestatus()
         fd_log.close()
+	subprocess.call(('univention-config-registry', 'unset', 'updater/maintenance'), stdout=subprocess.PIPE, stderr=subprocess.PIPE)

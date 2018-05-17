@@ -1,3 +1,9 @@
+univention-management-console (10.0.6-7) unstable; urgency=medium
+
+  * Bug #37223: Redirect UMC site to maintenance page if in maintenance mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 16 May 2018 22:14:52 +0200
+
 univention-management-console (10.0.6-6) unstable; urgency=medium
 
   * Bug #46978: enable bad password lockout policy in umc

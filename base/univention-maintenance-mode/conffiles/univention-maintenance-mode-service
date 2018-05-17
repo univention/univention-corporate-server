@@ -30,13 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+
 . /usr/share/univention-lib/ucr.sh
 if is_ucr_true updater/maintenance; then
-	true
-	#systemctl start univention-maintenance-mode.service
+	/usr/share/univention-maintenance-mode-available-updates
+	systemctl start univention-maintenance-mode.service
 else
-	true
-	#systemctl stop univention-maintenance-mode.service
+	systemctl stop univention-maintenance-mode.service
 fi
 
 # has to be done here because the updater/maintenance trigger executes first the script
