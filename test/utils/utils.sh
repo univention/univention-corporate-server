@@ -43,13 +43,6 @@ basic_setup () {
 	elif ip -4 addr show | grep -Fq 'inet 10.210.'
 	then
 		echo "Assuming Amazon Cloud"
-		GW='10.210.216.13' MDS='169.254.169.254'
-		echo "supersede routers ${GW};" >> /etc/dhcp/dhclient.conf.local
-		echo "supersede rfc3442-classless-static-routes 32,${MDS//./,},0,0,0,0,0,${GW//./,};" >> /etc/dhcp/dhclient.conf.local
-		ip route replace default via "$GW"  # VPN gateway
-		ip route replace "$MDS" dev eth0  # EC2 meta-data service
-		ucr set gateway="$GW"
-		sleep 10 # just wait a few seconds to give the amazone cloud some time
 		# Bug #39807: set dns/forwarder* early to prevent a bind restart later
 		ucr search --brief --non-empty '^nameserver[123]$'|sed -re 's,nameserver([123]): ,dns/forwarder\1=,'|xargs --no-run-if-empty ucr set
 		ucr set --force updater/identify="UCS (EC2 Test)"
