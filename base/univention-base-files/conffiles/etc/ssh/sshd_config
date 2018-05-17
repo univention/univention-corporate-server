@@ -147,10 +147,7 @@ else:
 	print '#KerberosGetAFSToken no'
 print ''
 print '# GSSAPI options'
-if configRegistry.get('sshd/GSSAPIAuthentication'):
-	print 'GSSAPIAuthentication %(sshd/GSSAPIAuthentication)s' % configRegistry
-else:
-	print 'GSSAPIAuthentication yes'
+print 'GSSAPIAuthentication %s' % configRegistry.get('sshd/GSSAPIAuthentication', 'yes')
 if configRegistry.get('sshd/GSSAPICleanupCredentials'):
 	print 'GSSAPICleanupCredentials %(sshd/GSSAPICleanupCredentials)s' % configRegistry
 else:
@@ -159,10 +156,7 @@ if configRegistry.get('sshd/GSSAPIStrictAcceptorCheck'):
 	print 'GSSAPIStrictAcceptorCheck %(sshd/GSSAPIStrictAcceptorCheck)s' % configRegistry
 else:
 	print '#GSSAPIStrictAcceptorCheck yes'
-if configRegistry.get('sshd/GSSAPIKeyExchange'):
-	print 'GSSAPIKeyExchange %(sshd/GSSAPIKeyExchange)s' % configRegistry
-else:
-	print 'GSSAPIKeyExchange yes'
+print 'GSSAPIKeyExchange %s' % configRegistry.get('sshd/GSSAPIKeyExchange', 'yes')
 @!@
 # Set this to 'yes' to enable PAM authentication, account processing,
 # and session processing. If this is enabled, PAM authentication will
@@ -174,10 +168,8 @@ else:
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
 @!@
-if configRegistry.get('sshd/UsePAM'):
-	print 'UsePAM %(sshd/UsePAM)s' % configRegistry
-else:
-	print 'UsePAM yes'
+
+print 'UsePAM %s' % configRegistry.get('sshd/UsePAM', 'yes')
 print ''
 if configRegistry.get('sshd/AllowAgentForwarding'):
 	print 'AllowAgentForwarding %(sshd/AllowAgentForwarding)s' % configRegistry
@@ -201,10 +193,7 @@ if configRegistry.get('sshd/PermitTTY'):
 	print 'PermitTTY %(sshd/PermitTTY)s' % configRegistry
 else:
 	print '#PermitTTY yes'
-if configRegistry.get('sshd/PrintMotd'):
-	print 'PrintMotd %(sshd/PrintMotd)s' % configRegistry
-else:
-	print 'PrintMotd no'
+print 'PrintMotd %s' % configRegistry.get('sshd/PrintMotd', 'no')
 if configRegistry.get('sshd/TCPKeepAlive'):
 	print 'TCPKeepAlive %(sshd/TCPKeepAlive)s' % configRegistry
 else:
