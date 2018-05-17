@@ -1,8 +1,8 @@
-univention-management-console (10.0.6-3.1) unstable; urgency=medium
+univention-management-console (10.0.6-3.2) unstable; urgency=medium
 
   * Bug #46983: StartupWizard test version
 
- -- Erik Damrose <damrose@univention.de>  Wed, 09 May 2018 11:41:44 +0200
+ -- Erik Damrose <damrose@univention.de>  Thu, 17 May 2018 13:59:15 +0200
 
 univention-management-console (10.0.6-3) unstable; urgency=medium
 

@@ -51,11 +51,7 @@ define([
 			name: 'links2',
 			content: (function() {
 				var _openPageWithTracking = function(url, key) {
-<<<<<<< b6e4169225773a664bfe9dbf63df22239d02408c
-						topic.publish('/umc/actions', 'startup-wizard', 'help', key);
-=======
 						topic.publish('/umc/actions', 'startup-wizard-exp', 'help', key);
->>>>>>> Bug #46983: StartupWizard test version
 						var w = window.open(url);
 						w.focus();
 				}
