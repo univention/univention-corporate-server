@@ -260,10 +260,10 @@ if configRegistry.get('sshd/banner'):
 	print "Banner %s" % configRegistry['sshd/banner']
 print ''
 print ''
-print '# Allow client to pass locale environment variables'
 if configRegistry.get('sshd/AcceptEnv'):
 	print 'AcceptEnv %(sshd/AcceptEnv)s' % configRegistry
 else:
+	print '# Allow client to pass locale environment variables'
 	print 'AcceptEnv LANG LC_*'
 @!@
 # override default of no subsystems
