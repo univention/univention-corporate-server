@@ -118,7 +118,7 @@ else:
 	print '#IgnoreRhosts yes'
 print ''
 print '# To disable tunneled clear text passwords, change to no here!'
-print 'PasswordAuthentication %s' % configRegistry.get('sshd/passwordauthentication', 'no')
+print 'PasswordAuthentication %s' % configRegistry.get('sshd/passwordauthentication', 'yes')
 if configRegistry.get('sshd/PermitEmptyPasswords'):
 	print 'PermitEmptyPasswords %(sshd/PermitEmptyPasswords)s' % configRegistry
 else:
