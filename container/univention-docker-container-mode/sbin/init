@@ -162,7 +162,7 @@ ip_network() {
 # FIXME: this only works for IPv4 subnets!
 
 _ifconfig_eth0=$(LANG=C ifconfig eth0)
-_ifconfig_eth0_ipv4=$(grep "^ *inet addr:" <<<"$_ifconfig_eth0")
+_ifconfig_eth0_ipv4=$(grep "^ *inet " <<<"$_ifconfig_eth0")
 _ip_inet_addr_show_eth0=$(LANG=C ip -f inet addr show eth0)
 
 interfaces_eth0_address=$(grep -Po '^ *inet \K\d+\.\d+\.\d+\.\d+' <<<"$_ip_inet_addr_show_eth0")
@@ -170,11 +170,11 @@ echo "interfaces/eth0/address: $interfaces_eth0_address"
 
 _ip_network_CIDR=$(grep -Po '^ *inet \K\d+\.\d+\.\d+\.\d+/\d+' <<<"$_ip_inet_addr_show_eth0")
 
-interfaces_eth0_broadcast=$(grep -Po " Bcast:\K\d+\.\d+\.\d+.\d+" <<<"$_ifconfig_eth0_ipv4")
+interfaces_eth0_broadcast=$(grep -Po " broadcast \K\d+\.\d+\.\d+.\d+" <<<"$_ifconfig_eth0_ipv4")
 echo "interfaces/eth0/broadcast: $interfaces_eth0_broadcast" 
 
 # interfaces_eth0_netmask=$(ip_netmask "$_ip_network_CIDR")
-interfaces_eth0_netmask=$(grep -Po " Mask:\K\d+\.\d+\.\d+.\d+" <<<"$_ifconfig_eth0_ipv4")
+interfaces_eth0_netmask=$(grep -Po " netmask \K\d+\.\d+\.\d+.\d+" <<<"$_ifconfig_eth0_ipv4")
 echo "interfaces/eth0/netmask: $interfaces_eth0_netmask" 
 
 interfaces_eth0_network=$(ip_network "$_ip_network_CIDR")
