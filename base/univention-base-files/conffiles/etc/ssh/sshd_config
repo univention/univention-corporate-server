@@ -210,10 +210,6 @@ if configRegistry.get('sshd/PrintLastLog'):
 else:
 	print '#PrintLastLog yes'
 print ''
-if configRegistry.get('sshd/UseLogin'):
-	print 'UseLogin %(sshd/UseLogin)s' % configRegistry
-else:
-	print '#UseLogin no'
 if configRegistry.get('sshd/UsePrivilegeSeparation'):
 	print 'UsePrivilegeSeparation %(sshd/UsePrivilegeSeparation)s' % configRegistry
 else:

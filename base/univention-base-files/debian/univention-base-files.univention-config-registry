@@ -52,7 +52,6 @@ Variables: sshd/UsePAM
 Variables: sshd/PermitTTY
 Variables: sshd/PrintMotd
 Variables: sshd/PrintLastLog
-Variables: sshd/UseLogin
 Variables: sshd/UsePrivilegeSeparation
 Variables: sshd/PermitUserEnvironment
 Variables: sshd/Compression

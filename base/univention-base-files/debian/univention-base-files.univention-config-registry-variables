@@ -298,12 +298,6 @@ Description[en]=Specifies the OpenSSH deamon configuration value 'PrintLastLog':
 Type=str
 Categories=service-ssh
 
-[sshd/UseLogin]
-Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'UseLogin' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
-Description[en]=Specifies the OpenSSH deamon configuration value 'UseLogin': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
-Type=str
-Categories=service-ssh
-
 [sshd/UsePrivilegeSeparation]
 Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'UsePrivilegeSeparation' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
 Description[en]=Specifies the OpenSSH deamon configuration value 'UsePrivilegeSeparation': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
