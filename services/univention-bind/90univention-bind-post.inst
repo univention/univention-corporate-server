@@ -81,14 +81,6 @@ wait_for_dns () {
 
 univention-config-registry set dns/backend?ldap
 
-if [ ! -e /etc/runit/univention/univention-bind-proxy ]; then
-	ln -s /etc/runit/univention-bind-proxy /etc/runit/univention/univention-bind-proxy
-fi
-
-if [ ! -e /etc/runit/univention/univention-bind-samba4 ]; then
-	ln -s /etc/runit/univention-bind-samba4 /etc/runit/univention/univention-bind-samba4
-fi
-
 if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	# these might be hangovers from the installation
 	pkill -f /usr/sbin/named
@@ -97,7 +89,7 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 fi
 
 # Restart the bind9 daemon and wait for a few seconds if the local nameserver should be used
-sleep 5  # This sleep is needed, because possible updates in /etc/runit/ are only scanned every five seconds (see man runsvdir).
+sleep 5  # Make sure the bind9.service is linked.
 service bind9 restart
 if [ -z "$nameserver_external" ] || ! is_ucr_true nameserver/external; then
 	wait_for_dns

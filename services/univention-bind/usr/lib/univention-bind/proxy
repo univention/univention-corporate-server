@@ -27,28 +27,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-@%@UCRWARNING=# @%@
-
-if [ "$(uname -m)" = "x86_64" ]; then
-	export LDB_MODULES_PATH=/usr/lib/x86_64-linux-gnu/ldb/
-else
-	export LDB_MODULES_PATH=/usr/lib/i386-linux-gnu/ldb/
-fi
-
 # dirs under /var/run can go away on reboots.
 mkdir -p /var/run/named
 chmod 775 /var/run/named
-
-# bind is running as root when using s4 as backend.
-# To open the rndc port, the rndc.key must be owned by root.
-chown root:root /etc/bind/rndc.key
 chown root:bind /var/run/named >/dev/null 2>&1 || true
+
+# Give permissions back to bind,
+# see /usr/lib/univention-bind/samba4
+chown bind:bind /etc/bind/rndc.key
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 debug_level="$(ucr get dns/debug/level)"
 test -z $debug_level && debug_level=0
 
-OPTS="-c /etc/bind/named.conf.samba4 -f -d $debug_level"
+OPTS="-c /etc/bind/named.conf.proxy -u bind -f -d $debug_level"
 
 exec /usr/sbin/named $OPTS

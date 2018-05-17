@@ -1,0 +1,16 @@
+[Unit]
+Description=BIND Domain Name Server with samba4 backend
+Documentation=man:named(8)
+After=network.target samba-ad-dc.service
+Requires=samba-ad-dc.service
+Conflicts=univention-bind-ldap.service
+
+[Service]
+ExecStart=/usr/lib/univention-bind/samba4
+ExecReload=/usr/sbin/rndc -p 953 reload
+ExecStop=/usr/sbin/rndc -p 953 stop
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+Alias=bind9.service

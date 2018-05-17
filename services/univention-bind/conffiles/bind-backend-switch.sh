@@ -1,6 +1,9 @@
 #!/bin/sh
 #
-# Copyright 2001-2018 Univention GmbH
+# Univention bind9 backend switch
+#  UCR script
+#
+# Copyright 2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,22 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-@%@UCRWARNING=# @%@
+dns_backend="$(/usr/sbin/ucr get dns/backend)"
 
-# dirs under /var/run can go away on reboots.
-mkdir -p /var/run/named
-chmod 775 /var/run/named
-chown root:bind /var/run/named >/dev/null 2>&1 || true
-
-# Give permissions back to bind,
-# see /etc/runit/univention-bind-samba4/run
-chown bind:bind /etc/bind/rndc.key
-
-PATH=/sbin:/bin:/usr/sbin:/usr/bin
-
-debug_level="$(ucr get dns/debug/level)"
-test -z $debug_level && debug_level=0
-
-OPTS="-c /etc/bind/named.conf.proxy -u bind -f -d $debug_level"
-
-exec /usr/sbin/named $OPTS
+if [ "$dns_backend" = "ldap" ]; then
+	systemctl disable univention-bind-samba4.service
+	systemctl enable univention-bind-proxy.service
+elif [ "$dns_backend" = "samba4" ]; then
+	systemctl disable univention-bind-proxy.service
+	systemctl enable univention-bind-samba4.service
+else
+	echo "ERROR: Unknown dns backend"
+	exit 1
+fi
+exit 0

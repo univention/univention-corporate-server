@@ -1,0 +1,19 @@
+[Unit]
+Description=BIND Domain Name Server proxy for ldap backend
+Documentation=man:named(8)
+After=network.target
+After=univention-bind-ldap.service
+Requires=univention-bind-ldap.service
+BindsTo=univention-bind-ldap.service
+PropagatesReloadTo=univention-bind-ldap.service
+Conflicts=univention-bind-samba4.service
+
+[Service]
+ExecStart=/usr/lib/univention-bind/proxy
+ExecReload=/usr/sbin/rndc -p 953 reload
+ExecStop=/usr/sbin/rndc -p 953 stop
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+Alias=bind9.service

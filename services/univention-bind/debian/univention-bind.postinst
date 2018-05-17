@@ -81,8 +81,20 @@ if [ "$1" = "configure" ]; then
 		rm -f /etc/systemd/system/bind9.service
 		systemctl --system daemon-reload
 	}
+	dpkg --compare-versions "$2" lt 12.0.2-1 && {
+		service bind9 stop
+		rm -r /etc/runit/univention-bind
+		rm -r /etc/runit/univention-bind-proxy
+		rm -r /etc/runit/univention-bind-samba4
+		rm /etc/runit/univention/univention-bind
+		rm /etc/runit/univention/univention-bind-proxy
+		rm /etc/runit/univention/univention-bind-samba4
+		systemctl --system daemon-reload
+		dns_backend="$(/usr/sbin/ucr get dns/backend)"
+		/usr/sbin/ucr set "dns/backend=$dns_backend"
+	}
 	if [ -n "$2" ]; then
-		service bind9 crestart
+		service bind9 restart
 	else
 		service bind9 start
 	fi

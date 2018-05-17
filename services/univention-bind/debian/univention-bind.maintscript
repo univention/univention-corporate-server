@@ -1,0 +1,3 @@
+rm_conffile /etc/univention/templates/files/etc/runit/univention-bind-proxy/run 12.0.2~
+rm_conffile /etc/univention/templates/files/etc/runit/univention-bind-samba4/run 12.0.2~
+rm_conffile /etc/univention/templates/files/etc/runit/univention-bind/run 12.0.2~

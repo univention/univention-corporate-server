@@ -2,14 +2,9 @@ Type: file
 File: etc/bind/named.conf
 Variables: dns/ipv6
 
-Type: file
-File: etc/runit/univention-bind/run
-
-Type: file
-File: etc/runit/univention-bind-proxy/run
-
-Type: file
-File: etc/runit/univention-bind-samba4/run
+Type: script
+Script: bind-backend-switch.sh
+Variables: dns/backend
 
 Type: file
 File: etc/bind/named.conf.proxy
