@@ -13,6 +13,7 @@ import subprocess
 
 from univention.config_registry import handler_set
 from univention.testing.strings import random_username
+from univention.testing.utils import wait_for_connector_replication
 
 
 class TestUsers(object):
@@ -225,7 +226,7 @@ class TestUsers(object):
 			user = udm.create_user(**props)[0]
 			udm.verify_ldap_object(user, attrs, strict=False)
 			udm.remove_object('users/user', dn=user)
-
+		wait_for_connector_replication()
 		if kwargs.get('modify', True):
 			user = udm.create_user()[0]
 			user = udm.modify_object('users/user', dn=user, **props)
