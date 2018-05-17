@@ -205,6 +205,10 @@ if configRegistry.get('sshd/PrintMotd'):
 	print 'PrintMotd %(sshd/PrintMotd)s' % configRegistry
 else:
 	print 'PrintMotd no'
+if configRegistry.get('sshd/TCPKeepAlive'):
+	print 'TCPKeepAlive %(sshd/TCPKeepAlive)s' % configRegistry
+else:
+	print '#TCPKeepAlive yes'
 if configRegistry.get('sshd/PrintLastLog'):
 	print 'PrintLastLog %(sshd/PrintLastLog)s' % configRegistry
 else:
