@@ -1,6 +1,13 @@
+univention-docker-container-mode (3.0.0-3) unstable; urgency=medium
+
+  * Bug #46665: Fixed saving the initial network configuration into UCR during
+    startup of the container.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 17 May 2018 18:36:14 +0200
+
 univention-docker-container-mode (3.0.0-2) unstable; urgency=medium
 
-  * Bug #46758 won't be releaed, yet needs a version bump
+  * Bug #46758 won't be released, yet needs a version bump
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 04 Apr 2018 14:18:45 +0200
 
