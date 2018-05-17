@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-docker-container-mode
-fix:
+fix: 3.0.0-3A~4.3.0.201805171843
 desc: |-
   This update addresses the following issue(s):
   * Fixed saving the initial network configuration into UCR during startup of
