@@ -335,10 +335,11 @@ install_with_unmaintained () {
 }
 
 wait_for_repo_server () {
+	local i repository_online_server
 	eval "$(ucr shell 'repository/online/server')"
 	repository_online_server=${repository_online_server#https://}
 	repository_online_server=${repository_online_server#http://}
-	repository_online_server=${repository_online_server%/}
+	repository_online_server=${repository_online_server%%/*}
 	for i in $(seq 1 300); do
 		ping -c 2 "$repository_online_server" && return 0
 		sleep 1
@@ -769,8 +770,6 @@ monkeypatch () {
 
 	# Bug #40419: UCS@school Slave reject: LDAP sambaSID != S4 objectSID == SID(Master)
 	[ "$(hostname)" = "slave300-s1" ] && /usr/share/univention-s4-connector/remove_ucs_rejected.py "cn=master300,cn=dc,cn=computers,dc=autotest300,dc=local" || true
-
-	return 0
 }
 
 import_license () {
@@ -874,9 +873,8 @@ run_app_appliance_tests () {
 }
 
 add_tech_key_authorized_keys() {
-	mkdir -p /root/.ssh
+	install -m0755 -o0 -g0 -d /root/.ssh
 	echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKxi4dwmF9K7gV4JbQUmQ4ufRHcxYOYUHWoIRuj8jLmP1hMOqEmZ43rSRoe2E3xTNg+RAjwkX1GQmWQzzjRIYRpUfwLo+yEXtER1DCDTupLPAT5ulL6uPd5mK965vbE46g50LHRyTGZTbsh1A/NPD7+LNBvgm5dTo/KtMlvJHWDN0u4Fwix2uQfvCSOpF1n0tDh0b+rr01orITJcjuezIbZsArTszA+VVJpoMyvu/I3VQVDSoHB+7bKTPwPQz6OehBrFNZIp4zl18eAXafDoutTXSOUyiXcrViuKukRmvPAaO8u3+r+OAO82xUSQZgIWQgtsja8vsiQHtN+EtR8mIn tech' >>/root/.ssh/authorized_keys
-	return 0
 }
 
 install_winrm() {
@@ -887,7 +885,6 @@ install_winrm() {
 assert_admember_mode () {
 	. /usr/share/univention-lib/admember.sh
 	is_localhost_in_admember_mode
-	return $?
 }
 
 # vim:set filetype=sh ts=4:
