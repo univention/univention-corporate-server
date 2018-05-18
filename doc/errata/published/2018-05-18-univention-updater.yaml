@@ -10,3 +10,5 @@ desc: |
    package updates are running at the end of the update by starting
    them explicitly.
 bug: [47029]
+erratum: 84
+announced: 2018-05-18
