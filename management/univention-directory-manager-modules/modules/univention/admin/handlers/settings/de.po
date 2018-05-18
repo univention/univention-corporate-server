@@ -1,42 +1,42 @@
 # Copyright 2010-2018 Univention GmbH
-# 
+#
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
-# 
+#
 # The source code of this program is made available
 # under the terms of the GNU Affero General Public License version 3
 # (GNU AGPL V3) as published by the Free Software Foundation.
-# 
+#
 # Binary versions of this program provided by Univention to you as
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
 # you and Univention and not subject to the GNU AGPL V3.
-# 
+#
 # In the case you use this program under the terms of the GNU AGPL V3,
 # the program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2018-01-30 20:28+0100\n"
+"POT-Creation-Date: 2018-05-18 11:53+0200\n"
 "PO-Revision-Date: 2015-07-19 22:32+0200\n"
 "Last-Translator: Daniel Tröder <troeder@univention.de>\n"
 "Language-Team: Deutsch <German <packages@univention.de>>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 
 #: modules/univention/admin/handlers/settings/sambadomain.py:257
 msgid "A bitfield to indicate complexity and storage restrictions."
@@ -45,8 +45,7 @@ msgstr "Ein Bitfeld um Komplexität und Speicherbeschränkungen anzuzeigen."
 #: modules/univention/admin/handlers/settings/extended_attribute.py:79
 msgid "A longer descriptive text, which is shown as a bubble-help in the UMC"
 msgstr ""
-"Ein längerer Beschreibungstext, der in der UMC als Popup-Hilfe angezeigt "
-"wird"
+"Ein längerer Beschreibungstext, der in der UMC als Popup-Hilfe angezeigt wird"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:68
 msgid "A short descriptive text which is used as label in the UMC"
@@ -68,21 +67,21 @@ msgstr "Dateiname der ACL"
 msgid "ACL name"
 msgstr "Name der ACL"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:385
+#: modules/univention/admin/handlers/settings/usertemplate.py:377
 msgid "Account"
 msgstr "Konto"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:116
+#: modules/univention/admin/handlers/settings/usertemplate.py:113
 msgid "Account deactivation"
 msgstr "Kontodeaktivierung"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:385
+#: modules/univention/admin/handlers/settings/usertemplate.py:377
 msgid "Account settings"
 msgstr "Kontoeinstellungen"
 
 #: modules/univention/admin/handlers/settings/ldapacl.py:170
 #: modules/univention/admin/handlers/settings/ldapschema.py:146
-#: modules/univention/admin/handlers/settings/portal_entry.py:141
+#: modules/univention/admin/handlers/settings/portal_entry.py:151
 #: modules/univention/admin/handlers/settings/udm_hook.py:182
 #: modules/univention/admin/handlers/settings/udm_module.py:204
 #: modules/univention/admin/handlers/settings/udm_syntax.py:182
@@ -101,11 +100,11 @@ msgstr "Aktiv"
 msgid "Add an empty value to choice list"
 msgstr "Einen leeren Wert zur Auswahlliste hinzufügen"
 
-#: modules/univention/admin/handlers/settings/portal_entry.py:180
+#: modules/univention/admin/handlers/settings/portal_entry.py:190
 msgid "Advanced"
 msgstr "Erweitert"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:332
+#: modules/univention/admin/handlers/settings/usertemplate.py:329
 msgid "Alternative e-mail address"
 msgstr "Alternative E-Mail-Adresse"
 
@@ -122,7 +121,7 @@ msgstr ""
 msgid "App identifier"
 msgstr "App-Kennung"
 
-#: modules/univention/admin/handlers/settings/portal.py:187
+#: modules/univention/admin/handlers/settings/portal.py:211
 msgid "Appearance"
 msgstr "Erscheinung"
 
@@ -158,6 +157,11 @@ msgstr "Basis-DN"
 msgid "Base DN the license is valid for"
 msgstr "Für diesen Basis-DN ist die Lizenz gültig."
 
+#: modules/univention/admin/handlers/settings/portal_all.py:71
+#, fuzzy
+msgid "Basic settings"
+msgstr "Grundeinstellungen - Dienst"
+
 #: modules/univention/admin/handlers/settings/cn.py:69
 #: modules/univention/admin/handlers/settings/default.py:150
 #: modules/univention/admin/handlers/settings/directory.py:187
@@ -171,11 +175,11 @@ msgstr "Für diesen Basis-DN ist die Lizenz gültig."
 #: modules/univention/admin/handlers/settings/udm_hook.py:166
 #: modules/univention/admin/handlers/settings/udm_module.py:186
 #: modules/univention/admin/handlers/settings/udm_syntax.py:166
-#: modules/univention/admin/handlers/settings/usertemplate.py:359
+#: modules/univention/admin/handlers/settings/usertemplate.py:351
 msgid "Basic values"
 msgstr "Grundeinstellungen"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:399
+#: modules/univention/admin/handlers/settings/usertemplate.py:391
 msgid "Business"
 msgstr "Geschäftlich"
 
@@ -187,12 +191,12 @@ msgstr "CSS Hintergrund"
 msgid "Category"
 msgstr "Kategorie"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:106
-#: modules/univention/admin/handlers/settings/usertemplate.py:107
+#: modules/univention/admin/handlers/settings/usertemplate.py:103
+#: modules/univention/admin/handlers/settings/usertemplate.py:104
 msgid "Change password on next login"
 msgstr "Passwort bei der nächsten Anmeldung ändern"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:229
+#: modules/univention/admin/handlers/settings/usertemplate.py:226
 msgid "City"
 msgstr "Stadt"
 
@@ -224,11 +228,11 @@ msgstr "Konfiguration der zu erweiternden Module"
 msgid "Connection"
 msgstr "Verbindung"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:398
+#: modules/univention/admin/handlers/settings/usertemplate.py:390
 msgid "Contact"
 msgstr "Kontakt"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:398
+#: modules/univention/admin/handlers/settings/usertemplate.py:390
 msgid "Contact Information"
 msgstr "Kontaktinformationen"
 
@@ -240,7 +244,7 @@ msgstr "Kopierbar"
 msgid "Corporate clients"
 msgstr "Corporate Clients"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:238
+#: modules/univention/admin/handlers/settings/usertemplate.py:235
 msgid "Country"
 msgstr "Land"
 
@@ -333,8 +337,8 @@ msgid ""
 "Default value which is set for this extended attribute when a new object is "
 "created"
 msgstr ""
-"Standard Wert der für dieses erweiterte Attribut gesetzt wird wenn ein neues"
-" Objekt erstellt wird"
+"Standard Wert der für dieses erweiterte Attribut gesetzt wird wenn ein neues "
+"Objekt erstellt wird"
 
 #: modules/univention/admin/handlers/settings/umc_operationset.py:96
 msgid ""
@@ -348,8 +352,8 @@ msgstr ""
 msgid ""
 "Defines on which hosts this operations are permitted on. The value can be "
 "either a host name (as filename pattern e.g. server1*), a server role (e.g. "
-"serverrole:domaincontroller_slave) or a service, which must run on the host,"
-" (e.g. service:LDAP). Leaving this empty causes all hosts to be allowed."
+"serverrole:domaincontroller_slave) or a service, which must run on the host, "
+"(e.g. service:LDAP). Leaving this empty causes all hosts to be allowed."
 msgstr ""
 "Definiert auf welchen Rechnern diese Befehle erlaubt sind. Der Wert kann "
 "entweder ein Rechnername (als Dateinamenmuster z.B. server1*), eine "
@@ -357,14 +361,24 @@ msgstr ""
 "auf dem Rechner laufen muss, sein (z.B. service:LDAP). Wenn das Feld leer "
 "gelassen wird sind alle Rechner erlaubt."
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:283
+#: modules/univention/admin/handlers/settings/portal.py:169
+msgid ""
+"Defines the color which is used for the fonts on the portal page as well as "
+"the icons in the header."
+msgstr ""
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:280
 msgid "Department number"
 msgstr "Abteilungsnummer"
 
+#: modules/univention/admin/handlers/settings/portal_entry.py:131
+msgid "Deprecated by userGroup"
+msgstr ""
+
 #: modules/univention/admin/handlers/settings/portal_entry.py:78
-#: modules/univention/admin/handlers/settings/portal_entry.py:174
+#: modules/univention/admin/handlers/settings/portal_entry.py:184
 #: modules/univention/admin/handlers/settings/umc_operationset.py:72
-#: modules/univention/admin/handlers/settings/usertemplate.py:77
+#: modules/univention/admin/handlers/settings/usertemplate.py:74
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -389,6 +403,7 @@ msgid "Display"
 msgstr "Anzeige"
 
 #: modules/univention/admin/handlers/settings/portal.py:70
+#: modules/univention/admin/handlers/settings/portal_all.py:61
 #: modules/univention/admin/handlers/settings/portal_entry.py:68
 msgid "Display Name"
 msgstr "Anzeigename"
@@ -397,8 +412,8 @@ msgstr "Anzeigename"
 msgid "Display Size (mm)"
 msgstr "Bildschirm Größe (mm)"
 
-#: modules/univention/admin/handlers/settings/portal_entry.py:171
-#: modules/univention/admin/handlers/settings/usertemplate.py:87
+#: modules/univention/admin/handlers/settings/portal_entry.py:181
+#: modules/univention/admin/handlers/settings/usertemplate.py:84
 msgid "Display name"
 msgstr "Anzeigename"
 
@@ -414,7 +429,7 @@ msgstr "Anzuzeigende LDAP-Attribute"
 msgid "Do not show this extended attribute in the UMC"
 msgstr "Dieses erweiterte Attribut nicht in der UMC anzeigen"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:126
+#: modules/univention/admin/handlers/settings/usertemplate.py:123
 msgid "E-mail address"
 msgstr "E-Mail-Adresse"
 
@@ -426,11 +441,11 @@ msgstr "Editierbar"
 msgid "Editable after creation"
 msgstr "Nachträglich modifizierbar"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:256
+#: modules/univention/admin/handlers/settings/usertemplate.py:253
 msgid "Employee number"
 msgstr "Mitarbeiternummer"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:292
+#: modules/univention/admin/handlers/settings/usertemplate.py:289
 msgid "Employee type"
 msgstr "Mitarbeiterkategorie"
 
@@ -438,7 +453,7 @@ msgstr "Mitarbeiterkategorie"
 msgid "Enable option by default."
 msgstr "Setzt die Option standardmäßig."
 
-#: modules/univention/admin/handlers/settings/portal_entry.py:165
+#: modules/univention/admin/handlers/settings/portal_entry.py:175
 msgid "Entry options"
 msgstr "Optionen für Eintrag"
 
@@ -489,9 +504,10 @@ msgstr "GNU Message Catalog für Übersetzungen"
 #: modules/univention/admin/handlers/settings/ldapschema.py:135
 #: modules/univention/admin/handlers/settings/lock.py:82
 #: modules/univention/admin/handlers/settings/packages.py:83
-#: modules/univention/admin/handlers/settings/portal.py:182
-#: modules/univention/admin/handlers/settings/portal_entry.py:165
-#: modules/univention/admin/handlers/settings/portal_entry.py:166
+#: modules/univention/admin/handlers/settings/portal.py:203
+#: modules/univention/admin/handlers/settings/portal_all.py:71
+#: modules/univention/admin/handlers/settings/portal_entry.py:175
+#: modules/univention/admin/handlers/settings/portal_entry.py:176
 #: modules/univention/admin/handlers/settings/printermodel.py:86
 #: modules/univention/admin/handlers/settings/printeruri.py:84
 #: modules/univention/admin/handlers/settings/prohibited_username.py:83
@@ -503,12 +519,12 @@ msgstr "GNU Message Catalog für Übersetzungen"
 #: modules/univention/admin/handlers/settings/udm_module.py:186
 #: modules/univention/admin/handlers/settings/udm_syntax.py:166
 #: modules/univention/admin/handlers/settings/umc_operationset.py:120
-#: modules/univention/admin/handlers/settings/usertemplate.py:359
+#: modules/univention/admin/handlers/settings/usertemplate.py:351
 #: modules/univention/admin/handlers/settings/xconfig_choices.py:177
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/univention/admin/handlers/settings/portal.py:193
+#: modules/univention/admin/handlers/settings/portal.py:217
 msgid "General Content"
 msgstr "Allgemeiner Inhalt"
 
@@ -592,7 +608,7 @@ msgstr "Allgemeine Einstellungen"
 msgid "General syntax definition settings"
 msgstr "Grundeinstellungen - Syntax-Definition"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:360
+#: modules/univention/admin/handlers/settings/usertemplate.py:352
 msgid "General user template settings"
 msgstr "Grundeinstellungen - Benutzervorlage"
 
@@ -604,7 +620,7 @@ msgstr "Gruppenverweis"
 msgid "Group Links"
 msgstr "Gruppenverweise"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:379
+#: modules/univention/admin/handlers/settings/usertemplate.py:371
 msgid "Group Memberships"
 msgstr "Gruppenmitgliedschaften"
 
@@ -620,9 +636,9 @@ msgstr "Gruppenname"
 msgid "Group ordering number"
 msgstr "Gruppen-Ordnungsnummer"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:301
-#: modules/univention/admin/handlers/settings/usertemplate.py:379
-#: modules/univention/admin/handlers/settings/usertemplate.py:380
+#: modules/univention/admin/handlers/settings/usertemplate.py:298
+#: modules/univention/admin/handlers/settings/usertemplate.py:371
+#: modules/univention/admin/handlers/settings/usertemplate.py:372
 msgid "Groups"
 msgstr "Gruppen"
 
@@ -642,11 +658,11 @@ msgstr ""
 "Überschrift des Portals. Mindestens ein Wert; insbesondere en_US ist "
 "empfohlen"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:145
+#: modules/univention/admin/handlers/settings/usertemplate.py:142
 msgid "Home share"
 msgstr "Benutzerverzeichnis-Freigabe"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:155
+#: modules/univention/admin/handlers/settings/usertemplate.py:152
 msgid "Home share path"
 msgstr "Pfad der Benutzerverzeichnis-Freigabe"
 
@@ -658,7 +674,7 @@ msgstr "Hook-Klasse"
 msgid "Horizontal Sync"
 msgstr "Horizontale Synchronisation"
 
-#: modules/univention/admin/handlers/settings/portal_entry.py:152
+#: modules/univention/admin/handlers/settings/portal_entry.py:162
 msgid "Icon"
 msgstr "Icon"
 
@@ -683,15 +699,14 @@ msgid ""
 "In some cases it is useful to overwrite predefined input fields with "
 "extended attributes. If the internal UDM name of an attribute is configured "
 "here, its  input field is overwritten by this extended attribute. The UDM "
-"attribute name can only be determined by searching within "
-"/usr/share/pyshared/univention/admin/handlers directory. It is the name "
-"which comes before the colon in the declarations of "
-"univention.admin.property objects, e.g., roomNumber for a  user's room "
-"number"
+"attribute name can only be determined by searching within /usr/share/"
+"pyshared/univention/admin/handlers directory. It is the name which comes "
+"before the colon in the declarations of univention.admin.property objects, e."
+"g., roomNumber for a  user's room number"
 msgstr ""
-"In einigen Fällen ist es sinnvoll, vorgegebene Eingabefelder mit erweiterten"
-" Attributen zu überschreiben. Wird hier der interne UDM-Name eines Attributs"
-" konfiguriert, wird dessen Eingabefeld von diesem erweiterten Attribut "
+"In einigen Fällen ist es sinnvoll, vorgegebene Eingabefelder mit erweiterten "
+"Attributen zu überschreiben. Wird hier der interne UDM-Name eines Attributs "
+"konfiguriert, wird dessen Eingabefeld von diesem erweiterten Attribut "
 "überschrieben. Der UDM-Attributname kann nur durch eine Suche unterhalb des "
 "Verzeichnisses /usr/share/pyshared/univention/admin/handlers/ ermittelt "
 "werden. Es handelt sich dabei um den Namen, der in den Deklarationen von "
@@ -699,6 +714,7 @@ msgstr ""
 "roomNumber für die Raumnummer eines Benutzers"
 
 #: modules/univention/admin/handlers/settings/portal.py:59
+#: modules/univention/admin/handlers/settings/portal_all.py:50
 #: modules/univention/admin/handlers/settings/portal_entry.py:57
 msgid "Internal name"
 msgstr "Interner Name"
@@ -779,7 +795,7 @@ msgid "Licensing Information"
 msgstr "Lizenz-Informationen"
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:110
-#: modules/univention/admin/handlers/settings/portal_entry.py:177
+#: modules/univention/admin/handlers/settings/portal_entry.py:187
 msgid "Link"
 msgstr "Link"
 
@@ -823,7 +839,7 @@ msgstr "Sperrobjekte"
 msgid "Locked until"
 msgstr "Gesperrt bis"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:386
+#: modules/univention/admin/handlers/settings/usertemplate.py:378
 msgid "Locking and deactivation"
 msgstr "Konto-Deaktivierung"
 
@@ -835,7 +851,7 @@ msgstr "Dauer der Aussperrung"
 msgid "Lockout duration minutes"
 msgstr "Dauer der Aussperrung"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:165
+#: modules/univention/admin/handlers/settings/usertemplate.py:162
 msgid "Login shell"
 msgstr "Login-Shell"
 
@@ -854,8 +870,7 @@ msgstr "Ausführliche Beschreibung"
 #: modules/univention/admin/handlers/settings/extended_options.py:82
 msgid "Long description for the option as shown on the Option tab."
 msgstr ""
-"Lange Beschreibung für die Option, wie sie im Optionen-Reiter angezeigt "
-"wird."
+"Lange Beschreibung für die Option, wie sie im Optionen-Reiter angezeigt wird."
 
 #: modules/univention/admin/handlers/settings/directory.py:165
 msgid "Mail Link"
@@ -920,8 +935,8 @@ msgstr ""
 #: modules/univention/admin/handlers/settings/license.py:132
 msgid "Maximum number of client hosts managed with the UCS infrastructure"
 msgstr ""
-"Maximale Anzahl von Client-Rechnern, die mit der UCS Infrastruktur verwaltet"
-" werden."
+"Maximale Anzahl von Client-Rechnern, die mit der UCS Infrastruktur verwaltet "
+"werden."
 
 #: modules/univention/admin/handlers/settings/license.py:272
 msgid "Maximum number of corporate clients this license allows."
@@ -996,8 +1011,8 @@ msgid ""
 "Modules this extended attribute is added to, e.g. \"users/user\" or "
 "\"computers/windows\""
 msgstr ""
-"Module zu denen dieses erweiterte Attribute hinzugefügt wird, z.B "
-"\"users/user\" oder \"computers/windows\""
+"Module zu denen dieses erweiterte Attribute hinzugefügt wird, z.B \"users/"
+"user\" oder \"computers/windows\""
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:323
 msgid "Modules to be extended"
@@ -1026,7 +1041,7 @@ msgstr "Mehrfachwert"
 #: modules/univention/admin/handlers/settings/lock.py:60
 #: modules/univention/admin/handlers/settings/packages.py:59
 #: modules/univention/admin/handlers/settings/packages.py:60
-#: modules/univention/admin/handlers/settings/portal.py:183
+#: modules/univention/admin/handlers/settings/portal.py:204
 #: modules/univention/admin/handlers/settings/printermodel.py:61
 #: modules/univention/admin/handlers/settings/printermodel.py:62
 #: modules/univention/admin/handlers/settings/printeruri.py:59
@@ -1045,16 +1060,16 @@ msgid ""
 "modified or deleted"
 msgstr ""
 "Name einer Python-Klasse die das univention.admin.hook interface "
-"implementiert und dazu benutzt werden kann, zusätzliche Aktionen auszuführen"
-" wenn ein Objekt erstellt, modifiziert oder gelöscht wird"
+"implementiert und dazu benutzt werden kann, zusätzliche Aktionen auszuführen "
+"wenn ein Objekt erstellt, modifiziert oder gelöscht wird"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:183
 msgid ""
 "Name of the tab in the UMC on which this extended attribute is be placed. A "
 "new tab is created automatically if no tab with the name exists"
 msgstr ""
-"Name der Karteikarte in der UMC auf der dieses erweiterte Attribut platziert"
-" wird. Eine neue Karteikarte wird erstellt wenn noch keine Karteikarte mit "
+"Name der Karteikarte in der UMC auf der dieses erweiterte Attribut platziert "
+"wird. Eine neue Karteikarte wird erstellt wenn noch keine Karteikarte mit "
 "diesem Namen existiert"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:57
@@ -1105,12 +1120,18 @@ msgstr ""
 "Ein Eintrag in https://fqdn/univention/portal. Gehört zu einem (oder "
 "mehreren) settings/portal"
 
+#: modules/univention/admin/handlers/settings/portal_entry.py:142
+msgid ""
+"Only visible for the specified user group. If not given, anonymous users may "
+"see the entry, too."
+msgstr ""
+
 #: modules/univention/admin/handlers/settings/extended_options.py:125
 msgid "Option may be repeatedly turned on and off."
 msgstr "Die Option kann wiederholt gesetzt und entfernt werden."
 
 #: modules/univention/admin/handlers/settings/syntax.py:175
-#: modules/univention/admin/handlers/settings/usertemplate.py:342
+#: modules/univention/admin/handlers/settings/usertemplate.py:339
 msgid "Options"
 msgstr "Optionen"
 
@@ -1122,8 +1143,8 @@ msgstr "Optionen für erweiterte Attribute"
 msgid "Ordering number"
 msgstr "Ordnungsnummer"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:97
-#: modules/univention/admin/handlers/settings/usertemplate.py:373
+#: modules/univention/admin/handlers/settings/usertemplate.py:94
+#: modules/univention/admin/handlers/settings/usertemplate.py:365
 msgid "Organisation"
 msgstr "Organisation"
 
@@ -1135,11 +1156,11 @@ msgstr "Existierende Karteikarte überschreiben"
 msgid "Overwrite existing widget"
 msgstr "Existierendes Eingabefeld überschreiben"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:393
+#: modules/univention/admin/handlers/settings/usertemplate.py:385
 msgid "POSIX (Linux/UNIX)"
 msgstr "POSIX (Linux/UNIX)"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:393
+#: modules/univention/admin/handlers/settings/usertemplate.py:385
 msgid "POSIX (Linux/UNIX) account settings"
 msgstr "POSIX (Linux/UNIX) Kontoeinstellungen"
 
@@ -1177,11 +1198,11 @@ msgstr "Passwort-Eigenschaften"
 msgid "Passwords must meet complexity requirements"
 msgstr "Kennwort muss Komplexitätsvoraussetzungen entsprechen"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:156
+#: modules/univention/admin/handlers/settings/usertemplate.py:153
 msgid "Path to the home directory on the home share"
 msgstr "Relativer Pfad der Benutzerverzeichnis-Freigabe"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:370
+#: modules/univention/admin/handlers/settings/usertemplate.py:362
 msgid "Personal information"
 msgstr "Persönliche Informationen"
 
@@ -1193,11 +1214,16 @@ msgstr "Richtlinienverweis"
 msgid "Policy Links"
 msgstr "Richtlinienverweise"
 
+#: modules/univention/admin/handlers/settings/portal.py:191
+#, fuzzy
+msgid "Portal entries order"
+msgstr "Portal: Eintrag"
+
 #: modules/univention/admin/handlers/settings/portal.py:146
 msgid "Portal logo"
 msgstr "Portal-Logo"
 
-#: modules/univention/admin/handlers/settings/portal.py:182
+#: modules/univention/admin/handlers/settings/portal.py:203
 msgid "Portal options"
 msgstr "Optionen für Portal"
 
@@ -1213,7 +1239,7 @@ msgstr "Portal: Portal"
 msgid "Portals"
 msgstr "Portale"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:220
+#: modules/univention/admin/handlers/settings/usertemplate.py:217
 msgid "Postal code"
 msgstr "Postleitzahl"
 
@@ -1242,11 +1268,11 @@ msgstr "Premiumsupport"
 msgid "Primary Groups"
 msgstr "Primäre Gruppen"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:322
+#: modules/univention/admin/handlers/settings/usertemplate.py:319
 msgid "Primary e-mail address"
 msgstr "Primäre E-Mail-Adresse"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:310
+#: modules/univention/admin/handlers/settings/usertemplate.py:307
 msgid "Primary group"
 msgstr "Primäre Gruppe"
 
@@ -1318,8 +1344,8 @@ msgid ""
 "group is used"
 msgstr ""
 "Zusammenhängende Attribute können gruppiert werden. Dieses Feld gibt den "
-"Name der Gruppe an in welcher dieses erweiterte Attribut platziert wird.Wenn"
-" kein Name gegeben wird, wird keine Gruppe verwendet"
+"Name der Gruppe an in welcher dieses erweiterte Attribut platziert wird.Wenn "
+"kein Name gegeben wird, wird keine Gruppe verwendet"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:313
 msgid "Remove object class if the attribute is removed"
@@ -1345,7 +1371,7 @@ msgstr "Auflösung"
 msgid "Restrict to host"
 msgstr "Auf Rechner beschränken"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:265
+#: modules/univention/admin/handlers/settings/usertemplate.py:262
 msgid "Room number"
 msgstr "Raumnummer"
 
@@ -1465,7 +1491,7 @@ msgstr "Einstellungen: UDM Syntax"
 msgid "Settings: UMC operation set"
 msgstr "Einstellungen: UMC-Operationen"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:48
+#: modules/univention/admin/handlers/settings/usertemplate.py:45
 msgid "Settings: User Template"
 msgstr "Einstellungen: Benutzervorlage"
 
@@ -1473,7 +1499,7 @@ msgstr "Einstellungen: Benutzervorlage"
 msgid "Share Link"
 msgstr "Freigabenverweis"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:146
+#: modules/univention/admin/handlers/settings/usertemplate.py:143
 msgid "Share, the user's home directory resides on"
 msgstr "Freigabe, auf der sich das Heimatverzeichnis des Benutzers befindet"
 
@@ -1489,8 +1515,7 @@ msgstr "Kurzbeschreibung"
 #: modules/univention/admin/handlers/settings/extended_options.py:71
 msgid "Short description for the option as shown on the Option tab."
 msgstr ""
-"Kurze Beschreibung für die Option, wie sie im Optionen-Reiter angezeigt "
-"wird."
+"Kurze Beschreibung für die Option, wie sie im Optionen-Reiter angezeigt wird."
 
 #: modules/univention/admin/handlers/settings/syntax.py:121
 msgid "Show Only"
@@ -1507,6 +1532,11 @@ msgstr "Login anzeigen"
 #: modules/univention/admin/handlers/settings/portal.py:80
 msgid "Show menu"
 msgstr "Menü anzeigen"
+
+#: modules/univention/admin/handlers/settings/portal.py:180
+#, fuzzy
+msgid "Show on server"
+msgstr "Server anzeigen"
 
 #: modules/univention/admin/handlers/settings/portal.py:91
 msgid "Show search"
@@ -1580,11 +1610,17 @@ msgstr "Zu speicherndes Attribut"
 msgid "Stored LDAP Attribute"
 msgstr "Zu speicherndes LDAP-Attribut"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:211
+#: modules/univention/admin/handlers/settings/usertemplate.py:208
 msgid "Street"
 msgstr "Straße"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:274
+#: modules/univention/admin/handlers/settings/portal.py:158
+msgid ""
+"Style definition for the CSS 'background' property which will be applied to "
+"the portal page, e.g. linear-gradient(black, white)"
+msgstr ""
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:271
 msgid "Superior"
 msgstr "Vorgesetzter"
 
@@ -1612,11 +1648,11 @@ msgstr "Name der Karteikarte"
 msgid "Tab with advanced settings"
 msgstr "Karteikarte mit erweiterten Einstellungen"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:247
+#: modules/univention/admin/handlers/settings/usertemplate.py:244
 msgid "Telephone number"
 msgstr "Telefonnummer"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:58
+#: modules/univention/admin/handlers/settings/usertemplate.py:55
 msgid "Template name"
 msgstr "Name der Vorlage"
 
@@ -1626,11 +1662,11 @@ msgstr "Die von diesem erweiterten Attribut verwendete ABI-Nummer"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:173
 msgid ""
-"The extended attribute is not shown in the UMC. It can only be used from the"
-" UDM CLI or the Python interface"
+"The extended attribute is not shown in the UMC. It can only be used from the "
+"UDM CLI or the Python interface"
 msgstr ""
-"Dieses erweiterte Attribut wird nicht in der UMC angezeigt. Es kann dann nur"
-" per UDM-CLI  das Python-Interface verwendet werden"
+"Dieses erweiterte Attribut wird nicht in der UMC angezeigt. Es kann dann nur "
+"per UDM-CLI  das Python-Interface verwendet werden"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:253
 msgid ""
@@ -1644,11 +1680,14 @@ msgstr ""
 msgid "The name for the extended attribute as used by UDM CLI"
 msgstr "Der vom UDM-CLI zu verwendende Name für dieses erweiterte Attribut"
 
+#: modules/univention/admin/handlers/settings/portal.py:192
+msgid "The order in which the portal entries are shown on this portal"
+msgstr ""
+
 #: modules/univention/admin/handlers/settings/license.py:112
 msgid "This Signature is used to verify the authenticity of the license."
 msgstr ""
-"Diese Signatur wird verwendet, um die Authentizität der Lizenz zu "
-"überprüfen."
+"Diese Signatur wird verwendet, um die Authentizität der Lizenz zu überprüfen."
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:283
 msgid ""
@@ -1663,8 +1702,8 @@ msgid ""
 "This extended attribute can still be modified after the object has been "
 "created"
 msgstr ""
-"Dieses erweiterte Attribute kann noch modifiziert werden nach dem das Objekt"
-" angelegt wurde"
+"Dieses erweiterte Attribute kann noch modifiziert werden nach dem das Objekt "
+"angelegt wurde"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:152
 msgid ""
@@ -1693,13 +1732,17 @@ msgstr ""
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:213
 msgid ""
-"This number specifies the position on which this group is placed on the tab."
-" The numbering starts at 1"
+"This number specifies the position on which this group is placed on the tab. "
+"The numbering starts at 1"
 msgstr ""
 "Position an der diese Gruppe auf der Karteikarte platziert wird. Die "
 "Nummerierung beginnt bei 1"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:68
+#: modules/univention/admin/handlers/settings/portal.py:181
+msgid "This portal will be used as start site for the given server"
+msgstr ""
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:65
 msgid "Title"
 msgstr "Anrede"
 
@@ -1834,8 +1877,8 @@ msgid ""
 "be used in connection with any LDAP object (e.g., a user object)"
 msgstr ""
 "Univention Corporate Server bringt ein eigenes LDAP-Schema für "
-"Kundenerweiterungen mit. Die LDAP-Objektklasse univentionFreeAttributes kann"
-" ohne Einschränkungen für erweiterte Attribute verwendet werden. Sie bringt "
+"Kundenerweiterungen mit. Die LDAP-Objektklasse univentionFreeAttributes kann "
+"ohne Einschränkungen für erweiterte Attribute verwendet werden. Sie bringt "
 "20 frei zu verwendende Attribute (univentionFreeAttribute1 bis "
 "univentionFreeAttribute20) mit und kann in Verbindung mit jedem beliebigen "
 "LDAP-Objekt (z.B. einem Benutzerobjekt) verwendet werden"
@@ -1852,7 +1895,7 @@ msgstr "Univention Verbotene Benutzernamen"
 msgid "Univention Settings"
 msgstr "Univention-Einstellungen"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:135
+#: modules/univention/admin/handlers/settings/usertemplate.py:132
 msgid "Unix home directory"
 msgstr "UNIX-Heimatverzeichnis"
 
@@ -1864,8 +1907,13 @@ msgstr "Benutzerverweis"
 msgid "User Links"
 msgstr "Benutzerverweise"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:364
+#: modules/univention/admin/handlers/settings/usertemplate.py:356
 msgid "User account"
+msgstr "Benutzerkonto"
+
+#: modules/univention/admin/handlers/settings/portal_entry.py:141
+#, fuzzy
+msgid "User group"
 msgstr "Benutzerkonto"
 
 #: modules/univention/admin/handlers/settings/sambaconfig.py:129
@@ -1908,8 +1956,7 @@ msgstr ""
 msgid ""
 "Values of this extended attribute are not available for searching in the UMC"
 msgstr ""
-"Nach Werten dieses erweiterten Attributs kann nicht in der UMC gesucht "
-"werden"
+"Nach Werten dieses erweiterten Attributs kann nicht in der UMC gesucht werden"
 
 #: modules/univention/admin/handlers/settings/license.py:281
 msgid "Version"
@@ -1943,14 +1990,18 @@ msgstr "Version des erweiterten Attributs"
 msgid "Vertical Refresh"
 msgstr "Vertikale Wiederholungsrate"
 
+#: modules/univention/admin/handlers/settings/portal.py:208
+msgid "Visibility"
+msgstr ""
+
 #: modules/univention/admin/handlers/settings/extended_attribute.py:132
 msgid ""
 "When values are entered, the UMC performs a syntax check. Apart from "
 "standard syntax definitions (string) and (integer), there are three "
 "possibilities for expressing a binary condition. The syntax TrueFalse is "
 "represented at LDAP level using the strings true and false, the syntax "
-"TrueFalseUpper corresponds to the OpenLDAP boolean values TRUE and FALSE and"
-" the syntax boolean does not save any value or the string 1"
+"TrueFalseUpper corresponds to the OpenLDAP boolean values TRUE and FALSE and "
+"the syntax boolean does not save any value or the string 1"
 msgstr ""
 "Bei der Eingabe von Werten nimmt die UMC eine Syntaxprüfung vor. Neben "
 "Standard-Syntaxdefinitionen für Zeichenketten (string), Zahlen (integer) "
@@ -1960,27 +2011,27 @@ msgstr ""
 "FALSE. Die Syntax boolean dagegen speichert keinen Wert bzw. die "
 "Zeichenkette 1"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:389
+#: modules/univention/admin/handlers/settings/usertemplate.py:381
 msgid "Windows"
 msgstr "Windows"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:389
+#: modules/univention/admin/handlers/settings/usertemplate.py:381
 msgid "Windows Account Settings"
 msgstr "Windows-Kontoeinstellungen"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:202
+#: modules/univention/admin/handlers/settings/usertemplate.py:199
 msgid "Windows home drive"
 msgstr "Laufwerk des Benutzerverzeichnises"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:175
+#: modules/univention/admin/handlers/settings/usertemplate.py:172
 msgid "Windows home path"
 msgstr "Windows-Home-Verzeichnis"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:184
+#: modules/univention/admin/handlers/settings/usertemplate.py:181
 msgid "Windows logon path"
 msgstr "Windows-Logon-Pfad"
 
-#: modules/univention/admin/handlers/settings/usertemplate.py:193
+#: modules/univention/admin/handlers/settings/usertemplate.py:190
 msgid "Windows profile directory"
 msgstr "Profilverzeichnis"
 

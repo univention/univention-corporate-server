@@ -697,6 +697,16 @@ class object(univention.admin.handlers.simpleLdap):
 			self.gidNum = self.oldattr['gidNumber'][0]
 		if 'samba' in self.options:
 			self.groupSid = self.oldattr['sambaSID'][0]
+		searchResult = self.lo.search(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(gidNumber=%s))', [self.gidNum]), scope='domain')
+		# is this group in mentioned in settings/default?
+		try:
+			dn, attrs = self.lo.search(filter='objectClass=univentionDefault', base=self.position.getDomain(), scope='domain', unique=True, required=True)[0]
+		except ldap.NO_SUCH_OBJECT:
+			pass
+		else:
+			for attr, value in attrs.iteritems():
+				if attr.lower().endswith('group') and self.dn in value:
+					raise univention.admin.uexceptions.primaryGroupUsed(_('It is used as %s.') % attr)
 		if getattr(self, 'gidNum', None):
 			searchResult = self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(gidNumber=%s))', [self.gidNum]), scope='domain')
 			if searchResult:
