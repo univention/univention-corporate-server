@@ -1,3 +1,9 @@
+univention-kdm (4.0.0-2) unstable; urgency=medium
+
+  * Bug #47026: Suggest using the Administrator user at KDE login
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 18 May 2018 14:37:37 +0200
+
 univention-kdm (4.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
