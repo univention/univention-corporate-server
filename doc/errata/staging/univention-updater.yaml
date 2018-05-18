@@ -8,5 +8,5 @@ desc: |
  This update addresses the following issue:
  * Make sure all services that are disabled while installing
    package updates are running at the end of the update by starting
-   them explicitly
+   them explicitly.
 bug: [47029]
