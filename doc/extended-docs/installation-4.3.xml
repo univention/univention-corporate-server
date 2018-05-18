@@ -1311,7 +1311,7 @@ univention-system-setup-boot uss/server/role string memberserver
 			<para>
 				Options entered under <guimenu>additional start options</guimenu> are passed on to the kernel in network-based installations, e.g., for the deactivation of ACPI during system start.
 				This can also be used to specify other pre-seed variables on a host-by-host basis.
-				To perform a installation fully unattended see <xref linkend="preseed:pxe"/> for a list of required options.
+				To perform a installation fully unattended see the <link linkend="preseed:pxe">explanations for the installation profile</link> for a list of required options.
 			</para>
 			<para>
 				A PXE configuration file is created for every computer object under <filename class="directory">/var/lib/univention-client-boot/pxelinux.cfg/</filename>.
