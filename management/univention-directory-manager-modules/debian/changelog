@@ -1,3 +1,11 @@
+univention-directory-manager-modules (13.0.21-22) unstable; urgency=medium
+
+  * Bug #44685: Prevent the removal of groups that are mentioned in the
+    settings/default object. These groups are used for new objects and
+    therefore must exist.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 18 May 2018 12:00:04 +0200
+
 univention-directory-manager-modules (13.0.21-21) unstable; urgency=medium
 
   * Bug #46842: fixes after qa

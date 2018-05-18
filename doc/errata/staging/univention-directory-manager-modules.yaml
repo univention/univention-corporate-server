@@ -3,11 +3,13 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-directory-manager-modules
-fix: 13.0.21-21A~4.3.0.201805151727
-desc: |
- This update addresses the following issue(s):
- * Properties that have been set to default values are no
-   longer ignored when saving from the UDM detail page.
- * Join script uses bindpwdfile option, added bindpwdfile support
-   in univention-dnsedit.
-bug: [46529, 46842]
+fix:
+desc: |-
+  This update addresses the following issue(s):
+  * Properties that have been set to default values are no
+    longer ignored when saving from the UDM detail page.
+  * Join script uses bindpwdfile option, added bindpwdfile support
+    in univention-dnsedit.
+  * Prevent the removal of groups that are mentioned in the settings/default
+    object. These groups are used for new objects and therefore must exist.
+bug: [46529, 46842, 44685]
