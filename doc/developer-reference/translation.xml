@@ -25,7 +25,7 @@
 		<para>
 			This section describes all steps necessary to create a working translation package for UCS.
 			We recommend having a running UCS installation where the tools can be set up in an easy manner.
-			Further more a current Subversion checkout of the UCS source code is required.
+			Further more a current GIT checkout of the UCS source code is required.
 		</para>
 
 		<section id="misc:translation:preparation">
@@ -35,19 +35,21 @@
 				It requires some additional Debian tools to build the package.
 				Run the following command on your UCS to install all needed packages.
 				<programlisting language="sh">
-univention-install univention-ucs-translation-template dpkg-dev subversion
+sudo univention-install univention-ucs-translation-template dpkg-dev git
 				</programlisting>
 			</para>
 		</section>
 
-		<section id="misc:translation:checkoutsvn">
-			<title>Obtain a current checkout of the UCS Subversion repository</title>
+		<section id="misc:translation:checkout">
+			<title>Obtain a current checkout of the UCS GIT repository</title>
 			<para>
-				The Subversion repository is later processed to get initial files for a new translation(often referred to as PO file or Portable Objects).
+				The GIT repository is later processed to get initial files for a new translation(often referred to as PO file or Portable Objects).
 				<programlisting language="sh">
 mkdir ~/translation
 cd ~/translation
-svn co http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-3
+git clone \
+    --single-branch --depth 1 --shallow-submodules \
+    https://github.com/univention/univention-corporate-server
 				</programlisting>
 			</para>
 		</section>
@@ -59,9 +61,12 @@ svn co http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-3
 				<programlisting language="sh">
 cd ~/translation
 univention-ucs-translation-build-package \
-    -s ~/translation/ucs-4.1-3 -c fr -l fr_FR.UTF-8:UTF-8 -n French
+    --source ~/translation/univention-corporate-server \
+    --languagecode fr \
+    --locale fr_FR.UTF-8:UTF-8 \
+    --language-nam French
 				</programlisting>
-				This creates a new directory <filename class="directory">~/translation/univention-ucs-translation-fr/</filename> which contains a Debian source package of the same name.
+				This creates a new directory <filename class="directory">~/translation/univention-l10n-fr/</filename> which contains a Debian source package of the same name.
 				It includes all source and target files for the translation.
 			</para>
 		</section>
@@ -69,7 +74,7 @@ univention-ucs-translation-build-package \
 		<section id="misc:translation:translate">
 			<title>Edit translation files</title>
 			<para>
-				The translation source files(<literal>.po</literal> files) are located below the directory <filename class="directory">~/translation/univention-ucs-translation-fr/fr</filename>.
+				The translation source files (<filename class="extension">.po</filename> files) are located below the directory <filename class="directory">~/translation/univention-l10n-fr/fr</filename>.
 				Each file should be edited to create the translation.
 			</para>
 			<para>
@@ -119,20 +124,21 @@ msgstr ""
 		<section id="misc:translation:updatepackage">
 			<title>Update the translation package</title>
 			<para>
-				First update your Subversion checkout:
+				First update your GIT checkout:
 			</para>
 			<programlisting language="sh">
-cd ~/translation/ucs-4.1-3
-svn update
+cd ~/translation/univention-corporate-server
+git pull --rebase
 			</programlisting>
 			<para>
-				If changes affecting translations are made in the Subversion repository, existing translation packages need to be updated to reflect those changes.
-				Given a path to an updated Subversion checkout, <command>univention-ucs-translation-merge</command> can update a previously created translation source package. 
-				The following example will update the translation package <package>univention-ucs-translation-fr/</package>:
+				If changes affecting translations are made in the GIT repository, existing translation packages need to be updated to reflect those changes.
+				Given a path to an updated GIT checkout, <command>univention-ucs-translation-merge</command> can update a previously created translation source package.
+				The following example will update the translation package <package>univention-l10n-fr/</package>:
 			</para>
 			<programlisting language="sh">
-univention-ucs-translation-merge ~/translation/ucs-4.1-3 \
-    ~/translation/univention-ucs-translation-fr
+univention-ucs-translation-merge \
+    ~/translation/univention-corporate-server \
+    ~/translation/univention-l10n-fr
 			</programlisting>
 		</section>
 
@@ -143,9 +149,10 @@ univention-ucs-translation-merge ~/translation/ucs-4.1-3 \
 				This can be done with the following commands:
 			</para>
 			<programlisting language="sh">
-cd ~/translation/univention-ucs-translation-fr
-dpkg-buildpackage -uc -us -b
-dpkg -i ../univention-ucs-translation-fr_*.deb
+cd ~/translation/univention-l10n-fr
+sudo apt-get build-dep .
+dpkg-buildpackage -uc -us -b -rfakeroot
+sudo dpkg -i ../univention-l10n-fr_*.deb
 			</programlisting>
 			<para>
 				After logging out of the &ucsUMC; the new language should now be selectable in the &ucsUMC; login window.
