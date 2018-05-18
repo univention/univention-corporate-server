@@ -616,8 +616,39 @@ https://license.univention.de/shop/example/orders/465.ldif
 	<para>
 		In addition to the interactive installation described in the <biblioref linkend="ucs-manual"/>, a profile-based installation of UCS is also possible.
 		With this method, the settings for the <wordasword>Debian Installer</wordasword> and <wordasword>&ucsUSS;</wordasword> are specified in a pre-seed file.
-		If all the required settings are included in the installation profile, it is possible to perform the installation fully unattended.
-		Otherwise the installer will ask interactively for missing values.
+	</para>
+
+	<para>
+		The Debian Installer consists of a number of special-purpose components to perform each installation task.
+		Each component performs its task, asking the user questions as necessary to do its job.
+		The questions themselves are given priorities, and the priority of questions to be asked is set when the installer is started.
+	</para>
+
+	<para>
+		When a default installation is performed, only essential (<userinput>priority=high</userinput>) questions will be asked.
+		This results in a highly automated installation process with little user interaction.
+	</para>
+
+	<para>
+		If there is a problem, the user will see an error screen, and the installer menu may be shown in order to select some alternative action.
+		Serious error notifications are set to <userinput>priority=critical</userinput> so the user will always be notified.
+	</para>
+
+	<para>
+		Power users may be more comfortable with a menu-driven interface, where each step is controlled by the user rather than the installer performing each step automatically in sequence.
+		To use the installer in a manual, menu-driven way, add the boot argument <userinput>priority=medium</userinput>.
+	</para>
+
+	<para>
+		If your hardware requires you to pass options to kernel modules as they are installed, you will need to start the installer in <quote>expert</quote> mode.
+		This can be done by adding the boot argument <userinput>priority=low</userinput>.
+	</para>
+
+	<para>
+		Depending on the selected priority the installer will ask more or less questions.
+		The installer will either use internal default values or the values from the profile.
+		To perform the installation fully unattended all required answers must be provided through the installation profile.
+		Therefore <userinput>priority=critical</userinput> should be specified under <guimenu>additional start options</guimenu> for UCS systems using the profile from <xref linkend="profile:example"/>.
 	</para>
 
 	<section id="profile:structure">
@@ -654,7 +685,7 @@ https://license.univention.de/shop/example/orders/465.ldif
 #
 
 #
-# The following options are set through the PXE configuration <co id="preseed:pxe-co" linkends="preseed:pxe"/>
+# The following options must be set through the PXE configuration <co id="preseed:pxe-co" linkends="preseed:pxe"/>
 #
 # Delay asking for locale and keyboard layout after pre-seeding via network
 #d-i auto-install/enable boolean true
@@ -662,6 +693,23 @@ https://license.univention.de/shop/example/orders/465.ldif
 #d-i debconf/priority select critical
 # Disable graphical installer
 #d-i debian-installer/framebuffer boolean false
+
+# no live installer
+d-i live-installer/enable boolean false
+
+#
+# Use interfaces with link
+#
+d-i netcfg/dhcp_timeout string 60
+
+#
+# Use dummy hostname and domain
+#
+d-i netcfg/get_hostname string unassigned-hostname
+d-i netcfg/get_domain string unassigned-domain
+krb5-config krb5-config/default_realm string UNASSIGNED-REALM
+krb5-config krb5-config/kerberos_servers string localhost
+krb5-config krb5-config/admin_server string localhost
 
 #
 # Select German as default locale and for keyboard layout <co id="preseed:locale-co" linkends="preseed:locale"/>
@@ -698,6 +746,7 @@ d-i mirror/udeb/suite string ucs424
 d-i passwd/root-login boolean true
 # Alternative: printf "secret" | mkpasswd -s -m sha-512
 d-i passwd/root-password-crypted string * <co id="preseed:password-co" linkends="preseed:password"/>
+d-i passwd/make-user boolean false
 
 #
 # Partition hard disk: Use "lvm" and one big "/" partition <co id="preseed:partman-co" linkends="preseed:partman"/>
@@ -706,6 +755,9 @@ d-i passwd/root-password-crypted string * <co id="preseed:password-co" linkends=
 d-i partman-auto/method string lvm
 # Choices: atomic home multi
 d-i partman-auto/choose_recipe string atomic
+d-i partman-auto/init_automatically_partition select 60some_device_lvm
+d-i partman-auto/init_automatically_partition seen false
+d-i partman-auto-lvm/new_vg_name string vg_ucs
 d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-md/device_remove_md boolean true
 d-i partman-lvm/confirm boolean true
@@ -714,6 +766,40 @@ d-i partman-partitioning/confirm_write_new_label boolean true
 d-i partman/choose_partition select finish
 d-i partman/confirm boolean true
 d-i partman/confirm_nooverwrite boolean true
+
+# Pre-select the standard UCS kernel
+#d-i base-installer/kernel/image string linux-image-%(kernel_version)s
+d-i base-installer/includes string less
+d-i base-installer/debootstrap_script string /usr/share/debootstrap/scripts/sid
+
+#
+# Only minimal install
+#
+d-i apt-setup/use_mirror boolean false
+d-i apt-setup/no_mirror boolean true
+d-i apt-setup/services-select multiselect none
+d-i apt-setup/cdrom/set-first boolean false
+tasksel tasksel/first multiselect none
+d-i pkgsel/include string univention-system-setup-boot univention-management-console-web-server univention-management-console-module-setup univention-kernel-image openssh-server
+postfix postfix/main_mailer_type string No configuration
+openssh-server ssh/disable_cr_auth boolean false
+d-i ucf/changeprompt select keep_current
+d-i pkgsel/upgrade select none
+popularity-contest popularity-contest/participate boolean false
+
+#
+# Install GRUB in MBR by default on new systems
+#
+d-i grub-installer/only_debian boolean true
+d-i grub-installer/bootdev string default
+grub-pc grub-pc/install_devices multiselect
+grub-pc grub-pc/install_devices_empty boolean true
+
+#
+# After installation
+#
+d-i finish-install/reboot_in_progress note
+d-i cdrom-detect/eject boolean true
 
 #
 # Disable starting "Univention System Setup Boot" <co id="preseed:uss-co" linkends="preseed:uss"/>
@@ -734,8 +820,24 @@ univention-system-setup-boot uss/server/role string memberserver
 		<calloutlist>
 			<callout arearefs="preseed:pxe-co" id="preseed:pxe">
 				<para>
-					These settings are configured through the PXE command line parameters.
-					They are listed here for reference only and cannot be changed through this file.
+					These settings must be configured as PXE command line parameters in <guimenu>additional start options</guimenu>.
+					They are listed here for reference only and cannot be changed through this file:
+				</para>
+				<itemizedlist spacing="compact">
+					<listitem><simpara>
+						The parameter <varname>auto-install/enable</varname> is used to switch the order of some installer modules:
+						The network should be configured and the <filename>preseed.cfg</filename> should be loaded <emphasis>before</emphasis> the first questions about the locale settings are asked.
+					</simpara></listitem>
+					<listitem><simpara>
+						The parameter <varname>netcfg/choose_interface=auto</varname> tells the installer to use the same interface which was used for the PXE boot.
+					</simpara></listitem>
+					<listitem><simpara>
+						Also some of those early questions are asked at priority level <literal>high</literal>.
+						The priority level should be raised to <literal>critical</literal> to hide them.
+					</simpara></listitem>
+				</itemizedlist>
+				<para>
+					The long parameter names can be abbreviated as <literal> auto=true priority=critical interface=auto</literal>.
 				</para>
 			</callout>
 			<callout arearefs="preseed:locale-co" id="preseed:locale">
@@ -1207,8 +1309,9 @@ univention-system-setup-boot uss/server/role string memberserver
 				As an alternative any other <systemitem class="protocol">http</systemitem> server can be used as well, in which case an absolute URL must be given.
 			</para>
 			<para>
-				Options entered under <guimenu>Additional start options</guimenu> are passed on to the kernel in network-based installations, e.g., for the deactivation of ACPI during system start.
+				Options entered under <guimenu>additional start options</guimenu> are passed on to the kernel in network-based installations, e.g., for the deactivation of ACPI during system start.
 				This can also be used to specify other pre-seed variables on a host-by-host basis.
+				To perform an installation fully unattended see the <link linkend="preseed:pxe">explanations for the installation profile</link> for a list of required options.
 			</para>
 			<para>
 				A PXE configuration file is created for every computer object under <filename class="directory">/var/lib/univention-client-boot/pxelinux.cfg/</filename>.
