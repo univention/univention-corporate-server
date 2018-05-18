@@ -73,7 +73,7 @@ cd work/
 						<para>Checkout example package from GIT version control system</para>
 						<programlisting><![CDATA[
 git checkout https://github.com/univention/univention-corporate-server.git
-cd base/univention-ssh
+cd univention-corporate-server/base/univention-ssh
 							]]></programlisting>
 					</step>
 					<step>
