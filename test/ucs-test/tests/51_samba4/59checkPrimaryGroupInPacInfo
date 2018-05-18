@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: "Check that the primary group is listed in the kerberos PAC_LOGON_INFO GROUP_MEMBERSHIP_ARRAY"
 ## exposure: dangerous
+## tags: [SKIP]
 ## bugs: [37101,43405]
 ## packages: [univention-samba4]
 ## roles:
