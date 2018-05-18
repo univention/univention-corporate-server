@@ -64,7 +64,7 @@ univention-ucs-translation-build-package \
     --source ~/translation/univention-corporate-server \
     --languagecode fr \
     --locale fr_FR.UTF-8:UTF-8 \
-    --language-nam French
+    --language-name French
 				</programlisting>
 				This creates a new directory <filename class="directory">~/translation/univention-l10n-fr/</filename> which contains a Debian source package of the same name.
 				It includes all source and target files for the translation.
