@@ -1,3 +1,10 @@
+univention-updater (13.0.1-44) unstable; urgency=medium
+
+  * Bug #47029: Try to start all services that are (re-)enabled in 
+    enable--apache2-umc script
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 18 May 2018 12:14:27 +0200
+
 univention-updater (13.0.1-43) unstable; urgency=medium
 
   * Bug #46850: check for failed.ldif in preup.sh

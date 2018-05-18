@@ -50,6 +50,12 @@ for prog in univention-management-console-server \
 		/bin/chmod a+x "/usr/sbin/$prog"
 		[ -z "$NORESTART" ] && "/etc/init.d/$prog" restart
 	fi		
+
+	# Try to reach a working state: Start all $prog services.
+	# The --no-restart parameter is there to avoid stopping
+	# existing connections and sessions. Simply trying to start
+	# an already running service should do no harm
+	service "$prog" start
 done
 
 exit 0
