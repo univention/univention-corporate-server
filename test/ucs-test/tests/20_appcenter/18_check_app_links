@@ -68,28 +68,6 @@ def fail_the_test(bad_link):
     bad_links.append(bad_link)
 
 
-def check_link_by_request(proc_connection, link):
-    """
-    Opens the given 'link' using urllib2 and returns HTTP code/reason.
-    """
-    response_code = reason = ''
-    try:
-        req = Request(link, headers={'User-Agent': 'Mozilla/5.0'})
-        url = urlopen(req, timeout=60)
-        response_code = url.getcode()
-
-    except (URLError, HTTPError, ValueError) as exc:
-        print "\n ERROR while checking the URL '%s': %r" % (link, exc)
-        if isinstance(exc, HTTPError):
-            response_code = exc.code
-            reason = exc.reason
-        elif isinstance(exc, URLError):
-            reason = exc.reason
-
-    proc_connection.send((response_code, reason))
-    proc_connection.close()
-
-
 def findall_urls(app):
     """
     Returns a set of 'http:' and 'https:' URLs found in the given app.
@@ -139,8 +117,10 @@ def check_ini_files():
         time.sleep(1)
         print "\nChecking link:", link
         requests_timeout = 10
+        headers = requests.utils.default_headers()
+        headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:59.0) Gecko/20100101 Firefox/59.0'})
         try:
-            r = requests.get(link, timeout=requests_timeout, verify=False)
+            r = requests.get(link, timeout=requests_timeout, verify=False, headers=headers)
         except Exception as exc:
             print "Response code indicates a problem. %s" % str(exc)
             fail_the_test(link)
