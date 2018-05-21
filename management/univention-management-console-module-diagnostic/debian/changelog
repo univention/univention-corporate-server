@@ -1,3 +1,11 @@
+univention-management-console-module-diagnostic (4.0.0-29) unstable; urgency=medium
+
+  * Bug #45515: A new diagnostic plugin has been added to check whether the
+    remote and the local version of the SAML identity and service certificates
+    match
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 21 May 2018 23:55:20 +0200
+
 univention-management-console-module-diagnostic (4.0.0-28) unstable; urgency=medium
 
   * Bug #43403: adjust indentation

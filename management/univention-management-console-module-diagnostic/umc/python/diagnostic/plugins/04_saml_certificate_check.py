@@ -35,7 +35,6 @@ import glob
 import shutil
 import socket
 import tempfile
-import subprocess
 import contextlib
 
 import requests
@@ -44,7 +43,7 @@ from defusedxml.ElementTree import fromstring
 
 import univention.uldap
 import univention.config_registry
-from univention.management.console.modules.diagnostic import Critical, ProblemFixed
+from univention.management.console.modules.diagnostic import Critical
 from univention.management.console.config import ucr
 
 from univention.lib.i18n import Translation
@@ -93,23 +92,11 @@ def test_identity_provider_certificate():
 					with open(idp) as fd:
 						cert = find_node(fromstring(fd.read()), '{http://www.w3.org/2000/09/xmldsig#}X509Certificate')
 						if cert.text.strip() not in certificate:
-							raise Critical(_('The certificate of the SAML identity provider does not match.'), buttons=[{
-								'action': 'fix_identity_provider_certificate',
-								'label': _('Repair identity provider certificate')
-							}])
+							raise Critical(_('The certificate of the SAML identity provider does not match.'))
 
 		except requests.exceptions.ConnectionError:
 			print 'error, connecting'
 			pass
-
-
-def fix_identity_provider_certificate(umc_instance):
-	with tempfile.NamedTemporaryFile() as password_file:
-		password_file.write(umc_instance.password)
-		password_file.flush()
-		subprocess.call(['univention-run-join-scripts', '--force', '--run-scripts', '92univention-management-console-web-server', '-dcaccount', umc_instance.username, '-dcpwd', password_file.name])
-		test_identity_provider_certificate()
-		raise ProblemFixed()
 
 
 def test_service_provider_certificate():
@@ -118,35 +105,13 @@ def test_service_provider_certificate():
 	# If it fails: /usr/share/univention-management-console/saml/update_metadata
 	#
 	# fails because https://help.univention.com/t/renewing-the-ssl-certificates/37 was not used. https://help.univention.com/t/renewing-the-complete-ssl-certificate-chain/36
-	raise Critical(_('The certificate of the SAML service provider does not match.'), buttons=[{
-		'action': 'fix_service_provider_certificate',
-		'label': _('Repair service provider certificate')
-	}])
 	lo = univention.uldap.getMachineConnection()
 	certs = lo.search(filter_format('(&(serviceProviderMetadata=*)(univentionObjectType=saml/serviceprovider)(SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata))', ['%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))]), attr=['serviceProviderMetadata'])
 	with open('/etc/univention/ssl/%s.%s/cert.pem' % (ucr.get('hostname'), ucr.get('domainname'))) as fd:
 		for cert in certs:
 			cert = find_node(fromstring(cert[1]['serviceProviderMetadata'][0]), '{http://www.w3.org/2000/09/xmldsig#}X509Certificate')
 			if cert.text.strip() not in fd.read():
-				raise Critical(_('The certificate of the SAML service provider does not match.'), buttons=[{
-					'action': 'fix_service_provider_certificate',
-					'label': _('Repair service provider certificate')
-				}])
-
-
-def fix_service_provider_certificate(umc_instance):
-	with tempfile.NamedTemporaryFile() as password_file:
-		password_file.write(umc_instance.password)
-		password_file.flush()
-		subprocess.call(['univention-run-join-scripts', '--force', '--run-scripts', '92univention-management-console-web-server', '-dcaccount', umc_instance.username, '-dcpwd', password_file.name])
-		test_service_provider_certificate()
-		raise ProblemFixed()
-
-
-actions = {
-	'fix_service_provider_certificate': fix_service_provider_certificate,
-	'fix_identity_provider_certificate': fix_identity_provider_certificate,
-}
+				raise Critical(_('The certificate of the SAML service provider does not match.'))
 
 
 if __name__ == '__main__':
