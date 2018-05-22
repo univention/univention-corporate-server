@@ -72,7 +72,7 @@ define([
 
 				// show warning notification
 				var link = tools.linkToModule({module: 'updater'});
-				var warning = _("<b style='color: #ff7070'>Warning:</b> The currently used UCS version is out of maintenance. Plase visit the %s for more information", link);
+				var warning = _("<b style='color: #ff7070'>Warning:</b> The currently used UCS version is out of maintenance. Please visit the %s for more information", link);
 				dialog.warn(warning);
 			});
 		};
