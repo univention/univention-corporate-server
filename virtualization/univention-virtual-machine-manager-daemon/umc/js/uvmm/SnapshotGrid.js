@@ -40,8 +40,9 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/TextBox",
 	"umc/modules/uvmm/types",
+	"umc/modules/uvmm/snapshot",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Deferred, Dialog, tools, dialog, Grid, Form, TextBox, types, _) {
+], function(declare, lang, array, Deferred, Dialog, tools, dialog, Grid, Form, TextBox, types, snapshot, _) {
 	return declare("umc.modules.uvmm.SnapshotGrid", [ Grid ], {
 
 		domain: null,
@@ -93,90 +94,14 @@ define([
 		},
 
 		_addSnapshot: function() {
-			var _dialog = null, form = null;
-
-			if (this.domain.suspended) {
-					dialog.alert(_('Creating a snapshot is not possible, because the domain is currently suspended!'));
-					return;
-			}
-
-			var qcow2_images = 0;
-			var snapshots_possible = array.every(this.domain.disks, function(disk) {
-				if (!disk.source) {
-					return true;
-				}
-				if (disk.readonly) {
-					return true;
-				}
-				if (disk.driver_type == 'qcow2') {
-					++qcow2_images;
-					return true;
-				}
-				return false;
-			});
-			if (!snapshots_possible) {
-				dialog.alert(_('Creating a snapshot is not possible, because the domain contains writeable raw images!'));
-				return;
-			} else if (qcow2_images === 0 && this.domain.state != 'SHUTOFF') {
-				dialog.alert(_('Creating a snapshot is not possible, because the domain does not have at least one qcow2 image!'));
-				return;
-			}
-
-			var _cleanup = function() {
-				_dialog.hide();
-				_dialog.destroyRecursive();
-				form.destroyRecursive();
-			};
-
-			var _saveSnapshot = lang.hitch(this, function(name) {
-				// send the UMCP command
-				this.onUpdateProgress(0, 1);
-				tools.umcpCommand('uvmm/snapshot/create', {
-					domainURI: this.domain.domainURI,
-					snapshotName: name
-				}).then(lang.hitch(this, function() {
-					this.moduleStore.onChange();
-					this.onUpdateProgress(1, 1);
-				}), lang.hitch(this, function() {
-					dialog.alert(_('An error ocurred during processing your request.'));
-					this.moduleStore.onChange();
-					this.onUpdateProgress(1, 1);
-				}));
-			});
-
-			form = new Form({
-				widgets: [{
-					name: 'name',
-					type: TextBox,
-					label: _('Please enter the name for the snapshot:'),
-					pattern: '^[^./&<][^/&<]*$',
-					invalidMessage: _('A valid snapshot name cannot contain "/", "&" or "<", and may not start with "." .')
-				}],
-				buttons: [{
-					name: 'submit',
-					label: _('Create'),
-					style: 'float: right;',
-					callback: function() {
-						var nameWidget = form.getWidget('name');
-						if (nameWidget.isValid()) {
-							var name = nameWidget.get('value');
-							_cleanup();
-							_saveSnapshot(name);
-						}
-					}
-				}, {
-					name: 'cancel',
-					label: _('Cancel'),
-					callback: _cleanup
-				}],
-				layout: [ 'name' ]
-			});
-
-			_dialog = new Dialog({
-				title: _('Create new snapshot'),
-				content: form
-			});
-			_dialog.show();
+			this.onUpdateProgress(0, 1);
+			snapshot._addSnapshot(this.domain.domainURI, this.domain).then(lang.hitch(this, function() {
+				this.onUpdateProgress(1, 1);
+				this.moduleStore.onChange();
+			}), lang.hitch(this, function() {
+				this.onUpdateProgress(1, 1);
+				this.moduleStore.onChange();
+			}));
 		},
 
 		_revertSnapshot: function(ids) {

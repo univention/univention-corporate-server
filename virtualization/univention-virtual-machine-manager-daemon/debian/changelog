@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (7.0.0-8) unstable; urgency=medium
+
+  * Bug #41772: relocated functionality to add snapshots to own javascript
+  	file to enable snapshots being made in right click context menu in vm list
+  	grid
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 22 May 2018 12:01:42 +0200
+
 univention-virtual-machine-manager-daemon (7.0.0-7) unstable; urgency=medium
 
   * Bug #47182: Sort valid hosts for migrate option
