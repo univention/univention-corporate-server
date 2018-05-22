@@ -43,7 +43,7 @@ class UCSSetup(UCSInstallation):
 		self.client.mouseClickOnText('NEXT')
 
 	def language(self, language):
-		self.client.waitForText('English', timeout=self.timeout)
+		self.client.waitForText('English', timeout=self.timeout, prevent_screen_saver=True)
 		self.screenshot('language-setup.png')
 		self.next()
 		self.client.waitForText('Default system locale', timeout=self.timeout)
@@ -129,7 +129,7 @@ class UCSSetup(UCSInstallation):
 			self.client.mouseClickOnText('configure system')
 
 	def finish(self):
-		self.client.waitForText('Setup successful', timeout=3600)
+		self.client.waitForText('Setup successful', timeout=3600, prevent_screen_saver=True)
 		self.screenshot('finished-setup.png')
 		self.client.keyPress('tab')
 		self.client.keyPress('enter')
