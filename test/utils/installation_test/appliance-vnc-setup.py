@@ -165,9 +165,11 @@ class UCSSetup(UCSInstallation):
 				self.orga(self.args.organisation, self.args.password)
 			if not self.args.role == 'fast':
 				self.hostname(self.args.fqdn)
-			if self.args.ucs is True:
-				self.select_components()
+			try:
+				self.client.waitForText('Software configuration', timeout=self.timeout)
 				self.next()
+			except VNCDoException:
+				self.connect()
 			self.start()
 			time.sleep(900)
 			self.finish()
