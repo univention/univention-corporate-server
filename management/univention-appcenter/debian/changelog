@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-47) unstable; urgency=medium
+
+  * Bug #44542: Remove use of deprecated AppManager
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 24 May 2018 15:41:48 +0200
+
 univention-appcenter (7.0.1-46) unstable; urgency=medium
 
   * Bug #47051: pwdfile support in join script
