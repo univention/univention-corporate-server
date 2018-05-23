@@ -126,7 +126,6 @@ def handler(dn, new, old, command):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "s4-connector: UMC module is disabled by UCR variable connector/s4/listener/disabled")
 		return
 
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "s4-connector: aaaa %s" % (dn))
 	# restart connector on extended attribute changes
 	if 'univentionUDMProperty' in new.get('objectClass', []) or 'univentionUDMProperty' in old.get('objectClass', []):
 		connector_needs_restart = True
