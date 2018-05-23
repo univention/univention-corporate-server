@@ -1,3 +1,9 @@
+univention-join (10.0.0-13) unstable; urgency=medium
+
+  * Bug #45514: join fail message
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 May 2018 17:28:42 +0200
+
 univention-join (10.0.0-12) unstable; urgency=medium
 
   * Bug #42986: Adjust comment and log message

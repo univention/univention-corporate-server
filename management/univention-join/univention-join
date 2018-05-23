@@ -110,7 +110,7 @@ failed_message () {
 	echo "* Join failed!                                                           *"
 	echo "* Contact your system administrator                                      *"
 	echo "**************************************************************************"
-	echo "* Message:  $@"
+	echo "* Message:  Please visit https://help.univention.com/t/8842 for common problems during the join and how to fix them -- $@"
 	echo "**************************************************************************"
 	exit 1
 }
@@ -458,7 +458,6 @@ if [ $? -ne 0 ]; then
 	ssh_out=$(echo "$ssh_out" | tr '\n' ' ' | tr  '\r' ' ')
 	failed_message "The ssh-login to ${DCACCOUNT}@${DCNAME} failed with \"${ssh_out}\". Please make sure the account ${DCACCOUNT} exists and is a member of the Domain Admins group!"
 fi
-
 
 # get master versions
 versions="$(univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" /usr/sbin/ucr search --brief ^version/)"
