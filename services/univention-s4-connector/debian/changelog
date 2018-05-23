@@ -1,3 +1,9 @@
+univention-s4-connector (12.0.2-13) unstable; urgency=medium
+
+  * Bug #46972: restart connector on extended attribute changes
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 May 2018 13:15:45 +0200
+
 univention-s4-connector (12.0.2-12) unstable; urgency=medium
 
   * Bug #47013: fix non-ascii samba rejects
