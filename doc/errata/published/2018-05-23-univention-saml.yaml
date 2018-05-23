@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Added bindpwdfile support in join script.
 bug: [46842]
+erratum: 87
+announced: 2018-05-23
