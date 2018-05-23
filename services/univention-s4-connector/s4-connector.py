@@ -38,6 +38,7 @@ import os
 import time
 import shutil
 import univention.debug
+import subprocess
 
 name = 's4-connector'
 description = 'S4 Connector replication'
@@ -51,6 +52,7 @@ modrdn = "1"
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=18619#c5
 s4_init_mode = False
 group_objects = []
+connector_needs_restart = False
 
 dirs = [listener.configRegistry.get('connector/s4/listener/dir', '/var/lib/univention-connector/s4')]
 if 'connector/listener/additionalbasenames' in listener.configRegistry and listener.configRegistry['connector/listener/additionalbasenames']:
@@ -103,14 +105,34 @@ def _is_module_disabled():
 	return listener.baseConfig.is_true('connector/s4/listener/disabled', False)
 
 
+def _restart_connector():
+	listener.setuid(0)
+	try:
+		if not subprocess.call(['pgrep', '-f', 's4connector/s4/main.py']):
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "s4-connector: restarting connector ...")
+			subprocess.call(('service', 'univention-s4-connector', 'restart'))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "s4-connector: ... done")
+	finally:
+		listener.unsetuid()
+
+
 def handler(dn, new, old, command):
 
 	global group_objects
 	global s4_init_mode
+	global connector_needs_restart
 
 	if _is_module_disabled():
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "s4-connector: UMC module is disabled by UCR variable connector/s4/listener/disabled")
 		return
+
+	# restart connector on extended attribute changes
+	if 'univentionUDMProperty' in new.get('objectClass', []) or 'univentionUDMProperty' in old.get('objectClass', []):
+		connector_needs_restart = True
+	else:
+		if connector_needs_restart is True:
+			_restart_connector()
+			connector_needs_restart = False
 
 	listener.setuid(0)
 	try:
@@ -166,6 +188,7 @@ def clean():
 def postrun():
 	global s4_init_mode
 	global group_objects
+	global connector_needs_restart
 
 	if s4_init_mode:
 		listener.setuid(0)
@@ -185,6 +208,9 @@ def postrun():
 		finally:
 			listener.unsetuid()
 
+	if connector_needs_restart is True:
+		_restart_connector()
+		connector_needs_restart = False
 
 def initialize():
 	global s4_init_mode

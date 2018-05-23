@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.8-23) unstable; urgency=medium
+
+  * Bug #47048: restart connector on extended attribute changes
+
+ -- Arvid Requate <requate@univention.de>  Mon, 25 Jun 2018 17:14:23 +0200
+
 univention-s4-connector (11.0.8-22) unstable; urgency=medium
 
   * Bug #46971: Fix code comment
