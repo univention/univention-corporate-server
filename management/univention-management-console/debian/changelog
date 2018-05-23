@@ -1,3 +1,10 @@
+univention-management-console (10.0.6-4) unstable; urgency=medium
+
+  * Bug #45874: use english feedback url as key for translation
+    instead of umcFeedbackUrl
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 23 May 2018 18:38:38 +0200
+
 univention-management-console (10.0.6-3) unstable; urgency=medium
 
   * Bug #46791: Modify description of umc/web/piwik ucr variable to better explain actual behavior

@@ -1,3 +1,9 @@
+univention-l10n-fr (2.0.0-6) unstable; urgency=medium
+
+  * Bug #45874: Fix url for sending feedback in StartupDialog
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 23 May 2018 18:41:15 +0200
+
 univention-l10n-fr (2.0.0-5) unstable; urgency=medium
 
   * Bug #46118: Updated translation for univention-directory-manager-modules
