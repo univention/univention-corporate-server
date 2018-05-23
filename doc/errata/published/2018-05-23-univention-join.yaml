@@ -11,3 +11,5 @@ desc: |
    called with.
  * An error when joining a DC Backup via the UMC has been resolved.
 bug: [46731, 46842, 42986]
+erratum: 85
+announced: 2018-05-23
