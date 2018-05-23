@@ -14,7 +14,7 @@ msgstr ""
 #: www/management/widgets/WelcomePage.js:78
 #, python-format
 msgid ""
-"<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Tell us you opinion!</"
+"<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Tell us your opinion!</"
 "a></p>"
 msgstr ""
 "<p><a href=\"%s?umc=StartupDialog\" target=\"_blank\">Donnez-nous votre "
@@ -341,6 +341,6 @@ msgstr ""
 "menu utilisateur en haut à droite."
 
 #: www/management/widgets/WelcomePage.js:78
-msgid "umcFeedbackUrl"
-msgstr "umcFeedbackUrl"
+msgid "https://www.univention.com/feedback/"
+msgstr "https://www.univention.com/feedback/"
 
