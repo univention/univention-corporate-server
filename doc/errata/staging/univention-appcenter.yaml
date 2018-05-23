@@ -11,4 +11,4 @@ desc: |-
   * When changing the App Center server, update all installed Apps, too.
   * univention-app update now accepts --cache-dir to use a different directory
     for downloaded meta files.
-bug: [46789, 46842, 43434, 47021]
+bug: [46789, 47051, 43434, 47021]
