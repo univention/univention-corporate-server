@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-s4-connector
-fix: 12.0.2-13A~4.3.0.201805231319
+fix: 12.0.2-14A~4.3.0.201805231328
 desc: |
  This update addresses the following issue(s):
  * In case connector/s4/mapping/group/syncmode is set to "write" in UCR,
