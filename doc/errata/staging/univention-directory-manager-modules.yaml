@@ -12,4 +12,4 @@ desc: |-
     in univention-dnsedit.
   * Prevent the removal of groups that are mentioned in the settings/default
     object. These groups are used for new objects and therefore must exist.
-bug: [46529, 46842, 44685]
+bug: [46529, 47052, 44685]
