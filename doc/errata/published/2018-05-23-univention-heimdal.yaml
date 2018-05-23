@@ -9,3 +9,5 @@ desc: |
  * Join script does not need credentials and added bindpwdfile parameter
    to salt_krb5Keys.
 bug: [46842]
+erratum: 86
+announced: 2018-05-23
