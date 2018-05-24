@@ -913,11 +913,19 @@ class s4(univention.s4connector.ucs):
 		self.creation_list = []
 
 		# Build an internal cache with S4 as key and the UCS object as cache
-		self.group_mapping_cache_ucs = {}
-		self.group_mapping_cache_con = {}
+
+		# UCS group member DNs to S4 group member DN
+		# * entry used and updated while reading in group_members_sync_from_ucs
+		# * entry flushed during non-delete at beginning of sync_to_ucs
+		self.group_member_mapping_cache_ucs = {}
+
+		# S4 group member DNs to UCS group member DN
+		# * entry used and updated while reading in group_members_sync_to_ucs
+		# * entry flushed during non-delete at beginning of sync_from_ucs
+		self.group_member_mapping_cache_con = {}
 
 		# Save the old members of a group
-		# The connector is object base, a least in the way AD/S4 to LDAP because we don't
+		# The connector is object based, at least in the direction AD/S4 to LDAP, because we don't
 		# have a local cache. group_members_cache_ucs and group_members_cache_con help to
 		# determine if the group membership was already saved. For example, one group and
 		# five users are created on UCS side. After two users have been synced to AD/S4,
@@ -926,9 +934,17 @@ class s4(univention.s4connector.ucs):
 		# from the group. For this we remove only members who are in the local cache.
 
 		# UCS groups and UCS members
+		# * initialized during start
+		# * entry updated in group_members_sync_from_ucs and object_memberships_sync_from_ucs
+		# * entry flushed for group object in sync_to_ucs / add_in_ucs
+		# * entry used for decision in group_members_sync_to_ucs
 		self.group_members_cache_ucs = {}
 
 		# S4 groups and S4 members
+		# * initialized during start
+		# * entry updated in group_members_sync_to_ucs and object_memberships_sync_to_ucs
+		# * entry flushed for group object in sync_from_ucs / ADD
+		# * entry used for decision in group_members_sync_from_ucs
 		self.group_members_cache_con = {}
 
 		if init_group_cache:
@@ -1630,10 +1646,14 @@ class s4(univention.s4connector.ucs):
 			self.__group_cache_ucs_append_member(groupDN, object_ucs['dn'])
 
 	def __group_cache_ucs_append_member(self, group, member):
-		if not self.group_members_cache_ucs.get(group.lower()):
-			self.group_members_cache_ucs[group.lower()] = []
-		ud.debug(ud.LDAP, ud.INFO, "__group_cache_ucs_append_member: Append user %s to group ucs cache of %s" % (member.lower(), group.lower()))
-		self.group_members_cache_ucs[group.lower()].append(member.lower())
+		group_lower = group.lower()
+		member_lower = member.lower()
+		ud.debug(ud.LDAP, ud.INFO, "__group_cache_ucs_append_member: Append user %s to UCS group member cache of %s" % (member_lower, group_lower))
+		members = self.group_members_cache_ucs.get(group_lower)
+		if not members:
+			self.group_members_cache_ucs[group_lower] = [member_lower]
+		else:
+			members.append(member_lower)
 
 	def group_members_sync_from_ucs(self, key, object):  # object mit s4-dn
 		"""
@@ -1645,104 +1665,104 @@ class s4(univention.s4connector.ucs):
 
 		object_key = key
 		object_ucs = self._object_mapping(object_key, object)
+		object_ucs_dn = object_ucs['dn']
 
-		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: type of object_ucs['dn']: %s" % type(object_ucs['dn']))
-		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: dn is: %s" % object_ucs['dn'])
-		ldap_object_ucs = self.get_ucs_ldap_object(object_ucs['dn'])
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: type of object_ucs['dn']: %s" % type(object_ucs_dn))
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: dn is: %s" % object_ucs_dn)
+		ldap_object_ucs = self.get_ucs_ldap_object(object_ucs_dn)
+		ldap_object_ucs_gidNumber = ldap_object_ucs['gidNumber'][0]
 
 		if not ldap_object_ucs:
-			ud.debug(ud.LDAP, ud.PROCESS, 'group_members_sync_from_ucs:: The UCS object (%s) was not found. The object was removed.' % object_ucs['dn'])
+			ud.debug(ud.LDAP, ud.PROCESS, 'group_members_sync_from_ucs:: The UCS object (%s) was not found. The object was removed.' % object_ucs_dn)
 			return
 
-		if ldap_object_ucs.get('uniqueMember'):
-			ucs_members = set(ldap_object_ucs['uniqueMember'])
-		else:
-			ucs_members = set()
-
+		ucs_members = set(ldap_object_ucs.get('uniqueMember', []))
 		ud.debug(ud.LDAP, ud.INFO, "ucs_members: %s" % ucs_members)
-
-		# remove members which have this group as primary group (set same gidNumber)
-		prim_members_ucs_filter = format_escaped('(gidNumber={0!e})', ldap_object_ucs['gidNumber'][0])
-		prim_members_ucs = self.lo.lo.search(filter=prim_members_ucs_filter, attr=['gidNumber'])
-
-		# all dn's need to be lower-case so we can compare them later and put them in the group ucs cache:
-		self.group_members_cache_ucs[object_ucs['dn'].lower()] = []
-
-		for prim_object in prim_members_ucs:
-			if prim_object[0].lower() in ucs_members:
-				ucs_members.remove(prim_object[0].lower())
-
+		if ucs_members:
+			# skip members which have this group as primary group (set same gidNumber)
+			prim_members_ucs_filter = format_escaped('(gidNumber={0!e})', ldap_object_ucs_gidNumber)
+			prim_members_ucs = self.lo.lo.search(filter=prim_members_ucs_filter, attr=['gidNumber'])
+			for prim_object in prim_members_ucs:
+				if prim_object[0].lower() in ucs_members:
+					ucs_members.remove(prim_object[0].lower())
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: clean ucs_members: %s" % ucs_members)
 
+		# all dn's need to be lower-case so we can compare them later and put them in the UCS group member cache:
+		self.group_members_cache_ucs[object_ucs_dn.lower()] = []
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: UCS group member cache reset")
+
+		# lookup all current members of S4 group
 		ldap_object_s4 = self.get_object(object['dn'])
 		if not ldap_object_s4:
 			ud.debug(ud.LDAP, ud.PROCESS, 'group_members_sync_from_ucs:: The S4 object (%s) was not found. The object was removed.' % object['dn'])
 			return
-
 		s4_members = set(self.get_s4_members(object['dn'], ldap_object_s4))
-
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: s4_members %s" % s4_members)
 
-		s4_members_from_ucs = set()
-
 		# map members from UCS to S4 and check if they exist
+		s4_members_from_ucs = set() # Code review comment: For some reason this is a list of lowercase DNs
 		for member_dn in ucs_members:
-			s4_dn = self.group_mapping_cache_ucs.get(member_dn.lower())
+			s4_dn = self.group_member_mapping_cache_ucs.get(member_dn.lower())
 			if s4_dn:
-				ud.debug(ud.LDAP, ud.INFO, "Found %s in group cache ucs" % member_dn)
+				ud.debug(ud.LDAP, ud.INFO, "Found %s in UCS group member cache" % member_dn)
 				s4_members_from_ucs.add(s4_dn.lower())
-				self.__group_cache_ucs_append_member(object_ucs['dn'], member_dn)
+				self.__group_cache_ucs_append_member(object_ucs_dn, member_dn)
 			else:
-				ud.debug(ud.LDAP, ud.INFO, "Did not find %s in group cache ucs" % member_dn)
+				ud.debug(ud.LDAP, ud.INFO, "Did not find %s in UCS group member cache" % member_dn)
 				member_object = {'dn': member_dn, 'modtype': 'modify', 'attributes': self.lo.get(member_dn)}
 
-				# can't sync them if users have no posix-account
-				if not member_object['attributes'].get('gidNumber'):
+				try:
+					# check if this is members primary group, if true it shouldn't be added to s4
+					if member_object['attributes']['gidNumber'][0] == ldap_object_ucs_gidNumber:
+						# is primary group
+						continue
+				except (KeyError, IndexError):
+					# can't sync them if users have no posix-account
 					continue
 
-				# check if this is members primary group, if true it shouldn't be added to s4
-				if 'gidNumber' in member_object['attributes'] and 'gidNumber' in ldap_object_ucs and member_object['attributes']['gidNumber'] == ldap_object_ucs['gidNumber']:
-					# is primary group
-					continue
-
-				# print 'member_object: %s '%member_object
 				for k in self.property.keys():
 					if self.modules[k].identify(member_dn, member_object['attributes']):
-						key = k
+						mo_key = k
 						break
-				# print 'object key: %s' % key
-				s4_dn = self._object_mapping(key, member_object, 'ucs')['dn']
+				else:
+					ud.debug(ud.LDAP, ud.WARN, "group_members_sync_from_ucs: failed to identify object type of ucs member, ignore membership: %s" % member_dn)
+					continue  # member is an object which will not be synced
+
+				s4_dn = self._object_mapping(mo_key, member_object, 'ucs')['dn']
 				# check if dn exists in s4
 				try:
 					if self.lo_s4.get(s4_dn, attr=['cn']):  # search only for cn to suppress coding errors
 						s4_members_from_ucs.add(s4_dn.lower())
-						self.group_mapping_cache_ucs[member_dn.lower()] = s4_dn
-						self.__group_cache_ucs_append_member(object_ucs['dn'], member_dn)
+						self.group_member_mapping_cache_ucs[member_dn.lower()] = s4_dn
+						self.__group_cache_ucs_append_member(object_ucs_dn, member_dn)
 				except (ldap.SERVER_DOWN, SystemExit):
 					raise
 				except:  # FIXME: which exception is to be caught?
-					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: failed to get dn from s4, assume object doesn't exist")
+					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: failed to get S4 dn for UCS group member %s, assume object doesn't exist" % member_dn)
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: UCS-members in s4_members_from_ucs %s" % s4_members_from_ucs)
 
 		# check if members in S4 don't exist in UCS, if true they need to be added in S4
-		for member_dn in s4_members:
+		for member_dn in s4_members_from_ucs:
 			if not member_dn.lower() in s4_members_from_ucs:
 				try:
 					s4_object = self.get_object(member_dn)
 
-					key = self.__identify({'dn': member_dn, 'attributes': s4_object})
-					ucs_dn = self._object_mapping(key, {'dn': member_dn, 'attributes': s4_object})['dn']
+					mo_key = self.__identify({'dn': member_dn, 'attributes': s4_object})
+					ucs_dn = self._object_mapping(mo_key, {'dn': member_dn, 'attributes': s4_object})['dn']
 					if not self.lo.get(ucs_dn, attr=['cn']):
+						## Leave the following line commented out, as we don't want to keep the member in Samba/AD if it's not present in OpenLDAP
+						## Note: in this case the membership gets removed even if the object itself is ignored for synchronization
 						# s4_members_from_ucs.append(member_dn.lower())
 						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Object exists only in S4 [%s]" % ucs_dn)
-					elif self._ignore_object(key, {'dn': member_dn, 'attributes': s4_object}):
+					elif self._ignore_object(mo_key, {'dn': member_dn, 'attributes': s4_object}):
+						## Keep the member in Samba/AD if it's also present in OpenLDAP but ignored in synchronization?
 						s4_members_from_ucs.add(member_dn.lower())
-						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Object ignored in S4 [%s], key = [%s]" % (ucs_dn, key))
+						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Object ignored in S4 [%s], key = [%s]" % (ucs_dn, mo_key))
 				except (ldap.SERVER_DOWN, SystemExit):
 					raise
 				except:  # FIXME: which exception is to be caught?
-					self._debug_traceback(ud.INFO, "group_members_sync_from_ucs: failed to get dn from s4 which is groupmember")
+					self._debug_traceback(ud.INFO, "group_members_sync_from_ucs: failed to get UCS dn for S4 group member %s" % member_dn)
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: UCS-and S4-members in s4_members_from_ucs %s" % s4_members_from_ucs)
 
@@ -1750,7 +1770,7 @@ class s4(univention.s4connector.ucs):
 		# direct compare is not possible, because s4_members_from_ucs are all lowercase, s4_members are not, so we need to iterate...
 		# FIXME: should be done in the last iteration (above)
 
-		# need to remove users from s4_members which have this group as primary group. may failed earlier if groupnames are mapped
+		# need to remove users from s4_members_from_ucs which have this group as primary group. may failed earlier if groupnames are mapped
 		try:
 			group_rid = decode_sid(self.lo_s4.lo.search_s(compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid'])[0][1]['objectSid'][0]).split('-')[-1]
 		except ldap.NO_SUCH_OBJECT:
@@ -1766,6 +1786,7 @@ class s4(univention.s4connector.ucs):
 					if prim_dn.lower() in s4_members_from_ucs:
 						s4_members_from_ucs.remove(prim_dn.lower())
 					elif prim_dn in s4_members_from_ucs:
+						## Code review comment: Obsolete? s4_members_from_ucs should be all lowercase at this point
 						s4_members_from_ucs.remove(prim_dn)
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: s4_members_from_ucs without members with this as their primary group: %s" % s4_members_from_ucs)
@@ -1774,7 +1795,6 @@ class s4(univention.s4connector.ucs):
 		del_members = set()
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to add initialized: %s" % add_members)
-		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to del initialized: %s" % del_members)
 
 		for member_dn in s4_members:
 			ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: %s in s4_members_from_ucs?" % member_dn)
@@ -1784,29 +1804,25 @@ class s4(univention.s4connector.ucs):
 				add_members.remove(member_dn_lower)
 			else:
 				if object['modtype'] == 'add':
-					ud.debug(ud.LDAP, ud.PROCESS, "group_members_sync_from_ucs: %s is newly added. For this case don't remove the membership." % (object['dn'].lower()))
+					ud.debug(ud.LDAP, ud.PROCESS, "group_members_sync_from_ucs: %s is newly added. For this case don't remove current S4 members." % (object['dn'].lower()))
 				elif (member_dn_lower in self.group_members_cache_con.get(object['dn'].lower(), [])) or (self.property.get('group') and self.property['group'].sync_mode in ['write', 'none']):
+					## FIXME: Should this really also be done if sync_mode for group is 'none'?
 					# remove member only if he was in the cache on S4 side
 					# otherwise it is possible that the user was just created on S4 and we are on the way back
 					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: No")
 					del_members.add(member_dn)
 				else:
-					ud.debug(ud.LDAP, ud.PROCESS, "group_members_sync_from_ucs: %s was not found in group member con cache of %s, don't delete" % (member_dn_lower, object['dn'].lower()))
+					ud.debug(ud.LDAP, ud.PROCESS, "group_members_sync_from_ucs: %s was not found in S4 group member cache of %s, don't delete" % (member_dn_lower, object['dn'].lower()))
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to add: %s" % add_members)
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to del: %s" % del_members)
 
 		if add_members or del_members:
-			s4_members = s4_members | add_members
-			for member in del_members:
-				s4_members.remove(member)
+			s4_members |= add_members # Note: add_members are only lowercase
+			s4_members -= del_members # Note: del_members are case sensitive
 			ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members result: %s" % s4_members)
-			group_dn_lower = object_ucs['dn'].lower()
 
-			modlist_members = []
-			for member in s4_members:
-				modlist_members.append(compatible_modstring(member))
-
+			modlist_members = [compatible_modstring(member) for member in s4_members]
 			ud.debug(ud.LDAP, ud.ALL, "group_members_sync_from_ucs: modlist: %s" % modlist_members)
 			try:
 				self.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'member', modlist_members)])
@@ -1850,10 +1866,10 @@ class s4(univention.s4connector.ucs):
 					self.group_members_cache_con[groupDN.lower()] = []
 				dn = object['attributes'].get('distinguishedName', [None])[0]
 				if dn:
-					ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_to_ucs: Append user %s to group con cache of %s" % (dn.lower(), groupDN.lower()))
+					ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_to_ucs: Append user %s to S4 group member cache of %s" % (dn.lower(), groupDN.lower()))
 					self.group_members_cache_con[groupDN.lower()].append(dn.lower())
 				else:
-					ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_to_ucs: Failed to append user %s to group con cache of %s" % (object['dn'].lower(), groupDN.lower()))
+					ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_to_ucs: Failed to append user %s to S4 group member cache of %s" % (object['dn'].lower(), groupDN.lower()))
 
 	def __compare_lowercase(self, dn, dn_list):
 		"""
@@ -1908,16 +1924,21 @@ class s4(univention.s4connector.ucs):
 				ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_from_ucs: User is already member of the group: %s modlist: %s" % (s4_group_object['dn'], ml))
 
 		# The user has been removed from the cache. He must be added in any case
-		ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_from_ucs: Append user %s to group con cache of %s" % (object['dn'].lower(), s4_group_object['dn'].lower()))
+		ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_from_ucs: Append user %s to S4 group member cache of %s" % (object['dn'].lower(), s4_group_object['dn'].lower()))
 		if not self.group_members_cache_con.get(s4_group_object['dn'].lower()):
 			self.group_members_cache_con[s4_group_object['dn'].lower()] = []
 		self.group_members_cache_con[s4_group_object['dn'].lower()].append(object['dn'].lower())
 
 	def __group_cache_con_append_member(self, group, member):
-		if not self.group_members_cache_con.get(group.lower()):
-			self.group_members_cache_con[group.lower()] = []
-		ud.debug(ud.LDAP, ud.INFO, "__group_cache_con_append_member: Append user %s to group con cache of %s" % (member.lower(), group.lower()))
-		self.group_members_cache_con[group.lower()].append(member.lower())
+		group_lower = group.lower()
+		member_lower = member.lower()
+		ud.debug(ud.LDAP, ud.INFO, "__group_cache_con_append_member: Append user %s to S4 group member cache of %s" % (member_lower, group_lower))
+		members = self.group_members_cache_con.get(group_lower)
+		if not members:
+			self.group_members_cache_con[group_lower] = [member_lower]
+		else:
+			members.append(member_lower)
+
 
 	def group_members_sync_to_ucs(self, key, object):
 		"""
@@ -1927,76 +1948,75 @@ class s4(univention.s4connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: object: %s" % object)
 
 		object_key = key
-
 		s4_object = self._object_mapping(object_key, object, 'ucs')
+		s4_object_dn = s4_object['dn']
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: s4_object (mapped): %s" % s4_object)
 
-		ldap_object_ucs = self.get_ucs_ldap_object(object['dn'])
-		if ldap_object_ucs.get('uniqueMember'):
-			ucs_members = set(ldap_object_ucs['uniqueMember'])
-		else:
-			ucs_members = set()
-		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ucs_members: %s" % ucs_members)
-
 		# FIXME: does not use dn-mapping-function
-		ldap_object_s4 = self.get_object(s4_object['dn'])  # FIXME: may fail if object doesn't exist
+		ldap_object_s4 = self.get_object(s4_object_dn)
+		if not ldap_object_s4:
+			ud.debug(ud.LDAP, ud.PROCESS, 'group_members_sync_to_ucs:: The S4 object (%s) was not found. The object was removed.' % s4_object_dn)
+			return
+
+		s4_members = self.get_s4_members(object['dn'], ldap_object_s4)
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: s4_members %s" % s4_members)
+
+		# search and add members which have this as their primaryGroup
 		group_sid = ldap_object_s4['objectSid'][0]
 		group_rid = group_sid[string.rfind(group_sid, "-") + 1:]
-		s4_members = self.get_s4_members(object['dn'], ldap_object_s4)
-
-		# search for members who have this as their primaryGroup
 		prim_members_s4_filter = format_escaped('(primaryGroupID={0!e})', group_rid)
 		prim_members_s4 = self.__search_s4(self.lo_s4.base, ldap.SCOPE_SUBTREE, prim_members_s4_filter)
-
 		for prim_dn, prim_object in prim_members_s4:
 			if prim_dn not in ['None', '', None]:  # filter referrals
 				s4_members.append(prim_dn)
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: clean s4_members %s" % s4_members)
 
-		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: s4_members %s" % s4_members)
+		self.group_members_cache_con[s4_object_dn.lower()] = []
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: S4 group member cache reset")
 
-		ucs_members_from_s4 = {'user': [], 'group': [], 'unknown': []}
-
-		self.group_members_cache_con[s4_object['dn'].lower()] = []
-		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: Reset con cache")
-
-		dn_mapping_ucs_member_to_s4 = {}
+		# lookup all current members of UCS group
+		ldap_object_ucs = self.get_ucs_ldap_object(object['dn'])
+		ucs_members = set(ldap_object_ucs.get('uniqueMember', []))
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ucs_members: %s" % ucs_members)
 
 		# map members from S4 to UCS and check if they exist
+		ucs_members_from_s4 = {'user': [], 'group': [], 'unknown': []}
+		dn_mapping_ucs_member_to_s4 = {}
 		for member_dn in s4_members:
-			ucs_dn = self.group_mapping_cache_con.get(member_dn.lower())
+			ucs_dn = self.group_member_mapping_cache_con.get(member_dn.lower())
 			if ucs_dn:
-				ud.debug(ud.LDAP, ud.INFO, "Found %s in group cache s4: DN: %s" % (member_dn, ucs_dn))
+				ud.debug(ud.LDAP, ud.INFO, "Found %s in S4 group member cache: DN: %s" % (member_dn, ucs_dn))
 				ucs_members_from_s4['unknown'].append(ucs_dn.lower())
 				dn_mapping_ucs_member_to_s4[ucs_dn.lower()] = member_dn
-				self.__group_cache_con_append_member(s4_object['dn'], member_dn)
+				self.__group_cache_con_append_member(s4_object_dn, member_dn)
 			else:
-				ud.debug(ud.LDAP, ud.INFO, "Did not find %s in group cache s4" % member_dn)
+				ud.debug(ud.LDAP, ud.INFO, "Did not find %s in S4 group member cache" % member_dn)
 				member_object = self.get_object(member_dn)
 				if member_object:
 					mo_key = self.__identify({'dn': member_dn, 'attributes': member_object})
 					if not mo_key:
-						ud.debug(ud.LDAP, ud.WARN, "group_members_sync_to_ucs: failed to identify object type of s4 member, ignore membership: %s" % member_dn)
+						ud.debug(ud.LDAP, ud.WARN, "group_members_sync_to_ucs: failed to identify object type of S4 group member, ignore membership: %s" % member_dn)
 						continue  # member is an object which will not be synced
 					if self._ignore_object(mo_key, {'dn': member_dn, 'attributes': member_object}):
 						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: Object dn %s should be ignored, ignore membership" % member_dn)
 						continue
 
 					ucs_dn = self._object_mapping(mo_key, {'dn': member_dn, 'attributes': member_object})['dn']
-					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: mapped s4 member to ucs DN %s" % ucs_dn)
+					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: mapped S4 group member to ucs DN %s" % ucs_dn)
 
 					dn_mapping_ucs_member_to_s4[ucs_dn.lower()] = member_dn
 
 					try:
 						if self.lo.get(ucs_dn):
 							ucs_members_from_s4['unknown'].append(ucs_dn.lower())
-							self.group_mapping_cache_con[member_dn.lower()] = ucs_dn
-							self.__group_cache_con_append_member(s4_object['dn'], member_dn)
+							self.group_member_mapping_cache_con[member_dn.lower()] = ucs_dn
+							self.__group_cache_con_append_member(s4_object_dn, member_dn)
 						else:
 							ud.debug(ud.LDAP, ud.INFO, "Failed to find %s via self.lo.get" % ucs_dn)
 					except (ldap.SERVER_DOWN, SystemExit):
 						raise
 					except:  # FIXME: which exception is to be caught?
-						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: failed to get dn from ucs, assume object doesn't exist")
+						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: failed to get UCS dn for S4 group member %s, assume object doesn't exist" % member_dn)
 
 		# build an internal cache
 		cache = {}
@@ -2030,14 +2050,13 @@ class s4(univention.s4connector.ucs):
 				except (ldap.SERVER_DOWN, SystemExit):
 					raise
 				except:  # FIXME: which exception is to be caught?
-					self._debug_traceback(ud.INFO, "group_members_sync_to_ucs: failed to get dn from ucs which is groupmember")
+					self._debug_traceback(ud.INFO, "group_members_sync_to_ucs: failed to get S4 dn for UCS group member %s" % member_dn)
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: dn_mapping_ucs_member_to_s4=%s" % (dn_mapping_ucs_member_to_s4))
 		add_members = copy.deepcopy(ucs_members_from_s4)
 		del_members = {'user': [], 'group': []}
 
-		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ucs_members: %s" % ucs_members)
-		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ucs_members_from_s4: %s" % ucs_members_from_s4)
+		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: members to add initialized: %s" % add_members)
 
 		for member_dn in ucs_members:
 			member_dn_lower = member_dn.lower()
@@ -2052,7 +2071,8 @@ class s4(univention.s4connector.ucs):
 				# otherwise it is possible that the user was just created on UCS
 
 				if (member_dn_lower in self.group_members_cache_ucs.get(object['dn'].lower(), [])) or (self.property.get('group') and self.property['group'].sync_mode in ['read', 'none']):
-					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: %s was found in group member ucs cache of %s" % (member_dn_lower, object['dn'].lower()))
+					## FIXME: Should this really also be done if sync_mode for group is 'none'?
+					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: %s was found in UCS group member cache of %s" % (member_dn_lower, object['dn'].lower()))
 					ucs_object_attr = cache.get(member_dn)
 					if not ucs_object_attr:
 						ucs_object_attr = self.lo.get(member_dn)
@@ -2066,7 +2086,7 @@ class s4(univention.s4connector.ucs):
 								del_members[k].append(member_dn)
 								break
 				else:
-					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: %s was not found in group member ucs cache of %s, don't delete" % (member_dn_lower, object['dn'].lower()))
+					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: %s was not found in UCS group member cache of %s, don't delete" % (member_dn_lower, object['dn'].lower()))
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: members to add: %s" % add_members)
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: members to del: %s" % del_members)
@@ -2452,9 +2472,9 @@ class s4(univention.s4connector.ucs):
 		addlist = []
 		modlist = []
 
-		if self.group_mapping_cache_con.get(object['dn'].lower()) and object['modtype'] != 'delete':
+		if self.group_member_mapping_cache_con.get(object['dn'].lower()) and object['modtype'] != 'delete':
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: remove %s from group cache" % object['dn'])
-			self.group_mapping_cache_con[object['dn'].lower()] = None
+			self.group_member_mapping_cache_con[object['dn'].lower()] = None
 
 		s4_object = self.get_object(object['dn'])
 		if s4_object:

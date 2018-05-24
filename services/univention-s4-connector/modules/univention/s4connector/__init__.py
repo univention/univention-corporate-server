@@ -1504,8 +1504,8 @@ class ucs:
 		if not old_object and object['modtype'] == 'move':
 			object['modtype'] = 'add'
 
-		if self.group_mapping_cache_ucs.get(object['dn'].lower()) and object['modtype'] != 'delete':
-			self.group_mapping_cache_ucs[object['dn'].lower()] = None
+		if self.group_member_mapping_cache_ucs.get(object['dn'].lower()) and object['modtype'] != 'delete':
+			self.group_member_mapping_cache_ucs[object['dn'].lower()] = None
 
 		try:
 			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs:   [%14s] [%10s] %s' % (property_type, object['modtype'], object['dn']))
