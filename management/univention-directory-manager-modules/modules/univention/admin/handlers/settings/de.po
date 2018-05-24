@@ -158,9 +158,8 @@ msgid "Base DN the license is valid for"
 msgstr "Für diesen Basis-DN ist die Lizenz gültig."
 
 #: modules/univention/admin/handlers/settings/portal_all.py:71
-#, fuzzy
 msgid "Basic settings"
-msgstr "Grundeinstellungen - Dienst"
+msgstr "Grundeinstellungen"
 
 #: modules/univention/admin/handlers/settings/cn.py:69
 #: modules/univention/admin/handlers/settings/default.py:150
@@ -1215,9 +1214,8 @@ msgid "Policy Links"
 msgstr "Richtlinienverweise"
 
 #: modules/univention/admin/handlers/settings/portal.py:191
-#, fuzzy
 msgid "Portal entries order"
-msgstr "Portal: Eintrag"
+msgstr "Reihenfolge Portaleinträge"
 
 #: modules/univention/admin/handlers/settings/portal.py:146
 msgid "Portal logo"
@@ -1534,9 +1532,8 @@ msgid "Show menu"
 msgstr "Menü anzeigen"
 
 #: modules/univention/admin/handlers/settings/portal.py:180
-#, fuzzy
 msgid "Show on server"
-msgstr "Server anzeigen"
+msgstr "Auf Server anzeigen"
 
 #: modules/univention/admin/handlers/settings/portal.py:91
 msgid "Show search"
@@ -1912,9 +1909,8 @@ msgid "User account"
 msgstr "Benutzerkonto"
 
 #: modules/univention/admin/handlers/settings/portal_entry.py:141
-#, fuzzy
 msgid "User group"
-msgstr "Benutzerkonto"
+msgstr "Benutzergruppe"
 
 #: modules/univention/admin/handlers/settings/sambaconfig.py:129
 msgid "User must Logon to Change Password"
