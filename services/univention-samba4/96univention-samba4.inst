@@ -714,7 +714,7 @@ exit_on_slave_if_no_s4_connector_on_master_or_backup
 extract_bind_credentials "$@"
 test -n "$binddn" && dcaccount="$(univention-ldapsearch -s base -b "$binddn" uid | ldapsearch-wrapper | sed -n 's/^uid: //p')"
 test -z "$binddn" && binddn="cn=admin,$ldap_base"
-test -z "$bindpwdfile" && bindpwd="/etc/ldap.secret)"
+test -z "$bindpwdfile" && bindpwdfile="/etc/ldap.secret"
 test -z "$bindpwd" && bindpwd="$(< "$bindpwdfile")"
 
 configure_samba_role

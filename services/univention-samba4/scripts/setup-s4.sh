@@ -170,7 +170,7 @@ fi
 if [ -z "$binddn" ]; then
 	if [ -r "/etc/ldap.secret" ]; then
 		binddn="cn=admin,$ldap_base"
-		bindpwd=$(< /etc/ldap.secret)
+		bindpwd="$(< /etc/ldap.secret)"
 		bindpwdfile="/etc/ldap.secret"
 	fi
 fi
