@@ -59,7 +59,7 @@ Description: Tools for Univention App Center
 Package: python-univention-appcenter
 Architecture: all
 Depends: univention-ssh,
- univention-join,
+ univention-join (>= 10.0.0-12A),
  python-univention-config-registry,
  python-univention-directory-manager,
  python-mysqldb,
