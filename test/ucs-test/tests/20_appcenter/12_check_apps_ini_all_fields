@@ -16,14 +16,9 @@ from ConfigParser import RawConfigParser, NoOptionError, NoSectionError
 
 import univention.testing.utils as utils
 from univention.testing.codes import TestCodes
-from univention.management.console.modules.appcenter.app_center import Application, CACHE_DIR
 
-
-APPCENTER_FILE = "/var/cache/appcenter-installed.txt"
-check_installed_apps = []
-
-IGNORE_FILES = ('categories.ini', '.categories.ini', '.rating.ini', '.license_types.ini')
-IGNORE_DIRS = ('REMOVED',)
+from univention.appcenter.app import App
+from univention.appcenter.app_cache import Apps
 
 failures = 0
 
@@ -50,26 +45,6 @@ class AppCheck(object):
         and no '--all' argument was given or if App instance cannot be created.
         """
         print "\nChecking file '%s':" % self.pname
-        if check_installed_apps:
-            # check only apps from this list
-            # (i.e. no --all option was given)
-            try:
-                App = Application(self.pname)
-            except (ValueError, KeyError) as exc:
-                # if App instance cannot be created
-                self.log(" - the application file '%s' can not "
-                         "be initialized correctly, skipping checks.",
-                         self.pname)
-                return
-
-            if App.id not in check_installed_apps:
-                # the App is not installed, skip it
-                self.log(" - the application '%s' is not "
-                         "installed, skipping checks.",
-                         App.name)
-                return
-            print "Checking App", App.name
-
         try:
                 appid = self.config.get('Application', 'ID')
         except NoSectionError, NoOptionError:
@@ -315,48 +290,6 @@ def exclude_ignored(names, remove):
             pass
 
 
-def select_ini_files(top):
-    """
-    Selects the .ini files and/in folders that are not in the
-    'IGNORE_FILES' and 'IGNORE_DIRS'.
-    """
-    for root, dirs, files in os.walk(top):
-        exclude_ignored(files, IGNORE_FILES)
-
-        for file_name in files:
-            if not file_name.endswith('.ini'):
-                # ignore any other files
-                continue
-
-            path_name = os.path.join(root, file_name)
-            yield path_name
-
-        exclude_ignored(dirs, IGNORE_DIRS)
-
-
-def get_installed_apps():
-    """
-    Populates the global 'check_installed_apps' with ids from the
-    'APPCENTER_FILE'. Skips when the 'APPCENTER_FILE' does not exist.
-    This won't be executed if '--all' argument is given.
-    """
-    try:
-        if not os.path.exists(APPCENTER_FILE):
-            print("The '%s' file with a list of installed Apps cannot "
-                  "be found." % APPCENTER_FILE)
-            exit(TestCodes.RESULT_SKIP)
-
-        AppsFile = open(APPCENTER_FILE)
-        global check_installed_apps
-        for app_id in AppsFile:
-            check_installed_apps.append(app_id.strip())
-
-        AppsFile.close()
-    except (IOError, OSError) as exc:
-        utils.fail("An error occured while trying to open the '%s' file: %r"
-                   % (APPCENTER_FILE, exc))
-
-
 def parse_args():
     """
     Creates an instance of OptionParser and parses arguments.
@@ -372,15 +305,6 @@ def parse_args():
                       dest="quiet",
                       action="store_true",
                       help="Decrease the verbosity.")
-
-    parser.add_option("-p", "--path",
-                      default=CACHE_DIR,
-                      dest="path",
-                      action="store",
-                      type="string",
-                      help=("An .ini file to check or a folder with *.ini."
-                            " Will check the '%s' if not specified."
-                            % CACHE_DIR))
 
     parser.add_option("-a", "--all",
                       default=False,
@@ -407,18 +331,12 @@ if __name__ == '__main__':
     parsed = parse_args()
     if not parsed.check_all:
         # check only .ini of the apps that are installed
-        get_installed_apps()
-
-    if os.path.isfile(parsed.path):
-        # check parsed file
-        AppCheck(parsed.path).check()
-    elif os.path.isdir(parsed.path):
-        for path_name in select_ini_files(parsed.path):
-            # or check .ini files in a parsed path
-            AppCheck(path_name).check()
+        apps = Apps().get_all_locally_installed_apps()
     else:
-        print "\nSKIPPED: '%s'" % parsed.path
-        exit(TestCodes.RESULT_SKIP)
+        apps = Apps().get_all_apps()
+
+    for app in apps:
+        AppCheck(app.get_ini_file()).check()
 
     if failures:
         utils.fail("\nThere were %d error(s) detected. Please check "

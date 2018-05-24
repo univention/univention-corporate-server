@@ -12,9 +12,12 @@ from time import sleep
 
 import univention.testing.utils as utils
 from univention.testing.codes import TestCodes
-from univention.management.console.modules.appcenter.app_center import Application, ucr
 
-APP_ID = 'univention-demo'
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.ucr import ucr_get
+from univention.appcenter.udm import ApplicationLDAPObject, get_machine_connection
+
+APP_ID = 'univention-demo-data'
 
 
 def get_app_dn(App):
@@ -34,18 +37,18 @@ def check_app_version_ldap_registraton(new_version):
     print("\nChecking if App's new version '%s' can be registered in LDAP"
           % new_version)
 
-    App = Application.find(APP_ID)
+    App = Apps().find(APP_ID)
     if not App:
         print("\nThe App with id '%s' could not be found, skipping the test."
               % APP_ID)
         exit(TestCodes.RESULT_SKIP)
 
     App.version = new_version
-    App.ldap_id = App.id + '_' + new_version
 
+    lo, pos = get_machine_connection()
     print "\nCreating an App LDAP object:"
     try:
-        ldap_object = App.get_ldap_object(or_create=True)
+        ldap_object = ApplicationLDAPObject(App, lo, pos, create_if_not_exists=True)
         if not ldap_object:
             utils.fail("The App LDAP object was neither created, "
                        "nor already exist.")
@@ -59,7 +62,7 @@ def check_app_version_ldap_registraton(new_version):
 
     try:
         utils.verify_ldap_object(app_dn,
-                                 {'univentionAppID': [App.ldap_id],
+                                 {'univentionAppID': ['%s_%s' % (App.id, App.version)],
                                   'univentionAppVersion': [App.version]})
 
         print "\nRemoving the App object from LDAP:"
@@ -80,8 +83,7 @@ if __name__ == '__main__':
                      "0.1 'rev 1.3'", "0.1 !@#$%^*-")
 
     print "\nChecking an App with id '%s'" % APP_ID
-    ucr.load()
-    ldap_base = ucr.get('ldap/base')
+    ldap_base = ucr_get('ldap/base')
 
     for version in test_versions:
         check_app_version_ldap_registraton(version)

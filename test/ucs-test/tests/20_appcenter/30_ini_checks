@@ -6,57 +6,51 @@
 
 import sys
 import subprocess
+from ConfigParser import NoSectionError, NoOptionError
 
-from univention.management.console.modules.appcenter.app_center import Application
-
-CATEGORIES = set((
-	'Administration',
-	'Business',
-	'Collaboration',
-	'Education',
-	'System services',
-	'UCS components',
-	'Virtualization',
-))
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.ini_parser import read_ini_file
 
 returncode = 100
-meta_inf = Application.get_metainf_url()
 
 codes = {}
-for app in Application.all():
-	for ver in app.versions:
-		if ver.id.endswith('-test'):
-			print 'Ignoring test App %s' % ver.id
-			continue
+for app in Apps(locale='en').get_every_single_app():
+	if app.id.endswith('-test'):
+		print 'Ignoring test App %s' % app
+		continue
+	else:
+		print 'Checking %r' % app
+	# codes
+	code = app.code
+	if code:
+		if code in codes:
+			if codes[code] != app.id:
+				print ' FAIL: Code %r has already been taken by %r!' % (code, codes[code])
+				returncode = 1
 		else:
-			print 'Checking %r' % ver
-		# codes
-		code = ver.code
-		if code:
-			if code in codes:
-				if codes[code] != ver.id:
-					print ' FAIL: Code %r has already been taken by %r!' % (code, codes[code])
-					returncode = 1
-			else:
-				codes[code] = ver.id
-		# categories
-		unsupported = set(ver.get('unlocalised_categories')) - CATEGORIES
-		for category in unsupported:
-			print ' FAIL: Unsupported category: %s!' % category
+			codes[code] = app.id
+	# categories
+	cache = app.get_app_cache_obj().get_appcenter_cache_obj()
+	unsupported = set(app.categories) - set(cache.get_categories().values())
+	for category in unsupported:
+		print ' FAIL: Unsupported category: %s!' % category
+		returncode = 1
+	# logo files
+	ini_parser = read_ini_file(app.get_ini_file())
+	for logo_attr in [
+		'ApplianceLogo',
+		'ApplianceBootsplashLogo',
+		'ApplianceUmcHeaderLogo',
+		'ApplianceWelcomeScreenLogo',
+		]:
+		try:
+			logo_name = ini_parser.get('Application', logo_attr)
+		except (NoSectionError, NoOptionError):
+			continue
+		url = '%s/meta-inf/%s/%s/%s' % (app.get_server(), app.get_ucs_version(), app.id, logo_name)
+		stdout = subprocess.check_output(['curl', '-Is', url])
+		if 'HTTP/1.1 200 OK' not in stdout.splitlines():
+			print 'FAIL: Could not find %s' % url
 			returncode = 1
-		# logo files
-		for logo_attr in [
-			'ApplianceLogo',
-			'ApplianceBootsplashLogo',
-			'ApplianceUmcHeaderLogo',
-			'ApplianceWelcomeScreenLogo',
-			]:
-			logo_name = ver.get(logo_attr)
-			if logo_name:
-				url = '%s/%s/%s' % (meta_inf, ver.id, logo_name)
-				stdout = subprocess.check_output(['curl', '-Is', url])
-				if 'HTTP/1.1 200 OK' not in stdout.splitlines():
-					print 'FAIL: Could not find %s' % url
-					returncode = 1
 
 sys.exit(returncode)

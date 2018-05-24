@@ -5,88 +5,70 @@
 ## tags: [basic, apptest]
 ## bugs: [30508]
 ## packages:
-##   - univention-management-console-module-appcenter
+##   - univention-appcenter
 ## exposure: safe
 
 import locale
 from os import path
 from glob import glob
 
+from univention.appcenter.app import App
+from univention.appcenter.actions import get_action
+
 import univention.testing.utils as utils
-from univention.management.console.modules.appcenter.app_center import Application, CACHE_DIR
 
 
 failures_counter = 0
-app_ids = set()
+apps = []
 
 
-def set_locale(new_locale):
-    """
-    Tries to set the locale to a given 'new_locale', returns True on success.
-    """
-    print "\nSetting the locale to '%s':\n" % new_locale
-    try:
-        locale.setlocale(locale.LC_ALL, (new_locale, 'UTF-8'))
-        return True
-
-    except locale.Error as exc:
-        print("An Error occured when trying to set the current locale to "
-              "'%s': '%s'. (Probably the '%s' is not installed.)"
-              % (new_locale, exc, new_locale))
-
-
-def check_file(filename):
+def check_file(filename, local):
     """
     Tries to create an instance of the App center Application for the given
     'filename'.
     """
-    try:
-        App = Application(filename)
+    app = App.from_ini(filename, local)
+    if app:
 
-        global app_ids
-        app_ids.add(App.id)
+        apps.append(app)
         print "OK"
 
-    except Exception as exc:
+    else:
         global failures_counter
         failures_counter += 1
         print("\nAn error occured with an .ini file '%s' while trying to "
-              "create App center 'Application' instance with it: '%s'\n"
-              % (filename, exc))
+              "create App center 'App' instance with it'\n"
+              % (filename))
 
 
 def print_all_apps_versions(number_of_files):
     """
     Prints overall statistics and versions of all Apps that were found.
     """
-    print "\nTotal", number_of_files, ".ini files for", len(app_ids), "apps were found:\n"
+    print "\nTotal", number_of_files, ".ini files for", len(apps), "apps were found:\n"
 
-    for app_id in sorted(app_ids):
-        App = Application.find(app_id)
-        if App:
-            print(" %s %r" % (App.id, list(reversed([a.version for a in App.versions]))))
-        else:
-            print "The App with ID '%s' was not found." % app_id
+    for app in apps:
+        print(repr(app))
 
 
 def check_ini_files():
     """
     Checks all .ini files that are found in the CACHE_DIR.
     """
-    test_locales = ('de_DE', 'en_US')
-    test_path = [fname for fname in glob(path.join(CACHE_DIR, '*.ini')) if not path.basename(fname).startswith('.')]
+    test_locales = ('de', 'en')
+    test_path = [fname for fname in glob('/var/cache/univention-appcenter/*/*/*.ini') if not path.basename(fname).startswith('.')]
 
     for local in test_locales:
-        if set_locale(local):
             for filename in test_path:
                 print "Checking", filename, "in", local, "locale:"
-                check_file(filename)
+                check_file(filename, local)
 
     print_all_apps_versions(len(test_path))
 
 
 if __name__ == '__main__':
-    Application.sync_with_server()
+    update = get_action('update')
+    update.call()
 
     # find and check all .ini files:
     check_ini_files()
