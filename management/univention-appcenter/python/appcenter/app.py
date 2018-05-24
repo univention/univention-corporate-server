@@ -299,6 +299,7 @@ class AppRatingAttribute(AppListAttribute):
 		setattr(app, self.name, value)
 
 
+# TODO: remove; unused
 class AppLocalisedListAttribute(AppListAttribute):
 	_cache = {}
 
@@ -328,6 +329,14 @@ class AppLocalisedListAttribute(AppListAttribute):
 			for i, val in enumerate(value):
 				value[i] = self._translate(self.localisable_by_file, locale, val)
 		return value
+
+
+class AppLocalisedCategoriesAttribute(AppListAttribute):
+	def post_creation(self, app):
+		value = getattr(app, self.name)
+		cache = app.get_app_cache_obj().get_appcenter_cache_obj()
+		value = [cache.get_categories().get(val.lower(), val) for val in value]
+		setattr(app, self.name, value)
 
 
 class AppAttributeOrFalseOrNone(AppBooleanAttribute):
@@ -795,7 +804,7 @@ class App(object):
 	description = AppAttribute(localisable=True)
 	long_description = AppAttribute(localisable=True)
 	thumbnails = AppListAttribute(localisable=True)
-	categories = AppLocalisedListAttribute(choices=['Administration', 'Business', 'Collaboration', 'Education', 'System services', 'UCS components', 'Virtualization', ''], localisable_by_file='categories.ini', strict=False)
+	categories = AppLocalisedCategoriesAttribute()
 
 	website = AppAttribute(localisable=True)
 	support_url = AppAttribute(localisable=True)

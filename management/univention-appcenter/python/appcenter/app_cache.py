@@ -42,11 +42,12 @@ from glob import glob
 from json import dump, load
 from urlparse import urlsplit
 from distutils.version import LooseVersion
+from ConfigParser import NoSectionError
 
 from univention.appcenter.app import App
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.utils import mkdir, get_locale
-from univention.appcenter.ini_parser import IniSectionListAttribute, IniSectionAttribute, IniSectionObject
+from univention.appcenter.ini_parser import read_ini_file, IniSectionListAttribute, IniSectionAttribute, IniSectionObject
 from univention.appcenter.ucr import ucr_load, ucr_get, ucr_is_true
 
 
@@ -198,7 +199,7 @@ class AppCache(_AppCache):
 		return cls._app_cache_cache[key]
 
 	def get_appcenter_cache_obj(self):
-		return AppCenterCache(server=self.get_server(), ucs_versions=[self.get_ucs_version()], locale=self.get_locale())
+		return AppCenterCache.build(server=self.get_server(), ucs_versions=[self.get_ucs_version()], locale=self.get_locale())
 
 	def _save_cache(self):
 		cache_file = self.get_cache_file()
@@ -362,6 +363,8 @@ class AppCache(_AppCache):
 
 
 class AppCenterCache(_AppCache):
+	_appcenter_cache_cache = {}
+
 	def __init__(self, cache_class=None, server=None, ucs_versions=None, locale=None, cache_dir=None):
 		self._cache_class = cache_class
 		self._server = server
@@ -370,6 +373,15 @@ class AppCenterCache(_AppCache):
 		self._cache_dir = cache_dir
 		self._license_type_cache = None
 		self._ratings_cache = None
+		self._categories_cache = None
+
+	@classmethod
+	def build(cls, cache_class=None, server=None, ucs_versions=None, locale=None, cache_dir=None):
+		obj = cls(cache_class, server, ucs_versions, locale, cache_dir)
+		key = cls, obj.get_app_cache_class(), obj.get_server(), tuple(obj.get_ucs_versions()), obj.get_locale(), obj.get_cache_dir()
+		if key not in cls._appcenter_cache_cache:
+			cls._appcenter_cache_cache[key] = obj
+		return cls._appcenter_cache_cache[key]
 
 	def _get_current_ucs_version(self):
 		try:
@@ -457,6 +469,20 @@ class AppCenterCache(_AppCache):
 			self._ratings_cache = Rating.all_from_file(cache_file)
 		return self._ratings_cache
 
+	def get_categories(self):
+		if self._categories_cache is None:
+			cache_file = self.get_cache_file('.categories.ini')
+			parser = read_ini_file(cache_file)
+			locale = self.get_locale()
+			if not parser.has_section(locale):
+				locale = 'en'
+			try:
+				categories = dict(parser.items(locale))
+			except NoSectionError:
+				categories = {}
+			self._categories_cache = categories
+		return self._categories_cache
+
 	def get_every_single_app(self):
 		ret = []
 		for app_cache in self.get_app_caches():
@@ -467,6 +493,7 @@ class AppCenterCache(_AppCache):
 		ucr_load()
 		self._license_type_cache = None
 		self._ratings_cache = None
+		self._categories_cache = None
 		for fname in glob(self.get_cache_dir()):
 			if os.path.isdir(fname):
 				ucs_version = os.path.basename(fname)
@@ -498,7 +525,7 @@ class Apps(_AppCache):
 		return [cache]
 
 	def _build_appcenter_cache(self, server, ucs_versions):
-		return self.get_appcenter_cache_class()(server=server, ucs_versions=ucs_versions, locale=self.get_locale())
+		return self.get_appcenter_cache_class().build(server=server, ucs_versions=ucs_versions, locale=self.get_locale())
 
 	def get_every_single_app(self):
 		ret = []
@@ -542,5 +569,5 @@ def default_server():
 
 
 def default_ucs_version():
-	cache = AppCenterCache(server=default_server())
+	cache = AppCenterCache.build(server=default_server())
 	return cache.get_ucs_versions()[0]

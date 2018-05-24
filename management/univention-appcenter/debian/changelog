@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-48) unstable; urgency=medium
+
+  * Bug #47072: Categories were not translated. This has been fixed.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 24 May 2018 15:35:58 +0200
+
 univention-appcenter (7.0.1-47) unstable; urgency=medium
 
   * Bug #44542: Remove use of deprecated AppManager
