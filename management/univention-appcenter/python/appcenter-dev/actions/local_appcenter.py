@@ -55,7 +55,7 @@ from univention.appcenter.app_cache import Apps, default_server
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction, get_action
 from univention.appcenter.exceptions import LocalAppCenterError
 from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase, call_process, container_mode
-from univention.appcenter.ucr import ucr_save, ucr_get, ucr_instance
+from univention.appcenter.ucr import ucr_save, ucr_get, ucr_instance, ucr_load
 from univention.appcenter.ini_parser import read_ini_file
 
 
@@ -118,23 +118,25 @@ class DevUseTestAppcenter(UniventionAppAction):
 			# this would require credentials (for potential schema updates etc)
 			register.call(apps=[app], register_task=['component'])
 			if app.docker and not container_mode():
-				try:
-					from univention.appcenter.docker import Docker
-				except ImportError:
-					# should not happen
-					self.log('univention-appcenter-docker is not installed')
-					continue
-				docker = Docker(app, self.logger)
-				self.log('Updating container... (checking for appbox)')
-				if docker.execute('which', 'univention-app').returncode == 0:
-					self.log('... setting the new App Center inside the container')
-					docker.execute('univention-install', 'univention-appcenter-dev')
-					if args.revert:
-						docker.execute('univention-app', 'dev-use-test-appcenter', '--revert')
-					else:
-						docker.execute('univention-app', 'dev-use-test-appcenter', '--appcenter-host', args.appcenter_host)
+				start = get_action('start')
+				start.call(app=app)
+				configure = get_action('configure')
+				if args.revert:
+					set_vars = {
+						'repository/online/component/%s/server' % app.component_id: 'https://appcenter.software-univention.de',
+						'repository/app_center/server': 'appcenter.software-univention.de',
+						'update/secure_apt': 'yes',
+						'appcenter/index/verify': 'yes',
+					}
 				else:
-					self.log('... nothing to do here')
+					ucr_load()
+					set_vars = {
+						'repository/online/component/%s/server' % app.component_id: default_server(),
+						'repository/app_center/server': args.appcenter_host,
+						'update/secure_apt': 'no',
+						'appcenter/index/verify': 'no',
+					}
+				configure.call(app=app, run_script='no', set_vars=set_vars)
 
 
 class LocalAppcenterAction(UniventionAppAction):

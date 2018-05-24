@@ -1,3 +1,10 @@
+univention-appcenter (7.0.1-51) unstable; urgency=medium
+
+  * Bug #43434: When changing the App Center server, update all installed
+    Apps, too.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 24 May 2018 21:34:50 +0200
+
 univention-appcenter (7.0.1-50) unstable; urgency=medium
 
   * Bug #47051: and univention-directory-manager-tools
