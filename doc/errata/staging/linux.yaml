@@ -1,0 +1,73 @@
+product: ucs
+release: "4.2"
+version: [3, 4]
+scope: ucs_4.2-0-errata4.2-4
+src: linux
+fix: 4.9.30-2A~4.2.0.201805241043
+desc: |
+ This update of the Linux kernel to version 4.9.102 addresses the following
+ issues:
+ * CVE-2017-17975: use-after-free in the usbtv_probe function in
+   drivers/media/usb/usbtv/usbtv-core.c
+ * CVE-2017-18218: Use-after-free vulnerability in
+   drivers/net/ethernet/hisilicon/hns/hns_enet.c allows local attacker to
+   cause denial of service
+ * CVE-2017-18222: Memory corruption in ethtool_get_strings function in hns
+   driver
+ * CVE-2017-18255: Integer overflow in
+   events/core.c:perf_cpu_time_max_percent_handler() can allow for denial of
+   service
+ * CVE-2017-18257: Inifinite loop caused by integer overflow in
+   fs/f2fs/data.c:__get_data_block() allows for denial of service
+ * CVE-2018-1066: Null pointer dereference in
+   fs/cifs/cifsencrypt.c:setup_ntlmv2_rsp() when empty TargetInfo is returned
+   in NTLMSSP setup negotiation response allowing to crash client's kernel
+ * CVE-2018-1087: KVM: error in exception handling leads to wrong debug stack
+   value
+ * CVE-2018-1092: NULL pointer dereference in
+   ext4/mballoc.c:ext4_process_freed_data() when mounting crafted ext4 image
+ * CVE-2018-1093: Out of bounds read in
+   ext4/balloc.c:ext4_valid_block_bitmap() causes crash with crafted ext4
+   image
+ * CVE-2018-1108: drivers: getrandom(2) unblocks too early after system boot
+ * CVE-2018-1120: fuse-backed file mmap-ed onto process cmdline arguments
+   causes denial of service
+ * CVE-2018-1130: a null pointer dereference in
+   net/dccp/output.c:dccp_write_xmit() leads to a system crash
+ * CVE-2018-3639: cpu: speculative store bypass
+ * CVE-2018-7757: Memory leak in the sas_smp_get_phy_events function in
+   drivers/scsi/libsas/sas_expander.c
+ * CVE-2018-8781: Integer overflow in
+   drivers/gpu/drm/udl/udl_fb.c:udl_fb_mmap() can allow attackers to execute
+   code in kernel space
+ * CVE-2018-8822: Memory corruption in ncp_read_kernel function in
+   fs/ncpfs/ncplib_kernel.c
+ * CVE-2018-8897: error in exception handling leads to DoS
+ * CVE-2018-10087: Undefined behavior in kernel/exit.c:kernel_wait4() function
+   allows local denial of service
+ * CVE-2018-10940: incorrect memory bounds check in drivers/cdrom/cdrom.c
+ * CVE-2018-1000199: ptrace() incorrect error handling leads to corruption and
+   DoS
+note: This is the first of three parts.
+bug: [47063]
+cve:
+- CVE-2017-17975
+- CVE-2017-18218
+- CVE-2017-18222
+- CVE-2017-18255
+- CVE-2017-18257
+- CVE-2018-1066
+- CVE-2018-1087
+- CVE-2018-1092
+- CVE-2018-1093
+- CVE-2018-1108
+- CVE-2018-1120
+- CVE-2018-1130
+- CVE-2018-3639
+- CVE-2018-7757
+- CVE-2018-8781
+- CVE-2018-8822
+- CVE-2018-8897
+- CVE-2018-10087
+- CVE-2018-10940
+- CVE-2018-1000199
