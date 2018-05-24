@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-46) unstable; urgency=medium
+
+  * Bug #47051: pwdfile support in join script
+
+ -- Felix Botner <botner@univention.de>  Thu, 24 May 2018 13:37:09 +0200
+
 univention-appcenter (7.0.1-45) unstable; urgency=medium
 
   * Bug #47021: univention-app update now accepts --cache-dir to use a
