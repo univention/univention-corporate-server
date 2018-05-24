@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+## joinscript api: bindpwdfile
+
 VERSION=8
 
 . /usr/share/univention-join/joinscripthelper.lib
@@ -55,29 +57,27 @@ fi
 
 ### --- BEGIN helper functions ---
 
-extract_binddn_and_bindpwd_from_args() {
-	## parse binddn and bindpwd from command line arguments into shell variables
+extract_bind_credentials() {
+	## parse bind credentials from command line arguments into shell variables
 	while [ $# -gt 0 ]; do
 		case "$1" in
 			"--binddn")
-							binddn="${2:?missing binddn}"
-							shift 2 || exit 2
-							;;
-			"--bindpwd")
-							bindpwd="${2:?missing bindpwd}"
-							shift 2 || exit 2
-							;;
+				binddn="${2:?missing binddn}"
+				shift 2 || exit 2
+				;;
+			"--bindpwdfile")
+				bindpwdfile="${2:?missing bindpwdfile}"
+				shift 2 || exit 2
+				;;
 			*)
 				shift
 				;;
 		esac
 	done
 	if [ -n "$binddn" ]; then
-		dcaccount=$(ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret \
-		             -s base -b "$binddn" uid | ldapsearch-wrapper | sed -n 's/^uid: //p')
+		dcaccount="$(univention-ldapsearch -s base -b "$binddn" uid | ldapsearch-wrapper | sed -n 's/^uid: //p')"
 	fi
 }
-
 
 configure_localhost_as_winsserver ()
 {
@@ -151,11 +151,11 @@ configure_s4_dc_as_kdc() {
 ### --- END helper functions ---
 
 ### Determine Samba join credentials
-extract_binddn_and_bindpwd_from_args "$@"
+extract_bind_credentials "$@"
 
-if [ -n "$dcaccount" -a -n "$bindpwd" ]; then
+if [ -n "$dcaccount" -a -n "$bindpwdfile" ]; then
 	samba_account="$dcaccount"
-	samba_pwd="$bindpwd"
+	samba_pwd="$(< $bindpwdfile)"
 else
 	if is_ucr_true ad/member; then
 		echo "INFO: Cannot run joinscript in memberserver mode without join credentials. Please run:"
@@ -196,7 +196,7 @@ fi
 if [ -n "$s4setup" ] || is_ucr_true ad/member; then
 	univention-config-registry set samba/domain/security=ads
 
-	/usr/share/univention-samba/mount_extfs_with_user_xattr.py
+	test -f /usr/share/univention-samba/mount_extfs_with_user_xattr.py && /usr/share/univention-samba/mount_extfs_with_user_xattr.py
 	if [ -z "$samba4_ntacl_backend" ]; then
 		univention-config-registry set samba4/ntacl/backend='native'
 		if [ -x /etc/init.d/univention-directory-listener ]; then
@@ -390,7 +390,7 @@ fi
 ucs_addServiceToLocalhost 'Samba 3' "$@"
 
 # sync netlogon share
-/usr/share/univention-samba/slave-sync >>/var/log/univention/samba-sync.log
+test -f /usr/share/univention-samba/slave-sync && /usr/share/univention-samba/slave-sync >>/var/log/univention/samba-sync.log
 
 joinscript_save_current_version
 
