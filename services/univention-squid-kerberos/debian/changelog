@@ -1,3 +1,9 @@
+univention-squid-kerberos (7.0.0-2) unstable; urgency=medium
+
+  * Bug #47058: support bindpwdfile in join
+
+ -- Felix Botner <botner@univention.de>  Thu, 24 May 2018 13:09:24 +0200
+
 univention-squid-kerberos (7.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
