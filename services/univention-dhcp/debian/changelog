@@ -1,3 +1,9 @@
+univention-dhcp (12.0.0-5) unstable; urgency=medium
+
+  * Bug #47065: bindpwdfile support
+
+ -- Felix Botner <botner@univention.de>  Thu, 24 May 2018 14:17:38 +0200
+
 univention-dhcp (12.0.0-4) unstable; urgency=low
 
   * Bug #46120: Fix Python syntax error in dhcpd.conf

@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+## joinscript api: bindpwdfile
+
 VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib || exit 1
@@ -104,13 +106,17 @@ ucr = ConfigRegistry()
 ucr.load()
 base = ucr["ldap/base"]
 
-usage = "%prog [--binddn <DN> --bindpwd <PW>] --service <DN> [--policy-reference <POLICY-DN>]..."
+usage = "%prog [--binddn <DN> --bindpwd <PW>|--bindpwdfile <PWFILE>] --service <DN> [--policy-reference <POLICY-DN>]..."
 parser = OptionParser(usage=usage)
 parser.add_option("--binddn")
 parser.add_option("--bindpwd")
+parser.add_option("--bindpwdfile")
 parser.add_option("--service")
 parser.add_option("--policy-reference", action="append", default=[])
 opt, args = parser.parse_args()
+if opt.bindpwdfile:
+	with open(opt.bindpwdfile) as f:
+		opt.bindpwd = f.readline().strip()
 
 umod.update()
 mod = umod.get("dhcp/subnet")
