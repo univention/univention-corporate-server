@@ -1,3 +1,9 @@
+univention-saml (5.0.4-19) unstable; urgency=medium
+
+  * Bug #47068: pwdfile support in join script
+
+ -- Felix Botner <botner@univention.de>  Thu, 24 May 2018 13:43:10 +0200
+
 univention-saml (5.0.4-18) unstable; urgency=medium
 
   * Bug #46842: pwdfile support in join script
