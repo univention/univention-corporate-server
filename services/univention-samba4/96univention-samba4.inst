@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+## joinscript api: bindpwdfile
+
 VERSION=6
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
@@ -565,10 +567,6 @@ _create_group_with_special_sid()
 
 	if [ -z "$group_dn" ]; then
 
-		extract_binddn_and_bindpwd_from_args "$@"
-		test -z "$binddn" && binddn="cn=admin,$ldap_base"
-		test -z "$bindpwd" && bindpwd="$(cat /etc/ldap.secret)"
-
 		udm groups/group create "$@" --ignore_exists --option=posix \
 				--position "$position,$ldap_base" \
 				--set name="$name"
@@ -598,7 +596,7 @@ univentionSamba4SID: $sid
 "
 		fi
 
-		echo "$ldif" | ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" -D "$binddn" -w "$bindpwd" 
+		echo "$ldif" | ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" -D "$binddn" -y "$bindpwdfile"
 		
 		if [ "$name" = "Authenticated Users" ]; then
 			udm groups/group modify "$@" --dn "cn=$name,$position,$ldap_base" \
@@ -662,10 +660,6 @@ _update_pseudo_group()
 	group_dn="$(univention-ldapsearch "(&(objectClass=univentionGroup)(cn=$name)(!(univentionGroupType=-2147483643)))" | ldapsearch-wrapper | sed -ne 's|dn: ||p')"
 
 	if [ -n "$group_dn" ]; then
-		extract_binddn_and_bindpwd_from_args "$@"
-		test -z "$binddn" && binddn="cn=admin,$ldap_base"
-		test -z "$bindpwd" && bindpwd="$(cat /etc/ldap.secret)"
-
 		echo "dn: $group_dn
 changetype: modify
 replace: univentionObjectFlag
@@ -675,7 +669,7 @@ add: univentionGroupType
 univentionGroupType: -2147483643
 -
 replace: sambaGroupType
-sambaGroupType: 5" | ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" -D "$binddn" -w "$bindpwd" 
+sambaGroupType: 5" | ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" -D "$binddn" -y "$bindpwdfile"
 	fi
 }
 
@@ -716,11 +710,12 @@ unset SMB_CONF_PATH
 
 exit_on_slave_if_no_s4_connector_on_master_or_backup
 
-extract_binddn_and_bindpwd_from_args "$@"
-if [ -n "$binddn" ]; then
-	dcaccount=$(ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret \
-	             -s base -b "$binddn" uid | ldapsearch-wrapper | sed -n 's/^uid: //p')
-fi
+# parse credentials
+extract_bind_credentials "$@"
+test -n "$binddn" && dcaccount="$(univention-ldapsearch -s base -b "$binddn" uid | ldapsearch-wrapper | sed -n 's/^uid: //p')"
+test -z "$binddn" && binddn="cn=admin,$ldap_base"
+test -z "$bindpwdfile" && bindpwd="/etc/ldap.secret)"
+test -z "$bindpwd" && bindpwd="$(< "$bindpwdfile")"
 
 configure_samba_role
 

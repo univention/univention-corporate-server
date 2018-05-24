@@ -59,6 +59,10 @@ while getopts  "h-:W:" option; do
 				bindpwd="${!OPTIND}"
 				OPTIND=$((OPTIND+1))
 				;;
+			bindpwdfile)
+				bindpwdfile="${!OPTIND}"
+				OPTIND=$((OPTIND+1))
+				;;
 			site|site=*)
 				## allow "--site=foo" and "--site foo"
 				val=${OPTARG#*=}
@@ -167,10 +171,15 @@ if [ -z "$binddn" ]; then
 	if [ -r "/etc/ldap.secret" ]; then
 		binddn="cn=admin,$ldap_base"
 		bindpwd=$(< /etc/ldap.secret)
+		bindpwdfile="/etc/ldap.secret"
 	fi
 fi
 ## store the binddn and bindpwd options in UDM_ARGV
-UDM_ARGV=("--binddn" "$binddn" --bindpwd "$bindpwd")
+if [ -n "$bindpwdfile" ]; then
+	UDM_ARGV=("--binddn" "$binddn" --bindpwdfile "$bindpwdfile")
+else
+	UDM_ARGV=("--binddn" "$binddn" --bindpwd "$bindpwd")
+fi
 set -- "${UDM_ARGV[@]}"
 
 

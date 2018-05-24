@@ -62,7 +62,7 @@ while getopts "$optspec" option; do
 		rodc)
 			rodc=1
 			;;
-		binddn|bindpwd)
+		binddn|bindpwd|bindpwdfile)
 			## store the binddn and bindpwd options in UDM_ARGV
 			param=("--${OPTARG}" "${!OPTIND}")
 			if [ -z "$UDM_ARGV" ]; then
