@@ -39,6 +39,10 @@ class %s(univention.admin.hook.simpleHook):
 	with udm_test.UCSTestUDM() as udm:
 		udm.stop_cli_server()
 		cli_name = uts.random_string()
+
+		user = udm.create_user(**{cli_name: uts.random_string()})[0]
+		utils.verify_ldap_object(user, {'description': []})
+
 		udm.create_object(
 			'settings/extended_attribute',
 			position=udm.UNIVENTION_CONTAINER,
@@ -50,9 +54,6 @@ class %s(univention.admin.hook.simpleHook):
 			ldapMapping='univentionFreeAttribute15',
 			hook=hook_name
 		)
-
-		user = udm.create_user(**{cli_name: uts.random_string()})[0]
-		utils.verify_ldap_object(user, {'description': []})
 
 		udm.modify_object('users/user', dn=user, displayName=uts.random_name())
 		utils.verify_ldap_object(user, {'description': [hook_name]})
