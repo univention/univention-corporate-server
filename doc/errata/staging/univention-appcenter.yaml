@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-appcenter
-fix: 7.0.1-45A~4.3.0.201805162117
+fix: 7.0.1-46A~4.3.0.201805241338
 desc: |-
   This update addresses the following issue(s):
   * Added "update-certificates" command to univention-appcenter.
