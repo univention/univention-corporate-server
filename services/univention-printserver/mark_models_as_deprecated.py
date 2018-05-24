@@ -45,13 +45,15 @@ class UpdatePrinterModels(object):
 		self.ucr = univention.config_registry.ConfigRegistry()
 		self.ucr.load()
 		self.obsolete = obsolete
+		if self.options.bindpwdfile:
+			with open(self.options.bindpwdfile) as f:
+				self.options.bindpwd = f.readline().strip()
 		self.ldap_connection()
 		univention.admin.modules.update()
 		self.models = univention.admin.modules.get('settings/printermodel')
 		univention.admin.modules.init(self.lo, self.position, self.models)
 
 	def ldap_connection(self):
-		self.co = univention.admin.config.config()
 		if self.options.binddn and self.options.bindpwd:
 			self.lo = univention.admin.uldap.access(
 				host=self.ucr['ldap/master'],
@@ -110,7 +112,7 @@ class UpdatePrinterModels(object):
 					self.lo.modify(dn, changes)
 
 	def mark_as_obsolete(self):
-		obj = self.models.lookup(self.co, self.lo, ldap.filter.filter_format('name=%s', [options.name]))
+		obj = self.models.lookup(None, self.lo, ldap.filter.filter_format('name=%s', [options.name]))
 		if obj:
 			obj = obj[0]
 			obj.open()
@@ -142,6 +144,7 @@ if __name__ == '__main__':
 	parser.add_option('--check-duplicate', '-c', action='store_true', dest='check_duplicate', help='Check for duplicate models')
 	parser.add_option('--binddn', action='store', dest='binddn', help='LDAP bind dn for UDM CLI operation')
 	parser.add_option('--bindpwd', action='store', dest='bindpwd', help='LDAP bind password for bind dn')
+	parser.add_option('--bindpwdfile', action='store', dest='bindpwdfile', help='LDAP bind password file for bind dn')
 	parser.add_option('--name', action='store', dest='name', help='name of the settings/printermodel object to modify')
 	parser.add_option('--version', action='store', dest='version', help='only available in this version or older', default='4.2')
 	options, args = parser.parse_args()
