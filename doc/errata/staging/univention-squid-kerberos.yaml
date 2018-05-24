@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-squid-kerberos
+fix: 7.0.0-2A~4.3.0.201805241311
+desc: |
+ This update addresses the following issue(s):
+ * Added support for bindpwdfile during join.
+bug: [47058]
