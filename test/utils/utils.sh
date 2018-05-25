@@ -43,8 +43,9 @@ basic_setup () {
 	elif ip -4 addr show | grep -Fq 'inet 10.210.'
 	then
 		echo "Assuming Amazon Cloud"
-		# Bug #39807: set dns/forwarder* early to prevent a bind restart later
-		ucr search --brief --non-empty '^nameserver[123]$'|sed -re 's,nameserver([123]): ,dns/forwarder\1=,'|xargs --no-run-if-empty ucr set
+		# Bug #46993: Remove OpenDNS resolver - use AmazonProvidedDNS
+		sed -i -e '/^nameserver 208.67.22[02].22[02]/d' /etc/resolv.conf
+		grep nameserver /etc/resolv.conf|cat -n|sed -re 's,^\s*([0-9]+)\s*(nameserver)\s*(.*),\2\1=\3 dns/forwarder\1=\3,'|xargs ucr set nameserver1= nameserver2= nameserver3= dns/forwarder1= dns/forwarder2= dns/forwarder3=
 		ucr set --force updater/identify="UCS (EC2 Test)"
 		if grep -F /dev/vda /boot/grub/device.map && [ -b /dev/xvda ] # Bug 36256
 		then
