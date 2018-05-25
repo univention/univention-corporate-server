@@ -498,8 +498,9 @@ class Appcenter(object):
 		if not version:
 			self.add_ucs_version_to_appcenter('4.1')
 			self.add_ucs_version_to_appcenter('4.2')
-			self.versions = ['4.1', '4.2']
-			self._write_ucs_ini('[4.2]\nSupportedUCSVersions=4.2, 4.1\n')
+			self.add_ucs_version_to_appcenter('4.3')
+			self.versions = ['4.1', '4.2', '4.3']
+			self._write_ucs_ini('[4.2]\nSupportedUCSVersions=4.2, 4.3, 4.1\n')
 		else:
 			self.add_ucs_version_to_appcenter(version)
 			self.versions = [version]
@@ -559,6 +560,7 @@ Virtualization=Virtualisierung''')
 				{'version': vv, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
 			subprocess.call('zsyncmake -u http://%(fqdn)s/meta-inf/%(version)s/all.tar.gz -z -o /var/www/meta-inf/%(version)s/all.tar.zsync /var/www/meta-inf/%(version)s/all.tar' %
 				{'version': vv, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
+		subprocess.call('univention-app update', shell=True)
 
 	def cleanup(self):
 		if self.meta_inf_created:
