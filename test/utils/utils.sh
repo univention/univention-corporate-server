@@ -48,8 +48,11 @@ basic_setup () {
 		# set dns/forwarder*, this should prevent a later bind restart (Bug #39807)
 		i=1; cat /etc/resolv.conf | sed -ne 's|^nameserver ||p' | while read ns; do ucr set dns/forwarder$i=$ns; i="$((i+1))"; done
 
-		# Make static /etc/hosts entries for our update servers. Workaround for Bug #46993
-		ucr set hosts/static/176.9.114.147="updates-test.software-univention.de updates.software-univention.de"
+		# Re-create /etc/resolv.conf
+		# https://forge.univention.org/bugzilla/show_bug.cgi?id=46993
+		cat /etc/resolv.conf
+		ucr commit /etc/resolv.conf
+		cat /etc/resolv.conf
 
 		ucr set --force updater/identify="UCS (EC2 Test)"
 		if grep -F /dev/vda /boot/grub/device.map && [ -b /dev/xvda ] # Bug 36256
