@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-directory-manager-modules
-fix: 13.0.21-23A~4.3.0.201805241740
+fix: 13.0.21-24A~4.3.0.201805251310
 desc: |-
   This update addresses the following issue(s):
   * Properties that have been set to default values are no
