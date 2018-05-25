@@ -163,6 +163,7 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 		</para>
 
 	</section>
+  </section>
 
   <section id="idmcloud:gsuite">
 	<title>Google Apps for Work Connector</title>
