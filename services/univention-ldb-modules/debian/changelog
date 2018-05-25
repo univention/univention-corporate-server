@@ -1,3 +1,9 @@
+univention-ldb-modules (6.0.0-3) unstable; urgency=medium
+
+  * Bug #47064: bindpwdfile support
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 May 2018 14:41:42 +0200
+
 univention-ldb-modules (6.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
