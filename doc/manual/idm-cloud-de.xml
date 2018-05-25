@@ -27,7 +27,7 @@
 		in der Cloud arbeiten. Dabei bleibt das Passwort im Unternehmensnetzwerk und wird nicht zum Cloud Dienst übertragen.
 	</para>
 	<para>
-		Im folgenden Kapitel ist die Einrichtung des Microsoft Office 365 Connector beschrieben.
+		In den folgenden Kapiteln ist die Einrichtung des Microsoft Office 365 und des Google Apps for Work Connector beschrieben.
 	</para>
   </section>
 
@@ -163,6 +163,123 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 		</para>
 
 	</section>
+
+  <section id="idmcloud:gsuite">
+	<title>Google Apps for Work Connector</title>
+	<para>
+		Der Google Apps for Work Connector ermöglicht die Synchronisation der Benutzer und Gruppen zu einer G Suite 
+		Domäne, vorher auch bekannt als Google Apps for Work. Dabei lässt sich steuern, welche der in UCS angelegten
+		Benutzer G Suite verwenden dürfen. Die so ausgewählten Benutzer werden entsprechend von UCS in die G Suite 
+		Domäne provisioniert. Es kann dabei konfiguriert werden, welche Attribute synchronisiert werden und Attribute
+		können dabei anonymisiert werden.
+	</para>
+
+	<para>
+		Die Single Sign-on Anmeldung an G Suite erfolgt über die in UCS integrierte SAML-Implementierung, d.h. die
+		Authentifizierung erfolgt dabei gegen den UCS-Server und es werden keine Passwort-Hashes zur G Suite Domäne
+		übertragen. Die Authentifikation des Benutzers erfolgt ausschließlich über den Webbrowser des Clients. Dieser
+		sollte aber die DNS-Namen der UCS-Domäne auflösen können, das ist insbesondere für Mobilgeräte wichtig zu beachten.
+	</para>
+
+	<section id="idmcloud:gsuite:setup">
+		<title>Einrichtung</title>
+		<para>
+			Für den Einsatz des Google Apps for Work Connectors wird ein G Suite Administrator Konto, ein entsprechendes
+			Konto in der G Suite Domäne, sowie eine von Google
+			<ulink url="https://support.google.com/a/topic/9196?hl=de">verifizierte Domäne</ulink> benötigt. Die ersten beiden
+			werden zu Testzwecken kostenlos von Google bereitgestellt. Für das Konfigurieren des SSO wird jedoch eine eigene
+			Internet-Domäne benötigt, in der TXT‑Records erstellt werden können.
+		</para>
+
+		<para>
+			Falls noch keine G Suite Subskription vorhanden ist, so kann diese via <ulink url="https://gsuite.google.com/setup-hub/"/>
+			mit dem Link <guimenu>Jetzt kostenlos testen</guimenu> konfiguriert werden. Mit einem privaten Gmail Konto
+			ist eine Verbindung nicht möglich.
+		</para>
+
+		<para>
+			Anschließend sollte eine Anmeldung mit einem <guimenu>G Suite Administratorkonto</guimenu> in der
+			<ulink url="https://admin.google.com/">Admin-Konsole</ulink> erfolgen.
+		</para>
+
+		<para>
+			Unter dem Menüpunkt <guimenu>mehr Widgets</guimenu> kann via <guimenu>Domains hinzufügen oder entfernen</guimenu> 
+			nun die eigene Domäne hinzugefügt und verifiziert werden. Dafür ist es notwendig, einen TXT-Record im DNS der eigenen
+			Domäne zu erzeugen. Dieser Vorgang kann einige Minuten in Anspruch nehmen.
+		</para>
+
+		<para>
+			Nun kann die Google Apps for Work Connector aus dem App Center auf dem UCS System installiert werden. Die Installation dauert
+			nur wenige Minuten. Anschließend steht ein Einrichtungsassistent (Wizard) für die Einrichtung zur Verfügung.
+			Mit Abschluss des Einrichtungsassistenten ist die Installation abgeschlossen und der Connector ist einsatzbereit.
+		</para>
+
+		<figure id="idmcloud:gsuite:wizard">
+			<title>Google Apps for Work Einrichtungsassistent</title>
+			<graphic scalefit="1" width="100%" fileref="illustrations43/google_wizard1_de.png"/>
+		</figure>
+
+	</section>
+
+	<section id="idmcloud:gsuite:config">
+		<title>Konfiguration</title>
+		<para>
+			Nach der Einrichtung über den Einrichtungsassistenten kann über das Benutzermodul an jedem Benutzerobjekt auf dem Reiter <guimenu>Google Apps</guimenu>
+			konfiguriert werden, dass dieser Benutzer zu G Suite provisioniert wird.
+		</para>
+
+		<para>
+			Wird eine Änderung am Benutzer durchgeführt, so werden die Änderungen auch in die G Suite Domäne repliziert. Es erfolgt
+			keine Synchronisation aus der G Suite Domäne in das UCS-System. Das bedeutet Änderungen, die in der G Suite Domäne 
+			vorgenommen wurden, können durch Änderungen an den gleichen Attributen in UCS unter Umständen wieder überschrieben werden.
+		</para>
+
+		<para>
+			Wird bei einem Benutzer die Google Apps Eigenschaft entfernt, so wird der Benutzer entsprechende in der G Suite Domäne gelöscht.
+		</para>
+
+		<para>
+			Über die &ucsUCRV; <envar>google-apps/attributes/mapping/.*</envar> wird konfiguriert, welche LDAP Attribute (z. B. Vorname, Nachname, etc.)
+			eines Benutzerkontos synchronisiert werden. Die &ucsUCRV; und ihre Werte spiegeln die verschachtelte Datenstruktur der G Suite Benutzerkonten
+			wider. Die Namen, die in den Werten dem Prozentzeichen folgen, sind die Attribute im UCS LDAP. Werden alle &ucsUCRV;
+			<envar>google-apps/attributes/mapping/.*</envar> entfernt, so werden keine Daten außer der primären E-Mail-Adresse synchronisert.
+		</para>
+
+		<para>
+			Mit der &ucsUCRV; <envar>google-apps/attributes/anonymize</envar> können kommasepariert LDAP Attribute angegeben werden,
+			die zwar in der G Suite Domäne angelegt, jedoch mit Zufallswerten gefüllt werden.
+		</para>
+
+		<para>
+			Mit der &ucsUCRV; <envar>google-apps/attributes/never</envar> können kommasepariert LDAP Attribute angegeben werden, die
+			nicht synchronisiert werden sollen, selbst wenn diese per <envar>google-apps/attributes/mapping</envar> oder
+			<envar>google-apps/attributes/anonymize</envar> konfiguriert sind.
+		</para>
+
+		<para>
+			Die Synchronisation der Gruppen der Google Apps for Work Benutzern kann mit der &ucsUCRV; <envar>google-apps/groups/sync</envar> aktiviert werden.
+		</para>
+
+		<para>
+			Änderungen an &ucsUCRV;n werden erst nach dem Neustart des &ucsUDL; umgesetzt.
+		</para>
+
+	</section>
+
+	<section id="idmcloud:gsuite:debug">
+		<title>Fehlersuche</title>
+		<para>
+			Meldungen während der Einrichtung werden in der folgenden Logdatei
+			<filename>/var/log/univention/management-console-module-googleapps.log</filename> protokolliert.
+		</para>
+
+		<para>
+			Bei Synchronisationsproblemen sollte die Logdatei des &ucsUDL; geprüft werden:
+			<filename>/var/log/univention/listener.log</filename>. Mit Hilfe der &ucsUCRV; <envar>google-apps/debug/werror</envar>
+			können mehr Debugausgaben aktiviert werden.
+		</para>
+  	</section>
+
   </section>
 
 </chapter>
