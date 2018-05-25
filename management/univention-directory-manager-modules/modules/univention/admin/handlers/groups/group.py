@@ -706,7 +706,6 @@ class object(univention.admin.handlers.simpleLdap):
 			for attr, value in attrs.iteritems():
 				if attr.lower().endswith('group') and self.dn in value:
 					raise univention.admin.uexceptions.primaryGroupUsed(_('It is used as %s.') % attr)
-		searchResult = self.lo.search(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(gidNumber=%s))', [self.gidNum]), scope='domain')
 		if getattr(self, 'gidNum', None):
 			searchResult = self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(gidNumber=%s))', [self.gidNum]), scope='domain')
 			if searchResult:

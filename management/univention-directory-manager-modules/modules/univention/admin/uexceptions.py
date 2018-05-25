@@ -212,7 +212,7 @@ class primaryGroup(base):
 
 
 class primaryGroupUsed(base):
-	message = _('This is a primary group')
+	message = _('This is a primary group.')
 
 
 class homeShareUsed(base):
