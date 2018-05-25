@@ -1506,15 +1506,24 @@ class ucs:
 		if not old_object and object['modtype'] == 'move':
 			object['modtype'] = 'add'
 
-		if self.group_member_mapping_cache_ucs.get(object['dn'].lower()) and object['modtype'] != 'delete':
-			self.group_member_mapping_cache_ucs[object['dn'].lower()] = None
-
 		try:
 			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs:   [%14s] [%10s] %s' % (property_type, object['modtype'], object['dn']))
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
 		except:  # FIXME: which exception is to be caught?
 			ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs...')
+
+		if object['modtype'] in ('delete', 'move'):
+			try:
+				del self.group_member_mapping_cache_ucs[object['dn'].lower()]
+				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: %s removed from UCS group member mapping cache" % object['dn'])
+			except KeyError:
+				pass
+			try:
+				del self.group_member_mapping_cache_con[pre_mapped_s4_dn.lower()]
+				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: %s removed from S4 group member mapping cache" % pre_mapped_s4_dn)
+			except KeyError:
+				pass
 
 		position = univention.admin.uldap.position(self.baseConfig['ldap/base'])
 
