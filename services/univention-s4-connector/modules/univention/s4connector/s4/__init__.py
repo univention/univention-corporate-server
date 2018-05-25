@@ -2478,9 +2478,17 @@ class s4(univention.s4connector.ucs):
 		addlist = []
 		modlist = []
 
-		if self.group_member_mapping_cache_con.get(object['dn'].lower()) and object['modtype'] != 'delete':
-			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: remove %s from group cache" % object['dn'])
-			self.group_member_mapping_cache_con[object['dn'].lower()] = None
+		if object['modtype'] in ('delete', 'move'):
+			try:
+				del self.group_member_mapping_cache_con[object['dn'].lower()]
+				ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s removed from S4 group member mapping cache" % object['dn'])
+			except KeyError:
+				pass
+			try:
+				del self.group_member_mapping_cache_ucs[pre_mapped_ucs_dn.lower()]
+				ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s removed from UCS group member mapping cache" % pre_mapped_ucs_dn)
+			except KeyError:
+				pass
 
 		s4_object = self.get_object(object['dn'])
 		if s4_object:
