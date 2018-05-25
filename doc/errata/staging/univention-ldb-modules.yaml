@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-ldb-modules
+fix: 6.0.0-3A~4.3.0.201805251504
+desc: |
+ This update addresses the following issue(s):
+ * Added support for bindpwdfile during join.
+bug: [47064]
