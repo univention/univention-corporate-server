@@ -199,9 +199,8 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 
 		<para>
 			Anschließend sollte eine Anmeldung mit einem <guimenu>G Suite Administratorkonto</guimenu> in der
-			<ulink url="https://admin.google.com/">Admin-Konsole</ulink> erfolgen. Anschließend sollte den Anweisgungen bzgl. der
-			Verifikation der Domäne gefolgt werden. Dafür ist es notwendig, einen TXT-Record im DNS der eigenen
-			Domäne zu erzeugen. Dieser Vorgang kann einige Minuten in Anspruch nehmen.
+			<ulink url="https://admin.google.com/">Admin-Konsole</ulink> erfolgen. Nun sollte die Verifikation der Domäne erfolgen.
+			Dafür ist es notwendig, einen TXT-Record im DNS der eigenen Domäne zu erzeugen. Dieser Vorgang kann einige Minuten in Anspruch nehmen.
 		</para>
 
 		<para>
