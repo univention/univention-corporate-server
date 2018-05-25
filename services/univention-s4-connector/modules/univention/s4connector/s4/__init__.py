@@ -2416,6 +2416,7 @@ class s4(univention.s4connector.ucs):
 		return not old_ucs_object.get(attribute) == new_ucs_object.get(attribute)
 
 	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object=None, new_ucs_object=None):
+		# NOTE: pre_mapped_ucs_dn means: original ucs_dn (i.e. before _object_mapping)
 		_d = ud.function('ldap.__sync_from_ucs')
 		# Diese Methode erhaelt von der UCS Klasse ein Objekt,
 		# welches hier bearbeitet wird und in das S4 geschrieben wird.
@@ -2791,16 +2792,16 @@ class s4(univention.s4connector.ucs):
 				if univention.s4connector.compare_lowercase(result[0], object['dn']):
 					continue
 				ud.debug(ud.LDAP, ud.INFO, "delete: %s" % result[0])
-				subobject = {'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
+				subobject_s4 = {'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
 				key = None
 				for k in self.property.keys():
 					if self.modules[k].identify(result[0], result[1]):
 						key = k
 						break
-				object_mapping = self._object_mapping(key, subobject)
-				ud.debug(ud.LDAP, ud.WARN, "delete subobject: %s" % object_mapping['dn'])
-				if not self._ignore_object(key, object_mapping):
-					if not self.sync_from_ucs(key, subobject, object_mapping['dn']):
+				back_mapped_subobject = self._object_mapping(key, subobject_s4)
+				ud.debug(ud.LDAP, ud.WARN, "delete subobject: %s" % back_mapped_subobject['dn'])
+				if not self._ignore_object(key, back_mapped_subobject):
+					if not self.sync_from_ucs(key, subobject_s4, back_mapped_subobject['dn']):
 						try:
 							ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %s" % result[0])
 						except (ldap.SERVER_DOWN, SystemExit):
