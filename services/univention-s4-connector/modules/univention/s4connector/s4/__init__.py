@@ -916,12 +916,12 @@ class s4(univention.s4connector.ucs):
 
 		# UCS group member DNs to S4 group member DN
 		# * entry used and updated while reading in group_members_sync_from_ucs
-		# * entry flushed during non-delete at beginning of sync_to_ucs
+		# * entry flushed during delete+move at in sync_to_ucs and sync_from_ucs
 		self.group_member_mapping_cache_ucs = {}
 
 		# S4 group member DNs to UCS group member DN
 		# * entry used and updated while reading in group_members_sync_to_ucs
-		# * entry flushed during non-delete at beginning of sync_from_ucs
+		# * entry flushed during delete+move at in sync_to_ucs and sync_from_ucs
 		self.group_member_mapping_cache_con = {}
 
 		# Save the old members of a group
