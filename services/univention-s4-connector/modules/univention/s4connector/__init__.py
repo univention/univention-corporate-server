@@ -889,12 +889,13 @@ class ucs:
 				object['olddn'] = unicode(old_dn, 'utf8')  # needed for correct samaccount-mapping
 
 			if not self._ignore_object(key, object) or ignore_subtree_match:
-				premapped_ucs_dn = object['dn']
-				object = self._object_mapping(key, object, 'ucs')
+				pre_mapped_ucs_dn = object['dn']
+				# NOTE: pre_mapped_ucs_dn means: original ucs_dn (i.e. before _object_mapping)
+				mapped_object = self._object_mapping(key, object, 'ucs')
 				if not self._ignore_object(key, object) or ignore_subtree_match:
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: finished mapping")
 					try:
-						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn, 'utf8'), old, new)) or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn, old, new))):
+						if ((old_dn and not self.sync_from_ucs(key, mapped_object, pre_mapped_ucs_dn, unicode(old_dn, 'utf8'), old, new)) or (not old_dn and not self.sync_from_ucs(key, mapped_object, pre_mapped_ucs_dn, old_dn, old, new))):
 							self._save_rejected_ucs(filename, dn)
 							return False
 						else:
@@ -1462,16 +1463,16 @@ class ucs:
 					if compare_lowercase(result[0], object['dn']):
 						continue
 					ud.debug(ud.LDAP, ud.INFO, "delete: %s" % result[0])
-					subobject = {'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
+					subobject_ucs = {'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
 					key = None
 					for k in self.property.keys():
 						if self.modules[k].identify(result[0], result[1]):
 							key = k
 							break
-					object_mapping = self._object_mapping(key, subobject, 'ucs')
-					ud.debug(ud.LDAP, ud.WARN, "delete subobject: %s" % object_mapping['dn'])
-					if not self._ignore_object(key, object_mapping):
-						if not self.sync_to_ucs(key, subobject, object_mapping['dn'], object):
+					back_mapped_subobject = self._object_mapping(key, subobject_ucs, 'ucs')
+					ud.debug(ud.LDAP, ud.WARN, "delete subobject: %s" % back_mapped_subobject['dn'])
+					if not self._ignore_object(key, back_mapped_subobject):
+						if not self.sync_to_ucs(key, subobject_ucs, back_mapped_subobject['dn'], object):
 							try:
 								ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %s" % result[0])
 							except (ldap.SERVER_DOWN, SystemExit):
@@ -1486,7 +1487,8 @@ class ucs:
 			else:
 				raise
 
-	def sync_to_ucs(self, property_type, object, premapped_s4_dn, original_object):
+	def sync_to_ucs(self, property_type, object, pre_mapped_s4_dn, original_object):
+		# NOTE: pre_mapped_s4_dn means: original s4_dn (i.e. before _object_mapping)
 		_d = ud.function('ldap.sync_to_ucs')
 		# this function gets an object from the s4 class, which should be converted into a ucs modul
 
@@ -1568,7 +1570,7 @@ class ucs:
 					module = univention.admin.modules.get(old_object.module)
 				if object['modtype'] == 'add':
 					result = self.add_in_ucs(property_type, object, module, position)
-					self._check_dn_mapping(object['dn'], premapped_s4_dn)
+					self._check_dn_mapping(object['dn'], pre_mapped_s4_dn)
 					self.s4cache.add_entry(guid, original_object.get('attributes'))
 				if object['modtype'] == 'delete':
 					if not old_object:
@@ -1576,17 +1578,17 @@ class ucs:
 						result = True
 					else:
 						result = self.delete_in_ucs(property_type, object, module, position)
-					self._remove_dn_mapping(object['dn'], premapped_s4_dn)
+					self._remove_dn_mapping(object['dn'], pre_mapped_s4_dn)
 					self.s4cache.remove_entry(guid)
 				if object['modtype'] == 'move':
 					result = self.move_in_ucs(property_type, object, module, position)
 					self._remove_dn_mapping(object['olddn'], '')  # we don't know the old s4-dn here anymore, will be checked by remove_dn_mapping
-					self._check_dn_mapping(object['dn'], premapped_s4_dn)
+					self._check_dn_mapping(object['dn'], pre_mapped_s4_dn)
 					# Check S4cache
 
 				if object['modtype'] == 'modify':
 					result = self.modify_in_ucs(property_type, object, module, position)
-					self._check_dn_mapping(object['dn'], premapped_s4_dn)
+					self._check_dn_mapping(object['dn'], pre_mapped_s4_dn)
 					self.s4cache.add_entry(guid, original_object.get('attributes'))
 
 			if not result:
