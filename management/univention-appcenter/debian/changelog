@@ -1,3 +1,11 @@
+univention-appcenter (7.0.1-52) unstable; urgency=medium
+
+  * Bug #46813: The App logos are now linked to UMC frontend folder as soon as
+    the UMC module is installed. These logos are otherwise unavailable during
+    the setup of App Appliances.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 25 May 2018 17:23:31 +0200
+
 univention-appcenter (7.0.1-51) unstable; urgency=medium
 
   * Bug #43434: When changing the App Center server, update all installed
