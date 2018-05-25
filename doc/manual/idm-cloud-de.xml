@@ -243,7 +243,7 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 			Über die &ucsUCRV; <envar>google-apps/attributes/mapping/.*</envar> wird konfiguriert, welche LDAP Attribute (z. B. Vorname, Nachname, etc.)
 			eines Benutzerkontos synchronisiert werden. Die &ucsUCRV; und ihre Werte spiegeln die verschachtelte Datenstruktur der G Suite Benutzerkonten
 			wider. Die Namen, die in den Werten dem Prozentzeichen folgen, sind die Attribute im UCS LDAP. Werden alle &ucsUCRV;
-			<envar>google-apps/attributes/mapping/.*</envar> entfernt, so werden keine Daten außer der primären E-Mail-Adresse synchronisert.
+			<envar>google-apps/attributes/mapping/.*</envar> entfernt, so werden keine Daten außer der primären E-Mail-Adresse synchronisiert.
 		</para>
 
 		<para>
