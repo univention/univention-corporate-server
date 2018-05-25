@@ -169,10 +169,9 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 	<title>Google Apps for Work Connector</title>
 	<para>
 		Der Google Apps for Work Connector ermöglicht die Synchronisation der Benutzer und Gruppen zu einer G Suite 
-		Domäne, vorher auch bekannt als Google Apps for Work. Dabei lässt sich steuern, welche der in UCS angelegten
-		Benutzer G Suite verwenden dürfen. Die so ausgewählten Benutzer werden entsprechend von UCS in die G Suite 
-		Domäne provisioniert. Es kann dabei konfiguriert werden, welche Attribute synchronisiert werden und Attribute
-		können dabei anonymisiert werden.
+		Domäne. Dabei lässt sich steuern, welche der in UCS angelegten Benutzer G Suite verwenden dürfen. Die so
+		ausgewählten Benutzer werden entsprechend von UCS in die G Suite Domäne provisioniert. Es kann dabei konfiguriert
+		werden, welche Attribute synchronisiert werden und Attribute können dabei anonymisiert werden.
 	</para>
 
 	<para>
@@ -200,12 +199,8 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 
 		<para>
 			Anschließend sollte eine Anmeldung mit einem <guimenu>G Suite Administratorkonto</guimenu> in der
-			<ulink url="https://admin.google.com/">Admin-Konsole</ulink> erfolgen.
-		</para>
-
-		<para>
-			Unter dem Menüpunkt <guimenu>mehr Widgets</guimenu> kann via <guimenu>Domains hinzufügen oder entfernen</guimenu> 
-			nun die eigene Domäne hinzugefügt und verifiziert werden. Dafür ist es notwendig, einen TXT-Record im DNS der eigenen
+			<ulink url="https://admin.google.com/">Admin-Konsole</ulink> erfolgen. Anschließend sollte den Anweisgungen bzgl. der
+			Verifikation der Domäne gefolgt werden. Dafür ist es notwendig, einen TXT-Record im DNS der eigenen
 			Domäne zu erzeugen. Dieser Vorgang kann einige Minuten in Anspruch nehmen.
 		</para>
 
