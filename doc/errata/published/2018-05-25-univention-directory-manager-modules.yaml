@@ -13,3 +13,5 @@ desc: |-
   * Prevent the removal of groups that are mentioned in the settings/default
     object. These groups are used for new objects and therefore must exist.
 bug: [46529, 47052, 44685]
+erratum: 88
+announced: 2018-05-25
