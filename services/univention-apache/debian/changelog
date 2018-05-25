@@ -1,6 +1,6 @@
 univention-apache (9.0.5-14) unstable; urgency=medium
 
-  * Bug #44921: Use X-Forwarded-Proto
+  * Bug #47071: Use X-Forwarded-Proto
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 02 May 2018 18:34:04 +0200
 
