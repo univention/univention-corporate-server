@@ -1,3 +1,9 @@
+ucs-test (8.0.28-128) unstable; urgency=medium
+
+  * Bug #47057: fixed hook in 68_udm-extendedattribute/31_extented_attribute_ldap_modlist_hook
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 May 2018 10:45:23 +0200
+
 ucs-test (8.0.28-127) unstable; urgency=medium
 
   * Bug #44542: Remove deprecated Application / AppManager
