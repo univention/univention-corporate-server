@@ -580,6 +580,7 @@ Virtualization=Virtualisierung''')
 				{'version': vv, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
 			subprocess.call('zsyncmake -u http://%(fqdn)s/meta-inf/%(version)s/all.tar.gz -z -o /var/www/meta-inf/%(version)s/all.tar.zsync /var/www/meta-inf/%(version)s/all.tar' %
 				{'version': vv, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
+		subprocess.call('univention-app update', shell=True)
 
 	def cleanup(self):
 		if self.meta_inf_created:

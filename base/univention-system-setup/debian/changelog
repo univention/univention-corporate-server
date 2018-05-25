@@ -1,3 +1,9 @@
+univention-system-setup (11.0.4-8) unstable; urgency=medium
+
+  * Bug #46665: Fix 80_docker.40_app_umc_install_latest_appbox.test
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 25 May 2018 14:55:19 +0200
+
 univention-system-setup (11.0.4-7) unstable; urgency=medium
 
   * Bug #46852: Scroll to top when viewing privacy statement in
