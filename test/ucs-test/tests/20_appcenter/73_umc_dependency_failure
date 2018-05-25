@@ -5,7 +5,7 @@
 ## packages:
 ##   - univention-management-console-module-appcenter
 ##   - univention-appcenter-dev
-## tags: [appcenter,SKIP]
+## tags: [appcenter]
 ## bugs: [44769]
 from __future__ import print_function
 

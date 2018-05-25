@@ -1,3 +1,9 @@
+ucs-test (8.0.28-129) unstable; urgency=medium
+
+  * Bug #44769: Re-enable 20_appcenter/73_umc_dependency_failure
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 25 May 2018 11:30:02 +0200
+
 ucs-test (8.0.28-128) unstable; urgency=medium
 
   * Bug #47057: fixed hook in 68_udm-extendedattribute/31_extented_attribute_ldap_modlist_hook
