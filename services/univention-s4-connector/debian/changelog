@@ -1,3 +1,9 @@
+univention-s4-connector (12.0.2-15) unstable; urgency=medium
+
+  * Bug #47061: bindpwdfile support
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 May 2018 11:33:29 +0200
+
 univention-s4-connector (12.0.2-14) unstable; urgency=medium
 
   * Bug #46972: removed log

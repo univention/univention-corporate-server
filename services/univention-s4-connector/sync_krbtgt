@@ -185,7 +185,11 @@ def main():
 	parser.add_option("--ucrbase", dest="ucrbase", help="", metavar="ucrbase", default="connector")
 	parser.add_option("--binddn", dest="binddn", help="Binddn for UCS LDAP connection", default=None)
 	parser.add_option("--bindpwd", dest="bindpwd", help="Bindpwd for UCS LDAP connection", default=None)
+	parser.add_option("--bindpwdfile", dest="bindpwdfile", help="Bindpwdfile for UCS LDAP connection", default=None)
 	(options, args) = parser.parse_args()
+	if options.bindpwdfile:
+		with open(options.bindpwdfile) as f:
+			options.bindpwd = f.readline().strip()
 
 	try:
 		s4 = S4(options.ucrbase, options.binddn, options.bindpwd)

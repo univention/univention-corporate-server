@@ -181,7 +181,11 @@ if __name__ == '__main__':
 	parser.add_option("--write2samba4", dest="write2samba4", action="store_true", help="Write WMI filter links from UCS to Samba 4", default=False)
 	parser.add_option("--binddn", dest="binddn", action="store", help="Binddn for UCS LDAP connection")
 	parser.add_option("--bindpwd", dest="bindpwd", action="store", help="Password for UCS LDAP connection")
+	parser.add_option("--bindpwdfile", dest="bindpwdfile", action="store", help="Password file for UCS LDAP connection")
 	(options, args) = parser.parse_args()
+	if options.bindpwdfile:
+		with open(options.bindpwdfile) as f:
+			options.bindpwd = f.readline().strip()
 
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()

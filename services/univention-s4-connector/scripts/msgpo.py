@@ -186,7 +186,11 @@ if __name__ == '__main__':
 	parser.add_option("--only-override-empty", dest="only_override_empty", action="store_true", help="The parameter controls that the attribute is only overwritten in case it is empty. This can only be used in write2ucs mode.", default=False)
 	parser.add_option("--binddn", dest="binddn", action="store", help="Binddn for UCS LDAP connection")
 	parser.add_option("--bindpwd", dest="bindpwd", action="store", help="Password for UCS LDAP connection")
+	parser.add_option("--bindpwdfile", dest="bindpwdfile", action="store", help="Password file for UCS LDAP connection")
 	(options, args) = parser.parse_args()
+	if options.bindpwdfile:
+		with open(options.bindpwdfile) as f:
+			options.bindpwd = f.readline().strip()
 
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
