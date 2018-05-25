@@ -27,6 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/ldap.sh
 
 # Bug #27001
 univention_samba4_is_ucr_false () { # test if UCS variable is "false"
@@ -39,8 +40,7 @@ univention_samba4_is_ucr_false () { # test if UCS variable is "false"
     esac
 }
 
-
-extract_bind_credentials() {
+extract_samba_bind_credentials() {
 	## parse bind credentials from command line arguments into shell variables
 	while [ $# -gt 0 ]; do
 		case "$1" in
@@ -57,6 +57,20 @@ extract_bind_credentials() {
 				;;
 		esac
 	done
+	# dc account is empty on master and backup, unless --ask-pass is used
+	test -n "$binddn" && dcaccount=$(ucs_convertDN2UID "$binddn" "$@")
+	test -z "$binddn" && binddn="cn=admin,$ldap_base"
+	test -z "$bindpwdfile" && bindpwdfile="/etc/ldap.secret"
+	test -z "$bindpwd" && bindpwd="$(< "$bindpwdfile")"
+}
+
+check_dcaccount_and_bindpwd_and_fail() {
+	if [ -z "$dcaccount" ] ||  [ -z "$bindpwd" ]; then
+		echo "Administrative credentials are needed to join to existing Samba4 domain. Please run:"
+		printf "\tunivention-run-join-scripts --ask-pass\n"
+		echo "to complete the domain join."
+		exit 1
+	fi
 }
 
 extract_binddn_and_bindpwd_from_args() {
