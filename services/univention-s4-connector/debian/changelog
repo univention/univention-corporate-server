@@ -1,7 +1,14 @@
+univention-s4-connector (11.0.8-21) UNRELEASED; urgency=medium
+
+  * Bug #46971: When objects are deleted or moved remove the their DN from
+    both group member mapping caches.
+
+ -- Arvid Requate <requate@univention.de>  Fri, 25 May 2018 13:03:14 +0200
+
 univention-s4-connector (11.0.8-20) unstable; urgency=medium
 
-  * Bug #46971: skip object_memberships_sync_to_ucs
-    if group syncmode is write
+  * Bug #46971: make skip of object_memberships_sync_to_ucs explicit in
+    mapping if group syncmode is write
 
  -- Arvid Requate <requate@univention.de>  Thu, 26 Apr 2018 19:27:48 +0200
 
