@@ -3,10 +3,9 @@ release: "4.2"
 version: [3,4]
 scope: ucs_4.2-0-errata4.2-4
 src: univention-s4-connector
-fix: 11.0.8-20A~4.2.0.201805181430
+fix: 11.0.8-21A~4.2.0.201805251309
 desc: |
  This update addresses the following issue(s):
- * In case connector/s4/mapping/group/syncmode is set to "write" in UCR,
-   the S4-Connector would still modify groups in OpenLDAP when a user
-   was modified. This affected UCS@school.
+ * When objects are deleted or moved remove the their DN from
+   both group member mapping caches. This affected UCS@school.
 bug: [46971]
