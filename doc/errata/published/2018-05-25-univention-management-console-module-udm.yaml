@@ -12,3 +12,5 @@ desc: |
    information dialog because of confusion with the
    number of physical and virtual servers.
 bug: [46529, 45944]
+erratum: 89
+announced: 2018-05-25
