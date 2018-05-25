@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-samba4
-fix: 7.0.2-12A~4.3.0.201805241700
+fix: 7.0.2-13A~4.3.0.201805241819
 desc: |
  This update addresses the following issue(s):
  * Added support for bindpwdfile during join.
