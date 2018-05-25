@@ -204,7 +204,7 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 		</para>
 
 		<para>
-			Nun kann die Google Apps for Work Connector aus dem App Center auf dem UCS System installiert werden. Die Installation dauert
+			Nun kann der Google Apps for Work Connector aus dem App Center auf dem UCS System installiert werden. Die Installation dauert
 			nur wenige Minuten. Anschließend steht ein Einrichtungsassistent (Wizard) für die Einrichtung zur Verfügung.
 			Mit Abschluss des Einrichtungsassistenten ist die Installation abgeschlossen und der Connector ist einsatzbereit.
 		</para>
@@ -236,7 +236,7 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 		<para>
 			Über die &ucsUCRV; <envar>google-apps/attributes/mapping/.*</envar> wird konfiguriert, welche LDAP Attribute (z. B. Vorname, Nachname, etc.)
 			eines Benutzerkontos synchronisiert werden. Die &ucsUCRV; und ihre Werte spiegeln die verschachtelte Datenstruktur der G Suite Benutzerkonten
-			wider. Die Namen, die in den Werten dem Prozentzeichen folgen, sind die Attribute im UCS LDAP. Werden alle &ucsUCRV;
+			wider. Die Namen, die in den Werten dem Prozentzeichen folgen, sind die Attribute im UCS LDAP. Werden alle &ucsUCRV;n
 			<envar>google-apps/attributes/mapping/.*</envar> entfernt, so werden keine Daten außer der primären E-Mail-Adresse synchronisiert.
 		</para>
 
@@ -252,7 +252,7 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 		</para>
 
 		<para>
-			Die Synchronisation der Gruppen der Google Apps for Work Benutzern kann mit der &ucsUCRV; <envar>google-apps/groups/sync</envar> aktiviert werden.
+			Die Synchronisation der Gruppen der Google Apps for Work Benutzer kann mit der &ucsUCRV; <envar>google-apps/groups/sync</envar> aktiviert werden.
 		</para>
 
 		<para>
