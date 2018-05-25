@@ -40,7 +40,7 @@ univention_samba4_is_ucr_false () { # test if UCS variable is "false"
     esac
 }
 
-extract_samba_bind_credentials() {
+extract_binddn_bindpwd_bindpwdfile_dcaccount_from_args() {
 	## parse bind credentials from command line arguments into shell variables
 	while [ $# -gt 0 ]; do
 		case "$1" in

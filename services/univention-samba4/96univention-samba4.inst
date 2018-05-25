@@ -707,7 +707,7 @@ unset SMB_CONF_PATH
 exit_on_slave_if_no_s4_connector_on_master_or_backup
 
 # parse credentials
-extract_samba_bind_credentials "$@"
+extract_binddn_bindpwd_bindpwdfile_dcaccount_from_args "$@"
 
 configure_samba_role
 
