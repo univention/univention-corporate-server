@@ -164,7 +164,7 @@ add_servicePrincipals() {
 
 create_site() {
 
-	check_dcaccount_and_bindpwd_and_fail
+	assert_dcaccount_and_bindpwd
 
 	if [ -n "$samba4_dc" ]; then
 		ucr_variable='samba4/dc'
@@ -833,7 +833,7 @@ if [ "$samba4_role" = 'DC' ]; then
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 
-			check_dcaccount_and_bindpwd_and_fail
+			assert_dcaccount_and_bindpwd
 
 			remove_dc_ntds_guid_records_from_dns "$@"
 
@@ -910,7 +910,7 @@ if [ "$samba4_role" = 'DC' ]; then
 
 elif [ "$samba4_role" = "RODC" ]; then
 
-	check_dcaccount_and_bindpwd_and_fail
+	assert_dcaccount_and_bindpwd
 
 	/etc/init.d/samba stop
 

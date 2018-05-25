@@ -1,3 +1,9 @@
+univention-samba4 (7.0.2-16) unstable; urgency=medium
+
+  * Bug #47059: bindpwdfile support
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 May 2018 14:40:12 +0200
+
 univention-samba4 (7.0.2-15) unstable; urgency=medium
 
   * Bug #47059: bindpwdfile support

@@ -64,7 +64,7 @@ extract_binddn_bindpwd_bindpwdfile_dcaccount_from_args() {
 	test -z "$bindpwd" && bindpwd="$(< "$bindpwdfile")"
 }
 
-check_dcaccount_and_bindpwd_and_fail() {
+assert_dcaccount_and_bindpwd() {
 	if [ -z "$dcaccount" ] ||  [ -z "$bindpwd" ]; then
 		echo "Administrative credentials are needed to join to existing Samba4 domain. Please run:"
 		printf "\tunivention-run-join-scripts --ask-pass\n"
