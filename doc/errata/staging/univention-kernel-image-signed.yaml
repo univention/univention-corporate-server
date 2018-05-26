@@ -5,7 +5,7 @@ scope: ucs_4.2-0-errata4.2-4
 src: univention-kernel-image-signed
 fix: 
 desc: |
- This update of the Linux kernel to version 4.9.102 addresses the following
+ This update of the Linux kernel to version 4.9.103 addresses the following
  issues:
  * CVE-2017-17975: use-after-free in the usbtv_probe function in
    drivers/media/usb/usbtv/usbtv-core.c
@@ -43,6 +43,8 @@ desc: |
  * CVE-2018-8822: Memory corruption in ncp_read_kernel function in
    fs/ncpfs/ncplib_kernel.c
  * CVE-2018-8897: error in exception handling leads to DoS
+ * CVE-2018-10021: ata qc leak in drivers/scsi/libsas/sas_scsi_host.c allows
+   local users to cause denial-of-service
  * CVE-2018-10087: Undefined behavior in kernel/exit.c:kernel_wait4() function
    allows local denial of service
  * CVE-2018-10940: incorrect memory bounds check in drivers/cdrom/cdrom.c
@@ -69,5 +71,6 @@ cve:
 - CVE-2018-8822
 - CVE-2018-8897
 - CVE-2018-10087
+- CVE-2018-10021
 - CVE-2018-10940
 - CVE-2018-1000199
