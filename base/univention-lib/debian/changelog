@@ -1,3 +1,9 @@
+univention-lib (7.0.0-10) unstable; urgency=medium
+
+  * Bug #47066: bindpwdfile support
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 May 2018 18:33:42 +0200
+
 univention-lib (7.0.0-9) unstable; urgency=medium
 
   * Bug #41733: Improve error logging and retry AD LDAP bind in case

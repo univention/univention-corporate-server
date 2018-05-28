@@ -965,11 +965,15 @@ def rename_well_known_sid_objects(username, password, ucr=None):
 
 	# Next run the renaming script
 	binddn = '%s@%s' % (username, ucr.get('kerberos/realm'))
-	p1 = subprocess.Popen(['/usr/share/univention-ad-connector/scripts/well-known-sid-object-rename', '--binddn', binddn, '--bindpwd', password],
-		stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-		close_fds=True)
-	stdout, stderr = p1.communicate()
-	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
+	with tempfile.NamedTemporaryFile() as fd:
+		fd.write(password)
+		fd.flush()
+		p1 = subprocess.Popen(
+			['/usr/share/univention-ad-connector/scripts/well-known-sid-object-rename', '--binddn', binddn, '--bindpwdfile', fd.name],
+			stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+		stdout, stderr = p1.communicate()
+		ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
+
 	if p1.returncode != 0:
 		msg = "well-known-sid-object-rename failed with %d (%s)" % (p1.returncode, stderr)
 		ud.debug(ud.MODULE, ud.ERROR, msg)
@@ -1006,12 +1010,16 @@ def make_deleted_objects_readable_for_this_machine(username, password, ucr=None)
 
 	ud.debug(ud.MODULE, ud.PROCESS, "Make Deleted Objects readable for this machine")
 
-	binddn = '%s@%s' % (username, ucr.get('kerberos/realm'))
-	p1 = subprocess.Popen(['/usr/share/univention-ad-connector/scripts/make-deleted-objects-readable-for-this-machine', '--binddn', binddn, '--bindpwd', password],
-		stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-		close_fds=True)
-	stdout, stderr = p1.communicate()
-	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
+	with tempfile.NamedTemporaryFile() as fd:
+		fd.write(password)
+		fd.flush()
+		binddn = '%s@%s' % (username, ucr.get('kerberos/realm'))
+		p1 = subprocess.Popen(
+			['/usr/share/univention-ad-connector/scripts/make-deleted-objects-readable-for-this-machine', '--binddn', binddn, '--bindpwdfile', fd.name],
+			stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+			close_fds=True)
+		stdout, stderr = p1.communicate()
+		ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
 	if p1.returncode != 0:
 		msg = "make-deleted-objects-readable-for-this-machine failed with %d (%s)" % (p1.returncode, stderr)
 		ud.debug(ud.MODULE, ud.ERROR, msg)
@@ -1229,12 +1237,15 @@ def run_samba_join_script(username, password, ucr=None):
 		raise sambaJoinScriptFailed()
 	binddn = res[0]
 
-	my_env = os.environ
-	my_env['SMB_CONF_PATH'] = '/etc/samba/smb.conf'
-	cmd = ('/usr/lib/univention-install/26univention-samba.inst', '--binddn', binddn, '--bindpwd', password)
-	p1 = subprocess.Popen(cmd, close_fds=True, env=my_env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	stdout, stderr = p1.communicate()
-	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
+	with tempfile.NamedTemporaryFile() as fd:
+		fd.write(password)
+		fd.flush()
+		my_env = os.environ
+		my_env['SMB_CONF_PATH'] = '/etc/samba/smb.conf'
+		cmd = ('/usr/lib/univention-install/26univention-samba.inst', '--binddn', binddn, '--bindpwdfile', fd.name)
+		p1 = subprocess.Popen(cmd, close_fds=True, env=my_env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		stdout, stderr = p1.communicate()
+		ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
 	if p1.returncode != 0:
 		if stderr:
 			ud.debug(ud.MODULE, ud.ERROR, "stderr:\n%s" % (stderr,))
