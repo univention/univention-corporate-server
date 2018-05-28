@@ -1,3 +1,9 @@
+univention-l10n-fr (2.0.0-7) unstable; urgency=medium
+
+  * Bug #47097: Fixed a typo when warning about an outdated UCS version.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 28 May 2018 21:08:41 +0200
+
 univention-l10n-fr (2.0.0-6) unstable; urgency=medium
 
   * Bug #45874: Fix url for sending feedback in StartupDialog
