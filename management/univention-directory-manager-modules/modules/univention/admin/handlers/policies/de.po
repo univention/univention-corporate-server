@@ -1141,7 +1141,7 @@ msgstr "Benutzer-Quota"
 
 #: modules/univention/admin/handlers/policies/release.py:100
 msgid "Without specifying the most recent version will be used"
-msgstr "Ohne Angabe wird die aktuelleste Version verwendet"
+msgstr "Ohne Angabe wird die aktuellste Version verwendet"
 
 #: modules/univention/admin/handlers/policies/policy.py:49
 msgid "http://docs.univention.de/manual.html#central:policies"
