@@ -1,3 +1,11 @@
+univention-lib (7.0.0-9) unstable; urgency=medium
+
+  * Bug #41733: Improve error logging and retry AD LDAP bind in case
+    of ldap.OPERATIONS_ERROR during first LDAP search.
+  * Fix undefined variable due to typo
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 May 2018 13:20:22 +0200
+
 univention-lib (7.0.0-7) unstable; urgency=medium
 
   * Bug #45033: todo_list changes as suggested by qa

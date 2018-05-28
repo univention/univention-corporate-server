@@ -204,8 +204,9 @@ def _get_kerberos_ticket(principal, password, ucr=None):
 		p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()
 		if p1.returncode != 0:
-			ud.debug(ud.MODULE, ud.ERROR, "kinit failed:\n%s" % stdout)
-			raise connectionFailed()
+			msg = "kinit failed:\n%s" % stdout
+			ud.debug(ud.MODULE, ud.ERROR, msg)
+			raise connectionFailed(msg)
 		if stdout:
 			ud.debug(ud.MODULE, ud.WARN, "kinit output:\n%s" % stdout)
 	finally:
@@ -221,7 +222,7 @@ def check_connection(ad_domain_info, username, password):
 	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 	stdout, stderr = p1.communicate()
 	if p1.returncode != 0:
-		raise connectionFailed()
+		raise connectionFailed(stdout)
 
 
 def flush_nscd_hosts_cache():
@@ -276,8 +277,9 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 		lo_ad.lo.set_option(ldap.OPT_PROTOCOL_VERSION, ldap.VERSION3)
 		lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
 		lo_ad.lo.sasl_interactive_bind_s("", auth)
-	except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM):
-		raise connectionFailed()
+	except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM) as exc:
+		ud.debug(ud.MODULE, ud.ERROR, str(exc))
+		raise connectionFailed(exc)
 	finally:
 		subprocess.call(['systemctl', 'start', 'nscd'])
 		set_ucr(previous_dns_ucr_set, previous_dns_ucr_unset)
@@ -285,17 +287,40 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 		set_ucr(previous_host_static_ucr_set, previous_host_static_ucr_unset)
 		flush_nscd_hosts_cache()
 
-	res = lo_ad.search(scope="base", attr=["objectSid"])
+	try:
+		res = lo_ad.search(scope="base", attr=["objectSid"])
+	except ldap.OPERATIONS_ERROR as exc:
+		# Try again
+		try:
+			subprocess.call(['systemctl', 'stop', 'nscd'])
+			lo_ad = univention.uldap.access(host=ad_server_name, port=389, base=ad_ldap_base, binddn=None, bindpw=None, start_tls=0, use_ldaps=False, decode_ignorelist=["objectSid"])
+			lo_ad.lo.set_option(ldap.OPT_PROTOCOL_VERSION, ldap.VERSION3)
+			lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
+			lo_ad.lo.sasl_interactive_bind_s("", auth)
+		except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM) as exc:
+			msg = "second attempt: " + str(exc)
+			ud.debug(ud.MODULE, ud.ERROR, msg)
+			raise connectionFailed(exc)
+		finally:
+			subprocess.call(['systemctl', 'start', 'nscd'])
+			set_ucr(previous_dns_ucr_set, previous_dns_ucr_unset)
+			set_ucr(previous_krb_ucr_set, previous_krb_ucr_unset)
+			set_ucr(previous_host_static_ucr_set, previous_host_static_ucr_unset)
+			flush_nscd_hosts_cache()
+		res = lo_ad.search(scope="base", attr=["objectSid"])
+
 	if not res or "objectSid" not in res[0][1]:
-		ud.debug(ud.MODULE, ud.ERROR, "Determination of AD domain SID failed")
-		raise connectionFailed()
+		msg = "Determination of AD domain SID failed"
+		ud.debug(ud.MODULE, ud.ERROR, msg)
+		raise connectionFailed(msg)
 
 	domain_sid = ndr_unpack(security.dom_sid, res[0][1]["objectSid"][0])
 
 	res = lo_ad.search(filter="(sAMAccountName=%s)" % username, attr=["objectSid", "primaryGroupID"])
 	if not res or "objectSid" not in res[0][1]:
-		ud.debug(ud.MODULE, ud.ERROR, "Determination user SID failed")
-		raise connectionFailed()
+		msg = "Determination user SID failed"
+		ud.debug(ud.MODULE, ud.ERROR, msg)
+		raise connectionFailed(msg)
 
 	user_sid = ndr_unpack(security.dom_sid, res[0][1]["objectSid"][0])
 	if user_sid == security.dom_sid("%s-%s" % (domain_sid, security.DOMAIN_RID_ADMINISTRATOR)):
@@ -310,8 +335,9 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 
 	res = lo_ad.search(filter="(sAMAccountName=%s)" % username, base=user_dn, scope="base", attr=["tokenGroups"])
 	if not res or "tokenGroups" not in res[0][1]:
-		ud.debug(ud.MODULE, ud.ERROR, "Lookup of AD group memberships for user failed")
-		raise connectionFailed()
+		msg = "Lookup of AD group memberships for user failed"
+		ud.debug(ud.MODULE, ud.ERROR, msg)
+		raise connectionFailed(msg)
 
 	if "tokenGroups" not in res[0][1]:
 		raise notDomainAdminInAD()
@@ -736,7 +762,7 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 			cldap_res = net.finddc(address=ip, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
 		except RuntimeError as ex:
 			ud.debug(ud.MODULE, ud.ERROR, "Connection to AD Server %s failed: %s" % (ip, ex.args[0]))
-			check_result.append("CLDAP: %s", ex.args[0])
+			check_results.append("CLDAP: %s", ex.args[0])
 		else:
 			if not check_dns:
 				ad_server_ip = ip
@@ -753,7 +779,7 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 					break
 			except OSError as ex:
 				ud.debug(ud.MODULE, ud.ERROR, "%s failed: %s" % (cmd, ex.args[1]))
-				check_result.append("DNS: %s", ex.args[1])
+				check_results.append("DNS: %s", ex.args[1])
 
 	if ad_server_ip is None:
 		raise failedADConnect(["Connection to AD Server %s failed (%s)" % (ad_server, ",".join(check_results))])
@@ -945,8 +971,9 @@ def rename_well_known_sid_objects(username, password, ucr=None):
 	stdout, stderr = p1.communicate()
 	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
 	if p1.returncode != 0:
-		ud.debug(ud.MODULE, ud.ERROR, "well-known-sid-object-rename failed with %d (%s)" % (p1.returncode, stderr))
-		raise connectionFailed()
+		msg = "well-known-sid-object-rename failed with %d (%s)" % (p1.returncode, stderr)
+		ud.debug(ud.MODULE, ud.ERROR, msg)
+		raise connectionFailed(msg)
 
 	# Finally wait for replication and slapd restart to ensure that new LDAP ACLs are active:
 	res = lo.search(filter="(&(sambaSID=%s)(objectClass=sambaGroupMapping))" % domain_admins_sid, attr=["cn"], unique=True)
@@ -986,8 +1013,9 @@ def make_deleted_objects_readable_for_this_machine(username, password, ucr=None)
 	stdout, stderr = p1.communicate()
 	ud.debug(ud.MODULE, ud.PROCESS, "%s" % stdout)
 	if p1.returncode != 0:
-		ud.debug(ud.MODULE, ud.ERROR, "make-deleted-objects-readable-for-this-machine failed with %d (%s)" % (p1.returncode, stderr))
-		raise connectionFailed()
+		msg = "make-deleted-objects-readable-for-this-machine failed with %d (%s)" % (p1.returncode, stderr)
+		ud.debug(ud.MODULE, ud.ERROR, msg)
+		raise connectionFailed(msg)
 
 
 def prepare_dns_reverse_settings(ad_domain_info, ucr=None):
