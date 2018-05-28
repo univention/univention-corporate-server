@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-ad-connector
+fix: 12.0.0-9A~4.3.0.201805281212
+desc: |
+ This update addresses the following issue(s):
+ * Improve error feedback for connectionFailed and failedADConnect exceptions.
+bug: [47091]
