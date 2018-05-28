@@ -3,10 +3,11 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-l10n-fr
-fix: 2.0.0-6A~4.3.0.201805231857
-desc: |
- This update addresses the following issue(s):
- * The link in the welcome dialog for sending feedback
-   pointed to a wrong location in the french translation.
-   This has been resolved.
-bug: [45874]
+fix:
+desc: |-
+  This update addresses the following issue(s):
+  * The link in the welcome dialog for sending feedback
+    pointed to a wrong location in the french translation.
+    This has been resolved.
+  * Fixed a typo when warning about an outdated UCS version.
+bug: [45874, 47097]
