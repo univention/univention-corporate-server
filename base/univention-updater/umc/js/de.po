@@ -41,7 +41,7 @@ msgstr "1 Paket wird aktualisiert"
 #, javascript-format
 msgid ""
 "<b style='color: #ff7070'>Warning:</b> The currently used UCS version is out "
-"of maintenance. Plase visit the %s for more information"
+"of maintenance. Please visit the %s for more information"
 msgstr ""
 "<b style='color: #ff7070'>Achtung:</b> Für die aktuelle UCS Version werden "
 "keine Sicherheitsupdates mehr veröffentlicht. Bitte rufen Sie das %s auf um "
