@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-25) unstable; urgency=medium
+
+  * Bug #46348: Fixed a typo in the German translation of the Release Policy.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 28 May 2018 20:56:02 +0200
+
 univention-directory-manager-modules (13.0.21-24) unstable; urgency=medium
 
   * Bug #44685: Updated translations
