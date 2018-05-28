@@ -53,44 +53,6 @@ if test -e "/etc/univention/ssl/$hostname.$domainname/private.key"; then
       ln -s /etc/univention/ssl/$hostname.$domainname/private.key /etc/cups/ssl/server.key
 fi
 
-# redefine credentials --binddn to -D and --bindpwd to -w in case of server/role is backup or slave
-credentials=()
-while getopts  "h-:" option; do
-    case "${option}" in
-        -)
-            case "${OPTARG}" in
-                binddn)
-                    credentials+=("-D" "${!OPTIND}")
-                    OPTIND=$((OPTIND+1))
-                    ;;
-                bindpwd)
-                    credentials+=("-w" "${!OPTIND}")
-                    OPTIND=$((OPTIND+1))
-                    ;;
-            esac;;
-        *) ;;
-    esac
-done
-
-### <cleanupcode bug=31624 comment="may be removed after UCS 3.2-0">
-if [ -z "$credentials" ]; then
-	if [ -r /etc/ldap.secret ]; then
-		credentials=("-D" "cn=admin,$ldap_base" "-y" /etc/ldap.secret)
-	else
-		echo "INFO: Administrative credentials required for this joinscript"
-		exit 1
-	fi
-fi
-while read dn; do
-	ldapmodify -x -h "$ldap_master" -p "${ldap_master_port:-7389}" "${credentials[@]}" <<-%EOR
-	dn: $dn
-	changetype: modify
-	delete: univentionPrinterUseClientDriver
-	-
-	%EOR
-done < <(univention-ldapsearch -LLL "(&(univentionPrinterUseClientDriver=*)(univentionPrinterSpoolHost=$(hostname -f)))" dn | ldapsearch-wrapper | sed -n 's/dn: //p')
-### </cleanupcode>
-
 univention-directory-manager container/cn create "$@" --ignore_exists --position "cn=univention,$ldap_base" --set name=cups || die
 
 univention-directory-manager settings/printermodel create "$@" --ignore_exists \

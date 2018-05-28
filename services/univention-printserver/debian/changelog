@@ -1,3 +1,9 @@
+univention-printserver (11.0.0-9) unstable; urgency=medium
+
+  * Bug #47062: bindpwdfile support
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 May 2018 17:17:57 +0200
+
 univention-printserver (11.0.0-8) unstable; urgency=medium
 
   * Bug #47062: bindpwdfile support
