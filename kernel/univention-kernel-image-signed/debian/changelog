@@ -1,3 +1,15 @@
+univention-kernel-image-signed (3.0.2-24) unstable; urgency=medium
+
+  * Bug #47063: Update to linux-4.9.103-ucs110
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 28 May 2018 11:59:01 +0200
+
+univention-kernel-image-signed (3.0.2-23) unstable; urgency=low
+
+  * Bug #47063: Update to linux-4.9.89-ucs110
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 24 May 2018 11:00:54 +0200
+
 univention-kernel-image-signed (3.0.2-22) unstable; urgency=medium
 
   * Bug #46209: Update to linux-4.9.89-ucs109
