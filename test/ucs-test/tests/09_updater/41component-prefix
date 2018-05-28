@@ -21,10 +21,6 @@ repoprefix="univention-repository-$$-${RANDOM}"
 
 setup_apache "${repoprefix}"
 
-cat /etc/apache2/sites-enabled/univention-reposito*
-systemctl restart apache2.service
-sleep 3
-
 mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}"
