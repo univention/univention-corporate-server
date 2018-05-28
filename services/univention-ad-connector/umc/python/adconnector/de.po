@@ -108,10 +108,10 @@ msgstr ""
 #, python-format
 msgid ""
 "Could not connect to AD Server %s. Please verify that username and password "
-"are correct."
+"are correct. (Details:\n%s)"
 msgstr ""
 "Eine Verbindung zum AD-Server %s konnte nicht hergestellt werden. Bitte "
-"überprüfen Sie Benutzername und Password."
+"überprüfen Sie Benutzername und Password. (Details:\n%s)"
 
 #: umc/python/adconnector/__init__.py:384
 #: umc/python/adconnector/__init__.py:503

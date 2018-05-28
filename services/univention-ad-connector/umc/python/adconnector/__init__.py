@@ -399,13 +399,13 @@ class Instance(Base, ProgressMixin):
 			raise UMC_Error(_('The AD member mode can only be configured on a DC master server.'))
 		except admember.failedADConnect as exc:  # lookup_adds_dc()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_Error(_('Could not connect to AD Server %s. Please verify that the specified address is correct. (%s)') % (ad_server_address, "check_domain: %s" % (exc,)))
+			raise UMC_Error(_('Could not connect to AD Server %s. Please verify that the specified address is correct. (%s)') % (ad_server_address, 'check_domain: %s' % (exc,)))
 		except admember.domainnameMismatch as exc:  # check_domain()
 			MODULE.warn('Failure: %s' % exc)
 			raise UMC_Error(_('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain': ad_domain_info.get("Domain"), 'ucs_domain': ucr['domainname']})
 		except admember.connectionFailed as exc:  # check_connection()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_Error(_('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info.get('DC DNS Name'))
+			raise UMC_Error(_('Could not connect to AD Server %s. Please verify that username and password are correct. (Details:\n%s)' % (ad_domain_info.get('DC DNS Name'), exc))
 		except admember.notDomainAdminInAD as exc:  # check_ad_account()
 			MODULE.warn('Failure: %s' % exc)
 			raise UMC_Error(_('The given user is not member of the Domain Admins group in Active Directory. This is a requirement for the Active Directory domain join.'))
@@ -528,11 +528,11 @@ class Instance(Base, ProgressMixin):
 		except admember.invalidUCSServerRole as exc:
 			_err(exc, _('The AD member mode can only be configured on a DC master server.'))
 		except admember.failedADConnect as exc:
-			_err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct. (%s)') % (ad_domain_info.get('DC DNS Name'), "admember_join: %s" % (exc,)))
+			_err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct. (%s)') % (ad_domain_info.get('DC DNS Name'), 'admember_join: %s' % (exc,)))
 		except admember.domainnameMismatch as exc:
 			_err(exc, _('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain': ad_domain_info["Domain"], 'ucs_domain': ucr['domainname']})
 		except admember.connectionFailed as exc:
-			_err(exc, _('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info.get('DC DNS Name'))
+			_err(exc, _('Could not connect to AD Server %s. Please verify that username and password are correct. (Details:\n%s)') % (ad_domain_info.get('DC DNS Name'), exc))
 		except admember.failedToSetAdministratorPassword as exc:
 			_err(exc, _('Failed to set the password of the UCS Administrator to the Active Directory Administrator password.'))
 		except admember.timeSyncronizationFailed as exc:
