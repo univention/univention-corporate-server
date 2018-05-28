@@ -1,3 +1,9 @@
+univention-updater (13.0.1-45) unstable; urgency=medium
+
+  * Bug #47097: Fixed a typo when warning about an outdated UCS version.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 28 May 2018 21:05:54 +0200
+
 univention-updater (13.0.1-44) unstable; urgency=medium
 
   * Bug #47029: Try to start all services that are (re-)enabled in 
