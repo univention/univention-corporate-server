@@ -405,7 +405,7 @@ class Instance(Base, ProgressMixin):
 			raise UMC_Error(_('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain': ad_domain_info.get("Domain"), 'ucs_domain': ucr['domainname']})
 		except admember.connectionFailed as exc:  # check_connection()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_Error(_('Could not connect to AD Server %s. Please verify that username and password are correct. (Details:\n%s)' % (ad_domain_info.get('DC DNS Name'), exc))
+			raise UMC_Error(_('Could not connect to AD Server %s. Please verify that username and password are correct. (Details:\n%s)') % (ad_domain_info.get('DC DNS Name'), exc))
 		except admember.notDomainAdminInAD as exc:  # check_ad_account()
 			MODULE.warn('Failure: %s' % exc)
 			raise UMC_Error(_('The given user is not member of the Domain Admins group in Active Directory. This is a requirement for the Active Directory domain join.'))

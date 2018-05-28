@@ -1,3 +1,9 @@
+univention-ad-connector (12.0.0-10) unstable; urgency=medium
+
+  * Bug #47091: Fix typo
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 May 2018 12:18:31 +0200
+
 univention-ad-connector (12.0.0-9) unstable; urgency=medium
 
   * Bug #47091: Improve error feedback
