@@ -275,9 +275,13 @@ if __name__ == "__main__":
 	parser.add_option("--configbasename", dest="configbasename", help="", metavar="CONFIGBASENAME", default="connector")
 	parser.add_option("--binddn", dest="binddn", help="", metavar="BINDDN")
 	parser.add_option("--bindpwd", dest="bindpwd", help="", metavar="BINDPWD")
+	parser.add_option("--bindpwdfile", dest="bindpwdfile", help="", metavar="BINDPWDFILE")
 	(options, args) = parser.parse_args()
 
 	CONFIGBASENAME = options.configbasename
+	if options.bindpwdfile:
+		with open(options.bindpwdfile) as f:
+			options.bindpwd = f.readline().strip()
 
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
