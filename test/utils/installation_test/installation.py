@@ -291,7 +291,7 @@ class UCSInstallation(object):
 		self.click(self._['next'])
 
 	def finish(self):
-		self.client.waitForText(self._['setup_successful'], timeout=1700)
+		self.client.waitForText(self._['setup_successful'], timeout=2000)
 		self.click(self._['finish'])
 		time.sleep(200)
 
