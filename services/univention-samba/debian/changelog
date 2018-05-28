@@ -1,3 +1,9 @@
+univention-samba (12.0.1-3) unstable; urgency=medium
+
+  * Bug #47060: bindpwdfile support
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 May 2018 17:00:47 +0200
+
 univention-samba (12.0.1-2) unstable; urgency=medium
 
   * Bug #47060: bindpwdfile support

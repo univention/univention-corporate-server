@@ -196,7 +196,7 @@ fi
 if [ -n "$s4setup" ] || is_ucr_true ad/member; then
 	univention-config-registry set samba/domain/security=ads
 
-	test -f /usr/share/univention-samba/mount_extfs_with_user_xattr.py && /usr/share/univention-samba/mount_extfs_with_user_xattr.py
+	/usr/share/univention-samba/mount_extfs_with_user_xattr.py
 	if [ -z "$samba4_ntacl_backend" ]; then
 		univention-config-registry set samba4/ntacl/backend='native'
 		if [ -x /etc/init.d/univention-directory-listener ]; then
@@ -390,7 +390,7 @@ fi
 ucs_addServiceToLocalhost 'Samba 3' "$@"
 
 # sync netlogon share
-test -f /usr/share/univention-samba/slave-sync && /usr/share/univention-samba/slave-sync >>/var/log/univention/samba-sync.log
+/usr/share/univention-samba/slave-sync >>/var/log/univention/samba-sync.log
 
 joinscript_save_current_version
 
