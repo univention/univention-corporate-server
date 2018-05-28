@@ -30,11 +30,6 @@
 set -x
 
 basic_setup () {
-	# Bug #46993: Debug DNS resolver issues
-	sed -i -e 's/grep -F /&-A2 -B2 /' /etc/apt/apt.conf.d/99updatecheck.conf || :
-	iptables -t filter -I INPUT 1 ! -i lo -p udp --sport 53 -j LOG --log-prefix DNS
-	iptables -t filter -I OUTPUT 1 ! -o lo -p udp --dport 53 -j LOG --log-prefix DNS
-
 	# force dpkg not to call "sync" during package installations/updates
 	echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/force-unsafe-io
 	if grep "QEMU Virtual CPU" /proc/cpuinfo ; then
@@ -141,7 +136,6 @@ upgrade_to_latest () {
 	return $rv
 }
 _upgrade_to_latest () {
-	/usr/sbin/jitter 300 /bin/true  # Bug #46993
 	declare -i remain=300 rv delay=30
 	while true
 	do
