@@ -124,6 +124,8 @@ class DevUseTestAppcenter(UniventionAppAction):
 					# should not happen
 					self.log('univention-appcenter-docker is not installed')
 					continue
+				start = get_action('start')
+				start.call(app=app)
 				docker = Docker(app, self.logger)
 				self.log('Updating container... (checking for appbox)')
 				if docker.execute('which', 'univention-app').returncode == 0:
