@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-53) unstable; urgency=medium
+
+  * Bug #47094: fix cache dir permission
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 May 2018 14:34:47 +0200
+
 univention-appcenter (7.0.1-52) unstable; urgency=medium
 
   * Bug #46813: The App logos are now linked to UMC frontend folder as soon as

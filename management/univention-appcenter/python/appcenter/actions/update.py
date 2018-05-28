@@ -276,6 +276,8 @@ class Update(UniventionAppAction):
 		self.debug('Unpacking %s...' % all_tar_file)
 		if self._subprocess(['tar', '-C', app_cache.get_cache_dir(), '-xf', all_tar_file]).returncode:
 			raise UpdateUnpackArchiveFailed(all_tar_file)
+		# make sure cache dir is available for everybody
+		os.chmod(app_cache.get_cache_dir(), 0o755)
 		# `touch all_tar_file` to get a new cache in case it was created in between extraction
 		os.utime(all_tar_file, None)
 
