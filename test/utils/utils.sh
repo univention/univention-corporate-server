@@ -30,11 +30,6 @@
 set -x
 
 basic_setup () {
-	# Bug #46993: Debug DNS resolver issues
-	sed -i -e 's/grep -F /&-A2 -B2 /' /etc/apt/apt.conf.d/99updatecheck.conf || :
-	iptables -t filter -I INPUT 1 ! -i lo -p udp --sport 53 -j LOG --log-prefix DNS
-	iptables -t filter -I OUTPUT 1 ! -o lo -p udp --dport 53 -j LOG --log-prefix DNS
-
 	# force dpkg not to call "sync" during package installations/updates
 	echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/force-unsafe-io
 	if grep "QEMU Virtual CPU" /proc/cpuinfo ; then
@@ -43,8 +38,9 @@ basic_setup () {
 	elif ip -4 addr show | grep -Fq 'inet 10.210.'
 	then
 		echo "Assuming Amazon Cloud"
-		# Bug #39807: set dns/forwarder* early to prevent a bind restart later
-		ucr search --brief --non-empty '^nameserver[123]$'|sed -re 's,nameserver([123]): ,dns/forwarder\1=,'|xargs --no-run-if-empty ucr set
+		# Bug #46993: Remove OpenDNS resolver - use AmazonProvidedDNS
+		sed -i -e '/^nameserver 208.67.22[02].22[02]/d' /etc/resolv.conf
+		grep nameserver /etc/resolv.conf|cat -n|sed -re 's,^\s*([0-9]+)\s*(nameserver)\s*(.*),\2\1=\3 dns/forwarder\1=\3,'|xargs ucr set nameserver1= nameserver2= nameserver3= dns/forwarder1= dns/forwarder2= dns/forwarder3=
 		ucr set --force updater/identify="UCS (EC2 Test)"
 		if grep -F /dev/vda /boot/grub/device.map && [ -b /dev/xvda ] # Bug 36256
 		then
@@ -135,7 +131,6 @@ upgrade_to_latest () {
 	return $rv
 }
 _upgrade_to_latest () {
-	/usr/sbin/jitter 300 /bin/true  # Bug #46993
 	declare -i remain=300 rv delay=30
 	while true
 	do
