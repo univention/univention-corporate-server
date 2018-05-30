@@ -46,23 +46,17 @@ class UpdateCertificates(UniventionAppAction):
 	help = 'Update certificates for an app'
 
 	def setup_parser(self, parser):
-		parser.add_argument('--app', action=StoreAppAction, help='The ID of the App for which the certificates should be updated')
-		parser.add_argument('--all-apps', action='store_true', help='Update certificates for all installed apps')
-		self.parser = parser
+		super(UpdateCertificates, self).setup_parser(parser)
+		parser.add_argument('apps', nargs='*', action=StoreAppAction, help='The ID of app for which the certificates should be updated (all locally installed if none given)')
 
 	def update_certificates(self, app):
 		self._run_update_certificates_script(app)
 
 	def main(self, args):
-		apps = list()
-		if not args.app and not args.all_apps:
-			self.parser.error('Neither --app APP nor --all-apps given')
-		if args.app:
-			apps = [args.app]
-		elif args.all_apps:
-			apps = Apps().get_all_locally_installed_apps()
+		if not args.apps:
+			args.apps = Apps().get_all_locally_installed_apps()
 		self.logfile_logger = get_logfile_logger('update-certificates')
-		for app in apps:
+		for app in args.apps:
 			self.log('updating certificates for {0}'.format(app))
 			self.update_certificates(app)
 
