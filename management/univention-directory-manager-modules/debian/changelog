@@ -1,3 +1,11 @@
+univention-directory-manager-modules (13.0.21-26) unstable; urgency=medium
+
+  * Bug #46910: Add description for
+    directory/manager/web/modules/search/advanced_on_open
+    UCR variable
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 30 May 2018 09:54:29 +0200
+
 univention-directory-manager-modules (13.0.21-25) unstable; urgency=medium
 
   * Bug #46348: Fixed a typo in the German translation of the Release Policy.
