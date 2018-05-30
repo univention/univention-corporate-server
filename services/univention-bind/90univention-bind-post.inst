@@ -46,7 +46,7 @@ wait_for_dns () {
 	echo -n "Wait for bind9: "
 	count=0
 	while [ $count -le 600 ]; do
-		if LC_ALL=C host -W 1 "$ldap_master" 2>&1 | grep -q 'has \(IPv6 \)\?address '
+		if LC_ALL=C host -W 1 "$ldap_master" 127.0.0.1 2>&1 | grep -q 'has \(IPv6 \)\?address '
 		then
 			echo " done"
 			break
@@ -62,7 +62,7 @@ wait_for_dns () {
 	if ! is_ucr_false dns/register/srv_records/ldap; then
 		count=0
 		while [ $count -le 600 ]; do
-			if LC_ALL=C host -t SRV -W 1 "_ldap._tcp.$domainname" 2>&1 | grep -q "has SRV record"
+			if LC_ALL=C host -t SRV -W 1 "_ldap._tcp.$domainname" 127.0.0.1 2>&1 | grep -q "has SRV record"
 			then
 				echo " done"
 				break
