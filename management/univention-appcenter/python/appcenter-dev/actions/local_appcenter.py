@@ -130,7 +130,7 @@ class DevUseTestAppcenter(UniventionAppAction):
 				self.log('Updating container... (checking for appbox)')
 				if docker.execute('which', 'univention-app').returncode == 0:
 					self.log('... setting the new App Center inside the container')
-					docker.execute('univention-install', 'univention-appcenter-dev')
+					docker.execute('univention-install', '-y', 'univention-appcenter-dev')
 					if args.revert:
 						docker.execute('univention-app', 'dev-use-test-appcenter', '--revert')
 					else:
