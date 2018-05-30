@@ -39,6 +39,7 @@ univention-config-registry set directory/manager/web/modules/autosearch?1 \
 	directory/reports/cleanup/cron?"0 0 * * *" \
 	directory/reports/cleanup/age?43200 \
 	directory/manager/web/modules/wizards/disabled?no \
+	directory/manager/web/modules/search/advanced_on_open?false \
 	directory/manager/web/modules/computers/computer/add/default?"computers/windows" \
 	directory/manager/web/modules/groups/group/checks/circular_dependency?"yes" \
 	umc/module/udm/users/self/disabled?true

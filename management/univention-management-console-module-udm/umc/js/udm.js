@@ -854,6 +854,9 @@ define([
 			if (this.moduleFlavor == 'navigation') {
 				this._wizardsDisabled = 'yes';
 			}
+			var _isAdvancedSearch = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/advanced_on_open'] ||
+				this._ucr['directory/manager/web/modules/search/advanced_on_open'];
+			this._isAdvancedSearch = tools.isTrue(_isAdvancedSearch);
 
 			var umcpCmd = lang.hitch(this, 'umcpCommand');
 			var widgets = [];
