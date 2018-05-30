@@ -56,6 +56,7 @@ from univention.appcenter.actions import UniventionAppAction, StoreAppAction, ge
 from univention.appcenter.exceptions import LocalAppCenterError
 from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir, underscore, camelcase, call_process, container_mode
 from univention.appcenter.ucr import ucr_save, ucr_get, ucr_instance
+from univention.appcenter.log import get_logfile_logger
 from univention.appcenter.ini_parser import read_ini_file
 
 
@@ -110,6 +111,7 @@ class DevUseTestAppcenter(UniventionAppAction):
 
 	def _update_apps(self, args):
 		self.log('Updating all installed Apps to use the new App Center server')
+		logfile_logger = get_logfile_logger('dev-use-test-appcenter')
 		for app in Apps().get_all_locally_installed_apps():
 			self.log('Updating %s' % app)
 			register = get_action('register')
@@ -130,11 +132,15 @@ class DevUseTestAppcenter(UniventionAppAction):
 				self.log('Updating container... (checking for appbox)')
 				if docker.execute('which', 'univention-app').returncode == 0:
 					self.log('... setting the new App Center inside the container')
-					docker.execute('univention-install', '-y', 'univention-appcenter-dev')
+					returncode = docker.execute('univention-install', '-y', 'univention-appcenter-dev', _logger=logfile_logger).returncode
+					if returncode != 0:
+						self.warn('univention-install univention-appcenter-dev failed!')
 					if args.revert:
-						docker.execute('univention-app', 'dev-use-test-appcenter', '--revert')
+						returncode = docker.execute('univention-app', 'dev-use-test-appcenter', '--revert', _logger=logfile_logger).returncode
 					else:
-						docker.execute('univention-app', 'dev-use-test-appcenter', '--appcenter-host', args.appcenter_host)
+						returncode = docker.execute('univention-app', 'dev-use-test-appcenter', '--appcenter-host', args.appcenter_host, _logger=logfile_logger).returncode
+					if returncode != 0:
+						self.fatal('univention-app dev-use-test-appcenter failed!')
 				else:
 					self.log('... nothing to do here')
 
