@@ -69,9 +69,11 @@ define([
 			if (!snapshots_possible) {
 				dialog.alert(_('Creating a snapshot is not possible, because the domain contains writeable raw images!'));
 				deferred.reject();
+				return deferred.promise;
 			} else if (qcow2_images === 0 && domain.state != 'SHUTOFF') {
 				dialog.alert(_('Creating a snapshot is not possible, because the domain does not have at least one qcow2 image!'));
 				deferred.reject();
+				return deferred.promise;
 			}
 
 			var _cleanup = function() {
