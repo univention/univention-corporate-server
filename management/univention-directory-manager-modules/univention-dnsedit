@@ -49,6 +49,7 @@ import univention.admin.handlers.dns.forward_zone as forward_zone
 import univention.admin.handlers.dns.reverse_zone as reverse_zone
 import univention.admin.handlers.dns.host_record as host_record
 import univention.admin.handlers.dns.txt_record as txt_record
+import univention.admin.handlers.dns.ns_record as ns_record
 import univention.admin.handlers.dns.ptr_record as ptr_record
 import univention.admin.handlers.dns.srv_record as srv_record
 import univention.admin.handlers.dns.alias as alias
@@ -301,6 +302,53 @@ def add_cname_record(name, cname):
 		record.create()
 
 
+def add_ns_record(name, value):
+	"""Add DNS NS record."""
+	udm_property = 'ns'
+	filt = univention.admin.filter.expression('name', name)
+	records = ns_record.lookup(co, lo, filt, scope='domain',
+			base=position.getDomain(), superordinate=zone, unique=True)
+	if records:
+		record = records[0]
+	else:
+		record = ns_record.object(co, lo, position, superordinate=zone)
+		record['name'] = name
+		record['zonettl'] = ['80600']
+
+	tmp = record[udm_property]
+	if value in tmp:
+		return
+	tmp.append(value)
+	record[udm_property] = tmp
+
+	if records:
+		record.modify()
+	else:
+		record.create()
+
+
+def remove_ns_record(name, value):
+	"""Remove DNS NS record."""
+	udm_property = 'ns'
+	filt = univention.admin.filter.expression('name', name)
+	records = ns_record.lookup(co, lo, filt, scope='domain',
+			base=position.getDomain(), superordinate=zone, unique=True)
+	if records:
+		record = records[0]
+	else:
+		print >> sys.stderr, "No record found"
+		return
+
+	if value in record[udm_property]:
+		record[udm_property].remove(value)
+		if record[udm_property]:
+			record.modify()
+		else:
+			record.remove()
+	else:
+		print >> sys.stderr, "Does not exist"
+
+
 def add_ptr_record(address, ptr):
 	"""Add DNS pointer record."""
 	filt = univention.admin.filter.expression('address', address)
@@ -373,6 +421,8 @@ def main():
 				add_srv_record(*args)
 			elif typ == 'txt':
 				add_txt_record(*args)
+			elif typ == 'ns':
+				add_ns_record(*args)
 			elif typ == 'ptr' and options.reverse:
 				add_ptr_record(*args)
 			elif typ == 'cname':
@@ -387,6 +437,8 @@ def main():
 		elif command == 'remove':
 			if typ == 'srv':
 				remove_srv_record(*args)
+			elif typ == 'ns':
+				remove_ns_record(*args)
 			else:
 				parser.error('Unknown type "%s"' % (typ,))
 		else:

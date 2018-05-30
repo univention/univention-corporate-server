@@ -1365,6 +1365,75 @@ def s4_txt_record_create(s4connector, object):
 	dnsNodeDn = s4_dns_node_base_create(s4connector, object, dnsRecords)
 
 
+def ucs_ns_record_create(s4connector, object):
+	_d = ud.function('ucs_ns_record_create')
+	ud.debug(ud.LDAP, ud.INFO, 'ucs_ns_record_create: object: %s' % object)
+	udm_property = 'ns'
+
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
+
+	# unpack the record
+	c = __unpack_nsRecord(object)
+
+	# Does a host record for this zone already exist?
+	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
+	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
+	if len(searchResult) > 0:
+		superordinate = s4connector_get_superordinate('dns/ns_record', s4connector.lo, searchResult[0][0])
+		foundRecord = univention.admin.handlers.dns.ns_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		foundRecord.open()
+
+		if set(foundRecord[udm_property]) != set(c):
+			foundRecord[udm_property] = c
+			foundRecord.modify()
+		else:
+			ud.debug(ud.LDAP, ud.INFO, 'ucs_ns_record_create: do not modify ns record')
+	else:
+		zoneDN = __get_zone_dn(s4connector, zoneName)
+
+		superordinate = s4connector_get_superordinate('dns/ns_record', s4connector.lo, zoneDN)
+		ud.debug(ud.LDAP, ud.INFO, 'ucs_ns_record_create: superordinate: %s' % superordinate)
+
+		position = univention.admin.uldap.position(zoneDN)
+
+		newRecord = univention.admin.handlers.dns.ns_record.object(None, s4connector.lo, position, dn=None, superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord.open()
+		newRecord['name'] = relativeDomainName
+		newRecord[udm_property] = c
+		newRecord.create()
+
+
+def ucs_ns_record_delete(s4connector, object):
+	_d = ud.function('ucs_ns_record_delete')
+	ud.debug(ud.LDAP, ud.INFO, 'ucs_ns_record_delete: object: %s' % object)
+
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
+
+	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
+	searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
+	if len(searchResult) > 0:
+		superordinate = s4connector_get_superordinate('dns/ns_record', s4connector.lo, searchResult[0][0])
+		newRecord = univention.admin.handlers.dns.ns_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord.open()
+		newRecord.delete()
+	else:
+		ud.debug(ud.LDAP, ud.INFO, 'ucs_ns_record_delete: Object was not found, filter was: %s' % ol_filter)
+
+	return True
+
+
+def s4_ns_record_create(s4connector, object):
+	_d = ud.function('s4_ns_record_create')
+
+	dnsRecords = []
+
+	__pack_nsRecord(object, dnsRecords)
+
+	dnsNodeDn = s4_dns_node_base_create(s4connector, object, dnsRecords)
+
+
 def ucs_zone_create(s4connector, object, dns_type):
 	_d = ud.function('ucs_zone_create')
 
@@ -1501,6 +1570,8 @@ def _identify_dns_ucs_object(s4connector, object):
 			return 'ptr_record'
 		if univention.admin.handlers.dns.txt_record.identify(object['dn'], object['attributes']):
 			return 'txt_record'
+		if univention.admin.handlers.dns.ns_record.identify(object['dn'], object['attributes']):
+			return 'ns_record'
 	return None
 
 
@@ -1551,6 +1622,8 @@ def _identify_dns_con_object(s4connector, object):
 					return 'host_record'
 				elif dnsp.DNS_TYPE_TXT in dns_types:
 					return 'txt_record'
+				elif dnsp.DNS_TYPE_NS in dns_types:
+					return 'ns_record'
 
 	return None
 
@@ -1620,6 +1693,13 @@ def ucs2con(s4connector, key, object):
 			s4_dns_node_base_delete(s4connector, object)
 		# ignore move
 
+	elif dns_type == 'ns_record':
+		if object['modtype'] in ['add', 'modify']:
+			s4_ns_record_create(s4connector, object)
+		elif object['modtype'] in ['delete']:
+			s4_dns_node_base_delete(s4connector, object)
+		# ignore move
+
 	return True
 
 
@@ -1676,6 +1756,12 @@ def con2ucs(s4connector, key, object):
 			ucs_txt_record_create(s4connector, object)
 		elif object['modtype'] in ['delete']:
 			ucs_txt_record_delete(s4connector, object)
+		# ignore move
+	elif dns_type == 'ns_record':
+		if object['modtype'] in ['add', 'modify']:
+			ucs_ns_record_create(s4connector, object)
+		elif object['modtype'] in ['delete']:
+			ucs_ns_record_delete(s4connector, object)
 		# ignore move
 	if dns_type in ['forward_zone', 'reverse_zone']:
 		if object['modtype'] in ['add', 'modify']:
