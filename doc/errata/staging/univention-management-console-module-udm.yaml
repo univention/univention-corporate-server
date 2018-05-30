@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-management-console-module-udm
-fix: 
+fix: 8.0.5-11A~4.3.0.201805301145
 desc: |-
   This update addresses the following issue(s):
   * Whether the simple or advanced search is shown upon opening
