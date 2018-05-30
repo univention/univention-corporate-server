@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-lib
-fix: 7.0.0-10A~4.3.0.201805281836
+fix: 7.0.0-11A~4.3.0.201805301322
 desc: |
  This update addresses the following issue(s):
  * Improve error logging and retry AD LDAP bind in case of
