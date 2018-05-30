@@ -762,7 +762,7 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 			cldap_res = net.finddc(address=ip, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
 		except RuntimeError as ex:
 			ud.debug(ud.MODULE, ud.ERROR, "Connection to AD Server %s failed: %s" % (ip, ex.args[0]))
-			check_results.append("CLDAP: %s", ex.args[0])
+			check_results.append("CLDAP: %s" % ex.args[0])
 		else:
 			if not check_dns:
 				ad_server_ip = ip
@@ -779,7 +779,7 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 					break
 			except OSError as ex:
 				ud.debug(ud.MODULE, ud.ERROR, "%s failed: %s" % (cmd, ex.args[1]))
-				check_results.append("DNS: %s", ex.args[1])
+				check_results.append("DNS: %s" % ex.args[1])
 
 	if ad_server_ip is None:
 		raise failedADConnect(["Connection to AD Server %s failed (%s)" % (ad_server, ",".join(check_results))])

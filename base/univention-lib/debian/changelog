@@ -1,3 +1,9 @@
+univention-lib (7.0.0-11) unstable; urgency=medium
+
+  * Bug #41733: Fix another syntax error typo
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 May 2018 13:21:07 +0200
+
 univention-lib (7.0.0-10) unstable; urgency=medium
 
   * Bug #47066: bindpwdfile support
