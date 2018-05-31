@@ -11,12 +11,12 @@ _ssh () {
 }
 
 # update the image on the kvm server and exit
-ucs_template="/var/univention/buildsystem2/temp/build/appliance/UCS-KVM-Demo-Image.qcow2"
-kvm_template_dir="/var/lib/libvirt/templates/single/Others/appliance_ucsa_amd64/"
+ucs_template="/var/univention/buildsystem2/temp/build/appliance/UCS-Demo-Image-KVM.qcow2"
+kvm_template_dir="/var/lib/libvirt/templates/single/Others/appliance_ucs_amd64/"
 template_name="$(basename $ucs_template)"
 kvm_template="$kvm_template_dir/$template_name"
 xml_template="/mnt/omar/vmwares/kvm/single/Others/ucs_appliance_template.xml"
-kvm_xml="$kvm_template_dir/appliance_ucsa_amd.xml"
+kvm_xml="$kvm_template_dir/appliance_ucs_amd.xml"
 
 # check disk space
 stat=$(_ssh stat -f -c '%a*%S' /var/lib/libvirt)
@@ -57,7 +57,7 @@ _ssh mkdir -p "$kvm_template_dir"
 _ssh cp "$xml_template" "$kvm_xml"
 
 # fake uvmm template
-_ssh touch /mnt/omar/vmwares/kvm/single/Others/appliance_ucsa_amd64.tar.gz
+_ssh touch /mnt/omar/vmwares/kvm/single/Others/appliance_ucs_amd64.tar.gz
 
 # prepare image
 _ssh "guestfish add $kvm_template : set-network true : run : mount /dev/mapper/vg_ucs-root / : \
