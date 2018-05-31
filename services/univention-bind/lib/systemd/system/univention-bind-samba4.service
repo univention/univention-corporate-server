@@ -2,6 +2,8 @@
 Description=BIND Domain Name Server with samba4 backend
 Documentation=man:named(8)
 After=network.target samba-ad-dc.service
+Wants=nss-lookup.target
+Before=nss-lookup.target
 Requires=samba-ad-dc.service
 Conflicts=univention-bind-ldap.service
 

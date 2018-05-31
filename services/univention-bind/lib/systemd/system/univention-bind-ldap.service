@@ -1,5 +1,5 @@
 [Unit]
-Description=BIND Domain Name Server with ldap backend
+Description=BIND Domain Name Server with LDAP backend
 Documentation=man:named(8)
 After=network.target slapd.service
 Before=univention-bind-proxy.service
