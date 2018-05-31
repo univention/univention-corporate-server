@@ -41,14 +41,14 @@ Type=bool
 Categories=management-umc
 
 [directory/manager/web/modules/search/advanced_on_open]
-Description[de]=Diese Variable legt fest, ob beim Öffnen eines Domnänenmanagement-Moduls, initial die einfache oder erweiterte Suche angezeigt wird. Diese Einstellung gilt für alle Module. Ergänzend kann diese Einstellung für einzelne Module spezifisch überschrieben werden, z.B. 'directory/manager/web/modules/users/user/search/advanced_on_open=true'.
-Description[en]=This variable determines whether the simple or advanced search is initially displayed when a domain management module is opened. This setting applies to all modules. In addition, this setting can be specifically overwritten for individual modules, e.g. 'directory/manager/web/modules/users/search/advanced_on_open=true'.
+Description[de]=Diese Variable legt fest, ob beim Öffnen eines Domänenmanagement-Moduls, initial die einfache oder erweiterte Suche angezeigt wird. Diese Einstellung gilt für alle Module. Ergänzend kann diese Einstellung für einzelne Module spezifisch überschrieben werden, z.B. 'directory/manager/web/modules/users/user/search/advanced_on_open=true'.
+Description[en]=This variable determines whether the simple or advanced search is initially displayed when a domain management module is opened. This setting applies to all modules. In addition, this setting can be specifically overwritten for individual modules, e.g. 'directory/manager/web/modules/users/user/search/advanced_on_open=true'.
 Type=bool
 Categories=management-umc
 
 [directory/manager/web/modules/.*/.*/search/advanced_on_open]
 Description[de]=Das initiale Anzeigen, der einfachen oder erweiterten Suche (siehe 'directory/manager/web/modules/search/advanced_on_open') kann auch pro Modul festgelegt werden, z.B. 'directory/manager/web/modules/users/user/search/advanced_on_open=true'.
-Description[en]=The initial display of the simple or advanced search (see 'directory/manager/web/modules/search/advanced_on_open') can also be set per module, e.g.'directory/manager/web/modules/user/search/ advanced_on_open=true'.
+Description[en]=The initial display of the simple or advanced search (see 'directory/manager/web/modules/search/advanced_on_open') can also be set per module, e.g. 'directory/manager/web/modules/users/user/search/advanced_on_open=true'.
 Type=bool
 Categories=management-umc
 
