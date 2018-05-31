@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-59) unstable; urgency=medium
+
+  * Bug #46789: certificate management
+
+ -- Felix Botner <botner@univention.de>  Thu, 31 May 2018 10:29:05 +0200
+
 univention-appcenter (7.0.1-58) unstable; urgency=medium
 
   * Bug #43434: When changing the App Center server, update all installed

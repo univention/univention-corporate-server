@@ -307,7 +307,7 @@ class InstallRemoveUpgrade(Register):
 		if not args.update_certificates:
 			return
 		uc = get_action('update-certificates')
-		uc.call(app=app)
+		uc.call(apps=[app])
 
 	def _configure(self, app, args, run_script=None):
 		if not args.configure:

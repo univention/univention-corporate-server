@@ -40,15 +40,11 @@ import os
 
 class UpdateCertificates(UpdateCertificates, DockerActionMixin):
 
-	def setup_parser(self, parser):
-		super(UpdateCertificates, self).setup_parser(parser)
-
 	def _copy_host_cert(self, docker, host_ssl_dir, dest):
-		if os.path.isfile('{0}/cert.pem'.format(host_ssl_dir)) and os.path.isfile('{0}/private.key'.format(host_ssl_dir)):
-			docker.execute('mkdir', '-p', dest, _logger=self.logfile_logger)
-			docker.execute('chmod', '750', dest, _logger=self.logfile_logger)
-			docker.cp_to_container('{0}/cert.pem'.format(host_ssl_dir), '{0}/cert.perm'.format(dest), _logger=self.logfile_logger)
-			docker.cp_to_container('{0}/private.key'.format(host_ssl_dir), '{0}/private.key'.format(dest), _logger=self.logfile_logger)
+		docker.execute('mkdir', '-p', dest, _logger=self.logfile_logger)
+		docker.execute('chmod', '750', dest, _logger=self.logfile_logger)
+		docker.cp_to_container('{0}/cert.pem'.format(host_ssl_dir), '{0}/cert.perm'.format(dest), _logger=self.logfile_logger)
+		docker.cp_to_container('{0}/private.key'.format(host_ssl_dir), '{0}/private.key'.format(dest), _logger=self.logfile_logger)
 
 	def update_certificates(self, app):
 		hostname = ucr_get('hostname')
