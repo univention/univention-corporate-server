@@ -50,36 +50,45 @@ _kvm_image () {
 
 _vmplayer_image () {
 	local identify="$1"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "test -e ${VMPLAYER_IMAGE} && rm ${VMPLAYER_IMAGE} || true;"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --vmware -s $TMP_KVM_IMAGE -f ${VMPLAYER_IMAGE%.*}"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.vm"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.vm"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE}.vm : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "test -e ${VMPLAYER_IMAGE} && rm ${VMPLAYER_IMAGE}"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --vmware -s ${TMP_KVM_IMAGE}.vm -f ${VMPLAYER_IMAGE%-*}"
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${VMPLAYER_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${VMPLAYER_IMAGE}"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${VMPLAYER_IMAGE}"
 	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${VMPLAYER_IMAGE} > ${VMPLAYER_IMAGE}.md5 && chmod 644 ${VMPLAYER_IMAGE}*"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${VMPLAYER_IMAGE}"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.vm"
 }
 
 
 _virtualbox_image () {
 	local identify="$1"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.vb"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.vb"
 	_scp utils/install-vbox-guesttools.sh ${KVM_USER}@${IMAGE_SERVER}:
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE} : set-network true : run : mount /dev/mapper/vg_ucs-root /  : copy-in install-vbox-guesttools.sh /root/ : command /root/install-vbox-guesttools.sh"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "test -e ${VBOX_IMAGE} && rm ${VBOX_IMAGE} || true"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --ova-virtualbox -s $TMP_KVM_IMAGE -f ${VBOX_IMAGE%.*}"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE}.vb : set-network true : run : mount /dev/mapper/vg_ucs-root /  : copy-in install-vbox-guesttools.sh /root/ : command /root/install-vbox-guesttools.sh"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE}.vb : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "test -e ${VBOX_IMAGE} && rm ${VBOX_IMAGE}"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --ova-virtualbox -s ${TMP_KVM_IMAGE}.vb -f ${VBOX_IMAGE%-*}"
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${VBOX_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${VBOX_IMAGE}"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${VBOX_IMAGE}"
 	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${VBOX_IMAGE} > ${VBOX_IMAGE}.md5 && chmod 644  ${VBOX_IMAGE}*"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${VBOX_IMAGE}"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.vb"
 }
 
 
 _esxi () {
 	local identify="$1"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "test -e ${ESX_IMAGE} && rm ${ESX_IMAGE} || true"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --ova-esxi -s $TMP_KVM_IMAGE -f ${ESX_IMAGE%.*}"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.es"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.es"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE}.es : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "test -e ${ESX_IMAGE} && rm ${ESX_IMAGE}"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --ova-esxi -s ${TMP_KVM_IMAGE}.es -f ${ESX_IMAGE%-*}"
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${ESX_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${ESX_IMAGE}"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${ESX_IMAGE}"
 	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${ESX_IMAGE} > ${ESX_IMAGE}.md5 && chmod 644  ${ESX_IMAGE}*"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${ESX_IMAGE}"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.es"
 }
 
 _ec2_image () {
@@ -130,7 +139,6 @@ create_app_images () {
 	_kvm_image "Univention App ${UCS_VERSION} Appliance ${APP_ID} (KVM)"
 	_vmplayer_image "Univention App ${UCS_VERSION} Appliance ${APP_ID} (VMware)"
 	_esxi "Univention App ${UCS_VERSION} Appliance ${APP_ID} (ESX)"
-	# Virtualbox is last image because guest-tools are installed
 	_virtualbox_image "Univention App ${UCS_VERSION} Appliance ${APP_ID} (VirtualBox)"
 
 	# cleanup
@@ -149,22 +157,22 @@ ln -s ../${UCS_VERSION}/${APP_ID} ${APP_ID}
 create_ucs_images () {
 
 	UPDATER_ID="$1"
-    KVM_USER="$2"
-    KVM_SERVER="$3"
-    UCS_VERSION="$4"
+	KVM_USER="$2"
+	KVM_SERVER="$3"
+	UCS_VERSION="$4"
 
-    KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_master-ucs-appliance.qcow2"
-    APPS_SERVER="omar.knut.univention.de"
-    IMAGE_SERVER="docker.knut.univention.de"
-    TMP_DIR="/tmp/build-ucs-appliance"
-    TMP_KVM_IMAGE="$TMP_DIR/master.qcow2"
-    APPS_BASE="/var/univention/buildsystem2/temp/build/appliance/"
+	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_master-ucs-appliance.qcow2"
+	APPS_SERVER="omar.knut.univention.de"
+	IMAGE_SERVER="docker.knut.univention.de"
+	TMP_DIR="/tmp/build-ucs-appliance"
+	TMP_KVM_IMAGE="$TMP_DIR/master.qcow2"
+	APPS_BASE="/var/univention/buildsystem2/temp/build/appliance/"
 	MEMORY=1536
-    IMAGE_VERSION="${UCS_VERSION}"
-    VMPLAYER_IMAGE="UCS-VMware-Demo-Image.zip"
-    KVM_IMAGE="UCS-KVM-Demo-Image.qcow2"
-	VBOX_IMAGE="UCS-Virtualbox-Demo-Image.ova"
-    ESX_IMAGE="UCS-VMware-ESX-Demo-Image.ova"
+	IMAGE_VERSION="${UCS_VERSION}"
+	VMPLAYER_IMAGE="UCS-Demo-Image-vmware.zip"
+	KVM_IMAGE="UCS-Demo-Image-KVM.qcow2"
+	VBOX_IMAGE="UCS-Demo-Image-virtualbox.ova"
+	ESX_IMAGE="UCS-Demo-Image-ESX.ova"
 
     export APP_ID KVM_USER KVM_SERVER UCS_VERSION KT_CREATE_IMAGE APPS_BASE APPS_SERVER IMAGE_SERVER
     export TMP_DIR VMPLAYER_IMAGE KVM_IMAGE TMP_KVM_IMAGE VBOX_IMAGE ESX_IMAGE MEMORY IMAGE_VERSION
@@ -183,10 +191,9 @@ create_ucs_images () {
 	# create apps dir
 	_ssh -l "$KVM_USER" "$APPS_SERVER" "mkdir -p $APPS_BASE"
 
-	#_kvm_image "$UPDATER_ID (KVM)"
+	_kvm_image "$UPDATER_ID (KVM)"
 	_vmplayer_image "$UPDATER_ID (VMware)"
 	_esxi "$UPDATER_ID (ESX)"
-	# Virtualbox is last image because guest-tools are installed
 	_virtualbox_image "$UPDATER_ID (VirtualBox)"
 
 	# cleanup
