@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-dns_backend="$(/usr/sbin/ucr get dns/backend)"
+dns_backend="$(ucr get dns/backend)"
 
 if [ "$dns_backend" = "ldap" ]; then
 	systemctl disable univention-bind-samba4.service
