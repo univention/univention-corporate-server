@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-l10n-fr
-fix: 2.0.0-7A~4.3.0.201805282110
+fix: 2.0.0-8A~4.3.0.201805311410
 desc: |-
   This update addresses the following issue(s):
   * The link in the welcome dialog for sending feedback
