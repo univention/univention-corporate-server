@@ -5,8 +5,6 @@ set -e
 
 export KVM_SERVER="$KVM_SERVER"
 export KVM_USER="$KVM_USER"
-export UCS_VERSION="$UCS_VERSION"
-export TEST_ERRATA="true"
 
 _ssh () {
 	ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -n -l "$KVM_USER" "$KVM_SERVER" "$@"
@@ -67,11 +65,5 @@ _ssh "guestfish add $kvm_template : set-network true : run : mount /dev/mapper/v
 	mkdir-p /root/.ssh/ : \
 	write /root/.ssh/authorized_keys 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKxi4dwmF9K7gV4JbQUmQ4ufRHcxYOYUHWoIRuj8jLmP1hMOqEmZ43rSRoe2E3xTNg+RAjwkX1GQmWQzzjRIYRpUfwLo+yEXtER1DCDTupLPAT5ulL6uPd5mK965vbE46g50LHRyTGZTbsh1A/NPD7+LNBvgm5dTo/KtMlvJHWDN0u4Fwix2uQfvCSOpF1n0tDh0b+rr01orITJcjuezIbZsArTszA+VVJpoMyvu/I3VQVDSoHB+7bKTPwPQz6OehBrFNZIp4zl18eAXafDoutTXSOUyiXcrViuKukRmvPAaO8u3+r+OAO82xUSQZgIWQgtsja8vsiQHtN+EtR8mIn tech' : \
 "
-	# TODO Update
-	#command 'ucr set repository/online=yes' : \
-	#write /etc/apt/sources.list.d/test.list 'deb http://192.168.0.10/build2/ ucs_4.3-0-errata4.3-0/all/' : \
-	#write-append /etc/apt/sources.list.d/test.list 'deb http://192.168.0.10/build2/ ucs_4.3-0-errata4.3-0/\$(ARCH)/' : \
-
-
 
 exit 0
