@@ -11,6 +11,7 @@ Conflicts=univention-bind-samba4.service
 ExecStart=/usr/lib/univention-bind/ldap
 ExecReload=/usr/sbin/rndc -p 55555 reload
 ExecStop=/usr/sbin/rndc -p 55555 stop
+ExecStartPost=/usr/bin/timeout 30 /bin/sh -c "until rndc -p 55555 status | grep --quiet 'server is up and running'; do sleep 1; done"
 Restart=on-failure
 
 [Install]
