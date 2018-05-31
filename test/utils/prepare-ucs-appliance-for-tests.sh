@@ -53,6 +53,7 @@ if [ "$appliance_md5" != "$kvm_md5" ]; then
 fi
 
 # cp xml
+_ssh mkdir -p "$kvm_template_dir"
 _ssh cp "$xml_template" "$kvm_xml"
 
 # fake uvmm template
