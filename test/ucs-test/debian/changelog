@@ -1,3 +1,9 @@
+ucs-test (8.0.28-131) unstable; urgency=medium
+
+  * Bug #41416: Test Appliance logos only for installed Apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 31 May 2018 12:56:04 +0200
+
 ucs-test (8.0.28-130) unstable; urgency=medium
 
   * Bug #46789: fixed 80_docker/72_app_update_certificates
