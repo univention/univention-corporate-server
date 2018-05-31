@@ -44,10 +44,10 @@ msgstr "1 paquetage à mettre à jour"
 #: umc/js/updater.js:75
 #, javascript-format
 msgid ""
-"<b style='color: #ff7070'>Warning:</b> The currently used UCS version is out "
-"of maintenance. Please visit the %s for more information"
+"The currently used UCS version is out "
+"of maintenance. Please visit the %s for more information."
 msgstr ""
-"<b style='color: #ff7070'>Avertissement :</b> la version d'UCS en cours "
+"La version d'UCS en cours "
 "d'utilisation n'est plus maintenue. Pour plus d'informations, veuillez "
 "consulter %s."
 
