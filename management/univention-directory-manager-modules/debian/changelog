@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-27) unstable; urgency=medium
+
+  * Bug #46910: Fix typos
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 31 May 2018 11:46:46 +0200
+
 univention-directory-manager-modules (13.0.21-26) unstable; urgency=medium
 
   * Bug #46910: Add description for
