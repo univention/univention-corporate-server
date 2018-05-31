@@ -1,3 +1,9 @@
+univention-l10n-fr (2.0.0-8) unstable; urgency=medium
+
+  * Bug #47097: Fixed a typo when warning about an outdated UCS version.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 31 May 2018 14:08:59 +0200
+
 univention-l10n-fr (2.0.0-7) unstable; urgency=medium
 
   * Bug #47097: Fixed a typo when warning about an outdated UCS version.
