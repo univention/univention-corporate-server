@@ -42,18 +42,21 @@ _scp () {
 
 _kvm_image () {
 	local identify="$1"
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE} : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
-	_scp ${KVM_USER}@${IMAGE_SERVER}:${TMP_KVM_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/$KVM_IMAGE"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.kv"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.kv"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE}.kv : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
+	_scp ${KVM_USER}@${IMAGE_SERVER}:${TMP_KVM_IMAGE}.kv ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/$KVM_IMAGE"
 	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${KVM_IMAGE} > ${KVM_IMAGE}.md5 && chmod 644 ${KVM_IMAGE}*"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.kv"
 }
 
 
 _vmplayer_image () {
 	local identify="$1"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.vm"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${VMPLAYER_IMAGE}"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.vm"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE}.vm : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "test -e ${VMPLAYER_IMAGE} && rm ${VMPLAYER_IMAGE} || true"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --vmware -s ${TMP_KVM_IMAGE}.vm -f ${VMPLAYER_IMAGE%-*}"
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${VMPLAYER_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${VMPLAYER_IMAGE}"
 	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${VMPLAYER_IMAGE} > ${VMPLAYER_IMAGE}.md5 && chmod 644 ${VMPLAYER_IMAGE}*"
@@ -65,11 +68,11 @@ _vmplayer_image () {
 _virtualbox_image () {
 	local identify="$1"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.vb"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${VBOX_IMAGE}"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.vb"
 	_scp utils/install-vbox-guesttools.sh ${KVM_USER}@${IMAGE_SERVER}:
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE}.vb : set-network true : run : mount /dev/mapper/vg_ucs-root /  : copy-in install-vbox-guesttools.sh /root/ : command /root/install-vbox-guesttools.sh"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE}.vb : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "test -e ${VBOX_IMAGE} && rm ${VBOX_IMAGE} || true"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --ova-virtualbox -s ${TMP_KVM_IMAGE}.vb -f ${VBOX_IMAGE%-*}"
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${VBOX_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${VBOX_IMAGE}"
 	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${VBOX_IMAGE} > ${VBOX_IMAGE}.md5 && chmod 644  ${VBOX_IMAGE}*"
@@ -81,9 +84,9 @@ _virtualbox_image () {
 _esxi () {
 	local identify="$1"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.es"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${ESX_IMAGE}"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.es"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE}.es : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "test -e ${ESX_IMAGE} && rm ${ESX_IMAGE} || true"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --ova-esxi -s ${TMP_KVM_IMAGE}.es -f ${ESX_IMAGE%-*}"
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${ESX_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${ESX_IMAGE}"
 	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${ESX_IMAGE} > ${ESX_IMAGE}.md5 && chmod 644  ${ESX_IMAGE}*"
