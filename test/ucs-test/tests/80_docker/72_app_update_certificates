@@ -69,10 +69,10 @@ exit 0
 			app.verify(joined=False)
 			verify_certs(app)
 			cleanup(app)
-			subprocess.check_output(['univention-app', 'update-certificates', '--app', name])
+			subprocess.check_output(['univention-app', 'update-certificates', name])
 			verify_certs(app)
 			cleanup(app)
-			subprocess.check_output(['univention-app', 'update-certificates', '--all-apps'])
+			subprocess.check_output(['univention-app', 'update-certificates'])
 			verify_certs(app)
 			cleanup(app)
 

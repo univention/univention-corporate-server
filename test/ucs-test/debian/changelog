@@ -1,3 +1,9 @@
+ucs-test (8.0.28-130) unstable; urgency=medium
+
+  * Bug #46789: fixed 80_docker/72_app_update_certificates
+
+ -- Felix Botner <botner@univention.de>  Thu, 31 May 2018 09:46:09 +0200
+
 ucs-test (8.0.28-129) unstable; urgency=medium
 
   * Bug #44769: Re-enable 20_appcenter/73_umc_dependency_failure
