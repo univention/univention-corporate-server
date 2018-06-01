@@ -459,8 +459,8 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 			on servers with the &ucsBackup; role (backup DC for short).
 		</para>
 		<para>
-			The &ucsBackup; is the fallback system for the master DC. If the latter should
-			fail, a backup DC can take over the role of the DC master permanently (see
+			The &ucsBackup; is the fallback system for the &ucsMaster;. If the latter should
+			fail, a &ucsBackup; can take over the role of the &ucsMaster; permanently (see
 			<xref linkend="domain:backup2master"/>).
 		</para>
 	</section>
@@ -1469,18 +1469,18 @@ univention-directory-listener-ctrl resync cups-printers
 	</itemizedlist>
 	<caution>
 		<para>
-                The conversion of a &ucsBackup; to a &ucsMaster; is a serious configuration change and 
+		The conversion of a &ucsBackup; to a &ucsMaster; is a serious configuration change and 
 		should be prepared carefully. The conversion cannot be reversed.
 		</para>
-                <para>
+		<para>
 		The &ucsMaster; that is going to be replaced has to be shut down before the conversion. It must not be
 		powered on during or after the conversion!
-                </para>
-                <para>
+		</para>
+		<para>
 		Before the conversion, the installed software packages and the current configuration has to be compared between the &ucsMaster; and &ucsBackup;.
 		If the &ucsMaster; is not available anymore, use a file backup.
-                After the conversion, all possibly remaining references of the old &ucsMaster; have to be removed or changed to the new &ucsMaster;.
-                </para>
+		After the conversion, all possibly remaining references of the old &ucsMaster; have to be removed or changed to the new &ucsMaster;.
+		</para>
 	</caution>
 	<para>
 		The conversion primarily involves the changeover of the services relevant for
@@ -1488,58 +1488,89 @@ univention-directory-listener-ctrl resync cups-printers
 		manually (this can be done using the UMC modules <guimenu>App Center</guimenu>
 		or <guimenu>Package Management</guimenu>).
 		For example, if the mail component was installed on the previous &ucsMaster;,
-		it gets not automatically installed on the new &ucsMaster; after the conversion.
+		it will not be automatically installed on the new &ucsMaster; after the conversion.
 		To minimize manual changes after the conversion, please consider <xref
-                linkend="domain:fault-tolerant"/>.
+		linkend="domain:fault-tolerant"/>.
 	</para>
 	<para>
 		If additional LDAP schema packages were installed on the &ucsMaster;, they must
 		also be installed on the &ucsBackup; prior to the conversion.
 		The package list of the old &ucsMaster; should be saved prior to the promotion in order to
-		allow subsequent comparison of the installed packages. The package list can be created with
+		allow a subsequent comparison of the installed packages. The package list can be created with
 		the following command:
 	</para>
-	  <programlisting language="sh">
+		<programlisting language="sh">
 dpkg --get-selections \* &gt;> dpkg.selection
-	  </programlisting>
-        <para>
+		</programlisting>
+	<para>
 		This file should be compared with the same output on the &ucsBackup;. Missing packages should 
 		then be installed on the &ucsBackup;. Especially those packages that install a LDAP schema
 		are absolutely necessary. The following command executed on the &ucsMaster; will list all affected packages:
-        </para>
-          <programlisting language="sh">
+	</para>
+		<programlisting language="sh">
 ls -1 /etc/ldap/schema/*.schema /usr/share/univention-ldap/schema/*.schema | xargs dpkg -S
-                </programlisting>
-        <para>
-                To simply installl all packages of the &ucsMaster; also on the  &ucsBackup;, use the previously
+		</programlisting>
+	<para>
+		To simply installl all packages of the &ucsMaster; also on the &ucsBackup;, use the previously
 		created file <filename>dpkg.selection</filename> of the &ucsMaster; and run the following command 
 		on the &ucsBackup;:
-        </para>
-          <programlisting language="sh">
+	</para>
+		<programlisting language="sh">
 dpkg --set-selections &lt; dpkg.selection
 apt-get dselect-upgrade
-          </programlisting>
+		</programlisting>
 	<para>
-	  In addition, the &ucsUCR; inventory needs to be saved so that it is possible to compare the
-	  configuration adjustments on the new &ucsMaster;. This can be achieved with the following
-	  command:
+		In addition, the &ucsUCR; inventory needs to be saved so that it is possible to compare the
+		configuration adjustments on the new &ucsMaster;. This can be achieved with the following
+		command:
 	</para>
-	  <programlisting language="sh">
+		<programlisting language="sh">
 /etc/univention/base.conf
 /etc/univention/base-forced.conf
-	  </programlisting>
+		</programlisting>
+	<para>
+		UCS saves a copy of those files every night to <filename>/var/univention-backup/ucr-backup_%Y%m%d.tgz</filename>
+	</para>
 	<para>
 		The conversion of a &ucsBackup; to the new &ucsMaster; is performed by running the
-		<command>/usr/lib/univention-ldap/univention-backup2master</command> command.
+		command <command>/usr/lib/univention-ldap/univention-backup2master</command> on the &ucsBackup;.
 		The system must be rebooted after the conversion. The process is logged to
 		<filename>/var/log/univention/backup2master.log</filename>
 	</para>
-
 	<para>
-	  The computer name and/or the IP address of the &ucsMaster; is automatically changed to the new name in all
-	  configurations managed from the UCS LDAP or via &ucsUCR; in the scope of the promotion. If the
-	  name is referenced in configuration files or on systems which are not managed by &ucsUCR;, it must be adapted
-	  accordingly following the promotion.
+		The following steps are performed by <command>univention-backup2master</command>:
+	</para>
+	<itemizedlist>
+		<listitem>
+			<simpara>
+			Checking the environment: The system must be a &ucsBackup; that already joined the domain.
+			Addtionally, it is checked if the &ucsMaster; can be resolved via DNS and if the repository server can be reached.
+			Also, the &ucsMaster; must be powered off and not reachable anymore.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+				Now, the most important services OpenLDAP, Samba, Kerberos and Univention Directory Notifier and Listener will be stopped.
+				Important &ucsUCRV;, such as <envar>ldap/master</envar> and <envar>server/role</envar> will be changed. The UCS Root CA certificate will be available via the webserver on the &ucsBackup;. All mentioned services will be started again.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+				The DNS SRV record <literal>kerberos-adm</literal> will be changed from the old to the new &ucsMaster;.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+				If present, the Univention S4 Connector (see <xref linkend="windows:s4connector"/>) will be
+				removed from the computer object of the old &ucsMaster; and will be scheduled for re-configuration on the new &ucsMaster;.
+			</simpara>
+		</listitem>
+	</itemizedlist>
+	<para>
+		The computer name and/or the IP address of the &ucsMaster; is automatically changed to the new name in all
+		configurations managed from the UCS LDAP or via &ucsUCR; in the scope of the promotion. If the
+		name is referenced in configuration files or on systems which are not managed by &ucsUCR;, it must be adapted
+		accordingly following the promotion.
 	</para>
 </section>
 

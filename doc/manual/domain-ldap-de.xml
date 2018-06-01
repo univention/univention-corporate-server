@@ -471,8 +471,8 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 			Domänendaten und SSL-Sicherheitszertifikate als Nur-Lese-Kopie gespeichert.
 		</para>
 		<para>
-			Der &ucsBackup; dient als Fallback-System des DC Master. Sollte dieser
-			ausfallen, kann ein DC Backup die Rolle des DC Master dauerhaft übernehmen
+			Der &ucsBackup; dient als Fallback-System des &ucsMaster;. Sollte dieser
+			ausfallen, kann ein &ucsBackup; die Rolle des &ucsMaster; dauerhaft übernehmen
 			(siehe <xref linkend="domain:backup2master"/>).
 		</para>
 	</section>
@@ -1525,22 +1525,22 @@ univention-directory-listener-ctrl resync cups-printers
 		linkend="domain:fault-tolerant"/> beachtet werden.
 	</para>
 	<para>
-	  Wurden auf dem &ucsMaster; zusätzliche LDAP-Schema-Pakete installiert, so
-	  müssen diese vor der Umwandlung auch auf dem &ucsBackup; installiert werden.
-	  Die Paketliste des alten &ucsMaster; sollte vor der Umstellung gesichert werden, um einen
-	  Abgleich der installierten Pakete zu erlauben. Die Paketliste kann mit dem folgenden Befehl
-	  erstellt werden:
+		  Wurden auf dem &ucsMaster; zusätzliche LDAP-Schema-Pakete installiert, so
+		müssen diese vor der Umwandlung auch auf dem &ucsBackup; installiert werden.
+		Die Paketliste des alten &ucsMaster; sollte vor der Umstellung gesichert werden, um einen
+		Abgleich der installierten Pakete zu erlauben. Die Paketliste kann mit dem folgenden Befehl
+		erstellt werden:
 	</para>
-	  <programlisting language="sh">
+		<programlisting language="sh">
 dpkg --get-selections \* > dpkg.selection
-	  </programlisting>
+		</programlisting>
 	<para>
-	  Die so auf dem &ucsMaster; erstellte Datei sollte mit einer ebenso erstellten Datei des &ucsBackup;
-	  verglichen und benötigte Pakete auf dem &ucsBackup; nachinstalliert werden. Insbesondere alle Pakete,
-	  die ein LDAP-Schema installieren sind zwingend erforderlich. Eine Auflistung dieser LDAP-Schema-Pakete
-	  lässt sich wie folgt erstellen:
+		Die so auf dem &ucsMaster; erstellte Datei sollte mit einer ebenso erstellten Datei des &ucsBackup;
+		verglichen und benötigte Pakete auf dem &ucsBackup; nachinstalliert werden. Insbesondere alle Pakete,
+		die ein LDAP-Schema installieren sind zwingend erforderlich. Eine Auflistung dieser LDAP-Schema-Pakete
+		lässt sich wie folgt erstellen:
 	</para>
-	  <programlisting language="sh">
+		<programlisting language="sh">
 ls -1 /etc/ldap/schema/*.schema /usr/share/univention-ldap/schema/*.schema | xargs dpkg -S
 		</programlisting>
 	<para>
@@ -1548,30 +1548,30 @@ ls -1 /etc/ldap/schema/*.schema /usr/share/univention-ldap/schema/*.schema | xar
 		kann die zuvor auf dem &ucsMaster; erstellte Datei <filename>dpkg.selection</filename> mit
 		folgenden Befehlen verwendet werden:
 	</para>
-	  <programlisting language="sh">
+		<programlisting language="sh">
 dpkg --set-selections &lt; dpkg.selection
 apt-get dselect-upgrade
-	  </programlisting>
+		</programlisting>
 	<para>
-	  Darüber hinaus sollte der &ucsUCR;-Datenbestand gesichert werden, um
-	  Konfigurationsanpassungen auch auf dem neuen &ucsMaster; abgleichen zu können. Folgende Dateien
-	  des &ucsMaster; sind dazu mit denen auf dem &ucsBackup; zu vergleichen:
+		Darüber hinaus sollte der &ucsUCR;-Datenbestand gesichert werden, um
+		Konfigurationsanpassungen auch auf dem neuen &ucsMaster; abgleichen zu können. Folgende Dateien
+		des &ucsMaster; sind dazu mit denen auf dem &ucsBackup; zu vergleichen:
 	</para>
-	  <programlisting language="sh">
+		<programlisting language="sh">
 /etc/univention/base.conf
 /etc/univention/base-forced.conf
-	  </programlisting>
+		</programlisting>
 	<para>
-	  Eine nächtliche Sicherung dieser Dateien findet sich auch in <filename>/var/univention-backup/ucr-backup_%Y%m%d.tgz</filename>
+		Eine nächtliche Sicherung dieser Dateien findet sich auch in <filename>/var/univention-backup/ucr-backup_%Y%m%d.tgz</filename>
 	</para>
 	<para>
-	  Die Umwandlung eines &ucsBackup; zum neuen &ucsMaster; erfolgt dann durch Aufruf des
-	  Befehls <command>/usr/lib/univention-ldap/univention-backup2master</command> auf dem &ucsBackup;.
-	  Das System muss anschließend neu gestartet werden. Die Umstellung wird in der Logdatei
-	  <filename>/var/log/univention/backup2master.log</filename> protokolliert.
+		Die Umwandlung eines &ucsBackup; zum neuen &ucsMaster; erfolgt dann durch Aufruf des
+		Befehls <command>/usr/lib/univention-ldap/univention-backup2master</command> auf dem &ucsBackup;.
+		Das System muss anschließend neu gestartet werden. Die Umstellung wird in der Logdatei
+		<filename>/var/log/univention/backup2master.log</filename> protokolliert.
 	</para>
 	<para>
-	  Folgende Schritte führt der Befehl <command>univention-backup2master</command> der Reihe nach aus:
+		Folgende Schritte führt der Befehl <command>univention-backup2master</command> der Reihe nach aus:
 	</para>
 	<itemizedlist>
 		<listitem>
