@@ -35,6 +35,9 @@ import univention.admin.uldap
 
 
 class config:
+	"""
+	UDM configuration object.
+	"""
 
 	def __init__(self, host=''):
 		base = univention.admin.uldap.getBaseDN(host)
@@ -61,6 +64,15 @@ class config:
 
 
 def getDefaultContainer(lo, module):
+	"""
+	Return the default container for a UDM module.
+
+	:param univention.admin.uldap.access lo: A LDAP connection object.
+	:param module: The name of a UDM module.
+	:type module: str or a :py:class:`univention.admin.handlers.simpleLdap` instance.
+	:returns: A distinguished name.
+	:rtype: str
+	"""
 	if isinstance(module, type('str')):
 		if module == 'users/user':
 			att = 'univentionUsersObject'
@@ -87,7 +99,15 @@ def getDefaultContainer(lo, module):
 
 
 def getDefaultValue(lo, name, position=None):
+	"""
+	Return the default value for a UDM module.
 
+	:param univention.admin.uldap.access lo: A LDAP connection object.
+	:param str name: The name of a property.
+	:param univention.admin.uldap.position position: A UDM position specifying the LDAP base container.
+	:returns: The default value.
+	:rtype: str
+	"""
 	if name == 'group':
 		att = 'univentionDefaultGroup'
 	elif name == 'computerGroup':

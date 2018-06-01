@@ -40,19 +40,45 @@ from ldapurl import LDAPUrl
 from ldapurl import isLDAPUrl
 
 
-def parentDn(dn, base=''):
+def parentDn(dn, base=''):  # type: (str, str) -> Union[str]
+	"""
+	Return the parent container of a distinguished name.
+
+	:param str dn: The distinguished name.
+	:param str base: distinguished name where to stop.
+	:return: The parent distinguished name or None.
+	:rtype: str or None
+	"""
 	_d = univention.debug.function('uldap.parentDn dn=%s base=%s' % (dn, base))
 	if dn.lower() == base.lower():
-		return
+		return None
 	dn = ldap.dn.str2dn(dn)
 	return ldap.dn.dn2str(dn[1:])
 
 
-def explodeDn(dn, notypes=0):
+def explodeDn(dn, notypes=0):  # type: (str, int) -> list[str]
+	"""
+	Break up a DN into its component parts.
+
+	:param str dn: The distinguished name.
+	:param int notypes: Return only the component's attribute values if True. Also the attribute types if False.
+	:return: A list of relative distinguished names.
+	:rtype: list[str]
+	"""
 	return ldap.dn.explode_dn(dn, notypes)
 
 
-def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
+def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):  # type: (int, list[str], bool) -> access
+	"""
+	Open a LDAP connection to the local LDAP server with the LDAP root account.
+
+	:param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
+	:param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
+	:type decode_ignorelist: list[str]
+	:param bool reconnect: Automatically reconect if the connection fails.
+	:return: A LDAP access object.
+	:rtype: univention.uldap.access
+	"""
 	ucr = ConfigRegistry()
 	ucr.load()
 	port = int(ucr.get('slapd/port', '7389').split(',')[0])
@@ -66,7 +92,17 @@ def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	return access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
-def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
+def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):  # type: (int, list[str], bool) -> access
+	"""
+	Open a LDAP connection to the Master LDAP server using the admin credentials.
+
+	:param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
+	:param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
+	:type decode_ignorelist: list[str]
+	:param bool reconnect: Automatically reconect if the connection fails.
+	:return: A LDAP access object.
+	:rtype: univention.uldap.access
+	"""
 	ucr = ConfigRegistry()
 	ucr.load()
 	bindpw = open('/etc/ldap.secret').read().rstrip('\n')
@@ -74,7 +110,17 @@ def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
-def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
+def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):  # type: (int, list[str], bool) -> access
+	"""
+	Open a LDAP connection to a Backup LDAP server using the admin credentials.
+
+	:param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
+	:param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
+	:type decode_ignorelist: list[str]
+	:param bool reconnect: Automatically reconect if the connection fails.
+	:return: A LDAP access object.
+	:rtype: univention.uldap.access
+	"""
 	ucr = ConfigRegistry()
 	ucr.load()
 	bindpw = open('/etc/ldap-backup.secret').read().rstrip('\n')
@@ -88,7 +134,19 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 		return access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
-def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, secret_file="/etc/machine.secret", reconnect=True):
+def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, secret_file="/etc/machine.secret", reconnect=True):  # type: (int, list[str], bool, str, bool) -> access
+	"""
+	Open a LDAP connection using the machine credentials.
+
+	:param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
+	:param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
+	:type decode_ignorelist: list[str]
+	:param bool ldap_master: Open a connection to the Master if True, to the preferred LDAP server otherwise.
+	:param str secret_file: The name of a file containing the password credentials.
+	:param bool reconnect: Automatically reconect if the connection fails.
+	:return: A LDAP access object.
+	:rtype: univention.uldap.access
+	"""
 	ucr = ConfigRegistry()
 	ucr.load()
 
@@ -117,6 +175,9 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
 
 
 class access:
+	"""
+	The low-level class to access a LDAP server.
+	"""
 
 	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False, uri=None, follow_referral=False, reconnect=True):
 		"""start_tls = 0 (no); 1 (try); 2 (must)"""
@@ -171,15 +232,24 @@ class access:
 		else:
 			return pwd
 
-	def bind(self, binddn, bindpw):
-		"""Do simple LDAP bind using DN and password."""
+	def bind(self, binddn, bindpw):  # type: (str, str) -> None
+		"""
+		Do simple LDAP bind using DN and password.
+
+		:param str binddn: The distinguished name of the account.
+		:param str bindpw: The user password for simple authentication.
+		"""
 		self.binddn = binddn
 		self.bindpw = bindpw
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'bind binddn=%s' % self.binddn)
 		self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
 
-	def bind_saml(self, bindpw):
-		"""Do LDAP bind using SAML Message"""
+	def bind_saml(self, bindpw):  # type: (str) -> None
+		"""
+		Do LDAP bind using SAML message.
+
+		:param str bindpw: The SAML authentication cookie.
+		"""
 		self.binddn = None
 		self.bindpw = bindpw
 		saml = ldap.sasl.sasl({
@@ -190,7 +260,10 @@ class access:
 		self.binddn = re.sub('^dn:', '', self.lo.whoami_s())
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'SAML bind binddn=%s' % self.binddn)
 
-	def unbind(self):
+	def unbind(self):  # type: () -> None
+		"""
+		Unauthenticate.
+		"""
 		self.lo.unbind_s()
 
 	def __open(self, ca_certfile):
@@ -265,9 +338,18 @@ class access:
 	def __decode_attribute(self, attr, val):
 		return self.__recode_attribute(attr, val)
 
-	def get(self, dn, attr=[], required=False):
-		'''returns ldap object'''
+	def get(self, dn, attr=[], required=False):  # type: (str, list[str], bool) -> dict[str, list[str]]
+		"""
+		Return multiple attributes of a single LDAP object.
 
+		:param str dn: The distinguished name of the object to lookup.
+		:param attr: The list of attributes to fetch.
+		:type attr: list[str]
+		:param bool required: Raise an exception instead of returning an empty dictionary.
+		:returns: A dictionary mapping the requested attributes to a list of their values.
+		:rtype: dict[str, list[str]]
+		:raises ldap.NO_SUCH_OBJECT: If the LDAP object is not accessible.
+		"""
 		if dn:
 			try:
 				result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attr)
@@ -279,9 +361,17 @@ class access:
 			raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
 		return {}
 
-	def getAttr(self, dn, attr, required=False):
-		'''return attribute of ldap object'''
+	def getAttr(self, dn, attr, required=False):  # type: (str, str, bool) -> list[str]
+		"""
+		Return a single attribute of a single LDAP object.
 
+		:param str dn: The distinguished name of the object to lookup.
+		:param str attr: The attribute to fetch.
+		:param bool required: Raise an exception instead of returning an empty dictionary.
+		:returns: A list of values.
+		:rtype: list[str]
+		:raises ldap.NO_SUCH_OBJECT: If the LDAP object is not accessible.
+		"""
 		_d = univention.debug.function('uldap.getAttr %s %s' % (dn, attr))
 		if dn:
 			try:
@@ -294,9 +384,26 @@ class access:
 			raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
 		return []
 
-	def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None):
-		'''do ldap search'''
+	def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None):  # type: (str, str, str, list[str], bool, bool, int, int, Optional[list[ldap.controls.LDAPControl]]) -> list[tuple[str, dict[str, list[str]]]]
+		"""
+		Perform LDAP search and return values.
 
+		:param str filter: LDAP search filter.
+		:param str base: the starting point for the search.
+		:param str scope: Specify the scope of the search to be one of `base`, `base+one`, `one`, `sub`, or `domain` to specify a base object, base plus one-level, one-level, subtree, or children search.
+		:param attr: The list of attributes to fetch.
+		:type attr: list[str]
+		:param bool unique: Raise an exception if more than one object matches.
+		:param bool required: Raise an exception instead of returning an empty dictionary.
+		:param int timeout: wait at most timeout seconds for a search to complete. `-1` for no limit.
+		:param int sizelimit: retrieve at most sizelimit entries for a search. `0` for no limit.
+		:param serverctrls: a list of :py:class:`ldap.controls.LDAPControl` instances sent to the server along with the LDAP request.
+		:type serverctrls: list[ldap.controls.LDAPControl]
+		:returns: A list of 2-tuples (dn, values) for each LDAP object, where values is a dictionary mapping attribute names to a list of values.
+		:rtype: list[tuple[str, dict[str, list[str]]]]
+		:raises ldap.NO_SUCH_OBJECT: Indicates the target object cannot be found.
+		:raises ldap.INAPPROPRIATE_MATCHING: Indicates that the matching rule specified in the search filter does not match a rule defined for the attribute's syntax.
+		"""
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.search filter=%s base=%s scope=%s attr=%s unique=%d required=%d timeout=%d sizelimit=%d' % (filter, base, scope, attr, unique, required, timeout, sizelimit))
 
 		if not base:
@@ -320,7 +427,24 @@ class access:
 			raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
 		return res
 
-	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None):
+	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None):  # type: (str, str, str, bool, bool, int, int, Optional[list[ldap.controls.LDAPControl]]) -> list[str]
+		"""
+		Perform LDAP search and return distinguished names only.
+
+		:param str filter: LDAP search filter.
+		:param str base: the starting point for the search.
+		:param str scope: Specify the scope of the search to be one of `base`, `base+one`, `one`, `sub`, or `domain` to specify a base object, base plus one-level, one-level, subtree, or children search.
+		:param bool unique: Raise an exception if more than one object matches.
+		:param bool required: Raise an exception instead of returning an empty dictionary.
+		:param int timeout: wait at most timeout seconds for a search to complete. `-1` for no limit.
+		:param int sizelimit: retrieve at most sizelimit entries for a search. `0` for no limit.
+		:param serverctrls: a list of :py:class:`ldap.controls.LDAPControl` instances sent to the server along with the LDAP request.
+		:type serverctrls: list[ldap.controls.LDAPControl]
+		:returns: A list of distinguished names.
+		:rtype: list[str]
+		:raises ldap.NO_SUCH_OBJECT: Indicates the target object cannot be found.
+		:raises ldap.INAPPROPRIATE_MATCHING: Indicates that the matching rule specified in the search filter does not match a rule defined for the attribute's syntax.
+		"""
 		_d = univention.debug.function('uldap.searchDn filter=%s base=%s scope=%s unique=%d required=%d' % (filter, base, scope, unique, required))
 		return [x[0] for x in self.search(filter, base, scope, ['dn'], unique, required, timeout, sizelimit, serverctrls)]
 
@@ -415,13 +539,21 @@ class access:
 			self.__schema = ldap.schema.SubSchema(self.lo.read_subschemasubentry_s(self.lo.search_subschemasubentry_s()), 0)
 		return self.__schema
 
-	def add(self, dn, al, serverctrls=None, response=None):
-		"""Add LDAP entry with dn and attributes in add_list=(attribute-name, old-values. new-values) or (attribute-name, new-values)."""
+	def add(self, dn, al, serverctrls=None, response=None):  # type: (str, list[tuple], Optional[list[ldap.controls.LDAPControl]], Optional[dict]) -> None
+		"""
+		Add LDAP entry at distinguished name and attributes in add_list=(attribute-name, old-values. new-values) or (attribute-name, new-values).
+
+		:param str dn: The distinguished name of the object to add.
+		:param al: The add-list of 2-tuples (attribute-name, new-values).
+		:param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
+		:type serverctrls: list[ldap.controls.LDAPControl]
+		:param dict response: An optional dictionary to received the server controls of the result.
+		"""
 		if not serverctrls:
 			serverctrls = []
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.add dn=%s' % dn)
-		nal = {}
+		nal = {}  # type: dict[str, Any]
 		for i in al:
 			key, val = i[0], i[-1]
 			if not val:
@@ -444,9 +576,18 @@ class access:
 		if serverctrls and isinstance(response, dict):
 			response['ctrls'] = resp_ctrls
 
-	def modify(self, dn, changes, serverctrls=None, response=None):
-		"""Modify LDAP entry dn with attributes in changes=(attribute-name, old-values, new-values)."""
+	def modify(self, dn, changes, serverctrls=None, response=None):  # type: (str, list[tuple[str, Any, Any]], Optional[list[ldap.controls.LDAPControl]], Optional[dict]) -> str
+		"""
+		Modify LDAP entry DN with attributes in changes=(attribute-name, old-values, new-values).
 
+		:param str dn: The distinguished name of the object to modify.
+		:param changes: The modify-list of 3-tuples (attribute-name, old-values, new-values).
+		:param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
+		:type serverctrls: list[ldap.controls.LDAPControl]
+		:param dict response: An optional dictionary to received the server controls of the result.
+		:returns: The distinguished name.
+		:rtype: str
+		"""
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.modify %s' % dn)
 
 		if not serverctrls:
@@ -508,8 +649,13 @@ class access:
 			return ldap.dn.dn2str([ldap.dn.str2dn(new_rdn)[0]] + ldap.dn.str2dn(dn)[1:]), new_rdn
 		return dn, rdn
 
-	def modify_s(self, dn, ml):
-		"""Redirect modify_s directly to lo"""
+	def modify_s(self, dn, ml):  # type: (str, list[tuple[str, Optional[list[str]], list[str]]]) -> None
+		"""
+		Redirect `modify_s` directly to :py:attr:`lo`.
+
+		:param str dn: The distinguished name of the object to modify.
+		:param ml: The modify-list of 3-tuples (attribute-name, old-values, new-values).
+		"""
 		try:
 			self.lo.modify_ext_s(dn, ml)
 		except ldap.REFERRAL as exc:
@@ -518,8 +664,16 @@ class access:
 			lo_ref = self._handle_referral(exc)
 			lo_ref.modify_ext_s(dn, ml)
 
-	def modify_ext_s(self, dn, ml, serverctrls=None, response=None):
-		"""Redirect modify_ext_s directly to lo"""
+	def modify_ext_s(self, dn, ml, serverctrls=None, response=None):  # type: (str, list[tuple[str, Any, Any]], Optional[list[ldap.controls.LDAPControl]], Optional[dict]) -> None
+		"""
+		Redirect `modify_ext_s` directly to :py:attr:`lo`.
+
+		:param str dn: The distinguished name of the object to modify.
+		:param ml: The modify-list of 3-tuples (attribute-name, old-values, new-values).
+		:param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
+		:type serverctrls: list[ldap.controls.LDAPControl]
+		:param dict response: An optional dictionary to received the server controls of the result.
+		"""
 		if not serverctrls:
 			serverctrls = []
 
@@ -534,7 +688,16 @@ class access:
 		if serverctrls and isinstance(response, dict):
 			response['ctrls'] = resp_ctrls
 
-	def rename(self, dn, newdn, serverctrls=None, response=None):
+	def rename(self, dn, newdn, serverctrls=None, response=None):  # type: (str, str, Optional[list[ldap.controls.LDAPControl]], Optional[dict]) -> None
+		"""
+		Rename a LDAP object.
+
+		:param str dn: The old distinguished name of the object to rename.
+		:param str newdn: The new distinguished name of the object to rename.
+		:param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
+		:type serverctrls: list[ldap.controls.LDAPControl]
+		:param dict response: An optional dictionary to received the server controls of the result.
+		"""
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename %s -> %s' % (dn, newdn))
 		oldsdn = self.parentDn(dn)
 		newrdn = ldap.dn.dn2str([ldap.dn.str2dn(newdn)[0]])
@@ -550,8 +713,17 @@ class access:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: modrdn %s to %s' % (dn, newrdn))
 			self.rename_ext_s(dn, newrdn, serverctrls=serverctrls, response=response)
 
-	def rename_ext_s(self, dn, newrdn, newsuperior=None, serverctrls=None, response=None):
-		"""Redirect rename_ext_s directly to lo"""
+	def rename_ext_s(self, dn, newrdn, newsuperior=None, serverctrls=None, response=None):  # type: (str, str, Optional[str], Optional[list[ldap.controls.LDAPControl]], Optional[dict]) -> None
+		"""
+		Redirect `rename_ext_s` directly to :py:attr:`lo`.
+
+		:param str dn: The old distinguished name of the object to rename.
+		:param str newdn: The new distinguished name of the object to rename.
+		:param str newsuperior: The distinguished name of the new container.
+		:param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
+		:type serverctrls: list[ldap.controls.LDAPControl]
+		:param dict response: An optional dictionary to received the server controls of the result.
+		"""
 		if not serverctrls:
 			serverctrls = []
 
@@ -566,7 +738,12 @@ class access:
 		if serverctrls and isinstance(response, dict):
 			response['ctrls'] = resp_ctrls
 
-	def delete(self, dn):
+	def delete(self, dn):  # type: (str) -> None
+		"""
+		Delete a LDAP object.
+
+		:param str dn: The distinguished name of the object to remove.
+		"""
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.delete %s' % dn)
 		if dn:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'delete')
@@ -578,15 +755,35 @@ class access:
 				lo_ref = self._handle_referral(exc)
 				lo_ref.delete_s(dn)
 
-	def parentDn(self, dn):
+	def parentDn(self, dn):  # type: (str) -> Optional[str]
+		"""
+		Return the parent container of a distinguished name.
+
+		:param str dn: The distinguished name.
+		:return: The parent distinguished name or None if the LDAP base is reached.
+		:rtype: str or None
+		"""
 		return parentDn(dn, self.base)
 
-	def explodeDn(self, dn, notypes=False):
+	def explodeDn(self, dn, notypes=False):  # type: (str, Union[bool, int]) -> list[str]
+		"""
+		Break up a DN into its component parts.
+
+		:param str dn: The distinguished name.
+		:param bool notypes: Return only the component's attribute values if True. Also the attribute types if False.
+		:return: A list of relative distinguished names.
+		:rtype: list[str]
+		"""
 		return explodeDn(dn, notypes)
 
 	@classmethod
-	def compare_dn(cls, a, b):
+	def compare_dn(cls, a, b):  # type: (str, str) -> bool
 		r"""Test DNs are same
+
+		:param str a: The first distinguished name.
+		:param str b: A second distinguished name.
+		:returns: True if the DNs are the same, False otherwise.
+		:rtype: bool
 
 		>>> compare_dn = access.compare_dn
 		>>> compare_dn('foo=1', 'foo=1')
