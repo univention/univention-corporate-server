@@ -1565,12 +1565,38 @@ apt-get dselect-upgrade
 				removed from the computer object of the old &ucsMaster; and will be scheduled for re-configuration on the new &ucsMaster;.
 			</simpara>
 		</listitem>
+		<listitem>
+			<simpara>
+				The server role of the new &ucsMaster; will be changed to <classname>domaincontroller_master</classname> in the OpenLDAP directory service.
+				The DNS SRV record <literal>_domaincontroller_master._tcp</literal> will also be adjusted.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+				If present, all entries of the old &ucsMaster; will be removed from the local Samba directory service.
+				Additionally, the FSMO roles will be transfered to the new &ucsMaster;.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+				The computer object of the old &ucsMaster; will be deleted from OpenLDAP.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+				The OpenLDAP directory service will be searched for any remaining references to the old &ucsMaster;. All found references (e.g. DNS records) are shown and suggested to be fixed. 
+				The suggested fixes have to be checked and confirmed one by one.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+				Finally, the package <package>univention-server-backup</package> will be replaced by <package>univention-server-master</package>.
+			</simpara>
+		</listitem>
 	</itemizedlist>
 	<para>
-		The computer name and/or the IP address of the &ucsMaster; is automatically changed to the new name in all
-		configurations managed from the UCS LDAP or via &ucsUCR; in the scope of the promotion. If the
-		name is referenced in configuration files or on systems which are not managed by &ucsUCR;, it must be adapted
-		accordingly following the promotion.
+		Subsequently, the LDAP directory on the new &ucsMaster; and the &ucsUCR; values on all UCS systems of the domain should be checked for
+		any remaining references to the hostname or the IP address of the old &ucsMaster;. Those references need to be adjusted to the new &ucsMaster;, too.
 	</para>
 </section>
 
