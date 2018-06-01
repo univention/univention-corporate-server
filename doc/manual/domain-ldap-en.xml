@@ -1511,7 +1511,7 @@ dpkg --get-selections \* &gt;> dpkg.selection
 ls -1 /etc/ldap/schema/*.schema /usr/share/univention-ldap/schema/*.schema | xargs dpkg -S
 		</programlisting>
 	<para>
-		To simply installl all packages of the &ucsMaster; also on the &ucsBackup;, use the previously
+		To simply install all packages of the &ucsMaster; also on the &ucsBackup;, use the previously
 		created file <filename>dpkg.selection</filename> of the &ucsMaster; and run the following command 
 		on the &ucsBackup;:
 	</para>
@@ -1544,7 +1544,7 @@ apt-get dselect-upgrade
 		<listitem>
 			<simpara>
 			Checking the environment: The system must be a &ucsBackup; that already joined the domain.
-			Addtionally, it is checked if the &ucsMaster; can be resolved via DNS and if the repository server can be reached.
+			Additionally, it is checked if the &ucsMaster; can be resolved via DNS and if the repository server can be reached.
 			Also, the &ucsMaster; must be powered off and not reachable anymore.
 			</simpara>
 		</listitem>
