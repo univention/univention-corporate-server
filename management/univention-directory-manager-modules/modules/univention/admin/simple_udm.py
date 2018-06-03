@@ -36,6 +36,8 @@ import univention.admin.uldap
 #
 # TODO: ucs-test
 # TODO: log to univention.debug.ADMIN
+# TODO: search() should not be in a UDM object, just in the module/class -> factory
+# TODO: _get_udm_object() and _get_udm_module() should be in the module/class -> factory
 #
 
 
