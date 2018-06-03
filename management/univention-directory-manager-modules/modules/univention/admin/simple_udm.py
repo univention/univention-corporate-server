@@ -34,7 +34,7 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 
 try:
-	from typing import Any, Dict, Iterator, List, Optional
+	from typing import Any, Dict, Iterator, List, Optional, Tuple
 except ImportError:
 	pass
 
@@ -54,6 +54,12 @@ class UdmError(Exception):
 		self.dn = dn
 		self.module_name = module_name
 		super(UdmError, self).__init__(msg)
+
+
+class DeletedError(UdmError):
+	def __init__(self, msg=None, dn=None, module_name=None):
+		msg = msg or 'Object{} has already been deleted.'.format(' {!r}'.format(dn) if dn else '')
+		super(DeletedError, self).__init__(msg, dn, module_name)
 
 
 class FirstUseError(UdmError):
@@ -156,7 +162,7 @@ class UdmModule(object):
 		new_group = get_udm_object('groups/group', lo)
 		existing_user = get_udm_object('users/user', lo, 'uid=test,cn=users,dc=example,dc=com')
 	"""
-	_udm_module_cache = {}  # type: Dict[str, univention.admin.handlers.simpleLdap]
+	_udm_module_cache = {}  # type: Dict[Tuple[str, str, str, str], univention.admin.handlers.simpleLdap]
 
 	def __init__(self, name, lo):  # type: (str, univention.admin.uldap.access) -> None
 		self.name = name
@@ -324,6 +330,7 @@ class UdmObject(object):
 		self._udm_object = None  # type: univention.admin.handlers.simpleLdap
 		self._old_position = ''
 		self._fresh = True
+		self._deleted = False
 
 	def __repr__(self):  # type: () -> str
 		return '{}({!r}, {!r})'.format(self.__class__.__name__, self._udm_module.name, self.dn)
@@ -335,6 +342,8 @@ class UdmObject(object):
 		:return: self
 		:rtype: UdmObject
 		"""
+		if self._deleted:
+			raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name)
 		if not self.dn or not self._udm_object:
 			raise FirstUseError(module_name=self._udm_module.name)
 		self._udm_object = self._udm_module._get_udm_object(self.dn)
@@ -349,6 +358,8 @@ class UdmObject(object):
 		:rtype: UdmObject
 		:raises MoveError: when a move operation fails
 		"""
+		if self._deleted:
+			raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name)
 		if not self._fresh:
 			# TODO: log warning
 			print('*** WARNING: saving stale UDM object instance.')
@@ -395,13 +406,17 @@ class UdmObject(object):
 
 		:return: None
 		"""
+		if self._deleted:
+			# TODO: log warning
+			print('*** WARNING: {} has already been deleted.'.format(self))
+			return
 		if not self.dn or not self._udm_object:
 			raise FirstUseError()
 		self._udm_object.remove()
 		if univention.admin.objects.wantsCleanup(self._udm_object):
 			univention.admin.objects.performCleanup(self._udm_object)
-		# prevent further use of object
-		self._udm_object = self.save = self.delete = self.reload = None
+		self._udm_object = None
+		self._deleted = True
 
 	def _copy_from_udm_obj(self):  # type: () -> None
 		"""
