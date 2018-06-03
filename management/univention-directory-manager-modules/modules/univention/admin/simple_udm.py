@@ -33,15 +33,23 @@ import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.uldap
 
+try:
+	from typing import Any, Dict, Iterator, List, Optional
+except ImportError:
+	pass
+
 #
 # TODO: ucs-test
 # TODO: log to univention.debug.ADMIN
-# TODO: search() should not be in a UDM object, just in the module/class -> factory
-# TODO: _get_udm_object() and _get_udm_module() should be in the module/class -> factory
+# TODO: split exceptions into separate file
+# TODO: create dynamic factory for individual and extensible UdmModule classes
 #
+
+__simple_udm_module_cache = {}  # type: Dict[str, UdmModule]
 
 
 class UdmError(Exception):
+	"""Base class of Exceptions raised by simple_udm module."""
 	def __init__(self, msg, dn=None, module_name=None):
 		self.dn = dn
 		self.module_name = module_name
@@ -49,25 +57,231 @@ class UdmError(Exception):
 
 
 class FirstUseError(UdmError):
+	"""
+	Raised when a client tries to delete or reload a UdmObject that is not yet
+	saved.
+	"""
 	def __init__(self, msg=None, dn=None, module_name=None):
 		msg = msg or 'Object has not been created/loaded yet.'
 		super(FirstUseError, self).__init__(msg, dn, module_name)
 
 
+class ModifyError(UdmError):
+	"""Raised when an error occurred when moving an object."""
+	pass
+
+
+class MoveError(UdmError):
+	"""Raised if an error occurred when moving an object."""
+	pass
+
+
 class NoObject(UdmError):
+	"""Raised when a UdmObject could not be found at a DN."""
 	def __init__(self, msg=None, dn=None, module_name=None):
 		msg = msg or 'No object found at DN {!r}.'.format(dn)
 		super(NoObject, self).__init__(msg, dn, module_name)
 
 
-class UnknownAttribute(UdmError):
+class UnknownProperty(UdmError):
+	"""
+	Raised when a client tries to set a property on UdmObject.attr, that it
+	does not support.
+	"""
 	pass
 
 
 class WrongObjectType(UdmError):
+	"""
+	Raised when the LDAP object to be loaded does not match the UdmModule type.
+	"""
 	def __init__(self, msg=None, dn=None, module_name=None):
 		msg = msg or 'Wrong UDM module: {!r} is not a {!r}.'.format(dn, module_name)
 		super(WrongObjectType, self).__init__(msg, dn, module_name)
+
+
+def get_udm_module(name, lo):  # type: (str, univention.admin.uldap.access) -> UdmModule
+	"""
+	Caching UdmModule factory. Please use this instead of instantiating
+	UdmModule directly.
+
+	:param str name: name of the UDM module
+	:param univention.admin.uldap.access lo: LDAP access object
+	:return: a UdmModule
+	:rtype: UdmModule
+	"""
+	if name not in __simple_udm_module_cache:
+		__simple_udm_module_cache[name] = UdmModule(name, lo)
+	return __simple_udm_module_cache[name]
+
+
+def get_udm_object(module_name, lo, dn=''):  # type: (str, univention.admin.uldap.access, Optional[str]) -> UdmObject
+	"""
+	Convenience function to get a UdmObject without handling a UdmModule.
+
+	:param str module_name: name of the UDM module from which to get an object
+	:param univention.admin.uldap.access lo: LDAP access object
+	:param str dn: DN of the object to load, use '' to get a new, unsaved object
+	:return: a UdmObject
+	:rtype: UdmObject
+	:raises NoObject: if `dn` is set and no LDAP object is found at `dn`
+	:raises WrongObjectType: if `dn` is set and the object found at `dn` is not of type `module_name`
+	"""
+	mod = get_udm_module(module_name, lo)
+	if dn:
+		return mod.get(dn)
+	else:
+		return mod.new()
+
+
+class UdmModule(object):
+	"""
+	Simple API to use UDM modules. Basically a UdmObject factory.
+
+	Usage:
+	1. Get an LDAP access object: import univention.admin.uldap; lo, po = univention.admin.uldap.getAdminConnection()
+	2. Create a module object:
+		user_mod = get_udm_module('users/user', lo)
+	3. Create object(s):
+	3.1 Fresh, not yet saved UdmObject:
+		new_user = user_mod.new()
+	3.2 Load an existing object:
+		group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
+	3.3 Search and load existing objects:
+		dc_slaves = dc_slave_mod.search(lo, filter_s='cn=s10*')
+		campus_groups = group_mod.search(lo, base='ou=campus,dc=example,dc=com')
+
+	There is a shortcut for creating or retrieving UdmObjects without handling
+	UdmModule instances:
+		new_group = get_udm_object('groups/group', lo)
+		existing_user = get_udm_object('users/user', lo, 'uid=test,cn=users,dc=example,dc=com')
+	"""
+	_udm_module_cache = {}  # type: Dict[str, univention.admin.handlers.simpleLdap]
+
+	def __init__(self, name, lo):  # type: (str, univention.admin.uldap.access) -> None
+		self.name = name
+		self.lo = lo
+		self._udm_module = self._get_udm_module()
+
+	def __repr__(self):  # type: () -> str
+		return '{}({!r})'.format(self.__class__.__name__, self.name)
+
+	def new(self):  # type: () -> UdmObject
+		"""
+		TODO: doc
+
+		:return: a new, unsaved UdmObject object
+		:rtype: UdmObject
+		"""
+		return self._load_obj('')
+
+	def get(self, dn):  # type: (str) -> UdmObject
+		"""
+		TODO: doc
+
+		:param str dn:
+		:return: an existing UdmObject object
+		:rtype: UdmObject
+		:raises NoObject: if no object is found at `dn`
+		:raises WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
+		"""
+		return self._load_obj(dn)
+
+	def search(self, filter_s='', base='', scope='sub'):
+		# type: (Optional[str], Optional[str], Optional[str]) -> Iterator[UdmObject]
+		"""
+		TODO: doc
+
+		:param str filter_s: LDAP filter (only object selector like uid=foo
+			required, objectClasses will be set by the UDM module)
+		:param str base:
+		:param str scope:
+		:return: iterator of UdmObject objects
+		:rtype: Iterator(UdmObject)
+		"""
+		try:
+			udm_module_lookup_filter = str(self._udm_module.lookup_filter(filter_s, self.lo))
+		except AttributeError:
+			# not all modules have 'lookup_filter'
+			udm_module_lookup_filter = filter_s
+		for dn in self.lo.searchDn(filter=udm_module_lookup_filter, base=base, scope=scope):
+			yield self.get(dn)
+
+	@property
+	def identifying_property(self):  # type: () -> str
+		"""Property that is used as first component in a DN."""
+		for key, property in self._udm_module.property_descriptions.iteritems():
+			if property.identifies:
+				return key
+		return ''
+
+	@property
+	def mapping(self):  # type: () -> Dict[str, Dict[str, str]]
+		"""UDM properties to LDAP attributes mapping and vice versa."""
+		return {
+			'udm2ldap': dict((k, v[0]) for k, v in self._udm_module.mapping._map.iteritems()),
+			'ldap2udm': dict((k, v[0]) for k, v in self._udm_module.mapping._unmap.iteritems())
+		}
+
+	def _get_udm_module(self):  # type: () -> univention.admin.handlers.simpleLdap
+		"""
+		TODO: doc
+
+		:return: a UDM module
+		:rtype: univention.admin.handlers.simpleLdap
+		"""
+		key = (self.lo.base, self.lo.binddn, self.lo.host, self.name)
+		if key not in self._udm_module_cache:
+			if self.name not in [key[3] for key in self._udm_module_cache.keys()]:
+				univention.admin.modules.update()
+			udm_module = univention.admin.modules.get(self.name)
+			po = univention.admin.uldap.position(self.lo.base)
+			univention.admin.modules.init(self.lo, po, udm_module)
+			self._udm_module_cache[key] = udm_module
+		return self._udm_module_cache[key]
+
+	def _get_udm_object(self, dn):  # type: (str) -> univention.admin.handlers.simpleLdap
+		"""
+		Retrieve UDM object from LDAP.
+
+		May raise from NoObject if no object is found at DN or WrongObjectType
+		if the object found is not of type :py:attr:`self.name`.
+
+		:param str dn: the DN of the object to load
+		:return: UDM object
+		:rtype: univention.admin.handlers.simpleLdap
+		:raises NoObject: if no object is found at `dn`
+		:raises WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
+		"""
+		udm_module = self._get_udm_module()
+		po = univention.admin.uldap.position(self.lo.base)
+		try:
+			obj = univention.admin.objects.get(udm_module, None, self.lo, po, dn=dn)
+		except univention.admin.uexceptions.noObject:
+			raise NoObject(dn=dn, module_name=self.name)
+		uni_obj_type = getattr(obj, 'oldattr', {}).get('univentionObjectType')
+		if uni_obj_type and self.name not in uni_obj_type:
+			raise WrongObjectType(dn=dn, module_name=self.name)
+		obj.open()
+		return obj
+
+	def _load_obj(self, dn):  # type: (str) -> UdmObject
+		"""
+		TODO: doc
+
+		:param str dn: the DN of the UDM object to load, if '' a new one
+		:return: a UdmObject
+		:rtype: UdmObject
+		:raises NoObject: if no object is found at `dn`
+		:raises WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
+		"""
+		obj = UdmObject()
+		obj._lo = self.lo
+		obj._udm_module = self
+		obj._udm_object = self._get_udm_object(dn)
+		obj.attr = _Attr(obj)
+		obj._copy_from_udm_obj()
+		return obj
 
 
 class UdmObject(object):
@@ -75,108 +289,99 @@ class UdmObject(object):
 	Simple API to use UDM objects.
 
 	Usage:
-	* create a fresh, not yet saved, object by initializing with an empty dn:
-		user = UdmObject('users/user', lo, '')
-	* load existing object:
-		group = UdmObject('groups/group', lo, 'cn=test,cn=groups,dc=example,dc=com')
-	* search and load existing objects:
-		dc_slaves = UdmObject.search('computers/domaincontroller_slave', lo, filter_s='cn=s10*')
-		campus_groups = UdmObject.search('groups/group', lo, base='ou=campus,dc=example,dc=com')
-	* modify object:
+	* Creation of instances :py:class:`UdmObject` is always done through a
+	:py:class:`UdmModul` instances py:meth:`new()`, py:meth:`get()` or
+	py:meth:`search()` methods.
+	* There is a convenience function to create or load :py:class:`UdmObject`s:
+	:py:func:`get_udm_object(<module_name>, <lo>, [dn])`.
+	* Modify an object:
 		user.attr.firstname = 'Peter'
 		user.attr.lastname = 'Pan'
 		user.save()
-	* move object:
+	* Move an object:
 		user.position = 'cn=users,ou=Company,dc=example,dc=com'
 		user.save()
-	* delete object:
+	* Delete an object:
 		obj.delete()
 
 	Please be aware that UDM hooks and listener modules often add, modify or
-	remove attributes when saving to LDAP. When continuing to use a UDM object
-	after save(), it is *strongly* recommended to reload() it.
-
-	Methods can be chained:
-	* UdmObject(dn, ...).delete()
-	* obj.reload().delete()
-	* fresh_obj = obj.save().reload()
+	remove attributes when saving to LDAP. When continuing to use a
+	:py:class:`UdmObject` after :py:meth:`save()`, it is *strongly* recommended
+	to :py:meth:`reload()` it: `obj = obj.save().reload()`
 	"""
-
-	_udm_module_cache = dict()
-
-	class _Attr(object):
-		def __init__(self, obj, udm_object):  # type: (UdmObject, univention.admin.handlers.simpleLdap) -> None
-			self._obj = obj
-			self._udm_object = udm_object
-
-		def __repr__(self):
-			return repr(dict((k, v) for k, v in self.__dict__.items() if not str(k).startswith('_')))
-
-		def __setattr__(self, key, value):
-			if not str(key).startswith('_') and key not in self._udm_object:
-				raise UnknownAttribute(
-					'Unknown attribute {!r} for UDM module {!r}.'.format(key, self._obj.module_name),
-					self._obj.dn,
-					self._obj.module_name
-				)
-			super(UdmObject._Attr, self).__setattr__(key, value)
-
-	def __init__(self, module_name, lo, dn):  # type: (str, univention.admin.uldap.access, str) -> None
+	def __init__(self):  # type: () -> None
 		"""
-		TODO: doc
-
-		:param module_name:
-		:param lo:
-		:param dn:
+		Don't instantiate a :py:class:`UdmObject` directly. Use a
+		:py:class:`UdmModule` or :py:func:`get_udm_object()`.
 		"""
-		self.dn = dn
-		self.module_name = module_name
-		self._lo = lo
-
-		self.options = []
-		self.policies = []
+		self.dn = ''
+		self.attr = None  # type: _Attr
+		self.options = []  # type: List[str]
+		self.policies = []  # type: List[str]
 		self.position = ''
-
+		self._lo = None  # type: univention.admin.uldap.access
+		self._udm_module = None  # type: UdmModule
+		self._udm_object = None  # type: univention.admin.handlers.simpleLdap
 		self._old_position = ''
-		self._udm_object = self._get_udm_object(dn)
-
-		self.attr = UdmObject._Attr(self, self._udm_object)
-
-		self._copy_from_udm_obj()
 		self._fresh = True
+
+	def __repr__(self):  # type: () -> str
+		return '{}({!r}, {!r})'.format(self.__class__.__name__, self._udm_module.name, self.dn)
 
 	def reload(self):  # type: () -> UdmObject
 		"""
-		TODO: doc
-		:return:
+		Refresh object from LDAP.
+
+		:return: self
+		:rtype: UdmObject
 		"""
 		if not self.dn or not self._udm_object:
-			raise FirstUseError()
-		self._udm_object = self._get_udm_object(self.dn)
+			raise FirstUseError(module_name=self._udm_module.name)
+		self._udm_object = self._udm_module._get_udm_object(self.dn)
 		self._copy_from_udm_obj()
-		self._fresh = True
 		return self
 
 	def save(self):  # type: () -> UdmObject
 		"""
-		TODO: doc
-		:return:
+		Save object to LDAP.
+
+		:return: self
+		:rtype: UdmObject
+		:raises MoveError: when a move operation fails
 		"""
 		if not self._fresh:
-			# TODO: where to log the warning to?
-			pass
+			# TODO: log warning
+			print('*** WARNING: saving stale UDM object instance.')
 		self._copy_to_udm_obj()
 		if self.dn:
 			if self._old_position and self._old_position != self.position:
 				new_dn_li = [str2dn(self._udm_object.dn)[0]]
 				new_dn_li.extend(str2dn(self.position))
 				new_dn = dn2str(new_dn_li)
-				self.dn = self._udm_object.move(new_dn)
+				try:
+					self.dn = self._udm_object.move(new_dn)
+				except univention.admin.uexceptions.invalidOperation as exc:
+					raise MoveError(
+						'Error moving {!r} object from {!r} to {!r}: {}'.format(
+							self._udm_module.name, self.dn, self.position, exc
+						), dn=self.dn, module_name=self._udm_module.name
+					)
 				assert self.dn == self._udm_object.dn
 				self.position = self._lo.parentDn(self.dn)
 				self._old_position = self.position
 				self._udm_object.position.setDn(self.position)
-			self.dn = self._udm_object.modify()
+			try:
+				self.dn = self._udm_object.modify()
+			except (
+					univention.admin.uexceptions.noProperty,
+					univention.admin.uexceptions.valueError,
+					univention.admin.uexceptions.valueInvalidSyntax
+			) as exc:
+				raise ModifyError(
+					'Error saving {!r} object at {!r}: {}'.format(
+						self._udm_module.name, self.dn, exc
+					), dn=self.dn, module_name=self._udm_module.name
+				)
 		else:
 			self.dn = self._udm_object.create()
 		assert self.dn == self._udm_object.dn
@@ -198,33 +403,11 @@ class UdmObject(object):
 		# prevent further use of object
 		self._udm_object = self.save = self.delete = self.reload = None
 
-	@classmethod
-	def search(cls, module_name, lo, filter_s='', base='', scope='sub'):
-		# type: (str, univention.admin.uldap.access, Optional[str]) -> List[UdmObject]
-		"""
-		TODO: doc
-
-		:param module_name:
-		:param lo:
-		:param filter_s: str: LDAP filter (only object selector like uid=foo
-			required, objectClasses will be set by the UDM module)
-		:param base:
-		:param scope:
-		:return: list of UdmObject objects
-		"""
-		udm_module = cls._get_udm_module(module_name, lo)
-		try:
-			udm_module_lookup_filter = str(udm_module.lookup_filter(filter_s, lo))
-		except AttributeError:
-			# not all modules have 'lookup_filter'
-			udm_module_lookup_filter = filter_s
-		res = lo.search(filter=udm_module_lookup_filter, base=base, scope=scope, attr=['dn'])
-		return [UdmObject(module_name, lo, dn) for dn, attr in res]
-
 	def _copy_from_udm_obj(self):  # type: () -> None
 		"""
 		TODO: doc
-		:return:
+
+		:return: None
 		"""
 		self.dn = self._udm_object.dn
 		self.options = self._udm_object.options
@@ -234,14 +417,16 @@ class UdmObject(object):
 			self._old_position = self.position
 		else:
 			self.position = self._udm_object.position.getDn()
-		self.attr = UdmObject._Attr(self, self._udm_object)
+		self.attr = _Attr(self)
 		for k, v in self._udm_object.items():
 			setattr(self.attr, k, v)
+		self._fresh = True
 
 	def _copy_to_udm_obj(self):  # type: () -> None
 		"""
 		TODO: doc
-		:return:
+
+		:return: None
 		"""
 		self._udm_object.options = self.options
 		self._udm_object.policies = self.policies
@@ -250,43 +435,19 @@ class UdmObject(object):
 			if v != getattr(self.attr, k, None):
 				self._udm_object[k] = getattr(self.attr, k, None)
 
-	@classmethod
-	def _get_udm_module(cls, module_name, lo):
-		# type: (str, univention.admin.uldap.access) -> univention.admin.handlers.simpleLdap
-		"""
-		TODO: doc
-		:param module_name:
-		:param lo:
-		:return:
-		"""
-		key = (lo.base, lo.binddn, lo.host, module_name)
-		if key not in cls._udm_module_cache:
-			if module_name not in [key[3] for key in cls._udm_module_cache.keys()]:
-				univention.admin.modules.update()
-			udm_module = univention.admin.modules.get(module_name)
-			po = univention.admin.uldap.position(lo.base)
-			univention.admin.modules.init(lo, po, udm_module)
-			cls._udm_module_cache[key] = udm_module
-		return cls._udm_module_cache[key]
 
-	def _get_udm_object(self, dn):  # type: (str) -> univention.admin.handlers.simpleLdap
-		"""
-		Retrieve UDM object from LDAP.
+class _Attr(object):
+	def __init__(self, obj):  # type: (UdmObject) -> None
+		self._obj = obj
 
-		May raise from NoObject if no object is found at DN or WrongObjectType
-		if the object found is not of type self.module_name.
+	def __repr__(self):  # type: () -> str
+		return repr(dict((k, v) for k, v in self.__dict__.iteritems() if not str(k).startswith('_')))
 
-		:param dn: str
-		:return: univention.admin.handlers.simpleLdap: UDM object
-		"""
-		udm_module = self._get_udm_module(self.module_name, self._lo)
-		po = univention.admin.uldap.position(self.position or self._lo.base)
-		try:
-			obj = univention.admin.objects.get(udm_module, None, self._lo, po, dn=dn)
-		except univention.admin.uexceptions.noObject:
-			raise NoObject(dn=dn, module_name=self.module_name)
-		uni_obj_type = getattr(obj, 'oldattr', {}).get('univentionObjectType')
-		if uni_obj_type and self.module_name not in uni_obj_type:
-			raise WrongObjectType(dn=dn, module_name=self.module_name)
-		obj.open()
-		return obj
+	def __setattr__(self, key, value):  # type: (str, Any) -> None
+		if not str(key).startswith('_') and key not in self._obj._udm_object:
+			raise UnknownProperty(
+				'Unknown property {!r} for UDM module {!r}.'.format(key, self._obj._udm_module.name),
+				dn=self._obj.dn,
+				module_name=self._obj._udm_module.name
+			)
+		super(_Attr, self).__setattr__(key, value)
