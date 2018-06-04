@@ -1,3 +1,9 @@
+univention-kdm (4.0.0-3) unstable; urgency=medium
+
+  * Bug #47026: Fix position of the username hint
+
+ -- Richard Ulmer <ulmer@univention.de>  Mon, 04 Jun 2018 14:58:51 +0200
+
 univention-kdm (4.0.0-2) unstable; urgency=medium
 
   * Bug #47026: Suggest using the Administrator user at KDE login
