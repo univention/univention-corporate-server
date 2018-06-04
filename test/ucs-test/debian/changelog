@@ -1,3 +1,9 @@
+ucs-test (8.0.28-132) unstable; urgency=medium
+
+  * Bug #32626: Add support for DNS NS records
+
+ -- Arvid Requate <requate@univention.de>  Mon, 04 Jun 2018 07:56:51 +0200
+
 ucs-test (8.0.28-131) unstable; urgency=medium
 
   * Bug #41416: Test Appliance logos only for installed Apps

@@ -1,3 +1,9 @@
+univention-s4-connector (12.0.2-17) unstable; urgency=medium
+
+  * Bug #32626: Add support for DNS NS records
+
+ -- Arvid Requate <requate@univention.de>  Mon, 04 Jun 2018 07:56:26 +0200
+
 univention-s4-connector (12.0.2-16) unstable; urgency=medium
 
   * Bug #47061: unjoin script too
