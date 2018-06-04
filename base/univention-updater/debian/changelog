@@ -1,3 +1,9 @@
+univention-updater (13.0.1-47) unstable; urgency=low
+
+  * Bug #47117: fix order of mail workarounds/check in preup.sh
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 04 Jun 2018 09:35:33 +0200
+
 univention-updater (13.0.1-46) unstable; urgency=medium
 
   * Bug #47097: Fixed a typo when warning about an outdated UCS version.

@@ -596,13 +596,6 @@ case "$available_locales" in
 	*) /usr/sbin/univention-config-registry set locale="$available_locales en_US.UTF-8:UTF-8";;
 esac
 
-# Bug #45968: let Postfix3 extension packages recreate /etc/postfix/dynamicmaps.cf with new format
-if [ -a /etc/postfix/dynamicmaps.cf ] && grep -q 'usr/lib/postfix' /etc/postfix/dynamicmaps.cf; then
-	PF2_BACKUP="$(mktemp /etc/postfix/dynamicmaps.cf.backup-postfix2.XXXXXXXX)"
-	echo "Removing /etc/postfix/dynamicmaps.cf. Creating backup in $PF2_BACKUP." >>"$UPDATER_LOG" 2>&1
-	mv -fv /etc/postfix/dynamicmaps.cf "$PF2_BACKUP" >>"$UPDATER_LOG" 2>&1
-fi
-
 # Bug 45935: backup squid conf before update
 if [ ! -d /etc/squid3-update-4.3 ]; then
 	test -d /etc/squid3 && cp -rf /etc/squid3 /etc/squid3-update-4.3
@@ -622,6 +615,13 @@ if LC_ALL=C dpkg -l 'univention-mail-cyrus' 2>/dev/null | grep ^i >>"$UPDATER_LO
 		echo "proceed, please refer to https://help.univention.com/t/7957"
 		exit 1
 	fi
+fi
+
+# Bug #45968: let Postfix3 extension packages recreate /etc/postfix/dynamicmaps.cf with new format
+if [ -a /etc/postfix/dynamicmaps.cf ] && grep -q 'usr/lib/postfix' /etc/postfix/dynamicmaps.cf; then
+	PF2_BACKUP="$(mktemp /etc/postfix/dynamicmaps.cf.backup-postfix2.XXXXXXXX)"
+	echo "Removing /etc/postfix/dynamicmaps.cf. Creating backup in $PF2_BACKUP." >>"$UPDATER_LOG" 2>&1
+	mv -fv /etc/postfix/dynamicmaps.cf "$PF2_BACKUP" >>"$UPDATER_LOG" 2>&1
 fi
 
 # Bug 46388 - Ensure atd doesn't kill the UMC update process
