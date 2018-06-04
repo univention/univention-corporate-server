@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the DNS NS records
 #
-# Copyright 2011-2017 Univention GmbH
+# Copyright 2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -41,11 +41,11 @@ _ = translation.translate
 
 module = 'dns/ns_record'
 operations = ['add', 'edit', 'remove', 'search']
-columns = ['ns']
+columns = ['nameserver']
 superordinate = 'dns/forward_zone'
 childs = 0
 short_description = 'DNS: NS Record'
-long_description = _('Resolve a zone name to a nameserver.')
+long_description = _('Delegate a subzone to other nameservers.')
 options = {
 	'default': univention.admin.option(
 		default=True,
@@ -53,9 +53,9 @@ options = {
 	),
 }
 property_descriptions = {
-	'name': univention.admin.property(
-		short_description=_('Name'),
-		long_description=_('The name of the host relative to the domain.'),
+	'zone': univention.admin.property(
+		short_description=_('Zone name'),
+		long_description=_('The name of the subzone relative to the parent.'),
 		syntax=univention.admin.syntax.dnsName,
 		multivalue=False,
 		include_in_default_search=True,
@@ -75,9 +75,9 @@ property_descriptions = {
 		identifies=False,
 		default=(('22', 'hours'), [])
 	),
-	'ns': univention.admin.property(
+	'nameserver': univention.admin.property(
 		short_description=_('Name servers'),
-		long_description=_('The FQDNs of the servers serving the named zone.'),
+		long_description=_('The FQDNs of the hosts serving the named zone.'),
 		syntax=univention.admin.syntax.dnsHostname,
 		multivalue=True,
 		options=[],
@@ -89,16 +89,16 @@ property_descriptions = {
 layout = [
 	Tab(_('General'), _('Basic values'), layout=[
 		Group(_('General NS record settings'), layout=[
-			'name',
-			'ns',
+			'zone',
+			'nameserver',
 			'zonettl'
 		]),
 	]),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'relativeDomainName', None, univention.admin.mapping.ListToString)
-mapping.register('ns', 'nSRecord')
+mapping.register('zone', 'relativeDomainName', None, univention.admin.mapping.ListToString)
+mapping.register('nameserver', 'nSRecord')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 
 
@@ -130,28 +130,32 @@ class object(univention.admin.handlers.simpleLdap):
 		self._updateZone()
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=False, required=False, timeout=-1, sizelimit=0):
-
-	filter = univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'dNSZone'),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('cNAMERecord', '*')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sRVRecord', '*')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aRecord', '*')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aAAARecord', '*')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('mXRecord', '*')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('tXTRecord', '*')]),
-		univention.admin.filter.expression('nSRecord', '*')
-	])
+def lookup_filter(filter_s=None, superordinate=None):
+	lookup_filter_obj = \
+		univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', 'dNSZone'),
+			univention.admin.filter.expression('nSRecord', '*'),
+			univention.admin.filter.conjunction('!', [
+				univention.admin.filter.conjunction('|', [
+					univention.admin.filter.expression('relativeDomainName', '@'),
+					univention.admin.filter.expression('zoneName', '*.in-addr.arpa'),
+				])
+			])
+		])
 
 	if superordinate:
-		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone']), escape=True))
+		parent = superordinate.mapping.mapValue('zone', superordinate['zone'])
+		lookup_filter_obj.expressions.append(
+			univention.admin.filter.expression('zoneName', parent, escape=True)
+		)
 
-	if filter_s:
-		filter_p = univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
+	lookup_filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
+	return lookup_filter_obj
+
+
+def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=False, required=False, timeout=-1, sizelimit=0):
+
+	filter = lookup_filter(filter_s, superordinate)
 
 	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
@@ -165,6 +169,5 @@ def identify(dn, attr, canonical=0):
 		'@' not in attr.get('relativeDomainName', []),
 		not attr.get('zoneName', ['.in-addr.arpa'])[0].endswith('.in-addr.arpa'),
 		attr.get('nSRecord', []),
-		not any(attr.get(a) for a in ('aRecord', 'aAAARecord', 'mXRecord', 'sRVRecord', 'tXTRecord')),
 		module in attr.get('univentionObjectType', [module]),
 	])

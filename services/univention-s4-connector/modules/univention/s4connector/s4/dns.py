@@ -1368,7 +1368,7 @@ def s4_txt_record_create(s4connector, object):
 def ucs_ns_record_create(s4connector, object):
 	_d = ud.function('ucs_ns_record_create')
 	ud.debug(ud.LDAP, ud.INFO, 'ucs_ns_record_create: object: %s' % object)
-	udm_property = 'ns'
+	udm_property = 'nameserver'
 
 	zoneName = object['attributes']['zoneName'][0]
 	relativeDomainName = object['attributes']['relativeDomainName'][0]
@@ -1399,7 +1399,7 @@ def ucs_ns_record_create(s4connector, object):
 
 		newRecord = univention.admin.handlers.dns.ns_record.object(None, s4connector.lo, position, dn=None, superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
-		newRecord['name'] = relativeDomainName
+		newRecord['zone'] = relativeDomainName
 		newRecord[udm_property] = c
 		newRecord.create()
 

@@ -206,7 +206,6 @@ msgid "Map names to IP addresses (and other data)."
 msgstr "Übersetzt Namen zu IP-Adressen (und anderen Daten)."
 
 #: modules/univention/admin/handlers/dns/dns.py:62
-#: modules/univention/admin/handlers/dns/ns_record.py:57
 #: modules/univention/admin/handlers/dns/srv_record.py:59
 #: modules/univention/admin/handlers/dns/txt_record.py:57
 msgid "Name"
@@ -264,8 +263,8 @@ msgid "Resolve the symbolic name to IP addresses."
 msgstr "Löst den symbolischen Namen zu IP-Adressen auf."
 
 #: modules/univention/admin/handlers/dns/ns_record.py:48
-msgid "Resolve a zone name to a nameserver."
-msgstr "Löst einen Zonennamen zu einem Nameserver auf."
+msgid "Delegate a subzone to other nameservers."
+msgstr "Delegiert eine Subzone an andere Nameserver."
 
 #: modules/univention/admin/handlers/dns/txt_record.py:48
 msgid "Resolve the symbolic name to some textual data."
@@ -337,7 +336,7 @@ msgid "The FQDNs of the servers serving this zone."
 msgstr "Die FQDNs der Rechner, die diese Zone bereitstellen."
 
 #: modules/univention/admin/handlers/dns/ns_record.py:80
-msgid "The FQDNs of the servers serving the named zone."
+msgid "The FQDNs of the hosts serving the named zone."
 msgstr "Die FQDNs der Rechner, die genannte Zone bereitstellen."
 
 #: modules/univention/admin/handlers/dns/forward_zone.py:84
@@ -371,10 +370,13 @@ msgid "The name of the entry relative to the domain."
 msgstr "Der Name des Eintrags relativ zur Domäne."
 
 #: modules/univention/admin/handlers/dns/host_record.py:61
-#: modules/univention/admin/handlers/dns/ns_record.py:58
 #: modules/univention/admin/handlers/dns/txt_record.py:58
 msgid "The name of the host relative to the domain."
 msgstr "Der Name des Rechners relativ zur Domäne."
+
+#: modules/univention/admin/handlers/dns/ns_record.py:58
+msgid "The name of the subzone relative to the parent."
+msgstr "Der Name der Subzone relativ zur Übergeordneten."
 
 #: modules/univention/admin/handlers/dns/alias.py:85
 msgid "The name this alias points to. A FQDN must end with a dot."
@@ -438,6 +440,7 @@ msgid "Time to live"
 msgstr "Time-to-Live"
 
 #: modules/univention/admin/handlers/dns/forward_zone.py:61
+#: modules/univention/admin/handlers/dns/ns_record.py:57
 msgid "Zone name"
 msgstr "Name der Zone"
 
