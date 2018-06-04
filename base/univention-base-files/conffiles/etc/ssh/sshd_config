@@ -11,19 +11,15 @@
 # possible, but leave them commented.  Uncommented options override the
 # default value.
 
+Port @%@sshd/port@%@
+#AddressFamily any
+#ListenAddress 0.0.0.0
+#ListenAddress ::
+
+#HostKey /etc/ssh/ssh_host_rsa_key
+#HostKey /etc/ssh/ssh_host_ecdsa_key
+#HostKey /etc/ssh/ssh_host_ed25519_key
 @!@
-print 'Port %s' % configRegistry.get('sshd/port', '22')
-if configRegistry.get('sshd/AddressFamily'):
-	print 'AddressFamily %(sshd/AddressFamily)s' % configRegistry
-else:
-	print '#AddressFamily any'
-if configRegistry.get('sshd/ListenAddress'):
-	for ip in filter(None, configRegistry.get('sshd/ListenAddress', '').split(',')):
-		print 'ListenAddress %s' % ip
-else:
-	print '#ListenAddress 0.0.0.0'
-	print '#ListenAddress ::'
-print ''
 from os.path import exists
 for key in configRegistry.get('sshd/HostKey', 'rsa,ecdsa,ed25519').split(','):
 	if '/' in key:
@@ -37,127 +33,61 @@ for key in configRegistry.get('sshd/HostKey', 'rsa,ecdsa,ed25519').split(','):
 		filename = '/etc/ssh/ssh_host_%s_key' % (key,)
 	if exists(filename):
 		print "HostKey %s" % (filename,)
-print ''
-print ''
-print '# Ciphers and keying'
-if configRegistry.get('sshd/RekeyLimit'):
-	print 'RekeyLimit %(sshd/RekeyLimit)s' % configRegistry
-else:
-	print '#RekeyLimit default none'
-print ''
-print '# Logging'
-if configRegistry.get('sshd/SyslogFacility'):
-	print 'SyslogFacility %(sshd/SyslogFacility)s' % configRegistry
-else:
-	print '#SyslogFacility AUTH'
-if configRegistry.get('sshd/LogLevel'):
-	print 'LogLevel %(sshd/LogLevel)s' % configRegistry
-else:
-	print '#LogLevel INFO'
-print ''
-print '# Authentication:'
-print ''
-if configRegistry.get('sshd/LoginGraceTime'):
-	print 'LoginGraceTime %(sshd/LoginGraceTime)s' % configRegistry
-else:
-	print 'LoginGraceTime 600'
-print 'PermitRootLogin %s' % configRegistry.get('sshd/permitroot', 'prohibit-password')
-if configRegistry.get('sshd/StrictModes'):
-	print 'StrictModes %(sshd/StrictModes)s' % configRegistry
-else:
-	print '#StrictModes yes'
-if configRegistry.get('sshd/MaxAuthTries'):
-	print 'MaxAuthTries %(sshd/MaxAuthTries)s' % configRegistry
-else:
-	print '#MaxAuthTries 6'
-if configRegistry.get('sshd/MaxSessions'):
-	print 'MaxSessions %(sshd/MaxSessions)s' % configRegistry
-else:
-	print '#MaxSessions 10'
-print ''
-if configRegistry.get('sshd/PubkeyAuthentication'):
-	print 'PubkeyAuthentication %(sshd/PubkeyAuthentication)s' % configRegistry
-else:
-	print '#PubkeyAuthentication yes'
-print ''
-print '# Expect .ssh/authorized_keys2 to be disregarded by default in future.'
-if configRegistry.get('sshd/AuthorizedKeysFile'):
-	print 'AuthorizedKeysFile %(sshd/AuthorizedKeysFile)s' % configRegistry
-else:
-	print '#AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2'
-print ''
-if configRegistry.get('sshd/AuthorizedPrincipalsFile'):
-	print 'AuthorizedPrincipalsFile %(sshd/AuthorizedPrincipalsFile)s' % configRegistry
-else:
-	print '#AuthorizedPrincipalsFile none'
-print ''
-if configRegistry.get('sshd/AuthorizedKeysCommand'):
-	print 'AuthorizedKeysCommand %(sshd/AuthorizedKeysCommand)s' % configRegistry
-else:
-	print '#AuthorizedKeysCommand none'
-if configRegistry.get('sshd/AuthorizedKeysCommandUser'):
-	print 'AuthorizedKeysCommandUser %(sshd/AuthorizedKeysCommandUser)s' % configRegistry
-else:
-	print '#AuthorizedKeysCommandUser nobody'
-print ''
-print '# For this to work you will also need host keys in /etc/ssh/ssh_known_hosts'
-if configRegistry.get('sshd/HostbasedAuthentication'):
-	print 'HostbasedAuthentication %(sshd/HostbasedAuthentication)s' % configRegistry
-else:
-	print '#HostbasedAuthentication no'
-print '# Change to yes if you don\'t trust ~/.ssh/known_hosts for'
-print '# HostbasedAuthentication'
-if configRegistry.get('sshd/IgnoreUserKnownHosts'):
-	print 'IgnoreUserKnownHosts %(sshd/IgnoreUserKnownHosts)s' % configRegistry
-else:
-	print '#IgnoreUserKnownHosts no'
-print '# Don\'t read the user\'s ~/.rhosts and ~/.shosts files'
-if configRegistry.get('sshd/IgnoreRhosts'):
-	print 'IgnoreRhosts %(sshd/IgnoreRhosts)s' % configRegistry
-else:
-	print '#IgnoreRhosts yes'
-print ''
-print '# To disable tunneled clear text passwords, change to no here!'
-print 'PasswordAuthentication %s' % configRegistry.get('sshd/passwordauthentication', 'yes')
-if configRegistry.get('sshd/PermitEmptyPasswords'):
-	print 'PermitEmptyPasswords %(sshd/PermitEmptyPasswords)s' % configRegistry
-else:
-	print '#PermitEmptyPasswords no'
-print ''
-print '# Change to yes to enable challenge-response passwords (beware issues with'
-print '# some PAM modules and threads)'
-print 'ChallengeResponseAuthentication %s' % configRegistry.get('sshd/challengeresponse', 'yes')
-print ''
-print '# Kerberos options'
-if configRegistry.get('sshd/KerberosAuthentication'):
-	print 'KerberosAuthentication %(sshd/KerberosAuthentication)s' % configRegistry
-else:
-	print '#KerberosAuthentication no'
-if configRegistry.get('sshd/KerberosOrLocalPasswd'):
-	print 'KerberosOrLocalPasswd %(sshd/KerberosOrLocalPasswd)s' % configRegistry
-else:
-	print '#KerberosOrLocalPasswd yes'
-if configRegistry.get('sshd/KerberosTicketCleanup'):
-	print 'KerberosTicketCleanup %(sshd/KerberosTicketCleanup)s' % configRegistry
-else:
-	print '#KerberosTicketCleanup yes'
-if configRegistry.get('sshd/KerberosGetAFSToken'):
-	print 'KerberosGetAFSToken %(sshd/KerberosGetAFSToken)s' % configRegistry
-else:
-	print '#KerberosGetAFSToken no'
-print ''
-print '# GSSAPI options'
-print 'GSSAPIAuthentication %s' % configRegistry.get('sshd/GSSAPIAuthentication', 'yes')
-if configRegistry.get('sshd/GSSAPICleanupCredentials'):
-	print 'GSSAPICleanupCredentials %(sshd/GSSAPICleanupCredentials)s' % configRegistry
-else:
-	print '#GSSAPICleanupCredentials yes'
-if configRegistry.get('sshd/GSSAPIStrictAcceptorCheck'):
-	print 'GSSAPIStrictAcceptorCheck %(sshd/GSSAPIStrictAcceptorCheck)s' % configRegistry
-else:
-	print '#GSSAPIStrictAcceptorCheck yes'
-print 'GSSAPIKeyExchange %s' % configRegistry.get('sshd/GSSAPIKeyExchange', 'yes')
 @!@
+
+# Ciphers and keying
+#RekeyLimit default none
+
+# Logging
+#SyslogFacility AUTH
+#LogLevel INFO
+
+# Authentication:
+
+LoginGraceTime 600
+PermitRootLogin @%@sshd/permitroot@%@
+#StrictModes yes
+#MaxAuthTries 6
+#MaxSessions 10
+
+#PubkeyAuthentication yes
+
+# Expect .ssh/authorized_keys2 to be disregarded by default in future.
+#AuthorizedKeysFile	.ssh/authorized_keys .ssh/authorized_keys2
+
+#AuthorizedPrincipalsFile none
+
+#AuthorizedKeysCommand none
+#AuthorizedKeysCommandUser nobody
+
+# For this to work you will also need host keys in /etc/ssh/ssh_known_hosts
+#HostbasedAuthentication no
+# Change to yes if you don't trust ~/.ssh/known_hosts for
+# HostbasedAuthentication
+#IgnoreUserKnownHosts no
+# Don't read the user's ~/.rhosts and ~/.shosts files
+#IgnoreRhosts yes
+
+# To disable tunneled clear text passwords, change to no here!
+PasswordAuthentication @%@sshd/passwordauthentication@%@
+#PermitEmptyPasswords no
+
+# Change to yes to enable challenge-response passwords (beware issues with
+# some PAM modules and threads)
+ChallengeResponseAuthentication @%@sshd/challengeresponse@%@
+
+# Kerberos options
+#KerberosAuthentication no
+#KerberosOrLocalPasswd yes
+#KerberosTicketCleanup yes
+#KerberosGetAFSToken no
+
+# GSSAPI options
+GSSAPIAuthentication yes
+#GSSAPICleanupCredentials yes
+#GSSAPIStrictAcceptorCheck yes
+GSSAPIKeyExchange yes
+
 # Set this to 'yes' to enable PAM authentication, account processing,
 # and session processing. If this is enabled, PAM authentication will
 # be allowed through the ChallengeResponseAuthentication and
@@ -167,98 +97,47 @@ print 'GSSAPIKeyExchange %s' % configRegistry.get('sshd/GSSAPIKeyExchange', 'yes
 # If you just want the PAM account and session checks to run without
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
-@!@
+UsePAM yes
 
-print 'UsePAM %s' % configRegistry.get('sshd/UsePAM', 'yes')
-print ''
-if configRegistry.get('sshd/AllowAgentForwarding'):
-	print 'AllowAgentForwarding %(sshd/AllowAgentForwarding)s' % configRegistry
-else:
-	print '#AllowAgentForwarding yes'
-if configRegistry.get('sshd/AllowTcpForwarding'):
-	print 'AllowTcpForwarding %(sshd/AllowTcpForwarding)s' % configRegistry
-else:
-	print '#AllowTcpForwarding yes'
-if configRegistry.get('sshd/GatewayPorts'):
-	print 'GatewayPorts %(sshd/GatewayPorts)s' % configRegistry
-else:
-	print '#GatewayPorts no'
-print 'X11Forwarding %s' % configRegistry.get('sshd/xforwarding', 'no')
+#AllowAgentForwarding yes
+#AllowTcpForwarding yes
+#GatewayPorts no
+X11Forwarding @%@sshd/xforwarding@%@
+@!@
 if configRegistry.get('sshd/xdisplayoffset'):
 	print "X11DisplayOffset %s" % configRegistry['sshd/xdisplayoffset']
 if configRegistry.get('sshd/xuselocalhost'):
 	print "X11UseLocalhost %s" % configRegistry['sshd/xuselocalhost']
-print ''
-if configRegistry.get('sshd/PermitTTY'):
-	print 'PermitTTY %(sshd/PermitTTY)s' % configRegistry
-else:
-	print '#PermitTTY yes'
-print 'PrintMotd %s' % configRegistry.get('sshd/PrintMotd', 'no')
+@!@
+#PermitTTY yes
+PrintMotd no
+#PrintLastLog yes
+@!@
 if configRegistry.get('sshd/TCPKeepAlive'):
-	print 'TCPKeepAlive %(sshd/TCPKeepAlive)s' % configRegistry
-else:
-	print '#TCPKeepAlive yes'
-if configRegistry.get('sshd/PrintLastLog'):
-	print 'PrintLastLog %(sshd/PrintLastLog)s' % configRegistry
-else:
-	print '#PrintLastLog yes'
-print ''
-if configRegistry.get('sshd/UsePrivilegeSeparation'):
-	print 'UsePrivilegeSeparation %(sshd/UsePrivilegeSeparation)s' % configRegistry
-else:
-	print '#UsePrivilegeSeparation sandbox'
-if configRegistry.get('sshd/PermitUserEnvironment'):
-	print 'PermitUserEnvironment %(sshd/PermitUserEnvironment)s' % configRegistry
-else:
-	print '#PermitUserEnvironment no'
-if configRegistry.get('sshd/Compression'):
-	print 'Compression %(sshd/Compression)s' % configRegistry
-else:
-	print '#Compression delayed'
-if configRegistry.get('sshd/ClientAliveInterval'):
-	print 'ClientAliveInterval %(sshd/ClientAliveInterval)s' % configRegistry
-else:
-	print '#ClientAliveInterval 0'
-if configRegistry.get('sshd/ClientAliveCountMax'):
-	print 'ClientAliveCountMax %(sshd/ClientAliveCountMax)s' % configRegistry
-else:
-	print '#ClientAliveCountMax 3'
-if configRegistry.get('sshd/UseDNS'):
-	print 'UseDNS %(sshd/UseDNS)s' % configRegistry
-else:
-	print '#UseDNS no'
-if configRegistry.get('sshd/PidFile'):
-	print 'PidFile %(sshd/PidFile)s' % configRegistry
-else:
-	print '#PidFile /var/run/sshd.pid'
-if configRegistry.get('sshd/MaxStartups'):
-	print 'MaxStartups %(sshd/MaxStartups)s' % configRegistry
-else:
-	print '#MaxStartups 10:30:100'
-if configRegistry.get('sshd/PermitTunnel'):
-	print 'PermitTunnel %(sshd/PermitTunnel)s' % configRegistry
-else:
-	print '#PermitTunnel no'
-if configRegistry.get('sshd/ChrootDirectory'):
-	print 'ChrootDirectory %(sshd/ChrootDirectory)s' % configRegistry
-else:
-	print '#ChrootDirectory none'
-if configRegistry.get('sshd/VersionAddendum'):
-	print 'VersionAddendum %(sshd/VersionAddendum)s' % configRegistry
-else:
-	print '#VersionAddendum none'
-print ''
-print '# no default banner path'
+	print "TCPKeepAlive %(sshd/TCPKeepAlive)s" % configRegistry
+@!@
+#UseLogin no
+#UsePrivilegeSeparation sandbox
+#PermitUserEnvironment no
+#Compression delayed
+#ClientAliveInterval 0
+#ClientAliveCountMax 3
+#UseDNS no
+#PidFile /var/run/sshd.pid
+#MaxStartups 10:30:100
+#PermitTunnel no
+#ChrootDirectory none
+#VersionAddendum none
+
+# no default banner path
+@!@
 if configRegistry.get('sshd/banner'):
 	print "Banner %s" % configRegistry['sshd/banner']
-print ''
-print ''
-if configRegistry.get('sshd/AcceptEnv'):
-	print 'AcceptEnv %(sshd/AcceptEnv)s' % configRegistry
-else:
-	print '# Allow client to pass locale environment variables'
-	print 'AcceptEnv LANG LC_*'
 @!@
+
+# Allow client to pass locale environment variables
+AcceptEnv LANG LC_*
+
 # override default of no subsystems
 Subsystem	sftp	/usr/lib/openssh/sftp-server
 
@@ -276,10 +155,7 @@ if configRegistry.get('sshd/Ciphers'):
 	print "Ciphers %(sshd/Ciphers)s" % configRegistry
 if configRegistry.get('sshd/KexAlgorithms'):
 	print "KexAlgorithms %(sshd/KexAlgorithms)s" % configRegistry
-@!@
 
-# Start of additional configuration options defined via ucr 'sshd/config/.*'
-@!@
 PREFIX = 'sshd/config/'
 DIGITS = '0123456789'
 config = [

@@ -1,9 +1,3 @@
-univention-base-files (7.0.0-13) unstable; urgency=medium
-
-  * Bug #39704: Add more UCR varaibles for sshd_config
-
- -- Richard Ulmer <ulmer@univention.de>  Thu, 17 May 2018 11:00:35 +0200
-
 univention-base-files (7.0.0-12) unstable; urgency=medium
 
   * Bug #45950: Update broken template for UCRV update/secure_apt
