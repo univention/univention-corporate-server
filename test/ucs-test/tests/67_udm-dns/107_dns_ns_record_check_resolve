@@ -1,0 +1,56 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create DNS NS record and try to resolve it
+## bugs: [32626]
+## roles:
+##  - domaincontroller_master
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+## tags:
+##  - skip_admember
+## exposure: safe
+
+import univention.testing.udm as udm_test
+import univention.testing.ucr as ucr_test
+import univention.testing.strings as uts
+import subprocess
+from univention.testing.ucs_samba import wait_for_s4connector
+import univention.testing.utils as utils
+
+if __name__ == '__main__':
+	ucr = ucr_test.UCSTestConfigRegistry()
+	ucr.load()
+	with udm_test.UCSTestUDM() as udm:
+		partentzone = '%(domainname)s' % ucr
+		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
+		forward_zone = "zoneName=%(domainname)s,cn=dns,%(ldap/base)s" % ucr
+
+		zonename = uts.random_name()
+		nameserver1 = ".".join([uts.random_name(), partentzone])
+		nameserver2 = ".".join([uts.random_name(), partentzone])
+		nameservers = [nameserver1, nameserver2]
+
+		record_properties = {
+			'zone': zonename,
+			'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
+			'nameserver': nameservers
+		}
+		ns_record = udm.create_object('dns/ns_record', superordinate=forward_zone, **record_properties)
+
+		wait_for_s4connector()
+		qname = '%s.%s' % (zonename, partentzone)
+		p1 = subprocess.Popen(['dig', '+nocmd', '+noall', '+answer', '@localhost', qname, 'ANY'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+		stdout, stderr = p1.communicate()
+		if p1.returncode != 0:
+			utils.fail("DNS dig query failed")
+
+		found = set()
+		for line in stdout.split('\n'):
+			if line.startswith("%s.\t" % qname):
+				for nameserver in nameservers:
+					if line.endswith("\tIN\tNS\t%s." % nameserver):
+						found.add(nameserver)
+						break
+		nameservers = set(nameservers)
+		if nameservers != found:
+			utils.fail("Record not found: %s" % ([nameservers - found]))
