@@ -3,9 +3,10 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-s4-connector
-fix: 12.0.2-16A~4.3.0.201805251225
+fix: 12.0.2-17A~4.3.0.201806040804
 desc: |
  This update addresses the following issue(s):
+ * Add support for DNS NS records
  * In case connector/s4/mapping/group/syncmode is set to "write" in UCR,
    the S4-Connector would still modify groups in OpenLDAP when a user
    was modified. This affected UCS@school.
@@ -14,4 +15,4 @@ desc: |
  * The listener module now restarts the connector if extended attributes
    are modified.
  * Added support for bindpwdfile during join.
-bug: [46682,47013,46972,47061]
+bug: [32626,46682,47013,46972,47061]
