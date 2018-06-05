@@ -280,6 +280,24 @@ Description[en]=Specifies the OpenSSH deamon configuration value 'UsePAM': if th
 Type=str
 Categories=service-ssh
 
+[sshd/AllowAgentForwarding]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'AllowAgentForwarding' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'AllowAgentForwarding': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/AllowTcpForwarding]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'AllowTcpForwarding' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'AllowTcpForwarding': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/GatewayPorts]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'GatewayPorts' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'GatewayPorts': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
 [sshd/PermitTTY]
 Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'PermitTTY' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
 Description[en]=Specifies the OpenSSH deamon configuration value 'PermitTTY': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
