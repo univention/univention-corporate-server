@@ -49,6 +49,9 @@ Variables: sshd/GSSAPICleanupCredentials
 Variables: sshd/GSSAPIStrictAcceptorCheck
 Variables: sshd/GSSAPIKeyExchange
 Variables: sshd/UsePAM
+Variables: sshd/AllowAgentForwarding
+Variables: sshd/AllowTcpForwarding
+Variables: sshd/GatewayPorts
 Variables: sshd/PermitTTY
 Variables: sshd/PrintMotd
 Variables: sshd/PrintLastLog
