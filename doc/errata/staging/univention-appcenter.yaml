@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-appcenter
-fix: 7.0.1-59A~4.3.0.201805311030
+fix: 7.0.1-60A~4.3.0.201806051119
 desc: |-
   This update addresses the following issue(s):
   * Added "update-certificates" command to univention-appcenter.
@@ -13,8 +13,5 @@ desc: |-
     for downloaded meta files.
   * The deprecated AppManager class is not used anymore in the code.
   * Categories were not translated. This has been fixed.
-  * The App logos are now linked to UMC frontend folder as soon as the UMC
-    module is installed. These logos are otherwise unavailable during the
-    setup of App Appliances.
   * Fixed permissions of cache directory.
-bug: [46789, 47051, 43434, 47021, 44542, 47072, 46813, 47094]
+bug: [46789, 47051, 43434, 47021, 44542, 47072, 47094]
