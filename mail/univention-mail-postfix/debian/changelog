@@ -1,3 +1,9 @@
+univention-mail-postfix (12.0.0-20) unstable; urgency=low
+
+  * Bug #46454: fix traceback due to "un-open-ed" UDM object
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 05 Jun 2018 21:21:42 +0200
+
 univention-mail-postfix (12.0.0-19) unstable; urgency=medium
 
   * Bug #46454: actually install script

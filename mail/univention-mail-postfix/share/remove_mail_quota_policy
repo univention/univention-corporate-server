@@ -146,6 +146,7 @@ class QuotaRemoval(object):
 					filter_s = explode_dn(ref_dn, 0)[0]
 					base = ','.join(explode_dn(ref_dn, 0)[1:])
 					obj = mod.lookup(None, self.lo, filter_s, base=base)[0]
+					obj.open()
 					obj.policies.remove(dn)
 					if self.modify:
 						obj.modify()
