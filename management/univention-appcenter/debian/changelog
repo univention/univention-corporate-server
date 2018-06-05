@@ -1,3 +1,9 @@
+univention-appcenter (7.0.1-60) unstable; urgency=medium
+
+  * Bug #46813: Temporary revert
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 05 Jun 2018 11:18:08 +0200
+
 univention-appcenter (7.0.1-59) unstable; urgency=medium
 
   * Bug #46789: certificate management
