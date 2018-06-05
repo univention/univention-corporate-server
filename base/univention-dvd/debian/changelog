@@ -1,3 +1,9 @@
+univention-dvd (3.0.0-10) unstable; urgency=low
+
+  * Bug #47127: UCS-4.3-1 DVD
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 05 Jun 2018 17:22:40 +0200
+
 univention-dvd (3.0.0-9) unstable; urgency=low
 
   * Bug #45868: Fix Debian-Stretch symbolic links
