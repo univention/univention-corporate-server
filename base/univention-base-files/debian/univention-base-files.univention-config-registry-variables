@@ -46,13 +46,31 @@ Description[en]=This setting ('yes'/'no') configures, whether a X11 connection o
 Type=str
 Categories=service-ssh
 
+[sshd/X11Forwarding]
+Description[de]=Diese Einstellung ('yes'/'no') legt fest, ob eine auf dem entfernten Rechner gestartete X11-Verbindung weitergeleitet wird. Diese Einstellung muss aktiviert sein, um Benutzern einen grafischen SSH-Login auf dem Server zu ermöglichen.
+Description[en]=This setting ('yes'/'no') configures, whether a X11 connection on the remote host is forwarded. This setting needs to be activated to allow users a graphical login to the server.
+Type=str
+Categories=service-ssh
+
 [sshd/xdisplayoffset]
 Description[de]=X11-Anzeigeoberflächen (Displays) sind beginnend mit 0 durchnumeriert. Diese Variable legt das erste Display fest, das im Rahmen der X11-Weiterleitung verwendet werden soll.
 Description[en]=X11 displays are numbered starting with 0. This variable specifies the first display to be used during X11 forwarding.
 Type=int
 Categories=service-ssh
 
+[sshd/X11DisplayOffset]
+Description[de]=X11-Anzeigeoberflächen (Displays) sind beginnend mit 0 durchnumeriert. Diese Variable legt das erste Display fest, das im Rahmen der X11-Weiterleitung verwendet werden soll.
+Description[en]=X11 displays are numbered starting with 0. This variable specifies the first display to be used during X11 forwarding.
+Type=int
+Categories=service-ssh
+
 [sshd/xuselocalhost]
+Description[de]=Diese Variable legt fest ('yes'/'no'), ob im Rahmen der X11-Weiterleitung die DISPLAY-Umgebungsvariable auf 'localhost' gesetzt wird. Dies verhindert, das der SSH-Client auf das X11-Display des weiterleitenden Servers zugreifen kann.
+Description[en]=This variable configures ('yes'/'no'), whether the DISPLAY variable is mapped to 'localhost' during X11 forwarding. This prevents the access of the SSH client to the X11 display of the forwarding server.
+Type=str
+Categories=service-ssh
+
+[sshd/X11UseLocalHost]
 Description[de]=Diese Variable legt fest ('yes'/'no'), ob im Rahmen der X11-Weiterleitung die DISPLAY-Umgebungsvariable auf 'localhost' gesetzt wird. Dies verhindert, das der SSH-Client auf das X11-Display des weiterleitenden Servers zugreifen kann.
 Description[en]=This variable configures ('yes'/'no'), whether the DISPLAY variable is mapped to 'localhost' during X11 forwarding. This prevents the access of the SSH client to the X11 display of the forwarding server.
 Type=str
@@ -65,6 +83,12 @@ Type=str
 Categories=service-ssh
 
 [sshd/banner]
+Description[de]=Die hier angegebene Datei wird bei Anmeldungen per SSH als Hinweis-Banner angezeigt. Wird die Variable auf einen leeren String gesetzt, wird keine Datei angezeigt.
+Description[en]=The file specified here is shown during SSH logins. If the variable is set to an empty string, no file is shown.
+Type=str
+Categories=service-ssh
+
+[sshd/Banner]
 Description[de]=Die hier angegebene Datei wird bei Anmeldungen per SSH als Hinweis-Banner angezeigt. Wird die Variable auf einen leeren String gesetzt, wird keine Datei angezeigt.
 Description[en]=The file specified here is shown during SSH logins. If the variable is set to an empty string, no file is shown.
 Type=str

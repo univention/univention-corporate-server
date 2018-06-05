@@ -11,11 +11,15 @@ File: etc/ssh/sshd_config
 Variables: sshd/port
 Variables: sshd/permitroot
 Variables: sshd/xforwarding
+Variables: sshd/X11Forwarding
 Variables: sshd/xdisplayoffset
+Variables: sshd/X11DisplayOffset
 Variables: sshd/xuselocalhost
+Variables: sshd/X11UseLocalHost
 Variables: sshd/challengeresponse
 Variables: sshd/passwordauthentication
 Variables: sshd/banner
+Variables: sshd/Banner
 Variables: sshd/MACs
 Variables: sshd/Ciphers
 Variables: sshd/KexAlgorithms
