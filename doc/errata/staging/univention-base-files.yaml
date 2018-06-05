@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [0]
+scope: ucs_4.3-0-errata4.3-0
+src: univention-base-files
+fix: 7.0.0-13A~4.3.0.201805171105
+desc: |
+ This update addresses the following issue(s):
+ * Some configuration values of /etc/ssh/sshd_config were not mapped to UCR
+   variables.
+bug: [39704]

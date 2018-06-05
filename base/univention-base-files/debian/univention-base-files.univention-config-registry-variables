@@ -112,6 +112,270 @@ Description[en]=Specifies whether to send TCP keepalive messages. Default: yes. 
 Type=bool
 Categories=service-ssh
 
+[sshd/AddressFamily]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'AddressFamily' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'AddressFamily': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/ListenAddress]
+Description[de]=Komma separierte Liste. Legt die OpenSSH Deamon Konfigurationsvariable 'ListenAddress' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Comma separated list. Specifies the OpenSSH deamon configuration value 'ListenAddress': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/RekeyLimit]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'RekeyLimit' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'RekeyLimit': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/SyslogFacility]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'SyslogFacility' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'SyslogFacility': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/LogLevel]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'LogLevel' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'LogLevel': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/LoginGraceTime]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'LoginGraceTime' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'LoginGraceTime': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/StrictModes]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'StrictModes' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'StrictModes': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/MaxAuthTries]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'MaxAuthTries' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'MaxAuthTries': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/MaxSessions]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'MaxSessions' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'MaxSessions': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/PubkeyAuthentication]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'PubkeyAuthentication' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'PubkeyAuthentication': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/AuthorizedKeysFile]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'AuthorizedKeysFile' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'AuthorizedKeysFile': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/AuthorizedPrincipalsFile]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'AuthorizedPrincipalsFile' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'AuthorizedPrincipalsFile': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/AuthorizedKeysCommand]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'AuthorizedKeysCommand' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'AuthorizedKeysCommand': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/AuthorizedKeysCommandUser]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'AuthorizedKeysCommandUser' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'AuthorizedKeysCommandUser': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/HostbasedAuthentication]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'HostbasedAuthentication' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'HostbasedAuthentication': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/IgnoreUserKnownHosts]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'IgnoreUserKnownHosts' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'IgnoreUserKnownHosts': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/IgnoreRhosts]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'IgnoreRhosts' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'IgnoreRhosts': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/PermitEmptyPasswords]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'PermitEmptyPasswords' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'PermitEmptyPasswords': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/ChallengeResponseAuthentication]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'ChallengeResponseAuthentication' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'ChallengeResponseAuthentication': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/KerberosAuthentication]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'KerberosAuthentication' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'KerberosAuthentication': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/KerberosOrLocalPasswd]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'KerberosOrLocalPasswd' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'KerberosOrLocalPasswd': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/KerberosTicketCleanup]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'KerberosTicketCleanup' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'KerberosTicketCleanup': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/KerberosGetAFSToken]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'KerberosGetAFSToken' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'KerberosGetAFSToken': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/GSSAPIAuthentication]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'GSSAPIAuthentication' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'GSSAPIAuthentication': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/GSSAPICleanupCredentials]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'GSSAPICleanupCredentials' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'GSSAPICleanupCredentials': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/GSSAPIStrictAcceptorCheck]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'GSSAPIStrictAcceptorCheck' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'GSSAPIStrictAcceptorCheck': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/GSSAPIKeyExchange]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'GSSAPIKeyExchange' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'GSSAPIKeyExchange': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/UsePAM]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'UsePAM' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'UsePAM': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/PermitTTY]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'PermitTTY' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'PermitTTY': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/PrintMotd]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'PrintMotd' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'PrintMotd': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/PrintLastLog]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'PrintLastLog' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'PrintLastLog': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/UsePrivilegeSeparation]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'UsePrivilegeSeparation' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'UsePrivilegeSeparation': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/PermitUserEnvironment]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'PermitUserEnvironment' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'PermitUserEnvironment': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/Compression]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'Compression' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'Compression': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/ClientAliveInterval]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'ClientAliveInterval' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'ClientAliveInterval': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/ClientAliveCountMax]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'ClientAliveCountMax' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'ClientAliveCountMax': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/UseDNS]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'UseDNS' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'UseDNS': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/PidFile]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'PidFile' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'PidFile': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/MaxStartups]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'MaxStartups' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'MaxStartups': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/PermitTunnel]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'PermitTunnel' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'PermitTunnel': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/ChrootDirectory]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'ChrootDirectory' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'ChrootDirectory': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/VersionAddendum]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'VersionAddendum' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'VersionAddendum': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/AcceptEnv]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'AcceptEnv' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'AcceptEnv': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
+[sshd/Subsystem]
+Description[de]=Legt die OpenSSH Deamon Konfigurationsvariable 'Subsystem' fest. Wenn die Variable nicht gesetzt ist, so wird der OpenSSH Standard benutzt, siehe auch `man sshd_config.
+Description[en]=Specifies the OpenSSH deamon configuration value 'Subsystem': if the variable is unset, the OpenSSH default value is used, see `man sshd_config for details.
+Type=str
+Categories=service-ssh
+
 [sshd/config/.*]
 Description[de]=Spezifiziert zusätzliche Konfigurationsoptionen für /etc/ssh/sshd_config. Siehe `man sshd_config` für Details.
 Description[en]=Specifies additional configuration options for /etc/ssh/sshd_config. See `man sshd_config for details.
