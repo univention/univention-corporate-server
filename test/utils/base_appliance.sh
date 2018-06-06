@@ -1117,13 +1117,16 @@ __EOF__
 
 appliance_reset_servers ()
 {
-	ucr set repository/online/server="https://updates.software-univention.de/"
-	ucr unset appcenter/index/verify
-       	ucr set update/secure_apt=yes
+	local reset="$1"
+	if [ "$reset" = true ]; then
+		ucr set repository/online/server="https://updates.software-univention.de/"
+		ucr unset appcenter/index/verify
+			ucr set update/secure_apt=yes
 
-	ucr search --brief --value "^appcenter-test.software-univention.de$" | sed -ne 's|: .*||p' | while read key; do
-		ucr set "$key=appcenter.software-univention.de"
-	done
+		ucr search --brief --value "^appcenter-test.software-univention.de$" | sed -ne 's|: .*||p' | while read key; do
+			ucr set "$key=appcenter.software-univention.de"
+		done
+	fi
 }
 
 disable_root_login_and_poweroff ()
