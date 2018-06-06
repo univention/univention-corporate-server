@@ -9,3 +9,5 @@ desc: |
  * Added a link to the knowledge base article about join problems
    in the join error message.
 bug: [45514]
+erratum: 95
+announced: 2018-06-06
