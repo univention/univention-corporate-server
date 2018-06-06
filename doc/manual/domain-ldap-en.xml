@@ -1521,8 +1521,8 @@ apt-get dselect-upgrade
 		</programlisting>
 	<para>
 		In addition, the &ucsUCR; inventory needs to be saved so that it is possible to compare the
-		configuration adjustments on the new &ucsMaster;. This can be achieved with the following
-		command:
+		configuration adjustments on the new &ucsMaster;. The following files on the &ucsMaster; need
+		to be compared with those on the &ucsBackup;:
 	</para>
 		<programlisting language="sh">
 /etc/univention/base.conf
