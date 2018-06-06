@@ -15,3 +15,5 @@ desc: |-
   * Categories were not translated. This has been fixed.
   * Fixed permissions of cache directory.
 bug: [46789, 47051, 43434, 47021, 44542, 47072, 47094]
+erratum: 91
+announced: 2018-06-06
