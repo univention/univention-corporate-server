@@ -1,3 +1,9 @@
+univention-net-installer (11.0.0-3) unstable; urgency=medium
+
+  * Bug #47120: Adapt to UCS-4.3-1
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jun 2018 16:35:55 +0200
+
 univention-net-installer (11.0.0-2) unstable; urgency=low
 
   * Bug #45747: Update PXE profile for UCS-4.3

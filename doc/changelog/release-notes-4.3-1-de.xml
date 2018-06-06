@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-de-4.3-0">
+<book lang="de" id="releasenotes-de-4.3-1">
 	<bookinfo>
 		<title>UCS 4.3 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.3</subtitle>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.3-1</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,45 +44,13 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit Univention Corporate Server 4.3 steht das dritte Minor Release für Univention Corporate Server (UCS) 4 zur
+			Mit Univention Corporate Server 4.3-1 steht das erste Point-Release für Univention Corporate Server (UCS) 4.3 zur
 			Verfügung. Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie
 			diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				UCS 4.3 basiert auf Debian GNU/Linux 9 (<wordasword>Stretch</wordasword>). Mehr als 20.000 Source Pakete wurden aktualisiert und
-				zum Teil an die Bedürfnisse der Nutzer von UCS angepasst. Als Linux Kernel wird nun der unveränderte Kernel von Debian GNU/Linux
-				verwendet. Das erhöht die Kompatibilität zu Hard- und Softwaresystemen, die für Debian zertifiziert sind. Neu in UCS 4.3 sind außerdem
-				u.a. MariaDB und Nagios 4.
-			</para></listitem>
-			<listitem><para>
-				Über die mit UCS 4.2 eingeführten Portalseiten erhalten Nutzer von überall einfachen Zugriff auf relevante Anwendungen.
-				Mit UCS 4.3 können Administratoren diese Portale in einem Visual Composer Modus und via Drag and Drop einfach aufbauen und verwalten.
-				Je nach Berechtigung, Abteilung, Niederlassung oder Schule können den Nutzern oder Gruppen unterschiedliche Inhalte angezeigt werden.
-			</para></listitem>
-			<listitem><para>
-				Mit UCS 4.3 ist die SAML-Authentifizierung mit der Kerberos Anmeldung verknüpft. An Windows oder Linux (Ubuntu) angemeldete
-				Nutzer können ohne eine erneute Authentifizierung auf Web-Applikationen zugreifen, die SAML unterstützen.
-			</para></listitem>
-			<listitem><para>
-				Die unterschiedlichen Kontooptionen für Benutzer wurden vereinheitlicht. So gibt es mit UCS 4.3 drei unterschiedliche Kontotypen:
-				<itemizedlist>
-					<listitem><para>
-						Normale, vollwertige Konten, diese haben sämtliche Eigenschaften.
-					</para></listitem>
-					<listitem><para>
-						Einfache Authentisierungskonten, diese können sich lediglich mit dem LDAP-Server verbinden, haben aber keine Möglichkeit sich auch anderweitig anzumelden.
-					</para></listitem>
-					<listitem><para>
-						Adressbucheinträge für die Pflege von Kontaktinformationen.
-					</para></listitem>
-				</itemizedlist>
-			</para></listitem>
-			<listitem><para>
-				Samba wurde auf Version 4.7 aktualisiert. In der neuen Samba Version gibt es wichtige Verbesserungen im Bereich Active Directory Domänencontroller.
-				So wird durch die Multi-Process-Implementierung des Samba LDAP-Servers eine deutliche Performanceverbesserung eintreten. Zusätzlich kommt
-				die Replikation von Gruppenmitgliedschaften nun mit deutlich weniger Ressourcen aus.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -187,48 +155,6 @@ Checking ldap_schema ...                          OK
 	<chapter id="relnotes:packages">
 		<title>Hinweise zum Einsatz einzelner Pakete</title>
 
-		<section id="relnotes:mariadb">
-			<title>MariaDB ersetzt MySQL</title>
-			<para>
-				Mit UCS 4.3 wird MySQL durch MariaDB ersetzt.
-				Die Integration wird über das neue Paket <package>univention-mariadb</package> bereitgestellt.
-				Das Paket <package>univention-mysql</package> ist nun ein Meta-Paket und installiert <package>univention-mariadb</package>.
-				Bestehende Daten werden ohne Benutzerinteraktion bei einem Update auf UCS 4.3 migriert.
-			</para>
-		</section>
-
-		<section id="relnotes:useroptions">
-			<title>Vereinheitlichung der Benutzeroptionen</title>
-			<para>
-				Bisher konnten den Benutzern vom Administrator in UMC bestimmte Eigenschaften zugeordnet werden.
-				Das waren u.a. Samba, Kerberos, POSIX und Mail. Mit UCS 4.3 werden die vorhandenen Benutzer in drei
-				unterschiedliche Benutzertypen migriert:
-				1. Normale vollwertige Benutzer, diese haben sämtliche Eigenschaften.
-				2. Einfache Authentisierungskonten, diese können sich lediglich mit dem LDAP verbinden, haben aber keine
-				Möglichkeit sich auch anderweitig anzumelden.
-				3. Reine Adressbucheinträge - hier können neben internen auch externe Identitäten gepflegt werden, z.B. um Adresslisten zu erstellen.
-			</para>
-		</section>
-
-		<section id="relnotes:cyrus">
-			<title>Cyrus IMAP-Server</title>
-			<para>
-				Die Integration des Cyrus IMAP- und POP3-Servers wurde aus UCS entfernt. Die Integration von Dovecot wird die einzige sein, die ab UCS 4.3 unterstützt wird.
-				Wenn Sie Cyrus unter UCS 4.2 verwenden und ein Upgrade auf UCS 4.3 durchführen möchten, lesen Sie den Artikel <ulink url = "https://help.univention.com/t/7957" />.
-				Der Artikel enthält einen Link zu Anweisungen für die Migration von Cyrus nach Dovecot.
-			</para>
-		</section>
-
-		<section id="relnotes:nt">
-			<title>Samba als Windows NT DC</title>
-			<para>
-				Unterstützung für <literal>Windows-NT-Domänen</literal> wurde aus UCS 4.3 entfernt. Das Update für diese Domänen
-				ist blockiert und die Domäne muss nach der Anleitung <ulink url = "https://wiki.univention.de/index.php/Migration_from_Samba_3_to_Samba_4">
-				Migration von Samba 3 nach Samba 4 </ulink> zu <literal>Samba/AD</literal> migriert werden.
-				Siehe auch <ulink url = "https://wiki.univention.de/index.php/Best_Practice_Samba_4_Migration">Best Practices für Samba 4 Migration</ulink>.
-			</para>
-		</section>
-
 		<section id="relnotes:usage">
 			<title>Erfassung von Nutzungsstatistiken</title>
 			<para>
@@ -294,10 +220,10 @@ Checking ldap_schema ...                          OK
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.2-3</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <wordasword>4.3-0</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-0.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-1.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

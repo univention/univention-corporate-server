@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-en-4.3-0">
+<book lang="en" id="releasenotes-en-4.3-1">
 	<bookinfo>
 		<title>UCS 4.3 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.3</subtitle>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.3-1</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,46 +44,13 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With Univention Corporate Server 4.3, the third minor release of Univention Corporate Server (UCS) 4 is now
+			With Univention Corporate Server 4.3-1, the first point release of Univention Corporate Server (UCS) 4.3 is now
 			available. It provides several feature improvements and extensions, new properties as well as
 			various improvements and bugfixes. Here is an overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				UCS 4.3 is based on Debian GNU/Linux 9 (Stretch). More than 20,000 source packages have
-				been updated and and some have been adapted to the needs of UCS users. The Linux kernel of Debian GNU/Linux is
-				now used unmodified. This greatly improves compatibility to hardware and software which has been certified for
-				Debian 9. Also new in UCS 4.3 are e.g. MariaDB and Nagios 4.
-			</para></listitem>
-			<listitem><para>
-				The portal pages introduced with the UCS 4.2 give users a simple way to access applications relevant to them. With UCS 4.3,
-				administrators can easily build and manage these portals in visual composer mode and via drag and drop.
-				It is now also possible to show different content to different users, depending on their group membership, permissions,
-				department, branch or school.
-			</para></listitem>
-			<listitem><para>
- 				With UCS 4.3, SAML authentication is linked to the Kerberos login. Users logged in to Windows or
-				Linux (Ubuntu) can access Web applications that support SAML without re-authentication.
-			</para></listitem>
-			<listitem><para>
-				The different account types for users have been simplified. There are now three different account types with UCS 4.3:
-				<itemizedlist>
-					<listitem><para>
-						Normal accounts containing all features.
-					</para></listitem>
-					<listitem><para>
-						Simple authentication accounts, these can only connect to LDAP servers, but have no possibility to log in elsewhere.
-					</para></listitem>
-					<listitem><para>
-						Address book entries for maintaining contact information.
-					</para></listitem>
-				</itemizedlist>
-			</para></listitem>
-			<listitem><para>
-				Samba has been updated to version 4.7. This new Samba release contains important enhancements to the Active Directory
-				domain controller. For example, the multi process implementation of the Samba LDAP server will significantly improve
-				performance. Additionally, replicating group memberships now uses significantly fewer resources.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -188,47 +155,6 @@ Checking ldap_schema ...                          OK
 	<chapter id="relnotes:packages">
 		<title>Notes on selected packages</title>
 
-		<section id="relnotes:mariadb">
-			<title>MariaDB replaces MySQL</title>
-			<para>
-				UCS 4.3 replaces MySQL with MariaDB.
-				The new package <package>univention-mariadb</package> provides the integration into UCS.
-				The package <package>univention-mysql</package> is now a meta package and installs <package>univention-mariadb</package>.
-				Existing data is migrated without user interaction when updating to UCS 4.3.
-			</para>
-		</section>
-
-		<section id="relnotes:useroptions">
-			<title>Simplify user options</title>
-			<para>
-				Previously, UMC administrators could assign certain properties to users, e.g. Samba, Kerberos, POSIX and Mail.
-				With UCS 4.3, the existing users will be migrated to three different user types:
-                 1. Normal full-fledged users, these have all features.
-                 2. Simple authentication accounts, these can only connect to LDAP, but cannot log in elsewhere.
-                 3. Address book entries - internal or external identities can be maintained here, e.g. to create address lists.
-			</para>
-		</section>
-
-		<section id="relnotes:cyrus">
-			<title>Cyrus IMAP daemon</title>
-			<para>
-				The integration of the Cyrus IMAP and POP3 server has been removed from UCS.
-				The integration of Dovecot will be the only one supported from UCS 4.3 on.
-				If you are using Cyrus on UCS 4.2 and wish to upgrade to UCS 4.3, please refer to the article <ulink url="https://help.univention.com/t/7957" />.
-				The article includes a link to instructions for migrating from Cyrus to Dovecot.
-			</para>
-		</section>
-
-		<section id="relnotes:nt">
-			<title>Samba as Windows NT DC</title>
-			<para>
-				Support for <literal>Windows NT style domain control</literal> has been removed from UCS 4.3. The update for
-				these domains is blocked and the domain needs to be migrated to <literal>Samba/AD</literal>
-				following the update guide <ulink url="https://wiki.univention.de/index.php/Migration_from_Samba_3_to_Samba_4">Migration from Samba 3 to Samba 4</ulink>.
-				See also <ulink url="https://wiki.univention.de/index.php/Best_Practice_Samba_4_Migration">Best practices for Samba 4 Migration</ulink> .
-			</para>
-		</section>
-
 		<section id="relnotes:usage">
 			<title>Collection of usage statistics</title>
 			<para>
@@ -254,7 +180,6 @@ Checking ldap_schema ...                          OK
 				WebKit is primarily used for displaying HTML help pages etc.
 				Firefox should be used as web browser.
 			</para>
-
 		</section>
 
 		<section id="relnotes:browsers">
@@ -294,10 +219,10 @@ Checking ldap_schema ...                          OK
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <wordasword>4.2-3</wordasword>:
+			Listed are the changes since UCS <wordasword>4.3-0</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-0.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-1.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
