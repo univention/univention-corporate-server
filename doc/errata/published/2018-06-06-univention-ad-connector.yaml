@@ -9,3 +9,5 @@ desc: |
  * Improve error feedback for connectionFailed and failedADConnect exceptions.
  * Added support for bindpwdfile during join.
 bug: [47091,47096]
+erratum: 90
+announced: 2018-06-06
