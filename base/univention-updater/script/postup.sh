@@ -145,27 +145,22 @@ if [ -f /var/univention-join/joined -a "$server_role" != basesystem ]; then
 		--bindpwdfile "/etc/machine.secret" \
 		--dn "$ldap_hostdn" \
 		--set operatingSystem="Univention Corporate Server" \
-		--set operatingSystemVersion="4.3-0" >>"$UPDATER_LOG" 2>&1
+		--set operatingSystemVersion="4.3-1" >>"$UPDATER_LOG" 2>&1
 fi
 
 # Move to mirror mode for previous errata component
 ucr set \
-	repository/online/component/4.2-3-errata=false \
-	repository/online/component/4.2-3-errata/localmirror=true \
-	repository/online/component/4.3-0-errata=enabled \
-	repository/online/component/4.3-0-errata/description="Errata updates for UCS 4.3-0" \
-	repository/online/component/4.3-0-errata/version="4.3" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/4.3-0-errata=false \
+	repository/online/component/4.3-0-errata/localmirror=true \
+	repository/online/component/4.3-1-errata=enabled \
+	repository/online/component/4.3-1-errata/description="Errata updates for UCS 4.3-1" \
+	repository/online/component/4.3-1-errata/version="4.3" >>"$UPDATER_LOG" 2>&1
 
 # Bug 45328
 # update/register appcenter at this point because 4.3-0 postup still is in 4.2 mode
 univention-app update >>"$UPDATER_LOG" 2>&1 || true
 univention-app register --app >>"$UPDATER_LOG" 2>&1 || true
 # Bug 45328
-
-# Bug #46435
-if [ -x "/usr/bin/mysql_upgrade" -a -e "/etc/mysql/debian.cnf" ]; then
-	/usr/bin/mysql_upgrade --defaults-extra-file=/etc/mysql/debian.cnf >>"$UPDATER_LOG" 2>&1
-fi
 
 # Bug #46270
 if [ -x "/usr/sbin/univention-directory-listener-ctrl" ]; then
@@ -186,20 +181,6 @@ if test -e /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf; then
 	rm /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf
 	systemctl daemon-reload
 fi
-
-# Bug 46542 - ensure correct ntp init script and run level links
-ntp_init=$(md5sum /etc/init.d/ntp* 2>/dev/null | sed -ne 's|c11e6b1c398746e81b1a4cc160d2bbb2  ||p' | head -1)
-if [ -n "$ntp_init" -a "$ntp_init" != "/etc/init.d/ntp" ]; then
-	test -e /etc/init.d/ntp && mv /etc/init.d/ntp /var/univention-backup/ntp-init-update-to-4.3-0
-	mv "$ntp_init" /etc/init.d/ntp
-	systemctl daemon-reload >>"$UPDATER_LOG" 2>&1
-fi
-if ! ls /etc/rc2.d/ | grep -q ntp; then
-	if [ -e /etc/init.d/ntp ]; then
-		update-rc.d ntp defaults >>"$UPDATER_LOG" 2>&1
-	fi
-fi
-# Bug 46542 - end
 
 /usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3 >>"$UPDATER_LOG" 2>&1
 

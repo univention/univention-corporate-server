@@ -77,8 +77,8 @@ readcontinue ()
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: https://docs.software-univention.de/release-notes-4.3-0-en.html"
-echo " German version:  https://docs.software-univention.de/release-notes-4.3-0-de.html"
+echo " English version: https://docs.software-univention.de/release-notes-4.3-1-en.html"
+echo " German version:  https://docs.software-univention.de/release-notes-4.3-1-de.html"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
@@ -301,30 +301,6 @@ fail_if_role_package_will_be_removed ()
 	fi
 }
 
-# begin bug 46133 - stop if md5 based "Signature Algorithm" is used in tls certificate
-fail_if_md5_signature_is_used () {
-	local cert_path="/etc/univention/ssl/"$hostname"."$domainname"/cert.pem"
-	if [ -f "$cert_path" ]; then
-		local md5_indicator="Signature Algorithm: md5WithRSAEncryption"
-		local certopt="no_header,no_version,no_serial,no_signame,no_subject,no_issuer,no_pubkey,no_aux,no_extensions,no_validity"
-		openssl x509 -in "$cert_path" -text -certopt "$certopt" | grep --quiet "$md5_indicator"
-		if [ $? -eq 0 ]; then
-			echo "ERROR: The pre-check of the update found that the certificate file:"
-			echo "       "$cert_path""
-			echo "       is using md5 as the signature algorithm. This is not supported in"
-			echo "       UCS 4.3 and later versions. The signature algorithm can be set"
-			echo "       on the domain controller master with:"
-			echo "       ucr set ssl/default/hashfunction=sha256"
-			echo "       The certificate needs to be renewed afterwards. Doing that is"
-			echo "       described at:"
-			echo "       https://help.univention.com/t/renewing-the-ssl-certificates/37"
-			exit 1
-		fi
-	fi
-}
-fail_if_md5_signature_is_used
-# end bug 46133
-
 # begin bug 45861 - create proper runit default link
 mkdir -p /etc/runit/runsvdir || true
 if [ "$(readlink /etc/runit/runsvdir/default)" != "/etc/runit/univention" ]; then
@@ -333,47 +309,6 @@ if [ "$(readlink /etc/runit/runsvdir/default)" != "/etc/runit/univention" ]; the
 	ln -s /etc/runit/univention /etc/runit/runsvdir/default || true
 fi
 # end bug 45861
-
-# begin bug 45913 - remove univention-config-wrapper, can be removed after 4.3-0
-dpkg -P univention-config-wrapper >&3 2>&3
-# end bug 45913
-
-# begin bug 46118 - Remove support for NT DC
-is_slave_pdc() {
-	dpkg -l univention-samba-slave-pdc | grep -q ^ii
-}
-
-is_samba3_installed() {
-	dpkg -l univention-samba | grep -q ^ii
-}
-
-block_update_of_NT_DC() {
-	if [ "${samba_role}" = "domaincontroller" ]; then
-		if ! is_samba3_installed; then
-			return
-		fi
-		if [ "${server_role}" = "domaincontroller_slave" ]; then
-			if is_slave_pdc; then
-				return
-			fi
-		fi
-		echo "WARNING: Samba/NT (samba3) Domain Controller is not supported any more."
-		echo "         Please migrate this domain to Samba/AD before updating."
-		echo "         See https://wiki.univention.de/index.php/Migration_from_Samba_3_to_Samba_4"
-		echo "         and https://wiki.univention.de/index.php/Best_Practice_Samba_4_Migration"
-		echo "         "
-		echo "         This check can be disabled by setting the UCR variable"
-		echo "         update43/ignore_samba_nt_dc to yes."
-		if is_ucr_true update43/ignore_samba_nt_dc; then
-			echo "WARNING: update43/ignore_samba_nt_dc is set to true. Skipped as requested."
-		else
-			exit 1
-		fi
-	fi
-}
-
-block_update_of_NT_DC
-# end bug 46118
 
 # begin bug 46562
 block_update_if_system_date_is_too_old() {
@@ -445,23 +380,6 @@ then
 else
 	echo "WARNING: skipped disk-usage-test as requested"
 fi
-
-## Check for postgresql-9.1 (Bug #44160)
-check_for_postgresql91 () {
-	case "$(dpkg-query -W -f '${Status}' postgresql-9.1 2>/dev/null)" in
-	install*) ;;
-	*) return 0 ;;
-	esac
-	echo "WARNING: PostgreSQL-9.1 is no longer supported by UCS-4.3 and must be migrated to"
-	echo "         a newer version of PostgreSQL. See https://help.univention.com/t/8073 for"
-	echo "         more details."
-	if is_ucr_true update43/ignore_postgresql91; then
-		echo "WARNING: update43/ignore_postgresql91 is set to true. Skipped as requested."
-	else
-		exit 1
-	fi
-}
-check_for_postgresql91
 
 echo -n "Checking for package status: "
 if dpkg -l 2>&1 | LC_ALL=C grep "^[a-zA-Z][A-Z] " >&3 2>&3
@@ -596,26 +514,8 @@ case "$available_locales" in
 	*) /usr/sbin/univention-config-registry set locale="$available_locales en_US.UTF-8:UTF-8";;
 esac
 
-# Bug 45935: backup squid conf before update
-if [ ! -d /etc/squid3-update-4.3 ]; then
-	test -d /etc/squid3 && cp -rf /etc/squid3 /etc/squid3-update-4.3
-	test -e /etc/univention/templates/files/etc/squid3/squid.conf && cp /etc/univention/templates/files/etc/squid3/squid.conf /etc/squid3-update-4.3/ucr.template
-fi
-
 # Bug 46066: disable memberOf for updates
 ucr set ldap/overlay/memberof?false >>"$UPDATER_LOG" 2>&1
-
-# Bug #46102: Remove Cyrus integration
-if LC_ALL=C dpkg -l 'univention-mail-cyrus' 2>/dev/null | grep ^i >>"$UPDATER_LOG" 2>&1; then
-	if is_ucr_true update43/ignore_cyrus_check; then
-		echo "WARNING: Ignoring installed Cyrus integration package."
-	else
-		echo "ERROR: The Cyrus integration package was found. Cyrus is not"
-		echo "supported anymore by UCS 4.3. Aborting the upgrade. For instructions how to"
-		echo "proceed, please refer to https://help.univention.com/t/7957"
-		exit 1
-	fi
-fi
 
 # Bug #45968: let Postfix3 extension packages recreate /etc/postfix/dynamicmaps.cf with new format
 if [ -a /etc/postfix/dynamicmaps.cf ] && grep -q 'usr/lib/postfix' /etc/postfix/dynamicmaps.cf; then
@@ -625,7 +525,7 @@ if [ -a /etc/postfix/dynamicmaps.cf ] && grep -q 'usr/lib/postfix' /etc/postfix/
 fi
 
 # Bug 46388 - Ensure atd doesn't kill the UMC update process
-install -d /etc/systemd/system/atd.service.d && \
+install -d /etc/systemd/system/atd.service.d &&
 if ! test -e /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf; then
 	printf '[Service]\nKillMode=process\n' > /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf
 	systemctl daemon-reload
@@ -657,21 +557,10 @@ apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade >&3 2>&3
 
 fail_if_role_package_will_be_removed
 
-# Bug #46267: Pave the way for php7.0:
-if [ -x /usr/sbin/a2query ] && /usr/sbin/a2query -m php5; then
-	/usr/sbin/a2dismod php5 || true
-fi >>"$UPDATER_LOG" 2>&1
-
 # Bug 46559: Stop nrpe daemon
 if [ -x /etc/init.d/nagios-nrpe-server ]; then
 	/etc/init.d/nagios-nrpe-server stop >>"$UPDATER_LOG" 2>&1
 fi
-
-# Bug #46669: Disable Predictable Network Interface Names on upgrades
-case "${grub_append:-}" in
-*net.ifnames=?*) ;;
-*) ucr set grub/append="${grub_append:+$grub_append }net.ifnames=0" ;;
-esac
 
 echo ""
 echo "Starting update process, this may take a while."
