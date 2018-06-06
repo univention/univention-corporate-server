@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Fixed permissions for nagios log file.
 bug: [47015]
+erratum: 101
+announced: 2018-06-06
