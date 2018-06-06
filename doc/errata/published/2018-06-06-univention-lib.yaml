@@ -10,3 +10,5 @@ desc: |
    ldap.OPERATIONS_ERROR during first LDAP search.
  * Added support for bindpwdfile during join.
 bug: [41733,47066]
+erratum: 98
+announced: 2018-06-06
