@@ -9,3 +9,5 @@ desc: |
  * The BIND9 service was sometimes not started by the join script.
  * There was a traceback in the join.log file.
 bug: [46206]
+erratum: 92
+announced: 2018-06-06
