@@ -10,3 +10,5 @@ desc: |
    pointed to a wrong location in the french translation.
    This has been resolved.
 bug: [45874]
+erratum: 112
+announced: 2018-06-06
