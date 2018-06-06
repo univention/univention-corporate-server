@@ -11,3 +11,5 @@ desc: |-
     This has been resolved.
   * Fixed a typo when warning about an outdated UCS version.
 bug: [45874, 47097]
+erratum: 111
+announced: 2018-06-06
