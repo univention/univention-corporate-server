@@ -11,3 +11,5 @@ desc: |-
     a UDM module can now be defined via the UCR variable
     `directory/manager/web/modules/search/advanced_on_open`.
 bug: [46348, 46910]
+erratum: 108
+announced: 2018-06-06
