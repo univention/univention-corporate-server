@@ -9,3 +9,5 @@ desc: |-
   * A new diagnostic plugin has been added to check whether the remote and the
     local version of the SAML identity and service certificates match.
 bug: [45515]
+erratum: 100
+announced: 2018-06-06
