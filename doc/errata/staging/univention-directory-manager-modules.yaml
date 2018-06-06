@@ -6,9 +6,8 @@ src: univention-directory-manager-modules
 fix: 13.0.21-28A~4.3.0.201806040803
 desc: |-
   This update addresses the following issues:
-  * Add support for DNS NS records.
   * Fixed a typo in the German translation of the Release Policy.
   * Whether the simple or advanced search is shown upon opening
     a UDM module can now be defined via the UCR variable
     `directory/manager/web/modules/search/advanced_on_open`.
-bug: [32626, 46348, 46910]
+bug: [46348, 46910]

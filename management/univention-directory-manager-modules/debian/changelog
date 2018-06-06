@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-29) unstable; urgency=low
+
+  * Bug #32626: Revert change for UCS-4.3-1 release.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jun 2018 15:05:43 +0200
+
 univention-directory-manager-modules (13.0.21-28) unstable; urgency=medium
 
   * Bug #32626: Add support for DNS NS records

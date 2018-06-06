@@ -42,7 +42,6 @@ import univention.admin.handlers.dns.host_record
 import univention.admin.handlers.dns.srv_record
 import univention.admin.handlers.dns.ptr_record
 import univention.admin.handlers.dns.txt_record
-import univention.admin.handlers.dns.ns_record
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
@@ -101,7 +100,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 			ret += univention.admin.handlers.dns.alias.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 			ret += univention.admin.handlers.dns.srv_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 			ret += univention.admin.handlers.dns.txt_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-			ret += univention.admin.handlers.dns.ns_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 		else:
 			ret += univention.admin.handlers.dns.ptr_record.lookup(co, lo, ptr_filter, base, superordinate, scope, unique, required, timeout, sizelimit)
 	else:

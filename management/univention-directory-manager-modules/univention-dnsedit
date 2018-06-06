@@ -421,8 +421,6 @@ def main():
 				add_srv_record(*args)
 			elif typ == 'txt':
 				add_txt_record(*args)
-			elif typ == 'ns':
-				add_ns_record(*args)
 			elif typ == 'ptr' and options.reverse:
 				add_ptr_record(*args)
 			elif typ == 'cname':
@@ -437,8 +435,6 @@ def main():
 		elif command == 'remove':
 			if typ == 'srv':
 				remove_srv_record(*args)
-			elif typ == 'ns':
-				remove_ns_record(*args)
 			else:
 				parser.error('Unknown type "%s"' % (typ,))
 		else:
