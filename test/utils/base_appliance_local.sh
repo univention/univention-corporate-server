@@ -94,6 +94,22 @@ _esxi () {
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.es"
 }
 
+
+_hyperv_image () {
+	local identify="$1"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.hv"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${HYPERV_IMAGE_BASE}.vhdx ${HYPERV_IMAGE_BASE}.zip"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.hv"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE}.hv : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "qemu-img convert qemu-img convert -p -o subformat=dynamic -O vhdx ${TMP_KVM_IMAGE}.hv ${HYPERV_IMAGE_BASE}.vhdx"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "zip ${HYPERV_IMAGE_BASE}.zip ${HYPERV_IMAGE_BASE}.vhdx"
+	_scp ${KVM_USER}@${IMAGE_SERVER}:${HYPERV_IMAGE_BASE}.zip ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${HYPERV_IMAGE_BASE}.zip"
+	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${HYPERV_IMAGE_BASE}.zip > ${HYPERV_IMAGE_BASE}.zip.md5 && chmod 644 ${HYPERV_IMAGE_BASE}*"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${HYPERV_IMAGE_BASE}.vhdx ${HYPERV_IMAGE_BASE}.zip"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.hv"
+}
+
+
 _ec2_image () {
 	# Identifier already set
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance --only --ec2-ebs -s $TMP_KVM_IMAGE"
@@ -116,6 +132,7 @@ _set_global_vars () {
 	KVM_IMAGE="Univention-App-${APP_ID}-KVM.qcow2"
 	VBOX_IMAGE="Univention-App-${APP_ID}-virtualbox.ova"
 	ESX_IMAGE="Univention-App-${APP_ID}-ESX.ova"
+	HYPERV_IMAGE_BASE="Univention-App-${APP_ID}-Hyper-V"
 
 	export APP_ID KVM_USER KVM_SERVER UCS_VERSION KT_CREATE_IMAGE APPS_BASE APPS_SERVER IMAGE_SERVER
 	export TMP_DIR VMPLAYER_IMAGE KVM_IMAGE TMP_KVM_IMAGE VBOX_IMAGE ESX_IMAGE IMAGE_VERSION
@@ -176,6 +193,7 @@ create_ucs_images () {
 	KVM_IMAGE="UCS-Demo-Image-KVM.qcow2"
 	VBOX_IMAGE="UCS-Demo-Image-virtualbox.ova"
 	ESX_IMAGE="UCS-Demo-Image-ESX.ova"
+	HYPERV_IMAGE_BASE="UCS-Demo-Image-Hyper-V"
 
     export APP_ID KVM_USER KVM_SERVER UCS_VERSION KT_CREATE_IMAGE APPS_BASE APPS_SERVER IMAGE_SERVER
     export TMP_DIR VMPLAYER_IMAGE KVM_IMAGE TMP_KVM_IMAGE VBOX_IMAGE ESX_IMAGE MEMORY IMAGE_VERSION
@@ -198,6 +216,7 @@ create_ucs_images () {
 	_vmplayer_image "$UPDATER_ID (VMware)"
 	_esxi "$UPDATER_ID (ESX)"
 	_virtualbox_image "$UPDATER_ID (VirtualBox)"
+	_hyperv_image "$UPDATER_ID (HyperV)"
 
 	# cleanup
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -rf ${TMP_DIR}"
