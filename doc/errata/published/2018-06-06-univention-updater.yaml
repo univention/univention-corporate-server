@@ -8,3 +8,5 @@ desc: |-
   This update addresses the following issue(s):
   * Fixed a typo when warning about an outdated UCS version.
 bug: [47097]
+erratum: 110
+announced: 2018-06-06
