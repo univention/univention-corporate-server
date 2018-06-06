@@ -101,7 +101,7 @@ _hyperv_image () {
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${HYPERV_IMAGE_BASE}.vhdx ${HYPERV_IMAGE_BASE}.zip"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.hv"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE}.hv : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "qemu-img convert qemu-img convert -p -o subformat=dynamic -O vhdx ${TMP_KVM_IMAGE}.hv ${HYPERV_IMAGE_BASE}.vhdx"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "qemu-img convert -p -o subformat=dynamic -O vhdx ${TMP_KVM_IMAGE}.hv ${HYPERV_IMAGE_BASE}.vhdx"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "zip ${HYPERV_IMAGE_BASE}.zip ${HYPERV_IMAGE_BASE}.vhdx"
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${HYPERV_IMAGE_BASE}.zip ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${HYPERV_IMAGE_BASE}.zip"
 	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${HYPERV_IMAGE_BASE}.zip > ${HYPERV_IMAGE_BASE}.zip.md5 && chmod 644 ${HYPERV_IMAGE_BASE}*"
