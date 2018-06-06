@@ -3,7 +3,7 @@ release: "4.3"
 version: [0]
 scope: ucs_4.3-0-errata4.3-0
 src: univention-directory-manager-modules
-fix: 13.0.21-28A~4.3.0.201806040803
+fix: 13.0.21-29A~4.3.0.201806061508
 desc: |-
   This update addresses the following issues:
   * Fixed a typo in the German translation of the Release Policy.
