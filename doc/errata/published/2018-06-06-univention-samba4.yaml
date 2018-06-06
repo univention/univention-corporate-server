@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Added support for bindpwdfile during join.
 bug: [47059]
+erratum: 105
+announced: 2018-06-06
