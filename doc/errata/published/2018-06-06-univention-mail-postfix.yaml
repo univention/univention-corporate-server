@@ -10,3 +10,5 @@ desc: |
    deprecated mail quota policies can be removed using the script
    /usr/share/univention-mail-postfix/remove_mail_quota_policy (Bug #46454).
 bug: [46454]
+erratum: 99
+announced: 2018-06-06
