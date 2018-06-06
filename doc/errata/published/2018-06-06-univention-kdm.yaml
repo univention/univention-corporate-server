@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Help the user decide which user to log in as at the KDE login screen.
 bug: [47026]
+erratum: 96
+announced: 2018-06-06
