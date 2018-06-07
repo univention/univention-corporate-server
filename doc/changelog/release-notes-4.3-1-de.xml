@@ -52,6 +52,10 @@
 		<itemizedlist>
 			<listitem><para>
 			</para></listitem>
+			<listitem><para>
+				Diverse Security Updates wurden in UCS 4.3-1 integriert, bspw. für Apache, den Linux Kernel und PostgreSQL.
+				Eine vollständige Liste ist in <xref linkend="relnotes:changelog"/> zu finden.
+			</para></listitem>
 		</itemizedlist>
 	</chapter>
 

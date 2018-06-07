@@ -28,8 +28,8 @@
 	  <listitem>
 		<simpara>
 		  All versions of the same major
-		  number will be used. If for example UCS-4.2 is installed, all repositories of the
-		  component with version numbers 4.0, 4.1 and 4.2 will be used if available.
+		  number will be used. If for example UCS-4.3 is installed, all repositories of the
+		  component with version numbers 4.0, 4.1, 4.2 and 4.3 will be used if available.
 		</simpara>
 	  </listitem>
 	</varlistentry>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DOCTYPE umc SYSTEM "branches/ucs-4.1/ucs-4.1-0/management/univention-management-console/doc/module.dtd"-->
+<!--DOCTYPE umc SYSTEM "management/univention-management-console/doc/module.dtd"-->
 <umc version="2.0">
 	<module id="udm" icon="udm-MODULE" version="1.0" translationId="MODULE">
 		<name>...</name>
