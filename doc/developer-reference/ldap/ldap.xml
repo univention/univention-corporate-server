@@ -17,12 +17,12 @@
 			An <acronym>LDAP</acronym> server provides authenticated and controlled access to directory objects over the network.
 			<acronym>LDAP</acronym> objects consist of a collection of attributes which conform to so called <acronym>LDAP</acronym> schemata.
 			An in depth documentation of <acronym>LDAP</acronym> is beyond the scope of this document, other sources cover this topic exhaustively,
-			e.g. <ulink url="http://www.zytrax.com/books/ldap/"/> or the man pages (<literal>slapd.conf</literal>, <literal>slapd.access</literal>).
+			e.g. <ulink url="http://www.zytrax.com/books/ldap/"/> or the man pages (<citerefentry><refentrytitle>slapd.conf</refentrytitle><manvolnum>5</manvolnum></citerefentry>, <citerefentry><refentrytitle>slapd.access</refentrytitle><manvolnum>5</manvolnum></citerefentry>).
 		</para>
 		<para>
 			At least it should be noted that OpenLDAP offers two fundamentally different tool sets for direct access or modification of LDAP data:
-			The slap* commands (<literal>slapcat</literal>, etc.) are very low level, operating directly on the <acronym>LDAP</acronym> backend data and
-			should only be used in rare cases, usually with the LDAP server not running. The ldap* commands (<literal>ldapsearch</literal>, etc.) on the
+			The <command>slap<replaceable>*</replaceable></command> commands (<command>slapcat</command>, etc.) are very low level, operating directly on the <acronym>LDAP</acronym> backend data and
+			should only be used in rare cases, usually with the LDAP server not running. The <command>ldap<replaceable>*</replaceable></command> commands (<command>ldapsearch</command>, etc.) on the
 			other hand are the proper way to perform LDAP operations from the command line and their functionality can equivalently be used from all major
 			programming languages.
 		</para>
