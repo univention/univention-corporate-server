@@ -150,7 +150,7 @@ cd testdeb-0.1
 			The files and their format will be described in the following sections.
 		</para>
 		<para>
-			To create an initial <filename class="directory">debian/</filename> directory with all template files, invoke the <citerefentry><refentrytitle>dh_make</refentrytitle><manvolnum>8</manvolnum></citerefentry> command provided by the <package>dh-make</package> packet:
+			To create an initial <filename class="directory">debian/</filename> directory with all template files, invoke the <citerefentry><refentrytitle>dh_make</refentrytitle><manvolnum>8</manvolnum></citerefentry> command provided by the package <package>dh-make</package>:
 		</para>
 		<programlisting>dh_make --native --single --email user@example.com</programlisting>
 		<para>

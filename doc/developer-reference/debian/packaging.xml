@@ -536,7 +536,7 @@ Description: <insert up to 60 chars description>
 				<varlistentry><term><literal>Recommends</literal></term>
 					<listitem>
 						<para>
-							A strong dependency on some other packets, which should normally be co-installed with this package, but can be removed.
+							A strong dependency on some other packages, which should normally be co-installed with this package, but can be removed.
 							This is useful for additional software like plug-ins, which extends the functionality of this package, but is not strictly required.
 						</para>
 					</listitem>
