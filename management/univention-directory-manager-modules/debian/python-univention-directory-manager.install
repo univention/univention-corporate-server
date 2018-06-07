@@ -15,6 +15,7 @@ modules/univention/admin/handlers/computers/*.py usr/share/pyshared/univention/a
 modules/univention/admin/handlers/kerberos/*.py usr/share/pyshared/univention/admin/handlers/kerberos/
 modules/univention/admin/syntax.d/*.py usr/share/pyshared/univention/admin/syntax.d/
 modules/univention/admin/hooks.d/*.py usr/share/pyshared/univention/admin/hooks.d/
+modules/univention/udm usr/share/pyshared/univention/
 python-lib/*.py usr/share/pyshared/univention/lib
 listener/*.py usr/lib/univention-directory-listener/system/
 18python-univention-directory-manager.inst usr/lib/univention-install/
