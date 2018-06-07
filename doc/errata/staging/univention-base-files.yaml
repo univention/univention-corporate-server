@@ -1,7 +1,7 @@
 product: ucs
 release: "4.3"
 version: [0]
-scope: ucs_4.3-0-errata4.3-0
+scope: ucs_4.3-0-errata4.3-1
 src: univention-base-files
 fix: 7.0.0-14A~4.3.0.201806071232
 desc: |
