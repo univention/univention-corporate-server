@@ -42,14 +42,12 @@ except ImportError:
 
 class BaseUdmObject(object):
 	"""
-	Simple API to use UDM objects.
+	Base class for UdmObject classes.
 
 	Usage:
-	* Creation of instances :py:class:`UdmObject` is always done through a
-	:py:class:`UdmModul` instances py:meth:`new()`, py:meth:`get()` or
+	* Creation of instances :py:class:`BaseUdmObject` is always done through a
+	:py:class:`BaseUdmModul` instances py:meth:`new()`, py:meth:`get()` or
 	py:meth:`search()` methods.
-	* There is a convenience function to create or load :py:class:`UdmObject`s:
-	:py:func:`get_udm_object(<module_name>, <lo>, [dn])`.
 	* Modify an object:
 		user.props.firstname = 'Peter'
 		user.props.lastname = 'Pan'
@@ -62,13 +60,13 @@ class BaseUdmObject(object):
 
 	Please be aware that UDM hooks and listener modules often add, modify or
 	remove properties when saving to LDAP. When continuing to use a
-	:py:class:`UdmObject` after :py:meth:`save()`, it is *strongly* recommended
-	to :py:meth:`reload()` it: `obj = obj.save().reload()`
+	:py:class:`BaseUdmObject` after :py:meth:`save()`, it is *strongly*
+	recommended to :py:meth:`reload()` it: `obj.save().reload()`
 	"""
 	def __init__(self):  # type: () -> None
 		"""
 		Don't instantiate a :py:class:`UdmObject` directly. Use a
-		:py:class:`UdmModule` or :py:func:`get_udm_object()`.
+		:py:class:`BaseUdmModule`.
 		"""
 		self.dn = ''
 		self.props = None  # type: BaseUdmObjectProperties
@@ -113,6 +111,7 @@ class BaseUdmObject(object):
 
 
 class BaseUdmObjectProperties(object):
+	"""Container for UDM properties."""
 	def __init__(self, simple_udm_obj):  # type: (BaseUdmObject) -> None
 		self._simple_udm_obj = simple_udm_obj
 
@@ -127,25 +126,19 @@ UdmLdapMapping = namedtuple('UdmLdapMapping', ('ldap2udm', 'udm2ldap'))
 
 class BaseUdmModule(object):
 	"""
-	Simple API to use UDM modules. Basically a UdmObject factory.
+	Base class for UdmModule classes. UdmModules are basically UdmObject
+	factories.
 
 	Usage:
-	1. Get an LDAP access object: import univention.admin.uldap; lo, po = univention.admin.uldap.getAdminConnection()
-	2. Create a module object:
-		user_mod = get_udm_module('users/user', lo)
-	3. Create object(s):
-	3.1 Fresh, not yet saved UdmObject:
+	0. Get module using
+		user_mod = Udm.using_*().get('users/user')
+	1 Create fresh, not yet saved BaseUdmModule:
 		new_user = user_mod.new()
-	3.2 Load an existing object:
+	2 Load an existing object:
 		group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
-	3.3 Search and load existing objects:
+	3 Search and load existing objects:
 		dc_slaves = dc_slave_mod.search(lo, filter_s='cn=s10*')
 		campus_groups = group_mod.search(lo, base='ou=campus,dc=example,dc=com')
-
-	There is a shortcut for creating or retrieving UdmObjects without handling
-	UdmModule instances:
-		new_group = get_udm_object('groups/group', lo)
-		existing_user = get_udm_object('users/user', lo, 'uid=test,cn=users,dc=example,dc=com')
 	"""
 	udm_object_class = BaseUdmObject
 
@@ -158,7 +151,7 @@ class BaseUdmModule(object):
 
 	def new(self):  # type: () -> BaseUdmObject
 		"""
-		TODO: doc
+		Create a new, unsaved BaseUdmObject object.
 
 		:return: a new, unsaved BaseUdmObject object
 		:rtype: BaseUdmObject
@@ -167,7 +160,7 @@ class BaseUdmModule(object):
 
 	def get(self, dn):  # type: (str) -> BaseUdmObject
 		"""
-		TODO: doc
+		Load UDM object from LDAP.
 
 		:param str dn:
 		:return: an existing BaseUdmObject object
@@ -179,7 +172,7 @@ class BaseUdmModule(object):
 
 	def search(self, filter_s='', base='', scope='sub'):  # type: (str, str, str) -> Iterator[BaseUdmObject]
 		"""
-		TODO: doc
+		Get all UDM objects from LDAP that match the given filter.
 
 		:param str filter_s: LDAP filter (only object selector like uid=foo
 			required, objectClasses will be set by the UDM module)
@@ -192,7 +185,11 @@ class BaseUdmModule(object):
 
 	@property
 	def identifying_property(self):  # type: () -> str
-		"""Property that is used as first component in a DN."""
+		"""
+		UDM Property of which the mapped LDAP attribute is used as first
+		component in a DN, e.g. `username` (LDAP attribute `uid`) or `name`
+		(LDAP attribute `cn`).
+		"""
 		raise NotImplementedError()
 
 	@property

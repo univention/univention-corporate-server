@@ -57,7 +57,7 @@ class UdmModuleFactoryConfigurationStorage(object):
 	@classmethod
 	def get_configuration(cls, module_name):  # type: (str) -> UdmModuleFactoryConfiguration
 		"""
-		TODO: doc
+		Get configuration for a module.
 
 		:param str module_name: the UDM modules name for which to get the factory configuration
 		:return: the factory configuration
@@ -79,12 +79,13 @@ class UdmModuleFactoryConfigurationStorage(object):
 	@classmethod
 	def set_configuration(cls, factory_configuration):  # type: (UdmModuleFactoryConfiguration) -> None
 		"""
-		TODO: doc
+		Store configuration for a module.
 
 		:param UdmModuleFactoryConfiguration factory_configuration: the class configuration to save
 		:return: None
 		:raises IOError: if the configuration could not be written to disk
 		"""
+		# TODO: add permanent-or-transient option
 		if cls._config is None:
 			cls._load_configuration()
 		cls._config[factory_configuration.udm_module_name] = factory_configuration
@@ -92,12 +93,19 @@ class UdmModuleFactoryConfigurationStorage(object):
 
 	@classmethod
 	def _load_configuration(cls):  # type: () -> Dict[str, UdmModuleFactoryConfiguration]
+		"""
+		Load configuration from disk.
+
+		:return: mapping module_name -> configuration
+		:rtype: Dict(str, UdmModuleFactoryConfiguration)
+		"""
 		try:
 			with open(_UDM_MODULE_FACTORY_CONFIGURATION_PATH) as fp:
 				config = json.load(fp)
 		except IOError as exc:
 			# TODO: log
 			print('Warn: Could not open UDM module factory configuration: {}'.format(exc))
+			# TODO: should we raise an exception?
 			config = {}
 		cls._config = {}
 		for k, v in config.iteritems():

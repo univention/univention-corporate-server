@@ -47,6 +47,7 @@ except ImportError:
 
 
 class GenericUdmObjectProperties(BaseUdmObjectProperties):
+	"""Container for UDM properties."""
 	def __init__(self, simple_udm_obj):  # type: (GenericUdmObject) -> None
 		assert isinstance(simple_udm_obj, GenericUdmObject)
 		self._simple_udm_obj = simple_udm_obj
@@ -63,14 +64,12 @@ class GenericUdmObjectProperties(BaseUdmObjectProperties):
 
 class GenericUdmObject(BaseUdmObject):
 	"""
-	Simple API to use UDM objects.
+	Generic UdmObject class that can be used with all UDM module types.
 
 	Usage:
-	* Creation of instances :py:class:`UdmObject` is always done through a
-	:py:class:`UdmModul` instances py:meth:`new()`, py:meth:`get()` or
+	* Creation of instances :py:class:`GenericUdmObject` is always done through a
+	:py:class:`GenericUdmModul` instances py:meth:`new()`, py:meth:`get()` or
 	py:meth:`search()` methods.
-	* There is a convenience function to create or load :py:class:`UdmObject`s:
-	:py:func:`get_udm_object(<module_name>, <lo>, [dn])`.
 	* Modify an object:
 		user.props.firstname = 'Peter'
 		user.props.lastname = 'Pan'
@@ -83,8 +82,8 @@ class GenericUdmObject(BaseUdmObject):
 
 	Please be aware that UDM hooks and listener modules often add, modify or
 	remove properties when saving to LDAP. When continuing to use a
-	:py:class:`UdmObject` after :py:meth:`save()`, it is *strongly* recommended
-	to :py:meth:`reload()` it: `obj = obj.save().reload()`
+	:py:class:`GenericUdmObject` after :py:meth:`save()`, it is *strongly*
+	recommended to :py:meth:`reload()` it: `obj.save().reload()`
 	"""
 	udm_prop_class = GenericUdmObjectProperties
 
@@ -186,7 +185,8 @@ class GenericUdmObject(BaseUdmObject):
 
 	def _copy_from_udm_obj(self):  # type: () -> None
 		"""
-		TODO: doc
+		Copy UDM property values from low-level UDM object to `props`
+		container.
 
 		:return: None
 		"""
@@ -212,7 +212,8 @@ class GenericUdmObject(BaseUdmObject):
 
 	def _copy_to_udm_obj(self):  # type: () -> None
 		"""
-		TODO: doc
+		Copy UDM property values from `props` container to low-level UDM
+		object.
 
 		:return: None
 		"""
@@ -237,22 +238,15 @@ class GenericUdmModule(BaseUdmModule):
 	Simple API to use UDM modules. Basically a GenericUdmObject factory.
 
 	Usage:
-	1. Get an LDAP access object: import univention.admin.uldap; lo, po = univention.admin.uldap.getAdminConnection()
-	2. Create a module object:
-		user_mod = get_udm_module('users/user', lo)
-	3. Create object(s):
-	3.1 Fresh, not yet saved GenericUdmObject:
+	0. Get module using
+		user_mod = Udm.using_*().get('users/user')
+	1 Create fresh, not yet saved GenericUdmObject:
 		new_user = user_mod.new()
-	3.2 Load an existing object:
+	2 Load an existing object:
 		group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
-	3.3 Search and load existing objects:
+	3 Search and load existing objects:
 		dc_slaves = dc_slave_mod.search(lo, filter_s='cn=s10*')
 		campus_groups = group_mod.search(lo, base='ou=campus,dc=example,dc=com')
-
-	There is a shortcut for creating or retrieving UdmObjects without handling
-	UdmModule instances:
-		new_group = get_udm_object('groups/group', lo)
-		existing_user = get_udm_object('users/user', lo, 'uid=test,cn=users,dc=example,dc=com')
 	"""
 	_udm_module_cache = {}  # type: Dict[Tuple[str, str, str, str], univention.admin.handlers.simpleLdap]
 	udm_object_class = GenericUdmObject
@@ -263,16 +257,16 @@ class GenericUdmModule(BaseUdmModule):
 
 	def new(self):  # type: () -> GenericUdmObject
 		"""
-		TODO: doc
+		Create a new, unsaved GenericUdmObject object.
 
-		:return: a new, unsaved BaseUdmObject object
-		:rtype: BaseUdmObject
+		:return: a new, unsaved GenericUdmObject object
+		:rtype: GenericUdmObject
 		"""
 		return self._load_obj('')
 
 	def get(self, dn):  # type: (str) -> GenericUdmObject
 		"""
-		TODO: doc
+		Load UDM object from LDAP.
 
 		:param str dn:
 		:return: an existing GenericUdmObject object
@@ -284,14 +278,14 @@ class GenericUdmModule(BaseUdmModule):
 
 	def search(self, filter_s='', base='', scope='sub'):  # type: (str, str, str) -> Iterator[GenericUdmObject]
 		"""
-		TODO: doc
+		Get all UDM objects from LDAP that match the given filter.
 
 		:param str filter_s: LDAP filter (only object selector like uid=foo
 			required, objectClasses will be set by the UDM module)
-		:param str base:
-		:param str scope:
-		:return: iterator of BaseUdmObject objects
-		:rtype: Iterator(BaseUdmObject)
+		:param str base: subtree to search
+		:param str scope: depth to search
+		:return: generator to iterate over GenericUdmObject objects
+		:rtype: Iterator(GenericUdmObject)
 		"""
 		try:
 			udm_module_lookup_filter = str(self._udm_module.lookup_filter(filter_s, self.lo))
@@ -303,7 +297,11 @@ class GenericUdmModule(BaseUdmModule):
 
 	@property
 	def identifying_property(self):  # type: () -> str
-		"""Property that is used as first component in a DN."""
+		"""
+		UDM Property of which the mapped LDAP attribute is used as first
+		component in a DN, e.g. `username` (LDAP attribute `uid`) or `name`
+		(LDAP attribute `cn`).
+		"""
 		for key, udm_property in self._udm_module.property_descriptions.iteritems():
 			if udm_property.identifies:
 				return key

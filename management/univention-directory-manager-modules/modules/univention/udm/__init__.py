@@ -50,10 +50,10 @@ obj.delete()
 
 obj = user_mod.new()
 obj.props.username = 'bar'
-obj.save().refresh()
+obj.save().refresh()  # reload obj.props from LDAP after save()
 
-for obj in user_mod.search('uid=a*'):
-	print(obj.dn)
+for obj in user_mod.search('uid=a*'):  # search() returns a generator
+	print(obj.props.firstname, obj.props.lastname)
 """
 
 from __future__ import absolute_import

@@ -39,6 +39,8 @@ except ImportError:
 
 
 class LDAP_connection(object):
+	"""Caching LDAP connection factory."""
+
 	_ucr = None  # type: univention.config_registry.ConfigRegistry
 	_connection_admin = None  # type: univention.admin.uldap.access
 	_connection_machine = None  # type: univention.admin.uldap.access
