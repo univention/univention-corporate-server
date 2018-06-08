@@ -1,3 +1,16 @@
+univention-appcenter (7.0.2-1) unstable; urgency=medium
+
+  * Bug #46813: Redo
+  * Version bump for 4.3-1
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 08 Jun 2018 11:55:32 +0200
+
+univention-appcenter (7.0.1-60) unstable; urgency=medium
+
+  * Bug #46813: Temporary revert
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 08 Jun 2018 11:55:18 +0200
+
 univention-appcenter (7.0.1-59) unstable; urgency=medium
 
   * Bug #46789: certificate management
