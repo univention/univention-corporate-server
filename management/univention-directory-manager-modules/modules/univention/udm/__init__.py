@@ -37,13 +37,13 @@ UDM objects manipulate LDAP objects.
 Usage:
 
 from univention.udm import Udm
-udm = Udm.get_admin()
-user_mod = udm('users/user')
+
+user_mod = Udm.using_admin().get('users/user')
 
 obj = user_mod.get(dn)
-obj.props.firstname = 'foo'
-obj.position = 'cn=users,cn=example,dc=com'
-obj.save()
+obj.props.firstname = 'foo'  # modify property
+obj.position = 'cn=users,cn=example,dc=com'  # move LDAP object
+obj.save()  # apply changes
 
 obj = user_mod.get(dn)
 obj.delete()

@@ -60,7 +60,9 @@ class Udm(object):
 	"""
 	Dynamic factory for creating UdmModule objects.
 
-	TODO: doc usage
+	group_mod = Udm.using_admin().get('groups/group')
+	folder_mod = Udm.using_machine().get('mail/folder')
+	user_mod = Udm.using_credentials('myuser', 's3cr3t').get('users/user')
 	"""
 	_module_cache = {}  # type: Dict[Tuple[str, str, str, str], BaseUdmModule]
 	_connection_handler = LDAP_connection
@@ -70,22 +72,19 @@ class Udm(object):
 		self._configuration_storage = UdmModuleFactoryConfigurationStorage()
 
 	@classmethod
-	def get_admin(cls):  # type: () -> Udm
+	def using_admin(cls):  # type: () -> Udm
 		return cls(cls._connection_handler.get_admin_connection())
 
 	@classmethod
-	def get_machine(cls):  # type: () -> Udm
+	def using_machine(cls):  # type: () -> Udm
 		return cls(cls._connection_handler.get_machine_connection())
 
 	@classmethod
-	def get_credentials(cls, username, password, dn=None, base=None, server=None, port=None):
+	def using_credentials(cls, username, password, dn=None, base=None, server=None, port=None):
 		# type: (string_types, string_types, Optional[string_types], Optional[string_types], Optional[string_types], Optional[int]) -> Udm
 		return cls(cls._connection_handler.get_credentials_connection(username, password, dn, base, server, port))
 
-	def __call__(self, name, *args, **kwargs):  # type: (str) -> BaseUdmModule
-		return self._get_simple_udm_module(name)
-
-	def _get_simple_udm_module(self, name):  # type: (str) -> BaseUdmModule
+	def get(self, name):  # type: (str) -> BaseUdmModule
 		"""
 		Load a (subclass of) :py:class:`BaseUdmModule`.
 
