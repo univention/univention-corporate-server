@@ -34,12 +34,4 @@ update-python-modules --post-install
 
 #DEBHELPER#
 
-if [ -z "$2" ]; then
-	# new installation. update local files once as there might be
-	# meta files already in the cache that did not undergo
-	# _update_local_files routine
-	# See Bug#46813
-	python -c "from univention.appcenter.actions import get_action; get_action('update')()._update_local_files()"
-fi
-
 exit 0
