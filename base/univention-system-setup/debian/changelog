@@ -1,6 +1,7 @@
-univention-system-setup (11.0.4-9) unstable; urgency=medium
+univention-system-setup (11.0.5-1) unstable; urgency=medium
 
   * Bug #46813: Remove umc-appcenter dependency
+  * Version bump for 4.3-1
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 08 Jun 2018 12:01:09 +0200
 
