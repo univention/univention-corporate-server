@@ -820,6 +820,9 @@
 			<listitem><simpara>
 				Ignore loop-back network interfaces <filename class='devicefile'>lo</filename> and <filename class='devicefile'>docker0</filename> in <command>univention-register-network-address</command> (<u:bug>41052</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				If more than one harddisk is detected during UCS installation, the target disk for the grub installer can be selected. (<u:bug>44595</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
