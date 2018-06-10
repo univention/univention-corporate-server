@@ -27,17 +27,21 @@
 # <http://www.gnu.org/licenses/>.
 
 """
-Base classes for simple UDM modules and objects.
+Base classes for (simplified) UDM modules and objects.
 """
 
 import pprint
 from collections import namedtuple
 
 try:
-	from typing import Iterator, List
+	from typing import Callable, Iterator, List, Optional
 	import univention.admin.uldap
+	import univention.admin.filter.conjunction
 except ImportError:
 	pass
+
+
+UdmLdapMapping = namedtuple('UdmLdapMapping', ('ldap2udm', 'udm2ldap'))
 
 
 class BaseUdmObject(object):
@@ -112,16 +116,54 @@ class BaseUdmObject(object):
 
 class BaseUdmObjectProperties(object):
 	"""Container for UDM properties."""
-	def __init__(self, simple_udm_obj):  # type: (BaseUdmObject) -> None
-		self._simple_udm_obj = simple_udm_obj
+	def __init__(self, udm_obj):  # type: (BaseUdmObject) -> None
+		self._simple_udm_obj = udm_obj
 
 	def __repr__(self):  # type: () -> str
 		return pprint.pformat(dict((k, v) for k, v in self.__dict__.iteritems() if not str(k).startswith('_')), indent=2)
 
 
+class BaseUdmModuleMetadata(object):
+	"""Base class for UDM module meta data."""
 
+	def __init__(self, udm_module):  # type: (BaseUdmModule) -> None
+		self._simple_udm_module = udm_module
 
-UdmLdapMapping = namedtuple('UdmLdapMapping', ('ldap2udm', 'udm2ldap'))
+	@property
+	def identifying_property(self):  # type: () -> str
+		"""
+		UDM Property of which the mapped LDAP attribute is used as first
+		component in a DN, e.g. `username` (LDAP attribute `uid`) or `name`
+		(LDAP attribute `cn`).
+		"""
+		raise NotImplementedError()
+
+	def lookup_filter(self, filter_s=None):  # type: (Optional[str]) -> str
+		"""
+		Filter the UDM module uses to find its corresponding LDAP objects.
+
+		This can be used in two ways:
+
+		* get the filter to find all objects:
+			`myfilter_s = obj.meta.lookup_filter()`
+		* get the filter to find a subset of the corresponding LDAP objects (`filter_s` will be combined with `&` to the filter for alle objects):
+			`myfilter = obj.meta.lookup_filter('(|(givenName=A*)(givenName=B*))')`
+
+		:param str filter_s: optional LDAP filter expression
+		:return: an LDAP filter string
+		:rtype: str
+		"""
+		raise NotImplementedError()
+
+	@property
+	def mapping(self):  # type: () -> UdmLdapMapping
+		"""
+		UDM properties to LDAP attributes mapping and vice versa.
+
+		:return: a namedtuple containing two mappings: a) from UDM property to LDAP attribute and b) from LDAP attribute to UDM property
+		:rtype: UdmLdapMapping
+		"""
+		raise NotImplementedError()
 
 
 class BaseUdmModule(object):
@@ -140,11 +182,13 @@ class BaseUdmModule(object):
 		dc_slaves = dc_slave_mod.search(lo, filter_s='cn=s10*')
 		campus_groups = group_mod.search(lo, base='ou=campus,dc=example,dc=com')
 	"""
-	udm_object_class = BaseUdmObject
+	_udm_object_class = BaseUdmObject
+	_udm_module_meta_class = BaseUdmModuleMetadata
 
 	def __init__(self, name, lo):  # type: (str, univention.admin.uldap.access) -> None
 		self.name = name
 		self.lo = lo
+		self.meta = self._udm_module_meta_class(self)
 
 	def __repr__(self):  # type: () -> str
 		return '{}({!r})'.format(self.__class__.__name__, self.name)
@@ -180,24 +224,5 @@ class BaseUdmModule(object):
 		:param str scope:
 		:return: iterator of BaseUdmObject objects
 		:rtype: Iterator(BaseUdmObject)
-		"""
-		raise NotImplementedError()
-
-	@property
-	def identifying_property(self):  # type: () -> str
-		"""
-		UDM Property of which the mapped LDAP attribute is used as first
-		component in a DN, e.g. `username` (LDAP attribute `uid`) or `name`
-		(LDAP attribute `cn`).
-		"""
-		raise NotImplementedError()
-
-	@property
-	def mapping(self):  # type: () -> UdmLdapMapping
-		"""
-		UDM properties to LDAP attributes mapping and vice versa.
-
-		:return: a namedtuple containing two mappings: a) from UDM property to LDAP attribute and b) from LDAP attribute to UDM property
-		:rtype: UdmLdapMapping
 		"""
 		raise NotImplementedError()

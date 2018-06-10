@@ -27,15 +27,37 @@
 # <http://www.gnu.org/licenses/>.
 
 """
-# TODO: update module doc -> same as in __init__.py
+Univention Directory Manager Modules (UDM) API
 
-import univention.admin.uldap
-lo, po = univention.admin.uldap.getAdminConnection()
+This is a simplified API for accessing UDM objects.
+It consists of UDM modules and UDM object.
+UDM modules are factories for UDM objects.
+UDM objects manipulate LDAP objects.
 
-from univention.admin.simple_udm import UdmModuleFactory
-user_mod = UdmModuleFactory._get_simple_udm_module('users/user', lo)
-all_users = user_mod.search()
-myuser = user_mod.get('uid=myuser,cn=users,dc=example,dc=com')
+Usage:
+
+from univention.udm import Udm
+
+user_mod = Udm.using_admin().get('users/user')
+or
+user_mod = Udm.using_machine().get('users/user')
+or
+user_mod = Udm.using_credentials('s3cr3t', 'uid=myuser,cn=users,...').get('users/user')
+
+obj = user_mod.get(dn)
+obj.props.firstname = 'foo'  # modify property
+obj.position = 'cn=users,cn=example,dc=com'  # move LDAP object
+obj.save()  # apply changes
+
+obj = user_mod.get(dn)
+obj.delete()
+
+obj = user_mod.new()
+obj.props.username = 'bar'
+obj.save().refresh()  # reload obj.props from LDAP after save()
+
+for obj in user_mod.search('uid=a*'):  # search() returns a generator
+	print(obj.props.firstname, obj.props.lastname)
 """
 
 from __future__ import absolute_import
@@ -46,7 +68,6 @@ from .utils import LDAP_connection
 
 try:
 	from typing import Dict, Optional, Tuple
-	from six import string_types
 except ImportError:
 	pass
 
@@ -73,15 +94,50 @@ class Udm(object):
 
 	@classmethod
 	def using_admin(cls):  # type: () -> Udm
+		"""
+		Use a cn=admin connection.
+
+		:return: a Udm object
+		:rtype: Udm
+		"""
 		return cls(cls._connection_handler.get_admin_connection())
 
 	@classmethod
 	def using_machine(cls):  # type: () -> Udm
+		"""
+		Use a machine connection.
+
+		:return: a Udm object
+		:rtype: Udm
+		"""
 		return cls(cls._connection_handler.get_machine_connection())
 
 	@classmethod
-	def using_credentials(cls, username, password, dn=None, base=None, server=None, port=None):
-		# type: (string_types, string_types, Optional[string_types], Optional[string_types], Optional[string_types], Optional[int]) -> Udm
+	def using_credentials(
+			cls,
+			password,  # type: str
+			username=None,  # type: Optional[str]
+			dn=None,  # type: Optional[str]
+			base=None,  # type: Optional[str]
+			server=None,  # type: Optional[str]
+			port=None  # type: Optional[int]
+	):
+		# type: (...) -> Udm
+		"""
+		Use the provided credentials to open an LDAP connection.
+
+		Either `username` or `dn` are required. If `username`, a machine
+		connection is used to retrieve the DN it belongs to.
+
+		:param str password: password of user / DN to use for LDAP connection
+		:param str username: username to use for LDAP connection
+		:param str dn: DN to use for LDAP connection
+		:param str base: optional search base
+		:param str server: optional LDAP server address as FQDN
+		:param int port: optional LDAP server port
+		:return: a Udm object
+		:rtype: Udm
+		"""
 		return cls(cls._connection_handler.get_credentials_connection(username, password, dn, base, server, port))
 
 	def get(self, name):  # type: (str) -> BaseUdmModule

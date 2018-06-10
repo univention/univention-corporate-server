@@ -51,4 +51,4 @@ class UsersUserUdmObject(GenericUdmObject):
 
 class UsersUserUdmModule(GenericUdmModule):
 	"""Test dynamic factory"""
-	udm_object_class = UsersUserUdmObject
+	_udm_object_class = UsersUserUdmObject

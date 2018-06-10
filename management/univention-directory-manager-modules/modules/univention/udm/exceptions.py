@@ -34,7 +34,7 @@ except ImportError:
 
 
 class UdmError(Exception):
-	"""Base class of Exceptions raised by simple_udm module."""
+	"""Base class of Exceptions raised by (simplified) UDM modules."""
 	def __init__(self, msg, dn=None, module_name=None):
 		# type: (Text, Optional[str], Optional[str]) -> None
 		self.dn = dn
