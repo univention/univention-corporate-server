@@ -1,0 +1,274 @@
+#!/bin/bash
+#
+# WIP: Make VM release ready
+# <https://forge.univention.org/bugzilla/show_bug.cgi?id=38920>
+#
+set -u
+
+eval "$(ucr shell)"
+
+exe="${0##*/}"
+report_only=true
+ready=true
+dryrun=
+verbose=:
+checks=()
+
+main () {
+	local check
+	setup
+	parse_args "$@"
+	for check in "${checks[@]}"
+	do
+		"$verbose" '%s\t' "$check"
+		"$check"
+		"$verbose" '\n'
+	done
+	"$ready"
+}
+
+die () {
+	echo "$exe: $*" >&2
+	exit 1
+}
+
+setup () {
+	tmp="$(mktemp)"
+	trap "rm -f '$tmp'" EXIT
+}
+
+parse_args () {
+	local args="$(getopt -n "$exe" -o 'hcnv' -l "help,clean,dry-run,verbose" -- "$@")" ||
+		die "Failed to parse arguments '$*'"
+	eval set -- "$args"
+
+	while arg="${1:-}"
+	do
+		shift
+		case "$arg" in
+		-h|--help) echo "$exe [-h|--help] [-c|--clean] [-n|--dry-run]" ; exit 0 ;;
+		-c|--clean) report_only=false ;;
+		-n|--dry-run) dryrun=echo ;;
+		-v|--verbose) verbose=printf ;;
+		--) break ;;
+		*) die "Unknown argument '$arg'" ;;
+		esac
+	done
+	[ $# -ge 1 ] ||
+		set -- $(grep -o '^check_\w\+' "$0")
+	checks=("$@")
+}
+
+issue () {
+	[ -t 2 ] && tput bold
+	echo "W: $1" >&2
+	[ -t 2 ] && tput sgr0
+	ready=false
+	shift
+	if [ $# -ge 1 ] && ! "$report_only"
+	then
+		${dryrun:+"$dryrun"} "$@"
+	fi
+}
+
+check_apt () {
+	local deb
+	for deb in /var/cache/apt/archives/*.deb
+	do
+		[ -f "$deb" ] || continue
+		issue "APT cache contains files" apt-get clean
+		break
+	done
+}
+
+check_bash_history () {
+	[ -s ~/.bash_history ] &&
+		issue "BASH history exists" truncate -s 0 ~/.bash_history
+}
+
+check_ssh () {
+	local key
+	for key in /etc/ssh/ssh_host_*
+	do
+		[ -f "$key" ] || continue
+		issue "SSH keys exist" rm -f /etc/ssh/ssh_host_*
+		break
+	done
+}
+
+check_postfix () {
+	local pfs
+	for pfs in /etc/postfix/dh_*.pem
+	do
+		[ -f "$pfs" ] || continue
+		issue "Postfix PFS files exist" rm -f /etc/postfix/dh_*.pem
+		break
+	done
+}
+
+check_mail () {
+	find /var/mail -type f -not -empty -print0 >"$tmp" || :
+	[ -s "$tmp" ] &&
+		issue "Mail exist" find /var/mail -type f -not -empty -delete
+}
+
+check_backup () {
+	find /var/univention-backup -mindepth 1 -not -empty -print0 >"$tmp" || :
+	[ -s "$tmp" ] &&
+		issue "Backup exist" find /var/univention-backup -mindepth 1 -not -empty -delete
+}
+
+check_udev () {
+	find /etc/udev/rules.d -name \*-persistent-\*.rules -print0 >"$tmp" || :
+	[ -s "$tmp" ] &&
+		issue "Persistent udev rules exist" find /etc/udev/rules.d -name \*-persistent-\*.rules -delete
+}
+
+check_grub () {
+	local MAP dev debconf
+	MAP='/boot/grub/device.map'
+	[ -s "$MAP" ] ||
+		issue "GRUB device.map missing" grub-mkdevicemap
+	dev=$(awk '/^\(hd0\)/{print $2}' "$MAP")
+	[ -b "$dev" ] ||
+		issue "GRUB boot device wrong" grub-mkdevicemap
+	dev=$(awk '/^\(hd0\)/{print $2}' "$MAP")
+	debconf=$(echo 'get grub-pc/install_devices' | debconf-communicate | sed 's/^0 //')
+	[ -b "$debconf" ] ||
+		issue "DebConf GRUB device wrong" debconf-communicate <<<"set grub-pc/install_devices $dev"
+	[ ${grub_rootdelay:-5} -gt 0 ] &&
+		issue "grub/rootdelay != 0" ucr set grub/rootdelay='0'
+	[ ${grub_timeout:-5} -gt 0 ] &&
+		issue "grub/timeout != 0" ucr set grub/timeout='0'
+}
+
+check_root () {
+	grep -q '^root:\*:' /etc/shadow ||
+		issue "root password exists" usermod -p \* root
+}
+
+check_ec2 () {
+	# Run this only for AWS-EC2
+	curl --silent --show-error --connect-timeout 1 --max-time 1 --retry-max-time 1 --retry 1 -I http://169.254.169.254/ >/dev/null ||
+		return 0
+	echo "I: EC2"
+	[ "$server_amazon" = true ] ||
+		issue "UCRV server/amazon" ucr set server/amazon='true'
+	[ "$grub_generate_menu_lst" = no ] ||
+		issue "generate-menu-lst is enabled" ucr set grub/generate-menu-lst='no'
+	[ -e /boot/grub/menu.lst ] &&
+		issue "menu.lst exists" rm -f /boot/grub/menu.lst*
+	case "$grub_append" in
+	*console=ttyS*) ;;
+	*) issue "Missing serial console" ucr set grub/append="${grub_append:+$grub_append }console=tty0 console=ttyS0" ;;
+	esac
+	case "$grub_terminal" in
+	*serial*) ;;
+	*) issue "Missing GRUB terminal" ucr set grub/terminal='console serial' ;;
+	esac
+	case "$grub_serialcommand" in
+	serial*) ;;
+	*) issue "Missing GRUB serial" ucr set grub/serialcommand='serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1' ;;
+	esac
+}
+
+check_dns () {
+	local ns
+	for ns in $nameserver1 $nameserver2 $nameserver3 dns_forwarder1 dns_forwarder2 dns_forwarder3
+	do
+		case "${!ns:-}" in
+		8.8.8.8|8.8.4.4|208.67.22[02].22[02]|2602:0:cc[cd]::2) issue "Using public DNS in $ns" ucr unset "$ns" ;;
+		esac
+	done
+}
+
+check_ucr () {
+	local old
+	case "$repository_online" in
+	false|no|disable|disabled|0) ;;
+	*) issue "online should be disabled" ucr set repository/online='false' ;;
+	esac
+	case "$repository_online_unmaintained" in
+	false|no|disable|disabled|0) ;;
+	*) issue "unmaintained should be disabled" ucr set repository/online/unmaintained='no' ;;
+	esac
+	while IFS=': ' read key value
+	do
+		case "$key" in
+		repository/online/component/${version_version}-${version_patchlevel}-errata) expected=enabled ;;
+		repository/online/component/[0-9].[0-9]-[0-9]-errata) expected=false ;;
+		*) continue ;;
+		esac
+		[ "$value" = "$expected" ] ||
+			echo "${key}=${expected}"
+	done </etc/univention/base.conf >"$tmp"
+	[ -s "$tmp" ] &&
+		issue "Wrong errata component" $(xargs -0 -a "$tmp" echo ucr set)
+}
+
+check_links () {
+	return 0  # FIXME
+	find / -xdev -xtype l -printf '%p -> %l\n' >"$tmp"
+	[ -s "$tmp" ] &&
+		issue "Broken sym-links"
+}
+
+check_home () {
+	find /root -mindepth 1 -name .ssh -prune -o -not -name .profile -not -name .bashrc -not -name .bash_history -print0 >"$tmp"
+	[ -s "$tmp" ] &&
+		issue "Files in $HOME" find /root -mindepth 1 -name .ssh -prune -o -not -name .profile -not -name .bashrc -not -name .bash_history -delete
+}
+
+check_dpkg () {
+	local desired status error pkg
+	dpkg-query -f '${Status} ${Package}\n' -W >"$tmp"
+	while read desired status error pkg
+	do
+		case "$desired $status $error" in
+		"install ok installed") ;;
+		"deinstall ok config-files") issue "Config-files" dpkg -P "$pkg" ;;
+		*) issue "Unknown status $pkg: $desired $status $error"
+		esac
+	done <"$tmp"
+}
+
+check_kernel () {  # Bug #37144
+	local arch current desired status error pkg
+	arch="$(dpkg --print-architecture)"
+	current="$(dpkg-query -s univention-kernel-image | sed -rne "/^Depends:/s/.*(linux-image-.*-${arch})(-signed)?(,.*)?\$/\1/p")"
+	dpkg-query -f '${Status} ${Package}\n' -W "linux-image-*-${arch}" >"$tmp"
+	while read desired status error pkg
+	do
+		case "$desired $status $error $pkg" in
+		"install ok installed $current") ;;
+		"unknown ok not-installed "*) ;;
+		*) issue "Old Kernel" apt-get remove --purge "$pkg" ;;
+		esac
+	done <"$tmp"
+}
+
+check_system_setup () {
+	local CACHE='/var/cache/univention-system-setup/packages'
+	find "$CACHE" -name \*.deb -printf '%f\n' >"$tmp" || :
+	[ -s "$tmp" ] ||
+		issue "No packages cached" /usr/share/univention-system-setup/download-packages
+	find "$CACHE" -name \*.deb -printf '%f\n' |
+		sed -e '/^lib/d' -e 's/_.*//' |
+		xargs -n 1 apt-get -qq --print-uris install >"$tmp"
+	grep -F -v "$CACHE" "$tmp" &&
+		issue "Missing packages in cache" /usr/share/univention-system-setup/download-packages
+}
+
+check_logs () {
+	find /var/log \( -name \*.gz -o -name \*.[0-9] \) -print0 >"$tmp" || :
+	[ -s "$tmp" ] &&
+		issue "Old logfiles exist" find /var/log \( -name \*.gz -o -name \*.[0-9] \) -delete
+	find /var/log \( -not -name \*.gz -not -name \*.[0-9] -type f -not -empty \) -print0 >"$tmp" || :
+	[ -s "$tmp" ] &&
+		issue "Logfiles exist" find /var/log \( -not -name \*.gz -not -name \*.[0-9] -type f -not -empty \) -delete
+	[ -s /var/lib/logrotate/status ] &&
+		issue "logrotate status exists" truncate -s 0 /var/lib/logrotate/status
+}
+
+main "$@"
+# vim :set backupcopy=auto:
