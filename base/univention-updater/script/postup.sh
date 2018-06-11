@@ -156,18 +156,6 @@ ucr set \
 	repository/online/component/4.3-1-errata/description="Errata updates for UCS 4.3-1" \
 	repository/online/component/4.3-1-errata/version="4.3" >>"$UPDATER_LOG" 2>&1
 
-# Bug 45328
-# update/register appcenter at this point because 4.3-0 postup still is in 4.2 mode
-univention-app update >>"$UPDATER_LOG" 2>&1 || true
-univention-app register --app >>"$UPDATER_LOG" 2>&1 || true
-# Bug 45328
-
-# Bug #46270
-if [ -x "/usr/sbin/univention-directory-listener-ctrl" ]; then
-	/usr/sbin/univention-directory-listener-ctrl resync portal >>"$UPDATER_LOG" 2>&1
-	/usr/sbin/univention-directory-listener-ctrl resync portal_entry >>"$UPDATER_LOG" 2>&1
-fi
-
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-run-join-scripts >>"$UPDATER_LOG" 2>&1
@@ -181,8 +169,6 @@ if test -e /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf; then
 	rm /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf
 	systemctl daemon-reload
 fi
-
-/usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3 >>"$UPDATER_LOG" 2>&1
 
 echo "
 

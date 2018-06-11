@@ -1,3 +1,9 @@
+univention-updater (13.0.1-49) unstable; urgency=medium
+
+  * Bug #47121: Adapt links and components for 4.3-1
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 11 Jun 2018 15:18:43 +0200
+
 univention-updater (13.0.1-48) unstable; urgency=medium
 
   * Bug #47121: Adapt links and components for 4.3-1

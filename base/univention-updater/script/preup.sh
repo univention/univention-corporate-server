@@ -476,53 +476,12 @@ check_overwritten_umc_templates () {
 }
 check_overwritten_umc_templates
 
-# Bug 44281, block update for univention App appliances until appliance
-# package has been updated...
-check_app_appliance () {
-	if dpkg -l univention-app-appliance >/dev/null 2>&1
-	then
-		echo "ERROR: The UCS 4.3 update is not yet available for UCS app appliances."
-		echo "       Please try to update your system to UCS 4.3 at a later point."
-		exit 1
-	fi
-}
-check_app_appliance
-
-check_kopano_repo () {
-	for repo in kopano/repo/kopano-core kopano/repo/kopano-webapp kopano/repo/kopano-webmeetings; do
-		if is_ucr_true "$repo"; then
-			echo "ERROR: An external repository for the Kopano Apps is currently configured."
-			echo "       There are known issues when updating to UCS 4.3 and using software"
-			echo "       from the Kopano software repository."
-			echo "       The update is blocked while Kopano and Univention are working"
-			echo "       on a solution."
-			if is_ucr_true update43/ignore_kopano_repo; then
-				echo "WARNING: update43/ignore_kopano_repo is set to true. Skipped as requested."
-			else
-				exit 1
-			fi
-		fi
-	done
-}
-check_kopano_repo
-
-
 # ensure that en_US is included in list of available locales (Bug #44150)
 available_locales="$(/usr/sbin/univention-config-registry get locale)"
 case "$available_locales" in
 	*en_US*) ;;
 	*) /usr/sbin/univention-config-registry set locale="$available_locales en_US.UTF-8:UTF-8";;
 esac
-
-# Bug 46066: disable memberOf for updates
-ucr set ldap/overlay/memberof?false >>"$UPDATER_LOG" 2>&1
-
-# Bug #45968: let Postfix3 extension packages recreate /etc/postfix/dynamicmaps.cf with new format
-if [ -a /etc/postfix/dynamicmaps.cf ] && grep -q 'usr/lib/postfix' /etc/postfix/dynamicmaps.cf; then
-	PF2_BACKUP="$(mktemp /etc/postfix/dynamicmaps.cf.backup-postfix2.XXXXXXXX)"
-	echo "Removing /etc/postfix/dynamicmaps.cf. Creating backup in $PF2_BACKUP." >>"$UPDATER_LOG" 2>&1
-	mv -fv /etc/postfix/dynamicmaps.cf "$PF2_BACKUP" >>"$UPDATER_LOG" 2>&1
-fi
 
 # Bug 46388 - Ensure atd doesn't kill the UMC update process
 install -d /etc/systemd/system/atd.service.d &&
