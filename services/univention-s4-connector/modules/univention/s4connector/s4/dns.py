@@ -1570,6 +1570,8 @@ def _identify_dns_ucs_object(s4connector, object):
 			return 'ptr_record'
 		if univention.admin.handlers.dns.txt_record.identify(object['dn'], object['attributes']):
 			return 'txt_record'
+		if univention.admin.handlers.dns.ns_record.identify(object['dn'], object['attributes']):
+			return 'ns_record'
 	return None
 
 
@@ -1620,6 +1622,8 @@ def _identify_dns_con_object(s4connector, object):
 					return 'host_record'
 				elif dnsp.DNS_TYPE_TXT in dns_types:
 					return 'txt_record'
+				elif dnsp.DNS_TYPE_NS in dns_types:
+					return 'ns_record'
 
 	return None
 
@@ -1689,6 +1693,13 @@ def ucs2con(s4connector, key, object):
 			s4_dns_node_base_delete(s4connector, object)
 		# ignore move
 
+	elif dns_type == 'ns_record':
+		if object['modtype'] in ['add', 'modify']:
+			s4_ns_record_create(s4connector, object)
+		elif object['modtype'] in ['delete']:
+			s4_dns_node_base_delete(s4connector, object)
+		# ignore move
+
 	return True
 
 
@@ -1745,6 +1756,12 @@ def con2ucs(s4connector, key, object):
 			ucs_txt_record_create(s4connector, object)
 		elif object['modtype'] in ['delete']:
 			ucs_txt_record_delete(s4connector, object)
+		# ignore move
+	elif dns_type == 'ns_record':
+		if object['modtype'] in ['add', 'modify']:
+			ucs_ns_record_create(s4connector, object)
+		elif object['modtype'] in ['delete']:
+			ucs_ns_record_delete(s4connector, object)
 		# ignore move
 	if dns_type in ['forward_zone', 'reverse_zone']:
 		if object['modtype'] in ['add', 'modify']:

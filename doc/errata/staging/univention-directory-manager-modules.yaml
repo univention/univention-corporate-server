@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: univention-directory-manager-modules
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Add support for DNS NS records.
+bug: [32626]

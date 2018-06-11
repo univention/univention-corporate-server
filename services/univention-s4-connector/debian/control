@@ -15,7 +15,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention (>=8.0.3-1),
  python-univention-license,
  python-univention-heimdal (>= 4.0.2-2),
- python-univention-directory-manager (>= 12.0.18-1),
+ python-univention-directory-manager (>= 13.0.21-28),
  python-pyasn1-modules,
  python-pysqlite2
 Provides: ${python:Provides}
