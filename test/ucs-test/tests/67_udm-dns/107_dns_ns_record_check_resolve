@@ -22,10 +22,11 @@ if __name__ == '__main__':
 	ucr.load()
 	with udm_test.UCSTestUDM() as udm:
 		partentzone = '%(domainname)s' % ucr
+		partentzone = partentzone.lower()
 		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
 		forward_zone = "zoneName=%(domainname)s,cn=dns,%(ldap/base)s" % ucr
 
-		zonename = uts.random_name()
+		zonename = uts.random_name().lower()
 		nameserver1 = ".".join([uts.random_name(), partentzone])
 		nameserver2 = ".".join([uts.random_name(), partentzone])
 		nameservers = [nameserver1, nameserver2]
@@ -46,9 +47,10 @@ if __name__ == '__main__':
 
 		found = set()
 		for line in stdout.split('\n'):
+			line = line.lower()
 			if line.startswith("%s.\t" % qname):
 				for nameserver in nameservers:
-					if line.endswith("\tIN\tNS\t%s." % nameserver):
+					if line.endswith("\tin\tns\t%s." % nameserver):
 						found.add(nameserver)
 						break
 		nameservers = set(nameservers)
