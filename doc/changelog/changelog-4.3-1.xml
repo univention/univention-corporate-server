@@ -829,6 +829,9 @@
 			<listitem><simpara>
 				The <package>univention-updater</package> <filename>preup</filename> and <filename>postup</filename> scripts have been adapted for UCS 4.3-1. (<u:bug>47121</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+					The following packages were moved to the maintained repository: <package>gunicorn</package> <package>python-backports-abc</package> <package>python-django</package> <package>python-django-celery</package> <package>python-django-common</package> <package>python-djangorestframework</package> <package>python-djangorestframework-doc</package> <package>python-gunicorn</package> <package>python-pampy</package>. (<u:bug>46585</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
