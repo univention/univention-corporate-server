@@ -1136,6 +1136,7 @@ disable_root_login_and_poweroff ()
 		echo "root:$appliance_default_password" | chpasswd
 	fi
 	rm -r /root/* || true
+	rm /root/.ssh/authorized_keys || true
 	rm /root/.bash_history || true
 	history -c
 	echo "halt -p" | at now || true
@@ -1144,6 +1145,7 @@ disable_root_login_and_poweroff ()
 appliance_poweroff ()
 {
 	rm -r /root/* || true
+	rm /root/.ssh/authorized_keys || true
 	rm /root/.bash_history || true
 	history -c
 	echo "halt -p" | at now || true
