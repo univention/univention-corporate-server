@@ -57,10 +57,10 @@
 				Die Usability und Konfigurierbarkeit des Managementsystems wurde weiter ausgebaut. So wurde an vielen Stellen das erwartete Verhalten des Managementsystems verbessert, etwa bei der Konfiguration von E-Mailadressen oder DNS Einstellungen.
 			</para></listitem>
 			<listitem><para>
-				Zur Erhöhung der Browsersicherheit wurde eine Content-Security-Policy in die UCS Weboberfläche definiert, die von UCS gesetzte Browsercookies schützt.
+					Zur Erhöhung der Browser Sicherheit wurde eine <wordasword>Content-Security-Policy</wordasword> in die UCS Weboberfläche definiert, die von UCS gesetzte HTTP-Cookies schützt.
 			</para></listitem>
 			<listitem><para>
-				Diverse Security Updates wurden in UCS 4.3-1 integriert, bspw. für den Linux Kernel, Samba4 und Apache2.
+					Diverse Security Updates wurden in UCS 4.3-1 integriert, bspw. für den Linux Kernel, <wordasword>Samba</wordasword> und <wordasword>Apache2</wordasword>.
 				Eine vollständige Liste ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>

@@ -54,13 +54,13 @@
 				The UMC system diagnostic module has been extended with additional tests. They support the administrator to check the system health of the UCS system and the whole domain.
 			</para></listitem>
 			<listitem><para>
-				The management system usability and configureability has been expanded. The expected useability has been improved in several places, for example when configuring email addresses or DNS settings.
+				The management system usability and configurability has been expanded. The expected usability has been improved in several places, for example when configuring email addresses or DNS settings.
 			</para></listitem>
 			<listitem><para>
 				A content-security-policy has been integrated in the UCS management system to increase the browser security by protecting web cookies.
 			</para></listitem>
 			<listitem><para>
-				Various security updates have been integrated into UCS 4.3-1, e.g. Apache, the Linux kernel and PostgreSQL.
+					Various security updates have been integrated into UCS 4.3-1, e.g. <wordasword>Apache2</wordasword>, the Linux kernel and <wordasword>Samba4</wordasword>.
 				A complete list is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
