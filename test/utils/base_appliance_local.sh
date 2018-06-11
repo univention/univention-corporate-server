@@ -112,7 +112,7 @@ _hyperv_image () {
 
 _ec2_image () {
 	# Identifier already set
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance --only --ec2-ebs -s $TMP_KVM_IMAGE"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance --only --ec2-ebs -s $TMP_KVM_IMAGE -v 'UCS_VERSION_INFO'"
 }
 
 _set_global_vars () {
@@ -120,6 +120,7 @@ _set_global_vars () {
 	KVM_USER=$2
 	KVM_SERVER=$3
 	UCS_VERSION=$4
+	UCS_VERSION_INFO="$5"
 
 	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_app-appliance-${APP_ID}.qcow2"
 	APPS_BASE="/var/univention/buildsystem2/mirror/appcenter.test/univention-apps/${UCS_VERSION}/${APP_ID}"
@@ -134,7 +135,7 @@ _set_global_vars () {
 	ESX_IMAGE="Univention-App-${APP_ID}-ESX.ova"
 	HYPERV_IMAGE_BASE="Univention-App-${APP_ID}-Hyper-V"
 
-	export APP_ID KVM_USER KVM_SERVER UCS_VERSION KT_CREATE_IMAGE APPS_BASE APPS_SERVER IMAGE_SERVER
+	export APP_ID KVM_USER KVM_SERVER UCS_VERSION UCS_VERSION_INFO KT_CREATE_IMAGE APPS_BASE APPS_SERVER IMAGE_SERVER
 	export TMP_DIR VMPLAYER_IMAGE KVM_IMAGE TMP_KVM_IMAGE VBOX_IMAGE ESX_IMAGE IMAGE_VERSION
 }
 
