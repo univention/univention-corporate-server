@@ -391,6 +391,9 @@
 				<listitem><simpara>
 					The development tools did not prepend <systemitem class="protocol">http://</systemitem> to the call for <command>zsyncmake</command> (<u:bug>45830</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						The App Center cache is now updated locally when the package <package>univention-management-console-appcenter</package> is installed during system setup. (<u:bug>46813</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
