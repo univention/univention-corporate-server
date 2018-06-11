@@ -823,6 +823,9 @@
 			<listitem><simpara>
 				If more than one harddisk is detected during UCS installation, the target disk for the grub installer can be selected. (<u:bug>44595</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The <package>univention-updater</package> <filename>preup</filename> and <filename>postup</filename> scripts have been adapted for UCS 4.3-1. (<u:bug>46947</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
