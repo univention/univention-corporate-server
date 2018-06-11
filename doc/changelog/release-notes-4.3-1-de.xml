@@ -51,9 +51,16 @@
 
 		<itemizedlist>
 			<listitem><para>
+				Für das UMC Diagnosemodul wurde eine große Zahl zusätzlicher Funktionstests hinzugefügt, die den Administrator dabei unterstützen den Gesundheitszustand des Servers und der gesamten Domäne zu prüfen.
 			</para></listitem>
 			<listitem><para>
-				Diverse Security Updates wurden in UCS 4.3-1 integriert, bspw. für Apache, den Linux Kernel und PostgreSQL.
+				Die Usability und Konfigurierbarkeit des Managementsystems wurde weiter ausgebaut. So wurde an vielen Stellen das erwartete Verhalten des Managementsystems verbessert, etwa bei der Konfiguration von E-Mailadressen oder DNS Einstellungen.
+			</para></listitem>
+			<listitem><para>
+				Zur Erhöhung der Browsersicherheit wurde eine Content-Security-Policy in die UCS Weboberfläche definiert, die von UCS gesetzte Browsercookies schützt.
+			</para></listitem>
+			<listitem><para>
+				Diverse Security Updates wurden in UCS 4.3-1 integriert, bspw. für den Linux Kernel, Samba4 und Apache2.
 				Eine vollständige Liste ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>
@@ -110,34 +117,6 @@
 			Sollte dennoch eine Aktualisierung über eine Netzverbindung durchgeführt werden, ist sicherzustellen, dass das Update bei Unterbrechung der Netzverbindung trotzdem weiterläuft.
 			Hierfür können beispielsweise die Tools <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen UCS Systemrollen installiert sind.
 		</para>
-
-		<para>
-			Mit UCS 4.3 bietet Univention ein Skript an, mit dem Probleme, die das Update des UCS Systems verhindern würden, schon vor dem Update erkannt werden können.
-			Diese Skript kann vor dem Update manuell auf das System geladen und ausgeführt werden:
-			<screen><![CDATA[
-# download
--> curl -OOs http://updates.software-univention.de/download/univention-update-checks/pre-update-checks-4.3{,.gpg}
-
-# run script
--> gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg pre-update-checks-4.3.gpg \
-        pre-update-checks-4.3 && bash pre-update-checks-4.3
-
-gpgv: Unterschrift vom Mi 07 Mär 2018 13:36:51 CET mittels RSA-Schlüssel ID 6B8BFD3C
-gpgv: Korrekte Unterschrift von "Univention Corporate Server 4.x <packages@univention.de>"
-
-Starting pre-update checks (Mo 12. Mär 09:15:34 CET 2018):
-
-Checking app_appliance ...                        OK
-Checking block_update_of_NT_DC ...                OK
-Checking cyrus_integration ...                    OK
-Checking disk_space ...                           OK
-Checking hold_packages ...                        OK
-Checking ldap_connection ...                      OK
-Checking ldap_schema ...                          OK
-...
-			]]></screen>
-		</para>
-
 	</chapter>
 
 	<chapter id="relnotes:post">

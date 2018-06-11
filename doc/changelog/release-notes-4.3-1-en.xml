@@ -51,6 +51,13 @@
 
 		<itemizedlist>
 			<listitem><para>
+				The UMC system diagnostic module has been extended with additional tests. They support the administrator to check the system health of the UCS system and the whole domain.
+			</para></listitem>
+			<listitem><para>
+				The management system usability and configureability has been expanded. The expected useability has been improved in several places, for example when configuring email addresses or DNS settings.
+			</para></listitem>
+			<listitem><para>
+				A content-security-policy has been integrated in the UCS management system to increase the browser security by protecting web cookies.
 			</para></listitem>
 			<listitem><para>
 				Various security updates have been integrated into UCS 4.3-1, e.g. Apache, the Linux kernel and PostgreSQL.
@@ -110,34 +117,6 @@
 			If updating should occur over a network connection nevertheless, it must be verified that the update continues in case of disconnection from the network.
 			This can be achieved, e.g., using the tools <command>screen</command> and <command>at</command>.  These tools are installed on all UCS system roles by default.
 		</para>
-
-		<para>
-			With UCS 4.3, Univention provides a script that checks for problems which would prevent the successful update of the system. Prior to the update, this script
-			can be downloaded and executed on the UCS system.
-			<screen><![CDATA[
-# download
--> curl -OOs http://updates.software-univention.de/download/univention-update-checks/pre-update-checks-4.3{,.gpg}
-
-# run script
--> gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg \
-        pre-update-checks-4.3.gpg pre-update-checks-4.3 && bash pre-update-checks-4.3
-
-gpgv: Signature made Wed Mar  7 13:36:51 2018 CET using RSA key ID 6B8BFD3C
-gpgv: Good signature from "Univention Corporate Server 4.x <packages@univention.de>"
-
-Starting pre-update checks (Mon Mar 12 09:15:34 CET 2018):
-
-Checking app_appliance ...                        OK
-Checking block_update_of_NT_DC ...                OK
-Checking cyrus_integration ...                    OK
-Checking disk_space ...                           OK
-Checking hold_packages ...                        OK
-Checking ldap_connection ...                      OK
-Checking ldap_schema ...                          OK
-...
-			]]></screen>
-		</para>
-
 	</chapter>
 
 	<chapter id="relnotes:post">
