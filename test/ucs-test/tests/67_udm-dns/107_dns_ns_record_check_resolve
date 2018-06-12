@@ -16,17 +16,18 @@ import univention.testing.strings as uts
 import subprocess
 from univention.testing.ucs_samba import wait_for_s4connector
 import univention.testing.utils as utils
+import re
 
 if __name__ == '__main__':
 	ucr = ucr_test.UCSTestConfigRegistry()
 	ucr.load()
 	with udm_test.UCSTestUDM() as udm:
 		partentzone = '%(domainname)s' % ucr
-		partentzone = partentzone.lower()
+		partentzone = partentzone
 		pos = 'cn=dns,%s' % (udm.LDAP_BASE,)
 		forward_zone = "zoneName=%(domainname)s,cn=dns,%(ldap/base)s" % ucr
 
-		zonename = uts.random_name().lower()
+		zonename = uts.random_name()
 		nameserver1 = ".".join([uts.random_name(), partentzone])
 		nameserver2 = ".".join([uts.random_name(), partentzone])
 		nameservers = [nameserver1, nameserver2]
@@ -39,20 +40,14 @@ if __name__ == '__main__':
 		ns_record = udm.create_object('dns/ns_record', superordinate=forward_zone, **record_properties)
 
 		wait_for_s4connector()
-		qname = '%s.%s' % (zonename, partentzone)
-		p1 = subprocess.Popen(['dig', '+nocmd', '+noall', '+answer', '@localhost', qname, 'ANY'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+
+		zone_fqdn = '%s.%s' % (zonename, partentzone)
+		p1 = subprocess.Popen(['dig', '+nocmd', '+noall', '+answer', '@localhost', zone_fqdn, 'ANY'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()
 		if p1.returncode != 0:
 			utils.fail("DNS dig query failed")
 
-		found = set()
-		for line in stdout.split('\n'):
-			line = line.lower()
-			if line.startswith("%s.\t" % qname):
-				for nameserver in nameservers:
-					if line.endswith("\tin\tns\t%s." % nameserver):
-						found.add(nameserver)
-						break
-		nameservers = set(nameservers)
+		found = [x for x in nameservers if re.search("^%s\.[ \t][0-9]+[ \t]IN\tNS\t%s\." % (zone_fqdn, x), stdout, re.MULTILINE)]
+
 		if nameservers != found:
 			utils.fail("Record not found: %s" % ([nameservers - found]))
