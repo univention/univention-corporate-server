@@ -1,3 +1,9 @@
+ucs-test (8.0.28-134) unstable; urgency=medium
+
+  * Bug #32626: Adjust test case to dig output
+
+ -- Arvid Requate <requate@univention.de>  Tue, 12 Jun 2018 16:26:17 +0200
+
 ucs-test (8.0.28-133) unstable; urgency=medium
 
   * Bug #32626: Adjust test case to support mixed case domains
