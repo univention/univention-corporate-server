@@ -1,3 +1,9 @@
+univention-web (2.0.0-13) unstable; urgency=medium
+
+  * Bug #47133: Fix traceback dialogs for 'display_feedback' option
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 13 Jun 2018 17:23:41 +0200
+
 univention-web (2.0.0-12) unstable; urgency=medium
 
   * Bug #47188: Adjust icons.svg and error.svg for imagemagick
