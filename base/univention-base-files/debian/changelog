@@ -1,3 +1,9 @@
+univention-base-files (6.0.0-18) unstable; urgency=medium
+
+  * Bug #47260: Do not ignore ucr layers in ucr autostart module
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 28 Jun 2018 10:37:50 +0200
+
 univention-base-files (6.0.0-17) unstable; urgency=medium
 
   * Bug #46750: allow to set journald SplitMode by UCRV
