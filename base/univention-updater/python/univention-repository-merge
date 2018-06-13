@@ -45,7 +45,6 @@ from univention.updater.locking import UpdaterLock
 
 l_package = {}  # type: Dict[Tuple[str, str], Tuple[str, str, int]] # (package, arch) -> (filename, version, arg)
 p_remove = []
-destination_dir = ''
 
 
 def usage(fd=sys.stdout):
@@ -112,11 +111,8 @@ def cleanup_repository(directory):
     finally:
         fp_debug.close()
 
-# parse options
 
-
-if __name__ == '__main__':
-
+def parse_args():
     if len(sys.argv) < 2:
         usage()
         sys.exit(1)
@@ -132,7 +128,7 @@ if __name__ == '__main__':
         print(msg)
         sys.exit(1)
 
-    with UpdaterLock():
+    if True:
         source_dirs = []
         for opt, val in opts:
             if opt == '--dest':
@@ -151,6 +147,13 @@ if __name__ == '__main__':
             usage()
             sys.exit(1)
 
+    return destination_dir, source_dirs
+
+
+def main():
+    destination_dir, source_dirs = parse_args()
+
+    with UpdaterLock():
         os.path.walk(destination_dir, walking, 1)
 
         for dirname in source_dirs:
@@ -189,3 +192,7 @@ if __name__ == '__main__':
         os.chdir(packages_dir)
         urepo.update_indexes(packages_dir, stdout=fp_debug, stderr=fp_debug)
         fp_debug.close()
+
+
+if __name__ == '__main__':
+    main()
