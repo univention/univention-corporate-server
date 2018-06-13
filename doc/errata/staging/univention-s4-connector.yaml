@@ -6,6 +6,6 @@ src: univention-s4-connector
 fix: 11.0.8-22A~4.2.0.201805251330
 desc: |
  This update addresses the following issue(s):
- * When objects are deleted or moved remove the their DN from
+ * When objects are deleted or moved remove their DN from
    both group member mapping caches. This affected UCS@school.
 bug: [46971]
