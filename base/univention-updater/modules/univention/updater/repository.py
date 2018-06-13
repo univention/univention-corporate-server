@@ -30,7 +30,6 @@ Univention Updater helper functions for managing a local repository.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import gzip
 import os
 import shutil
 import subprocess
@@ -76,12 +75,10 @@ def gzip_file(filename):
     Compress file.
 
     :param str filename: The file name of the file to compress.
+    :returns: the process exit code.
+    :rtype: int
     """
-    f_in = open(filename, 'rb')
-    f_out = gzip.open('%s.gz' % filename, 'wb')
-    f_out.writelines(f_in)
-    f_out.close()
-    f_in.close()
+    return subprocess.call(('gzip', '--keep', '--force', '--no-name', '-9', filename))
 
 
 def copy_package_files(source_dir, dest_dir):
@@ -152,9 +149,7 @@ def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr
             sys.exit(1)
 
         # create Packages.gz file
-        gzip_file(os.path.join(base_dir, arch, 'Packages'))
-
-        if ret:
+        if gzip_file(os.path.join(base_dir, arch, 'Packages')):
             print >> stdout, 'failed.'
             print >> stderr, "Error: Failed to create Packages.gz file for '%s'" % os.path.join(base_dir, arch)
             sys.exit(1)
