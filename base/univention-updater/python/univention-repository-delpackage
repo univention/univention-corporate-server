@@ -91,7 +91,9 @@ def main():
         dirs = []
 
         for filename in files:
-            if filename.endswith('.deb') and os.path.exists(filename):
+            if not os.path.exists(filename):
+                continue
+            if filename.endswith('.deb') or filename.endswith('.udeb'):
                 dirname = os.path.dirname(filename)
                 basedir = urepo.get_repo_basedir(dirname)
                 if basedir not in dirs:

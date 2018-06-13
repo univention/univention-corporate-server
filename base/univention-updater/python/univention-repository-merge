@@ -67,7 +67,7 @@ def walking(arg, dirname, names):
     for f in names:
         filename = os.path.join(dirname, f)
 
-        if filename.endswith('.deb'):
+        if filename.endswith('.deb') or filename.endswith('.udeb'):
             out = os.popen('dpkg -I %s' % filename)
 
             package = ''
@@ -99,7 +99,9 @@ def cleanup_repository(directory):
     def _walk(fp_debug, dirname, names):
         for name in names:
             filename = os.path.join(dirname, name)
-            if os.path.isfile(filename) and filename.endswith('.deb'):
+            if not os.path.isfile(filename):
+                continue
+            if filename.endswith('.deb') or filename.endswith('.udeb'):
                 try:
                     os.unlink(filename)
                 except EnvironmentError:
