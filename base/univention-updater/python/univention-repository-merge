@@ -64,10 +64,10 @@ def compare(version1, version2):
 def walking(arg, dirname, names):
     """ Update l_package hash with new and p_remove hash with obsolete .deb files """
     for f in names:
-        file = os.path.join(dirname, f)
+        filename = os.path.join(dirname, f)
 
-        if file.endswith('.deb'):
-            out = os.popen('dpkg -I %s' % file)
+        if filename.endswith('.deb'):
+            out = os.popen('dpkg -I %s' % filename)
 
             package = ''
             version = ''
@@ -86,11 +86,11 @@ def walking(arg, dirname, names):
             if record:
                 if compare(version, record[1]):
                     p_remove.append(record[0])
-                    l_package[key] = [file, version, arg]
+                    l_package[key] = [filename, version, arg]
                 else:
-                    p_remove.append(file)
+                    p_remove.append(filename)
             else:
-                l_package[key] = [file, version, arg]
+                l_package[key] = [filename, version, arg]
 
 
 def cleanup_repository(directory):
@@ -151,8 +151,8 @@ if __name__ == '__main__':
 
         os.path.walk(destination_dir, walking, 1)
 
-        for dir in source_dirs:
-            src = urepo.get_repo_basedir(dir)
+        for dirname in source_dirs:
+            src = urepo.get_repo_basedir(dirname)
             os.path.walk(src, walking, 0)
 
         packages_dir = os.path.join(destination_dir)
@@ -176,12 +176,12 @@ if __name__ == '__main__':
 
         save_dir = os.path.realpath(os.path.curdir)
 
-        for dir in source_dirs:
-            if dir == packages_dir:
+        for dirname in source_dirs:
+            if dirname == packages_dir:
                 continue
-            cleanup_repository(dir)
+            cleanup_repository(dirname)
 
-            urepo.update_indexes(dir, stdout=fp_debug, stderr=fp_debug)
+            urepo.update_indexes(dirname, stdout=fp_debug, stderr=fp_debug)
 
         os.chdir(save_dir)
         os.chdir(packages_dir)

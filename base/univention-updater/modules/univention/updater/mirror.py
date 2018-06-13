@@ -118,8 +118,8 @@ class UniventionMirror(UniventionUpdater):
         makedirs(self.repository_path)
 
         # these sub-directories are required by apt-mirror
-        for dir in ('skel', 'mirror', 'var'):
-            path = os.path.join(self.repository_path, dir)
+        for dirname in ('skel', 'mirror', 'var'):
+            path = os.path.join(self.repository_path, dirname)
             makedirs(path)
         path = os.path.join(self.repository_path, 'mirror', 'univention-repository')
         try:
