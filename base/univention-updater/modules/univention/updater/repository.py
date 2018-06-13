@@ -122,8 +122,6 @@ def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr
     :param bool dists: Also generate :file:`Packages` files in :file:`dists/` subdirectory.
     :param file stdout: Override standard output. Defaults to :py:obj:`sys.stdout`.
     :param file stderr: Override standard error output. Defaults to :py:obj:`sys.stderr`.
-
-    See :py:func:`create_packages` for a variant supporting a single directory only.
     """
     # redirekt output
     if not stdout:
@@ -174,43 +172,6 @@ def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr
             gzip_file(packages_file)
 
     print >> stdout, 'done.'
-
-
-def create_packages(base_dir, source_dir):
-    """
-    Re-generate Debian `Packages` file for a single architecture directory.
-
-    :param str base_dir: Base directory. From here `apt-ftparchive` is called.
-    :param str source_dir: A sub directory. For this `apt-ftparchive` is called.
-
-    See :py:func:`update_indexes` for a variant supporting multiple architectures.
-
-    .. deprecated:: 4.3
-
-    This is only used by :program:`univention-repository-addpackage` and :program:`univention-repository-delpackage`.
-    """
-    pkg_file = os.path.join(base_dir, source_dir, 'Packages')
-    # recreate Packages file
-    if not os.path.isdir(os.path.join(base_dir, source_dir)) or not os.path.isfile(pkg_file):
-        return
-
-    # create a backup
-    if os.path.exists(pkg_file):
-        shutil.copyfile(pkg_file, '%s.SAVE' % pkg_file)
-
-    packages_fd = open(pkg_file, 'w')
-    ret = subprocess.call(['apt-ftparchive', 'packages', source_dir], stdout=packages_fd, cwd=base_dir)
-    packages_fd.close()
-
-    if ret:
-        print >> sys.stderr, "Error: Failed to create Packages file for '%s'" % os.path.join(base_dir, source_dir)
-        # restore backup
-        if os.path.exists('%s.SAVE' % pkg_file):
-            shutil.copyfile('%s.SAVE' % pkg_file, pkg_file)
-        sys.exit(1)
-
-    # create Packages.gz file
-    gzip_file(pkg_file)
 
 
 def get_repo_basedir(packages_dir):

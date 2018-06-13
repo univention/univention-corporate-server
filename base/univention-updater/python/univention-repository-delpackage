@@ -100,14 +100,7 @@ def main():
                 os.unlink(filename)
 
         for path in dirs:
-            # these might not exist if creating a new repository
-            urepo.create_packages(path, '.')
-            if path[-1] == '/':
-                path = path[: -1]
-
-            head, tail = os.path.split(path)
-            for arch in urepo.ARCHITECTURES:
-                urepo.create_packages(head, '%s/%s' % (tail, arch))
+            urepo.update_indexes(path, update_only=True)
 
 
 if __name__ == '__main__':

@@ -139,21 +139,12 @@ def main():
                         print >>sys.stdout, "Interrupted by user."
                         sys.exit(1)
 
-        os.chdir(packages_dir)
-
         if not fileProcessed:
             print >>sys.stdout, "Warning: No packages found, no packages added"
             # shortcut exit, since there's nothing left to be done
             sys.exit(0)
 
-        # these might not exist if creating a new repository
-        urepo.create_packages(packages_path, '.')
-        if packages_path[-1] == '/':
-            packages_path = packages_path[: -1]
-
-        head, tail = os.path.split(packages_path)
-        for arch in urepo.ARCHITECTURES:
-            urepo.create_packages(head, '%s/%s' % (tail, arch))
+        urepo.update_indexes(packages_path, update_only=True)
 
 
 if __name__ == '__main__':
