@@ -953,96 +953,6 @@ class UniventionUpdater:
             result += repos
         return result
 
-    def get_all_available_errata_updates(self):
-        """
-        Returns a list of all available errata updates for current major.minor version
-        as integer::
-
-            updater.get_all_available_errata_updates()
-            [3, 4, 5]
-
-        :returns: A list of errata updates.
-        :rtype: list[int]
-        """
-        result = []
-        for el in xrange(self.erratalevel + 1, 1000):
-            version = UCS_Version((self.version_major, self.version_minor, el))
-            secver = self.errata_update_available(version)
-            if secver:
-                result.append(secver)
-            else:
-                break
-        self.log.info('Found errata updates %r', result)
-        return result
-
-    def get_component_erratalevel(self, component, version=None):
-        """
-        Returns the errata level for a component and UCS-version
-        installed on the system.
-
-        :param str component: The name of the component.
-        :param str version: The UCR release. If no version is given, the current_version is taken.
-        :return: The errata level of the component.
-        :rtype: int
-        """
-        if version is None:
-            version = self.current_version
-        version = UCS_Version(version)
-        return int(self.configRegistry.get('repository/online/component/%s/%s.%s/erratalevel' % (component, version.major, version.minor), 0))
-
-    def get_all_available_errata_component_updates(self):
-        """
-        Returns a list of all available errata updates for current major.minor version
-        as integer::
-
-            updater.get_all_available_errata_component_updates()
-            [
-                ('component1', {'2.3': [2, 3], '2.4': [5]}),
-                ('component2', {'3.0': [1], '3.1': []}),
-                ('component3', {'3.0': [1]}),
-            ]
-
-        :returns: A list of 2-tuples `(component, dict)`, where `dict` maps each `major.minor` version to a list of vailable patch-level-versions.
-        :rtype: list[str, dict(str, list[int])]
-        """
-        result = []
-        for component in self.get_all_components():
-            # get configured versions for component; default: this major
-            versions = self._get_component_versions(component, None, None)
-            component_versions = {}
-            for version in versions:
-                version_str = UCS_Version.FORMAT % version
-                current_level = self.get_component_erratalevel(component, version)
-                component_versions[version_str] = []
-                for el in xrange(current_level + 1, 1000):
-                    if self.get_component_repositories(component, [version], errata_level=el):
-                        component_versions[version_str].append(el)
-                    else:
-                        break
-            if component_versions:
-                result.append((component, component_versions))
-
-        self.log.info('Found component errata updates %r', result)
-        return result
-
-    def errata_update_available(self, version=None):
-        """
-        Check for the errata version for the current version.
-        Returns next available security update number (integer) or False if no security update is available.
-
-        :param UCS_Version version: The UCS release to check.
-        :returns: The next security update or False
-        :rtype: int or False
-        """
-        if version:
-            start = end = version
-        else:
-            start = end = UCS_Version((self.version_major, self.version_minor, self.erratalevel + 1))
-        archs = ['all'] + self.architectures
-        for server, ver in self._iterate_errata_repositories(start, end, self.parts, archs):
-            return ver.patchlevel
-        return False
-
     @property
     def current_version(self):
         """
@@ -1397,27 +1307,7 @@ class UniventionUpdater:
         for ver in self._iterate_versions(struct, start, end, parts, archs, server):
             yield server, ver
 
-    def _iterate_errata_repositories(self, start, end, parts, archs):
-        """
-        Iterate over all UCS errata releases and return (server, version).
-
-        :param UCS_Version start: The UCS release to start from.
-        :param UCS_Version end: The UCS release where to stop.
-        :param parts: List of `maintained` and/or `unmaintained`.
-        :type parts: list[str]
-        :param archs: List of architectures.
-        :type archs: list[str]
-        :returns: A iterator returning 2-tuples (server, ver).
-
-        .. deprecated:: 3.1
-        """
-        self.log.info('Searching errata [%s..%s)', start, end)
-        server = self.server
-        struct = UCSRepoPool(prefix=self.server, patch="errata%(patchlevel)d", patchlevel_reset=1, patchlevel_max=999)
-        for ver in self._iterate_versions(struct, start, end, parts, archs, server):
-            yield server, ver
-
-    def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False, errata_level=None, iterate_errata=True):
+    def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False):
         """
         Iterate over all components and return (server, version).
 
@@ -1426,7 +1316,6 @@ class UniventionUpdater:
         :param archs: List of architectures.
         :type archs: list[str]
         :param bool for_mirror_list: Use the settings for mirroring.
-        :param bool iterate_errata: Include associated errata component, too.
         :returns: A iterator returning 2-tuples (server, ver).
         """
         self.log.info('Searching components %r [%s..%s)', components, start, end)
@@ -1447,22 +1336,9 @@ class UniventionUpdater:
 
             self.log.info('Component %s from %s versions %r', component, server, versions)
             for version in versions:
-                # Get a list of all availble errata updates for this component and version
-
-                # The errata level for components is bound to the minor version
-                patch_names = [component]
-                if iterate_errata:
-                    if errata_level:
-                        patch_names = ['%s-errata%s' % (component, errata_level)]
-                    elif not for_mirror_list:
-                        # see below for mirror.list handling
-                        errata_level = self.get_component_erratalevel(component, version)
-                        patch_names += ['%s-errata%d' % (component, x) for x in range(1, errata_level + 1)]
-
-                for patch_name in patch_names:
                     try:
                         for (UCSRepoPoolVariant, subarchs) in ((UCSRepoPool, archs), (UCSRepoPoolNoArch, ('all',))):
-                            struct = UCSRepoPoolVariant(prefix=server, patch=patch_name)
+                            struct = UCSRepoPoolVariant(prefix=server, patch=component)
                             for ver in self._iterate_versions(struct, version, version, parts, subarchs, server):
                                 yield server, ver
                     except (ConfigurationError, ProxyError):
@@ -1470,19 +1346,6 @@ class UniventionUpdater:
                         # then raise error, otherwise ignore it
                         if component in self.get_current_components():
                             raise
-
-                # Go through all errata level for this component and break if the first errata level is missing
-                if for_mirror_list:
-                    for i in xrange(1, 1000):
-                        valid = False
-                        patch_name = '%s-errata%s' % (component, i)
-                        for (UCSRepoPoolVariant, subarchs) in ((UCSRepoPool, archs), (UCSRepoPoolNoArch, ('all',))):
-                            struct = UCSRepoPoolVariant(prefix=server, patch=patch_name)
-                            for ver in self._iterate_versions(struct, version, version, parts, subarchs, server):
-                                yield server, ver
-                                valid = True
-                        if not valid:
-                            break
 
     def print_version_repositories(self, clean=False, dists=False, start=None, end=None):
         """
@@ -1514,67 +1377,6 @@ class UniventionUpdater:
         for server, ver in self._iterate_version_repositories(start, end, self.parts, archs, dists):
             result.append(ver.deb(server))
             if isinstance(ver, UCSRepoPool) and ver.arch == archs[-1]:  # after architectures but before next patch(level)
-                if clean:
-                    result.append(ver.clean(server))
-                if self.sources:
-                    ver.arch = "source"
-                    try:
-                        code, size, content = server.access(ver, "Sources.gz")
-                        if size >= MIN_GZIP:
-                            result.append(ver.deb(server, "deb-src"))
-                    except DownloadError as e:
-                        ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-
-        return '\n'.join(result)
-
-    def print_errata_repositories(self, clean=False, start=None, end=None, all_errata_updates=False):
-        """
-        Return a string of Debian repository statements for all UCS errata
-        updates for UCS versions between start and end.
-
-        :param bool clean: Add additional `clean` statements for `apt-mirror`.
-        :param UCS_Version start: Start UCS release. Defaults to (major, minor).
-        :param UCS_Version end: End UCS release. Defaults to (major, minor).
-        :param bool all_errata_updates: Return all available instead of all needed statements for errata updates.
-        :returns: A string with APT statement lines.
-        :rtype: str
-
-        .. deprecated:: 3.1
-        """
-        # NOTE: Here "patchlevel" is used for the "erratalevel"
-        if not self.online_repository:
-            return ''
-
-        if clean:
-            clean = self.configRegistry.is_true('online/repository/clean', False)
-
-        if start:
-            start = copy.copy(start)
-            start.patchlevel = 1  # errata updates start with 'errata1'
-        else:
-            start = UCS_Version((self.version_major, self.version_minor, 1))
-        # Explicit override of start for point updates (Bug #25616)
-        if not all_errata_updates:
-            try:
-                skip = self.configRegistry['repository/online/errata/start']
-                start.patchlevel = int(skip)
-            except (KeyError, TypeError, ValueError):
-                pass
-
-        # Hopefully never more than 999 errata updates
-        max = bool(all_errata_updates) and 1000 or self.erratalevel
-        if end:
-            end = copy.copy(end)
-            end.patchlevel = max
-        else:
-            end = UCS_Version((self.version_major, self.version_minor, max))
-
-        archs = ['all'] + self.architectures
-        result = []
-
-        for server, ver in self._iterate_errata_repositories(start, end, self.parts, archs):
-            result.append(ver.deb(server))
-            if ver.arch == archs[-1]:  # after architectures but before next patch(level)
                 if clean:
                     result.append(ver.clean(server))
                 if self.sources:
@@ -1751,7 +1553,7 @@ class UniventionUpdater:
                 versions.add(version)
         return versions
 
-    def get_component_repositories(self, component, versions, clean=False, debug=True, for_mirror_list=False, errata_level=None):
+    def get_component_repositories(self, component, versions, clean=False, debug=True, for_mirror_list=False):
         """
         Return list of Debian repository statements for requested component.
 
@@ -1766,9 +1568,6 @@ class UniventionUpdater:
         """
         archs = ['all'] + self.architectures
         result = []
-
-        if errata_level > 999:
-            return result
 
         # Sanitize versions: UCS_Version() and Major.Minor
         versions_mmp = set()
@@ -1786,10 +1585,7 @@ class UniventionUpdater:
             versions_mmp.add(version)
 
         for version in versions_mmp:
-            # Show errata updates for latest version only
-            iterate_errata = version == max(versions_mmp)
-
-            for server, ver in self._iterate_component_repositories([component], version, version, archs, for_mirror_list=for_mirror_list, errata_level=errata_level, iterate_errata=iterate_errata):
+            for server, ver in self._iterate_component_repositories([component], version, version, archs, for_mirror_list=for_mirror_list):
                 result.append(ver.deb(server))
                 if ver.arch == archs[-1]:  # after architectures but before next patch(level)
                     if clean:
