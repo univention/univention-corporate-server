@@ -197,18 +197,12 @@ def create_packages(base_dir, source_dir):
         return
 
     pkg_file = os.path.join(base_dir, source_dir, 'Packages')
-    pkg_file_lock = os.path.join(base_dir, source_dir, 'Packages.lock')
     # create a backup
     if os.path.exists(pkg_file):
         shutil.copyfile(pkg_file, '%s.SAVE' % pkg_file)
 
     packages_fd = open(os.path.join(base_dir, source_dir, 'Packages'), 'w')
-    try:
-        fd = open(pkg_file_lock, 'w')
-        fd.close()
-    except:
-        pass
-
+    packages_fd = open(pkg_file, 'w')
     ret = subprocess.call(['apt-ftparchive', 'packages', source_dir], stdout=packages_fd, cwd=base_dir)
     packages_fd.close()
 
@@ -217,15 +211,10 @@ def create_packages(base_dir, source_dir):
         # restore backup
         if os.path.exists('%s.SAVE' % pkg_file):
             shutil.copyfile('%s.SAVE' % pkg_file, pkg_file)
-        if os.path.exists(pkg_file_lock):
-            os.unlink(pkg_file_lock)
         sys.exit(1)
 
     # create Packages.gz file
     gzip_file(os.path.join(base_dir, source_dir, 'Packages'))
-
-    if os.path.exists(pkg_file_lock):
-        os.unlink(pkg_file_lock)
 
 
 def get_repo_basedir(packages_dir):

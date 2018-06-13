@@ -36,7 +36,6 @@ import os
 import shutil
 import sys
 import getopt
-import time
 import re
 
 from univention.config_registry import ConfigRegistry
@@ -142,21 +141,15 @@ if __name__ == '__main__':
                         os.remove(targetfilename)  # remove incomplete package file
                         print >>sys.stderr, "Warning: Removed incomplete file"
                     if isinstance(e, exceptions.KeyboardInterrupt):
-                        out = os.popen('touch Packages.lock')
                         print >>sys.stdout, "Interrupted by user."
                         sys.exit(1)
 
         os.chdir(packages_dir)
 
-        if not fileProcessed and not os.path.exists('Packages.lock'):
+        if not fileProcessed:
             print >>sys.stdout, "Warning: No packages found, no packages added"
             # shortcut exit, since there's nothing left to be done
             sys.exit(0)
-
-        count = 0
-        if os.path.exists('Packages.lock') and count < 300:
-            time.sleep(1)
-            count = count + 1
 
         # these might not exist if creating a new repository
         urepo.create_packages(packages_path, '.')
