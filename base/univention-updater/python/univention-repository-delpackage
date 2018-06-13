@@ -75,8 +75,7 @@ def parse_args():
             files.append(val)
 
     if len(files) > 0:
-        for i in args:
-            files.append(i)
+        files += args
 
     if len(files) < 1:
         usage()
