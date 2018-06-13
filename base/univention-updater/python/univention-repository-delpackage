@@ -88,7 +88,7 @@ def main():
     urepo.assert_local_repository()
 
     with UpdaterLock():
-        dirs = []
+        dirs = set()
 
         for filename in files:
             if not os.path.exists(filename):
@@ -96,8 +96,7 @@ def main():
             if filename.endswith('.deb') or filename.endswith('.udeb'):
                 dirname = os.path.dirname(filename)
                 basedir = urepo.get_repo_basedir(dirname)
-                if basedir not in dirs:
-                    dirs.append(basedir)
+                dirs.add(basedir)
                 os.unlink(filename)
 
         for path in dirs:
