@@ -1,9 +1,16 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Updater
-#  actualise script
-#
+"""\
+{prog}: Perform a (dist-)upgrade and (un-)install packages as set
+                      through policies
+
+usage: {prog} [-? || --help] [--dist-upgrade] [--silent] [--check]
+
+-?, --help       Show this message
+--dist-upgrade   Perform a dist-upgrade instead of a regular update
+--silent         Don't show normal output, but error messages only
+--check          Don't do anything, just check if updates are available
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -99,16 +106,13 @@ class Tee(object):
         return ret
 
 
-def usage():
-    print "univention-actualise: Perform a (dist-)upgrade and (un-)install packages as set"
-    print "                      through policies"
-    print ""
-    print "usage: univention-actualise [-? || --help] [--dist-upgrade] [--silent] [--check]"
-    print ""
-    print "-?, --help       Show this message"
-    print "--dist-upgrade   Perform a dist-upgrade instead of a regular update"
-    print "--silent         Don't show normal output, but error messages only"
-    print "--check          Don't do anything, just check if updates are available"
+def usage(fd=sys.stdout):
+    """
+    Print usage message.
+
+    :param file fd: Override standard error output. Defaults to :py:obj:`sys.stdout`.
+    """
+    fd.write(__doc__.format(prog=os.path.basename(__file__)))
 
 
 def waitForLock():

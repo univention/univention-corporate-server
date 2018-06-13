@@ -1,9 +1,8 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Updater
-#  repository update
-#
+"""
+Update a local repository.
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -199,7 +198,7 @@ def parse_args():
         if os.path.isdir(mount_point_default):
             break
 
-    parser = OptionParser(usage="usage: %prog (net|cdrom) [options]")
+    parser = OptionParser(usage="usage: %prog (net|cdrom) [options]", description=__doc__)
     parser.add_option(
         '-i', '--iso', action='store',
         dest='iso_file',

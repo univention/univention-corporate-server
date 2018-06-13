@@ -1,9 +1,13 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Updater
-#  merge repositories
-#
+"""\
+{prog}: tool for merging packages directories
+
+Syntax:
+  {prog} --dest <destination_dir> --src <source_dir> [--src <source_dir>]
+  {prog} [--help]
+
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -45,14 +49,12 @@ destination_dir = ''
 
 
 def usage(fd=sys.stdout):
-    """ Print usage information """
-    print >>fd, 'univention-repository-merge: tool for merging packages directories'
-    print >>fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
-    print >>fd, ''
-    print >>fd, 'Syntax:'
-    print >>fd, '  univention-repository-merge --dest <destination_dir> --src <source_dir> [--src <source_dir>]'
-    print >>fd, '  univention-repository-merge [--help] '
-    print >>fd, ''
+    """
+    Print usage message.
+
+    :param file fd: Override standard error output. Defaults to :py:obj:`sys.stdout`.
+    """
+    fd.write(__doc__.format(prog=os.path.basename(__file__)))
 
 
 def compare(version1, version2):

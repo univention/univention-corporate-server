@@ -1,8 +1,8 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Updater
-#  creates a repository
+"""
+Creates a local repository.
+"""
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -253,7 +253,7 @@ def main():
     for mount_point_default in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
         if os.path.isdir(mount_point_default):
             break
-    parser = OptionParser(usage="usage: %prog [options]")
+    parser = OptionParser(usage="usage: %prog [options]", description=__doc__)
     parser.add_option('-n', '--non-interactive', action='store_false',
                       dest='interactive', default=True,
                       help='if given no questions are asked.')
