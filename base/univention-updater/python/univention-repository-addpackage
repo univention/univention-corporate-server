@@ -116,9 +116,11 @@ def main():
         # we should issue a warning
         fileProcessed = False
 
-        regexp_arch = re.compile('.*_([a-z0-9]*).deb')
+        regexp_arch = re.compile('.*_([a-z0-9]*).u?deb')
         for filename in files:
-            if filename.endswith('.deb') and os.path.exists(filename):
+            if not os.path.exists(filename):
+                continue
+            if filename.endswith('.deb') or filename.endswith('.udeb'):
                 fileProcessed = True
                 match = regexp_arch.match(filename)
                 if not match:
