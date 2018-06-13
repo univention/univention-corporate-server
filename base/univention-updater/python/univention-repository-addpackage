@@ -56,13 +56,10 @@ def usage(fd=sys.stdout):
 
 def rewrite_url(url):
     """ Replace illegal characters in url with underscores """
-    tmp = url
-    illegal_chars = [',', '%', ' ']
+    for i in ',% ':
+        url = url.replace(i, '_')
 
-    for i in illegal_chars:
-        tmp = tmp.replace(i, '_')
-
-    return tmp
+    return url
 
 
 def parse_args():
