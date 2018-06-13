@@ -87,13 +87,13 @@ if __name__ == '__main__':
     with UpdaterLock():
         dirs = []
 
-        for file in files:
-            if file.endswith('.deb') and os.path.exists(file):
-                dir, filename = os.path.split(file)
-                basedir = urepo.get_repo_basedir(dir)
+        for filename in files:
+            if filename.endswith('.deb') and os.path.exists(filename):
+                dirname = os.path.dirname(filename)
+                basedir = urepo.get_repo_basedir(dirname)
                 if basedir not in dirs:
                     dirs.append(basedir)
-                os.unlink(file)
+                os.unlink(filename)
 
         for path in dirs:
             # these might not exist if creating a new repository

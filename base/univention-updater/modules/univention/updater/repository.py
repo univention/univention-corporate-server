@@ -60,14 +60,14 @@ class TeeFile(object):
         """
         self._fds = fds or [sys.stdout]
 
-    def write(self, str):
+    def write(self, data):
         """
         Write string to all registered files.
 
-        :param str str: The string to write.
+        :param str data: The string to write.
         """
         for fd in self._fds:
-            fd.write(str)
+            fd.write(data)
             fd.flush()
 
 

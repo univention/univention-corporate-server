@@ -1540,9 +1540,9 @@ class UniventionUpdater:
             /major.minor/
                 use exactly this version.
         """
-        str = self.configRegistry.get('repository/online/component/%s/version' % component, '')
+        ver = self.configRegistry.get('repository/online/component/%s/version' % component, '')
         versions = set()
-        for version in RE_SPLIT_MULTI.split(str):
+        for version in RE_SPLIT_MULTI.split(ver):
             if version in ('current', ''):  # all from start to end, defaults to same major
                 # Cache releases because it is network expensive
                 try:
