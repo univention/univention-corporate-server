@@ -298,3 +298,14 @@ def get_installation_version():
         return line[8: -1]
 
     return None
+
+
+def assert_local_repository(out=sys.stderr):
+    """
+    Exit with error if the local repository is not enabled.
+
+    :param file out: Override error output. Defaults to :py:obj:`sys.stderr`.
+    """
+    if not configRegistry.is_true('local/repository', False):
+        print >> out, 'Error: The local repository is not activated. Use "univention-repository-create" to create it or set the Univention Configuration Registry variable "local/repository" to "yes" to re-enable it.'
+        sys.exit(1)

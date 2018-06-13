@@ -38,7 +38,6 @@ import sys
 import getopt
 import re
 
-from univention.config_registry import ConfigRegistry
 import univention.updater.repository as urepo
 from univention.updater.locking import UpdaterLock
 
@@ -109,12 +108,7 @@ if __name__ == '__main__':
         print >> sys.stderr, "Error: No Debian packages specified."
         sys.exit(1)
 
-    ucr = ConfigRegistry()
-    ucr.load()
-
-    if ucr.is_false('local/repository', True):
-        print >> sys.stderr, 'Error: The local repository is disabled. Check if univention-debmirror ist installed.'
-        sys.exit(1)
+    urepo.assert_local_repository()
 
     with UpdaterLock():
         packages_path = urepo.get_repo_basedir(packages_dir)

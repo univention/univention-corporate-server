@@ -35,7 +35,6 @@ import os
 import sys
 import getopt
 
-from univention.config_registry import ConfigRegistry
 import univention.updater.repository as urepo
 from univention.updater.locking import UpdaterLock
 
@@ -83,11 +82,7 @@ if __name__ == '__main__':
         usage()
         sys.exit(1)
 
-    ucr = ConfigRegistry()
-    ucr.load()
-    if ucr.is_false('local/repository', True):
-        print >> sys.stderr, 'Error: The local repository is diabled. Use "univention-config-registry set local/repository=yes" to activate local repository'
-        sys.exit(1)
+    urepo.assert_local_repository()
 
     with UpdaterLock():
         dirs = []
