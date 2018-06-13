@@ -42,8 +42,10 @@ import getopt
 
 import univention.updater.repository as urepo
 from univention.updater.locking import UpdaterLock
+from debian.debfile import DebFile
+from apt import apt_pkg
 
-l_package = {}  # type: Dict[Tuple[str, str], Tuple[str, str, int]] # (package, arch) -> (filename, version, arg)
+l_package = {}  # type: Dict[Tuple[str, str], Tuple[str, str, int]] # (package, arch) -> (filename, version, in_dst)
 p_remove = []
 
 
@@ -56,62 +58,46 @@ def usage(fd=sys.stdout):
     fd.write(__doc__.format(prog=os.path.basename(__file__)))
 
 
-def compare(version1, version2):
-    """ Test if version1 is newer than version2 """
-    resultCode = os.system('dpkg --compare-versions %s gt %s >/dev/null 2>&1' % (version1, version2))
-    return resultCode == 0
-
-
-def walking(arg, dirname, names):
+def walking(in_dst, dirname, names):
     """ Update l_package hash with new and p_remove hash with obsolete .deb files """
     for f in names:
         filename = os.path.join(dirname, f)
 
         if filename.endswith('.deb') or filename.endswith('.udeb'):
-            out = os.popen('dpkg -I %s' % filename)
+            debfile = DebFile(filename)
+            control = debfile.debcontrol()
 
-            package = ''
-            version = ''
-            arch = ''
-            for line in out.readlines():
-                line = line.strip()
-                if line.startswith('Package: '):
-                    package = ' '.join(line.split(' ', 1)[1:])
-                if line.startswith('Version: '):
-                    version = ' '.join(line.split(' ', 1)[1:])
-                if line.startswith('Architecture: '):
-                    arch = ' '.join(line.split(' ', 1)[1:])
-
+            package = control['Package']
+            version = control['Version']
+            arch = control['Architecture']
             key = (package, arch)
-            record = l_package.get(key)
-            if record:
-                if compare(version, record[1]):
-                    p_remove.append(record[0])
-                    l_package[key] = [filename, version, arg]
+            value = (filename, version, in_dst)
+            record = l_package.setdefault(key, value)
+            if record != value:
+                old_filename, old_version = record[:2]
+                if apt_pkg.version_compare(version, old_version) > 0:
+                    p_remove.append(old_filename)
+                    l_package[key] = value
                 else:
                     p_remove.append(filename)
-            else:
-                l_package[key] = [filename, version, arg]
 
 
-def cleanup_repository(directory):
+def cleanup_repository(fp_debug, dirname, names):
     """ Remove all .deb files recursively from directory """
-    def _walk(fp_debug, dirname, names):
-        for name in names:
-            filename = os.path.join(dirname, name)
-            if not os.path.isfile(filename):
-                continue
-            if filename.endswith('.deb') or filename.endswith('.udeb'):
-                try:
-                    os.unlink(filename)
-                except EnvironmentError:
-                    fp_debug.write('Warning: failed to remove %s\n' % filename)
+    for name in names:
+        filename = os.path.join(dirname, name)
+        if not os.path.isfile(filename):
+            continue
+        if filename.endswith('.deb') or filename.endswith('.udeb'):
+            remove(filename, fp_debug)
 
-    fp_debug = open('/var/log/univention/repository.log', 'a+')
+
+def remove(filename, fp_debug):
+    """Remove file."""
     try:
-        os.path.walk(directory, _walk, fp_debug)
-    finally:
-        fp_debug.close()
+        os.unlink(filename)
+    except EnvironmentError:
+        fp_debug.write('Warning: failed to remove %s\n' % filename)
 
 
 def parse_args():
@@ -130,24 +116,23 @@ def parse_args():
         print(msg)
         sys.exit(1)
 
-    if True:
-        source_dirs = []
-        for opt, val in opts:
-            if opt == '--dest':
-                destination_dir = val
-            elif opt == '--src':
-                src = urepo.get_repo_basedir(val)
-                source_dirs.append(src)
+    source_dirs = []
+    for opt, val in opts:
+        if opt == '--dest':
+            destination_dir = val
+        elif opt == '--src':
+            src = urepo.get_repo_basedir(val)
+            source_dirs.append(src)
 
-        if not destination_dir:
-            usage()
-            sys.exit(1)
+    if not destination_dir:
+        usage()
+        sys.exit(1)
 
-        destination_dir = urepo.get_repo_basedir(destination_dir)
+    destination_dir = urepo.get_repo_basedir(destination_dir)
 
-        if len(source_dirs) < 1:
-            usage()
-            sys.exit(1)
+    if len(source_dirs) < 1:
+        usage()
+        sys.exit(1)
 
     return destination_dir, source_dirs
 
@@ -156,43 +141,34 @@ def main():
     destination_dir, source_dirs = parse_args()
 
     with UpdaterLock():
-        os.path.walk(destination_dir, walking, 1)
+        if not os.path.exists(destination_dir):
+            os.mkdir(destination_dir)
+        os.path.walk(destination_dir, walking, True)
 
         for dirname in source_dirs:
             src = urepo.get_repo_basedir(dirname)
-            os.path.walk(src, walking, 0)
-
-        packages_dir = os.path.join(destination_dir)
-        if not os.path.exists(packages_dir):
-            os.mkdir(packages_dir)
+            os.path.walk(src, walking, False)
 
         fp_debug = open('/var/log/univention/repository.log', 'a+')
-        for k in l_package.keys():
-            if l_package[k][2] == 0:  # if not dest dir
+        for ((_package, arch), (filename, _version, in_dst)) in l_package.iteritems():
+            if not in_dst:
                 try:
-                    dest = os.path.join(packages_dir, k[1])
-                    shutil.copy(l_package[k][0], dest)
+                    dest = os.path.join(destination_dir, arch)
+                    shutil.copy(filename, dest)
                 except EnvironmentError:
-                    fp_debug.write('Error: faild to copy %s\n' % dest)
+                    fp_debug.write('Error: failed to copy %s\n' % dest)
 
         for f in p_remove:
-            try:
-                os.remove(f)
-            except EnvironmentError:
-                fp_debug.write('Warning: failed to remove %s\n' % f)
-
-        save_dir = os.path.realpath(os.path.curdir)
+            remove(f, fp_debug)
 
         for dirname in source_dirs:
-            if dirname == packages_dir:
+            if dirname == destination_dir:
                 continue
-            cleanup_repository(dirname)
+            os.path.walk(dirname, cleanup_repository, fp_debug)
 
             urepo.update_indexes(dirname, stdout=fp_debug, stderr=fp_debug)
 
-        os.chdir(save_dir)
-        os.chdir(packages_dir)
-        urepo.update_indexes(packages_dir, stdout=fp_debug, stderr=fp_debug)
+        urepo.update_indexes(destination_dir, stdout=fp_debug, stderr=fp_debug)
         fp_debug.close()
 
 
