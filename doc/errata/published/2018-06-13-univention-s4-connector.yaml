@@ -9,3 +9,5 @@ desc: |
  * When objects are deleted or moved remove their DN from
    both group member mapping caches. This affected UCS@school.
 bug: [46971]
+erratum: 420
+announced: 2018-06-13
