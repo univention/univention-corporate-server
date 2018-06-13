@@ -1,3 +1,9 @@
+univention-base-files (7.0.0-15) unstable; urgency=medium
+
+  * Bug #46300: Do not ignore ucr layers in ucr autostart module
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 13 Jun 2018 16:35:12 +0200
+
 univention-base-files (7.0.0-14) unstable; urgency=medium
 
   * Bug #39704: Add more UCR varaibles for sshd_config

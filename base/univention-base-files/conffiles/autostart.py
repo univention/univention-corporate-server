@@ -34,22 +34,6 @@ from univention.service_info import ServiceInfo
 from logging import getLogger
 
 
-NO, MANUALLY, YES = range(3)
-
-
-def check(string):
-	"""
-	Translate UCRV */autostart string into enumeration.
-	"""
-	string = string.lower() if isinstance(string, basestring) else ''
-	if string in ('false', 'no'):
-		return NO
-	elif string in ('manually',):
-		return MANUALLY
-	else:
-		return YES
-
-
 def ctl(cmd, service):
 	log = getLogger(__name__).getChild('cmd')
 
@@ -80,32 +64,22 @@ def handler(configRegistry, changes):
 			log.debug('Incomplete service information: %s', service)
 			continue
 
-		try:
-			old, new = changes[var]
-			old = check(old)
-			new = check(new)
-		except KeyError:
+		if var not in changes:
 			log.debug('Not changed: %s', name)
 			continue
 
-		if old == new:
-			log.debug('No change: %s: %s', name, old)
-			continue
-
-		if new == NO:
+		if configRegistry.is_false(var, False):
 			log.info('Disabling %s...', unit)
 			ctl('disable', unit)
 			ctl('mask', unit)
-		elif new == MANUALLY:
+		elif configRegistry.get(var, '').lower() == 'manually':
 			log.info('Manual %s...', unit)
 			ctl('unmask', unit)
 			ctl('disable', unit)
-		elif new == YES:
+		else:
 			log.info('Enabling %s...', unit)
 			ctl('unmask', unit)
 			ctl('enable', unit)
-		else:
-			log.error('Unknown mode %s for %s', new, unit)
 
 
 # vim:set sw=4 ts=4 noet:
