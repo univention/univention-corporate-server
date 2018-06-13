@@ -198,12 +198,9 @@ def create_packages(base_dir, source_dir):
 
     pkg_file = os.path.join(base_dir, source_dir, 'Packages')
     pkg_file_lock = os.path.join(base_dir, source_dir, 'Packages.lock')
-    pkg_file_gz = os.path.join(base_dir, source_dir, 'Packages.gz')
     # create a backup
     if os.path.exists(pkg_file):
         shutil.copyfile(pkg_file, '%s.SAVE' % pkg_file)
-    if os.path.exists(pkg_file_gz):
-        shutil.copyfile(pkg_file_gz, '%s.SAVE' % pkg_file_gz)
 
     packages_fd = open(os.path.join(base_dir, source_dir, 'Packages'), 'w')
     try:
@@ -220,8 +217,6 @@ def create_packages(base_dir, source_dir):
         # restore backup
         if os.path.exists('%s.SAVE' % pkg_file):
             shutil.copyfile('%s.SAVE' % pkg_file, pkg_file)
-        if os.path.exists('%s.SAVE' % pkg_file_gz):
-            shutil.copyfile('%s.SAVE' % pkg_file_gz, pkg_file_gz)
         if os.path.exists(pkg_file_lock):
             os.unlink(pkg_file_lock)
         sys.exit(1)
