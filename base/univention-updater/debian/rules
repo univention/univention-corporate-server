@@ -32,9 +32,6 @@
 # Sample debian/rules that uses debhelper.
 # GNU copyright 1997 to 1999 by Joey Hess.
 
-version := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
-copyrightyear := $(shell date +%Y)
-
 PO_FILES := $(shell find modules -name '*.po')
 MO_FILES := $(PO_FILES:%.po=%.mo)
 
@@ -44,15 +41,6 @@ MO_FILES := $(PO_FILES:%.po=%.mo)
 override_dh_auto_build: $(MO_FILES)
 	dh-umc-module-build
 	dh_auto_build
-
-override_dh_install:
-	dh_install
-	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/univention-updater/usr/share/univention-updater/univention-updater
-	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/univention-updater/usr/sbin/univention-repository-create
-	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/univention-updater/usr/sbin/univention-repository-merge
-	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/univention-updater/usr/sbin/univention-repository-update
-	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/univention-updater/usr/sbin/univention-repository-delpackage
-	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/univention-updater/usr/sbin/univention-repository-addpackage
 
 override_dh_auto_install:
 	dh-umc-module-install

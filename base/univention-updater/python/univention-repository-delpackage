@@ -1,9 +1,13 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Updater
-#  repository delpackage
-#
+"""\
+{prog}: tool for removing packages from local repository
+
+Syntax:
+  {prog} --file <debian_package>...
+  {prog} [--help]
+
+"""
 # Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -40,13 +44,12 @@ from univention.updater.locking import UpdaterLock
 
 
 def usage(fd=sys.stdout):
-    print >>fd, 'univention-repository-delpackage: tool for removing packages from local repository'
-    print >>fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
-    print >>fd, ''
-    print >>fd, 'Syntax:'
-    print >>fd, '  univention-repository-delpackage --file <debian_package> <debian_package>'
-    print >>fd, '  univention-repository-delpackage [--help] '
-    print >>fd, ''
+    """
+    Print usage message.
+
+    :param file fd: Override standard error output. Defaults to :py:obj:`sys.stdout`.
+    """
+    fd.write(__doc__.format(prog=os.path.basename(__file__)))
 
 # parse options
 

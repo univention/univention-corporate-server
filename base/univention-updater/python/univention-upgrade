@@ -1,7 +1,5 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Updater
 """
 Install UCS release and errata updates.
 """
@@ -315,9 +313,8 @@ def do_app_updates(options, checkForUpdates, silent):
 
 
 def parse_args():
-    description = sys.modules[__name__].__doc__
     usage = "%prog [options] "
-    parser = OptionParser(usage=usage, description=description)
+    parser = OptionParser(usage=usage, description=__doc__)
     parser.set_defaults(app_updates=True)
     parser.add_option(
         "--updateto", dest="updateto", default=None,
