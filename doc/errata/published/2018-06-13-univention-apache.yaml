@@ -9,3 +9,5 @@ desc: |-
   * Added headers X-Forwarded-Proto and X-Forwarded-SSL so that certain Apps
     work correctly behind a proxy.
 bug: [47071]
+erratum: 419
+announced: 2018-06-13
