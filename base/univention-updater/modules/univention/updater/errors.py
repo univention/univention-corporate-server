@@ -1,9 +1,8 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Management Console
-#  module: manages updates
-#
+"""
+Univention Updater exceptions.
+"""
 # Copyright 2008-2018 Univention GmbH
 #
 # http://www.univention.de/
@@ -41,6 +40,10 @@ class UpdaterException(Exception):
 class RequiredComponentError(UpdaterException):
     """
     Signal required component not available.
+
+    :param str version: The UCS release version.
+    :param components: A list of components.
+    :type components: set(str)
     """
 
     def __init__(self, version, components):
@@ -65,7 +68,10 @@ class PreconditionError(UpdaterException):
     """
     Signal abort by release or component pre-/post-update script.
 
-    args=(phase=preup|postup, order=pre|main|post, component, script-filename).
+    :param str phase: either `preup` or `postup`.
+    :param str order: either `pre` or `main` or `post`.
+    :param str component: The name of the component or None.
+    :param str script: The name of the failing script.
     """
 
     def __init__(self, phase, order, component, script):
@@ -102,6 +108,9 @@ class VerificationError(ConfigurationError):
 class CannotResolveComponentServerError(ConfigurationError):
     """
     Signal permanent error in component configuration.
+
+    :param str component: The name of the component.
+    :param bool for_mirror_list: `True` if the error happened while generating the list of repositories to mirror, `False` while generating the list of repositories for the server itself.
     """
 
     def __init__(self, component, for_mirror_list):

@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 """
-Univention Updater helper functions for managing repositories
+Univention Updater helper functions for managing a local repository.
 """
 # Copyright 2009-2018 Univention GmbH
 #
@@ -55,7 +55,7 @@ class TeeFile(object):
         """
         Register multiple file descriptors, to which the data is written.
 
-        :param fds: A list of files.
+        :param fds: A list of opened files.
         :type fds: list(File)
         """
         if not fds:
@@ -119,13 +119,15 @@ def copy_package_files(source_dir, dest_dir):
 
 def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr=None):
     """
-    Re-generate Debian `Packages` files.
+    Re-generate Debian :file:`Packages` files including :file:`dists/` for all architectures.
 
     :param str base_dir: Base directory, which contains the per architecture sub directories.
     :param bool update_only: Only update already existing files - skip missing files.
-    :param bool dists: Also generate `Packages` files in `dists/` subdirectory.
+    :param bool dists: Also generate :file:`Packages` files in :file:`dists/` subdirectory.
     :param file stdout: Override standard output. Defaults to :py:obj:`sys.stdout`.
     :param file stderr: Override standard error output. Defaults to :py:obj:`sys.stderr`.
+
+    See :py:func:`create_packages` for a variant supporting a single directory only.
     """
     # redirekt output
     if not stdout:
@@ -179,10 +181,16 @@ def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr
 
 def create_packages(base_dir, source_dir):
     """
-    Re-generate Debian `Packages` file.
+    Re-generate Debian `Packages` file for a single architecture directory.
 
     :param str base_dir: Base directory. From here `apt-ftparchive` is called.
     :param str source_dir: A sub directory. For this `apt-ftparchive` is called.
+
+    See :py:func:`update_indexes` for a variant supporting multiple architectures.
+
+    .. deprecated:: 4.3
+
+    This is only used by :program:`univention-repository-addpackage` and :program:`univention-repository-delpackage`.
     """
     # recreate Packages file
     if not os.path.isdir(os.path.join(base_dir, source_dir)) or not os.path.isfile(os.path.join(base_dir, source_dir, 'Packages')):
@@ -293,7 +301,7 @@ def get_installation_version():
     Return UCS release version of local repository mirror.
 
     :returns: The UCS releases which was last copied into the local repository.
-    :rtype: str
+    :rtype: str or None
     """
     try:
         fd = open(os.path.join(configRegistry.get('repository/mirror/basepath'), '.univention_install'))

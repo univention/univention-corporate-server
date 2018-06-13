@@ -1,9 +1,8 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Updater
-#  Common commands to manage Debian packages
-#
+"""
+Common commands to manage Debian packages.
+"""
 # Copyright 2011-2018 Univention GmbH
 #
 # http://www.univention.de/
@@ -35,38 +34,40 @@ from univention.config_registry import ConfigRegistry
 configRegistry = ConfigRegistry()
 configRegistry.load()
 
-# Update package cache
 cmd_update = configRegistry.get('update/commands/update', 'apt-get update')
+"""Update package cache."""
 
-# Show package information
 cmd_show = configRegistry.get('update/commands/show', 'apt-cache show')
+"""Show package information."""
 
-# Upgrade only installed packages
 cmd_upgrade = configRegistry.get(
     'update/commands/upgrade',
     'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -u upgrade')
+"""Upgrade only installed packages"""
 cmd_upgrade_sim = configRegistry.get(
     'update/commands/upgrade/simulate',
     'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -us upgrade')
+"""Simulate upgrade only installed packages"""
 
-# Upgrade system, may install new packages to satisfy dependencies
 cmd_dist_upgrade = configRegistry.get(
     'update/commands/distupgrade',
     'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -u dist-upgrade')
+"""Upgrade system, may install new packages to satisfy dependencies"""
 cmd_dist_upgrade_sim = configRegistry.get(
     'update/commands/distupgrade/simulate',
     'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -us dist-upgrade')
+"""Simulate upgrade system, may install new packages to satisfy dependencies"""
 
-# Install packages
 cmd_install = configRegistry.get(
     'update/commands/install',
     'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 install')
+"""Install packages"""
 
-# Remove packages
 cmd_remove = configRegistry.get('update/commands/remove', 'apt-get --yes remove')
+"""Remove packages"""
 
-# Configure all pending packages
 cmd_config = configRegistry.get('update/commands/configure', 'dpkg --configure -a')
+"""Configure all pending packages"""
 
 del ConfigRegistry
 del configRegistry

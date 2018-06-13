@@ -1,9 +1,8 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Debmirror
-#  mirrors a repository server
-#
+"""
+Mirror Univention repository server.
+"""
 # Copyright 2009-2018 Univention GmbH
 #
 # http://www.univention.de/

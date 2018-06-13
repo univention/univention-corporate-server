@@ -99,7 +99,7 @@ class UCS_Version(object):
         """
         Parse string and set version.
 
-        :param str UCS release version.
+        :param str version: UCS release version.
         """
         match = UCS_Version._regexp.match(version)
         if not match:
