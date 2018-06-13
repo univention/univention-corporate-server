@@ -630,7 +630,8 @@ define([
 						if (info.result.title) {
 							info.title = info.result.title;
 						}
-						info.traceback = '';
+						info.traceback = info.message;
+						info.message = '';
 						this.displayTraceback(info);
 					} else if (info.traceback) {
 						this.displayTraceback(info);
