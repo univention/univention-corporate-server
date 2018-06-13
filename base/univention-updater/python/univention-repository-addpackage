@@ -64,11 +64,8 @@ def rewrite_url(url):
 
     return tmp
 
-# parse options
 
-
-if __name__ == '__main__':
-
+def parse_args():
     if len(sys.argv) < 2:
         usage()
         sys.exit(1)
@@ -109,6 +106,11 @@ if __name__ == '__main__':
         print >> sys.stderr, "Error: No Debian packages specified."
         sys.exit(1)
 
+    return packages_dir, files
+
+
+def main():
+    packages_dir, files = parse_args()
     urepo.assert_local_repository()
 
     with UpdaterLock():
@@ -154,3 +156,7 @@ if __name__ == '__main__':
         head, tail = os.path.split(packages_path)
         for arch in urepo.ARCHITECTURES:
             urepo.create_packages(head, '%s/%s' % (tail, arch))
+
+
+if __name__ == '__main__':
+    main()

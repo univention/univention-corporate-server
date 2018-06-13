@@ -51,11 +51,8 @@ def usage(fd=sys.stdout):
     """
     fd.write(__doc__.format(prog=os.path.basename(__file__)))
 
-# parse options
 
-
-if __name__ == '__main__':
-
+def parse_args():
     if len(sys.argv) < 2:
         usage()
         sys.exit(1)
@@ -85,6 +82,11 @@ if __name__ == '__main__':
         usage()
         sys.exit(1)
 
+    return files
+
+
+def main():
+    files = parse_args()
     urepo.assert_local_repository()
 
     with UpdaterLock():
@@ -107,3 +109,7 @@ if __name__ == '__main__':
             head, tail = os.path.split(path)
             for arch in urepo.ARCHITECTURES:
                 urepo.create_packages(head, '%s/%s' % (tail, arch))
+
+
+if __name__ == '__main__':
+    main()
