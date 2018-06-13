@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-web
-fix: 2.0.0-12A~4.3.0.201806131614
+fix: 2.0.0-13A~4.3.0.201806131727
 desc: |
  This update addresses the following issue(s):
  * An error in the conversion of svg to png images
