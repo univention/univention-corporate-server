@@ -606,7 +606,7 @@ class TestUniventionUpdater(unittest.TestCase):
         self._uri({
             '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, PATCH): '',
         })
-        ver = U.UCS_Version((MAJOR, MINOR, 0))  # comonent.erratalevel!
+        ver = U.UCS_Version((MAJOR, MINOR, 0))  # component.erratalevel!
         comp_ver = self.u._get_component_versions('a', start=ver, end=ver)
         self.assertEqual(set((ver,)), comp_ver)
 
@@ -616,7 +616,7 @@ class TestUniventionUpdater(unittest.TestCase):
         self._uri({
             '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, PATCH): '',
         })
-        ver = U.UCS_Version((MAJOR, MINOR, 0))  # comonent.erratalevel!
+        ver = U.UCS_Version((MAJOR, MINOR, 0))  # component.erratalevel!
         comp_ver = self.u._get_component_versions('a', start=ver, end=ver)
         self.assertEqual(set((ver,)), comp_ver)
 

@@ -98,7 +98,7 @@ def copy_package_files(source_dir, dest_dir):
         if os.path.isfile(os.path.join(source_dir, filename)) and (filename.endswith('.deb') or filename.endswith('.udeb')):
             try:
                 arch = filename.rsplit('_', 1)[-1].split('.', 1)[0]  # partman-btrfs_10.3.201403242318_all.udeb
-            except:
+            except (TypeError, ValueError):
                 print >> sys.stderr, "Warning: Could not determine architecture of package '%s'" % filename
                 continue
             src = os.path.join(source_dir, filename)
@@ -289,7 +289,7 @@ def get_installation_version():
     """
     try:
         fd = open(os.path.join(configRegistry.get('repository/mirror/basepath'), '.univention_install'))
-    except:
+    except (LookupError, EnvironmentError):
         return None
 
     for line in fd.readlines():

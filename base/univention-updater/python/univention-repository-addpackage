@@ -31,7 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import exceptions
 import os
 import shutil
 import sys
@@ -80,7 +79,7 @@ if __name__ == '__main__':
     try:
         opts, args = getopt.getopt(sys.argv[1:], '', longopts)
     except getopt.error as msg:
-        print msg
+        print(msg)
         sys.exit(1)
 
     files = []
@@ -129,12 +128,12 @@ if __name__ == '__main__':
                 targetfilename = os.path.join(packages_path, arch[0], rewrite_url(file.split('/')[-1]))
                 try:
                     shutil.copyfile(os.path.join(file), targetfilename)
-                except Exception as e:
+                except (shutil.Error, KeyboardInterrupt) as e:
                     print >> sys.stderr, "Warning: copying of %s failed: %s" % (file, str(e))
                     if os.path.exists(targetfilename):
                         os.remove(targetfilename)  # remove incomplete package file
                         print >>sys.stderr, "Warning: Removed incomplete file"
-                    if isinstance(e, exceptions.KeyboardInterrupt):
+                    if isinstance(e, KeyboardInterrupt):
                         print >>sys.stdout, "Interrupted by user."
                         sys.exit(1)
 
