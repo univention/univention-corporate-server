@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * An error in the conversion of svg to png images
    has been resolved.
-bug: [47188]
+ * Some errors were not displayed correctly in the 
+   'Inform vendor' dialogs.
+bug: [47188, 47133]
