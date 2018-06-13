@@ -58,10 +58,7 @@ class TeeFile(object):
         :param fds: A list of opened files.
         :type fds: list(File)
         """
-        if not fds:
-            self.fds = [sys.stdout]
-        else:
-            self._fds = fds
+        self._fds = fds or [sys.stdout]
 
     def write(self, str):
         """
