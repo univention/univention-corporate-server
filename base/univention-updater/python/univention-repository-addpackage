@@ -126,10 +126,10 @@ def main():
                 if not match:
                     print >> sys.stderr, 'Warning: Could not determine architecture of package %s. It will not be added' % filename
                     continue
-                arch = match.groups()
-                targetfilename = os.path.join(packages_path, arch[0], rewrite_url(filename.split('/')[-1]))
+                arch, = match.groups()
+                targetfilename = os.path.join(packages_path, arch, rewrite_url(os.path.basename(filename)))
                 try:
-                    shutil.copyfile(os.path.join(filename), targetfilename)
+                    shutil.copyfile(filename, targetfilename)
                 except (EnvironmentError, KeyboardInterrupt) as e:
                     print >> sys.stderr, "Warning: copying of %s failed: %s" % (filename, e)
                     if os.path.exists(targetfilename):
