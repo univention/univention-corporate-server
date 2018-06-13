@@ -5,7 +5,7 @@
 import unittest
 from tempfile import NamedTemporaryFile
 from mockups import (
-    U, MAJOR, MINOR, PATCH, ARCH, SEC, ERRAT, PART,
+    U, MAJOR, MINOR, PATCH, ARCH, ERRAT, PART,
     MockConfigRegistry, MockUCSHttpServer, MockPopen,
 )
 
@@ -63,11 +63,9 @@ class TestUniventionUpdater(unittest.TestCase):
         self.assertEqual(['maintained'], self.u.parts)
         self.assertEqual('%d.%d' % (MAJOR, MINOR), self.u.ucs_version)
         self.assertEqual(PATCH, self.u.patchlevel)
-        self.assertEqual(SEC, self.u.security_patchlevel)
         self.assertEqual(ERRAT, self.u.erratalevel)
         self.assertEqual(MAJOR, self.u.version_major)
         self.assertEqual(MINOR, self.u.version_minor)
-        self.assertFalse(self.u.hotfixes)
 
     def test_get_next_version(self):
         """Test no next version."""
@@ -208,17 +206,6 @@ class TestUniventionUpdater(unittest.TestCase):
             'deb file:///mock/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', ARCH),
         )), set(tmp))
 
-    def test_get_all_available_security_updates(self):
-        """Test next available security updates."""
-        self._uri({
-            '%d.%d/maintained/sec%d/%s/Packages.gz' % (MAJOR, MINOR, SEC + 1, 'all'): DATA,
-            '%d.%d/maintained/sec%d/%s/Packages.gz' % (MAJOR, MINOR, SEC + 1, ARCH): DATA,
-            '%d.%d/maintained/sec%d/%s/Packages.gz' % (MAJOR, MINOR, SEC + 2, 'all'): DATA,
-            '%d.%d/maintained/sec%d/%s/Packages.gz' % (MAJOR, MINOR, SEC + 2, ARCH): DATA,
-        })
-        tmp = self.u.get_all_available_security_updates()
-        self.assertEqual([SEC + 1, SEC + 2], tmp)
-
     def test_get_all_available_errata_updates(self):
         """Test next available errata updates."""
         self._uri({
@@ -266,14 +253,6 @@ class TestUniventionUpdater(unittest.TestCase):
         self.assertEqual(dict([
             ('a', {'%d.%d' % (MAJOR, MINOR): []}),
         ]), dict(tmp))
-
-    def test_security_update_available(self):
-        """Test for availability of next security update."""
-        self._uri({
-            '%d.%d/maintained/sec%d/all/Packages.gz' % (MAJOR, MINOR, SEC + 1): DATA,
-        })
-        sec = self.u.security_update_available()
-        self.assertEqual(SEC + 1, sec)
 
     def test_errata_update_available(self):
         """Test for availability of next errata update."""
@@ -532,18 +511,6 @@ class TestUniventionUpdater(unittest.TestCase):
         self.assertEqual(set((
             'deb file:///mock/%d.%d/maintained/ %d.%d-%d/%s/' % (MAJOR, MINOR, MAJOR, MINOR, 0, 'all'),
             'deb file:///mock/%d.%d/maintained/ %d.%d-%d/%s/' % (MAJOR, MINOR, MAJOR, MINOR, 0, ARCH),
-        )), set(tmp.splitlines()))
-
-    def test_print_security_repositories(self):
-        """Test printing security repositories."""
-        self._uri({
-            '%d.%d/maintained/sec%d/%s/Packages.gz' % (MAJOR, MINOR, 1, 'all'): DATA,
-            '%d.%d/maintained/sec%d/%s/Packages.gz' % (MAJOR, MINOR, 1, ARCH): DATA,
-        })
-        tmp = self.u.print_security_repositories()
-        self.assertEqual(set((
-            'deb file:///mock/%d.%d/maintained/ sec%d/%s/' % (MAJOR, MINOR, 1, 'all'),
-            'deb file:///mock/%d.%d/maintained/ sec%d/%s/' % (MAJOR, MINOR, 1, ARCH),
         )), set(tmp.splitlines()))
 
     def test_print_errata_repositories(self):

@@ -763,12 +763,8 @@ class UniventionUpdater:
         # UCS version
         self.ucs_version = self.configRegistry['version/version']
         self.patchlevel = int(self.configRegistry['version/patchlevel'])
-        self.security_patchlevel = int(self.configRegistry.get('version/security-patchlevel', 0))
         self.erratalevel = int(self.configRegistry.get('version/erratalevel', 0))
         self.version_major, self.version_minor = map(int, self.ucs_version.split('.', 1))
-
-        # should hotfixes be used
-        self.hotfixes = self.configRegistry.is_true('repository/online/hotfixes', False)
 
         # override automatically detected architecture by UCR variable repository/online/architectures (comma or space separated)
         archlist = self.configRegistry.get('repository/online/architectures', '')
@@ -957,30 +953,6 @@ class UniventionUpdater:
             result += repos
         return result
 
-    def get_all_available_security_updates(self):
-        """
-        Returns a list of all available security updates for current major.minor version
-        as integer::
-
-            updater.get_all_available_security_updates()
-            [3, 4, 5]
-
-        :returns: A list of security updates.
-        :rtype: list[int]
-
-        .. deprecated:: 3.1
-        """
-        result = []
-        for sp in xrange(self.security_patchlevel + 1, 100):
-            version = UCS_Version((self.version_major, self.version_minor, sp))
-            secver = self.security_update_available(version)
-            if secver:
-                result.append(secver)
-            else:
-                break
-        self.log.info('Found security updates %r', result)
-        return result
-
     def get_all_available_errata_updates(self):
         """
         Returns a list of all available errata updates for current major.minor version
@@ -1052,26 +1024,6 @@ class UniventionUpdater:
 
         self.log.info('Found component errata updates %r', result)
         return result
-
-    def security_update_available(self, version=None):
-        """
-        Check for the security version for the current version.
-        Returns next available security update number (integer) or False if no security update is available.
-
-        :param UCS_Version version: The UCS release to check.
-        :returns: The next security update or False
-        :rtype: int or False
-
-        .. deprecated:: 3.1
-        """
-        if version:
-            start = end = version
-        else:
-            start = end = UCS_Version((self.version_major, self.version_minor, self.security_patchlevel + 1))
-        archs = ['all'] + self.architectures
-        for server, ver in self._iterate_security_repositories(start, end, self.parts, archs):
-            return ver.patchlevel
-        return False
 
     def errata_update_available(self, version=None):
         """
@@ -1445,33 +1397,6 @@ class UniventionUpdater:
         for ver in self._iterate_versions(struct, start, end, parts, archs, server):
             yield server, ver
 
-    def _iterate_security_repositories(self, start, end, parts, archs, hotfixes=False):
-        """
-        Iterate over all UCS security releases and return (server, version).
-
-        :param UCS_Version start: The UCS release to start from.
-        :param UCS_Version end: The UCS release where to stop.
-        :param parts: List of `maintained` and/or `unmaintained`.
-        :type parts: list[str]
-        :param archs: List of architectures.
-        :type archs: list[str]
-        :param bool hotfixes: Also return hot-fixes repositories.
-        :returns: A iterator returning 2-tuples (server, ver).
-
-        .. deprecated:: 3.0
-        """
-        self.log.info('Searching security [%s..%s), hotfix=%s', start, end, hotfixes)
-        server = self.server
-        struct = UCSRepoPool(prefix=self.server, patch="sec%(patchlevel)d", patchlevel_reset=1)
-        for ver in self._iterate_versions(struct, start, end, parts, archs, server):
-            yield server, ver
-        if hotfixes:
-            # hotfixes don't use patchlevel, but UCS_Version.__cmp__ uses them
-            start.patchlevel = end.patchlevel = None
-            struct = UCSRepoPool(prefix=self.server, patch="hotfixes", patchlevel_reset=None)
-            for ver in self._iterate_versions(struct, start, end, parts, archs, server):
-                yield server, ver
-
     def _iterate_errata_repositories(self, start, end, parts, archs):
         """
         Iterate over all UCS errata releases and return (server, version).
@@ -1589,60 +1514,6 @@ class UniventionUpdater:
         for server, ver in self._iterate_version_repositories(start, end, self.parts, archs, dists):
             result.append(ver.deb(server))
             if isinstance(ver, UCSRepoPool) and ver.arch == archs[-1]:  # after architectures but before next patch(level)
-                if clean:
-                    result.append(ver.clean(server))
-                if self.sources:
-                    ver.arch = "source"
-                    try:
-                        code, size, content = server.access(ver, "Sources.gz")
-                        if size >= MIN_GZIP:
-                            result.append(ver.deb(server, "deb-src"))
-                    except DownloadError as e:
-                        ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-
-        return '\n'.join(result)
-
-    def print_security_repositories(self, clean=False, start=None, end=None, all_security_updates=False):
-        """
-        Return a string of Debian repository statements for all UCS security
-        updates for UCS versions between start and end.
-
-        :param bool clean: Add additional `clean` statements for `apt-mirror`.
-        :param UCS_Version start: Start UCS release. Defaults to (major, minor).
-        :param UCS_Version end: End UCS release. Defaults to (major, minor).
-        :param bool all_security_updates: Return all available instead of all needed statements for security updates.
-        :returns: A string with APT statement lines.
-        :rtype: str
-
-        .. deprecated:: 3.0
-        """
-        # NOTE: Here "patchlevel" is used for the "security patchlevel"
-        if not self.online_repository:
-            return ''
-
-        if clean:
-            clean = self.configRegistry.is_true('online/repository/clean', False)
-
-        if start:
-            start = copy.copy(start)
-            start.patchlevel = 1  # security updates start with 'sec1'
-        else:
-            start = UCS_Version((self.version_major, self.version_minor, 1))
-
-        # Hopefully never more than 99 security updates
-        max = bool(all_security_updates) and 100 or self.security_patchlevel
-        if end:
-            end = copy.copy(end)
-            end.patchlevel = max
-        else:
-            end = UCS_Version((self.version_major, self.version_minor, max))
-
-        archs = ['all'] + self.architectures
-        result = []
-
-        for server, ver in self._iterate_security_repositories(start, end, self.parts, archs, self.hotfixes):
-            result.append(ver.deb(server))
-            if ver.arch == archs[-1]:  # after architectures but before next patch(level)
                 if clean:
                     result.append(ver.clean(server))
                 if self.sources:
@@ -2032,8 +1903,6 @@ class UniventionUpdater:
             ver = u.current_version
             struct = u._iterate_version_repositories(ver, ver, u.parts, u.architectures)
             struct = u._iterate_component_repositories(['ucd'], ver, ver, u.architectures)
-            sec_ver = UCS_Version((u.version_major, u.version_minor, 1))
-            struct = u._iterate_security_repositories(sec_ver, sec_ver, u.parts, u.architectures)
             scripts = u.get_sh_files(struct)
             next_ver = u.get_next_version(u.current_version)
             for phase, order in u.call_sh_files(scripts, '/var/log/univention/updater.log', next_ver):
