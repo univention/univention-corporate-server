@@ -143,7 +143,7 @@ def copy_repository(options):
 def copy_packages(options):
     print '  copying packages ...',
     sys.stdout.flush()
-    for subdir in ('packages', 'all', 'amd64', 'i386'):
+    for subdir in ('packages',) + urepo.ARCHITECTURES:
         if os.path.exists(os.path.join(options.mount_point, subdir)):
             urepo.copy_package_files(os.path.join(options.mount_point, subdir), _repo_base)
             sys.stdout.flush()

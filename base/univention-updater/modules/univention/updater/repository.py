@@ -159,7 +159,9 @@ def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr
 
     # create Packages file in dists directory if it exists
     if dists and os.path.isdir(os.path.join(base_dir, 'dists')):
-        for arch in ('i386', 'amd64'):
+        for arch in ARCHITECTURES:
+            if arch == 'all':
+                continue
             if not os.path.isdir(os.path.join(base_dir, 'dists/univention/main', 'binary-%s' % arch)):
                 continue
             packages_file = os.path.join(base_dir, 'dists/univention/main', 'binary-%s' % arch, 'Packages')
@@ -227,7 +229,7 @@ def get_repo_basedir(packages_dir):
     has_arch_dirs = False
     has_packages = False
     for entry in os.listdir(packages_dir):
-        if os.path.isdir(os.path.join(packages_dir, entry)) and entry in ('i386', 'all', 'amd64'):
+        if os.path.isdir(os.path.join(packages_dir, entry)) and entry in ARCHITECTURES:
             has_arch_dirs = True
         elif os.path.isfile(os.path.join(packages_dir, entry)) and entry == 'Packages':
             has_packages = True
@@ -238,7 +240,7 @@ def get_repo_basedir(packages_dir):
             print >> sys.stderr, 'Error: %s does not seem to be a repository.' % packages_dir
             sys.exit(1)
         head, tail = os.path.split(packages_dir)
-        if tail in ('i386', 'all', 'amd64'):
+        if tail in ARCHITECTURES:
             packages_path = head
         else:
             print >> sys.stderr, 'Error: %s does not seem to be a repository.' % packages_dir
