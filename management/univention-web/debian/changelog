@@ -1,3 +1,9 @@
+univention-web (2.0.0-12) unstable; urgency=medium
+
+  * Bug #47188: Adjust icons.svg and error.svg for imagemagick
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 13 Jun 2018 15:35:51 +0200
+
 univention-web (2.0.0-11) unstable; urgency=medium
 
   * Bug #46582: Add tooltip for recommended app badge
