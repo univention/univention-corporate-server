@@ -69,7 +69,6 @@ def parse_args():
         sys.exit(1)
 
     files = []
-    packages_dir = ''
     for opt, val in opts:
         if opt == '--file':
             files.append(val)
