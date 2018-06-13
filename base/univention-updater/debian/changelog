@@ -1,3 +1,9 @@
+univention-updater (13.0.1-69) unstable; urgency=low
+
+  * Bug #46600: Fix local repository dists Packages setup
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 14 Jun 2018 15:09:18 +0200
+
 univention-updater (13.0.1-68) unstable; urgency=medium
 
   * Bug #47913: fixed updater
