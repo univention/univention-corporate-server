@@ -221,34 +221,16 @@ def get_repo_basedir(packages_dir):
     :returns: The canonicalized path without the architecture sub directory.
     :rtype: str
     """
-    # cut off trailing '/'
-    if packages_dir[-1] == '/':
-        packages_dir = packages_dir[: -1]
-
-    # find repository base directory
-    has_arch_dirs = False
-    has_packages = False
-    for entry in os.listdir(packages_dir):
-        if os.path.isdir(os.path.join(packages_dir, entry)) and entry in ARCHITECTURES:
-            has_arch_dirs = True
-        elif os.path.isfile(os.path.join(packages_dir, entry)) and entry == 'Packages':
-            has_packages = True
-
-    if not has_arch_dirs:
-        # might not be a repository
-        if not has_packages:
-            print >> sys.stderr, 'Error: %s does not seem to be a repository.' % packages_dir
-            sys.exit(1)
-        head, tail = os.path.split(packages_dir)
+    path = os.path.normpath(packages_dir)
+    if os.path.isfile(os.path.join(path, 'Packages')):
+        head, tail = os.path.split(path)
         if tail in ARCHITECTURES:
-            packages_path = head
-        else:
-            print >> sys.stderr, 'Error: %s does not seem to be a repository.' % packages_dir
-            sys.exit(1)
-    else:
-        packages_path = packages_dir
+            return head
+    elif set(os.listdir(path)) & set(ARCHITECTURES):
+        return path
 
-    return packages_path
+    print >> sys.stderr, 'Error: %s does not seem to be a repository.' % packages_dir
+    sys.exit(1)
 
 
 def is_debmirror_installed():
