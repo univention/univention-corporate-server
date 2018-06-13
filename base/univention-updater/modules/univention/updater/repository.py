@@ -89,26 +89,28 @@ def copy_package_files(source_dir, dest_dir):
     :param str dest_dir: Destination directory.
     """
     for filename in os.listdir(source_dir):
-        if os.path.isfile(os.path.join(source_dir, filename)) and (filename.endswith('.deb') or filename.endswith('.udeb')):
+        src = os.path.join(source_dir, filename)
+        if not os.path.isfile(src):
+            continue
+        if filename.endswith('.deb') or filename.endswith('.udeb'):
             try:
                 arch = filename.rsplit('_', 1)[-1].split('.', 1)[0]  # partman-btrfs_10.3.201403242318_all.udeb
             except (TypeError, ValueError):
                 print >> sys.stderr, "Warning: Could not determine architecture of package '%s'" % filename
                 continue
-            src = os.path.join(source_dir, filename)
             src_size = os.stat(src)[6]
             dest = os.path.join(dest_dir, arch, filename)
             # package already exists with correct size
             if os.path.isfile(dest) and os.stat(dest)[6] == src_size:
                 continue
-            try:
-                shutil.copy2(src, dest)
-            except shutil.Error:
-                print >> sys.stderr, "Copying package '%s' failed." % filename
-        if filename in ('preup.sh', 'preup.sh.gpg', 'postup.sh', 'postup.sh.gpg'):
-            src = os.path.join(source_dir, filename)
+        elif filename in ('preup.sh', 'preup.sh.gpg', 'postup.sh', 'postup.sh.gpg'):
             dest = os.path.join(dest_dir, 'all', filename)
+        else:
+            continue
+        try:
             shutil.copy2(src, dest)
+        except shutil.Error as ex:
+            print >> sys.stderr, "Copying '%s' failed: %s" % (src, ex)
 
 
 def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr=None):
@@ -134,24 +136,25 @@ def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr
     for arch in ARCHITECTURES:
         if not os.path.isdir(os.path.join(base_dir, arch)):
             continue
-        if update_only and not os.path.isfile(os.path.join(base_dir, arch, 'Packages')):
+        pkgname = os.path.join(base_dir, arch, 'Packages')
+        if update_only and not os.path.isfile(pkgname):
             continue
         print >> stdout, arch,
         stdout.flush()
         # create Packages file
-        packages_fd = open(os.path.join(base_dir, arch, 'Packages'), 'w')
+        packages_fd = open(pkgname, 'w')
         pwd, child = os.path.split(base_dir)
         ret = subprocess.call(['apt-ftparchive', 'packages', os.path.join(child, arch)], stdout=packages_fd, stderr=stderr, cwd=pwd)
         packages_fd.close()
 
         if ret:
-            print >> stderr, "Error: Failed to create Packages file for '%s'" % os.path.join(base_dir, arch)
+            print >> stderr, "Error: Failed to create '%s'" % pkgname
             sys.exit(1)
 
         # create Packages.gz file
-        if gzip_file(os.path.join(base_dir, arch, 'Packages')):
+        if gzip_file(pkgname):
             print >> stdout, 'failed.'
-            print >> stderr, "Error: Failed to create Packages.gz file for '%s'" % os.path.join(base_dir, arch)
+            print >> stderr, "Error: Failed to compress '%s'" % pkgname
             sys.exit(1)
 
     # create Packages file in dists directory if it exists
@@ -184,11 +187,11 @@ def create_packages(base_dir, source_dir):
 
     This is only used by :program:`univention-repository-addpackage` and :program:`univention-repository-delpackage`.
     """
+    pkg_file = os.path.join(base_dir, source_dir, 'Packages')
     # recreate Packages file
-    if not os.path.isdir(os.path.join(base_dir, source_dir)) or not os.path.isfile(os.path.join(base_dir, source_dir, 'Packages')):
+    if not os.path.isdir(os.path.join(base_dir, source_dir)) or not os.path.isfile(pkg_file):
         return
 
-    pkg_file = os.path.join(base_dir, source_dir, 'Packages')
     # create a backup
     if os.path.exists(pkg_file):
         shutil.copyfile(pkg_file, '%s.SAVE' % pkg_file)
@@ -205,7 +208,7 @@ def create_packages(base_dir, source_dir):
         sys.exit(1)
 
     # create Packages.gz file
-    gzip_file(os.path.join(base_dir, source_dir, 'Packages'))
+    gzip_file(pkg_file)
 
 
 def get_repo_basedir(packages_dir):
