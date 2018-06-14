@@ -3,7 +3,7 @@ release: "4.2"
 version: [4]
 scope: ucs_4.2-0-errata4.2-4
 src: rpcbind
-fix: 0.2.1-6+deb8u2A~4.2.0.201806132147
+fix: 0.2.1-6+deb8u2A~4.2.4.201806141120
 desc: |
  This update addresses the following issue(s):
  * When rpcbind is stopped, it returned a non-zero exit code,
