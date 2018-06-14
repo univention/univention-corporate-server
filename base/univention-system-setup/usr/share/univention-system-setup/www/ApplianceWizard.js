@@ -857,7 +857,7 @@ define([
 					type: CheckBox,
 					name: 'update/system/after/setup',
 					value: true,
-					label: _('Update system after setup')
+					label: ''
 				}, {
 					type: Text,
 					name: 'privacyStatement',
@@ -1824,6 +1824,18 @@ define([
 			this._showMemoryWarning();
 
 			this.getWidget('summary', 'info').set('content', msg);
+
+			if (this._isRoleMaster()) {
+				this.getWidget('summary', 'update/system/after/setup').set(
+					'label',
+					_('Install the latest available Errata, patch level and app updates after setup')
+				)
+			} else {
+				this.getWidget('summary', 'update/system/after/setup').set(
+					'label',
+					_('Update system to the installation status of the master domain controller after setup')
+				)
+			}
 		},
 
 		_updateValidationPage: function(details) {

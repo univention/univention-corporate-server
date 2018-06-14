@@ -1,3 +1,9 @@
+univention-system-setup (11.0.5-2) unstable; urgency=medium
+
+  * Bug #45931: Give more detailed information about installed updates
+
+ -- Richard Ulmer <ulmer@univention.de>  Thu, 14 Jun 2018 13:17:43 +0200
+
 univention-system-setup (11.0.5-1) unstable; urgency=medium
 
   * Bug #46813: Remove umc-appcenter dependency
