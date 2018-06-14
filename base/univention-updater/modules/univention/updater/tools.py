@@ -1266,10 +1266,10 @@ class UniventionUpdater:
                                             raise ProxyError(uri, "download blocked by proxy?")
                                     except DownloadError as e:
                                         ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-                                del ver.arch
+                                    del ver.arch
                             except DownloadError as e:
                                 ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-                        del ver.part
+                            del ver.part
 
                         if isinstance(ver.patch, basestring):  # patchlevel not used
                             break
