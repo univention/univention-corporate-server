@@ -779,5 +779,8 @@ if __name__ == '__main__':
         ud.set_level(ud.NETWORK, ud.ALL + 1)
     if False:
         import logging
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(
+            level=logging.DEBUG,
+            format="%(levelname)s %(filename)s:%(lineno)d#%(funcName)s: %(message)s",
+        )
     unittest.main()

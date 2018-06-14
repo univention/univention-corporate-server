@@ -318,11 +318,17 @@ class UCSRepoPoolNoArch(UCSRepo):
 class UCSRepoDist(UCSRepo):
     """
     Debian APT repository using 'suites'.
+
+    .. attention::
+       UCS-2.x used a different and broken layout!
     """
 
     def __init__(self, **kw):
         kw.setdefault('version', UCS_Version.FORMAT)
         kw.setdefault('patch', UCS_Version.FULLFORMAT)
+        kw.setdefault('suite', 'ucs%(major)d%(minor)d%(patchlevel)d')
+        kw.setdefault('component', 'main')
+        kw.setdefault('components', 'main/debian-installer')
         super(UCSRepoDist, self).__init__(**kw)
 
     def deb(self, server, type="deb"):
@@ -334,11 +340,11 @@ class UCSRepoDist(UCSRepo):
         :returns: The APT repository stanza.
         :rtype: str
 
-        >>> r=UCSRepoDist(major=2,minor=2,patchlevel=0,part='maintained',arch='i386')
+        >>> r=UCSRepoDist(major=4,minor=3,patchlevel=1,part='maintained')
         >>> r.deb('https://updates.software-univention.de/')
-        'deb https://updates.software-univention.de/2.2/maintained/2.2-0/ dists/univention/main/binary-i386/'
+        'deb https://updates.software-univention.de/4.3/maintained/4.3-1/ ucs431 main main/debian-installer'
         """
-        fmt = "%(version)s/%(part)s/%(patch)s/ dists/univention/main/binary-%(arch)s/"
+        fmt = "%(version)s/%(part)s/%(patch)s/ %(suite)s %(component)s %(components)s"
         return "%s %s%s" % (type, server, super(UCSRepoDist, self)._format(fmt))
 
     def path(self, filename=None):
@@ -349,16 +355,16 @@ class UCSRepoDist(UCSRepo):
         :returns: relative path.
         :rtype: str
 
-        >>> UCSRepoDist(major=2,minor=2).path()
-        '2.2/'
-        >>> UCSRepoDist(major=2,minor=2,part='maintained').path()
-        '2.2/maintained/'
-        >>> UCSRepoDist(major=2,minor=2,patchlevel=0,part='maintained').path()
-        '2.2/maintained/2.2-0/dists/univention/main/'
-        >>> UCSRepoDist(major=2,minor=2,patchlevel=0,part='maintained',arch='i386').path()
-        '2.2/maintained/2.2-0/dists/univention/main/binary-i386/Packages.gz'
+        >>> UCSRepoDist(major=4,minor=3).path()
+        '4.3/'
+        >>> UCSRepoDist(major=4,minor=3,part='maintained').path()
+        '4.3/maintained/'
+        >>> UCSRepoDist(major=4,minor=3,patchlevel=1,part='maintained').path()
+        '4.3/maintained/4.3-1/dists/ucs431/main/'
+        >>> UCSRepoDist(major=4,minor=3,patchlevel=1,part='maintained',arch='i386').path()
+        '4.3/maintained/4.3-1/dists/ucs431/main/binary-i386/Packages.gz'
         """
-        fmt = "%(version)s/%(part)s/%(patch)s/dists/univention/main/binary-%(arch)s/" + (filename or 'Packages.gz')
+        fmt = "%(version)s/%(part)s/%(patch)s/dists/%(suite)s/%(component)s/binary-%(arch)s/" + (filename or 'Packages.gz')
         return super(UCSRepoDist, self)._format(fmt)
 
 
@@ -933,11 +939,11 @@ class UniventionUpdater:
 
         mmp_version = UCS_Version(version)
         current_components = self.get_current_components()
-        archs = ['all'] + self.architectures
 
-        result = []
-        for server, ver in self._iterate_version_repositories(mmp_version, mmp_version, self.parts, archs):
-            result.append(ver.deb(server))
+        result = [
+            ver.deb(server)
+            for server, ver in self._iterate_version_repositories(mmp_version, mmp_version, self.parts, self.architectures)
+        ]
         for component in components:
             repos = []
             try:
@@ -1289,7 +1295,7 @@ class UniventionUpdater:
                 ver.major += 1
                 ver.minor = 0
 
-    def _iterate_version_repositories(self, start, end, parts, archs, dists=False):
+    def _iterate_version_repositories(self, start, end, parts, archs, dists=False):  # type: (UCS_Version, UCS_Version, List[str], List[str], bool) -> Iterator[Tuple[UCSRepo, UCS_Version]]
         """
         Iterate over all UCS releases and return (server, version).
 
@@ -1297,19 +1303,19 @@ class UniventionUpdater:
         :param UCS_Version end: The UCS release where to stop.
         :param parts: List of `maintained` and/or `unmaintained`.
         :type parts: list[str]
-        :param archs: List of architectures.
+        :param archs: List of architectures without `all`.
         :type archs: list[str]
         :param bool dists: Also return :py:class:`UCSRepoDist` repositories before :py:class:`UCSRepoPool`
         :returns: A iterator returning 2-tuples (server, ver).
         """
         self.log.info('Searching releases [%s..%s), dists=%s', start, end, dists)
         server = self.server
-        if dists:
+        if dists and 'maintained' in parts:
             struct = UCSRepoDist(prefix=self.server)
-            for ver in self._iterate_versions(struct, start, end, parts, archs, server):
+            for ver in self._iterate_versions(struct, start, end, ['maintained'], archs, server):
                 yield server, ver
         struct = UCSRepoPool(prefix=self.server)
-        for ver in self._iterate_versions(struct, start, end, parts, archs, server):
+        for ver in self._iterate_versions(struct, start, end, parts, ['all'] + archs, server):
             yield server, ver
 
     def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False):
@@ -1318,7 +1324,7 @@ class UniventionUpdater:
 
         :param UCS_Version start: The UCS release to start from.
         :param UCS_Version end: The UCS release where to stop.
-        :param archs: List of architectures.
+        :param archs: List of architectures without `all`.
         :type archs: list[str]
         :param bool for_mirror_list: Use the settings for mirroring.
         :returns: A iterator returning 2-tuples (server, ver).
@@ -1342,9 +1348,9 @@ class UniventionUpdater:
             self.log.info('Component %s from %s versions %r', component, server, versions)
             for version in versions:
                     try:
-                        for (UCSRepoPoolVariant, subarchs) in ((UCSRepoPool, archs), (UCSRepoPoolNoArch, ('all',))):
+                        for (UCSRepoPoolVariant, subarchs) in ((UCSRepoPool, archs), (UCSRepoPoolNoArch, [])):
                             struct = UCSRepoPoolVariant(prefix=server, patch=component)
-                            for ver in self._iterate_versions(struct, version, version, parts, subarchs, server):
+                            for ver in self._iterate_versions(struct, version, version, parts, ['all'] + subarchs, server):
                                 yield server, ver
                     except (ConfigurationError, ProxyError):
                         # if component is marked as required (UCR variable "version" contains "current")
@@ -1376,12 +1382,10 @@ class UniventionUpdater:
         if not end:
             end = UCS_Version((self.version_major, self.version_minor, self.patchlevel))
 
-        archs = ['all'] + self.architectures
         result = []
-
-        for server, ver in self._iterate_version_repositories(start, end, self.parts, archs, dists):
+        for server, ver in self._iterate_version_repositories(start, end, self.parts, self.architectures, dists):
             result.append(ver.deb(server))
-            if isinstance(ver, UCSRepoPool) and ver.arch == archs[-1]:  # after architectures but before next patch(level)
+            if isinstance(ver, UCSRepoPool) and ver.arch == self.architectures[-1]:  # after architectures but before next patch(level)
                 if clean:
                     result.append(ver.clean(server))
                 if self.sources:
@@ -1571,7 +1575,6 @@ class UniventionUpdater:
         :returns: A list of strings with APT statements.
         :rtype: list(str)
         """
-        archs = ['all'] + self.architectures
         result = []
 
         # Sanitize versions: UCS_Version() and Major.Minor
@@ -1590,9 +1593,9 @@ class UniventionUpdater:
             versions_mmp.add(version)
 
         for version in versions_mmp:
-            for server, ver in self._iterate_component_repositories([component], version, version, archs, for_mirror_list=for_mirror_list):
+            for server, ver in self._iterate_component_repositories([component], version, version, self.architectures, for_mirror_list=for_mirror_list):
                 result.append(ver.deb(server))
-                if ver.arch == archs[-1]:  # after architectures but before next patch(level)
+                if ver.arch == self.architectures[-1]:  # after architectures but before next patch(level)
                     if clean:
                         result.append(ver.clean(server))
                     if self.sources:

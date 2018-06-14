@@ -139,7 +139,7 @@ class UniventionMirror(UniventionUpdater):
         start = self.version_start
         end = self.version_end
         parts = self.parts
-        archs = ('all',)
+        archs = []  # only 'all'
 
         repos = self._iterate_version_repositories(start, end, parts, archs)  # returns generator
 
