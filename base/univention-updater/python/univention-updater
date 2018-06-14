@@ -628,7 +628,8 @@ if __name__ == '__main__':
             except RequiredComponentError as ex:
                 update_status(status='DONE', errorsource='PREPARATION')
                 dprint("%s" % ex)
-            except PreconditionError as (phase, order, component, script):
+            except PreconditionError as ex:
+                (phase, order, component, script) = ex.args
                 if phase == 'preup':
                     phase = 'pre-update'
                     errorsource = 'PREUP'

@@ -160,7 +160,8 @@ class UCSRepo(UCS_Version):
         while format:
             try:
                 return format % self
-            except KeyError as (k,):
+            except KeyError as ex:
+                (k,) = ex.args
                 # strip missing part
                 i = format.index('%%(%s)' % k)
                 format = format[:i]
@@ -812,7 +813,7 @@ class UniventionUpdater:
                 self.log.info('Using configured prefix %s', self.repourl.path)
             except DownloadError as e:
                 self.log.error('Failed configured prefix %s', self.repourl.path, exc_info=True)
-                uri, code = e
+                uri, code = e.args
                 raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (self.repourl.path, uri))
         except ConfigurationError as e:
             if self.check_access:
@@ -1499,7 +1500,7 @@ class UniventionUpdater:
                 try:
                     assert server.access(None, '')
                 except DownloadError as e:
-                    uri, code = e
+                    uri, code = e.args
                     raise ConfigurationError(uri, 'absent prefix forced - component %s not found: %s' % (component, uri))
             else:
                 for testserver in [
@@ -1516,7 +1517,7 @@ class UniventionUpdater:
                         return testserver
                     except DownloadError as e:
                         ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-                        uri, code = e
+                        uri, code = e.args
                 raise ConfigurationError(uri, 'non-existing component prefix: %s' % (uri,))
 
         except ConfigurationError:
