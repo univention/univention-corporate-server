@@ -81,7 +81,6 @@ def check_preconditions(options):
 
 def prepare(options):
     """ Set local/repository and create directory structure """
-    # set local/repository
     if configRegistry.is_false('local/repository', True):
         handler_set(['local/repository=yes'])
         configRegistry.load()
@@ -90,10 +89,14 @@ def prepare(options):
         handler_set(['repository/mirror=yes'])
         configRegistry.load()
 
-    # create directory structure
     makedirs(_repo_base)
     for arch in urepo.ARCHITECTURES:
         makedirs(os.path.join(_repo_base, arch))
+
+    for p in ['var', 'skel']:
+        d = os.path.join(_mirror_base, p)
+        if not os.path.exists(d):
+            os.mkdir(d)
 
 
 def copy_repository(options):
@@ -179,15 +182,6 @@ def mount(options):
 
     print 'ok.'
     return True
-
-
-def setup_repository(options):
-    """ Update indexes """
-    basepath = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
-    for p in ['var', 'skel']:
-        d = os.path.join(basepath, p)
-        if not os.path.exists(d):
-            os.mkdir(d)
 
 
 def setup_pxe(options):
@@ -278,7 +272,6 @@ def main():
 
         try:
             copy_repository(options)
-            setup_repository(options)
             setup_pxe(options)
         finally:
             if options.mount:
