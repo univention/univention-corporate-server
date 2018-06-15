@@ -1,7 +1,4 @@
-#!/usr/bin/make -f
-#
-# Univention Bind
-#  rules file for the debian package
+#!/bin/sh
 #
 # Copyright 2001-2018 Univention GmbH
 #
@@ -30,20 +27,26 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#clean:
-#	rm -f *~ univention-name-to-unicode
+if [ "$(uname -m)" = "x86_64" ]; then
+	export LDB_MODULES_PATH=/usr/lib/x86_64-linux-gnu/ldb/
+else
+	export LDB_MODULES_PATH=/usr/lib/i386-linux-gnu/ldb/
+fi
 
-override_dh_auto_clean:
-	dh_auto_clean
-	rm -f debian/univention-bind.conffiles
+# dirs under /var/run can go away on reboots.
+mkdir -p /var/run/named
+chmod 775 /var/run/named
 
-override_dh_auto_install:
-	dh_auto_install
-	univention-install-config-registry
+# bind is running as root when using s4 as backend.
+# To open the rndc port, the rndc.key must be owned by root.
+chown root:root /etc/bind/rndc.key
+chown root:bind /var/run/named >/dev/null 2>&1 || true
 
-override_dh_auto_test:
-	dh_auto_test
-	ucslint
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
-%:
-	dh $@
+debug_level="$(ucr get dns/debug/level)"
+test -z $debug_level && debug_level=0
+
+OPTS="-c /etc/bind/named.conf.samba4 -f -d $debug_level"
+
+exec /usr/sbin/named $OPTS

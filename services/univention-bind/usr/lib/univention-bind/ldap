@@ -26,8 +26,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-#
-@%@UCRWARNING=# @%@
 
 # dirs under /var/run can go away on reboots.
 mkdir -p /var/run/named
@@ -38,7 +36,8 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 debug_level="$(ucr get dns/debug/level)"
 test -z $debug_level && debug_level=0
+port="$(ucr get dns/master/port)"
 
-OPTS="-c /etc/bind/named.conf -p @%@dns/master/port@%@ -u bind -f -d $debug_level"
+OPTS="-c /etc/bind/named.conf -p $port -u bind -f -d $debug_level"
 
 exec /usr/sbin/named $OPTS

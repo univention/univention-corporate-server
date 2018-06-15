@@ -104,8 +104,6 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	fi
 fi
 
-ln -s /etc/runit/univention-bind /etc/runit/univention/univention-bind >/dev/null 2>&1
-
 joinscript_save_current_version
 
 exit 0

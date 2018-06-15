@@ -1,4 +1,1 @@
-etc/runit/univention-bind
-etc/runit/univention-bind-proxy
-etc/runit/univention-bind-samba4
 var/cache/univention-bind-proxy

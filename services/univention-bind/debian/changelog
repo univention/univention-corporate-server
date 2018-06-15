@@ -1,3 +1,9 @@
+univention-bind (12.0.1-5) unstable; urgency=medium
+
+  * Bug #43689: use systemd services instead of runit
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 15 Jun 2018 12:58:54 +0200
+
 univention-bind (12.0.1-4) unstable; urgency=low
 
   * Bug #46206: Fix wait_for_dns

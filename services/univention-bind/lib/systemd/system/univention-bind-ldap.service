@@ -1,0 +1,18 @@
+[Unit]
+Description=BIND Domain Name Server with LDAP backend
+Documentation=man:named(8)
+After=network.target slapd.service
+Before=univention-bind-proxy.service
+Requires=slapd.service univention-bind-proxy.service
+BindsTo=univention-bind-proxy.service
+Conflicts=univention-bind-samba4.service
+
+[Service]
+ExecStart=/usr/lib/univention-bind/ldap
+ExecReload=/usr/sbin/rndc -p 55555 reload
+ExecStop=/usr/sbin/rndc -p 55555 stop
+ExecStartPost=/usr/bin/timeout 30 /bin/sh -c "until rndc -p 55555 status | grep --quiet 'server is up and running'; do sleep 1; done"
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
