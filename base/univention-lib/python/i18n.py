@@ -33,6 +33,10 @@ Internationalization (i18n) utilities.
 import gettext
 from locale import getlocale, Error, LC_MESSAGES
 import re
+try:
+	from typing import Optional  # noqa
+except ImportError:
+	pass
 
 
 class I18N_Error(Exception):

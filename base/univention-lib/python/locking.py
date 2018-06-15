@@ -31,6 +31,10 @@ Univention Common Python Library for file locking
 
 import fcntl
 import os
+try:
+	from typing import IO, Optional  # noqa
+except ImportError:
+	pass
 
 
 def get_lock(name, nonblocking=False):

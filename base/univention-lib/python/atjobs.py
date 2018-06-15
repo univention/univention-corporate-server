@@ -41,6 +41,10 @@ import datetime
 import subprocess
 import re
 import locale
+try:
+	from typing import Dict, List, Optional, Union  # noqa
+except ImportError:
+	pass
 
 __all__ = ['add', 'list', 'load', 'remove', 'reschedule', 'AtJob']
 

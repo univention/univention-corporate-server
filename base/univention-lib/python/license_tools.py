@@ -32,6 +32,10 @@ from optparse import OptionParser
 import sys
 import datetime
 import univention.uldap
+try:
+	from typing import Optional  # noqa
+except ImportError:
+	pass
 
 
 class LicenseCheckError(Exception):

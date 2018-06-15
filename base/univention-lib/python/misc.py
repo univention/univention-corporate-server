@@ -32,6 +32,10 @@ Univention Common Python Library
 
 import univention.config_registry
 import subprocess
+try:
+	from typing import Optional  # noqa
+except ImportError:
+	pass
 
 
 def createMachinePassword():

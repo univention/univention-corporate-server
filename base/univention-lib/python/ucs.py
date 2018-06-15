@@ -31,6 +31,10 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
+try:
+	from typing import List, Union, Tuple  # noqa
+except ImportError:
+	pass
 
 
 class UCS_Version(object):

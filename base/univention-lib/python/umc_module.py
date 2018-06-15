@@ -37,6 +37,10 @@ import zlib
 from PIL import Image
 import StringIO
 import magic
+try:
+	from typing import Any, Callable, Optional, Tuple  # noqa
+except ImportError:
+	pass
 MIME_TYPE = magic.open(magic.MAGIC_MIME_TYPE)
 MIME_TYPE.load()
 MIME_DESCRIPTION = magic.open(magic.MAGIC_NONE)

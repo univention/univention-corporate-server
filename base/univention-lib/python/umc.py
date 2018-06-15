@@ -43,6 +43,12 @@ import json
 import locale
 from Cookie import SimpleCookie
 from httplib import HTTPSConnection, HTTPException
+try:
+	from typing import Any, Callable, Dict, List, Optional, Tuple, Type, TypeVar, Union  # noqa
+	_T = TypeVar('_T')  # noqa
+	import httplib  # noqa
+except ImportError:
+	pass
 
 from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()

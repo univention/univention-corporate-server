@@ -32,6 +32,10 @@ Read and write :file:`/etc/fstab`.
 
 import os
 import re
+try:
+	from typing import List, Optional  # noqa
+except ImportError:
+	pass
 
 
 class File(list):

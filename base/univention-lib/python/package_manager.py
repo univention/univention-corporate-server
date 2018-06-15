@@ -40,6 +40,12 @@ from contextlib import contextmanager
 import threading
 from logging import getLogger, DEBUG, Handler
 from time import sleep
+try:
+	from typing import Any, Callable, Dict, IO, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union  # noqa
+	from types import TracebackType  # noqa
+	import logging  # noqa
+except ImportError:
+	pass
 
 import apt_pkg
 import apt

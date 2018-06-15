@@ -33,6 +33,11 @@ Univention Helper functions for creating or rename share directories
 import os
 import commands
 import shutil
+try:
+	from typing import Dict, List, Optional  # noqa
+	from univention.config_registry import ConfigRegistry  # noqa
+except ImportError:
+	pass
 
 DEFAULT_FS = "ext2/ext3:ext2:ext3:ext4:xfs:btrfs"
 DIR_BLACKLIST = []

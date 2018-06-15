@@ -32,6 +32,10 @@ Functions for handling Python errors.
 
 import traceback
 import sys
+try:
+	from typing import List  # noqa
+except ImportError:
+	pass
 
 
 def formatTraceback():

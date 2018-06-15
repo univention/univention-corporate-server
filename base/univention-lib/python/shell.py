@@ -31,6 +31,10 @@ Univention common Python library for shell scripts.
 # <http://www.gnu.org/licenses/>.
 import subprocess
 import re
+try:
+	from typing import Any, List, Optional, Union, Tuple  # noqa
+except ImportError:
+	pass
 
 
 def escape_value(value):

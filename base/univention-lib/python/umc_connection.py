@@ -35,6 +35,11 @@ connections to remote |UMC| Servers.
 # <http://www.gnu.org/licenses/>.
 
 import warnings
+try:
+	from typing import Any, Callable, Dict, Optional  # noqa
+	from httplib import HTTPSConnection  # noqa
+except ImportError:
+	pass
 
 from univention.lib.umc import Client, ConnectionError, HTTPError, Forbidden
 from httplib import HTTPException

@@ -29,6 +29,11 @@ Univention common Python library for :command:`logrotate` configuration files.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+try:
+	from typing import Dict, List, Optional, Union  # noqa
+	from univention.config_registry import ConfigRegistry  # noqa
+except ImportError:
+	pass
 
 
 def _getBoolDefault(varGlobal, varLocal, settings, configRegistry):
