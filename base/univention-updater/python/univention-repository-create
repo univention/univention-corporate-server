@@ -136,8 +136,9 @@ def copy_repository(options):
                 os.chmod(profiles_dest, 0o555)
                 print 'done.'
 
-        copy_dists(options)
+    copy_dists(options)
     copy_packages(options)
+    urepo.gen_indexes(_repo_base, options.version)
 
 
 def copy_packages(options):
@@ -210,8 +211,6 @@ def mount(options):
 
 def setup_repository(options):
     """ Update indexes """
-    urepo.update_indexes(_repo_base, dists=True)
-
     basepath = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
     for p in ['var', 'skel']:
         d = os.path.join(basepath, p)

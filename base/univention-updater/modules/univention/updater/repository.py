@@ -35,8 +35,10 @@ import os
 import shutil
 import subprocess
 import sys
+import gzip
 
 from univention.config_registry import ConfigRegistry
+from .ucs_version import UCS_Version  # noqa F401
 
 configRegistry = ConfigRegistry()
 configRegistry.load()
@@ -173,6 +175,43 @@ def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr
             gzip_file(packages_file)
 
     print >> stdout, 'done.'
+
+
+def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
+    """
+    Re-generate Debian :file:`Packages` files from file:`dists/` file.
+
+    :param str base: Base directory, which contains the per architecture sub directories.
+    """
+    A = 'Architecture: '
+    F = 'Filename: '
+    print '  generating index ...',
+    for arch in ARCHITECTURES:
+        if arch == 'all':
+            continue
+        src = os.path.join(
+            base,
+            'dists',
+            'ucs%d%d%d' % version.mmp,
+            'main',
+            'binary-%s' % (arch,),
+            'Packages.gz',
+        )
+        if not os.path.exists(src):
+            continue
+        lines = []
+        with gzip.open(src, 'rb') as f_src, open(os.path.join(base, 'all', 'Packages'), 'w') as f_all, open(os.path.join(base, arch, 'Packages'), 'w') as f_arch:
+            for line in f_src:
+                if line.startswith(A):
+                    arch = line[len(A):].strip()
+                elif line.startswith(F):
+                    line = F + line[len(F):].lstrip('/')
+                lines.append(line)
+                if line == '\n':
+                    f = f_all if arch == 'all' else f_arch
+                    f.write(''.join(lines))
+                    del lines[:]
+    print 'done'
 
 
 def get_repo_basedir(packages_dir):
