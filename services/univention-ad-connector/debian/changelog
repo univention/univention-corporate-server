@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.6-34) unstable; urgency=medium
+
+  * Bug #47050: restart connector on extended attribute changes
+
+ -- Arvid Requate <requate@univention.de>  Mon, 25 Jun 2018 17:06:15 +0200
+
 univention-ad-connector (11.0.6-33) unstable; urgency=medium
 
   * Bug #43745: depend on explicit version of univention-lib
