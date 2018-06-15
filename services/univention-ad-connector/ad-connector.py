@@ -38,6 +38,7 @@ import time
 import os
 import univention.debug
 import shutil
+import subprocess
 
 name = 'ad-connector'
 description = 'AD Connector replication'
@@ -52,6 +53,7 @@ modrdn = "1"
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=18619#c5
 init_mode = False
 group_objects = []
+connector_needs_restart = False
 
 dirs = [listener.baseConfig['connector/ad/listener/dir']]
 if 'connector/listener/additionalbasenames' in listener.baseConfig and listener.baseConfig['connector/listener/additionalbasenames']:
@@ -100,10 +102,30 @@ def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
 	shutil.move(filepath, os.path.join(directory, filename))
 
 
+def _restart_connector():
+	listener.setuid(0)
+	try:
+		if not subprocess.call(['pgrep', '-f', 'connector/ad/main.py']):
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "ad-connector: restarting connector ...")
+			subprocess.call(('service', 'univention-ad-connector', 'restart'))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "ad-connector: ... done")
+	finally:
+		listener.unsetuid()
+
+
 def handler(dn, new, old, command):
 
 	global group_objects
 	global init_mode
+	global connector_needs_restart
+
+	# restart connector on extended attribute changes
+	if 'univentionUDMProperty' in new.get('objectClass', []) or 'univentionUDMProperty' in old.get('objectClass', []):
+		connector_needs_restart = True
+	else:
+		if connector_needs_restart is True:
+			_restart_connector()
+			connector_needs_restart = False
 
 	listener.setuid(0)
 	try:
@@ -157,6 +179,7 @@ def clean():
 def postrun():
 	global init_mode
 	global group_objects
+	global connector_needs_restart
 	if init_mode:
 		listener.setuid(0)
 		try:
@@ -174,6 +197,9 @@ def postrun():
 			group_objects = []
 		finally:
 			listener.unsetuid()
+	if connector_needs_restart is True:
+		_restart_connector()
+		connector_needs_restart = False
 
 
 def initialize():
