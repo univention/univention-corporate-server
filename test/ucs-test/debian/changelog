@@ -1,3 +1,9 @@
+ucs-test (8.0.28-135) unstable; urgency=medium
+
+  * Bug #46366: Remove duplicate test
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 15 Jun 2018 12:45:22 +0200
+
 ucs-test (8.0.28-134) unstable; urgency=medium
 
   * Bug #32626: Adjust test case to dig output
