@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: univention-management-console
+fix: 9.0.80-95A~4.2.0.201806151514
+desc: |
+ This update addresses the following issue(s):
+ * A problem with the saml authentification which could lead to the
+   umc web interface becomming unresponsive has been fixed.
+bug: [47109]
