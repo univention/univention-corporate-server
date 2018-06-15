@@ -1,3 +1,9 @@
+univention-base-files (7.0.0-16) unstable; urgency=medium
+
+  * Bug #39704: Improve some wording
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 15 Jun 2018 15:02:44 +0200
+
 univention-base-files (7.0.0-15) unstable; urgency=medium
 
   * Bug #46300: Do not ignore ucr layers in ucr autostart module
