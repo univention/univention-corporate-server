@@ -1,9 +1,8 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Helper
-#  function for creating or rename share directories
-#
+"""
+Univention Helper functions for creating or rename share directories
+"""
 # Copyright 2011-2018 Univention GmbH
 #
 # http://www.univention.de/
@@ -47,7 +46,14 @@ DIR_BLACKLIST.append("/root")
 
 
 def dirIsMountPoint(path):
+	# type: (str) -> Optional[str]
+	"""
+	Check if `path` is a mount point.
 
+	:param str path: The path to check.
+	:returns: A string if the path is a mount point, `None` otherwise.
+	:rtype: str or None
+	"""
 	if path == "/":
 		return "/ is a mount point"
 
@@ -69,7 +75,15 @@ def dirIsMountPoint(path):
 
 
 def checkDirFileSystem(path, cr):
+	# type: (str, ConfigRegistry) -> Optional[str]
+	"""
+	Check if the given path is of a known file system type.
 
+	:param str path: A file system path.
+	:param ConfigRegistry cr: A |UCR| instance.
+	:returns: A string if the path is a known file system, `None` otherwise.
+	:rtype: str or None
+	"""
 	knownFs = cr.get("listener/shares/rename/fstypes", DEFAULT_FS).split(":")
 	ret, out = commands.getstatusoutput("LC_ALL=C stat -f '%s'" % path)
 	myFs = ""
@@ -86,7 +100,16 @@ def checkDirFileSystem(path, cr):
 
 
 def createOrRename(old, new, cr):
-	# create or rename
+	# type: (Dict[str, List[str]], Dict[str, List[str]], ConfigRegistry) -> Optional[str]
+	"""
+	Create or rename a share.
+
+	:param str old: The old path.
+	:param str new: The new path.
+	:param ConfigRegistry cr: A |UCR| instance.
+	:returns: A string if an error occurs, `None` on success.
+	:rtype: str or None
+	"""
 	rename = False
 	if cr.is_true("listener/shares/rename", False) and old:
 		# rename only if old object exists and

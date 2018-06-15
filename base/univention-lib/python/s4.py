@@ -1,3 +1,36 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+"""
+Univention common Python Library for
+common |AD| constants.
+"""
+# Copyright 2012-2018 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
 well_known_sids = {
 	"S-1-2": "Local Authority",
 	"S-1-2-0": "Local",
@@ -32,6 +65,7 @@ well_known_sids = {
 	"S-1-5-80-0": "All Services",
 	"S-1-5-32-568": "IIS_IUSRS",
 }
+"""Well known security identifiers."""
 
 well_known_domain_rids = {
 	"500": "Administrator",
@@ -55,6 +89,11 @@ well_known_domain_rids = {
 	# Windows Server "8"
 	"522": "Cloneable Domain Controllers",
 }
+"""
+Mapping of well known relative (security) identifiers to their (English) names.
+
+See :py:data:`rids_for_well_known_security_identifiers` for the reverse mapping.
+"""
 
 rids_for_well_known_security_identifiers = {
 	# All lowercase for lookup
@@ -79,3 +118,8 @@ rids_for_well_known_security_identifiers = {
 	# Windows Server "8"
 	"cloneable domain controllers": "522",
 }
+"""
+Mapping of lower cases English names to to well known relative (security) identifiers.
+
+See :py:data:`well_known_domain_rids` for the reverse mapping.
+"""

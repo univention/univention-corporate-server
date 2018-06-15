@@ -1,10 +1,9 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Helper
-#  get primaryMailAddress and uid from primaryMailAddress or uid
-#  (used by horde/imp login hook to map uid to mail address)
-#
+"""
+get primaryMailAddress and uid from primaryMailAddress or uid
+(used by horde/imp login hook to map uid to mail address)
+"""
 # Copyright 2011-2018 Univention GmbH
 #
 # http://www.univention.de/

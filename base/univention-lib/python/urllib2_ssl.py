@@ -1,3 +1,37 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+"""
+Univention fork of :py:mod:`urllib2` supporting verified |SSL| connections.
+
+.. deprecated:: 4.0
+   This is directly supported by :py:mod:`urllib2` since Python 2.7.9
+"""
+# Copyright 2012-2018 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
 import re
 import httplib
 import socket
@@ -40,12 +74,15 @@ def _dnsname_to_pat(dn, max_wildcards=1):
 
 
 def match_hostname(cert, hostname):
-	"""Verify that *cert* (in decoded format as returned by
-	SSLSocket.getpeercert()) matches the *hostname*.  RFC 2818 rules
-	are mostly followed, but IP addresses are not accepted for *hostname*.
+	"""
+	Verify that `cert` (in decoded format as returned by
+	:py:meth:`SSLSocket.getpeercert`) matches the `hostname`.  :rfc:`2818` rules
+	are mostly followed, but IP addresses are not accepted for `hostname`.
 
-	CertificateError is raised on failure. On success, the function
-	returns nothing.
+	:param cert: The certificate.
+	:param str hostname: the host name.
+	:returns: nothing on success.
+	:raises CertificateError: on failure.
 	"""
 	if not cert:
 		raise ValueError("empty or no certificate")
@@ -117,25 +154,23 @@ class VerifiedHTTPSConnection(httplib.HTTPSConnection):
 
 
 class VerifiedHTTPSHandler(urllib2.HTTPSHandler):
-
 	"""
-    Possible keyword arguments:
-      cert_file:       (see httplib.HTTPSConnection)
-      key_file:        (see httplib.HTTPSConnection)
-      ca_certs_file:   (string, see VerifiedHTTPSConnection) filename of CA certs file
-      check_hostname:  (boolean, see VerifiedHTTPSConnection) checks certificate hostname against given hostname
+	:param str cert_file:       see :py:class:`httplib.HTTPSConnection`
+	:param str key_file:        see :py:class:`httplib.HTTPSConnection`
+	:param str ca_certs_file:   see :py:class:`VerifiedHTTPSConnection`; filename of CA certs file
+	:param bool check_hostname:  see :py:class:`VerifiedHTTPSConnection`; checks certificate hostname against given hostname
 
-    Code example:
-	  import urllib
-	  import univention.urllib2_ssl
-	  opener = urllib2.build_opener(
-		  univention.urllib2_ssl.VerifiedHTTPSHandler(
-			  key_file='/etc/univention/ssl/%s/private.key' % ucr.get('hostname'),
-			  cert_file='/etc/univention/ssl/%s/cert.key' % ucr.get('hostname'),
-			  ca_certs_file='/etc/univention/ssl/ucsCA/CAcert.pem',
-			  ))
-	  response = opener.open(url, body).read()
+	Code example::
 
+		import urllib
+		import univention.urllib2_ssl
+		opener = urllib2.build_opener(
+			univention.urllib2_ssl.VerifiedHTTPSHandler(
+				key_file='/etc/univention/ssl/%(hostname)s/private.key' % ucr,
+				cert_file='/etc/univention/ssl/%(hostname)s/cert.key' % ucr,
+				ca_certs_file='/etc/univention/ssl/ucsCA/CAcert.pem',
+		))
+		response = opener.open(url, body).read()
 	"""
 
 	def __init__(self, **kwargs):

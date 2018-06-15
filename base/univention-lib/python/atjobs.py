@@ -1,8 +1,5 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Common Python Library
-#
 # Copyright 2012-2018 Univention GmbH
 #
 # http://www.univention.de/
@@ -30,11 +27,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-'''This module abstracts the handling of at-jobs, each job is encapsulated by
-the class AtJob. Use the method add() in order to add a new command to the
-queue of at-jobs. Use the methods list() and load() to get a list of all
+"""
+Univention common Python library for handling :program:`at` jobs.
+
+This module abstracts the handling of at-jobs, each job is encapsulated by
+the class :py:class:`AtJob`. Use the method :py:meth:`add` in order to add a new command to the
+queue of at-jobs. Use the methods :py:meth:`list` and :py:meth:`load` to get a list of all
 registered jobs or to load a specific job given an ID, respectively. The module
-uses time stamps in seconds for scheduling jobs.'''
+uses time stamps in seconds for scheduling jobs.
+"""
 
 import datetime
 import subprocess
@@ -56,13 +57,20 @@ COMMENT_PREFIX = '# Comment: '
 
 
 def add(cmd, execTime=None, comments={}):
-	'''Add a new command to the job queue given a time (in seconds since
-	the epoch or as a datetime object) at which the job will be
-	executed. Optionally comments can be provided as a dictionary. The
-	data is assoziated with the job.'''
+	# type: (str, Union[None, int, float, datetime.datetime], Optional[Dict[str, str]]) -> Optional[AtJob]
+	"""
+	Add a new command to the job queue given a time
+	at which the job will be executed.
+
+	:param execTime: execution time either as seconds since the epoch or as a :py:class:`datetime.datetime` instance. Defaults to `now`.
+	:type execTime: int or float or datetime.datetime or None
+	:param dict comments: A optional dictionary with comments to be associated with the job.
+	:returns: The created job or `None`.
+	:rtype: AtJob or None
+	"""
 
 	if isinstance(execTime, (int, float)):
-		start = datetime.datetime.fromtimestamp(execTime)
+		start = datetime.datetime.fromtimestamp(execTime)  # type: Optional[datetime.datetime]
 	else:
 		start = execTime
 
@@ -103,7 +111,16 @@ def add(cmd, execTime=None, comments={}):
 
 
 def reschedule(nr, execTime=None):
-	"""Re-schedules the at job with the given number for the specified time"""
+	"""
+	Re-schedules the at job with the given number for the specified time.
+
+	:param int nr: The job number.
+	:param execTime: execution time either as seconds since the epoch or as a :py:class:`datetime.datetime` instance. Defaults to `now`.
+	:type execTime: int or float or datetime.datetime or None
+	:returns: The created job or `None`.
+	:rtype: AtJob or None
+	:raises: AttributeError: if the job cannot be found.
+	"""
 	atjob = load(nr, extended=True)
 	if atjob is None:
 		raise AttributeError('Could not find at job %s' % nr)
@@ -115,9 +132,16 @@ def reschedule(nr, execTime=None):
 
 
 def list(extended=False):
-	'''Returns a list of all registered jobs as instances of AtJob. If
-	extended is set to True the parser also extras the comments and the
-	command to execute. This can be used to re-schedule a job.'''
+	# type: (bool) -> List[AtJob]
+	"""
+	Returns a list of all registered jobs.
+
+	:param bool extended: If set to `True` also the comments and the command to execute are fetched.
+	:returns: A list of :py:class:`AtJob` instances.
+	:rtype: list[AtJob]
+
+	This can be used to re-schedule a job.
+	"""
 	p = subprocess.Popen('/usr/bin/atq', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	out = p.communicate()[0].splitlines()
 	jobs = []
@@ -134,8 +158,15 @@ def list(extended=False):
 
 
 def load(nr, extended=False):
-	'''Load a job given a particular ID. Returns None if job does not exist,
-	otherwise an instance of AtJob is returned.'''
+	# type: (int, bool) -> Optional[AtJob]
+	"""
+	Load the job given.
+
+	:param nr: Job number.
+	:param bool extended: If set to `True` also the comments and the command to execute are fetched.
+	:returns: `None` if job does not exist, otherwise an instance of :py:class:`AtJob`.
+	:rtype: AtJob
+	"""
 	result = [p for p in list(extended) if p.nr == nr]
 	if len(result):
 		return result[0]
@@ -143,13 +174,25 @@ def load(nr, extended=False):
 
 
 def remove(nr):
-	"""Removes the at job with the given number"""
+	# type: (int) -> None
+	"""
+	Removes the at job with the given number.
+
+	:param int nr: Job number.
+	"""
 	result = [p for p in list() if p.nr == nr]
 	if len(result):
 		return result[0].rm()
 
 
 def _parseScript(job):
+	# type: (AtJob) -> None
+	"""
+	Internal function to load the job details by parding the job of :command:`atq`.
+
+	:param AtJob job: A job.
+	"""
+	# FIXME: This should be a method of the class.
 	p = subprocess.Popen(['/usr/bin/at', '-c', str(job.nr)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	out = p.communicate()[0].splitlines()
 	job.comments = {}
@@ -175,7 +218,14 @@ def _parseScript(job):
 
 
 def _parseJob(string):
-	'''Internal method to parse output of at-command.'''
+	# type: (str) -> Optional[AtJob]
+	"""
+	Internal method to parse output of :command:`atq`.
+
+	:param str string: A output line of :command:`atq`.
+	:returns: A :py:class:`AtJob` instance or `None`
+	:rtype: AtJob
+	"""
 	timeLocale = locale.getlocale(locale.LC_TIME)
 	try:
 		# change the time locale temporarily to 'C' as atq uses English date format
@@ -199,17 +249,23 @@ def _parseJob(string):
 
 
 class AtJob(object):
+	"""
+	This class is an abstract representation of an at-job. Do not initiate
+	the class directly, but use the methods provided in this module.
 
-	'''This class is an abstract representation of an at-job. Do not initiate
-	the class directly, but use the methods provided in this module.'''
-
+	:param int nr: Job number.
+	:param str owner: User owning the job.
+	:param datetime.datetime execTime: Planned job execution time.
+	:param bool isRunning: `True` is the jub is curently running, `False` otherwise.
+	"""
 	def __init__(self, nr, owner, execTime, isRunning):
+		# type: (int, str, datetime.datetime, bool) -> None
 		self.nr = nr
 		self.owner = owner
-		self.command = None
+		self.command = None  # type: Optional[str]
 		self.execTime = execTime
 		self.isRunning = isRunning
-		self.comments = {}
+		self.comments = {}  # type: Dict[str, str]
 
 	def __str__(self):
 		t = self.execTime.strftime(_dateTimeFormatWrite)
@@ -221,6 +277,8 @@ class AtJob(object):
 		return self.__str__()
 
 	def rm(self):
-		'''Remove the job from the queue.'''
+		"""
+		Remove the job from the queue.
+		"""
 		p = subprocess.Popen(['/usr/bin/atrm', str(self.nr)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		p.communicate()

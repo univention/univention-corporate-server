@@ -1,8 +1,8 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Common Python Library
-#
+"""
+Univention common Python library for :command:`logrotate` configuration files.
+"""
 # Copyright 2010-2018 Univention GmbH
 #
 # http://www.univention.de/
@@ -32,7 +32,15 @@
 
 
 def _getBoolDefault(varGlobal, varLocal, settings, configRegistry):
+	# type: (str, str, Dict[str, str], ConfigRegistry) -> None
+	"""
+	Get default value of type boolean.
 
+	:param str varGlobal: The |UCR| variable name of the global setting.
+	:param str varLocal: The |UCR| variable name of the service specific setting.
+	:param dict settings: A mapping, where the configuration is stored in.
+	:param ConfigRegistry configRegistry: An |UCR| instance.
+	"""
 	configName = varGlobal.split("/")[-1]
 	if configRegistry.is_true(varGlobal, True):
 		settings[configName] = configName
@@ -44,7 +52,19 @@ def _getBoolDefault(varGlobal, varLocal, settings, configRegistry):
 
 
 def getLogrotateConfig(name, configRegistry):
+	# type: (str, ConfigRegistry) -> Dict[str, str]
+	"""
+	Build aggregated configuration for log file rotation.
 
+	:param str name: The name of the log file or service.
+	:param ConfigRegistry configRegistry: An |UCR| instance.
+	:returns: A dictionary containging the merged configuration.
+	:rtype: dict
+
+	>>> ucr = ConfigRegistry()
+	>>> ucr.load()
+	>>> conf = getLogrotateConfig('service', ucr)
+	"""
 	settings = {}
 
 	for var in ["logrotate/", "logrotate/" + name + "/"]:

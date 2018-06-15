@@ -1,8 +1,8 @@
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Management Console
-#  i18n utils
-#
+"""
+Internationalization (i18n) utilities.
+"""
 # Copyright 2006-2018 Univention GmbH
 #
 # http://www.univention.de/
@@ -36,28 +36,45 @@ import re
 
 
 class I18N_Error(Exception):
+	"""
+	Error in Internationalization.
+	"""
 	pass
 
 
 class Locale(object):
+	"""
+	Represents a locale specification and provides simple access to
+	language, territory, codeset and modifier.
 
-	'''Represents a locale specification and provides simple access to
-	language, territory, codeset and modifier'''
+	:param locale: The locale string `language[_territory][.codeset][@modifier]`.
+	:type locale: str or None
+	"""
 
 	REGEX = re.compile('(?P<language>([a-z]{2}|C|POSIX))(_(?P<territory>[A-Z]{2}))?(.(?P<codeset>[a-zA-Z-0-9]+)(@(?P<modifier>.+))?)?')
 
 	def __init__(self, locale=None):
+		# type: (Optional[str]) -> None
 		self.__reset()
 		if locale is not None:
 			self.parse(locale)
 
 	def __reset(self):
-		self.language = None
-		self.territory = None
-		self.codeset = None
-		self.modifier = None
+		# type: () -> None
+		self.language = None  # type: Optional[str]
+		self.territory = None  # type: Optional[str]
+		self.codeset = None  # type: Optional[str]
+		self.modifier = None  # type: Optional[str]
 
 	def parse(self, locale):
+		# type: (str) -> None
+		"""
+		Parse locale string.
+
+		:param str locale: The locale string `language[_territory][.codeset][@modifier]`.
+		:raises TypeError: if `locale` is not a string.
+		:raises I18N_Error: if `locale` does not match the format.
+		"""
 		if not isinstance(locale, basestring):
 			raise TypeError('locale must be of type string')
 		self.__reset()
@@ -72,9 +89,11 @@ class Locale(object):
 			setattr(self, key, value)
 
 	def __nonzero__(self):
+		# type: () -> bool
 		return self.language is not None
 
 	def __str__(self):
+		# type: () -> str
 		text = self.language
 		if self.language not in ('C', 'POSIX'):
 			if self.territory is not None:
@@ -87,17 +106,31 @@ class Locale(object):
 
 
 class NullTranslation(object):
+	"""
+	Dummy translation.
 
-	def __init__(self, namespace=None, locale_spec=None, localedir=None):
-		self.domain = namespace
-		self._translation = None
-		self._localedir = localedir
-		self._localespec = None
-		self._locale = locale_spec
+	:param str namespace: The name of the translation domain.
+	:param str locale_spec: The selected locale.
+	:param str localedir: The name of the directory containing the translation files.
+	"""
+
+	def __init__(self, namespace, locale_spec=None, localedir=None):
+		# type: (str, Optional[str], Optional[str]) -> None
+		self.domain = namespace  # type: Optional[str]
+		self._translation = None  # type: Optional[gettext.NullTranslations]
+		self._localedir = localedir  # type: Optional[str]
+		self._localespec = None  # type: Optional[Locale]
+		self._locale = locale_spec  # type: Optional[str]
 		if not self._locale:
 			self.set_language()
 
 	def _set_domain(self, namespace):
+		# type: (str) -> None
+		"""
+		Select translation domain.
+
+		:param str namespace: The name of the translation domain.
+		"""
 		if namespace is not None:
 			self._domain = namespace.replace('/', '-').replace('.', '-')
 		else:
@@ -106,12 +139,31 @@ class NullTranslation(object):
 	domain = property(fset=_set_domain)
 
 	def set_language(self, language=None):
+		# type: (Optional[str]) -> None
+		"""
+		Select language.
+
+		:param str language: The language code.
+		"""
 		pass
 
 	def _get_locale(self):
+		# type: () -> Optional[Locale]
+		"""
+		Return currently selected locale.
+
+		:returns: The currently selected locale.
+		:rtype: Locale
+		"""
 		return self._localespec
 
 	def _set_locale(self, locale_spec=None):
+		# type: (Optional[str]) -> None
+		"""
+		Select new locale.
+
+		:param str locale_spec: The new locale specification.
+		"""
 		if locale_spec is None:
 			return
 		self._localespec = Locale(locale_spec)
@@ -119,6 +171,14 @@ class NullTranslation(object):
 	locale = property(fget=_get_locale, fset=_set_locale)
 
 	def translate(self, message):
+		# type: (str) -> unicode
+		"""
+		Translate message.
+
+		:param str message: The message to translate.
+		:returns: The localized message.
+		:rtype: str
+		"""
 		if self._translation is None:
 			return message
 		return self._translation.ugettext(message)
@@ -127,9 +187,19 @@ class NullTranslation(object):
 
 
 class Translation(NullTranslation):
+	"""
+	Translation.
+	"""
 	locale = Locale()
 
 	def set_language(self, language=None):
+		# type: (Optional[str]) -> None
+		"""
+		Select language.
+
+		:param str language: The language code.
+		:raises I18N_Error: if the given locale is not valid.
+		"""
 		if language is not None:
 			Translation.locale.parse(language)
 

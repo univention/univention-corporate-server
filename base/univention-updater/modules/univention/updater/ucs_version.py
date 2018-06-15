@@ -45,10 +45,7 @@ class UCS_Version(object):
 
     def __init__(self, version):
         """
-        version must a string matching the pattern X.Y-Z or a triple
-        with major, minor and patchlevel.
-
-        :param version: A UCS release version.
+        :param version: must a :py:class:`str` matching the pattern `X.Y-Z` or a triple with major, minor and patchlevel.
         :type version: list(int) or tuple(int) or str or UCS_Version
         :raises TypeError: if the version cannot be parsed.
 
@@ -99,7 +96,8 @@ class UCS_Version(object):
         """
         Parse string and set version.
 
-        :param str version: UCS release version.
+        :param str verion: A |UCS| release version string.
+        :raises ValueError: if the string is not a valid |UCS| release version string.
         """
         match = UCS_Version._regexp.match(version)
         if not match:

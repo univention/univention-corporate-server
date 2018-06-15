@@ -1,9 +1,8 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Management Console
-#  quota module: reads and writes /etc/fstab
-#
+"""
+Read and write :file:`/etc/fstab`.
+"""
 # Copyright 2006-2018 Univention GmbH
 #
 # http://www.univention.de/
@@ -36,15 +35,25 @@ import re
 
 
 class File(list):
+	"""
+	Handle lines of :file:`/etc/fstab`.
+
+	:param str file: The name of the file.
+	"""
 	_is_comment = re.compile('[ \t]*#').search
 	_filesystems = ('ext2', 'xfs', 'nfs', 'proc', 'auto', 'swap')
 
 	def __init__(self, file='/etc/fstab'):
+		# type: (str) -> None
 		list.__init__(self)
 		self.__file = file
 		self.load()
 
 	def load(self):
+		# type: () -> None
+		"""
+		Load entries from file.
+		"""
 		fd = open(self.__file, 'r')
 		for line in fd.readlines():
 			if File._is_comment(line):
@@ -54,6 +63,14 @@ class File(list):
 		fd.close()
 
 	def find(self, **kargs):
+		# type: (**str) -> Optional[Entry]
+		"""
+		Search and return the entry matching the criteria.
+
+		:param kwargs: A mapping of :py:class:`Entry` attributes to values.
+		:returns: The first entry matching all criteria or `None`.
+		:rtype: Entry or None
+		"""
 		for entry in self:
 			found = True
 			for arg, value in kargs.items():
@@ -65,6 +82,16 @@ class File(list):
 		return None
 
 	def get(self, filesystem=[], ignore_root=True):
+		# type: (List[str], bool) -> List[Entry]
+		"""
+		Return list of entries matching a list of file system types.
+
+		:param filesystem: A list of file system names.
+		:type filesystem: List[str]
+		:param bool ignore_root: Skip the root file system if `True`.
+		:returns: A list of matching entries.
+		:rtype: List[Entry]
+		"""
 		result = []
 		for entry in self:
 			if isinstance(entry, str):
@@ -76,12 +103,32 @@ class File(list):
 		return result
 
 	def save(self):
+		# type: () -> None
+		"""
+		Save entries to file.
+		"""
 		fd = open(self.__file, 'w')
 		for line in self:
 			fd.write('%s\n' % str(line))
 		fd.close()
 
 	def __parse(self, line):
+		# type: (str) -> Entry
+		"""
+		Parse file system table line.
+
+		1.	`fs_spec`
+		2.	`fs_file`
+		3.	`fs_vfstype`
+		4.	`fs_mntops`
+		5.	`fs_freq`
+		6.	`fs_passno`
+
+		:param str line: A line.
+		:returns: The parsed entry.
+		:rtype: Entry
+		:raises InvalidEntry: if the line cannot be parsed.
+		"""
 		fields = line.split(None, 7)
 		if len(fields) < 4:
 			raise InvalidEntry('The following is not a valid fstab entry: %s' % line)  # TODO
@@ -104,11 +151,26 @@ class File(list):
 
 
 class Entry(object):
+	"""
+	Entry of :manpage:`fstab(5)`.
+
+	:param str spec: This field describes the block special device or remote filesystem to be mounted..
+	:param str mount_point: This field describes the mount point (target) for the filesystem.
+	:param str type: The type of the filesystem.
+	:param options: The list of mount options associated with the filesystem.
+	:type options: List[str]
+	:param int dump: Option for :manpage:`dump(8)`.
+	:param int passno: Order information for `fsck(8)`.
+	:param str comment: Optional comment from end of line.
+
+	:ivar str uuid: The file system |UUID| if the file system is mounted by it. Otherwise `None`.
+	"""
 
 	def __init__(self, spec, mount_point, type, options, dump=0, passno=0, comment=''):
+		# type: (str, str, str, str, int, int, str) -> None
 		self.spec = spec.strip()
 		if self.spec.startswith('UUID='):
-			self.uuid = self.spec[5:]
+			self.uuid = self.spec[5:]  # type: Optional[str]
 			uuid_dev = os.path.join('/dev/disk/by-uuid', self.uuid)
 			if os.path.exists(uuid_dev):
 				self.spec = os.path.realpath(uuid_dev)
@@ -129,6 +191,9 @@ class Entry(object):
 
 
 class InvalidEntry(Exception):
+	"""
+	Invalid entry in file system table
+	"""
 	pass
 
 

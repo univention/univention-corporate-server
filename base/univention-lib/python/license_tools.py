@@ -35,30 +35,27 @@ import univention.uldap
 
 
 class LicenseCheckError(Exception):
-
-	'''Generic error during license check'''
+	"""Generic error during license check"""
 
 
 class LicenseExpired(LicenseCheckError):
-
-	'''The license is expired'''
+	"""The license is expired"""
 
 
 class LicenseNotFound(LicenseCheckError):
-
-	'''The license cannot be found in LDAP'''
+	"""The license cannot be found in LDAP"""
 
 
 def is_CSP_license(lo=None):
-	'''
+	# type: (Optional[univention.uldap.acceess]) -> bool
+	"""
 	Function to detect if installed license is a cloud service provider license (CSP).
-	The function reuses the given LDAP connection object <lo> or creates a new LDAP
-	connection with machine credentials.
 
-	If a valid CSP license has been found, True is returned.
-	If a valid non-CSP license has been found, False is returned.
-	if the license is invalid, broken or expired, an Exception is raised.
-	'''
+	:param univention.uldap.acceess lo: Optional |LDAP| connection to re-use. Otherwise a new |LDAP| connection with machine credentials is created.
+	:returns: `True` if a valid CSP license has been found or `False` if a valid non-CSP license has been found.
+	:raises LicenseNotFound: if no license was found.
+	:raises LicenseExpired: if the license has expired.
+	"""
 
 	if not lo:
 		lo = univention.uldap.getMachineConnection()

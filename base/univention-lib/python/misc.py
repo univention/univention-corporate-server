@@ -1,14 +1,48 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+"""
+Univention Common Python Library
+"""
+# Copyright 2012-2018 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
 
 import univention.config_registry
 import subprocess
 
 
 def createMachinePassword():
+	# type: () -> str
 	"""
 	Returns a $(pwgen) generated password according to the
-	requirements in
-		machine/password/length
-		machine/password/complexity
+	requirements in |UCR| varibales
+	`machine/password/length` and `machine/password/complexity`.
+
+	:returns: A password.
+	:rtype: str
 	"""
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
@@ -20,11 +54,14 @@ def createMachinePassword():
 
 
 def getLDAPURIs(configRegistryInstance=None):
+	# type: (Optional[univention.config_registry.ConfigRegistry]) -> str
 	"""
-	Returns a string with all configured LDAP servers,
-	ldap/server/name and ldap/server/addition.
-	Optional a UCR instance ca be given as parameter, for example
-	if the function is used in a UCR template
+	Returns a space separated list of all configured |LDAP| servers, according to |UCR| variables
+	`ldap/server/name` and `ldap/server/addition`.
+
+	:param univention.config_registry.ConfigRegistry configRegistryInstance: An optional |UCR| instance.
+	:returns: A space separated list of |LDAP| |URI|.
+	:rtype: str
 	"""
 	if configRegistryInstance:
 		ucr = configRegistryInstance
@@ -50,11 +87,14 @@ def getLDAPURIs(configRegistryInstance=None):
 
 
 def getLDAPServersCommaList(configRegistryInstance=None):
+	# type: (Optional[univention.config_registry.ConfigRegistry]) -> str
 	"""
-	Returns a comma-separated string with all configured LDAP servers,
-	ldap/server/name and ldap/server/addition.
-	Optional a UCR instance ca be given as parameter, for example
-	if the function is used in a UCR template
+	Returns a comma-separated string with all configured |LDAP| servers,
+	`ldap/server/name` and `ldap/server/addition`.
+
+	:param univention.config_registry.ConfigRegistry configRegistryInstance: An optional |UCR| instance.
+	:returns: A space separated list of |LDAP| host names.
+	:rtype: str
 	"""
 	if configRegistryInstance:
 		ucr = configRegistryInstance
@@ -78,10 +118,16 @@ def getLDAPServersCommaList(configRegistryInstance=None):
 
 
 def custom_username(name, configRegistryInstance=None):
+	# type: (str, Optional[univention.config_registry.ConfigRegistry]) -> str
 	"""
-	Returns the customized username configured via UCR
-	"""
+	Returns the customized user name configured via |UCR|.
 
+	:param str name: A user name.
+	:param univention.config_registry.ConfigRegistry configRegistryInstance: An optional |UCR| instance.
+	:returns: The translated user name.
+	:rtype: str
+	:raises ValueError: if no name is given.
+	"""
 	if not name:
 		raise ValueError
 
@@ -95,10 +141,16 @@ def custom_username(name, configRegistryInstance=None):
 
 
 def custom_groupname(name, configRegistryInstance=None):
+	# type: (str, Optional[univention.config_registry.ConfigRegistry]) -> str
 	"""
-	Returns the customized groupname configured via UCR
-	"""
+	Returns the customized group name configured via |UCR|.
 
+	:param str name: A group name.
+	:param univention.config_registry.ConfigRegistry configRegistryInstance: An optional |UCR| instance.
+	:returns: The translated group name.
+	:rtype: str
+	:raises ValueError: if no name is given.
+	"""
 	if not name:
 		raise ValueError
 

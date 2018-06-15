@@ -1,8 +1,8 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Univention Common Python Library
-#
+"""
+Univention common Python library for shell scripts.
+"""
 # Copyright 2010-2018 Univention GmbH
 #
 # http://www.univention.de/
@@ -34,8 +34,13 @@ import re
 
 
 def escape_value(value):
+	# type: (str) -> str
 	"""
 	Escape a value for shell usage with double quotes.
+
+	:param str value: The string to escape.
+	:returns: The escaped string.
+	:rtype: str
 
 	>>> escape_value('eins zwei')
 	'"eins zwei"'
@@ -55,16 +60,23 @@ _RE_AT_JOB = re.compile('^job ([1-9][0-9]*) at .*')
 
 
 def create_at_job(script, time=None, date=None):
+	# type: (Union[List[str], Tuple[str], str], Optional[str], Optional[str]) -> Any
 	"""
-	Create an "at" job.
-	Returns an AtJob object with the named attributes .returncode, .job,
-	.stdout and .stderr.
+	Create an :program:`at` job.
+
+	:param script: The shell command to execute.
+	:type script: List[str] or Tuple[str] or str
+	:param str time: The time of day when the command is to be executed. If `None` is given, `now` is used.
+	:param str date: The date when the command is to be executed.
+	:returns: an `AtJob` object with the named attributes `.returncode`, `.job`, `.stdout` and `.stderr`.
 
 	>>> r = create_at_job('''echo "42"''')
 	>>> r = create_at_job(['echo', 'noon'], '12:00')
 	>>> r = create_at_job(['echo', 'new year'], '24:00', '31.12.2010')
 	>>> (r.returncode, r.job, r.stdout, r.stderr) # doctest:+ELLIPSIS
 	(0, ..., '', '...job ... at Sat Jan  1 00:00:00 2011\\n')
+
+	See :py:mod:`univention.atjobs` for an alternative implementation.
 	"""
 	# if script is a sequence, shell escape it
 	if isinstance(script, (list, tuple)):
