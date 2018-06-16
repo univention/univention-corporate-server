@@ -2,8 +2,9 @@ Type: file
 File: etc/bind/named.conf
 Variables: dns/ipv6
 
-Type: script
-Script: bind-backend-switch.sh
+Type: file
+File: etc/systemd/system/bind9.service.d/10-configure-backend.conf
+Postinst: systemctl_daemon-reload.py
 Variables: dns/backend
 
 Type: file

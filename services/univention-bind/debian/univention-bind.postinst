@@ -85,12 +85,10 @@ if [ "$1" = "configure" ]; then
 		service bind9 stop
 		for dirname in "univention-bind" "univention-bind-proxy" "univention-bind-samba4"; do
 			rm -rf "/etc/runit/$dirname"
-			rm "/etc/runit/univention/$dirname"
-			rmdir "/etc/univention/templates/files/etc/runit/$dirname"
+			rm -rf "/etc/runit/univention/$dirname"
+			rm -rf "/etc/univention/templates/files/etc/runit/$dirname"
 		done
 		systemctl --system daemon-reload
-		dns_backend="$(ucr get dns/backend)"
-		ucr set "dns/backend=$dns_backend"
 		service bind9 start
 	}
 	if [ -n "$2" ]; then

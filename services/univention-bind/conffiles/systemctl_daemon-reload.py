@@ -1,7 +1,4 @@
-#!/bin/sh
-#
-# Univention bind9 backend switch
-#  UCR script
+#!/usr/bin/python2.7
 #
 # Copyright 2018 Univention GmbH
 #
@@ -30,16 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-dns_backend="$(ucr get dns/backend)"
+from subprocess import call
 
-if [ "$dns_backend" = "ldap" ]; then
-	systemctl disable univention-bind-samba4.service
-	systemctl enable univention-bind-proxy.service
-elif [ "$dns_backend" = "samba4" ]; then
-	systemctl disable univention-bind-proxy.service
-	systemctl enable univention-bind-samba4.service
-else
-	echo "ERROR: Unknown dns backend"
-	exit 1
-fi
-exit 0
+def postinst(ucr, changes):
+	call(['systemctl', 'daemon-reload'])

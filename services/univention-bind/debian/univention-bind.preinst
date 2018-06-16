@@ -30,10 +30,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-if dpkg --compare-versions "$2" lt 11.0.0-9
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 12.0.2-1
 then
+	# Remove diversion with wrong package name
 	dpkg-divert --quiet --rename \
 		--package univention-bind9 \
+		--divert /lib/systemd/system/bind9.service.debian \
+		--remove /lib/systemd/system/bind9.service
+fi
+
+if dpkg --compare-versions "$2" lt 12.0.2-1
+then
+	dpkg-divert --quiet --rename \
+		--package univention-bind \
 		--divert /lib/systemd/system/bind9.service.debian \
 		--add /lib/systemd/system/bind9.service
 fi

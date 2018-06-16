@@ -32,11 +32,11 @@
 
 #DEBHELPER#
 
-dpkg --compare-versions "$2" lt 11.0.0-9 && lose=y || lose=n
+dpkg --compare-versions "$2" lt 12.0.2-1 && lose=y || lose=n
 case "$1,$lose" in
 remove,*|abort-install,*|disappear,*|*,y)
 	dpkg-divert --quiet --rename \
-		--package univention-bind9 \
+		--package univention-bind \
 		--divert /lib/systemd/system/bind9.service.debian \
 		--remove /lib/systemd/system/bind9.service
 	;;

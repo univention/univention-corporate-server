@@ -1,3 +1,9 @@
+univention-bind (12.0.2-1) unstable; urgency=medium
+
+  * Bug #43689: use drop in file to configure bind9.service
+
+ -- Jürn Brodersen <brodersen@univention.de>  Sat, 16 Jun 2018 19:16:40 +0200
+
 univention-bind (12.0.1-5) unstable; urgency=medium
 
   * Bug #43689: use systemd services instead of runit

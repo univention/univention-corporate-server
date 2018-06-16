@@ -1,16 +1,9 @@
 [Unit]
-Description=BIND Domain Name Server proxy for LDAP backend
 Documentation=man:named(8)
-After=network.target univention-bind-ldap.service
 Wants=nss-lookup.target
 Before=nss-lookup.target
-Requires=univention-bind-ldap.service
-BindsTo=univention-bind-ldap.service
-PropagatesReloadTo=univention-bind-ldap.service
-Conflicts=univention-bind-samba4.service
 
 [Service]
-ExecStart=/usr/lib/univention-bind/proxy
 ExecReload=/usr/sbin/rndc -p 953 reload
 ExecStop=/usr/sbin/rndc -p 953 stop
 ExecStartPost=/usr/bin/timeout 30 /bin/sh -c "until rndc -p 953 status | grep --quiet 'server is up and running'; do sleep 1; done"
@@ -18,4 +11,3 @@ Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
-Alias=bind9.service
