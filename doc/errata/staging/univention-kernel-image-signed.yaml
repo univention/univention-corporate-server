@@ -3,9 +3,9 @@ release: "4.2"
 version: [3, 4]
 scope: ucs_4.2-0-errata4.2-4
 src: univention-kernel-image-signed
-fix: 3.0.2-26A~4.2.0.201806161507
+fix: 3.0.2-27A~4.2.0.201806170756
 desc: |
- This update of the Linux kernel to version 4.9.108 addresses the following
+ This update of the Linux kernel to version 4.9.109 addresses the following
  issues:
  * CVE-2017-17975: use-after-free in the usbtv_probe function in
    drivers/media/usb/usbtv/usbtv-core.c
