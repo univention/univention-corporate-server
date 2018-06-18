@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: univention-updater
+fix: 13.0.1-50A~4.3.0.201806181507
+desc: |-
+  This update addresses the following issue(s):
+  * Network errors while trying to contact the update server do not result in
+    a traceback anymore. Instead, a readable error message is shown.
+bug: [41536]
