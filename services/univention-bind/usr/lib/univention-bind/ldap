@@ -28,16 +28,31 @@
 # <http://www.gnu.org/licenses/>.
 
 # dirs under /var/run can go away on reboots.
-mkdir -p /var/run/named
-chmod 775 /var/run/named
-chown root:bind /var/run/named >/dev/null 2>&1 || true
 
-PATH=/sbin:/bin:/usr/sbin:/usr/bin
+case "$1" in
+	start)
+		mkdir -p /var/run/named
+		chmod 775 /var/run/named
+		chown root:bind /var/run/named >/dev/null 2>&1 || true
 
-debug_level="$(ucr get dns/debug/level)"
-test -z $debug_level && debug_level=0
-port="$(ucr get dns/master/port)"
+		PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
-OPTS="-c /etc/bind/named.conf -p $port -u bind -f -d $debug_level"
+		debug_level="$(ucr get dns/debug/level)"
+		test -z $debug_level && debug_level=0
+		port="$(ucr get dns/master/port)"
 
-exec /usr/sbin/named $OPTS
+		OPTS="-c /etc/bind/named.conf -p $port -u bind -f -d $debug_level"
+
+		exec /usr/sbin/named $OPTS
+		;;
+	reload)
+		/usr/sbin/rndc -p 55555 reload
+		;;
+	stop)
+		/usr/sbin/rndc -p 55555 stop
+		;;
+	wait-for-startup)
+		/usr/bin/timeout 30 /bin/sh -c \
+			"until rndc -p 55555 status | grep --quiet 'server is up and running'; do sleep 1; done"
+		;;
+esac

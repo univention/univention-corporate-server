@@ -1,3 +1,9 @@
+univention-bind (12.0.2-3) unstable; urgency=medium
+
+  * Bug #43689: Add simple init script for setup inside chroot
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 18 Jun 2018 13:34:20 +0200
+
 univention-bind (12.0.2-2) unstable; urgency=medium
 
   * Bug #43689: Fix samab -> samba4; Cleanup

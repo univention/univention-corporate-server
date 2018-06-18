@@ -37,3 +37,65 @@
 
 # sourcing /lib/lsb/init-functions calls bind9.service if it exists
 . /lib/lsb/init-functions
+
+# During systemsetup inside chroot we need a simple init script
+
+eval "$(univention-config-registry shell dns/backend)"
+
+NAME='bind9'
+DESC=$(get_lsb_header_val "$0" Short-Description)
+
+case "$1" in
+	start)
+		case "$dns_backend" in
+			samba4)
+				/usr/lib/univention-bind/samba4 start &
+				/usr/lib/univention-bind/samba4 wait-for-startup
+				;;
+			ldap)
+				/usr/lib/univention-bind/proxy start &
+				/usr/lib/univention-bind/ldap start &
+				/usr/lib/univention-bind/proxy wait-for-startup
+				;;
+		esac
+		;;
+	stop)
+		case "$dns_backend" in
+			samba4)
+				/usr/lib/univention-bind/samba4 stop
+				;;
+			ldap)
+				/usr/lib/univention-bind/proxy stop
+				/usr/lib/univention-bind/ldap stop
+				;;
+		esac
+		;;
+	restart)
+		case "$dns_backend" in
+			samba4)
+				/usr/lib/univention-bind/samba4 stop
+				/usr/lib/univention-bind/samba4 start &
+				/usr/lib/univention-bind/samba4 wait-for-startup
+				;;
+			ldap)
+				/usr/lib/univention-bind/proxy stop
+				/usr/lib/univention-bind/ldap stop
+				/usr/lib/univention-bind/proxy start &
+				/usr/lib/univention-bind/ldap start &
+				/usr/lib/univention-bind/proxy wait-for-startup
+				;;
+		esac
+		;;
+	reload)
+		case "$dns_backend" in
+			samba4)
+				/usr/lib/univention-bind/samba4 reload
+				;;
+			ldap)
+				/usr/lib/univention-bind/proxy reload
+				/usr/lib/univention-bind/ldap reload
+				;;
+		esac
+		;;
+
+esac

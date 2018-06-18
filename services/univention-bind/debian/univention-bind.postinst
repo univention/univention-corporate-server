@@ -92,7 +92,7 @@ if [ "$1" = "configure" ]; then
 		service bind9 start
 	}
 	if [ -n "$2" ]; then
-		systemctl try-restart bind9
+		systemctl try-restart bind9 || service bind9 restart
 	else
 		service bind9 start
 	fi
@@ -109,6 +109,8 @@ if [ "$1" = "configure" ]; then
 	fi
 	service univention-directory-listener crestart
 fi
+
+dh_systemd_enable enable bind9.service
 
 call_joinscript 05univention-bind.inst
 call_joinscript 90univention-bind-post.inst

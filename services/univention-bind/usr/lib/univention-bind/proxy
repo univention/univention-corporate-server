@@ -27,20 +27,34 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# dirs under /var/run can go away on reboots.
-mkdir -p /var/run/named
-chmod 775 /var/run/named
-chown root:bind /var/run/named >/dev/null 2>&1 || true
+case "$1" in
+	start)
+		# dirs under /var/run can go away on reboots.
+		mkdir -p /var/run/named
+		chmod 775 /var/run/named
+		chown root:bind /var/run/named >/dev/null 2>&1 || true
 
-# Give permissions back to bind,
-# see /usr/lib/univention-bind/samba4
-chown bind:bind /etc/bind/rndc.key
+		# Give permissions back to bind,
+		# see /usr/lib/univention-bind/samba4
+		chown bind:bind /etc/bind/rndc.key
 
-PATH=/sbin:/bin:/usr/sbin:/usr/bin
+		PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
-debug_level="$(ucr get dns/debug/level)"
-test -z $debug_level && debug_level=0
+		debug_level="$(ucr get dns/debug/level)"
+		test -z $debug_level && debug_level=0
 
-OPTS="-c /etc/bind/named.conf.proxy -u bind -f -d $debug_level"
+		OPTS="-c /etc/bind/named.conf.proxy -u bind -f -d $debug_level"
 
-exec /usr/sbin/named $OPTS
+		exec /usr/sbin/named $OPTS
+		;;
+	reload)
+		/usr/sbin/rndc -p 953 reload
+		;;
+	stop)
+		/usr/sbin/rndc -p 953 stop
+		;;
+	wait-for-startup)
+		/usr/bin/timeout 30 /bin/sh -c \
+			"until rndc -p 953 status | grep --quiet 'server is up and running'; do sleep 1; done"
+		;;
+esac
