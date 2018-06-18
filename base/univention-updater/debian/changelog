@@ -1,3 +1,10 @@
+univention-updater (13.0.1-50) unstable; urgency=medium
+
+  * Bug #41536: Better error message if network connection to update server
+    failed.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 18 Jun 2018 14:27:58 +0200
+
 univention-updater (13.0.1-49) unstable; urgency=medium
 
   * Bug #47121: Adapt links and components for 4.3-1

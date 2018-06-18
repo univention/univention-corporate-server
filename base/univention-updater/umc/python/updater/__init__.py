@@ -48,12 +48,12 @@ from univention.lib.i18n import Translation
 from univention.lib import atjobs
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
-from univention.management.console.modules import Base
+from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import ChoicesSanitizer, StringSanitizer, IntegerSanitizer
 
 from univention.updater.tools import UniventionUpdater
-from univention.updater.errors import RequiredComponentError
+from univention.updater.errors import RequiredComponentError, UpdaterException
 
 _ = Translation('univention-management-console-module-updater').translate
 
@@ -409,7 +409,12 @@ class Instance(Base):
 				result['release_update_available'] = ''
 
 			what = 'querying update-blocking components'
-			blocking_components = self.uu.get_all_available_release_updates()[1]
+			try:
+				blocking_components = self.uu.get_all_available_release_updates()[1]
+			except (UpdaterException, ValueError) as exc:
+				msg = _('Error contacting the update server. Please check your proxy or firewall settings, if any. Or it may be a problem with your configured DNS server.')
+				msg += ' ' + _('This is the error message:') + ' ' + str(exc)
+				raise UMC_Error(msg)
 			result['release_update_blocking_components'] = ' '.join(blocking_components or [])
 
 			what = "querying availability for easy mode"
@@ -449,9 +454,9 @@ class Instance(Base):
 		except Exception as exc:  # FIXME: don't catch everything
 			typ = str(type(exc)).strip('<>')
 			msg = '[while %s] [%s] %s' % (what, typ, exc)
-			result['message'] = msg
-			result['status'] = 1
-			MODULE.error(msg)
+			msg = _('Error contacting the update server. Please check your proxy or firewall settings, if any. Or it may be a problem with your configured DNS server.')
+			msg += ' ' + _('This is the error message:') + ' ' + str(exc)
+			raise UMC_Error(msg)
 
 		self.finished(request.id, [result])
 

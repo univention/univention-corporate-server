@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-31 14:02+0200\n"
+"POT-Creation-Date: 2018-06-18 14:59+0200\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -11,6 +11,15 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: umc/python/updater/__init__.py:415 umc/python/updater/__init__.py:457
+msgid ""
+"Error contacting the update server. Please check your proxy or firewall "
+"settings, if any. Or it may be a problem with your configured DNS server."
+msgstr ""
+"Fehler beim Verbindungsaufbau zum Update-Server. Bitte überprüfen Sie die "
+"Proxy- oder Firewall-Einstellungen, falls vorhanden. Es kann sich sich auch "
+"um ein Problem des konfigurierten DNS-Servers handeln."
 
 #: umc/python/updater/__init__.py:83
 msgid "Package update"
@@ -24,6 +33,10 @@ msgstr "Release-Aktualisierung"
 #, python-format
 msgid "Release update to version %s"
 msgstr "Release-Aktualisierung nach %s"
+
+#: umc/python/updater/__init__.py:416 umc/python/updater/__init__.py:458
+msgid "This is the error message:"
+msgstr "Dies ist die Fehlermeldung:"
 
 #: umc/python/updater/__init__.py:273
 msgid "latest version"
