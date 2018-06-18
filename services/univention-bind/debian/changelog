@@ -1,3 +1,9 @@
+univention-bind (12.0.2-4) unstable; urgency=medium
+
+  * Bug #43689: fork from the init script
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 18 Jun 2018 16:40:53 +0200
+
 univention-bind (12.0.2-3) unstable; urgency=medium
 
   * Bug #43689: Add simple init script for setup inside chroot
