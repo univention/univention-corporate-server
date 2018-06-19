@@ -47,6 +47,9 @@ try:
 except ImportError:
 	pass
 
+from univention.lib.locking import get_lock, release_lock
+from univention.lib.i18n import Translation
+
 import apt_pkg
 import apt
 import apt.progress
@@ -54,8 +57,6 @@ from apt.cache import FetchFailedException, LockFailedException, ProblemResolver
 
 apt_pkg.init()
 
-from univention.lib.locking import get_lock, release_lock
-from univention.lib.i18n import Translation
 _ = Translation('univention-lib').translate
 
 # FIXME: Requires univention-updater (but this requires univention-lib...)
