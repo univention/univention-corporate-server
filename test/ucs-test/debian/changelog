@@ -1,3 +1,10 @@
+ucs-test (8.0.28-137) unstable; urgency=medium
+
+  * Bug #47208: Let wait_for_replication wait until listener and notifier id
+    are equal
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 19 Jun 2018 15:06:45 +0200
+
 ucs-test (8.0.28-136) unstable; urgency=medium
 
   * Bug #43689: Retry resolveDnsEntry in case the zone was not yet transfered
