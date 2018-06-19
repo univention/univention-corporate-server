@@ -1,3 +1,9 @@
+ucs-test (7.0.23-127) unstable; urgency=medium
+
+  * Bug #47412: Let wait_for_replication wait until listener and notifier id are equal
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 01 Aug 2018 13:50:27 +0200
+
 ucs-test (7.0.23-126) unstable; urgency=medium
 
   * Bug #46665: Fix 80_docker.40_app_umc_install_latest_appbox.test
