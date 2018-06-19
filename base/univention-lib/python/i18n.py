@@ -125,7 +125,7 @@ class NullTranslation(object):
 		self.domain = namespace  # type: Optional[str]
 		self._translation = None  # type: Optional[gettext.NullTranslations]
 		self._localedir = localedir  # type: Optional[str]
-		self._localespec = None  # type: Optional[Locale]
+		self._locale = None  # type: Optional[Locale]
 		if not locale_spec:
 			self.set_language()
 
@@ -170,7 +170,7 @@ class NullTranslation(object):
 		:returns: The currently selected locale.
 		:rtype: Locale
 		"""
-		return self._localespec
+		return self._locale
 
 	def _set_locale(self, locale_spec=None):
 		# type: (Optional[str]) -> None
@@ -181,7 +181,7 @@ class NullTranslation(object):
 		"""
 		if locale_spec is None:
 			return
-		self._localespec = Locale(locale_spec)
+		self._locale = Locale(locale_spec)
 
 	locale = property(fget=_get_locale, fset=_set_locale)
 
