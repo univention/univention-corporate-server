@@ -332,10 +332,13 @@ class FollowLogfile(object):
 
 def wait_for_replication(verbose=True):
     sys.stdout.flush()
+    time.sleep(1)  # Give the notifier some time to increase its transaction id
     if verbose:
         print 'Waiting for replication...'
     for _ in xrange(300):
-        cmd = ('/usr/lib/nagios/plugins/check_univention_replication',)
+        # The "-c 1" option ensures listener and notifier id are equal.
+        # Otherwise the check is successful as long as the listener id changed since the last check.
+        cmd = ('/usr/lib/nagios/plugins/check_univention_replication', '-c', '1')
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdout, _stderr = proc.communicate()
         if proc.returncode == 0:
