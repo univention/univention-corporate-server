@@ -42,7 +42,7 @@ import httplib
 import ssl
 from functools import wraps
 
-from univention.appcenter.app_cache import AllApps
+from univention.appcenter.app_cache import Apps
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.utils import underscore, call_process, verbose_http_error, send_information
 from univention.appcenter.exceptions import Abort, NetworkError
@@ -62,7 +62,7 @@ def possible_network_error(func):
 
 
 class StoreAppAction(Action):
-	cache_class = AllApps
+	cache_class = Apps
 
 	@classmethod
 	def parse_app_id_string(cls, app_id):
