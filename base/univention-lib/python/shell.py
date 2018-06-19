@@ -83,8 +83,7 @@ def create_at_job(script, time=None, date=None):
 	See :py:mod:`univention.atjobs` for an alternative implementation.
 	"""
 	# if script is a sequence, shell escape it
-	if isinstance(script, (list, tuple)):
-		script = ' '.join(map(escape_value, script))
+	line = ' '.join(map(escape_value, script)) if isinstance(script, (list, tuple)) else script
 	# build at command
 	cmd = ['at']
 	if time:
@@ -98,7 +97,7 @@ def create_at_job(script, time=None, date=None):
 	p = subprocess.Popen(cmd, shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
 
 	class AtJob:
-		stdout, stderr = p.communicate(script)
+		stdout, stderr = p.communicate(line)
 		returncode = p.returncode
 		if returncode == 0:
 			job = int(_RE_AT_JOB.match(stderr.splitlines()[-1]).groups()[0])
