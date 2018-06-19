@@ -60,7 +60,7 @@ def escape_value(value):
 	return '"%s"' % ''.join(map(lambda c: escapes.get(c, c), value))
 
 
-_RE_AT_JOB = re.compile('^job ([1-9][0-9]*) at .*')
+_RE_AT_JOB = re.compile(r'^job ([1-9][0-9]*) at ')
 
 
 def create_at_job(script, time=None, date=None):
@@ -99,10 +99,13 @@ def create_at_job(script, time=None, date=None):
 	class AtJob:
 		stdout, stderr = p.communicate(line)
 		returncode = p.returncode
+		job = None
 		if returncode == 0:
-			job = int(_RE_AT_JOB.match(stderr.splitlines()[-1]).groups()[0])
-		else:
-			job = None
+			line = stderr.splitlines()[-1]
+			match = _RE_AT_JOB.match(line)
+			if match:
+				job = int(match.group(1))
+
 	return AtJob
 
 
