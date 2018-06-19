@@ -184,9 +184,9 @@ def remove(nr):
 
 	:param int nr: Job number.
 	"""
-	result = [p for p in list() if p.nr == nr]
-	if len(result):
-		return result[0].rm()
+	for p in list():
+		if p.nr == nr:
+			return p.rm()
 
 
 def _parseScript(job):
