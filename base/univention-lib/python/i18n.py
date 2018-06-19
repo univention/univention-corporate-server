@@ -222,10 +222,7 @@ class Translation(NullTranslation):
 		if not Translation.locale:
 			try:
 				lang = getlocale(LC_MESSAGES)
-				if lang[0] is None:
-					language = 'C'
-				else:
-					language = lang[0]
+				language = lang[0] or 'C'
 				Translation.locale.parse(language)
 			except Error as e:
 				raise I18N_Error('The given locale is not vaild: %s' % str(e))
