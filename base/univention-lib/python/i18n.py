@@ -98,6 +98,8 @@ class Locale(object):
 
 	def __str__(self):
 		# type: () -> str
+		if not self.language:
+			return ''
 		text = self.language
 		if self.language not in ('C', 'POSIX'):
 			if self.territory is not None:
@@ -106,7 +108,7 @@ class Locale(object):
 				text += '.%s' % self.codeset
 			if self.modifier is not None:
 				text += '@%s' % self.modifier
-		return text is None and '' or text
+		return text
 
 
 class NullTranslation(object):
