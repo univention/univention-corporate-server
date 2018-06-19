@@ -126,8 +126,7 @@ class NullTranslation(object):
 		self._translation = None  # type: Optional[gettext.NullTranslations]
 		self._localedir = localedir  # type: Optional[str]
 		self._localespec = None  # type: Optional[Locale]
-		self._locale = locale_spec  # type: Optional[str]
-		if not self._locale:
+		if not locale_spec:
 			self.set_language()
 
 	def _get_domain(self):
