@@ -122,7 +122,7 @@ class NullTranslation(object):
 
 	def __init__(self, namespace, locale_spec=None, localedir=None):
 		# type: (str, Optional[str], Optional[str]) -> None
-		self.domain = namespace  # type: Optional[str]
+		self._set_domain(namespace)
 		self._translation = None  # type: Optional[gettext.NullTranslations]
 		self._localedir = localedir  # type: Optional[str]
 		self._locale = None  # type: Optional[Locale]
