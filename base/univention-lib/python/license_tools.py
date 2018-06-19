@@ -98,16 +98,16 @@ Possible exitcodes:
 	try:
 		result = is_CSP_license()
 	except LicenseExpired:
-		print 'License expired'
+		print('License expired')
 		sys.exit(11)
 	except LicenseNotFound:
-		print 'License not found'
+		print('License not found')
 		sys.exit(12)
 	except LicenseCheckError:
-		print 'License verfication error'
+		print('License verfication error')
 		sys.exit(12)
 
-	print 'CSP=%s' % (result,)
+	print('CSP=%s' % (result,))
 	if not result:
 		sys.exit(10)
 

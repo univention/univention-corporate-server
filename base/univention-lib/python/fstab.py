@@ -203,4 +203,4 @@ class InvalidEntry(Exception):
 
 if __name__ == '__main__':
 	fstab = File('fstab')
-	print fstab.get(['xfs', 'ext3'])
+	print(fstab.get(['xfs', 'ext3']))

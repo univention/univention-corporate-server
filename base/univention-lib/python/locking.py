@@ -73,7 +73,7 @@ def get_lock(name, nonblocking=False):
 		if e.errno == 11:
 			return None
 		raise
-	print >>fd, '%s\n' % os.getpid()
+	fd.write('%s\n' % os.getpid())
 	return fd
 
 
