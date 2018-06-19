@@ -204,7 +204,7 @@ fi
 /usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3 >>"$UPDATER_LOG" 2>&1
 
 # Bug #46875: unmask the rpcbind service again after update
-if grep -q '^rpcbind/autostart: no$' /etc/univention/base-forced.conf
+if grep -q '^rpcbind/autostart: no$' /etc/univention/base-forced.conf; then
 	ucr unset --force rpcbind/autostart
 	systemctl daemon-reload
 	if [ -x /usr/sbin/rpcinfo ]; then
