@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: univention-lib
+fix: 7.0.0-12
+desc: |
+ This update addresses the following issue:
+ * Protect code of `getMailFromMailOrUid` from execution on module load.
+bug: [47206]

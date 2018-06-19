@@ -1,3 +1,9 @@
+univention-lib (7.0.0-12) unstable; urgency=low
+
+  * Bug #47206: Protect getMailFromMailOrUid module import
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 19 Jun 2018 14:09:55 +0200
+
 univention-lib (7.0.0-11) unstable; urgency=medium
 
   * Bug #41733: Fix another syntax error typo
