@@ -33,6 +33,7 @@ import time
 import dns.resolver as resolver
 from dns.exception import Timeout
 from dns.resolver import NXDOMAIN
+from dns.resolver import NoNameservers
 
 
 def resolveDnsEntry(zoneName, resourceRecord, timeout=120, tries=3):
@@ -46,7 +47,7 @@ def resolveDnsEntry(zoneName, resourceRecord, timeout=120, tries=3):
 			tries -= 1
 			if tries < 0:
 				raise
-		except NXDOMAIN:
+		except (NXDOMAIN, NoNameservers):
 			diff = time.time() - start
 			if diff > timeout:
 				raise
