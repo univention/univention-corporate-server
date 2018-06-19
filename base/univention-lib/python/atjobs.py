@@ -152,7 +152,7 @@ def list(extended=False):
 	for line in out:
 		ijob = _parseJob(line)
 		if ijob:
-			jobs.append(_parseJob(line))
+			jobs.append(ijob)
 
 	if extended:
 		for job in jobs:
