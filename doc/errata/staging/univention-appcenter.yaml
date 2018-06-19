@@ -1,12 +1,12 @@
 product: ucs
 release: "4.2"
-version: [4]
+version: [3, 4]
 scope: ucs_4.2-0-errata4.2-4
 src: univention-appcenter
-fix:
+fix: 6.0.11-17A~4.2.0.201806191433
 desc: |-
   This update addresses the following issue(s):
-  * Bug #47187: The command "univention-app" took every App from every UCS
-  version into consideration. Now Non-Docker Apps are excluded when the UCS
-  version of the App and the one of the system do not match.
+  * The command "univention-app" took every App from every UCS version into
+  consideration. Now Non-Docker Apps are excluded when the UCS version of the
+  App and the one of the system do not match.
 bug: [47207]
