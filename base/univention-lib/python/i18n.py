@@ -125,8 +125,11 @@ class NullTranslation(object):
 		self._set_domain(namespace)
 		self._translation = None  # type: Optional[gettext.NullTranslations]
 		self._localedir = localedir  # type: Optional[str]
-		self._locale = None  # type: Optional[Locale]
-		if not locale_spec:
+		if not hasattr(self, '_locale'):
+			self._locale = None  # type: Optional[Locale]
+		if locale_spec:
+			self._set_locale(locale_spec)
+		else:
 			self.set_language()
 
 	def _get_domain(self):
@@ -205,7 +208,7 @@ class Translation(NullTranslation):
 	"""
 	Translation.
 	"""
-	locale = Locale()
+	_locale = Locale()
 
 	def set_language(self, language=None):
 		# type: (Optional[str]) -> None
@@ -216,13 +219,13 @@ class Translation(NullTranslation):
 		:raises I18N_Error: if the given locale is not valid.
 		"""
 		if language is not None:
-			Translation.locale.parse(language)
+			self.locale.parse(language)
 
-		if not Translation.locale:
+		if not self.locale:
 			try:
 				lang = getlocale(LC_MESSAGES)
 				language = lang[0] or 'C'
-				Translation.locale.parse(language)
+				self.locale.parse(language)
 			except Error as e:
 				raise I18N_Error('The given locale is not vaild: %s' % str(e))
 
@@ -230,9 +233,9 @@ class Translation(NullTranslation):
 			return
 
 		try:
-			self._translation = gettext.translation(self._domain, languages=(Translation.locale.language, ), localedir=self._localedir)
+			self._translation = gettext.translation(self._domain, languages=(self.locale.language, ), localedir=self._localedir)
 		except IOError as e:
 			try:
-				self._translation = gettext.translation(self._domain, languages=('%s_%s' % (Translation.locale.language, Translation.locale.territory), ), localedir=self._localedir)
+				self._translation = gettext.translation(self._domain, languages=('%s_%s' % (self.locale.language, self.locale.territory), ), localedir=self._localedir)
 			except IOError:
 				self._translation = None
