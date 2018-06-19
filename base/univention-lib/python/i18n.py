@@ -130,6 +130,16 @@ class NullTranslation(object):
 		if not self._locale:
 			self.set_language()
 
+	def _get_domain(self):
+		# type: () -> str
+		"""
+		Retrun translation domain.
+
+		:returns: The name of the translation domain.
+		:rtype: str
+		"""
+		return self._domain
+
 	def _set_domain(self, namespace):
 		# type: (str) -> None
 		"""
@@ -142,7 +152,7 @@ class NullTranslation(object):
 		else:
 			self._domain = None
 
-	domain = property(fset=_set_domain)
+	domain = property(fget=_get_domain, fset=_set_domain)
 
 	def set_language(self, language=None):
 		# type: (Optional[str]) -> None
