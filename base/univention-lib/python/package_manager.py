@@ -176,6 +176,7 @@ class ProgressState(object):
 		"""
 		if self._percentage is not None:
 			return self._start_steps + self._percentage
+		return None
 
 	def poll(self):
 		# type: () -> Dict[str, Any]

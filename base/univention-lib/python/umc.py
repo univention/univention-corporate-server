@@ -271,6 +271,7 @@ class Response(object):
 		"""
 		if isinstance(self.data, dict):
 			return self.data.get('result')
+		return None
 
 	@property
 	def message(self):
@@ -282,6 +283,7 @@ class Response(object):
 		"""
 		if isinstance(self.data, dict):
 			return self.data.get('message')
+		return None
 
 	def __init__(self, status, reason, body, headers, _response):
 		# type: (int, str, str, List[Tuple[str, str]], httplib.HTTPResponse) -> None

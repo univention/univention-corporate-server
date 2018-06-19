@@ -121,6 +121,7 @@ class UMCConnection(object):
 		except ConnectionError as exc:
 			if error_handler:
 				error_handler('Could not connect to UMC on %s: %s' % (ucr.get('ldap/master'), exc.reason))
+			return None
 
 	def auth(self, username, password, auth_type=None):
 		# type: (str, str, Optional[str]) -> None
