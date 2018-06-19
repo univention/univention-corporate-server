@@ -1,9 +1,3 @@
-univention-updater (13.0.1-51) unstable; urgency=medium
-
-  * Bug #46875: mask the rpcbind service during update
-
- -- Arvid Requate <requate@univention.de>  Tue, 19 Jun 2018 12:29:53 +0200
-
 univention-updater (13.0.1-50) unstable; urgency=medium
 
   * Bug #41536: Better error message if network connection to update server

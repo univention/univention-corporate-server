@@ -170,18 +170,6 @@ if test -e /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf; then
 	systemctl daemon-reload
 fi
 
-# Bug #46875: unmask the rpcbind service again after update
-if grep -q '^rpcbind/autostart: no$' /etc/univention/base-forced.conf
-	ucr unset --force rpcbind/autostart
-	systemctl daemon-reload
-	if [ -x /usr/sbin/rpcinfo ]; then
-		systemctl restart rpcbind
-		systemctl restart nfs-kernel-server
-		systemctl restart nfs-server
-		systemctl restart quotarpc
-	fi
-fi
-
 echo "
 
 
