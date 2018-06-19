@@ -1,3 +1,9 @@
+univention-samba (12.0.1-4) unstable; urgency=medium
+
+  * Bug #47095: restore some share scripts
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Jun 2018 16:47:50 +0200
+
 univention-samba (12.0.1-3) unstable; urgency=medium
 
   * Bug #47060: bindpwdfile support
