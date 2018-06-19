@@ -454,9 +454,7 @@ class PackageManager(object):
 		:param bool just_mark: if `True`, process the previously saved list of packages instead of the given new list.
 		"""
 		if not just_mark:
-			if pkgs is None:
-				pkgs = []
-			self._always_install = pkgs
+			self._always_install = pkgs or []
 		for pkg in self._always_install:
 			if self.is_installed(pkg):
 				pkg.mark_keep()
