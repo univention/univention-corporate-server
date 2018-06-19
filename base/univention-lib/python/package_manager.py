@@ -1046,8 +1046,8 @@ class PackageManager(object):
 					continue
 				match = re.search(' - (write|open|rename) \((\d+): .*\)', msg)
 				if match:
-					type_, errno = match.groups()
-					errno = int(errno)
+					type_, errno_ = match.groups()
+					errno = int(errno_)
 					if errno == ENOSPC:
 						no_space_left = True
 						continue
@@ -1081,9 +1081,9 @@ class PackageManager(object):
 				_('The sources.list entries could be repaired by executing the following commands as root on this server:'),
 				'ucr commit /etc/apt/sources.list.d/*; apt-get update'])
 		if further:
-			further = list(further)
-			message.append('\n%s\n%s' % (_('Further information regarding this error:'), further[0]))
-			message.extend(further[1:])
+			further_ = list(further)
+			message.append('\n%s\n%s' % (_('Further information regarding this error:'), further_[0]))
+			message.extend(further_[1:])
 		return message
 
 	def autoremove(self):
