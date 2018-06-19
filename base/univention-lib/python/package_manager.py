@@ -189,12 +189,10 @@ class ProgressState(object):
 		"""
 		result = {
 			'info': self._info,
-			'steps': self._steps,
+			'steps': int((self._steps * 100 / self._max_steps)) if self._max_steps and self._steps is not None else None,
 			'errors': self._errors,
 			'finished': self._finished,
 		}
-		if self._max_steps and result['steps']:
-			result['steps'] = int((result['steps'] * 100 / self._max_steps))
 		self.reset()
 		return result
 
