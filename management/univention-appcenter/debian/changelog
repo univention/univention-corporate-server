@@ -1,3 +1,11 @@
+univention-appcenter (7.0.2-2) unstable; urgency=medium
+
+  * Bug #47187: The command "univention-app" took every App from every UCS
+    version into consideration. Now Non-Docker Apps are excluded when the UCS
+    version of the App and the one of the system do not match.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 19 Jun 2018 14:35:14 +0200
+
 univention-appcenter (7.0.2-1) unstable; urgency=medium
 
   * Bug #46813: Redo
