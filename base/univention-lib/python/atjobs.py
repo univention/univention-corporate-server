@@ -80,7 +80,7 @@ def add(cmd, execTime=None, comments={}):
 
 	# launch the at job directly
 	atCmd = ['/usr/bin/at']
-	if start:
+	if isinstance(start, datetime.datetime):
 		jobTime = start.strftime(_timeFormatWrite)
 		jobDate = start.strftime(_dateFormatWrite)
 		atCmd.extend([jobTime, jobDate])
