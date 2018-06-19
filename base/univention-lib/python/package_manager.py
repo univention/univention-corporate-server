@@ -238,7 +238,7 @@ class FetchProgress(apt.progress.text.AcquireProgress):
 	:param ProgressState outfile: An instance to receive the progress information.
 	"""
 
-	def __init__(self, outfile=None):
+	def __init__(self, outfile):
 		# type: (ProgressState) -> None
 		super(FetchProgress, self).__init__()
 		self._file = MessageWriter(outfile)
