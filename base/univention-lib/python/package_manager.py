@@ -439,7 +439,7 @@ class PackageManager(object):
 		self._always_install = []  # type: List[apt.package.Package]
 		self.always_noninteractive = always_noninteractive
 		self.lock_fd = None  # type: Optional[IO]
-		self.apt_lock_fd = None  # type: Optional[int]
+		self.apt_lock_fd = -1
 		if lock:
 			self.lock()
 
@@ -501,7 +501,7 @@ class PackageManager(object):
 		"""
 		if self.apt_lock_fd >= 0:
 			os.close(self.apt_lock_fd)
-			self.apt_lock_fd = None
+			self.apt_lock_fd = -1
 		if self.lock_fd is not None:
 			release_lock(self.lock_fd)
 			self.lock_fd = None
