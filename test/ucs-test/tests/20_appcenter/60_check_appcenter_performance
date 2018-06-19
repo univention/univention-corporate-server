@@ -23,7 +23,7 @@ def main():
 	max_time = 15.0
 	request_query = ('appcenter/query', {'quick': True}, )
 
-	print("Getting umc_connection")
+	print("Getting UMC connection")
 	client = Client.get_test_connection()
 
 	print("Start request to appcenter")
