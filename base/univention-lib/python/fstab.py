@@ -136,7 +136,8 @@ class File(list):
 		fields = line.split(None, 7)
 		if len(fields) < 4:
 			raise InvalidEntry('The following is not a valid fstab entry: %s' % line)  # TODO
-		entry = Entry(*fields[: 4])
+		spec, mount_point, typ, options = fields[:4]
+		entry = Entry(spec, mount_point, typ, options)
 		if len(fields) > 4:
 			dump = fields[4]
 			if not File._is_comment(dump):
