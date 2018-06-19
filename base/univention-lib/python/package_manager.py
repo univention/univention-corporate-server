@@ -998,7 +998,9 @@ class PackageManager(object):
 			_open()
 		except SystemError:
 			# still failing, let it raise
-			self._handle_system_error(*sys.exc_info())
+			typ, value, traceback = sys.exc_info()
+			assert typ is not None and value is not None and traceback is not None
+			self._handle_system_error(typ, value, traceback)
 
 	def _handle_system_error(self, etype, exc, etraceback):
 		# type: (Type[BaseException], BaseException, TracebackType) -> None
