@@ -565,10 +565,9 @@ class PackageManager(object):
 
 		:param bool exclude_apache: If `True` Apache may be restarted.
 		"""
+		cmd_disable_exec = [CMD_DISABLE_EXEC]
 		if exclude_apache:
-			cmd_disable_exec = [CMD_DISABLE_EXEC, '--exclude-apache']
-		else:
-			cmd_disable_exec = CMD_DISABLE_EXEC
+			cmd_disable_exec.append('--exclude-apache')
 		self._shell_command(cmd_disable_exec)
 		try:
 			yield
