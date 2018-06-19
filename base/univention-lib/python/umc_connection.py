@@ -80,7 +80,7 @@ class UMCConnection(object):
 		:returns: A dictionary containing the |HTTP| headers.
 		:rtype: dict
 		"""
-		return self._client._headers
+		return self.client._headers
 
 	@property
 	def _host(self):
@@ -101,7 +101,7 @@ class UMCConnection(object):
 		:returns: The connection.
 		:rtype: HTTPSConnection
 		"""
-		return self._client._get_connection()
+		return self.client._get_connection()
 
 	@classmethod
 	def get_machine_connection(cls, error_handler=None):
