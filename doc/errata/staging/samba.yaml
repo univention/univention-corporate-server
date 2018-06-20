@@ -2,7 +2,7 @@ product: ucs
 release: "4.3"
 version: [1,0]
 scope: ucs_4.3-0-errata4.3-1
-src: univention-s4-connector
+src: samba
 fix: 2:4.7.5-1A~4.3.0.201806181700
 desc: |
  This update addresses the following issue(s):
