@@ -9,3 +9,5 @@ desc: |
  * Some scripts, that were deleted by a previous cleanup,
    have been restored.
 bug: [47095]
+erratum: 115
+announced: 2018-06-20
