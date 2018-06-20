@@ -11,3 +11,5 @@ desc: |
  * Some errors were not displayed correctly in the 
    'Inform vendor' dialogs.
 bug: [47188, 47133]
+erratum: 116
+announced: 2018-06-20
