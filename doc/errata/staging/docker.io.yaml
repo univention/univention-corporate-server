@@ -1,0 +1,14 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: docker.io
+fix: 1.13.1-0ubuntu6A~4.3.1.201806192203
+desc: |
+ This update addresses the following issue:
+ * During the initial setup by Univention System Setup the package gets always
+   installed inside the chroot environment. systemd is not yet used there, but
+   the legacy SysV init scripts. Its stop action reports an error as the
+   daemon is not running. This aborts the removal of the package, which is
+   done when setting up a Base system. This has been fixed.
+bug: [47194]
