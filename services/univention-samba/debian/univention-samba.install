@@ -4,17 +4,6 @@ samba-privileges.py usr/lib/univention-directory-listener/system
 74univention-samba.uinst usr/lib/univention-uninstall/
 scripts/kerberize_user usr/share/univention-samba/
 scripts/addmachine.sh usr/share/univention-samba/
-scripts/account-policy usr/share/univention-samba/
-scripts/change_sid usr/share/univention-samba/
-scripts/fix_user_sids usr/share/univention-samba/
 scripts/mount_extfs_with_user_xattr.py usr/share/univention-samba/
-scripts/purge_users_and_groups usr/share/univention-samba/
-scripts/remove-samba-account usr/share/univention-samba/
-scripts/set_default_settings usr/share/univention-samba/
-scripts/slave-sync usr/share/univention-samba/
-scripts/fix_primary_groups usr/share/univention-samba/
 scripts/password_check usr/share/univention-samba/
-scripts/query_domain_policy usr/share/univention-samba/
-scripts/set_account_policy_from_pdbedit usr/share/univention-samba/
-scripts/set_privilege usr/share/univention-samba/
 server_password_change.d/univention-samba usr/lib/univention-server/server_password_change.d/
