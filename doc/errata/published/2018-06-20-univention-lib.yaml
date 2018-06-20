@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Protect code of `getMailFromMailOrUid` from execution on module load.
 bug: [47206]
+erratum: 113
+announced: 2018-06-20
