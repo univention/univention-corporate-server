@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: univention-appcenter
+fix: 7.0.2-3A~4.3.0.201806201340
+desc: |-
+  This update addresses the following issue(s):
+  * Improved cache performance of the App Center
+bug: [46821]
