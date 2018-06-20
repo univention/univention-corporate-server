@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-3) unstable; urgency=medium
+
+  * Bug #46821: Improved cache performance of the App Center
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 20 Jun 2018 13:24:53 +0200
+
 univention-appcenter (7.0.2-2) unstable; urgency=medium
 
   * Bug #47187: The command "univention-app" took every App from every UCS
