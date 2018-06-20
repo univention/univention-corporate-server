@@ -8,10 +8,6 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
-RETVAL=100
-
-eval "$(ucr shell)"
-
 os="$(univention-ldapsearch -b "$ldap_hostdn" -s base -LLL univentionOperatingSystem | sed -ne 's|univentionOperatingSystem: ||p')"
 if [ "$os" != "Univention Corporate Server" ]; then
 	fail_test 110 "univentionOperatingSystem is set to $os"
@@ -21,5 +17,4 @@ if [ "$ovs" != "$version_version-$version_patchlevel" ]; then
 	fail_test 110 "univentionOperatingSystemVersion is set to $ovs"
 fi
 
-exit $RETVAL
-
+exit "$RETVAL"

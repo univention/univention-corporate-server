@@ -9,12 +9,10 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 . /usr/share/univention-lib/ucr.sh || exit 137
 
-RETVAL=100
-
 if ! is_ucr_false connector/s4/autostart; then
 	if is_ucr_true connector/s4/listener/disabled; then
-		fail_test 110 "connector/s4/autostart is active but connector/s4/listener/disabled is active too"
+		fail_fast 110 "connector/s4/autostart is active but connector/s4/listener/disabled is active too"
 	fi
 fi
 
-exit $RETVAL
+exit "$RETVAL"

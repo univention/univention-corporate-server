@@ -1,30 +1,13 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner bash
 ## desc: check wether the ntpd daemon is running
+## roles-not: [basesystem]
 ## exposure: safe
 ## bugs: [39297]
 
-from subprocess import Popen, PIPE, call
-import univention.testing.utils as utils
-from sys import exit
-
-print "checking wether ntpd is running."
-
-proc = Popen(['pgrep', 'ntpd'], stdout=PIPE, stderr=PIPE)
-
-stdout, stderr = proc.communicate()
-
-
-def dump_ps():
-	call(['ps', 'afwx'])
-
-
-if stderr.strip():
-	dump_ps()
-	utils.fail('An error ocurred when running the pgrep command'
-		'to check for ntpd, STDERR: %s ' % stderr)
-
-if proc.returncode != 0:
-	dump_ps()
-	utils.fail('ntpd not found.')
-
-exit(0)
+if ! pgrep ntpd
+then
+	echo "ntpd not found in process list"
+	ps afwx
+	exit 1
+fi
+:

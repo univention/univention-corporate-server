@@ -1,14 +1,11 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Check system status with univention-system-check
+## roles-not: [basesystem]
 ## tags: [basic, apptest]
 ## exposure: safe
 
-RETVAL=100
-
-sleep 100
-
 set -e
-tmp=$(mktemp -d)
+tmp="$(mktemp -d)"
 trap "rm -rf '$tmp'" EXIT
 cd "$tmp"
 curl -OOs https://updates.software-univention.de/download/univention-system-check/univention-system-check.tar.gz{,.gpg}

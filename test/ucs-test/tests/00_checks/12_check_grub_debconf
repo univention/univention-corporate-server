@@ -8,15 +8,11 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
-RETVAL=100
-
-missing_devices=0 # are any devices in grub-pc/install_devices missing/wrong?
-have_no_devices=1 # are there no devices in grub-pc/install_devices at all?
-boot_device_missing=1 # is the $boot_device in grub-pc/install_devices?
 RET=$(echo "get grub-pc/install_devices" | debconf-communicate | sed -re 's,^[0-9]+ ,,')
 echo "Currently grub-pc/install_devices is set to '$RET'"
-for i in `echo $RET | sed -e 's/, / /g'` ; do # from grub-pc.postinst
-	real_device="$(readlink -f "$i")"		  # from grub-pc.postinst
+for i in ${RET//, / }
+do
+	real_device="$(readlink -f "$i")"
 	echo "Checking '$real_device'..."
 	if [ -b "$real_device" ] # exists and is block special
 	then
@@ -27,4 +23,4 @@ for i in `echo $RET | sed -e 's/, / /g'` ; do # from grub-pc.postinst
 	fi
 done
 
-exit $RETVAL
+exit "$RETVAL"

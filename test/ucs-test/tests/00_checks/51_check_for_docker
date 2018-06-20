@@ -4,18 +4,12 @@
 ## packages:
 ## - docker.io
 
-RETVAL=0
-
 . "$TESTLIBPATH/base.sh" || exit 137
-
-echo "Trying to find 'dockerd' process:"
 
 if pgrep -f "/usr/bin/dockerd " >/dev/null
 then
-    echo "OK. Process found."
+	echo "OK. Process found."
 else
 	ps afwx
-    fail_fast 110 "Could not find the 'docker' process."
+	fail_fast 110 "Could not find the 'docker' process."
 fi
-
-exit $RETVAL

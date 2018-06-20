@@ -1,3 +1,9 @@
+ucs-test (8.0.28-138) unstable; urgency=low
+
+  * Bug #47217: Run tests on base system
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 20 Jun 2018 11:58:57 +0200
+
 ucs-test (8.0.28-137) unstable; urgency=medium
 
   * Bug #47208: Let wait_for_replication wait until listener and notifier id

@@ -9,12 +9,9 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
-RETVAL=100
-
 echo "DEBUG: 46_ntacl_sysvolcheck"
 find /var/lib/samba/sysvol
 echo "DEBUG: 46_ntacl_sysvolcheck (done)"
 
-samba-tool ntacl sysvolcheck || fail_test 110 "samba-tool ntacl sysvolcheck failed"
-
-exit $RETVAL
+samba-tool ntacl sysvolcheck ||
+	fail_fast 110 "samba-tool ntacl sysvolcheck failed"

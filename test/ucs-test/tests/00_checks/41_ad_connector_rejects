@@ -1,23 +1,18 @@
-#!/usr/share/ucs-test/runner bash 
+#!/usr/share/ucs-test/runner bash
 ## desc: Check for rejected AD objects
 ## exposure: safe
 ## bugs: [37011]
 ## packages:
 ## - univention-ad-connector
 
-RETVAL=0
-
 . "$TESTLIBPATH/base.sh" || exit 137
-
-eval "$(ucr shell)"
 
 test -n "$connector_ad_ldap_host" || exit 137
 
-univention-connector-list-rejected | egrep -q "(UCS DN|AD DN)"
-if [ $? = 0 ]; then
+if univention-connector-list-rejected | egrep -q "(UCS DN|AD DN)"
+then
 	univention-connector-list-rejected
-	fail_test 1 "Rejects found"
+	fail_fast 1 "Rejects found"
 fi
 
-exit $RETVAL
-
+exit "$RETVAL"
