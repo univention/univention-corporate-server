@@ -10,3 +10,5 @@ desc: |-
   consideration. Now Non-Docker Apps are excluded when the UCS version of the
   App and the one of the system do not match.
 bug: [47187]
+erratum: 114
+announced: 2018-06-20
