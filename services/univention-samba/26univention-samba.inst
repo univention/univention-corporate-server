@@ -389,9 +389,6 @@ fi
 
 ucs_addServiceToLocalhost 'Samba 3' "$@"
 
-# sync netlogon share
-/usr/share/univention-samba/slave-sync >>/var/log/univention/samba-sync.log
-
 joinscript_save_current_version
 
 exit 0
