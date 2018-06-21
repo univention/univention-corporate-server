@@ -143,12 +143,14 @@
   </section>
 
   <section id="lawyer:proxy">
-	<title>Web proxy/web filter</title>
-	<para>
-	  UCS has an integrated web filter based on Squid and DansGuardian, which checks web traffic for
-	  viruses using the integrated virus scanner ClamAV. In this way, Trojans and viruses on websites
-	  are identified and filtered out. Potentially dangerous files such as executable files can also
-	  be blocked.
+	<title>Web proxy and web cache</title>
+    <para>
+      A web proxy server and web cache based on Squid is available with the app
+      proxy server in UCS. Response times for regular calling the same web
+      pages is reduced. Likewise, the data transfer volume via Internet access
+      can be reduced. Furthermore, the access to Internet content can be
+      controlled and managed. For example, it can be defined, which users or
+      user groups access which websites.
 	</para>
   </section>
 
@@ -182,7 +184,9 @@
 	<title>References</title>
 	<itemizedlist>
 	  <listitem><simpara><ulink url="https://docs.software-univention.de/manual.html"/> (UCS manual)</simpara></listitem>
-	  <listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/app-catalog/zarafa/"/> (Zarafa Collaboration Platform)</simpara></listitem>
+      <listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/app-catalog/zarafa/"/> (Zarafa Collaboration Platform)</simpara></listitem>
+
+      <listitem><simpara><ulink url="https://www.univention.com/appid/squid/"/> (<application>Proxyserver / Webcache (Squid)</application>)</simpara></listitem>
 	  <listitem><simpara><ulink url="https://docs.software-univention.de/manual.html#windows:adtakeover"/></simpara></listitem>
 	</itemizedlist>
   </section>

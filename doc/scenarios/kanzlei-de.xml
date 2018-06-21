@@ -148,12 +148,15 @@
   </section>
 
   <section id="lawyer:proxy">
-	<title>Proxy und Webfilter</title>
+	<title>Web-Proxy und Webcache</title>
 	<para>
-	  Ein Webfilter auf Basis von Squid und DansGuardian ist in UCS integriert und führt mit dem
-	  integrierten Virenscanner ClamAV eine Prüfung des Webdatenverkehrs auf Viren durch. Dadurch
-	  werden auf Webseiten versteckte Trojaner erkannt und ausgefiltert. Auch potentiell
-	  gefährliche Dateien wie ausführbare Dateien können blockiert werden.
+      Ein Web-Proxyserver und Web-Cache auf Basis von Squid steht mit der App
+      Proxyserver in UCS zur Verfügung. Antwortzeiten für den regelmäßigen
+      Aufruf gleicher Webseiten werden verringert. Ebenso kann das
+      Daten-Transfervolumen über den Internetzugang reduziert werden. Darüber
+      hinaus wird die Kontrolle und Administration des Zugriffs auf
+      Internetinhalte ermöglicht. So kann beispielsweise festgelegt werden,
+      welche Benutzer oder Benutzergruppen auf welche Webseiten zugreifen.
 	</para>
   </section>
 
@@ -190,10 +193,11 @@
 	<title>Referenzen</title>
 	  <itemizedlist>
 		<listitem><simpara><ulink url="https://docs.software-univention.de/handbuch.html"/> (UCS-Handbuch)</simpara></listitem>
-        <listitem><simpara><ulink url="https://www.univention.de/appid/kopano-core"/> (Kopano Core)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.de/appid/kopano-webapp"/> (Kopano WebApp)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.de/appid/bareos"/> (Bareos Backup Server)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.de/appid/sep-sesam"/> (SEP sesam Backup Server)</simpara></listitem>
+        <listitem><simpara><ulink url="https://www.univention.de/appid/kopano-core"/> (<application>Kopano Core</application>)</simpara></listitem>
+        <listitem><simpara><ulink url="https://www.univention.de/appid/kopano-webapp"/> (<application>Kopano WebApp</application>)</simpara></listitem>
+        <listitem><simpara><ulink url="https://www.univention.de/appid/bareos"/> (<application>Bareos Backup Server</application>)</simpara></listitem>
+        <listitem><simpara><ulink url="https://www.univention.de/appid/squid/"/> (<application>Proxyserver / Webcache (Squid)</application>)</simpara></listitem>
+        <listitem><simpara><ulink url="https://www.univention.de/appid/sep-sesam"/> (<application>SEP sesam Backup Server</application>)</simpara></listitem>
 		<listitem><simpara><ulink url="https://docs.software-univention.de/handbuch.html#windows:adtakeover"/></simpara></listitem>
 	  </itemizedlist>
   </section>
