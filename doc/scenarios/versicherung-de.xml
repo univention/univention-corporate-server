@@ -377,8 +377,8 @@
   <section id="insurance:backup">
 	<title>Backup</title>
 	<para>
-      Für die Datensicherung kommt <emphasize>SEP sesam Backup
-      Server</emphasize> aus dem App Center zum Einsatz, das mit wenigen
+      Für die Datensicherung kommt <emphasis>SEP sesam Backup
+      Server</emphasis> aus dem App Center zum Einsatz, das mit wenigen
       Klicks installiet ist. Es bietet ein verteiltes Sicherungskonzept mit
       verschiedenen Backup-Agenten, die sowohl komplette Systeme als auch Daten
       sichern können. Für die Sicherung von Datenbanken stehen etwa gesonderte
@@ -391,7 +391,7 @@
 	<title>Integration von SuiteCRM</title>
 	<para>
       Als CRM-Lösung für Vertriebsmitarbeiter wird
-      <emphasize>SuiteCRM</emphasize> eingesetzt. Die Verwaltung der
+      <emphasis>SuiteCRM</emphasis> eingesetzt. Die Verwaltung der
       SuiteCRM-Benutzer- und -rollen integriert sich direkt in die &ucsUMC;.
       Die Installation erfolgt mit wenigen Klicks aus dem App Center.
 	</para>

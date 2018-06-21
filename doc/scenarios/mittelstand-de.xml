@@ -170,7 +170,7 @@
       Außerdem ist jedem Drucker ein Seitenpreis zugeordnet. Dadurch können pro
       Benutzer die angefallenen Druckkosten ermittelt werden. Dies kann auch
       mit einer Limitierung von zu druckenden Seiten verbunden werden. Über die
-      App <emphasize>Print Server Quota</emphasize> können Druckquotas auch auf Benutzergruppenbasis
+      App <emphasis>Print Server Quota</emphasis> können Druckquotas auch auf Benutzergruppenbasis
       ausgedehnt werden.
 	</para>
   </section>
@@ -204,7 +204,7 @@
   <section id="engineering:groupware">
 	<title>Groupware</title>
 	<para>
-        Ganupa Technologies verwendet die Groupwarelösung <emphasize>Open-Xchange App Suite</emphasize> zur Abstimmung
+        Ganupa Technologies verwendet die Groupwarelösung <emphasis>Open-Xchange App Suite</emphasis> zur Abstimmung
 	  von Terminen, Kontakten und Aufgaben.
 	</para>
 
@@ -239,7 +239,7 @@
 	</para>
 
 	<para>
-        UCS bietet hierfür eine Integration über die App <emphasize>Proxyserver / Webcache (Squid)</emphasize>.
+        UCS bietet hierfür eine Integration über die App <emphasis>Proxyserver / Webcache (Squid)</emphasis>.
 	</para>
 
 	<para>
@@ -253,7 +253,7 @@
 	  <itemizedlist>
 		<listitem><simpara><ulink url="https://docs.software-univention.de/handbuch.html"/> (UCS-Handbuch)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.de/appid/oxseforucs/"/> (<application>OX App Suite</application>)</simpara></listitem>
-        <listitem><simpara><ulink url"https://www.univention.de/appid/squid/"/>(<application>Proxyserver / Webcache (Squid)</application>)</simpara></listitem>
+        <listitem><simpara><ulink url="https://www.univention.de/appid/squid/"/>(<application>Proxyserver / Webcache (Squid)</application>)</simpara></listitem>
 	  </itemizedlist>
   </section>
 </chapter>

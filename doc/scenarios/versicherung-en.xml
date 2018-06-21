@@ -365,7 +365,7 @@
   <section id="insurance:backup">
 	<title>Backup</title>
 	<para>
-      <emphasize>SEP sesam backup server</emphasize> from the App Center is
+      <emphasis>SEP sesam backup server</emphasis> from the App Center is
       used for file backup, which can be installed with a few clicks. It offers
       a distributed backup concept with different backup agents, which backup
       both complete systems and data. Special backup agents are available for
@@ -377,7 +377,7 @@
   <section id="insurance:crm">
 	<title>Integration of SuiteCRM</title>
 	<para>
-      <emphasize>SuiteCRM</emphasize> is employed as the CRM solution for sales
+      <emphasis>SuiteCRM</emphasis> is employed as the CRM solution for sales
       personnel. The administration of the SuiteCRM users and roles integrates
       directly in the &ucsUMC;. The installation can be performed with a few
       clicks using the Univention App Center.

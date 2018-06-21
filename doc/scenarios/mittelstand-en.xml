@@ -173,7 +173,7 @@
 	  In addition, every printer is assigned a page price. This allows accounting
 	  to determine the incurred printing costs per user. This can optionally also be
       connected to limit the number of pages which can be printed. With
-      the app <emphasize>Print Server Quota</emphasize> print quotas can be extended to a usergroup
+      the app <emphasis>Print Server Quota</emphasis> print quotas can be extended to a usergroup
       basis.
 	</para>
   </section>
@@ -209,8 +209,8 @@
   <section id="engineering:groupware">
 	<title>Groupware</title>
 	<para>
-      Ganupa Technologies uses the groupware solution <emphasize>Open-Xchange
-      App Suite</emphasize> for arranging meetings and organizing contacts
+      Ganupa Technologies uses the groupware solution <emphasis>Open-Xchange
+      App Suite</emphasis> for arranging meetings and organizing contacts
       and tasks.
 	</para>
 
@@ -243,7 +243,7 @@
 	<para>
       At a later point in time, the plan is to monitor the Internet access
       centrally via a web proxy. For this purpose, UCS provides the app
-      <emphasize>Proxy server/ web cache (Squid)</emphasize>.
+      <emphasis>Proxy server/ web cache (Squid)</emphasis>.
 	</para>
 
 	<para>

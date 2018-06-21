@@ -131,10 +131,10 @@
   <section id="lawyer:groupware">
 	<title>Groupware</title>
     <para>
-      On the UCS system the groupware solution <emphasize>Kopano</emphasize> is
+      On the UCS system the groupware solution <emphasis>Kopano</emphasis> is
       installed as app from the App Center.  Kopano accesses the user data of
       the UCS directory service. The administration integrates seamlessly in
-      the &ucsUMC;. The employees use the web-based <emphasize>Kopano WebApp</emphasize> for calendaring,
+      the &ucsUMC;. The employees use the web-based <emphasis>Kopano WebApp</emphasis> for calendaring,
       also available in the App Center.
 	</para>
 
@@ -148,7 +148,7 @@
 	<title>Web proxy and web cache</title>
     <para>
       A web proxy server and web cache based on Squid is available with the app
-      <emphasize>proxy server</emphasize> in UCS. Response times for regular calling the same web
+      <emphasis>proxy server</emphasis> in UCS. Response times for regular calling the same web
       pages is reduced. Likewise, the data transfer volume via Internet access
       can be reduced. Furthermore, the access to Internet content can be
       controlled and managed. For example, it can be defined, which users or
