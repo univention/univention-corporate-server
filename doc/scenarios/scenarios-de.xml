@@ -14,5 +14,4 @@
 <xi:include href="kanzlei-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
 <xi:include href="mittelstand-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
 <xi:include href="versicherung-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-<xi:include href="schultraeger-de.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
 </book>
