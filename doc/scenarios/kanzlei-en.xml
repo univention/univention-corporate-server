@@ -15,7 +15,7 @@
 	<para>
 	  Hemmerlein &amp; Sons lawyer's office has a total of ten employees. The employees work
 	  predominantly with office applications and a legal workflow management system, which is only
-	  available for Microsoft Windows. Windows 8 is employed as the client operating system. All the
+	  available for Microsoft Windows. Windows 10 is employed as the client operating system. All the
 	  data are to be stored centrally on a server and backed up. As there is only limited technical
 	  expertise available and it is not viable to finance an in-house administrator team, particular
 	  value is placed on simple administration. The administrative duties described below can be
@@ -49,10 +49,11 @@
   <section id="lawyer:users">
 	<title>Management of user accounts</title>
 	<para>
-	  User accounts for the ten employees are created in the &ucsUMC; web interface. Each employee
-	  receives a password, which - as all user data - is saved in an LDAP directory service and
-	  requested when logging on to the Windows client.
-	</para>
+        User accounts for the ten employees are created in the &ucsUMC; web
+        interface. Each employee can set his password with the Self Service App
+        from the App Center. Like all user data the password is save to a LDAP
+        directory server and requested when logging on to the Windows client.
+    </para>
 
 	<para>
 	  <figure id="umc-anlegen">
@@ -129,11 +130,12 @@
 
   <section id="lawyer:groupware">
 	<title>Groupware</title>
-	<para>
-	  Zarafa4UCS, an integration of the groupware <emphasis>Zarafa Collaboration
-	  Platform</emphasis> in UCS, is installed on the UCS system from the App Center. Zarafa accesses the user data of
-	  the UCS directory service. The administration integrates seamlessly in the &ucsUMC;. The
-	  employees use Microsoft Outlook 2010 as the groupware client.
+    <para>
+      On the UCS system the groupware solution <emphasis>Kopano</emphasize> is
+      installed as app from the App Center.  Kopano accesses the user data of
+      the UCS directory service. The administration integrates seamlessly in
+      the &ucsUMC;. The employees the web-based Kopano WebApp for calendaring,
+      also available in the App Center.
 	</para>
 
 	<para>
@@ -159,8 +161,9 @@
 	<para>
 	  All files (both the users' files in the home directory and the legal literature files in the
 	  central share) are stored on the UCS system and can thus be centrally saved on a tape
-	  drive. For this UCS provides the backup software Bacula, which can be used flexibly for
-	  different backup and archiving strategies.
+      drive. The App Center in UCS offers several solutions like for example
+      Bareos Backup Server and SEP sesam Backup Server that can be used
+      flexibly for different backup and archiving strategies.
 	</para>
   </section>
 
@@ -183,10 +186,12 @@
   <section id="lawyer:ref">
 	<title>References</title>
 	<itemizedlist>
-	  <listitem><simpara><ulink url="https://docs.software-univention.de/manual.html"/> (UCS manual)</simpara></listitem>
-      <listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/app-catalog/zarafa/"/> (Zarafa Collaboration Platform)</simpara></listitem>
-
+      <listitem><simpara><ulink url="https://docs.software-univention.de/manual.html"/> (UCS manual)</simpara></listitem>
+      <listitem><simpara><ulink url="https://www.univention.com/appid/kopano-core"/> (<application>Kopano Core</application>)</simpara></listitem>
+      <listitem><simpara><ulink url="https://www.univention.com/appid/kopano-webapp"/> (<application>Kopano WebApp</application>)</simpara></listitem>
       <listitem><simpara><ulink url="https://www.univention.com/appid/squid/"/> (<application>Proxyserver / Webcache (Squid)</application>)</simpara></listitem>
+      <listitem><simpara><ulink url="https://www.univention.com/appid/sep-sesam"/> (<application>SEP sesam Backup Server</application>)</simpara></listitem>
+      <listitem><simpara><ulink url="https://www.univention.com/appid/bareos"/> (<application>Bareos Backup Server</application>)</simpara></listitem>
 	  <listitem><simpara><ulink url="https://docs.software-univention.de/manual.html#windows:adtakeover"/></simpara></listitem>
 	</itemizedlist>
   </section>

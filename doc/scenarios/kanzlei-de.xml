@@ -54,7 +54,8 @@
 	  Self-Service App aus dem App Center sein Passwort selbst setzen, das -
 	  wie alle Benutzerdaten - in einem LDAP-Verzeichnisdienst gespeichert und
 	  bei der Anmeldung am Windows-Client abgefragt wird.
-	</para>
+    </para>
+
 	<para>
 	  <figure id="umc-anlegen">
 		<title>Anlegen eines Benutzers in der Univention Management Console</title>
@@ -133,12 +134,12 @@
   <section id="lawyer:groupware">
 	<title>Groupware</title>
 	<para>
-	  Auf dem UCS-System wird über das App Center Kopano installiert, eine
-	  Groupware mit Integration in UCS. Kopano greift dabei auf die
-	  Benutzerkontoinformationen des UCS-Verzeichnisdienstes zu. Die Verwaltung
-	  integriert sich nahtlos in die &ucsUMC;. Die Mitarbeiter verwenden zur
-	  Terminabstimmung die webbasierte Kopano WebApp, auch als App im App
-	  Center verfügbar.
+      Auf dem UCS-System wird über das App Center Kopano installiert, eine
+      Groupware mit Integration in UCS. Kopano greift dabei auf die
+      Benutzerkontoinformationen des UCS-Verzeichnisdienstes zu. Die Verwaltung
+      integriert sich nahtlos in die &ucsUMC;. Die Mitarbeiter verwenden die
+      webbasierte Kopano WebApp für ihren Kalender, auch als App im App Center
+      verfügbar.
 	</para>
 
 	<para>
@@ -197,6 +198,7 @@
         <listitem><simpara><ulink url="https://www.univention.de/appid/kopano-webapp"/> (<application>Kopano WebApp</application>)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.de/appid/bareos"/> (<application>Bareos Backup Server</application>)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.de/appid/squid/"/> (<application>Proxyserver / Webcache (Squid)</application>)</simpara></listitem>
+        <listitem><simpara><ulink url="https://www.univention.de/appid/self-service/"/> (<application>Self Service</application>)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.de/appid/sep-sesam"/> (<application>SEP sesam Backup Server</application>)</simpara></listitem>
 		<listitem><simpara><ulink url="https://docs.software-univention.de/handbuch.html#windows:adtakeover"/></simpara></listitem>
 	  </itemizedlist>
