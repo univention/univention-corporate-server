@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-4) unstable; urgency=medium
+
+  * Bug #46821: Improved cache performance of the App Center
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 21 Jun 2018 12:15:00 +0200
+
 univention-appcenter (7.0.2-3) unstable; urgency=medium
 
   * Bug #46821: Improved cache performance of the App Center

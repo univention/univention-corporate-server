@@ -37,7 +37,7 @@ from fnmatch import fnmatch
 
 from univention.appcenter.actions import UniventionAppAction
 from univention.appcenter.app_cache import Apps
-from univention.appcenter.udm import get_app_ldap_object
+from univention.appcenter.udm import get_app_ldap_object, get_machine_connection
 from univention.appcenter.utils import flatten
 from univention.appcenter.ucr import ucr_get, ucr_is_true
 
@@ -124,6 +124,7 @@ class List(UniventionAppAction):
 
 	def _list(self, pattern):
 		ret = []
+		lo, pos = get_machine_connection()
 		for app in self.get_apps():
 			versions = []
 			installations = {}
@@ -132,7 +133,7 @@ class List(UniventionAppAction):
 					continue
 			app = Apps().find(app.id, latest=True)
 			for _app in Apps().get_all_apps_with_id(app.id):
-				ldap_obj = get_app_ldap_object(_app)
+				ldap_obj = get_app_ldap_object(_app, lo, pos)
 				servers = ldap_obj.installed_on_servers()
 				versions.append(_app.version)
 				installations[_app.version] = servers
