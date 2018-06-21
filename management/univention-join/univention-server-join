@@ -210,12 +210,93 @@ create_entry () {
 	local primaryGroup="$4"
 	local group="$5"
 	log 0 "Join $desc"
+	local rc
+	local old_dn
+	local udm_object
+	local conflict_dn
+	local conflict_host
+	local conflict_module
+	local udm_object2
+	local conflict_dn2
+	local conflict_host2
+	local udm_object_owns_mac
+	local udm_object_owns_ip
+	local pre_check_conflicts
+	pre_check_conflicts=()
 
-	old_dn="$(univention-directory-manager "$module" list --filter name="$NEWHOSTNAME" "${ADMINOPTIONS[@]}" | DN1)"
-	if [ $? -gt 0 ]; then
+	### check for conflicts
+	udm_object="$(univention-directory-manager "$module" list --filter name="$NEWHOSTNAME" "${ADMINOPTIONS[@]}")"
+	rc=$?
+	old_dn="$(DN1 <<<"$udm_object")"
+	if [ $rc -gt 0 ]; then
 		log 1 "E: failed search $desc [$old_dn]"
 		exit 1
+	elif [ -z "$old_dn" ]; then
+		udm_object="$(univention-directory-manager computers/computer list --filter name="$NEWHOSTNAME" "${ADMINOPTIONS[@]}")"
+		conflict_dn="$(DN1 <<<"$udm_object")"
+		if [ -n "$conflict_dn" ]; then
+			## try to convert DN to short name
+			conflict_module="$(univention-ldapsearch -xLLL -s base -b "$conflict_dn" univentionObjectType | sed -ne 's|univentionObjectType: ||p')"
+			if [ -n "$conflict_module" ]; then
+				udm_object="$(univention-directory-manager "$conflict_module" list --position "$conflict_dn" --filter name="$NEWHOSTNAME" "${ADMINOPTIONS[@]}")"
+				conflict_host="$(sed -n 's/^ *name: //p' <<<"$udm_object")"
+			else
+				conflict_host="$conflict_dn"
+			fi
+			pre_check_conflicts+=("E: Host name $NEWHOSTNAME is already assigned to a computer object of different role, please use a different name or remove that object.")
+		fi
 	fi
+
+	if [ -n "$MAC" ]; then
+		udm_object_owns_mac="$(sed -n 's/^ *mac: //p' <<<"$udm_object")"
+		if [ "${udm_object_owns_mac,,}" != "${MAC,,}" ]; then
+			## check if some other computer object owns this MAC address
+			udm_object2="$(univention-directory-manager computers/computer list --filter mac="$MAC" "${ADMINOPTIONS[@]}")"
+			conflict_dn2="$(DN1 <<<"$udm_object2")"
+			if [ -n "$conflict_dn2" ]; then
+				## try to convert DN to short name
+				conflict_module="$(univention-ldapsearch -xLLL -s base -b "$conflict_dn2" univentionObjectType | sed -ne 's|univentionObjectType: ||p')"
+				if [ -n "$conflict_module" ]; then
+					udm_object2="$(univention-directory-manager "$conflict_module" list --position "$conflict_dn2" --filter mac="$MAC" "${ADMINOPTIONS[@]}")"
+					conflict_host2="$(sed -n 's/^ *name: //p' <<<"$udm_object2")"
+				else
+					conflict_host2="$conflict_dn2"
+				fi
+				pre_check_conflicts+=("E: MAC address $MAC is already assigned to $conflict_host2, please remove that object or change the MAC address.")
+			fi
+		elif [ -n "$conflict_host" ]; then
+			## MAC found and udm_object has same name
+			pre_check_conflicts+=("E: MAC address $MAC is already assigned to $conflict_host.")
+		fi
+	fi
+
+	if [ -n "$IP" ]; then
+		udm_object_owns_ip="$(sed -n 's/^ *ip: //p' <<<"$udm_object")"
+		if [ "$udm_object_owns_ip" != "$IP" ]; then
+			## check if some other computer object owns this IP address
+			udm_object2="$(univention-directory-manager computers/computer list --filter ip="$IP" "${ADMINOPTIONS[@]}")"
+			conflict_dn2="$(DN1 <<<"$udm_object2")"
+			if [ -n "$conflict_dn2" ]; then
+				## try to convert DN to short name
+				conflict_module="$(univention-ldapsearch -xLLL -s base -b "$conflict_dn2" univentionObjectType | sed -ne 's|univentionObjectType: ||p')"
+				if [ -n "$conflict_module" ]; then
+					udm_object2="$(univention-directory-manager "$conflict_module" list --position "$conflict_dn2" --filter ip="$IP" "${ADMINOPTIONS[@]}")"
+					conflict_host2="$(sed -n 's/^ *name: //p' <<<"$udm_object2")"
+				else
+					conflict_host2="$conflict_dn2"
+				fi
+				pre_check_conflicts+=("E: IP address $IP is already assigned to $conflict_host2, please remove that object or change the IP address.")
+			fi
+		elif [ -n "$conflict_host" ]; then
+			## IP found and udm_object has same name
+			pre_check_conflicts+=("E: IP address $IP is already assigned to $conflict_host.")
+		fi
+	fi
+	if [ ${#pre_check_conflicts[@]} -gt 0 ]; then
+		log 1 "${pre_check_conflicts[*]}"
+		exit 1
+	fi
+	### check for conflicts done
 
 	args=()
 	if [ -z "$old_dn" ]; then
