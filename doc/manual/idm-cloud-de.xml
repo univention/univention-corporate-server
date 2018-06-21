@@ -230,7 +230,7 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 		</para>
 
 		<para>
-			Wird bei einem Benutzer die Google Apps Eigenschaft entfernt, so wird der Benutzer entsprechende in der G Suite Domäne gelöscht.
+			Wird bei einem Benutzer die Google Apps Eigenschaft entfernt, so wird der Benutzer entsprechend in der G Suite Domäne gelöscht.
 		</para>
 
 		<para>
