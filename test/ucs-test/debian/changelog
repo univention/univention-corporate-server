@@ -1,3 +1,9 @@
+ucs-test (8.0.28-139) unstable; urgency=medium
+
+  * Bug #47215: enable 01_univention_system_check for basesystem
+
+ -- Felix Botner <botner@univention.de>  Thu, 21 Jun 2018 09:52:07 +0200
+
 ucs-test (8.0.28-138) unstable; urgency=low
 
   * Bug #47217: Run tests on base system
