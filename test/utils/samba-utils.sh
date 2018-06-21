@@ -20,6 +20,11 @@ function check_user_in_winclient {
 	python shared-utils/ucs-winrm.py domain-user-validate-password --domain sambatest.local --domainuser $1 --domainpassword $2
 }
 
+function create_and_print_testfile {
+	 python shared-utils/ucs-winrm.py run-ps --cmd "New-Item .\\printest.txt -ItemType file"
+	 python shared-utils/ucs-winrm.py run-ps --cmd "Add-Content .\\printest.txt 'print this in PDF'"
+	 python shared-utils/ucs-winrm.py run-ps --cmd "copy .\\printest.txt \\\\ucs-samba\SambaPDFprinter"
+}
 function check_GPO {
 	command=`samba-tool gpo listall`
 	if echo "$command" | grep -q "$1"
