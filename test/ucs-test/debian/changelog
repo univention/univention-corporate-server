@@ -1,3 +1,9 @@
+ucs-test (8.0.28-140) unstable; urgency=medium
+
+  * Bug #46821: Fix import of App Center actions
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 21 Jun 2018 11:10:31 +0200
+
 ucs-test (8.0.28-139) unstable; urgency=medium
 
   * Bug #47215: enable 01_univention_system_check for basesystem
