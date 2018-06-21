@@ -32,7 +32,7 @@
 	</para>
 
 	<para>
-	  Microsoft Windows 7 is used on all the desktops. Software distribution
+	  Microsoft Windows 10 is used on all the desktops. Software distribution
 	  and the installation of security updates are centralized.
 	</para>
 
@@ -200,8 +200,7 @@
 	  The Open Source software distribution opsi runs on the Windows
 	  clients. It allows an extensively automated distribution of security
 	  updates and Windows updates as well as the rollout of software
-	  packages to the Windows clients. The configuration of opsi integrates
-	  itself into the UCS management system with OPSI4UCS.
+	  packages to the Windows clients.
 	</para>
 
 	<para>
@@ -215,7 +214,7 @@
 	<para>
 	  The Univention Active Directory connector (AD connector for short)
 	  makes it possible to synchronize directory service objects between a
-	  Microsoft Windows 2000/2003/2008/2012 server with Microsoft Active
+      Microsoft Windows 2008/2012/2016 server with Microsoft Active
 	  Directory (AD) and an Open Source LDAP directory service in &ucsUCS;.
 	</para>
 
@@ -247,8 +246,8 @@
 	<title>Groupware</title>
 	<para>
 	  The groupware is provided in the form of Exchange Server
-	  2010 by the parent company Vigil Insurances, allowing the users to
-	  access it using Outlook 2010 and Outlook WebAccess.
+	  2016 by the parent company Vigil Insurances, allowing the users to
+	  access it using Outlook 2010 and Outlook on the web.
 	</para>
 
 	<para>
@@ -366,12 +365,12 @@
   <section id="insurance:backup">
 	<title>Backup</title>
 	<para>
-	  SEP sesam is used for file backup. It offers a distributed backup
-	  concept with different backup agents, which backup both complete
-	  systems and data. Special backup agents are available for the backup of
-	  databases. All data are copied from the standard servers in the
-	  headquarters and from there saved on tape media. The installation can be performed with a few clicks
-	  using the App Center.
+      SEP sesam from the App Center is used for file backup. It offers a
+      distributed backup concept with different backup agents, which backup
+      both complete systems and data. Special backup agents are available for
+      the backup of databases. All data are copied from the standard servers in
+      the headquarters and from there saved on tape media. The installation can
+      be performed with a few clicks using the App Center.
 	</para>
 
 	<para>
@@ -388,10 +387,10 @@
   </section>
 
   <section id="insurance:crm">
-	<title>Integration of SugarCRM</title>
+	<title>Integration of SuiteCRM</title>
 	<para>
-	  SugarCRM is employed as the CRM solution for sales personnel. The
-	  administration of the SugarCRM users and roles integrates directly in
+	  SuiteCRM is employed as the CRM solution for sales personnel. The
+	  administration of the SuiteCRM users and roles integrates directly in
 	  the &ucsUMC;. The installation can be performed with a few clicks
 	  using the Univention App Center.
 	</para>
@@ -406,14 +405,13 @@
   <section id="insurance:rev">
 	<title>References</title>
 	  <itemizedlist>
-		<listitem><simpara><ulink url="https://docs.software-univention.de/manual.html"/> (UCS manual)</simpara></listitem>
-		<listitem><simpara><ulink url="http://wiki.univention.de/index.php?title=UVMM_Quickstart"/></simpara></listitem>
-		<listitem><simpara><ulink url="http://wiki.univention.de/index.php?title=Opsi_%28open_pc_server_integration%29"/> (currently only available in German)</simpara></listitem>
-		<listitem><simpara><ulink url="https://docs.software-univention.de/ucc-manual-1.0.html"/> (Univention Corporate Client manual)</simpara></listitem>
+        <listitem><simpara><ulink url="https://docs.software-univention.de/manual.html"/> (UCS manual)</simpara></listitem>
+        <listitem><simpara><ulink url="https://docs.software-univention.de/manual.html#domain-ldap:directorylogger"/> (Audit-proof logging of LDAP changes with Univention Directory Logger)</simpara></listitem>
+        <listitem><simpara><ulink url="https://docs.software-univention.de/manual.html#uvmm:chapter"/></simpara></listitem>
 		<listitem><simpara><ulink url="https://docs.software-univention.de/installation.html"/> (Extended installation documentation)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/app-catalog/drbd/"/> (DRBD)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/app-catalog/sep-sesam/"/> (SEP sesam Backup)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/app-catalog/sugarcrm/"/> (SugarCRM)</simpara></listitem>
+        <listitem><simpara><ulink url="https://www.univention.com/appid/opsi/"/> (<application>opsi</application>)</simpara></listitem>
+        <listitem><simpara><ulink url="https://www.univention.com/appid/sep-sesam/"/> (<application>SEP sesam Backup Server</application>)</simpara></listitem>
+        <listitem><simpara><ulink url="https://www.univention.com/appid/digitec-suitecrm/"/> (SuiteCRM)</simpara></listitem>
 	  </itemizedlist>
   </section>
 </chapter>
