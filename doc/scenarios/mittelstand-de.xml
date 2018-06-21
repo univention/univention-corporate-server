@@ -49,13 +49,6 @@
 	</para>
 
 	<para>
-	  Um Energie zu sparen und Wartungskosten zu minimieren, sollen für die Mitarbeiter in
-	  Verwaltung und Vertrieb Thin Clients (festplattenlose Rechner) zum Einsatz kommen. Da keine
-	  lokalen Daten oder Konfigurationen gespeichert werden, kann ein defekter Thin Client
-	  problemlos auch durch nicht-technische Mitarbeiter ersetzt werden.
-	</para>
-
-	<para>
 	  Ein Proxy-Server soll den Netzwerkverkehr in einem Cache zwischenspeichern und Virenschutz
 	  anbieten.
 	</para>
@@ -93,7 +86,9 @@
 	<para>
 	  Das Unternehmen implementiert eine Infrastruktur bestehend aus einem UCS Domänencontroller
 	  Master (DC Master), einem UCS Domänencontroller Backup (DC Backup), mehreren UCS
-	  Domänencontroller Slave (DC Slave) und Thin Clients.
+      Domänencontroller Slave (DC Slave) und Arbeitsplatzsysteme für
+      Mitarbeiter bestehend aus Desktop Computern und Notebooks. Mitarbeiter
+      können zwischen Microsoft Windows und Ubuntu Linux wählen.
 	</para>
 
 	<para>
@@ -156,48 +151,6 @@
 	</para>
   </section>
 
-  <section id="engineering:ucc">
-	<title>Linux Terminal Services</title>
-	<para>
-	  In der Firmenzentrale sind vier Domänencontroller Slave-Systeme installiert. Sie dienen als
-	  Linux-Terminalserver, auf die mit Thin Clients zugegriffen wird.
-	</para>
-
-	<para>
-	  Die Anwendungen der Benutzer werden auf den Terminalservern ausgeführt, während die Thin
-	  Clients die Anwendungen lediglich darstellen und Benutzereingaben an den Terminalserver
-	  übermitteln. Der Bildschirminhalt wird durch den RDP-Server <application>xrdp</application> bereitgestellt, die
-	  Übertragung erfolgt daher bandbreitenschonend über das Remote Desktop Protocol (RDP).
-	</para>
-
-	<para>
-	  Die Benutzerdaten werden auf dem zentralen SAN gespeichert. Die dafür verwendete Freigabe wird
-	  durch die &ucsUMC; verwaltet.
-	</para>
-
-	<para>
-	  Auf den Linux-Terminalservern kommt der Univention Corporate Client (UCC) mit dem Desktop KDE 4 zum
-	  Einsatz. Alle für den Bürobetrieb wichtigen Anwendungen werden mitgeliefert (Textverarbeitung,
-	  Datenbanken, Präsentationen und Tabellenkalkulation mit LibreOffice, Bildverarbeitung mit
-	  GIMP, Mozilla Firefox als Web-Browser, Mozilla Thunderbird als Groupware- und Mailclient,
-	  Multimedia-Applikationen für das Abspielen von Musik und Videos und zum Brennen von DVDs/CDs).
-	</para>
-
-	<para>
-	  <figure id="ucc">
-		<title>Zentral verwalteter Univention Corporate Client</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations43/ucc.png"/>
-	  </figure>
-	</para>
-
-	<para>
-	  Für verschiedene Benutzergruppen existieren vorkonfigurierte Desktops, in denen je nach
-	  Tätigkeit verschiedene Applikationen vorkonfiguriert sind. So verwendet etwa die Verwaltung
-	  einen Desktop, auf dem nur Mozilla Firefox und LibreOffice eingerichtet sind, während die
-	  technischen Mitarbeiter aus einem breiteren Applikationsumfang schöpfen können.
-	</para>
-  </section>
-
   <section id="engineering:print">
 	<title>Druckdienste</title>
 	<para>
@@ -219,28 +172,6 @@
 	  druckenden Seiten verbunden werden, die aber in der Umgebung nicht zum
 	  Einsatz kommt. Über die App Print Server Quota können Druckquotas auch
 	  auf Benutzergruppenbasis ausgedehnt werden.
-	</para>
-  </section>
-
-  <section id="engineering:terminal">
-	<title>Windows-Terminalserver</title>
-	<para>
-	  Für die Windows-Programme wird durch Samba 4 eine Windows-Domäne realisiert, in die ein
-	  Windows-Terminalserver als Mitgliedsserver eingebunden wird. Auf diesem Server wird die
-	  Buchhaltungssoftware betrieben, die nur unter Microsoft Windows läuft. Diese wird durch einen
-	  RDP-Client nahtlos auf den Linux-Desktops dargestellt.
-	</para>
-
-	<para>
-	  <figure id="windowsts">
-		<title>Integration einer Windows-Applikation in den Univention Desktop Client</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations43/windows-ts.png"/>
-	  </figure>
-	</para>
-
-	<para>
-	  Die Linux- und die Samba 4-Domäne verwenden dieselben Benutzerdaten und Benutzer können von
-	  Linux und Microsoft Windows aus auf ihr Heimatverzeichnis zugreifen.
 	</para>
   </section>
 
@@ -308,7 +239,7 @@
 	</para>
 
 	<para>
-	  UCS bietet hierfür eine Integration des Web-Proxy Squid und des Virenscanners ClamAV.
+	  UCS bietet hierfür eine Integration über die App Proxyserver / Webcache (Squid).
 	</para>
 
 	<para>
@@ -321,7 +252,8 @@
 	<title>Referenzen</title>
 	  <itemizedlist>
 		<listitem><simpara><ulink url="https://docs.software-univention.de/handbuch.html"/> (UCS-Handbuch)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.de/produkte/univention-app-center/app-katalog/oxseforucs/"/> (<application>OX App Suite</application>)</simpara></listitem>
+        <listitem><simpara><ulink url="https://www.univention.de/appid/oxseforucs/"/> (<application>OX App Suite</application>)</simpara></listitem>
+        <listitem><simpara><ulink url"https://www.univention.de/appid/squid/"/>(<application>Proxyserver / Webcache (Squid)</application>)</simpara></listitem>
 	  </itemizedlist>
   </section>
 </chapter>
