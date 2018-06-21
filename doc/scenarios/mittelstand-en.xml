@@ -49,14 +49,6 @@
 	</para>
 
 	<para>
-	  To save energy and minimize maintenance costs, the employees in
-	  Administration and Sales will be provided with thin clients (computers
-	  without hard drives). As no data or configurations are saved locally,
-	  a defective thin client can be easily replaced even by non-technical
-	  staff.
-	</para>
-
-	<para>
 	  A proxy server will buffer the network traffic in a cache and provide
 	  virus protection.
 	</para>
@@ -94,8 +86,9 @@
 	<para>
 	  The company implements an infrastructure composed of a UCS domain
 	  controller master (DC master), a UCS domain controller backup (DC
-	  backup), several UCS domain controller slaves (DC slaves) and thin
-	  clients.
+      backup), several UCS domain controller slaves (DC slaves) and desktop
+      systems consisting of desktop computers and notebooks. Microsoft Windows
+      and Ubuntu Linux are used on those systems.
 	</para>
 
 	<para>
@@ -160,53 +153,6 @@
 	</para>
   </section>
 
-  <section id="engineering:ucc">
-	<title>Linux terminal services</title>
-	<para>
-	  Four domain controller slave systems are installed in the company
-	  headquarters. They serve as Linux terminal servers, which can be
-	  accessed with thin clients.
-	</para>
-
-	<para>
-	  The users' applications are run on the terminal servers, while the
-	  thin clients merely display the applications and transmit the user
-	  inputs to the terminal servers. The screen content is provided by the RDP server <application>xrdp</application>,
-	  allowing a low-bandwidth access using the Remote Desktop Protocol (RDP).
-	</para>
-
-	<para>
-	  The user data are saved on the central SAN. The share used for this is
-	  administrated in the &ucsUMC;.
-	</para>
-
-	<para>
-	  The Univention Corporate Client with the KDE 4 desktop is used on the Linux
-	  terminal servers. All of the applications required for office duties
-	  are supplied as standard (word processing, databases, presentations
-	  and spreadsheet analysis with LibreOffice, image processing with
-	  GIMP, Mozilla Firefox as web browser, Mozilla Thunderbird as groupware and
-	  e-mail client, multimedia applications for playing music and videos
-	  and burning DVD/CD).
-	</para>
-
-	<para>
-	  <figure id="ucc">
-		<title>Centrally managed Univention Corporate Client</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations43/ucc.png"/>
-	  </figure>
-	</para>
-
-	<para>
-	  Preconfigured desktops are available for different user groups, in
-	  which different applications are preconfigured depending on the duties
-	  involved. For example, Administration uses a desktop on which only
-	  Mozilla Firefox and LibreOffice are installed, while the
-	  technicians have access to a much wider spectrum of
-	  applications.
-	</para>
-  </section>
-
   <section id="engineering:print">
 	<title>Print services</title>
 	<para>
@@ -224,31 +170,11 @@
 	</para>
 
 	<para>
-	  In addition, every printer is assigned a page price. This allows Accounting
+	  In addition, every printer is assigned a page price. This allows accounting
 	  to determine the incurred printing costs per user. This can optionally also be
-	  connected to a limit on the number of pages which can be printed.
-	</para>
-  </section>
-
-  <section id="engineering:terminal">
-	<title>Microsoft Windows terminal services</title>
-	<para>
-	  Samba 4 is used to create a Windows domain in which a Microsoft Windows terminal
-	  server is joined as a member server. This server is used to run the
-	  accounting software, which only functions in Microsoft Windows. The
-	  application is displayed seamlessly on Linux desktops via an RDP client.
-	</para>
-
-	<para>
-	  <figure id="windowsts">
-		<title>Integrating a Windows application in the Univention desktop client</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations43/windows-ts_en.png"/>
-	  </figure>
-	</para>
-
-	<para>
-	  The Linux and Samba domains use the same user data and users can
-	  access their home directories from Linux and Microsoft Windows.
+      connected to a limit on the number of pages which can be printed. With
+      the app Print Server Quota print quotas can be extended to a usergroup
+      basis.
 	</para>
   </section>
 
@@ -283,21 +209,21 @@
   <section id="engineering:groupware">
 	<title>Groupware</title>
 	<para>
-	  Ganupa Technologies uses the groupware solution Open-Xchange Server
-	  Edition for arranging meetings and organizing contacts and tasks.
+      Ganupa Technologies uses the groupware solution Open-Xchange App Suite
+      for arranging meetings and organizing contacts and tasks.
 	</para>
 
 	<para>
-	  The groupware server is operated as a &ucsSlave; system on the Amazon EC2
-	  cloud. This allows flexible scaling of the groupware system to growing
-	  performance and storage requirements. The installation can be performed with a few clicks
-	  using the App Center.
+      The groupware server is operated as a &ucsSlave; system on the Amazon EC2
+      cloud. This allows flexible scaling of the groupware system to growing
+      performance and storage requirements. The installation can be performed
+      with a few clicks using the App Center.
 	</para>
 
 	<para>
 	  The administration of the groupware-related attributes integrates
 	  seamlessly in the &ucsUMC;. The employees access the groupware via
-	  the Open-Xchange web client and Mozilla Thunderbird.
+	  the OX App Suite web client and Mozilla Thunderbird.
 	</para>
 
 	<para>
@@ -314,9 +240,9 @@
   <section id="engineering:outlook">
 	<title>Outlook</title>
 	<para>
-	  At a later point in time, the plan is to monitor the Internet access
-	  centrally via a web proxy. For this purpose, UCS provides an
-	  integration of the web proxy Squid and the virus scanner ClamAV.
+      At a later point in time, the plan is to monitor the Internet access
+      centrally via a web proxy. For this purpose, UCS provides the app Proxy
+      server/ web cache (Squid).
 	</para>
 
 	<para>
@@ -329,7 +255,9 @@
 	<title>References</title>
 	  <itemizedlist>
 		<listitem><simpara><ulink url="https://docs.software-univention.de/manual.html"/> (UCS manual)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/app-catalog/oxseforucs/"/> (<application>OX App Suite</application>)</simpara></listitem>
+        <listitem><simpara><ulink url="https://www.univention.com/appid/oxseforucs/"/> (<application>OX App Suite</application>)</simpara></listitem>
+		<listitem><simpara><ulink url="https://www.univention.com/appid/squid/"/> (<application>Proxy
+      server/ web cache (Squid)</application>)</simpara></listitem>
 	  </itemizedlist>
   </section>
 </chapter>

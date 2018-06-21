@@ -87,8 +87,8 @@
 	  Das Unternehmen implementiert eine Infrastruktur bestehend aus einem UCS Domänencontroller
 	  Master (DC Master), einem UCS Domänencontroller Backup (DC Backup), mehreren UCS
       Domänencontroller Slave (DC Slave) und Arbeitsplatzsysteme für
-      Mitarbeiter bestehend aus Desktop Computern und Notebooks. Mitarbeiter
-      können zwischen Microsoft Windows und Ubuntu Linux wählen.
+      Mitarbeiter bestehend aus Desktop Computern und Notebooks. Zum Einsatz
+      kommen Microsoft Windows und Ubuntu Linux.
 	</para>
 
 	<para>
@@ -167,11 +167,11 @@
 	</para>
 
 	<para>
-	  Außerdem ist jedem Drucker ein Seitenpreis zugeordnet. Dadurch können pro Benutzer die
-	  angefallenen Druckkosten ermittelt werden. Dies kann auch mit einer Limitierung von zu
-	  druckenden Seiten verbunden werden, die aber in der Umgebung nicht zum
-	  Einsatz kommt. Über die App Print Server Quota können Druckquotas auch
-	  auf Benutzergruppenbasis ausgedehnt werden.
+      Außerdem ist jedem Drucker ein Seitenpreis zugeordnet. Dadurch können pro
+      Benutzer die angefallenen Druckkosten ermittelt werden. Dies kann auch
+      mit einer Limitierung von zu druckenden Seiten verbunden werden. Über die
+      App Print Server Quota können Druckquotas auch auf Benutzergruppenbasis
+      ausgedehnt werden.
 	</para>
   </section>
 
