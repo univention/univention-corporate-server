@@ -170,7 +170,7 @@
       Außerdem ist jedem Drucker ein Seitenpreis zugeordnet. Dadurch können pro
       Benutzer die angefallenen Druckkosten ermittelt werden. Dies kann auch
       mit einer Limitierung von zu druckenden Seiten verbunden werden. Über die
-      App Print Server Quota können Druckquotas auch auf Benutzergruppenbasis
+      App <emphasize>Print Server Quota</emphasize> können Druckquotas auch auf Benutzergruppenbasis
       ausgedehnt werden.
 	</para>
   </section>
@@ -204,7 +204,7 @@
   <section id="engineering:groupware">
 	<title>Groupware</title>
 	<para>
-	  Ganupa Technologies verwendet die Groupwarelösung Open-Xchange App Suite zur Abstimmung
+        Ganupa Technologies verwendet die Groupwarelösung <emphasize>Open-Xchange App Suite</emphasize> zur Abstimmung
 	  von Terminen, Kontakten und Aufgaben.
 	</para>
 
@@ -239,7 +239,7 @@
 	</para>
 
 	<para>
-	  UCS bietet hierfür eine Integration über die App Proxyserver / Webcache (Squid).
+        UCS bietet hierfür eine Integration über die App <emphasize>Proxyserver / Webcache (Squid)</emphasize>.
 	</para>
 
 	<para>

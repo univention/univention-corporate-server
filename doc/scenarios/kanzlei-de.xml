@@ -51,7 +51,7 @@
 	<para>
 	  Für die zehn Mitarbeiter werden im Web-Interface der &ucsUMC;
 	  Benutzerkonten angelegt. Jeder Mitarbeiter kann sich über die Benutzer
-	  Self-Service App aus dem App Center sein Passwort selbst setzen, das -
+      <emphasize>Self-Service</emphasize> App aus dem App Center sein Passwort selbst setzen, das -
 	  wie alle Benutzerdaten - in einem LDAP-Verzeichnisdienst gespeichert und
 	  bei der Anmeldung am Windows-Client abgefragt wird.
     </para>
@@ -134,11 +134,11 @@
   <section id="lawyer:groupware">
 	<title>Groupware</title>
 	<para>
-      Auf dem UCS-System wird über das App Center Kopano installiert, eine
+        Auf dem UCS-System wird über das App Center <emphasize>Kopano</emphasize> installiert, eine
       Groupware mit Integration in UCS. Kopano greift dabei auf die
       Benutzerkontoinformationen des UCS-Verzeichnisdienstes zu. Die Verwaltung
       integriert sich nahtlos in die &ucsUMC;. Die Mitarbeiter verwenden die
-      webbasierte Kopano WebApp für ihren Kalender, auch als App im App Center
+      webbasierte <emphasize>Kopano WebApp</emphasize>für ihren Kalender, auch als App im App Center
       verfügbar.
 	</para>
 
@@ -152,7 +152,7 @@
 	<title>Web-Proxy und Webcache</title>
 	<para>
       Ein Web-Proxyserver und Web-Cache auf Basis von Squid steht mit der App
-      Proxyserver in UCS zur Verfügung. Antwortzeiten für den regelmäßigen
+      <emphasize>Proxyserver</emphasize> in UCS zur Verfügung. Antwortzeiten für den regelmäßigen
       Aufruf gleicher Webseiten werden verringert. Ebenso kann das
       Daten-Transfervolumen über den Internetzugang reduziert werden. Darüber
       hinaus wird die Kontrolle und Administration des Zugriffs auf

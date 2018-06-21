@@ -377,34 +377,23 @@
   <section id="insurance:backup">
 	<title>Backup</title>
 	<para>
-	  Für die Datensicherung kommt SEP sesam Backup Server aus dem App Center
-	  zum Einsatz. Es bietet ein verteiltes Sicherungskonzept mit verschiedenen
-	  Backup-Agenten, die sowohl komplette Systeme als auch Daten sichern
-	  können. Für die Sicherung von Datenbanken stehen etwa gesonderte Agenten
-	  zur Verfügung.  Alle Daten werden von den Standort-Servern in die
-	  Zentrale kopiert und dort auf Bandmedien gesichert. Die Installation
-	  erfolgt mit wenigen Klicks aus dem App Center.
-	</para>
-
-	<para>
-	  Distributed Replicated Block Device (DRBD) wird für die Spiegelung von
-	  Festplatten-Partitionen und anderen Blockgeräten über das Netzwerk zwischen
-	  zwei Servern verwendet. Dabei werden alle lokalen Schreibzugriffe zusätzlich
-	  über das Netzwerk an den zweiten Server übermittelt. Je nach Konfiguration
-	  besteht die Möglichkeiten einen Schreibzugriff auf die Festplatte erst dann
-	  als erfolgreich zu erachten, wenn dieser sowohl auf dem lokalen Server, als
-	  auch auf dem zweiten Server erfolgreich ausgeführt wurde. Somit besitzen beide
-	  Server zu jedem Zeitpunkt eine identische Kopie einer Festplatten-Partition.
+      Für die Datensicherung kommt <emphasize>SEP sesam Backup
+      Server</emphasize> aus dem App Center zum Einsatz, das mit wenigen
+      Klicks installiet ist. Es bietet ein verteiltes Sicherungskonzept mit
+      verschiedenen Backup-Agenten, die sowohl komplette Systeme als auch Daten
+      sichern können. Für die Sicherung von Datenbanken stehen etwa gesonderte
+      Agenten zur Verfügung. Alle Daten werden von den Standort-Servern in die
+      Zentrale kopiert und dort auf
 	</para>
   </section>
 
   <section id="insurance:crm">
 	<title>Integration von SuiteCRM</title>
 	<para>
-	  Als CRM-Lösung für Vertriebsmitarbeiter wird SuiteCRM eingesetzt. Die
-	  Verwaltung der SuiteCRM-Benutzer- und -rollen integriert sich direkt in
-	  die &ucsUMC;. Die Installation erfolgt mit wenigen Klicks aus dem App
-	  Center.
+      Als CRM-Lösung für Vertriebsmitarbeiter wird
+      <emphasize>SuiteCRM</emphasize> eingesetzt. Die Verwaltung der
+      SuiteCRM-Benutzer- und -rollen integriert sich direkt in die &ucsUMC;.
+      Die Installation erfolgt mit wenigen Klicks aus dem App Center.
 	</para>
 
 	<para>

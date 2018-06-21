@@ -365,34 +365,22 @@
   <section id="insurance:backup">
 	<title>Backup</title>
 	<para>
-      SEP sesam from the App Center is used for file backup. It offers a
-      distributed backup concept with different backup agents, which backup
+      <emphasize>SEP sesam backup server</emphasize> from the App Center is
+      used for file backup, which can be installed with a few clicks. It offers
+      a distributed backup concept with different backup agents, which backup
       both complete systems and data. Special backup agents are available for
       the backup of databases. All data are copied from the standard servers in
-      the headquarters and from there saved on tape media. The installation can
-      be performed with a few clicks using the App Center.
-	</para>
-
-	<para>
-	  Distributed replicated block device (DRBD) is used for the mirroring
-	  of hard drive partitions and other block devices via the network
-	  between two servers. In doing so, all local write accesses are
-	  additionally transferred to the second server via the
-	  network. Depending on the configuration you have the possibility to
-	  consider the write access to the hard drive as successful only once
-	  this has been run successfully on both the local server and the second
-	  server. In this way both servers have an identical copy of a hard
-	  drive partition at all times.
+      the headquarters and from there saved on tape media.
 	</para>
   </section>
 
   <section id="insurance:crm">
 	<title>Integration of SuiteCRM</title>
 	<para>
-	  SuiteCRM is employed as the CRM solution for sales personnel. The
-	  administration of the SuiteCRM users and roles integrates directly in
-	  the &ucsUMC;. The installation can be performed with a few clicks
-	  using the Univention App Center.
+      <emphasize>SuiteCRM</emphasize> is employed as the CRM solution for sales
+      personnel. The administration of the SuiteCRM users and roles integrates
+      directly in the &ucsUMC;. The installation can be performed with a few
+      clicks using the Univention App Center.
 	</para>
 
 	<para>

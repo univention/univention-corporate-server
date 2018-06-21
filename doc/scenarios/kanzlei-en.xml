@@ -50,7 +50,7 @@
 	<title>Management of user accounts</title>
 	<para>
         User accounts for the ten employees are created in the &ucsUMC; web
-        interface. Each employee can set his password with the Self Service App
+        interface. Each employee can set the password with the Self Service App
         from the App Center. Like all user data the password is save to a LDAP
         directory server and requested when logging on to the Windows client.
     </para>
@@ -131,10 +131,10 @@
   <section id="lawyer:groupware">
 	<title>Groupware</title>
     <para>
-      On the UCS system the groupware solution <emphasis>Kopano</emphasize> is
+      On the UCS system the groupware solution <emphasize>Kopano</emphasize> is
       installed as app from the App Center.  Kopano accesses the user data of
       the UCS directory service. The administration integrates seamlessly in
-      the &ucsUMC;. The employees the web-based Kopano WebApp for calendaring,
+      the &ucsUMC;. The employees use the web-based <emphasize>Kopano WebApp</emphasize> for calendaring,
       also available in the App Center.
 	</para>
 
@@ -148,7 +148,7 @@
 	<title>Web proxy and web cache</title>
     <para>
       A web proxy server and web cache based on Squid is available with the app
-      proxy server in UCS. Response times for regular calling the same web
+      <emphasize>proxy server</emphasize> in UCS. Response times for regular calling the same web
       pages is reduced. Likewise, the data transfer volume via Internet access
       can be reduced. Furthermore, the access to Internet content can be
       controlled and managed. For example, it can be defined, which users or
