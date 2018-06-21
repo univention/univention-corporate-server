@@ -149,9 +149,9 @@
   </section>
 
   <section id="lawyer:proxy">
-	<title>Web-Proxy und Webcache</title>
+	<title>Web Proxy und Webcache</title>
 	<para>
-      Ein Web-Proxyserver und Web-Cache auf Basis von Squid steht mit der App
+      Ein Web Proxyserver und Web-Cache auf Basis von Squid steht mit der App
       <emphasis>Proxyserver</emphasis> in UCS zur Verfügung. Antwortzeiten für den regelmäßigen
       Aufruf gleicher Webseiten werden verringert. Ebenso kann das
       Daten-Transfervolumen über den Internetzugang reduziert werden. Darüber

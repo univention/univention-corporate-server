@@ -259,7 +259,7 @@
 	<para>
 	  Die Groupware wird in Form von Exchange Server 2016 komplett durch
 	  die Konzernmutter Vigil Insurances bereitgestellt, auf das die
-	  Benutzer mit Outlook 2010 und Outlook on the web zugreifen.
+	  Benutzer mit Outlook 2010 und Outlook-on-the-web zugreifen.
 	</para>
 
 	<para>
@@ -379,7 +379,7 @@
 	<para>
       Für die Datensicherung kommt <emphasis>SEP sesam Backup
       Server</emphasis> aus dem App Center zum Einsatz, das mit wenigen
-      Klicks installiet ist. Es bietet ein verteiltes Sicherungskonzept mit
+      Klicks installiert ist. Es bietet ein verteiltes Sicherungskonzept mit
       verschiedenen Backup-Agenten, die sowohl komplette Systeme als auch Daten
       sichern können. Für die Sicherung von Datenbanken stehen etwa gesonderte
       Agenten zur Verfügung. Alle Daten werden von den Standort-Servern in die
@@ -392,7 +392,7 @@
 	<para>
       Als CRM-Lösung für Vertriebsmitarbeiter wird
       <emphasis>SuiteCRM</emphasis> eingesetzt. Die Verwaltung der
-      SuiteCRM-Benutzer- und -rollen integriert sich direkt in die &ucsUMC;.
+      SuiteCRM Benutzer- und -rollen integriert sich direkt in die &ucsUMC;.
       Die Installation erfolgt mit wenigen Klicks aus dem App Center.
 	</para>
 
