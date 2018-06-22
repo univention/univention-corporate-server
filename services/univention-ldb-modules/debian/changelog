@@ -1,3 +1,10 @@
+univention-ldb-modules (6.0.0-4) unstable; urgency=medium
+
+  * Bug #47234: Move ucsschool specific join scripts into
+    ucs-schol-metapackage
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 21 Jun 2018 14:15:14 +0200
+
 univention-ldb-modules (6.0.0-3) unstable; urgency=medium
 
   * Bug #47064: bindpwdfile support
