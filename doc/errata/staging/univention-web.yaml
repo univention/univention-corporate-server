@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: univention-web
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * If the values of a _SelectMixin widget gets updated, its selection gets
+   reset now. This happens especially when a dependency changes value.
+bug: [47141]
