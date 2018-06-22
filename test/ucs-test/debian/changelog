@@ -1,3 +1,9 @@
+ucs-test (8.0.28-142) unstable; urgency=low
+
+  * Bug #43970: Re-enable NFS test
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 22 Jun 2018 15:49:18 +0200
+
 ucs-test (8.0.28-141) unstable; urgency=medium
 
   * Bug #47217: fixed 00_checks/10_s4_connector_rejects
