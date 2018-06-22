@@ -1,3 +1,9 @@
+univention-web (2.0.0-14) unstable; urgency=medium
+
+  * Bug #47141: Reset selection of _SelectMixin if values are updated
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Fri, 22 Jun 2018 08:19:35 +0200
+
 univention-web (2.0.0-13) unstable; urgency=medium
 
   * Bug #47133: Fix traceback dialogs for 'display_feedback' option
