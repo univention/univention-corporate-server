@@ -31,7 +31,7 @@ TEST module and object specific for "users/user" UDM module.
 """
 
 from __future__ import absolute_import
-from .generic import GenericUdmModule, GenericUdmObject
+from .generic import GenericUdm1Module, GenericUdm1Object
 
 try:
 	from typing import Dict, List, Text
@@ -39,7 +39,7 @@ except ImportError:
 	pass
 
 
-class UsersUserUdmObject(GenericUdmObject):
+class UsersUserUdm1Object(GenericUdm1Object):
 	"""Test dynamic factory"""
 
 	def _decode_prop_homePostalAddress(self, value):  # type: (List[List[Text]]) -> List[Dict[str, Text]]
@@ -49,6 +49,6 @@ class UsersUserUdmObject(GenericUdmObject):
 		return [[v['street'], v['zipcode'], v['city']] for v in value]
 
 
-class UsersUserUdmModule(GenericUdmModule):
+class UsersUserUdm1Module(GenericUdm1Module):
 	"""Test dynamic factory"""
-	_udm_object_class = UsersUserUdmObject
+	_udm_object_class = UsersUserUdm1Object

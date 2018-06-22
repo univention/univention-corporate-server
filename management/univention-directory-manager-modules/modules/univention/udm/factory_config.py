@@ -46,13 +46,13 @@ _UDM_MODULE_FACTORY_CONFIGURATION_PATH = os.path.join(os.path.dirname(__file__),
 UdmModuleFactoryConfiguration = namedtuple(
 	'UdmModuleFactoryConfiguration',
 	('udm_module_name', 'module_path', 'class_name')
-)  # e.g. UdmModuleFactoryConfiguration('users/user', 'univention.admin.simple_udm', 'GenericUdmModule')
+)  # e.g. UdmModuleFactoryConfiguration('users/user', 'univention.admin.simple_udm', 'GenericUdm1Module')
 
 
 class UdmModuleFactoryConfigurationStorage(object):
 	"""Handle loading and storing of the dynamic factory metadata."""
 	_config = None  # type: Dict[str, UdmModuleFactoryConfiguration]
-	_default_factory = {'module_path': 'univention.udm.generic', 'class_name': 'GenericUdmModule'}
+	_default_factory = {'module_path': 'univention.udm.generic', 'class_name': 'GenericUdm1Module'}
 
 	@classmethod
 	def get_configuration(cls, module_name):  # type: (str) -> UdmModuleFactoryConfiguration
