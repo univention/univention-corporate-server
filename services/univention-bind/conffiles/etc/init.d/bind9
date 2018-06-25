@@ -4,6 +4,8 @@
 # Provides:          bind9
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
+# Required-Start:    slapd samba-ad-dc
+# Required-Stop:     slapd samba-ad-dc
 # Short-Description: bind9 Domain Name Server (DNS)
 ### END INIT INFO
 #

@@ -1,3 +1,9 @@
+univention-bind (12.0.2-7) unstable; urgency=medium
+
+  * Bug #43689: fix init script warnings
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 25 Jun 2018 10:20:28 +0200
+
 univention-bind (12.0.2-6) unstable; urgency=medium
 
   * Bug #43689: change requires dependency to wants
