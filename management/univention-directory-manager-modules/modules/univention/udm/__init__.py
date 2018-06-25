@@ -56,9 +56,8 @@ for obj in user_mod.search('uid=a*'):  # search() returns a generator
 	print(obj.props.firstname, obj.props.lastname)
 """
 
-from __future__ import absolute_import
-from .udm import Udm
-from .exceptions import DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UdmError, UnknownProperty, WrongObjectType
+from univention.udm.udm import Udm
+from univention.udm.exceptions import DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UdmError, UnknownProperty, WrongObjectType
 
 __all__ = [
 	'Udm',

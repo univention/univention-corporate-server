@@ -30,8 +30,8 @@
 TEST module and object specific for "users/user" UDM module.
 """
 
-from __future__ import absolute_import
-from .generic import GenericUdm1Module, GenericUdm1Object
+from __future__ import unicode_literals
+from univention.udm.generic import GenericUdm1Module, GenericUdm1Object
 
 try:
 	from typing import Dict, List, Text

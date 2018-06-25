@@ -26,7 +26,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
+from __future__ import unicode_literals
 try:
 	from typing import Optional, Text
 except ImportError:

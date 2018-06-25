@@ -30,6 +30,7 @@
 Base classes for (simplified) UDM modules and objects.
 """
 
+from __future__ import unicode_literals
 import pprint
 from collections import namedtuple
 

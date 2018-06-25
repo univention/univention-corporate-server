@@ -31,7 +31,7 @@ A generic UDM module and object implementation.
 Will work for all kinds of UDM modules.
 """
 
-from __future__ import absolute_import
+from __future__ import unicode_literals
 from ldap.dn import dn2str, str2dn
 import univention.admin.objects
 import univention.admin.modules
@@ -48,10 +48,6 @@ except ImportError:
 
 class GenericUdm1ObjectProperties(BaseUdmObjectProperties):
 	"""Container for UDM properties."""
-	def __init__(self, udm_obj):  # type: (GenericUdm1Object) -> None
-		assert isinstance(udm_obj, GenericUdm1Object)
-		self._simple_udm_obj = udm_obj
-
 	def __setattr__(self, key, value):  # type: (str, Any) -> None
 		if not str(key).startswith('_') and key not in self._simple_udm_obj._udm_object:
 			raise UnknownProperty(

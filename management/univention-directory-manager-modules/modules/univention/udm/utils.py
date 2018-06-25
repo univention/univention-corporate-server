@@ -26,14 +26,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
+from __future__ import unicode_literals
 from ldap.filter import filter_format
 import univention.admin.uldap
 import univention.config_registry
 
 try:
-	from typing import Dict, Optional, Tuple
-	from six import string_types
+	from typing import Dict, Optional, Text, Tuple
 except ImportError:
 	pass
 
@@ -44,7 +43,7 @@ class LDAP_connection(object):
 	_ucr = None  # type: univention.config_registry.ConfigRegistry
 	_connection_admin = None  # type: univention.admin.uldap.access
 	_connection_machine = None  # type: univention.admin.uldap.access
-	_connection_account = {}  # type: Dict[Tuple[string_types, string_types, string_types, string_types], univention.admin.uldap.access]
+	_connection_account = {}  # type: Dict[Tuple[Text, int, Text, Text], univention.admin.uldap.access]
 
 	@classmethod
 	def get_admin_connection(cls):  # type: () -> univention.admin.uldap.access
@@ -59,8 +58,16 @@ class LDAP_connection(object):
 		return cls._connection_machine
 
 	@classmethod
-	def get_credentials_connection(cls, username, password, dn=None, base=None, server=None, port=None):
-		# type: (string_types, string_types, Optional[string_types], Optional[string_types], Optional[string_types], Optional[int]) -> univention.admin.uldap.access
+	def get_credentials_connection(
+			cls,
+			password,  # type: str
+			username=None,  # type: Optional[str]
+			dn=None,  # type: Optional[str]
+			base=None,  # type: Optional[str]
+			server=None,  # type: Optional[str]
+			port=None  # type: Optional[int]
+		):
+		# type: (...) -> univention.admin.uldap.access
 		assert (username or dn) and password, 'Either username and password or dn and password are required.'
 
 		if not cls._ucr:
