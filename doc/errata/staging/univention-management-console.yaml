@@ -8,4 +8,7 @@ desc: |
  This update addresses the following issue(s):
  * A problem with the saml authentification which could lead to the
    umc web interface becomming unresponsive has been fixed.
-bug: [47109]
+ * In certain situtations after reloading the browser window the error message
+   "There are no modules available for the currently authenticated user" was
+   incorrectly displayed. This behavior has been repaired.
+bug: [47109,46998]
