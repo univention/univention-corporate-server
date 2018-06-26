@@ -125,8 +125,8 @@
 					<simpara>
 					A user account which is authorized to add systems to the UCS domains
 					is called a join account. By default, this is the
-					<systemitem class="username">Administrator</systemitem> user or a member of the <systemitem class="groupname">Domain
-					Admins</systemitem> group. The join account can be assigned using the
+					<systemitem class="username">Administrator</systemitem> user or a member of the two groups <systemitem class="groupname">Domain
+					Admins</systemitem> and <systemitem class="groupname">DC Backup Hosts</systemitem>. The join account can be assigned using the
 					<option>-dcaccount <replaceable>ACCOUNTNAME</replaceable></option> parameter.
 					</simpara>
 				</listitem>
