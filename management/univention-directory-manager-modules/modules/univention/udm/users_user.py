@@ -42,7 +42,7 @@ except ImportError:
 class UsersUserUdm1Object(GenericUdm1Object):
 	"""Test dynamic factory"""
 
-	def _decode_prop_homePostalAddress(self, value):  # type: (List[List[Text]]) -> List[Dict[str, Text]]
+	def _decode_prop_homePostalAddress(self, value):  # type: (List[List[Text]]) -> List[Dict[Text, Text]]
 		return [{'street': v[0], 'zipcode': v[1], 'city': v[2]} for v in value]
 
 	def _encode_prop_homePostalAddress(self, value):  # type: (List[Dict[str, Text]]) -> List[List[Text]]

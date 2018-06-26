@@ -35,7 +35,7 @@ import pprint
 from collections import namedtuple
 
 try:
-	from typing import Callable, Iterator, List, Optional
+	from typing import Callable, Iterator, List, Optional, Text
 	import univention.admin.uldap
 	import univention.admin.filter.conjunction
 except ImportError:
@@ -80,7 +80,7 @@ class BaseUdmObject(object):
 		self.position = ''
 		self._simple_udm_module = None  # type: BaseUdmModule
 
-	def __repr__(self):  # type: () -> str
+	def __repr__(self):  # type: () -> Text
 		return '{}({!r}, {!r})'.format(
 			self.__class__.__name__,
 			self._simple_udm_module.name if self._simple_udm_module else '<not initialized>',
@@ -191,7 +191,7 @@ class BaseUdmModule(object):
 		self.lo = lo
 		self.meta = self._udm_module_meta_class(self)
 
-	def __repr__(self):  # type: () -> str
+	def __repr__(self):  # type: () -> Text
 		return '{}({!r})'.format(self.__class__.__name__, self.name)
 
 	def new(self):  # type: () -> BaseUdmObject
