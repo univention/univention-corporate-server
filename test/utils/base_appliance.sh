@@ -422,22 +422,26 @@ prepare_apps ()
 	local extra_packages=""
 	local counter=0
 	local packages=""
+	declare -A applist
 
 	register_app_components "$main_app"
 
-	for app in $(get_app_attr $main_app ApplianceAdditionalApps) $main_app; do
-		if app_appliance_IsDockerApp "$app"; then
-			prepare_docker_app "$app" "$counter"
-		else
-			prepare_package_app "$app" "$counter"
+	for app in $(get_app_attr $main_app RequiredAppsInDomain) $(get_app_attr $main_app RequiredApps) $main_app $(get_app_attr $main_app ApplianceAdditionalApps); do
+		if [ -z "${applist[$app]}" ]; then
+			if app_appliance_IsDockerApp "$app"; then
+				prepare_docker_app "$app" "$counter"
+			else
+				prepare_package_app "$app" "$counter"
 
-		fi
-		counter=$((counter+1))
-		# pre installed packages
-		packages="$(get_app_attr $app AppliancePreInstalledPackages)"
-		if [ -n "$packages" ]; then
-			DEBIAN_FRONTEND=noninteractive apt-get -y install $packages
+			fi
+			counter=$((counter+1))
+			# pre installed packages
+			packages="$(get_app_attr $app AppliancePreInstalledPackages)"
+			if [ -n "$packages" ]; then
+				DEBIAN_FRONTEND=noninteractive apt-get -y install $packages
 
+			fi
+			applist["$app"]="true"
 		fi
 	done
 
