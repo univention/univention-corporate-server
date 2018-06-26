@@ -3,8 +3,11 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-appcenter
-fix: 7.0.2-4A~4.3.0.201806211635
+fix: 7.0.2-5A~4.3.0.201806270128
 desc: |-
   This update addresses the following issue(s):
   * Improved cache performance of the App Center
-bug: [46821]
+  * Certain Apps could not be upgraded when installed on a Non-Master system.
+  * Fixed a bug that made the installation of certain Apps impossible when
+    invoked from a remote server.
+bug: [46821, 47253, 47158]
