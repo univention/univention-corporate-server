@@ -57,6 +57,19 @@ if is_ucr_true samba4/disabled; then
 	exit 0
 fi
 
+
+is_school_slave ()
+{
+	univention-ldapsearch -LLL "(&(univentionService=UCS@school)(uid=$hostname\$)(univentionServerRole=slave))" dn | grep -qi ^"dn: $ldab_hostdn"
+}
+if ! is_school_slave; then
+	# This join script should only run on a school slave
+	# See bug 47234.
+	echo "INFO: This system is not a school slave."
+	exit 0
+fi
+
+
 ## Check if Samba 4 setup is done
 LDB_URI="tdb:///var/lib/samba/private/sam.ldb"
 domaindn="DC=${kerberos_realm//./,DC=}"	# that's what /usr/share/pyshared/samba/provision.py uses

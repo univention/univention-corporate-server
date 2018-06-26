@@ -41,6 +41,17 @@ joinscript_init
 
 JOINSCRIPT_DEPENDENCY="98univention-samba4-dns.inst"
 
+is_school_slave ()
+{
+	univention-ldapsearch -LLL "(&(univentionService=UCS@school)(uid=$hostname\$)(univentionServerRole=slave))" dn | grep -qi ^"dn: $ldab_hostdn"
+}
+if ! is_school_slave; then
+	# This join script should only run on a school slave
+	# See bug 47234.
+	echo "INFO: This system is not a school slave."
+	exit 0
+fi
+
 already_executed() {
 	local JOINSCRIPT_DEPENDENCY="$1"
 	local JS_PACKAGE
