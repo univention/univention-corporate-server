@@ -1,0 +1,432 @@
+#!/bin/bash
+#
+# Univention Samba4 Slave PDC helper
+#  join script
+#
+# Copyright 2013-2018 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+## joinscript api: bindpwdfile
+
+VERSION=3
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
+. /usr/share/univention-lib/all.sh
+. /usr/share/univention-samba4/lib/all.sh
+
+NAME="S4 SlavePDC"
+
+eval "$(univention-config-registry shell)"
+
+# This join script is a Workaround for Bug #30105: 
+# Create dns-<hostname> before univention_samaccountname_ldap_check
+# is registered by 97libunivention-ldb-modules.inst.
+# This code was copied from UCS 3.1-0 98univention-samba4-dns.inst
+
+# samba4 allowed on this system?
+if is_ucr_true samba4/disabled; then
+	echo "WARNING: samba4 on this system is not allowed."
+	echo "         The samba4 join stops here. To rerun the"
+	echo "         join script, use "
+	echo "         -> univention-run-join-scripts"
+	exit 0
+fi
+
+## Check if Samba 4 setup is done
+LDB_URI="tdb:///var/lib/samba/private/sam.ldb"
+domaindn="DC=${kerberos_realm//./,DC=}"	# that's what /usr/share/pyshared/samba/provision.py uses
+if ! ldbsearch -H "$LDB_URI" -b $domaindn -s base dn 2>/dev/null| grep -qi ^"dn: $domaindn"; then
+	echo "Samba4 backend database not available yet, exiting joinscript 98univention-samba4-dns."
+	exit 1
+fi
+
+if [ "$samba4_role" != "RODC" ]; then
+	univention_samba4_wait_for_rid_set	## Replication of local RID Pool required for SAM account creation
+	/usr/share/univention-samba4/scripts/create_spn_account.sh \
+		--samaccountname "dns-$hostname" \
+		--serviceprincipalname "DNS/$hostname.$domainname" \
+		--privatekeytab dns.keytab
+fi
+
+_create_default_s4_groups ()
+{
+	udm container/cn create "$@" --set name=Builtin --ignore_exists || die
+
+	udm groups/group create "$@" --set name="Network Configuration Operators" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Members in this group can have some administrative privileges to manage configuration of networking features" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="556" ||die
+
+	udm groups/group create "$@" --set name="Read-Only Domain Controllers" \
+		--ignore_exists \
+		--position "cn=groups,$ldap_base" \
+		--set description="Members of this group are Read-Only Domain Controllers in the domain" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483646" \
+		--set sambaRID="521" ||die
+
+	udm groups/group create "$@" --set name="Remote Desktop Users" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Members in this group are granted the right to logon remotely" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="555" ||die
+
+	udm groups/group create "$@" --set name="Distributed COM Users" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Members are allowed to launch, activate and use Distributed COM objects on this machine." \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="562" ||die
+
+	udm groups/group create "$@" --set name="Pre-Windows 2000 Compatible Access" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="A backward compatibility group which allows read access on all users and groups in the domain" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="554" ||die
+
+	udm groups/group create "$@" --set name="RAS and IAS Servers" \
+		--ignore_exists \
+		--position "cn=groups,$ldap_base" \
+		--set description="Servers in this group can access remote access properties of users" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483644" \
+		--set sambaRID="553" ||die
+
+	udm groups/group create "$@" --set name="Enterprise Admins" \
+		--ignore_exists \
+		--position "cn=groups,$ldap_base" \
+		--append users="uid=administrator,cn=users,$ldap_base" \
+		--set description="Designated administrators of the enterprise" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483640" \
+		--set sambaRID="519" ||die
+
+	udm groups/group create "$@" --set name="Account Operators" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Members can administer domain user and group accounts" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="548" ||die
+
+	udm groups/group create "$@" --set name="Terminal Server License Servers" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Members of this group can update user accounts in Active Directory with information about license issuance, for the purpose of tracking and reporting TS Per User CAL usage" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="561" ||die
+
+	udm groups/group create "$@" --set name="Domain Controllers" \
+		--ignore_exists \
+		--position "cn=groups,$ldap_base" \
+		--set description="All domain controllers in the domain" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483646" \
+		--set sambaRID="516" ||die
+
+	udm groups/group modify "$@" --dn "cn=Domain Controllers,cn=groups,$ldap_base" \
+		--append hosts="$ldap_hostdn"
+
+	udm groups/group create "$@" --set name="Server Operators" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Members can administer domain servers" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="549" ||die
+
+	udm groups/group create "$@" --set name="Cert Publishers" \
+		--ignore_exists \
+		--position "cn=groups,$ldap_base" \
+		--set description="Members of this group are permitted to publish certificates to the directory" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483644" \
+		--set sambaRID="517" ||die
+
+	udm groups/group create "$@" --set name="DnsUpdateProxy" \
+		--ignore_exists \
+		--position "cn=groups,$ldap_base" \
+		--set description="DNS clients who are permitted to perform dynamic updates on behalf of some other clients (such as DHCP servers)." \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483646" \
+		--set sambaRID="1102" ||die
+
+	udm groups/group create "$@" --set name="Performance Monitor Users" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Members of this group can access performance counter data locally and remotely" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="558" ||die
+
+	udm groups/group create "$@" --set name="Guests" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--append nestedGroup="cn=domain guests,cn=groups,$ldap_base" \
+		--set description="Guests have the same access as members of the Users group by default, except for the Guest account which is further restricted" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="546" ||die
+
+	udm groups/group create "$@" --set name="Certificate Service DCOM Access" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Members of this group are allowed to connect to Certification Authorities in the enterprise" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="574" ||die
+
+	udm groups/group create "$@" --set name="Schema Admins" \
+		--ignore_exists \
+		--position "cn=groups,$ldap_base" \
+		--append users="uid=administrator,cn=users,$ldap_base" \
+		--set description="Designated administrators of the schema" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483640" \
+		--set sambaRID="518" ||die
+
+	udm groups/group create "$@" --set name="Enterprise Read-Only Domain Controllers" \
+		--ignore_exists \
+		--position "cn=groups,$ldap_base" \
+		--set description="Members of this group are Read-Only Domain Controllers in the enterprise" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483640" \
+		--set sambaRID="498" ||die
+
+	udm groups/group create "$@" --set name="Replicator" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Supports file replication in a domain" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="552" ||die
+
+	udm groups/group create "$@" --set name="Domain Computers" \
+		--ignore_exists \
+		--position "cn=groups,$ldap_base" \
+		--set description="All workstations and servers joined to the domain" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483646" \
+		--set sambaRID="515" ||die
+
+	udm groups/group create "$@" --set name="DnsAdmins" \
+		--ignore_exists \
+		--position "cn=groups,$ldap_base" \
+		--set description="DNS Administrators Group" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483644" \
+		--set sambaRID="1101" ||die
+
+	udm groups/group create "$@" --set name="Windows Authorization Access Group" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Members of this group have access to the computed tokenGroupsGlobalAndUniversal attribute on User objects" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="560" ||die
+
+	udm groups/group create "$@" --set name="Incoming Forest Trust Builders" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Members of this group can create incoming, one-way trusts to this forest" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="557" ||die
+
+	udm groups/group create "$@" --set name="Event Log Readers" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Members of this group can read event logs from local machine" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="573" ||die
+
+	udm groups/group create "$@" --set name="Group Policy Creator Owners" \
+		--ignore_exists \
+		--position "cn=groups,$ldap_base" \
+		--set description="Members in this group can modify group policy for the domain" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483646" \
+		--set sambaRID="520" ||die
+
+	udm groups/group create "$@" --set name="Performance Log Users" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Members of this group may schedule logging of performance counters, enable trace providers, and collect event traces both locally and via remote access to this computer" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="559" ||die
+
+	udm groups/group create "$@" --set name="Administrators" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--append users="uid=administrator,cn=users,$ldap_base" \
+		--append nestedGroup="cn=domain admins,cn=groups,$ldap_base" \
+		--append nestedGroup="cn=enterprise admins,cn=groups,$ldap_base" \
+		--set description="Administrators have complete and unrestricted access to the computer/domain" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="544" ||die
+
+	udm groups/group create "$@" --set name="Allowed RODC Password Replication Group" \
+		--ignore_exists \
+		--position "cn=groups,$ldap_base" \
+		--set description="Members in this group can have their passwords replicated to all read-only domain controllers in the domain" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483644" \
+		--set sambaRID="571" ||die
+
+	udm groups/group create "$@" --set name="Users" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--append nestedGroup="cn=domain users,cn=groups,$ldap_base" \
+		--set description="Users are prevented from making accidental or intentional system-wide changes and can run most applications" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="545" ||die
+
+	udm groups/group create "$@" --set name="Backup Operators" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Backup Operators can override security restrictions for the sole purpose of backing up or restoring files" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="551" ||die
+
+	udm groups/group create "$@" --set name="IIS_IUSRS" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Built-in group used by Internet Information Services." \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="568" ||die
+
+	udm groups/group create "$@" --set name="Denied RODC Password Replication Group" \
+		--ignore_exists \
+		--position "cn=groups,$ldap_base" \
+		--append users="uid=krbtgt,cn=users,$ldap_base" \
+		--append nestedGroup="cn=read-only domain controllers,cn=groups,$ldap_base" \
+		--append nestedGroup="cn=group policy creator owners,cn=groups,$ldap_base" \
+		--append nestedGroup="cn=domain admins,cn=groups,$ldap_base" \
+		--append nestedGroup="cn=cert publishers,cn=groups,$ldap_base" \
+		--append nestedGroup="cn=enterprise admins,cn=groups,$ldap_base" \
+		--append nestedGroup="cn=schema admins,cn=groups,$ldap_base" \
+		--append nestedGroup="cn=domain controllers,cn=groups,$ldap_base" \
+		--set description="Members in this group cannot have their passwords replicated to any read-only domain controllers in the domain" \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483644" \
+		--set sambaRID="572" ||die
+
+	udm groups/group create "$@" --set name="Cryptographic Operators" \
+		--ignore_exists \
+		--position "cn=Builtin,$ldap_base" \
+		--set description="Members are authorized to perform cryptographic operations." \
+		--set sambaGroupType="2" \
+		--set adGroupType="-2147483643" \
+		--set sambaRID="569" ||die
+}
+
+_update_groups ()
+{
+	users_default_administrator=$(custom_username "Administrator")
+	groups_default_domainadmins=$(custom_groupname "Domain Admins")
+	groups_default_domainusers=$(custom_groupname "Domain Users")
+	groups_default_domainguests=$(custom_groupname "Domain Guests")
+	udm groups/group modify "$@" --dn "cn=$groups_default_domainguests,cn=groups,$ldap_base" --set description='All domain guests'
+	udm groups/group modify "$@" --dn "cn=$groups_default_domainusers,cn=groups,$ldap_base" --set description='All domain users'
+	udm groups/group modify "$@" --dn "cn=$groups_default_domainadmins,cn=groups,$ldap_base" --set description='Designated administrators of the domain'
+	udm users/user modify "$@" --dn "uid=$users_default_administrator,cn=users,$ldap_base" --set description='Built-in account for administering the computer/domain'
+	udm groups/group modify "$@" --dn "cn=Group Policy Creator Owners,cn=groups,$ldap_base" --append users="uid=$users_default_administrator,cn=users,$ldap_base"
+}
+
+_update_container ()
+{
+	udm container/cn create "$@" --ignore_exists --set name=System 
+	udm container/cn modify "$@" --dn "cn=System,$ldap_base" --set description='Builtin system settings' 
+}
+
+_demote_slavepdc_in_central_s4 ()
+{
+    local master_s4=$(udm computers/domaincontroller_master list "$@" --filter univentionService='Samba 4'| sed -ne 's/^ *fqdn: //p')
+    local backup_s4=$(udm computers/domaincontroller_backup list "$@" --filter univentionService='Samba 4'| sed -ne 's/^ *fqdn: //p')
+    if [ -n "$master_s4" -o -n "$backup_s4" ]; then
+		extract_binddn_bindpwd_bindpwdfile_dcaccount_from_args "$@"
+		assert_dcaccount_and_bindpwd
+        for server in $master_s4 $backup_s4; do
+			local host_dn="$(ldbsearch --debug-stderr -k no -H ldaps://$server "-U$dcaccount%$bindpwd" "(&(sAMAccountName=${hostname}$)(objectClass=computer)(userAccountControl=532480))" dn | sed -ne 's/dn: //p')"
+			if [ -n "$host_dn" ]; then
+				echo "Demote $host_dn in Master Samba 4 LDAP"
+				ldbmodify --debug-stderr -k no -H ldaps://$server "-U$dcaccount%$bindpwd" <<-%EOT
+					dn: $host_dn
+					changetype: modify
+					replace: userAccountControl
+					userAccountControl: 4096
+					%EOT
+			else
+				continue
+			fi
+
+			local config_dn="$(ldbsearch --debug-stderr -k no -H ldaps://$server "-U$dcaccount%$bindpwd" --cross-ncs "(&(cn=${hostname})(objectClass=server))" dn | sed -ne 's/dn: //p')"
+			if [ -n "$config_dn" ]; then
+				echo "Delete $config_dn in Master Samba 4 LDAP"
+				ldbdel --debug-stderr -k no -H ldaps://$server "-U$dcaccount%$bindpwd" --cross-ncs --recursive "$config_dn"
+
+				# try to execute samba-tool drs kcc on DC Master. It doesn't
+				# matter if it fails because the command will be executed
+				# after some time automatically on the DC Master
+				pwdfile=$(mktemp)
+				chown 600 "$pwdfile"
+				echo -n "$bindpwd" >"$pwdfile"
+				univention-ssh "$pwdfile" root@$server samba-tool drs kcc
+				rm "$pwdfile"
+			fi
+
+			break
+		done
+	fi
+}
+
+_create_default_s4_groups "$@"
+_update_groups "$@"
+_update_container "$@"
+_demote_slavepdc_in_central_s4 "$@"
+
+ucs_addServiceToLocalhost "${NAME}" "$@"
+
+joinscript_save_current_version
+
+exit 0
