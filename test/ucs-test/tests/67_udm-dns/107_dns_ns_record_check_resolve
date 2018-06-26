@@ -6,6 +6,7 @@
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
+##   - univention-s4-connector
 ## tags:
 ##  - skip_admember
 ## exposure: safe
@@ -50,4 +51,4 @@ if __name__ == '__main__':
 		found = [x for x in nameservers if re.search("^%s\.[ \t][0-9]+[ \t]IN\tNS\t%s\." % (zone_fqdn, x), stdout, re.MULTILINE)]
 
 		if nameservers != found:
-			utils.fail("Record not found: %s" % ([nameservers - found]))
+			utils.fail("Record not found: %s" % ([set(nameservers) - set(found)],))

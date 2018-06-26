@@ -1,3 +1,9 @@
+ucs-test (8.0.28-143) unstable; urgency=medium
+
+  * Bug #32626: Restrict test scope to master running Samba/AD
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Jun 2018 12:47:21 +0200
+
 ucs-test (8.0.28-142) unstable; urgency=low
 
   * Bug #43970: Re-enable NFS test
