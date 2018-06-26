@@ -503,7 +503,7 @@ class Instance(umcm.Base, ProgressMixin):
 			else:
 				if result['can_continue']:
 					def _thread_remote(_client):
-						with self.locked():
+						with self.is_working():
 							self._query_remote_progress(_client)
 
 					def _finished_remote(thread, result):

@@ -1,3 +1,10 @@
+univention-appcenter (7.0.2-5) unstable; urgency=medium
+
+  * Bug #47253: Added --only-master-packages for upgrade
+  * Bug #47158: Do not lock when doing a remote execution
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 27 Jun 2018 01:26:06 +0200
+
 univention-appcenter (7.0.2-4) unstable; urgency=medium
 
   * Bug #46821: Improved cache performance of the App Center
