@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-ldb-modules
-fix: 11.0.1-5A~4.3.0.201806261308
+fix: 6.0.0-5A~4.3.0.201806261304
 desc: |
  This update addresses the following issues:
  * Exit samba pdc join scripts early if the system is not a school slave.
