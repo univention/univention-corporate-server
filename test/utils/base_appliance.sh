@@ -216,6 +216,8 @@ prepare_package_app ()
 
 set -x
 
+echo "__MSG__:Installing app $app"
+
 eval "\$(ucr shell update/commands/install)"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
