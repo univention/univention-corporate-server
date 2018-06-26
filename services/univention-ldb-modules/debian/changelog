@@ -1,3 +1,9 @@
+univention-ldb-modules (6.0.0-6) unstable; urgency=low
+
+  * Bug #47234: improved UCS@school slave check
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 26 Jun 2018 21:40:44 +0200
+
 univention-ldb-modules (6.0.0-5) unstable; urgency=medium
 
   * Bug #47234: readd joinscripts and add check instead

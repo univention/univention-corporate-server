@@ -43,7 +43,8 @@ JOINSCRIPT_DEPENDENCY="98univention-samba4-dns.inst"
 
 is_school_slave ()
 {
-	univention-ldapsearch -LLL "(&(univentionService=UCS@school)(uid=$hostname\$)(univentionServerRole=slave))" dn | grep -qi ^"dn: $ldab_hostdn"
+	local ldap_hostdn="$(ucr get ldap/hostdn)"
+	univention-ldapsearch -LLL -b "$ldap_hostdn" "(&(univentionService=UCS@school)(univentionServerRole=slave))" dn | grep -qi "^dn:"
 }
 if ! is_school_slave; then
 	# This join script should only run on a school slave
