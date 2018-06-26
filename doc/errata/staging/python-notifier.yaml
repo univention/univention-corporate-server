@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: python-notifier
+fix: 0.9.7-4.A~4.3.0.201806071253
+desc: |
+ This update addresses the following issue(s):
+ * Fix UMC crashing on system time change
+bug: [44222]
