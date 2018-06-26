@@ -60,6 +60,14 @@ if [ "$1" = "configure" ]; then
 	fi
 fi
 
+# TODO: create cmdline tool for this
+# TODO: move to join script
+python -c 'from univention.udm.factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
+config_storage = UdmModuleFactoryConfigurationStorage(True)
+config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^users/.*$", "univention.udm.generic", "GenericUdm1Module"))
+config_storage.register_configuration(UdmModuleFactoryConfiguration(r"groups/.*", "univention.udm.generic", "GenericUdm1Module"))
+config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^users/user$", "univention.udm.users_user", "UsersUserUdm1Module"))'
+
 stop_udm_cli_server
 
 call_joinscript 18python-univention-directory-manager.inst
