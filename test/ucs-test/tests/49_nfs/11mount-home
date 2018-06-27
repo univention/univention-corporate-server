@@ -2,6 +2,7 @@
 ## desc: Login user with $HOME on NFS share
 ## roles: [domaincontroller_backup, domaincontroller_slave, memberserver]
 ## exposure: dangerous
+## tags: [skip_admember]
 ## packages:
 ##   - univention-home-mounter
 
@@ -36,7 +37,7 @@ if __name__ == '__main__':
 		user_prop = dict(
 			username=user_name,
 			unixhome=user_home,
-			primaryGroup='cn=Domain Admins,cn=groups,%(ldap/base)s' % ucr,
+			primaryGroup='cn=%s,cn=groups,%s' % (ucr.get('groups/default/domainadmins', 'Domain Admins'), ucr['ldap/base']),
 			homeShare=share,
 			homeSharePath=user_name,
 		)
