@@ -9,3 +9,5 @@ desc: |
  * A problem with the SAML authentification which could lead to the
    UMC web interface becoming unresponsive has been fixed.
 bug: [46870]
+erratum: 125
+announced: 2018-06-27
