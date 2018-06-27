@@ -9,3 +9,5 @@ desc: |
  * The listener module now restarts the connector if extended attributes
    are modified.
 bug: [47049]
+erratum: 121
+announced: 2018-06-27
