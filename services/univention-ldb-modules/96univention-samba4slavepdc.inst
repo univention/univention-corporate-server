@@ -67,6 +67,7 @@ if ! is_school_slave; then
 	# This join script should only run on a school slave
 	# See bug 47234.
 	echo "INFO: This system is not a school slave."
+	joinscript_save_current_version
 	exit 0
 fi
 
