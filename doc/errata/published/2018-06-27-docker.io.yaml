@@ -12,3 +12,5 @@ desc: |
    daemon is not running. This aborts the removal of the package, which is
    done when setting up a Base system. This has been fixed.
 bug: [47194]
+erratum: 117
+announced: 2018-06-27
