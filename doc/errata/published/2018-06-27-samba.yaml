@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Continue samba-tool dbcheck --fix even if a modification failed
 bug: [45982]
+erratum: 120
+announced: 2018-06-27
