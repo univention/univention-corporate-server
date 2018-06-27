@@ -7,5 +7,5 @@ fix: 10.0.6-5A~4.3.0.201806151507
 desc: |
  This update addresses the following issue(s):
  * A problem with the SAML authentification which could lead to the
-   umc web interface becomming unresponsive has been fixed.
+   UMC web interface becoming unresponsive has been fixed.
 bug: [46870]
