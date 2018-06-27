@@ -9,3 +9,5 @@ desc: |
  * Exit samba slave PDC join scripts early if the system
    is not a UCS@school slave.
 bug: [47234]
+erratum: 124
+announced: 2018-06-27
