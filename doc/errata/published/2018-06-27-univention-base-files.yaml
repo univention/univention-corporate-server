@@ -10,3 +10,5 @@ desc: |
    variables.
  * UCR autostart variables are now correctly evaluated across all scopes
 bug: [39704, 46300]
+erratum: 122
+announced: 2018-06-27
