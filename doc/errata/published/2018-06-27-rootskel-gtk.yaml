@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The screen-saver has been disabled while the installer is running.
 bug: [47090]
+erratum: 119
+announced: 2018-06-27
