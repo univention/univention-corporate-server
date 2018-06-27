@@ -9,3 +9,5 @@ desc: |-
   * univention-server-join now checks and reports conflicts in name/role,
     MAC and IP address. This provides better error feedback.
 bug: [42124]
+erratum: 123
+announced: 2018-06-27
