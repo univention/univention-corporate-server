@@ -3,7 +3,7 @@ release: "4.2"
 version: [4]
 scope: ucs_4.2-0-errata4.2-4
 src: univention-base-files
-fix: 
+fix: 6.0.0-18A~4.2.0.201806281202
 desc: |
  This update addresses the following issue(s):
  * UCR autostart variables are now correctly evaluated across all scopes
