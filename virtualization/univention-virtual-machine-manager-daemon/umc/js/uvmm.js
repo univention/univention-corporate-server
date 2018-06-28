@@ -71,11 +71,12 @@ define([
 	"umc/modules/uvmm/InstanceWizard",
 	"umc/modules/uvmm/CreatePage",
 	"umc/modules/uvmm/types",
+	"umc/modules/uvmm/snapshot",
 	"umc/i18n!umc/modules/uvmm",
 	"xstyle/css!./uvmm.css"
 ], function(declare, lang, array, kernel, win, dojoWindow, string, query, Deferred, topic, on, aspect, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
-	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, types, _) {
+	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, types, snapshot, _) {
 
 	var isRunning = function(item) {
 		// isRunning contains state==PAUSED to enable VNC Connections to pause instances
@@ -1499,6 +1500,27 @@ define([
 				isMultiAction: true,
 				callback: lang.hitch(this, '_changeState', 'RUN', 'start' ),
 				canExecute: canStart
+			}, {
+				name: 'snapshot',
+				label: _('Create snapshot'),
+				isMultiAction: false,
+				isStandardAction: false,
+				isContextAction: true,
+				canExecute: function(item) {
+					return item.node_available;
+				},
+				callback: lang.hitch(this, function(ids) {
+					if (!ids.length) {
+						return;
+					}
+					tools.umcpCommand("uvmm/domain/get", {
+						domainURI: ids[0]
+					}).then(lang.hitch(this, function(data) {
+						snapshot._addSnapshot(ids[0], data.result).then(lang.hitch(this, function() {
+							dialog.alert(_('Snapshot successfully created'));
+						}));
+					}));
+				}),
 			}, {
 				name: 'shutdown',
 				label: _('Shutdown'),
