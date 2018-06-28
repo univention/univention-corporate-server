@@ -11,3 +11,5 @@ desc: |-
   * Fixed a bug that made the installation of certain Apps impossible when
     invoked from a remote server.
 bug: [46821, 47253, 47158]
+erratum: 126
+announced: 2018-06-28
