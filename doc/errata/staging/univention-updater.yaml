@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-updater
-fix: 13.0.1-51A~4.3.1
+fix: 13.0.1-51A~4.3.0.201806281326
 desc: |-
   This update addresses the following issues:
   * Network errors while trying to contact the update server do not result in
