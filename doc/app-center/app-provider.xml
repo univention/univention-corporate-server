@@ -12,12 +12,286 @@
 </bookinfo>
 
 <chapter id="introduction">
-  <title>Introduction</title>
-  <section id="Introduction:start">
-	<title>What is Univention App Center?</title>
-	<para>
-	</para>
-  </section>
+    <title>Introduction</title>
+
+    <para>
+    </para>
+
+    <section id="introduction:start">
+	    <title>What is Univention App Center?</title>
+    	<para>
+        </para>
+    </section>
+
+    <section id="infrastructure">
+        <title>App Center infrastructure</title>
+        <para>
+        </para>
+    </section>
+</chapter>
+
+<chapter id="get-started">
+    <title>Get Started</title>
+
+    <para>
+    </para>
+
+    <section id="app-provider-needs">
+        <title>What needs the app provider?</title>
+
+        <para>
+        </para>
+
+        <section id="app-provider-needs:docker-container">
+            <title>Software in a Docker container</title>
+            <para>
+            </para>
+        </section>
+
+        <section id="app-provider-needs:portal-account">
+            <title>Account for App Provider Portal</title>
+            <para>
+            </para>
+        </section>
+    </section>
+
+    <section id="create-app-with-docker">
+        <title>Create app with a Docker container</title>
+
+        <para>
+        </para>
+
+        <section id="create-app-with-docker:container">
+            <title>Docker Container</title>
+            <para>
+            </para>
+        </section>
+
+        <section id="create-app-with-docker:description">
+            <title>Logo and description</title>
+            <para>
+            </para>
+        </section>
+
+        <section id="create-app-with-docker:defaults">
+            <title>Change defaults</title>
+            <para>
+            </para>
+        </section>
+
+        <section id="create-app-with-docker:volumes">
+            <title>Persistant data with volumes</title>
+            <para>
+            </para>
+        </section>
+
+        <section id="create-app-with-docker:web-interface">
+            <title>Web interface</title>
+            <para>
+            </para>
+        </section>
+
+        <section id="create-app-with-docker:ports">
+            <title>Ports</title>
+            <para>
+            </para>
+        </section>
+
+        <section id="create-app-with-docker:database">
+            <title>Database</title>
+            <para>
+            </para>
+        </section>
+
+    </section>
+</chapter>
+
+<chapter id="connection-idm">
+    <title>Connection with Identity Management</title>
+
+    <para>
+    </para>
+
+    <section id="provisioning">
+        <title>Provisioning</title>
+
+        <para>
+        </para>
+
+        <section id="provisioning:pull">
+            <title>Automatically via LDAP connection (Pull)</title>
+            <para>
+            </para>
+        </section>
+
+        <section id="provisioning:push">
+            <title>Automatically via IDM notifications (Push)</title>
+            <para>
+            </para>
+        </section>
+    </section>
+
+    <section id="authentication">
+        <title>Authentication</title>
+
+        <para>
+        </para>
+
+        <section id="authentication:ldap">
+            <title>LDAP</title>
+            <para>
+            </para>
+        </section>
+        <section id="authentication:saml">
+            <title>SAML</title>
+            <para>
+            </para>
+        </section>
+        <section id="authentication:kerberos">
+            <title>Kerberos</title>
+            <para>
+            </para>
+        </section>
+        <section id="authentication:pam">
+            <title>PAM</title>
+            <para>
+            </para>
+        </section>
+<!--
+        <section id="authentication:openid-connect">
+            <title>OpenID connect</title>
+            <para>
+            </para>
+        </section>
+-->
+    </section>
+
+    <section id="user-rights-management">
+        <title>User rights management</title>
+        <para>
+        </para>
+    </section>
+
+</chapter>
+
+<chapter id="app-lifecycle">
+    <title>App life cycle</title>
+
+    <para>
+    </para>
+
+    <section id="testing">
+        <title>Testing</title>
+        <para>
+        </para>
+    </section>
+
+    <section id="first-release">
+        <title>First release</title>
+        <para>
+        </para>
+    </section>
+
+    <section id="updates">
+        <title>Updates</title>
+        <para>
+        </para>
+    </section>
+
+    <section id="termination">
+        <title>Termination (end of life)</title>
+        <para>
+        </para>
+    </section>
+
+    <section id="certificates">
+        <title>Certificates</title>
+        <para>
+        </para>
+    </section>
+
+</chapter>
+
+<chapter id="app-presentation">
+    <title>App presentation</title>
+
+    <para>
+    </para>
+
+    <section id="logos">
+        <title>Logos</title>
+        <para>
+        </para>
+    </section>
+
+    <section id="screentshots">
+        <title>Screenshots and videos</title>
+        <para>
+        </para>
+    </section>
+
+    <section id="description">
+        <title>Description</title>
+        <para>
+        </para>
+    </section>
+
+    <section id="contact">
+        <title>Contact</title>
+        <para>
+        </para>
+    </section>
+
+    <section id="license">
+        <title>License</title>
+        <para>
+        </para>
+    </section>
+
+    <section id="readme">
+        <title>README for the administrator</title>
+        <para>
+        </para>
+    </section>
+
+</chapter>
+
+<chapter id="app-appliances">
+    <title>App Appliances</title>
+
+    <section id="branding">
+        <title>Custom branding</title>
+        <para>
+        </para>
+    </section>
+
+    <section id="procedures">
+        <title>Procedures</title>
+        <para>
+        </para>
+    </section>
+</chapter>
+
+<chapter id="app-configurations">
+    <title>App configurations</title>
+
+    <section id="installation-scripts">
+        <title>Installation scripts</title>
+        <para>
+        </para>
+    </section>
+
+    <section id="app-settings">
+        <title>App settings</title>
+        <para>
+        </para>
+    </section>
+
+    <section id="app-attributes">
+        <title>App attributes</title>
+        <para>
+        </para>
+    </section>
 </chapter>
 
 </book>
