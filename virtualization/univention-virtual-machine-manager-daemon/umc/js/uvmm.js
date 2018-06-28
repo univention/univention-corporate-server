@@ -1270,12 +1270,6 @@ define([
 				label: _('Name'),
 				formatter: lang.hitch(this, 'iconFormatter')
 			}, {
-				name: 'cpuUsage',
-				label: _('CPU usage'),
-				style: 'min-width: 80px;',
-				width: 'adjust',
-				formatter: lang.hitch(this, 'cpuUsageFormatter')
-			}, {
 				name: 'start',
 				label: _('Start'),
 				width: '50px',
@@ -1297,6 +1291,18 @@ define([
 				label: _('Description'),
 				formatter: lang.hitch(this, '_descriptionFormatter')
 			};
+			
+		   var cpuusage = {
+				name: 'cpuUsage',
+				label: _('CPU usage'),
+				style: 'min-width: 80px;',
+				width: 'adjust',
+				formatter: lang.hitch(this, 'cpuUsageFormatter')
+			};
+
+			if (tools.isTrue(this._ucr['uvmm/umc/showcpuusage'])) {
+				domainColumns.splice(1, 0, cpuusage);
+			}
 
 			if (this._currentWidth > this._GRID_COLUMNS_WIDTH_LIMIT) {
 				domainColumns.splice(1, 0, description);
