@@ -21,3 +21,9 @@ Description[de]=Der Detailgrad der Debugausgaben des UVMM-Dienstes. Mögliche We
 Description[en]=The verbosity level of the UVMM daemon debug statement. Possible value: DEBUG, INFO, WARNING, ERROR, CRITICAL.
 Type=str
 Categories=uvmm
+
+[uvmm/umc/showcpuusage]
+Description[de]=Steuert, ob die Spalte 'CPU Auslastung' im UVMM Modul angezeigt wird. Um die Spalte auszublenden, kann der Wert auf 'no' gesetzt werden.
+Description[en]=Controls the visibility for the 'CPU usage' column in the UVMM module. The value can be set to 'no' to hide the column.
+Type=str
+Categories=uvmm
