@@ -7,5 +7,5 @@ fix: 7.0.0-8A~4.3.0.201806281447
 desc: |
  This update addresses the following issue(s):
  * The hosts in the 'Migrate domain' dialog are now sorted.
- * Snapshots can now be created as a context action in the grid overview.
+ * Snapshots can now be created from the context menu of the grid overview.
 bug: [47182, 41772]
