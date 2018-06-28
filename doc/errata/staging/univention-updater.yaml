@@ -3,9 +3,11 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-updater
-fix: 13.0.1-50A~4.3.0.201806181507
+fix: 13.0.1-51A~4.3.1
 desc: |-
-  This update addresses the following issue(s):
+  This update addresses the following issues:
   * Network errors while trying to contact the update server do not result in
     a traceback anymore. Instead, a readable error message is shown.
-bug: [41536]
+  * Code for the deprecated UCS-2.x and UCS-3.x repository layout has been
+    removed.
+bug: [41536, 36719]

@@ -322,9 +322,6 @@ def main():
             'repository/online/server=%(hostname)s.%(domainname)s' % configRegistry,
             'repository/mirror/version/start?%d.0-0' % options.version.major,
         ]
-        # unset UCR variable marking old repository
-        if 'repository/local/old' in configRegistry:
-            ucr_set.handler_unset(['repository/local/old'])
         # set last version contained in repository
         end = configRegistry.get('repository/mirror/version/end', '').strip()
         if not end or UCS_Version(end) < options.version:

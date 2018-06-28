@@ -5,7 +5,7 @@
 import unittest
 from tempfile import NamedTemporaryFile
 from mockups import (
-    U, MAJOR, MINOR, PATCH, ARCH, SEC, ERRAT, PART,
+    U, MAJOR, MINOR, PATCH, ARCH, ERRAT, PART,
     MockConfigRegistry, MockUCSHttpServer, MockPopen,
 )
 
@@ -63,11 +63,9 @@ class TestUniventionUpdater(unittest.TestCase):
         self.assertEqual(['maintained'], self.u.parts)
         self.assertEqual('%d.%d' % (MAJOR, MINOR), self.u.ucs_version)
         self.assertEqual(PATCH, self.u.patchlevel)
-        self.assertEqual(SEC, self.u.security_patchlevel)
         self.assertEqual(ERRAT, self.u.erratalevel)
         self.assertEqual(MAJOR, self.u.version_major)
         self.assertEqual(MINOR, self.u.version_minor)
-        self.assertFalse(self.u.hotfixes)
 
     def test_get_next_version(self):
         """Test no next version."""
@@ -207,81 +205,6 @@ class TestUniventionUpdater(unittest.TestCase):
             'deb file:///mock/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', 'all'),
             'deb file:///mock/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', ARCH),
         )), set(tmp))
-
-    def test_get_all_available_security_updates(self):
-        """Test next available security updates."""
-        self._uri({
-            '%d.%d/maintained/sec%d/%s/Packages.gz' % (MAJOR, MINOR, SEC + 1, 'all'): DATA,
-            '%d.%d/maintained/sec%d/%s/Packages.gz' % (MAJOR, MINOR, SEC + 1, ARCH): DATA,
-            '%d.%d/maintained/sec%d/%s/Packages.gz' % (MAJOR, MINOR, SEC + 2, 'all'): DATA,
-            '%d.%d/maintained/sec%d/%s/Packages.gz' % (MAJOR, MINOR, SEC + 2, ARCH): DATA,
-        })
-        tmp = self.u.get_all_available_security_updates()
-        self.assertEqual([SEC + 1, SEC + 2], tmp)
-
-    def test_get_all_available_errata_updates(self):
-        """Test next available errata updates."""
-        self._uri({
-            '%d.%d/maintained/errata%d/%s/Packages.gz' % (MAJOR, MINOR, ERRAT + 1, 'all'): DATA,
-            '%d.%d/maintained/errata%d/%s/Packages.gz' % (MAJOR, MINOR, ERRAT + 1, ARCH): DATA,
-            '%d.%d/maintained/errata%d/%s/Packages.gz' % (MAJOR, MINOR, ERRAT + 2, 'all'): DATA,
-            '%d.%d/maintained/errata%d/%s/Packages.gz' % (MAJOR, MINOR, ERRAT + 2, ARCH): DATA,
-        })
-        tmp = self.u.get_all_available_errata_updates()
-        self.assertEqual([ERRAT + 1, ERRAT + 2], tmp)
-
-    def test_get_all_available_errata_component_updates(self):
-        """Test getting all component errata updates."""
-        self._ucr({
-            'repository/online/component/a': 'yes',
-            'repository/online/component/a/version': '2.3 2.4',
-            'repository/online/component/a/2.4/erratalevel': '2',
-            'repository/online/component/b': 'yes',
-            'repository/online/component/b/version': '3.0 3.1',
-            'repository/online/component/c': 'yes',
-        })
-        self._uri({
-            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (2, 3, 'all'): DATA,
-            '%d.%d/maintained/component/a-errata2/%s/Packages.gz' % (2, 3, 'all'): DATA,
-            '%d.%d/maintained/component/a-errata3/%s/Packages.gz' % (2, 4, 'all'): DATA,
-            '%d.%d/maintained/component/b-errata1/%s/Packages.gz' % (3, 0, 'all'): DATA,
-            '%d.%d/maintained/component/c-errata1/%s/Packages.gz' % (MAJOR, MINOR, 'all'): DATA,
-        })
-        tmp = self.u.get_all_available_errata_component_updates()
-        self.assertEqual(dict([
-            ('a', {'2.3': [1, 2], '2.4': [3]}),
-            ('b', {'3.0': [1], '3.1': []}),
-            ('c', {'%d.%d' % (MAJOR, MINOR): [1]}),
-        ]), dict(tmp))
-
-    def test_get_all_available_errata_component_updates_bug27098(self):
-        """Test getting all component errata updates with broken non-arch setup."""
-        self._ucr({
-            'repository/online/component/a': 'yes',
-        })
-        self._uri({
-            '%d.%d/maintained/component/a/Packages.gz' % (MAJOR, MINOR): DATA,
-        })
-        tmp = self.u.get_all_available_errata_component_updates()
-        self.assertEqual(dict([
-            ('a', {'%d.%d' % (MAJOR, MINOR): []}),
-        ]), dict(tmp))
-
-    def test_security_update_available(self):
-        """Test for availability of next security update."""
-        self._uri({
-            '%d.%d/maintained/sec%d/all/Packages.gz' % (MAJOR, MINOR, SEC + 1): DATA,
-        })
-        sec = self.u.security_update_available()
-        self.assertEqual(SEC + 1, sec)
-
-    def test_errata_update_available(self):
-        """Test for availability of next errata update."""
-        self._uri({
-            '%d.%d/maintained/errata%d/all/Packages.gz' % (MAJOR, MINOR, ERRAT + 1): DATA,
-        })
-        sec = self.u.errata_update_available()
-        self.assertEqual(ERRAT + 1, sec)
 
     def test_current_version(self):
         """Test current version property."""
@@ -534,47 +457,6 @@ class TestUniventionUpdater(unittest.TestCase):
             'deb file:///mock/%d.%d/maintained/ %d.%d-%d/%s/' % (MAJOR, MINOR, MAJOR, MINOR, 0, ARCH),
         )), set(tmp.splitlines()))
 
-    def test_print_security_repositories(self):
-        """Test printing security repositories."""
-        self._uri({
-            '%d.%d/maintained/sec%d/%s/Packages.gz' % (MAJOR, MINOR, 1, 'all'): DATA,
-            '%d.%d/maintained/sec%d/%s/Packages.gz' % (MAJOR, MINOR, 1, ARCH): DATA,
-        })
-        tmp = self.u.print_security_repositories()
-        self.assertEqual(set((
-            'deb file:///mock/%d.%d/maintained/ sec%d/%s/' % (MAJOR, MINOR, 1, 'all'),
-            'deb file:///mock/%d.%d/maintained/ sec%d/%s/' % (MAJOR, MINOR, 1, ARCH),
-        )), set(tmp.splitlines()))
-
-    def test_print_errata_repositories(self):
-        """Test printing errata repositories."""
-        self._uri({
-            '%d.%d/maintained/errata%d/%s/Packages.gz' % (MAJOR, MINOR, 1, 'all'): DATA,
-            '%d.%d/maintained/errata%d/%s/Packages.gz' % (MAJOR, MINOR, 1, ARCH): DATA,
-        })
-        tmp = self.u.print_errata_repositories()
-        self.assertEqual(set((
-            'deb file:///mock/%d.%d/maintained/ errata%d/%s/' % (MAJOR, MINOR, 1, 'all'),
-            'deb file:///mock/%d.%d/maintained/ errata%d/%s/' % (MAJOR, MINOR, 1, ARCH),
-        )), set(tmp.splitlines()))
-
-    def test_print_errata_repositories_MIN(self):
-        """Test printing errata repositories with minimum."""
-        self._ucr({
-            'repository/online/errata/start': '%d' % (2,),
-        })
-        self._uri({
-            '%d.%d/maintained/errata%d/%s/Packages.gz' % (MAJOR, MINOR, 1, 'all'): DATA,
-            '%d.%d/maintained/errata%d/%s/Packages.gz' % (MAJOR, MINOR, 1, ARCH): DATA,
-            '%d.%d/maintained/errata%d/%s/Packages.gz' % (MAJOR, MINOR, 2, 'all'): DATA,
-            '%d.%d/maintained/errata%d/%s/Packages.gz' % (MAJOR, MINOR, 2, ARCH): DATA,
-        })
-        tmp = self.u.print_errata_repositories()
-        self.assertEqual(set((
-            'deb file:///mock/%d.%d/maintained/ errata%d/%s/' % (MAJOR, MINOR, 2, 'all'),
-            'deb file:///mock/%d.%d/maintained/ errata%d/%s/' % (MAJOR, MINOR, 2, ARCH),
-        )), set(tmp.splitlines()))
-
     def test__get_component_baseurl_default(self):
         """Test getting default component configuration."""
         u = self.u._get_component_baseurl('a')
@@ -724,7 +606,7 @@ class TestUniventionUpdater(unittest.TestCase):
         self._uri({
             '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, PATCH): '',
         })
-        ver = U.UCS_Version((MAJOR, MINOR, 0))  # comonent.erratalevel!
+        ver = U.UCS_Version((MAJOR, MINOR, 0))  # component.erratalevel!
         comp_ver = self.u._get_component_versions('a', start=ver, end=ver)
         self.assertEqual(set((ver,)), comp_ver)
 
@@ -734,14 +616,13 @@ class TestUniventionUpdater(unittest.TestCase):
         self._uri({
             '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, PATCH): '',
         })
-        ver = U.UCS_Version((MAJOR, MINOR, 0))  # comonent.erratalevel!
+        ver = U.UCS_Version((MAJOR, MINOR, 0))  # component.erratalevel!
         comp_ver = self.u._get_component_versions('a', start=ver, end=ver)
         self.assertEqual(set((ver,)), comp_ver)
 
     def test_get_component_repositories_ARCH(self):
         """
         Test component repositories with architecture sub directories.
-        errata is not explicitly requested.
         """
         self._ucr({
             'repository/online/component/a': 'yes',
@@ -749,62 +630,11 @@ class TestUniventionUpdater(unittest.TestCase):
         self._uri({
             '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR, 'all'): DATA,
             '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR, ARCH): DATA,
-            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR, 'all'): DATA,
-            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR, ARCH): DATA,
         })
         r = self.u.get_component_repositories(component='a', versions=('%d.%d' % (MAJOR, MINOR),))
         self.assertEqual(set((
             'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR, 'all'),
             'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR, ARCH),
-        )), set(r))
-
-    def test_get_component_repositories_ARCH_ERRARA(self):
-        """Test component errata repositories with architecture sub directories."""
-        self._ucr({
-            'repository/online/component/a': 'yes',
-        })
-        self._uri({
-            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR, 'all'): DATA,
-            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR, ARCH): DATA,
-        })
-        r = self.u.get_component_repositories(component='a', versions=('%d.%d' % (MAJOR, MINOR),), errata_level=1)
-        self.assertEqual(set((
-            'deb file:///mock/%d.%d/maintained/component/ a-errata1/%s/' % (MAJOR, MINOR, 'all'),
-            'deb file:///mock/%d.%d/maintained/component/ a-errata1/%s/' % (MAJOR, MINOR, ARCH),
-        )), set(r))
-
-    def test_get_component_repositories_ARCH_MULTI(self):
-        """
-        Test component errata repositories with architecture sub directories.
-        onyl last errata is ierated, only first there.
-        """
-        self._ucr({
-            'repository/online/component/a': 'yes',
-            'repository/online/component/a/%d.%d/erratalevel' % (MAJOR, MINOR): '1',
-            'repository/online/component/a/%d.%d/erratalevel' % (MAJOR, MINOR + 1): '1',
-        })
-        self._uri({
-            '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR, 'all'): DATA,
-            '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR, ARCH): DATA,
-            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR, 'all'): DATA,
-            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR, ARCH): DATA,
-            '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR + 1, 'all'): DATA,
-            '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR + 1, ARCH): DATA,
-            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR + 1, 'all'): DATA,
-            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR + 1, ARCH): DATA,
-            '%d.%d/maintained/component/a-errata2/%s/Packages.gz' % (MAJOR, MINOR + 1, 'all'): DATA,
-            '%d.%d/maintained/component/a-errata2/%s/Packages.gz' % (MAJOR, MINOR + 1, ARCH): DATA,
-        })
-        v1 = U.UCS_Version((MAJOR, MINOR, 0))
-        v2 = U.UCS_Version((MAJOR, MINOR + 1, 0))
-        r = self.u.get_component_repositories(component='a', versions=(v1, v2))
-        self.assertEqual(set((
-            'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR, 'all'),
-            'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR, ARCH),
-            'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR + 1, 'all'),
-            'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR + 1, ARCH),
-            'deb file:///mock/%d.%d/maintained/component/ a-errata1/%s/' % (MAJOR, MINOR + 1, 'all'),
-            'deb file:///mock/%d.%d/maintained/component/ a-errata1/%s/' % (MAJOR, MINOR + 1, ARCH),
         )), set(r))
 
     def test_get_component_repositories_NOARCH(self):
@@ -814,24 +644,10 @@ class TestUniventionUpdater(unittest.TestCase):
         })
         self._uri({
             '%d.%d/maintained/component/a/Packages.gz' % (MAJOR, MINOR): DATA,
-            '%d.%d/maintained/component/a-errata1/Packages.gz' % (MAJOR, MINOR): DATA,
         })
         r = self.u.get_component_repositories(component='a', versions=('%d.%d' % (MAJOR, MINOR),))
         self.assertEqual(set((
             'deb file:///mock/%d.%d/maintained/component/a/ ./' % (MAJOR, MINOR),
-        )), set(r))
-
-    def test_get_component_repositories_NOARCH_ERRATA(self):
-        """Test component errata repositories without architecture sub directories."""
-        self._ucr({
-            'repository/online/component/a': 'yes',
-        })
-        self._uri({
-            '%d.%d/maintained/component/a-errata1/Packages.gz' % (MAJOR, MINOR): DATA,
-        })
-        r = self.u.get_component_repositories(component='a', versions=('%d.%d' % (MAJOR, MINOR),), errata_level=1)
-        self.assertEqual(set((
-            'deb file:///mock/%d.%d/maintained/component/a-errata1/ ./' % (MAJOR, MINOR),
         )), set(r))
 
     def test__releases_in_range_current(self):

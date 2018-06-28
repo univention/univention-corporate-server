@@ -98,7 +98,7 @@ def copy_package_files(source_dir, dest_dir):
         if os.path.isfile(os.path.join(source_dir, filename)) and (filename.endswith('.deb') or filename.endswith('.udeb')):
             try:
                 arch = filename.rsplit('_', 1)[-1].split('.', 1)[0]  # partman-btrfs_10.3.201403242318_all.udeb
-            except:
+            except (TypeError, ValueError):
                 print >> sys.stderr, "Warning: Could not determine architecture of package '%s'" % filename
                 continue
             src = os.path.join(source_dir, filename)
@@ -197,21 +197,12 @@ def create_packages(base_dir, source_dir):
         return
 
     pkg_file = os.path.join(base_dir, source_dir, 'Packages')
-    pkg_file_lock = os.path.join(base_dir, source_dir, 'Packages.lock')
-    pkg_file_gz = os.path.join(base_dir, source_dir, 'Packages.gz')
     # create a backup
     if os.path.exists(pkg_file):
         shutil.copyfile(pkg_file, '%s.SAVE' % pkg_file)
-    if os.path.exists(pkg_file_gz):
-        shutil.copyfile(pkg_file_gz, '%s.SAVE' % pkg_file_gz)
 
     packages_fd = open(os.path.join(base_dir, source_dir, 'Packages'), 'w')
-    try:
-        fd = open(pkg_file_lock, 'w')
-        fd.close()
-    except:
-        pass
-
+    packages_fd = open(pkg_file, 'w')
     ret = subprocess.call(['apt-ftparchive', 'packages', source_dir], stdout=packages_fd, cwd=base_dir)
     packages_fd.close()
 
@@ -220,17 +211,10 @@ def create_packages(base_dir, source_dir):
         # restore backup
         if os.path.exists('%s.SAVE' % pkg_file):
             shutil.copyfile('%s.SAVE' % pkg_file, pkg_file)
-        if os.path.exists('%s.SAVE' % pkg_file_gz):
-            shutil.copyfile('%s.SAVE' % pkg_file_gz, pkg_file_gz)
-        if os.path.exists(pkg_file_lock):
-            os.unlink(pkg_file_lock)
         sys.exit(1)
 
     # create Packages.gz file
     gzip_file(os.path.join(base_dir, source_dir, 'Packages'))
-
-    if os.path.exists(pkg_file_lock):
-        os.unlink(pkg_file_lock)
 
 
 def get_repo_basedir(packages_dir):
@@ -305,7 +289,7 @@ def get_installation_version():
     """
     try:
         fd = open(os.path.join(configRegistry.get('repository/mirror/basepath'), '.univention_install'))
-    except:
+    except (LookupError, EnvironmentError):
         return None
 
     for line in fd.readlines():
@@ -314,3 +298,14 @@ def get_installation_version():
         return line[8: -1]
 
     return None
+
+
+def assert_local_repository(out=sys.stderr):
+    """
+    Exit with error if the local repository is not enabled.
+
+    :param file out: Override error output. Defaults to :py:obj:`sys.stderr`.
+    """
+    if not configRegistry.is_true('local/repository', False):
+        print >> out, 'Error: The local repository is not activated. Use "univention-repository-create" to create it or set the Univention Configuration Registry variable "local/repository" to "yes" to re-enable it.'
+        sys.exit(1)

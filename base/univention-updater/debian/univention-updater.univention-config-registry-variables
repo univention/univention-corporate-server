@@ -106,13 +106,6 @@ Description[en]=The description of a repository component.
 Type=str
 Categories=service-software-management
 
-[repository/online/component/.*/erratalevel]
-Description[de]=Für Repository-Komponenten können Errata-Updates (z.B. Bugfixes oder Sicherheitskorrekturen) veröffentlicht werden. Diese Variable wird im Rahmen der Installation der Erratas-Updates automatisch erhöht, so dass geprüft werden kann welche Errata-Updates installiert wird.
-Description[en]=Errata updates (e.g. bugfixes or security fixes) can be issued for repository components. This variable is automatically increased during the installation of such errata updates. It allows to check the status of installed errata updates.
-Type=int
-Categories=service-software-management
-ReadOnly=yes
-
 [repository/online/component/.*/unmaintained]
 Description[de]=Auch für Repository-Komponenten wird zwischen 'maintained' und 'unmaintained' unterschieden (siehe 'repository/online/unmaintained'). Komponenten, die über das Univention App Center integriert werden, verwenden in der Regel nur 'maintained'. Ist diese Option aktiviert, werden Pakete der Komponente aus 'unmaintained' bereitgestellt. Ist die Variable nicht gesetzt, wird die globale Einstellung verwendet.
 Description[en]=Repository components also differentiate between 'maintained' and 'unmaintained' (see 'repository/online/unmaintained'). Components which are included through the Univention App Center usually only use 'maintained'. If this option is activated, packages of the component from 'unmaintained' are included. If the variable is unset, the global setting is used.

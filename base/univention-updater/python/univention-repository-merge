@@ -39,7 +39,7 @@ import getopt
 import univention.updater.repository as urepo
 from univention.updater.locking import UpdaterLock
 
-l_package = {}
+l_package = {}  # type: Dict[Tuple[str, str], Tuple[str, str, int]] # (package, arch) -> (filename, version, arg)
 p_remove = []
 destination_dir = ''
 
@@ -101,7 +101,7 @@ def cleanup_repository(directory):
             if os.path.isfile(filename) and filename.endswith('.deb'):
                 try:
                     os.unlink(filename)
-                except:
+                except EnvironmentError:
                     fp_debug.write('Warning: failed to remove %s\n' % filename)
 
     fp_debug = open('/var/log/univention/repository.log', 'a+')
@@ -127,7 +127,7 @@ if __name__ == '__main__':
     try:
         opts, args = getopt.getopt(sys.argv[1:], '', longopts)
     except getopt.error as msg:
-        print msg
+        print(msg)
         sys.exit(1)
 
     with UpdaterLock():
@@ -165,13 +165,13 @@ if __name__ == '__main__':
                 try:
                     dest = os.path.join(packages_dir, k[1])
                     shutil.copy(l_package[k][0], dest)
-                except:
+                except shutil.Error:
                     fp_debug.write('Error: faild to copy %s\n' % dest)
 
         for f in p_remove:
             try:
                 os.remove(f)
-            except:
+            except EnvironmentError:
                 fp_debug.write('Warning: failed to remove %s\n' % f)
 
         save_dir = os.path.realpath(os.path.curdir)

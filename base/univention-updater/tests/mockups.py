@@ -21,7 +21,6 @@ __all__ = [
 MAJOR = 3
 MINOR = 0
 PATCH = 1
-SEC = 2
 ERRAT = 3
 PART = 'part'
 ARCH = 'arch'
@@ -34,7 +33,6 @@ class MockConfigRegistry(C.ConfigRegistry):
     _DEFAULT = {
         'version/version': '%d.%d' % (MAJOR, MINOR),
         'version/patchlevel': '%d' % (PATCH,),
-        'version/security-patchlevel': '%d' % (SEC,),
         'version/erratalevel': '%d' % (ERRAT,),
     }
     _EXTRA = {}

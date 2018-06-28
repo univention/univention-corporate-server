@@ -145,14 +145,10 @@ class UniventionMirror(UniventionUpdater):
 
         repos = self._iterate_version_repositories(start, end, parts, archs)  # returns generator
 
-        start_errata = UCS_Version((start.major, start.minor, 1))  # errata updates start with 'errata1'
-        end_errata = UCS_Version((end.major, end.minor, 999))  # get all available for mirror
-        errata = self._iterate_errata_repositories(start_errata, end_errata, parts, archs)  # returns generator
-
         components = self.get_components(only_localmirror_enabled=True)
         comp = self._iterate_component_repositories(components, start, end, archs, for_mirror_list=True)  # returns generator
 
-        all_repos = itertools.chain(repos, errata, comp)  # concatenate all generators into a single one
+        all_repos = itertools.chain(repos, comp)  # concatenate all generators into a single one
         for server, struct, phase, path, script in UniventionUpdater.get_sh_files(all_repos, self.script_verify):
             self.log.info('Mirroring %s:%r/%s to %s', server, struct, phase, path)
             assert script is not None, 'No script'

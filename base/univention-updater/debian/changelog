@@ -1,3 +1,9 @@
+univention-updater (13.0.1-51) unstable; urgency=low
+
+  * Bug #36719: Remove deprecated code
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 28 Jun 2018 13:21:20 +0200
+
 univention-updater (13.0.1-50) unstable; urgency=medium
 
   * Bug #41536: Better error message if network connection to update server
