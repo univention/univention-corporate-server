@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%entities;
+]>
+<book lang="en" id='app-provider-4.3'>
+<bookinfo>
+  <title>Univention App Center for App Provider</title>
+</bookinfo>
+
+<chapter id="introduction">
+  <title>Introduction</title>
+  <section id="Introduction:start">
+	<title>What is Univention App Center?</title>
+	<para>
+	</para>
+  </section>
+</chapter>
+
+</book>
