@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (7.0.0-9) unstable; urgency=medium
+
+  * Bug #47268: Make CPU-Usage column visibility configurable
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 29 Jun 2018 11:59:37 +0200
+
 univention-virtual-machine-manager-daemon (7.0.0-8) unstable; urgency=medium
 
   * Bug #41772: relocated functionality to add snapshots to own javascript
