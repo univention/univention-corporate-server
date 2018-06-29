@@ -1,3 +1,10 @@
+univention-saml (5.0.4-20) unstable; urgency=medium
+
+  * Bug #47241: Fix apache configuration when operating without a separate
+    VirtualHost for single sign-on
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 29 Jun 2018 10:48:55 +0200
+
 univention-saml (5.0.4-19) unstable; urgency=medium
 
   * Bug #47068: pwdfile support in join script
