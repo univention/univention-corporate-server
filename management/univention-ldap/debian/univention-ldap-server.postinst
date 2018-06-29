@@ -108,6 +108,7 @@ ucr set \
 	ldap/database/mdb/maxsize?"$mdb_max" \
 	ldap/sizelimit?400000 \
 	ldap/cachesize?20000 \
+	ldap/attributeoptions?"entry-,lang-" \
 	ldap/idlcachesize?20000 \
 	ldap/idletimeout?360 \
 	ldap/index/autorebuild?yes \

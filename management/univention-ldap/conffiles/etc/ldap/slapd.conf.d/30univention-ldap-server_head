@@ -18,11 +18,10 @@ from os.path import exists
 filename = configRegistry.get("ldap/tls/dh/paramfile", "/etc/ldap/dh_2048.pem")
 if filename and exists(filename):
 	print 'TLSDHParamFile	%s' % (filename,)
+
+print('')
+print('sizelimit %s' % configRegistry.get("ldap/sizelimit"))
+print('idletimeout %s' % configRegistry.get("ldap/idletimeout"))
+if 'ldap/attributeoptions' in configRegistry:
+    print('attributeoptions %s' % ' '.join(['"' + x.strip() + '"' for x in configRegistry.get('ldap/attributeoptions').split(',')]))
 @!@
-
-sizelimit		@%@ldap/sizelimit@%@
-
-idletimeout		@%@ldap/idletimeout@%@
-
-attributeoptions "entry-"
-

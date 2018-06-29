@@ -56,6 +56,9 @@ Subfile: etc/ldap/slapd.conf.d/30univention-ldap-server_head
 Variables: ldap/tls/ciphersuite
 Variables: ldap/tls/minprotocol
 Variables: ldap/tls/dh/paramfile
+Variables: ldap/sizelimit
+Variables: ldap/idletimeout
+Variables: ldap/attributeoptions
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf

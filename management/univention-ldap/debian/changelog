@@ -1,3 +1,10 @@
+univention-ldap (14.0.2-16) unstable; urgency=medium
+
+  * Bug #47246: added ldap/attributeoptions for slapd.conf
+    (new default is "entry-,lang-" instead of "entry-")
+
+ -- Felix Botner <botner@univention.de>  Fri, 29 Jun 2018 11:52:54 +0200
+
 univention-ldap (14.0.2-15) unstable; urgency=medium
 
   * Bug #46288: fix userPrimaryGroupPreset LDAP syntax
