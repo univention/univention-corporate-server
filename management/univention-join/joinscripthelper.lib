@@ -264,6 +264,7 @@ joinscript_init() {
 
 die() {
     rc=$?
+    set +e
     joinscript_log_error "$@"
     exit $rc
 }
@@ -287,11 +288,8 @@ exec_log_failure() {
 
 joinscript_log_error() {
 	local line
-	echo -en "$1" | while read line; do
-		if [ -n "$line" ]; then
-			echo "__ERR__: $line"
-		fi
-	done
+	echo "$@"
+	echo "__JOINERR__:FAILED: $0"
 }
 
 # 1 binddn, 2 bindpwdfile, create join credential files /var/run/univention-join/binddn and /var/run/univention-join/bindpwd

@@ -1,3 +1,9 @@
+univention-system-setup (11.0.5-4) unstable; urgency=medium
+
+  * Bug #42366: Improve error message and feedback when join fails
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 29 Jun 2018 16:06:54 +0200
+
 univention-system-setup (11.0.5-3) unstable; urgency=medium
 
   * Bug #45931: Improve display of information about installed updates

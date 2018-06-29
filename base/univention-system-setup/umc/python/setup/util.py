@@ -78,6 +78,7 @@ ucr.load()
 PATH_SYS_CLASS_NET = '/sys/class/net'
 PATH_SETUP_SCRIPTS = '/usr/lib/univention-system-setup/scripts/'
 PATH_JOIN_SCRIPT = '/usr/lib/univention-system-setup/scripts/setup-join.sh'
+PATH_JOIN_LOG = '/var/log/univention/join.log'
 PATH_PROFILE = '/var/cache/univention-system-setup/profile'
 LOG_FILE = '/var/log/univention/setup.log'
 PATH_PASSWORD_FILE = '/var/cache/univention-system-setup/secret'
@@ -470,7 +471,16 @@ class ProgressParser(object):
 		# error message: why did the join fail?
 		match = ProgressParser.JOINERROR.match(line)
 		if match is not None:
-			error = '%s: %s' % (self.current.fractionName, match.groups()[0])
+			error = '%s: %s\n' % (self.current.fractionName, match.groups()[0])
+			with open(PATH_JOIN_LOG, 'r') as join_log:
+				log = join_log.read().splitlines(True)
+			error_log = []
+			for line in reversed(log):
+				error_log.append(line)
+				if line.startswith('Configure'):
+					break
+			for line in reversed(error_log):
+				error += line
 			self.current.errors.append(error)
 			self.current.critical = True
 			return True
