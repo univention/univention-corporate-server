@@ -8,6 +8,8 @@ desc: |
  This update addresses the following issue(s):
  * Some debug message levels in LDAP overlays have been adjusted
    to more sensible values.
- * New UCR variable "ldap/attributeoptions" to configure attributeoptions in
-   slapd.conf. New default is "entry-" "lang-".
+ * The new UCR variable "ldap/attributeoptions" has been added
+   to configure the slapd.conf "attributeoptions" parameter. The
+   default for "attributeoptions" has changed from "entry-" to
+   "entry-,lang-".
 bug: [47196, 47246]
