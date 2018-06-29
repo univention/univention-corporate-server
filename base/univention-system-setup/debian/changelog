@@ -1,3 +1,9 @@
+univention-system-setup (11.0.5-3) unstable; urgency=medium
+
+  * Bug #45931: Improve display of information about installed updates
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 29 Jun 2018 15:10:42 +0200
+
 univention-system-setup (11.0.5-2) unstable; urgency=medium
 
   * Bug #45931: Give more detailed information about installed updates

@@ -857,7 +857,9 @@ define([
 					type: CheckBox,
 					name: 'update/system/after/setup',
 					value: true,
-					label: ''
+					label: _('Update system after setup') +
+						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').' +
+						'showTooltip(event, \'updates\');">' + _('more information') + '</a>)'
 				}, {
 					type: Text,
 					name: 'privacyStatement',
@@ -1142,6 +1144,14 @@ define([
 			else if (type == 'proxy') {
 				msg = _('A proxy address needs to be specified in the format: <i>http://proxy.mydomain.intranet:3128</i><br/>Proxy access with username and password may be specified via the format: <i>http://username:password@proxy.mydomain.intranet:3128</i>');
 			}
+			else if (type == 'updates') {
+				msg = _('Install the latest errata and app updates after the setup.');
+				if (this._isRoleMaster()) {
+					msg = _('Install the latest patch level, errata and app updates after the setup.');
+				} else if (this._isRoleNonMaster()) {
+					msg = _('Update system to the UCS release version of the master domain conroller and install all available errata and app updates after the setup.');
+				}
+			}
 			if (msg) {
 				_showTooltip(evt.target, msg, evt);
 			}
@@ -1192,7 +1202,8 @@ define([
 					['network', '_renewLease'],
 					['credentials-master', 'email_address'],
 					['fqdn-nonmaster-all', 'hostname'],
-					['network', 'proxy/http']
+					['network', 'proxy/http'],
+					['summary', 'update/system/after/setup']
 				], function(iitem) {
 				var iwidget = this.getWidget(iitem[0], iitem[1]);
 				iwidget.set('label', lang.replace(iwidget.label, this));
@@ -1824,18 +1835,6 @@ define([
 			this._showMemoryWarning();
 
 			this.getWidget('summary', 'info').set('content', msg);
-
-			if (this._isRoleMaster()) {
-				this.getWidget('summary', 'update/system/after/setup').set(
-					'label',
-					_('Install the latest available Errata, patch level and app updates after setup')
-				)
-			} else {
-				this.getWidget('summary', 'update/system/after/setup').set(
-					'label',
-					_('Update system to the installation status of the master domain controller after setup')
-				)
-			}
 		},
 
 		_updateValidationPage: function(details) {
