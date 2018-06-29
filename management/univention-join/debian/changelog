@@ -1,3 +1,10 @@
+univention-join (10.0.0-15) unstable; urgency=medium
+
+  * Bug #42366: Repair logging of failed join scripts and adapt to changes in
+    system setup
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 29 Jun 2018 16:10:01 +0200
+
 univention-join (10.0.0-14) unstable; urgency=medium
 
   * Bug #42124: univention-server-join now checkd for conflicts in name/role,
