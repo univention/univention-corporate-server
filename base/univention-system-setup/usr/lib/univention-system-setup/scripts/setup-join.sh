@@ -65,6 +65,7 @@ while [ "$#" -gt 0 ]; do
 done
 
 SETUP_LOG="/var/log/univention/setup.log"
+JOIN_LOG="/var/log/univention/join.log"
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
@@ -268,8 +269,8 @@ if [ $? -ne 1 ]; then
 			ln -sf /var/univention-join/status /usr/lib/univention-install/.index.txt
 
 			for i in /usr/lib/univention-install/*.inst; do
-				echo "Configure $i"
-				$i
+				echo "Configure $(basename "$i") $(LC_ALL=C date)" | tee -a "$JOIN_LOG"
+				$i > >(tee -a "$JOIN_LOG") 2> >(tee -a "$JOIN_LOG" >&2)
 			done
 		else
 			if [ -n "$dcaccount" -a -n "$password_file" ]; then
@@ -282,7 +283,7 @@ if [ $? -ne 1 ]; then
 				rm -f "$pwd_file"
 			fi
 		fi
-	) | (
+	) |& (
 		# parse the output for lines "^Configure .*" which indicate that a join
 		# script is being executed
 		while read line; do
@@ -293,9 +294,15 @@ if [ $? -ne 1 ]; then
 				progress_msg "$(gettext "Configure") $(basename $joinScript)"
 				progress_next_step
 			fi
+			if [ "${line#__JOINERR__}" != "$line" ]; then
+				# found line indicating join failed. output
+				echo "$line"
+				continue
+			fi
 			if [ "${line#* Message:  }" != "$line" ]; then
 				# found line indicating join failed. output
 				progress_join_error "${line#* Message:  }"
+				continue
 			fi
 			echo "$line"
 		done
