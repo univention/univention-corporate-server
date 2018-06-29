@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [0,1]
+scope: ucs_4.3-0-errata4.3-1
+src: univention-saml
+fix: 5.0.4-20A~4.3.0.201806291057
+desc: |
+ This update addresses the following issue(s):
+ * When operating without a separate VirtualHost for single sign-on, a
+   rewrite rule in the scope of other config rules limited execution of
+   further rewrite rules. This fix restricts the rewrite rule to the
+   single sign-on directory.
+bug: [47241]
