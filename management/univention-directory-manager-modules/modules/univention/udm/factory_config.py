@@ -201,6 +201,8 @@ class UdmModuleFactoryConfigurationStorage(object):
 		if config_with_date:
 			compiled_pattern = re.compile(factory_configuration.udm_module_name_pattern)
 			self._config[compiled_pattern].remove(config_with_date)
+			if not self._config[compiled_pattern]:
+				del self._config[compiled_pattern]
 			# TODO: log
 			print('Info: Unregistered configuration {!r}.'.format(
 				self._config_with_date_2_config_without_date(config_with_date)))
