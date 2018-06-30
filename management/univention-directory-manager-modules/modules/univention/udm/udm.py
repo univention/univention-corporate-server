@@ -173,7 +173,10 @@ class Udm(object):
 		:raises ImportError: if the Python module for `name` could not be loaded
 		"""
 		# key is (connection + class)
-		key = (self.lo.base, self.lo.binddn, self.lo.host, factory_config.module_path, factory_config.class_name)
+		key = (
+			self.lo.base, self.lo.binddn, self.lo.host,
+			name, factory_config.module_path, factory_config.class_name
+		)
 		if key not in self._module_object_cache:
 			# TODO: log
 			print('Debug: trying to load UDM module {!r} for configuration {!r}...'.format(name, factory_config))
