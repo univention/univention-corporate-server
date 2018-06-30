@@ -159,9 +159,9 @@ class Udm(object):
 		:raises ImportError: if the Python module for `name` could not be loaded
 		"""
 		factory_config = self._configuration_storage.get_configuration(name)
-		return self.get_by_factory(name, factory_config)
+		return self.get_by_factory_config(name, factory_config)
 
-	def get_by_factory(self, name, factory_config):  # type: (str, UdmModuleFactoryConfiguration) -> BaseUdmModule
+	def get_by_factory_config(self, name, factory_config):  # type: (str, UdmModuleFactoryConfiguration) -> BaseUdmModule
 		"""
 		Get an object of :py:class:`BaseUdmModule` (or of a subclass) for UDM
 		factory configuration `factory_configuration`.
@@ -172,6 +172,7 @@ class Udm(object):
 		:rtype: BaseUdmModule
 		:raises ImportError: if the Python module for `name` could not be loaded
 		"""
+		assert isinstance(factory_config, UdmModuleFactoryConfiguration)
 		# key is (connection + class)
 		key = (
 			self.lo.base, self.lo.binddn, self.lo.host,
