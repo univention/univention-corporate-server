@@ -45,6 +45,15 @@ except ImportError:
 UdmLdapMapping = namedtuple('UdmLdapMapping', ('ldap2udm', 'udm2ldap'))
 
 
+class BaseUdmObjectProperties(object):
+	"""Container for UDM properties."""
+	def __init__(self, udm_obj):  # type: (BaseUdmObject) -> None
+		self._udm_obj = udm_obj
+
+	def __repr__(self):  # type: () -> str
+		return pprint.pformat(dict((k, v) for k, v in self.__dict__.iteritems() if not str(k).startswith('_')), indent=2)
+
+
 class BaseUdmObject(object):
 	"""
 	Base class for UdmObject classes.
@@ -68,6 +77,8 @@ class BaseUdmObject(object):
 	:py:class:`BaseUdmObject` after :py:meth:`save()`, it is *strongly*
 	recommended to :py:meth:`reload()` it: `obj.save().reload()`
 	"""
+	udm_prop_class = BaseUdmObjectProperties
+
 	def __init__(self):  # type: () -> None
 		"""
 		Don't instantiate a :py:class:`UdmObject` directly. Use a
@@ -78,12 +89,12 @@ class BaseUdmObject(object):
 		self.options = []  # type: List[str]
 		self.policies = []  # type: List[str]
 		self.position = ''
-		self._simple_udm_module = None  # type: BaseUdmModule
+		self._udm_module = None  # type: BaseUdmModule
 
 	def __repr__(self):  # type: () -> Text
 		return '{}({!r}, {!r})'.format(
 			self.__class__.__name__,
-			self._simple_udm_module.name if self._simple_udm_module else '<not initialized>',
+			self._udm_module.name if self._udm_module else '<not initialized>',
 			self.dn
 		)
 
@@ -115,20 +126,11 @@ class BaseUdmObject(object):
 		raise NotImplementedError()
 
 
-class BaseUdmObjectProperties(object):
-	"""Container for UDM properties."""
-	def __init__(self, udm_obj):  # type: (BaseUdmObject) -> None
-		self._simple_udm_obj = udm_obj
-
-	def __repr__(self):  # type: () -> str
-		return pprint.pformat(dict((k, v) for k, v in self.__dict__.iteritems() if not str(k).startswith('_')), indent=2)
-
-
 class BaseUdmModuleMetadata(object):
 	"""Base class for UDM module meta data."""
 
 	def __init__(self, udm_module):  # type: (BaseUdmModule) -> None
-		self._simple_udm_module = udm_module
+		self._udm_module = udm_module
 
 	@property
 	def identifying_property(self):  # type: () -> str

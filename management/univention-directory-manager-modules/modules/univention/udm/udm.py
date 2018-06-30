@@ -56,19 +56,18 @@ obj = user_mod.new()
 obj.props.username = 'bar'
 obj.save().refresh()  # reload obj.props from LDAP after save()
 
-for obj in user_mod.search('uid=a*'):  # search() returns a generator
+for obj in Udm.using_machine().get('users/user').search('uid=a*'):  # search() returns a generator
 	print(obj.props.firstname, obj.props.lastname)
 """
 
 from __future__ import unicode_literals
 import importlib
 from univention.udm.base import BaseUdmModule
-from univention.udm.factory_config import UdmModuleFactoryConfigurationStorage
+from univention.udm.factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
 from univention.udm.utils import LDAP_connection
 
 try:
 	from typing import Dict, Optional, Tuple, Type
-	from univention.udm.factory_config import UdmModuleFactoryConfiguration
 except ImportError:
 	pass
 

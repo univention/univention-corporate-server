@@ -49,11 +49,11 @@ except ImportError:
 class GenericUdm1ObjectProperties(BaseUdmObjectProperties):
 	"""Container for UDM properties."""
 	def __setattr__(self, key, value):  # type: (str, Any) -> None
-		if not str(key).startswith('_') and key not in self._simple_udm_obj._udm_object:
+		if not str(key).startswith('_') and key not in self._udm_obj._udm1_object:
 			raise UnknownProperty(
-				'Unknown property {!r} for UDM module {!r}.'.format(key, self._simple_udm_obj._simple_udm_module.name),
-				dn=self._simple_udm_obj.dn,
-				module_name=self._simple_udm_obj._simple_udm_module.name
+				'Unknown property {!r} for UDM module {!r}.'.format(key, self._udm_obj._udm_module.name),
+				dn=self._udm_obj.dn,
+				module_name=self._udm_obj._udm_module.name
 			)
 		super(GenericUdm1ObjectProperties, self).__setattr__(key, value)
 
@@ -86,12 +86,12 @@ class GenericUdm1Object(BaseUdmObject):
 	def __init__(self):  # type: () -> None
 		"""
 		Don't instantiate a :py:class:`UdmObject` directly. Use a
-		:py:class:`UdmModule` or :py:func:`get_udm_object()`.
+		:py:class:`UdmModule`.
 		"""
 		super(GenericUdm1Object, self).__init__()
-		self._simple_udm_module = None  # type: GenericUdm1Module
+		self._udm_module = None  # type: GenericUdm1Module
 		self._lo = None  # type: univention.admin.uldap.access
-		self._udm_object = None  # type: univention.admin.handlers.simpleLdap
+		self._udm1_object = None  # type: univention.admin.handlers.simpleLdap
 		self._old_position = ''
 		self._fresh = True
 		self._deleted = False
@@ -104,10 +104,10 @@ class GenericUdm1Object(BaseUdmObject):
 		:rtype: UdmObject
 		"""
 		if self._deleted:
-			raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._simple_udm_module.name)
-		if not self.dn or not self._udm_object:
-			raise FirstUseError(module_name=self._simple_udm_module.name)
-		self._udm_object = self._simple_udm_module._get_udm_object(self.dn)
+			raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name)
+		if not self.dn or not self._udm1_object:
+			raise FirstUseError(module_name=self._udm_module.name)
+		self._udm1_object = self._udm_module._get_udm1_object(self.dn)
 		self._copy_from_udm_obj()
 		return self
 
@@ -120,30 +120,30 @@ class GenericUdm1Object(BaseUdmObject):
 		:raises MoveError: when a move operation fails
 		"""
 		if self._deleted:
-			raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._simple_udm_module.name)
+			raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name)
 		if not self._fresh:
 			# TODO: log warning
-			print('*** WARNING: saving stale UDM object instance.')
+			print('WARNING: saving stale UDM object instance.')
 		self._copy_to_udm_obj()
 		if self.dn:
 			if self._old_position and self._old_position != self.position:
-				new_dn_li = [str2dn(self._udm_object.dn)[0]]
+				new_dn_li = [str2dn(self._udm1_object.dn)[0]]
 				new_dn_li.extend(str2dn(self.position))
 				new_dn = dn2str(new_dn_li)
 				try:
-					self.dn = self._udm_object.move(new_dn)
+					self.dn = self._udm1_object.move(new_dn)
 				except univention.admin.uexceptions.invalidOperation as exc:
 					raise MoveError(
 						'Error moving {!r} object from {!r} to {!r}: {}'.format(
-							self._simple_udm_module.name, self.dn, self.position, exc
-						), dn=self.dn, module_name=self._simple_udm_module.name
+							self._udm_module.name, self.dn, self.position, exc
+						), dn=self.dn, module_name=self._udm_module.name
 					)
-				assert self.dn == self._udm_object.dn
+				assert self.dn == self._udm1_object.dn
 				self.position = self._lo.parentDn(self.dn)
 				self._old_position = self.position
-				self._udm_object.position.setDn(self.position)
+				self._udm1_object.position.setDn(self.position)
 			try:
-				self.dn = self._udm_object.modify()
+				self.dn = self._udm1_object.modify()
 			except (
 					univention.admin.uexceptions.noProperty,
 					univention.admin.uexceptions.valueError,
@@ -151,12 +151,12 @@ class GenericUdm1Object(BaseUdmObject):
 			) as exc:
 				raise ModifyError(
 					'Error saving {!r} object at {!r}: {}'.format(
-						self._simple_udm_module.name, self.dn, exc
-					), dn=self.dn, module_name=self._simple_udm_module.name
+						self._udm_module.name, self.dn, exc
+					), dn=self.dn, module_name=self._udm_module.name
 				)
 		else:
-			self.dn = self._udm_object.create()
-		assert self.dn == self._udm_object.dn
+			self.dn = self._udm1_object.create()
+		assert self.dn == self._udm1_object.dn
 		assert self.position == self._lo.parentDn(self.dn)
 		self._fresh = False
 		return self
@@ -169,14 +169,14 @@ class GenericUdm1Object(BaseUdmObject):
 		"""
 		if self._deleted:
 			# TODO: log warning
-			print('*** WARNING: {} has already been deleted.'.format(self))
+			print('WARNING: {} has already been deleted.'.format(self))
 			return
-		if not self.dn or not self._udm_object:
+		if not self.dn or not self._udm1_object:
 			raise FirstUseError()
-		self._udm_object.remove()
-		if univention.admin.objects.wantsCleanup(self._udm_object):
-			univention.admin.objects.performCleanup(self._udm_object)
-		self._udm_object = None
+		self._udm1_object.remove()
+		if univention.admin.objects.wantsCleanup(self._udm1_object):
+			univention.admin.objects.performCleanup(self._udm1_object)
+		self._udm1_object = None
 		self._deleted = True
 
 	def _copy_from_udm_obj(self):  # type: () -> None
@@ -186,16 +186,16 @@ class GenericUdm1Object(BaseUdmObject):
 
 		:return: None
 		"""
-		self.dn = self._udm_object.dn
-		self.options = self._udm_object.options
-		self.policies = self._udm_object.policies
+		self.dn = self._udm1_object.dn
+		self.options = self._udm1_object.options
+		self.policies = self._udm1_object.policies
 		if self.dn:
 			self.position = self._lo.parentDn(self.dn)
 			self._old_position = self.position
 		else:
-			self.position = self._udm_object.position.getDn()
+			self.position = self._udm1_object.position.getDn()
 		self.props = self.udm_prop_class(self)
-		for k, v in self._udm_object.items():
+		for k, v in self._udm1_object.items():
 			try:
 				decode_func = getattr(self, '_decode_prop_{}'.format(k))
 				assert callable(decode_func), 'Attribute {!r} of class {!r} must be callable.'.format(
@@ -213,10 +213,10 @@ class GenericUdm1Object(BaseUdmObject):
 
 		:return: None
 		"""
-		self._udm_object.options = self.options
-		self._udm_object.policies = self.policies
-		self._udm_object.position.setDn(self.position)
-		for k, v in self._udm_object.items():
+		self._udm1_object.options = self.options
+		self._udm1_object.policies = self.policies
+		self._udm1_object.position.setDn(self.position)
+		for k, v in self._udm1_object.items():
 			new_val = getattr(self.props, k, None)
 			if v != new_val:
 				try:
@@ -226,7 +226,7 @@ class GenericUdm1Object(BaseUdmObject):
 					new_val = encode_func(new_val)
 				except AttributeError:
 					pass
-				self._udm_object[k] = new_val
+				self._udm1_object[k] = new_val
 
 
 class GenericUdm1ModuleMetadata(BaseUdmModuleMetadata):
@@ -237,7 +237,7 @@ class GenericUdm1ModuleMetadata(BaseUdmModuleMetadata):
 		component in a DN, e.g. `username` (LDAP attribute `uid`) or `name`
 		(LDAP attribute `cn`).
 		"""
-		for key, udm_property in self._simple_udm_module._udm_module.property_descriptions.iteritems():
+		for key, udm_property in self._udm_module._udm1_module.property_descriptions.iteritems():
 			if udm_property.identifies:
 				return key
 		return ''
@@ -257,7 +257,7 @@ class GenericUdm1ModuleMetadata(BaseUdmModuleMetadata):
 		:return: an LDAP filter string
 		:rtype: str
 		"""
-		return str(self._simple_udm_module._udm_module.lookup_filter(filter_s, self._simple_udm_module.lo))
+		return str(self._udm_module._udm1_module.lookup_filter(filter_s, self._udm_module.lo))
 
 	@property
 	def mapping(self):  # type: () -> UdmLdapMapping
@@ -268,8 +268,8 @@ class GenericUdm1ModuleMetadata(BaseUdmModuleMetadata):
 		:rtype: UdmLdapMapping
 		"""
 		return UdmLdapMapping(
-			udm2ldap=dict((k, v[0]) for k, v in self._simple_udm_module._udm_module.mapping._map.iteritems()),
-			ldap2udm=dict((k, v[0]) for k, v in self._simple_udm_module._udm_module.mapping._unmap.iteritems())
+			udm2ldap=dict((k, v[0]) for k, v in self._udm_module._udm1_module.mapping._map.iteritems()),
+			ldap2udm=dict((k, v[0]) for k, v in self._udm_module._udm1_module.mapping._unmap.iteritems())
 		)
 
 
@@ -294,7 +294,7 @@ class GenericUdm1Module(BaseUdmModule):
 
 	def __init__(self, name, lo):  # type: (str, univention.admin.uldap.access) -> None
 		super(GenericUdm1Module, self).__init__(name, lo)
-		self._udm_module = self._get_udm_module()
+		self._udm1_module = self._get_udm1_module()
 
 	def new(self):  # type: () -> GenericUdm1Object
 		"""
@@ -329,14 +329,14 @@ class GenericUdm1Module(BaseUdmModule):
 		:rtype: Iterator(GenericUdm1Object)
 		"""
 		try:
-			udm_module_lookup_filter = str(self._udm_module.lookup_filter(filter_s, self.lo))
+			udm_module_lookup_filter = str(self._udm1_module.lookup_filter(filter_s, self.lo))
 		except AttributeError:
 			# not all modules have 'lookup_filter'
 			udm_module_lookup_filter = filter_s
 		for dn in self.lo.searchDn(filter=udm_module_lookup_filter, base=base, scope=scope):
 			yield self.get(dn)
 
-	def _get_udm_module(self):  # type: () -> univention.admin.handlers.simpleLdap
+	def _get_udm1_module(self):  # type: () -> univention.admin.handlers.simpleLdap
 		"""
 		Load a UDM module, initializing it if required.
 
@@ -347,7 +347,7 @@ class GenericUdm1Module(BaseUdmModule):
 		# cannot know if update() or init() are required. So we'll also cache.
 		key = (self.lo.base, self.lo.binddn, self.lo.host, self.name)
 		if key not in self._udm_module_cache:
-			if self.name not in [key[3] for key in self._udm_module_cache.keys()]:
+			if self.name not in [k[3] for k in self._udm_module_cache.keys()]:
 				univention.admin.modules.update()
 			udm_module = univention.admin.modules.get(self.name)
 			po = univention.admin.uldap.position(self.lo.base)
@@ -355,7 +355,7 @@ class GenericUdm1Module(BaseUdmModule):
 			self._udm_module_cache[key] = udm_module
 		return self._udm_module_cache[key]
 
-	def _get_udm_object(self, dn):  # type: (str) -> univention.admin.handlers.simpleLdap
+	def _get_udm1_object(self, dn):  # type: (str) -> univention.admin.handlers.simpleLdap
 		"""
 		Retrieve UDM object from LDAP.
 
@@ -368,7 +368,7 @@ class GenericUdm1Module(BaseUdmModule):
 		:raises NoObject: if no object is found at `dn`
 		:raises WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
 		"""
-		udm_module = self._get_udm_module()
+		udm_module = self._get_udm1_module()
 		po = univention.admin.uldap.position(self.lo.base)
 		try:
 			obj = univention.admin.objects.get(udm_module, None, self.lo, po, dn=dn)
@@ -392,8 +392,8 @@ class GenericUdm1Module(BaseUdmModule):
 		"""
 		obj = self._udm_object_class()
 		obj._lo = self.lo
-		obj._simple_udm_module = self
-		obj._udm_object = self._get_udm_object(dn)
+		obj._udm_module = self
+		obj._udm1_object = self._get_udm1_object(dn)
 		obj.props = obj.udm_prop_class(obj)
 		obj._copy_from_udm_obj()
 		return obj

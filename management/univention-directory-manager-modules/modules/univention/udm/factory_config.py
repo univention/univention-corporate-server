@@ -96,7 +96,7 @@ except ImportError:
 UdmModuleFactoryConfiguration = namedtuple(
 	'UdmModuleFactoryConfiguration',
 	('udm_module_name_pattern', 'module_path', 'class_name')
-)  # e.g. UdmModuleFactoryConfiguration('users/.*', 'univention.admin.simple_udm', 'GenericUdm1Module')
+)  # e.g. UdmModuleFactoryConfiguration('users/.*', 'univention.admin.udm', 'GenericUdm1Module')
 
 
 _UdmModuleFactoryConfigurationWithDate = namedtuple(
@@ -144,8 +144,6 @@ class UdmModuleFactoryConfigurationStorage(object):
 				candidates_exact.extend(configurations)
 			elif udm_module_name_pattern.match(module_name):
 				candidates_regex.extend(configurations)
-
-		# print('*** candidates_exact={!r} candidates_regex={!r}'.format(candidates_exact, candidates_regex))
 
 		if candidates_exact:
 			open('/tmp/candidates_exact', 'a').write('candidates_exact={!r}\n'.format(candidates_exact))
@@ -280,7 +278,7 @@ class UdmModuleFactoryConfigurationStorage(object):
 			raise
 		self._config = {}
 		for regex, configs in config.iteritems():
-			self._config[re.compile(regex)] = [_UdmModuleFactoryConfigurationWithDate(**config) for config in configs]
+			self._config[re.compile(regex)] = [_UdmModuleFactoryConfigurationWithDate(**c) for c in configs]
 		return self._config
 
 	def _save_configuration(self):  # type: () -> None
