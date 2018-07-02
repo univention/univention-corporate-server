@@ -5,8 +5,8 @@ scope: ucs_4.3-0-errata4.3-1
 src: univention-system-setup
 fix: 11.0.5-4A~4.3.0.201806291616
 desc: |
- This update addresses the following issue(s):
- * It was unclear what kind of updates were to be installed on the last page of
-   the system setup.
+ This update addresses the following issues:
+ * It was unclear what kind of updates were to be installed on the last page
+   of the system setup.
  * Improve error messages of join failures.
 bug: [45931,42366]
