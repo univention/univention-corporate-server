@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0
+src: libmicrodns
+fix: 0.0.3-3
+desc: |
+ This update addresses the following issues:
+ * New maintained dependency of VLC.
+bug: [47294]
+ignore:
+  - version.scope
