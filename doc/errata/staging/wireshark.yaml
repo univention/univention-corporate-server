@@ -1,0 +1,32 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: wireshark
+fix: 2.2.6+g32dac6a-2+deb9u3
+desc: |
+ This update addresses the following issues:
+ * Heap-based Buffer Overflow in SIGCOMP dissector crash in packet-sigcomp.c
+   (CVE-2018-7320)
+ * out of bounds access in UMTS MAC dissector in packet-umts_mac.c
+   (CVE-2018-7334)
+ * IEEE 802.11 dissector crash in airpdcap.c (CVE-2018-7335)
+ * NBAP dissector crash in nbap.cnf (CVE-2018-7419)
+ * NBAP dissector crash in epan/dissectors/packet-nbap.c (CVE-2018-9261)
+ * memory leak in ui/failure_message.c (CVE-2018-9264)
+ * memory leak in epan/dissectors/packet-pcp.c (CVE-2018-9273)
+ * Use after free in packet-q931.c (CVE-2018-11358)
+ * Heap-based Buffer Overflow in packet-gsm_a_dtap.c (CVE-2018-11360)
+ * Out-of-bounds read in packet-ldss.c (CVE-2018-11362)
+bug: [47284]
+cve:
+- CVE-2018-7320
+- CVE-2018-7334
+- CVE-2018-7335
+- CVE-2018-7419
+- CVE-2018-9261
+- CVE-2018-9264
+- CVE-2018-9273
+- CVE-2018-11358
+- CVE-2018-11360
+- CVE-2018-11362
