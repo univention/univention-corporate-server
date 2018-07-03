@@ -146,7 +146,6 @@ class UdmModuleFactoryConfigurationStorage(object):
 				candidates_regex.extend(configurations)
 
 		if candidates_exact:
-			open('/tmp/candidates_exact', 'a').write('candidates_exact={!r}\n'.format(candidates_exact))
 			candidates_exact.sort(key=attrgetter('addition_date'), reverse=True)
 			return self._config_with_date_2_config_without_date(candidates_exact[0])
 
@@ -234,10 +233,8 @@ class UdmModuleFactoryConfigurationStorage(object):
 		if mtime > self._persistence_date:
 			self._load_configuration()
 			# reapply register and unregister operations if in non-persistent mode
-			open('/tmp/_transient_operations', 'a').write('self._transient_operations={!r}\n'.format(self._transient_operations))
 			while self._transient_operations:
 				operation, pattern, config = self._transient_operations.pop(0)
-				open('/tmp/_transient_operations', 'a').write('operation={!r} pattern={!r} config={!r}\n'.format(operation, pattern, config))
 				if operation == 'add':
 					self._config.setdefault(pattern, []).extend(config)
 				elif operation == 'del':
