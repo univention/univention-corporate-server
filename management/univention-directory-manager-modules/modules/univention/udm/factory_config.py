@@ -86,6 +86,7 @@ import time
 import errno
 from operator import attrgetter
 from collections import namedtuple
+from univention.udm.utils import UDebug as ud
 
 try:
 	from typing import Any, Dict, List, Optional, Pattern, Text, Tuple, Union
@@ -122,8 +123,7 @@ class UdmModuleFactoryConfigurationStorage(object):
 		try:
 			self._load_configuration()
 		except IOError:
-			# TODO: log
-			print('Warn: No configuration could be loaded from disk. Continuing with empty one.')
+			ud.warn('No configuration could be loaded from disk. Continuing with empty one.')
 			self._config = {}
 
 	def get_configuration(self, module_name):  # type: (str) -> UdmModuleFactoryConfiguration
@@ -153,8 +153,7 @@ class UdmModuleFactoryConfigurationStorage(object):
 			candidates_regex.sort(key=attrgetter('addition_date'), reverse=True)
 			return self._config_with_date_2_config_without_date(candidates_regex[0])
 
-		# TODO: log
-		print('Debug: no specific factory for {!r} found, using {!r}.'.format(module_name, self._default_factory))
+		ud.debug('No specific factory for {!r} found, using {!r}.'.format(module_name, self._default_factory))
 		return UdmModuleFactoryConfiguration(
 			udm_module_name_pattern=module_name, **self._default_factory
 		)
@@ -202,15 +201,14 @@ class UdmModuleFactoryConfigurationStorage(object):
 			self._config[compiled_pattern].remove(config_with_date)
 			if not self._config[compiled_pattern]:
 				del self._config[compiled_pattern]
-			# TODO: log
-			print('Info: Unregistered configuration {!r}.'.format(
+			ud.info('Unregistered configuration {!r}.'.format(
 				self._config_with_date_2_config_without_date(config_with_date)))
 			if self.persistent:
 				self._save_configuration()
 			else:
 				self._transient_operations.append(('del', compiled_pattern, config_with_date))
 		else:
-			print('Warn: Could not find configuration to unregister: {!r}.'.format(factory_configuration))
+			ud.warn('Could not find configuration to unregister: {!r}.'.format(factory_configuration))
 
 	def refresh_config(self):
 		"""
@@ -272,8 +270,7 @@ class UdmModuleFactoryConfigurationStorage(object):
 			with open(self._persistence_path) as fp:
 				config = json.load(fp)  # type: Dict[str, List[Dict[str, Any]]]
 		except IOError as exc:
-			# TODO: log
-			print('Error: Could not open UDM module factory configuration: {}'.format(exc))
+			ud.error('Could not open UDM module factory configuration: {}'.format(exc))
 			raise
 		self._config = {}
 		for regex, configs in config.iteritems():
@@ -294,10 +291,9 @@ class UdmModuleFactoryConfigurationStorage(object):
 				config_as_dict[regex.pattern] = [dict(**config.__dict__) for config in configs]
 			with open(self._persistence_path, 'wb') as fp:
 				json.dump(config_as_dict, fp)
-			# TODO: log
-			print('Info: Saved UDM module factory configuration.')
+			ud.info('Saved UDM module factory configuration.')
 		except IOError as exc:
-			print('Error: Could not write UDM module factory configuration: {}'.format(exc))
+			ud.error('Could not write UDM module factory configuration: {}'.format(exc))
 			raise
 
 	@staticmethod
@@ -311,12 +307,10 @@ class UdmModuleFactoryConfigurationStorage(object):
 		"""
 		if not regex.startswith('^'):
 			regex = r'^{}'.format(regex)
-			# TODO: log
-			print("Debug: prepended '^' to pattern: {!r}".format(regex))
+			ud.debug("Prepended '^' to pattern: {!r}".format(regex))
 		if not regex.endswith('$'):
 			regex = r'{}$'.format(regex)
-			# TODO: log
-			print("Debug: appended '$' to pattern: {!r}".format(regex))
+			ud.debug("Appended '$' to pattern: {!r}".format(regex))
 		return unicode(regex)
 
 	@staticmethod

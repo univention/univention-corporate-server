@@ -30,11 +30,49 @@ from __future__ import unicode_literals
 from ldap.filter import filter_format
 import univention.admin.uldap
 import univention.config_registry
+import univention.debug
 
 try:
 	from typing import Dict, Optional, Text, Tuple
 except ImportError:
 	pass
+
+
+class UDebug(object):
+	target = univention.debug.ADMIN
+
+	@classmethod
+	def all(cls, msg):
+		"""Write a debug message with level ALL (as in DEBUG)"""
+		cls._log(univention.debug.ALL, msg)
+
+	debug = all
+
+	@classmethod
+	def error(cls, msg):
+		"""Write a debug message with level ERROR"""
+		cls._log(univention.debug.ERROR, msg)
+
+	@classmethod
+	def info(cls, msg):
+		"""Write a debug message with level INFO"""
+		cls._log(univention.debug.INFO, msg)
+
+	@classmethod
+	def process(cls, msg):
+		"""Write a debug message with level PROCESS"""
+		cls._log(univention.debug.PROCESS, msg)
+
+	@classmethod
+	def warn(cls, msg):
+		"""Write a debug message with level WARN"""
+		cls._log(univention.debug.WARN, msg)
+
+	warning = warn
+
+	@classmethod
+	def _log(cls, level, msg):
+		univention.debug.debug(cls.target, level, msg)
 
 
 class LDAP_connection(object):

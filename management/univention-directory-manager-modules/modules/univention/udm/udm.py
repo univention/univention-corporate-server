@@ -64,17 +64,12 @@ from __future__ import unicode_literals
 import importlib
 from univention.udm.base import BaseUdmModule
 from univention.udm.factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
-from univention.udm.utils import LDAP_connection
+from univention.udm.utils import LDAP_connection, UDebug as ud
 
 try:
 	from typing import Dict, Optional, Tuple, Type
 except ImportError:
 	pass
-
-#
-# TODO: ucs-test
-# TODO: log to univention.debug.ADMIN
-#
 
 
 class Udm(object):
@@ -179,8 +174,7 @@ class Udm(object):
 			name, factory_config.module_path, factory_config.class_name
 		)
 		if key not in self._module_object_cache:
-			# TODO: log
-			print('Debug: trying to load UDM module {!r} for configuration {!r}...'.format(name, factory_config))
+			ud.debug('Trying to load UDM module {!r} for configuration {!r}...'.format(name, factory_config))
 			module_cls = self._load_module(factory_config)
 			self._module_object_cache[key] = module_cls(name, self.lo)
 		return self._module_object_cache[key]
@@ -188,14 +182,12 @@ class Udm(object):
 	def _load_module(self, factory_config):  # type: (UdmModuleFactoryConfiguration) -> Type[BaseUdmModule]
 		key = (factory_config.module_path, factory_config.class_name)
 		if key not in self._module_class_cache:
-			# TODO: log
-			print('Debug: trying to load Python module {!r}...'.format(factory_config.module_path))
+			ud.debug('Trying to load Python module {!r}...'.format(factory_config.module_path))
 			module = importlib.import_module(factory_config.module_path)
-			print('Debug: trying to load class {!r} from module {!r}...'.format(
-				factory_config.class_name, module.__name__))
+			ud.debug('Trying to load class {!r} from module {!r}...'.format(factory_config.class_name, module.__name__))
 			candidate_cls = getattr(module, factory_config.class_name)
 			assert issubclass(candidate_cls, BaseUdmModule), '{!r} is not a subclass of BaseUdmModule.'.format(
 				candidate_cls)
-			print('Debug: loaded {!r}.'.format(candidate_cls))
+			ud.debug('Loaded {!r}.'.format(candidate_cls))
 			self._module_class_cache[key] = candidate_cls
 		return self._module_class_cache[key]

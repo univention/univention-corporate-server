@@ -39,6 +39,7 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 from univention.udm.base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from univention.udm.exceptions import DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UnknownProperty, WrongObjectType
+from univention.udm.utils import UDebug as ud
 
 try:
 	from typing import Any, Dict, Iterator, Optional, Tuple
@@ -122,8 +123,7 @@ class GenericUdm1Object(BaseUdmObject):
 		if self._deleted:
 			raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name)
 		if not self._fresh:
-			# TODO: log warning
-			print('WARNING: saving stale UDM object instance.')
+			ud.warn('Saving stale UDM object instance.')
 		self._copy_to_udm_obj()
 		if self.dn:
 			if self._old_position and self._old_position != self.position:
@@ -168,8 +168,7 @@ class GenericUdm1Object(BaseUdmObject):
 		:return: None
 		"""
 		if self._deleted:
-			# TODO: log warning
-			print('WARNING: {} has already been deleted.'.format(self))
+			ud.warn('{} has already been deleted.'.format(self))
 			return
 		if not self.dn or not self._udm1_object:
 			raise FirstUseError()
