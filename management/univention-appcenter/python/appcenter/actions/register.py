@@ -68,6 +68,7 @@ class Register(CredentialsAction):
 		parser.add_argument('--app', dest='register_task', action='append_const', const='app', help='Registering the app itself (internal UCR variables, ucs-overview variables, adding a special LDAP object for the app)')
 		parser.add_argument('--database', dest='register_task', action='append_const', const='database', help='Installing, starting a database management system and creating a databse for the app (if necessary)')
 		parser.add_argument('--attributes', dest='register_task', action='append_const', const='attributes', help='Adding schema extions to LDAP; adding extended attributes')
+		parser.add_argument('--listener', dest='register_task', action='append_const', const='listener', help='Adding listener for App')
 		parser.add_argument('--do-it', dest='do_it', action='store_true', default=None, help='Always do it, disregarding installation status')
 		parser.add_argument('--undo-it', dest='do_it', action='store_false', default=None, help='Undo any registrations, disregarding installation status')
 		parser.add_argument('apps', nargs='*', action=StoreAppAction, help='The ID of the App that shall be registered')
@@ -84,6 +85,7 @@ class Register(CredentialsAction):
 		self._register_app_for_apps(apps, args)
 		self._register_database_for_apps(apps, args)
 		self._register_attributes_for_apps(apps, args)
+		self._register_listener_for_apps(apps, args)
 		self._register_installed_apps_in_ucr()
 
 	def _do_register(self, app, args):
@@ -244,6 +246,64 @@ class Register(CredentialsAction):
 				return
 			for attribute in attributes:
 				remove_extended_attribute(attribute, lo, pos)
+
+	def _register_listener_for_apps(self, apps, args):
+		if not self._shall_register(args, 'listener'):
+			return
+		restart = False
+		meta_files = []
+		for app in apps:
+			if self._do_register(app, args):
+				restart = self._register_listener(app, delay=True) or restart
+			else:
+				meta_file = self._unregister_listener(app, delay=True)
+				if meta_file:
+					restart = True
+					meta_files.append(meta_file)
+		if restart:
+			self._restart_listener(meta_files)
+
+	def _register_listener(self, app, delay=False):
+		if app.listener_udm_modules:
+			listener_file = '/usr/lib/univention-directory-listener/system/%s.py' % app.id
+			if os.path.exists(listener_file):
+				return
+			with open(listener_file, 'w') as fd:
+				fd.write('''#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+__package__ = ''  # workaround for PEP 366
+
+
+from univention.appcenter.listener import AppListener
+
+name = '%(name)s'
+
+class AppListener(AppListener):
+	class Configuration(AppListener.Configuration):
+		name = '%(name)s'
+''' % {'name': app.id})
+			self.log('Added Listener for %s' % app)
+			if not delay:
+				self._restart_listener([])
+			return True
+
+	def _unregister_listener(self, app, delay=False):
+		listener_file = '/usr/lib/univention-directory-listener/system/%s.py' % app.id
+		listener_meta_file = '/var/lib/univention-directory-listener/handlers/%s' % app.id
+		if os.path.exists(listener_file):
+			os.unlink(listener_file)
+			self.log('Removed Listener for %s' % app)
+			if not delay:
+				self._restart_listener([listener_meta_file])
+			return listener_meta_file
+
+	def _restart_listener(self, meta_files):
+		self.log('Restarting Listener...')
+		self._subprocess(['service', 'univention-directory-listener', 'crestart'])
+		for meta_file in meta_files:
+			if os.path.exists(meta_file):
+				self.debug('Removed leftover file %s. Useful for re-installations' % meta_file)
+				os.unlink(meta_file)
 
 	def _register_host_for_apps(self, apps, args):
 		if not self._shall_register(args, 'host'):

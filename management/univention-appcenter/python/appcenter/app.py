@@ -789,6 +789,8 @@ class App(object):
 			container were applied.
 		host_certificate_access: Docker Apps only. The App gets access
 			to the host certificate.
+		listener_udm_modules: List of UDM modules that a listener
+			integration shall watch.
 	"""
 	__metaclass__ = AppMetaClass
 
@@ -912,6 +914,8 @@ class App(object):
 	docker_script_configure = AppAttribute()
 
 	host_certificate_access = AppBooleanAttribute()
+
+	listener_udm_modules = AppListAttribute()
 
 	def __init__(self, _attrs, _cache, **kwargs):
 		if kwargs:

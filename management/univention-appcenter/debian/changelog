@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-6) unstable; urgency=medium
+
+  * Bug #47265: Listener integration
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 28 Jun 2018 14:08:27 +0200
+
 univention-appcenter (7.0.2-5) unstable; urgency=medium
 
   * Bug #47253: Added --only-master-packages for upgrade

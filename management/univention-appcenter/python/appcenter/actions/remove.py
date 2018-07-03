@@ -59,6 +59,8 @@ class Remove(InstallRemoveUpgrade):
 		self.percentage = 45
 		self._unregister_app(app, args)
 		self.percentage = 50
+		self._unregister_listener(app)
+		self.percentage = 55
 		self._unregister_attributes(app, args)
 		self.percentage = 60
 		if self._unregister_component(app):
