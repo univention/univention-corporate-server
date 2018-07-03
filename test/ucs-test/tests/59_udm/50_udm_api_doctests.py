@@ -6,6 +6,10 @@
 ## packages: [python-univention-directory-manager]
 
 import unittest
+import univention.debug as ud
+
+ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
+ud.set_level(ud.ADMIN, ud.ALL)
 
 testSuite = unittest.TestSuite()
 

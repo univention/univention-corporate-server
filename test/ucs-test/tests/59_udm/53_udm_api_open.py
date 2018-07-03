@@ -6,10 +6,15 @@
 ## packages: [python-univention-directory-manager]
 
 from unittest import main, TestCase
+import univention.debug as ud
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.udm import Udm
 from univention.udm.factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
+
+
+ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
+ud.set_level(ud.ADMIN, ud.ALL)
 
 
 class TestUdmAutoOpen(TestCase):
