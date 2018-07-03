@@ -249,7 +249,6 @@ mkpdir () { # Create pool directory ${dir}
 		case "${1}" in
 			[1-9]*.[0-9]*-[0-9]*) versions+=("${1}") ;;
 			[1-9]*.[0-9]*--errata[0-9]*) versions+=("${1}") ;;
-			[1-9]*.[0-9]*--hotfixes) versions+=("${1}") ;;
 			[1-9]*.[0-9]*--component/*) versions+=("${1}") ;;
 			maintained|unmaintained) parts+=("${1}") ;;
 			all|i386|amd64) archs+=("${1}") ;;
@@ -497,7 +496,6 @@ split_repo_path () { # Split repository path into atoms
 	case "${3}" in
 		"${version}-"[0-9]*) version="${3}" ;;
 		errata*) version="${version}--${3}" ;;
-		hotfixes) version="${version}--hotfixes" ;;
 		component) version="${version}--component/${4}" ; shift ;;
 		*) echo "Unknown ${3}" >&2 ; return 2 ;;
 	esac
@@ -517,7 +515,6 @@ checkapt () { # Check for apt-source statement ${1}
 			http*) pattern="^${prefix} ${1}" ;;
 			[1-9]*.[0-9]*-[0-9]*) pattern="^${prefix} .*/${1%-*}/.* ${1}/.*/$" ;;
 			[1-9]*.[0-9]*--errata[0-9]*) pattern="^${prefix} .*/${1%%-*}/.* ${1#*--}/.*/" ;;
-			[1-9]*.[0-9]*--hotfixes) pattern="^${prefix} .*/${1%%-*}/.* hotfixes/.*/" ;;
 			[1-9]*.[0-9]*--component/*) pattern="^${prefix} .*/${1%%-*}/.*/component/\? ${1#*--component/}/.*/" ;;
 			maintained|unmaintained) pattern="^${prefix} .*/${1}/\(component/\?\)\? .*/.*/" ;;
 			all|${ARCH}|extern) pattern="^${prefix} .*/\(component/\?\)\? .*/${1}/" ;;

@@ -1,3 +1,9 @@
+ucs-test (8.0.28-145) unstable; urgency=low
+
+  * Bug #36719: Remove deprecated updater code
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 03 Jul 2018 11:36:32 +0200
+
 ucs-test (8.0.28-144) unstable; urgency=low
 
   * Bug #43970: Disable NFS test in AD-Member mode

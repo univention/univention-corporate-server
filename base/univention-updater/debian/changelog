@@ -1,3 +1,9 @@
+univention-updater (13.0.1-52) unstable; urgency=low
+
+  * Bug #36719: Remove deprecated code
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 03 Jul 2018 11:22:20 +0200
+
 univention-updater (13.0.1-51) unstable; urgency=low
 
   * Bug #36719: Remove deprecated code

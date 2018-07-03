@@ -165,7 +165,7 @@ if __name__ == '__main__':
                 try:
                     dest = os.path.join(packages_dir, k[1])
                     shutil.copy(l_package[k][0], dest)
-                except shutil.Error:
+                except EnvironmentError:
                     fp_debug.write('Error: faild to copy %s\n' % dest)
 
         for f in p_remove:

@@ -201,7 +201,6 @@ def create_packages(base_dir, source_dir):
     if os.path.exists(pkg_file):
         shutil.copyfile(pkg_file, '%s.SAVE' % pkg_file)
 
-    packages_fd = open(os.path.join(base_dir, source_dir, 'Packages'), 'w')
     packages_fd = open(pkg_file, 'w')
     ret = subprocess.call(['apt-ftparchive', 'packages', source_dir], stdout=packages_fd, cwd=base_dir)
     packages_fd.close()

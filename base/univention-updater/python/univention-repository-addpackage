@@ -128,7 +128,7 @@ if __name__ == '__main__':
                 targetfilename = os.path.join(packages_path, arch[0], rewrite_url(file.split('/')[-1]))
                 try:
                     shutil.copyfile(os.path.join(file), targetfilename)
-                except (shutil.Error, KeyboardInterrupt) as e:
+                except (EnvironmentError, KeyboardInterrupt) as e:
                     print >> sys.stderr, "Warning: copying of %s failed: %s" % (file, str(e))
                     if os.path.exists(targetfilename):
                         os.remove(targetfilename)  # remove incomplete package file
