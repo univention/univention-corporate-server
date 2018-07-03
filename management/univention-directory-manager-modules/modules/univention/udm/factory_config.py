@@ -236,7 +236,7 @@ class UdmModuleFactoryConfigurationStorage(object):
 			while self._transient_operations:
 				operation, pattern, config = self._transient_operations.pop(0)
 				if operation == 'add':
-					self._config.setdefault(pattern, []).extend(config)
+					self._config.setdefault(pattern, []).append(config)
 				elif operation == 'del':
 					try:
 						self._config[pattern].remove(config)
