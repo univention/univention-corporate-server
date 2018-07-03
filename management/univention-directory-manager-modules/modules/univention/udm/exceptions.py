@@ -90,7 +90,7 @@ class WrongObjectType(UdmError):
 	"""
 	Raised when the LDAP object to be loaded does not match the UdmModule type.
 	"""
-	def __init__(self, msg=None, dn=None, module_name=None):
+	def __init__(self, msg=None, dn=None, module_name=None, univention_object_type=None):
 		# type: (Optional[Text], Optional[str], Optional[str]) -> None
-		msg = msg or 'Wrong UDM module: {!r} is not a {!r}.'.format(dn, module_name)
+		msg = msg or 'Wrong UDM module: {!r} is not a {!r}, but a {!r}.'.format(dn, module_name, univention_object_type)
 		super(WrongObjectType, self).__init__(msg, dn, module_name)

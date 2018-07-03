@@ -376,8 +376,8 @@ class GenericUdm1Module(BaseUdmModule):
 		except univention.admin.uexceptions.noObject:
 			raise NoObject(dn=dn, module_name=self.name)
 		uni_obj_type = getattr(obj, 'oldattr', {}).get('univentionObjectType')
-		if uni_obj_type and self.name not in uni_obj_type:
-			raise WrongObjectType(dn=dn, module_name=self.name)
+		if uni_obj_type and self.name.split('/', 1)[0] not in [uot.split('/', 1)[0] for uot in uni_obj_type]:
+			raise WrongObjectType(dn=dn, module_name=self.name, univention_object_type=uni_obj_type)
 		if self.meta.auto_open:
 			obj.open()
 		return obj
