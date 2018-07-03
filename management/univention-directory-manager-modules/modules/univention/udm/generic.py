@@ -377,7 +377,8 @@ class GenericUdm1Module(BaseUdmModule):
 		uni_obj_type = getattr(obj, 'oldattr', {}).get('univentionObjectType')
 		if uni_obj_type and self.name not in uni_obj_type:
 			raise WrongObjectType(dn=dn, module_name=self.name)
-		obj.open()
+		if self.meta.auto_open:
+			obj.open()
 		return obj
 
 	def _load_obj(self, dn):  # type: (str) -> GenericUdm1Object

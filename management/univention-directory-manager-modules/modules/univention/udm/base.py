@@ -129,6 +129,8 @@ class BaseUdmObject(object):
 class BaseUdmModuleMetadata(object):
 	"""Base class for UDM module meta data."""
 
+	auto_open = True  # whether UDM objects should be `open()`ed
+
 	def __init__(self, udm_module):  # type: (BaseUdmModule) -> None
 		self._udm_module = udm_module
 
@@ -184,6 +186,10 @@ class BaseUdmModule(object):
 	3 Search and load existing objects:
 		dc_slaves = dc_slave_mod.search(lo, filter_s='cn=s10*')
 		campus_groups = group_mod.search(lo, base='ou=campus,dc=example,dc=com')
+	4. Load existing object(s) without `open()`ing them;
+		user_mod.meta.auto_open = False
+		user = user_mod.get(dn)
+		user.props.groups == []
 	"""
 	_udm_object_class = BaseUdmObject
 	_udm_module_meta_class = BaseUdmModuleMetadata
