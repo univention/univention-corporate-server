@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: libgcrypt20
+fix: 1.7.6-2+deb9u3
+desc: |
+ This update addresses the following issue:
+ * ROHNP - Key Extraction Side Channel in Multiple Crypto Libraries
+   (CVE-2018-0495)
+bug: [47288]
+cve:
+- CVE-2018-0495
