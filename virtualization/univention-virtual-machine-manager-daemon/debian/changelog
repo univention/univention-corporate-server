@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (7.0.0-10) unstable; urgency=medium
+
+  * Bug #41772: fix javascript traceback
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 03 Jul 2018 17:33:48 +0200
+
 univention-virtual-machine-manager-daemon (7.0.0-9) unstable; urgency=medium
 
   * Bug #47268: Make CPU-Usage column visibility configurable

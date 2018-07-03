@@ -48,7 +48,7 @@ define([
 
 			if (domain.suspended) {
 					dialog.alert(_('Creating a snapshot is not possible, because the domain is currently suspended!'));
-					deferred.reject();
+					deferred.cancel();
 					return deferred.promise;
 			}
 
@@ -68,11 +68,11 @@ define([
 			});
 			if (!snapshots_possible) {
 				dialog.alert(_('Creating a snapshot is not possible, because the domain contains writeable raw images!'));
-				deferred.reject();
+				deferred.cancel();
 				return deferred.promise;
 			} else if (qcow2_images === 0) {
 				dialog.alert(_('Creating a snapshot is not possible, because the domain does not have at least one qcow2 image!'));
-				deferred.reject();
+				deferred.cancel();
 				return deferred.promise;
 			}
 
@@ -116,7 +116,8 @@ define([
 					label: _('Cancel'),
 					callback: function() {
 						_cleanup();
-						deferred.reject();
+						deferred.cancel();
+						return deferred.promise;
 					}
 				}],
 				layout: [ 'name' ]
