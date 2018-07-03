@@ -330,10 +330,11 @@ class GenericUdm1Module(BaseUdmModule):
 		"""
 		try:
 			udm_module_lookup_filter = str(self._udm1_module.lookup_filter(filter_s, self.lo))
+			dns = self.lo.searchDn(filter=udm_module_lookup_filter, base=base, scope=scope)
 		except AttributeError:
 			# not all modules have 'lookup_filter'
-			udm_module_lookup_filter = filter_s
-		for dn in self.lo.searchDn(filter=udm_module_lookup_filter, base=base, scope=scope):
+			dns = (obj.dn for obj in self._udm1_module.lookup(None, self.lo, filter_s, base=base, scope=scope))
+		for dn in dns:
 			yield self.get(dn)
 
 	def _get_udm1_module(self):  # type: () -> univention.admin.handlers.simpleLdap
