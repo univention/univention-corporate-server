@@ -39,39 +39,40 @@ except ImportError:
 
 
 class UDebug(object):
-	target = univention.debug.ADMIN
+	"""univention.debug convenience wrapper"""
+	target = univention.debug.ADMIN  # type: int
 
 	@classmethod
-	def all(cls, msg):
+	def all(cls, msg):  # type: (str) -> None
 		"""Write a debug message with level ALL (as in DEBUG)"""
 		cls._log(univention.debug.ALL, msg)
 
 	debug = all
 
 	@classmethod
-	def error(cls, msg):
+	def error(cls, msg):  # type: (str) -> None
 		"""Write a debug message with level ERROR"""
 		cls._log(univention.debug.ERROR, msg)
 
 	@classmethod
-	def info(cls, msg):
+	def info(cls, msg):  # type: (str) -> None
 		"""Write a debug message with level INFO"""
 		cls._log(univention.debug.INFO, msg)
 
 	@classmethod
-	def process(cls, msg):
+	def process(cls, msg):  # type: (str) -> None
 		"""Write a debug message with level PROCESS"""
 		cls._log(univention.debug.PROCESS, msg)
 
 	@classmethod
-	def warn(cls, msg):
+	def warn(cls, msg):  # type: (str) -> None
 		"""Write a debug message with level WARN"""
 		cls._log(univention.debug.WARN, msg)
 
 	warning = warn
 
 	@classmethod
-	def _log(cls, level, msg):
+	def _log(cls, level, msg):  # type: (int, str) -> None
 		univention.debug.debug(cls.target, level, msg)
 
 
