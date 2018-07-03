@@ -286,9 +286,13 @@ def get_installation_version():
     :returns: The UCS releases which was last copied into the local repository.
     :rtype: str or None
     """
+    base = configRegistry.get('repository/mirror/basepath')
+    if not base:
+        return None
     try:
-        fd = open(os.path.join(configRegistry.get('repository/mirror/basepath'), '.univention_install'))
-    except (LookupError, EnvironmentError):
+        path = os.path.join(base, '.univention_install')
+        fd = open(path, 'r')
+    except EnvironmentError:
         return None
 
     for line in fd.readlines():
