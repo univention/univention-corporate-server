@@ -108,7 +108,7 @@ _UdmModuleFactoryConfigurationWithDate = namedtuple(
 class UdmModuleFactoryConfigurationStorage(object):
 	"""Handle loading and storing of the dynamic factory metadata."""
 	_default_factory = {'module_path': 'univention.udm.generic', 'class_name': 'GenericUdm1Module'}
-	_persistence_path = '/tmp/udm_module_factory.json'  # TODO: change path to /var/lib/u-d-m-m/
+	_persistence_path = '/var/lib/univention-directory-manager-modules/udm_module_factory.json'
 
 	def __init__(self, persistent=True):  # type: (Optional[bool]) -> None
 		"""
