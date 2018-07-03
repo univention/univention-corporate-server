@@ -37,8 +37,8 @@ import univention.admin.objects
 import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.uldap
-from .base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
-from .exceptions import DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UnknownProperty, WrongObjectType
+from univention.udm.base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
+from univention.udm.exceptions import DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UnknownProperty, WrongObjectType
 
 try:
 	from typing import Any, Dict, Iterator, Optional, Tuple
