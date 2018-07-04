@@ -34,6 +34,8 @@ from __future__ import absolute_import
 
 import json
 import logging
+import time
+import re
 
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
@@ -42,6 +44,14 @@ import selenium.common.exceptions as selenium_exceptions
 
 logger = logging.getLogger(__name__)
 
+
+def expand_path(xpath):
+	# replaces instances of [@containsClass="className"]
+	# with
+	# [contains(concat(" ", normalize-space(@class), " "), " className ")]
+	pattern = r'(?<=\[)@containsClass=([\"\'])(.*?)\1(?=\])'
+	replacement = r'contains(concat(\1 \1, normalize-space(@class), \1 \1), \1 \2 \1)'
+	return re.sub(pattern, replacement, xpath)
 
 class Interactions(object):
 
@@ -125,7 +135,20 @@ class Interactions(object):
 		)
 
 	def open_side_menu(self):
-		self.click_element('//*[@class="umcMobileMenuToggleButton"]')
+		self.click_element(expand_path('//*[@containsClass="umcHeader"]//*[@containsClass="umcMobileMenuToggleButton"]'))
+		time.sleep(0.5)
+
+	def close_side_menu(self):
+		self.click_element(expand_path('//*[@containsClass="mobileMenu"]//*[@containsClass="umcMobileMenuToggleButton"]'))
+		time.sleep(0.5)
+
+	def click_side_menu_entry(self, text):
+		self.click_element(expand_path('//*[@containsClass="mobileMenu"]//*[@containsClass="menuItem"][contains(text(), "%s")]') % text)
+		time.sleep(0.5)
+
+	def click_side_menu_back(self):
+		self.click_element(expand_path('//*[@containsClass="mobileMenu"]//*[@containsClass="menuSlideHeader"]'))
+		time.sleep(0.5)
 
 	def click_element(self, xpath, scroll_into_view=False, timeout=60):
 		"""
