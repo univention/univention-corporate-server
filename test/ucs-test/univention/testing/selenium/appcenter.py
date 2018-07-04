@@ -33,7 +33,7 @@
 from __future__ import absolute_import
 from time import sleep
 
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 from univention.admin import localization
 
@@ -61,26 +61,31 @@ class AppCenter(object):
 		self.close_info_dialog_if_visisble()
 
 		self.selenium.wait_for_text(_('Please confirm to install the application'))
-		self.self.wait_until_progress_bar_finishes()
+		self.selenium.wait_until_all_standby_animations_disappeared()
 		self.selenium.click_button(_('Install'))
 
-		self.selenium.wait_for_text(_('Installing %s') % (app,))
-		self.self.wait_until_progress_bar_finishes()
-
+		self.selenium.wait_for_text(_('Installing'))
 		self.selenium.wait_for_text(_('Installed'), timeout=900)
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
 	def uninstall_app(self, app):
 		self.open_app(app)
 
-		self.selenium.click_text(_('(this computer)'))
+		try:
+			self.selenium.driver.find_element_by_xpath('//*[text() = "Manage domain wide installations"]')
+		except NoSuchElementException:
+			pass
+		else:
+			self.selenium.click_text(_('(this computer)'))
 		self.selenium.click_button(_('Uninstall'))
 
 		self.selenium.wait_for_text(_('Please confirm to uninstall the application'))
+		self.selenium.wait_until_all_standby_animations_disappeared()
+		sleep(2) # there is still something in the way even with wait_until_all_standby_animations_disappeared
 		self.selenium.click_button(_('Uninstall'))
 
 		self.selenium.wait_for_text(_('Running tests'))
-		self.selenium.wait_for_text(_('More information'), timeout=900)
+		self.selenium.wait_until_element_visible('//*[contains(concat(" ", normalize-space(@class), " "), " dijitButtonText ")][text() = "Install"]', timeout=900)
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
 	def upgrade_app(self, app):
@@ -127,6 +132,9 @@ class AppCenter(object):
 		)
 		sleep(2)
 
+	def click_app_tile(self, appid):
+		self.selenium.click_element('//div[contains(concat(" ", normalize-space(@class), " "), " umcGalleryWrapperItem ")][@moduleid="%s"]' % appid)
+
 	def open(self):
 		# TODO: check if appcenter is already opened with the overview site
 		self.selenium.search_module(_('App Center'))
@@ -137,7 +145,7 @@ class AppCenter(object):
 	def open_app(self, app):
 		# TODO: check if appcenter is already opened with the app page
 		self.open()
-		self.selenium.click_text(app)
+		self.click_app_tile(app)
 		self.selenium.wait_for_text(_('More information'))
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
@@ -156,5 +164,5 @@ if __name__ == '__main__':
 	s.__enter__()
 	s.do_login()
 	a = AppCenter(s)
-	a.install_app('Dudle')
-	a.uninstall_app('Dudle')
+	a.install_app('dudle')
+	a.uninstall_app('dudle')
