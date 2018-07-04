@@ -312,13 +312,6 @@
 	</para>
 
 	<para>
-	  <figure id="nagios">
-		<title>System monitoring of a server</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations43/nagios_en.png"/>
-	  </figure>
-	</para>
-
-	<para>
 	  Nagios checks can be chronologically limited so that non-critical
 	  values don't trigger logging messages during the night, for example.
 	</para>

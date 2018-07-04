@@ -322,13 +322,6 @@
 	</para>
 
 	<para>
-	  <figure id="nagios">
-		<title>Systemüberwachung auf einem Server</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations43/nagios.png"/>
-	  </figure>
-	</para>
-
-	<para>
 	  Nagios-Prüfungen können zeitlich eingeschränkt werden, so dass
 	  unkritische Werte beispielsweise nachts keine Meldungen auslösen.
 	</para>
