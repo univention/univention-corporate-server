@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * Backport upstream patch to fix build with VLC 3.0.
 bug: [47294]
+erratum: 144
+announced: 2018-07-04
