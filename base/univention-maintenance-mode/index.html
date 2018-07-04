@@ -30,7 +30,7 @@
   <body>
     <div class="container">
       <h1 id="headline">This system is in maintenance mode</h1>
-      <p id="explanation">Univention Corporate Server is currently updating. Depending on the release, this may take some time. In /var/log/univention/updater.log, you will find more detailed information on the progress if the update.</p>
+      <p id="explanation">Univention Corporate Server is currently updating. Depending on the release, this may take some time. In /var/log/univention/updater.log, you will find more detailed information on the progress of the update. This page will reload once the update finished.</p>
       <hr>
 			<div class="progress-container">
 				<progress id="progressbar" max="100">
@@ -53,7 +53,7 @@
 			console.log(locale);
 			if (locale.substring(0,2) === "de") {
 				document.getElementById("headline").innerHTML = "Dieses System ist im Maintenance-Modus";
-				document.getElementById("explanation").innerHTML = "Univention Corporate Server wird gerade aktualisiert. Dies kann je nach Release etwas Zeit in Anspruch nehmen. Die Datei /var/log/univention/updater.log enthält ausführliche Informationen zum Fortschritt des Updates.";
+				document.getElementById("explanation").innerHTML = "Univention Corporate Server wird gerade aktualisiert. Dies kann je nach Release etwas Zeit in Anspruch nehmen. Die Datei /var/log/univention/updater.log enthält ausführliche Informationen zum Fortschritt des Updates. Diese Seite wird sich nach Ende des Updates automatisch neu laden.";
 			}
 			removeClass = function(elem, cName) {
 				element.className.replace(RegExp("/\b" + cName + "\b/g"), "");
