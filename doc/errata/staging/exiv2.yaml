@@ -1,0 +1,24 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: exiv2
+fix: 0.25-3.1+deb9u1
+desc: |
+ This update addresses the following issues:
+ * SIGABRT caused by memory allocation in
+   types.cpp:Exiv2::Internal::PngChunk::zlibUncompress() (CVE-2018-10958)
+ * SIGABRT by triggering an incorrect Safe::add call (CVE-2018-10998)
+ * heap-based buffer over-read in parseTXTChunk function (CVE-2018-10999)
+ * heap-based buffer overflow in getData in preview.cpp (CVE-2018-11531)
+ * integer overflow in getData function in preview.cpp (CVE-2018-12264)
+ * integer overflow in the LoaderExifJpeg class in preview.cpp
+   (CVE-2018-12265)
+bug: [47301]
+cve:
+- CVE-2018-10958
+- CVE-2018-10998
+- CVE-2018-10999
+- CVE-2018-11531
+- CVE-2018-12264
+- CVE-2018-12265
