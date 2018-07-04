@@ -10,3 +10,5 @@ desc: |
 bug: [47294]
 ignore:
   - version.scope
+erratum: 142
+announced: 2018-07-04
