@@ -1,3 +1,9 @@
+univention-management-console (9.0.80-98) unstable; urgency=low
+
+  * Bug #47569: Fix notifier traceback memory leak
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 07 Aug 2018 14:58:09 +0200
+
 univention-management-console (9.0.80-97) unstable; urgency=medium
 
   * Bug #47109: Improve situation where the client loses its session
