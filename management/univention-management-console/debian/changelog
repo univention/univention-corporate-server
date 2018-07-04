@@ -1,3 +1,9 @@
+univention-management-console (10.0.6-6) unstable; urgency=medium
+
+  * Bug #46978: enable bad password lockout policy in umc
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 04 Jul 2018 13:27:42 +0200
+
 univention-management-console (10.0.6-5) unstable; urgency=medium
 
   * Bug #46870: fix hanging auth command which could happen in some rare cases
