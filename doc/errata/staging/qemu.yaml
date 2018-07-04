@@ -1,0 +1,56 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u4A~4.3.1.201807041541
+desc: |
+ This update addresses the following issues:
+ * Systems with microprocessors utilizing speculative execution and indirect
+   branch prediction may allow unauthorized disclosure of information to an
+   attacker with local user access via a side-channel analysis.
+   (CVE-2017-5715)
+ * Race condition in the v9fs_xattrwalk function in hw/9pfs/9p.c allows local
+   guest OS users to obtain sensitive information from host heap memory via
+   vectors related to reading extended attributes. (CVE-2017-15038)
+ * Reject options larger than 32M (CVE-2017-15119)
+ * VNC server implementation was found to be vulnerable to an unbounded memory
+   allocation issue, as it did not throttle the framebuffer updates sent to
+   its client. If the client did not consume these updates, VNC server
+   allocates growing memory to hold onto this data. A malicious remote VNC
+   client could use this flaw to cause DoS to the server host.
+   (CVE-2017-15124)
+ * QEMU allows remote attackers to cause a memory leak by triggering slow
+   data-channel read operations, related to io/channel-websock.c.
+   (CVE-2017-15268)
+ * The mode4and5 write functions in hw/display/cirrus_vga.c allow local OS
+   guest privileged users to cause a denial of service (out-of-bounds write
+   access and QEMU process crash) via vectors related to dst calculation.
+   (CVE-2017-15289)
+ * hw/input/ps2.c in QEMU does not validate 'rptr' and 'count' values during
+   guest migration, leading to out-of-bounds access. (CVE-2017-16845)
+ * The Virtio Vring implementation in QEMU allows local OS guest users to
+   cause a denial of service (divide-by-zero error and QEMU process crash) by
+   unsetting vring alignment while updating Virtio rings. (CVE-2017-17381)
+ * Integer overflow in the macro ROUND_UP (n, d) allows a user to cause a
+   denial of service (QEMU process crash). (CVE-2017-18043)
+ * The vga_draw_text function allows local OS guest privileged users to cause
+   a denial of service (out-of-bounds read and QEMU process crash) by
+   leveraging improper memory address validation. (CVE-2018-5683)
+ * The load_multiboot function in hw/i386/multiboot.c allows local guest OS
+   users to execute arbitrary code on the QEMU host via a mh_load_end_addr
+   value greater than mh_bss_end_addr, which triggers an out-of-bounds read or
+   write memory access. (CVE-2018-7550)
+bug: [47303]
+cve:
+- CVE-2017-5715
+- CVE-2017-15038
+- CVE-2017-15119
+- CVE-2017-15124
+- CVE-2017-15268
+- CVE-2017-15289
+- CVE-2017-16845
+- CVE-2017-17381
+- CVE-2017-18043
+- CVE-2018-5683
+- CVE-2018-7550
