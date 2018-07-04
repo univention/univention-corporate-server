@@ -13,3 +13,5 @@ note: New upstream release 3.0.2-0+deb9u1 following the LTS release branch.
 bug: [47294]
 cve:
 - CVE-2017-17670
+erratum: 143
+announced: 2018-07-04
