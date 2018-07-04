@@ -587,11 +587,16 @@ class Instance(Base):
 		if '%' in command:
 			command = command % (pipes.quote(detail).replace('\n', '').replace('\r', '').replace('\x00', ''),)
 
+		prejob = '/usr/share/univention-updater/disable-apache2-umc'
+		postjob = '/usr/share/univention-updater/enable-apache2-umc --no-restart'
+		if job == 'release':
+			prejob = 'ucr set updater/maintenance=true'
+			postjob = 'ucr set updater/maintenance=false'
 		MODULE.info("Creating job: %r" % (command,))
 		command = '''
-/usr/share/univention-updater/disable-apache2-umc
+%s
 %s < /dev/null
-/usr/share/univention-updater/enable-apache2-umc --no-restart''' % (command,)
+%s''' % (prejob, command, postjob)
 		atjobs.add(command, comments=dict(lines=self._logfile_start_line))
 
 		return {'status': 0}

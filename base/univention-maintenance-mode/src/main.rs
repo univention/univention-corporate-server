@@ -31,6 +31,7 @@
 
 use std::io::prelude::*;
 use std::fs::File;
+use std::fs;
 use std::io;
 use std::io::BufReader;
 use std::time::Duration;
@@ -90,6 +91,9 @@ impl UpdaterStatus {
         for line in BufReader::new(status_file).lines() {
             if let Ok(line) = line {
                 let bits: Vec<&str> = line.split("=").collect();
+                if bits.len() < 2 {
+                    continue;
+                }
                 if line.starts_with("current_version=") {
                     current_version = Some(String::from(bits[1]));
                 }
@@ -115,10 +119,10 @@ impl UpdaterStatus {
 		release_file.read_to_string(&mut contents)?;
         let mut overall_updates = Vec::new();
         for ver in contents.split(",") {
+            overall_updates.push(ver.to_string());
             if Some(ver.to_string()) == target_version {
                 break;
             }
-            overall_updates.push(ver.to_string());
         }
 
         let status = UpdaterStatus {
@@ -151,6 +155,9 @@ fn write_json(percentage: f32) -> io::Result<()> {
 }
 
 pub fn main() {
+    if fs::remove_file("/var/www/univention/maintenance/updater.json").is_err() {
+        println!("Failed to delete the status file /var/www/univention/maintenance/updater.json");
+    }
     loop {
         match read_progress() {
             Ok(percentage) => match add_updater_context(percentage) {

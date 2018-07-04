@@ -193,7 +193,7 @@ define([
 			// this piece of code was taken from:
 			// https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload
 			this._beforeunloadHandler = on(window, "beforeunload", lang.hitch(this, function(e) {
-				if (this.selectedChildWidget !== this._progress || this._progress.get('allowClose')) {
+				if (this.selectedChildWidget !== this._progress || this._progress._log.get('gotoMaintenance') || this._progress.get('allowClose')) {
 					return;
 				}
 				var msg = _('An update of the system is being executed.') + '\n' +

@@ -1,3 +1,9 @@
+univention-updater (13.0.1-54) unstable; urgency=medium
+
+  * Bug #37223: Activate and deactivate univention-maintenance-mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 14 Jun 2018 00:00:50 +0200
+
 univention-updater (13.0.1-53) unstable; urgency=low
 
   * Bug #36719: Remove deprecated code

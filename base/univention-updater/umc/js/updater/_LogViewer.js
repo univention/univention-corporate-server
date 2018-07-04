@@ -46,6 +46,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/window",
+	"dojo/_base/array",
 	"dojo/dom-geometry",
 	"dojo/window",
 	"dojox/html/entities",
@@ -53,7 +54,7 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, win, geometry, dojoWindow, entities, tools, Text, ContainerWidget, _) {
+], function(declare, lang, win, array, geometry, dojoWindow, entities, tools, Text, ContainerWidget, _) {
 	return declare('umc.modules.updater._LogViewer', [ ContainerWidget ], {
 		'class': 'umcUpdaterLogViewer',
 
@@ -77,8 +78,30 @@ define([
 			this.addChild(this._text);
 		},
 
-		_fetch_log: function() {
+		_checkForMaintenanceMode: function() {
+			var loginURL = '/univention/login/';
+			var xhr = new XMLHttpRequest();
+			xhr.timeout = this._check_interval;
+			xhr.onreadystatechange = lang.hitch(this, function(e) {
+				if (xhr.readyState === 4 && xhr.status === 200) {
+					var headers = xhr.getAllResponseHeaders().toLowerCase();
+					array.forEach(headers.split('\n'), lang.hitch(this, function(header) {
+						var content = header.split(':', 2);
+						if (content.length == 2 && content[0] == 'x-ucs-maintenance' && content[1].trim() == 'true') {
+							// Okay. During update, the maintenance mode is on.
+							// We should leave UMC and watch the progress on the maintenance page instead
+							this.set('gotoMaintenance', true);
+							document.location = loginURL + '?dojo.preventCache=' + Math.floor(Math.random() * 100000);
+						}
+					}));
+				}
+			});
+			xhr.open('HEAD', loginURL + '?dojo.preventCache=' + Math.floor(Math.random() * 100000), true)
+			xhr.send();
+		},
 
+		_fetch_log: function() {
+			this._checkForMaintenanceMode();
 			tools.umcpCommand(this.query,{job:this._current_job, count:-1},false).then(lang.hitch(this,function(data) {
 
 				this.onQuerySuccess(this.query + " [count=-1]");
