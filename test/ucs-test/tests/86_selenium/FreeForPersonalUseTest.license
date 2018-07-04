@@ -1,0 +1,24 @@
+dn: cn=admin,cn=license,cn=univention,
+objectClass: top
+objectClass: univentionLicense
+objectClass: univentionObject
+univentionObjectType: settings/license
+univentionLicenseEndDate: unlimited
+univentionLicenseModule: admin
+cn: admin
+univentionLicenseBaseDN: Free for personal use edition
+univentionLicenseUsers: 5
+univentionLicenseServers: unlimited
+univentionLicenseManagedClients: 5
+univentionLicenseCorporateClients: unlimited
+univentionLicenseVirtualDesktopUsers: unlimited
+univentionLicenseVirtualDesktopClients: unlimited
+univentionLicenseSupport: 0
+univentionLicensePremiumSupport: 0
+univentionLicenseVersion: 2
+univentionLicenseType: UCS
+univentionLicenseSignature: pOb0FqnaXildZ8j5URqnlc9n0LnQrGJBDEc8Mx3qGO69L5V1th
+ EWmv89ykyBV6k/H7EjEPXitsgcFWiN6aLlFu8ssJoU6Km2B6pE1kHhwQFXzbMg6WWVyCLvSzIeP6k
+ d/uU0ZpvGSUANAdiL6FqTrMMugNLTJOXp36bn8RBYRtTLxEOWaIZtRjf5HsDfKPRrw00ogXhpBuoF
+ p/eBy3IP+dfY2DZPW6Mbky8TGd4ZE5wOwrQGseGjU/sbvJ+ME+8oVTgTfTCeU0wOFTzWyk+NzegeP
+ +DHw2l2WTvRCDnu1laJiWwraWSFZOc+yZQwiivwXPchzZqDHaIbGGUrpje2kg==

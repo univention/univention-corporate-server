@@ -1,0 +1,60 @@
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+# -*- coding: utf-8 -*-
+## desc: Test the 'System diagnostic' module
+## roles:
+##  - domaincontroller_master
+## tags:
+##  - skip_admember
+## join: true
+## exposure: dangerous
+
+from univention.testing import selenium
+from univention.admin import localization
+import os
+import time
+
+
+translator = localization.translation('ucs-test-selenium')
+_ = translator.translate
+
+
+class UMCTester(object):
+
+	def open_license_import_dialog(self):
+		self.selenium.open_side_menu()
+		self.selenium.wait_for_text(_('License'))
+		self.selenium.click_side_menu_entry(_('License'))
+		self.selenium.wait_for_text(_('Import new license'))
+		self.selenium.click_side_menu_entry(_('Import new license'))
+		self.selenium.wait_for_text(_('UCS license import'))
+
+	def test_umc(self):
+		self.selenium.do_login()
+		self.open_license_import_dialog()
+		uploader = self.selenium.driver.find_element_by_xpath('//*[contains(@id, "_Uploader_")]//input[@type="file"]')
+		uploader.send_keys(os.path.abspath('FreeForPersonalUserTest.license'))
+		self.selenium.wait_for_text('The license has been imported successfully')
+		self.selenium.click_button('Ok')
+		self.selenium.wait_until_all_dialogues_closed()
+
+		self.selenium.do_login()
+		self.open_license_import_dialog()
+		licenseText = self.selenium.driver.find_element_by_xpath('//textarea[@name="licenseText"]')
+		with open(os.path.abspath('FreeForPersonalUserTest.license'), 'r') as f:
+			s = f.read()
+			licenseText.send_keys(s)
+		self.selenium.click_button('Import from text field')
+		self.selenium.wait_for_text('The license has been imported successfully')
+		self.selenium.click_button('Ok')
+		self.selenium.wait_until_all_dialogues_closed()
+
+
+
+
+
+if __name__ == '__main__':
+	with selenium.UMCSeleniumTest() as s:
+		umc_tester = UMCTester()
+		umc_tester.selenium = s
+
+		umc_tester.test_umc()
