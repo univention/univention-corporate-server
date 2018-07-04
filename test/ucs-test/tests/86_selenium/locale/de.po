@@ -418,6 +418,10 @@ msgstr "Benutzereinstellungen"
 msgid "Users"
 msgstr "Benutzer"
 
+#: 160_process_overview_module:47
+msgid "User"
+msgstr "Benutzer"
+
 #: 151_udm_users:150
 msgid "[Advanced settings]"
 msgstr ""
