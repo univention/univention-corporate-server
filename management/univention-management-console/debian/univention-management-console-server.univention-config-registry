@@ -15,6 +15,15 @@ Variables: auth/umc/addon/.*
 
 Type: subfile
 Multifile: etc/pam.d/univention-management-console
+Subfile: etc/pam.d/univention-management-console.d/30_tally
+Variables: auth/faillog
+Variables: auth/faillog/limit
+Variables: auth/faillog/unlock_time
+Variables: auth/faillog/root
+Variables: auth/faillog/lock_global
+
+Type: subfile
+Multifile: etc/pam.d/univention-management-console
 Subfile: etc/pam.d/univention-management-console.d/40_saml
 Variables: hostname
 Variables: domainname

@@ -1,0 +1,18 @@
+@!@
+if configRegistry.is_true('auth/faillog', False):
+	tally_option='per_user deny=%s' % configRegistry.get('auth/faillog/limit', '5')
+	if configRegistry.is_true('auth/faillog/root', False):
+		tally_option+=' even_deny_root_account'
+	if configRegistry.get('auth/faillog/unlock_time', '0') != '0':
+		tally_option+=' unlock_time=%s' % configRegistry.get('auth/faillog/unlock_time')
+	if configRegistry.is_true('auth/faillog/lock_global', False):
+		print 'auth	[success=1 user_unknown=1 default=bad]	pam_tally.so %s' % tally_option
+		print 'auth	[default=die]	pam_runasroot.so program=/usr/lib/univention-pam/lock-user'
+	else:
+		print 'auth	required	pam_tally.so %s' % tally_option
+@!@
+
+@!@
+if configRegistry.is_true('auth/faillog', False):
+	print 'account	required	pam_tally.so'
+@!@
