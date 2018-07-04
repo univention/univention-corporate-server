@@ -78,12 +78,13 @@ class ChecksAndWaits(object):
 			self.elements_invisible, 'waited %s seconds for progress bar' % (timeout,)
 		)
 
-	def wait_until_element_visible(self, xpath):
+	def wait_until_element_visible(self, xpath, timeout=60):
 		logger.info('Waiting for the element with the xpath %r to be visible.' % (xpath,))
 		self.wait_until(
 			expected_conditions.visibility_of_element_located(
 				(webdriver.common.by.By.XPATH, xpath)
-			)
+			),
+			timeout=timeout
 		)
 
 	def wait_until(self, check_function, timeout=60):

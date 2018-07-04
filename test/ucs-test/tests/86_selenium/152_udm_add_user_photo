@@ -1,0 +1,123 @@
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+# -*- coding: utf-8 -*-
+## desc: Test adding, changing and removing a photo for a user
+## packages:
+##  - univention-management-console-module-udm
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+## tags:
+##  - skip_admember
+## join: true
+## exposure: dangerous
+
+import re
+import time
+
+from selenium.common.exceptions import NoSuchElementException
+
+from univention.admin import localization
+from univention.testing.utils import get_ldap_connection
+import univention.testing.udm as udm_test
+import univention.testing.selenium as selenium
+import univention.testing.selenium.udm as selenium_udm
+
+translator = localization.translation('ucs-test-selenium')
+_ = translator.translate
+
+
+def expand_path(xpath):
+	# replaces instances of [@containsClass="className"]
+	# with
+	# [contains(concat(" ", normalize-space(@class), " "), " className ")]
+	pattern = r'(?<=\[)@containsClass=([\"\'])(.*?)\1(?=\])'
+	replacement = r'contains(concat(\1 \1, normalize-space(@class), \1 \1), \1 \2 \1)'
+	return re.sub(pattern, replacement, xpath)
+
+
+class UmcUdmError(Exception):
+	pass
+
+
+class UMCTester(object):
+
+	def setup(self):
+		self.create_test_user()
+		self.login_and_open_module()
+
+
+	def create_test_user(self):
+		self.users = selenium_udm.Users(self.selenium)
+		userdn = self.udm.create_user()[0]
+		lo = get_ldap_connection()
+		user_object = lo.get(userdn)
+		user = {}
+		user['username'] = user_object['uid'][0]
+		user['lastname'] = user_object['sn'][0]
+		self.user = user
+
+
+	def login_and_open_module(self):
+		self.selenium.do_login()
+		self.selenium.open_module(self.users.name)
+		self.users.wait_for_main_grid_load()
+
+
+	def test_umc(self):
+		self.setup()
+
+		uploaded_src_initial = self.test_upload_image(self.user, '/tmp/initial.png')
+		uploaded_src_changed = self.test_upload_image(self.user, '/tmp/changed.png')
+		if uploaded_src_changed == uploaded_src_initial:
+			raise UmcUdmError('The src in the img tag did not change after a new image has been uploaded')
+		self.test_clear_image(self.user)
+
+
+	def test_upload_image(self, user, img_path):
+		self.users.open_details(user)
+		self.selenium.driver.save_screenshot(img_path)
+		uploader = self.selenium.driver.find_element_by_xpath('//*[contains(@id, "_ImageUploader_")]//input[@type="file"]')
+		uploader.send_keys(img_path)
+
+		time.sleep(1) # wait_for_text('Uploading...') is too inconsistent
+		self.selenium.wait_for_text('Upload new image')
+
+		if not self.get_uploaded_src():
+			raise UmcUdmError('There is no img tag in the Image widget after an image has been uploaded')
+		self.users.save_details()
+		self.users.open_details(user)
+		uploaded_src = self.get_uploaded_src()
+		if not uploaded_src:
+			raise UmcUdmError('There is no img tag in the Image widget after uploading a image, saving and opening the detailspage again')
+		self.users.close_details()
+
+		return uploaded_src
+
+
+	def test_clear_image(self, user):
+		self.users.open_details(user)
+		self.selenium.click_button('Clear image data')
+		if self.get_uploaded_src():
+			raise UmcUdmError('There is still an img tag in the Image widget after "Clear image data" has been pressed')
+		self.users.save_details()
+		self.users.open_details(user)
+		if self.get_uploaded_src():
+			raise UmcUdmError('There is still an img tag in the Image widget after clearing the image, saving and opening the detailspage again')
+
+
+	def get_uploaded_src(self):
+		try:
+			img = self.selenium.driver.find_element_by_xpath(expand_path('//*[contains(@id, "_ImageUploader_")]//*[@containsClass="umcImage"]/img'))
+		except NoSuchElementException:
+			return None
+		else:
+			return img.get_attribute('src')
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm, selenium.UMCSeleniumTest() as s:
+		umc_tester = UMCTester()
+		umc_tester.udm = udm
+		umc_tester.selenium = s
+
+		umc_tester.test_umc()
