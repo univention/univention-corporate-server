@@ -148,8 +148,8 @@ class AuthHandler(signals.Provider):
 
 	def __authentication_result(self, thread, result, request):
 		if isinstance(result, BaseException) and not isinstance(result, (AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, PasswordChangeFailed, AccountExpired)):
-			import traceback
-			AUTH.error(''.join(traceback.format_exception(*thread.exc_info)))
+			msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
+			AUTH.error(msg)
 		if isinstance(result, tuple):
 			username, password = result
 			result = {'username': username, 'password': password, 'auth_type': request.body.get('auth_type')}

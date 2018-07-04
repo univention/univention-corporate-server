@@ -1251,11 +1251,14 @@ class SAML(Ressource):
 		try:
 			data = self.sp.global_logout(user.saml.response.name_id)
 		except KeyError:
-			tb = sys.exc_info()[2]
-			while tb.tb_next:
-				tb = tb.tb_next
-			if tb.tb_frame.f_code.co_name != 'entities':
-				raise
+			try:
+				tb = sys.exc_info()[2]
+				while tb.tb_next:
+					tb = tb.tb_next
+				if tb.tb_frame.f_code.co_name != 'entities':
+					raise
+			finally:
+				tb = None
 			# already logged out or UMC-Webserver restart
 			user.saml = None
 			data = {}

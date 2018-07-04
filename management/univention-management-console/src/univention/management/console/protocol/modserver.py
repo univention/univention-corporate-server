@@ -114,7 +114,11 @@ class ModuleServer(Server):
 					))
 				raise UMC_Error(error, status=MODULE_ERR_INIT_FAILED)
 		except UMC_Error:
-			self.__init_etype, self.__init_exc, self.__init_etraceback = sys.exc_info()
+			try:
+				exc_info = sys.exc_info()
+				self.__init_etype, self.__init_exc, self.__init_etraceback = exc_info  # FIXME: do not keep a reference to traceback
+			finally:
+				exc_info = None
 		else:
 			self.__handler.signal_connect('success', notifier.Callback(self._reply, True))
 
@@ -291,11 +295,12 @@ class ModuleServer(Server):
 				try:
 					self.__handler.init()
 				except BaseException:
-					etype, exc, etraceback = sys.exc_info()
-					self.__init_etype = etype
-					self.__init_exc = exc
-					self.__init_etraceback = etraceback
-					self.error_handling(msg, 'init', *sys.exc_info())
+					try:
+						exc_info = sys.exc_info()
+						self.__init_etype, self.__init_exc, self.__init_etraceback = exc_info  # FIXME: do not keep a reference to traceback
+						self.error_handling(msg, 'init', *exc_info)
+					finally:
+						exc_info = None
 					return
 
 			self.response(resp)
