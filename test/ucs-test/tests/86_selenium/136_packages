@@ -1,0 +1,80 @@
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+# -*- coding: utf-8 -*-
+## desc: Test the 'System diagnostic' module
+## roles-not:
+##  - basesystem
+## tags:
+##  - skip_admember
+## join: true
+## exposure: dangerous
+
+import logging
+import re
+
+from univention.testing import selenium
+from univention.admin import localization
+
+translator = localization.translation('ucs-test-selenium')
+_ = translator.translate
+logger = logging.getLogger(__name__)
+
+
+class UmcError(Exception):
+	pass
+
+
+def expand_path(xpath):
+	# replaces instances of [@containsClass="className"]
+	# with
+	# [contains(concat(" ", normalize-space(@class), " "), " className ")]
+	pattern = r'(?<=\[)@containsClass=([\"\'])(.*?)\1(?=\])'
+	replacement = r'contains(concat(\1 \1, normalize-space(@class), \1 \1), \1 \2 \1)'
+	return re.sub(pattern, replacement, xpath)
+
+
+class UMCTester(object):
+
+	def test_umc(self):
+		self.selenium.do_login()
+		self.selenium.open_module('Package Management')
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+		# test install and deinstall of not installed package
+		self.selenium.enter_input('pattern', 'aa3d')
+		self.selenium.submit_input('pattern')
+		self.selenium.wait_until_all_standby_animations_disappeared()
+		self.selenium.click_checkbox_of_grid_entry('aa3d')
+		self.selenium.click_button('Install')
+		self.selenium.wait_for_text('Confirmation')
+		logger.info("Clicking the dialog button %r", _('Install'))
+		self.selenium.click_element(expand_path('//*[@containsClass="dijitDialog"]//*[@containsClass="dijitButtonText"][text() = "%s"]' % _('Install')))
+		self.selenium.wait_until_all_dialogues_closed()
+		self.selenium.wait_until_progress_bar_finishes()
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+		installation_status_path = expand_path('//*[text() = "%s"]/ancestor-or-self::*[@containsClass="field-package"]/following-sibling::*[@containsClass="field-status"]' % _('aa3d'))
+		installation_status = self.selenium.driver.find_element_by_xpath(installation_status_path).text
+		if installation_status != 'installed':
+			raise UmcError('The installation status of %s is not "installed"' % 'aa3d')
+
+		self.selenium.click_checkbox_of_grid_entry('aa3d')
+		self.selenium.click_button('Uninstall')
+		self.selenium.wait_for_text('Confirmation')
+		logger.info("Clicking the dialog button %r", _('Uninstall'))
+		self.selenium.click_element(expand_path('//*[@containsClass="dijitDialog"]//*[@containsClass="dijitButtonText"][text() = "%s"]' % _('Uninstall')))
+		self.selenium.wait_until_all_dialogues_closed()
+		self.selenium.wait_until_progress_bar_finishes()
+		self.selenium.wait_until_all_standby_animations_disappeared()
+
+		installation_status_path = expand_path('//*[text() = "%s"]/ancestor-or-self::*[@containsClass="field-package"]/following-sibling::*[@containsClass="field-status"]' % _('aa3d'))
+		installation_status = self.selenium.driver.find_element_by_xpath(installation_status_path).text
+		if installation_status != 'not installed':
+			raise UmcError('The installation status of %s is not "not installed"' % 'aa3d')
+
+
+if __name__ == '__main__':
+	with selenium.UMCSeleniumTest() as s:
+		umc_tester = UMCTester()
+		umc_tester.selenium = s
+
+		umc_tester.test_umc()
