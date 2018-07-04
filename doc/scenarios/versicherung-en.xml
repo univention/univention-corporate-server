@@ -228,11 +228,7 @@
 	<para>
 	  The UCS directory service synchronizes with the Microsoft Active
 	  Directory of the parent company. The replication encompasses
-	  all the containers, organizational units, users and groups. Users have
-	  a special position since the password cannot be queried via the
-	  LDAP protocol in Microsoft Active Directory. A system service is
-	  installed on the Windows server for this purpose, which enables
-	  password synchronization.
+	  all the containers, organizational units, users and groups. 
 	</para>
 
 	<para>
@@ -247,7 +243,7 @@
 	<para>
 	  The groupware is provided in the form of Exchange Server
 	  2016 by the parent company Vigil Insurances, allowing the users to
-	  access it using Outlook 2010 and Outlook on the web.
+	  access it using Outlook and Outlook on the web.
 	</para>
 
 	<para>
@@ -349,16 +345,6 @@
 	  In the headquarters 150 users work with terminal services based on
 	  Citrix XenApp. The XenApp terminal server runs on a Windows member server,
 	  which joined the local Samba 4 domain.
-	</para>
-
-	<para>
-	  Access to the Citrix server is performed via thin clients, which are
-	  operated with Univention Corporate Client (UCC): the thin clients are
-	  registered and configured in the UCS management system (for example, the
-	  IP address can be assigned centrally per DHCP or the monitor
-	  resolution can be centrally specified). The terminal services used by
-	  the users are configured user-specifically; the configuration is
-	  performed via the user administration of the &ucsUMC;.
 	</para>
   </section>
 

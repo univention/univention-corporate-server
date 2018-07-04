@@ -240,11 +240,7 @@
 	<para>
 	  Der UCS-Verzeichnisdienst synchronisiert sich mit dem Microsoft Active
 	  Directory-Verzeichnis des Mutterkonzerns. Die Replikation umfasst alle
-	  Container, Organisationseinheiten, Benutzer und Gruppen. Die Benutzer
-	  nehmen eine Sonderstellung ein, da das Passwort im Microsoft Active
-	  Directory nicht über LDAP abgefragt werden kann. Hierfür
-	  wird ein zusätzlicher Dienst auf dem Microsoft Windows-Server installiert, der
-	  diese Passwortsynchronisation ermöglicht.
+	  Container, Organisationseinheiten, Benutzer und Gruppen.
 	</para>
 
 	<para>
@@ -259,7 +255,7 @@
 	<para>
 	  Die Groupware wird in Form von Exchange Server 2016 komplett durch
 	  die Konzernmutter Vigil Insurances bereitgestellt, auf das die
-	  Benutzer mit Outlook 2010 und Outlook-on-the-web zugreifen.
+	  Benutzer mit Outlook und Outlook-on-the-web zugreifen.
 	</para>
 
 	<para>
@@ -360,17 +356,6 @@
 	  In der Zentrale arbeiten 150 Benutzer mit Terminaldiensten auf Basis
 	  von Citrix XenApp. Der XenApp-Terminalserver läuft auf einem
 	  Microsoft Windows Memberserver, der in die Samba 4-Domäne gejoint ist.
-	</para>
-
-	<para>
-	  Der Zugriff auf die Citrix-Server erfolgt durch Thin Clients, die mit
-	  Univention Corporate Client (UCC) betrieben werden: Die Thin
-	  Clients werden im UCS-Managementsystem angelegt und konfiguriert (die
-	  IP-Adresse kann beispielsweise zentral per DHCP zugewiesen oder
-	  die Bildschirmauflösung zentral vorgegeben werden). Die von den
-	  Benutzern verwendeten Terminaldienste werden benutzerbezogen
-	  konfiguriert; die Konfiguration erfolgt über die Benutzer-Verwaltung
-	  der &ucsUMC;.
 	</para>
   </section>
 
