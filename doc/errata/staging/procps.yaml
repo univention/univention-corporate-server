@@ -1,16 +1,16 @@
 product: ucs
 release: "4.3"
-version: [1]
+version: [0,1]
 scope: ucs_4.3-0-errata4.3-1
 src: procps
 fix: 2:3.3.12-3+deb9u1
 desc: |
  This update addresses the following issues:
  * Local privilege escalation in top (CVE-2018-1122)
- * denial of service in ps via mmap buffer overflow (CVE-2018-1123)
+ * Denial of service in ps via mmap buffer overflow (CVE-2018-1123)
  * Integer overflows leading to heap overflow in file2strvec (CVE-2018-1124)
- * stack buffer overflow in pgrep (CVE-2018-1125)
- * incorrect integer size in proc/alloc.* leading to truncation / integer
+ * Stack buffer overflow in pgrep (CVE-2018-1125)
+ * Incorrect integer size in proc/alloc.* leading to truncation / integer
    overflow issues (CVE-2018-1126)
 bug: [47296]
 cve:

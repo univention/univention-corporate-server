@@ -1,23 +1,23 @@
 product: ucs
 release: "4.3"
-version: [1]
+version: [0,1]
 scope: ucs_4.3-0-errata4.3-1
 src: firefox-esr
 fix: 52.9.0esr-1~deb9u1
 desc: |
  This update addresses the following issues:
- * CVE-2018-5156: Media recorder segmentation fault when track type is changed
-   during capture
- * CVE-2018-5188: Memory safety bugs fixed
- * CVE-2018-6126: Heap buffer overflow rasterizing paths in SVG with Skia
- * CVE-2018-12359: Buffer overflow using computed size of canvas element
- * CVE-2018-12360: Use-after-free when using focus()
- * CVE-2018-12362: Integer overflow in SSSE3 scaler
- * CVE-2018-12363: Use-after-free when appending DOM nodes
- * CVE-2018-12364: CSRF attacks through 307 redirects and NPAPI plugins
- * CVE-2018-12365: Compromised IPC child process can list local filenames
- * CVE-2018-12366: Invalid data handling during QCMS transformations
- * CVE-2018-12368: No warning when opening executable SettingContent-ms
+ * Media recorder segmentation fault when track type is changed
+   during capture (CVE-2018-5156)
+ * Memory safety bugs fixed (CVE-2018-5188)
+ * Heap buffer overflow rasterizing paths in SVG with Skia (CVE-2018-6126)
+ * Buffer overflow using computed size of canvas element (CVE-2018-12359)
+ * Use-after-free when using focus() (CVE-2018-12360)
+ * Integer overflow in SSSE3 scaler (CVE-2018-12362)
+ * Use-after-free when appending DOM nodes (CVE-2018-12363)
+ * CSRF attacks through 307 redirects and NPAPI plugins (CVE-2018-12364)
+ * Compromised IPC child process can list local filenames (CVE-2018-12365)
+ * Invalid data handling during QCMS transformations (CVE-2018-12366)
+ * No warning when opening executable SettingContent-ms (CVE-2018-12368)
 bug: [47285]
 cve:
 - CVE-2018-12359

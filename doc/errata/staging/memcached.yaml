@@ -1,6 +1,6 @@
 product: ucs
 release: "4.3"
-version: [1]
+version: [0,1]
 scope: ucs_4.3-0-errata4.3-1
 src: memcached
 fix: 1.4.33-1+deb9u1

@@ -1,6 +1,6 @@
 product: ucs
 release: "4.3"
-version: [1]
+version: [0,1]
 scope: ucs_4.3-0
 src: libnfs
 fix: 1.11.0-2
