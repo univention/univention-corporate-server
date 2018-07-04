@@ -9,3 +9,5 @@ desc: |
  * Make CPU-Usage column visibility configurable. The visibility
    is controlled by the UCR variable uvmm/umc/showcpuusage
 bug: [47137]
+erratum: 425
+announced: 2018-07-04
