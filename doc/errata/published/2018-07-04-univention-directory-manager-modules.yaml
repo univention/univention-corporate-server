@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Add support for DNS NS records.
 bug: [32626]
+erratum: 141
+announced: 2018-07-04
