@@ -1,3 +1,9 @@
+ucs-test (8.0.28-147) unstable; urgency=medium
+
+  * Bug #47306: Fix fuzzy entry
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 04 Jul 2018 20:18:28 +0200
+
 ucs-test (8.0.28-146) unstable; urgency=medium
 
   * Bug #47306: Add selenium tests for UMC product test
