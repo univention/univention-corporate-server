@@ -1,13 +1,16 @@
 product: ucs
 release: "4.3"
-version: [0,1]
+version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-saml
-fix: 5.0.4-21A~4.3.0.201807041308
+fix: 5.0.4-22A~4.3.0.201807051324
 desc: |
  This update addresses the following issue(s):
  * When operating without a separate VirtualHost for single sign-on, a
    rewrite rule in the scope of other config rules limited execution of
    further rewrite rules. This fix restricts the rewrite rule to the
    single sign-on directory.
-bug: [47241]
+ * Raw service provider configurations can now be added to udm 
+   saml/serviceprovider objects. The configuration will be replicated
+   to all domain IdP servers.
+bug: [47241, 47309]
