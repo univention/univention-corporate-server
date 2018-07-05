@@ -28,7 +28,7 @@
             known from mobile platforms from Apple or Google. It provides an
             infrastructure to build, deploy and run enterprise applications on
             Univention Corporate Server (UCS). The App Center uses well-known
-            technology like and Docker containers.
+            technology like and docker containers.
         </para>
     </section>
 
@@ -97,37 +97,195 @@
     <title>Get Started</title>
 
     <para>
+        This chapter describes the requirements and the steps to create an app
+        for Univention App Center. After reading this chaper you are can create
+        your own app and start with a development and test cycle using the Test
+        App Center.
     </para>
 
     <section id="app-provider-needs">
-        <title>What needs the app provider?</title>
+        <title>What the app provider needs?</title>
 
         <para>
         </para>
 
-        <section id="app-provider-needs:docker-container">
-            <title>Software in a Docker container</title>
+        <section id="app-provider-needs:docker-image">
+            <title>Software in a docker image</title>
             <para>
+                Your software needs to be provided in a <ulink
+                    url="https://docs.docker.com/">docker image</ulink>. This
+                is the easiest way to deploy software in Univention App Center.
+            </para>
+            <para>
+                It is also recommended to publish the docker container to
+                <ulink url="https://hub.docker.com/">docker hub</ulink>. This
+                makes referencing the image later much easier.
+            </para>
+            <para>
+                The image must have an image tag for versioning. It later
+                allows updates for the apps.
             </para>
         </section>
 
         <section id="app-provider-needs:portal-account">
             <title>Account for App Provider Portal</title>
+
             <para>
+                The app provider portal is the app developer's self service
+                place for all the settings around the app.
             </para>
+
+           <orderedlist>
+               <listitem>
+                   <simpara>
+                       To start building your app, you should first get
+                       yourself an account for the app provider portal.
+                       Please <ulink url="https://www.univention.com/products/univention-app-center/for-solution-providers/">
+                           request your personal account</ulink>.
+                   </simpara>
+               </listitem>
+               <listitem>
+                   <simpara>
+                       You will receive an email with your username and
+                       instructions on how to set your password.
+                   </simpara>
+               </listitem>
+               <listitem>
+                   <simpara>
+                       Afterwards you can login to the <ulink
+                           url="https://provider-portal.software-univention.de/univention-management-console/">App
+                           Provider Portal</ulink>.
+                   </simpara>
+               </listitem>
+           </orderedlist>
         </section>
     </section>
 
     <section id="create-app-with-docker">
-        <title>Create app with a Docker container</title>
+        <title>Create app with a docker image</title>
 
         <para>
+            This section describes the steps how to create the app in the App
+            Provider Portal and use a docker image.
         </para>
 
-        <section id="create-app-with-docker:container">
-            <title>Docker Container</title>
-            <para>
-            </para>
+        <para>
+            <figure id="create-app-with-docker:create-app">
+                <title>Add a new App</title>
+                <graphic scalefit="1" width="80%" fileref="illustrations/app_portal_new_app.png"/>
+            </figure>
+        </para>
+
+        <orderedlist>
+            <listitem>
+                <simpara>
+                    In the App Provider Portal select the
+                    <guimenu>Apps</guimenu> module in the
+                    <guimenu>Favorites</guimenu> or <guimenu>Software</guimenu>
+                    section.
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    Click on <guimenu>Add a new App</guimenu> and provide the following settings.
+                    <itemizedlist>
+                    <listitem>
+                        <simpara>
+                            <emphasis>App ID</emphasis> is like a primary key.
+                            You should choose it carefully, because it cannot
+                            be changed once the app is released to the public.
+                            It should use small capitals, dashes and numbers.
+                            Please do not include version strings in here.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>App Name</emphasis> is the name of your
+                            app. It is used to display the app on the overview
+                            pages. This attribute can be changed any time later.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>App Version</emphasis> is the version of
+                            your app. The App Center distinguishes versions and
+                            uses them to handle app updates.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>UCS Version</emphasis> is the UCS version
+                            your app should start to be available on.
+                        </simpara>
+                        <simpara>
+                            As the App is a container and has little
+                            interaction with the host system, it is unnecessary
+                            to publish a new version for UCS 4.3, if it has
+                            already been published for UCS 4.2. UCS 4.3 systems
+                            may very well use the App - if you specify
+                            <literal>SupportedUCSVersion=4.2-0, 4.3-0</literal>
+                            in your 4.2 App. It does not really matter in
+                            which UCS version you are publishing your App. But
+                            if you are publishing it in various UCS versions,
+                            you need to also test various UCS versions.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <emphasis>File under</emphasis> refers to the
+                            organization that the app belongs to. Please select
+                            your organization here or otherwise the app will not
+                            show up in the listing for you.
+                        </simpara>
+                    </listitem>
+                    </itemizedlist>
+                </simpara>
+            </listitem>
+        </orderedlist>
+
+        <section id="create-app-with-docker:image">
+            <title>Docker image</title>
+
+            <orderedlist>
+                <listitem>
+                    <simpara>
+                        In your app go to the tab <guimenu>Docker</guimenu>.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Activate the checkbox <guimenu>Use docker container technology</guimenu>.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Enter the name of your image to <guimenu>Docker
+                            image</guimenu>. Grab the name of your image from
+                        docker hub for example
+                        <literal>univention/ucs-master-amd64:4.2-2</literal>.
+                    </simpara>
+                </listitem>
+            </orderedlist>
+
+            <important>
+                <para>
+                    Please add the version tag explicitely. The App Center
+                    distinguishes different app versions and handles updates
+                    accordingly.
+                </para>
+            </important>
+
+            <note>
+                <para>
+                    The App Center does currently not support multi container
+                    setups. The container needs to include all services needed
+                    for the software, except the database.  The App Center
+                    takes care of providing a database management system
+                    directly on the docker host that can be used by the docker
+                    container. Supported are MySQL and PostgreSQL. See <xref
+                        linkend="create-app-with-docker:database" />.
+                </para>
+            </note>
         </section>
 
         <section id="create-app-with-docker:description">
@@ -139,6 +297,7 @@
         <section id="create-app-with-docker:defaults">
             <title>Change defaults</title>
             <para>
+                Set the docker entry-point in the section ''Advanced docker settings'' at ''Entrypoint for the Docker App''.
             </para>
         </section>
 
