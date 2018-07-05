@@ -45,6 +45,7 @@ TYPE=
 USERTMP="$(mktemp -d)"
 DCPWD="$USERTMP/dcpwd"
 VERSION_CHECK=true
+CHECK_RUN=false
 VERBOSE=false
 SKIPIPMAC=false
 SKIPADMEMBERMODE=false
@@ -78,6 +79,7 @@ display_help() {
 	  -realm <kerberos realm>:       Kerberos realm, e.g. TEST.LOCAL
 	  -windom <windows domain name>: Name of the windows (samba) domain
 	  -disableVersionCheck           Disable version check against _dcname_
+	  -checkPrerequisites            Just perform some tests without changing anything
 	  -skipIpMac                     Do not register IP and MAC in machine account
 	  -skipAdMemberMode              Do not activate ad member mode during join
 	  -containerAdMemberMode         Configure ad member in container mode
@@ -334,6 +336,10 @@ do
 			shift
 			VERSION_CHECK=false
 			;;
+		"-checkPrerequisites")
+			shift
+			CHECK_RUN=true
+			;;
 		"--version")
 			display_version
 			exit 0
@@ -453,7 +459,7 @@ if [ $? -ne 0 ]; then
 	fi
 fi 
 
-ssh_out="$(univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" ls 2>&1)"
+ssh_out="$(univention-ssh -timeout 3 "$DCPWD" "${DCACCOUNT}@${DCNAME}" ls 2>&1)"
 if [ $? -ne 0 ]; then
 	ssh_out=$(echo "$ssh_out" | tr '\n' ' ' | tr  '\r' ' ')
 	failed_message "The ssh-login to ${DCACCOUNT}@${DCNAME} failed with \"${ssh_out}\". Please make sure the account ${DCACCOUNT} exists and is a member of the Domain Admins group!"
@@ -504,7 +510,7 @@ fi
 
 echo -e "\033[60Gdone"
 
-if [ "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" ]; then
+if [ "$CHECK_RUN" = "false" -a "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" ]; then
 	# check for memberof overlay
 	master_member_of="$(univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" /usr/sbin/ucr get ldap/overlay/memberof)"
 	ucr set tmp/join/test/master/memberof="$master_member_of" >/dev/null 2>&1
@@ -520,19 +526,19 @@ if [ "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontr
 	fi
 fi
 
-if [ -x /etc/init.d/univention-s4-connector ]; then
+if [ "$CHECK_RUN" = "false" -a -x /etc/init.d/univention-s4-connector ]; then
 	echo -n "Stop S4-Connector: "
 	/etc/init.d/univention-s4-connector stop >>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
 fi
 
-if [ -x /etc/init.d/slapd ]; then
+if [ "$CHECK_RUN" = "false" -a -x /etc/init.d/slapd ]; then
 	echo -n "Stop LDAP Server: "
 	/etc/init.d/slapd stop >>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
 fi
 
-if [ -x /etc/init.d/samba ]; then
+if [ "$CHECK_RUN" = "false" -a -x /etc/init.d/samba ]; then
 	echo -n "Stop Samba Server: "
 	if [ "$dns_backend" = "samba4" ]; then
 		ucr set dns/backend=ldap >>/var/log/univention/join.log 2>&1
@@ -550,13 +556,13 @@ else
 fi
 
 if [ -n "$ldap_base" ]; then
-	univention-config-registry set ldap/base="$ldap_base" >/dev/null 2>&1
+	$CHECK_RUN || univention-config-registry set ldap/base="$ldap_base" >/dev/null 2>&1
 	echo -e "\033[60Gdone"
 else
 	failed_message "Failed to determine ldap/base."
 fi
 
-if [ -x /etc/init.d/slapd ]; then
+if [ "$CHECK_RUN" = "false" -a -x /etc/init.d/slapd ]; then
 	echo -n "Start LDAP Server: "
 	/etc/init.d/slapd start >>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
@@ -586,9 +592,7 @@ else
 	echo -e "\033[60Gdone"
 fi
 
-if [ $server_role != "domaincontroller_master" -a "$server_role" != "domaincontroller_backup" -a -z "$binddn" ]; then
-	failed_message "binddn for user $DCACCOUNT not found"
-fi
+$CHECK_RUN && exit 0
 
 if [ -x /usr/bin/rdate ]; then
 	echo -n "Sync time: "
