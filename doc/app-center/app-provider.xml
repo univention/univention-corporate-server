@@ -15,17 +15,80 @@
     <title>Introduction</title>
 
     <para>
+        This document is for app providers who want to place their product
+        clearly visible for a broad, professional and growing user group. It
+        covers the steps on how make the product available as app for
+        Univention App Center.
     </para>
 
     <section id="introduction:start">
 	    <title>What is Univention App Center?</title>
-    	<para>
+        <para>
+            Univention App Center is an ecosystem similar to the app stores
+            known from mobile platforms from Apple or Google. It provides an
+            infrastructure to build, deploy and run enterprise applications on
+            Univention Corporate Server (UCS). The App Center uses well-known
+            technology like and Docker containers.
         </para>
     </section>
 
     <section id="infrastructure">
         <title>App Center infrastructure</title>
+
         <para>
+            The ecosystem consists of following components:
+            <itemizedlist>
+                <listitem>
+                    <simpara>
+                        <emphasis>The App</emphasis> is the software plus the
+                        collection of metadata like description, logo,
+                        screenshots and more for the presentation.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        <emphasis>The App Center Repository</emphasis> is a
+                        central server infrastructure managed by Univention
+                        that stores the files and data for the app. It is the
+                        installation source for the app for UCS.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        <emphasis>The App Center Module on UCS</emphasis> is
+                        part of the web-based management system on UCS. It is the
+                        place where administrators install, update and
+                        uninstall apps in their UCS environment.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        <emphasis>The App Catalog</emphasis> is the
+                        presentation of the app portfolio on the <ulink
+                            url="https://www.univention.com/products/univention-app-center/app-catalog/">
+                            Univention website</ulink>.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        <emphasis>The App Provider Portal</emphasis> is the
+                        self-service portal for app providers where they can
+                        create and maintain their app.  
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        <emphasis>The Test App Center</emphasis> is the
+                        &quot;staging area&quot; for app providers to develop
+                        and test their apps.
+                    </simpara>
+                </listitem>
+            </itemizedlist>
+        </para>
+
+        <para>
+            For building an app the app developer deals with the app, the
+            provider portal and the Test App Center.
         </para>
     </section>
 </chapter>
