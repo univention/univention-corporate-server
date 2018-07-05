@@ -188,6 +188,7 @@
             <listitem>
                 <simpara>
                     Click on <guimenu>Add a new App</guimenu> and provide the following settings.
+                </simpara>
                     <itemizedlist>
                     <listitem>
                         <simpara>
@@ -239,7 +240,6 @@
                         </simpara>
                     </listitem>
                     </itemizedlist>
-                </simpara>
             </listitem>
         </orderedlist>
 
