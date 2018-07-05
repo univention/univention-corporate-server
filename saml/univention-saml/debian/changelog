@@ -1,3 +1,10 @@
+univention-saml (5.0.4-22) unstable; urgency=medium
+
+  * Bug #47309 Support raw simplesaml service provider configurations with
+    replication
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 05 Jul 2018 13:15:59 +0200
+
 univention-saml (5.0.4-21) unstable; urgency=medium
 
   * Bug #47241: Fix apache configuration when operating without a separate

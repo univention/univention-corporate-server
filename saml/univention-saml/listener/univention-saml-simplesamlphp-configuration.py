@@ -133,61 +133,70 @@ def write_configuration_file(dn, new, filename):
 		metadata = None
 		entityid = new.get('SAMLServiceProviderIdentifier')[0]
 
+	if new.get('rawsimplesamlSPconfig') and new['rawsimplesamlSPconfig'][0]:
+		rawsimplesamlSPconfig = new['rawsimplesamlSPconfig'][0]
+	else:
+		rawsimplesamlSPconfig = None
+
 	fd = open(filename, 'w')
-	fd.write("<?php\n")
-	fd.flush()
 
-	if metadata:
-		with NamedTemporaryFile() as temp:
-			temp.write(raw_metadata_generator)
-			temp.flush()
-
-			process = Popen(['/usr/bin/php', temp.name, entityid], stdout=fd, stderr=PIPE, stdin=PIPE)
-			stdout, stderr = process.communicate(metadata)
-			if process.returncode != 0:
-				ud.debug(ud.LISTENER, ud.ERROR, 'Failed to create %s: %s' % (filename, stderr,))
-		fd.write("$further = array(\n")
+	if rawsimplesamlSPconfig:
+		fd.write(rawsimplesamlSPconfig)
 	else:
-		fd.write('$metadata[%s] = array(\n' % php_string(entityid))
-		fd.write("	'AssertionConsumerService'	=> %s,\n" % php_array(new.get('AssertionConsumerService')))
-		if new.get('singleLogoutService'):
-			fd.write("	'SingleLogoutService'	=> %s,\n" % php_array(new.get('singleLogoutService')))
+		fd.write("<?php\n")
+		fd.flush()
 
-	if new.get('NameIDFormat'):
-		fd.write("	'NameIDFormat'	=> %s,\n" % php_string(new.get('NameIDFormat')[0]))
-	if new.get('simplesamlNameIDAttribute'):
-		fd.write("	'simplesaml.nameidattribute'	=> %s,\n" % php_string(new.get('simplesamlNameIDAttribute')[0]))
-	if new.get('simplesamlAttributes'):
-		fd.write("	'simplesaml.attributes'	=> %s,\n" % php_bool(new.get('simplesamlAttributes')[0]))
-	if new.get('simplesamlAttributes') and new.get('simplesamlAttributes')[0] == "TRUE":
-		simplesamlLDAPattributes = list(new.get('simplesamlLDAPattributes', []))
-		if new.get('simplesamlNameIDAttribute') and new.get('simplesamlNameIDAttribute')[0] not in simplesamlLDAPattributes:
-			simplesamlLDAPattributes.append(new.get('simplesamlNameIDAttribute')[0])
-		fd.write("	'attributes'	=> %s,\n" % php_array(simplesamlLDAPattributes))
-	if new.get('attributesNameFormat'):
-		fd.write("	'attributes.NameFormat'	=> %s,\n" % php_string(new.get('attributesNameFormat')[0]))
-	if new.get('serviceproviderdescription'):
-		fd.write("	'description'	=> %s,\n" % php_string(new.get('serviceproviderdescription')[0]))
-	if new.get('serviceProviderOrganizationName'):
-		fd.write("	'OrganizationName'	=> %s,\n" % php_string(new.get('serviceProviderOrganizationName')[0]))
-	if new.get('privacypolicyURL'):
-		fd.write("	'privacypolicy'	=> %s,\n" % php_string(new.get('privacypolicyURL')[0]))
+		if metadata:
+			with NamedTemporaryFile() as temp:
+				temp.write(raw_metadata_generator)
+				temp.flush()
 
-	fd.write("	'authproc' => array(\n")
-	if not metadata:  # TODO: make it configurable
-		# make sure that only users that are enabled to use this service provider are allowed
-		fd.write("		10 => array(\n")
-		fd.write("		'class' => 'authorize:Authorize',\n")
-		fd.write("		'regex' => FALSE,\n")
-		fd.write("		'enabledServiceProviderIdentifier' => %s,\n" % php_array([dn]))
-		fd.write("		)\n")
-	else:
-		fd.write("		100 => array('class' => 'core:AttributeMap', 'name2oid'),\n")
-	fd.write("	),\n")
+				process = Popen(['/usr/bin/php', temp.name, entityid], stdout=fd, stderr=PIPE, stdin=PIPE)
+				stdout, stderr = process.communicate(metadata)
+				if process.returncode != 0:
+					ud.debug(ud.LISTENER, ud.ERROR, 'Failed to create %s: %s' % (filename, stderr,))
+			fd.write("$further = array(\n")
+		else:
+			fd.write('$metadata[%s] = array(\n' % php_string(entityid))
+			fd.write("	'AssertionConsumerService'	=> %s,\n" % php_array(new.get('AssertionConsumerService')))
+			if new.get('singleLogoutService'):
+				fd.write("	'SingleLogoutService'	=> %s,\n" % php_array(new.get('singleLogoutService')))
 
-	fd.write(");\n")
-	if metadata:
-		fd.write("$metadata[%s] = array_merge($metadata[%s], $further);" % (php_string(entityid), php_string(entityid)))
+		if new.get('NameIDFormat'):
+			fd.write("	'NameIDFormat'	=> %s,\n" % php_string(new.get('NameIDFormat')[0]))
+		if new.get('simplesamlNameIDAttribute'):
+			fd.write("	'simplesaml.nameidattribute'	=> %s,\n" % php_string(new.get('simplesamlNameIDAttribute')[0]))
+		if new.get('simplesamlAttributes'):
+			fd.write("	'simplesaml.attributes'	=> %s,\n" % php_bool(new.get('simplesamlAttributes')[0]))
+		if new.get('simplesamlAttributes') and new.get('simplesamlAttributes')[0] == "TRUE":
+			simplesamlLDAPattributes = list(new.get('simplesamlLDAPattributes', []))
+			if new.get('simplesamlNameIDAttribute') and new.get('simplesamlNameIDAttribute')[0] not in simplesamlLDAPattributes:
+				simplesamlLDAPattributes.append(new.get('simplesamlNameIDAttribute')[0])
+			fd.write("	'attributes'	=> %s,\n" % php_array(simplesamlLDAPattributes))
+		if new.get('attributesNameFormat'):
+			fd.write("	'attributes.NameFormat'	=> %s,\n" % php_string(new.get('attributesNameFormat')[0]))
+		if new.get('serviceproviderdescription'):
+			fd.write("	'description'	=> %s,\n" % php_string(new.get('serviceproviderdescription')[0]))
+		if new.get('serviceProviderOrganizationName'):
+			fd.write("	'OrganizationName'	=> %s,\n" % php_string(new.get('serviceProviderOrganizationName')[0]))
+		if new.get('privacypolicyURL'):
+			fd.write("	'privacypolicy'	=> %s,\n" % php_string(new.get('privacypolicyURL')[0]))
+
+		fd.write("	'authproc' => array(\n")
+		if not metadata:  # TODO: make it configurable
+			# make sure that only users that are enabled to use this service provider are allowed
+			fd.write("		10 => array(\n")
+			fd.write("		'class' => 'authorize:Authorize',\n")
+			fd.write("		'regex' => FALSE,\n")
+			fd.write("		'enabledServiceProviderIdentifier' => %s,\n" % php_array([dn]))
+			fd.write("		)\n")
+		else:
+			fd.write("		100 => array('class' => 'core:AttributeMap', 'name2oid'),\n")
+		fd.write("	),\n")
+
+		fd.write(");\n")
+		if metadata:
+			fd.write("$metadata[%s] = array_merge($metadata[%s], $further);" % (php_string(entityid), php_string(entityid)))
 
 	fd.close()
 	process = Popen(['/usr/bin/php', '-lf', filename], stderr=PIPE, stdout=PIPE)

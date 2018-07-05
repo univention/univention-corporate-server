@@ -185,6 +185,16 @@ msgid ""
 msgstr ""
 "XML Meta-Daten des Service Providers in Rohform zur Erweiterung der Konfiguration von simplesamlphp."
 
+#: modules/univention/admin/handlers/saml/serviceprovider.py:183
+msgid "raw simplesaml SP config"
+msgstr ""
+"Rohdaten einer simplesaml SP Konfiguration"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:184
+msgid "A raw simplesamlphp service provider configuration."
+msgstr ""
+"Die Rohdaten einer simplesamlphp Service Provider Konfiguration"
+
 #: modules/univention/admin/handlers/saml/serviceprovider.py:185
 msgid "General"
 msgstr "Allgemein"

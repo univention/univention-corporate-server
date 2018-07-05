@@ -179,6 +179,16 @@ property_descriptions = {
 		dontsearch=True,
 		identifies=False,
 	),
+	'rawsimplesamlSPconfig': univention.admin.property(
+		short_description=_('raw simplesaml SP config'),
+		long_description=_('A raw simplesamlphp service provider configuration.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		dontsearch=True,
+		identifies=False,
+	),
 }
 
 layout = [
@@ -218,6 +228,7 @@ mapping.register('privacypolicyURL', 'privacypolicyURL', None, univention.admin.
 mapping.register('attributesNameFormat', 'attributesNameFormat', None, univention.admin.mapping.ListToString)
 mapping.register('singleLogoutService', 'singleLogoutService', None, univention.admin.mapping.ListToString)
 mapping.register('serviceProviderMetadata', 'serviceProviderMetadata', None, univention.admin.mapping.ListToString)
+mapping.register('rawsimplesamlSPconfig', 'rawsimplesamlSPconfig', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
