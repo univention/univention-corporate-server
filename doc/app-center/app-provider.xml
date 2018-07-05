@@ -98,7 +98,7 @@
 
     <para>
         This chapter describes the requirements and the steps to create an app
-        for Univention App Center. After reading this chaper you are can create
+        for Univention App Center. After reading this chapter you are can create
         your own app and start with a development and test cycle using the Test
         App Center.
     </para>
@@ -122,7 +122,7 @@
                 makes referencing the image later much easier.
             </para>
             <para>
-                The image must have an image tag for versioning. It later
+                The image must have an image tag for version information. It later
                 allows updates for the apps.
             </para>
         </section>
@@ -172,7 +172,7 @@
         <para>
             <figure id="create-app-with-docker:create-app">
                 <title>Add a new App</title>
-                <graphic scalefit="1" width="80%" fileref="illustrations/app_portal_new_app.png"/>
+                <graphic scalefit="1" width="275px" fileref="illustrations/app_portal_new_app.png"/>
             </figure>
         </para>
 
