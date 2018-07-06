@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-7) unstable; urgency=medium
+
+  * Bug #47315: Listener Converter
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 06 Jul 2018 10:09:14 +0200
+
 univention-appcenter (7.0.2-6) unstable; urgency=medium
 
   * Bug #47265: Listener integration
