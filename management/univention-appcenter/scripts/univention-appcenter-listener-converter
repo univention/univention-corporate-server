@@ -1,0 +1,154 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Univention App Center
+#  univention-appcenter-listener-converter
+#
+# Copyright 2015-2018 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+#
+
+import os
+import os.path
+from argparse import ArgumentParser
+from glob import glob
+import time
+import json
+
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.utils import mkdir
+from univention.appcenter.udm import search_objects, get_admin_connection  #get_connection
+from univention.appcenter.ucr import ucr_get, ucr_load
+from univention.appcenter.packages import reload_package_manager
+from univention.appcenter.listener import LISTENER_DUMP_DIR
+
+
+_CONNECTIONS = {}
+
+
+def get_app_connection(app):
+	if app.id not in _CONNECTIONS:
+		lo, pos = get_admin_connection()
+		_CONNECTIONS[app.id] = lo, pos
+	return _CONNECTIONS[app.id]
+
+
+def run_trigger(app):
+	dst = os.path.join(app.get_data_dir(), 'listener')
+	for fname in sorted(glob(os.path.join(dst, '*.json'))):
+		print 'Deleting', fname
+		print
+		os.unlink(fname)
+
+
+def convert(app, dumped, filename):
+	udm_type = dumped['object_type']
+	command = dumped['command']
+	entry_uuid = dumped['entry_uuid']
+	dn = dumped['dn']
+	if command == 'delete':
+		attrs = None
+	else:
+		lo, pos = get_app_connection(app)
+		print 'Searching', udm_type, entry_uuid
+		objs = search_objects(udm_type, lo, pos, entryUUID=entry_uuid)
+		if objs:
+			attrs = objs[0].info
+		else:
+			return
+	dst = os.path.join(app.get_data_dir(), 'listener')
+	mkdir(dst)
+	base = os.path.basename(filename)
+	with open(os.path.join(dst, base), 'wb') as fd:
+		attrs = {
+			'id': entry_uuid,
+			'object': attrs,
+			'dn': dn,
+			'udm_object_type': udm_type,
+		}
+		json.dump(attrs, fd, sort_keys=True, indent=4)
+	#try:
+	#	os.unlink(filename)
+	#except EnvironmentError as exc:
+	#	pass
+
+
+def find_and_convert_files(app):
+	filenames = sorted(glob(os.path.join(LISTENER_DUMP_DIR, app.id, '*.json')))
+	used_entry_uuids = {}
+	dumped_objects = {}
+	used_filenames = []
+	obsolete_filenames = []
+	for filename in filenames:
+		print 'Converting', filename
+		dumped = json.load(open(filename))
+		entry_uuid = dumped['entry_uuid']
+		if entry_uuid in used_entry_uuids:
+			obsolete_filename = used_entry_uuids.pop(entry_uuid)
+			used_filenames.remove(obsolete_filename)
+			obsolete_filenames.append(obsolete_filename)
+		used_filenames.append(filename)
+		used_entry_uuids[entry_uuid] = filename
+		dumped_objects[filename] = dumped
+	for filename in used_filenames:
+		dumped = dumped_objects[filename]
+		convert(app, dumped, filename)
+		#os.unlink(filename)
+	for filename in obsolete_filenames:
+		#os.unlink(filename)
+		pass
+	if filenames:
+		return True
+
+
+def main():
+	usage = '%(prog)s'
+	description = '%(prog)s converts files written by the App Center listener integration to files that can be processed be the App itself.'
+	parser = ArgumentParser(usage=usage, description=description)
+	parser.add_argument('app', nargs='*', help='App whose listener output should be converted.')
+	parser.add_argument('--once', action='store_true', help='Only do this once and then quit (otherwise will loop forever).')
+	args = parser.parse_args()
+	apps = args.app
+	while True:
+		ucr_load()
+		reload_package_manager()
+		interval = int(ucr_get('appcenter/converter/sleep', '1'))
+		if args.app:
+			apps = [Apps().find(app) for app in args.app]
+			apps = [app for app in apps if app.is_installed()]
+		else:
+			apps = Apps().get_all_locally_installed_apps()
+		for app in apps:
+			if find_and_convert_files(app):
+				run_trigger(app)
+		if args.once:
+			break
+		time.sleep(interval)
+
+
+if __name__ == '__main__':
+	main()
