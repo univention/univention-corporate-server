@@ -28,7 +28,7 @@
  */
 /*global define */
 
-define([
+define("umc/widgets/DateBox", [
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/aspect",
@@ -69,11 +69,28 @@ define([
 		},
 
 		_dateToString: function(dateObj) {
-			if (dateObj && dateObj instanceof Date) {
-				return sprintf('%04d-%02d-%02d', dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDate());
+			// convert input to ISO8601
+			// input: string or Date object
+			// output: string in ISO format
+			if (dateObj) {
+				if (dateObj instanceof Date) {
+					return sprintf('%04d-%02d-%02d', dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDate());
+				} else if (typeof dateObj == 'string' && dateObj.match(/^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]+$/)) {
+					date = dateObj.split('.');
+					// test if udm syntax is date or date2
+					if (date[2].length < 4) {
+						// guessing the century; pretty stupid
+						if (Number(date[2]) > 60) {
+							date[2] = '19' + date[2];
+						} else {
+								date[2] = '20' + date[2];
+						}
+					}
+					return sprintf('%04d-%02d-%02d', date[2], date[1], date[0]);
+				}
 			}
 			return dateObj;
-		},
+		 },
 
 		// return ISO8601/RFC3339 format (yyyy-MM-dd) as string
 		_getValueAttr: function() {
