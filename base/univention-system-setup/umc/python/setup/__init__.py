@@ -69,6 +69,7 @@ except ImportError as e:
 
 
 import util
+from checks.univention_join import set_role_and_check_if_join_will_work
 from . import network
 
 ucr = univention.config_registry.ConfigRegistry()
@@ -91,7 +92,6 @@ class RequestTimeout(UMC_Error):
 
 
 class Instance(Base, ProgressMixin):
-
 	def __init__(self, *args, **kwargs):
 		Base.__init__(self, *args, **kwargs)
 		ProgressMixin.__init__(self)
@@ -774,9 +774,9 @@ class Instance(Base, ProgressMixin):
 		return result
 
 	@simple_response
-	def check_credentials(self, role, dns, nameserver, address, username, password):
+	def check_domain_join_information(self, domain_check_role, role, dns, nameserver, address, username, password):
 		result = {}
-		if role == 'ad':
+		if domain_check_role == 'ad':
 			domain = util.check_credentials_ad(nameserver, address, username, password)
 			result['domain'] = domain
 			if dns:  # "dns" means we don't want to replace the existing DC Master
@@ -786,7 +786,9 @@ class Instance(Base, ProgressMixin):
 					# We need to check the credentials of this system, too, so we ensure that the System is reachable via SSH.
 					# Otherwise the join will fail with strange error like "ping to ..." failed.
 					result.update(util.receive_domaincontroller_master_information(False, nameserver, ucs_master_fqdn, username, password))
-		elif role == 'nonmaster':
+					set_role_and_check_if_join_will_work(role, ucs_master_fqdn, username, password)
+		elif domain_check_role == 'nonmaster':
 			result.update(util.receive_domaincontroller_master_information(dns, nameserver, address, username, password))
+			set_role_and_check_if_join_will_work(role, address, username, password)
 		# master? basesystem? no domain check necessary
 		return result
