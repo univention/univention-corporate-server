@@ -1,0 +1,10 @@
+[Install]
+WantedBy=multi-user.target
+
+[Unit]
+Description=Convert listener output and run trigger for the App %I
+After=docker.target
+
+[Service]
+Type=simple
+ExecStart=/usr/share/univention-appcenter-listener-converter %i

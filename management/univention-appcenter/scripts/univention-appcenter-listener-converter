@@ -4,7 +4,7 @@
 # Univention App Center
 #  univention-appcenter-listener-converter
 #
-# Copyright 2015-2018 Univention GmbH
+# Copyright 2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -38,31 +38,69 @@ from argparse import ArgumentParser
 from glob import glob
 import time
 import json
+import shutil
+
+from univention.listener.handler_logging import get_logger
 
 from univention.appcenter.app_cache import Apps
-from univention.appcenter.utils import mkdir
-from univention.appcenter.udm import search_objects, get_admin_connection  #get_connection
+from univention.appcenter.utils import mkdir, call_process
+from univention.appcenter.udm import search_objects, get_machine_connection, get_connection
 from univention.appcenter.ucr import ucr_get, ucr_load
 from univention.appcenter.packages import reload_package_manager
 from univention.appcenter.listener import LISTENER_DUMP_DIR
 
 
-_CONNECTIONS = {}
+logger = None
 
 
 def get_app_connection(app):
-	if app.id not in _CONNECTIONS:
-		lo, pos = get_admin_connection()
-		_CONNECTIONS[app.id] = lo, pos
-	return _CONNECTIONS[app.id]
+	if get_app_connection._connection is None:
+		if app.docker:
+			machine_account = ucr_get(app.ucr_hostdn_key)
+			try:
+				from univention.appcenter.docker import Docker
+			except ImportError:
+				return None, None
+			docker = Docker(app, logger)
+			if docker.is_running():
+				machine_password = open(docker.path('/etc/machine.secret')).read()
+			get_app_connection._connection = get_connection(machine_account, machine_password)
+			logger.info('Using App account connection')
+		else:
+			get_app_connection._connection = get_machine_connection()
+			logger.info('Using machine connection')
+	return get_app_connection._connection
+get_app_connection._connection = None
 
 
 def run_trigger(app):
-	dst = os.path.join(app.get_data_dir(), 'listener')
-	for fname in sorted(glob(os.path.join(dst, '*.json'))):
-		print 'Deleting', fname
-		print
-		os.unlink(fname)
+	logger.info('Running trigger')
+	success = True
+	cached_script = app.get_cache_file('listener_trigger')
+	if not os.path.exists(cached_script):
+		logger.info('No trigger defined...')
+		return
+	if app.docker:
+		try:
+			from univention.appcenter.docker import Docker
+		except ImportError:
+			logger.info('Docker App not supported')
+			return
+		docker = Docker(app, logger)
+		script_name = '/tmp/univention-%s.listener_trigger' % app.id
+		open(docker.path(script_name), 'wb')
+		process = docker.execute('chmod', '0700', script_name)
+		shutil.copy(cached_script, docker.path(script_name))
+		process = docker.execute(script_name)
+		success = process.returncode == 0
+	else:
+		os.chmod(cached_script, 0o744)
+		call_process([cached_script], logger=logger)
+	if success:
+		logger.info('Success! Removing consumed files')
+		dst = os.path.join(app.get_data_dir(), 'listener')
+		for fname in sorted(glob(os.path.join(dst, '*.json'))):
+			os.unlink(fname)
 
 
 def convert(app, dumped, filename):
@@ -74,16 +112,17 @@ def convert(app, dumped, filename):
 		attrs = None
 	else:
 		lo, pos = get_app_connection(app)
-		print 'Searching', udm_type, entry_uuid
 		objs = search_objects(udm_type, lo, pos, entryUUID=entry_uuid)
 		if objs:
 			attrs = objs[0].info
 		else:
-			return
-	dst = os.path.join(app.get_data_dir(), 'listener')
-	mkdir(dst)
+			logger.info('EntryUUID %s not found' % entry_uuid)
+			return False
+	dst_dir = os.path.join(app.get_data_dir(), 'listener')
+	mkdir(dst_dir)
 	base = os.path.basename(filename)
-	with open(os.path.join(dst, base), 'wb') as fd:
+	dst = os.path.join(dst_dir, base)
+	with open(dst, 'wb') as fd:
 		attrs = {
 			'id': entry_uuid,
 			'object': attrs,
@@ -91,10 +130,8 @@ def convert(app, dumped, filename):
 			'udm_object_type': udm_type,
 		}
 		json.dump(attrs, fd, sort_keys=True, indent=4)
-	#try:
-	#	os.unlink(filename)
-	#except EnvironmentError as exc:
-	#	pass
+	logger.info('Successfully created %s for the App to consume' % dst)
+	return True
 
 
 def find_and_convert_files(app):
@@ -104,47 +141,58 @@ def find_and_convert_files(app):
 	used_filenames = []
 	obsolete_filenames = []
 	for filename in filenames:
-		print 'Converting', filename
+		logger.info('Converting %s' % filename)
 		dumped = json.load(open(filename))
 		entry_uuid = dumped['entry_uuid']
 		if entry_uuid in used_entry_uuids:
 			obsolete_filename = used_entry_uuids.pop(entry_uuid)
+			logger.info('%s replaces earlier %s' % (filename, obsolete_filename))
 			used_filenames.remove(obsolete_filename)
 			obsolete_filenames.append(obsolete_filename)
 		used_filenames.append(filename)
 		used_entry_uuids[entry_uuid] = filename
 		dumped_objects[filename] = dumped
+	for filename in obsolete_filenames:
+		logger.info('Deleting unused %s' % filename)
+		os.unlink(filename)
 	for filename in used_filenames:
 		dumped = dumped_objects[filename]
-		convert(app, dumped, filename)
-		#os.unlink(filename)
-	for filename in obsolete_filenames:
-		#os.unlink(filename)
-		pass
+		if convert(app, dumped, filename):
+			logger.info('Deleting used %s' % filename)
+			os.unlink(filename)
 	if filenames:
 		return True
 
 
 def main():
 	usage = '%(prog)s'
-	description = '%(prog)s converts files written by the App Center listener integration to files that can be processed be the App itself.'
+	description = '%(prog)s converts files written by the App Center listener integration to files that can be processed be the App itself. Logs to the corresponding listener log file.'
 	parser = ArgumentParser(usage=usage, description=description)
-	parser.add_argument('app', nargs='*', help='App whose listener output should be converted.')
+	parser.add_argument('app', help='App whose listener output should be converted.')
 	parser.add_argument('--once', action='store_true', help='Only do this once and then quit (otherwise will loop forever).')
 	args = parser.parse_args()
-	apps = args.app
+	old_app = None
+	global logger
+	logger = get_logger(args.app)
 	while True:
 		ucr_load()
 		reload_package_manager()
 		interval = int(ucr_get('appcenter/converter/sleep', '1'))
-		if args.app:
-			apps = [Apps().find(app) for app in args.app]
-			apps = [app for app in apps if app.is_installed()]
+		app = Apps().find(args.app)
+		if not app:
+			logger.info('App not found')
+		elif not app.is_installed():
+			logger.info('App not installed')
 		else:
-			apps = Apps().get_all_locally_installed_apps()
-		for app in apps:
-			if find_and_convert_files(app):
-				run_trigger(app)
+			try:
+				if old_app is None or app != old_app:
+					logger.info('Need a new LDAP connection')
+					get_connection._connection = None
+					old_app = app
+				if find_and_convert_files(app):
+					run_trigger(app)
+			except Exception:
+				logger.error('Error in the Listener converter', exc_info=1)
 		if args.once:
 			break
 		time.sleep(interval)

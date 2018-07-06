@@ -282,6 +282,8 @@ class AppListener(AppListener):
 	class Configuration(AppListener.Configuration):
 		name = '%(name)s'
 ''' % {'name': app.id})
+			self._subprocess(['systemctl', 'enable', 'univention-appcenter-listener-converter@%s.service' % app.id])
+			self._subprocess(['systemctl', 'start', 'univention-appcenter-listener-converter@%s.service' % app.id])
 			self.log('Added Listener for %s' % app)
 			if not delay:
 				self._restart_listener([])
@@ -292,6 +294,8 @@ class AppListener(AppListener):
 		listener_meta_file = '/var/lib/univention-directory-listener/handlers/%s' % app.id
 		if os.path.exists(listener_file):
 			os.unlink(listener_file)
+			self._subprocess(['systemctl', 'stop', 'univention-appcenter-listener-converter@%s.service' % app.id])
+			self._subprocess(['systemctl', 'disable', 'univention-appcenter-listener-converter@%s.service' % app.id])
 			self.log('Removed Listener for %s' % app)
 			if not delay:
 				self._restart_listener([listener_meta_file])
