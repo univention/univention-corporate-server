@@ -74,15 +74,14 @@ get_app_connection._connection = None
 
 
 def run_trigger(app):
+	cached_script = app.get_cache_file('listener_trigger')
+	if not os.path.exists(cached_script):
+		return
 	filenames = glob(os.path.join(app.get_data_dir(), 'listener', '*.json'))
 	if not filenames:
 		return
 	logger.info('Running trigger')
 	success = True
-	cached_script = app.get_cache_file('listener_trigger')
-	if not os.path.exists(cached_script):
-		logger.info('No trigger defined...')
-		return
 	if app.docker:
 		try:
 			from univention.appcenter.docker import Docker

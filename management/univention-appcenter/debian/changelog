@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-8) unstable; urgency=medium
+
+  * Bug #47315: Do not spam logs in case of incomplete integration
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 08 Jul 2018 00:23:46 +0200
+
 univention-appcenter (7.0.2-7) unstable; urgency=medium
 
   * Bug #47315: Listener Converter
