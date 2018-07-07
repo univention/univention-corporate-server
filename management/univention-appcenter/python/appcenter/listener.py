@@ -67,16 +67,21 @@ class AppListener(ListenerModuleHandler):
 			'command': command,
 			}
 		with self.as_root():
-			with open(self._get_new_file_name(), 'wb') as fd:
+			filename = self._get_new_file_name()
+			with open(filename, 'wb') as fd:
 				json.dump(attrs, fd, sort_keys=True, indent=4)
+			self.logger.info('Wrote %s for %s %s' % (filename, object_type, entry_uuid))
 
 	def create(self, dn, new):
+		self.logger.info('Creation of %s' % dn)
 		self._write_json(dn, new, 'modify')
 
 	def modify(self, dn, old, new, old_dn):
+		self.logger.info('Modification of %s' % dn)
 		self._write_json(dn, new, 'modify')
 
 	def remove(self, dn, old):
+		self.logger.info('Deletion of %s' % dn)
 		self._write_json(dn, old, 'delete')
 
 	class Configuration(ListenerModuleHandler.Configuration):

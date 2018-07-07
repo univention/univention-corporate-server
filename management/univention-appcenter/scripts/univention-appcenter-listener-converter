@@ -74,6 +74,9 @@ get_app_connection._connection = None
 
 
 def run_trigger(app):
+	filenames = glob(os.path.join(app.get_data_dir(), 'listener', '*.json'))
+	if not filenames:
+		return
 	logger.info('Running trigger')
 	success = True
 	cached_script = app.get_cache_file('listener_trigger')
@@ -90,7 +93,7 @@ def run_trigger(app):
 		script_name = '/tmp/univention-%s.listener_trigger' % app.id
 		open(docker.path(script_name), 'wb')
 		process = docker.execute('chmod', '0700', script_name)
-		shutil.copy(cached_script, docker.path(script_name))
+		shutil.copyfile(cached_script, docker.path(script_name))
 		process = docker.execute(script_name)
 		success = process.returncode == 0
 	else:
@@ -98,8 +101,7 @@ def run_trigger(app):
 		call_process([cached_script], logger=logger)
 	if success:
 		logger.info('Success! Removing consumed files')
-		dst = os.path.join(app.get_data_dir(), 'listener')
-		for fname in sorted(glob(os.path.join(dst, '*.json'))):
+		for fname in filenames:
 			os.unlink(fname)
 
 
@@ -160,8 +162,6 @@ def find_and_convert_files(app):
 		if convert(app, dumped, filename):
 			logger.info('Deleting used %s' % filename)
 			os.unlink(filename)
-	if filenames:
-		return True
 
 
 def main():
@@ -189,8 +189,8 @@ def main():
 					logger.info('Need a new LDAP connection')
 					get_connection._connection = None
 					old_app = app
-				if find_and_convert_files(app):
-					run_trigger(app)
+				find_and_convert_files(app)
+				run_trigger(app)
 			except Exception:
 				logger.error('Error in the Listener converter', exc_info=1)
 		if args.once:
