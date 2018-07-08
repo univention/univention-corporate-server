@@ -500,7 +500,7 @@
 				By default, the OpenLDAP server in UCS does not allow anonymous authentications. For every app a user account is created. The account has
 				read access to the LDAP directory. The username is passed as the environment variable LDAP_HOSTDN. The password is written in the file /etc/machine.secret.
 				The credentials are not changed when an app is upgraded. But they change if an App is reinstalled. 
-            <para>
+            </para>
         </section>
 <!--
         <section id="authentication:saml">
