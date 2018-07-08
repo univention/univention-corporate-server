@@ -269,7 +269,7 @@
 
             <important>
                 <para>
-                    Please add the version tag explicitely. The App Center
+                    Please add the version tag explicitly. The App Center
                     distinguishes different app versions and handles updates
                     accordingly.
                 </para>
@@ -297,7 +297,7 @@
         <section id="create-app-with-docker:defaults">
             <title>Change defaults</title>
             <para>
-                Set the docker entry-point in the section ''Advanced docker settings'' at ''Entrypoint for the Docker App''.
+                Set the docker entry-point in the section <guimenu>Advanced docker settings</guimenu> at <guimenu>Entrypoint for the Docker App</guimenu>.
             </para>
         </section>
 
@@ -340,7 +340,10 @@
     <para>
 		If the app should benefit from the identity management system, the flag <emphasis>Add activation checkbox for App in UCS user management</emphasis>
 		should be activated.
-		This gives administrators the possibility to activate the users for the app. It is also possible to make significantly more complex settings. This is described in TODO.
+		This gives administrators the possibility to activate the users for the app. It is also possible to make significantly more complex settings.
+<!-- TODO
+	Add a link
+-->
     </para>
 
     <section id="provisioning">
@@ -358,7 +361,7 @@
 				and for groups the filter <wordasword>(univentionObjectType=groups/group)</wordasword> can be used.
             </para>
             <para>
-				If the user activation is used (<emphasis>Add activation checkbox for App in UCS user management</emphasis>), the following LDAP filter can be used:
+				If the user activation is used (<guimenu>Add activation checkbox for App in UCS user management</guimenu>), the following LDAP filter can be used:
 				<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>.
 				The string <wordasword>myapp</wordasword> has to be replaced with the <wordasword>appid</wordasword>.
             </para>
@@ -395,7 +398,7 @@
 
             <para>
 				By default, the OpenLDAP server in UCS does not allow anonymous authentications. For every app a user account is created. The account has
-				read access to the LDAP directory. The username is passed as the environment variable LDAP_HOSTDN. The password is written in the file <filename>/etc/machine.secret</filename>.
+				read access to the LDAP directory. The username is passed as the environment variable <option>LDAP_HOSTDN</option>. The password is written in the file <filename>/etc/machine.secret</filename>.
 				The credentials are not changed when an app is upgraded. But they change if an App is reinstalled. 
             </para>
         </section>
@@ -461,7 +464,7 @@
 				and for groups the filter <wordasword>(univentionObjectType=groups/group)</wordasword> can be used.
             </para>
             <para>
-				If the user activation is used (<emphasis>Add activation checkbox for App in UCS user management</emphasis>), the following LDAP filter can be used:
+				If the user activation is used (<guimenu>Add activation checkbox for App in UCS user management</guimenu>), the following LDAP filter can be used:
 				<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>.
 				The string <wordasword>myapp</wordasword> has to be replaced with the <wordasword>appid</wordasword>.
             </para>
@@ -498,7 +501,7 @@
 
             <para>
 				By default, the OpenLDAP server in UCS does not allow anonymous authentications. For every app a user account is created. The account has
-				read access to the LDAP directory. The username is passed as the environment variable LDAP_HOSTDN. The password is written in the file <filename>/etc/machine.secret</filename>.
+				read access to the LDAP directory. The username is passed as the environment variable <option>LDAP_HOSTDN</option>. The password is written in the file <filename>/etc/machine.secret</filename>.
 				The credentials are not changed when an app is upgraded. But they change if an App is reinstalled. 
             </para>
         </section>
