@@ -359,7 +359,7 @@
             </para>
             <para>
 				If the user activation is used (<emphasis>Add activation checkbox for App in UCS user management</emphasis>), the following LDAP filter can be used:
-				<emphasis>(&(univentionObjectType=users/user)(myappActivated=TRUE))</emphasis>.
+				<emphasis>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</emphasis>.
 				The string myapp has to be replaced with the appid.
             </para>
             <para>
@@ -462,7 +462,7 @@
             </para>
             <para>
 				If the user activation is used (<emphasis>Add activation checkbox for App in UCS user management</emphasis>), the following LDAP filter can be used:
-				<emphasis>(&(univentionObjectType=users/user)(myappActivated=TRUE))</emphasis>.
+				<emphasis>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</emphasis>.
 				The string myapp has to be replaced with the appid.
             </para>
             <para>
