@@ -354,13 +354,13 @@
             <title>Automatically via LDAP connection (Pull)</title>
             <para>
 				UCS stores the user and group information in an OpenLDAP based directory. Thus, the default information can be accessed via the LDAP protocol.
-				Objects are identified by an LDAP filter. The following filter can be used to search for users <emphasis>(univentionObjectType=users/user)</emphasis>
-				and for groups the filter <emphasis>(univentionObjectType=groups/group)</emphasis> can be used.
+				Objects are identified by an LDAP filter. The following filter can be used to search for users <wordasword>(univentionObjectType=users/user)</wordasword>
+				and for groups the filter <wordasword>(univentionObjectType=groups/group)</wordasword> can be used.
             </para>
             <para>
 				If the user activation is used (<emphasis>Add activation checkbox for App in UCS user management</emphasis>), the following LDAP filter can be used:
-				<emphasis>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</emphasis>.
-				The string myapp has to be replaced with the appid.
+				<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>.
+				The string <wordasword>myapp</wordasword> has to be replaced with the <wordasword>appid</wordasword>.
             </para>
             <para>
 				The parameters for the LDAP server can be read from the environment variables:
@@ -382,20 +382,20 @@
 					</listitem>
 					<listitem>
 						<simpara>
-    						<option>LDAP_BASE</option>: The base for the whole LDAP database, e.g., dc=mydomain,dc=intranet or o=mydomain.
+    						<option>LDAP_BASE</option>: The base for the whole LDAP database, e.g., <uri>dc=mydomain,dc=intranet</uri> or <uri>o=mydomain</uri>.
 						</simpara>
 					</listitem>
 				</itemizedlist>
 				<important>
 					<para>
-						As a rule, the LDAP basis should not be further restricted. Many environments store users below cn=users, but this is not the case in all environments.
+						As a rule, the LDAP basis should not be further restricted. Many environments store users below <uri>cn=users</uri>, but this is not the case in all environments.
 					</para>
 				</important>
             </para>
 
             <para>
 				By default, the OpenLDAP server in UCS does not allow anonymous authentications. For every app a user account is created. The account has
-				read access to the LDAP directory. The username is passed as the environment variable LDAP_HOSTDN. The password is written in the file /etc/machine.secret.
+				read access to the LDAP directory. The username is passed as the environment variable LDAP_HOSTDN. The password is written in the file <filename>/etc/machine.secret</filename>.
 				The credentials are not changed when an app is upgraded. But they change if an App is reinstalled. 
             </para>
         </section>
@@ -408,7 +408,7 @@
 				then delete the files.
             </para>
             <para>
-				The configuration for these IDM notifcations can be done on the <option>LDAP Listener</option> tab in the App Provider Portal.
+				The configuration for these IDM notifications can be done on the <option>LDAP Listener</option> tab in the App Provider Portal.
 <!-- TODO
 	How to define the script?
 -->
@@ -457,13 +457,13 @@
             <title>LDAP</title>
             <para>
 				UCS stores the user and group information in an OpenLDAP based directory. Thus, the default information can be accessed via the LDAP protocol.
-				Objects are identified by an LDAP filter. The following filter can be used to search for users <emphasis>(univentionObjectType=users/user)</emphasis>
-				and for groups the filter <emphasis>(univentionObjectType=groups/group)</emphasis> can be used.
+				Objects are identified by an LDAP filter. The following filter can be used to search for users <wordasword>(univentionObjectType=users/user)</wordasword>
+				and for groups the filter <wordasword>(univentionObjectType=groups/group)</wordasword> can be used.
             </para>
             <para>
 				If the user activation is used (<emphasis>Add activation checkbox for App in UCS user management</emphasis>), the following LDAP filter can be used:
-				<emphasis>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</emphasis>.
-				The string myapp has to be replaced with the appid.
+				<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>.
+				The string <wordasword>myapp</wordasword> has to be replaced with the <wordasword>appid</wordasword>.
             </para>
             <para>
 				The parameters for the LDAP server can be read from the environment variables:
@@ -485,20 +485,20 @@
 					</listitem>
 					<listitem>
 						<simpara>
-    						<option>LDAP_BASE</option>: The base for the whole LDAP database, e.g., dc=mydomain,dc=intranet or o=mydomain.
+    						<option>LDAP_BASE</option>: The base for the whole LDAP database, e.g., <uri>dc=mydomain,dc=intranet</uri> or <uri>o=mydomain</uri>.
 						</simpara>
 					</listitem>
 				</itemizedlist>
 				<important>
 					<para>
-						As a rule, the LDAP basis should not be further restricted. Many environments store users below cn=users, but this is not the case in all environments.
+						As a rule, the LDAP basis should not be further restricted. Many environments store users below <uri>cn=users</uri>, but this is not the case in all environments.
 					</para>
 				</important>
             </para>
 
             <para>
 				By default, the OpenLDAP server in UCS does not allow anonymous authentications. For every app a user account is created. The account has
-				read access to the LDAP directory. The username is passed as the environment variable LDAP_HOSTDN. The password is written in the file /etc/machine.secret.
+				read access to the LDAP directory. The username is passed as the environment variable LDAP_HOSTDN. The password is written in the file <filename>/etc/machine.secret</filename>.
 				The credentials are not changed when an app is upgraded. But they change if an App is reinstalled. 
             </para>
         </section>
