@@ -332,23 +332,116 @@
     <title>Connection with Identity Management</title>
 
     <para>
+		One of the UCS key features is the integrated identity management (IDM).
+		With this central identity management, users benefit, among other things, from a single login independent of which services or systems they use.
+		It is highly recommended to integrate the app into the identity management system.
+    </para>
+
+    <para>
+		If the app should benefit from the identity management system, the flag <emphasis>Add activation checkbox for App in UCS user management</emphasis>
+		should be activated.
+		This gives administrators the possibility to activate the users for the app. It is also possible to make significantly more complex settings. This is described in TODO.
     </para>
 
     <section id="provisioning">
         <title>Provisioning</title>
 
         <para>
+			There are different ways in which applications can access provisioning information. The following describes a pull and a push-based procedure.
         </para>
 
         <section id="provisioning:pull">
             <title>Automatically via LDAP connection (Pull)</title>
             <para>
+				UCS stores the user and group information in an OpenLDAP based directory. Thus, the default information can be accessed via the LDAP protocol.
+				Objects are identified by an LDAP filter. The following filter can be used to search for users <emphasis>(univentionObjectType=users/user)</emphasis>
+				and for groups the filter <emphasis>(univentionObjectType=groups/group)</emphasis> can be used.
+            </para>
+            <para>
+				If the user activation is used (<emphasis>Add activation checkbox for App in UCS user management</emphasis>), the following LDAP filter can be used:
+				<emphasis>(&(univentionObjectType=users/user)(myappActivated=TRUE))</emphasis>.
+				The string myapp has to be replaced with the appid.
+            </para>
+            <para>
+				The parameters for the LDAP server can be read from the environment variables:
+				<itemizedlist>
+					<listitem>
+						<simpara>
+     						<option>LDAP_SERVER_NAME</option>: The fully-qualified host name of the OpenLDAP server the App may connect to.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+    						<option>LDAP_SERVER_PORT</option>: The port of the OpenLDAP server the App may connect to.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+    						<option>LDAP_SERVER_ADDITION</option>: A list of alternative OpenLDAP servers. These values should be used for failover.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+    						<option>LDAP_BASE</option>: The base for the whole LDAP database, e.g., dc=mydomain,dc=intranet or o=mydomain.
+						</simpara>
+					</listitem>
+				</itemizedlist>
+				<important>
+					<para>
+						As a rule, the LDAP basis should not be further restricted. Many environments store users below cn=users, but this is not the case in all environments.
+					</para>
+				</important>
+            </para>
+
+            <para>
+				By default, the OpenLDAP server in UCS does not allow anonymous authentications. For every app a user account is created. The account has
+				read access to the LDAP directory. The username is passed as the environment variable LDAP_HOSTDN. The password is written in the file /etc/machine.secret.
+				The credentials are not changed when an app is upgraded. But they change if an App is reinstalled. 
             </para>
         </section>
 
         <section id="provisioning:push">
             <title>Automatically via IDM notifications (Push)</title>
             <para>
+				An app can be notified by the IDM system when users or groups are created, modified or deleted. For each change, a file is created in
+				a specific directory. The app can either poll the directory or register a command that is executed when a file is created. The app should
+				then delete the files.
+            </para>
+            <para>
+				The configuration for these IDM notifcations can be done on the <option>LDAP Listener</option> tab in the App Provider Portal.
+<!-- TODO
+	How to define the script?
+-->
+            </para>
+            <para>
+				The files are created in the directory <filename>/var/lib/univention-appcenter/apps/$appid/data/listener/</filename>.
+            </para>
+            <para>
+				All files are JSON with one dictionary and the following content:
+				<itemizedlist>
+					<listitem>
+						<simpara>
+    						<option>entry_uuid</option>: A unique identifier for the object. It does not change even if the object is moved. The script certainly wants to
+							identify objects by this attribute.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+    						<option>dn</option>: The distinguished name of the LDAP object.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+    						<option>type</option>: The type of the object, i.e., "users/user", or "groups/group".
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+    						<option>attributes</option>: A dictionary of the attributes of this object. The content is defined by the UDM (Univention Directory Manager)
+							representation of the object. If it is null instead, the object has been deleted.
+						</simpara>
+					</listitem>
+				</itemizedlist>
             </para>
         </section>
     </section>
@@ -357,26 +450,82 @@
         <title>Authentication</title>
 
         <para>
+			There are different ways in which applications can authenticate the against the UCS identity management system.
         </para>
 
         <section id="authentication:ldap">
             <title>LDAP</title>
             <para>
+				UCS stores the user and group information in an OpenLDAP based directory. Thus, the default information can be accessed via the LDAP protocol.
+				Objects are identified by an LDAP filter. The following filter can be used to search for users <emphasis>(univentionObjectType=users/user)</emphasis>
+				and for groups the filter <emphasis>(univentionObjectType=groups/group)</emphasis> can be used.
             </para>
+            <para>
+				If the user activation is used (<emphasis>Add activation checkbox for App in UCS user management</emphasis>), the following LDAP filter can be used:
+				<emphasis>(&(univentionObjectType=users/user)(myappActivated=TRUE))</emphasis>.
+				The string myapp has to be replaced with the appid.
+            </para>
+            <para>
+				The parameters for the LDAP server can be read from the environment variables:
+				<itemizedlist>
+					<listitem>
+						<simpara>
+     						<option>LDAP_SERVER_NAME</option>: The fully-qualified host name of the OpenLDAP server the App may connect to.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+    						<option>LDAP_SERVER_PORT</option>: The port of the OpenLDAP server the App may connect to.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+    						<option>LDAP_SERVER_ADDITION</option>: A list of alternative OpenLDAP servers. These values should be used for failover.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+    						<option>LDAP_BASE</option>: The base for the whole LDAP database, e.g., dc=mydomain,dc=intranet or o=mydomain.
+						</simpara>
+					</listitem>
+				</itemizedlist>
+				<important>
+					<para>
+						As a rule, the LDAP basis should not be further restricted. Many environments store users below cn=users, but this is not the case in all environments.
+					</para>
+				</important>
+            </para>
+
+            <para>
+				By default, the OpenLDAP server in UCS does not allow anonymous authentications. For every app a user account is created. The account has
+				read access to the LDAP directory. The username is passed as the environment variable LDAP_HOSTDN. The password is written in the file /etc/machine.secret.
+				The credentials are not changed when an app is upgraded. But they change if an App is reinstalled. 
+            <para>
         </section>
+<!--
         <section id="authentication:saml">
             <title>SAML</title>
             <para>
             </para>
         </section>
+-->
         <section id="authentication:kerberos">
             <title>Kerberos</title>
             <para>
-            </para>
-        </section>
-        <section id="authentication:pam">
-            <title>PAM</title>
-            <para>
+				UCS integrates a Kerberos server by default. As usual with Kerberos, the data for the Kerberos configuration can be obtained from the DNS. By default, the
+				DNS domain name is passed through the <option>DOMAINNAME</option> environment variable. The following settings can then be queried via DNS:
+				<itemizedlist>
+					<listitem>
+						<simpara>
+							<emphasis>Kerberos Realm</emphasis>: It an be queried by the TXT record <option>_kerberos.DOMAINNAME</option>
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<emphasis>Kerberos KDC</emphasis>: It an be queried by the SRV records <option>_kerberos._tcp.DOMAINNAME</option> and  <option>_kerberos._udp.DOMAINNAME</option>.
+						</simpara>
+					</listitem>
+				<itemizedlist>
             </para>
         </section>
 <!--
