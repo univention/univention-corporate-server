@@ -525,7 +525,7 @@
 							<emphasis>Kerberos KDC</emphasis>: It an be queried by the SRV records <option>_kerberos._tcp.DOMAINNAME</option> and  <option>_kerberos._udp.DOMAINNAME</option>.
 						</simpara>
 					</listitem>
-				<itemizedlist>
+				</itemizedlist>
             </para>
         </section>
 <!--
