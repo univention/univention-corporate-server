@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: univention-ldap
+fix: 14.0.2-16A~4.3.0.201806291155
+desc: |
+ This update addresses the following issue(s):
+ * New UCR variable "ldap/attributeoptions" to configure attributeoptions in
+   slapd.conf. New default is "entry-" "lang-".
+bug: [47246]
