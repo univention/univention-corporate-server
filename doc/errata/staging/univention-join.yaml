@@ -7,4 +7,6 @@ fix: 10.0.0-15A~4.3.0.201806291620
 desc: |
  This update addresses the following issue(s):
  * Improve error messages of join failures.
-bug: [42366]
+ * Add option to the univention-join tool for checking problems without altering
+   the system.
+bug: [42366,42022]
