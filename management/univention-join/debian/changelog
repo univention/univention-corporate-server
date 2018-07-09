@@ -1,3 +1,9 @@
+univention-join (10.0.0-16) unstable; urgency=medium
+
+  * Bug #42022: Add -checkPrerequisites mode for univention-join
+
+ -- Richard Ulmer <ulmer@univention.de>  Mon, 09 Jul 2018 14:58:25 +0200
+
 univention-join (10.0.0-15) unstable; urgency=medium
 
   * Bug #42366: Repair logging of failed join scripts and adapt to changes in
