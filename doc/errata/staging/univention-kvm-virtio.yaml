@@ -7,4 +7,4 @@ fix: 7.0.0-3A~4.3.0.201807091354
 desc: |
  This update addresses the following issue(s):
  * Update to virtio driver 0.1.141-1
-bug: [47112]
+bug: [47321]
