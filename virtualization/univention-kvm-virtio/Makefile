@@ -29,8 +29,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-SOURCE := virtio-win-0.1.126.iso
-TARGET := KVM_Windows_drivers_(virtio_1.1.126).iso
+SOURCE := virtio-win-0.1.141.iso
+TARGET := KVM_Windows_drivers_(virtio_1.1.141).iso
 
 empty :=
 space := $(empty) $(empty)
@@ -47,6 +47,6 @@ install: $(SOURCE)
 .PHONY: get-orig-source
 get-orig-source: $(SOURCE)
 virtio-win-%.iso:
-	wget -O "$@" "https://updates.software-univention.de/download/large-build-files/virtio/$@"
-	echo "b57810f33746ed90420f12f6267903f595ddd02aecb8d3de58cd2d5c0b39ec2f31e0352c2548344e629827616bf2d3c284e1ff60d2132fdde39f2086b36af2e6  $@" | sha512sum -c
+	wget -O "$@" "http://updates.software-univention.de/download/large-build-files/virtio/$@"
+	echo "909f4437b69cba1edfa857326986eb8c4b58835169d70117a5ff57bfa4ebc48f74d6ffa05de50732fb60551166544160fa3b4ec5c59cfb98daeb789902a9b119  $@" | sha512sum -c
 	#wget -O "$@" "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-$*-1/$@"
