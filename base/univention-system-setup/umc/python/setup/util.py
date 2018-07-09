@@ -49,7 +49,6 @@ import psutil
 import socket
 import traceback
 from contextlib import contextmanager
-from distutils.version import LooseVersion
 
 import dns.resolver
 import dns.reversename
@@ -1133,74 +1132,6 @@ def get_random_nameserver(country):
 	)
 
 
-def receive_domaincontroller_master_information(dns, nameserver, address, username, password):
-	result = {}
-	result['domain'] = check_credentials_nonmaster(dns, nameserver, address, username, password)
-	check_domain_has_activated_license(address, username, password)
-	check_domain_is_higher_or_equal_version(address, username, password)
-	result['install_memberof_overlay'] = check_memberof_overlay_is_installed(address, username, password)
-	return result
-
-
-def check_memberof_overlay_is_installed(address, username, password):
-	with _temporary_password_file(password) as password_file:
-		try:
-			return ucr.is_true(value=subprocess.check_output([
-				'univention-ssh',
-				password_file,
-				'%s@%s' % (username, address),
-				'/usr/sbin/univention-config-registry',
-				'get',
-				'ldap/overlay/memberof'
-			]).strip())
-		except subprocess.CalledProcessError as exc:
-			MODULE.error('Could not query DC Master for memberof overlay: %s' % (exc,))
-	return False
-
-
-def check_domain_has_activated_license(address, username, password):
-	appliance_name = ucr.get("umc/web/appliance/name")
-	if not appliance_name:
-		return  # the license must only be checked in an appliance scenario
-
-	valid_license = True
-	error = None
-	with _temporary_password_file(password) as password_file:
-		try:
-			license_uuid = subprocess.check_output([
-				'univention-ssh',
-				password_file,
-				'%s@%s' % (username, address),
-				'/usr/sbin/ucr',
-				'get',
-				'uuid/license'
-			], stderr=subprocess.STDOUT).rstrip()
-		except subprocess.CalledProcessError as exc:
-			valid_license = False
-			error = exc.output
-		else:
-			valid_license = len(license_uuid) == 36
-			error = _('The license %s is not valid.') % (license_uuid,)
-
-	if not valid_license:
-		raise UMC_Error(
-			_('To install the {appliance_name} appliance it is necessary to have an activated UCS license on the master domain controller.').format(appliance_name=appliance_name) + ' ' +
-			_('During the check of the license status the following error occurred:\n{error}''').format(error=error)
-		)
-
-
-def check_domain_is_higher_or_equal_version(address, username, password):
-	with _temporary_password_file(password) as password_file:
-		try:
-			master_ucs_version = subprocess.check_output(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo $(/usr/sbin/ucr get version/version)-$(/usr/sbin/ucr get version/patchlevel)'], stderr=subprocess.STDOUT).rstrip()
-		except subprocess.CalledProcessError:
-			MODULE.error('Failed to retrieve UCS version: %s' % (traceback.format_exc()))
-			return
-		nonmaster_ucs_version = '{}-{}'.format(ucr.get('version/version'), ucr.get('version/patchlevel'))
-		if LooseVersion(nonmaster_ucs_version) > LooseVersion(master_ucs_version):
-			raise UMC_Error(_('The UCS version of the domain you are trying to join ({}) is lower than the local one ({}). This constellation is not supported.').format(master_ucs_version, nonmaster_ucs_version))
-
-
 def check_credentials_ad(nameserver, address, username, password):
 	try:
 		ad_domain_info = lookup_adds_dc(address, ucr={'nameserver1': nameserver})
@@ -1218,17 +1149,3 @@ def check_credentials_ad(nameserver, address, username, password):
 		raise UMC_Error(_("The given user is not member of the Domain Admins group in Active Directory. This is a requirement for the Active Directory domain join."))
 	else:
 		return ad_domain_info['Domain']
-
-
-def check_credentials_nonmaster(dns, nameserver, address, username, password):
-	if dns:
-		domain = get_ucs_domain(nameserver)
-	else:
-		domain = '.'.join(address.split('.')[1:])
-	if not domain:
-		# Not checked... no UCS domain!
-		raise UMC_Error(_('No UCS DC Master could be found at the address.'))
-	with _temporary_password_file(password) as password_file:
-		if subprocess.call(['univention-ssh', password_file, '%s@%s' % (username, address), '/bin/true']):
-			raise UMC_Error(_('The connection to the UCS DC Master was refused. Please recheck the password.'))
-		return domain

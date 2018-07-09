@@ -68,9 +68,10 @@ except ImportError as e:
 	MODULE.warn('Ignoring import error: %s' % e)
 
 
-import util
-from checks.univention_join import set_role_and_check_if_join_will_work
 from . import network
+from .checks.univention_join import receive_domaincontroller_master_information
+from .checks.univention_join import set_role_and_check_if_join_will_work
+import util
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -785,10 +786,10 @@ class Instance(Base, ProgressMixin):
 					# if we found a _domaincontroller_master._tcp SRV record the system will be a DC Backup/Slave/Member.
 					# We need to check the credentials of this system, too, so we ensure that the System is reachable via SSH.
 					# Otherwise the join will fail with strange error like "ping to ..." failed.
-					result.update(util.receive_domaincontroller_master_information(False, nameserver, ucs_master_fqdn, username, password))
+					result.update(receive_domaincontroller_master_information(False, nameserver, ucs_master_fqdn, username, password))
 					set_role_and_check_if_join_will_work(role, ucs_master_fqdn, username, password)
 		elif domain_check_role == 'nonmaster':
-			result.update(util.receive_domaincontroller_master_information(dns, nameserver, address, username, password))
+			result.update(receive_domaincontroller_master_information(dns, nameserver, address, username, password))
 			set_role_and_check_if_join_will_work(role, address, username, password)
 		# master? basesystem? no domain check necessary
 		return result
