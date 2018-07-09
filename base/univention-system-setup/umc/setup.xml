@@ -42,7 +42,7 @@
 		<command name="setup/find_city" function="find_city"/>
 		<command name="setup/apps/query" function="apps_query"/>
 		<command name="setup/check/domain" function="check_domain"/>
-		<command name="setup/check/credentials" function="check_credentials"/>
+		<command name="setup/check/join_info" function="check_domain_join_information"/>
 		<command name="setup/set_locale" function="reset_locale"/>
 		<command name="setup/net/progress" function="progress"/>
 	</module>

@@ -68,8 +68,10 @@ except ImportError as e:
 	MODULE.warn('Ignoring import error: %s' % e)
 
 
-import util
 from . import network
+from .checks.univention_join import receive_domaincontroller_master_information
+from .checks.univention_join import set_role_and_check_if_join_will_work
+import util
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -91,7 +93,6 @@ class RequestTimeout(UMC_Error):
 
 
 class Instance(Base, ProgressMixin):
-
 	def __init__(self, *args, **kwargs):
 		Base.__init__(self, *args, **kwargs)
 		ProgressMixin.__init__(self)
@@ -774,9 +775,9 @@ class Instance(Base, ProgressMixin):
 		return result
 
 	@simple_response
-	def check_credentials(self, role, dns, nameserver, address, username, password):
+	def check_domain_join_information(self, domain_check_role, role, dns, nameserver, address, username, password):
 		result = {}
-		if role == 'ad':
+		if domain_check_role == 'ad':
 			domain = util.check_credentials_ad(nameserver, address, username, password)
 			result['domain'] = domain
 			if dns:  # "dns" means we don't want to replace the existing DC Master
@@ -785,8 +786,10 @@ class Instance(Base, ProgressMixin):
 					# if we found a _domaincontroller_master._tcp SRV record the system will be a DC Backup/Slave/Member.
 					# We need to check the credentials of this system, too, so we ensure that the System is reachable via SSH.
 					# Otherwise the join will fail with strange error like "ping to ..." failed.
-					result.update(util.receive_domaincontroller_master_information(False, nameserver, ucs_master_fqdn, username, password))
-		elif role == 'nonmaster':
-			result.update(util.receive_domaincontroller_master_information(dns, nameserver, address, username, password))
+					result.update(receive_domaincontroller_master_information(False, nameserver, ucs_master_fqdn, username, password))
+					set_role_and_check_if_join_will_work(role, ucs_master_fqdn, username, password)
+		elif domain_check_role == 'nonmaster':
+			result.update(receive_domaincontroller_master_information(dns, nameserver, address, username, password))
+			set_role_and_check_if_join_will_work(role, address, username, password)
 		# master? basesystem? no domain check necessary
 		return result

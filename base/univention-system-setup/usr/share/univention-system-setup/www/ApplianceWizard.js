@@ -2461,10 +2461,13 @@ define([
 			}));
 		},
 
-		_checkCredentials: function() {
-			var params = {role: this._getRoleForDomainChecks(true)};
+		_checkDomainJoinInformation: function() {
+			var params = {
+				domain_check_role: this._getRoleForDomainChecks(true),
+				role: this.getValues()['server/role']
+			};
 			lang.mixin(params, this._getCredentials());
-			return this.umcpCommand('setup/check/credentials', params).then(function(data) {
+			return this.umcpCommand('setup/check/join_info', params).then(function(data) {
 				return data.result;
 			});
 		},
@@ -2732,22 +2735,34 @@ define([
 			}
 
 			if (pageName == 'credentials-ad' || pageName == 'credentials-nonmaster') {
-				return this.standbyDuring(this._checkCredentials().then(lang.hitch(this, function(result) {
+				var acceptCredentials = function(result) {
 					this._domainName = result.domain;
 					this._install_memberof_overlay = result.install_memberof_overlay;
-				}), lang.hitch(this, function() {
-					// in case of errors don't switch the page
+				};
+
+				var setNextPageToSamePage = function() {
 					nextPage = pageName;
 					return nextPage;
-				})).then(lang.hitch(this, function() {
+				};
+
+				var resetCredentialPageAndContinue = function() {
 					if (nextPage == 'credentials-nonmaster') {
 						this.getWidget('credentials-nonmaster', '_ucs_password').reset();
 					} else if (nextPage == 'credentials-ad') {
 						this.getWidget('credentials-ad', 'ad/password').reset();
 					}
-
 					return this._forcePageTemporarily(nextPage);
-				})));
+				};
+
+				var promise = this.standbyDuring(
+					this._checkDomainJoinInformation().then(
+						lang.hitch(this, acceptCredentials),  // callback
+						lang.hitch(this, setNextPageToSamePage)  // errback
+					).then(
+						lang.hitch(this, resetCredentialPageAndContinue)  // callback; will always be called
+					)
+				);
+				return promise;
 			}
 
 			if (nextPage == 'software') {
