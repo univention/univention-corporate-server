@@ -1,8 +1,8 @@
-univention-kvm-virtio (7.0.0-2) unstable; urgency=medium
+univention-kvm-virtio (7.0.0-3) unstable; urgency=medium
 
   * Bug #47112: Update to virtio driver 0.1.141-1
 
- -- Erik Damrose <damrose@univention.de>  Mon, 09 Jul 2018 13:34:47 +0200
+ -- Erik Damrose <damrose@univention.de>  Mon, 09 Jul 2018 13:51:53 +0200
 
 univention-kvm-virtio (7.0.0-1) unstable; urgency=medium
 
