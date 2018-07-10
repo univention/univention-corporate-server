@@ -3,9 +3,11 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-ldap
-fix: 14.0.2-16A~4.3.0.201806291155
+fix: 14.0.2-17A~4.3.0.201807101245
 desc: |
  This update addresses the following issue(s):
+ * Some debug message levels in LDAP overlays have been adjusted
+   to more sensible values.
  * New UCR variable "ldap/attributeoptions" to configure attributeoptions in
    slapd.conf. New default is "entry-" "lang-".
-bug: [47246]
+bug: [47196, 47246]
