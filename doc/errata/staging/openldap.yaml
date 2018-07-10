@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: openldap
+fix: 2.4.45+dfsg-1~bpo9+1A~4.3.0.201807101226
+desc: |
+ This update addresses the following issue(s):
+ * Some debug message levels in LDAP overlays have been adjusted
+   to more sensible values.
+bug: [47196]
