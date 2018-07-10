@@ -101,7 +101,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.3-5; 
 fi
 
 ucr set \
-	ldap/debug/level?0 \
+	ldap/debug/level?none \
 	slapd/port?"7389,389" \
 	slapd/port/ldaps?"7636,636" \
 	ldap/database/type?mdb \
@@ -188,6 +188,14 @@ if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domainc
 	/usr/lib/univention-install/01univention-ldap-server-init.inst || true
 	/usr/lib/univention-install/10univention-ldap-server.inst || true
 	[ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 11.0.12-5 && upgrade_license || :
+fi
+
+if [ "$1" = "configure" ]; then
+	if dpkg --compare-versions "$2" lt-nl 14.0.2-16; then
+		if [ "$ldap_debug_level" = 0 ]; then
+			ucr set ldap/debug/level=none
+		fi
+	fi
 fi
 
 ## after this line slapd.conf is expected to be updated properly and slapd may restart

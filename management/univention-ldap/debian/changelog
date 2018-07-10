@@ -1,3 +1,10 @@
+univention-ldap (14.0.2-17) unstable; urgency=medium
+
+  * Bug #47196: Adjust default ldap/debug/level from 0 to "none"
+    to log critical errors
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 Jul 2018 12:41:10 +0200
+
 univention-ldap (14.0.2-16) unstable; urgency=medium
 
   * Bug #47246: added ldap/attributeoptions for slapd.conf
