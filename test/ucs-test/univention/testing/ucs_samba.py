@@ -17,6 +17,10 @@ CONNECTOR_WAIT_SLEEP = 5
 CONNECTOR_WAIT_TIME = CONNECTOR_WAIT_SLEEP * CONNECTOR_WAIT_INTERVAL
 
 
+class DRSReplicationFailed(Exception):
+    pass
+
+
 @contextlib.contextmanager
 def password_policy(complexity=False, minimum_password_age=0, maximum_password_age=3):
     if not package_installed('univention-samba4'):
@@ -51,7 +55,8 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 
     samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp)
     controls = ["domain_scope:0"]
-    base = samdb.domain_dn()
+    if base is None:
+        base = samdb.domain_dn()
     if not base or base == 'None':
         if verbose:
             print 'wait_for_drs_replication(): skip, no samba domain found'
@@ -73,6 +78,7 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
         print '.',
         time.sleep(delta_t)
         t = time.time()
+    raise DRSReplicationFailed("DRS replication for filter: '%s' failed due to timeout after %d sec." % (ldap_filter, t - t0))
 
 
 def get_available_s4connector_dc():

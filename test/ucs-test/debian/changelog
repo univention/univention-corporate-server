@@ -1,3 +1,10 @@
+ucs-test (8.0.28-148) unstable; urgency=medium
+
+  * Bug #47345: add timeout exception to wait_for_drs_replication, repair base
+    keyword argument
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 11 Jul 2018 20:41:50 +0200
+
 ucs-test (8.0.28-147) unstable; urgency=medium
 
   * Bug #47306: Fix fuzzy entry
