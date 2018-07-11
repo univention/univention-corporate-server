@@ -9,3 +9,5 @@ desc: |
  * The bind9 service is now a native systemd service and does not use
    runsv anymore.
 bug: [43689]
+erratum: 146
+announced: 2018-07-11
