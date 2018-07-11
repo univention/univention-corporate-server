@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Enable bad password lockout policy in UMC
 bug: [46978]
+erratum: 147
+announced: 2018-07-11
