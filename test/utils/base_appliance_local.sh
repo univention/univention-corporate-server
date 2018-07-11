@@ -46,7 +46,7 @@ _kvm_image () {
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.kv"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE}.kv : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${TMP_KVM_IMAGE}.kv ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/$KVM_IMAGE"
-	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${KVM_IMAGE} > ${KVM_IMAGE}.md5 && chmod 644 ${KVM_IMAGE}*"
+	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${KVM_IMAGE} > ${KVM_IMAGE}.md5 && sha256sum ${KVM_IMAGE} > ${KVM_IMAGE}.sha256 && chmod 644 ${KVM_IMAGE}*"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.kv"
 }
 
@@ -59,7 +59,7 @@ _vmplayer_image () {
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE}.vm : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --vmware -s ${TMP_KVM_IMAGE}.vm -f ${VMPLAYER_IMAGE%-*}"
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${VMPLAYER_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${VMPLAYER_IMAGE}"
-	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${VMPLAYER_IMAGE} > ${VMPLAYER_IMAGE}.md5 && chmod 644 ${VMPLAYER_IMAGE}*"
+	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${VMPLAYER_IMAGE} > ${VMPLAYER_IMAGE}.md5 && sha256sum ${VMPLAYER_IMAGE} > ${VMPLAYER_IMAGE}.sha256 && chmod 644 ${VMPLAYER_IMAGE}*"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${VMPLAYER_IMAGE}"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.vm"
 }
@@ -75,7 +75,7 @@ _virtualbox_image () {
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE}.vb : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --ova-virtualbox -s ${TMP_KVM_IMAGE}.vb -f ${VBOX_IMAGE%-*}"
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${VBOX_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${VBOX_IMAGE}"
-	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${VBOX_IMAGE} > ${VBOX_IMAGE}.md5 && chmod 644  ${VBOX_IMAGE}*"
+	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${VBOX_IMAGE} > ${VBOX_IMAGE}.md5 && sha256sum ${VBOX_IMAGE} > ${VBOX_IMAGE}.sha256 && chmod 644  ${VBOX_IMAGE}*"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${VBOX_IMAGE}"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.vb"
 }
@@ -89,7 +89,7 @@ _esxi () {
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "guestfish add ${TMP_KVM_IMAGE}.es : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\""
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --ova-esxi -s ${TMP_KVM_IMAGE}.es -f ${ESX_IMAGE%-*}"
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${ESX_IMAGE} ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${ESX_IMAGE}"
-	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${ESX_IMAGE} > ${ESX_IMAGE}.md5 && chmod 644  ${ESX_IMAGE}*"
+	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${ESX_IMAGE} > ${ESX_IMAGE}.md5 && sha256sum ${ESX_IMAGE} > ${ESX_IMAGE}.sha256 && chmod 644  ${ESX_IMAGE}*"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${ESX_IMAGE}"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.es"
 }
@@ -104,7 +104,7 @@ _hyperv_image () {
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "qemu-img convert -p -o subformat=dynamic -O vhdx ${TMP_KVM_IMAGE}.hv ${HYPERV_IMAGE_BASE}.vhdx"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "zip ${HYPERV_IMAGE_BASE}.zip ${HYPERV_IMAGE_BASE}.vhdx"
 	_scp ${KVM_USER}@${IMAGE_SERVER}:${HYPERV_IMAGE_BASE}.zip ${KVM_USER}@${APPS_SERVER}:"$APPS_BASE/${HYPERV_IMAGE_BASE}.zip"
-	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${HYPERV_IMAGE_BASE}.zip > ${HYPERV_IMAGE_BASE}.zip.md5 && chmod 644 ${HYPERV_IMAGE_BASE}*"
+	_ssh -l "$KVM_USER" "$APPS_SERVER" "cd $APPS_BASE && md5sum ${HYPERV_IMAGE_BASE}.zip > ${HYPERV_IMAGE_BASE}.zip.md5 && sha256sum ${HYPERV_IMAGE_BASE}.zip > ${HYPERV_IMAGE_BASE}.zip.sha256 && chmod 644 ${HYPERV_IMAGE_BASE}*"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${HYPERV_IMAGE_BASE}.vhdx ${HYPERV_IMAGE_BASE}.zip"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -f ${TMP_KVM_IMAGE}.hv"
 }
