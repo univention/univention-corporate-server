@@ -2549,12 +2549,18 @@ define([
 					var devicesStr = array.map(fallbackDevices, function(idev) {
 						return lang.replace('<li><b>{name}:</b> {ip}</li>', idev);
 					}).join('\n');
-					var msg = _('<p>One or more network interfaces could not obtain an IP address via DHCP. These interfaces will use automatic generated private addresses instead (APIPA).</p> <ul> %s </ul> <p>Please adjust your DHCP settings or confirm use of private address(es).</p>', devicesStr);
+					var msg = _('<p>One or more network interfaces could not obtain an IP address via DHCP. ' +
+						'These interfaces will use automatic generated private addresses instead (APIPA).</p> ' +
+						'<ul> %s </ul> <p>Please adjust your DHCP settings or confirm use of private address(es).</p>',
+						devicesStr
+					);
 					var buttonLabel = _('Continue with 169.254.*.* addresse(s)');
 					var allDevices = this._getNetworkDevices();
 					if (fallbackDevices.length === allDevices.length) {
-						msg = _('<p>With the current settings <b> no </b> internet access is available.</p><p>Because of this some functions like the App Center or software-updates will not be accessible</p>') + msg;
-						buttonLabel =  _('Continue without internet access');
+						msg = _('<p>With the current settings <b> no </b> internet access is available.</p>' +
+							'<p>Because of this some functions like the App Center or software-updates will not be accessible</p>'
+						) + msg;
+						buttonLabel = _('Continue without internet access');
 					}
 					return dialog.confirm(msg, [{
 						label: _('Cancel'),
@@ -2572,9 +2578,12 @@ define([
 						return page;
 					}
 
-					return dialog.confirm(_('No gateway has been specified and thus no access to the internet is possible. As UCS requires internet access for its functionality, certain services (e.g., software updates, installation of further software components) will not be able to operate as expected.'), [{
+					return dialog.confirm(_('No gateway has been specified and thus no access to the internet is ' +
+						'possible. As UCS requires internet access for its functionality, certain services (e.g., ' +
+						'software updates, installation of further software components) will not be able to operate as expected.'
+					), [{
 						label: _('Adjust settings'),
-						name: 'network'
+						name: pageName
 					}, {
 						label: _('Continue without internet access'),
 						'default': true,
