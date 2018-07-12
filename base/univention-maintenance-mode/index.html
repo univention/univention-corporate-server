@@ -3,35 +3,94 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
 		<style>
 			body {
-				background-color: #e9ecef;
+				background-color: #f2f2f2;
+				font-family: 'Roboto', sans-serif;
+				font-size: 14px;
+				color: #282828;
 			}
 			.container {
-				padding: 10ex 10em;
-				margin: 0;
+				padding: 5ex 5em;
+				margin: 10%;
+				margin-top: 100px;
+				background-color: #ffffff;
+				box-shadow: 0px 1px 3px rgba(0,0,0,0.25);
 			}
 			h1 {
+				font-size: 24px;
+				color: #282828;
+				font-weight: normal;
+				line-height: 1em;
 			}
+
 			.progress-container {
-				background-color: #ffffff;
+				background-color: #e0e0e0;
 				border-style: hidden;
 				border-radius: 10px;
-				padding: 3ex 3em;
+				margin: 30px 5em;
+				margin-bottom: 0px;
 			}
 			progress {
 				width: 100%;
+				height: 20px;
+				-webkit-appearance: none;
+				-moz-appearance: none;
+				appearance: none;
+
+				border: none;
+				border-radius: 10px;
+
+				color: #7AB51D;
+			}
+
+			progress::-webkit-progress-bar {
+				border-radius: 10px;
+				background-color: #e0e0e0;
+			}
+			progress::-webkit-progress-value {
+				border-radius: 10px;
+				background-color: #7AB51D;
+			}
+			progress:not([value])::-webkit-progress-bar {
+				background: url(progressBarAnim.gif);
+				background-repeat: repeat;
+			}
+
+			progress::-moz-progress-bar {
+				border-radius: 10px;
+				background-color: #7AB51D;
+			}
+			progress:not([value])::-moz-progress-bar {
+				background-image: url(progressBarAnim.gif);
+				background-repeat: repeat;
+			}
+
+			.univentionLogo {
+				display: inline-block;
+				vertical-align: top;
+				/*background-image: url(images/univention.svg);*/
+				background-image: url(/univention/js/dijit/themes/umc/images/univention.svg);
+				background-repeat: no-repeat;
+				background-position: center center;
+				height: 48px;
+				width: 160px;
+				margin-left: 5px;
+				margin-right: 22px;
+				margin-top: -100px;
+				float: right;
 			}
 		</style>
 
     <title>UCS maintenance</title>
   </head>
   <body>
+	<div class="univentionLogo"></div>
     <div class="container">
       <h1 id="headline">This system is in maintenance mode</h1>
-      <p id="explanation">Univention Corporate Server is currently updating. Depending on the release, this may take some time. In /var/log/univention/updater.log, you will find more detailed information on the progress of the update. This page will reload once the update finished.</p>
-      <hr>
+      <p id="explanation">Univention Corporate Server is currently updating. Depending on the release, this may take some time. In /var/log/univention/updater.log, you will find more detailed information on the progress of the update. This page will reload once the update is finished.</p>
 			<div class="progress-container">
 				<progress id="progressbar" max="100">
 				</progress>
@@ -120,7 +179,7 @@
 						}
 					}
 				};
-				xhr.send(null);
+				//xhr.send(null);
 			};
 			poll = function() {
 				checkForReload();
