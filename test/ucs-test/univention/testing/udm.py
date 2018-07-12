@@ -410,7 +410,8 @@ class UCSTestUDM(object):
 
         return (self.create_object('users/user', wait_for_replication, check_for_drs_replication, **attr), attr['username'])
 
-    def create_ldap_user(self, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+    def create_ldap_user(self, wait_for_replication=True, check_for_drs_replication=False, **kwargs):  # :pylint: disable-msg=W0613
+        # check_for_drs_replication=False -> ldap users are not replicated to s4
         attr = self._set_module_default_attr(kwargs, (('position', 'cn=users,%s' % self.LDAP_BASE),
                                                       ('password', 'univention'),
                                                       ('username', uts.random_username()),
