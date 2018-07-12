@@ -2545,7 +2545,13 @@ define([
 
 			// check dhcp config
 			if (pageName == 'network') {
-				var _linkLocalAddressesWarning = lang.hitch(this, function(fallbackDevices) {
+				var _throwErrorIfNextWasCanceled = lang.hitch(this, function(selectedNextPage){
+					if (selectedNextPage == pageName)
+						throw selectedNextPage;
+					return selectedNextPage;
+				});
+
+				var _getConfirmationToContinueWithLinkLocalAdresses = lang.hitch(this, function(fallbackDevices) {
 					var devicesStr = array.map(fallbackDevices, function(idev) {
 						return lang.replace('<li><b>{name}:</b> {ip}</li>', idev);
 					}).join('\n');
@@ -2569,15 +2575,12 @@ define([
 						label: buttonLabel,
 						'default': true,
 						name: nextPage
-					}], _('Warning'));
+					}], _('Warning')).then(
+						_throwErrorIfNextWasCanceled
+					);
 				});
 
-				var _noGatewayWarning = lang.hitch(this, function(page) {
-					if (page == 'network') {
-						// the prior warning has been canceled
-						return page;
-					}
-
+				var _getConfirmationToContinueWithoutGateway = lang.hitch(this, function(selectedNextPage) {
 					return dialog.confirm(_('No gateway has been specified and thus no access to the internet is ' +
 						'possible. As UCS requires internet access for its functionality, certain services (e.g., ' +
 						'software updates, installation of further software components) will not be able to operate as expected.'
@@ -2588,20 +2591,18 @@ define([
 						label: _('Continue without internet access'),
 						'default': true,
 						name: nextPage
-					}], _('Warning'));
+					}], _('Warning')).then(
+						_throwErrorIfNextWasCanceled
+					);
 				});
 
-				var _applyNetworkSettings = lang.hitch(this, function(page) {
-					if (page == 'network') {
-						// cancelled prior warning
-						return page;
-					}
 
+				var _applyNetworkSettings = lang.hitch(this, function(selectedNextPage) {
 					// need network settings to be applied?
 					var networkValues = this.getPage('network')._form.get('value');
 					var haveValuesChanged = !tools.isEqual(networkValues, this._lastAppliedNetworkValues);
 					if (!haveValuesChanged) {
-						return page;
+						return selectedNextPage;
 					}
 					this._lastAppliedNetworkValues = networkValues;
 
@@ -2621,26 +2622,32 @@ define([
 							messageInterval: 400
 						});
 					}), 2000).then(function() {
-						return page;
+						return selectedNextPage;
 					});
 
 					this.standbyDuring(requestDeferred);
 					return requestDeferred;
 				});
 
-				// check fallback devices
+				var _returnCurrentPage = lang.hitch(this, function(selectedNextPage) {
+					return pageName;
+				});
+
 				var fallbackDevices = this._getLinkLocalDHCPAddresses();
 				if (fallbackDevices.length) {
-					deferred = _linkLocalAddressesWarning(fallbackDevices);
+					deferred = _getConfirmationToContinueWithLinkLocalAdresses(fallbackDevices);
 				}
 
-				// check gateway
 				var gateway = this.getWidget('network', 'gateway').get('value');
 				if (!gateway) {
-					deferred = deferred.then(_noGatewayWarning);
+					deferred = deferred.then(_getConfirmationToContinueWithoutGateway);
 				}
 
-				deferred = deferred.then(_applyNetworkSettings);
+				deferred = deferred.then(
+					_applyNetworkSettings,  // callback
+					_returnCurrentPage  // errback; some previous dialog was canceled
+				);
+
 				// apply network settings
 				if (this.isPageVisible('role')) {
 					return deferred;
