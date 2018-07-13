@@ -1,3 +1,9 @@
+univention-system-setup (11.0.5-6) unstable; urgency=medium
+
+  * Bug #47105: Check if repository servers are reachable during system setup
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 13 Jul 2018 14:45:03 +0200
+
 univention-system-setup (11.0.5-5) unstable; urgency=medium
 
   * Bug #42022: Test if univention-join will work in system setup
