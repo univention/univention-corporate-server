@@ -2545,16 +2545,28 @@ define([
 
 			// check dhcp config
 			if (pageName == 'network') {
-				var _linkLocalAddressesWarning = lang.hitch(this, function(fallbackDevices) {
+				var _throwErrorIfNextWasCanceled = lang.hitch(this, function(selectedNextPage){
+					if (selectedNextPage == pageName)
+						throw selectedNextPage;
+					return selectedNextPage;
+				});
+
+				var _getConfirmationToContinueWithLinkLocalAdresses = lang.hitch(this, function(fallbackDevices) {
 					var devicesStr = array.map(fallbackDevices, function(idev) {
 						return lang.replace('<li><b>{name}:</b> {ip}</li>', idev);
 					}).join('\n');
-					var msg = _('<p>One or more network interfaces could not obtain an IP address via DHCP. These interfaces will use automatic generated private addresses instead (APIPA).</p> <ul> %s </ul> <p>Please adjust your DHCP settings or confirm use of private address(es).</p>', devicesStr);
+					var msg = _('<p>One or more network interfaces could not obtain an IP address via DHCP. ' +
+						'These interfaces will use automatic generated private addresses instead (APIPA).</p> ' +
+						'<ul> %s </ul> <p>Please adjust your DHCP settings or confirm use of private address(es).</p>',
+						devicesStr
+					);
 					var buttonLabel = _('Continue with 169.254.*.* addresse(s)');
 					var allDevices = this._getNetworkDevices();
 					if (fallbackDevices.length === allDevices.length) {
-						msg = _('<p>With the current settings <b> no </b> internet access is available.</p><p>Because of this some functions like the App Center or software-updates will not be accessible</p>') + msg;
-						buttonLabel =  _('Continue without internet access');
+						msg = _('<p>With the current settings <b> no </b> internet access is available.</p>' +
+							'<p>Because of this some functions like the App Center or software-updates will not be accessible</p>'
+						) + msg;
+						buttonLabel = _('Continue without internet access');
 					}
 					return dialog.confirm(msg, [{
 						label: _('Cancel'),
@@ -2563,36 +2575,58 @@ define([
 						label: buttonLabel,
 						'default': true,
 						name: nextPage
-					}], _('Warning'));
+					}], _('Warning')).then(
+						_throwErrorIfNextWasCanceled
+					);
 				});
 
-				var _noGatewayWarning = lang.hitch(this, function(page) {
-					if (page == 'network') {
-						// the prior warning has been canceled
-						return page;
-					}
-
-					return dialog.confirm(_('No gateway has been specified and thus no access to the internet is possible. As UCS requires internet access for its functionality, certain services (e.g., software updates, installation of further software components) will not be able to operate as expected.'), [{
+				var _getConfirmationToContinueWithoutGateway = lang.hitch(this, function(selectedNextPage) {
+					return dialog.confirm(_('No gateway has been specified and thus no access to the internet is ' +
+						'possible. As UCS requires internet access for its functionality, certain services (e.g., ' +
+						'software updates, installation of further software components) will not be able to operate as expected.'
+					), [{
 						label: _('Adjust settings'),
-						name: 'network'
+						name: pageName
 					}, {
 						label: _('Continue without internet access'),
 						'default': true,
 						name: nextPage
-					}], _('Warning'));
+					}], _('Warning')).then(
+						_throwErrorIfNextWasCanceled
+					);
 				});
 
-				var _applyNetworkSettings = lang.hitch(this, function(page) {
-					if (page == 'network') {
-						// cancelled prior warning
-						return page;
-					}
+				var _getConfirmationToContinueWithoutRepositoryAccess = lang.hitch(this, function(selectedNextPage) {
+					// FIXME: It's ugly that this function is used here, but I couldn't find a way to do without.
+					_throwErrorIfNextWasCanceled(selectedNextPage);
 
+					return dialog.confirm(
+						_(
+							'Could not reach all repository servers. Please check if the UCR variables ' +
+							'"repository/online/server" and "repository/app_center/server" are set correctly and ' +
+							'the set servers can be reached through your network.'
+						),
+						[{
+							label: _('Adjust settings'),
+							name: pageName
+						},
+						{
+							label: _('Continue without access to the repository servers'),
+							'default': true,
+							name: nextPage
+						}],
+						_('Warning')
+					).then(
+						_throwErrorIfNextWasCanceled
+					);
+				});
+
+				var _applyNetworkSettings = lang.hitch(this, function(selectedNextPage) {
 					// need network settings to be applied?
 					var networkValues = this.getPage('network')._form.get('value');
 					var haveValuesChanged = !tools.isEqual(networkValues, this._lastAppliedNetworkValues);
 					if (!haveValuesChanged) {
-						return page;
+						return selectedNextPage;
 					}
 					this._lastAppliedNetworkValues = networkValues;
 
@@ -2612,26 +2646,58 @@ define([
 							messageInterval: 400
 						});
 					}), 2000).then(function() {
-						return page;
+						return selectedNextPage;
 					});
 
 					this.standbyDuring(requestDeferred);
 					return requestDeferred;
 				});
 
-				// check fallback devices
+				var _returnCurrentPage = lang.hitch(this, function(selectedNextPage) {
+					return pageName;
+				});
+
+				var checkIfRepositoriesAreReachable = lang.hitch(this, function(selectedNextPage) {
+					console.log("Got " + selectedNextPage + " as selectedNextPage.");
+					return this.umcpCommand('setup/check/repository_accessibility').then(
+						function(data) {
+							if(data.result)
+								return selectedNextPage;
+							throw selectedNextPage;
+						}
+					);
+				});
+
 				var fallbackDevices = this._getLinkLocalDHCPAddresses();
 				if (fallbackDevices.length) {
-					deferred = _linkLocalAddressesWarning(fallbackDevices);
+					deferred = _getConfirmationToContinueWithLinkLocalAdresses(fallbackDevices);
 				}
 
-				// check gateway
 				var gateway = this.getWidget('network', 'gateway').get('value');
 				if (!gateway) {
-					deferred = deferred.then(_noGatewayWarning);
+					deferred = deferred.then(_getConfirmationToContinueWithoutGateway);
 				}
 
-				deferred = deferred.then(_applyNetworkSettings);
+				deferred = deferred.then(
+					_applyNetworkSettings,  // callback
+					_returnCurrentPage  // errback; some previous dialog was canceled
+				);
+
+				deferred = deferred.then(
+					_throwErrorIfNextWasCanceled  // This is to prevent unnecessary calls of checkIfRepositoriesAreReachable().
+				);
+				deferred = deferred.then(
+					checkIfRepositoriesAreReachable
+				).then(
+					function(selectedNextPage) { return selectedNextPage; },  // callback; just continue
+					_getConfirmationToContinueWithoutRepositoryAccess  // errback
+				);
+
+				deferred = deferred.then(
+					function(selectedNextPage) { return selectedNextPage; },  // callback; just continue
+					_returnCurrentPage  // errback; some previous dialog was canceled
+				);
+
 				// apply network settings
 				if (this.isPageVisible('role')) {
 					return deferred;
