@@ -2596,6 +2596,30 @@ define([
 					);
 				});
 
+				var _getConfirmationToContinueWithoutRepositoryAccess = lang.hitch(this, function(selectedNextPage) {
+					// FIXME: It's ugly that this function is used here, but I couldn't find a way to do without.
+					_throwErrorIfNextWasCanceled(selectedNextPage);
+
+					return dialog.confirm(
+						_(
+							'Could not reach all repository servers. Please check if the UCR variables ' +
+							'"repository/online/server" and "repository/app_center/server" are set correctly and ' +
+							'the set servers can be reached through your network.'
+						),
+						[{
+							label: _('Adjust settings'),
+							name: pageName
+						},
+						{
+							label: _('Continue without access to the repository servers'),
+							'default': true,
+							name: nextPage
+						}],
+						_('Warning')
+					).then(
+						_throwErrorIfNextWasCanceled
+					);
+				});
 
 				var _applyNetworkSettings = lang.hitch(this, function(selectedNextPage) {
 					// need network settings to be applied?
@@ -2633,6 +2657,17 @@ define([
 					return pageName;
 				});
 
+				var checkIfRepositoriesAreReachable = lang.hitch(this, function(selectedNextPage) {
+					console.log("Got " + selectedNextPage + " as selectedNextPage.");
+					return this.umcpCommand('setup/check/repository_accessibility').then(
+						function(data) {
+							if(data.result)
+								return selectedNextPage;
+							throw selectedNextPage;
+						}
+					);
+				});
+
 				var fallbackDevices = this._getLinkLocalDHCPAddresses();
 				if (fallbackDevices.length) {
 					deferred = _getConfirmationToContinueWithLinkLocalAdresses(fallbackDevices);
@@ -2645,6 +2680,21 @@ define([
 
 				deferred = deferred.then(
 					_applyNetworkSettings,  // callback
+					_returnCurrentPage  // errback; some previous dialog was canceled
+				);
+
+				deferred = deferred.then(
+					_throwErrorIfNextWasCanceled  // This is to prevent unnecessary calls of checkIfRepositoriesAreReachable().
+				);
+				deferred = deferred.then(
+					checkIfRepositoriesAreReachable
+				).then(
+					function(selectedNextPage) { return selectedNextPage; },  // callback; just continue
+					_getConfirmationToContinueWithoutRepositoryAccess  // errback
+				);
+
+				deferred = deferred.then(
+					function(selectedNextPage) { return selectedNextPage; },  // callback; just continue
 					_returnCurrentPage  // errback; some previous dialog was canceled
 				);
 
