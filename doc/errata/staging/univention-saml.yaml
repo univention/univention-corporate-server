@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-saml
-fix: 5.0.4-22A~4.3.0.201807051324
+fix: 5.0.4-23A~4.3.0.201807131600
 desc: |
  This update addresses the following issue(s):
  * When operating without a separate VirtualHost for single sign-on, a
@@ -12,5 +12,7 @@ desc: |
    single sign-on directory.
  * Raw service provider configurations can now be added to udm 
    saml/serviceprovider objects. The configuration will be replicated
-   to all domain IdP servers.
+   to all domain IdP servers. In addition, the configuration option of
+   simplesamlphp LDAP get_attributes is now done in LDAP. The current 
+   value set to the UCR variable is migrated to the updated configuration
 bug: [47241, 47309]
