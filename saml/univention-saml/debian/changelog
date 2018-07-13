@@ -1,3 +1,18 @@
+univention-saml (5.0.4-23) unstable; urgency=medium
+
+  * Bug #47309: IdP configuration options regarding allowed LDAP attributes
+    are now configured centrally in LDAP. This can be exended in the future
+  * The default object DN for the configuration is
+    id=default-saml-idp,cn=univention,LDAPBASE
+  * A listener has been added, which replicates changes to this object on all
+    SAML IDP servers
+  * Previous UCRv values set to saml/idp/ldap/get_attributes are added to the
+    default configuration on package update 
+  * Resync univention-saml-simplesamlphp-configuration when installing and
+    upgrading package
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 13 Jul 2018 15:48:23 +0200
+
 univention-saml (5.0.4-22) unstable; urgency=medium
 
   * Bug #47309 Support raw simplesaml service provider configurations with

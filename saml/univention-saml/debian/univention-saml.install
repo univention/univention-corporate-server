@@ -1,5 +1,6 @@
 umc/saml-serviceprovider.xml usr/share/univention-management-console/modules
 listener/univention-saml-simplesamlphp-configuration.py usr/lib/univention-directory-listener/system/
+listener/univention-saml-idp-config.py usr/lib/univention-directory-listener/system/
 simplesamlphp-modules/* usr/share/simplesamlphp/modules
 24univention-saml-uninstall.uinst usr/lib/univention-uninstall
 91univention-saml.inst usr/lib/univention-install

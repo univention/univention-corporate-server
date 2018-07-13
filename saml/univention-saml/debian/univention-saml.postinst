@@ -39,7 +39,6 @@ configure)
 	fi
 
 	ucr set saml/idp/enableSAML20-IdP?true \
-		saml/idp/ldap/get_attributes?"'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'" \
 		saml/idp/ldap/search_attributes?"'uid', 'mailPrimaryAddress'" \
 		saml/idp/lookandfeel/theme?"univentiontheme:univention" \
 		saml/idp/https?"true" \

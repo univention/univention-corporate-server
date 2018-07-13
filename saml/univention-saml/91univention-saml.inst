@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION="6"
+VERSION="7"
 
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
@@ -306,9 +306,39 @@ if joinscript_check_version_in_range_executed 1 3; then
 	done
 fi
 
+# Create IdP config object
+idp_ldap_get_attributes="$saml_idp_ldap_get_attributes"
+
+udm saml/idpconfig create "$@" \
+	--ignore_exists \
+	--position="cn=univention,$ldap_base" \
+	--set id=default-saml-idp
+
+# If the package gets installed on a DC master, configure default values
+if ! joinscript_check_any_version_executed && [ "$server_role" == "domaincontroller_master" ]; then
+	udm saml/idpconfig modify "$@" \
+		--dn="id=default-saml-idp,cn=univention,$ldap_base" \
+		--append LdapGetAttributes="uid" \
+		--append LdapGetAttributes="mailPrimaryAddress" \
+		--append LdapGetAttributes="enabledServiceProviderIdentifier"
+fi
+
+# When updating, add migrate current values of UCR saml/idp/ldap/get_attributes to LDAP
+if joinscript_check_version_in_range_executed 1 6; then
+	# Parse old attribute list from UCR and append every value IdP config object
+	for attr in $(echo $idp_ldap_get_attributes | sed -e s"/[\',]//g"); do
+		udm saml/idpconfig modify "$@" \
+			--dn="id=default-saml-idp,cn=univention,$ldap_base" \
+			--append LdapGetAttributes="$attr"
+	done
+fi
+
+
+
 # Bug #39739: the listener will be installed and running before univention-saml has configured the 
 # simplesamlphp config. The listener will then not be able to write the SP metadata. Reinitialize it here
-if ! joinscript_check_any_version_executed || joinscript_check_version_in_range_executed 1 3; then
+# Bug #47309 Additional resync required for raw metadata
+if ! joinscript_check_any_version_executed || joinscript_check_version_in_range_executed 1 6; then
 	/usr/sbin/univention-directory-listener-ctrl resync univention-saml-simplesamlphp-configuration
 fi
 

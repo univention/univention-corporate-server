@@ -107,8 +107,8 @@ Type=str
 Categories=saml
 
 [saml/idp/ldap/get_attributes]
-Description[de]=Eine Liste von LDAP Benutzerattributen, die aus dem LDAP gelesen werden (z.B.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier')
-Description[en]=A list of ldap user attributes that are read from ldap after succesful user authentication (i.e.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier')
+Description[de]=Eine Liste von LDAP Benutzerattributen, die aus dem LDAP gelesen werden (z.B.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'). Die Einstellungen dieser UCRv werden domänenweit von einem LDAP object verwaltet, standardmäßig id=default-saml-idp,cn=univention,LDAPBASE
+Description[en]=A list of ldap user attributes that are read from ldap after succesful user authentication (i.e.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'). This settings for this UCRv are managed domain wide by an ldap object, the default is id=default-saml-idp,cn=univention,LDAPBASE
 Type=str
 Categories=saml
 
