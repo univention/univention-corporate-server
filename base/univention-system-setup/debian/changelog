@@ -1,3 +1,9 @@
+univention-system-setup (11.0.5-7) unstable; urgency=medium
+
+  * Bug #42022: Improve logging, checks for binddn and add translation
+
+ -- Richard Ulmer <ulmer@univention.de>  Mon, 16 Jul 2018 15:42:48 +0200
+
 univention-system-setup (11.0.5-6) unstable; urgency=medium
 
   * Bug #47105: Check if repository servers are reachable during system setup
