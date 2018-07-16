@@ -1,3 +1,9 @@
+univention-config-registry (13.0.0-5) unstable; urgency=medium
+
+  * Bug #47356: Relax trigger execution to "noawait"
+
+ -- Arvid Requate <requate@univention.de>  Mon, 16 Jul 2018 14:10:37 +0200
+
 univention-config-registry (13.0.0-4) unstable; urgency=medium
 
   * Bug #45936: only ucr ascii in warning text
