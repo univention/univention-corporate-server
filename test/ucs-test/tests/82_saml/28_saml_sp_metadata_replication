@@ -1,0 +1,66 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check whether idP is synchronized between DC Master and DC Backup.
+## tags:
+##  - saml
+## bugs: [47309]
+## roles: [domaincontroller_backup]
+## join: true
+## exposure: dangerous
+## packages:
+##  - python-requests
+
+import subprocess
+import os.path
+
+import univention.config_registry as configRegistry
+import univention.admin.modules as udm_modules
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import samltest
+
+ucr = configRegistry.ConfigRegistry()
+ucr.load()
+udm_modules.update()
+
+
+def main():
+	account = utils.UCSTestDomainAdminCredentials()
+	SamlSession = samltest.SamlTest(account.username, account.bindpw)
+	lo = utils.get_ldap_connection(admin_uldap=True)
+	master = udm_modules.lookup('computers/domaincontroller_master', None, lo, scope='sub')
+	master_hostname = "%s.%s" % (master[0]['name'], master[0]['domain'])
+	backup_ip = '127.0.0.1'
+
+	try:
+		# Copy service provider config from UMC, delete it, and re-inject it as a new service provider
+		# using the functionality introduced in Bug #47309
+		metadata_filename = '/etc/simplesamlphp/metadata.d/https:__%s_univention_saml_metadata.php' % (master_hostname)
+		with open(metadata_filename) as metadata_file:
+			metadata = metadata_file.read()
+
+		# set udm saml/sp object to 'deactivated' so the file is removed
+		cmd_disable = ['/usr/sbin/udm', 'saml/serviceprovider', 'modify', '--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')), '--set', 'isActivated=FALSE']
+		subprocess.call(cmd_disable)
+		utils.wait_for_replication()
+		assert not os.path.exists(metadata_filename)	
+
+		# add new SP with raw metadata
+		with udm_test.UCSTestUDM() as udm:
+			new_service_provider = {'Identifier': 'ucs-test-sp', 'isActivated': 'TRUE', 'AssertionConsumerService': 'https://.de', 'rawsimplesamlSPconfig': metadata}
+			udm.create_object('saml/serviceprovider', **new_service_provider)
+
+			# try to login
+			with samltest.GuaranteedIdP(backup_ip):
+				SamlSession.target_sp_hostname = master_hostname
+				SamlSession.login_with_new_session_at_IdP()
+				SamlSession.test_login()
+	except samltest.SamlError as exc:
+		utils.fail(exc.message)
+	finally:
+		# enable SP config in any case to reset state
+		cmd_enable = ['/usr/sbin/udm', 'saml/serviceprovider', 'modify', '--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')), '--set', 'isActivated=TRUE']
+		subprocess.call(cmd_enable)
+
+
+if __name__ == '__main__':
+	main()
