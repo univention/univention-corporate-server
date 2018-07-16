@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-web
-fix: 2.0.0-15A~4.3.0.201807061643
+fix: 2.0.0-16A~4.3.0.201807161337
 desc: |
  This update addresses the following issue(s):
  * If the values of a _SelectMixin widget gets updated, its selection gets
