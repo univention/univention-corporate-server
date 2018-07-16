@@ -428,11 +428,11 @@ class VMware(Target):
 		if os.path.exists(archive_name):
 			raise IOError('Output file %r exists' % (archive_name, ))
 		files = [
-			('%s/' % (options.filename, ), None, ),
-			('%s/%s.vmdk' % (options.filename, options.filename, ), Vmdk(image), ),
-			('%s/%s.vmxf' % (options.filename, options.filename, ), create_vmxf(machine_uuid, options.filename), ),
-			('%s/%s.vmx' % (options.filename, options.filename, ), create_vmx(options.filename, image_uuid, options), ),
-			('%s/%s.vmsd' % (options.filename, options.filename, ), str(), ),
+			('%s/' % (options.product, ), None, ),
+			('%s/%s.vmdk' % (options.product, options.product, ), Vmdk(image), ),
+			('%s/%s.vmxf' % (options.product, options.product, ), create_vmxf(machine_uuid, options.product), ),
+			('%s/%s.vmx' % (options.product, options.product, ), create_vmx(options.product, image_uuid, options), ),
+			('%s/%s.vmsd' % (options.product, options.product, ), str(), ),
 		]
 		pkzip = Pkzip(files)
 		shutil.copyfile(pkzip.path(), archive_name)
@@ -641,8 +641,8 @@ class Virtualbox(Target):
 		return 'ova-virtualbox'
 
 	def create(self, image, options):
-		image_name = '%s-virtualbox-disk1.vmdk' % (options.filename, )
-		descriptor_name = '%s-virtualbox.ovf' % (options.filename, )
+		image_name = '%s-virtualbox-disk1.vmdk' % (options.product, )
+		descriptor_name = '%s-virtualbox.ovf' % (options.product, )
 		if options.no_target_specific_filename:
 			archive_name = options.filename
 		else:
@@ -1023,8 +1023,8 @@ class ESXi(Target):
 		return 'ova-esxi'
 
 	def create(self, image, options):
-		image_name = '%s-ESX-disk1.vmdk' % (options.filename, )
-		descriptor_name = '%s-ESX.ovf' % (options.filename, )
+		image_name = '%s-ESX-disk1.vmdk' % (options.product, )
+		descriptor_name = '%s-ESX.ovf' % (options.product, )
 		if options.no_target_specific_filename:
 			archive_name = options.filename
 		else:
@@ -1162,7 +1162,7 @@ class EC2(Target):
 		machine_name = options.product
 		if options.version is not None:
 			machine_name += ' ' + options.version
-		image_name = '%s-disk1.vmdk' % (options.filename, )
+		image_name = '%s-disk1.vmdk' % (options.product, )
 		part_size = 10 * 1000 * 1000  # 10 MB
 		url_lifetime = 24 * 60 * 60  # 1 day
 		volume_size = int(math.ceil(float(image.size()) / 1024 / 1024 / 1024))  # GiB
