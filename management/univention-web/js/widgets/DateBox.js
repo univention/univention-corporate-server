@@ -28,7 +28,9 @@
  */
 /*global define */
 
-define("umc/widgets/DateBox", [
+var date_de_format = /^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]+$/;
+
+define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/aspect",
@@ -75,22 +77,24 @@ define("umc/widgets/DateBox", [
 			if (dateObj) {
 				if (dateObj instanceof Date) {
 					return sprintf('%04d-%02d-%02d', dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDate());
-				} else if (typeof dateObj == 'string' && dateObj.match(/^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]+$/)) {
-					date = dateObj.split('.');
-					// test if udm syntax is date or date2
-					if (date[2].length < 4) {
+				} else if (typeof dateObj == 'string' && dateObj.match(date_de_format)) {
+					var date = dateObj.split('.');
+					var year = date[2];
+					var month = date[1];
+					var day = date[0];
+					if (year.length < 4) {
 						// guessing the century; pretty stupid
-						if (Number(date[2]) > 60) {
-							date[2] = '19' + date[2];
+						if (Number(year) > 60) {
+							year = '19' + year;
 						} else {
-								date[2] = '20' + date[2];
+							year = '20' + year;
 						}
 					}
-					return sprintf('%04d-%02d-%02d', date[2], date[1], date[0]);
+					return sprintf('%04d-%02d-%02d', year, month, day);
 				}
 			}
 			return dateObj;
-		 },
+		},
 
 		// return ISO8601/RFC3339 format (yyyy-MM-dd) as string
 		_getValueAttr: function() {

@@ -1,3 +1,9 @@
+univention-web (2.0.0-16) unstable; urgency=medium
+
+  * Bug #47201: QA feedback
+
+ -- Jannik Ahlers <ahlers@univention.de>  Mon, 16 Jul 2018 13:32:41 +0200
+
 univention-web (2.0.0-15) unstable; urgency=medium
 
   * Bug #47201: Make DateBox widget convert dates in german format to ISO8601
