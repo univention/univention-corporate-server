@@ -190,11 +190,11 @@ create_ucs_images () {
 	APPS_BASE="/var/univention/buildsystem2/temp/build/appliance/"
 	MEMORY=1536
 	IMAGE_VERSION="${UCS_VERSION}"
-	VMPLAYER_IMAGE="UCS-Demo-Image-vmware.zip"
-	KVM_IMAGE="UCS-Demo-Image-KVM.qcow2"
-	VBOX_IMAGE="UCS-Demo-Image-virtualbox.ova"
-	ESX_IMAGE="UCS-Demo-Image-ESX.ova"
-	HYPERV_IMAGE_BASE="UCS-Demo-Image-Hyper-V"
+	VMPLAYER_IMAGE="UCS-VMware-Image.zip"
+	KVM_IMAGE="UCS-KVM-Image.qcow2"
+	VBOX_IMAGE="UCS-Virtualbox-Image.ova"
+	ESX_IMAGE="UCS-VMware-ESX-Image.ova"
+	HYPERV_IMAGE_BASE="UCS-Hyper-V-Image"
 
     export APP_ID KVM_USER KVM_SERVER UCS_VERSION KT_CREATE_IMAGE APPS_BASE APPS_SERVER IMAGE_SERVER
     export TMP_DIR VMPLAYER_IMAGE KVM_IMAGE TMP_KVM_IMAGE VBOX_IMAGE ESX_IMAGE MEMORY IMAGE_VERSION
