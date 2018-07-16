@@ -1,3 +1,9 @@
+generate-appliance (4.0.0-4) unstable; urgency=medium
+
+  * Bug #47355: Adapt conventions for output file names
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 16 Jul 2018 17:21:26 +0200
+
 generate-appliance (4.0.0-3) unstable; urgency=medium
 
   * Bug #47130: fix description for EC2 AMI
