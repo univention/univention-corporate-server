@@ -19,19 +19,21 @@ def set_role_and_check_if_join_will_work(role, master_fqdn, admin_username, admi
 	UCR.save()
 
 	with _temporary_password_file(admin_password) as password_file:
-		try:
-			subprocess.check_call([
-				'univention-join',
-				'-dcname', master_fqdn,
-				'-dcaccount', admin_username,
-				'-dcpwd', password_file,
-				'-checkPrerequisites'
-			])
-		except subprocess.CalledProcessError:
+		p1 = subprocess.Popen([
+			'univention-join',
+			'-dcname', master_fqdn,
+			'-dcaccount', admin_username,
+			'-dcpwd', password_file,
+			'-checkPrerequisites'
+		], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+		stdout, stderr = p1.communicate()
+		if p1.returncode != 0:
+			messages = [ line[11:] for line in stdout.split('\n')
+			   if line.startswith("* Message: ")]
 			raise UMC_Error(_(
-				"univention-join will not work with the given setup. "
-				"Check /var/log/univention/join.log to see what went wrong."
-			))
+				"univention-join -checkPrerequisites reported a problem. "
+				"Output of check:\n\n"
+			) + "\n".join(messages) )
 
 
 def receive_domaincontroller_master_information(dns, nameserver, address, username, password):

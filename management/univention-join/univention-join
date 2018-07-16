@@ -106,6 +106,7 @@ display_version() {
 }
 
 failed_message () {
+	{
 	echo ""
 	echo ""
 	echo "**************************************************************************"
@@ -114,6 +115,7 @@ failed_message () {
 	echo "**************************************************************************"
 	echo "* Message:  Please visit https://help.univention.com/t/8842 for common problems during the join and how to fix them -- $@"
 	echo "**************************************************************************"
+	} | tee -a /var/log/univention/join.log
 	exit 1
 }
 
@@ -572,18 +574,27 @@ echo -n "Search LDAP binddn "
 
 # First use udm to search the user DN
 binddn="$(univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" \
-	/usr/sbin/udm users/user list --filter uid="$DCACCOUNT" --logfile /dev/null | sed -ne 's|^DN: ||p')"
+	/usr/sbin/udm users/user list --filter uid="$DCACCOUNT" --logfile /dev/null  2> >(tee -a /var/log/univention/join.log >&2) | sed -ne 's|^DN: ||p')"
 
 if [ -z "$binddn" ]; then
-	# Next check is the local ldapi interface
+	echo "binddn search on ${DCNAME} with UDM failed" >>/var/log/univention/join.log
+	# Next try ldapsearch with GSSAPI against OpenLDAP
 	binddn="$(univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" \
-		ldapsearch -x -LLL -H ldapi:/// "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
+		kinit --password-file=STDIN "${DCACCOUNT}" ldapsearch -Y GSSAPI -LLL -o ldif-wrap=no "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn <"$DCPWD" 2>/dev/null | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
 fi
 
 if [ -z "$binddn" ]; then
-	# Check with anonymous bind
+	echo "binddn search on ${DCNAME} with GSSAPI failed" >>/var/log/univention/join.log
+	# Next try the local ldapi interface, unlikely to succeed because only accessible for root
 	binddn="$(univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" \
-		ldapsearch -x -LLL "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
+		ldapsearch -x -LLL -o ldif-wrap=no -H ldapi:/// "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
+fi
+
+if [ -z "$binddn" ]; then
+	echo "binddn search on ${DCNAME} via LDAPI failed" >>/var/log/univention/join.log
+	# Finally try anonymous bind, unlikely to succeed because anonymous bind is disabled by default
+	binddn="$(univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" \
+		ldapsearch -x -LLL -o ldif-wrap=no "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
 fi
 
 if [ -z "$binddn" ]; then
