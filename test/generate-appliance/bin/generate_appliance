@@ -419,7 +419,10 @@ class VMware(Target):
 		return 'vmware'
 
 	def create(self, image, options):
-		archive_name = '%s-vmware.zip' % (options.filename, )
+		if options.no_target_specific_filename:
+			archive_name = options.filename
+		else:
+			archive_name = '%s-vmware.zip' % (options.filename, )
 		machine_uuid = uuid.uuid4()
 		image_uuid = uuid.uuid4()
 		if os.path.exists(archive_name):
@@ -640,7 +643,10 @@ class Virtualbox(Target):
 	def create(self, image, options):
 		image_name = '%s-virtualbox-disk1.vmdk' % (options.filename, )
 		descriptor_name = '%s-virtualbox.ovf' % (options.filename, )
-		archive_name = '%s-virtualbox.ova' % (options.filename, )
+		if options.no_target_specific_filename:
+			archive_name = options.filename
+		else:
+			archive_name = '%s-virtualbox.ova' % (options.filename, )
 		machine_uuid = uuid.uuid4()
 		image_uuid = uuid.uuid4()
 		if os.path.exists(archive_name):
@@ -1019,7 +1025,10 @@ class ESXi(Target):
 	def create(self, image, options):
 		image_name = '%s-ESX-disk1.vmdk' % (options.filename, )
 		descriptor_name = '%s-ESX.ovf' % (options.filename, )
-		archive_name = '%s-ESX.ova' % (options.filename, )
+		if options.no_target_specific_filename:
+			archive_name = options.filename
+		else:
+			archive_name = '%s-ESX.ova' % (options.filename, )
 		if os.path.exists(archive_name):
 			raise IOError('Output file %r exists' % (archive_name, ))
 		# HACK: change image descriptor to expected format
@@ -1312,6 +1321,7 @@ def parse_options():
 	parser.add_option('-c', '--cpu-count', default=1, type='int',
 		help='virtual CPU count (default: %default)')
 	parser.add_option('-f', '--filename', help='filename of appliance (default: derived from product)')
+	parser.add_option('-n', '--no-target-specific-filename', default=False, help='do not append hypervisor target to filename of appliance. This is the default if only one target is chosen.')
 	parser.add_option('-p', '--product', help='product name of appliance (default: %default)',
 		default='Univention Corporate Server (UCS)')
 	parser.add_option('--product-url', help='product URL of appliance (default: %default)',
@@ -1347,6 +1357,8 @@ def parse_options():
 	options.choices = frozenset(
 		reverse[name] for (name, wanted) in dict(options.choices).items() if wanted
 	)
+	if len(options.choices) == 1:
+		options.no_target_specific_filename = True
 	if args:
 		parser.error('additional parameter')
 	if options.source is None:
