@@ -1,3 +1,9 @@
+ucs-test (8.0.28-150) unstable; urgency=medium
+
+  * Bug #47345: Wait for s4 replication for containers
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 17 Jul 2018 11:15:10 +0200
+
 ucs-test (8.0.28-149) unstable; urgency=medium
 
   * Bug #47345: ldap users are not replicated to s4 -> do not wait

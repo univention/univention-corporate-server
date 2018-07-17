@@ -10,6 +10,7 @@
 
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
+from univention.testing.ucs_samba import wait_for_drs_replication
 import univention.testing.strings as uts
 import univention.config_registry as configRegistry
 import ldap.filter
@@ -28,6 +29,7 @@ if __name__ == '__main__':
 		ou_name_new = ou_name.upper()
 
 		ou = udm.create_object('container/ou', name=ou_name)
+		wait_for_drs_replication('ou=%s' % ou_name)
 		user = udm.create_user(position=ou, username=user_name)
 		network = udm.create_object('networks/network', position=ou, name=network_name, network='1.1.1.1', netmask='24')
 

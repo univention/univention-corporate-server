@@ -9,6 +9,7 @@
 
 
 import univention.testing.utils as utils
+from univention.testing.ucs_samba import wait_for_drs_replication
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.config_registry as configRegistry
@@ -30,6 +31,7 @@ if __name__ == '__main__':
 			ou_name_new = ou_name.upper()
 
 			ou = udm.create_object('container/ou', position=parent, name=ou_name)
+			wait_for_drs_replication('ou=%s' % ou_name)
 			if add_user:
 				user = udm.create_user(position=ou, username=user_name)
 
@@ -37,6 +39,7 @@ if __name__ == '__main__':
 				udm.modify_object('container/ou', dn=ou, name=ou_name_new)
 			except AssertionError:
 				pass
+			wait_for_drs_replication('(&(ou=%s)(name=%s))' % (ou_name, ou_name_new))
 			lo = utils.get_ldap_connection()
 			fail = False
 			for dn, entry in lo.search(filter='ou=temporary_move_container_*'):

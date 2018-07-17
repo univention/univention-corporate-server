@@ -9,6 +9,7 @@
 
 
 import univention.testing.utils as utils
+from univention.testing.ucs_samba import wait_for_drs_replication
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.config_registry as configRegistry
@@ -27,6 +28,7 @@ if __name__ == '__main__':
 		cn_name_new = cn_name.upper()
 
 		cn = udm.create_object('container/cn', name=cn_name)
+		wait_for_drs_replication('cn=%s' % cn_name)
 		user = udm.create_user(position=cn, username=user_name)
 		network = udm.create_object('networks/network', position=cn, name=network_name, network='1.1.1.1', netmask='24')
 
