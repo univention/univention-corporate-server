@@ -76,10 +76,18 @@ def run(_umc_instance, rerun=False, fix_log=''):
 
 	cmd = ['samba-tool', 'dbcheck']
 	(success, output) = util.run_with_output(cmd)
-	if not success:
+        if "ERROR:" in output:
 		error = _('`samba-tool dbcheck` returned a problem with the local AD database.')
 		error_descriptions.append(error)
-		error_descriptions.append(output)
+                is_error = True
+                newoutput = output.split("\n")
+                for entry in newoutput:
+                    if "WARNING:" in entry:
+                        is_error = False
+                    if "ERROR:" in entry:
+                        is_error = True
+                    if is_error:
+                        error_descriptions.append(entry)
 		if not rerun:
 			fix = _('You can run `samba-tool dbcheck --fix` to fix the issue.')
 			error_descriptions.append(fix)
