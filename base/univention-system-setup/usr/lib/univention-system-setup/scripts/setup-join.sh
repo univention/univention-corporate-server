@@ -270,7 +270,9 @@ if [ $? -ne 1 ]; then
 
 			for i in /usr/lib/univention-install/*.inst; do
 				echo "Configure $(basename "$i") $(LC_ALL=C date)" | tee -a "$JOIN_LOG"
-				$i > >(tee -a "$JOIN_LOG") 2> >(tee -a "$JOIN_LOG" >&2)
+				# test
+				$i 2>&1 | tee -a "$JOIN_LOG"
+				#$i > >(tee -a "$JOIN_LOG") 2> >(tee -a "$JOIN_LOG" >&2)
 			done
 		else
 			if [ -n "$dcaccount" -a -n "$password_file" ]; then

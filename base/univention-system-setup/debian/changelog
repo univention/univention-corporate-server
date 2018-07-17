@@ -1,3 +1,9 @@
+univention-system-setup (11.0.5-8) unstable; urgency=medium
+
+  * Bug #42366: fix setup-join
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Jul 2018 11:17:36 +0200
+
 univention-system-setup (11.0.5-7) unstable; urgency=medium
 
   * Bug #42022: Improve logging, checks for binddn and add translation
