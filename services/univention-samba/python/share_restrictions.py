@@ -142,6 +142,7 @@ class ShareConfiguration(object):
 		self._shares = {}
 		self._globals = {}
 		self._printers = {}
+		self.include_configs = {}
 
 	def delete(self):
 		"""delete all conf's in SHARES_DIR and INCLUDE_CONF"""
@@ -300,16 +301,23 @@ class ShareConfiguration(object):
 
 	# set share options to -> shares
 	def _set_options(self, value, share, option):
-		if match and share and options and value:
+		if share and option and value:
+			if share not in self._shares:
+				return
 			if option not in self._shares[share]:
 				self._shares[share][option] = set()
-
 			self._shares[share].ucr = True
 			self._shares[share][option].add(value)
+
+	# set include configs to -> include_configs
+	def _set_include_configs(self, value):
+		for i in value.split(','):
+			self.include_configs[i.strip()] = True
 
 	# parse ucr
 	def read_ucr(self):
 		_map = dict(
+			include_configs=(re.compile('samba/include/configs'), self._set_include_configs),
 			options=(re.compile('samba/share/([^\/]+)/options/(.*)'), self._set_options),
 			globals=(re.compile('samba/global/options/(.*)'), self._set_globals),
 			hosts=(re.compile('samba/share/([^\/]+)/hosts/deny'), self._set_denied_hosts),
@@ -340,6 +348,12 @@ class ShareConfiguration(object):
 		includes = set()
 
 		self.delete()
+
+		# include configs
+		for i in self.include_configs:
+			i_filename = os.path.join(ShareConfiguration.SHARES_DIR, i)
+			if os.path.isfile(i_filename):
+				includes.add('include = %s' % i_filename)
 
 		# write conf file with global options
 		if len(self.globals):

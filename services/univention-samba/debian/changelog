@@ -1,3 +1,10 @@
+univention-samba (12.0.1-6) unstable; urgency=medium
+
+  * Bug #46975: fixed share config in local-config and
+    added samba/include/configs
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Jul 2018 13:31:45 +0200
+
 univention-samba (12.0.1-5) unstable; urgency=medium
 
   * Bug #47095: restore some share scripts

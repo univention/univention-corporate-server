@@ -31,7 +31,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.lib.share_restrictions import ShareConfiguration
+import sys
+
+try:
+	from univention.lib.share_restrictions import ShareConfiguration
+except ImportError:
+	sys.exit(0)
 
 # main
 if __name__ == '__main__':
