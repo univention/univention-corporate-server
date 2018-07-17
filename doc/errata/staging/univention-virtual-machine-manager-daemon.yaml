@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: univention-virtual-machine-manager-daemon
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The hosts in the 'Migrate domain' dialog are now sorted.
+bug: [47342]
