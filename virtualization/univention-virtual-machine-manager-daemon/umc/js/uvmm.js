@@ -541,7 +541,8 @@ define([
 						name: 'name',
 						type: ComboBox,
 						label: _('Please select the destination server:'),
-						staticValues: validHosts
+						staticValues: validHosts,
+						sortStaticValues: true
 					}],
 					buttons: [{
 						name: 'submit',
