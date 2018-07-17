@@ -256,8 +256,6 @@ define([
 			} );
 			this.store.save();
 
-			this._initialValue = null; // Added again for Bug #47141
-
 			//if (this._isAutoValue) {
 			//	// reset the _initialValue in case we chose it automatically
 			//	this._initialValue = null;

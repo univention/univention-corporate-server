@@ -1,3 +1,9 @@
+univention-web (2.0.0-17) unstable; urgency=medium
+
+  * Bug #47141: Revert changes from 2.0.0-14
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 17 Jul 2018 12:27:10 +0200
+
 univention-web (2.0.0-16) unstable; urgency=medium
 
   * Bug #47201: QA feedback

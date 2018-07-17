@@ -6,7 +6,5 @@ src: univention-web
 fix: 2.0.0-16A~4.3.0.201807161337
 desc: |
  This update addresses the following issue(s):
- * If the values of a _SelectMixin widget gets updated, its selection gets
-   reset now. This happens especially when a dependency changes value.
- * Fixed a bug where the calendar widget would not display the date
-bug: [47141,47201]
+ * Fixed a bug where the calendar widget would not display the date.
+bug: [47201]
