@@ -82,12 +82,12 @@ define([
 					var year = date[2];
 					var month = date[1];
 					var day = date[0];
-					if (year.length < 4) {
+					if (year.length =< 4) {
 						// guessing the century; pretty stupid
 						if (Number(year) > 60) {
-							year = '19' + year;
+							year = sprintf('19%d', year);
 						} else {
-							year = '20' + year;
+							year = sprintf('20%02d', year);
 						}
 					}
 					return sprintf('%04d-%02d-%02d', year, month, day);
