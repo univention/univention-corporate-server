@@ -82,7 +82,7 @@ define([
 					var year = date[2];
 					var month = date[1];
 					var day = date[0];
-					if (year.length =< 4) {
+					if (year.length <= 4){
 						// guessing the century; pretty stupid
 						if (Number(year) > 60) {
 							year = sprintf('19%d', year);
