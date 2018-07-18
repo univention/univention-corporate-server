@@ -1,3 +1,9 @@
+univention-web (2.0.0-19) unstable; urgency=medium
+
+  * Bug #47201: fix typo
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 18 Jul 2018 14:17:28 +0200
+
 univention-web (2.0.0-18) unstable; urgency=medium
 
   * Bug #47201: QA feedback
