@@ -1,3 +1,9 @@
+univention-join (10.0.0-17) unstable; urgency=medium
+
+  * Bug #42022: Fix test in -checkPrerequisites mode of univention-join
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 18 Jul 2018 12:22:34 +0200
+
 univention-join (10.0.0-16) unstable; urgency=medium
 
   * Bug #42022: Add -checkPrerequisites mode for univention-join

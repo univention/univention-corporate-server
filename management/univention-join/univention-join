@@ -512,7 +512,7 @@ fi
 
 echo -e "\033[60Gdone"
 
-if [ "$CHECK_RUN" = "false" -a "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" ]; then
+if [ "$CHECK_RUN" = "false" ] && [ "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" ]; then
 	# check for memberof overlay
 	master_member_of="$(univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" /usr/sbin/ucr get ldap/overlay/memberof)"
 	ucr set tmp/join/test/master/memberof="$master_member_of" >/dev/null 2>&1
