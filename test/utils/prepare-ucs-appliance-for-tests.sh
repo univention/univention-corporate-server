@@ -11,7 +11,7 @@ _ssh () {
 }
 
 # update the image on the kvm server and exit
-ucs_template="/var/univention/buildsystem2/temp/build/appliance/UCS-Demo-Image-KVM.qcow2"
+ucs_template="/var/univention/buildsystem2/temp/build/appliance/UCS-KVM-Image.qcow2"
 kvm_template_dir="/var/lib/libvirt/templates/single/Others/appliance_ucsappliance_amd64/"
 template_name="$(basename $ucs_template)"
 kvm_template="$kvm_template_dir/$template_name"
