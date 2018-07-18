@@ -10,3 +10,5 @@ desc: |
    configured by the UCR variables syslog/input/* are now activated
    correctly.
 bug: [47035]
+erratum: 151
+announced: 2018-07-18
