@@ -9,6 +9,7 @@
 
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
+from univention.testing.ucs_samba import wait_for_drs_replication
 import univention.testing.strings as uts
 
 
@@ -16,7 +17,9 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		description = uts.random_string()
 
-		cn = udm.create_object('container/cn', name=uts.random_name_special_characters())
+		cn_name = uts.random_name_special_characters()
+		cn = udm.create_object('container/cn', name=cn_name)
+		wait_for_drs_replication('cn=%s' % cn_name)
 
 		udm.modify_object('container/cn', dn=cn, description=description)
 		utils.verify_ldap_object(cn, {'description': [description]})
