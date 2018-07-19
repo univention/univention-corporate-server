@@ -91,7 +91,7 @@ def run_trigger(app):
 		docker = Docker(app, logger)
 		script_name = '/tmp/univention-%s.listener_trigger' % app.id
 		open(docker.path(script_name), 'wb')
-		process = docker.execute('chmod', '0700', script_name)
+		process = docker.execute('chmod', '0755', script_name)
 		shutil.copyfile(cached_script, docker.path(script_name))
 		process = docker.execute(script_name)
 		success = process.returncode == 0
