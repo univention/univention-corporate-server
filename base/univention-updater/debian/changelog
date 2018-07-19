@@ -1,3 +1,10 @@
+univention-updater (13.0.1-48) unstable; urgency=medium
+
+  * Bug #46221: Allow update for app appliances by removing check from
+    preup.sh
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 19 Jul 2018 11:28:34 +0200
+
 univention-updater (13.0.1-47) unstable; urgency=low
 
   * Bug #47117: fix order of mail workarounds/check in preup.sh
