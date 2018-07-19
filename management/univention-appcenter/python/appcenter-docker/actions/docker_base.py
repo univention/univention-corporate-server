@@ -252,6 +252,7 @@ docker inspect:
 			with open(f_name, 'w+b') as f:
 				os.chmod(f_name, 0o600)
 				f.write(password)
+		docker.execute('rm', '/etc/timezone', '/etc/localtime')
 		docker.cp_to_container('/etc/timezone', '/etc/timezone')
 		docker.cp_to_container('/etc/localtime', '/etc/localtime')
 		if database_password_file:

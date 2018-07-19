@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-9) unstable; urgency=medium
+
+  * Bug #47373: remove localtime before copying into container
+
+ -- Felix Botner <botner@univention.de>  Thu, 19 Jul 2018 15:12:32 +0200
+
 univention-appcenter (7.0.2-8) unstable; urgency=medium
 
   * Bug #47315: Do not spam logs in case of incomplete integration
