@@ -1,0 +1,5 @@
+univention-maintenance-mode (1.0.0-0) unstable; urgency=medium
+
+  * Bug #37223: Prototype for a univention-maintenance-mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 26 Mar 2018 15:30:57 +0100

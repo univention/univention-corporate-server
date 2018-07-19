@@ -1,0 +1,19 @@
+Source: univention-maintenance-mode
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper,
+ ucslint,
+ docker.io
+Standards-Version: 4.0.0
+
+Package: univention-maintenance-mode
+Architecture: any
+Description: Files for a maintenance mode during release updates.
+ This package contains a minimal web server to be run when Apache,
+ UMC, etc. are not available.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

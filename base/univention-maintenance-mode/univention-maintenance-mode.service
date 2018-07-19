@@ -1,0 +1,9 @@
+[Unit]
+Description=A UCS maintenance mode site
+After=network.target
+
+[Service]
+Type=simple
+ExecStartPre=/bin/systemctl stop apache2.service
+ExecStart=/usr/bin/univention-maintenance-mode
+ExecStopPost=/bin/systemctl start apache2.service

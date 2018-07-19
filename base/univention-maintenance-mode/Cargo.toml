@@ -1,0 +1,9 @@
+[package]
+name = "maintenance"
+version = "0.1.0"
+authors = ["Dirk Wiesenthal <wiesenthal@univention.de>"]
+
+[dependencies]
+gotham = "0.2.0"
+hyper = "0.11.24"
+mime = "0.3.5"
