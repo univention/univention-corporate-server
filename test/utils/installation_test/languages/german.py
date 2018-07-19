@@ -41,6 +41,7 @@ strings = {
 	'no_dc_dns': 'Unter der Adresse des DNS-Servers',
 	'no_dc_dns_adapt': 'Einstellungen anpassen',
 	'preferred_dns': 'Bevorzugter DNS-Server',
+	'repositories_not_reachable': 'Nicht alle repository Server können',
 	'join_domain': 'Einer bestehenden UCS-Domäne',
 	'start_join': 'Domänenbeitritt am Ende',
 	'system_name': 'Eingabe des Namens',

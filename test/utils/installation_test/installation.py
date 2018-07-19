@@ -221,6 +221,8 @@ class UCSInstallation(object):
 			self.click(self._['preferred_dns'])
 			self.client.enterText(self.args.dns)
 			self.client.keyPress('enter')
+			if self.text_is_visible(self._['repositories_not_reachable']):
+				self.client.keyPress('enter')
 			time.sleep(120)
 			self.click(self._['join_domain'])
 			self.click(self._['next'])
@@ -249,6 +251,8 @@ class UCSInstallation(object):
 			self.click(self._['preferred_dns'])
 			self.client.enterText(self.args.dns)
 			self.client.keyPress('enter')
+			if self.text_is_visible(self._['repositories_not_reachable']):
+				self.client.keyPress('enter')
 			time.sleep(120)
 			if self.text_is_visible('APIPA', timeout=self.timeout):
 				self.client.keyPress('enter')
