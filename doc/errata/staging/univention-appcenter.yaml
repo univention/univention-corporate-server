@@ -3,11 +3,12 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-appcenter
-fix: 7.0.2-8A~4.3.0.201807080024
+fix: 7.0.2-9A~4.3.0.201807191514
 desc: |-
   This update addresses the following issue(s):
   * Apps may now be notified when relevant objects change in LDAP. This is
     done by adding a listener module to UCS.
   * Processing of these notifications is done asynchronically. Therefore, a
     new service has been added: univention-appcenter-listener-converter.
-bug: [47265, 47315]
+  * Timezone setup during docker app installations has been fixed.
+bug: [47265, 47315, 47373]
