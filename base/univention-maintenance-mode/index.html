@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
 		<style>
 			body {
@@ -104,12 +104,10 @@
 			locale = "";
 			(document.cookie || "").split(";").forEach(function(cook) {
 				var match = langRegexp.exec(cook.trim());
-				console.log(cook, match);
 				if (match) {
 					locale = match[1];
 				}
 			});
-			console.log(locale);
 			if (locale.substring(0,2) === "de") {
 				document.getElementById("headline").innerHTML = "Dieses System ist im Maintenance-Modus";
 				document.getElementById("explanation").innerHTML = "Univention Corporate Server wird gerade aktualisiert. Dies kann je nach Release etwas Zeit in Anspruch nehmen. Die Datei /var/log/univention/updater.log enthält ausführliche Informationen zum Fortschritt des Updates. Diese Seite wird sich nach Ende des Updates automatisch neu laden.";
@@ -123,17 +121,26 @@
 					elem.className += " " + cName;
 				}
 			};
+			interval = 1000;
 			warnUser = function() {
 				progressBar.removeAttribute("value");
 			};
 			setProgress = function(percentage) {
 				if (percentage > 0) {
-					progressBar.value = percentage;
+					var old = progressBar.value || 0;
+					var i = 0;
+					var steps = 100;
+					var transitionId = setInterval(function() {
+						i += 1;
+						if (i == steps) {
+							clearInterval(transitionId);
+						}
+						progressBar.value = old + (i / steps * (percentage - old));
+					}, interval / steps);
 				} else {
 					progressBar.removeAttribute("value");
 				}
 			};
-			interval = 1000;
 			checkForReload = function() {
 				var xhr = new XMLHttpRequest();
 				xhr.timeout = interval;
@@ -142,9 +149,6 @@
 				xhr.onload = function() {
 					if (xhr.readyState === xhr.DONE && xhr.status === 200) {
 						if (original_html !== xhr.responseText) {
-							console.log("Differing!");
-							console.log(original_html);
-							console.log(xhr.responseText);
 							window.location.reload(true);
 						}
 					}
@@ -175,7 +179,6 @@
 							if (failed > 60) {
 								warnUser();
 							}
-							console.log(failed);
 						}
 					}
 				};
