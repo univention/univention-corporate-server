@@ -1,3 +1,10 @@
+univention-maintenance-mode (1.0.0-1) unstable; urgency=medium
+
+  * Bug #37223: Static images
+  * Build fixes
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 20 Jul 2018 11:45:40 +0200
+
 univention-maintenance-mode (1.0.0-0) unstable; urgency=medium
 
   * Bug #37223: Prototype for a univention-maintenance-mode
