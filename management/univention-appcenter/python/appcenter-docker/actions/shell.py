@@ -50,12 +50,13 @@ class Shell(UniventionAppAction, DockerActionMixin):
 	def setup_parser(self, parser):
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the App in whose environment COMMANDS shall be executed')
 		parser.add_argument('commands', nargs=REMAINDER, help='Command to be run. Defaults to an interactive shell')
+		parser.add_argument('-u', '--user', default='root', help='User used to run the command inside the container (default: %(default)s')
 		parser.add_argument('-i', '--interactive', action='store_true', default=False, help='Keep STDIN open even if not attached')
 		parser.add_argument('-t', '--tty', action='store_true', default=False, help='Allocate a pseudo-TTY')
 
 	def main(self, args):
 		docker = self._get_docker(args.app)
-		docker_exec = ['docker', 'exec']
+		docker_exec = ['docker', 'exec', '-u', args.user]
 		commands = args.commands[:]
 		if not commands:
 			commands = shlex.split(args.app.docker_shell_command)

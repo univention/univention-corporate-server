@@ -137,7 +137,7 @@ def ps(only_running=True):
 
 
 def execute_with_output(container, args, tty=None):
-	docker_exec = ['docker', 'exec']
+	docker_exec = ['docker', 'exec', '-u', 'root']
 	if tty is None:
 		tty = sys.stdin.isatty()
 	if tty:
@@ -149,7 +149,7 @@ def execute_with_output(container, args, tty=None):
 def execute_with_process(container, args, logger=None, tty=None):
 	if logger is None:
 		logger = _logger
-	docker_exec = ['docker', 'exec']
+	docker_exec = ['docker', 'exec', '-u', 'root']
 	if tty is None:
 		tty = sys.stdin.isatty()
 	if tty:

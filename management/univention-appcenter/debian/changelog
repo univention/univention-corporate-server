@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-11) unstable; urgency=medium
+
+  * Bug #47340: The user root is used inside containers to run scripts
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 21 Jul 2018 13:37:03 +0200
+
 univention-appcenter (7.0.2-10) unstable; urgency=medium
 
   * Bug #42970: Remove docker_script_init
