@@ -187,16 +187,6 @@ update_check_overwritten_umc_templates () {
 	fi
 }
 
-# Bug 44281, block update for univention App appliances until appliance package has been updated...
-update_check_app_appliance () {
-	if dpkg -l univention-app-appliance >/dev/null 1>&2
-	then
-		echo -e "\tThe UCS 4.3 update is not yet available for UCS app appliances."
-		echo -e "\tPlease try to update your system to UCS 4.3 at a later point."
-		return 1
-	fi
-}
-
 update_check_package_status () {
 	if dpkg -l | LC_ALL=C grep "^[a-zA-Z][A-Z] " 1>&2
 	then
