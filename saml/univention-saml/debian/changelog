@@ -1,3 +1,9 @@
+univention-saml (5.0.4-24) unstable; urgency=medium
+
+  * Bug #47309: Fix config to allow SAML+Kerberos Login
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 23 Jul 2018 17:37:18 +0200
+
 univention-saml (5.0.4-23) unstable; urgency=medium
 
   * Bug #47309: IdP configuration options regarding allowed LDAP attributes
