@@ -1,6 +1,0 @@
-[samba/include/configs]
-Description[de]=Komma separierte Liste von Dateinamen, die in /etc/samba/local.config.conf inkludiert werden. Die Dateien müssen in /etc/samba/local.config.d/ vorhanden sein und dürfen nicht auf ".local.config.conf" enden.
-Description[en]=Comma separated list of file names to be included in /etc/samba/local.config.conf. Files have to exist in /etc/samba/local.config.d/ and must not end with ".local.config.conf".
-Type=str
-Categories=service-samba
-

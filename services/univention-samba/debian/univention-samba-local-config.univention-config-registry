@@ -8,7 +8,6 @@ Variables: samba/printmode/usergroup
 Variables: samba/printmode/hosts/.*
 Variables: samba/othershares/usergroup/.*/invalid
 Variables: samba/othershares/hosts
-Variables: samba/include/configs
 
 Type: multifile
 Multifile: etc/samba/smb.conf
