@@ -1,3 +1,9 @@
+univention-system-setup (11.0.5-9) unstable; urgency=medium
+
+  * Bug #42366: Improve readability
+
+ -- Arvid Requate <requate@univention.de>  Tue, 24 Jul 2018 16:39:34 +0200
+
 univention-system-setup (11.0.5-8) unstable; urgency=medium
 
   * Bug #42366: fix setup-join

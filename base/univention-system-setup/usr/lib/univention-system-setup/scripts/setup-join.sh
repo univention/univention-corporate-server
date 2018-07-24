@@ -272,7 +272,6 @@ if [ $? -ne 1 ]; then
 				echo "Configure $(basename "$i") $(LC_ALL=C date)" | tee -a "$JOIN_LOG"
 				# test
 				$i 2>&1 | tee -a "$JOIN_LOG"
-				#$i > >(tee -a "$JOIN_LOG") 2> >(tee -a "$JOIN_LOG" >&2)
 			done
 		else
 			if [ -n "$dcaccount" -a -n "$password_file" ]; then
@@ -285,7 +284,7 @@ if [ $? -ne 1 ]; then
 				rm -f "$pwd_file"
 			fi
 		fi
-	) |& (
+	) 2>&1 | (
 		# parse the output for lines "^Configure .*" which indicate that a join
 		# script is being executed
 		while read line; do
