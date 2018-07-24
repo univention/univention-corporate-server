@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.0-30) unstable; urgency=medium
+
+  * Bug #46197: Only show samba-tool dbcheck errors as critical
+
+ -- Arvid Requate <requate@univention.de>  Tue, 24 Jul 2018 17:34:54 +0200
+
 univention-management-console-module-diagnostic (4.0.0-29) unstable; urgency=medium
 
   * Bug #45515: A new diagnostic plugin has been added to check whether the
