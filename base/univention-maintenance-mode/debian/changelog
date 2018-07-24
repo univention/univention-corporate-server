@@ -1,3 +1,9 @@
+univention-maintenance-mode (1.0.0-3) unstable; urgency=medium
+
+  * Bug #37223: Include download status in progress calculation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 24 Jul 2018 11:49:33 +0200
+
 univention-maintenance-mode (1.0.0-2) unstable; urgency=medium
 
   * Bug #37223: Build fixes

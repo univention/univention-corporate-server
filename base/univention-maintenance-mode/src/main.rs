@@ -48,9 +48,14 @@ fn read_progress() -> io::Result<f32> {
         if let Ok(line) = line {
             let bits: Vec<&str> = line.split(":").collect();
             if bits.len() >= 3 {
-                if bits[0] == "pmstatus" {
+                if bits[0] == "dlstatus" {
                     ret = match bits[2].parse::<f32>() {
-                        Ok(val) => val,
+                        Ok(val) => val / 2.0,
+                        Err(_) => ret
+                    };
+                } else if bits[0] == "pmstatus" {
+                    ret = match bits[2].parse::<f32>() {
+                        Ok(val) => 50.0 + val / 2.0,
                         Err(_) => ret
                     };
                 }
@@ -158,6 +163,7 @@ pub fn main() {
     if fs::remove_file("/var/www/univention/maintenance/updater.json").is_err() {
         println!("Failed to delete the status file /var/www/univention/maintenance/updater.json");
     }
+    let duration = Duration::from_millis(2000);
     loop {
         match read_progress() {
             Ok(percentage) => match add_updater_context(percentage) {
@@ -169,7 +175,6 @@ pub fn main() {
             },
             Err(err) => println!("univention-maintenance-mode: Error while reading progress: {:?}", err)
         };
-        let duration = Duration::from_millis(2000);
         sleep(duration);
     }
 }

@@ -1,3 +1,9 @@
+univention-management-console (10.0.6-8) unstable; urgency=medium
+
+  * Bug #37223: Soften Content-Security-Policy
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 24 Jul 2018 11:39:44 +0200
+
 univention-management-console (10.0.6-7) unstable; urgency=medium
 
   * Bug #37223: Redirect UMC site to maintenance page if in maintenance mode

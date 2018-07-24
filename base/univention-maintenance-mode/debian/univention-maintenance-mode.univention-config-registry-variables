@@ -1,0 +1,5 @@
+[updater/maintenance]
+Description[de]=Diese Variable wird vom System gesetzt, solange Release-Aktualisierungen eingespielt werden. Es verhindert die Benutzung von Univention Management Console, um Fehler während der Aktualisierung zu vermeiden.
+Description[en]=This variable is set by the system as long as release updates are installed. It prohibits using Univention Management Console to prevent errors during the the update.
+Type=bool
+Categories=service-software-management

@@ -41,7 +41,7 @@ fi
 
 # has to be done here because the updater/maintenance trigger executes first the script
 # and then the file...
-ucr commit /etc/apache2/sites-available/univention-proxy.conf
+ucr commit /etc/apache2/sites-available/univention-proxy.conf /etc/apache2/sites-available/univention.conf
 systemctl reload apache2.service
 
 exit 0
