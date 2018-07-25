@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * Relax trigger execution to "noawait"
 bug: [47356]
+erratum: 152
+announced: 2018-07-25
