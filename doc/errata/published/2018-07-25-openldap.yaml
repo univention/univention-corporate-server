@@ -9,3 +9,5 @@ desc: |
  * Some debug message levels in LDAP overlays have been adjusted
    to more sensible values.
 bug: [47196]
+erratum: 155
+announced: 2018-07-25
