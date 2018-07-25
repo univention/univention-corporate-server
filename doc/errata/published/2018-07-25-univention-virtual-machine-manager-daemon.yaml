@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The hosts in the 'Migrate domain' dialog are now sorted.
 bug: [47342]
+erratum: 426
+announced: 2018-07-25
