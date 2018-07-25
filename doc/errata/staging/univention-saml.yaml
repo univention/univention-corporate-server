@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-saml
-fix: 5.0.4-24A~4.3.0.201807231740
+fix: 5.0.4-25A~4.3.0.201807251721
 desc: |
  This update addresses the following issue(s):
  * When operating without a separate VirtualHost for single sign-on, a
