@@ -13,3 +13,5 @@ desc: |
    default for "attributeoptions" has changed from "entry-" to
    "entry-,lang-".
 bug: [47196, 47246]
+erratum: 156
+announced: 2018-07-25
