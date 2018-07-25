@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issues:
  * Only show samba-tool dbcheck errors as critical
 bug: [46197]
-
+erratum: 153
+announced: 2018-07-25
