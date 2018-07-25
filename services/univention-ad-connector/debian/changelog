@@ -1,3 +1,9 @@
+univention-ad-connector (12.0.0-13) unstable; urgency=medium
+
+  * Bug #47232: Add resync_object_from_* and remove_*_rejected
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Jul 2018 18:51:07 +0200
+
 univention-ad-connector (12.0.0-12) unstable; urgency=medium
 
   * Bug #47049: restart connector on extended attribute changes
