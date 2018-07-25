@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Share options in univention-samba-local-config have been fixed.
 bug: [46975]
+erratum: 154
+announced: 2018-07-25
