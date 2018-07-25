@@ -10,4 +10,4 @@ desc: |-
     a traceback anymore. Instead, a readable error message is shown.
   * Code for the deprecated UCS-2.x and UCS-3.x repository layout has been
     removed.
-bug: [41536, 36719]
+bug: [41536, 36719, 37223]
