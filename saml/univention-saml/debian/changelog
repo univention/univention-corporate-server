@@ -1,3 +1,9 @@
+univention-saml (5.0.4-25) unstable; urgency=medium
+
+  * Bug #47309: Fix joinscript error handling
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 25 Jul 2018 17:18:34 +0200
+
 univention-saml (5.0.4-24) unstable; urgency=medium
 
   * Bug #47309: Fix config to allow SAML+Kerberos Login

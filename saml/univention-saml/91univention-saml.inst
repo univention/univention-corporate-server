@@ -312,7 +312,7 @@ idp_ldap_get_attributes="$saml_idp_ldap_get_attributes"
 udm saml/idpconfig create "$@" \
 	--ignore_exists \
 	--position="cn=univention,$ldap_base" \
-	--set id=default-saml-idp
+	--set id=default-saml-idp || die
 
 # If the package gets installed on a DC master, configure default values
 if ! joinscript_check_any_version_executed && [ "$server_role" == "domaincontroller_master" ]; then
@@ -320,7 +320,7 @@ if ! joinscript_check_any_version_executed && [ "$server_role" == "domaincontrol
 		--dn="id=default-saml-idp,cn=univention,$ldap_base" \
 		--append LdapGetAttributes="uid" \
 		--append LdapGetAttributes="mailPrimaryAddress" \
-		--append LdapGetAttributes="enabledServiceProviderIdentifier"
+		--append LdapGetAttributes="enabledServiceProviderIdentifier" || die
 fi
 
 # When updating, add migrate current values of UCR saml/idp/ldap/get_attributes to LDAP
@@ -329,7 +329,7 @@ if joinscript_check_version_in_range_executed 1 6; then
 	for attr in $(echo $idp_ldap_get_attributes | sed -e s"/[\',]//g"); do
 		udm saml/idpconfig modify "$@" \
 			--dn="id=default-saml-idp,cn=univention,$ldap_base" \
-			--append LdapGetAttributes="$attr"
+			--append LdapGetAttributes="$attr" || die
 	done
 fi
 
