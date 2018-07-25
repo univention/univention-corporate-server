@@ -1083,14 +1083,13 @@ class ad(univention.connector.ucs):
 
 		return max(usnchanged, usncreated)
 
-	def __search_ad(self, filter='', attrlist=[], show_deleted=False):
+	def __search_ad(self, base=None, scope=ldap.SCOPE_SUBTREE, filter='', attrlist=[], show_deleted=False):
 		'''
 		search ad
 		'''
 		_d = ud.function('ldap.__search_ad')
-
-		scope = ldap.SCOPE_SUBTREE
-		base = self.lo_ad.base
+		if not base:
+			base = self.lo_ad.base
 
 		ctrls = []
 		ctrls.append(SimplePagedResultsControl(True, PAGE_SIZE, ''))

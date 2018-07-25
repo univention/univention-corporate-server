@@ -4,6 +4,10 @@ univention-connector-list-rejected usr/sbin/
 scripts/prepare-new-instance usr/share/univention-ad-connector/scripts
 scripts/well-known-sid-object-rename usr/share/univention-ad-connector/scripts
 scripts/make-deleted-objects-readable-for-this-machine usr/share/univention-ad-connector/scripts
+scripts/resync_object_from_ucs.py usr/share/univention-ad-connector/
+scripts/resync_object_from_ad.py  sr/share/univention-ad-connector/
+scripts/remove_ucs_rejected.py usr/share/univention-ad-connector/
+scripts/remove_ad_rejected.py usr/share/univention-ad-connector/
 
 conffiles/etc/univention/connector/ad/mapping etc/univention/connector/ad/
 
