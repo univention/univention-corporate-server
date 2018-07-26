@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-ad-connector
-fix: 12.0.0-14A~4.3.0.201807261024
+fix: 12.0.0-15A~4.3.0.201807261435
 desc: |-
   This update addresses the following issue:
   * Four new tools have beeen added:
