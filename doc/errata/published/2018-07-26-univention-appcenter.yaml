@@ -9,3 +9,5 @@ desc: |-
   * Fix finding the wrong version in the App Cache. This issue could result in
     Apps being unregistered.
 bug: [47383]
+erratum: 157
+announced: 2018-07-26
