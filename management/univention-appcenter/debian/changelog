@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-12) unstable; urgency=medium
+
+  * Bug #47383: Fix finding the wrong version in the App Cache
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 26 Jul 2018 17:13:41 +0200
+
 univention-appcenter (7.0.2-11) unstable; urgency=medium
 
   * Bug #47340: The user root is used inside containers to run scripts

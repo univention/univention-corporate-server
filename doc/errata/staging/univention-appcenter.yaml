@@ -1,18 +1,11 @@
 product: ucs
 release: "4.3"
-version: [1]
+version: [0, 1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-appcenter
-fix: 7.0.2-11A~4.3.0.201807211346
+fix: 7.0.2-12A~4.3.0.201807261705
 desc: |-
   This update addresses the following issue(s):
-  * Apps may now be notified when relevant objects change in LDAP. This is
-    done by adding a listener module to UCS.
-  * Processing of these notifications is done asynchronically. Therefore, a
-    new service has been added: univention-appcenter-listener-converter.
-  * Timezone setup during docker app installations has been fixed.
-  * The user root is used inside containers to run scripts.
-  * Docker Apps may no longer specify a custom command to start the container
-    with. Instead, the command specified during the build of the image will be
-    used.
-bug: [47265, 47315, 47373, 47340, 42970]
+  * Fix finding the wrong version in the App Cache. This issue could result in
+    Apps being unregistered.
+bug: [47383]

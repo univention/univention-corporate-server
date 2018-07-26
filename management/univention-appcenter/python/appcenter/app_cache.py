@@ -119,8 +119,11 @@ class _AppCache(object):
 		for app in self.get_every_single_app():
 			if app.id in apps:
 				old_app, old_is_installed = apps[app.id]
-				if not old_is_installed and old_app < app:
-					apps[app.id] = (app, app.is_installed())
+				if not old_is_installed:
+					if old_app < app:
+						apps[app.id] = (app, app.is_installed())
+					elif app.is_installed():
+						apps[app.id] = (app, True)
 			else:
 				apps[app.id] = (app, app.is_installed())
 		return sorted(app for (app, is_installed) in apps.itervalues())
