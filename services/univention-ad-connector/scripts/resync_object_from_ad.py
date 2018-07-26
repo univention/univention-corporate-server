@@ -159,9 +159,9 @@ class ad(univention.connector.ad.ad):
 if __name__ == '__main__':
 
 	parser = OptionParser(usage='resync_object_from_ad.py [--filter <LDAP search filter>] [--base  <LDAP search base>] [dn]')
-	parser.add_option("--filter", dest="ldapfilter", help="LDAP search filter")
-	parser.add_option("--base", dest="ldapbase", help="LDAP search base")
-	parser.add_option("--configbasename", dest="configbasename", help="",
+	parser.add_option("-f", "--filter", dest="ldapfilter", help="LDAP search filter")
+	parser.add_option("-b", "--base", dest="ldapbase", help="LDAP search base")
+	parser.add_option("-c", "--configbasename", dest="configbasename", help="",
 	                  metavar="CONFIGBASENAME", default="connector")
 	(options, args) = parser.parse_args()
 
@@ -171,7 +171,7 @@ if __name__ == '__main__':
 		print("Invalid configbasename, directory %s does not exist" % state_directory)
 		sys.exit(1)
 
-	if len(args) != 1 and not options.ldapfilter:
+	if len(args) != 1 and not (options.ldapfilter or options.ldapbase):
 		parser.print_help()
 		sys.exit(2)
 

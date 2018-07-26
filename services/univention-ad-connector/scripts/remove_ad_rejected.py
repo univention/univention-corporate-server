@@ -55,7 +55,7 @@ def remove_ad_rejected(ad_dn):
 
 if __name__ == '__main__':
 	parser = OptionParser(usage='remove_ad_rejected.py dn')
-	parser.add_option("--configbasename", dest="configbasename", help="",
+	parser.add_option("-c", "--configbasename", dest="configbasename", help="",
 	                  metavar="CONFIGBASENAME", default="connector")
 	(options, args) = parser.parse_args()
 
