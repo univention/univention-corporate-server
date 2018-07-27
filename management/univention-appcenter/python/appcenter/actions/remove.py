@@ -54,12 +54,12 @@ class Remove(InstallRemoveUpgrade):
 		pass
 
 	def _do_it(self, app, args):
+		self._unregister_listener(app)
+		self.percentage = 5
 		if not self._remove_app(app, args):
 			raise RemoveFailed()
 		self.percentage = 45
 		self._unregister_app(app, args)
-		self.percentage = 50
-		self._unregister_listener(app)
 		self.percentage = 55
 		self._unregister_attributes(app, args)
 		self.percentage = 60

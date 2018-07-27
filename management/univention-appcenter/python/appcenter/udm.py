@@ -156,6 +156,16 @@ def get_connection(userdn, password):
 	return lo, pos
 
 
+def get_read_connection(userdn, password):
+	port = int(ucr_get('ldap/server/port', '7389'))
+	host = ucr_get('ldap/server/name')
+	base = ucr_get('ldap/base')
+	lo = base_access(host=host, port=port, base=base, binddn=userdn, bindpw=password)
+	lo = access(lo=lo)
+	pos = position(lo.base)
+	return lo, pos
+
+
 class ApplicationLDAPObject(object):
 
 	def __init__(self, app, lo, pos, create_if_not_exists=False):

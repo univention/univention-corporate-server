@@ -268,6 +268,9 @@ class Register(CredentialsAction):
 			listener_file = '/usr/lib/univention-directory-listener/system/%s.py' % app.id
 			if os.path.exists(listener_file):
 				return
+			ldap_filter = '(|%s)' % ''.join('(univentionObjectType=%s)' % udm_module for udm_module in app.listener_udm_modules)
+			dump_dir = os.path.join('/var/lib/univention-appcenter/listener/', app.id)  # this is appcenter.listener.LISTENER_DUMP_DIR, but save the import for just that
+			output_dir = os.path.join(app.get_data_dir, 'listener')
 			with open(listener_file, 'w') as fd:
 				fd.write('''#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
@@ -281,7 +284,13 @@ name = '%(name)s'
 class AppListener(AppListener):
 	class Configuration(AppListener.Configuration):
 		name = '%(name)s'
-''' % {'name': app.id})
+		# the following attributes do nothing and are here solely for
+		# documentation / transparency purposes
+		# logic is in the AppListener class itself
+		ldap_filter = '%(ldap_filter)s'
+		dump_dir = '%(dump_dir)s'
+		output_dir = '%(output_dir)s'
+''' % {'name': app.id, ldap_filter: ldap_filter, dump_dir: dump_dir, output_dir: output_dir})
 			self._subprocess(['systemctl', 'enable', 'univention-appcenter-listener-converter@%s.service' % app.id])
 			self._subprocess(['systemctl', 'start', 'univention-appcenter-listener-converter@%s.service' % app.id])
 			self.log('Added Listener for %s' % app)

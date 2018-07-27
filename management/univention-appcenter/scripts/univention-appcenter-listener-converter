@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+import sys
 import os
 import os.path
 from argparse import ArgumentParser
@@ -44,9 +45,8 @@ from univention.listener.handler_logging import get_logger
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.utils import mkdir, call_process
-from univention.appcenter.udm import search_objects, get_machine_connection, get_connection
-from univention.appcenter.ucr import ucr_get, ucr_load
-from univention.appcenter.packages import reload_package_manager
+from univention.appcenter.udm import search_objects, get_machine_connection, get_read_connection
+from univention.appcenter.ucr import ucr_get
 from univention.appcenter.listener import LISTENER_DUMP_DIR
 
 
@@ -54,7 +54,6 @@ logger = None
 
 
 def get_app_connection(app):
-	if get_app_connection._connection is None:
 		if app.docker:
 			machine_account = ucr_get(app.ucr_hostdn_key)
 			try:
@@ -64,13 +63,11 @@ def get_app_connection(app):
 			docker = Docker(app, logger)
 			if docker.is_running():
 				machine_password = open(docker.path('/etc/machine.secret')).read()
-			get_app_connection._connection = get_connection(machine_account, machine_password)
 			logger.info('Using App account connection')
+			return get_read_connection(machine_account, machine_password)
 		else:
-			get_app_connection._connection = get_machine_connection()
 			logger.info('Using machine connection')
-	return get_app_connection._connection
-get_app_connection._connection = None
+			return get_machine_connection()
 
 
 def run_trigger(app):
@@ -101,10 +98,13 @@ def run_trigger(app):
 	if success:
 		logger.info('Success! Removing consumed files')
 		for fname in filenames:
-			os.unlink(fname)
+			try:
+				os.unlink(fname)
+			except EnvironmentError:
+				pass
 
 
-def convert(app, dumped, filename):
+def convert(app, dumped, filename, lo, pos):
 	udm_type = dumped['object_type']
 	command = dumped['command']
 	entry_uuid = dumped['entry_uuid']
@@ -112,7 +112,6 @@ def convert(app, dumped, filename):
 	if command == 'delete':
 		attrs = None
 	else:
-		lo, pos = get_app_connection(app)
 		objs = search_objects(udm_type, lo, pos, entryUUID=entry_uuid)
 		if objs:
 			attrs = objs[0].info
@@ -135,7 +134,7 @@ def convert(app, dumped, filename):
 	return True
 
 
-def find_and_convert_files(app):
+def find_and_convert_files(app, lo, pos):
 	filenames = sorted(glob(os.path.join(LISTENER_DUMP_DIR, app.id, '*.json')))
 	used_entry_uuids = {}
 	dumped_objects = {}
@@ -158,7 +157,7 @@ def find_and_convert_files(app):
 		os.unlink(filename)
 	for filename in used_filenames:
 		dumped = dumped_objects[filename]
-		if convert(app, dumped, filename):
+		if convert(app, dumped, filename, lo, pos):
 			logger.info('Deleting used %s' % filename)
 			os.unlink(filename)
 
@@ -170,28 +169,26 @@ def main():
 	parser.add_argument('app', help='App whose listener output should be converted.')
 	parser.add_argument('--once', action='store_true', help='Only do this once and then quit (otherwise will loop forever).')
 	args = parser.parse_args()
-	old_app = None
 	global logger
 	logger = get_logger(args.app)
+	app = Apps().find(args.app)
+	if not app:
+		logger.critical('App not found')
+		sys.exit(1)
+	if not app.is_installed():
+		logger.critical('App not installed')
+		sys.exit(2)
+	lo, pos = get_app_connection()
+	if lo is None:
+		logger.critical('LDAP connection failed')
+		sys.exit(3)
+	interval = int(ucr_get('appcenter/converter/sleep', '5'))
 	while True:
-		ucr_load()
-		reload_package_manager()
-		interval = int(ucr_get('appcenter/converter/sleep', '1'))
-		app = Apps().find(args.app)
-		if not app:
-			logger.info('App not found')
-		elif not app.is_installed():
-			logger.info('App not installed')
-		else:
-			try:
-				if old_app is None or app != old_app:
-					logger.info('Need a new LDAP connection')
-					get_connection._connection = None
-					old_app = app
-				find_and_convert_files(app)
-				run_trigger(app)
-			except Exception:
-				logger.error('Error in the Listener converter', exc_info=1)
+		try:
+			find_and_convert_files(app, lo, pos)
+			run_trigger(app)
+		except Exception:
+			logger.error('Error in the Listener converter', exc_info=1)
 		if args.once:
 			break
 		time.sleep(interval)
