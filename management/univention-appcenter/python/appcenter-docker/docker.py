@@ -137,7 +137,7 @@ def ps(only_running=True):
 
 
 def execute_with_output(container, args, tty=None):
-	docker_exec = ['docker', 'exec']
+	docker_exec = ['docker', 'exec', '-u', 'root']
 	if tty is None:
 		tty = sys.stdin.isatty()
 	if tty:
@@ -149,7 +149,7 @@ def execute_with_output(container, args, tty=None):
 def execute_with_process(container, args, logger=None, tty=None):
 	if logger is None:
 		logger = _logger
-	docker_exec = ['docker', 'exec']
+	docker_exec = ['docker', 'exec', '-u', 'root']
 	if tty is None:
 		tty = sys.stdin.isatty()
 	if tty:
@@ -158,7 +158,7 @@ def execute_with_process(container, args, logger=None, tty=None):
 	return call_process(args, logger)
 
 
-def create(image, command, hostname=None, ports=None, volumes=None, env_file=None, args=None):
+def create(image, command=None, hostname=None, ports=None, volumes=None, env_file=None, args=None):
 	_args = []
 	if hostname:
 		_args.extend(['--hostname', hostname])
@@ -171,7 +171,10 @@ def create(image, command, hostname=None, ports=None, volumes=None, env_file=Non
 		_args.extend(['-v', volume])
 	if args:
 		_args.extend(args)
-	return check_output(['docker', 'create'] + _args + [image] + command).strip()
+	_args.append(image)
+	if command:
+		_args.extend(command)
+	return check_output(['docker', 'create'] + _args).strip()
 
 
 def rmi(image):
@@ -350,14 +353,13 @@ class Docker(object):
 			if os.path.isfile('/etc/apt/apt.conf.d/80proxy'):
 				volumes.add('/etc/apt/apt.conf.d/80proxy:/etc/apt/apt.conf.d/80proxy:ro')  # apt proxy
 		env_file = self.ucr_filter_env_file(env)
-		command = shlex.split(self.app.docker_script_init)
 		args = shlex.split(ucr_get(self.app.ucr_docker_params_key, ''))
 		for tmpfs in ("/run", "/run/lock"):                                 # systemd
 			args.extend(["--tmpfs", tmpfs])
 		seccomp_profile = "/etc/docker/seccomp-systemd.json"
 		args.extend(["--security-opt", "seccomp:%s" % seccomp_profile])     # systemd
 		args.extend(["-e", "container=docker"])                             # systemd
-		container = create(self.image, command, hostname, ports, volumes, env_file, args)
+		container = create(self.image, None, hostname, ports, volumes, env_file, args)
 		ucr_save({self.app.ucr_container_key: container})
 		self.container = container
 		return container
