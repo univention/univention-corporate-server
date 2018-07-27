@@ -750,6 +750,9 @@ class App(object):
 			of the second directory.
 		docker_server_role: Which computer object type shall be
 			created in LDAP as the docker container.
+		docker_script_init: The entrypoint for the Docker App. An
+			empty value will use the container's entrypoint, but
+			this needs an explicit *docker_script_init = *.
 		docker_script_setup: Path to the setup script in the container
 			run after the start of the container. If the App comes
 			with a setup script living on the App Center server,
@@ -899,6 +902,7 @@ class App(object):
 	docker_shell_command = AppAttribute(default='/bin/bash')
 	docker_volumes = AppListAttribute()
 	docker_server_role = AppAttribute(default='memberserver', choices=['memberserver', 'domaincontroller_slave'])
+	docker_script_init = AppAttribute(default='/sbin/init')
 	docker_script_setup = AppDockerScriptAttribute()
 	docker_script_store_data = AppDockerScriptAttribute()
 	docker_script_restore_data_before_setup = AppDockerScriptAttribute()
