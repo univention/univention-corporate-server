@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-15) unstable; urgency=medium
+
+  * Bug #47315: Restart service when needed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 27 Jul 2018 11:36:17 +0200
+
 univention-appcenter (7.0.2-14) unstable; urgency=medium
 
   * Bug #47315: Restart service when needed

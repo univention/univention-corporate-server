@@ -291,13 +291,7 @@ class AppListener(AppListener):
 		dump_dir = '%(dump_dir)s'
 		output_dir = '%(output_dir)s'
 ''' % {'name': app.id, ldap_filter: ldap_filter, dump_dir: dump_dir, output_dir: output_dir})
-			logger = LogCatcher()
-			self._subprocess(['systemctl', 'is-enabled', 'univention-appcenter-listener-converter@%s.service' % app.id], logger)
-			if list(logger.stdout()) == ['enabled']:
-				self._subprocess(['systemctl', 'restart', 'univention-appcenter-listener-converter@%s.service' % app.id])
-			else:
-				self._subprocess(['systemctl', 'enable', 'univention-appcenter-listener-converter@%s.service' % app.id])
-				self._subprocess(['systemctl', 'start', 'univention-appcenter-listener-converter@%s.service' % app.id])
+			self._update_converter_service()
 			self.log('Added Listener for %s' % app)
 			if not delay:
 				self._restart_listener([])
@@ -305,13 +299,26 @@ class AppListener(AppListener):
 		else:
 			return self._unregister_listener(app, delay)
 
+	def _update_converter_service(self, app):
+		listener_file = '/usr/lib/univention-directory-listener/system/%s.py' % app.id
+		if os.path.exists(listener_file):
+			logger = LogCatcher()
+			self._subprocess(['systemctl', 'is-enabled', 'univention-appcenter-listener-converter@%s.service' % app.id], logger)
+			if list(logger.stdout()) == ['enabled']:
+				self._subprocess(['systemctl', 'restart', 'univention-appcenter-listener-converter@%s.service' % app.id])
+			else:
+				self._subprocess(['systemctl', 'enable', 'univention-appcenter-listener-converter@%s.service' % app.id])
+				self._subprocess(['systemctl', 'start', 'univention-appcenter-listener-converter@%s.service' % app.id])
+		else:
+			self._subprocess(['systemctl', 'stop', 'univention-appcenter-listener-converter@%s.service' % app.id])
+			self._subprocess(['systemctl', 'disable', 'univention-appcenter-listener-converter@%s.service' % app.id])
+
 	def _unregister_listener(self, app, delay=False):
 		listener_file = '/usr/lib/univention-directory-listener/system/%s.py' % app.id
 		listener_meta_file = '/var/lib/univention-directory-listener/handlers/%s' % app.id
 		if os.path.exists(listener_file):
 			os.unlink(listener_file)
-			self._subprocess(['systemctl', 'stop', 'univention-appcenter-listener-converter@%s.service' % app.id])
-			self._subprocess(['systemctl', 'disable', 'univention-appcenter-listener-converter@%s.service' % app.id])
+			self._update_converter_service()
 			self.log('Removed Listener for %s' % app)
 			if not delay:
 				self._restart_listener([listener_meta_file])
