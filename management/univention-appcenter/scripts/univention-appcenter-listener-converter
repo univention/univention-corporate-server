@@ -178,7 +178,7 @@ def main():
 	if not app.is_installed():
 		logger.critical('App not installed')
 		sys.exit(2)
-	lo, pos = get_app_connection()
+	lo, pos = get_app_connection(app)
 	if lo is None:
 		logger.critical('LDAP connection failed')
 		sys.exit(3)

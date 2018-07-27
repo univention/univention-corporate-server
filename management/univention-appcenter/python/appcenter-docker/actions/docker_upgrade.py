@@ -173,7 +173,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		old_configure = args.configure
 		args.configure = False
 		self._install_new_app(app, args)
-		self._update_converter_service()
+		self._update_converter_service(app)
 		args.configure = old_configure
 		args.set_vars = settings
 		self._configure(app, args)

@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-16) unstable; urgency=medium
+
+  * Bug #47265: small fixes
+
+ -- Felix Botner <botner@univention.de>  Fri, 27 Jul 2018 16:27:11 +0200
+
 univention-appcenter (7.0.2-15) unstable; urgency=medium
 
   * Bug #47315: Restart service when needed

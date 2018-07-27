@@ -270,7 +270,7 @@ class Register(CredentialsAction):
 				return
 			ldap_filter = '(|%s)' % ''.join('(univentionObjectType=%s)' % udm_module for udm_module in app.listener_udm_modules)
 			dump_dir = os.path.join('/var/lib/univention-appcenter/listener/', app.id)  # this is appcenter.listener.LISTENER_DUMP_DIR, but save the import for just that
-			output_dir = os.path.join(app.get_data_dir, 'listener')
+			output_dir = os.path.join(app.get_data_dir(), 'listener')
 			with open(listener_file, 'w') as fd:
 				fd.write('''#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
@@ -290,8 +290,8 @@ class AppListener(AppListener):
 		ldap_filter = '%(ldap_filter)s'
 		dump_dir = '%(dump_dir)s'
 		output_dir = '%(output_dir)s'
-''' % {'name': app.id, ldap_filter: ldap_filter, dump_dir: dump_dir, output_dir: output_dir})
-			self._update_converter_service()
+''' % {'name': app.id, 'ldap_filter': ldap_filter, 'dump_dir': dump_dir, 'output_dir': output_dir})
+			self._update_converter_service(app)
 			self.log('Added Listener for %s' % app)
 			if not delay:
 				self._restart_listener([])
@@ -318,7 +318,7 @@ class AppListener(AppListener):
 		listener_meta_file = '/var/lib/univention-directory-listener/handlers/%s' % app.id
 		if os.path.exists(listener_file):
 			os.unlink(listener_file)
-			self._update_converter_service()
+			self._update_converter_service(app)
 			self.log('Removed Listener for %s' % app)
 			if not delay:
 				self._restart_listener([listener_meta_file])
