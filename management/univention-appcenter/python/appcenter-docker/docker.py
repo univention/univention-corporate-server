@@ -158,7 +158,7 @@ def execute_with_process(container, args, logger=None, tty=None):
 	return call_process(args, logger)
 
 
-def create(image, command=None, hostname=None, ports=None, volumes=None, env_file=None, args=None):
+def create(image, command, hostname=None, ports=None, volumes=None, env_file=None, args=None):
 	_args = []
 	if hostname:
 		_args.extend(['--hostname', hostname])
@@ -353,13 +353,14 @@ class Docker(object):
 			if os.path.isfile('/etc/apt/apt.conf.d/80proxy'):
 				volumes.add('/etc/apt/apt.conf.d/80proxy:/etc/apt/apt.conf.d/80proxy:ro')  # apt proxy
 		env_file = self.ucr_filter_env_file(env)
+		command = shlex.split(self.app.docker_script_init)
 		args = shlex.split(ucr_get(self.app.ucr_docker_params_key, ''))
 		for tmpfs in ("/run", "/run/lock"):                                 # systemd
 			args.extend(["--tmpfs", tmpfs])
 		seccomp_profile = "/etc/docker/seccomp-systemd.json"
 		args.extend(["--security-opt", "seccomp:%s" % seccomp_profile])     # systemd
 		args.extend(["-e", "container=docker"])                             # systemd
-		container = create(self.image, None, hostname, ports, volumes, env_file, args)
+		container = create(self.image, command, hostname, ports, volumes, env_file, args)
 		ucr_save({self.app.ucr_container_key: container})
 		self.container = container
 		return container
