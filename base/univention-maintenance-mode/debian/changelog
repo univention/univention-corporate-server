@@ -1,3 +1,9 @@
+univention-maintenance-mode (1.0.0-4) unstable; urgency=medium
+
+  * Bug #37223: Do it in Python
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 27 Jul 2018 18:13:24 +0200
+
 univention-maintenance-mode (1.0.0-3) unstable; urgency=medium
 
   * Bug #37223: Include download status in progress calculation

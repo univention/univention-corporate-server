@@ -1,0 +1,140 @@
+#!/usr/bin/python2.7
+# Univention Maintenance Mode
+#  Write progress of univention-updater in JSON file
+#
+# Copyright 2018 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+#
+
+import os
+import time
+import json
+
+from univention.updater import UniventionUpdater
+
+uu = UniventionUpdater(False)
+available_updates = uu.get_all_available_release_updates()[0]
+
+def read_progress():
+	updater_status = UpdaterStatus()
+	if updater_status.status == 'DONE':
+		return 0.0;
+	ret = 0.0
+	with open('/var/lib/univention-updater/univention-updater.status.details') as fd: 
+		for line in fd: 
+			bits = line.split(':')
+			if len(bits) > 3:
+				try:
+					if bits[0] == 'dlstatus':
+						ret = float(bits[2]) / 2.0 
+					elif bits[0] == 'pmstatus':
+						ret = 50.0 + float(bits[2]) / 2.0 
+				except ValueError:
+					pass
+	return ret
+	
+
+class UpdaterStatus(object):
+	def __init__(self):
+		self.target_version = None
+		with open('/var/lib/univention-updater/univention-updater.status') as fd:
+			for line in fd:
+				try:
+					key, value = line.split('=', 2)
+				except ValueError:
+					continue
+				if key == 'current_version':
+					self.current_version = value
+				elif key == 'next_version':
+					self.next_version = value
+				elif key == 'target_version':
+					self.target_version = value
+				elif key == 'type':
+					self.updatetype = value
+				elif key == 'status':
+					self.status = value
+				elif key == 'errorsource':
+					self.errorsource = value
+		self.overall_updates = available_updates
+		if self.target_version in self.overall_updates:
+			self.overall_updates = self.overall_updates[:self.overall_updates.index(self.target_version)]
+
+	def finished_updates(self):
+		if self.current_version in self.overall_updates:
+			return self.overall_updates.index(self.current_version) + 1
+		return 0
+
+
+def add_updater_context(percentage):
+	updater_status = UpdaterStatus()
+	if updater_status.target_version == updater_status.current_version:
+		return 100.0
+	finished_updates = float(updater_status.finished_updates())
+	return (finished_updates * 100.0 + percentage) / float(len(updater_status.overall_updates))
+
+
+def write_json(percentage):
+	with open('/var/www/univention/maintenance/updater.json', 'wb') as fd:
+		json.dump({'v1': {'percentage': percentage}}, fd)
+
+
+def compute():
+	try:
+		percentage = read_progress()
+	except EnvironmentError as exc:
+		print 'univention-maintenance-mode: Error while reading progress: %s' % exc
+	else:
+		try:
+			percentage = add_updater_context(percentage)
+		except EnvironmentError as exc:
+			print 'univention-maintenance-mode: Error while adding context: %s' % exc
+		else:
+			try:
+				write_json(percentage)
+			except EnvironmentError as exc:
+				print 'univention-maintenance-mode: Error while writing json: %s' % exc
+
+def main():
+	try:
+		os.unlink('/var/www/univention/maintenance/updater.json')
+	except EnvironmentError:
+		print 'Failed to delete the status file /var/www/univention/maintenance/updater.json'
+	duration = 0
+	from datetime import datetime
+	t1 = datetime.now()
+	i = 0
+	while True:
+		compute()
+		i += 1
+		if i % 1000 == 0:
+			print i, datetime.now() - t1
+			t1 = datetime.now()
+		time.sleep(duration)
+
+
+if __name__ == '__main__':
+	main()

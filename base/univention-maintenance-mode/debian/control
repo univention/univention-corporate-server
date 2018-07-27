@@ -4,12 +4,11 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper,
  univention-config-dev,
- ucslint,
- rustc
+ ucslint
 Standards-Version: 4.0.0
 
 Package: univention-maintenance-mode
-Architecture: any
+Architecture: all
 Description: Files for a maintenance mode during release updates.
  This package contains a minimal web server to be run when Apache,
  UMC, etc. are not available.

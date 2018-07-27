@@ -35,10 +35,6 @@ override_dh_auto_test:
 
 override_dh_auto_install:
 	univention-install-config-registry
-	mkdir -p bin/
-	rustc --crate-name univention_maintenance_mode_update_progress src/main.rs --crate-type bin --emit=dep-info,link -C opt-level=3 --out-dir bin/
-	mkdir -p debian/univention-maintenance-mode/usr/share/
-	install -m 0755 bin/univention_maintenance_mode_update_progress debian/univention-maintenance-mode/usr/share/univention-maintenance-mode-update-progress
 	dh_auto_install
 
 %:

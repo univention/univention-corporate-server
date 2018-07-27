@@ -33,7 +33,6 @@
 
 . /usr/share/univention-lib/ucr.sh
 if is_ucr_true updater/maintenance; then
-	/usr/share/univention-maintenance-mode-available-updates
 	systemctl start univention-maintenance-mode.service
 else
 	systemctl stop univention-maintenance-mode.service
