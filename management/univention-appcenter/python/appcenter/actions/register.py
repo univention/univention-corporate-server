@@ -51,7 +51,7 @@ from univention.appcenter.actions import StoreAppAction
 from univention.appcenter.exceptions import DatabaseConnectorError, RegisterSchemaFailed, RegisterSchemaFileFailed
 from univention.appcenter.actions.credentials import CredentialsAction
 from univention.appcenter.utils import mkdir, app_ports, app_ports_with_protocol, currently_free_port_in_range, generate_password, container_mode
-from univention.appcenter.log import catch_stdout
+from univention.appcenter.log import catch_stdout, LogCatcher
 from univention.appcenter.ucr import ucr_save, ucr_get, ucr_keys, ucr_instance
 
 
@@ -291,12 +291,19 @@ class AppListener(AppListener):
 		dump_dir = '%(dump_dir)s'
 		output_dir = '%(output_dir)s'
 ''' % {'name': app.id, ldap_filter: ldap_filter, dump_dir: dump_dir, output_dir: output_dir})
-			self._subprocess(['systemctl', 'enable', 'univention-appcenter-listener-converter@%s.service' % app.id])
-			self._subprocess(['systemctl', 'start', 'univention-appcenter-listener-converter@%s.service' % app.id])
+			logger = LogCatcher()
+			self._subprocess(['systemctl', 'is-enabled', 'univention-appcenter-listener-converter@%s.service' % app.id], logger)
+			if list(logger.stdout()) == ['enabled']:
+				self._subprocess(['systemctl', 'restart', 'univention-appcenter-listener-converter@%s.service' % app.id])
+			else:
+				self._subprocess(['systemctl', 'enable', 'univention-appcenter-listener-converter@%s.service' % app.id])
+				self._subprocess(['systemctl', 'start', 'univention-appcenter-listener-converter@%s.service' % app.id])
 			self.log('Added Listener for %s' % app)
 			if not delay:
 				self._restart_listener([])
 			return True
+		else:
+			return self._unregister_listener(app, delay)
 
 	def _unregister_listener(self, app, delay=False):
 		listener_file = '/usr/lib/univention-directory-listener/system/%s.py' % app.id

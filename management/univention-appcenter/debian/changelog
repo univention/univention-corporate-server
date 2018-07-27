@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-14) unstable; urgency=medium
+
+  * Bug #47315: Restart service when needed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 27 Jul 2018 11:05:16 +0200
+
 univention-appcenter (7.0.2-13) unstable; urgency=medium
 
   * Bug #47265: Add explicit, yet unneeded, variables to the listener files so
