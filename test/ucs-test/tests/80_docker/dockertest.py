@@ -93,6 +93,9 @@ class UCTTest_DockerApp_UMCInstallFailed(Exception):
 	pass
 
 
+class UCSTest_DockerApp_RegisterFailed(Exception):
+	pass
+
 def get_docker_appbox_image():
 	image_name = 'docker-test.software-univention.de/ucs-appbox-amd64:4.3-0'
 	print 'Using %s' % image_name
@@ -341,6 +344,14 @@ class App(object):
 		ret = subprocess.call(['univention-app', 'update'])
 		if ret != 0:
 			raise UCSTest_DockerApp_UpdateFailed()
+
+	def register(self):
+		print 'App.register()'
+		cmd = ['univention-app', 'register', '--app']
+		print cmd
+		ret = subprocess.call(' '.join(cmd), shell=True)
+		if ret != 0:
+			raise UCSTest_DockerApp_RegisterFailed()
 
 	def upgrade(self):
 		print 'App.upgrade()'

@@ -1,3 +1,9 @@
+ucs-test (8.0.28-152) unstable; urgency=medium
+
+  * Bug #47383: 63_app_register_with_old_app_installed
+
+ -- Felix Botner <botner@univention.de>  Fri, 27 Jul 2018 11:38:52 +0200
+
 ucs-test (8.0.28-151) unstable; urgency=medium
 
   * Bug #47345: Wait for s4 replication for containers (2)
