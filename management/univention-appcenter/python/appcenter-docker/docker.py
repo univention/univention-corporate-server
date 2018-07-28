@@ -174,7 +174,10 @@ def create(image, command, hostname=None, ports=None, volumes=None, env_file=Non
 	_args.append(image)
 	if command:
 		_args.extend(command)
-	return check_output(['docker', 'create'] + _args).strip()
+	args = ['docker', 'create'] + _args
+	_logger.debug('Creating a new Docker Container:')
+	_logger.debug(' '.join(args))
+	return check_output(args).strip()
 
 
 def rmi(image):
@@ -353,7 +356,9 @@ class Docker(object):
 			if os.path.isfile('/etc/apt/apt.conf.d/80proxy'):
 				volumes.add('/etc/apt/apt.conf.d/80proxy:/etc/apt/apt.conf.d/80proxy:ro')  # apt proxy
 		env_file = self.ucr_filter_env_file(env)
-		command = shlex.split(self.app.docker_script_init)
+		command = None
+		if self.app.docker_script_init:
+			command = shlex.split(self.app.docker_script_init)
 		args = shlex.split(ucr_get(self.app.ucr_docker_params_key, ''))
 		for tmpfs in ("/run", "/run/lock"):                                 # systemd
 			args.extend(["--tmpfs", tmpfs])
