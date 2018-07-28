@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-appcenter
-fix: 7.0.2-15A~4.3.0.201807271137
+fix: 7.0.2-17A~4.3.0.201807281604
 desc: |-
   This update addresses the following issue(s):
   * Apps may now be notified when relevant objects change in LDAP. This is
