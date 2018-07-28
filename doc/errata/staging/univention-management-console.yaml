@@ -3,7 +3,9 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-management-console
-fix: 
+fix: 10.0.6-8A~4.3.0.201807241153
 desc: |-
   This update addresses the following issues:
+  * During a release update, Apache will serve the maintenance page instead of
+    UMC.
 bug: [37223]

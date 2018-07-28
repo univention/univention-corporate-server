@@ -3,7 +3,11 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-maintenance-mode
-fix: 13.0.1-53A~4.3.0.201807031200
+fix: 1.0.0-4A~4.3.0.201807271836
 desc: |-
   This update addresses the following issues:
+  * Initial version: During a release update, Univention Management Console
+    (UMC) will no longer be accessible. Instead, a minimalistic web page
+    informs about the progress of the update. UMC will be available again as
+    soon as the update finished.
 bug: [37223]

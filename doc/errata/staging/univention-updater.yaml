@@ -10,4 +10,7 @@ desc: |-
     a traceback anymore. Instead, a readable error message is shown.
   * Code for the deprecated UCS-2.x and UCS-3.x repository layout has been
     removed.
+  * The progress of a release update is written to a status file so that the
+    package univention-maintenance-mode may read it to update the progress
+    accordingly.
 bug: [41536, 36719, 37223]
