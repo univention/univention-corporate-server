@@ -2601,10 +2601,14 @@ define([
 					_throwErrorIfNextWasCanceled(selectedNextPage);
 
 					return dialog.confirm(
-						_(
-							'Could not reach all repository servers. Please check if the UCR variables ' +
-							'"repository/online/server" and "repository/app_center/server" are set correctly and ' +
-							'the set servers can be reached through your network.'
+						_.ngettext(
+							'The server <b>%s</b> cannot be reached. For UCS to work properly, please ' +
+							'configure the network, any proxy and firewall to allow UCS to access this server.',
+							'These servers cannot be reached: <ul><li>%s</li></ul>' +
+							'For UCS to work properly, please configure the network, any proxy and firewall to ' +
+							'allow UCS to access these servers.',
+							unreachableServers.length,
+							unreachableServers.join('</li><li>')
 						),
 						[{
 							label: _('Adjust settings'),
@@ -2657,12 +2661,14 @@ define([
 					return pageName;
 				});
 
+				var unreachableServers;
+
 				var checkIfRepositoriesAreReachable = lang.hitch(this, function(selectedNextPage) {
-					console.log("Got " + selectedNextPage + " as selectedNextPage.");
 					return this.umcpCommand('setup/check/repository_accessibility').then(
 						function(data) {
-							if(data.result)
+							if(data.result.length === 0)
 								return selectedNextPage;
+							unreachableServers = data.result;
 							throw selectedNextPage;
 						}
 					);

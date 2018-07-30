@@ -68,11 +68,11 @@ except ImportError as e:
 	MODULE.warn('Ignoring import error: %s' % e)
 
 
-from . import network
-from .checks.repositories import check_if_repository_servers_are_reachable
-from .checks.univention_join import receive_domaincontroller_master_information
-from .checks.univention_join import set_role_and_check_if_join_will_work
-import util
+from univention.management.console.modules.setup import network
+from univention.management.console.modules.setup import util
+from univention.management.console.modules.setup.checks.repositories import get_unreachable_repository_servers
+from univention.management.console.modules.setup.checks.univention_join import receive_domaincontroller_master_information
+from univention.management.console.modules.setup.checks.univention_join import set_role_and_check_if_join_will_work
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -797,4 +797,4 @@ class Instance(Base, ProgressMixin):
 
 	@simple_response
 	def check_repository_accessibility(self):
-		return check_if_repository_servers_are_reachable()
+		return get_unreachable_repository_servers()
