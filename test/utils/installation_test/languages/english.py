@@ -37,7 +37,7 @@ strings = {
 	'no_dc_dns': 'No domain controller was found at',
 	'no_dc_dns_adapt': 'Adapt settings',
 	'preferred_dns': 'Preferred DNS server',
-	'repositories_not_reachable': 'Could not reach all repository',
+	'repositories_not_reachable': 'cannot be reached',
 	'join_domain': 'Join into an existing UCS',
 	'start_join': 'Start join at the end',
 	'system_name': 'Specify the name',
