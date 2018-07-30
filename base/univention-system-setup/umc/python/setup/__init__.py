@@ -69,7 +69,7 @@ except ImportError as e:
 
 
 from . import network
-from .checks.repositories import check_if_repository_servers_are_reachable
+from .checks.repositories import get_unreachable_repository_servers
 from .checks.univention_join import receive_domaincontroller_master_information
 from .checks.univention_join import set_role_and_check_if_join_will_work
 import util
@@ -797,4 +797,4 @@ class Instance(Base, ProgressMixin):
 
 	@simple_response
 	def check_repository_accessibility(self):
-		return check_if_repository_servers_are_reachable()
+		return get_unreachable_repository_servers()

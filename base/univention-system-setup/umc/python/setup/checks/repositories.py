@@ -6,7 +6,8 @@ UCR = univention.config_registry.ConfigRegistry()
 UCR.load()
 
 
-def check_if_repository_servers_are_reachable():
+def get_unreachable_repository_servers():
+	unreachable_servers = []
 	UCR.load()
 	for server in [
 		UCR.get('repository/online/server'),
@@ -16,5 +17,5 @@ def check_if_repository_servers_are_reachable():
 		try:
 			subprocess.check_call(['curl', server])
 		except subprocess.CalledProcessError:
-			return False
-	return True
+			unreachable_servers.append(server)
+	return unreachable_servers

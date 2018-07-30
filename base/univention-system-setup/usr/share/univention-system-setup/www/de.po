@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-system-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2018-07-13 14:23+0200\n"
+"POT-Creation-Date: 2018-07-30 13:22+0200\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -11,6 +11,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:316
 #, javascript-format
@@ -210,7 +211,7 @@ msgstr ""
 msgid "A preconfigured test domain will be instantiated."
 msgstr "Eine vorkonfigurierte UCS-Test-Domäne wird instanziiert."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2733
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2740
 msgid ""
 "A previous UCS system has already joined into the Active Directory domain. "
 "Please make sure the system \"%(ucs_master_fqdn)s\" is reachable via SSH. If"
@@ -294,8 +295,8 @@ msgstr ""
 "Directory-Domäne"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2588
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2610
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2720
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2614
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2727
 msgid "Adjust settings"
 msgstr "Einstellungen anpassen"
 
@@ -327,8 +328,8 @@ msgid "At least one network device needs to be properly configured."
 msgstr "Wenigstens ein Netzwerkgerät muss konfiguriert werden."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2572
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2734
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2868
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2741
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2875
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -380,7 +381,7 @@ msgstr ""
 "entweder als Benutzer <b>Administrator</b> oder als Benutzer <b>root</b>, "
 "falls das System noch nicht der Domäne beigetreten ist:"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2871
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2878
 msgid "Continue"
 msgstr "Fortfahren"
 
@@ -388,11 +389,11 @@ msgstr "Fortfahren"
 msgid "Continue with 169.254.*.* addresse(s)"
 msgstr "Fortfahren mit 169.254.*.* Adresse(n)"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2723
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2730
 msgid "Continue with incomplete settings"
 msgstr "Fortfahren mit unvollständigen Einstellungen"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2614
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2618
 msgid "Continue without access to the repository servers"
 msgstr "Ohne Zugriff auf die Repositories fortfahren"
 
@@ -408,17 +409,6 @@ msgid ""
 msgstr ""
 "Ein Fortsetzen der Installation kann zu einem nicht funktionsfähigen oder "
 "nicht mehr reagierenden System führen."
-
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2605
-msgid ""
-"Could not reach all repository servers. Please check if the UCR variables "
-"\"repository/online/server\" and \"repository/app_center/server\" are set "
-"correctly and the set servers can be reached through your network."
-msgstr ""
-"Nicht alle repository Server können erreicht werden. Bitte prüfen Sie, ob "
-"die UCR Variablen \"repository/online/server\" und "
-"\"repository/app_center/server\" korrekte Werte haben und die Server über "
-"Ihr Netzwerk erreichbar sind."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:309
 msgid "Create a new UCS domain"
@@ -736,7 +726,7 @@ msgstr ""
 "Es ist nicht möglich Samba 3 und Samba 4 auf einem System zu installieren. "
 "Bitte wählen Sie nur eine dieser Komponenten aus."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2756
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2763
 msgid ""
 "It seems that a UCS DC master system has already joined into the Windows AD "
 "domain. Please choose a different option as other system roles for joining "
@@ -807,7 +797,7 @@ msgstr "Keine zusätzliche Software-Komponente wird installiert."
 msgid "No additional software components will be installed."
 msgstr "Keine zusätzliche Software-Komponenten werden installiert."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2719
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2726
 msgid ""
 "No domain controller was found at the address of the name server. It is "
 "recommended to verify that the network settings are correct."
@@ -815,7 +805,7 @@ msgstr ""
 "Unter der Adresse des DNS-Servers konnte kein Domänencontroller gefunden "
 "werden. Die Netzwerkeinstellungen sollten überprüft werden."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2751
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2758
 msgid ""
 "No domain controller was found at the address of the name server. Please "
 "adjust your network settings."
@@ -901,7 +891,7 @@ msgstr ""
 msgid "Reconfigure"
 msgstr "Erneut konfigurieren"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2737
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2744
 msgid "Replace system"
 msgstr "System ersetzen"
 
@@ -909,7 +899,7 @@ msgstr "System ersetzen"
 msgid "Restarting server components..."
 msgstr "Neustart der Server-Komponenten..."
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2867
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2874
 msgid "Root password empty. Continue?"
 msgstr "Root-Passwort ist leer. Möchten Sie fortfahren?"
 
@@ -994,6 +984,25 @@ msgid ""
 msgstr ""
 "Das Root-Passwort ist zu kurz, aus Sicherheitsgründen muss es mindestens 8 "
 "Zeichen lang sein."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2605
+#, javascript-format
+msgid ""
+"The server <b>%s</b> cannot be reached. For UCS to work properly, please "
+"configure the network, any proxy and firewall to allow UCS to access this "
+"server."
+msgid_plural ""
+"These servers cannot be reached: <ul><li>%s</li></ul>For UCS to work "
+"properly, please configure the network, any proxy and firewall to allow UCS "
+"to access these servers."
+msgstr[0] ""
+"Der Server <b>%s</b> konnte nicht erreicht werden. Bitte konfigurieren Sie "
+"das Netzwerk, alle Proxyserver und Firewalls so, dass dieser Server "
+"erreichbar ist. Nur so kann UCS voll funktionsfähig sein."
+msgstr[1] ""
+"Diese Server konnten nicht erreicht werden: <ul><li>%s</li></ul>Bitte "
+"konfigurieren Sie das Netzwerk, alle Proxyserver und Firewalls so, dass"
+"diese Server erreichbar sind. Nur so kann UCS voll funktionsfähig sein."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1967
 msgid ""
@@ -1125,10 +1134,10 @@ msgstr "Warten auf den Neustart der Server-Komponenten ..."
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1177
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2578
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2594
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2618
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2726
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2739
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:2874
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2622
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2733
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2746
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2881
 msgid "Warning"
 msgstr "Warnung"
 
@@ -1340,6 +1349,16 @@ msgstr "Datenschutzerklärung"
 
 #~ msgid "Connection refused. Please recheck the password"
 #~ msgstr "Verbindungsaufbau abgelehnt. Bitte überprüfen Sie das Passwort"
+
+#~ msgid ""
+#~ "Could not reach all repository servers. Please check if the UCR variables "
+#~ "\"repository/online/server\" and \"repository/app_center/server\" are set "
+#~ "correctly and the set servers can be reached through your network."
+#~ msgstr ""
+#~ "Nicht alle repository Server können erreicht werden. Bitte prüfen Sie, ob "
+#~ "die UCR Variablen \"repository/online/server\" und "
+#~ "\"repository/app_center/server\" korrekte Werte haben und die Server über "
+#~ "Ihr Netzwerk erreichbar sind."
 
 #~ msgid "Country"
 #~ msgstr "Land"
