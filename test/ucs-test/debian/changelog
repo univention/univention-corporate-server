@@ -1,3 +1,9 @@
+ucs-test (8.0.28-153) unstable; urgency=medium
+
+  * Bug #37223: Adjust test string
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 30 Jul 2018 22:51:53 +0200
+
 ucs-test (8.0.28-152) unstable; urgency=medium
 
   * Bug #47383: 63_app_register_with_old_app_installed
