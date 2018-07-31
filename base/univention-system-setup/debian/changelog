@@ -1,3 +1,9 @@
+univention-system-setup (10.0.11-5) unstable; urgency=low
+
+  * Bug #47569: Fix notifier traceback memory leak
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 31 Jul 2018 16:36:42 +0200
+
 univention-system-setup (10.0.11-4) unstable; urgency=medium
 
   * Bug #46091: Add ldap-overlay-memberof to download-packages script
