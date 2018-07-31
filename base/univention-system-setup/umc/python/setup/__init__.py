@@ -238,8 +238,8 @@ class Instance(Base, ProgressMixin):
 				self.__keep_alive_request = None
 
 			if isinstance(result, BaseException):
-				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
-				MODULE.warn('Exception during saving the settings: %s\n%s' % (result, msg))
+				msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
+				MODULE.warn('Exception during saving the settings: %s' % (msg,))
 				self._progressParser.current.errors.append(_('Encountered unexpected error during setup process: %s') % result)
 				self._progressParser.current.critical = True
 				self._finishedResult = True
@@ -302,7 +302,8 @@ class Instance(Base, ProgressMixin):
 				self.__keep_alive_request = None
 
 			if isinstance(result, BaseException):
-				MODULE.warn('Exception during saving the settings: %s\n%s' % (result, ''.join(traceback.format_exception(*thread.exc_info))))
+				msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
+				MODULE.warn('Exception during saving the settings: %s' % (msg,))
 				self._progressParser.current.errors.append(_('Encountered unexpected error during setup process: %s') % (result,))
 				self._progressParser.current.critical = True
 				self._finishedResult = True
