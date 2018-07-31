@@ -8,4 +8,5 @@ desc: |-
   This update addresses the following issues:
   * During a release update, Apache will serve the maintenance page instead of
     UMC.
-bug: [37223]
+  * Fix memory leak caused by Python notifyer traceback handling.
+bug: [37223, 47114]

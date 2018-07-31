@@ -3,9 +3,9 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-appcenter
-fix: 7.0.2-17A~4.3.0.201807281604
+fix: 7.0.2-18A~4.3.0.201807311723
 desc: |-
-  This update addresses the following issue(s):
+  This update addresses the following issues:
   * Apps may now be notified when relevant objects change in LDAP. This is
     done by adding a listener module to UCS.
   * Processing of these notifications is done asynchronically. Therefore, a
@@ -15,4 +15,5 @@ desc: |-
   * Docker Apps may no longer specify a custom command to start the container
     with. Instead, the command specified during the build of the image will be
     used.
-bug: [47265, 47315, 47373, 47340, 42970]
+  * Fix memory leak caused by Python notifyer traceback handling.
+bug: [47265, 47315, 47373, 47340, 42970, 47114]

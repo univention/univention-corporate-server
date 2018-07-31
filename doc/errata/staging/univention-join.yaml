@@ -3,10 +3,11 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-join
-fix: 10.0.0-17A~4.3.0.201807181224
+fix: 10.0.0-18A~4.3.0.201807311721
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * Improve error messages of join failures.
- * Add option to the univention-join tool for checking problems without altering
-   the system.
-bug: [42366,42022]
+ * Add option to the univention-join tool for checking problems without
+   altering the system.
+ * Fix memory leak caused by Python notifyer traceback handling.
+bug: [42366, 42022, 47114]
