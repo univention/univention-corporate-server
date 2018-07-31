@@ -425,8 +425,8 @@ class Instance(Base):
 			self.progress_state.info = _('finished...')
 			self.progress_state.finish()
 			if isinstance(result, BaseException):
-				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
-				MODULE.warn('Exception during domain join: %s' % msg)
+				msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
+				MODULE.warn('Exception during domain join: %s' % (msg,))
 				self.progress_state.error_handler(_('An unexpected error occurred: %s') % result)
 
 		# launch thread
@@ -478,8 +478,8 @@ class Instance(Base):
 			self.progress_state.info = _('finished...')
 			self.progress_state.finish()
 			if isinstance(result, BaseException):
-				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
-				MODULE.warn('Exception during running join scripts: %s' % msg)
+				msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
+				MODULE.warn('Exception during running join scripts: %s' % (msg,))
 				self.progress_state.error_handler(_('An unexpected error occurred: %s') % result)
 
 		# launch thread
