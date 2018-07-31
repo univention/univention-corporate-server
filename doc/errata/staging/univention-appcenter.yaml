@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: univention-appcenter
+fix: 6.0.11-18A~4.2.0.201808131558
+desc: |-
+  This update addresses the following issue:
+  * Fix memory leak caused by Python notifyer traceback handling.
+bug: [47569]

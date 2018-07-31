@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issue:
  * Fix a memory leak preventing the Python garbage collector from freeing UVMM
    connection instances.
-bug: [47114]
+bug: [47569]
 ignore:
   - release+scope.consistent
   - version.scope
