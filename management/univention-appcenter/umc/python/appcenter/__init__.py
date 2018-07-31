@@ -1134,9 +1134,7 @@ class Instance(umcm.Base, ProgressMixin):
 			if changed:
 				response['status'] = constants.PUT_UPDATER_NOREPOS
 			return [response]
-		except:
-			info = sys.exc_info()
-			emsg = '%s: %s' % info[:2]
-			MODULE.warn("   !! Updater error [%s]: %s" % (emsg))
-			return [{'message': str(info[1]), 'status': constants.PUT_UPDATER_ERROR}]
+		except BaseException as ex:
+			MODULE.warn("   !! Updater error: %s" % (ex,))
+			return [{'message': str(ex), 'status': constants.PUT_UPDATER_ERROR}]
 		return [{'status': constants.PUT_SUCCESS}]
