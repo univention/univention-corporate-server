@@ -7,15 +7,21 @@ UCR.load()
 
 
 def get_unreachable_repository_servers():
-	unreachable_servers = []
 	UCR.load()
-	for server in [
+
+	servers = [
 		UCR.get('repository/online/server'),
 		UCR.get('repository/app_center/server'),
 		'docker.software-univention.de'
-	]:
-		try:
-			subprocess.check_call(['curl', '--max-time', '10', server])
-		except subprocess.CalledProcessError:
-			unreachable_servers.append(server)
-	return unreachable_servers
+	]
+
+	processes = start_curl_processes(servers)
+	wait_for_processes_to_finish(processes)
+	return [server for server, process in zip(servers, processes) if process.returncode != 0]
+
+def start_curl_processes(servers):
+	return [subprocess.Popen(['curl', '--max-time', '10', server]) for server in servers]
+
+def wait_for_processes_to_finish(processes):
+	for process in processes:
+		process.wait()
