@@ -2,7 +2,7 @@ product: ucs
 release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
-src: clmav
+src: clamav
 fix: 0.100.1+dfsg-0+deb9u1A~4.3.0.201807301921
 desc: |
  This update addresses the following issue(s):
