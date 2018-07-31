@@ -32,7 +32,7 @@ class UMCTester(object):
 		self.selenium.do_login()
 		self.open_license_import_dialog()
 		uploader = self.selenium.driver.find_element_by_xpath('//*[contains(@id, "_Uploader_")]//input[@type="file"]')
-		uploader.send_keys(os.path.abspath('FreeForPersonalUserTest.license'))
+		uploader.send_keys(os.path.abspath('FreeForPersonalUseTest.license'))
 		self.selenium.wait_for_text('The license has been imported successfully')
 		self.selenium.click_button('Ok')
 		self.selenium.wait_until_all_dialogues_closed()
@@ -40,7 +40,7 @@ class UMCTester(object):
 		self.selenium.do_login()
 		self.open_license_import_dialog()
 		licenseText = self.selenium.driver.find_element_by_xpath('//textarea[@name="licenseText"]')
-		with open(os.path.abspath('FreeForPersonalUserTest.license'), 'r') as f:
+		with open(os.path.abspath('FreeForPersonalUseTest.license'), 'r') as f:
 			s = f.read()
 			licenseText.send_keys(s)
 		self.selenium.click_button('Import from text field')

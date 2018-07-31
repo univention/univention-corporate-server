@@ -1,3 +1,10 @@
+ucs-test (8.0.28-154) unstable; urgency=medium
+
+  * Bug #47306: Fix 86_selenium/135_upload_license and
+    86_selenium/136_packages
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 31 Jul 2018 17:33:36 +0200
+
 ucs-test (8.0.28-153) unstable; urgency=medium
 
   * Bug #37223: Adjust test string
