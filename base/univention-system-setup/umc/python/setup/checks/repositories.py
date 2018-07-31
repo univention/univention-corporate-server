@@ -15,7 +15,7 @@ def get_unreachable_repository_servers():
 		'docker.software-univention.de'
 	]:
 		try:
-			subprocess.check_call(['curl', server])
+			subprocess.check_call(['curl', '--max-time', '10', server])
 		except subprocess.CalledProcessError:
 			unreachable_servers.append(server)
 	return unreachable_servers
