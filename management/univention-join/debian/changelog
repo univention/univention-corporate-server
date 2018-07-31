@@ -1,3 +1,9 @@
+univention-join (10.0.0-18) unstable; urgency=low
+
+  * Bug #47114: Fix UMC notifier traceback memory leak
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 31 Jul 2018 16:36:42 +0200
+
 univention-join (10.0.0-17) unstable; urgency=medium
 
   * Bug #42022: Fix test in -checkPrerequisites mode of univention-join
