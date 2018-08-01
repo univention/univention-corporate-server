@@ -16,3 +16,5 @@ desc: |
    simplesamlphp LDAP get_attributes is now done in LDAP. The current 
    value set to the UCR variable is migrated to the updated configuration
 bug: [47241, 47309]
+erratum: 159
+announced: 2018-08-01
