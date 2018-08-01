@@ -2706,7 +2706,7 @@ define([
 
 				// apply network settings
 				if (this.isPageVisible('role')) {
-					return deferred;
+					return this.standbyDuring(deferred);
 				}
 			}
 

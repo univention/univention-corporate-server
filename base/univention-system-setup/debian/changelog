@@ -1,3 +1,10 @@
+univention-system-setup (11.0.5-12) unstable; urgency=medium
+
+  * Bug #47105: Improve check if repository servers are reachable during
+    system setup
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 01 Aug 2018 11:37:48 +0200
+
 univention-system-setup (11.0.5-11) unstable; urgency=low
 
   * Bug #47114: Fix notifier traceback memory leak
