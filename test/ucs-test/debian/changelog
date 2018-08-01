@@ -1,3 +1,10 @@
+ucs-test (8.0.28-156) unstable; urgency=medium
+
+  * Bug #42970: 63_app_register_with_old_app_installed,
+    72_app_update_certificates docker CMD changes
+
+ -- Felix Botner <botner@univention.de>  Wed, 01 Aug 2018 13:18:16 +0200
+
 ucs-test (8.0.28-155) unstable; urgency=medium
 
   * Bug #47309: check sp deactivation and activate on master systems as well

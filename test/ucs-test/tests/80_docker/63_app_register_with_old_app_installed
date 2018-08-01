@@ -19,6 +19,7 @@ if __name__ == '__main__':
 			DockerImage='alpine:3.6',
 			DockerScriptSetup='/setup',
 			DockerScriptStoreData='/store_data',
+			DockerScriptInit='/sbin/init',
 		)
 		old_app.add_script(setup=setup)
 		old_app.add_script(store_data=store_data)
@@ -33,6 +34,7 @@ if __name__ == '__main__':
 			DockerImage='alpine:latest',
 			DockerScriptSetup='/setup',
 			DockerScriptStoreData='/store_data',
+			DockerScriptInit='/sbin/init',
 		)
 		new_app.add_script(setup=setup)
 		new_app.add_script(store_data=store_data)

@@ -59,6 +59,7 @@ exit 0
 				DockerScriptUpdateCertificates='/certs',
 				DockerScriptSetup='/setup',
 				DockerScriptStoreData='/store_data',
+				DockerScriptInit='/sbin/init',
 			)
 			app.add_script(update_certificates=update_certificates)
 			app.add_script(setup=setup)
@@ -84,6 +85,7 @@ exit 0
 				DockerScriptSetup='/setup',
 				DockerScriptUpdateCertificates='/root/certs',
 				DockerScriptStoreData='/store_data',
+				DockerScriptInit='/sbin/init',
 			)
 			app.add_script(update_certificates=update_certificates)
 			app.add_script(setup=setup)
