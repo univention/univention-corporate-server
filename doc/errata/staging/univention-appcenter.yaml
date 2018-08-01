@@ -12,8 +12,8 @@ desc: |-
     new service has been added: univention-appcenter-listener-converter.
   * Timezone setup during docker app installations has been fixed.
   * The user root is used inside containers to run scripts.
-  * Docker Apps may no longer specify a custom command to start the container
-    with. Instead, the command specified during the build of the image will be
-    used.
+  * Docker Apps no longer have a default for the attribute that controls which
+    command is used to start the container. If not given, the command
+    specified during the build of the image will now be used.
   * Fix memory leak caused by Python notifyer traceback handling.
 bug: [47265, 47315, 47373, 47340, 42970, 47114]
