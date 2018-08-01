@@ -5,7 +5,7 @@ scope: ucs_4.2-0-errata4.2-4
 src: univention-kernel-image
 fix: 10.0.0-13A~4.2.0.201805241058
 desc: |
- This update of the Linux kernel to version 4.9.109 addresses the following
+ This update of the Linux kernel to version 4.9.116 addresses the following
  issues:
  * CVE-2017-17975: use-after-free in the usbtv_probe function in
    drivers/media/usb/usbtv/usbtv-core.c
@@ -30,6 +30,8 @@ desc: |
    ext4/balloc.c:ext4_valid_block_bitmap() causes crash with crafted ext4
    image
  * CVE-2018-1108: drivers: getrandom(2) unblocks too early after system boot
+ * CVE-2018-1118: vhost: Information disclosure in
+   vhost/vhost.c:vhost_new_msg()
  * CVE-2018-1120: fuse-backed file mmap-ed onto process cmdline arguments
    causes denial of service
  * CVE-2018-1130: a null pointer dereference in
@@ -50,6 +52,14 @@ desc: |
  * CVE-2018-8897: error in exception handling leads to DoS
  * CVE-2018-10021: ata qc leak in drivers/scsi/libsas/sas_scsi_host.c allows
    local users to cause denial-of-service
+ * CVE-2018-10876: use-after-free in jbd2_journal_commit_transaction funtion
+ * CVE-2018-10877: out-of-bound access in ext4_ext_drop_refs function with a
+   crafted ext4 image
+ * CVE-2018-10881: out-of-bound access in ext4_get_group_info() when mounting
+   and operating a crafted ext4 image
+ * CVE-2018-10882: stack-out-of-bounds write infs/jbd2/transaction.c
+ * CVE-2018-10883: stack-out-of-bounds write in jbd2_journal_dirty_metadata
+   function
  * CVE-2018-10087: Undefined behavior in kernel/exit.c:kernel_wait4() function
    allows local denial of service
  * CVE-2018-10940: incorrect memory bounds check in drivers/cdrom/cdrom.c
@@ -81,3 +91,9 @@ cve:
 - CVE-2018-10021
 - CVE-2018-10940
 - CVE-2018-1000199
+- CVE-2018-1118
+- CVE-2018-10876
+- CVE-2018-10877
+- CVE-2018-10881
+- CVE-2018-10882
+- CVE-2018-10883
