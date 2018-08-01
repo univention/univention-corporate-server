@@ -1,3 +1,9 @@
+ucs-test (8.0.28-157) unstable; urgency=medium
+
+  * Bug #37223: fix typo
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 01 Aug 2018 13:21:10 +0200
+
 ucs-test (8.0.28-156) unstable; urgency=medium
 
   * Bug #42970: 63_app_register_with_old_app_installed,
