@@ -515,9 +515,9 @@ class Appcenter(object):
 	def __init__(self, version=None):
 		self.meta_inf_created = False
 		self.univention_repository_created = False
-
 		self.ucr = UCSTestConfigRegistry()
 		self.ucr.load()
+		self.apps = list()
 
 		if os.path.exists('/var/www/meta-inf'):
 			print 'ERROR: /var/www/meta-inf already exists'
@@ -606,6 +606,11 @@ Virtualization=Virtualisierung''')
 	def __exit__(self, exc_type, exc_value, traceback):
 		if exc_type:
 			print 'Cleanup after exception: %s %s' % (exc_type, exc_value)
+		try:
+			for app in self.apps:
+				app.uninstall()
+		except Exception as ex:
+			print 'removing app %s in __exit__ failed with: %s' % (app, str(ex))
 		self.cleanup()
 
 

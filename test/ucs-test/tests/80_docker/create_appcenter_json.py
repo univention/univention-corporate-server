@@ -150,6 +150,7 @@ class App(object):
 			'prerm',
 			'uinst',
 			'env',
+			'listener_trigger',
 		]:
 			for filename in glob(self._components_dir(docker_file)):
 				basename = os.path.basename(filename)

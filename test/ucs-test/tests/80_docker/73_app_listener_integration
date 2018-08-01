@@ -1,0 +1,198 @@
+#!/usr/share/ucs-test/runner python
+# -*- coding: utf-8 -*-
+## desc: Test appcenter listener/converter
+## tags: [docker]
+## exposure: dangerous
+## packages:
+##   - docker.io
+
+from dockertest import Appcenter, App
+import univention.testing.udm as udm_test
+import time
+import json
+import glob
+import os
+import subprocess
+
+APP_NAME = 'my-listener-test-app'
+DB_FILE = '/var/lib/univention-appcenter/apps/{0}/data/db.json'.format(APP_NAME)
+LISTENER_DIR = '/var/lib/univention-appcenter/apps/{0}/data/listener/'.format(APP_NAME)
+LISTENER_TIMEOUT = 10
+
+
+def dump_db():
+	with open(DB_FILE, 'r') as f:
+		db = json.load(f)
+	return db
+
+
+def obj_exists(obj_type, dn):
+	found = False
+	db = dump_db()
+	for obj_id, obj in db[obj_type].iteritems():
+		if dn.lower() == obj.get('dn').lower():
+			found = True
+	return found
+
+
+def user_exists(dn):
+	return obj_exists('users/user', dn)
+
+
+def group_exists(dn):
+	return obj_exists('groups/group', dn)
+
+
+def get_attr(obj_type, dn, attr):
+	db = dump_db()
+	for obj_id, obj in db[obj_type].iteritems():
+		if dn.lower() == obj.get('dn').lower():
+			return obj['obj'].get(attr)
+
+
+def test_listener():
+	with udm_test.UCSTestUDM() as udm:
+		# create
+		u1 = udm.create_user(username='litest1')
+		u2 = udm.create_user(username='litest2')
+		u3 = udm.create_user(username='litest3')
+		g1 = udm.create_group(name='ligroup1')
+		g2 = udm.create_group(name='ligroup2')
+		time.sleep(LISTENER_TIMEOUT)
+		assert user_exists(u1[0])
+		assert user_exists(u2[0])
+		assert user_exists(u3[0])
+		assert group_exists(g1[0])
+		assert group_exists(g2[0])
+		# modify
+		udm.modify_object('users/user', dn=u1[0], description='abcde')
+		udm.modify_object('users/user', dn=u2[0], description='xyz')
+		udm.modify_object('users/user', dn=u3[0], description='öäü????ßßßß!')
+		udm.modify_object('groups/group', dn=g1[0], description='lkjalkhlÄÖ#üäööäö')
+		udm.modify_object('groups/group', dn=g2[0], users=u1[0])
+		time.sleep(LISTENER_TIMEOUT)
+		assert get_attr('users/user', u1[0], 'description') == 'abcde'
+		assert get_attr('users/user', u2[0], 'description') == 'xyz'
+		assert get_attr('users/user', u3[0], 'description') == 'öäü????ßßßß!'
+		assert get_attr('users/user', u1[0], 'description')
+		assert get_attr('users/user', u1[0], 'disabled')
+		assert get_attr('users/user', u1[0], 'displayName')
+		assert get_attr('users/user', u1[0], 'gidNumber')
+		assert get_attr('users/user', u1[0], 'groups')
+		assert get_attr('users/user', u1[0], 'lastname')
+		assert get_attr('users/user', u1[0], 'sambaRID')
+		assert get_attr('groups/group', g1[0], 'description') == 'lkjalkhlÄÖ#üäööäö'
+		assert get_attr('groups/group', g2[0], 'users') == [unicode(u1[0])]
+		assert get_attr('groups/group', g2[0], 'users')
+		assert get_attr('groups/group', g2[0], 'gidNumber')
+		assert get_attr('groups/group', g2[0], 'name')
+		assert get_attr('groups/group', g2[0], 'sambaRID')
+		# remove
+		udm.remove_object('users/user', dn=u1[0])
+		udm.remove_object('users/user', dn=u2[0])
+		udm.remove_object('users/user', dn=u3[0])
+		udm.remove_object('groups/group', dn=g1[0])
+		udm.remove_object('groups/group', dn=g2[0])
+		time.sleep(LISTENER_TIMEOUT)
+		assert not user_exists(u1[0])
+		assert not user_exists(u2[0])
+		assert not user_exists(u3[0])
+		assert not group_exists(g1[0])
+		assert not group_exists(g2[0])
+		# listener dir should be empty at this point
+		assert not glob.glob(os.path.join(LISTENER_DIR, '*.json'))
+
+
+def systemd_service_active(service):
+	active = False
+	cmd = ['systemctl', 'status', service]
+	try:
+		out = subprocess.check_output(cmd)
+	except subprocess.CalledProcessError:
+		out = ''
+	if 'Active: active (running' in out:
+		active = True
+	return active
+
+
+if __name__ == '__main__':
+
+	name = APP_NAME
+	systemd_service = 'univention-appcenter-listener-converter@%s.service' % name
+
+	setup = '''#!/bin/bash
+export DEBIAN_FRONTEND=noninteractive
+apt-get -y update
+apt-get -y install python
+exit 0
+'''
+	store_data = '#!/bin/sh'
+	preinst = '''#!/bin/bash
+ucr set appcenter/apps/{0}/docker/params=' -t'
+exit 0
+'''.format(name)
+
+	listener_trigger = '''#!/usr/bin/python
+
+import glob
+import os
+import json
+
+DATA_DIR='/var/lib/univention-appcenter/apps/%s/data/listener'
+DB='/var/lib/univention-appcenter/apps/%s/data/db.json'
+
+if not os.path.isfile(DB):
+	with open(DB, 'wb') as f:
+		json.dump({'users/user':dict(), 'groups/group':dict()}, f, sort_keys=True, indent=4)
+
+for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
+
+	with open(DB, 'r') as f:
+		db = json.load(f)
+
+	with open(i, 'r') as f:
+		dumped = json.load(f)
+		action = 'add/modify'
+		if dumped.get('object') is None:
+			action = 'delete'
+
+		if action == 'delete':
+			if dumped.get('id') in db[dumped.get('udm_object_type')]:
+				del db[dumped.get('udm_object_type')][dumped.get('id')]
+		else:
+			db[dumped.get('udm_object_type')][dumped.get('id')] = dict(
+				id=dumped.get('id'),
+				dn=dumped.get('dn'),
+				obj=dumped.get('object'),
+			)
+
+	with open(DB, 'wb') as f:
+		json.dump(db, f, sort_keys=True, indent=4)
+
+	os.remove(i)
+''' % (name, name)
+
+	with Appcenter() as appcenter:
+		app = App(name=name, version='2', build_package=False, call_join_scripts=False)
+		app.set_ini_parameter(
+			DockerImage='debian:stable',
+			DockerScriptSetup='/setup',
+			DockerScriptStoreData='/store_data',
+			DockerScriptInit='/bin/bash',
+			ListenerUdmModules='users/user, groups/group',
+		)
+		app.add_script(setup=setup)
+		app.add_script(store_data=store_data)
+		app.add_script(preinst=preinst)
+		app.add_script(listener_trigger=listener_trigger)
+		app.add_to_local_appcenter()
+		appcenter.update()
+		app.install()
+		app.verify(joined=False)
+		assert systemd_service_active(systemd_service)
+		appcenter.apps.append(app)
+		test_listener()
+		app.uninstall()
+		assert not systemd_service_active(systemd_service)
+
+# vim: set ft=python ts=4 sw=4 et ai :
