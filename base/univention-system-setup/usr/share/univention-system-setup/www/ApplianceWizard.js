@@ -2878,11 +2878,7 @@ define([
 						'default': true,
 						name: nextPage
 					}], _('Warning')).then(lang.hitch(this, function(response) {
-						if (response == 'validation') {
-							return _validationFunction();
-						} else {
-							return this._forcePageTemporarily(response);
-						}
+						return this._forcePageTemporarily(response);
 					}));
 				}
 			}
