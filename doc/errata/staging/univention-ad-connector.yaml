@@ -13,4 +13,5 @@ desc: |-
     - remove_ucs_rejected.py
   * A regression of Bug 45779 affecing the AD connection wizzard has been
     fixed
-bug: [47232, 47430]
+  * Binary attribute list has been updated.
+bug: [47232, 47430, 47025]
