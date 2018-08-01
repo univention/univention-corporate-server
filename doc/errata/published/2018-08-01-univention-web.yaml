@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Fixed a bug where the calendar widget would not display the date.
 bug: [47201]
+erratum: 160
+announced: 2018-08-01
