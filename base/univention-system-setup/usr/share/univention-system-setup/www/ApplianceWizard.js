@@ -2929,7 +2929,7 @@ define([
 					});
 				}
 
-				if (pageName == 'fqdn-nonmaster-all') {
+				if (pageName == 'fqdn-nonmaster-all' && this.getValues()['start/join']) {
 					deferred = deferred.then(
 						// callback; will only be called, if previous dialog was not canceled
 						lang.hitch(this, this.warnIfUidIsAlreadyUsed)
