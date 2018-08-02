@@ -1656,6 +1656,44 @@ define([
 			}
 		},
 
+		warnIfUidIsAlreadyUsed: function(data) {
+			var uid = this.getValues()['hostname'] + '$';
+			return this.uidIsAvailable(uid).then(
+				function(data) { return true; },  // callback; uid is available, just continue
+				this.getConfirmationToContinueWithDuplicateUid.bind(null, uid)  // errback
+			);
+		},
+
+		uidIsAvailable: function(uid) {
+			var params = { uid: uid };
+			lang.mixin(params, this._getCredentials());
+			return this.umcpCommand('setup/check/uid', params).then(
+				function(data) {
+					if (data.result) { return data; }
+					throw data;
+				}
+			);
+		},
+
+		getConfirmationToContinueWithDuplicateUid: function(uid, data) {
+			return dialog.confirm(_('The uid \'%s\' is already used in the ' +
+				'LDAP. It is recommended to change the hostname in order to ' +
+				'get a unique uid.', uid
+			), [{
+				label: _('Adjust settings'),
+				name: 'stay'
+			}, {
+				label: _('Continue with duplicate uid'),
+				'default': true,
+				name: 'continue'
+			}], _('Warning')).then(
+				function(choice) {
+					if (choice == 'continue') { return choice; }
+					throw choice;
+				}
+			);
+		},
+
 		_updateAppGallery: function() {
 			if (!this._appGalleryUpdated) {
 				this._appGalleryUpdated = true;
@@ -2869,22 +2907,45 @@ define([
 			if (pageName == 'credentials-master' || pageName == 'fqdn-nonmaster-all') {
 				var passwordWidget = this.getWidget(pageName, 'root_password');
 				var password = passwordWidget.get('value');
+
+				var deferred = new Deferred();
+				deferred.resolve(nextPage);
+
 				if (passwordWidget.get('visible') && !password) {
-					return dialog.confirm(_('Root password empty. Continue?'), [{
-						label: _('Cancel'),
-						name: pageName
-					}, {
-						label: _('Continue'),
-						'default': true,
-						name: nextPage
-					}], _('Warning')).then(lang.hitch(this, function(response) {
-						if (response == 'validation') {
-							return _validationFunction();
-						} else {
-							return this._forcePageTemporarily(response);
-						}
-					}));
+					deferred = deferred.then(function(selectedNextPage) {
+						// callback; will always be used
+						return dialog.confirm(_('Root password empty. Continue?'), [{
+							label: _('Cancel'),
+							name: pageName
+						}, {
+							label: _('Continue'),
+							'default': true,
+							name: nextPage
+						}], _('Warning')).then(function(selectedNextPage) {
+							if (selectedNextPage == pageName)
+								throw selectedNextPage;
+							return selectedNextPage;
+						});
+					});
 				}
+
+				if (pageName == 'fqdn-nonmaster-all') {
+					deferred = deferred.then(
+						// callback; will only be called, if previous dialog was not canceled
+						lang.hitch(this, this.warnIfUidIsAlreadyUsed)
+					);
+				}
+
+				deferred = deferred.then(lang.hitch(this, function(selectedNextPage) {
+						return this._forcePageTemporarily(nextPage);  // callback
+					}),
+					lang.hitch(this, function(selectedNextPage) {
+						return this._forcePageTemporarily(pageName);  // errback; page change was canceled
+					})
+				);
+
+				var promise = this.standbyDuring(deferred);
+				return promise;
 			}
 
 			// update summary page
