@@ -67,11 +67,83 @@ class netbiosDomainnameNotFound(Exception):
 	pass
 
 # page results
-
-
 PAGE_SIZE = 1000
-ATTRIBUTE_LIST = ['objectGUID', 'ipsecData', 'repsFrom', 'replUpToDateVector', 'userCertificate', 'dNSProperty', 'dnsRecord', 'securityIdentifier', 'mS-DS-CreatorSID', 'logonHours', 'mSMQSites', 'mSMQSignKey', 'currentLocation', 'dSASignature', 'linkTrackSecret', 'mSMQDigests', 'mSMQEncryptKey', 'mSMQSignCertificates', 'may', 'sIDHistory', 'msExchMailboxSecurityDescriptor', 'msExchMailboxGuid', 'msExchMasterAccountSid', 'replicationSignature', 'repsTo', 'msExchBlockedSendersHash', 'msExchSafeSendersHash', 'msExchSafeRecipientHash', 'msExchDisabledArchiveGUID']
-	
+# microsoft ldap schema binary attributes
+# -> ldbsearch --paged -H AD_SERVER -U CREDS --cross-ncs '(|(attributeSyntax=2.5.5.15)(attributeSyntax=2.5.5.10)(attributeSyntax=2.5.5.17)(attributeSyntax=2.5.5.7))' lDAPDisplayName
+BINARY_ATTRIBUTES = [
+	'addressEntryDisplayTable', 'addressEntryDisplayTableMSDOS', 'addressSyntax', 'assocNTAccount',
+	'attributeCertificateAttribute', 'attributeSecurityGUID', 'audio',
+	'auditingPolicy', 'authorityRevocationList', 'birthLocation',
+	'cACertificate', 'categoryId', 'certificateRevocationList',
+	'controlAccessRights', 'cRLPartitionedRevocationList', 'crossCertificatePair',
+	'currentLocation', 'currentValue', 'currMachineId',
+	'dBCSPwd', 'deltaRevocationList', 'dhcpClasses',
+	'dhcpOptions', 'dhcpProperties', 'dNSProperty',
+	'dnsRecord', 'domainWidePolicy', 'dSASignature',
+	'eFSPolicy', 'foreignIdentifier', 'fRSExtensions',
+	'fRSReplicaSetGUID', 'fRSRootSecurity', 'fRSVersionGUID',
+	'groupMembershipSAM', 'helpData16', 'helpData32',
+	'implementedCategories', 'invocationId', 'ipsecData',
+	'jpegPhoto', 'lDAPIPDenyList', 'linkTrackSecret',
+	'lmPwdHistory', 'logonHours', 'logonWorkstation',
+	'machineWidePolicy', 'marshalledInterface', 'may',
+	'meetingBlob', 'moniker', 'moveTreeState',
+	'msAuthz-CentralAccessPolicyID', 'msCOM-ObjectId', 'msDFS-GenerationGUIDv2',
+	'msDFS-LinkIdentityGUIDv2', 'msDFS-LinkSecurityDescriptorv2', 'msDFS-NamespaceIdentityGUIDv2',
+	'msDFSR-ContentSetGuid', 'msDFSR-Extension', 'msDFSR-ReplicationGroupGuid',
+	'msDFSR-Schedule', 'msDFS-TargetListv2', 'msDNS-DNSKEYRecords',
+	'msDNS-SigningKeyDescriptors', 'msDNS-SigningKeys', 'msDRM-IdentityCertificate',
+	'msDS-AllowedToActOnBehalfOfOtherIdentity', 'msDS-AzObjectGuid', 'msDS-BridgeHeadServersUsed',
+	'msDS-ByteArray', 'msDS-Cached-Membership', 'mS-DS-ConsistencyGuid',
+	'mS-DS-CreatorSID', 'msDS-ExecuteScriptPassword', 'msDS-GenerationId',
+	'msDS-GroupMSAMembership', 'msDS-HasInstantiatedNCs', 'msDS-ManagedPassword',
+	'msDS-ManagedPasswordId', 'msDS-ManagedPasswordPreviousId', 'msDS-OptionalFeatureGUID',
+	'msDS-QuotaTrustee', 'mS-DS-ReplicatesNCReason', 'msDS-RetiredReplNCSignatures',
+	'msDS-RevealedUsers', 'msDs-Schema-Extensions', 'msDS-Site-Affinity',
+	'msDS-TransformationRulesCompiled', 'msDS-TrustForestTrustInfo', 'msExchBlockedSendersHash',
+	'msExchDisabledArchiveGUID', 'msExchMailboxGuid', 'msExchMailboxSecurityDescriptor',
+	'msExchMasterAccountSid', 'msExchSafeRecipientsHash', 'msExchSafeSendersHash',
+	'msFVE-KeyPackage', 'msFVE-RecoveryGuid', 'msFVE-VolumeGuid',
+	'msieee80211-Data', 'msImaging-PSPIdentifier', 'msImaging-ThumbprintHash',
+	'msiScript', 'msKds-KDFParam', 'msKds-RootKeyData',
+	'msKds-SecretAgreementParam', 'mSMQDigests', 'mSMQDigestsMig',
+	'mSMQEncryptKey', 'mSMQOwnerID', 'mSMQQMID',
+	'mSMQQueueType', 'mSMQSignCertificates', 'mSMQSignCertificatesMig',
+	'mSMQSignKey', 'mSMQSiteID', 'mSMQSites',
+	'mSMQUserSid', 'ms-net-ieee-80211-GP-PolicyReserved', 'ms-net-ieee-8023-GP-PolicyReserved',
+	'msPKIAccountCredentials', 'msPKI-CredentialRoamingTokens', 'msPKIDPAPIMasterKeys',
+	'msPKIRoamingTimeStamp', 'msRTCSIP-UserRoutingGroupId', 'msSPP-ConfigLicense',
+	'msSPP-CSVLKSkuId', 'msSPP-IssuanceLicense', 'msSPP-KMSIds',
+	'msSPP-OnlineLicense', 'msSPP-PhoneLicense', 'msTAPI-ConferenceBlob',
+	'msTPM-SrkPubThumbprint', 'msWMI-TargetObject', 'netbootDUID',
+	'netbootGUID', 'nTGroupMembers', 'ntPwdHistory',
+	'nTSecurityDescriptor', 'objectGUID', 'objectSid',
+	'oMObjectClass', 'oMTGuid', 'oMTIndxGuid',
+	'originalDisplayTable', 'originalDisplayTableMSDOS', 'otherWellKnownObjects',
+	'parentCACertificateChain', 'parentGUID', 'partialAttributeDeletionList',
+	'partialAttributeSet', 'pekList', 'pendingCACertificates',
+	'perMsgDialogDisplayTable', 'perRecipDialogDisplayTable', 'photo',
+	'pKIEnrollmentAccess', 'pKIExpirationPeriod', 'pKIKeyUsage',
+	'pKIOverlapPeriod', 'pKT', 'pKTGuid',
+	'prefixMap', 'previousCACertificates', 'priorValue',
+	'privateKey', 'productCode', 'proxiedObjectName',
+	'publicKeyPolicy', 'registeredAddress', 'replicationSignature',
+	'replPropertyMetaData', 'replUpToDateVector', 'repsFrom',
+	'repsTo', 'requiredCategories', 'retiredReplDSASignatures',
+	'samDomainUpdates', 'schedule', 'schemaIDGUID',
+	'schemaInfo', 'searchGuide', 'securityIdentifier',
+	'serviceClassID', 'serviceClassInfo', 'serviceInstanceVersion',
+	'sIDHistory', 'siteGUID', 'supplementalCredentials',
+	'supportedApplicationContext', 'syncWithSID', 'teletexTerminalIdentifier',
+	'telexNumber', 'terminalServer', 'thumbnailLogo',
+	'thumbnailPhoto', 'tokenGroups', 'tokenGroupsGlobalAndUniversal',
+	'tokenGroupsNoGCAcceptable', 'trustAuthIncoming', 'trustAuthOutgoing',
+	'unicodePwd', 'unixUserPassword', 'upgradeProductCode',
+	'userCert', 'userCertificate', 'userPassword',
+	'userPKCS12', 'userSMIMECertificate', 'volTableGUID',
+	'volTableIdxGUID', 'wellKnownObjects', 'winsockAddresses',
+]
+
 
 def activate_user(connector, key, object):
 	# set userAccountControl to 544
@@ -157,7 +229,7 @@ def encode_ad_object(ad_object):
 		for key in ad_object.keys():
 			if key == 'objectSid':
 				ad_object[key] = [decode_sid(ad_object[key][0])]
-			elif key in ATTRIBUTE_LIST:
+			elif key in BINARY_ATTRIBUTES:
 				ud.debug(ud.LDAP, ud.INFO, "encode_ad_object: attrib %s ignored during encoding" % key)  # don't recode
 			else:
 				try:
@@ -703,6 +775,13 @@ class ad(univention.connector.ucs):
 		self.baseConfig = baseConfig
 
 		self.open_ad()
+
+		# update binary attribute list
+		global BINARY_ATTRIBUTES
+		for attr in self.baseConfig.get('%s/ad/binary_attributes' % self.CONFIGBASENAME, '').split(','):
+			attr = attr.strip()
+			if attr not in BINARY_ATTRIBUTES:
+				BINARY_ATTRIBUTES.append(attr)
 
 		if not self.config.has_section('AD'):
 			ud.debug(ud.LDAP, ud.INFO, "__init__: init add config section 'AD'")

@@ -249,3 +249,9 @@ Description[de]=Die Datei, die das Passwort des Synchronisationsbenutzers (siehe
 Description[en]=A file containing the password of the synchronisation user (see 'con*/ldap/binddn'). The file should contain exactly one line with the password. If the variable is unset '/etc/ldap.secret' is used.
 Type=str
 Categories=service-adcon
+
+[con.*/ad/binary_attributes]
+Description[de]=Liste von AD LDAP Attributen die zusätzlich in die Liste der binaeren Attribute im Connector aufgenommen wird. Mehrere Werte müssen durch Komma getrennt werden.
+Description[en]=List of additional AD LDAP attributes for the connector binary attributes list. Multiple values need to be separated by commas.
+Type=str
+Categories=service-adcon
