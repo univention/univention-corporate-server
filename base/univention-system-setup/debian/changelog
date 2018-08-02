@@ -1,3 +1,9 @@
+univention-system-setup (11.0.5-14) unstable; urgency=medium
+
+  * Bug #47105: Fix translation typo
+
+ -- Richard Ulmer <ulmer@univention.de>  Thu, 02 Aug 2018 13:09:05 +0200
+
 univention-system-setup (11.0.5-13) unstable; urgency=medium
 
   * Bug #46045: Check if uid is already used during system setup

@@ -1006,7 +1006,7 @@ msgstr[0] ""
 "erreichbar ist. Nur so kann UCS voll funktionsfähig sein."
 msgstr[1] ""
 "Diese Server konnten nicht erreicht werden: <ul><li>%s</li></ul>Bitte "
-"konfigurieren Sie das Netzwerk, alle Proxyserver und Firewalls so, dass"
+"konfigurieren Sie das Netzwerk, alle Proxyserver und Firewalls so, dass "
 "diese Server erreichbar sind. Nur so kann UCS voll funktionsfähig sein."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2006
