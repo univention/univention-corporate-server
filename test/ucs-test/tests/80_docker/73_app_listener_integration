@@ -103,6 +103,14 @@ def test_listener():
 		assert not glob.glob(os.path.join(LISTENER_DIR, '*.json'))
 
 
+def get_pid_for_name(name):
+	o = subprocess.check_output(['ps', 'aux'])
+	for line in o.split('\n'):
+		if name in line:
+			return line.split()[1]
+	return None
+
+
 def systemd_service_active(service):
 	active = False
 	cmd = ['systemctl', 'status', service]
@@ -173,7 +181,7 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 ''' % (name, name)
 
 	with Appcenter() as appcenter:
-		app = App(name=name, version='2', build_package=False, call_join_scripts=False)
+		app = App(name=name, version='1', build_package=False, call_join_scripts=False)
 		app.set_ini_parameter(
 			DockerImage='debian:stable',
 			DockerScriptSetup='/setup',
@@ -188,11 +196,45 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 		app.add_to_local_appcenter()
 		appcenter.update()
 		app.install()
-		app.verify(joined=False)
-		assert systemd_service_active(systemd_service)
 		appcenter.apps.append(app)
+		app.verify(joined=False)
+		time.sleep(10)
+		with open('/var/lib/univention-directory-listener/handlers/%s' % name, 'r') as f:
+			status = f.readline()
+			assert status == '3'
+		assert systemd_service_active(systemd_service)
 		test_listener()
+
+		# check listener/converter restart during update
+		old_li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
+		old_con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
+		app = App(name=name, version='2', build_package=False, call_join_scripts=False)
+		app.set_ini_parameter(
+			DockerImage='debian:testing',
+			DockerScriptSetup='/setup',
+			DockerScriptStoreData='/store_data',
+			DockerScriptInit='/bin/bash',
+			ListenerUdmModules='users/user, groups/group',
+		)
+		app.add_script(setup=setup)
+		app.add_script(store_data=store_data)
+		app.add_script(preinst=preinst)
+		app.add_script(listener_trigger=listener_trigger)
+		app.add_to_local_appcenter()
+		appcenter.update()
+		app.upgrade()
+		app.verify(joined=False)
+		li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
+		con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
+		#assert not old_li_pid == li_pid TODO is this OK?
+		assert not old_con_pid == con_pid
+
+		# check converter stop/handler file/listener restart during remove
 		app.uninstall()
+		new_li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
 		assert not systemd_service_active(systemd_service)
+		assert not os.path.isfile('/var/lib/univention-directory-listener/handlers/%s' % name)
+		assert not li_pid == new_li_pid
+
 
 # vim: set ft=python ts=4 sw=4 et ai :

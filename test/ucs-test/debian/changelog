@@ -1,3 +1,9 @@
+ucs-test (8.0.28-159) unstable; urgency=medium
+
+  * Bug #47265: 73_app_listener_integration
+
+ -- Felix Botner <botner@univention.de>  Thu, 02 Aug 2018 10:42:40 +0200
+
 ucs-test (8.0.28-158) unstable; urgency=medium
 
   * Bug #47265: 73_app_listener_integration
