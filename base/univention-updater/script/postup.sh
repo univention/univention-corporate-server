@@ -187,7 +187,11 @@ date >>"$UPDATER_LOG"
 # make sure that UMC server is restarted (Bug #43520, Bug #33426)
 at now >>"$UPDATER_LOG" 2>&1 <<EOF
 sleep 30
-/usr/share/univention-updater/enable-apache2-umc --no-restart >>"$UPDATER_LOG" 2>&1
+# Bug #47436: Only reenable apache2 and umc if system-setup 
+# is not running. System-setup will re-enable apache2 and umc.
+if pgrep -l -f /usr/lib/univention-system-setup/scripts/setup-join.sh; then
+  /usr/share/univention-updater/enable-apache2-umc --no-restart >>"$UPDATER_LOG" 2>&1
+fi
 service univention-management-console-server restart >>"$UPDATER_LOG" 2>&1
 service univention-management-console-web-server restart >>"$UPDATER_LOG" 2>&1
 # the file path moved. during update via UMC the apache is not restarted. The new init script therefore checks the wrong pidfile which fails restarting.
