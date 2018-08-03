@@ -10,13 +10,14 @@
 
 import logging
 import re
+import apt
 
 from univention.testing import selenium
 from univention.admin import localization
+import univention.testing.utils as utils
 
 translator = localization.translation('ucs-test-selenium')
 _ = translator.translate
-logger = logging.getLogger(__name__)
 
 
 class UmcError(Exception):
@@ -32,45 +33,58 @@ def expand_path(xpath):
 	return re.sub(pattern, replacement, xpath)
 
 
+
 class UMCTester(object):
+
+	def get_small_package_name(self):
+		print("Trying to find small, uninstalled package with no dependencies and recommends...")
+		uninstalled_package = None
+		cache = apt.cache.Cache()
+		cache.update()
+		cache.open()
+		small_package = None
+		for package in cache:
+			if not package.is_installed \
+					and package.candidate.installed_size < 0.5 * 1000 * 1000 \
+					and not package.candidate.recommends \
+					and not package.candidate.dependencies:
+				small_package = package
+				break
+		if not small_package:
+			utils.fail('Did not find small, installed package with no dependencies and recommends')
+		print("Found small, uninstalled package: %s" % small_package)
+		return small_package.name
+
 
 	def test_umc(self):
 		self.selenium.do_login()
 		self.selenium.open_module('Package Management')
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
-		# test install and deinstall of not installed package
-		package_name = 'acpi'
-		self.selenium.enter_input('pattern', package_name)
-		self.selenium.submit_input('pattern')
-		self.selenium.wait_until_all_standby_animations_disappeared()
-		self.selenium.click_checkbox_of_grid_entry(package_name)
-		self.selenium.click_button('Install')
-		self.selenium.wait_for_text('Confirmation')
-		logger.info("Clicking the dialog button %r", _('Install'))
-		self.selenium.click_element(expand_path('//*[@containsClass="dijitDialog"]//*[@containsClass="dijitButtonText"][text() = "%s"]' % _('Install')))
-		self.selenium.wait_until_all_dialogues_closed()
-		self.selenium.wait_until_progress_bar_finishes()
-		self.selenium.wait_until_all_standby_animations_disappeared()
+		package_name = self.get_small_package_name()
 
-		installation_status_path = expand_path('//*[text() = "%s"]/ancestor-or-self::*[@containsClass="field-package"]/following-sibling::*[@containsClass="field-status"]' % package_name)
-		installation_status = self.selenium.driver.find_element_by_xpath(installation_status_path).text
-		if installation_status != 'installed':
-			raise UmcError('The installation status of %s is not "installed"' % package_name)
+		for action in ['install', 'uninstall']:
+			print("Current action: %s" % (action,))
+			button_for_action = _('Install') if action == 'install' else _('Uninstall')
+			expected_status = _('installed') if action == 'install' else _('not installed')
 
-		self.selenium.click_checkbox_of_grid_entry(package_name)
-		self.selenium.click_button('Uninstall')
-		self.selenium.wait_for_text('Confirmation')
-		logger.info("Clicking the dialog button %r", _('Uninstall'))
-		self.selenium.click_element(expand_path('//*[@containsClass="dijitDialog"]//*[@containsClass="dijitButtonText"][text() = "%s"]' % _('Uninstall')))
-		self.selenium.wait_until_all_dialogues_closed()
-		self.selenium.wait_until_progress_bar_finishes()
-		self.selenium.wait_until_all_standby_animations_disappeared()
+			self.selenium.enter_input('pattern', package_name)
+			self.selenium.submit_input('pattern')
+			self.selenium.wait_until_all_standby_animations_disappeared()
+			self.selenium.click_checkbox_of_grid_entry(package_name)
 
-		installation_status_path = expand_path('//*[text() = "%s"]/ancestor-or-self::*[@containsClass="field-package"]/following-sibling::*[@containsClass="field-status"]' % package_name)
-		installation_status = self.selenium.driver.find_element_by_xpath(installation_status_path).text
-		if installation_status != 'not installed':
-			raise UmcError('The installation status of %s is not "not installed"' % package_name)
+			self.selenium.click_button(button_for_action)
+			self.selenium.wait_for_text('Confirmation')
+			print("Clicking the dialog button %r" % (button_for_action,))
+			self.selenium.click_element(expand_path('//*[@containsClass="dijitDialog"]//*[@containsClass="dijitButtonText"][text() = "%s"]' % button_for_action))
+			self.selenium.wait_until_all_dialogues_closed()
+			self.selenium.wait_until_progress_bar_finishes()
+			self.selenium.wait_until_all_standby_animations_disappeared()
+
+			installation_status_path = expand_path('//*[text() = "%s"]/ancestor-or-self::*[@containsClass="field-package"]/following-sibling::*[@containsClass="field-status"]' % package_name)
+			installation_status = self.selenium.driver.find_element_by_xpath(installation_status_path).text
+			if installation_status != expected_status:
+				raise UmcError('The installation status of package "%s" should be "%s" but is "%s"' % (package_name, expected_status, installation_status,))
 
 
 if __name__ == '__main__':
