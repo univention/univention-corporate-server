@@ -16,7 +16,7 @@ check_windows_client_sid () {
 	test "$ucs_sid" = "$samba_sid"
 }
 
-run_singleserver_sambatest () {
+run_singleserver_samba_test () {
 
 	. env_vars
 	# get windows client name
@@ -42,9 +42,6 @@ run_singleserver_sambatest () {
 	# TODO Netzwerkumgebung sichtbar?
 	python shared-utils/ucs-winrm.py domain-user-validate-password --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py domain-user-validate-password --domainuser "newuser01" --domainpassword "Univention.99"
-
-	# host $windows_client muss die IPv4-Adresse liefern.
-	nslookup "$WINCLIENT_NAME" | grep "$WINCLIENT"
 
 
 	# Benutzer-Login am Windows7 Client
@@ -83,6 +80,9 @@ run_singleserver_sambatest () {
 	##python shared-utils/ucs-winrm.py check-printer --server $UCS --printername "printer1" --username 'newuser01' --userpwd "Univention.99"
 	# . samba-utils.sh; create_and_print_testfile
 	# cat '/var/spool/cups-pdf/ANONYMOUS/job_1-smbprn_00000003_Remote_Downlevel_Document_.pdf'
+
+	# host $windows_client muss die IPv4-Adresse liefern.
+	nslookup "$WINCLIENT_NAME" | grep "$WINCLIENT"
 
 	# IP-Adresse am Windows-Client ändern (statisch) DNS-Record auf dem Server überprüfen, DNS-Auflösung per host testen
 	# TODO, geht nicht so einfach in ec2
