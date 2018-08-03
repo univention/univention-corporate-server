@@ -1,3 +1,10 @@
+ucs-test (8.0.28-160) unstable; urgency=medium
+
+  * Bug #47306: fix 86_selenium/136_packages
+    86_selenium/135_upload_license
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 03 Aug 2018 18:40:08 +0200
+
 ucs-test (8.0.28-159) unstable; urgency=medium
 
   * Bug #47265: 73_app_listener_integration
