@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: openldap
+fix: 2.4.45+dfsg-1~bpo9+1A~4.3.0.201808061728
+desc: |
+ This update addresses the following issue:
+ * Fix regression in erratum 155: the OpenLDAP server fails to start during
+   system setup when updates are already installed during installation.
+bug: [47452]
