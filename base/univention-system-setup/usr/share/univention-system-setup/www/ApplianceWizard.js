@@ -194,12 +194,19 @@ define([
 		return acceptEmtpy || (tools.isFQDN(domainName));
 	};
 
-	var _invalidFQDNMessage = _('Invalid fully qualified domain name!<br/>Expected format: <i>hostname.mydomain.intranet</i>');
+	var _invalidFQDNMessage = _(
+		'Invalid fully qualified domain name!<br/>' +
+		'Expected format: <i>hostname.mydomain.intranet</i><br>' +
+		'Where the domain name ("mydomain") must be no longer than 15 characters.'
+	);
 	var _validateFQDN = function(fqdn) {
 		fqdn = fqdn || '';
 		var hasEnoughParts = fqdn.split('.').length >= 3;
 		var acceptEmtpy = !fqdn && !this.required;
-		return acceptEmtpy || (tools.isFQDN(fqdn) && hasEnoughParts);
+		if (hasEnoughParts) {
+			var domainnameIsShortEnough = fqdn.split('.')[1].length <= 15;  // Required by NetBIOS.
+		}
+		return acceptEmtpy || (tools.isFQDN(fqdn) && hasEnoughParts && domainnameIsShortEnough);
 	};
 
 	var _invalidHostOrFQDNMessage = _('Invalid hostname or fully qualified domain name!<br/>Expected format: <i>myhost</i> or <i>hostname.mydomain.intranet</i>');
