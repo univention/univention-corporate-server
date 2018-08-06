@@ -1554,6 +1554,7 @@ class ucs:
 				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: old_s4_object: %s" % old_s4_object)
 				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: new_s4_object: %s" % original_object['attributes'])
 				if old_s4_object:
+					object['old_s4_object'] = old_s4_object
 					for attr in original_object['attributes']:
 						if old_s4_object.get(attr) != original_object['attributes'].get(attr):
 							object['changed_attributes'].append(attr)

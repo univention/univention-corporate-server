@@ -752,8 +752,16 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			# Append modification as well to modlist, to apply in one transaction
 			if modifyUserPassword:
 				modlist.append(('userPassword', userPassword_ucs, '{K5KEY}'))
+		else:
+			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: No password change to sync to UCS")
 
-			# Update password expiry interval
+		try:
+			old_pwdLastSet = object['old_s4_object']['pwdLastSet'][0]
+		except (KeyError, IndexError):
+			old_pwdLastSet = None
+
+		if pwdLastSet != old_pwdLastSet:
+			ud.debug(ud.LDAP, ud.ALL, "password_sync_s4_to_ucs: updating shadowLastChange")
 			old_shadowLastChange = ucs_object_attributes.get('shadowLastChange', [None])[0]
 			pwdLastSet_unix = univention.s4connector.s4.s42samba_time(pwdLastSet)
 			new_shadowLastChange = str(pwdLastSet_unix / 3600 / 24)
@@ -779,10 +787,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			if old_krb5end or new_krb5end:
 				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update krb5PasswordEnd to %s for %s" % (new_krb5end, ucs_object['dn']))
 				modlist.append(('krb5PasswordEnd', old_krb5end, new_krb5end))
-		else:
-			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: No password change to sync to UCS")
 
-		if pwd_changed and (pwdLastSet or pwdLastSet == 0):
 			newSambaPwdMustChange = sambaPwdMustChange
 			if pwdLastSet == 0:  # pwd change on next login
 				newSambaPwdMustChange = str(pwdLastSet)
