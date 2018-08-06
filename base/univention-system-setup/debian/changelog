@@ -1,3 +1,10 @@
+univention-system-setup (11.0.5-16) unstable; urgency=medium
+
+  * Bug #46045: Fix validation page showing inappropriately during base system
+    installation
+
+ -- Richard Ulmer <ulmer@univention.de>  Mon, 06 Aug 2018 13:05:40 +0200
+
 univention-system-setup (11.0.5-15) unstable; urgency=medium
 
   * Bug #46045: Don't try to run checks with master if not joining

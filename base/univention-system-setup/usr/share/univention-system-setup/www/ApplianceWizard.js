@@ -2929,7 +2929,7 @@ define([
 					});
 				}
 
-				if (pageName == 'fqdn-nonmaster-all' && this.getValues()['start/join']) {
+				if (pageName == 'fqdn-nonmaster-all' && this._wantsToJoin()) {
 					deferred = deferred.then(
 						// callback; will only be called, if previous dialog was not canceled
 						lang.hitch(this, this.warnIfUidIsAlreadyUsed)
@@ -2937,7 +2937,11 @@ define([
 				}
 
 				deferred = deferred.then(lang.hitch(this, function(selectedNextPage) {
-						return this._forcePageTemporarily(nextPage);  // callback
+						// callback
+						if (selectedNextPage == 'validation') {
+							return _validationFunction();
+						}
+						return this._forcePageTemporarily(nextPage);
 					}),
 					lang.hitch(this, function(selectedNextPage) {
 						return this._forcePageTemporarily(pageName);  // errback; page change was canceled
