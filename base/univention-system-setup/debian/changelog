@@ -1,3 +1,9 @@
+univention-system-setup (11.0.5-17) unstable; urgency=medium
+
+  * Bug #45206: Raise required RAM to 1GiB
+
+ -- Richard Ulmer <ulmer@univention.de>  Mon, 06 Aug 2018 14:16:34 +0200
+
 univention-system-setup (11.0.5-16) unstable; urgency=medium
 
   * Bug #46045: Fix validation page showing inappropriately during base system
