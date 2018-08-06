@@ -762,12 +762,14 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 
 		if pwdLastSet != old_pwdLastSet:
 			ud.debug(ud.LDAP, ud.ALL, "password_sync_s4_to_ucs: updating shadowLastChange")
+
+			pwdLastSet_unix = univention.s4connector.s4.s42samba_time(pwdLastSet)
+			newSambaPwdLastSet = str(pwdLastSet_unix)
 			newSambaPwdMustChange = sambaPwdMustChange
+
 			if pwdLastSet == 0:  # pwd change on next login
-				newSambaPwdMustChange = str(pwdLastSet)
-				newSambaPwdLastSet = str(pwdLastSet)
+				newSambaPwdMustChange = str(pwdLastSet_unix)
 			else:
-				newSambaPwdLastSet = str(univention.s4connector.s4.s42samba_time(pwdLastSet))
 				userobject = s4connector.get_ucs_object('user', ucs_object['dn'])
 				if not userobject:
 					ud.debug(ud.LDAP, ud.ERROR, "password_sync_s4_to_ucs: couldn't get user-object from UCS")
@@ -779,7 +781,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 					pwhistoryPolicy = userobject.loadPolicyObject('policies/pwhistory')
 					try:
 						expiryInterval = int(pwhistoryPolicy['expiryInterval'])
-						newSambaPwdMustChange = str(long(newSambaPwdLastSet) + (expiryInterval * 3600 * 24))
+						newSambaPwdMustChange = str(pwdLastSet_unix + (expiryInterval * 3600 * 24))
 					except:  # FIXME: which exception is to be caught?
 						# expiryInterval is empty or no legal int-string
 						pwhistoryPolicy['expiryInterval'] = ''
@@ -789,7 +791,6 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 					ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: pwhistoryPolicy: expiryInterval: %s" % expiryInterval)
 
 			old_shadowLastChange = ucs_object_attributes.get('shadowLastChange', [None])[0]
-			pwdLastSet_unix = univention.s4connector.s4.s42samba_time(pwdLastSet)
 			new_shadowLastChange = str(pwdLastSet_unix / 3600 / 24)
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
 			modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
