@@ -762,32 +762,6 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 
 		if pwdLastSet != old_pwdLastSet:
 			ud.debug(ud.LDAP, ud.ALL, "password_sync_s4_to_ucs: updating shadowLastChange")
-			old_shadowLastChange = ucs_object_attributes.get('shadowLastChange', [None])[0]
-			pwdLastSet_unix = univention.s4connector.s4.s42samba_time(pwdLastSet)
-			new_shadowLastChange = str(pwdLastSet_unix / 3600 / 24)
-			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
-			modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
-			# shadowMax (set to value of univentionPWExpiryInterval, otherwise delete)
-			# krb5PasswordEnd (set to today + univentionPWExpiryInterval, otherwise delete)
-			policies = s4connector.lo.getPolicies(ucs_object['dn'])
-			old_shadowMax = ucs_object_attributes.get('shadowMax', [None])[0]
-			new_shadowMax = None
-			old_krb5end = ucs_object_attributes.get('krb5PasswordEnd', [None])[0]
-			new_krb5end = None
-			pwexp = policies.get('univentionPolicyPWHistory', {}).get('univentionPWExpiryInterval')
-			if pwexp:
-				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: password expiry for %s is %s" % (ucs_object['dn'], pwexp))
-				pwexp_value = pwexp.get('value', [None])[0]
-				if pwexp_value:
-					new_shadowMax = pwexp_value
-					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime((pwdLastSet_unix + (int(pwexp_value) * 3600 * 24))))
-			if old_shadowMax or new_shadowMax:
-				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowMax to %s for %s" % (new_shadowMax, ucs_object['dn']))
-				modlist.append(('shadowMax', old_shadowMax, new_shadowMax))
-			if old_krb5end or new_krb5end:
-				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update krb5PasswordEnd to %s for %s" % (new_krb5end, ucs_object['dn']))
-				modlist.append(('krb5PasswordEnd', old_krb5end, new_krb5end))
-
 			newSambaPwdMustChange = sambaPwdMustChange
 			if pwdLastSet == 0:  # pwd change on next login
 				newSambaPwdMustChange = str(pwdLastSet)
@@ -813,6 +787,32 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 						newSambaPwdMustChange = ''
 
 					ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: pwhistoryPolicy: expiryInterval: %s" % expiryInterval)
+
+			old_shadowLastChange = ucs_object_attributes.get('shadowLastChange', [None])[0]
+			pwdLastSet_unix = univention.s4connector.s4.s42samba_time(pwdLastSet)
+			new_shadowLastChange = str(pwdLastSet_unix / 3600 / 24)
+			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
+			modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
+			# shadowMax (set to value of univentionPWExpiryInterval, otherwise delete)
+			# krb5PasswordEnd (set to today + univentionPWExpiryInterval, otherwise delete)
+			policies = s4connector.lo.getPolicies(ucs_object['dn'])
+			old_shadowMax = ucs_object_attributes.get('shadowMax', [None])[0]
+			new_shadowMax = None
+			old_krb5end = ucs_object_attributes.get('krb5PasswordEnd', [None])[0]
+			new_krb5end = None
+			pwexp = policies.get('univentionPolicyPWHistory', {}).get('univentionPWExpiryInterval')
+			if pwexp:
+				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: password expiry for %s is %s" % (ucs_object['dn'], pwexp))
+				pwexp_value = pwexp.get('value', [None])[0]
+				if pwexp_value:
+					new_shadowMax = pwexp_value
+					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime((pwdLastSet_unix + (int(pwexp_value) * 3600 * 24))))
+			if old_shadowMax or new_shadowMax:
+				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowMax to %s for %s" % (new_shadowMax, ucs_object['dn']))
+				modlist.append(('shadowMax', old_shadowMax, new_shadowMax))
+			if old_krb5end or new_krb5end:
+				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update krb5PasswordEnd to %s for %s" % (new_krb5end, ucs_object['dn']))
+				modlist.append(('krb5PasswordEnd', old_krb5end, new_krb5end))
 
 			if sambaPwdLastSet:
 				if sambaPwdLastSet != newSambaPwdLastSet:
