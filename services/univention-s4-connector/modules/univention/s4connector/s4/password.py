@@ -754,10 +754,9 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 				modlist.append(('userPassword', userPassword_ucs, '{K5KEY}'))
 
 			# Update password expiry interval
-			#
-			# update shadowLastChange to now
 			old_shadowLastChange = ucs_object_attributes.get('shadowLastChange', [None])[0]
-			new_shadowLastChange = str(long(time.time()) / 3600 / 24)
+			pwdLastSet_unix = univention.s4connector.s4.s42samba_time(pwdLastSet)
+			new_shadowLastChange = str(pwdLastSet_unix / 3600 / 24)
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
 			modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
 			# shadowMax (set to value of univentionPWExpiryInterval, otherwise delete)
@@ -773,7 +772,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 				pwexp_value = pwexp.get('value', [None])[0]
 				if pwexp_value:
 					new_shadowMax = pwexp_value
-					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime((long(time.time()) + (int(pwexp_value) * 3600 * 24))))
+					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime((pwdLastSet_unix + (int(pwexp_value) * 3600 * 24))))
 			if old_shadowMax or new_shadowMax:
 				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowMax to %s for %s" % (new_shadowMax, ucs_object['dn']))
 				modlist.append(('shadowMax', old_shadowMax, new_shadowMax))
