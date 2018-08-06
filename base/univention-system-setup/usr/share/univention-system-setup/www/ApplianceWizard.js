@@ -1158,8 +1158,12 @@ define([
 		},
 
 		_showMemoryWarning: function() {
-			var memory_min = Math.max(parseInt(this.ucr['system/setup/boot/minimal_memory'], 10) || 512, 512);
-			if (memory_min > this.values.memory_total) {
+			var memory_min = Math.max(parseInt(this.ucr['system/setup/boot/minimal_memory'], 10) || 0, 1024);
+
+			// The reported total memory is always a bit lower, than the actually installed amount:
+			var memory_total_plus_margin = this.values.memory_total * 1.1;
+
+			if (memory_min > memory_total_plus_margin) {
 				var _memString = function(memory) {
 					if (memory < 1024) {
 						return _('%s MiB', parseInt(memory));
