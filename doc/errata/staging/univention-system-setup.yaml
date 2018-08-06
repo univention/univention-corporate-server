@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-system-setup
-fix: 11.0.5-17A~4.3.0.201808061420
+fix: 11.0.5-18A~4.3.0.201808061625
 desc: |
  This update addresses the following issues:
  * It was unclear what kind of updates were to be installed on the last page
@@ -14,4 +14,6 @@ desc: |
  * Fix memory leak caused by Python notifyer traceback handling.
  * Warn about duplicate uid when configuring the system.
  * Raise the required memory for UCS to 1 GB.
-bug: [45931,42366,42022,47105,47114,46045,45206]
+ * Enforce a maximum domain name length of 15 characters to conform to NetBIOS
+   requirements.
+bug: [45931,42366,42022,47105,47114,46045,45206,35829]
