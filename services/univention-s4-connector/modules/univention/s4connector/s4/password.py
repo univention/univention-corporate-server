@@ -620,17 +620,17 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		if sambaPwdMustChange >= 0 and sambaPwdMustChange < time.time():
 			# password expired, must be changed on next login
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: samba pwd expired, set newpwdLastSet to 0")
-			newpwdlastset = "0"
+			newpwdlastset = 0
 		else:
 			if sambaPwdLastSet is None:
 				sambaPwdLastSet = int(time.time())
-				newpwdlastset = str(univention.s4connector.s4.samba2s4_time(sambaPwdLastSet))
+				newpwdlastset = univention.s4connector.s4.samba2s4_time(sambaPwdLastSet)
 			elif sambaPwdLastSet in [0, 1]:
-				newpwdlastset = "0"
+				newpwdlastset = 0
 			else:
-				newpwdlastset = str(univention.s4connector.s4.samba2s4_time(sambaPwdLastSet))
-		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdlastset in modlist: %s" % newpwdlastset)
-		modlist.append((ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset))
+				newpwdlastset = univention.s4connector.s4.samba2s4_time(sambaPwdLastSet)
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet in modlist: %s" % newpwdlastset)
+		modlist.append((ldap.MOD_REPLACE, 'pwdLastSet', str(newpwdlastset)))
 		modlist.append((ldap.MOD_REPLACE, 'badPwdCount', '0'))
 		modlist.append((ldap.MOD_REPLACE, 'badPasswordTime', '0'))
 		modlist.append((ldap.MOD_REPLACE, 'lockoutTime', '0'))
@@ -640,14 +640,14 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 
 		# check pwdLastSet
 		if sambaPwdLastSet is not None:
-			newpwdlastset = str(univention.s4connector.s4.samba2s4_time(sambaPwdLastSet))
+			newpwdlastset = univention.s4connector.s4.samba2s4_time(sambaPwdLastSet)
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: sambaPwdLastSet: %d" % sambaPwdLastSet)
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: newpwdlastset  : %s" % newpwdlastset)
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet (AD): %s" % pwdLastSet)
 			if sambaPwdLastSet in [0, 1]:
-				modlist.append((ldap.MOD_REPLACE, 'pwdlastset', "0"))
-			elif pwdLastSet != newpwdlastset:
-				modlist.append((ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset))
+				modlist.append((ldap.MOD_REPLACE, 'pwdLastSet', "0"))
+			elif newpwdlastset != pwdLastSet and abs(newpwdlastset - pwdLastSet) >= 10000000:
+				modlist.append((ldap.MOD_REPLACE, 'pwdLastSet', str(newpwdlastset)))
 
 	# TODO: Password History
 	ctrl_bypass_password_hash = LDAPControl('1.3.6.1.4.1.7165.4.3.12', criticality=0)
@@ -793,7 +793,8 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			old_shadowLastChange = ucs_object_attributes.get('shadowLastChange', [None])[0]
 			new_shadowLastChange = str(pwdLastSet_unix / 3600 / 24)
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
-			modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
+			if new_shadowLastChange != old_shadowLastChange:
+				modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
 			# shadowMax (set to value of univentionPWExpiryInterval, otherwise delete)
 			# krb5PasswordEnd (set to today + univentionPWExpiryInterval, otherwise delete)
 			policies = s4connector.lo.getPolicies(ucs_object['dn'])

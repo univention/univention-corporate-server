@@ -1,3 +1,10 @@
+univention-s4-connector (12.0.2-23) unstable; urgency=medium
+
+  * Bug #47391: Sync sambaPwdLastChange to pwdLastSet only if difference
+    is bigger than granularity of one second.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 07 Aug 2018 17:33:13 +0200
+
 univention-s4-connector (12.0.2-22) unstable; urgency=medium
 
   * Bug #47391: Sync pwdLastSet also when hash didn't change
