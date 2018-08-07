@@ -1,3 +1,10 @@
+univention-samba4 (7.0.2-18) unstable; urgency=medium
+
+  * Bug #46782: Adjust default for samba/ntlm/auth ("ntlm auth") to
+    match samba ("ntlmv2-only")
+
+ -- Arvid Requate <requate@univention.de>  Tue, 07 Aug 2018 21:14:36 +0200
+
 univention-samba4 (7.0.2-17) unstable; urgency=medium
 
   * Bug #47059: uinst too
