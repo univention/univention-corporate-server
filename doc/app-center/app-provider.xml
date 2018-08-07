@@ -289,40 +289,178 @@ TODO: Nico
         <section id="create-app-with-docker:description">
             <title>Logo and description</title>
             <para>
+                On your app's <guimenu>General</guimenu> tab please provide a
+                description and logos for your software. Start with a short
+                and a long description for your app. It gives an impression on
+                how it will look like during later testing.
             </para>
+            <para>                
+               On the same tab you can upload two logos: A default icon that is
+               shown on the the app tile in the overview. For optimal
+               presentation it should be more of a square ratio. The second can
+               be more detailed and can for example include the software name.
+               Please provide the logos in SVG format.
+           </para>
+           <para>
+               Those settings can be changed at any time later.
+           </para>
+           <para>
+               For a more detailed description on the app presentation, please
+               have a look at <xref linkend="app-presentation" />.
+           </para>
         </section>
 
         <section id="create-app-with-docker:defaults">
             <title>Change defaults</title>
+            <!--
+            FIXME: This seems to be fixed in the portal already. There it
+            reads: "CMD for the Docker App. If Entrypoint is defined in the
+            Docker Image, these are the parameters for it when starting the
+            App. If not, this is the complete command that is run when the App
+            is started. Leave emtpy for image defaults."
+
+            TODO: If nothing needs to be changed here, remove the section completely.
+            -->
             <para>
-                Set the docker entry-point in the section <guimenu>Advanced docker settings</guimenu> at <guimenu>Entrypoint for the Docker App</guimenu>.
+                Set the docker entry-point in the section <guimenu>Advanced
+                    docker settings</guimenu> at <guimenu>Entrypoint for the
+                    Docker App</guimenu>.
             </para>
         </section>
 
         <section id="create-app-with-docker:volumes">
             <title>Persistent data with volumes</title>
             <para>
+                By default files created inside a container are stored in it,
+                but they don't persist when the container is no longer running
+                removed or is exchanged with a newer version. As solution
+                docker offers <ulink
+                    url="https://docs.docker.com/storage/volumes/">volumes</ulink>,
+                a mechanism for persisting data generated and used by docker
+                containers. A volume is a directory on the docker host that is
+                mounted inside the docker container.
+            </para>
+            <para>
+                <!--
+                FIXME: @Dirk: There are definitions for paths and files. Both
+                seems to work. Is this correct?
+                -->
+                To define volumes for your app, please go to the
+                <guimenu>Mounted volumes</guimenu> section on
+                <guimenu>Docker</guimenu> tab. Add an entry for each volume
+                and define the directory or file path on the host in the
+                first field and the destination in the container in the second
+                field. Leave the second field empty for the same path.
+            </para>
+            <para>
+                For example:
+                <itemizedlist>
+                    <listitem>
+                        <simpara>
+                            <option>Host</option>: <userinput>/var/lib/suitecrm_etc</userinput>
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <option>Docker container</option>: <userinput>/etc/suitecrm</userinput>
+                        </simpara>
+                    </listitem>
+                </itemizedlist>
             </para>
         </section>
 
         <section id="create-app-with-docker:web-interface">
             <title>Web interface</title>
             <para>
+                Many docker apps expose a web interface to the outside world,
+                e.g. via the port 8080. The App Center on UCS takes care to map
+                this web interface from some relative url to this port and adds a
+                reverse proxy configuration to the host's webserver
+                configuration.
+            </para>
+            <para>
+                In the <guimenu>Web interface</guimenu> section on the
+                <guimenu>General</guimenu> tab in your app, you can enter the
+                relative and which ports should be proxied.  For example to map
+                the containers ports 80 and 443 to
+                <userinput>/myapp</userinput>, the following settings have to
+                be made:
+                <itemizedlist>
+                    <listitem>
+                        <simpara>
+                            <option>Relative URL to web application</option>:
+                            <userinput>/myapp</userinput>
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <option>HTTP port of web application</option>:
+                            <userinput>80</userinput>
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            <option>HTTPS port of web application</option>:
+                            <userinput>443</userinput>
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            On the tab <guimenu>Docker</guimenu> in the section
+                            <guimenu>Advanced docker settings</guimenu>, select
+                            <userinput>HTTP and HTTPS</userinput>, if both
+                            protocal schemes should be covered.
+                        </simpara>
+                    </listitem>
+                </itemizedlist>
             </para>
         </section>
 
         <section id="create-app-with-docker:ports">
             <title>Ports</title>
             <para>
+                If your app needs to occupy ports in order work properly, they
+                can be definied in the <guimenu>Port redirection</guimenu>
+                section on the <guimenu>Docker</guimenu> tab. Here you can
+                define a list of ports that the docker host shall exclusively
+                acquire for the docker container. Ports defined here cannot be
+                used by other services on the UCS host or other docker
+                containers on that host.
+
             </para>
         </section>
 
         <section id="create-app-with-docker:database">
             <title>Database</title>
             <para>
+                Many applications need a relational database management system
+                (RDMS) somewhere in the environment to function properly. If
+                the app needs such a database the App Center takes care of
+                providing one directly on the docker host. In two sections on
+                the <guimenu>Docker</guimenu> tab the appropriate settings can
+                be made.
+            </para>
+            <para>
+                In the <guimenu>Database settings for docker
+                    container</guimenu> section the settings for the database are
+                defined. MySQL and PostgreSQL are supported. Database user,
+                database name and the path to the password file can be
+                specified. Upon installation of the app, the App Center
+                installs the defined database on the docker host, creates a
+                database with the defined settings and saves the password in a
+                file for later use.
+            </para>
+            <para>
+                In the <guimenu>Environment database variables</guimenu> the
+                mapping of the database settings to the environment variables
+                in the container is defined. For example, if the container
+                expects the database hostname in <envar>DATABASE_HOST</envar>,
+                it has to be entered in the field <guimenu>Variable containing
+                    the server providing the database</guimenu>. There are also
+                fields for the database port, user, password, database name and
+                the password file.
             </para>
         </section>
-
     </section>
 </chapter>
 
