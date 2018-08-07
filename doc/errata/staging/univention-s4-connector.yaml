@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-s4-connector
-fix: 12.0.2-22A~4.3.0.201808062203
+fix: 12.0.2-23A~4.3.0.201808071734
 desc: |-
   This update addresses the following issue:
   * Sync pwdLastSet changes also in case the hashes didn't actually change
