@@ -38,7 +38,6 @@ class UMCTester(object):
 
 	def get_small_package_name(self):
 		print("Trying to find small, uninstalled package with no dependencies and recommends...")
-		uninstalled_package = None
 		cache = apt.cache.Cache()
 		cache.update()
 		cache.open()
