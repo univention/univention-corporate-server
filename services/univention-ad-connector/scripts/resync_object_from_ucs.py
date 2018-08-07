@@ -147,7 +147,7 @@ if __name__ == '__main__':
 		resync = UCSResync()
 		treated_dns = resync.resync(ucs_dns, options.ldapfilter, options.ldapbase)
 	except ldap.NO_SUCH_OBJECT as ex:
-		print 'ERROR: The LDAP object not found : %s' % ex.args[1]
+		print 'ERROR: The LDAP object not found : %s' % str(ex)
 		if len(ex.args) == 3:
 			treated_dns = ex.args[2]
 		sys.exit(1)

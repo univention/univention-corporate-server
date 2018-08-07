@@ -2182,6 +2182,10 @@ class ad(univention.connector.ucs):
 					else:
 						object = self.__object_from_element(elements[0])
 						property_key = self.__identify(object)
+						if not property_key:
+							ud.debug(ud.LDAP, ud.INFO, "sync to ucs: Dropping reject for unidentified object %s" % dn)
+							self._remove_rejected(id)
+							continue
 						mapped_object = self._object_mapping(property_key, object)
 						try:
 							if not self._ignore_object(property_key, mapped_object) and not self._ignore_object(property_key, object):

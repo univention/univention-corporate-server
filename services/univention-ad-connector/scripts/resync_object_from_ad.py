@@ -122,6 +122,8 @@ class ad(univention.connector.ad.ad):
 					res = self.__search_ad(base=targetdn, scope=ldap.SCOPE_BASE, filter=ldapfilter, attrlist=["objectGUID", "uSNChanged"])
 
 					for msg in res:
+						if not msg[0]:  ## Referral
+							continue
 						guid_blob = msg[1]["objectGUID"][0]
 						guid = ndr_unpack(misc.GUID, guid_blob)
 						usn = msg[1]["uSNChanged"][0]

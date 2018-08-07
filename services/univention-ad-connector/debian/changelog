@@ -1,3 +1,12 @@
+univention-ad-connector (12.0.0-18) unstable; urgency=medium
+
+  * Bug #47232: Improve robustness of object resync by skipping
+    unidentified AD objects
+  * Skip referrals in resync_object_from_ad.py
+  * Fix exception handling in resync_object_from_ucs.py
+
+ -- Arvid Requate <requate@univention.de>  Tue, 07 Aug 2018 19:28:02 +0200
+
 univention-ad-connector (12.0.0-17) unstable; urgency=medium
 
   * Bug #47025: updated ad binary attributes list
