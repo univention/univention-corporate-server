@@ -264,7 +264,6 @@ joinscript_init() {
 
 die() {
     rc=$?
-    set +e
     joinscript_log_error "$@"
     exit $rc
 }
