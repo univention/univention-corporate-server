@@ -1,3 +1,10 @@
+ucs-test (8.0.28-161) unstable; urgency=medium
+
+  * Bug #47306: wait for standby animation to stabilize tests
+    and hide StartupDialog in 86_selenium/135_upload_license
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 07 Aug 2018 18:54:42 +0200
+
 ucs-test (8.0.28-160) unstable; urgency=medium
 
   * Bug #47306: fix 86_selenium/136_packages
