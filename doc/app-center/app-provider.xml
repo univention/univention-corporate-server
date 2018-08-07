@@ -374,7 +374,7 @@ TODO: Nico
             <para>
                 Many docker apps expose a web interface to the outside world,
                 e.g. via the port 8080. The App Center on UCS takes care to map
-                this web interface from some relative url to this port and adds a
+                this web interface from some relative link to this port and adds a
                 reverse proxy configuration to the host's webserver
                 configuration.
             </para>
@@ -406,10 +406,12 @@ TODO: Nico
                     </listitem>
                     <listitem>
                         <simpara>
-                            On the tab <guimenu>Docker</guimenu> in the section
+                            <option>Supported protocols by the container's web
+                                interface</option>: On the tab
+                            <guimenu>Docker</guimenu> in the section
                             <guimenu>Advanced docker settings</guimenu>, select
                             <userinput>HTTP and HTTPS</userinput>, if both
-                            protocal schemes should be covered.
+                            protocol schemes should be covered.
                         </simpara>
                     </listitem>
                 </itemizedlist>
@@ -420,13 +422,16 @@ TODO: Nico
             <title>Ports</title>
             <para>
                 If your app needs to occupy ports in order work properly, they
-                can be definied in the <guimenu>Port redirection</guimenu>
+                can be defined in the <guimenu>Port redirection</guimenu>
                 section on the <guimenu>Docker</guimenu> tab. Here you can
                 define a list of ports that the docker host shall exclusively
                 acquire for the docker container. Ports defined here cannot be
                 used by other services on the UCS host or other docker
                 containers on that host.
-
+            </para>
+            <para>
+                For example, the solution exposes an API under a dedicated
+                port. This port would be predestined to be defined here.
             </para>
         </section>
 
@@ -434,10 +439,11 @@ TODO: Nico
             <title>Database</title>
             <para>
                 Many applications need a relational database management system
-                (RDMS) somewhere in the environment to function properly. If
-                the app needs such a database the App Center takes care of
-                providing one directly on the docker host. In two sections on
-                the <guimenu>Docker</guimenu> tab the appropriate settings can
+                (<wordasword>RDMS</wordasword>) somewhere in the environment to
+                function properly. If the app needs such a database the App
+                Center takes care of providing one directly on the docker host.
+                In two sections on the <guimenu>Docker</guimenu> tab the
+                appropriate settings can
                 be made.
             </para>
             <para>
