@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-join
-fix: 10.0.0-18A~4.3.0.201807311721
+fix: 10.0.0-19A~4.3.0.201808072031
 desc: |
  This update addresses the following issues:
  * Improve error messages of join failures.
