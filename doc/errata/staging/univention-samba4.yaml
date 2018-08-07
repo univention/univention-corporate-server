@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: univention-samba4
+fix: 7.0.2-18A~4.3.0.201808072116
+desc: |-
+  This update addresses the following issue:
+  * Adjust default for samba/ntlm/auth ("ntlm auth") to "ntlmv2-only"
+bug: [46782]
