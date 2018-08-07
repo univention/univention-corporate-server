@@ -3,12 +3,12 @@ release: "4.2"
 version: [4]
 scope: ucs_4.2-0-errata4.2-4
 src: univention-management-console
-fix: 9.0.80-97A~4.2.0.201808011424
+fix: 9.0.80-97A~4.2.0.201808021154
 desc: |
  This update addresses the following issue(s):
- * A problem with the saml authentification which could lead to the
-   umc web interface becomming unresponsive has been fixed.
- * In certain situtations after reloading the browser window the error message
+ * A problem with the saml authentication which could lead to the
+   UMC web interface becoming unresponsive has been fixed.
+ * In certain situations after reloading the browser window the error message
    "There are no modules available for the currently authenticated user" was
    incorrectly displayed. This behavior has been repaired.
 bug: [47109,46998]
