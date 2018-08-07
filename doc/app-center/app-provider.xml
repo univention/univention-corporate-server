@@ -11,6 +11,10 @@
   <title>Univention App Center for App Provider</title>
 </bookinfo>
 
+<!--
+TODO: Nico
+-->
+
 <chapter id="introduction">
     <title>Introduction</title>
 
@@ -25,10 +29,10 @@
 	    <title>What is Univention App Center?</title>
         <para>
             Univention App Center is an ecosystem similar to the app stores
-            known from mobile platforms from Apple or Google. It provides an
+            known from mobile platforms like Apple or Google. It provides an
             infrastructure to build, deploy and run enterprise applications on
             Univention Corporate Server (UCS). The App Center uses well-known
-            technology like and docker containers.
+            technology like docker.
         </para>
     </section>
 
@@ -41,7 +45,7 @@
                 <listitem>
                     <simpara>
                         <emphasis>The App</emphasis> is the software plus the
-                        collection of metadata like description, logo,
+                        collection of metadata like text description, logo,
                         screenshots and more for the presentation.
                     </simpara>
                 </listitem>
@@ -98,7 +102,7 @@
 
     <para>
         This chapter describes the requirements and the steps to create an app
-        for Univention App Center. After reading this chapter you are can create
+        for Univention App Center. After reading this chapter you can create
         your own app and start with a development and test cycle using the Test
         App Center.
     </para>
@@ -112,18 +116,14 @@
         <section id="app-provider-needs:docker-image">
             <title>Software in a docker image</title>
             <para>
-                Your software needs to be provided in a <ulink
+                Your software needs to be provided as <ulink
                     url="https://docs.docker.com/">docker image</ulink>. This
                 is the easiest way to deploy software in Univention App Center.
-            </para>
-            <para>
                 It is also recommended to publish the docker container to
                 <ulink url="https://hub.docker.com/">docker hub</ulink>. This
-                makes referencing the image later much easier.
-            </para>
-            <para>
-                The image must have an image tag for version information. It later
-                allows updates for the apps.
+                makes referencing the image later much easier.  The image must
+                have an image tag for version information. It later allows
+                updates for the apps.
             </para>
         </section>
 
@@ -131,8 +131,8 @@
             <title>Account for App Provider Portal</title>
 
             <para>
-                The app provider portal is the app developer's self service
-                place for all the settings around the app.
+                The app provider portal is the app developer's place for self
+                service for all the settings around the app.
             </para>
 
            <orderedlist>
@@ -195,7 +195,7 @@
                             <emphasis>App ID</emphasis> is like a primary key.
                             You should choose it carefully, because it cannot
                             be changed once the app is released to the public.
-                            It should use small capitals, dashes and numbers.
+                            It should only use small capitals, dashes and numbers.
                             Please do not include version strings in here.
                         </simpara>
                     </listitem>
@@ -216,19 +216,17 @@
                     <listitem>
                         <simpara>
                             <emphasis>UCS Version</emphasis> is the UCS version
-                            your app should start to be available on.
-                        </simpara>
-                        <simpara>
-                            As the App is a container and has little
+                            your app should start to be available on. Please
+                            note: As the App is a container and has little
                             interaction with the host system, it is unnecessary
                             to publish a new version for UCS 4.3, if it has
                             already been published for UCS 4.2. UCS 4.3 systems
                             may very well use the App - if you specify
                             <literal>SupportedUCSVersion=4.2-0, 4.3-0</literal>
-                            in your 4.2 App. It does not really matter in
-                            which UCS version you are publishing your App. But
-                            if you are publishing it in various UCS versions,
-                            you need to also test various UCS versions.
+                            in your 4.2 App. It does not really matter in which
+                            UCS version you are publishing your App. But if you
+                            are publishing it in various UCS versions, you need
+                            to also test various UCS versions.
                         </simpara>
                     </listitem>
                     <listitem>
@@ -328,6 +326,9 @@
     </section>
 </chapter>
 
+<!--
+TODO: Stefan
+-->
 <chapter id="connection-idm">
     <title>Connection with Identity Management</title>
 
@@ -548,6 +549,9 @@
 
 </chapter>
 
+<!--
+TODO: Nico
+-->
 <chapter id="app-lifecycle">
     <title>App life cycle</title>
 
@@ -586,6 +590,9 @@
 
 </chapter>
 
+<!--
+TODO: Nico
+-->
 <chapter id="app-presentation">
     <title>App presentation</title>
 
@@ -630,6 +637,9 @@
 
 </chapter>
 
+<!--
+TODO: Nico
+-->
 <chapter id="app-appliances">
     <title>App Appliances</title>
 
@@ -646,6 +656,9 @@
     </section>
 </chapter>
 
+<!--
+TODO: Stefan
+-->
 <chapter id="app-configurations">
     <title>App configurations</title>
 
