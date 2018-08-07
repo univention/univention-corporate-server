@@ -52,6 +52,8 @@ class UMCTester(object):
 		Restores the initially dumped license, removes created
 		computers and users if there were any
 		"""
+		self.ucr.revert_to_original_registry()
+
 		if self.license_dump_successful:
 			print("\nRestoring initially dumped license from file "
 				  "'%s' and removing temp folder with license files"
@@ -180,6 +182,8 @@ class UMCTester(object):
 
 
 	def init(self):
+		self.ucr['umc/web/startupdialog'] = 'false'
+		self.ucr.save()
 		self.license_dump_successful = False
 		self.temp_license_folder = mkdtemp()
 		self.ldap_base = self.ucr.get('ldap/base')
