@@ -71,6 +71,22 @@ class ChecksAndWaits(object):
 			self.elements_invisible
 		)
 
+	def wait_until_standby_animation_appears(self, timeout=5):
+		logger.info("Waiting for standby animation to appear.")
+		xpath = '//*[starts-with(@id, "dojox_widget_Standby_")]/img'
+		try:
+			webdriver.support.ui.WebDriverWait(xpath, timeout).until(
+				self.elements_visible
+			)
+		except selenium_exceptions.TimeoutException:
+			logger.info("No standby animation appeared during timeout. Ignoring")
+		else:
+			logger.info("Found standby animation")
+	
+	def wait_until_standby_animation_appears_and_disappears(self):
+		self.wait_until_standby_animation_appears()
+		self.wait_until_all_standby_animations_disappeared()
+
 	def wait_until_progress_bar_finishes(self, timeout=300):
 		logger.info("Waiting for all progress bars to disappear.")
 		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " umcProgressBar ")]'
@@ -115,6 +131,16 @@ class ChecksAndWaits(object):
 		try:
 			visible_elems = [elem for elem in elems if elem.is_displayed()]
 			if len(visible_elems) is 0:
+				return True
+		except selenium_exceptions.StaleElementReferenceException:
+			pass
+		return False
+
+	def elements_visible(self, xpath):
+		elems = self.driver.find_elements_by_xpath(xpath)
+		try:
+			visible_elems = [elem for elem in elems if elem.is_displayed()]
+			if len(visible_elems) > 0:
 				return True
 		except selenium_exceptions.StaleElementReferenceException:
 			pass

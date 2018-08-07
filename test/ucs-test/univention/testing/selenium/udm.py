@@ -75,7 +75,7 @@ class UDMBase(object):
 		# This method will work with *most* UDM modules.
 		self.search(self._get_search_value(objectname))
 		self.selenium.click_grid_entry(self._get_grid_value(objectname))
-		self.selenium.wait_for_text(_('Basic settings'))
+		self.selenium.wait_until_standby_animation_appears_and_disappears()
 
 	def close_details(self):
 		print '*** close the detailpage'
@@ -118,8 +118,7 @@ class UDMBase(object):
 
 	def wait_for_main_grid_load(self, timeout=60):
 		print '*** waiting for main grid load'
-		time.sleep(5)
-		self.selenium.wait_until_all_standby_animations_disappeared()
+		self.selenium.wait_until_standby_animation_appears_and_disappears()
 
 	def open_add_dialog(self, container=None, template=None):
 		print '*** open the add dialog'
