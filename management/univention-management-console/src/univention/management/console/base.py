@@ -289,9 +289,16 @@ class Base(signals.Provider, Translation):
 			self.finished(request.id, result)
 			return
 		method = '%s: %s' % (thread.name, ' '.join(request.arguments))
-		self.__error_handling(request, method, *thread.exc_info)
+		self.__error_handling(request, method, thread.exc_info[0], thread.exc_info[1], thread.trace)
 
 	def error_handling(self, etype, exc, etraceback):
+		"""
+		Translate generic UDM exceptions back to LDAP exceptions.
+
+		:param etype: The exception class.
+		:param exc: The exception instance.
+		:param etraceback: The exception traceback instance; may be None.
+		"""
 		if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), ldap.SERVER_DOWN):
 			exc = exc.original_exception
 		if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), ldap.INVALID_CREDENTIALS):
@@ -305,10 +312,27 @@ class Base(signals.Provider, Translation):
 			raise Unauthorized
 
 	def __error_handling(self, request, method, etype, exc, etraceback):
+		"""
+		Handle UMC exception.
+
+		As requests are processes by python-notifier in a separate thread, any exception only contains the traceback relative to the notifier thread.
+		To make them more useable we want to combine them with the calling part to get a complete stack trace.
+		This is complicated by the fact that python-notifier no longer stores the original traceback, as this creates a memory leak.
+		Instead only the rendered traceback is stored.
+
+		:param request: The original UMC request.
+		:param method: The failed UMC command.
+		:param etype: The exception class.
+		:param exc: The exception instance.
+		:param etraceback: The exception traceback instance; may be None.
+		"""
 		message = ''
 		result = None
 		headers = None
 		error = None
+		trace = etraceback
+		if isinstance(etraceback, list):
+			etraceback = None
 		try:
 			try:
 				self.error_handling(etype, exc, etraceback)
@@ -329,9 +353,13 @@ class Base(signals.Provider, Translation):
 			}
 		except:
 			status = MODULE_ERR_COMMAND_FAILED
+			if etraceback is None:  # Bug #47114: thread.exc_info doesn't contain a traceback object anymore
+				trace = ''.join(trace + traceback.format_exception_only(*sys.exc_info()[:2]))
+			else:
+				trace = traceback.format_exc()
 			error = {
 				'command': ('%s %s' % (' '.join(request.arguments), '(%s)' % (request.flavor,) if request.flavor else '')).strip().decode('utf-8', 'replace'),
-				'traceback': traceback.format_exc().decode('utf-8', 'replace')
+				'traceback': trace.decode('utf-8', 'replace'),
 			}
 			message = self._('Internal server error during "%(command)s".') % error
 		MODULE.process(str(message))
