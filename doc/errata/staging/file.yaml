@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: file
+fix: 1:5.30-1+deb9u2
+desc: |
+ This update addresses the following issue:
+ * out-of-bounds read via a crafted ELF file (CVE-2018-10360)
+bug: [47507]
+cve:
+- CVE-2018-10360
