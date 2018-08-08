@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: linux-latest
+fix: 80+deb9u5
+desc: |
+ This update addresses the following issue:
+ * Update to Linux kernel 4.9.0-7
+bug: [47490]
