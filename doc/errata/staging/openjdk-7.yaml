@@ -1,0 +1,82 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: openjdk-7
+fix: 7u181-2.6.14-1~deb8u1A~4.2.4.201808071712
+desc: |
+ This update addresses the following issues:
+ * Improve key keying case (CVE-2018-2579)
+ * Improve LDAP logins (CVE-2018-2588)
+ * Improve reliability of DNS lookups (CVE-2018-2599)
+ * Improve usage messages (CVE-2018-2602)
+ * Improve PKCS usage (CVE-2018-2603)
+ * Stricter key generation (CVE-2018-2618)
+ * Improve GSS handling (CVE-2018-2629)
+ * Improve LDAP lookup robustness (CVE-2018-2633)
+ * Improve property negotiations (CVE-2018-2634)
+ * Improve JMX supportive features (CVE-2018-2637)
+ * Improve GTK initialization (CVE-2018-2641)
+ * More refactoring for deserialization cases (CVE-2018-2663)
+ * More refactoring for client deserialization cases (CVE-2018-2677)
+ * More refactoring for naming deserialization cases (CVE-2018-2678)
+ * incorrect merging of sections in the JAR manifest (CVE-2018-2790)
+ * unrestricted deserialization of data from JCEKS key stores (CVE-2018-2794)
+ * insufficient consistency checks in deserialization of multiple classes
+   (CVE-2018-2795)
+ * unbounded memory allocation during deserialization in PriorityBlockingQueue
+   (CVE-2018-2796)
+ * unbounded memory allocation during deserialization in TabularDataSupport
+   (CVE-2018-2797)
+ * unbounded memory allocation during deserialization in Container
+   (CVE-2018-2798)
+ * unbounded memory allocation during deserialization in NamedNodeMapImpl
+   (CVE-2018-2799)
+ * RMI HTTP transport enabled by default (CVE-2018-2800)
+ * incorrect handling of Reference clones can lead to sandbox bypass
+   (CVE-2018-2814)
+ * unbounded memory allocation during deserialization in StubIORImpl
+   (CVE-2018-2815)
+ * CORBA communication improvements (S8160104)
+ * Extra validation for public keys (S8174756)
+ * Improve host instance supports (S8175932)
+ * Revise default document styling (S8176458)
+ * Better use of certificates in LDAP (S8178458)
+ * Better RSA parameters (S8178466)
+ * Cleaner print job handling (S8179536)
+ * Cleaner palette entry handling (S8179990)
+ * Cleaner native graphics device handling (S8180011)
+ * Cleaner AWT robot handling (S8180015)
+ * Improve SymbolHashMap entry handling (S8180020)
+ * Cleaner CLR invocation handling (S8180433)
+ * More deeply colored ICC spaces (S8180877)
+ * Improve JVM UTF String handling (S8181664)
+ * Improve implementation of keystores (S8181670)
+ * Transform XML interfaces (S8186080)
+ * Improve native glyph layouts (S8186867)
+bug: [47470]
+cve:
+- CVE-2018-2579
+- CVE-2018-2588
+- CVE-2018-2599
+- CVE-2018-2602
+- CVE-2018-2603
+- CVE-2018-2618
+- CVE-2018-2629
+- CVE-2018-2633
+- CVE-2018-2634
+- CVE-2018-2637
+- CVE-2018-2641
+- CVE-2018-2663
+- CVE-2018-2677
+- CVE-2018-2678
+- CVE-2018-2790
+- CVE-2018-2794
+- CVE-2018-2795
+- CVE-2018-2796
+- CVE-2018-2797
+- CVE-2018-2798
+- CVE-2018-2799
+- CVE-2018-2800
+- CVE-2018-2814
+- CVE-2018-2815
