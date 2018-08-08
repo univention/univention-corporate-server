@@ -5,7 +5,7 @@ scope: ucs_4.3-0-errata4.3-1
 src: linux
 fix: 4.9.110-3+deb9u1
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * Integer overflow in events/core.c:perf_cpu_time_max_percent_handler() can
    allow for denial of service (CVE-2017-18255)
  * vhost: Information disclosure in vhost/vhost.c:vhost_new_msg()
