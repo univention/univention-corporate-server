@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: ca-certificates
+fix: 20161130+nmu1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Update Mozilla certificate authority bundle to version 2.22.
+bug: [47480]
