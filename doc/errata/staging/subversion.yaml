@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: subversion
+fix: 1.9.5-1+deb9u2
+desc: |
+ This update addresses the following issues:
+ * Backport for working around an issue in APR's trunc API. This is a
+   prerequisite for the SHA1/shattered fixes.
+ * Backport to prevent the possibility of rep-sharing between a directory rep
+   and a file/prop rep.
+ * Backport to reject commits which would introduce hash collisions with
+   existing data, thus addressing the SHA1/shattered issue.
+bug: [47478]
