@@ -3,17 +3,20 @@ release: "4.2"
 version: [4]
 scope: ucs_4.2-0-errata4.2-4
 src: linux
-fix: 4.9.30-2A~4.2.0.201808011018
+fix: 4.9.30-2A~4.2.0.201808080917
 desc: |
- This update of the Linux kernel to version 4.9.116 addresses the following
+ This update of the Linux kernel to version 4.9.118 addresses the following
  issues:
  * CVE-2017-17975: use-after-free in the usbtv_probe function in
    drivers/media/usb/usbtv/usbtv-core.c
+ * CVE-2017-18216: ocfs2: subsystem.su_mutex is required while accessing the
+   item->ci_parent
  * CVE-2017-18218: Use-after-free vulnerability in
    drivers/net/ethernet/hisilicon/hns/hns_enet.c allows local attacker to
    cause denial of service
  * CVE-2017-18222: Memory corruption in ethtool_get_strings function in hns
    driver
+ * CVE-2017-18224: ocfs2: ip_alloc_sem should be taken in ocfs2_get_block()
  * CVE-2017-18255: Integer overflow in
    events/core.c:perf_cpu_time_max_percent_handler() can allow for denial of
    service
@@ -37,6 +40,8 @@ desc: |
  * CVE-2018-1130: a null pointer dereference in
    net/dccp/output.c:dccp_write_xmit() leads to a system crash
  * CVE-2018-3639: cpu: speculative store bypass
+ * CVE-2018-5390: Linux Kernel TCP implementation vulnerable to Denial of
+   Service
  * CVE-2018-6412 kernel: Incorrect integer signedness in
    sbuslibc:sbusfb_ioctl_helper() allows for information leakage
  * CVE-2018-7757: Memory leak in the sas_smp_get_phy_events function in
@@ -55,6 +60,7 @@ desc: |
  * CVE-2018-10876: use-after-free in jbd2_journal_commit_transaction funtion
  * CVE-2018-10877: out-of-bound access in ext4_ext_drop_refs function with a
    crafted ext4 image
+ * CVE-2018-10878: out-of-bound write in ext4_init_block_bitmap()
  * CVE-2018-10881: out-of-bound access in ext4_get_group_info() when mounting
    and operating a crafted ext4 image
  * CVE-2018-10882: stack-out-of-bounds write infs/jbd2/transaction.c
@@ -63,6 +69,9 @@ desc: |
  * CVE-2018-10087: Undefined behavior in kernel/exit.c:kernel_wait4() function
    allows local denial of service
  * CVE-2018-10940: incorrect memory bounds check in drivers/cdrom/cdrom.c
+ * CVE-2018-13405: Fix up non-directory creation in SGID directories
+ * CVE-2018-13406: video: uvesafb: Fix integer overflow in allocation
+ * CVE-2018-14734: infiniband: fix a possible use-after-free bug
  * CVE-2018-1000199: ptrace() incorrect error handling leads to corruption and
    DoS
 note: This is the first of three parts.
@@ -97,3 +106,10 @@ cve:
 - CVE-2018-10881
 - CVE-2018-10882
 - CVE-2018-10883
+- CVE-2017-18216
+- CVE-2017-18224
+- CVE-2018-5390
+- CVE-2018-10878
+- CVE-2018-13405
+- CVE-2018-13406
+- CVE-2018-14734
