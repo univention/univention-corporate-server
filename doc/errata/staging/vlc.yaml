@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: vlc
+fix: 3.0.3-1-0+deb9u1
+desc: |
+ This update addresses the following issue:
+ * mkv: Fix NULL pointer access and buffer over-read in avcodec audio encoding
+   with non-default layouts via crafted MKV files (CVE-2018-11529)
+bug: [47479]
+cve:
+- CVE-2018-11529
