@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: reportbug
+fix: 7.1.7+deb9u2
+desc: |
+ This update addresses the following issue:
+ * Notify the security team or LTS team about a possible regression if
+   reporting a bug against a package containing a security fix.
+bug: [47506]
