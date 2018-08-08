@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: shared-mime-info
+fix: 1.8-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Switch dpkg trigger to noawait.
+bug: [47483]
