@@ -69,5 +69,5 @@ if [ ! "$RET" = "0" ] ; then
 fi
 
 # check HTTP service
-MSG="$(/usr/lib/nagios/plugins/check_http -I 127.0.0.1 -p 631 -S -k "Host: 127.0.0.1:631")"
+MSG="$(/usr/lib/nagios/plugins/check_http -H "127.0.0.1:631" -I 127.0.0.1 -p 631 -S)"
 nagiosExit "$?" "$MSG"

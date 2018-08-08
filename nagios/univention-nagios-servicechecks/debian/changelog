@@ -1,3 +1,9 @@
+univention-nagios-servicechecks (7.0.0-3) unstable; urgency=medium
+
+  * Bug #46698: Use the host header option to ensure HTTP/1.1 is used
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 08 Aug 2018 14:16:56 +0200
+
 univention-nagios-servicechecks (7.0.0-2) unstable; urgency=medium
 
   * Bug #45935: squid3 -> squid
