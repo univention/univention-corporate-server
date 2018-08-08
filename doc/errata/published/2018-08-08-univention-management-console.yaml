@@ -12,3 +12,5 @@ desc: |
    "There are no modules available for the currently authenticated user" was
    incorrectly displayed. This behavior has been repaired.
 bug: [47109,46998]
+erratum: 429
+announced: 2018-08-08
