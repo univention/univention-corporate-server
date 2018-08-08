@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: libdatetime-timezone-perl
+fix: 1:2.09-1+2018e
+desc: |
+ This update addresses the following issue:
+ * Update to Olson database version 2018e. This update contains contemporary
+   changes for North Korea.
+ * Update to Olson database version 2018d. This update contains contemporary
+   changes for Palestine and Casey Station.
+bug: [47477]
