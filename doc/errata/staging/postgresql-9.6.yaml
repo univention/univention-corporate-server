@@ -1,0 +1,16 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: postgresql-9.6
+fix: 9.6.9-0+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Uncontrolled search path element in pg_dump and other client applications
+   (CVE-2018-1058)
+ * Too-permissive access control list on function pg_logfile_rotate()
+   (CVE-2018-1115)
+bug: [47482]
+cve:
+- CVE-2018-1058
+- CVE-2018-1115
