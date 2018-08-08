@@ -13,5 +13,5 @@ desc: |
    usual effect is a crash, and in the case of the Shibboleth SP software, a
    crash in the shibd daemon.
 bug: [47476]
-cve:
-- CVE-2018-0000
+# cve:
+# - CVE-2018-0000
