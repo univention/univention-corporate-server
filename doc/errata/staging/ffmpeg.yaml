@@ -1,0 +1,50 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: ffmpeg
+fix: 7:3.2.12-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * avfilter/vf_transpose: Fix used plane count (CVE-2018-6392)
+ * avcodec/utvideodec: Fix bytes left check in decode_frame() (CVE-2018-6621)
+ * avcodec/utvideodec: Check subsample factors (CVE-2018-7557)
+ * avcodec/utvideodec: Set pro flag based on fourcc (CVE-2018-10001)
+ * avcodec/mpeg4videoenc: Use 64 bit for times in mpeg4_encode_gop_header()
+   (CVE-2018-12458)
+ * avformat/movenc: Do not pass AVCodecParameters in avpriv_request_sample
+   (CVE-2018-13300)
+ * avformat/movenc: Check that frame_types other than
+   EAC3_FRAME_TYPE_INDEPENDENT have a supported substream id (CVE-2018-13302)
+ * libavformat/movenc.c in FFmpeg allows attackers to cause a denial of
+   service (application crash caused by a divide-by-zero error) with a user
+   crafted Waveform audio file. (CVE-2018-14394)
+ * avformat/movenc: Write version 2 of audio atom if channels is not known
+   (CVE-2018-14395)
+ * FFmpeg contains multiple out of array access vulnerabilities in the mms
+   protocol that can result in attackers accessing out of bound data. This
+   attack appear to be exploitable via network connectivity.
+   (CVE-2018-1999010)
+ * FFmpeg contains a CWE-835: Infinite loop vulnerability in pva format
+   demuxer that can result in a Vulnerability that allows attackers to consume
+   excessive amount of resources like CPU and RAM. This attack appear to be
+   exploitable via specially crafted PVA file has to be provided as input.
+   (CVE-2018-1999012)
+ * FFmpeg contains a use-after-free vulnerability in the realmedia demuxer
+   that can result in vulnerability allows attacker to read heap memory. This
+   attack appear to be exploitable via specially crafted RM file has to be
+   provided as input. (CVE-2018-1999013)
+bug: [47504]
+cve:
+- CVE-2018-6392
+- CVE-2018-6621
+- CVE-2018-7557
+- CVE-2018-10001
+- CVE-2018-12458
+- CVE-2018-13300
+- CVE-2018-13302
+- CVE-2018-14394
+- CVE-2018-14395
+- CVE-2018-1999010
+- CVE-2018-1999012
+- CVE-2018-1999013
