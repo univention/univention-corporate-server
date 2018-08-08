@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Update to virtio driver 0.1.141-1
 bug: [47321]
+erratum: 162
+announced: 2018-08-08
