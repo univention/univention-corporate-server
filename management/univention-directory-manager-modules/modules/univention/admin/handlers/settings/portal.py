@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import json
 from ldap.filter import filter_format
 
 from univention.admin.layout import Tab, Group
@@ -187,6 +188,7 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	# 'portalEntriesOrder' - deprecated by 'content' of settings/portal
 	'portalEntriesOrder': univention.admin.property(
 		short_description=_('Portal entries order'),
 		long_description=_('The order in which the portal entries are shown on this portal'),
@@ -202,6 +204,14 @@ property_descriptions = {
 		long_description=_('List of static links shown on this portal. Only those links for the selected locale are shown (e.g.,: en_US, de_DE).'),
 		syntax=univention.admin.syntax.PortalLinks,
 		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
+	'content': univention.admin.property(
+		short_description=_('Portal content'),
+		syntax=univention.admin.syntax.PortalCategorySelection,
 		options=[],
 		required=False,
 		may_change=True,
@@ -233,6 +243,9 @@ layout = [
 			["links"],
 		]),
 	]),
+	Tab(_('Portal categories and entries'), _('The categories and entries that are shown on this portal'), layout=[
+		["content"],
+	]),
 ]
 
 
@@ -263,6 +276,13 @@ def unmapTranslationValue(vals):
 		ret.append(val.split(' ', 1))
 	return ret
 
+def mapContent(vals):
+	return json.dumps(vals)
+
+def unmapContent(vals):
+	return json.loads(vals[0])
+
+
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
@@ -278,6 +298,7 @@ mapping.register('fontColor', 'univentionPortalFontColor', None, univention.admi
 mapping.register('logo', 'univentionPortalLogo', None, univention.admin.mapping.ListToString)
 mapping.register('portalEntriesOrder', 'univentionPortalEntriesOrder')
 mapping.register('links', 'univentionPortalLinks', mapLinkValue, unmapLinkValue)
+mapping.register('content', 'univentionPortalContent', mapContent, unmapContent)
 
 
 class object(univention.admin.handlers.simpleLdap):
@@ -295,11 +316,37 @@ class object(univention.admin.handlers.simpleLdap):
 			('objectClass', ocs),
 		]
 
+	def _ldap_pre_create(self):
+		super(object, self)._ldap_pre_create()
+		self.__update_deprecated_property__portal_entries_order__of__self()
+
+	def _ldap_pre_modify(self):
+		self.__update_deprecated_property__portal_entries_order__of__self()
+
 	def _ldap_post_create(self):
 		self.__update_portal_computers()
+		self.__update_deprecated_property__portal__of__portal_entry()
 
 	def _ldap_post_modify(self):
 		self.__update_portal_computers()
+		self.__update_deprecated_property__portal__of__portal_entry()
+
+	def __update_deprecated_property__portal_entries_order__of__self(self):
+		# Use the order of the settings/portal_entry objects in the 'content' property
+		# for the deprecated 'portalEntriesOrder' property.
+		# Be aware that 'portalEntriesOrder' will not get updated if
+		# the settings/portal_entry objects are the same but only ordering changes.
+		# ['A', 'B', 'C']
+		# ['B', 'A', 'C'] # this will be ignored, since only ordering changed
+		# This was previously bypassed by unsetting 'portalEntriesOrder' and then resetting with the new order
+		if self.hasChanged('content'):
+			content = self.info.get('content', [])
+			new_order = [entry for category, entries in content for entry in entries]
+			new_order_no_duplicates = []
+			for entry in new_order:
+				if entry not in new_order_no_duplicates:
+					new_order_no_duplicates.append(entry)
+			self['portalEntriesOrder'] = new_order_no_duplicates
 
 	def __update_portal_computers(self):
 		if self.exists():
@@ -339,6 +386,52 @@ class object(univention.admin.handlers.simpleLdap):
 				compobj.open()
 				compobj['portal'] = self.dn
 				compobj.modify()
+	
+	def __update_deprecated_property__portal__of__portal_entry(self):
+		# Remove this portal from the 'portal' property of settings/portal_entry objects
+		# if they were removed from the 'content' property.
+		# Add this portal if they were added to 'content'.
+
+		if not self.hasChanged('content'):
+			return
+
+		portal_entry_mod = univention.admin.modules.get('settings/portal_entry')
+
+		old_content = self.oldinfo.get('content', [])
+		old_entries = [entry for category, entries in old_content for entry in entries]
+		new_content = self.info.get('content', [])
+		new_entries = [entry for category, entries in new_content for entry in entries]
+
+		# remove this portal from removed entries
+		removed_entries = [entry for entry in old_entries if entry not in new_entries]
+		for entry_dn in removed_entries:
+			try:
+				entry_obj = univention.admin.objects.get(portal_entry_mod, None, self.lo, position='', dn=entry_dn)
+			except univention.admin.uexceptions.noObject:
+				continue
+			else:
+				entry_obj.open()
+				old_portal = entry_obj.info.get('portal', [])
+				new_portal = [portal for portal in old_portal if not self.lo.compare_dn(portal, self.dn)]
+				if new_portal != old_portal:
+					entry_obj['portal'] = new_portal
+					entry_obj.modify()
+
+		# add this portal to added entries
+		added_entries = [entry for entry in new_entries if entry not in old_entries]
+		for entry_dn in added_entries:
+			try:
+				entry_obj = univention.admin.objects.get(portal_entry_mod, None, self.lo, position='', dn=entry_dn)
+			except univention.admin.uexceptions.noObject:
+				continue
+			else:
+				entry_obj.open()
+				old_portal = entry_obj.info.get('portal', [])
+				new_portal = old_portal + ([self.dn] if self.dn not in old_portal else [])
+				if old_portal != new_portal:
+					entry_obj['portal'] = new_portal
+					entry_obj.modify()
+
 
 	def _ldap_post_remove(self):
 		for obj in univention.admin.modules.lookup('settings/portal_entry', None, self.lo, scope='sub', filter=filter_format('portal=%s', [self.dn])):

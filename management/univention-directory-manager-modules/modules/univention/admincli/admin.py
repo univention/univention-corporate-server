@@ -1003,7 +1003,10 @@ def _doit(arglist):
 									out.append('  %s: %s' % (_2utf8(key), None))
 						else:
 							if s.tostring(value):
-								out.append('  %s: %s' % (_2utf8(key), _2utf8(s.tostring(value))))
+								if module.module == 'settings/portal' and key == 'content':
+									out.append('  %s:\n  %s' % (_2utf8(key), _2utf8(s.tostring(value).replace('\n', '\n  '))))
+								else:
+									out.append('  %s: %s' % (_2utf8(key), _2utf8(s.tostring(value))))
 							else:
 								out.append('  %s: %s' % (_2utf8(key), None))
 

@@ -45,6 +45,7 @@ import base64
 import zlib
 import bz2
 import copy
+import json
 import sys
 import os
 import shlex
@@ -3511,18 +3512,61 @@ class PortalLinks(complex):
 	all_required = True
 
 
+class PortalCategory(select):
+	choices = [
+		('admin', _('Shown in category "Administration"')),
+		('service', _('Shown in category "Installed services"')),
+	]
+
+
+class PortalCategoryV2(UDM_Objects):
+	udm_modules = ('settings/portal_category', )
+	label = '%(name)s'
+	empty_value = True
+
+
+class PortalEntrySelection(complex):
+	subsyntaxes = [(_('Portal Entry'), PortalEntries)]
+
+
+class PortalCategorySelection(simple):
+	subsyntaxes = [(_('Portal Category'), PortalCategoryV2), (_('Portal Entry'), PortalEntrySelection)]
+
+	@classmethod
+	def parse(self, texts, minn=None):
+		# for udm-cli
+		if type(texts) == str:
+			try:
+				texts = json.loads(texts)
+			except ValueError:
+				raise univention.admin.uexceptions.valueInvalidSyntax(_("Value has to be in valid json format"))
+		for text in texts:
+			if len(text) < len(self.subsyntaxes):
+				raise univention.admin.uexceptions.valueInvalidSyntax(_("not enough arguments"))
+			elif len(text) > len(self.subsyntaxes):
+				raise univention.admin.uexceptions.valueInvalidSyntax(_("too many arguments"))
+
+			if len(text[1]) > 0 and not text[0]:
+				raise univention.admin.uexceptions.valueInvalidSyntax(_("Portal entries can not be added to an empty category"))
+
+			s = Portals()
+			s.parse(text[0])
+
+			s = PortalEntries()
+			for portal_entry in text[1]:
+				s.parse(portal_entry)
+		return texts
+
+	@classmethod
+	def tostring(self, texts):
+		return json.dumps(texts, indent=2)
+
+
 class AuthRestriction(select):
 	choices = [
 		('admin', _('Visible for Admins only')),
 		('authenticated', _('Visible for authenticated users')),
 		('anonymous', _('Visible for everyone')),
-	]
-
-
-class PortalCategory(select):
-	choices = [
-		('admin', _('Shown in category "Administration"')),
-		('service', _('Shown in category "Installed services"')),
 	]
 
 

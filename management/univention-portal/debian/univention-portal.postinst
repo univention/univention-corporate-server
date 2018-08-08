@@ -43,4 +43,54 @@ if [ ! -e "/usr/share/univention-portal/portal.json" ]; then
 	cp /usr/share/univention-portal/portal-unjoined.json /usr/share/univention-portal/portal.json
 fi
 
+eval "$(univention-config-registry shell server/role)"
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 2.0.2-2; then
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		# map the deprecated 'category' and 'portal' property of settings/portal_entry objects
+		# to the 'content' property of settings/portal objects
+		python <<EOF
+# -*- coding: utf-8 -*-
+import json
+from ldap.filter import filter_format
+import univention.admin.uldap
+from univention.config_registry import ConfigRegistry
+
+ucr = ConfigRegistry()
+ucr.load()
+
+lo, po = univention.admin.uldap.getMachineConnection()
+
+portal_dns = lo.searchDn(filter='(objectClass=univentionPortal)')
+
+for portal_dn in portal_dns:
+	old_entries_order = lo.getAttr(portal_dn, 'univentionPortalEntriesOrder')
+
+	new_content = []
+	for category in ('admin', 'service'):
+		entry_dns = lo.searchDn(filter=filter_format('(&(objectClass=univentionPortalEntry)(univentionPortalEntryPortal:=%s)(univentionPortalEntryCategory=%s))', (portal_dn, category,)))
+		if not entry_dns:
+			continue
+
+		if old_entries_order:
+			ordered = [entry for entry in old_entries_order if entry in entry_dns]
+			unordered = [entry for entry in entry_dns if entry not in ordered]
+			entry_dns = ordered + unordered
+		category_dn = 'cn=%s,cn=categories,cn=portal,cn=univention,%s' % (category, ucr.get('ldap/base'))
+		new_content.append([category_dn, entry_dns])
+	new_entries_order = [entry for category, entries in new_content for entry in entries]
+	
+	old_content = lo.getAttr(portal_dn, 'univentionPortalContent')
+	old_content = old_content[0] if len(old_content) else None
+	if new_content != (old_content if old_content else []):
+		new_content = json.dumps(new_content)
+		lo.modify(portal_dn, [('univentionPortalContent', old_content, new_content), ('univentionPortalEntriesOrder', old_entries_order, new_entries_order)])
+EOF
+	fi
+
+	cp /usr/share/univention-portal/portal-unjoined.json /usr/share/univention-portal/portal.json
+	univention-directory-listener-ctrl resync portal
+	univention-directory-listener-ctrl resync portal_category
+	univention-directory-listener-ctrl resync portal_entry
+fi
+
 exit 0

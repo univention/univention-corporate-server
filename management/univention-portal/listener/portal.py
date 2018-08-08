@@ -30,6 +30,7 @@
 
 from __future__ import absolute_import
 
+import json
 import listener
 import os.path
 import univention.debug as ud  # pylint: disable-msg=E0611
@@ -165,8 +166,8 @@ def _make_obj(obj):
 		'showServers': obj.get('univentionPortalShowServers', [''])[0] == 'TRUE',
 		'logo': _save_image(obj, 'univentionPortalLogo', 'logos'),
 		'fontColor': obj.get('univentionPortalFontColor', [''])[0],
-		'portalEntriesOrder': obj.get('univentionPortalEntriesOrder', []),
 		'links': _make_links(obj.get('univentionPortalLinks', [])),
+		'content': json.loads(obj.get('univentionPortalContent', ['[]'])[0]),
 	}
 
 

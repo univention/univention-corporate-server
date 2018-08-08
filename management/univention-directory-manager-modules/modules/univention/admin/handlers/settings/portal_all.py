@@ -43,7 +43,7 @@ _ = translation.translate
 module = 'settings/portal_all'
 
 operations = ['search']
-childmodules = ['settings/portal', 'settings/portal_entry']
+childmodules = ['settings/portal', 'settings/portal_entry', 'settings/portal_category']
 virtual = True
 property_descriptions = {
 	'name': univention.admin.property(

@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
-# Copyright 2017-2018 Univention GmbH
+# Copyright 2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,13 +34,10 @@ import listener
 import os.path
 import univention.debug as ud  # pylint: disable-msg=E0611
 from json import load, dump
-from base64 import b64decode
-from imghdr import what
-from StringIO import StringIO
 
-name = 'portal_entry'
-description = 'Dump portal entry information'
-filter = '(univentionObjectType=settings/portal_entry)'
+name = 'portal_category'
+description = 'Dump portal category information'
+filter = '(univentionObjectType=settings/portal_category)'
 attributes = []
 
 
@@ -56,9 +53,9 @@ def _load():
 		return load(fd)
 
 
-def _save(entries):
+def _save(categories):
 	content = _load()
-	content['entries'] = entries
+	content['categories'] = categories
 	with open(_fname(), 'wb') as fd:
 		dump(content, fd, indent=2)
 
@@ -69,53 +66,28 @@ def _split_translation(value):
 	return dict(val.split(' ', 1) for val in value)
 
 
-def _save_image(obj, ldap_attr, dir_name):
-	img = obj.get(ldap_attr, [''])[0]
-	if img:
-		cn = os.path.basename(obj['cn'][0])
-		fname = os.path.join(os.path.dirname(_fname()), 'icons', dir_name, cn)
-		try:
-			img = b64decode(img)
-			string_buffer = StringIO(img)
-			suffix = what(string_buffer) or 'svg'
-			fname = '%s.%s' % (fname, suffix)
-			ud.debug(ud.LISTENER, ud.PROCESS, 'Writing image to %s' % fname)
-			with open(fname, 'wb') as fd:
-				fd.write(img)
-		except (EnvironmentError, TypeError, IOError) as err:
-			ud.debug(ud.LISTENER, ud.WARN, 'Failed to open %r or decode Icon: %s' % (fname, err))
-		else:
-			return '/univention/portal/icons/%s/%s.%s' % (dir_name, cn, suffix)
-
-
 def _make_obj(obj):
 	return {
 		'dn': obj.get('entryDN')[0],
-		'name': _split_translation(obj.get('univentionPortalEntryDisplayName')),
-		'description': _split_translation(obj.get('univentionPortalEntryDescription')),
-		'links': obj.get('univentionPortalEntryLink'),
-		'activated': obj.get('univentionPortalEntryActivate', [''])[0] != 'FALSE',
-		'favorite': obj.get('univentionPortalEntryFavorite', [''])[0] == 'TRUE',
-		'user_group': obj.get('univentionPortalEntryAllowedUserGroup', [''])[0],
-		'logo_name': _save_image(obj, 'univentionPortalEntryIcon', 'entries'),
+		'display_name': _split_translation(obj.get('univentionPortalCategoryDisplayName')),
 	}
 
 
 def handler(dn, new, old):
 	listener.setuid(0)
 	try:
-		entries = _load().get('entries', {})
+		categories = _load().get('categories', {})
 		if old and not new:
 			# Remove
 			try:
 				ud.debug(ud.LISTENER, ud.PROCESS, 'Removing: %s' % dn)
-				del entries[dn]
+				del categories[dn]
 			except KeyError:
 				ud.debug(ud.LISTENER, ud.PROCESS, 'Not found...')
 		else:
 			# Add or Change
 			ud.debug(ud.LISTENER, ud.PROCESS, 'Add or change: %s' % dn)
-			entries[dn] = _make_obj(new)
-		_save(entries)
+			categories[dn] = _make_obj(new)
+		_save(categories)
 	finally:
 		listener.unsetuid()

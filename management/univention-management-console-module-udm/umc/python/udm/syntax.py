@@ -146,6 +146,7 @@ __widgets = _UCRWidget.load()
 __widgets.extend([
 	Widget('umc/modules/udm/LockedCheckBox', (udm_syntax.locked), False),
 	Widget('umc/modules/udm/MultiObjectSelect', (udm_syntax.PortalComputer), False),
+	Widget('umc/modules/udm/PortalContent', (udm_syntax.PortalCategorySelection, udm_syntax.PortalEntrySelection, ), None),
 	Widget('CheckBox', (udm_syntax.OkOrNot, udm_syntax.TrueFalseUp, udm_syntax.boolean), False),
 	Widget('PasswordInputBox', (udm_syntax.passwd, udm_syntax.userPasswd), ''),
 	Widget('DateBox', (udm_syntax.iso8601Date, udm_syntax.date), '1970-01-01'),

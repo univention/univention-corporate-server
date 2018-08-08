@@ -159,3 +159,161 @@
 .umc .umcUDMMultiInputEditButton.dijitButtonActive .dijitButtonNode {
 	background-color: rgba(0, 0, 0, 0.16);
 }
+
+/* PortalContentSelection */
+.umc .dojoDndItem_PortalCategory {
+	display: grid;
+	grid-gap: 10px;
+	grid-template-columns: 40px 1fr auto;
+	grid-template-rows: auto auto;
+	grid-template-areas:
+		"handle category delete"
+		"handle entries  delete";
+	display: -ms-grid;
+	-ms-grid-columns: 40px 1fr auto;
+	-ms-grid-rows: auto auto;
+}
+
+.umc .dojoDndItem_PortalCategory > .dojoDndHandle {
+	grid-area: handle;
+	-ms-grid-column: 1;
+	-ms-grid-row: 1;
+	-ms-grid-row-span: 2;
+	background-color: #a0a0a0;
+	border-radius: 2px;
+	cursor: move;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.umc .dojoDndItem_PortalCategory > .dojoDndHandle .dojoDndHandle_icon {
+	background: url(udm/portalContentSelectionDndArrow.svg) no-repeat;
+	width: 20px;
+	height: 20px;
+	background-size: contain;
+	opacity: 0.4;
+}
+
+.umc .dojoDndItem_PortalCategory.umcMultiInputContainer > .umcLabelPane:not(.umcMultiInputLastRowEntry){
+	grid-area: category;
+	-ms-grid-column: 2;
+	-ms-grid-row: 1;
+	width: 100%;
+	padding: 0;
+}
+
+.umc .dojoDndItem_PortalCategory > .umcMultiInputLastRowEntry {
+	grid-area: entries;
+	-ms-grid-column: 2;
+	-ms-grid-row: 2;
+	padding: 0 !important;
+}
+
+.umc .dojoDndItem_PortalCategory > .umcMultiInputRemoveButton {
+	grid-area: delete;
+	-ms-grid-column: 3;
+	-ms-grid-row: 1;
+	-ms-grid-row-span: 2;
+	margin: 0;
+	background-color: #c8c8c8;
+}
+
+.umc .dojoDndItem_PortalCategory > .dojoDndItem_dndCover,
+.umc .dojoDndItem_PortalEntry > .dojoDndItem_dndCover {
+	grid-column: handle-end / -1;
+	grid-row: 1 / -1;
+	-ms-grid-column: 2;
+	-ms-grid-column-span: 2;
+	-ms-grid-row: 1;
+	-ms-grid-row-span: 2;
+	background-color: transparent;
+	position: relative;
+	z-index: 1;
+}
+
+.umc .dojoDndItem_PortalCategory,
+.umc .dojoDndItem_PortalEntry {
+	padding: 5px 0;
+	border: none;
+	background-color: transparent;
+	color: inherit;
+	transition: unset;
+	cursor: default;
+}
+
+.umc .dojoDndItem_PortalEntry {
+	display: grid;
+	grid-gap: 10px;
+	grid-template-columns: 40px 1fr auto;
+	grid-template-areas:
+		"handle entry delete";
+	display: -ms-grid;
+	-ms-grid-columns: 40px 1fr auto;
+}
+
+.umc .dojoDndItem_PortalEntry > .dojoDndHandle{
+	grid-area: handle;
+	-ms-grid-column: 1;
+	background-color: #a0a0a0;
+	border-radius: 2px;
+	cursor: move;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.umc .dojoDndItem_PortalEntry > .dojoDndHandle .dojoDndHandle_icon {
+	background: url(udm/portalContentSelectionDndArrow.svg) no-repeat;
+	width: 20px;
+	height: 20px;
+	background-size: contain;
+	opacity: 0.4;
+}
+
+.umc .dojoDndItem_PortalEntry > .umcLabelPane {
+	grid-area: entry;
+	-ms-grid-column: 2;
+	padding: 0 !important;
+	width: 100%;
+}
+
+.umc .dojoDndItem_PortalEntry > .umcMultiInputRemoveButton {
+	grid-area: delete; 
+	-ms-grid-column: 3;
+	margin: 0;
+	background-color: #c8c8c8;
+}
+
+.umc .dojoDndItem_PortalCategory > .umcMultiInputRemoveButton .dijitButtonNode,
+.umc .dojoDndItem_PortalEntry > .umcMultiInputRemoveButton .dijitButtonNode {
+	height: 100%;
+	display: flex;
+	align-items: center;
+}
+
+.umc .dojoDndSource_PortalEntrySelection {
+	margin: 0;
+}
+
+.umc .dojoDndSource_PortalCategorySelection .umcMultiInputAddButton,
+.umc .dojoDndSource_PortalEntrySelection .umcMultiInputAddButton {
+	margin: 10px 0;
+	width: 100%;
+}
+
+.umc .dojoDndSource_PortalCategorySelection .umcMultiInputAddButton .dijitButtonNode,
+.umc .dojoDndSource_PortalEntrySelection .umcMultiInputAddButton .dijitButtonNode {
+	width: 100%;
+	text-align: left;
+}
+
+.dojoDndSource_PortalCategorySelection .dojoDndItemBefore,
+.dojoDndSource_PortalEntrySelection .dojoDndItemBefore {
+	border-top: 2px solid grey;
+}
+
+.dojoDndSource_PortalCategorySelection .dojoDndItemAfter,
+.dojoDndSource_PortalEntrySelection .dojoDndItemAfter {
+	border-bottom: 2px solid grey;
+}

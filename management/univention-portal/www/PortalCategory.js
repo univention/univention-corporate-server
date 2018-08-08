@@ -30,14 +30,18 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/on",
 	"dojo/dom-class",
 	"dojo/dom-construct",
 	"dojo/query",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"umc/widgets/ContainerWidget",
+	"put-selector/put",
 	"./PortalGallery",
-], function(declare, domClass, domConstruct, domQuery, Memory, Observable, ContainerWidget, PortalGallery) {
+	"umc/i18n!portal"
+], function(declare, lang, on, domClass, domConstruct, domQuery, Memory, Observable, ContainerWidget, put, PortalGallery, _) {
 	return declare("PortalCategory", [ContainerWidget], {
 		baseClass: 'portalCategory',
 
@@ -60,23 +64,28 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			var heading = domConstruct.create("h2", {
-				innerHTML: this.heading
-			});
+			// header
+			var header = put(this.containerNode, 'h2', this.heading);
+			if (!this.heading) {
+				header.innerHTML = _('No display name provided');
+				put(header, '.noDisplayNameProvided');
+			}
+			this.own(on(header, 'click', lang.hitch(this, function() {
+				this.onEditCategory();
+			})));
 
-			var store = new Observable(new Memory({
-				data: this.apps
-			}));
-
+			// gallery
+			var wrapper = put(this.containerNode, 'div.dojoDndItem_dndCoverWrapper');
+			put(wrapper, 'div.dojoDndItem_dndCover.dijitDisplayNone');
 			this.grid = new PortalGallery({
-				store: store,
+				store: new Observable(new Memory({
+					data: this.apps
+				})),
 				domainName: this.domainName,
 				category: this.category,
 				useDnd: this.useDnd
 			});
-
-			domConstruct.place(heading, this.containerNode);
-			this.addChild(this.grid);
+			put(wrapper, this.grid.domNode);
 		},
 
 		postCreate: function() {
@@ -89,8 +98,8 @@ define([
 			domClass.toggle(this.domNode, 'dijitDisplayNone', hideCategory);
 		},
 
-		onAddEntry: function(category) {
-			// stub
+		onEditCategory: function() {
+			// event stub
 		}
 	});
 });

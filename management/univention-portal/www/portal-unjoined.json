@@ -8,15 +8,29 @@
       "en_US": "UCS Portal"
     },
     "showServers": true,
+    "content": [
+      [
+        "$admin_category$",
+        [
+          "$umc-local$"
+        ]
+      ]
+    ],
     "showLogin": true,
     "logo": null,
     "showSearch": true
   },
-  "entries": [
-    {
-      "category": "admin",
+  "categories": {
+    "$admin_category$": {
+      "display_name": {
+        "de_DE": "Administration",
+        "en_US": "Administration"
+      }
+    }
+  },
+  "entries": {
+    "$umc-local$": {
       "logo_name": "/univention/js/dijit/themes/umc/icons/scalable/univention-management-console.svg",
-      "portals": ["cn=domain,cn=portal"],
       "name": {
         "de_DE": "Systemeinstellungen",
         "en_US": "System settings",
@@ -35,5 +49,5 @@
         "fr_FR": "Console de gestion Univention pour admin\u00adis\u00adtrer le syst\u00e8me local"
       }
     }
-  ]
+  }
 }
