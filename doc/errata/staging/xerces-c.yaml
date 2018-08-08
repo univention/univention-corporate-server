@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: xerces-c
+fix: 3.1.4+debian-2+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Null pointer dereference while processing the path to DTD allows denial of
+   service (CVE-2017-12627)
+bug: [47487]
+cve:
+- CVE-2017-12627
