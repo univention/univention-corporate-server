@@ -8,3 +8,5 @@ desc: |-
   This update addresses the following issue:
   * Sync pwdLastSet changes also in case the hashes didn't actually change
 bug: [47391]
+erratum: 163
+announced: 2018-08-08
