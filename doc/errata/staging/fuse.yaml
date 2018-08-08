@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: fuse
+fix: 2.9.7-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * bypass of the "user_allow_other" restriction when SELinux is active
+   (CVE-2018-10906)
+bug: [47498]
+cve:
+- CVE-2018-10906
