@@ -1,0 +1,51 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: ruby2.3
+fix: 2.3.3-1+deb9u3
+desc: |
+ This update addresses the following issues:
+ * Command injection vulnerability in Net::FTP (CVE-2017-17405)
+ * HTTP response splitting in WEBrick (CVE-2017-17742)
+ * Command injection in lib/resolv.rb:lazy_initialize() allows arbitrary code
+   execution (CVE-2017-17790)
+ * Unintentional file and directory creation with directory traversal in
+   tempfile and tmpdir (CVE-2018-6914)
+ * DoS by large request in WEBrick (CVE-2018-8777)
+ * Buffer under-read in String#unpack (CVE-2018-8778)
+ * Unintentional socket creation by poisoned NULL byte in UNIXServer and
+   UNIXSocket (CVE-2018-8779)
+ * Unintentional directory traversal by poisoned NULL byte in Dir
+   (CVE-2018-8780)
+ * Path traversal when writing to a symlinked basedir outside of the root
+   (CVE-2018-1000073)
+ * Unsafe Object Deserialization Vulnerability in gem owner allowing arbitrary
+   code execution on specially crafted YAML (CVE-2018-1000074)
+ * Infinite loop vulnerability due to negative size in tar header causes
+   Denial of Service (CVE-2018-1000075)
+ * Improper verification of signatures in tarball allows to install mis-signed
+   gem (CVE-2018-1000076)
+ * Missing URL validation on spec home attribute allows malicious gem to set
+   an invalid homepage URL (CVE-2018-1000077)
+ * XSS vulnerability in homepage attribute when displayed via gem server
+   (CVE-2018-1000078)
+ * Path traversal issue during gem installation allows to write to arbitrary
+   filesystem locations (CVE-2018-1000079)
+bug: [47500]
+cve:
+- CVE-2017-17405
+- CVE-2017-17742
+- CVE-2017-17790
+- CVE-2018-6914
+- CVE-2018-8777
+- CVE-2018-8778
+- CVE-2018-8779
+- CVE-2018-8780
+- CVE-2018-1000073
+- CVE-2018-1000074
+- CVE-2018-1000075
+- CVE-2018-1000076
+- CVE-2018-1000077
+- CVE-2018-1000078
+- CVE-2018-1000079
