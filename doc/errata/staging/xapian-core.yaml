@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: xapian-core
+fix: 1.4.3-2+deb9u1
+desc: |
+ This update addresses the following issue:
+ * A cross-site scripting vulnerability exists due to incomplete HTML escaping
+   by Xapian::MSet::snippet() (CVE-2018-0499)
+bug: [47489]
+cve:
+- CVE-2018-0499
