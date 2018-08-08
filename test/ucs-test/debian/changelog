@@ -1,3 +1,9 @@
+ucs-test (8.0.28-162) unstable; urgency=medium
+
+  * Bug #47306: added test 86_selenium/180_portal_entries
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 08 Aug 2018 17:25:39 +0200
+
 ucs-test (8.0.28-161) unstable; urgency=medium
 
   * Bug #47306: wait for standby animation to stabilize tests
