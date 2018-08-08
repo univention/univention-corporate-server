@@ -1,3 +1,9 @@
+univention-system-setup (11.0.5-20) unstable; urgency=medium
+
+  * Bug #46045: Don't run duplicate uid check on admember
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 08 Aug 2018 12:34:29 +0200
+
 univention-system-setup (11.0.5-19) unstable; urgency=medium
 
   * Bug #35829: Revert "Limit domain name to 15 characters"
