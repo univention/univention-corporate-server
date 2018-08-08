@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: samba
+fix: 2:4.7.8-1A~4.3.0.201808081836
+desc: |
+ This update addresses the following issue(s):
+ * Update to package version 4.7.8
+bug: [47428]
