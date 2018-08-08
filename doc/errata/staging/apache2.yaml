@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: apache2
+fix: 2.4.25-3+deb9u5A~4.3.1.201808081329
+desc: |
+ This update addresses the following issue:
+ * Use-after-free on HTTP/2 stream shutdown (CVE-2018-1302)
+bug: [47510]
+cve:
+- CVE-2018-1302
