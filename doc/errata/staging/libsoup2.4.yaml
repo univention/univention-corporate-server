@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: libsoup2.4
+fix: 2.56.0-2+deb9u2
+desc: |
+ This update addresses the following issue:
+ * Crash in soup_cookie_jar.c:get_cookies() on empty hostnames
+   (CVE-2018-12910)
+bug: [47475]
+cve:
+- CVE-2018-12910
