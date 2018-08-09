@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: perl
+fix: 5.20.2-3+deb8u11
+desc: |
+ This update addresses the following issue:
+ * Directory traversal in Archive::Tar (CVE-2018-12015)
+bug: [47550]
+cve:
+- CVE-2018-12015
