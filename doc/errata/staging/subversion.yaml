@@ -7,5 +7,5 @@ fix: 1.8.10-6+deb8u6
 desc: |
  This update addresses the following issue:
  * Backport patches/perl-swig-crash from upstream to fix crashes with Perl
-   bindings, commonly seen when using git-svn, #534763).
+   bindings, commonly seen when using git-svn.
 bug: [47523]
