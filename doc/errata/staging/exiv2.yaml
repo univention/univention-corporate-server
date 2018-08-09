@@ -5,39 +5,15 @@ scope: ucs_4.2-0-errata4.2-4
 src: exiv2
 fix: 0.24-4.1+deb8u1
 desc: |
- This update addresses the following issue(s):
- * 
- CVE_2017-9239 is open
- CVE_2017-11591 is open
- CVE_2017-11683 is open
- CVE_2017-14859 is open
- CVE_2017-14862 is open
- CVE_2017-14864 is open
- CVE_2017-17669 is open
- CVE_2017-17723 is open
- CVE_2017-17725 is open
- CVE_2017-18005 is open
- CVE_2017-1000128 is open
- CVE_2018-8976 is open
- CVE_2018-9144 is open
- CVE_2018-9145 is undetermined
- CVE_2018-10780 is undetermined
- * In types.cpp in Exiv2 0.26, a large size value may lead to a SIGABRT during an attempt at memory allocation for an Exiv2::Internal::PngChunk::zlibUncompress call. (CVE-2018-10958)
- * An issue was discovered in Exiv2 0.26. readMetadata in jp2image.cpp allows remote attackers to cause a denial of service (SIGABRT) by triggering an incorrect Safe::add call. (CVE-2018-10998)
- * An issue was discovered in Exiv2 0.26. The Exiv2::Internal::PngChunk::parseTXTChunk function has a heap-based buffer over-read. (CVE-2018-10999)
- CVE_2018-11037 is open
- * Exiv2 0.26 has a heap-based buffer overflow in getData in preview.cpp. (CVE-2018-11531)
- * Exiv2 0.26 has integer overflows in LoaderTiff::getData() in preview.cpp, leading to an out-of-bounds read in Exiv2::ValueType::setDataArea in value.hpp. (CVE-2018-12264)
- * Exiv2 0.26 has an integer overflow in the LoaderExifJpeg class in preview.cpp, leading to an out-of-bounds read in Exiv2::MemIo::read in basicio.cpp. (CVE-2018-12265)
- CVE_2018-14338 is open
-
- 0.24-4.1+deb8u1 (Wed, 27 Jun 2018 08:09:34 -0400) * Non-maintainer upload by the LTS Security Team. * CVE-2018-10958: denial of service through memory exhaustion and application crash by a crafted PNG image. * CVE-2018-10999: a heap-based buffer over-read via a crafted PNG image. * CVE-2018-10998: denial of service through memory exhaustion and application crash by a crafted image. * CVE-2018-11531: a heap-based buffer overflow and application crash by a crafted image. * CVE-2018-12264: integer overflow leading to out of bounds read by a * CVE-2018-12265: integer overflow leading to out of bounds read by a
- * CVE-2018-10958 exiv2: SIGABRT caused by memory allocation in types.cpp:Exiv2::Internal::PngChunk::zlibUncompress() (CVE-2018-10958)
- * CVE-2018-10998 exiv2: SIGABRT by triggering an incorrect Safe::add call (CVE-2018-10998)
- * CVE-2018-10999 exiv2: heap-based buffer over-read in parseTXTChunk function (CVE-2018-10999)
- * CVE-2018-11531 exiv2: heap-based buffer overflow in getData in preview.cpp (CVE-2018-11531)
- * CVE-2018-12264 exiv2: integer overflow in getData function in preview.cpp (CVE-2018-12264)
- * CVE-2018-12265 exiv2: integer overflow in the LoaderExifJpeg class in preview.cpp (CVE-2018-12265)
+ This update addresses the following issues:
+ * SIGABRT caused by memory allocation in
+   types.cpp:Exiv2::Internal::PngChunk::zlibUncompress() (CVE-2018-10958)
+ * SIGABRT by triggering an incorrect Safe::add call (CVE-2018-10998)
+ * heap-based buffer over-read in parseTXTChunk function (CVE-2018-10999)
+ * heap-based buffer overflow in getData in preview.cpp (CVE-2018-11531)
+ * integer overflow in getData function in preview.cpp (CVE-2018-12264)
+ * integer overflow in the LoaderExifJpeg class in preview.cpp
+   (CVE-2018-12265)
 bug: [47530]
 cve:
 - CVE-2018-10958
