@@ -5,18 +5,11 @@ scope: ucs_4.2-0-errata4.2-4
 src: postgresql-9.4
 fix: 9.4.18-0+deb8u1
 desc: |
- This update addresses the following issue(s):
- * 
- CVE_2018-1053 is open
- CVE_2018-1058 is open
-
- 9.4.18-0+deb8u1 (Tue, 08 May 2018 20:37:04 +0200) * New upstream version. + Fix incorrect volatility markings on a few built-in functions.
-
- 9.4.17-0+deb8u1 (Tue, 27 Feb 2018 13:20:22 +0100) If you run an installation in which not all users are mutually trusting, or if you maintain an application or extension that is intended for use in arbitrary situations, it is strongly recommended that you read the documentation changes described in the first changelog entry below, and take suitable steps to ensure that your installation or code is secure. Also, the changes described in the second changelog entry below may cause functions used in index expressions or materialized views to fail during auto-analyze, or when reloading from a dump. After upgrading, monitor the server logs for such problems, and fix affected functions. + Document how to configure installations and applications to guard against search-path-dependent trojan-horse attacks from other users Using a search_path setting that includes any schemas writable by a hostile user enables that user to capture control of queries and then run arbitrary SQL code with the permissions of the attacked user. While it is possible to write queries that are proof against such hijacking, it is notationally tedious, and it's very easy to overlook holes. Therefore, we now recommend configurations in which no untrusted schemas appear in one's search path. (CVE-2018-1058) + Avoid use of insecure search_path settings in pg_dump and other client programs pg_dump, pg_upgrade, vacuumdb and other PostgreSQL-provided applications were themselves vulnerable to the type of hijacking described in the previous changelog entry; since these applications are commonly run by superusers, they present particularly attractive targets. To make them secure whether or not the installation as a whole has been secured, modify them to include only the pg_catalog schema in their search_path settings. Autovacuum worker processes now do the same, as well. In cases where user-provided functions are indirectly executed by these programs -- for example, user-provided functions in index expressions -- the tighter search_path may result in errors, which will need to be corrected by adjusting those user-provided functions to not assume anything about what search path they are invoked under. That has always been good practice, but now it will be necessary for correct behavior.
-
- 9.4.16-0+deb8u1 (Thu, 08 Feb 2018 10:34:39 +0100) + Ensure that all temporary files made by pg_upgrade are non-world-readable (CVE-2018-1053)
- * CVE-2018-1058 postgresql: Uncontrolled search path element in pg_dump and other client applications (CVE-2018-1058)
- * CVE-2018-1053 postgresql: pg_upgrade creates file of sensitive metadata under prevailing umask (CVE-2018-1053)
+ This update addresses the following issues:
+ * Uncontrolled search path element in pg_dump and other client applications
+   (CVE-2018-1058)
+ * pg_upgrade creates file of sensitive metadata under prevailing umask
+   (CVE-2018-1053)
 bug: [47527]
 cve:
 - CVE-2018-1058
