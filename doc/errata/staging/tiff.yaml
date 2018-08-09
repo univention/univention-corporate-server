@@ -1,0 +1,53 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: tiff
+fix: 4.0.3-12.3+deb8u6
+desc: |
+ This update addresses the following issue(s):
+ * 
+ CVE_2010-2596 is open
+ CVE_2014-8127 is open
+ CVE_2014-8130 is open
+ CVE_2015-7313 is open
+ CVE_2016-9539 is open
+ CVE_2016-10268 is open
+ CVE_2017-5563 is open
+ CVE_2017-9117 is open
+ * In LibTIFF 4.0.8, there is a denial of service vulnerability in the TIFFOpen function. A crafted input will lead to a denial of service attack. During the TIFFOpen process, td_imagelength is not checked. The value of td_imagelength can be directly controlled by an input file. In the ChopUpSingleUncompressedStrip function, the _TIFFCheckMalloc function is called based on td_imagelength. If we set the value of td_imagelength close to the amount of system memory, it will hang the system or trigger the OOM killer. (CVE-2017-11613)
+ CVE_2017-16232 is open
+ CVE_2017-17095 is open
+ CVE_2017-17942 is open
+ CVE_2017-17973 is open
+ CVE_2018-5360 is open
+ * In LibTIFF 4.0.9, there is an uncontrolled resource consumption in the TIFFSetDirectory function of tif_dir.c. Remote attackers could leverage this vulnerability to cause a denial of service via a crafted tif file. This occurs because the declared number of directory entries is not validated against the actual number of directory entries. (CVE-2018-5784)
+ * A NULL Pointer Dereference occurs in the function TIFFPrintDirectory in tif_print.c in LibTIFF 4.0.9 when using the tiffinfo tool to print crafted TIFF information, a different vulnerability than CVE-2017-18013. (This affects an earlier part of the TIFFPrintDirectory function that was not addressed by the CVE-2017-18013 patch.) (CVE-2018-7456)
+ * In LibTIFF 4.0.9, a heap-based buffer overflow occurs in the function LZWDecodeCompat in tif_lzw.c via a crafted TIFF file, as demonstrated by tiff2ps. (CVE-2018-8905)
+ CVE_2018-10126 is open
+ * The TIFFWriteDirectorySec() function in tif_dirwrite.c in LibTIFF through 4.0.9 allows remote attackers to cause a denial of service (assertion failure and application crash) via a crafted file, a different vulnerability than CVE-2017-13726. (CVE-2018-10963)
+ CVE_2018-12900 is open
+ CVE_2018-14373 is open
+ CVE_2018-14374 is open
+ CVE_2018-14375 is open
+ CVE_2018-14378 is open
+ TEMP-0846838-9738BD is open
+
+ 4.0.3-12.3+deb8u6 (Mon, 02 Jul 2018 13:04:59 +0200) * Non-maintainer upload by the LTS team. * Fix CVE-2017-11613: DoS vulnerability A crafted input will lead to a denial of service attack. During the TIFFOpen process, td_imagelength is not checked. The value of td_imagelength can be directly controlled by an input file. In the ChopUpSingleUncompressedStrip function, the _TIFFCheckMalloc function is called based on td_imagelength. If the value of td_imagelength is set close to the amount of system memory, it will hang the system or trigger the OOM killer. * Fix CVE-2018-10963: DoS vulnerability The TIFFWriteDirectorySec() function in tif_dirwrite.c in LibTIFF allows remote attackers to cause a denial of service (assertion failure and application crash) via a crafted file, a different vulnerability than CVE-2017-13726. * Fix CVE-2018-5784: DoS vulnerability In LibTIFF, there is an uncontrolled resource consumption in the TIFFSetDirectory function of tif_dir.c. Remote attackers could leverage this vulnerability to cause a denial of service via a crafted tif file. This occurs because the declared number of directory entries is not validated against the actual number of directory entries. * Fix CVE-2018-7456: NULL Pointer Dereference A NULL Pointer Dereference occurs in the function TIFFPrintDirectory in tif_print.c in LibTIFF when using the tiffinfo tool to print crafted TIFF information, a different vulnerability than CVE-2017-18013. (This affects an earlier part of the TIFFPrintDirectory function that was not addressed by the CVE-2017-18013 patch.) * Fix CVE-2018-8905: Heap-based buffer overflow In LibTIFF, a heap-based buffer overflow occurs in the function LZWDecodeCompat in tif_lzw.c via a crafted TIFF file, as demonstrated by tiff2ps.
+ * CVE-2017-11613 libtiff: Memory leak via corrupt td_imagelength in TIFFOpen function (CVE-2017-11613)
+ * CVE-2018-5784 libtiff: uncontrolled resource consumption in TIFFSetDirectory function in tif_dir.c (CVE-2018-5784)
+ * CVE-2018-7456 libtiff: NULL pointer dereference in tif_print.c:TIFFPrintDirectory() causes a denial of service (CVE-2018-7456)
+ * CVE-2018-8905 libtiff: heap-based buffer overflow in tif_lzw.c:LZWDecodeCompat() allows for denial of service (CVE-2018-8905)
+ * CVE-2018-10963 libtiff: reachable assertion in TIFFWriteDirectorySec function in tif_dirwrite.c (CVE-2018-10963)
+ CVE_2018-15209 is open
+ * CVE-2017-18013 libtiff: NULL pointer dereference in tif_print.c:TIFFPrintDirectory() causes crash (CVE-2017-18013)
+ * CVE-2017-13726 libtiff: Reachable assertion abort in the function TIFFWriteDirectorySec() (CVE-2017-13726)
+bug: [47545]
+cve:
+- CVE-2017-11613
+- CVE-2018-5784
+- CVE-2018-7456
+- CVE-2018-8905
+- CVE-2018-10963
+- CVE-2017-18013
+- CVE-2017-13726
