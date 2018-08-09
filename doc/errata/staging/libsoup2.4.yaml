@@ -1,0 +1,16 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: libsoup2.4
+fix: 2.48.0-1+deb8u2
+desc: |
+ This update addresses the following issue(s):
+ * 
+ * The get_cookies function in soup-cookie-jar.c in libsoup 2.63.2 allows attackers to have unspecified impact via an empty hostname. (CVE-2018-12910)
+
+ 2.48.0-1+deb8u2 (Fri, 06 Jul 2018 11:29:44 +0200) * Fix out of bounds access in the cookie jar (CVE-2018-12910).
+ * CVE-2018-12910 libsoup: Crash in soup_cookie_jar.c:get_cookies() on empty hostnames (CVE-2018-12910)
+bug: [47520]
+cve:
+- CVE-2018-12910
