@@ -5,39 +5,25 @@ scope: ucs_4.2-0-errata4.2-4
 src: mutt
 fix: 1.5.23-3+deb8u1
 desc: |
- This update addresses the following issue(s):
- * 
- CVE_2007-1268 is open
- * An issue was discovered in Mutt before 1.10.1 and NeoMutt before 2018-07-16. imap/command.c mishandles a NO response without a message. (CVE-2018-14349)
- * An issue was discovered in Mutt before 1.10.1 and NeoMutt before 2018-07-16. imap/message.c has a stack-based buffer overflow for a FETCH response with a long INTERNALDATE field. (CVE-2018-14350)
- * An issue was discovered in Mutt before 1.10.1 and NeoMutt before 2018-07-16. imap/command.c mishandles a long IMAP status mailbox literal count size. (CVE-2018-14351)
- * An issue was discovered in Mutt before 1.10.1 and NeoMutt before 2018-07-16. imap_quote_string in imap/util.c does not leave room for quote characters, leading to a stack-based buffer overflow. (CVE-2018-14352)
- * An issue was discovered in Mutt before 1.10.1 and NeoMutt before 2018-07-16. imap_quote_string in imap/util.c has an integer underflow. (CVE-2018-14353)
- * An issue was discovered in Mutt before 1.10.1 and NeoMutt before 2018-07-16. They allow remote IMAP servers to execute arbitrary commands via backquote characters, related to the mailboxes command associated with a manual subscription or unsubscription. (CVE-2018-14354)
- * An issue was discovered in Mutt before 1.10.1 and NeoMutt before 2018-07-16. imap/util.c mishandles ".." directory traversal in a mailbox name. (CVE-2018-14355)
- * An issue was discovered in Mutt before 1.10.1 and NeoMutt before 2018-07-16. pop.c mishandles a zero-length UID. (CVE-2018-14356)
- * An issue was discovered in Mutt before 1.10.1 and NeoMutt before 2018-07-16. They allow remote IMAP servers to execute arbitrary commands via backquote characters, related to the mailboxes command associated with an automatic subscription. (CVE-2018-14357)
- * An issue was discovered in Mutt before 1.10.1 and NeoMutt before 2018-07-16. imap/message.c has a stack-based buffer overflow for a FETCH response with a long RFC822.SIZE field. (CVE-2018-14358)
- * An issue was discovered in Mutt before 1.10.1 and NeoMutt before 2018-07-16. They have a buffer overflow via base64 data. (CVE-2018-14359)
- * An issue was discovered in NeoMutt before 2018-07-16. nntp_add_group in newsrc.c has a stack-based buffer overflow because of incorrect sscanf usage. (CVE-2018-14360)
- * An issue was discovered in NeoMutt before 2018-07-16. nntp.c proceeds even if memory allocation fails for messages data. (CVE-2018-14361)
- * An issue was discovered in Mutt before 1.10.1 and NeoMutt before 2018-07-16. pop.c does not forbid characters that may have unsafe interaction with message-cache pathnames, as demonstrated by a '/' character. (CVE-2018-14362)
- * An issue was discovered in NeoMutt before 2018-07-16. newsrc.c does not properly restrict '/' characters that may have unsafe interaction with cache pathnames. (CVE-2018-14363)
- TEMP-0775199-D05A9E is open
-
- 1.5.23-3+deb8u1 (Fri, 27 Jul 2018 22:20:50 -0400) * Non-maintainer upload by the LTS Team. (Closes: 904051) * Fix arbitrary command execution by remote IMAP servers via backquote characters, related to the mailboxes command associated with a manual subscription or unsubscription (CVE-2018-14354) characters, related to the mailboxes command associated with an automatic subscription (CVE-2018-14357) * Fix a stack-based buffer overflow caused by imap_quote_string() not leaving room for quote characters (CVE-2018-14352) * Fix an integer underflow in imap_quote_string() (CVE-2018-14353) * Fix mishandling of zero-length UID in pop.c (CVE-2018-14356) * Fix unsafe interaction between message-cache pathnames and certain characters in pop.c (CVE-2018-14362) * Fix mishandling of ".." directory traversal in IMAP mailbox name (CVE-2018-14355) * Fix a stack-based buffer overflow for an IMAP FETCH response with a long INTERNALDATE field (CVE-2018-14350) RFC822.SIZE field (CVE-2018-14358) * Fix mishandling of an IMAP NO response without a message (CVE-2018-14349) * Fix mishandling of long IMAP status mailbox literal count size (CVE-2018-14351) * Fix a buffer overflow via base64 data (CVE-2018-14359) * Fix a stack-based buffer overflow because of incorrect sscanf usage (CVE-2018-14360) * Fix a defect where processing continues if memory allocation fails for NNTP messages (CVE-2018-14361) characters in newsrc.c (CVE-2018-14363)
- * CVE-2018-14349 mutt: Heap Overflow in imap/command.c (CVE-2018-14349)
- * CVE-2018-14350 mutt: stack-based buffer overflow in imap/message.c (CVE-2018-14350)
- * CVE-2018-14351 mutt: IMAP status mailbox literal mishandled in imap/command.c (CVE-2018-14351)
- * CVE-2018-14352 mutt: stack-based buffer overflow in imap/util.c (CVE-2018-14352)
- * CVE-2018-14353 mutt: integer underflow in imap/util.c (CVE-2018-14353)
- * CVE-2018-14354 mutt: Remote code injection vulnerability to an IMAP mailbox (CVE-2018-14354)
- * CVE-2018-14355 mutt: IMAP header caching path traversal vulnerability (CVE-2018-14355)
- * CVE-2018-14356 mutt: mishandles a zero-length UID in pop.c (CVE-2018-14356)
- * CVE-2018-14357 mutt: Remote Code Execution via backquote characters (CVE-2018-14357)
- * CVE-2018-14358 mutt: stack-based buffer overflow in imap/message.c (CVE-2018-14358)
- * CVE-2018-14359 mutt: buffer overflow via base64 data (CVE-2018-14359)
- * CVE-2018-14362 mutt: POP body caching path traversal vulnerability (CVE-2018-14362)
+ This update addresses the following issues:
+ * Heap Overflow in imap/command.c (CVE-2018-14349)
+ * stack-based buffer overflow in imap/message.c (CVE-2018-14350)
+ * IMAP status mailbox literal mishandled in imap/command.c (CVE-2018-14351)
+ * stack-based buffer overflow in imap/util.c (CVE-2018-14352)
+ * integer underflow in imap/util.c (CVE-2018-14353)
+ * Remote code injection vulnerability to an IMAP mailbox (CVE-2018-14354)
+ * IMAP header caching path traversal vulnerability (CVE-2018-14355)
+ * mishandles a zero-length UID in pop.c (CVE-2018-14356)
+ * Remote Code Execution via backquote characters (CVE-2018-14357)
+ * stack-based buffer overflow in imap/message.c (CVE-2018-14358)
+ * buffer overflow via base64 data (CVE-2018-14359)
+ * Fix a stack-based buffer overflow because of incorrect sscanf usage
+   (CVE-2018-14360)
+ * Fix a defect where processing continues if memory allocation fails for NNTP
+   messages (CVE-2018-14361)
+ * POP body caching path traversal vulnerability (CVE-2018-14362)
+ * newsrc.c does not properly restrict '/' characters that may have unsafe
+   interaction with cache pathnames. (CVE-2018-14363)
 bug: [47521]
 cve:
 - CVE-2018-14349
