@@ -1,0 +1,76 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: firefox-esr
+fix: 52.9.0esr-1~deb8u1
+desc: |
+ This update addresses the following issue(s):
+ * 
+ * Memory safety bugs were reported in Firefox 59, Firefox ESR 52.7, and Thunderbird 52.7. Some of these bugs showed evidence of memory corruption and we presume that with enough effort that some of these could be exploited to run arbitrary code. This vulnerability affects Thunderbird < 52.8, Thunderbird ESR < 52.8, Firefox < 60, and Firefox ESR < 52.8. (CVE-2018-5150)
+ * A use-after-free vulnerability can occur while enumerating attributes during SVG animations with clip paths. This results in a potentially exploitable crash. This vulnerability affects Thunderbird < 52.8, Thunderbird ESR < 52.8, Firefox < 60, and Firefox ESR < 52.8. (CVE-2018-5154)
+ * A use-after-free vulnerability can occur while adjusting layout during SVG animations with text paths. This results in a potentially exploitable crash. This vulnerability affects Thunderbird < 52.8, Thunderbird ESR < 52.8, Firefox < 60, and Firefox ESR < 52.8. (CVE-2018-5155)
+ CVE_2018-5156 is resolved
+ * Same-origin protections for the PDF viewer can be bypassed, allowing a malicious site to intercept messages meant for the viewer. This could allow the site to retrieve PDF files restricted to viewing by an authenticated user on a third-party website. This vulnerability affects Firefox ESR < 52.8 and Firefox < 60. (CVE-2018-5157)
+ * The PDF viewer does not sufficiently sanitize PostScript calculator functions, allowing malicious JavaScript to be injected through a crafted PDF file. This JavaScript can then be run with the permissions of the PDF viewer by its worker. This vulnerability affects Firefox ESR < 52.8 and Firefox < 60. (CVE-2018-5158)
+ * An integer overflow can occur in the Skia library due to 32-bit integer use in an array without integer overflow checks, resulting in possible out-of-bounds writes. This could lead to a potentially exploitable crash triggerable by web content. This vulnerability affects Thunderbird < 52.8, Thunderbird ESR < 52.8, Firefox < 60, and Firefox ESR < 52.8. (CVE-2018-5159)
+ * Sites can bypass security checks on permissions to install lightweight themes by manipulating the "baseURI" property of the theme element. This could allow a malicious site to install a theme without user interaction which could contain offensive or embarrassing images. This vulnerability affects Thunderbird < 52.8, Thunderbird ESR < 52.8, Firefox < 60, and Firefox ESR < 52.8. (CVE-2018-5168)
+ * A buffer overflow was found during UTF8 to Unicode string conversion within JavaScript with extremely large amounts of data. This vulnerability requires the use of a malicious or vulnerable legacy extension in order to occur. This vulnerability affects Thunderbird ESR < 52.8, Thunderbird < 52.8, and Firefox ESR < 52.8. (CVE-2018-5178)
+ * Mozilla developers backported selected changes in the Skia library. These changes correct memory corruption issues including invalid buffer reads and writes during graphic operations. This vulnerability affects Thunderbird ESR < 52.8, Thunderbird < 52.8, and Firefox ESR < 52.8. (CVE-2018-5183)
+ CVE_2018-5188 is resolved
+ CVE_2018-6126 is resolved
+ CVE_2018-12359 is resolved
+ CVE_2018-12360 is resolved
+ CVE_2018-12362 is resolved
+ CVE_2018-12363 is resolved
+ CVE_2018-12364 is resolved
+ CVE_2018-12365 is resolved
+ CVE_2018-12366 is resolved
+
+ 52.9.0esr-1~deb8u1 (Wed, 27 Jun 2018 07:33:25 +0900) * New upstream release. * Fixes for mfsa2018-17, also known as: CVE-2018-12359, CVE-2018-12360, CVE-2018-12362, CVE-2018-5156, CVE-2018-12363, CVE-2018-12364, CVE-2018-12365, CVE-2018-12366, CVE-2018-12368, CVE-2018-5188. * intl/icu_sources_data.py: Add --disable-layoutex when running ICU configure. bz#1462859.
+
+ 52.8.1esr-1~deb8u1 (Fri, 08 Jun 2018 16:38:21 +0900) * Fixes for mfsa2018-14, also known as CVE-2018-6126. * debian/control*: Update Maintainer and Vcs fields, moving off alioth.
+
+ 52.8.0esr-1~deb8u1 (Thu, 10 May 2018 08:30:12 +0900) * Fixes for mfsa2018-12, also known as CVE-2018-5183, CVE-2018-5154, CVE-2018-5155, CVE-2018-5157, CVE-2018-5158, CVE-2018-5159, CVE-2018-5168, CVE-2018-5178, CVE-2018-5150.
+ * CVE-2018-5150 Mozilla: Memory safety bugs fixed in Firefox 60 and Firefox ESR 52.8 (CVE-2018-5150)
+ * CVE-2018-5154 Mozilla: Use-after-free with SVG animations and clip paths (CVE-2018-5154)
+ * CVE-2018-5155 Mozilla: Use-after-free with SVG animations and text paths (CVE-2018-5155)
+ * CVE-2018-5157 Mozilla: Same-origin bypass of PDF Viewer to view protected PDF files (CVE-2018-5157)
+ * CVE-2018-5158 Mozilla: Malicious PDF can inject JavaScript into PDF Viewer (CVE-2018-5158)
+ * CVE-2018-5159 Mozilla: Integer overflow and out-of-bounds write in Skia (CVE-2018-5159)
+ * CVE-2018-5168 Mozilla: Lightweight themes can be installed without user interaction (CVE-2018-5168)
+ * CVE-2018-5178 Mozilla: Buffer overflow during UTF-8 to Unicode string conversion through legacy extension (CVE-2018-5178)
+ * CVE-2018-5183 Mozilla: Backport critical security fixes in Skia (CVE-2018-5183)
+ * CVE-2018-12359 Mozilla: Buffer overflow using computed size of canvas element (CVE-2018-12359)
+ * CVE-2018-12360 Mozilla: Use-after-free using focus() (CVE-2018-12360)
+ * CVE-2018-12362 Mozilla: Integer overflow in SSSE3 scaler (CVE-2018-12362)
+ * CVE-2018-5156 Mozilla: Media recorder segmentation fault when track type is changed during capture (CVE-2018-5156)
+ * CVE-2018-12363 Mozilla: Use-after-free when appending DOM nodes (CVE-2018-12363)
+ * CVE-2018-12364 Mozilla: CSRF attacks through 307 redirects and NPAPI plugins (CVE-2018-12364)
+ * CVE-2018-12365 Mozilla: Compromised IPC child process can list local filenames (CVE-2018-12365)
+ * CVE-2018-12366 Mozilla: Invalid data handling during QCMS transformations (CVE-2018-12366)
+ * CVE-2018-12368 Mozilla: No warning when opening executable SettingContent-ms files (CVE-2018-12368)
+ * CVE-2018-5188 Mozilla: Memory safety bugs fixed in Firefox 61, Firefox ESR 60.1, and Firefox ESR 52.9 (CVE-2018-5188)
+ * CVE-2018-6126 Skia: Heap buffer overflow rasterizing paths in SVG (CVE-2018-6126)
+bug: [47536]
+cve:
+- CVE-2018-5150
+- CVE-2018-5154
+- CVE-2018-5155
+- CVE-2018-5157
+- CVE-2018-5158
+- CVE-2018-5159
+- CVE-2018-5168
+- CVE-2018-5178
+- CVE-2018-5183
+- CVE-2018-12359
+- CVE-2018-12360
+- CVE-2018-12362
+- CVE-2018-5156
+- CVE-2018-12363
+- CVE-2018-12364
+- CVE-2018-12365
+- CVE-2018-12366
+- CVE-2018-12368
+- CVE-2018-5188
+- CVE-2018-6126
