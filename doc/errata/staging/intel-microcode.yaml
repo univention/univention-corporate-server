@@ -1,0 +1,21 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: intel-microcode
+fix: 3.20180703.2~deb8u1
+desc: |
+ This update addresses the following issue(s):
+ * 
+ * Systems with microprocessors utilizing speculative execution and speculative execution of memory reads before the addresses of all prior memory writes are known may allow unauthorized disclosure of information to an attacker with local user access via a side-channel analysis, aka Speculative Store Bypass (SSB), Variant 4. (CVE-2018-3639)
+ * Systems with microprocessors utilizing speculative execution and that perform speculative reads of system registers may allow unauthorized disclosure of system parameters to an attacker with local user access via a side-channel analysis, aka Rogue System Register Read (RSRE), Variant 3a. (CVE-2018-3640)
+
+ 3.20180703.2~deb8u1 (Fri, 27 Jul 2018 05:30:17 +0200) * Non-maintainer upload by the LTS team. * Rebuild for jessie-security (no changes)
+
+ 3.20180703.1 (Thu, 05 Jul 2018 10:03:53 -0300) * New upstream microcode data file 20180703 + Updated Microcodes: sig 0x000206d6, pf_mask 0x6d, 2018-05-08, rev 0x061d, size 18432 sig 0x000206d7, pf_mask 0x6d, 2018-05-08, rev 0x0714, size 19456 sig 0x000306e4, pf_mask 0xed, 2018-04-25, rev 0x042d, size 15360 sig 0x000306e7, pf_mask 0xed, 2018-04-25, rev 0x0714, size 17408 sig 0x000306f2, pf_mask 0x6f, 2018-04-20, rev 0x003d, size 33792 sig 0x000306f4, pf_mask 0x80, 2018-04-20, rev 0x0012, size 17408 sig 0x000406f1, pf_mask 0xef, 2018-04-19, rev 0xb00002e, size 28672 sig 0x00050654, pf_mask 0xb7, 2018-05-15, rev 0x200004d, size 31744 sig 0x00050665, pf_mask 0x10, 2018-04-20, rev 0xe00000a, size 18432 + First batch of fixes for: Intel SA-00115, CVE-2018-3639, CVE-2018-3640 + SSBD support (Spectre-v4 mitigation) and fix Spectre-v3a for: Sandybridge server, Ivy Bridge server, Haswell server, Skylake server, Broadwell server, a few HEDT Core i7/i9 models that are actually gimped server dies. * source: update symlinks to reflect id of the latest release, 20180703
+ * CVE-2018-3639 hw: cpu: speculative store bypass (CVE-2018-3639)
+ * CVE-2018-3640 hw: cpu: speculative register load (CVE-2018-3640)
+bug: [47543]
+cve:
+- CVE-2018-3639
+- CVE-2018-3640
