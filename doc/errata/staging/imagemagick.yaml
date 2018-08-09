@@ -5,189 +5,25 @@ scope: ucs_4.2-0-errata4.2-4
 src: imagemagick
 fix: 8:6.8.9.9-5+deb8u13
 desc: |
- This update addresses the following issue(s):
- * 
- CVE_2005-0406 is open
- CVE_2008-3134 is open
- CVE_2016-8678 is open
- CVE_2017-6502 is open
- CVE_2017-7275 is open
- CVE_2017-9500 is open
- * The mng_get_long function in coders/png.c in ImageMagick 7.0.6-0 allows remote attackers to cause a denial of service (heap-based buffer over-read and application crash) via a crafted MNG image. (CVE-2017-10995)
- CVE_2017-11166 is open
- CVE_2017-11446 is open
- CVE_2017-11523 is open
- CVE_2017-11531 is open
- CVE_2017-11532 is open
- * When ImageMagick 7.0.6-1 processes a crafted file in convert, it can lead to a heap-based buffer over-read in the WriteUILImage() function in coders/uil.c. (CVE-2017-11533)
- CVE_2017-11534 is open
- * When ImageMagick 7.0.6-1 processes a crafted file in convert, it can lead to a heap-based buffer over-read in the WritePSImage() function in coders/ps.c. (CVE-2017-11535)
- CVE_2017-11536 is open
- CVE_2017-11537 is open
- CVE_2017-11539 is open
- * When ImageMagick 7.0.6-1 processes a crafted file in convert, it can lead to a heap-based buffer over-read in the WriteCIPImage() function in coders/cip.c, related to the GetPixelLuma function in MagickCore/pixel-accessor.h. (CVE-2017-11639)
- CVE_2017-11644 is open
- CVE_2017-11724 is open
- CVE_2017-11751 is open
- CVE_2017-11752 is open
- CVE_2017-11754 is open
- CVE_2017-11755 is open
- CVE_2017-12140 is open
- CVE_2017-12418 is open
- CVE_2017-12427 is open
- CVE_2017-12428 is open
- CVE_2017-12429 is open
- CVE_2017-12430 is open
- CVE_2017-12432 is open
- CVE_2017-12433 is open
- CVE_2017-12434 is open
- CVE_2017-12435 is open
- CVE_2017-12563 is open
- CVE_2017-12564 is open
- CVE_2017-12565 is open
- CVE_2017-12566 is open
- CVE_2017-12587 is open
- CVE_2017-12641 is open
- CVE_2017-12642 is open
- CVE_2017-12643 is open
- CVE_2017-12644 is open
- CVE_2017-12654 is open
- CVE_2017-12662 is open
- CVE_2017-12663 is open
- CVE_2017-12664 is open
- CVE_2017-12665 is open
- CVE_2017-12667 is open
- CVE_2017-12668 is open
- CVE_2017-12669 is open
- CVE_2017-12670 is open
- CVE_2017-12671 is open
- CVE_2017-12672 is open
- CVE_2017-12673 is open
- CVE_2017-12674 is open
- CVE_2017-12675 is open
- CVE_2017-12676 is open
- CVE_2017-12691 is open
- CVE_2017-12692 is open
- CVE_2017-12693 is open
- CVE_2017-12875 is open
- CVE_2017-13058 is open
- CVE_2017-13059 is open
- CVE_2017-13060 is open
- CVE_2017-13062 is open
- CVE_2017-13131 is open
- CVE_2017-13133 is open
- CVE_2017-13141 is open
- CVE_2017-13142 is open
- * In ImageMagick before 6.9.7-6 and 7.x before 7.0.4-6, the ReadMATImage function in coders/mat.c uses uninitialized data, which might allow remote attackers to obtain sensitive information from process memory. (CVE-2017-13143)
- CVE_2017-13145 is open
- CVE_2017-13146 is open
- CVE_2017-13658 is open
- CVE_2017-13768 is open
- CVE_2017-14060 is open
- CVE_2017-14137 is open
- CVE_2017-14138 is open
- CVE_2017-14139 is open
- CVE_2017-14172 is open
- CVE_2017-14173 is open
- CVE_2017-14174 is open
- CVE_2017-14175 is open
- CVE_2017-14249 is open
- CVE_2017-14324 is open
- CVE_2017-14325 is open
- CVE_2017-14326 is open
- CVE_2017-14341 is open
- CVE_2017-14342 is open
- CVE_2017-14343 is open
- CVE_2017-14400 is open
- CVE_2017-14505 is open
- CVE_2017-14531 is open
- CVE_2017-14532 is open
- CVE_2017-14533 is open
- CVE_2017-14624 is open
- CVE_2017-14625 is open
- CVE_2017-14626 is open
- CVE_2017-14684 is open
- CVE_2017-14739 is open
- CVE_2017-14741 is open
- CVE_2017-15015 is open
- CVE_2017-15016 is open
- CVE_2017-15017 is open
- CVE_2017-15032 is open
- CVE_2017-15033 is open
- CVE_2017-15217 is open
- CVE_2017-15218 is open
- CVE_2017-15281 is open
- * ImageMagick before 7.0.7-12 has a coders/png.c Magick_png_read_raw_profile heap-based buffer over-read via a crafted file, related to ReadOneMNGImage. (CVE-2017-17504)
- CVE_2017-17680 is open
- CVE_2017-17681 is open
- CVE_2017-17682 is open
- * In ImageMagick 7.0.7-16 Q16 x86_64 2017-12-21, there is a heap-based buffer over-read in ReadOneMNGImage in coders/png.c, related to length calculation and caused by an off-by-one error. (CVE-2017-17879)
- CVE_2017-17880 is open
- CVE_2017-17881 is open
- CVE_2017-17882 is open
- CVE_2017-17883 is open
- CVE_2017-17884 is open
- CVE_2017-17885 is open
- CVE_2017-17886 is open
- CVE_2017-17887 is open
- CVE_2017-17914 is open
- CVE_2017-17934 is open
- CVE_2017-18008 is open
- CVE_2017-18022 is open
- CVE_2017-18027 is open
- CVE_2017-18028 is open
- CVE_2017-18029 is open
- CVE_2017-18209 is open
- CVE_2017-18211 is open
- CVE_2017-18251 is open
- CVE_2017-18252 is open
- CVE_2017-18254 is open
- CVE_2017-18271 is open
- CVE_2017-18273 is open
- CVE_2017-1000445 is open
- CVE_2017-1000476 is open
- CVE_2018-5246 is open
- CVE_2018-5247 is open
- * In ImageMagick 7.0.7-17 Q16, there is a heap-based buffer over-read in coders/sixel.c in the ReadSIXELImage function, related to the sixel_decode function. (CVE-2018-5248)
- CVE_2018-5357 is open
- CVE_2018-5358 is open
- CVE_2018-6405 is open
- CVE_2018-7443 is open
- CVE_2018-7470 is open
- CVE_2018-8804 is open
- CVE_2018-8960 is open
- CVE_2018-9133 is open
- CVE_2018-9135 is open
- CVE_2018-10177 is open
- CVE_2018-10804 is open
- CVE_2018-10805 is open
- * In ImageMagick 7.0.7-23 Q16 x86_64 2018-01-24, there is a heap-based buffer over-read in ReadSUNImage in coders/sun.c, which allows attackers to cause a denial of service (application crash in SetGrayscaleImage in MagickCore/quantize.c) via a crafted SUN image file. (CVE-2018-11251)
- CVE_2018-11655 is open
- CVE_2018-11656 is open
- * In ImageMagick 7.0.8-3 Q16, ReadBMPImage and WriteBMPImage in coders/bmp.c allow attackers to cause an out of bounds write via a crafted file. (CVE-2018-12599)
- * In ImageMagick 7.0.8-3 Q16, ReadDIBImage and WriteDIBImage in coders/dib.c allow attackers to cause an out of bounds write via a crafted file. (CVE-2018-12600)
- CVE_2018-13153 is open
- CVE_2018-14434 is open
- CVE_2018-14435 is open
- CVE_2018-14436 is open
- CVE_2018-14437 is open
- CVE_2018-14551 is open
- TEMP-0869722-31618B is open
-
- 8:6.8.9.9-5+deb8u13 (Thu, 21 Jun 2018 19:52:55 -0400) * Non-maintainer upload by the LTS Team. * CVE-2018-11251: heap-based buffer over-read and application crash via a crafted SUN image. * CVE-2018-12599: out of bounds write via a crafted BMP image. * CVE-2018-12600: out of bounds write via a crafted DIB image.
-
- 8:6.8.9.9-5+deb8u12 (Sun, 06 May 2018 18:28:48 +0200) * Non-maintainer upload. * Fix the following security vulnerabilities: - CVE-2017-10995: heap-based buffer over-read and application crash via a crafted MNG image. - CVE-2017-11533: heap-based buffer over-read in the WriteUILImage() function in coders/uil.c. - CVE-2017-11535: heap-based buffer over-read in the WritePSImage() function in coders/ps.c. - CVE-2017-11639: heap-based buffer over-read in the WriteCIPImage() function in coders/cip.c. - CVE-2017-13143: ReadMATImage function in coders/mat.c uses uninitialized data, which might allow remote attackers to obtain sensitive information from process memory. - CVE-2017-17504: heap-based buffer over-read. - CVE-2017-17879: heap-based buffer over-read in ReadOneMNGImage in coders/png.c. - CVE-2018-5248: heap-based buffer over-read in coders/sixel.c in the ReadSIXELImage function.
- * CVE-2017-10995 ImageMagick: Out-of-bounds heap read in mng_get_long function (CVE-2017-10995)
- * CVE-2017-11533 ImageMagick: Heap-buffer over-read in the WriteUILImage() function (CVE-2017-11533)
- * CVE-2017-11535 ImageMagick: Heap-based buffer over-read in the WritePSImage() function (CVE-2017-11535)
- * CVE-2017-11639 ImageMagick: heap-based buffer over-read in the WriteCIPImage() function in coders/cip.c (CVE-2017-11639)
- * CVE-2017-13143 ImageMagick: Initialized data use in ReadMATImage function in coders/mat.c (CVE-2017-13143)
- * CVE-2017-17504 ImageMagick: Heap-based buffer overflow in Magick_png_read_raw_profile (CVE-2017-17504)
- * CVE-2017-17879 ImageMagick: Heap-based buffer over-read in ReadOneMNGImage function in coders/png.c (CVE-2017-17879)
- * CVE-2018-5248 ImageMagick: Heap-based buffer over-read in the ReadSIXELImage function in coders/sixel.c (CVE-2018-5248)
- * CVE-2018-11251 ImageMagick: heap-based buffer over-read in ReadSUNImage in coders/sun.c (CVE-2018-11251)
- * CVE-2018-12599 ImageMagick: out of bounds write in ReadBMPImage and WriteBMPImage in coders/bmp.c (CVE-2018-12599)
- * CVE-2018-12600 ImageMagick: out of bounds write ReadDIBImage and WriteDIBImage in coders/dib.c (CVE-2018-12600)
+ This update addresses the following issues:
+ * Out-of-bounds heap read in mng_get_long function (CVE-2017-10995)
+ * Heap-buffer over-read in the WriteUILImage() function (CVE-2017-11533)
+ * Heap-based buffer over-read in the WritePSImage() function (CVE-2017-11535)
+ * heap-based buffer over-read in the WriteCIPImage() function in coders/cip.c
+   (CVE-2017-11639)
+ * Initialized data use in ReadMATImage function in coders/mat.c
+   (CVE-2017-13143)
+ * Heap-based buffer overflow in Magick_png_read_raw_profile (CVE-2017-17504)
+ * Heap-based buffer over-read in ReadOneMNGImage function in coders/png.c
+   (CVE-2017-17879)
+ * Heap-based buffer over-read in the ReadSIXELImage function in
+   coders/sixel.c (CVE-2018-5248)
+ * heap-based buffer over-read in ReadSUNImage in coders/sun.c
+   (CVE-2018-11251)
+ * out of bounds write in ReadBMPImage and WriteBMPImage in coders/bmp.c
+   (CVE-2018-12599)
+ * out of bounds write ReadDIBImage and WriteDIBImage in coders/dib.c
+   (CVE-2018-12600)
 bug: [47537]
 cve:
 - CVE-2017-10995
