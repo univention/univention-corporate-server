@@ -1,0 +1,28 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: procps
+fix: 2:3.3.9-9+deb8u1
+desc: |
+ This update addresses the following issue(s):
+ * 
+ * procps-ng before version 3.3.15 is vulnerable to a local privilege escalation in top. If a user runs top with HOME unset in an attacker-controlled directory, the attacker could achieve privilege escalation by exploiting one of several vulnerabilities in the config_file() function. (CVE-2018-1122)
+ * procps-ng before version 3.3.15 is vulnerable to a denial of service in ps via mmap buffer overflow. Inbuilt protection in ps maps a guard page at the end of the overflowed buffer, ensuring that the impact of this flaw is limited to a crash (temporary denial of service). (CVE-2018-1123)
+ * procps-ng before version 3.3.15 is vulnerable to multiple integer overflows leading to a heap corruption in file2strvec function. This allows a privilege escalation for a local attacker who can create entries in procfs by starting processes, which could result in crashes or arbitrary code execution in proc utilities run by other users. (CVE-2018-1124)
+ * procps-ng before version 3.3.15 is vulnerable to a stack buffer overflow in pgrep. This vulnerability is mitigated by FORTIFY, as it involves strncat() to a stack-allocated string. When pgrep is compiled with FORTIFY (as on Red Hat Enterprise Linux and Fedora), the impact is limited to a crash. (CVE-2018-1125)
+ * procps-ng before version 3.3.15 is vulnerable to an incorrect integer size in proc/alloc.* leading to truncation/integer overflow issues. This flaw is related to CVE-2018-1124. (CVE-2018-1126)
+
+ 2:3.3.9-9+deb8u1 (Thu, 17 May 2018 16:28:00 +0200) * Non-maintainer upload by the Security Team. * top: Do not default to the cwd in configs_read(). (CVE-2018-1122) * ps/output.c: Fix outbuf overflows in pr_args() etc. (CVE-2018-1123) * proc/readproc.c: Fix bugs and overflows in file2strvec(). (CVE-2018-1124) * pgrep: Prevent a potential stack-based buffer overflow (CVE-2018-1125) * proc/alloc.*: Use size_t, not unsigned int. (CVE-2018-1126)
+ * CVE-2018-1122 procps-ng, procps: Local privilege escalation in top (CVE-2018-1122)
+ * CVE-2018-1123 procps-ng, procps: denial of service in ps via mmap buffer overflow (CVE-2018-1123)
+ * CVE-2018-1124 procps-ng, procps: Integer overflows leading to heap overflow in file2strvec (CVE-2018-1124)
+ * CVE-2018-1125 procps-ng, procps: stack buffer overflow in pgrep (CVE-2018-1125)
+ * CVE-2018-1126 procps-ng, procps: incorrect integer size in proc/alloc.* leading to truncation / integer overflow issues (CVE-2018-1126)
+bug: [47564]
+cve:
+- CVE-2018-1122
+- CVE-2018-1123
+- CVE-2018-1124
+- CVE-2018-1125
+- CVE-2018-1126
