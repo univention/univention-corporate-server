@@ -5,19 +5,9 @@ scope: ucs_4.2-0-errata4.2-4
 src: patch
 fix: 2.7.5-1+deb8u1
 desc: |
- This update addresses the following issue(s):
- * 
- CVE_2010-4651 is open
- CVE_2016-10713 is open
- CVE_2018-6951 is open
- CVE_2018-6952 is open
- * GNU Patch version 2.7.6 contains an input validation vulnerability when processing patch files, specifically the EDITOR_PROGRAM invocation (using ed) can result in code execution. This attack appear to be exploitable via a patch file processed via the patch utility. This is similar to FreeBSD's CVE-2015-1418 however although they share a common ancestry the code bases have diverged over time. (CVE-2018-1000156)
-
- 2.7.5-1+deb8u1 (Mon, 16 Apr 2018 20:48:14 +0000) * Fix CVE-2018-1000156: arbitrary command execution in ed-style patches
- .
- * CVE-2018-1000156 patch: Malicious patch files cause ed to execute arbitrary commands (CVE-2018-1000156)
- * The do_ed_script function in pch.c in GNU patch through 2.7.6, and patch in FreeBSD 10.1 before 10.1-RELEASE-p17, 10.2 before 10.2-BETA2-p3, 10.2-RC1 before 10.2-RC1-p2, and 0.2-RC2 before 10.2-RC2-p1, allows remote attackers to execute arbitrary commands via a crafted patch file, because a '!' character can be passed to the ed program. (CVE-2015-1418)
+ This update addresses the following issue:
+ * Malicious patch files cause ed to execute arbitrary commands
+   (CVE-2018-1000156)
 bug: [47528]
 cve:
 - CVE-2018-1000156
-- CVE-2015-1418
