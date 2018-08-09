@@ -1,3 +1,9 @@
+univention-kernel-image (11.0.1-8) unstable; urgency=low
+
+  * Bug #47490: Update to 4.9.110-7 from Debian
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 09 Aug 2018 08:21:38 +0200
+
 univention-kernel-image (11.0.1-7) unstable; urgency=low
 
   * Bug #45961: Depend directly on linux-image
