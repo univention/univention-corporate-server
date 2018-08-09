@@ -1,0 +1,24 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: memcached
+fix: 1.4.21-1.1+deb8u2
+desc: |
+ This update addresses the following issue(s):
+ * 
+ * The try_read_command function in memcached.c in memcached before 1.4.39 allows remote attackers to cause a denial of service (segmentation fault) via a request to add/set a key, which makes a comparison between signed and unsigned int and triggers a heap-based buffer over-read. NOTE: this vulnerability exists because of an incomplete fix for CVE-2016-8705. (CVE-2017-9951)
+ * Memcached version 1.5.5 contains an Insufficient Control of Network Message Volume (Network Amplification, CWE-406) vulnerability in the UDP support of the memcached server that can result in denial of service via network flood (traffic amplification of 1:50,000 has been reported by reliable sources). This attack appear to be exploitable via network connectivity to port 11211 UDP. This vulnerability appears to have been fixed in 1.5.6 due to the disabling of the UDP protocol by default. (CVE-2018-1000115)
+ * memcached version prior to 1.4.37 contains an Integer Overflow vulnerability in items.c:item_free() that can result in data corruption and deadlocks due to items existing in hash table being reused from free list. This attack appear to be exploitable via network connectivity to the memcached service. This vulnerability appears to have been fixed in 1.4.37 and later. (CVE-2018-1000127)
+
+ 1.4.21-1.1+deb8u2 (Sun, 03 Jun 2018 15:21:23 +0200) * Non-maintainer upload by the Security Team. * Heap-based buffer over-read in try_read_command function (CVE-2017-9951) * disable UDP port by default (CVE-2018-1000115) * debian/NEWS: Add explanation and document how to re-enable UDP if necessary * Don't overflow item refcount on get (CVE-2018-1000127)
+ * CVE-2017-9951 memcached: Heap-based buffer over-read in try_read_command function (incomplete fix for CVE-2016-8705) (CVE-2017-9951)
+ * CVE-2018-1000115 memcached: UDP server support allows spoofed traffic amplification DoS (CVE-2018-1000115)
+ * CVE-2018-1000127 memcached: Integer Overflow in items.c:item_free() (CVE-2018-1000127)
+ * CVE-2016-8705 memcached: Server update remote code execution (CVE-2016-8705)
+bug: [47533]
+cve:
+- CVE-2017-9951
+- CVE-2018-1000115
+- CVE-2018-1000127
+- CVE-2016-8705
