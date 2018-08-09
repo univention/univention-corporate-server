@@ -5,12 +5,8 @@ scope: ucs_4.2-0-errata4.2-4
 src: libarchive-zip-perl
 fix: 1.39-1+deb8u1
 desc: |
- This update addresses the following issue(s):
- * 
- * perl-archive-zip is vulnerable to a directory traversal in Archive::Zip. It was found that the Archive::Zip module did not properly sanitize paths while extracting zip files. An attacker able to provide a specially crafted archive for processing could use this flaw to write or overwrite arbitrary files in the context of the perl interpreter. (CVE-2018-10860)
-
- 1.39-1+deb8u1 (Tue, 24 Jul 2018 21:08:04 +0200) * Non-maintainer upload by the LTS team. * Fix CVE-2018-10860: perl-archive-zip is vulnerable to a directory traversal in Archive::Zip. It was found that the Archive::Zip module did not properly sanitize paths while extracting zip files. An attacker able to provide a specially crafted archive for processing could use this flaw to write or overwrite arbitrary files in the context of the perl interpreter.
- * CVE-2018-10860 perl-Archive-Zip: Directory traversal in Archive::Zip (CVE-2018-10860)
+ This update addresses the following issue:
+ * Directory traversal in Archive::Zip (CVE-2018-10860)
 bug: [47535]
 cve:
 - CVE-2018-10860
