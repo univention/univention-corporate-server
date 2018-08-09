@@ -5,8 +5,7 @@ scope: ucs_4.2-0-errata4.2-4
 src: reportbug
 fix: 6.6.3+deb8u1
 desc: |
- This update addresses the following issue(s):
- * 
-
- 6.6.3+deb8u1 (Mon, 19 Mar 2018 14:22:15 +0100) * Non-maintainer upload. * Don't CC secure-testing-team@lists.alioth.debian.org anymore. The testing security team didn't exist for a long time and the mailinglist will disappear when Alioth will be decomissioned. Thanks to Moritz Muehlenhoff
+ This update addresses the following issue:
+ * Notify the security team or LTS team about a possible regression if
+   reporting a bug against a package containing a security fix.
 bug: [47560]
