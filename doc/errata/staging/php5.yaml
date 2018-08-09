@@ -5,85 +5,29 @@ scope: ucs_4.2-0-errata4.2-4
 src: php5
 fix: 5.6.36+dfsg-0+deb8u1
 desc: |
- This update addresses the following issue(s):
- * 
- CVE_2006-0931 is open
- CVE_2006-4023 is open
- CVE_2006-6383 is open
- CVE_2006-7205 is open
- CVE_2007-0448 is open
- CVE_2007-1413 is open
- CVE_2007-1581 is open
- CVE_2007-1582 is open
- CVE_2007-1710 is open
- CVE_2007-1835 is open
- CVE_2007-1883 is open
- CVE_2007-1890 is open
- CVE_2007-3205 is open
- CVE_2007-3294 is open
- CVE_2007-4255 is open
- CVE_2007-4596 is open
- CVE_2007-4889 is open
- CVE_2007-5424 is open
- CVE_2008-2666 is open
- CVE_2008-4107 is open
- CVE_2008-5625 is open
- CVE_2008-7002 is open
- CVE_2009-3559 is open
- CVE_2009-4418 is open
- CVE_2010-1861 is open
- CVE_2010-1862 is open
- CVE_2010-1868 is open
- CVE_2010-1914 is open
- CVE_2010-1915 is open
- CVE_2010-2097 is open
- CVE_2010-2100 is open
- CVE_2010-2101 is open
- CVE_2010-2190 is open
- CVE_2010-3062 is open
- CVE_2010-3063 is open
- CVE_2010-3064 is open
- CVE_2012-1171 is open
- CVE_2012-3365 is open
- CVE_2013-3735 is open
- CVE_2013-6501 is open
- CVE_2014-5459 is open
- CVE_2014-9425 is open
- CVE_2015-9253 is open
- CVE_2016-5116 is open
- CVE_2017-5630 is open
- CVE_2017-7272 is open
- CVE_2017-7890 is open
- CVE_2017-9118 is open
- CVE_2017-9119 is open
- CVE_2017-9120 is open
- CVE_2017-11362 is open
- CVE_2017-14107 is open
- * In PHP through 5.6.33, 7.0.x before 7.0.28, 7.1.x through 7.1.14, and 7.2.x through 7.2.2, there is a stack-based buffer under-read while parsing an HTTP response in the php_stream_url_wrap_http_ex function in ext/standard/http_fopen_wrapper.c. This subsequently results in copying a large string. (CVE-2018-7584)
- * An issue was discovered in PHP before 5.6.35, 7.0.x before 7.0.29, 7.1.x before 7.1.16, and 7.2.x before 7.2.4. Dumpable FPM child processes allow bypassing opcache access controls because fpm_unix.c makes a PR_SET_DUMPABLE prctl call, allowing one user (in a multiuser environment) to obtain sensitive information from the process memory of a second user's PHP applications by running gcore on the PID of the PHP-FPM worker process. (CVE-2018-10545)
- * An issue was discovered in PHP before 5.6.36, 7.0.x before 7.0.30, 7.1.x before 7.1.17, and 7.2.x before 7.2.5. An infinite loop exists in ext/iconv/iconv.c because the iconv stream filter does not reject invalid multibyte sequences. (CVE-2018-10546)
- * An issue was discovered in ext/phar/phar_object.c in PHP before 5.6.36, 7.0.x before 7.0.30, 7.1.x before 7.1.17, and 7.2.x before 7.2.5. There is Reflected XSS on the PHAR 403 and 404 error pages via request data of a request for a .phar file. NOTE: this vulnerability exists because of an incomplete fix for CVE-2018-5712. (CVE-2018-10547)
- * An issue was discovered in PHP before 5.6.36, 7.0.x before 7.0.30, 7.1.x before 7.1.17, and 7.2.x before 7.2.5. ext/ldap/ldap.c allows remote LDAP servers to cause a denial of service (NULL pointer dereference and application crash) because of mishandling of the ldap_get_dn return value. (CVE-2018-10548)
- * An issue was discovered in PHP before 5.6.36, 7.0.x before 7.0.30, 7.1.x before 7.1.17, and 7.2.x before 7.2.5. exif_read_data in ext/exif/exif.c has an out-of-bounds read for crafted JPEG data because exif_iif_add_value mishandles the case of a MakerNote that lacks a final '\0' character. (CVE-2018-10549)
- CVE_2018-14851 is open
- CVE_2018-14883 is open
- CVE_2018-14884 is open
- TEMP-0800564-79703B is open
-
- 5.6.36+dfsg-0+deb8u1 (Sun, 24 Jun 2018 01:07:32 -0400) * Non-maintainer upload by the LTS Team. * New upstream version 5.6.36+dfsg - [CVE-2018-7584] stack-buffer-overflow while parsing HTTP response - [CVE-2018-10545] Dumpable FPM child processes allow bypassing opcache access controls - [CVE-2018-10546] stream filter convert.iconv leads to infinite loop on invalid sequence - [CVE-2018-10547] fix for CVE-2018-5712 may not be complete - [CVE-2018-10548] Malicious LDAP-Server Response causes Crash - [CVE-2018-10549] Heap Buffer Overflow (READ: 1786) in exif_iif_add_value * Refresh patches on top of PHP 5.6.36
- * CVE-2018-7584 php: Stack-based buffer under-read in ext/standard/http_fopen_wrapper.c:php_stream_url_wrap_http_ex function when parsing HTTP response allows denial of service (CVE-2018-7584)
- * CVE-2018-10545 php: Dumpable FPM child processes allow bypassing opcache access controls (CVE-2018-10545)
- * CVE-2018-10546 php: Infinite loop in ext/iconv/iconv.c when using stream filter with convert.incov on invalid sequence leads to denial-of-service (CVE-2018-10546)
- * CVE-2018-10547 php: Reflected XSS vulnerability on PHAR 403 and 404 error pages (CVE-2018-10547)
- * CVE-2018-10548 php: Null pointer dereference due to mishandling of ldap_get_dn return value allows denial-of-service by malicious LDAP server or man-in-the-middle attacker (CVE-2018-10548)
- * CVE-2018-10549 php: Out-of-bounds read in ext/exif/exif.c:exif_read_data() when reading crafted JPEG data (CVE-2018-10549)
- * CVE-2018-5712 php: reflected XSS in .phar 404 page (CVE-2018-5712)
+ This update addresses the following issues:
+ * reflected XSS in .phar 404 page (CVE-2018-5712)
+ * Stack-based buffer under-read in
+   ext/standard/http_fopen_wrapper.c:php_stream_url_wrap_http_ex function when
+   parsing HTTP response allows denial of service (CVE-2018-7584)
+ * Dumpable FPM child processes allow bypassing opcache access controls
+   (CVE-2018-10545)
+ * Infinite loop in ext/iconv/iconv.c when using stream filter with
+   convert.incov on invalid sequence leads to denial-of-service
+   (CVE-2018-10546)
+ * Reflected XSS vulnerability on PHAR 403 and 404 error pages
+   (CVE-2018-10547)
+ * Null pointer dereference due to mishandling of ldap_get_dn return value
+   allows denial-of-service by malicious LDAP server or man-in-the-middle
+   attacker (CVE-2018-10548)
+ * Out-of-bounds read in ext/exif/exif.c:exif_read_data() when reading crafted
+   JPEG data (CVE-2018-10549)
 bug: [47558]
 cve:
+- CVE-2018-5712
 - CVE-2018-7584
 - CVE-2018-10545
 - CVE-2018-10546
 - CVE-2018-10547
 - CVE-2018-10548
 - CVE-2018-10549
-- CVE-2018-5712
