@@ -1,0 +1,32 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: lame
+fix: 3.99.5+repack1-7+deb8u2
+desc: |
+ This update addresses the following issue(s):
+ * 
+ * The II_step_one function in layer2.c in mpglib, as used in libmpgdecoder.a in LAME 3.99.5 and other products, allows remote attackers to cause a denial of service (buffer over-read and application crash) via a crafted audio file. (CVE-2017-9869)
+ * The III_i_stereo function in layer3.c in mpglib, as used in libmpgdecoder.a in LAME 3.99.5 and other products, allows remote attackers to cause a denial of service (buffer over-read and application crash) via a crafted audio file that is mishandled in the code for the "block_type == 2" case, a similar issue to CVE-2017-11126. (CVE-2017-9870)
+ * The III_i_stereo function in layer3.c in mpglib, as used in libmpgdecoder.a in LAME 3.99.5 and other products, allows remote attackers to cause a denial of service (stack-based buffer overflow and application crash) or possibly have unspecified other impact via a crafted audio file. (CVE-2017-9871)
+ * The III_dequantize_sample function in layer3.c in mpglib, as used in libmpgdecoder.a in LAME 3.99.5 and other products, allows remote attackers to cause a denial of service (stack-based buffer overflow and application crash) or possibly have unspecified other impact via a crafted audio file. (CVE-2017-9872)
+ CVE_2017-13712 is open
+ * LAME 3.99.5 has a heap-based buffer over-read when handling a malformed file in k_34_4 in vbrquantize.c. (CVE-2017-15018)
+ CVE_2017-15019 is open
+ * LAME 3.99.5 has a heap-based buffer over-read in fill_buffer in libmp3lame/util.c, related to lame_encode_buffer_sample_t in libmp3lame/lame.c, a different vulnerability than CVE-2017-9410. (CVE-2017-15045)
+ * LAME 3.99.5 has a stack-based buffer overflow in unpack_read_samples in frontend/get_audio.c, a different vulnerability than CVE-2017-9412. (CVE-2017-15046)
+
+ 3.99.5+repack1-7+deb8u2 (Sun, 27 May 2018 17:30:02 -0400) [ Fabian Greffrath ] * Build the frontend with the sndfile io routines, RAW PCM and WAV can be read from stdin since at least 3.99.0. - Add Build-Depends: libsndfile1-dev. Addressed CVEs: CVE-2017-9872, CVE-2017-9871, CVE-2017-9870, CVE-2017-9869, CVE-2017-15046, CVE-2017-15045, CVE-2017-15018.
+bug: [47555]
+cve:
+- CVE-2017-9869
+- CVE-2017-9870
+- CVE-2017-9871
+- CVE-2017-9872
+- CVE-2017-15018
+- CVE-2017-15045
+- CVE-2017-15046
+- CVE-2017-11126
+- CVE-2017-9410
+- CVE-2017-9412
