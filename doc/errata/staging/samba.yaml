@@ -5,6 +5,6 @@ scope: ucs_4.2-0-errata4.2-4
 src: samba
 fix: 2:4.6.15-1A~4.2.0.201808081929
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Update to package version 4.6.15
 bug: [47429]
