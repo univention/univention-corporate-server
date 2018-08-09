@@ -5,12 +5,9 @@ scope: ucs_4.2-0-errata4.2-4
 src: libvncserver
 fix: 0.9.9+dfsg2-6.1+deb8u3
 desc: |
- This update addresses the following issue(s):
- * 
- * An issue was discovered in LibVNCServer through 0.9.11. rfbProcessClientNormalMessage() in rfbserver.c does not sanitize msg.cct.length, leading to access to uninitialized and potentially sensitive data or possibly unspecified other impact (e.g., an integer overflow) via specially crafted VNC packets. (CVE-2018-7225)
-
- 0.9.9+dfsg2-6.1+deb8u3 (Tue, 05 Jun 2018 14:05:57 +0200) * Non-maintainer upload. * Fix CVE-2018-7225: Uninitialized and potentially sensitive data could be accessed by remote attackers because the msg.cct.length in rfbserver.c was not sanitized.
- * CVE-2018-7225 libvncserver: Improper input sanitization in rfbProcessClientNormalMessage in rfbserver.c (CVE-2018-7225)
+ This update addresses the following issue:
+ * Improper input sanitization in rfbProcessClientNormalMessage in rfbserver.c
+   (CVE-2018-7225)
 bug: [47546]
 cve:
 - CVE-2018-7225
