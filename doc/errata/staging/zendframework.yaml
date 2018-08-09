@@ -5,11 +5,10 @@ scope: ucs_4.2-0-errata4.2-4
 src: zendframework
 fix: 1.12.9+dfsg-2+deb8u7
 desc: |
- This update addresses the following issue(s):
- * 
- * The (1) order and (2) group methods in Zend_Db_Select in the Zend Framework before 1.12.20 might allow remote attackers to conduct SQL injection attacks by leveraging failure to remove comments from an SQL statement before validation. (CVE-2016-4861)
-
- 1.12.9+dfsg-2+deb8u7 (Thu, 28 Jun 2018 19:37:00 +0200) * Non-maintainer upload by the LTS Team. * CVE-2016-4861 Allowing remote attackers to conduct SQL injection attacks by leveraging failure to remove comments from an SQL statement before validation. 
+ This update addresses the following issue:
+ * Allowing remote attackers to conduct SQL injection attacks by leveraging
+   failure to remove comments from an SQL statement before validation.
+   (CVE-2016-4861)
 bug: [47531]
 cve:
 - CVE-2016-4861
