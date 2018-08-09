@@ -5,7 +5,7 @@ scope: ucs_4.3-0-errata4.3-1
 src: imagemagick
 fix: 8:6.9.7.4+dfsg-11+deb9u5
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * Heap-based buffer over-read in the ReadSIXELImage function in
    coders/sixel.c (CVE-2018-5248)
  * heap-based buffer over-read in ReadSUNImage in coders/sun.c
