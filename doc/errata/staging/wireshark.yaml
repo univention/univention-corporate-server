@@ -5,99 +5,21 @@ scope: ucs_4.2-0-errata4.2-4
 src: wireshark
 fix: 1.12.1+g01b65bf-4+deb8u15
 desc: |
- This update addresses the following issue(s):
- * 
- CVE_2017-7700 is open
- CVE_2017-7702 is open
- CVE_2017-7703 is open
- CVE_2017-7746 is open
- CVE_2017-7747 is open
- CVE_2017-7748 is open
- CVE_2017-9343 is open
- CVE_2017-9344 is open
- CVE_2017-9345 is open
- CVE_2017-9346 is open
- CVE_2017-9349 is open
- CVE_2017-9350 is open
- CVE_2017-9351 is open
- CVE_2017-9352 is open
- CVE_2017-9354 is open
- CVE_2017-9616 is open
- CVE_2017-9617 is open
- CVE_2017-9766 is open
- CVE_2017-11406 is open
- CVE_2017-11407 is open
- CVE_2017-11409 is open
- CVE_2017-13764 is open
- CVE_2017-13765 is open
- CVE_2017-13767 is open
- CVE_2017-15189 is open
- CVE_2017-15191 is open
- CVE_2017-15192 is open
- CVE_2017-15193 is open
- CVE_2017-17935 is open
- CVE_2017-17997 is open
- CVE_2018-7322 is open
- CVE_2018-7323 is open
- CVE_2018-7324 is open
- CVE_2018-7325 is open
- CVE_2018-7331 is open
- CVE_2018-7332 is open
- * In Wireshark 2.4.0 to 2.4.4 and 2.2.0 to 2.2.12, the UMTS MAC dissector could crash. This was addressed in epan/dissectors/packet-umts_mac.c by rejecting a certain reserved value. (CVE-2018-7334)
- * In Wireshark 2.4.0 to 2.4.4 and 2.2.0 to 2.2.12, the IEEE 802.11 dissector could crash. This was addressed in epan/crypt/airpdcap.c by rejecting lengths that are too small. (CVE-2018-7335)
- CVE_2018-7336 is open
- CVE_2018-7337 is open
- CVE_2018-7417 is open
- CVE_2018-7418 is open
- * In Wireshark 2.2.0 to 2.2.12 and 2.4.0 to 2.4.4, the NBAP dissector could crash. This was addressed in epan/dissectors/asn1/nbap/nbap.cnf by ensuring DCH ID initialization. (CVE-2018-7419)
- CVE_2018-7420 is open
- CVE_2018-7421 is open
- CVE_2018-9256 is open
- CVE_2018-9257 is open
- CVE_2018-9258 is open
- CVE_2018-9259 is open
- CVE_2018-9260 is open
- * In Wireshark 2.4.0 to 2.4.5 and 2.2.0 to 2.2.13, the NBAP dissector could crash with a large loop that ends with a heap-based buffer overflow. This was addressed in epan/dissectors/packet-nbap.c by prohibiting the self-linking of DCH-IDs. (CVE-2018-9261)
- CVE_2018-9262 is open
- CVE_2018-9263 is open
- CVE_2018-9265 is open
- CVE_2018-9267 is open
- CVE_2018-9268 is open
- CVE_2018-9269 is open
- CVE_2018-9270 is open
- CVE_2018-9271 is open
- CVE_2018-9272 is open
- CVE_2018-11356 is open
- CVE_2018-11357 is open
- * In Wireshark 2.6.0, 2.4.0 to 2.4.6, and 2.2.0 to 2.2.14, the Q.931 dissector could crash. This was addressed in epan/dissectors/packet-q931.c by avoiding a use-after-free after a malformed packet prevented certain cleanup. (CVE-2018-11358)
- CVE_2018-11359 is open
- * In Wireshark 2.6.0, 2.4.0 to 2.4.6, and 2.2.0 to 2.2.14, the LDSS dissector could crash. This was addressed in epan/dissectors/packet-ldss.c by avoiding a buffer over-read upon encountering a missing '\0' character. (CVE-2018-11362)
- * In Wireshark 2.6.0 to 2.6.1, 2.4.0 to 2.4.7, and 2.2.0 to 2.2.15, the MMSE dissector could go into an infinite loop. This was addressed in epan/proto.c by adding offset and length validation. (CVE-2018-14339)
- * In Wireshark 2.6.0 to 2.6.1, 2.4.0 to 2.4.7, and 2.2.0 to 2.2.15, dissectors that support zlib decompression could crash. This was addressed in epan/tvbuff_zlib.c by rejecting negative lengths to avoid a buffer over-read. (CVE-2018-14340)
- * In Wireshark 2.6.0 to 2.6.1, 2.4.0 to 2.4.7, and 2.2.0 to 2.2.15, the DICOM dissector could go into a large or infinite loop. This was addressed in epan/dissectors/packet-dcm.c by preventing an offset overflow. (CVE-2018-14341)
- * In Wireshark 2.6.0 to 2.6.1, 2.4.0 to 2.4.7, and 2.2.0 to 2.2.15, the BGP protocol dissector could go into a large loop. This was addressed in epan/dissectors/packet-bgp.c by validating Path Attribute lengths. (CVE-2018-14342)
- * In Wireshark 2.6.0 to 2.6.1, 2.4.0 to 2.4.7, and 2.2.0 to 2.2.15, the ASN.1 BER dissector could crash. This was addressed in epan/dissectors/packet-ber.c by ensuring that length values do not exceed the maximum signed integer. (CVE-2018-14343)
- * In Wireshark 2.6.0 to 2.6.1, 2.4.0 to 2.4.7, and 2.2.0 to 2.2.15, the Bazaar protocol dissector could go into an infinite loop. This was addressed in epan/dissectors/packet-bzr.c by properly handling items that are too long. (CVE-2018-14368)
- * In Wireshark 2.6.0 to 2.6.1, 2.4.0 to 2.4.7, and 2.2.0 to 2.2.15, the HTTP2 dissector could crash. This was addressed in epan/dissectors/packet-http2.c by verifying that header data was found before proceeding to header decompression. (CVE-2018-14369)
-
- 1.12.1+g01b65bf-4+deb8u15 (Sun, 29 Jul 2018 13:03:02 +0200) * Non-maintainer upload by the Wheezy LTS Team. * fix for CVE-2018-14339 * fix for CVE-2018-14340 * fix for CVE-2018-14341 * fix for CVE-2018-14342 * fix for CVE-2018-14343 * fix for CVE-2018-14368 * fix for CVE-2018-14369 Due to several flaws different dissectors could go in infinite loop or could be crashed by malicious packets.
-
- 1.12.1+g01b65bf-4+deb8u14 (Fri, 01 Jun 2018 22:16:57 +0200) * CVE-2018-11358 CVE-2018-11362 CVE-2018-7334	CVE-2018-7335 * CVE-2018-7419 CVE-2018-9261
- * CVE-2018-7334 wireshark: out of bounds access in UMTS MAC dissector in packet-umts_mac.c (CVE-2018-7334)
- * CVE-2018-7335 wireshark: IEEE 802.11 dissector crash in airpdcap.c (CVE-2018-7335)
- * CVE-2018-7419 wireshark: NBAP dissector crash in nbap.cnf (CVE-2018-7419)
- * CVE-2018-9261 wireshark: NBAP dissector crash in epan/dissectors/packet-nbap.c (CVE-2018-9261)
- * CVE-2018-11358 wireshark: Use after free in packet-q931.c (CVE-2018-11358)
- * CVE-2018-11362 wireshark: Out-of-bounds read in packet-ldss.c (CVE-2018-11362)
- * CVE-2018-14339 wireshark: MMSE dissector infinite loop (wnpa-sec-2018-38) (CVE-2018-14339)
- * CVE-2018-14340 wireshark: Multiple dissectors could crash (wnpa-sec-2018-36) (CVE-2018-14340)
- * CVE-2018-14341 wireshark: DICOM dissector infinite loop (wnpa-sec-2018-39) (CVE-2018-14341)
- * CVE-2018-14342 wireshark: BGP dissector large loop (wnpa-sec-2018-34) (CVE-2018-14342)
- * CVE-2018-14343 wireshark: ASN.1 BER and related dissectors crash (wnpa-sec-2018-37) (CVE-2018-14343)
- * CVE-2018-14368 wireshark: Bazaar dissector infinite loop (wnpa-sec-2018-40) (CVE-2018-14368)
- * CVE-2018-14369 wireshark: HTTP2 dissector infinite loop (wnpa-sec-2018-41) (CVE-2018-14369)
- * CVE-2018-11362 wireshark: Out-of-bounds read in packet-ldss.c (CVE-2018-11362)
- * CVE-2018-11362 wireshark: Out-of-bounds read in packet-ldss.c (CVE-2018-11362)
+ This update addresses the following issues:
+ * out of bounds access in UMTS MAC dissector in packet-umts_mac.c
+   (CVE-2018-7334)
+ * IEEE 802.11 dissector crash in airpdcap.c (CVE-2018-7335)
+ * NBAP dissector crash in nbap.cnf (CVE-2018-7419)
+ * NBAP dissector crash in epan/dissectors/packet-nbap.c (CVE-2018-9261)
+ * Use after free in packet-q931.c (CVE-2018-11358)
+ * Out-of-bounds read in packet-ldss.c (CVE-2018-11362)
+ * MMSE dissector infinite loop (wnpa-sec-2018-38) (CVE-2018-14339)
+ * Multiple dissectors could crash (wnpa-sec-2018-36) (CVE-2018-14340)
+ * DICOM dissector infinite loop (wnpa-sec-2018-39) (CVE-2018-14341)
+ * BGP dissector large loop (wnpa-sec-2018-34) (CVE-2018-14342)
+ * ASN.1 BER and related dissectors crash (wnpa-sec-2018-37) (CVE-2018-14343)
+ * Bazaar dissector infinite loop (wnpa-sec-2018-40) (CVE-2018-14368)
+ * HTTP2 dissector infinite loop (wnpa-sec-2018-41) (CVE-2018-14369)
 bug: [47534]
 cve:
 - CVE-2018-7334
