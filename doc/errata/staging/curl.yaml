@@ -1,0 +1,22 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: curl
+fix: 7.38.0-4+deb8u11
+desc: |
+ This update addresses the following issue(s):
+ * 
+ CVE_2016-3739 is open
+ CVE_2016-7141 is open
+ CVE_2016-7167 is open
+ CVE_2016-8625 is open
+ CVE_2016-9586 is open
+ CVE_2017-7407 is open
+ * curl version curl 7.20.0 to and including curl 7.59.0 contains a CWE-126: Buffer Over-read vulnerability in denial of service that can result in curl can be tricked into reading data beyond the end of a heap based buffer used to store downloaded RTSP content.. This vulnerability appears to have been fixed in curl < 7.20.0 and curl >= 7.60.0. (CVE-2018-1000301)
+
+ 7.38.0-4+deb8u11 (Tue, 15 May 2018 23:05:31 +0100) * Fix heap buffer over-read when parsing bad RTSP headers as per CVE-2018-1000301 https://curl.haxx.se/docs/adv_2018-b138.html
+ * CVE-2018-1000301 curl: Out-of-bounds heap read when missing RTSP headers allows information leak of denial of service (CVE-2018-1000301)
+bug: [47554]
+cve:
+- CVE-2018-1000301
