@@ -5,12 +5,8 @@ scope: ucs_4.2-0-errata4.2-4
 src: libidn
 fix: 1.29-1+deb8u3
 desc: |
- This update addresses the following issue(s):
- * 
- * Integer overflow in the decode_digit function in puny_decode.c in Libidn2 before 2.0.4 allows remote attackers to cause a denial of service or possibly have unspecified other impact. (CVE-2017-14062)
-
- 1.29-1+deb8u3 (Thu, 26 Jul 2018 20:36:12 +0200) * Fix CVE-2017-14062: An integer overflow vulnerability in libidn's Punycode handling (an encoding used to convert Unicode characters to ASCII) which would have allowed remote attackers to cause a denial of service. Patch taken from wheezy, backported by Chris Lamb.
- * CVE-2017-14062 libidn2: Integer overflow in puny_decode.c/decode_digit (CVE-2017-14062)
+ This update addresses the following issue:
+ * Integer overflow in puny_decode.c/decode_digit (CVE-2017-14062)
 bug: [47525]
 cve:
 - CVE-2017-14062
