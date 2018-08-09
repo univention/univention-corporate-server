@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: xml-security-c
+fix: 1.7.2-3+deb8u1
+desc: |
+ This update addresses the following issue(s):
+ * 
+ TEMP-0905332-CB57BF is resolved
+
+ 1.7.2-3+deb8u1 (Sun, 05 Aug 2018 20:01:03 +0200) * [109db8e] New patch: Default KeyInfo resolver doesn't check for empty element content. The Apache Santuario XML Security for C++ library contained a number of code paths at risk of dereferencing null pointers when processing various kinds of malformed KeyInfo hints typically found in signed or encrypted XML. The usual effect is a crash, and in the case of the Shibboleth SP software, a crash in the shibd daemon. Upstream bug: https://issues.apache.org/jira/projects/SANTUARIO/issues/SANTUARIO-491 CVE: not assigned yet Thanks to Scott Cantor * [4dafdb4] Replace Russ in Uploaders
+bug: [47522]
