@@ -1,0 +1,17 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: xerces-c
+fix: 3.1.1-5.1+deb8u4
+desc: |
+ This update addresses the following issue(s):
+ * 
+ CVE_2012-0880 is open
+ * In Apache Xerces-C XML Parser library before 3.2.1, processing of external DTD paths can result in a null pointer dereference under certain conditions. (CVE-2017-12627)
+
+ 3.1.1-5.1+deb8u4 (Thu, 26 Apr 2018 00:28:32 -0400) * Fix CVE-2017-12627: Alberto Garcia, Francisco Oca and Suleman Ali of Offensive Research discovered that the Xerces-C XML parser mishandles certain kinds of external DTD references, resulting in dereference of a NULL pointer while processing the path to the DTD. The bug allows for a denial of service attack in applications that allow DTD processing and do not prevent external DTD usage, and could conceivably result in remote code execution.
+ * CVE-2017-12627 xerces-c: Null pointer dereference while processing the path to DTD allows denial of service (CVE-2017-12627)
+bug: [47541]
+cve:
+- CVE-2017-12627
