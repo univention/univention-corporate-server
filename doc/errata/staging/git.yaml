@@ -6,12 +6,12 @@ src: git
 fix: 1:2.1.4-2.1+deb8u6
 desc: |
  This update addresses the following issues:
+ * directory traversal via symlinks (CVE-2015-1196)
  * path sanity-checks on NTFS can read arbitrary memory (CVE-2018-11233)
  * arbitrary code execution when recursively cloning a malicious repository
    (CVE-2018-11235)
- * directory traversal via symlinks (CVE-2015-1196)
 bug: [47547]
 cve:
+- CVE-2015-1196
 - CVE-2018-11233
 - CVE-2018-11235
-- CVE-2015-1196
