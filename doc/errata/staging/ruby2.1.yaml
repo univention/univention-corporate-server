@@ -1,0 +1,92 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: ruby2.1
+fix: 2.1.5-2+deb8u4
+desc: |
+ This update addresses the following issue(s):
+ * 
+ CVE_2014-3916 is open
+ * Net::SMTP in Ruby before 2.4.0 is vulnerable to SMTP command injection via CRLF sequences in a RCPT TO or MAIL FROM command, as demonstrated by CRLF sequences immediately before and after a DATA substring. (CVE-2015-9096)
+ CVE_2016-2337 is open
+ * An exploitable heap overflow vulnerability exists in the Fiddle::Function.new "initialize" function functionality of Ruby. In Fiddle::Function.new "initialize" heap buffer "arg_types" allocation is made based on args array length. Specially constructed object passed as element of args array can increase this array size after mentioned allocation and cause heap overflow. (CVE-2016-2339)
+ * The openssl gem for Ruby uses the same initialization vector (IV) in GCM Mode (aes-*-gcm) when the IV is set before the key, which makes it easier for context-dependent attackers to bypass the encryption protection mechanism. (CVE-2016-7798)
+ * Ruby before 2.4.2, 2.3.5, and 2.2.8 is vulnerable to a malicious format string which contains a precious specifier (*) with a huge minus value. Such situation can lead to a buffer overrun, resulting in a heap memory corruption or an information disclosure from the heap. (CVE-2017-0898)
+ * RubyGems version 2.6.12 and earlier is vulnerable to maliciously crafted gem specifications that include terminal escape characters. Printing the gem specification would execute terminal escape sequences. (CVE-2017-0899)
+ * RubyGems version 2.6.12 and earlier is vulnerable to maliciously crafted gem specifications to cause a denial of service attack against RubyGems clients who have issued a `query` command. (CVE-2017-0900)
+ * RubyGems version 2.6.12 and earlier fails to validate specification names, allowing a maliciously crafted gem to potentially overwrite any file on the filesystem. (CVE-2017-0901)
+ * RubyGems version 2.6.12 and earlier is vulnerable to a DNS hijacking vulnerability that allows a MITM attacker to force the RubyGems client to download and install gems from a server that the attacker controls. (CVE-2017-0902)
+ * RubyGems versions between 2.0.0 and 2.6.13 are vulnerable to a possible remote code execution vulnerability. YAML deserialization of gem specifications can bypass class white lists. Specially crafted serialized objects can possibly be used to escalate to remote code execution. (CVE-2017-0903)
+ * The Basic authentication code in WEBrick library in Ruby before 2.2.8, 2.3.x before 2.3.5, and 2.4.x through 2.4.1 allows remote attackers to inject terminal emulator escape sequences into its log and possibly execute arbitrary commands via a crafted user name. (CVE-2017-10784)
+ * The decode method in the OpenSSL::ASN1 module in Ruby before 2.2.8, 2.3.x before 2.3.5, and 2.4.x through 2.4.1 allows attackers to cause a denial of service (interpreter crash) via a crafted string. (CVE-2017-14033)
+ * Ruby through 2.2.7, 2.3.x through 2.3.4, and 2.4.x through 2.4.1 can expose arbitrary memory during a JSON.generate call. The issues lies in using strdup in ext/json/ext/generator/generator.c, which will stop after encountering a '\0' byte, returning a pointer to a string of length zero, which is not the length stored in space_len. (CVE-2017-14064)
+ * Ruby before 2.4.3 allows Net::FTP command injection. Net::FTP#get, getbinaryfile, gettextfile, put, putbinaryfile, and puttextfile use Kernel#open to open a local file. If the localfile argument starts with the "|" pipe character, the command following the pipe character is executed. The default value of localfile is File.basename(remotefile), so malicious FTP servers could cause arbitrary command execution. (CVE-2017-17405)
+ * Ruby before 2.2.10, 2.3.x before 2.3.7, 2.4.x before 2.4.4, 2.5.x before 2.5.1, and 2.6.0-preview1 allows an HTTP Response Splitting attack. An attacker can inject a crafted key and value into an HTTP response for the HTTP server of WEBrick. (CVE-2017-17742)
+ * The lazy_initialize function in lib/resolv.rb in Ruby through 2.4.3 uses Kernel#open, which might allow Command Injection attacks, as demonstrated by a Resolv::Hosts::new argument beginning with a '|' character, a different vulnerability than CVE-2017-17405. NOTE: situations with untrusted input may be highly unlikely. (CVE-2017-17790)
+ * Directory traversal vulnerability in the Dir.mktmpdir method in the tmpdir library in Ruby before 2.2.10, 2.3.x before 2.3.7, 2.4.x before 2.4.4, 2.5.x before 2.5.1, and 2.6.0-preview1 might allow attackers to create arbitrary directories or files via a .. (dot dot) in the prefix argument. (CVE-2018-6914)
+ * In Ruby before 2.2.10, 2.3.x before 2.3.7, 2.4.x before 2.4.4, 2.5.x before 2.5.1, and 2.6.0-preview1, an attacker can pass a large HTTP request with a crafted header to WEBrick server or a crafted body to WEBrick server/handler and cause a denial of service (memory consumption). (CVE-2018-8777)
+ * In Ruby before 2.2.10, 2.3.x before 2.3.7, 2.4.x before 2.4.4, 2.5.x before 2.5.1, and 2.6.0-preview1, an attacker controlling the unpacking format (similar to format string vulnerabilities) can trigger a buffer under-read in the String#unpack method, resulting in a massive and controlled information disclosure. (CVE-2018-8778)
+ * In Ruby before 2.2.10, 2.3.x before 2.3.7, 2.4.x before 2.4.4, 2.5.x before 2.5.1, and 2.6.0-preview1, the UNIXServer.open and UNIXSocket.open methods are not checked for null characters. It may be connected to an unintended socket. (CVE-2018-8779)
+ * In Ruby before 2.2.10, 2.3.x before 2.3.7, 2.4.x before 2.4.4, 2.5.x before 2.5.1, and 2.6.0-preview1, the Dir.open, Dir.new, Dir.entries and Dir.empty? methods do not check NULL characters. When using the corresponding method, unintentional directory traversal may be performed. (CVE-2018-8780)
+ CVE_2018-1000073 is open
+ CVE_2018-1000074 is open
+ * RubyGems version Ruby 2.2 series: 2.2.9 and earlier, Ruby 2.3 series: 2.3.6 and earlier, Ruby 2.4 series: 2.4.3 and earlier, Ruby 2.5 series: 2.5.0 and earlier, prior to trunk revision 62422 contains a infinite loop caused by negative size vulnerability in ruby gem package tar header that can result in a negative size could cause an infinite loop.. This vulnerability appears to have been fixed in 2.7.6. (CVE-2018-1000075)
+ * RubyGems version Ruby 2.2 series: 2.2.9 and earlier, Ruby 2.3 series: 2.3.6 and earlier, Ruby 2.4 series: 2.4.3 and earlier, Ruby 2.5 series: 2.5.0 and earlier, prior to trunk revision 62422 contains a Improper Verification of Cryptographic Signature vulnerability in package.rb that can result in a mis-signed gem could be installed, as the tarball would contain multiple gem signatures.. This vulnerability appears to have been fixed in 2.7.6. (CVE-2018-1000076)
+ * RubyGems version Ruby 2.2 series: 2.2.9 and earlier, Ruby 2.3 series: 2.3.6 and earlier, Ruby 2.4 series: 2.4.3 and earlier, Ruby 2.5 series: 2.5.0 and earlier, prior to trunk revision 62422 contains a Improper Input Validation vulnerability in ruby gems specification homepage attribute that can result in a malicious gem could set an invalid homepage URL. This vulnerability appears to have been fixed in 2.7.6. (CVE-2018-1000077)
+ * RubyGems version Ruby 2.2 series: 2.2.9 and earlier, Ruby 2.3 series: 2.3.6 and earlier, Ruby 2.4 series: 2.4.3 and earlier, Ruby 2.5 series: 2.5.0 and earlier, prior to trunk revision 62422 contains a Cross Site Scripting (XSS) vulnerability in gem server display of homepage attribute that can result in XSS. This attack appear to be exploitable via the victim must browse to a malicious gem on a vulnerable gem server. This vulnerability appears to have been fixed in 2.7.6. (CVE-2018-1000078)
+ * RubyGems version Ruby 2.2 series: 2.2.9 and earlier, Ruby 2.3 series: 2.3.6 and earlier, Ruby 2.4 series: 2.4.3 and earlier, Ruby 2.5 series: 2.5.0 and earlier, prior to trunk revision 62422 contains a Directory Traversal vulnerability in gem installation that can result in the gem could write to arbitrary filesystem locations during installation. This attack appear to be exploitable via the victim must install a malicious gem. This vulnerability appears to have been fixed in 2.7.6. (CVE-2018-1000079)
+
+ 2.1.5-2+deb8u4 (Fri, 13 Jul 2018 15:55:10 +0200) * Non-maintainer upload by the LTS Team. * Fix multiple security issues: * CVE-2015-9096: SMTP command injection via CRLF sequences * CVE-2016-2339: Exploitable heap overflow in Fiddle::Function.new * CVE-2016-7798: Fix IV Reuse in GCM Mode. Patch by Kazuki Yamaguchi <k@rhe.jp> * CVE-2017-0898: Buffer underrun vulnerability in Kernel.sprintf * CVE-2017-10784: lib/webrick/log.rb: sanitize any type of logs * CVE-2017-14033: asn1: fix out-of-bounds read in decoding constructed objects * CVE-2017-14064: Heap exposure vulnerability in generating JSON * CVE-2017-0903: Whitelist classes and symbols that are in Gem spec YAML * Fix multiple vulnerabilities in rubygems: - a DNS request hijacking vulnerability. (CVE-2017-0902) - an ANSI escape sequence vulnerability. (CVE-2017-0899) - a DoS vulnerability in the query command. (CVE-2017-0900) - a vulnerability in the gem installer that allowed a malicious gem to overwrite arbitrary files. (CVE-2017-0901) * CVE-2017-17405: Command injection in Net::FTP * CVE-2017-17790: Command injection in Hosts:new() by use of Kernel#open * CVE-2018-1000075: Strictly interpret octal fields in tar headers to avoid infinite loop * CVE-2018-1000076: Raise a security error when there are duplicate files in a package * CVE-2018-1000077: Enforce URL validation on spec homepage attribute. * CVE-2018-1000078: Mitigate XSS vulnerability in homepage attribute when displayed via gem server. * CVE-2018-1000079: Directory Traversal vulnerability in gem installation that can result in the gem could write to arbitrary filesystem locations. * CVE-2018-8778: Buffer under-read in String#unpack * CVE-2018-8780: Unintentional directory traversal by poisoned NUL byte in Dir * CVE-2018-6914: Unintentional file and directory creation with directory traversal in tempfile and tmpdir * CVE-2018-8779: Unintentional socket creation by poisoned NUL byte in UNIXServer and UNIXSocket * CVE-2018-8777: DoS by large request in WEBrick * CVE-2017-17742: HTTP response splitting in WEBrick
+ * CVE-2015-9096 ruby: SMTP command injection via CRLF sequences in RCPT TO or MAIL FROM commands in Net::SMTP (CVE-2015-9096)
+ * CVE-2016-2339 ruby: Fiddle::Function.new heap buffer overflow (CVE-2016-2339)
+ * CVE-2016-7798 ruby: IV Reuse in GCM Mode (CVE-2016-7798)
+ * CVE-2017-0898 ruby: Buffer underrun vulnerability in Kernel.sprintf (CVE-2017-0898)
+ * CVE-2017-0899 rubygems: Escape sequence in the "summary" field of gemspec (CVE-2017-0899)
+ * CVE-2017-0900 rubygems: No size limit in summary length of gem spec (CVE-2017-0900)
+ * CVE-2017-0901 rubygems: Arbitrary file overwrite due to incorrect validation of specification name (CVE-2017-0901)
+ * CVE-2017-0902 rubygems: DNS hijacking vulnerability (CVE-2017-0902)
+ * CVE-2017-0903 rubygems: Unsafe object deserialization through YAML formatted gem specifications (CVE-2017-0903)
+ * CVE-2017-10784 ruby: Escape sequence injection vulnerability in the Basic authentication of WEBrick (CVE-2017-10784)
+ * CVE-2017-14033 ruby: Buffer underrun in OpenSSL ASN1 decode (CVE-2017-14033)
+ * CVE-2017-14064 ruby: Arbitrary heap exposure during a JSON.generate call (CVE-2017-14064)
+ * CVE-2017-17405 ruby: Command injection vulnerability in Net::FTP (CVE-2017-17405)
+ * CVE-2017-17742 ruby: HTTP response splitting in WEBrick (CVE-2017-17742)
+ * CVE-2017-17790 ruby: Command injection in lib/resolv.rb:lazy_initialize() allows arbitrary code execution (CVE-2017-17790)
+ * CVE-2018-6914 ruby: Unintentional file and directory creation with directory traversal in tempfile and tmpdir (CVE-2018-6914)
+ * CVE-2018-8777 ruby: DoS by large request in WEBrick (CVE-2018-8777)
+ * CVE-2018-8778 ruby: Buffer under-read in String#unpack (CVE-2018-8778)
+ * CVE-2018-8779 ruby: Unintentional socket creation by poisoned NULL byte in UNIXServer and UNIXSocket (CVE-2018-8779)
+ * CVE-2018-8780 ruby: Unintentional directory traversal by poisoned NULL byte in Dir (CVE-2018-8780)
+ * CVE-2018-1000075 rubygems: Infinite loop vulnerability due to negative size in tar header causes Denial of Service (CVE-2018-1000075)
+ * CVE-2018-1000076 rubygems: Improper verification of signatures in tarball allows to install mis-signed gem (CVE-2018-1000076)
+ * CVE-2018-1000077 rubygems: Missing URL validation on spec home attribute allows malicious gem to set an invalid homepage URL (CVE-2018-1000077)
+ * CVE-2018-1000078 rubygems: XSS vulnerability in homepage attribute when displayed via gem server (CVE-2018-1000078)
+ * CVE-2018-1000079 rubygems: Path traversal issue during gem installation allows to write to arbitrary filesystem locations (CVE-2018-1000079)
+bug: [47557]
+cve:
+- CVE-2015-9096
+- CVE-2016-2339
+- CVE-2016-7798
+- CVE-2017-0898
+- CVE-2017-0899
+- CVE-2017-0900
+- CVE-2017-0901
+- CVE-2017-0902
+- CVE-2017-0903
+- CVE-2017-10784
+- CVE-2017-14033
+- CVE-2017-14064
+- CVE-2017-17405
+- CVE-2017-17742
+- CVE-2017-17790
+- CVE-2018-6914
+- CVE-2018-8777
+- CVE-2018-8778
+- CVE-2018-8779
+- CVE-2018-8780
+- CVE-2018-1000075
+- CVE-2018-1000076
+- CVE-2018-1000077
+- CVE-2018-1000078
+- CVE-2018-1000079
