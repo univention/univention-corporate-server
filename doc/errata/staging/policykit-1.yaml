@@ -5,13 +5,10 @@ scope: ucs_4.2-0-errata4.2-4
 src: policykit-1
 fix: 0.105-15~deb8u3
 desc: |
- This update addresses the following issue(s):
- * 
- CVE_2016-2568 is open
- * A flaw was found in polkit before version 0.116. The implementation of the polkit_backend_interactive_authority_check_authorization function in polkitd allows to test for authentication and trigger authentication of unrelated processes owned by other users. This may result in a local DoS and information disclosure. (CVE-2018-1116)
-
- 0.105-15~deb8u3 (Fri, 27 Jul 2018 19:00:41 +0530) * Non-maintainer upload by the Debian LTS Team. * Fix CVE-2018-1116: polkit_backend_interactive_authority_check_authorization function in polkitd allows to test for authentication and trigger authentication of unrelated processes owned by other users which result in local DoS. * d/libpolkit-gobject-1-0.symbols: Update for new ABI
- * CVE-2018-1116 polkit: Improper authorization in polkit_backend_interactive_authority_check_authorization function in polkitd (CVE-2018-1116)
+ This update addresses the following issue:
+ * Improper authorization in
+   polkit_backend_interactive_authority_check_authorization function in
+   polkitd (CVE-2018-1116)
 bug: [47532]
 cve:
 - CVE-2018-1116
