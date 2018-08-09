@@ -16,10 +16,10 @@ desc: |
    of service (CVE-2018-8905)
  * reachable assertion in TIFFWriteDirectorySec function in tif_dirwrite.c
    (CVE-2018-10963)
- * NULL pointer dereference in tif_print.c:TIFFPrintDirectory() causes crash
-   (CVE-2017-18013)
  * Reachable assertion abort in the function TIFFWriteDirectorySec()
    (CVE-2017-13726)
+ * NULL pointer dereference in tif_print.c:TIFFPrintDirectory() causes crash
+   (CVE-2017-18013)
 bug: [47545]
 cve:
 - CVE-2017-11613
