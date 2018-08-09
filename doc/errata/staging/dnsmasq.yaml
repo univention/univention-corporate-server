@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: dnsmasq
+fix: 2.72-3+deb8u3
+desc: |
+ This update addresses the following issue(s):
+ * 
+ CVE_2017-15107 is open
+
+ 2.72-3+deb8u3 (Fri, 20 Jul 2018 11:15:50 +0200) * Non-maintainer upload by the LTS team. * Update init service for dns-root-data changes to fix dnsmasq startup when dns-root-data is installed..
+bug: [47529]
