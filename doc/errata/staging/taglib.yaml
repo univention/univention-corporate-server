@@ -5,12 +5,8 @@ scope: ucs_4.2-0-errata4.2-4
 src: taglib
 fix: 1.9.1-2.1+deb8u1
 desc: |
- This update addresses the following issue(s):
- * 
- * The TagLib::Ogg::FLAC::File::scan function in oggflacfile.cpp in TagLib 1.11.1 allows remote attackers to cause information disclosure (heap-based buffer over-read) via a crafted audio file. (CVE-2018-11439)
-
- 1.9.1-2.1+deb8u1 (Wed, 18 Jul 2018 10:03:02 +0200) * Non-maintainer upload by the LTS Team. * CVE-2018-11439 Fix for a heap-based buffer over-read via a crafted audio file.
- * CVE-2018-11439 taglib: heap-based buffer over-read via a crafted audio file (CVE-2018-11439)
+ This update addresses the following issue:
+ * heap-based buffer over-read via a crafted audio file (CVE-2018-11439)
 bug: [47561]
 cve:
 - CVE-2018-11439
