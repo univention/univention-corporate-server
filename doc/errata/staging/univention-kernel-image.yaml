@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: univention-kernel-image
+fix: 11.0.1-8A~4.3.0.201808090822
+desc: |
+ This update addresses the following issue:
+ * Update to Linux kernel 4.9.110-7
+note: This is the third of three parts.
+bug: [47490]

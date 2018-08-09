@@ -74,6 +74,7 @@ desc: |
    with crafted ext4 image (CVE-2018-1093)
  * Memory leak in drivers/net/wireless/mac80211_hwsim.c:hwsim_new_radio_nl()
    can lead to potential denial of service (CVE-2018-8087)
+note: This is the first of three parts.
 bug: [47490]
 cve:
 - CVE-2017-18255
