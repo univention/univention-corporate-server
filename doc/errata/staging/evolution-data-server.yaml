@@ -5,13 +5,8 @@ scope: ucs_4.2-0-errata4.2-4
 src: evolution-data-server
 fix: 3.12.9~git20141128.5242b0-2+deb8u4
 desc: |
- This update addresses the following issue(s):
- * 
- * camel/providers/imapx/camel-imapx-server.c in the IMAPx component in GNOME evolution-data-server before 3.21.2 proceeds with cleartext data containing a password if the client wishes to use STARTTLS but the server will not use STARTTLS, which makes it easier for remote attackers to obtain sensitive information by sniffing the network. The server code was intended to report an error and not proceed, but the code was written incorrectly. (CVE-2016-10727)
- CVE_2018-12422 is open
-
- 3.12.9~git20141128.5242b0-2+deb8u4 (Wed, 25 Jul 2018 12:06:29 +0800) * CVE-2016-10727: Prevent an issue where "STARTTLS not supported" errors from IMAP servers were ignored leading to the use of insecure connections without the user's knowledge or consent.
- * CVE-2016-10727 evolution-data-server: IMAPx Component Information Disclosure (CVE-2016-10727)
+ This update addresses the following issue:
+ * IMAPx Component Information Disclosure (CVE-2016-10727)
 bug: [47542]
 cve:
 - CVE-2016-10727
