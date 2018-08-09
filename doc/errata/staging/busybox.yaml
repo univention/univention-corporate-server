@@ -1,0 +1,43 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: busybox
+fix: 1:1.22.0-9+deb8u4
+desc: |
+ This update addresses the following issue(s):
+ * 
+ * Directory traversal vulnerability in the BusyBox implementation of tar before 1.22.0 v5 allows remote attackers to point to files outside the current working directory via a symlink. (CVE-2011-5325)
+ * The add_probe function in modutils/modprobe.c in BusyBox before 1.23.0 allows local users to bypass intended restrictions on loading kernel modules via a / (slash) character in a module name, as demonstrated by an "ifconfig /usbserial up" command or a "mount -t /snd_pcm none /" command. (CVE-2014-9645)
+ * huft_build in archival/libarchive/decompress_gunzip.c in BusyBox before 1.27.2 misuses a pointer, causing segfaults and an application crash during an unzip operation on a specially crafted ZIP file. (CVE-2015-9261)
+ * Integer overflow in the DHCP client (udhcpc) in BusyBox before 1.25.0 allows remote attackers to cause a denial of service (crash) via a malformed RFC1035-encoded domain name, which triggers an out-of-bounds heap write. (CVE-2016-2147)
+ * Heap-based buffer overflow in the DHCP client (udhcpc) in BusyBox before 1.25.0 allows remote attackers to have unspecified impact via vectors involving OPTION_6RD parsing. (CVE-2016-2148)
+ CVE_2016-6301 is open
+ * The get_next_block function in archival/libarchive/decompress_bunzip2.c in BusyBox 1.27.2 has an Integer Overflow that may lead to a write access violation. (CVE-2017-15873)
+ * In the add_match function in libbb/lineedit.c in BusyBox through 1.27.2, the tab autocomplete feature of the shell, used to get a list of filenames in a directory, does not sanitize filenames and results in executing any escape sequence in the terminal. This could potentially result in code execution, arbitrary file writes, or other attacks. (CVE-2017-16544)
+ CVE_2018-1000500 is open
+ * BusyBox project BusyBox wget version prior to commit 8e2174e9bd836e53c8b9c6e00d1bc6e2a718686e contains a Buffer Overflow vulnerability in Busybox wget that can result in heap buffer overflow. This attack appear to be exploitable via network connectivity. This vulnerability appears to have been fixed in after commit 8e2174e9bd836e53c8b9c6e00d1bc6e2a718686e. (CVE-2018-1000517)
+
+ 1:1.22.0-9+deb8u4 (Fri, 03 Aug 2018 05:43:46 +0200) * Non-maintainer upload the LTS team. * Regression update for CVE-2011-5325: It was found that the patch to prevent the exploitation of CVE-2011-5325 is too strict in case of cpio archives. This update restores the old behavior.
+
+ 1:1.22.0-9+deb8u3 (Thu, 02 Aug 2018 01:40:03 +0200) * Non-maintainer upload by the LTS team. * Regression update for CVE-2015-9261: Decompressing gzip archives works as intended again.
+
+ 1:1.22.0-9+deb8u2 (Fri, 27 Jul 2018 00:53:58 +0200) * Fix CVE-2011-5325: A path traversal vulnerability was found in Busybox implementation of tar. tar will extract a symlink that points outside of the current working directory and then follow that symlink when extracting other files. This allows for a directory traversal attack when extracting untrusted tarballs. * Fix CVE-2014-9645: The add_probe function in modutils/modprobe.c in BusyBox allows local users to bypass intended restrictions on loading kernel modules via a / (slash) character in a module name, as demonstrated by an "ifconfig /usbserial up" command or a "mount -t /snd_pcm none /" command. * Fix CVE-2016-2147: Integer overflow in the DHCP client (udhcpc) in BusyBox allows remote attackers to cause a denial of service (crash) via a malformed RFC1035-encoded domain name, which triggers an out-of-bounds heap write. * Fix CVE-2016-2148: Heap-based buffer overflow in the DHCP client (udhcpc) in BusyBox allows remote attackers to have unspecified impact via vectors involving OPTION_6RD parsing. * Fix CVE-2017-15873: The get_next_block function in archival/libarchive/decompress_bunzip2.c in BusyBox has an Integer Overflow that may lead to a write access violation. * Fix CVE-2017-16544: In the add_match function in libbb/lineedit.c in BusyBox, the tab autocomplete feature of the shell, used to get a list of filenames in a directory, does not sanitize filenames and results in executing any escape sequence in the terminal. This could potentially result in code execution, arbitrary file writes, or other attacks. * Fix CVE-2018-1000517: BusyBox project BusyBox wget contains a Buffer Overflow vulnerability in Busybox wget that can result in heap buffer overflow. This attack appear to be exploitable via network connectivity. * CVE-2015-9261: Unziping a specially crafted zip file results in a computation of an invalid pointer and a crash reading an invalid address.
+ * CVE-2011-5325 busybox: Path traversal via crafted tar file containing symlink (CVE-2011-5325)
+ * CVE-2014-9645 busybox: unprivileged arbitrary module load via basename abuse (CVE-2014-9645)
+ * CVE-2015-9261 busybox: Segmentation fault when unzipping specially crafted zip file (CVE-2015-9261)
+ * CVE-2016-2147 busybox: out of bounds write (heap) due to integer underflow in udhcpc (CVE-2016-2147)
+ * CVE-2016-2148 busybox: heap-based buffer overflow in OPTION_6RD parsing (CVE-2016-2148)
+ * CVE-2017-15873 busybox: Integer overflow in the get_next_block function (CVE-2017-15873)
+ * CVE-2017-16544 busybox: Insufficient sanitization of filenames when autocompleting (CVE-2017-16544)
+ * CVE-2018-1000517 busybox: wget: Heap-based buffer overflow in the retrieve_file_data() function (CVE-2018-1000517)
+bug: [47519]
+cve:
+- CVE-2011-5325
+- CVE-2014-9645
+- CVE-2015-9261
+- CVE-2016-2147
+- CVE-2016-2148
+- CVE-2017-15873
+- CVE-2017-16544
+- CVE-2018-1000517
