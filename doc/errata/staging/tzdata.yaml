@@ -1,0 +1,18 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: tzdata
+fix: 2018e-0+deb8u1
+desc: |
+ This update addresses the following issue(s):
+ * 
+
+ Debian update 2018e-0+deb8u1
+
+ 2018e-0+deb8u1 (Fri, 04 May 2018 20:34:02 +0200) [ Aurelien Jarno ] * New upstream version, affecting the following future timestamp: - North Korea switches back to +09 on 2018-05-05.
+
+ 2018d-0+deb8u1 (Mon, 26 Mar 2018 18:49:18 -0400) * New upstream version.
+
+ 2018c-0+deb8u1 (Sat, 10 Feb 2018 12:58:33 +0100) * New upstream version, affecting the following past and future timestamps: - São Tomé and Príncipe switched from +00 to +01 on 2018-01-01 at 01:00. - Southern Brazil will begin DST on 2018-11-04 instead of 2018-10-21.
+bug: [47556]
