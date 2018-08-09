@@ -1,0 +1,18 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: libdatetime-timezone-perl
+fix: 1:1.75-2+2018e
+desc: |
+ This update addresses the following issue(s):
+ * 
+
+ Debian update 1:1.75-2+2018e
+
+ 1:1.75-2+2018e (Fri, 04 May 2018 19:02:06 +0200) * Update to Olson database version 2018e. This update contains contemporary changes for North Korea.
+
+ 1:1.75-2+2018d (Fri, 30 Mar 2018 14:38:08 +0200) * Update to Olson database version 2018d. This update contains contemporary changes for Palestine and Casey Station.
+
+ 1:1.75-2+2018b (Sat, 10 Feb 2018 14:57:50 +0100) * Update to Olson database version 2018b. This update contains contemporary changes for São Tomé and Príncipe, Brazil, and Ireland.
+bug: [47538]
