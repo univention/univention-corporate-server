@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: subversion
+fix: 1.8.10-6+deb8u6
+desc: |
+ This update addresses the following issue(s):
+ * 
+
+ 1.8.10-6+deb8u6 (Mon, 26 Feb 2018 22:00:47 -0500) * Backport patches/perl-swig-crash from upstream to fix crashes with Perl bindings, commonly seen when using git-svn, #534763).
+bug: [47523]
