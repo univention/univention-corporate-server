@@ -5,12 +5,8 @@ scope: ucs_4.2-0-errata4.2-4
 src: xdg-utils
 fix: 1.1.0~rc1+git20111210-7.4+deb8u1
 desc: |
- This update addresses the following issue(s):
- * 
- * The open_envvar function in xdg-open in xdg-utils before 1.1.3 does not validate strings before launching the program specified by the BROWSER environment variable, which might allow remote attackers to conduct argument-injection attacks via a crafted URL, as demonstrated by %s in this environment variable. (CVE-2017-18266)
-
- 1.1.0~rc1+git20111210-7.4+deb8u1 (Sun, 20 May 2018 22:49:00 +0300) * Fix CVE-2017-18266,. - Avoid argument injection vulnerability in open_generic.
- * CVE-2017-18266 xdg-utils: Argument injection vulnerability in open_envvar() function (CVE-2017-18266)
+ This update addresses the following issue:
+ * Argument injection vulnerability in open_envvar() function (CVE-2017-18266)
 bug: [47540]
 cve:
 - CVE-2017-18266
