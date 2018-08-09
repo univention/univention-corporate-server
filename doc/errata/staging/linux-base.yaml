@@ -5,14 +5,6 @@ scope: ucs_4.2-0-errata4.2-4
 src: linux-base
 fix: 4.5~deb8u1
 desc: |
- This update addresses the following issue(s):
- * 
-
- Debian update 4.5~deb8u1
-
- 4.5~deb8u1 (Fri, 20 Jul 2018 02:42:43 +0100) * Rebuild for jessie; no changes required
-
- 4.4 (Fri, 08 Jul 2016 17:54:11 +0200) [ Ben Hutchings ] * Update debconf template translations: - Portuguese (Américo Monteiro) - Polish (Łukasz Dulny) - Japanese (Victory) - Russian (Yuri Kozlov) - German (Markus Hiereth) - French (Jean-Pierre Giraud) * linux-check-removal: Fix substitution of package name in debconf title [ Salvatore Bonaccorso ] * Update Swedish debconf template translation. Thanks to Martin Bagge <brother@bsnet.se> * Update Czech debconf template translation. Thanks to Michal Simunek <michal.simunek@gmail.com>
-
- 4.3 (Mon, 06 Jun 2016 17:06:15 +0100) * Add linux-check-removal command for use by package prerm scripts - Override lintian warning and error for this unusual debconf usage
+ This update addresses the following issue:
+ * New version to follow Debian changes.
 bug: [47544]
