@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: rar
+fix: 2:4.2.0+dfsg.1-0.1
+desc: |
+ This update addresses the following issue(s):
+ * 
+ CVE_2014-9983 is open
+
+ 2:4.2.0+dfsg.1-0.1 (Sun, 10 Jun 2018 00:38:24 +0100) * Non-maintainer upload * Repacked orig tarball excludes statically linked rar
+ , #860952) * Install dynamically linked rar and remove the lintian override for it being static * Remove lintian override for default.sfx being static, which it hasn't been for a long time
+bug: [47552]
