@@ -5,13 +5,9 @@ scope: ucs_4.2-0-errata4.2-4
 src: gnupg2
 fix: 2.0.26-6+deb8u2
 desc: |
- This update addresses the following issue(s):
- * 
- CVE_2018-9234 is open
- * mainproc.c in GnuPG before 2.2.8 mishandles the original filename during decryption and verification actions, which allows remote attackers to spoof the output that GnuPG sends on file descriptor 2 to other programs that use the "--status-fd 2" option. For example, the OpenPGP data might represent an original filename that contains line feed characters in conjunction with GOODSIG or VALIDSIG status codes. (CVE-2018-12020)
-
- 2.0.26-6+deb8u2 (Fri, 08 Jun 2018 20:58:33 +0200) * Non-maintainer upload by the Security Team. * gpg: Sanitize diagnostic with the original file name (CVE-2018-12020)
- * CVE-2018-12020 gnupg2: Improper sanitization of filenames allows for the display of fake status messages and the bypass of signature verification (CVE-2018-12020)
+ This update addresses the following issue:
+ * Improper sanitization of filenames allows for the display of fake status
+   messages and the bypass of signature verification (CVE-2018-12020)
 bug: [47548]
 cve:
 - CVE-2018-12020
