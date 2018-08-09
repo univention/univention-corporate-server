@@ -1,0 +1,17 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: ncurses
+fix: 5.9+20140913-1+deb8u3
+desc: |
+ This update addresses the following issue(s):
+ * 
+ * Stack-based buffer overflow in the _nc_write_entry function in tinfo/write_entry.c in ncurses 6.0 allows attackers to cause a denial of service (application crash) or possibly execute arbitrary code via a crafted terminfo file, as demonstrated by tic. (CVE-2017-16879)
+ CVE_2018-10754 is open
+
+ 5.9+20140913-1+deb8u3 (Thu, 28 Dec 2017 11:14:57 +0100) * Cherry-pick upstream fix from the 20171125 patchlevel to fix a buffer overflow in the _nc_write_entry function (CVE-2017-16879,.
+ * CVE-2017-16879 ncurses: Stack-based buffer overflow in the _nc_write_entry function (CVE-2017-16879)
+bug: [47559]
+cve:
+- CVE-2017-16879
