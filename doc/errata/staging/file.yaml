@@ -5,12 +5,8 @@ scope: ucs_4.2-0-errata4.2-4
 src: file
 fix: 1:5.22+15-2+deb8u4
 desc: |
- This update addresses the following issue(s):
- * 
- * The do_core_note function in readelf.c in libmagic.a in file 5.33 allows remote attackers to cause a denial of service (out-of-bounds read and application crash) via a crafted ELF file. (CVE-2018-10360)
-
- 1:5.22+15-2+deb8u4 (Mon, 11 Jun 2018 23:24:19 +0200) * Avoid reading past the end of buffer. [CVE-2018-10360]
- * CVE-2018-10360 file: out-of-bounds read via a crafted ELF file (CVE-2018-10360)
+ This update addresses the following issue:
+ * out-of-bounds read via a crafted ELF file (CVE-2018-10360)
 bug: [47553]
 cve:
 - CVE-2018-10360
