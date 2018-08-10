@@ -3,9 +3,9 @@ release: "4.2"
 version: [4]
 scope: ucs_4.2-0-errata4.2-4
 src: linux
-fix: 4.9.30-2A~4.2.0.201808080917
+fix: 4.9.30-2A~4.2.0.201808101912
 desc: |
- This update of the Linux kernel to version 4.9.118 addresses the following
+ This update of the Linux kernel to version 4.9.119 addresses the following
  issues:
  * CVE-2017-17975: use-after-free in the usbtv_probe function in
    drivers/media/usb/usbtv/usbtv-core.c
@@ -69,6 +69,7 @@ desc: |
  * CVE-2018-10087: Undefined behavior in kernel/exit.c:kernel_wait4() function
    allows local denial of service
  * CVE-2018-10940: incorrect memory bounds check in drivers/cdrom/cdrom.c
+ * CVE-2018-12233: Memory corruption in JFS setattr
  * CVE-2018-13405: Fix up non-directory creation in SGID directories
  * CVE-2018-13406: video: uvesafb: Fix integer overflow in allocation
  * CVE-2018-14734: infiniband: fix a possible use-after-free bug
@@ -113,3 +114,4 @@ cve:
 - CVE-2018-13405
 - CVE-2018-13406
 - CVE-2018-14734
+- CVE-2018-12233
