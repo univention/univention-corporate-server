@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: libipc-run-perl
+fix: 0.92-1.A~4.2.4.201808101752
+desc: |
+ This update addresses the following issue:
+
+ Debian update 0.92-1+deb8u1
+
+ 0.92-1+deb8u1 (Tue, 17 Apr 2018 16:16:38 +0800) * Backport upstream patch to fix memory leak
+bug: [47573]
