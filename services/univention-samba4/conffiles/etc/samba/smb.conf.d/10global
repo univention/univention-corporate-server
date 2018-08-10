@@ -91,7 +91,7 @@ for key, smbstring in [('samba/interfaces','interfaces'),
 		else:
 			print '\t%s\t= %s' % (smbstring, configRegistry[key])
 
-print '\tntlm auth\t= %s' % (configRegistry.get('samba/ntlm/auth', 'yes'))
+print '\tntlm auth\t= %s' % (configRegistry.get('samba/ntlm/auth', 'no'))
 
 ## legacy settings for smbd
 if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':

@@ -1,3 +1,10 @@
+univention-samba4 (6.0.12-1) unstable; urgency=medium
+
+  * Bug #47100: Adjust default for samba/ntlm/auth ("ntlm auth") to
+    match samba ("no", i.e. ntlmv2-only)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 10 Aug 2018 19:37:39 +0200
+
 univention-samba4 (6.0.11-1) unstable; urgency=medium
 
   * Bug #43223: more detailed error message for the domain join
