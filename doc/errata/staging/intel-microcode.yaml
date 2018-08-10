@@ -16,10 +16,7 @@ desc: |
    disclosure of system parameters to an attacker with local user access via a
    side-channel analysis, aka Rogue System Register Read (RSRE), Variant 3a.
    (CVE-2018-3640)
-note: This update is for x86_64 / amd64 only.
 bug: [47543]
 cve:
 - CVE-2018-3639
 - CVE-2018-3640
-ignore:
-  - changes.valid
