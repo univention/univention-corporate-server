@@ -26,7 +26,7 @@ for key, smbstring in [('samba/interfaces','interfaces'),
 if configRegistry.get('samba/socket_options'):
 	print '\tsocket options = %s' % configRegistry['samba/socket_options']
 
-print '\tntlm auth\t= %s' % (configRegistry.get('samba/ntlm/auth', 'yes'))
+print '\tntlm auth\t= %s' % (configRegistry.get('samba/ntlm/auth', 'ntlmv2-only'))
 
 print '\tmachine password timeout\t= %d' % int(configRegistry.get('samba/machine_password_timeout', 0))
 
