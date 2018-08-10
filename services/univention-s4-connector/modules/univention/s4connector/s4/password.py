@@ -54,6 +54,11 @@ class Krb5Context(object):
 
 krb5_context = Krb5Context()
 
+## Comment in source4/dsdb/samdb/ldb_modules/password_hash.c says:
+##     W2k8 and later DCs pass a dummy NThash to W2k3 DCs
+##     [MS-SAMR] Section 2.2.10.8 footnote <23>
+DUMMY_NTHASH_KEYTYPE = 4294967156  # (=-140L)
+
 def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 	up_blob = unicodePwd
 	sc_blob = supplementalCredentials
@@ -89,7 +94,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 								keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
 								keytypes.append(k.keytype)
 							except:
-								if k.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
+								if k.keytype == DUMMY_NTHASH_KEYTYPE:
 									if k.value == up_blob:  # the known case
 										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 NThash with special keytype %s in %s" % (k.keytype, p.name))
 									else:  # unknown special case
@@ -112,7 +117,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 								keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
 								keytypes.append(k.keytype)
 							except:
-								if k.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
+								if k.keytype == DUMMY_NTHASH_KEYTYPE:
 									if k.value == up_blob:  # the known case
 										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 NThash with special keytype %s in %s" % (k.keytype, p.name))
 									else:  # unknown special case
@@ -240,6 +245,11 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 			next_key.value = krb5_des_crc
 			next_key.value_len = len(krb5_des_crc)
 			kerberosKey4list.append(next_key)
+		else:
+			next_key = drsblobs.package_PrimaryKerberosKey4()
+			next_key.keytype = DUMMY_NTHASH_KEYTYPE
+			next_key.value_len = 0
+			kerberosKey4list.append(next_key)
 
 		salt4 = drsblobs.package_PrimaryKerberosString()
 		salt4.string = krb_ctr4_salt
@@ -260,7 +270,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 			if len(old_krb['ctr4'].keys) != ctr4.num_keys:
 				cleaned_old_keys = []
 				for key in old_krb['ctr4'].keys:
-					if key.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) to include the arc4 hash
+					if key.keytype == DUMMY_NTHASH_KEYTYPE:
 						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys filtering keytype %s from old_keys" % key.keytype)
 						continue
 					else:  # TODO: can we do something better at this point to make old_keys == num_keys ?
@@ -276,7 +286,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 			if ctr4.num_old_keys != ctr4.num_older_keys:
 				cleaned_older_keys = []
 				for key in s4_old_keys:
-					if key.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) to include the arc4 hash
+					if key.keytype == DUMMY_NTHASH_KEYTYPE:
 						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys filtering keytype %s from older_keys" % key.keytype)
 						continue
 					else:  # TODO: can we do something better at this point to make old_keys == num_keys ?
@@ -340,6 +350,11 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 			next_key.value = krb5_des_crc
 			next_key.value_len = len(krb5_des_crc)
 			kerberosKey3list.append(next_key)
+		else:
+			next_key = drsblobs.package_PrimaryKerberosKey3()
+			next_key.keytype = DUMMY_NTHASH_KEYTYPE
+			next_key.value_len = 0
+			kerberosKey3list.append(next_key)
 
 		salt = drsblobs.package_PrimaryKerberosString()
 		salt.string = krb_ctr3_salt
@@ -354,7 +369,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 			if len(old_krb['ctr3'].keys) != ctr3.num_keys:
 				cleaned_ctr3_old_keys = []
 				for key in old_krb['ctr3'].keys:
-					if key.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) to include the arc4 hash
+					if key.keytype == DUMMY_NTHASH_KEYTYPE:
 						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: Primary:Kerberos filtering keytype %s from old_keys" % key.keytype)
 						continue
 					else:  # TODO: can we do something better at this point to make old_keys == num_keys ?
