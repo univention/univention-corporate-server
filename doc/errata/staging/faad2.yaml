@@ -6,19 +6,11 @@ src: faad2
 fix: 2.7-8.A~4.2.4.201808101752
 desc: |
  This update addresses the following issues:
- * The mp4ff_read_stsd function in common/mp4ff/mp4atom.c in Freeware Advanced Audio Decoder 2 (FAAD2) 2.7 allows remote attackers to cause a denial of service (invalid memory read and application crash) via a crafted mp4 file. (CVE-2017-9218)
- * The mp4ff_read_stsc function in common/mp4ff/mp4atom.c in Freeware Advanced Audio Decoder 2 (FAAD2) 2.7 allows remote attackers to cause a denial of service (memory allocation error and application crash) via a crafted mp4 file. (CVE-2017-9219)
- * The mp4ff_read_stco function in common/mp4ff/mp4atom.c in Freeware Advanced Audio Decoder 2 (FAAD2) 2.7 allows remote attackers to cause a denial of service (memory allocation error) via a crafted mp4 file. (CVE-2017-9220)
- * The mp4ff_read_mdhd function in common/mp4ff/mp4atom.c in Freeware Advanced Audio Decoder 2 (FAAD2) 2.7 allows remote attackers to cause a denial of service (invalid memory read and application crash) via a crafted mp4 file. (CVE-2017-9221)
- * The mp4ff_parse_tag function in common/mp4ff/mp4meta.c in Freeware Advanced Audio Decoder 2 (FAAD2) 2.7 allows remote attackers to cause a denial of service (infinite loop and CPU consumption) via a crafted mp4 file. (CVE-2017-9222)
- * The mp4ff_read_stts function in common/mp4ff/mp4atom.c in Freeware Advanced Audio Decoder 2 (FAAD2) 2.7 allows remote attackers to cause a denial of service (invalid memory read and application crash) via a crafted mp4 file. (CVE-2017-9223)
- * The mp4ff_read_stsd function in common/mp4ff/mp4atom.c in Freeware Advanced Audio Decoder 2 (FAAD2) 2.7 allows remote attackers to cause a denial of service (large loop and CPU consumption) via a crafted mp4 file. (CVE-2017-9253)
- * The mp4ff_read_stts function in common/mp4ff/mp4atom.c in Freeware Advanced Audio Decoder 2 (FAAD2) 2.7 allows remote attackers to cause a denial of service (large loop and CPU consumption) via a crafted mp4 file. (CVE-2017-9254)
- * The mp4ff_read_stsc function in common/mp4ff/mp4atom.c in Freeware Advanced Audio Decoder 2 (FAAD2) 2.7 allows remote attackers to cause a denial of service (large loop and CPU consumption) via a crafted mp4 file. (CVE-2017-9255)
- * The mp4ff_read_stco function in common/mp4ff/mp4atom.c in Freeware Advanced Audio Decoder 2 (FAAD2) 2.7 allows remote attackers to cause a denial of service (large loop and CPU consumption) via a crafted mp4 file. (CVE-2017-9256)
- * The mp4ff_read_ctts function in common/mp4ff/mp4atom.c in Freeware Advanced Audio Decoder 2 (FAAD2) 2.7 allows remote attackers to cause a denial of service (large loop and CPU consumption) via a crafted mp4 file. (CVE-2017-9257)
-
- 2.7-8+deb8u1 (Tue, 01 May 2018 17:36:53 +0200) * Non-maintainer upload. * Fix CVE-2017-9218, CVE-2017-9219, CVE-2017-9220, CVE-2017-9221, CVE-2017-9222, CVE-2017-9223, CVE-2017-9253, CVE-2017-9254, CVE-2017-9255, CVE-2017-9256, CVE-2017-9257. Various issues were discovered in faad2, a fast audio decoder, that could cause a denial of service (large loop and CPU consumption) via a crafted mp4 file.
+ * Various issues were discovered in faad2, a fast audio decoder, that could
+   cause a denial of service (large loop and CPU consumption) via a crafted
+   mp4 file. (CVE-2017-9218, CVE-2017-9219, CVE-2017-9220, CVE-2017-9221,
+   CVE-2017-9222, CVE-2017-9223, CVE-2017-9253, CVE-2017-9254, CVE-2017-9255,
+   CVE-2017-9256, CVE-2017-9257)
 bug: [47574]
 cve:
 - CVE-2017-9218
