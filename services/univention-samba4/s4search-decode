@@ -97,6 +97,16 @@ def decode_krb5Key(value):
 	saltstring = salt.saltvalue()
 	print "#\tsaltstring: ", saltstring
 
+DUMMY_NTHASH_KEYTYPE = 4294967156  # (=-140L)
+
+drsblobs_blobs = {
+		"Packages": drsblobs.package_PackagesBlob,
+		"Primary:Kerberos-Newer-Keys": drsblobs.package_PrimaryKerberosBlob,
+		"Primary:Kerberos": drsblobs.package_PrimaryKerberosBlob,
+		"Primary:CLEARTEXT": drsblobs.package_PrimaryCLEARTEXTBlob,
+		"Primary:WDigest": drsblobs.package_PrimaryWDigestBlob,
+		"Primary:userPassword": drsblobs.package_PrimaryUserPasswordBlob,
+		}
 
 def decode_supplementalCredentials(value, kvno=0):
 	global krb5_context
@@ -108,24 +118,35 @@ def decode_supplementalCredentials(value, kvno=0):
 	print "# object_data.sub.num_packages:", object_data.sub.num_packages
 	for p in object_data.sub.packages:
 		print "#\tsupplementalCredentials package name: ", p.name
+		if not p.name in ("Primary:Kerberos-Newer-Keys", "Primary:Kerberos"):
+			continue
 		krb_blob = binascii.unhexlify(p.data)
 		try:
-			krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
+			krb = ndr_unpack(drsblobs_blobs[p.name], krb_blob)
 			print "#\tsupplementalCredentials package version: ", krb.version
 			print "#\tkrb5Salt: %s" % (krb.ctr.salt.string)
-			for k in krb.ctr.keys:
-				# print "#\tk.value:", binascii.b2a_base64(k.value).strip()
-				keytype = keytypes.get(k.keytype, k.keytype)
-				print "#\tkeytype: %s (%d)" % (keytype, k.keytype)
-				print "#\tkeyblock:",
-				keyblock = heimdal.keyblock_raw(krb5_context.ctx, k.keytype, k.value)
-				key_data = keyblock.keyvalue()
-				print binascii.b2a_base64(key_data).strip()
-				print "#\tkrb5SaltObject:",
-				krb5SaltObject = heimdal.salt_raw(krb5_context.ctx, krb.ctr.salt.string)
-				print krb5SaltObject.saltvalue()
-				krb5key = heimdal.asn1_encode_key(keyblock, krb5SaltObject, kvno)
-				print "#\tkrb5Key:: %s" % binascii.b2a_base64(krb5key).strip()
+			for (subkey, subkeystruct) in (("keys", krb.ctr.keys), ("old_keys", krb.ctr.old_keys)):
+				if subkeystruct:
+					print "#\t%s:" % subkey
+				for k in subkeystruct:
+					# print "#\tk.value:", binascii.b2a_base64(k.value).strip()
+					if k.keytype == DUMMY_NTHASH_KEYTYPE:
+						print "#\t\tkeytype: dummy (-140)"
+					else:
+						keytype = keytypes.get(k.keytype, k.keytype)
+						print "#\t\tkeytype: %s (%d)" % (keytype, k.keytype)
+					print "#\t\tkeyblock:",
+					if k.value:
+						keyblock = heimdal.keyblock_raw(krb5_context.ctx, k.keytype, k.value)
+						key_data = keyblock.keyvalue()
+						print binascii.b2a_base64(key_data).strip()
+						print "#\t\tkrb5SaltObject:",
+						krb5SaltObject = heimdal.salt_raw(krb5_context.ctx, krb.ctr.salt.string)
+						print krb5SaltObject.saltvalue()
+						krb5key = heimdal.asn1_encode_key(keyblock, krb5SaltObject, kvno)
+						print "#\t\tkrb5Key:: %s" % binascii.b2a_base64(krb5key).strip()
+					else:
+						print "<empty>"
 		except:
 			print "### Exception during ndr_unpack"
 			for line in traceback.format_exc().split('\n'):
