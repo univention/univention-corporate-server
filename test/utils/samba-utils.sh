@@ -74,12 +74,13 @@ run_singleserver_samba_test () {
 		--cmd 'set-GPPrefRegistryValue -Name NewGPO -Context User -key "HKCU\Environment" -ValueName NewGPO -Type String -value NewGPO -Action Update'
 	python shared-utils/ucs-winrm.py check-applied-gpos --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --usergpo 'Default Domain Policy' --usergpo 'NewGPO' --computergpo 'Default Domain Policy'
 	python shared-utils/ucs-winrm.py check-applied-gpos --username 'newuser01' --userpwd "Univention.99" --usergpo 'Default Domain Policy' --usergpo 'NewGPO' --computergpo 'Default Domain Policy'
+	# * Drucker einrichten
+	python shared-utils/ucs-winrm.py setup-printer --printername printer1  --server "$UCS" --credssp
 	# * Zugriff auf Drucker
-	# TODO install network printer
-	##python shared-utils/ucs-winrm.py check-printer --server $UCS --printername "printer1" --username 'Administrator' --userpwd "$ADMIN_PASSWORD"
-	##python shared-utils/ucs-winrm.py check-printer --server $UCS --printername "printer1" --username 'newuser01' --userpwd "Univention.99"
-	# . samba-utils.sh; create_and_print_testfile
-	# cat '/var/spool/cups-pdf/ANONYMOUS/job_1-smbprn_00000003_Remote_Downlevel_Document_.pdf'
+	python shared-utils/ucs-winrm.py print-on-printer --printername printer1 --server "$UCS" --impersonate --run-as-user Administrator
+	stat /var/spool/cups-pdf/administrator/job_1-document.pdf
+	python shared-utils/ucs-winrm.py print-on-printer --printername printer1 --server "$UCS" --impersonate --run-as-user newuser01 --run-as-password "Univention.99"
+	stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
 
 	# host $windows_client muss die IPv4-Adresse liefern.
 	nslookup "$WINCLIENT_NAME" | grep "$WINCLIENT"
