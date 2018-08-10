@@ -1,0 +1,29 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: cups
+fix: 1.7.5-11+deb8u4A~4.2.4.201808101752
+desc: |
+ This update addresses the following issues:
+ CVE_2014-8166 is open
+ * A localhost.localdomain whitelist entry in valid_host() in scheduler/client.c in CUPS before 2.2.2 allows remote attackers to execute arbitrary IPP commands by sending POST requests to the CUPS daemon in conjunction with DNS rebinding. The localhost.localdomain name is often resolved via a DNS server (neither the OS nor the web browser is responsible for ensuring that localhost.localdomain is 127.0.0.1). (CVE-2017-18190)
+ * The add_job function in scheduler/ipp.c in CUPS before 2.2.6, when D-Bus support is enabled, can be crashed by remote attackers by sending print jobs with an invalid username, related to a D-Bus notification. (CVE-2017-18248)
+ CVE_2018-4180 is resolved
+ CVE_2018-4181 is resolved
+ CVE_2018-6553 is resolved
+
+ 1.7.5-11+deb8u4 (Fri, 13 Jul 2018 13:05:13 +0200) * Non-maintainer upload by the LTS team. * CVE-2018-4180: Local Privilege Escalation to Root in dnssd Backend (CUPS_SERVERBIN) CVE-2018-4181: Limited Local File Reads as Root via cupsd.conf Include Directive - Backported patch taken from Ubuntu. * CVE-2018-6553: Fix AppArmor cupsd sandbox bypass due to use of hard links
+
+ 1.7.5-11+deb8u3 (Thu, 07 Jun 2018 09:23:48 -0400) * Non-maintainer upload by the Security Team. * CVE-2017-18190: fix remote code execution through DNS rebinding * CVE-2017-18248: fix remote crash through invalid username
+ * CVE-2017-18248 cups: Invalid usernames handled in scheduler/ipp.c:add_job() allow remote attackers to cause a denial of service (CVE-2017-18248)
+ * CVE-2018-4180 cups: Local privilege escalation to root due to insecure environment variable handling (CVE-2018-4180)
+ * CVE-2018-4181 cups: Manipulation of cupsd.conf by a local attacker resulting in limited reads of arbitrary files as root (CVE-2018-4181)
+ * CVE-2018-6553 cups: AppArmor cupsd Sandbox Bypass Due to Use of Hard Links (CVE-2018-6553)
+bug: [47570]
+cve:
+- CVE-2017-18190
+- CVE-2017-18248
+- CVE-2018-4180
+- CVE-2018-4181
+- CVE-2018-6553
