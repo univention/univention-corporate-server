@@ -76,6 +76,9 @@ run_singleserver_samba_test () {
 	python shared-utils/ucs-winrm.py check-applied-gpos --username 'newuser01' --userpwd "Univention.99" --usergpo 'Default Domain Policy' --usergpo 'NewGPO' --computergpo 'Default Domain Policy'
 	# * Drucker einrichten
 	python shared-utils/ucs-winrm.py setup-printer --printername printer1  --server "$UCS" --credssp
+	rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
+	sleep 20
+	rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
 	# * Zugriff auf Drucker
 	python shared-utils/ucs-winrm.py print-on-printer --printername printer1 --server "$UCS" --impersonate --run-as-user Administrator
 	stat /var/spool/cups-pdf/administrator/job_1-document.pdf
