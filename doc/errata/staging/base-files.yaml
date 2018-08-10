@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: base-files
+fix: 8+deb8u11A~4.2.4.201808101752
+desc: |
+ This update addresses the following issue:
+
+ 8+deb8u11 (Thu, 14 Jun 2018 15:00:02 +0200) * Changed /etc/debian_version to 8.11, for Debian 8.11 point release.
+bug: [47572]
