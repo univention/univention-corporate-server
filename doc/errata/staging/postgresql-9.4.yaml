@@ -3,14 +3,14 @@ release: "4.2"
 version: [4]
 scope: ucs_4.2-0-errata4.2-4
 src: postgresql-9.4
-fix: 9.4.18-0+deb8u1
+fix: 9.4.19-0+deb8u1
 desc: |
  This update addresses the following issues:
- * pg_upgrade creates file of sensitive metadata under prevailing umask
-   (CVE-2018-1053)
- * Uncontrolled search path element in pg_dump and other client applications
-   (CVE-2018-1058)
+ * pg_upgrade creates file of sensitive metadata under prevailing umask (CVE-2018-1053)
+ * Uncontrolled search path element in pg_dump and other client applications (CVE-2018-1058)
+ * Certain host connection parameters defeat client-side security defenses (CVE-2018-10915)
 bug: [47527]
 cve:
 - CVE-2018-1058
 - CVE-2018-1053
+- CVE-2018-10915
