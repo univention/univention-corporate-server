@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: openjdk-8
+fix: 8u181-b13-1~deb9u1
+desc: |
+ This update addresses the following issue:
+ * insufficient index validation in PatternSyntaxException getMessage()
+   (CVE-2018-2952)
+bug: [47577]
+cve:
+- CVE-2018-2952
