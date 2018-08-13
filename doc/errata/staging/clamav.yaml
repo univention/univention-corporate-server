@@ -1,0 +1,18 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: clamav
+fix: 0.100.1+dfsg-0+deb8u0A~4.2.0.201808131059
+desc: |
+ This update addresses the following issues:
+ * Remote denial of service due to HWP integer overflow with a resultant
+   infinite loop via a crafted Hangul Word Processor (HWP) file
+   (CVE-2018-0360)
+ * Remote denial of service due to ClamAV lacking a PDF object length check,
+   resulting in an unreasonably long time to parse a relatively small file
+   (CVE-2018-0361)
+bug: [47474]
+cve:
+- CVE-2018-0360
+- CVE-2018-0361
