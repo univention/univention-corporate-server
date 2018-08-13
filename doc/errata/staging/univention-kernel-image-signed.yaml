@@ -3,7 +3,7 @@ release: "4.2"
 version: [4]
 scope: ucs_4.2-0-errata4.2-4
 src: univention-kernel-image-signed
-fix: 3.0.2-30-WIP
+fix: 3.0.2-30A~4.2.0.201808130904
 desc: |
  This update of the Linux kernel to version 4.9.119 addresses the following
  issues:
