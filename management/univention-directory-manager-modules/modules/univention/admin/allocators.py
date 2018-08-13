@@ -196,8 +196,8 @@ def request(lo, position, type, value=None):
 	return acquireUnique(lo, position, type, value, _type2attr[type], scope=_type2scope[type])
 
 
-def confirm(lo, position, type, value):
-	if type in ('uidNumber', 'gidNumber'):
+def confirm(lo, position, type, value, updateLastUsedValue=True):
+	if type in ('uidNumber', 'gidNumber') and updateLastUsedValue:
 		lo.modify('cn=%s,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(type), position.getBase()), [('univentionLastUsedValue', '1', value)])
 	univention.admin.locking.unlock(lo, position, type, value, _type2scope[type])
 

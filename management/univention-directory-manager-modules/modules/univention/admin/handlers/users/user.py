@@ -1859,9 +1859,11 @@ class object(univention.admin.handlers.simpleLdap):
 		# request a new uidNumber or get lock for manually set uidNumber
 		if self['uidNumber']:
 			univention.admin.allocators.acquireUnique(self.lo, self.position, 'uidNumber', self['uidNumber'], 'uidNumber', scope='base')
+			# "False" ==> do not update univentionLastUsedValue in LDAP if a specific value has been specified
+			self.alloc.append(('uidNumber', self['uidNumber'], False))
 		else:
 			self['uidNumber'] = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
-		self.alloc.append(('uidNumber', self['uidNumber']))
+			self.alloc.append(('uidNumber', self['uidNumber']))
 
 		self.info['gidNumber'] = self.get_gid_for_primary_group()
 

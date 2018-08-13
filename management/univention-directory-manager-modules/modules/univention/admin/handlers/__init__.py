@@ -1504,14 +1504,21 @@ class simpleLdap(object):
 	def _release_locks(self):  # type: () -> None
 		"""Release all temporary done locks"""
 		while self.alloc:
-			name, value = self.alloc.pop()
+			name, value = self.alloc.pop()[0:2]
 			univention.admin.allocators.release(self.lo, self.position, name, value)
 
 	def _confirm_locks(self):  # type: () -> None
-		"""Confirm all temporary done locks"""
+		"""
+		Confirm all temporary done locks. self.alloc should contain a 2-tuple or 3-tuple:
+		(name:str, value:str) or (name:str, value:str, updateLastUsedValue:bool)
+		"""
 		while self.alloc:
-			name, value = self.alloc.pop()
-			univention.admin.allocators.confirm(self.lo, self.position, name, value)
+			item = self.alloc.pop()
+			name, value = item[0:2]
+			updateLastUsedValue = True
+			if len(item) > 2:
+				updateLastUsedValue = item[2]
+			univention.admin.allocators.confirm(self.lo, self.position, name, value, updateLastUsedValue=updateLastUsedValue)
 
 	def _call_checkLdap_on_all_property_syntaxes(self):  # type: () -> None
 		"""Calls checkLdap() method on every property if present.
