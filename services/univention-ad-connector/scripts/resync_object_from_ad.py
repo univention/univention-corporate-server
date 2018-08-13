@@ -131,7 +131,9 @@ class ad(univention.connector.ad.ad):
 					if not guid:
 						missing_dns.append(targetdn)
 				except ldap.NO_SUCH_OBJECT as ex:
-					error_dns.append((targetdn, ex.args[1]))
+					error_dns.append((targetdn, str(ex)))
+				except (ldap.REFERRAL, ldap.INVALID_DN_SYNTAX) as ex:
+					error_dns.append((targetdn, str(ex)))
 			if error_dns:
 				raise DNNotFound(1, error_dns, [r[0] for r in search_result])
 			if missing_dns:
@@ -147,6 +149,8 @@ class ad(univention.connector.ad.ad):
 			res = self.__search_ad(base=ldapbase, scope=ldap.SCOPE_SUBTREE, filter=ldapfilter, attrlist=["objectGUID", "uSNChanged"])
 
 			for msg in res:
+				if not msg[0]:  ## Referral
+					continue
 				guid_blob = msg[1]["objectGUID"][0]
 				guid = ndr_unpack(misc.GUID, guid_blob)
 				usn = msg[1]["uSNChanged"][0]
