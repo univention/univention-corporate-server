@@ -15,8 +15,8 @@ desc: |
    resulting in an unreasonably long time to parse a relatively small file
    (CVE-2018-0361)
  * Out of bounds heap memory read vulnerability in XAR parser, that can result
-   in Leaking of memory, may help in developing exploit chains. This attack
-   appear to be exploitable via the victim must scan a crafted XAR file
+   in leaking of memory, may help in developing exploit chains. This attack
+   appears to be exploitable in case the victim scans a crafted XAR file
    (CVE-2018-1000085)
 bug: [47474]
 cve:
