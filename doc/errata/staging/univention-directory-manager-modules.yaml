@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: univention-directory-manager-modules
+fix: 13.0.21-31A~4.3.0.201808141657
+desc: |
+ This update addresses the following issue(s):
+ * Ignore case during change of mailPrimaryAddress attribute
+   user objects.
+bug: [47415]
