@@ -57,6 +57,10 @@ run_singleserver_samba_test () {
 	python shared-utils/ucs-winrm.py create-share-file --server $UCS --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share testshare
 	stat /home/testshare/test-admin.txt
 	# this should fail
+	# test TODO remove
+	python shared-utils/ucs-winrm.py create-share-file --server $UCS --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention.99" \
+		--share testshare --debug || true
+	# test end
 	python shared-utils/ucs-winrm.py create-share-file --server $UCS --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention.99" \
 		--share testshare --debug 2>&1 | grep 'is denied.'
 	python shared-utils/ucs-winrm.py create-share-file --server $UCS --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention.99" \
@@ -98,8 +102,10 @@ run_singleserver_samba_test () {
 	rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
 	# * Zugriff auf Drucker
 	python shared-utils/ucs-winrm.py print-on-printer --printername printer1 --server "$UCS" --impersonate --run-as-user Administrator
+	sleep 20
 	stat /var/spool/cups-pdf/administrator/job_1-document.pdf
 	python shared-utils/ucs-winrm.py print-on-printer --printername printer1 --server "$UCS" --impersonate --run-as-user newuser01 --run-as-password "Univention.99"
+	sleep 20
 	stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
 	# TODO printer via gpo
 
