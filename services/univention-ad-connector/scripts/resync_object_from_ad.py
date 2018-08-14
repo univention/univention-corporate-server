@@ -157,7 +157,7 @@ class ad(univention.connector.ad.ad):
 					usn = msg[1]["uSNChanged"][0]
 					search_result.append((str(msg[0]), guid, usn))
 			except (ldap.REFERRAL, ldap.INVALID_DN_SYNTAX) as ex:
-				error_dns.append((targetdn, str(ex)))
+				raise DNNotFound(2, ldapbase)
 
 			if not guid:
 				raise GUIDNotFound(2, "No match")
