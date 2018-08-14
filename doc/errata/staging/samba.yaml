@@ -7,4 +7,10 @@ fix: 2:4.6.15-1A~4.2.0.201808081929
 desc: |
  This update addresses the following issue:
  * Update to package version 4.6.15
+ * Insufficient input validation on client directory listing in libsmbclient
+   (CVE-2018-10858)
+ * Confidential attribute disclosure from the AD LDAP server (CVE-2018-10919)
 bug: [47429]
+cve:
+ - CVE-2018-10858
+ - CVE-2018-10919
