@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: gdm3
+fix: 3.22.3-3+deb9u2
+desc: |
+ This update addresses the following issue:
+ * use-after-free in the GDM daemon (CVE-2018-14424)
+bug: [47588]
+cve:
+- CVE-2018-14424
