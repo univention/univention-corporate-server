@@ -1,3 +1,9 @@
+univention-squid (11.0.0-14) unstable; urgency=medium
+
+  * Bug #47425: fixed ucr variable squid/krb5auth/keepalive
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 14 Aug 2018 13:54:00 +0200
+
 univention-squid (11.0.0-13) unstable; urgency=medium
 
   * Bug #34154: utf8 and latin1 basic auth wrapper
