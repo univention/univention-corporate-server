@@ -146,15 +146,18 @@ class ad(univention.connector.ad.ad):
 				ldapbase = self.baseConfig['%s/ad/ldap/base' % CONFIGBASENAME]
 
 			guid = None
-			res = self.__search_ad(base=ldapbase, scope=ldap.SCOPE_SUBTREE, filter=ldapfilter, attrlist=["objectGUID", "uSNChanged"])
+			try:
+				res = self.__search_ad(base=ldapbase, scope=ldap.SCOPE_SUBTREE, filter=ldapfilter, attrlist=["objectGUID", "uSNChanged"])
 
-			for msg in res:
-				if not msg[0]:  ## Referral
-					continue
-				guid_blob = msg[1]["objectGUID"][0]
-				guid = ndr_unpack(misc.GUID, guid_blob)
-				usn = msg[1]["uSNChanged"][0]
-				search_result.append((str(msg[0]), guid, usn))
+				for msg in res:
+					if not msg[0]:  ## Referral
+						continue
+					guid_blob = msg[1]["objectGUID"][0]
+					guid = ndr_unpack(misc.GUID, guid_blob)
+					usn = msg[1]["uSNChanged"][0]
+					search_result.append((str(msg[0]), guid, usn))
+			except (ldap.REFERRAL, ldap.INVALID_DN_SYNTAX) as ex:
+				error_dns.append((targetdn, str(ex)))
 
 			if not guid:
 				raise GUIDNotFound(2, "No match")
