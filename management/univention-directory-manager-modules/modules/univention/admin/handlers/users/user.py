@@ -1891,7 +1891,8 @@ class object(univention.admin.handlers.simpleLdap):
 
 		# get lock for mailPrimaryAddress
 		if not self.exists() or self.hasChanged('mailPrimaryAddress'):
-			if self['mailPrimaryAddress']:
+			# ignore case in change of mailPrimaryAddress, we only store the lowercase address anyway
+			if self['mailPrimaryAddress'] and self['mailPrimaryAddress'].lower() != self.oldinfo.get('mailPrimaryAddress', '').lower():
 				try:
 					self.alloc.append(('mailPrimaryAddress', univention.admin.allocators.request(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])))
 				except univention.admin.uexceptions.noLock:

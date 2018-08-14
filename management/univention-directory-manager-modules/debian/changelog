@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-31) unstable; urgency=medium
+
+  * Bug #47415: ignore case in mailPrimaryAddress changes
+
+ -- Felix Botner <botner@univention.de>  Tue, 14 Aug 2018 16:53:27 +0200
+
 univention-directory-manager-modules (13.0.21-30) unstable; urgency=medium
 
   * Bug #32626: Reapply reverted patches
