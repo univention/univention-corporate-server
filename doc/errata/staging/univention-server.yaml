@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: univention-server
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * A LDAP schema of OX AppSuite is reregistered due to problems in the
+   handling of the Univention App Center's DefaultMasterPackages.
+bug: [47581]
