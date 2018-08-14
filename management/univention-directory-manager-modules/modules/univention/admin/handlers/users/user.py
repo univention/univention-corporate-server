@@ -1326,7 +1326,7 @@ def inconsistentDisabledState(oldattr):
 		unmapPosixDisabled(oldattr),
 		isPosixLocked(oldattr),
 	]
-	return all(disabled) if any(disabled) else True
+	return len(set(disabled)) > 1
 
 
 def unmapSambaDisabled(oldattr):
@@ -1337,6 +1337,7 @@ def unmapSambaDisabled(oldattr):
 			return acctFlags['D'] == 1
 		except KeyError:
 			pass
+	return False
 
 
 def unmapKerberosDisabled(oldattr):
@@ -1349,10 +1350,10 @@ def unmapKerberosDisabled(oldattr):
 
 def unmapPosixDisabled(oldattr):
 	try:
-		shadowExpire = int(oldattr.get('shadowExpire', ['0'])[0])
-	except ValueError:
+		shadowExpire = int(oldattr['shadowExpire'][0])
+	except (KeyError, ValueError):
 		return False
-	return shadowExpire == 1 or (shadowExpire < int(time.time() / 3600 / 24))
+	return shadowExpire == 1 or shadowExpire < int(time.time() / 3600 / 24)
 
 
 def unmapLocked(oldattr):
