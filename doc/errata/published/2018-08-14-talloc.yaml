@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Update to package version 2.1.10 required by tevent 0.9.34
 bug: [47429]
+erratum: 430
+announced: 2018-08-14
