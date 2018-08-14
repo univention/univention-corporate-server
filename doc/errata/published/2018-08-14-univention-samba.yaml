@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
   * Adjust default for samba/ntlm/auth ("ntlm auth") to "no", i.e. ntlmv2-only
 bug: [47100]
+erratum: 434
+announced: 2018-08-14
