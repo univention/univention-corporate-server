@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Update to package version 0.9.34 required by Samba 4.6.15
 bug: [47429]
+erratum: 431
+announced: 2018-08-14
