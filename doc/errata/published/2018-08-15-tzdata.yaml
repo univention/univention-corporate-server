@@ -11,3 +11,5 @@ desc: |
  * Update to Olson database version 2018d. This update contains contemporary
    changes for Palestine and Casey Station.
 bug: [47477]
+erratum: 198
+announced: 2018-08-15
