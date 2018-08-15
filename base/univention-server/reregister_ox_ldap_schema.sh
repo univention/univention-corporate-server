@@ -103,7 +103,7 @@ fix_master () {
 }
 
 
-if [ "$(LANG=C dpkg-query -W -f '${Status}' univention-ox-directory-integration 2>&1)" = "install ok installed" ] ; then
+if [ "$(LANG=C dpkg-query -W -f '${Status}' univention-ox-directory-integration 2>&1 | cut -d' ' -f1)" = "install" ] ; then
 	# OX schema is installed on UCS master
 	case "$server_role" in
 		domaincontroller_master)
