@@ -576,6 +576,29 @@ check_kopano_repo () {
 }
 check_kopano_repo
 
+# Bug #47551
+check_openxchange_app ()
+{
+	if LC_ALL=C dpkg -l 'univention-ox-meta-singleserver' 2>/dev/null | grep ^i >>"$UPDATER_LOG" 2>&1; then
+		ucrv_on_master="$(univention-ssh /etc/machine.secret ${hostname}\$@$ldap_master /usr/sbin/ucr get ox/master/42/registered_ldap_acls 2>/dev/null)" >&3 2>&3
+		ox_schema_in_ldap="$(univention-ldapsearch -xLLL -b cn=oxforucs,cn=ldapschema,cn=univention,$(ucr get ldap/base) | ldapsearch-wrapper) >>$UPDATER_LOG 2>&1"
+		rvalue_ox_schema_in_ldap="$?"
+		if [ ! "$rvalue_ox_schema_in_ldap" -o "$ucrv_on_master" != "yes" ]; then
+			echo "ucrv_on_master: ${ucrv_on_master}" >>"$UPDATER_LOG"
+			echo "ox_schema_in_ldap: ${ox_schema_in_ldap}" >>"$UPDATER_LOG"
+			echo; echo "ERROR: The OpenXChange LDAP Schema registration is incorrect."
+			echo "Aborting the upgrade. For instructions how to proceed, please refer to"
+			echo "https://help.univention.com/t/9440"; echo
+			if is_ucr_true update43/ignore_ox_schema_issue; then
+				echo "WARNING: update43/ignore_ox_schema_issue is set to true. Skipped as requested."
+			else
+				exit 1
+			fi
+		fi
+	fi
+}
+check_openxchange_app
+
 
 # ensure that en_US is included in list of available locales (Bug #44150)
 available_locales="$(/usr/sbin/univention-config-registry get locale)"
