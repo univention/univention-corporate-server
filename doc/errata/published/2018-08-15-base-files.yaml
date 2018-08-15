@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Change /etc/debian_version to 9.5, for Debian 9.5 point release.
 bug: [47512]
+erratum: 171
+announced: 2018-08-15
