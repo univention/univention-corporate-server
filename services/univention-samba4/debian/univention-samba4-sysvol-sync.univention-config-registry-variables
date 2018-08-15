@@ -45,3 +45,15 @@ Description[de]=Ist diese Option deaktiviert, dann werden keine Daten von upstre
 Description[en]=If this option is deactivated no files will be copied from upstream DCs.
 Type=bool
 Categories=service-samba
+
+[samba4/sysvol/sync/from_upstream/delete]
+Description[de]=Ist diese Option aktiviert, werden lokale Dateien auf dem Downstream DC bei der Synchronisation mit dem Upstream DC gelöscht. Diese Option darf nur verwendet werden, wenn auf dem Upstream DC samba4/sysvol/sync/from_downstream auf true gesetzt ist (unidirektionale Synchronisation vom Upstream DC).
+Description[en]=If this option is activated, downstream DCs will delete files in the local sysvol dir during the sync with the upstream DC. This option may only be used if samba4/sysvol/sync/from_downstream is true on the upstream DC (unidirctional synchronization from upstream DC).
+Type=bool
+Categories=service-samba
+
+[samba4/sysvol/sync/fix_gpt_ini]
+Description[de]=Ist diese Option aktiviert, werden nach der Synchronisation des lokalen Sysvol Verzeichnis alte gpt.ini Dateien (Groß- und Kleinschreibung) gelöscht.
+Description[en]=If this option is activated, old gpt.ini files (case in filename) will be deleted after the synchronization of the local sysvol directory.
+Type=bool
+Categories=service-samba

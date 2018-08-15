@@ -47,7 +47,7 @@ stderr_log_debug() {
 	fi
 }
 
-eval "$(/usr/sbin/univention-config-registry shell hostname samba4/sysvol/sync/host)"
+eval "$(/usr/sbin/univention-config-registry shell hostname samba4/sysvol/sync/host domainname)"
 
 DEBUG=false
 SYSVOL_PATH='/var/lib/samba/sysvol'
@@ -60,7 +60,7 @@ LC_ALL=C
 
 # hash over the list of files/directories with ACLs set
 all_files_and_dirs_have_acls () {
-	local dir="$1/$(ucr get domainname)/Policies"
+	local dir="$1/$domainname/Policies"
 	shift
 	local host="$1"
 
@@ -197,6 +197,10 @@ sync_to_local_sysvol() {
 			stderr_log_error "[$log_prefix] rsync to local sysvol exited with $rsync_exitcode ($out)"
 			return $rsync_exitcode
 		fi
+		if is_ucr_true samba4/sysvol/sync/fix_gpt_ini; then
+			stderr_log_debug "[$log_prefix] search for multiple gpt.ini files and delete all but the newest"
+			fix_gpt_ini
+		fi
 	) 8>"$SYSVOL_LOCKFILE"
 
 	# Note: returns here with subshell exitcode
@@ -268,6 +272,23 @@ sync_from_active_downstream_DCs() {
 	done
 }
 
+fix_gpt_ini () {
+	# find policy dirs with multiple gpt.ini's
+	local poldir="$SYSVOL_PATH/$domainname/Policies/"
+	while read dir; do
+		# sort gpt.ini's by time of last status change
+		mapfile -t gpts < <(stat -c "%Z %n" "$dir"/[Gg][Pp][Tt].[Ii][Nn][Ii] 2>/dev/null | sort -n -r)
+		if [ "${#gpts[@]}" -gt 1 ]; then
+			# multiple gpt.ini's found, delete first element of list (newest gpt.ini) and remove the rest
+			gpts=("${gpts[@]:1}")
+			for gpt in "${gpts[@]}"; do
+				local file=${gpt#* }
+				test -f $file && rm $file
+			done
+		fi
+	done < <(find "$poldir" -maxdepth 1 -type d -name '{*}')
+}
+
 sync_from_upstream_DC() {
 	for s4dc in $samba4_sysvol_sync_host; do	## usually there should only be one..
 		if [ "$s4dc" = "$hostname" ]; then
@@ -314,7 +335,12 @@ sync_from_upstream_DC() {
 		fi
 
 		## sync into hot target dir with local filesystem speed
-		sync_to_local_sysvol "$importdir" "${default_rsync_options[@]}"
+		## check if we have to delete local changes during sync
+		local hot_sync_rsync_options=("${default_rsync_options[@]}")
+		if is_ucr_true "samba4/sysvol/sync/from_upstream/delete"; then
+			hot_sync_rsync_options+=("--delete")
+		fi
+		sync_to_local_sysvol "$importdir" "${hot_sync_rsync_options[@]}"
 	done
 }
 
