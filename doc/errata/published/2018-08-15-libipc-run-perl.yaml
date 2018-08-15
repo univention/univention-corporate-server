@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Fix memory leak
 bug: [47501]
+erratum: 184
+announced: 2018-08-15
