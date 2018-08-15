@@ -8,3 +8,5 @@ desc: |-
   This update addresses the following issue:
   * Fix memory leak caused by Python notifyer traceback handling.
 bug: [47569]
+erratum: 437
+announced: 2018-08-15
