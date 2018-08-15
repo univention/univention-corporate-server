@@ -322,7 +322,9 @@ get_available_s4connector_dc() {
 	if is_ucs_school_domain; then
 		s4connector_dc_array=( $s4connector_dc )
 		if [ "${#s4connector_dc_array[@]}" -gt 1 ]; then
-			echo "ERROR: More than one S4 Connector hosts available: $s4connector_dc" 1>&2
+			echo "ERROR: More than one S4 Connector hosts available: ${s4connector_dc_array[*]}" 1>&2
+			echo "ERROR: If this is a central (non-school) slave, make sure every school slave" 1>&2
+			echo "ERROR: in the list above has the 'univentionService=S4 SlavePDC' service set!" 1>&2
 			return 1	## this is fatal
 		fi
 	fi
