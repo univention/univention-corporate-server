@@ -15,3 +15,5 @@ desc: |-
     fixed
   * The connector's AD binary attributes list has been updated.
 bug: [47232, 47430, 47025]
+erratum: 168
+announced: 2018-08-15
