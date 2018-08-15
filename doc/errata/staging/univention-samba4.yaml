@@ -3,8 +3,9 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-samba4
-fix: 7.0.2-19A~4.3.0.201808151044
+fix: 7.0.2-20A~4.3.0.201808151651
 desc: |
  This update addresses the following issue(s):
  * Improved error message for school slave join.
-bug: [47388]
+ * TODO
+bug: [47388,47576]
