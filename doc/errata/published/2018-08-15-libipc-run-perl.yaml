@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Backport upstream patch to fix memory leak
 bug: [47573]
+erratum: 462
+announced: 2018-08-15
