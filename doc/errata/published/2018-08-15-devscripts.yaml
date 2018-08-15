@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * New upstream version to follow Debian changes.
 bug: [47488]
+erratum: 173
+announced: 2018-08-15
