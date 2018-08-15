@@ -1,3 +1,9 @@
+univention-management-console (10.0.6-11) unstable; urgency=medium
+
+  * Bug #37223: Do not forbid .css, .js, .json to enable the portal
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 Aug 2018 17:03:38 +0200
+
 univention-management-console (10.0.6-10) unstable; urgency=low
 
   * Bug #47114: Fix traceback after fixing memory leak
