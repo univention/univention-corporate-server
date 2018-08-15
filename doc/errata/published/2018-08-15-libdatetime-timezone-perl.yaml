@@ -13,3 +13,5 @@ desc: |
  * Update to Olson database version 2018b. This update contains contemporary
    changes for São Tomé and Príncipe, Brazil, and Ireland.
 bug: [47556]
+erratum: 459
+announced: 2018-08-15
