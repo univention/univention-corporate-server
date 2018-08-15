@@ -28,3 +28,5 @@ desc: |
    used by the test suite.
  * Updated programs and man pages translations
 bug: [47503]
+erratum: 175
+announced: 2018-08-15
