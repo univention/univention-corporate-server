@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Switch dpkg trigger to noawait.
 bug: [47483]
+erratum: 195
+announced: 2018-08-15
