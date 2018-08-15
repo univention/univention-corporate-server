@@ -43,6 +43,7 @@ if (configRegistry.get('ldap/server/type') == "master") and configRegistry.is_fa
 	print 'include         /usr/share/univention-ldap/schema/oxforucs.schema'
 @!@
 EOF
+			echo "OX schema subtemplate has been updated"
 		fi
 	fi
 }
@@ -103,8 +104,8 @@ fix_master () {
 }
 
 
-if [ "$(LANG=C dpkg-query -W -f '${Status}' univention-ox-directory-integration 2>&1 | cut -d' ' -f1)" = "install" ] ; then
-	# OX schema is installed on UCS master
+if LANG=C dpkg-query -W -f '${Status}' univention-ox-directory-integration | egrep -i ' (installed|Triggers-awaiting|Triggers-pending|Half-configured|Unpacked|Half-installed)$' ; then
+	# OX schema package is installed
 	case "$server_role" in
 		domaincontroller_master)
 			fix_master
