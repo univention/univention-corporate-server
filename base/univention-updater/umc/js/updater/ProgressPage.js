@@ -62,6 +62,7 @@ define([
 		_job_key: '', // the key of the currently running job
 
 		_reboot_required: null,
+		_may_just_close: false,
 
 		allowClose: null,
 
@@ -111,6 +112,9 @@ define([
 			if (this._reboot_required) {
 				// show an alert
 				dialog.alert(_('In order to complete the recently executed action, it is required to reboot the system.'));
+				this.onStopWatching();
+			} else if (this._may_just_close) {
+				this._may_just_close = false;
 				this.onStopWatching();
 			} else {
 				// ask user to restart

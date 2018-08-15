@@ -210,6 +210,22 @@ class Instance(Base):
 
 	@simple_response
 	def query_maintenance_information(self):
+		ret = self._maintenance_information()
+		ret.update(self._last_update())
+		return ret
+
+	def _last_update(self):
+		last_update_failed = False
+		last_update_version = None
+		with open('/var/lib/univention-updater/univention-updater.status') as fd:
+			content = fd.read()
+			info = dict(line.split('=', 1) for line in content.splitlines())
+			last_update_failed = info.get('status') == 'FAILED'
+			if last_update_failed:
+				last_update_version = info.get('next_version')
+		return {'last_update_failed': last_update_failed, 'last_update_version': last_update_version}
+
+	def _maintenance_information(self):
 		ucr.load()
 		if ucr.is_true('license/extended_maintenance/disable_warning'):
 			return {'show_warning': False}

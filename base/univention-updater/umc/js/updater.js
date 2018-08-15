@@ -66,12 +66,22 @@ define([
 		var checkOutOfMaintenance = function() {
 			tools.umcpCommand('updater/maintenance_information').then(function(data) {
 				var info = data.result;
+				var link = tools.linkToModule({module: 'updater'});
+
+				if (info.last_update_failed) {
+					var version = _("a new UCS version");
+					if (info.last_update_version) {
+						version = "UCS " + info.last_update_version;
+					}
+					var warning = _("The update to %s failed. Please visit the %s for more information.", version, link);
+					dialog.warn(warning);
+				}
+
 				if (!info.show_warning) {
 					return;
 				}
 
 				// show warning notification
-				var link = tools.linkToModule({module: 'updater'});
 				var warning = _("The currently used UCS version is out of maintenance. Please visit the %s for more information.", link);
 				dialog.warn(warning);
 			});
@@ -184,6 +194,14 @@ define([
 			// propagate the status information to other pages
 			this._updates.on('statusloaded', lang.hitch(this, function(vals) {
 				this._progress.updateStatus(vals);
+			}));
+
+			this._updates.on('viewlog', lang.hitch(this, function() {
+				this._progress._log.setJobKey('release');
+				this._progress._may_just_close = true;
+				this._switch_to_progress_page();
+				this._progress.set('allowClose', true);
+				this._progress._switch_headings('failed');
 			}));
 
 			this.registerUnloadHandler();

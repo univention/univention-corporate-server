@@ -105,12 +105,19 @@ define([
 					'class':		'umcUpdaterWarningText',
 					visible:		false,
 					label:			'',
-					content:		'', // will be set below as soon as the UCS version is known
+					content:		'' // will be set below as soon as the UCS version is known
 				}, {
 					type: Text,
 					name: 'reboot_text',
 					label: ' ',
 					content: _("In order to complete the recently executed action, it is required to reboot the system."),
+					size: 'One',
+					labelPosition: 'bottom'
+				}, { // ------------------- Update failed pane ------------------------
+					type: Text,
+					name: 'update_failed',
+					label: ' ',
+					content: _("The update to %s failed. The log file /var/log/univention/updater.log may contain more information about this. Log files are rotated, though. If the file does not contain any information about the last update, you need to examine the rotated files (e.g, /var/log/univention/updater.log.1.gz).", _("a new UCS version")),
 					size: 'One',
 					labelPosition: 'bottom'
 				}, { // ------------------- Easy upgrade mode -------------------------
@@ -357,6 +364,15 @@ define([
 				style: 'margin:0',
 				size: 'One'
 			}, {
+				name: 'view_log_file',
+				label: _("View log file"),
+				callback: lang.hitch(this, function() {
+					this.onViewLog();
+					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'view-log');
+				}),
+				style: 'margin:0',
+				size: 'One'
+			}, {
 				name: 'easy_upgrade',
 				label: _("Start Upgrade"), 		// FIXME Label not correct
 				callback: lang.hitch(this, function() {
@@ -374,6 +390,11 @@ define([
 				label: _("Reboot required"),
 				layout: [
 					['reboot_text', 'reboot']
+				]
+			}, {
+				label: _("Update failed"),
+				layout: [
+					['update_failed', 'view_log_file'],
 				]
 			}, {
 				label: _("Release information"),
@@ -412,6 +433,7 @@ define([
 			// so they can be used later on
 			this._titlepanes = {
 				reboot: this._getEnclosingTitlePane('reboot'),
+				update_failed: this._getEnclosingTitlePane('update_failed'),
 				easymode: this._getEnclosingTitlePane('easy_upgrade'),
 				release: this._getEnclosingTitlePane('run_release_update'),
 				packages: this._getEnclosingTitlePane('run_packages_update')
@@ -630,6 +652,11 @@ define([
 
 		},
 
+		// Switches visibility of the update_failed pane on or off
+		_show_update_failed_pane: function(yes) {
+			domClass.toggle(this._titlepanes.update_failed.domNode, 'dijitDisplayNone', !yes);
+		},
+
 		postCreate: function() {
 			this.inherited(arguments);
 			this._checkOutOfMaintenance();
@@ -639,10 +666,24 @@ define([
 			// load maintenance information and show message if current UCS version is out of maintenance
 			tools.umcpCommand('updater/maintenance_information').then(lang.hitch(this, function(data) {
 				var info = data.result;
+
+				if (info.last_update_failed) {
+					var version = _("a new UCS version");
+					if (info.last_update_version) {
+						version = "UCS " + info.last_update_version;
+					}
+					var warning = _("The update to %s failed. The log file /var/log/univention/updater.log may contain more information about this. Log files are rotated, though. If the file does not contain any information about the last update, you need to examine the rotated files (e.g, /var/log/univention/updater.log.1.gz).", version);
+
+					// display out of maintenance message
+					var updateFailedWidget = this._form.getWidget('update_failed');
+					updateFailedWidget.set('content', warning);
+				}
+				this._show_update_failed_pane(!!info.last_update_failed);
+
 				if (!info.show_warning) {
 					return;
 				}
-				
+
 				var baseMsg = lang.replace(_("<b>Warning</b>: You are currently using UCS {0}. No more security updates will be released for this version. Please update the system to a newer UCS version!"), [info.ucs_version]);
 				var enterpriseSubscriptionAd = _("<br>Enterprise subscriptions offer extended maintenance for some UCS versions. Detailed information can be found at the <a target='_blank' href='https://www.univention.com/products/prices-and-subscriptions/'>Univention Website</a>.");
 				var extendedEnterpriseMsg = lang.replace(_("<b>Warning</b>: You are currently using UCS {0}. No more regular security updates will be released for this version!<br>Update the system to a newer UCS version or, alternatively, request an extended maintenance for this version. <a target='_blank' href='https://www.univention.com/contact/'>Feel free to contact us if you want to know more</a>."), [info.ucs_version]);
@@ -674,6 +715,7 @@ define([
 
 			this.inherited(arguments);
 			this._show_reboot_pane(false);
+			this._show_update_failed_pane(false);
 
 		},
 
@@ -713,6 +755,8 @@ define([
 		onRunDistUpgrade: function() {
 		},
 		onRunEasyUpgrade: function() {
+		},
+		onViewLog: function() {
 		},
 
 		onStatusLoaded: function(vals) {
