@@ -9,3 +9,5 @@ desc: |
  * Update init service for dns-root-data changes to fix dnsmasq startup when
    dns-root-data is installed..
 bug: [47529]
+erratum: 445
+announced: 2018-08-15
