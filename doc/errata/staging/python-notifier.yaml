@@ -1,14 +1,11 @@
 product: ucs
 release: "4.2"
 version: [4]
-scope: ucs_4.3-0-errata4.3-1
+scope: ucs_4.2-0-errata4.2-4
 src: python-notifier
-fix: 0.9.7-5A~4.3.0.201807041139
+fix: 0.9.7-4.31.201808151220
 desc: |
  This update addresses the following issue:
  * Fix a memory leak preventing the Python garbage collector from freeing UVMM
    connection instances.
 bug: [47569]
-ignore:
-  - release+scope.consistent
-  - version.scope
