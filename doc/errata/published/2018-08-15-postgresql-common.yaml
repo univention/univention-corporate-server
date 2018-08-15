@@ -11,3 +11,5 @@ desc: |
    clusters when running systemd. (Use deb-systemd-invoke instead of
    invoke-rc.d; jessie's invoke-rc.d does not support service patterns.)
 bug: [47511]
+erratum: 191
+announced: 2018-08-15
