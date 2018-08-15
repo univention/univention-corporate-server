@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-server
-fix: 13.0.0-4A~4.3.0.201808141212
+fix: 13.0.0-5A~4.3.0.201808151332
 desc: |
  This update addresses the following issue(s):
  * A LDAP schema of OX AppSuite is reregistered due to problems in the
