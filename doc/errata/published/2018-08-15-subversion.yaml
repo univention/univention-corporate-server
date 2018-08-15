@@ -13,3 +13,5 @@ desc: |
  * Backport to reject commits which would introduce hash collisions with
    existing data, thus addressing the SHA1/shattered issue.
 bug: [47478]
+erratum: 196
+announced: 2018-08-15
