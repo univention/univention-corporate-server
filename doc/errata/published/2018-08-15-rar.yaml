@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Replace statically linked rar with dynamically linked rar.
 bug: [47552]
+erratum: 477
+announced: 2018-08-15
