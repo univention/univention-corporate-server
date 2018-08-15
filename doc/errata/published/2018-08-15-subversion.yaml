@@ -9,3 +9,5 @@ desc: |
  * Backport patches/perl-swig-crash from upstream to fix crashes with Perl
    bindings, commonly seen when using git-svn.
 bug: [47523]
+erratum: 481
+announced: 2018-08-15
