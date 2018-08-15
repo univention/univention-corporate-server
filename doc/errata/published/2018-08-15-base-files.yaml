@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Changed /etc/debian_version to 8.11, for Debian 8.11 point release.
 bug: [47572]
+erratum: 440
+announced: 2018-08-15
