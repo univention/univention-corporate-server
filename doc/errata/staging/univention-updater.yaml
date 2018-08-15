@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-updater
-fix: 13.0.1-53A~4.3.0.201807031200
+fix:
 desc: |-
   This update addresses the following issues:
   * Network errors while trying to contact the update server do not result in
@@ -13,4 +13,6 @@ desc: |-
   * The progress of a release update is written to a status file so that the
     package univention-maintenance-mode may read it to update the progress
     accordingly.
-bug: [41536, 36719, 37223]
+  * Show a warning and allow examiniation of the updater.log file in UMC if
+    the last relase update failed.
+bug: [41536, 36719, 37223, 47592]

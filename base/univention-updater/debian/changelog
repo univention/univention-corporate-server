@@ -1,3 +1,10 @@
+univention-updater (13.0.1-56) unstable; urgency=medium
+
+  * Bug #47592: Show a warning and allow examiniation of the updater.log file
+    in UMC if the last relase update failed.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 Aug 2018 13:48:03 +0200
+
 univention-updater (13.0.1-55) unstable; urgency=medium
 
   * Bug #47436: In postup.sh, do not reenable apache2 and UMC restarts,
