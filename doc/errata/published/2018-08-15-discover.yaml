@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Use correct type for the length parameter of the getline() call.
 bug: [47484]
+erratum: 174
+announced: 2018-08-15
