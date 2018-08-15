@@ -9,3 +9,5 @@ desc: |
  * Fix a memory leak preventing the Python garbage collector from freeing UVMM
    connection instances.
 bug: [47569]
+erratum: 439
+announced: 2018-08-15
