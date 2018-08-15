@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Update Mozilla certificate authority bundle to version 2.22.
 bug: [47480]
+erratum: 172
+announced: 2018-08-15
