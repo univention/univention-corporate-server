@@ -9,3 +9,5 @@ desc: |
  * Notify the security team or LTS team about a possible regression if
    reporting a bug against a package containing a security fix.
 bug: [47506]
+erratum: 193
+announced: 2018-08-15
