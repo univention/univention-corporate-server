@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * A nagios warning for cups due to usage of HTTP/1.0 has been fixed.
 bug: [46698]
+erratum: 169
+announced: 2018-08-15
