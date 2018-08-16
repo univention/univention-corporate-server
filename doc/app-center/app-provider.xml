@@ -712,10 +712,149 @@ TODO: Nico
     <title>App life cycle</title>
 
     <para>
+        This chapter is about the life cycle of an app from the development,
+        over its life in the public to termination. The life cycle applies to
+        the app overall and to every single version, except the termination.
+        App versions are not explicitely terminated. They are superseded by the
+        next version.
     </para>
+
+    <section id="development">
+        <title>Development</title>
+        <para>
+            Every app starts with the development. It involves the definition
+            of the app in the app provider portal, providing the software
+            solution as docker container and the integration of the solution
+            with UCS, for example in the identity management area. See <xref
+                linkend="get-started" />.
+        </para>
+        <para>
+            Typically, the solution is already available as docker image. The
+            first step therefore is to have this image up and running as
+            container by the App Center. The second step usually handles the
+            integration, usually with the identity management in UCS, see <xref
+                linkend="connection-idm" />.
+        </para>
+    </section>
 
     <section id="testing">
         <title>Testing</title>
+        <para>
+            Testing the app is the final part of the development. It typically
+            involves a combination of manual and automatic tests. In order to
+            test your app with UCS, please follow these instructions.
+        </para>
+
+        <section id="testing:download">
+            <title>Download UCS</title>
+            <para>
+                Download UCS to get yourself a copy of UCS free of charge from
+                the <ulink
+                    url="https://www.univention.com/downloads/ucs-download/">Univention
+                    website</ulink>. You can choose an ISO image or a
+                pre-installed virtual machine image for various virtualization
+                hypervisors.
+            </para>
+        </section>
+
+        <section id="testing:setup">
+            <title>Initial UCS setup</title>
+            <para>
+                Please refer to the <ulink
+                    url="https://docs.software-univention.de/quickstart-en.html">UCS
+                    Quickstart Guide</ulink> for the first steps about
+                installation and initial setup.
+            </para>
+        </section>
+
+        <section id="testing:test-app-center">
+            <title>Test App Center</title>
+            <para>
+                Switch to the Test App Center and test your app directly on UCS.
+                <programlisting>
+                    univention-install univention-appcenter-dev
+                    univention-app dev-use-test-appcenter
+                </programlisting>
+            </para>
+        </section>
+
+        <section id="testing:install">
+            <title>Install the app</title>
+            <para>
+                Up until here, your app is available in the Test App Center and
+                you have a UCS system up and running that is configured against
+                the Test App Center. The app can be installed via the &ucsUMC;.
+                UMC consists of several modules and one of them is called
+                <guimenu>App Center</guimenu>. Open this module and install
+                your app from there.
+            </para>
+
+            <para>
+                The following points are mandatory for the App to be published:
+                <itemizedlist>
+                    <listitem>
+                        <simpara>
+                            The App has to install without user interaction.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            The App may not negatively impact UCS' core services.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            The App has to uninstall without leaving any remainders that interfere with UCS' core services.
+                        </simpara>
+                    </listitem>
+                </itemizedlist>
+            </para>
+
+            <para>
+                When installing the App, also mind README information that you
+                may have defined on the <guimenu>README files</guimenu> in your
+                app in the App Provider Portal. An Administrator expects an App
+                to be fully configured after the installation. If something is
+                needed in order to use the App (e.g., activating users for the
+                service), it should be described in the appropriate README
+                section.
+            </para>
+        </section>
+
+        <section id="testing:upgrade">
+            <title>Upgrade the app</title>
+            <para>
+                Once you have several version of the app, the upgrade should be
+                tested, as well. The App Center UMC module only allows the
+                installation of the latest app version. To test an upgrade of
+                your app, please go to the console and installed a version
+                explicitely:
+
+                <programlisting>
+                    univention-app install myapp=1.0
+                </programlisting>
+
+                Afterwards, you can go back to the App Center UMC module.
+                There, your app should show up with the update symbol
+                indicating the availability of an update. Continue and perform
+                the app upgrade.
+            </para>
+        </section>
+
+        <section id="testing:deactive-test-app-center">
+            <title>Deactivate the Test App Center</title>
+            <para>
+                To switch back to the productive App Center, please run:
+
+                <programlisting>
+                    univention-app dev-use-test-appcenter --revert
+                </programlisting>
+            </para>
+        </section>
+    </section>
+
+    <section id="approval">
+        <title>Two-side approval</title>
         <para>
         </para>
     </section>
