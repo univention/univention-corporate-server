@@ -3,9 +3,9 @@ release: "4.2"
 version: [4]
 scope: ucs_4.2-0-errata4.2-4
 src: linux
-fix: 4.9.30-2A~4.2.0.201808101912
+fix: 4.9.30-2A~4.2.0.201808161300
 desc: |
- This update of the Linux kernel to version 4.9.119 addresses the following
+ This update of the Linux kernel to version 4.9.120 addresses the following
  issues:
  * CVE-2017-17975: use-after-free in the usbtv_probe function in
    drivers/media/usb/usbtv/usbtv-core.c
@@ -39,6 +39,7 @@ desc: |
    causes denial of service
  * CVE-2018-1130: a null pointer dereference in
    net/dccp/output.c:dccp_write_xmit() leads to a system crash
+ * CVE-2018-3620 CVE-2018-3646: cpu: L1 terminal fault (L1TF)
  * CVE-2018-3639: cpu: speculative store bypass
  * CVE-2018-5390: Linux Kernel TCP implementation vulnerable to Denial of
    Service
@@ -115,3 +116,5 @@ cve:
 - CVE-2018-13406
 - CVE-2018-14734
 - CVE-2018-12233
+- CVE-2018-3620
+- CVE-2018-3646
