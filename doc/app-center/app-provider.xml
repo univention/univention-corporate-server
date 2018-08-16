@@ -32,7 +32,7 @@ TODO: Nico
             known from mobile platforms like Apple or Google. It provides an
             infrastructure to build, deploy and run enterprise applications on
             Univention Corporate Server (UCS). The App Center uses well-known
-            technology like docker.
+            technology like <ulink url="https://www.docker.com/">docker</ulink>.
         </para>
     </section>
 
@@ -87,11 +87,18 @@ TODO: Nico
                         and test their apps.
                     </simpara>
                 </listitem>
+                <listitem>
+                    <simpara>
+                        <emphasis>Univention Corporate Server (UCS)</emphasis>
+                        is the target platform for the app. UCS is technically
+                        a derivative of Debian GNU/Linux.
+                    </simpara>
+                </listitem>
             </itemizedlist>
         </para>
 
         <para>
-            For building an app the app developer deals with the app, the
+            For building an app the app developer deals with UCS, the app, the
             provider portal and the Test App Center.
         </para>
     </section>
@@ -122,8 +129,8 @@ TODO: Nico
                 It is also recommended to publish the docker container to
                 <ulink url="https://hub.docker.com/">docker hub</ulink>. This
                 makes referencing the image later much easier.  The image must
-                have an image tag for version information. It later allows
-                updates for the apps.
+                have a version tag to distinguish different software versions.
+                It later allows updates for the apps.
             </para>
         </section>
 
@@ -139,9 +146,12 @@ TODO: Nico
                <listitem>
                    <simpara>
                        To start building your app, you should first get
-                       yourself an account for the app provider portal.
-                       Please <ulink url="https://www.univention.com/products/univention-app-center/for-solution-providers/">
-                           request your personal account</ulink>.
+                       yourself an account for the app provider portal.  Please
+                       <ulink
+                           url="https://www.univention.com/products/univention-app-center/for-solution-providers/">
+                           request your personal account</ulink> on the
+                       Univention website and provide some context about the
+                       app you have in mind.
                    </simpara>
                </listitem>
                <listitem>
@@ -210,7 +220,8 @@ TODO: Nico
                         <simpara>
                             <emphasis>App Version</emphasis> is the version of
                             your app. The App Center distinguishes versions and
-                            uses them to handle app updates.
+                            uses them to handle app updates. Once the app is
+                            released, this attribut cannot be changed anymore.
                         </simpara>
                     </listitem>
                     <listitem>
@@ -223,8 +234,8 @@ TODO: Nico
                             already been published for UCS 4.2. UCS 4.3 systems
                             may very well use the App - if you specify
                             <literal>SupportedUCSVersion=4.2-0, 4.3-0</literal>
-                            in your 4.2 App. It does not really matter in which
-                            UCS version you are publishing your App. But if you
+                            in your 4.2 App. It does not really matter for
+                            which UCS version you publish your App. But if you
                             are publishing it in various UCS versions, you need
                             to also test various UCS versions.
                         </simpara>
@@ -275,12 +286,14 @@ TODO: Nico
 
             <note>
                 <para>
-                    The App Center does currently not support multi container
-                    setups. The container needs to include all services needed
-                    for the software, except the database.  The App Center
-                    takes care of providing a database management system
-                    directly on the docker host that can be used by the docker
-                    container. Supported are MySQL and PostgreSQL. See <xref
+                    The App Center does currently <ulink
+                        url="https://forge.univention.org/bugzilla/show_bug.cgi?id=43612">not
+                        support multi container setups</ulink>. The container
+                    needs to include all services needed for the software,
+                    except the database.  The App Center takes care of
+                    providing a database management system directly on the
+                    docker host that can be used by the docker container.
+                    Supported are MySQL and PostgreSQL. See <xref
                         linkend="create-app-with-docker:database" />.
                 </para>
             </note>
@@ -290,9 +303,9 @@ TODO: Nico
             <title>Logo and description</title>
             <para>
                 On your app's <guimenu>General</guimenu> tab please provide a
-                description and logos for your software. Start with a short
-                and a long description for your app. It gives an impression on
-                how it will look like during later testing.
+                description and logos for your software. Start with a short and
+                a long description. It gives an impression on how it will look
+                like during later testing.
             </para>
             <para>                
                On the same tab you can upload two logos: A default icon that is
@@ -302,11 +315,9 @@ TODO: Nico
                Please provide the logos in SVG format.
            </para>
            <para>
-               Those settings can be changed at any time later.
-           </para>
-           <para>
-               For a more detailed description on the app presentation, please
-               have a look at <xref linkend="app-presentation" />.
+               Those settings can be changed at any time later.  For a more
+               detailed description on the app presentation, please have a look
+               at <xref linkend="app-presentation" />.
            </para>
         </section>
 
@@ -332,7 +343,7 @@ TODO: Nico
             <title>Persistent data with volumes</title>
             <para>
                 By default files created inside a container are stored in it,
-                but they don't persist when the container is no longer running
+                but they don't persist when the container is no longer running,
                 removed or is exchanged with a newer version. As solution
                 docker offers <ulink
                     url="https://docs.docker.com/storage/volumes/">volumes</ulink>,
@@ -381,8 +392,8 @@ TODO: Nico
             <para>
                 In the <guimenu>Web interface</guimenu> section on the
                 <guimenu>General</guimenu> tab in your app, you can enter the
-                relative and which ports should be proxied.  For example to map
-                the containers ports 80 and 443 to
+                relative path and which ports should be proxied.  For example,
+                to map the containers ports 80 and 443 to
                 <userinput>/myapp</userinput>, the following settings have to
                 be made:
                 <itemizedlist>
@@ -421,17 +432,18 @@ TODO: Nico
         <section id="create-app-with-docker:ports">
             <title>Ports</title>
             <para>
-                If your app needs to occupy ports in order work properly, they
-                can be defined in the <guimenu>Port redirection</guimenu>
-                section on the <guimenu>Docker</guimenu> tab. Here you can
-                define a list of ports that the docker host shall exclusively
-                acquire for the docker container. Ports defined here cannot be
-                used by other services on the UCS host or other docker
-                containers on that host.
+                If your app needs to occupy ports on the host that need to be
+                passed along to the container in order work properly, they can
+                be defined in the <guimenu>Port redirection</guimenu> section
+                on the <guimenu>Docker</guimenu> tab. Here you can define a
+                list of ports that the docker host shall exclusively acquire
+                for the docker container. Ports defined here cannot be used by
+                other services or other docker containers on the UCS host.
             </para>
             <para>
-                For example, the solution exposes an API under a dedicated
-                port. This port would be predestined to be defined here.
+                For example, the solution exposes API under the dedicated port
+                <userinput>5555</userinput>. This port would be predestined to
+                be defined here.
             </para>
         </section>
 
