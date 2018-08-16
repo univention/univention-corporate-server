@@ -1,3 +1,9 @@
+univention-samba4 (7.0.2-21) unstable; urgency=medium
+
+  * Bug #47388: improve error message
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Aug 2018 11:41:33 +0200
+
 univention-samba4 (7.0.2-20) unstable; urgency=medium
 
   * Bug #47576: gpt.ini file handling in sysvol-sync.sh

@@ -323,8 +323,14 @@ get_available_s4connector_dc() {
 		s4connector_dc_array=( $s4connector_dc )
 		if [ "${#s4connector_dc_array[@]}" -gt 1 ]; then
 			echo "ERROR: More than one S4 Connector hosts available: ${s4connector_dc_array[*]}" 1>&2
-			echo "ERROR: If this is a central (non-school) slave, make sure every school slave" 1>&2
-			echo "ERROR: in the list above has the 'univentionService=S4 SlavePDC' service set!" 1>&2
+			# check for slaves without "S4 SlavePDC"
+			broken_school_slaves="$(univention-ldapsearch -LLL "(&$s4cldapfilter(univentionServerRole=slave))" cn | sed -n -e 's|^cn: ||p' | tr '\n' ' ')"
+			if [ -n "$broken_school_slaves" ]; then
+				echo "ERROR:"
+				echo "ERROR: If this is a central (non-school) slave, make sure every school slave" 1>&2
+				echo "ERROR: has the 'univentionService=S4 SlavePDC' service set!" 1>&2
+				echo "ERROR: Possible broken school slaves: $broken_school_slaves" 1>&2
+			fi
 			return 1	## this is fatal
 		fi
 	fi
