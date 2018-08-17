@@ -1316,29 +1316,239 @@ TODO: Nico
         <para>
             All texts, screenshots and videos should be entered in English.
             Translations to German should be only made on the
-            <guimenu>Translations</guimenu> tab.
+            <guimenu>Translations</guimenu> tab. Please make sure to provide
+            translations for the texts that have an English version is present.
+            For each item you find the English version on the tab and room for
+            the translation right below.
         </para>
     </section>
 
 </chapter>
 
-<!--
-TODO: Nico
--->
 <chapter id="app-appliances">
     <title>App Appliances</title>
+
+    <para>
+        App Appliances are pre-defined images which consist of the App, the UCS
+        management system and the UCS runtime environment. These App Appliances
+        are currently provided as VMware, VMware ESXi, VirtualBox and KVM
+        images. By default the UCS branding is used, but it is possible and
+        recommended to use a custom branding. 
+    </para>
+
+    <section id="app-appliances:create">
+        <title>Create an app appliance</title>
+        <para>
+            To create an appliance, select an app version that has already been
+            published and activate the <guimenu>Create App appliance</guimenu>
+            checkbox on the <guimenu>Appliance</guimenu> tab. If the solution
+            needs a minimum size of memory, please specify the needed mega
+            bytes.
+        </para>
+
+        <section id="appliance:additional-software">
+            <title>Additional software</title>
+            <para>
+                If your appliance should include additional apps besides your app,
+                please specify them in the <guimenu>Additional software</guimenu>
+                section.
+            </para>
+        </section>
+
+        <section id="appliance:customize-setup-wizard">
+            <title>Customize setup wizard in appliance</title>
+            <para>
+                The appliance allows you to customize the UCS setup wizard and
+                control which setup pages and setup fields should be hidden. For
+                simplicity towards the user, it is recommended to hide the
+                <userinput>software</userinput> page and the
+                <userinput>basesystem</userinput> setup field.
+            </para>
+        </section>
+
+        <section id="appliance:customize-app-center">
+            <title>Customize app listing in App Center</title>
+
+            <para>
+                The listing of apps in the App Center UMC module in the
+                appliance can be customized to either whitelist or blacklist
+                certain apps. For example, if your solution is a groupware, you
+                can hide other groupware solutions from listing.
+            </para>
+        </section>
+        <section id="appliance:first-steps">
+            <title>First steps information</title>
+            <para>
+                The appliances are usually configured in a way that the user
+                can start using it right away. In some cases it may be
+                necessary to provide some information on the first steps. For
+                example, the user needs to know that a user object has to be
+                created and activated for the app first. This could be briefly
+                described in this section.
+            </para>
+        </section>
+        <section id="appliance:umc-favorites">
+            <title>Customize UMC favorite category</title>
+            <para>
+                The appliance also allows to customize the UMC modules that
+                should be pre-configured for the favorites section in the UCS
+                management system. The favorites section comes up first, after
+                a user logs into the UCS management system. It is recommended
+                to have the modules <userinput>Users</userinput>,
+                <userinput>Groups</userinput> and <userinput>App
+                    Center</userinput> listed here.
+            </para>
+        </section>
+        <para>
+            As soon as the settings are made, <guimenu>Sync to Test App
+                Center</guimenu>, click the <guimenu>Publish App</guimenu>
+            button and provide a custom message to let the Univention team know
+            that you want an appliance to be built. This will create a ticket
+            which helps to keep the communication in one place.
+        </para>
+        <para>
+            The appliance is automatically built in the Univention build
+            infrastructure. After the build is finished, automatic tests will
+            be started. Build and testing will approximately need four hours.
+        </para>
+        <para>
+            After the automatic tests finished succesfully, you are informed.
+            You receive a link to appliance for download for testing and have a
+            few days of time. If no veto is given, the Appliance is usually
+            published after the veto deadline. After the release, the appliance
+            will show for download on the app page in the App Catalog. Please
+            also provide a link to the app detail page from your download page.
+        </para>
+    </section>
 
     <section id="branding">
         <title>Custom branding</title>
         <para>
+            With a customized branding of an appliance you can modify the
+            boot loader, the boot splash, the system setup wizard and the portal
+            page. Please look at the screenshots below and their captions
+            mentioning the options that control the look in the screen.
         </para>
+
+        <section id="appliance:branding:bootloader">
+            <title>Boot loader</title>
+            <para>
+                The background color can be configured for the boot loader.
+                Please define in the <guimenu>Primary appliance color</guimenu>
+                setting.
+            </para>
+            <para>
+                <figure id="appliance:branding:bootloader-figure">
+                    <title>Boot loader</title>
+                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Bootloader.png"/>
+                </figure>
+            </para>
+        </section>
+
+        <section id="appliance:branding:bootsplash">
+            <title>Boot Splash</title>
+            <para>
+                The boot splash can have a custom background and a logo. The
+                logo is defined in <guimenu>Logo in setup wizard</guimenu>.
+                Please provide a SVG file which has the fonts converted to
+                paths.
+            </para>
+            <para>
+                The background color is defined in <guimenu>CSS definition of
+                    the appliance background</guimenu>. For a black background,
+                simply define <userinput>#000000</userinput>. For a gradient
+                you can for example define <userinput>linear-gradient(to
+                    bottom, #345279 0%, #1d2c41 100%)</userinput>. For more
+                information on how to use a gradient, see <ulink
+                    url="https://www.w3schools.com/csSref/func_linear-gradient.asp">CSS
+                    linear-gradient() function on w3schools</ulink>.
+            </para>
+            <para>
+                <figure id="appliance:branding:bootsplash-figure">
+                    <title>Boot loader</title>
+                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Bootsplash.png"/>
+                </figure>
+            </para>
+        </section>
+
+        <section id="appliance:branding:setup-wizard">
+            <title>System setup wizard</title>
+            <para>
+                The system setup wizard allows several slots to be customized.
+                In the <guimenu>Appliance creation</guimenu> section in the
+                provider portal, you can set the <guimenu>Appliance
+                    name</guimenu> (string without the word "appliance"). It
+                controls the heading in the system setup wizard. Below is the
+                <guimenu>Logo for the setup wizard</guimenu>, which is shown on
+                the first page of the system setup wizard.
+            </para>
+            <para>
+                In the <guimenu>Branding configuration of the
+                    Appliance</guimenu> section, the logo on the top left can
+                be changed with the <guimenu>Logo for UMC header</guimenu>
+                setting. The <guimenu>Primary appliance color</guimenu>
+                controls the background color of the UMC header.
+            </para>
+            <para>
+                The <guimenu>Secondary appliance color</guimenu> is used as
+                color for smaller graphical elements throughout the setup
+                wizard (see <xref linkend="appliance:branding:umc-branding" />).
+            </para>
+            <para>
+                <figure id="appliance:branding:setup-wizard-figure">
+                    <title>Boot loader</title>
+                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Setup_Wizard.png"/>
+                </figure>
+            </para>
+            <para>
+                <figure id="appliance:branding:umc-branding-figure">
+                    <title>Boot loader</title>
+                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_UMC.png"/>
+                </figure>
+            </para>
+        </section>
+
+        <section id="appliance:branding:welcome-screen">
+            <title>Welcome screen</title>
+            <para>
+                The welcome screen is shown after the appliance setup has been
+                finished. If offers information on how the user can access the
+                appliance. It uses settings like the Appliance name and the CSS
+                definition of the appliance background. The <guimenu>Logo
+                    displayed in the welcome screen</guimenu> needs to be a SVG
+                file that is slightly wider than high and which has the fonts
+                converted to paths.
+            </para>
+            <para>
+                <figure id="appliance:branding:umc-branding-figure">
+                    <title>Boot loader</title>
+                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Welcome_Screen.png"/>
+                </figure>
+            </para>
+        </section>
+
+        <section id="appliance:branding:portal-page">
+            <title>Portal page</title>
+            <para>
+                The branding of the portal page is independent from the other
+                sections. You can define <guimenu>Title as shown on the portal
+                    page</guimenu> and decide if the font color shall be black
+                or white. The <guimenu>Logo for the portal page</guimenu>
+                controls which logo shall be set in the first tile on the
+                portal page. The background can either consist of a background
+                image or a background color or a background color gradient as
+                described in <xref linkend="appliance:branding:bootsplash" />.
+            </para>
+            <para>
+                <figure id="appliance:branding:portal-page-figure">
+                    <title>Boot loader</title>
+                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Portal_Page.png"/>
+                </figure>
+            </para>
+        </section>
+
     </section>
 
-    <section id="procedures">
-        <title>Procedures</title>
-        <para>
-        </para>
-    </section>
 </chapter>
 
 <!--
