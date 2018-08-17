@@ -492,12 +492,10 @@ TODO: Stefan
     </para>
 
     <para>
-		If the app should benefit from the identity management system, the flag <emphasis>Add activation checkbox for App in UCS user management</emphasis>
-		should be activated.
-		This gives administrators the possibility to activate the users for the app. It is also possible to make significantly more complex settings.
-<!-- TODO
-	Add a link
--->
+		If the app should benefit from the identity management, the flag <emphasis>Add activation checkbox for App in UCS user management</emphasis>
+		should be activated in the App Provider Portal.
+		This extends the IDM by a checkbox and an administrator can activate or deactivate each user individually for the app.
+		It is also possible to make significantly more complex settings. See <xref linkend="user-rights-management" /> for more details.
     </para>
 
     <section id="provisioning">
