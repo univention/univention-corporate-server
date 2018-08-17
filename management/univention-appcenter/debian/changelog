@@ -1,3 +1,10 @@
+univention-appcenter (7.0.2-19) unstable; urgency=medium
+
+  * Bug #47315: Better log messages, check returncode for trigger, make JSON
+    file creation "atomic"
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 17 Aug 2018 17:55:24 +0200
+
 univention-appcenter (7.0.2-18) unstable; urgency=low
 
   * Bug #47114: Fix notifier traceback memory leak

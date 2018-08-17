@@ -54,20 +54,20 @@ logger = None
 
 
 def get_app_connection(app):
-		if app.docker:
-			machine_account = ucr_get(app.ucr_hostdn_key)
-			try:
-				from univention.appcenter.docker import Docker
-			except ImportError:
-				return None, None
-			docker = Docker(app, logger)
-			if docker.is_running():
-				machine_password = open(docker.path('/etc/machine.secret')).read()
-			logger.info('Using App account connection')
-			return get_read_connection(machine_account, machine_password)
-		else:
-			logger.info('Using machine connection')
-			return get_machine_connection()
+	if app.docker:
+		machine_account = ucr_get(app.ucr_hostdn_key)
+		try:
+			from univention.appcenter.docker import Docker
+		except ImportError:
+			return None, None
+		docker = Docker(app, logger)
+		if docker.is_running():
+			machine_password = open(docker.path('/etc/machine.secret')).read()
+		logger.info('Using App account connection')
+		return get_read_connection(machine_account, machine_password)
+	else:
+		logger.info('Using machine connection')
+		return get_machine_connection()
 
 
 def run_trigger(app):
@@ -94,7 +94,7 @@ def run_trigger(app):
 		success = process.returncode == 0
 	else:
 		os.chmod(cached_script, 0o744)
-		call_process([cached_script], logger=logger)
+		success = call_process([cached_script], logger=logger).returncode == 0
 	if success:
 		logger.info('Success! Removing consumed files')
 		for fname in filenames:
@@ -122,7 +122,8 @@ def convert(app, dumped, filename, lo, pos):
 	mkdir(dst_dir)
 	base = os.path.basename(filename)
 	dst = os.path.join(dst_dir, base)
-	with open(dst, 'wb') as fd:
+	tmp = '/tmp/listener-converter-%s-%s.tmp' % (app.id, entry_uuid)
+	with open(tmp, 'wb') as fd:
 		attrs = {
 			'id': entry_uuid,
 			'object': attrs,
@@ -130,7 +131,8 @@ def convert(app, dumped, filename, lo, pos):
 			'udm_object_type': udm_type,
 		}
 		json.dump(attrs, fd, sort_keys=True, indent=4)
-	logger.info('Successfully created %s for the App to consume' % dst)
+	shutil.move(tmp, dst)
+	logger.info('%s of %s (id: %s, file: %s)' % ('conversion', dn, entry_uuid, dst))
 	return True
 
 
@@ -141,24 +143,24 @@ def find_and_convert_files(app, lo, pos):
 	used_filenames = []
 	obsolete_filenames = []
 	for filename in filenames:
-		logger.info('Converting %s' % filename)
+		logger.debug('Converting %s' % filename)
 		dumped = json.load(open(filename))
 		entry_uuid = dumped['entry_uuid']
 		if entry_uuid in used_entry_uuids:
 			obsolete_filename = used_entry_uuids.pop(entry_uuid)
-			logger.info('%s replaces earlier %s' % (filename, obsolete_filename))
+			logger.debug('%s replaces earlier %s' % (filename, obsolete_filename))
 			used_filenames.remove(obsolete_filename)
 			obsolete_filenames.append(obsolete_filename)
 		used_filenames.append(filename)
 		used_entry_uuids[entry_uuid] = filename
 		dumped_objects[filename] = dumped
 	for filename in obsolete_filenames:
-		logger.info('Deleting unused %s' % filename)
+		logger.debug('Deleting unused %s' % filename)
 		os.unlink(filename)
 	for filename in used_filenames:
 		dumped = dumped_objects[filename]
 		if convert(app, dumped, filename, lo, pos):
-			logger.info('Deleting used %s' % filename)
+			logger.debug('Deleting used %s' % filename)
 			os.unlink(filename)
 
 
@@ -183,12 +185,15 @@ def main():
 		logger.critical('LDAP connection failed')
 		sys.exit(3)
 	interval = int(ucr_get('appcenter/converter/sleep', '5'))
+	logger.info('Converter for %s ready' % app)
 	while True:
 		try:
 			find_and_convert_files(app, lo, pos)
 			run_trigger(app)
 		except Exception:
 			logger.error('Error in the Listener converter', exc_info=1)
+			logger.error('The Listener converter should be restarted in a few moments and try again')
+			raise
 		if args.once:
 			break
 		time.sleep(interval)

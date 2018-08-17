@@ -57,7 +57,7 @@ class AppListener(ListenerModuleHandler):
 		with self.as_root():
 			os.makedirs(dirname)
 
-	def _write_json(self, dn, obj, command):
+	def _write_json(self, dn, obj, command, log_as=None):
 		entry_uuid = obj.get('entryUUID', [None])[0]
 		object_type = obj.get('univentionObjectType', [None])[0]
 		attrs = {
@@ -70,18 +70,15 @@ class AppListener(ListenerModuleHandler):
 			filename = self._get_new_file_name()
 			with open(filename, 'wb') as fd:
 				json.dump(attrs, fd, sort_keys=True, indent=4)
-			self.logger.info('Wrote %s for %s %s' % (filename, object_type, entry_uuid))
+			self.logger.info('%s of %s (id: %s, file: %s)' % (log_as or command, dn, entry_uuid, filename))
 
 	def create(self, dn, new):
-		self.logger.info('Creation of %s' % dn)
-		self._write_json(dn, new, 'modify')
+		self._write_json(dn, new, 'modify', log_as='create')
 
 	def modify(self, dn, old, new, old_dn):
-		self.logger.info('Modification of %s' % dn)
 		self._write_json(dn, new, 'modify')
 
 	def remove(self, dn, old):
-		self.logger.info('Deletion of %s' % dn)
 		self._write_json(dn, old, 'delete')
 
 	class Configuration(ListenerModuleHandler.Configuration):
