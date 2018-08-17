@@ -713,6 +713,11 @@ TODO: Stefan
 			done in the inst script.
             Further information on extended attributes can be found in the Univention Developer Reference.
         </para>
+	<!--
+		TODO:
+		I haven't documented https://wiki.univention.de/index.php/Integration_with_UCS/Attributes.
+		We should decide how to proceed with this.
+	-->
     </section>
 
 </chapter>
@@ -1533,7 +1538,7 @@ TODO: Nico
                 converted to paths.
             </para>
             <para>
-                <figure id="appliance:branding:umc-branding-figure">
+                <figure id="appliance:branding:umc-branding-welcome-screen">
                     <title>Boot loader</title>
                     <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Welcome_Screen.png"/>
                 </figure>
