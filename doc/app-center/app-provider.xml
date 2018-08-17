@@ -564,9 +564,14 @@ TODO: Stefan
             </para>
             <para>
 				The configuration for these IDM notifications can be done on the <option>LDAP Listener</option> tab in the App Provider Portal.
-<!-- TODO
-	How to define the script?
--->
+				First, it must be defined on which changes the 
+				It can be configured which object types are watched. Currently, users and groups are supported.
+				In addition, a script is specified which is executed as soon as a change is made. The script is executed in the container.
+				If the app container contains such a script, it can be excuted by the script which is defined in the App Provider Portal, for example
+<programlisting language="sh">
+#/bin/sh
+/usr/sbin/app-connector
+</programlisting>
             </para>
             <para>
 				The files are created in the directory <filename>/var/lib/univention-appcenter/apps/$appid/data/listener/</filename>.
