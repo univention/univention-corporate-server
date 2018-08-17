@@ -912,6 +912,7 @@ univention-app dev-use-test-appcenter
             maintenance mode and receives updates from the app provider. The
             evolution of an app is represented by its version. In order to
             provide an update for your app, follow these steps:
+
             <orderedlist>
                 <listitem>
                     <simpara>
@@ -943,6 +944,13 @@ univention-app dev-use-test-appcenter
                     </simpara>
                 </listitem>
             </orderedlist>
+        </para>
+
+        <para>
+            <figure id="app-life-cycle:update:new-version">
+                <title>Add a new App</title>
+                <graphic scalefit="1" width="275px" fileref="illustrations/app_portal_new_version.png"/>
+            </figure>
         </para>
     </section>
 
