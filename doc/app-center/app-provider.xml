@@ -1411,7 +1411,6 @@ TODO: Nico
                 <userinput>Groups</userinput> and <userinput>App
                     Center</userinput> listed here.
             </para>
-        </section>
         <para>
             As soon as the settings are made, <guimenu>Sync to Test App
                 Center</guimenu>, click the <guimenu>Publish App</guimenu>
@@ -1432,6 +1431,7 @@ TODO: Nico
             will show for download on the app page in the App Catalog. Please
             also provide a link to the app detail page from your download page.
         </para>
+        </section>
     </section>
 
     <section id="branding">
