@@ -580,14 +580,14 @@ check_kopano_repo
 check_openxchange_app ()
 {
 	if LC_ALL=C dpkg -l 'univention-ox-meta-singleserver' 2>/dev/null | grep ^i >>"$UPDATER_LOG" 2>&1; then
-		ucrv_on_master="$(univention-ssh /etc/machine.secret ${hostname}\$@$ldap_master /usr/sbin/ucr get ox/master/42/registered_ldap_acls 2>/dev/null)" >&3 2>&3
-		ox_schema_in_ldap="$(univention-ldapsearch -xLLL -b cn=oxforucs,cn=ldapschema,cn=univention,$(ucr get ldap/base) | ldapsearch-wrapper) >>$UPDATER_LOG 2>&1"
+		ucrv_on_master="$(univention-ssh /etc/machine.secret ${hostname}\$@$ldap_master /usr/sbin/ucr get ox/master/42/registered_ldap_acls 2>/dev/null)"
+		ox_schema_in_ldap="$(univention-ldapsearch -xLLL -o ldif-wrap=no -b "cn=oxforucs,cn=ldapschema,cn=univention,$(ucr get ldap/base)" 2>>$UPDATER_LOG)"
 		rvalue_ox_schema_in_ldap="$?"
-		if [ ! "$rvalue_ox_schema_in_ldap" -o "$ucrv_on_master" != "yes" ]; then
+		if [ ! "$rvalue_ox_schema_in_ldap" = "0" -o "$ucrv_on_master" != "yes" ]; then
 			echo "ucrv_on_master: ${ucrv_on_master}" >>"$UPDATER_LOG"
 			echo "ox_schema_in_ldap: ${ox_schema_in_ldap}" >>"$UPDATER_LOG"
-			echo; echo "ERROR: The OpenXChange LDAP Schema registration is incorrect."
-			echo "Aborting the upgrade. For instructions how to proceed, please refer to"
+			echo; echo "ERROR: The OX Appsuite LDAP schema registration is incorrect."
+			echo "Aborting the upgrade. For instructions on how to proceed, please refer to"
 			echo "https://help.univention.com/t/9440"; echo
 			if is_ucr_true update43/ignore_ox_schema_issue; then
 				echo "WARNING: update43/ignore_ox_schema_issue is set to true. Skipped as requested."
