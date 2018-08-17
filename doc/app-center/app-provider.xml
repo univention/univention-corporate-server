@@ -1569,12 +1569,63 @@ TODO: Stefan
 -->
 <chapter id="app-configurations">
     <title>App configurations</title>
+	<para>
+	</para>
 
     <section id="installation-scripts">
         <title>Installation scripts</title>
         <para>
-        </para>
+		<!-- TOOD: descripe the order of the setup process -->
+		</para>
+        <section id="installation:preinst">
+            <title>Script called before installation to verify that App may be installed</title>
+			<para>
+				This script is called on the UCS host system before the App is initialized, even before the App image is downloaded.
+				Its purpose is to check whether installation may be successful.  Any exit code other than 0 will result in cancellation
+				of the installation process. This script is also called if the the App is upgraded.
+			</para>
+		</section>
+        <section id="installation:setup">
+            <title>Docker script setup</title>
+			<para>
+				This script is called in the Docker container. It is normaly the heart of the initial App configuration.
+				If the script fails (exit code != 0) the installation is aborted.
+				<!-- TODO: parameters?-->
+			</para>
+		</section>
+        <section id="installation:joinscript">
+            <title>Join script</title>
+			<para>
+				This script is called on the UCS host system after the Docker container is configured.
+				See our page about Join scripts or the Developer Reference for how to write a join script. If the join
+				script runs successfully, the join script may save this information in a status file. If this does not happen, the user
+				is constantly reminded to re-run the join script. So the join script does not need to run successfully. The installation
+				will not be aborted at this point. But of course at some point it should run through successfully.
+			</para>
+		</section>
+        <section id="installation:prerm">
+            <title>Script called before uninstalling to verify that App may be removed</title>
+			<para>
+				This script is called in the UCS host system. Its purpose is to check whether an uninstallation may
+				be successful. But it may be used to somehow prepare the system for the uninstallation. For example, the prerm may fail
+				if other software still depends on it. Any exit code other than 0 will result in cancellation of the uninstallation
+				process.
+			</para>
+		</section>
+        <section id="installation:unjoin">
+            <title>Un-join script</title>
+			<para>
+				This script is called on the UCS host system after the Docker Container is removed.
+				See the Developer Reference for how to write an unjoin script. It should somehow revert most (if not all)
+				changes done in the inst script (or join script). With the notable exception of schema registration. An LDAP schema
+				extension should never be removed once it was registered..
+			</para>
+		</section>
     </section>
+<!--
+	TODO:
+	Should we add store_data, restore_date_before_setup, restore_data_after_setup?
+-->
 
     <section id="app-settings">
         <title>App settings</title>
