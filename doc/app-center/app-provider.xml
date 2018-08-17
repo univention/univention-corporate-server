@@ -1510,7 +1510,7 @@ TODO: Nico
             <para>
                 The <guimenu>Secondary appliance color</guimenu> is used as
                 color for smaller graphical elements throughout the setup
-                wizard (see <xref linkend="appliance:branding:umc-branding" />).
+                wizard (see <xref linkend="appliance:branding:umc-branding-figure" />).
             </para>
             <para>
                 <figure id="appliance:branding:setup-wizard-figure">
