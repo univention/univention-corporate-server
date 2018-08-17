@@ -699,6 +699,19 @@ TODO: Stefan
     <section id="user-rights-management">
         <title>User rights management</title>
         <para>
+			The flag <emphasis>Add activation checkbox for App in UCS user management</emphasis> can be activated in the App
+			Provider Portal.
+			This adds a checkbox to the user administration and a schema extension for the IDM is created, so that the status
+			of the checkbox is stored in an attribute in the IDM. This allows each user to be activated or deactivated seperatly.
+        </para>
+        <para>
+			If the app requires more settings in the IDM, an own LDAP schema can be uploaded in the App Provider Portal
+			<guimenu>Docker / Configuration files / Schema extension for LDAP</guimenu>.
+        </para>
+        <para>
+			In this case, it is also possible to create individual extended attributes during the setup process. This should be
+			done in the inst script.
+            Further information on extended attributes can be found in the Univention Developer Reference.
         </para>
     </section>
 
