@@ -11,10 +11,6 @@
   <title>Univention App Center for App Provider</title>
 </bookinfo>
 
-<!--
-TODO: Nico
--->
-
 <chapter id="introduction">
     <title>Introduction</title>
 
@@ -314,6 +310,7 @@ TODO: Nico
                be more detailed and can for example include the software name.
                Please provide the logos in SVG format.
            </para>
+           <!-- TODO: @Nico: Add note on translation! -->
            <para>
                Those settings can be changed at any time later.  For a more
                detailed description on the app presentation, please have a look
@@ -705,9 +702,6 @@ TODO: Stefan
 
 </chapter>
 
-<!--
-TODO: Nico
--->
 <chapter id="app-lifecycle">
     <title>App life cycle</title>
 
@@ -771,10 +765,10 @@ TODO: Nico
             <title>Test App Center</title>
             <para>
                 Switch to the Test App Center and test your app directly on UCS.
-                <programlisting>
-                    univention-install univention-appcenter-dev
-                    univention-app dev-use-test-appcenter
-                </programlisting>
+<programlisting>
+univention-install univention-appcenter-dev
+univention-app dev-use-test-appcenter
+</programlisting>
             </para>
         </section>
 
@@ -851,29 +845,126 @@ TODO: Nico
                 </programlisting>
             </para>
         </section>
+
+        <section id="testing:automation-for-providers">
+            <title>Automated testing for App Providers</title>
+            <para>
+                Univention always runs automated tests on an app before it
+                released. This testing infrastructure can be used by the app
+                provider to increase the test coverage for the app. This can
+                drastically safe manual testing efforts.
+            </para>
+
+        <!-- 
+        TODO: Section about how providers can use testing infrastructure for automated tests.
+        -->
+            <para>
+            </para>
+        </section>
     </section>
 
     <section id="approval">
         <title>Two-side approval</title>
         <para>
+            Testing the app also involves to give an approval for the release
+            of the app. Each app in the App Center requires a two-side approval,
+            one from the app provider and one from Univention. The app provider
+            starts with the process and performs its tests to give the approval
+            for its app.
+        </para>
+        <para>
+            The app provider's approval is given by clicking on
+            <guimenu>Publish App</guimenu> in the App Provider portal. The
+            Univention App Center team is notified and they will start the
+            automated tests. As soon as the automated tests are successful, the
+            second approval is available and the app is ready to be released.
+        </para>
+        <para>
+            The automated tests conducted by Univention test for installation,
+            deinstallation and re-installation of the app for different UCS
+            system roles. They check for proper operation of the UCS services.
+            No app functionality will be tested. It is rather ensured that the
+            app does not break UCS functionality.
         </para>
     </section>
 
-    <section id="first-release">
-        <title>First release</title>
+    <section id="release">
+        <title>Release</title>
         <para>
+            As soon as the app is ready for release, it is copied to the
+            productive App Center by the Univention App Center team. The app
+            will be visible in the App Center UMC module immediately for all
+            UCS users. The app catalog is updated automatically and shows the
+            new app.
+        </para>
+        <para>
+            Besides the technical testing described above, the first release
+            also undergoes a review process on the app presentation. The app
+            description is checked for plausibility, understandability and for
+            the App Center context.
         </para>
     </section>
 
     <section id="updates">
         <title>Updates</title>
         <para>
+            After the release of the first version the app enters the
+            maintenance mode and receives updates from the app provider. The
+            evolution of an app is represented by its version. In order to
+            provide an update for your app, follow these steps:
+            <orderedlist>
+                <listitem>
+                    <simpara>
+                        Go to the <guimenu>Apps</guimenu> UMC module in the app
+                        provider portal and search your app.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Create a new version of the app: Mouse over the app's
+                        tile, click the menu in the upper right corner of the
+                        tile and select <guimenu>New App Version</guimenu>.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Enter the values for source and target version. The
+                        provider portal will then copy the source app to the
+                        target.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Open the new app version and make the appropriate
+                        changes, e.g. the version tag for the docker image.
+                        Usual places for changes involve the scripts and maybe
+                        the integration. Texts and logos should be checked if
+                        they are still up to date.
+                    </simpara>
+                </listitem>
+            </orderedlist>
         </para>
     </section>
 
     <section id="termination">
         <title>Termination (end of life)</title>
         <para>
+            If you as app provider decide to discontinue an app and stop the
+            maintenance, the app can be terminated by setting it end of life.
+            As soon as an app is end of life, users won't be able to install
+            it. Users that already have the app install, will see a
+            notification in the App Center that informs them about the
+            termination and that they should look for alternative solutions.
+        </para>
+        <para>
+            You can terminate the app by going to your app's configuration in
+            the app provider portal. Please go to the
+            <guimenu>Advanced</guimenu> tab to the section <guimenu>Custom
+                entries</guimenu>. Create a new custom entry with the
+            <option>Custom key</option> <userinput>EndOfLife</userinput> and
+            the <option>Custom value</option> <userinput>True</userinput>.
+            Afterwards press <guimenu>Sync to Test App Center</guimenu> and
+            <guimenu>Publish App</guimenu>.
         </para>
     </section>
 
