@@ -299,9 +299,9 @@
             <title>Logo and description</title>
             <para>
                 On your app's <guimenu>General</guimenu> tab please provide a
-                description and logos for your software. Start with a short and
-                a long description. It gives an impression on how it will look
-                like during later testing.
+                description in English and logos for your software. Start with
+                a short and a long description. It gives an impression on how
+                it will look like during later testing.
             </para>
             <para>                
                On the same tab you can upload two logos: A default icon that is
@@ -310,11 +310,11 @@
                be more detailed and can for example include the software name.
                Please provide the logos in SVG format.
            </para>
-           <!-- TODO: @Nico: Add note on translation! -->
            <para>
-               Those settings can be changed at any time later.  For a more
-               detailed description on the app presentation, please have a look
-               at <xref linkend="app-presentation" />.
+               Those settings can be changed at any time later. For a more
+               detailed description on the app presentation and notes on the
+               translation, please have a look at <xref
+                   linkend="app-presentation" />.
            </para>
         </section>
 
@@ -1056,41 +1056,265 @@ TODO: Nico
     <title>App presentation</title>
 
     <para>
+        This chapter is about how the app is presented to the user with texts,
+        logos, screenshots and videos. The contents are part of the app
+        configuration. They are shown to the user in the App Center UMC module
+        in UCS and on the Univention website in the <ulink
+            url="https://www.univention.com/products/univention-app-center/app-catalog/">App
+            Catalog</ulink>.
     </para>
 
     <section id="logos">
         <title>Logos</title>
         <para>
+            All logos uploaded to the app provider portal have to be SVG
+            format, which is most flexible for the presentation purposes. When
+            SVG files are created, please make sure that fonts are converted to
+            paths before export. Otherwise it may happen that another font is
+            used depending on the user's endpoint where the presentation is
+            rendered.
+        </para>
+        <para>
+            The logos can be uploaded on the <guimenu>General</guimenu> tab in
+            the <guimenu>Logos</guimenu> section. Two icons are needed: One for
+            the app tile on the overview page and a more detailed logo for the
+            app page. The tile only has limited space in square format. Please
+            make sure, your logo can still be recognized. The detailed logo is
+            not limited. Most logos for this slot have a landscape orientation.
+            The App Center and the App Catalog take care of the appropriate
+            scaling.
         </para>
     </section>
 
     <section id="screentshots">
         <title>Screenshots and videos</title>
         <para>
+            Screenshots and videos are a good way to introduce the solution to
+            the user. To add screenshots please go to the <guimenu>Screenshots
+                and videos</guimenu> tab. Screenshots can be in PNG or JPG
+            format and are uploaded here. Videos have to be published on
+            YouTube the complete YouTube link has to provided in the app
+            provider portal. You can add as many screenshots and videos you
+            like. Please keep in mind that the screenshots and videos in this
+            tab must be for an English speaking audience.
+        </para>
+        <para>
+             If you have the same screenshots in German, it is recommended that
+             you add them, as well, in the <guimenu>Translations</guimenu> tab
+             in the <guimenu>Screenshots and videos</guimenu> section.
+        </para>
+        <para>
+            Please use comprehensive visualizations which make it easier to
+            understand the text. Give the image files sensible names including
+            the keywords. An example of a bad file name for an image would be
+            “app_76bz3.jpg”, whereas “app_name.jpg” would be much better.
         </para>
     </section>
 
     <section id="description">
         <title>Description</title>
         <para>
+            The description is the text that introduces your solution to the
+            user and thus is very important to keep their attention.  Here are
+            some tips that are intended to help you to present your app in as
+            user-friendly, customer-oriented, and search-engine-optimized
+            manner as good as possible. At a glance:
+            <itemizedlist>
+                <listitem>
+                    <simpara>
+                        Unique content
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Content: What does the app do? Describe the added value and provide examples.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        The app is running on UCS. What is the added value that the combination of UCS and the app offers to the customer?
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        At least 300 words.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Please structure the text in paragraphs and use subheadings and lists.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Emphasize product benefits and list them.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Bear search engines in mind and use Keywords.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Furnish links with all HTML attributes
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Include supporting images/screenshots and define them
+                        in the app metadata (not within description).
+                    </simpara>
+                </listitem>
+            </itemizedlist>
+        </para>
+
+        <para>
+            The description is provided in HTML format. The text editor in the
+            provider portal provides decent functionality. If you need more
+            control on the HTML, you can switch to HTML source mode and edit
+            the HTML directly. Please don't use specific styles, because they
+            may distract the overall impression.
+        </para>
+        <para>
+            The important aspect here is that the content of your app
+            description is unique (keyword: unique content). Please do not
+            simply copy the product description from your own page, but instead
+            compose a new, original text. This text should be aimed at
+            approaching potential customers. Explain what the app can do and
+            the added value it offers a user. Examples are also an excellent
+            idea. In addition, you should emphasize the advantages offered by
+            the app when run under UCS.
+        </para>
+        <para>
+            The length of the description depends on how much you have to say
+            and how much explanation your app requires. Ideally the description
+            should be at least 300 words long.  Structure the text and use
+            paragraphs to make it easier to read. Work with subheadings (html:
+            h2, h3) to divide your text into logical sections.  It is very
+            helpful for the reader to be able to see the advantages of your app
+            and its combination with UCS at a glance. For this reason,
+            presentation of the advantages in lists (html: ol, ul, li) is
+            particularly practical.
+        </para>
+        <para>
+            Revise your text in order to optimize it for search engines. Have
+            you specified all the desired keywords (e.g., app name)? Have you
+            integrated relevant keywords in your text? The text can be adapted
+            for the search engines / keywords and synonyms, word combinations,
+            etc., are an asset – but please try to avoid keyword stuffing. Good
+            readability should be your priority.  Important terms in the text
+            can be emphasized if they help with the readability (html: strong).
+        </para>
+        <para>
+            If you want to use links in your app description (e.g., to pages on
+            your own website), please always use the
+            <userinput>target="_blank"</userinput> (open in new tab) and assign
+            the link a title attribute. Please keep the use of links to a
+            minimum and ideally use the fields provided especially for this
+            purpose in the app metadata.
         </para>
     </section>
 
     <section id="contact">
         <title>Contact</title>
         <para>
+            For the users it is important to know who is the producer of the
+            app. For this purpose there is the <guimenu>Contact</guimenu> tab
+            in the app provider portal. Please provide <option>Gerneal product
+                contact information</option> like an email address where the
+            users can contact you and a website to your solution. Please also
+            link to a website, where your support options and pricing is
+            explained to your customers and place the link in the field
+            <option>Website with information regarding
+                support options</option>.
         </para>
     </section>
 
     <section id="license">
         <title>License</title>
         <para>
+            On the <guimenu>License</guimenu> you can define license
+            information that you want to provide to the user. Let's start with
+            the <option>license agreement</option>. Here you can save a text
+            that the user should read and accept before the app is installed.
+            If the user does not accept the text, the installation process is
+            aborted and no app is installed. The license agreement is mostly
+            used by app providers for legal information that needs confirmation
+            by the user. If you don't have a need for such a text, you can
+            leave it empty.
+        </para>
+        <para>
+            Users have to register with a valid email address in order to use
+            the App Center. If you as app provider configure an email address
+            in the field <option>E-mail address for App install
+                notifications</option> you receive information on a daily basis
+            about which user installed the app. The App Center UMC module
+            informs the user that the app provider may contact them. App
+            provider are thus free to use the address for lead management.
+        </para>
+        <para>
+            The last setting is intended to provide the users a rough
+            imagination about the license type of your software. Please choose
+            one option that fits best to your solution. The options are:
+            <itemizedlist>
+                <listitem>
+                    <simpara>
+                        <userinput>Empty</userinput>: If no value is given, the
+                        App Center UMC module and the App Catalog will show the
+                        text "Please contact the App provider for further
+                        license details".
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        <userinput>Free commercial use</userinput>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        <userinput>Free commercial use. Some functions or
+                            services are liable to costs.</userinput>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        <userinput>Liable to Costs with Free Trial</userinput>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        <userinput>Liable to Costs</userinput>
+                    </simpara>
+                </listitem>
+            </itemizedlist>
         </para>
     </section>
 
     <section id="readme">
         <title>README for the administrator</title>
         <para>
+            In the tab <guimenu>README files</guimenu> additional information
+            for an app can be provided that show up at certain states of the
+            app. README files are also in HTML like the description and content
+            can be provided the same way (see <xref linkend="description" />).
+            The app provider portal describes when each README file shows up.
+        </para>
+        <para>
+            It is highly recommended to use the README files to show
+            information that does not make sense in the app description, like
+            for example configuration details, hints before and after and
+            update, etc. Please also keep in mind to provide a proper
+            translation.
+        </para>
+    </section>
+
+    <section id="translation">
+        <title>Translations</title>
+        <para>
+            All texts, screenshots and videos should be entered in English.
+            Translations to German should be only made on the
+            <guimenu>Translations</guimenu> tab.
         </para>
     </section>
 
