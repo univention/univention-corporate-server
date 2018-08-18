@@ -486,118 +486,167 @@ TODO: Stefan
     <title>Connection with Identity Management</title>
 
     <para>
-		One of the UCS key features is the integrated identity management (IDM).
-		With this central identity management, users benefit, among other things, from a single login independent of which services or systems they use.
-		It is highly recommended to integrate the app into the identity management system.
+		One of the UCS key features is the integrated identity management
+		(IDM). With this central identity management, users benefit, among
+		other things, from a single login independent of which services or
+		systems they use. It is highly recommended to integrate the app into
+		the identity management system.
     </para>
 
     <para>
-		If the app should benefit from the identity management, the flag <emphasis>Add activation checkbox for App in UCS user management</emphasis>
-		should be activated in the App Provider Portal.
-		This extends the IDM by a checkbox and an administrator can activate or deactivate each user individually for the app.
-		It is also possible to make significantly more complex settings. See <xref linkend="user-rights-management" /> for more details.
+		If the app should benefit from the identity management, the flag
+		<emphasis>Add activation checkbox for App in UCS user
+		management</emphasis> should be activated in the App Provider Portal.
+		This extends the IDM by a checkbox and an administrator can activate
+		or deactivate each user individually for the app. It is also possible
+		to make significantly more complex settings. See <xref
+		linkend="user-rights-management" /> for more details.
     </para>
 
     <section id="provisioning">
         <title>Provisioning</title>
 
         <para>
-			There are different ways in which applications can access provisioning information. The following describes a pull and a push-based procedure.
+			There are different ways in which applications can access
+			provisioning information. The following describes a pull and a
+			push-based procedure.
         </para>
 
         <section id="provisioning:pull">
             <title>Automatically via LDAP connection (Pull)</title>
             <para>
-				UCS stores the user and group information in an OpenLDAP based directory. Thus, the default information can be accessed via the LDAP protocol.
-				Objects are identified by an LDAP filter. The following filter can be used to search for users <wordasword>(univentionObjectType=users/user)</wordasword>
-				and for groups the filter <wordasword>(univentionObjectType=groups/group)</wordasword> can be used.
+				UCS stores the user and group information in an OpenLDAP based
+				directory. Thus, the default information can be accessed via
+				the LDAP protocol. Objects are identified by an LDAP filter.
+				The following filter can be used to search for users
+				<wordasword>(univentionObjectType=users/user)</wordasword> and
+				for groups the filter
+				<wordasword>(univentionObjectType=groups/group)</wordasword>
+				can be used.
             </para>
             <para>
-				If the user activation is used (<guimenu>Add activation checkbox for App in UCS user management</guimenu>), the following LDAP filter can be used:
+				If the user activation is used (<guimenu>Add activation
+				checkbox for App in UCS user management</guimenu>), the
+				following LDAP filter can be used:
 				<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>.
-				The string <wordasword>myapp</wordasword> has to be replaced with the <wordasword>appid</wordasword>.
+				The string <wordasword>myapp</wordasword> has to be replaced
+				with the <wordasword>appid</wordasword>.
             </para>
             <para>
 				The parameters for the LDAP server can be read from the environment variables:
 				<itemizedlist>
 					<listitem>
 						<simpara>
-     						<option>LDAP_SERVER_NAME</option>: The fully-qualified host name of the OpenLDAP server the App may connect to.
+							<option>LDAP_SERVER_NAME</option>:
+							The fully-qualified host name of the OpenLDAP
+							server the App may connect to.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-    						<option>LDAP_SERVER_PORT</option>: The port of the OpenLDAP server the App may connect to.
+							<option>LDAP_SERVER_PORT</option>:
+							The port of the OpenLDAP server the App may
+							connect to.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-    						<option>LDAP_SERVER_ADDITION</option>: A list of alternative OpenLDAP servers. These values should be used for failover.
+							<option>LDAP_SERVER_ADDITION</option>:
+							A list of alternative OpenLDAP servers. These
+							values should be used for failover.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-    						<option>LDAP_BASE</option>: The base for the whole LDAP database, e.g., <uri>dc=mydomain,dc=intranet</uri> or <uri>o=mydomain</uri>.
+							<option>LDAP_BASE</option>:
+							The base for the whole LDAP database, e.g.,
+							<uri>dc=mydomain,dc=intranet</uri> or
+							<uri>o=mydomain</uri>.
 						</simpara>
 					</listitem>
 				</itemizedlist>
 				<important>
 					<para>
-						As a rule, the LDAP basis should not be further restricted. Many environments store users below <uri>cn=users</uri>, but this is not the case in all environments.
+						As a rule, the LDAP basis should not be further
+						restricted. Many environments store users below
+						<uri>cn=users</uri>, but this is not the case in all
+						environments.
 					</para>
 				</important>
             </para>
 
             <para>
-				By default, the OpenLDAP server in UCS does not allow anonymous authentications. For every app a user account is created. The account has
-				read access to the LDAP directory. The username is passed as the environment variable <option>LDAP_HOSTDN</option>. The password is written in the file <filename>/etc/machine.secret</filename>.
-				The credentials are not changed when an app is upgraded. But they change if an App is reinstalled. 
+				By default, the OpenLDAP server in UCS does not allow
+				anonymous authentications. For every app a user account is
+				created. The account has read access to the LDAP directory.
+				The username is passed as the environment variable
+				<option>LDAP_HOSTDN</option>. The password is written in the
+				file <filename>/etc/machine.secret</filename>. The
+				credentials are not changed when an app is upgraded. But they
+				change if an App is reinstalled.
             </para>
         </section>
 
         <section id="provisioning:push">
             <title>Automatically via IDM notifications (Push)</title>
             <para>
-				An app can be notified by the IDM system when users or groups are created, modified or deleted. For each change, a file is created in
-				a specific directory. The app can either poll the directory or register a command that is executed when a file is created. The app should
-				then delete the files.
+				An app can be notified by the IDM system when users or groups
+				are created, modified or deleted. For each change, a file is
+				created in a specific directory. The app can either poll the
+				directory or register a command that is executed when a file
+				is created. The app should then delete the files.
             </para>
             <para>
-				The configuration for these IDM notifications can be done on the <option>LDAP Listener</option> tab in the App Provider Portal.
-				It can be configured which object types are watched. Currently, users and groups are supported.
-				In addition, a script is specified which is executed as soon as a change is made. The script is executed in the container.
-				If the app container contains such a script, it can be executed by the script which is defined in the App Provider Portal, for example
+				The configuration for these IDM notifications can be done on
+				the <option>LDAP Listener</option> tab in the App Provider
+				Portal. It can be configured which object types are watched.
+				Currently, users and groups are supported. In addition, a
+				script is specified which is executed as soon as a change is
+				made. The script is executed in the container. If the app
+				container contains such a script, it can be executed by the
+				script which is defined in the App Provider Portal, for
+				example
 <programlisting language="sh">
 #/bin/sh
 /usr/sbin/app-connector
 </programlisting>
             </para>
             <para>
-				The files are created in the directory <filename>/var/lib/univention-appcenter/apps/$appid/data/listener/</filename>.
+				The files are created in the directory
+				<filename>/var/lib/univention-appcenter/apps/$appid/data/listener/</filename>.
             </para>
             <para>
 				All files are JSON with one dictionary and the following content:
 				<itemizedlist>
 					<listitem>
 						<simpara>
-    						<option>entry_uuid</option>: A unique identifier for the object. It does not change even if the object is moved. The script certainly wants to
-							identify objects by this attribute.
+							<option>entry_uuid</option>:
+							A unique identifier for the object. It does not
+							change even if the object is moved. The script
+							certainly wants to identify objects by this
+							attribute.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-    						<option>dn</option>: The distinguished name of the LDAP object.
+							<option>dn</option>:
+							The distinguished name of the LDAP object.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-    						<option>type</option>: The type of the object, i.e., "users/user", or "groups/group".
+							<option>type</option>:
+							The type of the object, i.e., "users/user", or "groups/group".
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-    						<option>attributes</option>: A dictionary of the attributes of this object. The content is defined by the UDM (Univention Directory Manager)
-							representation of the object. If it is null instead, the object has been deleted.
+							<option>attributes</option>:
+							A dictionary of the attributes of this object. The
+							content is defined by the UDM (Univention
+							Directory Manager) representation of the object.
+							If it is null instead, the object has been
+							deleted.
 						</simpara>
 					</listitem>
 				</itemizedlist>
@@ -609,56 +658,82 @@ TODO: Stefan
         <title>Authentication</title>
 
         <para>
-			There are different ways in which applications can authenticate the against the UCS identity management system.
+			There are different ways in which applications can authenticate
+			the against the UCS identity management system.
         </para>
 
         <section id="authentication:ldap">
             <title>LDAP</title>
             <para>
-				UCS stores the user and group information in an OpenLDAP based directory. Thus, the default information can be accessed via the LDAP protocol.
-				Objects are identified by an LDAP filter. The following filter can be used to search for users <wordasword>(univentionObjectType=users/user)</wordasword>
-				and for groups the filter <wordasword>(univentionObjectType=groups/group)</wordasword> can be used.
+				UCS stores the user and group information in an OpenLDAP based
+				directory. Thus, the default information can be accessed via
+				the LDAP protocol. Objects are identified by an LDAP filter.
+				The following filter can be used to search for users
+				<wordasword>(univentionObjectType=users/user)</wordasword> and
+				for groups the filter
+				<wordasword>(univentionObjectType=groups/group)</wordasword>
+				can be used.
             </para>
             <para>
-				If the user activation is used (<guimenu>Add activation checkbox for App in UCS user management</guimenu>), the following LDAP filter can be used:
+				If the user activation is used (<guimenu>Add activation
+				checkbox for App in UCS user management</guimenu>),
+				the following LDAP filter can be used:
 				<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>.
-				The string <wordasword>myapp</wordasword> has to be replaced with the <wordasword>appid</wordasword>.
+				The string <wordasword>myapp</wordasword> has to be replaced
+				with the <wordasword>appid</wordasword>.
             </para>
             <para>
-				The parameters for the LDAP server can be read from the environment variables:
+				The parameters for the LDAP server can be read from the
+				environment variables:
 				<itemizedlist>
 					<listitem>
 						<simpara>
-     						<option>LDAP_SERVER_NAME</option>: The fully-qualified host name of the OpenLDAP server the App may connect to.
+							<option>LDAP_SERVER_NAME</option>:
+							The fully-qualified host name of the OpenLDAP
+							server the App may connect to.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-    						<option>LDAP_SERVER_PORT</option>: The port of the OpenLDAP server the App may connect to.
+							<option>LDAP_SERVER_PORT</option>:
+							The port of the OpenLDAP server the App may connect to.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-    						<option>LDAP_SERVER_ADDITION</option>: A list of alternative OpenLDAP servers. These values should be used for failover.
+							<option>LDAP_SERVER_ADDITION</option>:
+							A list of alternative OpenLDAP servers. These
+							values should be used for failover.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-    						<option>LDAP_BASE</option>: The base for the whole LDAP database, e.g., <uri>dc=mydomain,dc=intranet</uri> or <uri>o=mydomain</uri>.
+							<option>LDAP_BASE</option>:
+							The base for the whole LDAP database, e.g.,
+							<uri>dc=mydomain,dc=intranet</uri> or
+							<uri>o=mydomain</uri>.
 						</simpara>
 					</listitem>
 				</itemizedlist>
 				<important>
 					<para>
-						As a rule, the LDAP basis should not be further restricted. Many environments store users below <uri>cn=users</uri>, but this is not the case in all environments.
+						As a rule, the LDAP basis should not be further
+						restricted. Many environments store users below
+						<uri>cn=users</uri>, but this is not the case in all
+						environments.
 					</para>
 				</important>
             </para>
 
             <para>
-				By default, the OpenLDAP server in UCS does not allow anonymous authentications. For every app a user account is created. The account has
-				read access to the LDAP directory. The username is passed as the environment variable <option>LDAP_HOSTDN</option>. The password is written in the file <filename>/etc/machine.secret</filename>.
-				The credentials are not changed when an app is upgraded. But they change if an App is reinstalled. 
+				By default, the OpenLDAP server in UCS does not allow
+				anonymous authentications. For every app a user account is
+				created. The account has read access to the LDAP directory.
+				The username is passed as the environment variable
+				<option>LDAP_HOSTDN</option>. The password is written in the
+				file <filename>/etc/machine.secret</filename>. The credentials
+				are not changed when an app is upgraded. But they change if an
+				App is reinstalled. 
             </para>
         </section>
 <!--
@@ -671,17 +746,25 @@ TODO: Stefan
         <section id="authentication:kerberos">
             <title>Kerberos</title>
             <para>
-				UCS integrates a Kerberos server by default. As usual with Kerberos, the data for the Kerberos configuration can be obtained from the DNS. By default, the
-				DNS domain name is passed through the <option>DOMAINNAME</option> environment variable. The following settings can then be queried via DNS:
+				UCS integrates a Kerberos server by default. As usual with
+				Kerberos, the data for the Kerberos configuration can be
+				obtained from the DNS. By default, the DNS domain name is
+				passed through the <option>DOMAINNAME</option> environment
+				variable. The following settings can then be queried via DNS:
 				<itemizedlist>
 					<listitem>
 						<simpara>
-							<emphasis>Kerberos Realm</emphasis>: It an be queried by the TXT record <option>_kerberos.DOMAINNAME</option>
+							<emphasis>Kerberos Realm</emphasis>:
+							It an be queried by the TXT record
+							<option>_kerberos.DOMAINNAME</option>.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-							<emphasis>Kerberos KDC</emphasis>: It an be queried by the SRV records <option>_kerberos._tcp.DOMAINNAME</option> and  <option>_kerberos._udp.DOMAINNAME</option>.
+							<emphasis>Kerberos KDC</emphasis>:
+							It an be queried by the SRV records
+							<option>_kerberos._tcp.DOMAINNAME</option> and
+							<option>_kerberos._udp.DOMAINNAME</option>.
 						</simpara>
 					</listitem>
 				</itemizedlist>
@@ -699,19 +782,23 @@ TODO: Stefan
     <section id="user-rights-management">
         <title>User rights management</title>
         <para>
-			The flag <emphasis>Add activation checkbox for App in UCS user management</emphasis> can be activated in the App
-			Provider Portal.
-			This adds a checkbox to the user administration and a schema extension for the IDM is created, so that the status
-			of the checkbox is stored in an attribute in the IDM. This allows each user to be activated or deactivated seperatly.
+			The flag <emphasis>Add activation checkbox for App in UCS user
+			management</emphasis> can be activated in the App Provider Portal.
+			This adds a checkbox to the user administration and a schema
+			extension for the IDM is created, so that the status of the
+			checkbox is stored in an attribute in the IDM. This allows each
+			user to be activated or deactivated seperatly.
         </para>
         <para>
-			If the app requires more settings in the IDM, an own LDAP schema can be uploaded in the App Provider Portal
-			<guimenu>Docker / Configuration files / Schema extension for LDAP</guimenu>.
+			If the app requires more settings in the IDM, an own LDAP schema
+			can be uploaded in the App Provider Portal <guimenu>Docker /
+			Configuration files / Schema extension for LDAP</guimenu>.
         </para>
         <para>
-			In this case, it is also possible to create individual extended attributes during the setup process. This should be
-			done in the inst script.
-            Further information on extended attributes can be found in the Univention Developer Reference.
+			In this case, it is also possible to create individual extended
+			attributes during the setup process. This should be done in the
+			inst script.  Further information on extended attributes can be
+			found in the Univention Developer Reference.
         </para>
     </section>
 
@@ -1130,7 +1217,7 @@ TODO: Nico
         <title>Description</title>
         <para>
             The description is the text that introduces your solution to the
-            user and thus is very important to keep their attention.  Here are
+            user and thus is very important to keep their attention. Here are
             some tips that are intended to help you to present your app in as
             user-friendly, customer-oriented, and search-engine-optimized
             manner as good as possible. At a glance:
@@ -1570,55 +1657,85 @@ TODO: Stefan
 <chapter id="app-configurations">
     <title>App configurations</title>
 	<para>
+        The App Center offers the possibility to add scripts at various
+		points during the installation and configuration of the app. The most
+		important scripts are described below.
 	</para>
 
     <section id="installation-scripts">
         <title>Installation scripts</title>
         <para>
-		<!-- TOOD: descripe the order of the setup process -->
+			During the installation of an app, the so-called preinst script is
+			executed first. Afterwards, the account for the docker container is
+			created and the Docker container is started. After that, the setup
+			script is called and finally the join script.
 		</para>
         <section id="installation:preinst">
             <title>Script called before installation to verify that App may be installed</title>
 			<para>
-				This script is called on the UCS host system before the App is initialized, even before the App image is downloaded.
-				Its purpose is to check whether installation may be successful.  Any exit code other than 0 will result in cancellation
-				of the installation process. This script is also called if the the App is upgraded.
+				This script is called on the UCS host system before the App is
+				initialized, even before the App image is downloaded. It is
+				also called as preinst script. Its purpose is to check whether
+				installation may be successful. Any exit code other than 0
+				will result in cancellation of the installation process. This
+				script is also called if the the App is upgraded.
 			</para>
 		</section>
         <section id="installation:setup">
             <title>Docker script setup</title>
 			<para>
-				This script is called in the Docker container. It is normaly the heart of the initial App configuration.
-				If the script fails (exit code != 0) the installation is aborted.
+				This script is called in the Docker container. It is normaly
+				the heart of the initial App configuration. If the script
+				fails (exit code != 0) the installation is aborted.
 				<!-- TODO: parameters?-->
 			</para>
 		</section>
         <section id="installation:joinscript">
             <title>Join script</title>
 			<para>
-				This script is called on the UCS host system after the Docker container is configured.
-				See our page about Join scripts or the Developer Reference for how to write a join script. If the join
-				script runs successfully, the join script may save this information in a status file. If this does not happen, the user
-				is constantly reminded to re-run the join script. So the join script does not need to run successfully. The installation
-				will not be aborted at this point. But of course at some point it should run through successfully.
+				This script is called on the UCS host system after the Docker
+				container is configured. See our page about Join scripts or
+				the Developer Reference for how to write a join script. If the
+				join script runs successfully, the join script may save this
+				information in a status file. If this does not happen, the
+				user is constantly reminded to re-run the join script. So the
+				join script does not need to run successfully. The
+				installation will not be aborted at this point. But of course
+				at some point it should run through successfully.
 			</para>
 		</section>
-        <section id="installation:prerm">
+	</section>
+    <section id="uninstallation-scripts">
+        <title>Uninstallation scripts</title>
+        <para>
+		<!-- TOOD: descripe the order of the setup process -->
+			During the uninstallation of an app, the so-called prerm script is
+			executed first. Afterwards, the account for the docker container is
+			removed and the Docker container is stopped. After that, the
+			unjoin script is called.
+		</para>
+        <section id="uninstallation:prerm">
             <title>Script called before uninstalling to verify that App may be removed</title>
 			<para>
-				This script is called in the UCS host system. Its purpose is to check whether an uninstallation may
-				be successful. But it may be used to somehow prepare the system for the uninstallation. For example, the prerm may fail
-				if other software still depends on it. Any exit code other than 0 will result in cancellation of the uninstallation
-				process.
+				This script is called in the UCS host system. It is also
+				called as prerm script. Its purpose is to check whether an
+				uninstallation may be successful. But it may be used to
+				somehow prepare the system for the uninstallation. For
+				example, the prerm may fail if other software still depends on
+				it. Any exit code other than 0 will result in cancellation of
+				the uninstallation process.
 			</para>
 		</section>
-        <section id="installation:unjoin">
-            <title>Un-join script</title>
+        <section id="uninstallation:unjoin">
+            <title>Unjoin script</title>
 			<para>
-				This script is called on the UCS host system after the Docker Container is removed.
-				See the Developer Reference for how to write an unjoin script. It should somehow revert most (if not all)
-				changes done in the inst script (or join script). With the notable exception of schema registration. An LDAP schema
-				extension should never be removed once it was registered..
+				This script is called on the UCS host system after the Docker
+				container is removed. See the Developer Reference for how to
+				write an unjoin script. It should somehow revert most (if not
+				all) changes done in the inst script (or join script).
+				With the notable exception of schema registration. An LDAP
+				schema extension should never be removed once it was
+				registered.
 			</para>
 		</section>
     </section>
