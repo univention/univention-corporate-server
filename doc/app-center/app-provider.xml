@@ -808,11 +808,9 @@ TODO: Stefan
     <title>App life cycle</title>
 
     <para>
-        This chapter is about the life cycle of an app from the development,
-        over its life in the public to termination. The life cycle applies to
-        the app overall and to every single version, except the termination.
-        App versions are not explicitely terminated. They are superseded by the
-        next version.
+        This chapter is about the life cycle of an app from the first app
+        development, over its life in the public to termination. The life cycle
+        applies to the app overall and to every single version.
     </para>
 
     <section id="development">
@@ -820,16 +818,11 @@ TODO: Stefan
         <para>
             Every app starts with the development. It involves the definition
             of the app in the app provider portal, providing the software
-            solution as docker container and the integration of the solution
-            with UCS, for example in the identity management area. See <xref
-                linkend="get-started" />.
-        </para>
-        <para>
-            Typically, the solution is already available as docker image. The
-            first step therefore is to have this image up and running as
-            container by the App Center. The second step usually handles the
-            integration, usually with the identity management in UCS, see <xref
-                linkend="connection-idm" />.
+            solution as docker container (see <xref linkend="get-started" />)
+            and the integration of the solution with UCS, for example in the
+            identity management area (see <xref linkend="connection-idm" />).
+            This part of the life cycle can be divided into the two steps setup
+            and integration.
         </para>
     </section>
 
@@ -849,7 +842,8 @@ TODO: Stefan
                     url="https://www.univention.com/downloads/ucs-download/">Univention
                     website</ulink>. You can choose an ISO image or a
                 pre-installed virtual machine image for various virtualization
-                hypervisors.
+                hypervisors, like for example VMware (ESXi and Workstations),
+                VirtualBox and KVM.
             </para>
         </section>
 
@@ -891,6 +885,9 @@ univention-app dev-use-test-appcenter
                     <listitem>
                         <simpara>
                             The App has to install without user interaction.
+                            Exceptions are configuration parameters obtained
+                            via App Settings (see <xref linkend="app-settings"
+                                />).
                         </simpara>
                     </listitem>
                     <listitem>
@@ -913,17 +910,17 @@ univention-app dev-use-test-appcenter
                 to be fully configured after the installation. If something is
                 needed in order to use the App (e.g., activating users for the
                 service), it should be described in the appropriate README
-                section.
+                section (see <xref linkend="readme" />.
             </para>
         </section>
 
         <section id="testing:upgrade">
             <title>Upgrade the app</title>
             <para>
-                Once you have several version of the app, the upgrade should be
+                Once you have several versions of the app, the upgrade should be
                 tested, as well. The App Center UMC module only allows the
                 installation of the latest app version. To test an upgrade of
-                your app, please go to the console and installed a version
+                your app, please go to the console and install a version
                 explicitely:
 
                 <programlisting>
@@ -952,13 +949,21 @@ univention-app dev-use-test-appcenter
             <title>Automated testing for App Providers</title>
             <para>
                 Univention always runs automated tests on an app before it
-                released. This testing infrastructure can be used by the app
+                is released. This testing infrastructure can be used by the app
                 provider to increase the test coverage for the app. This can
                 drastically safe manual testing efforts.
             </para>
 
         <!-- 
         TODO: Section about how providers can use testing infrastructure for automated tests.
+
+        * How does automated testing apply to docker apps?
+        * Where can the settings be made?
+        * How does it work in principle?
+        * What are the requirements?
+
+        https://wiki.univention.de/index.php/Ucs-test is probably not the right
+        ressource for the topic, because it requires a debian package.
         -->
             <para>
             </para>
@@ -974,6 +979,10 @@ univention-app dev-use-test-appcenter
             starts with the process and performs its tests to give the approval
             for its app.
         </para>
+
+        <!-- 
+        TODO: Add examples what the app provider should test and take care of.
+        -->
         <para>
             The app provider's approval is given by clicking on
             <guimenu>Publish App</guimenu> in the App Provider portal. The
@@ -988,22 +997,27 @@ univention-app dev-use-test-appcenter
             No app functionality will be tested. It is rather ensured that the
             app does not break UCS functionality.
         </para>
+        <para>
+            Besides the technical testing, the first release also undergoes a
+            manual review process on the app presentation. The app description
+            is checked for plausibility, understandability and for the App
+            Center context.
+        </para>
+
     </section>
 
     <section id="release">
         <title>Release</title>
         <para>
             As soon as the app is ready for release, it is copied to the
-            productive App Center by the Univention App Center team. The app
-            will be visible in the App Center UMC module immediately for all
-            UCS users. The app catalog is updated automatically and shows the
-            new app.
-        </para>
-        <para>
-            Besides the technical testing described above, the first release
-            also undergoes a review process on the app presentation. The app
-            description is checked for plausibility, understandability and for
-            the App Center context.
+            productive App Center by the Univention App Center team. This
+            involves the app's presentation material as well as the docker
+            image. Univention maintains an own docker registry. The docker
+            image is copied to that registry and the reference to the docker
+            image is updated accordingly in the app definition. The app will
+            be visible in the App Center UMC module immediately for all UCS
+            users. The app catalog is updated automatically and shows the new
+            app.
         </para>
     </section>
 
@@ -1032,8 +1046,9 @@ univention-app dev-use-test-appcenter
                 <listitem>
                     <simpara>
                         Enter the values for source and target version. The
-                        provider portal will then copy the source app to the
-                        target.
+                        provider portal will then copy the source app
+                        configuration to the target. This saves the app
+                        developer a lot of typing.
                     </simpara>
                 </listitem>
                 <listitem>
@@ -1049,8 +1064,12 @@ univention-app dev-use-test-appcenter
         </para>
 
         <para>
+            <figure id="app-life-cycle:update:create-new-version">
+                <title>Menu for Add a new App</title>
+                <graphic scalefit="1" width="275px" fileref="illustrations/app_portal_create_new_version.png"/>
+            </figure>
             <figure id="app-life-cycle:update:new-version">
-                <title>Add a new App</title>
+                <title>Add a new App version</title>
                 <graphic scalefit="1" width="275px" fileref="illustrations/app_portal_new_version.png"/>
             </figure>
         </para>
@@ -1059,12 +1078,19 @@ univention-app dev-use-test-appcenter
     <section id="termination">
         <title>Termination (end of life)</title>
         <para>
-            If you as app provider decide to discontinue an app and stop the
-            maintenance, the app can be terminated by setting it end of life.
-            As soon as an app is end of life, users won't be able to install
-            it. Users that already have the app install, will see a
-            notification in the App Center that informs them about the
-            termination and that they should look for alternative solutions.
+            If the app provider decides to discontinue an app and stop the
+            maintenance, the app can be terminated by setting it <userinput>end
+                of life</userinput>.  As soon as an app is published in status
+            end of life, UCS system administrators won't be able to install it
+            anymore. UCS systems that already have the app installed, will show
+            a notification in the App Center that informs the UCS system
+            administrator about the termination and that they should look for
+            alternative solutions.
+        </para>
+
+        <para>
+            App versions are not explicitely terminated. They are superseded by
+            the next version. The termination applies to the whole app.
         </para>
         <para>
             You can terminate the app by going to your app's configuration in
@@ -1074,11 +1100,17 @@ univention-app dev-use-test-appcenter
             <option>Custom key</option> <userinput>EndOfLife</userinput> and
             the <option>Custom value</option> <userinput>True</userinput>.
             Afterwards press <guimenu>Sync to Test App Center</guimenu> and
-            <guimenu>Publish App</guimenu>.
+            <guimenu>Publish App</guimenu>. Please provide a custom message in
+            the publish dialog and let the App Center team know about the
+            reasons for the termination.
         </para>
     </section>
 
     <section id="certificates">
+        <!--
+        TODO: Check, if this is the right place for this section. Maybe it is
+        better placed in chapter "App configurations".
+        -->
         <title>Certificates</title>
         <para>
             UCS provides a certificate infrastructure for secure communication
@@ -1088,17 +1120,15 @@ univention-app dev-use-test-appcenter
         </para>
         <para>
             Apps may need access to the UCS certificate infrastructure or need
-            to be aware of changes to the certificates. Starting with UCS 4.3-0
-            errata91 the Univention App Center provides a simple way to manage
-            certificates inside an App.
-        </para>
-        <para>
-            This is simply a new action called
-            <guimenu>update-certificates</guimenu> in the App Center which is
-            called automatically during the installation and upgrade of Apps
-            (but can also be executed manually) and gives Apps a simple way to
-            gain access to certificates and to react upon changes to
-            certificates.
+            to be aware of changes to the certificates. Starting with <ulink
+                url="https://errata.software-univention.de/ucs/4.3/91.html">UCS
+                4.3-0 errata91</ulink> the Univention App Center provides a
+            simple way to manage certificates inside an App.  This is simply a
+            new action called <guimenu>update-certificates</guimenu> in the App
+            Center which is called automatically during the installation and
+            upgrade of Apps (but can also be executed manually) and gives Apps
+            a simple way to gain access to certificates and to react upon
+            changes to certificates.
         </para>
 <programlisting>
 # update all apps
@@ -1136,6 +1166,9 @@ univention-app dev-use-test-appcenter
         <para>
             Every app can define a <guimenu>update_certificates</guimenu>
             script.
+            <!--
+            TODO: @Felix: Where can the app developer place this script in the portal?
+            -->
         </para>
         <para>
             Example:
@@ -1160,8 +1193,9 @@ TODO: Nico
     <para>
         This chapter is about how the app is presented to the user with texts,
         logos, screenshots and videos. The contents are part of the app
-        configuration. They are shown to the user in the App Center UMC module
-        in UCS and on the Univention website in the <ulink
+        configuration. They are shown to the UCS system administrator in the
+        App Center UMC module in UCS and to users on the Univention website in
+        the <ulink
             url="https://www.univention.com/products/univention-app-center/app-catalog/">App
             Catalog</ulink>.
     </para>
@@ -1170,21 +1204,33 @@ TODO: Nico
         <title>Logos</title>
         <para>
             All logos uploaded to the app provider portal have to be SVG
-            format, which is most flexible for the presentation purposes. When
-            SVG files are created, please make sure that fonts are converted to
-            paths before export. Otherwise it may happen that another font is
-            used depending on the user's endpoint where the presentation is
-            rendered.
+            format, which is most flexible for the presentation purposes. 
         </para>
+
+        <important>
+            <para>
+                When SVG files are created or exported, please make sure that
+                fonts are converted to paths before export. Otherwise it may
+                happen that another font is used depending on the user's device
+                and browser where the presentation is rendered.
+            </para>
+            <para>
+                Please also do not simply import a bitmap graphics into SVG and
+                export it. Results after scaling may not look good, because the
+                logo is basically a bitmap in SVG apparel.
+            </para>
+        </important>
+
         <para>
             The logos can be uploaded on the <guimenu>General</guimenu> tab in
             the <guimenu>Logos</guimenu> section. Two icons are needed: One for
             the app tile on the overview page and a more detailed logo for the
-            app page. The tile only has limited space in square format. Please
+            app page. The tile has only limited space in square format. Please
             make sure, your logo can still be recognized. The detailed logo is
             not limited. Most logos for this slot have a landscape orientation.
             The App Center and the App Catalog take care of the appropriate
-            scaling.
+            scaling. SVG allows a very good result due to its nature as vector
+            graphics format.
         </para>
     </section>
 
@@ -1195,7 +1241,7 @@ TODO: Nico
             the user. To add screenshots please go to the <guimenu>Screenshots
                 and videos</guimenu> tab. Screenshots can be in PNG or JPG
             format and are uploaded here. Videos have to be published on
-            YouTube the complete YouTube link has to provided in the app
+            YouTube and the full YouTube link has to be provided in the app
             provider portal. You can add as many screenshots and videos you
             like. Please keep in mind that the screenshots and videos in this
             tab must be for an English speaking audience.
@@ -1207,9 +1253,11 @@ TODO: Nico
         </para>
         <para>
             Please use comprehensive visualizations which make it easier to
-            understand the text. Give the image files sensible names including
-            the keywords. An example of a bad file name for an image would be
-            “app_76bz3.jpg”, whereas “app_name.jpg” would be much better.
+            understand the app's description. This can be achieved with
+            screenshots or other forms of visualization. Give the image files
+            sensible names including the keywords. An example of a bad file
+            name for an image would be “app_76bz3.jpg”, whereas “app_name.jpg”
+            would be much better.
         </para>
     </section>
 
@@ -1217,8 +1265,8 @@ TODO: Nico
         <title>Description</title>
         <para>
             The description is the text that introduces your solution to the
-            user and thus is very important to keep their attention. Here are
-            some tips that are intended to help you to present your app in as
+            user and thus is very important to get their attention. Here are
+            some tips that are intended to help you to present your app in an
             user-friendly, customer-oriented, and search-engine-optimized
             manner as good as possible. At a glance:
             <itemizedlist>
@@ -1265,7 +1313,7 @@ TODO: Nico
                 <listitem>
                     <simpara>
                         Include supporting images/screenshots and define them
-                        in the app metadata (not within description).
+                        in the app configuration (not within description).
                     </simpara>
                 </listitem>
             </itemizedlist>
@@ -1273,43 +1321,45 @@ TODO: Nico
 
         <para>
             The description is provided in HTML format. The text editor in the
-            provider portal provides decent functionality. If you need more
-            control on the HTML, you can switch to HTML source mode and edit
-            the HTML directly. Please don't use specific styles, because they
-            may distract the overall impression.
+            provider portal provides decent functionality. If you more control
+            on the HTML is needed, switch to HTML source mode and edit the HTML
+            directly. 
         </para>
+        <note>
+            <para>
+                Please don't use custom styles in CSS, because they may
+                distract the overall impression. The App Center UMC module and
+                the App Catalog already have respective CSS style definitions.
+            </para>
+        </note>
         <para>
             The important aspect here is that the content of your app
-            description is unique (keyword: unique content). Please do not
-            simply copy the product description from your own page, but instead
-            compose a new, original text. This text should be aimed at
-            approaching potential customers. Explain what the app can do and
-            the added value it offers a user. Examples are also an excellent
-            idea. In addition, you should emphasize the advantages offered by
-            the app when run under UCS.
+            description is unique. Please do not simply copy the product
+            description from your own page, but instead compose a new, original
+            text. This text should be aimed at approaching potential customers.
         </para>
         <para>
             The length of the description depends on how much you have to say
             and how much explanation your app requires. Ideally the description
-            should be at least 300 words long.  Structure the text and use
-            paragraphs to make it easier to read. Work with subheadings (html:
-            h2, h3) to divide your text into logical sections.  It is very
-            helpful for the reader to be able to see the advantages of your app
-            and its combination with UCS at a glance. For this reason,
-            presentation of the advantages in lists (html: ol, ul, li) is
-            particularly practical.
+            should be at least 300 words long.  The text should be structured
+            and use paragraphs to make it easier to read. Subheadings (html:
+            h2, h3) should be used to divide the text into logical sections.
+            It is very helpful for the reader to be able to see the advantages
+            of your app and its combination with UCS at a glance. For this
+            reason, presentation of the advantages in lists (html: ol, ul, li)
+            is particularly practical.
         </para>
         <para>
-            Revise your text in order to optimize it for search engines. Have
-            you specified all the desired keywords (e.g., app name)? Have you
-            integrated relevant keywords in your text? The text can be adapted
-            for the search engines / keywords and synonyms, word combinations,
-            etc., are an asset – but please try to avoid keyword stuffing. Good
-            readability should be your priority.  Important terms in the text
-            can be emphasized if they help with the readability (html: strong).
+            Revise your text in order to optimize it for search engines. Are
+            all desired keywords specified? (e.g., app name)? Are the relevant
+            keywords integrated in the text?The text can be adapted for the
+            search engines / keywords and synonyms, word combinations, etc.,
+            are an asset – but please try to avoid keyword stuffing. Good
+            readability should be priority. Important terms in the text can be
+            emphasized if they help with the readability (html: strong).
         </para>
         <para>
-            If you want to use links in your app description (e.g., to pages on
+            If links should be used in the app description (e.g., to pages on
             your own website), please always use the
             <userinput>target="_blank"</userinput> (open in new tab) and assign
             the link a title attribute. Please keep the use of links to a
@@ -1327,7 +1377,7 @@ TODO: Nico
                 contact information</option> like an email address where the
             users can contact you and a website to your solution. Please also
             link to a website, where your support options and pricing is
-            explained to your customers and place the link in the field
+            explained to potential customers and place the link in the field
             <option>Website with information regarding
                 support options</option>.
         </para>
@@ -1336,24 +1386,22 @@ TODO: Nico
     <section id="license">
         <title>License</title>
         <para>
-            On the <guimenu>License</guimenu> you can define license
-            information that you want to provide to the user. Let's start with
-            the <option>license agreement</option>. Here you can save a text
-            that the user should read and accept before the app is installed.
-            If the user does not accept the text, the installation process is
+            On the <guimenu>License</guimenu> tab license information like for
+            example a license agreement can be defined. It is a text that the
+            user should read and has to accept before the app is installed. If
+            the user does not accept the text, the installation process is
             aborted and no app is installed. The license agreement is mostly
             used by app providers for legal information that needs confirmation
-            by the user. If you don't have a need for such a text, you can
-            leave it empty.
+            by the user. If such a text is not needed, leave it empty.
         </para>
         <para>
             Users have to register with a valid email address in order to use
-            the App Center. If you as app provider configure an email address
+            the App Center. If the app provider configures an email address
             in the field <option>E-mail address for App install
-                notifications</option> you receive information on a daily basis
+                notifications</option> it receives information on a daily basis
             about which user installed the app. The App Center UMC module
             informs the user that the app provider may contact them. App
-            provider are thus free to use the address for lead management.
+            providers can use the address for example for lead management.
         </para>
         <para>
             The last setting is intended to provide the users a rough
@@ -1396,15 +1444,16 @@ TODO: Nico
     <section id="readme">
         <title>README for the administrator</title>
         <para>
-            In the tab <guimenu>README files</guimenu> additional information
+            In the <guimenu>README files</guimenu> tab additional information
             for an app can be provided that show up at certain states of the
-            app. README files are also in HTML like the description and content
-            can be provided the same way (see <xref linkend="description" />).
-            The app provider portal describes when each README file shows up.
+            app life cycle. README files are also in HTML like the description
+            and content can be provided the same way (see <xref
+                linkend="description" />).  The app provider portal describes
+            when each README file shows up.
         </para>
         <para>
             It is highly recommended to use the README files to show
-            information that does not make sense in the app description, like
+            information that should not go in the app description, like
             for example configuration details, hints before and after and
             update, etc. Please also keep in mind to provide a proper
             translation.
@@ -1417,9 +1466,9 @@ TODO: Nico
             All texts, screenshots and videos should be entered in English.
             Translations to German should be only made on the
             <guimenu>Translations</guimenu> tab. Please make sure to provide
-            translations for the texts that have an English version is present.
-            For each item you find the English version on the tab and room for
-            the translation right below.
+            translations for the texts that have an English version. Each
+            translation consists of a set of two texts, the English version
+            first and second a text field for the German translation.
         </para>
     </section>
 
@@ -1430,10 +1479,11 @@ TODO: Nico
 
     <para>
         App Appliances are pre-defined images which consist of the App, the UCS
-        management system and the UCS runtime environment. These App Appliances
-        are currently provided as VMware, VMware ESXi, VirtualBox and KVM
-        images. By default the UCS branding is used, but it is possible and
-        recommended to use a custom branding. 
+        management system and the UCS runtime environment. They are run as
+        virtual machine within a hypervisor and are currently provided as
+        VMware, VMware ESXi, VirtualBox and KVM images. By default the UCS
+        branding is used, but it is possible and recommended to use a custom
+        branding. 
     </para>
 
     <section id="app-appliances:create">
@@ -1473,7 +1523,9 @@ TODO: Nico
                 The listing of apps in the App Center UMC module in the
                 appliance can be customized to either whitelist or blacklist
                 certain apps. For example, if your solution is a groupware, you
-                can hide other groupware solutions from listing.
+                can hide other groupware solutions from the overview listing.
+                System administors can only install the white listed apps or
+                are not allowed to install the black listed apps.
             </para>
         </section>
         <section id="appliance:first-steps">
@@ -1493,41 +1545,49 @@ TODO: Nico
                 The appliance also allows to customize the UMC modules that
                 should be pre-configured for the favorites section in the UCS
                 management system. The favorites section comes up first, after
-                a user logs into the UCS management system. It is recommended
-                to have the modules <userinput>Users</userinput>,
-                <userinput>Groups</userinput> and <userinput>App
-                    Center</userinput> listed here.
+                a UCS system administrator logs into the UCS management system.
+                It is recommended to have the modules
+                <userinput>Users</userinput>, <userinput>Groups</userinput> and
+                <userinput>App Center</userinput> listed here.
             </para>
-        <para>
-            As soon as the settings are made, <guimenu>Sync to Test App
-                Center</guimenu>, click the <guimenu>Publish App</guimenu>
-            button and provide a custom message to let the Univention team know
-            that you want an appliance to be built. This will create a ticket
-            which helps to keep the communication in one place.
-        </para>
-        <para>
-            The appliance is automatically built in the Univention build
-            infrastructure. After the build is finished, automatic tests will
-            be started. Build and testing will approximately need four hours.
-        </para>
-        <para>
-            After the automatic tests finished succesfully, you are informed.
-            You receive a link to appliance for download for testing and have a
-            few days of time. If no veto is given, the Appliance is usually
-            published after the veto deadline. After the release, the appliance
-            will show for download on the app page in the App Catalog. Please
-            also provide a link to the app detail page from your download page.
-        </para>
+        
+        <section id="appliance:build">
+            <title>Appliance build</title>
+            <para>
+                As soon as the settings are made, <guimenu>Sync to Test App
+                    Center</guimenu>, click the <guimenu>Publish App</guimenu>
+                button and provide a custom message to let the Univention team know
+                that you want an appliance to be built. This will create a ticket
+                which helps to keep the communication in one place.
+            </para>
+        </section>
+        <section id="appliance:release">
+            <title>Test and release</title>
+            <para>
+                The appliance is automatically built in the Univention build
+                infrastructure. After the build is finished, automatic tests will
+                be started. Build and testing will approximately need four hours.
+            </para>
+            <para>
+                After the automatic tests have finished succesfully, the app
+                provider is informed. It receives a link to the appliance
+                download for testing and has a few days of time. If no veto is
+                given, the Appliance is usually published after the veto
+                deadline. After the release, the appliance will show up for
+                download on the app page in the App Catalog. App Providers are
+                recommended to also place a link to the app detail page from
+                their download page.
+            </para>
         </section>
     </section>
 
     <section id="branding">
         <title>Custom branding</title>
         <para>
-            With a customized branding of an appliance you can modify the
-            boot loader, the boot splash, the system setup wizard and the portal
-            page. Please look at the screenshots below and their captions
-            mentioning the options that control the look in the screen.
+            With a customized branding of an appliance you can modify the boot
+            loader, the boot splash, the system setup wizard and the portal
+            page. Please look at the screenshots below and explanations of the
+            options that control the look.
         </para>
 
         <section id="appliance:branding:bootloader">
@@ -1550,8 +1610,8 @@ TODO: Nico
             <para>
                 The boot splash can have a custom background and a logo. The
                 logo is defined in <guimenu>Logo in setup wizard</guimenu>.
-                Please provide a SVG file which has the fonts converted to
-                paths.
+                Please provide a SVG file and mind the recommendations in <xref
+                    linkend="logos" />.
             </para>
             <para>
                 The background color is defined in <guimenu>CSS definition of
@@ -1565,7 +1625,7 @@ TODO: Nico
             </para>
             <para>
                 <figure id="appliance:branding:bootsplash-figure">
-                    <title>Boot loader</title>
+                    <title>Boot splash</title>
                     <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Bootsplash.png"/>
                 </figure>
             </para>
@@ -1577,10 +1637,10 @@ TODO: Nico
                 The system setup wizard allows several slots to be customized.
                 In the <guimenu>Appliance creation</guimenu> section in the
                 provider portal, you can set the <guimenu>Appliance
-                    name</guimenu> (string without the word "appliance"). It
-                controls the heading in the system setup wizard. Below is the
-                <guimenu>Logo for the setup wizard</guimenu>, which is shown on
-                the first page of the system setup wizard.
+                    name</guimenu> (the word "appliance" is automatically
+                appended). It controls the heading in the system setup wizard.
+                Below is the <guimenu>Logo for the setup wizard</guimenu>,
+                which is shown on the first page of the system setup wizard.
             </para>
             <para>
                 In the <guimenu>Branding configuration of the
@@ -1596,13 +1656,13 @@ TODO: Nico
             </para>
             <para>
                 <figure id="appliance:branding:setup-wizard-figure">
-                    <title>Boot loader</title>
+                    <title>System setup first screen</title>
                     <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Setup_Wizard.png"/>
                 </figure>
             </para>
             <para>
                 <figure id="appliance:branding:umc-branding-figure">
-                    <title>Boot loader</title>
+                    <title>System setup summary screen</title>
                     <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_UMC.png"/>
                 </figure>
             </para>
@@ -1612,16 +1672,24 @@ TODO: Nico
             <title>Welcome screen</title>
             <para>
                 The welcome screen is shown after the appliance setup has been
-                finished. If offers information on how the user can access the
-                appliance. It uses settings like the Appliance name and the CSS
-                definition of the appliance background. The <guimenu>Logo
-                    displayed in the welcome screen</guimenu> needs to be a SVG
-                file that is slightly wider than high and which has the fonts
-                converted to paths.
+                finished and also every time the appliance is started. If
+                offers information on how the user can access the appliance. It
+                uses settings like the Appliance name and the CSS definition of
+                the appliance background. The <guimenu>Logo displayed in the
+                    welcome screen</guimenu> needs to be a SVG file that is
+                slightly wider than high and which has the fonts converted to
+                paths. Please mind the recommendations in <xref linkend="logos"
+                    />.
+            </para>
+            <para>
+                Depending on the character of the welcome screen background
+                (bright or dark), the <guimenu>Font color for welcome
+                    screen</guimenu> should be eiterh set to
+                <userinput>White</userinput> or <userinput>Black</userinput>.
             </para>
             <para>
                 <figure id="appliance:branding:umc-branding-welcome-screen">
-                    <title>Boot loader</title>
+                    <title>Appliance welcome screen</title>
                     <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Welcome_Screen.png"/>
                 </figure>
             </para>
@@ -1641,7 +1709,7 @@ TODO: Nico
             </para>
             <para>
                 <figure id="appliance:branding:portal-page-figure">
-                    <title>Boot loader</title>
+                    <title>Appliance portal page</title>
                     <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Portal_Page.png"/>
                 </figure>
             </para>
