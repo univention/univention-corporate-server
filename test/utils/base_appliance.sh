@@ -284,7 +284,8 @@ prepare_docker_app () {
 			sleep 60 # some startup time...
 			# update to latest version
 			v=$(docker exec $container_id ucr get version/version)
-			docker exec $container_id univention-upgrade --ignoressh --ignoreterm --noninteractive --disable-app-updates --updateto="${v}-99"
+			# update is broken (empty domainname breaks postfix upgrade)
+			#docker exec $container_id univention-upgrade --ignoressh --ignoreterm --noninteractive --disable-app-updates --updateto="${v}-99"
 			docker exec "$container_id" ucr set repository/online/server="$(ucr get repository/online/server)" \
 				repository/app_center/server="$(ucr get repository/app_center/server)" \
 				appcenter/index/verify="$(ucr get appcenter/index/verify)" \
@@ -304,12 +305,12 @@ prepare_docker_app () {
 			#if [ -e "/var/cache/univention-appcenter/${component}.LICENSE_AGREEMENT" ]; then
 			#	ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
 			#fi
-			# php 7 ?
-			"$php7_required" && docker exec "$container_id" ucr set \
-				repository/online/component/php7=enabled \
-				repository/online/component/php7/version=current \
-				repository/online/component/php7/server=https://updates.software-univention.de \
-				repository/online/component/php7/description="PHP 7 for UCS"
+			# php 7 is maintained in 4.3
+			#"$php7_required" && docker exec "$container_id" ucr set \
+			#	repository/online/component/php7=enabled \
+			#	repository/online/component/php7/version=current \
+			#	repository/online/component/php7/server=https://updates.software-univention.de \
+			#	repository/online/component/php7/description="PHP 7 for UCS"
 			# provide required packages inside container
 			docker exec "$container_id" apt-get update
 			docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster) $extra_packages
