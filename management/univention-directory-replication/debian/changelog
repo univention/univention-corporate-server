@@ -1,3 +1,9 @@
+univention-directory-replication (11.0.0-7) unstable; urgency=medium
+
+  * Bug #41514: version bump
+
+ -- Arvid Requate <requate@univention.de>  Mon, 20 Aug 2018 17:33:22 +0200
+
 univention-directory-replication (11.0.0-6) unstable; urgency=medium
 
   * Bug #41514: reconnect in case of an error
