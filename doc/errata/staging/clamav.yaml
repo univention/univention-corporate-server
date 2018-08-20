@@ -6,8 +6,10 @@ src: clamav
 fix: 0.100.1+dfsg-0+deb8u1A~4.2.4.201808200927
 desc: |
  This update addresses the following issues:
- * ClamAV before 0.100.1 has an HWP integer overflow with a resultant infinite loop via a crafted Hangul Word Processor file. This is in parsehwp3_paragraph() in libclamav/hwp.c. (CVE-2018-0360)
- * ClamAV before 0.100.1 lacks a PDF object length check, resulting in an unreasonably long time to parse a relatively small file. (CVE-2018-0361)
+ * HWP integer overflow with a resultant infinite loop via a crafted Hangul
+   Word Processor file. (CVE-2018-0360)
+ * ClamAV lacks a PDF object length check, resulting in an unreasonably long
+   time to parse a relatively small file. (CVE-2018-0361)
 bug: [47614]
 cve:
 - CVE-2018-0360
