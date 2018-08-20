@@ -113,9 +113,6 @@
     <section id="app-provider-needs">
         <title>What the app provider needs?</title>
 
-        <para>
-        </para>
-
         <section id="app-provider-needs:docker-image">
             <title>Software in a docker image</title>
             <para>
@@ -1518,7 +1515,6 @@ TODO: Nico
 
         <section id="appliance:customize-app-center">
             <title>Customize app listing in App Center</title>
-
             <para>
                 The listing of apps in the App Center UMC module in the
                 appliance can be customized to either whitelist or blacklist
@@ -1528,6 +1524,7 @@ TODO: Nico
                 are not allowed to install the black listed apps.
             </para>
         </section>
+
         <section id="appliance:first-steps">
             <title>First steps information</title>
             <para>
@@ -1539,6 +1536,7 @@ TODO: Nico
                 described in this section.
             </para>
         </section>
+        
         <section id="appliance:umc-favorites">
             <title>Customize UMC favorite category</title>
             <para>
@@ -1550,6 +1548,7 @@ TODO: Nico
                 <userinput>Users</userinput>, <userinput>Groups</userinput> and
                 <userinput>App Center</userinput> listed here.
             </para>
+        </section>
         
         <section id="appliance:build">
             <title>Appliance build</title>
@@ -1561,6 +1560,7 @@ TODO: Nico
                 which helps to keep the communication in one place.
             </para>
         </section>
+
         <section id="appliance:release">
             <title>Test and release</title>
             <para>
