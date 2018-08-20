@@ -315,7 +315,8 @@ prepare_docker_app () {
 			#	repository/online/component/php7/description="PHP 7 for UCS"
 			# provide required packages inside container
 			docker exec "$container_id" apt-get update
-			docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster) $extra_packages apt-utils
+			docker exec "$container_id" univention-install --yes apt-utils
+			docker exec "$container_id" /usr/share/univention-docker-container-mode/download-packages $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster) $extra_packages
 			docker exec "$container_id" apt-get update
 			# check if packages are downloaded
 			for i in $(get_app_attr ${app} DefaultPackages) $(get_app_attr ${app} DefaultPackagesMaster); do
