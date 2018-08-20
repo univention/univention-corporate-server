@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: amd64-microcode
+fix: 3.20180524.1~bpo9+1
+desc: |
+ This update addresses the following issue:
+ * cpu: speculative execution branch target injection (CVE-2017-5715)
+bug: [47616]
+cve:
+- CVE-2017-5715
