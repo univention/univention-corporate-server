@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: univention-directory-replication
+fix: 11.0.0-7A~4.3.0.201808201733
+desc: |
+ This update addresses the following issue(s):
+ * Reconnect to LDAP server in case of an error
+bug: [41514]
