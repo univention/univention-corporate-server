@@ -214,7 +214,7 @@
                             <emphasis>App Version</emphasis> is the version of
                             your app. The App Center distinguishes versions and
                             uses them to handle app updates. Once the app is
-                            released, this attribut cannot be changed anymore.
+                            released, this attribute cannot be changed anymore.
                         </simpara>
                     </listitem>
                     <listitem>
@@ -784,7 +784,7 @@ TODO: Stefan
 			This adds a checkbox to the user administration and a schema
 			extension for the IDM is created, so that the status of the
 			checkbox is stored in an attribute in the IDM. This allows each
-			user to be activated or deactivated seperatly.
+			user to be activated or deactivated separately.
         </para>
         <para>
 			If the app requires more settings in the IDM, an own LDAP schema
@@ -918,7 +918,7 @@ univention-app dev-use-test-appcenter
                 tested, as well. The App Center UMC module only allows the
                 installation of the latest app version. To test an upgrade of
                 your app, please go to the console and install a version
-                explicitely:
+                explicitly:
 
                 <programlisting>
                     univention-app install myapp=1.0
@@ -989,7 +989,7 @@ univention-app dev-use-test-appcenter
         </para>
         <para>
             The automated tests conducted by Univention test for installation,
-            deinstallation and re-installation of the app for different UCS
+            un-installation and re-installation of the app for different UCS
             system roles. They check for proper operation of the UCS services.
             No app functionality will be tested. It is rather ensured that the
             app does not break UCS functionality.
@@ -1086,7 +1086,7 @@ univention-app dev-use-test-appcenter
         </para>
 
         <para>
-            App versions are not explicitely terminated. They are superseded by
+            App versions are not explicitly terminated. They are superseded by
             the next version. The termination applies to the whole app.
         </para>
         <para>
@@ -1119,7 +1119,7 @@ univention-app dev-use-test-appcenter
             Apps may need access to the UCS certificate infrastructure or need
             to be aware of changes to the certificates. Starting with <ulink
                 url="https://errata.software-univention.de/ucs/4.3/91.html">UCS
-                4.3-0 errata91</ulink> the Univention App Center provides a
+                4.3-0 errata 91</ulink> the Univention App Center provides a
             simple way to manage certificates inside an App.  This is simply a
             new action called <guimenu>update-certificates</guimenu> in the App
             Center which is called automatically during the installation and
@@ -1253,8 +1253,8 @@ TODO: Nico
             understand the app's description. This can be achieved with
             screenshots or other forms of visualization. Give the image files
             sensible names including the keywords. An example of a bad file
-            name for an image would be “app_76bz3.jpg”, whereas “app_name.jpg”
-            would be much better.
+            name for an image would be “app_76bz3.jpg”, whereas
+            “<wordasword>app_name.jpg</wordasword>” would be much better.
         </para>
     </section>
 
@@ -1339,12 +1339,13 @@ TODO: Nico
             The length of the description depends on how much you have to say
             and how much explanation your app requires. Ideally the description
             should be at least 300 words long.  The text should be structured
-            and use paragraphs to make it easier to read. Subheadings (html:
-            h2, h3) should be used to divide the text into logical sections.
-            It is very helpful for the reader to be able to see the advantages
-            of your app and its combination with UCS at a glance. For this
-            reason, presentation of the advantages in lists (html: ol, ul, li)
-            is particularly practical.
+            and use paragraphs to make it easier to read. Subheadings (HTML:
+            <wordasword>h2, h3</wordasword>) should be used to divide the text
+            into logical sections. It is very helpful for the reader to be
+            able to see the advantages of your app and its combination with UCS
+            at a glance. For this reason, presentation of the advantages in
+            lists (HTML: <wordasword>ol, ul, li</wordasword>) is particularly
+            practical.
         </para>
         <para>
             Revise your text in order to optimize it for search engines. Are
@@ -1353,7 +1354,7 @@ TODO: Nico
             search engines / keywords and synonyms, word combinations, etc.,
             are an asset – but please try to avoid keyword stuffing. Good
             readability should be priority. Important terms in the text can be
-            emphasized if they help with the readability (html: strong).
+            emphasized if they help with the readability (HTML: strong).
         </para>
         <para>
             If links should be used in the app description (e.g., to pages on
@@ -1475,7 +1476,7 @@ TODO: Nico
     <title>App Appliances</title>
 
     <para>
-        App Appliances are pre-defined images which consist of the App, the UCS
+        App Appliances are pre defined images which consist of the App, the UCS
         management system and the UCS runtime environment. They are run as
         virtual machine within a hypervisor and are currently provided as
         VMware, VMware ESXi, VirtualBox and KVM images. By default the UCS
@@ -1517,10 +1518,10 @@ TODO: Nico
             <title>Customize app listing in App Center</title>
             <para>
                 The listing of apps in the App Center UMC module in the
-                appliance can be customized to either whitelist or blacklist
+                appliance can be customized to either white list or blacklist
                 certain apps. For example, if your solution is a groupware, you
                 can hide other groupware solutions from the overview listing.
-                System administors can only install the white listed apps or
+                System administrators can only install the white listed apps or
                 are not allowed to install the black listed apps.
             </para>
         </section>
@@ -1569,7 +1570,7 @@ TODO: Nico
                 be started. Build and testing will approximately need four hours.
             </para>
             <para>
-                After the automatic tests have finished succesfully, the app
+                After the automatic tests have finished successfully, the app
                 provider is informed. It receives a link to the appliance
                 download for testing and has a few days of time. If no veto is
                 given, the Appliance is usually published after the veto
@@ -1621,7 +1622,7 @@ TODO: Nico
                     bottom, #345279 0%, #1d2c41 100%)</userinput>. For more
                 information on how to use a gradient, see <ulink
                     url="https://www.w3schools.com/csSref/func_linear-gradient.asp">CSS
-                    linear-gradient() function on w3schools</ulink>.
+                    linear-gradient() function on <wordasword>w3schools</wordasword></ulink>.
             </para>
             <para>
                 <figure id="appliance:branding:bootsplash-figure">
@@ -1684,7 +1685,7 @@ TODO: Nico
             <para>
                 Depending on the character of the welcome screen background
                 (bright or dark), the <guimenu>Font color for welcome
-                    screen</guimenu> should be eiterh set to
+                    screen</guimenu> should be eiter set to
                 <userinput>White</userinput> or <userinput>Black</userinput>.
             </para>
             <para>
@@ -1752,7 +1753,7 @@ TODO: Stefan
         <section id="installation:setup">
             <title>Docker script setup</title>
 			<para>
-				This script is called in the Docker container. It is normaly
+				This script is called in the Docker container. It is normally
 				the heart of the initial App configuration. If the script
 				fails (exit code != 0) the installation is aborted.
 				<!-- TODO: parameters?-->
