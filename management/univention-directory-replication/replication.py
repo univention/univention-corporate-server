@@ -799,6 +799,7 @@ def handler(dn, new, listener_old, operation):
 				l = connect(ldif=1)
 			else:
 				log_ldap(ud.WARN, 'Can not connect LDAP Server, retry in 10 seconds', ex)
+				reconnect = 1
 				time.sleep(10)
 		else:
 			connected = 1
