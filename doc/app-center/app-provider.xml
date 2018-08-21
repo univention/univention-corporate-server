@@ -321,7 +321,7 @@
                 In order to get usual docker images working, some settings in
                 the App Provider Portal have to be changed. In the
                 <guimenu>Life cycle scripts</guimenu> section on the
-                <guimenu>Docker</guimenu> tab all docker script dropdowns need
+                <guimenu>Docker</guimenu> tab all docker script drop-downs need
                 to be changed to <userinput>Disabled</userinput>, unless a
                 <userinput>Custom script</userinput> shall be provided.
             </para>
@@ -634,7 +634,7 @@ univention-app dev-use-test-appcenter
             <para>
                 A test script for the app can be provided in the
                 <guimenu>Testing</guimenu> tab. The script needs to be entered
-                in the textarea <guimenu>Test script run after
+                in the text area <guimenu>Test script run after
                     installation</guimenu>. It is run together with the
                 automatic app tests in the Univention test infrastructure and
                 will be executed after the app has been installed during those
@@ -1315,7 +1315,7 @@ univention-app dev-use-test-appcenter
 					<para>
 						As a rule, the LDAP basis should not be further
 						restricted. Many environments store users below
-						<uri>cn=users</uri>, but this is not the case in all
+						<uri>cn=users</uri> but this is not the case in all
 						environments.
 					</para>
 				</important>
@@ -1489,7 +1489,7 @@ univention-app dev-use-test-appcenter
 		<title>Upgrade scripts</title>
 		<para>
 			It may be necessary to move data from the old container to the new
-			container when changeging the app container or uninstalling the
+			container when replacing the app container or uninstalling the
 			app. Therefore, the upgrade scripts can be used.
 		</para>
 		<section id="upgrade:store_data">
