@@ -1686,7 +1686,7 @@ univention-app dev-use-test-appcenter
 			</para>
 			<para>
 				The attribute <guimenu>Required</guimenu> can be used to
-				define if this setting has to be set or nor.
+				define if this setting has to be set or not.
 			</para>
 			<para>
 				The attribute <guimenu>Scope</guimenu> is used to specify if
@@ -1707,7 +1707,7 @@ univention-app dev-use-test-appcenter
 				escaped with a \.
 			</para>
 			<para>
-				The attribute<guimenu>Filename</guimenu> can be used to
+				The attribute <guimenu>Filename</guimenu> can be used to
 				define the the absolute path where the file should be stored.
 				This attribute is needed in case the types <guimenu>File</guimenu> or
 				<guimenu>PasswordFile</guimenu> are used.
