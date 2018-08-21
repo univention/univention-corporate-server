@@ -1942,7 +1942,7 @@ service my-app-daemon restart
         </section>
 
         <section id="appliance:branding:bootsplash">
-            <title>Boot Splash</title>
+            <title>Boot splash</title>
             <para>
                 The boot splash can have a custom background and a logo. The
                 logo is defined in <guimenu>Logo in setup wizard</guimenu>.
