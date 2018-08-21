@@ -1135,13 +1135,13 @@ univention-app dev-use-test-appcenter
 						<simpara>
 							<option>LDAP_SERVER_NAME</option>:
 							The fully-qualified host name of the OpenLDAP
-							server the App may connect to.
+							server the app may connect to.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
 							<option>LDAP_SERVER_PORT</option>:
-							The port of the OpenLDAP server the App may
+							The port of the OpenLDAP server the app may
 							connect to.
 						</simpara>
 					</listitem>
@@ -1179,7 +1179,7 @@ univention-app dev-use-test-appcenter
 				<option>LDAP_HOSTDN</option>. The password is written in the
 				file <filename>/etc/machine.secret</filename>. The
 				credentials are not changed when an app is upgraded. But they
-				change if an App is reinstalled.
+				change if an app is reinstalled.
             </para>
         </section>
 
@@ -1286,13 +1286,13 @@ univention-app dev-use-test-appcenter
 						<simpara>
 							<option>LDAP_SERVER_NAME</option>:
 							The fully-qualified host name of the OpenLDAP
-							server the App may connect to.
+							server the app may connect to.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
 							<option>LDAP_SERVER_PORT</option>:
-							The port of the OpenLDAP server the App may connect to.
+							The port of the OpenLDAP server the app may connect to.
 						</simpara>
 					</listitem>
 					<listitem>
@@ -1329,7 +1329,7 @@ univention-app dev-use-test-appcenter
 				<option>LDAP_HOSTDN</option>. The password is written in the
 				file <filename>/etc/machine.secret</filename>. The credentials
 				are not changed when an app is upgraded. But they change if an
-				App is reinstalled.
+				app is reinstalled.
             </para>
         </section>
 <!--
@@ -1419,19 +1419,19 @@ univention-app dev-use-test-appcenter
 		<section id="installation:preinst">
 			<title>Script called before installation to verify that App may be installed</title>
 			<para>
-				This script is called on the UCS host system before the App is
-				initialized, even before the App image is downloaded. It is
+				This script is called on the UCS host system before the app is
+				initialized, even before the app image is downloaded. It is
 				also called as preinst script. Its purpose is to check whether
 				installation may be successful. Any exit code other than 0
 				will result in cancellation of the installation process. This
-				script is also called if the the App is upgraded.
+				script is also called if the the app is upgraded.
 			</para>
 		</section>
 		<section id="installation:setup">
 			<title>Docker script setup</title>
 			<para>
 				This script is called in the Docker container. It is normally
-				the heart of the initial App configuration. If the script
+				the heart of the initial app configuration. If the script
 				fails (exit code != 0) the installation is aborted.
 				<!-- TODO: parameters?-->
 			</para>
@@ -1536,7 +1536,7 @@ univention-app dev-use-test-appcenter
 			changes.
 		</para>
 		<para>
-			If App settings are defined for an App, the user can reach these
+			If App settings are defined for an app, the user can reach these
 			settings in the app configuration, see <xref linkend="app-configurations:app-settings:button" />).
 			<figure id="app-configurations:app-settings:button">
 				<title>App settings button</title>
@@ -1575,7 +1575,7 @@ univention-app dev-use-test-appcenter
 			<para>
 				The App settings are defined in the ini format. The definition
 				can be done in the field <guimenu>Settings that can be used to
-				configure the App. ini file format</guimenu>. One ini file can
+				configure the app. ini file format</guimenu>. One ini file can
 				contain several settings.
 			</para>
 			<para>
@@ -1584,7 +1584,7 @@ univention-app dev-use-test-appcenter
 				<programlisting>
 [myapp/mysetting]
 				</programlisting>
-				It is recommended to use the App ID as a prefix. This prevents
+				It is recommended to use the app ID as a prefix. This prevents
 				collisions.
 			</para>
 			<para>
@@ -1667,7 +1667,7 @@ univention-app dev-use-test-appcenter
 			<para>
 				The attribute <guimenu>Show</guimenu> can be used to define
 				when the setting should be shown. By default the setting
-				attribute is shown when the App is up and running. It is also
+				attribute is shown when the app is up and running. It is also
 				possible to show the setting attribute during the
 				installation. The following values are possible
 				<option>Install</option>, <option>Upgrade</option>,
@@ -1774,10 +1774,10 @@ Group[de] = Lizenz und Liste
             to be aware of changes to the certificates. Starting with <ulink
                 url="https://errata.software-univention.de/ucs/4.3/91.html">UCS
                 4.3-0 errata 91</ulink> the Univention App Center provides a
-            simple way to manage certificates inside an App.  This is simply a
-            new action called <guimenu>update-certificates</guimenu> in the App
+            simple way to manage certificates inside an app.  This is simply a
+            new action called <guimenu>update-certificates</guimenu> in the app
             Center which is called automatically during the installation and
-            upgrade of Apps (but can also be executed manually) and gives Apps
+            upgrade of apps (but can also be executed manually) and gives apps
             a simple way to gain access to certificates and to react upon
             changes to certificates.
         </para>
@@ -1825,7 +1825,7 @@ Group[de] = Lizenz und Liste
             Example:
 <programlisting>
 #!/bin/bash
-# cat the UCS root CA to the App's root CA chain
+# cat the UCS root CA to the app's root CA chain
 cat /etc/univention/ssl/ucsCA/CAcert.pem >> /opt/my-app/ca-bundle.crt
 service my-app-daemon restart
 </programlisting>
