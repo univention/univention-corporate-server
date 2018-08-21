@@ -632,6 +632,25 @@ univention-app dev-use-test-appcenter
         ressource for the topic, because it requires a debian package.
         -->
             <para>
+                A test script for the app can be provided in the
+                <guimenu>Testing</guimenu> tab. The script needs to be entered
+                in the textarea <guimenu>Test script run after
+                    installation</guimenu>. It is run together with the
+                automatic app tests in the Univention test infrastructure and
+                will be executed after the app has been installed during those
+                tests.
+            </para>
+            <para>
+                The App Provider portal offers an example for how the test
+                script should look like and an example for how the test script
+                can be tested on a UCS system. On successful tests, the script
+                has to end with exit code 0.
+            </para>
+            <para>
+                For certain tests user credentials for access to the directory
+                service are needed. They are passed with the parameters
+                <option>binddn</option> and <option>bindpwd</option>. In many
+                cases the user <option>Administrator</option> is used.
             </para>
         </section>
     </section>
@@ -937,7 +956,7 @@ univention-app dev-use-test-appcenter
         <para>
             Revise your text in order to optimize it for search engines. Are
             all desired keywords specified? (e.g., app name)? Are the relevant
-            keywords integrated in the text?The text can be adapted for the
+            keywords integrated in the text? The text can be adapted for the
             search engines / keywords and synonyms, word combinations, etc.,
             are an asset – but please try to avoid keyword stuffing. Good
             readability should be priority. Important terms in the text can be
