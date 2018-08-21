@@ -1946,7 +1946,7 @@ TODO: Stefan
 				The attribute <guimenu>Group</guimenu> can be used to group
 				settings. All settings sharing one group will be put under
 				that label. The default group is <option>Settings</option>. It
-				is alos possible to localize it for example
+				is also possible to localize it for example
 				<guimenu>Group[de]</guimenu>.
 			</para>
 			<para>
@@ -1957,7 +1957,7 @@ TODO: Stefan
 				installation. The following values are possible
 				<option>Install</option>, <option>Upgrade</option>,
 				<option>Remove</option> and <option>Settings</option>. It is possible
-				to specify more than one value which must be seperated by
+				to specify more than one value which must be separated by
 				comma.
 			</para>
 			<para>
@@ -1995,8 +1995,8 @@ TODO: Stefan
 			<para>
 				The attribute<guimenu>Filename</guimenu> can be used to
 				define the the absolute path where the file should be stored.
-				This attribute is needed in case the types File or
-				PasswordFile are used.
+				This attribute is needed in case the types <guimenu>File</guimenu> or
+				<guimenu>PasswordFile</guimenu> are used.
 			</para>
 		</section>
 		<section id="app-settings:examples">
@@ -2037,7 +2037,7 @@ Group = License and List
 Group[de] = Lizenz und Liste
 				</programlisting>
 				The first of these two settings will upload a file to
-				/opt/myapp/license inside the container. The second will save
+				<filename>/opt/myapp/license</filename> inside the container. The second will save
 				<wordasword>myapp/list: value2</wordasword> (or another value)
 				inside the container and on the docker host. Both settings
 				will be shown before the installation. On the App settings
