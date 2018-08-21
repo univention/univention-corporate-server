@@ -1465,10 +1465,48 @@ univention-app dev-use-test-appcenter
 			</para>
 		</section>
 	</section>
-<!--
-	TODO:
-	Should we add store_data, restore_date_before_setup, restore_data_after_setup?
--->
+
+	<section id="upgrade-scripts">
+		<title>Upgrade scripts</title>
+		<para>
+			It may be necessary to move data from the old container to the new
+			container when changeging the app container or uninstalling the
+			app. Therefore, the upgrade scripts can be used.
+		</para>
+		<section id="upgrade:store_data">
+			<title>Docker scriupt store_data</title>
+			<para>
+				This script is required if data exists in the container which
+				should not be removed during the container change or the
+				uninstallation.
+			   	It is not required if data is stored outside the container for
+				example in a database or a mapped volume.
+				This script is called inside the Docker container and it
+				should copy the relevant data to
+				<filename>/var/lib/univention-appcenter/apps/$APPID/data/</filename>.
+			   	Afterwards, the data can be restored by one of the
+				restore_data scripts.
+			</para>
+		</section>
+		<section id="upgrade:restore_data_before_setup">
+			<title>Docker script restore_data_before_setup</title>
+			<para>
+				This scipt is called inside the docker container before the
+				setup script is called.
+				Its purpose is to restore the data which has been stored by
+				the store_data script.
+			</para>
+		</section>
+		<section id="upgrade:restore_data_after_setup">
+			<title>Docker script restore_data_after_setup</title>
+			<para>
+				This scipt is called inside the docker container after the
+				setup script is called.
+				Its purpose is to restore the data which has been stored by
+				the store_data script.
+			</para>
+		</section>
+	</section>
 
 	<section id="app-settings">
 		<title>App settings</title>
