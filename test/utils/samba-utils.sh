@@ -129,7 +129,7 @@ run_multiserver_samba_master_p_one_test () {
 	udm users/user create --position "cn=users,dc=sambatest,dc=local" --set username="newuser01" --set firstname="Random" --set lastname="User" --set password="Univention.99"
 	udm groups/group modify --dn "cn=Domain Admins,cn=groups,dc=sambatest,dc=local" --append users="uid=newuser01,cn=users,dc=sambatest,dc=local"
 	udm shares/share create --position "cn=shares,dc=sambatest,dc=local" --set name="testshare" --set host="ucs-master.sambatest.local" --set path="/home/testshare"
-	udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set name="printermaster" --set spoolHost=$(hostname -A) --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
+	udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set name="Masterprinter" --set spoolHost=$(hostname -A) --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
 	
 	python shared-utils/ucs-winrm.py domain-join --domain sambatest.local --dnsserver "$UCS" --domainuser "administrator" --domainpassword "$ADMIN_PASSWORD"
 	
@@ -146,15 +146,15 @@ run_multiserver_samba_master_p_one_test () {
 	python shared-utils/ucs-winrm.py check-applied-gpos --client "$WINCLIENT" --username 'administrator' --userpwd "$ADMIN_PASSWORD" --usergpo 'Default Domain Policy' --usergpo 'NewGPO' --computergpo 'Default Domain Policy'
 	python shared-utils/ucs-winrm.py check-applied-gpos --client "$WINCLIENT" --username 'newuser01' --userpwd "Univention.99" --usergpo 'Default Domain Policy' --usergpo 'NewGPO' --computergpo 'Default Domain Policy'
 	
-	#python shared-utils/ucs-winrm.py setup-printer --printername printermaster  --server "$UCS"
-	#rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
-	#sleep 20
-	#rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
+	python shared-utils/ucs-winrm.py setup-printer --printername Masterprinter --server "$UCS"
+	rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
+	sleep 20
+	rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
 
-	#python shared-utils/ucs-winrm.py print-on-printer --printername printermaster --server "$UCS" --impersonate --run-as-user Administrator
-	#stat /var/spool/cups-pdf/administrator/job_1-document.pdf
-	#python shared-utils/ucs-winrm.py print-on-printer --printername printermaster --server "$UCS" --impersonate --run-as-user newuser01 --run-as-password "Univention.99"
-	#stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
+	python shared-utils/ucs-winrm.py print-on-printer --printername Masterprinter --server "$UCS" --impersonate --run-as-user Administrator
+	stat /var/spool/cups-pdf/administrator/job_1-document.pdf
+	python shared-utils/ucs-winrm.py print-on-printer --printername Masterprinter --server "$UCS" --impersonate --run-as-user newuser01 --run-as-password "Univention.99"
+	stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
 
 		
 	python shared-utils/ucs-winrm.py run-ps --cmd hostname > WINCLIENTNAME
@@ -168,16 +168,20 @@ run_multiserver_samba_master_p_one_test () {
 
 run_multiserver_samba_master_p_three_test () {
 	 . env_vars
-	 udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set name="SambaPDFMemberprinter" --set spoolHost="ucs-member.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
+	 udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set name="Memberprinter" --set spoolHost="ucs-member.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
 	 udm shares/share create --position "cn=shares,dc=sambatest,dc=local" --set name="testshareMember" --set host="ucs-member.sambatest.local" --set path="/home/testshare"
-	 udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set name="SambaPDFSlaveprinter" --set spoolHost=$(hostname -A) --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
+	 udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set name="Slaveprinter" --set spoolHost="ucs-slave.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
 	 udm shares/share create --position "cn=shares,dc=sambatest,dc=local" --set name="testshareSlave" --set host="ucs-slave.sambatest.local" --set path="/home/testshare"
 }
 
-run_multiserver_samba_master_p_five_test () {
+run_multiserver_samba_master_p_four_test () {
 	 . env_vars
 	 python shared-utils/ucs-winrm.py check-share --server $MEMBER --sharename "testshareMember" --driveletter R --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
 	 python shared-utils/ucs-winrm.py check-share --server $SLAVE --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
+	 python shared-utils/ucs-winrm.py setup-printer --printername Slaveprinter --server "$MEMBER"
+	 python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$SLAVE"
+	 python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "$MEMBER" --impersonate --run-as-user Administrator 
+	 python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server "$SLAVE" --impersonate --run-as-user Administrator
 	 samba-tool ntacl sysvolreset || true
 }
 
