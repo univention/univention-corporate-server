@@ -1165,7 +1165,7 @@ univention-app dev-use-test-appcenter
 					<para>
 						As a rule, the LDAP basis should not be further
 						restricted. Many environments store users below
-						<uri>cn=users</uri>, but this is not the case in all
+						<uri>cn=users</uri> but this is not the case in all
 						environments.
 					</para>
 				</important>
@@ -1351,7 +1351,7 @@ univention-app dev-use-test-appcenter
             <para>
 				UCS integrates a Kerberos server by default. As usual with
 				Kerberos, the data for the Kerberos configuration can be
-				obtained from the DNS. By default, the DNS domain name is
+				obtained from DNS. By default, the DNS domain name is
 				passed through the <option>DOMAINNAME</option> environment
 				variable. The following settings can then be queried via DNS:
 				<itemizedlist>
@@ -1393,7 +1393,7 @@ univention-app dev-use-test-appcenter
         <para>
 			In this case, it is also possible to create individual extended
 			attributes during the setup process. This should be done in the
-			inst script.  Further information on extended attributes can be
+			join script.  Further information on extended attributes can be
 			found in the Univention Developer Reference.
         </para>
     </section>
@@ -1419,18 +1419,18 @@ univention-app dev-use-test-appcenter
 		<section id="installation:preinst">
 			<title>Script called before installation to verify that App may be installed</title>
 			<para>
-				This script is called on the UCS host system before the app is
+				This script is executed on the UCS host system before the app is
 				initialized, even before the app image is downloaded. It is
 				also called as preinst script. Its purpose is to check whether
-				installation may be successful. Any exit code other than 0
+				installation may be successful or not. Any exit code other than 0
 				will result in cancellation of the installation process. This
-				script is also called if the the app is upgraded.
+				script is also executed if the the app is upgraded.
 			</para>
 		</section>
 		<section id="installation:setup">
 			<title>Docker script setup</title>
 			<para>
-				This script is called in the Docker container. It is normally
+				This script is executed in the Docker container. It is normally
 				the heart of the initial app configuration. If the script
 				fails (exit code != 0) the installation is aborted.
 				<!-- TODO: parameters?-->
@@ -1439,15 +1439,15 @@ univention-app dev-use-test-appcenter
 		<section id="installation:joinscript">
 			<title>Join script</title>
 			<para>
-				This script is called on the UCS host system after the Docker
-				container is configured. See our page about Join scripts or
-				the Developer Reference for how to write a join script. If the
-				join script runs successfully, the join script may save this
-				information in a status file. If this does not happen, the
-				user is constantly reminded to re-run the join script. So the
-				join script does not need to run successfully. The
-				installation will not be aborted at this point. But of course
-				at some point it should run through successfully.
+				This script is executed on the UCS host system after the Docker
+				container is configured. Please refer the Developer Refernece
+				about how to wirte a join script. If it runs successfully, the
+				join script may save this information in a status file. If
+				this does not happen, the user is constantly reminded to
+				re-run the join script. So the join script does not need to
+				run successfully. The installation will not be aborted at this
+				point. But of course at some point it should run through
+				successfully.
 			</para>
 		</section>
 	</section>
@@ -1457,12 +1457,12 @@ univention-app dev-use-test-appcenter
 			During the uninstallation of an app, the so-called prerm script is
 			executed first. Afterwards, the account for the docker container is
 			removed and the Docker container is stopped. After that, the
-			unjoin script is called.
+			unjoin script is executed.
 		</para>
 		<section id="uninstallation:prerm">
 			<title>Script called before uninstalling to verify that App may be removed</title>
 			<para>
-				This script is called in the UCS host system. It is also
+				This script is executed in the UCS host system. It is also
 				called as prerm script. Its purpose is to check whether an
 				uninstallation may be successful. But it may be used to
 				somehow prepare the system for the uninstallation. For
@@ -1474,7 +1474,7 @@ univention-app dev-use-test-appcenter
 		<section id="uninstallation:unjoin">
 			<title>Unjoin script</title>
 			<para>
-				This script is called on the UCS host system after the Docker
+				This script is executed on the UCS host system after the Docker
 				container is removed. See the Developer Reference for how to
 				write an unjoin script. It should somehow revert most (if not
 				all) changes done in the inst script (or join script).
@@ -1500,7 +1500,7 @@ univention-app dev-use-test-appcenter
 				uninstallation.
 			   	It is not required if data is stored outside the container for
 				example in a database or a mapped volume.
-				This script is called inside the Docker container and it
+				This script is executed inside the Docker container and it
 				should copy the relevant data to
 				<filename>/var/lib/univention-appcenter/apps/$APPID/data/</filename>.
 			   	Afterwards, the data can be restored by one of the
@@ -1510,8 +1510,8 @@ univention-app dev-use-test-appcenter
 		<section id="upgrade:restore_data_before_setup">
 			<title>Docker script restore_data_before_setup</title>
 			<para>
-				This script is called inside the docker container before the
-				setup script is called.
+				This script is executed inside the docker container before the
+				setup script is executed.
 				Its purpose is to restore the data which has been stored by
 				the store_data script.
 			</para>
@@ -1519,8 +1519,8 @@ univention-app dev-use-test-appcenter
 		<section id="upgrade:restore_data_after_setup">
 			<title>Docker script restore_data_after_setup</title>
 			<para>
-				This script is called inside the docker container after the
-				setup script is called.
+				This script is executed inside the docker container after the
+				setup script is executed.
 				Its purpose is to restore the data which has been stored by
 				the store_data script.
 			</para>
