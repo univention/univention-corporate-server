@@ -5,7 +5,7 @@ scope: ucs_4.2-0-errata4.2-4
 src: univention-kernel-image
 fix: 10.0.0-13A~4.2.0.201805241058
 desc: |
- This update of the Linux kernel to version 4.9.120 addresses the following
+ This update of the Linux kernel to version 4.9.122 addresses the following
  issues:
  * CVE-2017-17975: use-after-free in the usbtv_probe function in
    drivers/media/usb/usbtv/usbtv-core.c
@@ -56,6 +56,7 @@ desc: |
  * CVE-2018-8822: Memory corruption in ncp_read_kernel function in
    fs/ncpfs/ncplib_kernel.c
  * CVE-2018-8897: error in exception handling leads to DoS
+ * CVE-2018-9363: Bluetooth: hidp: buffer overflow in hidp_process_report
  * CVE-2018-10021: ata qc leak in drivers/scsi/libsas/sas_scsi_host.c allows
    local users to cause denial-of-service
  * CVE-2018-10876: use-after-free in jbd2_journal_commit_transaction funtion
@@ -74,6 +75,10 @@ desc: |
  * CVE-2018-13405: Fix up non-directory creation in SGID directories
  * CVE-2018-13406: video: uvesafb: Fix integer overflow in allocation
  * CVE-2018-14734: infiniband: fix a possible use-after-free bug
+ * CVE-2018-15572: x86/speculation: Protect against userspace-userspace
+   spectreRSB
+ * CVE-2018-15594: x86/paravirt: Fix spectre-v2 mitigations for paravirt
+   guests
  * CVE-2018-1000199: ptrace() incorrect error handling leads to corruption and
    DoS
 note: This is the third of three parts.
@@ -118,3 +123,6 @@ cve:
 - CVE-2018-12233
 - CVE-2018-3620
 - CVE-2018-3646
+- CVE-2018-9363
+- CVE-2018-15572
+- CVE-2018-15594
