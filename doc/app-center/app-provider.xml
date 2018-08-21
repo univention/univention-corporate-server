@@ -476,331 +476,6 @@
     </section>
 </chapter>
 
-<!--
-TODO: Stefan
--->
-<chapter id="connection-idm">
-    <title>Connection with Identity Management</title>
-
-    <para>
-		One of the UCS key features is the integrated identity management
-		(IDM). With this central identity management, users benefit, among
-		other things, from a single login independent of which services or
-		systems they use. It is highly recommended to integrate the app into
-		the identity management system.
-    </para>
-
-    <para>
-		If the app should benefit from the identity management, the flag
-		<emphasis>Add activation checkbox for App in UCS user
-		management</emphasis> should be activated in the App Provider Portal.
-		This extends the IDM by a checkbox and an administrator can activate
-		or deactivate each user individually for the app. It is also possible
-		to make significantly more complex settings. See <xref
-		linkend="user-rights-management" /> for more details.
-    </para>
-
-    <section id="provisioning">
-        <title>Provisioning</title>
-
-        <para>
-			There are different ways in which applications can access
-			provisioning information. The following describes a pull and a
-			push-based procedure.
-        </para>
-
-        <section id="provisioning:pull">
-            <title>Automatically via LDAP connection (Pull)</title>
-            <para>
-				UCS stores the user and group information in an OpenLDAP based
-				directory. Thus, the default information can be accessed via
-				the LDAP protocol. Objects are identified by an LDAP filter.
-				The following filter can be used to search for users
-				<wordasword>(univentionObjectType=users/user)</wordasword> and
-				for groups the filter
-				<wordasword>(univentionObjectType=groups/group)</wordasword>
-				can be used.
-            </para>
-            <para>
-				If the user activation is used (<guimenu>Add activation
-				checkbox for App in UCS user management</guimenu>), the
-				following LDAP filter can be used:
-				<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>.
-				The string <wordasword>myapp</wordasword> has to be replaced
-				with the <wordasword>appid</wordasword>.
-            </para>
-            <para>
-				The parameters for the LDAP server can be read from the environment variables:
-				<itemizedlist>
-					<listitem>
-						<simpara>
-							<option>LDAP_SERVER_NAME</option>:
-							The fully-qualified host name of the OpenLDAP
-							server the App may connect to.
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
-							<option>LDAP_SERVER_PORT</option>:
-							The port of the OpenLDAP server the App may
-							connect to.
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
-							<option>LDAP_SERVER_ADDITION</option>:
-							A list of alternative OpenLDAP servers. These
-							values should be used for failover.
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
-							<option>LDAP_BASE</option>:
-							The base for the whole LDAP database, e.g.,
-							<uri>dc=mydomain,dc=intranet</uri> or
-							<uri>o=mydomain</uri>.
-						</simpara>
-					</listitem>
-				</itemizedlist>
-				<important>
-					<para>
-						As a rule, the LDAP basis should not be further
-						restricted. Many environments store users below
-						<uri>cn=users</uri>, but this is not the case in all
-						environments.
-					</para>
-				</important>
-            </para>
-
-            <para>
-				By default, the OpenLDAP server in UCS does not allow
-				anonymous authentications. For every app a user account is
-				created. The account has read access to the LDAP directory.
-				The username is passed as the environment variable
-				<option>LDAP_HOSTDN</option>. The password is written in the
-				file <filename>/etc/machine.secret</filename>. The
-				credentials are not changed when an app is upgraded. But they
-				change if an App is reinstalled.
-            </para>
-        </section>
-
-        <section id="provisioning:push">
-            <title>Automatically via IDM notifications (Push)</title>
-            <para>
-				An app can be notified by the IDM system when users or groups
-				are created, modified or deleted. For each change, a file is
-				created in a specific directory. The app can either poll the
-				directory or register a command that is executed when a file
-				is created. The app should then delete the files.
-            </para>
-            <para>
-				The configuration for these IDM notifications can be done on
-				the <option>LDAP Listener</option> tab in the App Provider
-				Portal. It can be configured which object types are watched.
-				Currently, users and groups are supported. In addition, a
-				script is specified which is executed as soon as a change is
-				made. The script is executed in the container. If the app
-				container contains such a script, it can be executed by the
-				script which is defined in the App Provider Portal, for
-				example
-<programlisting language="sh">
-#/bin/sh
-/usr/sbin/app-connector
-</programlisting>
-            </para>
-            <para>
-				The files are created in the directory
-				<filename>/var/lib/univention-appcenter/apps/$appid/data/listener/</filename>.
-            </para>
-            <para>
-				All files are JSON with one dictionary and the following content:
-				<itemizedlist>
-					<listitem>
-						<simpara>
-							<option>entry_uuid</option>:
-							A unique identifier for the object. It does not
-							change even if the object is moved. The script
-							certainly wants to identify objects by this
-							attribute.
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
-							<option>dn</option>:
-							The distinguished name of the LDAP object.
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
-							<option>type</option>:
-							The type of the object, i.e., "users/user", or "groups/group".
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
-							<option>attributes</option>:
-							A dictionary of the attributes of this object. The
-							content is defined by the UDM (Univention
-							Directory Manager) representation of the object.
-							If it is null instead, the object has been
-							deleted.
-						</simpara>
-					</listitem>
-				</itemizedlist>
-            </para>
-        </section>
-    </section>
-
-    <section id="authentication">
-        <title>Authentication</title>
-
-        <para>
-			There are different ways in which applications can authenticate
-			the against the UCS identity management system.
-        </para>
-
-        <section id="authentication:ldap">
-            <title>LDAP</title>
-            <para>
-				UCS stores the user and group information in an OpenLDAP based
-				directory. Thus, the default information can be accessed via
-				the LDAP protocol. Objects are identified by an LDAP filter.
-				The following filter can be used to search for users
-				<wordasword>(univentionObjectType=users/user)</wordasword> and
-				for groups the filter
-				<wordasword>(univentionObjectType=groups/group)</wordasword>
-				can be used.
-            </para>
-            <para>
-				If the user activation is used (<guimenu>Add activation
-				checkbox for App in UCS user management</guimenu>),
-				the following LDAP filter can be used:
-				<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>.
-				The string <wordasword>myapp</wordasword> has to be replaced
-				with the <wordasword>appid</wordasword>.
-            </para>
-            <para>
-				The parameters for the LDAP server can be read from the
-				environment variables:
-				<itemizedlist>
-					<listitem>
-						<simpara>
-							<option>LDAP_SERVER_NAME</option>:
-							The fully-qualified host name of the OpenLDAP
-							server the App may connect to.
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
-							<option>LDAP_SERVER_PORT</option>:
-							The port of the OpenLDAP server the App may connect to.
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
-							<option>LDAP_SERVER_ADDITION</option>:
-							A list of alternative OpenLDAP servers. These
-							values should be used for failover.
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
-							<option>LDAP_BASE</option>:
-							The base for the whole LDAP database, e.g.,
-							<uri>dc=mydomain,dc=intranet</uri> or
-							<uri>o=mydomain</uri>.
-						</simpara>
-					</listitem>
-				</itemizedlist>
-				<important>
-					<para>
-						As a rule, the LDAP basis should not be further
-						restricted. Many environments store users below
-						<uri>cn=users</uri>, but this is not the case in all
-						environments.
-					</para>
-				</important>
-            </para>
-
-            <para>
-				By default, the OpenLDAP server in UCS does not allow
-				anonymous authentications. For every app a user account is
-				created. The account has read access to the LDAP directory.
-				The username is passed as the environment variable
-				<option>LDAP_HOSTDN</option>. The password is written in the
-				file <filename>/etc/machine.secret</filename>. The credentials
-				are not changed when an app is upgraded. But they change if an
-				App is reinstalled.
-            </para>
-        </section>
-<!--
-        <section id="authentication:saml">
-            <title>SAML</title>
-            <para>
-            </para>
-        </section>
--->
-<!--
-        <section id="authentication:openid-connect">
-            <title>OpenID connect</title>
-            <para>
-            </para>
-        </section>
--->
-        <section id="authentication:kerberos">
-            <title>Kerberos</title>
-            <para>
-				UCS integrates a Kerberos server by default. As usual with
-				Kerberos, the data for the Kerberos configuration can be
-				obtained from the DNS. By default, the DNS domain name is
-				passed through the <option>DOMAINNAME</option> environment
-				variable. The following settings can then be queried via DNS:
-				<itemizedlist>
-					<listitem>
-						<simpara>
-							<emphasis>Kerberos Realm</emphasis>:
-							It an be queried by the TXT record
-							<option>_kerberos.DOMAINNAME</option>.
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
-							<emphasis>Kerberos KDC</emphasis>:
-							It an be queried by the SRV records
-							<option>_kerberos._tcp.DOMAINNAME</option> and
-							<option>_kerberos._udp.DOMAINNAME</option>.
-						</simpara>
-					</listitem>
-				</itemizedlist>
-            </para>
-        </section>
-    </section>
-
-    <section id="user-rights-management">
-        <title>User rights management</title>
-        <para>
-			The flag <emphasis>Add activation checkbox for App in UCS user
-			management</emphasis> can be activated in the App Provider Portal.
-			This adds a checkbox to the user administration and a schema
-			extension for the IDM is created, so that the status of the
-			checkbox is stored in an attribute in the IDM. This allows each
-			user to be activated or deactivated separately.
-        </para>
-        <para>
-			If the app requires more settings in the IDM, an own LDAP schema
-			can be uploaded in the App Provider Portal <guimenu>Docker /
-			Configuration files / Schema extension for LDAP</guimenu>.
-        </para>
-        <para>
-			In this case, it is also possible to create individual extended
-			attributes during the setup process. This should be done in the
-			inst script.  Further information on extended attributes can be
-			found in the Univention Developer Reference.
-        </para>
-    </section>
-
-</chapter>
-
 <chapter id="app-lifecycle">
     <title>App life cycle</title>
 
@@ -1472,257 +1147,328 @@ TODO: Nico
 
 </chapter>
 
-<chapter id="app-appliances">
-    <title>App Appliances</title>
+<chapter id="connection-idm">
+    <title>Connection with Identity Management</title>
 
     <para>
-        App Appliances are pre defined images which consist of the App, the UCS
-        management system and the UCS runtime environment. They are run as
-        virtual machine within a hypervisor and are currently provided as
-        VMware, VMware ESXi, VirtualBox and KVM images. By default the UCS
-        branding is used, but it is possible and recommended to use a custom
-        branding. 
+		One of the UCS key features is the integrated identity management
+		(IDM). With this central identity management, users benefit, among
+		other things, from a single login independent of which services or
+		systems they use. It is highly recommended to integrate the app into
+		the identity management system.
     </para>
 
-    <section id="app-appliances:create">
-        <title>Create an app appliance</title>
+    <para>
+		If the app should benefit from the identity management, the flag
+		<emphasis>Add activation checkbox for App in UCS user
+		management</emphasis> should be activated in the App Provider Portal.
+		This extends the IDM by a checkbox and an administrator can activate
+		or deactivate each user individually for the app. It is also possible
+		to make significantly more complex settings. See <xref
+		linkend="user-rights-management" /> for more details.
+    </para>
+
+    <section id="provisioning">
+        <title>Provisioning</title>
+
         <para>
-            To create an appliance, select an app version that has already been
-            published and activate the <guimenu>Create App appliance</guimenu>
-            checkbox on the <guimenu>Appliance</guimenu> tab. If the solution
-            needs a minimum size of memory, please specify the needed mega
-            bytes.
+			There are different ways in which applications can access
+			provisioning information. The following describes a pull and a
+			push-based procedure.
         </para>
 
-        <section id="appliance:additional-software">
-            <title>Additional software</title>
+        <section id="provisioning:pull">
+            <title>Automatically via LDAP connection (Pull)</title>
             <para>
-                If your appliance should include additional apps besides your app,
-                please specify them in the <guimenu>Additional software</guimenu>
-                section.
+				UCS stores the user and group information in an OpenLDAP based
+				directory. Thus, the default information can be accessed via
+				the LDAP protocol. Objects are identified by an LDAP filter.
+				The following filter can be used to search for users
+				<wordasword>(univentionObjectType=users/user)</wordasword> and
+				for groups the filter
+				<wordasword>(univentionObjectType=groups/group)</wordasword>
+				can be used.
+            </para>
+            <para>
+				If the user activation is used (<guimenu>Add activation
+				checkbox for App in UCS user management</guimenu>), the
+				following LDAP filter can be used:
+				<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>.
+				The string <wordasword>myapp</wordasword> has to be replaced
+				with the <wordasword>appid</wordasword>.
+            </para>
+            <para>
+				The parameters for the LDAP server can be read from the environment variables:
+				<itemizedlist>
+					<listitem>
+						<simpara>
+							<option>LDAP_SERVER_NAME</option>:
+							The fully-qualified host name of the OpenLDAP
+							server the App may connect to.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<option>LDAP_SERVER_PORT</option>:
+							The port of the OpenLDAP server the App may
+							connect to.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<option>LDAP_SERVER_ADDITION</option>:
+							A list of alternative OpenLDAP servers. These
+							values should be used for failover.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<option>LDAP_BASE</option>:
+							The base for the whole LDAP database, e.g.,
+							<uri>dc=mydomain,dc=intranet</uri> or
+							<uri>o=mydomain</uri>.
+						</simpara>
+					</listitem>
+				</itemizedlist>
+				<important>
+					<para>
+						As a rule, the LDAP basis should not be further
+						restricted. Many environments store users below
+						<uri>cn=users</uri>, but this is not the case in all
+						environments.
+					</para>
+				</important>
+            </para>
+
+            <para>
+				By default, the OpenLDAP server in UCS does not allow
+				anonymous authentications. For every app a user account is
+				created. The account has read access to the LDAP directory.
+				The username is passed as the environment variable
+				<option>LDAP_HOSTDN</option>. The password is written in the
+				file <filename>/etc/machine.secret</filename>. The
+				credentials are not changed when an app is upgraded. But they
+				change if an App is reinstalled.
             </para>
         </section>
 
-        <section id="appliance:customize-setup-wizard">
-            <title>Customize setup wizard in appliance</title>
+        <section id="provisioning:push">
+            <title>Automatically via IDM notifications (Push)</title>
             <para>
-                The appliance allows you to customize the UCS setup wizard and
-                control which setup pages and setup fields should be hidden. For
-                simplicity towards the user, it is recommended to hide the
-                <userinput>software</userinput> page and the
-                <userinput>basesystem</userinput> setup field.
-            </para>
-        </section>
-
-        <section id="appliance:customize-app-center">
-            <title>Customize app listing in App Center</title>
-            <para>
-                The listing of apps in the App Center UMC module in the
-                appliance can be customized to either white list or blacklist
-                certain apps. For example, if your solution is a groupware, you
-                can hide other groupware solutions from the overview listing.
-                System administrators can only install the white listed apps or
-                are not allowed to install the black listed apps.
-            </para>
-        </section>
-
-        <section id="appliance:first-steps">
-            <title>First steps information</title>
-            <para>
-                The appliances are usually configured in a way that the user
-                can start using it right away. In some cases it may be
-                necessary to provide some information on the first steps. For
-                example, the user needs to know that a user object has to be
-                created and activated for the app first. This could be briefly
-                described in this section.
-            </para>
-        </section>
-        
-        <section id="appliance:umc-favorites">
-            <title>Customize UMC favorite category</title>
-            <para>
-                The appliance also allows to customize the UMC modules that
-                should be pre-configured for the favorites section in the UCS
-                management system. The favorites section comes up first, after
-                a UCS system administrator logs into the UCS management system.
-                It is recommended to have the modules
-                <userinput>Users</userinput>, <userinput>Groups</userinput> and
-                <userinput>App Center</userinput> listed here.
-            </para>
-        </section>
- 
-        <section id="appliance:build">
-            <title>Appliance build</title>
-            <para>
-                As soon as the settings are made, <guimenu>Sync to Test App
-                    Center</guimenu>, click the <guimenu>Publish App</guimenu>
-                button and provide a custom message to let the Univention team know
-                that you want an appliance to be built. This will create a ticket
-                which helps to keep the communication in one place.
-            </para>
-        </section>
-
-        <section id="appliance:release">
-            <title>Test and release</title>
-            <para>
-                The appliance is automatically built in the Univention build
-                infrastructure. After the build is finished, automatic tests will
-                be started. Build and testing will approximately need four hours.
+				An app can be notified by the IDM system when users or groups
+				are created, modified or deleted. For each change, a file is
+				created in a specific directory. The app can either poll the
+				directory or register a command that is executed when a file
+				is created. The app should then delete the files.
             </para>
             <para>
-                After the automatic tests have finished successfully, the app
-                provider is informed. It receives a link to the appliance
-                download for testing and has a few days of time. If no veto is
-                given, the Appliance is usually published after the veto
-                deadline. After the release, the appliance will show up for
-                download on the app page in the App Catalog. App Providers are
-                recommended to also place a link to the app detail page from
-                their download page.
+				The configuration for these IDM notifications can be done on
+				the <option>LDAP Listener</option> tab in the App Provider
+				Portal. It can be configured which object types are watched.
+				Currently, users and groups are supported. In addition, a
+				script is specified which is executed as soon as a change is
+				made. The script is executed in the container. If the app
+				container contains such a script, it can be executed by the
+				script which is defined in the App Provider Portal, for
+				example
+<programlisting language="sh">
+#/bin/sh
+/usr/sbin/app-connector
+</programlisting>
+            </para>
+            <para>
+				The files are created in the directory
+				<filename>/var/lib/univention-appcenter/apps/$appid/data/listener/</filename>.
+            </para>
+            <para>
+				All files are JSON with one dictionary and the following content:
+				<itemizedlist>
+					<listitem>
+						<simpara>
+							<option>entry_uuid</option>:
+							A unique identifier for the object. It does not
+							change even if the object is moved. The script
+							certainly wants to identify objects by this
+							attribute.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<option>dn</option>:
+							The distinguished name of the LDAP object.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<option>type</option>:
+							The type of the object, i.e., "users/user", or "groups/group".
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<option>attributes</option>:
+							A dictionary of the attributes of this object. The
+							content is defined by the UDM (Univention
+							Directory Manager) representation of the object.
+							If it is null instead, the object has been
+							deleted.
+						</simpara>
+					</listitem>
+				</itemizedlist>
             </para>
         </section>
     </section>
 
-    <section id="branding">
-        <title>Custom branding</title>
+    <section id="authentication">
+        <title>Authentication</title>
+
         <para>
-            With a customized branding of an appliance you can modify the boot
-            loader, the boot splash, the system setup wizard and the portal
-            page. Please look at the screenshots below and explanations of the
-            options that control the look.
+			There are different ways in which applications can authenticate
+			the against the UCS identity management system.
         </para>
 
-        <section id="appliance:branding:bootloader">
-            <title>Boot loader</title>
+        <section id="authentication:ldap">
+            <title>LDAP</title>
             <para>
-                The background color can be configured for the boot loader.
-                Please define in the <guimenu>Primary appliance color</guimenu>
-                setting.
+				UCS stores the user and group information in an OpenLDAP based
+				directory. Thus, the default information can be accessed via
+				the LDAP protocol. Objects are identified by an LDAP filter.
+				The following filter can be used to search for users
+				<wordasword>(univentionObjectType=users/user)</wordasword> and
+				for groups the filter
+				<wordasword>(univentionObjectType=groups/group)</wordasword>
+				can be used.
             </para>
             <para>
-                <figure id="appliance:branding:bootloader-figure">
-                    <title>Boot loader</title>
-                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Bootloader.png"/>
-                </figure>
+				If the user activation is used (<guimenu>Add activation
+				checkbox for App in UCS user management</guimenu>),
+				the following LDAP filter can be used:
+				<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>.
+				The string <wordasword>myapp</wordasword> has to be replaced
+				with the <wordasword>appid</wordasword>.
+            </para>
+            <para>
+				The parameters for the LDAP server can be read from the
+				environment variables:
+				<itemizedlist>
+					<listitem>
+						<simpara>
+							<option>LDAP_SERVER_NAME</option>:
+							The fully-qualified host name of the OpenLDAP
+							server the App may connect to.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<option>LDAP_SERVER_PORT</option>:
+							The port of the OpenLDAP server the App may connect to.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<option>LDAP_SERVER_ADDITION</option>:
+							A list of alternative OpenLDAP servers. These
+							values should be used for failover.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<option>LDAP_BASE</option>:
+							The base for the whole LDAP database, e.g.,
+							<uri>dc=mydomain,dc=intranet</uri> or
+							<uri>o=mydomain</uri>.
+						</simpara>
+					</listitem>
+				</itemizedlist>
+				<important>
+					<para>
+						As a rule, the LDAP basis should not be further
+						restricted. Many environments store users below
+						<uri>cn=users</uri>, but this is not the case in all
+						environments.
+					</para>
+				</important>
+            </para>
+
+            <para>
+				By default, the OpenLDAP server in UCS does not allow
+				anonymous authentications. For every app a user account is
+				created. The account has read access to the LDAP directory.
+				The username is passed as the environment variable
+				<option>LDAP_HOSTDN</option>. The password is written in the
+				file <filename>/etc/machine.secret</filename>. The credentials
+				are not changed when an app is upgraded. But they change if an
+				App is reinstalled.
             </para>
         </section>
-
-        <section id="appliance:branding:bootsplash">
-            <title>Boot Splash</title>
+<!--
+        <section id="authentication:saml">
+            <title>SAML</title>
             <para>
-                The boot splash can have a custom background and a logo. The
-                logo is defined in <guimenu>Logo in setup wizard</guimenu>.
-                Please provide a SVG file and mind the recommendations in <xref
-                    linkend="logos" />.
-            </para>
-            <para>
-                The background color is defined in <guimenu>CSS definition of
-                    the appliance background</guimenu>. For a black background,
-                simply define <userinput>#000000</userinput>. For a gradient
-                you can for example define <userinput>linear-gradient(to
-                    bottom, #345279 0%, #1d2c41 100%)</userinput>. For more
-                information on how to use a gradient, see <ulink
-                    url="https://www.w3schools.com/csSref/func_linear-gradient.asp">CSS
-                    linear-gradient() function on <wordasword>w3schools</wordasword></ulink>.
-            </para>
-            <para>
-                <figure id="appliance:branding:bootsplash-figure">
-                    <title>Boot splash</title>
-                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Bootsplash.png"/>
-                </figure>
             </para>
         </section>
-
-        <section id="appliance:branding:setup-wizard">
-            <title>System setup wizard</title>
+-->
+<!--
+        <section id="authentication:openid-connect">
+            <title>OpenID connect</title>
             <para>
-                The system setup wizard allows several slots to be customized.
-                In the <guimenu>Appliance creation</guimenu> section in the
-                provider portal, you can set the <guimenu>Appliance
-                    name</guimenu> (the word "appliance" is automatically
-                appended). It controls the heading in the system setup wizard.
-                Below is the <guimenu>Logo for the setup wizard</guimenu>,
-                which is shown on the first page of the system setup wizard.
-            </para>
-            <para>
-                In the <guimenu>Branding configuration of the
-                    Appliance</guimenu> section, the logo on the top left can
-                be changed with the <guimenu>Logo for UMC header</guimenu>
-                setting. The <guimenu>Primary appliance color</guimenu>
-                controls the background color of the UMC header.
-            </para>
-            <para>
-                The <guimenu>Secondary appliance color</guimenu> is used as
-                color for smaller graphical elements throughout the setup
-                wizard (see <xref linkend="appliance:branding:umc-branding-figure" />).
-            </para>
-            <para>
-                <figure id="appliance:branding:setup-wizard-figure">
-                    <title>System setup first screen</title>
-                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Setup_Wizard.png"/>
-                </figure>
-            </para>
-            <para>
-                <figure id="appliance:branding:umc-branding-figure">
-                    <title>System setup summary screen</title>
-                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_UMC.png"/>
-                </figure>
             </para>
         </section>
-
-        <section id="appliance:branding:welcome-screen">
-            <title>Welcome screen</title>
+-->
+        <section id="authentication:kerberos">
+            <title>Kerberos</title>
             <para>
-                The welcome screen is shown after the appliance setup has been
-                finished and also every time the appliance is started. If
-                offers information on how the user can access the appliance. It
-                uses settings like the Appliance name and the CSS definition of
-                the appliance background. The <guimenu>Logo displayed in the
-                    welcome screen</guimenu> needs to be a SVG file that is
-                slightly wider than high and which has the fonts converted to
-                paths. Please mind the recommendations in <xref linkend="logos"
-                    />.
-            </para>
-            <para>
-                Depending on the character of the welcome screen background
-                (bright or dark), the <guimenu>Font color for welcome
-                    screen</guimenu> should be either set to
-                <userinput>White</userinput> or <userinput>Black</userinput>.
-            </para>
-            <para>
-                <figure id="appliance:branding:umc-branding-welcome-screen">
-                    <title>Appliance welcome screen</title>
-                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Welcome_Screen.png"/>
-                </figure>
-            </para>
-        </section>
-
-        <section id="appliance:branding:portal-page">
-            <title>Portal page</title>
-            <para>
-                The branding of the portal page is independent from the other
-                sections. You can define <guimenu>Title as shown on the portal
-                    page</guimenu> and decide if the font color shall be black
-                or white. The <guimenu>Logo for the portal page</guimenu>
-                controls which logo shall be set in the first tile on the
-                portal page. The background can either consist of a background
-                image or a background color or a background color gradient as
-                described in <xref linkend="appliance:branding:bootsplash" />.
-            </para>
-            <para>
-                <figure id="appliance:branding:portal-page-figure">
-                    <title>Appliance portal page</title>
-                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Portal_Page.png"/>
-                </figure>
+				UCS integrates a Kerberos server by default. As usual with
+				Kerberos, the data for the Kerberos configuration can be
+				obtained from the DNS. By default, the DNS domain name is
+				passed through the <option>DOMAINNAME</option> environment
+				variable. The following settings can then be queried via DNS:
+				<itemizedlist>
+					<listitem>
+						<simpara>
+							<emphasis>Kerberos Realm</emphasis>:
+							It an be queried by the TXT record
+							<option>_kerberos.DOMAINNAME</option>.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<emphasis>Kerberos KDC</emphasis>:
+							It an be queried by the SRV records
+							<option>_kerberos._tcp.DOMAINNAME</option> and
+							<option>_kerberos._udp.DOMAINNAME</option>.
+						</simpara>
+					</listitem>
+				</itemizedlist>
             </para>
         </section>
+    </section>
 
+    <section id="user-rights-management">
+        <title>User rights management</title>
+        <para>
+			The flag <emphasis>Add activation checkbox for App in UCS user
+			management</emphasis> can be activated in the App Provider Portal.
+			This adds a checkbox to the user administration and a schema
+			extension for the IDM is created, so that the status of the
+			checkbox is stored in an attribute in the IDM. This allows each
+			user to be activated or deactivated separately.
+        </para>
+        <para>
+			If the app requires more settings in the IDM, an own LDAP schema
+			can be uploaded in the App Provider Portal <guimenu>Docker /
+			Configuration files / Schema extension for LDAP</guimenu>.
+        </para>
+        <para>
+			In this case, it is also possible to create individual extended
+			attributes during the setup process. This should be done in the
+			inst script.  Further information on extended attributes can be
+			found in the Univention Developer Reference.
+        </para>
     </section>
 
 </chapter>
 
-<!--
-TODO: Stefan
--->
 <chapter id="app-configurations">
 	<title>App configurations</title>
 	<para>
@@ -2058,6 +1804,255 @@ Group[de] = Lizenz und Liste
 	    </para>
 	</section>
 -->
+</chapter>
+
+
+<chapter id="app-appliances">
+    <title>App Appliances</title>
+
+    <para>
+        App Appliances are pre defined images which consist of the App, the UCS
+        management system and the UCS runtime environment. They are run as
+        virtual machine within a hypervisor and are currently provided as
+        VMware, VMware ESXi, VirtualBox and KVM images. By default the UCS
+        branding is used, but it is possible and recommended to use a custom
+        branding. 
+    </para>
+
+    <section id="app-appliances:create">
+        <title>Create an app appliance</title>
+        <para>
+            To create an appliance, select an app version that has already been
+            published and activate the <guimenu>Create App appliance</guimenu>
+            checkbox on the <guimenu>Appliance</guimenu> tab. If the solution
+            needs a minimum size of memory, please specify the needed mega
+            bytes.
+        </para>
+
+        <section id="appliance:additional-software">
+            <title>Additional software</title>
+            <para>
+                If your appliance should include additional apps besides your app,
+                please specify them in the <guimenu>Additional software</guimenu>
+                section.
+            </para>
+        </section>
+
+        <section id="appliance:customize-setup-wizard">
+            <title>Customize setup wizard in appliance</title>
+            <para>
+                The appliance allows you to customize the UCS setup wizard and
+                control which setup pages and setup fields should be hidden. For
+                simplicity towards the user, it is recommended to hide the
+                <userinput>software</userinput> page and the
+                <userinput>basesystem</userinput> setup field.
+            </para>
+        </section>
+
+        <section id="appliance:customize-app-center">
+            <title>Customize app listing in App Center</title>
+            <para>
+                The listing of apps in the App Center UMC module in the
+                appliance can be customized to either white list or blacklist
+                certain apps. For example, if your solution is a groupware, you
+                can hide other groupware solutions from the overview listing.
+                System administrators can only install the white listed apps or
+                are not allowed to install the black listed apps.
+            </para>
+        </section>
+
+        <section id="appliance:first-steps">
+            <title>First steps information</title>
+            <para>
+                The appliances are usually configured in a way that the user
+                can start using it right away. In some cases it may be
+                necessary to provide some information on the first steps. For
+                example, the user needs to know that a user object has to be
+                created and activated for the app first. This could be briefly
+                described in this section.
+            </para>
+        </section>
+        
+        <section id="appliance:umc-favorites">
+            <title>Customize UMC favorite category</title>
+            <para>
+                The appliance also allows to customize the UMC modules that
+                should be pre-configured for the favorites section in the UCS
+                management system. The favorites section comes up first, after
+                a UCS system administrator logs into the UCS management system.
+                It is recommended to have the modules
+                <userinput>Users</userinput>, <userinput>Groups</userinput> and
+                <userinput>App Center</userinput> listed here.
+            </para>
+        </section>
+ 
+        <section id="appliance:build">
+            <title>Appliance build</title>
+            <para>
+                As soon as the settings are made, <guimenu>Sync to Test App
+                    Center</guimenu>, click the <guimenu>Publish App</guimenu>
+                button and provide a custom message to let the Univention team know
+                that you want an appliance to be built. This will create a ticket
+                which helps to keep the communication in one place.
+            </para>
+        </section>
+
+        <section id="appliance:release">
+            <title>Test and release</title>
+            <para>
+                The appliance is automatically built in the Univention build
+                infrastructure. After the build is finished, automatic tests will
+                be started. Build and testing will approximately need four hours.
+            </para>
+            <para>
+                After the automatic tests have finished successfully, the app
+                provider is informed. It receives a link to the appliance
+                download for testing and has a few days of time. If no veto is
+                given, the Appliance is usually published after the veto
+                deadline. After the release, the appliance will show up for
+                download on the app page in the App Catalog. App Providers are
+                recommended to also place a link to the app detail page from
+                their download page.
+            </para>
+        </section>
+    </section>
+
+    <section id="branding">
+        <title>Custom branding</title>
+        <para>
+            With a customized branding of an appliance you can modify the boot
+            loader, the boot splash, the system setup wizard and the portal
+            page. Please look at the screenshots below and explanations of the
+            options that control the look.
+        </para>
+
+        <section id="appliance:branding:bootloader">
+            <title>Boot loader</title>
+            <para>
+                The background color can be configured for the boot loader.
+                Please define in the <guimenu>Primary appliance color</guimenu>
+                setting.
+            </para>
+            <para>
+                <figure id="appliance:branding:bootloader-figure">
+                    <title>Boot loader</title>
+                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Bootloader.png"/>
+                </figure>
+            </para>
+        </section>
+
+        <section id="appliance:branding:bootsplash">
+            <title>Boot Splash</title>
+            <para>
+                The boot splash can have a custom background and a logo. The
+                logo is defined in <guimenu>Logo in setup wizard</guimenu>.
+                Please provide a SVG file and mind the recommendations in <xref
+                    linkend="logos" />.
+            </para>
+            <para>
+                The background color is defined in <guimenu>CSS definition of
+                    the appliance background</guimenu>. For a black background,
+                simply define <userinput>#000000</userinput>. For a gradient
+                you can for example define <userinput>linear-gradient(to
+                    bottom, #345279 0%, #1d2c41 100%)</userinput>. For more
+                information on how to use a gradient, see <ulink
+                    url="https://www.w3schools.com/csSref/func_linear-gradient.asp">CSS
+                    linear-gradient() function on <wordasword>w3schools</wordasword></ulink>.
+            </para>
+            <para>
+                <figure id="appliance:branding:bootsplash-figure">
+                    <title>Boot splash</title>
+                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Bootsplash.png"/>
+                </figure>
+            </para>
+        </section>
+
+        <section id="appliance:branding:setup-wizard">
+            <title>System setup wizard</title>
+            <para>
+                The system setup wizard allows several slots to be customized.
+                In the <guimenu>Appliance creation</guimenu> section in the
+                provider portal, you can set the <guimenu>Appliance
+                    name</guimenu> (the word "appliance" is automatically
+                appended). It controls the heading in the system setup wizard.
+                Below is the <guimenu>Logo for the setup wizard</guimenu>,
+                which is shown on the first page of the system setup wizard.
+            </para>
+            <para>
+                In the <guimenu>Branding configuration of the
+                    Appliance</guimenu> section, the logo on the top left can
+                be changed with the <guimenu>Logo for UMC header</guimenu>
+                setting. The <guimenu>Primary appliance color</guimenu>
+                controls the background color of the UMC header.
+            </para>
+            <para>
+                The <guimenu>Secondary appliance color</guimenu> is used as
+                color for smaller graphical elements throughout the setup
+                wizard (see <xref linkend="appliance:branding:umc-branding-figure" />).
+            </para>
+            <para>
+                <figure id="appliance:branding:setup-wizard-figure">
+                    <title>System setup first screen</title>
+                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Setup_Wizard.png"/>
+                </figure>
+            </para>
+            <para>
+                <figure id="appliance:branding:umc-branding-figure">
+                    <title>System setup summary screen</title>
+                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_UMC.png"/>
+                </figure>
+            </para>
+        </section>
+
+        <section id="appliance:branding:welcome-screen">
+            <title>Welcome screen</title>
+            <para>
+                The welcome screen is shown after the appliance setup has been
+                finished and also every time the appliance is started. If
+                offers information on how the user can access the appliance. It
+                uses settings like the Appliance name and the CSS definition of
+                the appliance background. The <guimenu>Logo displayed in the
+                    welcome screen</guimenu> needs to be a SVG file that is
+                slightly wider than high and which has the fonts converted to
+                paths. Please mind the recommendations in <xref linkend="logos"
+                    />.
+            </para>
+            <para>
+                Depending on the character of the welcome screen background
+                (bright or dark), the <guimenu>Font color for welcome
+                    screen</guimenu> should be either set to
+                <userinput>White</userinput> or <userinput>Black</userinput>.
+            </para>
+            <para>
+                <figure id="appliance:branding:umc-branding-welcome-screen">
+                    <title>Appliance welcome screen</title>
+                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Welcome_Screen.png"/>
+                </figure>
+            </para>
+        </section>
+
+        <section id="appliance:branding:portal-page">
+            <title>Portal page</title>
+            <para>
+                The branding of the portal page is independent from the other
+                sections. You can define <guimenu>Title as shown on the portal
+                    page</guimenu> and decide if the font color shall be black
+                or white. The <guimenu>Logo for the portal page</guimenu>
+                controls which logo shall be set in the first tile on the
+                portal page. The background can either consist of a background
+                image or a background color or a background color gradient as
+                described in <xref linkend="appliance:branding:bootsplash" />.
+            </para>
+            <para>
+                <figure id="appliance:branding:portal-page-figure">
+                    <title>Appliance portal page</title>
+                    <graphic scalefit="1" width="800px" fileref="illustrations/Appliance_Branding_Portal_Page.png"/>
+                </figure>
+            </para>
+        </section>
+
+    </section>
+
 </chapter>
 
 </book>
