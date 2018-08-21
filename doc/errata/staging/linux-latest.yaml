@@ -3,8 +3,13 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: linux-latest
-fix: 80+deb9u5
+fix: 80+deb9u6
 desc: |
  This update addresses the following issue:
  * Update to Linux kernel 4.9.0-7
+
+ Debian update 80+deb9u6
+
+ * 80+deb9u6 (Sun, 19 Aug 2018 20:28:09 +0200)
+  * Update to 4.9.0-8
 bug: [47490]
