@@ -265,7 +265,7 @@ prepare_docker_app () {
 		fi
 	done
 	if [ "$app" == "egroupware" ]; then
-		extra_packages="libapache2-mod-php php-tidy php-gd php-imap php-ldap php-xsl php-mysql php-common apache2-mpm-prefork php-mbstring"
+		extra_packages="univention-apache libapache2-mod-php7.0 php-tidy php-gd php-imap php-ldap php-xsl php-mysql php-common php-mbstring php-json php-fpm php-bz2"
 	fi
 	local dockerimage="$(get_app_attr $app DockerImage)"
 	if [ "$?" != 0 ]; then
