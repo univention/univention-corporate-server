@@ -1,3 +1,9 @@
+univention-updater (13.0.1-57) unstable; urgency=medium
+
+  * Bug #47592: Show this warning only for one day
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 21 Aug 2018 14:05:03 +0200
+
 univention-updater (13.0.1-56) unstable; urgency=medium
 
   * Bug #47592: Show a warning and allow examiniation of the updater.log file
