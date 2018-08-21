@@ -643,10 +643,10 @@ univention-app dev-use-test-appcenter
     </section>
 
     <section id="approval">
-        <title>Two-side approval</title>
+        <title>Two-way approval</title>
         <para>
             Testing the app also involves to give an approval for the release
-            of the app. Each app in the App Center requires a two-side approval,
+            of the app. Each app in the App Center requires a two-way approval,
             one from the app provider and one from Univention. The app provider
             starts with the process and performs its tests to give the approval
             for its app.
