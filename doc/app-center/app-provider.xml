@@ -1685,7 +1685,7 @@ TODO: Nico
             <para>
                 Depending on the character of the welcome screen background
                 (bright or dark), the <guimenu>Font color for welcome
-                    screen</guimenu> should be eiter set to
+                    screen</guimenu> should be either set to
                 <userinput>White</userinput> or <userinput>Black</userinput>.
             </para>
             <para>
@@ -1869,62 +1869,62 @@ TODO: Stefan
 				<programlisting>
 [myapp/mysetting]
 				</programlisting>
-				It is recommeded to use the App ID as a prefix. This prevents
+				It is recommended to use the App ID as a prefix. This prevents
 				collisions.
 			</para>
 			<para>
 				The type of the attribute is defined with the keyword
 				<emphasis>Type</emphasis>. The following types are
-				supporeted:
+				supported:
 				<itemizedlist>
 					<listitem>
 						<simpara>
-							<emphasis>String</emphasis> A standard input field
+							<guimenu>String</guimenu> A standard input field
 							with no restrictions. This is used by default.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-							<emphasis>Int</emphasis> A number field which is
+							<guimenu>Int</guimenu> A number field which is
 							validated accordingly.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-							<emphasis>Bool</emphasis> A checkbox. The value
+							<guimenu>Bool</guimenu> A checkbox. The value
 							<option>true</option> or <option>false</option> is
 							set.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-							<emphasis>List</emphasis> A widget that lets the
+							<guimenu>List</guimenu> A widget that lets the
 							user choose from a predefined set of values.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-							<emphasis>Password</emphasis> A password input.
-							Note: The content will be stored as cleartext
+							<guimenu>Password</guimenu> A password input.
+							Note: The content will be stored as clear text
 							value inside the Docker container.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-							<emphasis>File</emphasis> An upload widget. The
+							<guimenu>File</guimenu> An upload widget. The
 							content is stored directly in a file according to
 							the definition of the setting.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-							<emphasis>PasswordFile</emphasis> As a File, but
+							<guimenu>PasswordFile</guimenu> As a File, but
 							shown as a password input.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-							<emphasis>Status</emphasis> A read-only settings
+							<guimenu>Status</guimenu> A read-only settings
 							that is actually meant as a feedback channel for
 							the user. This does not render a widget, but
 							instead just writes a text with whatever was
@@ -1936,64 +1936,64 @@ TODO: Stefan
 				</itemizedlist>
 			</para>
 			<para>
-				The attribute <emphasis>Description</emphasis> is used to
+				The attribute <guimenu>Description</guimenu> is used to
 				define the description of the setting. It is shown next to the
 				widget so that the user knows what to do with this form.
-				It can be localised by also defining
-				<emphasis>Description[de]</emphasis> and so on.
+				It can be localized by also defining
+				<guimenu>Description[de]</guimenu> and so on.
 			</para>
 			<para>
-				The attribute <emphasis>Group</emphasis> can be used to group
+				The attribute <guimenu>Group</guimenu> can be used to group
 				settings. All settings sharing one group will be put under
 				that label. The default group is <option>Settings</option>. It
-				is alos possible to localise it for example
-				<emphasis>Group[de]</emphasis>.
+				is alos possible to localize it for example
+				<guimenu>Group[de]</guimenu>.
 			</para>
 			<para>
-				The attribute <emphasis>Show</emphasis> can be used to define
+				The attribute <guimenu>Show</guimenu> can be used to define
 				when the setting should be shown. By default the setting
 				attribute is shown when the App is up and running. It is alos
-				possiblle to show the setting attribute during the
+				possible to show the setting attribute during the
 				installation. The following values are possible
 				<option>Install</option>, <option>Upgrade</option>,
 				<option>Remove</option> and <option>Settings</option>. It is possible
-				to specify more than one value which must be sepeerated by
+				to specify more than one value which must be seperated by
 				comma.
 			</para>
 			<para>
-				The attribute <emphasis>ShowReadOnly</emphasis> can be used in
-				the same way as <emphasis>Show</emphasis>. The difference is
+				The attribute <guimenu>ShowReadOnly</guimenu> can be used in
+				the same way as <guimenu>Show</guimenu>. The difference is
 				that the value is not changeable.
 			</para>
 			<para>
-				The attribute <emphasis>InitialValue</emphasis> can be used
+				The attribute <guimenu>InitialValue</guimenu> can be used
 				during the installation. If no value for this attribute was
-				given during the installation, the definied value is set.
+				given during the installation, the defined value is set.
 			</para>
 			<para>
-				The attribute <emphasis>Required</emphasis> can be used to
-				define if this setting has tp be set or nor.
+				The attribute <guimenu>Required</guimenu> can be used to
+				define if this setting has to be set or nor.
 			</para>
 			<para>
-				The attribute <emphasis>Scope</emphasis> is used to sepcify if
+				The attribute <guimenu>Scope</guimenu> is used to specify if
 				the value is set inside the Docker container
 				(<option>inside</option>), on the Docker host
 				(<option>outside</option>) or on both (<option>inside,
 				outside</option>). The default is <option>inside</option>.
 			</para>
 			<para>
-				The attributes <emphasis>Labels</emphasis> and
-				<emphasis>Values</emphasis> are used if a type List is
-				defined. The attribute <emphasis>Labels</emphasis> defines the
+				The attributes <guimenu>Labels</guimenu> and
+				<guimenu>Values</guimenu> are used if a type List is
+				defined. The attribute <guimenu>Labels</guimenu> defines the
 				values shown to the user and the attribute
-				<emphasis>Values</emphasis> defines the valies which are
+				<guimenu>Values</guimenu> defines the values which are
 				stored.
 				The lists are comma separated and should have the same size.
 				If a comma is necessary inside a label or value, it can be
 				escaped with a \.
 			</para>
 			<para>
-				The attribute<emphasis>Filename</emphasis> can be used to
+				The attribute<guimenu>Filename</guimenu> can be used to
 				define the the absolute path where the file should be stored.
 				This attribute is needed in case the types File or
 				PasswordFile are used.
