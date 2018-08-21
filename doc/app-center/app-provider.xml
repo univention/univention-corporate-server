@@ -1440,8 +1440,8 @@ univention-app dev-use-test-appcenter
 			<title>Join script</title>
 			<para>
 				This script is executed on the UCS host system after the Docker
-				container is configured. Please refer the Developer Refernece
-				about how to wirte a join script. If it runs successfully, the
+				container is configured. Please refer the Developer Reference
+				about how to write a join script. If it runs successfully, the
 				join script may save this information in a status file. If
 				this does not happen, the user is constantly reminded to
 				re-run the join script. So the join script does not need to
@@ -1462,9 +1462,9 @@ univention-app dev-use-test-appcenter
 		<section id="uninstallation:prerm">
 			<title>Script called before uninstalling to verify that App may be removed</title>
 			<para>
-				This script is executed in the UCS host system. It is also
+				This script is executed on the UCS host system. It is also
 				called as prerm script. Its purpose is to check whether an
-				uninstallation may be successful. But it may be used to
+				uninstallation is successful or not. But it may be used to
 				somehow prepare the system for the uninstallation. For
 				example, the prerm may fail if other software still depends on
 				it. Any exit code other than 0 will result in cancellation of
