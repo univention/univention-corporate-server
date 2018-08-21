@@ -1474,7 +1474,7 @@ univention-app dev-use-test-appcenter
 			app. Therefore, the upgrade scripts can be used.
 		</para>
 		<section id="upgrade:store_data">
-			<title>Docker scriupt store_data</title>
+			<title>Docker script store_data</title>
 			<para>
 				This script is required if data exists in the container which
 				should not be removed during the container change or the
@@ -1491,7 +1491,7 @@ univention-app dev-use-test-appcenter
 		<section id="upgrade:restore_data_before_setup">
 			<title>Docker script restore_data_before_setup</title>
 			<para>
-				This scipt is called inside the docker container before the
+				This script is called inside the docker container before the
 				setup script is called.
 				Its purpose is to restore the data which has been stored by
 				the store_data script.
@@ -1500,7 +1500,7 @@ univention-app dev-use-test-appcenter
 		<section id="upgrade:restore_data_after_setup">
 			<title>Docker script restore_data_after_setup</title>
 			<para>
-				This scipt is called inside the docker container after the
+				This script is called inside the docker container after the
 				setup script is called.
 				Its purpose is to restore the data which has been stored by
 				the store_data script.
@@ -1648,7 +1648,7 @@ univention-app dev-use-test-appcenter
 			<para>
 				The attribute <guimenu>Show</guimenu> can be used to define
 				when the setting should be shown. By default the setting
-				attribute is shown when the App is up and running. It is alos
+				attribute is shown when the App is up and running. It is also
 				possible to show the setting attribute during the
 				installation. The following values are possible
 				<option>Install</option>, <option>Upgrade</option>,
