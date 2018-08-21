@@ -1413,7 +1413,7 @@ univention-app dev-use-test-appcenter
 		<para>
 			During the installation of an app, the so-called preinst script is
 			executed first. Afterwards, the account for the docker container is
-			created and the Docker container is started. After that, the setup
+			created and the docker container is started. After that, the setup
 			script is called and finally the join script.
 		</para>
 		<section id="installation:preinst">
@@ -1430,7 +1430,7 @@ univention-app dev-use-test-appcenter
 		<section id="installation:setup">
 			<title>Docker script setup</title>
 			<para>
-				This script is executed in the Docker container. It is normally
+				This script is executed in the docker container. It is normally
 				the heart of the initial app configuration. If the script
 				fails (exit code != 0) the installation is aborted.
 				<!-- TODO: parameters?-->
@@ -1439,7 +1439,7 @@ univention-app dev-use-test-appcenter
 		<section id="installation:joinscript">
 			<title>Join script</title>
 			<para>
-				This script is executed on the UCS host system after the Docker
+				This script is executed on the UCS host system after the docker
 				container is configured. Please refer the Developer Reference
 				about how to write a join script. If it runs successfully, the
 				join script may save this information in a status file. If
@@ -1456,7 +1456,7 @@ univention-app dev-use-test-appcenter
 		<para>
 			During the uninstallation of an app, the so-called prerm script is
 			executed first. Afterwards, the account for the docker container is
-			removed and the Docker container is stopped. After that, the
+			removed and the docker container is stopped. After that, the
 			unjoin script is executed.
 		</para>
 		<section id="uninstallation:prerm">
@@ -1473,7 +1473,7 @@ univention-app dev-use-test-appcenter
 		<section id="uninstallation:unjoin">
 			<title>Unjoin script</title>
 			<para>
-				This script is executed on the UCS host system after the Docker
+				This script is executed on the UCS host system after the docker
 				container is removed. See the Developer Reference for how to
 				write an unjoin script. It should somehow revert most (if not
 				all) changes done in the join script.
@@ -1499,7 +1499,7 @@ univention-app dev-use-test-appcenter
 				new container or if the app is uninstalled.
 				It is not required if all the data is stored outside the container for
 				example in a database or a mapped volume.
-				This script is executed inside the Docker container and it
+				This script is executed inside the docker container and it
 				should copy the relevant data to
 				<filename>/var/lib/univention-appcenter/apps/$APPID/data/</filename>.
 			   	Afterwards, the data can be restored by one of the
@@ -1554,14 +1554,14 @@ univention-app dev-use-test-appcenter
 		<section id="app-settings:scripts">
 			<title>React on App settings</title>
 			<para>
-				The settings are saved inside the Docker container in the file
+				The settings are saved inside the docker container in the file
 				<filename>/etc/univention/base.conf</filename> in the type
 				<wordasword>key: value</wordasword>.
 				After the settings are changed, two scripts are executed.
 				First, the script <wordasword>configure_host</wordasword>. This script is run on the
-				Docker host.
+				docker host.
 				Second, the <wordasword>configure</wordasword> script is
-				executed. It is executed inside the Docker container. In the
+				executed. It is executed inside the docker container. In the
 				provider portal, the path of the script can be given
 				(<guimenu>Configuration script run in the Docker
 				Container</guimenu>) or the script code can be uploaded
@@ -1620,7 +1620,7 @@ univention-app dev-use-test-appcenter
 						<simpara>
 							<guimenu>Password</guimenu> A password input.
 							Note: The content will be stored as clear text
-							value inside the Docker container.
+							value inside the docker container.
 						</simpara>
 					</listitem>
 					<listitem>
@@ -1690,8 +1690,8 @@ univention-app dev-use-test-appcenter
 			</para>
 			<para>
 				The attribute <guimenu>Scope</guimenu> is used to specify if
-				the value is set inside the Docker container
-				(<option>inside</option>), on the Docker host
+				the value is set inside the docker container
+				(<option>inside</option>), on the docker host
 				(<option>outside</option>) or on both (<option>inside,
 				outside</option>). The default is <option>inside</option>.
 			</para>
