@@ -9,3 +9,5 @@ desc: |
  * A LDAP schema of OX AppSuite is reregistered due to problems in the
    handling of the Univention App Center's DefaultMasterPackages.
 bug: [47581]
+erratum: 203
+announced: 2018-08-21
