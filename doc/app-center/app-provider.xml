@@ -317,19 +317,13 @@
 
         <section id="create-app-with-docker:defaults">
             <title>Change defaults</title>
-            <!--
-            FIXME: This seems to be fixed in the portal already. There it
-            reads: "CMD for the Docker App. If Entrypoint is defined in the
-            Docker Image, these are the parameters for it when starting the
-            App. If not, this is the complete command that is run when the App
-            is started. Leave emtpy for image defaults."
-
-            TODO: If nothing needs to be changed here, remove the section completely.
-            -->
             <para>
-                Set the docker entry-point in the section <guimenu>Advanced
-                    docker settings</guimenu> at <guimenu>Entrypoint for the
-                    Docker App</guimenu>.
+                In order to get usual docker images working, some settings in
+                the App Provider Portal have to be changed. In the
+                <guimenu>Life cycle scripts</guimenu> section on the
+                <guimenu>Docker</guimenu> tab all docker script dropdowns need
+                to be changed to <userinput>Disabled</userinput>, unless a
+                <userinput>Custom script</userinput> shall be provided.
             </para>
         </section>
 
