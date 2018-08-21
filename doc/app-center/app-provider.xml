@@ -73,7 +73,7 @@
                     <simpara>
                         <emphasis>The App Provider Portal</emphasis> is the
                         self-service portal for app providers where they can
-                        create and maintain their app.  
+                        create and maintain their app.
                     </simpara>
                 </listitem>
                 <listitem>
@@ -300,7 +300,7 @@
                 a short and a long description. It gives an impression on how
                 it will look like during later testing.
             </para>
-            <para>                
+            <para>
                On the same tab you can upload two logos: A default icon that is
                shown on the the app tile in the overview. For optimal
                presentation it should be more of a square ratio. The second can
@@ -730,12 +730,19 @@ TODO: Stefan
 				<option>LDAP_HOSTDN</option>. The password is written in the
 				file <filename>/etc/machine.secret</filename>. The credentials
 				are not changed when an app is upgraded. But they change if an
-				App is reinstalled. 
+				App is reinstalled.
             </para>
         </section>
 <!--
         <section id="authentication:saml">
             <title>SAML</title>
+            <para>
+            </para>
+        </section>
+-->
+<!--
+        <section id="authentication:openid-connect">
+            <title>OpenID connect</title>
             <para>
             </para>
         </section>
@@ -767,13 +774,6 @@ TODO: Stefan
 				</itemizedlist>
             </para>
         </section>
-<!--
-        <section id="authentication:openid-connect">
-            <title>OpenID connect</title>
-            <para>
-            </para>
-        </section>
--->
     </section>
 
     <section id="user-rights-management">
@@ -1550,7 +1550,7 @@ TODO: Nico
                 <userinput>App Center</userinput> listed here.
             </para>
         </section>
-        
+ 
         <section id="appliance:build">
             <title>Appliance build</title>
             <para>
@@ -1724,23 +1724,23 @@ TODO: Nico
 TODO: Stefan
 -->
 <chapter id="app-configurations">
-    <title>App configurations</title>
+	<title>App configurations</title>
 	<para>
-        The App Center offers the possibility to add scripts at various
+		The App Center offers the possibility to add scripts at various
 		points during the installation and configuration of the app. The most
 		important scripts are described below.
 	</para>
 
-    <section id="installation-scripts">
-        <title>Installation scripts</title>
-        <para>
+	<section id="installation-scripts">
+		<title>Installation scripts</title>
+		<para>
 			During the installation of an app, the so-called preinst script is
 			executed first. Afterwards, the account for the docker container is
 			created and the Docker container is started. After that, the setup
 			script is called and finally the join script.
 		</para>
-        <section id="installation:preinst">
-            <title>Script called before installation to verify that App may be installed</title>
+		<section id="installation:preinst">
+			<title>Script called before installation to verify that App may be installed</title>
 			<para>
 				This script is called on the UCS host system before the App is
 				initialized, even before the App image is downloaded. It is
@@ -1750,8 +1750,8 @@ TODO: Stefan
 				script is also called if the the App is upgraded.
 			</para>
 		</section>
-        <section id="installation:setup">
-            <title>Docker script setup</title>
+		<section id="installation:setup">
+			<title>Docker script setup</title>
 			<para>
 				This script is called in the Docker container. It is normally
 				the heart of the initial App configuration. If the script
@@ -1759,8 +1759,8 @@ TODO: Stefan
 				<!-- TODO: parameters?-->
 			</para>
 		</section>
-        <section id="installation:joinscript">
-            <title>Join script</title>
+		<section id="installation:joinscript">
+			<title>Join script</title>
 			<para>
 				This script is called on the UCS host system after the Docker
 				container is configured. See our page about Join scripts or
@@ -1774,17 +1774,16 @@ TODO: Stefan
 			</para>
 		</section>
 	</section>
-    <section id="uninstallation-scripts">
-        <title>Uninstallation scripts</title>
-        <para>
-		<!-- TOOD: descripe the order of the setup process -->
+	<section id="uninstallation-scripts">
+		<title>Uninstallation scripts</title>
+		<para>
 			During the uninstallation of an app, the so-called prerm script is
 			executed first. Afterwards, the account for the docker container is
 			removed and the Docker container is stopped. After that, the
 			unjoin script is called.
 		</para>
-        <section id="uninstallation:prerm">
-            <title>Script called before uninstalling to verify that App may be removed</title>
+		<section id="uninstallation:prerm">
+			<title>Script called before uninstalling to verify that App may be removed</title>
 			<para>
 				This script is called in the UCS host system. It is also
 				called as prerm script. Its purpose is to check whether an
@@ -1795,8 +1794,8 @@ TODO: Stefan
 				the uninstallation process.
 			</para>
 		</section>
-        <section id="uninstallation:unjoin">
-            <title>Unjoin script</title>
+		<section id="uninstallation:unjoin">
+			<title>Unjoin script</title>
 			<para>
 				This script is called on the UCS host system after the Docker
 				container is removed. See the Developer Reference for how to
@@ -1807,17 +1806,245 @@ TODO: Stefan
 				registered.
 			</para>
 		</section>
-    </section>
+	</section>
 <!--
 	TODO:
 	Should we add store_data, restore_date_before_setup, restore_data_after_setup?
 -->
 
-    <section id="app-settings">
-        <title>App settings</title>
-        <para>
-        </para>
-    </section>
+	<section id="app-settings">
+		<title>App settings</title>
+		<para>
+			The App settings allow the user to configure the app during its
+			runtime. The provider portal can be used to define which settings
+			are displayed to the user. The app can react accordingly to the
+			changes.
+		</para>
+		<para>
+			If App settings are defined for an App, the user can reach these
+			settings in the app configuration, see <xref linkend="app-configurations:app-settings:button" />).
+			<figure id="app-configurations:app-settings:button">
+				<title>App settings button</title>
+				<graphic scalefit="1" width="800px" fileref="illustrations/Appcenter-settings-button.png"/>
+			</figure>
+			An example for an App settings dialog is in <xref linkend="app-configurations:app-settings:example" />).
+			<figure id="app-configurations:app-settings:example">
+				<title>App settings example</title>
+				<graphic scalefit="1" width="800px" fileref="illustrations/Appcenter-settings-example.png"/>
+			</figure>
+		</para>
+		<para>
+			The App settings can be defined on the tab
+			<guimenu>Settings</guimenu> in the provider portal.
+		</para>
+		<section id="app-settings:scripts">
+			<title>React on App settings</title>
+			<para>
+				The settings are saved inside the Docker container in the file
+				<filename>/etc/univention/base.conf</filename> in the type
+				<wordasword>key: value</wordasword>.
+				After the settings are changed, two scripts are executed.
+				First, the script <wordasword>configure_host</wordasword>. This script is run on the
+				Docker host.
+				Second, the <wordasword>configure</wordasword> script is
+				executed. It is executed inside the Docker container. In the
+				provider portal, a the path of the script can be given
+				(<guimenu>Configuration script run in the Docker
+				Container</guimenu> or the script code can be uploaded
+				(<guimenu>Path to script inside the container
+				(absolute)</guimenu>).
+			</para>
+		</section>
+		<section id="app-settings:reference">
+			<title>App settings configuration</title>
+			<para>
+				The App settings are defined in the ini format. The definition
+				can be done in the field <guimenu>Settings that can be used to
+				configure the App. ini file format<guimenu>. One ini file can
+				contain several settings.
+			</para>
+			<para>
+				The name of a setting is the name of the section in the ini
+				file, for example
+				<programlisting>
+[myapp/mysetting]
+				</programlisting>
+				It is recommeded to use the App ID as a prefix. This prevents
+				collisions.
+			</para>
+			<para>
+				The type of the attribute is defined with the keyword
+				<emphasis>Type</emphasis>. The following types are
+				supporeted:
+				<itemizedlist>
+					<listitem>
+						<simpara>
+							<emphasis>String</emphasis> A standard input field
+							with no restrictions. This is used by default.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<emphasis>Int</emphasis> A number field which is
+							validated accordingly.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<emphasis>Bool</emphasis> A checkbox. The value
+							<option>true</option> or <option>false</option> is
+							set.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<emphasis>List</emphasis> A widget that lets the
+							user choose from a predefined set of values.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<emphasis>Password</emphasis> A password input.
+							Note: The content will be stored as cleartext
+							value inside the Docker container.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<emphasis>File</emphasis> An upload widget. The
+							content is stored directly in a file according to
+							the definition of the setting.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<emphasis>PasswordFile</emphasis> As a File, but
+							shown as a password input.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<emphasis>Status</emphasis> A read-only settings
+							that is actually meant as a feedback channel for
+							the user. This does not render a widget, but
+							instead just writes a text with whatever was
+							written into this variable. Writing to it is up to
+							the App Provider (e.g., by using the configure
+							script).
+						</simpara>
+					</listitem>
+				<itemizedlist>
+			</para>
+			<para>
+				The attribute <emphasis>Description</emphasis> is used to
+				define the description of the setting. It is shown next to the
+				widget so that the user knows what to do with this form.
+				It can be localised by also defining
+				<emphasis>Description[de]</emphasis> and so on.
+			</para>
+			<para>
+				The attribute <emphasis>Group</emphasis> can be used to group
+				settings. All settings sharing one group will be put under
+				that label. The default group is <option>Settings</option>. It
+				is alos possible to localise it for example
+				<emphasis>Group[de]</emphasis>.
+			</para>
+			<para>
+				The attribute <emphasis>Show</emphasis> can be used to define
+				when the setting should be shown. By default the setting
+				attribute is shown when the App is up and running. It is alos
+				possiblle to show the setting attribute during the
+				installation. The following values are possible
+				<option>Install</option>, <option>Upgrade</option>,
+				<option>Remove> and <option>Settings</option>. It is possible
+				to specify more than one value which must be sepeerated by
+				comma.
+			</para>
+			<para>
+				The attribute <emphasis>ShowReadOnly</emphasis> can be used in
+				the same way as <emphasis>Show</emphasis>. The difference is
+				that the value is not changeable.
+			</para>
+			<para>
+				The attribute <emphasis>InitialValue</emphasis> can be used
+				during the installation. If no value for this attribute was
+				given during the installation, the definied value is set.
+			</para>
+			<para>
+				The attribute <emphasis>Required</emphasis> can be used to
+				define if this setting has tp be set or nor.
+			</para>
+			<para>
+				The attribute <emphasis>Scope</emphasis> is used to sepcify if
+				the value is set inside the Docker container
+				(<option>inside</option>), on the Docker host
+				(<option>outside</option>) or on both (<option>inside,
+				outside</option>). The default is <option>inside</option>.
+			</para>
+			<para>
+				The attributes <emphasis>Labels</emphasis> and
+				<emphasis>Values</emphasis> are used if a type List is
+				defined. The attribute <emphasis>Labels</emphasis> defines the
+				values shown to the user and the attribute
+				<emphasis>Values</emphasis> defines the valies which are
+				stored.
+				The lists are comma separated and should have the same size.
+				If a comma is necessary inside a label or value, it can be
+				escaped with a \.
+			</para>
+			<para>
+				The attribute<emphasis>Filename</emphasis> can be used to
+				define the the absolute path where the file should be stored.
+				This attribute is needed in case the types File or
+				PasswordFile are used.
+			</para>
+		</section>
+		<section id="app-settings:examples">
+			<title>App settings examples</title>
+			<para>
+				This is a minimal settings definition:
+				<programlisting>
+[myapp/mysetting]
+Type = String
+Description = This is the description of the setting
+Description[de] = Das ist die Beschreibung der Einstellung
+				</programlisting>
+			</para>
+			<para>
+				These are two more advanced settings
+				<programlisting>
+[myapp/myfile]
+Type = File
+Filename = /opt/myapp/license
+Description = License for the App
+Description[de] = Lizenz der App
+Show = Install, Settings
+Group = License and List
+Group[de] = Lizenz und Liste
+				</programlisting>
+
+				<programlisting>
+[myapp/list]
+Type = List
+Description = List of values
+Show = Install
+ShowReadOnly = Settings
+Values = value1, value2, value3
+Labels = Label 1, Label 2, Label 3
+InitialValue = value2
+Scope = inside, outside
+Group = License and List
+Group[de] = Lizenz und Liste
+				</programlisting>
+				The first of these two settings will upload a file to
+				/opt/myapp/license inside the container. The second will save
+				<wordasword>myapp/list: value2<wordasword> (or another value)
+				inside the container and on the docker host. Both settings
+				will be shown before the installation. On the App settings
+				page, the list setting will be read-only.
+			</para>
+		</section>
+	</section>
 
 <!--
 	TODO:
@@ -1825,11 +2052,11 @@ TODO: Stefan
 	We should decide how to proceed with this.
 -->
 <!--
-    <section id="app-attributes">
-        <title>App attributes</title>
-        <para>
-        </para>
-    </section>
+	<section id="app-attributes">
+	    <title>App attributes</title>
+	    <para>
+	    </para>
+	</section>
 -->
 </chapter>
 
