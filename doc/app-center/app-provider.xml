@@ -1860,7 +1860,7 @@ TODO: Stefan
 			<para>
 				The App settings are defined in the ini format. The definition
 				can be done in the field <guimenu>Settings that can be used to
-				configure the App. ini file format<guimenu>. One ini file can
+				configure the App. ini file format</guimenu>. One ini file can
 				contain several settings.
 			</para>
 			<para>
@@ -1933,7 +1933,7 @@ TODO: Stefan
 							script).
 						</simpara>
 					</listitem>
-				<itemizedlist>
+				</itemizedlist>
 			</para>
 			<para>
 				The attribute <emphasis>Description</emphasis> is used to
@@ -1956,7 +1956,7 @@ TODO: Stefan
 				possiblle to show the setting attribute during the
 				installation. The following values are possible
 				<option>Install</option>, <option>Upgrade</option>,
-				<option>Remove> and <option>Settings</option>. It is possible
+				<option>Remove</option> and <option>Settings</option>. It is possible
 				to specify more than one value which must be sepeerated by
 				comma.
 			</para>
@@ -2038,7 +2038,7 @@ Group[de] = Lizenz und Liste
 				</programlisting>
 				The first of these two settings will upload a file to
 				/opt/myapp/license inside the container. The second will save
-				<wordasword>myapp/list: value2<wordasword> (or another value)
+				<wordasword>myapp/list: value2</wordasword> (or another value)
 				inside the container and on the docker host. Both settings
 				will be shown before the installation. On the App settings
 				page, the list setting will be read-only.
