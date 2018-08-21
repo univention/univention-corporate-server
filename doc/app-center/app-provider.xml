@@ -778,82 +778,6 @@ univention-app dev-use-test-appcenter
         </para>
     </section>
 
-    <section id="certificates">
-        <!--
-        TODO: Check, if this is the right place for this section. Maybe it is
-        better placed in chapter "App configurations".
-        -->
-        <title>Certificates</title>
-        <para>
-            UCS provides a certificate infrastructure for secure communication
-            protocols. See <ulink
-                url="http://docs.software-univention.de/manual.html#domain:ssl">SSL
-                certificate management</ulink> in the UCS manual.
-        </para>
-        <para>
-            Apps may need access to the UCS certificate infrastructure or need
-            to be aware of changes to the certificates. Starting with <ulink
-                url="https://errata.software-univention.de/ucs/4.3/91.html">UCS
-                4.3-0 errata 91</ulink> the Univention App Center provides a
-            simple way to manage certificates inside an App.  This is simply a
-            new action called <guimenu>update-certificates</guimenu> in the App
-            Center which is called automatically during the installation and
-            upgrade of Apps (but can also be executed manually) and gives Apps
-            a simple way to gain access to certificates and to react upon
-            changes to certificates.
-        </para>
-<programlisting>
-# update all apps
--> univention-app update-certificates
-
-# update app "my-app"
--> univention-app update-certificates my-app
-</programlisting>
-
-        <para>
-            What happens update-certificates?
-            <itemizedlist>
-                <listitem>
-                    <simpara>
-                        The UCS root CA certificate is copied to <filename>/usr/local/share/ca-certificates/ucs.crt</filename> inside the container.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        <guimenu>update-ca-certificates</guimenu> is executed inside the container.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        The UCS root CA certificate is copied to <filename>/etc/univention/ssl/ucsCA/CAcert.pem</filename> inside the container.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        The docker host UCS certificate is copied to <filename>/etc/univention/ssl/docker-host-certificate/{cert.pem,private.key}</filename> and <filename>/etc/univention/ssl/$FQDN_DOCKER_HOST/{cert.pem,private.key}</filename>.
-                    </simpara>
-                </listitem>
-            </itemizedlist>
-        </para>
-        <para>
-            Every app can define a <guimenu>update_certificates</guimenu>
-            script.
-            <!--
-            TODO: @Felix: Where can the app developer place this script in the portal?
-            -->
-        </para>
-        <para>
-            Example:
-<programlisting>
-#!/bin/bash
-# cat the UCS root CA to the App's root CA chain
-cat /etc/univention/ssl/ucsCA/CAcert.pem >> /opt/my-app/ca-bundle.crt
-service my-app-daemon restart
-</programlisting>
-        </para>
-
-    </section>
-
 </chapter>
 
 <!--
@@ -1791,6 +1715,82 @@ Group[de] = Lizenz und Liste
 			</para>
 		</section>
 	</section>
+
+    <section id="certificates">
+        <!--
+        TODO: Check, if this is the right place for this section. Maybe it is
+        better placed in chapter "App configurations".
+        -->
+        <title>Certificates</title>
+        <para>
+            UCS provides a certificate infrastructure for secure communication
+            protocols. See <ulink
+                url="http://docs.software-univention.de/manual.html#domain:ssl">SSL
+                certificate management</ulink> in the UCS manual.
+        </para>
+        <para>
+            Apps may need access to the UCS certificate infrastructure or need
+            to be aware of changes to the certificates. Starting with <ulink
+                url="https://errata.software-univention.de/ucs/4.3/91.html">UCS
+                4.3-0 errata 91</ulink> the Univention App Center provides a
+            simple way to manage certificates inside an App.  This is simply a
+            new action called <guimenu>update-certificates</guimenu> in the App
+            Center which is called automatically during the installation and
+            upgrade of Apps (but can also be executed manually) and gives Apps
+            a simple way to gain access to certificates and to react upon
+            changes to certificates.
+        </para>
+<programlisting>
+# update all apps
+-> univention-app update-certificates
+
+# update app "my-app"
+-> univention-app update-certificates my-app
+</programlisting>
+
+        <para>
+            What happens update-certificates?
+            <itemizedlist>
+                <listitem>
+                    <simpara>
+                        The UCS root CA certificate is copied to <filename>/usr/local/share/ca-certificates/ucs.crt</filename> inside the container.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        <guimenu>update-ca-certificates</guimenu> is executed inside the container.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        The UCS root CA certificate is copied to <filename>/etc/univention/ssl/ucsCA/CAcert.pem</filename> inside the container.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        The docker host UCS certificate is copied to <filename>/etc/univention/ssl/docker-host-certificate/{cert.pem,private.key}</filename> and <filename>/etc/univention/ssl/$FQDN_DOCKER_HOST/{cert.pem,private.key}</filename>.
+                    </simpara>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            Every app can define a <guimenu>update_certificates</guimenu>
+            script.
+            <!--
+            TODO: @Felix: Where can the app developer place this script in the portal?
+            -->
+        </para>
+        <para>
+            Example:
+<programlisting>
+#!/bin/bash
+# cat the UCS root CA to the App's root CA chain
+cat /etc/univention/ssl/ucsCA/CAcert.pem >> /opt/my-app/ca-bundle.crt
+service my-app-daemon restart
+</programlisting>
+        </para>
+
+    </section>
 
 <!--
 	TODO:
