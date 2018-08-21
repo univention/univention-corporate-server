@@ -652,9 +652,6 @@ univention-app dev-use-test-appcenter
             for its app.
         </para>
 
-        <!-- 
-        TODO: Add examples what the app provider should test and take care of.
-        -->
         <para>
             The app provider's approval is given by clicking on
             <guimenu>Publish App</guimenu> in the App Provider portal. The
@@ -780,9 +777,6 @@ univention-app dev-use-test-appcenter
 
 </chapter>
 
-<!--
-TODO: Nico
--->
 <chapter id="app-presentation">
     <title>App presentation</title>
 
@@ -1717,10 +1711,6 @@ Group[de] = Lizenz und Liste
 	</section>
 
     <section id="certificates">
-        <!--
-        TODO: Check, if this is the right place for this section. Maybe it is
-        better placed in chapter "App configurations".
-        -->
         <title>Certificates</title>
         <para>
             UCS provides a certificate infrastructure for secure communication
