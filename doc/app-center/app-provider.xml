@@ -1464,11 +1464,10 @@ univention-app dev-use-test-appcenter
 			<para>
 				This script is executed on the UCS host system. It is also
 				called as prerm script. Its purpose is to check whether an
-				uninstallation is successful or not. But it may be used to
-				somehow prepare the system for the uninstallation. For
-				example, the prerm may fail if other software still depends on
-				it. Any exit code other than 0 will result in cancellation of
-				the uninstallation process.
+				uninstallation is successful or not. For example, the prerm
+				may fail if other software still depends on it. Any exit code
+				other than 0 will result in cancellation of the uninstallation
+				process.
 			</para>
 		</section>
 		<section id="uninstallation:unjoin">
@@ -1477,7 +1476,7 @@ univention-app dev-use-test-appcenter
 				This script is executed on the UCS host system after the Docker
 				container is removed. See the Developer Reference for how to
 				write an unjoin script. It should somehow revert most (if not
-				all) changes done in the inst script (or join script).
+				all) changes done in the join script.
 				With the notable exception of schema registration. An LDAP
 				schema extension should never be removed once it was
 				registered.
@@ -1489,16 +1488,16 @@ univention-app dev-use-test-appcenter
 		<title>Upgrade scripts</title>
 		<para>
 			It may be necessary to move data from the old container to the new
-			container when replacing the app container or uninstalling the
-			app. Therefore, the upgrade scripts can be used.
+			container when the app container is replaced during an upgrade or
+			the app is uninstalled. Therefore, the upgrade scripts can be used.
 		</para>
 		<section id="upgrade:store_data">
 			<title>Docker script store_data</title>
 			<para>
 				This script is required if data exists in the container which
-				should not be removed during the container change or the
-				uninstallation.
-			   	It is not required if data is stored outside the container for
+				should not be removed while the container is replaced with a
+				new container or if the app is uninstalled.
+				It is not required if all the data is stored outside the container for
 				example in a database or a mapped volume.
 				This script is executed inside the Docker container and it
 				should copy the relevant data to
@@ -1563,9 +1562,9 @@ univention-app dev-use-test-appcenter
 				Docker host.
 				Second, the <wordasword>configure</wordasword> script is
 				executed. It is executed inside the Docker container. In the
-				provider portal, a the path of the script can be given
+				provider portal, the path of the script can be given
 				(<guimenu>Configuration script run in the Docker
-				Container</guimenu> or the script code can be uploaded
+				Container</guimenu>) or the script code can be uploaded
 				(<guimenu>Path to script inside the container
 				(absolute)</guimenu>).
 			</para>
