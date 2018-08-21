@@ -40,6 +40,7 @@ import psutil
 import pipes
 import yaml
 import requests
+from datetime import datetime
 
 import univention.hooks
 import notifier.threads
@@ -215,15 +216,24 @@ class Instance(Base):
 		return ret
 
 	def _last_update(self):
-		last_update_failed = False
-		last_update_version = None
-		with open('/var/lib/univention-updater/univention-updater.status') as fd:
-			content = fd.read()
-			info = dict(line.split('=', 1) for line in content.splitlines())
-			last_update_failed = info.get('status') == 'FAILED'
-			if last_update_failed:
-				last_update_version = info.get('next_version')
-		return {'last_update_failed': last_update_failed, 'last_update_version': last_update_version}
+		status_file = '/var/lib/univention-updater/univention-updater.status'
+		ret = {'last_update_failed': False, 'last_update_version': None}
+		try:
+			mtime = stat(status_file).st_mtime
+			mtime = datetime.fromtimestamp(mtime)
+			delta = datetime.now() - mtime
+			if delta.days != 0:  # no fresh failure
+				return ret
+			with open(status_file) as fd:
+				content = fd.read()
+				info = dict(line.split('=', 1) for line in content.splitlines())
+				ret['last_update_failed'] = info.get('status') == 'FAILED'
+				if ret['last_update_failed']:
+					ret['last_update_version'] = info.get('next_version')
+		except (ValueError, EnvironmentError) as exc:
+			MODULE.error(str(exc))
+			pass
+		return ret
 
 	def _maintenance_information(self):
 		ucr.load()

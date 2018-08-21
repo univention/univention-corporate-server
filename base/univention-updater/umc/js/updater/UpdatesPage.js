@@ -117,7 +117,7 @@ define([
 					type: Text,
 					name: 'update_failed',
 					label: ' ',
-					content: _("The update to %s failed. The log file /var/log/univention/updater.log may contain more information about this. Log files are rotated, though. If the file does not contain any information about the last update, you need to examine the rotated files (e.g, /var/log/univention/updater.log.1.gz).", _("a new UCS version")),
+					content: _("The update to %s failed. The log file /var/log/univention/updater.log may contain more information about this.", _("a new UCS version")),
 					size: 'One',
 					labelPosition: 'bottom'
 				}, { // ------------------- Easy upgrade mode -------------------------
@@ -672,7 +672,7 @@ define([
 					if (info.last_update_version) {
 						version = "UCS " + info.last_update_version;
 					}
-					var warning = _("The update to %s failed. The log file /var/log/univention/updater.log may contain more information about this. Log files are rotated, though. If the file does not contain any information about the last update, you need to examine the rotated files (e.g, /var/log/univention/updater.log.1.gz).", version);
+					var warning = _("The update to %s failed. The log file /var/log/univention/updater.log may contain more information about this.", version);
 
 					// display out of maintenance message
 					var updateFailedWidget = this._form.getWidget('update_failed');

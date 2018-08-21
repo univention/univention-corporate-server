@@ -1,3 +1,9 @@
+univention-maintenance-mode (1.0.0-5) unstable; urgency=medium
+
+  * Bug #37223: Better debug messages; correctly set duration
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 21 Aug 2018 13:52:28 +0200
+
 univention-maintenance-mode (1.0.0-4) unstable; urgency=medium
 
   * Bug #37223: Do it in Python

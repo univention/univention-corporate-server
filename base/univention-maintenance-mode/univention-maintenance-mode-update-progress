@@ -64,7 +64,7 @@ class UpdaterStatus(object):
 		with open('/var/lib/univention-updater/univention-updater.status') as fd:
 			for line in fd:
 				try:
-					key, value = line.split('=', 2)
+					key, value = line.split('=', 1)
 				except ValueError:
 					continue
 				if key == 'current_version':
@@ -106,33 +106,26 @@ def compute():
 	try:
 		percentage = read_progress()
 	except EnvironmentError as exc:
-		print 'univention-maintenance-mode: Error while reading progress: %s' % exc
+		print 'Error while reading progress: %s' % exc
 	else:
 		try:
 			percentage = add_updater_context(percentage)
 		except EnvironmentError as exc:
-			print 'univention-maintenance-mode: Error while adding context: %s' % exc
+			print 'Error while adding context: %s' % exc
 		else:
 			try:
 				write_json(percentage)
 			except EnvironmentError as exc:
-				print 'univention-maintenance-mode: Error while writing json: %s' % exc
+				print 'Error while writing json: %s' % exc
 
 def main():
 	try:
 		os.unlink('/var/www/univention/maintenance/updater.json')
 	except EnvironmentError:
 		print 'Failed to delete the status file /var/www/univention/maintenance/updater.json'
-	duration = 0
-	from datetime import datetime
-	t1 = datetime.now()
-	i = 0
+	duration = 2
 	while True:
 		compute()
-		i += 1
-		if i % 1000 == 0:
-			print i, datetime.now() - t1
-			t1 = datetime.now()
 		time.sleep(duration)
 
 
