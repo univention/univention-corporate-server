@@ -572,9 +572,9 @@ univention-app dev-use-test-appcenter
             <para>
                 When installing the App, also mind README information that you
                 may have defined on the <guimenu>README files</guimenu> in your
-                app in the App Provider Portal. An Administrator expects an App
+                app in the App Provider Portal. An Administrator expects an app
                 to be fully configured after the installation. If something is
-                needed in order to use the App (e.g., activating users for the
+                needed in order to use the app (e.g., activating users for the
                 service), it should be described in the appropriate README
                 section (see <xref linkend="readme" />.
             </para>
