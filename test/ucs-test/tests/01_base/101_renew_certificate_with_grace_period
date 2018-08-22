@@ -1,0 +1,60 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test if a certificate can be renewed with a grace period
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## bugs: [41013]
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+SSLBASE="${sslbase:-/etc/univention/ssl}"
+pending_file="${SSLBASE}/pending.txt"
+
+test_days=1825
+test_grace=3
+
+random=$(random_hostname)
+test_cert_name="test_cert_$random"
+while [ $(univention-certificate list | grep "$test_cert_name" | wc -l) -gt "0" ]; do
+	random=$(random_hostname)
+	test_cert_name="test_cert_$random"
+done
+
+list0=$(univention-certificate list)
+univention-certificate new -name "$test_cert_name" >/dev/null 2>&1
+[ $(univention-certificate list | grep "$test_cert_name" | wc -l) -eq "1" ] || fail_test 2
+
+list1=$(univention-certificate list)
+num1=$(comm -13 <(echo "$list0") <(echo "$list1") | sed 's/\t.*//')
+univention-certificate renew -name "$test_cert_name" -days "$test_days" -grace "$test_grace" >/dev/null 2>&1
+[ $(univention-certificate list | grep "$test_cert_name" | wc -l) -eq "2" ] || fail_test 3
+
+list2=$(univention-certificate list)
+num2=$(comm -13 <(echo "$list1") <(echo "$list2") | sed 's/\t.*//')
+[ "$num1" != "$num2" ] || fail_test 4
+
+/etc/cron.daily/univention-ssl >/dev/null 2>&1
+[ $(univention-certificate list | grep "$test_cert_name" | wc -l) -eq "2" ] || fail_test 5
+
+# change expire date to an earlier date
+temp=$(mktemp)
+pending_certs=$(cat "$pending_file")
+for cert in "${pending_certs[@]}"; do
+	num=$(sed 's/:.*//' <<< "$cert")
+	expire=$(sed 's/.*://' <<< "$cert")
+	if [ "$num" == "$num1" ]; then
+		expire="$(($expire - ($test_grace * 3600 * 24)))"
+	fi
+	echo "$num:$expire" >>"$temp"
+done
+mv "$temp" "$pending_file"
+chmod 600 "$pending_file"
+
+/etc/cron.daily/univention-ssl >/dev/null 2>&1
+[ $(univention-certificate list | grep "$test_cert_name" | wc -l) -eq "1" ] || fail_test 6
+
+univention-certificate revoke -name $test_cert_name >/dev/null 2>&1
+[ $(univention-certificate list | grep "$test_cert_name" | wc -l) -eq "0" ] || fail_test 7
+
+exit 0
+
