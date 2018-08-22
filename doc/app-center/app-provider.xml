@@ -657,7 +657,7 @@ univention-app dev-use-test-appcenter
                 drastically safe manual testing efforts.
             </para>
 
-        <!-- 
+        <!--
         TODO: Section about how providers can use testing infrastructure for automated tests.
 
         * How does automated testing apply to docker apps?
@@ -844,7 +844,7 @@ univention-app dev-use-test-appcenter
         <title>Logos</title>
         <para>
             All logos uploaded to the app provider portal have to be SVG
-            format, which is most flexible for the presentation purposes. 
+            format, which is most flexible for the presentation purposes.
         </para>
 
         <important>
@@ -963,7 +963,7 @@ univention-app dev-use-test-appcenter
             The description is provided in HTML format. The text editor in the
             provider portal provides decent functionality. If you more control
             on the HTML is needed, switch to HTML source mode and edit the HTML
-            directly. 
+            directly.
         </para>
         <note>
             <para>
@@ -1229,63 +1229,199 @@ univention-app dev-use-test-appcenter
 				are created, modified or deleted. For each change, a file is
 				created in a specific directory. The app can either poll the
 				directory or register a command that is executed when a file
-				is created. The app should then delete the files.
+				is created.
             </para>
-            <para>
-				The configuration for these IDM notifications can be done on
-				the <guimenu>LDAP Listener</guimenu> tab in the App Provider
-				Portal. It can be configured which object types are watched.
-				Currently, users and groups are supported. In addition, a
-				script is specified which is executed as soon as a change is
-				made. The script is executed in the container. If the app
-				container contains such a script, it can be executed by the
-				script which is defined in the App Provider Portal, for
-				example
+			<section id="provision:push:setup">
+				<title>Setup in App configuration</title>
+				<para>
+					The configuration for these IDM notifications can be done on
+					the <guimenu>LDAP Listener</guimenu> tab in the App Provider
+					Portal. It can be configured which object types are watched.
+					Currently, users and groups are supported.
+				</para>
+				<para>
+					A script should be specified in the provider portal. The
+					script is copied from the App Center into the container and
+					called there. If a script is already part of the container,
+					this script can be called accordingly, e.g.
 <programlisting language="sh">
 #/bin/sh
 /usr/sbin/app-connector
 </programlisting>
-            </para>
-            <para>
-				The files are created in the directory
-				<filename>/var/lib/univention-appcenter/apps/$appid/data/listener/</filename>.
-            </para>
-            <para>
-				All files are JSON with one dictionary and the following content:
-				<itemizedlist>
-					<listitem>
-						<simpara>
-							<option>entry_uuid</option>:
-							A unique identifier for the object. It does not
-							change even if the object is moved. The script
-							certainly wants to identify objects by this
-							attribute.
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
-							<option>dn</option>:
-							The distinguished name of the LDAP object.
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
-							<option>type</option>:
-							The type of the object, i.e., "users/user", or "groups/group".
-						</simpara>
-					</listitem>
-					<listitem>
-						<simpara>
-							<option>attributes</option>:
-							A dictionary of the attributes of this object. The
-							content is defined by the UDM (Univention
-							Directory Manager) representation of the object.
-							If it is null instead, the object has been
-							deleted.
-						</simpara>
-					</listitem>
-				</itemizedlist>
-            </para>
+            	</para>
+			</section>
+			<section id="provision:push:mechanism">
+				<title>How the mechanism works</title>
+				<para>
+					The JSON files are created in the directory
+					<filename>/var/lib/univention-appcenter/apps/$appid/data/listener/</filename>.
+					The App Center generates for every change a at these object
+					one JSON file.
+					As soon as any attribute of the watched object types is
+					changed a JSON file is created in the directory. The script is
+					called in a defined and configurable interval by the App
+					Center, if at least one JSON file has been written.
+					Once the script has finished a JSON file, the script must
+					delete the JSON file.
+				</para>
+				<para>
+					All files are JSON with one dictionary and the following content:
+					<itemizedlist>
+						<listitem>
+							<simpara>
+								<option>entry_uuid</option>:
+								A unique identifier for the object. It does not
+								change even if the object is moved. The script
+								certainly wants to identify objects by this
+								attribute.
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+								<option>dn</option>:
+								The distinguished name of the LDAP object.
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+								<option>type</option>:
+								The type of the object, i.e., "users/user", or "groups/group".
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+								<option>attributes</option>:
+								A dictionary of the attributes of this object. The
+								content is defined by the UDM (Univention
+								Directory Manager) representation of the object.
+								If it is null instead, the object has been
+								deleted.
+							</simpara>
+						</listitem>
+					</itemizedlist>
+				</para>
+			</section>
+			<section id="provision:push:script">
+				<title>What should the script cover?</title>
+            	<para>
+					<itemizedlist>
+						<listitem>
+							<simpara>
+							     The listener does not filter the data. Every
+								 change will be saved in JSON files. If only a
+								 subset of users, e.g. a certain user type
+								 like students, shall be processed, the script
+								 should filter on it and only continue with
+								 the relevant data.
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+    							UCS can "resync" a listener. In this case,
+								each and every object appears once again as a
+								JSON file. The script needs to cover the case
+								where no real modification to the object has
+								been made.
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+    							The script has to exit with exit code = 0 on
+								success and != 0 on failure.
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+    							The script has to delete the JSON file that
+								has been already processed. If the files are
+								not deleted, the script should detect
+								duplicates and make sure to handle the same
+								change accordingly.
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+    							If a mapping between the entry_uuid of the
+								JSON file and the primary user key in the
+								solutions database is not possible, consider
+								maintaining a mapping table by the script, if
+								necessary. The entry_uuid is the only
+								attribute that remains the same for an
+								object.
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+    							It may happen that the same entry_uuid appears
+								twice in the set of JSON files. This means
+								that multiple modifications on the object have
+								been made since the last time your script
+								processed the object.
+							</simpara>
+						</listitem>
+					</itemizedlist>
+				</para>
+			</section>
+			<section id="provision:push:json">
+				<title>JSON example</title>
+            	<para>
+					This is an example of a JSON file for a user change. It is
+					not complete, but should clarify the idea.
+<programlisting language="sh">
+{
+    "dn": "uid=Administrator,cn=users,dc=sparka-43,dc=intranet",
+    "id": "b2f13544-e3cb-1037-810e-23ad4765aade",
+    "object": {
+        "description": "Built-in account for administering the computer/domain",
+        "disabled": "0",
+        "displayName": "Administrator",
+        "gecos": "Administrator",
+        "gidNumber": "5000",
+        "groups": [
+            "cn=Domain Admins,cn=groups,dc=sparka-43,dc=intranet",
+            "cn=Domain Users,cn=groups,dc=sparka-43,dc=intranet",
+            "cn=DC Backup Hosts,cn=groups,dc=sparka-43,dc=intranet",
+            "cn=Schema Admins,cn=groups,dc=sparka-43,dc=intranet",
+            "cn=Enterprise Admins,cn=groups,dc=sparka-43,dc=intranet",
+            "cn=Group Policy Creator Owners,cn=groups,dc=sparka-43,dc=intranet",
+            "cn=Administrators,cn=Builtin,dc=sparka-43,dc=intranet"
+        ],
+        "lastname": "Administrator",
+        "locked": "0",
+        "lockedTime": "0",
+        "mailForwardCopyToSelf": "0",
+        "mailPrimaryAddress": "admin@sparka-43.intranet",
+        "mailUserQuota": "0",
+        "password": "{crypt}$6$0kS4GowCZEAJRqWG$8LkK6iBeKFCInoxy9bCG1SFfGpajOy//ZgBSuuMOs2MJcUQQAI2zgoU1/KcQ6e7Ldqz/oMPOdTdjTNCebDQpX.",
+        "passwordexpiry": null,
+        "primaryGroup": "cn=Domain Admins,cn=groups,dc=sparka-43,dc=intranet",
+        "sambaRID": "500",
+        "shell": "/bin/bash",
+        "uidNumber": "2002",
+        "umcProperty": [
+            [
+                "appcenterDockerSeen",
+                "true"
+            ],
+            [
+                "appcenterSeen",
+                "2"
+            ],
+            [
+                "udmUserGridView",
+                "default"
+            ]
+        ],
+        "unixhome": "/home/Administrator",
+        "unlockTime": "",
+        "userexpiry": null,
+        "username": "Administrator",
+        "webweaverActivated": "TRUE"
+    },
+    "udm_object_type": "users/user"
+}
+<programlisting>
+				</para>
         </section>
     </section>
 
@@ -1895,7 +2031,7 @@ service my-app-daemon restart
         virtual machine within a hypervisor and are currently provided as
         VMware, VMware ESXi, VirtualBox and KVM images. By default the UCS
         branding is used, but it is possible and recommended to use a custom
-        branding. 
+        branding.
     </para>
 
     <section id="app-appliances:create">
@@ -1951,7 +2087,7 @@ service my-app-daemon restart
                 described in this section.
             </para>
         </section>
-        
+      
         <section id="appliance:umc-favorites">
             <title>Customize UMC favorite category</title>
             <para>
@@ -1964,7 +2100,7 @@ service my-app-daemon restart
                 <userinput>App Center</userinput> listed here.
             </para>
         </section>
- 
+
         <section id="appliance:build">
             <title>Appliance build</title>
             <para>
