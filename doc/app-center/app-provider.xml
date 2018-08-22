@@ -105,9 +105,9 @@
 
     <para>
         This chapter describes the requirements and the steps to create an app
-        for Univention App Center. After reading this chapter you can create
-        your own app and start with a development and test cycle using the Test
-        App Center.
+        for Univention App Center. After reading this chapter an app provider
+        can create its own app and start with a development and test cycle
+        using the Test App Center.
     </para>
 
     <section id="app-provider-needs">
@@ -116,7 +116,7 @@
         <section id="app-provider-needs:docker-image">
             <title>Software in a Docker image</title>
             <para>
-                Your software needs to be provided as <ulink
+                The software needs to be provided as <ulink
                     url="https://docs.docker.com/">Docker image</ulink>. This
                 is the easiest way to deploy software in Univention App Center.
                 It is also recommended to publish the Docker container to
@@ -146,24 +146,23 @@
            <orderedlist>
                <listitem>
                    <simpara>
-                       To start building your app, you should first get
-                       yourself an account for the App Provider Portal.  Please
-                       <ulink
+                       To start building the app, an account for the App
+                       Provider Portal is needed.  Please <ulink
                            url="https://www.univention.com/products/univention-app-center/for-solution-providers/">
-                           request your personal account</ulink> on the
+                           request a personal account</ulink> on the
                        Univention website and provide some context about the
-                       app you have in mind.
+                       intended app.
                    </simpara>
                </listitem>
                <listitem>
                    <simpara>
-                       You will receive an email with your username and
-                       instructions on how to set your password.
+                       An email with username and instructions on how to set a
+                       password is sent.
                    </simpara>
                </listitem>
                <listitem>
                    <simpara>
-                       Afterwards you can login to the <ulink
+                       Afterwards the login can be performed at the <ulink
                            url="https://provider-portal.software-univention.de/univention-management-console/">App
                            Provider Portal</ulink>.
                    </simpara>
@@ -204,15 +203,15 @@
                     <listitem>
                         <simpara>
                             <emphasis>App ID</emphasis> is like a primary key.
-                            You should choose it carefully, because it cannot
-                            be changed once the app is released to the public.
-                            It should only use small capitals, dashes and numbers.
+                            Choose it carefully, because it cannot be changed
+                            once the app is released to the public.  It should
+                            only use small capitals, dashes and numbers.
                             Please do not include version strings in here.
                         </simpara>
                     </listitem>
                     <listitem>
                         <simpara>
-                            <emphasis>App Name</emphasis> is the name of your
+                            <emphasis>App Name</emphasis> is the name of the
                             app. It is used to display the app on the overview
                             pages. This attribute can be changed any time later.
                         </simpara>
@@ -220,7 +219,7 @@
                     <listitem>
                         <simpara>
                             <emphasis>App Version</emphasis> is the version of
-                            your app. The App Center distinguishes versions and
+                            the app. The App Center distinguishes versions and
                             uses them to handle app updates. Once the app is
                             released, this attribute cannot be changed anymore.
                         </simpara>
@@ -228,9 +227,9 @@
                     <listitem>
                         <simpara>
                             <emphasis>UCS Version</emphasis> is the UCS version
-                            your app should start to be available on. Simply
-                            start with the latest available UCS version. You
-                            can also start with the oldest maintained UCS
+                            the app should start to be available on. Simply
+                            start with the latest available UCS version. It can
+                            also be started with the oldest maintained UCS
                             version to cover the broadest user base of UCS. See
                             the <ulink
                                 url="https://wiki.univention.de/index.php/Maintenance_Cycle_for_UCS">UCS
@@ -248,8 +247,8 @@
                         <simpara>
                             <emphasis>File under</emphasis> refers to the
                             organization that the app belongs to. Please select
-                            your organization here or otherwise the app will not
-                            show up in the listing for you.
+                            the organization here or otherwise the app will not
+                            show up in the listing.
                         </simpara>
                     </listitem>
                     </itemizedlist>
@@ -262,7 +261,7 @@
             <orderedlist>
                 <listitem>
                     <simpara>
-                        In your app go to the tab <guimenu>Docker</guimenu>.
+                        In the app go to the tab <guimenu>Docker</guimenu>.
                     </simpara>
                 </listitem>
                 <listitem>
@@ -272,8 +271,8 @@
                 </listitem>
                 <listitem>
                     <simpara>
-                        Enter the name of your image to <guimenu>Docker
-                            image</guimenu>. Grab the name of your image from
+                        Enter the name of the image to <guimenu>Docker
+                            image</guimenu>. Grab the name of the image from
                         Docker hub for example
                         <literal>univention/ucs-master-amd64:4.2-2</literal>.
                     </simpara>
@@ -324,13 +323,13 @@
         <section id="create-app-with-docker:description">
             <title>Logo and description</title>
             <para>
-                On your app's <guimenu>General</guimenu> tab please provide a
-                description in English and logos for your software. Start with
+                On the app's <guimenu>General</guimenu> tab please provide a
+                description in English and logos for the software. Start with
                 a short and a long description. It gives an impression on how
                 it will look like during later testing.
             </para>
             <para>
-               On the same tab you can upload two logos: A default icon that is
+               On the same tab two logos can be uploaded: A default icon that is
                shown on the app tile in the overview. For optimal
                presentation it should be more of a square ratio. The second can
                be more detailed and can for example include the software name.
@@ -373,8 +372,8 @@
                 FIXME: @Dirk: There are definitions for paths and files. Both
                 seems to work. Is this correct?
                 -->
-                To define volumes for your app, please go to the
-                <guimenu>Mounted volumes</guimenu> section on
+                To define volumes for the app, please go to the
+                <guimenu>Mounted volumes</guimenu> section on the
                 <guimenu>Docker</guimenu> tab. Add an entry for each volume
                 and define the directory or file path on the host in the
                 first field and the destination in the container in the second
@@ -408,9 +407,9 @@
             </para>
             <para>
                 In the <guimenu>Web interface</guimenu> section on the
-                <guimenu>General</guimenu> tab in your app, you can enter the
-                relative path and which ports should be proxied.  For example,
-                to map the containers ports 80 and 443 to
+                <guimenu>General</guimenu> tab in the app, enter the relative
+                path and which ports should be proxied. For example, to map
+                the container's ports 80 and 443 to
                 <userinput>/myapp</userinput>, the following settings have to
                 be made:
                 <itemizedlist>
@@ -449,13 +448,13 @@
         <section id="create-app-with-docker:ports">
             <title>Ports</title>
             <para>
-                If your app needs to occupy ports on the host that need to be
+                If the app needs to occupy ports on the host that need to be
                 passed along to the container in order work properly, they can
                 be defined in the <guimenu>Port redirection</guimenu> section
-                on the <guimenu>Docker</guimenu> tab. Here you can define a
-                list of ports that the Docker host shall exclusively acquire
-                for the Docker container. Ports defined here cannot be used by
-                other services or other Docker containers on the UCS host.
+                on the <guimenu>Docker</guimenu> tab. A list of ports can be
+                defined that the Docker host shall exclusively acquire for the
+                Docker container. Ports defined here cannot be used by other
+                services or other Docker containers on the UCS host.
             </para>
             <para>
                 For example, the solution exposes API under the dedicated port
@@ -526,19 +525,19 @@
         <para>
             Testing the app is the final part of the development. It typically
             involves a combination of manual and automatic tests. In order to
-            test your app with UCS, please follow these instructions.
+            test the app with UCS, please follow these instructions.
         </para>
 
         <section id="testing:download">
             <title>Download UCS</title>
             <para>
-                Download UCS to get yourself a copy of UCS free of charge from
+                Download UCS to get a copy of UCS free of charge from
                 the <ulink
                     url="https://www.univention.com/downloads/ucs-download/">Univention
-                    website</ulink>. You can choose an ISO image or a
-                pre-installed virtual machine image for various virtualization
-                hypervisors, like for example VMware (ESXi and Workstations),
-                VirtualBox and KVM.
+                    website</ulink>. Choose an ISO image or a pre-installed
+                virtual machine image for various virtualization hypervisors,
+                like for example VMware (ESXi and Workstations), VirtualBox and
+                KVM.
             </para>
         </section>
 
@@ -555,7 +554,8 @@
         <section id="testing:test-app-center">
             <title>Test App Center</title>
             <para>
-                Switch to the Test App Center and test your app directly on UCS.
+                Switch to the Test App Center Repository and test the app
+                directly on the UCS system that has been setup before.
 <programlisting>
 univention-install univention-appcenter-dev
 univention-app dev-use-test-appcenter
@@ -566,8 +566,8 @@ univention-app dev-use-test-appcenter
         <section id="testing:install">
             <title>Install the app</title>
             <para>
-                Up until here, your app is available in the Test App Center and
-                you have a UCS system up and running that is configured against
+                Up until here, the app is available in the Test App Center and
+                a UCS system is up and running that is configured against
                 the Test App Center. The app can be installed via the &ucsUMC;.
                 UMC consists of several modules and one of them is called
                 <guimenu>App Center</guimenu>. Open this module and install
@@ -600,39 +600,39 @@ univention-app dev-use-test-appcenter
                             The app is working on the as Supported UCS version
                             configured version of UCS (see <xref
                                 linkend="create-app-with-docker:supported-ucs-version"
-                                />.
+                                />).
                         </simpara>
                     </listitem>
                 </itemizedlist>
             </para>
 
             <para>
-                When installing the App, also mind README information that you
-                may have defined on the <guimenu>README files</guimenu> in your
-                app in the App Provider Portal. An Administrator expects an app
-                to be fully configured after the installation. If something is
-                needed in order to use the app (e.g., activating users for the
-                service), it should be described in the appropriate README
-                section (see <xref linkend="readme" />.
+                When installing the App, also mind README information that may
+                have been defined on the <guimenu>README files</guimenu> in
+                the app in the App Provider Portal. An Administrator expects
+                an app to be fully configured after the installation. If
+                something is needed in order to use the app (e.g., activating
+                users for the service), it should be described in the
+                appropriate README section (see <xref linkend="readme" />).
             </para>
         </section>
 
         <section id="testing:upgrade">
             <title>Upgrade the app</title>
             <para>
-                Once you have several versions of the app, the upgrade should be
+                Once several versions of the app exist, the upgrade should be
                 tested, as well. The App Center UMC module only allows the
                 installation of the latest app version. To test an upgrade of
-                your app, please go to the console and install a version
+                the app, please go to the console and install a version
                 explicitly:
 
                 <programlisting>
                     univention-app install myapp=1.0
                 </programlisting>
 
-                Afterwards, you can go back to the App Center UMC module.
-                There, your app should show up with the update symbol
-                indicating the availability of an update. Continue and perform
+                Afterwards, go back to the App Center UMC module. There, the
+                app should show up with the update symbol indicating the
+                availability of an update. Continue and perform
                 the app upgrade.
             </para>
         </section>
@@ -744,15 +744,15 @@ univention-app dev-use-test-appcenter
         <title>Updates</title>
         <para>
             After the release of the first version the app enters the
-            maintenance mode and receives updates from the app provider. The
+            "maintenance mode" and receives updates from the app provider. The
             evolution of an app is represented by its version. In order to
-            provide an update for your app, follow these steps:
+            provide an update for the app, follow these steps:
 
             <orderedlist>
                 <listitem>
                     <simpara>
                         Go to the <guimenu>Apps</guimenu> UMC module in the App
-                        Provider Portal and search your app.
+                        Provider Portal and search the app.
                     </simpara>
                 </listitem>
                 <listitem>
@@ -766,8 +766,7 @@ univention-app dev-use-test-appcenter
                     <simpara>
                         Enter the values for source and target version. The
                         App Provider Portal will then copy the source app
-                        configuration to the target. This saves the app
-                        developer a lot of typing.
+                        configuration to the target.
                     </simpara>
                 </listitem>
                 <listitem>
@@ -812,7 +811,7 @@ univention-app dev-use-test-appcenter
             the next version. The termination applies to the whole app.
         </para>
         <para>
-            You can terminate the app by going to your app's configuration in
+            The app can be terminated by going to the app's configuration in
             the App Provider Portal. Please go to the
             <guimenu>Advanced</guimenu> tab to the section <guimenu>Custom
                 entries</guimenu>. Create a new custom entry with the
@@ -866,7 +865,7 @@ univention-app dev-use-test-appcenter
             the <guimenu>Logos</guimenu> section. Two icons are needed: One for
             the app tile on the overview page and a more detailed logo for the
             app page. The tile has only limited space in square format. Please
-            make sure, your logo can still be recognized. The detailed logo is
+            make sure, the logo can still be recognized. The detailed logo is
             not limited. Most logos for this slot have a landscape orientation.
             The App Center and the App Catalog take care of the appropriate
             scaling. SVG allows a very good result due to its nature as vector
@@ -882,13 +881,12 @@ univention-app dev-use-test-appcenter
                 and videos</guimenu> tab. Screenshots can be in PNG or JPG
             format and are uploaded here. Videos have to be published on
             YouTube and the full YouTube link has to be provided in the App
-            Provider Portal. You can add as many screenshots and videos you
-            like. Please keep in mind that the screenshots and videos in this
-            tab must be for an English speaking audience.
+            Provider Portal. Please keep in mind that the screenshots and
+            videos in this tab must be for an English speaking audience.
         </para>
         <para>
-             If you have the same screenshots in German, it is recommended that
-             you add them, as well, in the <guimenu>Translations</guimenu> tab
+             If the same screenshots exist in German, it is recommended that
+             they are added, as well, in the <guimenu>Translations</guimenu> tab
              in the <guimenu>Screenshots and videos</guimenu> section.
         </para>
         <para>
@@ -904,9 +902,9 @@ univention-app dev-use-test-appcenter
     <section id="description">
         <title>Description</title>
         <para>
-            The description is the text that introduces your solution to the
+            The description is the text that introduces the solution to the
             user and thus is very important to get their attention. Here are
-            some tips that are intended to help you to present your app in an
+            some tips that are intended to help to present the app in an
             user-friendly, customer-oriented, and search-engine-optimized
             manner as good as possible. At a glance:
             <itemizedlist>
@@ -961,7 +959,7 @@ univention-app dev-use-test-appcenter
 
         <para>
             The description is provided in HTML format. The text editor in the
-            App Provider Portal provides decent functionality. If you more control
+            App Provider Portal provides decent functionality. If more control
             on the HTML is needed, switch to HTML source mode and edit the HTML
             directly.
         </para>
@@ -973,25 +971,26 @@ univention-app dev-use-test-appcenter
             </para>
         </note>
         <para>
-            The important aspect here is that the content of your app
+            The important aspect here is that the content of the app
             description is unique. Please do not simply copy the product
-            description from your own page, but instead compose a new, original
-            text. This text should be aimed at approaching potential customers.
+            description from the solution's own page, but instead compose a
+            new, original text. This text should be aimed at approaching
+            potential customers.
         </para>
         <para>
-            The length of the description depends on how much you have to say
-            and how much explanation your app requires. Ideally the description
+            The length of the description depends on how much there is to say
+            and how much explanation the app requires. Ideally the description
             should be at least 300 words long.  The text should be structured
             and use paragraphs to make it easier to read. Subheadings (HTML:
             <wordasword>h2, h3</wordasword>) should be used to divide the text
             into logical sections. It is very helpful for the reader to be
-            able to see the advantages of your app and its combination with UCS
+            able to see the advantages of the app and its combination with UCS
             at a glance. For this reason, presentation of the advantages in
             lists (HTML: <wordasword>ol, ul, li</wordasword>) is particularly
             practical.
         </para>
         <para>
-            Revise your text in order to optimize it for search engines. Are
+            Revise the text in order to optimize it for search engines. Are
             all desired keywords specified? (e.g., app name)? Are the relevant
             keywords integrated in the text? The text can be adapted for the
             search engines / keywords and synonyms, word combinations, etc.,
@@ -1001,7 +1000,7 @@ univention-app dev-use-test-appcenter
         </para>
         <para>
             If links should be used in the app description (e.g., to pages on
-            your own website), please always use the
+            the solution's own website), please always use the
             <userinput>target="_blank"</userinput> (open in new tab) and assign
             the link a title attribute. Please keep the use of links to a
             minimum and ideally use the fields provided especially for this
@@ -1016,10 +1015,10 @@ univention-app dev-use-test-appcenter
             app. For this purpose there is the <guimenu>Contact</guimenu> tab
             in the App Provider Portal. Please provide <option>Gerneal product
                 contact information</option> like an email address where the
-            users can contact you and a website to your solution. Please also
-            link to a website, where your support options and pricing is
-            explained to potential customers and place the link in the field
-            <option>Website with information regarding
+            users can contact the app provider and a website to the solution.
+            Please also link to a website, where the app provider's support
+            options and pricing is explained to potential customers and place
+            the link in the field <option>Website with information regarding
                 support options</option>.
         </para>
     </section>
@@ -1046,8 +1045,8 @@ univention-app dev-use-test-appcenter
         </para>
         <para>
             The last setting is intended to provide the users a rough
-            imagination about the license type of your software. Please choose
-            one option that fits best to your solution. The options are:
+            imagination about the license type of the software. Please choose
+            one option that fits best to the solution. The options are:
             <itemizedlist>
                 <listitem>
                     <simpara>
@@ -2052,7 +2051,7 @@ service my-app-daemon restart
         <section id="appliance:additional-software">
             <title>Additional software</title>
             <para>
-                If your appliance should include additional apps besides your app,
+                If the appliance should include additional apps besides the app,
                 please specify them in the <guimenu>Additional software</guimenu>
                 section.
             </para>
@@ -2061,8 +2060,8 @@ service my-app-daemon restart
         <section id="appliance:customize-setup-wizard">
             <title>Customize setup wizard in appliance</title>
             <para>
-                The appliance allows you to customize the UCS setup wizard and
-                control which setup pages and setup fields should be hidden. For
+                The appliance allows customization of the UCS setup wizard and
+                controls which setup pages and setup fields should be hidden. For
                 simplicity towards the user, it is recommended to hide the
                 <userinput>software</userinput> page and the
                 <userinput>basesystem</userinput> setup field.
@@ -2074,10 +2073,11 @@ service my-app-daemon restart
             <para>
                 The listing of apps in the App Center UMC module in the
                 appliance can be customized to either white list or blacklist
-                certain apps. For example, if your solution is a groupware, you
-                can hide other groupware solutions from the overview listing.
-                System administrators can only install the white listed apps or
-                are not allowed to install the black listed apps.
+                certain apps. For example, if the solution is a groupware,
+                other groupware solutions can be hidden from the overview
+                listing. System administrators can only install the white
+                listed apps or are not allowed to install the black listed
+                apps.
             </para>
         </section>
 
@@ -2111,9 +2111,9 @@ service my-app-daemon restart
             <para>
                 As soon as the settings are made, <guimenu>Sync to Test App
                     Center</guimenu>, click the <guimenu>Publish App</guimenu>
-                button and provide a custom message to let the Univention team know
-                that you want an appliance to be built. This will create a ticket
-                which helps to keep the communication in one place.
+                button and provide a custom message to let the Univention team
+                know that an appliance is desired to be built. This will create
+                a ticket which helps to keep the communication in one place.
             </para>
         </section>
 
@@ -2140,10 +2140,10 @@ service my-app-daemon restart
     <section id="branding">
         <title>Custom branding</title>
         <para>
-            With a customized branding of an appliance you can modify the boot
-            loader, the boot splash, the system setup wizard and the portal
-            page. Please look at the screenshots below and explanations of the
-            options that control the look.
+            With a customized branding of an appliance the boot loader, the
+            boot splash, the system setup wizard and the portal page can be
+            modified. Please look at the screenshots below and explanations of
+            the options that control the look.
         </para>
 
         <section id="appliance:branding:bootloader">
@@ -2172,12 +2172,13 @@ service my-app-daemon restart
             <para>
                 The background color is defined in <guimenu>CSS definition of
                     the appliance background</guimenu>. For a black background,
-                simply define <userinput>#000000</userinput>. For a gradient
-                you can for example define <userinput>linear-gradient(to
+                simply define <userinput>#000000</userinput>. A gradient can
+                for example be defined with <userinput>linear-gradient(to
                     bottom, #345279 0%, #1d2c41 100%)</userinput>. For more
                 information on how to use a gradient, see <ulink
                     url="https://www.w3schools.com/csSref/func_linear-gradient.asp">CSS
-                    linear-gradient() function on <wordasword>w3schools</wordasword></ulink>.
+                    linear-gradient() function on
+                    <wordasword>w3schools</wordasword></ulink>.
             </para>
             <para>
                 <figure id="appliance:branding:bootsplash-figure">
@@ -2191,11 +2192,11 @@ service my-app-daemon restart
             <title>System setup wizard</title>
             <para>
                 The system setup wizard allows several slots to be customized.
-                In the <guimenu>Appliance creation</guimenu> section in the
-                App Provider Portal, you can set the <guimenu>Appliance
-                    name</guimenu> (the word "appliance" is automatically
-                appended). It controls the heading in the system setup wizard.
-                Below is the <guimenu>Logo for the setup wizard</guimenu>,
+                In the <guimenu>Appliance creation</guimenu> section in the App
+                Provider Portal, the <guimenu>Appliance name</guimenu> (the
+                word "appliance" is automatically appended) can be set. It
+                controls the heading in the system setup wizard.  Below is the
+                <guimenu>Logo for the setup wizard</guimenu>,
                 which is shown on the first page of the system setup wizard.
             </para>
             <para>
@@ -2255,13 +2256,14 @@ service my-app-daemon restart
             <title>Portal page</title>
             <para>
                 The branding of the portal page is independent from the other
-                sections. You can define <guimenu>Title as shown on the portal
-                    page</guimenu> and decide if the font color shall be black
-                or white. The <guimenu>Logo for the portal page</guimenu>
-                controls which logo shall be set in the first tile on the
-                portal page. The background can either consist of a background
-                image or a background color or a background color gradient as
-                described in <xref linkend="appliance:branding:bootsplash" />.
+                sections. The <guimenu>Title as shown on the portal
+                    page</guimenu> can be defined and it can be configured if
+                the font color shall be black or white. The <guimenu>Logo for
+                    the portal page</guimenu> controls which logo shall be set
+                in the first tile on the portal page. The background can either
+                consist of a background image or a background color or a
+                background color gradient as described in <xref
+                    linkend="appliance:branding:bootsplash" />.
             </para>
             <para>
                 <figure id="appliance:branding:portal-page-figure">
