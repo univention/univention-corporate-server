@@ -59,6 +59,8 @@ desc: |
  * CVE-2018-9363: Bluetooth: hidp: buffer overflow in hidp_process_report
  * CVE-2018-10021: ata qc leak in drivers/scsi/libsas/sas_scsi_host.c allows
    local users to cause denial-of-service
+ * CVE-2018-10087: Undefined behavior in kernel/exit.c:kernel_wait4() function
+   allows local denial of service
  * CVE-2018-10876: use-after-free in jbd2_journal_commit_transaction funtion
  * CVE-2018-10877: out-of-bound access in ext4_ext_drop_refs function with a
    crafted ext4 image
@@ -68,8 +70,6 @@ desc: |
  * CVE-2018-10882: stack-out-of-bounds write infs/jbd2/transaction.c
  * CVE-2018-10883: stack-out-of-bounds write in jbd2_journal_dirty_metadata
    function
- * CVE-2018-10087: Undefined behavior in kernel/exit.c:kernel_wait4() function
-   allows local denial of service
  * CVE-2018-10940: incorrect memory bounds check in drivers/cdrom/cdrom.c
  * CVE-2018-12233: Memory corruption in JFS setattr
  * CVE-2018-13405: Fix up non-directory creation in SGID directories
