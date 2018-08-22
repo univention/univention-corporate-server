@@ -6,7 +6,8 @@ src: openssh
 fix: 1:7.4p1-10+deb9u4
 desc: |
  This update addresses the following issue:
- * User enumeration via malformed packets in authentication requests (CVE-2018-15473)
+ * User enumeration via malformed packets in authentication requests
+   (CVE-2018-15473)
 bug: [47629]
 cve:
 - CVE-2018-15473
