@@ -133,6 +133,7 @@ run_multiserver_samba_master_p_one_test () {
 	
 	python shared-utils/ucs-winrm.py domain-join --domain sambatest.local --dnsserver "$UCS" --domainuser "administrator" --domainpassword "$ADMIN_PASSWORD"
 	
+	python shared-utils/ucs-winrm.py domain-user-validate-password --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
  	#service smdb restart
  	python shared-utils/ucs-winrm.py create-gpo --credssp --name NewGPO --comment "testing new GPO in domain"
 	python shared-utils/ucs-winrm.py link-gpo --name NewGPO --target "dc=sambatest,dc=local" --credssp
@@ -141,8 +142,34 @@ run_multiserver_samba_master_p_one_test () {
   
 	#TODO A better check on client for applied GPOs
 	python shared-utils/ucs-winrm.py create-share-file --server $UCS --share "testshare" --filename "testfile.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
-	echo "halli hallo" > /home/testshare/testfile.txt
-	python shared-utils/ucs-winrm.py check-share --server $UCS --sharename "testshare" --filename "testfile.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD" --driveletter P
+	#echo "halli hallo" > /home/testshare/testfile.txt
+	#python shared-utils/ucs-winrm.py check-share --server $UCS --sharename "testshare" --filename "testfile.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD" --driveletter P
+	python shared-utils/ucs-winrm.py create-share-file --server $UCS --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share Administrator
+	stat /home/Administrator/test-admin.txt
+	getfacl /home/Administrator/test-admin.txt | grep "Domain.*Admin"
+	python shared-utils/ucs-winrm.py create-share-file --server $UCS --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention.99" --share newuser01
+	stat /home/newuser01/test-newuser01.txt
+	getfacl /home/newuser01/test-newuser01.txt | grep "Domain.*Users"
+	python shared-utils/ucs-winrm.py create-share-file --server $UCS --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share testshare
+	stat /home/testshare/test-admin.txt
+	# this should fail
+	python shared-utils/ucs-winrm.py create-share-file --server $UCS --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention.99" \
+		--share testshare --debug 2>&1 | grep 'denied.'
+	python shared-utils/ucs-winrm.py create-share-file --server $UCS --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention.99" \
+		--share Administrator --debug 2>&1 | grep 'denied.'
+	# check windows acl's
+	python shared-utils/ucs-winrm.py get-acl-for-share-file --server $UCS --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention.99" \
+		--share newuser01 --debug | grep "Group.*Domain Users"
+	python shared-utils/ucs-winrm.py get-acl-for-share-file --server $UCS --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" \
+		--share Administrator --debug | grep "Group.*Domain Admins"
+	# create files on samba and check share
+	su newuser01 -c "touch /home/newuser01/newfile.txt"
+	python shared-utils/ucs-winrm.py get-acl-for-share-file --server $UCS --filename newfile.txt --username 'newuser01' --userpwd "Univention.99" \
+		--share newuser01 --debug | grep "Group.*Domain Users"
+	su Administrator -c "touch /home/Administrator/newfile.txt"
+	python shared-utils/ucs-winrm.py get-acl-for-share-file --server $UCS --filename newfile.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" \
+		--share Administrator --debug | grep "Group.*Domain Admins"
+	
 	python shared-utils/ucs-winrm.py check-applied-gpos --client "$WINCLIENT" --username 'administrator' --userpwd "$ADMIN_PASSWORD" --usergpo 'Default Domain Policy' --usergpo 'NewGPO' --computergpo 'Default Domain Policy'
 	python shared-utils/ucs-winrm.py check-applied-gpos --client "$WINCLIENT" --username 'newuser01' --userpwd "Univention.99" --usergpo 'Default Domain Policy' --usergpo 'NewGPO' --computergpo 'Default Domain Policy'
 	
@@ -156,6 +183,8 @@ run_multiserver_samba_master_p_one_test () {
 	python shared-utils/ucs-winrm.py print-on-printer --printername Masterprinter --server "$UCS" --impersonate --run-as-user newuser01 --run-as-password "Univention.99"
 	stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
 
+	#password change
+	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --password "Univention123!"
 		
 	python shared-utils/ucs-winrm.py run-ps --cmd hostname > WINCLIENTNAME
 	host $(cat WINCLIENTNAME | grep WIN | cut -c 1-15)
@@ -178,8 +207,8 @@ run_multiserver_samba_master_p_four_test () {
 	 . env_vars
 	 python shared-utils/ucs-winrm.py check-share --server $MEMBER --sharename "testshareMember" --driveletter R --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
 	 python shared-utils/ucs-winrm.py check-share --server $SLAVE --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
-	 python shared-utils/ucs-winrm.py setup-printer --printername Slaveprinter --server "$MEMBER"
-	 python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$SLAVE"
+	 python shared-utils/ucs-winrm.py setup-printer --printername Slaveprinter --server "$SLAVE"
+	 python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$MEMBER"
 	 python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "$MEMBER" --impersonate --run-as-user Administrator 
 	 python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server "$SLAVE" --impersonate --run-as-user Administrator
 	 samba-tool ntacl sysvolreset || true
