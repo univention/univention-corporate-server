@@ -1127,13 +1127,15 @@ univention-app dev-use-test-appcenter
     </para>
 
     <para>
-		If the app should benefit from the identity management, the flag
-		<emphasis>Add activation checkbox for App in UCS user
-		management</emphasis> should be activated in the App Provider Portal.
-		This extends the IDM by a checkbox and an administrator can activate
-		or deactivate each user individually for the app. It is also possible
-		to make significantly more complex settings. See <xref
-		linkend="user-rights-management" /> for more details.
+        If the app should benefit from the identity management, the flag
+        <guimenu>Add activation checkbox for App in UCS user
+            management</guimenu> should be activated in the App Provider Portal
+        on the <guimenu>Advanced</guimenu>. This extends the IDM by a checkbox
+        and an administrator of the UCS system can activate or deactivate each
+        user individually for the app. The setting can then be found in the
+        Users UMC module and is called <guimenu>Apps</guimenu>. It is also
+        possible to make significantly more complex settings. See <xref
+            linkend="user-rights-management" /> for more details.
     </para>
 
     <section id="provisioning">
@@ -1152,9 +1154,9 @@ univention-app dev-use-test-appcenter
 				directory. Thus, the default information can be accessed via
 				the LDAP protocol. Objects are identified by an LDAP filter.
 				The following filter can be used to search for users
-				<wordasword>(univentionObjectType=users/user)</wordasword> and
+				"<wordasword>(univentionObjectType=users/user)</wordasword>" and
 				for groups the filter
-				<wordasword>(univentionObjectType=groups/group)</wordasword>
+				"<wordasword>(univentionObjectType=groups/group)</wordasword>"
 				can be used.
             </para>
             <para>
@@ -1200,7 +1202,7 @@ univention-app dev-use-test-appcenter
 				</itemizedlist>
 				<important>
 					<para>
-						As a rule, the LDAP basis should not be further
+						As a rule, the LDAP base should not be further
 						restricted. Many environments store users below
 						<uri>cn=users</uri> but this is not the case in all
 						environments.
@@ -1210,7 +1212,7 @@ univention-app dev-use-test-appcenter
 
             <para>
 				By default, the OpenLDAP server in UCS does not allow
-				anonymous authentications. For every app a user account is
+				anonymous connections. For every app a user account is
 				created. The account has read access to the LDAP directory.
 				The username is passed as the environment variable
 				<option>LDAP_HOSTDN</option>. The password is written in the
@@ -1231,7 +1233,7 @@ univention-app dev-use-test-appcenter
             </para>
             <para>
 				The configuration for these IDM notifications can be done on
-				the <option>LDAP Listener</option> tab in the App Provider
+				the <guimenu>LDAP Listener</guimenu> tab in the App Provider
 				Portal. It can be configured which object types are watched.
 				Currently, users and groups are supported. In addition, a
 				script is specified which is executed as soon as a change is
@@ -1302,16 +1304,16 @@ univention-app dev-use-test-appcenter
 				directory. Thus, the default information can be accessed via
 				the LDAP protocol. Objects are identified by an LDAP filter.
 				The following filter can be used to search for users
-				<wordasword>(univentionObjectType=users/user)</wordasword> and
+				"<wordasword>(univentionObjectType=users/user)</wordasword>" and
 				for groups the filter
-				<wordasword>(univentionObjectType=groups/group)</wordasword>
+				"<wordasword>(univentionObjectType=groups/group)</wordasword>"
 				can be used.
             </para>
             <para>
 				If the user activation is used (<guimenu>Add activation
 				checkbox for App in UCS user management</guimenu>),
 				the following LDAP filter can be used:
-				<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>.
+				"<wordasword>(&amp;(univentionObjectType=users/user)(myappActivated=TRUE))</wordasword>".
 				The string <wordasword>myapp</wordasword> has to be replaced
 				with the <wordasword>appid</wordasword>.
             </para>
