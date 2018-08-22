@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Copyright 2004-2018 Univention GmbH
 #
 # http://www.univention.de/
@@ -28,6 +28,9 @@
 
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
+. /usr/share/univention-ssl/make-certificates.sh
+update_pending_certs
+
 rv=0 tmp=$(mktemp)
 trap "rm -f '$tmp'" EXIT
 exec >"$tmp" 2>&1
@@ -44,7 +47,6 @@ check_gen_crl () {
 	interval=$(ucr get ssl/crl/interval)
 	[ "${interval:-0}" -ge 1 ] || return 0
 	[ -f "$crl" ] && [ -n "$(find "$crl" -mtime "-$interval")" ] && return 0
-	. /usr/share/univention-ssl/make-certificates.sh
 	gencrl
 }
 check_gen_crl || rv=$?
