@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-web
-fix: 
+fix: 2.0.0-21A~4.3.0.201808221621
 desc: |
  This update addresses the following issue(s):
  * The language sensitive sorting used in the grid via the
