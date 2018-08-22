@@ -17,3 +17,5 @@ desc: |-
     specified during the build of the image will now be used.
   * Fix memory leak caused by Python notifier traceback handling.
 bug: [47265, 47315, 47373, 47340, 42970, 47114]
+erratum: 211
+announced: 2018-08-22
