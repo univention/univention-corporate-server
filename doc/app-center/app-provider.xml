@@ -95,7 +95,7 @@
 
         <para>
             For building an app the app developer deals with UCS, the app, the
-            provider portal and the Test App Center.
+            App Provider Portal and the Test App Center.
         </para>
     </section>
 </chapter>
@@ -139,7 +139,7 @@
             <title>Account for App Provider Portal</title>
 
             <para>
-                The app provider portal is the app developer's place for self
+                The App Provider Portal is the app developer's place for self
                 service for all the settings around the app.
             </para>
 
@@ -147,7 +147,7 @@
                <listitem>
                    <simpara>
                        To start building your app, you should first get
-                       yourself an account for the app provider portal.  Please
+                       yourself an account for the App Provider Portal.  Please
                        <ulink
                            url="https://www.univention.com/products/univention-app-center/for-solution-providers/">
                            request your personal account</ulink> on the
@@ -512,7 +512,7 @@
         <title>Development</title>
         <para>
             Every app starts with the development. It involves the definition
-            of the app in the app provider portal, providing the software
+            of the app in the App Provider Portal, providing the software
             solution as Docker container (see <xref linkend="get-started" />)
             and the integration of the solution with UCS, for example in the
             identity management area (see <xref linkend="connection-idm" />).
@@ -678,7 +678,7 @@ univention-app dev-use-test-appcenter
                 tests.
             </para>
             <para>
-                The App Provider portal offers an example for how the test
+                The App Provider Portal offers an example for how the test
                 script should look like and an example for how the test script
                 can be tested on a UCS system. On successful tests, the script
                 has to end with exit code 0.
@@ -704,7 +704,7 @@ univention-app dev-use-test-appcenter
 
         <para>
             The app provider's approval is given by clicking on
-            <guimenu>Publish App</guimenu> in the App Provider portal. The
+            <guimenu>Publish App</guimenu> in the App Provider Portal. The
             Univention App Center team is notified and they will start the
             automated tests. As soon as the automated tests are successful, the
             second approval is available and the app is ready to be released.
@@ -751,8 +751,8 @@ univention-app dev-use-test-appcenter
             <orderedlist>
                 <listitem>
                     <simpara>
-                        Go to the <guimenu>Apps</guimenu> UMC module in the app
-                        provider portal and search your app.
+                        Go to the <guimenu>Apps</guimenu> UMC module in the App
+                        Provider Portal and search your app.
                     </simpara>
                 </listitem>
                 <listitem>
@@ -765,7 +765,7 @@ univention-app dev-use-test-appcenter
                 <listitem>
                     <simpara>
                         Enter the values for source and target version. The
-                        provider portal will then copy the source app
+                        App Provider Portal will then copy the source app
                         configuration to the target. This saves the app
                         developer a lot of typing.
                     </simpara>
@@ -813,7 +813,7 @@ univention-app dev-use-test-appcenter
         </para>
         <para>
             You can terminate the app by going to your app's configuration in
-            the app provider portal. Please go to the
+            the App Provider Portal. Please go to the
             <guimenu>Advanced</guimenu> tab to the section <guimenu>Custom
                 entries</guimenu>. Create a new custom entry with the
             <option>Custom key</option> <userinput>EndOfLife</userinput> and
@@ -843,7 +843,7 @@ univention-app dev-use-test-appcenter
     <section id="logos">
         <title>Logos</title>
         <para>
-            All logos uploaded to the app provider portal have to be SVG
+            All logos uploaded to the App Provider Portal have to be SVG
             format, which is most flexible for the presentation purposes.
         </para>
 
@@ -881,8 +881,8 @@ univention-app dev-use-test-appcenter
             the user. To add screenshots please go to the <guimenu>Screenshots
                 and videos</guimenu> tab. Screenshots can be in PNG or JPG
             format and are uploaded here. Videos have to be published on
-            YouTube and the full YouTube link has to be provided in the app
-            provider portal. You can add as many screenshots and videos you
+            YouTube and the full YouTube link has to be provided in the App
+            Provider Portal. You can add as many screenshots and videos you
             like. Please keep in mind that the screenshots and videos in this
             tab must be for an English speaking audience.
         </para>
@@ -961,7 +961,7 @@ univention-app dev-use-test-appcenter
 
         <para>
             The description is provided in HTML format. The text editor in the
-            provider portal provides decent functionality. If you more control
+            App Provider Portal provides decent functionality. If you more control
             on the HTML is needed, switch to HTML source mode and edit the HTML
             directly.
         </para>
@@ -1014,7 +1014,7 @@ univention-app dev-use-test-appcenter
         <para>
             For the users it is important to know who is the producer of the
             app. For this purpose there is the <guimenu>Contact</guimenu> tab
-            in the app provider portal. Please provide <option>Gerneal product
+            in the App Provider Portal. Please provide <option>Gerneal product
                 contact information</option> like an email address where the
             users can contact you and a website to your solution. Please also
             link to a website, where your support options and pricing is
@@ -1089,7 +1089,7 @@ univention-app dev-use-test-appcenter
             for an app can be provided that show up at certain states of the
             app life cycle. README files are also in HTML like the description
             and content can be provided the same way (see <xref
-                linkend="description" />).  The app provider portal describes
+                linkend="description" />).  The App Provider Portal describes
             when each README file shows up.
         </para>
         <para>
@@ -2192,7 +2192,7 @@ service my-app-daemon restart
             <para>
                 The system setup wizard allows several slots to be customized.
                 In the <guimenu>Appliance creation</guimenu> section in the
-                provider portal, you can set the <guimenu>Appliance
+                App Provider Portal, you can set the <guimenu>Appliance
                     name</guimenu> (the word "appliance" is automatically
                 appended). It controls the heading in the system setup wizard.
                 Below is the <guimenu>Logo for the setup wizard</guimenu>,
