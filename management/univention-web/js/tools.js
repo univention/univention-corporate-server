@@ -54,6 +54,10 @@ define([
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
 	// require it explicitely
+
+	/**
+	 * @exports umc/tools
+	 */
 	var tools = {};
 	var login = {}, TextBox = {}, TextArea = {};
 	var dialog = {
@@ -66,6 +70,7 @@ define([
 	};
 
 	tools.loadLicenseDataDeferred = new Deferred();
+	tools.browserSupportsIntlCollator = typeof(Intl) === 'object' && Intl.hasOwnProperty('Collator') && typeof(Intl.Collator) === 'function';
 
 	require(['umc/dialog', 'login', 'umc/widgets/TextBox', 'umc/widgets/TextArea'], function(_dialog, _login, _TextBox, _TextArea) {
 		// register the real umc/dialog module in the local scope
@@ -1087,89 +1092,213 @@ define([
 		},
 
 
-		cmpObjects: function(/*mixed...*/) {
-			// summary:
-			//		Returns a comparison functor for Array.sort() in order to sort arrays of
-			//		objects/dictionaries.
-			// description:
-			//		The function arguments specify the sorting order. Each function argument
-			//		can either be a string (specifying the object attribute to compare) or an
-			//		object with 'attribute' specifying the attribute to compare. Additionally,
-			//		the object may specify the attributes 'descending' (boolean), 'ignoreCase'
-			//		(boolean).
-			//		In order to be useful for grids and sort options, the arguments may also
-			//		be one single array.
-			// example:
-			//	|	var list = [ { id: '0', name: 'Bob' }, { id: '1', name: 'alice' } ];
-			//	|	var cmp = tools.cmpObjects({
-			//	|		attribute: 'name',
-			//	|		descending: true,
-			//	|		ignoreCase: true
-			//	|	});
-			//	|	list.sort(cmp);
-			// example:
-			//	|	var list = [ { id: '0', val: 100, val2: 11 }, { id: '1', val: 42, val2: 33 } ];
-			//	|	var cmp = tools.cmpObjects('val', {
-			//	|		attribute: 'val2',
-			//	|		descending: true
-			//	|	});
-			//	|	list.sort(cmp);
-			//	|	var cmp2 = tools.cmpObjects('val', 'val2');
-			//	|	list.sort(cmp2);
+		/**
+		 * @typedef CmpSettings
+		 *
+		 * @description
+		 *    This object defines a valid parameter for
+		 *    the [cmpObjects]{@link module:umc/tools~cmpObjects} function.
+		 *
+		 * @property {String} attribute -
+		 *    The name of the property that should be compared.
+		 *
+		 *    e.g. Set attribute to 'name' to sort this array after the 'name' property:  
+		 * ```javascript
+		 * var arr = [{ 'id': 0, 'name': 'Bob' }, { 'id': 1, 'name': 'Alice' }];
+		 * ```
+		 *
+		 * @property {Boolean} [descending=false] - Whether sort is descending ('z' to 'a') or ascending ('a' to 'z').
+		 *
+		 * @property {Boolean} [useCollator=true] -
+		 *    Whether a language sensitive
+		 *    [Intl.Collator]{@link https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Collator}
+		 *    instance should be used for sorting.
+		 *
+		 *    If the browser does not support the
+		 *    [Intl.Collator]{@link https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Collator}
+		 *    then a normal ascii sort is performed.
+		 *
+		 * @property {(String|String[])} [collatorLocales={@link module:umc/i18n/tools.defaultLang}] -
+		 *    The [locales]{@link https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Collator#Syntax}
+		 *    parameter for the
+		 *    [Intl.Collator]{@link https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Collator}
+		 *    instance.  
+		 *
+		 * @property {Object} [collatorOptions={ numeric: true }] -
+		 *    The [options]{@link https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Collator#Syntax}
+		 *    parameter for the
+		 *    [Intl.Collator]{@link https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Collator}
+		 *    instance.  
+		 *
+		 * @property {Boolean} [ignoreCase=true] -
+		 *    If an
+		 *    [Intl.Collator]{@link https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Collator}
+		 *    instance is used then this option is ignored.
+		 *
+		 *    Whether the values are turned to lowercase before performing an ascii compare.  
+		 *    Normal sorting uses ascii comparison which results in 'A-Za-z' sorting.
+		 */
 
-			// in case we got a single array as argument,
-			var args = arguments;
-			if (1 === arguments.length && arguments[0] instanceof Array) {
-				args = arguments[0];
+		/**
+		 * Returns a comparison function for
+		 * [Array.prototype.sort()]{@link https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/sort}
+		 * in order to sort an array of objects.
+		 *
+		 * @param {...(String|module:umc/tools~CmpSettings)} cmpSettings -
+		 *    The [CmpSettings]{@link module:umc/tools~CmpSettings} object defines how the objects in
+		 *    the array should be compared in order to sort them.  
+		 *    If a string is passed as an argument then a [CmpSettings]{@link module:umc/tools~CmpSettings}
+		 *    object with its default values will be used and its 'attribute' property will be the passed string.
+		 *
+		 *    If multiple arguments are passed, then the first argument is the primary sort,
+		 *    the second the secondary sort (in case the primary sort determined that the objects are
+		 *    identical), and so on.
+		 *
+		 *    In order to be useful for grids and sort options, the arguments may also be one single array. e.g.:
+		 * ```javascript
+		 * var cmpFunc = cmpObjects('firstname', { attribute: 'lastname', descending: true });
+		 * // is equal to
+		 * var cmpFunc = cmpObjects(['firstname', { attribute: 'lastname', descending: true }]);
+		 * ```
+		 *
+		 * @returns {Function} compareFunction - Returns a function that can be used as a parameter for Array.prototype.sort().
+		 *
+		 * @example
+		 * // Sorting an array of objects after the 'firstname' property.
+		 *
+		 * var myArray = [
+		 *     { 'firstname': 'Carl'  },
+		 *     { 'firstname': 'Alice' },
+		 *     { 'firstname': 'Bob'   },
+		 * ];
+		 * var compareFunction = cmpObjects('firstname');
+		 * myArray.sort(compareFunction);
+		 *
+		 * // result:
+		 * // [
+		 * //    { 'firstname': 'Alice' },
+		 * //    { 'firstname': 'Bob'   },
+		 * //    { 'firstname': 'Carl'  },
+		 * // ]
+		 *
+		 * @example
+		 * // If multiple arguments are passed, then the first argument is the primary sort,
+		 * // the second the secondary sort, and so on.
+		 *
+		 * var myArray = [
+		 *     { 'firstname': 'Bob',   'lastname': 'Bobsen' },
+		 *     { 'firstname': 'Alice', 'lastname': 'Asten'  },
+		 *     { 'firstname': 'Bob',   'lastname': 'Zeus'   },
+		 * ];
+		 * var compareFunction = cmpObjects('firstname', {
+		 *     'attribute': 'lastname',
+		 *     'descending': true
+		 * });
+		 * myArray.sort(compareFunction);
+		 *
+		 * // result:
+		 * // [
+		 * //    { 'firstname': 'Alice', 'lastname': 'Asten'  },
+		 * //    { 'firstname': 'Bob',   'lastname': 'Zeus'   },
+		 * //    { 'firstname': 'Bob',   'lastname': 'Bobsen' },
+		 * // ]
+		 *
+		 * @example
+		 * // Passing a string as an argument...
+		 * var compareFunction = cmpObjects('firstname');
+		 * // is equal to...
+		 * var compareFunction = cmpObjects({
+		 *     'attribute': 'firstname',
+		 *     'descending': false,
+		 *     'useCollator': true,
+		 *     'collatorLocales': i18nTools.defaultLang(),
+		 *     'collatorOptions': { 'numeric': true },
+		 *     'ignoreCase': true
+		 * });
+		 *
+		 * @example
+		 * // In order to be useful for grids and sort options, the arguments may also
+		 * // be one single array.
+		 *
+		 * var compareFunction = cmpObjects('firstname', 'lastname');
+		 * // is equal to 
+		 * var compareFunction = cmpObjects(['firstname', 'lastname'])
+		 */
+		cmpObjects: function(/*...(String|CmpSettings)*/) {
+			// make arguments into an array
+			var cmpSettingsArray;
+			if (Array.isArray(arguments[0])) {
+				cmpSettingsArray = arguments[0];
+			} else {
+				cmpSettingsArray = Array.prototype.slice.call(arguments);
 			}
 
-			// prepare unified ordering property list
-			var order = [];
-			for (var i = 0; i < args.length; ++i) {
-				// default values
-				var o = {
-					attr: '',
-					desc: 1,
-					ignCase: true
+			// prepare cmpSettings for all passed arguments
+			var cmpPriority = [];
+			array.forEach(cmpSettingsArray, lang.hitch(this, function(passedCmpSettings) {
+				// sanitize passedCmpSettings
+				if (typeof passedCmpSettings === 'string') {
+					passedCmpSettings = {
+						attribute: passedCmpSettings
+					};
+				}
+
+				// validate passedCmpSettings
+				if (!lang.exists('attribute', passedCmpSettings) || typeof passedCmpSettings.attribute !== 'string') {
+					tools.assert(false, 
+						'Wrong parameter for tools.cmpObjects().\n' +
+						'The parameter needs to be a string or an object containing the "attribute" property\n' +
+						'and the value of the "attribute" property has to be a string.\n' +
+						'Wrong parameter: ' + json.stringify(passedCmpSettings) + '\n' +
+						'Orig arguments: ' + json.stringify(cmpSettingsArray)
+					);
+				}
+
+				// mix passedCmpSettings into default values
+				var cmpSettings = {
+					attribute: '',
+					descending: false,
+					useCollator: true,
+					collatorLocales: i18nTools.defaultLang(),
+					collatorOptions: { numeric: true },
+					ignoreCase: true,
+					_collator: null,
 				};
+				lang.mixin(cmpSettings, lang.clone(passedCmpSettings));
 
-				// entry for ordering can by a String or an Object
-				if (typeof args[i] === "string") {
-					o.attr = args[i];
-				}
-				else if (typeof args[i] === "object" && 'attribute' in args[i]) {
-					o.attr = args[i].attribute;
-					o.desc = (args[i].descending ? -1 : 1);
-					o.ignCase = undefined === args[i].ignoreCase ? true : args[i].ignoreCase;
-				}
-				else {
-					// error case
-					tools.assert(false, 'Wrong parameter for tools.cmpObjects(): ' + json.stringify(args));
+				// create Intl.Collator instance
+				if (cmpSettings.useCollator && this.browserSupportsIntlCollator) {
+					cmpSettings._collator = new Intl.Collator(cmpSettings.collatorLocales, cmpSettings.collatorOptions);
 				}
 
-				// add order entry to list
-				order.push(o);
-			}
+				cmpPriority.push(cmpSettings);
+			}));
 
-			// return the comparison function
-			return function(_a, _b) {
-				for (var i = 0; i < order.length; ++i) {
-					var o = order[i];
+			// return comparison function
+			return function(objA, objB) {
+				for (var i = 0; i < cmpPriority.length; ++i) {
+					var cmpSettings = cmpPriority[i];
+					var direction = cmpSettings.descending ? -1 : 1;
 
-					// check for lowercase (ignore not existing values!)
-					var a = _a[o.attr];
-					var b = _b[o.attr];
-					if (o.ignCase && a && a.toLowerCase && b && b.toLowerCase) {
-						a = a.toLowerCase();
-						b = b.toLowerCase();
-					}
+					var a = objA[cmpSettings.attribute];
+					var b = objB[cmpSettings.attribute];
 
-					// check for lower/greater
-					if (a < b) {
-						return -1 * o.desc;
-					}
-					if (a > b) {
-						return 1 * o.desc;
+					if (cmpSettings._collator) {
+						var compareResult = cmpSettings._collator.compare(a, b) * direction;
+						if (compareResult !== 0) {
+							return compareResult;
+						}
+					} else {
+						if (cmpSettings.ignoreCase && a && a.toLowerCase && b && b.toLowerCase) {
+							a = a.toLowerCase();
+							b = b.toLowerCase();
+						}
+						if (a < b) {
+							return -1 * direction;
+						}
+						if (a > b) {
+							return 1 * direction;
+						}
 					}
 				}
 				return 0;

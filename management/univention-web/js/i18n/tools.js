@@ -40,6 +40,9 @@ define([
 	// should be fixed later on
 	//"dojo/text!/univention/languages.json"
 ], function(dojo, array, json, ioQuery, cookie) {
+	/**
+	 * @exports umc/i18n/tools
+	 */
 	var i18nTools = {};
 
 	// i18nTools.availableLanguages: Object[]
@@ -102,16 +105,20 @@ define([
 		}
 	};
 
+	/**
+	 * @summary
+	 *     Returns the default Language
+	 *
+	 * @description 
+	 *     This function will retrieve the currently set Language (has to
+	 *     be allowed, i.e. in i18nTools.availableLanguages) or a default
+	 *     Language.  The currently set locale (dojo/_base/kernel.locale)
+	 *     is set in the index.html either via the query string in the
+	 *     URL, via a cookie, or via dojo automatically
+	 *
+	 * @returns {String} A languageTag specified by RFC 3066 (e.g. en-US)
+	 */
 	i18nTools.defaultLang = function () {
-		// summary:
-		//		Returns the default Language
-		// description:
-		//		This function will retrieve the currently set Language (has to
-		//		be allowed, i.e. in i18nTools.availableLanguages) or a default
-		//		Language.  The currently set locale (dojo/_base/kernel.locale)
-		//		is set in the index.html either via the query string in the
-		//		URL, via a cookie, or via dojo automatically
-
 		var lowercase_locale = dojo.locale.toLowerCase();
 		var exact_match = array.filter(i18nTools.availableLanguages, function(item) {
 			return lowercase_locale === item.id.toLowerCase();
