@@ -207,12 +207,13 @@ run_multiserver_samba_master_p_four_test () {
 	 . env_vars
 	 python shared-utils/ucs-winrm.py check-share --server $MEMBER --sharename "testshareMember" --driveletter R --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
 	 python shared-utils/ucs-winrm.py check-share --server $SLAVE --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
-	#python shared-utils/ucs-winrm.py setup-printer --printername Slaveprinter --server "$SLAVE"
-	#python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$MEMBER"
-	 python shared-utils/ucs-winrm.py run-ps --cmd "Add-Printer -Connectionname \\\\ucs-slave\Slaveprinter" --impersonate --run-as-user Administrator
-	 python shared-utils/ucs-winrm.py run-ps --cmd "Add-Printer -Connectionname \\\\ucs-member\Memberprinter" --impersonate --run-as-user Administrator
-	 python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "$MEMBER" --impersonate --run-as-user Administrator 
-	 python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server "$SLAVE" --impersonate --run-as-user Administrator
+	 python shared-utils/ucs-winrm.py setup-printer --printername Slaveprinter --server "$SLAVE"
+	 python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$MEMBER"
+	 #python shared-utils/ucs-winrm.py run-ps --cmd "Add-Printer -Connectionname \\\\ucs-slave\Slaveprinter" --impersonate --run-as-user Administrator
+	 #python shared-utils/ucs-winrm.py run-ps --cmd "Add-Printer -Connectionname \\\\ucs-member\Memberprinter" --impersonate --run-as-user Administrator
+	 sleep 20
+	 python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "ucs-member" --impersonate --run-as-user Administrator 
+	 python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server "ucs-slave" --impersonate --run-as-user Administrator
 	 samba-tool ntacl sysvolreset || true
 }
 
