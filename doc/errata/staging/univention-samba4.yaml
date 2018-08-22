@@ -7,5 +7,13 @@ fix: 7.0.2-21A~4.3.0.201808161142
 desc: |
  This update addresses the following issue(s):
  * Improved error message for school slave join.
- * TODO
+ * Two new UCR variables have been added to more granular control
+   the behaviour of the sysvol synchronization.
+   "samba4/sysvol/sync/from_upstream/delete" to whether a downstream
+   DC should delete local changes during the synchronization from
+   the upstream DC (only usefull in ucsschool with
+   unidirctional synchronization from upstream DC)
+   "samba4/sysvol/sync/fix_gpt_ini" to whether old, redundant gpt.ini
+   files should be deleted after the synchronisation to the local
+   sysvol directory.
 bug: [47388,47576]
