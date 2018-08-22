@@ -1240,7 +1240,7 @@ univention-app dev-use-test-appcenter
 					Currently, users and groups are supported.
 				</para>
 				<para>
-					A script should be specified in the provider portal. The
+					A script should be specified in the App Provider Portal. The
 					script is copied from the App Center into the container and
 					called there. If a script is already part of the container,
 					this script can be called accordingly, e.g.
@@ -1712,7 +1712,7 @@ univention-app dev-use-test-appcenter
 		<title>App settings</title>
 		<para>
 			The App settings allow the user to configure the app during its
-			runtime. The provider portal can be used to define which settings
+			runtime. The App Provider Portal can be used to define which settings
 			are displayed to the user. The app can react accordingly to the
 			changes.
 		</para>
@@ -1731,7 +1731,7 @@ univention-app dev-use-test-appcenter
 		</para>
 		<para>
 			The App settings can be defined on the tab
-			<guimenu>Settings</guimenu> in the provider portal.
+			<guimenu>Settings</guimenu> in the App Provider Portal.
 		</para>
 		<section id="app-settings:scripts">
 			<title>React on App settings</title>
@@ -1744,7 +1744,7 @@ univention-app dev-use-test-appcenter
 				Docker host.
 				Second, the <wordasword>configure</wordasword> script is
 				executed. It is executed inside the Docker container. In the
-				provider portal, the path of the script can be given
+				App Provider Portal, the path of the script can be given
 				(<guimenu>Configuration script run in the Docker
 				Container</guimenu>) or the script code can be uploaded
 				(<guimenu>Path to script inside the container
