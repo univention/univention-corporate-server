@@ -802,5 +802,5 @@ class Instance(Base, ProgressMixin):
 		return get_unreachable_repository_servers()
 
 	@simple_response
-	def check_uid(self, uid, nameserver, username, password):
-		return check_if_uid_is_available(uid, nameserver, username, password)
+	def check_uid(self, uid, role, nameserver, username, password):
+		return check_if_uid_is_available(uid, role, nameserver, username, password)

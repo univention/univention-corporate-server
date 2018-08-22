@@ -1660,16 +1660,19 @@ define([
 			}
 		},
 
-		warnIfUidIsAlreadyUsed: function(data) {
-			var uid = this.getValues()['hostname'] + '$';
-			return this.uidIsAvailable(uid).then(
+		warnIfUidIsUsedElsewhere: function(data) {
+			var values = this.getValues();
+			var hostname = values['hostname'];
+			var uid = hostname + '$';
+			var role = values['server/role'];
+			return this.uidIsUsable(uid, role).then(
 				function(data) { return true; },  // callback; uid is available, just continue
-				this.getConfirmationToContinueWithDuplicateUid.bind(null, uid)  // errback
+				this.getConfirmationToContinueWithDuplicateHostname.bind(null, hostname)  // errback
 			);
 		},
 
-		uidIsAvailable: function(uid) {
-			var params = { uid: uid };
+		uidIsUsable: function(uid, role) {
+			var params = { uid: uid, role: role };
 			lang.mixin(params, this._getCredentials());
 			return this.umcpCommand('setup/check/uid', params).then(
 				function(data) {
@@ -1679,15 +1682,16 @@ define([
 			);
 		},
 
-		getConfirmationToContinueWithDuplicateUid: function(uid, data) {
-			return dialog.confirm(_('The uid \'%s\' is already used in the ' +
-				'LDAP. It is recommended to change the hostname in order to ' +
-				'get a unique uid.', uid
+		getConfirmationToContinueWithDuplicateHostname: function(hostname, data) {
+			return dialog.confirm(_('The hostname \'%s\' is already used for ' +
+				'a computer with a different role, in the UCS domain. It is ' +
+				'recommended to change the hostname for UCS to work properly.',
+				hostname
 			), [{
 				label: _('Adjust settings'),
 				name: 'stay'
 			}, {
-				label: _('Continue with duplicate uid'),
+				label: _('Continue with duplicate hostname'),
 				'default': true,
 				name: 'continue'
 			}], _('Warning')).then(
@@ -2936,7 +2940,7 @@ define([
 				if (pageName == 'fqdn-nonmaster-all' && this._isRoleNonMaster() && this._wantsToJoin()) {
 					deferred = deferred.then(
 						// callback; will only be called, if previous dialog was not canceled
-						lang.hitch(this, this.warnIfUidIsAlreadyUsed)
+						lang.hitch(this, this.warnIfUidIsUsedElsewhere)
 					);
 				}
 
