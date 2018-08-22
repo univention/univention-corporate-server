@@ -183,7 +183,7 @@
         <para>
             <figure id="create-app-with-docker:create-app">
                 <title>Add a new App</title>
-                <graphic scalefit="1" width="275px" fileref="illustrations43/app_portal_new_app.png"/>
+                <graphic scalefit="1" width="28%" fileref="illustrations43/app_portal_new_app.png"/>
             </figure>
         </para>
 
@@ -578,7 +578,7 @@ univention-app dev-use-test-appcenter
             <para>
                 <figure id="testing:install:app-center-umc-module">
                     <title>Univention Management Console overview with App Center module</title>
-                    <graphic scalefit="1" width="800px" fileref="illustrations43/umc-module-app-center.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations43/umc-module-app-center.png"/>
                 </figure>
             </para>
 
@@ -792,11 +792,11 @@ univention-app dev-use-test-appcenter
         <para>
             <figure id="app-life-cycle:update:create-new-version">
                 <title>Menu for Add a new App</title>
-                <graphic scalefit="1" width="275px" fileref="illustrations43/app_portal_create_new_version.png"/>
+                <graphic scalefit="1" width="28%" fileref="illustrations43/app_portal_create_new_version.png"/>
             </figure>
             <figure id="app-life-cycle:update:new-version">
                 <title>Add a new App version</title>
-                <graphic scalefit="1" width="275px" fileref="illustrations43/app_portal_new_version.png"/>
+                <graphic scalefit="1" width="28%" fileref="illustrations43/app_portal_new_version.png"/>
             </figure>
         </para>
     </section>
@@ -1706,12 +1706,12 @@ univention-app dev-use-test-appcenter
 			settings in the app configuration, see <xref linkend="app-configurations:app-settings:button" />).
 			<figure id="app-configurations:app-settings:button">
 				<title>App settings button</title>
-				<graphic scalefit="1" width="800px" fileref="illustrations43/Appcenter-settings-button.png"/>
+				<graphic scalefit="1" width="80%" fileref="illustrations43/Appcenter-settings-button.png"/>
 			</figure>
 			An example for an App settings dialog is in <xref linkend="app-configurations:app-settings:example" />).
 			<figure id="app-configurations:app-settings:example">
 				<title>App settings example</title>
-				<graphic scalefit="1" width="800px" fileref="illustrations43/Appcenter-settings-example.png"/>
+				<graphic scalefit="1" width="80%" fileref="illustrations43/Appcenter-settings-example.png"/>
 			</figure>
 		</para>
 		<para>
@@ -2146,7 +2146,7 @@ service my-app-daemon restart
             <para>
                 <figure id="appliance:branding:bootloader-figure">
                     <title>Boot loader</title>
-                    <graphic scalefit="1" width="800px" fileref="illustrations43/Appliance_Branding_Bootloader.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations43/Appliance_Branding_Bootloader.png"/>
                 </figure>
             </para>
         </section>
@@ -2173,7 +2173,7 @@ service my-app-daemon restart
             <para>
                 <figure id="appliance:branding:bootsplash-figure">
                     <title>Boot splash</title>
-                    <graphic scalefit="1" width="800px" fileref="illustrations43/Appliance_Branding_Bootsplash.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations43/Appliance_Branding_Bootsplash.png"/>
                 </figure>
             </para>
         </section>
@@ -2204,13 +2204,13 @@ service my-app-daemon restart
             <para>
                 <figure id="appliance:branding:setup-wizard-figure">
                     <title>System setup first screen</title>
-                    <graphic scalefit="1" width="800px" fileref="illustrations43/Appliance_Branding_Setup_Wizard.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations43/Appliance_Branding_Setup_Wizard.png"/>
                 </figure>
             </para>
             <para>
                 <figure id="appliance:branding:umc-branding-figure">
                     <title>System setup summary screen</title>
-                    <graphic scalefit="1" width="800px" fileref="illustrations43/Appliance_Branding_UMC.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations43/Appliance_Branding_UMC.png"/>
                 </figure>
             </para>
         </section>
@@ -2237,7 +2237,7 @@ service my-app-daemon restart
             <para>
                 <figure id="appliance:branding:umc-branding-welcome-screen">
                     <title>Appliance welcome screen</title>
-                    <graphic scalefit="1" width="800px" fileref="illustrations43/Appliance_Branding_Welcome_Screen.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations43/Appliance_Branding_Welcome_Screen.png"/>
                 </figure>
             </para>
         </section>
@@ -2258,7 +2258,7 @@ service my-app-daemon restart
             <para>
                 <figure id="appliance:branding:portal-page-figure">
                     <title>Appliance portal page</title>
-                    <graphic scalefit="1" width="800px" fileref="illustrations43/Appliance_Branding_Portal_Page.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations43/Appliance_Branding_Portal_Page.png"/>
                 </figure>
             </para>
         </section>
