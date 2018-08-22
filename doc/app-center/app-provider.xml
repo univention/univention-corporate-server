@@ -119,11 +119,19 @@
                 Your software needs to be provided as <ulink
                     url="https://docs.docker.com/">Docker image</ulink>. This
                 is the easiest way to deploy software in Univention App Center.
-                It is also recommended to publish the docker container to
-                <ulink url="https://hub.docker.com/">docker hub</ulink>. This
-                makes referencing the image later much easier.  The image must
-                have a version tag to distinguish different software versions.
-                It later allows updates for the apps.
+                It is also recommended to publish the Docker container to
+                <ulink url="https://hub.docker.com/">Docker hub</ulink>. This
+                makes referencing the image later much easier and simplifies
+                the development and test cycle during development. If public
+                access to the image is not wanted, it can be made private and
+                granted access to the Docker Hub user
+                <userinput>univention</userinput>. In this case, the image has
+                to be copied manually by the App Center team to the Univention
+                Docker registry.
+            </para>
+            <para>
+                The image must have a version tag to distinguish different
+                software versions. It later allows updates for the apps.
             </para>
         </section>
 
