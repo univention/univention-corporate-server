@@ -274,7 +274,7 @@
                     <simpara>
                         Enter the name of your image to <guimenu>Docker
                             image</guimenu>. Grab the name of your image from
-                        docker hub for example
+                        Docker hub for example
                         <literal>univention/ucs-master-amd64:4.2-2</literal>.
                     </simpara>
                 </listitem>
@@ -296,7 +296,7 @@
                     needs to include all services needed for the software,
                     except the database.  The App Center takes care of
                     providing a database management system directly on the
-                    docker host that can be used by the docker container.
+                    Docker host that can be used by the Docker container.
                     Supported are MySQL and PostgreSQL. See <xref
                         linkend="create-app-with-docker:database" />.
                 </para>
@@ -347,10 +347,10 @@
         <section id="create-app-with-docker:defaults">
             <title>Change defaults</title>
             <para>
-                In order to get usual docker images working, some settings in
+                In order to get usual Docker images working, some settings in
                 the App Provider Portal have to be changed. In the
                 <guimenu>Life cycle scripts</guimenu> section on the
-                <guimenu>Docker</guimenu> tab all docker script drop-downs need
+                <guimenu>Docker</guimenu> tab all Docker script drop-downs need
                 to be changed to <userinput>Disabled</userinput>, unless a
                 <userinput>Custom script</userinput> shall be provided.
             </para>
@@ -362,11 +362,11 @@
                 By default files created inside a container are stored in it,
                 but they don't persist when the container is no longer running,
                 removed or is exchanged with a newer version. As solution
-                docker offers <ulink
+                Docker offers <ulink
                     url="https://docs.docker.com/storage/volumes/">volumes</ulink>,
-                a mechanism for persisting data generated and used by docker
-                containers. A volume is a directory on the docker host that is
-                mounted inside the docker container.
+                a mechanism for persisting data generated and used by Docker
+                containers. A volume is a directory on the Docker host that is
+                mounted inside the Docker container.
             </para>
             <para>
                 <!--
@@ -400,7 +400,7 @@
         <section id="create-app-with-docker:web-interface">
             <title>Web interface</title>
             <para>
-                Many docker apps expose a web interface to the outside world,
+                Many Docker apps expose a web interface to the outside world,
                 e.g. via the port 8080. The App Center on UCS takes care to map
                 this web interface from some relative link to this port and adds a
                 reverse proxy configuration to the host's webserver
@@ -437,7 +437,7 @@
                             <option>Supported protocols by the container's web
                                 interface</option>: On the tab
                             <guimenu>Docker</guimenu> in the section
-                            <guimenu>Advanced docker settings</guimenu>, select
+                            <guimenu>Advanced Docker settings</guimenu>, select
                             <userinput>HTTP and HTTPS</userinput>, if both
                             protocol schemes should be covered.
                         </simpara>
@@ -453,9 +453,9 @@
                 passed along to the container in order work properly, they can
                 be defined in the <guimenu>Port redirection</guimenu> section
                 on the <guimenu>Docker</guimenu> tab. Here you can define a
-                list of ports that the docker host shall exclusively acquire
-                for the docker container. Ports defined here cannot be used by
-                other services or other docker containers on the UCS host.
+                list of ports that the Docker host shall exclusively acquire
+                for the Docker container. Ports defined here cannot be used by
+                other services or other Docker containers on the UCS host.
             </para>
             <para>
                 For example, the solution exposes API under the dedicated port
@@ -470,18 +470,18 @@
                 Many applications need a relational database management system
                 (<wordasword>RDMS</wordasword>) somewhere in the environment to
                 function properly. If the app needs such a database the App
-                Center takes care of providing one directly on the docker host.
+                Center takes care of providing one directly on the Docker host.
                 In two sections on the <guimenu>Docker</guimenu> tab the
                 appropriate settings can
                 be made.
             </para>
             <para>
-                In the <guimenu>Database settings for docker
+                In the <guimenu>Database settings for Docker
                     container</guimenu> section the settings for the database are
                 defined. MySQL and PostgreSQL are supported. Database user,
                 database name and the path to the password file can be
                 specified. Upon installation of the app, the App Center
-                installs the defined database on the docker host, creates a
+                installs the defined database on the Docker host, creates a
                 database with the defined settings and saves the password in a
                 file for later use.
             </para>
@@ -513,7 +513,7 @@
         <para>
             Every app starts with the development. It involves the definition
             of the app in the app provider portal, providing the software
-            solution as docker container (see <xref linkend="get-started" />)
+            solution as Docker container (see <xref linkend="get-started" />)
             and the integration of the solution with UCS, for example in the
             identity management area (see <xref linkend="connection-idm" />).
             This part of the life cycle can be divided into the two steps setup
@@ -660,7 +660,7 @@ univention-app dev-use-test-appcenter
         <!--
         TODO: Section about how providers can use testing infrastructure for automated tests.
 
-        * How does automated testing apply to docker apps?
+        * How does automated testing apply to Docker apps?
         * Where can the settings be made?
         * How does it work in principle?
         * What are the requirements?
@@ -730,9 +730,9 @@ univention-app dev-use-test-appcenter
         <para>
             As soon as the app is ready for release, it is copied to the
             productive App Center by the Univention App Center team. This
-            involves the app's presentation material as well as the docker
-            image. Univention maintains an own docker registry. The docker
-            image is copied to that registry and the reference to the docker
+            involves the app's presentation material as well as the Docker
+            image. Univention maintains an own Docker registry. The Docker
+            image is copied to that registry and the reference to the Docker
             image is updated accordingly in the app definition. The app will
             be visible in the App Center UMC module immediately for all UCS
             users. The app catalog is updated automatically and shows the new
@@ -773,7 +773,7 @@ univention-app dev-use-test-appcenter
                 <listitem>
                     <simpara>
                         Open the new app version and make the appropriate
-                        changes, e.g. the version tag for the docker image.
+                        changes, e.g. the version tag for the Docker image.
                         Usual places for changes involve the scripts and maybe
                         the integration. Texts and logos should be checked if
                         they are still up to date.
@@ -1587,8 +1587,8 @@ univention-app dev-use-test-appcenter
 		<title>Installation scripts</title>
 		<para>
 			During the installation of an app, the so-called preinst script is
-			executed first. Afterwards, the account for the docker container is
-			created and the docker container is started. After that, the setup
+			executed first. Afterwards, the account for the Docker container is
+			created and the Docker container is started. After that, the setup
 			script is called and finally the join script.
 		</para>
 		<section id="installation:preinst">
@@ -1605,7 +1605,7 @@ univention-app dev-use-test-appcenter
 		<section id="installation:setup">
 			<title>Docker script setup</title>
 			<para>
-				This script is executed in the docker container. It is normally
+				This script is executed in the Docker container. It is normally
 				the heart of the initial app configuration. If the script
 				fails (exit code != 0) the installation is aborted.
 				<!-- TODO: parameters?-->
@@ -1614,7 +1614,7 @@ univention-app dev-use-test-appcenter
 		<section id="installation:joinscript">
 			<title>Join script</title>
 			<para>
-				This script is executed on the UCS host system after the docker
+				This script is executed on the UCS host system after the Docker
 				container is configured. Please refer the Developer Reference
 				about how to write a join script. If it runs successfully, the
 				join script may save this information in a status file. If
@@ -1630,8 +1630,8 @@ univention-app dev-use-test-appcenter
 		<title>Uninstallation scripts</title>
 		<para>
 			During the uninstallation of an app, the so-called prerm script is
-			executed first. Afterwards, the account for the docker container is
-			removed and the docker container is stopped. After that, the
+			executed first. Afterwards, the account for the Docker container is
+			removed and the Docker container is stopped. After that, the
 			unjoin script is executed.
 		</para>
 		<section id="uninstallation:prerm">
@@ -1648,7 +1648,7 @@ univention-app dev-use-test-appcenter
 		<section id="uninstallation:unjoin">
 			<title>Unjoin script</title>
 			<para>
-				This script is executed on the UCS host system after the docker
+				This script is executed on the UCS host system after the Docker
 				container is removed. See the Developer Reference for how to
 				write an unjoin script. It should somehow revert most (if not
 				all) changes done in the join script.
@@ -1674,7 +1674,7 @@ univention-app dev-use-test-appcenter
 				new container or if the app is uninstalled.
 				It is not required if all the data is stored outside the container for
 				example in a database or a mapped volume.
-				This script is executed inside the docker container and it
+				This script is executed inside the Docker container and it
 				should copy the relevant data to
 				<filename>/var/lib/univention-appcenter/apps/$APPID/data/</filename>.
 			   	Afterwards, the data can be restored by one of the
@@ -1684,7 +1684,7 @@ univention-app dev-use-test-appcenter
 		<section id="upgrade:restore_data_before_setup">
 			<title>Docker script restore_data_before_setup</title>
 			<para>
-				This script is executed inside the docker container before the
+				This script is executed inside the Docker container before the
 				setup script is executed.
 				Its purpose is to restore the data which has been stored by
 				the store_data script.
@@ -1693,7 +1693,7 @@ univention-app dev-use-test-appcenter
 		<section id="upgrade:restore_data_after_setup">
 			<title>Docker script restore_data_after_setup</title>
 			<para>
-				This script is executed inside the docker container after the
+				This script is executed inside the Docker container after the
 				setup script is executed.
 				Its purpose is to restore the data which has been stored by
 				the store_data script.
@@ -1729,14 +1729,14 @@ univention-app dev-use-test-appcenter
 		<section id="app-settings:scripts">
 			<title>React on App settings</title>
 			<para>
-				The settings are saved inside the docker container in the file
+				The settings are saved inside the Docker container in the file
 				<filename>/etc/univention/base.conf</filename> in the type
 				<wordasword>key: value</wordasword>.
 				After the settings are changed, two scripts are executed.
 				First, the script <wordasword>configure_host</wordasword>. This script is run on the
-				docker host.
+				Docker host.
 				Second, the <wordasword>configure</wordasword> script is
-				executed. It is executed inside the docker container. In the
+				executed. It is executed inside the Docker container. In the
 				provider portal, the path of the script can be given
 				(<guimenu>Configuration script run in the Docker
 				Container</guimenu>) or the script code can be uploaded
@@ -1795,7 +1795,7 @@ univention-app dev-use-test-appcenter
 						<simpara>
 							<guimenu>Password</guimenu> A password input.
 							Note: The content will be stored as clear text
-							value inside the docker container.
+							value inside the Docker container.
 						</simpara>
 					</listitem>
 					<listitem>
@@ -1865,8 +1865,8 @@ univention-app dev-use-test-appcenter
 			</para>
 			<para>
 				The attribute <guimenu>Scope</guimenu> is used to specify if
-				the value is set inside the docker container
-				(<option>inside</option>), on the docker host
+				the value is set inside the Docker container
+				(<option>inside</option>), on the Docker host
 				(<option>outside</option>) or on both (<option>inside,
 				outside</option>). The default is <option>inside</option>.
 			</para>
@@ -1928,7 +1928,7 @@ Group[de] = Lizenz und Liste
 				The first of these two settings will upload a file to
 				<filename>/opt/myapp/license</filename> inside the container. The second will save
 				<wordasword>myapp/list: value2</wordasword> (or another value)
-				inside the container and on the docker host. Both settings
+				inside the container and on the Docker host. Both settings
 				will be shown before the installation. On the App settings
 				page, the list setting will be read-only.
 			</para>
@@ -1983,7 +1983,7 @@ Group[de] = Lizenz und Liste
                 </listitem>
                 <listitem>
                     <simpara>
-                        The docker host UCS certificate is copied to <filename>/etc/univention/ssl/docker-host-certificate/{cert.pem,private.key}</filename> and <filename>/etc/univention/ssl/$FQDN_DOCKER_HOST/{cert.pem,private.key}</filename>.
+                        The Docker host UCS certificate is copied to <filename>/etc/univention/ssl/docker-host-certificate/{cert.pem,private.key}</filename> and <filename>/etc/univention/ssl/$FQDN_DOCKER_HOST/{cert.pem,private.key}</filename>.
                     </simpara>
                 </listitem>
             </itemizedlist>
