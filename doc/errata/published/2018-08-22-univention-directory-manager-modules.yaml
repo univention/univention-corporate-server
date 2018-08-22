@@ -9,3 +9,5 @@ desc: |
  * Ignore case during change of mailPrimaryAddress attribute
    user objects.
 bug: [47415]
+erratum: 217
+announced: 2018-08-22
