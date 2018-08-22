@@ -14,3 +14,5 @@ desc: |
  * Fix memory leak caused by Python notifier traceback handling.
  * Raise the required memory for UCS to 1 GB.
 bug: [45931,42366,42022,47105,47114,45206]
+erratum: 214
+announced: 2018-08-22
