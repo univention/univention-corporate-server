@@ -43,6 +43,8 @@ DEFAULT_CRL_DAYS="$(/usr/sbin/univention-config-registry get ssl/crl/validity)"
 : ${DEFAULT_CRL_DAYS:=10}
 DEFAULT_DAYS="$(/usr/sbin/univention-config-registry get ssl/default/days)"
 : ${DEFAULT_DAYS:=1825}
+DEFAULT_GRACE="$(/usr/sbin/univention-config-registry get ssl/default/grace)"
+: ${DEFAULT_GRACE:=0}
 DEFAULT_MD="$(/usr/sbin/univention-config-registry get ssl/default/hashfunction)"
 : ${DEFAULT_MD:=sha256}
 DEFAULT_BITS="$(/usr/sbin/univention-config-registry get ssl/default/bits)"
@@ -132,6 +134,8 @@ default_md          = \$ENV::DEFAULT_MD
 preserve            = no
 
 policy              = policy_match
+
+unique_subject      = no
 
 [ policy_match ]
 
@@ -413,6 +417,7 @@ has_cert () {
 renew_cert () {
 	local id="${1:?Missing argument: certificate id}"
 	local days="${2:-$DEFAULT_DAYS}"
+	local grace="${3:-$DEFAULT_GRACE}"
 
 	revoke_cert "$id" "$grace" || [ $? -eq 2 ] || return $?
 
