@@ -11,3 +11,5 @@ desc: |-
     informs about the progress of the update. UMC will be available again as
     soon as the update finished.
 bug: [37223]
+erratum: 212
+announced: 2018-08-22
