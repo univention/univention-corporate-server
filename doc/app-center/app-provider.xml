@@ -1390,7 +1390,7 @@ univention-app dev-use-test-appcenter
         "mailForwardCopyToSelf": "0",
         "mailPrimaryAddress": "admin@sparka-43.intranet",
         "mailUserQuota": "0",
-        "password": "{crypt}$6$0kS4GowCZEAJRqWG$8LkK6iBeKFCInoxy9bCG1SFfGpajOy//ZgBSuuMOs2MJcUQQAI2zgoU1/KcQ6e7Ldqz/oMPOdTdjTNCebDQpX.",
+        "password": "{crypt}$6$0kS4GowCZEAJRqWG$8LkK6iBeKFCInoxy9bCG1SFfGpajOy//Zg[...]",
         "passwordexpiry": null,
         "primaryGroup": "cn=Domain Admins,cn=groups,dc=sparka-43,dc=intranet",
         "sambaRID": "500",
