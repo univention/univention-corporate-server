@@ -184,7 +184,7 @@ run_multiserver_samba_master_p_one_test () {
 	stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
 
 	#password change
-	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --password "Univention123!"
+	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univention123!"
 		
 	python shared-utils/ucs-winrm.py run-ps --cmd hostname > WINCLIENTNAME
 	host $(cat WINCLIENTNAME | grep WIN | cut -c 1-15)
