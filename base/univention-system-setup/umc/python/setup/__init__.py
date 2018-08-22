@@ -70,6 +70,7 @@ except ImportError as e:
 
 from univention.management.console.modules.setup import network
 from univention.management.console.modules.setup import util
+from univention.management.console.modules.setup.checks.ldap import check_if_uid_is_available
 from univention.management.console.modules.setup.checks.repositories import get_unreachable_repository_servers
 from univention.management.console.modules.setup.checks.univention_join import receive_domaincontroller_master_information
 from univention.management.console.modules.setup.checks.univention_join import set_role_and_check_if_join_will_work
@@ -799,3 +800,7 @@ class Instance(Base, ProgressMixin):
 	@simple_response
 	def check_repository_accessibility(self):
 		return get_unreachable_repository_servers()
+
+	@simple_response
+	def check_uid(self, uid, nameserver, username, password):
+		return check_if_uid_is_available(uid, nameserver, username, password)
