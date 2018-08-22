@@ -1262,7 +1262,7 @@ define([
 					collatorLocales: i18nTools.defaultLang(),
 					collatorOptions: { numeric: true },
 					ignoreCase: true,
-					_collator: null,
+					_collator: null
 				};
 				lang.mixin(cmpSettings, lang.clone(passedCmpSettings));
 
