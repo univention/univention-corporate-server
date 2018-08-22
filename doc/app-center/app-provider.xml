@@ -1567,9 +1567,11 @@ univention-app dev-use-test-appcenter
         </para>
         <para>
 			In this case, it is also possible to create individual extended
-			attributes during the setup process. This should be done in the
-			join script.  Further information on extended attributes can be
-			found in the Univention Developer Reference.
+            attributes during the setup process. This should be done in the
+            join script.  Further information on extended attributes can be
+            found in the <ulink
+                url="https://docs.software-univention.de/developer-reference.html">Univention
+                Developer Reference</ulink>.
         </para>
     </section>
 
@@ -1614,15 +1616,16 @@ univention-app dev-use-test-appcenter
 		<section id="installation:joinscript">
 			<title>Join script</title>
 			<para>
-				This script is executed on the UCS host system after the Docker
-				container is configured. Please refer the Developer Reference
-				about how to write a join script. If it runs successfully, the
-				join script may save this information in a status file. If
-				this does not happen, the user is constantly reminded to
-				re-run the join script. So the join script does not need to
-				run successfully. The installation will not be aborted at this
-				point. But of course at some point it should run through
-				successfully.
+                This script is executed on the UCS host system after the Docker
+                container is configured. Please refer the to the <ulink
+                    url="https://docs.software-univention.de/developer-reference.html">Developer
+                    Reference</ulink> about how to write a join script. If it
+                runs successfully, the join script may save this information in
+                a status file. If this does not happen, the user is constantly
+                reminded to re-run the join script. So the join script does not
+                need to run successfully. The installation will not be aborted
+                at this point. But of course at some point it should run
+                through successfully.
 			</para>
 		</section>
 	</section>
@@ -1648,12 +1651,14 @@ univention-app dev-use-test-appcenter
 		<section id="uninstallation:unjoin">
 			<title>Unjoin script</title>
 			<para>
-				This script is executed on the UCS host system after the Docker
-				container is removed. See the Developer Reference for how to
-				write an unjoin script. It should somehow revert most (if not
-				all) changes done in the join script.
-				With the notable exception of schema registration. An LDAP
-				schema extension should never be removed once it was
+                This script is executed on the UCS host system after the Docker
+                container is removed. See the <ulink
+                    url="https://docs.software-univention.de/developer-reference.html">Developer
+                    Reference</ulink> for how to write an unjoin script. It
+                should somehow revert most (if not all) changes done in the
+                join script.  With the notable exception of schema
+                registration. An LDAP schema extension should never be removed
+                once it was
 				registered.
 			</para>
 		</section>
