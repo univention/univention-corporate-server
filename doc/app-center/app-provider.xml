@@ -1315,11 +1315,11 @@ univention-app dev-use-test-appcenter
 						</listitem>
 						<listitem>
 							<simpara>
-    							UCS can "re-sync" the mechansim. In this case,
-								each and every object appears once again as a
-								JSON file. The script needs to cover the case
-								where no real modification to the object has
-								been made.
+                                UCS can "<wordasword>resync</wordasword>" a
+                                listener. In this case, each and every object
+                                appears once again as a JSON file. The script
+                                needs to cover the case where no real
+                                modification to the object has been made.
 							</simpara>
 						</listitem>
 						<listitem>
