@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-32) unstable; urgency=medium
+
+  * Bug #47199: fix inconsistentDisabledState() in users/user.py
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 22 Aug 2018 17:23:00 +0200
+
 univention-directory-manager-modules (13.0.21-31) unstable; urgency=medium
 
   * Bug #47415: ignore case in mailPrimaryAddress changes
