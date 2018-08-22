@@ -1,3 +1,9 @@
+univention-web (2.0.0-20) unstable; urgency=medium
+
+  * Bug #47195: Use Intl.Collator in tools.cmpObjects
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 22 Aug 2018 12:35:11 +0200
+
 univention-web (2.0.0-19) unstable; urgency=medium
 
   * Bug #47201: fix typo
