@@ -10,3 +10,5 @@ desc: |-
     UMC.
   * Fix memory leak caused by Python notifier traceback handling.
 bug: [37223, 47114]
+erratum: 215
+announced: 2018-08-22
