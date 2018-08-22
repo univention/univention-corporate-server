@@ -1317,7 +1317,7 @@ univention-app dev-use-test-appcenter
 						</listitem>
 						<listitem>
 							<simpara>
-    							UCS can "resync" a listener. In this case,
+    							UCS can "re-sync" a listener. In this case,
 								each and every object appears once again as a
 								JSON file. The script needs to cover the case
 								where no real modification to the object has
@@ -1341,18 +1341,18 @@ univention-app dev-use-test-appcenter
 						</listitem>
 						<listitem>
 							<simpara>
-    							If a mapping between the entry_uuid of the
+    							If a mapping between the <option>entry_uuid</option> of the
 								JSON file and the primary user key in the
 								solutions database is not possible, consider
 								maintaining a mapping table by the script, if
-								necessary. The entry_uuid is the only
+								necessary. The <option>entry_uuid</option> is the only
 								attribute that remains the same for an
 								object.
 							</simpara>
 						</listitem>
 						<listitem>
 							<simpara>
-    							It may happen that the same entry_uuid appears
+    							It may happen that the same <option>entry_uuid</option> appears
 								twice in the set of JSON files. This means
 								that multiple modifications on the object have
 								been made since the last time your script
