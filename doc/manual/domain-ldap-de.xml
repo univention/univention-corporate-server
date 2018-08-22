@@ -128,9 +128,9 @@
 					<simpara>
 					Als Join-Account wird ein Benutzerkonto bezeichnet, das berechtigt
 					ist, Systeme der UCS-Domäne hinzuzufügen. Standardmäßig ist dies der Benutzer
-					<systemitem class="username">Administrator</systemitem> oder ein Mitglied der Gruppe
-					<systemitem class="groupname">Domain Admins</systemitem>. Der Join-Account kann durch den Parameter
-					<option>-dcaccount <replaceable>ACCOUNTNAME</replaceable></option> übergeben werden.
+					<systemitem class="username">Administrator</systemitem> oder ein Mitglied der beiden Gruppen
+					<systemitem class="groupname">Domain Admins</systemitem> und <systemitem class="groupname">DC Backup Hosts</systemitem>.
+					Der Join-Account kann durch den Parameter <option>-dcaccount <replaceable>ACCOUNTNAME</replaceable></option> übergeben werden.
 					</simpara>
 				</listitem>
 				<listitem>
