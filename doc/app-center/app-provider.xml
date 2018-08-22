@@ -1255,8 +1255,6 @@ univention-app dev-use-test-appcenter
 				<para>
 					The JSON files are created in the directory
 					<filename>/var/lib/univention-appcenter/apps/$appid/data/listener/</filename>.
-					The App Center generates for every change a at these object
-					one JSON file.
 					As soon as any attribute of the watched object types is
 					changed a JSON file is created in the directory. The script is
 					called in a defined and configurable interval by the App
@@ -1307,7 +1305,7 @@ univention-app dev-use-test-appcenter
 					<itemizedlist>
 						<listitem>
 							<simpara>
-							     The listener does not filter the data. Every
+							     The mechanism does not filter the data. Every
 								 change will be saved in JSON files. If only a
 								 subset of users, e.g. a certain user type
 								 like students, shall be processed, the script
@@ -1317,7 +1315,7 @@ univention-app dev-use-test-appcenter
 						</listitem>
 						<listitem>
 							<simpara>
-    							UCS can "re-sync" a listener. In this case,
+    							UCS can "re-sync" the mechansim. In this case,
 								each and every object appears once again as a
 								JSON file. The script needs to cover the case
 								where no real modification to the object has
