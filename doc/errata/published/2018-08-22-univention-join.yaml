@@ -11,3 +11,5 @@ desc: |
    altering the system.
  * Fix memory leak caused by Python notifier traceback handling.
 bug: [42366, 42022, 47114]
+erratum: 216
+announced: 2018-08-22
