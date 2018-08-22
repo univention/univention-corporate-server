@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-MAIN_en := app-provider
+MAIN_en := app-provider-4.3
 MAIN := $(MAIN_en)
 STYLESHEET := univention
 
