@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Update to Linux kernel 4.9.0-8
 bug: [47490]
+erratum: 207
+announced: 2018-08-22
