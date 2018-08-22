@@ -1553,9 +1553,10 @@ univention-app dev-use-test-appcenter
     <section id="user-rights-management">
         <title>User rights management</title>
         <para>
-			The flag <emphasis>Add activation checkbox for App in UCS user
-			management</emphasis> can be activated in the App Provider Portal.
-			This adds a checkbox to the user administration and a schema
+            The flag <guimenu>Add activation checkbox for App in UCS user
+                management</guimenu> can be activated in the App Provider
+            Portal on the <guimenu>Advanced</guimenu>. This adds a checkbox to
+            the user administration and a schema
 			extension for the IDM is created, so that the status of the
 			checkbox is stored in an attribute in the IDM. This allows each
 			user to be activated or deactivated separately.
