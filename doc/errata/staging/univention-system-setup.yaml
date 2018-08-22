@@ -11,7 +11,7 @@ desc: |
  * Improve error messages of join failures.
  * Detect potential problems with the domain join when configuring the system.
  * Warn about unreachable repository servers when configuring the system.
- * Fix memory leak caused by Python notifyer traceback handling.
+ * Fix memory leak caused by Python notifier traceback handling.
  * Warn about duplicate uid when configuring the system.
  * Raise the required memory for UCS to 1 GB.
 bug: [45931,42366,42022,47105,47114,46045,45206]

@@ -9,5 +9,5 @@ desc: |
  * Improve error messages of join failures.
  * Add option to the univention-join tool for checking problems without
    altering the system.
- * Fix memory leak caused by Python notifyer traceback handling.
+ * Fix memory leak caused by Python notifier traceback handling.
 bug: [42366, 42022, 47114]

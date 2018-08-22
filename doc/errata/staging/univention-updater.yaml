@@ -13,6 +13,6 @@ desc: |-
   * The progress of a release update is written to a status file so that the
     package univention-maintenance-mode may read it to update the progress
     accordingly.
-  * Show a warning and allow examiniation of the updater.log file in UMC if
-    the last relase update failed.
+  * Show a warning and allow examination of the updater.log file in UMC if
+    the last release update failed.
 bug: [41536, 36719, 37223, 47592]
