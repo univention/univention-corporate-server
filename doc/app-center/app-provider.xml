@@ -1420,7 +1420,7 @@ univention-app dev-use-test-appcenter
     },
     "udm_object_type": "users/user"
 }
-<programlisting>
+</programlisting>
 				</para>
         </section>
     </section>
