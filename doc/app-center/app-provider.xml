@@ -228,18 +228,21 @@
                     <listitem>
                         <simpara>
                             <emphasis>UCS Version</emphasis> is the UCS version
-                            your app should start to be available on. Please
-                            note: As the App is a container and has little
-                            interaction with the host system, it is unnecessary
-                            to publish a new version for UCS 4.3, if it has
-                            already been published for UCS 4.2. UCS 4.3 systems
-                            may very well use the App - if you specify
-                            <literal>SupportedUCSVersion=4.2-0, 4.3-0</literal>
-                            in your 4.2 App. It does not really matter for
-                            which UCS version you publish your App. But if you
-                            are publishing it in various UCS versions, you need
-                            to also test various UCS versions.
+                            your app should start to be available on. Simply
+                            start with the latest available UCS version. You
+                            can also start with the oldest maintained UCS
+                            version to cover the broadest user base of UCS. See
+                            the <ulink
+                                url="https://wiki.univention.de/index.php/Maintenance_Cycle_for_UCS">UCS
+                                maintenance cycle</ulink> for an overview of
+                            the maintained UCS version. In either case it is
+                            recommended to specify the supported UCS versions
+                            explicitly (see <xref
+                                linkend="create-app-with-docker:supported-ucs-version"
+                                />.
                         </simpara>
+
+
                     </listitem>
                     <listitem>
                         <simpara>
@@ -298,6 +301,24 @@
                         linkend="create-app-with-docker:database" />.
                 </para>
             </note>
+        </section>
+
+        <section id="create-app-with-docker:supported-ucs-version">
+            <title>Supported UCS versions</title>
+            <para>
+                Upon app creation the <option>UCS Version</option> has been
+                specified. Please define the supported UCS version explicitly
+                on the <guimenu>Software</guimenu> tab in the <guimenu>Advanced
+                    software settings</guimenu> section.
+            </para>
+            <para>
+                Example: The app has been created for <option>UCS
+                    Version</option> <userinput>4.2</userinput>. The two
+                entries for <guimenu>Supported UCS versions for App</guimenu>
+                can be made: <userinput>4.2-3</userinput> and
+                <userinput>4.3-0</userinput>. This means that for the
+                installation of the app UCS 4.2-3 or UCS 4.3-0 are required.
+            </para>
         </section>
 
         <section id="create-app-with-docker:description">
@@ -572,6 +593,14 @@ univention-app dev-use-test-appcenter
                     <listitem>
                         <simpara>
                             The App has to uninstall without leaving any remainders that interfere with UCS' core services.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            The app is working on the as Supported UCS version
+                            configured version of UCS (see <xref
+                                linkend="create-app-with-docker:supported-ucs-version"
+                                />.
                         </simpara>
                     </listitem>
                 </itemizedlist>
