@@ -41,8 +41,9 @@
                 <listitem>
                     <simpara>
                         <emphasis>The App</emphasis> is the software plus the
-                        collection of metadata like text description, logo,
-                        screenshots and more for the presentation.
+                        collection of metadata like configuration, text
+                        description, logo, screenshots and more for the
+                        presentation.
                     </simpara>
                 </listitem>
                 <listitem>
@@ -50,21 +51,21 @@
                         <emphasis>The App Center Repository</emphasis> is a
                         central server infrastructure managed by Univention
                         that stores the files and data for the app. It is the
-                        installation source for the app for UCS.
+                        installation source for the app.
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
                         <emphasis>The App Center Module on UCS</emphasis> is
                         part of the web-based management system on UCS. It is the
-                        place where administrators install, update and
+                        place where UCS administrators install, update and
                         uninstall apps in their UCS environment.
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        <emphasis>The App Catalog</emphasis> is the
-                        presentation of the app portfolio on the <ulink
+                        <emphasis>The App Catalog</emphasis> presents the app
+                        portfolio on the <ulink
                             url="https://www.univention.com/products/univention-app-center/app-catalog/">
                             Univention website</ulink>.
                     </simpara>
@@ -384,12 +385,12 @@
                 <itemizedlist>
                     <listitem>
                         <simpara>
-                            <option>Host</option>: <userinput>/var/lib/suitecrm_etc</userinput>
+                            <option>Host</option>: <userinput>/var/lib/app_etc</userinput>
                         </simpara>
                     </listitem>
                     <listitem>
                         <simpara>
-                            <option>Docker container</option>: <userinput>/etc/suitecrm</userinput>
+                            <option>Docker container</option>: <userinput>/etc/app</userinput>
                         </simpara>
                     </listitem>
                 </itemizedlist>
@@ -571,7 +572,14 @@ univention-app dev-use-test-appcenter
                 the Test App Center. The app can be installed via the &ucsUMC;.
                 UMC consists of several modules and one of them is called
                 <guimenu>App Center</guimenu>. Open this module and install
-                your app from there.
+                the app from there.
+            </para>
+
+            <para>
+                <figure id="testing:install:app-center-umc-module">
+                    <title>Univention Management Console overview with App Center module</title>
+                    <graphic scalefit="1" width="800px" fileref="illustrations/umc-module-app-center.png"/>
+                </figure>
             </para>
 
             <para>
@@ -654,7 +662,7 @@ univention-app dev-use-test-appcenter
                 Univention always runs automated tests on an app before it
                 is released. This testing infrastructure can be used by the app
                 provider to increase the test coverage for the app. This can
-                drastically safe manual testing efforts.
+                save manual testing efforts.
             </para>
 
         <!--
@@ -802,8 +810,7 @@ univention-app dev-use-test-appcenter
             end of life, UCS system administrators won't be able to install it
             anymore. UCS systems that already have the app installed, will show
             a notification in the App Center that informs the UCS system
-            administrator about the termination and that they should look for
-            alternative solutions.
+            administrator and that they should look for alternative solutions.
         </para>
 
         <para>
@@ -849,9 +856,9 @@ univention-app dev-use-test-appcenter
         <important>
             <para>
                 When SVG files are created or exported, please make sure that
-                fonts are converted to paths before export. Otherwise it may
-                happen that another font is used depending on the user's device
-                and browser where the presentation is rendered.
+                fonts are converted to paths before export. Otherwise the text
+                in the logos is not rendered properly and the logo may look
+                odd.
             </para>
             <para>
                 Please also do not simply import a bitmap graphics into SVG and
@@ -878,11 +885,11 @@ univention-app dev-use-test-appcenter
         <para>
             Screenshots and videos are a good way to introduce the solution to
             the user. To add screenshots please go to the <guimenu>Screenshots
-                and videos</guimenu> tab. Screenshots can be in PNG or JPG
-            format and are uploaded here. Videos have to be published on
-            YouTube and the full YouTube link has to be provided in the App
-            Provider Portal. Please keep in mind that the screenshots and
-            videos in this tab must be for an English speaking audience.
+                and videos</guimenu> tab for upload. Screenshots can be in PNG
+            or JPG format. Videos have to be published on YouTube and the full
+            YouTube link has to be provided in the App Provider Portal. Please
+            keep in mind that the screenshots and videos in this tab must be
+            for an English speaking audience.
         </para>
         <para>
              If the same screenshots exist in German, it is recommended that
@@ -890,9 +897,8 @@ univention-app dev-use-test-appcenter
              in the <guimenu>Screenshots and videos</guimenu> section.
         </para>
         <para>
-            Please use comprehensive visualizations which make it easier to
-            understand the app's description. This can be achieved with
-            screenshots or other forms of visualization. Give the image files
+            Comprehensive visualizations can be added optionally which make it
+            easier to understand the app's description. Give the image files
             sensible names including the keywords. An example of a bad file
             name for an image would be “app_76bz3.jpg”, whereas
             “<wordasword>app_name.jpg</wordasword>” would be much better.
@@ -910,42 +916,38 @@ univention-app dev-use-test-appcenter
             <itemizedlist>
                 <listitem>
                     <simpara>
-                        Unique content
+                        Unique content with at least 300 words. No copy from
+                        the solutions web page.
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Content: What does the app do? Describe the added value and provide examples.
+                        Content: What does the app do? The added value and
+                        benefits should be described and examples be provided.
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        The app is running on UCS. What is the added value that the combination of UCS and the app offers to the customer?
+                        The app is running on UCS. What is the added value that
+                        the combination of UCS and the app offers to the
+                        customer?
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        At least 300 words.
+                        The text should be structured in paragraphs.
+                        Subheadings and lists should be used.
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Please structure the text in paragraphs and use subheadings and lists.
+                        Search engines should be kept in mind and keywords be
+                        used.
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Emphasize product benefits and list them.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        Bear search engines in mind and use Keywords.
-                    </simpara>
-                </listitem>
-                <listitem>
-                    <simpara>
-                        Furnish links with all HTML attributes
+                        Links should be furnished with all HTML attributes.
                     </simpara>
                 </listitem>
                 <listitem>
@@ -965,38 +967,22 @@ univention-app dev-use-test-appcenter
         </para>
         <note>
             <para>
-                Please don't use custom styles in CSS, because they may
+                Custom styles in CSS should not be used, because they may
                 distract the overall impression. The App Center UMC module and
                 the App Catalog already have respective CSS style definitions.
             </para>
         </note>
         <para>
-            The important aspect here is that the content of the app
-            description is unique. Please do not simply copy the product
-            description from the solution's own page, but instead compose a
-            new, original text. This text should be aimed at approaching
-            potential customers.
-        </para>
-        <para>
             The length of the description depends on how much there is to say
             and how much explanation the app requires. Ideally the description
             should be at least 300 words long.  The text should be structured
-            and use paragraphs to make it easier to read. Subheadings (HTML:
-            <wordasword>h2, h3</wordasword>) should be used to divide the text
-            into logical sections. It is very helpful for the reader to be
-            able to see the advantages of the app and its combination with UCS
-            at a glance. For this reason, presentation of the advantages in
-            lists (HTML: <wordasword>ol, ul, li</wordasword>) is particularly
-            practical.
-        </para>
-        <para>
-            Revise the text in order to optimize it for search engines. Are
-            all desired keywords specified? (e.g., app name)? Are the relevant
-            keywords integrated in the text? The text can be adapted for the
-            search engines / keywords and synonyms, word combinations, etc.,
-            are an asset – but please try to avoid keyword stuffing. Good
-            readability should be priority. Important terms in the text can be
-            emphasized if they help with the readability (HTML: strong).
+            and use paragraphs to make it easier to read. The target group are
+            potential customers. Subheadings (HTML: <wordasword>h2,
+                h3</wordasword>) should be used to divide the text into logical
+            sections. It is very helpful for the reader to be able to see the
+            advantages of the app and its combination with UCS at a glance. For
+            this reason, presentation of the advantages in lists (HTML:
+            <wordasword>ol, ul, li</wordasword>) is particularly practical.
         </para>
         <para>
             If links should be used in the app description (e.g., to pages on
@@ -1014,12 +1000,11 @@ univention-app dev-use-test-appcenter
             For the users it is important to know who is the producer of the
             app. For this purpose there is the <guimenu>Contact</guimenu> tab
             in the App Provider Portal. Please provide <option>Gerneal product
-                contact information</option> like an email address where the
-            users can contact the app provider and a website to the solution.
-            Please also link to a website, where the app provider's support
-            options and pricing is explained to potential customers and place
-            the link in the field <option>Website with information regarding
-                support options</option>.
+                contact information</option> like an email address and a
+            website to the solution.  Please also link to a website, where the
+            app provider's support options and pricing is explained to
+            potential customers and place the link in the field <option>Website
+                with information regarding support options</option>.
         </para>
     </section>
 
@@ -1028,25 +1013,26 @@ univention-app dev-use-test-appcenter
         <para>
             On the <guimenu>License</guimenu> tab license information like for
             example a license agreement can be defined. It is a text that the
-            user should read and has to accept before the app is installed. If
-            the user does not accept the text, the installation process is
-            aborted and no app is installed. The license agreement is mostly
-            used by app providers for legal information that needs confirmation
-            by the user. If such a text is not needed, leave it empty.
+            UCS system administrator should read and has to accept before the
+            app is installed. If the text is not accepted, the installation
+            process is aborted and no app is installed. The license agreement
+            is mostly used by app providers for legal information that needs
+            confirmation by the administrator before anything is installed. If
+            such a text is not needed, leave it empty.
         </para>
         <para>
-            Users have to register with a valid email address in order to use
-            the App Center. If the app provider configures an email address
-            in the field <option>E-mail address for App install
-                notifications</option> it receives information on a daily basis
-            about which user installed the app. The App Center UMC module
-            informs the user that the app provider may contact them. App
+            UCS system administrators have to register with a valid email
+            address in order to use the App Center. If the app provider
+            configures an email address in the field <option>E-mail address for
+                App install notifications</option> it receives information on a
+            daily basis about who installed the app. The App Center UMC
+            module informs the user that the app provider may contact them. App
             providers can use the address for example for lead management.
         </para>
         <para>
             The last setting is intended to provide the users a rough
-            imagination about the license type of the software. Please choose
-            one option that fits best to the solution. The options are:
+            imagination about the license type of the software. One option
+            should be chosen that fits best to the solution:
             <itemizedlist>
                 <listitem>
                     <simpara>
@@ -1094,9 +1080,9 @@ univention-app dev-use-test-appcenter
         <para>
             It is highly recommended to use the README files to show
             information that should not go in the app description, like
-            for example configuration details, hints before and after and
+            for example configuration details, hints before and after an
             update, etc. Please also keep in mind to provide a proper
-            translation.
+            German translation.
         </para>
     </section>
 
@@ -1105,10 +1091,12 @@ univention-app dev-use-test-appcenter
         <para>
             All texts, screenshots and videos should be entered in English.
             Translations to German should be only made on the
-            <guimenu>Translations</guimenu> tab. Please make sure to provide
-            translations for the texts that have an English version. Each
-            translation consists of a set of two texts, the English version
-            first and second a text field for the German translation.
+            <guimenu>Translations</guimenu> tab. It should be made sure that
+            translations for the texts that have an English version are
+            provided. Otherwise, English text will show up for a user with
+            German language settings. Each translation consists of a set of two
+            texts, the English version first and second a text field for the
+            German translation.
         </para>
     </section>
 
@@ -2051,9 +2039,8 @@ service my-app-daemon restart
         <section id="appliance:additional-software">
             <title>Additional software</title>
             <para>
-                If the appliance should include additional apps besides the app,
-                please specify them in the <guimenu>Additional software</guimenu>
-                section.
+                If the appliance should include additional apps, please specify
+                them in the <guimenu>Additional software</guimenu> section.
             </para>
         </section>
 
@@ -2089,7 +2076,8 @@ service my-app-daemon restart
                 necessary to provide some information on the first steps. For
                 example, the user needs to know that a user object has to be
                 created and activated for the app first. This could be briefly
-                described in this section.
+                described in this section. The German translation should be
+                kept in mind and be provided.
             </para>
         </section>
       
@@ -2126,13 +2114,15 @@ service my-app-daemon restart
             </para>
             <para>
                 After the automatic tests have finished successfully, the app
-                provider is informed. It receives a link to the appliance
-                download for testing and has a few days of time. If no veto is
-                given, the Appliance is usually published after the veto
+                provider is informed. A link to the appliance download is sent
+                and a few days of time for testing is given. If no veto is
+                sent, the Appliance is usually published after the veto
                 deadline. After the release, the appliance will show up for
                 download on the app page in the App Catalog. App Providers are
                 recommended to also place a link to the app detail page from
-                their download page.
+                their download page. The link is one criteria for the
+                recommended apps badge in the App Center overview and the App
+                Catalog.
             </para>
         </section>
     </section>
@@ -2142,8 +2132,8 @@ service my-app-daemon restart
         <para>
             With a customized branding of an appliance the boot loader, the
             boot splash, the system setup wizard and the portal page can be
-            modified. Please look at the screenshots below and explanations of
-            the options that control the look.
+            modified. Please look at the screenshots below and the explanations
+            of the options that control the look.
         </para>
 
         <section id="appliance:branding:bootloader">
@@ -2195,7 +2185,7 @@ service my-app-daemon restart
                 In the <guimenu>Appliance creation</guimenu> section in the App
                 Provider Portal, the <guimenu>Appliance name</guimenu> (the
                 word "appliance" is automatically appended) can be set. It
-                controls the heading in the system setup wizard.  Below is the
+                controls the heading in the system setup wizard. Next is the
                 <guimenu>Logo for the setup wizard</guimenu>,
                 which is shown on the first page of the system setup wizard.
             </para>
