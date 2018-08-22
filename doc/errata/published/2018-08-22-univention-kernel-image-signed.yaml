@@ -9,3 +9,5 @@ desc: |
  * Update to Linux kernel 4.9.110-8
 note: This is the second of three parts.
 bug: [47490]
+erratum: 208
+announced: 2018-08-22
