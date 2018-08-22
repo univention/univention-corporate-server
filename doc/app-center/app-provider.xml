@@ -28,7 +28,7 @@
             known from mobile platforms like Apple or Google. It provides an
             infrastructure to build, deploy and run enterprise applications on
             Univention Corporate Server (UCS). The App Center uses well-known
-            technology like <ulink url="https://www.docker.com/">docker</ulink>.
+            technology like <ulink url="https://www.docker.com/">Docker</ulink>.
         </para>
     </section>
 
@@ -114,10 +114,10 @@
         <title>What the app provider needs?</title>
 
         <section id="app-provider-needs:docker-image">
-            <title>Software in a docker image</title>
+            <title>Software in a Docker image</title>
             <para>
                 Your software needs to be provided as <ulink
-                    url="https://docs.docker.com/">docker image</ulink>. This
+                    url="https://docs.docker.com/">Docker image</ulink>. This
                 is the easiest way to deploy software in Univention App Center.
                 It is also recommended to publish the docker container to
                 <ulink url="https://hub.docker.com/">docker hub</ulink>. This
@@ -165,11 +165,11 @@
     </section>
 
     <section id="create-app-with-docker">
-        <title>Create app with a docker image</title>
+        <title>Create app with a Docker image</title>
 
         <para>
             This section describes the steps how to create the app in the App
-            Provider Portal and use a docker image.
+            Provider Portal and use a Docker image.
         </para>
 
         <para>
@@ -256,7 +256,7 @@
                 </listitem>
                 <listitem>
                     <simpara>
-                        Activate the checkbox <guimenu>Use docker container technology</guimenu>.
+                        Activate the checkbox <guimenu>Use Docker container technology</guimenu>.
                     </simpara>
                 </listitem>
                 <listitem>
