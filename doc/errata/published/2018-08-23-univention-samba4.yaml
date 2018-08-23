@@ -9,3 +9,5 @@ desc: |
   * After a server password change restart all of samba,
     not just the AD/DC component.
 bug: [47638]
+erratum: 218
+announced: 2018-08-23
