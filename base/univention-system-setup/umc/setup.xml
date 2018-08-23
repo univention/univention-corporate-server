@@ -44,6 +44,7 @@
 		<command name="setup/check/domain" function="check_domain"/>
 		<command name="setup/check/join_info" function="check_domain_join_information"/>
 		<command name="setup/check/repository_accessibility" function="check_repository_accessibility"/>
+		<command name="setup/check/uid" function="check_uid"/>
 		<command name="setup/set_locale" function="reset_locale"/>
 		<command name="setup/net/progress" function="progress"/>
 	</module>

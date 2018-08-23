@@ -1660,6 +1660,48 @@ define([
 			}
 		},
 
+		warnIfUidIsUsedElsewhere: function(data) {
+			var values = this.getValues();
+			var hostname = values['hostname'];
+			var uid = hostname + '$';
+			var role = values['server/role'];
+			return this.uidIsUsable(uid, role).then(
+				function(data) { return true; },  // callback; uid is available, just continue
+				this.getConfirmationToContinueWithDuplicateHostname.bind(null, hostname)  // errback
+			);
+		},
+
+		uidIsUsable: function(uid, role) {
+			var params = { uid: uid, role: role };
+			lang.mixin(params, this._getCredentials());
+			return this.umcpCommand('setup/check/uid', params).then(
+				function(data) {
+					if (data.result) { return data; }
+					throw data;
+				}
+			);
+		},
+
+		getConfirmationToContinueWithDuplicateHostname: function(hostname, data) {
+			return dialog.confirm(_('The hostname \'%s\' is already used for ' +
+				'a computer with a different role, in the UCS domain. It is ' +
+				'recommended to change the hostname for UCS to work properly.',
+				hostname
+			), [{
+				label: _('Adjust settings'),
+				name: 'stay'
+			}, {
+				label: _('Continue with duplicate hostname'),
+				'default': true,
+				name: 'continue'
+			}], _('Warning')).then(
+				function(choice) {
+					if (choice == 'continue') { return choice; }
+					throw choice;
+				}
+			);
+		},
+
 		_updateAppGallery: function() {
 			if (!this._appGalleryUpdated) {
 				this._appGalleryUpdated = true;
@@ -2873,22 +2915,49 @@ define([
 			if (pageName == 'credentials-master' || pageName == 'fqdn-nonmaster-all') {
 				var passwordWidget = this.getWidget(pageName, 'root_password');
 				var password = passwordWidget.get('value');
+
+				var deferred = new Deferred();
+				deferred.resolve(nextPage);
+
 				if (passwordWidget.get('visible') && !password) {
-					return dialog.confirm(_('Root password empty. Continue?'), [{
-						label: _('Cancel'),
-						name: pageName
-					}, {
-						label: _('Continue'),
-						'default': true,
-						name: nextPage
-					}], _('Warning')).then(lang.hitch(this, function(response) {
-						if (response == 'validation') {
-							return _validationFunction();
-						} else {
-							return this._forcePageTemporarily(response);
-						}
-					}));
+					deferred = deferred.then(function(selectedNextPage) {
+						// callback; will always be used
+						return dialog.confirm(_('Root password empty. Continue?'), [{
+							label: _('Cancel'),
+							name: pageName
+						}, {
+							label: _('Continue'),
+							'default': true,
+							name: nextPage
+						}], _('Warning')).then(function(selectedNextPage) {
+							if (selectedNextPage == pageName)
+								throw selectedNextPage;
+							return selectedNextPage;
+						});
+					});
 				}
+
+				if (pageName == 'fqdn-nonmaster-all' && this._isRoleNonMaster() && this._wantsToJoin()) {
+					deferred = deferred.then(
+						// callback; will only be called, if previous dialog was not canceled
+						lang.hitch(this, this.warnIfUidIsUsedElsewhere)
+					);
+				}
+
+				deferred = deferred.then(lang.hitch(this, function(selectedNextPage) {
+						// callback
+						if (selectedNextPage == 'validation') {
+							return _validationFunction();
+						}
+						return this._forcePageTemporarily(nextPage);
+					}),
+					lang.hitch(this, function(selectedNextPage) {
+						return this._forcePageTemporarily(pageName);  // errback; page change was canceled
+					})
+				);
+
+				var promise = this.standbyDuring(deferred);
+				return promise;
 			}
 
 			// update summary page
