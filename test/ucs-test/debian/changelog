@@ -1,3 +1,10 @@
+ucs-test (7.0.23-128) unstable; urgency=low
+
+  * Bug #42759: add test script 20b_check_auth_via_smtp_and_imap to check
+    PAM stack for mail services
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 23 Aug 2018 16:20:53 +0200
+
 ucs-test (7.0.23-127) unstable; urgency=medium
 
   * Bug #47412: Let wait_for_replication wait until listener and notifier id are equal
