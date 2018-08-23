@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: univention-appcenter
+fix: 7.0.2-21A~4.3.0.201808231749
+desc: |
+ This update addresses the following issue(s):
+ * The univention-appcenter-listener-converter has been fixed.
+bug: [47644]
