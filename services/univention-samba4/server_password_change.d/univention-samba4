@@ -54,5 +54,5 @@ set_machine_secret() {
 if [ "$1" = "postchange" ]; then
 	set_machine_secret
 
-	test -x /etc/init.d/samba-ad-dc && invoke-rc.d samba-ad-dc restart
+	test -x /etc/init.d/samba && invoke-rc.d samba restart
 fi

@@ -1,3 +1,10 @@
+univention-samba4 (7.0.2-23) unstable; urgency=medium
+
+  * Bug #47638: after a server password change restart all of samba,
+    not just the AD/DC component
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Aug 2018 12:34:34 +0200
+
 univention-samba4 (7.0.2-22) unstable; urgency=medium
 
   * Bug #47388: improve error message
