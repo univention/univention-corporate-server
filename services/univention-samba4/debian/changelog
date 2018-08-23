@@ -1,3 +1,10 @@
+univention-samba4 (6.0.12-2) unstable; urgency=medium
+
+  * Bug #47637: after a server password change restart all of samba,
+    not just the AD/DC component
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Aug 2018 12:26:38 +0200
+
 univention-samba4 (6.0.12-1) unstable; urgency=medium
 
   * Bug #47100: Adjust default for samba/ntlm/auth ("ntlm auth") to
