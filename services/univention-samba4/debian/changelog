@@ -1,3 +1,10 @@
+univention-samba4 (7.0.2-24) unstable; urgency=medium
+
+  * Bug #47638: run /etc/init.d/samba instead of "service samba"
+    and "invoke-rc.d samba".
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 Aug 2018 15:24:41 +0200
+
 univention-samba4 (7.0.2-23) unstable; urgency=medium
 
   * Bug #47638: after a server password change restart all of samba,
