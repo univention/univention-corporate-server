@@ -6,6 +6,6 @@ src: univention-samba4
 fix: 6.0.12-2A~4.2.0.201808231229
 desc: |
  This update addresses the following issue:
-  * after a server password change restart all of samba,
-    not just the AD/DC component
+  * After a server password change restart all of samba,
+    not just the AD/DC component.
 bug: [47637]
