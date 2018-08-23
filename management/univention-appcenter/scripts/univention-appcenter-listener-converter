@@ -122,7 +122,7 @@ def convert(app, dumped, filename, lo, pos):
 	mkdir(dst_dir)
 	base = os.path.basename(filename)
 	dst = os.path.join(dst_dir, base)
-	tmp = os.path.join(dst, '.converting.tmp')
+	tmp = dst + '.converting.tmp'
 	with open(tmp, 'wb') as fd:
 		attrs = {
 			'id': entry_uuid,

@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-21) unstable; urgency=medium
+
+  * Bug #47644: fixed univention-appcenter-listener-converter
+
+ -- Felix Botner <botner@univention.de>  Thu, 23 Aug 2018 17:48:31 +0200
+
 univention-appcenter (7.0.2-20) unstable; urgency=medium
 
   * Bug #47315: Change tmp filename for JSON file creation
