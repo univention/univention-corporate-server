@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: univention-mail-postfix
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The PAM stack has been fixed to allow the login via username (Bug #42759)
+bug: [42759]
