@@ -1,3 +1,9 @@
+univention-mail-postfix (11.0.2-5) unstable; urgency=low
+
+  * Bug #42759: fix PAM stack to allow login with UID
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 23 Aug 2018 15:44:49 +0200
+
 univention-mail-postfix (11.0.2-4) unstable; urgency=low
 
   * Bug #45422: add missing dependency

@@ -1,3 +1,9 @@
+univention-mail-cyrus-murder (8.0.0-4) unstable; urgency=low
+
+  * Bug #42759: fix PAM stack to allow login with UID
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 23 Aug 2018 16:22:08 +0200
+
 univention-mail-cyrus-murder (8.0.0-3) unstable; urgency=low
 
   * Bug #44566: fix path of makedirs binary
