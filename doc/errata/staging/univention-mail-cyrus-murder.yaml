@@ -3,7 +3,7 @@ release: "4.2"
 version: [4]
 scope: ucs_4.2-0-errata4.2-4
 src: univention-mail-cyrus-murder
-fix: 
+fix: 8.0.0-4A~4.2.0.201808231642
 desc: |
  This update addresses the following issue(s):
  * The PAM stack has been fixed to allow the login via username (Bug #42759)
