@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Univention - be open
+Exec=sh -c "firefox https://$(hostname --fqdn)"
+Icon=univention
+Type=Application
+Categories=System;
+GenericName=Server Administration
+Terminal=false
+Encoding=UTF-8
+StartupNotify=false
+X-XFCE-Source=file:///usr/share/applications/univention.desktop

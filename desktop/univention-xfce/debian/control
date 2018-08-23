@@ -1,0 +1,43 @@
+Source: univention-xfce
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint-univention
+Standards-Version: 3.8.2
+
+Package: univention-xfce
+Architecture: all
+Recommends:
+#xfce-l10n-de,
+ okular,
+ univention-mozilla-firefox,
+Depends: ${misc:Depends},
+ gettext,
+ univention-config,
+ univention-directory-manager-tools,
+ xfce4,
+# univention-xfce-setdirs,
+# univention-lightdm,
+Description: UCS - xfce desktop
+ This package installs the xfce desktop.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-xfce-setdirs
+Architecture: all
+Depends: ${misc:Depends},
+ univention-config
+Conflicts: univention-xfce (<< 1.25)
+Description: UCS - Set Profile Path
+ This package sets the profile path for the user
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=XSession
+Exec=/usr/bin/startkde
+TryExec=/usr/bin/startkde
+Name=Linux-Arbeitsplatz

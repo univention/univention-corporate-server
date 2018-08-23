@@ -1,0 +1,13 @@
+design/usr/share/wallpapers/*.png usr/share/wallpapers/
+design/usr/share/wallpapers/*.svg usr/share/wallpapers/
+78univention-xfce.inst usr/lib/univention-install/
+design/usr/share/wallpapers/UCS-3.0/contents/images/*.png usr/share/wallpapers/UCS-3.0/contents/images/
+design/usr/share/wallpapers/UCS-3.0/contents/screenshot.png usr/share/wallpapers/UCS-3.0/contents/
+design/usr/share/wallpapers/UCS-3.0/metadata.desktop usr/share/wallpapers/UCS-3.0/
+design/usr/share/wallpapers/UCS-4.0 usr/share/wallpapers/
+design/etc/univention/skel/.config/xfce4 etc/univention/skel/.config/
+univention_u.svg usr/share/pixmaps/
+univention.svg usr/share/icons/hicolor/scalable/apps/
+univention.desktop usr/share/applications/
+univention-root-login-notification.desktop /usr/share/autostart/
+xsessions/Linux-Arbeitsplatz.desktop usr/share/xsessions/
