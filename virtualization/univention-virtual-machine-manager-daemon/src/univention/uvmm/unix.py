@@ -122,7 +122,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 				raise
 			else:
 				logger.warn('[%d] NetException: %s' % (self.client_id, traceback.format_exc()))
-		except Exception as e:
+		except Exception:
 			logger.critical('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
 			raise
 

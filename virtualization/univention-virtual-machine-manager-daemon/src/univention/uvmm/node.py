@@ -758,7 +758,7 @@ class Node(PersistentCached):
 		try:
 			self.conn.storagePoolLookupByName('default')
 			logger.debug("default pool already registered on %s" % self.pd.name)
-		except libvirt.libvirtError as ex:
+		except libvirt.libvirtError:
 			logger.info("creating default pool on %s" % self.pd.name)
 			create_storage_pool(
 				self.conn,
@@ -974,7 +974,7 @@ class Node(PersistentCached):
 			contact = pd.annotations.get('contact', '')
 			name = pd.name
 			descr = pd.annotations.get('description', '')
-			if regex.match(name) is not None or regex.match(contact) is not None or regex.match(descr) is not None:
+			if regex.match(name) or regex.match(contact) or regex.match(descr):
 				vnc = self.domains[dom]._vnc()
 				domains.append({
 					'uuid': pd.uuid,
@@ -1061,7 +1061,7 @@ class Nodes(dict):
 		if group == 'default' or group is None:  # FIXME
 			pattern_regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
 			for node_uri in self.keys():
-				if pattern_regex.match(node_uri) is not None:
+				if pattern_regex.match(node_uri):
 					nodes.append(self[node_uri].pd)
 		return nodes
 
@@ -1077,10 +1077,10 @@ node_list = nodes.list
 def group_list():
 	"""Return list of groups for nodes."""
 	group = []
-	if (len(node_list('default', '*')) > 0):
+	if len(node_list('default', '*')) > 0:
 		group.append('default')
 	from univention.uvmm.cloudnode import cloudconnections
-	if (len(cloudconnections.list()) > 0):
+	if len(cloudconnections.list()) > 0:
 		group.append('cloudconnections')
 	return group
 

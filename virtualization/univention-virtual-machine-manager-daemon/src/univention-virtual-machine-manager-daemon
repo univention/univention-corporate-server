@@ -82,7 +82,7 @@ def createDaemon(options):
 			if (maxfd == resource.RLIM_INFINITY):
 				maxfd = MAXFD
 
-			dev_null = file(os.path.devnull, 'r')
+			dev_null = open(os.path.devnull, 'r')
 			try:
 				os.dup2(dev_null.fileno(), sys.stdin.fileno())
 			finally:
@@ -258,7 +258,7 @@ if __name__ == '__main__':
 	try:
 		logging.config.fileConfig(options.conffile)
 		logger = logging.getLogger("uvmmd")
-	except ConfigParser.Error as e:
+	except ConfigParser.Error:
 		logger = logging.getLogger("uvmmd")
 		logger.warning('Could not configure logger from %s' % (options.conffile,))
 

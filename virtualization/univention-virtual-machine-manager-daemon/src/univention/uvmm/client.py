@@ -35,6 +35,8 @@ import socket
 import protocol
 from helpers import TranslatableException, FQDN, N_ as _
 import univention.config_registry as ucr
+import os.path
+
 
 __all__ = [
 	'ClientError',
@@ -60,7 +62,7 @@ class UVMM_ClientSocket(object):
 		try:
 			self.sock.send(packet)
 			return self.receive()
-		except socket.timeout as msg:
+		except socket.timeout:
 			raise ClientError(_('Timed out while sending data.'))
 		except socket.error as (errno, msg):
 			raise ClientError(_("Could not send request: %(errno)d"), errno=errno)
@@ -89,7 +91,7 @@ class UVMM_ClientSocket(object):
 					return res
 		except protocol.PacketError as (translatable_text, dict):
 			raise ClientError(translatable_text, **dict)
-		except socket.timeout as msg:
+		except socket.timeout:
 			raise ClientError(_('Timed out while receiving data.'))
 		except socket.error as (errno, msg):
 			raise ClientError(_('Error while waiting for answer: %(errno)d'), errno=errno)
@@ -101,7 +103,7 @@ class UVMM_ClientSocket(object):
 		try:
 			self.sock.close()
 			self.sock = None
-		except socket.timeout as msg:
+		except socket.timeout:
 			raise ClientError(_('Timed out while closing socket.'))
 		except socket.error as (errno, msg):
 			raise ClientError(_('Error while closing socket: %(errno)d'), errno=errno)
@@ -118,7 +120,7 @@ class UVMM_ClientUnixSocket(UVMM_ClientSocket):
 			if timeout > 0:
 				self.sock.settimeout(timeout)
 			self.sock.connect(socket_path)
-		except socket.timeout as msg:
+		except socket.timeout:
 			raise ClientError(_('Timed out while opening local socket "%(path)s".'), path=socket_path)
 		except socket.error as (errno, msg):
 			raise ClientError(_('Could not open socket "%(path)s": %(errno)d'), path=socket_path, errno=errno)
@@ -179,9 +181,6 @@ def uvmm_cmd(request):
 	if isinstance(response, protocol.Response_ERROR):
 		raise ClientError(response.msg)
 	return response
-
-
-import os.path
 
 
 def uvmm_local_uri(local=False):

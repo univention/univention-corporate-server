@@ -110,8 +110,7 @@ def cached(cachefile, func, exception=LdapConnectionError):
 		except OSError as e:
 			if e.errno != errno.ENOENT:
 				raise LdapError(_('Error renaming %(file)s.new: %(msg)s'), file=cachefile, msg=e)
-	except IOError as e:
-		# LdapError("Error writing %(file)s: %(msg)e", file=cachefile, msg=e)
+	except IOError:
 		pass
 	except exception as msg:
 		logger.info('Using cached data "%s"' % (cachefile,))
@@ -261,7 +260,7 @@ def ldap_cloud_connection_add(cloudtype, name, parameter, ucs_images="1", search
 			ucs_images = "0"
 
 		for k, v in parameter.items():
-			if (k and v):
+			if k and v:
 				parameter_lst.append('%s=%s' % (k, v))
 		attrs = {
 			'objectClass': ['univentionVirtualMachineCloudConnection', 'univentionVirtualMachineHostOC', 'univentionObject'],
@@ -274,7 +273,7 @@ def ldap_cloud_connection_add(cloudtype, name, parameter, ucs_images="1", search
 		}
 		if preselected_images:
 			attrs['univentionVirtualMachineCloudConnectionImageList'] = preselected_images
-		modlist = [(k, v) for k, v in attrs.items()]
+		modlist = attrs.items()
 		lo.add(dn, modlist)
 
 	except LDAPError:

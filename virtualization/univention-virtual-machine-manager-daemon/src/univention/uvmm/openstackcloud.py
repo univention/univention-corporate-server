@@ -45,7 +45,7 @@ import ssl
 
 from node import PersistentCached
 from cloudconnection import CloudConnection, CloudConnectionError
-from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Secgroup_Rule, Cloud_Data_Size, Cloud_Data_Network, Cloud_Data_Image
+from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Secgroup_Rule, Cloud_Data_Size, Cloud_Data_Network
 import univention.config_registry as ucr
 
 configRegistry = ucr.ConfigRegistry()

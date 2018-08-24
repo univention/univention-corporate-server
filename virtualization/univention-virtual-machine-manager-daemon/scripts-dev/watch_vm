@@ -33,8 +33,3 @@ try:
 		time.sleep(1)
 except KeyboardInterrupt:
 	pass
-
-if __name__ == '__main__':
-	import readline
-	import rlcompleter
-	readline.parse_and_bind("tab: complete")

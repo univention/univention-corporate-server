@@ -93,6 +93,3 @@ def __test():
 
 if __name__ == '__main__':
 	__test()
-	import readline
-	import rlcompleter
-	readline.parse_and_bind("tab: complete")
