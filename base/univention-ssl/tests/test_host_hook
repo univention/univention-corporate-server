@@ -3,14 +3,15 @@ set -e -u
 . ${0%/*}/common.sh
 
 fqdn="$(rnd 10).$(rnd 10)"
-name="${fqdn%%.*}"
+cn="${fqdn%%.*}"
 init
 
 ucr set ssl/host/extensions="${0%/*}/../extensions-example.sh"
-gencert "${fqdn}" "${fqdn}"
+gencert "${fqdn}"
 
 list_cert_names | grep -F -e "${fqdn}"
 [ 01 = "$(has_valid_cert "${fqdn}")" ]
+ls $SSLBASE
 univention-certificate dump -name "${fqdn}"
 
 python -c '
@@ -23,7 +24,11 @@ v = e.get_value()
 a = v.split(", ")
 a = [_[len("DNS:"):] for _ in a if _.startswith("DNS:")]
 print "\n".join(a)
-exit(0 if set(a) == set(argv[2:]) else 1)
-' "${SSLBASE}/${fqdn}/cert.pem" "$name" "$fqdn"
+if set(a) == set(argv[2:]):
+	exit(0)
+else:
+	print "ERROR: SANs do not match fqdn and cn of test"
+	exit(1)
+' "${SSLBASE}/${fqdn}/cert.pem" "$cn" "$fqdn"
 
 :

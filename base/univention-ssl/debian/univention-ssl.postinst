@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 CERTPATH="/etc/univention/ssl/ucsCA/certs"
+INDEXATTRPATH="/etc/univention/ssl/ucsCA/index.txt.attr"
 
 test -d "$CERTPATH" || /bin/mkdir -p "$CERTPATH"
 
@@ -82,6 +83,11 @@ esac
 
 if [ "$1" = "configure" ]
 then
+	if dpkg --compare-versions "$2" lt-nl 12.0.0-9
+	then
+		echo 'unique_subject = no' > $INDEXATTRPATH
+		sed -i '/^policy \+=/aunique_subject      = no' /etc/univention/ssl/openssl.cnf
+	fi
 	if dpkg --compare-versions "$2" lt-nl 10.0.0-12
 	then
 		find /etc/univention/ssl -name openssl.cnf -exec sed -r \

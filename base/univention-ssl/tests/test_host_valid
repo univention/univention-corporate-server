@@ -4,15 +4,15 @@ set -e -u
 
 name="${R64}"
 init
-gencert "${name}" "${name}"
+gencert "${name}" # "${name}"
 list_cert_names | grep -F -e "${R64}"
 [ 01 = "$(has_valid_cert "${R64}")" ]
 
-renew_cert "${name}"
+renew_cert "$(has_valid_cert "${R64}")"
 list_cert_names | grep -F -e "${R64}"
 [ 02 = "$(has_valid_cert "${R64}")" ]
 
-revoke_cert "${name}"
+revoke_cert "$(has_valid_cert "${R64}")"
 has_valid_cert "${R64}" && exit 1
 list_cert_names | grep -F -e "${R64}" && exit 1
 
