@@ -10,7 +10,10 @@
 ## exposure: dangerous
 
 RETVAL=110 # Test fehlgeschlagen
+UT_VERBOSE=true
 . pool.sh || exit 137
+
+set -x
 
 compname="test${RANDOM}"
 repoprefix="univention-repository-$$-${RANDOM}"
@@ -23,6 +26,7 @@ mkpkg "${DIR}"
 
 comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/prefix=${repoprefix}"
+sleep 3
 
 (
 	set -e
