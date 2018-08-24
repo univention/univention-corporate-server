@@ -2,10 +2,10 @@ from univention.management.console.modules.setup.util import _temporary_password
 
 import subprocess
 
-def check_if_uid_is_available(uid, role, nameserver, username, password):
+def check_if_uid_is_available(uid, role, address, username, password):
 	with _temporary_password_file(password) as password_file:
 		process = subprocess.Popen([
-			'univention-ssh', password_file, '%s@%s' % (username, nameserver),
+			'univention-ssh', password_file, '%s@%s' % (username, address),
 			'python', '-'
 		], stdin=subprocess.PIPE)
 		process.communicate(
