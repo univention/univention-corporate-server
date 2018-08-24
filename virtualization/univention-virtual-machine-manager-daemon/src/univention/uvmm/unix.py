@@ -89,8 +89,8 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 					packet = protocol.Packet.parse(buffer)
 					if packet is None:
 						continue  # waiting
-				except protocol.PacketError as e:  # (translatable_text, dict):
-					logger.warning("[%d] Invalid packet received: %s" % (self.client_id, e))
+				except protocol.PacketError as ex:  # (translatable_text, dict):
+					logger.warning("[%d] Invalid packet received: %s" % (self.client_id, ex))
 					if logger.isEnabledFor(logging.DEBUG):
 						logger.debug("[%d] Dump: %r" % (self.client_id, data))
 					break
@@ -131,8 +131,8 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 		logger.info('[%d] Request "%s" received' % (self.client_id, command.command,))
 		try:
 			cmd = commands[command.command]
-		except KeyError as e:
-			logger.warning('[%d] Unknown command "%s": %s.' % (self.client_id, command.command, str(e)))
+		except KeyError as ex:
+			logger.warning('[%d] Unknown command "%s": %s.' % (self.client_id, command.command, str(ex)))
 			res = protocol.Response_ERROR()
 			res.translatable_text = '[%(id)d] Unknown command "%(command)s".'
 			res.values = {
@@ -144,16 +144,16 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 				res = cmd(self, command)
 				if res is None:
 					res = protocol.Response_OK()
-			except CommandError as e:
-				logger.warning('[%d] Error doing command "%s": %s' % (self.client_id, command.command, e))
+			except CommandError as ex:
+				logger.warning('[%d] Error doing command "%s": %s' % (self.client_id, command.command, ex))
 				res = protocol.Response_ERROR()
-				res.translatable_text, res.values = e.args
-			except Exception as e:
+				res.translatable_text, res.values = ex.args
+			except Exception as ex:
 				logger.error('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
 				res = protocol.Response_ERROR()
 				res.translatable_text = _('Exception: %(exception)s')
 				res.values = {
-					'exception': str(e),
+					'exception': str(ex),
 				}
 		return res
 
@@ -182,8 +182,8 @@ def unix(options):
 			unixd = SocketServer.ThreadingUnixStreamServer(options.socket, StreamHandler)
 			unixd.daemon_threads = True
 			sockets[unixd.fileno()] = unixd
-		except Exception as e:
-			logger.error("Could not create SSL server: %s" % (e,))
+		except Exception as ex:
+			logger.error("Could not create SSL server: %s" % (ex,))
 	if not sockets:
 		logger.error("No UNIX socket server.")
 		return

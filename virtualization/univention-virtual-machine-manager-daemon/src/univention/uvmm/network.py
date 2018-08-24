@@ -51,9 +51,9 @@ def network_is_active(conn, name):
 	'''checks if the network with the given name ist currently active'''
 	try:
 		return name in conn.listNetworks()
-	except libvirt.libvirtError as e:
-		logger.error(e)
-		raise NetworkError(_('Error retrieving list of active networks: %(error)s'), error=e.get_error_message())
+	except libvirt.libvirtError as ex:
+		logger.error(ex)
+		raise NetworkError(_('Error retrieving list of active networks: %(error)s'), error=ex.get_error_message())
 
 
 def network_start(conn, name):
@@ -66,17 +66,17 @@ def network_start(conn, name):
 		if not network.isActive():
 			return network.create() == 0
 		return True
-	except libvirt.libvirtError as e:
-		logger.error(e)
-		raise NetworkError(_('Error starting network %(name)s: %(error)s'), name=name, error=e.get_error_message())
+	except libvirt.libvirtError as ex:
+		logger.error(ex)
+		raise NetworkError(_('Error starting network %(name)s: %(error)s'), name=name, error=ex.get_error_message())
 
 
 def network_find_by_bridge(conn, bridge):
 	try:
 		networks = conn.listAllNetworks()
-	except libvirt.libvirtError as e:
-		logger.error(e)
-		raise NetworkError(_('Error retrieving list of networks: %(error)s'), error=e.get_error_message())
+	except libvirt.libvirtError as ex:
+		logger.error(ex)
+		raise NetworkError(_('Error retrieving list of networks: %(error)s'), error=ex.get_error_message())
 	for net in networks:
 		if net.bridgeName() == bridge:
 			network = Network()

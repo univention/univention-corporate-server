@@ -93,8 +93,8 @@ class Packet(object):
 			s = StringIO(data)
 			p = pickle.Unpickler(s)
 			packet = p.load()
-		except Exception as e:
-			raise PacketError(_('Not a valid Packet: %(msg)s'), msg=str(e))
+		except Exception as ex:
+			raise PacketError(_('Not a valid Packet: %(msg)s'), msg=str(ex))
 		if not isinstance(packet, Packet):
 			raise PacketError(_('Not a Packet: %(type)s'), type=type(packet))
 		else:

@@ -159,8 +159,8 @@ def uvmm_connect():
 	try:
 			__debug("Opening connection to local UVVMd...")
 			uvmm = UVMM_ClientUnixSocket('/var/run/uvmm.socket')
-	except ClientError as e:
-		raise ClientError('Can not open connection to UVMM daemon: %s' % e)
+	except ClientError as ex:
+		raise ClientError('Can not open connection to UVMM daemon: %s' % ex)
 	return uvmm
 
 

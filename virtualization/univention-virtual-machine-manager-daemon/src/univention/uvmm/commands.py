@@ -50,9 +50,9 @@ class CommandError(TranslatableException):
 
 	"""Signal error during command execution."""
 
-	def __init__(self, command, e, **kv):
+	def __init__(self, command, ex, **kv):
 		kv['command'] = command
-		TranslatableException.__init__(self, e, kv)
+		TranslatableException.__init__(self, ex, kv)
 
 
 class _Commands:
@@ -69,8 +69,8 @@ class _Commands:
 		logger.debug('L_CLOUD_ADD %s, testconnection: %s' % (request.args, request.testconnection))
 		try:
 			cloudnode.cloudconnections.add_connection(request.args, request.testconnection)
-		except cloudnode.CloudConnectionError as e:
-			raise CommandError('L_CLOUD_ADD', e)
+		except cloudnode.CloudConnectionError as ex:
+			raise CommandError('L_CLOUD_ADD', ex)
 
 	@staticmethod
 	def L_CLOUD_REMOVE(server, request):
@@ -81,8 +81,8 @@ class _Commands:
 		logger.debug('L_CLOUD_REMOVE %s' % (request.name))
 		try:
 			cloudnode.cloudconnections.remove_connection(request.name)
-		except cloudnode.CloudConnectionError as e:
-			raise CommandError('L_CLOUD_REMOVE', e)
+		except cloudnode.CloudConnectionError as ex:
+			raise CommandError('L_CLOUD_REMOVE', ex)
 
 	@staticmethod
 	def L_CLOUD_LIST(server, request):
@@ -94,8 +94,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = cloudnode.cloudconnections.list(request.pattern)
 			return res
-		except cloudnode.CloudConnectionError as e:
-			raise CommandError('L_CLOUD_LIST', e)
+		except cloudnode.CloudConnectionError as ex:
+			raise CommandError('L_CLOUD_LIST', ex)
 
 	@staticmethod
 	def L_CLOUD_INSTANCE_LIST(server, request):
@@ -109,8 +109,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = cloudnode.cloudconnections.list_conn_instances(request.conn_name, request.pattern)
 			return res
-		except cloudnode.CloudConnectionError as e:
-			raise CommandError('L_CLOUD_INSTANCE_LIST', e)
+		except cloudnode.CloudConnectionError as ex:
+			raise CommandError('L_CLOUD_INSTANCE_LIST', ex)
 
 	@staticmethod
 	def L_CLOUD_FREQUENCY(server, request):
@@ -124,8 +124,8 @@ class _Commands:
 		logger.debug('L_CLOUD_FREQUENCY %d %s' % (freq, request.name))
 		try:
 			cloudnode.cloudconnections.set_poll_frequency(freq, request.name)
-		except cloudnode.CloudConnectionError as e:
-			raise CommandError('L_CLOUD_FREQUENCY', e)
+		except cloudnode.CloudConnectionError as ex:
+			raise CommandError('L_CLOUD_FREQUENCY', ex)
 
 	@staticmethod
 	def L_CLOUD_IMAGE_LIST(server, request):
@@ -138,8 +138,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = cloudnode.cloudconnections.list_conn_images(request.conn_name)
 			return res
-		except cloudnode.CloudConnectionError as e:
-			raise CommandError('L_CLOUD_IMAGE_LIST', e)
+		except cloudnode.CloudConnectionError as ex:
+			raise CommandError('L_CLOUD_IMAGE_LIST', ex)
 
 	@staticmethod
 	def L_CLOUD_SIZE_LIST(server, request):
@@ -151,8 +151,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = cloudnode.cloudconnections.list_conn_sizes(request.conn_name)
 			return res
-		except cloudnode.CloudConnectionError as e:
-			raise CommandError('L_CLOUD_SIZE_LIST', e)
+		except cloudnode.CloudConnectionError as ex:
+			raise CommandError('L_CLOUD_SIZE_LIST', ex)
 
 	@staticmethod
 	def L_CLOUD_LOCATION_LIST(server, request):
@@ -164,8 +164,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = cloudnode.cloudconnections.list_conn_locations(request.conn_name)
 			return res
-		except cloudnode.CloudConnectionError as e:
-			raise CommandError('L_CLOUD_LOCATION_LIST', e)
+		except cloudnode.CloudConnectionError as ex:
+			raise CommandError('L_CLOUD_LOCATION_LIST', ex)
 
 	@staticmethod
 	def L_CLOUD_KEYPAIR_LIST(server, request):
@@ -177,8 +177,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = cloudnode.cloudconnections.list_conn_keypairs(request.conn_name)
 			return res
-		except cloudnode.CloudConnectionError as e:
-			raise CommandError('L_CLOUD_KEYPAIR_LIST', e)
+		except cloudnode.CloudConnectionError as ex:
+			raise CommandError('L_CLOUD_KEYPAIR_LIST', ex)
 
 	@staticmethod
 	def L_CLOUD_SECGROUP_LIST(server, request):
@@ -190,8 +190,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = cloudnode.cloudconnections.list_conn_secgroups(request.conn_name)
 			return res
-		except cloudnode.CloudConnectionError as e:
-			raise CommandError('L_CLOUD_SECGROUPS_LIST', e)
+		except cloudnode.CloudConnectionError as ex:
+			raise CommandError('L_CLOUD_SECGROUPS_LIST', ex)
 
 	@staticmethod
 	def L_CLOUD_NETWORK_LIST(server, request):
@@ -203,8 +203,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = cloudnode.cloudconnections.list_conn_networks(request.conn_name)
 			return res
-		except cloudnode.CloudConnectionError as e:
-			raise CommandError('L_CLOUD_NETWORK_LIST', e)
+		except cloudnode.CloudConnectionError as ex:
+			raise CommandError('L_CLOUD_NETWORK_LIST', ex)
 
 	@staticmethod
 	def L_CLOUD_SUBNET_LIST(server, request):
@@ -216,8 +216,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = cloudnode.cloudconnections.list_conn_subnets(request.conn_name)
 			return res
-		except cloudnode.CloudConnectionError as e:
-			raise CommandError('L_CLOUD_SUBNET_LIST', e)
+		except cloudnode.CloudConnectionError as ex:
+			raise CommandError('L_CLOUD_SUBNET_LIST', ex)
 
 	@staticmethod
 	def L_CLOUD_INSTANCE_STATE(server, request):
@@ -231,8 +231,8 @@ class _Commands:
 			raise CommandError('L_CLOUD_INSTANCE_STATE', _('unsupported state: %(state)s'), state=request.state)
 		try:
 			cloudnode.cloudconnections.instance_state(request.conn_name, request.instance_id, request.state)
-		except cloudnode.CloudConnectionError as e:
-			raise CommandError('L_CLOUD_INSTANCE_STATE', e)
+		except cloudnode.CloudConnectionError as ex:
+			raise CommandError('L_CLOUD_INSTANCE_STATE', ex)
 
 	@staticmethod
 	def L_CLOUD_INSTANCE_TERMINATE(server, request):
@@ -244,8 +244,8 @@ class _Commands:
 			raise CommandError('L_CLOUD_INSTANCE_TERMINATE', _('instance_id != string: %(instance_id)s'), instance_id=request.instance_id)
 		try:
 			cloudnode.cloudconnections.instance_terminate(request.conn_name, request.instance_id)
-		except cloudnode.CloudConnectionError as e:
-			raise CommandError('L_CLOUD_INSTANCE_TERMINATE', e)
+		except cloudnode.CloudConnectionError as ex:
+			raise CommandError('L_CLOUD_INSTANCE_TERMINATE', ex)
 
 	@staticmethod
 	def L_CLOUD_INSTANCE_CREATE(server, request):
@@ -257,8 +257,8 @@ class _Commands:
 			raise CommandError('L_CLOUD_INSTANCE_CREATE', _('args != dict: %(args)s'), agrs=request.args)
 		try:
 			cloudnode.cloudconnections.instance_create(request.conn_name, request.args)
-		except cloudnode.CloudConnectionError as e:
-			raise CommandError('L_CLOUD_INSTANCE_CREATE', e)
+		except cloudnode.CloudConnectionError as ex:
+			raise CommandError('L_CLOUD_INSTANCE_CREATE', ex)
 
 	@staticmethod
 	def NODE_ADD(server, request):
@@ -269,8 +269,8 @@ class _Commands:
 
 		try:
 			node.node_add(request.uri)
-		except node.NodeError as e:
-			raise CommandError('NODE_ADD', e)
+		except node.NodeError as ex:
+			raise CommandError('NODE_ADD', ex)
 
 	@staticmethod
 	def NODE_REMOVE(server, request):
@@ -281,8 +281,8 @@ class _Commands:
 
 		try:
 			node.node_remove(request.uri)
-		except node.NodeError as e:
-			raise CommandError('NODE_REMOVE', e)
+		except node.NodeError as ex:
+			raise CommandError('NODE_REMOVE', ex)
 
 	@staticmethod
 	def NODE_QUERY(server, request):
@@ -302,8 +302,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = pkg_data
 			return res
-		except node.NodeError as e:
-			raise CommandError('NODE_QUERY', e)
+		except node.NodeError as ex:
+			raise CommandError('NODE_QUERY', ex)
 
 	@staticmethod
 	def NODE_FREQUENCY(server, request):
@@ -317,8 +317,8 @@ class _Commands:
 		logger.debug('NODE_FREQUENCY %d %s' % (hz, request.uri))
 		try:
 			node.node_frequency(hz, request.uri)
-		except node.NodeError as e:
-			raise CommandError('NODE_FREQUENCY', e)
+		except node.NodeError as ex:
+			raise CommandError('NODE_FREQUENCY', ex)
 
 	@staticmethod
 	def NODE_LIST(server, request):
@@ -332,8 +332,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = node.node_list(request.group, request.pattern)
 			return res
-		except node.NodeError as e:
-			raise CommandError('NODE_LIST', e)
+		except node.NodeError as ex:
+			raise CommandError('NODE_LIST', ex)
 
 	@staticmethod
 	def GROUP_LIST(server, request):
@@ -343,8 +343,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = node.group_list()
 			return res
-		except node.NodeError as e:
-			raise CommandError('GROUP_LIST', e)
+		except node.NodeError as ex:
+			raise CommandError('GROUP_LIST', ex)
 
 	@staticmethod
 	def BYE(server, request):
@@ -366,8 +366,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = domains
 			return res
-		except node.NodeError as e:
-			raise CommandError('DOMAIN_LIST', e)
+		except node.NodeError as ex:
+			raise CommandError('DOMAIN_LIST', ex)
 
 	@staticmethod
 	def DOMAIN_INFO(server, request):
@@ -383,8 +383,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = domain_info
 			return res
-		except node.NodeError as e:
-			raise CommandError('DOMAIN_INFO', e)
+		except node.NodeError as ex:
+			raise CommandError('DOMAIN_INFO', ex)
 
 	@staticmethod
 	def DOMAIN_DEFINE(server, request):
@@ -400,8 +400,8 @@ class _Commands:
 			res.data = uuid
 			res.messages = warnings
 			return res
-		except node.NodeError as e:
-			raise CommandError('DOMAIN_DEFINE', e)
+		except node.NodeError as ex:
+			raise CommandError('DOMAIN_DEFINE', ex)
 
 	@staticmethod
 	def DOMAIN_STATE(server, request):
@@ -415,8 +415,8 @@ class _Commands:
 		logger.debug('DOMAIN_STATE %s#%s %s' % (request.uri, request.domain, request.state))
 		try:
 			node.domain_state(request.uri, request.domain, request.state)
-		except node.NodeError as e:
-			raise CommandError('DOMAIN_STATE', e)
+		except node.NodeError as ex:
+			raise CommandError('DOMAIN_STATE', ex)
 
 	@staticmethod
 	def DOMAIN_SAVE(server, request):
@@ -430,8 +430,8 @@ class _Commands:
 		logger.debug('DOMAIN_SAVE %s#%s %s' % (request.uri, request.domain, request.statefile))
 		try:
 			node.domain_save(request.uri, request.domain, request.statefile)
-		except node.NodeError as e:
-			raise CommandError('DOMAIN_SAVE', e)
+		except node.NodeError as ex:
+			raise CommandError('DOMAIN_SAVE', ex)
 
 	@staticmethod
 	def DOMAIN_RESTORE(server, request):
@@ -445,8 +445,8 @@ class _Commands:
 		logger.debug('DOMAIN_RESTORE %s %s' % (request.uri, request.statefile))
 		try:
 			node.domain_restore(request.uri, request.domain, request.statefile)
-		except node.NodeError as e:
-			raise CommandError('DOMAIN_RESTORE', e)
+		except node.NodeError as ex:
+			raise CommandError('DOMAIN_RESTORE', ex)
 
 	@staticmethod
 	def DOMAIN_UNDEFINE(server, request):
@@ -466,8 +466,8 @@ class _Commands:
 			logger.debug('DOMAIN_UNDEFINE %s#%s None (-> all volumes will be removed)' % (request.uri, request.domain))
 		try:
 			node.domain_undefine(request.uri, request.domain, request.volumes)
-		except node.NodeError as e:
-			raise CommandError('DOMAIN_UNDEFINE', e)
+		except node.NodeError as ex:
+			raise CommandError('DOMAIN_UNDEFINE', ex)
 
 	@staticmethod
 	def DOMAIN_MIGRATE(server, request):
@@ -481,8 +481,8 @@ class _Commands:
 		logger.debug('DOMAIN_MIGRATE %s#%s %s' % (request.uri, request.domain, request.target_uri))
 		try:
 			node.domain_migrate(request.uri, request.domain, request.target_uri)
-		except node.NodeError as e:
-			raise CommandError('DOMAIN_MIGRATE', e)
+		except node.NodeError as ex:
+			raise CommandError('DOMAIN_MIGRATE', ex)
 
 	@staticmethod
 	def DOMAIN_SNAPSHOT_CREATE(server, request):
@@ -496,8 +496,8 @@ class _Commands:
 		logger.debug('DOMAIN_SNAPSHOT_CREATE %s#%s %s' % (request.uri, request.domain, request.snapshot))
 		try:
 			node.domain_snapshot_create(request.uri, request.domain, request.snapshot)
-		except node.NodeError as e:
-			raise CommandError('DOMAIN_SNAPSHOT_CREATE', e)
+		except node.NodeError as ex:
+			raise CommandError('DOMAIN_SNAPSHOT_CREATE', ex)
 
 	@staticmethod
 	def DOMAIN_SNAPSHOT_REVERT(server, request):
@@ -511,8 +511,8 @@ class _Commands:
 		logger.debug('DOMAIN_SNAPSHOT_REVERT %s#%s %s' % (request.uri, request.domain, request.snapshot))
 		try:
 			node.domain_snapshot_revert(request.uri, request.domain, request.snapshot)
-		except node.NodeError as e:
-			raise CommandError('DOMAIN_SNAPSHOT_REVERT', e)
+		except node.NodeError as ex:
+			raise CommandError('DOMAIN_SNAPSHOT_REVERT', ex)
 
 	@staticmethod
 	def DOMAIN_SNAPSHOT_DELETE(server, request):
@@ -526,8 +526,8 @@ class _Commands:
 		logger.debug('DOMAIN_SNAPSHOT_DELETE %s#%s %s' % (request.uri, request.domain, request.snapshot))
 		try:
 			node.domain_snapshot_delete(request.uri, request.domain, request.snapshot)
-		except node.NodeError as e:
-			raise CommandError('DOMAIN_SNAPSHOT_DELETE', e)
+		except node.NodeError as ex:
+			raise CommandError('DOMAIN_SNAPSHOT_DELETE', ex)
 
 	@staticmethod
 	def DOMAIN_UPDATE(server, request):
@@ -537,8 +537,8 @@ class _Commands:
 		logger.debug('DOMAIN_UPDATE %s' % request.domain)
 		try:
 			node.domain_update(request.domain)
-		except node.NodeError as e:
-			raise CommandError('DOMAIN_UPDATE', e)
+		except node.NodeError as ex:
+			raise CommandError('DOMAIN_UPDATE', ex)
 
 	@staticmethod
 	def DOMAIN_CLONE(server, request):
@@ -563,8 +563,8 @@ class _Commands:
 			res.data = uuid
 			res.messages = warnings
 			return res
-		except node.NodeError as e:
-			raise CommandError('DOMAIN_CLONE', e)
+		except node.NodeError as ex:
+			raise CommandError('DOMAIN_CLONE', ex)
 
 	@staticmethod
 	def DOMAIN_TARGETHOST_ADD(server, request):
@@ -578,8 +578,8 @@ class _Commands:
 		logger.debug('DOMAIN_TARGETHOST_ADD %s: add %s' % (request.domain, request.targethost))
 		try:
 			node.domain_targethost_add(request.uri, request.domain, request.targethost)
-		except node.NodeError as e:
-			raise CommandError('DOMAIN_TARGETHOST_ADD', e)
+		except node.NodeError as ex:
+			raise CommandError('DOMAIN_TARGETHOST_ADD', ex)
 
 	@staticmethod
 	def DOMAIN_TARGETHOST_REMOVE(server, request):
@@ -593,8 +593,8 @@ class _Commands:
 		logger.debug('DOMAIN_TARGETHOST_REMOVE %s: remove %s' % (request.domain, request.targethost))
 		try:
 			node.domain_targethost_remove(request.uri, request.domain, request.targethost)
-		except node.NodeError as e:
-			raise CommandError('DOMAIN_TARGETHOST_REMOVE', e)
+		except node.NodeError as ex:
+			raise CommandError('DOMAIN_TARGETHOST_REMOVE', ex)
 
 	@staticmethod
 	def STORAGE_POOLS(server, request):
@@ -608,8 +608,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = pools
 			return res
-		except node.NodeError as e:
-			raise CommandError('STORAGE_POOLS', e)
+		except node.NodeError as ex:
+			raise CommandError('STORAGE_POOLS', ex)
 
 	@staticmethod
 	def STORAGE_VOLUMES(server, request):
@@ -623,10 +623,10 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = volumes
 			return res
-		except node.NodeError as e:
-			raise CommandError('STORAGE_VOLUMES', e)
-		except storage.StorageError as e:
-			raise CommandError('STORAGE_VOLUMES', e)
+		except node.NodeError as ex:
+			raise CommandError('STORAGE_VOLUMES', ex)
+		except storage.StorageError as ex:
+			raise CommandError('STORAGE_VOLUMES', ex)
 
 	@staticmethod
 	def STORAGE_VOLUMES_DESTROY(server, request):
@@ -642,8 +642,8 @@ class _Commands:
 			storage.destroy_storage_volumes(n.conn, request.volumes, ignore_error=True)
 			res = protocol.Response_OK()
 			return res
-		except node.NodeError as e:
-			raise CommandError('STORAGE_VOLUMES_DESTROY', e)
+		except node.NodeError as ex:
+			raise CommandError('STORAGE_VOLUMES_DESTROY', ex)
 
 	@staticmethod
 	def STORAGE_VOLUME_USEDBY(server, request):

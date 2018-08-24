@@ -367,8 +367,8 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 				logger.debug("NOP state transition: %s -> %s" % (instance.state, state))
 		except KeyError:
 			raise EC2CloudConnectionError("Unsupported State transition (%s -> %s) requested" % (instance.state, state))
-		except Exception as e:
-			raise EC2CloudConnectionError("Error trying to %s instance %s (id:%s): %s" % (state, instance.name, instance_id, e))
+		except Exception as ex:
+			raise EC2CloudConnectionError("Error trying to %s instance %s (id:%s): %s" % (state, instance.name, instance_id, ex))
 		logger.debug("STATE: done")
 		self.set_frequency_fast_update()
 
@@ -380,8 +380,8 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 			self._exec_libcloud(lambda: self.driver.destroy_node(instance))
 			# Update instance information
 			self.set_frequency_fast_update()
-		except Exception as e:  # Unfortunately, libcloud only throws "Exception"
-			raise EC2CloudConnectionError("Error while destroying instance %s (id:%s): %s" % (name, instance_id, e))
+		except Exception as ex:  # Unfortunately, libcloud only throws "Exception"
+			raise EC2CloudConnectionError("Error while destroying instance %s (id:%s): %s" % (name, instance_id, ex))
 		logger.info("Destroyed instance %s (id:%s), using connection %s" % (name, instance_id, self.publicdata.name))
 
 	def instance_create(self, args):
@@ -495,53 +495,53 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 			logger.debug("CREATE INSTANCE, connection:%s ARGS: %s" % (self.publicdata.name, kwargs))
 			self._exec_libcloud(lambda: self.driver.create_node(**kwargs))
 			self.set_frequency_fast_update()
-		except Exception as e:
-			raise EC2CloudConnectionError("Instance could not be created: %s" % e)
+		except Exception as ex:
+			raise EC2CloudConnectionError("Instance could not be created: %s" % ex)
 
 	# Execute lambda function
 	def _exec_libcloud(self, func):
 		try:
 			return func()
-		except InvalidCredsError as e:
+		except InvalidCredsError as ex:
 			self.logerror(logger, "Invalid credentials provided for connection %s: %s" % (self.publicdata.name, self.publicdata.url))
 			raise EC2CloudConnectionError(_('The EC2 region returned an error for connection "%(connection)s":\n\nAuthFailure: The provided AWS access credentials could not be validated. Please ensure that you are using the correct access keys. Consult the AWS service documentation for details.'), connection=self.publicdata.name)
-		except MalformedResponseError as e:
-			self.logerror(logger, "Malformed response from connection, correct endpoint specified? %s: %s; %s" % (self.publicdata.name, self.publicdata.url, str(e)))
+		except MalformedResponseError as ex:
+			self.logerror(logger, "Malformed response from connection, correct endpoint specified? %s: %s; %s" % (self.publicdata.name, self.publicdata.url, str(ex)))
 			raise
-		except ProviderError as e:
-			self.logerror(logger, "Connection %s: %s: httpcode: %s, %s" % (self.publicdata.name, self.publicdata.url, e.http_code, e))
+		except ProviderError as ex:
+			self.logerror(logger, "Connection %s: %s: httpcode: %s, %s" % (self.publicdata.name, self.publicdata.url, ex.http_code, ex))
 			raise
-		except IdempotentParamError as e:
+		except IdempotentParamError as ex:
 			self.logerror(logger, "Connection %s: %s, same client token sent, but made different request" % (self.publicdata.name, self.publicdata.url))
 			raise
-		except KeyPairDoesNotExistError as e:
+		except KeyPairDoesNotExistError as ex:
 			self.logerror(logger, "Connection %s: %s the requested keypair does not exist" % (self.publicdata.name, self.publicdata.url))
 			raise
-		except LibcloudError as e:
-			self.logerror(logger, "Connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, e))
+		except LibcloudError as ex:
+			self.logerror(logger, "Connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, ex))
 			raise
-		except ssl.SSLError as e:
-			self.logerror(logger, "Error with SSL connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, e))
+		except ssl.SSLError as ex:
+			self.logerror(logger, "Error with SSL connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, ex))
 			raise
-		except Exception as e:
-			if hasattr(e, 'errno'):
-				if e.errno == errno.ECONNREFUSED:
+		except Exception as ex:
+			if hasattr(ex, 'errno'):
+				if ex.errno == errno.ECONNREFUSED:
 					self.logerror(logger, "Connection %s: %s refused (ECONNREFUSED)" % (self.publicdata.name, self.publicdata.url))
-				elif e.errno == errno.EHOSTUNREACH:
+				elif ex.errno == errno.EHOSTUNREACH:
 					self.logerror(logger, "Connection %s: %s no route to host (EHOSTUNREACH)" % (self.publicdata.name, self.publicdata.url))
 
 				else:
-					self.logerror(logger, "Unknown exception %s with unknown errno %s: %s" % (self.publicdata.name, e.errno, self.publicdata.url))
-			elif hasattr(e, 'message'):
-				self.logerror(logger, "%s: %s Error: %s" % (self.publicdata.name, self.publicdata.url, e.message))
-				if "Blocked" in e.message:
+					self.logerror(logger, "Unknown exception %s with unknown errno %s: %s" % (self.publicdata.name, ex.errno, self.publicdata.url))
+			elif hasattr(ex, 'message'):
+				self.logerror(logger, "%s: %s Error: %s" % (self.publicdata.name, self.publicdata.url, ex.message))
+				if "Blocked" in ex.message:
 					raise EC2CloudConnectionError(_('The EC2 region returned an error for connection "%(connection)s":\n\nYour AWS account is currently blocked. If you have questions, please contact AWS Support.'), connection=self.publicdata.name)
-				if "RequestExpired" in e.message:
+				if "RequestExpired" in ex.message:
 					raise EC2CloudConnectionError(_('The EC2 region returned an error for connection "%(connection)s":\n\nRequestExpired: Please check your system time to interact with AWS.'), connection=self.publicdata.name)
-				if "UnauthorizedOperation" in e.message:
+				if "UnauthorizedOperation" in ex.message:
 					raise EC2CloudConnectionError(_('The EC2 region returned an error for connection "%(connection)s":\n\nUnauthorizedOperation: The provided AWS access credentials are not authorized to perform this operation. Check your IAM policies, and ensure that you are using the correct access keys. Also, the IAM user must have appropriate access rights to interact with EC2, e.g. AmazonEC2FullAccess.'), connection=self.publicdata.name)
 			else:
-				self.logerror(logger, "Unknown exception %s: %s, %s" % (self.publicdata.name, self.publicdata.url, dir(e)))
+				self.logerror(logger, "Unknown exception %s: %s, %s" % (self.publicdata.name, self.publicdata.url, dir(ex)))
 			raise
 
 

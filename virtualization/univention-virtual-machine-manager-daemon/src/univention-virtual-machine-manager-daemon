@@ -55,8 +55,8 @@ def createDaemon(options):
 	try:
 		(read_end, write_end) = os.pipe()
 		pid = os.fork()
-	except OSError as e:
-		raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
+	except OSError as ex:
+		raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=ex.strerror, errno=ex.errno)
 	if (pid == 0):  # 1st child
 		# detach from parent environment
 		os.chdir(WORKDIR)
@@ -65,8 +65,8 @@ def createDaemon(options):
 
 		try:
 			pid = os.fork()
-		except OSError as e:
-			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
+		except OSError as ex:
+			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=ex.strerror, errno=ex.errno)
 		if (pid == 0):  # 2nd child
 			os.close(read_end)
 
@@ -123,8 +123,8 @@ def createDaemon(options):
 			else:
 				print >>sys.stderr, _("Failed to fork daemon.")
 				sys.exit(1)
-		except OSError as e:
-			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
+		except OSError as ex:
+			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=ex.strerror, errno=ex.errno)
 
 
 def install_signal_handlers(options):

@@ -97,19 +97,19 @@ def cached(cachefile, func, exception=LdapConnectionError):
 			file.close()
 		try:
 			os.remove("%s.old" % (cachefile,))
-		except OSError as e:
-			if e.errno != errno.ENOENT:
-				raise LdapError(_('Error removing %(file)s.old: %(msg)s'), file=cachefile, msg=e)
+		except OSError as ex:
+			if ex.errno != errno.ENOENT:
+				raise LdapError(_('Error removing %(file)s.old: %(msg)s'), file=cachefile, msg=ex)
 		try:
 			os.rename("%s" % (cachefile,), "%s.old" % (cachefile,))
-		except OSError as e:
-			if e.errno != errno.ENOENT:
-				raise LdapError(_('Error renaming %(file)s: %(msg)s'), file=cachefile, msg=e)
+		except OSError as ex:
+			if ex.errno != errno.ENOENT:
+				raise LdapError(_('Error renaming %(file)s: %(msg)s'), file=cachefile, msg=ex)
 		try:
 			os.rename("%s.new" % (cachefile,), "%s" % (cachefile,))
-		except OSError as e:
-			if e.errno != errno.ENOENT:
-				raise LdapError(_('Error renaming %(file)s.new: %(msg)s'), file=cachefile, msg=e)
+		except OSError as ex:
+			if ex.errno != errno.ENOENT:
+				raise LdapError(_('Error renaming %(file)s.new: %(msg)s'), file=cachefile, msg=ex)
 	except IOError:
 		pass
 	except exception as msg:
@@ -121,9 +121,9 @@ def cached(cachefile, func, exception=LdapConnectionError):
 				result = p.load()
 			finally:
 				file.close()
-		except IOError as e:
-			if e.errno != errno.ENOENT:
-				raise exception(_('Error reading %(file)s: %(msg)s'), file=cachefile, msg=e)
+		except IOError as ex:
+			if ex.errno != errno.ENOENT:
+				raise exception(_('Error reading %(file)s: %(msg)s'), file=cachefile, msg=ex)
 			raise msg
 		except EOFError:
 			raise exception(_('Error reading incomplete %(file)s.'), file=cachefile)
