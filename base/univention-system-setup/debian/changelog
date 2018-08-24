@@ -1,3 +1,9 @@
+univention-system-setup (11.0.5-23) unstable; urgency=medium
+
+  * Bug #46045: Fix used address for the DC master
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 24 Aug 2018 12:33:15 +0200
+
 univention-system-setup (11.0.5-22) unstable; urgency=medium
 
   * Bug #46045: Enable using a taken uid if the role is the same
