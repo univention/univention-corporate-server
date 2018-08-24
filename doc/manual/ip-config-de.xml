@@ -2058,7 +2058,8 @@ univention-config-registry set squid/webports="80 443"
 		domänenbezogenen zwischengespeichert werden: Wird die &ucsUCRV;
 		<envar>squid/ntlmauth/keepalive</envar> auf <literal>yes</literal> gesetzt, wird für
 		nachgelagerte HTTP-Anfragen derselben Domäne keine weitere NTLM-Authentifizierung
-		durchgeführt.
+		durchgeführt. Bei Problemen auf ungejointen Systemen kann es helfen diese Variable auf 
+		'no' zu setzen.
 	  </para>
 
 	  <para>
