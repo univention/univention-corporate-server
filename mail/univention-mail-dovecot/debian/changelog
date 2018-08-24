@@ -1,3 +1,9 @@
+univention-mail-dovecot (4.0.0-11) unstable; urgency=low
+
+  * Bug #47642: The PAM stack has been fixed to allow the login via username
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 24 Aug 2018 10:49:49 +0200
+
 univention-mail-dovecot (4.0.0-10) unstable; urgency=low
 
   * Bug #46892: chown only if necessary
