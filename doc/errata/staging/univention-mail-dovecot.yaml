@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: univention-mail-dovecot
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The PAM stack has been fixed to allow the login via username (Bug #47642)
+bug: [47642]

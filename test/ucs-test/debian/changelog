@@ -1,3 +1,10 @@
+ucs-test (8.0.28-169) unstable; urgency=low
+
+  * Bug #47642: add test script 20b_check_auth_via_smtp_and_imap to check
+    PAM stack for mail services
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 23 Aug 2018 16:20:53 +0200
+
 ucs-test (8.0.28-168) unstable; urgency=medium
 
   * Bug #47000: 41component-prefix still fails
