@@ -1,3 +1,9 @@
+univention-squid (11.0.0-17) unstable; urgency=medium
+
+  * Bug #47425: Change ucr variable description2
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 27 Aug 2018 15:22:34 +0200
+
 univention-squid (11.0.0-16) unstable; urgency=medium
 
   * Bug #47425: Change ucr variable description
