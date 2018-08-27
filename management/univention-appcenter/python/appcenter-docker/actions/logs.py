@@ -68,5 +68,5 @@ class Logs(UniventionAppAction, DockerActionMixin):
 		if args.timestamps:
 			docker_logs.append('--timestamps')
 		if not args.app.docker:
-                        raise ShellAppNotRunning(args.app)
-                return subprocess.call(docker_logs + [docker.container])
+			raise ShellAppNotRunning(args.app)
+		return subprocess.call(docker_logs + [docker.container])
