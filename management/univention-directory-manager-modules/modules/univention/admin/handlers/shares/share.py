@@ -53,12 +53,6 @@ class cscPolicy(univention.admin.syntax.select):
 module = 'shares/share'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 
-syntax_return univention.admin.filter.conjunction('&', [
-	univention.admin.filter.expression('objectClass', 'univentionShare'),
-	univention.admin.filter.expression('cn', '*'),
-	univention.admin.filter.expression('writeable', '1'),
-])
-
 childs = 0
 short_description = _('Share: Directory')
 long_description = ''
