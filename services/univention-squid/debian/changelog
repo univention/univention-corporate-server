@@ -1,3 +1,9 @@
+univention-squid (11.0.0-16) unstable; urgency=medium
+
+  * Bug #47425: Change ucr variable description
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 27 Aug 2018 15:08:34 +0200
+
 univention-squid (11.0.0-15) unstable; urgency=medium
 
   * Bug #47425: enhanced description of ucr variable squid/krb5auth/keepalive
