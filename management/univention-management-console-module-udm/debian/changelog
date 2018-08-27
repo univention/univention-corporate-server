@@ -1,3 +1,10 @@
+univention-management-console-module-udm (8.0.5-12) unstable; urgency=medium
+
+  * Bug #40672: fix broken search filter generation for boolean and
+    multivalue/complex properties
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 27 Aug 2018 13:55:15 +0200
+
 univention-management-console-module-udm (8.0.5-11) unstable; urgency=medium
 
   * Bug 46910: Set the udm module search initially to simple or

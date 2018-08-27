@@ -228,22 +228,14 @@ mapping.register('icon', 'univentionPortalEntryIcon', None, univention.admin.map
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
+	@classmethod
+	def unmapped_lookup_filter(cls):
+		return univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', OC),
+		])
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter = univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', OC),
-	])
-
-	if filter_s:
-		filter_p = univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
-	res = []
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn, attributes=attrs))
-	return res
+lookup = object.lookup
 
 
 def identify(dn, attr, canonical=0):

@@ -9,4 +9,6 @@ desc: |
  * The "Account is deactivated" property on an user object was
    wrongly considered to be empty and resulted in a notification
    in the UMC. This issue has been resolved.
-bug: [47199]
+ * The search filter generated for boolean and multi-value properties
+   of UDM objects was not correct. This has been resolved.
+bug: [47199, 40672]

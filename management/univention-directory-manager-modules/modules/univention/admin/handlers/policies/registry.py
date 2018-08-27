@@ -173,19 +173,14 @@ class object(univention.admin.handlers.simplePolicy):
 		self.polinfo = univention.admin.mapping.mapDict(self.mapping, values)
 		self.polinfo = self._post_unmap(self.polinfo, values)
 
+	@classmethod
+	def unmapped_lookup_filter(cls):
+		return univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', 'univentionPolicyRegistry'),
+		])
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter = univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'univentionPolicyRegistry'),
-	])
-
-	if filter_s:
-		filter_p = univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
-	return object.lookup(co, lo, filter, base, superordinate, scope, unique, required, timeout, sizelimit)
+lookup = object.lookup
 
 
 def identify(dn, attr, canonical=0):
