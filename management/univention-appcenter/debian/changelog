@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-22) unstable; urgency=medium
+
+  * Bug #46433: Map 'docker logs' command to univention-app
+
+ -- Richard Ulmer <ulmer@univention.de>  Mon, 27 Aug 2018 12:21:40 +0200
+
 univention-appcenter (7.0.2-21) unstable; urgency=medium
 
   * Bug #47644: fixed univention-appcenter-listener-converter
