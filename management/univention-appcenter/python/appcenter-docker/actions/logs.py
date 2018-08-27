@@ -51,7 +51,6 @@ class Logs(UniventionAppAction, DockerActionMixin):
 		parser.add_argument('--since', action='store', metavar='timestamp', help='Show logs since timestamp')
 		parser.add_argument('-t', '--timestamps', action='store_true', default=False, help='Show timestamps')
 
-
 	def main(self, args):
 		docker = self._get_docker(args.app)
 		docker_logs = ['docker', 'logs']
