@@ -367,7 +367,7 @@ has_valid_cert () { # returns 0 if yes, 1 if not found, 2 if revoked, 3 if expir
 				split ( X[i], Y, "=" );
 				if ( name == Y[2] ) {
 					if ( $1 == "V" ) {
-						seq = seq$4;
+						seq = seq$4" ";
 					}
 					ret = ( $1 != "R" ) ? ( $1 == "V" && $2 >= now ? 0 : 3 ) : 2;
 				}
