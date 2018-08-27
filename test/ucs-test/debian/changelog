@@ -1,3 +1,10 @@
+ucs-test (8.0.28-170) unstable; urgency=low
+
+  * Bug #47642: 20b_check_auth_via_smtp_and_imap: fix LDAP connection on
+    slaves and memberservers
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 27 Aug 2018 09:27:13 +0200
+
 ucs-test (8.0.28-169) unstable; urgency=low
 
   * Bug #47642: add test script 20b_check_auth_via_smtp_and_imap to check

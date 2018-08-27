@@ -17,7 +17,6 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import univention.config_registry
-import univention.uldap
 
 class AuthTests(object):
 	def __init__(self, ucr, udm):
@@ -96,7 +95,7 @@ class AuthTests(object):
 		time.sleep(8)   # postrun (15s) is too much
 
 	def set_userPassword(self, value):
-		lo = univention.uldap.getAdminConnection()
+		lo = utils.get_ldap_connection()
 		lo.modify(self.userdn, [('userPassword', lo.get(self.userdn, ['userPassword'])['userPassword'], [value])])
 
 	def run_tests(self):
