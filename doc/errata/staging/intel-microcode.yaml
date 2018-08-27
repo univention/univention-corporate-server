@@ -1,0 +1,18 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: intel-microcode
+fix: 3.20180807a.1~bpo8+1
+desc: |
+ This update addresses the following issues:
+ * Spectre Variant 3a: Rogue System Register Read (RSRE) (CVE-2018-3640)
+ * Spectre Variant 4: speculative store bypass (SSB) (CVE-2018-3639)
+ * Foreshadow, L1 Terminal Fault (CVE-2018-3615, CVE-2018-3620, CVE-2018-3646)
+bug: [47670]
+cve:
+- CVE-2018-3620
+- CVE-2018-3640
+- CVE-2018-3639
+- CVE-2018-3615
+- CVE-2018-3646
