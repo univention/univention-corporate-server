@@ -30,12 +30,6 @@ ucs-test (8.0.28-167) unstable; urgency=medium
 
  -- Felix Botner <botner@univention.de>  Fri, 24 Aug 2018 12:59:20 +0200
 
-ucs-test (8.0.28-166) unstable; urgency=medium
-
-  * Bug #41013: added test for certificate renewal with grace period
-
- -- Jannik Ahlers <ahlers@univention.de>  Wed, 15 Aug 2018 16:09:20 +0200
-
 ucs-test (8.0.28-165) unstable; urgency=low
 
   * Bug #46477: handle docker interfaces
