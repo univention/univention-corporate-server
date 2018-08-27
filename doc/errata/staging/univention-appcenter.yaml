@@ -3,8 +3,9 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-appcenter
-fix: 7.0.2-21A~4.3.0.201808231749
+fix: 7.0.2-22A~4.3.0.201808271224
 desc: |
  This update addresses the following issue(s):
  * The univention-appcenter-listener-converter has been fixed.
-bug: [47644]
+ * The command ''univention-app logs'' has been introduced for docker apps.
+bug: [47644,46433]
