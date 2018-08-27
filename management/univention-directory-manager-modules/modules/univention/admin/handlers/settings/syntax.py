@@ -244,7 +244,9 @@ class object(univention.admin.handlers.simpleLdap):
 
 	@classmethod
 	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.expression('objectClass', 'univentionSyntax')
+		return univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', 'univentionSyntax')
+		])
 
 
 lookup = object.lookup
