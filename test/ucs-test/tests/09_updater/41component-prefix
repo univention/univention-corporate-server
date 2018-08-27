@@ -27,6 +27,7 @@ mkpkg "${DIR}"
 comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/prefix=${repoprefix}"
 sleep 3
+cat /etc/apt/sources.list.d/20_ucs-online-component.list
 
 (
 	set -e

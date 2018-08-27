@@ -1,3 +1,9 @@
+ucs-test (8.0.28-171) unstable; urgency=medium
+
+  * Bug #47000: 41component-prefix still fails
+
+ -- Felix Botner <botner@univention.de>  Mon, 27 Aug 2018 10:40:53 +0200
+
 ucs-test (8.0.28-170) unstable; urgency=low
 
   * Bug #47642: 20b_check_auth_via_smtp_and_imap: fix LDAP connection on
