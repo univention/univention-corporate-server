@@ -40,6 +40,7 @@ import locale
 import urllib
 import urllib2
 import traceback
+import inspect
 
 import notifier
 import notifier.threads
@@ -58,6 +59,7 @@ from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.session import TEMPUPLOADDIR
 
+import univention.admin.syntax as udm_syntax
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.uexceptions as udm_errors
@@ -143,15 +145,14 @@ class PropertySearchSanitizer(LDAPSearchSanitizer):
 		add_asterisks, use_asterisks = self.add_asterisks, self.use_asterisks
 		if object_type and property_ and UDM_Module(object_type).module:
 			prop = UDM_Module(object_type).module.property_descriptions.get(property_)
-			# If the widget is a checkbox the frontend sends True/False.
-			# We need to make sure that the sanitizer rewrites this to "1" and "0" without adding asterisks.
-			if prop and prop.syntax.name == 'boolean':
+			# If the property is represented as a Checkbox in the frontend then
+			# we get True/False as search value.
+			# We need to make sure that the sanitizer rewrites this to the
+			# correct thruthy/falsy string of the syntax class and not add asterisks.
+			if prop and issubclass(prop.syntax if inspect.isclass(prop.syntax) else type(prop.syntax), (udm_syntax.IStates, udm_syntax.boolean)):
 				self.use_asterisks = False
 				self.add_asterisks = False
-				if value is True:
-					value = '1'
-				elif value is False:
-					value = '0'
+				value = prop.syntax.sanitize_property_search_value(value)
 		try:
 			return super(PropertySearchSanitizer, self)._sanitize(value, name, further_arguments)
 		finally:
