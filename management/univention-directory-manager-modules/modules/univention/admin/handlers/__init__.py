@@ -1615,7 +1615,19 @@ class simpleLdap(object):
 			if issubclass(property_.syntax if inspect.isclass(property_.syntax) else type(property_.syntax), univention.admin.syntax.complex):
 				# special case: complex syntax properties need to be a list (of lists, if multivalue)
 				filter.value = [filter.value]
-		univention.admin.mapping.mapRewrite(filter, mapping)
+		# special case: properties that are represented as Checkboxes in the
+		# frontend should include '(!(propertyName=*))' in the ldap filter
+		# if the Checkboxe is set to False to also find objects where the property
+		# is not set. In that case we don't want to map the '*' to a different value.
+		dont_map_value = (
+				property_ 
+				and issubclass(
+					property_.syntax if inspect.isclass(property_.syntax) else type(property_.syntax),
+					(univention.admin.syntax.IStates, univention.admin.syntax.boolean)
+				)
+				and filter.value == '*'
+		)
+		univention.admin.mapping.mapRewrite(filter, mapping, dont_map_value=dont_map_value)
 		if isinstance(filter.value, (list, tuple)) and filter.value:
 			# complex syntax
 			filter.value = filter.value[0]

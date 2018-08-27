@@ -650,6 +650,21 @@ class boolean(simple):
 			return text and '1' or '0'
 		return super(boolean, self).parse(text)
 
+	@classmethod
+	def get_object_property_filter(cls, object_property, object_property_value):
+		not_set_filter = '(!(%s=*))' % object_property
+		compare_filter = '%s=%s' % (object_property, object_property_value)
+		if object_property_value == '0':
+			return '(|(%s)%s)' % (compare_filter, not_set_filter)
+		elif object_property_value == '1':
+			return compare_filter
+		else:
+			return ''
+
+	@classmethod
+	def sanitize_property_search_value(cls, search_value):
+		return '1' if search_value is True else '0'
+
 
 class filesize(simple):
 
@@ -2391,6 +2406,37 @@ class IStates(select):
 			if text == value:
 				return choice[0]
 		return text
+
+	@classmethod
+	def get_object_property_filter(cls, object_property, object_property_value):
+		try:
+			state_of_object_property_value = [state for state, (ldap_value, _) in cls.values if ldap_value == object_property_value][0]
+			if state_of_object_property_value not in (None, True, False):
+				return ''
+		except IndexError:
+			return ''
+
+		states_of_this_syntax = [state for state, _ in cls.values]
+		not_set_filter = '(!(%s=*))' % object_property
+		compare_filter = '%s=%s' % (object_property, object_property_value)
+		if state_of_object_property_value is None:
+			return not_set_filter
+		elif state_of_object_property_value is False and None not in states_of_this_syntax:
+			# This is for IStates that are shown as Checkboxes in the frontend.
+			# If the user searches for False we also want to include objects where the property is not set in ldap.
+			return '(|(%s)%s)' % (compare_filter, not_set_filter)
+		else:
+			return compare_filter
+
+	@classmethod
+	def sanitize_property_search_value(cls, search_value):
+		if search_value in (True, False):
+			# This is for IStates that are shown as Checkboxes in the frontend. In these cases we get a boolean as search value.
+			# Map the boolean to the string that is stored in ldap
+			for state, (ldap_value, _) in cls.values:
+				if state == search_value:
+					return ldap_value
+		return search_value
 
 
 class AllowDeny(IStates):
