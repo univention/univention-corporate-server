@@ -1,3 +1,10 @@
+univention-directory-manager-modules (13.0.21-33) unstable; urgency=medium
+
+  * Bug #40672: fix broken search filter generation for boolean and
+    multivalue/complex properties
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 27 Aug 2018 13:48:06 +0200
+
 univention-directory-manager-modules (13.0.21-32) unstable; urgency=medium
 
   * Bug #47199: fix inconsistentDisabledState() in users/user.py
