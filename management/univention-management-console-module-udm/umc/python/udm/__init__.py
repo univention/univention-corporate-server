@@ -135,29 +135,6 @@ class ObjectPropertySanitizer(StringSanitizer):
 		StringSanitizer.__init__(self, **args)
 
 
-class PropertySearchSanitizer(LDAPSearchSanitizer):
-
-	def _sanitize(self, value, name, further_arguments):
-		object_type = further_arguments.get('objectType')
-		property_ = further_arguments.get('objectProperty')
-		add_asterisks, use_asterisks = self.add_asterisks, self.use_asterisks
-		if object_type and property_ and UDM_Module(object_type).module:
-			prop = UDM_Module(object_type).module.property_descriptions.get(property_)
-			# If the widget is a checkbox the frontend sends True/False.
-			# We need to make sure that the sanitizer rewrites this to "1" and "0" without adding asterisks.
-			if prop and prop.syntax.name == 'boolean':
-				self.use_asterisks = False
-				self.add_asterisks = False
-				if value is True:
-					value = '1'
-				elif value is False:
-					value = '0'
-		try:
-			return super(PropertySearchSanitizer, self)._sanitize(value, name, further_arguments)
-		finally:
-			self.add_asterisks, self.use_asterisks = add_asterisks, use_asterisks
-
-
 class Instance(Base, ProgressMixin):
 
 	def __init__(self):
@@ -544,10 +521,9 @@ class Instance(Base, ProgressMixin):
 		return result
 
 	@sanitize(
-		objectPropertyValue=PropertySearchSanitizer(
+		objectPropertyValue=LDAPSearchSanitizer(
 			add_asterisks=ADD_ASTERISKS,
 			use_asterisks=USE_ASTERISKS,
-			further_arguments=['objectType', 'objectProperty'],
 		),
 		objectProperty=ObjectPropertySanitizer(required=True),
 		fields=ListSanitizer(),
