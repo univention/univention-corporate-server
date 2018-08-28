@@ -65,6 +65,12 @@ class UCSSetup(UCSInstallation):
 		except VNCDoException:
 			self.connect()
 		try:
+			self.client.waitForText('continue without access', timeout=self.timeout)
+			self.client.keyPress('enter')
+			time.sleep(60)
+		except VNCDoException:
+			self.connect()
+		try:
 			self.client.waitForText('No gateway has been', timeout=self.timeout)
 			self.client.keyPress('enter')
 			time.sleep(60)
