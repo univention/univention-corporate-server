@@ -111,21 +111,26 @@ mapping.register('printmodel', 'printerModel', mapDriverList, unmapDriverList)
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	@classmethod
-	def rewrite_filter(cls, filter, mapping):
-		if filter.variable == 'printmodel':
-			filter.variable = 'printerModel'
-		else:
-			super(object, cls).rewrite_filter(filter, mapping)
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionPrinterModels')
-		])
+def rewrite(filter, mapping):
+	if filter.variable == 'printmodel':
+		filter.variable = 'printerModel'
+	else:
+		univention.admin.mapping.mapRewrite(filter, mapping)
 
 
-lookup = object.lookup
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+
+	filter = univention.admin.filter.conjunction('&', [
+		univention.admin.filter.expression('objectClass', 'univentionPrinterModels')
+	])
+
+	if filter_s:
+		filter_p = univention.admin.filter.parse(filter_s)
+		univention.admin.filter.walk(filter_p, rewrite, arg=mapping)
+		filter.expressions.append(filter_p)
+
+	return object.lookup(co, lo, filter, base, superordinate, scope, unique, required, timeout, sizelimit)
 
 
 def identify(dn, attr, canonical=0):
