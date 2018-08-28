@@ -1,3 +1,9 @@
+univention-s4-connector (12.0.2-26) unstable; urgency=medium
+
+  * Bug #47636: remove old dn from group caches after rename
+
+ -- Felix Botner <botner@univention.de>  Tue, 28 Aug 2018 13:04:40 +0200
+
 univention-s4-connector (12.0.2-25) unstable; urgency=medium
 
   * Bug #47636: remove old dn from group caches after rename
