@@ -7,8 +7,10 @@ fix: 2.1.5-2+deb8u5
 desc: |
  This update addresses the following issues:
  * TclTkIp ip_cancel_eval type confusion vulnerability (CVE-2016-2337)
- * Path traversal when writing to a symlinked basedir outside of the root (CVE-2018-1000073)
- * Unsafe Object Deserialization Vulnerability in gem owner allowing arbitrary code execution on specially crafted YAML (CVE-2018-1000074)
+ * Path traversal when writing to a symlinked basedir outside of
+   the root (CVE-2018-1000073)
+ * Unsafe Object Deserialization Vulnerability in gem owner allowing
+   arbitrary code execution on specially crafted YAML (CVE-2018-1000074)
 bug: [47684]
 cve:
 - CVE-2016-2337
