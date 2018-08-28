@@ -210,14 +210,21 @@ class object(univention.admin.handlers.simpleLdap):
 			if not self.lo.searchDn(filter='(&(objectClass=univentionPrinter)(cn=%s)%s)' % (escape_filter_chars(member), spoolhosts)):
 				raise univention.admin.uexceptions.notValidPrinter(_('%(name)s is not a valid printer on Spoolhost %(host)s.') % {'name': member, 'host': self.info['spoolHost']})
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionPrinterGroup'),
-		])
 
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+	filter = univention.admin.filter.conjunction('&', [
+		univention.admin.filter.expression('objectClass', 'univentionPrinterGroup'),
+	])
 
-lookup = object.lookup
+	if filter_s:
+		filter_p = univention.admin.filter.parse(filter_s)
+		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
+		filter.expressions.append(filter_p)
+
+	res = []
+	for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
+		res.append(object(co, lo, None, dn))
+	return res
 
 
 def identify(dn, attr, canonical=0):
