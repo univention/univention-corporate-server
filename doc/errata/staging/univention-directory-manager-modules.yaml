@@ -6,7 +6,7 @@ src: univention-directory-manager-modules
 fix: 13.0.21-34A~4.3.0.201808281402
 desc: |
  This update addresses the following issue(s):
- * The "Account is deactivated" property on an user object was
-   wrongly considered to be empty and resulted in a notification
-   in the UMC. This issue has been resolved.
+ * The "Account is deactivated" property on a user object was wrongly
+   considered to be empty and resulted in a notification in the UMC. This
+   issue has been resolved.
 bug: [47199]
