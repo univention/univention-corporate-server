@@ -1560,10 +1560,7 @@ class simpleLdap(object):
 		:return: A list of UDM objects.
 		:rtype: list[simpleLdap]
 		"""
-		filter_s = cls.lookup_filter(filter_s, lo)
-		if superordinate:
-			filter_s = cls.lookup_filter_superordinate(filter_s, superordinate)
-		filter_str = unicode(filter_s or '')
+		filter_str = unicode(cls.lookup_filter(filter_s, lo) or '')
 		attr = cls._ldap_attributes()
 		result = []
 		for dn, attrs in lo.search(filter_str, base, scope, attr, unique, required, timeout, sizelimit):
@@ -1588,10 +1585,6 @@ class simpleLdap(object):
 		filter_p = cls.unmapped_lookup_filter()
 		filter_p.append_unmapped_filter_string(filter_s, cls.rewrite_filter, univention.admin.modules.get(cls.module).mapping)
 		return filter_p
-
-	@classmethod
-	def lookup_filter_superordinate(cls, filter, superordinate):
-		return filter
 
 	@classmethod
 	def unmapped_lookup_filter(cls):  # type: () -> univention.admin.filter.conjunction
