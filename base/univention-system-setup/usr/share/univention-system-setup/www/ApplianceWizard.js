@@ -1667,7 +1667,9 @@ define([
 			var role = values['server/role'];
 			return this.uidIsUsable(uid, role).then(
 				function(data) { return true; },  // callback; uid is available, just continue
-				this.getConfirmationToContinueWithDuplicateHostname.bind(null, hostname)  // errback
+				lang.hitch(this, function() {  // errback
+					return this.getConfirmationToContinueWithDuplicateHostname(hostname);
+				})
 			);
 		},
 
@@ -1682,14 +1684,14 @@ define([
 			);
 		},
 
-		getConfirmationToContinueWithDuplicateHostname: function(hostname, data) {
+		getConfirmationToContinueWithDuplicateHostname: function(hostname) {
 			return dialog.confirm(_('The hostname \'%s\' is already used for ' +
 				'a computer with a different role, in the UCS domain. It is ' +
 				'recommended to change the hostname for UCS to work properly.',
 				hostname
 			), [{
 				label: _('Adjust settings'),
-				name: 'stay'
+				name: 'adjust_settings'
 			}, {
 				label: _('Continue with duplicate hostname'),
 				'default': true,
