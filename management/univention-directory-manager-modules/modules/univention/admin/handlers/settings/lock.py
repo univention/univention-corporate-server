@@ -100,7 +100,5 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.filter.expression('objectClass', 'lock')
 		])
 
-lookup = object.lookup
 
-def identify(dn, attr, canonical=0):
-	return 'lock' in attr.get('objectClass', [])
+lookup = object.lookup

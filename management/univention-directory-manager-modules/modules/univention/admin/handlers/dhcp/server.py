@@ -111,7 +111,8 @@ class object(DHCPBase):
 
 	@classmethod
 	def lookup_filter_superordinate(cls, filter, superordinate):
-		filter.expressions.append(univention.admin.filter.expression('dhcpServiceDN', superordinate.dn, escape=True))
+		if superordinate:
+			filter.expressions.append(univention.admin.filter.expression('dhcpServiceDN', superordinate.dn, escape=True))
 		return filter
 
 
