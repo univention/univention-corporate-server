@@ -16,7 +16,7 @@ import univention.testing.utils as utils
 
 def checkAuths(host, passwd, url, (basic, ntlm), expect_wrong_password):
 	# in case all auth are disabled, all return 200
-	http_basic, http_ntlm, http_gneg = (200, 200, 200)
+	http_basic, http_ntlm = (200, 200, )
 	if basic or ntlm:
 		http_basic = 200 if (basic and not expect_wrong_password) else 407
 		http_ntlm = 200 if (ntlm and not expect_wrong_password) else 407
@@ -63,6 +63,7 @@ def printHeader(state, passwd, expect_wrong_password):
 def main():
 	squid = SimpleSquid()
 	with ucr_test.UCSTestConfigRegistry() as ucr:
+		handler_unset(['squid/krb5auth'])
 		# url = ucr.get('proxy/filter/redirecttarget')
 		url = 'http://www.univention.de'
 		host = '%(hostname)s.%(domainname)s' % ucr

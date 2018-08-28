@@ -1,3 +1,9 @@
+ucs-test (8.0.28-172) unstable; urgency=medium
+
+  * Bug #47425: Add 43_proxy/08_http_proxy_krb5_auth_check (skipped)
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 28 Aug 2018 11:23:12 +0200
+
 ucs-test (8.0.28-171) unstable; urgency=medium
 
   * Bug #47000: 41component-prefix still fails
