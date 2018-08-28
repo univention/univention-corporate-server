@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.21-34) unstable; urgency=medium
+
+  * Bug #40672: Revert 13.0.21-33
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 28 Aug 2018 13:55:03 +0200
+
 univention-directory-manager-modules (13.0.21-33) unstable; urgency=medium
 
   * Bug #40672: fix broken search filter generation for boolean and
