@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-system-setup
-fix: 11.0.5-23A~4.3.0.201808241234
+fix: 11.0.5-24A~4.3.0.201808281311
 desc: |
  This update addresses the following issue(s):
  * Warn about duplicate uid when configuring the system.
