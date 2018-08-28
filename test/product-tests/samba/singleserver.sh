@@ -14,7 +14,7 @@
 set -x
 set -e
 
-. product/samba/utils.sh
+. product-tests/samba/utils.sh
 . environment
 eval "$(ucr shell ldap/base windows/domain)"
 
