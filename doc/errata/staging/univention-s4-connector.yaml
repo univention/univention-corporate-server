@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-s4-connector
-fix: 12.0.2-25A~4.3.0.201808231302
+fix: 12.0.2-26A~4.3.0.201808281306
 desc: |
  This update addresses the following issue(s):
  * When objects are renamed remove the their DN from
