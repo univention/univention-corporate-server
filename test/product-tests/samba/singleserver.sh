@@ -15,7 +15,6 @@ set -x
 set -e
 
 . product-tests/samba/utils.sh
-. environment
 eval "$(ucr shell ldap/base windows/domain)"
 
 # check winrm
@@ -26,10 +25,8 @@ fi
 # get windows client info/name
 python shared-utils/ucs-winrm.py run-ps --cmd ipconfig
 python shared-utils/ucs-winrm.py run-ps --cmd "(gwmi win32_operatingsystem).caption"
-name="$(python shared-utils/ucs-winrm.py run-ps  --cmd '$env:computername' --loglevel error | head -1 | tr -d '\r')"
-test -n "$name"
-echo "export WINCLIENT_NAME='$name'" >> ./environment
-. environment
+winclient_name="$(python shared-utils/ucs-winrm.py run-ps  --cmd '$env:computername' --loglevel error | head -1 | tr -d '\r')"
+test -n "$winclient_name"
 
 # Join des Clients
 python shared-utils/ucs-winrm.py domain-join --dnsserver "$UCS"  --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
@@ -122,7 +119,7 @@ stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
 # TODO printer via gpo
 
 # host $windows_client muss die IPv4-Adresse liefern.
-nslookup "$WINCLIENT_NAME" | grep "$WINCLIENT"
+nslookup "$winclient_name" | grep "$WINCLIENT"
 
 # userpassword change
 password=univention

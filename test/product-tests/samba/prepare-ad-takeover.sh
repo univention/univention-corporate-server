@@ -18,7 +18,6 @@ set -e
 #  done:      Benutzerkonfiguration -> Administrative Vorlagen -> "Liste "Alle Programme" aus dem Menü Start entfernen"
 
 . product-tests/samba/utils.sh
-. environment
 eval "$(ucr shell ldap/base)"
 
 # Im AD sollten 1500 Benutzern und 40 Gruppen angelegt werden. Die Benutzer sollten auf die Gruppen verteilt werden.
