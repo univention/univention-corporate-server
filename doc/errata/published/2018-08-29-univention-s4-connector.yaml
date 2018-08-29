@@ -9,3 +9,5 @@ desc: |
  * When objects are renamed in UCS update their DN in the group member
    mapping caches. This was found in UCS@school but affected standard UCS too.
 bug: [47636]
+erratum: 224
+announced: 2018-08-29
