@@ -73,13 +73,13 @@ for i in $(seq 1 40); do
 done
 for i in $(seq 1 1500); do
 	udm users/user list --filter username="benutzer$i" | grep "^DN: "
-	local groupindex=$(($i % 40 + 1))
+	groupindex=$(($i % 40 + 1))
 	check_user_in_group "benutzer$i" "gruppe$groupindex"
 done
 # TODO check group membership
 
 # Passwortänderung muss funktionieren
-local new_password='üUnivention@90809098798'
+new_password='üUnivention@90809098798'
 python shared-utils/ucs-winrm.py change-user-password --domainuser benutzer11 --userpassword "$new_password" --client "$WIN1"
 python shared-utils/ucs-winrm.py domain-user-validate-password --domainuser benutzer11 --domainpassword "$new_password" --client "$WIN1"
 check_user_in_ucs benutzer11 "$new_password"
