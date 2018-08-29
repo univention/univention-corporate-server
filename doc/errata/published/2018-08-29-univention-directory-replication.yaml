@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Reconnect to LDAP server in case of an error
 bug: [41514]
+erratum: 223
+announced: 2018-08-29
