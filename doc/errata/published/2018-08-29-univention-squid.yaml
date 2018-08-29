@@ -9,3 +9,5 @@ desc: |
  * Setting the UCR variable squid/krb5auth/keepalive to 'off' did not
    have any effect. This has been fixed.
 bug: [47425]
+erratum: 225
+announced: 2018-08-29
