@@ -9,3 +9,5 @@ desc: |
  * Warn about already existing hostname
    when joining the system to the domain.
 bug: [46045]
+erratum: 226
+announced: 2018-08-29
