@@ -40,32 +40,20 @@ from univention.appcenter.exceptions import ShellAppNotRunning
 
 class Logs(UniventionAppAction, DockerActionMixin):
 
-	'''Get log output from a docker app.'''
-	help = 'Get log output from a docker app.'
+	'''Get log output of an app.'''
+	help = 'Get log output of an app.'
 
 	def setup_parser(self, parser):
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the App whose logs shall be output')
-		parser.add_argument('--details', action='store_true', default=False, help='Show extra details provided to logs')
-		parser.add_argument('-f', '--follow', action='store_true', default=False, help='Follow log output')
-		parser.add_argument('--tail', action='store', metavar='int', help='Number of lines to show from the end of the logs')
-		parser.add_argument('--since', action='store', metavar='timestamp', help='Show logs since timestamp')
-		parser.add_argument('-t', '--timestamps', action='store_true', default=False, help='Show timestamps')
 
 	def main(self, args):
+		if not args.app.docker or not args.app.is_installed():
+			self.log('ERROR: Currently the logs command only works for installed docker apps.')
+			return
+
+		return self.show_docker_logs(args)
+
+	def show_docker_logs(self, args):
 		docker = self._get_docker(args.app)
-		docker_logs = ['docker', 'logs']
-		if args.details:
-			docker_logs.append('--details')
-		if args.follow:
-			docker_logs.append('--follow')
-		if args.since:
-			docker_logs.append('--since')
-			docker_logs.append(args.since)
-		if args.tail:
-			docker_logs.append('--tail')
-			docker_logs.append(args.tail)
-		if args.timestamps:
-			docker_logs.append('--timestamps')
-		if not args.app.docker:
-			raise ShellAppNotRunning(args.app)
-		return subprocess.call(docker_logs + [docker.container])
+		self.log("#### 'docker logs {}' output:".format(docker.container))
+		return subprocess.call(['docker', 'logs', docker.container])
