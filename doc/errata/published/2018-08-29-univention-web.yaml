@@ -9,3 +9,5 @@ desc: |
  * The language sensitive sorting used in the grid via the
    Intl.Collator object is now used for other widgets as well.
 bug: [47195]
+erratum: 227
+announced: 2018-08-29
