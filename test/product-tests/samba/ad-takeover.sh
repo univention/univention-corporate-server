@@ -52,7 +52,6 @@ check_user_in_group () {
 }
 
 . product-tests/samba/utils.sh
-. environment
 eval "$(ucr shell ldap/base)"
 
 # Bug 46858 (missing samba restart) -> TODO
