@@ -10,8 +10,9 @@ create_and_print_testfile () {
 }
 
 check_windows_client_sid () {
-	local ucs_sid="$(univention-ldapsearch cn=$WINCLIENT_NAME sambaSID | sed -n 's/^sambaSID: //p')"
-	local samba_sid="$(univention-s4search cn=$WINCLIENT_NAME objectSid | sed -n 's/^objectSid: //p')"
+	local name="$1"
+	local ucs_sid="$(univention-ldapsearch cn="$name" sambaSID | sed -n 's/^sambaSID: //p')"
+	local samba_sid="$(univention-s4search cn="$name" objectSid | sed -n 's/^objectSid: //p')"
 	test -n "$ucs_sid"
 	test "$ucs_sid" = "$samba_sid"
 }

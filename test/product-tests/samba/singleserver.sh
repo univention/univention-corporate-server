@@ -30,10 +30,12 @@ test -n "$winclient_name"
 
 # Join des Clients
 python shared-utils/ucs-winrm.py domain-join --dnsserver "$UCS"  --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
+
 # Auf core prüfen: find /var -name core
 test -z "$(find /var -name core)"
+
 # SID des Windows-Clients in OpenLDAP prüfen Bug #39804
-check_windows_client_sid "$WINCLIENT"
+check_windows_client_sid "$winclient_name"
 
 # In der UMC anlegen: Benutzer, Drucker, Dateifreigabe
 udm users/user create --position "cn=users,$ldap_base" --set username="newuser01" \
