@@ -1,0 +1,166 @@
+# These udebs build the d-i cdrom initrd. As such, there is no reason
+# to keep another copy of them on the CD in udeb form.
+# 
+# This duplicates data found in the file build/pkg-lists/kernel, in d-i svn
+kernel-image-*
+# build/pkg-lists/base in d-i svn
+archdetect
+rootskel
+main-menu
+cdebconf-udeb
+udpkg
+anna
+di-utils
+di-utils-shell
+di-utils-reboot
+lowmemcheck
+# build/pkg-lists/cdrom/common, in d-i svn (also included in the
+# root+cd-drivers floppies)
+busybox-udeb
+installation-locale
+localechooser
+iso-3166-udeb
+hw-detect
+cdrom-detect
+cdrom-retriever
+load-cdrom
+cdrom-checker
+bogl-bterm-udeb
+di-utils-terminfo
+cdebconf-priority
+cdebconf-newt-udeb
+usb-discover
+preseed-common
+initrd-preseed
+file-preseed
+nano-udeb
+floppy-retriever
+libfribidi0-udeb
+# Already on the initrd as dependencies
+libdebconfclient0-udeb
+libdebian-installer4-udeb
+libdebian-installer-extra4-udeb
+# These udebs are only useful in building the boot floppy image
+busybox-floppy-udeb
+rootskel-bootfloppy
+# Graphical installer: common udebs included in initrd
+rootskel-gtk
+cdebconf-gtk-udeb
+fontconfig-udeb
+gtk2-engines-udeb
+libatk1.0-udeb
+libexpat1-udeb
+libfreetype6-udeb
+libglib2.0-udeb
+libgtk2-engines-udeb
+libpango1.0-udeb
+libpcre3-udeb
+libpixman-1-0-udeb
+libpng*-udeb
+libsdl1.2debian-udeb
+mouse-modules-*
+ttf-*
+fbset-udeb
+# Graphical installer: udebs for directfb
+libdirectfb-*-udeb
+libcairo-directfb2-udeb
+libgtk-directfb-2.0-0-udeb
+# Graphical installer: udebs for X.Org
+xserver-xorg-core-udeb
+xserver-xorg-input-evdev-udeb
+xserver-xorg-video-fbdev-udeb
+x11-xkb-utils-udeb
+xkb-data-udeb
+libcairo2-udeb
+libdrm2-udeb
+libfontenc1-udeb
+libgtk-x11-udeb
+libpciaccess0-udeb
+libx11-6-udeb
+libxau6-udeb
+libxcb1-udeb
+libxcursor1-udeb
+libxdmcp6-udeb
+libxext6-udeb
+libxfixes3-udeb
+libxfont1-udeb
+libxft2-udeb
+libxi6-udeb
+libxinerama1-udeb
+libxkbfile1-udeb
+libxrender1-udeb
+# Graphical installer: terminal support is included in initrd
+cdebconf-gtk-terminal
+libvte9-udeb
+# Not currently used
+cdebootstrap-udeb
+hdparm-udeb
+dhcp-client-udeb
+# This package is only useful in the d-i-demo
+di-utils-exit-installer
+# No need for these loaders.
+download-installer
+load-floppy
+# Only useful in the hd-media initrd
+iso-scan
+load-iso
+# These are not really needed, the regular netcfg subsumes them
+netcfg-static
+# skolelinux stuff, not for the stock CDs
+debian-edu-install-udeb
+debian-edu-profile-udeb
+debian-edu-archive-keyring-udeb
+ltsp-client-builder
+autopartkit
+# live CD stuff
+live-installer
+simple-cdd-profiles
+# If needed, will be on the initrd already
+module-init-tools-udeb
+env-preseed
+rescue-check
+cdebconf-text-udeb
+brltty-udeb
+klibc-utils-udeb
+libklibc-udeb
+udev-udeb
+udev-gtk-udeb
+ai-choosers
+auto-install
+libslang2-udeb
+kbd-chooser
+kbd-udeb
+console-setup-*
+# Currently unused
+debian-ports-archive-keyring-udeb
+emdebian-archive-keyring-udeb
+nbd-client-udeb
+pwgen-udeb
+# Eh?
+gnumach-udeb
+# UCS: Remove udeb from Debian-Wheezy and Debian-Jessie
+alsa-base-udeb
+localization-config-udeb
+mountfloppy
+partman-reiserfs
+partman-ufs
+userdevfs
+btrfs-tools-udeb
+cpuburn-udeb
+gnupg-udeb
+klibc-utils-floppy-udeb
+libcrypto1.0.0-udeb
+libdns-export100-udeb
+libffi5-udeb
+libgcrypt11-udeb
+libirs-export91-udeb
+libisccfg-export90-udeb
+libisc-export95-udeb
+libnss-dns-udeb
+libnss-files-udeb
+libparted0-udeb
+libpthread-stubs0-udeb
+libvte-2.90-9-udeb
+mii-diag-udeb
+ntfsprogs-udeb
+syslinux-udeb
