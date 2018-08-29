@@ -9,3 +9,5 @@ desc: |
  * The univention-appcenter-listener-converter has been fixed.
  * The command "univention-app logs" has been introduced for Docker Apps.
 bug: [47644,46433]
+erratum: 221
+announced: 2018-08-29
