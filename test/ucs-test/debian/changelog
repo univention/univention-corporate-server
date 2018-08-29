@@ -1,3 +1,9 @@
+ucs-test (7.0.23-130) unstable; urgency=low
+
+  * Bug #42759: fix 07pop_login and improve 20b_check_auth_via_smtp_and_imap
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 29 Aug 2018 10:45:29 +0200
+
 ucs-test (7.0.23-129) unstable; urgency=low
 
   * Bug #42759: 20b_check_auth_via_smtp_and_imap: fix LDAP connection on
