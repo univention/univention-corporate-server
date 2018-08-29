@@ -7,5 +7,5 @@ fix: 7.0.2-23A~4.3.0.201808290959
 desc: |
  This update addresses the following issue(s):
  * The univention-appcenter-listener-converter has been fixed.
- * The command ''univention-app logs'' has been introduced for docker apps.
+ * The command "univention-app logs" has been introduced for Docker Apps.
 bug: [47644,46433]
