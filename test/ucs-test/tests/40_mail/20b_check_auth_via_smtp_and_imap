@@ -1,16 +1,15 @@
 #!/usr/share/ucs-test/runner python
-## desc: Check authentication via SMTP, IMAP, sieve, testsaslauthd
+## desc: Check authentication via SMTP, IMAP, POP3, sieve, testsaslauthd
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
-
-
 
 import os
 import getpass
 import time
 import subprocess
 import imaplib
+import poplib
 from essential.mail import send_mail
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -62,6 +61,17 @@ class AuthTests(object):
 			print '>>> test_imap_auth({}): IMAP auth failed - {}'.format(user, exc)
 			return False
 
+	def test_pop3_auth(self, user):
+		try:
+			pop3con = poplib.POP3_SSL(host='localhost')
+			print pop3con.user(user)
+			print pop3con.pass_(self.password)
+			print '>>> test_pop3_auth({}): successful POP3 auth'.format(user)
+			return True
+		except Exception as exc:
+			print '>>> test_pop3_auth({}): POP3 auth failed - {}'.format(user, exc)
+			return False
+
 	def test_saslauthd(self, user):
 		if not self.ucr.is_true('mail/cyrus'):
 			return None
@@ -105,6 +115,8 @@ class AuthTests(object):
 				('smtp_uid', self.username, self.test_smtp_auth),
 				('imap_mailPrimaryAddress', self.email, self.test_imap_auth),
 				('imap_uid', self.username, self.test_imap_auth),
+				('pop3_mailPrimaryAddress', self.email, self.test_pop3_auth),
+				('pop3_uid', self.username, self.test_pop3_auth),
 				('testsaslauthd_mailPrimaryAddress', self.email, self.test_saslauthd),
 				('testsaslauthd_uid', self.username, self.test_saslauthd),
 				('sieve_mailPrimaryAddress', self.email, self.test_sieve),
