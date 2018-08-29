@@ -10,3 +10,5 @@ desc: |
    considered to be empty and resulted in a notification in the UMC. This
    issue has been resolved.
 bug: [47199]
+erratum: 222
+announced: 2018-08-29
