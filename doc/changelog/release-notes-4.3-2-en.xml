@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-en-4.3-1">
+<book lang="en" id="releasenotes-en-4.3-2">
 	<bookinfo>
 		<title>UCS 4.3 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.3-1</subtitle>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.3-2</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,23 +44,14 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With Univention Corporate Server 4.3-1, the first point release of Univention Corporate Server (UCS) 4.3 is now
+			With Univention Corporate Server 4.3-2, the second point release of Univention Corporate Server (UCS) 4.3 is now
 			available. It provides several feature improvements and extensions, new properties as well as
 			various improvements and bugfixes. Here is an overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				The UMC system diagnostic module has been extended with additional tests. They support the administrator to check the system health of the UCS system and the whole domain.
-			</para></listitem>
-			<listitem><para>
-				The management system usability and configurability has been expanded. The expected usability has been improved in several places, for example when configuring email addresses or DNS settings.
-			</para></listitem>
-			<listitem><para>
-				A content-security-policy has been integrated in the UCS management system to increase the browser security by protecting web cookies.
-			</para></listitem>
-			<listitem><para>
-					Various security updates have been integrated into UCS 4.3-1, e.g. <wordasword>Apache2</wordasword>, the Linux kernel and <wordasword>Samba4</wordasword>.
+				Various security updates have been integrated into UCS 4.3-2, e.g. <wordasword>Apache2</wordasword>, the Linux kernel and <wordasword>Samba4</wordasword>.
 				A complete list is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
@@ -202,10 +193,10 @@
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <wordasword>4.3-0</wordasword>:
+			Listed are the changes since UCS <wordasword>4.3-1</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-1.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-2.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
