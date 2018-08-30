@@ -790,8 +790,8 @@ setup_appliance ()
 	rm /etc/apt/sources.list.d/05univention-system-setup.list
 	rm -r /var/cache/univention-system-setup/packages/
 
-	apt-get update
 	[ "updates-test.software-univention.de" = "$(ucr get repository/online/server)" ] && ucr set update/secure_apt=no
+	apt-get update
 	download_system_setup_packages $@
 
 	# Cleanup apt archive
