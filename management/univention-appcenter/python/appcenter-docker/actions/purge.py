@@ -1,4 +1,5 @@
 from univention.appcenter.actions.docker_remove import Remove
+import shutil
 
 
 class Purge(Remove):
@@ -9,7 +10,7 @@ class Purge(Remove):
 	def main(self, args):
 		app = args.app
 		self.remove_app(args)
-		# TODO: remove app's files
+		self.remove_apps_files(app)
 		# TODO: remove database
 		# TODO: remove database user + credentials-file
 		# TODO: remove LDAP users and entries?!
@@ -20,3 +21,10 @@ class Purge(Remove):
 
 	def remove_app(self, args):
 		super(Purge, self).main(args)
+
+	def remove_apps_files(self, app):
+		app_files_dir = '/var/lib/univention-appcenter/apps/{}'.format(app.id)
+		try:
+			shutil.rmtree(app_files_dir)
+		except OSError:
+			self.log("WARN: Could not remove '{}'".format(app_files_dir))
