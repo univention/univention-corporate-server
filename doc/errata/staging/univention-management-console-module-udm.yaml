@@ -2,8 +2,8 @@ product: ucs
 release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
-src: univention-management-console-module-udm
-fix: 8.0.5-14A~4.3.0.201808300941
+src: 
+fix: 
 desc: |
  This update addresses the following issue(s):
  * The search filter generated for boolean and multi-value properties
