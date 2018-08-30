@@ -763,19 +763,19 @@ setup_appliance ()
 
 	# allow X11 login as normal user
 	ucr set "auth/gdm/group/Domain Users"=yes
-	 
+
 	# Disable xorg autodetection and set resolution to 800x600 for system setup
 	ucr set xorg/autodetect=no xorg/resolution=800x600
 
 	# Disable kernel mode set
 	# ucr set grub/append="nomodeset $(ucr get grub/append)"
-	
-	# Disable interface renaming	
+
+	# Disable interface renaming
 	ucr set grub/append="$(ucr get grub/append) net.ifnames=0"
 
 	# Show bootscreen in 800x600
 	ucr set grub/gfxmode=800x600@16
-	 
+
 	# generate all UMC languages
 	ucr set locale/default="en_US.UTF-8:UTF-8" locale="en_US.UTF-8:UTF-8 de_DE.UTF-8:UTF-8"; locale-gen
 
@@ -791,6 +791,7 @@ setup_appliance ()
 	rm -r /var/cache/univention-system-setup/packages/
 
 	apt-get update
+	[ "updates-test.software-univention.de" = "$(ucr get repository/online/server)" ] && ucr set update/secure_apt=no
 	download_system_setup_packages $@
 
 	# Cleanup apt archive
