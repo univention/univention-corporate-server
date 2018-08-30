@@ -214,22 +214,32 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_post_remove(self):
 		self._updateZone()
 
-	@classmethod
-	def lookup_filter_superordinate(cls, filter, superordinate):
-		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('subnet', superordinate['subnet']), escape=True))
-		filter = rewrite_rev(filter, superordinate.info['subnet'])
-		return filter
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'dNSZone'),
-			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
-			univention.admin.filter.conjunction('|', [
-				univention.admin.filter.expression('zoneName', '*.in-addr.arpa'),
-				univention.admin.filter.expression('zoneName', '*.ip6.arpa'),
-			]),
-		])
+def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=False, required=False, timeout=-1, sizelimit=0):
+
+	filter = univention.admin.filter.conjunction('&', [
+		univention.admin.filter.expression('objectClass', 'dNSZone'),
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
+		univention.admin.filter.conjunction('|', [
+			univention.admin.filter.expression('zoneName', '*.in-addr.arpa'),
+			univention.admin.filter.expression('zoneName', '*.ip6.arpa'),
+		]),
+	])
+
+	if superordinate:
+		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('subnet', superordinate['subnet']), escape=True))
+
+	if filter_s:
+		filter_p = univention.admin.filter.parse(filter_s)
+		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
+		if superordinate:
+			filter_p = rewrite_rev(filter_p, superordinate.info['subnet'])
+		filter.expressions.append(filter_p)
+
+	res = []
+	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
+		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
+	return res
 
 
 def rewrite_rev(filter, subnet):
@@ -278,9 +288,6 @@ def rewrite_rev(filter, subnet):
 			expression('relativeDomainName', addr_host or '*'),
 		])
 	return filter
-
-
-lookup = object.lookup
 
 
 def identify(dn, attr):
