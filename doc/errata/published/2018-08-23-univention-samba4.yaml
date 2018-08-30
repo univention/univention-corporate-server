@@ -8,14 +8,14 @@ desc: |
  This update addresses the following issues:
  * Improved error message for school slave join.
  * Two new UCR variables have been added to give more granular control
-   over the behaviour of the sysvol synchronization.
+   over the behaviour of the SYSVOL synchronization.
    "samba4/sysvol/sync/from_upstream/delete" to control whether a downstream
    DC should delete local changes during the synchronization from
    the upstream DC (only usefull in ucsschool with
-   unidirctional synchronization from upstream DC)
+   unidirectional synchronization from upstream DC)
    "samba4/sysvol/sync/fix_gpt_ini" to control whether old, redundant gpt.ini
    files should be deleted after the synchronisation to the local
-   sysvol directory.
+   SYSVOL directory.
  * After a server password change restart all of samba,
    not just the AD/DC component.
 bug: [47388,47576,47638]
