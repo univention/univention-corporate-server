@@ -1,5 +1,6 @@
 from univention.appcenter.actions.docker_remove import Remove
 import shutil
+import univention.appcenter.docker as docker
 
 
 class Purge(Remove):
@@ -16,7 +17,7 @@ class Purge(Remove):
 		# TODO: remove LDAP users and entries?!
 		if app.docker:
 			self.remove_docker_volumes(app)
-			# TODO: remove docker images
+			self.remove_docker_images(app)
 
 	def remove_app(self, args):
 		super(Purge, self).main(args)
@@ -35,3 +36,8 @@ class Purge(Remove):
 				shutil.rmtree(host_directory)
 			except OSError:
 				self.log("WARN: Could not remove docker volume '{}'".format(host_directory))
+
+	def remove_docker_images(self, app):
+		returncode = docker.rmi(app.docker_image)
+		if returncode != 0:
+			self.log("WARN: Could not remove the docker image '{}'".format(app.docker_image))
