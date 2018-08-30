@@ -15,9 +15,8 @@ class Purge(Remove):
 		# TODO: remove database user + credentials-file
 		# TODO: remove LDAP users and entries?!
 		if app.docker:
-			# TODO: remove docker volumes
+			self.remove_docker_volumes(app)
 			# TODO: remove docker images
-			pass
 
 	def remove_app(self, args):
 		super(Purge, self).main(args)
@@ -28,3 +27,11 @@ class Purge(Remove):
 			shutil.rmtree(app_files_dir)
 		except OSError:
 			self.log("WARN: Could not remove '{}'".format(app_files_dir))
+
+	def remove_docker_volumes(self, app):
+		for docker_volume in app.docker_volumes:
+			host_directory = docker_volume.split(':')[0]
+			try:
+				shutil.rmtree(host_directory)
+			except OSError:
+				self.log("WARN: Could not remove docker volume '{}'".format(host_directory))
