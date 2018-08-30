@@ -1586,13 +1586,7 @@ class simpleLdap(object):
 		See :py:meth:`lookup`.
 		"""
 		filter_p = cls.unmapped_lookup_filter()
-		# there are instances where the lookup/lookup_filter method of an module handler is called before
-		# univention.admin.modules.update() was performed. (e.g. management/univention-directory-manager-modules/univention-dnsedit)
-		module = univention.admin.modules.get(cls.module)
-		if not module:
-			univention.admin.modules.update()
-			module = univention.admin.modules.get(cls.module)
-		filter_p.append_unmapped_filter_string(filter_s, cls.rewrite_filter, module.mapping)
+		filter_p.append_unmapped_filter_string(filter_s, cls.rewrite_filter, univention.admin.modules.get(cls.module).mapping)
 		return filter_p
 
 	@classmethod
