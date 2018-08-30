@@ -2,8 +2,8 @@ product: ucs
 release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
-src: 
-fix: 
+src: univention-directory-manager-modules
+fix: 13.0.21-35A~4.3.0.201808300938
 desc: |
  This update addresses the following issue(s):
  * The search filter generated for boolean and multi-value properties
