@@ -71,7 +71,7 @@ define([
 		//		[ { id: 'de', label: 'German' }, { id: 'en', label: 'English' } ].
 		//		Can be mixed with dynamicValues with the predefined values being
 		//		displayed first. May also be only an array with strings (i.e., id==label).
-		staticValues: [],
+		staticValues: null,
 
 		// sortStaticValues: Boolean
 		//		Controls whether static values are sorted automatically.
@@ -90,7 +90,7 @@ define([
 		value: null,
 
 		// internal variable to keep track of which ids have already been added
-		_ids: {},
+		_ids: null,
 
 		_firstValueInList: null,
 
@@ -127,6 +127,9 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+
+			this._ids = {};
+			this.staticValues = this.staticValues || [];
 
 			this._saveInitialValue();
 
@@ -247,6 +250,7 @@ define([
 		},
 
 		_clearValues: function() {
+			this._ids = {};
 			this.store.fetch( {
 				onComplete: lang.hitch( this, function( items ) {
 					array.forEach( items, lang.hitch( this, function( item ) {
