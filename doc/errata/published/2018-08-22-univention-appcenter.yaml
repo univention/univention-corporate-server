@@ -8,7 +8,7 @@ desc: |-
   This update addresses the following issues:
   * Apps may now be notified when relevant objects change in LDAP. This is
     done by adding a listener module to UCS.
-  * Processing of these notifications is done asynchronically. Therefore, a
+  * Processing of these notifications is done asynchronously. Therefore, a
     new service has been added: univention-appcenter-listener-converter.
   * Timezone setup during docker app installations has been fixed.
   * The user root is used inside containers to run scripts.
