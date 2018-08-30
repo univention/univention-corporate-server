@@ -1,4 +1,6 @@
 from univention.appcenter.actions.docker_remove import Remove
+from univention.appcenter.database import DatabaseConnector
+import os
 import shutil
 import univention.appcenter.docker as docker
 
@@ -12,8 +14,7 @@ class Purge(Remove):
 		app = args.app
 		self.remove_app(args)
 		self.remove_apps_files(app)
-		# TODO: remove database
-		# TODO: remove database user + credentials-file
+		self.remove_apps_db_and_user(app)
 		# TODO: remove LDAP users and entries?!
 		if app.docker:
 			self.remove_docker_volumes(app)
@@ -28,6 +29,16 @@ class Purge(Remove):
 			shutil.rmtree(app_files_dir)
 		except OSError:
 			self.log("WARN: Could not remove '{}'".format(app_files_dir))
+
+	def remove_apps_db_and_user(self, app):
+		database_connector = DatabaseConnector.get_connector(app)
+		if database_connector:
+			database_connector.drop_db_and_user()
+
+			try:
+				os.remove(database_connector.get_db_password_file())
+			except OSError:
+				self.log("WARN: Could not remove '{}'".format(database_connector.get_db_password_file()))
 
 	def remove_docker_volumes(self, app):
 		for docker_volume in app.docker_volumes:
