@@ -124,19 +124,14 @@ register_policy_mapping(mapping)
 class object(simplePolicy):
 	module = module
 
+	@classmethod
+	def unmapped_lookup_filter(cls):
+		return udm_filter.conjunction('&', [
+			udm_filter.expression('objectClass', 'umcPolicy')
+		])
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter = udm_filter.conjunction('&', [
-		udm_filter.expression('objectClass', 'umcPolicy')
-	])
-
-	if filter_s:
-		filter_p = udm_filter.parse(filter_s)
-		udm_filter.walk(filter_p, udm_mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
-	return object.lookup(co, lo, filter, base, superordinate, scope, unique, required, timeout, sizelimit)
+lookup = object.lookup
 
 
 def identify(dn, attr, canonical=0):

@@ -464,7 +464,7 @@ def mapDiffAl(mapping, diff):  # UNUSED
 	return ml
 
 
-def mapRewrite(filter, mapping):
+def mapRewrite(filter, mapping, dont_map_value=False):
 	"""
 	Re-write UDM property name/value in UDM filter expression to LDAP attribute name/value.
 
@@ -481,7 +481,7 @@ def mapRewrite(filter, mapping):
 		if not mapping.shouldMap(key):
 			return
 		k = mapping.mapName(key)
-		v = mapping.mapValue(key, filter.value)
+		v = filter.value if dont_map_value else mapping.mapValue(key, filter.value)
 	except KeyError:
 		return
 	if k:

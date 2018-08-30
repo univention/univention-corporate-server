@@ -46,6 +46,7 @@ import types
 import re
 import time
 import sys
+import inspect
 import traceback
 
 import ipaddr
@@ -1559,7 +1560,10 @@ class simpleLdap(object):
 		:return: A list of UDM objects.
 		:rtype: list[simpleLdap]
 		"""
-		filter_str = unicode(cls.lookup_filter(filter_s, lo) or '')
+		filter_s = cls.lookup_filter(filter_s, lo)
+		if superordinate:
+			filter_s = cls.lookup_filter_superordinate(filter_s, superordinate)
+		filter_str = unicode(filter_s or '')
 		attr = cls._ldap_attributes()
 		result = []
 		for dn, attrs in lo.search(filter_str, base, scope, attr, unique, required, timeout, sizelimit):
@@ -1582,8 +1586,18 @@ class simpleLdap(object):
 		See :py:meth:`lookup`.
 		"""
 		filter_p = cls.unmapped_lookup_filter()
-		filter_p.append_unmapped_filter_string(filter_s, cls.rewrite_filter, univention.admin.modules.get(cls.module).mapping)
+		# there are instances where the lookup/lookup_filter method of an module handler is called before
+		# univention.admin.modules.update() was performed. (e.g. management/univention-directory-manager-modules/univention-dnsedit)
+		module = univention.admin.modules.get(cls.module)
+		if not module:
+			univention.admin.modules.update()
+			module = univention.admin.modules.get(cls.module)
+		filter_p.append_unmapped_filter_string(filter_s, cls.rewrite_filter, module.mapping)
 		return filter_p
+
+	@classmethod
+	def lookup_filter_superordinate(cls, filter, superordinate):
+		return filter
 
 	@classmethod
 	def unmapped_lookup_filter(cls):  # type: () -> univention.admin.filter.conjunction
@@ -1599,7 +1613,30 @@ class simpleLdap(object):
 
 	@classmethod
 	def rewrite_filter(cls, filter, mapping):
-		univention.admin.mapping.mapRewrite(filter, mapping)
+		property_ = univention.admin.modules.get(cls.module).property_descriptions.get(filter.variable)
+		if property_ and not isinstance(filter.value, (list, tuple)):
+			if property_.multivalue:
+				# special case: mutlivalue properties need to be a list when map()-ing
+				filter.value = [filter.value]
+			if issubclass(property_.syntax if inspect.isclass(property_.syntax) else type(property_.syntax), univention.admin.syntax.complex):
+				# special case: complex syntax properties need to be a list (of lists, if multivalue)
+				filter.value = [filter.value]
+		# special case: properties that are represented as Checkboxes in the
+		# frontend should include '(!(propertyName=*))' in the ldap filter
+		# if the Checkboxe is set to False to also find objects where the property
+		# is not set. In that case we don't want to map the '*' to a different value.
+		dont_map_value = (
+				property_ 
+				and issubclass(
+					property_.syntax if inspect.isclass(property_.syntax) else type(property_.syntax),
+					(univention.admin.syntax.IStates, univention.admin.syntax.boolean)
+				)
+				and filter.value == '*'
+		)
+		univention.admin.mapping.mapRewrite(filter, mapping, dont_map_value=dont_map_value)
+		if isinstance(filter.value, (list, tuple)) and filter.value:
+			# complex syntax
+			filter.value = filter.value[0]
 
 	@classmethod
 	def _ldap_attributes(cls):
