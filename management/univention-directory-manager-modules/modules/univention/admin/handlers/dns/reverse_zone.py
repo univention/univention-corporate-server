@@ -284,9 +284,10 @@ class object(univention.admin.handlers.simpleLdap):
 			rdn_value = rdn[rdn.find('=') + 1:]
 			return unmapSubnet(rdn_value)
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
+
+def lookup_filter(filter_s=None, lo=None):
+	lookup_filter_obj = \
+		univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'dNSZone'),
 			univention.admin.filter.expression('relativeDomainName', '@'),
 			univention.admin.filter.conjunction('|', [
@@ -294,19 +295,28 @@ class object(univention.admin.handlers.simpleLdap):
 				univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6)
 			]),
 		])
+	lookup_filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
+	return lookup_filter_obj
 
 
-lookup = object.lookup
-lookup_filter = object.lookup_filter
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+
+	filter = lookup_filter(filter_s)
+	res = []
+	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
+		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
+	return res
 
 
 def identify(dn, attr):
+
 	return 'dNSZone' in attr.get('objectClass', []) and\
 		['@'] == attr.get('relativeDomainName', []) and\
 		(attr['zoneName'][0].endswith(ARPA_IP4) or attr['zoneName'][0].endswith(ARPA_IP6))
 
 
 def quickDescription(rdn):
+
 	return unmapSubnet(rdn)
 
 

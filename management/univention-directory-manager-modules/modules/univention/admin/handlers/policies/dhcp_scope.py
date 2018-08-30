@@ -171,14 +171,19 @@ register_policy_mapping(mapping)
 class object(univention.admin.handlers.simplePolicy):
 	module = module
 
-	@classmethod
-	def unmapped_lookup_filter(cls):
-		return univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'univentionPolicyDhcpScope'),
-		])
 
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-lookup = object.lookup
+	filter = univention.admin.filter.conjunction('&', [
+		univention.admin.filter.expression('objectClass', 'univentionPolicyDhcpScope'),
+	])
+
+	if filter_s:
+		filter_p = univention.admin.filter.parse(filter_s)
+		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
+		filter.expressions.append(filter_p)
+
+	return object.lookup(co, lo, filter, base, superordinate, scope, unique, required, timeout, sizelimit)
 
 
 def identify(dn, attr, canonical=0):
