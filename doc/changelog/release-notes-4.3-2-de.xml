@@ -95,8 +95,8 @@
 
 		<para>
 			Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist.
-			Eine Standard-Installation benötigt min. 6 GB Speicherplatz.
-			Das Update benötigt je nach Umfang der vorhanden Installation ungefähr 2 GB zusätzlichen Speicherplatz zum Herunterladen und Installieren der Pakete.
+			Eine Standard-Installation benötigt min. 10 GB Speicherplatz.
+			Das Update benötigt je nach Umfang der vorhanden Installation ungefähr 4 GB zusätzlichen Speicherplatz zum Herunterladen und Installieren der Pakete.
 		</para>
 		<para>
 			Für das Update sollte eine Anmeldung auf der lokalen Konsole des Systems mit dem Benutzer <systemitem class="username">root</systemitem> durchgeführt und das Update dort gestartet werden.

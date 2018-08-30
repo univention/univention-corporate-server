@@ -93,8 +93,8 @@
 
 		<para>
 			It must be checked whether sufficient disk space is available.
-			A standard installation requires a minimum of 6 GB of disk space.
-			Depending on the scope of the existing installation, the update will require about another 2 GB of disk space for download and installation all packages.
+			A standard installation requires a minimum of 10 GB of disk space.
+			Depending on the scope of the existing installation, the update will require about another 4 GB of disk space for download and installation all packages.
 		</para>
 
 		<para>
