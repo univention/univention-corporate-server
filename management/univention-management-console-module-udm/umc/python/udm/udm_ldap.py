@@ -38,7 +38,6 @@ import threading
 import traceback
 import gc
 import functools
-import inspect
 
 from univention.management.console import Translation
 from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
@@ -1069,15 +1068,10 @@ def _object_property_filter(module, object_property, object_property_value, show
 		else:
 			ret = ''
 	else:
-		ret = ''
-		prop = module.module.property_descriptions.get(object_property)
-		if prop and issubclass(prop.syntax if inspect.isclass(prop.syntax) else type(prop.syntax), (udm_syntax.IStates, udm_syntax.boolean)):
-			ret = prop.syntax.get_object_property_filter(object_property, object_property_value)
-		if not ret:
-			ret = '%s=%s' % (object_property, object_property_value)
-			no_substring_value = object_property_value.strip('*')
-			if no_substring_value and no_substring_value != object_property_value:
-				ret = '(|(%s)(%s=%s))' % (ret, object_property, no_substring_value)
+		ret = '%s=%s' % (object_property, object_property_value)
+		no_substring_value = object_property_value.strip('*')
+		if no_substring_value and no_substring_value != object_property_value:
+			ret = '(|(%s)(%s=%s))' % (ret, object_property, no_substring_value)
 	if module is not None:
 		hidden_flag_attribute = 'objectFlag'
 		has_hidden_flag = module.get_property(hidden_flag_attribute) is not None
