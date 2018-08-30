@@ -99,13 +99,6 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	install univention-managed-client
 fi
 
-# Bug #43899: master package of self-service changed, install new master
-# package now, or dependencies will be uninstalled
-if [ "$server_role" = "domaincontroller_master" ] && is_installed univention-self-service-passwordreset-umc
-then
-	install univention-self-service-master
-fi
-
 # Update to UCS 4.3 autoremove
 if ! is_ucr_true update43/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
@@ -163,12 +156,6 @@ fi
 
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >>"$UPDATER_LOG" 2>&1
-
-# Bug 46388 - Ensure atd doesn't kill the UMC update process - remove file
-if test -e /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf; then
-	rm /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf
-	systemctl daemon-reload
-fi
 
 echo "
 

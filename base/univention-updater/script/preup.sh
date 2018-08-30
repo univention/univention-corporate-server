@@ -301,15 +301,6 @@ fail_if_role_package_will_be_removed ()
 	fi
 }
 
-# begin bug 45861 - create proper runit default link
-mkdir -p /etc/runit/runsvdir || true
-if [ "$(readlink /etc/runit/runsvdir/default)" != "/etc/runit/univention" ]; then
-	test -d /etc/runit/runsvdir/default && rmdir /etc/runit/runsvdir/default || true
-	test -h /etc/runit/runsvdir/default && rm /etc/runit/runsvdir/default || true
-	ln -s /etc/runit/univention /etc/runit/runsvdir/default || true
-fi
-# end bug 45861
-
 # begin bug 46562
 block_update_if_system_date_is_too_old() {
 	let system_year=$(date +%Y)
@@ -329,28 +320,6 @@ block_update_if_system_date_is_too_old() {
 }
 block_update_if_system_date_is_too_old
 # end bug 46562
-
-# Bug #46605: Block if single-server SSO is configured
-block_update_if_reconfigured_sso_is_detected() {
-	# The default sso nameserver entry is ucs-sso.$domainname
-	# If the configuration is different,
-	# https://help.univention.com/t/6681 was probably used.
-	# Default config in UCS 4.2 is done in univention-saml/91univention-saml.inst
-	if [ -n "$ucs_server_sso_fqdn" ] && [ "$ucs_server_sso_fqdn" != "ucs-sso.$domainname" ]; then
-		echo "WARNING: Single-Sign on was reconfigured and is not using the default"
-		echo "         DNS settings. When continued, there will be issues using UMC"
-		echo "         after the update."
-		echo "         "
-		echo "         This check can be disabled by setting the UCR variable"
-		echo "         update43/ignore_sso_domain to yes."
-		if is_ucr_true update43/ignore_sso_domain; then
-			echo "WARNING: update43/ignore_sso_domain is set to true. Skipped as requested."
-		else
-			exit 1
-		fi
-	fi
-}
-block_update_if_reconfigured_sso_is_detected
 
 # Bug #46850: Block if failed.ldif exists
 block_update_if_failed_ldif_exists() {
@@ -483,13 +452,6 @@ case "$available_locales" in
 	*) /usr/sbin/univention-config-registry set locale="$available_locales en_US.UTF-8:UTF-8";;
 esac
 
-# Bug 46388 - Ensure atd doesn't kill the UMC update process
-install -d /etc/systemd/system/atd.service.d &&
-if ! test -e /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf; then
-	printf '[Service]\nKillMode=process\n' > /etc/systemd/system/atd.service.d/ucs_release_upgrade.conf
-	systemctl daemon-reload
-fi
-
 # autoremove before the update
 if ! is_ucr_true update43/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
@@ -515,11 +477,6 @@ echo "** Starting: apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade" >&3
 apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade >&3 2>&3
 
 fail_if_role_package_will_be_removed
-
-# Bug 46559: Stop nrpe daemon
-if [ -x /etc/init.d/nagios-nrpe-server ]; then
-	/etc/init.d/nagios-nrpe-server stop >>"$UPDATER_LOG" 2>&1
-fi
 
 echo ""
 echo "Starting update process, this may take a while."

@@ -1,3 +1,9 @@
+univention-updater (13.0.1-59) unstable; urgency=low
+
+  * Bug #47654: Remove deprecated workarounds
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 30 Aug 2018 15:29:48 +0200
+
 univention-updater (13.0.1-58) unstable; urgency=medium
 
   * Bug #47654: Adapt links and components for 4.3-2
