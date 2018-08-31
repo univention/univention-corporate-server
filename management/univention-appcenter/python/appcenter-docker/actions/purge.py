@@ -1,11 +1,13 @@
+from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.docker_remove import Remove
+from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 from univention.appcenter.database import DatabaseConnector
 import os
 import shutil
 import univention.appcenter.docker as docker
 
 
-class Purge(Remove):
+class Purge(InstallRemoveUpgrade, DockerActionMixin):
 
 	def setup_parser(self, parser):
 		super(Purge, self).setup_parser(parser)
@@ -21,7 +23,8 @@ class Purge(Remove):
 			self.remove_docker_images(app)
 
 	def remove_app(self, args):
-		super(Purge, self).main(args)
+		args.backup = False
+		Remove().main(args)
 
 	def remove_apps_files(self, app):
 		app_files_dir = '/var/lib/univention-appcenter/apps/{}'.format(app.id)
