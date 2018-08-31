@@ -9,6 +9,9 @@ import univention.appcenter.docker as docker
 
 class Purge(InstallRemoveUpgrade, DockerActionMixin):
 
+	'''Remove an app with all it's configuration and data'''
+	help = "Remove an app with all it's configuration and data"
+
 	def setup_parser(self, parser):
 		super(Purge, self).setup_parser(parser)
 
