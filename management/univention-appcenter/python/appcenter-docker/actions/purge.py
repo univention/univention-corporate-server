@@ -17,6 +17,10 @@ class Purge(InstallRemoveUpgrade, DockerActionMixin):
 
 	def main(self, args):
 		app = args.app
+		if args.dry_run:
+			self.fatal('A dry run is not implemented for the purge command')
+			return 1
+
 		self.remove_app(args)
 		self.remove_apps_files(app)
 		self.remove_apps_db_and_user(app)
