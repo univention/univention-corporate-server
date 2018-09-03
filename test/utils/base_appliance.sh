@@ -535,7 +535,7 @@ download_system_setup_packages ()
 
 		# welcome-screen + dependencies for all roles
 		# libgif4 is removed upon uninstalling X, so put it in package cache
-		packages="$packages welcome-screen"
+		packages="$packages welcome-screen kernel-headers"
 
 		if ! app_appliance_is_software_blacklisted $app; then
 			packages="$packages management-console-module-adtakeover printserver printquota dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon self-service self-service-passwordreset-umc self-service-master"
