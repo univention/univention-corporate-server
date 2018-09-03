@@ -1,3 +1,9 @@
+univention-saml (5.0.4-27) unstable; urgency=medium
+
+  * Bug #47250: Create runtime directory for stunnel
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 03 Sep 2018 13:06:13 +0200
+
 univention-saml (5.0.4-26) unstable; urgency=medium
 
   * Bug #47309: Fix joinscript error handling
