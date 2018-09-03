@@ -51,6 +51,21 @@
 
 		<itemizedlist>
 			<listitem><para>
+				During the upgrade to new UCS release- or patchlevel versions, the Univention Management Console is put into maintenance mode. While the maintenance mode is active, the progress of the update is displayed on a simple web page.
+			</para></listitem>
+			<listitem><para>
+				Samba has been updated to version 4.7.8. For security reasons, authentication with NTLMv1 is no longer allowed. If there are still old systems or applications in use that absolutely need NTLMv1, this can be reactivated via the Univention Configuration Registry.
+			</para></listitem>
+			<listitem><para>
+				The installation wizard has been enhanced so that possible problems with domain join and the internet connection can be identified and possible solutions can be shown before the installation starts.
+			</para></listitem>
+			<listitem><para>
+				A manually created or customized SAML configuration for a service can now be stored directly in LDAP. This configuration is then replicated to all identity providers involved in single sign-on in the domain.
+			</para></listitem>
+			<listitem><para>
+				The AD connector has been enhanced with tools to synchronize individual objects or entire subtrees again and to specifically remove rejects.
+			</para></listitem>
+			<listitem><para>
 				Various security updates have been integrated into UCS 4.3-2, e.g. <wordasword>Apache2</wordasword>, the Linux kernel and <wordasword>Samba4</wordasword>.
 				A complete list is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
