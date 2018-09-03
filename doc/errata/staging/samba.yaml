@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: samba
+fix: 2:4.6.15-1A~4.2.0.201809031504
+desc: |
+ This update addresses the following issue:
+ * Fix regression: samba-tool ntacl sysvolcheck traceback due to
+   /var/lib/samba/netlogon. This isse affects UCS@school.
+bug: [47710]
