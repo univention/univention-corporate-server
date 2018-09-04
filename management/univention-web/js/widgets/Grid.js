@@ -477,6 +477,10 @@ define([
 				this.filter();
 			}
 
+			// this is for the inner scroll in the udm/navigation module
+			this.own(on(this._grid, 'scroll', lang.hitch(this, function() {
+				domClass.toggle(this.domNode, 'scrollIsNotAtTop', this._grid.getScrollPosition().y !== 0);
+			})));
 		},
 
 		_addViewsToGrid: function() {
