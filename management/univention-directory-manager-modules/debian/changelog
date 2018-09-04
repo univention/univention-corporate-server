@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.22-1) unstable; urgency=medium
+
+  * Bug #43442: Allow to customize portal with about page
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 29 Aug 2018 18:46:05 +0200
+
 univention-directory-manager-modules (13.0.21-34) unstable; urgency=medium
 
   * Bug #40672: Revert 13.0.21-33

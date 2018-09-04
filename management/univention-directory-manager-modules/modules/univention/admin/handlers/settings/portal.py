@@ -197,6 +197,16 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	'links': univention.admin.property(
+		short_description=_('Portal links'),
+		long_description=_('List of static links shown on this portal. Only those links for the selected locale are shown (e.g.,: en_US, de_DE).'),
+		syntax=univention.admin.syntax.PortalLinks,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 
 layout = [
@@ -220,9 +230,24 @@ layout = [
 			# ["showLogin"],
 			["showApps"],
 			# ["showServers"],
+			["links"],
 		]),
 	]),
 ]
+
+
+def mapLinkValue(vals):
+	ret = []
+	for val in vals:
+		ret.append('%s$$%s$$%s$$%s' % (val[0], val[1], val[2], val[3]))
+	return ret
+
+
+def unmapLinkValue(vals):
+	ret = []
+	for val in vals:
+		ret.append(val.split('$$', 4))
+	return ret
 
 
 def mapTranslationValue(vals):
@@ -252,6 +277,7 @@ mapping.register('cssBackground', 'univentionPortalCSSBackground', None, univent
 mapping.register('fontColor', 'univentionPortalFontColor', None, univention.admin.mapping.ListToString)
 mapping.register('logo', 'univentionPortalLogo', None, univention.admin.mapping.ListToString)
 mapping.register('portalEntriesOrder', 'univentionPortalEntriesOrder')
+mapping.register('links', 'univentionPortalLinks', mapLinkValue, unmapLinkValue)
 
 
 class object(univention.admin.handlers.simpleLdap):

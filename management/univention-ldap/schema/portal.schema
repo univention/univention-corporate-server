@@ -84,6 +84,12 @@ attributetype ( univentionPortalAttributeType:11 NAME 'univentionPortalEntriesOr
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
+attributetype ( univentionPortalAttributeType:12 NAME 'univentionPortalLinks'
+	DESC 'Portal links'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
 objectclass ( univentionPortalObjectClass:1 NAME 'univentionPortal'
 	DESC 'Portal data'
 	SUP top
@@ -100,6 +106,7 @@ objectclass ( univentionPortalObjectClass:1 NAME 'univentionPortal'
 			$ univentionPortalLogo
 			$ univentionPortalFontColor
 			$ univentionPortalEntriesOrder
+			$ univentionPortalLinks
 		)
 	)
 

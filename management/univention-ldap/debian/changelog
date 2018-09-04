@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-18) unstable; urgency=medium
+
+  * Bug #43442: Allow to customize portal with static pages
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 29 Aug 2018 18:46:41 +0200
+
 univention-ldap (14.0.2-17) unstable; urgency=medium
 
   * Bug #47196: Adjust default ldap/debug/level from 0 to "none"

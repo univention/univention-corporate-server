@@ -68,6 +68,7 @@ def _save(dn, portal):
 	fname = _fname()
 	portal['dn'] = dn
 	content = _load()
+	content['links'] = portal.pop('links', {})
 	content['portal'] = portal
 	with open(fname, 'wb') as fd:
 		dump(content, fd, indent=2)
@@ -145,6 +146,15 @@ body.umc .portalCategory h2 {
 		ud.debug(ud.LISTENER, ud.WARN, 'Failed to write CSS file %s: %s' % (fname, err))
 
 
+def _make_links(links):
+	ret = {}
+	for link in links:
+		location, href, locale, name = link.split('$$', 4)
+		location_list = ret.setdefault(location, [])
+		location_list.append({'name': name, 'locale': locale, 'href': href})
+	return ret
+
+
 def _make_obj(obj):
 	return {
 		'name': _split_translation(obj.get('univentionPortalDisplayName')),
@@ -156,6 +166,7 @@ def _make_obj(obj):
 		'logo': _save_image(obj, 'univentionPortalLogo', 'logos'),
 		'fontColor': obj.get('univentionPortalFontColor', [''])[0],
 		'portalEntriesOrder': obj.get('univentionPortalEntriesOrder', []),
+		'links': _make_links(obj.get('univentionPortalLinks', [])),
 	}
 
 

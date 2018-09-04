@@ -3499,6 +3499,18 @@ class PortalEntries(UDM_Objects):
 	empty_value = True
 
 
+class PortalLinksPosition(select):
+	choices = [
+		('footer', _('Footer')),
+	]
+
+
+class PortalLinks(complex):
+	delimiter = '$$'
+	subsyntaxes = [(_('Position'), PortalLinksPosition), (_('Link'), string), (_('Locale'), languageCode), (_('Name'), string)]
+	all_required = True
+
+
 class AuthRestriction(select):
 	choices = [
 		('admin', _('Visible for Admins only')),

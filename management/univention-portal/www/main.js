@@ -1792,8 +1792,24 @@ define([
 			this._initStyling();
 			this._updateStyling();
 			this._createCategories();
+			this._addLinks();
 
 			put(dojo.body(), new NotificationSnackbar({}).domNode);
+		},
+
+		_addLinks: function() {
+			var links = portalContent.links;
+			if (! links) {
+				return;
+			}
+			array.forEach(links.footer, function(link) {
+				if (link.locale != locale) {
+					return;
+				}
+				var name = link.name;
+				var a = put(dom.byId('portal-footer'), 'a', name);
+				a.href = link.href;
+			});
 		},
 
 		_checkEditAuthorization: function() {
