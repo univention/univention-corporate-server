@@ -640,13 +640,14 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 
 		# check pwdLastSet
 		if sambaPwdLastSet is not None:
-			newpwdlastset = univention.s4connector.s4.samba2s4_time(sambaPwdLastSet)
+			if sambaPwdLastSet in [0, 1]:
+				newpwdlastset = 0
+			else:
+				newpwdlastset = univention.s4connector.s4.samba2s4_time(sambaPwdLastSet)
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: sambaPwdLastSet: %d" % sambaPwdLastSet)
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: newpwdlastset  : %s" % newpwdlastset)
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet (AD): %s" % pwdLastSet)
-			if sambaPwdLastSet in [0, 1]:
-				modlist.append((ldap.MOD_REPLACE, 'pwdLastSet', "0"))
-			elif newpwdlastset != pwdLastSet and abs(newpwdlastset - pwdLastSet) >= 10000000:
+			if newpwdlastset != pwdLastSet and abs(newpwdlastset - pwdLastSet) >= 10000000:
 				modlist.append((ldap.MOD_REPLACE, 'pwdLastSet', str(newpwdlastset)))
 
 	# TODO: Password History
