@@ -513,10 +513,9 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		sambaPwdLastSet = long(ucs_object_attributes['sambaPwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: sambaPwdLastSet: %s" % sambaPwdLastSet)
 
-	sambaPwdMustChange = -1
 	if 'sambaPwdMustChange' in ucs_object_attributes:
 		sambaPwdMustChange = long(ucs_object_attributes['sambaPwdMustChange'][0])
-	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: sambaPwdMustChange: %s" % sambaPwdMustChange)
+		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4: Ignoring sambaPwdMustChange: %s" % sambaPwdMustChange)
 
 	ucsLMhash = ucs_object_attributes.get('sambaLMPassword', [None])[0]
 	ucsNThash = ucs_object_attributes.get('sambaNTPassword', [None])[0]
@@ -617,18 +616,14 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 				# else:
 				#	modlist.append((ldap.MOD_ADD, 'msDS-KeyVersionNumber', krb5KeyVersionNumber))
 
-		if sambaPwdMustChange >= 0 and sambaPwdMustChange < time.time():
-			# password expired, must be changed on next login
+		if sambaPwdLastSet is None:
+			sambaPwdLastSet = int(time.time())
+			newpwdlastset = str(univention.s4connector.s4.samba2s4_time(sambaPwdLastSet))
+		elif sambaPwdLastSet in [0, 1]:
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: samba pwd expired, set newpwdLastSet to 0")
 			newpwdlastset = 0
 		else:
-			if sambaPwdLastSet is None:
-				sambaPwdLastSet = int(time.time())
-				newpwdlastset = univention.s4connector.s4.samba2s4_time(sambaPwdLastSet)
-			elif sambaPwdLastSet in [0, 1]:
-				newpwdlastset = 0
-			else:
-				newpwdlastset = univention.s4connector.s4.samba2s4_time(sambaPwdLastSet)
+			newpwdlastset = univention.s4connector.s4.samba2s4_time(sambaPwdLastSet)
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet in modlist: %s" % newpwdlastset)
 		modlist.append((ldap.MOD_REPLACE, 'pwdLastSet', str(newpwdlastset)))
 		modlist.append((ldap.MOD_REPLACE, 'badPwdCount', '0'))
@@ -727,7 +722,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 		sambaPwdMustChange = ''
 		if 'sambaPwdMustChange' in ucs_object_attributes:
 			sambaPwdMustChange = ucs_object_attributes['sambaPwdMustChange'][0]
-		ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: sambaPwdMustChange: %s" % sambaPwdMustChange)
+			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: Found sambaPwdMustChange: %s" % sambaPwdMustChange)
 		krb5Key_ucs = ucs_object_attributes.get('krb5Key', [])
 		userPassword_ucs = ucs_object_attributes.get('userPassword', [None])[0]
 		krb5KeyVersionNumber = ucs_object_attributes.get('krb5KeyVersionNumber', [None])[0]
@@ -768,29 +763,21 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 
 			pwdLastSet_unix = univention.s4connector.s4.s42samba_time(pwdLastSet)
 			newSambaPwdLastSet = str(pwdLastSet_unix)
-			newSambaPwdMustChange = sambaPwdMustChange
 
-			if pwdLastSet == 0:  # pwd change on next login
-				newSambaPwdMustChange = str(pwdLastSet_unix)
-			else:
+			if pwdLastSet != 0:  # not pwd change on next login
 				new_shadowLastChange = str(pwdLastSet_unix / 3600 / 24)
 				userobject = s4connector.get_ucs_object('user', ucs_object['dn'])
 				if not userobject:
 					ud.debug(ud.LDAP, ud.ERROR, "password_sync_s4_to_ucs: couldn't get user-object from UCS")
 					return False
-				sambaPwdMustChange = sambaPwdMustChange.strip()
-				if not sambaPwdMustChange.isdigit():
-					pass
-				elif pwd_changed or (long(sambaPwdMustChange) < time.time() and not pwdLastSet == 0):
+				if pwd_changed:
 					pwhistoryPolicy = userobject.loadPolicyObject('policies/pwhistory')
 					try:
 						expiryInterval = int(pwhistoryPolicy['expiryInterval'])
-						newSambaPwdMustChange = str(pwdLastSet_unix + (expiryInterval * 3600 * 24))
 					except:  # FIXME: which exception is to be caught?
 						# expiryInterval is empty or no legal int-string
 						pwhistoryPolicy['expiryInterval'] = ''
 						expiryInterval = -1
-						newSambaPwdMustChange = ''
 
 					ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: pwhistoryPolicy: expiryInterval: %s" % expiryInterval)
 
@@ -826,15 +813,9 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 				modlist.append(('sambaPwdLastSet', '', newSambaPwdLastSet))
 				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: sambaPwdLastSet in modlist (set): %s" % newSambaPwdLastSet)
 
-			if sambaPwdMustChange != newSambaPwdMustChange:
-				# change if password has changed or "change pwd on next login" is not set
-				# set sambaPwdMustChange regarding to the univention-policy
-				if sambaPwdMustChange:
-					modlist.append(('sambaPwdMustChange', sambaPwdMustChange, newSambaPwdMustChange))
-					ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: sambaPwdMustChange in modlist (replace): %s" % newSambaPwdMustChange)
-				else:
-					modlist.append(('sambaPwdMustChange', '', newSambaPwdMustChange))
-					ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: sambaPwdMustChange in modlist (set): %s" % newSambaPwdMustChange)
+			if sambaPwdMustChange:
+				modlist.append(('sambaPwdMustChange', sambaPwdMustChange, ''))
+				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: Removing sambaPwdMustChange")
 
 		if len(modlist) > 0:
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: modlist: %s" % modlist)
