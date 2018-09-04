@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: libtirpc
+fix: 0.2.5-1+deb8u2
+desc: |
+ This update addresses the following issue:
+ * Segmentation fault in makefd_xprt return value in svc_vc.c (CVE-2018-14622)
+bug: [47752]
+cve:
+- CVE-2018-14622
