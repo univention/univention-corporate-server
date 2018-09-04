@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: samba
+fix: ~2:4.7.8-1A~4.3.0.201809041656
+desc: |
+ This update addresses the following issue(s):
+ * When joining a new Samba/AD DC, Samba replicates all LDAP partitions
+   independently. Depending on timing the replication of the linked attribute
+   "serverReference" could fail, if CN=Configuration gets replicated before
+   the main domain partition. As a result DRS replication could fail.
+bug: [47441]
