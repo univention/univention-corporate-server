@@ -14,4 +14,4 @@ desc: |
    UDM/OpenLDAP. In an UCS@school specific UMC module this caused a display
    issue, where the next required password change was shown as "never".
    This behavior has been fixed.
-bug: [45282, 47595]
+bug: [45282, 47508, 47595]
