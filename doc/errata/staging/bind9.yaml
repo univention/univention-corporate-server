@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [4]
+scope: ucs_4.2-0-errata4.2-4
+src: bind9
+fix: 1:9.9.5.dfsg-9+deb8u16A~4.2.4.201809041803
+desc: |
+ This update addresses the following issue:
+ * processing of certain records when "deny-answer-aliases" is in use may
+   trigger an assert leading to a denial of service (CVE-2018-5740)
+bug: [47750]
+cve:
+- CVE-2018-5740
