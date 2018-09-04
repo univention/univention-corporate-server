@@ -75,7 +75,7 @@ class DovecotFolderAclEntry(object):
 		return '{} "{}" {}'.format(self.folder_name, self.identifier, self.acl)
 
 	@classmethod
-	def from_str(cls, line):  # type (str) -> DovecotFolderAclEntry
+	def from_str(cls, line):  # type: (str) -> DovecotFolderAclEntry
 		# try with quotation marks first
 		m = glocal_acl_pattern1.match(line.strip())
 		if m:

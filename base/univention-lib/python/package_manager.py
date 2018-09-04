@@ -600,7 +600,7 @@ class PackageManager(object):
 		self.progress_state.add_start_steps(100)
 		self.progress_state.percentage(0)
 
-	def set_max_steps(self, steps):  # type (int) -> None
+	def set_max_steps(self, steps):  # type: (int) -> None
 		"""
 		Set maximum number of steps.
 
@@ -608,7 +608,7 @@ class PackageManager(object):
 		"""
 		self.progress_state._max_steps = steps
 
-	def set_finished(self):  # type () -> None
+	def set_finished(self):  # type: () -> None
 		"""
 		Signal all steps done.
 		"""
