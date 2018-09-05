@@ -9,3 +9,5 @@ desc: |
  * Fix regression: samba-tool ntacl sysvolcheck traceback due to
    /var/lib/samba/netlogon. This isse affects UCS@school.
 bug: [47710]
+erratum: 505
+announced: 2018-09-05
