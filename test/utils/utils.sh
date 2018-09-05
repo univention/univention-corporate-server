@@ -64,6 +64,7 @@ rotate_logfiles () {
 }
 
 jenkins_updates () {
+
 	ucr set update43/checkfilesystems=no
 	local version_version version_patchlevel version_erratalevel target rc=0
 	target="$(echo "${JOB_NAME:-}"|sed -rne 's,.*/UCS-([0-9]+\.[0-9]+-[0-9]+)/.*,\1,p')"
@@ -85,6 +86,8 @@ jenkins_updates () {
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
 	echo "Continuing from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
 	echo "errata_update=$errata_update"
+
+	test -n "$ERRATA_TESTS" && errata_update=testing
 
 	case "${errata_update:-}" in
 	testing) upgrade_to_latest_test_errata || rc=$? ;;
@@ -955,6 +958,13 @@ dump_systemd_journal () {
 
 prepare_results () {
 	dump_systemd_journal
+}
+
+add_branch_repository () {
+	test -z "$APT_REPO" && return 0
+	echo adding apt repo "$APT_REPO"
+	apt-get update
+	return $?
 }
 
 # vim:set filetype=sh ts=4:
