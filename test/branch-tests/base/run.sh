@@ -7,8 +7,7 @@ cd test
 
 # update packages
 #./build-branch-packages -g $GIT_BRANCH
-cfg="branch-tests/base/$CFG_FILE"
-declare -a cmd=("./ucs-ec2-tools/ucs-kvm-create" "-c" "branch-tests/$CFG_FILE")
+declare -a cmd=("./ucs-ec2-tools/ucs-kvm-create" "-c" "branch-tests/base/$CFG_FILE")
 "$HALT" && cmd+=("-t")
 "${cmd[@]}"
 test -e "./COMMAND_SUCCESS"
