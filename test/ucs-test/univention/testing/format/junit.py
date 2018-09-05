@@ -127,7 +127,7 @@ class Junit(TestFormatInterface):
                 msg = TestCodes.MESSAGE.get(result.reason, '')
                 xml.startElement('failure', {
                     'type': 'TestFailure',
-                    'message': msg,
+                    'message': '{} ({})'.format(msg, result.case.description or result.case.uid),
                 })
                 xml.endElement('failure')
 
