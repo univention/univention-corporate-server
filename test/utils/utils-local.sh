@@ -52,6 +52,7 @@ fetch-results () {
 		ucs-test.log
 		test-reports
 		artifacts
+		'/var/log/journalctl.log'
 		'/var/log/univention/management*'
 		'/var/log/univention/{join,setup,listener,appcenter,actualise,system-stats,updater,directory-manager-cmd}.log'
 		'/var/log/{syslog,auth.log}'

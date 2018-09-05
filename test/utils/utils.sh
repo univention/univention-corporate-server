@@ -882,4 +882,12 @@ assert_admember_mode () {
 	is_localhost_in_admember_mode
 }
 
+dump_systemd_journal () {
+	journalctl > /var/log/journalctl.log || echo "Could not dump systemd journal."
+}
+
+prepare_results () {
+	dump_systemd_journal
+}
+
 # vim:set filetype=sh ts=4:
