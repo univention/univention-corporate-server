@@ -761,43 +761,46 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			old_shadowLastChange = ucs_object_attributes.get('shadowLastChange', [None])[0]
 			new_shadowLastChange = old_shadowLastChange
 
+			# shadowMax (set to value of univentionPWExpiryInterval, otherwise delete)
+			# krb5PasswordEnd (set to today + univentionPWExpiryInterval, otherwise delete)
+			old_shadowMax = ucs_object_attributes.get('shadowMax', [None])[0]
+			new_shadowMax = old_shadowMax
+			old_krb5end = ucs_object_attributes.get('krb5PasswordEnd', [None])[0]
+			new_krb5end = old_krb5end
+
 			pwdLastSet_unix = univention.s4connector.s4.s42samba_time(pwdLastSet)
 			newSambaPwdLastSet = str(pwdLastSet_unix)
 
-			if pwdLastSet != 0:  # not pwd change on next login
+			if pwdLastSet == 0:  # pwd change on next login
+				new_shadowMax = '1'
+				expiry = long(time.time())
+				new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
+			else:                # not pwd change on next login
 				new_shadowLastChange = str(pwdLastSet_unix / 3600 / 24)
 				userobject = s4connector.get_ucs_object('user', ucs_object['dn'])
 				if not userobject:
 					ud.debug(ud.LDAP, ud.ERROR, "password_sync_s4_to_ucs: couldn't get user-object from UCS")
 					return False
-				if pwd_changed:
-					pwhistoryPolicy = userobject.loadPolicyObject('policies/pwhistory')
-					try:
-						expiryInterval = int(pwhistoryPolicy['expiryInterval'])
-					except:  # FIXME: which exception is to be caught?
-						# expiryInterval is empty or no legal int-string
-						pwhistoryPolicy['expiryInterval'] = ''
-						expiryInterval = -1
 
-					ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: pwhistoryPolicy: expiryInterval: %s" % expiryInterval)
+				pwhistoryPolicy = userobject.loadPolicyObject('policies/pwhistory')
+				try:
+					expiryInterval = int(pwhistoryPolicy['expiryInterval'])
+				except (TypeError, ValueError):
+					# expiryInterval is empty or no legal int-string
+					pwhistoryPolicy['expiryInterval'] = ''
+					expiryInterval = -1
+
+				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: password expiryInterval for %s is %s" % (ucs_object['dn'], expiryInterval))
+				if expiryInterval in (-1, 0):
+					new_shadowMax = ''
+					new_krb5end = ''
+				else:
+					new_shadowMax = str(expiryInterval)
+					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime((pwdLastSet_unix + (int(expiryInterval) * 3600 * 24))))
 
 			if new_shadowLastChange != old_shadowLastChange:
 				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
 				modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
-			# shadowMax (set to value of univentionPWExpiryInterval, otherwise delete)
-			# krb5PasswordEnd (set to today + univentionPWExpiryInterval, otherwise delete)
-			policies = s4connector.lo.getPolicies(ucs_object['dn'])
-			old_shadowMax = ucs_object_attributes.get('shadowMax', [None])[0]
-			new_shadowMax = old_shadowMax
-			old_krb5end = ucs_object_attributes.get('krb5PasswordEnd', [None])[0]
-			new_krb5end = old_krb5end
-			pwexp = policies.get('univentionPolicyPWHistory', {}).get('univentionPWExpiryInterval')
-			if pwexp:
-				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: password expiry for %s is %s" % (ucs_object['dn'], pwexp))
-				pwexp_value = pwexp.get('value', [None])[0]
-				if pwexp_value:
-					new_shadowMax = pwexp_value
-					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime((pwdLastSet_unix + (int(pwexp_value) * 3600 * 24))))
 			if new_shadowMax != old_shadowMax:
 				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowMax to %s for %s" % (new_shadowMax, ucs_object['dn']))
 				modlist.append(('shadowMax', old_shadowMax, new_shadowMax))
