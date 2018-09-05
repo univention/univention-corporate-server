@@ -949,4 +949,12 @@ postgres91_update () {
 	DEBIAN_FRONTEND='noninteractive' apt-get purge --yes postgresql-9.1
 }
 
+dump_systemd_journal () {
+	journalctl > /var/log/journalctl.log || echo "Could not dump systemd journal."
+}
+
+prepare_results () {
+	dump_systemd_journal
+}
+
 # vim:set filetype=sh ts=4:

@@ -59,8 +59,9 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/auth.log'
 		'/var/log/daemon.log'
 		'/var/log/dovecot.log'
+		'/var/log/journalctl.log'
 		'/var/log/mail.log'
-		'/var/log/samba/*'=
+		'/var/log/samba/*'
 		'/var/log/syslog'
 		'/var/log/univention/actualise.log'
 		'/var/log/univention/appcenter.log'
