@@ -961,10 +961,12 @@ prepare_results () {
 }
 
 add_branch_repository () {
-	test -z "$APT_REPO" && return 0
-	echo adding apt repo "$APT_REPO"
-	apt-get update
-	return $?
+	local extra_list="/root/utils/apt-get-branch-repo.list"
+	if [ -f "$extra_list" ]; then
+		cp "$extra_list" /etc/apt/sources.list.d/
+		apt-get update
+		return $?
+	fi
 }
 
 # vim:set filetype=sh ts=4:
