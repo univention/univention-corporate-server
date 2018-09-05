@@ -1,3 +1,9 @@
+ucs-test (8.0.28-176) unstable; urgency=low
+
+  * Bug #47735: Remove unreliable test fragment
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Wed, 05 Sep 2018 16:56:34 +0200
+
 ucs-test (8.0.28-175) unstable; urgency=low
 
   * Bug #47716: wait for s4 to write SID to OpenLDAP after creating user
