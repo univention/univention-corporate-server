@@ -1,3 +1,12 @@
+ucs-test (8.0.28-175) unstable; urgency=low
+
+  * Bug #47716: wait for s4 to write SID to OpenLDAP after creating user
+  * Bug #46512: show test description if it fails
+  * Bug #45828: enable test, add debug output
+
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 05 Sep 2018 15:49:04 +0200
+
 ucs-test (8.0.28-174) unstable; urgency=medium
 
   * Bug #47000: verson bump

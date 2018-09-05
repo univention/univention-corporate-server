@@ -1,16 +1,18 @@
 #!/usr/share/ucs-test/runner python
 ## -*- coding: utf-8 -*-
 ## desc: test automatic reconnect of uldap.py
-## tags: [skip_admember,SKIP]
+## tags: [skip_admember]
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
 ##   - python-univention-directory-manager
+##   - python-univention
 
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 import univention.testing.udm
 import univention.testing.ucr
+import univention.testing.strings as uts
 import univention.uldap
 import univention.admin.uldap
 import univention.admin.uexceptions
@@ -69,25 +71,35 @@ def main():
 			restart_finished = False
 			start_new_thread(delayed_slapd_restart, ())
 			filter_s = filter_format('(uid=%s)', (account.username,))
+			count = 0
 			try:
 				while not restart_finished:
-					lo.search(filter=filter_s)[0][0]
+					res = lo.search(filter=filter_s)[0][0]
+					assert res == account.binddn
+					count += 1
+				print('LDAP search finished successfully {} times.'.format(count))
 			except Exception as exc:
+				print('LDAP modify failed after succeeding {} times.'.format(count))
 				print traceback.format_exc()
 				utils.fail('lo.search() is not restart-safe with %r follow_referral=%r: %s' % (lo, follow_referral, exc,))
 
 			# test lo.modify operation
 			restart_finished = False
 			start_new_thread(delayed_slapd_restart, ())
+			count = 0
 			try:
 				old_description = ''
 				while not restart_finished:
-					new_description = 'Foo bar %s' % (time.time(),)
-					lo.modify(user_dn, [['description', old_description, new_description]])
+					new_description = 'Foo bar %s' % (uts.random_string(5),)
+					res = lo.modify(user_dn, [['description', old_description, new_description]])
+					assert res == user_dn
 					old_description = new_description
+					count +=1
+				print('LDAP modify finished successfully {} times.'.format(count))
 			except (INSUFFICIENT_ACCESS, univention.admin.uexceptions.permissionDenied):
 				pass  # On DC Slaves no objects can be modified
 			except Exception as exc:
+				print('LDAP modify failed after succeeding {} times.'.format(count))
 				print traceback.format_exc()
 				utils.fail('lo.modify() is not restart-safe with %r follow_referral=%r: %s' % (lo, follow_referral, exc,))
 
