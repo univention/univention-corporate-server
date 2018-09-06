@@ -959,6 +959,14 @@ dump_systemd_journal () {
 	journalctl > /var/log/journalctl.log || echo "Could not dump systemd journal."
 }
 
+add_hostname_to_juint_results ()
+{
+	local hostname="$(hostname)"
+	for f in test-reports/*/*.xml; do
+		sed -i "s| name=\"| name=\"${hostname}.|g;s|testcase classname=\"|testcase classname=\"${hostname}.|g" $f
+	done
+}
+
 prepare_results () {
 	dump_systemd_journal
 }
@@ -971,5 +979,6 @@ add_branch_repository () {
 		return $?
 	fi
 }
+
 
 # vim:set filetype=sh ts=4:
