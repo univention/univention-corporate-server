@@ -30,8 +30,7 @@ get_ucsschool_git_checkout () {
 		git fetch --no-tags --progress "$REPO_UCSSCHOOL" "+refs/heads/${UCSSCHOOL_BRANCH}:refs/remotes/origin/${UCSSCHOOL_BRANCH}" --depth=1
 		echo ">>> perform a sparse checkout"
 		git config core.sparsecheckout true
-		echo "tests/*" >> .git/info/sparse-checkout
-		echo "ucs-test-ucsschool/*" >> .git/info/sparse-checkout
+		echo "test/*" >> .git/info/sparse-checkout
 		git checkout -b "$UCSSCHOOL_BRANCH" "origin/$UCSSCHOOL_BRANCH"
 		echo ">>> UCS@school checkout done"
 	)
@@ -56,7 +55,7 @@ fi
 get_ucsschool_git_checkout
 
 # copy UCS@school specific files to UCS test directory
-[ -d "$GIT_DIR_UCSSCHOOL/test" ] && cp -rav "$GIT_DIR_UCSSCHOOL/test/*" "test/"
+[ -d "$GIT_DIR_UCSSCHOOL/test" ] && cp -Rav "$GIT_DIR_UCSSCHOOL/test/"* "test/"
 
 cd test
 
