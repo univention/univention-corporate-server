@@ -1,3 +1,14 @@
+ucs-test (8.0.28-180) unstable; urgency=low
+
+  * Bug #47718: make test more verbose
+  * fix network redirection
+  * print received email
+  * add support for EHLO
+  * send custom FQDN (prevent Postfix: 'greeted me with my own hostname' and
+    'replied to HELO/EHLO with my own host')
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 06 Sep 2018 16:11:10 +0200
+
 ucs-test (8.0.28-179) unstable; urgency=medium
 
   * Bug #47735: Add test fragment to check for correct process representation.
