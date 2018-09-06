@@ -42,12 +42,13 @@ class UMCTester(object):
 		self.selenium.do_login()
 		self.selenium.open_module(_('Process overview'))
 
-		'''
 		self.search('', _('All'))
-		self.compare_umc_process_count_with(len(psutil.pids()))
+		self.selenium.scroll_down()
+		self.check_for_malformed_entries()
+
 		self.search('root', _('User'))
-		self.compare_umc_process_count_with(len([pid for pid in psutil.process_iter() if pid.username() == 'root']))
-		''' # Removed since it is not relaibly testable. (Processes change between selenium call and test call of psutils)
+		self.selenium.scroll_down()
+		self.check_user_filter()
 
 		p = subprocess.Popen(['sleep', '5000'])
 		self.check_if_process_is_searchable(p.pid, _('PID'), p.pid)
@@ -58,20 +59,17 @@ class UMCTester(object):
 		self.kill_process_and_check_if_gone(p, force=True)
 
 
-	def compare_umc_process_count_with(self, count):
-		process_count_umc = self.get_process_count_umc()
-		process_count_psutil = count
-		if abs(process_count_umc - process_count_psutil) >= 5:
-			raise UmcError('The process count in the UMC grid and psutil differs by more then 5. UMC - %s ; psutil - %s' % (process_count_umc, process_count_psutil))
-		elif process_count_umc - process_count_psutil != 0:
-			print "####### WARNING Process count in the UMC grid and psutil differs by %s" % abs(process_count_umc - process_count_psutil)
+	def check_for_malformed_entries(self):
+		cells = self.selenium.driver.find_elements_by_css_selector('.dgrid-row .dgrid-cell:not(.dgrid-selector)')
+		if not all((c.text for c in cells)):
+			raise UmcError('Malformed(empty) cell in one of the rows displaying the processes.')
 
 
-	def get_process_count_umc(self):
-		grid_status = self.selenium.driver.find_element_by_css_selector('.umcGridStatus')
-		process_count_umc = int(re.search(r' (\d*) selected', grid_status.text).group(1))
-		return process_count_umc
-	
+	def check_user_filter(self):
+		cells = self.selenium.driver.find_elements_by_css_selector('.field-user[role=gridcell')
+		if not all(c.text == 'root' for c in cells):
+			raise UmcError('Found process that belongs to another user than root after filtering process for root user only')
+
 
 	def check_if_process_is_searchable(self, pid, category, search_value):
 		self.search(search_value, category)

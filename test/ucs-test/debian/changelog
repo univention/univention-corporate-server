@@ -1,3 +1,9 @@
+ucs-test (8.0.28-179) unstable; urgency=medium
+
+  * Bug #47735: Add test fragment to check for correct process representation.
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Thu, 06 Sep 2018 12:19:24 +0200
+
 ucs-test (8.0.28-178) unstable; urgency=medium
 
   * Bug #47736: only run 180_portal_entries on master and backup
