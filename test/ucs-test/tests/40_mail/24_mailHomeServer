@@ -5,6 +5,8 @@
 ## packages: [univention-mail-server]
 
 from essential.mail import send_mail, check_delivery
+import univention.admin.uldap
+from univention.admin.uexceptions import authFail
 from univention.testing.mail import MailSink
 from univention.testing.network import NetworkRedirector
 import dns.resolver
@@ -77,15 +79,20 @@ def main():
 						'mailHomeServer': mailHomeServer
 					}
 				)
+				try:
+					univention.admin.uldap.access(binddn=user_dn, bindpw=password)
+					print('*** OK: user can bind to LDAP server.')
+				except authFail:
+					utils.fail('User cannot bind to LDAP server.')
 				mails_list.append(mail)
 
 			port = 60025
 			sink_files = []
 			mail_sinks = []
-			for i in xrange(2):
+			for mailHomeServer, ip in hosts:
 				f = tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp')
-				nethelper.add_redirection(hosts[i][1], 25, port)
-				ms = MailSink('127.0.0.1', port, filename=f.name)
+				nethelper.add_redirection(ip, 25, port)
+				ms = MailSink('127.0.0.1', port, filename=f.name, fqdn=mailHomeServer)
 				ms.start()
 				port += 1
 				mail_sinks.append(ms)
@@ -103,8 +110,11 @@ def main():
 						password=password
 					)
 					check_delivery(token, mail, False)
+					print('*** OK: mail was not delivered to systemmail/Dovecot.')
 					check_delivery_mailsink(token, sink_files[0].name, (i == 0))
+					print('*** OK: mail was{} sent to mailsink 1.'.format(' not' if i != 0 else ''))
 					check_delivery_mailsink(token, sink_files[1].name, (i == 1))
+					print('*** OK: mail was{} sent to mailsink 2.'.format(' not' if i != 1 else ''))
 			finally:
 				for ms in mail_sinks:
 					ms.stop()
