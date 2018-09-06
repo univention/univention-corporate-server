@@ -1,3 +1,9 @@
+ucs-test (8.0.28-177) unstable; urgency=low
+
+  * Bug #47716: don't wait to long or post_run will happen
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 06 Sep 2018 10:18:17 +0200
+
 ucs-test (8.0.28-176) unstable; urgency=low
 
   * Bug #47735: Remove unreliable test fragment

@@ -100,7 +100,7 @@ def main():
 			username=username
 		)
 		wait_for_drs_replication(filter_format('cn=%s', (username,)))
-		wait_for_s4connector()  # wait for s4 to write SID back to OpenLDAP
+		time.sleep(2)  # wait for s4 to write SID back to OpenLDAP, don't wait to long or a post_run() will happen
 		verify_ldap_object(userdn, should_exist=True)
 
 		lm_logger.info('*** Checking setuid()...')
