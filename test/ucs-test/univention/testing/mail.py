@@ -56,7 +56,7 @@ class MailSink(object):
     <do some stuff>
     >>> ms.stop()
     """
-    class EmlServer(SMTPServer):
+    class EmlServer(DebuggingServer):
         target_dir = '.'
         number = 0
         filename = None
