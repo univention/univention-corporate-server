@@ -225,7 +225,7 @@ def get_dir_files(dir_path, recursive=True, exclude=None):
 	for f in glob.glob('%s/*' % dir_path):
 		if os.path.isfile(f):
 			result.append(f)
-		if os.path.isdir(f) and recursive and f not in exclude:
+		if os.path.isdir(f) and recursive and os.path.basename(f) not in exclude:
 			result.extend(get_dir_files(f))
 	return result
 
