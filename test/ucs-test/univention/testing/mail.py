@@ -56,11 +56,25 @@ class MailSink(object):
     >>> ms.stop()
     """
 
+    addr2fqdn = {}
+
     class ESMTPChannel(SMTPChannel):
         def __init__(self, server, conn, addr, fqdn=None):
+            MailSink.addr2fqdn[addr] = fqdn
             SMTPChannel.__init__(self, server, conn, addr)
 
+        def push(self, msg):
+            # catch "220 $FQDN $VERSION" from SMTPChannel.__init__()
+            try:
+                new_fqdn = MailSink.addr2fqdn[self._SMTPChannel__addr]
+                if msg == '220 %s %s' % (self._SMTPChannel__fqdn, __version__):
+                    msg = '220 %s %s' % (new_fqdn, __version__)
+            except KeyError:
+                pass
+            SMTPChannel.push(self, msg)
+
         def smtp_EHLO(self, arg):
+            # same code as smtp_HELO(), except /HELO/EHLO/ and changed FQDN
             if not arg:
                 self.push('501 Syntax: EHLO hostname')
                 return
@@ -68,13 +82,28 @@ class MailSink(object):
                 self.push('503 Duplicate HELO/EHLO')
             else:
                 self._SMTPChannel__greeting = arg
+                try:
+                    fqdn = MailSink.addr2fqdn[self._SMTPChannel__addr]
+                except KeyError:
+                    fqdn = self._SMTPChannel__fqdn
                 self.push('250 %s' % fqdn)
+
+        def smtp_HELO(self, arg):
+            # change FQDN
+            try:
+                self._SMTPChannel__fqdn = MailSink.addr2fqdn[self._SMTPChannel__addr]
+            except KeyError:
+                pass
+            SMTPChannel.smtp_HELO(self, arg)
 
     class EmlServer(DebuggingServer):
         target_dir = '.'
         number = 0
         filename = None
 
+        def __init__(self, localaddr, remoteaddr, fqdn=None):
+            DebuggingServer.__init__(self, localaddr, remoteaddr)
+            self.fqdn = fqdn
 
         def handle_accept(self):
             pair = self.accept()
@@ -82,6 +111,7 @@ class MailSink(object):
                 conn, addr = pair
                 print >> DEBUGSTREAM, 'Incoming connection from %s' % repr(addr)
                 channel = MailSink.ESMTPChannel(self, conn, addr, self.fqdn)
+
         def process_message(self, peer, mailfrom, rcpttos, data):
             DebuggingServer.process_message(self, peer, mailfrom, rcpttos, data)
             filename = self.filename or os.path.join(
@@ -95,7 +125,7 @@ class MailSink(object):
                     f.write('\n\n')
             self.number += 1
 
-    def __init__(self, address, port, filename=None, target_dir=None):
+    def __init__(self, address, port, filename=None, target_dir=None, fqdn=None):
         self.address = address
         self.port = port
         self.filename = filename
@@ -105,6 +135,7 @@ class MailSink(object):
             self.target_dir = target_dir
         self.thread = None
         self.do_run = False
+        self.fqdn = fqdn
 
     def start(self):
         self.do_run = True
@@ -118,7 +149,7 @@ class MailSink(object):
 
     def runner(self):
         print '*** Starting SMTPSink at %s:%s' % (self.address, self.port)
-        sink = self.EmlServer((self.address, self.port), None)
+        sink = self.EmlServer((self.address, self.port), None, self.fqdn)
         sink.target_dir = self.target_dir
         sink.filename = self.filename
         while self.do_run:
