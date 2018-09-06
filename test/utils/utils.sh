@@ -180,7 +180,10 @@ run_setup_join () {
 run_setup_join_on_non_master () {
 	local admin_password="${1:-univention}"
 	local srv rv=0
-	ucr set nameserver1="$(sed -ne 's|^nameserver=||p' /var/cache/univention-system-setup/profile)"
+	local nameserver1="$(sed -ne 's|^nameserver=||p' /var/cache/univention-system-setup/profile)"
+	if [ -n  "$nameserver1" ]; then
+		ucr set nameserver1="$nameserver1"
+	fi
 	echo -n "$admin_password" >/tmp/univention
 	patch_setup_join # temp. remove me
 	/usr/lib/univention-system-setup/scripts/setup-join.sh --dcaccount Administrator --password_file /tmp/univention || rv=$?
