@@ -107,7 +107,7 @@ class NetworkRedirector(object):
 
     CMD_LIST_REDIRECTION = [
         # redirect localhost-->%(remote_addr)s:%(remote_port)s ==> localhost:%(local_port)s
-        [BIN_IPTABLES, '-t', 'nat', '%(action)s', 'OUTPUT', '-p', 'tcp', '-d', '%(remote_addr)s', '--dport', '%(remote_port)s', '-j', 'REDIRECT', '--to', '%(local_port)s'],
+        [BIN_IPTABLES, '-t', 'nat', '%(action)s', 'OUTPUT', '-p', 'tcp', '-d', '%(remote_addr)s', '--dport', '%(remote_port)s', '-j', 'DNAT', '--to-destination', '127.0.0.1:%(local_port)s'],
     ]
 
     def __init__(self):
@@ -218,7 +218,7 @@ class NetworkRedirector(object):
                 'local_port': local_port,
                 'action': '-A',
             }
-            print '*** Adding network redirection (%s:%s <--> 127.0.0.1:%s)' % (remote_addr, remote_port, local_port)
+            print '*** Adding network redirection (%s:%s --> 127.0.0.1:%s)' % (remote_addr, remote_port, local_port)
             self.run_commands(self.CMD_LIST_REDIRECTION, args)
 
     def remove_redirection(self, remote_addr, remote_port, local_port, ignore_errors=False):
