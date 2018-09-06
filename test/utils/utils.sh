@@ -961,7 +961,7 @@ prepare_results () {
 }
 
 add_branch_repository () {
-	local extra_list="/root/utils/apt-get-branch-repo.list"
+	local extra_list="/root/apt-get-branch-repo.list"
 	if [ -f "$extra_list" ]; then
 		cp "$extra_list" /etc/apt/sources.list.d/
 		apt-get update
