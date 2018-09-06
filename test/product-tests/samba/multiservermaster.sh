@@ -30,7 +30,7 @@ python shared-utils/ucs-winrm.py domain-join --domain sambatest.local --dnsserve
 	
 python shared-utils/ucs-winrm.py domain-user-validate-password --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
  #service smdb restart
- python shared-utils/ucs-winrm.py create-gpo --credssp --name NewGPO --comment "testing new GPO in domain"
+python shared-utils/ucs-winrm.py create-gpo --credssp --name NewGPO --comment "testing new GPO in domain"
 python shared-utils/ucs-winrm.py link-gpo --name NewGPO --target "dc=sambatest,dc=local" --credssp
 python shared-utils/ucs-winrm.py run-ps --credssp --cmd 'set-GPPrefRegistryValue -Name NewGPO -Context User -key "HKCU\Environment" -ValueName NewGPO -Type String -value NewGPO -Action Update'
 sleep 150
@@ -78,9 +78,16 @@ stat /var/spool/cups-pdf/administrator/job_1-document.pdf
 python shared-utils/ucs-winrm.py print-on-printer --printername Masterprinter --server "$UCS" --impersonate --run-as-user newuser01 --run-as-password "Univention.99"
 stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
 
+
 #password change
 python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univention123!"
-	
+#change pw policies
+udm policies/pwhistory modify --dn 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=sambatest,dc=local' --set expiryInterval=2	
+udm policies/pwhistory modify --dn 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=sambatest,dc=local' --set length=5	
+samba-tool domain passwordsettings set --max-pwd-age=2
+python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ1"
+python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ" ?> expectederror
+python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univention123!" ?> expectederror
 python shared-utils/ucs-winrm.py run-ps --cmd hostname > WINCLIENTNAME
 host $(cat WINCLIENTNAME | grep WIN | cut -c 1-15)
 
