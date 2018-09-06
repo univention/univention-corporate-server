@@ -32,7 +32,7 @@
 import os
 import threading
 import asyncore
-from smtpd import SMTPServer
+from smtpd import DEBUGSTREAM, DebuggingServer, SMTPChannel, __version__
 
 
 class UCSTest_Mail_Exception(Exception):
@@ -41,7 +41,6 @@ class UCSTest_Mail_Exception(Exception):
 
 
 class MailSink(object):
-
     """
     This class starts an SMTP sink on the specified address/port.
     Each incoming mail will be written to a si
@@ -56,16 +55,37 @@ class MailSink(object):
     <do some stuff>
     >>> ms.stop()
     """
+
+    class ESMTPChannel(SMTPChannel):
+        def __init__(self, server, conn, addr, fqdn=None):
+            SMTPChannel.__init__(self, server, conn, addr)
+
+        def smtp_EHLO(self, arg):
+            if not arg:
+                self.push('501 Syntax: EHLO hostname')
+                return
+            if self._SMTPChannel__greeting:
+                self.push('503 Duplicate HELO/EHLO')
+            else:
+                self._SMTPChannel__greeting = arg
+                self.push('250 %s' % fqdn)
+
     class EmlServer(DebuggingServer):
         target_dir = '.'
         number = 0
         filename = None
 
+
+        def handle_accept(self):
+            pair = self.accept()
+            if pair is not None:
+                conn, addr = pair
+                print >> DEBUGSTREAM, 'Incoming connection from %s' % repr(addr)
+                channel = MailSink.ESMTPChannel(self, conn, addr, self.fqdn)
         def process_message(self, peer, mailfrom, rcpttos, data):
-            if not self.filename:
-                filename = os.path.join(self.target_dir, '%s-%d.eml' % (time.strftime('%Y%m%d-%H%M%S'), self.number))
-            else:
-                filename = self.filename
+            DebuggingServer.process_message(self, peer, mailfrom, rcpttos, data)
+            filename = self.filename or os.path.join(
+                self.target_dir, '%s-%d.eml' % (time.strftime('%Y%m%d-%H%M%S'), self.number))
             with open(filename, 'a') as f:
                 f.write('X-SmtpSink-Peer: %s\n' % repr(peer))
                 f.write('X-SmtpSink-From: %s\n' % repr(mailfrom))
