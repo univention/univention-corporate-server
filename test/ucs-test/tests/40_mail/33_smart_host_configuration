@@ -63,7 +63,6 @@ def main():
 							domain, basedn, dcslave_ip)
 					},
 					position='cn=computers,%s' % basedn,
-					check_for_drs_replication=True
 				)
 				dcslave_fqdn = '%s.%s' % (dcslave, domain)
 				handler_set(['mail/relayhost=%s' % dcslave_fqdn])
