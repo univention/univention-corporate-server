@@ -336,7 +336,10 @@ define([
 
 			// watch the state of the currently focused page
 			this._loadUCRVariables().then(lang.hitch(this, function() {
-				this.watch('selectedChildWidget', lang.hitch(this, function(child) {
+				this.watch('selectedChildWidget', lang.hitch(this, function(name, oldChild, newChild) {
+					if (newChild === this._detailPage) {
+						window.scrollTo(0, 0);
+					}
 					this._updateModuleState();
 				}));
 			}));
