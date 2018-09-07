@@ -1,3 +1,10 @@
+ucs-test (8.0.28-184) unstable; urgency=medium
+
+  * Bug #45049: rewrote test 10_ldap/65univention-admingrp-user-passwordreset-ldapdiff
+  	in python
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 07 Sep 2018 11:40:50 +0200
+
 ucs-test (8.0.28-183) unstable; urgency=medium
 
   * Bug #47717: fixed test 10_ldap/63univention-admingrp-user-passwordreset
