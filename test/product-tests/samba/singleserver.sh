@@ -1,11 +1,7 @@
 #!/bin/bash
 
 # export UCS=10.200.7.160
-# export WINCLIENT=10.200.7.65
-# export WINCLIENT_ADMIN=Administrator
-# export LDAP_BASE=four.three
 # export ADMIN_PASSWORD=univention
-# export WINCLIENT_PASSWORD=univention
 # export WINRM_DOMAIN="four.three"
 # export WINRM_CLIENT=10.200.7.65
 # export WINRM_USER=Administrator
@@ -121,12 +117,12 @@ stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
 # TODO printer via gpo
 
 # host $windows_client muss die IPv4-Adresse liefern.
-nslookup "$winclient_name" | grep "$WINCLIENT"
+nslookup "$winclient_name" | grep "$WINRM_CLIENT"
 
 # userpassword change
 password=univention
 users="test1 test2 test3"
-clients="$WINCLIENT $UCS"
+clients="$WINRM_CLIENT $UCS"
 for user in $users; do
 	udm users/user create --ignore_exists \
     	--set password=$password --set lastname=$user --set username=$user
