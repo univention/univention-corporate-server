@@ -190,6 +190,7 @@ define([
 		},
 
 		showApp: function(app) {
+			this.pageYOffsetBeforeShowApp = window.pageYOffset;
 			if (this._appDetailsPage) {
 				this._appDetailsPage.destroyRecursive();
 			}
@@ -252,11 +253,13 @@ define([
 				this.removeChild(appChooseHostDialog);
 				this.removeChild(this._appDetailsPage);
 				this._appDetailsPage.destroyRecursive();
+				window.scrollTo(0, this.pageYOffsetBeforeShowApp);
 			}));
 			this.addChild(this._appDetailsPage);
 
 			this.standbyDuring(this._appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
 				this.selectChild(this._appDetailsPage);
+				window.scrollTo(0, 0);
 			}));
 
 			appChooseHostDialog.on('showUp', lang.hitch(this, function() {

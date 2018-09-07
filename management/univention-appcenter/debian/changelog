@@ -1,3 +1,10 @@
+univention-appcenter (7.0.2-24) unstable; urgency=medium
+
+  * Bug #39667: remember scroll position before opening
+    App and scroll to top when opening App
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 07 Sep 2018 13:04:39 +0200
+
 univention-appcenter (7.0.2-23) unstable; urgency=medium
 
   * Bug #46433: Simplify the 'univention-app logs' command
