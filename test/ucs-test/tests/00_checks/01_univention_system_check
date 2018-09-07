@@ -4,6 +4,7 @@
 ## exposure: safe
 
 set -e
+
 tmp="$(mktemp -d)"
 trap "rm -rf '$tmp'" EXIT
 cd "$tmp"
