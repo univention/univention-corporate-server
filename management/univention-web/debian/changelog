@@ -1,3 +1,10 @@
+univention-web (2.0.0-22) unstable; urgency=medium
+
+  * Bug #44471: fix class variable that should be instance
+    variable in _SelectMixin.js
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 07 Sep 2018 14:40:40 +0200
+
 univention-web (2.0.0-21) unstable; urgency=medium
 
   * Bug #47195: Remove trailing comma
