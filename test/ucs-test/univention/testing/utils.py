@@ -46,6 +46,7 @@ except ImportError:
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 LISTENER_INIT_SCRIPT = '/etc/init.d/univention-directory-listener'
 FIREWALL_INIT_SCRIPT = '/etc/init.d/univention-firewall'
+SLAPD_INIT_SCRIPT = '/etc/init.d/slapd'
 
 
 class LDAPError(Exception):
@@ -201,6 +202,18 @@ def stop_s4connector():
 
 def start_s4connector():
     subprocess.call((S4CONNECTOR_INIT_SCRIPT, 'start'))
+
+
+def stop_slapd():
+    subprocess.call((SLAPD_INIT_SCRIPT, 'stop'))
+
+
+def start_slapd():
+    subprocess.call((SLAPD_INIT_SCRIPT, 'start'))
+
+
+def restart_slapd():
+    subprocess.call((SLAPD_INIT_SCRIPT, 'restart'))
 
 
 def stop_listener():

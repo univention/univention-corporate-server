@@ -1,3 +1,11 @@
+ucs-test (8.0.28-183) unstable; urgency=medium
+
+  * Bug #47717: fixed test 10_ldap/63univention-admingrp-user-passwordreset
+  * Bug #45049: rewrote test /10_ldap/63univention-admingrp-user-passwordreset
+  	in python, fixed test 10_ldap/65univention-admingrp-user-passwordreset-ldapdiff
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 07 Sep 2018 09:26:43 +0200
+
 ucs-test (8.0.28-182) unstable; urgency=medium
 
   * Bug #47734: stabilize 86_selenium/133_system_diagnostics
@@ -50,7 +58,6 @@ ucs-test (8.0.28-175) unstable; urgency=low
   * Bug #47716: wait for s4 to write SID to OpenLDAP after creating user
   * Bug #46512: show test description if it fails
   * Bug #45828: enable test, add debug output
-
 
  -- Daniel Troeder <troeder@univention.de>  Wed, 05 Sep 2018 15:49:04 +0200
 
