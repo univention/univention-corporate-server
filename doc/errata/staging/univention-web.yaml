@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-web
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * An issue with the drop-down menu for the search value in the
+   advanced search of UDM modules being unusable has been resolved.
+bug: [44471]
