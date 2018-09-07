@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-management-console-module-udm
-fix: 
+fix: 8.0.5-14A~4.3.0.201809071421
 desc: |
  This update addresses the following issue(s):
  * The page now scrolls to the beginning when
