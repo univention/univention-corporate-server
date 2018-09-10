@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-saml
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Make it possible to run stunnel on systems without univention-saml
+   installed, like member and slave server.
+bug: [47250]
