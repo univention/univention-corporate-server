@@ -1,3 +1,9 @@
+univention-portal (2.0.2-2) unstable; urgency=medium
+
+  * Bug #47243: Add custom portal categories
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 10 Sep 2018 12:20:26 +0200
+
 univention-portal (2.0.2-1) unstable; urgency=medium
 
   * Bug #43442: Allow to customize portal with static pages

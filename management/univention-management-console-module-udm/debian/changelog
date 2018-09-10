@@ -1,3 +1,9 @@
+univention-management-console-module-udm (8.0.5-15) unstable; urgency=medium
+
+  * Bug #47243: Add custom portal categories
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 10 Sep 2018 12:20:13 +0200
+
 univention-management-console-module-udm (8.0.5-14) unstable; urgency=medium
 
   * Bug #39667: scroll top top when opening UDM detail page

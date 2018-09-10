@@ -1,3 +1,9 @@
+univention-web (2.0.0-23) unstable; urgency=medium
+
+  * Bug #47243: Add custom portal categories
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 10 Sep 2018 12:20:39 +0200
+
 univention-web (2.0.0-22) unstable; urgency=medium
 
   * Bug #44471: fix class variable that should be instance

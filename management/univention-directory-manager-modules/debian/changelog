@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.22-2) unstable; urgency=medium
+
+  * Bug #47243: Add custom portal categories
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 10 Sep 2018 12:19:10 +0200
+
 univention-directory-manager-modules (13.0.22-1) unstable; urgency=medium
 
   * Bug #43442: Allow to customize portal with about page
