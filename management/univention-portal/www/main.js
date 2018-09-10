@@ -1876,7 +1876,7 @@ define([
 		},
 
 		_addLinks: function() {
-			var links = portalContent.links;
+			var links = portalJson.links;
 			if (! links) {
 				return;
 			}

@@ -118,18 +118,18 @@ def _write_css(obj):
 	css_code = ''
 	if background:
 		css_code += '''
-body.umc {
+body.umc.portal {
 	background: %s;
 }
 ''' % (background, )
 
 	if font_color == 'white':
 		css_code += '''
-body.umc .umcHeader .umcHeaderLeft h1 {
+body.umc.portal .umcHeader .umcHeaderLeft h1 {
 	color: white;
 }
 
-body.umc .portalCategory h2 {
+body.umc.portal .portalCategory h2 {
 	color: white;
 }
 '''
