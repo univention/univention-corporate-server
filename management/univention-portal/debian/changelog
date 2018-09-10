@@ -1,3 +1,9 @@
+univention-portal (2.0.2-3) unstable; urgency=medium
+
+  * Bug #47243: fix background images and footer links not being displayed
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 10 Sep 2018 16:45:47 +0200
+
 univention-portal (2.0.2-2) unstable; urgency=medium
 
   * Bug #47243: Add custom portal categories
