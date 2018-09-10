@@ -6,65 +6,53 @@ src: ghostscript
 fix: 9.20~dfsg-3.2+deb9u4
 desc: |
  This update addresses the following issues:
- * .tempfile file permission issues (699657) (CVE-2018-15908)
- * LockDistillerParams type confusion (699656) (CVE-2018-15910)
- * uninitialized memory access in the aesdecode operator (699665)
-   (CVE-2018-15911)
- * An issue was discovered in Artifex Ghostscript before 9.24. A type
-   confusion in "ztype" could be used by remote attackers able to supply
-   crafted PostScript to crash the interpreter or possibly have unspecified
-   other impact. (CVE-2018-16511)
- * setcolor missing type check (699655) (CVE-2018-16513)
+ * .tempfile file permission issues (CVE-2018-15908)
+ * LockDistillerParams type confusion (CVE-2018-15910)
+ * uninitialized memory access in the aesdecode operator (CVE-2018-15911)
+ * a type confusion in "ztype" could be used by remote attackers able to
+   supply crafted PostScript to crash the interpreter or possibly have
+   unspecified other impact. (CVE-2018-16511)
+ * setcolor missing type check (CVE-2018-16513)
  * incorrect access checking in temp file handling to disclose contents of
-   files (699658) (CVE-2018-16539)
- * use-after-free in copydevice handling (699661) (CVE-2018-16540)
- * incorrect free logic in pagedevice replacement (699664) (CVE-2018-16541)
- * .definemodifiedfont memory corruption if /typecheck is handled (699668)
+   files (CVE-2018-16539)
+ * use-after-free in copydevice handling (CVE-2018-16540)
+ * incorrect free logic in pagedevice replacement (CVE-2018-16541)
+ * .definemodifiedfont memory corruption if /typecheck is handled
    (CVE-2018-16542)
- * gssetresolution and gsgetresolution memory corruption (699670)
-   (CVE-2018-16543)
+ * gssetresolution and gsgetresolution memory corruption (CVE-2018-16543)
  * .setdistillerkeys PostScript command is accepted even though it is not
    intended for use (CVE-2018-16585)
- * uninitialized memory access in the aesdecode operator (699665)
-   (CVE-2018-15911)
- * An issue was discovered in Artifex Ghostscript before 9.24. A type
-   confusion in "ztype" could be used by remote attackers able to supply
-   crafted PostScript to crash the interpreter or possibly have unspecified
-   other impact. (CVE-2018-16511)
+ * uninitialized memory access in the aesdecode operator (CVE-2018-15911)
+ * a type confusion in "ztype" could be used by remote attackers able to
+   supply crafted PostScript to crash the interpreter or possibly have
+   unspecified other impact. (CVE-2018-16511)
  * incorrect access checking in temp file handling to disclose contents of
-   files (699658) (CVE-2018-16539)
- * .definemodifiedfont memory corruption if /typecheck is handled (699668)
+   files (CVE-2018-16539)
+ * .definemodifiedfont memory corruption if /typecheck is handled
    (CVE-2018-16542)
- * gssetresolution and gsgetresolution memory corruption (699670)
-   (CVE-2018-16543)
+ * gssetresolution and gsgetresolution memory corruption (CVE-2018-16543)
  * .setdistillerkeys PostScript command is accepted even though it is not
    intended for use (CVE-2018-16585)
- * uninitialized memory access in the aesdecode operator (699665)
-   (CVE-2018-15911)
- * An issue was discovered in Artifex Ghostscript before 9.24. A type
-   confusion in "ztype" could be used by remote attackers able to supply
-   crafted PostScript to crash the interpreter or possibly have unspecified
-   other impact. (CVE-2018-16511)
+ * uninitialized memory access in the aesdecode operator (CVE-2018-15911)
+ * a type confusion in "ztype" could be used by remote attackers able to
+   supply crafted PostScript to crash the interpreter or possibly have
+   unspecified other impact. (CVE-2018-16511)
  * incorrect access checking in temp file handling to disclose contents of
-   files (699658) (CVE-2018-16539)
- * .definemodifiedfont memory corruption if /typecheck is handled (699668)
+   files (CVE-2018-16539)
+ * .definemodifiedfont memory corruption if /typecheck is handled
    (CVE-2018-16542)
- * gssetresolution and gsgetresolution memory corruption (699670)
-   (CVE-2018-16543)
+ * gssetresolution and gsgetresolution memory corruption (CVE-2018-16543)
  * .setdistillerkeys PostScript command is accepted even though it is not
    intended for use (CVE-2018-16585)
- * uninitialized memory access in the aesdecode operator (699665)
-   (CVE-2018-15911)
- * An issue was discovered in Artifex Ghostscript before 9.24. A type
-   confusion in "ztype" could be used by remote attackers able to supply
-   crafted PostScript to crash the interpreter or possibly have unspecified
-   other impact. (CVE-2018-16511)
+ * uninitialized memory access in the aesdecode operator (CVE-2018-15911)
+ * a type confusion in "ztype" could be used by remote attackers able to
+   supply crafted PostScript to crash the interpreter or possibly have
+   unspecified other impact. (CVE-2018-16511)
  * incorrect access checking in temp file handling to disclose contents of
-   files (699658) (CVE-2018-16539)
- * .definemodifiedfont memory corruption if /typecheck is handled (699668)
+   files (CVE-2018-16539)
+ * .definemodifiedfont memory corruption if /typecheck is handled
    (CVE-2018-16542)
- * gssetresolution and gsgetresolution memory corruption (699670)
-   (CVE-2018-16543)
+ * gssetresolution and gsgetresolution memory corruption (CVE-2018-16543)
  * .setdistillerkeys PostScript command is accepted even though it is not
    intended for use (CVE-2018-16585)
 bug: [47774]
