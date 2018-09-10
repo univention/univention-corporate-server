@@ -22,39 +22,6 @@ desc: |
  * gssetresolution and gsgetresolution memory corruption (CVE-2018-16543)
  * .setdistillerkeys PostScript command is accepted even though it is not
    intended for use (CVE-2018-16585)
- * uninitialized memory access in the aesdecode operator (CVE-2018-15911)
- * a type confusion in "ztype" could be used by remote attackers able to
-   supply crafted PostScript to crash the interpreter or possibly have
-   unspecified other impact. (CVE-2018-16511)
- * incorrect access checking in temp file handling to disclose contents of
-   files (CVE-2018-16539)
- * .definemodifiedfont memory corruption if /typecheck is handled
-   (CVE-2018-16542)
- * gssetresolution and gsgetresolution memory corruption (CVE-2018-16543)
- * .setdistillerkeys PostScript command is accepted even though it is not
-   intended for use (CVE-2018-16585)
- * uninitialized memory access in the aesdecode operator (CVE-2018-15911)
- * a type confusion in "ztype" could be used by remote attackers able to
-   supply crafted PostScript to crash the interpreter or possibly have
-   unspecified other impact. (CVE-2018-16511)
- * incorrect access checking in temp file handling to disclose contents of
-   files (CVE-2018-16539)
- * .definemodifiedfont memory corruption if /typecheck is handled
-   (CVE-2018-16542)
- * gssetresolution and gsgetresolution memory corruption (CVE-2018-16543)
- * .setdistillerkeys PostScript command is accepted even though it is not
-   intended for use (CVE-2018-16585)
- * uninitialized memory access in the aesdecode operator (CVE-2018-15911)
- * a type confusion in "ztype" could be used by remote attackers able to
-   supply crafted PostScript to crash the interpreter or possibly have
-   unspecified other impact. (CVE-2018-16511)
- * incorrect access checking in temp file handling to disclose contents of
-   files (CVE-2018-16539)
- * .definemodifiedfont memory corruption if /typecheck is handled
-   (CVE-2018-16542)
- * gssetresolution and gsgetresolution memory corruption (CVE-2018-16543)
- * .setdistillerkeys PostScript command is accepted even though it is not
-   intended for use (CVE-2018-16585)
 bug: [47774]
 cve:
 - CVE-2018-15908
