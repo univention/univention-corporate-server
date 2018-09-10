@@ -369,7 +369,7 @@ define([
 						var result = '';
 						for (var i in str) {
 							var char = str.charAt(i);
-							if (/[\w\s]/.test(char) || (this.whitelist || '').includes(char)) {
+							if (/[\w\s]/.test(char) || (this.whitelist || '').includes(char) || char in this._umlauts) {
 								result = result.concat(char);
 							}
 						}

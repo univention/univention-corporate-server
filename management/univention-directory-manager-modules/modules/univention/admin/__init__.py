@@ -131,7 +131,7 @@ def pattern_replace(pattern, object):
 					whitelist = ''
 				whitelist = unicode(whitelist, 'utf-8')
 				text = unicode(text, 'utf-8')
-				text = u''.join([c for c in text if (c.isalnum() or c.isspace() or c in whitelist)])
+				text = u''.join([c for c in text if (c.isalnum() or c.isspace() or c in whitelist or c in property.UMLAUTS)])
 			elif iCmd in ('trim', 'strip'):
 				text = text.strip()
 		return text
