@@ -982,6 +982,13 @@ univention-director-manager users/user
 		  such as è, ä or ß into the corresponding ASCII characters.
 		</para>
 
+		<para>
+		The option <literal>:alphanum</literal> can be used to remove all non alphanumeric characters such as ` or #.
+		A whitelist of characters that are ignored by this option can be defined in the UCR variable <envar>directory/manager/templates/alphanum/whitelist</envar>.
+		If this option is applied to an entire field, even manually placed symbols like the @ in an email address are removed. To avoid that,
+		this option should be applied to specific attributes only or desired symbols should be entered into the whitelist.
+		</para>
+
         <para>
 			The options <literal>:strip</literal> or <literal>:trim</literal> remove all white space characters from the start and end of the string.
 		</para>

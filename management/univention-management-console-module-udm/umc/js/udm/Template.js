@@ -86,6 +86,8 @@ define([
 		//		property.
 		template: null,
 
+		whitelist: null,
+
 		_inverseReferences: null,
 
 		_userChanges: null,
@@ -108,20 +110,18 @@ define([
 		constructor: function(props) {
 			// mixin the props
 			lang.mixin(this, props);
-
+			var deferred = {ucr: tools.ucr('directory/manager/templates/alphanum/whitelist')};
 			if (this.operation === 'copy') {
-				var deferredWidgets = {};
 				tools.forIn(this.widgets, lang.hitch(this, function(ikey, ival) {
 					if (ikey in this.widgets && this.widgets[ikey].ready) {
-						deferredWidgets[ikey] = this.widgets[ikey].ready();
+						deferred[ikey] = this.widgets[ikey].ready();
 					}
 				}));
-				all(deferredWidgets).then(lang.hitch(this, function() {
-					this._constructor();
-				}));
-			} else {
-				this._constructor();
 			}
+			all(deferred).then(lang.hitch(this, function(result) {
+				this.whitelist = result.ucr['directory/manager/templates/alphanum/whitelist'];
+				this._constructor();
+			}));
 		},
 
 		_constructor: function() {
@@ -363,6 +363,18 @@ define([
 					modifiers.push(function(str) {
 						return lang.trim(str);
 					});
+					break;
+				case 'alphanum':
+					modifiers.push(lang.hitch(this, function(str) {
+						var result = '';
+						for (var i in str) {
+							var char = str.charAt(i);
+							if (/[\w\s]/.test(char) || (this.whitelist || '').includes(char) || char in this._umlauts) {
+								result = result.concat(char);
+							}
+						}
+						return result;
+					}));
 					break;
 				default:
 					// default modifier is a dummy function that does nothing

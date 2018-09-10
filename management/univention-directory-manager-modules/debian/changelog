@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.22-3) unstable; urgency=medium
+
+  * Bug #47580: Add alphanum option to user templates
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Mon, 10 Sep 2018 12:44:12 +0200
+
 univention-directory-manager-modules (13.0.22-2) unstable; urgency=medium
 
   * Bug #47243: Add custom portal categories

@@ -8,4 +8,5 @@ desc: |-
   This update addresses the following issue(s):
   * Allow to customize portal with about page
   * It is now possible to define custom categories for the portal.
-bug: [43442, 47243]
+  * User Templates now have access to the alphanum option.
+bug: [43442, 47243, 47580]
