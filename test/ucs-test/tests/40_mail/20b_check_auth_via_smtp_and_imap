@@ -63,7 +63,7 @@ class AuthTests(object):
 
 	def test_pop3_auth(self, user):
 		try:
-			pop3con = poplib.POP3_SSL(host='localhost')
+			pop3con = poplib.POP3_SSL(host='%s.%s' % (self.ucr.get('hostname'), self.ucr.get('domainname')))
 			print pop3con.user(user)
 			print pop3con.pass_(self.password)
 			print '>>> test_pop3_auth({}): successful POP3 auth'.format(user)
