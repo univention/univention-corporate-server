@@ -2,8 +2,8 @@ product: ucs
 release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
-src: univention-saml
-fix: 5.0.4-27A~4.3.0.201809101510
+src: stunnel4
+fix: 3:5.39-2A~4.3.0.201809101414
 desc: |
  This update addresses the following issue(s):
  * Enable stunnel to run on systems without univention-saml installed,
