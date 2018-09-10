@@ -1017,6 +1017,13 @@ univention-directory-manager users/user
 		  ä oder ß in entsprechende ASCII-Zeichen umgewandelt.
 		</para>
 
+		<para>
+		Durch die Option <literal>:alphanum</literal> werden alle nicht alphanumerischen Zeichen, wie ` oder # entfernt.
+		In der UCR Variable <envar>directory/manager/templates/alphanum/whitelist</envar> können Zeichen definiert werden, die von dieser Option ignoriert werden.
+		Zu beachten ist, dass wenn diese Option auf das ganze Feld angewendet wird, auch manuell gesetzte Zeichen entfernt werden. Zum Beispiel
+		das @-Zeichen in der Email-Adresse. Daher sollte man diese Option nur auf einzelne Attribute anwenden oder die Whitelist anpassen.
+		</para>
+
         <para>
 		  Die Optionen <literal>:strip</literal> bzw. <literal>:trim</literal> entfernen alle Leerzeichen am Anfang und Ende der Zeichenkette.
 		</para>
