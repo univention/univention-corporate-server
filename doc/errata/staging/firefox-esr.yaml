@@ -12,12 +12,6 @@ desc: |
  * Use-after-free in driver timers (CVE-2018-12377)
  * Use-after-free in IndexedDB (CVE-2018-12378)
  * Out-of-bounds write with malicious MAR file (CVE-2018-12379)
- * Memory safety bugs fixed in Firefox 62 and Firefox ESR 60.2
-   (CVE-2018-12376)
- * Memory safety bugs fixed in Firefox 62 and Firefox ESR 60.2
-   (CVE-2018-12376)
- * Memory safety bugs fixed in Firefox 62 and Firefox ESR 60.2
-   (CVE-2018-12376)
 bug: [47775]
 cve:
 - CVE-2017-16541
