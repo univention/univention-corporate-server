@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The page now scrolls to the beginning when
    opening the detail page of an UDM object.
-bug: [39667]
+ * It is now possible to define custom categories for the portal.
+bug: [39667, 47243]

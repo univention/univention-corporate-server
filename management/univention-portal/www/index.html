@@ -22,6 +22,7 @@
 					'umc/modules': 'management/modules'
 				}
 			};
+			dojoConfig.cacheBust = "v=2.0.1-3";
 			umcConfig.callback =function() {
 				require(["portal", "umc/widgets/LiveSearch"], function(portal) {
 					portal.start();
@@ -46,8 +47,7 @@
 				<div class="univentionLogo"></div>
 			</div>
 		</div>
-		<div id="content" class="content">
-		</div>
+		<div id="content" class="content"></div>
 		<footer id="portal-footer"></footer>
 	</body>
 </html>

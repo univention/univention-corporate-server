@@ -14,6 +14,11 @@ objectIdentifier univentionPortalComputer 1.3.6.1.4.1.10176.4209
 objectIdentifier univentionPortalComputerAttributeType univentionPortalComputer:1
 objectIdentifier univentionPortalComputerObjectClass univentionPortalComputer:2
 
+objectIdentifier univentionPortalCategory 1.3.6.1.4.1.10176.4210
+objectIdentifier univentionPortalCategoryAttributeType univentionPortalCategory:1
+objectIdentifier univentionPortalCategoryObjectClass univentionPortalCategory:2
+
+
 # <http://www.openldap.org/doc/admin24/schema.html>
 
 ### Definition for univentionPortal
@@ -90,6 +95,13 @@ attributetype ( univentionPortalAttributeType:12 NAME 'univentionPortalLinks'
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
+attributetype ( univentionPortalAttributeType:13 NAME 'univentionPortalContent'
+	DESC 'Portal content'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
 objectclass ( univentionPortalObjectClass:1 NAME 'univentionPortal'
 	DESC 'Portal data'
 	SUP top
@@ -107,6 +119,7 @@ objectclass ( univentionPortalObjectClass:1 NAME 'univentionPortal'
 			$ univentionPortalFontColor
 			$ univentionPortalEntriesOrder
 			$ univentionPortalLinks
+			$ univentionPortalContent
 		)
 	)
 
@@ -188,6 +201,23 @@ objectclass ( univentionPortalEntryObjectClass:1 NAME 'univentionPortalEntry'
 			$ univentionPortalEntryIcon
 			$ univentionPortalEntryCategory
 			$ univentionPortalEntryAllowedUserGroup
+		)
+	)
+
+### Definition for univentionPortalCategory
+
+attributetype ( univentionPortalCategoryAttributeType:1 NAME 'univentionPortalCategoryDisplayName'
+	DESC 'Portal category display name'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( univentionPortalCategoryObjectClass:1 NAME 'univentionPortalCategory'
+	DESC 'Portal Category data'
+	SUP top
+	MUST ( cn )
+	MAY (	
+			  univentionPortalCategoryDisplayName
 		)
 	)
 

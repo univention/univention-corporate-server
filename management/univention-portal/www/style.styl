@@ -43,7 +43,7 @@ material-shadow(level)
 	else
 		box-shadow: none
 
-.umc
+.umc.portal
 	min-height: 100%
 	/* Chrome,Safari4+ */
 	background: url(/univention/js/dijit/themes/umc/images/background-tile.png) repeat, -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(179,179,179,1)), color-stop(31%, rgba(224,224,224,1)), color-stop(51%, rgba(240,240,240,1)), color-stop(61%, rgba(235,235,235,1)), color-stop(74%, rgba(224,224,224,1)), color-stop(100%, rgba(189,189,189,1)))
@@ -91,14 +91,45 @@ material-shadow(level)
 				border-color: #282828
 			
 	.content
-		margin-top: 50px
+		padding-top: 15px
 
-		.portalCategory
-			margin-bottom: 30px
+	.portalCategory
+		padding: 15px 0
+		border: none
+		cursor: default
 
-			&:last-child
-				margin-bottom: 0
-				padding-bottom: 52px
+		h2
+			margin-bottom: 1em
+			display: inline-block
+
+			.noDisplayNameProvided
+				font-style: italic
+				opacity: 0.8
+
+		.umcPortalGallery .dgrid-scroller
+			margin: 0
+
+		.dojoDndItem_dndCoverWrapper
+			position: relative
+
+		.dojoDndItem_dndCover
+			position: absolute
+			top: 0
+			bottom: 0
+			left: 0
+			right: 0
+			z-index: 2
+			margin-left: -20px
+
+	.newCategory
+		display: none
+		margin: 15px 0 0 0
+
+		.dijitButtonContents
+			line-height: inherit
+
+		.dijitArrowButtonInner
+			margin-right: 16px
 	
 	.umcNotificationSnackbar
 		z-index: 28
@@ -228,13 +259,34 @@ material-shadow(level)
 			.dijitButtonText
 				display: none
 
-	&.dndMode .umcHeader
-		cursor: initial
-		pointer-events: none
+	&.dndMode
+		.umcHeader
+			cursor: initial
+			pointer-events: none
+
+		.portalCategory .dojoDndHandle
+			cursor: move
+			display: flex
+			align-items: center
+
+			&::before
+				display: block
+				content: ''
+				height: 40px
+				width: 30px
+				margin-right: 10px
+				background: url(portalContentSelectionDndArrow.svg) no-repeat
+				background-position: center
+				background-color: #d3d3d3
+				border-radius: 2px
+				material-shadow(1)
+
+
 	&.editMode:not(.dndMode)
 		#portalLogo,
 		#portalTitle
 			cursor: pointer
+
 		.portalLogoWrapper
 			display: inline
 			position: relative
@@ -243,14 +295,16 @@ material-shadow(level)
 				cursor: pointer
 				top: -3px
 				right: -3px
+
 		#portalTitle
 			position: relative
 
 			&:after
-				content: ''
 				display: block
+				content: ''
 				top: -18px
 				right: -40px
+
 		#portalTitle:after,
 		#portalLogoEdit
 			position: absolute
@@ -260,19 +314,42 @@ material-shadow(level)
 			box-shadow: 0 2px 4px rgba(1,0,0,0.157), 0 2px 7px rgba(0,1,0,0.227)
 			height: 40px
 			width: 40px
+
+		.portalCategory h2
+			position: relative
+			cursor: pointer
+
+			&::after
+				display: block
+				content: ''
+				position: absolute
+				background-image: url(editIcon.svg)
+				background-size: contain
+				border-radius: 50%
+				box-shadow: 0 2px 4px rgba(1,0,0,0.157), 0 2px 7px rgba(0,1,0,0.227)
+				height: 30px
+				width: 30px
+				bottom: 5px
+				right: -40px
+
+
+
 	&.editMode
 		.content
-			margin-bottom: 52px
+			padding-bottom: 150px
 		.portalEditFloatingButton
 			opacity: 0
 			visibility: hidden
 			transition: opacity 0.2s, visibility 0s 0.25s
+		&:not(.dndMode)
+			.content .newCategory
+				display: inline-block
 	&:not(.editMode)
 		.portalEditBar
 			transform: translateY(100%)
 	&:not(.dndMode)
-		.dojoDndTarget
-			display: none
+		.dojoDndSource_PortalEntries
+			display: none !important
 		.portalEntryOrderBar
 			transform: translateY(100%)
 
@@ -432,17 +509,29 @@ material-shadow(level)
 	&.dojoDndMove
 		cursor: move
 
-	.dojoDndTarget
+	.dojoDndSource_PortalEntries
 		min-height: 189px
 		&:after
 			content: ''
 			display: block
 			clear: both
+	.portalCategory.dojoDndItemSelected,
+	.portalCategory.dojoDndItemAnchor,
+	.portalCategory.dojoDndItemOver
+		background-color: transparent
+		color: inherit
 
+	.portalCategory.dojoDndItemBefore
+		border-top: 2px solid grey
+
+	.portalCategory.dojoDndItemAfter
+		border-bottom: 2px solid grey
+
+	.dojoDndSource_PortalEntries
 		.dojoDndItem
+			float: left
 			padding: 0
 			border: none
-			float: left
 			cursor: move
 			.umcGalleryWrapperItem,
 			.appInnerWrapper
@@ -463,7 +552,7 @@ material-shadow(level)
 				.cornerPiece
 					background-color: #fbfbfb
 	
-	.dojoDndSourceMoved
+	.dojoDndSource_PortalEntries.dojoDndSourceMoved
 		.dojoDndItemAnchor,
 		.dojoDndItemSelected
 			.umcGalleryWrapperItem
@@ -488,9 +577,6 @@ material-shadow(level)
 
 		.dojoDndItem
 			padding: 0
-
-			.umcGalleryWrapperItem
-				margin: 0
 
 	.dndPlaceholderHideout .dndPlaceholder
 		display: none

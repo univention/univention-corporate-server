@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-19) unstable; urgency=medium
+
+  * Bug #47243: Add custom portal categories
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 10 Sep 2018 12:19:43 +0200
+
 univention-ldap (14.0.2-18) unstable; urgency=medium
 
   * Bug #43442: Allow to customize portal with static pages

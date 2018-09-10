@@ -196,11 +196,8 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			// add the 'new entry' button
 			this._renderNewEntryButton();
-
-			// add empty element
-			this._appendRows();
+			this._appendRows(); // empty row
 		},
 
 		_loadValues: function(depends) {
@@ -416,16 +413,27 @@ define([
 		_getValueAttr: function() {
 			// only return non-empty entries
 			var vals = [];
-			array.forEach(this._getAllValues(), function(ival) {
-				if (typeof ival == "string" && '' !== ival) {
+			array.forEach(this._getAllValues(), lang.hitch(this, function(ival) {
+				if (typeof ival == "string" && this._hasContent(ival)) {
 					vals.push(ival);
-				}
-				else if (ival instanceof Array && ival.length) {
+				} else if (Array.isArray(ival) && this._hasContent(ival)) {
 					// if we only have one subtype, do not use arrays as representation
 					vals.push(1 == ival.length ? ival[0] : ival);
 				}
-			});
+			}));
 			return vals;
+		},
+
+		_hasContent: function(val) {
+			var hasContent = false;
+			if (Array.isArray(val)) {
+				array.forEach(val, lang.hitch(this, function(ival) {
+					hasContent = hasContent || this._hasContent(ival);
+				}));
+			} else {
+				hasContent = hasContent || val !== '';
+			}
+			return hasContent;
 		},
 
 		_updateNewEntryButton: function() {
@@ -521,7 +529,7 @@ define([
 			array.forEach(this.subtypes, function(iwidget, i) {
 				// add the widget configuration dict to the list of widgets
 				var iname = '__' + this.name + '-' + irow + '-' + i;
-				var iconf = lang.mixin({}, iwidget, {
+				var iconf = lang.mixin(lang.clone(iwidget), {
 					disabled: this.disabled,
 					threshold: this.threshold, // for UDM-threshold
 					name: iname,
@@ -544,7 +552,7 @@ define([
 			}, this);
 
 			// render the widgets
-			var widgets = render.widgets(widgetConfs, this);
+			var widgets = render.widgets(widgetConfs);
 
 			// if we have a button, we need to pass the value and index of the
 			// current element
@@ -563,7 +571,9 @@ define([
 				return widgets[iname];
 			});
 			var rowContainer = new ContainerWidget({
-				baseClass: 'umcMultiInputContainer'
+				baseClass: 'umcMultiInputContainer',
+				visibleWidgets: visibleWidgets,
+				irow: irow
 			});
 			array.forEach(order, function(iname, idx) {
 				// add widget to row container (wrapped by a LabelPane)
@@ -591,7 +601,9 @@ define([
 				visible: !this.disabled,
 				iconClass: 'multiInputTrashCanIcon',
 				showLabel: false,
-				onClick: lang.hitch(this, '_removeElement', irow),
+				onClick: lang.hitch(this, function() {
+					this._removeElement(rowContainer.irow);
+				}),
 				'class': 'umcIconButton umcMultiInputRemoveButton',
 				description: _('Remove entry')
 			});

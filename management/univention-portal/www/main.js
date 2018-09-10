@@ -39,9 +39,11 @@ define([
 	"dojo/query",
 	"dojo/dom",
 	"dojo/dom-class",
+	"dojo/dom-attr",
 	"dojo/dom-geometry",
 	"dojo/dom-style",
 	"dojo/mouse",
+	"dojo/dnd/Source",
 	"dojo/promise/all",
 	"dojox/string/sprintf",
 	"dojox/widget/Standby",
@@ -53,6 +55,9 @@ define([
 	"dijit/Tooltip",
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
+	"dijit/DropDownMenu",
+	"dijit/MenuItem",
+	"dijit/form/DropDownButton",
 	"umc/tools",
 	"umc/store",
 	"umc/json",
@@ -74,7 +79,7 @@ define([
 	// apps.json -> contains all locally installed apps
 	"umc/json!/univention/portal/apps.json",
 	"umc/i18n!portal"
-], function(declare, lang, array, Deferred, aspect, when, on, dojoQuery, dom, domClass, domGeometry, domStyle, mouse, all, sprintf, Standby, styles, dijitFocus, a11y, registry, Dialog, Tooltip, _WidgetBase, _TemplatedMixin, tools, store, json, dialog, NotificationSnackbar, Button, Form, Wizard, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, PortalCategory, portalTools, i18nTools, portalContent, installedApps, _) {
+], function(declare, lang, array, Deferred, aspect, when, on, dojoQuery, dom, domClass, domAttr, domGeometry, domStyle, mouse, Source, all, sprintf, Standby, styles, dijitFocus, a11y, registry, Dialog, Tooltip, _WidgetBase, _TemplatedMixin, DropDownMenu, MenuItem, DropDownButton, tools, store, json, dialog, NotificationSnackbar, Button, Form, Wizard, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, PortalCategory, portalTools, i18nTools, portalJson, installedApps, _) {
 
 	// convert IPv6 addresses to their canonical form:
 	//   ::1:2 -> 0000:0000:0000:0000:0000:0000:0001:0002
@@ -879,7 +884,7 @@ define([
 	});
 
 	// adjust white styling of header via extra CSS class
-	if (lang.getObject('portal.fontColor', false, portalContent) === 'white') {
+	if (lang.getObject('portal.fontColor', false, portalJson) === 'white') {
 		try {
 			domClass.add(dom.byId('umcHeader'), 'umcWhiteIcons');
 		} catch(err) { }
@@ -891,27 +896,28 @@ define([
 	} catch(err) { }
 
 	var locale = i18nTools.defaultLang().replace(/-/, '_');
+	var globalAppIndex = 0;
 	return {
 		portalCategories: null,
 		editMode: false,
 
 		_initStyling: function() {
 			var editPortalLogo = lang.hitch(this, function() {
-				if (!this.editMode) {
+				if (!this.editMode || this.dndMode) {
 					return;
 				}
 
-				this._editPortalProperties(['logo'], _('Portal logo'));
+				this._editProperties('settings/portal', portalJson.portal.dn, ['logo'], _('Portal logo'));
 			});
 			on(dom.byId('portalLogoEdit'), 'click', editPortalLogo);
 			on(dom.byId('portalLogo'), 'click', editPortalLogo);
 
 			on(dom.byId('portalTitle'), 'click', lang.hitch(this, function() {
-				if (!this.editMode) {
+				if (!this.editMode || this.dndMode) {
 					return;
 				}
 
-				this._editPortalProperties(['displayName'], _('Portal title'));
+				this._editProperties('settings/portal', portalJson.portal.dn, ['displayName'], _('Portal title'));
 			}));
 		},
 
@@ -920,7 +926,7 @@ define([
 			domClass.toggle(dom.byId('portal'), 'editMode', this.editMode);
 
 			// update title
-			var portal = portalContent.portal;
+			var portal = portalJson.portal;
 			var title = dom.byId('portalTitle');
 			var portalName = lang.replace(portal.name[locale] || portal.name.en_US || '', tools._status);
 			title.innerHTML = portalName;
@@ -935,7 +941,7 @@ define([
 			domClass.toggle(logoNode, 'dijitDisplayNone', (!portal.logo && !this.editMode));
 
 			// update color of header icons
-			domClass.toggle(dom.byId('umcHeader'), 'umcWhiteIcons', lang.getObject('portal.fontColor', false, portalContent) === 'white');
+			domClass.toggle(dom.byId('umcHeader'), 'umcWhiteIcons', lang.getObject('portal.fontColor', false, portalJson) === 'white');
 		},
 
 		_reloadCss: function() {
@@ -943,7 +949,7 @@ define([
 			// use styles.insertCssRule to display the style
 			// changes made after the first site load
 
- 			// reload the portal.css file
+			// reload the portal.css file
 			var re = /.*\/portal.css\??\d*$/;
 			var links = document.getElementsByTagName('link');
 			var link = array.filter(links, function(ilink) {
@@ -953,9 +959,9 @@ define([
 				return;
 			}
 			var href = link.href;
- 			if (href.indexOf('?') !== -1) {
- 				href = href.substr(0, href.indexOf('?'));
- 			}
+			if (href.indexOf('?') !== -1) {
+				href = href.substr(0, href.indexOf('?'));
+			}
 			href += lang.replace('?{0}', [Date.now()]);
 			link.href = href;
 		},
@@ -977,10 +983,10 @@ define([
 						return;
 					}
 					if (result && result.portal && result.entries) {
-						if (tools.isEqual(result, portalContent)) {
+						if (tools.isEqual(result, portalJson)) {
 							_load();
 						} else {
-							portalContent = result;
+							portalJson = result;
 							loadDeferred.resolve();
 						}
 					} else {
@@ -1009,7 +1015,9 @@ define([
 				array.forEach(this.portalCategories, function(iportalCategory) {
 					iportalCategory.destroyRecursive();
 				});
+				this.newCategoryButton.destroyRecursive();
 				this._createCategories();
+				this.dndSource.sync();
 				this._updateCategories();
 				deferred.resolve();
 			}));
@@ -1048,32 +1056,27 @@ define([
 			}
 		},
 
-		_editPortalProperties: function(propNames, dialogTitle) {
-			// show standby animation
+		_editProperties: function(type, dn, propNames, dialogTitle, categoryIndex /*optional*/) {
 			var standbyWidget = this.standbyWidget;
 			standbyWidget.show();
 			var formDialog = null; // block scope variable
+			var _this = this;
 
-			// load all properties for a portal object
-			this.moduleCache.getProperties('settings/portal', portalContent.portal.dn).then(lang.hitch(this, function(portalProps) {
-				// filter all portal properties for the ones we want to edit
+			this.moduleCache.getProperties(type, dn).then(lang.hitch(this, function(portalProps) {
 				var props = array.filter(lang.clone(portalProps), function(iprop) {
 					return array.indexOf(propNames, iprop.id) >= 0;
 				});
 				var initialFormValues = {}; // set after form.load()
 
-				// load the neccessary widgets to display the properties
 				this._requireWidgets(props).then(lang.hitch(this, function() {
 					props = this._prepareProps(props); // do this after requireWidgets because requireWidgets changes the type of the prop
 
-					// create the form with the given properties
 					var form = new Form({
 						widgets: props,
 						layout: propNames,
 						moduleStore: this.moduleStore
 					});
 
-					// save altered values when form is submitted
 					on(form, 'submit', lang.hitch(this, function() {
 						formDialog.standby(true);
 						var formValues = form.get('value');
@@ -1088,30 +1091,15 @@ define([
 							}
 						});
 
-						var alteredValuesNonEmpty = {};
-						tools.forIn(alteredValues, function(iname, ivalue) {
-							if (!this._isEmptyValue(ivalue)) {
-								alteredValuesNonEmpty[iname] = ivalue;
-							}
-						}, this);
-
-						// check if the values in the form have changed
-						// and if not return and close without saving
-						if (Object.keys(alteredValues).length === 0) {
-							formDialog.close();
-							return;
-						}
-
 						// reset validation settings from last validation
 						tools.forIn(form._widgets, function(iname, iwidget) {
 							if (iwidget.setValid) {
 								iwidget.setValid(null);
 							}
 						});
-						form.validate(); // validate all widgets to mark invalid/required fields
-
 						// see if there are widgets that are required and have no value
 						var allValid = true;
+						var firstInvalidWidget = null;
 						tools.forIn(form._widgets, function(iname, iwidget) {
 							var isEmpty = this._isEmptyValue(iwidget.get('value'));
 							if (iwidget.required && isEmpty) {
@@ -1120,18 +1108,35 @@ define([
 								// is already called, but MultiInput widgets that are required
 								// do not work correctly with validate
 								iwidget.setValid(false, _('This value is required')); // TODO wording / translation
-							} else if (!isEmpty && iwidget.isValid && !iwidget.isValid()) {
+							} else if (iwidget.isValid && !iwidget.isValid()) {
 								allValid = false;
+							}
+							if (!allValid && !firstInvalidWidget && a11y.getFirstInTabbingOrder(iwidget.domNode)) {
+								firstInvalidWidget = iwidget;
 							}
 						}, this);
 						if (!allValid) {
+							dijitFocus.focus(a11y.getFirstInTabbingOrder(firstInvalidWidget.domNode));
 							formDialog.standby(false);
 							return;
 						}
 
+						// check if the values in the form have changed
+						// and if not return and close without saving
+						if (Object.keys(alteredValues).length === 0) {
+							formDialog.close();
+							return;
+						}
+
+						var alteredValuesNonEmpty = {};
+						tools.forIn(alteredValues, function(iname, ivalue) {
+							if (!this._isEmptyValue(ivalue)) {
+								alteredValuesNonEmpty[iname] = ivalue;
+							}
+						}, this);
 						// validate the form values
 						tools.umcpCommand('udm/validate', {
-							objectType: 'settings/portal',
+							objectType: type,
 							properties: alteredValuesNonEmpty
 						}).then(lang.hitch(this, function(response) {
 							// parse response and mark widgets with invalid values
@@ -1152,9 +1157,15 @@ define([
 										allValid = false;
 									}
 								}
-								form._widgets[iprop.property].setValid(iprop.valid, iprop.details);
+
+								var widget = form.getWidget(iprop.property);
+								widget.setValid(iprop.valid, iprop.details);
+								if (!allValid && !firstInvalidWidget && a11y.getFirstInTabbingOrder(widget.domNode)) {
+									firstInvalidWidget = widget;
+								}
 							}));
 							if (!allValid) {
+								dijitFocus.focus(a11y.getFirstInTabbingOrder(firstInvalidWidget.domNode));
 								formDialog.standby(false);
 								return;
 							}
@@ -1163,25 +1174,44 @@ define([
 							if (alteredValues.displayName) {
 								alteredValues.displayName = alteredValues.displayName.concat(initialFormValues.displayName_remaining);
 							}
-							var putParams = lang.mixin(alteredValues, {
-								'$dn$': portalContent.portal.dn
-							});
-							form.moduleStore.put(putParams).then(lang.hitch(this, function(result) {
-								// see whether saving was successful
+
+							var moduleStoreFunc = dn ? 'put' : 'add';
+							var moduleStoreParams = dn ? lang.mixin(alteredValues, {'$dn$': dn}) : formValues;
+							var moduleStoreOptions = dn ? null : {'objectType': type};
+							form.moduleStore[moduleStoreFunc](moduleStoreParams, moduleStoreOptions).then(lang.hitch(this, function(result) {
 								if (result.success) {
-									// everything ok, close dialog
-									this._refreshAfterPortalEdit().then(function() {
-										formDialog.hide().then(function() {
-											formDialog.destroyRecursive();
-											dialog.contextNotify(_('Changes saved'));
-										});
-									});
+									formDialog.close();
+									dialog.contextNotify(_('Changes saved'));
+									if (!dn) {
+										var content = lang.clone(portalJson.portal.content);
+										content.push([result['$dn$'], []]);
+										this._saveEntryOrder(content);
+									} else {
+										var refreshFunc = {
+											'settings/portal': '_refreshAfterPortalEdit',
+											'settings/portal_category': '_refreshAfterPortalEntryEdit'
+										}[type];
+										lang.hitch(this, refreshFunc)();
+									}
 								} else {
-									dialog.alert(_('The changes to the portal object could not be saved: %(details)s', result));
+									var errmsg = '';
+									if (!dn) {
+										errmsg = _('The creation failed: %(details)s', result);
+									} else {
+										errmsg = _('The changes could not be saved: %(details)s', result);
+									}
+									dialog.alert(errmsg);
 									formDialog.standby(false);
 								}
 							}), function() {
-								dialog.alert(_('The changes to the portal object could not be saved'));
+								// TODO different error message
+								var errmsg = '';
+								if (!dn) {
+									errmsg = _('The creation failed');
+								} else {
+									errmsg = _('The changes could not be saved');
+								}
+								dialog.alert(errmsg);
 								formDialog.standby(false);
 							});
 						}));
@@ -1189,7 +1219,8 @@ define([
 
 					var formPreparationsDeferreds = [];
 					form.startup();
-					form.load(portalContent.portal.dn).then(function() {
+					var formLoaded = dn ? form.load(dn) : true;
+					when(formLoaded).then(function() {
 						form.ready().then(function() {
 							// preload images from ImageUploader widgets so that the
 							// dialog is correctly centered
@@ -1220,9 +1251,9 @@ define([
 								initialFormValues[ipropName] = form._widgets[ipropName].get('value');
 							});
 
-							var formValuesAlteredDeferred = new Deferred();
-							formPreparationsDeferreds.push(formValuesAlteredDeferred);
 							if (initialFormValues.displayName) {
+								var deferred = new Deferred();
+								formPreparationsDeferreds.push(deferred);
 								// if we edit the displayName property of the portal
 								// we only want to show the available languages (the languages that are also in the menu)
 								// with the language codes prefilled.
@@ -1260,11 +1291,9 @@ define([
 										array.forEach(form._widgets[iname]._widgets, function(iwidget) {
 											iwidget[0].set('disabled', true);
 										});
-										formValuesAlteredDeferred.resolve();
+										deferred.resolve();
 									});
 								}));
-							} else {
-								formValuesAlteredDeferred.resolve();
 							}
 
 							var portalComputersProp = array.filter(props, function(iprop) {
@@ -1274,27 +1303,45 @@ define([
 								form._widgets['portalComputers'].autoSearch = true;
 							}
 
+							if (type === 'settings/portal_category' && dn) {
+								form._widgets['name'].set('disabled', true);
+							}
+
+							var options = [{
+								name: 'cancel',
+								label: _('Cancel'),
+								callback: function(r) {
+									formDialog.close();
+								}
+							}, {
+								name: 'submit',
+								label: _('Save'),
+								default: true,
+								callback: function() {
+									form.submit();
+								}
+							}];
+							if (type === 'settings/portal_category' && dn) {
+								options.splice(1, 0, {
+									'name': 'remove',
+									'label': _('Remove from this portal'),
+									'callback': lang.hitch(this, function() {
+										formDialog.close();
+										var content = lang.clone(portalJson.portal.content);
+										content.splice(categoryIndex, 1);
+										_this._saveEntryOrder(content);
+									})
+								})
+							}
+
 							// create dialog to show form
 							all(formPreparationsDeferreds).then(function() {
 								formDialog = new _PortalPropertiesDialog({
-									'class': 'portalPropertiesDialog',
+									'class': 'portalPropertiesDialog', // TODO generic classname
 									closable: true, // so that the dialog is closable via esc key
 									title: dialogTitle,
 									message: form,
-									options: [{
-										name: 'cancel',
-										label: _('Cancel'),
-										callback: function(r) {
-											formDialog.close();
-										}
-									}, {
-										name: 'submit',
-										label: _('Save'),
-										default: true,
-										callback: function() {
-											form.submit();
-										}
-									}]
+									options: options
 								});
 
 								// go against the behaviour of ConfirmDialog to focus the confirm button
@@ -1313,60 +1360,57 @@ define([
 			}));
 		},
 
+		_categoryIndex: null,
 		_createCategories: function() {
+			this._categoryIndex = 0;
 			this.portalCategories = [];
 
-			var portal = portalContent.portal;
-			var entries = portalContent.entries;
-			var protocol = window.location.protocol;
-			var host = window.location.host;
-			var isIPv4 = tools.isIPv4Address(host);
-			var isIPv6 = tools.isIPv6Address(host);
+			var portal = portalJson.portal;
+			var entries = portalJson.entries;
+			var userGroups = array.map(tools.status('userGroups'), function(group) {
+				return group.toLowerCase();
+			});
 
 			if (portal.showApps) {
-				var apps = this._getApps(installedApps, locale, protocol, isIPv4, isIPv6);
+				var apps = this._getApps(installedApps, userGroups);
 				this._addCategory(_('Local Apps'), apps, 'localApps');
 			}
-			var userGroups = [];
-			array.forEach(tools.status('userGroups'), function(group) {
-				userGroups.push(group.toLowerCase());
-			});
-			array.forEach(['service', 'admin'], lang.hitch(this, function(category) {
-				var categoryEntries = array.filter(entries, function(entry) {
-					if (entry.category != category) {
-						return false;
-					}
-					if (! entry.activated) {
-						return false;
-					}
-					if (entry.user_group && userGroups.indexOf(entry.user_group.toLowerCase()) == -1) {
-						return false;
-					}
-					if (!entry.portals || entry.portals.indexOf(portal.dn) == -1) {
-						return false;
-					}
-					return true;
-				});
-				var apps = this._getApps(categoryEntries, locale, protocol, isIPv4, isIPv6);
-				var heading;
-				if (category === 'admin') {
-					heading = _('Administration');
-				} else if (category === 'service') {
-					heading = _('Applications');
+
+			array.forEach(portalJson.portal.content, lang.hitch(this, function(ientry) {
+				var category_dn = ientry[0];
+				var entry_dns = ientry[1];
+				var category = portalJson.categories[category_dn];
+				if (!category) {
+					return;
 				}
-				this._addCategory(heading, apps, category);
+				var apps = this._getApps(entry_dns, userGroups);
+				var heading = category.display_name[locale] || category.display_name.en_US;
+				this._addCategory(heading, apps, category_dn);
 			}));
+
+			this._addAddCategoryButton();
 		},
 
-		_getApps: function(categoryEntries, locale, protocol, isIPv4, isIPv6) {
+		_getApps: function(entries, userGroups) {
 			var apps = [];
-			var appsMap = {};
-			array.forEach(categoryEntries, function(entry) {
+			var appIndex = 0;
+			array.forEach(entries, function(entry) {
+				if (typeof entry === 'string') {
+					entry = portalJson.entries[entry];
+				}
+				if (!entry) {
+					return;
+				}
+				if (entry.user_group && userGroups.indexOf(entry.user_group.toLowerCase()) == -1) {
+					return;
+				}
+
 				var linkAndHostname = getBestLinkAndHostname(entry.links);
 				var app = {
 					name: entry.name[locale] || entry.name.en_US,
 					dn: entry.dn,
-					id: entry.dn,
+					id: (globalAppIndex++).toString() + '_' + entry.dn,
+					index: appIndex++,
 					description: entry.description[locale] || entry.description.en_US,
 					logo_name: _getLogoName(entry.logo_name),
 					web_interface: linkAndHostname.link,
@@ -1374,27 +1418,6 @@ define([
 				};
 				apps.push(app);
 			});
-			var entryOrder = portalContent.portal.portalEntriesOrder;
-			if (entryOrder && entryOrder.length) {
-				var newapps = [];
-				array.forEach(entryOrder, function() {
-					newapps.push(null);
-				});
-				var remainingApps = [];
-				array.forEach(apps, function(iapp) {
-					var iappIndex = entryOrder.indexOf(iapp.dn);
-					if (iappIndex >= 0) {
-						newapps[iappIndex] = iapp;
-					} else {
-						remainingApps.push(iapp);
-					}
-				});
-				newapps = array.filter(newapps, function(hasValue) {
-					return hasValue;
-				});
-				newapps = newapps.concat(remainingApps);
-				apps = newapps;
-			}
 			return apps;
 		},
 
@@ -1403,20 +1426,24 @@ define([
 				heading: heading,
 				apps: apps,
 				domainName: tools.status('domainname'),
-				useDnd: (category === 'service' || category === 'admin'),
-				category: category
+				useDnd: category !== 'localApps',
+				category: category,
+				'class': 'dojoDndItem',
+				categoryIndex: category === 'localApps' ? null : this._categoryIndex++
 			});
-			portalCategory.own(aspect.after(portalCategory.grid, 'onAddEntry', lang.hitch(this, function(category) {
-				if (this.dndMode) {
+			domAttr.set(portalCategory.domNode, 'dndType', 'PortalCategory');
+			dojoQuery('h2', portalCategory.domNode).addClass('dojoDndHandle');
+			portalCategory.own(aspect.after(portalCategory.grid, 'onAddEntry', lang.hitch(this, function() {
+				if (!this.editMode || this.dndMode) {
 					return;
 				}
-				this.editPortalEntry(category);
+				this.editPortalEntry(portalCategory);
 			}), true));
-			portalCategory.own(aspect.after(portalCategory.grid, 'onEditEntry', lang.hitch(this, function(category, item) {
-				if (this.dndMode) {
+			portalCategory.own(aspect.after(portalCategory.grid, 'onEditEntry', lang.hitch(this, function(item) {
+				if (!this.editMode || this.dndMode) {
 					return;
 				}
-				if (category === 'localApps') {
+				if (portalCategory.category === 'localApps') {
 					dialog.alert(_('Local apps can not be edited'));
 					return;
 				}
@@ -1424,14 +1451,70 @@ define([
 					dialog.alert(_('The dn for this entry could not be found'));
 					return;
 				}
-				this.editPortalEntry(category, item.dn);
+				this.editPortalEntry(portalCategory, item);
 			}), true));
+			portalCategory.own(aspect.after(portalCategory, 'onEditCategory', lang.hitch(this, function() {
+				if (!this.editMode || this.dndMode) {
+					return;
+				}
+				this._editProperties('settings/portal_category', portalCategory.category, ['name', 'displayName'], 'Edit category', portalCategory.categoryIndex);
+			})));
 			this.content.appendChild(portalCategory.domNode);
 			// resize the item names after adding the category to the site.
 			// the grid items are already rendered at this point (by creating the portalCategory)
 			// but they weren't in the dom tree yet
 			portalCategory.grid._resizeItemNames();
 			this.portalCategories.push(portalCategory);
+		},
+
+		_addAddCategoryButton: function() {
+			var menu = new DropDownMenu({});
+			var menuItem_createNew = new MenuItem({
+				label: _('Create new category'),
+				onClick: lang.hitch(this, function() {
+					this._editProperties('settings/portal_category', null, ['name', 'displayName'], _('Create new category'));
+				})
+			});
+			var menuItem_fromExisting = new MenuItem({
+				label: _('Add existing category'),
+				onClick: lang.hitch(this, function() {
+					require(['umc/modules/udm/ComboBox'], lang.hitch(this, function() {
+						dialog.confirmForm({
+							'title': _('Add category'),
+							'submit': _('Add'),
+							'widgets': [{
+								'name': 'category',
+								'label': _('Category'),
+								'dynamicValues': 'udm/syntax/choices',
+								'dynamicOptions': {
+									'syntax': 'PortalCategoryV2'
+								},
+								'type': 'umc/modules/udm/ComboBox',
+								'size': 'Two',
+								'threshold': 2000
+							}],
+							'layout': ['category']
+						}).then(lang.hitch(this, function(result) {
+							var content = lang.clone(portalJson.portal.content);
+							content.push([result.category, []]);
+							this._saveEntryOrder(content);
+						}), lang.hitch(this, function() {
+							// error stub (prevent error log when dialog is canceled)
+						}));
+					}));
+				})
+			});
+			menu.addChild(menuItem_createNew);
+			menu.addChild(menuItem_fromExisting);
+			menu.startup();
+
+			this.newCategoryButton = new DropDownButton({
+				label: _('Add category'),
+				'class': 'newCategory',
+				dropDown: menu
+			});
+			this.newCategoryButton.startup();
+			put(this.content, this.newCategoryButton.domNode);
 		},
 
 		// TODO copy pasted from udm/DetailPage.js
@@ -1461,10 +1544,10 @@ define([
 			return all(deferreds);
 		},
 
-		editPortalEntry: function(category, dn) {
+		editPortalEntry: function(portalCategory, item) {
 			var standbyWidget = this.standbyWidget;
 			standbyWidget.show();
-			var _initialDialogTitle = dn ? _('Edit entry') : _('Create entry');
+			var _initialDialogTitle = item ? _('Edit entry') : _('Create entry');
 
 			this.moduleCache.getProperties('settings/portal_entry').then(lang.hitch(this, function(portalEntryProps) {
 				portalEntryProps = lang.clone(portalEntryProps);
@@ -1614,22 +1697,19 @@ define([
 
 						lang.mixin(values, {
 							activated: true,
-							category: category,
-							portal: [portalContent.portal.dn],
 						});
 
 						wizard.moduleStore.add(values, {
 							objectType: 'settings/portal_entry'
 						}).then(lang.hitch(this, function(result) {
-							// see whether creating the portal entry was succesful
 							if (result.success) {
-								// everything ok, close the wizard
-								this._refreshAfterPortalEntryEdit().then(function() {
-									wizardDialog.hide().then(function() {
-										wizardDialog.destroyRecursive();
-										dialog.contextNotify(_('Portal entry was successfully created'));
-									});
-								});
+								var content = lang.clone(portalJson.portal.content);
+								content[portalCategory.categoryIndex][1].push(result['$dn$'])
+								wizardDialog.hide().then(lang.hitch(this, function() {
+									wizardDialog.destroyRecursive();
+									dialog.contextNotify(_('Portal entry was successfully created'));
+									this._saveEntryOrder(content);
+								}));
 							} else {
 								dialog.alert(_('The portal entry object could not be saved: %(details)s', result));
 								wizardDialog.standby(false);
@@ -1682,29 +1762,17 @@ define([
 							}
 						}));
 
-						// if the edited portal entry was not part of this portal before,
-						// add it to this portal
-						var portals = lang.clone(wizard.loadedEntryPortals);
-						var entryIsPartOfPortal = array.some(portals, function(iportal) {
-							return iportal === portalContent.portal.dn;
-						});
-						if (!entryIsPartOfPortal) {
-							portals.push(portalContent.portal.dn);
-						}
-
 						// save changes
 						var putParams = lang.mixin(alteredValues, {
-							'$dn$': wizard.dn,
-							category: category,
-							portal: portals
+							'$dn$': wizard.dn
 						});
-						wizard.moduleStore.put(alteredValues).then(lang.hitch(this, function(result) {
+						wizard.moduleStore.put(putParams).then(lang.hitch(this, function(result) {
 							// see whether creating the portal entry was succesful
 							if (result.success) {
 								// if the icon for the entry was changed we want a new iconClass
 								// to display the new icon
 								if (formValues.icon) {
-									var entry = array.filter(portalContent.entries, function(ientry) {
+									var entry = array.filter(portalJson.entries, function(ientry) {
 										return ientry.dn === wizard.dn;
 									})[0];
 									if (entry) {
@@ -1726,32 +1794,27 @@ define([
 						}), function() {
 							dialog.alert(_('The editing of the portal entry object failed.'));
 							wizardDialog.standby(false);
-						});
+						}).then(lang.hitch(this, function() {
+							if (!item || wizard.dn !== item.dn) {
+								var content = lang.clone(portalJson.portal.content);
+								if (!item) {
+									content[portalCategory.categoryIndex][1].push(wizard.dn);
+								} else {
+									content[portalCategory.categoryIndex][1][item.index] = wizard.dn;
+								}
+								this._saveEntryOrder(content);
+							}
+						}));
 					})));
 
 					// remove portal entry object from this portal
 					wizard.own(on(wizard, 'remove', lang.hitch(this, function() {
-						wizardDialog.standby(true);
-
-						var newPortals = array.filter(wizard.loadedEntryPortals, function(iportal) {
-							return iportal !== portalContent.portal.dn;
+						wizardDialog.hide().then(function() {
+							wizardDialog.destroyRecursive();
 						});
-						wizard.moduleStore.put({
-							'$dn$': wizard.dn,
-							portal: newPortals
-						}).then(lang.hitch(this, function(result) {
-							if (result.success) {
-								this._refreshAfterPortalEntryEdit().then(function() {
-									wizardDialog.hide().then(function() {
-										wizardDialog.destroyRecursive();
-										dialog.contextNotify(_('Changes saved'));
-									});
-								});
-							} else {
-								dialog.alert(_('The entry could not be removed: %(details)s', result));
-								wizardDialog.standby(false);
-							}
-						}));
+						var content = lang.clone(portalJson.portal.content);
+						content[portalCategory.categoryIndex][1].splice(item.index, 1);
+						this._saveEntryOrder(content);
 					})));
 
 					// create and show dialog with the wizard
@@ -1759,7 +1822,7 @@ define([
 					wizardWrapper.addChild(wizard);
 
 					var wizardDialog = null;
-					var wizardReady = dn ? wizard.loadEntry(dn) : true;
+					var wizardReady = item ? wizard.loadEntry(item.dn) : true;
 					when(wizardReady).then(function() {
 						wizardDialog = new _WizardDialog({
 							_initialTitle: _initialDialogTitle,
@@ -1791,9 +1854,24 @@ define([
 			this._setupEditMode();
 			this._initStyling();
 			this._updateStyling();
+			put(this.content, '.dojoDndSource_PortalCategories');
+			this.dndSource = new Source(this.content, {
+				type: ['PortalCategories'],
+				accept: ['PortalCategory'],
+				withHandles: true
+			});
+			this.dndSource.isSource = false; // set isSource to false after the constructor so that the css-classes are set correctly
+			aspect.after(this.dndSource, 'onDndStart', lang.hitch(this, function(source) {
+				if (source === this.dndSource) {
+					dojoQuery('.dojoDndItem_dndCover', this.content).removeClass('dijitDisplayNone');
+				}
+			}), true);
+			aspect.after(this.dndSource, 'onDndCancel', lang.hitch(this, function() {
+				dojoQuery('.dojoDndItem_dndCover', this.content).addClass('dijitDisplayNone');
+			}));
 			this._createCategories();
+			this.dndSource.sync();
 			this._addLinks();
-
 			put(dojo.body(), new NotificationSnackbar({}).domNode);
 		},
 
@@ -1879,14 +1957,14 @@ define([
 						'class': 'portalEditBarVisibilityButton',
 						label: _('Visibility'),
 						description: _('Edit the visibility of this portal'),
-						callback: lang.hitch(this, '_editPortalProperties', ['portalComputers'], _('Portal visibility'))
+						callback: lang.hitch(this, '_editProperties', 'settings/portal', portalJson.portal.dn, ['portalComputers'], _('Portal visibility'))
 					});
 					var appearanceButton = new _Button({
 						iconClass: '',
 						'class': 'portalEditBarAppearanceButton',
 						label: _('Appearance'),
 						description: _('Edit the font color and background for this portal'),
-						callback: lang.hitch(this, '_editPortalProperties', ['fontColor', 'background', 'cssBackground'], _('Portal appearance'))
+						callback: lang.hitch(this, '_editProperties', 'settings/portal', portalJson.portal.dn, ['fontColor', 'background', 'cssBackground'], _('Portal appearance'))
 					});
 					var closeButton = new _Button({
 						iconClass: 'umcCrossIconWhite',
@@ -1946,6 +2024,7 @@ define([
 
 			var scrollY = window.scrollY;
 			this.dndMode = active;
+			this.dndSource.isSource = active;
 			this.search.set('value', ''); // reset search
 			this.search.collapseSearch();
 			domClass.toggle(dom.byId('portal'), 'dndMode', this.dndMode);
@@ -1961,7 +2040,7 @@ define([
 
 			// populate dndSource of the category with the shown apps
 			var categories = array.filter(this.portalCategories, function(iPortalCategory) {
-				return array.indexOf(['service', 'admin'], iPortalCategory.category) >= 0;
+				return iPortalCategory.category !== 'localApps';
 			});
 			array.forEach(categories, lang.hitch(this, function(iCategory) {
 				domClass.toggle(iCategory.grid.contentNode, 'dijitOffScreen', this.dndMode);
@@ -1985,102 +2064,54 @@ define([
 
 			// make a fresh filter if we exit dnd mode
 			if (!this.dndMode) {
-				this.filterPortal();
+				this._refreshAfterPortalEntryEdit();
 			}
 			window.scrollTo(0, scrollY);
 		},
 
 		saveEntryOrder: function() {
-			this.standbyWidget.show();
-
-			var categories = array.filter(this.portalCategories, function(iPortalCategory) {
-				return array.indexOf(['service', 'admin'], iPortalCategory.category) >= 0;
-			});
-
-			var entriesToUpdate = {};
-			array.forEach(categories, function(iCategory) {
-				lang.mixin(entriesToUpdate, iCategory.grid.dndSource.externalDropMap);
-			});
-			var deferreds = [];
-			tools.forIn(entriesToUpdate, lang.hitch(this, function(dn, newCategory) {
-				var deferred = new Deferred();
-				deferreds.push(deferred);
-				this.moduleStore.put({
-					'$dn$': dn,
-					category: newCategory
-				}).then(lang.hitch(this, function(result) {
-					deferred.resolve({
-						success: result.success,
-						dn: dn,
-						category: newCategory
-					});
-				}));
+			// get new content
+			var newContent = [];
+			this.dndSource.getAllNodes().forEach(lang.hitch(this, function(portalCategoryNode) {
+				var portalCategory = dijit.byId(domAttr.get(portalCategoryNode, 'widgetId'));
+				var portalEntries = array.map(portalCategory.grid.dndSource.getAllNodes(), function(portalEntryNode) {
+					var portalEntryItem = portalCategory.grid.dndSource.getItem(portalEntryNode.id);
+					return portalEntryItem.data.dn;
+				});
+				newContent.push([portalCategory.category, portalEntries]);
 			}));
 
-			all(deferreds).then(lang.hitch(this, function(result) {
-				var msg = '';
-				var success = true;
-				msg = '<p>' + _('The new category for the following portal entries could not be saved:') + '</p><ul>';
-				array.forEach(result, function(iresult) {
-					success = success && iresult.success;
-					if (!iresult.success) {
-						msg += lang.replace('<li>{0}</li>', [iresult.dn]);
-					}
-				});
-				if (!success) {
-					this.standbyWidget.hide();
-					dialog.alert(msg);
-					return;
-				}
+			this._saveEntryOrder(newContent);
+		},
 
-				var portalEntriesOrder = [];
-				array.forEach(categories, lang.hitch(this, function(iCategory) {
-					var orderInCategory = [];
-					var dndSource = iCategory.grid.dndSource;
-					dndSource.getAllNodes().forEach(lang.hitch(this, function(inode) {
-						orderInCategory.push(dndSource.getItem(inode.id).data.dn);
-					}));
-					portalEntriesOrder = portalEntriesOrder.concat(orderInCategory);
-				}));
+		_saveEntryOrder: function(newContent) {
+			if (tools.isEqual(portalJson.portal.content, newContent)) {
+				return;
+			}
 
-				var portalEntriesOrderDeferred = new Deferred();
-				this.moduleStore.put({
-					'$dn$': portalContent.portal.dn,
-					portalEntriesOrder: []
-				}).then(lang.hitch(this, function(result) {
-					if (result.success) {
-						this.moduleStore.put({
-							'$dn$': portalContent.portal.dn,
-							portalEntriesOrder: portalEntriesOrder
-						}).then(lang.hitch(this, function(result) {
-							if (result.success) {
-								portalEntriesOrderDeferred.resolve();
-							} else {
-								portalEntriesOrderDeferred.reject();
-							}
-						}));
-					} else {
-						portalEntriesOrderDeferred.reject();
-					}
-				}));
-				portalEntriesOrderDeferred.then(lang.hitch(this, function() {
-					this._refreshAfterPortalEntryEdit().then( lang.hitch(this, function() {
-						this.standbyWidget.hide();
+			this.standbyWidget.show();
+			this.moduleStore.put({
+				'$dn$': portalJson.portal.dn,
+				content: newContent
+			}).then(lang.hitch(this, function(result) {
+				if (result.success) {
+					this._refreshAfterPortalEntryEdit().then(lang.hitch(this, function() {
 						this.setDndMode(false);
+						this.standbyWidget.hide();
 						dialog.contextNotify(_('Changes saved'));
 					}));
-				}, function() {
-					dialog.alert(_('Saving entry order failed'));
+				} else {
 					this.setDndMode(false);
 					this.standbyWidget.hide();
-				}));
+					dialog.alert(_('Saving entry order failed'));
+				}
 			}));
 		},
 
 		_updateCategories: function() {
 			var scrollY = window.scrollY;
 			var categories = array.filter(this.portalCategories, function(iPortalCategory) {
-				return array.indexOf(['service', 'admin'], iPortalCategory.category) >= 0;
+				return iPortalCategory.category !== 'localApps';
 			});
 
 			// FIXME this could only be done once and then use filterPortal do not show dummyNode

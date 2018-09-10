@@ -658,6 +658,18 @@ define([
 					properties.push(iprop);
 					return;
 				}
+
+				if (iprop.syntax === 'PortalCategorySelection') {
+					iprop.dndOptions = {
+						type: ['PortalCategorySelection'],
+						accept: ['PortalCategory']
+					};
+					iprop.subtypes[1].dndOptions = {
+						type: ['PortalEntrySelection'],
+						accept: ['PortalEntry']
+					};
+				}
+
 				if ('LinkList' == iprop.type) {
 					iprop.multivalue = false;
 				} else if ( iprop.type.indexOf('MultiObjectSelect') >= 0) {
@@ -1246,8 +1258,9 @@ define([
 				}[this.moduleFlavor];
 				if (!text && this.moduleFlavor === 'settings/portal_all') {
 					text = {
-						'settings/portal'       : _('Create portal'),
-						'settings/portal_entry' : _('Create portal entry')
+						'settings/portal'          : _('Create portal'),
+						'settings/portal_entry'    : _('Create portal entry'),
+						'settings/portal_category' : _('Create portal category')
 					}[this.objectType];
 				}
 				if (!text) {

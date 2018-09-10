@@ -83,19 +83,27 @@ define([
 			this.inherited(arguments);
 			this.baseClass += ' umcPortalGallery';
 			this._rowHandlers = [];
-			this._dndExternalDropMap = {};
 		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			this.buildDnd();
+		},
+
+		buildDnd: function() {
 			if (!this.useDnd) {
 				return;
 			}
 
-			var dndContainer = put(this.domNode, 'div');
-			this.dndPlaceholderHideout = put(this.domNode, 'div.dndPlaceholderHideout');
+			this.createDndSource();
+			this.createDndPlaceholder();
+		},
 
+		createDndSource: function() {
+			var dndContainer = put(this.domNode, 'div.dojoDndSource_PortalEntries');
 			this.dndSource = new Source(dndContainer, {
+				type: ['PortalEntries'],
+				accept: ['PortalEntry'],
 				horizontal: true,
 				copyState: function() {
 					return false; // do not allow copying
@@ -111,13 +119,16 @@ define([
 
 					return {
 						node: put('div', node), // wrap the tile so that the margin is part of the node and there is is no gap between the tiles
-						data: item
+						data: item,
+						type: ['PortalEntry']
 					};
 				})
 			});
 			this.dndSource.store = new Memory({});
-			this.dndSource.externalDropMap = {};
-			var domString = '' +
+		},
+
+		createDndPlaceholder: function() {
+			this.dndPlaceholder = domConstruct.toDom('' +
 				'<div class="dndPlaceholder dojoDndItem">' +
 					'<div class="umcGalleryWrapperItem portalEditAddEntryDummy">' +
 						'<div class="cornerPiece boxShadow bl">' +
@@ -128,24 +139,16 @@ define([
 						'</div>' +
 						'<div class="cornerPiece boxShadowCover bl"></div>' +
 					'</div>' +
-				'</div>';
-			this.dndPlaceholder = domConstruct.toDom(domString);
+				'</div>'
+			);
+			this.dndPlaceholderHideout = put(this.domNode, 'div.dndPlaceholderHideout');
 			put(this.dndPlaceholderHideout, this.dndPlaceholder);
 
-			aspect.around(this.dndSource, 'onDropExternal', lang.hitch(this, function(origFunction) {
-				return lang.hitch(this, function(source, nodes, copy) {
-					array.forEach(nodes, lang.hitch(this, function(inode) {
-						var data = source.getItem(inode.id).data;
-						delete source.externalDropMap[data.dn];
-						if (!this.store.get(data.dn)) {
-							this.dndSource.externalDropMap[data.dn] = this.category;
-						}
-						this.dndSource.store.add(data);
-						source.store.remove(data.dn);
-					}));
-					origFunction.apply(this.dndSource, [source, nodes, copy]);
-				});
-			}));
+			this.setupEventHandlingForDndPlaceholder();
+		},
+
+		setupEventHandlingForDndPlaceholder: function() {
+			//// move the dndPlaceholder around
 			aspect.after(this.dndSource, '_addItemClass', lang.hitch(this, function(target, cssClass) {
 				if (this.dndSource.isDragging) {
 					if (target === this.dndPlaceholder) {
@@ -177,6 +180,16 @@ define([
 					}
 				}
 			}), true);
+			aspect.after(this.dndSource, 'onMouseMove', lang.hitch(this, function() {
+				if (!this.dndSource.isDragging) {
+					return;
+				}
+				if (!this.dndSource.current && this.dndSource.parent.lastChild !== this.dndPlaceholder) {
+					put(this.dndSource.parent, this.dndPlaceholder);
+				}
+			}));
+
+			//// put the dndPlaceholder back into dndPlaceholderHideout
 			aspect.before(this.dndSource, 'onDropInternal', lang.hitch(this, function() {
 				if (!this.dndSource.current && this.dndSource.parent.lastChild === this.dndPlaceholder) {
 					this.dndSource.current = this.dndPlaceholder.previousSibling;
@@ -190,14 +203,6 @@ define([
 			}));
 			aspect.after(this.dndSource, 'onDraggingOut', lang.hitch(this, function() {
 				put(this.dndPlaceholderHideout, this.dndPlaceholder);
-			}));
-			aspect.after(this.dndSource, 'onMouseMove', lang.hitch(this, function() {
-				if (!this.dndSource.isDragging) {
-					return;
-				}
-				if (!this.dndSource.current && this.dndSource.parent.lastChild !== this.dndPlaceholder) {
-					put(this.dndSource.parent, this.dndPlaceholder);
-				}
 			}));
 		},
 
@@ -259,13 +264,13 @@ define([
 						'<div class="dummyIcon"></div>' +
 					'</div>';
 				var domNode = domConstruct.toDom(domString);
-				this._rowHandlers.push(on(domNode, 'click', lang.hitch(this, 'onAddEntry', this.category)));
+				this._rowHandlers.push(on(domNode, 'click', lang.hitch(this, 'onAddEntry')));
 				return domNode;
 			}
 
 			var domNode = this.inherited(arguments);
 			if (this.editMode) {
-				this._rowHandlers.push(on(domNode, 'click', lang.hitch(this, 'onEditEntry', this.category, item)));
+				this._rowHandlers.push(on(domNode, 'click', lang.hitch(this, 'onEditEntry', item)));
 			} else {
 				put(domNode, 'a[href=$]', this._getWebInterfaceUrl(item), query('.umcGalleryItem', domNode)[0]);
 			}

@@ -7,4 +7,5 @@ fix:
 desc: |-
   This update addresses the following issue(s):
   * Allow to customize portal with static pages
-bug: [43442]
+  * It is now possible to define custom categories for the portal.
+bug: [43442, 47243]

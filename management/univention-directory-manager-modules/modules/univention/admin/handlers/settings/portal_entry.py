@@ -94,6 +94,7 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	# 'category' - deprecated in favor of 'content' of settings/portal
 	'category': univention.admin.property(
 		short_description=_('Category'),
 		long_description='',
@@ -116,6 +117,7 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	# 'portal' - deprecated in favor of 'content' of settings/portal
 	'portal': univention.admin.property(
 		short_description=_('Portals'),
 		long_description=_('Shown on portals'),
@@ -174,8 +176,7 @@ property_descriptions = {
 layout = [
 	Tab(_('General'), _('Entry options'), layout=[
 		Group(_('General'), layout=[
-			["name", "category"],
-			["portal"],
+			["name"],
 			["icon"],
 		]),
 		Group(_('Display name'), layout=[
@@ -227,6 +228,114 @@ mapping.register('icon', 'univentionPortalEntryIcon', None, univention.admin.map
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
+
+	def _ldap_post_create(self):
+		self._update_portals_after_portal_change()
+
+
+	def _ldap_post_modify(self):
+		if self.hasChanged('name'):
+			newdn = 'cn=%s,%s' % (self['name'], self.lo.parentDn(self.dn),)
+			self._update_portals_after_name_change(self.dn, newdn)
+		if self.hasChanged('portal'):
+			self._update_portals_after_portal_change()
+
+
+	def _ldap_post_move(self, olddn):
+		self._update_portals_after_name_change(olddn, self.dn)
+
+
+	def _ldap_post_remove(self):
+		for portal_obj in univention.admin.modules.lookup('settings/portal', None, self.lo, scope='sub'):
+			self._remove_self_from_portal(portal_obj)
+
+
+	def _update_portals_after_portal_change(self):
+		old_portal = self.oldinfo.get('portal', [])
+		new_portal = self.info.get('portal', [])
+
+		removed_portals = [portal for portal in old_portal if portal not in new_portal]
+		for portal_dn in removed_portals:
+			self._remove_self_from_portal(portal_dn)
+
+		added_portals = [portal for portal in new_portal if portal not in old_portal]
+		for portal_dn in added_portals:
+			self._add_self_to_portal(portal_dn)
+
+
+	def _remove_self_from_portal(self, portal_obj):
+		if type(portal_obj) == str:
+			try:
+				portal_mod = univention.admin.modules.get('settings/portal')
+				portal_obj = univention.admin.objects.get(portal_mod, None, self.lo, position='', dn=portal_obj)
+			except univention.admin.uexceptions.noObject:
+				# If a settings/portal objects gets removed it removes itself from the 'portal' property of all
+				# settings/portal_entry objects.
+				# And in reverse this function is called when the 'portal' property of settings/portal_entry
+				# changes so the settings/portal object might already be deleted, if this is triggered by
+				# the removal of said settings/portal object.
+				return
+
+		portal_obj.open()
+		old_content = portal_obj.info.get('content', [])
+		new_content = []
+		for category, entries in old_content:
+			entries_with_self_removed = [entry for entry in entries if not self.lo.compare_dn(entry, self.dn)]
+			if len(entries_with_self_removed) > 0:
+				new_content.append([category, entries_with_self_removed])
+		if new_content != old_content:
+			portal_obj['content'] = new_content
+			portal_obj.modify()
+
+
+	def _add_self_to_portal(self, portal_obj):
+		if type(portal_obj) == str:
+			portal_mod = univention.admin.modules.get('settings/portal')
+			portal_obj = univention.admin.objects.get(portal_mod, None, self.lo, position='', dn=portal_obj)
+
+		portal_obj.open()
+		old_content = portal_obj.info.get('content', [])
+		if self.dn in [entry for category, entries in old_content for entry in entries]:
+			return
+		new_content = None
+		portal_category_dn = 'cn=%s,cn=categories,cn=portal,cn=univention,%s' % (self['category'], self.lo.base,)
+		category_already_in_old_content = portal_category_dn in [category for category, entries in old_content]
+		if category_already_in_old_content:
+			new_content = [[category, entries + ([self.dn] if category == portal_category_dn else [])] for category, entries in old_content]
+		else:
+			new_content = old_content + [[portal_category_dn, [self.dn]]]
+		if new_content != old_content:
+			try:
+				portal_category_mod = univention.admin.modules.get('settings/portal_category')
+				univention.admin.objects.get(portal_category_mod, None, self.lo, position='', dn=portal_category_dn)
+			except univention.admin.uexceptions.noObject:
+				# if the settings/portal_category object for the category string does not exist anymore create it
+				portal_category_pos = univention.admin.uldap.position(self.lo.parentDn(portal_category_dn))
+				portal_category_obj = portal_category_mod.object(None, self.lo, portal_category_pos)
+				portal_category_obj['name'] = self['category']
+				portal_category_obj['displayName'] = {
+					'admin': [
+						('en_US', 'Administration'),
+						('de_DE', 'Verwaltung')
+					],
+					'service': [
+						('en_US', 'Applications'),
+						('de_DE', 'Applikationen')
+					]
+				}.get(self['category'], [])
+				portal_category_obj.create()
+			portal_obj['content'] = new_content
+			portal_obj.modify()
+
+
+	def _update_portals_after_name_change(self, olddn, newdn):
+		for portal_obj in univention.admin.modules.lookup('settings/portal', None, self.lo, scope='sub'):
+			portal_obj.open()
+			old_content = portal_obj.info.get('content', [])
+			new_content = [[category, [newdn if self.lo.compare_dn(entry, olddn) else entry for entry in entries]] for category, entries in old_content]
+			if new_content != old_content:
+				portal_obj['content'] = new_content
+				portal_obj.modify()
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

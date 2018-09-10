@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=4
+VERSION=5
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -51,6 +51,10 @@ hostname="$(ucr get hostname)"
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "cn=univention,$ldap_base" \
 	--set name=portal || die
+
+univention-directory-manager container/cn create "$@" --ignore_exists \
+	--position "cn=portal,cn=univention,$ldap_base" \
+	--set name=categories || die
 
 # create container for portal objects and portal entries
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
@@ -73,6 +77,20 @@ role="$(ucr get server/role)"
 
 # the following UDM objects need to be created only intially
 if [ "$role" = "domaincontroller_master" ]; then
+	# create admin category
+	univention-directory-manager settings/portal_category create "$@" --ignore_exists \
+		--position "cn=categories,cn=portal,cn=univention,$ldap_base" \
+		--set name=admin \
+		--append displayName='"en_US" "Administration"' \
+		--append displayName='"de_DE" "Verwaltung"' || die
+
+	# create applications category
+	univention-directory-manager settings/portal_category create "$@" --ignore_exists \
+		--position "cn=categories,cn=portal,cn=univention,$ldap_base" \
+		--set name=service \
+		--append displayName='"en_US" "Applications"' \
+		--append displayName='"de_DE" "Applikationen"' || die
+
 	# create domain-wide portal object for DC master/backup systems
 	univention-directory-manager settings/portal create "$@" --ignore_exists \
 		--position "cn=portal,cn=univention,$ldap_base" \
@@ -132,7 +150,6 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/univention-management-console.svg)" \
 		--set portal="cn=local,cn=portal,cn=univention,$ldap_base" || die
 
-	# set link to master umc on all other system roles
 	ucr set \
 		ucs/web/overview/entries/admin/ucs-local-to-domain/label?"Univention Portal" \
 		ucs/web/overview/entries/admin/ucs-local-to-domain/label/de?"Univention Portal" \
