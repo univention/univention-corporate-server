@@ -91,6 +91,8 @@ class InstallRemoveUpgrade(Register):
 			errors, warnings = app.check(action)
 			can_continue = self._handle_errors(app, args, errors, True)
 			can_continue = self._handle_errors(app, args, warnings, fatal=not can_continue) and can_continue
+			if not self.check_user_credentials(args):
+				can_continue = False
 			if not can_continue or not self._call_prescript(app, args):
 				status = 0
 				self.fatal('Unable to %s %s. Aborting...' % (action, app.id))

@@ -61,6 +61,14 @@ class CredentialsAction(UniventionAppAction):
 		parser.add_argument('--pwdfile', help='Filename containing the password for registering the app. See --username')
 		parser.add_argument('--password', help=SUPPRESS)
 
+	def check_user_credentials(self, args):
+		try:
+			lo, pos = self._get_ldap_connection(args, allow_machine_connection=False, allow_admin_connection=False)
+		except ConnectionFailed:
+			return False
+		else:
+			return True
+
 	def _get_username(self, args):
 		if self._username is not None:
 			return self._username

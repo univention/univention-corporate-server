@@ -212,6 +212,8 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			self.old_app = app
 
 	def _revert(self, app, args):
+		if not app.docker:
+			return super(Upgrade, self)._revert(app, args)
 		if self._had_image_upgrade:
 			try:
 				remove = get_action('remove')
