@@ -231,6 +231,7 @@ static void usage(void) {
 	fprintf(stderr, "   -g   start from scratch (remove cache)\n");
 	fprintf(stderr, "   -i   initialize handlers only\n");
 	fprintf(stderr, "   -o   write transaction file\n");
+	fprintf(stderr, "   -P   initialize handlers only, but not from scratch\n");
 }
 
 
@@ -397,7 +398,7 @@ int main(int argc, char *argv[]) {
 	for (;;) {
 		int c;
 
-		c = getopt(argc, argv, "d:FH:h:p:b:D:w:y:xZY:U:R:Km:Bc:giol:");
+		c = getopt(argc, argv, "d:FH:h:p:b:D:w:y:xZY:U:R:Km:Bc:giol:P");
 		if (c < 0)
 			break;
 		switch (c) {
@@ -466,8 +467,10 @@ int main(int argc, char *argv[]) {
 			from_scratch = true;
 			break;
 		case 'i':
-			initialize_only = true;
 			from_scratch = true;
+			/* fallthrough */
+		case 'P':
+			initialize_only = true;
 			foreground = true;
 			break;
 		case 'o':

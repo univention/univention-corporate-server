@@ -69,3 +69,39 @@ Description[de]=Diese Variable konfiguriert den Detailgrad der Logausgaben für 
 Description[en]=This variable configures the verbosity of the log messages for the listener module <name> in /var/log/univention/listener_modules/<name>.log. Possible values: 0-4 (0: only error messages to 4: all debug statements). Default: 2 (INFO).
 Type=int
 Categories=service-ln
+
+[listener/init/fake/replication/mdb]
+Description[de]=Der Pfad zu einer Lightning Memory Database (LMDB) Datei, die anstatt des Moduls 'replication' für die Initialisierung des LDAP servers verwendet wird. Hat eine höhere Priorität als 'listener/init/fake/replication/ldif'.
+Description[en]=Path to a Lightning Memory Database (LMDB file, which gets used for the LDAP server instead of using the 'replication' module. Has a higher priority than 'listener/init/fake/replication/ldif'.
+Type=str
+Categories=service-ln
+
+[listener/init/fake/replication/ldif]
+Description[de]=Der Pfad zu einer LDAP Data Interchange Format (LDIF) Datei, die anstatt des Moduls 'replication' für die Initialisierung des LDAP servers verwendet wird. Hat eine niedrigere Priorität als 'listener/init/fake/replication/mdb'.
+Description[en]=Path to a LDAP Data Interchange Format (LDIF) file, which gets used for the LDAP server instead of using the 'replication' module. Has a lower priority than 'listener/init/fake/replication/mdb'.
+Type=str
+Categories=service-ln
+
+[listener/init/fake]
+Description[de]=Eine durch Leerzeichen separierte Liste von Listener Modulen, die durch einen alternativen Mechanismus initialisiert werden sollen. Derzeit ist dies nur für das Modul 'replication' umgesetzt, wofür weitere Einstellungen getätigt werden müssen.
+Description[en]=A space separated list of Listener modules, for which an alternative mechanism should be used to initialize them. Currently this is only supported for the module 'replication', which required additional configuration.
+Type=str
+Categories=service-ln
+
+[listener/init/fake/helper]
+Description[de]=Der Pfad zu einem Shell-Datei, über die weitere alternative Mechanismen für die Initialisierung von Module implementiert werden können.
+Description[en]=Path to a shell file, which can be used to implement other alternative Mechanisms to initialize Listener modules.
+Type=str
+Categories=service-ln
+
+[listener/init/fake/cache]
+Description[de]=Der Pfad zu einer Lightning Memory Database (LMDB) Datei, die den Listener-Cache nach der Initialisierung überschreibt.
+Description[en]=Path to a Lightning Memory Database (LMDB) file, which overwrites the Listener cache file after the initialization.
+Type=str
+Categories=service-ln
+
+[listener/init/fake/notifierid/timeout]
+Description[de]=Die Zeitspanne in Sekunden, für die auf die Initialisierung der Listener-Module gewartet wird. Standard: 24h
+Description[en]=The time span in seconds, for which the Listener waits for the modules to be initialized. Default: 24h
+Type=int
+Categories=service-ln

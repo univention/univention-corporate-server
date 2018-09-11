@@ -4,6 +4,7 @@ src/verify usr/sbin/
 src/convert usr/sbin/
 src/listener-ctrl usr/sbin/
 python/get_notifier_id.py usr/share/univention-directory-listener/
+python/univention-get-ldif-from-master.py usr/share/univention-directory-listener/
 python/ldap_server.py usr/lib/univention-directory-listener/system/
 python/listener.py* usr/share/pyshared/
 python/univention/listener/*.py* usr/share/pyshared/univention/listener/

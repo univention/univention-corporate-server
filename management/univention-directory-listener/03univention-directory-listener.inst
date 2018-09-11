@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Directory Listener
 #  join script
@@ -35,9 +35,33 @@ VERSION=1
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
-ln -sf /etc/runit/univention-directory-listener /etc/runit/univention/univention-directory-listener
+die () {
+	echo "${0##*/}: $*"
+	exit 1
+}
 
-sv down univention-directory-listener
+eval "$(univention-config-registry shell)"
+
+server_role=1 ldap_base=2 ldap_hostdn=3
+case "$server_role" in
+'')
+	die "UCR variable 'server/role' is not set or empty"
+	;;
+domaincontroller_master)
+	joinscript_save_current_version
+	exit 0
+	;;
+domaincontroller_backup)
+	dn="cn=admin,$ldap_base" secret=/etc/ldap.secret
+	;;
+*)
+	dn="$ldap_hostdn" secret=/etc/machine.secret
+	;;
+esac
+
+ln -snf /etc/runit/univention-directory-listener /etc/runit/univention/univention-directory-listener
+
+service univention-directory-listener stop
 
 if [ -e "/var/lib/univention-directory-listener" ]; then
 	rm -Rf /var/lib/univention-directory-listener/*
@@ -47,29 +71,97 @@ if [ -e "/var/lib/univention-directory-replication" ]; then
 	rm -Rf /var/lib/univention-directory-replication/*
 fi
 
-eval "$(univention-config-registry shell)"
-write_translog= dn= secret=
+if [ -e "/var/lib/univention-ldap/listener/listener" ]; then
+	chown listener /var/lib/univention-ldap/listener/listener*
+	write_translog=1
+else
+	write_translog=''
+fi
 
-case "$server_role" in
-domaincontroller_master)
-	index="/usr/lib/univention-install/.index.txt"
-	line="univention-directory-listener v${VERSION} successful"
-	grep -Fqx "$line" "$index" || echo "$line" >>"$index"
-	exit 0
-	;;
-*)
-	if [ -e "/var/lib/univention-ldap/listener/listener" ]; then
-		chown listener /var/lib/univention-ldap/listener/listener*
-		write_translog=1
+fake_replication () {
+	# fake_replication creates the local ldap database
+	# with ldapsearch and slapadd or by copying a pre
+	# defined database backend file to bypass the replication.py
+	# listener module
+	local time_start time_end minutes
+
+	service slapd stop
+
+	# update schema
+	/usr/share/univention-directory-listener/univention-get-ldif-from-master.py -s
+
+	# update local ldap
+	rm /var/lib/univention-ldap/ldap/*
+	time_start="$(date +%s)"
+	if [ -f "${listener_init_fake_replication_mdb:-}" ]
+	then
+		# use local database file (mdb!)
+		echo -n "moving database file $listener_init_fake_replication_mdb ... "
+		mv "$listener_init_fake_replication_mdb" /var/lib/univention-ldap/ldap/data.mdb ||
+			die "Failed to move MDB file"
+	elif [ -f "${listener_init_fake_replication_ldif:-}" ]
+	then
+		# slapadd local gzip ldif file
+		echo -n "slapadd $listener_init_fake_replication_ldif ... "
+		zcat "$listener_init_fake_replication_ldif" | slapadd -q ||
+			die "Failed slapadd from 'listener_init_fake_replication_ldif'"
+	else
+		# ldap search and slapadd
+		echo -n "searching ldap on master and slapadd ... "
+		/usr/share/univention-directory-listener/univention-get-ldif-from-master.py -l -o - | slapadd -q ||
+			die "Failed slapadd with master LDIF"
 	fi
-esac
+	time_end="$(date +%s)"
+	minutes="$(((time_end - time_start) / 60))"
+	echo "OK (in $minutes minutes)"
+	sync
+	chown -R openldap: /var/lib/univention-ldap/ldap
 
-case "$server_role" in
-domaincontroller_master|domaincontroller_backup) dn="cn=admin,$ldap_base" secret=/etc/ldap.secret ;;
-?*) dn="$ldap_hostdn" secret=/etc/machine.secret ;;
-esac
+	service slapd.service start
+}
 
-/usr/sbin/univention-directory-listener -i \
+# 1: fake listener initialization
+# init the listener without the configured handlers,
+# special case replication.py, create local ldap by
+# search and slapadd ...
+if [ -n "${listener_init_fake:-}" ]
+then
+	echo "faking listener initialization"
+
+	# get and store notifier id to get changes during initialization
+	notifierid_master="$(/usr/share/univention-directory-listener/get_notifier_id.py)" ||
+		die "Failed to get Notifier ID"
+	notifierid="${listener_init_fake_notifierid:-"$notifierid_master"}"
+
+	# set notifier id
+	echo "$notifierid" > /var/lib/univention-directory-listener/notifier_id
+	chown listener /var/lib/univention-directory-listener/notifier_id
+
+	# helper function to customize handler helper for fake initialization
+	# for each handler a function fake_NAME is called, if exists, see fake_replication
+	if [ -r "${listener_init_fake_helper:-}" ]; then
+		. "$listener_init_fake_helper"
+	fi
+
+	# fake handler initialization
+	install -o listener -m 0700 -d  /var/lib/univention-directory-listener/handlers
+	for handler in $listener_init_fake  # IFS
+	do
+		fake_helper="${!fake_$handler}"
+		command -v "$fake_helper" >/dev/null || continue
+		"$fake_helper"
+		echo 3 > "/var/lib/univention-directory-listener/handlers/$handler"
+	done
+	chown -R listener: /var/lib/univention-directory-listener/handlers
+
+	mode='-P'
+else
+	notifierid_master=''
+	mode='-i'
+fi
+
+univention-config-registry set ldap/database/ldbm/dbsync="10"
+/usr/sbin/univention-directory-listener "$mode" \
 	-d "${listener_debug_level:-1}" \
 	-h "$ldap_master" \
 	-b "$ldap_base" \
@@ -80,29 +172,52 @@ esac
 	-x \
 	${dn:+-D "$dn"} ${secret:+-y "$secret"}
 exit_status=$?
+univention-config-registry set ldap/database/ldbm/dbsync=$ldap_database_ldbm_dbsync
 
-# needed for db sync
-sleep 15
+# 2: fake listener initialization
+# copy listener cache (if defined), because cache without
+# replication.py is not fully filled
+if [ -f "${listener_init_fake_cache:-}" ]; then
+	echo "using fake listener cache $listener_init_fake_cache"
+	rm -f /var/lib/univention-directory-listener/cache/*
+	install -m 0600 -g listener -g nogroup  "$listener_init_fake_cache" /var/lib/univention-directory-listener/cache/data.db ||
+		die "Failed to install '$listener_init_fake_cache'"
+fi
 
-if [ -f /etc/init.d/slapd ]
+if command -v slapd >/dev/null
 then
-    /etc/init.d/slapd restart
+	service slapd restart
 fi
 
-if [ $exit_status != 0 ]; then
-	exit 1
-fi
+[ $exit_status = 0 ] ||
+	die "Failed to start Listener"
 
-if test -e "/var/lib/univention-directory-listener/handlers/replication"; then
-	res=`cat /var/lib/univention-directory-listener/handlers/replication`
-	if [ $res != "1" -a "$res" != "3" ]; then
-		exit 1
-	fi
+if [ -e "/var/lib/univention-directory-listener/handlers/replication" ]
+then
+	case "$(cat /var/lib/univention-directory-listener/handlers/replication)" in
+	1|3) ;;
+	*) die "Failed to initialize Listener module 'replication'" ;;
+	esac
 fi
 
 # The samba join script needs a running listener. Bug #19128
-/etc/init.d/univention-directory-listener stop
-/etc/init.d/univention-directory-listener start
+/etc/init.d/univention-directory-listener restart
+
+# 3: fake listener initialization on non master systems
+# wait until local notifier id is equal to notifier id of the master
+# otherwise if we could miss something (password change of computer
+# during join) if listener_init_fake_notifierid is used
+if [ "${notifierid_master:-0}" -gt 0 ]
+then
+	max="$(date +%s -d "${listener_init_fake_notifierid_timeout:-86400} second")"  # 24h
+	while now="$(date -%s)" ; [ "$now" -le "$max" ]
+	do
+		lid="$(cat /var/lib/univention-directory-listener/notifier_id)"
+		printf '\r%5d: waiting for replication (master.nid:%d <= self.nid:%d)' "$((max - now))" "$notifierid_master" "$lid"
+		[ "$notifierid_master" -le "${lid:-0}" ] && break
+		sleep 3
+	done
+fi
 
 test -x /usr/sbin/nscd && /usr/sbin/nscd -i passwd
 test -x /usr/sbin/nscd && /usr/sbin/nscd -i group
