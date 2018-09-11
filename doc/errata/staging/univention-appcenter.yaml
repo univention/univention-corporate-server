@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-appcenter
-fix: 7.0.2-26A~4.3.0.201809110951
+fix: 7.0.2-27A~4.3.0.201809111135
 desc: |
  This update addresses the following issue(s):
  * When an app is opened in the App Center,
@@ -13,4 +13,7 @@ desc: |
  * A purge command for univention-app has been introduced
  * Proxy settings in containers are updated before an
    app upgrade.
-bug: [39667,47695,47439]
+ * Installation routines now ask for valid credentials before actually doing
+   anything. This prevents possible errors when reverting the installation
+   status should the credentials be invalid.
+bug: [39667,47695,47439,47619]
