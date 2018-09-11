@@ -21,7 +21,7 @@ class AuthTests(object):
 		self.domain = self.ucr.get('domainname')
 
 		self.username = uts.random_name()
-		self.email = '%smail@%s' % (self.username, self.domain)
+		self.email = '%s@%s' % (self.username, self.domain)
 		self.password = 'univention'
 		self.userdn, self.username = self.udm.create_user(
 			username=self.username,
