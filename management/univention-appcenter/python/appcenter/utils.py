@@ -199,24 +199,27 @@ def rmdir(directory):
 		shutil.rmtree(directory)
 
 
-def call_process2(args, logger=None, env=None):
-	if logger:
-		logger.info('Calling %s' % args)
+def call_process2(cmd, logger=None, env=None):
+	if logger is None:
+		logger = utils_logger
+	logger.info('Running command: {0}'.format(' '.join(cmd)))
+	out = str()
+	ret = 0
 	try:
-		p = Popen(args, stdout=PIPE, stderr=STDOUT, bufsize=1, close_fds=True, env=env)
-	except OSError as exc:
-		err = '%s failed with %s' % (' '.join(args), str(exc))
-		if logger:
-			logger.warn(err)
-		return -1, [err]
-	out = list()
-	while p.poll() is None:
-		stdout = p.stdout.readline().rstrip()
-		if stdout:
-			out.append(stdout)
-			if logger:
-				logger.info(stdout)
-	return p.returncode, out
+		p = Popen(cmd, stdout=PIPE, stderr=STDOUT, bufsize=1, close_fds=True, env=env)
+		while p.poll() is None:
+			stdout = p.stdout.readline()
+			if stdout:
+				out += stdout
+				if logger:
+					logger.info(stdout.strip())
+		ret = p.returncode
+	except Exception as err:
+		out = str(err)
+		ret = 1
+	if ret:
+		logger.error('Command {} failed with: {} ({})'.format(' '.join(cmd), out.strip(), ret))
+	return ret, out
 
 
 def call_process(args, logger=None, env=None):

@@ -44,7 +44,7 @@ from univention.appcenter.app_cache import Apps
 from univention.appcenter.docker import Docker, rmi
 from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.actions import get_action
-from univention.appcenter.exceptions import DockerCouldNotStartContainer, DatabaseConnectorError, AppCenterErrorContainerStart, DockerImagePullFailed
+from univention.appcenter.exceptions import DockerCouldNotStartContainer, DatabaseConnectorError, AppCenterErrorContainerStart
 from univention.appcenter.actions.service import Start, Stop
 from univention.appcenter.utils import mkdir  # get_locale
 from univention.appcenter.ucr import ucr_keys, ucr_get, ucr_is_true
@@ -158,8 +158,7 @@ class DockerActionMixin(object):
 
 		if args.pull_image:
 			self.log('Downloading app image %s' % docker.image)
-			if not docker.pull():
-				raise DockerImagePullFailed(docker.image)
+			docker.pull()
 
 		self.log('Initializing app image')
 		hostname = explode_dn(hostdn, 1)[0]
@@ -242,7 +241,7 @@ docker inspect:
 {state}
 {graphdriver}""".format(
 				app=app, container=docker.container,
-				clogs='\n'.join(clogs), dlogs='\n'.join(dlogs),
+				clogs=clogs, dlogs=dlogs,
 				state=inspect.get('State'),
 				graphdriver=inspect.get('GraphDriver')
 			)

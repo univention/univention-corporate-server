@@ -41,7 +41,7 @@ from univention.appcenter.actions.upgrade import Upgrade
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.docker_install import Install
 from univention.appcenter.actions.service import Start
-from univention.appcenter.ucr import ucr_save
+from univention.appcenter.ucr import ucr_save, ucr_get
 from univention.appcenter.packages import update_packages
 
 import os
@@ -81,6 +81,13 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			return 'docker', None
 		if not Start.call(app=self.old_app):
 			raise UpgradeStartContainerFailed()
+		# update proxy settings
+		if app.docker:
+			aucr = get_action('configure')()
+			pvars = dict()
+			for psetting in ['proxy/http', 'proxy/https', 'proxy/no_proxy']:
+				pvars[psetting] = ucr_get(psetting)
+			aucr._set_config_via_tool(app, pvars)
 		result = self._execute_container_script(app, 'update_available', credentials=False, output=True)
 		if result is not None:
 			process, log = result
@@ -154,7 +161,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 
 		self.log('Verifying Docker registry manifest for app image %s' % docker.image)
 		docker.verify()
-
+		self.log('Pulling Docker image %s' % docker.image)
 		docker.pull()
 		self.log('Saving data from old container (%s)' % self.old_app)
 		Start.call(app=self.old_app)

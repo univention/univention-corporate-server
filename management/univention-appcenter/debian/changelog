@@ -1,3 +1,10 @@
+univention-appcenter (7.0.2-26) unstable; urgency=medium
+
+  * Bug #47439: fail if image pull fails, update
+    proxy settings before upgrade
+
+ -- Felix Botner <botner@univention.de>  Tue, 11 Sep 2018 09:45:45 +0200
+
 univention-appcenter (7.0.2-25) unstable; urgency=medium
 
   * Bug #47695: Introduce 'univention-app purge'

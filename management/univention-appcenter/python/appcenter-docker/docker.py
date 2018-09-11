@@ -44,7 +44,7 @@ from contextlib import contextmanager
 
 from univention.appcenter.utils import app_ports_with_protocol, call_process, call_process2, shell_safe, get_sha256, _
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.exceptions import DockerVerificationFailed
+from univention.appcenter.exceptions import DockerVerificationFailed, DockerImagePullFailed
 from univention.appcenter.ucr import ucr_save, ucr_is_false, ucr_get, ucr_run_filter, ucr_is_true
 
 _logger = get_base_logger().getChild('docker')
@@ -78,24 +78,6 @@ class DockerImageVerificationFailedChecksum(Exception):
 def inspect(name):
 	out = check_output(['docker', 'inspect', name])
 	return loads(out)[0]
-
-
-def pull(image):
-	try:
-		hub, image_name = image.split('/', 1)
-	except ValueError:
-		pass
-	else:
-		cfg = {}
-		dockercfg_file = os.path.expanduser('~/.dockercfg')
-		if os.path.exists(dockercfg_file):
-			with open(dockercfg_file) as dockercfg:
-				cfg = loads(dockercfg.read())
-		if hub not in cfg:
-			retcode = call(['docker', 'login', '-e', 'invalid', '-u', DOCKER_READ_USER_CRED['username'], '-p', DOCKER_READ_USER_CRED['password'], hub])
-			if retcode != 0:
-				_logger.warn('Could not login to %s. You may not be able to pull the image from the repository!' % hub)
-	return call(['docker', 'pull', image]) == 0
 
 
 def verify(app, image):
@@ -264,7 +246,23 @@ class Docker(object):
 		return False
 
 	def pull(self):
-		return pull(self.image)
+		try:
+			hub, image_name = self.image.split('/', 1)
+		except ValueError:
+			pass
+		else:
+			cfg = {}
+			dockercfg_file = os.path.expanduser('~/.dockercfg')
+			if os.path.exists(dockercfg_file):
+				with open(dockercfg_file) as dockercfg:
+					cfg = loads(dockercfg.read())
+			if hub not in cfg:
+				retcode = call(['docker', 'login', '-e', 'invalid', '-u', DOCKER_READ_USER_CRED['username'], '-p', DOCKER_READ_USER_CRED['password'], hub])
+				if retcode != 0:
+					_logger.warn('Could not login to %s. You may not be able to pull the image from the repository!' % hub)
+		ret, out = call_process2(['docker', 'pull', self.image], logger=_logger)
+		if ret != 0:
+			raise DockerImagePullFailed(self.image, out)
 
 	def verify(self):
 		if ucr_is_false('appcenter/index/verify'):

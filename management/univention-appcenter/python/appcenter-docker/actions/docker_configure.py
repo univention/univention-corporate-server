@@ -42,6 +42,7 @@ from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.configure import Configure
 from univention.appcenter.utils import mkdir, app_is_running
 from univention.appcenter.ucr import ucr_save
+from univention.appcenter.log import get_logfile_logger
 
 
 class NoDatabaseFound(Exception):
@@ -73,8 +74,9 @@ class Configure(Configure, DockerActionMixin):
 		if not app_is_running(app):
 			self.warn('Cannot write settings while %s is not running' % app)
 			return
+		logfile_logger = get_logfile_logger('update-certificates')
 		docker = self._get_docker(app)
-		if not docker.execute('which', 'ucr').returncode == 0:
+		if not docker.execute('which', 'ucr', _logger=logfile_logger).returncode == 0:
 			self.warn('ucr cannot be found, falling back to changing the database file directly')
 			self._set_config_directly(app, set_vars)
 			return
@@ -87,9 +89,9 @@ class Configure(Configure, DockerActionMixin):
 			else:
 				set_args.append('%s=%s' % (key, value))
 		if set_args:
-			docker.execute('ucr', 'set', *set_args)
+			docker.execute('ucr', 'set', *set_args, _logger=logfile_logger)
 		if unset_args:
-			docker.execute('ucr', 'unset', *unset_args)
+			docker.execute('ucr', 'unset', *unset_args, _logger=logfile_logger)
 
 	@classmethod
 	@contextmanager
