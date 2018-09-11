@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-appcenter
-fix: 7.0.2-25A~4.3.0.201809101128
+fix: 7.0.2-26A~4.3.0.201809110951
 desc: |
  This update addresses the following issue(s):
  * When an app is opened in the App Center,
@@ -11,4 +11,6 @@ desc: |
    and when the App detail page is closed,
    the previous scroll position is restored.
  * A purge command for univention-app has been introduced
-bug: [39667,47695]
+ * Proxy settings in containers are updated before an
+   app upgrade.
+bug: [39667,47695,47439]
