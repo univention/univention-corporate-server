@@ -6,7 +6,7 @@ src: univention-system-setup
 fix: 10.0.11-5A~4.2.0.201808131517
 desc: |
  This update addresses the following issue:
- * Fix memory leak caused by Python notifyer traceback handling.
+ * Fix memory leak caused by Python notifier traceback handling.
 bug: [47569]
 erratum: 438
 announced: 2018-08-15

@@ -6,7 +6,7 @@ src: univention-join
 fix: 9.0.3-14A~4.2.0.201808131557
 desc: |
  This update addresses the following issue:
- * Fix memory leak caused by Python notifyer traceback handling.
+ * Fix memory leak caused by Python notifier traceback handling.
 bug: [47569]
 erratum: 436
 announced: 2018-08-15
