@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-appcenter
-fix: 7.0.2-29A~4.3.0.201809121039
+fix: 7.0.2-30A~4.3.0.201809121648
 desc: |
  This update addresses the following issue(s):
  * When an app is opened in the App Center,
@@ -15,4 +15,5 @@ desc: |
  * Installation routines now ask for valid credentials before actually doing
    anything. This prevents possible errors when reverting the installation
    status should the credentials be invalid.
-bug: [39667,47439,47619]
+ * Never prompt in container commands during the app installation.
+bug: [39667,47439,47619,47763]
