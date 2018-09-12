@@ -83,12 +83,20 @@ define([
 		},
 
 		expandSearch: function() {
+			if (this.get('disabled')) {
+				return;
+			}
 			domClass.remove(this.domNode, 'collapsed');
 		},
 
 		collapseSearch: function(ignoreFocus) {
 			var shouldCollapse = (ignoreFocus || !this.focused) && !this.get('value');
 			domClass.toggle(this.domNode, 'collapsed', shouldCollapse);
+		},
+
+		_setDisabledAttr: function(disabled) {
+			this._searchTextBox.set('disabled', disabled);
+			this._set('disabled', disabled);
 		},
 
 		_getValueAttr: function() {

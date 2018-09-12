@@ -317,3 +317,7 @@
 .dojoDndSource_PortalEntrySelection .dojoDndItemAfter {
 	border-bottom: 2px solid grey;
 }
+
+.umc .dojoDndAvatar {
+	pointer-events: none;
+}
