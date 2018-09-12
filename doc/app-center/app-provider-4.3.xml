@@ -28,7 +28,7 @@
             known from mobile platforms like Apple or Google. It provides an
             infrastructure to build, deploy and run enterprise applications on
             Univention Corporate Server (UCS). The App Center uses well-known
-            technology like <ulink url="https://www.docker.com/">Docker</ulink>.
+            technologies like <ulink url="https://www.docker.com/">Docker</ulink>.
         </para>
     </section>
 
@@ -36,7 +36,7 @@
         <title>App Center infrastructure</title>
 
         <para>
-            The ecosystem consists of following components:
+            The ecosystem consists of the following components:
             <itemizedlist>
                 <listitem>
                     <simpara>
@@ -95,7 +95,7 @@
         </para>
 
         <para>
-            For building an app the app developer deals with UCS, the app, the
+            For building an app the app developer works with UCS, the app, the
             App Provider Portal and the Test App Center.
         </para>
     </section>
@@ -107,17 +107,17 @@
     <para>
         This chapter describes the requirements and the steps to create an app
         for Univention App Center. After reading this chapter an app provider
-        can create its own app and start with a development and test cycle
+        will be able to create their own app and start with a development and test cycle
         using the Test App Center.
     </para>
 
     <section id="app-provider-needs">
-        <title>What the app provider needs?</title>
+        <title>What does the app provider need?</title>
 
         <section id="app-provider-needs:docker-image">
             <title>Software in a Docker image</title>
             <para>
-                The software needs to be provided as <ulink
+                The software needs to be provided as a <ulink
                     url="https://docs.docker.com/">Docker image</ulink>. This
                 is the easiest way to deploy software in Univention App Center.
                 It is also recommended to publish the Docker container to
@@ -173,10 +173,10 @@
     </section>
 
     <section id="create-app-with-docker">
-        <title>Create app with a Docker image</title>
+        <title>Create an app with a Docker image</title>
 
         <para>
-            This section describes the steps how to create the app in the App
+            This section describes how to create the app in the App
             Provider Portal and use a Docker image.
         </para>
 
@@ -214,7 +214,7 @@
                         <simpara>
                             <emphasis>App Name</emphasis> is the name of the
                             app. It is used to display the app on the overview
-                            pages. This attribute can be changed any time later.
+                            pages. This attribute can be changed any time.
                         </simpara>
                     </listitem>
                     <listitem>
@@ -222,7 +222,7 @@
                             <emphasis>App Version</emphasis> is the version of
                             the app. The App Center distinguishes versions and
                             uses them to handle app updates. Once the app is
-                            released, this attribute cannot be changed anymore.
+                            released, this attribute cannot be changed.
                         </simpara>
                     </listitem>
                     <listitem>
@@ -337,9 +337,9 @@
                Please provide the logos in SVG format.
            </para>
            <para>
-               Those settings can be changed at any time later. For a more
-               detailed description on the app presentation and notes on the
-               translation, please have a look at <xref
+               Those settings can be changed later. For a more
+               detailed description of the app presentation and notes on the
+               translation, please take a look at <xref
                    linkend="app-presentation" />.
            </para>
         </section>
@@ -347,7 +347,7 @@
         <section id="create-app-with-docker:defaults">
             <title>Change defaults</title>
             <para>
-                In order to get usual Docker images working, some settings in
+                In order to get the usual Docker images working, some settings in
                 the App Provider Portal have to be changed. In the
                 <guimenu>Life cycle scripts</guimenu> section on the
                 <guimenu>Docker</guimenu> tab all Docker script drop-downs need
@@ -450,7 +450,7 @@
             <title>Ports</title>
             <para>
                 If the app needs to occupy ports on the host that need to be
-                passed along to the container in order work properly, they can
+                passed along to the container in order to work properly, they can
                 be defined in the <guimenu>Port redirection</guimenu> section
                 on the <guimenu>Docker</guimenu> tab. A list of ports can be
                 defined that the Docker host shall exclusively acquire for the
@@ -470,13 +470,13 @@
                 Many applications need a relational database management system
                 (<wordasword>RDMS</wordasword>) somewhere in the environment to
                 function properly. If the app needs such a database the App
-                Center takes care of providing one directly on the Docker host.
+                Center takes care of providing one directly to the Docker host.
                 In two sections on the <guimenu>Docker</guimenu> tab the
                 appropriate settings can
                 be made.
             </para>
             <para>
-                In the <guimenu>Database settings for Docker
+                In the <guimenu>Database settings for the Docker
                     container</guimenu> section the settings for the database are
                 defined. MySQL and PostgreSQL are supported. Database user,
                 database name and the path to the password file can be
@@ -486,11 +486,11 @@
                 file for later use.
             </para>
             <para>
-                In the <guimenu>Environment database variables</guimenu> the
+                In the <guimenu>Environment database variables</guimenu> for the
                 mapping of the database settings to the environment variables
-                in the container is defined. For example, if the container
+                in the container are defined. For example, if the container
                 expects the database hostname in <envar>DATABASE_HOST</envar>,
-                it has to be entered in the field <guimenu>Variable containing
+                it has to be entered into the field <guimenu>Variable containing
                     the server providing the database</guimenu>. There are also
                 fields for the database port, user, password, database name and
                 the password file.
@@ -503,20 +503,20 @@
     <title>App life cycle</title>
 
     <para>
-        This chapter is about the life cycle of an app from the first app
-        development, over its life in the public to termination. The life cycle
+        This chapter relates the life cycle of an app from the first app
+        development, its life in the public to termination. The life cycle
         applies to the app overall and to every single version.
     </para>
 
     <section id="development">
         <title>Development</title>
         <para>
-            Every app starts with the development. It involves the definition
+            Every app starts with its development. It involves the definition
             of the app in the App Provider Portal, providing the software
-            solution as Docker container (see <xref linkend="get-started" />)
+            solution as a Docker container (see <xref linkend="get-started" />)
             and the integration of the solution with UCS, for example in the
             identity management area (see <xref linkend="connection-idm" />).
-            This part of the life cycle can be divided into the two steps setup
+            This part of the life cycle can be divided into two steps: setup
             and integration.
         </para>
     </section>
@@ -524,7 +524,7 @@
     <section id="testing">
         <title>Testing</title>
         <para>
-            Testing the app is the final part of the development. It typically
+            Testing the app is the final part of its development. It typically
             involves a combination of manual and automatic tests. In order to
             test the app with UCS, please follow these instructions.
         </para>
@@ -556,7 +556,7 @@
             <title>Test App Center</title>
             <para>
                 Switch to the Test App Center Repository and test the app
-                directly on the UCS system that has been setup before.
+                directly on the UCS system set up before.
 <programlisting>
 univention-install univention-appcenter-dev
 univention-app dev-use-test-appcenter
@@ -703,10 +703,10 @@ univention-app dev-use-test-appcenter
     <section id="approval">
         <title>Two-way approval</title>
         <para>
-            Testing the app also involves to give an approval for the release
+            Testing the app also involves giving an approval for the release
             of the app. Each app in the App Center requires a two-way approval,
             one from the app provider and one from Univention. The app provider
-            starts with the process and performs its tests to give the approval
+            starts with the process and performs the tests to give the approval
             for its app.
         </para>
 
@@ -721,7 +721,7 @@ univention-app dev-use-test-appcenter
             The automated tests conducted by Univention test for installation,
             un-installation and re-installation of the app for different UCS
             system roles. They check for proper operation of the UCS services.
-            No app functionality will be tested. It is rather ensured that the
+            No app functionality will be tested. The tests are for ensuring that the
             app does not break UCS functionality.
         </para>
         <para>
@@ -751,7 +751,7 @@ univention-app dev-use-test-appcenter
     <section id="updates">
         <title>Updates</title>
         <para>
-            After the release of the first version the app enters the
+            After the release of the first version the app enters 
             "maintenance mode" and receives updates from the app provider. The
             evolution of an app is represented by its version. In order to
             provide an update for the app, follow these steps:
@@ -760,7 +760,7 @@ univention-app dev-use-test-appcenter
                 <listitem>
                     <simpara>
                         Go to the <guimenu>Apps</guimenu> UMC module in the App
-                        Provider Portal and search the app.
+                        Provider Portal and search for the app.
                     </simpara>
                 </listitem>
                 <listitem>
@@ -804,13 +804,13 @@ univention-app dev-use-test-appcenter
     <section id="termination">
         <title>Termination (end of life)</title>
         <para>
-            If the app provider decides to discontinue an app and stop the
+            If the app provider decides to discontinue an app and stop
             maintenance, the app can be terminated by setting it <userinput>end
                 of life</userinput>.  As soon as an app is published in status
             end of life, UCS system administrators won't be able to install it
             anymore. UCS systems that already have the app installed, will show
             a notification in the App Center that informs the UCS system
-            administrator and that they should look for alternative solutions.
+            administrator that they should look for alternative solutions.
         </para>
 
         <para>
@@ -861,7 +861,7 @@ univention-app dev-use-test-appcenter
                 odd.
             </para>
             <para>
-                Please also do not simply import a bitmap graphics into SVG and
+                Please also do not simply import a bitmap graphic into SVG and
                 export it. Results after scaling may not look good, because the
                 logo is basically a bitmap in SVG apparel.
             </para>
@@ -875,7 +875,7 @@ univention-app dev-use-test-appcenter
             make sure, the logo can still be recognized. The detailed logo is
             not limited. Most logos for this slot have a landscape orientation.
             The App Center and the App Catalog take care of the appropriate
-            scaling. SVG allows a very good result due to its nature as vector
+            scaling. SVG allows a very good result due to its nature as a vector
             graphics format.
         </para>
     </section>
@@ -908,15 +908,15 @@ univention-app dev-use-test-appcenter
     <section id="description">
         <title>Description</title>
         <para>
-            The description is the text that introduces the solution to the
-            user and thus is very important to get their attention. Here are
-            some tips that are intended to help to present the app in an
+            The description is the text introducing the solution to the
+            user and thus is very important for getting their attention. Here are
+            some tips intended to help to present the app in a
             user-friendly, customer-oriented, and search-engine-optimized
-            manner as good as possible. At a glance:
+            manner. 
             <itemizedlist>
                 <listitem>
                     <simpara>
-                        Unique content with at least 300 words. No copy from
+                        Unique content with at least 300 words. Not a copy from
                         the solutions web page.
                     </simpara>
                 </listitem>
@@ -968,7 +968,7 @@ univention-app dev-use-test-appcenter
         <note>
             <para>
                 Custom styles in CSS should not be used, because they may
-                distract the overall impression. The App Center UMC module and
+                distract from the overall impression. The App Center UMC module and
                 the App Catalog already have respective CSS style definitions.
             </para>
         </note>
@@ -976,7 +976,7 @@ univention-app dev-use-test-appcenter
             The length of the description depends on how much there is to say
             and how much explanation the app requires. Ideally the description
             should be at least 300 words long.  The text should be structured
-            and use paragraphs to make it easier to read. The target group are
+            and paragraphs should be used to make it easier to read. The target group are
             potential customers. Subheadings (HTML: <wordasword>h2,
                 h3</wordasword>) should be used to divide the text into logical
             sections. It is very helpful for the reader to be able to see the
@@ -985,7 +985,7 @@ univention-app dev-use-test-appcenter
             <wordasword>ol, ul, li</wordasword>) is particularly practical.
         </para>
         <para>
-            If links should be used in the app description (e.g., to pages on
+            If links are used in the app description (e.g., to pages on
             the solution's own website), please always use the
             <userinput>target="_blank"</userinput> (open in new tab) and assign
             the link a title attribute. Please keep the use of links to a
@@ -1011,9 +1011,9 @@ univention-app dev-use-test-appcenter
     <section id="license">
         <title>License</title>
         <para>
-            On the <guimenu>License</guimenu> tab license information like for
-            example a license agreement can be defined. It is a text that the
-            UCS system administrator should read and has to accept before the
+            On the <guimenu>License</guimenu> tab license information can be defined; for
+            example, a license agreement. This should be read by a
+            UCS system administrator and has to be accepted before the
             app is installed. If the text is not accepted, the installation
             process is aborted and no app is installed. The license agreement
             is mostly used by app providers for legal information that needs
@@ -1027,12 +1027,12 @@ univention-app dev-use-test-appcenter
                 App install notifications</option> it receives information on a
             daily basis about who installed the app. The App Center UMC
             module informs the user that the app provider may contact them. App
-            providers can use the address for example for lead management.
+            providers can use the address, for example, for lead management.
         </para>
         <para>
             The last setting is intended to provide the users a rough
             imagination about the license type of the software. One option
-            should be chosen that fits best to the solution:
+             best fitting to the solution should be chosen:
             <itemizedlist>
                 <listitem>
                     <simpara>
@@ -1070,8 +1070,8 @@ univention-app dev-use-test-appcenter
     <section id="readme">
         <title>README for the administrator</title>
         <para>
-            In the <guimenu>README files</guimenu> tab additional information
-            for an app can be provided that show up at certain states of the
+            In the tab <guimenu>README files</guimenu> additional information
+            for an app can be provided that show up at certain stages of the
             app life cycle. README files are also in HTML like the description
             and content can be provided the same way (see <xref
                 linkend="description" />).  The App Provider Portal describes
@@ -1106,7 +1106,7 @@ univention-app dev-use-test-appcenter
     <title>Connection with Identity Management</title>
 
     <para>
-		One of the UCS key features is the integrated identity management
+		One of the UCS's key features is the integrated identity management
 		(IDM). With this central identity management, users benefit, among
 		other things, from a single login independent of which services or
 		systems they use. It is highly recommended to integrate the app into
@@ -1130,8 +1130,7 @@ univention-app dev-use-test-appcenter
 
         <para>
 			There are different ways in which applications can access
-			provisioning information. The following describes a pull and a
-			push-based procedure.
+			provisioning information. The following describes a pull and push-based procedure.
         </para>
 
         <section id="provisioning:pull">
@@ -1318,7 +1317,7 @@ univention-app dev-use-test-appcenter
 						<listitem>
 							<simpara>
     							The script has to delete the JSON file that
-								has been already processed. If the files are
+								has already been processed. If the files are
 								not deleted, the script should detect
 								duplicates and make sure to handle the same
 								change accordingly.
@@ -1415,7 +1414,7 @@ univention-app dev-use-test-appcenter
 
         <para>
 			There are different ways in which applications can authenticate
-			the against the UCS identity management system.
+			against the UCS identity management system.
         </para>
 
         <section id="authentication:ldap">
@@ -1548,7 +1547,7 @@ univention-app dev-use-test-appcenter
         </para>
         <para>
 			If the app requires more settings in the IDM, an own LDAP schema
-			can be uploaded in the App Provider Portal <guimenu>Docker /
+			can be uploaded into the App Provider Portal <guimenu>Docker /
 			Configuration files / Schema extension for LDAP</guimenu>.
         </para>
         <para>
@@ -1585,10 +1584,10 @@ univention-app dev-use-test-appcenter
 			<para>
 				This script is executed on the UCS host system before the app is
 				initialized, even before the app image is downloaded. It is
-				also called as preinst script. Its purpose is to check whether
-				installation may be successful or not. Any exit code other than 0
+				also called a preinst script. Its purpose is to check whether
+				installation will be successful or not. Any exit code other than 0
 				will result in cancellation of the installation process. This
-				script is also executed if the the app is upgraded.
+				script is also executed if the app is upgraded.
 			</para>
 		</section>
 		<section id="installation:setup">
@@ -1642,7 +1641,7 @@ univention-app dev-use-test-appcenter
                 container is removed. See the <ulink
                     url="https://docs.software-univention.de/developer-reference.html">Developer
                     Reference</ulink> for how to write an unjoin script. It
-                should somehow revert most (if not all) changes done in the
+                should revert most (if not all) changes done in the
                 join script.  With the notable exception of schema
                 registration. An LDAP schema extension should never be removed
                 once it was
@@ -1677,7 +1676,7 @@ univention-app dev-use-test-appcenter
 			<title>Docker script restore_data_before_setup</title>
 			<para>
 				This script is executed inside the Docker container before the
-				setup script is executed.
+				setup script is run.
 				Its purpose is to restore the data which has been stored by
 				the store_data script.
 			</para>
@@ -1686,7 +1685,7 @@ univention-app dev-use-test-appcenter
 			<title>Docker script restore_data_after_setup</title>
 			<para>
 				This script is executed inside the Docker container after the
-				setup script is executed.
+				setup script is run.
 				Its purpose is to restore the data which has been stored by
 				the store_data script.
 			</para>
@@ -1875,7 +1874,7 @@ univention-app dev-use-test-appcenter
 			</para>
 			<para>
 				The attribute <guimenu>Filename</guimenu> can be used to
-				define the the absolute path where the file should be stored.
+				define the absolute path where the file should be stored.
 				This attribute is needed in case the types <guimenu>File</guimenu> or
 				<guimenu>PasswordFile</guimenu> are used.
 			</para>
@@ -1941,10 +1940,10 @@ Group[de] = Lizenz und Liste
                 url="https://errata.software-univention.de/ucs/4.3/91.html">UCS
                 4.3-0 errata 91</ulink> the Univention App Center provides a
             simple way to manage certificates inside an app.  This is simply a
-            new action called <guimenu>update-certificates</guimenu> in the app
+            new action named <guimenu>update-certificates</guimenu> in the app
             Center which is called automatically during the installation and
-            upgrade of apps (but can also be executed manually) and gives apps
-            a simple way to gain access to certificates and to react upon
+            upgrade of apps (but can also be executed manually) and provides apps
+            a simple way to gain access to certificates and to react to
             changes to certificates.
         </para>
 <programlisting>
@@ -2018,8 +2017,8 @@ service my-app-daemon restart
     <title>App Appliances</title>
 
     <para>
-        App Appliances are pre defined images which consist of the App, the UCS
-        management system and the UCS runtime environment. They are run as
+        App Appliances are pre-defined images which consist of the App, the UCS
+        management system and the UCS runtime environment. They are run as a
         virtual machine within a hypervisor and are currently provided as
         VMware, VMware ESXi, VirtualBox and KVM images. By default the UCS
         branding is used, but it is possible and recommended to use a custom
@@ -2059,11 +2058,10 @@ service my-app-daemon restart
             <title>Customize app listing in App Center</title>
             <para>
                 The listing of apps in the App Center UMC module in the
-                appliance can be customized to either white list or blacklist
+                appliance can be customized to either whitelist or blacklist
                 certain apps. For example, if the solution is a groupware,
                 other groupware solutions can be hidden from the overview
-                listing. System administrators can only install the white
-                listed apps or are not allowed to install the black listed
+                listing. System administrators can only install the whitelisted apps or are not allowed to install the black listed
                 apps.
             </para>
         </section>
@@ -2071,23 +2069,23 @@ service my-app-daemon restart
         <section id="appliance:first-steps">
             <title>First steps information</title>
             <para>
-                The appliances are usually configured in a way that the user
-                can start using it right away. In some cases it may be
-                necessary to provide some information on the first steps. For
+                The appliances are usually configured in such a way that the user
+                can start using them right away. In some cases it may be
+                necessary to provide some information for the first steps. For
                 example, the user needs to know that a user object has to be
                 created and activated for the app first. This could be briefly
                 described in this section. The German translation should be
-                kept in mind and be provided.
+                kept in mind and provided.
             </para>
         </section>
       
         <section id="appliance:umc-favorites">
             <title>Customize UMC favorite category</title>
             <para>
-                The appliance also allows to customize the UMC modules that
+                The appliance also allows to customize the UMC modules which
                 should be pre-configured for the favorites section in the UCS
                 management system. The favorites section comes up first, after
-                a UCS system administrator logs into the UCS management system.
+                a UCS system administrator logs onto the UCS management system.
                 It is recommended to have the modules
                 <userinput>Users</userinput>, <userinput>Groups</userinput> and
                 <userinput>App Center</userinput> listed here.
@@ -2100,7 +2098,7 @@ service my-app-daemon restart
                 As soon as the settings are made, <guimenu>Sync to Test App
                     Center</guimenu>, click the <guimenu>Publish App</guimenu>
                 button and provide a custom message to let the Univention team
-                know that an appliance is desired to be built. This will create
+                know that an appliance is ready to be build. This will create
                 a ticket which helps to keep the communication in one place.
             </para>
         </section>
@@ -2108,14 +2106,14 @@ service my-app-daemon restart
         <section id="appliance:release">
             <title>Test and release</title>
             <para>
-                The appliance is automatically built in the Univention build
+                The appliance is automatically build in the Univention build
                 infrastructure. After the build is finished, automatic tests will
                 be started. Build and testing will approximately need four hours.
             </para>
             <para>
                 After the automatic tests have finished successfully, the app
                 provider is informed. A link to the appliance download is sent
-                and a few days of time for testing is given. If no veto is
+                and a few days are given for testing. If no veto is
                 sent, the Appliance is usually published after the veto
                 deadline. After the release, the appliance will show up for
                 download on the app page in the App Catalog. App Providers are
@@ -2219,7 +2217,7 @@ service my-app-daemon restart
             <title>Welcome screen</title>
             <para>
                 The welcome screen is shown after the appliance setup has been
-                finished and also every time the appliance is started. If
+                finished and also every time the appliance is started. It
                 offers information on how the user can access the appliance. It
                 uses settings like the Appliance name and the CSS definition of
                 the appliance background. The <guimenu>Logo displayed in the
