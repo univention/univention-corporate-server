@@ -11,3 +11,5 @@ desc: |
    "serverReference" could fail, if CN=Configuration gets replicated before
    the main domain partition. As a result DRS replication could fail.
 bug: [47749]
+erratum: 511
+announced: 2018-09-12
