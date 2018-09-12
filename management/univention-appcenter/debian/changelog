@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-29) unstable; urgency=medium
+
+  * Bug #47695: Revert all changes
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 12 Sep 2018 10:37:36 +0200
+
 univention-appcenter (7.0.2-28) unstable; urgency=medium
 
   * Bug #47619: Do not change revert behaviour for Non-Docker Apps
