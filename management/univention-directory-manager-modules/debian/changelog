@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.22-4) unstable; urgency=medium
+
+  * Bug #47580: Remove debug entry
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Wed, 12 Sep 2018 08:21:09 +0200
+
 univention-directory-manager-modules (13.0.22-3) unstable; urgency=medium
 
   * Bug #47580: Add alphanum option to user templates

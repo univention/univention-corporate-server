@@ -175,9 +175,6 @@ def pattern_replace(pattern, object):
 	value = regex.sub(repl, pattern, 0)
 	if global_commands:
 		value = modify_text(value, global_commands)
-
-	with open('/tmp/list.txt', 'a') as fd:
-		fd.write('From: {} to: {}\n'.format(pattern, value))
 	return value
 
 
