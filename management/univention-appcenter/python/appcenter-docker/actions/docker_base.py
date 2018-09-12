@@ -48,7 +48,7 @@ from univention.appcenter.exceptions import DockerCouldNotStartContainer, Databa
 from univention.appcenter.actions.service import Start, Stop
 from univention.appcenter.utils import mkdir  # get_locale
 from univention.appcenter.ucr import ucr_keys, ucr_get, ucr_is_true
-from univention.appcenter.log import LogCatcher
+from univention.appcenter.log import LogCatcher, get_logfile_logger
 
 
 BACKUP_DIR = '/var/lib/univention-appcenter/backups'
@@ -251,9 +251,11 @@ docker inspect:
 			with open(f_name, 'w+b') as f:
 				os.chmod(f_name, 0o600)
 				f.write(password)
-		docker.execute('rm', '/etc/timezone', '/etc/localtime')
-		docker.cp_to_container('/etc/timezone', '/etc/timezone')
-		docker.cp_to_container('/etc/localtime', '/etc/localtime')
+		# update timezone in container
+		logfile_logger = get_logfile_logger('docker.base')
+		docker.execute('rm', '-f', '/etc/timezone', '/etc/localtime', _logger=logfile_logger)
+		docker.cp_to_container('/etc/timezone', '/etc/timezone', _logger=logfile_logger)
+		docker.cp_to_container('/etc/localtime', '/etc/localtime', _logger=logfile_logger)
 		if database_password_file:
 			docker.cp_to_container(database_password_file, database_password_file)
 		after_image_configuration.update(set_vars)

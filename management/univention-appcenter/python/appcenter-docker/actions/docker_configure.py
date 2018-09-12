@@ -74,7 +74,7 @@ class Configure(Configure, DockerActionMixin):
 		if not app_is_running(app):
 			self.warn('Cannot write settings while %s is not running' % app)
 			return
-		logfile_logger = get_logfile_logger('update-certificates')
+		logfile_logger = get_logfile_logger('docker.configure')
 		docker = self._get_docker(app)
 		if not docker.execute('which', 'ucr', _logger=logfile_logger).returncode == 0:
 			self.warn('ucr cannot be found, falling back to changing the database file directly')
