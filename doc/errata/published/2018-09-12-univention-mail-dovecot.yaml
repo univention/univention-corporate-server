@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The PAM stack has been fixed to allow the login via username (Bug #42759)
 bug: [42759]
+erratum: 514
+announced: 2018-09-12
