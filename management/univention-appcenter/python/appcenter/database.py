@@ -169,9 +169,6 @@ class DatabaseConnector(object):
 	def create_db_and_user(self, password):
 		raise NotImplementedError()
 
-	def drop_db_and_user(self):
-		raise NotImplementedError()
-
 	def setup(self):
 		self.install()
 		self.start()
@@ -232,10 +229,6 @@ class PostgreSQL(DatabaseConnector):
 		call_process_as('postgres', ['/usr/bin/createdb', '-O', self.get_db_user(), '-T', 'template0', '-E', 'UTF8', self.get_db_name()], logger=database_logger)
 		self.execute('ALTER ROLE "%s" WITH ENCRYPTED PASSWORD \'%s\'' % (self.get_db_user(), password))
 
-	def drop_db_and_user(self):
-		call_process_as('postgres', ['/usr/bin/dropdb', self.get_db_name()], logger=database_logger)
-		call_process_as('postgres', ['/usr/bin/dropuser', self.get_db_user()], logger=database_logger)
-
 
 class MySQL(DatabaseConnector):
 
@@ -295,10 +288,6 @@ class MySQL(DatabaseConnector):
 	def create_db_and_user(self, password):
 		self.execute('CREATE DATABASE IF NOT EXISTS `%s`' % self.escape(self.get_db_name()))
 		self.execute("GRANT ALL ON `%s`.* TO '%s'@'%%' IDENTIFIED BY '%s'" % (self.escape(self.get_db_name()), self.escape(self.get_db_user()), password))
-
-	def drop_db_and_user(self):
-		self.execute('DROP DATABASE IF EXISTS `%s`' % self.escape(self.get_db_name()))
-		self.execute('DROP USER IF EXISTS `%s`' % self.escape(self.get_db_user()))
 
 	def __del__(self):
 		if self._connection:
