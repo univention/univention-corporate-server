@@ -213,6 +213,89 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
+			<listitem>
+				<para>
+					The following updated packages from Debian Jessie 8.11 are included (<u:bug>47793</u:bug>):
+					<simplelist type="inline">
+						<member><package>389-ds-base</package></member>
+						<member><package>adminer</package></member>
+						<member><package>ant</package></member>
+						<member><package>batik</package></member>
+						<member><package>blender</package></member>
+						<member><package>blktrace</package></member>
+						<member><package>bouncycastle</package></member>
+						<member><package>bwm-ng</package></member>
+						<member><package>cgit</package></member>
+						<member><package>cinnamon</package></member>
+						<member><package>confuse</package></member>
+						<member><package>debian-installer-netboot-images</package></member>
+						<member><package>debian-security-support</package></member>
+						<member><package>dh-make-perl</package></member>
+						<member><package>discount</package></member>
+						<member><package>dns-root-data</package></member>
+						<member><package>dojo</package></member>
+						<member><package>dokuwiki</package></member>
+						<member><package>dropbear</package></member>
+						<member><package>git-annex</package></member>
+						<member><package>gosa</package></member>
+						<member><package>gpac</package></member>
+						<member><package>graphicsmagick</package></member>
+						<member><package>kamailio</package></member>
+						<member><package>lava-server</package></member>
+						<member><package>libcgroup</package></member>
+						<member><package>libextractor</package></member>
+						<member><package>libgit2</package></member>
+						<member><package>linux-4.9</package></member>
+						<member><package>linux-latest-4.9</package></member>
+						<member><package>mactelnet</package></member>
+						<member><package>mailman</package></member>
+						<member><package>mariadb-10.0</package></member>
+						<member><package>mercurial</package></member>
+						<member><package>mgetty</package></member>
+						<member><package>mosquitto</package></member>
+						<member><package>network-manager-vpnc</package></member>
+						<member><package>nvidia-graphics-drivers</package></member>
+						<member><package>nvidia-graphics-drivers-legacy-304xx</package></member>
+						<member><package>openjpeg2</package></member>
+						<member><package>openssh</package></member>
+						<member><package>otrs2</package></member>
+						<member><package>php-horde-crypt</package></member>
+						<member><package>php-horde-image</package></member>
+						<member><package>phpmyadmin</package></member>
+						<member><package>plexus-archiver</package></member>
+						<member><package>prosody</package></member>
+						<member><package>psensor</package></member>
+						<member><package>python-mimeparse</package></member>
+						<member><package>python-xmltodict</package></member>
+						<member><package>redis</package></member>
+						<member><package>resiprocate</package></member>
+						<member><package>ruby-passenger</package></member>
+						<member><package>ruby-sprockets</package></member>
+						<member><package>ruby-zip</package></member>
+						<member><package>sam2p</package></member>
+						<member><package>slurm-llnl</package></member>
+						<member><package>spice-gtk</package></member>
+						<member><package>spip</package></member>
+						<member><package>squirrelmail</package></member>
+						<member><package>sssd</package></member>
+						<member><package>strongswan</package></member>
+						<member><package>sympa</package></member>
+						<member><package>thunderbird</package></member>
+						<member><package>tomcat-native</package></member>
+						<member><package>tomcat7</package></member>
+						<member><package>tomcat8</package></member>
+						<member><package>twitter-bootstrap3</package></member>
+						<member><package>user-mode-linux</package></member>
+						<member><package>vim-syntastic</package></member>
+						<member><package>virtualbox-guest-additions-iso</package></member>
+						<member><package>wordpress</package></member>
+						<member><package>xen</package></member>
+						<member><package>znc</package></member>
+						<member><package>zookeeper</package></member>
+						<member><package>zsh</package></member>
+					</simplelist>
+				</para>
+			</listitem>
 		</itemizedlist>
 	</section>
 
