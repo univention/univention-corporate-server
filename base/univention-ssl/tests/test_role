@@ -6,7 +6,7 @@ init
 
 ! univention-certificate new -name "$R64" -days 10
 ! univention-certificate renew -name "$R64" -days 10
-! univention-certificate revoke -name "$R64"
+! univention-certificate revoke-non-interactive -name "$R64"
 ! univention-certificate list
 ! univention-certificate check -name "$R64"
 ! univention-certificate list-all
@@ -15,7 +15,7 @@ init
 printf '\nserver/role: domaincontroller_backup' >>"$UNIVENTION_BASECONF"
 ! univention-certificate new -name "$R64" -days 10
 ! univention-certificate renew -name "$R64" -days 10
-! univention-certificate revoke -name "$R64"
+! univention-certificate revoke-non-interactive -name "$R64"
 ! univention-certificate update-expired
 univention-certificate list
 univention-certificate list-all
@@ -25,7 +25,7 @@ univention-certificate new -name "$R64" -days 10
 univention-certificate list
 univention-certificate check -name "$R64"
 univention-certificate renew -name "$R64" -days 10
-univention-certificate revoke -name "$R64"
+univention-certificate revoke-non-interactive -name "$R64"
 univention-certificate list-all
 univention-certificate update-expired
 

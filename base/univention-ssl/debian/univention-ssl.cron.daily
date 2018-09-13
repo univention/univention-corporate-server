@@ -28,9 +28,6 @@
 
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
-. /usr/share/univention-ssl/make-certificates.sh
-update_pending_certs
-
 rv=0 tmp=$(mktemp)
 trap "rm -f '$tmp'" EXIT
 exec >"$tmp" 2>&1
@@ -54,7 +51,6 @@ check_gen_crl || rv=$?
 if [ "$(ucr get server/role)" = domaincontroller_master ]; then
 	if ! is_ucr_false ssl/update/expired; then
 		univention-certificate update-expired
-		univention-certificate update-pending
 	fi
 fi
 
