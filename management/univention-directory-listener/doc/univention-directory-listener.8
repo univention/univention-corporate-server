@@ -76,7 +76,10 @@ LDAP state path, default is \fI/var/lib/univention\-ldap\fP.
 Start from scratch (remove cache).
 .TP
 .B \-i
-Initialize handlers only.
+Remove old cache and only initialize handlers in foreground mode.
+.TP
+.B \-P
+Keep old cache and only initialize handlers in foreground mode.
 .TP
 .BI \-o\  file
 Write transaction \fIfile\fP.
