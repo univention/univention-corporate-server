@@ -513,7 +513,7 @@
         <para>
             Every app starts with its development. It involves the definition
             of the app in the App Provider Portal, providing the software
-            solution as a Docker container (see <xref linkend="get-started" />)
+            solution as a Docker image (see <xref linkend="get-started" />)
             and the integration of the solution with UCS, for example in the
             identity management area (see <xref linkend="connection-idm" />).
             This part of the life cycle can be divided into two steps: setup
@@ -751,7 +751,7 @@ univention-app dev-use-test-appcenter
     <section id="updates">
         <title>Updates</title>
         <para>
-            After the release of the first version the app enters 
+            After the release of the first version the app enters
             "maintenance mode" and receives updates from the app provider. The
             evolution of an app is represented by its version. In order to
             provide an update for the app, follow these steps:
@@ -912,7 +912,7 @@ univention-app dev-use-test-appcenter
             user and thus is very important for getting their attention. Here are
             some tips intended to help to present the app in a
             user-friendly, customer-oriented, and search-engine-optimized
-            manner. 
+            manner.
             <itemizedlist>
                 <listitem>
                     <simpara>
@@ -1032,7 +1032,7 @@ univention-app dev-use-test-appcenter
         <para>
             The last setting is intended to provide the users a rough
             imagination about the license type of the software. One option
-             best fitting to the solution should be chosen:
+            best fitting to the solution should be chosen:
             <itemizedlist>
                 <listitem>
                     <simpara>
@@ -1129,8 +1129,9 @@ univention-app dev-use-test-appcenter
         <title>Provisioning</title>
 
         <para>
-			There are different ways in which applications can access
-			provisioning information. The following describes a pull and push-based procedure.
+            There are different ways in which applications can access
+            provisioning information. The following describes a pull and
+            push-based procedure.
         </para>
 
         <section id="provisioning:pull">
@@ -2061,8 +2062,8 @@ service my-app-daemon restart
                 appliance can be customized to either whitelist or blacklist
                 certain apps. For example, if the solution is a groupware,
                 other groupware solutions can be hidden from the overview
-                listing. System administrators can only install the whitelisted apps or are not allowed to install the black listed
-                apps.
+                listing. System administrators can only install the whitelisted
+                apps or are not allowed to install the black listed apps.
             </para>
         </section>
 
@@ -2106,7 +2107,7 @@ service my-app-daemon restart
         <section id="appliance:release">
             <title>Test and release</title>
             <para>
-                The appliance is automatically build in the Univention build
+                The appliance is automatically built in the Univention build
                 infrastructure. After the build is finished, automatic tests will
                 be started. Build and testing will approximately need four hours.
             </para>
