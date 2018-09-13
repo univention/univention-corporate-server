@@ -126,12 +126,9 @@ def pattern_replace(pattern, object):
 
 				text = unicodedata.normalize('NFKD', unicode(text)).encode('ascii', 'ignore')
 			elif iCmd == 'alphanum':
-				whitelist = configRegistry.get('directory/manager/templates/alphanum/whitelist')
-				if not whitelist:
-					whitelist = ''
-				whitelist = unicode(whitelist, 'utf-8')
+				whitelist = unicode(configRegistry.get('directory/manager/templates/alphanum/whitelist', ''), 'utf-8')
 				text = unicode(text, 'utf-8')
-				text = u''.join([c for c in text if (c.isalnum() or c.isspace() or c in whitelist or c in property.UMLAUTS)])
+				text = u''.join([c for c in text if (c.isalnum() or c in whitelist)])
 			elif iCmd in ('trim', 'strip'):
 				text = text.strip()
 		return text
@@ -180,16 +177,68 @@ def pattern_replace(pattern, object):
 
 class property:
 	UMLAUTS = {
+		'À': 'A',
+		'Á': 'A',
+		'Â': 'A',
+		'Ã': 'A',
 		'Ä': 'Ae',
-		'ä': 'ae',
+		'Å': 'A',
+		'Æ': 'AE',
+		'Ç': 'C',
+		'È': 'E',
+		'É': 'E',
+		'Ê': 'E',
+		'Ë': 'E',
+		'Ì': 'I',
+		'Í': 'I',
+		'Î': 'I',
+		'Ï': 'I',
+		'Ð': 'D',
+		'Ñ': 'N',
+		'Ò': 'O',
+		'Ó': 'O',
+		'Ô': 'O',
+		'Õ': 'O',
 		'Ö': 'Oe',
-		'ö': 'oe',
+		'Ø': 'O',
+		'Ù': 'U',
+		'Ú': 'U',
+		'Û': 'U',
 		'Ü': 'Ue',
-		'ü': 'ue',
+		'Ý': 'Y',
+		'Þ': 'P',
 		'ß': 'ss',
-		'Æ': 'Ae',
+		'à': 'a',
+		'á': 'a',
+		'â': 'a',
+		'ã': 'a',
+		'ä': 'ae',
+		'å': 'a',
 		'æ': 'ae',
-		'Ð': 'D'
+		'ç': 'c',
+		'è': 'e',
+		'é': 'e',
+		'ê': 'e',
+		'ë': 'e',
+		'ì': 'i',
+		'í': 'i',
+		'î': 'i',
+		'ï': 'i',
+		'ð': 'o',
+		'ñ': 'n',
+		'ò': 'o',
+		'ó': 'o',
+		'ô': 'o',
+		'õ': 'o',
+		'ö': 'oe',
+		'ø': 'o',
+		'ù': 'u',
+		'ú': 'u',
+		'û': 'u',
+		'ü': 'ue',
+		'ý': 'y',
+		'þ': 'p',
+		'ÿ': 'y'
 	}
 
 	def __init__(

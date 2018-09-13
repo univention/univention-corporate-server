@@ -110,7 +110,7 @@ define([
 		constructor: function(props) {
 			// mixin the props
 			lang.mixin(this, props);
-			var deferred = {ucr: tools.ucr('directory/manager/templates/alphanum/whitelist')};
+			var deferred = {tool_ucr: tools.ucr('directory/manager/templates/alphanum/whitelist')};
 			if (this.operation === 'copy') {
 				tools.forIn(this.widgets, lang.hitch(this, function(ikey, ival) {
 					if (ikey in this.widgets && this.widgets[ikey].ready) {
@@ -119,7 +119,7 @@ define([
 				}));
 			}
 			all(deferred).then(lang.hitch(this, function(result) {
-				this.whitelist = result.ucr['directory/manager/templates/alphanum/whitelist'];
+				this.whitelist = result.tool_ucr['directory/manager/templates/alphanum/whitelist'] || '';
 				this._constructor();
 			}));
 		},
@@ -367,9 +367,9 @@ define([
 				case 'alphanum':
 					modifiers.push(lang.hitch(this, function(str) {
 						var result = '';
-						for (var i in str) {
+						for (var i = 0; i < str.length; ++i) {
 							var char = str.charAt(i);
-							if (/[\w\s]/.test(char) || (this.whitelist || '').includes(char) || char in this._umlauts) {
+							if (/[a-zA-Z0-9]/.test(char) || this.whitelist.indexOf(char) >= 0 || typeof this._umlauts[char] == 'string') {  // TODO: Use unicode regex if IE11 not supported anymore
 								result = result.concat(char);
 							}
 						}
