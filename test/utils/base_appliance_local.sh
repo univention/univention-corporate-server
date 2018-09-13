@@ -142,10 +142,12 @@ create_app_images () {
 	_set_global_vars "$@"
 
 	# convert image
-	_ssh -l "$KVM_USER" "$KVM_SERVER" "test -d $TMP_DIR && rm -rf $TMP_DIR || true"
-	_ssh -l "$KVM_USER" "$KVM_SERVER" "mkdir -p $TMP_DIR"
-	_ssh -l "$KVM_USER" "$KVM_SERVER" "mkdir -p $APPS_BASE"
-	_ssh -l "$KVM_USER" "$KVM_SERVER" "qemu-img convert -p -c -O qcow2 $KT_CREATE_IMAGE $TMP_KVM_IMAGE"
+	_ssh -l "$KVM_USER" "$KVM_SERVER" "
+		test -d $TMP_DIR && rm -rf $TMP_DIR || true
+		mkdir -p $TMP_DIR
+		mkdir -p $APPS_BASE
+		qemu-img convert -p -c -O qcow2 $KT_CREATE_IMAGE $TMP_KVM_IMAGE
+	"
 
 	# get memory specification (is saved in /tmp/.memory in image)
 	export MEMORY=$(_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "virt-cat -a ${TMP_KVM_IMAGE} /.memory 2>/dev/null || echo 1024")
