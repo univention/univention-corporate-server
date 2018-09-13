@@ -19,7 +19,8 @@ Depends: ${misc:Depends},
  univention-config (>= 7.0.31-1),
  python-univention-lib (>= 3.0.4-1),
  python-univention-directory-manager,
- openssl
+ openssl,
+ python-libmilter,
 Conflicts: univention-mail,
  exim4,
  exim4-base,
@@ -70,3 +71,15 @@ Description: UCS - postfix configuration
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: python-libmilter
+Architecture: all
+Depends: ${misc:Depends},
+ python (<< 2.8),
+ python (>= 2.6),
+ python-support,
+Description: A pure python implementation of libmilter.
+ This package contains a pure python implementation of
+ libmilter. It is compatible with both Postfix and Sendmail.
+ .
+ https://github.com/crustymonkey/python-libmilter

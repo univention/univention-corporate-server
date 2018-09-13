@@ -105,6 +105,14 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.1-5; 
         ucr set mail/postfix/virtual/mailbox/maps="$mail_postfix_virtual_mailbox_maps, ldap:/etc/postfix/ldap.virtual_mailbox"
     fi
 fi
+if [ "$1" = configure ] && [ -n "$2" ] && dpkg --compare-versions "$2" lt 12.0.0-22; then
+	PORT="$(ucr get mail/postfix/no-forged-from-milter-port)"
+	[ -z "$PORT" ] && PORT=5656
+	ucr set "mail/postfix/smtpd_milters?inet:localhost:$PORT"
+	systemctl --system daemon-reload
+	systemctl enable univention-postfix-sender-check
+	systemctl start univention-postfix-sender-check
+fi
 
 for file in transport virtual canonical access relocated; do
   if [ ! -e /etc/postfix/$file ]; then

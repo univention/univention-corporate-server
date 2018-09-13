@@ -87,6 +87,11 @@ Variables: mail/postfix/tls/policy/maps
 
 Type: subfile
 Multifile: etc/postfix/main.cf
+Subfile: etc/postfix/main.cf.d/70_milter
+Variables: mail/postfix/smtpd_milters
+
+Type: subfile
+Multifile: etc/postfix/main.cf
 Subfile: etc/postfix/main.cf.d/80_delivery
 Variables: mail/antivir
 Variables: mail/archivefolder

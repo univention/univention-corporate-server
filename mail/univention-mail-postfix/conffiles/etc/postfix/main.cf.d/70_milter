@@ -1,0 +1,5 @@
+@!@
+milters = configRegistry.get('mail/postfix/smtpd_milters', '')
+if milters:
+	print('smtpd_milters = {}'.format(milters))
+@!@

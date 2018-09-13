@@ -419,6 +419,18 @@ Description[en]=Set this variable to "yes" to reject non-ASCII addresses from cl
 Type=bool
 Categories=service-mail
 
+[mail/postfix/smtpd_milters]
+Description[de]=Eine freizeichen- oder kommaseparierte Liste von Milter (mail filter) Applikationen für neue Mail die über den Postfix smtpd(8) Server herin kommen (siehe <http://www.postfix.org/postconf.5.html#smtpd_milters>). Standardmäßig ist diese Variable nicht gesetzt.
+Description[en]=A space or comma separated list of Milter (mail filter) applications for new mail that arrives via the Postfix smtpd(8) server (see <http://www.postfix.org/postconf.5.html#smtpd_milters>). The default for this variable is to be unset.
+Type=str
+Categories=service-mail
+
+[mail/postfix/no-forged-from-milter-port]
+Description[de]=Port auf dem der Milter-Prozess lauschen soll (immer an localhost). Standard: 5656.
+Description[en]=Port on which the Milter process shoudl listen (always on localhost). Default: 5656.
+Type=str
+Categories=service-mail
+
 [mail/postfix/postscreen/enabled]
 Description[de]=Ist diese Option aktiviert, werden eingehende SMTP-Verbindungen durch Postscreen geprüft, bevor sie an den SMTP-Dienst übergeben werden. Ist die Variable nicht gesetzt, erfolgt keine Prüfung (Standard: "no").
 Description[en]=If this option is activated, incoming SMTP connections are checked by postscreen before the connection is passed to the SMTP daemon. If the variable is unset, no check is performed (Default: "no").

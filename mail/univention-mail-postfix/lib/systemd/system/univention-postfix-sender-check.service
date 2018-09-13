@@ -1,0 +1,14 @@
+[Unit]
+Description=Postfix milter to prevent forged From
+After=slapd.service
+
+[Service]
+Type=simple
+ExecStart=/usr/share/univention-mail-postfix/no_forged_from_milter.py
+Restart=always
+RestartSec=3
+User=listfilter
+Group=nogroup
+
+[Install]
+WantedBy=multi-user.target

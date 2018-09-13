@@ -1,0 +1,110 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test mail server rejecting forged From addresses
+## exposure: dangerous
+## packages: [univention-mail-server]
+
+from essential.mail import check_ldap_bind, send_mail
+import smtplib
+import time
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+
+domain = ''
+
+
+def check_sending_mail(sender_envelope, sender, recipient, username, password, should_be_accepted):
+	token = str(time.time())
+	try:
+		ret_code = send_mail(recipients=recipient, sender=sender, msg=token, port=587, tls=True, username=username, password=password, sender_envelope=sender_envelope)
+		if bool(ret_code) == should_be_accepted:
+			utils.fail(
+				'Sending should_be_accepted = {!r}, but return code = {!r}\n{!r} means there are no refused recipient'.format(
+					should_be_accepted, ret_code, ret_code))
+		else:
+			print('OK: mail was accepted.')
+	except (smtplib.SMTPSenderRefused, smtplib.SMTPDataError) as exc:
+		if should_be_accepted:
+			utils.fail('Mail sent failed with exception: {}'.format(exc))
+		else:
+			print('OK: mail was rejected: {}'.format(exc))
+
+
+def new_email(with_real_name=False):
+	email = '{}@{}'.format(uts.random_name(), domain)
+	if with_real_name:
+		return 'Vor{} Nach{} <{}>'.format(uts.random_name(3), uts.random_name(3), email)
+	else:
+		return email
+
+
+def main():
+	global domain
+
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		with udm_test.UCSTestUDM() as udm:
+			print('*** UCRV mail/postfix/smtpd_milters={!r}'.format(ucr.get('mail/postfix/smtpd_milters')))
+			print('*** UCRV mail/postfix/no-forged-from-milter-port={!r}'.format(
+				ucr.get('mail/postfix/no-forged-from-milter-port')))
+			domain = ucr.get('domainname')
+			password = uts.random_name()
+			mpa = new_email()
+			mpa_with_real_name = 'Vor{} Nach{} <{}>'.format(uts.random_name(3), uts.random_name(3), mpa)
+			maa = new_email()
+			maa_with_real_name = 'Vor{} Nach{} <{}>'.format(uts.random_name(3), uts.random_name(3), maa)
+			user_dn, username = udm.create_user(
+					password=password,
+					mailHomeServer='{}.{}'.format(ucr['hostname'], domain),
+					mailPrimaryAddress=mpa,
+					mailAlternativeAddress=maa,
+			)
+			print('*** Created user {!r} ({}).'.format(username, user_dn))
+			check_ldap_bind(user_dn, password)
+
+			print('*** Sending with correct FROM in envelope and header with email address only (mPA)...')
+			check_sending_mail(mpa, mpa, mpa, mpa, password, True)
+
+			print('*** Sending with correct FROM in envelope and header with real name (mPA)...')
+			check_sending_mail(mpa_with_real_name, mpa_with_real_name, mpa_with_real_name, mpa, password, True)
+
+			print('*** Sending with correct FROM in envelope and wrong From in header with email address only (mPA)...')
+			check_sending_mail(mpa, new_email(), mpa, mpa, password, False)
+
+			print('*** Sending with correct FROM in envelope and wrong From in header with real name (mPA)...')
+			check_sending_mail(mpa_with_real_name, new_email(True), mpa_with_real_name, mpa, password, False)
+
+			print('*** Sending with wrong FROM in envelope and correct From in header with email address only (mPA)...')
+			check_sending_mail(new_email(), mpa, mpa, mpa, password, False)
+
+			print('*** Sending with wrong FROM in envelope and correct From in header with real name (mPA)...')
+			check_sending_mail(new_email(True), mpa_with_real_name, mpa_with_real_name, mpa, password, False)
+
+			print('*** Sending with wrong FROM in envelope and wrong From in header with email address only...')
+			check_sending_mail(new_email(), new_email(), mpa, mpa, password, False)
+
+			print('*** Sending with wrong FROM in envelope and wrong From in header with real name...')
+			check_sending_mail(new_email(True), new_email(True), mpa, mpa, password, False)
+
+			print('*** Sending with correct FROM in envelope and header with email address only (mAA)...')
+			check_sending_mail(maa, maa, mpa, mpa, password, True)
+
+			print('*** Sending with correct FROM in envelope and header with real name (mAA)...')
+			check_sending_mail(maa_with_real_name, maa_with_real_name, mpa_with_real_name, mpa, password, True)
+
+			print('*** Sending with correct FROM in envelope and wrong From in header with email address only (mAA)...')
+			check_sending_mail(maa, new_email(), mpa, mpa, password, False)
+
+			print('*** Sending with correct FROM in envelope and wrong From in header with real name (mAA)...')
+			check_sending_mail(maa_with_real_name, new_email(True), mpa, mpa, password, False)
+
+			print('*** Sending with wrong FROM in envelope and correct From in header with email address only (mAA)...')
+			check_sending_mail(new_email(), maa, mpa, mpa, password, False)
+
+			print('*** Sending with wrong FROM in envelope and correct From in header with real name (mAA)...')
+			check_sending_mail(new_email(True), maa_with_real_name, mpa, mpa, password, False)
+
+
+if __name__ == '__main__':
+	main()

@@ -41,6 +41,9 @@ import subprocess
 import sys
 import time
 import uuid
+from six import string_types
+import univention.admin.uldap
+from univention.admin.uexceptions import authFail
 import univention.testing.strings as uts
 import univention.config_registry
 from email.mime.multipart import MIMEMultipart
@@ -447,7 +450,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 	assert imap_user, "imap_search_mail: imap_user has not been specified"
 	imap_password = imap_password or "univention"
 	imap_folder = imap_folder or ""
-	assert isinstance(imap_folder, str), "imap_search_mail: imap_folder is no string"
+	assert isinstance(imap_folder, string_types), "imap_search_mail: imap_folder is no string"
 
 	if use_ssl:
 		conn = imaplib.IMAP4_SSL(host=server)
@@ -584,7 +587,7 @@ def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permiss
 		basedn = ucr.get('ldap/base')
 	name = uts.random_name()
 	folder_mailaddress = ''
-	if isinstance(mailAddress, str):
+	if isinstance(mailAddress, string_types):
 		folder_mailaddress = mailAddress
 	elif mailAddress:
 		folder_mailaddress = '%s@%s' % (name, domain)
@@ -615,28 +618,47 @@ def create_random_msgid():
 	return '%s.%s' % (uuid.uuid1(), random_email())
 
 
-def send_mail(recipients=None, sender=None, subject=None, msg=None, idstring='no id string',
-	gtube=False, virus=False, attachments=[], server=None, port=0, tls=False, username=None, password=None,
-	debuglevel=1, messageid=None, ssl=False):
+def send_mail(
+		recipients=None,  # type: Union[str, List[str]]
+		sender=None,
+		subject=None,
+		msg=None,
+		idstring='no id string',
+		gtube=False,
+		virus=False,
+		attachments=[],
+		server=None,
+		port=0,
+		tls=False,
+		username=None,
+		password=None,
+		debuglevel=1,
+		messageid=None,
+		ssl=False,
+		sender_envelope=None
+):
 	"""
 	Send a mail to mailserver.
-	Arguments:
-	recipients: single recipient as string or a list of recipients
-				(e.g. 'foo@example.com' or ['foo@example.com', 'bar@example.com'])
-	sender:	    [optional] mail address of sender (default: tarpit@example.com)
-	subject:    [optional] mail subject (default: 'Testmessage %s' % time.ctime() )
-	msg:	    [optional] mail message; if msg is defined, idstring will be ignored!
-	idstring:   [optional] idstring that will be integrated into default mail
-	gtube:	    [optional] if True, gtube teststring will be added to mail (default: False)
-	virus:	    [optional] if True, an attachment with virus signature will be added to mail
-	attachments:[optional] list of filenames to be attached to mail
-	server:	    [optional] name or IP address of mailserver (default: localhost)
-	port:       [optional] port, the mailserver will listen on (default: 25)
-	tls:	    [optional] use TLS if true
-	username:   [optional] authenticate against mailserver if username and password are set
-	password:	[optional] authenticate against mailserver if username and password are set
-	debuglevel: [optional] SMTP client debug level (default: 1)
-	messageid:  [optional] message id (defaults to a random value)
+
+	:param recipients: single recipient as string or a list of recipients
+	:type recipients: str or list(str)
+	:param str sender: [optional] mail address of sender (default: tarpit@example.com)
+	:param str subject: [optional] mail subject (default: 'Testmessage %s' % time.ctime() )
+	:param str msg: [optional] mail message; if msg is defined, idstring will be ignored!
+	:param str idstring: [optional] idstring that will be integrated into default mail
+	:param str gtube: [optional] if True, gtube teststring will be added to mail (default: False)
+	:param str virus: [optional] if True, an attachment with virus signature will be added to mail
+	:param str attachments: [optional] list of filenames to be attached to mail
+	:param str server: [optional] name or IP address of mailserver (default: localhost)
+	:param str port: [optional] port, the mailserver will listen on (default: 25)
+	:param str tls: [optional] use TLS if true
+	:param str username: [optional] authenticate against mailserver if username and password are set
+	:param str password: optional] authenticate against mailserver if username and password are set
+	:param str debuglevel: [optional] SMTP client debug level (default: 1)
+	:param str messageid: [optional] message id (defaults to a random value)
+	:param str sender_envelope: [optional] mail address of sender in *envelope* (default: value of ``sender``)
+	:return: return of :py:func:``smtplib.SMTP.sendmail()``
+	:rtype: dict
 	"""
 
 	# default values
@@ -658,7 +680,7 @@ Regards,
 	# use user values if defined
 	if sender:
 		m_sender = sender
-	if recipients and isinstance(recipients, str):
+	if recipients and isinstance(recipients, string_types):
 		m_recipients = [recipients]
 	elif recipients and isinstance(recipients, list):
 		m_recipients = recipients
@@ -677,9 +699,12 @@ Regards,
 			m_port = 25
 	if msg:
 		m_msg = msg
+	if not sender_envelope:
+		sender_envelope = m_sender
 
-	print '*** Sending mail: recipients=%r sender=%r subject=%r idstring=%r gtube=%r server=%r port=%r tls=%r username=%r password=%r HELO/EHLO=%r' % (
-		m_recipients, m_sender, m_subject, idstring, gtube, m_server, m_port, tls, username, password, m_ehlo)
+	print('*** Sending mail: recipients={!r} sender={!r} subject={!r}'.format(m_recipients, m_sender, m_subject))
+	print('    idstring={!r} gtube={!r} server={!r} port={!r} tls={!r}'.format(idstring, gtube, m_server, m_port, tls))
+	print('    username={!r} password={!r} HELO/EHLO={!r} sender_envelope={!r}'.format(username, password, m_ehlo, sender_envelope))
 
 	if len(m_msg.split()) < 2:
 		print('*** Warning: A body with only one word will be rated with BODY_SINGLE_WORD=2.499 and probably lead to the message being identified as spam.')
@@ -725,7 +750,7 @@ Regards,
 		server.starttls()
 	if username and password:
 		server.login(username, password)
-	ret_code = server.sendmail(m_sender, m_recipients, mimemsg.as_string())
+	ret_code = server.sendmail(sender_envelope, m_recipients, mimemsg.as_string())
 	server.quit()
 	return ret_code
 
@@ -764,12 +789,29 @@ def check_sending_mail(
 			password=password
 		)
 		if bool(ret_code) == allowed:
-			utils.fail('Sending allowed = %r, but return code = %r\n {} means there are no refused recipient' % (allowed, ret_code))
+			utils.fail(
+				'Sending allowed = {!r}, but return code = {!r}\n{!r} means there are no refused recipients.'.format(
+					allowed, ret_code, ret_code))
+		else:
+			print('Mail was accepted.')
 		if local:
 			check_delivery(token, recipient_email, allowed)
 	except smtplib.SMTPException as ex:
 		if allowed and (tls or 'access denied' in str(ex)):
 			utils.fail('Mail sent failed with exception: %s' % ex)
+
+
+def check_ldap_bind(user_dn, password, raise_exception=True):  # type: (str, str, Optional[bool]) -> bool
+	try:
+		univention.admin.uldap.access(binddn=user_dn, bindpw=password)
+		print('DN {!r} can bind to LDAP server.'.format(user_dn))
+		return True
+	except authFail:
+		if raise_exception:
+			utils.fail('DN {!r} cannot bind to LDAP server.'.format(user_dn))
+		else:
+			print('DN {!r} cannot bind to LDAP server.'.format(user_dn))
+			return False
 
 
 if __name__ == '__main__':

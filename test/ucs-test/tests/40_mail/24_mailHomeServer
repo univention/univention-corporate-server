@@ -4,9 +4,7 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
-from essential.mail import send_mail, check_delivery
-import univention.admin.uldap
-from univention.admin.uexceptions import authFail
+from essential.mail import check_ldap_bind, send_mail, check_delivery
 from univention.testing.mail import MailSink
 from univention.testing.network import NetworkRedirector
 import dns.resolver
@@ -79,11 +77,7 @@ def main():
 						'mailHomeServer': mailHomeServer
 					}
 				)
-				try:
-					univention.admin.uldap.access(binddn=user_dn, bindpw=password, host=ucr['ldap/master'])
-					print('*** OK: user can bind to LDAP server.')
-				except authFail:
-					utils.fail('User cannot bind to LDAP server.')
+				check_ldap_bind(user_dn, password)
 				mails_list.append(mail)
 
 			port = 60025
