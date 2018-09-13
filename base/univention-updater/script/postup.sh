@@ -132,9 +132,8 @@ if [ ! -z "$update_custom_postup" ]; then
 fi
 
 if [ -x /usr/sbin/univention-check-templates ]; then
-	/usr/sbin/univention-check-templates >>"$UPDATER_LOG" 2>&1
-	rc=$?
-	if [ "$rc" != 0 ]; then
+	if ! /usr/sbin/univention-check-templates >>"$UPDATER_LOG" 2>&1
+	then
 		echo "Warning: UCR templates were not updated. Please check $UPDATER_LOG or execute univention-check-templates as root."
 	fi
 fi
@@ -145,30 +144,21 @@ if [ -f /var/univention-join/joined -a "$server_role" != basesystem ]; then
 		--bindpwdfile "/etc/machine.secret" \
 		--dn "$ldap_hostdn" \
 		--set operatingSystem="Univention Corporate Server" \
-		--set operatingSystemVersion="4.2-4" >>"$UPDATER_LOG" 2>&1
+		--set operatingSystemVersion="4.2-5" >>"$UPDATER_LOG" 2>&1
 fi
 
 # Move to mirror mode for previous errata component
 ucr set \
-	repository/online/component/4.2-3-errata=false \
-	repository/online/component/4.2-3-errata/localmirror=true \
-	repository/online/component/4.2-4-errata=enabled \
-	repository/online/component/4.2-4-errata/description="Errata updates for UCS 4.2-4" \
-	repository/online/component/4.2-4-errata/version="4.2" >>"$UPDATER_LOG" 2>&1
-
-# Bug 45328
-# update/register appcenter at this point because 4.2-0 postup still is in 4.1 mode
-univention-app update || true
-univention-app register --app || true
-# Bug 45328
+	repository/online/component/4.2-4-errata=false \
+	repository/online/component/4.2-4-errata/localmirror=true \
+	repository/online/component/4.2-5-errata=enabled \
+	repository/online/component/4.2-5-errata/description="Errata updates for UCS 4.2-5" \
+	repository/online/component/4.2-5-errata/version="4.2" >>"$UPDATER_LOG" 2>&1
 
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-run-join-scripts >>"$UPDATER_LOG" 2>&1
 fi
-
-# Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
-service univention-firewall restart >>"$UPDATER_LOG" 2>&1
 
 echo "
 
@@ -183,16 +173,5 @@ echo "
 
 echo "done."
 date >>"$UPDATER_LOG"
-
-# make sure that UMC server is restarted (Bug #43520, Bug #33426)
-at now >>"$UPDATER_LOG" 2>&1 <<EOF
-sleep 30
-/usr/share/univention-updater/enable-apache2-umc --no-restart >>"$UPDATER_LOG" 2>&1
-service univention-management-console-server restart >>"$UPDATER_LOG" 2>&1
-service univention-management-console-web-server restart >>"$UPDATER_LOG" 2>&1
-# the file path moved. during update via UMC the apache is not restarted. The new init script therefore checks the wrong pidfile which fails restarting.
-cp /var/run/apache2.pid /var/run/apache2/apache2.pid
-service apache2 restart >>"$UPDATER_LOG" 2>&1
-EOF
 
 exit 0
