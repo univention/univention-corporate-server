@@ -1,0 +1,87 @@
+title-color: "black"
+title-text: ""
+title-font: "Sans Regular 16"
+desktop-color: "lightgrey"
+desktop-image: "/isolinux/splash.png"
+message-color: "black"
+message-bg-color: "lightgrey"
+terminal-font: "Sans Regular 12"
+
++ vbox {
+  top = 80
+  left = 45%
+  width = 60%
+  height = 100
+#ifdef MENU0_DISABLED
+  + hbox {
+    left = 0
+    + label {text = MENU0 font = "Sans 10" color = "#3c3c3c" align = "left"}
+  }
+#endif
+#ifdef MENU1
+  + hbox {
+    left = 0
+    + label {text = " >" font = "Sans 10" color = "black" align = "left"}
+    + label {text = MENU1 font = "Sans 10" color = "#3c3c3c" align = "left"}
+  }
+#endif
+#ifdef MENU2
+  + hbox {
+    left = 0
+    + label {text = "   >" font = "Sans 10" color = "black" align = "left"}
+    + label {text = MENU2 font = "Sans 10" color = "#3c3c3c" align = "left"}
+  }
+#endif
+#ifdef MENU3
+  + hbox {
+    left = 0
+    + label {text = "     >" font = "Sans 10" color = "black" align = "left"}
+    + label {text = MENU3 font = "Sans 10" color = "#3c3c3c" align = "left"}
+  }
+#endif
+#ifdef MENU4
+  + hbox {
+    left = 0
+    + label {text = "       >" font = "Sans 10" color = "black" align = "left"}
+    + label {text = MENU4 font = "Sans 10" color = "#3c3c3c" align = "left"}
+  }
+#endif
+}
+
++ boot_menu {
+  left = 18%
+  width = 50%
+  top = 200
+  height = 200
+  item_font = "Sans Regular 12"
+  item_color = "#3c3c3c"
+  selected_item_color = "#7ab51d"
+  item_height = 20
+  item_padding = 15
+  item_spacing = 5
+}
+
++ vbox {
+  top = 100%-60
+  left = 10%
+  + hbox {
+    top = 0
+    left = 20%
+    + label {text = "Enter: " font = "Sans 10" color = "black" align = "left"}
+    + label {text = "Select             " font = "Sans 10" color = "#3c3c3c" align = "left"}
+#ifdef MENU1
+    + label {text = "           " font = "Sans 10" color = "black" align = "left"}
+    + label {text = "Esc:   " font = "Sans 10" color = "black" align = "left"}
+    + label {text = "Back up one level  " font = "Sans 10" color = "#3c3c3c" align = "left"}
+#endif
+  }
+  + hbox {
+    top = 0
+    left = 20%
+    + label {text = "E:     " font = "Sans 10" color = "black" align = "left"}
+    + label {text = "Edit Selection     " font = "Sans 10" color = "#3c3c3c" align = "left"}
+    + label {text = "           " font = "Sans 10" color = "black" align = "left"}
+    + label {text = "C:     " font = "Sans 10" color = "black" align = "left"}
+    + label {text = "GRUB Command line" font = "Sans 10" color = "#3c3c3c" align = "left"}
+  }
+}

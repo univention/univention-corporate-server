@@ -1,3 +1,9 @@
+univention-dvd (2.0.0-17) unstable; urgency=medium
+
+  * Bug #47794: UCS-4.2-5 DVD
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 13 Sep 2018 09:37:10 +0200
+
 univention-dvd (2.0.0-16) unstable; urgency=medium
 
   * Bug #46091: Add package univention-ldap-overlay-memberof to DVD
