@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-directory-listener
+fix: 12.0.0-20A~4.3.0.201809131740
+desc: |
+ This update addresses the following issue:
+ * An alternative mechanism to initialize the Univention Directory Listener in
+   large environments was added.
+bug: [47783]
