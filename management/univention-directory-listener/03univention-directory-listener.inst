@@ -69,7 +69,6 @@ domaincontroller_master|domaincontroller_backup) dn="cn=admin,$ldap_base" secret
 ?*) dn="$ldap_hostdn" secret=/etc/machine.secret ;;
 esac
 
-univention-config-registry set ldap/database/ldbm/dbsync="10"
 /usr/sbin/univention-directory-listener -i \
 	-d "${listener_debug_level:-1}" \
 	-h "$ldap_master" \
@@ -81,8 +80,6 @@ univention-config-registry set ldap/database/ldbm/dbsync="10"
 	-x \
 	${dn:+-D "$dn"} ${secret:+-y "$secret"}
 exit_status=$?
-
-univention-config-registry set ldap/database/ldbm/dbsync=$ldap_database_ldbm_dbsync
 
 # needed for db sync
 sleep 15
