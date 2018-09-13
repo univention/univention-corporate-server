@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-en-4.2-4">
+<book lang="en" id="releasenotes-en-4.2-5">
 	<bookinfo>
-		<title>UCS 4.2-4 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.2-4</subtitle>
+		<title>UCS 4.2-5 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.2-5</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,31 +44,14 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With Univention Corporate Server 4.2-4, the fourth point release of Univention Corporate Server (UCS) 4.2 is now
+			With Univention Corporate Server 4.2-5, the fifth point release of Univention Corporate Server (UCS) 4.2 is now
 			available. It provides several feature improvements and extensions, new properties as well as
 			various improvements and bugfixes. An overview of the most important changes are:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				Support for creating subfolders in shared folders was added to the Dovecot integration.
-			</para></listitem>
-			<listitem><para>
-				The package <package>univention-ldap-overlay-memberof</package> is now automatically installed
-				during the system configuration of &ucsBackup; and &ucsSlave; systems if the
-				<property>memberOf</property> overlay module is enabled on the &ucsMaster;.
-			</para></listitem>
-			<listitem><para>
-				Individual changes to the Postfix configuration can now be added to the files <filename>main.cf.local</filename> and <filename>master.cf.local</filename>.
-			</para></listitem>
-			<listitem><para>
-				A confirmation dialog has been added which is shown after a user changed their password at the self-service module.
-			</para></listitem>
-			<listitem><para>
-				A new API for programming of &ucsUDL; modules was added.
-			</para></listitem>
-			<listitem><para>
-				Various security updates have been integrated into UCS 4.2-4, e.g. OpenLDAP, the Linux kernel, Samba, MySQL and PostgreSQL.
+				Various security updates have been integrated into UCS 4.2-5, e.g. OpenLDAP, the Linux kernel, Samba, MySQL and PostgreSQL.
 				A complete list is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
@@ -209,10 +192,10 @@
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <wordasword>4.2-3</wordasword>:
+			Listed are the changes since UCS <wordasword>4.2-4</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-4.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-5.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
