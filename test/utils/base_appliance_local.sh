@@ -43,6 +43,7 @@ _scp () {
 _kvm_image () {
 	local identify="$1"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
+		set -e
 		rm -f ${TMP_KVM_IMAGE}.kv
 		cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.kv
 		guestfish add ${TMP_KVM_IMAGE}.kv : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\"
@@ -56,7 +57,8 @@ _kvm_image () {
 _vmplayer_image () {
 	local identify="$1"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
-		rm -f ${TMP_KVM_IMAGE}.vm
+		set -e
+		rm -f ${TMP_KVM_IMAGE}.vm ${VMPLAYER_IMAGE}
 		cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.vm
 		guestfish add ${TMP_KVM_IMAGE}.vm : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\"
 		generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --vmware -s ${TMP_KVM_IMAGE}.vm -f ${VMPLAYER_IMAGE}
@@ -70,7 +72,8 @@ _virtualbox_image () {
 	local identify="$1"
 	_scp utils/install-vbox-guesttools.sh ${KVM_USER}@${IMAGE_SERVER}:
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
-		rm -f ${TMP_KVM_IMAGE}.vb
+		set -e
+		rm -f ${TMP_KVM_IMAGE}.vb ${VBOX_IMAGE}
 		cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.vb
 		guestfish add ${TMP_KVM_IMAGE}.vb : set-network true : run : mount /dev/mapper/vg_ucs-root /  : copy-in install-vbox-guesttools.sh /root/ : command /root/install-vbox -guesttools.sh
 		guestfish add ${TMP_KVM_IMAGE}.vb : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\"
@@ -84,7 +87,8 @@ _virtualbox_image () {
 _esxi () {
 	local identify="$1"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
-		rm -f ${TMP_KVM_IMAGE}.es
+		set -e
+		rm -f ${TMP_KVM_IMAGE}.es ${ESX_IMAGE}
 		cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.es
 		guestfish add ${TMP_KVM_IMAGE}.es : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\"
 		generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --ova-esxi -s ${TMP_KVM_IMAGE}.es -f ${ESX_IMAGE}
@@ -97,8 +101,8 @@ _esxi () {
 _hyperv_image () {
 	local identify="$1"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
-		rm -f ${TMP_KVM_IMAGE}.hv
-		rm -f ${HYPERV_IMAGE_BASE}.vhdx ${HYPERV_IMAGE_BASE}.zip
+		set -e
+		rm -f ${TMP_KVM_IMAGE}.hv ${HYPERV_IMAGE_BASE}.vhdx ${HYPERV_IMAGE_BASE}.zip
 		cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.hv
 		guestfish add ${TMP_KVM_IMAGE}.hv : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\"
 		qemu-img convert -p -o subformat=dynamic -O vhdx ${TMP_KVM_IMAGE}.hv ${HYPERV_IMAGE_BASE}.vhdx
@@ -143,6 +147,7 @@ create_app_images () {
 
 	# convert image
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "
+		set -e
 		test -d $TMP_DIR && rm -rf $TMP_DIR || true
 		mkdir -p $TMP_DIR
 		mkdir -p $APPS_BASE
@@ -162,6 +167,7 @@ create_app_images () {
 
 	# update current link and sync test mirror
 	_ssh -l "$KVM_USER" "$APPS_SERVER" "
+		set -e
 		cd /var/univention/buildsystem2/mirror/appcenter.test/univention-apps/current/
 		test -L ${APP_ID} && rm ${APP_ID}
 		ln -s ../${UCS_VERSION}/${APP_ID} ${APP_ID}
