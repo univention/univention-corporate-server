@@ -1105,11 +1105,11 @@ univention-app dev-use-test-appcenter
     <title>Connection with Identity Management</title>
 
     <para>
-		One of the UCS's key features is the integrated identity management
-		(IDM). With this central identity management, users benefit, among
-		other things, from a single login independent of which services or
-		systems they use. It is highly recommended to integrate the app into
-		the identity management system.
+        One of the <wordasword>UCS's</wordasword> key features is the
+        integrated identity management (IDM). With this central identity
+        management, users benefit, among other things, from a single login
+        independent of which services or systems they use. It is highly
+        recommended to integrate the app into the identity management system.
     </para>
 
     <para>
