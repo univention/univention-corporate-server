@@ -605,8 +605,8 @@ univention-app dev-use-test-appcenter
                     </listitem>
                     <listitem>
                         <simpara>
-                            The app is working on the as Supported UCS version
-                            configured version of UCS (see <xref
+                            The app is working with the UCS versions that are
+                            configured as Supported UCS version (see <xref
                                 linkend="create-app-with-docker:supported-ucs-version"
                                 />).
                         </simpara>
@@ -960,8 +960,7 @@ univention-app dev-use-test-appcenter
         </para>
 
         <para>
-            The description is provided in HTML format. The text editor in the
-            App Provider Portal provides decent functionality. If more control
+            The description is provided in HTML format. If more control
             on the HTML is needed, switch to HTML source mode and edit the HTML
             directly.
         </para>
