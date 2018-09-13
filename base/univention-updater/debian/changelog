@@ -1,3 +1,9 @@
+univention-updater (12.0.11-20) unstable; urgency=medium
+
+  * Bug #45672: Adapt updater message for 4.2-5 errata
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 13 Sep 2018 16:47:50 +0200
+
 univention-updater (12.0.11-19) unstable; urgency=medium
 
   * Bug #47788: Adapt links and components for 4.2-5
