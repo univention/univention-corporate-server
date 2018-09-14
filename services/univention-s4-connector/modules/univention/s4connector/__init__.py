@@ -166,6 +166,22 @@ class configdb:
 		self.filename = filename
 		self._dbcon = lite.connect(self.filename)
 
+	def get_by_value(self, section, option):
+		for i in [1, 2]:
+			try:
+				cur = self._dbcon.cursor()
+				cur.execute("SELECT key FROM '%s' WHERE value=?" % section, (option,))
+				self._dbcon.commit()
+				rows = cur.fetchall()
+				cur.close()
+				if rows:
+					return rows[0][0]
+				return ''
+			except lite.Error, e:
+				if self._dbcon:
+					self._dbcon.close()
+				self._dbcon = lite.connect(self.filename)
+
 	def get(self, section, option):
 		for i in [1, 2]:
 			try:
@@ -1419,6 +1435,16 @@ class ucs:
 		else:
 			return False
 
+	def was_objectGUID_deleted_by_ucs(self, objectGUID):
+		try:
+			objectGUID = str(ndr_unpack(misc.GUID, objectGUID))
+			entryUUID = self.config.get_by_value('UCS deleted', objectGUID)
+			if entryUUID:
+				return True
+		except Exception as err:
+			ud.debug(ud.LDAP, ud.ERROR, "was_objectGUID_deleted_by_ucs: failed to look for objectGUID %s in 'UCS deleted': %s" % (objectGUID, str(err)))
+		return False
+
 	def delete_in_ucs(self, property_type, object, module, position):
 		_d = ud.function('ldap.delete_in_ucs')
 
@@ -1432,6 +1458,10 @@ class ucs:
 		else:
 			objectGUID = None
 		entryUUID = self._get_entryUUID(object['dn'])
+
+		if objectGUID and self.was_objectGUID_deleted_by_ucs(objectGUID):
+			ud.debug(ud.LDAP, ud.PROCESS, "delete_in_ucs: object %s already deleted in UCS, ignoring delete" % object['dn'])
+			return True
 
 		if property_type == 'windowscomputer':
 			# Sepcial handling for windows computer:

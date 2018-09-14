@@ -1,0 +1,70 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check whether ou can be renamed to different case ou=aaBB -> ou=aabb"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+RETRYREJECTED="$(ucr get connector/s4/retryrejected)"
+ad_set_retry_rejected 2
+
+rand="$(random_chars)"
+OU="${rand}AAA"
+OU_RENAME="${rand}aaa"
+USER="$(random_chars)"
+UDM_users_user_username="$USER"
+UDM_users_user_lastname="$(random_chars)"
+UDM_users_user_password="U$(random_chars)123"
+UDM_container_ou_name="$OU"
+AD_OU_DN="OU=$OU,$(ad_get_base)"
+AD_USER_DN="CN=$USER,OU=$OU,$(ad_get_base)"
+
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+section "Create ou with a user object"
+
+udm_create "container/ou" || fail_test 110
+udm_create "users/user" "" "" "ou=$OU,$ldap_base" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+udm_exists "container/ou"; fail_bool 0 110
+udm_exists "users/user" "" "" "ou=$OU,$ldap_base"; fail_bool 0 110
+ad_exists "$AD_OU_DN"; fail_bool 0 110
+ad_exists "$AD_USER_DN"; fail_bool 0 110
+
+section "Rename $OU into $OU_RENAME"
+
+udm container/ou modify --dn "ou=$OU,$ldap_base" --set name="$OU_RENAME"
+UDM_container_ou_name="$OU_RENAME"
+AD_OU_DN="OU=$OU_RENAME,$(ad_get_base)"
+AD_USER_DN="CN=$USER,OU=$OU_RENAME,$(ad_get_base)"
+ad_wait_for_synchronization; fail_bool 0 110
+udm_exists "container/ou"; fail_bool 0 110
+udm_exists "users/user" "" "" "ou=$OU_RENAME,$ldap_base"; fail_bool 0 110
+ad_exists "$AD_OU_DN"; fail_bool 0 110
+ad_exists "$AD_USER_DN"; fail_bool 0 110
+
+section "Clean up"
+
+udm_remove "users/user" "" "" "ou=$OU_RENAME,$ldap_base" || fail_test 110
+udm_remove "container/ou" "" "" "$ldap_base" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+udm_exists "container/ou"; fail_bool 1 110
+ad_exists "$AD_OU_DN"; fail_bool 1 110
+udm_exists "users/user" "" "" "ou=$OU_RENAME,$ldap_base"; fail_bool 1 110
+udm_exists "users/user" "" "" "ou=$OU,$ldap_base"; fail_bool 1 110
+ad_exists "$AD_USER_DN"; fail_bool 1 110
+ad_set_retry_rejected "$RETRYREJECTED"
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
