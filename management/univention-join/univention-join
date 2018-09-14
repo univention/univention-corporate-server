@@ -184,7 +184,7 @@ check_ldap_tls_connection () {
 
 	eval "$(ucr shell ldap/master/port)"
 
-	univention-ldapsearch -p "$ldap_master_port" -s base -h "$DCNAME" -D "$binddn" -y "$DCPWD" dn >/dev/null
+	univention-ldapsearch -p "$ldap_master_port" -s base -h "$DCNAME" -D "$binddn" --bindpwdfile "$DCPWD" dn >/dev/null
 	if  [ $? != 0 ]; then
  		failed_message "Establishing a TLS connection with $DCNAME failed. Maybe you didn't specify a FQDN."
 	fi
@@ -643,9 +643,11 @@ else
 			args+=(-netmask "$NETMASK")
 		fi
 	fi
-	mac_addr="$(LC_ALL=C ip link show | sed -rne 's|.*link/ether ([0-9a-fA-F:]+) brd .*|\1|p' | head -n1)"
+	mac_addr="$(LC_ALL=C ip link show | sed -rne 's|.*link/ether ([0-9a-fA-F:]+) brd .*|\1|p' | head -n -1)"
 	if [ -n "$mac_addr" ]; then
-		args+=(-mac "$mac_addr")
+		while read line; do
+			args+=(-mac "$line")
+		done <<< "$mac_addr"
 	fi
 fi
 
