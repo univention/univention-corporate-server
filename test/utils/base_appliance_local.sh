@@ -44,7 +44,8 @@ _kvm_image () {
 	local identify="$1"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
 		set -e
-		rm -f ${TMP_KVM_IMAGE}.kv
+		cd $APPS_BASE
+		rm -f ${TMP_KVM_IMAGE}.kv $KVM_IMAGE
 		cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.kv
 		guestfish add ${TMP_KVM_IMAGE}.kv : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\"
 		cp -f ${TMP_KVM_IMAGE}.kv $KVM_IMAGE
@@ -58,6 +59,7 @@ _vmplayer_image () {
 	local identify="$1"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
 		set -e
+		cd $APPS_BASE
 		rm -f ${TMP_KVM_IMAGE}.vm ${VMPLAYER_IMAGE}
 		cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.vm
 		guestfish add ${TMP_KVM_IMAGE}.vm : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\"
@@ -73,6 +75,7 @@ _virtualbox_image () {
 	_scp utils/install-vbox-guesttools.sh ${KVM_USER}@${IMAGE_SERVER}:
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
 		set -e
+		cd $APPS_BASE
 		rm -f ${TMP_KVM_IMAGE}.vb ${VBOX_IMAGE}
 		cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.vb
 		guestfish add ${TMP_KVM_IMAGE}.vb : set-network true : run : mount /dev/mapper/vg_ucs-root /  : copy-in install-vbox-guesttools.sh /root/ : command /root/install-vbox-guesttools.sh
@@ -88,6 +91,7 @@ _esxi () {
 	local identify="$1"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
 		set -e
+		cd $APPS_BASE
 		rm -f ${TMP_KVM_IMAGE}.es ${ESX_IMAGE}
 		cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.es
 		guestfish add ${TMP_KVM_IMAGE}.es : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\"
@@ -102,6 +106,7 @@ _hyperv_image () {
 	local identify="$1"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
 		set -e
+		cd $APPS_BASE
 		rm -f ${TMP_KVM_IMAGE}.hv ${HYPERV_IMAGE_BASE}.vhdx ${HYPERV_IMAGE_BASE}.zip
 		cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.hv
 		guestfish add ${TMP_KVM_IMAGE}.hv : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\"
@@ -132,11 +137,11 @@ _set_global_vars () {
 	TMP_DIR="/var/univention/buildsystem2/temp/build-app-appliance/${APP_ID}"
 	TMP_KVM_IMAGE="$TMP_DIR/master.qcow2"
 	IMAGE_VERSION="${UCS_VERSION}-with-${APP_ID}"
-	VMPLAYER_IMAGE="$APPS_BASE/Univention-App-${APP_ID}-vmware.zip"
-	KVM_IMAGE="$APPS_BASE/Univention-App-${APP_ID}-KVM.qcow2"
-	VBOX_IMAGE="$APPS_BASE/Univention-App-${APP_ID}-virtualbox.ova"
-	ESX_IMAGE="$APPS_BASE/Univention-App-${APP_ID}-ESX.ova"
-	HYPERV_IMAGE_BASE="$APPS_BASE/Univention-App-${APP_ID}-Hyper-V"
+	VMPLAYER_IMAGE="Univention-App-${APP_ID}-vmware.zip"
+	KVM_IMAGE="Univention-App-${APP_ID}-KVM.qcow2"
+	VBOX_IMAGE="Univention-App-${APP_ID}-virtualbox.ova"
+	ESX_IMAGE="Univention-App-${APP_ID}-ESX.ova"
+	HYPERV_IMAGE_BASE="Univention-App-${APP_ID}-Hyper-V"
 
 	export APP_ID KVM_USER KVM_SERVER UCS_VERSION UCS_VERSION_INFO KT_CREATE_IMAGE APPS_BASE APPS_SERVER IMAGE_SERVER
 	export TMP_DIR VMPLAYER_IMAGE KVM_IMAGE TMP_KVM_IMAGE VBOX_IMAGE ESX_IMAGE IMAGE_VERSION
