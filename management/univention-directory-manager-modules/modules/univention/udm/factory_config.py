@@ -78,7 +78,7 @@ Info: Unregistered configuration UdmModuleFactoryConfiguration(udm_module_name_p
 UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/.*$', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
 """
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 import os
 import re
 import json
@@ -86,7 +86,7 @@ import time
 import errno
 from operator import attrgetter
 from collections import namedtuple
-from univention.udm.utils import UDebug as ud
+from .utils import UDebug as ud
 
 try:
 	from typing import Any, Dict, List, Optional, Pattern, Text, Tuple, Union

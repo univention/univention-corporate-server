@@ -31,15 +31,15 @@ A generic UDM module and object implementation.
 Will work for all kinds of UDM modules.
 """
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 from ldap.dn import dn2str, str2dn
 import univention.admin.objects
 import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.uldap
-from univention.udm.base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
-from univention.udm.exceptions import DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UnknownProperty, WrongObjectType
-from univention.udm.utils import UDebug as ud
+from .base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
+from .exceptions import DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UnknownProperty, WrongObjectType
+from .utils import UDebug as ud
 
 try:
 	from typing import Any, Dict, Iterator, Optional, Tuple

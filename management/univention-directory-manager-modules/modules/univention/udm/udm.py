@@ -60,11 +60,11 @@ for obj in Udm.using_machine().get('users/user').search('uid=a*'):  # search() r
 	print(obj.props.firstname, obj.props.lastname)
 """
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 import importlib
-from univention.udm.base import BaseUdmModule
-from univention.udm.factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
-from univention.udm.utils import LDAP_connection, UDebug as ud
+from .base import BaseUdmModule
+from .factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
+from .utils import LDAP_connection, UDebug as ud
 
 try:
 	from typing import Dict, Optional, Tuple, Type

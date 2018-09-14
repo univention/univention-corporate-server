@@ -26,7 +26,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 from ldap.filter import filter_format
 import univention.admin.uldap
 import univention.config_registry
