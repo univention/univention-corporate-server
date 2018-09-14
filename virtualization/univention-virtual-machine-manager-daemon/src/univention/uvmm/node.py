@@ -58,6 +58,11 @@ from lxml import etree as ET
 import cPickle as pickle
 
 import univention.config_registry as ucr
+try:
+	from typing import Any, Optional, Set, Type  # noqa
+	from types import TracebackType  # noqa
+except ImportError:
+	pass
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
@@ -198,6 +203,62 @@ class PersistentCached(object):
 		os.rename(old_name, new_name)
 
 
+class _Domain(object):
+	__slots__ = ('log', 'domain', '_inactive_xml', '_inactive_tree', '_active_xml', '_active_tree')
+
+	def __init__(self, domain):
+		# type: (libvirt.virDomain) -> None
+		self.log = logger.getChild('xml')
+		self.domain = domain  # type: libvirt.virDomain
+		self._inactive_xml = None  # type: Optional[str]
+		self._inactive_tree = None  # type: ET._Element
+		self._active_xml = None  # type: Optional[str]
+		self._active_tree = None  # type: ET._Element
+
+	@property
+	def inactive_xml(self):
+		# type () -> str
+		if not self._inactive_xml:
+			self.log.debug('Fetching inactive XML for %s', self.domain.name())
+			self._inactive_xml = self.domain.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
+		return self._inactive_xml
+
+	@property
+	def inactive_tree(self):
+		# type: () -> ET._Element
+		if self._inactive_tree is None:
+			self.log.debug('Parsing inactive XML for %s', self.domain.name())
+			self._inactive_tree = ET.fromstring(self.inactive_xml)
+		return self._inactive_tree
+
+	@property
+	def active_xml(self):
+		# type () -> str
+		if not self._active_xml:
+			self.log.debug('Fetching active XML for %s', self.domain.name())
+			self._active_xml = self.domain.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+		return self._active_xml
+
+	@property
+	def active_tree(self):
+		# type: () -> ET._Element
+		if self._active_tree is None:
+			self.log.debug('Parsing active XML for %s', self.domain.name())
+			self._active_tree = ET.fromstring(self.active_xml)
+		return self._active_tree
+
+	def __enter__(self):
+		# type: () -> _Domain
+		return self
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		# type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+		self._inactive_xml = None
+		self._inactive_tree = None
+		self._active_xml = None
+		self._active_tree = None
+
+
 class Domain(PersistentCached):
 
 	"""Container for domain statistics."""
@@ -209,6 +270,8 @@ class Domain(PersistentCached):
 		self._time_used = 0L
 		self._cpu_usage = 0
 		self._cache_id = None
+		self._restart = 0
+		self._redefined = True  # check for <cpu> only once per process as this is quiet expensive
 		self.pd = Data_Domain()
 		if isinstance(domain, libvirt.virDomain):
 			self.pd.uuid = domain.UUIDString()
@@ -221,8 +284,14 @@ class Domain(PersistentCached):
 	def __eq__(self, other):
 		return self.pd.uuid == other.pd.uuid
 
-	def update(self, domain):
-		"""Update statistics which may change often."""
+	def update(self, domain, redefined=False):
+		"""
+		Update statistics which may change often.
+
+		:param libvirt.virDomain domain: libvirt domain instance.
+		:param bool defined: True if the domain was (re-)defined.
+		"""
+		self._redefined |= redefined
 		if self.pd.name is None:
 			self.pd.name = domain.name()
 		for i in range(5):
@@ -271,24 +340,76 @@ class Domain(PersistentCached):
 
 	def update_expensive(self, domain):
 		"""Update statistics."""
-		# Full XML definition
-		xml = domain.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
-		cache_id = hash(xml)
-		if self._cache_id != cache_id:
-			try:
-				self.cache_save(xml)
-				self._cache_id = cache_id
-			except IOError as ex:
-				logger.warning("Failed to cache domain %s: %s" % (self.pd.uuid, ex))
+		with _Domain(domain) as dom:
+			cache_id = hash(dom.inactive_xml)
+			if self._cache_id != cache_id:
+				if self.update_cpu(dom):
+					return
+				try:
+					self.cache_save(dom.inactive_xml)
+					self._cache_id = cache_id
+				except IOError as ex:
+					logger.warning("Failed to cache domain %s: %s" % (self.pd.name, ex))
+
+			if domain.isActive():
+				xml = dom.active_xml
+				self.pd.suspended = False
+			else:
+				xml = dom.inactive_xml
+				self.pd.suspended = domain.hasManagedSaveImage(0)
+
 			self.xml2obj(xml)
+			self.update_volumes(domain)
+			self.update_snapshots(domain)
 
-		if domain.isActive():
-			self.pd.suspended = False
+	def update_cpu(self, dom):
+		# type: (_Domain) -> bool
+		"""
+		Update '/domain/cpu' as set by UCRV 'uvmm/vm/cpu/host-model'.
+
+		:param _Domain domain: domain XML data.
+		:returns: True if the node was updated, False otherwise.
+		:rtype: bool
+		"""
+		if not self._redefined:
+			return False
+
+		self._redefined = False
+
+		try:
+			model = configRegistry['uvmm/vm/cpu/host-model']
+		except LookupError:
+			return False
+
+		old_cpu = _update_xml(dom.inactive_tree, 'cpu', None)
+		if model == 'remove':
+			inactive_changed = bool(old_cpu)
+		elif model == 'missing' and old_cpu is not None:
+			dom.inactive_tree.append(old_cpu)
+			inactive_changed = False
+		elif model in ('missing', 'always'):
+			new_cpu = _update_xml(dom.inactive_tree, 'cpu', None, mode='host-model')
+			_update_xml(new_cpu, 'model', None, fallback='allow')
+			inactive_changed = old_cpu is None or old_cpu.attrib.get('mode') != 'host-model'
 		else:
-			self.pd.suspended = domain.hasManagedSaveImage(0)
+			return False
 
-		self.update_volumes(domain)
-		self.update_snapshots(domain)
+		if dom.domain.isActive() and (inactive_changed or (dom.inactive_tree.find('cpu') is None) != (dom.active_tree.find('cpu') is None)):
+			logger.info("Pending domain restart: %s", self.pd.name)
+			self._restart = dom.domain.ID()
+
+		if not inactive_changed:
+			return False
+
+		logger.info("Updating inactive domain %s", self.pd.name)
+		new_xml = ET.tostring(dom.inactive_tree)
+		conn = dom.domain.connect()
+		try:
+			conn.defineXML(new_xml)
+		except libvirt.libvirtError as ex:
+			logger.error("Failed to update domain %s: %s (%s)", self.pd.name, ex, new_xml)
+
+		return True
 
 	def update_volumes(self, domain):
 		"""Determine size and pool."""
@@ -531,7 +652,7 @@ class Node(PersistentCached):
 		self.libvirt_version = tuple2version((0, 8, 7))
 		self.config_frequency = Nodes.IDLE_FREQUENCY
 		self.current_frequency = Nodes.IDLE_FREQUENCY
-		self.domainCB = None
+		self.domainCB = []
 		self.timerEvent = threading.Event()
 		try:
 			# Calculate base cache dir for node
@@ -655,7 +776,10 @@ class Node(PersistentCached):
 		self.pd.capabilities = DomainTemplate.list_from_xml(xml)
 		self.libvirt_version = self.conn.getLibVersion()
 
-		self.domainCB = self.conn.domainEventRegisterAny(None, libvirt.VIR_DOMAIN_EVENT_ID_LIFECYCLE, self.livecycle_event, None)
+		self.domainCB = [
+			self.conn.domainEventRegisterAny(None, libvirt.VIR_DOMAIN_EVENT_ID_LIFECYCLE, self.livecycle_event, None),
+			self.conn.domainEventRegisterAny(None, libvirt.VIR_DOMAIN_EVENT_ID_REBOOT, self.reboot_event, None),
+		]
 
 	def livecycle_event(self, conn, dom, event, detail, opaque):
 		"""Handle domain addition, update and removal."""
@@ -678,12 +802,42 @@ class Node(PersistentCached):
 				except LookupError:
 					domStat = Domain(dom, node=self)
 					self.domains[uuid] = domStat
-				domStat.update(dom)
+
+				domStat.update(dom, redefined=event == libvirt.VIR_DOMAIN_EVENT_DEFINED)
 			if event in (libvirt.VIR_DOMAIN_EVENT_STARTED, libvirt.VIR_DOMAIN_EVENT_RESUMED):
 				self.write_novnc_tokens()
 		except KeyError:
 			# during migration events are not ordered causal
 			pass
+		except Exception:
+			log.error('%s: Exception handling callback' % (self.pd.uri,), exc_info=True)
+			# don't crash the event handler
+
+	def reboot_event(self, conn, dom, opaque):
+		"""Handle domain reboot."""
+		log = logger.getChild('reboot')
+		try:
+			log.debug(
+				"Domain %s(%s)",
+				dom.name(),
+				dom.ID(),
+			)
+			uuid = dom.UUIDString()
+			try:
+				domStat = self.domains[uuid]
+			except LookupError:
+				return
+			try:
+				if domStat._restart == dom.ID():
+					# Race condition: the slower UVMMd will just ignore errors
+					try:
+						dom.destroy()
+						dom.create()
+					except libvirt.libvirtError as ex:
+						if ex.get_error_code() != libvirt.VIR_ERR_OPERATION_INVALID:
+							raise
+			finally:
+				domStat._restart = 0
 		except Exception:
 			log.error('%s: Exception handling callback' % (self.pd.uri,), exc_info=True)
 			# don't crash the event handler
@@ -706,12 +860,11 @@ class Node(PersistentCached):
 	def _unregister(self):
 		"""Unregister callback and close connection."""
 		if self.conn is not None:
-			if self.domainCB is not None:
+			while self.domainCB:
 				try:
-					self.conn.domainEventDeregisterAny(self.domainCB)
+					self.conn.domainEventDeregisterAny(self.domainCB.pop())
 				except Exception:
 					logger.error("%s: Exception in domainEventDeregisterAny" % (self.pd.uri,), exc_info=True)
-				self.domainCB = None
 
 			try:
 				self.conn.close()
@@ -936,7 +1089,7 @@ def _domain_backup(dom, save=True):
 	"""Save domain definition to backup file."""
 	backup_dir = configRegistry.get('uvmm/backup/directory', '/var/backups/univention-virtual-machine-manager-daemon')
 	uuid = dom.UUIDString()
-	xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+	xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
 	if len(xml) < 300:  # minimal XML descriptor length
 		logger.error("Failed to backup domain %s: %s" % (uuid, xml))
 		raise NodeError(_("Failed to backup domain %(domain)s: %(xml)s"), domain=uuid, xml=xml)
@@ -988,7 +1141,15 @@ def _update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
 
 
 def _domain_edit(node, dom_stat, xml):
-	"""Apply python object 'dom_stat' to an XML domain description."""
+	"""
+	Apply python object 'dom_stat' to an XML domain description.
+
+	:param Node node: The host system node.
+	:param Domain dom_stat: The virtual machine object.
+	:param str xml: libvirt domain XML string.
+
+	:returns: A 2-tuple (xml, updates_xml), where `xml` is the updated domain XML string, `updates_xml` a list of device update XML strings.
+	"""
 	if xml:
 		defaults = False
 	else:
@@ -1253,7 +1414,7 @@ def domain_define(uri, domain):
 		old_uuid = old_dom.UUIDString()
 		if old_uuid != domain.uuid:
 			raise NodeError(_('Domain name "%(domain)s" already used by "%(uuid)s"'), domain=domain.name, uuid=old_uuid)
-		old_xml = old_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+		old_xml = old_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
 	except libvirt.libvirtError as ex:
 		if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 			logger.error(ex)
@@ -1262,7 +1423,7 @@ def domain_define(uri, domain):
 		try:
 			if domain.uuid:
 				old_dom = conn.lookupByUUIDString(domain.uuid)
-				old_xml = old_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+				old_xml = old_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
 		except libvirt.libvirtError as ex:
 			if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 				logger.error(ex)
@@ -1580,7 +1741,7 @@ def domain_migrate(source_uri, domain, target_uri):
 			source_dom.migrate(target_conn, flags, None, None, 0)
 		elif source_state in (libvirt.VIR_DOMAIN_SHUTDOWN, libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
 			# for domains not running their definition is migrated
-			xml = source_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+			xml = source_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
 			target_conn.defineXML(xml)
 			source_dom.undefine()
 		else:
@@ -1600,6 +1761,8 @@ def domain_migrate(source_uri, domain, target_uri):
 		else:
 			logger.warning('Domain "%(domain)s" still not migrated from "%(source)s" to "%(target)s"' % {'domain': domain, 'source': source_uri, 'target': target_uri})
 	except libvirt.libvirtError as ex:
+		if ex.get_error_code() == libvirt.VIR_ERR_CPU_INCOMPATIBLE:
+			raise NodeError(_('The target host has an incompatible CPU; select a different host or try an offline migration. (%(details)s)') % {'details': ex.get_str2()})
 		logger.error(ex)
 		raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=ex.get_error_message())
 
@@ -1749,7 +1912,7 @@ def domain_clone(uri, domain, name, subst):
 				warnings.append(warning)
 				annotations = {}
 
-			xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+			xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
 			# /domain
 			domain = ET.fromstring(xml)
 			# /domain/uuid
@@ -1930,7 +2093,7 @@ def __domain_targethost(uri, domain):
 		conn = node.conn
 		domconn = conn.lookupByUUIDString(domain)
 		dom = node.domains[domain]
-		dom_xml = domconn.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+		dom_xml = domconn.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
 		dom_tree = ET.fromstring(dom_xml)
 		dom_metadata = _update_xml(dom_tree, 'metadata', None, dummy='')
 		dom_migrationhosts = _update_xml(dom_metadata, 'uvmm:migrationtargethosts', None, dummy='')

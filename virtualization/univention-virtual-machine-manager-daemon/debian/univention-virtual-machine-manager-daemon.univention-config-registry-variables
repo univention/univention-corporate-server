@@ -33,3 +33,9 @@ Description[de]=Interval in Sekunden für das automatische Aktualisieren der UVM
 Description[en]=Interval in seconds for automatically refreshing the UVMM view in web browsers. Default: 5
 Type=int
 Categories=uvmm
+
+[uvmm/vm/cpu/host-model]
+Description[de]=Für die Live-Migration von virtuellen Maschinen kann UVMM das CPU-Model des Wirt-Systems aufzeichnen. Wird diese Einstellung auf 'missing' gesetzt, wird die Beschreibung eingefügt, nur falls sie fehlt. Bei 'always' wird sie immer eingefügt und überschreibt auch anderweitige Einstellunegn. 'remove' entfernt die Beschreibung; jeder andere Wert (inklusive nicht gesetzt) ändert die Beschreibung nicht, was der Standard ist.
+Description[en]=For live migration of virtual machines UVMM can track the exact CPU model of the host systems. Setting this value to 'missing' will insert such an description only if it is missing. 'aways' will insert the description always overwriting any previous setting. 'remove' will remove the description; any other value (including unset) will not change the description, which is the default.
+Type=int
+Categories=uvmm
