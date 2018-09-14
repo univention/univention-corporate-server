@@ -42,7 +42,12 @@ die () {
 
 eval "$(univention-config-registry shell)"
 
-server_role=1 ldap_base=2 ldap_hostdn=3
+if [ -n "${UNIVENTION_JOIN_DEBUG:-}" ]
+then
+	PS4='+ ${BASH_SOURCE[0]}:${LINENO}:${FUNCNAME[0]}@${SECONDS}: '
+	set -x
+fi
+
 case "$server_role" in
 '')
 	die "UCR variable 'server/role' is not set or empty"
@@ -91,13 +96,13 @@ fake_replication () {
 	/usr/share/univention-directory-listener/univention-get-ldif-from-master.py -s
 
 	# update local ldap
-	rm /var/lib/univention-ldap/ldap/*
+	rm -f /var/lib/univention-ldap/ldap/*
 	time_start="$(date +%s)"
 	if [ -f "${listener_init_fake_replication_mdb:-}" ]
 	then
 		# use local database file (mdb!)
-		echo -n "moving database file $listener_init_fake_replication_mdb ... "
-		mv "$listener_init_fake_replication_mdb" /var/lib/univention-ldap/ldap/data.mdb ||
+		echo -n "Installing database file $listener_init_fake_replication_mdb ... "
+		install -o openldap -g openldap -m 0600 "$listener_init_fake_replication_mdb" /var/lib/univention-ldap/ldap/data.mdb ||
 			die "Failed to move MDB file"
 	elif [ -f "${listener_init_fake_replication_ldif:-}" ]
 	then
@@ -138,7 +143,7 @@ then
 
 	# get and store notifier id to get changes during initialization
 	notifierid_master="$(/usr/share/univention-directory-listener/get_notifier_id.py)" ||
-		die "Failed to get Notifier ID"
+		die "Failed to get Notifier-ID"
 	notifierid="${listener_init_fake_notifierid:-"$notifierid_master"}"
 
 	# set notifier id
@@ -155,7 +160,7 @@ then
 	install -o listener -m 0700 -d  /var/lib/univention-directory-listener/handlers
 	for handler in $listener_init_fake  # IFS
 	do
-		fake_helper="${!fake_$handler}"
+		fake_helper="fake_$handler"
 		command -v "$fake_helper" >/dev/null || continue
 		"$fake_helper"
 		echo 3 > "/var/lib/univention-directory-listener/handlers/$handler"
@@ -168,7 +173,6 @@ else
 	mode='-i'
 fi
 
-univention-config-registry set ldap/database/ldbm/dbsync="10"
 /usr/sbin/univention-directory-listener "$mode" \
 	-d "${listener_debug_level:-1}" \
 	-h "$ldap_master" \
@@ -180,13 +184,12 @@ univention-config-registry set ldap/database/ldbm/dbsync="10"
 	-x \
 	${dn:+-D "$dn"} ${secret:+-y "$secret"}
 exit_status=$?
-univention-config-registry set ldap/database/ldbm/dbsync=$ldap_database_ldbm_dbsync
 
 # 2: fake listener initialization
 # copy listener cache (if defined), because cache without
 # replication.py is not fully filled
 if [ -f "${listener_init_fake_cache:-}" ]; then
-	echo "using fake listener cache $listener_init_fake_cache"
+	echo "Installing fake listener cache $listener_init_fake_cache"
 	rm -f /var/lib/univention-directory-listener/cache/*
 	install -m 0600 -g listener -g nogroup  "$listener_init_fake_cache" /var/lib/univention-directory-listener/cache/data.mdb ||
 		die "Failed to install '$listener_init_fake_cache'"
@@ -218,10 +221,10 @@ fi
 if [ "${notifierid_master:-0}" -gt 0 ]
 then
 	max="$(date +%s -d "${listener_init_fake_notifierid_timeout:-86400} second")"  # 24h
-	while now="$(date -%s)" ; [ "$now" -le "$max" ]
+	while now="$(date +%s)" ; [ "$now" -le "$max" ]
 	do
 		lid="$(cat /var/lib/univention-directory-listener/notifier_id)"
-		printf '\r%5d: waiting for replication (master.nid:%d <= self.nid:%d)' "$((max - now))" "$notifierid_master" "$lid"
+		printf '\r%5d: waiting for replication (Notifier-ID self:%d <= master:%d)' "$((max - now))" "$lid" "$notifierid_master"
 		[ "$notifierid_master" -le "${lid:-0}" ] && break
 		sleep 3
 	done
