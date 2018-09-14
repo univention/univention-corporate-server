@@ -764,7 +764,7 @@ def check_sending_mail(
 			password=password
 		)
 		if bool(ret_code) == allowed:
-			utils.fail('Sending allowed = %r, but return code = %r\n {} means there are no refused recipient' % (allowed, ret_code))
+			utils.fail('Sending allowed = {!r}, but return code = {!r}\n<empty dict> means there are no refused recipient'.format(allowed, ret_code))
 		if local:
 			check_delivery(token, recipient_email, allowed)
 	except smtplib.SMTPException as ex:

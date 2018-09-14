@@ -18,7 +18,7 @@ def check_sending_mail(username, password, recipient_email, should_be_accepted):
 	try:
 		ret_code = send_mail(recipients=recipient_email, msg=token, tls=True, username=username, password=password)
 		if bool(ret_code) == should_be_accepted:
-			utils.fail('Sending should_be_accepted = %r, but return code = %r\n {} means there are no refused recipient' % (should_be_accepted, ret_code))
+			utils.fail('Sending should_be_accepted = %r, but return code = %r\n<empty dict> means there are no refused recipient' % (should_be_accepted, ret_code))
 	except smtplib.SMTPRecipientsRefused as exc:
 		if should_be_accepted:
 			utils.fail('Mail sent failed with exception: %s' % exc)
