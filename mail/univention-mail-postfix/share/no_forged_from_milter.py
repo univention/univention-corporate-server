@@ -34,6 +34,7 @@ class NoForgedFromMilter(lm.ForkMixin, lm.MilterProtocol):
 	_ldap_secret_mtime = 0.0
 	regex_email_with_brakets = re.compile(r'.*<(.+@.+\..+)>$')
 	regex_email_no_brakets = re.compile(r'(.+@.+\..+)$')
+	mail_domains = []
 
 	def __init__(self, opts=0, protos=0):
 		lm.MilterProtocol.__init__(self, opts, protos)
@@ -43,6 +44,8 @@ class NoForgedFromMilter(lm.ForkMixin, lm.MilterProtocol):
 		self.envelope_from = ''
 		self.header_from = ''
 		self.recipients = []
+		self.__class__.mail_domains = self.get_mail_domains()
+		self.log('Mail domains: {}'.format(', '.join(self.mail_domains)))
 
 	@classmethod
 	def log(cls, msg, level='INFO'):
@@ -84,6 +87,19 @@ class NoForgedFromMilter(lm.ForkMixin, lm.MilterProtocol):
 			cls.log('Found no email address for sasl_login_name={!r}.'.format(sasl_login_name), 'ERROR')
 			return ''
 
+	@classmethod
+	def get_mail_domains(cls):
+		lo = cls.get_lo()
+		ldap_attr = ['cn']
+		ldap_filter = 'objectClass=univentionMailDomainname'
+		ldap_result = lo.search(filter=ldap_filter, attr=ldap_attr)
+		return [attr['cn'][0] for dn, attr in ldap_result]
+
+	@classmethod
+	def reload_sig_handler(cls, num, frame):
+		cls.mail_domains = cls.get_mail_domains()
+		cls.log('Reloaded. Mail domains: {}'.format(', '.join(cls.mail_domains)))
+
 	@lm.noReply
 	def connect(self, hostname, family, ip, port, cmdDict):
 		self.clear_variables()
@@ -94,36 +110,48 @@ class NoForgedFromMilter(lm.ForkMixin, lm.MilterProtocol):
 		try:
 			self.sasl_login_name = cmdDict['auth_authen']
 		except KeyError:
-			# not a submission
-			pass
+			# not authenticated session
+			local_part, at, domain = self.envelope_from.rpartition('@')
+			if domain and domain in self.mail_domains:
+				self.log('REJECT: envelope_from ({}) of not authenticated user with hosted domain ({}).'.format(
+					self.envelope_from, domain))
+				return lm.REJECT
 		else:
+			# authenticated session
 			if not self.legitimate_addresses:
 				self.legitimate_addresses = self.get_legitimate_addresses_for_username(self.sasl_login_name)
-			if self.envelope_from in self.legitimate_addresses:
-				return lm.CONTINUE
-			else:
+			if self.envelope_from not in self.legitimate_addresses:
 				self.log('REJECT: envelope_from ({}) not in legitimate addresses ({}).'.format(
 					self.envelope_from, ', '.join(self.legitimate_addresses)))
 				return lm.REJECT
 		return lm.CONTINUE
 
 	def header(self, key, val, cmdDict):
-		if self.sasl_login_name and key.lower() == 'from':
+		if key.lower() == 'from':
 			m = self.regex_email_with_brakets.match(val)
 			if not m:
 				m = self.regex_email_no_brakets.match(val)
-			if m:
-				self.header_from = m.groups()[0]
+			if not m:
+				self.log('Invalid email address: {!r}: {!r}.'.format(key, val), 'ERROR')
+				return lm.REJECT
+			self.header_from = m.groups()[0]
+			if self.sasl_login_name:
+				# authenticated session
 				if not self.legitimate_addresses:
 					self.legitimate_addresses = self.get_legitimate_addresses_for_username(self.sasl_login_name)
 				if self.header_from in self.legitimate_addresses:
 					return lm.CONTINUE
 				else:
-					self.log('REJECT: {!r} in "From" header ({}) not in legitimate addresses ({!s}).'.format(
+					self.log('REJECT: header_from ({}) not in legitimate addresses ({!s}).'.format(
 						self.header_from, val, ', '.join(self.legitimate_addresses)))
 					return lm.REJECT
 			else:
-				self.log('Cannot parse header: {!r}: {!r}.'.format(key, val), 'ERROR')
+				# not authenticated session
+				local_part, at, domain = self.header_from.rpartition('@')
+				if domain and domain in self.mail_domains:
+					self.log('REJECT: header_from ({}) of not authenticated user with hosted domain ({}).'.format(
+						self.header_from, domain))
+					return lm.REJECT
 		return lm.CONTINUE
 
 	def eob(self, cmdDict):
@@ -153,15 +181,16 @@ def run_milter():
 		sys.exit(0)
 	signal.signal(signal.SIGINT, sig_handler)
 	signal.signal(signal.SIGTERM, sig_handler)
+	signal.signal(signal.SIGHUP, NoForgedFromMilter.reload_sig_handler)
 
 	try:
 		milter_factory.run()
 	except Exception as exc:
 		milter_factory.close()
-		# first print->log to journald/syslog, then to mail.log
+		# print to journald/syslog and log to mail.log
 		print('EXCEPTION OCCURRED: {}'.format(exc))
 		traceback.print_tb(sys.exc_traceback)
-		NoForgedFromMilter.log('Exception in NoForgedFromMilter run: {}\n{}'.format(exc, traceback.format_tb(exc)))
+		NoForgedFromMilter.log('Exception in NoForgedFromMilter run: {}'.format(exc), 'ERROR')
 		sys.exit(3)
 
 

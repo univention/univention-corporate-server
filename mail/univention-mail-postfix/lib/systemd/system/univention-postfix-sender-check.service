@@ -5,6 +5,7 @@ After=slapd.service
 [Service]
 Type=simple
 ExecStart=/usr/share/univention-mail-postfix/no_forged_from_milter.py
+ExecReload=/bin/kill -s HUP $MAINPID
 Restart=always
 RestartSec=3
 User=listfilter

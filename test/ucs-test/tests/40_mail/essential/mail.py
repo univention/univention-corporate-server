@@ -57,6 +57,12 @@ import univention.testing.utils as utils
 import univention.testing.ucr as ucr_test
 from univention.testing.decorators import WaitForNonzeroResultOrTimeout
 
+try:
+	from typing import Dict, List, Optional, Union
+except ImportError:
+	pass
+
+
 COMMASPACE = ', '
 
 
@@ -619,24 +625,25 @@ def create_random_msgid():
 
 
 def send_mail(
-		recipients=None,  # type: Union[str, List[str]]
-		sender=None,
-		subject=None,
-		msg=None,
-		idstring='no id string',
-		gtube=False,
-		virus=False,
-		attachments=[],
-		server=None,
-		port=0,
-		tls=False,
-		username=None,
-		password=None,
-		debuglevel=1,
-		messageid=None,
-		ssl=False,
-		sender_envelope=None
+		recipients=None,  # type: Optional[Union[str, List[str]]]
+		sender=None,  # type: Optional[str]
+		subject=None,  # type: Optional[str]
+		msg=None,  # type: Optional[str]
+		idstring='no id string',  # type: Optional[str]
+		gtube=False,  # type: Optional[bool]
+		virus=False,  # type: Optional[bool]
+		attachments=[],  # type: Optional[List[str]]
+		server=None,  # type: Optional[str]
+		port=0,  # type: Optional[int]
+		tls=False,  # type: Optional[bool]
+		username=None,  # type: Optional[str]
+		password=None,  # type: Optional[str]
+		debuglevel=1,  # type: Optional[int]
+		messageid=None,  # type: Optional[str]
+		ssl=False,  # type: Optional[bool]
+		sender_envelope=None  # type: Optional[str]
 ):
+	# type: (...) -> Dict[str, Dict[str, str]]
 	"""
 	Send a mail to mailserver.
 
@@ -755,7 +762,13 @@ Regards,
 	return ret_code
 
 
-def check_delivery(token, recipient_email, should_be_delivered, spam=False):
+def check_delivery(
+		token,  # type: str
+		recipient_email,  # type: str
+		should_be_delivered,  # type: bool
+		spam=False  # type: Optional[bool]
+):
+	# type: (...) -> None
 	print "%s is waiting for an email; should be delivered = %r" % (recipient_email, should_be_delivered)
 	if spam:
 		delivered = spam_delivered(token, mail_address=recipient_email)
@@ -770,13 +783,14 @@ def check_delivery(token, recipient_email, should_be_delivered, spam=False):
 
 
 def check_sending_mail(
-	username=None,
-	password=None,
-	recipient_email=None,
-	tls=True,
-	allowed=True,
-	local=True
+	username=None,  # type: Optional[str]
+	password=None,  # type: Optional[str]
+	recipient_email=None,  # type: Optional[str]
+	tls=True,  # type: Optional[bool]
+	allowed=True,  # type: Optional[bool]
+	local=True  # type: Optional[bool]
 ):
+	# type: (...) -> None
 	token = 'The token is {}.'.format(time.time())
 	try:
 		ret_code = send_mail(
@@ -789,9 +803,7 @@ def check_sending_mail(
 			password=password
 		)
 		if bool(ret_code) == allowed:
-			utils.fail(
-				'Sending allowed = {!r}, but return code = {!r}\n{!r} means there are no refused recipients.'.format(
-					allowed, ret_code, ret_code))
+			utils.fail('Sending allowed = {!r}, but return code = {!r}\n<empty dict> means there are no refused recipients.'.format(allowed, ret_code))
 		else:
 			print('Mail was accepted.')
 		if local:
