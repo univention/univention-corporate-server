@@ -92,6 +92,14 @@ def get_shares():
 	return shares
 
 
+def quota_enabled(mtab_line):
+	if 'usrquota' in mtab_line:
+		return True
+	if 'usrjquota=' in mtab_line and 'jqfmt=vfsv' in mtab_line:
+		return True
+	return False
+
+
 def get_mountpoints_with_quota(user, shares):
 	_mountpoints = {}
 	p = subprocess.Popen(['quota', '-vwpu', user], stdout=subprocess.PIPE)
@@ -116,7 +124,8 @@ def get_mountpoints_with_quota(user, shares):
 			for line in mtab:
 				current_mountpoint = line.split()[1]  # shares are defined on mountpoints
 				current_device = line.split()[0]  # quotas are defined on devices
-				if current_mountpoint == attrs['mountpoint'] and 'usrquota' in line:
+
+				if current_mountpoint == attrs['mountpoint'] and quota_enabled(line):
 					for quotaline in quota_stdout:
 						quota_values = quotaline.split()
 						if quota_values[0] == current_device:

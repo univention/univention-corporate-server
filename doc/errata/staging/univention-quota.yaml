@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-quota
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Setting a user quota through a policy now works with
+   journaled (usrjquota) quota as well.
+bug: [47764]
