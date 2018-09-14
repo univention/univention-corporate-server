@@ -188,7 +188,7 @@ univention-config-registry set ldap/database/ldbm/dbsync=$ldap_database_ldbm_dbs
 if [ -f "${listener_init_fake_cache:-}" ]; then
 	echo "using fake listener cache $listener_init_fake_cache"
 	rm -f /var/lib/univention-directory-listener/cache/*
-	install -m 0600 -g listener -g nogroup  "$listener_init_fake_cache" /var/lib/univention-directory-listener/cache/data.db ||
+	install -m 0600 -g listener -g nogroup  "$listener_init_fake_cache" /var/lib/univention-directory-listener/cache/data.mdb ||
 		die "Failed to install '$listener_init_fake_cache'"
 fi
 
