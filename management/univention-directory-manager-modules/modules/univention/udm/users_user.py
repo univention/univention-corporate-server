@@ -34,6 +34,7 @@ from __future__ import absolute_import, unicode_literals
 import time
 import datetime
 from univention.admin.uexceptions import valueInvalidSyntax
+from .binary_props import Base64BinaryProperty
 from .generic import GenericUdm1Module, GenericUdm1Object
 
 try:
@@ -83,6 +84,19 @@ class UsersUserUdm1Object(GenericUdm1Object):
 
 	_decode_prop_userexpiry = _decode_prop_birthday
 	_encode_prop_userexpiry = _encode_prop_birthday
+
+	def _decode_prop_jpegPhoto(self, value):  # type: (Optional[Text]) -> Optional[Base64BinaryProperty]
+		if value:
+			return Base64BinaryProperty('jpegPhoto', value)
+		else:
+			return value
+
+	def _encode_prop_jpegPhoto(self, value):  # type: (Optional[Base64BinaryProperty]) -> Optional[Text]
+		if value:
+			return value.encoded
+		else:
+			return value
+
 
 class UsersUserUdm1Module(GenericUdm1Module):
 	"""Test dynamic factory"""
