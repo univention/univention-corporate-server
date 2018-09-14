@@ -133,6 +133,18 @@ modrdn = "1"
 					</para>
 				</listitem>
 			</varlistentry>
+			<varlistentry>
+				<term><varname>handle_every_delete</varname> (optional)</term>
+				<listitem>
+					<para>
+						The Listener uses its <link linkend="listener:details:cache">cache</link> to keep track of objects, especially their previous values and which modules handles which objects.
+						The &ucsUCRV; <envar>listener/cache/filter</envar> can be used to prevent certain objects from being stored in the cache.
+						But then the Listener no longer knows which module must be called when such an object is deleted.
+						Setting this variable to <literal>True</literal> will make the Listener call the function <function>handler()</function> of this module whenever any object is deleted.
+						The function then must use other means to determine itself if the deleted object is of the appropriate type as <varname>old</varname> will be <literal>None</literal>.
+					</para>
+				</listitem>
+			</varlistentry>
 		</variablelist>
 
 		<para>
