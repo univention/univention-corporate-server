@@ -78,7 +78,7 @@ _virtualbox_image () {
 		cd $APPS_BASE
 		rm -f ${TMP_KVM_IMAGE}.vb ${VBOX_IMAGE}
 		cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.vb
-		guestfish add ${TMP_KVM_IMAGE}.vb : set-network true : run : mount /dev/mapper/vg_ucs-root /  : copy-in install-vbox-guesttools.sh /root/ : command /root/install-vbox-guesttools.sh
+		guestfish add ${TMP_KVM_IMAGE}.vb : set-network true : run : mount /dev/mapper/vg_ucs-root /  : copy-in /root/install-vbox-guesttools.sh /root/ : command /root/install-vbox-guesttools.sh
 		guestfish add ${TMP_KVM_IMAGE}.vb : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\"
 		generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --ova-virtualbox -s ${TMP_KVM_IMAGE}.vb -f ${VBOX_IMAGE}
 		md5sum ${VBOX_IMAGE} > ${VBOX_IMAGE}.md5 && sha256sum ${VBOX_IMAGE} > ${VBOX_IMAGE}.sha256 && chmod 644  ${VBOX_IMAGE}*
