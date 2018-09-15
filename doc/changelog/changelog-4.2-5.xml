@@ -257,7 +257,6 @@
 						<member><package>nvidia-graphics-drivers</package></member>
 						<member><package>nvidia-graphics-drivers-legacy-304xx</package></member>
 						<member><package>openjpeg2</package></member>
-						<member><package>openssh</package></member>
 						<member><package>otrs2</package></member>
 						<member><package>php-horde-crypt</package></member>
 						<member><package>php-horde-image</package></member>
@@ -497,6 +496,15 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	</section>
+
+	<section id="changelog:other">
+		<title>Other changes</title>
+		<itemizedlist>
+			<listitem><simpara>
+				If more than one hard disk drive is detected during UCS installation, the target disk for the grub installer can be selected <u:bug>47822</u:bug>.
+			</simpara></listitem>
+		</itemizedlist>
 	</section>
 </chapter>
 <!-- vim: set ts=4 sw=4 noet: -->
