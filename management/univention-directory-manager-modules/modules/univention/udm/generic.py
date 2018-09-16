@@ -52,18 +52,18 @@ class GenericUdm1ObjectProperties(BaseUdmObjectProperties):
 	"""
 	Container for UDM properties.
 
-	:py:attr:`encoders` is a mapping from property names to subclasses of
-	encoders.BaseEncoder, which will be used to transparently map between the
+	:py:attr:`_encoders` is a mapping from property names to subclasses of
+	_encoders.BaseEncoder, which will be used to transparently map between the
 	properties representation in UDM1 and the new UDM APIs.
 	"""
 
-	encoders = {}  # type: Dict[Text, Type[BaseEncoder]]
+	_encoders = {}  # type: Dict[Text, Type[BaseEncoder]]
 
 	def __init__(self, udm_obj):  # type: (BaseUdmObject) -> None
 		super(GenericUdm1ObjectProperties, self).__init__(udm_obj)
-		for property_names, encoder_class in self.encoders.iteritems():
+		for property_names, encoder_class in self._encoders.iteritems():
 			assert issubclass(encoder_class, BaseEncoder), \
-				'{}.encoders[{!r}] must be an subclass of BaseEncoder.'.format(self.__class__.__name__, property_names)
+				'{}._encoders[{!r}] must be an subclass of BaseEncoder.'.format(self.__class__.__name__, property_names)
 
 	def __setattr__(self, key, value):  # type: (str, Any) -> None
 		if not str(key).startswith('_') and key not in self._udm_obj._udm1_object:
@@ -212,7 +212,7 @@ class GenericUdm1Object(BaseUdmObject):
 		self.props = self.udm_prop_class(self)
 		for k, v in self._udm1_object.items():
 			try:
-				encoder_class = self.props.encoders[k]
+				encoder_class = self.props._encoders[k]
 			except KeyError:
 				val = v
 			else:
@@ -237,7 +237,7 @@ class GenericUdm1Object(BaseUdmObject):
 			new_val = getattr(self.props, k, None)
 			if v != new_val:
 				try:
-					encoder_class = self.props.encoders[k]
+					encoder_class = self.props._encoders[k]
 				except KeyError:
 					new_val2 = new_val
 				else:

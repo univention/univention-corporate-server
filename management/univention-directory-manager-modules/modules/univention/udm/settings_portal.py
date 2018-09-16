@@ -31,9 +31,8 @@ Module and object specific for "settings/portal" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
-from .base import BaseUdmObjectProperties
 from .encoders import Base64BinaryPropertyEncoder, StringBooleanPropertyEncoder, MultiLanguageTextPropertyEncoder
-from .generic import GenericUdm1Module, GenericUdm1Object
+from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
 
 try:
 	from typing import Dict, List, Optional, Text
@@ -41,10 +40,10 @@ except ImportError:
 	pass
 
 
-class SettingsPortalUdm1ObjectProperties(BaseUdmObjectProperties):
+class SettingsPortalUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	"""settings/portal UDM properties."""
 
-	encoders = {
+	_encoders = {
 		'background': Base64BinaryPropertyEncoder,
 		'displayName': MultiLanguageTextPropertyEncoder,
 		'logo': Base64BinaryPropertyEncoder,
