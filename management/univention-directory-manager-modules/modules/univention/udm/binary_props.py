@@ -43,18 +43,21 @@ class BaseBinaryProperty(object):
 	"""
 	Container for a binary UDM property.
 
-	Update
+	Data can be set and retrieved in both its raw form or encoded for LDAP.
+
+	Internally data is held in the encoded state (the form in which it will be
+	saved to LDAP).
 	"""
-	def __init__(self, name, encoded_value=None, decoded_value=None):
+	def __init__(self, name, encoded_value=None, raw_value=None):
 		# type: (Text, Optional[Text], Optional[Text]) -> None
-		assert not (encoded_value and decoded_value), 'Only one of "encoded_value" and "decoded_value" must be set.'
-		assert (encoded_value or decoded_value), 'One of "encoded_value" or "decoded_value" must be set.'
+		assert not (encoded_value and raw_value), 'Only one of "encoded_value" and "raw_value" must be set.'
+		assert (encoded_value or raw_value), 'One of "encoded_value" or "raw_value" must be set.'
 		self._name = name
 		self._value = None
 		if encoded_value:
 			self.encoded = encoded_value
-		elif decoded_value:
-			self.decoded = decoded_value
+		elif raw_value:
+			self.raw = raw_value
 
 	def __repr__(self):  # type: () -> Text
 		return '{}({!r})'.format(self.__class__.__name__, self._name)
@@ -68,21 +71,31 @@ class BaseBinaryProperty(object):
 		self._value = value
 
 	@property
-	def decoded(self):  # type: () -> Text
+	def raw(self):  # type: () -> Text
 		raise NotImplementedError()
 
-	@decoded.setter
-	def decoded(self, value):  # type: (Text) -> None
+	@raw.setter
+	def raw(self, value):  # type: (Text) -> None
 		raise NotImplementedError()
 
 
 class Base64BinaryProperty(BaseBinaryProperty):
-	"""Container for a binary UDM property encoded using base64."""
+	"""
+	Container for a binary UDM property encoded using base64.
 
+	obj.props.<prop>.encoded == base64.b64encode(obj.props.<prop>.decoded)
+
+	>>> binprop = Base64BinaryProperty('example', raw_value='raw value')
+	>>> Base64BinaryProperty('example', encoded_value=binprop.encoded).raw == 'raw value'
+	True
+	>>> import base64
+	>>> binprop.encoded == base64.b64encode(binprop.raw)
+	True
+	"""
 	@property
-	def decoded(self):  # type: () -> Text
+	def raw(self):  # type: () -> Text
 		return base64.b64decode(self._value)
 
-	@decoded.setter
-	def decoded(self, value):  # type: (Text) -> None
+	@raw.setter
+	def raw(self, value):  # type: (Text) -> None
 		self._value = base64.b64encode(value)
