@@ -37,18 +37,34 @@ import univention.admin.objects
 import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.uldap
+from .encoders import BaseEncoder
 from .base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from .exceptions import DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UnknownProperty, WrongObjectType
 from .utils import UDebug as ud
 
 try:
-	from typing import Any, Dict, Iterator, Optional, Tuple
+	from typing import Any, Dict, Iterator, Optional, Text, Tuple, Type
 except ImportError:
 	pass
 
 
 class GenericUdm1ObjectProperties(BaseUdmObjectProperties):
-	"""Container for UDM properties."""
+	"""
+	Container for UDM properties.
+
+	:py:attr:`encoders` is a mapping from property names to subclasses of
+	encoders.BaseEncoder, which will be used to transparently map between the
+	properties representation in UDM1 and the new UDM APIs.
+	"""
+
+	encoders = {}  # type: Dict[Text, Type[BaseEncoder]]
+
+	def __init__(self, udm_obj):  # type: (BaseUdmObject) -> None
+		super(GenericUdm1ObjectProperties, self).__init__(udm_obj)
+		for property_names, encoder_class in self.encoders.iteritems():
+			assert issubclass(encoder_class, BaseEncoder), \
+				'{}.encoders[{!r}] must be an subclass of BaseEncoder.'.format(self.__class__.__name__, property_names)
+
 	def __setattr__(self, key, value):  # type: (str, Any) -> None
 		if not str(key).startswith('_') and key not in self._udm_obj._udm1_object:
 			raise UnknownProperty(
@@ -196,13 +212,15 @@ class GenericUdm1Object(BaseUdmObject):
 		self.props = self.udm_prop_class(self)
 		for k, v in self._udm1_object.items():
 			try:
-				decode_func = getattr(self, '_decode_prop_{}'.format(k))
-				assert callable(decode_func), 'Attribute {!r} of class {!r} must be callable.'.format(
-					'_decode_prop_{}'.format(k), self.__class__.__name__)
-				v = decode_func(v)
-			except AttributeError:
-				pass
-			setattr(self.props, k, v)
+				encoder_class = self.props.encoders[k]
+			except KeyError:
+				val = v
+			else:
+				if encoder_class.static:  # don't create an object if not necessary
+					val = encoder_class.decode(v)
+				else:
+					val = encoder_class(k).decode(v)
+			setattr(self.props, k, val)
 		self._fresh = True
 
 	def _copy_to_udm_obj(self):  # type: () -> None
@@ -219,18 +237,20 @@ class GenericUdm1Object(BaseUdmObject):
 			new_val = getattr(self.props, k, None)
 			if v != new_val:
 				try:
-					encode_func = getattr(self, '_encode_prop_{}'.format(k))
-					assert callable(encode_func), 'Attribute {!r} of class {!r} must be callable.'.format(
-						'encode_func{}'.format(k), self.__class__.__name__)
-					new_val = encode_func(new_val)
-				except AttributeError:
-					pass
-				self._udm1_object[k] = new_val
+					encoder_class = self.props.encoders[k]
+				except KeyError:
+					new_val2 = new_val
+				else:
+					if encoder_class.static:  # don't create an object if not necessary
+						new_val2 = encoder_class.encode(new_val)
+					else:
+						new_val2 = encoder_class(k).encode(new_val)
+				self._udm1_object[k] = new_val2
 
 
 class GenericUdm1ModuleMetadata(BaseUdmModuleMetadata):
 	@property
-	def identifying_property(self):  # type: () -> str
+	def identifying_property(self):  # type: () -> Text
 		"""
 		UDM Property of which the mapped LDAP attribute is used as first
 		component in a DN, e.g. `username` (LDAP attribute `uid`) or `name`

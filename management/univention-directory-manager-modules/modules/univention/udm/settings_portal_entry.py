@@ -31,7 +31,8 @@ Module and object specific for "settings/portal_entry" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
-from .binary_props import Base64BinaryProperty
+from .base import BaseUdmObjectProperties
+from .encoders import Base64BinaryPropertyEncoder, StringBooleanPropertyEncoder, MultiLanguageTextPropertyEncoder
 from .generic import GenericUdm1Module, GenericUdm1Object
 
 try:
@@ -40,38 +41,20 @@ except ImportError:
 	pass
 
 
+class SettingsPortalEntryUdm1ObjectProperties(BaseUdmObjectProperties):
+	"""settings/portal_entry UDM properties."""
+
+	encoders = {
+		'activated': StringBooleanPropertyEncoder,
+		'description': MultiLanguageTextPropertyEncoder,
+		'displayName': MultiLanguageTextPropertyEncoder,
+		'icon': Base64BinaryPropertyEncoder,
+	}
+
+
 class SettingsPortalEntryUdm1Object(GenericUdm1Object):
 	"""Better representation of settings/portal_entry properties."""
-
-	def _decode_prop_activated(self, value):  # type: (str) -> bool
-		return value == 'TRUE'
-
-	def _encode_prop_activated(self, value):  # type: (bool) -> Text
-		if value:
-			return 'TRUE'
-		else:
-			return 'FALSE'
-
-	def _decode_prop_description(self, value):  # type: (List[List[Text]]) -> Dict[Text, Text]
-		return dict(value)
-
-	def _encode_prop_description(self, value):  # type: (Dict[str, Text]) -> List[List[Text]]
-		return [[k, v] for k, v in value.items()]
-
-	_decode_prop_displayName = _decode_prop_description
-	_encode_prop_displayName = _encode_prop_description
-
-	def _decode_prop_icon(self, value):  # type: (Optional[Text]) -> Optional[Base64BinaryProperty]
-		if value:
-			return Base64BinaryProperty('icon', value)
-		else:
-			return value
-
-	def _encode_prop_icon(self, value):  # type: (Optional[Base64BinaryProperty]) -> Optional[Text]
-		if value:
-			return value.encoded
-		else:
-			return value
+	udm_prop_class = SettingsPortalEntryUdm1ObjectProperties
 
 
 class SettingsPortalEntryUdm1Module(GenericUdm1Module):

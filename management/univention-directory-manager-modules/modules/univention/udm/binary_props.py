@@ -27,7 +27,7 @@
 # <http://www.gnu.org/licenses/>.
 
 """
-Classes for holding binary UDM  object porperties.
+Classes for holding binary UDM  object properties.
 """
 
 from __future__ import absolute_import, unicode_literals
@@ -60,7 +60,7 @@ class BaseBinaryProperty(object):
 			self.raw = raw_value
 
 	def __repr__(self):  # type: () -> Text
-		return '{}({!r})'.format(self.__class__.__name__, self._name)
+		return '{}({})'.format(self.__class__.__name__, self._name)
 
 	@property
 	def encoded(self):  # type: () -> Text
