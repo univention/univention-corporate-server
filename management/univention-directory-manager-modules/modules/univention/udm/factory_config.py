@@ -166,6 +166,9 @@ class UdmModuleFactoryConfigurationStorage(object):
 		:return: None
 		:raises IOError: if the configuration could not be written to disk
 		"""
+		# TODO: sanity check: before accepting the new configuration, load the
+		# module and verify that it's a subclass of base.BaseUdmModule
+
 		self.refresh_config()
 
 		compiled_pattern = re.compile(self._add_regex_bounds(factory_configuration.udm_module_name_pattern))

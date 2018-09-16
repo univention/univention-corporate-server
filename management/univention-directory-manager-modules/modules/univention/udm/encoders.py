@@ -176,3 +176,23 @@ class StringBooleanPropertyEncoder(BaseEncoder):
 			return 'TRUE'
 		else:
 			return 'FALSE'
+
+
+class StringIntPropertyEncoder(BaseEncoder):
+	static = False
+
+	def decode(self, value=None):  # type: (Optional[Text]) -> Optional[int]
+		if value is None:
+			return value
+		else:
+			try:
+				return int(value)
+			except ValueError:
+				raise valueInvalidSyntax('Value of {!r} must be an int.'.format(self.property_name))
+
+	@staticmethod
+	def encode(value=None):  # type: (Optional[int]) -> Optional[Text]
+		if value is None:
+			return value
+		else:
+			return str(value)
