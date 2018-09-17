@@ -1,3 +1,9 @@
+univention-updater (13.0.1-49) unstable; urgency=medium
+
+  * Bug #47828: Remove settings from UCS 4.2-5 updater
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 17 Sep 2018 13:42:50 +0200
+
 univention-updater (13.0.1-48) unstable; urgency=medium
 
   * Bug #46221: Allow update for app appliances by removing check from

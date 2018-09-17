@@ -215,6 +215,12 @@ if grep -q '^rpcbind/autostart: no$' /etc/univention/base-forced.conf; then
 	fi
 fi
 
+# Bug #47828: remove possible deactivated updater warniung
+if is_ucr_true license/extended_maintenance/disable_warning/set_by_425-updater; then
+	ucr unset license/extended_maintenance/disable_warning/set_by_425-updater \
+		license/extended_maintenance/disable_warning
+fi
+
 echo "
 
 
