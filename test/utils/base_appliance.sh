@@ -873,57 +873,6 @@ __EOF__
 	fi
 }
 
-setup_ec2 ()
-{
-	ucr set grub/append="$(ucr get grub/append) console=tty0 console=ttyS0"
-
-	DEV='/dev/xvda' GRUB='(hd0)'
-    echo "${GRUB} ${DEV}" >/boot/grub/device.map
-	debconf-communicate <<<"set grub-pc/install_devices $DEV"
-
-	append="$(ucr get grub/append |
-	    sed -re "s|/dev/sda|${DEV}|g;s|(no)?splash||g")"
-
-	ucr set server/amazon=true \
-		updater/identify="UCS (EC2)" \
-		locale="en_US.UTF-8:UTF-8 de_DE.UTF-8:UTF-8" \
-		grub/bootsplash=no \
-		grub/quiet=no \
-		grub/append="${append}" \
-		grub/boot=${DEV} \
-		grub/root=${DEV}1 \
-		grub/grub1root=${GRUB} \
-		grub/rootdelay=0 \
-		grub/timeout=0 \
-		grub/generate-menu-lst=no \
-		grub/terminal="console serial" \
-		grub/serialcommand="serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1"
-
-	rm -f /boot/grub/menu.lst # This still is evaluated by AWS-EC2 if it exists!
-	update-grub
-
-	apt-get purge -y univention-firewall univention-ifplugd univention-basesystem ifplugd libdaemon0
-	univention-install -y cloud-initramfs-growroot patch gdisk
-	mv /usr/share/initramfs-tools/scripts/local-bottom/growroot /usr/share/initramfs-tools/scripts/init-premount/
-	###### cp growroot.patch
-	cat > /root/growroot.patch <<__EOF__
---- /usr/share/initramfs-tools/scripts/init-premount/growroot.orig  2017-09-06 11:21:31.340000000 -0400
-+++ /usr/share/initramfs-tools/scripts/init-premount/growroot   2017-09-06 11:21:51.044000000 -0400
-@@ -1,5 +1,7 @@
- #!/bin/sh
-  set -e
-
-+udevadm settle --timeout \${ROOTDELAY:-30}
-+ 
- PREREQS=""
- case \$1 in
-@@ -73,10 +73,6 @@
- 	*) msg "exited '\$ret'" "\${out}"; exit 1;;
- esac
-
--# There was something to do, unmount and resize
--umount "\${rootmnt}" ||
-
 setup_appliance ()
 {
 	# Stop firefox. Not required to run, and resets some UCRv (e.g. system/setup/boot/start)
@@ -1200,7 +1149,6 @@ disable_root_login_and_poweroff ()
 		echo "root:$appliance_default_password" | chpasswd
 	fi
 	rm /root/*
-	rm /root/.ssh/authorized_keys || true
 	rm /root/.bash_history
 	history -c
 	halt -p
@@ -1209,7 +1157,6 @@ disable_root_login_and_poweroff ()
 appliance_poweroff ()
 {
 	rm /root/*
-	rm /root/.ssh/authorized_keys || true
 	rm /root/.bash_history
 	history -c
 	halt -p
