@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * cpu: speculative store bypass (CVE-2018-3639)
  * cpu: speculative register load (CVE-2018-3640)
-bug: [47826]
+bug: [47826, 47827]
 cve:
 - CVE-2018-3639
 - CVE-2018-3640
