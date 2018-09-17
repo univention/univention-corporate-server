@@ -76,13 +76,13 @@ _vmplayer_image () {
 
 _virtualbox_image () {
 	local identify="$1"
-	_scp utils/install-vbox-guesttools.sh ${KVM_USER}@${IMAGE_SERVER}:
+	_scp utils/install-vbox-guesttools.sh ${KVM_USER}@${IMAGE_SERVER}:/tmp
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
 		set -e -x
 		cd $APPS_BASE
 		rm -f ${TMP_KVM_IMAGE}.vb ${VBOX_IMAGE}
 		cp ${TMP_KVM_IMAGE} ${TMP_KVM_IMAGE}.vb
-		guestfish add ${TMP_KVM_IMAGE}.vb : set-network true : run : mount /dev/mapper/vg_ucs-root /  : copy-in /root/install-vbox-guesttools.sh /root/ : command /root/install-vbox-guesttools.sh
+		guestfish add ${TMP_KVM_IMAGE}.vb : set-network true : run : mount /dev/mapper/vg_ucs-root /  : copy-in /tmp/install-vbox-guesttools.sh /root/ : command /root/install-vbox-guesttools.sh
 		guestfish add ${TMP_KVM_IMAGE}.vb : run : mount /dev/mapper/vg_ucs-root / : command \"/usr/sbin/ucr set updater/identify='$identify'\"
 		generate_appliance -m $MEMORY -p UCS -v $IMAGE_VERSION -o --ova-virtualbox -s ${TMP_KVM_IMAGE}.vb -f ${VBOX_IMAGE}
 		md5sum ${VBOX_IMAGE} > ${VBOX_IMAGE}.md5
