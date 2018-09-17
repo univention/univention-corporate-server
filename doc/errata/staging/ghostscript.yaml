@@ -9,10 +9,6 @@ desc: |
  * /invalidaccess bypass after failed restore (699654) (CVE-2018-16509)
  * Incorrect "restoration of privilege" checking when running out of stack
    during exception handling (CVE-2018-16802)
- * Incorrect "restoration of privilege" checking when running out of stack
-   during exception handling (CVE-2018-16802)
- * Incorrect "restoration of privilege" checking when running out of stack
-   during exception handling (CVE-2018-16802)
 bug: [47825]
 cve:
 - CVE-2018-16509
