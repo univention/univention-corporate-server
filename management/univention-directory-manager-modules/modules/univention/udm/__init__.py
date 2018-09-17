@@ -54,6 +54,11 @@ obj.save().refresh()  # reload obj.props from LDAP after save()
 
 for obj in user_mod.search('uid=a*'):  # search() returns a generator
 	print(obj.props.firstname, obj.props.lastname)
+
+A shortcut exists to get UDM objects directly::
+
+	from univention.udm import Udm
+	Udm.using_admin().get_obj(dn)
 """
 
 from __future__ import absolute_import

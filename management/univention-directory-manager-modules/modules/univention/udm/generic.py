@@ -328,7 +328,7 @@ class GenericUdm1Module(BaseUdmModule):
 		"""
 		Load UDM object from LDAP.
 
-		:param str dn:
+		:param str dn: DN of the object to load
 		:return: an existing GenericUdm1Object object
 		:rtype: GenericUdm1Object
 		:raises NoObject: if no object is found at `dn`

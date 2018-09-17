@@ -215,7 +215,7 @@ class BaseUdmModule(object):
 		"""
 		Load UDM object from LDAP.
 
-		:param str dn:
+		:param str dn: DN of the object to load
 		:return: an existing BaseUdmObject object
 		:rtype: BaseUdmObject
 		:raises NoObject: if no object is found at `dn`

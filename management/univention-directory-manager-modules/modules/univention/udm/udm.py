@@ -63,11 +63,13 @@ for obj in Udm.using_machine().get('users/user').search('uid=a*'):  # search() r
 from __future__ import absolute_import, unicode_literals
 import importlib
 from .base import BaseUdmModule
+from .exceptions import NoObject
 from .factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
 from .utils import LDAP_connection, UDebug as ud
 
 try:
 	from typing import Dict, Optional, Tuple, Type
+	from .base import BaseUdmObject
 except ImportError:
 	pass
 
@@ -79,6 +81,10 @@ class Udm(object):
 	group_mod = Udm.using_admin().get('groups/group')
 	folder_mod = Udm.using_machine().get('mail/folder')
 	user_mod = Udm.using_credentials('myuser', 's3cr3t').get('users/user')
+
+	A shortcut exists to get UDM objects directly::
+
+		Udm.using_admin().get_obj(dn)
 	"""
 	_module_class_cache = {}  # type: Dict[Tuple[str, str], Type[BaseUdmModule]]
 	_module_object_cache = {}  # type: Dict[Tuple[str, str, str, str, str], BaseUdmModule]
@@ -155,6 +161,24 @@ class Udm(object):
 		"""
 		factory_config = self._configuration_storage.get_configuration(name)
 		return self.get_by_factory_config(name, factory_config)
+
+	def get_obj(self, dn):  # type: (str) -> BaseUdmObject
+		"""
+		Try to load an UDM object from LDAP. Guess the required UDM module
+		from the ``univentionObjectType`` LDAP attribute of the LDAP object.
+
+		:param str dn: DN of the object to load
+		:return: object of a subclass of :py:class:`BaseUdmObject`
+		:rtype: BaseUdmObject
+		:raises NoObject: if no object is found at `dn`
+		:raises ImportError: if the Python module for ``univentionObjectType``
+			at ``dn`` could not be loaded
+		"""
+		ldap_obj = self.lo.get(dn, attr=[str('univentionObjectType')])
+		if not ldap_obj:
+			raise NoObject(dn=dn)
+		udm_module = self.get(ldap_obj['univentionObjectType'][0])
+		return udm_module.get(dn)
 
 	def get_by_factory_config(self, name, factory_config):  # type: (str, UdmModuleFactoryConfiguration) -> BaseUdmModule
 		"""
