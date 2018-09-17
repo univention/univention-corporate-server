@@ -292,6 +292,7 @@
 						<member><package>znc</package></member>
 						<member><package>zookeeper</package></member>
 						<member><package>zsh</package></member>
+						<member><package>zutils</package></member>
 					</simplelist>
 				</para>
 			</listitem>
