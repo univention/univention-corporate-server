@@ -440,7 +440,8 @@ install_ucsschool () {
 			# Ensure ucsschool is a registered app
 			echo "ucsschool" >>/var/cache/appcenter-installed.txt
 			cat /etc/apt/sources.list.d/20_ucs-online-component.list
-			univention-app install --noninteractive ucsschool || rv=$?
+			username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
+			univention-app install --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" ucsschool || rv=$?
 			echo "install_ucsschool - DEBUG2"
 			cat /etc/apt/sources.list.d/20_ucs-online-component.list
 			;;
