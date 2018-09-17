@@ -51,7 +51,16 @@
 
 		<itemizedlist>
 			<listitem><para>
-				Diverse Security Updates wurden in UCS 4.2-5 integriert, bspw. für OpenLDAP, den Linux Kernel, Samba, MySQL und PostgreSQL.
+				Die Maildienste Dovecot, Cyrus und Postfix unterstützen nun die Anmeldung per Benutzername.
+			</para></listitem>
+			<listitem><para>
+				&ucsUCR; <envar>autostart</envar> Variablen werden jetzt über alle &ucsUCR; Scopes korrekt ausgewertet.
+			</para></listitem>
+			<listitem><para>
+				Ein Speicherleck in der &ucsUMC; im Paket <package>python-notifier</package> wurde behoben.
+			</para></listitem>
+			<listitem><para>
+				Diverse Security Updates wurden in UCS 4.2-5 integriert, bspw. für den Linux Kernel, Samba und PostgreSQL.
 				Eine vollständige Liste ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>

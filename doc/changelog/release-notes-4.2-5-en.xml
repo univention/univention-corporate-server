@@ -51,7 +51,16 @@
 
 		<itemizedlist>
 			<listitem><para>
-				Various security updates have been integrated into UCS 4.2-5, e.g. OpenLDAP, the Linux kernel, Samba, MySQL and PostgreSQL.
+				The mail services dovecot, cyrus and postfix now also support login with the username.
+			</para></listitem>
+			<listitem><para>
+				&ucsUCR; <envar>autostart</envar> variables are now correctly evaluated across all &ucsUCR; scopes.
+			</para></listitem>
+			<listitem><para>
+				A memory leak in &ucsUMC; in the <package>python-notifier</package> libary was fixed.
+			</para></listitem>
+			<listitem><para>
+				Various security updates have been integrated into UCS 4.2-5, e.g. the Linux kernel, Samba and PostgreSQL.
 				A complete list is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
