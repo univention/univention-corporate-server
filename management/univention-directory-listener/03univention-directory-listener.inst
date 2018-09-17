@@ -39,6 +39,9 @@ die () {
 	echo "${0##*/}: $*"
 	exit 1
 }
+have () {
+		command -v "$1" >/dev/null
+}
 
 eval "$(univention-config-registry shell)"
 
@@ -48,24 +51,10 @@ then
 	set -x
 fi
 
-case "$server_role" in
-'')
+[ -n "${server_role:-}" ] ||
 	die "UCR variable 'server/role' is not set or empty"
-	;;
-domaincontroller_master)
-	joinscript_save_current_version
-	exit 0
-	;;
-domaincontroller_backup)
-	dn="cn=admin,$ldap_base" secret=/etc/ldap.secret
-	;;
-*)
-	dn="$ldap_hostdn" secret=/etc/machine.secret
-	;;
-esac
 
 ln -snf /etc/runit/univention-directory-listener /etc/runit/univention/univention-directory-listener
-
 service univention-directory-listener stop
 
 if [ -e "/var/lib/univention-directory-listener" ]; then
@@ -82,6 +71,19 @@ if [ -e "/var/lib/univention-ldap/listener/listener" ]; then
 else
 	write_translog=''
 fi
+
+case "$server_role" in
+domaincontroller_master)
+	joinscript_save_current_version
+	exit 0
+	;;
+domaincontroller_backup)
+	dn="cn=admin,$ldap_base" secret=/etc/ldap.secret
+	;;
+*)
+	dn="$ldap_hostdn" secret=/etc/machine.secret
+	;;
+esac
 
 fake_replication () {
 	# fake_replication creates the local ldap database
@@ -161,7 +163,7 @@ then
 	for handler in $listener_init_fake  # IFS
 	do
 		fake_helper="fake_$handler"
-		command -v "$fake_helper" >/dev/null || continue
+		have "$fake_helper" || continue
 		"$fake_helper"
 		echo 3 > "/var/lib/univention-directory-listener/handlers/$handler"
 	done
@@ -230,8 +232,11 @@ then
 	done
 fi
 
-test -x /usr/sbin/nscd && /usr/sbin/nscd -i passwd
-test -x /usr/sbin/nscd && /usr/sbin/nscd -i group
+if have nscd
+then
+	nscd -i passwd
+	nscd -i group
+fi
 
 joinscript_save_current_version
 exit 0
