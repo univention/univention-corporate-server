@@ -51,13 +51,13 @@
 
 		<itemizedlist>
 			<listitem><para>
-				The mail services dovecot, cyrus and postfix now also support login with the username.
+				The mail services <wordasword>dovecot</wordasword>, <wordasword>cyrus</wordasword> and postfix now support login with the username.
 			</para></listitem>
 			<listitem><para>
 				&ucsUCR; <envar>autostart</envar> variables are now correctly evaluated across all &ucsUCR; scopes.
 			</para></listitem>
 			<listitem><para>
-				A memory leak in &ucsUMC; in the <package>python-notifier</package> libary was fixed.
+				A memory leak in &ucsUMC; in the <package>python-notifier</package> library was fixed.
 			</para></listitem>
 			<listitem><para>
 				Various security updates have been integrated into UCS 4.2-5, e.g. the Linux kernel, Samba and PostgreSQL.
