@@ -826,6 +826,7 @@ import_license () {
 		nscd -i hosts
 	fi
 	univention-license-import ./ValidTest.license && univention-license-check
+	echo "license/base=$(ucr get license/base) uuid/license=$(ucr get uuid/license)"
 }
 
 install_apps_via_umc () {
