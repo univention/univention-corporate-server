@@ -34,11 +34,6 @@ from __future__ import absolute_import, unicode_literals
 from .encoders import Base64BinaryPropertyEncoder, StringBooleanPropertyEncoder, MultiLanguageTextPropertyEncoder
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
 
-try:
-	from typing import Dict, List, Optional, Text
-except ImportError:
-	pass
-
 
 class SettingsPortalEntryUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	"""settings/portal_entry UDM properties."""

@@ -178,6 +178,21 @@ class StringBooleanPropertyEncoder(BaseEncoder):
 			return 'FALSE'
 
 
+class StringIntBooleanPropertyEncoder(BaseEncoder):
+	static = True
+
+	@staticmethod
+	def decode(value=None):  # type: (Optional[Text]) -> bool
+		return value == '1'
+
+	@staticmethod
+	def encode(value=None):  # type: (Optional[bool]) -> Text
+		if value:
+			return '1'
+		else:
+			return '0'
+
+
 class StringIntPropertyEncoder(BaseEncoder):
 	static = False
 

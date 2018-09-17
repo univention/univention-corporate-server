@@ -27,34 +27,29 @@
 # <http://www.gnu.org/licenses/>.
 
 """
-Module and object specific for "settings/portal" UDM module.
+Module and object specific for "groups/group" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
-from .encoders import Base64BinaryPropertyEncoder, StringBooleanPropertyEncoder, MultiLanguageTextPropertyEncoder
+from .encoders import StringIntBooleanPropertyEncoder, StringIntPropertyEncoder
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
 
 
-class SettingsPortalUdm1ObjectProperties(GenericUdm1ObjectProperties):
-	"""settings/portal UDM properties."""
+class GroupsGroupUdm1ObjectProperties(GenericUdm1ObjectProperties):
+	"""groups/group UDM properties."""
 
 	_encoders = {
-		'background': Base64BinaryPropertyEncoder,
-		'displayName': MultiLanguageTextPropertyEncoder,
-		'logo': Base64BinaryPropertyEncoder,
-		'showApps': StringBooleanPropertyEncoder,
-		'showLogin': StringBooleanPropertyEncoder,
-		'showMenu': StringBooleanPropertyEncoder,
-		'showSearch': StringBooleanPropertyEncoder,
-		'showServers': StringBooleanPropertyEncoder,
+		'UVMMGroup': StringIntBooleanPropertyEncoder,
+		'gidNumber': StringIntPropertyEncoder,
+		'sambaRID': StringIntPropertyEncoder,
 	}
 
 
-class SettingsPortalUdm1Object(GenericUdm1Object):
-	"""Better representation of settings/portal properties."""
-	udm_prop_class = SettingsPortalUdm1ObjectProperties
+class GroupsGroupUdm1Object(GenericUdm1Object):
+	"""Better representation of groups/group properties."""
+	udm_prop_class = GroupsGroupUdm1ObjectProperties
 
 
-class SettingsPortalUdm1Module(GenericUdm1Module):
-	"""SettingsPortalUdm1Object factory"""
-	_udm_object_class = SettingsPortalUdm1Object
+class GroupsGroupUdm1Module(GenericUdm1Module):
+	"""GroupsGroupUdm1Object factory"""
+	_udm_object_class = GroupsGroupUdm1Object

@@ -33,14 +33,9 @@ Module and object specific for "users/user" UDM module.
 from __future__ import absolute_import, unicode_literals
 from .encoders import (
 	Base64BinaryPropertyEncoder, DatePropertyEncoder, DisabledPropertyEncoder, HomePostalAddressPropertyEncoder,
-	SambaLogonHoursPropertyEncoder,
+	SambaLogonHoursPropertyEncoder, StringIntPropertyEncoder,
 )
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
-
-try:
-	from typing import Dict, List, Optional, Text
-except ImportError:
-	pass
 
 
 class UsersUserUdm1ObjectProperties(GenericUdm1ObjectProperties):
@@ -49,9 +44,13 @@ class UsersUserUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	_encoders = {
 		'birthday': DatePropertyEncoder,
 		'disabled': DisabledPropertyEncoder,
+		'gidNumber': StringIntPropertyEncoder,
 		'homePostalAddress': HomePostalAddressPropertyEncoder,
 		'jpegPhoto': Base64BinaryPropertyEncoder,
+		'mailForwardCopyToSelf': DisabledPropertyEncoder,
 		'sambaLogonHours': SambaLogonHoursPropertyEncoder,
+		'sambaRID': StringIntPropertyEncoder,
+		'uidNumber': StringIntPropertyEncoder,
 		'userexpiry': DatePropertyEncoder,
 	}
 

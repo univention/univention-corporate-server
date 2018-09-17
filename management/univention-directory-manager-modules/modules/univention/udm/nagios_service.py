@@ -34,11 +34,6 @@ from __future__ import absolute_import, unicode_literals
 from .encoders import DisabledPropertyEncoder, StringIntPropertyEncoder
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
 
-try:
-	from typing import Dict, List, Optional, Text
-except ImportError:
-	pass
-
 
 class NagiosServiceUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	"""nagios/service UDM properties."""
