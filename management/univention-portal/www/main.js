@@ -940,6 +940,7 @@ define([
 						moduleStore: this._moduleStore,
 						locale: locale
 					});
+					var wizardDialog = null;
 
 					wizard.own(on(wizard, 'loadEntry', function() {
 						// FIXME this is not really clear
@@ -960,268 +961,268 @@ define([
 						});
 					}));
 					wizard.startup();
+					wizard.ready().then(lang.hitch(this, function() {
+						// adjust wizardDialog title when the page of the wizard changes
+						tile.set('currentPageClass', wizard.selectedChildWidget.name);
+						wizard.own(wizard.watch('selectedChildWidget', function(name, oldPage, newPage) {
+							// focus the first focusable element for the current page
+							wizardDialog.focus();
 
-					// adjust wizardDialog title when the page of the wizard changes
-					tile.set('currentPageClass', wizard.selectedChildWidget.name);
-					wizard.own(wizard.watch('selectedChildWidget', function(name, oldPage, newPage) {
-						// focus the first focusable element for the current page
-						wizardDialog.focus();
-
-						tile.set('currentPageClass', newPage.name);
-						var subtext = {
-							'icon': ': Icon',
-							'displayName': ': Display Name',
-							'link': ': Link',
-							'description': ': Description',
-							'name': ''
-						}[newPage.name];
-						wizardDialog.set('title', lang.replace('{0}{1}', [wizardDialog._initialTitle, subtext]));
-					}));
+							tile.set('currentPageClass', newPage.name);
+							var subtext = {
+								'icon': ': Icon',
+								'displayName': ': Display Name',
+								'link': ': Link',
+								'description': ': Description',
+								'name': ''
+							}[newPage.name];
+							wizardDialog.set('title', lang.replace('{0}{1}', [wizardDialog._initialTitle, subtext]));
+						}));
 
 
-					// watch the icon on the icon page and update the preview tile accordingly
-					wizard.getWidget('icon')._image.watch('value', function(name, oldVal, newVal) {
-						var iconUri = '';
-						if (newVal) {
-							iconUri = lang.replace('data:image/{0};base64,{1}', [this._getImageType(), newVal]);
-						}
-						tile.set('icon', iconUri);
-					})
+						// watch the icon on the icon page and update the preview tile accordingly
+						wizard.getWidget('icon')._image.watch('value', function(name, oldVal, newVal) {
+							var iconUri = '';
+							if (newVal) {
+								iconUri = lang.replace('data:image/{0};base64,{1}', [this._getImageType(), newVal]);
+							}
+							tile.set('icon', iconUri);
+						})
 
-					// add onChange listener for displayName and description
-					// to update the preview tile if displayName or description
-					// is changed
-					var defaultValuesForResize = this._portalCategories[0].grid._getDefaultValuesForResize('.umcGalleryName');
-					array.forEach(['displayName', 'description'], function(ipropName) {
-						var widget = wizard.getWidget(ipropName);
-						widget.ready().then(function() {
-							array.forEach(widget._widgets, function(iwidget) {
-								iwidget[1].set('intermediateChanges', true);
-								wizard.own(on(iwidget[1], 'change', function() {
-									var previewText = '';
-									var ipropValues = widget.get('value');
-									// ipropValues has the following format where
-									// the current locale (selected language for the portal)
-									// is the first entry
-									//   [
-									//   	['de_DE', 'Text']
-									//   	['fr_FR', '']
-									//   	['en_EN', 'Text']
-									//   ]
-									//
-									// if text for current locale exists
-									// we use it for the preview tile else
-									// we use the first locale with text
-									if (ipropValues[0][1].length) {
-										previewText = ipropValues[0][1];
-									} else {
-										// FIXME use some short circuiting
-										var ipropValuesWithText = array.filter(ipropValues, function(ipropValue) {
-											return ipropValue[1];
-										});
-										if (ipropValuesWithText.length) {
-											previewText = ipropValuesWithText[0][1];
+						// add onChange listener for displayName and description
+						// to update the preview tile if displayName or description
+						// is changed
+						var defaultValuesForResize = this._portalCategories[0].grid._getDefaultValuesForResize('.umcGalleryName');
+						array.forEach(['displayName', 'description'], function(ipropName) {
+							var widget = wizard.getWidget(ipropName);
+							widget.ready().then(function() {
+								array.forEach(widget._widgets, function(iwidget) {
+									iwidget[1].set('intermediateChanges', true);
+									wizard.own(on(iwidget[1], 'change', function() {
+										var previewText = '';
+										var ipropValues = widget.get('value');
+										// ipropValues has the following format where
+										// the current locale (selected language for the portal)
+										// is the first entry
+										//   [
+										//   	['de_DE', 'Text']
+										//   	['fr_FR', '']
+										//   	['en_EN', 'Text']
+										//   ]
+										//
+										// if text for current locale exists
+										// we use it for the preview tile else
+										// we use the first locale with text
+										if (ipropValues[0][1].length) {
+											previewText = ipropValues[0][1];
+										} else {
+											// FIXME use some short circuiting
+											var ipropValuesWithText = array.filter(ipropValues, function(ipropValue) {
+												return ipropValue[1];
+											});
+											if (ipropValuesWithText.length) {
+												previewText = ipropValuesWithText[0][1];
+											}
 										}
-									}
-									tile.set(ipropName, previewText);
-									// resize the displayName
-									if (ipropName === 'displayName') {
-										var fontSize = parseInt(defaultValuesForResize.fontSize, 10) || 16;
-										domStyle.set(tile.displayNameNode, 'font-size', fontSize + 'px');
-										while (domGeometry.position(tile.displayNameNode).h > defaultValuesForResize.height) {
-											fontSize--;
+										tile.set(ipropName, previewText);
+										// resize the displayName
+										if (ipropName === 'displayName') {
+											var fontSize = parseInt(defaultValuesForResize.fontSize, 10) || 16;
 											domStyle.set(tile.displayNameNode, 'font-size', fontSize + 'px');
+											while (domGeometry.position(tile.displayNameNode).h > defaultValuesForResize.height) {
+												fontSize--;
+												domStyle.set(tile.displayNameNode, 'font-size', fontSize + 'px');
+											}
 										}
-									}
-								}));
+									}));
+								});
 							});
 						});
-					});
 
-					// add onChange listener for link to update
-					// the preview tile if link is changed
-					var widget = wizard.getWidget('link');
-					var __addLinkOnChangeListener = function(rowIndex) {
-						var rowWidget = widget._widgets[rowIndex];
-						rowWidget[0].set('intermediateChanges', true);
-						wizard.own(on(rowWidget[0], 'change', function() {
-							var link = '';
-							var entryLinks = wizard.getWidget('link').get('value');
-							if (entryLinks.length) {
-								link = getBestLinkAndHostname(entryLinks).hostname;
-							}
-							tile.set('link', link);
-						}));
-					};
-					widget.ready().then(function() {
-						array.forEach(widget._widgets, function(iwidget, rowIndex) {
-							__addLinkOnChangeListener(rowIndex);
+						// add onChange listener for link to update
+						// the preview tile if link is changed
+						var widget = wizard.getWidget('link');
+						var __addLinkOnChangeListener = function(rowIndex) {
+							var rowWidget = widget._widgets[rowIndex];
+							rowWidget[0].set('intermediateChanges', true);
+							wizard.own(on(rowWidget[0], 'change', function() {
+								var link = '';
+								var entryLinks = wizard.getWidget('link').get('value');
+								if (entryLinks.length) {
+									link = getBestLinkAndHostname(entryLinks).hostname;
+								}
+								tile.set('link', link);
+							}));
+						};
+						widget.ready().then(function() {
+							array.forEach(widget._widgets, function(iwidget, rowIndex) {
+								__addLinkOnChangeListener(rowIndex);
+							});
 						});
-					});
-					aspect.after(widget, '__appendRow', function(rowIndex) {
-						widget.ready().then(__addLinkOnChangeListener(rowIndex));
-					}, true);
+						aspect.after(widget, '__appendRow', function(rowIndex) {
+							widget.ready().then(__addLinkOnChangeListener(rowIndex));
+						}, true);
 
 
-					//// listener for save / finish / cancel
-					// close wizard on cancel
-					wizard.own(on(wizard, 'cancel', lang.hitch(this, function() {
-						wizardDialog.hide().then(function() {
-							wizardDialog.destroyRecursive();
-						});
-					})));
-
-					// create a new portal entry object
-					wizard.own(on(wizard, 'finished', lang.hitch(this, function(values) {
-						wizardDialog.standby(true);
-
-						lang.mixin(values, {
-							activated: true,
-						});
-
-						wizard.moduleStore.add(values, {
-							objectType: 'settings/portal_entry'
-						}).then(lang.hitch(this, function(result) {
-							if (result.success) {
-								var content = lang.clone(portalJson.portal.content);
-								content[portalCategory.categoryIndex][1].push(result['$dn$'])
-								wizardDialog.hide().then(lang.hitch(this, function() {
-									wizardDialog.destroyRecursive();
-									dialog.contextNotify(_('Portal entry was successfully created'));
-									this._saveEntryOrder(content);
-								}));
-							} else {
-								dialog.alert(_('The portal entry object could not be saved: %(details)s', result));
-								wizardDialog.standby(false);
-							}
-						}), function() {
-							dialog.alert(_('The portal entry object could not be saved.'));
-							wizardDialog.standby(false);
-						});
-					})));
-
-					// save changes made to an existing portal entry object
-					wizard.own(on(wizard, 'save', lang.hitch(this, function(formValues) {
-						wizardDialog.standby(true);
-
-						// TODO the error message from the backend if the internal name was
-						// altered is not really expressive
-						var alteredValues = {};
-						tools.forIn(formValues, function(iname, ivalue) {
-							if (iname === '$dn$') {
-								return;
-							}
-							if (!tools.isEqual(ivalue, wizard.initialFormValues[iname])) {
-								alteredValues[iname] = ivalue;
-							}
-						});
-
-						var alteredValuesNonEmpty = {};
-						tools.forIn(alteredValues, function(iname, ivalue) {
-							if (!this._isEmptyValue(ivalue)) {
-								alteredValuesNonEmpty[iname] = ivalue;
-							}
-						}, this);
-
-						// check if the values in the form have changed
-						// and we do not force saving.
-						// In that case return and close without saving
-						if (!wizard._forceSave && Object.keys(alteredValues).length === 0) {
+						//// listener for save / finish / cancel
+						// close wizard on cancel
+						wizard.own(on(wizard, 'cancel', lang.hitch(this, function() {
 							wizardDialog.hide().then(function() {
 								wizardDialog.destroyRecursive();
 							});
-							return;
-						}
+						})));
 
-						//// save the altered values
-						// concatenate the altered form values for displayName and description
-						// with the ones filtered out when loading the portal entry object
-						array.forEach(['displayName', 'description'], lang.hitch(this, function(ipropName) {
-							if (alteredValues[ipropName]) {
-								alteredValues[ipropName] = alteredValues[ipropName].concat(wizard.initialFormValues[ipropName + '_remaining']);
-							}
-						}));
-
-						// save changes
-						var putParams = lang.mixin(alteredValues, {
-							'$dn$': wizard.dn
-						});
-						wizard.moduleStore.put(putParams).then(lang.hitch(this, function(result) {
-							// see whether creating the portal entry was succesful
-							if (result.success) {
-								// if the icon for the entry was changed we want a new iconClass
-								// to display the new icon
-								if (formValues.icon) {
-									var entry = array.filter(portalJson.entries, function(ientry) {
-										return ientry.dn === wizard.dn;
-									})[0];
-									if (entry) {
-										portalTools.requestNewIconClass(entry.logo_name);
-									}
-								}
-
-								// reload categories and close wizard dialog
-								this._refresh(portalTools.RenderMode.EDIT).then(function() {
-									wizardDialog.hide().then(function() {
-										wizardDialog.destroyRecursive();
-										dialog.contextNotify(_('Changes saved'));
-									});
-								});
-							} else {
-								dialog.alert(_('The editing of the portal entry object failed: %(details)s', result));
-								wizardDialog.standby(false);
-							}
-						}), function() {
-							dialog.alert(_('The editing of the portal entry object failed.'));
-							wizardDialog.standby(false);
-						}).then(lang.hitch(this, function() {
-							if (!item || wizard.dn !== item.dn) {
-								var content = lang.clone(portalJson.portal.content);
-								if (!item) {
-									content[portalCategory.categoryIndex][1].push(wizard.dn);
-								} else {
-									content[portalCategory.categoryIndex][1][item.index] = wizard.dn;
-								}
-								this._saveEntryOrder(content);
-							}
-						}));
-					})));
-
-					// remove portal entry object from this portal
-					wizard.own(on(wizard, 'remove', lang.hitch(this, function() {
-						wizardDialog.hide().then(function() {
-							wizardDialog.destroyRecursive();
-						});
-						var content = lang.clone(portalJson.portal.content);
-						content[portalCategory.categoryIndex][1].splice(item.index, 1);
-						this._saveEntryOrder(content);
-					})));
-
-					// create and show dialog with the wizard
-					wizardWrapper.addChild(tile);
-					wizardWrapper.addChild(wizard);
-
-					var wizardDialog = null;
-					var wizardReady = item ? wizard.loadEntry(item.dn) : true;
-					when(wizardReady).then(function() {
-						wizardDialog = new _WizardDialog({
-							_initialTitle: _initialDialogTitle,
-							title: _initialDialogTitle,
-							'class': 'portalEntryDialog',
-							content: wizardWrapper
-						});
-						on(wizard, 'nameQuery', function() {
+						// create a new portal entry object
+						wizard.own(on(wizard, 'finished', lang.hitch(this, function(values) {
 							wizardDialog.standby(true);
+
+							lang.mixin(values, {
+								activated: true,
+							});
+
+							wizard.moduleStore.add(values, {
+								objectType: 'settings/portal_entry'
+							}).then(lang.hitch(this, function(result) {
+								if (result.success) {
+									var content = lang.clone(portalJson.portal.content);
+									content[portalCategory.categoryIndex][1].push(result['$dn$'])
+									wizardDialog.hide().then(lang.hitch(this, function() {
+										wizardDialog.destroyRecursive();
+										dialog.contextNotify(_('Portal entry was successfully created'));
+										this._saveEntryOrder(content);
+									}));
+								} else {
+									dialog.alert(_('The portal entry object could not be saved: %(details)s', result));
+									wizardDialog.standby(false);
+								}
+							}), function() {
+								dialog.alert(_('The portal entry object could not be saved.'));
+								wizardDialog.standby(false);
+							});
+						})));
+
+						// save changes made to an existing portal entry object
+						wizard.own(on(wizard, 'save', lang.hitch(this, function(formValues) {
+							wizardDialog.standby(true);
+
+							// TODO the error message from the backend if the internal name was
+							// altered is not really expressive
+							var alteredValues = {};
+							tools.forIn(formValues, function(iname, ivalue) {
+								if (iname === '$dn$') {
+									return;
+								}
+								if (!tools.isEqual(ivalue, wizard.initialFormValues[iname])) {
+									alteredValues[iname] = ivalue;
+								}
+							});
+
+							var alteredValuesNonEmpty = {};
+							tools.forIn(alteredValues, function(iname, ivalue) {
+								if (!this._isEmptyValue(ivalue)) {
+									alteredValuesNonEmpty[iname] = ivalue;
+								}
+							}, this);
+
+							// check if the values in the form have changed
+							// and we do not force saving.
+							// In that case return and close without saving
+							if (!wizard._forceSave && Object.keys(alteredValues).length === 0) {
+								wizardDialog.hide().then(function() {
+									wizardDialog.destroyRecursive();
+								});
+								return;
+							}
+
+							//// save the altered values
+							// concatenate the altered form values for displayName and description
+							// with the ones filtered out when loading the portal entry object
+							array.forEach(['displayName', 'description'], lang.hitch(this, function(ipropName) {
+								if (alteredValues[ipropName]) {
+									alteredValues[ipropName] = alteredValues[ipropName].concat(wizard.initialFormValues[ipropName + '_remaining']);
+								}
+							}));
+
+							// save changes
+							var putParams = lang.mixin(alteredValues, {
+								'$dn$': wizard.dn
+							});
+							wizard.moduleStore.put(putParams).then(lang.hitch(this, function(result) {
+								// see whether creating the portal entry was succesful
+								if (result.success) {
+									// if the icon for the entry was changed we want a new iconClass
+									// to display the new icon
+									if (formValues.icon) {
+										var entry = array.filter(portalJson.entries, function(ientry) {
+											return ientry.dn === wizard.dn;
+										})[0];
+										if (entry) {
+											portalTools.requestNewIconClass(entry.logo_name);
+										}
+									}
+
+									// reload categories and close wizard dialog
+									this._refresh(portalTools.RenderMode.EDIT).then(function() {
+										wizardDialog.hide().then(function() {
+											wizardDialog.destroyRecursive();
+											dialog.contextNotify(_('Changes saved'));
+										});
+									});
+								} else {
+									dialog.alert(_('The editing of the portal entry object failed: %(details)s', result));
+									wizardDialog.standby(false);
+								}
+							}), function() {
+								dialog.alert(_('The editing of the portal entry object failed.'));
+								wizardDialog.standby(false);
+							}).then(lang.hitch(this, function() {
+								if (!item || wizard.dn !== item.dn) {
+									var content = lang.clone(portalJson.portal.content);
+									if (!item) {
+										content[portalCategory.categoryIndex][1].push(wizard.dn);
+									} else {
+										content[portalCategory.categoryIndex][1][item.index] = wizard.dn;
+									}
+									this._saveEntryOrder(content);
+								}
+							}));
+						})));
+
+						// remove portal entry object from this portal
+						wizard.own(on(wizard, 'remove', lang.hitch(this, function() {
+							wizardDialog.hide().then(function() {
+								wizardDialog.destroyRecursive();
+							});
+							var content = lang.clone(portalJson.portal.content);
+							content[portalCategory.categoryIndex][1].splice(item.index, 1);
+							this._saveEntryOrder(content);
+						})));
+
+						// create and show dialog with the wizard
+						wizardWrapper.addChild(tile);
+						wizardWrapper.addChild(wizard);
+
+						var wizardReady = item ? wizard.loadEntry(item.dn) : true;
+						when(wizardReady).then(function() {
+							wizardDialog = new _WizardDialog({
+								_initialTitle: _initialDialogTitle,
+								title: _initialDialogTitle,
+								'class': 'portalEntryDialog',
+								content: wizardWrapper
+							});
+							on(wizard, 'nameQuery', function() {
+								wizardDialog.standby(true);
+							});
+							on(wizard, 'nameQueryEnd', function() {
+								wizardDialog.standby(false);
+							});
+							on(wizard, 'entryLoaded', function() {
+								wizardDialog.standby(false);
+							});
+							wizardDialog.show();
+							standbyWidget.hide();
 						});
-						on(wizard, 'nameQueryEnd', function() {
-							wizardDialog.standby(false);
-						});
-						on(wizard, 'entryLoaded', function() {
-							wizardDialog.standby(false);
-						});
-						wizardDialog.show();
-						standbyWidget.hide();
-					});
+					}));
 				}));
 			}));
 		},
@@ -1489,7 +1490,7 @@ define([
 
 		_getCategories: function(renderMode) {
 			var categories = [];
-			var userGroups = array.map(tools.status('userGroups'), function(group) {
+			var userGroups = (tools.status('userGroups') || []).map(function(group) {
 				return group.toLowerCase();
 			});
 
@@ -1559,9 +1560,17 @@ define([
 					if (!entry.activated) {
 						return false;
 					}
-					if (entry.user_group && userGroups.indexOf(entry.user_group.toLowerCase()) == -1) {
-						return false;
-					}
+					var allowedGroups = (entry.allowedGroups || []).map(function(allowedGroup) {
+						return allowedGroup.toLowerCase();
+					});
+					if (allowedGroups.length) {
+						var userIsInAllowedGroup = userGroups.some(function(userGroup) {
+							return allowedGroups.indexOf(userGroup) >= 0;
+						});
+						if (!userIsInAllowedGroup) {
+							return false;
+						}
+ 					}
 				}
 				return true;
 			});

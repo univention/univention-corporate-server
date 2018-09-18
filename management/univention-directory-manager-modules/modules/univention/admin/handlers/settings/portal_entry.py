@@ -130,7 +130,7 @@ property_descriptions = {
 	),
 	'authRestriction': univention.admin.property(
 		short_description=_('Authorization'),
-		long_description=_('Deprecated by userGroup'),
+		long_description=_('Deprecated by allowedGroups'),
 		syntax=univention.admin.syntax.AuthRestriction,
 		default='anonymous',
 		multivalue=False,
@@ -139,11 +139,11 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
-	'userGroup': univention.admin.property(
-		short_description=_('User group'),
-		long_description=_('Only visible for the specified user group. If not given, anonymous users may see the entry, too.'),
+	'allowedGroups': univention.admin.property(
+		short_description=_('Restrict visibility to groups'),
+		long_description=_('If one or more groups are selected then the portal entry will only be visible to logged in users that are in any of the selected groups. If no groups are selected then the portal entry is always visible.'),
 		syntax=univention.admin.syntax.GroupDNOrEmpty,
-		multivalue=False,
+		multivalue=True,
 		options=[],
 		required=False,
 		may_change=True,
@@ -190,7 +190,7 @@ layout = [
 		]),
 		Group(_('Advanced'), layout=[
 			["activated"],
-			["userGroup"],
+			["allowedGroups"],
 			#["authRestriction"],
 			#["favorite"],
 		]),
@@ -221,7 +221,7 @@ mapping.register('category', 'univentionPortalEntryCategory', None, univention.a
 mapping.register('link', 'univentionPortalEntryLink')
 mapping.register('portal', 'univentionPortalEntryPortal')
 mapping.register('activated', 'univentionPortalEntryActivate', None, univention.admin.mapping.ListToString)
-mapping.register('userGroup', 'univentionPortalEntryAllowedUserGroup', None, univention.admin.mapping.ListToString)
+mapping.register('allowedGroups', 'univentionPortalEntryAllowedUserGroup')
 mapping.register('authRestriction', 'univentionPortalEntryAuthRestriction', None, univention.admin.mapping.ListToString)
 mapping.register('icon', 'univentionPortalEntryIcon', None, univention.admin.mapping.ListToString)
 

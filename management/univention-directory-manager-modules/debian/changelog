@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.23-2) unstable; urgency=medium
+
+  * Bug #46927: a portal entry can now have multiple allowed groups
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 18 Sep 2018 14:49:21 +0200
+
 univention-directory-manager-modules (13.0.23-1) unstable; urgency=low
 
   * Bug #41109:
