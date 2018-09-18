@@ -3,10 +3,11 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-web
-fix: 2.0.0-24A~4.3.0.201809181311
+fix: 2.0.0-25A~4.3.0.201809181629
 desc: |
  This update addresses the following issue(s):
  * An issue with the drop-down menu for the search value in the
    advanced search of UDM modules being unusable has been resolved.
  * It is now possible to define custom categories for the portal.
-bug: [44471, 47243]
+ * The scrolling in the LDAP directory module has been improved.
+bug: [44471, 47243, 45598]
