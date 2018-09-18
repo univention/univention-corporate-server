@@ -1,3 +1,10 @@
+univention-portal (2.0.2-4) unstable; urgency=medium
+
+  * Bug #47243: show deactivated and out of group entries
+    when editing the portal
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 18 Sep 2018 12:42:27 +0200
+
 univention-portal (2.0.2-3) unstable; urgency=medium
 
   * Bug #47243: fix background images and footer links not being displayed
