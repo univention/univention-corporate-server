@@ -33,13 +33,20 @@ En/Decoders for object properties.
 from __future__ import absolute_import, unicode_literals
 import datetime
 import time
+import lazy_object_proxy
 from .binary_props import Base64BinaryProperty
+from .udm import Udm
 from univention.admin.uexceptions import valueInvalidSyntax
 
 try:
-	from typing import Any, Dict, List, Optional, Text
+	from typing import Any, Dict, List, Optional, Text, Type
+	import univention.admin.uldap
 except ImportError:
 	pass
+
+
+__dn_list_property_encoder_class_cache = {}  # type: Dict[Text, Type[DnListPropertyEncoder]]
+__dn_property_encoder_class_cache = {}  # type: Dict[Text, Type[DnPropertyEncoder]]
 
 
 class BaseEncoder(object):
@@ -211,3 +218,149 @@ class StringIntPropertyEncoder(BaseEncoder):
 			return value
 		else:
 			return str(value)
+
+
+class DnListPropertyEncoder(BaseEncoder):
+	"""
+	Given a list of DNs, return the same list with an additional member
+	``objs``. ``objs`` is a lazy object that will become the list of UDM
+	objects the DNs refer to, when accessed.
+
+	:py:func:`dn_list_property_encoder_for()` will dynamically produce
+	subclasses of this for every UDM module required.
+	"""
+	static = False
+	udm_module_name = ''
+
+	class DnsList(list):
+		# a list with an additional member variable
+		objs = None  # type: DnListPropertyEncoder.MyProxy
+
+	class MyProxy(lazy_object_proxy.Proxy):
+		# overwrite __repr__ for better navigation in ipython
+		def __repr__(self, __getattr__=object.__getattribute__):
+			return super(DnListPropertyEncoder.MyProxy, self).__str__()
+
+	def __init__(self, property_name=None, lo=None, *args, **kwargs):
+		# type: (Optional[Text], Optional[univention.admin.uldap.access], *Any, **Any) -> None
+		assert lo is not None, 'Argument "lo" must not be None.'
+		super(DnListPropertyEncoder, self).__init__(property_name, lo, *args, **kwargs)
+		self.lo = lo
+
+	def _list_of_dns_to_list_of_udm_objects(self, value):
+		udm = Udm(self.lo)
+		if self.udm_module_name == 'auto':
+			return [udm.get_obj(dn) for dn in value]
+		else:
+			udm_module = udm.get(self.udm_module_name)
+			return [udm_module.get(dn) for dn in value]
+
+	def decode(self, value=None):  # type: (Optional[List[Text]]) -> Optional[List[Text]]
+		if value is None:
+			return value
+		else:
+			assert hasattr(value, '__iter__'), 'Value is not iterable: {!r}'.format(value)
+			new_list = self.DnsList(value)
+			new_list.objs = self.MyProxy(lambda: self._list_of_dns_to_list_of_udm_objects(value))
+			return new_list
+
+	@staticmethod
+	def encode(value=None):  # type: (Optional[List[Text]]) -> Optional[List[Text]]
+		try:
+			del value.objs
+		except AttributeError:
+			pass
+		return value
+
+
+class DnPropertyEncoder(BaseEncoder):
+	"""
+	Given a DN, return a string object with the DN and an additional member
+	``obj``. ``obj`` is a lazy object that will become the UDM object the DN
+	refers to, when accessed.
+
+	:py:func:`dn_property_encoder_for()` will dynamically produce
+	subclasses of this for every UDM module required.
+	"""
+	static = False
+	udm_module_name = ''
+
+	class DnStr(str):
+		# a string with an additional member variable
+		obj = None  # type: DnPropertyEncoder.MyProxy
+
+	class MyProxy(lazy_object_proxy.Proxy):
+		# overwrite __repr__ for better navigation in ipython
+		def __repr__(self, __getattr__=object.__getattribute__):
+			return super(DnPropertyEncoder.MyProxy, self).__str__()
+
+	def __init__(self, property_name=None, lo=None, *args, **kwargs):
+		# type: (Optional[Text], Optional[univention.admin.uldap.access], *Any, **Any) -> None
+		assert lo is not None, 'Argument "lo" must not be None.'
+		super(DnPropertyEncoder, self).__init__(property_name, lo, *args, **kwargs)
+		self.lo = lo
+
+	def _dn_to_udm_object(self, value):
+		udm = Udm(self.lo)
+		if self.udm_module_name == 'auto':
+			return udm.get_obj(value)
+		else:
+			udm_module = udm.get(self.udm_module_name)
+			return udm_module.get(value)
+
+	def decode(self, value=None):  # type: (Optional[Text]) -> str
+		new_str = self.DnStr(value)
+		if value:
+			new_str.obj = self.MyProxy(lambda: self._dn_to_udm_object(value))
+		return new_str
+
+	@staticmethod
+	def encode(value=None):  # type: (Optional[Text]) -> Optional[Text]
+		try:
+			del value.obj
+		except AttributeError:
+			pass
+		return value
+
+
+def _classify_name(name):
+	mod_parts = name.split('/')
+	return ''.join('{}{}'.format(mp[0].upper(), mp[1:]) for mp in mod_parts)
+
+
+def dn_list_property_encoder_for(udm_module_name):  # type: (Text) -> Type[DnListPropertyEncoder]
+	"""
+	Create a (cached) subclass of DnListPropertyEncoder specific for each UDM
+	module.
+
+	:param str udm_module_name: name of UDM module (e.g. `users/user`) or
+		`auto` if auto-detection should be done. Auto-detection requires one
+		additional LDAP-query per object (still lazy though)!
+	:return: subclass of DnListPropertyEncoder
+	:rtype: type(DnListPropertyEncoder)
+	"""
+	if udm_module_name not in __dn_list_property_encoder_class_cache:
+		cls_name = str('DnListPropertyEncoder{}').format(_classify_name(udm_module_name))
+		specific_encoder_cls = type(cls_name, (DnListPropertyEncoder,), {})  # type: Type[DnListPropertyEncoder]
+		specific_encoder_cls.udm_module_name = udm_module_name
+		__dn_list_property_encoder_class_cache[udm_module_name] = specific_encoder_cls
+	return __dn_list_property_encoder_class_cache[udm_module_name]
+
+
+def dn_property_encoder_for(udm_module_name):  # type: (Text) -> Type[DnPropertyEncoder]
+	"""
+	Create a (cached) subclass of DnPropertyEncoder specific for each UDM
+	module.
+
+	:param str udm_module_name: name of UDM module (e.g. `users/user`) or
+		`auto` if auto-detection should be done. Auto-detection requires one
+		additional LDAP-query per object (still lazy though)!
+	:return: subclass of DnPropertyEncoder
+	:rtype: type(DnPropertyEncoder)
+	"""
+	if udm_module_name not in __dn_property_encoder_class_cache:
+		cls_name = str('DnPropertyEncoder{}').format(_classify_name(udm_module_name))
+		specific_encoder_cls = type(cls_name, (DnPropertyEncoder,), {})  # type: Type[DnPropertyEncoder]
+		specific_encoder_cls.udm_module_name = udm_module_name
+		__dn_property_encoder_class_cache[udm_module_name] = specific_encoder_cls
+	return __dn_property_encoder_class_cache[udm_module_name]

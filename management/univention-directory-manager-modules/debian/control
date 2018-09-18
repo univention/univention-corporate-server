@@ -25,7 +25,8 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention-license,
  python-univention-directory-manager-cli (= ${binary:Version}),
  iso-codes,
- python-ipaddr
+ python-ipaddr,
+ python-lazy-object-proxy
 Provides: ${python:Provides}
 Replaces: python-univention-lib (<< 1.0.15-1)
 Description: UCS - Modules for administration tools

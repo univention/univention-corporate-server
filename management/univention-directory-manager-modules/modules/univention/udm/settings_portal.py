@@ -31,7 +31,10 @@ Module and object specific for "settings/portal" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
-from .encoders import Base64BinaryPropertyEncoder, StringBooleanPropertyEncoder, MultiLanguageTextPropertyEncoder
+from .encoders import (
+	dn_list_property_encoder_for, Base64BinaryPropertyEncoder, StringBooleanPropertyEncoder,
+	MultiLanguageTextPropertyEncoder,
+)
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
 
 
@@ -42,6 +45,8 @@ class SettingsPortalUdm1ObjectProperties(GenericUdm1ObjectProperties):
 		'background': Base64BinaryPropertyEncoder,
 		'displayName': MultiLanguageTextPropertyEncoder,
 		'logo': Base64BinaryPropertyEncoder,
+		'portalComputers': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
+		'portalEntriesOrder': dn_list_property_encoder_for('settings/portal_entry'),  # not really sure about this as it's not exposed through the cli or python frontend, guessed it from the syntax
 		'showApps': StringBooleanPropertyEncoder,
 		'showLogin': StringBooleanPropertyEncoder,
 		'showMenu': StringBooleanPropertyEncoder,

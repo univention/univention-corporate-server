@@ -31,7 +31,7 @@ Module and object specific for "nagios/service" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
-from .encoders import DisabledPropertyEncoder, StringIntPropertyEncoder
+from .encoders import dn_list_property_encoder_for, DisabledPropertyEncoder, StringIntPropertyEncoder
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
 
 
@@ -39,6 +39,7 @@ class NagiosServiceUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	"""nagios/service UDM properties."""
 
 	_encoders = {
+		'assignedHosts': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
 		'maxCheckAttempts': StringIntPropertyEncoder,
 		'normalCheckInterval': StringIntPropertyEncoder,
 		'notificationInterval': StringIntPropertyEncoder,

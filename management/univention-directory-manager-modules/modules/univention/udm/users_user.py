@@ -32,8 +32,8 @@ Module and object specific for "users/user" UDM module.
 
 from __future__ import absolute_import, unicode_literals
 from .encoders import (
-	Base64BinaryPropertyEncoder, DatePropertyEncoder, DisabledPropertyEncoder, HomePostalAddressPropertyEncoder,
-	SambaLogonHoursPropertyEncoder, StringIntPropertyEncoder,
+	dn_list_property_encoder_for, dn_property_encoder_for, Base64BinaryPropertyEncoder, DatePropertyEncoder,
+	DisabledPropertyEncoder, HomePostalAddressPropertyEncoder, SambaLogonHoursPropertyEncoder, StringIntPropertyEncoder,
 )
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
 
@@ -45,11 +45,15 @@ class UsersUserUdm1ObjectProperties(GenericUdm1ObjectProperties):
 		'birthday': DatePropertyEncoder,
 		'disabled': DisabledPropertyEncoder,
 		'gidNumber': StringIntPropertyEncoder,
+		'groups': dn_list_property_encoder_for('groups/group'),
 		'homePostalAddress': HomePostalAddressPropertyEncoder,
 		'jpegPhoto': Base64BinaryPropertyEncoder,
 		'mailForwardCopyToSelf': DisabledPropertyEncoder,
+		'primaryGroup': dn_property_encoder_for('groups/group'),
 		'sambaLogonHours': SambaLogonHoursPropertyEncoder,
 		'sambaRID': StringIntPropertyEncoder,
+		'secretary': dn_list_property_encoder_for('users/user'),
+		'serviceprovider': dn_list_property_encoder_for('saml/serviceprovider'),
 		'uidNumber': StringIntPropertyEncoder,
 		'userexpiry': DatePropertyEncoder,
 	}

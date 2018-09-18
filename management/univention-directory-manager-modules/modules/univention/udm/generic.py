@@ -32,18 +32,19 @@ Will work for all kinds of UDM modules.
 """
 
 from __future__ import absolute_import, unicode_literals
+import inspect
 from ldap.dn import dn2str, str2dn
 import univention.admin.objects
 import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.uldap
-from .encoders import BaseEncoder
+from .encoders import dn_list_property_encoder_for, BaseEncoder
 from .base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from .exceptions import DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UnknownProperty, WrongObjectType
 from .utils import UDebug as ud
 
 try:
-	from typing import Any, Dict, Iterator, Optional, Text, Tuple, Type
+	from typing import Any, Dict, Iterator, Optional, Text, Tuple, Type, Union
 except ImportError:
 	pass
 
@@ -62,8 +63,8 @@ class GenericUdm1ObjectProperties(BaseUdmObjectProperties):
 	def __init__(self, udm_obj):  # type: (BaseUdmObject) -> None
 		super(GenericUdm1ObjectProperties, self).__init__(udm_obj)
 		for property_names, encoder_class in self._encoders.iteritems():
-			assert issubclass(encoder_class, BaseEncoder), \
-				'{}._encoders[{!r}] must be an subclass of BaseEncoder.'.format(self.__class__.__name__, property_names)
+			assert hasattr(encoder_class, 'decode')
+			assert hasattr(encoder_class, 'encode')
 
 	def __setattr__(self, key, value):  # type: (str, Any) -> None
 		if not str(key).startswith('_') and key not in self._udm_obj._udm1_object:
@@ -99,6 +100,7 @@ class GenericUdm1Object(BaseUdmObject):
 	recommended to :py:meth:`reload()` it: `obj.save().reload()`
 	"""
 	udm_prop_class = GenericUdm1ObjectProperties
+	_policies_encoder = None
 
 	def __init__(self):  # type: () -> None
 		"""
@@ -203,7 +205,12 @@ class GenericUdm1Object(BaseUdmObject):
 		"""
 		self.dn = self._udm1_object.dn
 		self.options = self._udm1_object.options
-		self.policies = self._udm1_object.policies
+		if not self._policies_encoder:
+			policies_encoder_class = dn_list_property_encoder_for('auto')
+			self.__class__._policies_encoder = self._init_encoder(
+				policies_encoder_class, property_name='__policies', lo=self._lo
+			)
+		self.policies = self._policies_encoder.decode(self._udm1_object.policies)
 		if self.dn:
 			self.position = self._lo.parentDn(self.dn)
 			self._old_position = self.position
@@ -216,10 +223,8 @@ class GenericUdm1Object(BaseUdmObject):
 			except KeyError:
 				val = v
 			else:
-				if encoder_class.static:  # don't create an object if not necessary
-					val = encoder_class.decode(v)
-				else:
-					val = encoder_class(k).decode(v)
+				encoder = self._init_encoder(encoder_class, property_name=k)
+				val = encoder.decode(v)
 			setattr(self.props, k, val)
 		self._fresh = True
 
@@ -241,11 +246,37 @@ class GenericUdm1Object(BaseUdmObject):
 				except KeyError:
 					new_val2 = new_val
 				else:
-					if encoder_class.static:  # don't create an object if not necessary
-						new_val2 = encoder_class.encode(new_val)
-					else:
-						new_val2 = encoder_class(k).encode(new_val)
+					encoder = self._init_encoder(encoder_class, property_name=k)
+					new_val2 = encoder.encode(new_val)
 				self._udm1_object[k] = new_val2
+
+	def _init_encoder(self, encoder_class, **kwargs):
+		# type: (Type[BaseEncoder], **Any) -> Union[Type[BaseEncoder], BaseEncoder]
+		"""
+		Instantiate encoder object if required. Optionally assemble additional
+		arguments.
+
+		:param encoder_class: a subclass of BaseEncoder
+		:type encoder_class: type(BaseEncoder)
+		:param kwargs: named arguments to pass to __init__ when instantiating encoder object
+		:return: either a class object or an instance, depending on the class variable :py:attr:`static`
+		:rtype: BaseEncoder or type(BaseEncoder)
+		"""
+		if encoder_class.static:
+			# don't create an object if not necessary
+			return encoder_class
+		else:
+			# initialize with required arguments
+			for arg in inspect.getargspec(encoder_class.__init__).args:
+				if arg == 'self':
+					continue
+				elif arg in kwargs:
+					continue
+				elif arg == 'lo':
+					kwargs['lo'] = self._lo
+				else:
+					raise TypeError('Unknown argument {!r} for {}.__init__.'.format(arg, encoder_class.__class__.__name__))
+			return encoder_class(**kwargs)
 
 
 class GenericUdm1ModuleMetadata(BaseUdmModuleMetadata):
