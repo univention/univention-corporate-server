@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.22-5) unstable; urgency=medium
+
+  * Bug #47580: Sync umlauts dict with frontend
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Tue, 18 Sep 2018 11:01:11 +0200
+
 univention-directory-manager-modules (13.0.22-4) unstable; urgency=medium
 
   * Bug #47580: Remove debug entry
