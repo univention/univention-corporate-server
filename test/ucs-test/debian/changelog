@@ -1,3 +1,9 @@
+ucs-test (8.0.28-189) unstable; urgency=low
+
+  * Bug #41109: add execution flag for 38_user_univentionLastUsedValue
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Sep 2018 13:16:24 +0200
+
 ucs-test (8.0.28-188) unstable; urgency=low
 
   * Bug #41109: add 3 new tests for checking the handling of
