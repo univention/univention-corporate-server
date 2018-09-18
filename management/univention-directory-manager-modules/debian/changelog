@@ -1,6 +1,16 @@
+univention-directory-manager-modules (13.0.23-1) unstable; urgency=low
+
+  * Bug #41109:
+   - do not update univentionLastUsedValue for uidNumber if
+     uidNumber has been specified manually in users/user
+   - do not update univentionLastUsedValue for gidNumber if
+     gidNumber has been specified manually in groups/group
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 14 Sep 2018 16:23:47 +0200
+
 univention-directory-manager-modules (13.0.22-6) unstable; urgency=medium
 
-  * Bug #47580: Fix broken postins script
+  * Bug #47580: Fix broken postinst script
 
  -- Ole Schwiegert <schwiegert@univention.de>  Tue, 18 Sep 2018 11:50:12 +0200
 
