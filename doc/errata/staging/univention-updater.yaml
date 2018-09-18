@@ -1,0 +1,11 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: univention-updater
+fix: 12.0.11-21A~4.2.0.201809171336
+desc: |
+ This update addresses the following issue:
+ * Deactivate extended security maintenance message for the 
+   Univention updater.
+bug: [47828]
