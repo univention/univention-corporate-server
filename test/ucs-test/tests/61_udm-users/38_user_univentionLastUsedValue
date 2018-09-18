@@ -1,0 +1,39 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create users/user and check univentionLastUsedValue
+## tags: [udm,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import random
+import univention.uldap
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.ucr as ucr_test
+
+
+if __name__ == '__main__':
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		with udm_test.UCSTestUDM() as udm:
+			luv_dn = 'cn=uidNumber,cn=temporary,cn=univention,%s' % (ucr.get('ldap/base'),)
+			lo = univention.uldap.getAdminConnection()
+
+			lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
+			user_dn = udm.create_user()[0]
+			utils.verify_ldap_object(user_dn)
+			lastUsedValue_new = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
+			if lastUsedValue_old == lastUsedValue_new:
+				utils.fail('Create user with automatic uidNumber: univentionLastUsedValue did not change, but it should!')
+
+			lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
+			uidNumber = str(random.randint(100000, 200000))
+			user_dn = udm.create_user(uidNumber=uidNumber)[0]
+			utils.verify_ldap_object(user_dn, expected_attr={'uidNumber': [uidNumber]})
+			lastUsedValue_new = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
+			if lastUsedValue_old != lastUsedValue_new:
+				utils.fail('Create user with specified uidNumber: univentionLastUsedValue did change, but it should not!')
+
+			# Please note: modification of uidNumber is not allowed according to users/user.py --> not tested here

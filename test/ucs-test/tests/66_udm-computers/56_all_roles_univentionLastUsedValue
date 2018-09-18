@@ -1,0 +1,53 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create minimal object for all computer roles and check univentionLastUsedValue
+## tags: [udm-computers,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+'''
+Computer objects request a uidNumber when creating an object, but the value of
+univentionLastUsedValue has never been incremented.
+Since UCS 4.3-2erratumX this is no longer the case and univentionLastUsedValue
+is never changed.
+'''
+
+import random
+import time
+import univention.uldap
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+import univention.testing.ucr as ucr_test
+
+if __name__ == '__main__':
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		with udm_test.UCSTestUDM() as udm:
+			luv_dn = 'cn=uidNumber,cn=temporary,cn=univention,%s' % (ucr.get('ldap/base'),)
+			lo = univention.uldap.getAdminConnection()
+			for role in udm.COMPUTER_MODULES:
+
+				lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
+				computer_dn = udm.create_object(role, name=uts.random_string(), wait_for_replication=False)
+				utils.verify_ldap_object(computer_dn)
+				lastUsedValue_new = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
+				if lastUsedValue_old == lastUsedValue_new and role not in ('computers/ipmanagedclient',):
+					utils.fail('Create %s with automatic uidNumber: univentionLastUsedValue did not change, but it should!' % (role,))
+				if lastUsedValue_old != lastUsedValue_new and role in ('computers/ipmanagedclient',):
+					utils.fail('Create %s: univentionLastUsedValue did change, but it should not!' % (role,))
+
+				lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
+				kwargs = {
+					'dn': computer_dn,
+					'description': 'modified at {}'.format(time.ctime()),
+					'wait_for_replication': False,
+				}
+				computer_dn = udm.modify_object(role, **kwargs)
+				utils.verify_ldap_object(computer_dn, expected_attr={'description': [kwargs['description']]})
+				lastUsedValue_new = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
+				if lastUsedValue_old != lastUsedValue_new:
+					utils.fail('Modified %s with specified uidNumber: univentionLastUsedValue did change, but it should not!' % (role,))
+
+		utils.wait_for_replication()
