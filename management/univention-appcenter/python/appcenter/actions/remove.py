@@ -32,6 +32,8 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+import os.path
+
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 from univention.appcenter.ucr import ucr_save
 from univention.appcenter.packages import remove_packages, remove_packages_dry_run, update_packages
@@ -71,6 +73,11 @@ class Remove(InstallRemoveUpgrade):
 		self._call_unjoin_script(app, args)
 		if not app.docker:
 			ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})
+
+	def needs_credentials(self, app):
+		if os.path.exists(app.get_cache_file(self.prescript_ext)):
+			return True
+		return False
 
 	def _remove_app(self, app, args):
 		self._configure(app, args)

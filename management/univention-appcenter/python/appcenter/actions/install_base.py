@@ -91,7 +91,7 @@ class InstallRemoveUpgrade(Register):
 			errors, warnings = app.check(action)
 			can_continue = self._handle_errors(app, args, errors, True)
 			can_continue = self._handle_errors(app, args, warnings, fatal=not can_continue) and can_continue
-			if not self.check_user_credentials(args):
+			if self.needs_credentials(app) and not self.check_user_credentials(args):
 				can_continue = False
 			if not can_continue or not self._call_prescript(app, args):
 				status = 0
@@ -154,6 +154,17 @@ class InstallRemoveUpgrade(Register):
 				self._register_installed_apps_in_ucr()
 				upgrade_search = get_action('upgrade-search')
 				upgrade_search.call_safe(app=[app], update=False)
+
+	def needs_credentials(self, app):
+		if os.path.exists(app.get_cache_file(self.prescript_ext)):
+			return True
+		if os.path.exists(app.get_cache_file('schema')):
+			return True
+		if os.path.exists(app.get_cache_file('attributes')) or app.generic_user_activation:
+			return True
+		if app.docker and app.docker_script_setup:
+			return True
+		return False
 
 	def _handle_errors(self, app, args, errors, fatal):
 		can_continue = True

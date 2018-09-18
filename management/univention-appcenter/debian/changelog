@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-31) unstable; urgency=medium
+
+  * Bug #47619: Check whether credentials are really needed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 18 Sep 2018 15:29:19 +0200
+
 univention-appcenter (7.0.2-30) unstable; urgency=medium
 
   * Bug #47763: never prompt during timezone update

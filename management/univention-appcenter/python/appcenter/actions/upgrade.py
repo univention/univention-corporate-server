@@ -77,6 +77,16 @@ class Upgrade(Install):
 		args.app = app
 		return self.do_it(args)
 
+	def needs_credentials(self, app):
+		needs_credentials = super(Upgrade, self).needs_credentials(app)
+		if needs_credentials:
+			return True
+		if app.docker and app.docker_script_update_packages:
+			return True
+		if app.docker and app.docker_script_update_app_version:
+			return True
+		return False
+
 	def _revert(self, app, args):
 		try:
 			self.log('Trying to revert to old version. This may lead to problems, but it is better than leaving it the way it is now')
