@@ -47,14 +47,11 @@ define([
 	"dojo/promise/all",
 	"dojox/string/sprintf",
 	"dojox/widget/Standby",
-	"dojox/html/styles",
 	"dijit/focus",
 	"dijit/a11y",
 	"dijit/registry",
 	"dijit/Dialog",
 	"dijit/Tooltip",
-	"dijit/_WidgetBase",
-	"dijit/_TemplatedMixin",
 	"dijit/DropDownMenu",
 	"dijit/MenuItem",
 	"dijit/form/DropDownButton",
@@ -62,24 +59,22 @@ define([
 	"umc/store",
 	"umc/json",
 	"umc/dialog",
-	"umc/dialog/NotificationSnackbar",
 	"umc/widgets/Button",
 	"umc/widgets/Form",
-	"umc/widgets/Wizard",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/MultiInput",
 	"put-selector/put",
 	"./PortalCategory",
+	"./PortalEntryWizard",
+	"./PortalEntryWizardPreviewTile",
 	"./tools",
 	"umc/i18n/tools",
-	// portal.json -> contains entries of this portal as specified in the LDAP directory
-	"umc/json!/univention/portal/portal.json",
-	// apps.json -> contains all locally installed apps
-	"umc/json!/univention/portal/apps.json",
+	"umc/json!/univention/portal/portal.json", // -> contains entries of this portal as specified in the LDAP directory
+	"umc/json!/univention/portal/apps.json", // -> contains all locally installed apps
 	"umc/i18n!portal"
-], function(declare, lang, array, Deferred, aspect, when, on, dojoQuery, dom, domClass, domAttr, domGeometry, domStyle, mouse, Source, all, sprintf, Standby, styles, dijitFocus, a11y, registry, Dialog, Tooltip, _WidgetBase, _TemplatedMixin, DropDownMenu, MenuItem, DropDownButton, tools, store, json, dialog, NotificationSnackbar, Button, Form, Wizard, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, PortalCategory, portalTools, i18nTools, portalJson, installedApps, _) {
+], function(declare, lang, array, Deferred, aspect, when, on, dojoQuery, dom, domClass, domAttr, domGeometry, domStyle, mouse, Source, all, sprintf, Standby, dijitFocus, a11y, registry, Dialog, Tooltip, DropDownMenu, MenuItem, DropDownButton, tools, store, json, dialog, Button, Form, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, PortalCategory, PortalEntryWizard, PortalEntryWizardPreviewTile, portalTools, i18nTools, portalJson, installedApps, _) {
 
 	// convert IPv6 addresses to their canonical form:
 	//   ::1:2 -> 0000:0000:0000:0000:0000:0000:0001:0002
@@ -370,579 +365,20 @@ define([
 	var _PortalPropertiesDialog = declare('PortalPropertiesDialog', [ConfirmDialog, StandbyMixin]);
 	var _WizardDialog = declare('WizardDialog', [Dialog, StandbyMixin]);
 
-	var PortalEntryWizard = declare('PortalEntryWizard', [Wizard], {
-		'class': 'portalEntryWizard',
-
-		pageMainBootstrapClasses: 'col-xxs-12 col-xs-8',
-
-		portalEntryProps: null,
-		_getProps: function(id) {
-			return array.filter(this.portalEntryProps, function(iProp) {
-				return iProp.id === id;
-			})[0];
-		},
-
-		postMixInProperties: function() {
-			this.inherited(arguments);
-			this.initialFormValues = {};
-			this.dn = null;
-
-			lang.mixin(this, {
-				pages: [{
-					name: 'name',
-					widgets: [this._getProps('name')],
-					layout: ['name'],
-					headerText: ' ' // FIXME hacky workaround to get 'nav' to show so that Page.js adds the mainBootstrapClasses to 'main'
-					// helpText: 'TODO',
-					// helpTextRegion: 'main'
-				}, {
-					name: 'icon',
-					widgets: [this._getProps('icon')],
-					layout: ['icon'],
-					headerText: ' '
-					// helpText: 'TODO',
-					// helpTextRegion: 'main'
-				}, {
-					name: 'displayName',
-					widgets: [this._getProps('displayName')],
-					layout: ['displayName'],
-					headerText: ' '
-					// helpText: 'TODO',
-					// helpTextRegion: 'main'
-				}, {
-					name: 'link',
-					widgets: [this._getProps('link')],
-					layout: ['link'],
-					headerText: ' '
-					// helpText: 'TODO',
-					// helpTextRegion: 'main'
-				}, {
-					name: 'description',
-					widgets: [this._getProps('description')],
-					layout: ['description'],
-					headerText: ' '
-					// helpText: 'TODO',
-					// helpTextRegion: 'main'
-				}]
-			})
-		},
-
-		buildRendering: function() {
-			this.inherited(arguments);
-
-			// set the value of the displayName and description widget to
-			// have the available languages (the ones that are available in the menu)
-			// prefilled and do not allow the user to add or remove rows for languages
-			var availableLanguageCodes = array.map(i18nTools.availableLanguages, function(ilanguage) {
-				return ilanguage.id.replace(/-/, '_');
-			});
-			// shift current locale to the beginning
-			availableLanguageCodes.splice(0, 0, availableLanguageCodes.splice(availableLanguageCodes.indexOf(locale), 1)[0]);
-
-			var localizedPrefillValues = [];
-			array.forEach(availableLanguageCodes, function(ilanguageCode) {
-				localizedPrefillValues.push([ilanguageCode, '']);
-			});
-			array.forEach(['displayName', 'description'], lang.hitch(this, function(iname) {
-				domClass.add(this.getWidget(iname).domNode, 'noRemoveButton');
-				this.getWidget(iname).set('max', localizedPrefillValues.length);
-				this.getWidget(iname).set('value', localizedPrefillValues);
-				this.getWidget(iname).ready().then(lang.hitch(this, function() {
-					array.forEach(this.getWidget(iname)._widgets, function(iwidget) {
-						// disable the textbox for the language code
-						iwidget[0].set('disabled', true);
-					});
-				}));
-			}));
-
-			// set initialFormValues
-			array.forEach(this.pages, lang.hitch(this, function(ipage) {
-				array.forEach(ipage.widgets, lang.hitch(this, function(iwidgetConf) {
-					var widget = this.getWidget(iwidgetConf.id);
-					var widgetReady = widget.ready ? widget.ready() : true;
-					when(widgetReady).then(lang.hitch(this, function() {
-						this.initialFormValues[iwidgetConf.id] = widget.get('value');
-					}));
-				}));
-			}));
-		},
-
-		switchPage: function(pageName) {
-			var scrollY = window.scrollY;
-			this.inherited(arguments);
-			window.scrollTo(0, scrollY);
-		},
-
-		getFooterButtons: function(pageName) {
-			var footerbuttons = [{
-				name: 'remove',
-				label: _('Remove from this portal'),
-				align: 'right',
-				callback: lang.hitch(this, function() {
-					dialog.confirm(_('Do you really want to remove this entry from this portal'), [{
-						name: 'cancel',
-						label: _('Cancel')
-					}, {
-						name: 'remove',
-						label: _('Remove'),
-						'default': true,
-						callback: lang.hitch(this, 'onRemove')
-					}]);
-				})
-			}, {
-				name: 'previous',
-				label: _('Back'),
-				align: 'right',
-				callback: lang.hitch(this, '_previous', pageName)
-			}, {
-				name: 'next',
-				align: 'right',
-				label: _('Next'),
-				callback: lang.hitch(this, '_next', pageName)
-			}, {
-				name: 'cancel',
-				label: _('Cancel'),
-				callback: lang.hitch(this, 'onCancel')
-			}, {
-				name: 'save',
-				defaultButton: true,
-				label: _('Save'),
-				callback: lang.hitch(this, '_finish', pageName)
-			}, {
-				name: 'finish',
-				defaultButton: true,
-				label: _('Finish'),
-				callback: lang.hitch(this, '_finish', pageName)
-			}];
-
-			return footerbuttons;
-		},
-
-		_updateButtons: function(pageName) {
-			this.inherited(arguments);
-			var buttons = this._pages[pageName]._footerButtons;
-			if (buttons.next) {
-				domClass.toggle(buttons.next.domNode, 'dijitDefaultButton', !this.dn || (this.dn && pageName === 'name') ? true : false);
-			}
-			if (buttons.remove) {
-				domClass.toggle(buttons.remove.domNode, 'dijitDisplayNone', this.dn && pageName === 'name' ? false : true);
-			}
-			if (buttons.finish) {
-				domClass.toggle(buttons.finish.domNode, 'dijitDisplayNone', this.dn ? true : false || this.hasNext(pageName));
-			}
-			if (buttons.save) {
-				domClass.toggle(buttons.save.domNode, 'dijitDisplayNone', this.dn && pageName !== 'name' ? false : true);
-			}
-		},
-
-		_isEmptyValue: function(value) {
-			if (typeof value === 'string' || value instanceof Array) {
-				return value.length === 0;
-			} else if (typeof value === 'object') {
-				return Object.keys(value).length === 0;
-			} else {
-				return false;
-			}
-		},
-
-		__validateWidget: function(widget) {
-			if (widget instanceof MultiInput) {
-				// FIXME the MultiInput widget does not implement validate.
-				// this goes trough all widgets in all rows and validates them
-				// so that the tooltip with the error message is shown.
-				var i, j;
-				for (i = 0; i < widget._widgets.length; ++i) {
-					for (j = 0; j < widget._widgets[i].length; ++j) {
-						var iwidget = widget._widgets[i][j];
-						if (!iwidget.get('visible')) {
-							// ignore hidden widgets
-							continue;
-						}
-						iwidget._hasBeenBlurred = true;
-						if (iwidget.validate !== undefined) {
-							if (iwidget._maskValidSubsetError !== undefined) {
-								iwidget._maskValidSubsetError = false;
-							}
-							iwidget.validate();
-						}
-					}
-				}
-			} else {
-				widget.validate();
-			}
-		},
-
-		_validatePage: function(pageName) {
-			var deferred = new Deferred();
-			var firstInvalidWidget = null;
-			var initialFormValues = this.initialFormValues;
-			var form = this.getPage(pageName)._form;
-			var formValues = form.get('value');
-
-			var alteredValues = {};
-			tools.forIn(formValues, function(iname, ivalue) {
-				if (iname === '$dn$') {
-					return;
-				}
-				if (!tools.isEqual(ivalue, initialFormValues[iname])) {
-					alteredValues[iname] = ivalue;
-				}
-			});
-
-			var alteredValuesNonEmpty = {};
-			tools.forIn(alteredValues, function(iname, ivalue) {
-				if (!this._isEmptyValue(ivalue)) {
-					alteredValuesNonEmpty[iname] = ivalue;
-				}
-			}, this);
-
-			// reset validation settings from last validation
-			tools.forIn(form._widgets, function(iname, iwidget) {
-				if (iwidget.setValid) {
-					iwidget.setValid(null);
-				}
-			});
-			form.validate(); // validate all widgets to mark invalid/required fields
-
-			// see if there are widgets that are required and have no value
-			var allValid = true;
-			tools.forIn(form._widgets, function(iname, iwidget) {
-				var isEmpty = this._isEmptyValue(iwidget.get('value'));
-				if (iwidget.required && isEmpty) {
-					allValid = false;
-					iwidget.setValid(false, _('This value is required'));
-				} else if (!isEmpty && iwidget.isValid && !iwidget.isValid()) {
-					allValid = false;
-				}
-
-				this.__validateWidget(iwidget);
-				if (!allValid && !firstInvalidWidget && a11y.getFirstInTabbingOrder(iwidget.domNode)) {
-					firstInvalidWidget = iwidget;
-				}
-			}, this);
-			if (!allValid) {
-				deferred.reject(firstInvalidWidget);
-				return deferred;
-			}
-
-			// validate the form values
-			tools.umcpCommand('udm/validate', {
-				objectType: 'settings/portal_entry',
-				properties: alteredValuesNonEmpty
-			}).then(lang.hitch(this, function(response) {
-				// parse response and mark widgets with invalid values
-				var allValid = true;
-				array.forEach(response.result, lang.hitch(this, function(iprop) {
-					if (iprop.valid instanceof Array) {
-						array.forEach(iprop.valid, function(ivalid, index) {
-							if (ivalid) {
-								iprop.valid[index] = null;
-							} else {
-								allValid = false;
-							}
-						});
-					} else {
-						if (iprop.valid) {
-							iprop.valid = null;
-						} else {
-							allValid = false;
-						}
-					}
-
-					var widget = form.getWidget(iprop.property);
-					widget.setValid(iprop.valid, iprop.details);
-					this.__validateWidget(widget);
-					if (!allValid && !firstInvalidWidget && a11y.getFirstInTabbingOrder(widget.domNode)) {
-						firstInvalidWidget = widget;
-					}
-				}));
-				if (!allValid) {
-					deferred.reject(firstInvalidWidget);
-				} else {
-					deferred.resolve();
-				}
-			}));
-			return deferred;
-		},
-
-		loadEntry: function(dn) {
-			var deferred = new Deferred();
-			this.moduleStore.get(dn).then(lang.hitch(this, function(result) {
-				this.dn = dn;
-				this.loadedEntryPortals = result['portal'] || [];
-				this.onLoadEntry();
-				//// populate all widgets with the loaded portal entry data
-				//// and store the initial form values
-				array.forEach(this.pages, lang.hitch(this, function(ipage) {
-					array.forEach(ipage.widgets, lang.hitch(this, function(iwidgetConf) {
-						if (result[iwidgetConf.id]) {
-							this.getWidget(iwidgetConf.id).set('value', result[iwidgetConf.id]);
-							this.initialFormValues[iwidgetConf.id] = result[iwidgetConf.id];
-						}
-					}));
-				}));
-
-				//// we only want to show languages that are visible in the menu.
-				//// seperate languages that are in the menu and other lanuages and
-				//// merge them back when saving
-				var availableLanguageCodes = array.map(i18nTools.availableLanguages, function(ilanguage) {
-					return ilanguage.id.replace(/-/, '_');
-				});
-				// shift current locale to the beginning
-				availableLanguageCodes.splice(0, 0, availableLanguageCodes.splice(availableLanguageCodes.indexOf(locale), 1)[0]);
-
-				array.forEach(['displayName', 'description'], lang.hitch(this, function(iname) {
-					var filteredName = [];
-					array.forEach(availableLanguageCodes, lang.hitch(this, function(ilanguageCode) {
-						var name = array.filter(this.initialFormValues[iname], function(iname) {
-							return iname[0] === ilanguageCode;
-						})[0];
-						if (!name) {
-							name = [ilanguageCode, ''];
-						}
-						filteredName.push(name);
-					}));
-					var remainingName = array.filter(this.initialFormValues[iname], function(iname) {
-						return array.indexOf(availableLanguageCodes, iname[0]) === -1;
-					});
-
-					this.initialFormValues[iname] = filteredName;
-					this.initialFormValues[iname + '_remaining'] = remainingName;
-
-					this.getWidget(iname).set('value', filteredName);
-				}));
-
-				this.onEntryLoaded();
-				this._updateButtons(this.selectedChildWidget.name);
-				deferred.resolve();
-			}));
-
-			return deferred;
-		},
-		onLoadEntry: function() {
-			// event stub
-		},
-		onEntryLoaded: function() {
-			// event stub
-		},
-		onNameQuery: function() {
-			// event stub
-		},
-		onNameQueryEnd: function() {
-			// event stub
-		},
-
-		_next: function(currentPage) {
-			if (!currentPage) {
-				this.inherited(arguments);
-			} else {
-				var origArgs = arguments;
-				this._validatePage(currentPage).then(lang.hitch(this, function() {
-					if (currentPage === 'name') {
-						var enteredName = this.getWidget('name').get('value');
-						this.onNameQuery();
-						this.moduleStore.query({
-							'objectProperty': 'name',
-							'objectPropertyValue': enteredName
-						}).then(lang.hitch(this, function(result) {
-							if (!result.length) {
-								this.inherited(origArgs);
-								this.onNameQueryEnd();
-							} else {
-								var entryToLoad = array.filter(result, function(ientry) {
-									return ientry.name === enteredName;
-								})[0];
-								if (!entryToLoad || (entryToLoad && this.dn && this.dn === entryToLoad['$dn$'])) {
-									this.inherited(origArgs);
-									this.onNameQueryEnd();
-								} else {
-									dialog.confirm(_('A portal entry with the given name already exists.'), [{
-										'name': 'cancel',
-										'label': _('Cancel'),
-										'default': true
-									}, {
-										'name': 'load',
-										'label': _('Load entry')
-									}]).then(lang.hitch(this, function(choice) {
-										if (choice === 'load') {
-											this.loadEntry(entryToLoad['$dn$']).then(lang.hitch(this, function() {
-												// if we load an existing portal entry we want to save the
-												// portal and category attribute on the portal entry object
-												// even if none of the loaded form values (e.g. displayName)
-												// have changed.
-												this._forceSave = true;
-												this.inherited(origArgs);
-											}));
-										} else {
-											this.onNameQueryEnd();
-										}
-									}));
-								}
-							}
-						}));
-					} else {
-						this.inherited(origArgs);
-					}
-				}), function(firstInvalidWidget) {
-					dijitFocus.focus(a11y.getFirstInTabbingOrder(firstInvalidWidget.domNode));
-				});
-			}
-		},
-
-		_finish: function(currentPage) {
-			var origArgs = arguments;
-			this._validatePage(currentPage).then(lang.hitch(this, function() {
-				if (this.dn) {
-					this.onSave(this.getValues());
-				} else {
-					this.onFinished(this.getValues());
-				}
-			}), function(firstInvalidWidget) {
-				dijitFocus.focus(a11y.getFirstInTabbingOrder(firstInvalidWidget.domNode));
-			});
-		},
-
-		onSave: function(values) {
-			// event stub
-		},
-
-		onRemove: function() {
-			// stub
-		}
-	});
-
-	var PortalEntryWizardPreviewTile = declare('Tile', [_WidgetBase, _TemplatedMixin], {
-		templateString: '' +
-			'<div class="previewTile umcAppGallery col-xs-4" data-dojo-attach-point="domNode">' +
-				'<div class="umcGalleryWrapperItem" data-dojo-attach-point="wrapperNode">' +
-					'<div class="cornerPiece boxShadow bl">' +
-						'<div class="hoverBackground"></div>' +
-					'</div>' +
-					'<div class="cornerPiece boxShadow tr">' +
-						'<div class="hoverBackground"></div>' +
-					'</div>' +
-					'<div class="cornerPiece boxShadowCover bl"></div>' +
-					'<div class="appIcon umcGalleryIcon" data-dojo-attach-point="iconNode">' +
-						'<img data-dojo-attach-point="imgNode"/>' +
-					'</div>' +
-					'<div class="appInnerWrapper umcGalleryItem">' +
-						'<div class="contentWrapper">' +
-							'<div class="appContent">' +
-								'<div class="umcGalleryName" data-dojo-attach-point="displayNameWrapperNode">' +
-									'<div class="umcGalleryNameContent" data-dojo-attach-point="displayNameNode"></div>' +
-								'</div>' +
-								'<div class="umcGallerySubName" data-dojo-attach-point="linkNode"></div>' +
-							'</div>' +
-							'<div class="appHover">' +
-								'<div data-dojo-attach-point="descriptionNode"></div>' +
-							'</div>' +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-			'</div>',
-
-		currentPageClass: null,
-		_setCurrentPageClassAttr: function(page) {
-			domClass.toggle(this.wrapperNode, 'hover', page === 'description');
-			domClass.replace(this.domNode, page, this.currentPageClass);
-			this._set('currentPageClass', page);
-		},
-
-		icon: null,
-		_setIconAttr: function(iconUri) {
-			this.imgNode.src = iconUri;
-			domClass.toggle(this.iconNode, 'iconLoaded', iconUri);
-			this._set('icon', iconUri);
-		},
-
-		displayName: null,
-		_setDisplayNameAttr: function(displayName) {
-			this.set('displayNameClass', displayName ? 'hasName': null);
-			this.displayNameNode.innerHTML = displayName;
-			this._set('displayName', displayName);
-		},
-		displayNameClass: null,
-		_setDisplayNameClassAttr: { node: 'displayNameWrapperNode', type: 'class' },
-
-		link: null,
-		_setLinkAttr: function(link) {
-			this.set('linkClass', link ? 'hasLink' : null);
-			this.linkNode.innerHTML = link;
-			this._set('link', link);
-		},
-		linkClass: null,
-		_setLinkClassAttr: { node: 'linkNode', type: 'class' },
-
-		description: null,
-		_setDescriptionAttr: function(description) {
-			this.set('descriptionClass', description ? 'hasDescription' : null)	;
-			this.descriptionNode.innerHTML = description;
-			this._set('description', description);
-		},
-		descriptionClass: null,
-		_setDescriptionClassAttr: { node: 'descriptionNode', type: 'class' }
-	});
-
-	// adjust white styling of header via extra CSS class
-	if (lang.getObject('portal.fontColor', false, portalJson) === 'white') {
-		try {
-			domClass.add(dom.byId('umcHeader'), 'umcWhiteIcons');
-		} catch(err) { }
-	}
-
-	// remove display=none from header
-	try {
-		domClass.remove(dom.byId('umcHeaderRight'), 'dijitDisplayNone');
-	} catch(err) { }
-
 	var locale = i18nTools.defaultLang().replace(/-/, '_');
-	var globalAppIndex = 0;
 	return {
-		portalCategories: null,
-		editMode: false,
+		// always
+		_search: null,
+		_categoryIndex: null,
+		_portalCategories: null,
+		_globalEntryIndex: null,
+		_contentNode: null,
+		_cleanupList: null,
 
-		_initStyling: function() {
-			var editPortalLogo = lang.hitch(this, function() {
-				if (!this.editMode || this.dndMode) {
-					return;
-				}
-
-				this._editProperties('settings/portal', portalJson.portal.dn, ['logo'], _('Portal logo'));
-			});
-			on(dom.byId('portalLogoEdit'), 'click', editPortalLogo);
-			on(dom.byId('portalLogo'), 'click', editPortalLogo);
-
-			on(dom.byId('portalTitle'), 'click', lang.hitch(this, function() {
-				if (!this.editMode || this.dndMode) {
-					return;
-				}
-
-				this._editProperties('settings/portal', portalJson.portal.dn, ['displayName'], _('Portal title'));
-			}));
-		},
-
-		_updateStyling: function() {
-			// update global class for edit mode
-			domClass.toggle(dom.byId('portal'), 'editMode', this.editMode);
-
-			// update title
-			var portal = portalJson.portal;
-			var title = dom.byId('portalTitle');
-			var portalName = lang.replace(portal.name[locale] || portal.name.en_US || '', tools._status);
-			title.innerHTML = portalName;
-			document.title = portalName;
-
-			// update custom logo
-			var logoNode = dom.byId('portalLogo');
-			// FIXME? instead of reloading the portal logo,
-			// use styles.insertCssRule to display the style
-			// changes made after the first site load
-			logoNode.src = portal.logo ? lang.replace('{0}?{1}', [portal.logo, Date.now()]) : '/univention/portal/portal-logo-dummy.svg';
-			domClass.toggle(logoNode, 'dijitDisplayNone', (!portal.logo && !this.editMode));
-
-			// update color of header icons
-			domClass.toggle(dom.byId('umcHeader'), 'umcWhiteIcons', lang.getObject('portal.fontColor', false, portalJson) === 'white');
-		},
+		// edit
+		_standby: null,
+		_moduleCache: null,
+		_moduleStore: null,
 
 		_reloadCss: function() {
 			// FIXME? instead of reloading the portal.css file,
@@ -974,51 +410,44 @@ define([
 		// use that instead of the initial portal.json data
 		_reloadPortalContent: function() {
 			var loadDeferred = new Deferred();
-			var counter = 0;
+
+			var waitedTime = 0;
+			var waitTime = 200;
+
+			var previousPortalJson = lang.clone(portalJson);
 
 			var _load = function() {
-				json.load('/univention/portal/portal.json', require, function(result) {
-					if (++counter >= 3) {
-						loadDeferred.resolve();
-						return;
-					}
-					if (result && result.portal && result.entries) {
-						if (tools.isEqual(result, portalJson)) {
-							_load();
+				if (waitedTime >= 3000) {
+					loadDeferred.resolve();
+					return
+				}
+
+				setTimeout(function() {
+					json.load('/univention/portal/portal.json', require, function(result) {
+						if (result && result.portal && result.entries && result.categories) {
+							if (tools.isEqual(result, previousPortalJson)) {
+								_load();
+							} else {
+								portalJson = result;
+								loadDeferred.resolve();
+							}
 						} else {
-							portalJson = result;
-							loadDeferred.resolve();
+							_load();
 						}
-					} else {
-						_load();
-					}
-				});
+					});
+				}, waitTime);
+				waitedTime += waitTime;
 			};
 
 			_load();
 			return loadDeferred;
 		},
 
-		_refreshAfterPortalEdit: function() {
+		_refresh: function(renderModeAfterRefresh) {
 			var deferred = new Deferred();
 			this._reloadPortalContent().then(lang.hitch(this, function() {
-				this._updateStyling();
 				this._reloadCss(); // FIXME only reload css if it is necessary (cssBackground / background / fontColor changed)
-				deferred.resolve();
-			}));
-			return deferred;
-		},
-
-		_refreshAfterPortalEntryEdit: function() {
-			var deferred = new Deferred();
-			this._reloadPortalContent().then(lang.hitch(this, function() {
-				array.forEach(this.portalCategories, function(iportalCategory) {
-					iportalCategory.destroyRecursive();
-				});
-				this.newCategoryButton.destroyRecursive();
-				this._createCategories();
-				this.dndSource.sync();
-				this._updateCategories();
+				this._render(renderModeAfterRefresh);
 				deferred.resolve();
 			}));
 			return deferred;
@@ -1057,13 +486,13 @@ define([
 		},
 
 		_editProperties: function(type, dn, propNames, dialogTitle, categoryIndex /*optional*/) {
-			var standbyWidget = this.standbyWidget;
+			var standbyWidget = this._standby;
 			standbyWidget.show();
 			var formDialog = null; // block scope variable
 			var _this = this;
 
-			this.moduleCache.getProperties(type, dn).then(lang.hitch(this, function(portalProps) {
-				var props = array.filter(lang.clone(portalProps), function(iprop) {
+			this._moduleCache.getProperties(type, dn).then(lang.hitch(this, function(props) {
+				var props = array.filter(lang.clone(props), function(iprop) {
 					return array.indexOf(propNames, iprop.id) >= 0;
 				});
 				var initialFormValues = {}; // set after form.load()
@@ -1074,7 +503,7 @@ define([
 					var form = new Form({
 						widgets: props,
 						layout: propNames,
-						moduleStore: this.moduleStore
+						moduleStore: this._moduleStore
 					});
 
 					on(form, 'submit', lang.hitch(this, function() {
@@ -1187,11 +616,7 @@ define([
 										content.push([result['$dn$'], []]);
 										this._saveEntryOrder(content);
 									} else {
-										var refreshFunc = {
-											'settings/portal': '_refreshAfterPortalEdit',
-											'settings/portal_category': '_refreshAfterPortalEntryEdit'
-										}[type];
-										lang.hitch(this, refreshFunc)();
+										this._refresh(portalTools.RenderMode.EDIT);
 									}
 								} else {
 									var errmsg = '';
@@ -1360,114 +785,67 @@ define([
 			}));
 		},
 
-		_categoryIndex: null,
-		_createCategories: function() {
-			this._categoryIndex = 0;
-			this.portalCategories = [];
-
-			var portal = portalJson.portal;
-			var entries = portalJson.entries;
-			var userGroups = array.map(tools.status('userGroups'), function(group) {
-				return group.toLowerCase();
+		_renderCategory: function(category, renderMode) {
+			var portalCategory = new PortalCategory({
+				heading: category.heading,
+				entries: category.entries,
+				domainName: tools.status('domainname'),
+				renderMode: renderMode,
+				category: category.dn,
+				categoryIndex: category.dn === 'localApps' ? null : this._categoryIndex++,
+				$notInPortalJSON$: category['$notInPortalJSON$']
 			});
+			this._cleanupList.widgets.push(portalCategory);
 
-			if (portal.showApps) {
-				var apps = this._getApps(installedApps, userGroups);
-				this._addCategory(_('Local Apps'), apps, 'localApps');
+			switch (renderMode) {
+				case portalTools.RenderMode.EDIT:
+					portalCategory.own(on(portalCategory, 'addEntry', lang.hitch(this, function() {
+						this.editPortalEntry(portalCategory);
+					})));
+					portalCategory.own(on(portalCategory, 'editEntry', lang.hitch(this, function(entry) {
+						if (!entry.dn) {
+							dialog.alert(_('The dn for this entry could not be found'));
+							return;
+						}
+						this.editPortalEntry(portalCategory, entry);
+					})));
+					portalCategory.own(on(portalCategory, 'entryNotInPortalJSON', lang.hitch(this, function(entry) {
+						dialog.confirm(_("<p>The entry with the dn '%s' should be shown at this position but it could not be found.</p><p>Try refreshing or calling<br><pre>univention-directory-listener-ctrl resync portal\nunivention-directory-listener-ctrl resync portal_entry\nunivention-directory-listener-ctrl resync portal_category</pre></p>", entry.dn), [{
+							label: _('Remove from this portal'),
+							callback: lang.hitch(this, function() {
+								var content = lang.clone(portalJson.portal.content);
+								content[portalCategory.categoryIndex][1].splice(entry.index, 1);
+								this._saveEntryOrder(content);
+							})
+						}, {
+							label: 'OK',
+							default: true
+						}], 'title');
+					})));
+					portalCategory.own(on(portalCategory, 'editCategory', lang.hitch(this, function() {
+						this._editProperties('settings/portal_category', portalCategory.category, ['name', 'displayName'], 'Edit category', portalCategory.categoryIndex);
+					})));
+					portalCategory.own(on(portalCategory, 'categoryNotInPortalJSON', lang.hitch(this, function() {
+						dialog.confirm(_("<p>The category with the dn '%s' should be shown at this position but it could not be found.</p><p>Try refreshing the page or calling<br><pre>univention-directory-listener-ctrl resync portal\nunivention-directory-listener-ctrl resync portal_entry\nunivention-directory-listener-ctrl resync portal_category</pre></p>", portalCategory.category), [{
+							label: _('Remove from this portal'),
+							callback: lang.hitch(this, function() {
+								var content = lang.clone(portalJson.portal.content);
+								content.splice(portalCategory.categoryIndex, 1);
+								this._saveEntryOrder(content);
+							})
+						}, {
+							label: 'OK',
+							default: true
+						}], 'title');
+					})));
+					break;
 			}
 
-			array.forEach(portalJson.portal.content, lang.hitch(this, function(ientry) {
-				var category_dn = ientry[0];
-				var entry_dns = ientry[1];
-				var category = portalJson.categories[category_dn];
-				if (!category) {
-					return;
-				}
-				var apps = this._getApps(entry_dns, userGroups);
-				var heading = category.display_name[locale] || category.display_name.en_US;
-				this._addCategory(heading, apps, category_dn);
-			}));
-
-			this._addAddCategoryButton();
+			this._portalCategories.push(portalCategory);
+			return portalCategory;
 		},
 
-		_getApps: function(entries, userGroups) {
-			var apps = [];
-			var appIndex = 0;
-			array.forEach(entries, function(entry) {
-				if (typeof entry === 'string') {
-					entry = portalJson.entries[entry];
-				}
-				if (!entry) {
-					return;
-				}
-				if (entry.user_group && userGroups.indexOf(entry.user_group.toLowerCase()) == -1) {
-					return;
-				}
-
-				var linkAndHostname = getBestLinkAndHostname(entry.links);
-				var app = {
-					name: entry.name[locale] || entry.name.en_US,
-					dn: entry.dn,
-					id: (globalAppIndex++).toString() + '_' + entry.dn,
-					index: appIndex++,
-					description: entry.description[locale] || entry.description.en_US,
-					logo_name: _getLogoName(entry.logo_name),
-					web_interface: linkAndHostname.link,
-					host_name: linkAndHostname.hostname
-				};
-				apps.push(app);
-			});
-			return apps;
-		},
-
-		_addCategory: function(heading, apps, category) {
-			var portalCategory = new PortalCategory({
-				heading: heading,
-				apps: apps,
-				domainName: tools.status('domainname'),
-				useDnd: category !== 'localApps',
-				category: category,
-				'class': 'dojoDndItem',
-				categoryIndex: category === 'localApps' ? null : this._categoryIndex++
-			});
-			domAttr.set(portalCategory.domNode, 'dndType', 'PortalCategory');
-			dojoQuery('h2', portalCategory.domNode).addClass('dojoDndHandle');
-			portalCategory.own(aspect.after(portalCategory.grid, 'onAddEntry', lang.hitch(this, function() {
-				if (!this.editMode || this.dndMode) {
-					return;
-				}
-				this.editPortalEntry(portalCategory);
-			}), true));
-			portalCategory.own(aspect.after(portalCategory.grid, 'onEditEntry', lang.hitch(this, function(item) {
-				if (!this.editMode || this.dndMode) {
-					return;
-				}
-				if (portalCategory.category === 'localApps') {
-					dialog.alert(_('Local apps can not be edited'));
-					return;
-				}
-				if (!item.dn) {
-					dialog.alert(_('The dn for this entry could not be found'));
-					return;
-				}
-				this.editPortalEntry(portalCategory, item);
-			}), true));
-			portalCategory.own(aspect.after(portalCategory, 'onEditCategory', lang.hitch(this, function() {
-				if (!this.editMode || this.dndMode) {
-					return;
-				}
-				this._editProperties('settings/portal_category', portalCategory.category, ['name', 'displayName'], 'Edit category', portalCategory.categoryIndex);
-			})));
-			this.content.appendChild(portalCategory.domNode);
-			// resize the item names after adding the category to the site.
-			// the grid items are already rendered at this point (by creating the portalCategory)
-			// but they weren't in the dom tree yet
-			portalCategory.grid._resizeItemNames();
-			this.portalCategories.push(portalCategory);
-		},
-
-		_addAddCategoryButton: function() {
+		_renderAddCategoryButton: function() {
 			var menu = new DropDownMenu({});
 			var menuItem_createNew = new MenuItem({
 				label: _('Create new category'),
@@ -1514,7 +892,8 @@ define([
 				dropDown: menu
 			});
 			this.newCategoryButton.startup();
-			put(this.content, this.newCategoryButton.domNode);
+			this._cleanupList.widgets.push(this.newCategoryButton);
+			put(this._contentNode, this.newCategoryButton.domNode);
 		},
 
 		// TODO copy pasted from udm/DetailPage.js
@@ -1545,20 +924,21 @@ define([
 		},
 
 		editPortalEntry: function(portalCategory, item) {
-			var standbyWidget = this.standbyWidget;
+			var standbyWidget = this._standby;
 			standbyWidget.show();
 			var _initialDialogTitle = item ? _('Edit entry') : _('Create entry');
 
-			this.moduleCache.getProperties('settings/portal_entry').then(lang.hitch(this, function(portalEntryProps) {
+			this._moduleCache.getProperties('settings/portal_entry').then(lang.hitch(this, function(portalEntryProps) {
 				portalEntryProps = lang.clone(portalEntryProps);
 
 				this._requireWidgets(portalEntryProps).then(lang.hitch(this, function() {
 					portalEntryProps = this._prepareProps(portalEntryProps);
 					var wizardWrapper = new ContainerWidget({});
-					var tile = new PortalEntryWizardPreviewTile();
+					var tile = new PortalEntryWizardPreviewTile({});
 					var wizard = new PortalEntryWizard({
 						portalEntryProps: portalEntryProps,
-						moduleStore: this.moduleStore
+						moduleStore: this._moduleStore,
+						locale: locale
 					});
 
 					wizard.own(on(wizard, 'loadEntry', function() {
@@ -1611,7 +991,7 @@ define([
 					// add onChange listener for displayName and description
 					// to update the preview tile if displayName or description
 					// is changed
-					var defaultValuesForResize = this.portalCategories[0].grid._getDefaultValuesForResize('.umcGalleryName');
+					var defaultValuesForResize = this._portalCategories[0].grid._getDefaultValuesForResize('.umcGalleryName');
 					array.forEach(['displayName', 'description'], function(ipropName) {
 						var widget = wizard.getWidget(ipropName);
 						widget.ready().then(function() {
@@ -1781,7 +1161,7 @@ define([
 								}
 
 								// reload categories and close wizard dialog
-								this._refreshAfterPortalEntryEdit().then(function() {
+								this._refresh(portalTools.RenderMode.EDIT).then(function() {
 									wizardDialog.hide().then(function() {
 										wizardDialog.destroyRecursive();
 										dialog.contextNotify(_('Changes saved'));
@@ -1839,7 +1219,6 @@ define([
 						on(wizard, 'entryLoaded', function() {
 							wizardDialog.standby(false);
 						});
-						wizardDialog.startup();
 						wizardDialog.show();
 						standbyWidget.hide();
 					});
@@ -1848,31 +1227,437 @@ define([
 		},
 
 		start: function() {
-			this.content = dom.byId('content');
-			this.search = registry.byId('umcLiveSearch');
-			this.search.on('search', lang.hitch(this, 'filterPortal'));
-			this._setupEditMode();
-			this._initStyling();
-			this._updateStyling();
-			put(this.content, '.dojoDndSource_PortalCategories');
-			this.dndSource = new Source(this.content, {
+			this._initProperties();
+			this._registerEventHandlerForSearch();
+			this._setupEditModeIfAuthorized();
+			this._render(portalTools.RenderMode.NORMAL);
+			this._addLinks();
+
+			// TODO
+			window.portal = this;
+			window._Button = _Button;
+		},
+
+		_initProperties: function() {
+			this._search = registry.byId('umcLiveSearch');
+			this._categoryIndex = 0;
+			this._portalCategories = [];
+			this._globalEntryIndex = 0;
+			this._contentNode = dom.byId('content');
+			this._cleanupList = {
+				handlers: [],
+				widgets: []
+			};
+		},
+
+		_registerEventHandlerForSearch: function() {
+			this._search.on('search', lang.hitch(this, 'filterPortal'));
+		},
+
+		_setupEditModeIfAuthorized: function() {
+			this._checkEditAuthorization().then(lang.hitch(this, function(canEdit) {
+				if (canEdit) {
+					this._setupEditMode();
+				}
+			}));
+		},
+
+		_checkEditAuthorization: function() {
+			var deferred = new Deferred();
+			tools.umcpCommand('get/modules').then(function(result) {
+				var isAuthorized = result.modules.some(function(module) {
+					return module.flavor === 'settings/portal_all';
+				});
+				deferred.resolve(isAuthorized);
+			});
+			return deferred;
+		},
+
+		_setupEditMode: function() {
+			// require cache only here and not at the beginning of the file
+			// because member servers and slaves do not have
+			// the univention-management-console-module-udm package installed.
+			// This method is only called when it is available
+			require(['umc/modules/udm/cache'], lang.hitch(this, function(cache) {
+				this._moduleCache = cache.get('settings/portal_all');
+				this._moduleStore = store('$dn$', 'udm', 'settings/portal_all');
+
+				this._createStandbyWidget();
+				this._createEnterEditModeButton();
+				this._createToolbar();
+			}));
+		},
+
+		_createStandbyWidget: function() {
+			this._standby = new Standby({
+				target: dom.byId('portal'),
+				zIndex: 100,
+				image: require.toUrl("dijit/themes/umc/images/standbyAnimation.svg").toString(),
+				duration: 200
+			});
+			put(dom.byId('portal'), this._standby.domNode);
+			this._standby.startup();
+		},
+
+		_createEnterEditModeButton: function() {
+			var portalEditFloatingButton = put(dom.byId('portal'), 'div.portalEditFloatingButton div.icon <');
+			new Tooltip({
+				label: _('Edit this portal'),
+				showDelay: 0,
+				hideDelay: 0,
+				connectId: [portalEditFloatingButton],
+				position: ['above']
+			});
+			on(portalEditFloatingButton, 'click', lang.hitch(this, '_render', portalTools.RenderMode.EDIT));
+		},
+
+		_createToolbar: function() {
+			var toolbar = new ContainerWidget({
+				'class': 'portalEditBar'
+			});
+			var entryOrderButton = new _Button({
+				iconClass: '',
+				'class': 'portalEditBarEntryOrderButton',
+				label: _('Order'),
+				description: _('Change order of portal entries via drag and drop'),
+				callback: lang.hitch(this, function() {
+					saveEntryOrderButton.focus();
+					this._render(portalTools.RenderMode.DND);
+				})
+			});
+			var visibilityButton = new _Button({
+				iconClass: '',
+				'class': 'portalEditBarVisibilityButton',
+				label: _('Visibility'),
+				description: _('Edit the visibility of this portal'),
+				callback: lang.hitch(this, '_editProperties', 'settings/portal', portalJson.portal.dn, ['portalComputers'], _('Portal visibility'))
+			});
+			var appearanceButton = new _Button({
+				iconClass: '',
+				'class': 'portalEditBarAppearanceButton',
+				label: _('Appearance'),
+				description: _('Edit the font color and background for this portal'),
+				callback: lang.hitch(this, '_editProperties', 'settings/portal', portalJson.portal.dn, ['fontColor', 'background', 'cssBackground'], _('Portal appearance'))
+			});
+			var closeButton = new _Button({
+				iconClass: 'umcCrossIconWhite',
+				'class': 'portalEditBarCloseButton',
+				description: _('Stop editing this portal'),
+				callback: lang.hitch(this, function() {
+					this._render(portalTools.RenderMode.NORMAL);
+					if (closeButton.focusNode.blur) {
+						closeButton.focusNode.blur();
+					}
+				})
+			});
+			toolbar.addChild(entryOrderButton);
+			toolbar.addChild(visibilityButton);
+			toolbar.addChild(appearanceButton);
+			toolbar.addChild(closeButton);
+
+			//
+			var dndbar = new ContainerWidget({
+				'class': 'portalEntryOrderBar'
+			});
+			var cancelEntryOrderButton = new _Button({
+				label: _('Cancel'),
+				'class': 'portalEntryOrderBarCancelButton',
+				callback: lang.hitch(this, function() {
+					this._render(portalTools.RenderMode.EDIT);
+				})
+			});
+			var saveEntryOrderButton = new _Button({
+				label: _('Save entry order'),
+				'class': 'portalEntryOrderBarSaveButton',
+				callback: lang.hitch(this, function() {
+					this.saveEntryOrder();
+				})
+			});
+			dndbar.addChild(cancelEntryOrderButton);
+			dndbar.addChild(saveEntryOrderButton);
+
+			//
+			put(dom.byId('portal'), toolbar.domNode);
+			put(dom.byId('portal'), dndbar.domNode);
+		},
+
+		_render: function(renderMode) {
+			this._renderMode = renderMode;
+			this._cleanupPreviousRender();
+			this._updateCssClassForCurrentRenderMode(renderMode);
+			this._renderHeader(renderMode);
+			this._renderContent(renderMode);
+			this._updateSearch(renderMode);
+		},
+
+		_cleanupPreviousRender: function() {
+			while (this._cleanupList.handlers.length) {
+				this._cleanupList.handlers.pop().remove();
+			}
+			while (this._cleanupList.widgets.length) {
+				var widget = this._cleanupList.widgets.pop();
+				if (widget.destroyRecursive) {
+					widget.destroyRecursive();
+				} else if (widget.destroy) {
+					widget.destroy();
+				}
+			}
+			this._globalEntryIndex = 0;
+			this._categoryIndex = 0;
+			this._portalCategories = [];
+		},
+
+		_updateCssClassForCurrentRenderMode: function(renderMode) {
+			tools.forIn(portalTools.RenderMode, function(renderMode, name) {
+				domClass.remove(dom.byId('portal'), name);
+			});
+			domClass.add(dom.byId('portal'), renderMode);
+		},
+
+		_renderHeader: function(renderMode) {
+			domClass.remove(dom.byId('umcHeaderRight'), 'dijitDisplayNone');
+
+			// font color
+			domClass.toggle(dom.byId('umcHeader'), 'umcWhiteIcons', lang.getObject('portal.fontColor', false, portalJson) === 'white');
+
+			// logo
+			var logoSrc = portalJson.portal.logo ? lang.replace('{0}?{1}', [portalJson.portal.logo, Date.now()]) : '/univention/portal/portal-logo-dummy.svg';
+			dom.byId('portalLogo').src = logoSrc;
+
+			// title
+			var portalName = portalJson.portal.name[locale] || portalJson.portal.name.en_US || '';
+			dom.byId('portalTitle').innerHTML = portalName;
+			document.title = portalName;
+
+			switch (renderMode) {
+				case portalTools.RenderMode.DND:
+				case portalTools.RenderMode.NORMAL:
+					domClass.toggle(dom.byId('portalLogo'), 'dijitDisplayNone', !portalJson.portal.logo);
+					break;
+				case portalTools.RenderMode.EDIT:
+					domClass.remove(dom.byId('portalLogo'), 'dijitDisplayNone');
+					this._registerEventHandlerForHeader();
+					break;
+			}
+		},
+
+		_registerEventHandlerForHeader: function() {
+			var editPortalLogo = lang.hitch(this, function() {
+				this._editProperties('settings/portal', portalJson.portal.dn, ['logo'], _('Portal logo'));
+			});
+			this._cleanupList.handlers.push(
+				on(dom.byId('portalLogoEdit'), 'click', editPortalLogo)
+			);
+			this._cleanupList.handlers.push(
+				on(dom.byId('portalLogo'), 'click', editPortalLogo)
+			);
+
+			this._cleanupList.handlers.push(
+				on(dom.byId('portalTitle'), 'click', lang.hitch(this, function() {
+					this._editProperties('settings/portal', portalJson.portal.dn, ['displayName'], _('Portal title'));
+				}))
+			);
+		},
+
+		_renderContent: function(renderMode) {
+			this._renderCategories(renderMode);
+			if (renderMode === portalTools.RenderMode.EDIT) {
+				this._renderAddCategoryButton();
+			}
+		},
+
+		_renderCategories: function(renderMode) {
+			var categories = this._getCategories(renderMode);
+
+			switch (renderMode) {
+				case portalTools.RenderMode.NORMAL:
+				case portalTools.RenderMode.EDIT:
+					categories.forEach(lang.hitch(this, function(category) {
+						var portalCategory = this._renderCategory(category, renderMode);
+						this._contentNode.appendChild(portalCategory.domNode);
+					}));
+					break;
+				case portalTools.RenderMode.DND:
+					this._createDndSource();
+					this.dndSource.insertNodes(false, categories);
+					break;
+			}
+			this._portalCategories.forEach(function(portalCategory) {
+				portalCategory.startup();
+			});
+		},
+
+		_getCategories: function(renderMode) {
+			var categories = [];
+			var userGroups = array.map(tools.status('userGroups'), function(group) {
+				return group.toLowerCase();
+			});
+
+			if (renderMode === portalTools.RenderMode.NORMAL && portalJson.portal.showApps) {
+				categories.push({
+					heading: _('Local Apps'),
+					entries: this._getEntries(installedApps, userGroups, renderMode),
+					dn: 'localApps',
+					renderMode: renderMode
+				});
+			}
+
+			array.forEach(portalJson.portal.content, lang.hitch(this, function(category) {
+				var categoryDN = category[0];
+				var entryDNs = category[1];
+				var category = portalJson.categories[categoryDN];
+				// TODO add dummy category
+				if (!category) {
+					categories.push({
+						$notInPortalJSON$: true,
+						heading: '',
+						entries: this._getEntries(entryDNs, userGroups, renderMode),
+						dn: categoryDN,
+						renderMode: renderMode
+					});
+				} else {
+					var entries = this._getEntries(entryDNs, userGroups, renderMode);
+					var heading = category.display_name[locale] || category.display_name.en_US;
+					categories.push({
+						$notInPortalJSON$: false,
+						heading: category.display_name[locale] || category.display_name.en_US,
+						entries: this._getEntries(entryDNs, userGroups, renderMode),
+						dn: categoryDN,
+						renderMode: renderMode
+					});
+				}
+			}));
+
+			return categories;
+		},
+
+		_getEntries: function(entries, userGroups, renderMode) {
+			entries = this._sanitizeEntries(entries);
+			entries = this._filterEntries(entries, userGroups, renderMode);
+			entries = this._prepareEntriesForPortalGallery(entries, renderMode);
+			return entries;
+		},
+
+		_sanitizeEntries: function(entries) {
+			return entries.map(function(entry) {
+				if (typeof entry === 'string') {
+					entry = portalJson.entries[entry] || {
+						$notInPortalJSON$: true,
+						dn: entry
+					};
+				}
+				return entry;
+			});
+		},
+
+		_filterEntries: function(entries, userGroups, renderMode) {
+			return entries.filter(function(entry) {
+				if (renderMode === portalTools.RenderMode.NORMAL) {
+					if (entry.$notInPortalJSON$) {
+						return false;
+					}
+					if (!entry.activated) {
+						return false;
+					}
+					if (entry.user_group && userGroups.indexOf(entry.user_group.toLowerCase()) == -1) {
+						return false;
+					}
+				}
+				return true;
+			});
+		},
+
+		_prepareEntriesForPortalGallery: function(entries, renderMode) {
+			var localEntryIndex = 0;
+			entries = entries.map(lang.hitch(this, function(entry) {
+				if (entry.$notInPortalJSON$) {
+					return {
+						dn: entry.dn,
+						id: (this._globalEntryIndex++).toString() + '_$entryNotInPortalJSON$',
+						index: localEntryIndex++
+					};
+				}
+
+				var linkAndHostname = getBestLinkAndHostname(entry.links);
+				return {
+					name: entry.name[locale] || entry.name.en_US,
+					dn: entry.dn,
+					// We need globally unique id for portalTools.RenderMode.DND
+					// so that we can drag an entry to a different category without
+					// an id collision
+					id: (this._globalEntryIndex++).toString() + '_' + entry.dn,
+					// We need the index of an entry within a category for portalTools.RenderMode.EDIT.
+					// We can't identify the correct portalJson.portal.content position with only
+					// the dn of the entry since an entry can be in the same category multiple times.
+					index: localEntryIndex++,
+					description: entry.description[locale] || entry.description.en_US,
+					logo_name: _getLogoName(entry.logo_name),
+					web_interface: linkAndHostname.link,
+					host_name: linkAndHostname.hostname,
+					activated: entry.activated
+				};
+			}));
+			if (renderMode === portalTools.RenderMode.EDIT) {
+				entries.push({
+					id: '$addEntryTile$'
+				});
+			}
+			return entries;
+		},
+
+		_updateSearch: function(renderMode) {
+			this._search.set('disabled', renderMode === portalTools.RenderMode.DND);
+			switch (renderMode) {
+				case portalTools.RenderMode.NORMAL:
+				case portalTools.RenderMode.EDIT:
+					this._search.set('value', this._lastSearch);
+					this._search.expandSearch();
+					this._search.focus();
+					this._search.search();
+					break;
+				case portalTools.RenderMode.DND:
+					this._search.set('value', '');
+					this._search.collapseSearch();
+					break;
+			}
+		},
+
+		_createDndSource: function() {
+			put(this._contentNode, '.dojoDndSource_PortalCategories');
+			this.dndSource = new Source(this._contentNode, {
+				copyState: function() {
+					return false; // do not allow copying
+				},
 				type: ['PortalCategories'],
 				accept: ['PortalCategory'],
-				withHandles: true
+				withHandles: true,
+				creator: lang.hitch(this, function(item, hint) {
+					var portalCategory = this._renderCategory(item, item.renderMode);
+
+					if (hint === 'avatar') {
+						return { node: portalCategory.domNode }; 
+					}
+
+					return {
+						node: portalCategory.domNode,
+						data: item,
+						type: ['PortalCategory']
+					};
+				})
 			});
-			this.dndSource.isSource = false; // set isSource to false after the constructor so that the css-classes are set correctly
-			aspect.after(this.dndSource, 'onDndStart', lang.hitch(this, function(source) {
+
+			var onDndStartHandler = aspect.after(this.dndSource, 'onDndStart', lang.hitch(this, function(source) {
 				if (source === this.dndSource) {
-					dojoQuery('.dojoDndItem_dndCover', this.content).removeClass('dijitDisplayNone');
+					dojoQuery('.dojoDndItem_dndCover', this._contentNode).removeClass('dijitDisplayNone');
 				}
 			}), true);
-			aspect.after(this.dndSource, 'onDndCancel', lang.hitch(this, function() {
-				dojoQuery('.dojoDndItem_dndCover', this.content).addClass('dijitDisplayNone');
+			var onDndCancelHandler = aspect.after(this.dndSource, 'onDndCancel', lang.hitch(this, function() {
+				dojoQuery('.dojoDndItem_dndCover', this._contentNode).addClass('dijitDisplayNone');
 			}));
-			this._createCategories();
-			this.dndSource.sync();
-			this._addLinks();
-			put(dojo.body(), new NotificationSnackbar({}).domNode);
+
+			this._cleanupList.widgets.push(this.dndSource);
+			this._cleanupList.handlers.push(onDndStartHandler);
+			this._cleanupList.handlers.push(onDndCancelHandler);
 		},
 
 		_addLinks: function() {
@@ -1890,187 +1675,7 @@ define([
 			});
 		},
 
-		_checkEditAuthorization: function() {
-			var authDeferred = new Deferred();
-
-			tools.umcpCommand('get/modules').then(function(result) {
-				var isAuthorized = array.filter(result.modules, function(iModule) {
-					return iModule.flavor === 'settings/portal_all';
-				}).length >= 1;
-				if (isAuthorized) {
-					authDeferred.resolve();
-				} else {
-					authDeferred.reject();
-				}
-			});
-
-			return authDeferred;
-		},
-
-		_setupEditMode: function() {
-			this._checkEditAuthorization().then(lang.hitch(this, function() {
-				// require cache only here because member servers and slaved do not have
-				// the univention-management-console-module-udm installed
-				require(['umc/modules/udm/cache'], lang.hitch(this, function(cache) {
-					this.moduleCache = cache.get('settings/portal_all');
-					this.moduleStore = store('$dn$', 'udm', 'settings/portal_all');
-
-					// create standby widget that covers the whole screen when loading form dialogs
-					this.standbyWidget = new Standby({
-						target: dom.byId('portal'),
-						zIndex: 100,
-						image: require.toUrl("dijit/themes/umc/images/standbyAnimation.svg").toString(),
-						duration: 200
-					});
-					put(dom.byId('portal'), this.standbyWidget.domNode);
-					this.standbyWidget.startup();
-
-					// create floating button to enter edit mode
-					this.portalEditFloatingButton = put(dom.byId('portal'), 'div.portalEditFloatingButton div.icon <');
-					// TODO is tooltip necessary? it is kind of unaesthetic
-					new Tooltip({
-						label: _('Edit this portal'),
-						showDelay: 0,
-						hideDelay: 0,
-						connectId: [this.portalEditFloatingButton],
-						position: ['above']
-					});
-					on(this.portalEditFloatingButton, 'click', lang.hitch(this, 'setEditMode', true));
-
-					// create toolbar at bottom to exit edit mode
-					// and have options to edit portal properties
-					this.portalEditBar = new ContainerWidget({
-						'class': 'portalEditBar'
-					});
-					var entryOrderButton = new _Button({
-						iconClass: '',
-						'class': 'portalEditBarEntryOrderButton',
-						label: _('Order'),
-						description: _('Change order of portal entries via drag and drop'),
-						callback: lang.hitch(this, function() {
-							saveEntryOrderButton.focus();
-							this.setDndMode(true);
-						})
-					});
-					var visibilityButton = new _Button({
-						iconClass: '',
-						'class': 'portalEditBarVisibilityButton',
-						label: _('Visibility'),
-						description: _('Edit the visibility of this portal'),
-						callback: lang.hitch(this, '_editProperties', 'settings/portal', portalJson.portal.dn, ['portalComputers'], _('Portal visibility'))
-					});
-					var appearanceButton = new _Button({
-						iconClass: '',
-						'class': 'portalEditBarAppearanceButton',
-						label: _('Appearance'),
-						description: _('Edit the font color and background for this portal'),
-						callback: lang.hitch(this, '_editProperties', 'settings/portal', portalJson.portal.dn, ['fontColor', 'background', 'cssBackground'], _('Portal appearance'))
-					});
-					var closeButton = new _Button({
-						iconClass: 'umcCrossIconWhite',
-						'class': 'portalEditBarCloseButton',
-						description: _('Stop editing this portal'),
-						callback: lang.hitch(this, function() {
-							this.setEditMode(false);
-							if (closeButton.focusNode.blur) {
-								closeButton.focusNode.blur();
-							}
-						})
-					});
-					this.portalEditBar.addChild(entryOrderButton);
-					this.portalEditBar.addChild(visibilityButton);
-					this.portalEditBar.addChild(appearanceButton);
-					this.portalEditBar.addChild(closeButton);
-
-					// create bar to save entry order and leave dnd mode
-					this.portalEntryOrderBar = new ContainerWidget({
-						'class': 'portalEntryOrderBar'
-					});
-					var cancelEntryOrderButton = new _Button({
-						label: _('Cancel'),
-						'class': 'portalEntryOrderBarCancelButton',
-						callback: lang.hitch(this, function() {
-							this.setDndMode(false);
-						})
-					});
-					var saveEntryOrderButton = new _Button({
-						label: _('Save entry order'),
-						'class': 'portalEntryOrderBarSaveButton',
-						callback: lang.hitch(this, function() {
-							this.saveEntryOrder();
-						})
-					});
-					this.portalEntryOrderBar.addChild(cancelEntryOrderButton);
-					this.portalEntryOrderBar.addChild(saveEntryOrderButton);
-
-					put(dom.byId('portal'), this.portalEditBar.domNode);
-					put(dom.byId('portal'), this.portalEntryOrderBar.domNode);
-				}));
-			}));
-		},
-
-		setEditMode: function(active) {
-			this.editMode = active;
-			this.search.set('value', ''); // reset search
-			this.search.collapseSearch();
-			this._updateStyling();
-			this._updateCategories();
-		},
-
-		setDndMode: function(active) {
-			if (this.dndMode === active) {
-				return;
-			}
-
-			var scrollY = window.scrollY;
-			this.dndMode = active;
-			this.dndSource.isSource = active;
-			this.search.set('value', ''); // reset search
-			this.search.collapseSearch();
-			domClass.toggle(dom.byId('portal'), 'dndMode', this.dndMode);
-
-
-			// hide the local apps category in dnd mode
-			var localAppsCategory = array.filter(this.portalCategories, function(iPortalCategory) {
-				return iPortalCategory.category === 'localApps';
-			})[0];
-			if (localAppsCategory) {
-				domClass.toggle(localAppsCategory.domNode, 'dijitDisplayNone', this.dndMode);
-			}
-
-			// populate dndSource of the category with the shown apps
-			var categories = array.filter(this.portalCategories, function(iPortalCategory) {
-				return iPortalCategory.category !== 'localApps';
-			});
-			array.forEach(categories, lang.hitch(this, function(iCategory) {
-				domClass.toggle(iCategory.grid.contentNode, 'dijitOffScreen', this.dndMode);
-				iCategory.grid.dndMode = this.dndMode;
-				if (this.dndMode) {
-					var apps = iCategory.grid.store.query(function(app) {
-						return !app.portalEditAddEntryDummy;
-					});
-					array.forEach(apps, function(iapp) {
-						lang.mixin(iapp, {
-							id: iapp.dn
-						});
-					});
-					iCategory.grid.insertDndData(apps);
-				} else {
-					iCategory.grid.dndSource.store.setData([]);
-					iCategory.grid.dndSource.parent.innerHTML = '';
-					iCategory.grid.dndSource.clearItems();
-				}
-			}));
-
-			// make a fresh filter if we exit dnd mode
-			if (!this.dndMode) {
-				this._refreshAfterPortalEntryEdit();
-			}
-			window.scrollTo(0, scrollY);
-		},
-
 		saveEntryOrder: function() {
-			// get new content
 			var newContent = [];
 			this.dndSource.getAllNodes().forEach(lang.hitch(this, function(portalCategoryNode) {
 				var portalCategory = dijit.byId(domAttr.get(portalCategoryNode, 'widgetId'));
@@ -2089,65 +1694,40 @@ define([
 				return;
 			}
 
-			this.standbyWidget.show();
-			this.moduleStore.put({
+			this._standby.show();
+			this._moduleStore.put({
 				'$dn$': portalJson.portal.dn,
 				content: newContent
 			}).then(lang.hitch(this, function(result) {
 				if (result.success) {
-					this._refreshAfterPortalEntryEdit().then(lang.hitch(this, function() {
-						this.setDndMode(false);
-						this.standbyWidget.hide();
+					this._refresh(portalTools.RenderMode.EDIT).then(lang.hitch(this, function() {
+						this._standby.hide();
 						dialog.contextNotify(_('Changes saved'));
 					}));
 				} else {
-					this.setDndMode(false);
-					this.standbyWidget.hide();
+					this._render(portalTools.RenderMode.EDIT);
+					this._standby.hide();
 					dialog.alert(_('Saving entry order failed'));
 				}
 			}));
 		},
 
-		_updateCategories: function() {
-			var scrollY = window.scrollY;
-			var categories = array.filter(this.portalCategories, function(iPortalCategory) {
-				return iPortalCategory.category !== 'localApps';
-			});
-
-			// FIXME this could only be done once and then use filterPortal do not show dummyNode
-			// add/remove tile to categories for adding portal entries
-			array.forEach(categories, lang.hitch(this, function(iCategory) {
-				if (this.editMode) {
-					iCategory.grid.store.add({
-						portalEditAddEntryDummy: true,
-						category: iCategory.category,
-						id: '$portalEditAddEntryDummy$'
-					});
-				} else {
-					iCategory.grid.store.remove('$portalEditAddEntryDummy$');
-				}
-			}));
-
-			array.forEach(this.portalCategories, lang.hitch(this, function(iPortalCategory) {
-				iPortalCategory.grid.editMode = this.editMode;
-			}));
-			this.filterPortal();
-			window.scrollTo(0, scrollY);
-		},
-
 		filterPortal: function() {
-			var searchPattern = lang.trim(this.search.get('value'));
-			var searchQuery = this.search.getSearchQuery(searchPattern);
+			var searchPattern = lang.trim(this._search.get('value'));
+			var searchQuery = this._search.getSearchQuery(searchPattern);
 
 			var query = function(app) {
-				return app.portalEditAddEntryDummy || searchQuery.test(app);
+				return app.id === '$addEntryTile$' || searchQuery.test(app);
 			};
 
-			array.forEach(this.portalCategories, function(category) {
+			array.forEach(this._portalCategories, function(category) {
 				category.set('query', query);
 			});
+
+			this._lastSearch = searchPattern;
 		},
 
+		// these functions are used in management/univention-portal/test/test.js
 		getHighestRankedLink: getHighestRankedLink,
 		canonicalizeIPAddress: canonicalizeIPAddress,
 		getLocalLinks: getLocalLinks,

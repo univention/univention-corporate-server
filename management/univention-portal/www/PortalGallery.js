@@ -82,26 +82,48 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.baseClass += ' umcPortalGallery';
-			this._rowHandlers = [];
 		},
 
 		buildRendering: function() {
-			this.inherited(arguments);
-			this.buildDnd();
-		},
+			domClass.add(this.domNode, this.baseClass);
 
-		buildDnd: function() {
-			if (!this.useDnd) {
-				return;
+			switch (this.renderMode) {
+				case portalTools.RenderMode.NORMAL:
+					this.inherited(arguments);
+					break;
+				case portalTools.RenderMode.EDIT:
+					this.inherited(arguments);
+					this._registerEventHandlersForEditMode();
+					break;
+				case portalTools.RenderMode.DND:
+					// no this.inherited(arguments); is intentional
+					this._createDndSource();
+					this._createDndPlaceholder();
+					break;
 			}
-
-			this.createDndSource();
-			this.createDndPlaceholder();
 		},
 
-		createDndSource: function() {
-			var dndContainer = put(this.domNode, 'div.dojoDndSource_PortalEntries');
-			this.dndSource = new Source(dndContainer, {
+		_registerEventHandlersForEditMode: function() {
+			this.own(on(this.contentNode, '.editEntryTile:click', lang.hitch(this, function(evt) {
+				evt.stopImmediatePropagation();
+				var entry = this.row(evt).data;
+				this.onEditEntry(entry);
+			})));
+			this.own(on(this.contentNode, '.addEntryTile:click', lang.hitch(this, function(evt) {
+				evt.stopImmediatePropagation();
+				this.onAddEntry();
+			})));
+			this.own(on(this.contentNode, '.notInPortalJSONTile:click', lang.hitch(this, function(evt) {
+				evt.stopImmediatePropagation();
+				var entry = this.row(evt).data;
+				this.onEntryNotInPortalJSON(entry);
+			})));
+		},
+
+		_createDndSource: function() {
+			this.contentNode = this.domNode; // the resizing methods need this.contentNode to be set
+			put(this.domNode, '.dojoDndSource_PortalEntries');
+			this.dndSource = new Source(this.domNode, {
 				type: ['PortalEntries'],
 				accept: ['PortalEntry'],
 				horizontal: true,
@@ -109,12 +131,12 @@ define([
 					return false; // do not allow copying
 				},
 				creator: lang.hitch(this, function(item, hint) {
-					var renderInfo = this.getRenderInfo(item);
-					var node = this.getDomForRenderRow(renderInfo);
-					this._resizeDndNode(node);
+					var node = this.renderRow(item);
 
 					if (hint === 'avatar') {
-						return {node: put('div.umcAppGallery', node)};
+						node = put('div.umcAppGallery', node); // wrap the tile in div a with class umcAppGallery for correct styling
+						this._resizeItemNamesOfAvatarTile(node);
+						return { node: node }; 
 					}
 
 					return {
@@ -124,13 +146,12 @@ define([
 					};
 				})
 			});
-			this.dndSource.store = new Memory({});
 		},
 
-		createDndPlaceholder: function() {
+		_createDndPlaceholder: function() {
 			this.dndPlaceholder = domConstruct.toDom('' +
 				'<div class="dndPlaceholder dojoDndItem">' +
-					'<div class="umcGalleryWrapperItem portalEditAddEntryDummy">' +
+					'<div class="umcGalleryWrapperItem addEntryTile">' +
 						'<div class="cornerPiece boxShadow bl">' +
 							'<div class="hoverBackground"></div>' +
 						'</div>' +
@@ -144,12 +165,12 @@ define([
 			this.dndPlaceholderHideout = put(this.domNode, 'div.dndPlaceholderHideout');
 			put(this.dndPlaceholderHideout, this.dndPlaceholder);
 
-			this.setupEventHandlingForDndPlaceholder();
+			this._registerEventHandlersForDndPlaceholder();
 		},
 
-		setupEventHandlingForDndPlaceholder: function() {
+		_registerEventHandlersForDndPlaceholder: function() {
 			//// move the dndPlaceholder around
-			aspect.after(this.dndSource, '_addItemClass', lang.hitch(this, function(target, cssClass) {
+			this.own(aspect.after(this.dndSource, '_addItemClass', lang.hitch(this, function(target, cssClass) {
 				if (this.dndSource.isDragging) {
 					if (target === this.dndPlaceholder) {
 						return;
@@ -179,61 +200,49 @@ define([
 						put(target, putCombinator, this.dndPlaceholder);
 					}
 				}
-			}), true);
-			aspect.after(this.dndSource, 'onMouseMove', lang.hitch(this, function() {
+			}), true));
+			// when we are dragging a tile but are not hovering over a different tile
+			// then we want to add the dndPlaceholder at the end of the gallery
+			this.own(aspect.after(this.dndSource, 'onMouseMove', lang.hitch(this, function() {
 				if (!this.dndSource.isDragging) {
 					return;
 				}
 				if (!this.dndSource.current && this.dndSource.parent.lastChild !== this.dndPlaceholder) {
 					put(this.dndSource.parent, this.dndPlaceholder);
 				}
-			}));
+			})));
 
 			//// put the dndPlaceholder back into dndPlaceholderHideout
-			aspect.before(this.dndSource, 'onDropInternal', lang.hitch(this, function() {
+			this.own(aspect.before(this.dndSource, 'onDropInternal', lang.hitch(this, function() {
 				if (!this.dndSource.current && this.dndSource.parent.lastChild === this.dndPlaceholder) {
 					this.dndSource.current = this.dndPlaceholder.previousSibling;
 				}
-			}));
-			aspect.after(this.dndSource, 'onDropInternal', lang.hitch(this, function() {
+			})));
+			this.own(aspect.after(this.dndSource, 'onDndCancel', lang.hitch(this, function() {
 				put(this.dndPlaceholderHideout, this.dndPlaceholder);
-			}));
-			aspect.after(this.dndSource, 'onDndCancel', lang.hitch(this, function() {
+			})));
+			this.own(aspect.after(this.dndSource, 'onDraggingOut', lang.hitch(this, function() {
 				put(this.dndPlaceholderHideout, this.dndPlaceholder);
-			}));
-			aspect.after(this.dndSource, 'onDraggingOut', lang.hitch(this, function() {
-				put(this.dndPlaceholderHideout, this.dndPlaceholder);
-			}));
-		},
-
-		insertDndData: function(data) {
-			this.dndSource.store.setData(data);
-			this.dndSource.insertNodes(false, this.dndSource.store.query());
-		},
-
-		postCreate: function() {
-			// TODO: this changes with Dojo 2.0
-			this.domNode.setAttribute("widgetId", this.id);
-
-			// add specific DOM classes
-			if (this.baseClass) {
-				domClass.add(this.domNode, this.baseClass);
-			}
-
-			if (this.store) {
-				this.set('store', this.store);
-			}
+			})));
 		},
 
 		startup: function() {
-			// calling startup causes the entries to be rendered 3 times from
-			// somewhere in the inheritence chain.
-			// We actally do not need (want) any of the startup code from the
-			// inheritance chain. It is just resizing which does not matter
-			// with the portal tile design and issuing the first rendering of
-			// the entries which is triggered by setting the store in
-			// this.postCreate 
-			return;
+			// Initial rendering of the entries.
+			// Since we need the PortalGallery to be in the dom for sizing
+			// purposes we set the store attribute here and not earlier.
+			switch (this.renderMode) {
+				case portalTools.RenderMode.NORMAL:
+				case portalTools.RenderMode.EDIT:
+					var store = new Observable(new Memory({
+						data: this.entries
+					}));
+					this.set('store', store);
+					break;
+				case portalTools.RenderMode.DND:
+					this.dndSource.insertNodes(false, this.entries);
+					this._resizeItemNames();
+					break;
+			}
 		},
 
 		getRenderInfo: function(item) {
@@ -246,44 +255,57 @@ define([
 			return portalTools.getIconClass(logoUrl);
 		},
 
-		getStatusIconClass: function() {
-			return (this.editMode && !this.dndMode) ? 'editIcon' : 'noStatus';
+		getStatusIconClass: function(item) {
+			return this.renderMode === portalTools.RenderMode.EDIT ? 'editIcon' : 'noStatus';
 		},
 
 		renderRow: function(item) {
-			if (item.portalEditAddEntryDummy) {
-				var domString = '' +
-					'<div class="umcGalleryWrapperItem portalEditAddEntryDummy">' +
-						'<div class="cornerPiece boxShadow bl">' +
-							'<div class="hoverBackground"></div>' +
-						'</div>' +
-						'<div class="cornerPiece boxShadow tr">' +
-							'<div class="hoverBackground"></div>' +
-						'</div>' +
-						'<div class="cornerPiece boxShadowCover bl"></div>' +
-						'<div class="dummyIcon"></div>' +
-					'</div>';
-				var domNode = domConstruct.toDom(domString);
-				this._rowHandlers.push(on(domNode, 'click', lang.hitch(this, 'onAddEntry')));
-				return domNode;
+			var domNode;
+			switch (this.renderMode) {
+				case portalTools.RenderMode.NORMAL:
+					domNode = this.inherited(arguments);
+					put(domNode, 'a[href=$]', this._getWebInterfaceUrl(item), query('.umcGalleryItem', domNode)[0]);
+					break;
+				case portalTools.RenderMode.EDIT:
+					if (item.id && item.id === '$addEntryTile$') {
+						domNode = this.getBlankTile();
+						put(domNode, '.addEntryTile');
+					} else if (item.id && item.id.indexOf('$entryNotInPortalJSON$') >= 0) {
+						domNode = this.getBlankTile();
+						put(domNode, '.notInPortalJSONTile');
+					} else {
+						domNode = this.inherited(arguments);
+						put(domNode, '.editEntryTile');
+					}
+					break;
+				case portalTools.RenderMode.DND:
+					if (item.id && item.id.indexOf('$entryNotInPortalJSON$') >= 0) {
+						domNode = this.getBlankTile();
+						put(domNode, '.notInPortalJSONTile');
+					} else {
+						var renderInfo = this.getRenderInfo(item);
+						domNode = this.getDomForRenderRow(renderInfo);
+					}
+					break;
 			}
-
-			var domNode = this.inherited(arguments);
-			if (this.editMode) {
-				this._rowHandlers.push(on(domNode, 'click', lang.hitch(this, 'onEditEntry', item)));
-			} else {
-				put(domNode, 'a[href=$]', this._getWebInterfaceUrl(item), query('.umcGalleryItem', domNode)[0]);
-			}
+			domClass.toggle(domNode, 'deactivated', item.id !== '$addEntryTile$' && !item.activated);
 			return domNode;
 		},
 
-		editMode: null,
-		_rowHandlers: null,
-		renderArray: function() {
-			array.forEach(this._rowHandlers, function(ihandler) {
-				ihandler.remove();
-			});
-			this.inherited(arguments);
+		getBlankTile: function() {
+			var domString = '' +
+				'<div class="umcGalleryWrapperItem">' +
+					'<div class="cornerPiece boxShadow bl">' +
+						'<div class="hoverBackground"></div>' +
+					'</div>' +
+					'<div class="cornerPiece boxShadow tr">' +
+						'<div class="hoverBackground"></div>' +
+					'</div>' +
+					'<div class="cornerPiece boxShadowCover bl"></div>' +
+					'<div class="dummyIcon"></div>' +
+				'</div>';
+			var domNode = domConstruct.toDom(domString);
+			return domNode;
 		},
 
 		// can't be used with dojo/on since this widget does not inherit from _WidgetBase
@@ -292,7 +314,11 @@ define([
 			// event stub
 		},
 
-		onEditEntry: function(item) {
+		onEditEntry: function(entry) {
+			// event stub
+		},
+
+		onEntryNotInPortalJSON: function(entry) {
 			// event stub
 		},
 
@@ -366,20 +392,17 @@ define([
 			return url;
 		},
 
-		_resizeDndNode: function(node) {
-			var wrapper = put('div.umcAppGallery.dijitOffScreen', node);
-			put(dojo.body(), wrapper);
+		_resizeItemNamesOfAvatarTile: function(node) {
+			var offscreenWrapper = put(dojo.body(), 'div.dijitOffScreen', node, '<');
 			var defaultValues = this._getDefaultValuesForResize('.umcGalleryName');
-			var defaultHeight = defaultValues.height;
-			var fontSize = parseInt(defaultValues.fontSize, 10) || 16;
 			query('.umcGalleryNameContent', node).forEach(lang.hitch(this, function(inode) {
 				var fontSize = parseInt(defaultValues.fontSize, 10) || 16;
-				while (domGeometry.position(inode).h > defaultHeight) {
+				while (domGeometry.position(inode).h > defaultValues.height) {
 					fontSize--;
 					domStyle.set(inode, 'font-size', fontSize + 'px');
 				}
 			}));
-			dojo.body().removeChild(wrapper);
+			put(offscreenWrapper, '!');
 		}
 	});
 });

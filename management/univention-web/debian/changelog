@@ -1,3 +1,9 @@
+univention-web (2.0.0-24) unstable; urgency=medium
+
+  * Bug #47243: add _setDisabledAttr to LiveSearch
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 18 Sep 2018 12:43:50 +0200
+
 univention-web (2.0.0-23) unstable; urgency=medium
 
   * Bug #47243: Add custom portal categories

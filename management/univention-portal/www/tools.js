@@ -33,6 +33,12 @@ define([
 	"dojox/html/styles"
 ], function(lang, styles) {
 	return {
+		RenderMode: {
+			NORMAL: 'normal',
+			EDIT: 'edit',
+			DND: 'dnd'
+		},
+
 		_insertedIconStyles: {},
 		_createWithTimeStamp: {},
 

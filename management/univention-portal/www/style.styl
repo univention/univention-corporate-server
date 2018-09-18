@@ -43,7 +43,14 @@ material-shadow(level)
 	else
 		box-shadow: none
 
+.umc .umcHeader .umcLiveSearch .umcSearchBox
+	&:before,
+	&:after,
+	&
+		border-color: #282828
+
 .umc.portal
+	// general styling
 	min-height: 100%
 	/* Chrome,Safari4+ */
 	background: url(/univention/js/dijit/themes/umc/images/background-tile.png) repeat, -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(179,179,179,1)), color-stop(31%, rgba(224,224,224,1)), color-stop(51%, rgba(240,240,240,1)), color-stop(61%, rgba(235,235,235,1)), color-stop(74%, rgba(224,224,224,1)), color-stop(100%, rgba(189,189,189,1)))
@@ -69,7 +76,7 @@ material-shadow(level)
 			@media (max-width: 550px)
 				padding-top: 40px
 
-			.umcCustomLogo
+			#portalLogo
 				width: auto
 				height: auto
 				max-width: 100px
@@ -83,12 +90,6 @@ material-shadow(level)
 
 		.umcHeaderRight
 			float: right
-
-		.umcLiveSearch .dijitTextBox
-			&:before,
-			&:after,
-			&
-				border-color: #282828
 			
 	.content
 		padding-top: 15px
@@ -99,40 +100,29 @@ material-shadow(level)
 		cursor: default
 
 		h2
-			margin-bottom: 1em
+			margin: 0
+			padding: 20px 0
 			display: inline-block
 
-			.noDisplayNameProvided
+			&.noDisplayNameProvided
 				font-style: italic
 				opacity: 0.8
 
 		.umcPortalGallery .dgrid-scroller
 			margin: 0
 
-		.dojoDndItem_dndCoverWrapper
-			position: relative
-
-		.dojoDndItem_dndCover
-			position: absolute
-			top: 0
-			bottom: 0
-			left: 0
-			right: 0
-			z-index: 2
+	.portalCategory
+		.umcPortalGallery
 			margin-left: -20px
+		.umcGalleryWrapperItem
+			margin: 12px 20px
 
-	.newCategory
-		display: none
-		margin: 15px 0 0 0
+	footer
+		a + a
+			margin-left: 20px
 
-		.dijitButtonContents
-			line-height: inherit
 
-		.dijitArrowButtonInner
-			margin-right: 16px
-	
-	.umcNotificationSnackbar
-		z-index: 28
+	// Styling for the inline editing toolbar, floating button and dialogs
 	.portalEditBar,
 	.portalEntryOrderBar
 		position: fixed
@@ -140,68 +130,12 @@ material-shadow(level)
 		left: 0
 		right: 0
 		text-align: right
-		background-color: #fff
 		material-shadow(2)
 		transition: transform 0.2s
 		height: 100px
 		background-color: rgb(250, 200, 0)
+		transform: translateY(100%)
 
-	.portalEntryOrderBar
-		z-index: 27
-		.portalEntryOrderBarSaveButton .dijitButtonText
-			color: #7ab51d
-
-		.portalEntryOrderBarSaveButton,
-		.portalEntryOrderBarCancelButton
-			&.dijitButtonActive,
-			&.dijitButtonFocused,
-			&.dijitButtonHover
-				.dijitButtonNode
-					background-color: #ffffff
-
-	@media (min-width: 550px) and (max-width: 750px)
-		.portalEditBar
-			.portalEditBarEntryOrderButton,
-			.portalEditBarVisibilityButton,
-			.portalEditBarAppearanceButton
-				.dijitButtonContents
-					display: flex
-					flex-flow: column
-
-					.dijitIcon
-						margin-bottom: 5px
-						margin-right: 16px
-	@media (min-width: 350px) and (max-width: 550px)
-		.portalEditBar
-			height: auto
-
-			.dijitButton.portalEditBarEntryOrderButton,
-			.dijitButton.portalEditBarVisibilityButton,
-			.dijitButton.portalEditBarAppearanceButton
-				width: 100%
-
-				.dijitButtonNode
-					justify-content: flex-start
-
-			.portalEditBarCloseButton
-				position: absolute
-				right: 0
-				top: 0
-				height: 100%
-		&.dndMode .portalEditBar
-			transform: translateY(100%)
-	@media (max-width: 350px)
-		.portalEntryOrderBar,
-		.portalEditBar
-			height: auto
-
-			.dijitButton
-				width: 100% !important
-		&.dndMode .portalEditBar
-			transform: translateY(100%)
-
-	.portalEntryOrderBar,
-	.portalEditBar
 		.dijitButton
 			margin: 0
 			height: 100%
@@ -216,6 +150,7 @@ material-shadow(level)
 				justify-content: center
 
 				.dijitButtonText
+					text-align: left
 					color: white
 
 			&.dijitButtonActive,
@@ -224,9 +159,46 @@ material-shadow(level)
 				.dijitButtonNode
 					background-color: rgba(0, 0, 0, 0.078)
 
+	@media (min-width: 550px)
+		.portalEditBar
+			.portalEditBarEntryOrderButton,
+			.portalEditBarVisibilityButton,
+			.portalEditBarAppearanceButton
+				.dijitButtonContents
+					display: flex
+					flex-flow: column
+
+					.dijitIcon
+						margin-bottom: 5px
+						margin-right: 16px
+
+	@media (min-width: 350px) and (max-width: 550px)
+		.portalEditBar
+			height: auto
+
+			.portalEditBarEntryOrderButton,
+			.portalEditBarVisibilityButton,
+			.portalEditBarAppearanceButton
+				width: 100%
+
+				.dijitButtonNode
+					justify-content: flex-start
+
+			.portalEditBarCloseButton
+				position: absolute
+				right: 0
+				top: 0
+				height: 100%
+
+	@media (max-width: 350px)
+		.portalEntryOrderBar,
+		.portalEditBar
+			height: auto
+
+			.dijitButton
+				width: 100% !important
+
 	.portalEditBar
-		z-index: 26
-	
 		.portalEditBarEntryOrderButton,
 		.portalEditBarVisibilityButton,
 		.portalEditBarAppearanceButton
@@ -259,99 +231,12 @@ material-shadow(level)
 			.dijitButtonText
 				display: none
 
-	&.dndMode
-		.umcHeader
-			cursor: initial
-			pointer-events: none
-
-		.portalCategory .dojoDndHandle
-			cursor: move
-			display: flex
-			align-items: center
-
-			&::before
-				display: block
-				content: ''
-				height: 40px
-				width: 30px
-				margin-right: 10px
-				background: url(portalContentSelectionDndArrow.svg) no-repeat
-				background-position: center
-				background-color: #d3d3d3
-				border-radius: 2px
-				material-shadow(1)
-
-
-	&.editMode:not(.dndMode)
-		#portalLogo,
-		#portalTitle
-			cursor: pointer
-
-		.portalLogoWrapper
-			display: inline
-			position: relative
-
-			#portalLogoEdit
-				cursor: pointer
-				top: -3px
-				right: -3px
-
-		#portalTitle
-			position: relative
-
-			&:after
-				display: block
-				content: ''
-				top: -18px
-				right: -40px
-
-		#portalTitle:after,
-		#portalLogoEdit
-			position: absolute
-			transform: scale(0.7)
-			background-image: url(editIcon.svg)
-			border-radius: 50%
-			box-shadow: 0 2px 4px rgba(1,0,0,0.157), 0 2px 7px rgba(0,1,0,0.227)
-			height: 40px
-			width: 40px
-
-		.portalCategory h2
-			position: relative
-			cursor: pointer
-
-			&::after
-				display: block
-				content: ''
-				position: absolute
-				background-image: url(editIcon.svg)
-				background-size: contain
-				border-radius: 50%
-				box-shadow: 0 2px 4px rgba(1,0,0,0.157), 0 2px 7px rgba(0,1,0,0.227)
-				height: 30px
-				width: 30px
-				bottom: 5px
-				right: -40px
-
-
-
-	&.editMode
-		.content
-			padding-bottom: 150px
-		.portalEditFloatingButton
-			opacity: 0
-			visibility: hidden
-			transition: opacity 0.2s, visibility 0s 0.25s
-		&:not(.dndMode)
-			.content .newCategory
-				display: inline-block
-	&:not(.editMode)
-		.portalEditBar
-			transform: translateY(100%)
-	&:not(.dndMode)
-		.dojoDndSource_PortalEntries
-			display: none !important
-		.portalEntryOrderBar
-			transform: translateY(100%)
+	.portalEditBar
+		z-index: 26
+	.portalEntryOrderBar
+		z-index: 27
+	.umcNotificationSnackbar
+		z-index: 28
 
 	.dijitDialog .umcSize-One
 		width: 50%
@@ -384,16 +269,6 @@ material-shadow(level)
 			margin: 18px;
 			transform: scale(1.4)
 	
-	.portalEditAddEntryDummy
-		.cornerPiece
-			background-color: #d3d3d3
-		.dummyIcon
-			position: relative
-			width: 100%
-			height: 100%
-			background: url(portal-add-entry-plus.svg) no-repeat center
-			background-size: 39px
-
 	.portalEntryWizard
 		.umcPageNav
 			display: none
@@ -436,6 +311,13 @@ material-shadow(level)
 
 				&:not(.iconLoaded) img
 					display: none
+	.portalEntryDialog,
+	.portalPropertiesDialog
+		.umcMultiInput.noRemoveButton
+			.umcMultiInputLastRowEntry
+				padding-right: 0.5em
+			.umcMultiInputRemoveButton
+				display: none
 
 	.portalEntryDialog
 		width: 650px
@@ -496,112 +378,242 @@ material-shadow(level)
 				.appHover div:not(.hasDescription)
 					transition: background-color 0.1s 0.2s ease-in
 					background-color: #e8e8e8
-	
-	.portalEntryDialog,
-	.portalPropertiesDialog
-		.umcMultiInput.noRemoveButton
-			.umcMultiInputLastRowEntry
-				padding-right: 0.5em
-			.umcMultiInputRemoveButton
-				display: none
-	
 
-	&.dojoDndMove
-		cursor: move
+	// styling for the edit mode
+	&.edit
+		#portalLogo,
+		#portalTitle
+			cursor: pointer
 
-	.dojoDndSource_PortalEntries
-		min-height: 189px
-		&:after
-			content: ''
-			display: block
-			clear: both
-	.portalCategory.dojoDndItemSelected,
-	.portalCategory.dojoDndItemAnchor,
-	.portalCategory.dojoDndItemOver
-		background-color: transparent
-		color: inherit
-
-	.portalCategory.dojoDndItemBefore
-		border-top: 2px solid grey
-
-	.portalCategory.dojoDndItemAfter
-		border-bottom: 2px solid grey
-
-	.dojoDndSource_PortalEntries
-		.dojoDndItem
-			float: left
-			padding: 0
-			border: none
-			cursor: move
-			.umcGalleryWrapperItem,
-			.appInnerWrapper
-				cursor: move
-
-		.dojoDndItemSelected,
-		.dojoDndItemOver,
-		.dojoDndItemAnchor,
-		.dndPlaceholder
-			background-color: transparent
-			border: none
-			.umcGalleryWrapperItem
-				.boxShadow
-					material-shadow(2)
-		.dojoDndItemSelected,
-		.dojoDndItemAnchor
-			.umcGalleryWrapperItem
-				.cornerPiece
-					background-color: #fbfbfb
-	
-	.dojoDndSource_PortalEntries.dojoDndSourceMoved
-		.dojoDndItemAnchor,
-		.dojoDndItemSelected
-			.umcGalleryWrapperItem
-				transform: scale(0.8)
-
-		&.dojoDndContainerOver
-			.dojoDndItemAnchor,
-			.dojoDndItemSelected
-				display: none
-
-	table.dojoDndAvatar
-		border: none
-		box-shadow: none
-		background-color: transparent
-
-		.dojoDndAvatarHeader
-			display: none
-
-		.dojoDndAvatarItem
+		#portalLogoWrapper
 			display: inline
-			opacity: 1 !important
+			position: relative
 
-		.dojoDndItem
-			padding: 0
+			#portalLogoEdit
+				cursor: pointer
+				top: -3px
+				right: -3px
 
-	.dndPlaceholderHideout .dndPlaceholder
-		display: none
-	.dndPlaceholder
-		width: 195px
-		height: 189px
-		float: left
-	.portalCategory
-		.umcPortalGallery
-			margin-left: -20px
-		.umcGalleryWrapperItem
-			margin: 12px 20px
-			transition: transform 0.3s
+		#portalTitle
+			position: relative
 
-	.umcGalleryWrapperItem
-		.appStatusIcon
+			&:after
+				display: block
+				content: ''
+				top: -18px
+				right: -40px
+
+		#portalTitle:after,
+		#portalLogoEdit
+			position: absolute
+			transform: scale(0.7)
 			background-image: url(editIcon.svg)
 			border-radius: 50%
 			box-shadow: 0 2px 4px rgba(1,0,0,0.157), 0 2px 7px rgba(0,1,0,0.227)
+			height: 40px
+			width: 40px
 
-			&.editIcon
-				background-position: 0 0
+		#content
+			padding-bottom: 150px
 
-		.appStatusHoverIcon
+		.portalEditBar
+			transform: translateY(0)
+
+		.portalCategory h2
+			position: relative
+			cursor: pointer
+
+			&::after
+				display: block
+				content: ''
+				position: absolute
+				background-image: url(editIcon.svg)
+				background-size: contain
+				border-radius: 50%
+				box-shadow: 0 2px 4px rgba(1,0,0,0.157), 0 2px 7px rgba(0,1,0,0.227)
+				height: 30px
+				width: 30px
+				top: 5px
+				right: -40px
+
+		.newCategory
+			margin: 15px 0 0 0
+
+			.dijitButtonContents
+				line-height: inherit
+
+			.dijitArrowButtonInner
+				margin-right: 16px
+
+		.addEntryTile
+			.cornerPiece
+				background-color: #d3d3d3
+			.dummyIcon
+				position: relative
+				width: 100%
+				height: 100%
+				background: url(portal-add-entry-plus.svg) no-repeat center
+				background-size: 39px
+
+		.umcGalleryWrapperItem
+			.appStatusIcon
+				background-image: url(editIcon.svg)
+				border-radius: 50%
+				box-shadow: 0 2px 4px rgba(1,0,0,0.157), 0 2px 7px rgba(0,1,0,0.227)
+
+				&.editIcon
+					background-position: 0 0
+
+			.appStatusHoverIcon
+				display: none
+
+	// styling for dnd mode
+	&.dnd
+		#content
+			padding-bottom: 150px
+
+		.portalEntryOrderBar
+			transform: translateY(0)
+
+		.portalCategory
+			.dojoDndItem_dndCoverWrapper
+				position: relative
+
+			.dojoDndItem_dndCover
+				position: absolute
+				top: 0
+				bottom: 0
+				left: 0
+				right: 0
+				z-index: 2
+				margin-left: -20px
+
+			.dojoDndHandle
+				cursor: move
+				display: flex
+				align-items: center
+
+				&::before
+					display: block
+					content: ''
+					height: 40px
+					width: 30px
+					margin-right: 10px
+					background: url(portalContentSelectionDndArrow.svg) no-repeat
+					background-position: center
+					background-color: #d3d3d3
+					border-radius: 2px
+					material-shadow(1)
+
+		&.dojoDndMove
+			cursor: move
+
+			.portalCategory
+				cursor: move
+
+		.dojoDndSource_PortalEntries
+			min-height: 189px
+			&:after
+				content: ''
+				display: block
+				clear: both
+
+		.portalCategory.dojoDndItemSelected,
+		.portalCategory.dojoDndItemAnchor,
+		.portalCategory.dojoDndItemOver
+			background-color: transparent
+			color: inherit
+
+		.portalCategory.dojoDndItemBefore
+			border-top: 2px solid grey
+
+		.portalCategory.dojoDndItemAfter
+			border-bottom: 2px solid grey
+
+		.dojoDndSource_PortalEntries
+			.dojoDndItem
+				float: left
+				padding: 0
+				border: none
+				cursor: move
+				.umcGalleryWrapperItem,
+				.appInnerWrapper
+					cursor: move
+
+			.umcGalleryWrapperItem
+				transition: transform 0.3s
+
+			.dojoDndItemSelected,
+			.dojoDndItemOver,
+			.dojoDndItemAnchor,
+			.dndPlaceholder
+				background-color: transparent
+				border: none
+				.umcGalleryWrapperItem
+					.boxShadow
+						material-shadow(2)
+
+			.dndPlaceholder .cornerPiece
+				background-color: #d3d3d3
+
+			.dojoDndItemSelected,
+			.dojoDndItemAnchor
+				.umcGalleryWrapperItem
+					.cornerPiece
+						background-color: #fbfbfb
+		
+		.dojoDndSource_PortalEntries.dojoDndSourceMoved
+			.dojoDndItemAnchor,
+			.dojoDndItemSelected
+				.umcGalleryWrapperItem
+					transform: scale(0.8)
+
+			&.dojoDndContainerOver
+				.dojoDndItemAnchor,
+				.dojoDndItemSelected
+					display: none
+
+			.dndPlaceholder
+				width: 195px
+				height: 189px
+				float: left
+
+		table.dojoDndAvatar
+			border: none
+			box-shadow: none
+			background-color: transparent
+			pointer-events: none
+
+			.dojoDndAvatarHeader
+				display: none
+
+			.dojoDndAvatarItem
+				display: inline
+				opacity: 1 !important
+
+			.dojoDndItem
+				padding: 0
+
+		.dndPlaceholderHideout .dndPlaceholder
 			display: none
-	footer
-		a + a
-			margin-left: 20px
+
+	// styling for both modes
+	&.edit,
+	&.dnd
+		.umcGalleryWrapperItem.deactivated
+			.appIcon,
+			.appInnerWrapper
+				opacity: 0.4
+
+		.portalEditFloatingButton
+			opacity: 0
+			visibility: hidden
+			transition: opacity 0.2s, visibility 0s 0.25s
+
+		.notInPortalJSONTile
+			.dummyIcon
+				position: relative
+				width: 100%
+				height: 100%
+				background: url(questionMark.svg) no-repeat center
+				background-size: 60px

@@ -31,21 +31,19 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/aspect",
 	"dojo/on",
 	"dojo/dom-class",
-	"dojo/dom-construct",
-	"dojo/query",
-	"dojo/store/Memory",
-	"dojo/store/Observable",
 	"umc/widgets/ContainerWidget",
 	"put-selector/put",
 	"./PortalGallery",
+	"./tools.js",
 	"umc/i18n!portal"
-], function(declare, lang, on, domClass, domConstruct, domQuery, Memory, Observable, ContainerWidget, put, PortalGallery, _) {
+], function(declare, lang, aspect, on, domClass, ContainerWidget, put, PortalGallery, portalTools, _) {
 	return declare("PortalCategory", [ContainerWidget], {
 		baseClass: 'portalCategory',
 
-		apps: null,
+		entries: null,
 
 		heading: null,
 
@@ -56,6 +54,7 @@ define([
 		query: null,
 
 		_setQueryAttr: function(query) {
+			domClass.remove(this.domNode, 'dijitDisplayNone'); // The category has to be visible so that this.grid._resizeItemNames() works
 			this.grid.set('query', query);
 			this._updateVisibility();
 			this._set('query', query);
@@ -70,35 +69,80 @@ define([
 				header.innerHTML = _('No display name provided');
 				put(header, '.noDisplayNameProvided');
 			}
-			this.own(on(header, 'click', lang.hitch(this, function() {
-				this.onEditCategory();
-			})));
 
 			// gallery
-			var wrapper = put(this.containerNode, 'div.dojoDndItem_dndCoverWrapper');
-			put(wrapper, 'div.dojoDndItem_dndCover.dijitDisplayNone');
 			this.grid = new PortalGallery({
-				store: new Observable(new Memory({
-					data: this.apps
-				})),
+				entries: this.entries,
 				domainName: this.domainName,
 				category: this.category,
-				useDnd: this.useDnd
+				renderMode: this.renderMode
 			});
-			put(wrapper, this.grid.domNode);
+
+			switch (this.renderMode) {
+				case portalTools.RenderMode.NORMAL:
+					this.addChild(this.grid);
+					break;
+				case portalTools.RenderMode.EDIT:
+					this.addChild(this.grid);
+					if (this.$notInPortalJSON$) {
+						this.own(on(header, 'click', lang.hitch(this, function() {
+							this.onCategoryNotInPortalJSON();
+						})));
+					} else {
+						this.own(on(header, 'click', lang.hitch(this, function() {
+							this.onEditCategory();
+						})));
+					}
+					this.own(aspect.after(this.grid, 'onAddEntry', lang.hitch(this, function() {
+						this.onAddEntry();
+					})));
+					this.own(aspect.after(this.grid, 'onEditEntry', lang.hitch(this, function(entry) {
+						this.onEditEntry(entry);
+					}), true));
+					this.own(aspect.after(this.grid, 'onEntryNotInPortalJSON', lang.hitch(this, function(entry) {
+						this.onEntryNotInPortalJSON(entry);
+					}), true));
+					break;
+				case portalTools.RenderMode.DND:
+					put(header, '.dojoDndHandle');
+					put(this.containerNode, 'div.dojoDndItem_dndCoverWrapper div.dojoDndItem_dndCover.dijitDisplayNone +', this.grid.domNode);
+					break;
+			}
 		},
 
-		postCreate: function() {
+		startup: function() {
+			this.grid.startup();
 			this._updateVisibility();
 		},
 
 		_updateVisibility: function() {
-			var appsDisplayed = domQuery('div[class*="dgrid-row"]', this.grid.contentNode);
-			var hideCategory = appsDisplayed.length === 0;
+			var hideCategory;
+			if (this.renderMode === portalTools.RenderMode.DND) {
+				hideCategory = false;
+			} else {
+				var renderedApps = this.grid.store.query(this.grid.query, this.grid.queryOptions);
+				hideCategory = renderedApps.length === 0;
+			}
 			domClass.toggle(this.domNode, 'dijitDisplayNone', hideCategory);
 		},
 
 		onEditCategory: function() {
+			// event stub
+		},
+
+		onEditEntry: function(entry) {
+			// event stub
+		},
+
+		onAddEntry: function() {
+			// event stub
+		},
+
+		onEntryNotInPortalJSON: function(entry) {
+			// event stub
+		},
+
+		onCategoryNotInPortalJSON: function() {
 			// event stub
 		}
 	});

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (8.0.5-18) unstable; urgency=medium
+
+  * Bug #47243: prevent mouse event glitch with the dnd avatar
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 18 Sep 2018 12:46:16 +0200
+
 univention-management-console-module-udm (8.0.5-17) unstable; urgency=medium
 
   * Bug #47580: Improve code quality, remove whitespace from allowed chars
