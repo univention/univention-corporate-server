@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.23-3) unstable; urgency=medium
+
+  * Bug #47580: Correct type for UCR variable
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Tue, 18 Sep 2018 17:30:28 +0200
+
 univention-directory-manager-modules (13.0.23-2) unstable; urgency=medium
 
   * Bug #46927: a portal entry can now have multiple allowed groups

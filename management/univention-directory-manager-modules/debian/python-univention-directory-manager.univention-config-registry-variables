@@ -103,5 +103,5 @@ Categories=management-udm
 [directory/manager/templates/alphanum/whitelist]
 Description[de]=Diese Zeichenkette enthält alle (Sonder-)zeichen, die bei der Nutzung der Vorlagenoption <:alphanum> nicht entfernt werden sollen.
 Description[en]=This string contains all (special) characters that shall not be removed when using the template option <:alphanum>.
-Type=bool
+Type=str
 Categories=management-udm
