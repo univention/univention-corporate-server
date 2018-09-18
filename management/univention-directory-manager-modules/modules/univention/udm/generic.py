@@ -206,6 +206,7 @@ class GenericUdm1Object(BaseUdmObject):
 		self.dn = self._udm1_object.dn
 		self.options = self._udm1_object.options
 		if not self._policies_encoder:
+			# 'auto', because list contains policies/*
 			policies_encoder_class = dn_list_property_encoder_for('auto')
 			self.__class__._policies_encoder = self._init_encoder(
 				policies_encoder_class, property_name='__policies', lo=self._lo
