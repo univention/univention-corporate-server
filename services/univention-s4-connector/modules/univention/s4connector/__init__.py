@@ -2025,3 +2025,13 @@ class ucs:
 											object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute] = values
 
 		return object_out
+
+	def identify_udm_object(self, dn, attrs):
+		for k in self.property.keys():
+			if self.modules[k].identify(unicode(dn, 'utf8'), attrs):
+				return k
+			elif self.modules_others[k]:
+				for m in self.modules_others[k]:
+					if m and m.identify(unicode(dn, 'utf8'), attrs):
+						return m
+		return None
