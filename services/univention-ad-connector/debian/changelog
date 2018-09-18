@@ -1,3 +1,9 @@
+univention-ad-connector (12.0.0-22) unstable; urgency=medium
+
+  * Bug #47209: do not remove post_attributes during add to ad
+
+ -- Felix Botner <botner@univention.de>  Tue, 18 Sep 2018 16:50:51 +0200
+
 univention-ad-connector (12.0.0-21) unstable; urgency=medium
 
   * Bug #47232: Fix broken code

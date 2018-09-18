@@ -2439,8 +2439,6 @@ class ad(univention.connector.ucs):
 
 						if value:
 							modlist.append((ldap.MOD_REPLACE, attr, value))
-						else:
-							modlist.append((ldap.MOD_DELETE, attr, None))
 
 			ud.debug(ud.LDAP, ud.INFO, "to add: %s" % object['dn'])
 			ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: addlist: %s" % addlist)
