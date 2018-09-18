@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-samba4
+fix: 7.0.2-25A~4.3.0.201809181424
+desc: |
+ This update addresses the following issue(s):
+ * Ignore netlogon_creds_cli.tdb in univention-samba4-backup.
+bug: [46468]
