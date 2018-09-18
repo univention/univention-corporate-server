@@ -44,26 +44,11 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With Univention Corporate Server 4.2-5, the fifth point release of Univention Corporate Server (UCS) 4.2 is now
-			available. It provides several feature improvements and extensions, new properties as well as
-			various improvements and bugfixes. An overview of the most important changes are:
+			With Univention Corporate Server 4.2-5, the fifth Point-Release for Univention Corporate Server (UCS) 4.2 is
+			now available. It includes various detail improvements and bug fixes, especially in the areas of Active
+			Directory Compatibility and UCS Management System. The security updates released for UCS 4.2-4 are included in this update. 
 		</para>
 
-		<itemizedlist>
-			<listitem><para>
-				The mail services <wordasword>dovecot</wordasword>, <wordasword>cyrus</wordasword> and postfix now support login with the username.
-			</para></listitem>
-			<listitem><para>
-				&ucsUCR; <envar>autostart</envar> variables are now correctly evaluated across all &ucsUCR; scopes.
-			</para></listitem>
-			<listitem><para>
-				A memory leak in &ucsUMC; in the <package>python-notifier</package> library was fixed.
-			</para></listitem>
-			<listitem><para>
-				Various security updates have been integrated into UCS 4.2-5, e.g. the Linux kernel, Samba and PostgreSQL.
-				A complete list is available in <xref linkend="relnotes:changelog"/>.
-			</para></listitem>
-		</itemizedlist>
 	</chapter>
 
 	<chapter id="relnotes:update">
