@@ -1,3 +1,9 @@
+univention-management-console (10.0.6-12) unstable; urgency=medium
+
+  * Bug #45598: improved scrolling for the LDAP directory module
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 18 Sep 2018 16:12:26 +0200
+
 univention-management-console (10.0.6-11) unstable; urgency=medium
 
   * Bug #37223: Do not forbid .css, .js, .json to enable the portal
