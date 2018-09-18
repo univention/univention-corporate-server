@@ -17,4 +17,6 @@ desc: |-
 	value and previously used and now free values could be reused if
 	necessary. This behavior has now been disabled. univentionLastUsedValue
 	is now monotonously increasing (Bug #41109).
-bug: [41109, 43442, 47243, 47580]
+  * The visibility of a portal entry object can now be restricted
+    to multiple groups instead of just one.
+bug: [41109, 43442, 47243, 47580, 46927]
