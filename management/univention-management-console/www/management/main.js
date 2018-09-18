@@ -895,7 +895,7 @@ define([
 			this._tabContainer.watch('selectedChildWidget', lang.hitch(this, function(name, oldModule, newModule) {
 				this._lastSelectedChild = oldModule;
 				this._updateHeaderColor(oldModule, newModule);
-				this._updateCSSForUDMNavigation(oldModule, newModule);
+				this._updateScrolllessUDMNavigation(newModule);
 
 				if (!newModule.moduleID) {
 					// this is the overview page, not a module
@@ -945,19 +945,15 @@ define([
 			}
 		},
 
-		_updateCSSForUDMNavigation: function(oldModule, newModule) {
+		_updateScrolllessUDMNavigation: function(newModule) {
 			if (has('trident')) {
 				// do not apply special css on IE
 				return;
 			}
-
-			if (oldModule && oldModule.moduleID === 'udm' && oldModule.moduleFlavor === 'navigation') {
-				domClass.remove(this._topContainer.domNode, 'udmNavigationScrollless');
-			}
-
-			if (newModule.moduleID === 'udm' && newModule.moduleFlavor === 'navigation') {
-				domClass.add(this._topContainer.domNode, 'udmNavigationScrollless');
-			}
+			var addClass = newModule.moduleID === 'udm' 
+				&& newModule.moduleFlavor === 'navigation' 
+				&& newModule.selectedChildWidget === newModule._searchPage;
+			domClass.toggle(this._topContainer.domNode, 'udmNavigationScrollless', addClass);
 		},
 
 		switchToOverview: function() {
