@@ -96,7 +96,7 @@ def _make_obj(obj):
 		'links': obj.get('univentionPortalEntryLink'),
 		'activated': obj.get('univentionPortalEntryActivate', [''])[0] != 'FALSE',
 		'favorite': obj.get('univentionPortalEntryFavorite', [''])[0] == 'TRUE',
-		'user_group': obj.get('univentionPortalEntryAllowedUserGroup', [''])[0],
+		'allowedGroups': obj.get('univentionPortalEntryAllowedUserGroup', []),
 		'logo_name': _save_image(obj, 'univentionPortalEntryIcon', 'entries'),
 	}
 

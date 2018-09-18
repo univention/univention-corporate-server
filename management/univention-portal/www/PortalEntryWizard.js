@@ -80,8 +80,8 @@ define([
 			lang.mixin(this, {
 				pages: [{
 					name: 'name',
-					widgets: this._getWidgets(['name', 'activated', 'userGroup']),
-					layout: [['name'], ['activated'], ['userGroup']],
+					widgets: this._getWidgets(['name', 'activated', 'allowedGroups']),
+					layout: [['name'], ['activated'], ['allowedGroups']],
 					headerText: ' ' // FIXME hacky workaround to get 'nav' to show so that Page.js adds the mainBootstrapClasses to 'main'
 				}, {
 					name: 'icon',
@@ -111,6 +111,8 @@ define([
 			this.inherited(arguments);
 
 			this.ready().then(lang.hitch(this, function() {
+				this.getWidget('name', 'allowedGroups').autoSearch = true;
+
 				// set the value of the displayName and description widget to
 				// have the available languages (the ones that are available in the menu)
 				// prefilled and do not allow the user to add or remove rows for languages
@@ -359,12 +361,8 @@ define([
 				array.forEach(this.pages, lang.hitch(this, function(ipage) {
 					array.forEach(ipage.widgets, lang.hitch(this, function(iwidgetConf) {
 						if (result[iwidgetConf.id]) {
-							// var widget = this.getWidget(iwidgetConf.id);
-							// var widgetReady = widget.ready ? widget.ready() : true;
-							// when(widgetReady).then(lang.hitch(this, function() {
 							this.getWidget(iwidgetConf.id).set('value', result[iwidgetConf.id]);
 							this.initialFormValues[iwidgetConf.id] = result[iwidgetConf.id];
-							// }));
 						}
 					}));
 				}));
@@ -458,7 +456,6 @@ define([
 												// even if none of the loaded form values (e.g. displayName)
 												// have changed.
 												this._forceSave = true;
-												this.inherited(origArgs);
 											}));
 										} else {
 											this.onNameQueryEnd();
