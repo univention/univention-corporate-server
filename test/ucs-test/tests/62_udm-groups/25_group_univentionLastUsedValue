@@ -1,0 +1,39 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create groups/group and check univentionLastUsedValue
+## tags: [udm,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import random
+import univention.uldap
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.ucr as ucr_test
+
+
+if __name__ == '__main__':
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		with udm_test.UCSTestUDM() as udm:
+			luv_dn = 'cn=gidNumber,cn=temporary,cn=univention,%s' % (ucr.get('ldap/base'),)
+			lo = univention.uldap.getAdminConnection()
+
+			lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
+			group_dn = udm.create_group()[0]
+			utils.verify_ldap_object(group_dn)
+			lastUsedValue_new = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
+			if lastUsedValue_old == lastUsedValue_new:
+				utils.fail('Create group with automatic gidNumber: univentionLastUsedValue did not change, but it should!')
+
+			lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
+			gidNumber = str(random.randint(100000, 200000))
+			group_dn = udm.create_group(gidNumber=gidNumber)[0]
+			utils.verify_ldap_object(group_dn, expected_attr={'gidNumber': [gidNumber]})
+			lastUsedValue_new = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
+			if lastUsedValue_old != lastUsedValue_new:
+				utils.fail('Create group with specified gidNumber: univentionLastUsedValue did change, but it should not!')
+
+			# Please note: modification of gidNumber is not allowed according to groups/group.py --> not tested here

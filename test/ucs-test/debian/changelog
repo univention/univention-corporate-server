@@ -1,3 +1,11 @@
+ucs-test (8.0.28-188) unstable; urgency=low
+
+  * Bug #41109: add 3 new tests for checking the handling of
+    univentionLastUsedValue of uidNumber/gidNumber when creating
+    user, group or computer objects.
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Sep 2018 13:02:26 +0200
+
 ucs-test (8.0.28-187) unstable; urgency=medium
 
   * Bug #39121: added x to 101_renew_certificate_with_grace_period 
