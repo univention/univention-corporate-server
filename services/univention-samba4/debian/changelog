@@ -1,3 +1,9 @@
+univention-samba4 (7.0.2-25) unstable; urgency=medium
+
+  * Bug #46468: ignore netlogon_creds_cli.tdb in univention-samba4-backup
+
+ -- Felix Botner <botner@univention.de>  Tue, 18 Sep 2018 14:21:55 +0200
+
 univention-samba4 (7.0.2-24) unstable; urgency=medium
 
   * Bug #47638: run /etc/init.d/samba instead of "service samba"

@@ -78,6 +78,8 @@ WHERE=/var/univention-backup/samba
 DAYS=""
 DIRS="private sysvol"
 WHEN="$(date +%Y-%m-%d)"
+IGNORE_TDBS=()
+IGNORE_TDBS+=(netlogon_creds_cli.tdb)
 
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -127,11 +129,18 @@ for d in $DIRS; do
 		for db in tdb ldb; do
 			find $relativedirname -name "*.$db.bak" -exec rm {} \;
 			for file in `find $relativedirname -name "*.$db"`; do
-				tdbbackup $file
-				Status=$?
-				if [ $Status -ne 0 ]; then
-					echo "Error while backing up $file with tdbbackup - status $Status"
-					exit 1
+				ignore=false
+				for i in ${IGNORE_TDBS[@]}; do
+					test "$(basename $file)" = "$i" && ignore=true && break
+				done
+				if ! $ignore; then
+					echo tdbbackup $file
+					tdbbackup $file
+					Status=$?
+					if [ $Status -ne 0 ]; then
+						echo "Error while backing up $file with tdbbackup - status $Status"
+						exit 1
+					fi
 				fi
 			done
 		done
