@@ -1,3 +1,9 @@
+univention-management-console-module-udm (8.0.5-20) unstable; urgency=medium
+
+  * Bug #45598: remove git rebase remnant
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 18 Sep 2018 16:21:13 +0200
+
 univention-management-console-module-udm (8.0.5-19) unstable; urgency=medium
 
   * Bug #45598: improved scrolling for the LDAP directory module
