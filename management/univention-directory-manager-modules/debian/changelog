@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.22-6) unstable; urgency=medium
+
+  * Bug #47580: Fix broken postins script
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Tue, 18 Sep 2018 11:50:12 +0200
+
 univention-directory-manager-modules (13.0.22-5) unstable; urgency=medium
 
   * Bug #47580: Sync umlauts dict with frontend
