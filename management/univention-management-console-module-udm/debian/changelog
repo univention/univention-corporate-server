@@ -1,3 +1,9 @@
+univention-management-console-module-udm (8.0.5-17) unstable; urgency=medium
+
+  * Bug #47580: Improve code quality, remove whitespace from allowed chars
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Tue, 18 Sep 2018 11:02:35 +0200
+
 univention-management-console-module-udm (8.0.5-16) unstable; urgency=medium
 
   * Bug #47580: Add alphanum option to user templates
