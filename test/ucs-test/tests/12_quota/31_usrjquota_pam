@@ -1,0 +1,17 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test setting the quota through pam with usrjquota, the j is for journaled
+## roles-not: [basesystem]
+## exposure: dangerous
+## packages:
+##   - univention-quota
+
+from quota_test import QuoataCheck
+
+
+def main():
+	quoataCheck = QuoataCheck(quota_type="usrjquota=aquota.user,jqfmt=vfsv1")
+	quoataCheck.test_quota_pam()
+
+
+if __name__ == '__main__':
+	main()

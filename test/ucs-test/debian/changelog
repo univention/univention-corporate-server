@@ -1,3 +1,9 @@
+ucs-test (8.0.28-190) unstable; urgency=medium
+
+  * Bug #47764: Add tests for setting quota through pam
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 18 Sep 2018 15:35:56 +0200
+
 ucs-test (8.0.28-189) unstable; urgency=low
 
   * Bug #41109: add execution flag for 38_user_univentionLastUsedValue
