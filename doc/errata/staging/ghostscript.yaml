@@ -8,91 +8,18 @@ desc: |
  This update addresses the following issues:
  * status command permitted with -dSAFER in psi/zfile.c allowing attackers to
    identify the size and existence of files (CVE-2018-11645)
- * .tempfile file permission issues (699657) (CVE-2018-15908)
- * shading_param incomplete type checking (699660) (CVE-2018-15909)
- * LockDistillerParams type confusion (699656) (CVE-2018-15910)
- * uninitialized memory access in the aesdecode operator (699665)
-   (CVE-2018-15911)
- * /invalidaccess bypass after failed restore (699654) (CVE-2018-16509)
- * missing type check in type checker (699659) (CVE-2018-16511)
- * setcolor missing type check (699655) (CVE-2018-16513)
+ * .tempfile file permission issues (CVE-2018-15908)
+ * shading_param incomplete type checking (CVE-2018-15909)
+ * LockDistillerParams type confusion (CVE-2018-15910)
+ * uninitialized memory access in the aesdecode operator (CVE-2018-15911)
+ * /invalidaccess bypass after failed restore (CVE-2018-16509)
+ * missing type check in type checker (CVE-2018-16511)
+ * setcolor missing type check (CVE-2018-16513)
  * incorrect access checking in temp file handling to disclose contents of
-   files (699658) (CVE-2018-16539)
- * use-after-free in copydevice handling (699661) (CVE-2018-16540)
- * incorrect free logic in pagedevice replacement (699664) (CVE-2018-16541)
- * .definemodifiedfont memory corruption if /typecheck is handled (699668)
-   (CVE-2018-16542)
- * .setdistillerkeys PostScript command is accepted even though it is not
-   intended for use (CVE-2018-16585)
- * Incorrect "restoration of privilege" checking when running out of stack
-   during exception handling (CVE-2018-16802)
- * status command permitted with -dSAFER in psi/zfile.c allowing attackers to
-   identify the size and existence of files (CVE-2018-11645)
- * uninitialized memory access in the aesdecode operator (699665)
-   (CVE-2018-15911)
- * incorrect access checking in temp file handling to disclose contents of
-   files (699658) (CVE-2018-16539)
- * .definemodifiedfont memory corruption if /typecheck is handled (699668)
-   (CVE-2018-16542)
- * .setdistillerkeys PostScript command is accepted even though it is not
-   intended for use (CVE-2018-16585)
- * Incorrect "restoration of privilege" checking when running out of stack
-   during exception handling (CVE-2018-16802)
- * status command permitted with -dSAFER in psi/zfile.c allowing attackers to
-   identify the size and existence of files (CVE-2018-11645)
- * uninitialized memory access in the aesdecode operator (699665)
-   (CVE-2018-15911)
- * incorrect access checking in temp file handling to disclose contents of
-   files (699658) (CVE-2018-16539)
- * .definemodifiedfont memory corruption if /typecheck is handled (699668)
-   (CVE-2018-16542)
- * .setdistillerkeys PostScript command is accepted even though it is not
-   intended for use (CVE-2018-16585)
- * Incorrect "restoration of privilege" checking when running out of stack
-   during exception handling (CVE-2018-16802)
- * status command permitted with -dSAFER in psi/zfile.c allowing attackers to
-   identify the size and existence of files (CVE-2018-11645)
- * uninitialized memory access in the aesdecode operator (699665)
-   (CVE-2018-15911)
- * incorrect access checking in temp file handling to disclose contents of
-   files (699658) (CVE-2018-16539)
- * .definemodifiedfont memory corruption if /typecheck is handled (699668)
-   (CVE-2018-16542)
- * .setdistillerkeys PostScript command is accepted even though it is not
-   intended for use (CVE-2018-16585)
- * Incorrect "restoration of privilege" checking when running out of stack
-   during exception handling (CVE-2018-16802)
- * status command permitted with -dSAFER in psi/zfile.c allowing attackers to
-   identify the size and existence of files (CVE-2018-11645)
- * uninitialized memory access in the aesdecode operator (699665)
-   (CVE-2018-15911)
- * incorrect access checking in temp file handling to disclose contents of
-   files (699658) (CVE-2018-16539)
- * .definemodifiedfont memory corruption if /typecheck is handled (699668)
-   (CVE-2018-16542)
- * .setdistillerkeys PostScript command is accepted even though it is not
-   intended for use (CVE-2018-16585)
- * Incorrect "restoration of privilege" checking when running out of stack
-   during exception handling (CVE-2018-16802)
- * status command permitted with -dSAFER in psi/zfile.c allowing attackers to
-   identify the size and existence of files (CVE-2018-11645)
- * uninitialized memory access in the aesdecode operator (699665)
-   (CVE-2018-15911)
- * incorrect access checking in temp file handling to disclose contents of
-   files (699658) (CVE-2018-16539)
- * .definemodifiedfont memory corruption if /typecheck is handled (699668)
-   (CVE-2018-16542)
- * .setdistillerkeys PostScript command is accepted even though it is not
-   intended for use (CVE-2018-16585)
- * Incorrect "restoration of privilege" checking when running out of stack
-   during exception handling (CVE-2018-16802)
- * status command permitted with -dSAFER in psi/zfile.c allowing attackers to
-   identify the size and existence of files (CVE-2018-11645)
- * uninitialized memory access in the aesdecode operator (699665)
-   (CVE-2018-15911)
- * incorrect access checking in temp file handling to disclose contents of
-   files (699658) (CVE-2018-16539)
- * .definemodifiedfont memory corruption if /typecheck is handled (699668)
+   files (CVE-2018-16539)
+ * use-after-free in copydevice handling (CVE-2018-16540)
+ * incorrect free logic in pagedevice replacement (CVE-2018-16541)
+ * .definemodifiedfont memory corruption if /typecheck is handled
    (CVE-2018-16542)
  * .setdistillerkeys PostScript command is accepted even though it is not
    intended for use (CVE-2018-16585)
