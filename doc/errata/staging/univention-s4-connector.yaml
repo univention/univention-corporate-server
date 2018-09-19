@@ -5,12 +5,12 @@ scope: ucs_4.3-0-errata4.3-2
 src: univention-s4-connector
 fix: 12.0.2-29A~4.3.0.201809051616
 desc: |
- This update addresses the following issue(s):
- * The S4-Connector now doesn't update the obsolete attribute
-   sambaPwdMustChange any longer.
- * When a password change on next login had been activated for a user
-   the S4-Connector removed shadowMax and krb5PasswordEnd and reset
-   shadowLastChange to 0 when syncronizing changes back from Samba/AD to
+ This update addresses the following issues:
+ * The S4-Connector no longer updates the obsolete attribute
+   sambaPwdMustChange.
+ * When "password change on next login" had been activated for a user
+   the S4-Connector removed "shadowMax" and "krb5PasswordEnd" and reset
+   "shadowLastChange" to 0 when synchronizing changes back from Samba/AD to
    UDM/OpenLDAP. In an UCS@school specific UMC module this caused a display
    issue, where the next required password change was shown as "never".
    This behavior has been fixed.
