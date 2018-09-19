@@ -362,7 +362,7 @@ define([
 			var addClass = this.moduleID === 'udm' 
 				&& this.moduleFlavor === 'navigation' 
 				&& newChild === this._searchPage;
-			domClass.toggle(dojo.byId('umcTopContainer'), 'udmNavigationScrollless', newChild === this._searchPage);
+			domClass.toggle(dojo.byId('umcTopContainer'), 'udmNavigationScrollless', addClass);
 		},
 
 		_setModuleStateAttr: function(_state) {
