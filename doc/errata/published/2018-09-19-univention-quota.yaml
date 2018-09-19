@@ -9,3 +9,5 @@ desc: |
  * Setting a user quota through a policy now works with journaled (usrjquota)
    quota as well.
 bug: [47764]
+erratum: 236
+announced: 2018-09-19
