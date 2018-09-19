@@ -66,25 +66,16 @@ def main():
 				)
 				dcslave_fqdn = '%s.%s' % (dcslave, domain)
 				handler_set(['mail/relayhost=%s' % dcslave_fqdn])
-				restart_postfix()
 				port = 60025
-				f = tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp')
 				nethelper.add_redirection(dcslave_ip, 25, port)
-				ms = MailSink('127.0.0.1', port, filename=f.name)
-				ms.start()
-
-				try:
-					wait_for_dns([(dcslave, dcslave_ip)])
+				wait_for_dns([(dcslave, dcslave_ip)])
+				restart_postfix()
+				with tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp') as fp, MailSink('127.0.0.1', port, filename=fp.name):
 					recipient = 'noreply@univention.de'
 					token = str(time.time())
 					send_mail(recipients=recipient, msg=token)
-					check_delivery_mailsink(token, f.name, True)
+					check_delivery_mailsink(token, fp.name, True)
 					check_delivery(token, recipient, False)
-				except dns.resolver.NXDOMAIN:
-					pass
-				finally:
-					ms.stop()
-					f.close()
 
 
 if __name__ == '__main__':

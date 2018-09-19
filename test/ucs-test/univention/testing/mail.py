@@ -137,6 +137,12 @@ class MailSink(object):
         self.do_run = False
         self.fqdn = fqdn
 
+    def __enter__(self):
+        self.start()
+
+    def __exit__(self, exc_type, exc_value, etraceback):
+        self.stop()
+
     def start(self):
         self.do_run = True
         self.thread = threading.Thread(target=self.runner)
