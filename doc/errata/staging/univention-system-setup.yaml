@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-system-setup
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Adapt systemsetup for firefox 60.
+bug: [47808]

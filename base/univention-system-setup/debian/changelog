@@ -1,3 +1,9 @@
+univention-system-setup (11.0.5-25) unstable; urgency=medium
+
+  * Bug #47808: Adapt setup for firefox 60
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 19 Sep 2018 13:56:51 +0200
+
 univention-system-setup (11.0.5-24) unstable; urgency=medium
 
   *  Bug #46045: Avoid using bind()
