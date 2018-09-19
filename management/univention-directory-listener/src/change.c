@@ -311,8 +311,7 @@ int change_update_schema(univention_ldap_parameters_t *lp) {
 	char *server_role;
 
 	server_role = univention_config_get_string("server/role");
-
-	if (!strcmp(server_role, "domaincontroller_master")) {
+	if (server_role && !strcmp(server_role, "domaincontroller_master")) {
 		free(server_role);
 		return LDAP_SUCCESS;
 	}

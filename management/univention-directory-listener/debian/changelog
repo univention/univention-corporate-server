@@ -1,6 +1,7 @@
 univention-directory-listener (12.0.0-24) unstable; urgency=low
 
   * Bug #47783: Make fake helper optional
+  * Bug #47837: Fix segmetation fault when UCRV server/role is unset
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 19 Sep 2018 16:15:13 +0200
 
