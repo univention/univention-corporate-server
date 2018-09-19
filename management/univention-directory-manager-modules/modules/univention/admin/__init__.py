@@ -126,8 +126,11 @@ def pattern_replace(pattern, object):
 
 				text = unicodedata.normalize('NFKD', unicode(text)).encode('ascii', 'ignore')
 			elif iCmd == 'alphanum':
-				whitelist = unicode(configRegistry.get('directory/manager/templates/alphanum/whitelist', ''), 'utf-8')
-				text = unicode(text, 'utf-8')
+				whitelist = configRegistry.get('directory/manager/templates/alphanum/whitelist', '')
+				if not type(whitelist) == unicode:
+					whitelist = unicode(whitelist, 'utf-8')
+				if not type(text) == unicode:
+					text = unicode(text, 'utf-8')
 				text = u''.join([c for c in text if (c.isalnum() or c in whitelist)])
 			elif iCmd in ('trim', 'strip'):
 				text = text.strip()

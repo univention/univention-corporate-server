@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.23-4) unstable; urgency=medium
+
+  * Bug #47580: Fix problem with converting into unicode
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Tue, 19 Sep 2018 10:49:43 +0200
+
 univention-directory-manager-modules (13.0.23-3) unstable; urgency=medium
 
   * Bug #47580: Correct type for UCR variable
