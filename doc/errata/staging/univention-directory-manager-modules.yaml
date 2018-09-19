@@ -19,4 +19,4 @@ desc: |-
     is now monotonously increasing.
   * The visibility of a portal entry object can now be restricted
     to multiple groups instead of just one.
-bug: [41109, 43442, 47243, 47580, 46927]
+bug: [43442, 47243, 47580, 41109, 46927]
