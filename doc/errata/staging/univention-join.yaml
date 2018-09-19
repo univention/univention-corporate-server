@@ -5,8 +5,8 @@ scope: ucs_4.3-0-errata4.3-2
 src: univention-join
 fix: 
 desc: |
- This update addresses the following issue(s):
- * Fixed join failing when two mac addresses are set on the computer object.
- Also, joining a host with two mac addresses now attaches them both to the
- computer object.
+ This update addresses the following issue:
+ * Fixed join failing when two MAC addresses are set on the computer object.
+   Also, joining a host with multiple network interfaces now attaches them all
+   to the computer object.
 bug: [47338]
