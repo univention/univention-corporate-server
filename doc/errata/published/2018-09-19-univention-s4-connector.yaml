@@ -15,3 +15,5 @@ desc: |
    issue, where the next required password change was shown as "never".
    This behavior has been fixed.
 bug: [45282, 47508, 47595]
+erratum: 237
+announced: 2018-09-19
