@@ -1,3 +1,10 @@
+ucs-test (8.0.28-192) unstable; urgency=medium
+
+  * Bug #47374: added 199sync_ucs_case_only_rename_ou
+  * Bug #47779: added 108sync_ucs_module_others_groupmembership_ucs_to_ad
+
+ -- Felix Botner <botner@univention.de>  Wed, 19 Sep 2018 11:54:31 +0200
+
 ucs-test (8.0.28-191) unstable; urgency=low
 
   * Bug #47719: wait for DNS to appear, make MailSink a contextmanager
@@ -26,7 +33,7 @@ ucs-test (8.0.28-188) unstable; urgency=low
 
 ucs-test (8.0.28-187) unstable; urgency=medium
 
-  * Bug #39121: added x to 101_renew_certificate_with_grace_period 
+  * Bug #39121: added x to 101_renew_certificate_with_grace_period
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Sep 2018 12:05:05 +0200
 
