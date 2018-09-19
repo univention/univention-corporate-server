@@ -79,7 +79,7 @@ static unsigned int num_rdns(LDAPDN dn) {
 
 /* climb the dntree */
 static int dntree_lookup_id4ldapdn(MDB_cursor *cur, LDAPDN dn, DNID *dnid_out, int *found_out) {
-	int rv, iRDN, found;
+	int rv = MDB_NOTFOUND, iRDN, found;
 	MDB_val key, data;
 	DNID parent, id = 0;
 	char *rdn;

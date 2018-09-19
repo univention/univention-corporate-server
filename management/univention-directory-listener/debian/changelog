@@ -1,3 +1,9 @@
+univention-directory-listener (12.0.0-25) unstable; urgency=low
+
+  * Bug #47783: Fix compilation error
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 19 Sep 2018 17:20:31 +0200
+
 univention-directory-listener (12.0.0-24) unstable; urgency=low
 
   * Bug #47783: Make fake helper optional
