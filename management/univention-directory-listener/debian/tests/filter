@@ -1,0 +1,219 @@
+#!/bin/bash
+#
+# Setup two LDAP servers to test filtering UDL cache
+# slapd:3389 -> UDN -> UDL -> slapd:7389
+#
+PS4='+ ${BASH_SOURCE[0]}:${LINENO}:${FUNCNAME[0]}@${SECONDS}: '
+set -e -u -x
+
+PORT='3389'
+BASE='o=test'
+FQDN="$(hostname).test"
+SECRET='SECRET'
+IP='127.0.0.2'
+
+die () {
+	echo "${0##/*}: $*"
+	exit 1
+}
+
+reset () {
+	local rv="$?"
+	set +e
+	[ $rv -gt 0 ] && [ -t 1 ] && bash -i
+	start-stop-daemon -R TERM/5/KILL/5 --exec /usr/sbin/slapd --stop
+	start-stop-daemon -R TERM/5/KILL/5 --exec /usr/sbin/univention-directory-listener --stop
+	rm -rf /usr/lib/univention-directory-listener/system2
+	start-stop-daemon -R TERM/5/KILL/5 --exec /usr/sbin/univention-directory-notifier --stop
+	start-stop-daemon -R TERM/5/KILL/5 --exec /usr/sbin/slapd2 --stop
+	rm -f /usr/sbin/slapd2 /etc/ldap/slapd2.conf
+	set -e
+	return "$rv"
+}
+reset
+# trap reset EXIT
+
+##### UCR
+UCR () {
+	apt-get install -y --no-install-recommends univention-config
+	grep -v '^#' <<__UCR__ | xargs -d'\n' ucr set
+hostname=${FQDN%%.*}
+domainname=${FQDN#*.}
+ldap/base=$BASE
+hosts/static/$IP=$FQDN ${FQDN%%.*}
+listener/cache/filter=(objectClass=person)
+server/role=test
+ldap/server/type=slave
+ldap/online/master=no
+ldap/master=${FQDN}
+ldap/master/port=${PORT}
+ldap/index/approx=cn,givenName,mail,sn,uid
+ldap/index/eq=cn,uid
+ldap/index/pres=cn,uid
+ldap/index/sub=cn,uid
+# ldap/translogfile=/var/lib/univention-ldap/listener/listener
+ldap/k5pwd=false
+notifier/autostart=no
+listener/autostart=no
+ldap/autostart=no
+__UCR__
+}
+UCR
+
+##### Files
+FILES () {
+	install -o listener -g openldap -m 0755 -d /var/lib/univention-ldap
+	echo 0 > /var/lib/univention-ldap/last_id  # RW=translog
+	install -o listener -g openldap -m 0775 -d /var/lib/univention-ldap/listener
+	truncate -s 0 /var/lib/univention-ldap/listener/listener  # RW=translog,UDN
+	truncate -s 0 /var/lib/univention-ldap/listener/listener.lock
+
+	chown openldap:openldap /var/lib/univention-ldap/last_id /var/lib/univention-ldap/listener/listener*
+	chmod 0660 /var/lib/univention-ldap/last_id /var/lib/univention-ldap/listener/listener*
+
+	install -o root -g openldap -m 0755 -d /var/lib/univention-ldap/notify
+	truncate -s 0 /var/lib/univention-ldap/notify/transaction  # RW=UDN RO=translog
+	chown root:openldap /var/lib/univention-ldap/notify/transaction*
+	chmod 0640 /var/lib/univention-ldap/notify/transaction*
+}
+FILES
+
+##### SSL
+SSL () {
+	rm -f "/etc/univention/ssl/$FQDN/private.key" "/etc/univention/ssl/$FQDN/cert.pem" /etc/ssl/private/ssl-cert-snakeoil.key /etc/ssl/certs/ssl-cert-snakeoil.pem /usr/local/share/ca-certificates/ssl-cert-snakeoil.crt /etc/univention/ssl/ucsCA/CAcert.pem
+	make-ssl-cert generate-default-snakeoil --force-overwrite
+	install -m 0750 -o root -g ssl-cert -d "/etc/univention/ssl/$FQDN"
+	ln -nf /etc/ssl/private/ssl-cert-snakeoil.key "/etc/univention/ssl/$FQDN/private.key"
+	ln -nf /etc/ssl/certs/ssl-cert-snakeoil.pem "/etc/univention/ssl/$FQDN/cert.pem"
+	ln -nf /etc/ssl/certs/ssl-cert-snakeoil.pem /usr/local/share/ca-certificates/ssl-cert-snakeoil.crt
+	update-ca-certificates
+	ln -nf /etc/ssl/certs/ca-certificates.crt /etc/univention/ssl/ucsCA/CAcert.pem
+	adduser openldap ssl-cert
+}
+SSL
+
+##### LDAP Primary
+PRIMARY () {
+	cat >/var/lib/univention-ldap/schema.conf <<__CONF__
+include         /etc/ldap/schema/core.schema
+include         /etc/ldap/schema/cosine.schema
+include         /etc/ldap/schema/nis.schema
+include         /etc/ldap/schema/inetorgperson.schema
+include         /etc/ldap/schema/ppolicy.schema
+include         /usr/share/univention-ldap/schema/directory.schema
+include         /usr/share/univention-ldap/schema/policy.schema
+include         /usr/share/univention-ldap/schema/krb5-kdc.schema
+include         /usr/share/univention-ldap/schema/solaris.schema
+include         /usr/share/univention-ldap/schema/dnszone.schema
+include         /usr/share/univention-ldap/schema/samba.schema
+include         /usr/share/univention-ldap/schema/univention.schema
+include         /usr/share/univention-ldap/schema/univention-objecttype.schema
+include         /usr/share/univention-ldap/schema/lock.schema
+include         /usr/share/univention-ldap/schema/univention-default.schema
+include         /usr/share/univention-ldap/schema/mail.schema
+include         /usr/share/univention-ldap/schema/user.schema
+__CONF__
+	cat >/etc/ldap/slapd2.conf <<__CONF__
+include         /var/lib/univention-ldap/schema.conf
+
+pidfile         /var/run/slapd/slapd2.pid
+argsfile        /var/run/slapd/slapd2.args
+loglevel        0
+
+TLSCertificateFile /etc/ssl/certs/ssl-cert-snakeoil.pem
+TLSCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+TLSCACertificateFile /etc/ssl/certs/ca-certificates.crt
+
+modulepath      /usr/lib/ldap
+moduleload      back_mdb.so
+moduleload      translog.so
+
+database        mdb
+suffix          "$BASE"
+rootdn          "cn=admin,$BASE"
+rootpw          "$SECRET"
+overlay         translog
+translog        /var/lib/univention-ldap/listener/listener
+maxsize         2147483648
+threads         16
+tool-threads    1
+limits users    time.soft=-1 time.hard=-1
+directory       "/var/lib/ldap"
+lastmod         on
+__CONF__
+
+	rm /var/lib/ldap/*.mdb
+
+	ucr filter < /usr/share/univention-ldap/base.ldif | slapadd -f /etc/ldap/slapd2.conf
+	chown openldap: /var/lib/ldap/*.mdb
+	cp -f --reflink=auto /usr/sbin/slapd /usr/sbin/slapd2
+
+	slapd2 -h "ldap://:$PORT" -u openldap -g openldap -f /etc/ldap/slapd2.conf
+	ldapadd -H "ldap://$FQDN:$PORT" -ZZ -x -D "cn=admin,$BASE" -w "$SECRET" <<__LDIF__
+dn: cn=test${n:-},$BASE
+objectClass: person
+sn: test${n:-}
+cn: test${n:-}
+__LDIF__
+	ldapsearch -xLLLo ldif-wrap=no -H "ldap://$FQDN:$PORT" -b "cn=test${n:-},$BASE" -s base -ZZ -D "cn=admin,$BASE" -w "$SECRET" 1.1
+}
+PRIMARY
+
+##### UDN
+UDN () {
+	/usr/sbin/univention-directory-notifier -o
+}
+UDN
+
+##### LDAP Secondary
+SECONDARY () {
+	ucr set ldap/autostart=yes
+	install -o openldap -g openldap -m 0750 -d /var/lib/univention-ldap/ldap
+	slaptest -f /etc/ldap/slapd.conf -u
+	rm -rf /etc/ldap/slapd.d  # prevent init.d/slapd prefering it
+	service slapd restart
+}
+SECONDARY
+
+###### UDL
+UDL () {
+	install -o root -g root -m 0755 -d /usr/lib/univention-directory-listener/system2
+	ln -nf /usr/lib/univention-directory-listener/system/replication.py /usr/lib/univention-directory-listener/system2/replication.py
+	/usr/sbin/univention-directory-listener -i \
+		-d 2 \
+		-b "$BASE" \
+		-m /usr/lib/univention-directory-listener/system2 \
+		-c /var/lib/univention-directory-listener \
+		-H "ldap://$FQDN:$PORT" -h "$FQDN" -p "$PORT" \
+		-x -D "cn=admin,$BASE" -w "$SECRET"
+	secret="$(sed -rne 's/^\s*rootpw\s*"(([^\"]|\\")*)"\s*(#.*)?$/\1/;T;s/\\"/"/g;p;q' /etc/ldap/rootpw.conf)"
+
+	/usr/sbin/univention-directory-listener \
+		-d 2 \
+		-b "$BASE" \
+		-m /usr/lib/univention-directory-listener/system2 \
+		-c /var/lib/univention-directory-listener \
+		-H "ldap://$FQDN:$PORT" -h "$FQDN" -p "$PORT" \
+		-x -D "cn=admin,$BASE" -w "$SECRET" &
+}
+UDL
+
+##### Replication
+REPLICATION () {
+	for ((t=0;t<10;t++))
+	do
+		sleep 1
+		[ -s /var/lib/univention-ldap/last_id  ] || continue
+		read -r tid </var/lib/univention-ldap/last_id || :  # Ignore EOF error before \n
+		[ -s /var/lib/univention-directory-listener/notifier_id ] || continue
+		read -r lid </var/lib/univention-directory-listener/notifier_id || :  # Ignore EOF error before \n
+		[ "$tid" -eq "$lid" ] && break
+	done
+	ldapsearch -xLLLo ldif-wrap=no -H "ldap://$FQDN:7389" -b "cn=test${n:-},$BASE" -s base -ZZ -D "cn=update,$BASE" -w "$secret" 1.1
+}
+REPLICATION
+
+univention-directory-listener-dump | grep -Fi "cn=test${n:-},$BASE" &&
+	die "UDL filter did not work"
+
+:
