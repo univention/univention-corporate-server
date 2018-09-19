@@ -3,9 +3,10 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-directory-listener
-fix: 12.0.0-23A~4.3.0.201809171013
+fix: 12.0.0-24A~4.3.0.201809191626
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * An alternative mechanism to initialize the Univention Directory Listener in
    large environments was added.
-bug: [47783]
+ * Fixed a crash when the UCR variable 'server/role' is not set.
+bug: [47783, 47837]
