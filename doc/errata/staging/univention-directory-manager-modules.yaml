@@ -11,12 +11,12 @@ desc: |-
   * User Templates now have access to the alphanum option.
   * For performance reasons, UDM stores the last used value of uidNumber
     and gidNumber in an LDAP object in the univentionLastUsedValue
-	attribute. Usually these two values are monotonously increasing with
-	automatic assignment. When manually specifying the uidNumber/gidNumber
-	when creating an object, however, this value could jump back to a lower
-	value and previously used and now free values could be reused if
-	necessary. This behavior has now been disabled. univentionLastUsedValue
-	is now monotonously increasing (Bug #41109).
+    attribute. Usually these two values are monotonously increasing with
+    automatic assignment. When manually specifying the uidNumber/gidNumber
+    when creating an object, however, this value could jump back to a lower
+    value and previously used and now free values could be reused if
+    necessary. This behavior has now been disabled. univentionLastUsedValue
+    is now monotonously increasing.
   * The visibility of a portal entry object can now be restricted
     to multiple groups instead of just one.
 bug: [41109, 43442, 47243, 47580, 46927]
