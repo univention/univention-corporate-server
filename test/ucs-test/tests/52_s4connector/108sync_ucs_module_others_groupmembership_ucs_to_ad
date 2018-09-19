@@ -1,0 +1,56 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check whether group membership for computer/linux (ucs_module_others) objects are synced to ad"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+RETRYREJECTED="$(ucr get connector/s4/retryrejected)"
+ad_set_retry_rejected 2
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+UDM_computers_linux_name="$(random_chars)"
+UDM_groups_group_name="$(random_chars)"
+UDM_computers_linux_dn="cn=$UDM_computers_linux_name,cn=computers,$ldap_base"
+AD_computers_linux_dn="CN=$UDM_computers_linux_name,CN=Computers,$(ad_get_base)"
+UDM_groups_group_dn="cn=$UDM_groups_group_name,cn=groups,$ldap_base"
+AD_groups_group_dn="CN=$UDM_groups_group_name,CN=Groups,$(ad_get_base)"
+
+section "test membership for ucs_module_others objects"
+
+udm_create "computers/linux" || fail_test 110
+udm_create "groups/group" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_exists "$AD_computers_linux_dn" || fail_test 110
+ad_exists "$AD_groups_group_dn" || fail_test 110
+udm_modify "computers/linux" "" "" "" "" --append groups="$UDM_groups_group_dn" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+univention-s4search cn="$UDM_computers_linux_name"
+ad_verify_multi_value_attribute_contains "$AD_computers_linux_dn" "memberOf" "$AD_groups_group_dn" || fail_test 110
+
+section "Clean up"
+
+udm_remove "computers/linux" || fail_test 110
+udm_remove "groups/group" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "computers/linux"; fail_bool 1 110
+udm_exists "groups/group"; fail_bool 1 110
+ad_exists "$AD_computers_linux_dn"; fail_bool 1 110
+ad_exists "$AD_groups_group_dn"; fail_bool 1 110
+
+ad_set_retry_rejected "$RETRYREJECTED"
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

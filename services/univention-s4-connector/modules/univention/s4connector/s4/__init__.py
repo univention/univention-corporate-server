@@ -1720,11 +1720,8 @@ class s4(univention.s4connector.ucs):
 					# can't sync them if users have no posix-account
 					continue
 
-				for k in self.property.keys():
-					if self.modules[k].identify(member_dn, member_object['attributes']):
-						mo_key = k
-						break
-				else:
+				mo_key = self.identify_udm_object(member_dn, member_object['attributes'])
+				if mo_key is None:
 					ud.debug(ud.LDAP, ud.WARN, "group_members_sync_from_ucs: failed to identify object type of ucs member, ignore membership: %s" % member_dn)
 					continue  # member is an object which will not be synced
 
