@@ -12,10 +12,14 @@ eval "$(ucr shell ldap/base windows/domain)"
 if ! dpkg -l python-winrm | grep ^ii 1>/dev/null; then
 	( . utils.sh && install_winrm )
 fi
-
+#activate umaintained repo
+ucr set repository/online/unmaintained='yes'
+apt update
+univention-install -y faketime
 # get windows client info/name
 python shared-utils/ucs-winrm.py run-ps --cmd ipconfig
 python shared-utils/ucs-winrm.py run-ps --cmd "(gwmi win32_operatingsystem).caption"
+# get hostname for check in dns of server from client
 winclient_name="$(python shared-utils/ucs-winrm.py run-ps  --cmd '$env:computername' --loglevel error | head -1 | tr -d '\r')"
 test -n "$winclient_name"
 
@@ -37,8 +41,6 @@ sleep 150
   
 #TODO A better check on client for applied GPOs
 python shared-utils/ucs-winrm.py create-share-file --server $UCS --share "testshare" --filename "testfile.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
-#echo "halli hallo" > /home/testshare/testfile.txt
-#python shared-utils/ucs-winrm.py check-share --server $UCS --sharename "testshare" --filename "testfile.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD" --driveletter P
 python shared-utils/ucs-winrm.py create-share-file --server $UCS --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share Administrator
 stat /home/Administrator/test-admin.txt
 getfacl /home/Administrator/test-admin.txt | grep "Domain.*Admin"
@@ -67,7 +69,7 @@ python shared-utils/ucs-winrm.py get-acl-for-share-file --server $UCS --filename
 
 python shared-utils/ucs-winrm.py check-applied-gpos --client "$WINCLIENT" --username 'administrator' --userpwd "$ADMIN_PASSWORD" --usergpo 'Default Domain Policy' --usergpo 'NewGPO' --computergpo 'Default Domain Policy'
 python shared-utils/ucs-winrm.py check-applied-gpos --client "$WINCLIENT" --username 'newuser01' --userpwd "Univention.99" --usergpo 'Default Domain Policy' --usergpo 'NewGPO' --computergpo 'Default Domain Policy'
-
+#printertest network printer in master
 python shared-utils/ucs-winrm.py setup-printer --printername Masterprinter --server "$UCS"
 rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
 sleep 20
@@ -83,13 +85,17 @@ stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
 python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univention123!"
 #change pw policies
 udm policies/pwhistory modify --dn 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=sambatest,dc=local' --set expiryInterval=2	
-udm policies/pwhistory modify --dn 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=sambatest,dc=local' --set length=5	
-samba-tool domain passwordsettings set --max-pwd-age=2
-python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ1"
-python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ" ?> expectederror
-python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univention123!" ?> expectederror
-python shared-utils/ucs-winrm.py run-ps --cmd hostname > WINCLIENTNAME
-host $(cat WINCLIENTNAME | grep WIN | cut -c 1-15)
+udm policies/pwhistory modify --dn 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=sambatest,dc=local' --set pwLength=5	
+udm policies/pwhistory modify --dn 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=sambatest,dc=local' --set length=2
+samba-tool domain passwordsettings set --min-pwd-length=5 --max-pwd-age=2 --history-length=2
+#change pw after policiesw changes
+python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ!"
+python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ" --debug 2>&1 | grep Exception
+python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univention123!"
+#check expiration date of PW
+python shared-utils/ucs-winrm.py run-ps --cmd "net user newuser01 /domain" --impersonate --run-as-user Administrator | grep $(date -d "+2 days" +"%d.%m.%Y")
+#python shared-utils/ucs-winrm.py run-ps --cmd hostname > WINCLIENTNAME
+#host $(cat WINCLIENTNAME | grep WIN | cut -c 1-15)
 
 test -z "$(find /var -name core)"
 
