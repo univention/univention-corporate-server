@@ -1,3 +1,9 @@
+univention-nagios-raid (7.0.1-0) unstable; urgency=medium
+
+  * Bug #47319: use mdstat plugin in check_raid test
+
+ -- Felix Botner <botner@univention.de>  Wed, 19 Sep 2018 11:12:56 +0200
+
 univention-nagios-raid (7.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
