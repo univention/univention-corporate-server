@@ -329,12 +329,24 @@ class Domain(PersistentCached):
 			domain_tree = ET.fromstring(xml)
 		except ET.XMLSyntaxError:
 			return
-		devices = domain_tree.find('devices', namespaces=XMLNS)
+
 		self.pd.domain_type = domain_tree.attrib['type']
 		if not self.pd.domain_type:
 			logger.error("Failed /domain/@type from %s" % xml)
 		self.pd.uuid = domain_tree.findtext('uuid', namespaces=XMLNS)
 		self.pd.name = domain_tree.findtext('name', namespaces=XMLNS)
+		self.xml2obj_boot(domain_tree)
+		self.xml2obj_clock(domain_tree)
+
+		devices = domain_tree.find('devices', namespaces=XMLNS)
+		self.xml2obj_disks(devices)
+		self.xml2obj_interfaces(devices)
+		self.xml2obj_graphics(devices)
+
+		self.pd.targethosts = [host.text for host in domain_tree.findall('metadata/uvmm:migrationtargethosts/uvmm:hostname', namespaces=XMLNS)]
+
+	def xml2obj_boot(self, domain_tree):
+		"""Parse boot information from XML."""
 		os_ = domain_tree.find('os', namespaces=XMLNS)
 		if os_ is not None:
 			typ = os_.find('type', namespaces=XMLNS)
@@ -350,10 +362,15 @@ class Domain(PersistentCached):
 		if bootloader is not None:
 			self.pd.bootloader = bootloader.text
 			self.pd.bootloader_args = domain_tree.findtext('bootloader_args', namespaces=XMLNS)
+
+	def xml2obj_clock(self, domain_tree):
+		"""Parse clock information from XML."""
 		clock = domain_tree.find('clock', namespaces=XMLNS)
 		if clock is not None:
 			self.pd.rtc_offset = clock.attrib.get('offset')
 
+	def xml2obj_disks(self, devices):
+		"""Parse disks from XML."""
 		self.pd.disks = []
 		for disk in devices.findall('disk', namespaces=XMLNS):
 			dev = Disk()
@@ -385,6 +402,8 @@ class Domain(PersistentCached):
 
 			self.pd.disks.append(dev)
 
+	def xml2obj_interfaces(self, devices):
+		"""Parse interfaces from XML."""
 		self.pd.interfaces = []
 		for iface in devices.findall('interface', namespaces=XMLNS):
 			dev = Interface()
@@ -412,6 +431,8 @@ class Domain(PersistentCached):
 
 			self.pd.interfaces.append(dev)
 
+	def xml2obj_graphics(self, devices):
+		"""Parse graphics from XML."""
 		self.pd.graphics = []
 		for graphic in devices.findall('graphics', namespaces=XMLNS):
 			dev = Graphic()
@@ -437,8 +458,6 @@ class Domain(PersistentCached):
 			else:
 				logger.error('Unsupported graphics type: %s' % type)
 			self.pd.graphics.append(dev)
-
-		self.pd.targethosts = [host.text for host in domain_tree.findall('metadata/uvmm:migrationtargethosts/uvmm:hostname', namespaces=XMLNS)]
 
 	def key(self):
 		"""Return a unique key for this domain and generation."""
