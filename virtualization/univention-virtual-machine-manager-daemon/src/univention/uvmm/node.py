@@ -65,6 +65,17 @@ configRegistry.load()
 logger = logging.getLogger('uvmmd.node')
 
 STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED')
+DOM_EVENT_STRINGS = (
+	("Defined", ("Added", "Updated", "Renamed", "Snapshot")),
+	("Undefined", ("Removed", "Renamed")),
+	("Started", ("Booted", "Migrated", "Restored", "Snapshot", "Wakeup")),
+	("Suspended", ("Paused", "Migrated", "IOError", "Watchdog", "Restored", "Snapshot", "API error", "Postcopy", "Postcopy failed")),
+	("Resumed", ("Unpaused", "Migrated", "Snapshot", "Postcopy")),
+	("Stopped", ("Shutdown", "Destroyed", "Crashed", "Migrated", "Saved", "Failed", "Snapshot")),
+	("Shutdown", ("Finished", "On guest request", "On host request")),
+	("PMSuspended", ("Memory", "Disk")),
+	("Crashed", ("Panicked",)),
+)
 
 XMLNS = {
 	'uvmm': 'https://univention.de/uvmm/1.0',
@@ -619,34 +630,38 @@ class Node(PersistentCached):
 		self.pd.capabilities = DomainTemplate.list_from_xml(xml)
 		self.libvirt_version = self.conn.getLibVersion()
 
-		def domain_callback(conn, dom, event, detail, node):
-			"""Handle domain addition, update and removal."""
-			try:
-				eventStrings = ("Added", "Removed", "Started", "Suspended", "Resumed", "Stopped", "Saved", "Restored")
-				logger.debug("domain_callback %s(%s) %s %d" % (dom.name(), dom.ID(), eventStrings[event], detail))
-				uuid = dom.UUIDString()
-				if event == libvirt.VIR_DOMAIN_EVENT_DEFINED:
+		self.domainCB = self.conn.domainEventRegisterAny(None, libvirt.VIR_DOMAIN_EVENT_ID_LIFECYCLE, self.livecycle_event, None)
+
+	def livecycle_event(self, conn, dom, event, detail, opaque):
+		"""Handle domain addition, update and removal."""
+		log = logger.getChild('livecycle')
+		try:
+			log.debug(
+				"Domain %s(%s) Event %s Details %s",
+				dom.name(),
+				dom.ID(),
+				DOM_EVENT_STRINGS[event][0],
+				DOM_EVENT_STRINGS[event][1][detail],
+			)
+			uuid = dom.UUIDString()
+			if event == libvirt.VIR_DOMAIN_EVENT_UNDEFINED:
+				if detail == libvirt.VIR_DOMAIN_EVENT_UNDEFINED_REMOVED:
+					del self.domains[uuid]
+			else:
+				try:
+					domStat = self.domains[uuid]
+				except LookupError:
 					domStat = Domain(dom, node=self)
 					self.domains[uuid] = domStat
-				elif event == libvirt.VIR_DOMAIN_EVENT_UNDEFINED:
-					try:
-						del self.domains[uuid]
-					except KeyError:
-						pass
-				else:  # VIR_DOMAIN_EVENT_STARTED _SUSPENDED _RESUMED _STOPPED
-					try:
-						domStat = self.domains[uuid]
-						domStat.update(dom)
-						self.write_novnc_tokens()
-					except KeyError:
-						# during migration events are not ordered causal
-						pass
-			except Exception:
-				logger.error('%s: Exception handling callback' % (self.pd.uri,), exc_info=True)
-				# don't crash the event handler
-
-		self.conn.domainEventRegister(domain_callback, self)
-		self.domainCB = domain_callback
+				domStat.update(dom)
+			if event in (libvirt.VIR_DOMAIN_EVENT_STARTED, libvirt.VIR_DOMAIN_EVENT_RESUMED):
+				self.write_novnc_tokens()
+		except KeyError:
+			# during migration events are not ordered causal
+			pass
+		except Exception:
+			log.error('%s: Exception handling callback' % (self.pd.uri,), exc_info=True)
+			# don't crash the event handler
 
 	def unregister(self, wait=False):
 		"""Unregister callbacks doing updates."""
@@ -668,9 +683,9 @@ class Node(PersistentCached):
 		if self.conn is not None:
 			if self.domainCB is not None:
 				try:
-					self.conn.domainEventDeregister(self.domainCB)
+					self.conn.domainEventDeregisterAny(self.domainCB)
 				except Exception:
-					logger.error("%s: Exception in domainEventDeregister" % (self.pd.uri,), exc_info=True)
+					logger.error("%s: Exception in domainEventDeregisterAny" % (self.pd.uri,), exc_info=True)
 				self.domainCB = None
 
 			try:
