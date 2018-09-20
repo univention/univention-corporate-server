@@ -277,7 +277,7 @@ class AppcenterApp(object):
 			yield self.file_info(basename, url, readme_filename)
 
 		# Adding ucr, schema, (un)joinscript, etc
-		for ext in ['univention-config-registry-variables', 'schema', 'attributes', 'configure', 'configure_host', 'settings', 'preinst', 'inst', 'prerm', 'uinst', 'setup', 'store_data', 'restore_data_before_setup', 'restore_data_after_setup', 'update_available', 'update_packages', 'update_release', 'update_app_version', 'env', 'update_certificates', 'listener_trigger']:
+		for ext in ['univention-config-registry-variables', 'schema', 'attributes', 'configure', 'configure_host', 'settings', 'preinst', 'inst', 'prerm', 'uinst', 'setup', 'store_data', 'restore_data_before_setup', 'restore_data_after_setup', 'update_available', 'update_packages', 'update_release', 'update_app_version', 'env', 'update_certificates', 'listener_trigger', 'compose']:
 			control_filename = self._components_dir(ext)
 			if os.path.exists(control_filename):
 				basename = os.path.basename(control_filename)
