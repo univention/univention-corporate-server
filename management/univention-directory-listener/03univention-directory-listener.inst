@@ -163,6 +163,7 @@ then
 	for handler in $listener_init_fake  # IFS
 	do
 		fake_helper="fake_$handler"
+		echo "faking handler '$handler' ..."
 		if have "$fake_helper"
 		then
 			"$fake_helper"

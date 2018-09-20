@@ -1,3 +1,9 @@
+univention-directory-listener (12.0.0-26) unstable; urgency=low
+
+  * Bug #47783: Add log message for fake handler initialization
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 20 Sep 2018 16:58:20 +0200
+
 univention-directory-listener (12.0.0-25) unstable; urgency=low
 
   * Bug #47783: Fix compilation error
