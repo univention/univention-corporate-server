@@ -40,6 +40,8 @@ if [ ! -f "$product_test" ]; then
 	exit 1
 fi
 
+TEST_FUNCTION=""
+TEST_FUNCTION=${@:$OPTIND:1}
 set -e
 
 section=$(dirname "$product_test")
@@ -61,9 +63,17 @@ EOF
 	sshpass -p "$password" scp -r "./product-tests" "$user"@"$server":/root
 	sshpass -p "$password" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -T "$user"@"$server" <<EOF
 cd /root
-bash -x $product_test
+if [ -n "$TEST_FUNCTION" ]; then
+	. $product_test && "$TEST_FUNCTION"
+else
+	bash -x $product_test
+fi
 env
 EOF
 else
-	bash -x $product_test
+	if [ -n "$TEST_FUNCTION" ]; then
+		. $product_test && "$TEST_FUNCTION"
+	else
+		bash -x $product_test
+	fi
 fi
