@@ -64,8 +64,6 @@ class Nodes(object):
 			'cpus': <number of CPUs>,
 			'cpuUsage': <cpu usage in %>,
 			'available': (True|False),
-			'supports_suspend': (True|False),
-			'supports_snapshot': (True|False)
 			}, ...]
 		"""
 		def _finished(data):
@@ -87,8 +85,6 @@ class Nodes(object):
 					'cpuUsage': (node_pd.cpu_usage or 0) / 10.0,
 					'available': node_pd.last_try == node_pd.last_update,
 					'cpus': node_pd.cpus,
-					'supports_suspend': node_pd.supports_suspend,
-					'supports_snapshot': node_pd.supports_snapshot,
 				})
 			return nodes
 

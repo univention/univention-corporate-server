@@ -611,8 +611,6 @@ class Data_Node(object):
 		self.capabilities = []  # node.DomainTemplate
 		self.last_try = 0.0
 		self.last_update = 0.0
-		self.supports_suspend = False
-		self.supports_snapshot = False
 
 
 class Data_Pool(object):

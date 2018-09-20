@@ -286,8 +286,7 @@ class Domain(PersistentCached):
 					logger.warning('Failed to query disk %s#%s: %s', self.pd.uuid, dev.source, ex.get_error_message())
 
 		# List of snapshots
-		snapshots = None
-		if self.node.pd.supports_snapshot:
+		if True:
 			snapshots = {}
 			for name in domain.snapshotListNames(0):
 				snap = domain.snapshotLookupByName(name, 0)
@@ -304,10 +303,7 @@ class Domain(PersistentCached):
 		self.pd.snapshots = snapshots
 
 		# Suspend image
-		if self.node.pd.supports_suspend:
-			self.pd.suspended = domain.hasManagedSaveImage(0)
-		else:
-			self.pd.suspended = None
+		self.pd.suspended = domain.hasManagedSaveImage(0)
 
 	def update_ldap(self):
 		"""Update annotations from LDAP."""
@@ -631,8 +627,6 @@ class Node(PersistentCached):
 		self.pd.cores = tuple(info[4:8])
 		xml = self.conn.getCapabilities()
 		self.pd.capabilities = DomainTemplate.list_from_xml(xml)
-		self.pd.supports_suspend = True
-		self.pd.supports_snapshot = True
 		self.libvirt_version = self.conn.getLibVersion()
 
 		def domain_callback(conn, dom, event, detail, node):
@@ -767,8 +761,6 @@ class Node(PersistentCached):
 		key = hash((
 			self.pd.phyMem,
 			self.pd.cores,
-			self.pd.supports_suspend,
-			self.pd.supports_snapshot,
 		))
 		for dom in self.domains.values():
 			key ^= dom.calc_cache_id()
@@ -1575,8 +1567,6 @@ def domain_snapshot_create(uri, domain, snapshot):
 	"""Create new snapshot of domain."""
 	try:
 		node = node_query(uri)
-		if not node.pd.supports_snapshot:
-			raise NodeError(_('Snapshot not supported "%(node)s"'), node=uri)
 		conn = node.conn
 		dom = conn.lookupByUUIDString(domain)
 		dom_stat = node.domains[domain]
@@ -1597,8 +1587,6 @@ def domain_snapshot_revert(uri, domain, snapshot):
 	"""Revert to snapshot of domain."""
 	try:
 		node = node_query(uri)
-		if not node.pd.supports_snapshot:
-			raise NodeError(_('Snapshot not supported "%(node)s"'), node=uri)
 		conn = node.conn
 		dom = conn.lookupByUUIDString(domain)
 		dom_stat = node.domains[domain]
@@ -1630,8 +1618,6 @@ def domain_snapshot_delete(uri, domain, snapshot):
 	"""Delete snapshot of domain."""
 	try:
 		node = node_query(uri)
-		if not node.pd.supports_snapshot:
-			raise NodeError(_('Snapshot not supported "%(node)s"'), node=uri)
 		conn = node.conn
 		dom = conn.lookupByUUIDString(domain)
 		dom_stat = node.domains[domain]
