@@ -282,7 +282,16 @@ class Domain(PersistentCached):
 				logger.warning("Failed to cache domain %s: %s" % (self.pd.uuid, ex))
 			self.xml2obj(xml)
 
-		# Determine size and pool
+		if domain.isActive():
+			self.pd.suspended = False
+		else:
+			self.pd.suspended = domain.hasManagedSaveImage(0)
+
+		self.update_volumes(domain)
+		self.update_snapshots(domain)
+
+	def update_volumes(self, domain):
+		"""Determine size and pool."""
 		for dev in self.pd.disks:
 			if not dev.source:
 				continue
@@ -296,25 +305,22 @@ class Domain(PersistentCached):
 				if ex.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_VOL:
 					logger.warning('Failed to query disk %s#%s: %s', self.pd.uuid, dev.source, ex.get_error_message())
 
-		# List of snapshots
-		if True:
-			snapshots = {}
-			for name in domain.snapshotListNames(0):
-				snap = domain.snapshotLookupByName(name, 0)
-				xml = snap.getXMLDesc(0)
-				try:
-					domainsnap_tree = ET.fromstring(xml)
-				except ET.XMLSyntaxError:
-					continue
-				ctime = domainsnap_tree.findtext('creationTime', namespaces=XMLNS)
-				snap_stat = Data_Snapshot()
-				snap_stat.name = name
-				snap_stat.ctime = int(ctime)
-				snapshots[name] = snap_stat
+	def update_snapshots(self, domain):
+		"""List of snapshots."""
+		snapshots = {}
+		for name in domain.snapshotListNames(0):
+			snap = domain.snapshotLookupByName(name, 0)
+			xml = snap.getXMLDesc(0)
+			try:
+				domainsnap_tree = ET.fromstring(xml)
+			except ET.XMLSyntaxError:
+				continue
+			ctime = domainsnap_tree.findtext('creationTime', namespaces=XMLNS)
+			snap_stat = Data_Snapshot()
+			snap_stat.name = name
+			snap_stat.ctime = int(ctime)
+			snapshots[name] = snap_stat
 		self.pd.snapshots = snapshots
-
-		# Suspend image
-		self.pd.suspended = domain.hasManagedSaveImage(0)
 
 	def update_ldap(self):
 		"""Update annotations from LDAP."""
