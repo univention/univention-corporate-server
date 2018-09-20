@@ -33,10 +33,7 @@
 
 import os
 import errno
-try:
-	import cPickle as pickle
-except ImportError:
-	import pickle
+import cPickle as pickle
 import univention.config_registry as ucr
 import univention.uldap
 from ldap import LDAPError, SERVER_DOWN

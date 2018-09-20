@@ -38,10 +38,7 @@ import threading
 import time
 import re
 import fnmatch
-try:
-	import cPickle as pickle
-except ImportError:
-	import pickle
+import cPickle as pickle
 
 from protocol import Cloud_Data_Connection, Cloud_Data_Image, Cloud_Data_Keypair
 from helpers import TranslatableException, ms, uri_encode

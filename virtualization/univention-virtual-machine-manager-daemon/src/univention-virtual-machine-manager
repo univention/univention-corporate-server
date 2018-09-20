@@ -41,10 +41,7 @@ from univention.uvmm import protocol, client
 from univention.uvmm.helpers import TranslatableException, _
 from pprint import pprint
 from uuid import UUID
-try:
-	from lxml import etree as ET
-except ImportError:
-	import xml.etree.ElementTree as ET
+from lxml import etree as ET
 __builtins__._ = _
 
 

@@ -30,14 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 """UVMM protocol."""
-try:
-	from cStringIO import StringIO
-except ImportError:
-	from StringIO import StringIO
-try:
-	import cPickle as pickle
-except ImportError:
-	import pickle
+from cStringIO import StringIO
+import cPickle as pickle
 import struct
 from helpers import TranslatableException, N_ as _
 

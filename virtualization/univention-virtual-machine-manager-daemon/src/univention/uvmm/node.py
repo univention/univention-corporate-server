@@ -54,14 +54,8 @@ import re
 import random
 from xml.sax.saxutils import escape as xml_escape
 import tempfile
-try:
-	from lxml import etree as ET
-except ImportError:
-	import xml.etree.ElementTree as ET
-try:
-	import cPickle as pickle
-except ImportError:
-	import pickle
+from lxml import etree as ET
+import cPickle as pickle
 
 import univention.config_registry as ucr
 
