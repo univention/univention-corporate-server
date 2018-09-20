@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-03 16:31+0200\n"
+"POT-Creation-Date: 2018-09-20 11:26+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -18,6 +18,11 @@ msgid ""
 msgstr ""
 "\"univention-check-join-status\" gab einen Fehler mit dem Domänenbeitritt "
 "zurück."
+
+#: umc/python/diagnostic/plugins/56_univention_types.py:51
+#, python-format
+msgid "%d objects should be \"%s\""
+msgstr "%d Objekte sollten \"%s\" sein"
 
 #: umc/python/diagnostic/plugins/11_nameserver.py:15
 #, python-format
@@ -325,6 +330,10 @@ msgstr ""
 msgid "KDC service check"
 msgstr "KDC Erreichbarkeit"
 
+#: umc/python/diagnostic/plugins/56_univention_types.py:13
+msgid "LDAP objects"
+msgstr "LDAP-Objekte"
+
 #: umc/python/diagnostic/plugins/01_ssh_connection.py:67
 #, python-format
 msgid ""
@@ -359,6 +368,11 @@ msgstr ""
 #: umc/python/diagnostic/plugins/21_check_join_status.py:45
 msgid "Manual: Analysis of listener/notifier problems"
 msgstr "Handbuch: Analyse von Listener/Notifier-Problemen"
+
+#: umc/python/diagnostic/plugins/56_univention_types.py:54
+#, python-format
+msgid "Migrate %d LDAP objects"
+msgstr "Migriere %d LDAP-Objekte"
 
 #: umc/python/diagnostic/plugins/55_user_migration.py:27
 msgid "Migrate user objects"
@@ -430,6 +444,13 @@ msgstr ""
 #: umc/python/diagnostic/plugins/00_check_server_password.py:171
 msgid "Note that server/password/interval is set to {}."
 msgstr "Beachten Sie, dass server/password/interval auf {} gesetzt ist."
+
+#: umc/python/diagnostic/plugins/56_univention_types.py:16
+msgid ""
+"Objects that implicitely satisfy the standards of a Univention Object but "
+"lack this attribute should be migrated."
+msgstr ""
+"Objekte, die die Anforderungen eines Univention-Objekts implizit erfüllen, aber dieses Attribut nicht gesetzt haben, sollten migriert werden."
 
 #: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:138
 msgid "Outbound {nc!r}: error during DRS replication to {source} ({estring})"
@@ -511,15 +532,6 @@ msgstr ""
 msgid "Regenerate sources.list"
 msgstr "Source-Listen neu generieren"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:98
-msgid "Repair identity provider certificate"
-msgstr "Identity Provider-Zertifikat wiederherstellen"
-
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:123
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:133
-msgid "Repair service provider certificate"
-msgstr "Service Provider-Zertifikat wiederherstellen"
-
 #: umc/python/diagnostic/plugins/22_kdc_service.py:346
 msgid "Reset kerberos/kdc to 127.0.0.1"
 msgstr "Setze kerberos/kdc auf 127.0.0.1 zurück"
@@ -545,7 +557,7 @@ msgstr ""
 msgid "S4 rejected:"
 msgstr "Nicht synchronisierte S4 Objekte:"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:54
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:53
 msgid "SAML certificate verification failed!"
 msgstr "Überprüfung der SAML-Zertifikate fehlgeschlagen!"
 
@@ -583,6 +595,13 @@ msgstr "Setze server/password/change=True"
 msgid "Set server/password/interval=21"
 msgstr "Setze server/password/interval=21"
 
+#: umc/python/diagnostic/plugins/56_univention_types.py:15
+msgid ""
+"Several services rely on the attribute \"univentionObjectType\" to search "
+"and identify objects in LDAP."
+msgstr ""
+"Verschiedene Dienste vertrauen auf das Attribut \"univentionObjectType\", um nach Objekten im LDAP zu suchen oder diese zu identifizieren."
+
 #: umc/python/diagnostic/plugins/30_disk_usage.py:129
 msgid "Some disks are nearly full:"
 msgstr "Einige Festplatten sind beinahe voll:"
@@ -598,12 +617,11 @@ msgstr ""
 "Die UCR Variable {variable!r} ist nicht gesetzt, aber notwendig für den S4 "
 "Connector."
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:96
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:95
 msgid "The certificate of the SAML identity provider does not match."
 msgstr "Das Zertifikat des SAML Identity Providers stimmt nicht überein."
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:121
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:131
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:114
 msgid "The certificate of the SAML service provider does not match."
 msgstr "Das Zertifikat des SAML Service Providers stimmt nicht überein."
 
@@ -875,6 +893,10 @@ msgstr ""
 "Der Nutzer oder die Gruppe mit dem Namen {name!r} hat die SID {actual_sid}, "
 "sollte aber {sid} haben."
 
+#: umc/python/diagnostic/plugins/56_univention_types.py:44
+msgid "These objects were found:"
+msgstr "Diese Objekte wurden gefunden:"
+
 #: umc/python/diagnostic/plugins/55_user_migration.py:14
 msgid ""
 "When a user object is created by a system which is not yet on UCS 4.3 it "
@@ -951,15 +973,14 @@ msgid "`nsupdate` check for domain {domain} failed ({details})."
 msgstr ""
 "`nsupdate` Prüfung für die Domänne {domain} ist fehlgeschlagen ({details})."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:89
-msgid "`samba-tool dbcheck` found no errors in the local AD database."
-msgstr ""
-"`samba-tool dbcheck` hat keine Fehler in der lokalen AD Datenbank "
-"gefunden."
-
 #: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:80
 msgid "`samba-tool dbcheck` found an error in the local AD database."
 msgstr "`samba-tool dbcheck` fand einen Fehler in der lokalen AD Datenbank."
+
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:89
+msgid "`samba-tool dbcheck` found no errors in the local AD database."
+msgstr ""
+"`samba-tool dbcheck` hat keine Fehler in der lokalen AD Datenbank gefunden."
 
 #: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:151
 msgid "`samba-tool drs showrepl` returned a problem with the replication."
@@ -1021,3 +1042,9 @@ msgstr "samba/interfaces enthält weder lo noch 127.0.0.1 noch 0.0.0.0."
 #: umc/python/diagnostic/plugins/53_package_status.py:28
 msgid "some"
 msgstr "einigen"
+
+#~ msgid "Repair identity provider certificate"
+#~ msgstr "Identity Provider-Zertifikat wiederherstellen"
+
+#~ msgid "Repair service provider certificate"
+#~ msgstr "Service Provider-Zertifikat wiederherstellen"
