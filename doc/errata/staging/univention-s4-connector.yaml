@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-s4-connector
-fix: 12.0.2-31A~4.3.0.201809191154
+fix: 12.0.2-32A~4.3.0.201809201407
 desc: |
  This update addresses the following issue(s):
  * Renaming a container (only difference in upper and lower case) has been fixed.
