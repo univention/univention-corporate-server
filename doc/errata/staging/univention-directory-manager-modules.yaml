@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-directory-manager-modules
-fix: 13.0.23-4A~4.3.0.201809191058
+fix: 13.0.23-5A~4.3.0.201809200950
 desc: |-
   This update addresses the following issue(s):
   * Allow to customize portal with about page
