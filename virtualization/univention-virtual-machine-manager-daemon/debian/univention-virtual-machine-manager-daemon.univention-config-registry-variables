@@ -27,3 +27,9 @@ Description[de]=Steuert, ob die Spalte 'CPU Auslastung' im UVMM Modul angezeigt 
 Description[en]=Controls the visibility for the 'CPU usage' column in the UVMM module. The value can be set to 'no' to hide the column.
 Type=str
 Categories=uvmm
+
+[uvmm/umc/autoupdate/interval]
+Description[de]=Interval in Sekunden für das automatische Aktualisieren der UVMM Sicht im Web-Browser. Standard: 5
+Description[en]=Interval in seconds for automatically refreshing the UVMM view in web browsers. Default: 5
+Type=int
+Categories=uvmm
