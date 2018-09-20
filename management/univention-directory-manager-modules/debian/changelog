@@ -1,3 +1,10 @@
+univention-directory-manager-modules (13.0.23-5) unstable; urgency=medium
+
+  * Bug #40672: fix broken search filter generation for boolean and
+    multivalue/complex properties
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 20 Sep 2018 09:45:56 +0200
+
 univention-directory-manager-modules (13.0.23-4) unstable; urgency=medium
 
   * Bug #47580: Fix problem with converting into unicode

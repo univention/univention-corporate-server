@@ -357,21 +357,14 @@ class object(univention.admin.handlers.simpleLdap):
 			printergroup_object['groupMember'].remove(self.info['name'])
 			printergroup_object.modify()
 
+	@classmethod
+	def unmapped_lookup_filter(cls):
+		return univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', 'univentionPrinter'),
+		])
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	filter = univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'univentionPrinter'),
-	])
 
-	if filter_s:
-		filter_p = univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
-	res = []
-	for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn))
-	return res
+lookup = object.lookup
 
 
 def identify(dn, attr, canonical=0):
