@@ -1,6 +1,7 @@
 univention-directory-listener (12.0.0-26) unstable; urgency=low
 
   * Bug #47783: Add log message for fake handler initialization
+  * Bug #47837: Fix another segmetation fault when UCRVs is unset
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 20 Sep 2018 16:58:20 +0200
 

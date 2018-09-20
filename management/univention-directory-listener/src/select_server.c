@@ -87,7 +87,15 @@ void select_server(univention_ldap_parameters_t *lp) {
 	}
 
 	server_role = univention_config_get_string("server/role");
+	if (!server_role) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_DEBUG, "UCRV 'server/role' is not set");
+		abort();
+	}
 	ldap_master = univention_config_get_string("ldap/master");
+	if (!ldap_master) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_DEBUG, "UCRV 'server/role' is not set");
+		abort();
+	}
 	ldap_master_port = univention_config_get_int("ldap/master/port");
 
 	/* if this is a master or backup return ldap/master */
@@ -100,7 +108,7 @@ void select_server(univention_ldap_parameters_t *lp) {
 		char *ldap_backups = univention_config_get_string("ldap/backup");
 
 		/* list of backups and master still up-to-date? */
-		if (current_server_list && (strcmp(ldap_backups, current_server_list) != 0)) {
+		if (current_server_list && ldap_backups && (strcmp(ldap_backups, current_server_list) != 0)) {
 			free(current_server_list);
 			current_server_list = NULL;
 		}
@@ -166,5 +174,5 @@ result:
 	free(ldap_master);
 	free(server_role);
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "LDAP-Server is %s:%d", lp->host, lp->port);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "LDAP-Server is %s:%d", lp->host ? lp->host : "NULL", lp->port);
 }
