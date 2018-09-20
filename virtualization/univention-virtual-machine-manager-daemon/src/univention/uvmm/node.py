@@ -958,7 +958,7 @@ def _domain_backup(dom, save=True):
 	logger.info("Domain backuped to %s." % (file,))
 
 
-def __update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
+def _update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
 	'''Create, update or delete node named '_node_name' of '_node_parent'.
 	If _node_value == None and all(attr == None), then node is deleted.
 	'''
@@ -996,7 +996,7 @@ def _domain_edit(node, dom_stat, xml):
 		xml = '<domain/>'
 		defaults = True
 	live_updates = []
-	update = __update_xml
+	update = _update_xml
 
 	# find loader
 	logger.debug('Searching for template: arch=%s domain_type=%s os_type=%s' % (dom_stat.arch, dom_stat.domain_type, dom_stat.os_type))
@@ -1754,11 +1754,11 @@ def domain_clone(uri, domain, name, subst):
 			# /domain
 			domain = ET.fromstring(xml)
 			# /domain/uuid
-			__update_xml(domain, 'uuid', None)  # remove
+			_update_xml(domain, 'uuid', None)  # remove
 			# /domain/name
-			__update_xml(domain, 'name', name)  # replace
+			_update_xml(domain, 'name', name)  # replace
 			# /domain/devices/*[]
-			domain_devices = __update_xml(domain, 'devices', '')
+			domain_devices = _update_xml(domain, 'devices', '')
 
 			# /domain/devices/interface[]
 			domain_devices_interfaces = domain_devices.findall('interface', namespaces=XMLNS)
@@ -1858,22 +1858,22 @@ def domain_clone(uri, domain, name, subst):
 				# /volume
 				volume = ET.fromstring(xml)
 				# /volume/name
-				__update_xml(volume, 'name', new_name)  # replace
+				_update_xml(volume, 'name', new_name)  # replace
 				# /volume/key
-				__update_xml(volume, 'key', None)  # remove
+				_update_xml(volume, 'key', None)  # remove
 				# /volume/source
-				__update_xml(volume, 'source', None)  # remove
+				_update_xml(volume, 'source', None)  # remove
 				# /volume/target
 				volume_target = volume.find('target', namespaces=XMLNS)
 				if volume_target:
 					# /volume/target/path
-					__update_xml(volume_target, 'path', None)  # remove
+					_update_xml(volume_target, 'path', None)  # remove
 
 				if method == 'cow':
 					# /volume/backingStore
-					volume_backingStore = __update_xml(volume, 'backingStore', '')
+					volume_backingStore = _update_xml(volume, 'backingStore', '')
 					# /volume/backingStore/path
-					__update_xml(volume_backingStore, 'path', vol.path())
+					_update_xml(volume_backingStore, 'path', vol.path())
 				xml = ET.tostring(volume)
 				logger.debug('Cloning disk: %s' % (xml,))
 
@@ -1933,8 +1933,8 @@ def __domain_targethost(uri, domain):
 		dom = node.domains[domain]
 		dom_xml = domconn.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
 		dom_tree = ET.fromstring(dom_xml)
-		dom_metadata = __update_xml(dom_tree, 'metadata', None, dummy='')
-		dom_migrationhosts = __update_xml(dom_metadata, 'uvmm:migrationtargethosts', None, dummy='')
+		dom_metadata = _update_xml(dom_tree, 'metadata', None, dummy='')
+		dom_migrationhosts = _update_xml(dom_metadata, 'uvmm:migrationtargethosts', None, dummy='')
 		domain_targethosts = set(elem.text for elem in dom_migrationhosts.findall('uvmm:hostname', namespaces=XMLNS))
 
 		logger.debug('Migration-target-host of "%s" before modification: %r', domain, domain_targethosts)
