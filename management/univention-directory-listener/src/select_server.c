@@ -88,12 +88,12 @@ void select_server(univention_ldap_parameters_t *lp) {
 
 	server_role = univention_config_get_string("server/role");
 	if (!server_role) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_DEBUG, "UCRV 'server/role' is not set");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "UCRV 'server/role' is not set");
 		abort();
 	}
 	ldap_master = univention_config_get_string("ldap/master");
 	if (!ldap_master) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_DEBUG, "UCRV 'server/role' is not set");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "UCRV 'server/role' is not set");
 		abort();
 	}
 	ldap_master_port = univention_config_get_int("ldap/master/port");
