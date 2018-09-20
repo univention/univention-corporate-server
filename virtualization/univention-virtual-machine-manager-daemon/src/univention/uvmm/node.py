@@ -585,17 +585,7 @@ class Node(PersistentCached):
 			logger.warning("'%s' broken? next check in %s. %s" % (self.pd.uri, ms(hz), ex))
 			if hz > self.current_frequency:
 				self.current_frequency = hz
-			if self.conn is not None:
-				try:
-					self.conn.domainEventDeregister(self.domainCB)
-				except Exception:
-					logger.error("%s: Exception in domainEventDeregister" % (self.pd.uri,), exc_info=True)
-				self.domainCB = None
-				try:
-					self.conn.close()
-				except Exception:
-					logger.error('%s: Exception in conn.close' % (self.pd.uri,), exc_info=True)
-				self.conn = None
+			self._unregister()
 
 	def __eq__(self, other):
 		return (self.pd.uri, self.pd.name) == (other.pd.uri, other.pd.name)
@@ -670,11 +660,23 @@ class Node(PersistentCached):
 					logger.debug("timer still alive: %s" % (self.pd.uri,))
 				else:
 					wait = False
-		if self.domainCB is not None:
-			self.conn.domainEventDeregister(self.domainCB)
-			self.domainCB = None
+
+		self._unregister()
+
+	def _unregister(self):
+		"""Unregister callback and close connection."""
 		if self.conn is not None:
-			self.conn.close()
+			if self.domainCB is not None:
+				try:
+					self.conn.domainEventDeregister(self.domainCB)
+				except Exception:
+					logger.error("%s: Exception in domainEventDeregister" % (self.pd.uri,), exc_info=True)
+				self.domainCB = None
+
+			try:
+				self.conn.close()
+			except Exception:
+				logger.error('%s: Exception in conn.close' % (self.pd.uri,), exc_info=True)
 			self.conn = None
 
 	def set_frequency(self, hz):
