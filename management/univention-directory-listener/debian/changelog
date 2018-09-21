@@ -1,3 +1,9 @@
+univention-directory-listener (12.0.0-28) unstable; urgency=low
+
+  * Bug #47837: Fix copy-paste-error in error message
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 21 Sep 2018 09:52:11 +0200
+
 univention-directory-listener (12.0.0-27) unstable; urgency=low
 
   * Bug #47837: Fix wrong debug level
