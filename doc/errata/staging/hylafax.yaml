@@ -6,7 +6,9 @@ src: hylafax
 fix: 3:6.0.6-7+deb9u1
 desc: |
  This update addresses the following issue:
- * hylafax (CVE-2018-17141)
+ * A missing input sanitising in the Hylafax fax software could potentially
+   result in the execution of arbitrary code via a malformed fax message
+   (CVE-2018-17141)
 bug: [47849]
 cve:
 - CVE-2018-17141
