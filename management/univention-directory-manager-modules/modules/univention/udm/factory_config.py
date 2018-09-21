@@ -51,16 +51,12 @@ decision which one to return is done in the following order:
 
 
 >>> config_storage = UdmModuleFactoryConfigurationStorage(False)
+>>> config_storage.refresh_config()
+>>> config_storage._config = {}
 >>> config1 = UdmModuleFactoryConfiguration('groups/.*', 'univention.udm.generic', 'GenericUdm1Module')
 >>> config2 = UdmModuleFactoryConfiguration('^users/user$', 'univention.udm.users_user', 'UsersUserUdm1Module')
 >>> config3 = UdmModuleFactoryConfiguration('^users/.*$', 'univention.udm.generic', 'GenericUdm1Module')
 >>> config_storage.register_configuration(config1)
-Debug: prepended '^' to pattern: u'^groups/.*'
-Debug: appended '$' to pattern: u'^groups/.*$'
-Debug: prepended '^' to pattern: u'^groups/.*'
-Debug: appended '$' to pattern: u'^groups/.*$'
-Debug: prepended '^' to pattern: u'^groups/.*'
-Debug: appended '$' to pattern: u'^groups/.*$'
 >>> config_storage.register_configuration(config2)
 >>> config_storage.register_configuration(config3)
 >>> config_storage.get_configuration('users/user')
@@ -70,10 +66,8 @@ UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/.*$', module_path
 >>> config_storage.get_configuration('groups/group')
 UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^groups/.*$', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
 >>> config_storage.get_configuration('computers/domaincontroller_master')
-Debug: no specific factory for u'computers/domaincontroller_master' found, using {u'class_name': u'GenericUdm1Module', u'module_path': u'univention.udm.generic'}.
 UdmModuleFactoryConfiguration(udm_module_name_pattern=u'computers/domaincontroller_master', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
 >>> config_storage.unregister_configuration(config2)
-Info: Unregistered configuration UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/user$', module_path=u'univention.udm.users_user', class_name=u'UsersUserUdm1Module').
 >>> config_storage.get_configuration('users/user')
 UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/.*$', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
 """
@@ -245,6 +239,7 @@ class UdmModuleFactoryConfigurationStorage(object):
 						pass
 				else:
 					raise RuntimeError('Unknown operation in self._transient_operations: {!r}'.format(self._transient_operations))
+			self._persistence_date = mtime
 
 	def _find_configuration(self, factory_configuration):
 		# type: (UdmModuleFactoryConfiguration) -> Union[_UdmModuleFactoryConfigurationWithDate, None]
