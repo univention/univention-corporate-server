@@ -8,12 +8,6 @@ desc: |
  This update addresses the following issue:
  * arbitrary Perl code execution in the context of the user account via a
    user-owned .htaccess (CVE-2011-2767)
- * arbitrary Perl code execution in the context of the user account via a
-   user-owned .htaccess (CVE-2011-2767)
- * arbitrary Perl code execution in the context of the user account via a
-   user-owned .htaccess (CVE-2011-2767)
- * arbitrary Perl code execution in the context of the user account via a
-   user-owned .htaccess (CVE-2011-2767)
 bug: [47847]
 cve:
 - CVE-2011-2767
