@@ -1,0 +1,19 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: libapache2-mod-perl2
+fix: 2.0.9~1624218-2+deb8u3
+desc: |
+ This update addresses the following issue:
+ * arbitrary Perl code execution in the context of the user account via a
+   user-owned .htaccess (CVE-2011-2767)
+ * arbitrary Perl code execution in the context of the user account via a
+   user-owned .htaccess (CVE-2011-2767)
+ * arbitrary Perl code execution in the context of the user account via a
+   user-owned .htaccess (CVE-2011-2767)
+ * arbitrary Perl code execution in the context of the user account via a
+   user-owned .htaccess (CVE-2011-2767)
+bug: [47847]
+cve:
+- CVE-2011-2767
