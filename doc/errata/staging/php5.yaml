@@ -1,0 +1,17 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: php5
+fix: 5.6.38+dfsg-0+deb8u1
+desc: |
+ This update addresses the following issue:
+ * Cross-site scripting (XSS) flaw in Apache2 component via body of
+   'Transfer-Encoding: chunked' request (CVE-2018-17082)
+ * Cross-site scripting (XSS) flaw in Apache2 component via body of
+   'Transfer-Encoding: chunked' request (CVE-2018-17082)
+ * Cross-site scripting (XSS) flaw in Apache2 component via body of
+   'Transfer-Encoding: chunked' request (CVE-2018-17082)
+bug: [47848]
+cve:
+- CVE-2018-17082
