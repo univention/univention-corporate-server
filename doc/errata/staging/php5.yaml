@@ -8,10 +8,6 @@ desc: |
  This update addresses the following issue:
  * Cross-site scripting (XSS) flaw in Apache2 component via body of
    'Transfer-Encoding: chunked' request (CVE-2018-17082)
- * Cross-site scripting (XSS) flaw in Apache2 component via body of
-   'Transfer-Encoding: chunked' request (CVE-2018-17082)
- * Cross-site scripting (XSS) flaw in Apache2 component via body of
-   'Transfer-Encoding: chunked' request (CVE-2018-17082)
 bug: [47848]
 cve:
 - CVE-2018-17082
