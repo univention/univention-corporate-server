@@ -63,3 +63,4 @@ class SettingsPortalUdm1Object(GenericUdm1Object):
 class SettingsPortalUdm1Module(GenericUdm1Module):
 	"""SettingsPortalUdm1Object factory"""
 	_udm_object_class = SettingsPortalUdm1Object
+	supported_api_versions = (1,)

@@ -34,6 +34,8 @@ It consists of UDM modules and UDM object.
 UDM modules are factories for UDM objects.
 UDM objects manipulate LDAP objects.
 
+The :py:class:`Udm` class is a LDAP connection and UDM module factory.
+
 Usage:
 
 from univention.udm import Udm
@@ -59,13 +61,25 @@ A shortcut exists to get UDM objects directly::
 
 	from univention.udm import Udm
 	Udm.using_admin().get_obj(dn)
+
+The API is versioned. The default API version that will be used, if not defined
+otherwise is in ``univention.udm.__default_api_version__``.
+
+It is recommended to hard code the used version in your code. Supply it as
+argument to the Udm module factory::
+
+	Udm.using_admin(1)  # use API version 1
 """
 
 from __future__ import absolute_import
-from .udm import Udm
-from .exceptions import DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UdmError, UnknownProperty, WrongObjectType
+from .udm import __default_api_version__, Udm
+from .exceptions import (
+	DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UdmError, UnknownProperty, UnknownUdmModuleType,
+	WrongObjectType
+)
 
 __all__ = [
-	'Udm',
-	'DeletedError', 'FirstUseError', 'ModifyError', 'MoveError', 'NoObject', 'UdmError', 'UnknownProperty', 'WrongObjectType',
+	'__default_api_version__', 'Udm',
+	'DeletedError', 'FirstUseError', 'ModifyError', 'MoveError', 'NoObject', 'UdmError', 'UnknownProperty',
+	'UnknownUdmModuleType', 'WrongObjectType',
 ]

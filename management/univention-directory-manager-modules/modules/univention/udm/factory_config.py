@@ -41,35 +41,56 @@ A UDM module factory configuration consists of:
 UDM module factory configurations are stored in
 :py:`UdmModuleFactoryConfiguration` objects. The registry is persistent.
 
-Multiple modules can be registered for the same UDM module name. When
-retrieving by UDM module name and multiple configurations are found, the
-decision which one to return is done in the following order:
+Multiple modules can be registered for the same UDM module name and API
+version. When retrieving by UDM module name and multiple configurations are
+found, the decision which one to return is done in the following order:
 
 1. exact name match, newest registration if multiple
 2. regular expression name match, newest registration if multiple
 3. the default configuration
 
+In any case the requested API version must be in the modules
+:py:`attr`supported_api_versions` list.
+
 
 >>> config_storage = UdmModuleFactoryConfigurationStorage(False)
->>> config_storage.refresh_config()
->>> config_storage._config = {}
->>> config1 = UdmModuleFactoryConfiguration('groups/.*', 'univention.udm.generic', 'GenericUdm1Module')
->>> config2 = UdmModuleFactoryConfiguration('^users/user$', 'univention.udm.users_user', 'UsersUserUdm1Module')
->>> config3 = UdmModuleFactoryConfiguration('^users/.*$', 'univention.udm.generic', 'GenericUdm1Module')
+>>> config_storage.refresh_config()  # set config_storage._persistence_date to prevent another refresh
+>>> config_storage._config = {}  # empty config
+>>> config1 = UdmModuleFactoryConfiguration('groups/.*', 'univention.udm.generic', 'GenericUdm1Module')  # v1
+>>> config2 = UdmModuleFactoryConfiguration('^users/user$', 'univention.udm.users_user', 'UsersUserUdm1Module')  # v1
+>>> config3 = UdmModuleFactoryConfiguration('^users/.*$', 'univention.udm.generic', 'GenericUdm1Module')  # v0 & v1
+>>> config4 = UdmModuleFactoryConfiguration('^users/ldap$', 'univention.udm.users_ldap_v0', 'UsersLdapUdm1Module')  # v0
+>>> config5 = UdmModuleFactoryConfiguration('^users/ldap$', 'univention.udm.users_ldap_v1', 'UsersLdapUdm1Module')  # v1
 >>> config_storage.register_configuration(config1)
 >>> config_storage.register_configuration(config2)
 >>> config_storage.register_configuration(config3)
->>> config_storage.get_configuration('users/user')
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/user$', module_path=u'univention.udm.users_user', class_name=u'UsersUserUdm1Module')
->>> config_storage.get_configuration('users/ldap')
+>>> config_storage.register_configuration(config4)
+>>> config_storage.register_configuration(config5)
+>>> config_storage.get_configuration('users/user', 0)
 UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/.*$', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
->>> config_storage.get_configuration('groups/group')
+>>> config_storage.get_configuration('users/user', 1)
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/user$', module_path=u'univention.udm.users_user', class_name=u'UsersUserUdm1Module')
+>>> config_storage.get_configuration('users/ldap', 0)
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/ldap$', module_path=u'univention.udm.users_ldap_v0', class_name=u'UsersLdapUdm1Module')
+>>> config_storage.get_configuration('users/ldap', 1)
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/ldap$', module_path=u'univention.udm.users_ldap_v1', class_name=u'UsersLdapUdm1Module')
+>>> config_storage.get_configuration('users/ldap', 2)
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'users/ldap', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
+>>> config_storage.unregister_configuration(config5)
+>>> config_storage.get_configuration('users/ldap', 1)
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/.*$', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
+>>> config_storage.get_configuration('groups/group', 1)
 UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^groups/.*$', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
->>> config_storage.get_configuration('computers/domaincontroller_master')
+>>> config_storage.get_configuration('computers/domaincontroller_master', 1)
 UdmModuleFactoryConfiguration(udm_module_name_pattern=u'computers/domaincontroller_master', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
 >>> config_storage.unregister_configuration(config2)
->>> config_storage.get_configuration('users/user')
+>>> config_storage.get_configuration('users/user', 1)
 UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/.*$', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
+>>> config_storage.unregister_configuration(config3)
+>>> config_storage.get_configuration('users/ldap', 1)
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'users/ldap', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
+>>> config_storage.get_configuration('users/user', 1)
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'users/user', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
 """
 
 from __future__ import absolute_import, unicode_literals
@@ -80,23 +101,26 @@ import time
 import errno
 from operator import attrgetter
 from collections import namedtuple
-from .utils import UDebug as ud
+from .base import BaseUdmModule
+from .utils import load_class, UDebug as ud
 
 try:
-	from typing import Any, Dict, List, Optional, Pattern, Text, Tuple, Union
+	from typing import Any, Dict, Iterable, List, Optional, Pattern, Text, Tuple, Union
 except ImportError:
 	pass
 
 
+# configuration class for API users
 UdmModuleFactoryConfiguration = namedtuple(
 	'UdmModuleFactoryConfiguration',
 	('udm_module_name_pattern', 'module_path', 'class_name')
 )  # e.g. UdmModuleFactoryConfiguration('users/.*', 'univention.admin.udm', 'GenericUdm1Module')
 
 
+# internal configuration class supporting temporal ordering
 _UdmModuleFactoryConfigurationWithDate = namedtuple(
 	'UdmModuleFactoryConfigurationWithDate',
-	('udm_module_name_pattern', 'module_path', 'class_name', 'addition_date')
+	('udm_module_name_pattern', 'module_path', 'class_name', 'api_versions', 'addition_date')
 )
 
 
@@ -107,7 +131,9 @@ class UdmModuleFactoryConfigurationStorage(object):
 
 	def __init__(self, persistent=True):  # type: (Optional[bool]) -> None
 		"""
-		:param bool persistent: whether configuration changes should be stored (and immediately be used by other processes) or should be transient, and used in this process only
+		:param bool persistent: whether configuration changes should be stored
+			(and immediately be used by other processes) or should be
+			transient, and used in this process only
 		"""
 		self.persistent = persistent
 		self._config = {}  # type: Dict[Pattern, List[_UdmModuleFactoryConfigurationWithDate]]
@@ -120,11 +146,12 @@ class UdmModuleFactoryConfigurationStorage(object):
 			ud.warn('No configuration could be loaded from disk. Continuing with empty one.')
 			self._config = {}
 
-	def get_configuration(self, module_name):  # type: (str) -> UdmModuleFactoryConfiguration
+	def get_configuration(self, module_name, api_version):  # type: (str, int) -> UdmModuleFactoryConfiguration
 		"""
 		Get configuration for a module.
 
 		:param str module_name: the UDM modules name for which to get the factory configuration
+		:param int api_version: the API version that the UDM module must support
 		:return: the factory configuration
 		:rtype: UdmModuleFactoryConfiguration
 		"""
@@ -135,9 +162,9 @@ class UdmModuleFactoryConfigurationStorage(object):
 
 		for udm_module_name_pattern, configurations in self._config.iteritems():
 			if udm_module_name_pattern.pattern == '^{}$'.format(module_name):
-				candidates_exact.extend(configurations)
+				candidates_exact.extend([conf for conf in configurations if api_version in conf.api_versions])
 			elif udm_module_name_pattern.match(module_name):
-				candidates_regex.extend(configurations)
+				candidates_regex.extend([conf for conf in configurations if api_version in conf.api_versions])
 
 		if candidates_exact:
 			candidates_exact.sort(key=attrgetter('addition_date'), reverse=True)
@@ -159,12 +186,17 @@ class UdmModuleFactoryConfigurationStorage(object):
 		:param UdmModuleFactoryConfiguration factory_configuration: the configuration to save
 		:return: None
 		:raises IOError: if the configuration could not be written to disk
+		:raises ValueError: if the module.class in ``factory_configuration`` is
+			not a subclass of base.BaseUdmModule
 		"""
-		# TODO: sanity check: before accepting the new configuration, load the
-		# module and verify that it's a subclass of base.BaseUdmModule
+		candidate_cls = load_class(factory_configuration.module_path, factory_configuration.class_name)
+		if not issubclass(candidate_cls, BaseUdmModule):
+			raise ValueError('{!r} is not a subclass of BaseUdmModule.'.format(candidate_cls))
+		ud.debug('Loaded {!r}.'.format(candidate_cls))
+		supported_api_versions = candidate_cls.supported_api_versions
+		ud.debug('{!r} support API versions {!r}.'.format(candidate_cls, supported_api_versions))
 
 		self.refresh_config()
-
 		compiled_pattern = re.compile(self._add_regex_bounds(factory_configuration.udm_module_name_pattern))
 
 		# check if configuration already exists
@@ -207,7 +239,7 @@ class UdmModuleFactoryConfigurationStorage(object):
 		else:
 			ud.warn('Could not find configuration to unregister: {!r}.'.format(factory_configuration))
 
-	def refresh_config(self):
+	def refresh_config(self, force=False):
 		"""
 		If the configuration storage was updated, load it.
 
@@ -225,7 +257,7 @@ class UdmModuleFactoryConfigurationStorage(object):
 			else:
 				raise
 
-		if mtime > self._persistence_date:
+		if force or mtime > self._persistence_date:
 			self._load_configuration()
 			# reapply register and unregister operations if in non-persistent mode
 			while self._transient_operations:
@@ -240,6 +272,38 @@ class UdmModuleFactoryConfigurationStorage(object):
 				else:
 					raise RuntimeError('Unknown operation in self._transient_operations: {!r}'.format(self._transient_operations))
 			self._persistence_date = mtime
+
+	def update_version_data(self, dottet_class_path):  # type: (str) -> Iterable[int]
+		"""
+		Load UDM module found at ``dottet_class_path`` and update API version
+		data in persistent factory configuration.
+
+		:param str dottet_class_path: module from which to load supported API versions
+		:return: the supported API versions
+		:rtype: list(int)
+		"""
+		# TODO
+
+	@staticmethod
+	def get_supported_versions(module_path, class_name):  # type: (str, str) -> Iterable[int]
+		"""
+		Retrieve supported API versions from UDM module found at
+		``dottet_class_path``.
+
+		:param str module_path: module from which to load class ``class_name``
+		:param str class_name: class in module ``module_path`` from which to
+			load supported API versions
+		:return: the supported API versions
+		:rtype: list(int)
+		:raises ImportError: if the module at ``module_path`` could not be loaded
+		:raises ValueError: if the object in ``class_name`` is not a class or
+			not a subclass of base.BaseUdmModule
+		"""
+		candidate_cls = load_class(module_path, class_name)
+		if not issubclass(candidate_cls, BaseUdmModule):
+			raise ValueError('{!r} is not a subclass of BaseUdmModule.'.format(candidate_cls))
+		ud.debug('Loaded {!r} with support API versions {!r}.'.format(candidate_cls, candidate_cls.supported_api_versions))
+		return candidate_cls.supported_api_versions
 
 	def _find_configuration(self, factory_configuration):
 		# type: (UdmModuleFactoryConfiguration) -> Union[_UdmModuleFactoryConfigurationWithDate, None]
@@ -262,10 +326,12 @@ class UdmModuleFactoryConfigurationStorage(object):
 
 		:return: mapping module_name -> configuration
 		:rtype: Dict[str, List[_UdmModuleFactoryConfigurationWithDate]]
+		:raises IOError: if the configuration file could not be read
 		"""
 		# TODO: file locking
 		try:
 			with open(self._persistence_path) as fp:
+				# TODO: switch to python-ujson for 3x speed?
 				config = json.load(fp)  # type: Dict[str, List[Dict[str, Any]]]
 		except IOError as exc:
 			ud.error('Could not open UDM module factory configuration: {}'.format(exc))
@@ -314,16 +380,18 @@ class UdmModuleFactoryConfigurationStorage(object):
 	@staticmethod
 	def _config_with_date_2_config_without_date(config_with_date):
 			# type: (_UdmModuleFactoryConfigurationWithDate) -> UdmModuleFactoryConfiguration
-			kwargs = config_with_date.__dict__
+			kwargs = config_with_date._asdict()
 			del kwargs['addition_date']
+			del kwargs['api_versions']
 			return UdmModuleFactoryConfiguration(**kwargs)
 
 	@classmethod
 	def _config_without_date_2_config_with_date(cls, config_without_date):
 		# type: (UdmModuleFactoryConfiguration) -> _UdmModuleFactoryConfigurationWithDate
-		kwargs = config_without_date.__dict__
+		kwargs = config_without_date._asdict()
 		kwargs['udm_module_name_pattern'] = cls._add_regex_bounds(config_without_date.udm_module_name_pattern)
 		kwargs['addition_date'] = time.time()
+		kwargs['api_versions'] = cls.get_supported_versions(config_without_date.module_path, config_without_date.class_name)
 		return _UdmModuleFactoryConfigurationWithDate(**kwargs)
 
 

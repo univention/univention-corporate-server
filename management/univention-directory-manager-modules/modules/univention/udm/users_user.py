@@ -67,3 +67,4 @@ class UsersUserUdm1Object(GenericUdm1Object):
 class UsersUserUdm1Module(GenericUdm1Module):
 	"""UsersUserUdm1Object factory"""
 	_udm_object_class = UsersUserUdm1Object
+	supported_api_versions = (1,)

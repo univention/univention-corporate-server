@@ -59,3 +59,4 @@ class GroupsGroupUdm1Object(GenericUdm1Object):
 class GroupsGroupUdm1Module(GenericUdm1Module):
 	"""GroupsGroupUdm1Object factory"""
 	_udm_object_class = GroupsGroupUdm1Object
+	supported_api_versions = (1,)

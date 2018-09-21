@@ -35,7 +35,7 @@ import pprint
 from collections import namedtuple
 
 try:
-	from typing import Callable, Iterator, List, Optional, Text
+	from typing import Callable, Iterable, Iterator, List, Optional, Text
 	import univention.admin.uldap
 	import univention.admin.filter.conjunction
 except ImportError:
@@ -131,8 +131,9 @@ class BaseUdmModuleMetadata(object):
 
 	auto_open = True  # whether UDM objects should be `open()`ed
 
-	def __init__(self, udm_module):  # type: (BaseUdmModule) -> None
+	def __init__(self, udm_module, api_version):  # type: (BaseUdmModule, int) -> None
 		self._udm_module = udm_module
+		self.api_version = api_version
 
 	@property
 	def identifying_property(self):  # type: () -> str
@@ -191,13 +192,14 @@ class BaseUdmModule(object):
 		user = user_mod.get(dn)
 		user.props.groups == []
 	"""
+	supported_api_versions = ()  # type: Iterable[int]
 	_udm_object_class = BaseUdmObject
 	_udm_module_meta_class = BaseUdmModuleMetadata
 
-	def __init__(self, name, lo):  # type: (str, univention.admin.uldap.access) -> None
+	def __init__(self, name, lo, api_version):  # type: (str, univention.admin.uldap.access, int) -> None
 		self.name = name
 		self.lo = lo
-		self.meta = self._udm_module_meta_class(self)
+		self.meta = self._udm_module_meta_class(self, api_version)
 
 	def __repr__(self):  # type: () -> Text
 		return '{}({!r})'.format(self.__class__.__name__, self.name)

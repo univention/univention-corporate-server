@@ -27,6 +27,8 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import, unicode_literals
+import inspect
+import importlib
 from ldap.filter import filter_format
 import univention.admin.uldap
 import univention.config_registry
@@ -140,3 +142,27 @@ class LDAP_connection(object):
 				bindpw=password
 			)
 		return cls._connection_account[key]
+
+
+def load_class(module_path, class_name):  # type: (str, str) -> type
+	"""
+	Load Python class from module.
+
+	:param str module_path: module from which to load class ``class_name``
+	:param str class_name: class in module ``module_path`` from which to
+		load supported API versions
+	:return: loaded class
+	:rtype: type
+	:raises ImportError: if the module at ``module_path`` could not be loaded
+	:raises ValueError: if the object in ``class_name`` is not a class
+	"""
+	UDebug.debug('Trying to load Python module {!r}...'.format(module_path))
+	module = importlib.import_module(module_path)
+	UDebug.debug('Trying to load class {!r} from module {!r}...'.format(class_name, module.__name__))
+	candidate_cls = getattr(module, class_name)
+	UDebug.debug('Loaded {!r}.'.format(candidate_cls))
+	if not inspect.isclass(candidate_cls):
+		raise ValueError(
+			'Found {!r}, which is not a class, when looking for class with name {!r} in module path {!r}.'.format(
+				candidate_cls, class_name, module_path))
+	return candidate_cls

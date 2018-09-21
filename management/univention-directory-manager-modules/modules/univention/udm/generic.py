@@ -219,13 +219,17 @@ class GenericUdm1Object(BaseUdmObject):
 			self.position = self._udm1_object.position.getDn()
 		self.props = self.udm_prop_class(self)
 		for k, v in self._udm1_object.items():
-			try:
-				encoder_class = self.props._encoders[k]
-			except KeyError:
-				val = v
+			if self._udm_module.meta.api_version > 0:
+				# encoders exist from API version 1 on
+				try:
+					encoder_class = self.props._encoders[k]
+				except KeyError:
+					val = v
+				else:
+					encoder = self._init_encoder(encoder_class, property_name=k)
+					val = encoder.decode(v)
 			else:
-				encoder = self._init_encoder(encoder_class, property_name=k)
-				val = encoder.decode(v)
+				val = v
 			setattr(self.props, k, val)
 		self._fresh = True
 
@@ -241,7 +245,8 @@ class GenericUdm1Object(BaseUdmObject):
 		self._udm1_object.position.setDn(self.position)
 		for k, v in self._udm1_object.items():
 			new_val = getattr(self.props, k, None)
-			if v != new_val:
+			if self._udm_module.meta.api_version > 0:
+				# encoders exist from API version 1 on
 				try:
 					encoder_class = self.props._encoders[k]
 				except KeyError:
@@ -249,6 +254,9 @@ class GenericUdm1Object(BaseUdmObject):
 				else:
 					encoder = self._init_encoder(encoder_class, property_name=k)
 					new_val2 = encoder.encode(new_val)
+			else:
+				new_val2 = new_val
+			if v != new_val2:
 				self._udm1_object[k] = new_val2
 
 	def _init_encoder(self, encoder_class, **kwargs):
@@ -342,9 +350,10 @@ class GenericUdm1Module(BaseUdmModule):
 	_udm_object_class = GenericUdm1Object
 	_udm_module_meta_class = GenericUdm1ModuleMetadata
 	_udm_module_cache = {}  # type: Dict[Tuple[str, str, str, str], univention.admin.handlers.simpleLdap]
+	supported_api_versions = (0, 1)
 
-	def __init__(self, name, lo):  # type: (str, univention.admin.uldap.access) -> None
-		super(GenericUdm1Module, self).__init__(name, lo)
+	def __init__(self, name, lo, api_version):  # type: (str, univention.admin.uldap.access, int) -> None
+		super(GenericUdm1Module, self).__init__(name, lo, api_version)
 		self._udm1_module = self._get_udm1_module()
 
 	def new(self):  # type: () -> GenericUdm1Object

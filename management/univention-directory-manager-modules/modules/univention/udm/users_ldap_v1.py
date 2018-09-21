@@ -27,37 +27,29 @@
 # <http://www.gnu.org/licenses/>.
 
 """
-Module and object specific for "nagios/service" UDM module.
+FOR TESTING PURPOSES ONLY!
+
+Module and object specific for "users/ldap" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
-from .encoders import dn_list_property_encoder_for, DisabledPropertyEncoder, StringIntPropertyEncoder
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
+from .encoders import DisabledPropertyEncoder
 
 
-class NagiosServiceUdm1ObjectProperties(GenericUdm1ObjectProperties):
-	"""nagios/service UDM properties."""
+class UsersLdapUdm1ObjectProperties(GenericUdm1ObjectProperties):
+	"""users/ldap UDM properties."""
 
 	_encoders = {
-		'assignedHosts': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
-		'maxCheckAttempts': StringIntPropertyEncoder,
-		'normalCheckInterval': StringIntPropertyEncoder,
-		'notificationInterval': StringIntPropertyEncoder,
-		'notificationOptionCritical': DisabledPropertyEncoder,
-		'notificationOptionRecovered': DisabledPropertyEncoder,
-		'notificationOptionUnreachable': DisabledPropertyEncoder,
-		'notificationOptionWarning': DisabledPropertyEncoder,
-		'retryCheckInterval': StringIntPropertyEncoder,
-		'useNRPE': DisabledPropertyEncoder,
+		'disabled': DisabledPropertyEncoder,
 	}
 
+class UsersLdapUdm1Object(GenericUdm1Object):
+	"""Better representation of users/ldap properties."""
+	udm_prop_class = UsersLdapUdm1ObjectProperties
 
-class NagiosServiceUdm1Object(GenericUdm1Object):
-	"""Better representation of nagios/service properties."""
-	udm_prop_class = NagiosServiceUdm1ObjectProperties
 
-
-class NagiosServiceUdm1Module(GenericUdm1Module):
-	"""UsersUserUdm1Object factory"""
-	_udm_object_class = NagiosServiceUdm1Object
+class UsersLdapUdm1Module(GenericUdm1Module):
+	"""UsersLdapUdm1Object factory"""
+	_udm_object_class = UsersLdapUdm1Object
 	supported_api_versions = (1,)

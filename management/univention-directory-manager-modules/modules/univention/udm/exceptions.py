@@ -28,7 +28,7 @@
 
 from __future__ import unicode_literals
 try:
-	from typing import Optional, Text
+	from typing import Iterable, Optional, Text
 except ImportError:
 	pass
 
@@ -36,15 +36,33 @@ except ImportError:
 class UdmError(Exception):
 	"""Base class of Exceptions raised by (simplified) UDM modules."""
 	def __init__(self, msg, dn=None, module_name=None):
-		# type: (Text, Optional[str], Optional[str]) -> None
+		# type: (Text, Optional[Text], Optional[Text]) -> None
+		super(UdmError, self).__init__(msg)
 		self.dn = dn
 		self.module_name = module_name
-		super(UdmError, self).__init__(msg)
+
+
+class ApiVersionNotSupported(UdmError):
+	def __init__(
+		self,
+		msg=None,  # type: Text
+		module_name=None,  # type: Text
+		module_cls=None,  # type: type
+		requested_version=None,  # type: int
+		supported_versions=None,  # type: Iterable
+	):
+		#  type: (...) -> None
+		self.module_cls = module_cls
+		self.requested_version = requested_version
+		self.supported_versions = supported_versions
+		msg = msg or 'Class {!r} for module {!r} supports API versions {!r}, but {!r} was requested.'.format(
+			module_cls, module_name, supported_versions, requested_version)
+		super(ApiVersionNotSupported, self).__init__(msg, module_name=module_name)
 
 
 class DeletedError(UdmError):
 	def __init__(self, msg=None, dn=None, module_name=None):
-		# type: (Optional[Text], Optional[str], Optional[str]) -> None
+		# type: (Optional[Text], Optional[Text], Optional[Text]) -> None
 		msg = msg or 'Object{} has already been deleted.'.format(' {!r}'.format(dn) if dn else '')
 		super(DeletedError, self).__init__(msg, dn, module_name)
 
@@ -55,7 +73,7 @@ class FirstUseError(UdmError):
 	saved.
 	"""
 	def __init__(self, msg=None, dn=None, module_name=None):
-		# type: (Optional[Text], Optional[str], Optional[str]) -> None
+		# type: (Optional[Text], Optional[Text], Optional[Text]) -> None
 		msg = msg or 'Object has not been created/loaded yet.'
 		super(FirstUseError, self).__init__(msg, dn, module_name)
 
@@ -73,9 +91,19 @@ class MoveError(UdmError):
 class NoObject(UdmError):
 	"""Raised when a UdmObject could not be found at a DN."""
 	def __init__(self, msg=None, dn=None, module_name=None):
-		# type: (Optional[Text], Optional[str], Optional[str]) -> None
+		# type: (Optional[Text], Optional[Text], Optional[Text]) -> None
 		msg = msg or 'No object found at DN {!r}.'.format(dn)
 		super(NoObject, self).__init__(msg, dn, module_name)
+
+
+class UnknownUdmModuleType(UdmError):
+	"""
+	Raised when an LDAP object has no or empty attribute univentionObjectType.
+	"""
+	def __init__(self, msg=None, dn=None, module_name=None):
+		# type: (Optional[Text], Optional[Text], Optional[Text]) -> None
+		msg = msg or 'No or empty attribute "univentionObjectType" found at DN {!r}.'.format(dn)
+		super(UnknownUdmModuleType, self).__init__(msg, dn, module_name)
 
 
 class UnknownProperty(UdmError):
@@ -91,6 +119,6 @@ class WrongObjectType(UdmError):
 	Raised when the LDAP object to be loaded does not match the UdmModule type.
 	"""
 	def __init__(self, msg=None, dn=None, module_name=None, univention_object_type=None):
-		# type: (Optional[Text], Optional[str], Optional[str]) -> None
+		# type: (Optional[Text], Optional[Text], Optional[Text], Optional[Text]) -> None
 		msg = msg or 'Wrong UDM module: {!r} is not a {!r}, but a {!r}.'.format(dn, module_name, univention_object_type)
 		super(WrongObjectType, self).__init__(msg, dn, module_name)
