@@ -219,7 +219,7 @@ create_entry () {
 	local udm_object2
 	local conflict_dn2
 	local conflict_host2
-	local udm_object_owns_mac
+	local udm_object_owned_macs
 	local udm_object_owns_ip
 	local pre_check_conflicts
 	pre_check_conflicts=()
@@ -248,8 +248,8 @@ create_entry () {
 	fi
 
 	if [ -n "$MAC" ]; then
-		udm_object_owns_mac="$(sed -n 's/^ *mac: //p' <<<"$udm_object")"
-		if [ "${udm_object_owns_mac,,}" != "${MAC,,}" ]; then
+		udm_object_owned_macs="$(sed -n 's/^ *mac: //p' <<<"$udm_object")"
+		if ! grep --quiet "${udm_object_owned_macs,,}" <<< "${MAC,,}"; then
 			## check if some other computer object owns this MAC address
 			udm_object2="$(univention-directory-manager computers/computer list --filter mac="$MAC" "${ADMINOPTIONS[@]}")"
 			conflict_dn2="$(DN1 <<<"$udm_object2")"
@@ -399,7 +399,8 @@ if [ -n "$IP" ]; then
 		subnet="$(univention-ipcalc6 --ip "$IP" --netmask "$NETMASK" --output reverse --calcdns)"
 	else
 		# Fallback
-		subnet="$(univention-ipcalc6 --ip "$IP" --netmask "$interfaces_${interfaces_primary:-eth0}_netmask" --output reverse --calcdns)"
+		var_primary_netmask="interfaces_${interfaces_primary:-eth0}_netmask"
+		subnet="$(univention-ipcalc6 --ip "$IP" --netmask "${!var_primary_netmask}" --output reverse --calcdns)"
 	fi
 	log 0 "	Calculated subnet = $subnet"
 

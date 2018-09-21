@@ -22,6 +22,12 @@ ucs-test (8.0.28-193) unstable; urgency=low
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 14 Sep 2018 15:01:38 +0200
 
+ucs-test (8.0.28-193) unstable; urgency=medium
+
+  * Bug #47338: Add section for join script tests
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 21 Sep 2018 15:07:04 +0200
+
 ucs-test (8.0.28-192) unstable; urgency=medium
 
   * Bug #47374: added 199sync_ucs_case_only_rename_ou

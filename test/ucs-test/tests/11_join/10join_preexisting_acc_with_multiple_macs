@@ -1,0 +1,75 @@
+#!/usr/share/ucs-test/runner python
+## desc: Call univention-server-join on preexisting computer account with multiple macs
+## bugs: [47338]
+## packages:
+##  - univention-join
+## exposure: dangerous
+
+import subprocess
+
+import univention.testing.utils as utils
+import univention.testing.strings as uts
+import univention.testing.udm as udm_test
+
+
+def main():
+	with udm_test.UCSTestUDM() as udm:
+		memberserver1 = {
+			"name": uts.random_string(),
+			"mac": (uts.random_mac(), uts.random_mac(), ),
+			"ip": "127.0.0.121",
+		}
+		memberserver2 = {
+			"name": uts.random_string(),
+			"mac": memberserver1["mac"],
+			"ip": "127.0.0.122",
+		}
+		memberserver1["dn"] = udm.create_object("computers/memberserver", set=memberserver1)
+		utils.verify_ldap_object(memberserver1["dn"], expected_attr={"macAddress": memberserver1["mac"]})
+		join_member_with_preexisting_acc(memberserver1, udm)
+		join_member_with_conflicting_mac(memberserver2)
+
+
+def join_member_with_preexisting_acc(memberserver, udm):
+	print(memberserver)
+	for i in range(0, len(memberserver["mac"])):
+		# This removes all but one mac
+		subprocess.check_call([
+			"/usr/share/univention-join/univention-server-join",
+			"-role", "memberserver",
+			"-hostname", memberserver["name"],
+			"-ip", memberserver["ip"],
+			"-mac", memberserver["mac"][i],
+		])
+		# Readd macs
+		udm.modify_object("computers/memberserver", dn=memberserver["dn"], mac=memberserver["mac"])
+		utils.verify_ldap_object(memberserver["dn"], expected_attr={"macAddress": memberserver["mac"]})
+
+
+def join_member_with_conflicting_mac(memberserver):
+	print(memberserver)
+	for i in range(0, len(memberserver["mac"])):
+		try:
+			# This should fail because the macs conflict between memberserver1 and memberserver2
+			subprocess.check_output([
+				"/usr/share/univention-join/univention-server-join",
+				"-role", "memberserver",
+				"-hostname", memberserver["name"],
+				"-ip", memberserver["ip"],
+				"-mac", memberserver["mac"][i],
+			])
+		except subprocess.CalledProcessError as exc:
+			expected_error = "E: failed to create Member Server (1) [E: Object exists: (mac)  {}]".format(
+				memberserver["mac"][i]
+			)
+			if expected_error not in exc.output:
+				utils.fail("Join failed, but for the wrong reason:\n{}".format(exc.output))
+		else:
+			utils.fail(
+				"Calling join for a server that has a mac "
+				"that is already set on another server should not be possible."
+			)
+
+
+if __name__ == "__main__":
+	main()
