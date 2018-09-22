@@ -4,6 +4,7 @@
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## packages: [python-univention-directory-manager]
+## bugs: [47316]
 
 from collections import namedtuple
 from unittest import main, TestCase
@@ -104,7 +105,6 @@ class TestUdmUsersBasic(TestCase):
 			strict=False,
 			should_exist=True
 		)
-		print('OK.')
 
 	def test_modify_user(self):
 		user_mod = self.udm.get('users/user')
@@ -133,7 +133,6 @@ class TestUdmUsersBasic(TestCase):
 			strict=False,
 			should_exist=True
 		)
-		print('OK.')
 
 	def test_modify_user_homePostalAddress_udm1_generic(self):
 		addresses = [
@@ -161,7 +160,6 @@ class TestUdmUsersBasic(TestCase):
 				'homePostalAddress': ['{street}${zipcode}${city}'.format(**ad.__dict__) for ad in addresses],
 			},
 		)
-		print('OK.')
 
 	def test_modify_user_homePostalAddress_as_dict(self):
 		addresses = [
@@ -189,7 +187,6 @@ class TestUdmUsersBasic(TestCase):
 				'homePostalAddress': ['{street}${zipcode}${city}'.format(**ad.__dict__) for ad in addresses],
 			},
 		)
-		print('OK.')
 
 	def test_remove_user(self):
 		user_mod = self.udm.get('users/user')
@@ -201,8 +198,7 @@ class TestUdmUsersBasic(TestCase):
 			obj.dn,
 			should_exist=False
 		)
-		print('OK.')
 
 
 if __name__ == '__main__':
-	main()
+	main(verbosity=2)

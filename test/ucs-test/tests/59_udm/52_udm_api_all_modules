@@ -4,6 +4,7 @@
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## packages: [python-univention-directory-manager]
+## bugs: [47316]
 
 from collections import defaultdict
 from unittest import main, TestCase
@@ -58,4 +59,4 @@ class TestUdmGenericVariousModules(TestCase):
 
 
 if __name__ == '__main__':
-	main()
+	main(verbosity=2)
