@@ -34,7 +34,7 @@ Module and object specific for "users/ldap" UDM module.
 
 from __future__ import absolute_import, unicode_literals
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
-from .encoders import DisabledPropertyEncoder
+from ..encoders import DisabledPropertyEncoder
 
 
 class UsersLdapUdm1ObjectProperties(GenericUdm1ObjectProperties):

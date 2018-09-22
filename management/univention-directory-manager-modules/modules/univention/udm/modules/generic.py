@@ -38,10 +38,10 @@ import univention.admin.objects
 import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.uldap
-from .encoders import dn_list_property_encoder_for, BaseEncoder
-from .base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
-from .exceptions import DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UnknownProperty, WrongObjectType
-from .utils import UDebug as ud
+from ..encoders import dn_list_property_encoder_for, BaseEncoder
+from ..base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
+from ..exceptions import DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UnknownProperty, WrongObjectType
+from ..utils import UDebug as ud
 
 try:
 	from typing import Any, Dict, Iterator, Optional, Text, Tuple, Type, Union

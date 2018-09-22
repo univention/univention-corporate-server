@@ -27,36 +27,37 @@
 # <http://www.gnu.org/licenses/>.
 
 """
-Module and object specific for "groups/group" UDM module.
+Module and object specific for "nagios/service" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
-from .encoders import dn_list_property_encoder_for, StringIntBooleanPropertyEncoder, StringIntPropertyEncoder
+from ..encoders import dn_list_property_encoder_for, DisabledPropertyEncoder, StringIntPropertyEncoder
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
 
 
-class GroupsGroupUdm1ObjectProperties(GenericUdm1ObjectProperties):
-	"""groups/group UDM properties."""
+class NagiosServiceUdm1ObjectProperties(GenericUdm1ObjectProperties):
+	"""nagios/service UDM properties."""
 
 	_encoders = {
-		'UVMMGroup': StringIntBooleanPropertyEncoder,
-		'allowedEmailGroups': dn_list_property_encoder_for('groups/group'),
-		'allowedEmailUsers': dn_list_property_encoder_for('users/user'),
-		'gidNumber': StringIntPropertyEncoder,
-		'hosts': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
-		'memberOf': dn_list_property_encoder_for('groups/group'),
-		'nestedGroup': dn_list_property_encoder_for('groups/group'),
-		'sambaRID': StringIntPropertyEncoder,
-		'users': dn_list_property_encoder_for('users/user'),
+		'assignedHosts': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
+		'maxCheckAttempts': StringIntPropertyEncoder,
+		'normalCheckInterval': StringIntPropertyEncoder,
+		'notificationInterval': StringIntPropertyEncoder,
+		'notificationOptionCritical': DisabledPropertyEncoder,
+		'notificationOptionRecovered': DisabledPropertyEncoder,
+		'notificationOptionUnreachable': DisabledPropertyEncoder,
+		'notificationOptionWarning': DisabledPropertyEncoder,
+		'retryCheckInterval': StringIntPropertyEncoder,
+		'useNRPE': DisabledPropertyEncoder,
 	}
 
 
-class GroupsGroupUdm1Object(GenericUdm1Object):
-	"""Better representation of groups/group properties."""
-	udm_prop_class = GroupsGroupUdm1ObjectProperties
+class NagiosServiceUdm1Object(GenericUdm1Object):
+	"""Better representation of nagios/service properties."""
+	udm_prop_class = NagiosServiceUdm1ObjectProperties
 
 
-class GroupsGroupUdm1Module(GenericUdm1Module):
-	"""GroupsGroupUdm1Object factory"""
-	_udm_object_class = GroupsGroupUdm1Object
+class NagiosServiceUdm1Module(GenericUdm1Module):
+	"""UsersUserUdm1Object factory"""
+	_udm_object_class = NagiosServiceUdm1Object
 	supported_api_versions = (1,)

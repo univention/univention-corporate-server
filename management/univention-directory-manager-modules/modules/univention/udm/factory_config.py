@@ -56,41 +56,41 @@ In any case the requested API version must be in the modules
 >>> config_storage = UdmModuleFactoryConfigurationStorage(False)
 >>> config_storage.refresh_config()  # set config_storage._persistence_date to prevent another refresh
 >>> config_storage._config = {}  # empty config
->>> config1 = UdmModuleFactoryConfiguration('groups/.*', 'univention.udm.generic', 'GenericUdm1Module')  # v1
->>> config2 = UdmModuleFactoryConfiguration('^users/user$', 'univention.udm.users_user', 'UsersUserUdm1Module')  # v1
->>> config3 = UdmModuleFactoryConfiguration('^users/.*$', 'univention.udm.generic', 'GenericUdm1Module')  # v0 & v1
->>> config4 = UdmModuleFactoryConfiguration('^users/ldap$', 'univention.udm.users_ldap_v0', 'UsersLdapUdm1Module')  # v0
->>> config5 = UdmModuleFactoryConfiguration('^users/ldap$', 'univention.udm.users_ldap_v1', 'UsersLdapUdm1Module')  # v1
+>>> config1 = UdmModuleFactoryConfiguration('groups/.*', 'univention.udm.modules.generic', 'GenericUdm1Module')  # v1
+>>> config2 = UdmModuleFactoryConfiguration('^users/user$', 'univention.udm.modules.users_user', 'UsersUserUdm1Module')  # v1
+>>> config3 = UdmModuleFactoryConfiguration('^users/.*$', 'univention.udm.modules.generic', 'GenericUdm1Module')  # v0 & v1
+>>> config4 = UdmModuleFactoryConfiguration('^users/ldap$', 'univention.udm.modules.users_ldap_v0', 'UsersLdapUdm1Module')  # v0
+>>> config5 = UdmModuleFactoryConfiguration('^users/ldap$', 'univention.udm.modules.users_ldap_v1', 'UsersLdapUdm1Module')  # v1
 >>> config_storage.register_configuration(config1)
 >>> config_storage.register_configuration(config2)
 >>> config_storage.register_configuration(config3)
 >>> config_storage.register_configuration(config4)
 >>> config_storage.register_configuration(config5)
 >>> config_storage.get_configuration('users/user', 0)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/.*$', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/.*$', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
 >>> config_storage.get_configuration('users/user', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/user$', module_path=u'univention.udm.users_user', class_name=u'UsersUserUdm1Module')
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/user$', module_path=u'univention.udm.modules.users_user', class_name=u'UsersUserUdm1Module')
 >>> config_storage.get_configuration('users/ldap', 0)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/ldap$', module_path=u'univention.udm.users_ldap_v0', class_name=u'UsersLdapUdm1Module')
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/ldap$', module_path=u'univention.udm.modules.users_ldap_v0', class_name=u'UsersLdapUdm1Module')
 >>> config_storage.get_configuration('users/ldap', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/ldap$', module_path=u'univention.udm.users_ldap_v1', class_name=u'UsersLdapUdm1Module')
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/ldap$', module_path=u'univention.udm.modules.users_ldap_v1', class_name=u'UsersLdapUdm1Module')
 >>> config_storage.get_configuration('users/ldap', 2)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'users/ldap', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'users/ldap', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
 >>> config_storage.unregister_configuration(config5)
 >>> config_storage.get_configuration('users/ldap', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/.*$', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/.*$', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
 >>> config_storage.get_configuration('groups/group', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^groups/.*$', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^groups/.*$', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
 >>> config_storage.get_configuration('computers/domaincontroller_master', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'computers/domaincontroller_master', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'computers/domaincontroller_master', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
 >>> config_storage.unregister_configuration(config2)
 >>> config_storage.get_configuration('users/user', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/.*$', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/.*$', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
 >>> config_storage.unregister_configuration(config3)
 >>> config_storage.get_configuration('users/ldap', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'users/ldap', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'users/ldap', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
 >>> config_storage.get_configuration('users/user', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'users/user', module_path=u'univention.udm.generic', class_name=u'GenericUdm1Module')
+UdmModuleFactoryConfiguration(udm_module_name_pattern=u'users/user', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
 """
 
 from __future__ import absolute_import, unicode_literals
@@ -126,7 +126,7 @@ _UdmModuleFactoryConfigurationWithDate = namedtuple(
 
 class UdmModuleFactoryConfigurationStorage(object):
 	"""Handle loading and storing of the dynamic factory metadata."""
-	_default_factory = {'module_path': 'univention.udm.generic', 'class_name': 'GenericUdm1Module'}
+	_default_factory = {'module_path': 'univention.udm.modules.generic', 'class_name': 'GenericUdm1Module'}
 	_persistence_path = '/var/lib/univention-directory-manager-modules/udm_module_factory.json'
 
 	def __init__(self, persistent=True):  # type: (Optional[bool]) -> None

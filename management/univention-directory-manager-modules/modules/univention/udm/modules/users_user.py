@@ -31,7 +31,7 @@ Module and object specific for "users/user" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
-from .encoders import (
+from ..encoders import (
 	dn_list_property_encoder_for, dn_property_encoder_for, Base64BinaryPropertyEncoder, DatePropertyEncoder,
 	DisabledPropertyEncoder, HomePostalAddressPropertyEncoder, SambaLogonHoursPropertyEncoder, StringIntPropertyEncoder,
 )

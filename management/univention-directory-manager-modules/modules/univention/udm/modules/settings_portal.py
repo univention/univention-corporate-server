@@ -31,7 +31,7 @@ Module and object specific for "settings/portal" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
-from .encoders import (
+from ..encoders import (
 	dn_list_property_encoder_for, Base64BinaryPropertyEncoder, StringBooleanPropertyEncoder,
 	MultiLanguageTextPropertyEncoder,
 )
