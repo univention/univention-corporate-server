@@ -8,8 +8,6 @@
 from collections import defaultdict
 from unittest import main, TestCase
 import univention.debug as ud
-from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
-from univention.testing.ucr import UCSTestConfigRegistry
 from univention.udm import Udm
 from univention.udm.factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
 import univention.admin.modules
@@ -20,9 +18,6 @@ ud.set_level(ud.ADMIN, ud.ALL)
 
 
 class TestUdmGenericVariousModules(TestCase):
-	ucr_test = None
-	udm_test = None
-
 	@classmethod
 	def setUpClass(cls):
 		# we want to use only 1 class for all UDM modules and not save anything to disk
@@ -33,15 +28,6 @@ class TestUdmGenericVariousModules(TestCase):
 		config_storage.register_configuration(config)
 		cls.udm = Udm.using_admin(1)
 		cls.udm._configuration_storage = config_storage
-
-		cls.udm_test = UCSTestUDM()
-		cls.ucr_test = UCSTestConfigRegistry()
-		cls.ucr_test.load()
-
-	@classmethod
-	def tearDownClass(cls):
-		cls.ucr_test.revert_to_original_registry()
-		cls.udm_test.cleanup()
 
 	def test_load_modules(self):
 		print('Loading all modules...')

@@ -14,8 +14,8 @@ ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
 ud.set_level(ud.ADMIN, ud.ALL)
 
 config_storage = UdmModuleFactoryConfigurationStorage(False)
-config_storage.refresh_config()  # set config_storage._persistence_date to prevent another refresh
 config_storage._config = {}  # empty config
+config_storage._load_configuration = lambda: 42
 config1 = UdmModuleFactoryConfiguration('groups/.*', 'univention.udm.modules.generic', 'GenericUdm1Module')  # v1
 config2 = UdmModuleFactoryConfiguration('^users/user$', 'univention.udm.modules.users_user', 'UsersUserUdm1Module')  # v1
 config3 = UdmModuleFactoryConfiguration('^users/.*$', 'univention.udm.modules.generic', 'GenericUdm1Module')  # v0 & v1
