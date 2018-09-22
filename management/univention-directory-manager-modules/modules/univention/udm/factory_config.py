@@ -51,46 +51,6 @@ found, the decision which one to return is done in the following order:
 
 In any case the requested API version must be in the modules
 :py:`attr`supported_api_versions` list.
-
-
->>> config_storage = UdmModuleFactoryConfigurationStorage(False)
->>> config_storage.refresh_config()  # set config_storage._persistence_date to prevent another refresh
->>> config_storage._config = {}  # empty config
->>> config1 = UdmModuleFactoryConfiguration('groups/.*', 'univention.udm.modules.generic', 'GenericUdm1Module')  # v1
->>> config2 = UdmModuleFactoryConfiguration('^users/user$', 'univention.udm.modules.users_user', 'UsersUserUdm1Module')  # v1
->>> config3 = UdmModuleFactoryConfiguration('^users/.*$', 'univention.udm.modules.generic', 'GenericUdm1Module')  # v0 & v1
->>> config4 = UdmModuleFactoryConfiguration('^users/ldap$', 'univention.udm.modules.users_ldap_v0', 'UsersLdapUdm1Module')  # v0
->>> config5 = UdmModuleFactoryConfiguration('^users/ldap$', 'univention.udm.modules.users_ldap_v1', 'UsersLdapUdm1Module')  # v1
->>> config_storage.register_configuration(config1)
->>> config_storage.register_configuration(config2)
->>> config_storage.register_configuration(config3)
->>> config_storage.register_configuration(config4)
->>> config_storage.register_configuration(config5)
->>> config_storage.get_configuration('users/user', 0)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/.*$', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
->>> config_storage.get_configuration('users/user', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/user$', module_path=u'univention.udm.modules.users_user', class_name=u'UsersUserUdm1Module')
->>> config_storage.get_configuration('users/ldap', 0)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/ldap$', module_path=u'univention.udm.modules.users_ldap_v0', class_name=u'UsersLdapUdm1Module')
->>> config_storage.get_configuration('users/ldap', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/ldap$', module_path=u'univention.udm.modules.users_ldap_v1', class_name=u'UsersLdapUdm1Module')
->>> config_storage.get_configuration('users/ldap', 2)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'users/ldap', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
->>> config_storage.unregister_configuration(config5)
->>> config_storage.get_configuration('users/ldap', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/.*$', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
->>> config_storage.get_configuration('groups/group', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^groups/.*$', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
->>> config_storage.get_configuration('computers/domaincontroller_master', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'computers/domaincontroller_master', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
->>> config_storage.unregister_configuration(config2)
->>> config_storage.get_configuration('users/user', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'^users/.*$', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
->>> config_storage.unregister_configuration(config3)
->>> config_storage.get_configuration('users/ldap', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'users/ldap', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
->>> config_storage.get_configuration('users/user', 1)
-UdmModuleFactoryConfiguration(udm_module_name_pattern=u'users/user', module_path=u'univention.udm.modules.generic', class_name=u'GenericUdm1Module')
 """
 
 from __future__ import absolute_import, unicode_literals
