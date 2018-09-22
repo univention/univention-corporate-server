@@ -35,13 +35,13 @@ class TestUdmUsersBasic(TestCase):
 		config_storage = UdmModuleFactoryConfigurationStorage(False)
 		config_storage._config = {}
 		config_storage._load_configuration = lambda: 42
-		config1 = UdmModuleFactoryConfiguration(r'^users/.*$', 'univention.udm.generic', 'GenericUdm1Module')
-		config2 = UdmModuleFactoryConfiguration(r'groups/.*', 'univention.udm.generic', 'GenericUdm1Module')
-		config3 = UdmModuleFactoryConfiguration(r'^users/user$', 'univention.udm.users_user', 'UsersUserUdm1Module')
+		config1 = UdmModuleFactoryConfiguration(r'^users/.*$', 'univention.udm.modules.generic', 'GenericUdm1Module')
+		config2 = UdmModuleFactoryConfiguration(r'groups/.*', 'univention.udm.modules.generic', 'GenericUdm1Module')
+		config3 = UdmModuleFactoryConfiguration(r'^users/user$', 'univention.udm.modules.users_user', 'UsersUserUdm1Module')
 		config_storage.register_configuration(config1)
 		config_storage.register_configuration(config2)
 		config_storage.register_configuration(config3)
-		cls.udm = Udm.using_admin()
+		cls.udm = Udm.using_admin(1)
 		cls.udm._configuration_storage = config_storage
 
 		user_mod1 = cls.udm.get('users/user')
@@ -149,7 +149,7 @@ class TestUdmUsersBasic(TestCase):
 				'homePostalAddress': [],
 			},
 		)
-		config = UdmModuleFactoryConfiguration('users/user', 'univention.udm.generic', 'GenericUdm1Module')
+		config = UdmModuleFactoryConfiguration('users/user', 'univention.udm.modules.generic', 'GenericUdm1Module')
 		user_mod_generic = self.udm.get_by_factory_config('users/user', config)
 		obj = user_mod_generic.get(dn)
 		assert username == obj.props.username
@@ -177,11 +177,11 @@ class TestUdmUsersBasic(TestCase):
 				'homePostalAddress': [],
 			},
 		)
-		config = UdmModuleFactoryConfiguration('users/user', 'univention.udm.users_user', 'UsersUserUdm1Module')
+		config = UdmModuleFactoryConfiguration('users/user', 'univention.udm.modules.users_user', 'UsersUserUdm1Module')
 		user_mod_usersuser = self.udm.get_by_factory_config('users/user', config)
 		obj = user_mod_usersuser.get(dn)
 		assert username == obj.props.username
-		obj.props.homePostalAddress.extend([ad.__dict__ for ad in addresses])
+		obj.props.homePostalAddress.extend([ad._asdict() for ad in addresses])
 		obj.save()
 		utils.verify_ldap_object(
 			dn,

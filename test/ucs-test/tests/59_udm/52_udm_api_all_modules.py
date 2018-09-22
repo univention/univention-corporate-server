@@ -29,9 +29,9 @@ class TestUdmGenericVariousModules(TestCase):
 		config_storage = UdmModuleFactoryConfigurationStorage(False)
 		config_storage._config = {}
 		config_storage._load_configuration = lambda: 42
-		config = UdmModuleFactoryConfiguration(r'^.*/.*$', 'univention.udm.generic', 'GenericUdm1Module')
+		config = UdmModuleFactoryConfiguration(r'^.*/.*$', 'univention.udm.modules.generic', 'GenericUdm1Module')
 		config_storage.register_configuration(config)
-		cls.udm = Udm.using_admin()
+		cls.udm = Udm.using_admin(1)
 		cls.udm._configuration_storage = config_storage
 
 		cls.udm_test = UCSTestUDM()
