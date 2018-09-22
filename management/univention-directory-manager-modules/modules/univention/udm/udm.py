@@ -173,7 +173,7 @@ class Udm(object):
 		:return: a Udm object
 		:rtype: Udm
 		"""
-		return cls(cls._connection_handler.get_credentials_connection(password, username, dn, base, server, port, api_version))
+		return cls(cls._connection_handler.get_credentials_connection(password, username, dn, base, server, port), api_version)
 
 	def get(self, name):  # type: (str) -> BaseUdmModule
 		"""
