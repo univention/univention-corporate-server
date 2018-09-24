@@ -1,3 +1,9 @@
+ucs-test (8.0.28-194) unstable; urgency=medium
+
+  * Bug #41013: remove test
+
+ -- Jannik Ahlers <ahlers@univention.de>  Mon, 24 Sep 2018 15:42:51 +0200
+
 ucs-test (8.0.28-193) unstable; urgency=low
 
   * Bug #47818: add test 40_create_portal_entry
@@ -11,25 +17,25 @@ ucs-test (8.0.28-192) unstable; urgency=medium
 
  -- Felix Botner <botner@univention.de>  Wed, 19 Sep 2018 11:54:31 +0200
 
-ucs-test (8.0.28-190) unstable; urgency=low
+ucs-test (8.0.28-191) unstable; urgency=low
 
   * Bug #47719: wait for DNS to appear, make MailSink a contextmanager
 
  -- Daniel Troeder <troeder@univention.de>  Wed, 19 Sep 2018 08:56:02 +0200
 
-ucs-test (8.0.28-189) unstable; urgency=medium
+ucs-test (8.0.28-190) unstable; urgency=medium
 
   * Bug #47764: Add tests for setting quota through pam
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 18 Sep 2018 15:35:56 +0200
 
-ucs-test (8.0.28-188) unstable; urgency=low
+ucs-test (8.0.28-189) unstable; urgency=low
 
   * Bug #41109: add execution flag for 38_user_univentionLastUsedValue
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Sep 2018 13:16:24 +0200
 
-ucs-test (8.0.28-187) unstable; urgency=low
+ucs-test (8.0.28-188) unstable; urgency=low
 
   * Bug #41109: add 3 new tests for checking the handling of
     univentionLastUsedValue of uidNumber/gidNumber when creating
@@ -37,17 +43,23 @@ ucs-test (8.0.28-187) unstable; urgency=low
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Sep 2018 13:02:26 +0200
 
-ucs-test (8.0.28-186) unstable; urgency=medium
+ucs-test (8.0.28-187) unstable; urgency=medium
 
   * Bug #39121: added x to 101_renew_certificate_with_grace_period
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Sep 2018 12:05:05 +0200
 
-ucs-test (8.0.28-185) unstable; urgency=medium
+ucs-test (8.0.28-186) unstable; urgency=medium
 
   * Bug #39121: enabled 401check_posix_pwd_expiry_after_ad_pwdchange
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Sep 2018 11:47:21 +0200
+
+ucs-test (8.0.28-185) unstable; urgency=medium
+
+  * Bug #41013: added test for certificate renewal with grace period
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 15 Aug 2018 16:09:20 +0200
 
 ucs-test (8.0.28-184) unstable; urgency=medium
 

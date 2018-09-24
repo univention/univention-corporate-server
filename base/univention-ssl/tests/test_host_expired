@@ -13,8 +13,7 @@ univention-certificate update-expired
 univention-certificate list | grep $name && exit 1
 univention-certificate list-all | grep "$id.*$name.*(E)"
 univention-certificate renew -name "$name" -days 1000
-univention-certificate list | grep $name
-univention-certificate list-all | grep "$id.*$name.*(R)"
+test "$(univention-certificate list | grep -c $name)" -eq 1
 
 # renew without updatedb
 name="cert2"
@@ -23,6 +22,17 @@ faketime 'last week' univention-certificate new -name "$name" -days 1
 univention-certificate list | grep $name
 univention-certificate renew -name "$name" -days 1000
 univention-certificate list | grep $name
-univention-certificate list-all | grep "$id.*$name.*(R)"
+test "$(univention-certificate list | grep -c $name)" -eq 2
+
+# renew and test expiration of old cert
+name="cert3"
+id="05"
+univention-certificate new -name "$name" -days 1
+univention-certificate list | grep "$name"
+univention-certificate renew -name "$name" -days 1000
+test "$(univention-certificate list | grep -c $name)" -eq 2
+faketime 'next week' univention-certificate update-expired
+test "$(univention-certificate list | grep -c $name)" -eq 1
+! univention-certificate list | grep "$name" | grep "$id"
 
 :

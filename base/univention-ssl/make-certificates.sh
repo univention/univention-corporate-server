@@ -133,6 +133,8 @@ preserve            = no
 
 policy              = policy_match
 
+unique_subject      = no
+
 [ policy_match ]
 
 countryName		= match
@@ -341,56 +343,73 @@ list_cert_names_all () {
 	}' <"${SSLBASE}/${CA}/index.txt"
 }
 
+get_cert_name_from_id () {
+	if ! [ -z "$1" ]; then
+		list_cert_names_all | awk -v id="$1" '$1 == id {print $2}'
+	fi
+}
+
 update_db () {
 	openssl ca -updatedb -config "${SSLBASE}/openssl.cnf" -passin "file:${SSLBASE}/password"
 }
 
-has_valid_cert () { # returns 0 if yes, 1 if not found, 2 if revoked, 3 if expired
-	local cn="${1:?Missing argument: common name}"
+# parameter 1: id of cert to check
+# exits 0 if yes, 1 if not found, 2 if revoked, 3 if expired
 
-	awk -F '\t' -v name="$cn" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
-	BEGIN { ret=1; seq=""; }
-	{
-		split ( $6, X, "/" );
-		for ( i=2; X[i] != ""; i++ ) {
-			if ( X[i] ~ /^CN=/ ) {
-				split ( X[i], Y, "=" );
-				if ( name == Y[2] ) {
-					seq = $4;
-					ret = ( $1 != "R" ) ? ( $1 == "V" && $2 >= now ? 0 : 3 ) : 2;
-				}
-			}
-		}
+is_valid () {
+	local id="${1:?Missing argument: number}"
+	tac "${SSLBASE}/${CA}/index.txt" | awk -F '\t' -v id="$id" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
+	BEGIN { ret=1; }
+	$4 == id {
+		ret = ( $1 != "R" ) ? ( $1 == "V" && $2 >= now ? 0 : 3 ) : 2;
+		exit;
 	}
-	END { print seq; exit ret; }' <"${SSLBASE}/${CA}/index.txt"
+	END { exit ret; }'
 }
 
-has_cert () { # returns 0 if cert exists and is not revoked, 1 if not found or revoked
+# parameter 1: cn whose certs to look for
+# exits 0 if cert exists and is not revoked, 1 if not found or revoked; prints certs of cn
+
+has_cert () {
 	local cn="${1:?Missing argument: common name}"
-	awk -F '\t' -v name="$cn" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
+
+	cat "${SSLBASE}/${CA}/index.txt" | awk -F '\t' -v cn="$cn" '
 	BEGIN { ret=1; seq=""; }
-	{
-		if ( $1 != "R" ) {
-			split ( $6, X, "/" );
-			for ( i=2; X[i] != ""; i++ ) {
-				if ( X[i] ~ /^CN=/ ) {
-					split ( X[i], Y, "=" );
-					if ( name == Y[2] ) {
-						seq = $4;
-						ret = 0;
-					}
-				}
-			}
+	$6 ~ cn {
+		seq = seq $4 "\n";
+		if ($1 == "V") {
+			ret = 0;
 		}
 	}
-	END { print seq; exit ret; }' <"${SSLBASE}/${CA}/index.txt"
+	END {
+		print seq;
+		exit ret;
+	}'
+}
+
+# parameter 1: cn whose certs to look for
+# exits 0 if yes, 1 if not found, 2 if revoked, 3 if expired; prints newest valid cert of cn
+
+has_valid_cert () {
+	local cn="${1:?Missing argument: common name}"
+
+	tac "${SSLBASE}/${CA}/index.txt" | awk -F '\t' -v cn="$cn" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
+	BEGIN { ret=1; seq=""; }
+	$6 ~ cn {
+		if ($1 == "V") {
+			seq = $4;
+			ret = 0;
+			exit;
+		} else {
+			ret = ( $1 != "R" ) ? ( $1 == "V" && $2 >= now ? 0 : 3 ) : 2;
+		}
+	}
+	END { print seq; exit ret; }'
 }
 
 renew_cert () {
 	local fqdn="${1:?Missing argument: common name}"
 	local days="${2:-$DEFAULT_DAYS}"
-
-	revoke_cert "$fqdn" || [ $? -eq 2 ] || return $?
 
 	(
 	cd "$SSLBASE"
@@ -398,7 +417,7 @@ renew_cert () {
 	)
 }
 
-# Parameter 1: Name des CN dessen Zertifikat wiederufen werden soll
+# Parameter 1: Name of the CN whose certs are to be revoked
 
 revoke_cert () {
 	local fqdn="${1:?Missing argument: common name}"
@@ -412,7 +431,20 @@ revoke_cert () {
 		return 2
 	fi
 
-	openssl ca -config "${SSLBASE}/openssl.cnf" -revoke "${SSLBASE}/${CA}/certs/${NUM}.pem" -passin pass:"$PASSWD"
+	while read line; do
+		if is_valid "$line"; then
+			openssl ca -config "${SSLBASE}/openssl.cnf" -revoke "${SSLBASE}/${CA}/certs/${line}.pem" -passin pass:"$PASSWD"
+		fi
+	done <<< "$NUM"
+	gencrl
+}
+
+# Parameter 1: id of the cert to be revoked
+
+revoke_cert_id () {
+	local id="${1:?Missing argument: serial number}"
+
+	openssl ca -config "${SSLBASE}/openssl.cnf" -revoke "${SSLBASE}/${CA}/certs/${id}.pem" -passin pass:"$PASSWD"
 	gencrl
 }
 

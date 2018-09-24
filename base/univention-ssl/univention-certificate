@@ -52,6 +52,7 @@ usage () {
 	echo ""
 	echo "Options:"
 	echo "        -name <name>"
+	echo "        -id <serial number>"
 	echo "        -days <days>"
 	echo "        -request <req.pem>"
 
@@ -96,6 +97,7 @@ do
 	dump) command="$1" ;;
 	sign) command="$1" ;;
 	-name|--name) name="${2:?Missing argument to -name}" ; shift ;;
+	-id|--id) id="${2:?Missing argument to -id}" ; shift ;;
 	-days|--days) days="${2:?Missing argument to -days}" ; shift ;;
 	-request|--request) request="$(readlink -f "${2:?Missing argument to -request}")" ; shift ;;
 	-h|--help|--usage|-\?) usage ;;
@@ -105,14 +107,16 @@ do
 	shift
 done
 
+. "${MAKE_CERTIFICATES_SH_INCLUDE:=/usr/share/univention-ssl/make-certificates.sh}"
+
 case "$command" in
-new|revoke|renew|check|dump) : ${name:?Missing argument '-name'} ;;
-sign) : ${request:?Missing argument '-request'} ;;
+new|renew) : "${name:?Missing argument '-name'}" ;;
+revoke|check|dump)  : "${name:="$(get_cert_name_from_id "$id")"}"
+					: "${name:?Missing argument '-name' or '-id'}" ;;
+sign) : "${request:?Missing argument '-request'}" ;;
 list|list_all|update_expired) ;;
 *) usage "Unknown command: '$1'" >&2 ;;
 esac
-
-. "${MAKE_CERTIFICATES_SH_INCLUDE:=/usr/share/univention-ssl/make-certificates.sh}"
 
 cd "$SSLBASE"
 
@@ -129,8 +133,12 @@ new () {
 
 revoke () {
 		run_only master exclusive
-		echo "Revoke certificate: $name"
-		revoke_cert "$name"
+		echo "Revoke certificates: $name"
+		if [ -n "$id" ] ; then
+			revoke_cert_id "$id"
+		else
+			revoke_cert "$name"
+		fi
 }
 
 renew () {
@@ -146,18 +154,23 @@ renew () {
 }
 
 check () {
-		local rv=0
+		: "${id:="$(has_cert "$name")"}"
+		local exitcode=1
 		run_only backup shared
-		echo -n "Certificate \"$name\" is "
-		has_valid_cert "$name" >/dev/null || rv=$?
-		case "$rv" in
-		0) echo "valid" ;;
-		1) echo "invalid (not found)" ;;
-		2) echo "invalid (revoked)" ;;
-		3) echo "invalid (expired)" ;;
-		*) echo "invalid" ;;
-		esac
-		exit $rv
+		while read line; do
+			local rv=0
+			echo -n "Certificate \"$name\" with serial number $line is "
+			is_valid "$line" || rv=$?
+			case "$rv" in
+			0) echo "valid"
+				exitcode=0;;
+			1) echo "invalid (not found)" ;;
+			2) echo "invalid (revoked)" ;;
+			3) echo "invalid (expired)" ;;
+			*) echo "invalid" ;;
+			esac
+		done <<< "$id"
+		exit "$exitcode"
 }
 
 list () {
@@ -179,11 +192,14 @@ update_expired () {
 }
 
 dump () {
-		local filename="$SSLBASE/$name/cert.pem"
-		[ -r "$filename" ] ||
-			die "Can not read file '$filename'"
-		echo "Dump certificate: $name"
-		openssl x509 -in "$filename" -noout -text
+		: "${id:="$(has_cert "$name")"}"
+		while read line; do
+			local filename="$SSLBASE/$CA/certs/$line.pem"
+			[ -r "$filename" ] ||
+				die "Can not read file '$filename'"
+			echo "Dump certificate: $name"
+			openssl x509 -in "$filename" -noout -text
+		done <<< "$id"
 }
 
 sign () {
