@@ -3,7 +3,7 @@ release: "4.3"
 version: [1]
 scope: ucs_4.3-0-errata4.3-1
 src: univention-ssl
-fix: 12.0.0-10A~4.3.0.201809101627
+fix: 12.0.0-9A~4.3.0.201808221626
 desc: |
  This update addresses the following issue(s):
  * univention-certificate now offers a transition period for the
