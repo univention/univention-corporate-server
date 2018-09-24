@@ -630,7 +630,7 @@ ServerName printserver.example.com
         <section id="extdom:ssl:list">
             <title>Displaying the certificates</title>
 			<para>
-			  The following command is used to display a list of all the available, valid certificates and their serial number:
+			  The following command is used to display a list of all the available, valid certificates:
 			</para>
 <programlisting language="sh"><![CDATA[
 univention-certificate list
@@ -640,8 +640,6 @@ univention-certificate list
 			  An individual SSL certificate can be displayed with the following command:
 			</para>
 <programlisting language="sh"><![CDATA[
-univention-certificate dump -number serialnumber
-or
 univention-certificate dump -name fullyqualifiedhostname
 ]]></programlisting>
 		</section>
@@ -652,10 +650,9 @@ univention-certificate dump -name fullyqualifiedhostname
 			  This command checks whether a certificate is valid or invalid:
 			</para>
 <programlisting language="sh"><![CDATA[
-univention-certificate check -number serialnumber
+univention-certificate check -name fullyqualifiedhostname
 ]]></programlisting>
 			<para>
-				Using this command with the '-name' flag shows the newest certificate of the fqdn.
 			  A certificate may be invalid because it has either been revoked or has expired.
 			</para>
 		</section>
@@ -666,8 +663,6 @@ univention-certificate check -number serialnumber
 			  The following command is used to revoke a certificate:
 			</para>
 <programlisting language="sh"><![CDATA[
-univention-certificate revoke -number serialnumber
-or
 univention-certificate revoke -name fullyqualifiedhostname
 ]]></programlisting>
 			<para>
