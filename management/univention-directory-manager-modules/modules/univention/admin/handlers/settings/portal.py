@@ -366,6 +366,7 @@ class object(univention.admin.handlers.simpleLdap):
 					compmod = univention.admin.modules.get(compobj.module)
 					if not compmod.initialized:
 						univention.admin.modules.init(self.lo, self.position, compmod)
+						compobj = univention.admin.modules.lookup('computers/computer', None, self.lo, scope='base', base=computer)[0]
 				except univention.admin.uexceptions.noObject:
 					continue
 				compobj.open()
@@ -381,6 +382,7 @@ class object(univention.admin.handlers.simpleLdap):
 					compmod = univention.admin.modules.get(compobj.module)
 					if not compmod.initialized:
 						univention.admin.modules.init(self.lo, self.position, compmod)
+						compobj = univention.admin.modules.lookup('computers/computer', None, self.lo, scope='base', base=computer)[0]
 				except univention.admin.uexceptions.noObject:
 					continue
 				compobj.open()

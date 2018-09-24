@@ -1,3 +1,10 @@
+univention-directory-manager-modules (13.0.24-1) unstable; urgency=low
+
+  * Bug #47818: settings/portal.py: reread computer object if computer
+    module as not been initialized before
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 14 Sep 2018 14:22:36 +0200
+
 univention-directory-manager-modules (13.0.23-5) unstable; urgency=medium
 
   * Bug #40672: fix broken search filter generation for boolean and
