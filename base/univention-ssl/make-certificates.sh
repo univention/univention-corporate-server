@@ -43,6 +43,8 @@ DEFAULT_CRL_DAYS="$(/usr/sbin/univention-config-registry get ssl/crl/validity)"
 : ${DEFAULT_CRL_DAYS:=10}
 DEFAULT_DAYS="$(/usr/sbin/univention-config-registry get ssl/default/days)"
 : ${DEFAULT_DAYS:=1825}
+DEFAULT_GRACE="$(/usr/sbin/univention-config-registry get ssl/default/grace)"
+: ${DEFAULT_GRACE:=0}
 DEFAULT_MD="$(/usr/sbin/univention-config-registry get ssl/default/hashfunction)"
 : ${DEFAULT_MD:=sha256}
 DEFAULT_BITS="$(/usr/sbin/univention-config-registry get ssl/default/bits)"
@@ -353,40 +355,6 @@ update_db () {
 	openssl ca -updatedb -config "${SSLBASE}/openssl.cnf" -passin "file:${SSLBASE}/password"
 }
 
-# parameter 1: id of cert to check
-# exits 0 if yes, 1 if not found, 2 if revoked, 3 if expired
-
-is_valid () {
-	local id="${1:?Missing argument: number}"
-	tac "${SSLBASE}/${CA}/index.txt" | awk -F '\t' -v id="$id" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
-	BEGIN { ret=1; }
-	$4 == id {
-		ret = ( $1 != "R" ) ? ( $1 == "V" && $2 >= now ? 0 : 3 ) : 2;
-		exit;
-	}
-	END { exit ret; }'
-}
-
-# parameter 1: cn whose certs to look for
-# exits 0 if cert exists and is not revoked, 1 if not found or revoked; prints certs of cn
-
-has_cert () {
-	local cn="${1:?Missing argument: common name}"
-
-	cat "${SSLBASE}/${CA}/index.txt" | awk -F '\t' -v cn="$cn" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
-	BEGIN { ret=1; seq=""; }
-	$6 ~ cn {
-		seq = seq $4 "\n";
-		if ($1 == "V") {
-			ret = 0;
-		}
-	}
-	END {
-		print seq;
-		exit ret;
-	}'
-}
-
 # parameter 1: cn whose certs to look for
 # exits 0 if yes, 1 if not found, 2 if revoked, 3 if expired; prints newest valid cert of cn
 
@@ -407,12 +375,51 @@ has_valid_cert () {
 	END { print seq; exit ret; }'
 }
 
+# parameter 1: id of cert to check
+# exits 0 if yes, 1 if not found, 2 if revoked, 3 if expired
+
+is_valid () {
+	local id="${1:?Missing argument: number}"
+	tac "${SSLBASE}/${CA}/index.txt" | awk -F '\t' -v id="$id" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
+	BEGIN { ret=1; }
+	$4 == id {
+		ret = ( $1 != "R" ) ? ( $1 == "V" && $2 >= now ? 0 : 3 ) : 2;
+		exit;
+	}
+	END { exit ret; }'
+}
+
+# parameter 1: cn whose certs to look for
+# exits 0 if cert exists and is not revoked, 1 if not found or revoked; prints newest cert of cn
+
+has_cert () {
+	local cn="${1:?Missing argument: common name}"
+
+	tac "${SSLBASE}/${CA}/index.txt" | awk -F '\t' -v cn="$cn" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
+	BEGIN { ret=1; seq=""; }
+	$6 ~ cn {
+		if ($1 == "V") {
+			seq = $4;
+			ret = 0;
+			exit;
+		} else {
+			seq = $4;
+			ret = ( $1 != "R" ) ? 0 : 1;
+		}
+	}
+	END { print seq; exit ret; }'
+}
+
 # Parameter 1: id of the certificate to revoke
 # Parameter 2: certificate validity in days
+# Parameter 3: grace period in days
 
 renew_cert () {
 	local id="${1:?Missing argument: certificate id}"
 	local days="${2:-$DEFAULT_DAYS}"
+	local grace="${3:-$DEFAULT_GRACE}"
+
+	revoke_cert "$id" "$grace" || [ $? -eq 2 ] || return $?
 
 	(
 	name="$(get_cert_name_from_id "$id")"
@@ -422,11 +429,56 @@ renew_cert () {
 }
 
 # Parameter 1: id of the certificate to revoke
+# Parameter 2: grace period in days
 
 revoke_cert () {
 	local id="${1:?Missing argument: certificate id}"
-	openssl ca -config "${SSLBASE}/openssl.cnf" -revoke "${SSLBASE}/${CA}/certs/${id}.pem" -passin pass:"$PASSWD"
+	local grace="${2:-$DEFAULT_GRACE}"
+
+	if [ "$grace" -eq 0 ]; then
+		openssl ca -config "${SSLBASE}/openssl.cnf" -revoke "${SSLBASE}/${CA}/certs/${id}.pem" -passin pass:"$PASSWD"
+	else
+		# remember the certificate for revocation after the grace period
+		pending_file="${SSLBASE}/pending.txt"
+		[ -f "$pending_file" ] || touch "$pending_file"
+		chmod 600 "$pending_file"
+
+		local now=$(date +"%s")
+		local expire="$((now + (grace * 3600 * 24)))"
+		echo "$id:$expire" >> "$pending_file"
+		chmod 600 "$pending_file"
+	fi
+
 	gencrl
+}
+
+update_pending_certs () {
+	local pending_file="${SSLBASE}/pending.txt"
+	[ -f "$pending_file" ] || touch "$pending_file"
+	chmod 600 "$pending_file"
+	local temp=$(mktemp)
+
+	while IFS=: read -r num expire; do
+		local now=$(date +"%s")
+		if [ "$now" -gt "$expire" ]; then
+			openssl ca -config "${SSLBASE}/openssl.cnf" -revoke "${SSLBASE}/${CA}/certs/${num}.pem" -passin pass:"$PASSWD"
+		else
+			echo "$num:$expire" >>"$temp"
+		fi
+	done < "$pending_file"
+
+	mv "$temp" "$pending_file"
+	chmod 600 "$pending_file"
+	gencrl
+}
+
+list_cert_names_pending() {
+	local pending_file="${SSLBASE}/pending.txt"
+	while IFS=: read -r num expire; do
+		local certname="$(get_cert_name_from_id "$num")"
+		local expiredate="$(date -d @"$expire")"
+		echo "$num      $certname    $expiredate"
+	done < "$pending_file"
 }
 
 # Parameter 1: Request file
@@ -504,11 +556,11 @@ _common_gen_cert () {
 
 	# process the request
 	if [ -s "${extFile:-}" ]; then
-		openssl ca -batch -config "${SSLBASE}/openssl.cnf" -days "$days" -in "$SSLBASE/$name/req.pem" \
+		openssl ca -batch -config "${SSLBASE}/openssl.cnf" -days $days -in "$SSLBASE/$name/req.pem" \
 			-out "$SSLBASE/$name/cert.pem" -passin pass:"$PASSWD" -extfile "$extFile"
 		rm -f "$extFile"
 	else
-		openssl ca -batch -config "${SSLBASE}/openssl.cnf" -days "$days" -in "$SSLBASE/$name/req.pem" \
+		openssl ca -batch -config "${SSLBASE}/openssl.cnf" -days $days -in "$SSLBASE/$name/req.pem" \
 			-out "$SSLBASE/$name/cert.pem" -passin pass:"$PASSWD"
 	fi
 

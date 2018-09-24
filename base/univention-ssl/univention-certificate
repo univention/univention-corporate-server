@@ -49,11 +49,14 @@ usage () {
 	echo "        list-all (list all, including revoked and expired)"
 	echo "        sign"
 	echo "        update-expired (updates db for expired certificates)"
+	echo "        list-pending"
+	echo "        update-pending (revokes pending certificates if expired)"
 	echo ""
 	echo "Options:"
 	echo "        -name <name>"
 	echo "        -number <number>"
 	echo "        -days <days>"
+	echo "        -grace <grace> (grace period, in days)"
 	echo "        -request <req.pem>"
 
 	[ -n "$1" ] && exit 2 || exit 0
@@ -84,24 +87,25 @@ run_only () {
 command=
 name=
 days=
-noninteractive=
+grace=
 while [ $# -ge 1 ]
 do
 	case "$1" in
 	new) command="$1" ;;
 	revoke) command="$1" ;;
-	revoke-non-interactive) command="revoke"
-		noninteractive="true" ;;
 	renew) command="$1" ;;
 	check) command="$1" ;;
 	list) command="$1" ;;
 	list-all) command="list_all" ;;
 	update-expired) command="update_expired" ;;
+	list-pending) command="list_pending" ;;
+	update-pending) command="update_pending" ;;
 	dump) command="$1" ;;
 	sign) command="$1" ;;
 	-name|--name) name="${2:?Missing argument to -name}" ; shift ;;
 	-number|--number) number="${2:?Missing argument to -number}" ; shift ;;
 	-days|--days) days="${2:?Missing argument to -days}" ; shift ;;
+	-grace|--grace) grace="${2:?Missing argument to -grace}" ; shift ;;
 	-request|--request) request="$(readlink -f "${2:?Missing argument to -request}")" ; shift ;;
 	-h|--help|--usage|-\?) usage ;;
 	-*) usage "Unknown option: '$1'" >&2 ;;
@@ -118,7 +122,7 @@ case "$command" in
 								 : "${name:?Missing argument '-name' or '-number'}"
 								 : "${number:="$(has_cert "$name")"}" ;;
 	sign) : "${request:?Missing argument '-request'}" ;;
-	list|list_all|update_expired) ;;
+	list|list_all|update_expired|list_pending|update_pending) ;;
 	*) usage "Unknown command: '$1'" >&2 ;;
 esac
 
@@ -137,23 +141,15 @@ new () {
 
 revoke () {
 		run_only master exclusive
-		if [[ "$number" == *$'\n'* ]] && [ -z "$noninteractive" ] ; then
-			read -p "Warning: There is more than one certficate registered for the dn $name. Do you really want to revoke all of them (y/n)?"
-			if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
-				exit 1
-			fi
-		fi
-		echo "$number" | while read line; do
-			echo "Revoke certificate: $name"
-			revoke_cert "$line" || :
-		done
+		echo "Revoke certificate: $name"
+		revoke_cert "$number"
 }
 
 renew () {
 		run_only master exclusive
 		: "${days:?Missing argument -days}"
 		echo "Renew certificate: $name"
-		renew_cert "$(echo "$number" | tail -n1)" "$days"
+		renew_cert "$number" "$days" "$grace"
 		if getent group "DC Backup Hosts" >/dev/null 2>&1
 		then
 			chgrp -R "DC Backup Hosts" "$name"
@@ -164,17 +160,16 @@ renew () {
 check () {
 		local rv=0
 		run_only backup shared
-		echo "$number" | while read line; do
-			echo -n "Certificate \"$name\" with serial number $line is "
-			is_valid "$line" || rv=$?
-			case "$rv" in
-			0) echo "valid" ;;
-			1) echo "invalid (not found)" ;;
-			2) echo "invalid (revoked)" ;;
-			3) echo "invalid (expired)" ;;
-			*) echo "invalid" ;;
-			esac
-		done
+		echo -n "Certificate \"$name\" is "
+		is_valid "$number" || rv=$?
+		case "$rv" in
+		0) echo "valid" ;;
+		1) echo "invalid (not found)" ;;
+		2) echo "invalid (revoked)" ;;
+		3) echo "invalid (expired)" ;;
+		*) echo "invalid" ;;
+		esac
+		exit $rv
 }
 
 list () {
@@ -189,21 +184,30 @@ list_all () {
 		list_cert_names_all
 }
 
+list_pending () {
+		run_only backup shared
+		echo "List all pending certificates and their expiration time"
+		list_cert_names_pending
+}
+
 update_expired () {
 		run_only master exclusive
 		echo "Updating db for expired certificates"
 		update_db
 }
 
+update_pending () {
+		run_only master exclusive
+		echo "Revoke pending certificates if their expiration time has passed"
+		update_pending_certs
+}
+
 dump () {
-		echo "$number" | while read line; do
-			local filename="$SSLBASE/$CA/certs/$line.pem"
-			[ -r "$filename" ] ||
-				die "Can not read file '$filename'"
-			echo "Dump certificate: $name"
-			openssl x509 -in "$filename" -noout -text
-			echo
-		done
+		local filename="$SSLBASE/$CA/certs/$number.pem"
+		[ -r "$filename" ] ||
+			die "Can not read file '$filename'"
+		echo "Dump certificate: $name"
+		openssl x509 -in "$filename" -noout -text
 }
 
 sign () {

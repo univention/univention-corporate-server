@@ -24,7 +24,6 @@ list_cert_names | grep -F -e "${R64}"
 [ 02 = "$(has_valid_cert "${R64}")" ]
 
 revoke_cert "$(has_valid_cert "${R64}")"
-revoke_cert "$(has_valid_cert "${R64}")"
 has_valid_cert "${R64}" && exit 1
 list_cert_names | grep -F -e "${R64}" && exit 1
 
