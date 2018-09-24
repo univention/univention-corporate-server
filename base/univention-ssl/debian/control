@@ -8,8 +8,7 @@ Build-Depends-Indep: debhelper,
  shell-univention-lib,
  openssl,
  python-m2crypto,
- faketime,
- ucslint
+ faketime
 Standards-Version: 3.5.5
 
 Package: univention-ssl

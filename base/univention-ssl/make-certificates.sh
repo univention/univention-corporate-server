@@ -313,7 +313,7 @@ gencrl () {
 	fi
 }
 
-list_cert_names () { # list all valid certs
+list_cert_names () {
 	awk -F '\t' '
 	{
 		if ( $1 == "V" ) {
@@ -328,7 +328,7 @@ list_cert_names () { # list all valid certs
 	}' <"${SSLBASE}/${CA}/index.txt"
 }
 
-list_cert_names_all () { # list all certs
+list_cert_names_all () {
 	awk -F '\t' '
 	{
 		split ( $6, X, "/" );
@@ -341,139 +341,79 @@ list_cert_names_all () { # list all certs
 	}' <"${SSLBASE}/${CA}/index.txt"
 }
 
-get_cert_name_from_id() {
-	if ! [ -z "$1" ]; then
-		list_cert_names_all | awk -v id="$1" '$1 == id {print $2}'
-	fi
-}
-
 update_db () {
 	openssl ca -updatedb -config "${SSLBASE}/openssl.cnf" -passin "file:${SSLBASE}/password"
 }
 
-# parameter 1: cn whose certs to look for
-# exits 0 if yes, 1 if not found, 2 if revoked, 3 if expired; prints newest valid cert of cn
-
-has_valid_cert () {
+has_valid_cert () { # returns 0 if yes, 1 if not found, 2 if revoked, 3 if expired
 	local cn="${1:?Missing argument: common name}"
 
-	tac "${SSLBASE}/${CA}/index.txt" | awk -F '\t' -v cn="$cn" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
+	awk -F '\t' -v name="$cn" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
 	BEGIN { ret=1; seq=""; }
-	$6 ~ cn {
-		if ($1 == "V") {
-			seq = $4;
-			ret = 0;
-			exit;
-		} else {
-			ret = ( $1 != "R" ) ? ( $1 == "V" && $2 >= now ? 0 : 3 ) : 2;
+	{
+		split ( $6, X, "/" );
+		for ( i=2; X[i] != ""; i++ ) {
+			if ( X[i] ~ /^CN=/ ) {
+				split ( X[i], Y, "=" );
+				if ( name == Y[2] ) {
+					seq = $4;
+					ret = ( $1 != "R" ) ? ( $1 == "V" && $2 >= now ? 0 : 3 ) : 2;
+				}
+			}
 		}
 	}
-	END { print seq; exit ret; }'
+	END { print seq; exit ret; }' <"${SSLBASE}/${CA}/index.txt"
 }
 
-# parameter 1: id of cert to check
-# exits 0 if yes, 1 if not found, 2 if revoked, 3 if expired
-
-is_valid () {
-	local id="${1:?Missing argument: number}"
-	tac "${SSLBASE}/${CA}/index.txt" | awk -F '\t' -v id="$id" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
-	BEGIN { ret=1; }
-	$4 == id {
-		ret = ( $1 != "R" ) ? ( $1 == "V" && $2 >= now ? 0 : 3 ) : 2;
-		exit;
-	}
-	END { exit ret; }'
-}
-
-# parameter 1: cn whose certs to look for
-# exits 0 if cert exists and is not revoked, 1 if not found or revoked; prints newest cert of cn
-
-has_cert () {
+has_cert () { # returns 0 if cert exists and is not revoked, 1 if not found or revoked
 	local cn="${1:?Missing argument: common name}"
-
-	tac "${SSLBASE}/${CA}/index.txt" | awk -F '\t' -v cn="$cn" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
+	awk -F '\t' -v name="$cn" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
 	BEGIN { ret=1; seq=""; }
-	$6 ~ cn {
-		if ($1 == "V") {
-			seq = $4;
-			ret = 0;
-			exit;
-		} else {
-			seq = $4;
-			ret = ( $1 != "R" ) ? 0 : 1;
+	{
+		if ( $1 != "R" ) {
+			split ( $6, X, "/" );
+			for ( i=2; X[i] != ""; i++ ) {
+				if ( X[i] ~ /^CN=/ ) {
+					split ( X[i], Y, "=" );
+					if ( name == Y[2] ) {
+						seq = $4;
+						ret = 0;
+					}
+				}
+			}
 		}
 	}
-	END { print seq; exit ret; }'
+	END { print seq; exit ret; }' <"${SSLBASE}/${CA}/index.txt"
 }
-
-# Parameter 1: id of the certificate to revoke
-# Parameter 2: certificate validity in days
-# Parameter 3: grace period in days
 
 renew_cert () {
-	local id="${1:?Missing argument: certificate id}"
+	local fqdn="${1:?Missing argument: common name}"
 	local days="${2:-$DEFAULT_DAYS}"
 
-	revoke_cert "$id" "$grace" || [ $? -eq 2 ] || return $?
+	revoke_cert "$fqdn" || [ $? -eq 2 ] || return $?
 
 	(
-	name="$(get_cert_name_from_id "$id")"
 	cd "$SSLBASE"
-	_common_gen_cert "$name" "$name"
+	_common_gen_cert "$fqdn" "$fqdn"
 	)
 }
 
-# Parameter 1: id of the certificate to revoke
-# Parameter 2: grace period in days
+# Parameter 1: Name des CN dessen Zertifikat wiederufen werden soll
 
 revoke_cert () {
-	local id="${1:?Missing argument: certificate id}"
-	local grace="${2:-$DEFAULT_GRACE}"
+	local fqdn="${1:?Missing argument: common name}"
 
-	if [ "$grace" -eq 0 ]; then
-		openssl ca -config "${SSLBASE}/openssl.cnf" -revoke "${SSLBASE}/${CA}/certs/${id}.pem" -passin pass:"$PASSWD"
-	else
-		# remember the certificate for revocation after the grace period
-		pending_file="${SSLBASE}/pending.txt"
-		[ -f "$pending_file" ] || touch "$pending_file"
-		chmod 600 "$pending_file"
+	local cn NUM
+	[ ${#fqdn} -gt 64 ] && cn="${fqdn%%.*}" || cn="$fqdn"
 
-		local now=$(date +"%s")
-		local expire="$((now + (grace * 3600 * 24)))"
-		echo "$id:$expire" >> "$pending_file"
-		chmod 600 "$pending_file"
+	if ! NUM="$(has_cert "$cn")"
+	then
+		echo "no certificate for $1 registered" >&2
+		return 2
 	fi
 
+	openssl ca -config "${SSLBASE}/openssl.cnf" -revoke "${SSLBASE}/${CA}/certs/${NUM}.pem" -passin pass:"$PASSWD"
 	gencrl
-}
-
-update_pending_certs () {
-	local pending_file="${SSLBASE}/pending.txt"
-	[ -f "$pending_file" ] || touch "$pending_file"
-	chmod 600 "$pending_file"
-	local temp=$(mktemp)
-
-	while IFS=: read -r num expire; do
-		local now=$(date +"%s")
-		if [ "$now" -gt "$expire" ]; then
-			openssl ca -config "${SSLBASE}/openssl.cnf" -revoke "${SSLBASE}/${CA}/certs/${num}.pem" -passin pass:"$PASSWD"
-		else
-			echo "$num:$expire" >>"$temp"
-		fi
-	done < "$pending_file"
-
-	mv "$temp" "$pending_file"
-	chmod 600 "$pending_file"
-	gencrl
-}
-
-list_cert_names_pending() {
-	local pending_file="${SSLBASE}/pending.txt"
-	while IFS=: read -r num expire; do
-		local certname="$(get_cert_name_from_id "$num")"
-		local expiredate="$(date -d @"$expire")"
-		echo "$num      $certname    $expiredate"
-	done < "$pending_file"
 }
 
 # Parameter 1: Request file
@@ -504,12 +444,13 @@ except Exception as err:
 ' "$request"
 }
 
-# Parameter 1: fqdn or common name for cert
-# Parameter 2: days the cert is valid
+# Parameter 1: Name des Unterverzeichnisses, in dem das neue Zertifikat abgelegt werden soll
+# Parameter 2: Name des CN für den das Zertifikat ausgestellt wird.
 
 gencert () {
-	local fqdn="${1:?Missing argument: common name}"
-	local days="${2:-$DEFAULT_DAYS}"
+	local name="${1:?Missing argument: dirname}"
+	local fqdn="${2:?Missing argument: common name}"
+	local days="${3:-$DEFAULT_DAYS}"
 
 	local hostname="${fqdn%%.*}" cn="$fqdn"
 	if [ ${#hostname} -gt 64 ]
@@ -517,26 +458,28 @@ gencert () {
 		echo "FATAL: Hostname '$hostname' is longer than 64 characters" >&2
 		return 2
 	fi
-	name=$(cd "$SSLBASE" && readlink -f "$fqdn")
+	name=$(cd "$SSLBASE" && readlink -f "$name")
 
+	revoke_cert "$fqdn" || [ $? -eq 2 ] || return $?
+
+	install -m 700 -d "$name"
 	if [ ${#fqdn} -gt 64 ]
 	then
 		echo "INFO: FQDN '$fqdn' is longer than 64 characters, using hostname '$hostname' as CN."
 		cn="$hostname"
 	fi
-	install -m 700 -d "$SSLBASE/$cn"
 	if [ -n "$EXTERNAL_REQUEST_FILE" ]
 	then
-		cp "$EXTERNAL_REQUEST_FILE" "$fqdn/req.pem"
-		[ -n "$EXTERNAL_REQUEST_FILE_KEY" ] && cp "$EXTERNAL_REQUEST_FILE_KEY" "$fqdn/private.key"
+		cp "$EXTERNAL_REQUEST_FILE" "$name/req.pem"
+		[ -n "$EXTERNAL_REQUEST_FILE_KEY" ] && cp "$EXTERNAL_REQUEST_FILE_KEY" "$name/private.key"
 	else
 		# generate a key pair
-		mk_config "$SSLBASE/$cn/openssl.cnf" "" "$days" "$cn" "$cn $hostname"
-		openssl genrsa -out "$SSLBASE/$cn/private.key" "$DEFAULT_BITS"
-		openssl req -batch -config "$SSLBASE/$cn/openssl.cnf" -new -key "$SSLBASE/$cn/private.key" -out "$SSLBASE/$cn/req.pem"
+		mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname"
+		openssl genrsa -out "$name/private.key" "$DEFAULT_BITS"
+		openssl req -batch -config "$name/openssl.cnf" -new -key "$name/private.key" -out "$name/req.pem"
 	fi
 
-	_common_gen_cert "$cn" "$cn"
+	_common_gen_cert "$name" "$fqdn"
 }
 
 _common_gen_cert () {
@@ -551,16 +494,16 @@ _common_gen_cert () {
 
 	# process the request
 	if [ -s "${extFile:-}" ]; then
-		openssl ca -batch -config "${SSLBASE}/openssl.cnf" -days $days -in "$SSLBASE/$name/req.pem" \
-			-out "$SSLBASE/$name/cert.pem" -passin pass:"$PASSWD" -extfile "$extFile"
+		openssl ca -batch -config "${SSLBASE}/openssl.cnf" -days $days -in "$name/req.pem" \
+			-out "$name/cert.pem" -passin pass:"$PASSWD" -extfile "$extFile"
 		rm -f "$extFile"
 	else
-		openssl ca -batch -config "${SSLBASE}/openssl.cnf" -days $days -in "$SSLBASE/$name/req.pem" \
-			-out "$SSLBASE/$name/cert.pem" -passin pass:"$PASSWD"
+		openssl ca -batch -config "${SSLBASE}/openssl.cnf" -days $days -in "$name/req.pem" \
+			-out "$name/cert.pem" -passin pass:"$PASSWD"
 	fi
 
 	# move the new certificate to its place
 	move_cert "${SSLBASE}/${CA}/newcerts/"*
 
-	find "${SSLBASE}/$name" -type f -exec chmod 600 {} + , -type d -exec chmod 700 {} +
+	find "$name" -type f -exec chmod 600 {} + , -type d -exec chmod 700 {} +
 }

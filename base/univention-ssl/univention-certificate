@@ -49,8 +49,6 @@ usage () {
 	echo "        list-all (list all, including revoked and expired)"
 	echo "        sign"
 	echo "        update-expired (updates db for expired certificates)"
-	echo "        list-pending"
-	echo "        update-pending (revokes pending certificates if expired)"
 	echo ""
 	echo "Options:"
 	echo "        -name <name>"
@@ -95,8 +93,6 @@ do
 	list) command="$1" ;;
 	list-all) command="list_all" ;;
 	update-expired) command="update_expired" ;;
-	list-pending) command="list_pending" ;;
-	update-pending) command="update_pending" ;;
 	dump) command="$1" ;;
 	sign) command="$1" ;;
 	-name|--name) name="${2:?Missing argument to -name}" ; shift ;;
@@ -110,13 +106,10 @@ do
 done
 
 case "$command" in
-	new) : "${name:?Missing argument '-name'}" ;;
-	revoke|renew|check|dump) : "${name:="$(get_cert_name_from_id "$number")"}"
-								 : "${name:?Missing argument '-name' or '-number'}"
-								 : "${number:="$(has_cert "$name")"}" ;;
-	sign) : "${request:?Missing argument '-request'}" ;;
-	list|list_all|update_expired|list_pending|update_pending) ;;
-	*) usage "Unknown command: '$1'" >&2 ;;
+new|revoke|renew|check|dump) : ${name:?Missing argument '-name'} ;;
+sign) : ${request:?Missing argument '-request'} ;;
+list|list_all|update_expired) ;;
+*) usage "Unknown command: '$1'" >&2 ;;
 esac
 
 . "${MAKE_CERTIFICATES_SH_INCLUDE:=/usr/share/univention-ssl/make-certificates.sh}"
@@ -126,29 +119,29 @@ cd "$SSLBASE"
 new () {
 		run_only master exclusive
 		echo "Creating certificate: $name"
-		gencert "$name" "$days"
+		gencert "$SSLBASE/$name" "$name" "$days"
 		if getent group "DC Backup Hosts" >/dev/null 2>&1
 		then
-			chgrp -R "DC Backup Hosts" "$name"
-			chmod -R g+rX "$name"
+			chgrp -R "DC Backup Hosts" "$SSLBASE/$name"
+			chmod -R g+rX "$SSLBASE/$name"
 		fi
 }
 
 revoke () {
 		run_only master exclusive
 		echo "Revoke certificate: $name"
-		revoke_cert "$number"
+		revoke_cert "$name"
 }
 
 renew () {
 		run_only master exclusive
-		: "${days:?Missing argument -days}"
+		: ${days:?Missing argument -days}
 		echo "Renew certificate: $name"
-		renew_cert "$number" "$days" "$grace"
+		renew_cert "$name" "$days"
 		if getent group "DC Backup Hosts" >/dev/null 2>&1
 		then
-			chgrp -R "DC Backup Hosts" "$name"
-			chmod -R g+rX "$name"
+			chgrp -R "DC Backup Hosts" "$SSLBASE/$name"
+			chmod -R g+rX "$SSLBASE/$name"
 		fi
 }
 
@@ -156,7 +149,7 @@ check () {
 		local rv=0
 		run_only backup shared
 		echo -n "Certificate \"$name\" is "
-		is_valid "$number" || rv=$?
+		has_valid_cert "$name" >/dev/null || rv=$?
 		case "$rv" in
 		0) echo "valid" ;;
 		1) echo "invalid (not found)" ;;
@@ -179,26 +172,14 @@ list_all () {
 		list_cert_names_all
 }
 
-list_pending () {
-		run_only backup shared
-		echo "List all pending certificates and their expiration time"
-		list_cert_names_pending
-}
-
 update_expired () {
 		run_only master exclusive
 		echo "Updating db for expired certificates"
 		update_db
 }
 
-update_pending () {
-		run_only master exclusive
-		echo "Revoke pending certificates if their expiration time has passed"
-		update_pending_certs
-}
-
 dump () {
-		local filename="$SSLBASE/$CA/certs/$number.pem"
+		local filename="$SSLBASE/$name/cert.pem"
 		[ -r "$filename" ] ||
 			die "Can not read file '$filename'"
 		echo "Dump certificate: $name"
@@ -211,11 +192,11 @@ sign () {
 	name="$(getcnreq "$request")"
 	[ -n "$name" ] || die "Can not find CN in request '$request'"
 	echo "Signing request: $name"
-	EXTERNAL_REQUEST_FILE=$request gencert "$name" "$days"
+	EXTERNAL_REQUEST_FILE=$request gencert "$SSLBASE/$name" "$name" "$days"
 	if getent group "DC Backup Hosts" >/dev/null 2>&1
 	then
-		chgrp -R "DC Backup Hosts" "$name"
-		chmod -R g+rX "$name"
+		chgrp -R "DC Backup Hosts" "$SSLBASE/$name"
+		chmod -R g+rX "$SSLBASE/$name"
 	fi
 }
 
