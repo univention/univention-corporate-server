@@ -10,6 +10,13 @@ univention-join (10.0.0-21) unstable; urgency=medium
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 18 Sep 2018 17:47:29 +0200
 
+univention-join (10.0.0-20) unstable; urgency=medium
+
+  * Bug #47338: fix univention-join and univention-server-join for handling
+  	multiple mac addresses
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 14 Sep 2018 16:04:49 +0200
+
 univention-join (10.0.0-19) unstable; urgency=medium
 
   * Bug #42366: Remove debug leftover

@@ -131,7 +131,8 @@ do
 			shift 2 || exit 2
 			;;
 		"-mac")
-			MAC="${2:?missing ethernet MAC address}"
+			MAC+="${2:?missing ethernet MAC address}
+"
 			shift 2 || exit 2
 			;;
 		"-bindaccount")
@@ -249,25 +250,27 @@ create_entry () {
 
 	if [ -n "$MAC" ]; then
 		udm_object_owned_macs="$(sed -n 's/^ *mac: //p' <<<"$udm_object")"
-		if ! grep --quiet "${udm_object_owned_macs,,}" <<< "${MAC,,}"; then
-			## check if some other computer object owns this MAC address
-			udm_object2="$(univention-directory-manager computers/computer list --filter mac="$MAC" "${ADMINOPTIONS[@]}")"
-			conflict_dn2="$(DN1 <<<"$udm_object2")"
-			if [ -n "$conflict_dn2" ]; then
-				## try to convert DN to short name
-				conflict_module="$(univention-ldapsearch -xLLL -s base -b "$conflict_dn2" univentionObjectType | sed -ne 's|univentionObjectType: ||p')"
-				if [ -n "$conflict_module" ]; then
-					udm_object2="$(univention-directory-manager "$conflict_module" list --position "$conflict_dn2" --filter mac="$MAC" "${ADMINOPTIONS[@]}")"
-					conflict_host2="$(sed -n 's/^ *name: //p' <<<"$udm_object2")"
-				else
-					conflict_host2="$conflict_dn2"
+		while read line; do
+			if ! grep --quiet "${udm_object_owned_macs,,}" <<< "${MAC,,}"; then
+				## check if some other computer object owns this MAC address
+				udm_object2="$(univention-directory-manager computers/computer list --filter mac="$line" "${ADMINOPTIONS[@]}")"
+				conflict_dn2="$(DN1 <<<"$udm_object2")"
+				if [ -n "$conflict_dn2" ]; then
+					## try to convert DN to short name
+					conflict_module="$(univention-ldapsearch -xLLL -s base -b "$conflict_dn2" univentionObjectType | sed -ne 's|univentionObjectType: ||p')"
+					if [ -n "$conflict_module" ]; then
+						udm_object2="$(univention-directory-manager "$conflict_module" list --position "$conflict_dn2" --filter mac="$line" "${ADMINOPTIONS[@]}")"
+						conflict_host2="$(sed -n 's/^ *name: //p' <<<"$udm_object2")"
+					else
+						conflict_host2="$conflict_dn2"
+					fi
+					pre_check_conflicts+=("E: MAC address $line is already assigned to $conflict_host2, please remove that object or change the MAC address.")
 				fi
-				pre_check_conflicts+=("E: MAC address $MAC is already assigned to $conflict_host2, please remove that object or change the MAC address.")
+			elif [ -n "$conflict_host" ]; then
+				## MAC found and udm_object has same name
+				pre_check_conflicts+=("E: MAC address $line is already assigned to $conflict_host.")
 			fi
-		elif [ -n "$conflict_host" ]; then
-			## MAC found and udm_object has same name
-			pre_check_conflicts+=("E: MAC address $MAC is already assigned to $conflict_host.")
-		fi
+		done <<< "$MAC"
 	fi
 
 	if [ -n "$IP" ]; then
@@ -313,13 +316,17 @@ create_entry () {
 			fi
 		fi
 		if [ -n "$MAC" ]; then
-			args+=(--set mac="$MAC")
+			while read line; do
+				args+=(--set mac="$line")
+			done <<< "$MAC"
 		fi
 		# DHCP
 		case "$module" in
 		computers/managedclient|computers/mobileclient)
 			if [ -n "$dhcpEntry" ] && [ -n "$IP" ] && [ -n "$MAC" ]; then
-				args+=(--set dhcpEntryZone="$dhcpEntry $IP $MAC")
+				while read line; do
+					args+=(--set dhcpEntryZone="$dhcpEntry $IP $line")
+				done <<< "$MAC"
 			fi
 			;;
 		esac
@@ -367,7 +374,9 @@ create_entry () {
 		log 0 "Modify $desc [$old_dn]"
 
 		if [ -n "$MAC" ]; then
-			args+=(--set mac="$MAC")
+			while read line; do
+				args+=(--set mac="$line")
+			done <<< "$MAC"
 		fi
 		if [ -n "$IP" ]; then
 			args+=(--set ip="$IP")

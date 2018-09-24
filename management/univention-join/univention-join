@@ -643,9 +643,11 @@ else
 			args+=(-netmask "$NETMASK")
 		fi
 	fi
-	mac_addr="$(LC_ALL=C ip link show | sed -rne 's|.*link/ether ([0-9a-fA-F:]+) brd .*|\1|p' | head -n1)"
+	mac_addr="$(LC_ALL=C ip link show | sed -rne 's|.*link/ether ([0-9a-fA-F:]+) brd .*|\1|p' | head -n -1)"
 	if [ -n "$mac_addr" ]; then
-		args+=(-mac "$mac_addr")
+		while read line; do
+			args+=(-mac "$line")
+		done <<< "$mac_addr"
 	fi
 fi
 
