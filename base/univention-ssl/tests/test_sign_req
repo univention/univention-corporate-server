@@ -17,7 +17,7 @@ openssl req -in "$sslbase/my-req.pem" -text
 
 univention-certificate sign -request "$sslbase/my-req.pem"
 list_cert_names | grep -F -e "${R64}"
-[ 01 = "$(has_valid_cert ${R64})" ]
+[ 01 = "$(has_valid_cert "${R64}")" ]
 
 renew_cert "${name}"
 list_cert_names | grep -F -e "${R64}"
