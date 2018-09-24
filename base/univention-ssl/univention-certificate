@@ -52,7 +52,9 @@ usage () {
 	echo ""
 	echo "Options:"
 	echo "        -name <name>"
+	echo "        -number <number>"
 	echo "        -days <days>"
+	echo "        -grace <grace> (grace period, in days)"
 	echo "        -request <req.pem>"
 
 	[ -n "$1" ] && exit 2 || exit 0
@@ -83,6 +85,7 @@ run_only () {
 command=
 name=
 days=
+grace=
 while [ $# -ge 1 ]
 do
 	case "$1" in
@@ -96,7 +99,9 @@ do
 	dump) command="$1" ;;
 	sign) command="$1" ;;
 	-name|--name) name="${2:?Missing argument to -name}" ; shift ;;
+	-number|--number) number="${2:?Missing argument to -number}" ; shift ;;
 	-days|--days) days="${2:?Missing argument to -days}" ; shift ;;
+	-grace|--grace) grace="${2:?Missing argument to -grace}" ; shift ;;
 	-request|--request) request="$(readlink -f "${2:?Missing argument to -request}")" ; shift ;;
 	-h|--help|--usage|-\?) usage ;;
 	-*) usage "Unknown option: '$1'" >&2 ;;
@@ -105,14 +110,15 @@ do
 	shift
 done
 
-case "$command" in
-new|revoke|renew|check|dump) : ${name:?Missing argument '-name'} ;;
-sign) : ${request:?Missing argument '-request'} ;;
-list|list_all|update_expired) ;;
-*) usage "Unknown command: '$1'" >&2 ;;
-esac
-
 . "${MAKE_CERTIFICATES_SH_INCLUDE:=/usr/share/univention-ssl/make-certificates.sh}"
+
+case "$command" in
+	new|revoke|renew|check|dump) : "${name:="$(get_cert_name_from_number "$number")"}"
+								 : "${name:?Missing argument '-name'}" ;;
+	sign) : "${request:?Missing argument '-request'}" ;;
+	list|list_all|update_expired) ;;
+	*) usage "Unknown command: '$1'" >&2 ;;
+esac
 
 cd "$SSLBASE"
 
@@ -137,7 +143,7 @@ renew () {
 		run_only master exclusive
 		: ${days:?Missing argument -days}
 		echo "Renew certificate: $name"
-		renew_cert "$name" "$days"
+		renew_cert "$name" "$days" "$grace"
 		if getent group "DC Backup Hosts" >/dev/null 2>&1
 		then
 			chgrp -R "DC Backup Hosts" "$SSLBASE/$name"

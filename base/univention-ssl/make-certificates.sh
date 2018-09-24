@@ -43,6 +43,8 @@ DEFAULT_CRL_DAYS="$(/usr/sbin/univention-config-registry get ssl/crl/validity)"
 : ${DEFAULT_CRL_DAYS:=10}
 DEFAULT_DAYS="$(/usr/sbin/univention-config-registry get ssl/default/days)"
 : ${DEFAULT_DAYS:=1825}
+DEFAULT_GRACE="$(/usr/sbin/univention-config-registry get ssl/default/grace)"
+: ${DEFAULT_GRACE:=0}
 DEFAULT_MD="$(/usr/sbin/univention-config-registry get ssl/default/hashfunction)"
 : ${DEFAULT_MD:=sha256}
 DEFAULT_BITS="$(/usr/sbin/univention-config-registry get ssl/default/bits)"
@@ -132,6 +134,8 @@ default_md          = \$ENV::DEFAULT_MD
 preserve            = no
 
 policy              = policy_match
+
+unique_subject      = no
 
 [ policy_match ]
 
@@ -341,6 +345,12 @@ list_cert_names_all () {
 	}' <"${SSLBASE}/${CA}/index.txt"
 }
 
+get_cert_name_from_number () {
+	if ! [ -z "$1" ]; then
+		list_cert_names_all | awk -v id="$1" '$0~id {print $2}'
+	fi
+}
+
 update_db () {
 	openssl ca -updatedb -config "${SSLBASE}/openssl.cnf" -passin "file:${SSLBASE}/password"
 }
@@ -356,7 +366,9 @@ has_valid_cert () { # returns 0 if yes, 1 if not found, 2 if revoked, 3 if expir
 			if ( X[i] ~ /^CN=/ ) {
 				split ( X[i], Y, "=" );
 				if ( name == Y[2] ) {
-					seq = $4;
+					if ( $1 == "V" ) {
+						seq = seq$4" ";
+					}
 					ret = ( $1 != "R" ) ? ( $1 == "V" && $2 >= now ? 0 : 3 ) : 2;
 				}
 			}
@@ -389,8 +401,9 @@ has_cert () { # returns 0 if cert exists and is not revoked, 1 if not found or r
 renew_cert () {
 	local fqdn="${1:?Missing argument: common name}"
 	local days="${2:-$DEFAULT_DAYS}"
+	local grace="${3:-$DEFAULT_GRACE}"
 
-	revoke_cert "$fqdn" || [ $? -eq 2 ] || return $?
+	revoke_cert "$fqdn" "$grace" || [ $? -eq 2 ] || return $?
 
 	(
 	cd "$SSLBASE"
@@ -402,6 +415,7 @@ renew_cert () {
 
 revoke_cert () {
 	local fqdn="${1:?Missing argument: common name}"
+	local grace="${2:-$DEFAULT_GRACE}"
 
 	local cn NUM
 	[ ${#fqdn} -gt 64 ] && cn="${fqdn%%.*}" || cn="$fqdn"
@@ -412,9 +426,64 @@ revoke_cert () {
 		return 2
 	fi
 
-	openssl ca -config "${SSLBASE}/openssl.cnf" -revoke "${SSLBASE}/${CA}/certs/${NUM}.pem" -passin pass:"$PASSWD"
+	if [ "$grace" -eq 0 ]; then
+		# revoke all certificates of this fqdn
+		for num in "${NUM[@]}"; do
+			local num1=$(sed 's/\s.*$//' <<< "$num")
+			openssl ca -config "${SSLBASE}/openssl.cnf" -revoke "${SSLBASE}/${CA}/certs/${num1}.pem" -passin pass:"$PASSWD"
+		done
+	else
+		# remember all certificates of this fqdn for revocation after the grace period
+		pending_file="${SSLBASE}/pending.txt"
+		[ -f "$pending_file" ] || touch "$pending_file"
+		chmod 600 "$pending_file"
+		local pending_certs=$(cat "$pending_file")
+		local temp=$(mktemp)
+
+		for num in "${NUM[@]}"; do
+			local num=$(sed 's/\s.*$//' <<< "$num")
+			local now=$(date +"%s")
+			local expire="$(($now + ($grace * 3600 * 24)))"
+			echo "$num:$expire" >>"$temp"
+		done
+
+		for cert in "${pending_certs[@]}"; do
+			local num=$(sed 's/:.*//' <<< "$cert")
+			local expire=$(sed 's/.*://' <<< "$cert")
+			if [[ "$NUM" != *"$num"* ]]; then
+				echo "$num:$expire" >>"$temp"
+			fi
+		done
+		mv "$temp" "$pending_file"
+		chmod 600 "$pending_file"
+	fi
+
 	gencrl
 }
+
+update_pending_certs () {
+	local pending_file="${SSLBASE}/pending.txt"
+	[ -f "$pending_file" ] || touch "$pending_file"
+	chmod 600 "$pending_file"
+	local pending_certs=$(cat "$pending_file")
+	local temp=$(mktemp)
+
+	for cert in "${pending_certs[@]}"; do
+		local num=$(sed 's/:.*//' <<< "$cert")
+		local expire=$(sed 's/.*://' <<< "$cert")
+		local now=$(date +"%s")
+		if [ "$now" -gt "$expire" ]; then
+			openssl ca -config "${SSLBASE}/openssl.cnf" -revoke "${SSLBASE}/${CA}/certs/${num}.pem" -passin pass:"$PASSWD"
+		else
+			echo "$num:$expire" >>"$temp"
+		fi
+	done
+
+	mv "$temp" "$pending_file"
+	chmod 600 "$pending_file"
+	gencrl
+}
+
 
 # Parameter 1: Request file
 
