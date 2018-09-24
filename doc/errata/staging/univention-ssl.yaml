@@ -1,0 +1,14 @@
+product: ucs
+release: "4.3"
+version: [1]
+scope: ucs_4.3-0-errata4.3-1
+src: univention-ssl
+fix: 12.0.0-12A~4.3.0.201809241545
+desc: |
+ This update addresses the following issue(s):
+ * The command 'univention-certificate renew' now does
+   not revoke the old certificates anymore, so that they
+   are still valid until they expire.
+   Additionally, certificates can now get addressed
+   by their serial numbers using the -id option
+bug: [41013]
