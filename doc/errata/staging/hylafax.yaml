@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: hylafax
+fix: 3:6.0.6-6+deb8u1
+desc: |
+ This update addresses the following issue:
+ * A missing input sanitising in the Hylafax fax software could potentially
+   result in the execution of arbitrary code via a malformed fax message
+   (CVE-2018-17141)
+bug: [47855]
+cve:
+- CVE-2018-17141
