@@ -21,5 +21,6 @@ desc: |-
     to multiple groups instead of just one.
   * The search filter generated for boolean and multi-value properties
     of UDM objects was not correct. This has been resolved.
-  * Fix a traceback during portal assignment at computer objects when a settings/portal object is created (Bug #47818).
+  * Fix a traceback during portal assignment at computer objects when a
+    settings/portal object is created.
 bug: [43442, 47243, 47580, 41109, 46927, 40672, 47818]
