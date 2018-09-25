@@ -330,7 +330,7 @@ class Base(signals.Provider, Translation):
 		result = None
 		headers = None
 		error = None
-		trace = etraceback
+		trace = etraceback or []
 		if isinstance(etraceback, list):
 			etraceback = None
 		try:
@@ -354,12 +354,12 @@ class Base(signals.Provider, Translation):
 		except:
 			status = MODULE_ERR_COMMAND_FAILED
 			if etraceback is None:  # Bug #47114: thread.exc_info doesn't contain a traceback object anymore
-				trace = ''.join(trace + traceback.format_exception_only(*sys.exc_info()[:2]))
+				tb_str = ''.join(trace + traceback.format_exception_only(*sys.exc_info()[:2]))
 			else:
-				trace = traceback.format_exc()
+				tb_str = traceback.format_exc()
 			error = {
 				'command': ('%s %s' % (' '.join(request.arguments), '(%s)' % (request.flavor,) if request.flavor else '')).strip().decode('utf-8', 'replace'),
-				'traceback': trace.decode('utf-8', 'replace'),
+				'traceback': tb_str.decode('utf-8', 'replace'),
 			}
 			message = self._('Internal server error during "%(command)s".') % error
 		MODULE.process(str(message))

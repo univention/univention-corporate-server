@@ -1,3 +1,9 @@
+univention-management-console (10.0.6-14) unstable; urgency=low
+
+  * Bug #47857: Fix traceback handling
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 25 Sep 2018 13:20:31 +0200
+
 univention-management-console (10.0.6-13) unstable; urgency=medium
 
   * Bug #45598: only apply special css on the UDM navigation search page
