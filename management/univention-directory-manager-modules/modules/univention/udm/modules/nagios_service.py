@@ -58,6 +58,6 @@ class NagiosServiceUdm1Object(GenericUdm1Object):
 
 
 class NagiosServiceUdm1Module(GenericUdm1Module):
-	"""UsersUserUdm1Object factory"""
+	"""NagiosServiceUdm1Object factory"""
 	_udm_object_class = NagiosServiceUdm1Object
 	supported_api_versions = (1,)

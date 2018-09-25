@@ -435,9 +435,7 @@ class GenericUdm1Module(BaseUdmModule):
 			obj = univention.admin.objects.get(udm_module, None, self.lo, po, dn=dn)
 		except univention.admin.uexceptions.noObject:
 			raise NoObject(dn=dn, module_name=self.name)
-		uni_obj_type = getattr(obj, 'oldattr', {}).get('univentionObjectType')
-		if uni_obj_type and self.name.split('/', 1)[0] not in [uot.split('/', 1)[0] for uot in uni_obj_type]:
-			raise WrongObjectType(dn=dn, module_name=self.name, univention_object_type=uni_obj_type)
+		self._verify_univention_object_type(obj)
 		if self.meta.auto_open:
 			obj.open()
 		return obj
@@ -459,3 +457,18 @@ class GenericUdm1Module(BaseUdmModule):
 		obj.props = obj.udm_prop_class(obj)
 		obj._copy_from_udm_obj()
 		return obj
+
+	def _verify_univention_object_type(self, udm1_obj):  # type: (univention.admin.handlers.simpleLdap) -> None
+		"""
+		Check that the ``univentionObjectType`` of the LDAP objects matches the
+		UDM module name.
+
+		:param udm1_obj: UDM1 object
+		:type udm1_obj: univention.admin.handlers.simpleLdap
+		:return: None
+		:raises WrongObjectType: if ``univentionObjectType`` of the LDAP object
+			does not match the UDM module name
+		"""
+		uni_obj_type = getattr(udm1_obj, 'oldattr', {}).get('univentionObjectType')
+		if uni_obj_type and self.name.split('/', 1)[0] not in [uot.split('/', 1)[0] for uot in uni_obj_type]:
+			raise WrongObjectType(dn=udm1_obj.dn, module_name=self.name, univention_object_type=', '.join(uni_obj_type))

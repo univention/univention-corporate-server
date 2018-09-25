@@ -152,7 +152,7 @@ class BaseUdmModuleMetadata(object):
 
 		* get the filter to find all objects:
 			`myfilter_s = obj.meta.lookup_filter()`
-		* get the filter to find a subset of the corresponding LDAP objects (`filter_s` will be combined with `&` to the filter for alle objects):
+		* get the filter to find a subset of the corresponding LDAP objects (`filter_s` will be combined with `&` to the filter for all objects):
 			`myfilter = obj.meta.lookup_filter('(|(givenName=A*)(givenName=B*))')`
 
 		:param str filter_s: optional LDAP filter expression
@@ -180,7 +180,7 @@ class BaseUdmModule(object):
 	Usage:
 	0. Get module using
 		user_mod = Udm.using_*().get('users/user')
-	1 Create fresh, not yet saved BaseUdmModule:
+	1 Create fresh, not yet saved BaseUdmObject:
 		new_user = user_mod.new()
 	2 Load an existing object:
 		group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
