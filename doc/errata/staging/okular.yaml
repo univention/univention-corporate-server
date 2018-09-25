@@ -1,0 +1,14 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: okular
+fix: 4:16.08.2-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * a Directory Traversal vulnerability in function unpackDocumentArchive()"
+   can result in Arbitrary file creation on the user workstation.
+   (CVE-2018-1000801)
+bug: [47852]
+cve:
+- CVE-2018-1000801
