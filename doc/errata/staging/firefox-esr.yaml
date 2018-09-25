@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: firefox-esr
+fix: 60.2.1esr-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * Crash in TransportSecurityInfo due to cached data (CVE-2018-12385)
+ * Setting a master password post-Firefox 58 does not delete unencrypted
+   previously stored passwords (CVE-2018-12383)
+bug: [47851]
+cve:
+- CVE-2018-12385
+- CVE-2018-12383
