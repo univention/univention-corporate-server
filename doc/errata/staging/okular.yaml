@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: okular
+fix: 4:4.14.2-2+deb8u1
+desc: |
+ This update addresses the following issue:
+ * Fix for a directory traversal vulnerability that can result in arbitrary
+   file creation on the user workstation (CVE-2018-1000801)
+bug: [47854]
+cve:
+- CVE-2018-1000801
