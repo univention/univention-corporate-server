@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: libarchive-zip-perl
+fix: 1.59-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Prevent from traversing symlinks and parent directories when extracting
+   (CVE-2018-10860)
+bug: [47853]
+cve:
+- CVE-2018-10860
