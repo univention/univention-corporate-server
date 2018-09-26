@@ -9,3 +9,5 @@ desc: |
  * The scrolling in the LDAP directory module has been improved.
  * Fix regression in traceback handling.
 bug: [45598, 47857]
+erratum: 248
+announced: 2018-09-26
