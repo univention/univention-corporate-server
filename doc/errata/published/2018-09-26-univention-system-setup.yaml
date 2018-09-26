@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Adapt systemsetup to work with firefox 60.
 bug: [47808]
+erratum: 245
+announced: 2018-09-26
