@@ -11,3 +11,5 @@ desc: |-
  * The visibility of a portal entry object can now be restricted
    to multiple groups instead of just one.
 bug: [43442, 47243, 46927]
+erratum: 250
+announced: 2018-09-26
