@@ -1,3 +1,9 @@
+univention-portal (2.0.2-8) unstable; urgency=medium
+
+  * Bug #47864: Fix portal category ordering
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 26 Sep 2018 16:32:54 +0200
+
 univention-portal (2.0.2-7) unstable; urgency=medium
 
   * Bug #47864: Fix portal
