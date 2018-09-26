@@ -11,3 +11,5 @@ desc: |
    Additionally, certificates can now get addressed by their serial numbers
    using the option '-id'.
 bug: [41013]
+erratum: 244
+announced: 2018-09-26
