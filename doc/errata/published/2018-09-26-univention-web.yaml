@@ -11,3 +11,5 @@ desc: |
  * It is now possible to define custom categories for the portal.
  * The scrolling in the LDAP directory module has been improved.
 bug: [44471, 47243, 45598]
+erratum: 251
+announced: 2018-09-26
