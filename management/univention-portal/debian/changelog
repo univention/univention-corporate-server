@@ -1,3 +1,9 @@
+univention-portal (2.0.2-7) unstable; urgency=medium
+
+  * Bug #47864: Fix portal
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 26 Sep 2018 15:51:18 +0200
+
 univention-portal (2.0.2-6) unstable; urgency=medium
 
   * Bug #43442: CSS fixes when using lots and lots of links
