@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The nagios raid check now uses the mdstat plugin.
 bug: [47319]
+erratum: 243
+announced: 2018-09-26
