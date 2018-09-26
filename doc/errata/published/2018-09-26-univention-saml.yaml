@@ -10,3 +10,5 @@ desc: |
    like member and slave servers. The univention-saml package was updated
    to create required directories.
 bug: [47250]
+erratum: 246
+announced: 2018-09-26
