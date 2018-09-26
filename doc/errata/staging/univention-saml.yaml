@@ -7,5 +7,6 @@ fix: 5.0.4-27A~4.3.0.201809101510
 desc: |
  This update addresses the following issue(s):
  * Enable stunnel to run on systems without univention-saml installed,
-   like member and slave servers.
+   like member and slave servers. The univention-saml package was updated
+   to create required directories.
 bug: [47250]

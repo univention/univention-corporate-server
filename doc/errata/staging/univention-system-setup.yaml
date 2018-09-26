@@ -6,5 +6,5 @@ src: univention-system-setup
 fix: 11.0.5-26A~4.3.0.201809191624
 desc: |
  This update addresses the following issue(s):
- * Adapt systemsetup for firefox 60.
+ * Adapt systemsetup to work with firefox 60.
 bug: [47808]

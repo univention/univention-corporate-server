@@ -6,14 +6,12 @@ src: univention-appcenter
 fix: 7.0.2-31A~4.3.0.201809181530
 desc: |
  This update addresses the following issue(s):
- * When an app is opened in the App Center,
-   the page now scrolls to the beginning
-   and when the App detail page is closed,
-   the previous scroll position is restored.
- * Proxy settings in containers are updated before an
-   app upgrade.
+ * When an app is opened in the App Center, the page now scrolls to the
+   top and when the App detail page is closed, the previous scroll position
+   is restored.
+ * Proxy settings in containers are updated before an app upgrade.
  * Installation routines now ask for valid credentials before actually doing
-   anything. This prevents possible errors when reverting the installation
+   anything. This prevents possible errors when reverting the installation.
    status should the credentials be invalid.
  * Never prompt in container commands during the app installation.
 bug: [39667,47439,47619,47763]

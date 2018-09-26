@@ -6,8 +6,8 @@ src: univention-management-console-module-udm
 fix: 8.0.5-23A~4.3.0.201809200953
 desc: |
  This update addresses the following issue(s):
- * The page now scrolls to the beginning when
-   opening the detail page of an UDM object.
+ * The page now scrolls to the top when opening the detail page of
+   an UDM object.
  * It is now possible to define custom categories for the portal.
  * User Templates now have access to the alphanum option.
  * The scrolling in the LDAP directory module has been improved.

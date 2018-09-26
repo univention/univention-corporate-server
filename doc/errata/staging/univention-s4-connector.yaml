@@ -6,7 +6,8 @@ src: univention-s4-connector
 fix: 12.0.2-32A~4.3.0.201809201407
 desc: |
  This update addresses the following issue(s):
- * Renaming a container (only difference in upper and lower case) has been fixed.
- * The group membership sync now correctly idenifies "ucs_module_others"
-   if defined in the mapping.
+ * Renaming a container (only difference in upper and lower case)
+   has been fixed.
+ * The group membership sync now correctly identifies
+   "ucs_module_others" if defined in the mapping.
 bug: [47374,47779]

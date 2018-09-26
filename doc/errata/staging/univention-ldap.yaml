@@ -6,6 +6,6 @@ src: univention-ldap
 fix: 14.0.2-19A~4.3.0.201809101240
 desc: |-
   This update addresses the following issue(s):
-  * Allow to customize portal with static pages
+  * Allow to customize portal with static pages.
   * It is now possible to define custom categories for the portal.
 bug: [43442, 47243]
