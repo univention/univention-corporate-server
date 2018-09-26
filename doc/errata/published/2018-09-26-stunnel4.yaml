@@ -9,3 +9,5 @@ desc: |
  * Enable stunnel to run on systems without univention-saml installed,
    like member and slave servers.
 bug: [47250]
+erratum: 247
+announced: 2018-09-26
