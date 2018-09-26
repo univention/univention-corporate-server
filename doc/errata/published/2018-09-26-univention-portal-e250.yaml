@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-portal
+fix: 2.0.2-6A~4.3.0.201809191154
+desc: |-
+ This update addresses the following issue(s):
+ * Allow to customize portal with static pages.
+ * It is now possible to define custom categories for the portal.
+ * The visibility of a portal entry object can now be restricted
+   to multiple groups instead of just one.
+bug: [43442, 47243, 46927]
+erratum: 250
+announced: 2018-09-26
