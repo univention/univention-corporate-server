@@ -15,3 +15,5 @@ desc: |
    status should the credentials be invalid.
  * Never prompt in container commands during the app installation.
 bug: [39667,47439,47619,47763]
+erratum: 249
+announced: 2018-09-26
