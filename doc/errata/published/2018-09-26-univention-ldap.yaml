@@ -9,3 +9,5 @@ desc: |-
   * Allow to customize portal with static pages.
   * It is now possible to define custom categories for the portal.
 bug: [43442, 47243]
+erratum: 254
+announced: 2018-09-26
