@@ -11,3 +11,5 @@ desc: |
  * Fixed a crash when the UCR variables 'server/role' and 'ldap/master' are
    not set.
 bug: [47783, 47837]
+erratum: 242
+announced: 2018-09-26
