@@ -1,3 +1,9 @@
+ucs-test (8.0.28-195) unstable; urgency=medium
+
+  * Bug #47863: Test for umc traceback handling 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 26 Sep 2018 10:36:54 +0200
+
 ucs-test (8.0.28-194) unstable; urgency=medium
 
   * Bug #41013: remove test

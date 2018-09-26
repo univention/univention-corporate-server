@@ -6,5 +6,10 @@
 		<keywords></keywords>
 		<command name="ucstest/norespond" function="norespond" />
 		<command name="ucstest/respond" function="respond" />
+		<command name="ucstest/non_threaded_traceback" function="non_threaded_traceback" />
+		<command name="ucstest/threaded_traceback" function="threaded_traceback" />
+		<command name="ucstest/umc_error_traceback" function="umc_error_traceback" />
+		<command name="ucstest/traceback_as_thread_result" function="traceback_as_thread_result" />
+		<command name="ucstest/umc_error_as_thread_result" function="umc_error_as_thread_result" />
 	</module>
 </umc>

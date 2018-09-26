@@ -32,8 +32,25 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.management.console.modules import Base
+from univention.management.console.error import UMC_Error
 from univention.management.console.modules.decorators import simple_response
 import subprocess
+import sys
+
+
+class NonThreadedError(Exception):
+	pass
+
+
+class ThreadedError(Exception):
+	pass
+
+
+class FakeThread(object):
+	def __init__(self):
+		self.exc_info = None
+		self.name = "Fake Thread"
+		self.trace = None
 
 
 def joinscript():
@@ -54,9 +71,43 @@ def unjoinscript():
 
 class Instance(Base):
 
-    @simple_response
-    def respond(self):
-        return True
+	@simple_response
+	def respond(self):
+		return True
 
-    def norespond(self, request):
-        pass
+	def norespond(self, request):
+		pass
+
+	@simple_response
+	def non_threaded_traceback(self):
+		raise NonThreadedError()
+
+	@simple_response
+	def threaded_traceback(self):
+		def _throw_exception(_1, _2):
+			raise ThreadedError()
+		return _throw_exception
+
+	@simple_response
+	def umc_error_traceback(self):
+		raise UMC_Error("This is an UMC Error")
+
+	def traceback_as_thread_result(self, request):
+		#  UVMM uses this to pass-through traceback from internal umc calls to the frontend
+		try:
+			raise ThreadedError
+		except ThreadedError as result:
+			etype, value, _ = sys.exc_info()
+			thread = FakeThread()
+			thread.exc_info = (etype, value, None)
+		self.thread_finished_callback(thread, result, request)
+
+	def umc_error_as_thread_result(self, request):
+		#  UVMM uses this to pass-through traceback from internal umc calls to the frontend
+		try:
+			raise UMC_Error("This is an UMC Error")
+		except UMC_Error as result:
+			etype, value, _ = sys.exc_info()
+			thread = FakeThread()
+			thread.exc_info = (etype, value, None)
+		self.thread_finished_callback(thread, result, request)
