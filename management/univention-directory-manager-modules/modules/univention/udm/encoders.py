@@ -273,6 +273,57 @@ class DnListPropertyEncoder(BaseEncoder):
 		return value
 
 
+class CnameListPropertyEncoder(DnListPropertyEncoder):
+	"""
+	Given a list of CNAMEs, return the same list with an additional member
+	``objs``. ``objs`` is a lazy object that will become the list of UDM
+	objects the CNAMEs refer to, when accessed.
+	"""
+	udm_module_name = 'dns/alias'
+
+	def _list_of_dns_to_list_of_udm_objects(self, value):
+		udm_module = Udm(self.lo).get(self.udm_module_name)
+		return [list(udm_module.search('relativeDomainName={}'.format(cname)))[0] for cname in value]
+
+
+class DnsEntryZoneAliasListPropertyEncoder(DnListPropertyEncoder):
+	"""
+	Given a list of dnsEntryZoneAlias entries, return the same list with an
+	additional member ``objs``. ``objs`` is a lazy object that will become
+	the list of UDM objects the dnsEntryZoneAlias entries refer to, when
+	accessed.
+	"""
+	udm_module_name = 'dns/alias'
+
+	def _list_of_dns_to_list_of_udm_objects(self, value):
+		udm_module = Udm(self.lo).get(self.udm_module_name)
+		return [udm_module.get('relativeDomainName={},{}'.format(v[2], v[1])) for v in value]
+
+
+class DnsEntryZoneForwardListPropertyEncoder(DnListPropertyEncoder):
+	"""
+	Given a list of dnsEntryZoneForward entries, return the same list with an
+	additional member ``objs``. ``objs`` is a lazy object that will become
+	the list of UDM objects the dnsEntryZoneForward entries refer to, when
+	accessed.
+	"""
+	udm_module_name = 'dns/forward_zone'
+
+	def _list_of_dns_to_list_of_udm_objects(self, value):
+		udm_module = Udm(self.lo).get(self.udm_module_name)
+		return [udm_module.get(v[0]) for v in value]
+
+
+class DnsEntryZoneReverseListPropertyEncoder(DnsEntryZoneForwardListPropertyEncoder):
+	"""
+	Given a list of dnsEntryZoneReverse entries, return the same list with an
+	additional member ``objs``. ``objs`` is a lazy object that will become
+	the list of UDM objects the dnsEntryZoneReverse entries refer to, when
+	accessed.
+	"""
+	udm_module_name = 'dns/reverse_zone'
+
+
 class DnPropertyEncoder(BaseEncoder):
 	"""
 	Given a DN, return a string object with the DN and an additional member
@@ -323,7 +374,7 @@ class DnPropertyEncoder(BaseEncoder):
 		return value
 
 
-def _classify_name(name):
+def _classify_name(name):  # type: (Text) -> Text
 	mod_parts = name.split('/')
 	return ''.join('{}{}'.format(mp[0].upper(), mp[1:]) for mp in mod_parts)
 

@@ -78,6 +78,7 @@ UdmModuleFactoryConfiguration = namedtuple(
 
 
 # internal configuration class supporting temporal ordering
+# TODO: discuss other ordering mechanism. addition_date isn't safe when reregistering
 _UdmModuleFactoryConfigurationWithDate = namedtuple(
 	'UdmModuleFactoryConfigurationWithDate',
 	('udm_module_name_pattern', 'module_path', 'class_name', 'api_versions', 'addition_date')
