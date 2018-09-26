@@ -1,17 +1,18 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the container upgrade without a re-join
 ## tags: [docker]
+## roles:
+##  - domaincontroller_master
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
 
-from dockertest import *
+from dockertest import Appcenter, get_app_name, store_data_script_4_1, App, get_docker_appbox_image
 from univention.testing.utils import get_ldap_connection, fail
 from univention.config_registry import ConfigRegistry
 
 
 if __name__ == '__main__':
-
 	with Appcenter() as appcenter:
 		app_name = get_app_name()
 		package_name = get_app_name()
@@ -34,7 +35,6 @@ if __name__ == '__main__':
 		app.add_to_local_appcenter()
 
 		try:
-
 			appcenter.update()
 
 			app.install()
@@ -65,12 +65,12 @@ if __name__ == '__main__':
 				AutoModProxy='True',
 				SupportedUCSVersions='4.1-0, 4.2-0, 4.3-0',
 				DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
-				## For debugging and testing of store_data and restore_data
+				# For debugging and testing of store_data and restore_data
 				# DockerScriptStoreData='/usr/share/univention-appcenter/app/%s/store_data' % app_name,
 				# DockerScriptRestoreDataBeforeSetup='/usr/share/univention-appcenter/app/%s/restore_data_before_setup' % app_name,
 			)
 			app.create_basic_modproxy_settings()
-			## For debugging and testing of store_data and restore_data
+			# For debugging and testing of store_data and restore_data
 			# app.add_script(store_data=store_data_script_4_1())
 			# app.add_script(restore_data_before_setup=restore_data_script_4_1())
 
