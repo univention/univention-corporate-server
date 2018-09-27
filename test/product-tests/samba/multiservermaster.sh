@@ -32,8 +32,15 @@ udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set n
 	
 python shared-utils/ucs-winrm.py domain-join --domain sambatest.local --dnsserver "$UCS" --domainuser "administrator" --domainpassword "$ADMIN_PASSWORD"
 	
+#Anmeldung auf dem System als Domänen-Benutzer (normales Mitglied von Domain Users). Done
 python shared-utils/ucs-winrm.py domain-user-validate-password --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
  #service smdb restart
+#    Default Domain Policy anpassen und testen, ob sich diese korrekt auf Benutzer/Recher auswirkt, z.B.
+#	Benutzerkonfiguration -> Richtlinien -> Administrative Vorlagen -> Startmenü und Taskleiste -> "Liste "Alle Programme" aus dem Menü Start entfernen" DONE
+#    Container/OU im Samba4-verzeichnisdienst anlegen, Benutzer-GPO (GPO1) anlegen und damit verknüpfen, Testbenutzer in den Container verschieben. GPO Beispiel:
+#	Benutzerkonfiguration -> Richtlinien -> Administrative Vorlagen -> Startmenü und Taskleiste -> Lautstärkesymbol entfernen -> aktivieren/Ok DONE
+#    Container/OU im Samba4-verzeichnisdienst anlegen, Rechner-GPO (GPO2) anlegen und damit verknüpfen, Test-Windows-client in den Container verschieben. GPO Beispiel:
+#	Computerkonfiguration -> Richtlinien -> Administrative Vorlagen -> System/Anmelden -> Diese Programme bei der Benutzeranmeldung ausführen -> Auszuführende Elemente -> notepad -> aktivieren/Ok DONE
 python shared-utils/ucs-winrm.py create-gpo --credssp --name NewGPO --comment "testing new GPO in domain"
 python shared-utils/ucs-winrm.py link-gpo --name NewGPO --target "dc=sambatest,dc=local" --credssp
 python shared-utils/ucs-winrm.py run-ps --credssp --cmd 'set-GPPrefRegistryValue -Name NewGPO -Context User -key "HKCU\Environment" -ValueName NewGPO -Type String -value NewGPO -Action Update'
@@ -55,6 +62,8 @@ python shared-utils/ucs-winrm.py create-share-file --server $UCS --filename test
 python shared-utils/ucs-winrm.py create-share-file --server $UCS --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention.99" \
 	--share Administrator --debug 2>&1 | grep 'denied.'
 # check windows acl's
+#	    ACL-Vergabe unter Windows testen(rechte Maustaste/Eigenschaften.. Hinzufügen und Entfernen von ACLs) DONE
+#	    Serverseitig: getfacl DONE
 python shared-utils/ucs-winrm.py get-acl-for-share-file --server $UCS --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention.99" \
 	--share newuser01 --debug | grep "Group.*Domain Users"
 python shared-utils/ucs-winrm.py get-acl-for-share-file --server $UCS --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" \
@@ -70,6 +79,11 @@ python shared-utils/ucs-winrm.py get-acl-for-share-file --server $UCS --filename
 python shared-utils/ucs-winrm.py check-applied-gpos --client "$WINCLIENT" --username 'administrator' --userpwd "$ADMIN_PASSWORD" --usergpo 'Default Domain Policy' --usergpo 'NewGPO' --computergpo 'Default Domain Policy'
 python shared-utils/ucs-winrm.py check-applied-gpos --client "$WINCLIENT" --username 'newuser01' --userpwd "Univention.99" --usergpo 'Default Domain Policy' --usergpo 'NewGPO' --computergpo 'Default Domain Policy'
 #printertest network printer in master
+#	Zugriff als Domänen-Administrator vom Windowsclient aus DONE
+#	serverseitig einen Druckertreiber hinterlegen, am einfachsten von 32bit XP aus (Windows 7 ist ein bisschen anders, 64bit ist zusätzlich hakelig ).
+#	Verbinden eines Druckers als unpriviligierter Benutzer vom Windowsclient aus TODO
+#	Testdruck von wordpad aus auf den verbundenen Drucker DONE
+#    Druckerzugriff mit serverseitig hinterlegten Druckertreibern: DONE
 python shared-utils/ucs-winrm.py setup-printer --printername Masterprinter --server "$UCS"
 rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
 sleep 20
@@ -81,18 +95,29 @@ python shared-utils/ucs-winrm.py print-on-printer --printername Masterprinter --
 stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
 
 
+#    Kann man anschließend per kinit für den Benutzer auf UCS-Seite ein Ticket bekommen?
+#Samba Domänen Passwort Einstellungen:
 #password change
+#    Kann das Passwort per STRG-ALT-ENTF an den unterschiedlichen Windows-Systemen geändert werden? Not possible : simulated with LDAP pw change
 python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univention123!"
 #change pw policies
+#    In UDM am Samba Domänenobjekt folgende Einstellungen treffen
+#        Maximales Passwortalter: 2 Tage (wegen Bug #44226) DONE
+#        Passwort History: 2 (wegen Bug #46557) DONE
+#        Minimale Passwortlänge auf 5 Buchstaben setzen. DONE
 udm policies/pwhistory modify --dn 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=sambatest,dc=local' --set expiryInterval=2	
 udm policies/pwhistory modify --dn 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=sambatest,dc=local' --set pwLength=5	
 udm policies/pwhistory modify --dn 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=sambatest,dc=local' --set length=2
 samba-tool domain passwordsettings set --min-pwd-length=5 --max-pwd-age=2 --history-length=2
 #change pw after policiesw changes
+#    Mit Benutzer am Windows7-Client anmelden und Passwort auf "Ünivention123" ändern. Die Samba4/Heimdal-Passwortkomplexitätsprüfung sollte das akzeptieren. DONE
+#    Uhrzeit auf den UCS DCs eine Stunde vorstellen und neu booten. (Oder Zeit sinnvoll anders nutzen..) Simulated by fetching information from Samba DB and comparing with a date 
+#    Benutzer-Konto Option "Passwort bei der nächsten Anmeldung ändern" im UDM wählen und an jedem Windows System testen, ob das Passwort geändert werden muss. Kann man jetzt wieder "Ünivention123" setzen? DONE
 python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ!"
 python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ" --debug 2>&1 | grep Exception
 python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univention123!"
 #check expiration date of PW
+#    Mit Benutzer am Windows7-Client anmelden -> Windows muss Passwortänderung verlangen. Passwort ändern: Man sollte nicht wieder das alte Passwort setzen können. Man sollte ein Passwort mit 5 Buchstaben setzen können. DONE
 python shared-utils/ucs-winrm.py run-ps --cmd "net user newuser01 /domain" --impersonate --run-as-user Administrator | grep $(date -d "+2 days" +"%d.%m.%Y")
 #python shared-utils/ucs-winrm.py run-ps --cmd hostname > WINCLIENTNAME
 #host $(cat WINCLIENTNAME | grep WIN | cut -c 1-15)
@@ -103,4 +128,34 @@ echo "Success"
 exit 0
 
 
+# Check list
+#Es sollte eine größere UCS Domäne aufgesetzt werden, also DC Master, DC Backup, DC Slave und Memberserver zusätzlich sollte ein RODC installiert werden, siehe Produkttests UCS 3.2 Samba 4#Read-Only-DC. Auf allen Systemen sollte Samba4 (optional Printserver) im Installer ausgewählt werden. Auf dem Memberserver Samba 3. Done: see cfg file
+#Auf allen Systemen sollte einmal server-password-change aufgerufen werden Done: cfg file
+#
+#Alle DCs auf coredump prüfen: find /var -name core Done
+#Die folgenden Client-Systeme sollten der UCS-Samba4 Domäne beitreten:
+#Windows 8
+#Windows 7
+#Windows 2012 Done(Amazon has only this) cfg file
+#Windows 2008R2
+#Windows 10
+#
+#Es sollten die AD Tools auf einem Windows Client installiert werden: http://wiki.univention.de/index.php?title=UCS_3.0_Samba_4#Manage_users_with_Active_Directory_tools : As of now impossible beacuse WinRM cannot use AD Tools
+#(Achtung: "Administrator" ist nicht "MYDOM\Administrator"! Ersterer ist nur der lokale Administrator.).
+#Uhrzeit prüfen: Sollte synchron zum DC Master sein (automatischer Abgleich per NTP). TODO Windows client has different Timezone than UCS Master, but time are synced
 
+#GPO
+#Es sollten die Remote Administration Tools auf dem Windows Client installiert werden, siehe hier
+
+#SHARES
+
+#
+#    können Samba-Freigaben auch als MSDFS-Freigaben exportiert werden ? TODO
+#    Dafür muss auf dem Samba-Server die UCR-Variable samba/enable-msdfs=yes gesetzt werden TODO
+#
+#
+#
+#    In UMC Gruppenberechtigungen vergeben (valid users = @Gruppe) und prüfen TODO
+
+#PASSWORDS
+#Änderung
