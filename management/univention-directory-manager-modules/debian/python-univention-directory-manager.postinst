@@ -70,13 +70,14 @@ config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^.*/.*$", 
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^computers/.*$", "univention.udm.modules.computers_all", "ComputersAllUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^appcenter/app$", "univention.udm.modules.appcenter_app", "AppcenterAppUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^groups/group$", "univention.udm.modules.groups_group", "GroupsGroupUdm1Module"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^users/contact$", "univention.udm.modules.users_user", "UsersUserUdm1Module"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^users/ldap$", "univention.udm.modules.users_user", "UsersUserUdm1Module"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^users/user$", "univention.udm.modules.users_user", "UsersUserUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^nagios/service$", "univention.udm.modules.nagios_service", "NagiosServiceUdm1Module"))
+config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^saml/serviceprovider$", "univention.udm.modules.saml_serviceprovider", "SamlServiceproviderUdm1Module"))
+config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^settings/directory$", "univention.udm.modules.settings_directory", "SettingsDirectoryUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^settings/portal$", "univention.udm.modules.settings_portal", "SettingsPortalUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^settings/portal_entry$", "univention.udm.modules.settings_portal_entry", "SettingsPortalEntryUdm1Module"))
-'
+config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^users/contact$", "univention.udm.modules.users_user", "UsersUserUdm1Module"))
+config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^users/ldap$", "univention.udm.modules.users_user", "UsersUserUdm1Module"))
+config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^users/user$", "univention.udm.modules.users_user", "UsersUserUdm1Module"))'
 
 stop_udm_cli_server
 
