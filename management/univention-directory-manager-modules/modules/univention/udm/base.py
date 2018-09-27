@@ -33,6 +33,8 @@ Base classes for (simplified) UDM modules and objects.
 from __future__ import absolute_import, unicode_literals
 import pprint
 from collections import namedtuple
+from ldap.filter import filter_format
+from .exceptions import NoObject
 
 try:
 	from typing import Callable, Iterable, Iterator, List, Optional, Text
@@ -184,6 +186,7 @@ class BaseUdmModule(object):
 		new_user = user_mod.new()
 	2 Load an existing object:
 		group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
+		group = group_mod.get_by_id('Domain Users')
 	3 Search and load existing objects:
 		dc_slaves = dc_slave_mod.search(lo, filter_s='cn=s10*')
 		campus_groups = group_mod.search(lo, base='ou=campus,dc=example,dc=com')
@@ -224,6 +227,28 @@ class BaseUdmModule(object):
 		:raises WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
 		"""
 		raise NotImplementedError()
+
+	def get_by_id(self, id):  # type: (str) -> BaseUdmObject
+		"""
+		Load UDM object from LDAP by searching for its ID.
+
+		This is a convenience function around :py:meth:`search()`.
+
+		:param str id: ID of the object to load (e.g. username (uid) for users/user,
+			name (cn) for groups/group etc.)
+		:return: an existing BaseUdmObject object
+		:rtype: BaseUdmObject
+		:raises NoObject: if no object is found with ID `id`
+		"""
+		filter_s = filter_format('{}=%s'.format(self.meta.identifying_property), (id,))
+		res = list(self.search(filter_s))
+		if not res:
+			raise NoObject('No object found for {!r}.'.format(filter_s), module_name=self.name)
+		elif len(res) > 1:
+			raise RuntimeError(
+				'Searching in module {!r} with identifying_property {!r} (filter: {!r}) returned {} objects.'.format(
+					self.name, self.meta.identifying_property, filter_s, len(res)))
+		return res[0]
 
 	def search(self, filter_s='', base='', scope='sub'):  # type: (str, str, str) -> Iterator[BaseUdmObject]
 		"""

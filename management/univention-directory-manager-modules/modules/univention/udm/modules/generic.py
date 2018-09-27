@@ -343,6 +343,7 @@ class GenericUdm1Module(BaseUdmModule):
 		new_user = user_mod.new()
 	2 Load an existing object:
 		group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
+		group = group_mod.get_by_id('Domain Users')
 	3 Search and load existing objects:
 		dc_slaves = dc_slave_mod.search(lo, filter_s='cn=s10*')
 		campus_groups = group_mod.search(lo, base='ou=campus,dc=example,dc=com')

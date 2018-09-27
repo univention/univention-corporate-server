@@ -57,13 +57,20 @@ obj.save().refresh()  # reload obj.props from LDAP after save()
 for obj in user_mod.search('uid=a*'):  # search() returns a generator
 	print(obj.props.firstname, obj.props.lastname)
 
-A shortcut exists to get UDM objects directly::
+A shortcut exists to get UDM objects directly, without knowing their
+univention object type::
 
 	from univention.udm import Udm
 	Udm.using_admin().get_obj(dn)
 
+A shortcut exists to get UDM objects directly, knowing their univention object
+type, but without knowing their DN::
+
+	from univention.udm import Udm
+	Udm.using_admin().get('groups/group').get_by_id('Domain Users')
+
 The API is versioned. The default API version that will be used, if not defined
-otherwise is in ``univention.udm.__default_api_version__``.
+otherwise, is ``univention.udm.__default_api_version__``.
 
 It is recommended to hard code the used version in your code. Supply it as
 argument to the Udm module factory::
