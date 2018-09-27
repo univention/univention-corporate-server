@@ -236,6 +236,9 @@ class DnListPropertyEncoder(BaseEncoder):
 		# a list with an additional member variable
 		objs = None  # type: DnListPropertyEncoder.MyProxy
 
+		def __deepcopy__(self, memodict=None):
+			return list(self)
+
 	class MyProxy(lazy_object_proxy.Proxy):
 		# overwrite __repr__ for better navigation in ipython
 		def __repr__(self, __getattr__=object.__getattribute__):
@@ -339,6 +342,9 @@ class DnPropertyEncoder(BaseEncoder):
 	class DnStr(str):
 		# a string with an additional member variable
 		obj = None  # type: DnPropertyEncoder.MyProxy
+
+		def __deepcopy__(self, memodict=None):
+			return str(self)
 
 	class MyProxy(lazy_object_proxy.Proxy):
 		# overwrite __repr__ for better navigation in ipython
