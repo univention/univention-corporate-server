@@ -93,7 +93,7 @@ EOF
 	univention-directory-listener-ctrl resync portal_entry
 fi
 
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 2.0.2-7; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 2.0.2-11; then
 	univention-directory-listener-ctrl resync portal
 	univention-directory-listener-ctrl resync portal_entry
 	univention-directory-listener-ctrl resync portal_category

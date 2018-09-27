@@ -1,3 +1,9 @@
+univention-portal (2.0.2-11) unstable; urgency=medium
+
+  * Bug #47870: Fix portal again with fixed listener (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 27 Sep 2018 11:08:20 +0200
+
 univention-portal (2.0.2-10) unstable; urgency=medium
 
   * Bug #47870: Fix portal again with fixed listener
