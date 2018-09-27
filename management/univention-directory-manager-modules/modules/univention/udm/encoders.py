@@ -36,6 +36,8 @@ import time
 import lazy_object_proxy
 from .binary_props import Base64BinaryProperty
 from .udm import Udm
+from .utils import UDebug
+from .exceptions import UnknownUdmModuleType
 from univention.admin.uexceptions import valueInvalidSyntax
 from univention.admin.syntax import sambaGroupType
 
@@ -296,12 +298,21 @@ class DnListPropertyEncoder(BaseEncoder):
 
 	def _list_of_dns_to_list_of_udm_objects(self, value):
 		udm = Udm(self.lo)
-		if self.udm_module_name == 'auto':
-			# TODO: handle UnknownUdmModuleType
-			return [udm.get_obj(dn) for dn in value]
-		else:
-			udm_module = udm.get(self.udm_module_name)
-			return [udm_module.get(dn) for dn in value]
+		udm_module = None
+		res = []
+		for dn in value:
+			try:
+				if self.udm_module_name == 'auto':
+					obj = udm.get_obj(dn)
+				else:
+					if not udm_module:
+						udm_module = udm.get(self.udm_module_name)
+					obj = udm_module.get(dn)
+			except UnknownUdmModuleType as exc:
+				UDebug.warn(str(exc))
+			else:
+				res.append(obj)
+		return res
 
 	def decode(self, value=None):  # type: (Optional[List[Text]]) -> Optional[List[Text]]
 		if value is None:
@@ -404,11 +415,15 @@ class DnPropertyEncoder(BaseEncoder):
 
 	def _dn_to_udm_object(self, value):
 		udm = Udm(self.lo)
-		if self.udm_module_name == 'auto':
-			return udm.get_obj(value)
-		else:
-			udm_module = udm.get(self.udm_module_name)
-			return udm_module.get(value)
+		try:
+			if self.udm_module_name == 'auto':
+				return udm.get_obj(value)
+			else:
+				udm_module = udm.get(self.udm_module_name)
+				return udm_module.get(value)
+		except UnknownUdmModuleType as exc:
+			UDebug.error(str(exc))
+			return None
 
 	def decode(self, value=None):  # type: (Optional[Text]) -> str
 		new_str = self.DnStr(value)
