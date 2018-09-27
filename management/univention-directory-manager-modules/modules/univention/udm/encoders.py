@@ -148,6 +148,29 @@ class MultiLanguageTextPropertyEncoder(BaseEncoder):
 			return value
 
 
+class MultiLanguageTextAppcenterPropertyEncoder(BaseEncoder):
+	static = True
+
+	@staticmethod
+	def decode(value=None):  # type: (Optional[List[Text]]) -> Optional[Dict[Text, Text]]
+		if value:
+			res = {}
+			for s in value:
+				lang, txt = s.split(' ', 1)
+				lang = lang.strip('[]')
+				res[lang] = txt
+			return res
+		else:
+			return value
+
+	@staticmethod
+	def encode(value=None):  # type: (Optional[Dict[Text, Text]]) -> Optional[List[Text]]
+		if value:
+			return ['[{}] {}'.format(k, v) for k, v in value.items()]
+		else:
+			return value
+
+
 class SambaGroupTypePropertyEncoder(BaseEncoder):
 	static = True
 	choices = dict(sambaGroupType.choices)
@@ -274,6 +297,7 @@ class DnListPropertyEncoder(BaseEncoder):
 	def _list_of_dns_to_list_of_udm_objects(self, value):
 		udm = Udm(self.lo)
 		if self.udm_module_name == 'auto':
+			# TODO: handle UnknownUdmModuleType
 			return [udm.get_obj(dn) for dn in value]
 		else:
 			udm_module = udm.get(self.udm_module_name)

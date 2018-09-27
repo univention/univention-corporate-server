@@ -68,6 +68,7 @@ python -c 'from univention.udm.factory_config import UdmModuleFactoryConfigurati
 config_storage = UdmModuleFactoryConfigurationStorage(True)
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^.*/.*$", "univention.udm.modules.generic", "GenericUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^computers/.*$", "univention.udm.modules.computers_all", "ComputersAllUdm1Module"))
+config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^appcenter/app$", "univention.udm.modules.appcenter_app", "AppcenterAppUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^groups/group$", "univention.udm.modules.groups_group", "GroupsGroupUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^users/contact$", "univention.udm.modules.users_user", "UsersUserUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^users/ldap$", "univention.udm.modules.users_user", "UsersUserUdm1Module"))

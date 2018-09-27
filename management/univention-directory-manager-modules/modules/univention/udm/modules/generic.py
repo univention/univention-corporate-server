@@ -40,7 +40,10 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 from ..encoders import dn_list_property_encoder_for, BaseEncoder
 from ..base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
-from ..exceptions import DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UnknownProperty, WrongObjectType
+from ..exceptions import (
+	DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UnknownProperty, UnknownUdmModuleType,
+	WrongObjectType
+)
 from ..utils import UDebug as ud
 
 try:
@@ -412,6 +415,11 @@ class GenericUdm1Module(BaseUdmModule):
 			if self.name not in [k[3] for k in self._udm_module_cache.keys()]:
 				univention.admin.modules.update()
 			udm_module = univention.admin.modules.get(self.name)
+			if not udm_module:
+				raise UnknownUdmModuleType(
+					msg='UDM module {!r} does not exist.'.format(self.name),
+					module_name=self.name
+				)
 			po = univention.admin.uldap.position(self.lo.base)
 			univention.admin.modules.init(self.lo, po, udm_module)
 			self._udm_module_cache[key] = udm_module
