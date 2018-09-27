@@ -6,23 +6,7 @@ src: texlive-bin
 fix: 2014.20140926.35254-6+deb8u1
 desc: |
  This update addresses the following issue:
-
- * 2014.20140926.35254-6+deb8u1 (Wed, 19 Sep 2018 13:28:25 +0900) * fix
-   writet1 buffer overflow
-
- * 2014.20140926.35254-6+deb8u1 (Wed, 19 Sep 2018 13:28:25 +0900) * fix
-   writet1 buffer overflow
-
- * 2014.20140926.35254-6+deb8u1 (Wed, 19 Sep 2018 13:28:25 +0900) * fix
-   writet1 buffer overflow
-
- * 2014.20140926.35254-6+deb8u1 (Wed, 19 Sep 2018 13:28:25 +0900) * fix
-   writet1 buffer overflow
-
- * 2014.20140926.35254-6+deb8u1 (Wed, 19 Sep 2018 13:28:25 +0900) * fix
-   writet1 buffer overflow
- * Buffer overflow in t1_check_unusual_charstring function in writet1.c
-   (CVE-2018-17407)
+ * Buffer overflow in function `t1_check_unusual_charstring` (CVE-2018-17407)
 bug: [47875]
 cve:
 - CVE-2018-17407
