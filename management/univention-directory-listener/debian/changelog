@@ -1,3 +1,10 @@
+univention-directory-listener (12.0.0-29) unstable; urgency=low
+
+  * Bug #47871: log listener module deactivation
+  * don't run system code at import time
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 27 Sep 2018 09:41:08 +0200
+
 univention-directory-listener (12.0.0-28) unstable; urgency=low
 
   * Bug #47837: Fix copy-paste-error in error message
