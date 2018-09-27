@@ -30,10 +30,10 @@
 		</para>
 
 		<para>
-			The following chapter describes how to set up the Microsoft Office 365 Connector.
+			The following chapter describes how to set up the Microsoft Office 365 Connector and the Google Apps for Work Connector.
 		</para>
-
 	</section>
+
 	<section id="idmcloud:o365">
 		<title>Microsoft Office 365 Connector</title>
 
@@ -94,7 +94,7 @@
 			<title>Configuration</title>
 			<para>
 				After the end of the installation through the setup wizard, users can be enabled to use
-				Office 365. This configuration can be done through the user module on each user object on the<guimenu>Office
+				Office 365. This configuration can be done through the user module on each user object on the <guimenu>Office
 				365</guimenu> tab. Usage and allocation of licenses are acknowledged in the <guimenu>Office 365 Admin Center</guimenu>.
 			</para>
 
@@ -163,4 +163,117 @@
 
 		</section>
 	</section>
+
+	<section id="idmcloud:gsuite">
+		<title>Google Apps for Work Connector</title>
+		<para>
+			Google Apps for Work Connector allows users and groups to synchronize to a G Suite
+			domain. You can control which of the users created in UCS are allowed to use G Suite.
+
+			The users selected in this way are provisioned accordingly by UCS into the G Suite domain. It can
+			be configured which attributes are synchronized and attributes can be anonymized.
+		</para>
+
+		<para>
+			The Single Sign-On log-in to G Suite is done via the UCS integrated SAML implementation.
+			Authentication takes place against the UCS server, and no password hashes are transferred to the G Suite
+			domain. The user's authentication is done exclusively via the client's web browser. However, the browser should be
+			able to resolve the DNS records of the UCS domain, which is particularly important for mobile devices.
+		</para>
+
+		<section id="idmcloud:gsuite:setup">
+			<title>Setup</title>
+			<para>
+				To setup the Google Apps for Work Connectors a G Suite Administrator account, a
+				corresponding account in the G Suite domain, and a <ulink url="https://support.google.com/a/topic/9196?hl=en">domain verified</ulink>
+				by Google are required. The
+				first two will be provided free of charge by Google for testing purposes. However, configuring the SSO
+				requires a separate Internet domain where TXT records can be created.
+			</para>
+
+			<para>
+				If no G Suite subscription is available yet, it can be configured via <ulink url="https://gsuite.google.com/setup-hub/"/>
+				with the link <guimenu>Start your free trial</guimenu>. A connection with a private Gmail account is not possible.
+			</para>
+
+			<para>
+				Afterwards, you should log in with a <guimenu>G Suite administrator account</guimenu> in the
+				<ulink url="https://admin.google.com/">Admin Console</ulink>. The domain should now be verified. For this it is necessary
+				to create a TXT record in the DNS of your own domain. This process can take a few minutes.
+			</para>
+
+			<para>
+				Now the Google Apps for Work Connector from the App Center can be installed on the UCS system.
+				The installation only takes a few minutes.
+				There is a setup wizard available for the initial configuration. After completing the wizard the connector
+				is ready for use.
+			</para>
+
+			<figure id="idmcloud:gsuite:wizard">
+				<title>Google Apps for Work Setup Wizard</title>
+				<graphic scalefit="1" width="100%" fileref="illustrations43/google_wizard1_en.png"/>
+			</figure>
+		</section>
+
+		<section id="idmcloud:gsuite:config">
+			<title>Configuration</title>
+			<para>
+				After the setup via the setup wizard, you can use the user module on each user object on the
+				<guimenu>Google Apps tab</guimenu> to configure that this user is provisioned to G Suite.
+			</para>
+
+			<para>
+				If a change is made to the user, the changes will also be replicated to the G Suite domain. There is no
+				synchronization from the G Suite domain to the UCS system. This means that changes made in the G Suite domain
+				may be overwritten by changes to the same attributes in UCS.
+			</para>
+
+			<para>
+				If the Google Apps property is removed from a user, the user will be deleted from the G Suite domain accordingly.
+			</para>
+
+			<para>
+				The &ucsUCRV; <envar>google-apps/attributes/mapping/.*</envar> is used to configure which LDAP attributes (e.g. first name, last name, etc.)
+				of a user account are synchronized. The &ucsURCV; and its values reflect the nested data structure of the G Suite user accounts.
+				The names that follow the percentage sign in the values are the attributes in the UCS LDAP. If all &ucsUCRV;
+				<envar>google-apps/attributes/mapping/.*</envar> are removed, no data other than the primary e-mail address is synchronized.
+			</para>
+
+			<para>
+				The &ucsUCRV; <envar>google-apps/attributes/anonymize</envar> can be used to specify
+				comma-separated LDAP attributes that are created in the G Suite domain but filled with random values.
+			</para>
+
+			<para>
+				The &ucsUCRV; <envar>google-apps/attributes/never</envar> can be used to specify
+				comma-separated LDAP attributes that should not be synchronized, even if they are configured via
+				<envar>google-apps/attributes/mapping</envar> or <envar>google-apps/attributes/anonymize</envar>.
+			</para>
+
+			<para>
+				The synchronization of Google Apps for Work user groups can be enabled with the &ucsUCRV; <envar>google-apps/groups/sync</envar>.
+			</para>
+
+			<para>
+				Changes to &ucsUCRV; are implemented after restarting the &ucsUDL;.
+			</para>
+		</section>
+
+
+		<section id="idmcloud:gsuite:debug">
+			<title>Troubleshooting/Debugging</title>
+			<para>
+				Messages during setup are logged in the following log file
+				<filename>/var/log/univention/management-console-module-googleapps.log</filename>.
+			</para>
+
+			<para>
+				In case of synchronization problems, the log file of the &ucsUDL; should be checked:
+				<filename>/var/log/univention/listener.log</filename>. The &ucsUCRV; <envar>google-apps/debug/werror</envar>
+				activates additional debug output.
+			</para>
+		</section>
+
+	</section>
+
 </chapter>
