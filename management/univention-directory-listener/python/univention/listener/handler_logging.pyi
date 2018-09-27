@@ -54,9 +54,6 @@ from typing import Any, Dict, IO, Optional, Type
 __syslog_opened = False
 
 class UniFileHandler(TimedRotatingFileHandler):
-	_listener_uid = pwd.getpwnam('listener').pw_uid
-	_adm_gid = grp.getgrnam('adm').gr_gid
-
 	def _open(self) -> IO[str]:
 		...
 
