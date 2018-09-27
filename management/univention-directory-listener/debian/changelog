@@ -1,3 +1,9 @@
+univention-directory-listener (12.0.0-30) unstable; urgency=low
+
+  * Bug #47870: Fix terminal detection code in listener-ctrl
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 27 Sep 2018 11:07:43 +0200
+
 univention-directory-listener (12.0.0-29) unstable; urgency=low
 
   * Bug #47871: log listener module deactivation

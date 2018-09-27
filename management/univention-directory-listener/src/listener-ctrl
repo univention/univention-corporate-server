@@ -125,9 +125,9 @@ modules () {
 	exit ${1:-0}
 }
 
-if [ -t 1 ] && [ -n "${TERM:-}" ]
+if [ -t 1 ] && [ -n "${TERM:-}" ] && [ "$TERM" != dumb ]
 then
-	RSET=$(tput op) FAIL=$(tput setaf 1) OKAY=$(tput setaf 2)
+	RSET=$(tput op 2>/dev/null) FAIL=$(tput setaf 1 2>/dev/null) OKAY=$(tput setaf 2 2>/dev/null) || :
 else
 	RSET= FAIL= OKAY=
 fi
