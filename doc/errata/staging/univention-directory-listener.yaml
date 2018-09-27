@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-directory-listener
+fix: 12.0.0-29A~4.3.0.201809270943
+desc: |
+ This update addresses the following issue(s):
+ * Log a message, when a listener module using the new API was deactivated (Bug #47871).
+bug: [47871]
