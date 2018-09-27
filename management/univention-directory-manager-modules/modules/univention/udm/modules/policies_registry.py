@@ -27,36 +27,27 @@
 # <http://www.gnu.org/licenses/>.
 
 """
-Module and object specific for "settings/portal_entry" UDM module.
+Module and object specific for "policies/registry" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
-from ..encoders import (
-	dn_list_property_encoder_for, dn_property_encoder_for, Base64BinaryPropertyEncoder,
-	StringCaseInsensitiveResultUpperBooleanPropertyEncoder, ListOfListOflTextToDictPropertyEncoder
-)
+from ..encoders import ListOfListOflTextToDictPropertyEncoder
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
 
-
-class SettingsPortalEntryUdm1ObjectProperties(GenericUdm1ObjectProperties):
-	"""settings/portal_entry UDM properties."""
+class PoliciesRegistryUdm1ObjectProperties(GenericUdm1ObjectProperties):
+	"""policies/registry UDM properties."""
 
 	_encoders = {
-		'activated': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-		'description': ListOfListOflTextToDictPropertyEncoder,
-		'displayName': ListOfListOflTextToDictPropertyEncoder,
-		'icon': Base64BinaryPropertyEncoder,
-		'portal': dn_list_property_encoder_for('settings/portal'),
-		'userGroup': dn_property_encoder_for('groups/group'),
+		'registry': ListOfListOflTextToDictPropertyEncoder,
 	}
 
 
-class SettingsPortalEntryUdm1Object(GenericUdm1Object):
-	"""Better representation of settings/portal_entry properties."""
-	udm_prop_class = SettingsPortalEntryUdm1ObjectProperties
+class PoliciesRegistryUdm1Object(GenericUdm1Object):
+	"""Better representation of policies/registry properties."""
+	udm_prop_class = PoliciesRegistryUdm1ObjectProperties
 
 
-class SettingsPortalEntryUdm1Module(GenericUdm1Module):
-	"""SettingsPortalEntryUdm1Object factory"""
-	_udm_object_class = SettingsPortalEntryUdm1Object
+class PoliciesRegistryUdm1Module(GenericUdm1Module):
+	"""PoliciesRegistryUdm1Object factory"""
+	_udm_object_class = PoliciesRegistryUdm1Object
 	supported_api_versions = (1,)

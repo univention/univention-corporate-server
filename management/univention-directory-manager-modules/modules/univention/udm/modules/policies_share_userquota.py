@@ -27,36 +27,27 @@
 # <http://www.gnu.org/licenses/>.
 
 """
-Module and object specific for "settings/portal_entry" UDM module.
+Module and object specific for "policies/share_userquota" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
-from ..encoders import (
-	dn_list_property_encoder_for, dn_property_encoder_for, Base64BinaryPropertyEncoder,
-	StringCaseInsensitiveResultUpperBooleanPropertyEncoder, ListOfListOflTextToDictPropertyEncoder
-)
+from ..encoders import StringCaseInsensitiveResultUpperBooleanPropertyEncoder
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
 
-
-class SettingsPortalEntryUdm1ObjectProperties(GenericUdm1ObjectProperties):
-	"""settings/portal_entry UDM properties."""
+class PoliciesShareUserquotaUdm1ObjectProperties(GenericUdm1ObjectProperties):
+	"""policies/share_userquota UDM properties."""
 
 	_encoders = {
-		'activated': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-		'description': ListOfListOflTextToDictPropertyEncoder,
-		'displayName': ListOfListOflTextToDictPropertyEncoder,
-		'icon': Base64BinaryPropertyEncoder,
-		'portal': dn_list_property_encoder_for('settings/portal'),
-		'userGroup': dn_property_encoder_for('groups/group'),
+		'reapplyeverylogin': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 	}
 
 
-class SettingsPortalEntryUdm1Object(GenericUdm1Object):
-	"""Better representation of settings/portal_entry properties."""
-	udm_prop_class = SettingsPortalEntryUdm1ObjectProperties
+class PoliciesShareUserquotaUdm1Object(GenericUdm1Object):
+	"""Better representation of policies/share_userquota properties."""
+	udm_prop_class = PoliciesShareUserquotaUdm1ObjectProperties
 
 
-class SettingsPortalEntryUdm1Module(GenericUdm1Module):
-	"""SettingsPortalEntryUdm1Object factory"""
-	_udm_object_class = SettingsPortalEntryUdm1Object
+class PoliciesShareUserquotaUdm1Module(GenericUdm1Module):
+	"""PoliciesShareUserquotaUdm1Object factory"""
+	_udm_object_class = PoliciesShareUserquotaUdm1Object
 	supported_api_versions = (1,)

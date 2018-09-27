@@ -132,7 +132,7 @@ class HomePostalAddressPropertyEncoder(BaseEncoder):
 			return value
 
 
-class MultiLanguageTextPropertyEncoder(BaseEncoder):
+class ListOfListOflTextToDictPropertyEncoder(BaseEncoder):
 	static = True
 
 	@staticmethod
