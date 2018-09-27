@@ -32,8 +32,8 @@ Module and object specific for "settings/portal_entry" UDM module.
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import (
-	dn_list_property_encoder_for, dn_property_encoder_for, Base64BinaryPropertyEncoder, StringBooleanPropertyEncoder,
-	MultiLanguageTextPropertyEncoder
+	dn_list_property_encoder_for, dn_property_encoder_for, Base64BinaryPropertyEncoder,
+	StringCaseInsensitiveResultUpperBooleanPropertyEncoder, MultiLanguageTextPropertyEncoder
 )
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
 
@@ -42,7 +42,7 @@ class SettingsPortalEntryUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	"""settings/portal_entry UDM properties."""
 
 	_encoders = {
-		'activated': StringBooleanPropertyEncoder,
+		'activated': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'description': MultiLanguageTextPropertyEncoder,
 		'displayName': MultiLanguageTextPropertyEncoder,
 		'icon': Base64BinaryPropertyEncoder,
