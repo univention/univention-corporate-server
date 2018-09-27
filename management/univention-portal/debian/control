@@ -16,6 +16,7 @@ Breaks: python-univention-appcenter (<< 6.0.3-23)
 Replaces: python-univention-appcenter (<< 6.0.3-23)
 Depends: univention-management-console-server,
  univention-config,
+ univention-directory-listener (>= 12.0.0-29),
  univention-directory-manager-tools,
  python-univention-appcenter (>= 6.0.3-23),
  ${misc:Depends},
