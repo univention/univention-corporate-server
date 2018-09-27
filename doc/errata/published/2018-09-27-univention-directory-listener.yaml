@@ -9,3 +9,5 @@ desc: |
  * Log a message, when a listener module using the new API was deactivated.
  * Fix terminal detection code in listener-ctrl.
 bug: [47871, 47870]
+erratum: 256
+announced: 2018-09-27
