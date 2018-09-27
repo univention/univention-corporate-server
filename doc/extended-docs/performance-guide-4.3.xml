@@ -80,7 +80,7 @@ slapadd -l ldif
 			In the default configuration the memory mapped database needs more I/O operations than
 			the BDB backend. With the &ucsUCRV; <envar>ldap/database/mdb/envflags</envar> this
 			behavior can be configured. The following flags can be set (multiple values are
-			separated by commas):
+			separated by spaces):
 			<itemizedlist>
 				<listitem><simpara>
 					<option>nosync</option> specify that on-disk  database contents should not be
