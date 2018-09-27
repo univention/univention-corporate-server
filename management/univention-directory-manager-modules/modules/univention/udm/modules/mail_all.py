@@ -83,3 +83,4 @@ class OxMailHandleWrongUniventionObjectTypeMixIn(object):
 class MailAllUdm1Module(OxMailHandleWrongUniventionObjectTypeMixIn, GenericUdm1Module):
 	"""MailAllUdm1Object factory"""
 	_udm_object_class = MailAllUdm1Object
+	supported_api_versions = (1,)

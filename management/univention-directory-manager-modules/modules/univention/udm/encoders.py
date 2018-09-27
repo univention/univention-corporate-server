@@ -365,7 +365,7 @@ class DnsEntryZoneAliasListPropertyEncoder(DnListPropertyEncoder):
 		return [udm_module.get('relativeDomainName={},{}'.format(v[2], v[1])) for v in value]
 
 
-class DnsEntryZoneForwardListPropertyEncoder(DnListPropertyEncoder):
+class DnsEntryZoneForwardListMultiplePropertyEncoder(DnListPropertyEncoder):
 	"""
 	Given a list of dnsEntryZoneForward entries, return the same list with an
 	additional member ``objs``. ``objs`` is a lazy object that will become
@@ -374,12 +374,30 @@ class DnsEntryZoneForwardListPropertyEncoder(DnListPropertyEncoder):
 	"""
 	udm_module_name = 'dns/forward_zone'
 
+	@staticmethod
+	def _itemgetter(value):
+		return value[0]
+
 	def _list_of_dns_to_list_of_udm_objects(self, value):
 		udm_module = Udm(self.lo).get(self.udm_module_name)
-		return [udm_module.get(v[0]) for v in value]
+		return [udm_module.get(self._itemgetter(v)) for v in value]
 
 
-class DnsEntryZoneReverseListPropertyEncoder(DnsEntryZoneForwardListPropertyEncoder):
+class DnsEntryZoneForwardListSinglePropertyEncoder(DnsEntryZoneForwardListMultiplePropertyEncoder):
+	"""
+	Given a list of dnsEntryZoneForward entries, return the same list with an
+	additional member ``objs``. ``objs`` is a lazy object that will become
+	the list of UDM objects the dnsEntryZoneForward entries refer to, when
+	accessed.
+	"""
+	udm_module_name = 'dns/forward_zone'
+
+	@staticmethod
+	def _itemgetter(value):
+		return value
+
+
+class DnsEntryZoneReverseListMultiplePropertyEncoder(DnsEntryZoneForwardListMultiplePropertyEncoder):
 	"""
 	Given a list of dnsEntryZoneReverse entries, return the same list with an
 	additional member ``objs``. ``objs`` is a lazy object that will become
@@ -387,6 +405,24 @@ class DnsEntryZoneReverseListPropertyEncoder(DnsEntryZoneForwardListPropertyEnco
 	accessed.
 	"""
 	udm_module_name = 'dns/reverse_zone'
+
+	@staticmethod
+	def _itemgetter(value):
+		return value[0]
+
+
+class DnsEntryZoneReverseListSinglePropertyEncoder(DnsEntryZoneReverseListMultiplePropertyEncoder):
+	"""
+	Given a list of dnsEntryZoneReverse entries, return the same list with an
+	additional member ``objs``. ``objs`` is a lazy object that will become
+	the list of UDM objects the dnsEntryZoneReverse entries refer to, when
+	accessed.
+	"""
+	udm_module_name = 'dns/reverse_zone'
+
+	@staticmethod
+	def _itemgetter(value):
+		return value
 
 
 class DnPropertyEncoder(BaseEncoder):

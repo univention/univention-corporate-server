@@ -32,8 +32,8 @@ Module and object for all "computers/*" UDM modules.
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import (
-	CnameListPropertyEncoder, DnsEntryZoneAliasListPropertyEncoder, DnsEntryZoneForwardListPropertyEncoder,
-	DnsEntryZoneReverseListPropertyEncoder,
+	CnameListPropertyEncoder, DnsEntryZoneAliasListPropertyEncoder, DnsEntryZoneForwardListMultiplePropertyEncoder,
+	DnsEntryZoneReverseListMultiplePropertyEncoder,
 	dn_list_property_encoder_for, dn_property_encoder_for, StringIntBooleanPropertyEncoder, StringIntPropertyEncoder
 )
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
@@ -45,8 +45,8 @@ class ComputersAllUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	_encoders = {
 		'dnsAlias': CnameListPropertyEncoder,  # What is this? Isn't this data in dnsEntryZoneAlias already?
 		'dnsEntryZoneAlias': DnsEntryZoneAliasListPropertyEncoder,
-		'dnsEntryZoneForward': DnsEntryZoneForwardListPropertyEncoder,
-		'dnsEntryZoneReverse': DnsEntryZoneReverseListPropertyEncoder,
+		'dnsEntryZoneForward': DnsEntryZoneForwardListMultiplePropertyEncoder,
+		'dnsEntryZoneReverse': DnsEntryZoneReverseListMultiplePropertyEncoder,
 		'groups': dn_list_property_encoder_for('groups/group'),
 		'nagiosParents': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
 		'nagiosServices': dn_list_property_encoder_for('nagios/service'),
