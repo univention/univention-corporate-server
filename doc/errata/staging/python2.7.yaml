@@ -1,6 +1,6 @@
 product: ucs
 release: "4.2"
-version: [5]
+version: [4,5]
 scope: ucs_4.2-0-errata4.2-5
 src: python2.7
 fix: 2.7.9-2+deb8u2

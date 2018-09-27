@@ -1,6 +1,6 @@
 product: ucs
 release: "4.2"
-version: [5]
+version: [4,5]
 scope: ucs_4.2-0-errata4.2-5
 src: texlive-bin
 fix: 2014.20140926.35254-6+deb8u1
