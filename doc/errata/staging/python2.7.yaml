@@ -1,0 +1,21 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: python2.7
+fix: 2.7.9-2+deb8u2
+desc: |
+ This update addresses the following issues:
+ * Integer overflow in PyString_DecodeEscape results in heap-base buffer
+   overflow (CVE-2017-1000158)
+ * DOS via regular expression catastrophic backtracking in apop() method in
+   pop3lib (CVE-2018-1060)
+ * DOS via regular expression backtracking in difflib.IS_LINE_JUNK method in
+   difflib (CVE-2018-1061)
+ * Command injection in the shutil module (CVE-2018-1000802)
+bug: [47873]
+cve:
+- CVE-2017-1000158
+- CVE-2018-1060
+- CVE-2018-1061
+- CVE-2018-1000802
