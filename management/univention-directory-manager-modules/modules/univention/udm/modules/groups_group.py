@@ -31,7 +31,10 @@ Module and object specific for "groups/group" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
-from ..encoders import dn_list_property_encoder_for, StringIntBooleanPropertyEncoder, StringIntPropertyEncoder
+from ..encoders import (
+	dn_list_property_encoder_for, SambaGroupTypePropertyEncoder, StringIntBooleanPropertyEncoder,
+	StringIntPropertyEncoder
+)
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
 
 
@@ -46,6 +49,7 @@ class GroupsGroupUdm1ObjectProperties(GenericUdm1ObjectProperties):
 		'hosts': dn_list_property_encoder_for('auto'),  # can be different types of computer/* objects
 		'memberOf': dn_list_property_encoder_for('groups/group'),
 		'nestedGroup': dn_list_property_encoder_for('groups/group'),
+		'sambaGroupType': SambaGroupTypePropertyEncoder,
 		'sambaRID': StringIntPropertyEncoder,
 		'users': dn_list_property_encoder_for('users/user'),
 	}

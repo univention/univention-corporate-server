@@ -37,6 +37,7 @@ import lazy_object_proxy
 from .binary_props import Base64BinaryProperty
 from .udm import Udm
 from univention.admin.uexceptions import valueInvalidSyntax
+from univention.admin.syntax import sambaGroupType
 
 try:
 	from typing import Any, Dict, List, Optional, Text, Type
@@ -144,6 +145,26 @@ class MultiLanguageTextPropertyEncoder(BaseEncoder):
 		if value:
 			return [[k, v] for k, v in value.items()]
 		else:
+			return value
+
+
+class SambaGroupTypePropertyEncoder(BaseEncoder):
+	static = True
+	choices = dict(sambaGroupType.choices)
+	choices_reverted = dict((v, k) for k, v in sambaGroupType.choices)
+
+	@classmethod
+	def decode(cls, value=None):  # type: (Optional[List[Text]]) -> Optional[Text]
+		try:
+			return cls.choices[value]
+		except KeyError:
+			return value
+
+	@classmethod
+	def encode(cls, value=None):  # type: (Optional[Text]) -> Optional[List[Text]]
+		try:
+			return cls.choices_reverted[value]
+		except KeyError:
 			return value
 
 
