@@ -314,6 +314,16 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	'image_path': univention.admin.property(
+		short_description=_('Image Path'),
+		long_description=_('Path of an ISO image that will be mounted on instance creation'),
+		syntax=udm_syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 
 
@@ -343,6 +353,7 @@ layout = [
 			"kblayout",
 		]),
 		Group(_('Boot configuration'), layout=[
+			"image_path",
 			"bootdev",
 			"advkernelconf",
 			"kernel",
@@ -388,6 +399,7 @@ mapping.register('pvdisk', 'univentionVirtualMachineProfilePVDisk', None, udm_ma
 mapping.register('pvinterface', 'univentionVirtualMachineProfilePVInterface', None, udm_mapping.ListToString)
 mapping.register('pvcdrom', 'univentionVirtualMachineProfilePVCDROM', None, udm_mapping.ListToString)
 mapping.register('rtcoffset', 'univentionVirtualMachineProfileRTCOffset', None, udm_mapping.ListToString)
+mapping.register('image_path', 'univentionVirtualMachineProfileImagePath', None, udm_mapping.ListToString)
 
 
 class object(simpleLdap):

@@ -78,6 +78,7 @@ define([
 
 				// pre-set the form fields
 				var nodeURI = this.getWidget('nodeURI').get('value');
+				var driveStore = this.getWidget('drivestore').value;
 				this.getWidget('general', 'nodeURI').set('value', nodeURI);
 				this.getWidget('profile').set('value', profileDN);
 				this.getWidget('name').set('value', this._profile.name_prefix || '');
@@ -85,6 +86,63 @@ define([
 				this.getWidget('maxMem').set('value', types.parseCapacity(this._profile.ram || '4 MiB'));
 				this.getWidget('vcpus').set('value', this._profile.cpus);
 				this.getWidget('vnc').set('value', this._profile.vnc);
+		
+				function _nextID() {
+					var newID = driveStore.data.length + 1;
+		
+					array.forEach( driveStore.data, function( item ) {
+						if ( item.$id$ >= newID ) {
+							newID = item.$id$ + 1;
+						}
+					} );
+		
+					return newID;
+				}
+
+				var _addDefaultCDROM = lang.hitch(this, function(_driveStore) {
+					if ( this._profile.image_path ) {
+						paravirtual = this._profile.pvcdrom ? true : false;
+						var id = _nextID();
+
+						this._driveStore.add({
+							device: 'cdrom',
+							$id$: id,
+							driver_cache: 'default',
+							driver_type: 'iso',
+							readonly: true,
+							paravirtual: paravirtual,
+							pool: 'default',
+							size: "",
+							source: this._profile.image_path,
+							volumeFilename: this._profile.image_path,
+							volumeType: 'exists'
+						});
+					}
+				});
+
+				var _addDefaultDisk = lang.hitch(this, function(_driveStore) {
+					if ( this._profile.diskspace ) {
+						paravirtual = this._profile.pvdisk ? true : false;
+						var id = _nextID();
+
+						this._driveStore.add({
+							device: 'disk',
+							$id$: id,
+							driver_cache: 'none',
+							driver_type: 'qcow2',
+							readonly: false,
+							paravirtual: paravirtual,
+							pool: 'default',
+							size: types.parseCapacity(this._profile.diskspace),
+							source: null,
+							volumeFilename: this._profile.name_prefix + '-main',
+							volumeType: 'new',
+						});
+					}
+				});
+
+				_addDefaultCDROM(driveStore);
+				_addDefaultDisk(driveStore);
 
 				// update page header
 				this._pages.general.set('headerText', _('Create a virtual machine (profile: %s)', this._profile.name));
@@ -105,7 +163,8 @@ define([
 				idProperty: '$id$'
 			}));
 			this._driveGrid = new DriveGrid({
-				moduleStore: this._driveStore
+				moduleStore: this._driveStore,
+				domain: nodeURI
 			});
 
 			// wrap grid in a titlepane
@@ -203,11 +262,15 @@ define([
 						name: 'vnc',
 						type: CheckBox,
 						label: _('Direct access (VNC)')
+					}, {
+						name: 'drivestore',
+						type: HiddenInput,
+						value: this._driveGrid.moduleStore
 					}]
 				}, {
 					name: 'drives',
 					headerText: _('Add drive'),
-					helpText: _('To finalize the creation of the virtual machine, please add one or more drives by clicking on "Add drive".')
+					helpText: _('To finalize the creation of the virtual machine, please add one or more drives by clicking on "Add drive".'),
 				}],
 				headerButtons: [{
 					iconClass: 'umcCloseIconWhite',

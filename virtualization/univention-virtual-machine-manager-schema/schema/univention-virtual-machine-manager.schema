@@ -187,6 +187,12 @@ attributetype ( uvmmProfileAttributetype:20 NAME 'univentionVirtualMachineProfil
 	SUBSTR caseIgnoreIA5SubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
 
+attributetype ( uvmmProfileAttributetype:21 NAME 'univentionVirtualMachineProfileImagePath'
+	DESC 'Image path for the virtual machine'
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
 objectclass ( uvmmProfileObjectClass:1 NAME 'univentionVirtualMachineProfile'
 	DESC 'UCS Virtual Machine profile objectclass'
 	STRUCTURAL
@@ -211,6 +217,7 @@ objectclass ( uvmmProfileObjectClass:1 NAME 'univentionVirtualMachineProfile'
 		$ univentionVirtualMachineProfilePVCDROM
 		$ univentionVirtualMachineProfileRTCOffset
 		$ univentionVirtualMachineProfileDriverCache
+		$ univentionVirtualMachineProfileImagePath
 		)
 	)
 
