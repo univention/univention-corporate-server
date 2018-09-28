@@ -257,11 +257,13 @@ class Storages(object):
 		try:
 			pools = self.storage_pools[node_uri]
 		except LookupError:
-			_success, data = self.uvmm.send(
+			success, data = self.uvmm.send(
 				'STORAGE_POOLS',
 				None,
 				uri=node_uri
 			)
+			if not success:
+				return None
 			pools = dict([(pool.name, object2dict(pool)) for pool in data])
 			self.storage_pools[node_uri] = pools
 		return pools.get(pool_name)
