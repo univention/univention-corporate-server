@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-join
-fix: 10.0.0-23A~4.3.0.201809281330
+fix: 10.0.0-24A~4.3.0.201809281627
 desc: |
  This update addresses the following issue:
  * Fixed join failing when two MAC addresses are set on the computer object.
