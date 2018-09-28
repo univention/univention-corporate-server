@@ -1,3 +1,9 @@
+univention-join (10.0.0-23) unstable; urgency=medium
+
+  * Bug #47338: Allow for multiple macs on preexisting machine account
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 28 Sep 2018 12:36:22 +0200
+
 univention-join (10.0.0-22) unstable; urgency=medium
 
   * Bug #47338: Allow for multiple macs on preexisting machine account

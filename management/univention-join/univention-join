@@ -646,7 +646,9 @@ else
 	mac_addr="$(LC_ALL=C ip link show | sed -rne 's|.*link/ether ([0-9a-fA-F:]+) brd .*|\1|p' | head -n -1)"
 	if [ -n "$mac_addr" ]; then
 		while read line; do
-			args+=(-mac "$line")
+			if [ -n "$line" ]; then
+				args+=(-mac "$line")
+			fi
 		done <<< "$mac_addr"
 	fi
 fi
@@ -679,7 +681,7 @@ eval "$(grep -e '^ldap_dn=' -e '^KerberosPasswd=' "$USERTMP/secret")"
 [ -n "$ldap_dn" ] ||
 	failed_message "No LDAP Host DN returned"
 rdn=${ldap_dn%%,*}
-hostname=${rdn#cn=}
+hostname=${rdn#*cn=}
 [ -n "$hostname" ] ||
 	failed_message "Could not get canonical writing of hostname from DN $ldap_dn"
 
