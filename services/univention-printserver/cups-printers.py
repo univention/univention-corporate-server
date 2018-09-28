@@ -421,6 +421,8 @@ def handler(dn, new, old):
 		finally:
 			listener.unsetuid()
 
+		reload_printer_restrictions()
+
 		if need_to_reload_cups:
 			reload_cups_daemon()
 
@@ -439,6 +441,13 @@ def reload_cups_daemon():
 	else:
 		ud.debug(ud.LISTENER, ud.PROCESS, "cups-printers: no %s to init script found")
 
+
+def reload_printer_restrictions():
+		listener.setuid(0)
+		try:
+			subprocess.call(['python', '/usr/share/pyshared/univention/lib/share_restrictions.py'])
+		finally:
+			listener.unsetuid()
 
 def reload_smbd():
 	global reload_samba_in_postrun
