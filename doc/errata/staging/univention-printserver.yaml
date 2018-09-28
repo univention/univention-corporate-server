@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-printserver
-fix: 
+fix: 11.0.1-1A~4.3.0.201809281124
 desc: |
  This update addresses the following issue(s):
  * The printer restrictions are reloaded after changes are made.
