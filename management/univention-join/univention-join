@@ -681,7 +681,7 @@ eval "$(grep -e '^ldap_dn=' -e '^KerberosPasswd=' "$USERTMP/secret")"
 [ -n "$ldap_dn" ] ||
 	failed_message "No LDAP Host DN returned"
 rdn=${ldap_dn%%,*}
-hostname=${rdn#*cn=}
+hostname=${rdn#cn=}
 [ -n "$hostname" ] ||
 	failed_message "Could not get canonical writing of hostname from DN $ldap_dn"
 

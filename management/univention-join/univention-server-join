@@ -323,9 +323,10 @@ create_entry () {
 		case "$module" in
 		computers/managedclient|computers/mobileclient)
 			if [ -n "$dhcpEntry" ] && [ -n "$IP" ] && [ -n "$MAC" ]; then
-				for i in "${MAC[@]}"; do
-					args+=(--set dhcpEntryZone="$dhcpEntry $IP $i")
-				done
+					if [ "${#MAC[@]}" -gt 1 ]; then
+						log 1 "Multiple MAC addresses; creating DHCP entry for the first one only."
+					fi
+					args+=(--set dhcpEntryZone="$dhcpEntry $IP ${MAC[0]}")
 			fi
 			;;
 		esac
