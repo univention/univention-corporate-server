@@ -437,7 +437,7 @@ def storage_pools(node):
 			ex,
 		)
 		node.pd.last_try = time.time()
-		return pools
+		return ()
 	except libvirt.libvirtError as ex:
 		logger.error(ex)
 		raise StorageError(
