@@ -110,7 +110,11 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 					}
 
 				logger.debug('[%d] Sending response.', self.client_id)
-				packet = res.pack()
+				try:
+					packet = res.pack()
+				except Exception as ex:
+					logger.error('[%d] Sending response for %r: %r', self.client_id, command, res)
+					raise
 				self.wfile.write(packet)
 				self.wfile.flush()
 				logger.debug('[%d] Done.', self.client_id)
