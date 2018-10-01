@@ -1,21 +1,11 @@
 product: ucs
 release: "4.3"
-version: [2]
+version: [1, 2]
 scope: ucs_4.3-0-errata4.3-2
 src: texlive-bin
 fix: 2016.20160513.41080.dfsg-2+deb9u1
 desc: |
  This update addresses the following issue:
- * fix buffer overflow in writet1()
-
- * 2016.20160513.41080.dfsg-2+deb9u1 (Wed, 19 Sep 2018 13:18:30 +0900) * fix
-   buffer overflow in writet1
-
- * 2016.20160513.41080.dfsg-2+deb9u1 (Wed, 19 Sep 2018 13:18:30 +0900) * fix
-   buffer overflow in writet1
-
- * 2016.20160513.41080.dfsg-2+deb9u1 (Wed, 19 Sep 2018 13:18:30 +0900) * fix
-   buffer overflow in writet1
  * Buffer overflow in t1_check_unusual_charstring function in writet1.c
    (CVE-2018-17407)
 bug: [47892]
