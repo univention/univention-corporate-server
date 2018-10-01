@@ -6,8 +6,7 @@ src: ghostscript
 fix: 9.06~dfsg-2+deb8u9
 desc: |
  This update addresses the following issues:
- * gssetresolution and gsgetresolution memory corruption (699670)
-   (CVE-2018-16543)
+ * gssetresolution and gsgetresolution memory corruption (CVE-2018-16543)
  * User-writable error exception table (CVE-2018-17183)
 bug: [47888]
 cve:
