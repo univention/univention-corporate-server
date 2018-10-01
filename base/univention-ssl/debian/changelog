@@ -1,3 +1,9 @@
+univention-ssl (12.0.0-13) unstable; urgency=medium
+
+  * Bug #44469: Include DNS aliases in certificate creation
+
+ -- Jannik Ahlers <ahlers@univention.de>  Mon, 01 Oct 2018 13:23:56 +0200
+
 univention-ssl (12.0.0-12) unstable; urgency=medium
 
   * Bug #41013: univention-certificate renew now doesn't revoke the old cert

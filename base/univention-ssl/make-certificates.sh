@@ -483,6 +483,8 @@ gencert () {
 	local name="${1:?Missing argument: dirname}"
 	local fqdn="${2:?Missing argument: common name}"
 	local days="${3:-$DEFAULT_DAYS}"
+	local domain=$(ucr get domainname)
+	local san=$(univention-ldapsearch -LLL cNAMERecord="$fqdn". | grep relativeDomainName: | awk -v domain="${domain}" '{print $2, $2"."domain}' | sed ':a;N;$!ba;s/\n/\ /g')
 
 	local hostname="${fqdn%%.*}" cn="$fqdn"
 	if [ ${#hostname} -gt 64 ]
@@ -491,8 +493,6 @@ gencert () {
 		return 2
 	fi
 	name=$(cd "$SSLBASE" && readlink -f "$name")
-
-	revoke_cert "$fqdn" || [ $? -eq 2 ] || return $?
 
 	install -m 700 -d "$name"
 	if [ ${#fqdn} -gt 64 ]
@@ -506,7 +506,7 @@ gencert () {
 		[ -n "$EXTERNAL_REQUEST_FILE_KEY" ] && cp "$EXTERNAL_REQUEST_FILE_KEY" "$name/private.key"
 	else
 		# generate a key pair
-		mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname"
+		mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname $san"
 		openssl genrsa -out "$name/private.key" "$DEFAULT_BITS"
 		openssl req -batch -config "$name/openssl.cnf" -new -key "$name/private.key" -out "$name/req.pem"
 	fi
