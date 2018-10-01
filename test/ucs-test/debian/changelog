@@ -1,3 +1,10 @@
+ucs-test (8.0.28-198) unstable; urgency=medium
+
+  * Bug #47338: let test 11_join/10join_preexisting_acc_with_multiple_macs
+  	only run on master
+
+ -- Jannik Ahlers <ahlers@univention.de>  Mon, 01 Oct 2018 11:28:53 +0200
+
 ucs-test (8.0.28-197) unstable; urgency=medium
 
   * Bug #47338: version bump
