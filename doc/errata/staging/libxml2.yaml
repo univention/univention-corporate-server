@@ -1,0 +1,18 @@
+product: ucs
+release: "4.2"
+version: [4, 5]
+scope: ucs_4.2-0-errata4.2-5
+src: libxml2
+fix: 2.9.1+dfsg1-5+deb8u7A~4.2.5.201810011416
+desc: |
+ This update addresses the following issues:
+ * denial of service in xz_head function in xzlib.c (CVE-2017-18258)
+ * NULL pointer dereference in xpath.c:xmlXPathCompOpEval() can allow
+   attackers to cause a denial of service (CVE-2018-14404)
+ * Infinite loop when --with-lzma is used allows for denial of service via
+   crafted XML file (CVE-2018-14567)
+bug: [47887]
+cve:
+- CVE-2017-18258
+- CVE-2018-14404
+- CVE-2018-14567
