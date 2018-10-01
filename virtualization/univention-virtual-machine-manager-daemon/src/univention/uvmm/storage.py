@@ -35,10 +35,11 @@ This module implements functions to handle storage on nodes. This is
 independent from the on-wire-format.
 """
 
+from __future__ import absolute_import
 import libvirt
 import logging
-from helpers import TranslatableException, N_ as _, TimeoutError, timeout
-from protocol import Disk, Data_Pool
+from .helpers import TranslatableException, N_ as _, TimeoutError, timeout
+from .protocol import Disk, Data_Pool
 import os.path
 import univention.config_registry as ucr
 import time

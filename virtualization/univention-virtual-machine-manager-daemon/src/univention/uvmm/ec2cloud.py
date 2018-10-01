@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 """UVMM cloud ec2 handler"""
 
+from __future__ import absolute_import
 from libcloud.common.types import LibcloudError, MalformedResponseError, ProviderError, InvalidCredsError
 from libcloud.compute.types import Provider, NodeState, KeyPairDoesNotExistError
 from libcloud.compute.providers import get_driver
@@ -44,10 +45,10 @@ import re
 import errno
 import ssl
 
-from node import PersistentCached
-from helpers import N_ as _
-from cloudconnection import CloudConnection, CloudConnectionError
-from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Size, Cloud_Data_Network, Cloud_Data_Subnet
+from .node import PersistentCached
+from .helpers import N_ as _
+from .cloudconnection import CloudConnection, CloudConnectionError
+from .protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Size, Cloud_Data_Network, Cloud_Data_Subnet
 import univention.config_registry as ucr
 
 configRegistry = ucr.ConfigRegistry()

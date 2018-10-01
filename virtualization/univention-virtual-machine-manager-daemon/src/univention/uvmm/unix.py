@@ -33,14 +33,15 @@
 # http://docs.python.org/library/socketserver.html
 # http://akumakun.de/norbert/index.html
 
+from __future__ import absolute_import
 import os
 import errno
 import sys
 import SocketServer
-import protocol
-from commands import commands, CommandError
-from node import Nodes, node_frequency
-from helpers import N_ as _
+from . import protocol
+from .commands import commands, CommandError
+from .node import Nodes, node_frequency
+from .helpers import N_ as _
 import socket
 import select
 import logging

@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
 import logging
 import stat
 import hashlib
@@ -40,8 +41,8 @@ import re
 import fnmatch
 import cPickle as pickle
 
-from protocol import Cloud_Data_Connection, Cloud_Data_Image, Cloud_Data_Keypair
-from helpers import TranslatableException, ms, uri_encode
+from .protocol import Cloud_Data_Connection, Cloud_Data_Image, Cloud_Data_Keypair
+from .helpers import TranslatableException, ms, uri_encode
 
 logger = logging.getLogger('uvmmd.cloudconnection')
 

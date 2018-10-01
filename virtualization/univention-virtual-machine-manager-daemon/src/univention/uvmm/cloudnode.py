@@ -34,13 +34,14 @@
 This module implements functions to handle cloud connections and instances. This is independent from the on-wire-format.
 """
 
+from __future__ import absolute_import
 import logging
 import fnmatch
 import re
 
-from cloudconnection import CloudConnectionError
-from openstackcloud import OpenStackCloudConnection
-from ec2cloud import EC2CloudConnection
+from .cloudconnection import CloudConnectionError
+from .openstackcloud import OpenStackCloudConnection
+from .ec2cloud import EC2CloudConnection
 import univention.config_registry as ucr
 
 configRegistry = ucr.ConfigRegistry()

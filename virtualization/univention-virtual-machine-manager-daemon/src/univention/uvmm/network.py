@@ -34,10 +34,11 @@
 This module implements functions to handle network configurations.
 """
 
+from __future__ import absolute_import
 import libvirt
 import logging
-from helpers import TranslatableException, N_ as _
-from protocol import Network
+from .helpers import TranslatableException, N_ as _
+from .protocol import Network
 
 logger = logging.getLogger('uvmmd.network')
 

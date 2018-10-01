@@ -30,10 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 """UVMM protocol."""
+from __future__ import absolute_import
 from cStringIO import StringIO
 import cPickle as pickle
 import struct
-from helpers import TranslatableException, N_ as _
+from .helpers import TranslatableException, N_ as _
 
 VERSION = (2, 0)
 MAX_MSG_SIZE = 4096

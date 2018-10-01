@@ -31,9 +31,10 @@
 # <http://www.gnu.org/licenses/>.
 """UVMM client using a unix-socket."""
 
+from __future__ import absolute_import
 import socket
-import protocol
-from helpers import TranslatableException, FQDN, N_ as _
+from . import protocol
+from .helpers import TranslatableException, FQDN, N_ as _
 import univention.config_registry as ucr
 import os.path
 

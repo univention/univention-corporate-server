@@ -34,14 +34,15 @@
 This module implements parsing the protocol packets, checking parameters for
 validity and invoking the real implementation.
 """
+from __future__ import absolute_import
 import copy
 
-import protocol
-import node
-import cloudnode
-import storage
+from . import protocol
+from . import node
+from . import cloudnode
+from . import storage
 import logging
-from helpers import TranslatableException, N_ as _
+from .helpers import TranslatableException, N_ as _
 
 logger = logging.getLogger('uvmmd.command')
 

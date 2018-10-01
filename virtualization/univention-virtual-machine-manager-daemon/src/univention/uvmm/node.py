@@ -34,17 +34,18 @@
 This module implements functions to handle nodes and domains. This is independent from the on-wire-format.
 """
 
+from __future__ import absolute_import
 import libvirt
 import time
 import logging
 import math
-from helpers import TranslatableException, ms, tuple2version, N_ as _, uri_encode, FQDN
-from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify
+from .helpers import TranslatableException, ms, tuple2version, N_ as _, uri_encode, FQDN
+from .uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify
 import univention.admin.uexceptions
 import threading
-from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_domain_storage_volumes, StorageError
-from protocol import Data_Domain, Data_Node, Data_Snapshot, Disk, Interface, Graphic
-from network import network_start, network_find_by_bridge, NetworkError
+from .storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_domain_storage_volumes, StorageError
+from .protocol import Data_Domain, Data_Node, Data_Snapshot, Disk, Interface, Graphic
+from .network import network_start, network_find_by_bridge, NetworkError
 import copy
 import os
 import stat

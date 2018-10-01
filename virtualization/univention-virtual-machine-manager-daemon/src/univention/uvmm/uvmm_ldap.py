@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 """UVMM LDAP integration."""
 
+from __future__ import absolute_import
 import os
 import errno
 import cPickle as pickle
@@ -40,7 +41,7 @@ from ldap import LDAPError, SERVER_DOWN
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.handlers.uvmm.info as uvmm_info
-from helpers import TranslatableException, N_ as _, FQDN as HOST_FQDN
+from .helpers import TranslatableException, N_ as _, FQDN as HOST_FQDN
 import logging
 
 configRegistry = ucr.ConfigRegistry()
