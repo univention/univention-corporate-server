@@ -82,17 +82,13 @@ def createDaemon(options):
 			if (maxfd == resource.RLIM_INFINITY):
 				maxfd = MAXFD
 
-			dev_null = open(os.path.devnull, 'r')
-			try:
+			with open(os.path.devnull, 'r') as dev_null:
 				os.dup2(dev_null.fileno(), sys.stdin.fileno())
-			finally:
-				dev_null.close()
-			out_log = open(options.logfile or os.path.devnull, 'a+')
-			try:
+
+			with open(options.logfile or os.path.devnull, 'a+') as out_log:
 				os.dup2(out_log.fileno(), sys.stdout.fileno())
 				os.dup2(out_log.fileno(), sys.stderr.fileno())
-			finally:
-				out_log.close()
+
 			keep_fd = (sys.stdin.fileno(), sys.stdout.fileno(), sys.stderr.fileno(), write_end)
 			for fd in range(maxfd):
 				try:
@@ -114,11 +110,9 @@ def createDaemon(options):
 			os.close(read_end)
 
 			if pid:
-				fd = open(options.pidfile, "w")
-				try:
+				with open(options.pidfile, "w") as fd:
 					fd.write(pid)
-				finally:
-					fd.close()
+
 				sys.exit(0)
 			else:
 				print >>sys.stderr, _("Failed to fork daemon.")
@@ -159,12 +153,9 @@ def install_signal_handlers(options):
 		logger.info('Logfile reopened.')
 		# Re-open STDOUT, STDERR logfile
 		if options.logfile:
-			out_log = open(options.logfile, 'a+')
-			try:
+			with open(options.logfile, 'a+') as out_log:
 				os.dup2(out_log.fileno(), sys.stdout.fileno())
 				os.dup2(out_log.fileno(), sys.stderr.fileno())
-			finally:
-				out_log.close()
 
 	def signal_handler_terminate(signum, frame):
 		"""Handle TERM signal to cleanup before terminate."""

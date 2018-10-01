@@ -138,11 +138,9 @@ __ucr.load()
 def __auth_machine():
 	"""Get machine connection."""
 	username = "%s$" % __ucr['hostname']
-	f = open('/etc/machine.secret', 'r')
-	try:
+	with open('/etc/machine.secret', 'r') as f:
 		password = f.readline().rstrip()
-	finally:
-		f.close()
+
 	return (username, password)
 
 

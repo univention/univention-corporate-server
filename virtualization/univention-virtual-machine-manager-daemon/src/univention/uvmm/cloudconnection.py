@@ -199,8 +199,8 @@ class CloudConnection(object):
 			return
 		self._cache_hash = data_hash
 
+		fd = os.open(new_name, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, stat.S_IREAD | stat.S_IWRITE)
 		try:
-			fd = os.open(new_name, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, stat.S_IREAD | stat.S_IWRITE)
 			os.write(fd, data)
 		finally:
 			os.close(fd)
@@ -210,8 +210,7 @@ class CloudConnection(object):
 		# check if there is a cache file
 		cache_file_name = self.cache_file_name()
 		if os.path.isfile(cache_file_name):
-			cache_file = open(cache_file_name, 'r')
-			try:
+			with open(cache_file_name, 'r') as cache_file:
 				data = pickle.Unpickler(cache_file)
 				if data:
 					self._instances = data.load()
@@ -219,8 +218,6 @@ class CloudConnection(object):
 						logger.debug("loaded cached instance %s" % instance.name)
 						instance.available = False
 						instance.state = 4  # state UNKNOWN
-			finally:
-				cache_file.close()
 
 	def _get_instance_by_id(self, instance_id):
 		"""

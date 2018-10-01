@@ -666,13 +666,10 @@ class Node(PersistentCached):
 
 			# Load cached node info
 			cache_file_name = self.cache_file_name(uri)
-			cache_file = open(cache_file_name, 'r')
-			try:
+			with open(cache_file_name, 'r') as cache_file:
 				data = pickle.Unpickler(cache_file)
 				assert data is not None
 				self.pd = data.load()
-			finally:
-				cache_file.close()
 			assert self.pd.uri == uri
 			logger.debug("Loaded from cache '%s'", self.pd.uri)
 
@@ -683,11 +680,8 @@ class Node(PersistentCached):
 						continue
 					cache_file_name = os.path.join(root, fname)
 					try:
-						cache_file = open(cache_file_name, 'r')
-						try:
+						with open(cache_file_name, 'r') as cache_file:
 							xml = cache_file.read()
-						finally:
-							cache_file.close()
 						assert xml
 						assert isinstance(xml, basestring)
 						domStat = Domain(xml, self)
@@ -1728,11 +1722,8 @@ def domain_migrate(source_uri, domain, target_uri):
 			domStat = source_node.domains[domain]
 			try:
 				cache_file_name = domStat.cache_file_name()
-				cache_file = open(cache_file_name, 'r')
-				try:
+				with open(cache_file_name, 'r') as cache_file:
 					xml = cache_file.read()
-				finally:
-					cache_file.close()
 				target_conn.defineXML(xml)
 			except EnvironmentError as ex:
 				raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=ex)

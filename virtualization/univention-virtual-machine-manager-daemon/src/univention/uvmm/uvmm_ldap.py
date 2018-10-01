@@ -90,12 +90,9 @@ def cached(cachefile, func, exception=LdapConnectionError):
 	try:
 		result = func()
 
-		file = open("%s.new" % (cachefile,), "w")
-		try:
-			p = pickle.Pickler(file)
+		with open("%s.new" % (cachefile,), "w") as stream:
+			p = pickle.Pickler(stream)
 			p.dump(result)
-		finally:
-			file.close()
 		try:
 			os.remove("%s.old" % (cachefile,))
 		except EnvironmentError as ex:
@@ -116,12 +113,9 @@ def cached(cachefile, func, exception=LdapConnectionError):
 	except exception as msg:
 		logger.info('Using cached data "%s"', cachefile)
 		try:
-			file = open("%s" % (cachefile,), "r")
-			try:
-				p = pickle.Unpickler(file)
+			with open("%s" % (cachefile,), "r") as stream:
+				p = pickle.Unpickler(stream)
 				result = p.load()
-			finally:
-				file.close()
 		except EnvironmentError as ex:
 			if ex.errno != errno.ENOENT:
 				raise exception(_('Error reading %(file)s: %(msg)s'), file=cachefile, msg=ex)

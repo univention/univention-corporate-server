@@ -468,12 +468,9 @@ class StorageVolume(Resource):
 
     def read_snapshots(self):  # pylint: disable-msg=R0914
         """Get snapshots stored in qcow2 file."""
-        null = open(os.path.devnull, 'w')
-        try:
+        with open(os.path.devnull, 'w') as null:
             cmd = ('qemu-img', 'snapshot', '-l', self.filename)
             proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=null)
-        finally:
-            null.close()
         stdout, _stderr = proc.communicate()
         if proc.wait() != 0:
             self.logger.info("failed to read snapshots")
