@@ -1102,6 +1102,9 @@ def group_list():
 def _domain_backup(dom, save=True):
 	"""Save domain definition to backup file."""
 	backup_dir = configRegistry.get('uvmm/backup/directory', '/var/backups/univention-virtual-machine-manager-daemon')
+	if not backup_dir:
+		return
+
 	uuid = dom.UUIDString()
 	xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
 	if len(xml) < 300:  # minimal XML descriptor length
@@ -1111,17 +1114,25 @@ def _domain_backup(dom, save=True):
 	suffix = 'xml'
 	if save:
 		suffix += '.save'
-	tmp_file_name = os.path.join(backup_dir, "%s_%s.%s" % (uuid, now, suffix))
-	file = os.path.join(backup_dir, "%s.%s" % (uuid, suffix))
-	umask = os.umask(0o177)
-	tmp_file = open(tmp_file_name, "w")
+
+	tmp_file_name = os.path.join(backup_dir, "%s_%s_%s.%s" % (uuid, FQDN, now, suffix))
+	file_name = os.path.join(backup_dir, "%s.%s" % (uuid, suffix))
 	try:
-		tmp_file.write(xml)
-	finally:
-		tmp_file.close()
-	os.umask(umask)
-	os.rename(tmp_file_name, file)
-	logger.info("Domain backuped to %s.", file)
+		try:
+			os.mkdir(backup_dir, 0o700)
+		except EnvironmentError as ex:
+			if ex.errno != errno.EEXIST:
+				raise
+
+		with open(tmp_file_name, "w") as tmp_file:
+			os.fchmod(tmp_file.fileno(), 0o600)
+			tmp_file.write(xml)
+
+		os.rename(tmp_file_name, file_name)
+	except EnvironmentError as ex:
+		logger.warning("Failed to backup domain %s: %s", uuid, ex, exc_info=True)
+	else:
+		logger.info("Domain backuped to %s.", file_name)
 
 
 def _update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
