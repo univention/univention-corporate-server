@@ -1,0 +1,20 @@
+product: ucs
+release: "4.3"
+version: [1, 2]
+scope: ucs_4.3-0-errata4.3-2
+src: python2.7
+fix: 2.7.13-2+deb9u3
+desc: |
+ This update addresses the following issues:
+ * DOS via regular expression catastrophic backtracking in apop() method in
+   pop3lib (CVE-2018-1060)
+ * DOS via regular expression backtracking in difflib.IS_LINE_JUNK method in
+   difflib (CVE-2018-1061)
+ * Missing salt initialization in _elementtree.c module (CVE-2018-14647)
+ * Command injection in the shutil module (CVE-2018-1000802)
+bug: [47890]
+cve:
+- CVE-2018-1060
+- CVE-2018-1061
+- CVE-2018-14647
+- CVE-2018-1000802
