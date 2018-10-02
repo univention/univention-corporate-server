@@ -1425,11 +1425,14 @@ msgstr "Der Wert darf nicht verändert werden."
 msgid "Value may not contain double quotes (\")!"
 msgstr "Der Wert darf kein Anführungszeichen (\") enthalten!"
 
-#: modules/univention/admin/syntax.py:974
-#: modules/univention/admin/syntax.py:1487
-#: modules/univention/admin/syntax.py:1514
-msgid "Value may not contain other than numbers, letters and dots!"
-msgstr "Der Wert darf nur Zahlen, Buchstaben und Punkte enthalten."
+#: modules/univention/admin/syntax.py:989
+msgid "A group name may not contain other characters than numbers, letters and dots!"
+msgstr "Ein Gruppenname darf nur Zahlen, Buchstaben und Punkte enthalten."
+
+#: modules/univention/admin/syntax.py:1502
+#: modules/univention/admin/syntax.py:1529
+msgid "A host name or FQDN may not contain other characters than numbers, letters and dots!"
+msgstr "Ein Hostname oder FQDN darf nur Zahlen, Buchstaben und Punkte enthalten."
 
 #: modules/univention/admin/syntax.py:3417
 msgid ""
