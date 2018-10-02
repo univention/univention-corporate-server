@@ -8,11 +8,6 @@ desc: |
  This update addresses the following issues:
  * gssetresolution and gsgetresolution memory corruption (CVE-2018-16543)
  * User-writable error exception table (CVE-2018-17183)
-
- * 9.06~dfsg-2+deb8u10 (Mon, 01 Oct 2018 12:20:22 +0200)
-  * Berkeley Roshan Churchill reported a regression caused by an incomplete fix
-  for CVE-2018-16543. The pdf2ps tool failed to produce any output and
-  aborted with /rangecheck in .installpagedevice error.
 bug: [47888]
 cve:
 - CVE-2018-16543
