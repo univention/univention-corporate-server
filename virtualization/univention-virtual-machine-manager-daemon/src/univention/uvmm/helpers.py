@@ -29,6 +29,18 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import
+import sys
+import gettext
+import socket
+import threading
+import urlparse
+from functools import reduce
+try:
+	from typing import List  # noqa
+except ImportError:
+	pass
+
 
 __all__ = [
 	'_',
@@ -41,9 +53,6 @@ __all__ = [
 	'TimeoutError',
 	'timeout',
 ]
-
-import gettext
-from functools import reduce
 
 
 def N_(msg):
@@ -98,8 +107,6 @@ def tuple2version(version):
 	return reduce(lambda a, b: a * 1000 + b, version, 0)
 
 
-import socket
-
 FQDN = socket.getfqdn()
 
 
@@ -123,10 +130,6 @@ def uri_decode(uri):
 		return uri[:i] + chr(int(uri[i + 1:i + 3], 16)) + uri_decode(uri[i + 3:])
 	else:
 		return uri
-
-
-import sys
-import threading
 
 
 class TimeoutError(Exception):
@@ -184,9 +187,7 @@ import urlparse
 SplitResult(scheme='qemu', netloc='host.domain.tld', path='/system', query='', fragment='')
 """
 
-import urlparse
-
-__all = []
+__all = []  # type: List[str]
 __all += ['lxc']
 __all += ['vpx', 'esx', 'gsx']
 __all += ['vmwareplayer']

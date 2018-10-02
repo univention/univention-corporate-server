@@ -15,10 +15,7 @@ import libvirt
 import subprocess
 import logging
 from optparse import OptionParser
-try:
-    from lxml import etree as ET
-except ImportError:
-    import xml.etree.ElementTree as ET
+from lxml import etree as ET
 # The expat parser fails on control characters
 from xml.parsers.expat import ExpatError
 
@@ -471,12 +468,9 @@ class StorageVolume(Resource):
 
     def read_snapshots(self):  # pylint: disable-msg=R0914
         """Get snapshots stored in qcow2 file."""
-        null = open(os.path.devnull, 'w')
-        try:
+        with open(os.path.devnull, 'w') as null:
             cmd = ('qemu-img', 'snapshot', '-l', self.filename)
             proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=null)
-        finally:
-            null.close()
         stdout, _stderr = proc.communicate()
         if proc.wait() != 0:
             self.logger.info("failed to read snapshots")

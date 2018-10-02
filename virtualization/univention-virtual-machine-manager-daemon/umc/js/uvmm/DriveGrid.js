@@ -107,15 +107,9 @@ define([
 					isMultiAction: false,
 					isStandardAction: true,
 					callback: lang.hitch(this, '_changeMedium'),
-					canExecute: lang.hitch(this, function(item) {
-						if (item.device !== 'cdrom' && item.device !== 'floppy') {
-							return false;
-						}
-						if (!types.isActive(this.domain)) {
-							return true;
-						}
-						return true;
-					})
+					canExecute: function(item) {
+						return item.device == 'cdrom' || item.device == 'floppy';
+					}
 				}, {
 					name: 'add',
 					label: _('Add'),

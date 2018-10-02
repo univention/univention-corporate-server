@@ -109,6 +109,8 @@ class UVMM_Request(object):
 		"""
 		Process UVMMd response.
 		"""
+		if not result:
+			return (False, None)
 		data = None
 		success = result.status == 'OK'
 		if isinstance(result, protocol.Response_DUMP):

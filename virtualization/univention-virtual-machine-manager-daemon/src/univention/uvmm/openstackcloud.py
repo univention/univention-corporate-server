@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 """UVMM cloud openstack handler"""
 
+from __future__ import absolute_import
 from libcloud.common.types import LibcloudError, MalformedResponseError, ProviderError, InvalidCredsError
 from libcloud.compute.types import Provider, NodeState
 from libcloud.compute.providers import get_driver
@@ -43,9 +44,9 @@ import re
 import errno
 import ssl
 
-from node import PersistentCached
-from cloudconnection import CloudConnection, CloudConnectionError
-from protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Secgroup_Rule, Cloud_Data_Size, Cloud_Data_Network, Cloud_Data_Image
+from .node import PersistentCached
+from .cloudconnection import CloudConnection, CloudConnectionError
+from .protocol import Cloud_Data_Instance, Cloud_Data_Location, Cloud_Data_Secgroup, Cloud_Data_Secgroup_Rule, Cloud_Data_Size, Cloud_Data_Network
 import univention.config_registry as ucr
 
 configRegistry = ucr.ConfigRegistry()
@@ -143,7 +144,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 		self.updatethread.start()
 
 	def update_expensive(self):
-		logger.debug("Expensive update for %s: %s" % (self.publicdata.name, self.publicdata.url))
+		logger.debug("Expensive update for %s: %s", self.publicdata.name, self.publicdata.url)
 		self._images = self._exec_libcloud(lambda: self.driver.list_images())
 		self._sizes = self._exec_libcloud(lambda: self.driver.list_sizes())
 		self._locations = self._exec_libcloud(lambda: self.driver.list_locations())
@@ -326,17 +327,17 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			(NodeState.PAUSED, "SHUTOFF"): self._shutoff_instance,
 			(NodeState.RUNNING, "SUSPEND"): self._suspend_instance,
 		}
-		logger.debug("STATE: connection: %s instance %s (id:%s), oldstate: %s (%s), requested: %s" % (self.publicdata.name, instance.name, instance.id, instance.state, instance.state, state))
+		logger.debug("STATE: connection: %s instance %s (id:%s), oldstate: %s (%s), requested: %s", self.publicdata.name, instance.name, instance.id, instance.state, instance.state, state)
 		try:
 			transition = OS_TRANSITION[(instance.state, state)]
 			if transition:
 				transition(instance)
 			else:
-				logger.debug("NOP state transition: %s -> %s" % (instance.state, state))
+				logger.debug("NOP state transition: %s -> %s", instance.state, state)
 		except KeyError:
 			raise OpenStackCloudConnectionError("Unsupported State transition (%s -> %s) requested" % (instance.state, state))
-		except Exception as e:
-			raise OpenStackCloudConnectionError("Error trying to %s instance %s (id:%s): %s" % (state, instance.name, instance_id, e))
+		except Exception as ex:
+			raise OpenStackCloudConnectionError("Error trying to %s instance %s (id:%s): %s" % (state, instance.name, instance_id, ex))
 		logger.debug("STATE: done")
 		self.set_frequency_fast_update()
 
@@ -348,9 +349,9 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			self._exec_libcloud(lambda: self.driver.destroy_node(instance))
 			# Update instance information
 			self.set_frequency_fast_update()
-		except Exception as e:  # Unfortunately, libcloud only throws "Exception"
-			raise OpenStackCloudConnectionError("Error while destroying instance %s (id:%s): %s" % (name, instance_id, e))
-		logger.info("Destroyed instance %s (id:%s), using connection %s" % (name, instance_id, self.publicdata.name))
+		except Exception as ex:  # Unfortunately, libcloud only throws "Exception"
+			raise OpenStackCloudConnectionError("Error while destroying instance %s (id:%s): %s" % (name, instance_id, ex))
+		logger.info("Destroyed instance %s (id:%s), using connection %s", name, instance_id, self.publicdata.name)
 
 	def instance_create(self, args):
 		# Check args
@@ -443,37 +444,37 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			logger.debug("CREATE INSTANCE. ARGS: %s" % kwargs)
 			self._exec_libcloud(lambda: self.driver.create_node(**kwargs))
 			self.set_frequency_fast_update()
-		except Exception as e:
-			raise OpenStackCloudConnectionError("Instance could not be created: %s" % e)
+		except Exception as ex:
+			raise OpenStackCloudConnectionError("Instance could not be created: %s" % ex)
 
 	# Execute lambda function
 	def _exec_libcloud(self, func):
 		try:
 			return func()
-		except InvalidCredsError as e:
+		except InvalidCredsError as ex:
 			self.logerror(logger, "Invalid credentials provided for connection %s: %s" % (self.publicdata.name, self.publicdata.url))
 			raise
-		except MalformedResponseError as e:
-			self.logerror(logger, "Malformed response from connection, correct endpoint specified? %s: %s; %s" % (self.publicdata.name, self.publicdata.url, str(e)))
+		except MalformedResponseError as ex:
+			self.logerror(logger, "Malformed response from connection, correct endpoint specified? %s: %s; %s" % (self.publicdata.name, self.publicdata.url, str(ex)))
 			raise
-		except ProviderError as e:
-			self.logerror(logger, "Connection %s: %s: httpcode: %s, %s" % (self.publicdata.name, self.publicdata.url, e.http_code, e))
+		except ProviderError as ex:
+			self.logerror(logger, "Connection %s: %s: httpcode: %s, %s" % (self.publicdata.name, self.publicdata.url, ex.http_code, ex))
 			raise
-		except LibcloudError as e:
-			self.logerror(logger, "Connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, e))
+		except LibcloudError as ex:
+			self.logerror(logger, "Connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, ex))
 			raise
-		except ssl.SSLError as e:
-			self.logerror(logger, "Error with SSL connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, e))
+		except ssl.SSLError as ex:
+			self.logerror(logger, "Error with SSL connection %s: %s: %s" % (self.publicdata.name, self.publicdata.url, ex))
 			raise
-		except Exception as e:
-			if hasattr(e, 'errno'):
-				if e.errno == errno.ECONNREFUSED:
+		except Exception as ex:
+			if hasattr(ex, 'errno'):
+				if ex.errno == errno.ECONNREFUSED:
 					self.logerror(logger, "Connection %s: %s refused (ECONNREFUSED)" % (self.publicdata.name, self.publicdata.url))
-				elif e.errno == errno.EHOSTUNREACH:
+				elif ex.errno == errno.EHOSTUNREACH:
 					self.logerror(logger, "Connection %s: %s no route to host (EHOSTUNREACH)" % (self.publicdata.name, self.publicdata.url))
 
 				else:
-					self.logerror(logger, "Unknown exception %s with unknown errno %s: %s" % (self.publicdata.name, e.errno, self.publicdata.url))
+					self.logerror(logger, "Unknown exception %s with unknown errno %s: %s" % (self.publicdata.name, ex.errno, self.publicdata.url))
 			else:
 				self.logerror(logger, "Unknown exception  %s: %s" % (self.publicdata.name, self.publicdata.url))
 			raise

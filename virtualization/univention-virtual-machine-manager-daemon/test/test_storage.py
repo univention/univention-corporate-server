@@ -181,19 +181,11 @@ class TestGetDomainStorageVolumes(_Storage):
 
 class TestGetPoolInfo(_StoragePool):
 
-	@property
-	def conn(self):  # node
-		return self
-
-	def storagePoolLookupByName(self, name):  # conn
-		assert name == self.POOL
-		return self
-
 	def isActive(self):  # pool
 		return True
 
 	def test_pool_info(self):
-		pool = get_pool_info(node=self, name=self.POOL)
+		pool = get_pool_info(pool=self)
 		self.assertEqual('default', pool.name)
 		self.assertEqual('e6fd2acc-72b7-3796-34e2-dc5d29e58448', pool.uuid)
 		self.assertEqual(274658435072, pool.capacity)

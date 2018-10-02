@@ -31,19 +31,17 @@
 # <http://www.gnu.org/licenses/>.
 """UVMM LDAP integration."""
 
+from __future__ import absolute_import
 import os
 import errno
-try:
-	import cPickle as pickle
-except ImportError:
-	import pickle
+import cPickle as pickle
 import univention.config_registry as ucr
 import univention.uldap
 from ldap import LDAPError, SERVER_DOWN
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.handlers.uvmm.info as uvmm_info
-from helpers import TranslatableException, N_ as _, FQDN as HOST_FQDN
+from .helpers import TranslatableException, N_ as _, FQDN as HOST_FQDN
 import logging
 
 configRegistry = ucr.ConfigRegistry()
@@ -92,42 +90,35 @@ def cached(cachefile, func, exception=LdapConnectionError):
 	try:
 		result = func()
 
-		file = open("%s.new" % (cachefile,), "w")
-		try:
-			p = pickle.Pickler(file)
+		with open("%s.new" % (cachefile,), "w") as stream:
+			p = pickle.Pickler(stream)
 			p.dump(result)
-		finally:
-			file.close()
 		try:
 			os.remove("%s.old" % (cachefile,))
-		except OSError as e:
-			if e.errno != errno.ENOENT:
-				raise LdapError(_('Error removing %(file)s.old: %(msg)s'), file=cachefile, msg=e)
+		except EnvironmentError as ex:
+			if ex.errno != errno.ENOENT:
+				raise LdapError(_('Error removing %(file)s.old: %(msg)s'), file=cachefile, msg=ex)
 		try:
 			os.rename("%s" % (cachefile,), "%s.old" % (cachefile,))
-		except OSError as e:
-			if e.errno != errno.ENOENT:
-				raise LdapError(_('Error renaming %(file)s: %(msg)s'), file=cachefile, msg=e)
+		except EnvironmentError as ex:
+			if ex.errno != errno.ENOENT:
+				raise LdapError(_('Error renaming %(file)s: %(msg)s'), file=cachefile, msg=ex)
 		try:
 			os.rename("%s.new" % (cachefile,), "%s" % (cachefile,))
-		except OSError as e:
-			if e.errno != errno.ENOENT:
-				raise LdapError(_('Error renaming %(file)s.new: %(msg)s'), file=cachefile, msg=e)
-	except IOError as e:
-		# LdapError("Error writing %(file)s: %(msg)e", file=cachefile, msg=e)
+		except EnvironmentError as ex:
+			if ex.errno != errno.ENOENT:
+				raise LdapError(_('Error renaming %(file)s.new: %(msg)s'), file=cachefile, msg=ex)
+	except EnvironmentError:
 		pass
 	except exception as msg:
-		logger.info('Using cached data "%s"' % (cachefile,))
+		logger.info('Using cached data "%s"', cachefile)
 		try:
-			file = open("%s" % (cachefile,), "r")
-			try:
-				p = pickle.Unpickler(file)
+			with open("%s" % (cachefile,), "r") as stream:
+				p = pickle.Unpickler(stream)
 				result = p.load()
-			finally:
-				file.close()
-		except IOError as e:
-			if e.errno != errno.ENOENT:
-				raise exception(_('Error reading %(file)s: %(msg)s'), file=cachefile, msg=e)
+		except EnvironmentError as ex:
+			if ex.errno != errno.ENOENT:
+				raise exception(_('Error reading %(file)s: %(msg)s'), file=cachefile, msg=ex)
 			raise msg
 		except EOFError:
 			raise exception(_('Error reading incomplete %(file)s.'), file=cachefile)
@@ -171,7 +162,7 @@ def ldap_annotation(uuid):
 	try:
 		lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
 		base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
-	except (SERVER_DOWN, IOError):
+	except (SERVER_DOWN, EnvironmentError):
 		raise LdapConnectionError(_('Could not open LDAP-Machine connection'))
 	co = None
 	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)
@@ -190,7 +181,7 @@ def ldap_modify(uuid):
 	try:
 		lo, position = univention.admin.uldap.getMachineConnection(ldap_master=True)
 		base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
-	except (SERVER_DOWN, IOError):
+	except (SERVER_DOWN, EnvironmentError):
 		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
 	co = None
 	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)
@@ -233,7 +224,7 @@ def ldap_cloud_connections():
 				c['type'] = cloudtype
 				for p in data['univentionVirtualMachineCloudConnectionParameter']:
 					if '=' not in p:
-						logger.error('Expected "=" in cloud connection parameter. Connection %s, parameter %s' % (dn, p))
+						logger.error('Expected "=" in cloud connection parameter. Connection %s, parameter %s', dn, p)
 						continue
 					p_name = p.split('=', 1)[0]
 					p_value = p.split('=', 1)[1]
@@ -264,7 +255,7 @@ def ldap_cloud_connection_add(cloudtype, name, parameter, ucs_images="1", search
 			ucs_images = "0"
 
 		for k, v in parameter.items():
-			if (k and v):
+			if k and v:
 				parameter_lst.append('%s=%s' % (k, v))
 		attrs = {
 			'objectClass': ['univentionVirtualMachineCloudConnection', 'univentionVirtualMachineHostOC', 'univentionObject'],
@@ -277,7 +268,7 @@ def ldap_cloud_connection_add(cloudtype, name, parameter, ucs_images="1", search
 		}
 		if preselected_images:
 			attrs['univentionVirtualMachineCloudConnectionImageList'] = preselected_images
-		modlist = [(k, v) for k, v in attrs.items()]
+		modlist = attrs.items()
 		lo.add(dn, modlist)
 
 	except LDAPError:

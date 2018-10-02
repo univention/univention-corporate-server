@@ -423,7 +423,7 @@ class Domains(object):
 			if domain.get('vnc_password', None):
 				gfx.passwd = domain['vnc_password']
 
-			domain_info.graphics = [gfx, ]
+			domain_info.graphics = [gfx]
 
 		# RTC offset
 		if 'rtc_offset' in domain:

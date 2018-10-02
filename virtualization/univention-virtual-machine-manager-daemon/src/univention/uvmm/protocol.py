@@ -30,16 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 """UVMM protocol."""
-try:
-	from cStringIO import StringIO
-except ImportError:
-	from StringIO import StringIO
-try:
-	import cPickle as pickle
-except ImportError:
-	import pickle
+from __future__ import absolute_import
+from cStringIO import StringIO
+import cPickle as pickle
 import struct
-from helpers import TranslatableException, N_ as _
+from .helpers import TranslatableException, N_ as _
 
 VERSION = (2, 0)
 MAX_MSG_SIZE = 4096
@@ -99,8 +94,8 @@ class Packet(object):
 			s = StringIO(data)
 			p = pickle.Unpickler(s)
 			packet = p.load()
-		except Exception as e:
-			raise PacketError(_('Not a valid Packet: %(msg)s'), msg=str(e))
+		except Exception as ex:
+			raise PacketError(_('Not a valid Packet: %(msg)s'), msg=str(ex))
 		if not isinstance(packet, Packet):
 			raise PacketError(_('Not a Packet: %(type)s'), type=type(packet))
 		else:
@@ -563,20 +558,6 @@ class Response_DUMP(Response_OK):
 		self.messages = None
 
 
-class Data_StoragePool(object):
-
-	"""Container for storage pool statistics."""
-
-	def __init__(self):
-		self.uuid = None
-		self.name = None
-		self.capacity = None
-		self.available = None
-		self.path = None
-		self.active = None  # True False
-		self.type = None  # logical
-
-
 class Data_Domain(object):
 
 	"""Container for domain statistics."""
@@ -631,8 +612,6 @@ class Data_Node(object):
 		self.capabilities = []  # node.DomainTemplate
 		self.last_try = 0.0
 		self.last_update = 0.0
-		self.supports_suspend = False
-		self.supports_snapshot = False
 
 
 class Data_Pool(object):

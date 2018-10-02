@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (7.0.0-11) unstable; urgency=low
+
+  * Bug #21386: Assert compatible CPU during live migration
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Sep 2018 08:40:11 +0200
+
 univention-virtual-machine-manager-daemon (7.0.0-10) unstable; urgency=medium
 
   * Bug #41772: fix javascript traceback

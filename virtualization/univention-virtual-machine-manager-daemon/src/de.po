@@ -357,6 +357,15 @@ msgstr "Paket ist keine UVMM-Anfrage: %(type)s"
 msgid "Snapshot not supported \"%(node)s\""
 msgstr "\"%(node)s\" unterstützt keine Sicherungspunkte."
 
+#: univention/uvmm/node.py:1577
+#, python-format
+msgid ""
+"The target host has an incompatible CPU; select a different host or try an "
+"offline migration. (%(details)s)"
+msgstr ""
+"Der Zielrechnert hat eine inkompatible CPU; wählen Sie einen anderen Rechner "
+"oder versuchen Sie eine Migration im ausgeschalteten Zustand. (%(details)s)"
+
 #: univention/uvmm/ec2cloud.py:479
 #, python-format
 msgid ""

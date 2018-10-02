@@ -55,8 +55,8 @@ def createDaemon(options):
 	try:
 		(read_end, write_end) = os.pipe()
 		pid = os.fork()
-	except OSError as e:
-		raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
+	except EnvironmentError as ex:
+		raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=ex.strerror, errno=ex.errno)
 	if (pid == 0):  # 1st child
 		# detach from parent environment
 		os.chdir(WORKDIR)
@@ -65,8 +65,8 @@ def createDaemon(options):
 
 		try:
 			pid = os.fork()
-		except OSError as e:
-			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
+		except EnvironmentError as ex:
+			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=ex.strerror, errno=ex.errno)
 		if (pid == 0):  # 2nd child
 			os.close(read_end)
 
@@ -82,23 +82,19 @@ def createDaemon(options):
 			if (maxfd == resource.RLIM_INFINITY):
 				maxfd = MAXFD
 
-			dev_null = file(os.path.devnull, 'r')
-			try:
+			with open(os.path.devnull, 'r') as dev_null:
 				os.dup2(dev_null.fileno(), sys.stdin.fileno())
-			finally:
-				dev_null.close()
-			out_log = open(options.logfile or os.path.devnull, 'a+')
-			try:
+
+			with open(options.logfile or os.path.devnull, 'a+') as out_log:
 				os.dup2(out_log.fileno(), sys.stdout.fileno())
 				os.dup2(out_log.fileno(), sys.stderr.fileno())
-			finally:
-				out_log.close()
+
 			keep_fd = (sys.stdin.fileno(), sys.stdout.fileno(), sys.stderr.fileno(), write_end)
 			for fd in range(maxfd):
 				try:
 					if fd not in keep_fd:
 						os.close(fd)
-				except OSError:
+				except EnvironmentError:
 					pass
 
 			signal.signal(signal.SIGCHLD, signal.SIG_IGN)  # child
@@ -114,17 +110,15 @@ def createDaemon(options):
 			os.close(read_end)
 
 			if pid:
-				fd = open(options.pidfile, "w")
-				try:
+				with open(options.pidfile, "w") as fd:
 					fd.write(pid)
-				finally:
-					fd.close()
+
 				sys.exit(0)
 			else:
 				print >>sys.stderr, _("Failed to fork daemon.")
 				sys.exit(1)
-		except OSError as e:
-			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
+		except EnvironmentError as ex:
+			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=ex.strerror, errno=ex.errno)
 
 
 def install_signal_handlers(options):
@@ -134,7 +128,7 @@ def install_signal_handlers(options):
 		"""Handle HUP signal to restart daemon."""
 		self = os.path.abspath(sys.argv[0])
 		args = sys.argv[:]
-		logger.info("Re-executing self: %s %s" % (self, args))
+		logger.info("Re-executing self: %s %s", self, args)
 		os.execv(self, args)
 		logger.error("Failed to re-executing self.")
 		sys.exit(1)
@@ -159,12 +153,9 @@ def install_signal_handlers(options):
 		logger.info('Logfile reopened.')
 		# Re-open STDOUT, STDERR logfile
 		if options.logfile:
-			out_log = open(options.logfile, 'a+')
-			try:
+			with open(options.logfile, 'a+') as out_log:
 				os.dup2(out_log.fileno(), sys.stdout.fileno())
 				os.dup2(out_log.fileno(), sys.stderr.fileno())
-			finally:
-				out_log.close()
 
 	def signal_handler_terminate(signum, frame):
 		"""Handle TERM signal to cleanup before terminate."""
@@ -258,9 +249,9 @@ if __name__ == '__main__':
 	try:
 		logging.config.fileConfig(options.conffile)
 		logger = logging.getLogger("uvmmd")
-	except ConfigParser.Error as e:
+	except ConfigParser.Error:
 		logger = logging.getLogger("uvmmd")
-		logger.warning('Could not configure logger from %s' % (options.conffile,))
+		logger.warning('Could not configure logger from %s', options.conffile)
 
 	if options.verbose:
 		logger.setLevel(logging.DEBUG)
@@ -282,7 +273,7 @@ if __name__ == '__main__':
 				uri = config.get(section, "uri")
 				node_add(uri)
 			except ConfigParser.NoOptionError:
-				logger.warning("Section [%s] has no uri." % (section,))
+				logger.warning("Section [%s] has no uri.", section)
 
 	# Add nodes from command line
 	for uri in arguments:
@@ -310,7 +301,7 @@ if __name__ == '__main__':
 			try:
 				cloudconnections.add_connection(connection, testconnection=False)
 			except:
-				logger.error("Could not add connection %s (from ldap)" % (connection["name"]))
+				logger.error("Could not add connection %s (from ldap)", connection["name"])
 
 	except LdapError as msg:
 		logger.warning(msg)

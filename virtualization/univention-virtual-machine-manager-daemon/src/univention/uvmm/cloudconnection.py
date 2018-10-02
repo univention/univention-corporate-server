@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
 import logging
 import stat
 import hashlib
@@ -38,13 +39,10 @@ import threading
 import time
 import re
 import fnmatch
-try:
-	import cPickle as pickle
-except ImportError:
-	import pickle
+import cPickle as pickle
 
-from protocol import Cloud_Data_Connection, Cloud_Data_Image, Cloud_Data_Keypair
-from helpers import TranslatableException, ms, uri_encode
+from .protocol import Cloud_Data_Connection, Cloud_Data_Image, Cloud_Data_Keypair
+from .helpers import TranslatableException, ms, uri_encode
 
 logger = logging.getLogger('uvmmd.cloudconnection')
 
@@ -138,21 +136,21 @@ class CloudConnection(object):
 			self.set_frequency(self.FAST_UPDATE_FREQUENCY)
 
 	def run(self):
-		logger.info("Starting update thread for %s: %s" % (self.publicdata.name, self.publicdata.url))
+		logger.info("Starting update thread for %s: %s", self.publicdata.name, self.publicdata.url)
 		while self.updatethread is not None:
 			try:
 				self.update()
 			except Exception:
 				# Catch all exceptions and do not crash the thread
-				logger.error("Exception in thread %s: %s" % (self.publicdata.name, self.publicdata.url), exc_info=True)
+				logger.error("Exception in thread %s: %s", self.publicdata.name, self.publicdata.url, exc_info=True)
 			self.timerEvent.clear()
 			self.timerEvent.wait(self.current_frequency / 1000.0)
 
-		logger.info("Stopping update thread for %s: %s" % (self.publicdata.name, self.publicdata.url))
+		logger.info("Stopping update thread for %s: %s", self.publicdata.name, self.publicdata.url)
 
 	def update(self):
 		try:
-			logger.debug("Updating information for %s: %s" % (self.publicdata.name, self.publicdata.url))
+			logger.debug("Updating information for %s: %s", self.publicdata.name, self.publicdata.url)
 			# double update freqency in case an update error occurs
 			# this is reset if no exception occurs at the end of this try: statement
 			self.current_frequency = min(self.current_frequency * 2, self.MAX_UPDATE_INTERVAL)
@@ -172,7 +170,7 @@ class CloudConnection(object):
 				self.update_expensive()
 
 			self.publicdata.last_update = time.time()
-			logger.debug("Updating took %s seconds for %s" % (self.publicdata.last_update - self.publicdata.last_update_try, self.publicdata.name))
+			logger.debug("Updating took %s seconds for %s", self.publicdata.last_update - self.publicdata.last_update_try, self.publicdata.name)
 			self.publicdata.last_update_try = self.publicdata.last_update
 			self.cache_save()
 			self.current_frequency = self.config_default_frequency
@@ -180,7 +178,7 @@ class CloudConnection(object):
 		except Exception:
 			logger.error("Exception in update() for connection %s; Endpoint: %s" % (self.publicdata.name, self.publicdata.url), exc_info=False)
 
-		logger.debug("Next update for %s: %s" % (self.publicdata.name, ms(self.current_frequency)))
+		logger.debug("Next update for %s: %s", self.publicdata.name, ms(self.current_frequency))
 		self.publicdata.available = self.publicdata.last_update == self.publicdata.last_update_try
 
 	def update_expensive(self):
@@ -201,8 +199,8 @@ class CloudConnection(object):
 			return
 		self._cache_hash = data_hash
 
+		fd = os.open(new_name, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, stat.S_IREAD | stat.S_IWRITE)
 		try:
-			fd = os.open(new_name, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, stat.S_IREAD | stat.S_IWRITE)
 			os.write(fd, data)
 		finally:
 			os.close(fd)
@@ -212,8 +210,7 @@ class CloudConnection(object):
 		# check if there is a cache file
 		cache_file_name = self.cache_file_name()
 		if os.path.isfile(cache_file_name):
-			cache_file = open(cache_file_name, 'r')
-			try:
+			with open(cache_file_name, 'r') as cache_file:
 				data = pickle.Unpickler(cache_file)
 				if data:
 					self._instances = data.load()
@@ -221,8 +218,6 @@ class CloudConnection(object):
 						logger.debug("loaded cached instance %s" % instance.name)
 						instance.available = False
 						instance.state = 4  # state UNKNOWN
-			finally:
-				cache_file.close()
 
 	def _get_instance_by_id(self, instance_id):
 		"""
