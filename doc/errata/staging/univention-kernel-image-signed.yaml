@@ -2,8 +2,8 @@ product: ucs
 release: "4.3"
 version: [1, 2]
 scope: ucs_4.3-0-errata4.3-2
-src: linux
-fix: 4.9.110-3+deb9u5
+src: univention-kernel-image-signed
+fix: 4.0.0-7A~4.3.0.201810021026
 desc: |
  This update addresses the following issues:
  * irda: Memory leak caused by repeated binds of irda socket (CVE-2018-6554)
@@ -35,7 +35,7 @@ desc: |
  * Information leak in cdrom_ioctl_drive_status (CVE-2018-16658)
  * Use-after-free in the vmacache_flush_all function resulting in a possible
    privilege escalation (CVE-2018-17182)
-note: This is the first part of the update.
+note: This is the second part of the update.
 bug: [47894]
 cve:
 - CVE-2018-6554
