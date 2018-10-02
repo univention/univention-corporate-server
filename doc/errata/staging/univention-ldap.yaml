@@ -5,6 +5,6 @@ scope: ucs_4.3-0-errata4.3-2
 src: univention-ldap
 fix: 14.0.2-20A~4.3.0.201810021127
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Adjust description of UCR variable 'ldap/database/mdb/envflags'
 bug: [47869]
