@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.24-2) unstable; urgency=low
+
+  * Bug #47861: make source of error messages distinguishable
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 02 Oct 2018 16:53:01 +0200
+
 univention-directory-manager-modules (13.0.24-1) unstable; urgency=low
 
   * Bug #47818: settings/portal.py: reread computer object if computer
