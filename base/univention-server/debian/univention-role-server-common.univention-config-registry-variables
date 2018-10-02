@@ -3,3 +3,9 @@ Description[de]=Das Password des Maschinenkontos (gespeichert in /etc/machine.se
 Description[en]=The password of the machine account is renewed regularly. This variable configures the rotation interval in days.
 Type=int
 Categories=system-base
+
+[server/password/cron]
+Description[de]=Das Zeitpunkt fÃ¼r die ÃœbperprÃ¼fung des Maschinenkontos auf Erneuerung. Die Konfiguration erfolgt in Cron-Syntax, siehe 'man 5 crontab'
+Description[en]=The point in time for checking the machine account for renewal. The configuration is done in Cron syntax, see 'man 5 crontab'.
+Type=str
+Categories=service-ldap

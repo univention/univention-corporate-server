@@ -35,6 +35,7 @@ ldap/server/port?7389
 ldap/server/type?slave
 server/password/interval?21
 server/role=domaincontroller_slave
+server/password/cron?0 1 * * *
 __UCR__
 
 #DEBHELPER#

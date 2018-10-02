@@ -38,6 +38,7 @@ ldap/server/port?7389
 ldap/server/type=master
 server/password/interval?21
 server/role=domaincontroller_master
+server/password/cron?0 1 * * *
 __UCR__
 
 mkdir -p /var/lib/samba/netlogon/scripts/

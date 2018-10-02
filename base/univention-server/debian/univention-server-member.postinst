@@ -35,6 +35,7 @@ samba/share/home?no
 samba/share/netlogon?no
 server/password/interval?21
 server/role=memberserver
+server/password/cron?0 1 * * *
 __UCR__
 
 #DEBHELPER#

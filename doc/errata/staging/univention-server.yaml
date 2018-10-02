@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-server
+fix: 
+desc: |
+ This update addresses the following issue:
+ * The machine account password is changed by default every 21 days. That
+   check is by default performed nightly a 01:00 by a cron job. That point of
+   time can now be configured through the new UCRV variable
+   'server/password/cron'.
+bug: [47781]
