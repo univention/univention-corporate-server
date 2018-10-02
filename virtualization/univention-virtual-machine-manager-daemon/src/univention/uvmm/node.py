@@ -82,6 +82,7 @@ DOM_EVENT_STRINGS = (
 	("PMSuspended", ("Memory", "Disk")),
 	("Crashed", ("Panicked",)),
 )
+CONNECTION_EVENT_STRINGS = ("Error", "End-of-file", "Keepalive", "Client")
 
 XMLNS = {
 	'uvmm': 'https://univention.de/uvmm/1.0',
@@ -724,6 +725,8 @@ class Node(PersistentCached):
 			if self.conn is None:
 				self.conn = libvirt.open(self.pd.uri)
 				logger.info("Connected to '%s'", self.pd.uri)
+				self.conn.registerCloseCallback(self.close_event, None)
+
 				self.update_once()
 				self._register_default_pool()
 				# reset timer after successful re-connect
@@ -836,6 +839,22 @@ class Node(PersistentCached):
 		except Exception:
 			log.error('%s: Exception handling callback', self.pd.uri, exc_info=True)
 			# don't crash the event handler
+
+	def close_event(self, conn, reason, opaque):
+		"""
+		Handle connection close event.
+
+		:param libvirt.virConnect conn: The (now closed) connection.
+		:param int reason: Event details.
+		:param opaque: Opaque data.
+		"""
+		log = logger.getChild('connection')
+		log.info(
+			"Connection %s closed: %s",
+			conn.getURI(),
+			CONNECTION_EVENT_STRINGS[reason],
+		)
+		self.conn = None
 
 	def unregister(self, wait=False):
 		"""Unregister callbacks doing updates."""
