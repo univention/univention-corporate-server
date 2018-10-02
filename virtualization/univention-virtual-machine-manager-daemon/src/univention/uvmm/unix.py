@@ -171,7 +171,7 @@ def unix(options):
 	try:
 		if os.path.exists(options.socket):
 			os.remove(options.socket)
-	except OSError as ex:
+	except EnvironmentError as ex:
 		logger.error("Failed to delete old socket '%s': %s", options.socket, ex)
 		sys.exit(1)
 
@@ -208,7 +208,7 @@ def unix(options):
 	logger.info('Server is terminating.')
 	try:
 		os.remove(options.socket)
-	except OSError as ex:
+	except EnvironmentError as ex:
 		logger.warning("Failed to delete old socket '%s': %s", options.socket, ex)
 
 

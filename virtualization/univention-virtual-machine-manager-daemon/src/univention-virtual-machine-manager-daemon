@@ -55,7 +55,7 @@ def createDaemon(options):
 	try:
 		(read_end, write_end) = os.pipe()
 		pid = os.fork()
-	except OSError as ex:
+	except EnvironmentError as ex:
 		raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=ex.strerror, errno=ex.errno)
 	if (pid == 0):  # 1st child
 		# detach from parent environment
@@ -65,7 +65,7 @@ def createDaemon(options):
 
 		try:
 			pid = os.fork()
-		except OSError as ex:
+		except EnvironmentError as ex:
 			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=ex.strerror, errno=ex.errno)
 		if (pid == 0):  # 2nd child
 			os.close(read_end)
@@ -98,7 +98,7 @@ def createDaemon(options):
 				try:
 					if fd not in keep_fd:
 						os.close(fd)
-				except OSError:
+				except EnvironmentError:
 					pass
 
 			signal.signal(signal.SIGCHLD, signal.SIG_IGN)  # child
@@ -123,7 +123,7 @@ def createDaemon(options):
 			else:
 				print >>sys.stderr, _("Failed to fork daemon.")
 				sys.exit(1)
-		except OSError as ex:
+		except EnvironmentError as ex:
 			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=ex.strerror, errno=ex.errno)
 
 

@@ -97,20 +97,20 @@ def cached(cachefile, func, exception=LdapConnectionError):
 			file.close()
 		try:
 			os.remove("%s.old" % (cachefile,))
-		except OSError as ex:
+		except EnvironmentError as ex:
 			if ex.errno != errno.ENOENT:
 				raise LdapError(_('Error removing %(file)s.old: %(msg)s'), file=cachefile, msg=ex)
 		try:
 			os.rename("%s" % (cachefile,), "%s.old" % (cachefile,))
-		except OSError as ex:
+		except EnvironmentError as ex:
 			if ex.errno != errno.ENOENT:
 				raise LdapError(_('Error renaming %(file)s: %(msg)s'), file=cachefile, msg=ex)
 		try:
 			os.rename("%s.new" % (cachefile,), "%s" % (cachefile,))
-		except OSError as ex:
+		except EnvironmentError as ex:
 			if ex.errno != errno.ENOENT:
 				raise LdapError(_('Error renaming %(file)s.new: %(msg)s'), file=cachefile, msg=ex)
-	except IOError:
+	except EnvironmentError:
 		pass
 	except exception as msg:
 		logger.info('Using cached data "%s"', cachefile)
@@ -121,7 +121,7 @@ def cached(cachefile, func, exception=LdapConnectionError):
 				result = p.load()
 			finally:
 				file.close()
-		except IOError as ex:
+		except EnvironmentError as ex:
 			if ex.errno != errno.ENOENT:
 				raise exception(_('Error reading %(file)s: %(msg)s'), file=cachefile, msg=ex)
 			raise msg
@@ -167,7 +167,7 @@ def ldap_annotation(uuid):
 	try:
 		lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
 		base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
-	except (SERVER_DOWN, IOError):
+	except (SERVER_DOWN, EnvironmentError):
 		raise LdapConnectionError(_('Could not open LDAP-Machine connection'))
 	co = None
 	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)
@@ -186,7 +186,7 @@ def ldap_modify(uuid):
 	try:
 		lo, position = univention.admin.uldap.getMachineConnection(ldap_master=True)
 		base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
-	except (SERVER_DOWN, IOError):
+	except (SERVER_DOWN, EnvironmentError):
 		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
 	co = None
 	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)

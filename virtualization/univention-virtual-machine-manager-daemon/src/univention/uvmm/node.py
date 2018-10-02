@@ -348,7 +348,7 @@ class Domain(PersistentCached):
 				try:
 					self.cache_save(dom.inactive_xml)
 					self._cache_id = cache_id
-				except IOError as ex:
+				except EnvironmentError as ex:
 					logger.warning("Failed to cache domain %s: %s", self.pd.name, ex)
 
 			if domain.isActive():
@@ -636,7 +636,7 @@ class _DomainDict(dict):
 		domStat = super(_DomainDict, self).pop(uuid)
 		try:
 			domStat.cache_purge()
-		except OSError as ex:
+		except EnvironmentError as ex:
 			if ex.errno != errno.ENOENT:
 				logger.warning("Failed to remove cached domain '%s#%s': %s", domStat.node.pd.uri, uuid, ex)
 
@@ -659,7 +659,7 @@ class Node(PersistentCached):
 			cache_dom_dir = self.cache_dom_dir(uri)
 			try:
 				os.mkdir(cache_dom_dir, 0o700)  # contains VNC password
-			except OSError as ex:
+			except EnvironmentError as ex:
 				if ex.errno != errno.EEXIST:
 					raise
 
@@ -693,10 +693,10 @@ class Node(PersistentCached):
 						assert domStat.cache_file_name() == cache_file_name
 						self.domains[domStat.pd.uuid] = domStat
 						logger.debug("Loaded from cache '%s#%s'", self.pd.uri, domStat.pd.uuid)
-					except (EOFError, IOError, AssertionError, ET.XMLSyntaxError) as ex:
+					except (EOFError, EnvironmentError, AssertionError, ET.XMLSyntaxError) as ex:
 						logger.warning("Failed to load cached domain %s: %s", cache_file_name, ex)
 				del dirs[:]  # just that direcory; no recursion
-		except (EOFError, IOError, AssertionError, pickle.PickleError) as ex:
+		except (EOFError, EnvironmentError, AssertionError, pickle.PickleError) as ex:
 			logger.warning("Failed to load cached state of %s: %s", uri, ex)
 			self.pd = Data_Node()  # public data
 			self.pd.uri = uri
@@ -920,7 +920,7 @@ class Node(PersistentCached):
 				data = pickle.dumps(self.pd)
 				self.cache_save(data)
 				self._cache_id = cache_id
-			except IOError as ex:
+			except EnvironmentError as ex:
 				logger.exception("Failed to write cached node %s: %s" % (self.pd.uri, ex))
 			self.write_novnc_tokens()
 
@@ -1733,7 +1733,7 @@ def domain_migrate(source_uri, domain, target_uri):
 				finally:
 					cache_file.close()
 				target_conn.defineXML(xml)
-			except IOError as ex:
+			except EnvironmentError as ex:
 				raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=ex)
 		elif source_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED, libvirt.VIR_DOMAIN_PAUSED):
 			# running domains are live migrated
