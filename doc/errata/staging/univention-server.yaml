@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-server
-fix: 
+fix: 13.0.0-7A~4.3.0.201810021104
 desc: |
  This update addresses the following issue:
  * The machine account password is changed by default every 21 days. That
