@@ -75,6 +75,7 @@ config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^container
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^container/ou$", "univention.udm.modules.container_ou", "ContainerOuUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^groups/group$", "univention.udm.modules.groups_group", "GroupsGroupUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^nagios/service$", "univention.udm.modules.nagios_service", "NagiosServiceUdm1Module"))
+config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^mail/.*$", "univention.udm.modules.mail_all", "MailAllUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^policies/registry$", "univention.udm.modules.policies_registry", "PoliciesRegistryUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^policies/share_userquota$", "univention.udm.modules.policies_share_userquota", "PoliciesShareUserquotaUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^policies/umc$", "univention.udm.modules.policies_umc", "PoliciesUmcUdm1Module"))

@@ -37,13 +37,13 @@ for oxmail/ox$NAME, that opens LDAP objects with both
 :py:meth:`GenericUdm1Module._verify_univention_object_type()` raises a
 :py:exc:`WrongObjectType` exception when loading it.
 
-The mixin :py:class:`OxMailHandleWrongUniventionObjectTypeMixIn` can be used to
-overwrite :py:meth:`_verify_univention_object_type()` with a version that
-allows both mail/* and oxmail/* in univentionObjectType.
+The overwritten method :py:meth:`_verify_univention_object_type()` allows both
+mail/* and oxmail/* in univentionObjectType.
 """
 
 from __future__ import absolute_import, unicode_literals
 import copy
+from ..encoders import ListOfListOflTextToDictPropertyEncoder, StringIntPropertyEncoder
 from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
 from ..exceptions import WrongObjectType
 
@@ -51,7 +51,11 @@ from ..exceptions import WrongObjectType
 class MailAllUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	"""mail/* UDM properties."""
 
-	# TODO: encoders
+	_encoders = {
+		'mailUserQuota': StringIntPropertyEncoder,
+		'sharedFolderGroupACL': ListOfListOflTextToDictPropertyEncoder,
+		'sharedFolderUserACL': ListOfListOflTextToDictPropertyEncoder,
+	}
 
 
 class MailAllUdm1Object(GenericUdm1Object):
@@ -59,10 +63,11 @@ class MailAllUdm1Object(GenericUdm1Object):
 	udm_prop_class = MailAllUdm1ObjectProperties
 
 
-class OxMailHandleWrongUniventionObjectTypeMixIn(object):
-	"""
-	Mixin class to use with Mail*Udm1Module classes.
-	"""
+class MailAllUdm1Module(GenericUdm1Module):
+	"""MailAllUdm1Object factory"""
+	_udm_object_class = MailAllUdm1Object
+	supported_api_versions = (1,)
+
 	def _verify_univention_object_type(self, udm1_obj):  # type: (univention.admin.handlers.simpleLdap) -> None
 		"""
 		Allow both mail/* and oxmail/* in univentionObjectType.
@@ -78,9 +83,3 @@ class OxMailHandleWrongUniventionObjectTypeMixIn(object):
 		# and now the original test
 		if uni_obj_type and self.name.split('/', 1)[0] not in [uot.split('/', 1)[0] for uot in uni_obj_type]:
 			raise WrongObjectType(dn=udm1_obj.dn, module_name=self.name, univention_object_type=', '.join(uni_obj_type))
-
-
-class MailAllUdm1Module(OxMailHandleWrongUniventionObjectTypeMixIn, GenericUdm1Module):
-	"""MailAllUdm1Object factory"""
-	_udm_object_class = MailAllUdm1Object
-	supported_api_versions = (1,)

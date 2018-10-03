@@ -274,6 +274,25 @@ class StringIntPropertyEncoder(BaseEncoder):
 			return str(value)
 
 
+class StringListToList(BaseEncoder):
+	static = True
+	separator = ' '
+
+	@classmethod
+	def decode(cls, value=None):  # type: (Optional[Text]) -> Optional[List[Text]]
+		if value:
+			return value.split(cls.separator)
+		else:
+			return value
+
+	@classmethod
+	def encode(cls, value=None):  # type: (Optional[List[Text]]) -> Optional[Text]
+		if value:
+			return cls.separator.join(value)
+		else:
+			return value
+
+
 class DnListPropertyEncoder(BaseEncoder):
 	"""
 	Given a list of DNs, return the same list with an additional member
