@@ -63,7 +63,7 @@ fi
 # TODO: create cmdline tool for this
 # TODO: move to join script
 #
-# r"^.*/.*$" must be first, so it chosen last!
+# r"^.*/.*$" must be first, so it is chosen last!
 python -c 'from univention.udm.factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
 config_storage = UdmModuleFactoryConfigurationStorage(True)
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^.*/.*$", "univention.udm.modules.generic", "GenericUdm1Module"))
@@ -77,7 +77,7 @@ config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^groups/gr
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^nagios/service$", "univention.udm.modules.nagios_service", "NagiosServiceUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^policies/registry$", "univention.udm.modules.policies_registry", "PoliciesRegistryUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^policies/share_userquota$", "univention.udm.modules.policies_share_userquota", "PoliciesShareUserquotaUdm1Module"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^policies/umc$", "univention.udm.modules.policies_umc", "PoliciesUmcUserquotaUdm1Module"))
+config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^policies/umc$", "univention.udm.modules.policies_umc", "PoliciesUmcUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^saml/serviceprovider$", "univention.udm.modules.saml_serviceprovider", "SamlServiceproviderUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^settings/directory$", "univention.udm.modules.settings_directory", "SettingsDirectoryUdm1Module"))
 config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^settings/portal$", "univention.udm.modules.settings_portal", "SettingsPortalUdm1Module"))

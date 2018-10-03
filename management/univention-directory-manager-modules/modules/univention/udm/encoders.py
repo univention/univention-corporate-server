@@ -219,18 +219,20 @@ class SambaLogonHoursPropertyEncoder(BaseEncoder):
 class StringCaseInsensitiveResultLowerBooleanPropertyEncoder(BaseEncoder):
 	static = True
 	result_case_func = 'lower'
-
-	@staticmethod
-	def decode(value=None):  # type: (Optional[Text]) -> bool
-		return value.lower() == 'true'
+	false_string = 'false'
+	true_string = 'true'
 
 	@classmethod
-	def encode(self, value=None):  # type: (Optional[bool]) -> Text
-		assert self.result_case_func in ('lower', 'upper')
+	def decode(cls, value=None):  # type: (Optional[Text]) -> bool
+		return value.lower() == cls.true_string
+
+	@classmethod
+	def encode(cls, value=None):  # type: (Optional[bool]) -> Text
+		assert cls.result_case_func in ('lower', 'upper')
 		if value:
-			return getattr('true', self.result_case_func)()
+			return getattr(cls.true_string, cls.result_case_func)()
 		else:
-			return getattr('false', self.result_case_func)()
+			return getattr(cls.false_string, cls.result_case_func)()
 
 
 class StringCaseInsensitiveResultUpperBooleanPropertyEncoder(StringCaseInsensitiveResultLowerBooleanPropertyEncoder):
