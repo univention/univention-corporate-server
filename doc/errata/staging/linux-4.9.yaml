@@ -1,0 +1,52 @@
+product: ucs
+release: "4.2"
+version: [4, 5]
+scope: ucs_4.2-0-errata4.2-5
+src: linux-4.9
+fix: 4.9.110-3+deb9u5~deb8u1
+desc: |
+ This update addresses the following issues:
+ * irda: Memory leak caused by repeated binds of irda socket (CVE-2018-6554)
+ * irda: use-after-free vulnerability in the hashbin list (CVE-2018-6555)
+ * Buffer overflow in hidp_process_report (CVE-2018-9363)
+ * HID: debug: Buffer overflow in hid_debug_events_read() in
+   drivers/hid/hid-debug.c (CVE-2018-9516)
+ * MIDI driver race condition leads to a double-free (CVE-2018-10902)
+ * infinite loop in net/ipv4/cipso_ipv4.c:cipso_v4_optptr() allows for DoS
+   (CVE-2018-10938)
+ * Invalid pointer dereference in fs/btrfs/relocation.c:__del_reloc_root()
+   when mounting crafted btrfs image (CVE-2018-14609)
+ * NULL pointer dereference in fs/hfsplus/dir.c:hfsplus_lookup() when
+   operating on a file in a crafted hfs+ image (CVE-2018-14617)
+ * stack-based buffer overflow in chap_server_compute_md5() in iscsi target
+   (CVE-2018-14633)
+ * Uninitialized state in x86 PV failsafe callback path (XSA-274)
+   (CVE-2018-14678)
+ * use-after-free in ucma_leave_multicast in drivers/infiniband/core/ucma.c
+   (CVE-2018-14734)
+ * hw: cpu: userspace-userspace spectreRSB attack (CVE-2018-15572)
+ * Mishandling of indirect calls weakens Spectre mitigation for paravirtual
+   guests (CVE-2018-15594)
+ * incorrect bounds checking in yurex_read in drivers/usb/misc/yurex.c
+   (CVE-2018-16276)
+ * Information leak in cdrom_ioctl_drive_status (CVE-2018-16658)
+ * Use-after-free in the vmacache_flush_all function resulting in a possible
+   privilege escalation (CVE-2018-17182)
+bug: [47905]
+cve:
+- CVE-2018-6554
+- CVE-2018-6555
+- CVE-2018-9363
+- CVE-2018-9516
+- CVE-2018-10902
+- CVE-2018-10938
+- CVE-2018-14609
+- CVE-2018-14617
+- CVE-2018-14633
+- CVE-2018-14678
+- CVE-2018-14734
+- CVE-2018-15572
+- CVE-2018-15594
+- CVE-2018-16276
+- CVE-2018-16658
+- CVE-2018-17182
