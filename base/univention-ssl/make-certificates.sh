@@ -373,7 +373,7 @@ is_valid () {
 has_cert () {
 	local cn="${1:?Missing argument: common name}"
 
-	cat "${SSLBASE}/${CA}/index.txt" | awk -F '\t' -v cn="$cn" '
+	awk -F '\t' -v cn="$cn" '
 	BEGIN { ret=1; seq=""; }
 	$6 ~ cn {
 		seq = seq $4 "\n";
@@ -384,7 +384,7 @@ has_cert () {
 	END {
 		print seq;
 		exit ret;
-	}'
+	}' <"${SSLBASE}/${CA}/index.txt"
 }
 
 # parameter 1: cn whose certs to look for
