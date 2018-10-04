@@ -422,7 +422,7 @@ renew_cert () {
 revoke_cert () {
 	local fqdn="${1:?Missing argument: common name}"
 
-	local cn NUM
+	local cn NUM line
 	[ ${#fqdn} -gt 64 ] && cn="${fqdn%%.*}" || cn="$fqdn"
 
 	if ! NUM="$(has_cert "$cn")"
@@ -431,11 +431,12 @@ revoke_cert () {
 		return 2
 	fi
 
-	while read line; do
+	for line in $NUM  # IFS
+	do
 		if is_valid "$line"; then
 			openssl ca -config "${SSLBASE}/openssl.cnf" -revoke "${SSLBASE}/${CA}/certs/${line}.pem" -passin pass:"$PASSWD"
 		fi
-	done <<< "$NUM"
+	done
 	gencrl
 }
 
