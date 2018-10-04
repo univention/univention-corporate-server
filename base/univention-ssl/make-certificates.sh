@@ -40,13 +40,13 @@ CA=ucsCA
 case "$CA" in /*) echo "$0: FATAL: Invalid CA=$CA" >&2 ; exit 2 ;; esac
 
 DEFAULT_CRL_DAYS="$(/usr/sbin/univention-config-registry get ssl/crl/validity)"
-: ${DEFAULT_CRL_DAYS:=10}
+: "${DEFAULT_CRL_DAYS:=10}"
 DEFAULT_DAYS="$(/usr/sbin/univention-config-registry get ssl/default/days)"
-: ${DEFAULT_DAYS:=1825}
+: "${DEFAULT_DAYS:=1825}"
 DEFAULT_MD="$(/usr/sbin/univention-config-registry get ssl/default/hashfunction)"
-: ${DEFAULT_MD:=sha256}
+: "${DEFAULT_MD:=sha256}"
 DEFAULT_BITS="$(/usr/sbin/univention-config-registry get ssl/default/bits)"
-: ${DEFAULT_BITS:=2048}
+: "${DEFAULT_BITS:=2048}"
 export DEFAULT_MD DEFAULT_BITS DEFAULT_CRL_DAYS
 
 if test -e "$SSLBASE/password"; then
@@ -58,7 +58,7 @@ fi
 _check_ssl () {
 	local var="$1" len="$2" val="${3:-}"
 	[ -n "$val" ] || val=$(ucr get "$var")
-	[ ${#val} -le $len ] && return 0
+	[ "${#val}" -le "$len" ] && return 0
 	echo "$var too long; max $len" >&2
 	return 1
 }
@@ -272,7 +272,7 @@ init () {
 	# make the root-CA configuration file
 	mk_config "${SSLBASE}/openssl.cnf" "$PASSWD" "$DEFAULT_DAYS" "$cn" || return $?
 
-	openssl genrsa -${cipher:-aes256} -passout pass:"$PASSWD" -out "${SSLBASE}/${CA}/private/CAkey.pem" "$DEFAULT_BITS" || return $?
+	openssl genrsa -"${cipher:-aes256}" -passout pass:"$PASSWD" -out "${SSLBASE}/${CA}/private/CAkey.pem" "$DEFAULT_BITS" || return $?
 	openssl req -batch -config "${SSLBASE}/openssl.cnf" -new -x509 -days "$DEFAULT_DAYS" -key "${SSLBASE}/${CA}/private/CAkey.pem" -out "${SSLBASE}/${CA}/CAcert.pem" || return $?
 
 	ln -snf "${SSLBASE}/${CA}/CAcert.pem" "/usr/local/share/ca-certificates/${CA}.crt" || return $?
@@ -527,11 +527,11 @@ _common_gen_cert () {
 
 	# process the request
 	if [ -s "${extFile:-}" ]; then
-		openssl ca -batch -config "${SSLBASE}/openssl.cnf" -days $days -in "$name/req.pem" \
+		openssl ca -batch -config "${SSLBASE}/openssl.cnf" -days "$days" -in "$name/req.pem" \
 			-out "$name/cert.pem" -passin pass:"$PASSWD" -extfile "$extFile"
 		rm -f "$extFile"
 	else
-		openssl ca -batch -config "${SSLBASE}/openssl.cnf" -days $days -in "$name/req.pem" \
+		openssl ca -batch -config "${SSLBASE}/openssl.cnf" -days "$days" -in "$name/req.pem" \
 			-out "$name/cert.pem" -passin pass:"$PASSWD"
 	fi
 
