@@ -50,7 +50,7 @@ DEFAULT_BITS="$(/usr/sbin/univention-config-registry get ssl/default/bits)"
 export DEFAULT_MD DEFAULT_BITS DEFAULT_CRL_DAYS
 
 if test -e "$SSLBASE/password"; then
-	PASSWD=`cat "$SSLBASE/password"`
+	PASSWD="$(cat "$SSLBASE/password")"
 else
 	PASSWD=""
 fi
@@ -258,7 +258,7 @@ init () {
 		. /usr/share/univention-lib/base.sh
 		create_machine_password > "$SSLBASE/password"
 	fi
-	PASSWD=`cat "$SSLBASE/password"`
+	PASSWD="$(cat "$SSLBASE/password")"
 
 	# create directory infrastructure
 	install -m 755 -d "${SSLBASE}/${CA}"
