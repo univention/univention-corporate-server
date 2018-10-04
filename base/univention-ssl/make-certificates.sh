@@ -220,12 +220,12 @@ EOF
 }
 
 move_cert () {
-	local i dir="${SSLBASE}/${CA}/certs"
+	local hash i dir="${SSLBASE}/${CA}/certs"
 	for i in "$@"
 	do
 		if [ -f "$i" ]
 		then
-			local hash="$(openssl x509 -hash -noout -in "$i")"
+			hash="$(openssl x509 -hash -noout -in "$i")"
 			mv "$i" "${dir}/${i##*/}"
 			local count=0
 			while :
@@ -240,8 +240,9 @@ move_cert () {
 }
 
 init () {
-	local cn="$(ucr get ssl/common)"
-	local cipher="$(/usr/sbin/univention-config-registry get ssl/ca/cipher)"
+	local cn cipher
+	cn="$(ucr get ssl/common)"
+	cipher="$(/usr/sbin/univention-config-registry get ssl/ca/cipher)"
 	check_ssl_parameters "$cn" || return $?
 
 	# remove old stuff
@@ -518,7 +519,8 @@ _common_gen_cert () {
 	local name="$1" fqdn="$2"
 
 	# get host extension file
-	local extFile hostExt=$(ucr get ssl/host/extensions)
+	local extFile hostExt
+	hostExt=$(ucr get ssl/host/extensions)
 	if [ -s "$hostExt" ]; then
 		. "$hostExt"
 		extFile=$(createHostExtensionsFile "$fqdn")
