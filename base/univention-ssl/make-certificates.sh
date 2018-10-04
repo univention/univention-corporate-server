@@ -480,13 +480,12 @@ except Exception as err:
 
 # Parameter 1: Name des Unterverzeichnisses, in dem das neue Zertifikat abgelegt werden soll
 # Parameter 2: Name des CN für den das Zertifikat ausgestellt wird.
+# Parameter 3: Optionale Anzahl der Tage für die Gültigkeit.
 
 gencert () {
 	local name="${1:?Missing argument: dirname}"
 	local fqdn="${2:?Missing argument: common name}"
 	local days="${3:-$DEFAULT_DAYS}"
-	local domain=$(ucr get domainname)
-	local san=$(univention-ldapsearch -LLL cNAMERecord="$fqdn". | grep relativeDomainName: | awk -v domain="${domain}" '{print $2, $2"."domain}' | sed ':a;N;$!ba;s/\n/\ /g')
 
 	local hostname="${fqdn%%.*}" cn="$fqdn"
 	if [ ${#hostname} -gt 64 ]
@@ -507,6 +506,9 @@ gencert () {
 		cp "$EXTERNAL_REQUEST_FILE" "$name/req.pem"
 		[ -n "$EXTERNAL_REQUEST_FILE_KEY" ] && cp "$EXTERNAL_REQUEST_FILE_KEY" "$name/private.key"
 	else
+		# Add DNS alias names
+		local san
+		san="$(univention-ldapsearch -LLLo ldif-wrap=no "(cNAMERecord=${fqdn%.}.)" 1.1 | sed -rne 's/^dn: relativeDomainName=([^,]+),zoneName=([^,]+),.*/\1 \1.\2/p' | tr '\n' ' ')"
 		# generate a key pair
 		mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname $san"
 		openssl genrsa -out "$name/private.key" "$DEFAULT_BITS"
