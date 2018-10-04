@@ -1,0 +1,28 @@
+product: ucs
+release: "4.2"
+version: [4, 5]
+scope: ucs_4.2-0-errata4.2-5
+src: imagemagick
+fix: 8:6.8.9.9-5+deb8u14
+desc: |
+ This update addresses the following issues:
+ * heap-based buffer over-read in the ParseImageResourceBlocks function in
+   coders/psd.c (CVE-2018-16412)
+ * heap-based buffer over-read in the PushShortPixel function in
+   MagickCore/quantum-private.h (CVE-2018-16413)
+ * out-of-bounds write in InsertRow function in coders/cut.c (CVE-2018-16642)
+ * missing check for fputc function in multiple files (CVE-2018-16643)
+ * improper check for length in ReadDCMImage of coders/dcm.c and ReadPICTImage
+   of coders/pict.c (CVE-2018-16644)
+ * Out-of-memory ReadBMPImage of coders/bmp.c and ReadDIBImage of codes/dib.c
+   (CVE-2018-16645)
+ * Missing NULL check in ReadOneJNGImage in coders/png.c (CVE-2018-16749)
+bug: [47907]
+cve:
+- CVE-2018-16412
+- CVE-2018-16413
+- CVE-2018-16642
+- CVE-2018-16643
+- CVE-2018-16644
+- CVE-2018-16645
+- CVE-2018-16749
