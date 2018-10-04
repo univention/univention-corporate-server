@@ -226,7 +226,6 @@ move_cert () {
 		if [ -f "$i" ]
 		then
 			local hash="$(openssl x509 -hash -noout -in "$i")"
-			local new="${SSLBASE}/${CA}/certs/${i##*/}"
 			mv "$i" "${dir}/${i##*/}"
 			local count=0
 			while :
