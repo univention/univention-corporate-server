@@ -412,7 +412,7 @@ renew_cert () {
 	local days="${2:-$DEFAULT_DAYS}"
 
 	(
-	cd "$SSLBASE"
+	cd "$SSLBASE" || exit $?
 	_common_gen_cert "$fqdn" "$fqdn"
 	)
 }
