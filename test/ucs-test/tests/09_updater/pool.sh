@@ -74,12 +74,13 @@ ucr () { # (get|set|unset) name[=value]...
 }
 
 cleanup () { # Undo all changes
+	local rv="$?"
 	set +e
 	trap - EXIT
 
 	[ -f "${BASEDIR}/reenable_mirror" ] && a2ensite univention-repository >&3 2>&3
 	find -P /etc/apache2 -lname "${BASEDIR}/*" -exec rm -f {} +
-	apache2ctl graceful >&3 2>&3
+	apache2ctl restart >&3 2>&3
 
 	declare -a reset remove
 	local name sname
@@ -103,6 +104,7 @@ cleanup () { # Undo all changes
 
 	rm -rf "${BASEDIR}"
 	echo "=== RESULT: ${RETVAL} ==="
+	return "$rv"
 }
 trap cleanup EXIT
 failure () { # Report failed command
@@ -113,6 +115,8 @@ failure () { # Report failed command
 	echo "**************** Test failed above this line ****************" >&2
 	echo "ERROR ${0}:${BASH_LINENO[@]}" >&2
 	echo "ERROR ${BASH_COMMAND}" >&2
+	[ -s "${BASEDIR}/apache2.log" ] && cat "${BASEDIR}/apache2.log"
+	cat /etc/apt/sources.list /etc/apt/sources.list.d/*.list || :
 	sleep ${UT_DELAY:-0}
 	exit ${RETVAL:-140} # internal error
 }
@@ -133,7 +137,7 @@ setup_apache () { # Setup apache for repository [--port ${port}] [${prefix}]
 	cat <<-EOF >"${BASEDIR}/apache2.conf"
 	${listen}
 	<VirtualHost ${hostname}${port:+:${port}}>
-	DocumentRoot ${BASEDIR}
+	DocumentRoot ${BASEDIR}/apache2.log combined
 	${alias}
 	<Directory ${REPODIR}>
 			   AllowOverride All
@@ -144,12 +148,13 @@ setup_apache () { # Setup apache for repository [--port ${port}] [${prefix}]
 	EOF
 	ln -s "${BASEDIR}/apache2.conf" /etc/apache2/sites-enabled/univention-repository.$$.conf
 	mkdir -p "${REPODIR}"
-	if test -f /etc/apache2/sites-enabled/univention-repository
+	if test -f /etc/apache2/sites-enabled/univention-repository.conf
 	then
 		touch "${BASEDIR}/reenable_mirror"
 		a2dissite univention-repository >&3 2>&3
 	fi
-	apache2ctl graceful >&3 2>&3
+	truncate -s 0 "${BASEDIR}/apache2.log"
+	apache2ctl restart >&3 2>&3
 }
 
 config_repo () { # Configure use of repository from local apache
@@ -174,6 +179,7 @@ config_repo () { # Configure use of repository from local apache
 		invoke-rc.d cron stop
 	fi
 	ucr set \
+		update/available= \
 		local/repository=no \
 		repository/mirror=no \
 		repository/online=yes \
@@ -181,8 +187,6 @@ config_repo () { # Configure use of repository from local apache
 		repository/online/port="${port}" \
 		repository/online/prefix="${prefix}" \
 		"${extra[@]}" >&3 2>&3
-	ucr commit /etc/apt/sources.list.d/*.list >&3 2>&3
-	ucr set update/available= >&3 2>&3
 }
 
 config_mirror () { # Configure mirror to use repository from local apache
@@ -217,7 +221,6 @@ config_mirror () { # Configure mirror to use repository from local apache
 		repository/mirror/port="${port}" \
 		repository/mirror/prefix="${prefix}" \
 		"${extra[@]}" >&3 2>&3
-	ucr commit /etc/apt/mirror.list >&3 2>&3
 }
 
 allpatchlevels () { # All ${major}.${minor}-0 ... ${major}.${minor}-${patchlevel}

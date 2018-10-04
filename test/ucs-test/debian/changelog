@@ -1,3 +1,9 @@
+ucs-test (8.0.28-199) unstable; urgency=low
+
+  * Bug #47000: Debug 09/10component-prefix
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 04 Oct 2018 16:32:31 +0200
+
 ucs-test (8.0.28-198) unstable; urgency=medium
 
   * Bug #47338: let test 11_join/10join_preexisting_acc_with_multiple_macs
