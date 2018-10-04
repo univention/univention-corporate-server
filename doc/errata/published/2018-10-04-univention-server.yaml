@@ -11,3 +11,5 @@ desc: |
    time can now be configured through the new UCR variable
    'server/password/cron'.
 bug: [47781]
+erratum: 262
+announced: 2018-10-04
