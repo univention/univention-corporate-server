@@ -255,6 +255,7 @@ init () {
 	if ! test -e "$SSLBASE/password"; then
 		touch "$SSLBASE/password"
 		chmod 600 "$SSLBASE/password"
+		# shellcheck source=/dev/null
 		. /usr/share/univention-lib/base.sh
 		create_machine_password > "$SSLBASE/password"
 	fi
@@ -522,6 +523,7 @@ _common_gen_cert () {
 	local extFile hostExt
 	hostExt=$(ucr get ssl/host/extensions)
 	if [ -s "$hostExt" ]; then
+		# shellcheck source=/dev/null
 		. "$hostExt"
 		extFile=$(createHostExtensionsFile "$fqdn")
 	fi
