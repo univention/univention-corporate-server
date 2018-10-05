@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-virtual-machine-manager-daemon
-fix: 7.0.0-11A~4.3.0.201810021441
+fix: 7.0.0-12A~4.3.0.201810051658
 desc: |
  This update addresses the following issue:
  * Migration of virtual machines between incompatible CPUs can be prevented by
