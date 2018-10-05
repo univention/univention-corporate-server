@@ -35,13 +35,14 @@ import re
 import glob
 import subprocess
 
-from univention.management.console.modules.diagnostic import Warning
+from univention.management.console.modules.diagnostic import Warning, MODULE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check errors in sources.list files')
 description = _('All files ok.')
+run_descr = [' Check by opening /etc/apt/sources.list.d/* and look for exceptions']
 
 
 TRACEBACK_REGEX = re.compile((
@@ -84,7 +85,7 @@ def find_tracebacks(path):
 
 
 def check_for_tracebacks():
-	for path in glob.iglob('/etc/apt/sources.list.d/*'):
+	for path in glob.glob('/etc/apt/sources.list.d/*'):
 		for exception in find_tracebacks(path):
 			yield TracebackFound(path, exception)
 
@@ -101,7 +102,8 @@ def run(_umc_instance, rerun=False):
 		error_descriptions.append(_('Please check the files for more details.'))
 		if not rerun:
 			error_descriptions.append(_('The error might be fixable by regenerating the sources.list.'))
-			raise Warning(description='\n'.join(error_descriptions), buttons=buttons)
+                        MODULE.error('\n'.join(error_descriptions))
+                        raise Warning(description='\n'.join(error_descriptions), buttons=buttons)
 		raise Warning(description='\n'.join(error_descriptions))
 
 

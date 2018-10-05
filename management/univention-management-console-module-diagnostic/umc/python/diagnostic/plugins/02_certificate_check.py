@@ -48,7 +48,7 @@ from univention.management.console.modules.diagnostic import Critical, Warning
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
-
+run_descr=['This can be checked by running ucr get server/roles and ucr get ldap/master']
 title = _('Check validity of SSL certificates')
 description = _('All SSL certificates valid.')
 links = [{
@@ -274,7 +274,6 @@ def verify_from_master(master, all_certificates):
 				for error in verifier.verify(cert):
 					yield error
 
-
 def run(_umc_instance):
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
@@ -296,6 +295,7 @@ def run(_umc_instance):
 		error_descriptions.append(_('Please see {sdb} on how to renew certificates.'))
 		if any(isinstance(error, CertificateError) for error in cert_verify):
 			raise Critical(description='\n'.join(error_descriptions))
+		MODULE.error('\n'.join(error_descriptions))
 		raise Warning(description='\n'.join(error_descriptions))
 
 

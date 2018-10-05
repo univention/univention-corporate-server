@@ -3,7 +3,8 @@
 
 from subprocess import Popen, PIPE, STDOUT
 from univention.management.console.config import ucr
-from univention.management.console.modules.diagnostic import Critical
+from univention.management.console.modules.diagnostic import Critical, MODULE
+from univention.management.console.log import MODULE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -20,6 +21,7 @@ umc_modules = [{
 	'flavor': 'network'
 }]
 
+run_descr =['This can be checked by using ucr get gateway']
 
 def run(_umc_instance):
 	ucr.load()
@@ -29,6 +31,7 @@ def run(_umc_instance):
 	process = Popen(['/bin/ping', '-c3', '-w4', '-W4', gateway], stdout=PIPE, stderr=STDOUT)
 	stdout, stderr = process.communicate()
 	if process.returncode:
+		MODULE.error('\n'.join(description))
 		raise Critical('\n'.join([description % (gateway,), '', stdout]))
 
 

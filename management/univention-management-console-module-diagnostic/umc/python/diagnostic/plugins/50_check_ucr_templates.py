@@ -40,6 +40,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check for modified UCR templates')
 description = _('No problems found with modified UCR templates')
+run_descr = ['This can be checked by running: univention-check-templates']
 
 
 def run(_umc_instance):
@@ -54,6 +55,7 @@ def run(_umc_instance):
 			_('The files should be checked for differences.'),
 		]
 		if error.output:
+			MODULE.error('\n'.join(error_description))
 			error_description.extend(('\n\n', error.output))
 		raise Warning(' '.join(error_description))
 

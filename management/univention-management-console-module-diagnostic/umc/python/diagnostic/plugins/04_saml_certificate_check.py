@@ -40,6 +40,7 @@ import contextlib
 import requests
 from ldap.filter import filter_format
 from defusedxml.ElementTree import fromstring
+from univention.management.console.log import MODULE
 
 import univention.uldap
 import univention.config_registry
@@ -51,7 +52,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 
 title = _('SAML certificate verification failed!')
-
+run_descr =['Checks SAML certificates']
 
 @contextlib.contextmanager
 def download_tempfile(url, headers=None):
@@ -81,7 +82,9 @@ def test_identity_provider_certificate():
 	# download from all ip addresses of ucs-sso. the IDP certificate (/etc/simplesamlphp/*-idp-certificate.crt)
 	# compare this with /usr/share/univention-management-console/saml/idp/*.xml
 	# If it fails: univention-run-joinscripts --force --run-scripts 92univention-management-console-web-server
+	
 	sso_fqdn = ucr.get('ucs/server/sso/fqdn')
+	MODULE.process("compares ucs-sso by using 'ucr get ucs/server/sso/fqdn' with /usr/share/univention-management-console/saml/idp/*.xml")
 	if not sso_fqdn:
 		return
 	for host in socket.gethostbyname_ex(sso_fqdn)[2]:
@@ -107,10 +110,12 @@ def test_service_provider_certificate():
 	# fails because https://help.univention.com/t/renewing-the-ssl-certificates/37 was not used. https://help.univention.com/t/renewing-the-complete-ssl-certificate-chain/36
 	lo = univention.uldap.getMachineConnection()
 	certs = lo.search(filter_format('(&(serviceProviderMetadata=*)(univentionObjectType=saml/serviceprovider)(SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata))', ['%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))]), attr=['serviceProviderMetadata'])
+	MODULE.process("Checking certificates of /etc/univention/ssl/%s.%s/cert.pem" % (ucr.get('hostname'), ucr.get('domainname')))
 	with open('/etc/univention/ssl/%s.%s/cert.pem' % (ucr.get('hostname'), ucr.get('domainname'))) as fd:
 		for cert in certs:
 			cert = find_node(fromstring(cert[1]['serviceProviderMetadata'][0]), '{http://www.w3.org/2000/09/xmldsig#}X509Certificate')
 			if cert.text.strip() not in fd.read():
+				MODULE.error("Fails because https://help.univention.com/t/renewing-the-ssl-certificates/37 was not used")
 				raise Critical(_('The certificate of the SAML service provider does not match.'))
 
 

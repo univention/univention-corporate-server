@@ -32,6 +32,7 @@ buttons = [{
 	'action': 'adjust'
 }]
 actions = {}  # filled at bottom
+run_descr = ['checks samba logfile /var/log/samba/log.smbd for "too many open files" messages \n checks if ucr get samba/max_open_files is set to the suggested value of 32808']
 
 
 def run(_umc_instance):
@@ -49,7 +50,7 @@ def run(_umc_instance):
 		max_open_files = int(ucr.get('samba/max_open_files', 32808))
 	except ValueError:
 		max_open_files = 0
-
+	MODULE.process("open files: %s , max open files: %s" %(counter, max_open_files))
 	if counter and max_open_files < suggested_max_open_files:
 		raise Critical(umc_modules=[{'module': 'ucr'}])
 

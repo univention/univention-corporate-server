@@ -3,10 +3,10 @@
 
 from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import Critical
-from univention.management.console.modules.diagnostic import Warning
+from univention.management.console.modules.diagnostic import Warning, MODULE
 from univention.admin import uldap
 from univention.admin import modules
-
+from univention.management.console.log import MODULE
 import paramiko
 import logging
 import socket
@@ -16,7 +16,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('SSH connection to UCS server failed!')
 
-
+run_descr =['This can be checked by running:  univention-ssh /etc/machine.secret "%s$"@%s echo OK'  %  (ucr["hostname"], 'fqdn')]
 class IgnorePolicy(paramiko.MissingHostKeyPolicy):
 
 	def missing_host_key(self, client, hostname, key):
@@ -28,7 +28,7 @@ def run(_umc_instance):
 	# Now a workaround for paramico logging to connector-s4.log
 	# because one of the diagnostic plugins instanciates s4connector.s4.s4()
 	# which initializes univention.debug2, which initializes logging.basicConfig
-	logger = paramiko.util.logging.getLogger()
+        logger = paramiko.util.logging.getLogger()
 	logger.setLevel(logging.CRITICAL)
 
 	try:
@@ -76,7 +76,7 @@ def run(_umc_instance):
 		hostname=ucr['hostname'])
 
 	for host in ucs_hosts:
-		client = paramiko.SSHClient()
+                client = paramiko.SSHClient()
 		client.load_system_host_keys()
 		client.set_missing_host_key_policy(IgnorePolicy())
 
@@ -105,6 +105,7 @@ def run(_umc_instance):
 		if auth_failed:
 			msg += '\n' + auth_msg + ' - ' + auth_info + '\n'
 		msg += '\n'
+		MODULE.error("%s %s"%(msg,data))
 		raise Critical(msg % data)
 
 

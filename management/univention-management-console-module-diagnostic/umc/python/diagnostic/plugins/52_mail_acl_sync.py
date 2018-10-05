@@ -47,6 +47,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check IMAP shared folder ACLs')
 description = _('All shared folder ACLs are in sync with UDM.')
+run_descr = ['Checks if all IMAP shared Folder ACLs are in sync with UDM']
 
 
 class ACLError(Exception):

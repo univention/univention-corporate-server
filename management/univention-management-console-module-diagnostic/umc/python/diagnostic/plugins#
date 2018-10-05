@@ -4,7 +4,7 @@
 # Univention Management Console module:
 #  System Diagnosis UMC module
 #
-# Copyright 2016-2018 Univention GmbH
+# Copyright 2017-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,35 +31,36 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.management.console.modules.diagnostic import Critical, ProblemFixed, MODULE
+from univention.management.console.modules.diagnostic import Warning, ProblemFixed, MODULE
 from univention.management.console.modules.diagnostic import util
-from univention.management.console.log import MODULE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-title = _('Check local AD database for errors')
+title = _('Check Samba sysvol ACLs for errors')
 description = _('No errors found.'),
-run_descr = ['This can be checked by running samba-tool dbcheck']
 
-
-def run_samba_tool_dbcheck_fix(umc_instance):
+def run_samba_tool_ntacl_sysvolreset(umc_instance):
 	if not util.is_service_active('Samba 4'):
 		return
 
-	cmd = ['samba-tool', 'dbcheck', '--fix', '--cross-ncs', '--yes']
+	cmd = ['samba-tool', 'ntacl', 'sysvolreset']
 	(success, output) = util.run_with_output(cmd)
 
 	cmd_string = ' '.join(cmd)
-	MODULE.process('Output of %s:\n%s' % (cmd_string, output))
-	fix_log = [_('Output of `{cmd}`:').format(cmd=cmd_string)]
+	if success:
+		fix_log = [_('`{cmd}` succeeded.').format(cmd=cmd_string)]
+		MODULE.process('Output of %s:\n%s' % (cmd_string, output))
+	else:
+		fix_log = [_('`{cmd}` failed.').format(cmd=cmd_string)]
+		MODULE.error('Error running %s:\n%s' % (cmd_string, output))
 
 	fix_log.append(output.decode('utf-8', 'replace'))
 	run(umc_instance, rerun=True, fix_log='\n'.join(fix_log))
 
 
 actions = {
-	'run_samba_tool_dbcheck_fix': run_samba_tool_dbcheck_fix
+	'run_samba_tool_ntacl_sysvolreset': run_samba_tool_ntacl_sysvolreset,
 }
 
 
@@ -72,25 +73,33 @@ def run(_umc_instance, rerun=False, fix_log=''):
 		error_descriptions.append(fix_log)
 
 	buttons = [{
-		'action': 'run_samba_tool_dbcheck_fix',
-		'label': _('Run `samba-tool dbcheck --fix --cross-ncs --yes`'),
+		'action': 'run_samba_tool_ntacl_sysvolreset',
+		'label': _('Run `samba-tool ntacl sysvolreset`'),
 	}]
 
-	cmd = ['samba-tool', 'dbcheck']
+	cmd = ['samba-tool', 'ntacl', 'sysvolcheck']
 	(success, output) = util.run_with_output(cmd)
-	if [x for x in output.split('\n') if x.startswith("ERROR:")]:
-		error = _('`samba-tool dbcheck` found an error in the local AD database.')
-		error_descriptions.append(error)
-		error_descriptions.append(output)
+	if not success or output:
+			error = _('`samba-tool ntacl sysvolcheck` returned a problem with the sysvol ACLs.')
+			error_descriptions.append(error)
+
+			if output.find("NT_STATUS_OBJECT_NAME_NOT_FOUND") != -1:
+				outputList=output.splitlines()
+			for x in outputList:
+				if x.find("NT_STATUS_OBJECT_NAME_NOT_FOUND") == -1:
+					error_descriptions.append(x)
+				error_descriptions.append("")
+				else:
+					error_descriptions.append(output)
 		if not rerun:
-			fix = _('You can run `samba-tool dbcheck --fix` to fix the issue.')
-			error_descriptions.append(fix)
-		raise Critical(description='\n'.join(error_descriptions), buttons=buttons)
+		fix = _('Running `samba-tool ntacl sysvolreset` may help to fix the issue.')
+		error_descriptions.append(fix)
+	    raise Warning(description='\n'.join(error_descriptions), buttons=buttons)
 
 	if rerun:
-		fixed = _('`samba-tool dbcheck` found no errors in the local AD database.')
+		fixed = _('`samba-tool ntacl sysvolcheck` found no problems.')
 		error_descriptions.append(fixed)
-		MODULE.error('\n'.join(error_descriptions))
+		error_descriptions.append(output)
 		raise ProblemFixed(description='\n'.join(error_descriptions))
 
 

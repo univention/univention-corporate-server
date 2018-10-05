@@ -36,14 +36,16 @@ import contextlib
 
 import univention.lib.admember
 import univention.config_registry
-from univention.management.console.modules.diagnostic import Critical
+from univention.management.console.modules.diagnostic import Critical, MODULE
 from univention.management.console.modules.diagnostic import util
+from univention.management.console.log import MODULE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check kerberos authenticated DNS updates')
 description = _('No errors occured.')
+run_descr = ['Checks if kerberos authenticated DNS updates']
 
 
 class UpdateError(Exception):
@@ -80,6 +82,8 @@ class NSUpdateError(UpdateError):
 def kinit(principal, keytab=None, password_file=None):
 	auth = '--keytab={tab}' if keytab else '--password-file={file}'
 	cmd = ('kinit', auth.format(tab=keytab, file=password_file), principal)
+	MODULE.process('Running: %s' %(''.join(cmd)))
+
 	try:
 		subprocess.check_call(cmd)
 	except subprocess.CalledProcessError:
@@ -93,6 +97,8 @@ def nsupdate(server, domainname):
 	process = subprocess.Popen(('nsupdate', '-g', '-t', '15'), stdin=subprocess.PIPE,
 		stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	cmd = 'server {server}\nprereq yxdomain {domain}\nsend\nquit\n'
+	MODULE.process("Running: 'echo %s | nsupdate -g -t 15" %(cmd,))
+
 	_ = process.communicate(cmd.format(server=server, domain=domainname))
 	if process.poll() != 0:
 		raise NSUpdateError(server, domainname)
@@ -157,7 +163,8 @@ def run(_umc_instance):
 	problems = list(check_nsupdate(config_registry, server))
 	if problems:
 		ed = [_('Errors occured while running `kinit` or `nsupdate`.')]
-		ed.extend(str(error) for error in problems)
+                ed.extend(str(error) for error in problems)
+                MODULE.error('\n'.join(ed))
 		raise Critical(description='\n'.join(ed))
 
 

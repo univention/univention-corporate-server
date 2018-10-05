@@ -48,7 +48,7 @@ from univention.management.console.modules.diagnostic import Critical, ProblemFi
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
-
+run_descr = ["Trying to authenticatate with machine password against LDAP  Similar to running: univention-ldapsearch -LLLs base dn"]
 title = _('Check machine password')
 description = _('Authentication with machine password against LDAP successful.')
 links = [{
@@ -187,7 +187,8 @@ def run(_umc_instance, retest=False):
 				'label': _('Set server/password/interval=21'),
 			})
 
-		raise Critical(description=' '.join(error_descriptions), buttons=buttons)
+			MODULE.error('\n'.join(error_descriptions))
+			raise Critical(description=' '.join(error_descriptions), buttons=buttons)
 	if retest:
 		raise ProblemFixed(buttons=[])
 

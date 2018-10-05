@@ -34,7 +34,7 @@
 import re
 
 import univention.uldap
-from univention.management.console.modules.diagnostic import Warning
+from univention.management.console.modules.diagnostic import Warning, MODULE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -48,6 +48,7 @@ links = [{
 }]
 
 VALID_HOSTNAME = re.compile(r"^(?!-)[A-Z0-9-]{1,63}(?<!-)$", re.IGNORECASE)
+run_descr = ['checks non-compliant hostnames. Check https://tools.ietf.org/html/rfc1123#section-2 for the syntax of hostnames']
 
 
 def univention_hostnames():
@@ -75,6 +76,7 @@ def run(_umc_instance):
 		problem = _('This may lead to DNS problems.')
 		specification = _('Please refer to {rfc1123} for the syntax of host names.')
 		description = [invalid.format(hostnames=', '.join(hostnames)), problem, specification]
+		MODULE.error('\n'.join(description))
 		raise Warning(description='\n'.join(description))
 
 

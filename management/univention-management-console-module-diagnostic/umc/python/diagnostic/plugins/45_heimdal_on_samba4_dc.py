@@ -36,7 +36,7 @@ import psutil
 import univention.uldap
 
 import univention.config_registry
-from univention.management.console.modules.diagnostic import Critical
+from univention.management.console.modules.diagnostic import Critical, MODULE
 from univention.management.console.modules.diagnostic import util
 
 from univention.lib.i18n import Translation
@@ -45,6 +45,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 title = _('Check Heimdal KDC on Samba 4 DC')
 description = _('Samba 4 KDC running.')
 umc_modules = [{'module': 'services'}]
+run_descr = ['This can be checked by running: samba-tool processes']
 
 
 def samba_kdc_running():
@@ -85,7 +86,8 @@ def run(_umc_instance):
 			if not is_kerberos_autostart_disabled():
 				error_descriptions.append(autostart_error)
 			error_descriptions.append(solution)
-		raise Critical('\n'.join(error_descriptions))
+		MODULE.error('n'.join(error_descriptions))
+                raise Critical('\n'.join(error_descriptions))
 
 
 if __name__ == '__main__':

@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from univention.management.console.config import ucr
-from univention.management.console.modules.diagnostic import Warning
+from univention.management.console.modules.diagnostic import Warning, MODULE
+from univention.management.console.log import MODULE
 
 import dns.resolver
 from dns.exception import DNSException, Timeout
@@ -21,6 +22,7 @@ umc_modules = [{
 	'module': 'setup',
 	'flavor': 'network'
 }]
+run_descr =['Checks if all nameservers are responsive']
 
 
 def run(_umc_instance):
@@ -31,12 +33,13 @@ def run(_umc_instance):
 		'www.univention.de': ('dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3'),
 		ucr.get('hostname', ''): ('nameserver1', 'nameserver2', 'nameserver3')
 	}
-
 	for hostname, nameservers in hostnames.iteritems():
 		for nameserver in nameservers:
 			if not ucr.get(nameserver):
 				continue
-
+			
+			MODULE.process("Similar to running: dig +short %s @%s" %(hostname,ucr[nameserver]))
+			MODULE.process("Trying %s to resolve %s" %(ucr[nameserver],hostname))
 			try:
 				query_dns_server(ucr[nameserver], hostname)
 			except DNSException as exc:

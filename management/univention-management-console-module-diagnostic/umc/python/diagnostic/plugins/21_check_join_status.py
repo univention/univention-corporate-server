@@ -45,6 +45,7 @@ links = [{
 	'label': _('Manual: Analysis of listener/notifier problems')
 }]
 umc_modules = [{'module': 'join'}]
+run_descr = ['This can be checked by running: univention-check-join-status']
 
 
 def run(_umc_instance):
@@ -57,6 +58,7 @@ def run(_umc_instance):
 		if stderr:
 			errors.append("\nSTDERR:\n{}".format(stderr))
 		errors.append(_('See {erroranalysis} or run the join-scripts via {join}.'))
+                MODULE.error('\n'.join(errors))
 		raise Critical(description='\n'.join(errors))
 
 if __name__ == '__main__':

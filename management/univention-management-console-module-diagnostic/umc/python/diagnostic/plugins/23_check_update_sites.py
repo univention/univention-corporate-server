@@ -22,7 +22,7 @@
 #
 # In the case you use this program under the terms of the GNU AGPL V3,
 # the program is provided in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# but WTHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
 #
@@ -33,9 +33,10 @@
 
 import socket
 import urlparse
+from univention.management.console.log import MODULE
 
 import univention.config_registry
-from univention.management.console.modules.diagnostic import Warning
+from univention.management.console.modules.diagnostic import Warning, MODULE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -47,6 +48,7 @@ links = [{
 	'href': _('http://sdb.univention.de/1298'),
 	'label': _('Univention Support Database - DNS Server on DC does not resolve external names')
 }]
+run_descr =['Checks resolving repository servers']
 
 
 def repositories():
@@ -60,6 +62,9 @@ def repositories():
 
 def test_resolve(url):
 	parsed = urlparse.urlsplit(url if '//' in url else '//' + url)
+	MODULE.process("Trying to resolve address of repository server %s" %(parsed.hostname))
+	MODULE.process("Similar to running: host %s"%(parsed.hostname))
+
 	try:
 		socket.getaddrinfo(parsed.hostname, parsed.scheme)
 	except socket.gaierror:
@@ -79,6 +84,7 @@ def run(_umc_instance):
 	if unresolvable:
 		error_descriptions.extend(unresolvable)
 		error_descriptions.append(_('Please see {sdb} for troubleshooting DNS problems.'))
+		MODULE.error('\n'.join(error_descriptions))
 		raise Warning(description='\n'.join(error_descriptions))
 
 

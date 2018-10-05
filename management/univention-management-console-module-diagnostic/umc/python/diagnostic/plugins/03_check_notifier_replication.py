@@ -35,10 +35,10 @@ import socket
 
 import univention.config_registry
 from univention.management.console.modules.diagnostic import Warning
-
+from univention.management.console.log import MODULE
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
-
+run_descr=['get id of ucr get ldap/master and check if var/lib/univention-directory-listener/notifier_id) is the same ']
 title = _('Check for problems with UDN replication')
 description = _('No problems found with UDN replication.')
 
@@ -68,6 +68,7 @@ def run(_umc_instance):
 
 	try:
 		notifier_id = get_id(configRegistry.get('ldap/master'))
+		MODULE.process('Trying to get %s' %(notifier_id))
 	except socket.error:
 		raise Warning(_('Error retrieving notifier ID from the UDN.'))
 	else:

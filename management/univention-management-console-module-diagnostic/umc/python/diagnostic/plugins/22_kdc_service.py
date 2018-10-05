@@ -46,6 +46,7 @@ from pyasn1.type import namedtype
 import pyasn1.codec.der.encoder
 import pyasn1.codec.der.decoder
 import pyasn1.error
+from univention.management.console.log import MODULE
 
 from univention.config_registry import handler_set as ucr_set
 import univention.config_registry
@@ -56,7 +57,8 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('KDC service check')
-description = _('The check for the KDC reachability was succesful.')
+description = ['The check for the KDC reachability was succesful.']
+run_descr = ['Makes a KDC reachability check']
 
 
 # This checks for the reachability of KDCs by sending a AS-REQ per TCP and UDP.
@@ -100,12 +102,11 @@ def reset_kerberos_kdc(umc_instance):
 	ucr_set(['kerberos/kdc=127.0.0.1'])
 	return run(umc_instance, retest=True)
 
-
+description = _('ph ')
 actions = {
 	'add_lo_to_samba_interfaces': add_lo_to_samba_interfaces,
 	'reset_kerberos_kdc': reset_kerberos_kdc,
 }
-
 
 def _c(n, t):
 	return t.clone(tagSet=t.tagSet + tag.Tag(tag.tagClassContext, tag.tagFormatSimple, n))
@@ -191,7 +192,7 @@ def build_kerberos_request(target_realm, user_name):
 
 	req_body['sname'] = None
 	req_body['sname']['name-type'] = 2  # NT_SRV_INST
-	req_body['sname']['name-string'] = None
+	req_body['s/name']['name-string'] = None
 	req_body['sname']['name-string'][0] = 'krbtgt'
 	req_body['sname']['name-string'][1] = target_realm
 
@@ -249,7 +250,8 @@ def send_and_receive(kdc, port, protocol, as_req):
 
 def probe_kdc(kdc, port, protocol, target_realm, user_name):
 	request = build_kerberos_request(target_realm, user_name)
-
+	MODULE.process("Trying to cantact KDC %s on port %d" %(kdc,port))
+	MODULE.process("Similar to running: nmap%s -p %d" %(kdc,port))
 	try:
 		received = send_and_receive(kdc, port, protocol, request)
 	except KerberosException:
@@ -288,7 +290,6 @@ def resolve_kdc_record(protocol, domainname):
 
 	for record in result:
 		yield (record.target.to_text(True), record.port, protocol)
-
 
 def run(_umc_instance, retest=False):
 	configRegistry = univention.config_registry.ConfigRegistry()
@@ -353,11 +354,12 @@ def run(_umc_instance, retest=False):
 
 	if error_descriptions:
 		error = '\n'.join(error_descriptions)
-		raise Warning(description=error)
-
+		MODULE.error(error)
+                raise Warning(description=error)
+        
 	if retest:
 		raise ProblemFixed()
-
+        
 
 if __name__ == '__main__':
 	from univention.management.console.modules.diagnostic import main
