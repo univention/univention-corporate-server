@@ -234,7 +234,7 @@
 
 			<para>
 				The &ucsUCRV; <envar>google-apps/attributes/mapping/.*</envar> is used to configure which LDAP attributes (e.g. first name, last name, etc.)
-				of a user account are synchronized. The &ucsURCV; and its values reflect the nested data structure of the G Suite user accounts.
+				of a user account are synchronized. The &ucsUCRV; and its values reflect the nested data structure of the G Suite user accounts.
 				The names that follow the percentage sign in the values are the attributes in the UCS LDAP. If all &ucsUCRV;
 				<envar>google-apps/attributes/mapping/.*</envar> are removed, no data other than the primary e-mail address is synchronized.
 			</para>
