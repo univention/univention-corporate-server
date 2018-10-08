@@ -1,3 +1,9 @@
+ucs-test (8.0.28-200) unstable; urgency=medium
+
+  * Bug #47000: Fix univention-repository apache config
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 08 Oct 2018 14:02:49 +0200
+
 ucs-test (8.0.28-199) unstable; urgency=low
 
   * Bug #47000: Debug 09/10component-prefix

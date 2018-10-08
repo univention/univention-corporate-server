@@ -137,7 +137,8 @@ setup_apache () { # Setup apache for repository [--port ${port}] [${prefix}]
 	cat <<-EOF >"${BASEDIR}/apache2.conf"
 	${listen}
 	<VirtualHost ${hostname}${port:+:${port}}>
-	DocumentRoot ${BASEDIR}/apache2.log combined
+	DocumentRoot ${BASEDIR}
+	CustomLog ${BASEDIR}/apache2.log combined
 	${alias}
 	<Directory ${REPODIR}>
 			   AllowOverride All
