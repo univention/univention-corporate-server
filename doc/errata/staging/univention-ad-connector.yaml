@@ -3,9 +3,11 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-ad-connector
-fix: 12.0.0-22A~4.3.0.201809181653
+fix: 12.0.0-23A~4.3.0.201810081728
 desc: |
  This update addresses the following issue(s):
  * A traceback during the add of users in AD with telephone
    attributes has been fixed.
-bug: [47209]
+ * Support sasl/gssapi in AD Connection setup scripts (to support
+   integrity checking during binds).
+bug: [47209,47901]
