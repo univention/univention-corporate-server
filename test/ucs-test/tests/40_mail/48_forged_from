@@ -56,10 +56,13 @@ def main():
 	global domain
 
 	with ucr_test.UCSTestConfigRegistry() as ucr:
+		ucrlist = [(k, v) for k, v in ucr.items() if k.startswith('mail/postfix/smtpd_milters/')]
+		ucrlist.sort()
 		with udm_test.UCSTestUDM() as udm:
-			print('*** UCRV mail/postfix/smtpd_milters={!r}'.format(ucr.get('mail/postfix/smtpd_milters')))
-			print('*** UCRV mail/postfix/no-forged-from-milter-port={!r}'.format(
-				ucr.get('mail/postfix/no-forged-from-milter-port')))
+			for k, v in ucrlist:
+				print('*** UCRV {!r}={!r}'.format(k, v))
+			print('*** UCRV mail/postfix/sender_check_milter_port={!r}'.format(
+				ucr.get('mail/postfix/sender_check_milter_port')))
 			syslog.openlog(ident="test_48_forged_from", facility=syslog.LOG_MAIL)
 			domain = ucr.get('domainname')
 			password = uts.random_name()

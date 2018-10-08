@@ -419,9 +419,9 @@ Description[en]=Set this variable to "yes" to reject non-ASCII addresses from cl
 Type=bool
 Categories=service-mail
 
-[mail/postfix/smtpd_milters]
-Description[de]=Eine freizeichen- oder kommaseparierte Liste von Milter (mail filter) Applikationen für neue Mail die über den Postfix smtpd(8) Server herin kommen (siehe <http://www.postfix.org/postconf.5.html#smtpd_milters>). Standardmäßig ist diese Variable nicht gesetzt.
-Description[en]=A space or comma separated list of Milter (mail filter) applications for new mail that arrives via the Postfix smtpd(8) server (see <http://www.postfix.org/postconf.5.html#smtpd_milters>). The default for this variable is to be unset.
+[mail/postfix/smtpd_milters/.*]
+Description[de]=Mit Variablen der Form mail/postfix/smtpd_milters/SEQUENZNUMMER=MILTER-ADRESSE können Adressen von Miltern (mail filter) Applikationen konfiguriert werden. Milter werden über neue Mails die über den Postfix smtpd(8) Server herein kommen informiert und können diese akzeptieren, bearbeiten und ablehnen (siehe <http://www.postfix.org/postconf.5.html#smtpd_milters>). Die Sequenznummer wird alphanumerisch sortiert und beeinflusst die Reihenfolge der Milter. Standardmäßig ist diese Variable nicht gesetzt.
+Description[en]=Variables in the format mail/postfix/smtpd_milters/SEQUENCE=MILTER-ADDRESS can be used to configure Milter (mail filter) applications. Milters are informed about new mail that arrives via the Postfix smtpd(8) server and can accept, edit and reject those messages (see <http://www.postfix.org/postconf.5.html#smtpd_milters>). The sequence numbers are sorted alphabetically and ensure the order. The default for this variable is to be unset.
 Type=str
 Categories=service-mail
 
