@@ -964,6 +964,40 @@ postmap /etc/postfix/smtp_auth
 		</note>
 	</section>
 
+	<section id="mail::serverconfig::sender_check">
+		<title>Konfiguration zur Verhinderung gefälschter Absender-Adressen</title>
+		<para>
+			Die Standardkonfiguration von <application>Postfix</application> erlaubt authentifizierten Benutzern das
+			Senden mit beliebigen <literal>From</literal> Adressen.
+			Sie erlaubt außerdem das Einliefern von Emails mit einer Domäne im Absender, die das System selbst verwaltet.
+		</para>
+		<para>
+			Um gefälschte Absendeadressen zu verhindern, kann ein Filter aktiviert werden der beide Fälle verhindert.
+			Der Filter (technisch <application>milter</application> genannt) weist Nachrichten bereits während des
+			SMTP Dialogs zurück, so dass sie nicht einmal bis zum Spam Scanner kommen.
+			Der Filter protokolliert Zurückweisungen in der für Email üblichen Logdatei (<filename>/var/log/mail.log</filename>).
+			Um den <application>sender_check milter</application> zu aktivieren, muss <application>Postfix</application>
+			konfiguriert werden sich zu ihm zu verbinden.
+		</para>
+		<para>
+			<application>Postfix</application> unterstützt die gleichzeitige Verwendung mehrerer
+			<application>milter</application>. Daher kann der Wert für <envar>milters</envar> in
+			<application>Postfix'</application> Konfiguration aus mehreren Einträgen bestehen.
+			Um diese sortierbar zu machen, haben die &ucsUCRV; die Form
+			<envar>mail/postfix/smtpd_milters/<replaceable>SEQUENZ</replaceable>=<replaceable>ADRESSE</replaceable></envar>.
+		</para>
+		<para>
+			Der <application>sender_check milter</application> ist ein kleines Programm das an <envar>localhost</envar> am Port <envar>5656</envar> lauscht. Der Port kann mit der &ucsUCRV; <envar>mail/postfix/sender_check_milter_port</envar>
+			eingestellt werden.
+		</para>
+		<note>
+			<para>
+				Nach jeder Änderung einer auf <application>Postfix</application> bezogenen &ucsUCRV; muss dieses seine
+				Konfiguration neu laden: <command>service postfix reload</command>.
+			</para>
+		</note>
+	</section>
+
 	<section id="mail::serverconfig::maincflocal">
 		<title>Eigene Anpassung der Postfix Konfiguration</title>
 		<para>

@@ -928,6 +928,39 @@ postmap /etc/postfix/smtp_auth
 		</note>
 	</section>
 
+	<section id="mail::serverconfig::sender_check">
+		<title>Configuration to prevent forged From addresses</title>
+		<para>
+			In the default configuration <application>Postfix</application> allows authenticated users to send with an
+			arbitrary <literal>From</literal> address.
+			It also allows non-authenticated users to deliver emails to the	system with a <literal>From</literal>
+			of a domain that is hosted on the system itself.
+		</para>
+		<para>
+			A filter can be enabled, that will prevent the forging of <literal>From</literal> addresses in both cases.
+			The filter (technically called a <application>milter</application>) will reject such emails during the SMTP
+			dialogue, so that they won't even reach the spam filter.
+			The filter will log rejects to the usual mail log file (<filename>/var/log/mail.log</filename>).
+			To enable the <application>sender_check milter</application>, <application>Postfix</application> must be
+			configured to connect to it.
+		</para>
+		<para>
+			<application>Postfix</application> supports using multiple <application>milters</application> at once, so
+			its <envar>milters</envar> configuration allows multiple entries. To make those sortable the &ucsUCRV; is
+			<envar>mail/postfix/smtpd_milters/<replaceable>SEQUENCE</replaceable>=<replaceable>ADDRESS</replaceable></envar>.
+		</para>
+		<para>
+			The <application>sender_check milter</application> is a small program that listens by default on port <envar>5656</envar> on <envar>localhost</envar>. The port can be changed using the &ucsUCRV;
+			<envar>mail/postfix/sender_check_milter_port</envar>.
+		</para>
+		<note>
+			<para>
+				After each change of a <application>Postfix</application> related &ucsUCRV;, reload
+				<application>Postfix</application>: <command>service postfix reload</command>.
+			</para>
+		</note>
+	</section>
+
 	<section id="mail::serverconfig::maincflocal">
 		<title>Custom Postfix configuration</title>
 		<para>
