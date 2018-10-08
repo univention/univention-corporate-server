@@ -53,7 +53,7 @@ import univention.uldap
 from univention.config_registry import ConfigRegistry
 
 
-class NoForgedFromMilter(lm.ForkMixin, lm.MilterProtocol):
+class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 	_lo = None
 	_ldap_secret_mtime = 0.0
 	regex_email_with_brakets = re.compile(r'.*<(.+@.+\..+)>$')
@@ -190,22 +190,22 @@ class NoForgedFromMilter(lm.ForkMixin, lm.MilterProtocol):
 def run_milter():
 	ucr = ConfigRegistry()
 	ucr.load()
-	syslog.openlog(ident="no_forged_from", logoption=syslog.LOG_PID, facility=syslog.LOG_MAIL)
-	port = ucr.get('mail/postfix/no-forged-from-milter-port', 5656)
-	NoForgedFromMilter.log('Starting NoForgedFromMilter on port {}.'.format(port))
+	syslog.openlog(ident="sender_check", logoption=syslog.LOG_PID, facility=syslog.LOG_MAIL)
+	port = ucr.get('mail/postfix/sender_check_milter_port', 5656)
+	SenderCheckMilter.log('Starting sender_check milter process. Listening on port {}.'.format(port))
 	# test LDAP connection
-	NoForgedFromMilter.get_lo()
+	SenderCheckMilter.get_lo()
 
 	opts = lm.SMFIP_NOHELO | lm.SMFIP_NORCPT | lm.SMFIP_NOBODY | lm.SMFIP_NOEOH | lm.SMFIP_NODATA
-	milter_factory = lm.ForkFactory('inet:127.0.0.1:{}'.format(port), NoForgedFromMilter, opts)
+	milter_factory = lm.ForkFactory('inet:127.0.0.1:{}'.format(port), SenderCheckMilter, opts)
 
 	def sig_handler(num, frame):
-		NoForgedFromMilter.log('Stopping NoForgedFromMilter.')
+		SenderCheckMilter.log('Stopping sender_check milter process.')
 		milter_factory.close()
 		sys.exit(0)
 	signal.signal(signal.SIGINT, sig_handler)
 	signal.signal(signal.SIGTERM, sig_handler)
-	signal.signal(signal.SIGHUP, NoForgedFromMilter.reload_sig_handler)
+	signal.signal(signal.SIGHUP, SenderCheckMilter.reload_sig_handler)
 
 	try:
 		milter_factory.run()
@@ -214,7 +214,7 @@ def run_milter():
 		# print to journald/syslog and log to mail.log
 		print('EXCEPTION OCCURRED: {}'.format(exc))
 		traceback.print_tb(sys.exc_traceback)
-		NoForgedFromMilter.log('Exception in NoForgedFromMilter run: {}'.format(exc), 'ERROR')
+		SenderCheckMilter.log('Exception in sender_check milter run: {}'.format(exc), 'ERROR')
 		sys.exit(3)
 
 

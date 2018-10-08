@@ -425,9 +425,9 @@ Description[en]=Variables in the format mail/postfix/smtpd_milters/SEQUENCE=MILT
 Type=str
 Categories=service-mail
 
-[mail/postfix/no-forged-from-milter-port]
-Description[de]=Port auf dem der Milter-Prozess lauschen soll (immer an localhost). Standard: 5656.
-Description[en]=Port on which the Milter process shoudl listen (always on localhost). Default: 5656.
+[mail/postfix/sender_check_milter_port]
+Description[de]=Port auf dem der Milter-Prozess, der die Absenderadressen prüft ("sender_check"), lauschen soll (immer an localhost). Standard: 5656.
+Description[en]=Port on which the Milter process that verifies sender addresses ("sender_check") should listen (always on localhost). Default: 5656.
 Type=str
 Categories=service-mail
 
