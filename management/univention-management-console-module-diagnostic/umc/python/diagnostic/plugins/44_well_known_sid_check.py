@@ -39,12 +39,13 @@ import univention.lib.misc
 import univention.config_registry
 from univention.management.console.modules.diagnostic import Warning
 from univention.management.console.modules.diagnostic import util
-
+from univention.management.console.log import MODULE
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check well known SIDs')
 description = _('All SIDs exist and names are consistent.')
+run_descr = ['Checks if all well known SIDs exist and if their names are consistent']
 
 
 NON_EXISTENT_SIDS = set(('Power Users', 'Creator Group Server',
@@ -173,6 +174,7 @@ def run(_umc_instance):
 
 	check_errors = list(check_existence_and_consistency())
 	if check_errors:
+		MODULE.error(description='\n'.join(str(x) for x in check_errors))
 		raise Warning(description='\n'.join(str(x) for x in check_errors))
 
 

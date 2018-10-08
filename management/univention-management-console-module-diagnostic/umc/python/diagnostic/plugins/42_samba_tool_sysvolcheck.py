@@ -39,7 +39,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check Samba sysvol ACLs for errors')
 description = _('No errors found.'),
-
+run_descr = ['This can be checked by running samba-tool ntacl sysvolcheck']
 
 def run_samba_tool_ntacl_sysvolreset(umc_instance):
 	if not util.is_service_active('Samba 4'):

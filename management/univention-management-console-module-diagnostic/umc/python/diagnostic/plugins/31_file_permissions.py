@@ -37,6 +37,7 @@ import grp
 import stat
 import glob
 from collections import namedtuple
+from univention.management.console.log import MODULE
 
 import univention.config_registry
 from univention.management.console.modules.diagnostic import Warning
@@ -46,6 +47,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check file permissions')
 description = _('All files ok.')
+run_descr = ['Checks file permissions']
 
 
 class CheckError(Exception):
@@ -96,6 +98,9 @@ def get_actual_owner(uid, gid):
 
 
 def check_file(path, owner, group, mode, must_exist=False):
+	MODULE.process("Checking permission for %s" %(path))
+	MODULE.process("Similar to running: stat %s"%(path))
+
 	try:
 		file_stat = os.stat(path)
 	except EnvironmentError:

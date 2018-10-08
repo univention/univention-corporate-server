@@ -37,6 +37,7 @@ import univention
 import univention.uldap
 from univention.management.console.modules.diagnostic import Critical, Warning
 from univention.management.console.modules.diagnostic import util
+from univention.management.console.log import MODULE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -48,6 +49,7 @@ links = [{
 	'href': 'https://help.univention.com/t/how-to-deal-with-s4-connector-rejects/33',
 	'label': _('Univention Support Database - How to deal with s4-connector rejects')
 }]
+run_descr =['Checks if there are S4 Connector rejects']
 
 
 class MissingConfigurationKey(KeyError):
@@ -133,6 +135,7 @@ def run(_umc_instance):
 	except MissingConfigurationKey as error:
 		error_description = _('The UCR variable {variable!r} is unset, but necessary for the S4 Connector.')
 		raise Critical(description=error_description.format(variable=error.message))
+	MODULE.process('Checking S4-Connector rejects Similar to running univention-s4connector-list-rejected')
 
 	ucs_rejects = list(get_ucs_rejected(s4))
 	s4_rejects = list(get_s4_rejected(s4))

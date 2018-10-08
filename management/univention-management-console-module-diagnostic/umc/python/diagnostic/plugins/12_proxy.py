@@ -19,6 +19,8 @@ umc_modules = [{
 	'flavor': 'network'
 }]
 actions = {}
+run_descr = ['Checks if the proxy server runs correctly']
+
 
 
 def run(_umc_instance, url='http://www.univention.de/', connecttimeout=30, timeout=30):
@@ -52,6 +54,8 @@ def run(_umc_instance, url='http://www.univention.de/', connecttimeout=30, timeo
 
 	buf = StringIO.StringIO()
 	curl.setopt(pycurl.WRITEFUNCTION, buf.write)
+	MODULE.process(''.join("Trying to connect to %s via HTTP proxy %s" %(url, proxy)))
+
 	try:
 		curl.perform()
 	except pycurl.error as exc:

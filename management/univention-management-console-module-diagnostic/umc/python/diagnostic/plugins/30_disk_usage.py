@@ -34,7 +34,7 @@
 import psutil
 
 import univention.config_registry
-from univention.management.console.modules.diagnostic import Warning, Critical
+from univention.management.console.modules.diagnostic import Warning, Critical, MODULE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -43,6 +43,7 @@ title = _('Check free disk space')
 description = _('Enough free disk space available.')
 
 DISK_USAGE_THRESHOLD = 90
+run_descr = ['Checks if there is enough free disk space available']
 
 
 def mount_points():
@@ -140,6 +141,7 @@ def run(_umc_instance):
 
 		if problem_on_root:
 			raise Critical('\n'.join(error_descriptions), umc_modules=umc_modules)
+                MODULE.error('n'.join(error_descriptions))
 		raise Warning('\n'.join(error_descriptions), umc_modules=umc_modules)
 
 

@@ -15,6 +15,7 @@ description = '\n'.join([
 	_('More information about the cause can be gained by executing "dpkg --audit".')
 ])
 
+run_descr = ['This can be checked by running: dpkg --audit Login to the system as root via ssh and run the command "dpkg --configure -a" in order to correct the packages status.']
 
 def run(_umc_instance):
 	proccess = Popen(['dpkg', '--audit'], stdout=PIPE, env={'LANG': 'C'})
