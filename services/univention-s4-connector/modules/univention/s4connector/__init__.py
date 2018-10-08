@@ -171,13 +171,12 @@ class configdb:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT key FROM '%s' WHERE value=?" % section, (option,))
-				self._dbcon.commit()
 				rows = cur.fetchall()
 				cur.close()
 				if rows:
 					return rows[0][0]
 				return ''
-			except lite.Error, e:
+			except lite.Error as e:
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = lite.connect(self.filename)
@@ -187,13 +186,12 @@ class configdb:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
-				self._dbcon.commit()
 				rows = cur.fetchall()
 				cur.close()
 				if rows:
 					return rows[0][0]
 				return ''
-			except lite.Error, e:
+			except lite.Error as e:
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = lite.connect(self.filename)
@@ -209,7 +207,7 @@ class configdb:
 				self._dbcon.commit()
 				cur.close()
 				return
-			except lite.Error, e:
+			except lite.Error as e:
 				ud.debug(ud.LDAP, ud.ERROR, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
@@ -220,11 +218,10 @@ class configdb:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT * FROM '%s'" % (section))
-				self._dbcon.commit()
 				rows = cur.fetchall()
 				cur.close()
 				return rows
-			except lite.Error, e:
+			except lite.Error as e:
 				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
@@ -238,7 +235,7 @@ class configdb:
 				self._dbcon.commit()
 				cur.close()
 				return
-			except lite.Error, e:
+			except lite.Error as e:
 				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
@@ -249,14 +246,13 @@ class configdb:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='%s';" % section)
-				self._dbcon.commit()
 				rows = cur.fetchone()
 				cur.close()
 				if rows:
 					return True
 				else:
 					return False
-			except lite.Error, e:
+			except lite.Error as e:
 				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
@@ -270,7 +266,7 @@ class configdb:
 				self._dbcon.commit()
 				cur.close()
 				return
-			except lite.Error, e:
+			except lite.Error as e:
 				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
@@ -281,14 +277,13 @@ class configdb:
 			try:
 				cur = self._dbcon.cursor()
 				cur.execute("SELECT value FROM '%s' WHERE key=?" % section, (option,))
-				self._dbcon.commit()
 				rows = cur.fetchall()
 				cur.close()
 				if rows:
 					return True
 				else:
 					return False
-			except lite.Error, e:
+			except lite.Error as e:
 				ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
 				if self._dbcon:
 					self._dbcon.close()
