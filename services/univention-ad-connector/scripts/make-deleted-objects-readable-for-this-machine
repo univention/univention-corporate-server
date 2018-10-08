@@ -67,44 +67,6 @@ def log(level, msg):
 		print "%s: %s" % (prefix.get(level), msg)
 
 
-class AD_Connection():
-
-	''' stripped down univention.connector.ad.ad class
-		difference: accept "bindpwd" directly instead of "bindpw" filename
-		difference: don't require mapping
-		difference: Skip init_group_cache code (i.e. use init_group_cache=False)
-		difference: don't use TLS
-		difference: don't use kerberos
-	'''
-
-	def __init__(self, CONFIGBASENAME, baseConfig, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate):
-
-		self.CONFIGBASENAME = CONFIGBASENAME
-
-		self.ad_ldap_host = ad_ldap_host
-		self.ad_ldap_port = ad_ldap_port
-		self.ad_ldap_base = ad_ldap_base
-		self.ad_ldap_binddn = ad_ldap_binddn
-		self.ad_ldap_bindpw = ad_ldap_bindpw
-		self.ad_ldap_certificate = ad_ldap_certificate
-		self.baseConfig = baseConfig
-
-		tls_mode = 0
-		ldaps = self.baseConfig.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False)  # tls or ssl
-
-		self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
-
-		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
-
-		try:
-			result = self.lo_ad.lo.search_ext_s(ad_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'], timeout=-1, sizelimit=0)
-			objectSid_blob = result[0][1]['objectSid'][0]
-			self.ad_sid = univention.connector.ad.decode_sid(objectSid_blob)
-		except Exception, msg:
-			print "Failed to get SID from AD: %s" % msg
-			sys.exit(1)
-
-
 class AD_DSACL_modifier():
 
 	''' Provides methods for modifying the nTSecurityDescriptor of CN=Deleted Objects
@@ -160,7 +122,7 @@ class AD_DSACL_modifier():
 		ad_init = None
 		while not ad_init:
 			try:
-				self.ad = AD_Connection(
+				self.ad = univention.connector.ad.Simple_AD_Connection(
 					CONFIGBASENAME,
 					self.ucr,
 					self.ucr['%s/ad/ldap/host' % CONFIGBASENAME],
@@ -180,7 +142,7 @@ class AD_DSACL_modifier():
 		ctrls = []
 		ctrls.append(ldap.controls.LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=0))
 
-		result = self.ad.lo_ad.lo.search_ext_s("CN=Deleted Objects,%s" % (self.ad.lo_ad.base,), ldap.SCOPE_BASE, "(objectClass=*)", attrlist=["nTSecurityDescriptor", ], serverctrls=ctrls)
+		result = self.ad.lo.search_ext_s("CN=Deleted Objects,%s" % (self.ad.base,), ldap.SCOPE_BASE, "(objectClass=*)", attrlist=["nTSecurityDescriptor", ], serverctrls=ctrls)
 		if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 			self.deleted_objects_dn = result[0][0]
 			obj = result[0][1]
@@ -206,11 +168,11 @@ class AD_DSACL_modifier():
 		modify_ctrls = []
 		modify_ctrls.append(ldap.controls.LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=0))
 		modify_ctrls.append(ldap.controls.LDAPControl(LDAP_SERVER_SD_FLAGS_OID, criticality=1, encodedControlValue='0\x03\x02\x01\x01'))  # this is a 1 encoded as ASN1 SEQUENCE { INTEGER }
-		self.ad.lo_ad.lo.modify_ext_s(compatible_modstring(self.deleted_objects_dn), [(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)], serverctrls=modify_ctrls)
+		self.ad.lo.modify_ext_s(compatible_modstring(self.deleted_objects_dn), [(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)], serverctrls=modify_ctrls)
 
 	def grant_DSACL_LCRP_to_local_system(self):
 		ldap_filter = "(sAMAccountName=%s$)" % (self.ucr["hostname"],)
-		result = self.ad.lo_ad.lo.search_ext_s(self.ad.lo_ad.base, ldap.SCOPE_SUBTREE, univention.connector.ad.compatible_modstring(ldap_filter), attrlist=["objectSid", ])
+		result = self.ad.lo.search_ext_s(self.ad.base, ldap.SCOPE_SUBTREE, univention.connector.ad.compatible_modstring(ldap_filter), attrlist=["objectSid", ])
 		if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 			obj = result[0][1]
 			objectSid_ndr = obj.get("objectSid", [None])[0]
@@ -241,7 +203,7 @@ class AD_DSACL_modifier():
 		desc_ndr = ndr_pack(desc)
 		ctrls = []
 		ctrls.append(ldap.controls.LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=0))
-		self.ad.lo_ad.lo.modify_ext_s(compatible_modstring(self.deleted_objects_dn), [(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)], serverctrls=ctrls)
+		self.ad.lo.modify_ext_s(compatible_modstring(self.deleted_objects_dn), [(ldap.MOD_REPLACE, 'nTSecurityDescriptor', desc_ndr)], serverctrls=ctrls)
 		print "INFO: DSACL of Deleted Objects adjusted."
 
 

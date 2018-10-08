@@ -48,6 +48,7 @@ import univention.lib.s4
 import univention.admin.modules as udm_modules
 import univention.admin.filter as udm_filter
 import univention.admin.uexceptions as uexceptions
+
 # load UDM modules
 udm_modules.update()
 
@@ -65,44 +66,6 @@ def log(level, msg):
 	ud.debug(ud.LDAP, level, msg)
 	if level <= ud.get_level(ud.LDAP):
 		print "%s: %s" % (prefix.get(level), msg)
-
-
-class AD_Connection():
-
-	''' stripped down univention.connector.ad.ad class
-		difference: accept "bindpwd" directly instead of "bindpw" filename
-		difference: don't require mapping
-		difference: Skip init_group_cache code (i.e. use init_group_cache=False)
-		difference: don't use TLS
-		difference: don't use kerberos
-	'''
-
-	def __init__(self, CONFIGBASENAME, baseConfig, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate):
-
-		self.CONFIGBASENAME = CONFIGBASENAME
-
-		self.ad_ldap_host = ad_ldap_host
-		self.ad_ldap_port = ad_ldap_port
-		self.ad_ldap_base = ad_ldap_base
-		self.ad_ldap_binddn = ad_ldap_binddn
-		self.ad_ldap_bindpw = ad_ldap_bindpw
-		self.ad_ldap_certificate = ad_ldap_certificate
-		self.baseConfig = baseConfig
-
-		tls_mode = 0
-		ldaps = self.baseConfig.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False)  # tls or ssl
-
-		self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
-
-		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
-
-		try:
-			result = self.lo_ad.lo.search_ext_s(ad_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'], timeout=-1, sizelimit=0)
-			objectSid_blob = result[0][1]['objectSid'][0]
-			self.ad_sid = univention.connector.ad.decode_sid(objectSid_blob)
-		except Exception, msg:
-			print "Failed to get SID from AD: %s" % msg
-			sys.exit(1)
 
 
 class Well_Known_SID_object_renamer():
@@ -173,7 +136,7 @@ class Well_Known_SID_object_renamer():
 		ad_init = None
 		while not ad_init:
 			try:
-				self.ad = AD_Connection(
+				self.ad = univention.connector.ad.Simple_AD_Connection(
 					CONFIGBASENAME,
 					self.ucr,
 					self.ucr['%s/ad/ldap/host' % CONFIGBASENAME],
@@ -202,7 +165,7 @@ class Well_Known_SID_object_renamer():
 
 		for (sid, canonical_name) in AD_well_known_sids.items():
 
-			result = self.ad.lo_ad.lo.search_ext_s(self.ad.lo_ad.base, ldap.SCOPE_SUBTREE, univention.connector.ad.compatible_modstring("(objectSid=%s)" % (sid,)), attrlist=["sAMAccountName", "objectClass"])
+			result = self.ad.lo.search_ext_s(self.ad.base, ldap.SCOPE_SUBTREE, univention.connector.ad.compatible_modstring("(objectSid=%s)" % (sid,)), attrlist=["sAMAccountName", "objectClass"])
 			if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 				obj = result[0][1]
 			else:
