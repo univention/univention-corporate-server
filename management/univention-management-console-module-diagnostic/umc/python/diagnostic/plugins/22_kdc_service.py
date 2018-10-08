@@ -46,8 +46,6 @@ from pyasn1.type import namedtype
 import pyasn1.codec.der.encoder
 import pyasn1.codec.der.decoder
 import pyasn1.error
-from univention.management.console.log import MODULE
-
 from univention.config_registry import handler_set as ucr_set
 import univention.config_registry
 from univention.management.console.modules.diagnostic import Warning, Critical, ProblemFixed, MODULE
@@ -335,7 +333,7 @@ def run(_umc_instance, retest=False):
 					local_included |= interface == 'lo'
 				else:
 					local_included |= addr.is_loopback or addr.is_unspecified
-			error = _('samba/interfaces does not contain lo, 127.0.0.1 or 0.0.0.0.')
+					error = _('samba/interfaces does not contain lo, 127.0.0.1 or 0.0.0.0.')
 			error_descriptions.append(error)
 
 			description = '\n'.join(error_descriptions)
