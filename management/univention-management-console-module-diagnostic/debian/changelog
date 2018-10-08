@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.1-2) unstable; urgency=medium
+
+  * Bug #47649: Improved logging of diagnostic plugin actions
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 08 Oct 2018 11:33:12 +0200
+
 univention-management-console-module-diagnostic (4.0.1-1) unstable; urgency=medium
 
   * Bug #47844: Check for univentionObjectType and migrate objects without one
