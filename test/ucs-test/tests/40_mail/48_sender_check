@@ -63,7 +63,7 @@ def main():
 				print('*** UCRV {!r}={!r}'.format(k, v))
 			print('*** UCRV mail/postfix/sender_check_milter_port={!r}'.format(
 				ucr.get('mail/postfix/sender_check_milter_port')))
-			syslog.openlog(ident="test_48_forged_from", facility=syslog.LOG_MAIL)
+			syslog.openlog(ident="test_48_sender_check", facility=syslog.LOG_MAIL)
 			domain = ucr.get('domainname')
 			password = uts.random_name()
 			mpa = new_email()
@@ -140,8 +140,6 @@ def main():
 			log('*** Sending w/o authenticating with example.com in FROM in envelope and header with non-existent email...')
 			check_sending_mail(example_email(), new_email(), mpa, None, None, False)
 
-			log('*** End of 48_forged_from')
-
 			# new domain
 			new_domain = '{}.{}'.format(uts.random_name(), uts.random_name(3))
 			new_mpa = new_email(maildomain=new_domain)
@@ -199,6 +197,8 @@ def main():
 
 			log('*** Sending w/o authenticating with example.com in FROM in envelope and header with non-existent email...')
 			check_sending_mail(example_email(), new_email(maildomain=new_domain), mpa, None, None, False)
+
+			log('*** End of 48_sender_check')
 
 
 if __name__ == '__main__':
