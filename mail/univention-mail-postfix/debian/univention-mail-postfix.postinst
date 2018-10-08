@@ -106,9 +106,6 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.1-5; 
     fi
 fi
 if [ "$1" = configure ] && [ -n "$2" ] && dpkg --compare-versions "$2" lt 12.0.0-22; then
-	PORT="$(ucr get mail/postfix/no-forged-from-milter-port)"
-	[ -z "$PORT" ] && PORT=5656
-	ucr set "mail/postfix/smtpd_milters/50?inet:localhost:$PORT"
 	systemctl --system daemon-reload
 	systemctl enable univention-postfix-sender-check
 	systemctl start univention-postfix-sender-check
