@@ -28,7 +28,7 @@ def run(_umc_instance):
 	# Now a workaround for paramico logging to connector-s4.log
 	# because one of the diagnostic plugins instanciates s4connector.s4.s4()
 	# which initializes univention.debug2, which initializes logging.basicConfig
-        logger = paramiko.util.logging.getLogger()
+	logger = paramiko.util.logging.getLogger()
 	logger.setLevel(logging.CRITICAL)
 
 	try:
@@ -76,7 +76,7 @@ def run(_umc_instance):
 		hostname=ucr['hostname'])
 
 	for host in ucs_hosts:
-                client = paramiko.SSHClient()
+		client = paramiko.SSHClient()
 		client.load_system_host_keys()
 		client.set_missing_host_key_policy(IgnorePolicy())
 

@@ -87,7 +87,7 @@ def run(_umc_instance):
 				error_descriptions.append(autostart_error)
 			error_descriptions.append(solution)
 		MODULE.error('n'.join(error_descriptions))
-                raise Critical('\n'.join(error_descriptions))
+		raise Critical('\n'.join(error_descriptions))
 
 
 if __name__ == '__main__':

@@ -102,8 +102,8 @@ def run(_umc_instance, rerun=False):
 		error_descriptions.append(_('Please check the files for more details.'))
 		if not rerun:
 			error_descriptions.append(_('The error might be fixable by regenerating the sources.list.'))
-                        MODULE.error('\n'.join(error_descriptions))
-                        raise Warning(description='\n'.join(error_descriptions), buttons=buttons)
+			MODULE.error('\n'.join(error_descriptions))
+			raise Warning(description='\n'.join(error_descriptions), buttons=buttons)
 		raise Warning(description='\n'.join(error_descriptions))
 
 

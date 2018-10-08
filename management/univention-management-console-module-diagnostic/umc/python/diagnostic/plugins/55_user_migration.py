@@ -24,7 +24,7 @@ def run(_umc_instance):
 	stdout, stderr = process.communicate()
 	if process.returncode:
 		MODULE.error(description + stdout)
-                raise Critical(description + stdout, buttons=[{
+		raise Critical(description + stdout, buttons=[{
 			'action': 'migrate_users',
 			'label': _('Migrate user objects'),
 		}])

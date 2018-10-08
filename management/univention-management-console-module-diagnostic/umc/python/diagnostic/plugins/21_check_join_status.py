@@ -58,7 +58,7 @@ def run(_umc_instance):
 		if stderr:
 			errors.append("\nSTDERR:\n{}".format(stderr))
 		errors.append(_('See {erroranalysis} or run the join-scripts via {join}.'))
-                MODULE.error('\n'.join(errors))
+		MODULE.error('\n'.join(errors))
 		raise Critical(description='\n'.join(errors))
 
 if __name__ == '__main__':

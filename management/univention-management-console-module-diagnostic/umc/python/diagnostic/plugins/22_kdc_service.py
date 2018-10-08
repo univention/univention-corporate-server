@@ -355,11 +355,11 @@ def run(_umc_instance, retest=False):
 	if error_descriptions:
 		error = '\n'.join(error_descriptions)
 		MODULE.error(error)
-                raise Warning(description=error)
-        
+		raise Warning(description=error)
+
 	if retest:
 		raise ProblemFixed()
-        
+
 
 if __name__ == '__main__':
 	from univention.management.console.modules.diagnostic import main

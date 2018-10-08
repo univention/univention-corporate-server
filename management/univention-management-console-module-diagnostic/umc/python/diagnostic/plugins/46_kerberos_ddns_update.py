@@ -163,8 +163,8 @@ def run(_umc_instance):
 	problems = list(check_nsupdate(config_registry, server))
 	if problems:
 		ed = [_('Errors occured while running `kinit` or `nsupdate`.')]
-                ed.extend(str(error) for error in problems)
-                MODULE.error('\n'.join(ed))
+		ed.extend(str(error) for error in problems)
+		MODULE.error('\n'.join(ed))
 		raise Critical(description='\n'.join(ed))
 
 

@@ -101,10 +101,10 @@ class Instance(Base, ProgressMixin):
 		plugin = self.get(plugin)
 		MODULE.process('Running %s' % (plugin,))
 		MODULE.process(''.join(plugin.run_descr,))
-                args = args or {}
+		args = args or {}
 		def thread(self, request):
-                        return plugin.execute(self, **args)
-                return thread
+			return plugin.execute(self, **args)
+		return thread
 
 	@sanitize(pattern=PatternSanitizer(default='.*'))
 	@simple_response
@@ -228,7 +228,7 @@ class Plugin(object):
 	@property
 	def run_descr(self):
 		return list(getattr(self.module, 'run_descr',[]))
-        
+
 	@property
 	def popups(self):
 		u"""Buttons with pop ups"""
