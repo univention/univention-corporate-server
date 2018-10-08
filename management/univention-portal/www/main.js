@@ -1426,7 +1426,7 @@ define([
 			dom.byId('portalLogo').src = logoSrc;
 
 			// title
-			var portalName = portalJson.portal.name[locale] || portalJson.portal.name.en_US || '';
+			var portalName = lang.replace(portalJson.portal.name[locale] || portalJson.portal.name.en_US || '', tools._status);
 			dom.byId('portalTitle').innerHTML = portalName;
 			document.title = portalName;
 
