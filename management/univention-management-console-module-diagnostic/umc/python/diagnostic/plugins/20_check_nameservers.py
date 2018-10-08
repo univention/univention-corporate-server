@@ -53,7 +53,7 @@ links = [{
 	'href': _('http://sdb.univention.de/1273'),
 	'label': _('Univention Support Database - Bind: zone transfer failed')
 }]
-run_descr =_('Checks nameserver entries on DNS zones')
+run_descr = ('Checks nameserver entries on DNS zones')
 
 
 class RecordNotFound(Exception):
