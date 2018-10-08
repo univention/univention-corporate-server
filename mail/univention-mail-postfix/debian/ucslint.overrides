@@ -2,5 +2,3 @@
 0004-16: conffiles/etc/listfilter.secret
 0004-16: conffiles/etc/mailname
 0010-2: conffiles/etc/init.d/postfix
-0010-2: contrib/libmilter.py
-0009-2: contrib/libmilter.py

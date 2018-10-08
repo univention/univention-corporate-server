@@ -1,0 +1,5 @@
+python-libmilter (1.0.0-0) unstable; urgency=low
+
+  * Bug #40609: initial import from github (version 1.0.3, "master" branch)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 08 Oct 2018 14:49:50 +0200

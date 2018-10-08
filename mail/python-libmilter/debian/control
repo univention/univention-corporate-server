@@ -1,0 +1,17 @@
+Source: python-libmilter
+Section: univention
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 7), ucslint-univention
+Standards-Version: 3.8.2
+
+Package: python-libmilter
+Architecture: all
+Depends: ${misc:Depends},
+ python (<< 2.8),
+ python (>= 2.6),
+ python-support,
+Description: A pure python implementation of libmilter.
+ This package contains a pure python implementation of
+ libmilter. It is compatible with both Postfix and Sendmail.
+ .
+ https://github.com/crustymonkey/python-libmilter

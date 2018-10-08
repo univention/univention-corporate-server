@@ -52,23 +52,3 @@ License: RFC-Reference
  .
  The limited permissions granted above are perpetual and will not be
  revoked by the Internet Society or its successors or assigns.
-
-Files: contrib/libmilter.py
-Copyright: Jay Deiman
-License: GNU General Public License version 3
- This program uses python-libmilter version 1.0.3 by Jay Deiman
- (admin@splitstreams.com) retrieved on 2018-09-13 from
- https://github.com/crustymonkey/python-libmilter
- .
- python-libmilter is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- python-libmilter is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with python-libmilter.  If not, see <http://www.gnu.org/licenses/>.

@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="no-js">
+<head>
+    <meta charset="utf-8" />
+    <title>python-libmilter [StuffIveLearned.org]</title>
+    <script>(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement)</script>
+    <meta name="generator" content="DokuWiki"/>
+<meta name="robots" content="index,follow"/>
+<meta name="keywords" content="programming,python,python-libmilter"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/lib/exe/opensearch.php" title="StuffIveLearned.org"/>
+<link rel="start" href="/"/>
+<link rel="contents" href="/doku.php?id=programming:python:python-libmilter&amp;do=index" title="Sitemap"/>
+<link rel="alternate" type="application/rss+xml" title="Recent Changes" href="/feed.php"/>
+<link rel="alternate" type="application/rss+xml" title="Current namespace" href="/feed.php?mode=list&amp;ns=programming:python"/>
+<link rel="alternate" type="text/html" title="Plain HTML" href="/doku.php?do=export_xhtml&amp;id=programming:python:python-libmilter"/>
+<link rel="alternate" type="text/plain" title="Wiki Markup" href="/doku.php?do=export_raw&amp;id=programming:python:python-libmilter"/>
+<link rel="canonical" href="https://stuffivelearned.org/doku.php?id=programming:python:python-libmilter"/>
+<link rel="stylesheet" type="text/css" href="/lib/exe/css.php?t=dokuwiki&amp;tseed=a9c39b9d23832667d12892559078d5c2"/>
+<!--[if gte IE 9]><!-->
+<script type="text/javascript">/*<![CDATA[*/var NS='programming:python';var JSINFO = {"id":"programming:python:python-libmilter","namespace":"programming:python"};
+/*!]]>*/</script>
+<script type="text/javascript" charset="utf-8" src="/lib/exe/jquery.php?tseed=23f888679b4f1dc26eef34902aca964f"></script>
+<script type="text/javascript" charset="utf-8" src="/lib/exe/js.php?t=dokuwiki&amp;tseed=a9c39b9d23832667d12892559078d5c2"></script>
+<script type="text/javascript">/*<![CDATA[*/
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		  
+/*!]]>*/</script>
+<script type="text/javascript">/*<![CDATA[*/
+var pageTracker = _gat._getTracker("UA-1091992-2");
+pageTracker._initData();
+pageTracker._trackPageview();
+		  
+/*!]]>*/</script>
+<script type="text/javascript" charset="utf-8">/*<![CDATA[*/addInitEvent(function(){
+	for ( i=0; i < document.forms.length; i++ ) {
+		if (document.forms[i].method == 'post') {
+			var myElement = document.createElement('input');
+			myElement.setAttribute('type', 'hidden');
+			myElement.name = 'bb2_screener_';
+			myElement.value = '1539003839 46.95.152.90';
+			document.forms[i].appendChild(myElement);
+		}
+	}
+});
+/*!]]>*/</script>
+<!--<![endif]-->
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="shortcut icon" href="/lib/tpl/dokuwiki/images/favicon.ico" />
+<link rel="apple-touch-icon" href="/lib/tpl/dokuwiki/images/apple-touch-icon.png" />
+    </head>
+
+<body>
+    <div id="dokuwiki__site"><div id="dokuwiki__top" class="site dokuwiki mode_show tpl_dokuwiki     ">
+
+        
+<!-- ********** HEADER ********** -->
+<div id="dokuwiki__header"><div class="pad group">
+
+    
+    <div class="headings group">
+        <ul class="a11y skip">
+            <li><a href="#dokuwiki__content">skip to content</a></li>
+        </ul>
+
+        <h1><a href="/doku.php?id=start"  accesskey="h" title="[H]"><img src="/lib/tpl/dokuwiki/images/logo.png" width="64" height="64" alt="" /> <span>StuffIveLearned.org</span></a></h1>
+            </div>
+
+    <div class="tools group">
+        <!-- USER TOOLS -->
+                    <div id="dokuwiki__usertools">
+                <h3 class="a11y">User Tools</h3>
+                <ul>
+                    <li><a href="/doku.php?id=programming:python:python-libmilter&amp;do=register"  class="action register" rel="nofollow" title="Register">Register</a></li><li><a href="/doku.php?id=programming:python:python-libmilter&amp;do=login&amp;sectok="  class="action login" rel="nofollow" title="Log In">Log In</a></li>                </ul>
+            </div>
+        
+        <!-- SITE TOOLS -->
+        <div id="dokuwiki__sitetools">
+            <h3 class="a11y">Site Tools</h3>
+            <form action="/doku.php?id=start" accept-charset="utf-8" class="search" id="dw__search" method="get" role="search"><div class="no"><input type="hidden" name="do" value="search" /><input type="text" placeholder="Search" id="qsearch__in" accesskey="f" name="id" class="edit" title="[F]" /><button type="submit" title="Search">Search</button><div id="qsearch__out" class="ajax_qsearch JSpopup"></div></div></form>            <div class="mobileTools">
+                <form action="/doku.php" method="get" accept-charset="utf-8"><div class="no"><input type="hidden" name="id" value="programming:python:python-libmilter" /><select name="do" class="edit quickselect" title="Tools"><option value="">Tools</option><optgroup label="Page Tools"><option value="edit">Show pagesource</option><option value="revisions">Old revisions</option><option value="backlink">Backlinks</option></optgroup><optgroup label="Site Tools"><option value="recent">Recent Changes</option><option value="media">Media Manager</option><option value="index">Sitemap</option></optgroup><optgroup label="User Tools"><option value="login">Log In</option><option value="register">Register</option></optgroup></select><button type="submit">&gt;</button></div></form>            </div>
+            <ul>
+                <li><a href="/doku.php?id=programming:python:python-libmilter&amp;do=recent"  class="action recent" accesskey="r" rel="nofollow" title="Recent Changes [R]">Recent Changes</a></li><li><a href="/doku.php?id=programming:python:python-libmilter&amp;do=media&amp;ns=programming%3Apython"  class="action media" rel="nofollow" title="Media Manager">Media Manager</a></li><li><a href="/doku.php?id=programming:python:python-libmilter&amp;do=index"  class="action index" accesskey="x" rel="nofollow" title="Sitemap [X]">Sitemap</a></li>            </ul>
+        </div>
+
+    </div>
+
+    <!-- BREADCRUMBS -->
+            <div class="breadcrumbs">
+                            <div class="youarehere"><span class="bchead">You are here: </span><span class="home"><bdi><a href="/doku.php?id=start" class="wikilink1" title="start">StuffIveLearned.org</a></bdi></span> » <bdi><a href="/doku.php?id=programming:start" class="wikilink2" title="programming:start" rel="nofollow">programming</a></bdi> » <bdi><a href="/doku.php?id=programming:python" class="wikilink1" title="programming:python">Python Programming</a></bdi> » <bdi><span class="curid"><a href="/doku.php?id=programming:python:python-libmilter" class="wikilink1" title="programming:python:python-libmilter">python-libmilter</a></span></bdi></div>
+                                        <div class="trace"><span class="bchead">Trace:</span> <span class="bcsep">•</span> <span class="curid"><bdi><a href="/doku.php?id=programming:python:python-libmilter"  class="breadcrumbs" title="programming:python:python-libmilter">python-libmilter</a></bdi></span></div>
+                    </div>
+    
+
+
+    <hr class="a11y" />
+</div></div><!-- /header -->
+
+        <div class="wrapper group">
+
+            
+            <!-- ********** CONTENT ********** -->
+            <div id="dokuwiki__content"><div class="pad group">
+                
+                <div class="pageId"><span>programming:python:python-libmilter</span></div>
+
+                <div class="page group">
+                                                            <!-- wikipage start -->
+                    <!-- TOC START -->
+<div id="dw__toc">
+<h3 class="toggle">Table of Contents</h3>
+<div>
+
+<ul class="toc">
+<li class="level1"><div class="li"><a href="#python-libmilter">python-libmilter</a></div>
+<ul class="toc">
+<li class="level2"><div class="li"><a href="#about">About</a></div></li>
+<li class="level2"><div class="li"><a href="#getting_it">Getting It</a></div></li>
+<li class="level2"><div class="li"><a href="#donations">Donations</a></div></li>
+<li class="level2"><div class="li"><a href="#bug_reports_issues_and_contributions">Bug Reports, Issues and Contributions</a></div></li>
+<li class="level2"><div class="li"><a href="#the_library">The Library</a></div>
+<ul class="toc">
+<li class="level3"><div class="li"><a href="#constants">Constants</a></div>
+<ul class="toc">
+<li class="level4"><div class="li"><a href="#smfif">SMFIF_*</a></div></li>
+<li class="level4"><div class="li"><a href="#smfip">SMFIP_*</a></div></li>
+<li class="level4"><div class="li"><a href="#response_constants">Response Constants</a></div></li>
+<li class="level4"><div class="li"><a href="#all_the_rest">All the Rest</a></div></li>
+</ul>
+</li>
+<li class="level3"><div class="li"><a href="#overridable_callbacks">Overridable Callbacks</a></div>
+<ul class="toc">
+<li class="level4"><div class="li"><a href="#connect_self_hostname_family_ip_port_cmddict">connect(self , hostname , family , ip , port , cmdDict)</a></div></li>
+<li class="level4"><div class="li"><a href="#helo_self_heloname">helo(self , heloname)</a></div></li>
+<li class="level4"><div class="li"><a href="#mailfrom_self_fraddr_cmddict">mailFrom(self , frAddr , cmdDict)</a></div></li>
+<li class="level4"><div class="li"><a href="#rcpt_self_recip_cmddict">rcpt(self , recip , cmdDict)</a></div></li>
+<li class="level4"><div class="li"><a href="#header_self_key_val_cmddict">header(self , key , val , cmdDict)</a></div></li>
+<li class="level4"><div class="li"><a href="#eoh_self_cmddict">eoh(self , cmdDict)</a></div></li>
+<li class="level4"><div class="li"><a href="#data_self_cmddict">data(self , cmdDict)</a></div></li>
+<li class="level4"><div class="li"><a href="#body_self_chunk_cmddict">body(self , chunk , cmdDict)</a></div></li>
+<li class="level4"><div class="li"><a href="#eob_self_cmddict">eob(self , cmdDict)</a></div></li>
+<li class="level4"><div class="li"><a href="#close_self">close(self)</a></div></li>
+<li class="level4"><div class="li"><a href="#abort_self">abort(self)</a></div></li>
+</ul>
+</li>
+<li class="level3"><div class="li"><a href="#modification_methods">Modification Methods</a></div>
+<ul class="toc">
+<li class="level4"><div class="li"><a href="#addrcpt_self_rcpt_esmtpadd">addRcpt(self , rcpt , esmtpAdd=&#039;&#039;)</a></div></li>
+<li class="level4"><div class="li"><a href="#delrcpt_self_rcpt">delRcpt(self , rcpt)</a></div></li>
+<li class="level4"><div class="li"><a href="#replbody_self_body">replBody(self , body)</a></div></li>
+<li class="level4"><div class="li"><a href="#addheader_self_key_val">addHeader(self , key , val)</a></div></li>
+<li class="level4"><div class="li"><a href="#chgheader_self_key_val_index_1">chgHeader(self , key , val=&#039;&#039; , index=1)</a></div></li>
+<li class="level4"><div class="li"><a href="#quarantine_self_msg">quarantine(self , msg=&#039;&#039;)</a></div></li>
+<li class="level4"><div class="li"><a href="#setreply_self_rcode_xcode_msg">setReply(self , rcode , xcode , msg)</a></div></li>
+<li class="level4"><div class="li"><a href="#chgfrom_self_fraddr_esmtpadd">chgFrom(self , frAddr , esmtpAdd=&#039;&#039;)</a></div></li>
+<li class="level4"><div class="li"><a href="#skip_self">skip(self)</a></div></li>
+</ul>
+</li>
+<li class="level3"><div class="li"><a href="#factories">Factories</a></div>
+<ul class="toc">
+<li class="level4"><div class="li"><a href="#asyncfactory">AsyncFactory</a></div></li>
+<li class="level4"><div class="li"><a href="#threadfactory">ThreadFactory</a></div></li>
+<li class="level4"><div class="li"><a href="#forkfactory">ForkFactory</a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="level2"><div class="li"><a href="#example">Example</a></div></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<!-- TOC END -->
+
+<h1 class="sectionedit1" id="python-libmilter">python-libmilter</h1>
+<div class="level1">
+
+</div>
+
+<h2 class="sectionedit2" id="about">About</h2>
+<div class="level2">
+
+<p>
+python-libmilter started as a project to maximize the portability of libmilter.  I know about, and have used, the excellent CPython implementation by Stuart D. Gathman <a href="http://bmsi.com/python/milter.html" class="urlextern" title="http://bmsi.com/python/milter.html" rel="nofollow">py-milter</a>.  Though I liked this library for it&#039;s thin wrapper around the C libmilter library (and thereby speed), I had some issues with getting it to install, having to find and download the appropriate source code for libmilter version installed, etc.  This is why I went with a ground up implementation of libmilter in pure Python.  I want something I could just “drop in” to a project and have a milter up and running in almost no time, no matter what <abbr title="Operating System">OS</abbr> environment I was in.  
+</p>
+
+<p>
+I also wanted some more choices for getting things done than the default thread approach.  This is why I modularized the milter itself to working as a traditional threading milter wherein each client connection gets its own thread, but I also added factories for single thread asynchronous operation and forking.  Do note that the threaded version of python-libmilter is constrained by the GIL, whereas <a href="http://bmsi.com/python/milter.html" class="urlextern" title="http://bmsi.com/python/milter.html" rel="nofollow">py-milter</a> is not since the threading is implemented in C.  If you really want to maximize speed, <a href="http://bmsi.com/python/milter.html" class="urlextern" title="http://bmsi.com/python/milter.html" rel="nofollow">py-milter</a> might be for you, but be aware that I&#039;ve been able to get excellent performance from this library in production environments with very heavy processing load (evaluating many regular expressions) using the forking factory.
+</p>
+
+<p>
+Note that this documentation assumes a good working knowledge of the SMTP protocol as defined in <abbr title="Request for Comments">RFC</abbr> 2822.
+</p>
+
+</div>
+
+<h2 class="sectionedit3" id="getting_it">Getting It</h2>
+<div class="level2">
+
+<p>
+You have a couple of options for getting this package.  You can head on over to the <a href="https://github.com/crustymonkey/python-libmilter" class="urlextern" title="https://github.com/crustymonkey/python-libmilter" rel="nofollow">Github page</a> and download or clone it from there.  
+</p>
+
+<p>
+You can also use <code>pip</code> or <code>easy_install</code> to install it.
+</p>
+<pre class="code bash">pip <span class="kw2">install</span> python-libmilter</pre>
+
+<p>
+<strong>NOTE:</strong> The RPMs are <strong>not</strong> guaranteed to be the latest versions.  Check <a href="https://github.com/crustymonkey/python-libmilter" class="urlextern" title="https://github.com/crustymonkey/python-libmilter" rel="nofollow">Github</a> to find out what the latest version is.  That said, I will try and keep these up to date.
+</p>
+
+<p>
+<a href="/lib/exe/fetch.php?media=programming:python:python-libmilter-1.0.1-1.noarch.rpm" class="media mediafile mf_rpm" title="programming:python:python-libmilter-1.0.1-1.noarch.rpm (41.4 KB)">python-libmilter-1.0.1-1.noarch.rpm</a> <br/>
+
+<a href="/lib/exe/fetch.php?media=programming:python:python-libmilter-1.0.1-1.src.rpm" class="media mediafile mf_rpm" title="programming:python:python-libmilter-1.0.1-1.src.rpm (17.8 KB)">python:python-libmilter-1.0.1-1.src.rpm</a>
+</p>
+
+</div>
+
+<h2 class="sectionedit4" id="donations">Donations</h2>
+<div class="level2">
+
+<p>
+By no means should anyone feel they <em>have</em> to donate.  However, if you&#039;ve used this stuff to save some time, prevent head shaped holes in the wall, raise your children or you just think this is awesome and want to contribute to my <a href="http://www.surlybrewing.com/" class="urlextern" title="http://www.surlybrewing.com/" rel="nofollow">Surly</a> fund (that stuff isn&#039;t cheap, but it&#039;s soooooo good), you can click the <a href="http://paypal.com" class="urlextern" title="http://paypal.com" rel="nofollow">Paypal</a> donate button below and toss me a couple of dollars.  I&#039;ve heard from others who have donated that they were visited by flying monkeys that spoke Icelandic, and were subsequently showered with fantastic gifts from said monkeys.  I don&#039;t know if this is true, or if drug use was involved, but it still sounds pretty awesome.
+</p>
+
+<p>
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="83ENX2ZV8E694">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+</p>
+
+</div>
+
+<h2 class="sectionedit5" id="bug_reports_issues_and_contributions">Bug Reports, Issues and Contributions</h2>
+<div class="level2">
+
+<p>
+Please submit any and all bug reports/feature requests to the <a href="https://github.com/crustymonkey/python-libmilter" class="urlextern" title="https://github.com/crustymonkey/python-libmilter" rel="nofollow">Github page</a>.
+</p>
+
+<p>
+If you wish to contribute code patches, please use the repository fork and pull request mechanisms of <a href="http://github.com" class="urlextern" title="http://github.com" rel="nofollow">Github</a>.
+</p>
+
+<p>
+If you have any other questions, you can always email me directly at admin@splitstreams.com.
+</p>
+
+</div>
+
+<h2 class="sectionedit6" id="the_library">The Library</h2>
+<div class="level2">
+
+<p>
+You will find that the library file is split up into sections defining the constants for client server options and flags.  Note that there are multiple milter versions (2, 3, 4, 6) and not everything is available in earlier versions than 6.  See libmilter documentation for specifics on what is available in what versions.  I will show where the version 2 compatibility ends so that if you wish to write your app to be compatible with all milter versions, you can do so.
+</p>
+
+</div>
+
+<h3 class="sectionedit7" id="constants">Constants</h3>
+<div class="level3">
+
+</div>
+
+<h4 class="sectionedit8" id="smfif">SMFIF_*</h4>
+<div class="level4">
+
+<p>
+These are flags that are set defining mutations that we wish to make in our app.  This first set is compatible with version 2 of the milter protocol.
+</p>
+<div class="table sectionedit9"><table class="inline">
+	<tr class="row0">
+		<th class="col0"> SMFIF_ADDHDRS </th><td class="col1"> States that we may add headers to the email </td>
+	</tr>
+	<tr class="row1">
+		<th class="col0"> SMFIF_CHGBODY </th><td class="col1"> States that we may replace the body </td>
+	</tr>
+	<tr class="row2">
+		<th class="col0"> SMFIF_ADDRCPT </th><td class="col1"> States that we may add recipients </td>
+	</tr>
+	<tr class="row3">
+		<th class="col0"> SMFIF_DELRCPT </th><td class="col1"> States that we may delete recipients </td>
+	</tr>
+	<tr class="row4">
+		<th class="col0"> SMFIF_CHGHDRS </th><td class="col1"> States that we may change/delete headers (note that this is different from the body) </td>
+	</tr>
+	<tr class="row5">
+		<th class="col0"> SMFIF_QUARANTINE </th><td class="col1"> States that we may quarantine the message (how this is done is up to the MTA.  Postfix will put the message in its HOLD queue) </td>
+	</tr>
+</table></div>
+
+<p>
+This next set is available in later milter protocol versions.
+</p>
+<div class="table sectionedit10"><table class="inline">
+	<tr class="row0">
+		<th class="col0"> SMFIF_CHGFROM </th><td class="col1"> States that we may replace the envelope sender </td>
+	</tr>
+	<tr class="row1">
+		<th class="col0"> SMFIF_ADDRCPT_PAR </th><td class="col1"> States that we may add recipients + args </td>
+	</tr>
+	<tr class="row2">
+		<th class="col0"> SMFIF_SETSYMLIST </th><td class="col1"> We may send macro names (CURRENTLY UNSUPPORTED) </td>
+	</tr>
+</table></div>
+
+<p>
+There are also some convenience flags.
+</p>
+<div class="table sectionedit11"><table class="inline">
+	<tr class="row0">
+		<th class="col0"> SMFIF_ALLOPTS_V2 </th><td class="col1"> This sets all flags from the first section </td>
+	</tr>
+	<tr class="row1">
+		<th class="col0"> SMFIF_ALLOPTS_V6 </th><td class="col1"> This sets all flags from the second section </td>
+	</tr>
+	<tr class="row2">
+		<th class="col0"> SMFIF_ALLOPTS </th><td class="col1"> This sets all flags </td>
+	</tr>
+</table></div>
+
+</div>
+
+<h4 class="sectionedit12" id="smfip">SMFIP_*</h4>
+<div class="level4">
+
+<p>
+These are protocol options, and can be set in a couple of different ways.  The first way is to simply set them when setting up your factory (TODO: link to the factory section).  The other way, at least for the <code>SMFIP_NO*</code> and <code>SMFIP_NR_*</code> options, is to use decorators.  That will be explained later.  First, we will define the protocol options.
+</p>
+
+<p>
+Again, this first section is available to version 2 of the milter protocol.
+</p>
+<div class="table sectionedit13"><table class="inline">
+	<tr class="row0">
+		<th class="col0"> SMFIP_NOCONNECT </th><td class="col1"> Tell the MTA we don&#039;t want connection info </td>
+	</tr>
+	<tr class="row1">
+		<th class="col0"> SMFIP_NOHELO </th><td class="col1"> Tell the MTA we don&#039;t want HELO info </td>
+	</tr>
+	<tr class="row2">
+		<th class="col0"> SMFIP_NOMAIL </th><td class="col1"> Tell the MTA we don&#039;t want MAIL info </td>
+	</tr>
+	<tr class="row3">
+		<th class="col0"> SMFIP_NORCPT </th><td class="col1"> Tell the MTA we don&#039;t want RCPT info </td>
+	</tr>
+	<tr class="row4">
+		<th class="col0"> SMFIP_NOBODY </th><td class="col1"> Tell the MTA we don&#039;t want the body </td>
+	</tr>
+	<tr class="row5">
+		<th class="col0"> SMFIP_NOHDRS </th><td class="col1"> Tell the MTA we don&#039;t want the headers </td>
+	</tr>
+	<tr class="row6">
+		<th class="col0"> SMFIP_NOEOH </th><td class="col1"> Tell the MTA we don&#039;t want the end of headers notification </td>
+	</tr>
+</table></div>
+
+<p>
+These other protocol options are defined for new versions of the milter protocol than version 2.
+</p>
+<div class="table sectionedit14"><table class="inline">
+	<tr class="row0">
+		<th class="col0"> SMFIP_NR_HDR </th><td class="col1"> Tell the MTA we don&#039;t reply to the headers </td>
+	</tr>
+	<tr class="row1">
+		<th class="col0"> SMFIP_NOUNKNOWN </th><td class="col1"> Tell the MTA we don&#039;t want any unknown commands </td>
+	</tr>
+	<tr class="row2">
+		<th class="col0"> SMFIP_NODATA </th><td class="col1"> Tell the MTA we don&#039;t want the DATA command sent to us </td>
+	</tr>
+	<tr class="row3">
+		<th class="col0"> SMFIP_RCPT_REJ </th><td class="col1"> Tell the MTA we want the rejected recipients </td>
+	</tr>
+	<tr class="row4">
+		<th class="col0"> SMFIP_NR_CONN </th><td class="col1"> Tell the MTA we don&#039;t reply to the headers </td>
+	</tr>
+	<tr class="row5">
+		<th class="col0"> SMFIP_NR_HELO </th><td class="col1"> Tell the MTA we don&#039;t reply to HELO info </td>
+	</tr>
+	<tr class="row6">
+		<th class="col0"> SMFIP_NR_MAIL </th><td class="col1"> Tell the MTA we don&#039;t reply to MAIL info </td>
+	</tr>
+	<tr class="row7">
+		<th class="col0"> SMFIP_NR_RCPT </th><td class="col1"> Tell the MTA we don&#039;t reply to RCPT info </td>
+	</tr>
+	<tr class="row8">
+		<th class="col0"> SMFIP_NR_DATA </th><td class="col1"> Tell the MTA we don&#039;t reply to the DATA command </td>
+	</tr>
+	<tr class="row9">
+		<th class="col0"> SMFIP_NR_UNKN </th><td class="col1"> Tell the MTA we don&#039;t reply to UNKNOWNs </td>
+	</tr>
+	<tr class="row10">
+		<th class="col0"> SMFIP_NR_EOH </th><td class="col1"> Tell the MTA we don&#039;t reply to the end of headers </td>
+	</tr>
+	<tr class="row11">
+		<th class="col0"> SMFIP_NR_BODY </th><td class="col1"> Tell the MTA we don&#039;t reply to the body chunks </td>
+	</tr>
+	<tr class="row12">
+		<th class="col0"> SMFIP_HDR_LEADSPC </th><td class="col1"> Header value has leading space </td>
+	</tr>
+</table></div>
+
+<p>
+And just like the OPTS, there are some convenience variables for setting all protocol options.
+</p>
+<div class="table sectionedit15"><table class="inline">
+	<tr class="row0">
+		<th class="col0"> SMFIP_ALLPROTOS_V2 </th><td class="col1"> Set all protocol options for version 2 of the protocol </td>
+	</tr>
+	<tr class="row1">
+		<th class="col0"> SMFIP_ALLPROTOS_V6 </th><td class="col1"> Set all the protocol options for everything post version 2 </td>
+	</tr>
+	<tr class="row2">
+		<th class="col0"> SMFIP_ALLPROTOS </th><td class="col1"> Sets all protocol options </td>
+	</tr>
+</table></div>
+
+</div>
+
+<h4 class="sectionedit16" id="response_constants">Response Constants</h4>
+<div class="level4">
+
+<p>
+These are what you use to reply to the MTA with what you want it to do currently.  The default is to just reply with a CONTINUE (do nothing).  You should use these as the <code>return</code> value from your callbacks.
+</p>
+
+<p>
+Example:
+</p>
+<pre class="code python"><span class="kw1">import</span> libmilter
+...
+...
+<span class="kw1">def</span> eob<span class="br0">&#40;</span><span class="kw2">self</span> <span class="sy0">,</span> cmdDict<span class="br0">&#41;</span>:
+    <span class="kw1">return</span> libmilter.<span class="me1">CONTINUE</span>
+...
+...</pre>
+<div class="table sectionedit17"><table class="inline">
+	<thead>
+	<tr class="row0">
+		<th class="col0"> Constant </th><th class="col1"> Description </th>
+	</tr>
+	</thead>
+	<tr class="row1">
+		<td class="col0"> ACCEPT </td><td class="col1"> Accept this message </td>
+	</tr>
+	<tr class="row2">
+		<td class="col0"> CONTINUE </td><td class="col1"> Do nothing.  Just continue processing the message </td>
+	</tr>
+	<tr class="row3">
+		<td class="col0"> REJECT </td><td class="col1"> Reject this message/recipient/from address, etc. </td>
+	</tr>
+	<tr class="row4">
+		<td class="col0"> TEMPFAIL </td><td class="col1"> Temporarily fail this message/recipient/from address, etc. </td>
+	</tr>
+	<tr class="row5">
+		<td class="col0"> DISCARD </td><td class="col1"> Discard the message </td>
+	</tr>
+	<tr class="row6">
+		<td class="col0"> CONN_FAIL </td><td class="col1"> Cause a connection failure </td>
+	</tr>
+	<tr class="row7">
+		<td class="col0"> SHUTDOWN </td><td class="col1"> 421: shutdown (internal to MTA) </td>
+	</tr>
+</table></div>
+
+</div>
+
+<h4 class="sectionedit18" id="all_the_rest">All the Rest</h4>
+<div class="level4">
+
+<p>
+All the rest of the standard constants are defined as well.  I&#039;ve only documented the ones above as these are the only ones directly used.
+</p>
+
+</div>
+
+<h3 class="sectionedit19" id="overridable_callbacks">Overridable Callbacks</h3>
+<div class="level3">
+
+<p>
+Here is the list of the overridable callbacks.  Any of these can be optionally overridden in a subclass of the <code>MilterProtocol</code> base class.
+</p>
+
+<p>
+Note that some of these callbacks include a <code>cmdDict</code> argument.  The <code>cmdDict</code> is a dictionary of everything in a fairly raw format that was sent by the MTA for this particular routine.  What is contained in it varies depending on your MTA and how it is configured.
+</p>
+
+<p>
+As an aside, all this information is also available with a <code>pydoc libmilter</code>.
+</p>
+
+</div>
+
+<h4 class="sectionedit20" id="connect_self_hostname_family_ip_port_cmddict">connect(self , hostname , family , ip , port , cmdDict)</h4>
+<div class="level4">
+
+<p>
+This gets the connection info:
+</p>
+<div class="table sectionedit21"><table class="inline">
+	<thead>
+	<tr class="row0">
+		<th class="col0"> Type </th><th class="col1"> Name </th><th class="col2"> Description </th>
+	</tr>
+	</thead>
+	<tr class="row1">
+		<td class="col0"> str </td><td class="col1 leftalign"> hostname  </td><td class="col2"> The reverse hostname of the connecting ip </td>
+	</tr>
+	<tr class="row2">
+		<td class="col0"> str </td><td class="col1"> family </td><td class="col2"> The IP family (L=unix , 4=ipv4 , 6=ipv6 , U=unknown) </td>
+	</tr>
+	<tr class="row3">
+		<td class="col0"> str </td><td class="col1"> ip</td><td class="col2"> The IP of the connecting client </td>
+	</tr>
+	<tr class="row4">
+		<td class="col0"> int </td><td class="col1"> port </td><td class="col2"> The port number of the connecting client </td>
+	</tr>
+	<tr class="row5">
+		<td class="col0"> dict </td><td class="col1"> cmdDict </td><td class="col2"> The raw dictionary of items sent by the MTA </td>
+	</tr>
+</table></div>
+
+</div>
+
+<h4 class="sectionedit22" id="helo_self_heloname">helo(self , heloname)</h4>
+<div class="level4">
+
+<p>
+This gets the HELO string sent by the client
+</p>
+<div class="table sectionedit23"><table class="inline">
+	<thead>
+	<tr class="row0">
+		<th class="col0"> Type </th><th class="col1"> Name </th><th class="col2"> Description </th>
+	</tr>
+	</thead>
+	<tr class="row1">
+		<td class="col0"> str </td><td class="col1"> heloname </td><td class="col2"> What the client HELOed as </td>
+	</tr>
+</table></div>
+
+</div>
+
+<h4 class="sectionedit24" id="mailfrom_self_fraddr_cmddict">mailFrom(self , frAddr , cmdDict)</h4>
+<div class="level4">
+
+<p>
+This gets the MAIL FROM envelope address
+</p>
+<div class="table sectionedit25"><table class="inline">
+	<thead>
+	<tr class="row0">
+		<th class="col0"> Type </th><th class="col1"> Name </th><th class="col2"> Description </th>
+	</tr>
+	</thead>
+	<tr class="row1">
+		<td class="col0"> str </td><td class="col1"> frAddr </td><td class="col2"> The envelope from address </td>
+	</tr>
+	<tr class="row2">
+		<td class="col0"> dict </td><td class="col1"> cmdDict </td><td class="col2"> The raw dictionary of items sent by the MTA </td>
+	</tr>
+</table></div>
+
+</div>
+
+<h4 class="sectionedit26" id="rcpt_self_recip_cmddict">rcpt(self , recip , cmdDict)</h4>
+<div class="level4">
+
+<p>
+This gets the RCPT TO envelope address
+</p>
+<div class="table sectionedit27"><table class="inline">
+	<thead>
+	<tr class="row0">
+		<th class="col0"> Type </th><th class="col1"> Name </th><th class="col2"> Description </th>
+	</tr>
+	</thead>
+	<tr class="row1">
+		<td class="col0"> str </td><td class="col1"> recip </td><td class="col2"> The envelope recipient address </td>
+	</tr>
+	<tr class="row2">
+		<td class="col0"> dict </td><td class="col1"> cmdDict </td><td class="col2"> The raw dictionary of items sent by the MTA </td>
+	</tr>
+</table></div>
+
+</div>
+
+<h4 class="sectionedit28" id="header_self_key_val_cmddict">header(self , key , val , cmdDict)</h4>
+<div class="level4">
+
+<p>
+This gets one header from the email at a time.  The “key” is the LHS of the header and the “val” is RHS.
+</p>
+
+<p>
+ex.: key=“Subject” , val=“The subject of my email”
+</p>
+<div class="table sectionedit29"><table class="inline">
+	<thead>
+	<tr class="row0">
+		<th class="col0"> Type </th><th class="col1"> Name </th><th class="col2"> Description </th>
+	</tr>
+	</thead>
+	<tr class="row1">
+		<td class="col0"> str </td><td class="col1"> key </td><td class="col2"> The header name </td>
+	</tr>
+	<tr class="row2">
+		<td class="col0"> str </td><td class="col1"> val </td><td class="col2"> The header value </td>
+	</tr>
+	<tr class="row3">
+		<td class="col0"> dict </td><td class="col1"> cmdDict </td><td class="col2"> The raw dictionary of items sent by the MTA </td>
+	</tr>
+</table></div>
+
+</div>
+
+<h4 class="sectionedit30" id="eoh_self_cmddict">eoh(self , cmdDict)</h4>
+<div class="level4">
+
+<p>
+This tells you when all the headers have been received
+</p>
+<div class="table sectionedit31"><table class="inline">
+	<thead>
+	<tr class="row0">
+		<th class="col0"> Type </th><th class="col1"> Name </th><th class="col2"> Description </th>
+	</tr>
+	</thead>
+	<tr class="row1">
+		<td class="col0"> dict </td><td class="col1"> cmdDict </td><td class="col2"> The raw dictionary of items sent by the MTA </td>
+	</tr>
+</table></div>
+
+</div>
+
+<h4 class="sectionedit32" id="data_self_cmddict">data(self , cmdDict)</h4>
+<div class="level4">
+
+<p>
+This is called when the client sends DATA
+</p>
+<div class="table sectionedit33"><table class="inline">
+	<thead>
+	<tr class="row0">
+		<th class="col0"> Type </th><th class="col1"> Name </th><th class="col2"> Description </th>
+	</tr>
+	</thead>
+	<tr class="row1">
+		<td class="col0"> dict </td><td class="col1"> cmdDict </td><td class="col2"> The raw dictionary of items sent by the MTA </td>
+	</tr>
+</table></div>
+
+</div>
+
+<h4 class="sectionedit34" id="body_self_chunk_cmddict">body(self , chunk , cmdDict)</h4>
+<div class="level4">
+
+<p>
+This gets a chunk of the body of the email from the MTA. This will be called many times for a large email.
+</p>
+<div class="table sectionedit35"><table class="inline">
+	<thead>
+	<tr class="row0">
+		<th class="col0"> Type </th><th class="col1"> Name </th><th class="col2"> Description </th>
+	</tr>
+	</thead>
+	<tr class="row1">
+		<td class="col0"> str </td><td class="col1"> chunk </td><td class="col2"> A chunk of the email&#039;s body </td>
+	</tr>
+	<tr class="row2">
+		<td class="col0"> dict </td><td class="col1"> cmdDict </td><td class="col2"> The raw dictionary of items sent by the MTA </td>
+	</tr>
+</table></div>
+
+</div>
+
+<h4 class="sectionedit36" id="eob_self_cmddict">eob(self , cmdDict)</h4>
+<div class="level4">
+
+<p>
+This signals that the MTA has sent the entire body of the email. This is the callback where you can use <a href="#modification_methods" title="programming:python:python-libmilter ↵" class="wikilink1">modification methods</a>, such as addHeader(), delRcpt(), etc.  If you return CONTINUE from this method, it will be the same as an returning ACCEPT.
+</p>
+<div class="table sectionedit37"><table class="inline">
+	<thead>
+	<tr class="row0">
+		<th class="col0"> Type </th><th class="col1"> Name </th><th class="col2"> Description </th>
+	</tr>
+	</thead>
+	<tr class="row1">
+		<td class="col0"> dict </td><td class="col1"> cmdDict </td><td class="col2"> The raw dictionary of items sent by the MTA </td>
+	</tr>
+</table></div>
+
+</div>
+
+<h4 class="sectionedit38" id="close_self">close(self)</h4>
+<div class="level4">
+
+<p>
+Here, you can close any open resources. 
+</p>
+
+<p>
+<strong>NOTE:</strong> this method is <strong>always</strong> called when everything is complete.
+</p>
+
+</div>
+
+<h4 class="sectionedit39" id="abort_self">abort(self)</h4>
+<div class="level4">
+
+<p>
+This is called when an ABORT is received from the MTA.
+</p>
+
+<p>
+<strong>NOTE:</strong> Postfix will send an ABORT at the end of every message.
+</p>
+
+</div>
+
+<h3 class="sectionedit40" id="modification_methods">Modification Methods</h3>
+<div class="level3">
+
+<p>
+These are all the methods that can <strong>only be used in the eob()</strong> callback in your milter to modify the message/senders/recipients themselves.  Note that your MTA must support these methods for them to be used.  You also must tell the MTA you are going to use these in your application with the appropriate <a href="#smfif" title="programming:python:python-libmilter ↵" class="wikilink1">SMFIF_*</a> options passed into the <a href="#factories" title="programming:python:python-libmilter ↵" class="wikilink1">Factory</a>.
+</p>
+
+</div>
+
+<h4 class="sectionedit41" id="addrcpt_self_rcpt_esmtpadd">addRcpt(self , rcpt , esmtpAdd=&#039;&#039;)</h4>
+<div class="level4">
+
+<p>
+This will tell the MTA to add a recipient to the email.
+</p>
+
+<p>
+There are essentially 2 different ways you can use this.  The most basic way is to just call it with a recipient address:
+</p>
+<pre class="code python"><span class="kw2">self</span>.<span class="me1">addRcpt</span><span class="br0">&#40;</span><span class="st0">'someone@example.com'</span><span class="br0">&#41;</span></pre>
+
+<p>
+That will add an envelope recipient to the message.  This can be very useful if you silently want to send certain messages to their another email account, perhaps for spam analysis.  To use this, you must set the <code>SMFIF_ADDRCPT</code> option.
+</p>
+
+<p>
+The second way is to call this and set the <code>esmtpAdd</code> variable as well.  The <code>esmtpAdd</code> variable would be set to optional ESMTP parameters to the add recipient method. <br/>
+
+<strong>IMPORTANT:</strong>  If you want to use <code>esmtpAdd</code> to add additional ESMTP parameters, you have to set the <code>SMFIF_ADDRCPT_PAR</code> option instead of (or in addition to) the <code>SMFIF_ADDRCPT</code> option.
+</p>
+
+</div>
+
+<h4 class="sectionedit42" id="delrcpt_self_rcpt">delRcpt(self , rcpt)</h4>
+<div class="level4">
+
+<p>
+This will tell the MTA to delete a recipient from the email
+</p>
+
+<p>
+<strong>NOTE:</strong> The recipient address must be EXACTLY the same as one of the addresses received in the rcpt() callback.
+</p>
+
+<p>
+You must have the <code>SMFIF_DELRCPT</code> option set to use this.
+</p>
+
+</div>
+
+<h4 class="sectionedit43" id="replbody_self_body">replBody(self , body)</h4>
+<div class="level4">
+
+<p>
+This will replace the body of the email with a new body.  This is how you would make changes to the body of an email.  It is up to you to store the email, modify it and send the entire body back to the MTA with this method.
+</p>
+
+<p>
+You must have the <code>SMFIF_CHGBODY</code> option set to use this.
+</p>
+
+</div>
+
+<h4 class="sectionedit44" id="addheader_self_key_val">addHeader(self , key , val)</h4>
+<div class="level4">
+
+<p>
+This will add a header to the email in the form: “key: val”
+</p>
+
+<p>
+You must have the <code>SMFIF_ADDHDRS</code> option set to use this.
+</p>
+
+</div>
+
+<h4 class="sectionedit45" id="chgheader_self_key_val_index_1">chgHeader(self , key , val=&#039;&#039; , index=1)</h4>
+<div class="level4">
+
+<p>
+This will change a header in the email.  The <code>key</code> should be exectly what was received in header().  If <code>val</code> is empty, the header will be removed.  <code>index</code> refers to which header to remove in the case that there are multiple headers with the same <code>key</code> (<em>Received:</em> is one example).  Note that <code>index</code> starts at “1”.
+</p>
+
+<p>
+You must have the <code>SMFIF_CHGHDRS</code> option set to use this.
+</p>
+
+</div>
+
+<h4 class="sectionedit46" id="quarantine_self_msg">quarantine(self , msg=&#039;&#039;)</h4>
+<div class="level4">
+
+<p>
+This tells the MTA to quarantine the message (put it in the HOLD queue in Postfix).  You can optionally set a <code>msg</code> to be potentially logged by the MTA.
+</p>
+
+<p>
+You must have the <code>SMFIF_QUARANTINE</code> option set to use this.
+</p>
+
+</div>
+
+<h4 class="sectionedit47" id="setreply_self_rcode_xcode_msg">setReply(self , rcode , xcode , msg)</h4>
+<div class="level4">
+
+<p>
+Sets the reply that the MTA will use for this message.<br/>
+
+The <code>rcode</code> is the 3 digit code to use (ex. 554 or 250).<br/>
+
+The <code>xcode</code> is the xcode part of the reply (ex. 5.7.1 or 2.1.0).
+The <code>msg</code> is the text response.
+</p>
+
+<p>
+Example:
+</p>
+<pre class="code python"><span class="kw2">self</span>.<span class="me1">setReply</span><span class="br0">&#40;</span><span class="nu0">555</span> <span class="sy0">,</span> <span class="st0">'5.7.0'</span> <span class="sy0">,</span> <span class="st0">'Monkey poo has just been flung at you'</span><span class="br0">&#41;</span></pre>
+
+</div>
+
+<h4 class="sectionedit48" id="chgfrom_self_fraddr_esmtpadd">chgFrom(self , frAddr , esmtpAdd=&#039;&#039;)</h4>
+<div class="level4">
+
+<p>
+This tells the MTA to change the envelope From address, with optional ESMTP extensions in <code>esmtpAdd</code>.
+</p>
+
+<p>
+You must have the <code>SMFIF_CHGFROM</code> option set to use this.
+</p>
+
+</div>
+
+<h4 class="sectionedit49" id="skip_self">skip(self)</h4>
+<div class="level4">
+
+<p>
+This tells the MTA that we don&#039;t want any more of this type of callback.
+</p>
+
+<p>
+Unlike the other modifiers, <strong>THIS CAN ONLY BE CALLED FROM THE body() callback!!</strong>.
+</p>
+
+<p>
+You must have the <code>SMFIP_SKIP</code> option set to use this.
+</p>
+
+</div>
+
+<h3 class="sectionedit50" id="factories">Factories</h3>
+<div class="level3">
+
+<p>
+When you are building your own milter, you will have to choose a factory to use to run your milter.  There are 3 different factories built in, they are:
+</p>
+<div class="table sectionedit51"><table class="inline">
+	<tr class="row0">
+		<th class="col0"> AsyncFactory </th><td class="col1"> A single threaded, single process asynchronous factory (not recommended) </td>
+	</tr>
+	<tr class="row1">
+		<th class="col0"> ThreadFactory </th><td class="col1"> Spawns a thread per connection from the MTA.  Works well with minimal processing in your milter. </td>
+	</tr>
+	<tr class="row2">
+		<th class="col0"> ForkFactory </th><td class="col1"> Spawns a process for each connection from the MTA.  Works the best when you don&#039;t need to share global resources </td>
+	</tr>
+</table></div>
+
+<p>
+When creating a factory object, you do so by calling the factory class (<code>AsyncFactory</code> is used as the example here, but all the factories are the same) with the following options.
+</p>
+<pre class="code python">async <span class="sy0">=</span> AsyncFactory<span class="br0">&#40;</span>socketStr <span class="sy0">,</span> MyMilter <span class="sy0">,</span> smfifOptions <span class="sy0">,</span> tcpListenQueue <span class="sy0">,</span> sockChmod<span class="br0">&#41;</span></pre>
+
+<p>
+The arguments are as follows:
+</p>
+<div class="table sectionedit52"><table class="inline">
+	<thead>
+	<tr class="row0">
+		<th class="col0"> Arg </th><th class="col1"> Type </th><th class="col2"> Description </th>
+	</tr>
+	</thead>
+	<tr class="row1">
+		<td class="col0"> socketStr </td><td class="col1"> str </td><td class="col2"> This is a string representing the listen socket.  It is either of the form <code>inet:&lt;ip&gt;:&lt;port&gt;</code> or the fullpath to where a unix domain socket should be created </td>
+	</tr>
+	<tr class="row2">
+		<td class="col0"> MyMilter </td><td class="col1"> libmilter.MilterProtocol </td><td class="col2"> This should be your subclass implementation of <code>libmilter.MilterProtocol</code> </td>
+	</tr>
+	<tr class="row3">
+		<td class="col0"> smfifOptions </td><td class="col1"> int </td><td class="col2"> This should be any <a href="#smfif" title="programming:python:python-libmilter ↵" class="wikilink1">SMFIF_*</a> options you wish to set on your milter.  You should bitwise OR the <a href="#smfif" title="programming:python:python-libmilter ↵" class="wikilink1">SMFIF_*</a> options together. This is optional and the default is zero (no options set) </td>
+	</tr>
+	<tr class="row4">
+		<td class="col0"> tcpListenQueue </td><td class="col1"> int </td><td class="col2"> The TCP listen queue for the socket.  Optional, with a default of 50 </td>
+	</tr>
+	<tr class="row5">
+		<td class="col0"> sockChmod </td><td class="col1"> int </td><td class="col2"> What to <code>chmod</code> the unix domain socket to after creation.  Optional, with a default of <code>0666</code>.  Obviously, this is ignored when you are creating an “inet” socket. </td>
+	</tr>
+</table></div>
+
+</div>
+
+<h4 class="sectionedit53" id="asyncfactory">AsyncFactory</h4>
+<div class="level4">
+
+<p>
+This factory is somewhat modeled after a Twisted implementation, though with some differences.  This will run everything, by default, in a single thread and single process.  This means that things must return very quickly (there is a way around this).  This is not the recommended factory to use if you are doing anything beyond trivial checks of the message.  The advantage to this factory, however, is that it makes sharing of global resources very easy.
+</p>
+
+<p>
+The “single thread” model can be circumvented slightly here with the use of a decorator called <code>callInThread</code> that you can use with certain callbacks to send some more intensive processing to another thread, while keeping the main milter thread responsive.  Here is a quick example of how to use this:
+</p>
+<pre class="code python"><span class="kw1">import</span> libmilter
+<span class="kw1">class</span> MyMilter<span class="br0">&#40;</span>libmilter.<span class="me1">MilterProtocol</span><span class="br0">&#41;</span>:
+...
+...
+    <span class="sy0">@</span>libmilter.<span class="me1">callInThread</span>
+    <span class="kw1">def</span> connect<span class="br0">&#40;</span><span class="kw2">self</span> <span class="sy0">,</span> hostname <span class="sy0">,</span> family <span class="sy0">,</span> ip <span class="sy0">,</span> port <span class="sy0">,</span> cmdDict<span class="br0">&#41;</span>:
+        <span class="co1"># Run checks on the IP.  Perhaps this includes RBLs, a local database check, etc.</span>
+        <span class="kw1">if</span> processIP<span class="br0">&#40;</span>ip<span class="br0">&#41;</span>:
+            <span class="kw1">return</span> libmilter.<span class="me1">CONTINUE</span>
+        <span class="kw1">else</span>:
+            <span class="kw1">return</span> libmilter.<span class="me1">REJECT</span></pre>
+
+<p>
+<strong>NOTE:</strong> No “mixin” class needs to be inherited with this factory&#039;s use.
+</p>
+
+</div>
+
+<h4 class="sectionedit54" id="threadfactory">ThreadFactory</h4>
+<div class="level4">
+
+<p>
+This is a factory, wherein each connection from the MTA ends up in it&#039;s own thread.  This is exactly how the C libmilter works.
+</p>
+
+<p>
+This works well, with one caveat, the Python GIL.  If you are making a single external call which can take a long time and is not considered blocking (like IO), that call can make your entire daemon unresponsive.  An example of this would be a complex regular expression being run that can potentially take a long time to return (I found this out the hard way).  If you aren&#039;t doing this kind of processing, and especially if you need to share global resources between milter instances, this is probably your best choice.  If you need to run complex regular expressions and don&#039;t want to block incoming connections from your MTA, use the <a href="#forkfactory" title="programming:python:python-libmilter ↵" class="wikilink1">ForkFactory</a> instead.
+</p>
+
+<p>
+<strong>NOTE:</strong> If you choose use this, your milter protocol class implementation <strong>must</strong> inherit the <code>ThreadMixin</code> class as well.
+</p>
+
+<p>
+Example:
+</p>
+<pre class="code python"><span class="kw1">import</span> libmilter
+<span class="kw1">class</span> MyMilter<span class="br0">&#40;</span>libmilter.<span class="me1">ThreadMixin</span> <span class="sy0">,</span> libmilter.<span class="me1">MilterProtocol</span><span class="br0">&#41;</span>:
+...</pre>
+
+</div>
+
+<h4 class="sectionedit55" id="forkfactory">ForkFactory</h4>
+<div class="level4">
+
+<p>
+This is a factory that will fork a child process for each incoming connection from the MTA.  This will add some more overhead on your machine, but is recommended for the best concurrency.  See the description of <a href="#threadfactory" title="programming:python:python-libmilter ↵" class="wikilink1">ThreadFactory</a> as to why this is.
+</p>
+
+<p>
+<strong>NOTE:</strong> If you choose use this, your milter protocol class implementation <strong>must</strong> inherit the <code>ForkMixin</code> class as well.
+</p>
+
+<p>
+Example:
+</p>
+<pre class="code python"><span class="kw1">import</span> libmilter
+<span class="kw1">class</span> MyMilter<span class="br0">&#40;</span>libmilter.<span class="me1">ForkMixin</span> <span class="sy0">,</span> libmilter.<span class="me1">MilterProtocol</span><span class="br0">&#41;</span>:
+...</pre>
+
+</div>
+
+<h2 class="sectionedit56" id="example">Example</h2>
+<div class="level2">
+
+<p>
+See the examples directory in the distribution for a complete test milter example using the <a href="#forkfactory" title="programming:python:python-libmilter ↵" class="wikilink1">ForkFactory</a>.
+</p>
+
+</div>
+
+                    <!-- wikipage stop -->
+                                    </div>
+
+                <div class="docInfo"><bdi>programming/python/python-libmilter.txt</bdi> · Last modified: 2012/03/02 18:59 by <bdi>jay</bdi></div>
+
+                            </div></div><!-- /content -->
+
+            <hr class="a11y" />
+
+            <!-- PAGE ACTIONS -->
+            <div id="dokuwiki__pagetools">
+                <h3 class="a11y">Page Tools</h3>
+                <div class="tools">
+                    <ul>
+                        <li><a href="/doku.php?id=programming:python:python-libmilter&amp;do=edit"  class="action source" accesskey="v" rel="nofollow" title="Show pagesource [V]"><span>Show pagesource</span></a></li><li><a href="/doku.php?id=programming:python:python-libmilter&amp;do=revisions"  class="action revs" accesskey="o" rel="nofollow" title="Old revisions [O]"><span>Old revisions</span></a></li><li><a href="/doku.php?id=programming:python:python-libmilter&amp;do=backlink"  class="action backlink" rel="nofollow" title="Backlinks"><span>Backlinks</span></a></li><li><a href="#dokuwiki__top"  class="action top" accesskey="t" rel="nofollow" title="Back to top [T]"><span>Back to top</span></a></li>                    </ul>
+                </div>
+            </div>
+        </div><!-- /wrapper -->
+
+        
+<!-- ********** FOOTER ********** -->
+<div id="dokuwiki__footer"><div class="pad">
+    <div class="license">Except where otherwise noted, content on this wiki is licensed under the following license: <bdi><a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license" class="urlextern">CC Attribution-Noncommercial-Share Alike 4.0 International</a></bdi></div>
+    <div class="buttons">
+        <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license"><img src="/lib/images/license/button/cc-by-nc-sa.png" alt="CC Attribution-Noncommercial-Share Alike 4.0 International" /></a>        <a href="http://www.dokuwiki.org/donate" title="Donate" ><img
+            src="/lib/tpl/dokuwiki/images/button-donate.gif" width="80" height="15" alt="Donate" /></a>
+        <a href="http://php.net" title="Powered by PHP" ><img
+            src="/lib/tpl/dokuwiki/images/button-php.gif" width="80" height="15" alt="Powered by PHP" /></a>
+        <a href="http://validator.w3.org/check/referer" title="Valid HTML5" ><img
+            src="/lib/tpl/dokuwiki/images/button-html5.png" width="80" height="15" alt="Valid HTML5" /></a>
+        <a href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3" title="Valid CSS" ><img
+            src="/lib/tpl/dokuwiki/images/button-css.png" width="80" height="15" alt="Valid CSS" /></a>
+        <a href="http://dokuwiki.org/" title="Driven by DokuWiki" ><img
+            src="/lib/tpl/dokuwiki/images/button-dw.png" width="80" height="15" alt="Driven by DokuWiki" /></a>
+    </div>
+</div></div><!-- /footer -->
+
+    </div></div><!-- /site -->
+
+    <div class="no"><img src="/lib/exe/indexer.php?id=programming%3Apython%3Apython-libmilter&amp;1539003839" width="2" height="1" alt="" /></div>
+    <div id="screen__mode" class="no"></div></body>
+</html>

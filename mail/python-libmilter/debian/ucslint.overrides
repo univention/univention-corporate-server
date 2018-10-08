@@ -1,0 +1,4 @@
+0010-2: debian/copyright
+0010-2: modules/libmilter.py
+0009-2: modules/libmilter.py
+0010-2: usr/share/doc/python-libmilter/examples/testmilter.py
