@@ -134,7 +134,6 @@ for d in $DIRS; do
 					test "$(basename $file)" = "$i" && ignore=true && break
 				done
 				if ! $ignore; then
-					echo tdbbackup $file
 					tdbbackup $file
 					Status=$?
 					if [ $Status -ne 0 ]; then
