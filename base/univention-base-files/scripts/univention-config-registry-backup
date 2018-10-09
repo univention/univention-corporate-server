@@ -32,11 +32,13 @@
 
 . /usr/share/univention-lib/backup.sh
 
+TARGETDIR="/var/univention-backup"
+install -m 755 -o root -g root -d "$TARGETDIR"
+
+TARGET="$TARGETDIR/ucr-backup_$(date +%Y%m%d).tgz"
+install -m 600 -o root -g root /dev/null "$TARGET"
+
 cd /etc/univention
-TARGET="/var/univention-backup/ucr-backup_$(date +%Y%m%d).tgz"
-touch "$TARGET"
-chmod 600 "$TARGET"
-chown root:root "$TARGET"
 tar cfz "$TARGET" ./base*.conf
 
 clean_old_backups 'ucr-backup_.*\.tgz'

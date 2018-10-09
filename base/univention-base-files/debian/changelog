@@ -1,3 +1,10 @@
+univention-base-files (7.0.0-18) unstable; urgency=medium
+
+  * Bug #47336: Ensure that /var/univention-backup exists in
+    univention-config-registry-backup
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Oct 2018 21:28:15 +0200
+
 univention-base-files (7.0.0-17) unstable; urgency=medium
 
   * Bug #47035: fixed mod path in /etc/rsyslog.conf
