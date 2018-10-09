@@ -468,6 +468,18 @@ property_descriptions = {
 		dontsearch=True,
 		copyable=True,
 	),
+	'mailAllowedSenderAddress': univention.admin.property(
+		short_description=_('Allowed e-mail sender address'),
+		long_description=_('E-mail addresses this user is allowed to use as sender address (additionally to its own primary and alternative addresses), when the "Configuration to prevent forged From addresses" is enabled (see manual). A username means this user is allowed to send using the primary and all alternative addresses of that user. An e-mail address mean this user is allowed to send using only that e-mail.'),
+		syntax=univention.admin.syntax.emailAddressValidDomain,
+		multivalue=True,
+		required=False,
+		dontsearch=False,
+		may_change=True,
+		identifies=False,
+		readonly_when_synced=False,
+		copyable=True,
+	),
 	'overridePWHistory': univention.admin.property(
 		short_description=_('Override password history'),
 		long_description=_('No check if the password was already used is performed.'),
@@ -761,6 +773,7 @@ layout = [
 		Group(_('Advanced settings'), layout=[
 			'mailAlternativeAddress',
 			'mailHomeServer',
+			'mailAllowedSenderAddress',
 		], ),
 		Group(_('Mail forwarding'), layout=[
 			'mailForwardCopyToSelf',
@@ -1168,6 +1181,7 @@ mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
 mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.admin.mapping.ListToString)
 mapping.register('mailForwardAddress', 'mailForwardAddress')
 mapping.register('mailForwardCopyToSelf', 'mailForwardCopyToSelf', None, univention.admin.mapping.ListToString)
+mapping.register('mailAllowedSenderAddress', 'mailAllowedSenderAddress')
 
 mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
 mapping.register('e-mail', 'mail')
@@ -1590,6 +1604,9 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self._check_uid_gid_uniqueness()
 
+		if self['mailAllowedSenderAddress']:
+			self._remove_own_addresses_from_mail_allowed_server_address()
+
 	def _ldap_pre_ready(self):
 		super(object, self)._ldap_pre_ready()
 
@@ -1678,6 +1695,9 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged("uidNumber"):
 			# this should never happen, as uidNumber is marked as unchangeable
 			self._check_uid_gid_uniqueness()
+
+		if self.hasChanged('mailAllowedSenderAddress'):
+			self._remove_own_addresses_from_mail_allowed_server_address()
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
@@ -2013,6 +2033,12 @@ class object(univention.admin.handlers.simpleLdap):
 			if mod_[1] != mod_[2]:
 				ml.append(mod_)
 		return ml
+
+	def _remove_own_addresses_from_mail_allowed_server_address(self):
+		# remove mPA and mAA from mailAllowedSenderAddress list, as the user
+		# is always allowed to send from those
+		remove_list = [self['mailPrimaryAddress']] + self['mailAlternativeAddress']
+		self['mailAllowedSenderAddress'] = [a for a in self['mailAllowedSenderAddress'] if a not in remove_list]
 
 	def _modlist_univention_person(self, ml):
 		# make sure that univentionPerson is set as objectClass when needed
