@@ -97,10 +97,11 @@ class GenericUdm1Object(BaseUdmObject):
 	* Delete an object:
 		obj.delete()
 
-	Please be aware that UDM hooks and listener modules often add, modify or
-	remove properties when saving to LDAP. When continuing to use a
-	:py:class:`GenericUdm1Object` after :py:meth:`save()`, it is *strongly*
-	recommended to :py:meth:`reload()` it: `obj.save().reload()`
+	After saving a :py:class:`GenericUdm1Object`, it is :py:meth:`reload()`ed
+	automtically because UDM hooks and listener modules often add, modify or
+	remove properties when saving to LDAP. As this involves LDAP, it can be
+	disabled if the object is not used afterwards and performance is an issue:
+		user_mod.meta.auto_reload = False
 	"""
 	udm_prop_class = GenericUdm1ObjectProperties
 	_policies_encoder = None
@@ -185,6 +186,8 @@ class GenericUdm1Object(BaseUdmObject):
 		assert self.dn == self._udm1_object.dn
 		assert self.position == self._lo.parentDn(self.dn)
 		self._fresh = False
+		if self.meta.auto_reload:
+			self.reload()
 		return self
 
 	def delete(self):  # type: () -> None

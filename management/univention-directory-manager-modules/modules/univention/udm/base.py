@@ -74,10 +74,11 @@ class BaseUdmObject(object):
 	* Delete an object:
 		obj.delete()
 
-	Please be aware that UDM hooks and listener modules often add, modify or
-	remove properties when saving to LDAP. When continuing to use a
-	:py:class:`BaseUdmObject` after :py:meth:`save()`, it is *strongly*
-	recommended to :py:meth:`reload()` it: `obj.save().reload()`
+	After saving a :py:class:`BaseUdmObject`, it is :py:meth:`reload()`ed
+	automtically because UDM hooks and listener modules often add, modify or
+	remove properties when saving to LDAP. As this involves LDAP, it can be
+	disabled if the object is not used afterwards and performance is an issue:
+		user_mod.meta.auto_reload = False
 	"""
 	udm_prop_class = BaseUdmObjectProperties
 
@@ -132,6 +133,7 @@ class BaseUdmModuleMetadata(object):
 	"""Base class for UDM module meta data."""
 
 	auto_open = True  # whether UDM objects should be `open()`ed
+	auto_reload = True  # whether UDM objects should be `reload()`ed after saving
 
 	def __init__(self, udm_module, api_version):  # type: (BaseUdmModule, int) -> None
 		self._udm_module = udm_module

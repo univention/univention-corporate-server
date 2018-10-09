@@ -40,6 +40,7 @@ univention-directory-manager-modules (13.0.25-2) unstable; urgency=low
 univention-directory-manager-modules (13.0.24-3) unstable; urgency=medium
 
   * Bug #47861: Documentation fixes
+  * Bug #47861: auto_reload after save
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 09 Oct 2018 18:29:10 +0200
 
