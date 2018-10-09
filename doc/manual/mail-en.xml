@@ -940,7 +940,19 @@ postmap /etc/postfix/smtp_auth
 			A filter can be enabled, that will prevent the forging of <literal>From</literal> addresses in both cases.
 			The filter (technically called a <application>milter</application>) will reject such emails during the SMTP
 			dialogue, so that they won't even reach the spam filter.
-			The filter will log rejects to the usual mail log file (<filename>/var/log/mail.log</filename>).
+			The filter checks both the <literal>From</literal> im the e-mails header as well as the <literal>MAIL
+			FROM</literal> in the SMTP dialogue.
+		</para>
+		<para>
+			E-mails with a sender address that is neither the primary nor one of the alternative e-mail addresses of
+			the sending user will be rejected.
+			To nonetheless be able to send e-mails in someone else's name, usernames and e-mail addresses can be stored
+			for a user in the UMC in <guimenu>Advanced settings &ar; Mail &ar; Allowed e-mail sender address</guimenu>.
+			If a username is saved there, the user will be able use that users primary and all its alternative e-mail
+			addresses as sender address. If an e-mail address is used, the user will only be able to use that as sender
+			address.
+		</para>
+		<para>
 			To enable the <application>sender_check milter</application>, <application>Postfix</application> must be
 			configured to connect to it.
 		</para>
@@ -952,6 +964,7 @@ postmap /etc/postfix/smtp_auth
 		<para>
 			The <application>sender_check milter</application> is a small program that listens by default on port <envar>5656</envar> on <envar>localhost</envar>. The port can be changed using the &ucsUCRV;
 			<envar>mail/postfix/sender_check_milter_port</envar>.
+			The filter will log rejects to the usual mail log file (<filename>/var/log/mail.log</filename>).
 		</para>
 		<note>
 			<para>

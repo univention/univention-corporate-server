@@ -974,8 +974,20 @@ postmap /etc/postfix/smtp_auth
 		<para>
 			Um gefälschte Absendeadressen zu verhindern, kann ein Filter aktiviert werden der beide Fälle verhindert.
 			Der Filter (technisch <application>milter</application> genannt) weist Nachrichten bereits während des
-			SMTP Dialogs zurück, so dass sie nicht einmal bis zum Spam Scanner kommen.
-			Der Filter protokolliert Zurückweisungen in der für Email üblichen Logdatei (<filename>/var/log/mail.log</filename>).
+			SMTP Dialogs zurück, so dass sie nicht einmal bis zum Spam Scanner kommen. Kontrolliert wird sowohl das
+			<literal>From</literal> im <literal>header</literal> von E-Mails als auch das <literal>MAIL FROM</literal>
+			im SMTP-Dialog.
+		</para>
+		<para>
+			E-Mails mit einem Absender, der nicht die primäre oder eine der alternativen E-Mail-Adressen des sendenden
+			Benutzers ist, werden abgelehnt.
+			Um dennoch das Senden von E-Mails im Namen Anderer zu ermöglichen, können in der UMC am Benutzer unter
+			<guimenu>Erweiterte Einstellungen &ar; Mail &ar; Erlaubte E-Mail-Absender-Adresse</guimenu>
+			Benutzernamen und E-Mail-Adressen hinterlegt werden. Wenn dort ein Benutzername angegeben wird, so kann
+			sowohl mit dessen primärer also auch allen alternativen E-Mail-Adressen gesendet werden. Wird eine
+			E-Mail-Adresse angegeben, so kann nur diese als Absender verwendet werden.
+		</para>
+		<para>
 			Um den <application>sender_check milter</application> zu aktivieren, muss <application>Postfix</application>
 			konfiguriert werden sich zu ihm zu verbinden.
 		</para>
@@ -989,6 +1001,7 @@ postmap /etc/postfix/smtp_auth
 		<para>
 			Der <application>sender_check milter</application> ist ein kleines Programm das an <envar>localhost</envar> am Port <envar>5656</envar> lauscht. Der Port kann mit der &ucsUCRV; <envar>mail/postfix/sender_check_milter_port</envar>
 			eingestellt werden.
+			Zurückweisungen werden in der für Email üblichen Logdatei (<filename>/var/log/mail.log</filename>) protokolliert.
 		</para>
 		<note>
 			<para>
