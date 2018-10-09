@@ -84,7 +84,7 @@ class FirstUseError(UdmError):
 
 
 class ModifyError(UdmError):
-	"""Raised when an error occurred when modifying an object."""
+	"""Raised if an error occurred when modifying an object."""
 	pass
 
 

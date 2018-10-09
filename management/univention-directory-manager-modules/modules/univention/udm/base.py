@@ -188,8 +188,8 @@ class BaseUdmModule(object):
 		group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
 		group = group_mod.get_by_id('Domain Users')
 	3 Search and load existing objects:
-		dc_slaves = dc_slave_mod.search(lo, filter_s='cn=s10*')
-		campus_groups = group_mod.search(lo, base='ou=campus,dc=example,dc=com')
+		dc_slaves = dc_slave_mod.search(filter_s='cn=s10*')
+		campus_groups = group_mod.search(base='ou=campus,dc=example,dc=com')
 	4. Load existing object(s) without `open()`ing them;
 		user_mod.meta.auto_open = False
 		user = user_mod.get(dn)

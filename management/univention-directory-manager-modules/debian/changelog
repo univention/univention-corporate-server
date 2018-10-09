@@ -37,6 +37,12 @@ univention-directory-manager-modules (13.0.25-2) unstable; urgency=low
 
  -- Daniel Troeder <troeder@univention.de>  Mon, 15 Oct 2018 11:12:17 +0200
 
+univention-directory-manager-modules (13.0.24-3) unstable; urgency=medium
+
+  * Bug #47861: Documentation fixes
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 09 Oct 2018 18:29:10 +0200
+
 univention-directory-manager-modules (13.0.24-2) unstable; urgency=low
 
   * Bug #47861: make source of error messages distinguishable

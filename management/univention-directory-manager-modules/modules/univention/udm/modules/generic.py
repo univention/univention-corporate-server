@@ -207,7 +207,7 @@ class GenericUdm1Object(BaseUdmObject):
 	def _copy_from_udm_obj(self):  # type: () -> None
 		"""
 		Copy UDM property values from low-level UDM object to `props`
-		container.
+		container as well as its `policies` and `options`.
 
 		:return: None
 		"""
@@ -387,8 +387,8 @@ class GenericUdm1Module(BaseUdmModule):
 		group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
 		group = group_mod.get_by_id('Domain Users')
 	3 Search and load existing objects:
-		dc_slaves = dc_slave_mod.search(lo, filter_s='cn=s10*')
-		campus_groups = group_mod.search(lo, base='ou=campus,dc=example,dc=com')
+		dc_slaves = dc_slave_mod.search(filter_s='cn=s10*')
+		campus_groups = group_mod.search(base='ou=campus,dc=example,dc=com')
 	"""
 	_udm_object_class = GenericUdm1Object
 	_udm_module_meta_class = GenericUdm1ModuleMetadata
