@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.1-6) unstable; urgency=low
+
+  * Bug #47583: Improved misleading error message in diagnostic module 42_samba_sysvolcheck
+
+ -- Julia Bremer <bremer@brankis.knut.univention.de>  Tue, 09 Oct 2018 10:55:53 +0200
+
 univention-management-console-module-diagnostic (4.0.1-5) unstable; urgency=low
 
   * Bug #47649: Fixed faulty error message in 22_kdc_service_check
