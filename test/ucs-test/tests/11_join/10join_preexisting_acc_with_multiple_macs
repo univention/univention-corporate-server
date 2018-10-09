@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Call univention-server-join on preexisting computer account with multiple macs
 ## bugs: [47338]
-## roles: domaincontroller_master
+## roles: [domaincontroller_master]
 ## packages:
 ##  - univention-join
 ## exposure: dangerous
