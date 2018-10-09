@@ -333,8 +333,9 @@ def run(_umc_instance, retest=False):
 					local_included |= interface == 'lo'
 				else:
 					local_included |= addr.is_loopback or addr.is_unspecified
-					error = _('samba/interfaces does not contain lo, 127.0.0.1 or 0.0.0.0.')
-			error_descriptions.append(error)
+			if not local_included:
+				error = _('samba/interfaces does not contain lo, 127.0.0.1 or 0.0.0.0.')
+				error_descriptions.append(error)
 
 			description = '\n'.join(error_descriptions)
 			buttons = [{
