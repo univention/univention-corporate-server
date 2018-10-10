@@ -35,10 +35,10 @@ from ..encoders import (
 	dn_list_property_encoder_for, SambaGroupTypePropertyEncoder, StringIntBooleanPropertyEncoder,
 	StringIntPropertyEncoder
 )
-from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
+from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
 
 
-class GroupsGroupUdm1ObjectProperties(GenericUdm1ObjectProperties):
+class GroupsGroupUdmObjectProperties(GenericUdmObjectProperties):
 	"""groups/group UDM properties."""
 
 	_encoders = {
@@ -55,14 +55,14 @@ class GroupsGroupUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	}
 
 
-class GroupsGroupUdm1Object(GenericUdm1Object):
+class GroupsGroupUdmObject(GenericUdmObject):
 	"""Better representation of groups/group properties."""
-	udm_prop_class = GroupsGroupUdm1ObjectProperties
+	udm_prop_class = GroupsGroupUdmObjectProperties
 
 
-class GroupsGroupUdm1Module(GenericUdm1Module):
-	"""GroupsGroupUdm1Object factory"""
-	_udm_object_class = GroupsGroupUdm1Object
+class GroupsGroupUdmModule(GenericUdmModule):
+	"""GroupsGroupUdmObject factory"""
+	_udm_object_class = GroupsGroupUdmObject
 	supported_api_versions = (1,)
 
 	def _get_default_positions_property(self):

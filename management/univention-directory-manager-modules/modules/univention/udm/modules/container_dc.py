@@ -32,10 +32,10 @@ Module and object specific for "container/dc" UDM module.
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import DnsEntryZoneForwardListSinglePropertyEncoder, DnsEntryZoneReverseListSinglePropertyEncoder
-from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
+from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
 
 
-class ContainerDcUdm1ObjectProperties(GenericUdm1ObjectProperties):
+class ContainerDcUdmObjectProperties(GenericUdmObjectProperties):
 	"""container/dc UDM properties."""
 
 	_encoders = {
@@ -44,12 +44,12 @@ class ContainerDcUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	}
 
 
-class ContainerDcUdm1Object(GenericUdm1Object):
+class ContainerDcUdmObject(GenericUdmObject):
 	"""Better representation of container/dc properties."""
-	udm_prop_class = ContainerDcUdm1ObjectProperties
+	udm_prop_class = ContainerDcUdmObjectProperties
 
 
-class ContainerDcUdm1Module(GenericUdm1Module):
-	"""ContainerDcUdm1Object factory"""
-	_udm_object_class = ContainerDcUdm1Object
+class ContainerDcUdmModule(GenericUdmModule):
+	"""ContainerDcUdmObject factory"""
+	_udm_object_class = ContainerDcUdmObject
 	supported_api_versions = (1,)

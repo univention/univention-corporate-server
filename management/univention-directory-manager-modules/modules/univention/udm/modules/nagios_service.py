@@ -32,10 +32,10 @@ Module and object specific for "nagios/service" UDM module.
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import dn_list_property_encoder_for, DisabledPropertyEncoder, StringIntPropertyEncoder
-from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
+from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
 
 
-class NagiosServiceUdm1ObjectProperties(GenericUdm1ObjectProperties):
+class NagiosServiceUdmObjectProperties(GenericUdmObjectProperties):
 	"""nagios/service UDM properties."""
 
 	_encoders = {
@@ -52,12 +52,12 @@ class NagiosServiceUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	}
 
 
-class NagiosServiceUdm1Object(GenericUdm1Object):
+class NagiosServiceUdmObject(GenericUdmObject):
 	"""Better representation of nagios/service properties."""
-	udm_prop_class = NagiosServiceUdm1ObjectProperties
+	udm_prop_class = NagiosServiceUdmObjectProperties
 
 
-class NagiosServiceUdm1Module(GenericUdm1Module):
-	"""NagiosServiceUdm1Object factory"""
-	_udm_object_class = NagiosServiceUdm1Object
+class NagiosServiceUdmModule(GenericUdmModule):
+	"""NagiosServiceUdmObject factory"""
+	_udm_object_class = NagiosServiceUdmObject
 	supported_api_versions = (1,)

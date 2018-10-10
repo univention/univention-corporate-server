@@ -32,9 +32,9 @@ Module and object specific for "policies/umc" UDM module.
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import dn_list_property_encoder_for
-from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
+from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
 
-class PoliciesUmcUdm1ObjectProperties(GenericUdm1ObjectProperties):
+class PoliciesUmcUdmObjectProperties(GenericUdmObjectProperties):
 	"""policies/umc UDM properties."""
 
 	_encoders = {
@@ -42,14 +42,14 @@ class PoliciesUmcUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	}
 
 
-class PoliciesUmcUdm1Object(GenericUdm1Object):
+class PoliciesUmcUdmObject(GenericUdmObject):
 	"""Better representation of policies/umc properties."""
-	udm_prop_class = PoliciesUmcUdm1ObjectProperties
+	udm_prop_class = PoliciesUmcUdmObjectProperties
 
 
-class PoliciesUmcUdm1Module(GenericUdm1Module):
-	"""PoliciesUmcUdm1Object factory"""
-	_udm_object_class = PoliciesUmcUdm1Object
+class PoliciesUmcUdmModule(GenericUdmModule):
+	"""PoliciesUmcUdmObject factory"""
+	_udm_object_class = PoliciesUmcUdmObject
 	supported_api_versions = (1,)
 
 	def _get_default_positions_property(self):

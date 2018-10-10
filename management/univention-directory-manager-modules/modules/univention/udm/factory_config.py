@@ -74,7 +74,7 @@ except ImportError:
 UdmModuleFactoryConfiguration = namedtuple(
 	'UdmModuleFactoryConfiguration',
 	('udm_module_name_pattern', 'module_path', 'class_name')
-)  # e.g. UdmModuleFactoryConfiguration('users/.*', 'univention.admin.udm', 'GenericUdm1Module')
+)  # e.g. UdmModuleFactoryConfiguration('users/.*', 'univention.admin.udm', 'GenericUdmModule')
 
 
 # internal configuration class supporting temporal ordering
@@ -87,7 +87,7 @@ _UdmModuleFactoryConfigurationWithDate = namedtuple(
 
 class UdmModuleFactoryConfigurationStorage(object):
 	"""Handle loading and storing of the dynamic factory metadata."""
-	_default_factory = {'module_path': 'univention.udm.modules.generic', 'class_name': 'GenericUdm1Module'}
+	_default_factory = {'module_path': 'univention.udm.modules.generic', 'class_name': 'GenericUdmModule'}
 	_persistence_path = '/var/lib/univention-directory-manager-modules/udm_module_factory.json'
 
 	def __init__(self, persistent=True):  # type: (Optional[bool]) -> None

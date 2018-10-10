@@ -35,10 +35,10 @@ from ..encoders import (
 	dn_list_property_encoder_for, dn_property_encoder_for, Base64BinaryPropertyEncoder,
 	StringCaseInsensitiveResultUpperBooleanPropertyEncoder, ListOfListOflTextToDictPropertyEncoder
 )
-from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
+from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
 
 
-class SettingsPortalEntryUdm1ObjectProperties(GenericUdm1ObjectProperties):
+class SettingsPortalEntryUdmObjectProperties(GenericUdmObjectProperties):
 	"""settings/portal_entry UDM properties."""
 
 	_encoders = {
@@ -51,12 +51,12 @@ class SettingsPortalEntryUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	}
 
 
-class SettingsPortalEntryUdm1Object(GenericUdm1Object):
+class SettingsPortalEntryUdmObject(GenericUdmObject):
 	"""Better representation of settings/portal_entry properties."""
-	udm_prop_class = SettingsPortalEntryUdm1ObjectProperties
+	udm_prop_class = SettingsPortalEntryUdmObjectProperties
 
 
-class SettingsPortalEntryUdm1Module(GenericUdm1Module):
-	"""SettingsPortalEntryUdm1Object factory"""
-	_udm_object_class = SettingsPortalEntryUdm1Object
+class SettingsPortalEntryUdmModule(GenericUdmModule):
+	"""SettingsPortalEntryUdmObject factory"""
+	_udm_object_class = SettingsPortalEntryUdmObject
 	supported_api_versions = (1,)

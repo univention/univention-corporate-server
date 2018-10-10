@@ -36,10 +36,10 @@ from ..encoders import (
 	DnsEntryZoneReverseListMultiplePropertyEncoder,
 	dn_list_property_encoder_for, dn_property_encoder_for, StringIntBooleanPropertyEncoder, StringIntPropertyEncoder
 )
-from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
+from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
 
 
-class ComputersAllUdm1ObjectProperties(GenericUdm1ObjectProperties):
+class ComputersAllUdmObjectProperties(GenericUdmObjectProperties):
 	"""computers/* UDM properties."""
 
 	_encoders = {
@@ -58,12 +58,12 @@ class ComputersAllUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	}
 
 
-class ComputersAllUdm1Object(GenericUdm1Object):
+class ComputersAllUdmObject(GenericUdmObject):
 	"""Better representation of computers/* properties."""
-	udm_prop_class = ComputersAllUdm1ObjectProperties
+	udm_prop_class = ComputersAllUdmObjectProperties
 
 
-class ComputersAllUdm1Module(GenericUdm1Module):
-	"""ComputersAllUdm1Object factory"""
-	_udm_object_class = ComputersAllUdm1Object
+class ComputersAllUdmModule(GenericUdmModule):
+	"""ComputersAllUdmObject factory"""
+	_udm_object_class = ComputersAllUdmObject
 	supported_api_versions = (1,)

@@ -32,23 +32,23 @@ Module and object specific for "container/ou" UDM module.
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import dn_property_encoder_for
-from .container_cn import ContainerCnUdm1Module, ContainerCnUdm1Object, ContainerCnUdm1ObjectProperties
+from .container_cn import ContainerCnUdmModule, ContainerCnUdmObject, ContainerCnUdmObjectProperties
 
 
-class ContainerOuUdm1ObjectProperties(ContainerCnUdm1ObjectProperties):
+class ContainerOuUdmObjectProperties(ContainerCnUdmObjectProperties):
 	"""container/ou UDM properties."""
 
-	_encoders = ContainerCnUdm1ObjectProperties._encoders
+	_encoders = ContainerCnUdmObjectProperties._encoders
 	_encoders['ucsschoolClassShareFileServer'] = dn_property_encoder_for('auto')
 	_encoders['ucsschoolHomeShareFileServer'] = dn_property_encoder_for('auto')
 
 
-class ContainerOuUdm1Object(ContainerCnUdm1Object):
+class ContainerOuUdmObject(ContainerCnUdmObject):
 	"""Better representation of container/ou properties."""
-	udm_prop_class = ContainerOuUdm1ObjectProperties
+	udm_prop_class = ContainerOuUdmObjectProperties
 
 
-class ContainerOuUdm1Module(ContainerCnUdm1Module):
-	"""ContainerOuUdm1Object factory"""
-	_udm_object_class = ContainerOuUdm1Object
+class ContainerOuUdmModule(ContainerCnUdmModule):
+	"""ContainerOuUdmObject factory"""
+	_udm_object_class = ContainerOuUdmObject
 	supported_api_versions = (1,)

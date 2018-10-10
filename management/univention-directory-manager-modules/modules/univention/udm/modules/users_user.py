@@ -36,10 +36,10 @@ from ..encoders import (
 	DisabledPropertyEncoder, HomePostalAddressPropertyEncoder, SambaLogonHoursPropertyEncoder, StringIntPropertyEncoder,
 )
 from ..exceptions import NoObject
-from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
+from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
 
 
-class UsersUserUdm1ObjectProperties(GenericUdm1ObjectProperties):
+class UsersUserUdmObjectProperties(GenericUdmObjectProperties):
 	"""users/user UDM properties."""
 
 	_encoders = {
@@ -61,14 +61,14 @@ class UsersUserUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	}
 
 
-class UsersUserUdm1Object(GenericUdm1Object):
+class UsersUserUdmObject(GenericUdmObject):
 	"""Better representation of users/user properties."""
-	udm_prop_class = UsersUserUdm1ObjectProperties
+	udm_prop_class = UsersUserUdmObjectProperties
 
 
-class UsersUserUdm1Module(GenericUdm1Module):
-	"""UsersUserUdm1Object factory"""
-	_udm_object_class = UsersUserUdm1Object
+class UsersUserUdmModule(GenericUdmModule):
+	"""UsersUserUdmObject factory"""
+	_udm_object_class = UsersUserUdmObject
 	supported_api_versions = (1,)
 
 	def _get_default_positions_property(self):

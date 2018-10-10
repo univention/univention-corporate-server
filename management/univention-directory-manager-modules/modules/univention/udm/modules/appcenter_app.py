@@ -34,10 +34,10 @@ from __future__ import absolute_import, unicode_literals
 from ..encoders import (
 	Base64BinaryPropertyEncoder, MultiLanguageTextAppcenterPropertyEncoder
 )
-from .generic import GenericUdm1Module, GenericUdm1Object, GenericUdm1ObjectProperties
+from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
 
 
-class AppcenterAppUdm1ObjectProperties(GenericUdm1ObjectProperties):
+class AppcenterAppUdmObjectProperties(GenericUdmObjectProperties):
 	"""appcenter/app UDM properties."""
 
 	_encoders = {
@@ -50,12 +50,12 @@ class AppcenterAppUdm1ObjectProperties(GenericUdm1ObjectProperties):
 	}
 
 
-class AppcenterAppUdm1Object(GenericUdm1Object):
+class AppcenterAppUdmObject(GenericUdmObject):
 	"""Better representation of appcenter/app properties."""
-	udm_prop_class = AppcenterAppUdm1ObjectProperties
+	udm_prop_class = AppcenterAppUdmObjectProperties
 
 
-class AppcenterAppUdm1Module(GenericUdm1Module):
-	"""AppcenterAppUdm1Object factory"""
-	_udm_object_class = AppcenterAppUdm1Object
+class AppcenterAppUdmModule(GenericUdmModule):
+	"""AppcenterAppUdmObject factory"""
+	_udm_object_class = AppcenterAppUdmObject
 	supported_api_versions = (1,)
