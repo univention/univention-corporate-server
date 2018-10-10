@@ -68,11 +68,11 @@ class MailAllUdm1Module(GenericUdm1Module):
 	_udm_object_class = MailAllUdm1Object
 	supported_api_versions = (1,)
 
-	def _verify_univention_object_type(self, udm1_obj):  # type: (univention.admin.handlers.simpleLdap) -> None
+	def _verify_univention_object_type(self, orig_udm_obj):  # type: (univention.admin.handlers.simpleLdap) -> None
 		"""
 		Allow both mail/* and oxmail/* in univentionObjectType.
 		"""
-		uni_obj_type = copy.copy(getattr(udm1_obj, 'oldattr', {}).get('univentionObjectType'))
+		uni_obj_type = copy.copy(getattr(orig_udm_obj, 'oldattr', {}).get('univentionObjectType'))
 		if uni_obj_type and uni_obj_type[0].startswith('mail/'):
 			# oxmail/oxfolder -> .append(mail/folder)
 			uni_obj_type.append('oxmail/ox{}'.format(uni_obj_type[0].split('/', 1)[1]))
@@ -82,4 +82,4 @@ class MailAllUdm1Module(GenericUdm1Module):
 
 		# and now the original test
 		if uni_obj_type and self.name.split('/', 1)[0] not in [uot.split('/', 1)[0] for uot in uni_obj_type]:
-			raise WrongObjectType(dn=udm1_obj.dn, module_name=self.name, univention_object_type=', '.join(uni_obj_type))
+			raise WrongObjectType(dn=orig_udm_obj.dn, module_name=self.name, univention_object_type=', '.join(uni_obj_type))
