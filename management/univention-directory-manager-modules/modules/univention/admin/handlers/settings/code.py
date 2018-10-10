@@ -45,7 +45,7 @@ default_containers = ['cn=code,cn=univention']
 childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
 short_description = _('Code')
-long_description = _('Arbitrary code blobs') # TODO: better
+long_description = _('Arbitrary code files')
 options = {
 	'default': univention.admin.option(
 		default=True,
@@ -55,7 +55,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('name'),
-		long_description='',
+		long_description=_('The name of the Code file'),
 		syntax=univention.admin.syntax.string_numbers_letters_dots,
 		multivalue=False,
 		include_in_default_search=True,
@@ -66,7 +66,7 @@ property_descriptions = {
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
-		long_description=_('Description'), #TODO
+		long_description=_('The code files description'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		options=[],
@@ -75,8 +75,8 @@ property_descriptions = {
 		identifies=False
 	),
 	'code': univention.admin.property(
-		short_description=_('Code blob'),
-		long_description=_('The actual code blob'),
+		short_description=_('Code file'),
+		long_description=_('The actual code, bzipped and base64 encoded'),
 		syntax=univention.admin.syntax.Base64Bzip2Text,
 		multivalue=False,
 		options=[],
@@ -116,7 +116,7 @@ property_descriptions = {
 	),
 	'meta': univention.admin.property(
 		short_description=_('Meta information'),
-		long_description='',
+		long_description='The code objects meta information',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		options=[],
