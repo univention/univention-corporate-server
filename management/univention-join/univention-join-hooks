@@ -34,7 +34,7 @@
 import os
 import sys
 import argparse
-from univention.config_registry import configHandlers, ConfigRegistry
+from univention.config_registry import ConfigRegistry
 import univention.admin.uldap
 from univention.admin import modules as udm_modules
 from univention.admin import uexceptions
@@ -44,32 +44,23 @@ import bz2
 import base64
 import tempfile
 import shutil
-import time
-import datetime
-import apt
 
-server_roles= ("domaincontroller_master",
-              "domaincontroller_backup",
-              "domaincontroller_slave",
-              "memberserver",
-              )
+server_roles = (
+	"domaincontroller_master",
+	"domaincontroller_backup",
+	"domaincontroller_slave",
+	"memberserver",
+)
+
 
 def main():
 	parser = argparse.ArgumentParser(description="Run join-hooks")
-	parser.add_argument("--server-role",
-				choices=server_roles,
-				help="Server Role")
-	parser.add_argument("--hooktype",
-				choices=("pre-join", "pre-joinscripts", "post-joinscripts"),
-				help="Type of hook")
-	parser.add_argument("--master",
-				help="UCS Master")
-	parser.add_argument("--binddn",
-				help="Bind-DN")
-	parser.add_argument("--bindpwdfile",
-				help="Password file")
-	parser.add_argument("-v", "--verbose", action='count',
-				help="Verbose")
+	parser.add_argument("--server-role", choices=server_roles, help="Server Role")
+	parser.add_argument("--hooktype", choices=("pre-join", "pre-joinscripts", "post-joinscripts"), help="Type of hook")
+	parser.add_argument("--master", help="UCS Master")
+	parser.add_argument("--binddn", help="Bind-DN")
+	parser.add_argument("--bindpwdfile", help="Password file")
+	parser.add_argument("-v", "--verbose", action='count', help="Verbose")
 	args = parser.parse_args()
 
 	hook_options = []
@@ -98,7 +89,7 @@ def main():
 	else:
 		args.error("Missing required option --bindpwdfile")
 		sys.exit(1)
-	
+
 	ucr = ConfigRegistry()
 	ucr.load()
 
@@ -107,13 +98,11 @@ def main():
 		bindpw = f.read()
 		bindpw = bindpw.strip()
 
-	# ca_certfile = "/etc/univention/ssl/ucsCA/CAcert.pem"
-
 	try:
 		lo = univention.admin.uldap.access(host=args.master, port=7389, base=ucr["ldap/base"], binddn=args.binddn, bindpw=bindpw, start_tls=2)
 		ldap_position = univention.admin.uldap.position(lo.base)
 	except uexceptions.ldapError as exc:
-		print("Failed LDAP Connection to %s: %s" % (master, exc))
+		print("Failed LDAP Connection to %s: %s" % (args.master, exc))
 		exit(1)
 	except Exception as exc:
 		print("Exception occurred: %s" % (exc,))
@@ -168,4 +157,5 @@ def main():
 
 if __name__ == "__main__":
 	main()
+
 # vim:set sw=4 ts=4 noet:
