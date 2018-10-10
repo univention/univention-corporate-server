@@ -42,8 +42,8 @@ from ..encoders import dn_list_property_encoder_for
 from ..udm import Udm
 from ..base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from ..exceptions import (
-	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, UnknownProperty, UnknownUdmModuleType,
-	WrongObjectType
+	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, UnknownProperty,
+	UnknownUdmModuleType, WrongObjectType
 )
 from ..utils import UDebug as ud
 
