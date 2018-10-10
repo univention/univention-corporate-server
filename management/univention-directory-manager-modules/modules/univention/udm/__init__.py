@@ -61,7 +61,7 @@ A shortcut exists to get UDM objects directly, without knowing their
 univention object type::
 
 	from univention.udm import Udm
-	Udm.using_admin().get_obj(dn)
+	Udm.using_admin().identify_object_by_dn(dn)
 
 A shortcut exists to get UDM objects directly, knowing their univention object
 type, but without knowing their DN::

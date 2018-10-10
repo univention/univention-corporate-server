@@ -63,7 +63,7 @@ for obj in Udm.using_machine().get('users/user').search('uid=a*'):  # search() r
 
 A shortcut exists to get a UDM object directly::
 
-	Udm.using_admin().get_obj(dn)
+	Udm.using_admin().identify_object_by_dn(dn)
 
 It is recommended to hard code the used API version in your code. Supply it as
 argument when creating a Udm object::
@@ -71,7 +71,11 @@ argument when creating a Udm object::
 	Udm.using_admin().version(1)  # use API version 1
 	Udm(lo).version(0).get('users/user')  # get users/user module for API version 0
 	Udm(lo, 0).get('users/user')  # get users/user module for API version 0
+<<<<<<< HEAD
 	Udm.using_credentials('s3cr3t', 'uid=myuser,..').version(2).get_obj(dn)  # get object using API version 2
+=======
+	Udm.using_credentials('s3cr3t', 'uid=myuser,..', 2).identify_object_by_dn(dn)  # get object using API version 2
+>>>>>>> Bug #47861: Renaming some classes
 """
 
 from __future__ import absolute_import, unicode_literals
@@ -103,7 +107,7 @@ class Udm(object):
 
 	A shortcut exists to get UDM objects directly::
 
-		Udm.using_admin().get_obj(dn)
+		Udm.using_admin().identify_object_by_dn(dn)
 	"""
 	_module_class_cache = {}  # type: Dict[Tuple[int, str, str], Type[BaseUdmModule]]
 	_module_object_cache = {}  # type: Dict[Tuple[int, str, str, str, str, str], BaseUdmModule]
@@ -195,9 +199,9 @@ class Udm(object):
 		:raises ImportError: if the Python module for `name` could not be loaded
 		"""
 		factory_config = self._configuration_storage.get_configuration(name, self._api_version)
-		return self.get_by_factory_config(name, factory_config)
+		return self._get_by_factory_config(name, factory_config)
 
-	def get_obj(self, dn):  # type: (str) -> BaseUdmObject
+	def identify_object_by_dn(self, dn):  # type: (str) -> BaseUdmObject
 		"""
 		Try to load an UDM object from LDAP. Guess the required UDM module
 		from the ``univentionObjectType`` LDAP attribute of the LDAP object.
@@ -231,7 +235,7 @@ class Udm(object):
 		else:
 			return True
 
-	def get_by_factory_config(self, name, factory_config):  # type: (str, UdmModuleFactoryConfiguration) -> BaseUdmModule
+	def _get_by_factory_config(self, name, factory_config):  # type: (str, UdmModuleFactoryConfiguration) -> BaseUdmModule
 		"""
 		Get an object of :py:class:`BaseUdmModule` (or of a subclass) for UDM
 		factory configuration `factory_configuration`.
