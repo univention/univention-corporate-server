@@ -1,0 +1,36 @@
+objectIdentifier univentionCode 1.3.6.1.4.1.10176.4220
+objectIdentifier univentionCodeAttributeType univentionCode:1
+objectIdentifier univentionCodeObjectClass univentionCode:2
+
+# <https://hutten.knut.univention.de/mediawiki/index.php/Univention-OIDs>
+
+### Definition for univentionCode
+
+attributetype ( univentionCodeAttributeType:1
+	NAME 'univentionCode'
+	DESC 'Univention code data'
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+
+attributetype ( univentionCodeAttributeType:2
+	NAME 'univentionCodeType'
+	DESC 'Univention code type'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionCodeAttributeType:3
+	NAME 'univentionCodeMeta'
+	DESC 'Univention code meta data'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( univentionCodeObjectClass:1
+	NAME 'univentionCode'
+	DESC 'Univention code object'
+	SUP top
+	STRUCTURAL
+	MUST ( cn $ univentionCodeType )
+	MAY ( description $ univentionCode $ univentionCodeMeta $ univentionUCSVersionStart $ univentionUCSVersionEnd ) )
