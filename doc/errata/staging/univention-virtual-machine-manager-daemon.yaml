@@ -10,6 +10,9 @@ desc: |
    setting the new UCR variable 'uvmm/vm/cpu/host-model' to either 'missing'
    or 'always': This modifies the XML description to include a description for
    the CPU of the host system for running virtual machines.
+   If a CPU description is present, UVMM will check the target host for
+   compatibility. The migration is aborted if the target host's CPU is not
+   compatible.
    Virtual machines must be restarted to activate pending changes. UVMM
    monitors running virtual machines for reboot events and restarts them
    automatically.
