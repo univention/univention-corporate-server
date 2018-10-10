@@ -17,3 +17,5 @@ desc: |
    monitors running virtual machines for reboot events and restarts them
    automatically.
 bug: [21386]
+erratum: 269
+announced: 2018-10-10
