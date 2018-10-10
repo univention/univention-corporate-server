@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-26) unstable; urgency=medium
+
+  * Bug #47944: Add univentionCode schema
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Wed, 10 Oct 2018 13:50:45 +0200
+
 univention-ldap (14.0.2-25) unstable; urgency=low
 
   * Bug #48102: Fix spelling mistake

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.25-14) unstable; urgency=low
+
+  * Bug #47944: add settings/code udm module
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Wed, 10 Oct 2018 13:50:56 +0200
+
 univention-directory-manager-modules (13.0.25-13) unstable; urgency=low
 
   * Bug #47316: fix handling of superordinate in API v0 and v1
