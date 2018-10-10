@@ -1,0 +1,171 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Univention Joinscripts
+"""Install join scripts."""
+#
+# Copyright 2018-2019 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import os
+import sys
+import argparse
+from univention.config_registry import configHandlers, ConfigRegistry
+import univention.admin.uldap
+from univention.admin import modules as udm_modules
+from univention.admin import uexceptions
+from univention.lib.ucs import UCS_Version
+import subprocess
+import bz2
+import base64
+import tempfile
+import shutil
+import time
+import datetime
+import apt
+
+server_roles= ("domaincontroller_master",
+              "domaincontroller_backup",
+              "domaincontroller_slave",
+              "memberserver",
+              )
+
+def main():
+	parser = argparse.ArgumentParser(description="Run join-hooks")
+	parser.add_argument("--server-role",
+				choices=server_roles,
+				help="Server Role")
+	parser.add_argument("--hooktype",
+				choices=("pre-join", "pre-joinscripts", "post-joinscripts"),
+				help="Type of hook")
+	parser.add_argument("--master",
+				help="UCS Master")
+	parser.add_argument("--binddn",
+				help="Bind-DN")
+	parser.add_argument("--bindpwdfile",
+				help="Password file")
+	parser.add_argument("-v", "--verbose", action='count',
+				help="Verbose")
+	args = parser.parse_args()
+
+	hook_options = []
+	if args.server_role:
+		hook_options.extend(["--server-role", args.server_role])
+	else:
+		args.error("Missing required option --server-role")
+		sys.exit(1)
+	if args.master:
+		hook_options.extend(["--master", args.master])
+	else:
+		args.error("Missing required option --master")
+		sys.exit(1)
+	if args.hooktype:
+		hook_options.extend(["--hooktype", args.hooktype])
+	else:
+		args.error("Missing required option --hooktype")
+		sys.exit(1)
+	if args.binddn:
+		hook_options.extend(["--binddn", args.binddn])
+	else:
+		args.error("Missing required option --binddn")
+		sys.exit(1)
+	if args.bindpwdfile:
+		hook_options.extend(["--bindpwdfile", args.bindpwdfile])
+	else:
+		args.error("Missing required option --bindpwdfile")
+		sys.exit(1)
+	
+	ucr = ConfigRegistry()
+	ucr.load()
+
+	bindpw = ""
+	with open(args.bindpwdfile, 'r') as f:
+		bindpw = f.read()
+		bindpw = bindpw.strip()
+
+	# ca_certfile = "/etc/univention/ssl/ucsCA/CAcert.pem"
+
+	try:
+		lo = univention.admin.uldap.access(host=args.master, port=7389, base=ucr["ldap/base"], binddn=args.binddn, bindpw=bindpw, start_tls=2)
+		ldap_position = univention.admin.uldap.position(lo.base)
+	except uexceptions.ldapError as exc:
+		print("Failed LDAP Connection to %s: %s" % (master, exc))
+		exit(1)
+	except Exception as exc:
+		print("Exception occurred: %s" % (exc,))
+		exit(1)
+
+	udm_modules.update()
+	udm_module = udm_modules.get("settings/code")
+	udm_modules.init(lo, ldap_position, udm_module)
+	tempdir = tempfile.mkdtemp()
+	for udm_object in udm_module.lookup(None, lo, "code_type=%s" % args.hooktype):
+		udm_object.open()
+
+		base64_compressed_code = udm_object['code']
+		compressed_code = base64.b64decode(base64_compressed_code)
+		new_object_data = bz2.decompress(compressed_code)
+
+		hookname = udm_object['name']
+		filename = "-".join([args.hooktype, hookname])
+		filepath = os.path.join(tempdir, filename)
+		metadata = udm_object['meta']
+		if "disabled" in metadata:
+			print("Skipping disabled %s hook %s" % (args.hooktype, hookname))
+			continue
+
+		ucsversionstart = udm_object["ucsversionstart"]
+		ucsversionend = udm_object["ucsversionend"]
+		current_UCS_version = "-".join([ucr.get('version/version'), ucr.get('version/patchlevel')])
+		if ucsversionstart and UCS_Version(current_UCS_version) < UCS_Version(ucsversionstart):
+			print('Skipping %s hook %s, because it requires at least UCS version %s.' % (args.hooktype, hookname, ucsversionstart))
+			continue
+		elif ucsversionend and UCS_Version(current_UCS_version) > UCS_Version(ucsversionend):
+			print('Skipping %s hook %s, because it specifies compatibility only up to and including UCS version %s.' % (args.hooktype, hookname, ucsversionend))
+			continue
+
+		print("Running: %s (%s)" % (filepath, udm_object.dn))
+		if args.verbose:
+			print("###")
+			print(new_object_data)
+			print("###")
+		with open(filepath, "w") as f:
+			f.write(new_object_data)
+			f.close()
+			os.chmod(filepath, 0755)
+			cmd = [filepath]
+			cmd.extend(hook_options)
+			p1 = subprocess.Popen(cmd, close_fds=True)
+			p1.wait()
+			if p1.returncode != 0:
+				print("ERROR: %s hook %s failed." % (args.hooktype, filepath))
+				sys.exit(1)
+	shutil.rmtree(tempdir)
+
+if __name__ == "__main__":
+	main()
+# vim:set sw=4 ts=4 noet:

@@ -119,6 +119,23 @@ failed_message () {
 	exit 1
 }
 
+run_join_hook() {
+	local hooktype
+	local output
+	hooktype="$1"
+
+	/usr/share/univention-join/univention-join-hooks \
+		--server-role "$server_role" \
+		--type "$hooktype" \
+		--master "$DCNAME" \
+		--binddn "$binddn" --bindpwdfile "$DCPWD" 2> >(tee -a /var/log/univention/join.log >&2)
+	rc=$?
+
+	if [ "$rc" != 0 ]; then
+		failed_message "$hooktype failed, see /var/log/univention/join.log"
+	fi
+}
+
 bashquote () { # quote arguments for eval
 	declare -a escaped
 	declare -r quote=\\\'
@@ -130,19 +147,28 @@ bashquote () { # quote arguments for eval
 	echo -n "${escaped[@]}"
 }
 
-setup_ssl () {
+copy_ca_cert () {
 	local ca dst='/etc/univention/ssl/ucsCA'
 
-	if [ "$1" = "force" ]
-	then
-		rm -rf "$dst"
+	{
+	rm -rf "$dst"
 		install -m 0755 -d "$dst"
 		for ca in ucsCA udsCA
 		do
 			[ -e "$dst/CAcert.pem" ] && break
 			univention-scp "$DCPWD" -q "${DCACCOUNT}@${DCNAME}:/etc/univention/ssl/${ca}/CAcert.pem" "$dst/CAcert.pem"
 		done
-	fi >>/var/log/univention/join.log 2>&1
+	} >>/var/log/univention/join.log 2>&1
+	grep -q '^TLS_CACERT' /etc/ldap/ldap.conf || echo "TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem" >>/etc/ldap/ldap.conf
+}
+
+setup_ssl () {
+	local ca dst='/etc/univention/ssl/ucsCA'
+
+	if [ "$1" = "force" ]
+	then
+		copy_ca_cert
+	fi
 
 	# prevent join from failing if umask is modified (Bug #21587)
 	chmod 755 /etc/univention/ssl
@@ -661,6 +687,9 @@ fi
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=30886
 test -x /usr/sbin/nscd && nscd -i hosts
 
+copy_ca_cert
+run_join_hook pre-join
+
 echo -n "Join Computer Account: "
 args+=(-role "$server_role" -hostname "$hostname" -domainname "$domainname")
 # Copy local $DCPWD to remote $DCPWD' and invoke univention-join remotely
@@ -876,7 +905,9 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	chown listener /var/lib/univention-ldap/schema/id/id
 
 	check_and_configure_ad_member_mode
+	run_join_hook pre-joinscripts
 	run_join_scripts
+	run_join_hook post-joinscripts
 
 elif [ "$server_role" = "domaincontroller_slave" ]; then
 
@@ -933,7 +964,9 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
 	check_and_configure_ad_member_mode
+	run_join_hook pre-joinscripts
 	run_join_scripts
+	run_join_hook post-joinscripts
 
 elif [ "$server_role" = "memberserver" ]; then
 	setup_ssl force
@@ -964,7 +997,9 @@ elif [ "$server_role" = "memberserver" ]; then
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
 	check_and_configure_ad_member_mode
+	run_join_hook pre-joinscripts
 	run_join_scripts
+	run_join_hook post-joinscripts
 
 else
 # Client and Mobile Client
@@ -990,7 +1025,9 @@ else
 
 	eval "$(univention-config-registry shell)"
 
+	run_join_hook pre-joinscripts
 	run_join_scripts
+	run_join_hook post-joinscripts
 fi
 
 if [ -d /etc/runit/univention-directory-notifier ]; then
