@@ -39,6 +39,7 @@ import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.uldap
 from ..encoders import dn_list_property_encoder_for, BaseEncoder
+from ..udm import Udm
 from ..base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from ..exceptions import (
 	CreateError, DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UnknownProperty, UnknownUdmModuleType,
@@ -227,7 +228,7 @@ class GenericUdm1Object(BaseUdmObject):
 			self.position = self._lo.parentDn(self.dn)
 			self._old_position = self.position
 		else:
-			self.position = self._udm1_object.position.getDn()
+			self.position = self._udm_module.get_default_positions()[0]
 		self.props = self.udm_prop_class(self)
 		if not self.dn:
 			self._init_new_object_props()
@@ -442,6 +443,23 @@ class GenericUdm1Module(BaseUdmModule):
 			dns = (obj.dn for obj in self._udm1_module.lookup(None, self.lo, filter_s, base=base, scope=scope))
 		for dn in dns:
 			yield self.get(dn)
+
+	def get_default_positions(self):
+		default_positions_property = self._get_default_positions_property()
+		default_containers = []
+		if default_positions_property:
+			udm = Udm(self.lo, self.meta.api_version)
+			try:
+				default_directory_object = udm.get('settings/directory').get('cn=default containers,cn=univention,{}'.format(self.lo.base))
+			except NoObject:
+				pass
+			else:
+				default_directory_object = self._get_default_directory_object()
+				if default_directory_object is not None:
+					dns = getattr(default_directory_object.props, default_positions_property)
+					default_containers = [dn for dn in dns if udm.dn_exists(dn)]
+		default_containers.append(self.lo.base)
+		return default_containers
 
 	def _get_udm1_module(self):  # type: () -> univention.admin.handlers.simpleLdap
 		"""

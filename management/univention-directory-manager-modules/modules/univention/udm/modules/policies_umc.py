@@ -51,3 +51,6 @@ class PoliciesUmcUdm1Module(GenericUdm1Module):
 	"""PoliciesUmcUdm1Object factory"""
 	_udm_object_class = PoliciesUmcUdm1Object
 	supported_api_versions = (1,)
+
+	def _get_default_positions_property(self):
+		return 'computers'

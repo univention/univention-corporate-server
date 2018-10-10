@@ -75,6 +75,9 @@ argument when creating a Udm object::
 """
 
 from __future__ import absolute_import, unicode_literals
+
+from univention.admin.uexceptions import noObject
+
 from .base import BaseUdmModule
 from .exceptions import ApiVersionNotSupported, NoObject, UnknownUdmModuleType
 from .factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
@@ -226,6 +229,14 @@ class Udm(object):
 			raise UnknownUdmModuleType(dn=dn)
 		udm_module = self.get(uot)
 		return udm_module.get(dn)
+
+	def dn_exists(self, dn):
+		try:
+			self.lo.searchDn(base=dn, scope='base')
+		except noObject:
+			return False
+		else:
+			return True
 
 	def get_by_factory_config(self, name, factory_config):  # type: (str, UdmModuleFactoryConfiguration) -> BaseUdmModule
 		"""
