@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Ignore netlogon_creds_cli.tdb in univention-samba4-backup.
 bug: [46468]
+erratum: 267
+announced: 2018-10-10
