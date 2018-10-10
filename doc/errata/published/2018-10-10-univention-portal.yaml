@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Fix the broken text of the portal title and name.
 bug: [47877]
+erratum: 268
+announced: 2018-10-10
