@@ -42,7 +42,7 @@ from ..encoders import dn_list_property_encoder_for, BaseEncoder
 from ..udm import Udm
 from ..base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from ..exceptions import (
-	CreateError, DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UnknownProperty, UnknownUdmModuleType,
+	CreateError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, UnknownProperty, UnknownUdmModuleType,
 	WrongObjectType
 )
 from ..utils import UDebug as ud
@@ -130,7 +130,7 @@ class GenericUdm1Object(BaseUdmObject):
 		if self._deleted:
 			raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name)
 		if not self.dn or not self._udm1_object:
-			raise FirstUseError(module_name=self._udm_module.name)
+			raise NotYetSavedError(module_name=self._udm_module.name)
 		self._udm1_object = self._udm_module._get_udm1_object(self.dn)
 		self._copy_from_udm_obj()
 		return self
@@ -201,7 +201,7 @@ class GenericUdm1Object(BaseUdmObject):
 			ud.warn('{} has already been deleted.'.format(self))
 			return
 		if not self.dn or not self._udm1_object:
-			raise FirstUseError()
+			raise NotYetSavedError()
 		self._udm1_object.remove()
 		if univention.admin.objects.wantsCleanup(self._udm1_object):
 			univention.admin.objects.performCleanup(self._udm1_object)

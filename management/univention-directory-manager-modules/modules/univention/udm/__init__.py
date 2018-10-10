@@ -84,12 +84,12 @@ argument to the Udm module factory or via :py:meth:`version()`::
 from __future__ import absolute_import
 from .udm import __default_api_version__, Udm
 from .exceptions import (
-	DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UdmError, UnknownProperty, UnknownUdmModuleType,
+	DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, UdmError, UnknownProperty, UnknownUdmModuleType,
 	WrongObjectType
 )
 
 __all__ = [
 	'__default_api_version__', 'Udm',
-	'DeletedError', 'FirstUseError', 'ModifyError', 'MoveError', 'NoObject', 'UdmError', 'UnknownProperty',
+	'DeletedError', 'NotYetSavedError', 'ModifyError', 'MoveError', 'NoObject', 'UdmError', 'UnknownProperty',
 	'UnknownUdmModuleType', 'WrongObjectType',
 ]
