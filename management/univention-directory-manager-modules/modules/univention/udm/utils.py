@@ -114,38 +114,33 @@ class LDAP_connection(object):
 	@classmethod
 	def get_credentials_connection(
 			cls,
+			identity,  # type: str
 			password,  # type: str
-			username=None,  # type: Optional[str]
-			dn=None,  # type: Optional[str]
-			base=None,  # type: Optional[str]
-			server=None,  # type: Optional[str]
-			port=None  # type: Optional[int]
 		):
 		# type: (...) -> univention.admin.uldap.access
-		assert (username or dn) and password, 'Either username and password or dn and password are required.'
 
 		if not cls._ucr:
 			cls._ucr = univention.config_registry.ConfigRegistry()
 			cls._ucr.load()
 
-		if not dn:
-			if not cls._connection_machine:
-				try:
-					cls._connection_machine, po = univention.admin.uldap.getMachineConnection()
-				except Exception as exc:
-					# TODO: catch specific permission
-					# TODO: raise specific permission
-					raise RuntimeError('Cannot get DN for username.')
-			dns = cls._connection_machine.searchDn(filter_format('uid=%s', (username,)))
+		if '=' not in identity:
 			try:
-				dn = dns[0]
+				lo = cls.get_machine_connection()
+			except Exception:
+				# TODO: catch specific permission
+				# TODO: raise specific permission
+				raise RuntimeError('Cannot get DN for username.')
+			dns = lo.searchDn(filter_format('uid=%s', (identity,)))
+			try:
+				identity = dns[0]
 			except IndexError:
 				# TODO: raise specific permission
 				raise RuntimeError('Cannot get DN for username.')
 
-		server = server or cls._ucr['ldap/server/name']
-		base = base or cls._ucr['ldap/base']
-		key = (server, port, base, dn)
+		server = cls._ucr['ldap/master/name']
+		port = cls._ucr['ldap/master/port']
+		base = cls._ucr['ldap/base']
+		key = (identity, password)
 		if key not in cls._connection_account:
 			cls._connection_account[key] = univention.admin.uldap.access(
 				host=server,

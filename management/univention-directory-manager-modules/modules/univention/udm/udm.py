@@ -149,12 +149,9 @@ class Udm(object):
 	@classmethod
 	def using_credentials(
 			cls,
+			identity,  # type: str
 			password,  # type: str
-			username=None,  # type: Optional[str]
-			dn=None,  # type: Optional[str]
-			base=None,  # type: Optional[str]
-			server=None,  # type: Optional[str]
-			port=None,  # type: Optional[int]
+			api_version=__default_api_version__,  # type: Optional[int]
 	):
 		# type: (...) -> Udm
 		"""
@@ -163,12 +160,8 @@ class Udm(object):
 		Either `username` or `dn` are required. If `username`, a machine
 		connection is used to retrieve the DN it belongs to.
 
+		:param str identity: username or user dn to use for LDAP connection
 		:param str password: password of user / DN to use for LDAP connection
-		:param str username: username to use for LDAP connection
-		:param str dn: DN to use for LDAP connection
-		:param str base: optional search base
-		:param str server: optional LDAP server address as FQDN
-		:param int port: optional LDAP server port
 		:return: a Udm object
 		:rtype: Udm
 		"""

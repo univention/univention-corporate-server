@@ -45,6 +45,8 @@ univention-directory-manager-modules (13.0.24-4) unstable; urgency=medium
 
 univention-directory-manager-modules (13.0.24-3) unstable; urgency=medium
 
+  * Bug #47861: Reworking using_credentials to use fewer parameters and
+    connect to the UCS master
   * Bug #47861: Renaming some classes
   * Bug #47861: Documentation fixes
   * Bug #47861: auto_reload after save
