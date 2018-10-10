@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.25-15) unstable; urgency=low
+
+  * Bug #47944: Improve descriptions for settings/code
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Wed, 10 Oct 2018 14:52:32 +0200
+
 univention-directory-manager-modules (13.0.25-14) unstable; urgency=low
 
   * Bug #47944: add settings/code udm module
