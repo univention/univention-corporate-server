@@ -11,3 +11,5 @@ desc: |
  * The group membership sync now correctly identifies
    "ucs_module_others" if defined in the mapping.
 bug: [47374,47779]
+erratum: 266
+announced: 2018-10-10
