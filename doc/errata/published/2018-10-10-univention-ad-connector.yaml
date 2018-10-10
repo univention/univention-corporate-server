@@ -11,3 +11,5 @@ desc: |
  * Support sasl/gssapi in AD Connection setup scripts (to support
    integrity checking during binds).
 bug: [47209,47901]
+erratum: 265
+announced: 2018-10-10
