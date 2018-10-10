@@ -30,7 +30,11 @@ def udm_objects_without_type(lo):
 			continue
 		modules = identify(dn, attrs)
 		if modules:
-			objs.append((dn, modules, attrs['objectClass']))
+			for module in modules:  # Bug #47846
+				if module.module == 'kerberos/kdcentry':
+					break
+			else:
+				objs.append((dn, modules, attrs['objectClass']))
 	return objs
 
 def run(_umc_instance):
