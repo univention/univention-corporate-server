@@ -41,7 +41,7 @@ import univention.admin.uldap
 from ..encoders import dn_list_property_encoder_for, BaseEncoder
 from ..base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from ..exceptions import (
-	DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UnknownProperty, UnknownUdmModuleType,
+	CreateError, DeletedError, FirstUseError, ModifyError, MoveError, NoObject, UnknownProperty, UnknownUdmModuleType,
 	WrongObjectType
 )
 from ..utils import UDebug as ud
@@ -176,7 +176,15 @@ class GenericUdm1Object(BaseUdmObject):
 					), dn=self.dn, module_name=self._udm_module.name
 				)
 		else:
-			self.dn = self._udm1_object.create()
+			try:
+				self.dn = self._udm1_object.create()
+			except univention.admin.uexceptions.insufficientInformation as exc:
+				raise CreateError(
+					'Error creating {!r} object: {}'.format(
+						self._udm_module.name, exc
+					), module_name=self._udm_module.name
+				)
+
 		assert self.dn == self._udm1_object.dn
 		assert self.position == self._lo.parentDn(self.dn)
 		self._fresh = False

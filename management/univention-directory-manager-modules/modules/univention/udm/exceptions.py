@@ -60,6 +60,11 @@ class ApiVersionNotSupported(UdmError):
 		super(ApiVersionNotSupported, self).__init__(msg, module_name=module_name)
 
 
+class CreateError(UdmError):
+	"""Raised when an error occurred when creating an object."""
+	pass
+
+
 class DeletedError(UdmError):
 	def __init__(self, msg=None, dn=None, module_name=None):
 		# type: (Optional[Text], Optional[Text], Optional[Text]) -> None
@@ -79,7 +84,7 @@ class FirstUseError(UdmError):
 
 
 class ModifyError(UdmError):
-	"""Raised when an error occurred when moving an object."""
+	"""Raised when an error occurred when modifying an object."""
 	pass
 
 
