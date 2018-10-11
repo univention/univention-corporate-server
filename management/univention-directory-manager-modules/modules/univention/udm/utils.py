@@ -27,6 +27,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import, unicode_literals
+import sys
 import inspect
 import importlib
 from ldap.filter import filter_format
@@ -40,9 +41,19 @@ except ImportError:
 	pass
 
 
+is_interactive = bool(getattr(sys, 'ps1', sys.flags.interactive))
+
+
 class UDebug(object):
 	"""univention.debug convenience wrapper"""
 	target = univention.debug.ADMIN  # type: int
+	level2str = {
+		univention.debug.ALL: 'DEBUG',
+		univention.debug.ERROR: 'ERROR',
+		univention.debug.INFO: 'INFO',
+		univention.debug.PROCESS: 'INFO',
+		univention.debug.WARN: 'WARN',
+	}
 
 	@classmethod
 	def all(cls, msg):  # type: (Text) -> None
@@ -76,6 +87,8 @@ class UDebug(object):
 	@classmethod
 	def _log(cls, level, msg):  # type: (int, Text) -> None
 		univention.debug.debug(cls.target, level, msg)
+		if is_interactive and level <= univention.debug.INFO:
+			print('{}: {}'.format(cls.level2str[level], msg))
 
 
 class LDAP_connection(object):
