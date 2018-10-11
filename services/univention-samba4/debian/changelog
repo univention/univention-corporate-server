@@ -1,3 +1,11 @@
+univention-samba4 (7.0.2-27) unstable; urgency=medium
+
+  * Bug #47954: Depend on libunivention-ldb-modules and register
+    all ldb modules specified via UCR samba4/ldb/sam/module/prepend.
+    This UCR variable is set by ucs-school-*slave joinscripts
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Oct 2018 10:44:45 +0200
+
 univention-samba4 (7.0.2-26) unstable; urgency=medium
 
   * Bug #46468: ignore netlogon_creds_cli.tdb in univention-samba4-backup

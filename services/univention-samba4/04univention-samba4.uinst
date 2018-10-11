@@ -42,6 +42,30 @@ SERVICE="Samba 4"
 eval "$(ucr shell)"
 
 . /usr/share/univention-lib/all.sh
+
+## check the samba4/ldb/sam/module/prepend list
+if [ -n "$samba4_ldb_sam_module_prepend" ]; then
+	for module in $samba4_ldb_sam_module_prepend; do
+		unregister_opts="$unregister_opts --remove $module"
+	done
+fi
+
+if [ -n "$unregister_opts" ]; then
+	## backup LDB file
+	tempfile="$(mktemp)"
+	cp "$sam_ldb" "$tempfile"
+
+	## Register the Module
+	/usr/share/univention-samba4/scripts/register_ldb_module.py -H "$sam_ldb" $unregister_opts
+	## check if ldb file is ok
+	if ldbsearch -H "$sam_ldb" -b '@MODULES' -s base  > /dev/null; then
+		rm "$tempfile"
+	else
+		echo "Restoring original sam.ldb"
+		mv "$tempfile" "$sam_ldb"
+	fi
+fi
+
 ucs_removeServiceFromLocalhost "$SERVICE" "$@" || die
 
 ucr unset samba4/ldap/base \

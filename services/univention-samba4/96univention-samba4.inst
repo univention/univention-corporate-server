@@ -1023,6 +1023,10 @@ if ! [ -r "/etc/krb5.keytab" ]; then
 	echo "WARNING: /etc/krb5.keytab not created."
 fi
 
+if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
+	samba4_ldb_sam_module_prepend || true
+fi
+
 /etc/init.d/samba restart
 
 # To prevent a DRS replication conflict: 

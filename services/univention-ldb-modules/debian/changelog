@@ -1,3 +1,10 @@
+univention-ldb-modules (6.0.1-1) unstable; urgency=medium
+
+  * Bug #47954: Move 97libunivention-ldb-modules.inst code to
+    96univention-samba4.inst
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Oct 2018 11:07:47 +0200
+
 univention-ldb-modules (6.0.0-7) unstable; urgency=low
 
   * Bug #47234: mark joinscript as successfully run if it is run on a
