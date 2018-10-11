@@ -70,8 +70,6 @@ override_dh_auto_install:
 
 override_dh_install:
 	## put the following to files into dh_install sourcedir
-	install 96univention-samba4slavepdc.inst $(DESTDIR)
-	install 98univention-samba4slavepdc-dns.inst $(DESTDIR)
 	install ucs-school-create_windows_computer $(DESTDIR)
 	dh_install --fail-missing --list-missing --sourcedir=$(DESTDIR)
 	univention-install-config-registry

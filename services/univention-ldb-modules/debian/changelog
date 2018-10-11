@@ -1,3 +1,9 @@
+univention-ldb-modules (6.0.1-2) unstable; urgency=medium
+
+  * Bug #47957: Prepare move of samba4slapvepdc join scripts to UCS@school
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Oct 2018 12:11:47 +0200
+
 univention-ldb-modules (6.0.1-1) unstable; urgency=medium
 
   * Bug #47954: Move 97libunivention-ldb-modules.inst code to
