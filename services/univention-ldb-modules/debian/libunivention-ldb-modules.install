@@ -1,8 +1,5 @@
 usr/lib/*/samba/ldb/univention_samaccountname_ldap_check.so
 usr/lib/*/samba/ldb/univention_ldb_log.so
-register_ldb_module.py usr/share/univention-samba4/scripts
-97libunivention-ldb-modules.inst usr/lib/univention-install
 96univention-samba4slavepdc.inst usr/lib/univention-install
 98univention-samba4slavepdc-dns.inst usr/lib/univention-install
-03libunivention-ldb-modules.uinst usr/lib/univention-uninstall
 ucs-school-create_windows_computer usr/sbin
