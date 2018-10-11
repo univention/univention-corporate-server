@@ -44,7 +44,7 @@ user_mod = Udm.using_admin().get('users/user')
 or
 user_mod = Udm.using_machine().get('users/user')
 or
-user_mod = Udm.using_credentials('s3cr3t', 'uid=myuser,cn=users,...').get('users/user')
+user_mod = Udm.using_credentials('myuser', 's3cr3t').get('users/user')
 
 obj = user_mod.get(dn)
 obj.props.firstname = 'foo'  # modify property
@@ -71,11 +71,7 @@ argument when creating a Udm object::
 	Udm.using_admin().version(1)  # use API version 1
 	Udm(lo).version(0).get('users/user')  # get users/user module for API version 0
 	Udm(lo, 0).get('users/user')  # get users/user module for API version 0
-<<<<<<< HEAD
-	Udm.using_credentials('s3cr3t', 'uid=myuser,..').version(2).get_obj(dn)  # get object using API version 2
-=======
-	Udm.using_credentials('s3cr3t', 'uid=myuser,..', 2).identify_object_by_dn(dn)  # get object using API version 2
->>>>>>> Bug #47861: Renaming some classes
+	Udm.using_credentials('myuser', 'secret').version(2).identify_object_by_dn(dn)  # get object using API version 2
 """
 
 from __future__ import absolute_import, unicode_literals
@@ -169,7 +165,7 @@ class Udm(object):
 		:return: a Udm object
 		:rtype: Udm
 		"""
-		return cls(cls._connection_handler.get_credentials_connection(password, username, dn, base, server, port))
+		return cls(cls._connection_handler.get_credentials_connection(identity, password))
 
 	def version(self, api_version):  # type: (int) -> Udm
 		"""
