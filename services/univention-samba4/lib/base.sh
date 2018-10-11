@@ -418,3 +418,54 @@ cleanup_var_lib_samba()
 		rsync -a --exclude /private/* "$backup_folder/" /var/lib/samba
 	fi
 }
+
+samba4_ldb_sam_module_prepend()
+{
+	local variables
+	local domaindn
+	local LDB_URI
+	local module
+	local register_opts
+	local sam_ldb
+	local tempfile
+	## check if any of the relevant options are set
+	variables="$(univention-config-registry search --brief "^samba4/ldb/sam/module/")"
+	if [ -n "$variables" ]; then
+		sam_ldb="/var/lib/samba/private/sam.ldb"
+		LDB_URI="tdb://$sam_ldb"
+
+		domaindn="DC=${kerberos_realm//./,DC=}" # that's what /usr/share/pyshared/samba/provision.py uses
+		if ! ldbsearch -H "$LDB_URI" -b $domaindn -s base dn 2>/dev/null| grep -qi ^"dn: $domaindn"; then
+			echo "Samba4 does not seem to be provisioned, skipping samba4_ldb_sam_module_prepend"
+			exit 1
+		fi
+
+		## check the samba4/ldb/sam/module/prepend list
+		if [ -n "$samba4_ldb_sam_module_prepend" ]; then
+			for module in $samba4_ldb_sam_module_prepend; do
+				register_opts="$register_opts --prepend $module"
+			done
+		fi
+
+		if [ -n "$register_opts" ]; then
+			## backup LDB file
+			tempfile="$(mktemp)"
+			cp "$sam_ldb" "$tempfile"
+
+			## Restart the S4 Connector to check samba4/ldb/sam/module/prepend and use the bypass_samaccountname_ldap_check control
+			if [ -x /etc/init.d/univention-s4-connector ]; then
+				invoke-rc.d univention-s4-connector crestart
+			fi
+
+			## Register the Module
+			/usr/share/univention-samba4/scripts/register_ldb_module.py -H "$sam_ldb" --ignore-exists $register_opts
+			## check if ldb file is ok
+			if ldbsearch -H "$sam_ldb" -b '@MODULES' -s base  > /dev/null; then
+				rm "$tempfile"
+			else
+				echo "Restoring original sam.ldb"
+				mv "$tempfile" "$sam_ldb"
+			fi
+		fi
+	fi
+}

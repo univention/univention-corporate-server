@@ -36,9 +36,6 @@
 
 case "$1" in
 	configure)
-		uinst=/usr/lib/univention-install/03libunivention-ldb-modules.uinst
-		[ -e "$uinst" ] && rm "$uinst"
-
 		if [ -z "$2" ]; then
 			:
 		else
@@ -82,7 +79,6 @@ case "$1" in
 esac
 
 call_joinscript 96univention-samba4slavepdc.inst
-call_joinscript 97libunivention-ldb-modules.inst
 call_joinscript 98univention-samba4slavepdc-dns.inst
 
 exit 0
