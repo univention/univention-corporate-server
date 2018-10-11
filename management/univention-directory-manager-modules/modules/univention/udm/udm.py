@@ -68,9 +68,10 @@ A shortcut exists to get a UDM object directly::
 It is recommended to hard code the used API version in your code. Supply it as
 argument when creating a Udm object::
 
-	Udm.using_admin(1)  # use API version 1
+	Udm.using_admin().version(1)  # use API version 1
+	Udm(lo).version(0).get('users/user')  # get users/user module for API version 0
 	Udm(lo, 0).get('users/user')  # get users/user module for API version 0
-	Udm.using_credentials('s3cr3t', 'uid=myuser,..', 2).get_obj(dn)  # get object using API version 2
+	Udm.using_credentials('s3cr3t', 'uid=myuser,..').version(2).get_obj(dn)  # get object using API version 2
 """
 
 from __future__ import absolute_import, unicode_literals
@@ -105,44 +106,42 @@ class Udm(object):
 	_module_object_cache = {}  # type: Dict[Tuple[int, str, str, str, str, str], BaseUdmModule]
 	_connection_handler = LDAP_connection
 
-	def __init__(self, lo, api_version=__default_api_version__):
+	def __init__(self, lo, api_version=None):
 		# type: (univention.admin.uldap.access, Optional[int]) -> None
 		"""
 		Use the provided connection.
 
 		:param univention.admin.uldap.access lo: LDAP connection object
 		:param int api_version: load only UDM modules that support the
-			specified version
+			specified version, can be set later using :py:meth:`version()`.
 		:return: None
 		:rtype: None
 		"""
 		self.lo = lo
-		self._api_version = api_version
+		self.__api_version = None
+		if api_version is not None:
+			self.version(api_version)
 		self._configuration_storage = UdmModuleFactoryConfigurationStorage()
 
 	@classmethod
-	def using_admin(cls, api_version=__default_api_version__):  # type: (Optional[int]) -> Udm
+	def using_admin(cls):  # type: () -> Udm
 		"""
 		Use a cn=admin connection.
 
-		:param int api_version: load only UDM modules that support the
-			specified version
 		:return: a Udm object
 		:rtype: Udm
 		"""
-		return cls(cls._connection_handler.get_admin_connection(), api_version)
+		return cls(cls._connection_handler.get_admin_connection())
 
 	@classmethod
-	def using_machine(cls, api_version=__default_api_version__):  # type: (Optional[int]) -> Udm
+	def using_machine(cls):  # type: () -> Udm
 		"""
 		Use a machine connection.
 
-		:param int api_version: load only UDM modules that support the
-			specified version
 		:return: a Udm object
 		:rtype: Udm
 		"""
-		return cls(cls._connection_handler.get_machine_connection(), api_version)
+		return cls(cls._connection_handler.get_machine_connection())
 
 	@classmethod
 	def using_credentials(
@@ -153,7 +152,6 @@ class Udm(object):
 			base=None,  # type: Optional[str]
 			server=None,  # type: Optional[str]
 			port=None,  # type: Optional[int]
-			api_version=__default_api_version__,  # type: Optional[int]
 	):
 		# type: (...) -> Udm
 		"""
@@ -168,12 +166,27 @@ class Udm(object):
 		:param str base: optional search base
 		:param str server: optional LDAP server address as FQDN
 		:param int port: optional LDAP server port
-		:param int api_version: load only UDM modules that support the
-			specified version
 		:return: a Udm object
 		:rtype: Udm
 		"""
-		return cls(cls._connection_handler.get_credentials_connection(password, username, dn, base, server, port), api_version)
+		return cls(cls._connection_handler.get_credentials_connection(password, username, dn, base, server, port))
+
+	def version(self, api_version):  # type: (int) -> Udm
+		"""
+		Set the version of the API that the UDM modules must support.
+
+		Use in a chain of methods to get a UDM module::
+
+			Udm.get_admin().version(1).get('groups/group')
+
+		:param int api_version: load only UDM modules that support the
+		specified version
+		:return: self
+		:rtype Udm
+		"""
+		assert isinstance(api_version, int), "Argument 'api_version' must be an int."
+		self.__api_version = api_version
+		return self
 
 	def get(self, name):  # type: (str) -> BaseUdmModule
 		"""
@@ -244,6 +257,14 @@ class Udm(object):
 				)
 			self._module_object_cache[key] = module_cls(name, self.lo, self._api_version)
 		return self._module_object_cache[key]
+
+	@property
+	def _api_version(self):
+		if self.__api_version is None:
+			ud.warn('Using default API version ({}). It is recommended to set one explicitly.'.format(
+				__default_api_version__))
+			self.__api_version = __default_api_version__
+		return self.__api_version
 
 	def _load_module(self, factory_config):  # type: (UdmModuleFactoryConfiguration) -> Type[BaseUdmModule]
 		key = (self._api_version, factory_config.module_path, factory_config.class_name)

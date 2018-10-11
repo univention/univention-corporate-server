@@ -73,9 +73,12 @@ The API is versioned. The default API version that will be used, if not defined
 otherwise, is ``univention.udm.__default_api_version__``.
 
 It is recommended to hard code the used version in your code. Supply it as
-argument to the Udm module factory::
+argument to the Udm module factory or via :py:meth:`version()`::
 
-	Udm.using_admin(1)  # use API version 1
+	Udm.using_admin().version(1)  # use API version 1
+	Udm(lo).version(0).get('users/user')  # get users/user module for API version 0
+	Udm(lo, 0).get('users/user')  # get users/user module for API version 0
+	Udm.using_credentials('s3cr3t', 'uid=myuser,..').version(2).get_obj(dn)  # get object using API version 2
 """
 
 from __future__ import absolute_import
