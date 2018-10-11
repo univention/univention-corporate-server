@@ -39,27 +39,6 @@ case "$1" in
 		if [ -z "$2" ]; then
 			:
 		else
-			if dpkg --compare-versions "$2" le-nl 1.0.5-1.41.201305241523 ; then
-				## errata update code, copied from 98univention-samba4-dns-slavepdc.inst
-				## On UCS@school Slave PDCs the S4 Connector filters some SRV records.
-				kerberos_tcp_override=$(univention-config-registry get "connector/s4/mapping/dns/srv_record/_kerberos._tcp.$domainname/location")
-				if [ -n "$kerberos_tcp_override" ]; then
-					eval "$(univention-config-registry shell)"
-					if [ -n "$nameserver1" ]; then
-						if [ -n "$nameserver2" ] && [ "$nameserver2" != get_default_ip_address ]; then
-							if [ -n "$(dig +short @"$nameserver2" "_kerberos._tcp.$domainname" SRV | grep -v "$kerberos_tcp_override")" ]; then
-								## if nameserver2 advertises something other than the local system, then we must not use it.
-								ucr unset nameserver2
-							fi
-						fi
-						if [ -n "$nameserver3" ] && [ "$nameserver3" != get_default_ip_address ]; then
-							if [ -n "$(dig +short @"$nameserver3" "_kerberos._tcp.$domainname" SRV | grep -v "$kerberos_tcp_override")" ]; then
-								ucr unset nameserver3
-							fi
-						fi
-					fi
-				fi
-			fi
 			if test -x /etc/init.d/samba; then
 				invoke-rc.d --query samba ## check policy-rc.d
 				rc=$?
@@ -77,9 +56,6 @@ case "$1" in
 		exit 1
 		;;
 esac
-
-call_joinscript 96univention-samba4slavepdc.inst
-call_joinscript 98univention-samba4slavepdc-dns.inst
 
 exit 0
 
