@@ -11,5 +11,5 @@ desc: |
    objects that lack a univentionObjectType although they should have one.
    The plugin also allows to migrate those objects. Having a
    univentionObjectType allows for other services to use a convenient LDAP
-   filter
+   filter.
 bug: [47649, 47844]
