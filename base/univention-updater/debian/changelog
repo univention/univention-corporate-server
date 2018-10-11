@@ -1,3 +1,9 @@
+univention-updater (13.0.1-60) unstable; urgency=medium
+
+  * Bug #34444: univention-update now shows error message if unmet dependencies error appears
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 11 Oct 2018 11:26:56 +0200
+
 univention-updater (13.0.1-59) unstable; urgency=low
 
   * Bug #47654: Remove deprecated workarounds
