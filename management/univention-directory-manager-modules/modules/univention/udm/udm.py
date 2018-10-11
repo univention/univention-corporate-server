@@ -101,8 +101,8 @@ class Udm(object):
 
 		Udm.using_admin().get_obj(dn)
 	"""
-	_module_class_cache = {}  # type: Dict[Tuple[str, str], Type[BaseUdmModule]]
-	_module_object_cache = {}  # type: Dict[Tuple[str, str, str, str, str], BaseUdmModule]
+	_module_class_cache = {}  # type: Dict[Tuple[int, str, str], Type[BaseUdmModule]]
+	_module_object_cache = {}  # type: Dict[Tuple[int, str, str, str, str, str], BaseUdmModule]
 	_connection_handler = LDAP_connection
 
 	def __init__(self, lo, api_version=__default_api_version__):
@@ -226,8 +226,9 @@ class Udm(object):
 		:raises ImportError: if the Python module for `name` could not be loaded
 		"""
 		assert isinstance(factory_config, UdmModuleFactoryConfiguration)
-		# key is (connection + class)
+		# key is (version, connection + class)
 		key = (
+			self._api_version,
 			self.lo.base, self.lo.binddn, self.lo.host,
 			name, factory_config.module_path, factory_config.class_name
 		)
@@ -245,7 +246,7 @@ class Udm(object):
 		return self._module_object_cache[key]
 
 	def _load_module(self, factory_config):  # type: (UdmModuleFactoryConfiguration) -> Type[BaseUdmModule]
-		key = (factory_config.module_path, factory_config.class_name)
+		key = (self._api_version, factory_config.module_path, factory_config.class_name)
 		if key not in self._module_class_cache:
 			candidate_cls = load_class(factory_config.module_path, factory_config.class_name)
 			if not issubclass(candidate_cls, BaseUdmModule):
