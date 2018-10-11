@@ -149,7 +149,7 @@ univention-ldb-modules (5.0.0-1) unstable; urgency=medium
 
 univention-ldb-modules (4.0.7-1) unstable; urgency=low
 
-  * Bug #40988: Dependency updated for rebuild against Samba 4.3.7 
+  * Bug #40988: Dependency updated for rebuild against Samba 4.3.7
 
  -- Felix Botner <botner@univention.de>  Fri, 08 Apr 2016 12:33:26 +0200
 
