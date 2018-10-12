@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=3
+VERSION=4
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
 joinscript_init
@@ -82,6 +82,11 @@ fi
 if [ "$JS_LAST_EXECUTED_VERSION" = 1 ]; then
 	univention-directory-manager settings/extended_attribute modify "$@" --dn "cn=objectFlag,cn=custom attributes,cn=univention,$ldap_base" --set multivalue=1
 fi
+
+univention-directory-manager container/cn create "$@" --ignore_exists \
+	--position="cn=univention,$ldap_base" \
+	--set name="code" \
+	--set description="LDAP code storage." || die
 
 stop_udm_cli_server
 
