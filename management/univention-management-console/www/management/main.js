@@ -895,7 +895,7 @@ define([
 			this._tabContainer.watch('selectedChildWidget', lang.hitch(this, function(name, oldModule, newModule) {
 				this._lastSelectedChild = oldModule;
 				this._updateHeaderColor(oldModule, newModule);
-				this._updateScrolllessUDMNavigation(newModule);
+				this._updateScrolllessUMC(newModule);
 
 				if (!newModule.moduleID) {
 					// this is the overview page, not a module
@@ -945,15 +945,27 @@ define([
 			}
 		},
 
-		_updateScrolllessUDMNavigation: function(newModule) {
+		_updateScrolllessUMC: function(newModule) {
 			if (has('trident')) {
-				// do not apply special css on IE
-				return;
+				return; // do not apply special css on IE
 			}
-			var addClass = newModule.moduleID === 'udm' 
-				&& newModule.moduleFlavor === 'navigation' 
-				&& newModule.selectedChildWidget === newModule._searchPage;
-			domClass.toggle(this._topContainer.domNode, 'udmNavigationScrollless', addClass);
+
+			if (this._scrolllessUMCModuleWatchHandler) {
+				this._scrolllessUMCModuleWatchHandler.remove();
+				this._scrolllessUMCModuleWatchHandler = null;
+			}
+
+			var scrolllessModules = ['udm/navigation', 'uvmm/uvmm'];
+			var newModuleName = lang.replace('{0}/{1}', [newModule.moduleID, newModule.moduleFlavor]);
+			var isScrolllessModule = scrolllessModules.indexOf(newModuleName) >= 0;
+			var addClass = isScrolllessModule && newModule.selectedChildWidget === newModule._searchPage;
+			domClass.toggle(this._topContainer.domNode, 'umcScrollless', addClass);
+			if (isScrolllessModule) {
+				this._scrolllessUMCModuleWatchHandler = newModule.watch('selectedChildWidget', lang.hitch(this, function(name, oldChild, newChild) {
+					var addClass = newChild === newModule._searchPage;
+					domClass.toggle(this._topContainer.domNode, 'umcScrollless', addClass);
+				}));
+			}
 		},
 
 		switchToOverview: function() {
