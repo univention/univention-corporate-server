@@ -162,20 +162,19 @@ class UniventionLDAPExtension(object):
 		active_change_udm_options = [
 			"--set", "filename=%s" % self.target_filename,
 			"--set", "data=%s" % new_data,
-			"--set", "active=FALSE",
 		]
+		if self.udm_module_name != "settings/data":
+			active_change_udm_options.extend([
+				"--set", "active=FALSE",
+			])
 
 		common_udm_options = [
 			"--set", "package=%s" % (options.packagename,),
 			"--set", "packageversion=%s" % (options.packageversion,),
 		]
 
-		if self.udm_module_name == "settings/code":
-			common_udm_options.extend(["--set", "code_type={}".format(options.code_type), ])
-			active_change_udm_options = [
-				"--set", "code={}".format(new_data),
-				"--set", "meta={}".format(json.dumps({'filename': self.target_filename})),
-			]
+		if self.udm_module_name == "settings/data":
+			common_udm_options.extend(["--set", "data_type={}".format(options.data_type), ])
 
 		if self.udm_module_name != "settings/ldapschema":
 			if options.ucsversionstart:
@@ -814,9 +813,9 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 					listener.unsetuid()
 
 
-class UniventionCodeExtension(UniventionLDAPExtension):
-	target_container_name = 'code'
-	udm_module_name = 'settings/code'
+class UniventionDataExtension(UniventionLDAPExtension):
+	target_container_name = 'data'
+	udm_module_name = 'settings/data'
 	active_flag_attribute = ''
 	filesuffix = ''
 
@@ -926,14 +925,14 @@ def option_callback_udm_passthrough_options(option, opt_str, value, parser, *arg
 	setattr(parser.values, option.dest, value)
 
 
-def check_code_module_options(option, opt_str, value, parser):
+def check_data_module_options(option, opt_str, value, parser):
 	if value.startswith('--'):
 		raise OptionValueError("%s requires an argument" % (opt_str,))
-	if not parser.values.code:
-		raise OptionValueError("%s can only be used after --code" % (opt_str,))
+	if not parser.values.data:
+		raise OptionValueError("%s can only be used after --data" % (opt_str,))
 
-def option_callback_set_code_module_options(option, opt_str, value, parser):
-	check_code_module_options(option, opt_str, value, parser)
+def option_callback_set_data_module_options(option, opt_str, value, parser):
+	check_data_module_options(option, opt_str, value, parser)
 	setattr(parser.values, option.dest, value)
 
 
@@ -1002,9 +1001,9 @@ def ucs_registerLDAPExtension():
 			action="append", type="existing_filename", default=[],
 			help="UDM hook", metavar="<filename>")
 
-	parser.add_option("--code", dest="code",
+	parser.add_option("--data", dest="data",
 			action="append", type="existing_filename", default=[],
-			help="Code object", metavar="<filename>")
+			help="Data object", metavar="<filename>")
 
 	parser.add_option("--packagename", dest="packagename",
 			help="Package name")
@@ -1018,12 +1017,12 @@ def ucs_registerLDAPExtension():
 			action="store", type="ucs_version",
 			help="End activation with UCS version", metavar="<UCS Version>")
 
-	code_module_options = OptionGroup(parser, "Code object specific options")
-	code_module_options.add_option("--code_type", dest="code_type",
+	data_module_options = OptionGroup(parser, "Data object specific options")
+	data_module_options.add_option("--data_type", dest="data_type",
 			type="string",
-			action="callback", callback=option_callback_set_code_module_options,
-			help="type of code object", metavar="<Code object type>")
-	parser.add_option_group(code_module_options)
+			action="callback", callback=option_callback_set_data_module_options,
+			help="type of data object", metavar="<Data object type>")
+	parser.add_option_group(data_module_options)
 
 	udm_module_options = OptionGroup(parser, "UDM module specific options")
 	udm_module_options.add_option("--messagecatalog", dest="udm_module_messagecatalog",
@@ -1083,7 +1082,7 @@ def ucs_registerLDAPExtension():
 	if not opts.packageversion:
 		parser.error('--packageversion option is required.')
 
-	if not (opts.schemafile or opts.aclfile or opts.udm_syntax or opts.udm_hook or opts.udm_module or opts.code):
+	if not (opts.schemafile or opts.aclfile or opts.udm_syntax or opts.udm_hook or opts.udm_module or opts.data):
 		parser.print_help()
 		sys.exit(2)
 
@@ -1136,14 +1135,14 @@ def ucs_registerLDAPExtension():
 			univentionUDMModule.register(udm_module, opts, udm_passthrough_options)
 			objects.append(univentionUDMModule)
 
-	if opts.code:
-		if UniventionCodeExtension.create_base_container(ucr, udm_passthrough_options) != 0:
+	if opts.data:
+		if UniventionDataExtension.create_base_container(ucr, udm_passthrough_options) != 0:
 			sys.exit(1)
 
-		for code in opts.code:
-			univentionCodeExtension = UniventionCodeExtension(ucr)
-			univentionCodeExtension.register(code, opts, udm_passthrough_options)
-			objects.append(univentionCodeExtension)
+		for data in opts.data:
+			univentionDataExtension = UniventionDataExtension(ucr)
+			univentionDataExtension.register(data, opts, udm_passthrough_options)
+			objects.append(univentionDataExtension)
 
 	for obj in objects:
 		if not obj.wait_for_activation():
@@ -1180,9 +1179,9 @@ def ucs_unregisterLDAPExtension():
 			action="append", type="string",
 			help="UDM hook", metavar="<hook name>")
 
-	parser.add_option("--code", dest="code",
+	parser.add_option("--data", dest="data",
 			action="append", type="string",
-			help="Code object", metavar="<path to code object>")
+			help="Data object", metavar="<path to data object>")
 
 	# parser.add_option("-v", "--verbose", action="count")
 
@@ -1205,10 +1204,10 @@ def ucs_unregisterLDAPExtension():
 	ucr = ConfigRegistry()
 	ucr.load()
 
-	if opts.code:
-		for code in opts.code:
-			univentionCodeExtension = UniventionCodeExtension(ucr)
-			univentionCodeExtension.unregister(code, opts, udm_passthrough_options)
+	if opts.data:
+		for data in opts.data:
+			univentionDataExtension = UniventionDataExtension(ucr)
+			univentionDataExtension.unregister(data, opts, udm_passthrough_options)
 
 	if opts.udm_module:
 		for udm_module in opts.udm_module:
