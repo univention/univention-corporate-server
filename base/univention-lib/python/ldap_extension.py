@@ -144,7 +144,7 @@ class UniventionLDAPExtension(object):
 		self.target_filename = target_filename or os.path.basename(filename)
 
 		target_filename_parts = os.path.splitext(self.target_filename)
-		if target_filename_parts[1] == self.filesuffix:
+		if target_filename_parts[1] == self.filesuffix and self.filesuffix:
 			self.objectname = target_filename_parts[0]
 		else:
 			self.objectname = self.target_filename
@@ -806,6 +806,19 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 					listener.unsetuid()
 
 
+class UniventionCodeExtension(UniventionLDAPExtension):
+	target_container_name = 'code'
+	udm_module_name = 'settings/code'
+	active_flag_attribute = ''
+	filesuffix = ''
+
+	def is_local_active(self):
+		return (0, None)
+
+	def wait_for_activation(self, timeout=180):
+		return True
+
+
 class UniventionUDMExtension(UniventionLDAPExtension):
 	__metaclass__ = ABCMeta
 
@@ -970,6 +983,10 @@ def ucs_registerLDAPExtension():
 			action="append", type="existing_filename", default=[],
 			help="UDM hook", metavar="<filename>")
 
+	parser.add_option("--code", dest="code",
+			action="append", type="existing_filename", default=[],
+			help="Code object", metavar="<filename>")
+
 	parser.add_option("--packagename", dest="packagename",
 			help="Package name")
 	parser.add_option("--packageversion", dest="packageversion",
@@ -1093,6 +1110,15 @@ def ucs_registerLDAPExtension():
 			univentionUDMModule.register(udm_module, opts, udm_passthrough_options)
 			objects.append(univentionUDMModule)
 
+	if opts.code:
+		if UniventionCodeExtension.create_base_container(ucr, udm_passthrough_options) != 0:
+			sys.exit(1)
+
+		for code in opts.code:
+			univentionCodeExtension = UniventionCodeExtension(ucr)
+			univentionCodeExtension.register(code, opts, udm_passthrough_options)
+			objects.append(univentionCodeExtension)
+
 	for obj in objects:
 		if not obj.wait_for_activation():
 			print "%s: registraton of %s failed." % (functionname, obj.filename)
@@ -1128,6 +1154,10 @@ def ucs_unregisterLDAPExtension():
 			action="append", type="string",
 			help="UDM hook", metavar="<hook name>")
 
+	parser.add_option("--code", dest="code",
+			action="append", type="string",
+			help="Code object", metavar="<hook name>")
+
 	# parser.add_option("-v", "--verbose", action="count")
 
 	udm_passthrough_options = []
@@ -1148,6 +1178,11 @@ def ucs_unregisterLDAPExtension():
 
 	ucr = ConfigRegistry()
 	ucr.load()
+
+	if opts.code:
+		for code in opts.code:
+			univentionCodeExtension = UniventionCodeExtension(ucr)
+			univentionCodeExtension.unregister(code, opts, udm_passthrough_options)
 
 	if opts.udm_module:
 		for udm_module in opts.udm_module:
