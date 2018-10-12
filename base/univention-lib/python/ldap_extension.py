@@ -174,8 +174,7 @@ class UniventionLDAPExtension(object):
 		]
 
 		if self.udm_module_name == "settings/data":
-			if options.data_type:
-				common_udm_options.extend(["--set", "data_type={}".format(options.data_type), ])
+			common_udm_options.extend(["--set", "data_type={}".format(options.data_type), ])
 			if options.data_meta:
 				common_udm_options.extend(["--set", "meta={}".format(options.data_meta), ])
 
@@ -1088,6 +1087,8 @@ def ucs_registerLDAPExtension():
 		parser.error('--packagename option is required.')
 	if not opts.packageversion:
 		parser.error('--packageversion option is required.')
+	if opts.data and not opts.data_type:
+		parser.error('--data_type option is required if --data is used.')
 
 	if not (opts.schemafile or opts.aclfile or opts.udm_syntax or opts.udm_hook or opts.udm_module or opts.data):
 		parser.print_help()
@@ -1188,7 +1189,7 @@ def ucs_unregisterLDAPExtension():
 
 	parser.add_option("--data", dest="data",
 			action="append", type="string",
-			help="Data object", metavar="<path to data object>")
+			help="Data object", metavar="<data object>")
 
 	# parser.add_option("-v", "--verbose", action="count")
 
