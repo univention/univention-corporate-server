@@ -1,3 +1,10 @@
+univention-join (10.0.2-2) unstable; urgency=medium
+
+  * Bug #47940: Fix univention-join-hooks option
+  * Bug #47944: Adjust univention-join-hooks to use settings/data
+
+ -- Arvid Requate <requate@univention.de>  Fri, 12 Oct 2018 15:59:07 +0200
+
 univention-join (10.0.2-1) unstable; urgency=medium
 
   * Bug #47940: fixed bashism
