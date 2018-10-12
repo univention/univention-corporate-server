@@ -32,7 +32,7 @@
 scriptname=$(basename "$BASH_SOURCE")
 
 error () {
-	echo ERROR: $@ >&2
+	echo "ERROR: $*" >&2
 	exit 1
 }
 
