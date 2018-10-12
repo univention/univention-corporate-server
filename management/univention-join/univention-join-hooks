@@ -110,7 +110,10 @@ def main():
 
 	udm_modules.update()
 	udm_module = udm_modules.get("settings/code")
+	if not udm_module:
 	udm_modules.init(lo, ldap_position, udm_module)
+		print("Required UDM module missing: settings/code")
+		exit(1)
 	tempdir = tempfile.mkdtemp()
 	for udm_object in udm_module.lookup(None, lo, "code_type=%s" % args.hooktype):
 		udm_object.open()
