@@ -1,3 +1,9 @@
+univention-join (10.0.1-1) unstable; urgency=medium
+
+  * Bug #47940: Run univention-join-hooks
+
+ -- Arvid Requate <requate@univention.de>  Fri, 12 Oct 2018 11:28:03 +0200
+
 univention-join (10.0.0-24) unstable; urgency=medium
 
   * Bug #47338: Fix DHCP entry
