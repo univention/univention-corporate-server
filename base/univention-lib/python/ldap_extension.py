@@ -174,7 +174,10 @@ class UniventionLDAPExtension(object):
 		]
 
 		if self.udm_module_name == "settings/data":
-			common_udm_options.extend(["--set", "data_type={}".format(options.data_type), ])
+			if options.data_type:
+				common_udm_options.extend(["--set", "data_type={}".format(options.data_type), ])
+			if options.data_meta:
+				common_udm_options.extend(["--set", "meta={}".format(options.data_meta), ])
 
 		if self.udm_module_name != "settings/ldapschema":
 			if options.ucsversionstart:
@@ -1019,6 +1022,10 @@ def ucs_registerLDAPExtension():
 
 	data_module_options = OptionGroup(parser, "Data object specific options")
 	data_module_options.add_option("--data_type", dest="data_type",
+			type="string",
+			action="callback", callback=option_callback_set_data_module_options,
+			help="type of data object", metavar="<Data object type>")
+	data_module_options.add_option("--data_meta", dest="data_meta",
 			type="string",
 			action="callback", callback=option_callback_set_data_module_options,
 			help="type of data object", metavar="<Data object type>")
