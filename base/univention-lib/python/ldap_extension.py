@@ -32,6 +32,7 @@ Python function to register |UDM| exitensions in |LDAP|.
 
 from optparse import OptionParser, OptionGroup, Option, OptionValueError
 from copy import copy
+import json
 import inspect
 import os
 import shutil
@@ -144,7 +145,7 @@ class UniventionLDAPExtension(object):
 		self.target_filename = target_filename or os.path.basename(filename)
 
 		target_filename_parts = os.path.splitext(self.target_filename)
-		if target_filename_parts[1] == self.filesuffix:
+		if target_filename_parts[1] == self.filesuffix and self.filesuffix:
 			self.objectname = target_filename_parts[0]
 		else:
 			self.objectname = self.target_filename
@@ -168,6 +169,13 @@ class UniventionLDAPExtension(object):
 			"--set", "package=%s" % (options.packagename,),
 			"--set", "packageversion=%s" % (options.packageversion,),
 		]
+
+		if self.udm_module_name == "settings/code":
+			common_udm_options.extend(["--set", "code_type={}".format(options.code_type), ])
+			active_change_udm_options = [
+				"--set", "code={}".format(new_data),
+				"--set", "meta={}".format(json.dumps({'filename': self.target_filename})),
+			]
 
 		if self.udm_module_name != "settings/ldapschema":
 			if options.ucsversionstart:
@@ -806,6 +814,19 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 					listener.unsetuid()
 
 
+class UniventionCodeExtension(UniventionLDAPExtension):
+	target_container_name = 'code'
+	udm_module_name = 'settings/code'
+	active_flag_attribute = ''
+	filesuffix = ''
+
+	def is_local_active(self):
+		return (0, None)
+
+	def wait_for_activation(self, timeout=180):
+		return True
+
+
 class UniventionUDMExtension(UniventionLDAPExtension):
 	__metaclass__ = ABCMeta
 
@@ -905,6 +926,17 @@ def option_callback_udm_passthrough_options(option, opt_str, value, parser, *arg
 	setattr(parser.values, option.dest, value)
 
 
+def check_code_module_options(option, opt_str, value, parser):
+	if value.startswith('--'):
+		raise OptionValueError("%s requires an argument" % (opt_str,))
+	if not parser.values.code:
+		raise OptionValueError("%s can only be used after --code" % (opt_str,))
+
+def option_callback_set_code_module_options(option, opt_str, value, parser):
+	check_code_module_options(option, opt_str, value, parser)
+	setattr(parser.values, option.dest, value)
+
+
 def check_udm_module_options(option, opt_str, value, parser):
 	if value.startswith('--'):
 		raise OptionValueError("%s requires an argument" % (opt_str,))
@@ -970,6 +1002,10 @@ def ucs_registerLDAPExtension():
 			action="append", type="existing_filename", default=[],
 			help="UDM hook", metavar="<filename>")
 
+	parser.add_option("--code", dest="code",
+			action="append", type="existing_filename", default=[],
+			help="Code object", metavar="<filename>")
+
 	parser.add_option("--packagename", dest="packagename",
 			help="Package name")
 	parser.add_option("--packageversion", dest="packageversion",
@@ -981,6 +1017,13 @@ def ucs_registerLDAPExtension():
 	parser.add_option("--ucsversionend", dest="ucsversionend",
 			action="store", type="ucs_version",
 			help="End activation with UCS version", metavar="<UCS Version>")
+
+	code_module_options = OptionGroup(parser, "Code object specific options")
+	code_module_options.add_option("--code_type", dest="code_type",
+			type="string",
+			action="callback", callback=option_callback_set_code_module_options,
+			help="type of code object", metavar="<Code object type>")
+	parser.add_option_group(code_module_options)
 
 	udm_module_options = OptionGroup(parser, "UDM module specific options")
 	udm_module_options.add_option("--messagecatalog", dest="udm_module_messagecatalog",
@@ -1040,7 +1083,7 @@ def ucs_registerLDAPExtension():
 	if not opts.packageversion:
 		parser.error('--packageversion option is required.')
 
-	if not (opts.schemafile or opts.aclfile or opts.udm_syntax or opts.udm_hook or opts.udm_module):
+	if not (opts.schemafile or opts.aclfile or opts.udm_syntax or opts.udm_hook or opts.udm_module or opts.code):
 		parser.print_help()
 		sys.exit(2)
 
@@ -1093,6 +1136,15 @@ def ucs_registerLDAPExtension():
 			univentionUDMModule.register(udm_module, opts, udm_passthrough_options)
 			objects.append(univentionUDMModule)
 
+	if opts.code:
+		if UniventionCodeExtension.create_base_container(ucr, udm_passthrough_options) != 0:
+			sys.exit(1)
+
+		for code in opts.code:
+			univentionCodeExtension = UniventionCodeExtension(ucr)
+			univentionCodeExtension.register(code, opts, udm_passthrough_options)
+			objects.append(univentionCodeExtension)
+
 	for obj in objects:
 		if not obj.wait_for_activation():
 			print "%s: registraton of %s failed." % (functionname, obj.filename)
@@ -1128,6 +1180,10 @@ def ucs_unregisterLDAPExtension():
 			action="append", type="string",
 			help="UDM hook", metavar="<hook name>")
 
+	parser.add_option("--code", dest="code",
+			action="append", type="string",
+			help="Code object", metavar="<path to code object>")
+
 	# parser.add_option("-v", "--verbose", action="count")
 
 	udm_passthrough_options = []
@@ -1148,6 +1204,11 @@ def ucs_unregisterLDAPExtension():
 
 	ucr = ConfigRegistry()
 	ucr.load()
+
+	if opts.code:
+		for code in opts.code:
+			univentionCodeExtension = UniventionCodeExtension(ucr)
+			univentionCodeExtension.unregister(code, opts, udm_passthrough_options)
 
 	if opts.udm_module:
 		for udm_module in opts.udm_module:
