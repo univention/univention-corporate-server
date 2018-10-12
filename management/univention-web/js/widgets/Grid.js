@@ -1008,10 +1008,12 @@ define([
 			if (this.getSelectedIDs().length === 0 || force) {
 				updateNotPaused = true;
 				var selectedIDs = this.getSelectedIDs();
-				var scrollPosition = geometry.docScroll().y;
-				this._filter(this.query).then(function() {
-					window.scroll(0, scrollPosition);
-				});
+				var pageScrollYBeforeUpdate = geometry.docScroll().y;
+				var gridScrollYBeforeUpdate = this._grid.getScrollPosition().y;
+				this._filter(this.query).then(lang.hitch(this, function() {
+					window.scroll(0, pageScrollYBeforeUpdate);
+					this._grid.scrollTo({y: gridScrollYBeforeUpdate});
+				}));
 				array.forEach(selectedIDs, function(selectedID) {
 					this._grid.select(this._grid.row(selectedID));
 				}, this);
