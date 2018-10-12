@@ -37,15 +37,15 @@ import univention.admin.localization
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
 
-OC = "univentionCode"
+OC = "univentionData"
 
-module = 'settings/code'
+module = 'settings/data'
 superordinate = 'settings/cn'
-default_containers = ['cn=code,cn=univention']
+default_containers = ['cn=data,cn=univention']
 childs = False
 operations = ['add', 'edit', 'remove', 'search', 'move']
-short_description = _('Code')
-long_description = _('Arbitrary code files')
+short_description = _('Data')
+long_description = _('Arbitrary data files')
 options = {
 	'default': univention.admin.option(
 		default=True,
@@ -55,7 +55,7 @@ options = {
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('name'),
-		long_description=_('The name of the Code file'),
+		long_description=_('The name of the data object'),
 		syntax=univention.admin.syntax.string_numbers_letters_dots,
 		multivalue=False,
 		include_in_default_search=True,
@@ -66,7 +66,7 @@ property_descriptions = {
 	),
 	'description': univention.admin.property(
 		short_description=_('Description'),
-		long_description=_('The code files description'),
+		long_description=_('The description'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		options=[],
@@ -74,9 +74,20 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
-	'code': univention.admin.property(
-		short_description=_('Code file'),
-		long_description=_('The actual code, bzipped and base64 encoded'),
+	'filename': univention.admin.property(
+		short_description=_('File name of file to store data in.'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		default='',
+		identifies=False
+	),
+	'data': univention.admin.property(
+		short_description=_('The data'),
+		long_description=_('The actual data, bzipped and base64 encoded'),
 		syntax=univention.admin.syntax.Base64Bzip2Text,
 		multivalue=False,
 		options=[],
@@ -84,9 +95,9 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
-	'code_type': univention.admin.property(
-		short_description=_('Code Type'),
-		long_description=_('The type of the code'),
+	'data_type': univention.admin.property(
+		short_description=_('Data Type'),
+		long_description=_('The type of the data'),
 		syntax=univention.admin.syntax.string_numbers_letters_dots,
 		multivalue=False,
 		options=[],
@@ -116,7 +127,7 @@ property_descriptions = {
 	),
 	'meta': univention.admin.property(
 		short_description=_('Meta information'),
-		long_description='The code objects meta information',
+		long_description='The data objects meta information',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,
 		options=[],
@@ -151,8 +162,9 @@ layout = [
 		Group(_('General settings'), layout=[
 			["name"],
 			["description"],
-			["code_type"],
-			["code"],
+			["filename"],
+			["data_type"],
+			["data"],
 		]),
 		Group(_('Metadata'), layout=[
 			["ucsversionstart"],
@@ -168,11 +180,12 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('code_type', 'univentionCodeType', None, univention.admin.mapping.ListToString)
-mapping.register('code', 'univentionCode', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+mapping.register('filename', 'univentionDataFilename', None, univention.admin.mapping.ListToString)
+mapping.register('data_type', 'univentionDataType', None, univention.admin.mapping.ListToString)
+mapping.register('data', 'univentionData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('ucsversionstart', 'univentionUCSVersionStart', None, univention.admin.mapping.ListToString)
 mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.admin.mapping.ListToString)
-mapping.register('meta', 'univentionCodeMeta', None)
+mapping.register('meta', 'univentionDataMeta', None)
 mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString)
 mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString)
 

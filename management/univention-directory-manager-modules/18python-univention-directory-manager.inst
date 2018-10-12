@@ -85,8 +85,8 @@ fi
 
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position="cn=univention,$ldap_base" \
-	--set name="code" \
-	--set description="LDAP code storage." || die
+	--set name="data" \
+	--set description="LDAP data storage." || die
 
 stop_udm_cli_server
 
