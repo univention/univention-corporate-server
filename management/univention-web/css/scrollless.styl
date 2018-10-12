@@ -1,0 +1,115 @@
+// Special style for sites where the page itself should not scroll
+// but only the components of the site e.g. Tree widgets.
+// Only tested for search page of udm/navigation and search page of uvmm/uvmm
+
+@import "variables"
+
+@media (min-width: $md-min)
+	#umcTopContainer.umcScrollless
+		position: absolute
+		top: 0
+		bottom: 0
+		left: 0
+		right: 0
+		display: flex
+		flex-direction: column
+
+		.umcMainTabContainer
+			flex-grow: 1
+
+			display: flex
+			flex-direction: column
+			min-height: 0
+
+			> .dijitStackContainerChildWrapper:not(.dijitHidden)
+				flex-grow: 1
+
+				display: flex !important
+				flex-direction: column
+				min-height: 0
+
+		.umcModule
+			flex-grow: 1
+
+			display: flex
+			flex-direction: column
+			min-height: 0
+
+		.umcModuleWrapper
+			flex-grow: 1
+
+			display: flex
+			flex-direction: column
+			min-height: 0
+
+		.umcModuleContent
+			display: flex
+			flex-direction: column
+			min-height: 0
+
+		.umcModuleContentChildWrapper
+			display: flex !important
+			flex-direction: column
+			min-height: 0
+
+		.umcModuleContent-child
+			display: flex
+			flex-direction: row
+			min-height: 0
+
+		.umcModuleUDM .umcPageNav,
+		.umcPageNav
+			display: flex
+			flex-direction: column
+			min-height: 0
+			margin-bottom: 16px
+
+		.umcPageNav .umcGridTree
+			display: flex
+			flex-direction: column
+			min-height: 0
+			margin-bottom: 0
+
+			.dgrid
+				display: flex
+				flex-direction: column
+				min-height: 0
+
+			.dgrid-scroller
+				display: flex
+				flex-direction: row
+				overflow-y: auto
+
+		.umcPageMain
+			display: flex
+			flex-direction: column
+			min-height: 0
+			margin-bottom: 16px
+
+			.umcGrid
+				display: flex
+				flex-direction: column
+				min-height: 0
+
+				.umcGridStatus
+					text-align: right
+
+				.dgrid-header
+					z-index: 1
+					transition: $material-shadow-transition-value
+
+				&.scrollIsNotAtTop .dgrid-header
+					material-shadow(2)
+
+				.dgrid
+					display: flex
+					flex-direction: column
+					min-height: 0
+
+				.dgrid-scroller
+					display: flex
+					flex-direction: row
+					overflow-y: auto
+
+		.umcPageFooter
+			display: none

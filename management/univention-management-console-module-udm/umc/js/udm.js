@@ -341,7 +341,6 @@ define([
 						window.scrollTo(0, 0);
 					}
 					this._updateModuleState();
-					this._updateScrolllessUDMNavigation(newChild);
 				}));
 			}));
 		},
@@ -352,17 +351,6 @@ define([
 					this.set('moduleState', moduleState);
 				}));
 			}), 0);
-		},
-
-		_updateScrolllessUDMNavigation: function(newChild) {
-			if (has('trident')) {
-				// do not apply special css on IE
-				return;
-			}
-			var addClass = this.moduleID === 'udm' 
-				&& this.moduleFlavor === 'navigation' 
-				&& newChild === this._searchPage;
-			domClass.toggle(dojo.byId('umcTopContainer'), 'udmNavigationScrollless', addClass);
 		},
 
 		_setModuleStateAttr: function(_state) {
