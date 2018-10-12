@@ -1,3 +1,10 @@
+univention-directory-manager-modules (13.0.25-16) unstable; urgency=low
+
+  * Bug #47944: add "package" and "packageversion" properties to
+    settings/code module
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 12 Oct 2018 14:01:29 +0200
+
 univention-directory-manager-modules (13.0.25-15) unstable; urgency=low
 
   * Bug #47944: Improve descriptions for settings/code
