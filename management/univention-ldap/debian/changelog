@@ -1,4 +1,11 @@
-univention-ldap (14.0.2-27) unstable; urgency=medium
+univention-ldap (14.0.2-28) unstable; urgency=medium
+
+  * Bug #47944: rename LDAP attributes for UDM module rename from
+    settings/code to settings/data
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 12 Oct 2018 16:01:30 +0200
+
+univention-ldap (14.0.2-27) unstable; urgency=low
 
   * Bug #47944: add attributes for "package" and "packageversion"
 
