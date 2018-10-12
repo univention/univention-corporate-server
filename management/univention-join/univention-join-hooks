@@ -109,18 +109,18 @@ def main():
 		exit(1)
 
 	udm_modules.update()
-	udm_module = udm_modules.get("settings/code")
+	udm_module = udm_modules.get("settings/data")
 	if not udm_module:
-		print("Required UDM module missing: settings/code")
+		print("Required UDM module missing: settings/data")
 		exit(0)
 	udm_modules.init(lo, ldap_position, udm_module)
 	tempdir = tempfile.mkdtemp()
-	for udm_object in udm_module.lookup(None, lo, "code_type=%s" % args.hooktype):
+	for udm_object in udm_module.lookup(None, lo, "data_type=%s" % args.hooktype):
 		udm_object.open()
 
-		base64_compressed_code = udm_object['code']
-		compressed_code = base64.b64decode(base64_compressed_code)
-		new_object_data = bz2.decompress(compressed_code)
+		base64_compressed_data = udm_object['data']
+		compressed_data = base64.b64decode(base64_compressed_data)
+		new_object_data = bz2.decompress(compressed_data)
 
 		hookname = udm_object['name']
 		filename = "-".join([args.hooktype, hookname])

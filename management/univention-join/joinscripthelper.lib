@@ -329,13 +329,20 @@ run_join_hook() {
 	local hooktype
 	hooktype="$1"
 
+	local master
 	local output
 	local rc
 
+	if [ -n "$DCNAME" ]; then
+		master="$DCNAME"
+	else
+		master="$ldap_master"
+	fi
+
 	/usr/share/univention-join/univention-join-hooks \
 		--server-role "$server_role" \
-		--type "$hooktype" \
-		--master "$DCNAME" \
+		--hooktype "$hooktype" \
+		--master "$master" \
 		--binddn "$binddn" --bindpwdfile "$DCPWD" >>/var/log/univention/join.log 2>&1
 	rc=$?
 
