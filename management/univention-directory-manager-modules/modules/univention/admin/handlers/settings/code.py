@@ -124,6 +124,26 @@ property_descriptions = {
 		may_change=True,
 		identifies=False
 	),
+	'package': univention.admin.property(
+		short_description=_('Software package'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
+	'packageversion': univention.admin.property(
+		short_description=_('Software package version'),
+		long_description='',
+		syntax=univention.admin.syntax.DebianPackageVersion,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 
 layout = [
@@ -133,9 +153,13 @@ layout = [
 			["description"],
 			["code_type"],
 			["code"],
+		]),
+		Group(_('Metadata'), layout=[
 			["ucsversionstart"],
 			["ucsversionend"],
-			["meta"]
+			["meta"],
+			["package"],
+			["packageversion"],
 		]),
 	]),
 ]
@@ -149,6 +173,8 @@ mapping.register('code', 'univentionCode', univention.admin.mapping.mapBase64, u
 mapping.register('ucsversionstart', 'univentionUCSVersionStart', None, univention.admin.mapping.ListToString)
 mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.admin.mapping.ListToString)
 mapping.register('meta', 'univentionCodeMeta', None)
+mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString)
+mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

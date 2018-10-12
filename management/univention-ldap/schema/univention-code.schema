@@ -33,4 +33,12 @@ objectclass ( univentionCodeObjectClass:1
 	SUP top
 	STRUCTURAL
 	MUST ( cn $ univentionCodeType )
-	MAY ( description $ univentionCode $ univentionCodeMeta $ univentionUCSVersionStart $ univentionUCSVersionEnd ) )
+	MAY ( description
+		$ univentionCode
+		$ univentionCodeMeta
+		$ univentionUCSVersionStart
+		$ univentionUCSVersionEnd
+		$ univentionOwnedByPackage
+		$ univentionOwnedByPackageVersion
+		)
+	)
