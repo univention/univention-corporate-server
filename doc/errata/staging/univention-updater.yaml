@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-upgrader
+fix: 13.0.1-61A~4.3.0.201810120915 
+desc: |
+ This update addresses the following issue(s):
+ * Fixes non existing error message in univention-updater
+bug: [34444]
