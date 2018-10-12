@@ -1,3 +1,10 @@
+ucs-test (8.0.28-203) unstable; urgency=low
+
+  * Bug #47650 Implemented a CLI Tool which executes the diagnostic modules. 
+  	Build package again in right scope. 
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 12 Oct 2018 09:42:31 +0200
+
 ucs-test (8.0.28-202) unstable; urgency=low
 
   * Bug #47650: Implemented a CLI Tool which executes the diagnostic modules
