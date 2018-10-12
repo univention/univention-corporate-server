@@ -1,3 +1,9 @@
+univention-updater (13.0.1-61) unstable; urgency=low
+
+  * Bug #34444 Reverted changes I made and fixed the univention-update error message again
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 12 Oct 2018 08:59:22 +0200
+
 univention-updater (13.0.1-60) unstable; urgency=medium
 
   * Bug #34444: univention-update now shows error message if unmet dependencies error appears
