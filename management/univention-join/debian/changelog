@@ -1,3 +1,9 @@
+univention-join (10.0.2-1) unstable; urgency=medium
+
+  * Bug #47940: fixed bashism
+
+ -- Felix Botner <botner@univention.de>  Fri, 12 Oct 2018 14:19:10 +0200
+
 univention-join (10.0.1-1) unstable; urgency=medium
 
   * Bug #47940: Run univention-join-hooks

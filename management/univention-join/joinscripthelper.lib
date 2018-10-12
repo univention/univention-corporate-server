@@ -336,7 +336,7 @@ run_join_hook() {
 		--server-role "$server_role" \
 		--type "$hooktype" \
 		--master "$DCNAME" \
-		--binddn "$binddn" --bindpwdfile "$DCPWD" 2> >(tee -a /var/log/univention/join.log >&2)
+		--binddn "$binddn" --bindpwdfile "$DCPWD" >>/var/log/univention/join.log 2>&1
 	rc=$?
 
 	if [ "$rc" != 0 ]; then
