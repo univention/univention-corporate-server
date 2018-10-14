@@ -165,23 +165,20 @@ class GenericUdm1Object(BaseUdmObject):
 				self._udm1_object.position.setDn(self.position)
 			try:
 				self.dn = self._udm1_object.modify()
-			except (
-					univention.admin.uexceptions.noProperty,
-					univention.admin.uexceptions.valueError,
-					univention.admin.uexceptions.valueInvalidSyntax
-			) as exc:
+			except univention.admin.uexceptions.base as exc:
 				raise ModifyError(
-					'Error saving {!r} object at {!r}: {}'.format(
-						self._udm_module.name, self.dn, exc
+					'Error saving {!r} object at {!r}: {} ({})'.format(
+						self._udm_module.name, self.dn, exc.message, exc
 					), dn=self.dn, module_name=self._udm_module.name
 				)
 		else:
+			print('create')
 			try:
 				self.dn = self._udm1_object.create()
-			except univention.admin.uexceptions.insufficientInformation as exc:
+			except univention.admin.uexceptions.base as exc:
 				raise CreateError(
-					'Error creating {!r} object: {}'.format(
-						self._udm_module.name, exc
+					'Error creating {!r} object: {} ({})'.format(
+						self._udm_module.name, exc.message, exc
 					), module_name=self._udm_module.name
 				)
 
