@@ -229,9 +229,13 @@ class GenericUdm1Object(BaseUdmObject):
 		else:
 			self.position = self._udm1_object.position.getDn()
 		self.props = self.udm_prop_class(self)
+		if not self.dn:
+			self._init_new_object_props()
 		for k in self._udm1_object.keys():
 			# workaround Bug #47971: _udm1_object.items() changes object
 			v = self._udm1_object.get(k)
+			if not self.dn and v is None:
+				continue
 			if self._udm_module.meta.api_version > 0:
 				# encoders exist from API version 1 on
 				try:
@@ -243,6 +247,8 @@ class GenericUdm1Object(BaseUdmObject):
 					val = encoder.decode(v)
 			else:
 				val = v
+			if v is None and self._udm1_object.descriptions[k].multivalue:
+				val = []
 			setattr(self.props, k, val)
 		self._fresh = True
 
@@ -273,6 +279,30 @@ class GenericUdm1Object(BaseUdmObject):
 				new_val2 = new_val
 			if v != new_val2:
 				self._udm1_object[k] = new_val2
+
+	def _init_new_object_props(self):  # type: () -> None
+		"""
+		This is a modified copy of the code of
+		:py:meth:`univention.admin.handlers.simpleLdap.__getitem__()` which
+		creates the default values for a new object, without setting them on
+		the underlying UDM object.
+		"""
+		for key in self._udm1_object.keys():
+			if key in self._udm1_object.info:
+				if self._udm1_object.descriptions[key].multivalue and not isinstance(self._udm1_object.info[key], list):
+					# why isn't this correct in the first place?
+					setattr(self.props, key, [self._udm1_object.info[key]])
+					continue
+				setattr(self.props, key, self._udm1_object.info[key])
+			# Disabled if branch, because the defaults should be calculated
+			# when saving and not when accessing (which is the reason this code
+			# needs to be here):
+			# elif key not in self._udm1_object._simpleLdap__no_default and self._udm1_object.descriptions[key].editable:
+			#     ...
+			elif self._udm1_object.descriptions[key].multivalue:
+				setattr(self.props, key, [])
+			else:
+				setattr(self.props, key, None)
 
 	def _init_encoder(self, encoder_class, **kwargs):
 		# type: (Type[BaseEncoder], **Any) -> Union[Type[BaseEncoder], BaseEncoder]
