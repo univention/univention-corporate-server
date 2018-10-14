@@ -49,6 +49,7 @@ class UsersUserUdm1ObjectProperties(GenericUdm1ObjectProperties):
 		'homePostalAddress': HomePostalAddressPropertyEncoder,
 		'jpegPhoto': Base64BinaryPropertyEncoder,
 		'mailForwardCopyToSelf': DisabledPropertyEncoder,
+		'mailUserQuota': StringIntPropertyEncoder,
 		'primaryGroup': dn_property_encoder_for('groups/group'),
 		'sambaLogonHours': SambaLogonHoursPropertyEncoder,
 		'sambaRID': StringIntPropertyEncoder,
