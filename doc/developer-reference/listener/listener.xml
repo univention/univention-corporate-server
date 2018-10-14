@@ -161,7 +161,7 @@ def setdata(key, value): pass
 		]]></programlisting>
 		<variablelist>
 			<varlistentry>
-				<term><function>handler(dn, old, new, command='')</function> (required)</term>
+				<term><function>handler(dn, new, old, command='')</function> (required)</term>
 				<listitem>
 					<para>
 						This function is called for each change matching the <varname>filter</varname> and <varname>attributes</varname> as declared in the header of the module.
