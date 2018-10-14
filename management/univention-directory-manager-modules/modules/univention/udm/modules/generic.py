@@ -229,7 +229,9 @@ class GenericUdm1Object(BaseUdmObject):
 		else:
 			self.position = self._udm1_object.position.getDn()
 		self.props = self.udm_prop_class(self)
-		for k, v in self._udm1_object.items():
+		for k in self._udm1_object.keys():
+			# workaround Bug #47971: _udm1_object.items() changes object
+			v = self._udm1_object.get(k)
 			if self._udm_module.meta.api_version > 0:
 				# encoders exist from API version 1 on
 				try:
@@ -254,7 +256,9 @@ class GenericUdm1Object(BaseUdmObject):
 		self._udm1_object.options = self.options
 		self._udm1_object.policies = self.policies
 		self._udm1_object.position.setDn(self.position)
-		for k, v in self._udm1_object.items():
+		for k in self._udm1_object.keys():
+			# workaround Bug #47971: _udm1_object.items() changes object
+			v = self._udm1_object.get(k)
 			new_val = getattr(self.props, k, None)
 			if self._udm_module.meta.api_version > 0:
 				# encoders exist from API version 1 on
