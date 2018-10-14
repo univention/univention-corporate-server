@@ -45,7 +45,7 @@ class TestUdmGenericVariousModules(TestCase):
 				)
 		else:
 			cls.ox_installed = False
-		cls.udm = Udm.using_admin(1)
+		cls.udm = Udm.using_admin().version(1)
 		cls.udm._configuration_storage = config_storage
 
 	def test_load_modules(self):

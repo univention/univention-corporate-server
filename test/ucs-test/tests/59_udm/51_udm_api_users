@@ -42,7 +42,7 @@ class TestUdmUsersBasic(TestCase):
 		config_storage.register_configuration(config1)
 		config_storage.register_configuration(config2)
 		config_storage.register_configuration(config3)
-		cls.udm = Udm.using_admin(1)
+		cls.udm = Udm.using_admin().version(1)
 		cls.udm._configuration_storage = config_storage
 
 		user_mod1 = cls.udm.get('users/user')
