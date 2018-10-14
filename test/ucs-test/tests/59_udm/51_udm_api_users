@@ -6,6 +6,7 @@
 ## packages: [python-univention-directory-manager]
 ## bugs: [47316]
 
+from copy import deepcopy
 from collections import namedtuple
 from unittest import main, TestCase
 import univention.debug as ud
@@ -30,6 +31,7 @@ class TestUdmUsersBasic(TestCase):
 	mail_domain = ''
 	ucr_test = None
 	udm_test = None
+	_user0_attrs = {}
 
 	@classmethod
 	def setUpClass(cls):
@@ -88,6 +90,7 @@ class TestUdmUsersBasic(TestCase):
 			'username': random_username(),
 			'password': random_username(),
 		}
+		self._user0_attrs.update(attrs)
 		print('Creating user with attrs: {!r}'.format(attrs))
 		for k, v in attrs.items():
 			setattr(obj.props, k, v)
@@ -101,6 +104,7 @@ class TestUdmUsersBasic(TestCase):
 				'uid': [attrs['username']],
 				'sn': [attrs['lastname']],
 				'givenName': [attrs['firstname']],
+				'displayName': ['{} {}'.format(attrs['firstname'], attrs['lastname'])],
 			},
 			strict=False,
 			should_exist=True
@@ -129,6 +133,7 @@ class TestUdmUsersBasic(TestCase):
 				'description': [attrs['description']],
 				'mailPrimaryAddress': [attrs['mailPrimaryAddress']],
 				'departmentNumber': [attrs['departmentNumber']],
+				'displayName': ['{} {}'.format(attrs['firstname'], attrs['lastname'])],
 			},
 			strict=False,
 			should_exist=True
@@ -187,6 +192,27 @@ class TestUdmUsersBasic(TestCase):
 				'homePostalAddress': ['{street}${zipcode}${city}'.format(**ad.__dict__) for ad in addresses],
 			},
 		)
+
+	def test_read_user(self):
+		obj = self.user_objects[0]
+		print('Checking properties of previously created user {!r}...'.format(obj.props.username))
+		expected_properties = deepcopy(self._user0_attrs)
+		del expected_properties['password']
+		expected_properties.update({
+			'e-mail': [],
+			'displayName': '{} {}'.format(self._user0_attrs['firstname'], self._user0_attrs['lastname']),
+		})
+		if hasattr(obj.props, 'oxDisplayName'):
+			expected_properties['oxDisplayName'] = expected_properties['displayName']
+			expected_properties['oxTimeZone'] = self.udm.get_obj(
+				'cn=oxTimeZone,cn=open-xchange,cn=custom attributes,cn=univention,{}'.format(self.ucr_test['ldap/base'])
+			).props.default
+		if hasattr(obj.props, 'mailUserQuota'):
+			expected_properties['mailUserQuota'] = 0
+		for k, v in expected_properties.items():
+			got = getattr(obj.props, k)
+			if got != v:
+				utils.fail('Expected for {!r}: {!r} got: {!r}'.format(k, v, got))
 
 	def test_remove_user(self):
 		user_mod = self.udm.get('users/user')
