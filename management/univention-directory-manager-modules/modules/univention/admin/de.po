@@ -895,9 +895,8 @@ msgid "Portal entries can not be added to an empty category"
 msgstr "Portal-Einträge können nicht einer leeren Kategorie zugeordnet werden"
 
 #: modules/univention/admin/syntax.py:3566
-#, fuzzy
 msgid "Position"
-msgstr "DHCP Option"
+msgstr "Position"
 
 #: modules/univention/admin/syntax.py:1762
 msgid "Post"
