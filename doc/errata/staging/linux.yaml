@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [1, 2]
+scope: ucs_4.3-0-errata4.3-2
+src: linux
+fix: 4.9.110-3+deb9u6
+desc: |
+ This update addresses the following issues:
+ * net: xen: Linux netback driver OOB access in hash handling (XSA-270)
+   (CVE-2018-15471)
+ * Privilege escalation on arm64 via KVM hypervisor (CVE-2018-18021)
+bug: [47987]
+cve:
+- CVE-2018-15471
+- CVE-2018-18021
