@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-ldap
+fix: 14.0.2-24A~4.3.0.201810151437
+desc: |
+ This update addresses the following issue:
+ * Fix generating of Diffie-Hellman ephemeral key exchange for forward
+   secrecy.
+bug: [47974]
