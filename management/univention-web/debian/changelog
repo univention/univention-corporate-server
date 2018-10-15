@@ -1,3 +1,9 @@
+univention-web (2.0.0-26) unstable; urgency=medium
+
+  * Bug #36624: Add styling for scrollless UMC
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 15 Oct 2018 13:26:34 +0200
+
 univention-web (2.0.0-25) unstable; urgency=medium
 
   * Bug #45598: improved scrolling for the LDAP directory module
