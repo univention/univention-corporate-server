@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [4, 5]
+scope: ucs_4.2-0-errata4.2-5
+src: net-snmp
+fix: 5.7.2.1+dfsg-1+deb8u2
+desc: |
+ This update addresses the following issue:
+ * NULL pointer exception in _set_key in agent/helpers/table_container.c
+   resulting in a denial of service (CVE-2018-18065)
+bug: [47988]
+cve:
+- CVE-2018-18065
