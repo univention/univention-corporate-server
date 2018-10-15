@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-l10n-fr
-fix: 2.0.0-9A~4.3.0.201810021710
+fix: 2.0.0-10A~4.3.0.201810151116
 desc: |
  This update addresses the following issue(s):
  * Adapt to changes in univention-directory-manager-modules (Bug #47861).
