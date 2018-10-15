@@ -1002,6 +1002,17 @@ univention-app dev-use-test-appcenter
         </para>
     </section>
 
+    <section id="category">
+        <title>Categories</title>
+        <para>
+            On the <guimenu>General</guimenu> tab the app can be given one or
+            more categories from a given set. Users can filter the app overview
+            in the App Center and in the App Catalog accordingly. App
+            categories help to group apps together by topic and give a better
+            overview for the various apps available.
+        </para>
+    </section>
+
     <section id="contact">
         <title>Contact</title>
         <para>
