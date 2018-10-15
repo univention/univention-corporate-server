@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-21) unstable; urgency=low
+
+  * Fix generating DH parameter file (Bug #47974)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Oct 2018 14:23:49 +0200
+
 univention-ldap (14.0.2-20) unstable; urgency=medium
 
   * Bug #47869: fix UCR variable description

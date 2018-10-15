@@ -32,16 +32,24 @@ umask 022
 paramfile="$(ucr get ldap/tls/dh/paramfile)"
 [ -n "$paramfile" ] || exit 0
 
-log=$(mktemp)
-exec >"$log" 2>&1
+log="$(mktemp)"
+exec 3>&1 >"$log" 2>&1
 
 tmp=$(mktemp "$paramfile.XXXXXXXXXX")
-trap "cat '$log';rm -f '$tmp' '$log'" EXIT
+cleanup () {
+	rv="$?"
+	set +e
+	cat "$log" >&3
+	rm -f "$tmp" "$log"
+	return "$rv"
+}
+trap cleanup EXIT
 
-openssl gendh -out "$tmp" -2 2048
+openssl dhparam -out "$tmp" -2 2048
 chmod 644 "$tmp"
 mv "$tmp" "$paramfile"
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/ucr.sh
 if is_ucr_true ldap/tls/dh/restart
 then
