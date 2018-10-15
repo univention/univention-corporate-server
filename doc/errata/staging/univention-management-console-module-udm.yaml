@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-management-console-module-udm
-fix: 
+fix: 8.0.5-24A~4.3.0.201810151356
 desc: |
  This update addresses the following issue(s):
  * The scrolling in the UVMM module has been improved.
