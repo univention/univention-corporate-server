@@ -462,6 +462,14 @@
                 <userinput>5555</userinput>. This port would be predestined to
                 be defined here.
             </para>
+            <para>
+                With the port definition the App Center also takes care to open
+                them in the UCS firewall. If additional ports are needed, the
+                can be defined in the app join script. Please the <ulink
+                    url="https://docs.software-univention.de/developer-reference.html#misc:nacl">Network
+                    Packet Filter section in the UCS Development
+                    Reference</ulink>.
+            </para>
         </section>
 
         <section id="create-app-with-docker:database">
