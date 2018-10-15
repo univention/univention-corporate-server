@@ -1630,7 +1630,7 @@ univention-app dev-use-test-appcenter
 			<para>
                 This script is executed on the UCS host system after the Docker
                 container is configured. Please refer the to the <ulink
-                    url="https://docs.software-univention.de/developer-reference.html">Developer
+                    url="https://docs.software-univention.de/developer-reference.html#chap:join">Developer
                     Reference</ulink> about how to write a join script. If it
                 runs successfully, the join script may save this information in
                 a status file. If this does not happen, the user is constantly
