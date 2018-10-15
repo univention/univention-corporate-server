@@ -1,3 +1,9 @@
+univention-l10n-fr (2.0.0-10) unstable; urgency=low
+
+  * Bug #47861: make error messages more accurate
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 15 Oct 2018 11:11:29 +0200
+
 univention-l10n-fr (2.0.0-9) unstable; urgency=low
 
   * Bug #47861: make source of error messages distinguishable
