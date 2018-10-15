@@ -935,6 +935,15 @@ univention-app dev-use-test-appcenter
                 </listitem>
                 <listitem>
                     <simpara>
+                        It is important for the user to understand which
+                        "edition" of the solution is installed and what
+                        features or limitations are included. Please also
+                        provide information on how to "upgrade" to the next
+                        "edition".
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
                         The text should be structured in paragraphs.
                         Subheadings and lists should be used.
                     </simpara>
