@@ -1,0 +1,187 @@
+product: ucs
+release: "4.3"
+version: [1, 2]
+scope: ucs_4.3-0-errata4.3-2
+src: wireshark
+fix: 2.6.3-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * MSNIP dissector crash (wnpa-sec-2017-30) (CVE-2017-9343)
+ * BT L2CAP dissector divide by zero (wnpa-sec-2017-29) (CVE-2017-9344)
+ * DNS dissector infinite loop (wnpa-sec-2017-26) (CVE-2017-9345)
+ * SoulSeek dissector infinite loop (wnpa-sec-2017-25) (CVE-2017-9346)
+ * ROS dissector crash (wnpa-sec-2017-31) (CVE-2017-9347)
+ * DOF dissector read overflow (wnpa-sec-2017-23) (CVE-2017-9348)
+ * DICOM dissector infinite loop (wnpa-sec-2017-27) (CVE-2017-9349)
+ * openSAFETY dissector memory exhaustion (wnpa-sec-2017-28) (CVE-2017-9350)
+ * DHCP dissector read overflow (wnpa-sec-2017-24) (CVE-2017-9351)
+ * Bazaar dissector infinite loop (wnpa-sec-2017-22) (CVE-2017-9352)
+ * IPv6 dissector crash (wnpa-sec-2017-33) (CVE-2017-9353)
+ * RGMP dissector crash (wnpa-sec-2017-32) (CVE-2017-9354)
+ * Overly deep mp4 chunks may cause stack exhaustion (CVE-2017-9616)
+ * Deeply nested DAAP data may cause stack exhaustion (CVE-2017-9617)
+ * PROFINET IO data with a high recursion depth can cause stack exhaustion
+   (CVE-2017-9766)
+ * DOCSIS infinite loop (wnpa-sec-2017-36) (CVE-2017-11406)
+ * MQ dissector crash (wnpa-sec-2017-35) (CVE-2017-11407)
+ * WBXML dissector infinite loop (wnpa-sec-2017-13) (CVE-2017-11410)
+ * Modbus dissector crash (wnpa-sec-2017-40) (CVE-2017-13764)
+ * IrCOMM dissector buffer overrun (wnpa-sec-2017-41) (CVE-2017-13765)
+ * MSDP dissector infinite loop (wnpa-sec-2017-38) (CVE-2017-13767)
+ * DOCSIS infinite loop (CVE-2017-15189)
+ * DMP dissector crash (CVE-2017-15191)
+ * BT ATT dissector crash (CVE-2017-15192)
+ * MBIM dissector crash (CVE-2017-15193)
+ * denial of service in the File_read_line function in epan/wslua/wslua_file.c
+   (CVE-2017-17935)
+ * Misuse of NULL pointer in MRDISC dissector (CVE-2017-17997)
+ * In Wireshark 2.4.0 to 2.4.4 and 2.2.0 to 2.2.12,
+   epan/dissectors/packet-thrift.c had a large loop that was addressed by not
+   proceeding with dissection after encountering an unexpected type.
+   (CVE-2018-7321)
+ * In Wireshark 2.4.0 to 2.4.4 and 2.2.0 to 2.2.12,
+   epan/dissectors/packet-dcm.c had an infinite loop that was addressed by
+   checking for integer wraparound. (CVE-2018-7322)
+ * In Wireshark 2.4.0 to 2.4.4 and 2.2.0 to 2.2.12,
+   epan/dissectors/packet-wccp.c had a large loop that was addressed by
+   ensuring that a calculated length was monotonically increasing.
+   (CVE-2018-7323)
+ * In Wireshark 2.4.0 to 2.4.4 and 2.2.0 to 2.2.12,
+   epan/dissectors/packet-sccp.c had an infinite loop that was addressed by
+   using a correct integer data type. (CVE-2018-7324)
+ * In Wireshark 2.4.0 to 2.4.4 and 2.2.0 to 2.2.12,
+   epan/dissectors/packet-rpki-rtr.c had an infinite loop that was addressed
+   by validating a length field. (CVE-2018-7325)
+ * In Wireshark 2.4.0 to 2.4.4 and 2.2.0 to 2.2.12,
+   epan/dissectors/packet-lltd.c had an infinite loop that was addressed by
+   using a correct integer data type. (CVE-2018-7326)
+ * In Wireshark 2.4.0 to 2.4.4 and 2.2.0 to 2.2.12,
+   epan/dissectors/packet-s7comm.c had an infinite loop that was addressed by
+   correcting off-by-one errors. (CVE-2018-7329)
+ * In Wireshark 2.4.0 to 2.4.4 and 2.2.0 to 2.2.12,
+   epan/dissectors/packet-ber.c had an infinite loop that was addressed by
+   validating a length. (CVE-2018-7331)
+ * In Wireshark 2.4.0 to 2.4.4 and 2.2.0 to 2.2.12,
+   epan/dissectors/packet-reload.c had an infinite loop that was addressed by
+   validating a length. (CVE-2018-7332)
+ * In Wireshark 2.4.0 to 2.4.4 and 2.2.0 to 2.2.12,
+   epan/dissectors/packet-rpcrdma.c had an infinite loop that was addressed by
+   validating a chunk size. (CVE-2018-7333)
+ * FCP dissector crash in packet-fcp.c (CVE-2018-7336)
+ * DOCSIS dissector crash in packet-docsis.c by injecting a malformed packet
+   (CVE-2018-7337)
+ * IPMI dissector crash in packet-ipmi-picmg.c (CVE-2018-7417)
+ * SIGCOMP dissector crash in packet-sigcomp.c (CVE-2018-7418)
+ * Pcapng file parser crash in pcapng.c (CVE-2018-7420)
+ * In Wireshark 2.2.0 to 2.2.12 and 2.4.0 to 2.4.4, the DMP dissector could go
+   into an infinite loop. This was addressed in epan/dissectors/packet-dmp.c
+   by correctly supporting a bounded number of Security Categories for a DMP
+   Security Classification. (CVE-2018-7421)
+ * stack overflow via crafted LWAPP Layer 3 Packet (CVE-2018-9256)
+ * infinite loop in the CQL dissector in epan/dissectors/packet-cql.c
+   (CVE-2018-9257)
+ * TCP dissector could crash in epan/dissectors/packet-tcp.c (CVE-2018-9258)
+ * MP4 dissector crash in epan/dissectors/file-mp4.c (CVE-2018-9259)
+ * IEEE 802.15.4 dissector crash in epan/dissectors/packet-ieee802154.c
+   (CVE-2018-9260)
+ * VLAN dissector crash in epan/dissectors/packet-vlan.c (CVE-2018-9262)
+ * Kerberos dissector crash in epan/dissectors/packet-kerberos.c
+   (CVE-2018-9263)
+ * memory leak in epan/dissectors/packet-tn3270.c (CVE-2018-9265)
+ * memory leak in epan/dissectors/packet-isup.c (CVE-2018-9266)
+ * memory leak in epan/dissectors/packet-lapd.c (CVE-2018-9267)
+ * memory leak in epan/dissectors/packet-smb2.c (CVE-2018-9268)
+ * memory leak in epan/dissectors/packet-giop.c (CVE-2018-9269)
+ * memory leak in epan/oids.c (CVE-2018-9270)
+ * memory leak in epan/dissectors/packet-multipart.c (CVE-2018-9271)
+ * memory leak in epan/dissectors/packet-h223.c (CVE-2018-9272)
+ * DNS dissector crash in packet-dns.c (CVE-2018-11356)
+ * Uncontrolled Resource Consumption in epan/tvbuff.c (CVE-2018-11357)
+ * Out-of-bounds Read in proto.c (CVE-2018-11359)
+ * Heap-based Buffer Overflow in dot11decrypt.c (CVE-2018-11361)
+ * MMSE dissector infinite loop (wnpa-sec-2018-38) (CVE-2018-14339)
+ * Multiple dissectors could crash (wnpa-sec-2018-36) (CVE-2018-14340)
+ * DICOM dissector infinite loop (wnpa-sec-2018-39) (CVE-2018-14341)
+ * BGP dissector large loop (wnpa-sec-2018-34) (CVE-2018-14342)
+ * ASN.1 BER and related dissectors crash (wnpa-sec-2018-37) (CVE-2018-14343)
+ * ISMP dissector crash (wnpa-sec-2018-35) (CVE-2018-14344)
+ * Bazaar dissector infinite loop (wnpa-sec-2018-40) (CVE-2018-14368)
+ * HTTP2 dissector infinite loop (wnpa-sec-2018-41) (CVE-2018-14369)
+ * Bluetooth Attribute Protocol dissector crash (CVE-2018-16056)
+ * Radiotap dissector crash (CVE-2018-16057)
+ * Bluetooth AVDTP dissector crash (CVE-2018-16058)
+bug: [47992]
+cve:
+- CVE-2017-9343
+- CVE-2017-9344
+- CVE-2017-9345
+- CVE-2017-9346
+- CVE-2017-9347
+- CVE-2017-9348
+- CVE-2017-9349
+- CVE-2017-9350
+- CVE-2017-9351
+- CVE-2017-9352
+- CVE-2017-9353
+- CVE-2017-9354
+- CVE-2017-9616
+- CVE-2017-9617
+- CVE-2017-9766
+- CVE-2017-11406
+- CVE-2017-11407
+- CVE-2017-11410
+- CVE-2017-13764
+- CVE-2017-13765
+- CVE-2017-13767
+- CVE-2017-15189
+- CVE-2017-15191
+- CVE-2017-15192
+- CVE-2017-15193
+- CVE-2017-17935
+- CVE-2017-17997
+- CVE-2018-7321
+- CVE-2018-7322
+- CVE-2018-7323
+- CVE-2018-7324
+- CVE-2018-7325
+- CVE-2018-7326
+- CVE-2018-7329
+- CVE-2018-7331
+- CVE-2018-7332
+- CVE-2018-7333
+- CVE-2018-7336
+- CVE-2018-7337
+- CVE-2018-7417
+- CVE-2018-7418
+- CVE-2018-7420
+- CVE-2018-7421
+- CVE-2018-9256
+- CVE-2018-9257
+- CVE-2018-9258
+- CVE-2018-9259
+- CVE-2018-9260
+- CVE-2018-9262
+- CVE-2018-9263
+- CVE-2018-9265
+- CVE-2018-9266
+- CVE-2018-9267
+- CVE-2018-9268
+- CVE-2018-9269
+- CVE-2018-9270
+- CVE-2018-9271
+- CVE-2018-9272
+- CVE-2018-11356
+- CVE-2018-11357
+- CVE-2018-11359
+- CVE-2018-11361
+- CVE-2018-14339
+- CVE-2018-14340
+- CVE-2018-14341
+- CVE-2018-14342
+- CVE-2018-14343
+- CVE-2018-14344
+- CVE-2018-14368
+- CVE-2018-14369
+- CVE-2018-16056
+- CVE-2018-16057
+- CVE-2018-16058
