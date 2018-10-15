@@ -1217,6 +1217,12 @@ univention-app dev-use-test-appcenter
 				directory or register a command that is executed when a file
 				is created.
             </para>
+            <para>
+                <ulink
+                    url="https://errata.software-univention.de/ucs/4.3/211.html">UCS
+                    4.3-1 errata 211</ulink> is required on the user's system
+                for this feature.
+            </para>
 			<section id="provision:push:setup">
 				<title>Setup in App configuration</title>
 				<para>
