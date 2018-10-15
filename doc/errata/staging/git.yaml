@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [4, 5]
+scope: ucs_4.2-0-errata4.2-5
+src: git
+fix: 1:2.1.4-2.1+deb8u7
+desc: |
+ This update addresses the following issue:
+ * arbitrary code execution via .gitmodules (CVE-2018-17456)
+bug: [47986]
+cve:
+- CVE-2018-17456
