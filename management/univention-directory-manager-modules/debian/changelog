@@ -1,4 +1,4 @@
-univention-directory-manager-modules (13.0.24-3) unstable; urgency=low
+univention-directory-manager-modules (13.0.25-1) unstable; urgency=low
 
   * Bug #47861: make error messages more accurate
 
