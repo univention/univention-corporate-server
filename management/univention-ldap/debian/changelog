@@ -1,4 +1,4 @@
-univention-ldap (14.0.2-21) unstable; urgency=low
+univention-ldap (14.0.2-24) unstable; urgency=low
 
   * Fix generating DH parameter file (Bug #47974)
 
