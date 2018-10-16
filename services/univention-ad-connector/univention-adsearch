@@ -202,7 +202,7 @@ if start_tls > 0:
 			with open(certificate_chain_filename, 'w') as certificate_chain_file:
 				certificate_chain_file.write(ca_cert)
 				certificate_chain_file.write(ad_cert)
-		ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, certificate_chain_file)
+		ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, certificate_chain_filename)
 	else:
 		ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 

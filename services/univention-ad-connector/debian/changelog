@@ -1,3 +1,9 @@
+univention-ad-connector (12.0.0-25) unstable; urgency=medium
+
+  * Bug #47858: make univention-adsearch use the certificate chain file
+
+ -- Arvid Requate <requate@univention.de>  Tue, 16 Oct 2018 19:29:36 +0200
+
 univention-ad-connector (12.0.0-24) unstable; urgency=medium
 
   * Bug #47858: make univention-adsearch use the certificate chain file
