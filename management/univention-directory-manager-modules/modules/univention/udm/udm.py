@@ -152,7 +152,6 @@ class Udm(object):
 			cls,
 			identity,  # type: str
 			password,  # type: str
-			api_version=__default_api_version__,  # type: Optional[int]
 	):
 		# type: (...) -> Udm
 		"""
