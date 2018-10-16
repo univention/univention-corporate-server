@@ -53,7 +53,7 @@ except ImportError:
 	pass
 
 
-class GenericUdm1ObjectProperties(BaseUdmObjectProperties):
+class GenericUdmObjectProperties(BaseUdmObjectProperties):
 	"""
 	Container for UDM properties.
 
@@ -65,7 +65,7 @@ class GenericUdm1ObjectProperties(BaseUdmObjectProperties):
 	_encoders = {}  # type: Dict[Text, Type[BaseEncoder]]
 
 	def __init__(self, udm_obj):  # type: (BaseUdmObject) -> None
-		super(GenericUdm1ObjectProperties, self).__init__(udm_obj)
+		super(GenericUdmObjectProperties, self).__init__(udm_obj)
 		for property_names, encoder_class in self._encoders.iteritems():
 			assert hasattr(encoder_class, 'decode')
 			assert hasattr(encoder_class, 'encode')
@@ -77,15 +77,15 @@ class GenericUdm1ObjectProperties(BaseUdmObjectProperties):
 				dn=self._udm_obj.dn,
 				module_name=self._udm_obj._udm_module.name
 			)
-		super(GenericUdm1ObjectProperties, self).__setattr__(key, value)
+		super(GenericUdmObjectProperties, self).__setattr__(key, value)
 
 
-class GenericUdm1Object(BaseUdmObject):
+class GenericUdmObject(BaseUdmObject):
 	"""
 	Generic UdmObject class that can be used with all UDM module types.
 
 	Usage:
-	* Creation of instances :py:class:`GenericUdm1Object` is always done through a
+	* Creation of instances :py:class:`GenericUdmObject` is always done through a
 	:py:class:`GenericUdmModul` instances py:meth:`new()`, py:meth:`get()` or
 	py:meth:`search()` methods.
 	* Modify an object:
@@ -98,13 +98,13 @@ class GenericUdm1Object(BaseUdmObject):
 	* Delete an object:
 		obj.delete()
 
-	After saving a :py:class:`GenericUdm1Object`, it is :py:meth:`reload()`ed
+	After saving a :py:class:`GenericUdmObject`, it is :py:meth:`reload()`ed
 	automtically because UDM hooks and listener modules often add, modify or
 	remove properties when saving to LDAP. As this involves LDAP, it can be
 	disabled if the object is not used afterwards and performance is an issue:
 		user_mod.meta.auto_reload = False
 	"""
-	udm_prop_class = GenericUdm1ObjectProperties
+	udm_prop_class = GenericUdmObjectProperties
 	_policies_encoder = None
 
 	def __init__(self):  # type: () -> None
@@ -112,15 +112,15 @@ class GenericUdm1Object(BaseUdmObject):
 		Don't instantiate a :py:class:`UdmObject` directly. Use a
 		:py:class:`UdmModule`.
 		"""
-		super(GenericUdm1Object, self).__init__()
-		self._udm_module = None  # type: GenericUdm1Module
+		super(GenericUdmObject, self).__init__()
+		self._udm_module = None  # type: GenericUdmModule
 		self._lo = None  # type: univention.admin.uldap.access
 		self._orig_udm_object = None  # type: univention.admin.handlers.simpleLdap
 		self._old_position = ''
 		self._fresh = True
 		self._deleted = False
 
-	def reload(self):  # type: () -> GenericUdm1Object
+	def reload(self):  # type: () -> GenericUdmObject
 		"""
 		Refresh object from LDAP.
 
@@ -135,7 +135,7 @@ class GenericUdm1Object(BaseUdmObject):
 		self._copy_from_udm_obj()
 		return self
 
-	def save(self):  # type: () -> GenericUdm1Object
+	def save(self):  # type: () -> GenericUdmObject
 		"""
 		Save object to LDAP.
 
@@ -334,7 +334,7 @@ class GenericUdm1Object(BaseUdmObject):
 			return encoder_class(**kwargs)
 
 
-class GenericUdm1ModuleMetadata(BaseUdmModuleMetadata):
+class GenericUdmModuleMetadata(BaseUdmModuleMetadata):
 	@property
 	def identifying_property(self):  # type: () -> Text
 		"""
@@ -378,14 +378,14 @@ class GenericUdm1ModuleMetadata(BaseUdmModuleMetadata):
 		)
 
 
-class GenericUdm1Module(BaseUdmModule):
+class GenericUdmModule(BaseUdmModule):
 	"""
-	Simple API to use UDM modules. Basically a GenericUdm1Object factory.
+	Simple API to use UDM modules. Basically a GenericUdmObject factory.
 
 	Usage:
 	0. Get module using
 		user_mod = Udm.using_*().get('users/user')
-	1 Create fresh, not yet saved GenericUdm1Object:
+	1 Create fresh, not yet saved GenericUdmObject:
 		new_user = user_mod.new()
 	2 Load an existing object:
 		group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
@@ -394,37 +394,37 @@ class GenericUdm1Module(BaseUdmModule):
 		dc_slaves = dc_slave_mod.search(filter_s='cn=s10*')
 		campus_groups = group_mod.search(base='ou=campus,dc=example,dc=com')
 	"""
-	_udm_object_class = GenericUdm1Object
-	_udm_module_meta_class = GenericUdm1ModuleMetadata
+	_udm_object_class = GenericUdmObject
+	_udm_module_meta_class = GenericUdmModuleMetadata
 	_udm_module_cache = {}  # type: Dict[Tuple[str, str, str, str], univention.admin.handlers.simpleLdap]
 	supported_api_versions = (0, 1)
 
 	def __init__(self, name, lo, api_version):  # type: (str, univention.admin.uldap.access, int) -> None
-		super(GenericUdm1Module, self).__init__(name, lo, api_version)
+		super(GenericUdmModule, self).__init__(name, lo, api_version)
 		self._orig_udm_module = self._get_orig_udm_module()
 
-	def new(self):  # type: () -> GenericUdm1Object
+	def new(self):  # type: () -> GenericUdmObject
 		"""
-		Create a new, unsaved GenericUdm1Object object.
+		Create a new, unsaved GenericUdmObject object.
 
-		:return: a new, unsaved GenericUdm1Object object
-		:rtype: GenericUdm1Object
+		:return: a new, unsaved GenericUdmObject object
+		:rtype: GenericUdmObject
 		"""
 		return self._load_obj('')
 
-	def get(self, dn):  # type: (str) -> GenericUdm1Object
+	def get(self, dn):  # type: (str) -> GenericUdmObject
 		"""
 		Load UDM object from LDAP.
 
 		:param str dn: DN of the object to load
-		:return: an existing GenericUdm1Object object
-		:rtype: GenericUdm1Object
+		:return: an existing GenericUdmObject object
+		:rtype: GenericUdmObject
 		:raises NoObject: if no object is found at `dn`
 		:raises WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
 		"""
 		return self._load_obj(dn)
 
-	def search(self, filter_s='', base='', scope='sub'):  # type: (str, str, str) -> Iterator[GenericUdm1Object]
+	def search(self, filter_s='', base='', scope='sub'):  # type: (str, str, str) -> Iterator[GenericUdmObject]
 		"""
 		Get all UDM objects from LDAP that match the given filter.
 
@@ -432,8 +432,8 @@ class GenericUdm1Module(BaseUdmModule):
 			required, objectClasses will be set by the UDM module)
 		:param str base: subtree to search
 		:param str scope: depth to search
-		:return: generator to iterate over GenericUdm1Object objects
-		:rtype: Iterator(GenericUdm1Object)
+		:return: generator to iterate over GenericUdmObject objects
+		:rtype: Iterator(GenericUdmObject)
 		"""
 		try:
 			udm_module_lookup_filter = str(self._orig_udm_module.lookup_filter(filter_s, self.lo))
@@ -509,13 +509,13 @@ class GenericUdm1Module(BaseUdmModule):
 			obj.open()
 		return obj
 
-	def _load_obj(self, dn):  # type: (str) -> GenericUdm1Object
+	def _load_obj(self, dn):  # type: (str) -> GenericUdmObject
 		"""
-		GenericUdm1Object factory.
+		GenericUdmObject factory.
 
 		:param str dn: the DN of the UDM object to load, if '' a new one
-		:return: a GenericUdm1Object
-		:rtype: GenericUdm1Object
+		:return: a GenericUdmObject
+		:rtype: GenericUdmObject
 		:raises NoObject: if no object is found at `dn`
 		:raises WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
 		"""
