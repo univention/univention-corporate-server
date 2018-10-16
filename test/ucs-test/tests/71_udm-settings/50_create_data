@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create a settings/code object
+## desc: Create a settings/data object
 ## tags: [udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
@@ -38,7 +38,7 @@ with ucr_test.UCSTestConfigRegistry() as ucr:
 				'cn': [kwargs['name']],
 				'description': [kwargs['description']],
 				'univentionDataFilename': [kwargs['filename']],
-				'univentionDataType': [kwargs['code_type']],
+				'univentionDataType': [kwargs['data_type']],
 				'univentionData': [bz2.compress(data)],
 				'univentionUCSVersionStart': [kwargs['ucsversionstart']],
 				'univentionUCSVersionEnd': [kwargs['ucsversionend']],
