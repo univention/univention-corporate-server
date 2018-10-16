@@ -1,3 +1,9 @@
+ucs-test (8.0.28-204) unstable; urgency=medium
+
+  * Bug #47650: Revert changes
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 16 Oct 2018 17:06:56 +0200
+
 ucs-test (8.0.28-203) unstable; urgency=low
 
   * Bug #47650 Implemented a CLI Tool which executes the diagnostic modules. 
