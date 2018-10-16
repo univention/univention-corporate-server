@@ -1,3 +1,9 @@
+univention-ad-connector (12.0.0-24) unstable; urgency=medium
+
+  * Bug #47858: make univention-adsearch use the certificate chain file
+
+ -- Arvid Requate <requate@univention.de>  Tue, 16 Oct 2018 15:59:42 +0200
+
 univention-ad-connector (12.0.0-23) unstable; urgency=medium
 
   * Bug #47901: support sasl/gssapi in

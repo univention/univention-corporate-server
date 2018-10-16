@@ -184,13 +184,27 @@ login_pw = fp.readline()
 if login_pw[-1] == '\n':
 	login_pw = login_pw[:-1]
 
-ca_file = configRegistry.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
-
+certificate_chain_filename = '/var/cache/univention-ad-connector/CAcert-%s.pem' % CONFIGBASENAME
 start_tls = 2 if configRegistry.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True) else 0
-if start_tls and ca_file:
-	ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, ca_file)
-elif start_tls:
-	ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
+if start_tls > 0:
+	ad_cert_filename = configRegistry.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
+	if ad_cert_filename:
+		if not os.path.exists(certificate_chain_filename):
+			# create a new CAcert file, which contains the UCS CA and the AD CA,
+			# see Bug #17768 for details
+			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=17768
+			with open('/etc/univention/ssl/ucsCA/CAcert.pem', 'r') as ca_file:
+				ca_cert = string.join(ca_file.readlines(), '')
+
+			with open(ad_cert_filename, 'r') as ad_cert_file:
+				ad_cert = string.join(ad_cert_file.readlines(), '')
+
+			with open(certificate_chain_filename, 'w') as certificate_chain_file:
+				certificate_chain_file.write(ca_cert)
+				certificate_chain_file.write(ad_cert)
+		ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, certificate_chain_file)
+	else:
+		ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
 lo = ldap.initialize(ldapuri)
 
