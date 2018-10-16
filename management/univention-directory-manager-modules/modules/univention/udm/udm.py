@@ -81,7 +81,8 @@ from univention.admin.uexceptions import noObject
 from .base import BaseUdmModule
 from .exceptions import ApiVersionNotSupported, NoObject, UnknownUdmModuleType
 from .factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
-from .utils import load_class, LDAP_connection, UDebug as ud
+from .utils import load_class, UDebug as ud
+from .connections import LDAP_connection
 
 try:
 	from typing import Dict, Optional, Tuple, Type

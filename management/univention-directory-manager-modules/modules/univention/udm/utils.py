@@ -30,9 +30,6 @@ from __future__ import absolute_import, unicode_literals
 import sys
 import inspect
 import importlib
-from ldap.filter import filter_format
-import univention.admin.uldap
-import univention.config_registry
 import univention.debug
 
 try:
@@ -89,67 +86,6 @@ class UDebug(object):
 		univention.debug.debug(cls.target, level, msg)
 		if is_interactive and level <= univention.debug.INFO:
 			print('{}: {}'.format(cls.level2str[level], msg))
-
-
-class LDAP_connection(object):
-	"""Caching LDAP connection factory."""
-
-	_ucr = None  # type: univention.config_registry.ConfigRegistry
-	_connection_admin = None  # type: univention.admin.uldap.access
-	_connection_machine = None  # type: univention.admin.uldap.access
-	_connection_account = {}  # type: Dict[Tuple[Text, int, Text, Text], univention.admin.uldap.access]
-
-	@classmethod
-	def get_admin_connection(cls):  # type: () -> univention.admin.uldap.access
-		if not cls._connection_admin:
-			cls._connection_admin, po = univention.admin.uldap.getAdminConnection()
-		return cls._connection_admin
-
-	@classmethod
-	def get_machine_connection(cls):  # type: () -> univention.admin.uldap.access
-		if not cls._connection_machine:
-			cls._connection_machine, po = univention.admin.uldap.getMachineConnection()
-		return cls._connection_machine
-
-	@classmethod
-	def get_credentials_connection(
-			cls,
-			identity,  # type: str
-			password,  # type: str
-		):
-		# type: (...) -> univention.admin.uldap.access
-
-		if not cls._ucr:
-			cls._ucr = univention.config_registry.ConfigRegistry()
-			cls._ucr.load()
-
-		if '=' not in identity:
-			try:
-				lo = cls.get_machine_connection()
-			except Exception:
-				# TODO: catch specific permission
-				# TODO: raise specific permission
-				raise RuntimeError('Cannot get DN for username.')
-			dns = lo.searchDn(filter_format('uid=%s', (identity,)))
-			try:
-				identity = dns[0]
-			except IndexError:
-				# TODO: raise specific permission
-				raise RuntimeError('Cannot get DN for username.')
-
-		server = cls._ucr['ldap/master/name']
-		port = cls._ucr['ldap/master/port']
-		base = cls._ucr['ldap/base']
-		key = (identity, password)
-		if key not in cls._connection_account:
-			cls._connection_account[key] = univention.admin.uldap.access(
-				host=server,
-				port=port,
-				base=base,
-				binddn=dn,
-				bindpw=password
-			)
-		return cls._connection_account[key]
 
 
 def load_class(module_path, class_name):  # type: (str, str) -> type
