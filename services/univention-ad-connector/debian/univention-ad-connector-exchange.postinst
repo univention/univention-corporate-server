@@ -30,12 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-univention-config-registry set	connector/ad/mapping/user/primarymail=true \
-				connector/ad/mapping/group/primarymail=true \
-				connector/ad/mapping/user/alternativemail=true \
-				connector/ad/mapping/group/alternativemail=true \
-				connector/ad/mapping/user/exchange=true \
-				connector/ad/mapping/group/exchange=true
+univention-config-registry set	connector/ad/mapping/user/primarymail?true \
+				connector/ad/mapping/group/primarymail?true \
+				connector/ad/mapping/user/alternativemail?true \
+				connector/ad/mapping/group/alternativemail?true \
+				connector/ad/mapping/user/exchange?true \
+				connector/ad/mapping/group/exchange?true
 
 #DEBHELPER#
 
