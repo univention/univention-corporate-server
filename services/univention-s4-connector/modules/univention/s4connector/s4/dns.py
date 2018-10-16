@@ -1471,7 +1471,10 @@ def ucs_zone_create(s4connector, object, dns_type):
 			zone = univention.admin.handlers.dns.reverse_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=None, attributes=[])
 		zone.open()
 		if set(ns) != set(zone['nameserver']):
-			if soa['mname'] not in ns:
+			mname = soa['mname']
+			if mname and not mname.endswith("."):
+				mname = "%s." % mname
+			if mname not in ns:
 				ns.insert(0, soa['mname'])
 			zone['nameserver'] = ns
 			modify = True
