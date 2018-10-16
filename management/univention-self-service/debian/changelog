@@ -1,3 +1,9 @@
+univention-self-service (3.0.0-5) unstable; urgency=medium
+
+  * Bug #45531: always reset psql password in join script
+
+ -- Felix Botner <botner@univention.de>  Fri, 12 Oct 2018 12:36:27 +0200
+
 univention-self-service (3.0.0-4) unstable; urgency=medium
 
   * Bug #45813: add confirmation dialog which tells about successful password
