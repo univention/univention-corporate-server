@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [1, 2]
+scope: ucs_4.3-0-errata4.3-2
+src: spice
+fix: 0.12.8-2.1+deb9u2
+desc: |
+ This update addresses the following issue:
+ * Missing check in demarshal.py:write_validate_array_item() allows for buffer
+   overflow and denial of service (CVE-2018-10873)
+bug: [47996]
+cve:
+- CVE-2018-10873
