@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-ad-connector
+fix: 12.0.0-24A~4.3.0.201810161604
+desc: |
+ This update addresses the following issue(s):
+ * The tool univention-adsearch now also uses the file containing the full
+   certificate chain instead of only the exported AD certificate alone.
+bug: [47858]
