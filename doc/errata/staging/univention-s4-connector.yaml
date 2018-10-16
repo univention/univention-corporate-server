@@ -3,10 +3,11 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-s4-connector
-fix: 12.0.2-34A~4.3.0.201810162048
+fix: 12.0.2-35A~4.3.0.201810162056
 desc: |
  This update addresses the following issue(s):
  * An indentation bug in the mapping file of the S4-Connector has been fixed
    which triggered an error in cases where connector/s4/mapping/dns/ignorelist
    was unset or empty in UCR.
-bug: [44711]
+ * Fix sync_to_ucs reject for DNS SOAs with trailing dot missing in the NS RR.
+bug: [44711, 44104]
