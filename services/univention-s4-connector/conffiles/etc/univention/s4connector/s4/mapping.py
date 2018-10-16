@@ -636,7 +636,7 @@ if ignore_filter:
 	dns_section = dns_section + '''
 			ignore_filter=%r,''' % ignore_filter
 
-	dns_section = dns_section + '''
+dns_section = dns_section + '''
 			ignore_subtree = global_ignore_subtree,
 			
 			con_sync_function = univention.s4connector.s4.dns.ucs2con,
