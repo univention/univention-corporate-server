@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: univention-ldap
+fix: 13.0.7-21A~4.2.0.201810160946
+desc: |
+ This update addresses the following issue(s):
+ * Change usePrimaryGroupPreset syntax from IA5 to UTF-8 (Backport from 4.3)
+bug: [47859]
