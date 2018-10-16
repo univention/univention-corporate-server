@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner python
 ## desc: Run all diagnostic checks
 ## exposure: safe
 ## packages: [univention-management-console-module-diagnostic]
