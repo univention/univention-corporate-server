@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-self-service
+fix: 3.0.0-5A~4.3.0.201810161243
+desc: |
+ This update addresses the following issue(s):
+ * The join script now always updates the local database password.
+bug: [45531]
