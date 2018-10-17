@@ -3,7 +3,6 @@
 
 from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import Warning, MODULE
-from univention.management.console.log import MODULE
 
 import dns.resolver
 from dns.exception import DNSException, Timeout

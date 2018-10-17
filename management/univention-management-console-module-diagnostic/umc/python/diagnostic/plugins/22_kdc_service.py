@@ -190,7 +190,7 @@ def build_kerberos_request(target_realm, user_name):
 
 	req_body['sname'] = None
 	req_body['sname']['name-type'] = 2  # NT_SRV_INST
-	req_body['s/name']['name-string'] = None
+	req_body['sname']['name-string'] = None
 	req_body['sname']['name-string'][0] = 'krbtgt'
 	req_body['sname']['name-string'][1] = target_realm
 

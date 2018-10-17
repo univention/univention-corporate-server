@@ -40,11 +40,9 @@ import contextlib
 import requests
 from ldap.filter import filter_format
 from defusedxml.ElementTree import fromstring
-from univention.management.console.log import MODULE
-
 import univention.uldap
 import univention.config_registry
-from univention.management.console.modules.diagnostic import Critical
+from univention.management.console.modules.diagnostic import Critical, MODULE
 from univention.management.console.config import ucr
 
 from univention.lib.i18n import Translation

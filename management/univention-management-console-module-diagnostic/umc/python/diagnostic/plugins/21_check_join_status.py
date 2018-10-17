@@ -32,7 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from subprocess import Popen, PIPE, STDOUT
-from univention.management.console.modules.diagnostic import Critical
+from univention.management.console.modules.diagnostic import Critical,MODULE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate

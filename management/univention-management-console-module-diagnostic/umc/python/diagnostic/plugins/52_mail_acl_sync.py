@@ -39,7 +39,7 @@ import univention.admin.uldap
 import univention.admin.modules as udm_modules
 
 import univention.config_registry
-from univention.management.console.modules.diagnostic import Warning
+from univention.management.console.modules.diagnostic import Warning, MODULE
 from univention.management.console.modules.diagnostic import util
 
 from univention.lib.i18n import Translation

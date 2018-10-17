@@ -42,9 +42,8 @@ import contextlib
 import requests
 import dateutil.tz
 from OpenSSL import crypto
-
 import univention.config_registry
-from univention.management.console.modules.diagnostic import Critical, Warning
+from univention.management.console.modules.diagnostic import Critical, Warning, MODULE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate

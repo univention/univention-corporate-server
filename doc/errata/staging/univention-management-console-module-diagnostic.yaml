@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-management-console-module-diagnostic
-fix: 4.0.1-7A~4.3.0.201810101315
+fix: 4.0.1-8A~4.3.0.201810171807
 desc: |
  This update addresses the following issue(s):
  * Improved logging of diagnostic module actions
@@ -12,4 +12,5 @@ desc: |
    The plugin also allows to migrate those objects. Having a
    univentionObjectType allows for other services to use a convenient LDAP
    filter.
+ * Code Cleanup
 bug: [47649, 47844]

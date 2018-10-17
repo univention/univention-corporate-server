@@ -34,8 +34,7 @@
 import socket
 
 import univention.config_registry
-from univention.management.console.modules.diagnostic import Warning
-from univention.management.console.log import MODULE
+from univention.management.console.modules.diagnostic import Warning, MODULE
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 run_descr=['get id of ucr get ldap/master and check if var/lib/univention-directory-listener/notifier_id) is the same ']
