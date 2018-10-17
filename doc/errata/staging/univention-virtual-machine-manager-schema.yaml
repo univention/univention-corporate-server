@@ -2,11 +2,10 @@ product: ucs
 release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
-src: univention-directory-manager-modules
-fix: 13.0.25-2A~4.3.0.201810151125
+src: univention-virtual-machine-manager-schema
+fix: 
 desc: |
  This update addresses the following issue(s):
- * Some error messages are more explicit (Bug #47861).
  * Searching for some UDM properties led to a traceback.
    This has been fixed.
-bug: [47861, 47910]
+bug: [47910]
