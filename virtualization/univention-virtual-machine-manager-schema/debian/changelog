@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (8.0.0-3) unstable; urgency=medium
+
+  * Bug #47910: fix index out of range error when generating search filter
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 17 Oct 2018 19:58:10 +0200
+
 univention-virtual-machine-manager-schema (8.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
