@@ -106,12 +106,11 @@ def unmapName(old):
 
 
 def mapName(old):
-	if isinstance(old, basestring):
-		return old
+	if len(old) == 1:
+		return old[0]
 	if len(old) == 3 and old[2]:
 		return '_{0}._{1}.{2}'.format(*old)
-
-	return '_{0}._{1}'.format(*old[: 2])
+	return '_{0}._{1}'.format(*old[:2])
 
 
 def unmapLocation(old):

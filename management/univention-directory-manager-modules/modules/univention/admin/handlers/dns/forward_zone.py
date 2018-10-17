@@ -219,21 +219,11 @@ layout = [
 
 
 def mapMX(old):
-	lst = []
-	if old == '*':
-		return str('*')
-	if isinstance(old, list) and len(old) == 2 and isinstance(old[0], unicode) and isinstance(old[1], unicode):
-		return str('%s %s' % (old[0], old[1], ))
-	for entry in old:
-		lst.append('%s %s' % (entry[0], entry[1]))
-	return lst
+	return [' '.join(entry) for entry in old]
 
 
 def unmapMX(old):
-	lst = []
-	for entry in old:
-		lst.append(entry.split(' ', 1))
-	return lst
+	return [entry.split(' ', 1) for entry in old]
 
 
 mapping = univention.admin.mapping.mapping()
