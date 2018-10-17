@@ -43,18 +43,6 @@ univention-directory-manager-modules (13.0.24-4) unstable; urgency=medium
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 10 Oct 2018 13:51:46 +0200
 
-univention-directory-manager-modules (13.0.24-3) unstable; urgency=medium
-
-  * Bug #47861: Move LDAP_connection
-  * Bug #47861: Renaming some classes
-  * Bug #47861: Reworking using_credentials to use fewer parameters and
-    connect to the UCS master
-  * Bug #47861: Documentation fixes
-  * Bug #47861: auto_reload after save
-  * Bug #47861: Add default position to modules
-
- -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 09 Oct 2018 18:29:10 +0200
-
 univention-directory-manager-modules (13.0.24-2) unstable; urgency=low
 
   * Bug #47861: make source of error messages distinguishable
