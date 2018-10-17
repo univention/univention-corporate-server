@@ -213,7 +213,7 @@ def find_all_zone_problems():
 	udm = UDM()
 	for zone in udm.all_zones():
 		for error in udm.check_zone(zone):
-			MODULE.process('Found error %s in %s' %(error, udm_check_zone(zone)))
+			MODULE.process('Found error %s in %s' %(error, udm.check_zone(zone)))
 			yield error
 
 

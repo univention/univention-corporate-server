@@ -4,7 +4,6 @@
 from subprocess import Popen, PIPE, STDOUT
 from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import Critical, MODULE
-from univention.management.console.log import MODULE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate

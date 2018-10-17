@@ -33,7 +33,7 @@
 
 
 import subprocess
-from univention.management.console.modules.diagnostic import Warning
+from univention.management.console.modules.diagnostic import Warning, MODULE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate

@@ -37,9 +37,8 @@ import univention.uldap
 import univention.lib.s4 as s4
 import univention.lib.misc
 import univention.config_registry
-from univention.management.console.modules.diagnostic import Warning
+from univention.management.console.modules.diagnostic import Warning, MODULE
 from univention.management.console.modules.diagnostic import util
-from univention.management.console.log import MODULE
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 

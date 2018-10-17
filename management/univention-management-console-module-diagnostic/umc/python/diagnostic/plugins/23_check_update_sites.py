@@ -33,8 +33,6 @@
 
 import socket
 import urlparse
-from univention.management.console.log import MODULE
-
 import univention.config_registry
 from univention.management.console.modules.diagnostic import Warning, MODULE
 
