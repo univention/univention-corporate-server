@@ -1,3 +1,11 @@
+ucs-test (8.0.28-206) unstable; urgency=low
+
+  * Bug #47000: Always generate GPG key for updater
+  * Bug #47000: Fix shell issues
+  * Bug #47000: Fix ucs-test --hold
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 17 Oct 2018 17:26:01 +0200
+
 ucs-test (8.0.28-205) unstable; urgency=medium
 
   * Bug #47643: Added test to check DRS replication works after server password change
