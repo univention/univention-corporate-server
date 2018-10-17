@@ -3,8 +3,9 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: ucs-test
-fix: 8.0.28-203A~4.3.0.201810120948
+fix: 8.0.28-205A~4.3.0.201810171543
 desc: |
  This update addresses the following issue(s):
- * Added a CLI tool which executes the diagnostic modules
-bug: [47650]
+ * Added test to check DRS replication works after server password change. Updated version
+
+bug: [47643]
