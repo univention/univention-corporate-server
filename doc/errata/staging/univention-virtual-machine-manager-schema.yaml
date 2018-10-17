@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-virtual-machine-manager-schema
-fix: 
+fix: 8.0.0-3A~4.3.0.201810172013
 desc: |
  This update addresses the following issue(s):
  * Searching for some UDM properties led to a traceback.
