@@ -10,3 +10,5 @@ desc: |
    Also, joining a host with multiple network interfaces now attaches them all
    to the computer object.
 bug: [47338]
+erratum: 271
+announced: 2018-10-17
