@@ -5,9 +5,11 @@
 # 2. Extra files for apache should be symlinked from ${BASEDIR}, which are removed on exit
 #
 eval "$(univention-config-registry shell | sed -e 's/^/declare -r _/')"
+# shellcheck disable=SC2154,SC2034
 declare -i major="${_version_version%.*}"
 declare -i minor="${_version_version#*.}"
 pkgname="test-$$-${RANDOM}"
+# shellcheck disable=SC2034
 repoprefix="univention-repository"
 ARCH=$(dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null)
 
@@ -20,7 +22,8 @@ bug43914 () {
 	UT_VERBOSE="$DST/ucs-test-$name"
 
 	local IFS=.
-	set -- $(uname -r)
+	# shellcheck disable=SC2046
+	set -- $(uname -r)  # IFS
 	case "$1" in
 	3) apt-get install -qq "linux-tools-$1.$2" </dev/null || return $? ;;
 	4) apt-get install -qq "linux-perf-$1.$2" </dev/null || return $? ;;
@@ -94,7 +97,9 @@ cleanup () { # Undo all changes
 			remove+=("${name}")
 		fi
 	done
+	# shellcheck disable=SC2128
 	[ -n "${remove}" ] && univention-config-registry unset "${remove[@]}" >&3 2>&3
+	# shellcheck disable=SC2128
 	[ -n "${reset}" ] && univention-config-registry set "${reset[@]}" >&3 2>&3
 	cp "${BASEDIR}"/base*.conf /etc/univention/
 	cp "${BASEDIR}/trusted.gpg" /etc/apt/trusted.gpg
@@ -113,12 +118,12 @@ failure () { # Report failed command
 	[ ${BASH_SUBSHELL} -eq 0 ] && return 0 # do not exit the controlling shell
 
 	echo "**************** Test failed above this line ****************" >&2
-	echo "ERROR ${0}:${BASH_LINENO[@]}" >&2
+	echo "ERROR ${0}:${BASH_LINENO[*]}" >&2
 	echo "ERROR ${BASH_COMMAND}" >&2
 	[ -s "${BASEDIR}/apache2.log" ] && cat "${BASEDIR}/apache2.log"
 	cat /etc/apt/sources.list /etc/apt/sources.list.d/*.list || :
-	sleep ${UT_DELAY:-0}
-	exit ${RETVAL:-140} # internal error
+	sleep "${UT_DELAY:-0}"
+	exit "${RETVAL:-140}" # internal error
 }
 trap 'failure ${LINENO}' ERR
 set -E # functions inherit ERR
@@ -225,7 +230,8 @@ config_mirror () { # Configure mirror to use repository from local apache
 }
 
 allpatchlevels () { # All ${major}.${minor}-0 ... ${major}.${minor}-${patchlevel}
-	set -- ${1//[.-]/ }
+	# shellcheck disable=SC2086
+	set -- ${1//[.-]/ }  # IFS
 	declare -i patchlevel
 	for ((patchlevel=0; patchlevel<=${3}; patchlevel+=1))
 	do
@@ -234,7 +240,8 @@ allpatchlevels () { # All ${major}.${minor}-0 ... ${major}.${minor}-${patchlevel
 }
 
 allminors () { # All ${major}.0-0 ... ${major}.${minor}-0 ... ${major}.${minor}-${patchlevel}
-	set -- ${1//[.-]/ }
+	# shellcheck disable=SC2086
+	set -- ${1//[.-]/ }  # IFS
 	declare -i minor
 	for ((minor=0; minor<=${2}; minor+=1))
 	do
@@ -344,18 +351,18 @@ mkdsc () { # Create dummy source package [name [version [arch [dir]]]]
 mkpkg () { # Create Package files for ${1}. Optional arguments go to dpkg-scanpackages.
 	local dir="${1:-${DIR}}"
 	shift
-	cd "${dir}/../.."
+	cd "${dir}/../.." || return $?
 	local subdir="${dir#${PWD}/}"
 	dpkg-scanpackages "${@}" "${subdir}" > "${dir}/Packages" 2>&3
 	gzip -n -9 <"${dir}/Packages" >"${dir}/Packages.gz"
 	bzip2 -9 <"${dir}/Packages" >"${dir}/Packages.bz2"
-	cd "${OLDPWD}"
+	cd "${OLDPWD}" || return $?
 
-	case "${_update_secure_apt}" in
+	case "${_update_secure_apt:-}" in
 		0|false|no|off) return 0 ;;
 	esac
 	mkgpg
-	cd "${dir}"
+	cd "${dir}" || return $?
 	rm -f Release Release.tmp Release.gpg
 	apt-ftparchive \
 		-o "APT::FTPArchive::Release::Origin=Univention" \
@@ -366,7 +373,7 @@ mkpkg () { # Create Package files for ${1}. Optional arguments go to dpkg-scanpa
 	mv Release.tmp Release
 
 	gpgsign Release
-	cd "${OLDPWD}"
+	cd "${OLDPWD}" || return $?
 }
 
 gpgsign () { # sign file
@@ -408,18 +415,18 @@ gpgsign () { # sign file
 mksrc () { # Create Sources files for ${1}. Optional arguments go to dpkg-scansources.
 	local dir="${1:-${DIR}}"
 	shift
-	cd "${dir}/../.."
+	cd "${dir}/../.." || return $?
 	local subdir="${dir#${PWD}/}"
 	dpkg-scansources "${@}" "${subdir}" > "${dir}/Sources" 2>&3
 	gzip -n -9 <"${dir}/Sources" >"${dir}/Sources.gz"
 	bzip2 -9 <"${dir}/Sources" >"${dir}/Sources.bz2"
-	cd "${OLDPWD}"
+	cd "${OLDPWD}" || return $?
 
-	case "${_update_secure_apt}" in
+	case "${_update_secure_apt:-}" in
 		0|false|no|off) return 0 ;;
 	esac
 	mkgpg
-	cd "${dir}"
+	cd "${dir}" || return $?
 	rm -f Release Release.tmp Release.gpg
 	apt-ftparchive \
 		-o "APT::FTPArchive::Release::Origin=Univention" \
@@ -430,7 +437,7 @@ mksrc () { # Create Sources files for ${1}. Optional arguments go to dpkg-scanso
 	mv Release.tmp Release
 
 	gpgsign Release
-	cd "${OLDPWD}"
+	cd "${OLDPWD}" || return $?
 }
 
 mkgpg () { # Create GPG-key for secure APT
@@ -478,7 +485,7 @@ mksh () { # Create shell scripts $@ in $1
 		exit ${ret}
 		EOF
 		chmod 755 "${dir}/${1}.sh"
-		case "${_repository_online_verify}" in
+		case "${_repository_online_verify:-}" in
 			0|false|no|off) return 0 ;;
 		esac
 		if mkgpg
@@ -492,7 +499,8 @@ mksh () { # Create shell scripts $@ in $1
 split_repo_path () { # Split repository path into atoms
 	local oldifs="${IFS}"
 	local IFS=/
-	set -- ${1#${REPODIR}/}
+	# shellcheck disable=SC2086
+	set -- ${1#${REPODIR}/}  # IFS
 	IFS="${oldifs}"
 	local version part arch
 	version="${1}"
@@ -508,7 +516,7 @@ split_repo_path () { # Split repository path into atoms
 }
 
 checkapt () { # Check for apt-source statement ${1}
-	local files=/etc/apt/sources.list.d/*.list
+	local files='/etc/apt/sources.list.d/*.list'
 	local prefix=deb
 	local pattern
 	while [ $# -ge 1 ]
@@ -523,7 +531,10 @@ checkapt () { # Check for apt-source statement ${1}
 			maintained|unmaintained) pattern="^${prefix} .*/${1}/\(component/\?\)\? .*/.*/" ;;
 			all|${ARCH}|extern) pattern="^${prefix} .*/\(component/\?\)\? .*/${1}/" ;;
 			i386|amd64) shift ; continue ;;
-			/*) set -- "$@" $(split_repo_path "${1}") && shift ; continue ;;
+			/*) # shellcheck disable=SC2046
+				set -- "$@" $(split_repo_path "${1}") && shift  # IFS
+				continue
+				;;
 			*) echo "Unknown ${1}" >&2 ; return 2 ;;
 		esac
 		if ! grep -q "${pattern}" ${files}
@@ -557,7 +568,7 @@ checkmirror () { # Check mirror for completeness: required-dirs... -- forbidden-
 	local port=80
 
 	# Symlink
-	test $(readlink "${dstdir}/mirror/univention-repository") = .
+	test "$(readlink "${dstdir}/mirror/univention-repository")" = .
 
 	# Directories
 	local invert
@@ -574,7 +585,7 @@ checkmirror () { # Check mirror for completeness: required-dirs... -- forbidden-
 
 	# Mirrored files
 	local cmd uri dist
-	while read cmd uri dist
+	while read -r cmd uri dist
 	do
 		[ "${cmd}" = deb ] || continue
 		[[ "${uri}" =~ 'http://localhost'(":${port}")?"/${REPOPREFIX}/"(.*) ]] || continue
@@ -586,7 +597,8 @@ checkmirror () { # Check mirror for completeness: required-dirs... -- forbidden-
 
 		local oldifs="${IFS}"
 		local IFS=$'\n'
-		set -- $(cd "${srcdir}" && find "${prefix}/${dist}" -name \*.deb -o -name \*.sh)
+		# shellcheck disable=SC2046
+		set -- $(cd "${srcdir}" && find "${prefix}/${dist}" -name \*.deb -o -name \*.sh)  # IFS
 		IFS="${oldifs}"
 		while [ $# -ge 1 ]
 		do
