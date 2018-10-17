@@ -358,9 +358,6 @@ mkpkg () { # Create Package files for ${1}. Optional arguments go to dpkg-scanpa
 	bzip2 -9 <"${dir}/Packages" >"${dir}/Packages.bz2"
 	cd "${OLDPWD}" || return $?
 
-	case "${_update_secure_apt:-}" in
-		0|false|no|off) return 0 ;;
-	esac
 	mkgpg
 	cd "${dir}" || return $?
 	rm -f Release Release.tmp Release.gpg
@@ -422,9 +419,6 @@ mksrc () { # Create Sources files for ${1}. Optional arguments go to dpkg-scanso
 	bzip2 -9 <"${dir}/Sources" >"${dir}/Sources.bz2"
 	cd "${OLDPWD}" || return $?
 
-	case "${_update_secure_apt:-}" in
-		0|false|no|off) return 0 ;;
-	esac
 	mkgpg
 	cd "${dir}" || return $?
 	rm -f Release Release.tmp Release.gpg
