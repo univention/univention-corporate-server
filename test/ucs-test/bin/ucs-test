@@ -139,8 +139,7 @@ class TestSet(object):
 						try:
 							if not dry_run:
 								test_result.run()
-								if stop_on_failure and \
-									test_result.result == TestCodes.RESULT_FAIL:
+								if stop_on_failure and test_result.eofs in 'EF':
 									# stop execution, Bug #35988
 									return
 						finally:
