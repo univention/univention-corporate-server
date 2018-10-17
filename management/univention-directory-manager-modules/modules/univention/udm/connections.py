@@ -26,9 +26,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import, unicode_literals
+from .exceptions import ConnectionError
+
 import univention.admin.uldap
 import univention.config_registry
 from ldap.filter import filter_format
+import ldap
 
 try:
 	from typing import Dict, Text, Tuple
@@ -46,13 +50,31 @@ class LDAP_connection(object):
 	@classmethod
 	def get_admin_connection(cls):  # type: () -> univention.admin.uldap.access
 		if not cls._connection_admin:
-			cls._connection_admin, po = univention.admin.uldap.getAdminConnection()
+			try:
+				cls._connection_admin, po = univention.admin.uldap.getAdminConnection()
+			except IOError:
+				raise ConnectionError('Could not read secret file')
+			except ldap.INVALID_CREDENTIALS:
+				raise ConnectionError('Credentials invalid')
+			except ldap.CONNECT_ERROR:
+				raise ConnectionError('Connection refused')
+			except ldap.SERVER_DOWN:
+				raise ConnectionError('The LDAP Server is not running')
 		return cls._connection_admin
 
 	@classmethod
 	def get_machine_connection(cls):  # type: () -> univention.admin.uldap.access
 		if not cls._connection_machine:
-			cls._connection_machine, po = univention.admin.uldap.getMachineConnection()
+			try:
+				cls._connection_machine, po = univention.admin.uldap.getMachineConnection()
+			except IOError:
+				raise ConnectionError('Could not read secret file')
+			except ldap.INVALID_CREDENTIALS:
+				raise ConnectionError('Credentials invalid')
+			except ldap.CONNECT_ERROR:
+				raise ConnectionError('Connection refused')
+			except ldap.SERVER_DOWN:
+				raise ConnectionError('The LDAP Server is not running')
 		return cls._connection_machine
 
 	@classmethod
@@ -68,29 +90,30 @@ class LDAP_connection(object):
 			cls._ucr.load()
 
 		if '=' not in identity:
-			try:
-				lo = cls.get_machine_connection()
-			except Exception:
-				# TODO: catch specific permission
-				# TODO: raise specific permission
-				raise RuntimeError('Cannot get DN for username.')
+			lo = cls.get_machine_connection()
 			dns = lo.searchDn(filter_format('uid=%s', (identity,)))
 			try:
 				identity = dns[0]
 			except IndexError:
-				# TODO: raise specific permission
-				raise RuntimeError('Cannot get DN for username.')
+				raise ConnectionError('Cannot get DN for username.')
 
 		server = cls._ucr['ldap/master']
 		port = cls._ucr['ldap/master/port']
 		base = cls._ucr['ldap/base']
 		key = (identity, password)
 		if key not in cls._connection_account:
-			cls._connection_account[key] = univention.admin.uldap.access(
-				host=server,
-				port=port,
-				base=base,
-				binddn=identity,
-				bindpw=password
-			)
+			try:
+				cls._connection_account[key] = univention.admin.uldap.access(
+					host=server,
+					port=port,
+					base=base,
+					binddn=identity,
+					bindpw=password
+				)
+			except ldap.INVALID_CREDENTIALS:
+				raise ConnectionError('Credentials invalid')
+			except ldap.CONNECT_ERROR:
+				raise ConnectionError('Connection refused')
+			except ldap.SERVER_DOWN:
+				raise ConnectionError('The LDAP Server is not running')
 		return cls._connection_account[key]

@@ -134,6 +134,7 @@ class Udm(object):
 
 		:return: a Udm object
 		:rtype: Udm
+		:raises ConnectionError: Non-Master systems, server down, etc.
 		"""
 		return cls(cls._connection_handler.get_admin_connection())
 
@@ -144,6 +145,7 @@ class Udm(object):
 
 		:return: a Udm object
 		:rtype: Udm
+		:raises ConnectionError: File permissions, server down, etc.
 		"""
 		return cls(cls._connection_handler.get_machine_connection())
 
@@ -164,6 +166,7 @@ class Udm(object):
 		:param str password: password of user / DN to use for LDAP connection
 		:return: a Udm object
 		:rtype: Udm
+		:raises ConnectionError: Invalid credentials, server down, etc.
 		"""
 		return cls(cls._connection_handler.get_credentials_connection(identity, password))
 

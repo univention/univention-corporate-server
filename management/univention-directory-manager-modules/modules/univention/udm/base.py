@@ -34,7 +34,7 @@ from __future__ import absolute_import, unicode_literals
 import pprint
 from collections import namedtuple
 from ldap.filter import filter_format
-from .exceptions import NoObject
+from .exceptions import NoObject, MultipleObjects
 
 try:
 	from typing import Callable, Iterable, Iterator, List, Optional, Text
@@ -241,13 +241,14 @@ class BaseUdmModule(object):
 		:return: an existing BaseUdmObject object
 		:rtype: BaseUdmObject
 		:raises NoObject: if no object is found with ID `id`
+		:raises MultipleObjects: if more than one object is found with ID `id`
 		"""
 		filter_s = filter_format('{}=%s'.format(self.meta.identifying_property), (id,))
 		res = list(self.search(filter_s))
 		if not res:
 			raise NoObject('No object found for {!r}.'.format(filter_s), module_name=self.name)
 		elif len(res) > 1:
-			raise RuntimeError(
+			raise MultipleObjects(
 				'Searching in module {!r} with identifying_property {!r} (filter: {!r}) returned {} objects.'.format(
 					self.name, self.meta.identifying_property, filter_s, len(res)))
 		return res[0]

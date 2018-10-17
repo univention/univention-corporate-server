@@ -42,6 +42,11 @@ class UdmError(Exception):
 		self.module_name = module_name
 
 
+class ConnectionError(UdmError):
+	"""Raised when something goes wrong getting a connection."""
+	pass
+
+
 class ApiVersionNotSupported(UdmError):
 	def __init__(
 		self,
@@ -99,6 +104,13 @@ class NoObject(UdmError):
 		# type: (Optional[Text], Optional[Text], Optional[Text]) -> None
 		msg = msg or 'No object found at DN {!r}.'.format(dn)
 		super(NoObject, self).__init__(msg, dn, module_name)
+
+
+class MultipleObjects(UdmError):
+	"""Raised when more than one UdmObject was found when there should be at most one."""
+	def __init__(self, msg):
+		# type: (Text) -> None
+		super(MultipleObjects, self).__init__(msg)
 
 
 class UnknownUdmModuleType(UdmError):
