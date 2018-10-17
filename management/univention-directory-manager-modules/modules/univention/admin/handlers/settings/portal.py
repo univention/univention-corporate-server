@@ -250,34 +250,24 @@ layout = [
 
 
 def mapLinkValue(vals):
-	ret = []
-	for val in vals:
-		ret.append('%s$$%s$$%s$$%s' % (val[0], val[1], val[2], val[3]))
-	return ret
+	return ['$$'.join(val) for val in vals]
 
 
 def unmapLinkValue(vals):
-	ret = []
-	for val in vals:
-		ret.append(val.split('$$', 4))
-	return ret
+	return [val.split('$$', 3) for val in vals]
 
 
 def mapTranslationValue(vals):
-	ret = []
-	for val in vals:
-		ret.append('%s %s' % (val[0], val[1]))
-	return ret
+	return [' '.join(val) for val in vals]
 
 
 def unmapTranslationValue(vals):
-	ret = []
-	for val in vals:
-		ret.append(val.split(' ', 1))
-	return ret
+	return [val.split(' ', 1) for val in vals]
+
 
 def mapContent(vals):
 	return json.dumps(vals)
+
 
 def unmapContent(vals):
 	return json.loads(vals[0])

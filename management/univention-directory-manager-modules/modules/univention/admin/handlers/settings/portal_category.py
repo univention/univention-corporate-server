@@ -89,17 +89,11 @@ layout = [
 
 
 def mapTranslationValue(vals):
-	ret = []
-	for val in vals:
-		ret.append('%s %s' % (val[0], val[1]))
-	return ret
+	return [' '.join(val) for val in vals]
 
 
 def unmapTranslationValue(vals):
-	ret = []
-	for val in vals:
-		ret.append(val.split(' ', 1))
-	return ret
+	return [val.split(' ', 1) for val in vals]
 
 
 mapping = univention.admin.mapping.mapping()

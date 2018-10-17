@@ -133,17 +133,11 @@ layout = [
 
 
 def mapKeyAndValue(old):
-	lst = []
-	for entry in old:
-		lst.append('%s=%s' % (entry[0], entry[1]))
-	return lst
+	return ['='.join(entry) for entry in old]
 
 
 def unmapKeyAndValue(old):
-	lst = []
-	for entry in old:
-		lst.append(entry.split('=', 1))
-	return lst
+	return [entry.split('=', 1) for entry in old]
 
 # Maping between UDM properties and LDAP attributes
 
