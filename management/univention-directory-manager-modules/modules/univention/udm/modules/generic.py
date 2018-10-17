@@ -32,6 +32,7 @@ Will work for all kinds of UDM modules.
 """
 
 from __future__ import absolute_import, unicode_literals
+import sys
 import inspect
 from ldap.dn import dn2str, str2dn
 import univention.admin.objects
@@ -42,8 +43,8 @@ from ..encoders import dn_list_property_encoder_for
 from ..udm import Udm
 from ..base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from ..exceptions import (
-	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, UnknownProperty,
-	UnknownUdmModuleType, WrongObjectType
+	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, UdmError,
+	UnknownProperty, UnknownUdmModuleType,WrongObjectType
 )
 from ..utils import UDebug as ud
 
@@ -152,11 +153,16 @@ class GenericUdmObject(BaseUdmObject):
 				try:
 					self.dn = self._orig_udm_object.move(new_dn)
 				except univention.admin.uexceptions.invalidOperation as exc:
-					raise MoveError(
+					raise MoveError, MoveError(
+						'Moving {!r} object is not supported ({}).'.format(self._udm_module.name, exc),
+						dn=self.dn, module_name=self._udm_module.name
+					), sys.exc_info()[2]
+				except univention.admin.uexceptions.base as exc:
+					raise MoveError, MoveError(
 						'Error moving {!r} object from {!r} to {!r}: {}'.format(
 							self._udm_module.name, self.dn, self.position, exc
 						), dn=self.dn, module_name=self._udm_module.name
-					)
+					), sys.exc_info()[2]
 				assert self.dn == self._orig_udm_object.dn
 				self.position = self._lo.parentDn(self.dn)
 				self._old_position = self.position
@@ -164,21 +170,21 @@ class GenericUdmObject(BaseUdmObject):
 			try:
 				self.dn = self._orig_udm_object.modify()
 			except univention.admin.uexceptions.base as exc:
-				raise ModifyError(
+				raise ModifyError, ModifyError(
 					'Error saving {!r} object at {!r}: {} ({})'.format(
 						self._udm_module.name, self.dn, exc.message, exc
 					), dn=self.dn, module_name=self._udm_module.name
-				)
+				), sys.exc_info()[2]
 		else:
 			print('create')
 			try:
 				self.dn = self._orig_udm_object.create()
 			except univention.admin.uexceptions.base as exc:
-				raise CreateError(
+				raise CreateError, CreateError(
 					'Error creating {!r} object: {} ({})'.format(
 						self._udm_module.name, exc.message, exc
 					), module_name=self._udm_module.name
-				)
+				), sys.exc_info()[2]
 
 		assert self.dn == self._orig_udm_object.dn
 		assert self.position == self._lo.parentDn(self.dn)
@@ -535,7 +541,11 @@ class GenericUdmModule(BaseUdmModule):
 		try:
 			obj = univention.admin.objects.get(udm_module, None, self.lo, po, dn=dn)
 		except univention.admin.uexceptions.noObject:
-			raise NoObject(dn=dn, module_name=self.name)
+			raise NoObject, NoObject(dn=dn, module_name=self.name), sys.exc_info()[2]
+		except univention.admin.uexceptions.base:
+			raise UdmError, UdmError(
+				'Error loading UDM object at DN {!r}'.format(dn), dn=dn, module_name=self.name
+			), sys.exc_info()[2]
 		self._verify_univention_object_type(obj)
 		if self.meta.auto_open:
 			obj.open()

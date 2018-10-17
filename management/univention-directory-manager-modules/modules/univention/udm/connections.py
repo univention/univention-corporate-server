@@ -27,17 +27,20 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import, unicode_literals
-from .exceptions import ConnectionError
-
+import sys
+import ldap
+from ldap.filter import filter_format
 import univention.admin.uldap
 import univention.config_registry
-from ldap.filter import filter_format
-import ldap
+import univention.admin.uldap
+import univention.config_registry
+from .exceptions import ConnectionError
 
 try:
 	from typing import Dict, Text, Tuple
 except ImportError:
 	pass
+
 
 class LDAP_connection(object):
 	"""Caching LDAP connection factory."""
@@ -53,13 +56,13 @@ class LDAP_connection(object):
 			try:
 				cls._connection_admin, po = univention.admin.uldap.getAdminConnection()
 			except IOError:
-				raise ConnectionError('Could not read secret file')
+				raise ConnectionError, ConnectionError('Could not read secret file'), sys.exc_info()[2]
 			except ldap.INVALID_CREDENTIALS:
-				raise ConnectionError('Credentials invalid')
+				raise ConnectionError, ConnectionError('Credentials invalid'), sys.exc_info()[2]
 			except ldap.CONNECT_ERROR:
-				raise ConnectionError('Connection refused')
+				raise ConnectionError, ConnectionError('Connection refused'), sys.exc_info()[2]
 			except ldap.SERVER_DOWN:
-				raise ConnectionError('The LDAP Server is not running')
+				raise ConnectionError, ConnectionError('The LDAP Server is not running'), sys.exc_info()[2]
 		return cls._connection_admin
 
 	@classmethod
@@ -68,13 +71,13 @@ class LDAP_connection(object):
 			try:
 				cls._connection_machine, po = univention.admin.uldap.getMachineConnection()
 			except IOError:
-				raise ConnectionError('Could not read secret file')
+				raise ConnectionError, ConnectionError('Could not read secret file'), sys.exc_info()[2]
 			except ldap.INVALID_CREDENTIALS:
-				raise ConnectionError('Credentials invalid')
+				raise ConnectionError, ConnectionError('Credentials invalid'), sys.exc_info()[2]
 			except ldap.CONNECT_ERROR:
-				raise ConnectionError('Connection refused')
+				raise ConnectionError, ConnectionError('Connection refused'), sys.exc_info()[2]
 			except ldap.SERVER_DOWN:
-				raise ConnectionError('The LDAP Server is not running')
+				raise ConnectionError, ConnectionError('The LDAP Server is not running'), sys.exc_info()[2]
 		return cls._connection_machine
 
 	@classmethod
@@ -95,7 +98,7 @@ class LDAP_connection(object):
 			try:
 				identity = dns[0]
 			except IndexError:
-				raise ConnectionError('Cannot get DN for username.')
+				raise ConnectionError, ConnectionError('Cannot get DN for username.'), sys.exc_info()[2]
 
 		server = cls._ucr['ldap/master']
 		port = cls._ucr['ldap/master/port']
@@ -111,9 +114,9 @@ class LDAP_connection(object):
 					bindpw=password
 				)
 			except ldap.INVALID_CREDENTIALS:
-				raise ConnectionError('Credentials invalid')
+				raise ConnectionError, ConnectionError('Credentials invalid'), sys.exc_info()[2]
 			except ldap.CONNECT_ERROR:
-				raise ConnectionError('Connection refused')
+				raise ConnectionError, ConnectionError('Connection refused'), sys.exc_info()[2]
 			except ldap.SERVER_DOWN:
-				raise ConnectionError('The LDAP Server is not running')
+				raise ConnectionError, ConnectionError('The LDAP Server is not running'), sys.exc_info()[2]
 		return cls._connection_account[key]

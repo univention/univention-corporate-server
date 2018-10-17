@@ -31,6 +31,7 @@ En/Decoders for object properties.
 """
 
 from __future__ import absolute_import, unicode_literals
+import sys
 import datetime
 import time
 import lazy_object_proxy
@@ -211,7 +212,7 @@ class SambaLogonHoursPropertyEncoder(BaseEncoder):
 				values = [v.split() for v in value]
 				return [cls._weekdays.index(w) * 24 + int(h.split('-', 1)[0]) for w, h in values]
 			except (IndexError, ValueError):
-				raise valueInvalidSyntax('One or more entries in sambaLogonHours have invalid syntax.')
+				raise valueInvalidSyntax, valueInvalidSyntax('One or more entries in sambaLogonHours have invalid syntax.'), sys.exc_info()[2]
 		else:
 			return value
 
@@ -264,7 +265,7 @@ class StringIntPropertyEncoder(BaseEncoder):
 			try:
 				return int(value)
 			except ValueError:
-				raise valueInvalidSyntax('Value of {!r} must be an int.'.format(self.property_name))
+				raise valueInvalidSyntax, valueInvalidSyntax('Value of {!r} must be an int.'.format(self.property_name)), sys.exc_info()[2]
 
 	@staticmethod
 	def encode(value=None):  # type: (Optional[int]) -> Optional[Text]

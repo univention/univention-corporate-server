@@ -75,9 +75,8 @@ argument when creating a Udm object::
 """
 
 from __future__ import absolute_import, unicode_literals
-
+import sys
 from univention.admin.uexceptions import noObject
-
 from .base import BaseUdmModule
 from .exceptions import ApiVersionNotSupported, NoObject, UnknownUdmModuleType
 from .factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
@@ -222,7 +221,7 @@ class Udm(object):
 			if not uot:
 				raise KeyError  # empty
 		except (KeyError, IndexError):
-			raise UnknownUdmModuleType(dn=dn)
+			raise UnknownUdmModuleType, UnknownUdmModuleType(dn=dn), sys.exc_info()[2]
 		udm_module = self.get(uot)
 		return udm_module.get(dn)
 
