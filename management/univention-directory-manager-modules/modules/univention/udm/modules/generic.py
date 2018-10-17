@@ -38,7 +38,7 @@ import univention.admin.objects
 import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.uldap
-from ..encoders import dn_list_property_encoder_for, BaseEncoder
+from ..encoders import dn_list_property_encoder_for
 from ..udm import Udm
 from ..base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from ..exceptions import (
@@ -46,11 +46,6 @@ from ..exceptions import (
 	WrongObjectType
 )
 from ..utils import UDebug as ud
-
-try:
-	from typing import Any, Dict, Iterator, Optional, Text, Tuple, Type, Union
-except ImportError:
-	pass
 
 
 class GenericUdmObjectProperties(BaseUdmObjectProperties):
@@ -62,15 +57,15 @@ class GenericUdmObjectProperties(BaseUdmObjectProperties):
 	properties representation in UDM1 and the new UDM APIs.
 	"""
 
-	_encoders = {}  # type: Dict[Text, Type[BaseEncoder]]
+	_encoders = {}
 
-	def __init__(self, udm_obj):  # type: (BaseUdmObject) -> None
+	def __init__(self, udm_obj):
 		super(GenericUdmObjectProperties, self).__init__(udm_obj)
 		for property_names, encoder_class in self._encoders.iteritems():
 			assert hasattr(encoder_class, 'decode')
 			assert hasattr(encoder_class, 'encode')
 
-	def __setattr__(self, key, value):  # type: (str, Any) -> None
+	def __setattr__(self, key, value):
 		if not str(key).startswith('_') and key not in self._udm_obj._orig_udm_object:
 			raise UnknownProperty(
 				'Unknown property {!r} for UDM module {!r}.'.format(key, self._udm_obj._udm_module.name),
@@ -107,20 +102,20 @@ class GenericUdmObject(BaseUdmObject):
 	udm_prop_class = GenericUdmObjectProperties
 	_policies_encoder = None
 
-	def __init__(self):  # type: () -> None
+	def __init__(self):
 		"""
 		Don't instantiate a :py:class:`UdmObject` directly. Use a
 		:py:class:`UdmModule`.
 		"""
 		super(GenericUdmObject, self).__init__()
-		self._udm_module = None  # type: GenericUdmModule
-		self._lo = None  # type: univention.admin.uldap.access
-		self._orig_udm_object = None  # type: univention.admin.handlers.simpleLdap
+		self._udm_module = None
+		self._lo = None
+		self._orig_udm_object = None
 		self._old_position = ''
 		self._fresh = True
 		self._deleted = False
 
-	def reload(self):  # type: () -> GenericUdmObject
+	def reload(self):
 		"""
 		Refresh object from LDAP.
 
@@ -135,7 +130,7 @@ class GenericUdmObject(BaseUdmObject):
 		self._copy_from_udm_obj()
 		return self
 
-	def save(self):  # type: () -> GenericUdmObject
+	def save(self):
 		"""
 		Save object to LDAP.
 
@@ -191,7 +186,7 @@ class GenericUdmObject(BaseUdmObject):
 			self.reload()
 		return self
 
-	def delete(self):  # type: () -> None
+	def delete(self):
 		"""
 		Remove the object from the LDAP database.
 
@@ -208,7 +203,7 @@ class GenericUdmObject(BaseUdmObject):
 		self._orig_udm_object = None
 		self._deleted = True
 
-	def _copy_from_udm_obj(self):  # type: () -> None
+	def _copy_from_udm_obj(self):
 		"""
 		Copy UDM property values from low-level UDM object to `props`
 		container as well as its `policies` and `options`.
@@ -228,7 +223,7 @@ class GenericUdmObject(BaseUdmObject):
 			self.position = self._lo.parentDn(self.dn)
 			self._old_position = self.position
 		else:
-			self.position = self._udm_module.get_default_positions()[0]
+			self.position = self._udm_module._get_default_positions()[0]
 		self.props = self.udm_prop_class(self)
 		if not self.dn:
 			self._init_new_object_props()
@@ -253,7 +248,7 @@ class GenericUdmObject(BaseUdmObject):
 			setattr(self.props, k, val)
 		self._fresh = True
 
-	def _copy_to_udm_obj(self):  # type: () -> None
+	def _copy_to_udm_obj(self):
 		"""
 		Copy UDM property values from `props` container to low-level UDM
 		object.
@@ -281,7 +276,7 @@ class GenericUdmObject(BaseUdmObject):
 			if v != new_val2:
 				self._orig_udm_object[k] = new_val2
 
-	def _init_new_object_props(self):  # type: () -> None
+	def _init_new_object_props(self):
 		"""
 		This is a modified copy of the code of
 		:py:meth:`univention.admin.handlers.simpleLdap.__getitem__()` which
@@ -306,7 +301,6 @@ class GenericUdmObject(BaseUdmObject):
 				setattr(self.props, key, None)
 
 	def _init_encoder(self, encoder_class, **kwargs):
-		# type: (Type[BaseEncoder], **Any) -> Union[Type[BaseEncoder], BaseEncoder]
 		"""
 		Instantiate encoder object if required. Optionally assemble additional
 		arguments.
@@ -336,7 +330,7 @@ class GenericUdmObject(BaseUdmObject):
 
 class GenericUdmModuleMetadata(BaseUdmModuleMetadata):
 	@property
-	def identifying_property(self):  # type: () -> Text
+	def identifying_property(self):
 		"""
 		UDM Property of which the mapped LDAP attribute is used as first
 		component in a DN, e.g. `username` (LDAP attribute `uid`) or `name`
@@ -347,7 +341,7 @@ class GenericUdmModuleMetadata(BaseUdmModuleMetadata):
 				return key
 		return ''
 
-	def lookup_filter(self, filter_s=None):  # type: (Optional[str]) -> str
+	def lookup_filter(self, filter_s=None):
 		"""
 		Filter the UDM module uses to find its corresponding LDAP objects.
 
@@ -365,7 +359,7 @@ class GenericUdmModuleMetadata(BaseUdmModuleMetadata):
 		return str(self._udm_module._orig_udm_module.lookup_filter(filter_s, self._udm_module.lo))
 
 	@property
-	def mapping(self):  # type: () -> UdmLdapMapping
+	def mapping(self):
 		"""
 		UDM properties to LDAP attributes mapping and vice versa.
 
@@ -396,14 +390,14 @@ class GenericUdmModule(BaseUdmModule):
 	"""
 	_udm_object_class = GenericUdmObject
 	_udm_module_meta_class = GenericUdmModuleMetadata
-	_udm_module_cache = {}  # type: Dict[Tuple[str, str, str, str], univention.admin.handlers.simpleLdap]
+	_udm_module_cache = {}
 	supported_api_versions = (0, 1)
 
-	def __init__(self, name, lo, api_version):  # type: (str, univention.admin.uldap.access, int) -> None
+	def __init__(self, name, lo, api_version):
 		super(GenericUdmModule, self).__init__(name, lo, api_version)
 		self._orig_udm_module = self._get_orig_udm_module()
 
-	def new(self):  # type: () -> GenericUdmObject
+	def new(self):
 		"""
 		Create a new, unsaved GenericUdmObject object.
 
@@ -412,7 +406,7 @@ class GenericUdmModule(BaseUdmModule):
 		"""
 		return self._load_obj('')
 
-	def get(self, dn):  # type: (str) -> GenericUdmObject
+	def get(self, dn):
 		"""
 		Load UDM object from LDAP.
 
@@ -424,7 +418,7 @@ class GenericUdmModule(BaseUdmModule):
 		"""
 		return self._load_obj(dn)
 
-	def search(self, filter_s='', base='', scope='sub'):  # type: (str, str, str) -> Iterator[GenericUdmObject]
+	def search(self, filter_s='', base='', scope='sub'):
 		"""
 		Get all UDM objects from LDAP that match the given filter.
 
@@ -444,13 +438,39 @@ class GenericUdmModule(BaseUdmModule):
 		for dn in dns:
 			yield self.get(dn)
 
-	def get_default_positions(self):
+	def _get_default_positions_property(self):
+		"""
+		TODO
+
+		:return:
+		:rtype: str
+		"""
+		return ''
+
+	def _get_default_directory_object(self):
+		"""
+		TODO
+
+		:return:
+		:rtype: GenericUdmObject ?
+		"""
+		return self.new()
+
+	def _get_default_positions(self):
+		"""
+		Get default containers for the UDM module.
+
+		:return: list of container DNs
+		:rtype: list(str)
+		"""
 		default_positions_property = self._get_default_positions_property()
 		default_containers = []
 		if default_positions_property:
 			udm = Udm(self.lo, self.meta.api_version)
 			try:
-				default_directory_object = udm.get('settings/directory').get('cn=default containers,cn=univention,{}'.format(self.lo.base))
+				default_directory_object = udm.get('settings/directory').get(
+					'cn=default containers,cn=univention,{}'.format(self.lo.base)
+				)
 			except NoObject:
 				pass
 			else:
@@ -461,7 +481,7 @@ class GenericUdmModule(BaseUdmModule):
 		default_containers.append(self.lo.base)
 		return default_containers
 
-	def _get_orig_udm_module(self):  # type: () -> univention.admin.handlers.simpleLdap
+	def _get_orig_udm_module(self):
 		"""
 		Load a UDM module, initializing it if required.
 
@@ -485,7 +505,7 @@ class GenericUdmModule(BaseUdmModule):
 			self._udm_module_cache[key] = udm_module
 		return self._udm_module_cache[key]
 
-	def _get_orig_udm_object(self, dn):  # type: (str) -> univention.admin.handlers.simpleLdap
+	def _get_orig_udm_object(self, dn):
 		"""
 		Retrieve UDM object from LDAP.
 
@@ -509,7 +529,7 @@ class GenericUdmModule(BaseUdmModule):
 			obj.open()
 		return obj
 
-	def _load_obj(self, dn):  # type: (str) -> GenericUdmObject
+	def _load_obj(self, dn):
 		"""
 		GenericUdmObject factory.
 
@@ -527,7 +547,7 @@ class GenericUdmModule(BaseUdmModule):
 		obj._copy_from_udm_obj()
 		return obj
 
-	def _verify_univention_object_type(self, orig_udm_obj):  # type: (univention.admin.handlers.simpleLdap) -> None
+	def _verify_univention_object_type(self, orig_udm_obj):
 		"""
 		Check that the ``univentionObjectType`` of the LDAP objects matches the
 		UDM module name.
