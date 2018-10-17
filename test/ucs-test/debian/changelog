@@ -1,3 +1,9 @@
+ucs-test (8.0.28-205) unstable; urgency=medium
+
+  * Bug #47643: Added test to check DRS replication works after server password change
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 17 Oct 2018 15:36:57 +0200
+
 ucs-test (8.0.28-204) unstable; urgency=medium
 
   * Bug #47650: Revert changes
