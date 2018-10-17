@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issue(s):
  * The tool univention-adsearch now also uses the file containing the full
    certificate chain instead of only the exported AD certificate alone.
- * The package univention-ad-connector-exchange.postinst did reset specific
-   UCR variable values to their default on update. This has been adjusted
-   to keep customer adjusted values untouched.
+ * The package univention-ad-connector-exchange did reset specific UCR
+   variable values to their default during the update. This has been
+   adjusted to keep customer adjusted values untouched.
 bug: [47858, 47856]
