@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.1-8) unstable; urgency=medium
+
+  * Bug #47649: Code Cleanup
+
+ -- Julia Bremer <jbremer@brankis.knut.univention.de>  Wed, 17 Oct 2018 18:04:36 +0200
+
 univention-management-console-module-diagnostic (4.0.1-7) unstable; urgency=medium
 
   * Bug #47844: Ignore kerberos/kdcentry entries for now
