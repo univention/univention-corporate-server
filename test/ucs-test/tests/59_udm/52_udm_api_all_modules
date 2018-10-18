@@ -28,7 +28,7 @@ class TestUdmGenericVariousModules(TestCase):
 		config_storage = UdmModuleFactoryConfigurationStorage(False)
 		config_storage._config = {}
 		config_storage._load_configuration = lambda: 42
-		config = UdmModuleFactoryConfiguration(r'^.*/.*$', 'univention.udm.modules.generic', 'GenericUdm1Module')
+		config = UdmModuleFactoryConfiguration(r'^.*/.*$', 'univention.udm.modules.generic', 'GenericUdmModule')
 		config_storage.register_configuration(config)
 		# except if OX is installed - we'll have to use at least one more class
 		univention.admin.modules.update()
@@ -40,7 +40,7 @@ class TestUdmGenericVariousModules(TestCase):
 					UdmModuleFactoryConfiguration(
 						r'^{}$'.format(mod_name),
 						'univention.udm.modules.mail_all',
-						'MailAllUdm1Module'
+						'MailAllUdmModule'
 					)
 				)
 		else:
@@ -55,11 +55,11 @@ class TestUdmGenericVariousModules(TestCase):
 			print('Loading {!r}...'.format(mod_name))
 			mod = self.udm.get(mod_name)
 			if mod_name in mail_and_ox_modules:
-				assert mod.__class__.__name__ == 'MailAllUdm1Module', 'Wrong UDM module, expected {!r}, got {!r}.'.format(
-					'MailAllUdm1Module', mod.__class__.__name__)
+				assert mod.__class__.__name__ == 'MailAllUdmModule', 'Wrong UDM module, expected {!r}, got {!r}.'.format(
+					'MailAllUdmModule', mod.__class__.__name__)
 			else:
-				assert mod.__class__.__name__ == 'GenericUdm1Module', 'Wrong UDM module, expected {!r}, got {!r}.'.format(
-					'GenericUdm1Module', mod.__class__.__name__)
+				assert mod.__class__.__name__ == 'GenericUdmModule', 'Wrong UDM module, expected {!r}, got {!r}.'.format(
+					'GenericUdmModule', mod.__class__.__name__)
 		print('OK: all modules could be loaded.')
 		if self.ox_installed:
 			assert len(Udm._module_class_cache) == 2

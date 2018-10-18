@@ -38,9 +38,9 @@ class TestUdmUsersBasic(TestCase):
 		config_storage = UdmModuleFactoryConfigurationStorage(False)
 		config_storage._config = {}
 		config_storage._load_configuration = lambda: 42
-		config1 = UdmModuleFactoryConfiguration(r'^users/.*$', 'univention.udm.modules.generic', 'GenericUdm1Module')
-		config2 = UdmModuleFactoryConfiguration(r'groups/.*', 'univention.udm.modules.generic', 'GenericUdm1Module')
-		config3 = UdmModuleFactoryConfiguration(r'^users/user$', 'univention.udm.modules.users_user', 'UsersUserUdm1Module')
+		config1 = UdmModuleFactoryConfiguration(r'^users/.*$', 'univention.udm.modules.generic', 'GenericUdmModule')
+		config2 = UdmModuleFactoryConfiguration(r'groups/.*', 'univention.udm.modules.generic', 'GenericUdmModule')
+		config3 = UdmModuleFactoryConfiguration(r'^users/user$', 'univention.udm.modules.users_user', 'UsersUserUdmModule')
 		config_storage.register_configuration(config1)
 		config_storage.register_configuration(config2)
 		config_storage.register_configuration(config3)
@@ -48,7 +48,7 @@ class TestUdmUsersBasic(TestCase):
 		cls.udm._configuration_storage = config_storage
 
 		user_mod1 = cls.udm.get('users/user')
-		assert user_mod1.__class__.__name__ == 'UsersUserUdm1Module', 'Wrong UDM module.'
+		assert user_mod1.__class__.__name__ == 'UsersUserUdmModule', 'Wrong UDM module.'
 		user_mod2 = cls.udm.get('users/user')
 		assert user_mod1 is user_mod2, 'UDM module object cache miss.'
 
@@ -153,8 +153,8 @@ class TestUdmUsersBasic(TestCase):
 				'homePostalAddress': [],
 			},
 		)
-		config = UdmModuleFactoryConfiguration('users/user', 'univention.udm.modules.generic', 'GenericUdm1Module')
-		user_mod_generic = self.udm.get_by_factory_config('users/user', config)
+		config = UdmModuleFactoryConfiguration('users/user', 'univention.udm.modules.generic', 'GenericUdmModule')
+		user_mod_generic = self.udm._get_by_factory_config('users/user', config)
 		obj = user_mod_generic.get(dn)
 		assert username == obj.props.username
 		obj.props.homePostalAddress = [[ad.street, ad.zipcode, ad.city] for ad in addresses]
@@ -180,8 +180,8 @@ class TestUdmUsersBasic(TestCase):
 				'homePostalAddress': [],
 			},
 		)
-		config = UdmModuleFactoryConfiguration('users/user', 'univention.udm.modules.users_user', 'UsersUserUdm1Module')
-		user_mod_usersuser = self.udm.get_by_factory_config('users/user', config)
+		config = UdmModuleFactoryConfiguration('users/user', 'univention.udm.modules.users_user', 'UsersUserUdmModule')
+		user_mod_usersuser = self.udm._get_by_factory_config('users/user', config)
 		obj = user_mod_usersuser.get(dn)
 		assert username == obj.props.username
 		obj.props.homePostalAddress.extend([ad._asdict() for ad in addresses])
@@ -204,7 +204,7 @@ class TestUdmUsersBasic(TestCase):
 		})
 		if hasattr(obj.props, 'oxDisplayName'):
 			expected_properties['oxDisplayName'] = expected_properties['displayName']
-			expected_properties['oxTimeZone'] = self.udm.get_obj(
+			expected_properties['oxTimeZone'] = self.udm.identify_object_by_dn(
 				'cn=oxTimeZone,cn=open-xchange,cn=custom attributes,cn=univention,{}'.format(self.ucr_test['ldap/base'])
 			).props.default
 		if hasattr(obj.props, 'mailUserQuota'):

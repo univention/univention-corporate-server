@@ -28,7 +28,7 @@ class TestUdmAutoOpen(TestCase):
 		config_storage = UdmModuleFactoryConfigurationStorage(False)
 		config_storage._config = {}
 		config_storage._load_configuration = lambda: 42
-		config = UdmModuleFactoryConfiguration(r'^.*/.*$', 'univention.udm.modules.generic', 'GenericUdm1Module')
+		config = UdmModuleFactoryConfiguration(r'^.*/.*$', 'univention.udm.modules.generic', 'GenericUdmModule')
 		config_storage.register_configuration(config)
 		cls.udm = Udm.using_admin().version(1)
 		cls.udm._configuration_storage = config_storage

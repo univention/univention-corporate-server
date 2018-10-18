@@ -11,7 +11,6 @@ import univention.debug as ud
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.ucr import UCSTestConfigRegistry
 import univention.testing.strings as uts
-import univention.admin.uldap
 from univention.udm import Udm
 
 
@@ -34,33 +33,24 @@ class TestUdmAutoOpen(TestCase):
 		cls.ucr_test.revert_to_original_registry()
 		cls.udm_test.cleanup()
 
-	def test_using_lo(self):
-		lo, po = univention.admin.uldap.getAdminConnection()
-		udm = Udm(lo)
-		assert udm.lo.binddn == 'cn=admin,{}'.format(self.ucr_test['ldap/base'])
-
-		lo, po = univention.admin.uldap.getMachineConnection()
-		udm = Udm(lo)
-		assert udm.lo.binddn == self.ucr_test['ldap/hostdn']
-
 	def test_using_admin(self):
-		udm = Udm.using_admin()
-		assert udm.lo.binddn == 'cn=admin,{}'.format(self.ucr_test['ldap/base'])
+		mod = Udm.using_admin().version(0).get('users/user')
+		assert mod.lo.binddn == 'cn=admin,{}'.format(self.ucr_test['ldap/base'])
 
 	def test_using_machine(self):
-		udm = Udm.using_machine()
-		assert udm.lo.binddn == self.ucr_test['ldap/hostdn']
+		mod = Udm.using_machine().version(0).get('users/user')
+		assert mod.lo.binddn == self.ucr_test['ldap/hostdn']
 
 	def test_using_credentials(self):
 		password = uts.random_name()
 		dn, username = self.udm_test.create_user(password=password)
-		udm = Udm.using_credentials(username=username, password=password)
-		assert udm.lo.binddn == dn
+		mod = Udm.using_credentials(identity=username, password=password).version(0).get('users/user')
+		assert mod.lo.binddn == dn
 
 		password = uts.random_name()
 		dn, username = self.udm_test.create_user(password=password)
-		udm = Udm.using_credentials(dn=dn, password=password)
-		assert udm.lo.binddn == dn
+		mod = Udm.using_credentials(identity=dn, password=password).version(0).get('users/user')
+		assert mod.lo.binddn == dn
 
 
 if __name__ == '__main__':
