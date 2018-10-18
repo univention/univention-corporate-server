@@ -851,7 +851,7 @@ univention-app dev-use-test-appcenter
 
         <para>
             The scripts needs to be downloaded from <ulink
-                url="https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control">https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control</url>.
+                url="https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control">https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control</ulink>.
             It requires Python 2.7 and cURL to run. For a list of available actions and their parameters, use the script's help:
                 <programlisting>
                     ./univention-appcenter-control --help
