@@ -1,3 +1,9 @@
+ucs-test (8.0.28-207) unstable; urgency=medium
+
+  *  Bug #47643: Fixed minor bug in new testcase
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 18 Oct 2018 10:40:53 +0200
+
 ucs-test (8.0.28-206) unstable; urgency=low
 
   * Bug #47000: Always generate GPG key for updater
