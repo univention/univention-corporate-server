@@ -500,6 +500,31 @@
                 the password file.
             </para>
         </section>
+
+        <section id="create-app-with-docker:environment">
+            <title>Environment</title>
+            <para>
+                Docker images usually receive environment variables when the
+                container is started. The App Center supports to pass static
+                configuration options to the container. Variables parameterizd
+                by &ucsUCRV;s are also supported. 
+            </para>
+            <para>
+                An environment file can look like the following example:
+                <programlisting>
+LDAP_SERVER=@%@ldap/server@%@
+FQDN=@%@hostname@%@.@%@domainname@%@
+HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
+                </programlisting>
+            </para>
+            <para>
+                The content of the environment file can be entered in the App
+                Provider portal on the <guimenu>Docker</guimenu> tab, in the
+                <guimenu>Configuration files</guimenu> section in the field for
+                <guimenu>Environment file used during the Docker Container
+                    creation</guimenu>.
+            </para>
+        </section>
     </section>
 </chapter>
 
