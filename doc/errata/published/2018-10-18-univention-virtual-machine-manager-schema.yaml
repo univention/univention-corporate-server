@@ -9,3 +9,5 @@ desc: |
  * Searching for some UDM properties led to a traceback.
    This has been fixed.
 bug: [47910]
+erratum: 283
+announced: 2018-10-18
