@@ -44,7 +44,7 @@ from univention.admin.syntax import sambaGroupType
 
 try:
 	from typing import Any, Dict, List, Optional, Text, Type
-	import univention.admin.uldap
+	from .utils import ConnectionConfig
 except ImportError:
 	pass
 
@@ -318,23 +318,27 @@ class DnListPropertyEncoder(BaseEncoder):
 		def __repr__(self, __getattr__=object.__getattribute__):
 			return super(DnListPropertyEncoder.MyProxy, self).__str__()
 
-	def __init__(self, property_name=None, lo=None, *args, **kwargs):
-		# type: (Optional[Text], Optional[univention.admin.uldap.access], *Any, **Any) -> None
-		assert lo is not None, 'Argument "lo" must not be None.'
-		super(DnListPropertyEncoder, self).__init__(property_name, lo, *args, **kwargs)
-		self.lo = lo
+	def __init__(self, property_name=None, connection_config=None, api_version=None, *args, **kwargs):
+		# type: (Optional[Text], Optional[ConnectionConfig], Optional[int], *Any, **Any) -> None
+		assert connection_config is not None, 'Argument "connection_config" must not be None.'
+		assert api_version is not None, 'Argument "api_version" must not be None.'
+		super(DnListPropertyEncoder, self).__init__(property_name, connection_config, api_version, *args, **kwargs)
+		self._connection_config = connection_config
+		self._api_version = api_version
+
+	def __repr__(self):  # type: () -> Text
+		return '{}({}[{}])'.format(self.__class__.__name__, self.property_name, self._api_version)
 
 	def _list_of_dns_to_list_of_udm_objects(self, value):
-		udm = Udm(self.lo)
 		udm_module = None
 		res = []
 		for dn in value:
 			try:
 				if self.udm_module_name == 'auto':
-					obj = udm.identify_object_by_dn(dn)
+					obj = self.udm.identify_object_by_dn(dn)
 				else:
 					if not udm_module:
-						udm_module = udm.get(self.udm_module_name)
+						udm_module = self.udm.get(self.udm_module_name)
 					obj = udm_module.get(dn)
 			except UnknownUdmModuleType as exc:
 				UDebug.warn(str(exc))
@@ -359,6 +363,10 @@ class DnListPropertyEncoder(BaseEncoder):
 			pass
 		return value
 
+	@property
+	def udm(self):
+		return Udm(self._connection_config).version(self._api_version)
+
 
 class CnameListPropertyEncoder(DnListPropertyEncoder):
 	"""
@@ -369,7 +377,7 @@ class CnameListPropertyEncoder(DnListPropertyEncoder):
 	udm_module_name = 'dns/alias'
 
 	def _list_of_dns_to_list_of_udm_objects(self, value):
-		udm_module = Udm(self.lo).get(self.udm_module_name)
+		udm_module = self.udm.get(self.udm_module_name)
 		return [list(udm_module.search('relativeDomainName={}'.format(cname)))[0] for cname in value]
 
 
@@ -383,7 +391,7 @@ class DnsEntryZoneAliasListPropertyEncoder(DnListPropertyEncoder):
 	udm_module_name = 'dns/alias'
 
 	def _list_of_dns_to_list_of_udm_objects(self, value):
-		udm_module = Udm(self.lo).get(self.udm_module_name)
+		udm_module = self.udm.get(self.udm_module_name)
 		return [udm_module.get('relativeDomainName={},{}'.format(v[2], v[1])) for v in value]
 
 
@@ -401,7 +409,7 @@ class DnsEntryZoneForwardListMultiplePropertyEncoder(DnListPropertyEncoder):
 		return value[0]
 
 	def _list_of_dns_to_list_of_udm_objects(self, value):
-		udm_module = Udm(self.lo).get(self.udm_module_name)
+		udm_module = self.udm.get(self.udm_module_name)
 		return [udm_module.get(self._itemgetter(v)) for v in value]
 
 
@@ -471,19 +479,23 @@ class DnPropertyEncoder(BaseEncoder):
 		def __repr__(self, __getattr__=object.__getattribute__):
 			return super(DnPropertyEncoder.MyProxy, self).__str__()
 
-	def __init__(self, property_name=None, lo=None, *args, **kwargs):
-		# type: (Optional[Text], Optional[univention.admin.uldap.access], *Any, **Any) -> None
-		assert lo is not None, 'Argument "lo" must not be None.'
-		super(DnPropertyEncoder, self).__init__(property_name, lo, *args, **kwargs)
-		self.lo = lo
+	def __init__(self, property_name=None, connection_config=None, api_version=None, *args, **kwargs):
+		# type: (Optional[Text], Optional[ConnectionConfig], Optional[int], *Any, **Any) -> None
+		assert connection_config is not None, 'Argument "connection_config" must not be None.'
+		assert api_version is not None, 'Argument "api_version" must not be None.'
+		super(DnPropertyEncoder, self).__init__(property_name, connection_config, api_version, *args, **kwargs)
+		self._connection_config = connection_config
+		self._api_version = api_version
+
+	def __repr__(self):  # type: () -> Text
+		return '{}({}[{}])'.format(self.__class__.__name__, self.property_name, self._api_version)
 
 	def _dn_to_udm_object(self, value):
-		udm = Udm(self.lo)
 		try:
 			if self.udm_module_name == 'auto':
-				return udm.identify_object_by_dn(value)
+				return self.udm.identify_object_by_dn(value)
 			else:
-				udm_module = udm.get(self.udm_module_name)
+				udm_module = self.udm.get(self.udm_module_name)
 				return udm_module.get(value)
 		except UnknownUdmModuleType as exc:
 			UDebug.error(str(exc))
@@ -503,6 +515,9 @@ class DnPropertyEncoder(BaseEncoder):
 			pass
 		return value
 
+	@property
+	def udm(self):
+		return Udm(self._connection_config).version(self._api_version)
 
 def _classify_name(name):  # type: (Text) -> Text
 	mod_parts = name.split('/')

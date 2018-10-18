@@ -30,12 +30,16 @@ from __future__ import absolute_import, unicode_literals
 import sys
 import inspect
 import importlib
+from collections import namedtuple
 import univention.debug
 
 try:
-	from typing import Dict, Optional, Text, Tuple
+	from typing import Any, Dict, Optional, Text, Tuple
 except ImportError:
 	pass
+
+
+ConnectionConfig = namedtuple('ConnectionConfig', ['klass', 'method', 'args', 'kwargs'])
 
 
 is_interactive = bool(getattr(sys, 'ps1', sys.flags.interactive))
@@ -110,3 +114,9 @@ def load_class(module_path, class_name):  # type: (str, str) -> type
 			'Found {!r}, which is not a class, when looking for class with name {!r} in module path {!r}.'.format(
 				candidate_cls, class_name, module_path))
 	return candidate_cls
+
+
+def get_connection(connection_config):  # type: (ConnectionConfig) -> Any
+	module_name, _dot, cls_name = connection_config.klass.rpartition('.')
+	cls = load_class(module_name, cls_name)
+	return getattr(cls, connection_config.method)(*connection_config.args, **connection_config.kwargs)

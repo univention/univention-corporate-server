@@ -36,11 +36,11 @@ import pprint
 from collections import namedtuple
 from ldap.filter import filter_format
 from .exceptions import NoObject, MultipleObjects
+from .utils import get_connection
 
 try:
 	from typing import Callable, Iterable, Iterator, List, Optional, Text
-	import univention.admin.uldap
-	import univention.admin.filter.conjunction
+	from .utils import ConnectionConfig
 except ImportError:
 	pass
 
@@ -212,9 +212,10 @@ class BaseUdmModule(object):
 	_udm_object_class = BaseUdmObject
 	_udm_module_meta_class = BaseUdmModuleMetadata
 
-	def __init__(self, name, lo, api_version):  # type: (str, univention.admin.uldap.access, int) -> None
+	def __init__(self, name, connection_config, api_version):  # type: (str, ConnectionConfig, int) -> None
 		self.name = name
-		self.lo = lo
+		self._connection_config = connection_config
+		self.connection = get_connection(connection_config)
 		self.meta = self._udm_module_meta_class(self, api_version)
 
 	def __repr__(self):  # type: () -> Text

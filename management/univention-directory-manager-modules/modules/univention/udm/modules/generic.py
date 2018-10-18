@@ -115,9 +115,9 @@ class GenericUdmObject(BaseUdmObject):
 		:py:class:`UdmModule`.
 		"""
 		super(GenericUdmObject, self).__init__()
-		self._udm_module = None
-		self._lo = None
-		self._orig_udm_object = None
+		self._udm_module = None  # type: GenericUdmModule
+		self._lo = None  # type: univention.admin.uldap.access
+		self._orig_udm_object = None  # type: univention.admin.handlers.simpleLdap
 		self._old_position = ''
 		self._fresh = True
 		self._deleted = False
@@ -343,8 +343,10 @@ class GenericUdmObject(BaseUdmObject):
 					continue
 				elif arg in kwargs:
 					continue
-				elif arg == 'lo':
-					kwargs['lo'] = self._lo
+				elif arg == 'api_version':
+					kwargs['api_version'] = self._udm_module.meta.api_version
+				elif arg == 'connection_config':
+					kwargs['connection_config'] = self._udm_module._connection_config
 				else:
 					raise TypeError('Unknown argument {!r} for {}.__init__.'.format(arg, encoder_class.__class__.__name__))
 			return encoder_class(**kwargs)
@@ -415,10 +417,15 @@ class GenericUdmModule(BaseUdmModule):
 	_udm_module_cache = {}
 	_default_containers = {}
 	supported_api_versions = (0, 1)
+	ucr = None  # type: univention.config_registry.ConfigRegistry
 
-	def __init__(self, name, lo, api_version):
-		super(GenericUdmModule, self).__init__(name, lo, api_version)
+	def __init__(self, name, connection_config, api_version):
+		super(GenericUdmModule, self).__init__(name, connection_config, api_version)
+		self.lo = self.connection  # type: univention.admin.uldap.access
 		self._orig_udm_module = self._get_orig_udm_module()
+		if not self.ucr:
+			self.__class__.ucr = univention.config_registry.ConfigRegistry()
+			self.ucr.load()
 
 	def new(self):
 		"""

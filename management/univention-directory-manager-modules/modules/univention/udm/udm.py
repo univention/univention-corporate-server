@@ -76,12 +76,10 @@ argument when creating a Udm object::
 
 from __future__ import absolute_import, unicode_literals
 import sys
-from univention.admin.uexceptions import noObject
 from .base import BaseUdmModule
 from .exceptions import ApiVersionNotSupported, NoObject, UnknownUdmModuleType
 from .factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
-from .utils import load_class, UDebug as ud
-from .connections import LDAP_connection
+from .utils import load_class, UDebug as ud, ConnectionConfig, get_connection
 
 try:
 	from typing import Dict, Optional, Tuple, Type
@@ -107,10 +105,9 @@ class Udm(object):
 	"""
 	_module_class_cache = {}  # type: Dict[Tuple[int, str, str], Type[BaseUdmModule]]
 	_module_object_cache = {}  # type: Dict[Tuple[int, str, str, str, str, str], BaseUdmModule]
-	_connection_handler = LDAP_connection
 
-	def __init__(self, lo, api_version=None):
-		# type: (univention.admin.uldap.access, Optional[int]) -> None
+	def __init__(self, connection_config, api_version=None):
+		# type: (ConnectionConfig, Optional[int]) -> None
 		"""
 		Use the provided connection.
 
@@ -120,7 +117,7 @@ class Udm(object):
 		:return: None
 		:rtype: None
 		"""
-		self.lo = lo
+		self.connection_config = connection_config
 		self.__api_version = None
 		if api_version is not None:
 			self.version(api_version)
@@ -135,7 +132,10 @@ class Udm(object):
 		:rtype: Udm
 		:raises ConnectionError: Non-Master systems, server down, etc.
 		"""
-		return cls(cls._connection_handler.get_admin_connection())
+		return cls(ConnectionConfig(
+			'univention.udm.connections.LDAP_connection',
+			'get_admin_connection',	(),	{})
+		)
 
 	@classmethod
 	def using_machine(cls):  # type: () -> Udm
@@ -146,28 +146,40 @@ class Udm(object):
 		:rtype: Udm
 		:raises ConnectionError: File permissions, server down, etc.
 		"""
-		return cls(cls._connection_handler.get_machine_connection())
+		return cls(ConnectionConfig(
+			'univention.udm.connections.LDAP_connection',
+			'get_machine_connection', (), {})
+		)
 
 	@classmethod
 	def using_credentials(
 			cls,
 			identity,  # type: str
 			password,  # type: str
+			base=None,  # type: Optional[str]
+			server=None,  # type: Optional[str]
+			port=None,  # type: Optional[int]
 	):
 		# type: (...) -> Udm
 		"""
 		Use the provided credentials to open an LDAP connection.
 
-		Either `username` or `dn` are required. If `username`, a machine
-		connection is used to retrieve the DN it belongs to.
+		`identity` must be either a username or a DN. If it is a username, a
+		machine connection is used to retrieve the DN it belongs to.
 
 		:param str identity: username or user dn to use for LDAP connection
 		:param str password: password of user / DN to use for LDAP connection
+		:param str base: optional search base
+		:param str server: optional LDAP server address as FQDN
+		:param int port: optional LDAP server port
 		:return: a Udm object
 		:rtype: Udm
 		:raises ConnectionError: Invalid credentials, server down, etc.
 		"""
-		return cls(cls._connection_handler.get_credentials_connection(identity, password))
+		return cls(ConnectionConfig(
+			'univention.udm.connections.LDAP_connection',
+			'get_credentials_connection', (identity, password),	{'base': base, 'server': server, 'port': port})
+		)
 
 	def version(self, api_version):  # type: (int) -> Udm
 		"""
@@ -213,7 +225,10 @@ class Udm(object):
 		:raises UnknownUdmModuleType: if the LDAP object at ``dn`` had no or
 			empty attribute ``univentionObjectType``
 		"""
-		ldap_obj = self.lo.get(dn, attr=[str('univentionObjectType')])
+		lo = get_connection(self.connection_config)
+		if lo.__module__ != 'univention.admin.uldap':
+			raise NotImplementedError('identify_object_by_dn() can only be used with a LDAP connection.')
+		ldap_obj = lo.get(dn, attr=[str('univentionObjectType')])
 		if not ldap_obj:
 			raise NoObject(dn=dn)
 		try:
@@ -240,7 +255,7 @@ class Udm(object):
 		# key is (version, connection + class)
 		key = (
 			self._api_version,
-			self.lo.base, self.lo.binddn, self.lo.host,
+			str(self.connection_config),
 			name, factory_config.module_path, factory_config.class_name
 		)
 		if key not in self._module_object_cache:
@@ -253,7 +268,7 @@ class Udm(object):
 					requested_version=self._api_version,
 					supported_versions=module_cls.supported_api_versions,
 				)
-			self._module_object_cache[key] = module_cls(name, self.lo, self._api_version)
+			self._module_object_cache[key] = module_cls(name, self.connection_config, self._api_version)
 		return self._module_object_cache[key]
 
 	@property

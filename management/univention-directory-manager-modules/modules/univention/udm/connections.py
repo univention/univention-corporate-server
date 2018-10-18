@@ -37,7 +37,7 @@ import univention.config_registry
 from .exceptions import ConnectionError
 
 try:
-	from typing import Dict, Text, Tuple
+	from typing import Dict, Optional, Text, Tuple
 except ImportError:
 	pass
 
@@ -48,7 +48,7 @@ class LDAP_connection(object):
 	_ucr = None  # type: univention.config_registry.ConfigRegistry
 	_connection_admin = None  # type: univention.admin.uldap.access
 	_connection_machine = None  # type: univention.admin.uldap.access
-	_connection_account = {}  # type: Dict[Tuple[Text, int, Text, Text], univention.admin.uldap.access]
+	_connection_account = {}  # type: Dict[Tuple[Text, Text, Text, int, Text], univention.admin.uldap.access]
 
 	@classmethod
 	def get_admin_connection(cls):  # type: () -> univention.admin.uldap.access
@@ -82,10 +82,13 @@ class LDAP_connection(object):
 
 	@classmethod
 	def get_credentials_connection(
-			cls,
-			identity,  # type: str
-			password,  # type: str
-		):
+		cls,
+		identity,  # type: str
+		password,  # type: str
+		base=None,  # type: Optional[str]
+		server=None,  # type: Optional[str]
+		port=None,  # type: Optional[int]
+	):
 		# type: (...) -> univention.admin.uldap.access
 
 		if not cls._ucr:
@@ -99,20 +102,15 @@ class LDAP_connection(object):
 				identity = dns[0]
 			except IndexError:
 				raise ConnectionError, ConnectionError('Cannot get DN for username.'), sys.exc_info()[2]
-
-		server = cls._ucr['ldap/master']
-		port = cls._ucr['ldap/master/port']
-		base = cls._ucr['ldap/base']
-		key = (identity, password)
+		access_kwargs = {'binddn': identity, 'bindpw': password, 'base': base or cls._ucr['ldap/base']}
+		if server:
+			access_kwargs['server'] = server
+		if port:
+			access_kwargs['port'] = port
+		key = (identity, password, server, port, base)
 		if key not in cls._connection_account:
 			try:
-				cls._connection_account[key] = univention.admin.uldap.access(
-					host=server,
-					port=port,
-					base=base,
-					binddn=identity,
-					bindpw=password
-				)
+				cls._connection_account[key] = univention.admin.uldap.access(**access_kwargs)
 			except ldap.INVALID_CREDENTIALS:
 				raise ConnectionError, ConnectionError('Credentials invalid'), sys.exc_info()[2]
 			except ldap.CONNECT_ERROR:
