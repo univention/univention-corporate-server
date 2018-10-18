@@ -1,3 +1,9 @@
+univention-ssl (12.0.0-14) unstable; urgency=medium
+
+  * Bug #44469: fix BASHism, cleanup
+
+ -- Jannik Ahlers <ahlers@univention.de>  Thu, 18 Oct 2018 13:16:47 +0200
+
 univention-ssl (12.0.0-13) unstable; urgency=medium
 
   * Bug #44469: Include DNS aliases in certificate creation
