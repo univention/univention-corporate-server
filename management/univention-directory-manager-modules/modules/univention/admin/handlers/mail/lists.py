@@ -57,7 +57,7 @@ property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
 		long_description='',
-		syntax=univention.admin.syntax.gid,
+		syntax=univention.admin.syntax.mailinglist_name,
 		multivalue=False,
 		include_in_default_search=True,
 		required=True,

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.25-4) unstable; urgency=low
+
+  * Bug #47861: add separate syntax class for mailing list names
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 18 Oct 2018 13:33:41 +0200
+
 univention-directory-manager-modules (13.0.25-3) unstable; urgency=medium
 
   * Bug #47910: fix index out of range error when generating search filter

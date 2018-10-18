@@ -992,6 +992,12 @@ class gid(simple):
 	)
 
 
+class mailinglist_name(gid):
+	error_message = _(
+		"A mailing list name must start and end with a letter, number or underscore. In between additionally spaces, "
+		"dashes and dots are allowed."
+	)
+
 class sharePath(simple):
 	regex = re.compile('^([^"])+$')
 	error_message = _('Value may not contain double quotes (")!')
