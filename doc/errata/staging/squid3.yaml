@@ -6,5 +6,7 @@ src: squid3
 fix: 3.5.23-5+deb9u1A~4.3.0.201810151142
 desc: |
  This update addresses the following issue(s):
- * renamed the build option for ssl support for squid3.5
+ * Squid3 is now compiled with support for OpenSSL again. This feature was
+   lost during the update to UCS 4.3-0 because Squid 3.5 requires an
+   additional compile time option for this.
 bug: [47809]
