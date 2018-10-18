@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Adapt to changes in univention-directory-manager-modules (Bug #47861).
 bug: [47861]
+erratum: 284
+announced: 2018-10-18
