@@ -369,10 +369,6 @@
                 mounted inside the Docker container.
             </para>
             <para>
-                <!--
-                FIXME: @Dirk: There are definitions for paths and files. Both
-                seems to work. Is this correct?
-                -->
                 To define volumes for the app, please go to the
                 <guimenu>Mounted volumes</guimenu> section on the
                 <guimenu>Docker</guimenu> tab. Add an entry for each volume
@@ -704,6 +700,44 @@ univention-app dev-use-test-appcenter
                 service are needed. They are passed with the parameters
                 <option>binddn</option> and <option>bindpwd</option>. In many
                 cases the user <option>Administrator</option> is used.
+            </para>
+        </section>
+
+        <section id="testing:debugging">
+            <title>Debugging</title>
+            <para>
+                During app development or for problem analysis it is necessary
+                to debug an app. If an app installation fails, the App Center
+                removes the docker container and thus prevents the developer to
+                have a deeper look into what happened. With the following
+                command the App Center will not throw away a failed app
+                installation. The container is kept on the system.
+                <programlisting>
+                    univention-app install myapp --do-not-revert
+                </programlisting>
+            </para>
+            <para>
+                For debugging or support cases it can be helpful to enter the
+                app container. The following command opens a bash in the
+                container.
+                <programlisting>
+                    univention-app shell myapp
+                </programlisting>
+                If the container does not support bash, the container can be
+                entered with the plain Docker commands.
+                <programlisting>
+                    CONTAINER="$(ucr get appcenter/apps/myapp/container)"
+                    docker exec "$CONTAINER" ...
+                </programlisting>
+            </para>
+            <para>
+                Important logfiles on the UCS host for debugging are:
+                <itemizedlist>
+                    <listitem><simpara><option>/var/log/univention/appcenter.log</option></simpara></listitem>
+                    <listitem><simpara><option>/var/log/univention/management-console-module-appcenter.log</option></simpara></listitem>
+                    <listitem><simpara><option>/var/log/univention/join.log</option></simpara></listitem>
+                    <listitem><simpara><option>/var/log/docker.log</option></simpara></listitem>
+                </itemizedlist>
             </para>
         </section>
     </section>
