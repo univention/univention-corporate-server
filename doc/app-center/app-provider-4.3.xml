@@ -726,8 +726,8 @@ univention-app dev-use-test-appcenter
                 If the container does not support bash, the container can be
                 entered with the plain Docker commands.
                 <programlisting>
-                    CONTAINER="$(ucr get appcenter/apps/myapp/container)"
-                    docker exec "$CONTAINER" ...
+CONTAINER="$(ucr get appcenter/apps/myapp/container)"
+docker exec "$CONTAINER" ...
                 </programlisting>
             </para>
             <para>
