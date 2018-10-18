@@ -31,6 +31,7 @@ Base classes for (simplified) UDM modules and objects.
 """
 
 from __future__ import absolute_import, unicode_literals
+import copy
 import pprint
 from collections import namedtuple
 from ldap.filter import filter_format
@@ -54,6 +55,16 @@ class BaseUdmObjectProperties(object):
 
 	def __repr__(self):  # type: () -> str
 		return pprint.pformat(dict((k, v) for k, v in self.__dict__.iteritems() if not str(k).startswith('_')), indent=2)
+
+	def __deepcopy__(self, memo):
+		id_self = id(self)
+		if not memo.get(id_self):
+			memo[id_self] = {}
+			for k, v in self.__dict__.items():
+				if k == '_udm_obj':
+					continue
+				memo[id_self][k] = copy.deepcopy(v)
+		return memo[id_self]
 
 
 class BaseUdmObject(object):

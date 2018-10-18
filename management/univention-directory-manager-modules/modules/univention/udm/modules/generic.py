@@ -33,12 +33,14 @@ Will work for all kinds of UDM modules.
 
 from __future__ import absolute_import, unicode_literals
 import sys
+import copy
 import inspect
 from ldap.dn import dn2str, str2dn
 import univention.admin.objects
 import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.uldap
+import univention.config_registry
 from ..encoders import dn_list_property_encoder_for
 from ..base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from ..exceptions import (
@@ -46,6 +48,11 @@ from ..exceptions import (
 	UnknownProperty, UnknownUdmModuleType,WrongObjectType
 )
 from ..utils import UDebug as ud
+
+
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+DEFAULT_CONTAINERS_DN = 'cn=default containers,cn=univention,{}'.format(ucr['ldap/base'])
 
 
 class GenericUdmObjectProperties(BaseUdmObjectProperties):
@@ -238,7 +245,7 @@ class GenericUdmObject(BaseUdmObject):
 			self.position = self._lo.parentDn(self.dn)
 			self._old_position = self.position
 		else:
-			self.position = self._udm_module._get_default_positions()[0]
+			self.position = self._udm_module._get_default_object_positions()[0]
 		self.props = self.udm_prop_class(self)
 		if not self.dn:
 			self._init_new_object_props()
@@ -406,7 +413,7 @@ class GenericUdmModule(BaseUdmModule):
 	_udm_object_class = GenericUdmObject
 	_udm_module_meta_class = GenericUdmModuleMetadata
 	_udm_module_cache = {}
-	_default_directory_object = None
+	_default_containers = {}
 	supported_api_versions = (0, 1)
 
 	def __init__(self, name, lo, api_version):
@@ -455,6 +462,13 @@ class GenericUdmModule(BaseUdmModule):
 			yield self.get(dn)
 
 	def _dn_exists(self, dn):
+		"""
+		Checks if the DN exists in LDAP.
+
+		:param str dn: the DN
+		:return: whether `dn` exists
+		:rtype: bool
+		"""
 		try:
 			self.lo.searchDn(base=dn, scope='base')
 		except univention.admin.uexceptions.noObject:
@@ -462,49 +476,52 @@ class GenericUdmModule(BaseUdmModule):
 		else:
 			return True
 
-	def _get_default_positions_property(self):
+	def _get_default_position_property(self):
 		"""
-		TODO
+		The property of the object `DEFAULT_CONTAINERS_DN` which lists the
+		default containers for this module.
 
-		:return:
+		:return: name of property
 		:rtype: str
 		"""
-		return ''
+		return self.name.split('/')[0]
 
-	@classmethod
-	def _get_default_directory_object(cls, udm):
+	def _get_default_containers(self):
 		"""
-		TODO
+		Get default containers for all modules.
 
-		:return:
-		:rtype: GenericUdmObject ?
+		:return: a dictionary with lists of DNs
+		:rtype: dict(str, list(str))
 		"""
-		if cls._default_directory_object is None:
-			try:
-				cls._default_directory_object = udm.get('settings/directory').get(
-						'cn=default containers,cn=univention,{}'.format(udm.lo.base)
-					)
-			except NoObject:
-				pass
-		return cls._default_directory_object
+		if not self._default_containers:
+			# DEFAULT_CONTAINERS_DN must exist, or we'll run into an infinite recursion
+			if self._dn_exists(DEFAULT_CONTAINERS_DN):
+				mod = GenericUdmModule('settings/directory', self.lo, 0)
+				try:
+					default_directory_object = mod.get(DEFAULT_CONTAINERS_DN)
+				except NoObject:
+					pass
+				else:
+					self._default_containers.update(copy.deepcopy(default_directory_object.props))
+		return self._default_containers
 
-	def _get_default_positions(self):
+	def _get_default_object_positions(self):
 		"""
-		Get default containers for the UDM module.
+		Get default containers for this UDM module.
 
 		:return: list of container DNs
 		:rtype: list(str)
 		"""
-		default_positions_property = self._get_default_positions_property()
-		default_containers = []
-		if default_positions_property:
-			udm = Udm(self.lo, self.meta.api_version)
-			default_directory_object = self._get_default_directory_object(udm)
-			if default_directory_object is not None:
-				dns = getattr(default_directory_object.props, default_positions_property)
-				default_containers = [dn for dn in dns if udm.dn_exists(dn)]
-		default_containers.append(self.lo.base)
-		return default_containers
+		default_positions_property = self._get_default_position_property()
+		default_containers = self._get_default_containers()
+
+		if default_containers and default_positions_property:
+			dns = default_containers.get(default_positions_property, [])
+			module_contailers = [dn for dn in dns if self._dn_exists(dn)]
+		else:
+			module_contailers = []
+		module_contailers.append(self.lo.base)
+		return module_contailers
 
 	def _get_orig_udm_module(self):
 		"""

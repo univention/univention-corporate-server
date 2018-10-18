@@ -109,16 +109,17 @@ class GenericUdmModule(BaseUdmModule):
 
 	def search(self, filter_s='', base='', scope='sub'):  # type: (str, str, str) -> Iterator[GenericUdmObject]
 		...
-
-	def _get_default_positions_property(self):  # type: () -> str
+	def _dn_exists(self, dn):  # type: (str) -> bool
 		...
 
-	def _get_default_directory_object(self):  # type: () -> GenericUdmObject
+	def _get_default_position_property(self):  # type: () -> str
 		...
 
-	def get_default_positions(self):  # type: () -> List[str]
+	def _get_default_containers(self):  # type: () -> Dict[str, List[str]]
 		...
 
+	def _get_default_object_positions(self):  # type: () -> List[str]
+		...
 	def _get_orig_udm_module(self):  # type: () -> univention.admin.handlers.simpleLdap
 		...
 
