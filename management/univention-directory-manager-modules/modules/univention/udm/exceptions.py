@@ -77,6 +77,16 @@ class DeletedError(UdmError):
 		super(DeletedError, self).__init__(msg, dn, module_name)
 
 
+class DeleteError(UdmError):
+	"""
+	Raised when a client tries to delete a UdmObject but fails.
+	"""
+	def __init__(self, msg=None, dn=None, module_name=None):
+		# type: (Optional[Text], Optional[Text], Optional[Text]) -> None
+		msg = msg or 'Object{} could not be deleted.'.format(' {!r}'.format(dn) if dn else '')
+		super(DeleteError, self).__init__(msg, dn, module_name)
+
+
 class NotYetSavedError(UdmError):
 	"""
 	Raised when a client tries to delete or reload a UdmObject that is not yet

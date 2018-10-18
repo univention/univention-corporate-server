@@ -42,7 +42,7 @@ from ..encoders import dn_list_property_encoder_for
 from ..udm import Udm
 from ..base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from ..exceptions import (
-	CreateError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, UnknownProperty, UnknownUdmModuleType,
+	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, UnknownProperty, UnknownUdmModuleType,
 	WrongObjectType
 )
 from ..utils import UDebug as ud
@@ -121,6 +121,7 @@ class GenericUdmObject(BaseUdmObject):
 
 		:return: self
 		:rtype: UdmObject
+		:raises NotYetSavedError: if object does not yet exist (has no dn)
 		"""
 		if self._deleted:
 			raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name)
@@ -191,13 +192,22 @@ class GenericUdmObject(BaseUdmObject):
 		Remove the object from the LDAP database.
 
 		:return: None
+		:raises NotYetSavedError: if object does not yet exist (has no dn)
+		:raises DeletedError: if the operation fails
 		"""
 		if self._deleted:
 			ud.warn('{} has already been deleted.'.format(self))
 			return
 		if not self.dn or not self._orig_udm_object:
 			raise NotYetSavedError()
-		self._orig_udm_object.remove()
+		try:
+			self._orig_udm_object.remove()
+		except univention.admin.uexceptions.base as exc:
+			raise DeleteError(
+				'Error deleting {!r} object {!r}: {}'.format(
+					self._udm_module.name, self.dn, exc
+				), dn=self.dn, module_name=self._udm_module.name
+			)
 		if univention.admin.objects.wantsCleanup(self._orig_udm_object):
 			univention.admin.objects.performCleanup(self._orig_udm_object)
 		self._orig_udm_object = None
@@ -391,6 +401,7 @@ class GenericUdmModule(BaseUdmModule):
 	_udm_object_class = GenericUdmObject
 	_udm_module_meta_class = GenericUdmModuleMetadata
 	_udm_module_cache = {}
+	_default_directory_object = None
 	supported_api_versions = (0, 1)
 
 	def __init__(self, name, lo, api_version):
@@ -447,14 +458,22 @@ class GenericUdmModule(BaseUdmModule):
 		"""
 		return ''
 
-	def _get_default_directory_object(self):
+	@classmethod
+	def _get_default_directory_object(cls, udm):
 		"""
 		TODO
 
 		:return:
 		:rtype: GenericUdmObject ?
 		"""
-		return self.new()
+		if cls._default_directory_object is None:
+			try:
+				cls._default_directory_object = udm.get('settings/directory').get(
+						'cn=default containers,cn=univention,{}'.format(udm.lo.base)
+					)
+			except NoObject:
+				pass
+		return cls._default_directory_object
 
 	def _get_default_positions(self):
 		"""
@@ -467,17 +486,10 @@ class GenericUdmModule(BaseUdmModule):
 		default_containers = []
 		if default_positions_property:
 			udm = Udm(self.lo, self.meta.api_version)
-			try:
-				default_directory_object = udm.get('settings/directory').get(
-					'cn=default containers,cn=univention,{}'.format(self.lo.base)
-				)
-			except NoObject:
-				pass
-			else:
-				default_directory_object = self._get_default_directory_object()
-				if default_directory_object is not None:
-					dns = getattr(default_directory_object.props, default_positions_property)
-					default_containers = [dn for dn in dns if udm.dn_exists(dn)]
+			default_directory_object = self._get_default_directory_object(udm)
+			if default_directory_object is not None:
+				dns = getattr(default_directory_object.props, default_positions_property)
+				default_containers = [dn for dn in dns if udm.dn_exists(dn)]
 		default_containers.append(self.lo.base)
 		return default_containers
 
