@@ -506,11 +506,9 @@
             <para>
                 Docker images usually receive environment variables when the
                 container is started. The App Center supports to pass static
-                configuration options to the container. Variables parameterizd
-                by &ucsUCRV;s are also supported. 
-            </para>
-            <para>
-                An environment file can look like the following example:
+                configuration options to the container. Variables parameterized
+                by &ucsUCRV;s are also supported. An environment file can look
+                like the following example:
                 <programlisting>
 LDAP_SERVER=@%@ldap/server@%@
 FQDN=@%@hostname@%@.@%@domainname@%@
