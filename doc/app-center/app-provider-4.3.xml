@@ -839,6 +839,58 @@ univention-app dev-use-test-appcenter
         </para>
     </section>
 
+    <section id="upload-interface">
+        <title>App Provider Portal upload interface</title>
+        <para>
+            An app is configured via the App Provider Portal, which offers a
+            web interface. There is also an upload interface available. If the
+            developer prefers to keep the app configuration in version control
+            system, the upload interface offers a good way to push changes for
+            the app to the Test App Center.
+        </para>
+
+        <para>
+            The scripts needs to be downloaded from <ulink
+                url="https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control">https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control</url>.
+            It requires Python 2.7 and cURL to run. For a list of available actions and their parameters, use the script's help:
+                <programlisting>
+                    ./univention-appcenter-control --help
+                    ./univention-appcenter-control upload --help
+                </programlisting>
+        </para>
+
+        <para>
+            The following examples show how the script can be used.
+            <programlisting>
+# creates a new version based on the latest version of myapp
+~/univention-appcenter-control new-version 4.3/myapp
+
+# finds out which on which UCS versions this Docker App may be installed
+# Note: jq is an external tool: apt-get install jq
+# you may parse JSON without it, of course
+~/univention-appcenter-control get --json 4.3/myapp | jq '._ini_vars.SupportedUCSVersions'
+
+# creates version 2.0 of myapp based on the (formerly) latest version
+~/univention-appcenter-control new-version 4.3/myapp 4.3/myapp=2.0
+
+# sets the DockerImage of the new app
+~/univention-appcenter-control set 4.3/myapp=2.0 --json '{"DockerImage": "mycompany/myimage:2.0"}'
+
+# copies myapp Version 1.0 from UCS 4.2 to UCS 4.3.
+~/univention-appcenter-control new-version 4.2/myapp=1.0 4.3/myapp=1.0
+
+# uploads all README files in the current folder to the latest version 
+# myapp in UCS 4.2
+~/univention-appcenter-control upload 4.3/myapp README*
+
+# uploads an image. Will be rejected if this image is not specified somewhere 
+# in the ini file. Note: This may overwrite the logo for other
+# version using the same logo name, too.
+~/univention-appcenter-control upload 4.3/myapp=1.0 myapp.svg 
+            </programlisting>
+        </para>
+    </section>
+
 </chapter>
 
 <chapter id="app-presentation">
