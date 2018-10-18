@@ -225,14 +225,6 @@ class Udm(object):
 		udm_module = self.get(uot)
 		return udm_module.get(dn)
 
-	def dn_exists(self, dn):
-		try:
-			self.lo.searchDn(base=dn, scope='base')
-		except noObject:
-			return False
-		else:
-			return True
-
 	def _get_by_factory_config(self, name, factory_config):  # type: (str, UdmModuleFactoryConfiguration) -> BaseUdmModule
 		"""
 		Get an object of :py:class:`BaseUdmModule` (or of a subclass) for UDM

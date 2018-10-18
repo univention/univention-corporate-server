@@ -250,7 +250,7 @@ class BaseUdmModule(object):
 		elif len(res) > 1:
 			raise MultipleObjects(
 				'Searching in module {!r} with identifying_property {!r} (filter: {!r}) returned {} objects.'.format(
-					self.name, self.meta.identifying_property, filter_s, len(res)))
+					self.name, self.meta.identifying_property, filter_s, len(res)), module_name=self.name)
 		return res[0]
 
 	def search(self, filter_s='', base='', scope='sub'):  # type: (str, str, str) -> Iterator[BaseUdmObject]

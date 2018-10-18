@@ -118,9 +118,7 @@ class NoObject(UdmError):
 
 class MultipleObjects(UdmError):
 	"""Raised when more than one UdmObject was found when there should be at most one."""
-	def __init__(self, msg):
-		# type: (Text) -> None
-		super(MultipleObjects, self).__init__(msg)
+	pass
 
 
 class UnknownUdmModuleType(UdmError):

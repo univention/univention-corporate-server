@@ -78,7 +78,7 @@ argument to the Udm module factory or via :py:meth:`version()`::
 	Udm.using_admin().version(1)  # use API version 1
 	Udm(lo).version(0).get('users/user')  # get users/user module for API version 0
 	Udm(lo, 0).get('users/user')  # get users/user module for API version 0
-	Udm.using_credentials('s3cr3t', 'uid=myuser,..').version(2).get_obj(dn)  # get object using API version 2
+	Udm.using_credentials('s3cr3t', 'uid=myuser,..').version(2).identify_object_by_dn(dn)  # get object using API version 2
 """
 
 from __future__ import absolute_import

@@ -40,7 +40,6 @@ import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.uldap
 from ..encoders import dn_list_property_encoder_for
-from ..udm import Udm
 from ..base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from ..exceptions import (
 	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, UdmError,
@@ -189,7 +188,7 @@ class GenericUdmObject(BaseUdmObject):
 		assert self.dn == self._orig_udm_object.dn
 		assert self.position == self._lo.parentDn(self.dn)
 		self._fresh = False
-		if self.meta.auto_reload:
+		if self._udm_module.meta.auto_reload:
 			self.reload()
 		return self
 
@@ -454,6 +453,14 @@ class GenericUdmModule(BaseUdmModule):
 			dns = (obj.dn for obj in self._orig_udm_module.lookup(None, self.lo, filter_s, base=base, scope=scope))
 		for dn in dns:
 			yield self.get(dn)
+
+	def _dn_exists(self, dn):
+		try:
+			self.lo.searchDn(base=dn, scope='base')
+		except univention.admin.uexceptions.noObject:
+			return False
+		else:
+			return True
 
 	def _get_default_positions_property(self):
 		"""

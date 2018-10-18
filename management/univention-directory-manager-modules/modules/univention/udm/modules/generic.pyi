@@ -36,6 +36,7 @@ import univention.admin.objects
 import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.uldap
+import univention.config_registry
 from ..encoders import BaseEncoder
 from ..base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from ..utils import UDebug as ud
@@ -97,7 +98,8 @@ class GenericUdmModule(BaseUdmModule):
 	_udm_module_cache = {}  # type: Dict[Tuple[str, str, str, str], univention.admin.handlers.simpleLdap]
 
 	def __init__(self, name, lo, api_version):  # type: (str, univention.admin.uldap.access, int) -> None
-		...
+		ucr = None  # type: univention.config_registry.ConfigRegistry
+		self.lo = self.connection  # type: univention.admin.uldap.access
 
 	def new(self):  # type: () -> GenericUdmObject
 		...
