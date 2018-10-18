@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [4, 5]
+scope: ucs_4.2-0-errata4.2-5
+src: libssh
+fix: 0.6.3-4+deb8u3
+desc: |
+ This update addresses the following issue:
+ * Authentication Bypass due to improper message callbacks implementation
+   (CVE-2018-10933)
+bug: [48011]
+cve:
+- CVE-2018-10933
