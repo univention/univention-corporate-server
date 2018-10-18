@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-dvd
+fix: 3.0.0-12A~4.3.0.201810181050
+desc: |
+ This update addresses the following issue:
+ * Put package "netcat-openbsd" on the next UCS release DVD. It is required
+   for VNC access to virtual machines.
+bug: [48015]
