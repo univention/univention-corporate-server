@@ -33,11 +33,6 @@ import importlib
 from collections import namedtuple
 import univention.debug
 
-try:
-	from typing import Any, Dict, Optional, Text, Tuple
-except ImportError:
-	pass
-
 
 ConnectionConfig = namedtuple('ConnectionConfig', ['klass', 'method', 'args', 'kwargs'])
 
@@ -47,7 +42,7 @@ is_interactive = bool(getattr(sys, 'ps1', sys.flags.interactive))
 
 class UDebug(object):
 	"""univention.debug convenience wrapper"""
-	target = univention.debug.ADMIN  # type: int
+	target = univention.debug.ADMIN
 	level2str = {
 		univention.debug.ALL: 'DEBUG',
 		univention.debug.ERROR: 'ERROR',
@@ -57,42 +52,42 @@ class UDebug(object):
 	}
 
 	@classmethod
-	def all(cls, msg):  # type: (Text) -> None
+	def all(cls, msg):
 		"""Write a debug message with level ALL (as in DEBUG)"""
 		cls._log(univention.debug.ALL, msg)
 
 	debug = all
 
 	@classmethod
-	def error(cls, msg):  # type: (Text) -> None
+	def error(cls, msg):
 		"""Write a debug message with level ERROR"""
 		cls._log(univention.debug.ERROR, msg)
 
 	@classmethod
-	def info(cls, msg):  # type: (Text) -> None
+	def info(cls, msg):
 		"""Write a debug message with level INFO"""
 		cls._log(univention.debug.INFO, msg)
 
 	@classmethod
-	def process(cls, msg):  # type: (Text) -> None
+	def process(cls, msg):
 		"""Write a debug message with level PROCESS"""
 		cls._log(univention.debug.PROCESS, msg)
 
 	@classmethod
-	def warn(cls, msg):  # type: (Text) -> None
+	def warn(cls, msg):
 		"""Write a debug message with level WARN"""
 		cls._log(univention.debug.WARN, msg)
 
 	warning = warn
 
 	@classmethod
-	def _log(cls, level, msg):  # type: (int, Text) -> None
+	def _log(cls, level, msg):
 		univention.debug.debug(cls.target, level, msg)
 		if is_interactive and level <= univention.debug.INFO:
 			print('{}: {}'.format(cls.level2str[level], msg))
 
 
-def load_class(module_path, class_name):  # type: (str, str) -> type
+def load_class(module_path, class_name):
 	"""
 	Load Python class from module.
 
@@ -116,7 +111,7 @@ def load_class(module_path, class_name):  # type: (str, str) -> type
 	return candidate_cls
 
 
-def get_connection(connection_config):  # type: (ConnectionConfig) -> Any
+def get_connection(connection_config):
 	module_name, _dot, cls_name = connection_config.klass.rpartition('.')
 	cls = load_class(module_name, cls_name)
 	return getattr(cls, connection_config.method)(*connection_config.args, **connection_config.kwargs)

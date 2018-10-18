@@ -38,22 +38,16 @@ from ldap.filter import filter_format
 from .exceptions import NoObject, MultipleObjects
 from .utils import get_connection
 
-try:
-	from typing import Callable, Iterable, Iterator, List, Optional, Text
-	from .utils import ConnectionConfig
-except ImportError:
-	pass
-
 
 UdmLdapMapping = namedtuple('UdmLdapMapping', ('ldap2udm', 'udm2ldap'))
 
 
 class BaseUdmObjectProperties(object):
 	"""Container for UDM properties."""
-	def __init__(self, udm_obj):  # type: (BaseUdmObject) -> None
+	def __init__(self, udm_obj):
 		self._udm_obj = udm_obj
 
-	def __repr__(self):  # type: () -> str
+	def __repr__(self):
 		return pprint.pformat(dict((k, v) for k, v in self.__dict__.iteritems() if not str(k).startswith('_')), indent=2)
 
 	def __deepcopy__(self, memo):
@@ -93,7 +87,7 @@ class BaseUdmObject(object):
 	"""
 	udm_prop_class = BaseUdmObjectProperties
 
-	def __init__(self):  # type: () -> None
+	def __init__(self):
 		"""
 		Don't instantiate a :py:class:`UdmObject` directly. Use a
 		:py:class:`BaseUdmModule`.
@@ -105,14 +99,14 @@ class BaseUdmObject(object):
 		self.position = ''
 		self._udm_module = None  # type: BaseUdmModule
 
-	def __repr__(self):  # type: () -> Text
+	def __repr__(self):
 		return '{}({!r}, {!r})'.format(
 			self.__class__.__name__,
 			self._udm_module.name if self._udm_module else '<not initialized>',
 			self.dn
 		)
 
-	def reload(self):  # type: () -> BaseUdmObject
+	def reload(self):
 		"""
 		Refresh object from LDAP.
 
@@ -121,7 +115,7 @@ class BaseUdmObject(object):
 		"""
 		raise NotImplementedError()
 
-	def save(self):  # type: () -> BaseUdmObject
+	def save(self):
 		"""
 		Save object to LDAP.
 
@@ -131,7 +125,7 @@ class BaseUdmObject(object):
 		"""
 		raise NotImplementedError()
 
-	def delete(self):  # type: () -> None
+	def delete(self):
 		"""
 		Remove the object from the LDAP database.
 
@@ -146,12 +140,12 @@ class BaseUdmModuleMetadata(object):
 	auto_open = True  # whether UDM objects should be `open()`ed
 	auto_reload = True  # whether UDM objects should be `reload()`ed after saving
 
-	def __init__(self, udm_module, api_version):  # type: (BaseUdmModule, int) -> None
+	def __init__(self, udm_module, api_version):
 		self._udm_module = udm_module
 		self.api_version = api_version
 
 	@property
-	def identifying_property(self):  # type: () -> str
+	def identifying_property(self):
 		"""
 		UDM Property of which the mapped LDAP attribute is used as first
 		component in a DN, e.g. `username` (LDAP attribute `uid`) or `name`
@@ -159,7 +153,7 @@ class BaseUdmModuleMetadata(object):
 		"""
 		raise NotImplementedError()
 
-	def lookup_filter(self, filter_s=None):  # type: (Optional[str]) -> str
+	def lookup_filter(self, filter_s=None):
 		"""
 		Filter the UDM module uses to find its corresponding LDAP objects.
 
@@ -177,7 +171,7 @@ class BaseUdmModuleMetadata(object):
 		raise NotImplementedError()
 
 	@property
-	def mapping(self):  # type: () -> UdmLdapMapping
+	def mapping(self):
 		"""
 		UDM properties to LDAP attributes mapping and vice versa.
 
@@ -212,16 +206,16 @@ class BaseUdmModule(object):
 	_udm_object_class = BaseUdmObject
 	_udm_module_meta_class = BaseUdmModuleMetadata
 
-	def __init__(self, name, connection_config, api_version):  # type: (str, ConnectionConfig, int) -> None
+	def __init__(self, name, connection_config, api_version):
 		self.name = name
 		self._connection_config = connection_config
 		self.connection = get_connection(connection_config)
 		self.meta = self._udm_module_meta_class(self, api_version)
 
-	def __repr__(self):  # type: () -> Text
+	def __repr__(self):
 		return '{}({!r})'.format(self.__class__.__name__, self.name)
 
-	def new(self):  # type: () -> BaseUdmObject
+	def new(self):
 		"""
 		Create a new, unsaved BaseUdmObject object.
 
@@ -230,7 +224,7 @@ class BaseUdmModule(object):
 		"""
 		raise NotImplementedError()
 
-	def get(self, dn):  # type: (str) -> BaseUdmObject
+	def get(self, dn):
 		"""
 		Load UDM object from LDAP.
 
@@ -242,7 +236,7 @@ class BaseUdmModule(object):
 		"""
 		raise NotImplementedError()
 
-	def get_by_id(self, id):  # type: (str) -> BaseUdmObject
+	def get_by_id(self, id):
 		"""
 		Load UDM object from LDAP by searching for its ID.
 
@@ -265,7 +259,7 @@ class BaseUdmModule(object):
 					self.name, self.meta.identifying_property, filter_s, len(res)), module_name=self.name)
 		return res[0]
 
-	def search(self, filter_s='', base='', scope='sub'):  # type: (str, str, str) -> Iterator[BaseUdmObject]
+	def search(self, filter_s='', base='', scope='sub'):
 		"""
 		Get all UDM objects from LDAP that match the given filter.
 

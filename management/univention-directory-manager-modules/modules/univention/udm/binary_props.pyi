@@ -31,65 +31,39 @@ Classes for holding binary UDM  object properties.
 """
 
 from __future__ import absolute_import, unicode_literals
-import base64
+from typing import Optional, Text
 
 
 class BaseBinaryProperty(object):
-	"""
-	Container for a binary UDM property.
-
-	Data can be set and retrieved in both its raw form or encoded for LDAP.
-
-	Internally data is held in the encoded state (the form in which it will be
-	saved to LDAP).
-	"""
 	def __init__(self, name, encoded_value=None, raw_value=None):
-		assert not (encoded_value and raw_value), 'Only one of "encoded_value" and "raw_value" must be set.'
-		assert (encoded_value or raw_value), 'One of "encoded_value" or "raw_value" must be set.'
-		self._name = name
-		self._value = None
-		if encoded_value:
-			self.encoded = encoded_value
-		elif raw_value:
-			self.raw = raw_value
+		# type: (Text, Optional[Text], Optional[Text]) -> None
+		...
 
-	def __repr__(self):
-		return '{}({})'.format(self.__class__.__name__, self._name)
+	def __repr__(self):  # type: () -> Text
+		...
 
 	@property
-	def encoded(self):
-		return self._value
+	def encoded(self):  # type: () -> Text
+		...
 
 	@encoded.setter
-	def encoded(self, value):
-		self._value = value
+	def encoded(self, value):  # type: (Text) -> None
+		...
 
 	@property
-	def raw(self):
-		raise NotImplementedError()
+	def raw(self):  # type: () -> Text
+		...
 
 	@raw.setter
-	def raw(self, value):
-		raise NotImplementedError()
+	def raw(self, value):  # type: (Text) -> None
+		...
 
 
 class Base64BinaryProperty(BaseBinaryProperty):
-	"""
-	Container for a binary UDM property encoded using base64.
-
-	obj.props.<prop>.encoded == base64.b64encode(obj.props.<prop>.decoded)
-
-	>>> binprop = Base64BinaryProperty('example', raw_value='raw value')
-	>>> Base64BinaryProperty('example', encoded_value=binprop.encoded).raw == 'raw value'
-	True
-	>>> import base64
-	>>> binprop.encoded == base64.b64encode(binprop.raw)
-	True
-	"""
 	@property
-	def raw(self):
-		return base64.b64decode(self._value)
+	def raw(self):  # type: () -> Text
+		...
 
 	@raw.setter
-	def raw(self, value):
-		self._value = base64.b64encode(value)
+	def raw(self, value):  # type: (Text) -> None
+		...

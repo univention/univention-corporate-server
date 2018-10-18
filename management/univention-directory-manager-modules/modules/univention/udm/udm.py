@@ -81,12 +81,6 @@ from .exceptions import ApiVersionNotSupported, NoObject, UnknownUdmModuleType
 from .factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
 from .utils import load_class, UDebug as ud, ConnectionConfig, get_connection
 
-try:
-	from typing import Dict, Optional, Tuple, Type
-	from .base import BaseUdmObject
-except ImportError:
-	pass
-
 
 __default_api_version__ = 1
 
@@ -103,11 +97,10 @@ class Udm(object):
 
 		Udm.using_admin().identify_object_by_dn(dn)
 	"""
-	_module_class_cache = {}  # type: Dict[Tuple[int, str, str], Type[BaseUdmModule]]
-	_module_object_cache = {}  # type: Dict[Tuple[int, str, str, str, str, str], BaseUdmModule]
+	_module_class_cache = {}
+	_module_object_cache = {}
 
 	def __init__(self, connection_config, api_version=None):
-		# type: (ConnectionConfig, Optional[int]) -> None
 		"""
 		Use the provided connection.
 
@@ -124,7 +117,7 @@ class Udm(object):
 		self._configuration_storage = UdmModuleFactoryConfigurationStorage()
 
 	@classmethod
-	def using_admin(cls):  # type: () -> Udm
+	def using_admin(cls):
 		"""
 		Use a cn=admin connection.
 
@@ -138,7 +131,7 @@ class Udm(object):
 		)
 
 	@classmethod
-	def using_machine(cls):  # type: () -> Udm
+	def using_machine(cls):
 		"""
 		Use a machine connection.
 
@@ -154,13 +147,12 @@ class Udm(object):
 	@classmethod
 	def using_credentials(
 			cls,
-			identity,  # type: str
-			password,  # type: str
-			base=None,  # type: Optional[str]
-			server=None,  # type: Optional[str]
-			port=None,  # type: Optional[int]
+			identity,
+			password,
+			base=None,
+			server=None,
+			port=None,
 	):
-		# type: (...) -> Udm
 		"""
 		Use the provided credentials to open an LDAP connection.
 
@@ -181,7 +173,7 @@ class Udm(object):
 			'get_credentials_connection', (identity, password),	{'base': base, 'server': server, 'port': port})
 		)
 
-	def version(self, api_version):  # type: (int) -> Udm
+	def version(self, api_version):
 		"""
 		Set the version of the API that the UDM modules must support.
 
@@ -198,7 +190,7 @@ class Udm(object):
 		self.__api_version = api_version
 		return self
 
-	def get(self, name):  # type: (str) -> BaseUdmModule
+	def get(self, name):
 		"""
 		Get an object of :py:class:`BaseUdmModule` (or of a subclass) for UDM
 		module `name`.
@@ -211,7 +203,7 @@ class Udm(object):
 		factory_config = self._configuration_storage.get_configuration(name, self._api_version)
 		return self._get_by_factory_config(name, factory_config)
 
-	def identify_object_by_dn(self, dn):  # type: (str) -> BaseUdmObject
+	def identify_object_by_dn(self, dn):
 		"""
 		Try to load an UDM object from LDAP. Guess the required UDM module
 		from the ``univentionObjectType`` LDAP attribute of the LDAP object.
@@ -240,7 +232,7 @@ class Udm(object):
 		udm_module = self.get(uot)
 		return udm_module.get(dn)
 
-	def _get_by_factory_config(self, name, factory_config):  # type: (str, UdmModuleFactoryConfiguration) -> BaseUdmModule
+	def _get_by_factory_config(self, name, factory_config):
 		"""
 		Get an object of :py:class:`BaseUdmModule` (or of a subclass) for UDM
 		factory configuration `factory_configuration`.
@@ -279,7 +271,7 @@ class Udm(object):
 			self.__api_version = __default_api_version__
 		return self.__api_version
 
-	def _load_module(self, factory_config):  # type: (UdmModuleFactoryConfiguration) -> Type[BaseUdmModule]
+	def _load_module(self, factory_config):
 		key = (self._api_version, factory_config.module_path, factory_config.class_name)
 		if key not in self._module_class_cache:
 			candidate_cls = load_class(factory_config.module_path, factory_config.class_name)

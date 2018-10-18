@@ -36,22 +36,17 @@ import univention.admin.uldap
 import univention.config_registry
 from .exceptions import ConnectionError
 
-try:
-	from typing import Dict, Optional, Text, Tuple
-except ImportError:
-	pass
-
 
 class LDAP_connection(object):
 	"""Caching LDAP connection factory."""
 
-	_ucr = None  # type: univention.config_registry.ConfigRegistry
-	_connection_admin = None  # type: univention.admin.uldap.access
-	_connection_machine = None  # type: univention.admin.uldap.access
-	_connection_account = {}  # type: Dict[Tuple[Text, Text, Text, int, Text], univention.admin.uldap.access]
+	_ucr = None
+	_connection_admin = None
+	_connection_machine = None
+	_connection_account = {}
 
 	@classmethod
-	def get_admin_connection(cls):  # type: () -> univention.admin.uldap.access
+	def get_admin_connection(cls):
 		if not cls._connection_admin:
 			try:
 				cls._connection_admin, po = univention.admin.uldap.getAdminConnection()
@@ -66,7 +61,7 @@ class LDAP_connection(object):
 		return cls._connection_admin
 
 	@classmethod
-	def get_machine_connection(cls):  # type: () -> univention.admin.uldap.access
+	def get_machine_connection(cls):
 		if not cls._connection_machine:
 			try:
 				cls._connection_machine, po = univention.admin.uldap.getMachineConnection()
@@ -83,14 +78,12 @@ class LDAP_connection(object):
 	@classmethod
 	def get_credentials_connection(
 		cls,
-		identity,  # type: str
-		password,  # type: str
-		base=None,  # type: Optional[str]
-		server=None,  # type: Optional[str]
-		port=None,  # type: Optional[int]
+		identity,
+		password,
+		base=None,
+		server=None,
+		port=None,
 	):
-		# type: (...) -> univention.admin.uldap.access
-
 		if not cls._ucr:
 			cls._ucr = univention.config_registry.ConfigRegistry()
 			cls._ucr.load()

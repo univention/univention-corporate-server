@@ -95,7 +95,12 @@ class GenericUdmModuleMetadata(BaseUdmModuleMetadata):
 
 
 class GenericUdmModule(BaseUdmModule):
-	_udm_module_cache = {}  # type: Dict[Tuple[str, str, str, str], univention.admin.handlers.simpleLdap]
+	_udm_object_class = GenericUdmObject
+	_udm_module_meta_class = GenericUdmModuleMetadata
+	_udm_module_cache = {}
+	_default_containers = {}
+	supported_api_versions = (0, 1)
+	ucr = None  # type: univention.config_registry.ConfigRegistry
 
 	def __init__(self, name, lo, api_version):  # type: (str, univention.admin.uldap.access, int) -> None
 		ucr = None  # type: univention.config_registry.ConfigRegistry
