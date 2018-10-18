@@ -134,6 +134,7 @@ univention-nagios-uvmmd
 univention-kvm-compat
 libvirt-clients
 ebtables
+netcat-openbsd
 
 firefox-esr-l10n-de
 firefox-esr
