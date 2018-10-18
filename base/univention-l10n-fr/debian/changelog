@@ -1,3 +1,9 @@
+univention-l10n-fr (2.0.0-11) unstable; urgency=low
+
+  * Bug #47861: add support for new syntax class mailinglist_name
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 18 Oct 2018 13:40:52 +0200
+
 univention-l10n-fr (2.0.0-10) unstable; urgency=low
 
   * Bug #47861: make error messages more accurate

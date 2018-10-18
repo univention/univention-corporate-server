@@ -1518,6 +1518,13 @@ msgid ""
 msgstr ""
 "La valeur ne doit contenir que des chiffres, des lettres et des points."
 
+#: modules/univention/admin/syntax.py:997
+msgid ""
+"A mailing list name must start and end with a letter, number or underscore. "
+"In between additionally spaces, dashes and dots are allowed."
+msgstr ""
+"La valeur ne doit contenir que des chiffres, des lettres et des points."
+
 #: modules/univention/admin/syntax.py:1506
 #: modules/univention/admin/syntax.py:1536
 msgid ""
