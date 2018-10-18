@@ -844,15 +844,19 @@ univention-app dev-use-test-appcenter
         <para>
             An app is configured via the App Provider Portal, which offers a
             web interface. There is also an upload interface available. If the
-            developer prefers to keep the app configuration in version control
+            developer prefers to keep the app configuration in a version control
             system, the upload interface offers a good way to push changes for
-            the app to the Test App Center.
+            the app to the Test App Center. The script can also be used in
+            non-interactive mode within other scripts. In such cases username
+            and password should be stored in separate files (no new line at the
+            end) that are passed as parameters.
         </para>
 
         <para>
             The scripts needs to be downloaded from <ulink
                 url="https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control">https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control</ulink>.
-            It requires Python 2.7 and cURL to run. For a list of available actions and their parameters, use the script's help:
+            It requires Python 2.7 and cURL to run. For a list of available
+            actions and their parameters, use the script's help:
                 <programlisting>
                     ./univention-appcenter-control --help
                     ./univention-appcenter-control upload --help
