@@ -1826,8 +1826,8 @@ FILENAME="$(joinscript_container_file "/opt/$APP/my.cnf")"
            <para>
                <emphasis>joinscript_register_schema</emphasis>:
                Registers a LDAP schema file semi automatically. The
-               schema file allows to extend LDAP objets with new
-               attributes.  The file will be copied to the Docker
+               schema file allows to extend LDAP objects with new
+               attributes. The file will be copied to the Docker
                host's
                <filename>/usr/share/univention-appcenter/apps/APPID/APPID.schema</filename>
                during installation. See the <ulink
