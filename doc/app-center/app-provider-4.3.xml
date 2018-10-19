@@ -1781,7 +1781,7 @@ $CONTAINER # docker container id
 
             <itemizedlist>
                 <listitem>
-                    <simpara>
+                    <para>
                         <emphasis>joinscript_add_simple_app_system_user</emphasis>:
                         Adds a domain wide user to the LDAP directory that is
                         not a real Domain User and offers an authentication
@@ -1793,10 +1793,10 @@ $CONTAINER # docker container id
                         <programlisting>
 joinscript_add_simple_app_system_user "$@" --set mailPrimaryAddress=...
                         </programlisting>
-                    </simpara>
+                    </para>
                 </listitem>
                 <listitem>
-                    <simpara>
+                    <para>
                         <emphasis>joinscript_container_is_running</emphasis>:
                         Returns whether or not the Docker container is
                         currently running. 0: Yes, 1: No. Can be used in an if
@@ -1804,27 +1804,27 @@ joinscript_add_simple_app_system_user "$@" --set mailPrimaryAddress=...
                         <programlisting>
 joinscript_container_is_running || die "Container is not running"
                         </programlisting>
-                    </simpara>
+                    </para>
                 </listitem>
                 <listitem>
-                    <simpara>
+                    <para>
                         <emphasis>joinscript_run_in_container</emphasis>: Run
                         one command inside the container. Returns the return
                         code of the command.
                         <programlisting>
 joinscript_run_in_container service myapp restart || die "Could not restart the service"
                         </programlisting>
-                    </simpara>
+                    </para>
                 </listitem>
                 <listitem>
-                    <simpara>
+                    <para>
                         <emphasis>joinscript_container_file</emphasis>: Given a
                         filename, prints the absolute path for the Docker Host
                         for that file inside the container.
                         <programlisting>
 FILENAME="$(joinscript_container_file "/opt/$APP/my.cnf")"
                         </programlisting>
-                    </simpara>
+                    </para>
                 </listitem>
                 <listitem>
                     <simpara>
@@ -1835,7 +1835,7 @@ FILENAME="$(joinscript_container_file "/opt/$APP/my.cnf")"
                     </simpara>
                 </listitem>
                 <listitem>
-                    <simpara>
+                    <para>
                         <emphasis>joinscript_register_schema</emphasis>:
                         Registers a LDAP schema file semi automatically. The
                         schema file allows to extend LDAP objets with new
@@ -1855,7 +1855,7 @@ FILENAME="$(joinscript_container_file "/opt/$APP/my.cnf")"
                         <programlisting>
 joinscript_register_schema "$@"
                         </programlisting>
-                    </simpara>
+                    </para>
                 </listitem>
             </itemizedlist>
 		</section>
