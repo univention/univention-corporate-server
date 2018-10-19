@@ -32,35 +32,46 @@ Base classes for (simplified) UDM modules and objects.
 
 from __future__ import absolute_import, unicode_literals
 from collections import namedtuple
-from typing import Any, Dict, Iterator, Optional, Text
+from typing import Any, Dict, Iterator, List, Optional, Text, TypeVar
 from .utils import ConnectionConfig
 
 
 UdmLdapMapping = namedtuple('UdmLdapMapping', ('ldap2udm', 'udm2ldap'))
 
 
+BaseUdmObjectTV = TypeVar('BaseUdmObjectTV', bound='BaseUdmObject')
+BaseUdmModuleTV = TypeVar('BaseUdmModuleTV', bound='BaseUdmModule')
+BaseUdmModuleMetadataTV = TypeVar('BaseUdmModuleMetadataTV', bound='BaseUdmModuleMetadata')
+BaseUdmObjectPropertiesTV = TypeVar('BaseUdmObjectPropertiesTV', bound='BaseUdmObjectProperties')
+
+
 class BaseUdmObjectProperties(object):
-	def __init__(self, udm_obj):  # type: (BaseUdmObject) -> None
+	def __init__(self, udm_obj):  # type: (BaseUdmObjectTV) -> None
+		self._udm_obj = udm_obj
+
+	def __repr__(self):  # type: () -> Text
 		...
 
-	def __repr__(self):  # type: () -> str
-		...
-
-	def __deepcopy__(self, memo):  # type: (Dict[int, Dict[str, Any]]) -> Dict[str, Any]
+	def __deepcopy__(self, memo):  # type: (Dict[int, Dict[Text, Any]]) -> Dict[Text, Any]
 		...
 
 
 class BaseUdmObject(object):
 	def __init__(self):  # type: () -> None
-		...
+		self.dn = ''
+		self.props = None  # type: BaseUdmObjectPropertiesTV
+		self.options = []  # type: List[Text]
+		self.policies = []  # type: List[Text]
+		self.position = ''  # type: Text
+		self._udm_module = None  # type: BaseUdmModuleTV
 
 	def __repr__(self):  # type: () -> Text
 		...
 
-	def reload(self):  # type: () -> BaseUdmObject
+	def reload(self):  # type: () -> BaseUdmObjectTV
 		...
 
-	def save(self):  # type: () -> BaseUdmObject
+	def save(self):  # type: () -> BaseUdmObjectTV
 		...
 
 	def delete(self):  # type: () -> None
@@ -68,14 +79,18 @@ class BaseUdmObject(object):
 
 
 class BaseUdmModuleMetadata(object):
-	def __init__(self, udm_module, api_version):  # type: (BaseUdmModule, int) -> None
-		...
+	auto_open = True
+	auto_reload = True
+
+	def __init__(self, udm_module, api_version):  # type: (BaseUdmModuleTV, int) -> None
+		self._udm_module = udm_module
+		self.api_version = api_version
 
 	@property
-	def identifying_property(self):  # type: () -> str
+	def identifying_property(self):  # type: () -> Text
 		...
 
-	def lookup_filter(self, filter_s=None):  # type: (Optional[str]) -> str
+	def lookup_filter(self, filter_s=None):  # type: (Optional[Text]) -> Text
 		...
 
 	@property
@@ -85,20 +100,23 @@ class BaseUdmModuleMetadata(object):
 
 class BaseUdmModule(object):
 	def __init__(self, name, connection_config, api_version):  # type: (Text, ConnectionConfig, int) -> None
-		...
+		self.name = name
+		self._connection_config = connection_config
+		self.connection = None  # type: Any
+		self.meta = None  # type: BaseUdmModuleMetadataTV
 
 	def __repr__(self):  # type: () -> Text
 		...
 
-	def new(self):  # type: () -> BaseUdmObject
+	def new(self):  # type: () -> BaseUdmObjectTV
 		...
 
-	def get(self, dn):  # type: (Text) -> BaseUdmObject
+	def get(self, dn):  # type: (Text) -> BaseUdmObjectTV
 		...
 
-	def get_by_id(self, id):  # type: (Text) -> BaseUdmObject
+	def get_by_id(self, id):  # type: (Text) -> BaseUdmObjectTV
 		...
 
 	def search(self, filter_s='', base='', scope='sub'):
-		# type: (str, Optional[str], Optional[str]) -> Iterator[BaseUdmObject]
+		# type: (Text, Optional[Text], Optional[Text]) -> Iterator[BaseUdmObjectTV]
 		...

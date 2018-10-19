@@ -30,15 +30,15 @@ from __future__ import absolute_import, unicode_literals
 from .base import BaseUdmModule, BaseUdmObject
 from .factory_config import UdmModuleFactoryConfiguration
 from .utils import UDebug as ud, ConnectionConfig
-from typing import Dict, Optional, Tuple, Type
+from typing import Dict, Optional, Text, Tuple, Type
 
 
 __default_api_version__ = 1
 
 
 class Udm(object):
-	_module_class_cache = {}  # type: Dict[Tuple[int, str, str], Type[BaseUdmModule]]
-	_module_object_cache = {}  # type: Dict[Tuple[int, str, str, str, str, str], BaseUdmModule]
+	_module_class_cache = {}  # type: Dict[Tuple[int, Text, Text], Type[BaseUdmModule]]
+	_module_object_cache = {}  # type: Dict[Tuple[int, Text, Text, Text, Text, Text], BaseUdmModule]
 
 	def __init__(self, connection_config, api_version=None):  # type: (ConnectionConfig, Optional[int]) -> None
 		...
@@ -54,10 +54,10 @@ class Udm(object):
 	@classmethod
 	def using_credentials(
 			cls,
-			identity,  # type: str
-			password,  # type: str
-			base=None,  # type: Optional[str]
-			server=None,  # type: Optional[str]
+			identity,  # type: Text
+			password,  # type: Text
+			base=None,  # type: Optional[Text]
+			server=None,  # type: Optional[Text]
 			port=None,  # type: Optional[int]
 	):
 		# type: (...) -> Udm
@@ -66,14 +66,14 @@ class Udm(object):
 	def version(self, api_version):  # type: (int) -> Udm
 		...
 
-	def get(self, name):  # type: (str) -> BaseUdmModule
+	def get(self, name):  # type: (Text) -> BaseUdmModule
 		...
 
-	def identify_object_by_dn(self, dn):  # type: (str) -> BaseUdmObject
+	def identify_object_by_dn(self, dn):  # type: (Text) -> BaseUdmObject
 		...
 
 	def _get_by_factory_config(self, name, factory_config):
-		# type: (str, UdmModuleFactoryConfiguration) -> BaseUdmModule
+		# type: (Text, UdmModuleFactoryConfiguration) -> BaseUdmModule
 		...
 
 	@property

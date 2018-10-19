@@ -115,9 +115,9 @@ class GenericUdmObject(BaseUdmObject):
 		:py:class:`UdmModule`.
 		"""
 		super(GenericUdmObject, self).__init__()
-		self._udm_module = None  # type: GenericUdmModule
-		self._lo = None  # type: univention.admin.uldap.access
-		self._orig_udm_object = None  # type: univention.admin.handlers.simpleLdap
+		self._udm_module = None
+		self._lo = None
+		self._orig_udm_object = None
 		self._old_position = ''
 		self._fresh = True
 		self._deleted = False
@@ -182,7 +182,6 @@ class GenericUdmObject(BaseUdmObject):
 					), dn=self.dn, module_name=self._udm_module.name
 				), sys.exc_info()[2]
 		else:
-			print('create')
 			try:
 				self.dn = self._orig_udm_object.create()
 			except univention.admin.uexceptions.base as exc:
@@ -307,7 +306,10 @@ class GenericUdmObject(BaseUdmObject):
 		"""
 		for key in self._orig_udm_object.keys():
 			if key in self._orig_udm_object.info:
-				if self._orig_udm_object.descriptions[key].multivalue and not isinstance(self._orig_udm_object.info[key], list):
+				if (
+					self._orig_udm_object.descriptions[key].multivalue and
+					not isinstance(self._orig_udm_object.info[key], list)
+				):
 					# why isn't this correct in the first place?
 					setattr(self.props, key, [self._orig_udm_object.info[key]])
 					continue

@@ -93,11 +93,11 @@ class BaseUdmObject(object):
 		:py:class:`BaseUdmModule`.
 		"""
 		self.dn = ''
-		self.props = None  # type: BaseUdmObjectProperties
-		self.options = []  # type: List[str]
-		self.policies = []  # type: List[str]
+		self.props = None
+		self.options = []
+		self.policies = []
 		self.position = ''
-		self._udm_module = None  # type: BaseUdmModule
+		self._udm_module = None
 
 	def __repr__(self):
 		return '{}({!r}, {!r})'.format(
