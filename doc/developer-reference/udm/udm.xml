@@ -454,7 +454,7 @@ w				The schema is shipped as <filename>/usr/share/extended-attribute/extended-a
 					This can be done by using <command>ucs_registerLDAPExtension</command> which is described in <xref linkend="join:libraries:shell"/>.
 				</para>
 				<para>
-					As an alternative the file can be put into the directory <filename class="directory">/usr/share/pyshared/univention/admin/syntax.d/</filename> and linked into the directory <filename class="directory">/usr/lib/pymodules/python2.6/univention/admin/syntax.d/</filename>.
+					As an alternative the file can be put into the directory <filename class="directory">/usr/share/pyshared/univention/admin/syntax.d/</filename> and linked into the directory <filename class="directory">/usr/lib/pymodules/python2.7/univention/admin/syntax.d/</filename>.
 					When included into a Debian package, the linking is normally done by <command>dh_python</command>.
 				</para>
 				<para>
@@ -691,7 +691,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 				Hooks can modify the <acronym>LDAP</acronym> operations when an object is created, modified, deleted or retrieved.
 				They are implemented in Python and the file must be placed in the directory <filename class="directory">/usr/share/pyshared/univention/admin/hooks.d/</filename><footnote>
 					<simpara>
-						This assumes that the hook file is packaged and linked by <command>dh_pysupport</command> to <filename>/usr/lib/pymodules/python<replaceable>2.6</replaceable>/univention/admin/hooks.d/</filename> for Python 2.6 or whatever Python version is used.
+						This assumes that the hook file is packaged and linked by <command>dh_pysupport</command> to <filename>/usr/lib/pymodules/python<replaceable>2.7</replaceable>/univention/admin/hooks.d/</filename> for Python 2.7 or whatever Python version is used.
 						If the file is installed manually, it must be placed on a path listed in <literal>sys.path</literal>.
 					</simpara>
 				</footnote>.
