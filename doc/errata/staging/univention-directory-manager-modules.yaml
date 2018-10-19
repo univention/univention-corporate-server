@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-directory-manager-modules
-fix:
+fix: 13.0.25-6A~4.3.0.201810191551
 desc: |-
   This update addresses the following issue(s):
   * Revert reloading syntax.py
