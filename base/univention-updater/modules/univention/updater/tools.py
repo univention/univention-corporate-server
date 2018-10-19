@@ -42,6 +42,7 @@ from commands import (
     cmd_update,
 )
 from errors import (
+    UnmetDependencyError,
     CannotResolveComponentServerError,
     ConfigurationError,
     DownloadError,
@@ -1167,8 +1168,10 @@ class UniventionUpdater:
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         (stdout, stderr) = p1.communicate()
         ud.debug(ud.NETWORK, ud.PROCESS, 'check for updates with "dist-upgrade -s", the returncode is %d' % p1.returncode)
+
         if p1.returncode == 100:
-            print stderr
+            raise UnmetDependencyError(stderr)
+
         ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
         ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
 
