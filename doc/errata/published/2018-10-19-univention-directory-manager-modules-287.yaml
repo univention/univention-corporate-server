@@ -8,3 +8,5 @@ desc: |-
   This update addresses the following issue(s):
   * Revert reloading syntax.py
 bug: [48026]
+erratum: 287
+announced: 2018-10-19
