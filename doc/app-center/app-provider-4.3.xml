@@ -1752,14 +1752,118 @@ docker exec "$CONTAINER" ...
                 This script is executed on the UCS host system after the Docker
                 container is configured. Please refer the to the <ulink
                     url="https://docs.software-univention.de/developer-reference.html#chap:join">Developer
-                    Reference</ulink> about how to write a join script. If it
-                runs successfully, the join script may save this information in
-                a status file. If this does not happen, the user is constantly
-                reminded to re-run the join script. So the join script does not
-                need to run successfully. The installation will not be aborted
-                at this point. But of course at some point it should run
-                through successfully.
-			</para>
+                    Reference</ulink> about how to write a join script. In
+                principle a join script is a script that runs after the
+                installation of an app and it has write access to the LDAP
+                directory service. If it runs successfully, the join script may
+                save this information in a status file. If this does not
+                happen, the user is constantly reminded to re-run the join
+                script. So the join script does not need to run successfully.
+                The installation will not be aborted at this point. But of
+                course at some point it should run through successfully.
+            </para>
+            <para>
+                Apart from the functions documented in the Developer Reference,
+                the below listed functions are available in join scripts for
+                dealing with apps. They require the following line in the
+                script:
+                <programlisting>
+. /usr/share/univention-appcenter/joinscripthelper.sh
+                </programlisting>
+                Furthermore, this call provides access to the following variables:
+                <programlisting>
+$APP # app id
+$APP_VERSION # app version
+$SERVICE # app name
+$CONTAINER # docker container id
+                </programlisting>
+            </para>
+
+            <itemizedlist>
+                <listitem>
+                    <simpara>
+                        <emphasis>joinscript_add_simple_app_system_user</emphasis>:
+                        Adds a domain wide user to the LDAP directory that is
+                        not a real Domain User and offers an authentication
+                        account. It can be used as bind user for the app to
+                        connect to the LDAP directory. The password will be
+                        stored on the Docker Host at
+                        <filename>/etc/$APP.secret</filename>. The DN will be
+                        <option>uid=$APP-systemuser,cn=users,$ldap_base</option>.
+                        <programlisting>
+joinscript_add_simple_app_system_user "$@" --set mailPrimaryAddress=...
+                        </programlisting>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        <emphasis>joinscript_container_is_running</emphasis>:
+                        Returns whether or not the Docker container is
+                        currently running. 0: Yes, 1: No. Can be used in an if
+                        statement.
+                        <programlisting>
+joinscript_container_is_running || die "Container is not running"
+                        </programlisting>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        <emphasis>joinscript_run_in_container</emphasis>: Run
+                        one command inside the container. Returns the return
+                        code of the command.
+                        <programlisting>
+joinscript_run_in_container service myapp restart || die "Could not restart the service"
+                        </programlisting>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        <emphasis>joinscript_container_file</emphasis>: Given a
+                        filename, prints the absolute path for the Docker Host
+                        for that file inside the container.
+                        <programlisting>
+FILENAME="$(joinscript_container_file "/opt/$APP/my.cnf")"
+                        </programlisting>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        <emphasis>joinscript_container_file_touch</emphasis>:
+                        Creates a file inside the container. Directories are
+                        created along the way. Prints the resulting filename
+                        just like "joinscript_container_file".
+                        <programlisting>
+cat > "$(joinscript_container_file_touch /etc/myapp/config)" <<- EOF
+Creating a new file inside the container
+from outside and with no special package tweaking
+EOF
+                        </programlisting>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        <emphasis>joinscript_register_schema</emphasis>:
+                        Registers a LDAP schema file semi automatically. The
+                        schema file allows to extend LDAP objets with new
+                        attributes.  The file will be copied to the Docker
+                        host's
+                        <filename>/usr/share/univention-appcenter/apps/APPID/APPID.schema</filename>
+                        during installation. See the <ulink
+                            url="http://www.openldap.org/doc/admin24/schema.html">LDAP
+                            documentation</ulink> for the syntax of a schema
+                        file. If you need an "official" OID namespace,
+                        Univention can provide one. It is important to note
+                        that shipping this file alone is not enough. The file
+                        content can be provided in the App Provider portal on
+                        the <guimenu>Docker</guimenu> tab, in the
+                        <guimenu>Configuration files</guimenu> section in the
+                        field for <guimenu>Schema extension for LDAP</guimenu>.
+                        <programlisting>
+joinscript_register_schema "$@"
+                        </programlisting>
+                    </simpara>
+                </listitem>
+            </itemizedlist>
 		</section>
 	</section>
 	<section id="uninstallation-scripts">
