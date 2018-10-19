@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-directory-manager-modules
+fix:
+desc: |-
+  This update addresses the following issue(s):
+  * Revert reloading syntax.py
+bug: [48026]
