@@ -9,3 +9,5 @@ desc: |
  * Ensure update of syntax class "mailinglist_name" in running Python
    processes.
 bug: [48020]
+erratum: 286
+announced: 2018-10-19
