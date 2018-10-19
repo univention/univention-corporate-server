@@ -1832,12 +1832,6 @@ FILENAME="$(joinscript_container_file "/opt/$APP/my.cnf")"
                         Creates a file inside the container. Directories are
                         created along the way. Prints the resulting filename
                         just like "joinscript_container_file".
-                        <programlisting>
-cat > "$(joinscript_container_file_touch /etc/myapp/config)" <<- EOF
-Creating a new file inside the container
-from outside and with no special package tweaking
-EOF
-                        </programlisting>
                     </simpara>
                 </listitem>
                 <listitem>
