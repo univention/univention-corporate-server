@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-directory-manager-modules
+fix: 13.0.25-5A~4.3.0.201810191225
+desc: |
+ This update addresses the following issue(s):
+ * Ensure update of syntax class "mailinglist_name" in running Python
+   processes.
+bug: [48020]
