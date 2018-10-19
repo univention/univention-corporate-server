@@ -27,3 +27,38 @@ create_gpo () {
 	python shared-utils/ucs-winrm.py run-ps --credssp \
     	--cmd "set-GPPrefRegistryValue -Name $name -Context $context -key $key -ValueName "$name" -Type String -value "$name" -Action Update"
 }
+
+check_user_in_ucs () {
+	local username="$1"
+	local password="$2"
+	local binddn="$(univention-ldapsearch uid="$username" dn | sed -ne 's|dn: ||p')"
+	# nss/pam
+	getent passwd | grep -w "$username"
+	su "$username" -c "exit"
+	# kerberos
+	echo "$password" > /tmp/pwdfile
+	kinit --password-file=/tmp/pwdfile $1
+	# ucs ldap
+	univention-ldapsearch -D "$binddn" -w "$password" "uid=$username"
+	# samba/ldap
+	ldbsearch -U "$username"%"$password" -H ldap://127.0.0.1 "cn=$username"
+	smbclient -U "$username"%"$password" //$(hostname)/sysvol -c exit
+}
+
+check_admin_umc () {
+	local username="$1"
+	local password="$2"
+	local binddn="$(univention-ldapsearch uid="$username" dn | sed -ne 's|dn: ||p')"
+	umc-command -U "$username" -P "$password" udm/get -f users/user -l -o "$binddn"
+}
+
+check_user_in_group () {
+	local username="$1"
+	local groupname="$2"
+	udm groups/group list --filter name="$groupname" | grep "$username"
+	local exitcode=$?
+	if [ "$exitcode" -ne 0 ]; then
+		printf '%s\n' 'user in group not found' >&2
+		exit 1
+	fi
+}
