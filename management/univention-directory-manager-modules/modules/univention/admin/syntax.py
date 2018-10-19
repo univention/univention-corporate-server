@@ -73,7 +73,7 @@ def import_syntax_files():
 		syntax_d = os.path.join(dir_, 'univention/admin/syntax.d/')
 
 		if os.path.exists(syntax_py) and os.path.isdir(syntax_d):
-			syntax_files = [syntax_py] + [os.path.join(syntax_d, f) for f in os.listdir(syntax_d) if f.endswith('.py')]
+			syntax_files = (os.path.join(syntax_d, f) for f in os.listdir(syntax_d) if f.endswith('.py'))
 
 			for fn in syntax_files:
 				try:

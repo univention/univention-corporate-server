@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.25-6) unstable; urgency=medium
+
+  * Bug #48026: Revert loading syntax.py itself
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 19 Oct 2018 15:48:23 +0200
+
 univention-directory-manager-modules (13.0.25-5) unstable; urgency=low
 
   * Bug #47861: move syntax class for mailing list names to separate module to
