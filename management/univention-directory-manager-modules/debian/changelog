@@ -1,3 +1,11 @@
+univention-directory-manager-modules (13.0.25-5) unstable; urgency=low
+
+  * Bug #47861: move syntax class for mailing list names to separate module to
+    ensure loading by running Python processes
+  * reload syntax.py itself
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 19 Oct 2018 12:22:59 +0200
+
 univention-directory-manager-modules (13.0.25-4) unstable; urgency=low
 
   * Bug #47861: add separate syntax class for mailing list names
