@@ -252,13 +252,13 @@ class StringIntPropertyEncoder(BaseEncoder):
 	static = False
 
 	def decode(self, value=None):
-		if value is None:
-			return value
+		if value in ('',  None):
+			return None
 		else:
 			try:
 				return int(value)
 			except ValueError:
-				raise valueInvalidSyntax, valueInvalidSyntax('Value of {!r} must be an int.'.format(self.property_name)), sys.exc_info()[2]
+				raise valueInvalidSyntax, valueInvalidSyntax('Value of {!r} must be an int (is {!r}).'.format(self.property_name, value)), sys.exc_info()[2]
 
 	@staticmethod
 	def encode(value=None):
@@ -501,6 +501,7 @@ class DnPropertyEncoder(BaseEncoder):
 	@property
 	def udm(self):
 		return self._udm
+
 
 def _classify_name(name):
 	mod_parts = name.split('/')
