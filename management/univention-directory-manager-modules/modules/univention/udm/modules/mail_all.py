@@ -52,7 +52,8 @@ class MailAllUdmObjectProperties(GenericUdmObjectProperties):
 	"""mail/* UDM properties."""
 
 	_encoders = {
-		'mailUserQuota': StringIntPropertyEncoder,
+		'mailQuota': StringIntPropertyEncoder,  # mail/folder
+		'mailUserQuota': StringIntPropertyEncoder,  # oxmail/oxfolder
 		'sharedFolderGroupACL': ListOfListOflTextToDictPropertyEncoder,
 		'sharedFolderUserACL': ListOfListOflTextToDictPropertyEncoder,
 	}
