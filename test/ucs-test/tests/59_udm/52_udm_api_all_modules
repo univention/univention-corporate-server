@@ -40,7 +40,7 @@ class TestUdmGenericVariousModules(TestCase):
 		print('OK: all modules could be loaded.')
 		len_module_object_cache = len(Udm._module_object_cache)
 		assert len_module_object_cache == len(self.avail_modules), 'Udm._module_object_cache has {} entries (should be {}).'.format(len_module_object_cache, len(Udm._module_object_cache))
-		print('OK: class and object caches are used.')
+		print('OK: object cache is used.')
 		stats = defaultdict(int)
 		for mod_name in self.avail_modules:
 			print('Listing objects of type {!r}...'.format(mod_name))
@@ -57,7 +57,7 @@ class TestUdmGenericVariousModules(TestCase):
 			print('OK: found {} objects of type {!r}.'.format(num + 1, mod_name))
 			if num > 0:
 				stats['mods'] += 1
-				stats['objs'] += 1
+				stats['objs'] += num
 		print('OK: loaded {objs} objects in {mods} modules.'.format(**stats))
 
 

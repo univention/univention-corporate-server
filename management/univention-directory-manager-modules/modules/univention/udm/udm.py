@@ -214,22 +214,25 @@ class Udm(object):
 		:rtype: BaseUdmModule
 		:raises ApiVersionNotSupported: if the Python module for `name` could not be loaded
 		"""
-		self._import()
-		possible = []
-		for module in self._modules:
-			if self.api_version not in module.meta.supported_api_versions:
-				continue
-			for suitable in module.meta.suitable_for:
-				if fnmatch(name, suitable):
-					possible.append((suitable.count('*'), module))
-					break
-		possible.sort(key=itemgetter(0))
-		try:
-			klass = possible[0][1]
-		except IndexError:
-			raise ApiVersionNotSupported(module_name=name, requested_version=self.api_version)
-		else:
-			return klass(self, name)
+		key = (name, self._api_version, self.connection.binddn)
+		if key not in self._module_object_cache:
+			self._import()
+			suitable_modules = []
+			for module in self._modules:
+				if self.api_version not in module.meta.supported_api_versions:
+					continue
+				for suitable in module.meta.suitable_for:
+					if fnmatch(name, suitable):
+						suitable_modules.append((suitable.count('*'), module))
+						break
+			suitable_modules.sort(key=itemgetter(0))
+			try:
+				klass = suitable_modules[0][1]
+			except IndexError:
+				raise ApiVersionNotSupported(module_name=name, requested_version=self.api_version)
+			else:
+				self._module_object_cache[key] = klass(self, name)
+		return self._module_object_cache[key]
 
 	def obj_by_dn(self, dn):
 		"""

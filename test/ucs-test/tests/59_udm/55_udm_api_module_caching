@@ -1,0 +1,23 @@
+#!/usr/share/ucs-test/runner python
+# -*- coding: utf-8 -*-
+## desc: Test UDM APIs module caching
+## exposure: dangerous
+## roles: [domaincontroller_master]
+## packages: [python-univention-directory-manager]
+## bugs: [47316]
+
+from unittest import main, TestCase
+from univention.udm import Udm
+
+
+class TestUdmModuleCaching(TestCase):
+	def test_caching(self):
+		assert Udm.using_admin().version(0).get('users/user') is Udm.using_admin().version(0).get('users/user')
+		assert Udm.using_admin().version(0).get('users/user') is not Udm.using_admin().version(1).get('users/user')
+		assert Udm.using_admin().version(1).get('users/user') is Udm.using_admin().version(1).get('users/user')
+		assert Udm.using_admin().version(0).get('users/user') is not Udm.using_admin().version(0).get('groups/group')
+		assert Udm.using_admin().version(0).get('users/user') is not Udm.using_machine().version(0).get('users/user')
+
+
+if __name__ == '__main__':
+	main(verbosity=2)
