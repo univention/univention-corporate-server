@@ -75,7 +75,7 @@ class GenericUdmObjectProperties(BaseUdmObjectProperties):
 
 	:py:attr:`_encoders` is a mapping from property names to subclasses of
 	_encoders.BaseEncoder, which will be used to transparently map between the
-	properties representation in UDM1 and the new UDM APIs.
+	properties representation in original UDM and the new UDM APIs.
 	"""
 
 	_encoders = {}
@@ -363,10 +363,8 @@ class GenericUdmObject(BaseUdmObject):
 					continue
 				elif arg in kwargs:
 					continue
-				elif arg == 'api_version':
-					kwargs['api_version'] = self._udm_module.meta.used_api_version
-				elif arg == 'connection_config':
-					kwargs['connection_config'] = self._udm_module._connection_config
+				elif arg == 'udm':
+					kwargs['udm'] = self._udm_module._udm
 				else:
 					raise TypeError('Unknown argument {!r} for {}.__init__.'.format(arg, encoder_class.__class__.__name__))
 			return encoder_class(**kwargs)

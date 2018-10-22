@@ -36,7 +36,6 @@ import datetime
 import time
 import lazy_object_proxy
 from .binary_props import Base64BinaryProperty
-from .udm import Udm
 from .utils import UDebug
 from .exceptions import UnknownUdmModuleType
 from univention.admin.uexceptions import valueInvalidSyntax
@@ -312,16 +311,11 @@ class DnListPropertyEncoder(BaseEncoder):
 		def __repr__(self, __getattr__=object.__getattribute__):
 			return super(DnListPropertyEncoder.MyProxy, self).__str__()
 
-	def __init__(self, property_name=None, connection_config=None, api_version=None, *args, **kwargs):
-		# type: (Optional[Text], Optional[ConnectionConfig], Optional[int], *Any, **Any) -> None
-		assert connection_config is not None, 'Argument "connection_config" must not be None.'
-		assert api_version is not None, 'Argument "api_version" must not be None.'
-		super(DnListPropertyEncoder, self).__init__(property_name, connection_config, api_version, *args, **kwargs)
-		self._connection_config = connection_config
-		self._api_version = api_version
-
-	def __repr__(self):
-		return '{}({}[{}])'.format(self.__class__.__name__, self.property_name, self._api_version)
+	def __init__(self, property_name=None, udm=None, *args, **kwargs):
+		# type: (Optional[Text], Optional[Udm], *Any, **Any) -> None
+		assert udm is not None, 'Argument "udm" must not be None.'
+		super(DnListPropertyEncoder, self).__init__(property_name, *args, **kwargs)
+		self._udm = udm
 
 	def _list_of_dns_to_list_of_udm_objects(self, value):
 		udm_module = None
@@ -359,7 +353,7 @@ class DnListPropertyEncoder(BaseEncoder):
 
 	@property
 	def udm(self):
-		return Udm(self._connection_config).version(self._api_version)
+		return self._udm
 
 
 class CnameListPropertyEncoder(DnListPropertyEncoder):
@@ -473,16 +467,11 @@ class DnPropertyEncoder(BaseEncoder):
 		def __repr__(self, __getattr__=object.__getattribute__):
 			return super(DnPropertyEncoder.MyProxy, self).__str__()
 
-	def __init__(self, property_name=None, connection_config=None, api_version=None, *args, **kwargs):
-		# type: (Optional[Text], Optional[ConnectionConfig], Optional[int], *Any, **Any) -> None
-		assert connection_config is not None, 'Argument "connection_config" must not be None.'
-		assert api_version is not None, 'Argument "api_version" must not be None.'
-		super(DnPropertyEncoder, self).__init__(property_name, connection_config, api_version, *args, **kwargs)
-		self._connection_config = connection_config
-		self._api_version = api_version
-
-	def __repr__(self):
-		return '{}({}[{}])'.format(self.__class__.__name__, self.property_name, self._api_version)
+	def __init__(self, property_name=None, udm=None, *args, **kwargs):
+		# type: (Optional[Text], Optional[Udm], *Any, **Any) -> None
+		assert udm is not None, 'Argument "udm" must not be None.'
+		super(DnPropertyEncoder, self).__init__(property_name, *args, **kwargs)
+		self._udm = udm
 
 	def _dn_to_udm_object(self, value):
 		try:
@@ -511,7 +500,7 @@ class DnPropertyEncoder(BaseEncoder):
 
 	@property
 	def udm(self):
-		return Udm(self._connection_config).version(self._api_version)
+		return self._udm
 
 def _classify_name(name):
 	mod_parts = name.split('/')

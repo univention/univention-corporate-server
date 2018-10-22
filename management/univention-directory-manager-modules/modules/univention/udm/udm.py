@@ -80,9 +80,8 @@ import os.path
 from fnmatch import fnmatch
 from glob import glob
 
-from .base import BaseUdmModule
 from .exceptions import ApiVersionNotSupported, NoObject, UnknownUdmModuleType
-from .utils import load_class, UDebug as ud, ConnectionConfig, get_connection
+from .utils import UDebug as ud, ConnectionConfig, get_connection
 
 
 __default_api_version__ = 1

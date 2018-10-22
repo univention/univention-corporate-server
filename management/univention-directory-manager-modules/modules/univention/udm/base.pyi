@@ -99,11 +99,9 @@ class BaseUdmModuleMetadata(object):
 
 
 class BaseUdmModule(object):
-	def __init__(self, name, connection_config, api_version):  # type: (Text, ConnectionConfig, int) -> None
+	def __init__(self, udm, name):  # type: (Udm, Text) -> None
+		self._udm_module = udm_module
 		self.name = name
-		self._connection_config = connection_config
-		self.connection = None  # type: Any
-		self.meta = None  # type: BaseUdmModuleMetadataTV
 
 	def __repr__(self):  # type: () -> Text
 		...
