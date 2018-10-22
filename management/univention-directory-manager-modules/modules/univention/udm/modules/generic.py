@@ -54,6 +54,12 @@ from ..exceptions import (
 )
 from ..utils import UDebug as ud
 
+
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+DEFAULT_CONTAINERS_DN = 'cn=default containers,cn=univention,{}'.format(ucr['ldap/base'])
+
+
 class UdmModuleMeta(type):
 	def __new__(mcs, name, bases, attrs):
 		meta = attrs.pop('Meta', None)
@@ -62,11 +68,6 @@ class UdmModuleMeta(type):
 		new_cls.meta = new_cls_meta
 		Udm._modules.append(new_cls)
 		return new_cls
-
-
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
-DEFAULT_CONTAINERS_DN = 'cn=default containers,cn=univention,{}'.format(ucr['ldap/base'])
 
 
 class GenericUdmObjectProperties(BaseUdmObjectProperties):

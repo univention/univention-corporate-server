@@ -77,6 +77,8 @@ argument when creating a Udm object::
 from __future__ import absolute_import, unicode_literals
 import sys
 import os.path
+import importlib
+from operator import itemgetter
 from fnmatch import fnmatch
 from glob import glob
 
@@ -101,6 +103,8 @@ class Udm(object):
 	"""
 	_module_class_cache = {}
 	_module_object_cache = {}
+	_imported = False
+	_modules = []
 
 	def __init__(self, connection_config, api_version=None):
 		"""
@@ -191,9 +195,6 @@ class Udm(object):
 		self._api_version = api_version
 		return self
 
-	_imported = False
-	_modules = []
-
 	@classmethod
 	def _import(cls):
 		if cls._imported:
@@ -201,10 +202,10 @@ class Udm(object):
 		path = os.path.dirname(__file__)
 		for pymodule in glob(os.path.join(path, 'modules', '*.py')):
 			pymodule_name = os.path.basename(pymodule)[:-3]  # without .py
-			__import__('univention.udm.modules.%s' % pymodule_name)
+			importlib.import_module('univention.udm.modules.{}'.format(pymodule_name))
 		cls._imported = True
 
-	def get(self, name):  # type: (str) -> BaseUdmModule
+	def get(self, name):
 		"""
 		Get an object of :py:class:`BaseUdmModule` (or of a subclass) for UDM
 		module `name`.
@@ -223,8 +224,9 @@ class Udm(object):
 				if fnmatch(name, suitable):
 					possible.append((suitable.count('*'), module))
 					break
+		possible.sort(key=itemgetter(0))
 		try:
-			klass = sorted(possible)[0][1]
+			klass = possible[0][1]
 		except IndexError:
 			raise ApiVersionNotSupported(module_name=name, requested_version=self.api_version)
 		else:
