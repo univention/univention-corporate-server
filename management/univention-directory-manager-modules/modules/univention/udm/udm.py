@@ -82,7 +82,6 @@ from glob import glob
 
 from .base import BaseUdmModule
 from .exceptions import ApiVersionNotSupported, NoObject, UnknownUdmModuleType
-from .factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
 from .utils import load_class, UDebug as ud, ConnectionConfig, get_connection
 
 
@@ -118,7 +117,6 @@ class Udm(object):
 		self._api_version = None
 		if api_version is not None:
 			self.version(api_version)
-		self._configuration_storage = UdmModuleFactoryConfigurationStorage()
 
 	@classmethod
 	def using_admin(cls):
@@ -215,23 +213,21 @@ class Udm(object):
 		:param str name: UDM module name (e.g. `users/user`)
 		:return: object of a subclass of :py:class:`BaseUdmModule`
 		:rtype: BaseUdmModule
-		:raises ImportError: if the Python module for `name` could not be loaded
+		:raises ApiVersionNotSupported: if the Python module for `name` could not be loaded
 		"""
 		self._import()
 		possible = []
 		for module in self._modules:
-			print module
 			if self.api_version not in module.meta.supported_api_versions:
 				continue
 			for suitable in module.meta.suitable_for:
-				print name, suitable
 				if fnmatch(name, suitable):
 					possible.append((suitable.count('*'), module))
 					break
 		try:
 			klass = sorted(possible)[0][1]
 		except IndexError:
-			raise UnknownUdmModuleType()
+			raise ApiVersionNotSupported(module_name=name, requested_version=self.api_version)
 		else:
 			return klass(self, name)
 
@@ -263,37 +259,6 @@ class Udm(object):
 		udm_module = self.get(uot)
 		return udm_module.get(dn)
 
-	def _get_by_factory_config(self, name, factory_config):
-		"""
-		Get an object of :py:class:`BaseUdmModule` (or of a subclass) for UDM
-		factory configuration `factory_configuration`.
-
-		:param str name: UDM module name (e.g. `users/user`)
-		:param UdmModuleFactoryConfiguration factory_config: UDM module factory configuration
-		:return: object of a subclass of :py:class:`BaseUdmModule`
-		:rtype: BaseUdmModule
-		:raises ImportError: if the Python module for `name` could not be loaded
-		"""
-		assert isinstance(factory_config, UdmModuleFactoryConfiguration)
-		# key is (version, connection + class)
-		key = (
-			self.api_version,
-			str(self.connection_config),
-			name, factory_config.module_path, factory_config.class_name
-		)
-		if key not in self._module_object_cache:
-			ud.debug('Trying to load UDM module {!r} for configuration {!r}...'.format(name, factory_config))
-			module_cls = self._load_module(factory_config)
-			if self.api_version not in module_cls.supported_api_versions:
-				raise ApiVersionNotSupported(
-					module_name=name,
-					module_cls=module_cls,
-					requested_version=self.api_version,
-					supported_versions=module_cls.supported_api_versions,
-				)
-			self._module_object_cache[key] = module_cls(name, self.connection_config, self.api_version)
-		return self._module_object_cache[key]
-
 	@property
 	def api_version(self):
 		if self._api_version is None:
@@ -301,13 +266,3 @@ class Udm(object):
 				__default_api_version__))
 			self._api_version = __default_api_version__
 		return self._api_version
-
-	def _load_module(self, factory_config):
-		key = (self.api_version, factory_config.module_path, factory_config.class_name)
-		if key not in self._module_class_cache:
-			candidate_cls = load_class(factory_config.module_path, factory_config.class_name)
-			if not issubclass(candidate_cls, BaseUdmModule):
-				raise ValueError('{!r} is not a subclass of BaseUdmModule.'.format(candidate_cls))
-			ud.debug('Loaded {!r}.'.format(candidate_cls))
-			self._module_class_cache[key] = candidate_cls
-		return self._module_class_cache[key]

@@ -60,33 +60,6 @@ if [ "$1" = "configure" ]; then
 	fi
 fi
 
-# TODO: create cmdline tool for this
-# TODO: move to join script
-#
-# r"^.*/.*$" must be first, so it is chosen last!
-python -c 'from univention.udm.factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
-config_storage = UdmModuleFactoryConfigurationStorage(True)
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^.*/.*$", "univention.udm.modules.generic", "GenericUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^computers/.*$", "univention.udm.modules.computers_all", "ComputersAllUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^appcenter/app$", "univention.udm.modules.appcenter_app", "AppcenterAppUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^container/cn$", "univention.udm.modules.container_cn", "ContainerCnUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^container/dc$", "univention.udm.modules.container_dc", "ContainerDcUdmModule"))
-# no conversion required for container/msgpo
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^container/ou$", "univention.udm.modules.container_ou", "ContainerOuUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^groups/group$", "univention.udm.modules.groups_group", "GroupsGroupUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^nagios/service$", "univention.udm.modules.nagios_service", "NagiosServiceUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^mail/.*$", "univention.udm.modules.mail_all", "MailAllUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^policies/registry$", "univention.udm.modules.policies_registry", "PoliciesRegistryUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^policies/share_userquota$", "univention.udm.modules.policies_share_userquota", "PoliciesShareUserquotaUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^policies/umc$", "univention.udm.modules.policies_umc", "PoliciesUmcUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^saml/serviceprovider$", "univention.udm.modules.saml_serviceprovider", "SamlServiceproviderUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^settings/directory$", "univention.udm.modules.settings_directory", "SettingsDirectoryUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^settings/portal$", "univention.udm.modules.settings_portal", "SettingsPortalUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^settings/portal_entry$", "univention.udm.modules.settings_portal_entry", "SettingsPortalEntryUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^users/contact$", "univention.udm.modules.users_user", "UsersUserUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^users/ldap$", "univention.udm.modules.users_user", "UsersUserUdmModule"))
-config_storage.register_configuration(UdmModuleFactoryConfiguration(r"^users/user$", "univention.udm.modules.users_user", "UsersUserUdmModule"))'
-
 stop_udm_cli_server
 
 call_joinscript 18python-univention-directory-manager.inst

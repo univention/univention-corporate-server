@@ -28,7 +28,6 @@
 
 from __future__ import absolute_import, unicode_literals
 from .base import BaseUdmModule, BaseUdmObject
-from .factory_config import UdmModuleFactoryConfiguration
 from .utils import UDebug as ud, ConnectionConfig
 from typing import Dict, Optional, Text, Tuple, Type
 
@@ -72,13 +71,6 @@ class Udm(object):
 	def obj_by_dn(self, dn):  # type: (Text) -> BaseUdmObject
 		...
 
-	def _get_by_factory_config(self, name, factory_config):
-		# type: (Text, UdmModuleFactoryConfiguration) -> BaseUdmModule
-		...
-
 	@property
 	def _api_version(self):  # type: () -> int
-		...
-
-	def _load_module(self, factory_config):  # type: (UdmModuleFactoryConfiguration) -> Type[BaseUdmModule]
 		...

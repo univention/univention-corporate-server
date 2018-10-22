@@ -47,15 +47,11 @@ class ApiVersionNotSupported(UdmError):
 		self,
 		msg=None,
 		module_name=None,
-		module_cls=None,
 		requested_version=None,
-		supported_versions=None,
 	):
-		self.module_cls = module_cls
 		self.requested_version = requested_version
-		self.supported_versions = supported_versions
-		msg = msg or 'Class {!r} for module {!r} supports API versions {!r}, but {!r} was requested.'.format(
-			module_cls, module_name, supported_versions, requested_version)
+		msg = msg or 'Module {!r} is not supported in API version {!r}'.format(
+			module_name, requested_version)
 		super(ApiVersionNotSupported, self).__init__(msg, module_name=module_name)
 
 
