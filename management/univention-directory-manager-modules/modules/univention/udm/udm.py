@@ -63,7 +63,7 @@ for obj in Udm.using_machine().get('users/user').search('uid=a*'):  # search() r
 
 A shortcut exists to get a UDM object directly::
 
-	Udm.using_admin().identify_object_by_dn(dn)
+	Udm.using_admin().obj_by_dn(dn)
 
 It is recommended to hard code the used API version in your code. Supply it as
 argument when creating a Udm object::
@@ -71,7 +71,7 @@ argument when creating a Udm object::
 	Udm.using_admin().version(1)  # use API version 1
 	Udm(lo).version(0).get('users/user')  # get users/user module for API version 0
 	Udm(lo, 0).get('users/user')  # get users/user module for API version 0
-	Udm.using_credentials('myuser', 'secret').version(2).identify_object_by_dn(dn)  # get object using API version 2
+	Udm.using_credentials('myuser', 'secret').version(2).obj_by_dn(dn)  # get object using API version 2
 """
 
 from __future__ import absolute_import, unicode_literals
@@ -79,8 +79,6 @@ import sys
 import os.path
 from fnmatch import fnmatch
 from glob import glob
-
-from univention.admin.uexceptions import noObject
 
 from .base import BaseUdmModule
 from .exceptions import ApiVersionNotSupported, NoObject, UnknownUdmModuleType
@@ -101,7 +99,7 @@ class Udm(object):
 
 	A shortcut exists to get UDM objects directly::
 
-		Udm.using_admin().identify_object_by_dn(dn)
+		Udm.using_admin().obj_by_dn(dn)
 	"""
 	_module_class_cache = {}
 	_module_object_cache = {}
@@ -237,7 +235,7 @@ class Udm(object):
 		else:
 			return klass(self, name)
 
-	def identify_object_by_dn(self, dn):
+	def obj_by_dn(self, dn):
 		"""
 		Try to load an UDM object from LDAP. Guess the required UDM module
 		from the ``univentionObjectType`` LDAP attribute of the LDAP object.
@@ -252,7 +250,7 @@ class Udm(object):
 			empty attribute ``univentionObjectType``
 		"""
 		if self.connection.__module__ != 'univention.admin.uldap':
-			raise NotImplementedError('identify_object_by_dn() can only be used with a LDAP connection.')
+			raise NotImplementedError('obj_by_dn() can only be used with an LDAP connection.')
 		ldap_obj = self.connection.get(dn, attr=[str('univentionObjectType')])
 		if not ldap_obj:
 			raise NoObject(dn=dn)

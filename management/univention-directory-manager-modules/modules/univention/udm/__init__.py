@@ -61,7 +61,7 @@ A shortcut exists to get UDM objects directly, without knowing their
 univention object type::
 
 	from univention.udm import Udm
-	Udm.using_admin().identify_object_by_dn(dn)
+	Udm.using_admin().obj_by_dn(dn)
 
 A shortcut exists to get UDM objects directly, knowing their univention object
 type, but without knowing their DN::
@@ -78,7 +78,7 @@ argument to the Udm module factory or via :py:meth:`version()`::
 	Udm.using_admin().version(1)  # use API version 1
 	Udm(lo).version(0).get('users/user')  # get users/user module for API version 0
 	Udm(lo, 0).get('users/user')  # get users/user module for API version 0
-	Udm.using_credentials('s3cr3t', 'uid=myuser,..').version(2).identify_object_by_dn(dn)  # get object using API version 2
+	Udm.using_credentials('s3cr3t', 'uid=myuser,..').version(2).obj_by_dn(dn)  # get object using API version 2
 """
 
 from __future__ import absolute_import

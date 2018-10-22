@@ -69,7 +69,7 @@ class Udm(object):
 	def get(self, name):  # type: (Text) -> BaseUdmModule
 		...
 
-	def identify_object_by_dn(self, dn):  # type: (Text) -> BaseUdmObject
+	def obj_by_dn(self, dn):  # type: (Text) -> BaseUdmObject
 		...
 
 	def _get_by_factory_config(self, name, factory_config):

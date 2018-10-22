@@ -329,7 +329,7 @@ class DnListPropertyEncoder(BaseEncoder):
 		for dn in value:
 			try:
 				if self.udm_module_name == 'auto':
-					obj = self.udm.identify_object_by_dn(dn)
+					obj = self.udm.obj_by_dn(dn)
 				else:
 					if not udm_module:
 						udm_module = self.udm.get(self.udm_module_name)
@@ -487,7 +487,7 @@ class DnPropertyEncoder(BaseEncoder):
 	def _dn_to_udm_object(self, value):
 		try:
 			if self.udm_module_name == 'auto':
-				return self.udm.identify_object_by_dn(value)
+				return self.udm.obj_by_dn(value)
 			else:
 				udm_module = self.udm.get(self.udm_module_name)
 				return udm_module.get(value)
