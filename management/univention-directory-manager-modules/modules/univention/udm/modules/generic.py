@@ -418,7 +418,7 @@ class GenericUdmModuleMetadata(BaseUdmModuleMetadata):
 		:return: an LDAP filter string
 		:rtype: str
 		"""
-		return str(self._udm_module._orig_udm_module.lookup_filter(filter_s, self._udm_module.lo))
+		return str(self._udm_module._orig_udm_module.lookup_filter(filter_s, self._udm_module.connection))
 
 	@property
 	def mapping(self):

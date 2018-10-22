@@ -204,7 +204,7 @@ class TestUdmUsersBasic(TestCase):
 		})
 		if hasattr(obj.props, 'oxDisplayName'):
 			expected_properties['oxDisplayName'] = expected_properties['displayName']
-			expected_properties['oxTimeZone'] = self.udm.identify_object_by_dn(
+			expected_properties['oxTimeZone'] = self.udm.obj_by_dn(
 				'cn=oxTimeZone,cn=open-xchange,cn=custom attributes,cn=univention,{}'.format(self.ucr_test['ldap/base'])
 			).props.default
 		if hasattr(obj.props, 'mailUserQuota'):
