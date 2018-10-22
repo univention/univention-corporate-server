@@ -101,7 +101,6 @@ class Udm(object):
 
 		Udm.using_admin().obj_by_dn(dn)
 	"""
-	_module_class_cache = {}
 	_module_object_cache = {}
 	_imported = False
 	_modules = []

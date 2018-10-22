@@ -36,7 +36,6 @@ __default_api_version__ = 1
 
 
 class Udm(object):
-	_module_class_cache = {}  # type: Dict[Tuple[int, Text, Text], Type[BaseUdmModuleTV]]
 	_module_object_cache = {}  # type: Dict[Tuple[int, Text, Text, Text, Text, Text], BaseUdmModuleTV]
 	_imported = False
 	_modules = []  # type: List[BaseUdmModuleTV]

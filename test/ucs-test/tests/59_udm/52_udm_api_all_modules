@@ -38,8 +38,6 @@ class TestUdmGenericVariousModules(TestCase):
 				assert mod.__class__.__name__ == 'GenericUdmModule', 'Wrong UDM module, expected {!r}, got {!r}.'.format(
 					'GenericUdmModule', mod.__class__.__name__)
 		print('OK: all modules could be loaded.')
-		len_module_class_cache = len(Udm._module_class_cache)
-		assert len_module_class_cache == 1, 'Udm._module_class_cache has {} entries (should be 1).'.format(len_module_class_cache)
 		len_module_object_cache = len(Udm._module_object_cache)
 		assert len_module_object_cache == len(self.avail_modules), 'Udm._module_object_cache has {} entries (should be {}).'.format(len_module_object_cache, len(Udm._module_object_cache))
 		print('OK: class and object caches are used.')
