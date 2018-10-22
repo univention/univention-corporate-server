@@ -95,15 +95,14 @@ class GenericUdmObject(BaseUdmObjectTV):
 
 
 class GenericUdmModuleMetadata(BaseUdmModuleMetadataTV):
-	@property
-	def identifying_property(self):  # type: () -> Text
-		...
+	def __init__(self, meta):  # type: (GenericUdmModuleTV.Meta) -> None
+		self.supported_api_versions = []  # type: List[int]
+		self.suitable_for = []  # type: List[Text]
+		self.default_positions_property = None  # type: Text
+		self.used_api_version = None  # type: int
+		self._udm_module = None  # type: GenericUdmModuleTV
 
-	def lookup_filter(self, filter_s=None):  # type: (Optional[Text]) -> Text
-		...
-
-	@property
-	def mapping(self):  # type: () -> UdmLdapMapping
+	def instance(self, udm_module, api_version):  # type: (Text, int) -> BaseUdmModuleMetadataTV
 		...
 
 

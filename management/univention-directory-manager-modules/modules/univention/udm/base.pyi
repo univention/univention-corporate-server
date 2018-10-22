@@ -32,8 +32,8 @@ Base classes for (simplified) UDM modules and objects.
 
 from __future__ import absolute_import, unicode_literals
 from collections import namedtuple
-from typing import Any, Dict, Iterator, List, Optional, Text, TypeVar
-from .utils import ConnectionConfig
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, TypeVar
+from .udm import Udm
 
 
 UdmLdapMapping = namedtuple('UdmLdapMapping', ('ldap2udm', 'udm2ldap'))
@@ -99,9 +99,14 @@ class BaseUdmModuleMetadata(object):
 
 
 class BaseUdmModule(object):
+	supported_api_versions = ()  # type: Iterable[int]
+	_udm_object_class = BaseUdmObject
+	_udm_module_meta_class = BaseUdmModuleMetadata
+
 	def __init__(self, udm, name):  # type: (Udm, Text) -> None
-		self._udm_module = udm_module
-		self.name = name
+		self._udm = udm  # type: Udm
+		self.name = name  # type: Text
+		self.meta = None  # type: BaseUdmModuleMetadataTV
 
 	def __repr__(self):  # type: () -> Text
 		...

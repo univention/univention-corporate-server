@@ -27,17 +27,19 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import, unicode_literals
-from .base import BaseUdmModule, BaseUdmObject
+from .base import BaseUdmModuleTV, BaseUdmObjectTV
 from .utils import UDebug as ud, ConnectionConfig
-from typing import Dict, Optional, Text, Tuple, Type
+from typing import Dict, List, Optional, Text, Tuple, Type
 
 
 __default_api_version__ = 1
 
 
 class Udm(object):
-	_module_class_cache = {}  # type: Dict[Tuple[int, Text, Text], Type[BaseUdmModule]]
-	_module_object_cache = {}  # type: Dict[Tuple[int, Text, Text, Text, Text, Text], BaseUdmModule]
+	_module_class_cache = {}  # type: Dict[Tuple[int, Text, Text], Type[BaseUdmModuleTV]]
+	_module_object_cache = {}  # type: Dict[Tuple[int, Text, Text, Text, Text, Text], BaseUdmModuleTV]
+	_imported = False
+	_modules = []  # type: List[BaseUdmModuleTV]
 
 	def __init__(self, connection_config, api_version=None):  # type: (ConnectionConfig, Optional[int]) -> None
 		...
@@ -65,12 +67,12 @@ class Udm(object):
 	def version(self, api_version):  # type: (int) -> Udm
 		...
 
-	def get(self, name):  # type: (Text) -> BaseUdmModule
+	def get(self, name):  # type: (Text) -> BaseUdmModuleTV
 		...
 
-	def obj_by_dn(self, dn):  # type: (Text) -> BaseUdmObject
+	def obj_by_dn(self, dn):  # type: (Text) -> BaseUdmObjectTV
 		...
 
 	@property
-	def _api_version(self):  # type: () -> int
+	def api_version(self):  # type: () -> int
 		...
