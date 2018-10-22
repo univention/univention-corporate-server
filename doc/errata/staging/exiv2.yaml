@@ -1,0 +1,17 @@
+product: ucs
+release: "4.2"
+version: [4, 5]
+scope: ucs_4.2-0-errata4.2-5
+src: exiv2
+fix: 0.24-4.1+deb8u2
+desc: |
+ This update addresses the following issues:
+ * SIGABRT caused by memory allocation in
+   types.cpp:Exiv2::Internal::PngChunk::zlibUncompress() (CVE-2018-10958)
+ * heap-based buffer over-read in parseTXTChunk function (CVE-2018-10999)
+ * heap-based buffer over-read via a crafted image file (CVE-2018-16336)
+bug: [48034]
+cve:
+- CVE-2018-10958
+- CVE-2018-10999
+- CVE-2018-16336
