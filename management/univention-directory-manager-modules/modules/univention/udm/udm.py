@@ -76,6 +76,12 @@ argument when creating a Udm object::
 
 from __future__ import absolute_import, unicode_literals
 import sys
+import os.path
+from fnmatch import fnmatch
+from glob import glob
+
+from univention.admin.uexceptions import noObject
+
 from .base import BaseUdmModule
 from .exceptions import ApiVersionNotSupported, NoObject, UnknownUdmModuleType
 from .factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
@@ -110,8 +116,8 @@ class Udm(object):
 		:return: None
 		:rtype: None
 		"""
-		self.connection_config = connection_config
-		self.__api_version = None
+		self.connection = get_connection(connection_config)
+		self._api_version = None
 		if api_version is not None:
 			self.version(api_version)
 		self._configuration_storage = UdmModuleFactoryConfigurationStorage()
@@ -187,10 +193,23 @@ class Udm(object):
 		:rtype Udm
 		"""
 		assert isinstance(api_version, int), "Argument 'api_version' must be an int."
-		self.__api_version = api_version
+		self._api_version = api_version
 		return self
 
-	def get(self, name):
+	_imported = False
+	_modules = []
+
+	@classmethod
+	def _import(cls):
+		if cls._imported:
+			return
+		path = os.path.dirname(__file__)
+		for pymodule in glob(os.path.join(path, 'modules', '*.py')):
+			pymodule_name = os.path.basename(pymodule)[:-3]  # without .py
+			__import__('univention.udm.modules.%s' % pymodule_name)
+		cls._imported = True
+
+	def get(self, name):  # type: (str) -> BaseUdmModule
 		"""
 		Get an object of :py:class:`BaseUdmModule` (or of a subclass) for UDM
 		module `name`.
@@ -200,8 +219,23 @@ class Udm(object):
 		:rtype: BaseUdmModule
 		:raises ImportError: if the Python module for `name` could not be loaded
 		"""
-		factory_config = self._configuration_storage.get_configuration(name, self._api_version)
-		return self._get_by_factory_config(name, factory_config)
+		self._import()
+		possible = []
+		for module in self._modules:
+			print module
+			if self.api_version not in module.meta.supported_api_versions:
+				continue
+			for suitable in module.meta.suitable_for:
+				print name, suitable
+				if fnmatch(name, suitable):
+					possible.append((suitable.count('*'), module))
+					break
+		try:
+			klass = sorted(possible)[0][1]
+		except IndexError:
+			raise UnknownUdmModuleType()
+		else:
+			return klass(self, name)
 
 	def identify_object_by_dn(self, dn):
 		"""
@@ -217,10 +251,9 @@ class Udm(object):
 		:raises UnknownUdmModuleType: if the LDAP object at ``dn`` had no or
 			empty attribute ``univentionObjectType``
 		"""
-		lo = get_connection(self.connection_config)
-		if lo.__module__ != 'univention.admin.uldap':
+		if self.connection.__module__ != 'univention.admin.uldap':
 			raise NotImplementedError('identify_object_by_dn() can only be used with a LDAP connection.')
-		ldap_obj = lo.get(dn, attr=[str('univentionObjectType')])
+		ldap_obj = self.connection.get(dn, attr=[str('univentionObjectType')])
 		if not ldap_obj:
 			raise NoObject(dn=dn)
 		try:
@@ -246,33 +279,33 @@ class Udm(object):
 		assert isinstance(factory_config, UdmModuleFactoryConfiguration)
 		# key is (version, connection + class)
 		key = (
-			self._api_version,
+			self.api_version,
 			str(self.connection_config),
 			name, factory_config.module_path, factory_config.class_name
 		)
 		if key not in self._module_object_cache:
 			ud.debug('Trying to load UDM module {!r} for configuration {!r}...'.format(name, factory_config))
 			module_cls = self._load_module(factory_config)
-			if self._api_version not in module_cls.supported_api_versions:
+			if self.api_version not in module_cls.supported_api_versions:
 				raise ApiVersionNotSupported(
 					module_name=name,
 					module_cls=module_cls,
-					requested_version=self._api_version,
+					requested_version=self.api_version,
 					supported_versions=module_cls.supported_api_versions,
 				)
-			self._module_object_cache[key] = module_cls(name, self.connection_config, self._api_version)
+			self._module_object_cache[key] = module_cls(name, self.connection_config, self.api_version)
 		return self._module_object_cache[key]
 
 	@property
-	def _api_version(self):
-		if self.__api_version is None:
+	def api_version(self):
+		if self._api_version is None:
 			ud.warn('Using default API version ({}). It is recommended to set one explicitly.'.format(
 				__default_api_version__))
-			self.__api_version = __default_api_version__
-		return self.__api_version
+			self._api_version = __default_api_version__
+		return self._api_version
 
 	def _load_module(self, factory_config):
-		key = (self._api_version, factory_config.module_path, factory_config.class_name)
+		key = (self.api_version, factory_config.module_path, factory_config.class_name)
 		if key not in self._module_class_cache:
 			candidate_cls = load_class(factory_config.module_path, factory_config.class_name)
 			if not issubclass(candidate_cls, BaseUdmModule):

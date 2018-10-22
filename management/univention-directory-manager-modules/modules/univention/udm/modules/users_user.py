@@ -73,3 +73,8 @@ class UsersUserUdmModule(GenericUdmModule):
 
 	def _get_default_positions_property(self):
 		return 'users'
+
+	class Meta:
+		supported_api_versions = [1]
+		suitable_for = ['users/user']
+		default_positions_property = 'users'

@@ -39,6 +39,7 @@ univention-directory-manager-modules (13.0.25-2) unstable; urgency=low
 
 univention-directory-manager-modules (13.0.24-4) unstable; urgency=medium
 
+  * Bug #47861: Renaming some classes
   * Bug #47861: make error messages more accurate
 
  -- Daniel Troeder <troeder@univention.de>  Mon, 15 Oct 2018 11:12:17 +0200

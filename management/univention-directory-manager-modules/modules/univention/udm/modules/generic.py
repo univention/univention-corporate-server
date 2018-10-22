@@ -35,12 +35,17 @@ from __future__ import absolute_import, unicode_literals
 import sys
 import copy
 import inspect
+from copy import deepcopy
+
 from ldap.dn import dn2str, str2dn
+
 import univention.admin.objects
 import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.config_registry
+
+from ..udm import Udm
 from ..encoders import dn_list_property_encoder_for
 from ..base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from ..exceptions import (
@@ -48,6 +53,15 @@ from ..exceptions import (
 	UnknownProperty, UnknownUdmModuleType,WrongObjectType
 )
 from ..utils import UDebug as ud
+
+class UdmModuleMeta(type):
+	def __new__(mcs, name, bases, attrs):
+		meta = attrs.pop('Meta', None)
+		new_cls_meta = GenericUdmModuleMetadata(meta)
+		new_cls = super(UdmModuleMeta, mcs).__new__(mcs, name, bases, attrs)
+		new_cls.meta = new_cls_meta
+		Udm._modules.append(new_cls)
+		return new_cls
 
 
 ucr = univention.config_registry.ConfigRegistry()
@@ -233,13 +247,17 @@ class GenericUdmObject(BaseUdmObject):
 		"""
 		self.dn = self._orig_udm_object.dn
 		self.options = self._orig_udm_object.options
-		if not self._policies_encoder:
-			# 'auto', because list contains policies/*
-			policies_encoder_class = dn_list_property_encoder_for('auto')
-			self.__class__._policies_encoder = self._init_encoder(
-				policies_encoder_class, property_name='__policies', lo=self._lo
-			)
-		self.policies = self._policies_encoder.decode(self._orig_udm_object.policies)
+		if self._udm_module.meta.used_api_version > 0:
+			# encoders exist from API version 1 on
+			if not self._policies_encoder:
+				# 'auto', because list contains policies/*
+				policies_encoder_class = dn_list_property_encoder_for('auto')
+				self.__class__._policies_encoder = self._init_encoder(
+					policies_encoder_class, property_name='__policies', lo=self._lo
+				)
+			self.policies = self._policies_encoder.decode(self._orig_udm_object.policies)
+		else:
+			self.policies = self._orig_udm_object.policies
 		if self.dn:
 			self.position = self._lo.parentDn(self.dn)
 			self._old_position = self.position
@@ -253,7 +271,7 @@ class GenericUdmObject(BaseUdmObject):
 			v = self._orig_udm_object.get(k)
 			if not self.dn and v is None:
 				continue
-			if self._udm_module.meta.api_version > 0:
+			if self._udm_module.meta.used_api_version > 0:
 				# encoders exist from API version 1 on
 				try:
 					encoder_class = self.props._encoders[k]
@@ -283,7 +301,7 @@ class GenericUdmObject(BaseUdmObject):
 			# workaround Bug #47971: _orig_udm_object.items() changes object
 			v = self._orig_udm_object.get(k)
 			new_val = getattr(self.props, k, None)
-			if self._udm_module.meta.api_version > 0:
+			if self._udm_module.meta.used_api_version > 0:
 				# encoders exist from API version 1 on
 				try:
 					encoder_class = self.props._encoders[k]
@@ -346,7 +364,7 @@ class GenericUdmObject(BaseUdmObject):
 				elif arg in kwargs:
 					continue
 				elif arg == 'api_version':
-					kwargs['api_version'] = self._udm_module.meta.api_version
+					kwargs['api_version'] = self._udm_module.meta.used_api_version
 				elif arg == 'connection_config':
 					kwargs['connection_config'] = self._udm_module._connection_config
 				else:
@@ -355,6 +373,25 @@ class GenericUdmObject(BaseUdmObject):
 
 
 class GenericUdmModuleMetadata(BaseUdmModuleMetadata):
+	def __init__(self, meta):
+		self.supported_api_versions = []
+		self.suitable_for = []
+		self.default_positions_property = None
+		self.used_api_version = None
+		self._udm_module = None
+		if hasattr(meta, 'supported_api_versions'):
+			self.supported_api_versions = meta.supported_api_versions
+		if hasattr(meta, 'suitable_for'):
+			self.suitable_for = meta.suitable_for
+		if hasattr(meta, 'default_positions_property'):
+			self.default_positions_property = meta.default_positions_property
+
+	def instance(self, udm_module, api_version):
+		cpy = deepcopy(self)
+		cpy._udm_module = udm_module
+		cpy.used_api_version = api_version
+		return cpy
+
 	@property
 	def identifying_property(self):
 		"""
@@ -414,20 +451,19 @@ class GenericUdmModule(BaseUdmModule):
 		dc_slaves = dc_slave_mod.search(filter_s='cn=s10*')
 		campus_groups = group_mod.search(base='ou=campus,dc=example,dc=com')
 	"""
+	__metaclass__ = UdmModuleMeta
 	_udm_object_class = GenericUdmObject
 	_udm_module_meta_class = GenericUdmModuleMetadata
 	_udm_module_cache = {}
 	_default_containers = {}
-	supported_api_versions = (0, 1)
-	ucr = None  # type: univention.config_registry.ConfigRegistry
 
-	def __init__(self, name, connection_config, api_version):
-		super(GenericUdmModule, self).__init__(name, connection_config, api_version)
-		self.lo = self.connection  # type: univention.admin.uldap.access
+	class Meta:
+		supported_api_versions = (0, 1)
+		suitable_for = ['*/*']
+
+	def __init__(self, udm, name):
+		super(GenericUdmModule, self).__init__(udm, name)
 		self._orig_udm_module = self._get_orig_udm_module()
-		if not self.ucr:
-			self.__class__.ucr = univention.config_registry.ConfigRegistry()
-			self.ucr.load()
 
 	def new(self):
 		"""
@@ -462,11 +498,11 @@ class GenericUdmModule(BaseUdmModule):
 		:rtype: Iterator(GenericUdmObject)
 		"""
 		try:
-			udm_module_lookup_filter = str(self._orig_udm_module.lookup_filter(filter_s, self.lo))
-			dns = self.lo.searchDn(filter=udm_module_lookup_filter, base=base, scope=scope)
+			udm_module_lookup_filter = str(self._orig_udm_module.lookup_filter(filter_s, self.connection))
+			dns = self.connection.searchDn(filter=udm_module_lookup_filter, base=base, scope=scope)
 		except AttributeError:
 			# not all modules have 'lookup_filter'
-			dns = (obj.dn for obj in self._orig_udm_module.lookup(None, self.lo, filter_s, base=base, scope=scope))
+			dns = (obj.dn for obj in self._orig_udm_module.lookup(None, self.connection, filter_s, base=base, scope=scope))
 		for dn in dns:
 			yield self.get(dn)
 
@@ -479,21 +515,11 @@ class GenericUdmModule(BaseUdmModule):
 		:rtype: bool
 		"""
 		try:
-			self.lo.searchDn(base=dn, scope='base')
+			self.connection.searchDn(base=dn, scope='base')
 		except univention.admin.uexceptions.noObject:
 			return False
 		else:
 			return True
-
-	def _get_default_position_property(self):
-		"""
-		The property of the object `DEFAULT_CONTAINERS_DN` which lists the
-		default containers for this module.
-
-		:return: name of property
-		:rtype: str
-		"""
-		return self.name.split('/')[0]
 
 	def _get_default_containers(self):
 		"""
@@ -505,7 +531,7 @@ class GenericUdmModule(BaseUdmModule):
 		if not self._default_containers:
 			# DEFAULT_CONTAINERS_DN must exist, or we'll run into an infinite recursion
 			if self._dn_exists(DEFAULT_CONTAINERS_DN):
-				mod = GenericUdmModule('settings/directory', self._connection_config, 0)
+				mod = GenericUdmModule('settings/directory', self._udm)
 				try:
 					default_directory_object = mod.get(DEFAULT_CONTAINERS_DN)
 				except NoObject:
@@ -521,7 +547,7 @@ class GenericUdmModule(BaseUdmModule):
 		:return: list of container DNs
 		:rtype: list(str)
 		"""
-		default_positions_property = self._get_default_position_property()
+		default_positions_property = self.meta.default_positions_property
 		default_containers = self._get_default_containers()
 
 		if default_containers and default_positions_property:
@@ -529,7 +555,7 @@ class GenericUdmModule(BaseUdmModule):
 			module_contailers = [dn for dn in dns if self._dn_exists(dn)]
 		else:
 			module_contailers = []
-		module_contailers.append(self.lo.base)
+		module_contailers.append(self.connection.base)
 		return module_contailers
 
 	def _get_orig_udm_module(self):
@@ -541,7 +567,7 @@ class GenericUdmModule(BaseUdmModule):
 		"""
 		# While univention.admin.modules already implements a modules cache we
 		# cannot know if update() or init() are required. So we'll also cache.
-		key = (self.lo.base, self.lo.binddn, self.lo.host, self.name)
+		key = (self.connection.base, self.connection.binddn, self.connection.host, self.name)
 		if key not in self._udm_module_cache:
 			if self.name not in [k[3] for k in self._udm_module_cache.keys()]:
 				univention.admin.modules.update()
@@ -551,8 +577,8 @@ class GenericUdmModule(BaseUdmModule):
 					msg='UDM module {!r} does not exist.'.format(self.name),
 					module_name=self.name
 				)
-			po = univention.admin.uldap.position(self.lo.base)
-			univention.admin.modules.init(self.lo, po, udm_module)
+			po = univention.admin.uldap.position(self.connection.base)
+			univention.admin.modules.init(self.connection, po, udm_module)
 			self._udm_module_cache[key] = udm_module
 		return self._udm_module_cache[key]
 
@@ -570,9 +596,9 @@ class GenericUdmModule(BaseUdmModule):
 		:raises WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
 		"""
 		udm_module = self._get_orig_udm_module()
-		po = univention.admin.uldap.position(self.lo.base)
+		po = univention.admin.uldap.position(self.connection.base)
 		try:
-			obj = univention.admin.objects.get(udm_module, None, self.lo, po, dn=dn)
+			obj = univention.admin.objects.get(udm_module, None, self.connection, po, dn=dn)
 		except univention.admin.uexceptions.noObject:
 			raise NoObject, NoObject(dn=dn, module_name=self.name), sys.exc_info()[2]
 		except univention.admin.uexceptions.base:
@@ -595,7 +621,7 @@ class GenericUdmModule(BaseUdmModule):
 		:raises WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
 		"""
 		obj = self._udm_object_class()
-		obj._lo = self.lo
+		obj._lo = self.connection
 		obj._udm_module = self
 		obj._orig_udm_object = self._get_orig_udm_object(dn)
 		obj.props = obj.udm_prop_class(obj)

@@ -206,14 +206,17 @@ class BaseUdmModule(object):
 	_udm_object_class = BaseUdmObject
 	_udm_module_meta_class = BaseUdmModuleMetadata
 
-	def __init__(self, name, connection_config, api_version):
+	def __init__(self, udm, name):
+		self._udm = udm
 		self.name = name
-		self._connection_config = connection_config
-		self.connection = get_connection(connection_config)
-		self.meta = self._udm_module_meta_class(self, api_version)
+		self.meta = self.meta.instance(self, udm.api_version)
 
 	def __repr__(self):
 		return '{}({!r})'.format(self.__class__.__name__, self.name)
+
+	@property
+	def connection(self):
+		return self._udm.connection
 
 	def new(self):
 		"""
