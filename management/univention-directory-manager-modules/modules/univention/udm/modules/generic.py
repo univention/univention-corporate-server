@@ -530,7 +530,7 @@ class GenericUdmModule(BaseUdmModule):
 		if not self._default_containers:
 			# DEFAULT_CONTAINERS_DN must exist, or we'll run into an infinite recursion
 			if self._dn_exists(DEFAULT_CONTAINERS_DN):
-				mod = GenericUdmModule('settings/directory', self._udm)
+				mod = GenericUdmModule(self._udm, 'settings/directory')
 				try:
 					default_directory_object = mod.get(DEFAULT_CONTAINERS_DN)
 				except NoObject:
