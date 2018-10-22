@@ -35,7 +35,6 @@ from ..encoders import (
 	dn_list_property_encoder_for, dn_property_encoder_for, Base64BinaryPropertyEncoder, DatePropertyEncoder,
 	DisabledPropertyEncoder, HomePostalAddressPropertyEncoder, SambaLogonHoursPropertyEncoder, StringIntPropertyEncoder,
 )
-from ..exceptions import NoObject
 from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
 
 
@@ -69,10 +68,6 @@ class UsersUserUdmObject(GenericUdmObject):
 class UsersUserUdmModule(GenericUdmModule):
 	"""UsersUserUdmObject factory"""
 	_udm_object_class = UsersUserUdmObject
-	supported_api_versions = (1,)
-
-	def _get_default_positions_property(self):
-		return 'users'
 
 	class Meta:
 		supported_api_versions = [1]

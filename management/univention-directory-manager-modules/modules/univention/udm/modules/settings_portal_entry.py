@@ -59,4 +59,7 @@ class SettingsPortalEntryUdmObject(GenericUdmObject):
 class SettingsPortalEntryUdmModule(GenericUdmModule):
 	"""SettingsPortalEntryUdmObject factory"""
 	_udm_object_class = SettingsPortalEntryUdmObject
-	supported_api_versions = (1,)
+
+	class Meta:
+		supported_api_versions = [1]
+		suitable_for = ['settings/portal_entry']

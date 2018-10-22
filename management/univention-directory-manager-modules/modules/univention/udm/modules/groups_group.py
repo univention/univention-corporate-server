@@ -63,7 +63,8 @@ class GroupsGroupUdmObject(GenericUdmObject):
 class GroupsGroupUdmModule(GenericUdmModule):
 	"""GroupsGroupUdmObject factory"""
 	_udm_object_class = GroupsGroupUdmObject
-	supported_api_versions = (1,)
 
-	def _get_default_positions_property(self):
-		return 'groups'
+	class Meta:
+		supported_api_versions = [1]
+		suitable_for = ['groups/group']
+		default_positions_property = 'groups'

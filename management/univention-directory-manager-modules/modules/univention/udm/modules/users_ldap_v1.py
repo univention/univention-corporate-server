@@ -52,4 +52,7 @@ class UsersLdapUdmObject(GenericUdmObject):
 class UsersLdapUdmModule(GenericUdmModule):
 	"""UsersLdapUdmObject factory"""
 	_udm_object_class = UsersLdapUdmObject
-	supported_api_versions = (1,)
+
+	class Meta:
+		supported_api_versions = [1]
+		suitable_for = ['users/ldap']

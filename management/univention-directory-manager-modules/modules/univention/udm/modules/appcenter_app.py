@@ -58,4 +58,7 @@ class AppcenterAppUdmObject(GenericUdmObject):
 class AppcenterAppUdmModule(GenericUdmModule):
 	"""AppcenterAppUdmObject factory"""
 	_udm_object_class = AppcenterAppUdmObject
-	supported_api_versions = (1,)
+
+	class Meta:
+		supported_api_versions = (1,)
+		suitable_for = ['appcenter/app']

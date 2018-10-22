@@ -50,7 +50,7 @@ class PoliciesUmcUdmObject(GenericUdmObject):
 class PoliciesUmcUdmModule(GenericUdmModule):
 	"""PoliciesUmcUdmObject factory"""
 	_udm_object_class = PoliciesUmcUdmObject
-	supported_api_versions = (1,)
 
-	def _get_default_positions_property(self):
-		return 'computers'
+	class Meta:
+		supported_api_versions = [1]
+		suitable_for = ['policies/umc']

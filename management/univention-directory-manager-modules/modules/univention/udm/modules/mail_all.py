@@ -66,7 +66,6 @@ class MailAllUdmObject(GenericUdmObject):
 class MailAllUdmModule(GenericUdmModule):
 	"""MailAllUdmObject factory"""
 	_udm_object_class = MailAllUdmObject
-	supported_api_versions = (1,)
 
 	def _verify_univention_object_type(self, orig_udm_obj):  # type: (univention.admin.handlers.simpleLdap) -> None
 		"""
@@ -83,3 +82,7 @@ class MailAllUdmModule(GenericUdmModule):
 		# and now the original test
 		if uni_obj_type and self.name.split('/', 1)[0] not in [uot.split('/', 1)[0] for uot in uni_obj_type]:
 			raise WrongObjectType(dn=orig_udm_obj.dn, module_name=self.name, univention_object_type=', '.join(uni_obj_type))
+
+	class Meta:
+		supported_api_versions = [1]
+		suitable_for = ['mail/*']

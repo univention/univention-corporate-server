@@ -66,4 +66,7 @@ class ComputersAllUdmObject(GenericUdmObject):
 class ComputersAllUdmModule(GenericUdmModule):
 	"""ComputersAllUdmObject factory"""
 	_udm_object_class = ComputersAllUdmObject
-	supported_api_versions = (1,)
+
+	class Meta:
+		supported_api_versions = (1,)
+		suitable_for = ['computers/*']

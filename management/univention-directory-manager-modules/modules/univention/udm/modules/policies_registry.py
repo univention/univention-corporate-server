@@ -50,4 +50,7 @@ class PoliciesRegistryUdmObject(GenericUdmObject):
 class PoliciesRegistryUdmModule(GenericUdmModule):
 	"""PoliciesRegistryUdmObject factory"""
 	_udm_object_class = PoliciesRegistryUdmObject
-	supported_api_versions = (1,)
+
+	class Meta:
+		supported_api_versions = [1]
+		suitable_for = ['policies/registry']

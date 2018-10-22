@@ -51,4 +51,7 @@ class ContainerOuUdmObject(ContainerCnUdmObject):
 class ContainerOuUdmModule(ContainerCnUdmModule):
 	"""ContainerOuUdmObject factory"""
 	_udm_object_class = ContainerOuUdmObject
-	supported_api_versions = (1,)
+
+	class Meta:
+		supported_api_versions = [1]
+		suitable_for = ['containers/ou']

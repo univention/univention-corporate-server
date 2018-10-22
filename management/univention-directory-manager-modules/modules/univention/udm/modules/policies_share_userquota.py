@@ -50,4 +50,7 @@ class PoliciesShareUserquotaUdmObject(GenericUdmObject):
 class PoliciesShareUserquotaUdmModule(GenericUdmModule):
 	"""PoliciesShareUserquotaUdmObject factory"""
 	_udm_object_class = PoliciesShareUserquotaUdmObject
-	supported_api_versions = (1,)
+
+	class Meta:
+		supported_api_versions = [1]
+		suitable_for = ['policies/share_userquota']

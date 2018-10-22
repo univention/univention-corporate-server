@@ -61,4 +61,7 @@ class ContainerCnUdmObject(GenericUdmObject):
 class ContainerCnUdmModule(GenericUdmModule):
 	"""ContainerCnUdmObject factory"""
 	_udm_object_class = ContainerCnUdmObject
-	supported_api_versions = (1,)
+
+	class Meta:
+		supported_api_versions = [1]
+		suitable_for = ['containers/cn']
