@@ -36,7 +36,10 @@ import lazy_object_proxy
 from univention.admin.syntax import sambaGroupType
 from .binary_props import Base64BinaryProperty
 from .utils import ConnectionConfig
-from typing import Any, Dict, List, Optional, Text, Type
+from typing import Any, Dict, List, Optional, Text, Type, TypeVar
+
+
+BaseEncoderTV = TypeVar('BaseEncoderTV', bound='univention.udm.encoders.BaseEncoder')
 
 
 __dn_list_property_encoder_class_cache = {}  # type: Dict[Text, Type[DnListPropertyEncoder]]

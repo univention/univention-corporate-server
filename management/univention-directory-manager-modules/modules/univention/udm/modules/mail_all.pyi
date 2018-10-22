@@ -42,20 +42,16 @@ mail/* and oxmail/* in univentionObjectType.
 """
 
 from __future__ import absolute_import, unicode_literals
-import copy
-from ..encoders import ListOfListOflTextToDictPropertyEncoder, StringIntPropertyEncoder
-from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
-from ..exceptions import WrongObjectType
+from ..encoders import BaseEncoderTV
+from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties, UdmHandlerTV
+
+from typing import Dict, Text
 
 
 class MailAllUdmObjectProperties(GenericUdmObjectProperties):
 	"""mail/* UDM properties."""
 
-	_encoders = {
-		'mailUserQuota': StringIntPropertyEncoder,
-		'sharedFolderGroupACL': ListOfListOflTextToDictPropertyEncoder,
-		'sharedFolderUserACL': ListOfListOflTextToDictPropertyEncoder,
-	}
+	_encoders = {}  # type: Dict[Text, BaseEncoderTV]
 
 
 class MailAllUdmObject(GenericUdmObject):
@@ -66,23 +62,7 @@ class MailAllUdmObject(GenericUdmObject):
 class MailAllUdmModule(GenericUdmModule):
 	"""MailAllUdmObject factory"""
 	_udm_object_class = MailAllUdmObject
+	supported_api_versions = (1,)
 
-	def _verify_univention_object_type(self, orig_udm_obj):
-		"""
-		Allow both mail/* and oxmail/* in univentionObjectType.
-		"""
-		uni_obj_type = copy.copy(getattr(orig_udm_obj, 'oldattr', {}).get('univentionObjectType'))
-		if uni_obj_type and uni_obj_type[0].startswith('mail/'):
-			# oxmail/oxfolder -> .append(mail/folder)
-			uni_obj_type.append('oxmail/ox{}'.format(uni_obj_type[0].split('/', 1)[1]))
-		elif uni_obj_type and uni_obj_type[0].startswith('oxmail/'):
-			# mail/folder -> .append(oxmail/oxfolder)
-			uni_obj_type.append('mail/{}'.format(uni_obj_type[0].split('/', 1)[1][2:]))
-
-		# and now the original test
-		if uni_obj_type and self.name.split('/', 1)[0] not in [uot.split('/', 1)[0] for uot in uni_obj_type]:
-			raise WrongObjectType(dn=orig_udm_obj.dn, module_name=self.name, univention_object_type=', '.join(uni_obj_type))
-
-	class Meta:
-		supported_api_versions = [1]
-		suitable_for = ['mail/*']
+	def _verify_univention_object_type(self, orig_udm_obj):  # type: (UdmHandlerTV) -> None
+		...

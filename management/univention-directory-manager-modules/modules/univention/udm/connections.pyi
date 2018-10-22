@@ -28,21 +28,22 @@
 
 from __future__ import absolute_import, unicode_literals
 import univention.config_registry
+from .modules.generic import UdmHandlerTV
 from typing import Dict, Optional, Text, Tuple
 
 
 class LDAP_connection(object):
 	_ucr = None  # type: univention.config_registry.ConfigRegistry
-	_connection_admin = None  # type: univention.admin.uldap.access
-	_connection_machine = None  # type: univention.admin.uldap.access
-	_connection_account = {}  # type: Dict[Tuple[Text, Text, Text, int, Text], univention.admin.uldap.access]
+	_connection_admin = None  # type: UdmHandlerTV
+	_connection_machine = None  # type: UdmHandlerTV
+	_connection_account = {}  # type: Dict[Tuple[Text, Text, Text, int, Text], UdmHandlerTV]
 
 	@classmethod
-	def get_admin_connection(cls):  # type: () -> univention.admin.uldap.access
+	def get_admin_connection(cls):  # type: () -> UdmHandlerTV
 		...
 
 	@classmethod
-	def get_machine_connection(cls):  # type: () -> univention.admin.uldap.access
+	def get_machine_connection(cls):  # type: () -> UdmHandlerTV
 		...
 
 	@classmethod
@@ -54,5 +55,5 @@ class LDAP_connection(object):
 		server=None,  # type: Optional[str]
 		port=None,  # type: Optional[int]
 	):
-		# type: (...) -> univention.admin.uldap.access
+		# type: (...) -> UdmHandlerTV
 		...

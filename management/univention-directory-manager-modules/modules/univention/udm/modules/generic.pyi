@@ -32,19 +32,26 @@ Will work for all kinds of UDM modules.
 """
 
 from __future__ import absolute_import, unicode_literals
-import univention.admin.objects
-import univention.admin.modules
-import univention.admin.uexceptions
-import univention.admin.uldap
 import univention.config_registry
 from ..encoders import BaseEncoder
 from ..base import (
 	BaseUdmObjectProperties, UdmLdapMapping,
 	BaseUdmObjectTV, BaseUdmModuleTV, BaseUdmModuleMetadataTV
 )
-from ..utils import UDebug as ud, ConnectionConfig
+from ..utils import ConnectionConfig
+from typing import Any, Dict, Iterator, List, Optional, Text, Tuple, Type, TypeVar, Union
 
-from typing import Any, Dict, Iterator, List, Optional, Text, Tuple, Type, Union
+
+GenericUdmObjectPropertiesTV = TypeVar(
+	'GenericUdmObjectPropertiesTV', bound='univention.udm.modules.generic.GenericUdmObjectProperties'
+)
+GenericUdmObjectTV = TypeVar('GenericUdmObjectTV', bound='univention.udm.modules.generic.GenericUdmObject')
+GenericUdmModuleMetadataTV = TypeVar(
+	'GenericUdmModuleMetadataTV', bound='univention.udm.modules.generic.GenericUdmModuleMetadata'
+)
+GenericUdmModuleTV = TypeVar('GenericUdmModuleTV', bound='univention.udm.modules.generic.GenericUdmModule')
+
+UdmHandlerTV = TypeVar('UdmHandlerTV', bound='univention.admin.handlers.simpleLdap')
 
 
 class GenericUdmObjectProperties(BaseUdmObjectProperties):
@@ -57,9 +64,9 @@ class GenericUdmObjectProperties(BaseUdmObjectProperties):
 
 class GenericUdmObject(BaseUdmObjectTV):
 	def __init__(self):  # type: () -> None
-		self._udm_module = None  # type: GenericUdmModule
-		self._lo = None  # type: univention.admin.uldap.access
-		self._orig_udm_object = None  # type: univention.admin.handlers.simpleLdap
+		self._udm_module = None  # type: GenericUdmModuleTV
+		self._lo = None  # type: UdmHandlerTV
+		self._orig_udm_object = None  # type: UdmHandlerTV
 		self._old_position = ''
 		self._fresh = True
 		self._deleted = False
@@ -103,17 +110,17 @@ class GenericUdmModuleMetadata(BaseUdmModuleMetadataTV):
 class GenericUdmModule(BaseUdmModuleTV):
 	_udm_object_class = GenericUdmObject  # type: Type[GenericUdmObject]
 	_udm_module_meta_class = GenericUdmModuleMetadata  # type: Type[GenericUdmModuleMetadata]
-	_udm_module_cache = {}  # type: Dict[Tuple[Text, Text, Text, Text], univention.admin.handlers.simpleLdap]
+	_udm_module_cache = {}  # type: Dict[Tuple[Text, Text, Text, Text], UdmHandlerTV]
 	_default_containers = {}  # type: Dict[Text, Dict[Text, Any]]
 	supported_api_versions = (0, 1)
 	ucr = None  # type: univention.config_registry.ConfigRegistry
 
 	def __init__(self, name, connection_config, api_version):
 		# type: (Text, ConnectionConfig, int) -> None
-		self.lo = self.connection  # type: univention.admin.uldap.access
-		self._orig_udm_module = None  # type: univention.admin.handlers.simpleLdap
+		self.lo = self.connection  # type: UdmHandlerTV
+		self._orig_udm_module = None  # type: UdmHandlerTV
 
-	def new(self):  # type: () -> GenericUdmObject
+	def new(self, superordinate=None):  # type: (Optional[Text]) -> GenericUdmObject
 		...
 
 	def get(self, dn):  # type: (Text) -> GenericUdmObject
@@ -132,14 +139,15 @@ class GenericUdmModule(BaseUdmModuleTV):
 
 	def _get_default_object_positions(self):  # type: () -> List[Text]
 		...
-	def _get_orig_udm_module(self):  # type: () -> univention.admin.handlers.simpleLdap
+	def _get_orig_udm_module(self):  # type: () -> UdmHandlerTV
 		...
 
-	def _get_orig_udm_object(self, dn):  # type: (Text) -> univention.admin.handlers.simpleLdap
+	def _get_orig_udm_object(self, dn, superordinate=None):
+		# type: (Text, Optional[Text]) -> UdmHandlerTV
 		...
 
 	def _load_obj(self, dn):  # type: (Text) -> GenericUdmObject
 		...
 
-	def _verify_univention_object_type(self, orig_udm_obj):  # type: (univention.admin.handlers.simpleLdap) -> None
+	def _verify_univention_object_type(self, orig_udm_obj):  # type: (UdmHandlerTV) -> None
 		...
