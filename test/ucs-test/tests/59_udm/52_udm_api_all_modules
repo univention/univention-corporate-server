@@ -9,8 +9,7 @@
 from collections import defaultdict
 from unittest import main, TestCase
 import univention.debug as ud
-from univention.udm import Udm
-from univention.udm.factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
+from univention.udm import Udm, WrongObjectType
 import univention.admin.modules
 
 
@@ -24,29 +23,10 @@ class TestUdmGenericVariousModules(TestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		# we want to use only 1 class for all UDM modules and not save anything to disk
-		config_storage = UdmModuleFactoryConfigurationStorage(False)
-		config_storage._config = {}
-		config_storage._load_configuration = lambda: 42
-		config = UdmModuleFactoryConfiguration(r'^.*/.*$', 'univention.udm.modules.generic', 'GenericUdmModule')
-		config_storage.register_configuration(config)
-		# except if OX is installed - we'll have to use at least one more class
+		# we want to use only 1 class for all UDM modules
+		cls.udm = Udm.using_admin().version(0)
 		univention.admin.modules.update()
 		cls.avail_modules = sorted([mod for mod in univention.admin.modules.modules.keys()])
-		if any(ox_mod in cls.avail_modules for ox_mod in cls.ox_modules):
-			cls.ox_installed = True
-			for mod_name in cls.ox_modules + cls.mail_modules:
-				config_storage.register_configuration(
-					UdmModuleFactoryConfiguration(
-						r'^{}$'.format(mod_name),
-						'univention.udm.modules.mail_all',
-						'MailAllUdmModule'
-					)
-				)
-		else:
-			cls.ox_installed = False
-		cls.udm = Udm.using_admin().version(1)
-		cls.udm._configuration_storage = config_storage
 
 	def test_load_modules(self):
 		print('Loading all modules...')
@@ -55,17 +35,13 @@ class TestUdmGenericVariousModules(TestCase):
 			print('Loading {!r}...'.format(mod_name))
 			mod = self.udm.get(mod_name)
 			if mod_name in mail_and_ox_modules:
-				assert mod.__class__.__name__ == 'MailAllUdmModule', 'Wrong UDM module, expected {!r}, got {!r}.'.format(
-					'MailAllUdmModule', mod.__class__.__name__)
-			else:
 				assert mod.__class__.__name__ == 'GenericUdmModule', 'Wrong UDM module, expected {!r}, got {!r}.'.format(
 					'GenericUdmModule', mod.__class__.__name__)
 		print('OK: all modules could be loaded.')
-		if self.ox_installed:
-			assert len(Udm._module_class_cache) == 2
-		else:
-			assert len(Udm._module_class_cache) == 1
-		assert len(Udm._module_object_cache) == len(self.avail_modules)
+		len_module_class_cache = len(Udm._module_class_cache)
+		assert len_module_class_cache == 1, 'Udm._module_class_cache has {} entries (should be 1).'.format(len_module_class_cache)
+		len_module_object_cache = len(Udm._module_object_cache)
+		assert len_module_object_cache == len(self.avail_modules), 'Udm._module_object_cache has {} entries (should be {}).'.format(len_module_object_cache, len(Udm._module_object_cache))
 		print('OK: class and object caches are used.')
 		stats = defaultdict(int)
 		for mod_name in self.avail_modules:
@@ -73,8 +49,13 @@ class TestUdmGenericVariousModules(TestCase):
 			mod = self.udm.get(mod_name)
 			mod.meta.auto_open = False
 			num = -1
-			for num, obj in enumerate(mod.search()):
-				print('{}: {}'.format(num, obj))
+			try:
+				for num, obj in enumerate(mod.search()):
+					print('{}: {}'.format(num, obj))
+			except WrongObjectType as exc:
+				if exc.module_name.startswith('oxmail/'):
+					# oxmail modules also loading non-ox objects
+					continue
 			print('OK: found {} objects of type {!r}.'.format(num + 1, mod_name))
 			if num > 0:
 				stats['mods'] += 1

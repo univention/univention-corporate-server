@@ -35,22 +35,22 @@ class TestUdmAutoOpen(TestCase):
 
 	def test_using_admin(self):
 		mod = Udm.using_admin().version(0).get('users/user')
-		assert mod.lo.binddn == 'cn=admin,{}'.format(self.ucr_test['ldap/base'])
+		assert mod.connection.binddn == 'cn=admin,{}'.format(self.ucr_test['ldap/base'])
 
 	def test_using_machine(self):
 		mod = Udm.using_machine().version(0).get('users/user')
-		assert mod.lo.binddn == self.ucr_test['ldap/hostdn']
+		assert mod.connection.binddn == self.ucr_test['ldap/hostdn']
 
 	def test_using_credentials(self):
 		password = uts.random_name()
 		dn, username = self.udm_test.create_user(password=password)
 		mod = Udm.using_credentials(identity=username, password=password).version(0).get('users/user')
-		assert mod.lo.binddn == dn
+		assert mod.connection.binddn == dn
 
 		password = uts.random_name()
 		dn, username = self.udm_test.create_user(password=password)
 		mod = Udm.using_credentials(identity=dn, password=password).version(0).get('users/user')
-		assert mod.lo.binddn == dn
+		assert mod.connection.binddn == dn
 
 
 if __name__ == '__main__':

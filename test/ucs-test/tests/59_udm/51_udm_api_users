@@ -15,7 +15,6 @@ from univention.testing.strings import random_string, random_username
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.udm import Udm
-from univention.udm.factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
 from univention.udm.exceptions import DeleteError
 
 
@@ -35,17 +34,7 @@ class TestUdmUsersBasic(TestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		config_storage = UdmModuleFactoryConfigurationStorage(False)
-		config_storage._config = {}
-		config_storage._load_configuration = lambda: 42
-		config1 = UdmModuleFactoryConfiguration(r'^users/.*$', 'univention.udm.modules.generic', 'GenericUdmModule')
-		config2 = UdmModuleFactoryConfiguration(r'groups/.*', 'univention.udm.modules.generic', 'GenericUdmModule')
-		config3 = UdmModuleFactoryConfiguration(r'^users/user$', 'univention.udm.modules.users_user', 'UsersUserUdmModule')
-		config_storage.register_configuration(config1)
-		config_storage.register_configuration(config2)
-		config_storage.register_configuration(config3)
 		cls.udm = Udm.using_admin().version(1)
-		cls.udm._configuration_storage = config_storage
 
 		user_mod1 = cls.udm.get('users/user')
 		assert user_mod1.__class__.__name__ == 'UsersUserUdmModule', 'Wrong UDM module.'
@@ -153,9 +142,7 @@ class TestUdmUsersBasic(TestCase):
 				'homePostalAddress': [],
 			},
 		)
-		config = UdmModuleFactoryConfiguration('users/user', 'univention.udm.modules.generic', 'GenericUdmModule')
-		user_mod_generic = self.udm._get_by_factory_config('users/user', config)
-		obj = user_mod_generic.get(dn)
+		obj = Udm.using_admin().version(0).get('users/user').get(dn)
 		assert username == obj.props.username
 		obj.props.homePostalAddress = [[ad.street, ad.zipcode, ad.city] for ad in addresses]
 		obj.save()
@@ -180,9 +167,7 @@ class TestUdmUsersBasic(TestCase):
 				'homePostalAddress': [],
 			},
 		)
-		config = UdmModuleFactoryConfiguration('users/user', 'univention.udm.modules.users_user', 'UsersUserUdmModule')
-		user_mod_usersuser = self.udm._get_by_factory_config('users/user', config)
-		obj = user_mod_usersuser.get(dn)
+		obj = Udm.using_admin().version(1).get('users/user').get(dn)
 		assert username == obj.props.username
 		obj.props.homePostalAddress.extend([ad._asdict() for ad in addresses])
 		obj.save()

@@ -11,7 +11,6 @@ import univention.debug as ud
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.udm import Udm
-from univention.udm.factory_config import UdmModuleFactoryConfiguration, UdmModuleFactoryConfigurationStorage
 
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
@@ -24,14 +23,7 @@ class TestUdmAutoOpen(TestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		# we want to use only 1 class for all UDM modules and not save anything to disk
-		config_storage = UdmModuleFactoryConfigurationStorage(False)
-		config_storage._config = {}
-		config_storage._load_configuration = lambda: 42
-		config = UdmModuleFactoryConfiguration(r'^.*/.*$', 'univention.udm.modules.generic', 'GenericUdmModule')
-		config_storage.register_configuration(config)
-		cls.udm = Udm.using_admin().version(1)
-		cls.udm._configuration_storage = config_storage
+		cls.udm = Udm.using_admin()
 
 		cls.udm_test = UCSTestUDM()
 		cls.ucr_test = UCSTestConfigRegistry()
