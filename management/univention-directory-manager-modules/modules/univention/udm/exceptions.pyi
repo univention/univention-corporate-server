@@ -32,9 +32,14 @@ from typing import Iterable, Optional, Text
 
 class UdmError(Exception):
 	"""Base class of Exceptions raised by (simplified) UDM modules."""
-	def __init__(self, msg, dn=None, module_name=None):
-		# type: (Text, Optional[Text], Optional[Text]) -> None
+	def __init__(self, msg=None, dn=None, module_name=None):
+		# type: (Optional[Text], Optional[Text], Optional[Text]) -> None
 		...
+
+
+class ApiVersionMustNotChange(UdmError):
+	"""Raised when something goes wrong getting a connection."""
+	...
 
 
 class ConnectionError(UdmError):
@@ -92,6 +97,14 @@ class ModifyError(UdmError):
 
 class MoveError(UdmError):
 	"""Raised if an error occurred when moving an object."""
+	...
+
+
+class NoApiVersionSet(UdmError):
+	"""
+	Raised when Udm.get() or Udm.obj_by_id() is used before setting an API
+	version.
+	"""
 	...
 
 

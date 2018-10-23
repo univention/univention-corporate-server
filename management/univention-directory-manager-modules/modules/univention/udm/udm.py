@@ -65,12 +65,10 @@ A shortcut exists to get a UDM object directly::
 
 	Udm.using_admin().obj_by_dn(dn)
 
-It is recommended to hard code the used API version in your code. Supply it as
-argument when creating a Udm object::
+The API is versioned. A fixed version must be hard coded in your code. Supply
+it as argument to the Udm module factory or via :py:meth:`version()`::
 
 	Udm.using_admin().version(1)  # use API version 1
-	Udm(lo).version(0).get('users/user')  # get users/user module for API version 0
-	Udm(lo, 0).get('users/user')  # get users/user module for API version 0
 	Udm.using_credentials('myuser', 'secret').version(2).obj_by_dn(dn)  # get object using API version 2
 """
 
@@ -82,11 +80,8 @@ from operator import itemgetter
 from fnmatch import fnmatch
 from glob import glob
 
-from .exceptions import ApiVersionNotSupported, NoObject, UnknownUdmModuleType
-from .utils import UDebug as ud, ConnectionConfig, get_connection
-
-
-__default_api_version__ = 1
+from .exceptions import ApiVersionMustNotChange, ApiVersionNotSupported, NoApiVersionSet, NoObject, UnknownUdmModuleType
+from .utils import ConnectionConfig, get_connection
 
 
 class Udm(object):
@@ -186,12 +181,17 @@ class Udm(object):
 			Udm.get_admin().version(1).get('groups/group')
 
 		:param int api_version: load only UDM modules that support the
-		specified version
+			specified version
 		:return: self
 		:rtype Udm
+		:raises ApiVersionMustNotChange: if called twice
 		"""
-		assert isinstance(api_version, int), "Argument 'api_version' must be an int."
-		self._api_version = api_version
+		if not isinstance(api_version, int):
+			raise ApiVersionNotSupported("Argument 'api_version' must be an int.", requested_version=api_version)
+		if self._api_version is None:
+			self._api_version = api_version
+		else:
+			raise ApiVersionMustNotChange()
 		return self
 
 	@classmethod
@@ -213,6 +213,7 @@ class Udm(object):
 		:return: object of a subclass of :py:class:`BaseUdmModule`
 		:rtype: BaseUdmModule
 		:raises ApiVersionNotSupported: if the Python module for `name` could not be loaded
+		:raises NoApiVersionSet: if the API version has not been set
 		"""
 		key = (name, self._api_version, self.connection.binddn)
 		if key not in self._module_object_cache:
@@ -242,6 +243,7 @@ class Udm(object):
 		:param str dn: DN of the object to load
 		:return: object of a subclass of :py:class:`BaseUdmObject`
 		:rtype: BaseUdmObject
+		:raises NoApiVersionSet: if the API version has not been set
 		:raises NoObject: if no object is found at `dn`
 		:raises ImportError: if the Python module for ``univentionObjectType``
 			at ``dn`` could not be loaded
@@ -265,7 +267,5 @@ class Udm(object):
 	@property
 	def api_version(self):
 		if self._api_version is None:
-			ud.warn('Using default API version ({}). It is recommended to set one explicitly.'.format(
-				__default_api_version__))
-			self._api_version = __default_api_version__
+			raise NoApiVersionSet()
 		return self._api_version

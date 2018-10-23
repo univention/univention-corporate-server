@@ -32,9 +32,6 @@ from .utils import UDebug as ud, ConnectionConfig
 from typing import Dict, List, Optional, Text, Tuple, Type
 
 
-__default_api_version__ = 1
-
-
 class Udm(object):
 	_module_object_cache = {}  # type: Dict[Tuple[int, Text, Text, Text, Text, Text], BaseUdmModuleTV]
 	_imported = False

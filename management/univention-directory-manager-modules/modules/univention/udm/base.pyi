@@ -111,6 +111,10 @@ class BaseUdmModule(object):
 	def __repr__(self):  # type: () -> Text
 		...
 
+	@property
+	def connection(self):  # type: () -> Any
+		...
+
 	def new(self):  # type: () -> BaseUdmObjectTV
 		...
 

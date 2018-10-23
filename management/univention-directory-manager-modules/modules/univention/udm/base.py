@@ -161,7 +161,9 @@ class BaseUdmModuleMetadata(object):
 
 		* get the filter to find all objects:
 			`myfilter_s = obj.meta.lookup_filter()`
-		* get the filter to find a subset of the corresponding LDAP objects (`filter_s` will be combined with `&` to the filter for all objects):
+		* get the filter to find a subset of the corresponding LDAP objects
+			(`filter_s` will be combined with `&` to the filter for all
+			objects):
 			`myfilter = obj.meta.lookup_filter('(|(givenName=A*)(givenName=B*))')`
 
 		:param str filter_s: optional LDAP filter expression
@@ -175,7 +177,8 @@ class BaseUdmModuleMetadata(object):
 		"""
 		UDM properties to LDAP attributes mapping and vice versa.
 
-		:return: a namedtuple containing two mappings: a) from UDM property to LDAP attribute and b) from LDAP attribute to UDM property
+		:return: a namedtuple containing two mappings: a) from UDM property to
+			LDAP attribute and b) from LDAP attribute to UDM property
 		:rtype: UdmLdapMapping
 		"""
 		raise NotImplementedError()
@@ -202,7 +205,7 @@ class BaseUdmModule(object):
 		user = user_mod.get(dn)
 		user.props.groups == []
 	"""
-	supported_api_versions = ()  # type: Iterable[int]
+	supported_api_versions = ()
 	_udm_object_class = BaseUdmObject
 	_udm_module_meta_class = BaseUdmModuleMetadata
 

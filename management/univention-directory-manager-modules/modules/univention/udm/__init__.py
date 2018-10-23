@@ -69,27 +69,22 @@ type, but without knowing their DN::
 	from univention.udm import Udm
 	Udm.using_admin().get('groups/group').get_by_id('Domain Users')
 
-The API is versioned. The default API version that will be used, if not defined
-otherwise, is ``univention.udm.__default_api_version__``.
-
-It is recommended to hard code the used version in your code. Supply it as
-argument to the Udm module factory or via :py:meth:`version()`::
+The API is versioned. A fixed version must be hard coded in your code. Supply
+it as argument to the Udm module factory or via :py:meth:`version()`::
 
 	Udm.using_admin().version(1)  # use API version 1
-	Udm(lo).version(0).get('users/user')  # get users/user module for API version 0
-	Udm(lo, 0).get('users/user')  # get users/user module for API version 0
 	Udm.using_credentials('s3cr3t', 'uid=myuser,..').version(2).obj_by_dn(dn)  # get object using API version 2
 """
 
 from __future__ import absolute_import
-from .udm import __default_api_version__, Udm
+from .udm import Udm
 from .exceptions import (
 	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, MultipleObjects, NoObject,
 	UdmError, UnknownProperty, UnknownUdmModuleType, WrongObjectType
 )
 
 __all__ = [
-	'__default_api_version__', 'Udm',
+	'Udm',
 	'CreateError', 'DeleteError', 'DeletedError', 'NotYetSavedError', 'ModifyError', 'MoveError', 'MultipleObjects',
 	'NoObject', 'UdmError', 'UnknownProperty', 'UnknownUdmModuleType', 'WrongObjectType',
 ]

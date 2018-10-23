@@ -31,10 +31,18 @@ from __future__ import unicode_literals
 
 class UdmError(Exception):
 	"""Base class of Exceptions raised by (simplified) UDM modules."""
-	def __init__(self, msg, dn=None, module_name=None):
+	msg = ''
+
+	def __init__(self, msg=None, dn=None, module_name=None):
+		msg = msg or self.msg
 		super(UdmError, self).__init__(msg)
 		self.dn = dn
 		self.module_name = module_name
+
+
+class ApiVersionMustNotChange(UdmError):
+	"""Raised when Udm.version() is called twice."""
+	msg = 'The version of an Udm instance must not be changed.'
 
 
 class ConnectionError(UdmError):
@@ -80,9 +88,7 @@ class NotYetSavedError(UdmError):
 	Raised when a client tries to delete or reload a UdmObject that is not yet
 	saved.
 	"""
-	def __init__(self, msg=None, dn=None, module_name=None):
-		msg = msg or 'Object has not been created/loaded yet.'
-		super(NotYetSavedError, self).__init__(msg, dn, module_name)
+	msg = 'Object has not been created/loaded yet.'
 
 
 class ModifyError(UdmError):
@@ -93,6 +99,14 @@ class ModifyError(UdmError):
 class MoveError(UdmError):
 	"""Raised if an error occurred when moving an object."""
 	pass
+
+
+class NoApiVersionSet(UdmError):
+	"""
+	Raised when Udm.get() or Udm.obj_by_id() is used before setting an API
+	version.
+	"""
+	msg = 'No API version has been set.'
 
 
 class NoObject(UdmError):
