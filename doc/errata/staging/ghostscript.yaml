@@ -6,19 +6,16 @@ src: ghostscript
 fix: 9.06~dfsg-2+deb8u11
 desc: |
  This update addresses the following issues:
- * Artifex Ghostscript 9.25 and earlier allows attackers to bypass a sandbox
-   protection mechanism via vectors involving errorhandler setup. NOTE: this
-   issue exists because of an incomplete fix for CVE-2018-17183.
-   (CVE-2018-17961)
- * Artifex Ghostscript allows attackers to bypass a sandbox protection
-   mechanism by leveraging exposure of system operators in the saved execution
-   stack in an error object. (CVE-2018-18073)
- * Artifex Ghostscript 9.25 and earlier allows attackers to bypass a sandbox
-   protection mechanism via vectors involving the 1Policy operator.
-   (CVE-2018-18284)
+ * Ghostscript allows attackers to bypass a sandbox protection mechanism via
+   vectors involving errorhandler setup. NOTE: this issue exists because of an
+   incomplete fix for CVE-2018-17183. (CVE-2018-17961)
+ * Ghostscript allows attackers to bypass a sandbox protection mechanism by
+   leveraging exposure of system operators in the saved execution stack in an
+   error object. (CVE-2018-18073)
+ * Ghostscript allows attackers to bypass a sandbox protection mechanism via
+   vectors involving the 1Policy operator. (CVE-2018-18284)
 bug: [48041]
 cve:
 - CVE-2018-17961
 - CVE-2018-18073
 - CVE-2018-18284
-- CVE-2018-17183
