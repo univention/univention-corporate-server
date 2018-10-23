@@ -1460,6 +1460,12 @@ def ucs_zone_create(s4connector, object, dns_type):
 			msdcs_soa = __unpack_soaRecord(msdcs_soa_obj)
 			soa['serial'] = str(max(int(soa['serial']), int(msdcs_soa['serial'])))
 
+	mname = soa['mname']
+	if mname and not mname.endswith("."):
+		mname = "%s." % mname
+	if mname not in ns:
+		ns.insert(0, mname)
+
 	# Does a zone already exist?
 	modify = False
 	ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
@@ -1471,11 +1477,6 @@ def ucs_zone_create(s4connector, object, dns_type):
 			zone = univention.admin.handlers.dns.reverse_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=None, attributes=[])
 		zone.open()
 		if set(ns) != set(zone['nameserver']):
-			mname = soa['mname']
-			if mname and not mname.endswith("."):
-				mname = "%s." % mname
-			if mname not in ns:
-				ns.insert(0, soa['mname'])
 			zone['nameserver'] = ns
 			modify = True
 		if soa['rname'].replace('.', '@', 1) != zone['contact'].rstrip('.'):
@@ -1518,8 +1519,6 @@ def ucs_zone_create(s4connector, object, dns_type):
 			zoneName = univention.admin.handlers.dns.reverse_zone.unmapSubnet(zoneName)
 		zone.open()
 		zone[name_key] = zoneName
-		if soa['mname'] not in ns:
-			ns.insert(0, soa['mname'])
 		zone['nameserver'] = ns
 		zone['contact'] = soa['rname'].replace('.', '@', 1)
 		zone['serial'] = soa['serial']
