@@ -45,13 +45,13 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.config_registry
 
-from ..udm import Udm
 from ..encoders import dn_list_property_encoder_for
 from ..base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from ..exceptions import (
 	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, UdmError,
 	UnknownProperty, UnknownUdmModuleType,WrongObjectType
 )
+from ..plugins import Plugin
 from ..utils import UDebug as ud
 
 
@@ -60,13 +60,12 @@ ucr.load()
 DEFAULT_CONTAINERS_DN = 'cn=default containers,cn=univention,{}'.format(ucr['ldap/base'])
 
 
-class UdmModuleMeta(type):
+class UdmModuleMeta(Plugin):
 	def __new__(mcs, name, bases, attrs):
 		meta = attrs.pop('Meta', None)
 		new_cls_meta = GenericUdmModuleMetadata(meta)
 		new_cls = super(UdmModuleMeta, mcs).__new__(mcs, name, bases, attrs)
 		new_cls.meta = new_cls_meta
-		Udm._modules.append(new_cls)
 		return new_cls
 
 

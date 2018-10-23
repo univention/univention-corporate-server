@@ -74,14 +74,15 @@ it as argument to the Udm module factory or via :py:meth:`version()`::
 
 from __future__ import absolute_import, unicode_literals
 import sys
-import os.path
-import importlib
 from operator import itemgetter
 from fnmatch import fnmatch
-from glob import glob
 
 from .exceptions import ApiVersionMustNotChange, ApiVersionNotSupported, NoApiVersionSet, NoObject, UnknownUdmModuleType
 from .utils import ConnectionConfig, get_connection
+from .plugins import Plugins
+
+
+_MODULES_PATH = 'univention.udm.modules'
 
 
 class Udm(object):
@@ -97,8 +98,6 @@ class Udm(object):
 		Udm.using_admin().obj_by_dn(dn)
 	"""
 	_module_object_cache = {}
-	_imported = False
-	_modules = []
 
 	def __init__(self, connection_config, api_version=None):
 		"""
@@ -194,16 +193,6 @@ class Udm(object):
 			raise ApiVersionMustNotChange()
 		return self
 
-	@classmethod
-	def _import(cls):
-		if cls._imported:
-			return
-		path = os.path.dirname(__file__)
-		for pymodule in glob(os.path.join(path, 'modules', '*.py')):
-			pymodule_name = os.path.basename(pymodule)[:-3]  # without .py
-			importlib.import_module('univention.udm.modules.{}'.format(pymodule_name))
-		cls._imported = True
-
 	def get(self, name):
 		"""
 		Get an object of :py:class:`BaseUdmModule` (or of a subclass) for UDM
@@ -217,9 +206,9 @@ class Udm(object):
 		"""
 		key = (name, self._api_version, self.connection.binddn)
 		if key not in self._module_object_cache:
-			self._import()
 			suitable_modules = []
-			for module in self._modules:
+			plugins = Plugins([_MODULES_PATH])
+			for module in plugins:
 				if self.api_version not in module.meta.supported_api_versions:
 					continue
 				for suitable in module.meta.suitable_for:
