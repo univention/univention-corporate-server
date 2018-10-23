@@ -38,6 +38,7 @@ import inspect
 from copy import deepcopy
 
 from ldap.dn import dn2str, str2dn
+import ldap
 
 import univention.admin.objects
 import univention.admin.modules
@@ -198,6 +199,12 @@ class GenericUdmObject(BaseUdmObject):
 		else:
 			try:
 				self.dn = self._orig_udm_object.create()
+			except ldap.INVALID_DN_SYNTAX as exc:
+				raise CreateError, CreateError(
+					'Error creating {!r} object: {} ({})'.format(
+						self._udm_module.name, exc.message, exc
+					), module_name=self._udm_module.name
+				), sys.exc_info()[2]
 			except univention.admin.uexceptions.base as exc:
 				raise CreateError, CreateError(
 					'Error creating {!r} object: {} ({})'.format(

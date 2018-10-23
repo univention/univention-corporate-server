@@ -69,4 +69,45 @@ class ComputersAllUdmModule(GenericUdmModule):
 
 	class Meta:
 		supported_api_versions = (1,)
+		default_positions_property = 'computers'
 		suitable_for = ['computers/*']
+
+
+class ComputersDCUdmModule(ComputersAllUdmModule):
+	"""ComputersAllUdmObject factory with an adjusted default position"""
+
+	def _get_default_object_positions(self):
+		ret = super(ComputersDCUdmModule, self)._get_default_object_positions()
+		if len(ret) == 4 and \
+			'cn=computers,{}'.format(self.connection.base) in ret and \
+			'cn=memberserver,cn=computers,{}'.format(self.connection.base) in ret and \
+			'cn=dc,cn=computers,{}'.format(self.connection.base) and \
+			self.connection.base in ret:
+				ret.remove('cn=dc,cn=computers,{}'.format(self.connection.base))
+				ret.insert(0, 'cn=dc,cn=computers,{}'.format(self.connection.base))
+		return ret
+
+	class Meta:
+		supported_api_versions = (1,)
+		default_positions_property = 'computers'
+		suitable_for = ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave']
+
+
+class ComputersMemberUdmModule(ComputersAllUdmModule):
+	"""ComputersAllUdmObject factory with an adjusted default position"""
+
+	def _get_default_object_positions(self):
+		ret = super(ComputersMemberUdmModule, self)._get_default_object_positions()
+		if len(ret) == 4 and \
+			'cn=computers,{}'.format(self.connection.base) in ret and \
+			'cn=memberserver,cn=computers,{}'.format(self.connection.base) in ret and \
+			'cn=dc,cn=computers,{}'.format(self.connection.base) and \
+			self.connection.base in ret:
+				ret.remove('cn=memberserver,cn=computers,{}'.format(self.connection.base))
+				ret.insert(0, 'cn=memberserver,cn=computers,{}'.format(self.connection.base))
+		return ret
+
+	class Meta:
+		supported_api_versions = (1,)
+		default_positions_property = 'computers'
+		suitable_for = ['computers/memberserver']
