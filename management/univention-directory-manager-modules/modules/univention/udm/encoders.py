@@ -41,6 +41,7 @@ from .exceptions import UnknownUdmModuleType
 from univention.admin.uexceptions import valueInvalidSyntax
 from univention.admin.syntax import sambaGroupType
 
+from univention.udm import Udm
 
 __dn_list_property_encoder_class_cache = {}
 __dn_property_encoder_class_cache = {}
@@ -311,11 +312,12 @@ class DnListPropertyEncoder(BaseEncoder):
 		def __repr__(self, __getattr__=object.__getattribute__):
 			return super(DnListPropertyEncoder.MyProxy, self).__str__()
 
-	def __init__(self, property_name=None, udm=None, *args, **kwargs):
-		# type: (Optional[Text], Optional[Udm], *Any, **Any) -> None
-		assert udm is not None, 'Argument "udm" must not be None.'
+	def __init__(self, property_name=None, connection=None, api_version=None, *args, **kwargs):
+		# type: (Optional[Text], Optional[Any], Optional[int], *Any, **Any) -> None
+		assert connection is not None, 'Argument "connection" must not be None.'
+		assert api_version is not None, 'Argument "api_version" must not be None.'
 		super(DnListPropertyEncoder, self).__init__(property_name, *args, **kwargs)
-		self._udm = udm
+		self._udm = Udm(connection, api_version)
 
 	def _list_of_dns_to_list_of_udm_objects(self, value):
 		udm_module = None
@@ -467,11 +469,12 @@ class DnPropertyEncoder(BaseEncoder):
 		def __repr__(self, __getattr__=object.__getattribute__):
 			return super(DnPropertyEncoder.MyProxy, self).__str__()
 
-	def __init__(self, property_name=None, udm=None, *args, **kwargs):
-		# type: (Optional[Text], Optional[Udm], *Any, **Any) -> None
-		assert udm is not None, 'Argument "udm" must not be None.'
+	def __init__(self, property_name=None, connection=None, api_version=None, *args, **kwargs):
+		# type: (Optional[Text], Optional[Any], Optional[int], *Any, **Any) -> None
+		assert connection is not None, 'Argument "connection" must not be None.'
+		assert api_version is not None, 'Argument "api_version" must not be None.'
 		super(DnPropertyEncoder, self).__init__(property_name, *args, **kwargs)
-		self._udm = udm
+		self._udm = Udm(connection, api_version)
 
 	def _dn_to_udm_object(self, value):
 		try:

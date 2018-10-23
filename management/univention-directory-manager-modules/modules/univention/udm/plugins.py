@@ -41,33 +41,27 @@ class Plugins(object):
 	_plugins = OrderedDict()  # If only I had OrderedSet()...
 	_imported = {}
 
-	def __init__(self, python_paths):
-		self.python_paths = python_paths
-		for python_path in python_paths:
-			self._imported.setdefault(python_path, False)
+	def __init__(self, python_path):
+		self.python_path = python_path
+		self._imported.setdefault(python_path, False)
 
 	@classmethod
 	def add_plugin(cls, plugin):
 		cls._plugins[plugin] = True
 
 	def __iter__(self):
-		self._import()
+		self.load()
 		for plugin in self._plugins:
-			if any(plugin.__module__.startswith(python_path) for python_path in self.python_paths):
+			if plugin.__module__.startswith(self.python_path):
 				yield plugin
 
-	def _import(self):
-		for python_path in self.python_paths:
-			self._import_path(python_path)
-
-	def _import_path(self, python_path):
-		if self._imported.get(python_path):
+	def load(self):
+		if self._imported.get(self.python_path):
 			return
-		base_module = importlib.import_module(python_path)
+		base_module = importlib.import_module(self.python_path)
 		base_module_dir = os.path.dirname(base_module.__file__)
 		path = os.path.join(base_module_dir, '*.py')
 		for pymodule in glob(path):
 			pymodule_name = os.path.basename(pymodule)[:-3]  # without .py
-			importlib.import_module('{}.{}'.format(python_path, pymodule_name))
-		self._imported[python_path] = True
-
+			importlib.import_module('{}.{}'.format(self.python_path, pymodule_name))
+		self._imported[self.python_path] = True

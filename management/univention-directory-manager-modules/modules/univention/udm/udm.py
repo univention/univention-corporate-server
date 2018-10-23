@@ -99,17 +99,17 @@ class Udm(object):
 	"""
 	_module_object_cache = {}
 
-	def __init__(self, connection_config, api_version=None):
+	def __init__(self, connection, api_version=None):
 		"""
 		Use the provided connection.
 
-		:param univention.admin.uldap.access lo: LDAP connection object
+		:param connection: Any connection object (e.g., univention.admin.uldap.access)
 		:param int api_version: load only UDM modules that support the
 			specified version, can be set later using :py:meth:`version()`.
 		:return: None
 		:rtype: None
 		"""
-		self.connection = get_connection(connection_config)
+		self.connection = connection
 		self._api_version = None
 		if api_version is not None:
 			self.version(api_version)
@@ -123,10 +123,10 @@ class Udm(object):
 		:rtype: Udm
 		:raises ConnectionError: Non-Master systems, server down, etc.
 		"""
-		return cls(ConnectionConfig(
+		connection_config = ConnectionConfig(
 			'univention.udm.connections.LDAP_connection',
-			'get_admin_connection',	(),	{})
-		)
+			'get_admin_connection', (), {})
+		return cls(get_connection(connection_config))
 
 	@classmethod
 	def using_machine(cls):
@@ -137,10 +137,10 @@ class Udm(object):
 		:rtype: Udm
 		:raises ConnectionError: File permissions, server down, etc.
 		"""
-		return cls(ConnectionConfig(
+		connection_config = ConnectionConfig(
 			'univention.udm.connections.LDAP_connection',
 			'get_machine_connection', (), {})
-		)
+		return cls(get_connection(connection_config))
 
 	@classmethod
 	def using_credentials(
@@ -166,10 +166,10 @@ class Udm(object):
 		:rtype: Udm
 		:raises ConnectionError: Invalid credentials, server down, etc.
 		"""
-		return cls(ConnectionConfig(
+		connection_config = ConnectionConfig(
 			'univention.udm.connections.LDAP_connection',
-			'get_credentials_connection', (identity, password),	{'base': base, 'server': server, 'port': port})
-		)
+			'get_credentials_connection', (identity, password), {'base': base, 'server': server, 'port': port})
+		return cls(get_connection(connection_config))
 
 	def version(self, api_version):
 		"""
@@ -207,7 +207,7 @@ class Udm(object):
 		key = (name, self._api_version, self.connection.binddn)
 		if key not in self._module_object_cache:
 			suitable_modules = []
-			plugins = Plugins([_MODULES_PATH])
+			plugins = Plugins(_MODULES_PATH)
 			for module in plugins:
 				if self.api_version not in module.meta.supported_api_versions:
 					continue
@@ -221,7 +221,7 @@ class Udm(object):
 			except IndexError:
 				raise ApiVersionNotSupported(module_name=name, requested_version=self.api_version)
 			else:
-				self._module_object_cache[key] = klass(self, name)
+				self._module_object_cache[key] = klass(name, self.connection, self.api_version)
 		return self._module_object_cache[key]
 
 	def obj_by_dn(self, dn):

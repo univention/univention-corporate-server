@@ -363,8 +363,10 @@ class GenericUdmObject(BaseUdmObject):
 					continue
 				elif arg in kwargs:
 					continue
-				elif arg == 'udm':
-					kwargs['udm'] = self._udm_module._udm
+				elif arg == 'connection':
+					kwargs['connection'] = self._udm_module.connection
+				elif arg == 'api_version':
+					kwargs['api_version'] = self._udm_module.meta.used_api_version
 				else:
 					raise TypeError('Unknown argument {!r} for {}.__init__.'.format(arg, encoder_class.__class__.__name__))
 			return encoder_class(**kwargs)
@@ -459,8 +461,8 @@ class GenericUdmModule(BaseUdmModule):
 		supported_api_versions = (0, 1)
 		suitable_for = ['*/*']
 
-	def __init__(self, udm, name):
-		super(GenericUdmModule, self).__init__(udm, name)
+	def __init__(self, name, connection, api_version):
+		super(GenericUdmModule, self).__init__(name, connection, api_version)
 		self._orig_udm_module = self._get_orig_udm_module()
 
 	def new(self):
@@ -529,7 +531,7 @@ class GenericUdmModule(BaseUdmModule):
 		if not self._default_containers:
 			# DEFAULT_CONTAINERS_DN must exist, or we'll run into an infinite recursion
 			if self._dn_exists(DEFAULT_CONTAINERS_DN):
-				mod = GenericUdmModule(self._udm, 'settings/directory')
+				mod = GenericUdmModule('settings/directory', self.connection, 0)
 				try:
 					default_directory_object = mod.get(DEFAULT_CONTAINERS_DN)
 				except NoObject:

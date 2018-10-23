@@ -36,7 +36,6 @@ import pprint
 from collections import namedtuple
 from ldap.filter import filter_format
 from .exceptions import NoObject, MultipleObjects
-from .utils import get_connection
 
 
 UdmLdapMapping = namedtuple('UdmLdapMapping', ('ldap2udm', 'udm2ldap'))
@@ -209,17 +208,13 @@ class BaseUdmModule(object):
 	_udm_object_class = BaseUdmObject
 	_udm_module_meta_class = BaseUdmModuleMetadata
 
-	def __init__(self, udm, name):
-		self._udm = udm
+	def __init__(self, name, connection, api_version):
+		self.connection = connection
 		self.name = name
-		self.meta = self.meta.instance(self, udm.api_version)
+		self.meta = self.meta.instance(self, api_version)
 
 	def __repr__(self):
 		return '{}({!r})'.format(self.__class__.__name__, self.name)
-
-	@property
-	def connection(self):
-		return self._udm.connection
 
 	def new(self):
 		"""
