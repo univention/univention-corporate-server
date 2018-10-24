@@ -35,7 +35,7 @@ import datetime
 import lazy_object_proxy
 from univention.admin.syntax import sambaGroupType
 from .binary_props import Base64BinaryProperty
-from .utils import ConnectionConfig
+from .udm import Udm
 from typing import Any, Dict, List, Optional, Text, Type, TypeVar
 
 
@@ -220,13 +220,12 @@ class DnListPropertyEncoder(BaseEncoder):
 		def __repr__(self, __getattr__=object.__getattribute__):
 			...
 
-	def __init__(self, property_name=None, connection_config=None, api_version=None, *args, **kwargs):
-		# type: (Optional[Text], Optional[ConnectionConfig], Optional[int], *Any, **Any) -> None
-		assert connection_config is not None, 'Argument "connection_config" must not be None.'
+	def __init__(self, property_name=None, connection=None, api_version=None, *args, **kwargs):
+		# type: (Optional[Text], Optional[Any], Optional[int], *Any, **Any) -> None
+		assert connection is not None, 'Argument "connection" must not be None.'
 		assert api_version is not None, 'Argument "api_version" must not be None.'
-		super(DnListPropertyEncoder, self).__init__(property_name, connection_config, api_version, *args, **kwargs)
-		self._connection_config = connection_config
-		self._api_version = api_version
+		super(DnListPropertyEncoder, self).__init__(property_name, *args, **kwargs)
+		self._udm = None  # type: Udm
 
 	def __repr__(self):  # type: () -> Text
 		...
@@ -311,13 +310,11 @@ class DnPropertyEncoder(BaseEncoder):
 		def __repr__(self, __getattr__=object.__getattribute__):
 			...
 
-	def __init__(self, property_name=None, connection_config=None, api_version=None, *args, **kwargs):
-		# type: (Optional[Text], Optional[ConnectionConfig], Optional[int], *Any, **Any) -> None
-		assert connection_config is not None, 'Argument "connection_config" must not be None.'
+	def __init__(self, property_name=None, connection=None, api_version=None, *args, **kwargs):
+		assert connection is not None, 'Argument "connection" must not be None.'
 		assert api_version is not None, 'Argument "api_version" must not be None.'
-		super(DnPropertyEncoder, self).__init__(property_name, connection_config, api_version, *args, **kwargs)
-		self._connection_config = connection_config
-		self._api_version = api_version
+		super(DnPropertyEncoder, self).__init__(property_name, *args, **kwargs)
+		self._udm = None  # type: Udm
 
 	def __repr__(self):  # type: () -> Text
 		...
@@ -333,8 +330,9 @@ class DnPropertyEncoder(BaseEncoder):
 		...
 
 	@property
-	def udm(self):
+	def udm(self):  # type: () -> Udm
 		...
+
 
 def _classify_name(name):  # type: (Text) -> Text
 	...

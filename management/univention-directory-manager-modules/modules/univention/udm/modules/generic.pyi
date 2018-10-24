@@ -114,9 +114,7 @@ class GenericUdmModule(BaseUdmModuleTV):
 	supported_api_versions = (0, 1)
 	ucr = None  # type: univention.config_registry.ConfigRegistry
 
-	def __init__(self, name, connection_config, api_version):
-		# type: (Text, ConnectionConfig, int) -> None
-		self.lo = self.connection  # type: UdmHandlerTV
+	def __init__(self, name, connection, api_version):  # type: (Text, Any, int) -> None
 		self._orig_udm_module = None  # type: UdmHandlerTV
 
 	def new(self, superordinate=None):  # type: (Optional[Text]) -> GenericUdmObject

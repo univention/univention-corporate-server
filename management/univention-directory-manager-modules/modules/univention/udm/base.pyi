@@ -103,16 +103,12 @@ class BaseUdmModule(object):
 	_udm_object_class = BaseUdmObject
 	_udm_module_meta_class = BaseUdmModuleMetadata
 
-	def __init__(self, udm, name):  # type: (Udm, Text) -> None
-		self._udm = udm  # type: Udm
+	def __init__(self, name, connection, api_version):  # type: (Text, Any, int) -> None
+		self.connection = connection  # type: Any
 		self.name = name  # type: Text
 		self.meta = None  # type: BaseUdmModuleMetadataTV
 
 	def __repr__(self):  # type: () -> Text
-		...
-
-	@property
-	def connection(self):  # type: () -> Any
 		...
 
 	def new(self):  # type: () -> BaseUdmObjectTV

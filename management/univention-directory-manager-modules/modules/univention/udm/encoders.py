@@ -36,12 +36,11 @@ import datetime
 import time
 import lazy_object_proxy
 from .binary_props import Base64BinaryProperty
+from .udm import Udm
 from .utils import UDebug
 from .exceptions import UnknownUdmModuleType
 from univention.admin.uexceptions import valueInvalidSyntax
 from univention.admin.syntax import sambaGroupType
-
-from univention.udm import Udm
 
 __dn_list_property_encoder_class_cache = {}
 __dn_property_encoder_class_cache = {}
@@ -313,7 +312,6 @@ class DnListPropertyEncoder(BaseEncoder):
 			return super(DnListPropertyEncoder.MyProxy, self).__str__()
 
 	def __init__(self, property_name=None, connection=None, api_version=None, *args, **kwargs):
-		# type: (Optional[Text], Optional[Any], Optional[int], *Any, **Any) -> None
 		assert connection is not None, 'Argument "connection" must not be None.'
 		assert api_version is not None, 'Argument "api_version" must not be None.'
 		super(DnListPropertyEncoder, self).__init__(property_name, *args, **kwargs)
@@ -470,7 +468,6 @@ class DnPropertyEncoder(BaseEncoder):
 			return super(DnPropertyEncoder.MyProxy, self).__str__()
 
 	def __init__(self, property_name=None, connection=None, api_version=None, *args, **kwargs):
-		# type: (Optional[Text], Optional[Any], Optional[int], *Any, **Any) -> None
 		assert connection is not None, 'Argument "connection" must not be None.'
 		assert api_version is not None, 'Argument "api_version" must not be None.'
 		super(DnPropertyEncoder, self).__init__(property_name, *args, **kwargs)
