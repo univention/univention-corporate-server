@@ -39,6 +39,9 @@ multi_server_master () {
 	ucr set repository/online/unmaintained='yes'
 	apt update
 	univention-install -y faketime
+ 	ucr set server/password/interval='0'
+	/usr/lib/univention-server/server_password_change
+	univention-install --yes univention-printserver-pdf
 
 	# get windows client info/name
 	python shared-utils/ucs-winrm.py run-ps --cmd ipconfig
@@ -218,4 +221,29 @@ ms_test_memberslave () {
 	python shared-utils/ucs-winrm.py run-ps --cmd "ping ucs-backup" --impersonate --run-as-user Administrator
 	python shared-utils/ucs-winrm.py run-ps --cmd "ping ucs-member" --impersonate --run-as-user Administrator
 	samba-tool ntacl sysvolreset || true
+}
+prepare-nonmaster() {
+ ucr set server/password/interval='0'
+ /usr/lib/univention-server/server_password_change
+ univention-install --yes univention-printserver-pdf
+ test -z "$(find /var -name core)"
+}
+prepareslaveprinter () {
+ rpcclient localhost -U "SAMBATEST\administrator%Univention@99#+?=$" -c 'setdriver "Slaveprinter" "MS Publisher Color Printer"'
+ echo "halli hallo" > /home/testshare/test.txt
+}
+preparememberprinter () {
+ rpcclient localhost -U "SAMBATEST\administrator%Univention@99#+?=$" -c 'setdriver "Memberprinter" "MS Publisher Color Printer"'
+ echo "halli hallo" > /home/testshare/test.txt
+}
+testprinter-nonmaster () {
+ stat /var/spool/cups-pdf/administrator/job_1-document.pdf
+}
+
+rdoctest () {
+#Schreibzugriffe gegen den RODC sollten scheitern, z.B.
+ ldbedit -H ldap://localhost -UAdministrator%univention samaccountname="$hostname\$" description || echo "expected behaviour : write operation failed" 
+ samba-tool user add rodcuser1 Password.99 || echo "expected behaviour : write operation failed" 
+#Nach dem Join sollten auf dem RODC z.B. keine unicodePwd und supplementalCredentials repliziert sein. Der folgende Aufruf sollte daher nur an dem Objekt des RODC selbst und an dem lokalen krbtgt_* Konto diese Passwortattribute finden:
+ ldbsearch -H /var/lib/samba/private/sam.ldb supplementalcredentials 
 }
