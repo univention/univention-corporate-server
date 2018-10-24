@@ -19,3 +19,5 @@ cve:
 - CVE-2018-17961
 - CVE-2018-18073
 - CVE-2018-18284
+ignore:
+  - version.maintenance
