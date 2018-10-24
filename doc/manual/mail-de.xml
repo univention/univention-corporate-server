@@ -1003,6 +1003,13 @@ postmap /etc/postfix/smtp_auth
 			eingestellt werden.
 			Zurückweisungen werden in der für Email üblichen Logdatei (<filename>/var/log/mail.log</filename>) protokolliert.
 		</para>
+		<para>
+			Um den <application>sender_check milter</application> zu aktivieren, führen Sie aus:
+			<programlisting language="sh">
+ucr set mail/postfix/smtpd_milters/50=inet:localhost:5656
+service postfix reload
+			</programlisting>
+		</para>
 		<note>
 			<para>
 				Nach jeder Änderung einer auf <application>Postfix</application> bezogenen &ucsUCRV; muss dieses seine

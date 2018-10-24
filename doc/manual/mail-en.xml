@@ -966,6 +966,13 @@ postmap /etc/postfix/smtp_auth
 			<envar>mail/postfix/sender_check_milter_port</envar>.
 			The filter will log rejects to the usual mail log file (<filename>/var/log/mail.log</filename>).
 		</para>
+		<para>
+			To enable the <application>sender_check milter</application>, run:
+			<programlisting language="sh">
+ucr set mail/postfix/smtpd_milters/50=inet:localhost:5656
+service postfix reload
+			</programlisting>
+		</para>
 		<note>
 			<para>
 				After each change of a <application>Postfix</application> related &ucsUCRV;, reload
