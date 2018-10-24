@@ -10,3 +10,5 @@ desc: |
    lost during the update to UCS 4.3-0 because Squid 3.5 requires an
    additional compile time option for this.
 bug: [47809]
+erratum: 288
+announced: 2018-10-24
