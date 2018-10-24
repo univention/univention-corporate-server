@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The printer restrictions are reloaded after changes are made.
 bug: [43227]
+erratum: 290
+announced: 2018-10-24
