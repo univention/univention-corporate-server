@@ -1,3 +1,9 @@
+ucs-test (8.0.28-210) unstable; urgency=medium
+
+  * Bug #44104: Improve test stability of 175sync_create_dns_a*_create
+
+ -- Arvid Requate <requate@univention.de>  Wed, 24 Oct 2018 18:44:14 +0200
+
 ucs-test (8.0.28-209) unstable; urgency=medium
 
   * Bug #45049: Changed import mistake in 10_ldap/66univention-admingrp-user-passwordreset-grpingrp
