@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The join script now always updates the local database password.
 bug: [45531]
+erratum: 291
+announced: 2018-10-24
