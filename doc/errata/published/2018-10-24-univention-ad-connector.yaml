@@ -12,3 +12,5 @@ desc: |
    variable values to their default during the update. This has been
    adjusted to keep customer adjusted values untouched.
 bug: [47858, 47856]
+erratum: 289
+announced: 2018-10-24
