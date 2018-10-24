@@ -741,12 +741,12 @@ univention-app dev-use-test-appcenter
             </para>
             <para>
                 For debugging or support cases it can be helpful to enter the
-                app container. The following command opens a bash in the
+                app container. The following command opens a shell in the
                 container.
                 <programlisting>
                     univention-app shell myapp
                 </programlisting>
-                If the container does not support bash, the container can be
+                If the container does not support a shell, the container can be
                 entered with the plain Docker commands.
                 <programlisting>
 CONTAINER="$(ucr get appcenter/apps/myapp/container)"
