@@ -29,7 +29,6 @@
 import importlib
 import os.path
 from glob import glob
-from collections import OrderedDict
 
 
 class Plugin(type):
@@ -47,7 +46,7 @@ class Plugins(object):
 	Register `Plugin` subclasses and iterate over them.
 	"""
 
-	_plugins = OrderedDict()  # If only I had OrderedSet()...
+	_plugins = []
 	_imported = {}
 
 	def __init__(self, python_path):
@@ -65,7 +64,7 @@ class Plugins(object):
 
 		:param type plugin: a `Plugin` subclass
 		"""
-		cls._plugins[plugin] = True
+		cls._plugins.append(plugin)
 
 	def __iter__(self):
 		"""
