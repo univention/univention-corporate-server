@@ -365,10 +365,30 @@ def wait_for_replication(verbose=True):
 
 
 def wait_for_replication_and_postrun(verbose=True):
+    # Postrun function in listener modules are called after 15 seconds without any events
+    def get_lid():
+        with open("/var/lib/univention-directory-listener/notifier_id", "r") as notifier_id:
+            return int(notifier_id.readline())
+
     wait_for_replication(verbose=verbose)
     if verbose:
         print "Waiting for postrun..."
-    time.sleep(17)
+    lid = get_lid()
+    seconds_since_last_change = 0
+    for _ in xrange(300):
+        time.sleep(1)
+        print '.',
+        if lid == get_lid():
+            seconds_since_last_change += 1
+        else:
+            seconds_since_last_change = 0
+        if seconds_since_last_change > 16:
+            if verbose:
+                print("Postrun should have run")
+            return
+        lid = get_lid()
+    print("Postrun was probably never called in the last 300 seconds")
+    raise LDAPReplicationFailed
 
 
 def wait_for_connector_replication():

@@ -67,8 +67,6 @@ class QuoataCheck(object):
 				"touch",
 				os.path.join(mount_point, "foo"),
 			])
-			import time
-			time.sleep(20)
 			quota_settings = subprocess.check_output([
 				"repquota",
 				"--user",
