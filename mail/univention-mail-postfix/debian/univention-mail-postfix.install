@@ -5,3 +5,4 @@ dh_*.pem usr/share/univention-mail-postfix/
 etc/univention/docker/init.d etc/univention/docker/
 etc/postfix/postscreen_access.cidr etc/postfix/
 lib/systemd/system
+modules/* usr/share/pyshared
