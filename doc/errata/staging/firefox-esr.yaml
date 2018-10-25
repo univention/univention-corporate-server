@@ -1,0 +1,28 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: firefox-esr
+fix: 60.3.0esr-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * Memory safety bugs fixed in Firefox ESR 60.3 (CVE-2018-12389)
+ * Memory safety bugs fixed in Firefox 63 and Firefox ESR 60.3
+   (CVE-2018-12390)
+ * Crash with nested event loops (CVE-2018-12392)
+ * Integer overflow during Unicode conversion while loading JavaScript
+   (CVE-2018-12393)
+ * WebExtension bypass of domain restrictions through header rewriting
+   (CVE-2018-12395)
+ * WebExtension content scripts can execute in disallowed contexts
+   (CVE-2018-12396)
+ * WebExtension local file permission check bypass (CVE-2018-12397)
+bug: [48049]
+cve:
+- CVE-2018-12389
+- CVE-2018-12390
+- CVE-2018-12392
+- CVE-2018-12393
+- CVE-2018-12395
+- CVE-2018-12396
+- CVE-2018-12397
