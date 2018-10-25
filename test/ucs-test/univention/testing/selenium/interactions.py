@@ -181,6 +181,16 @@ class Interactions(object):
 		elem.clear()
 		elem.send_keys(inputvalue)
 
+	def enter_input_combobox(self, inputname, inputvalue): # type: (str, str) -> void
+		xpath = "//*[@role='combobox' and .//input[@name='{}']]//input[@role='textbox']".format(inputname)
+		elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
+			self.get_all_enabled_elements
+		)
+		if len(elems) != 1:
+			logger.warn("Found {!d} input elements instead of one. Try using the first one".format(len(elems)))
+		elems[0].clear()
+		elems[0].send_keys(inputvalue)
+
 	def submit_input(self, inputname):
 		"""
 		Submit the input in an input-element with the tag inputname.
