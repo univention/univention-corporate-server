@@ -1,0 +1,16 @@
+product: ucs
+release: "4.2"
+version: [4, 5]
+scope: ucs_4.2-0-errata4.2-5
+src: clamav
+fix: 0.100.2+dfsg-0+deb8u1A~4.2.5.201810250824
+desc: |
+ This update addresses the following issue:
+ * A vulnerability in ClamAV versions prior to 0.100.2 could allow an attacker
+   to cause a denial of service (DoS) condition. The vulnerability is due to
+   an error related to the MEW unpacker within the "unmew11()" function
+   (libclamav/mew.c), which can be exploited to trigger an invalid read memory
+   access via a specially crafted EXE file. (CVE-2018-15378)
+bug: [48050]
+cve:
+- CVE-2018-15378
