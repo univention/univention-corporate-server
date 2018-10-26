@@ -174,10 +174,9 @@ class UniventionLDAPExtension(object):
 		]
 
 		if self.udm_module_name == "settings/data":
-			if options.data_type:
-				common_udm_options.extend(["--set", "data_type={}".format(options.data_type), ])
-			if options.data_meta:
-				common_udm_options.extend(["--set", "meta={}".format(options.data_meta), ])
+			common_udm_options.extend(["--set", "data_type={}".format(options.data_type), ])
+			for meta in options.data_meta:
+				common_udm_options.extend(["--set", "meta={}".format(meta), ])
 
 		if self.udm_module_name != "settings/ldapschema":
 			if options.ucsversionstart:
@@ -938,6 +937,10 @@ def option_callback_set_data_module_options(option, opt_str, value, parser):
 	check_data_module_options(option, opt_str, value, parser)
 	setattr(parser.values, option.dest, value)
 
+def option_callback_append_data_module_options(option, opt_str, value, parser):
+	check_data_module_options(option, opt_str, value, parser)
+	parser.values.ensure_value(option.dest, []).append(value)
+
 
 def check_udm_module_options(option, opt_str, value, parser):
 	if value.startswith('--'):
@@ -1025,10 +1028,10 @@ def ucs_registerLDAPExtension():
 			type="string",
 			action="callback", callback=option_callback_set_data_module_options,
 			help="type of data object", metavar="<Data object type>")
-	data_module_options.add_option("--data_meta", dest="data_meta",
+	data_module_options.add_option("--data_meta", dest="data_meta", default=[],
 			type="string",
-			action="callback", callback=option_callback_set_data_module_options,
-			help="type of data object", metavar="<Data object type>")
+			action="callback", callback=option_callback_append_data_module_options,
+			help="meta data for data object", metavar="<string>")
 	parser.add_option_group(data_module_options)
 
 	udm_module_options = OptionGroup(parser, "UDM module specific options")
