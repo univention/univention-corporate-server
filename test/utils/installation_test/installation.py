@@ -5,7 +5,6 @@
 UCS installation via vnc
 """
 
-from argparse import ArgumentParser
 from vncautomate import init_logger, VNCConnection
 from vncautomate.config import OCRConfig
 from vncdotool.api import VNCDoException
@@ -96,10 +95,12 @@ class UCSInstallation(object):
 			self.client.keyPress('down')
 			self.client.keyPress('enter')
 		elif self.args.role == 'applianceEC2':
-			self.click(self._['manual']) # Manuell
+			# Manuel
+			self.click(self._['manual'])
 			self.client.keyPress('enter')
 			time.sleep(3)
-			self.click(self._['virtual_disk_1']) # Virtuelle Festplatte 1
+			# Virtuelle Festplatte 1
+			self.click(self._['virtual_disk_1'])
 			time.sleep(3)
 			self.client.keyPress('enter')
 			time.sleep(3)
@@ -107,25 +108,30 @@ class UCSInstallation(object):
 			time.sleep(3)
 			self.client.keyPress('enter')
 			time.sleep(3)
-			self.click(self._['free_space']) # FREIER SPEICHER
+			self.click(self._['free_space'])
 			self.client.keyPress('enter')
 			time.sleep(3)
-			self.client.keyPress('enter') # neue partition erstellen
+			# neue partition erstellen
+			self.client.keyPress('enter')
 			time.sleep(3)
-			self.client.keyPress('enter') # enter: ganze festplattengröße ist eingetragen
+			# enter: ganze festplattengröße ist eingetragen
+			self.client.keyPress('enter')
 			time.sleep(3)
-			self.client.keyPress('enter') # enter: primär
+			# enter: primär
+			self.client.keyPress('enter')
 			time.sleep(3)
-			self.click(self._['boot_flag']) # "Boot-Flag"
-			self.client.keyPress('enter') # enter: boot-flag aktivieren
+			self.click(self._['boot_flag'])
+			# enter: boot-flag aktivieren
+			self.client.keyPress('enter')
 			time.sleep(3)
-			self.click(self._['finish_create_partition']) # "Anlegen der Partition beenden"
+			self.click(self._['finish_create_partition'])
 			self.client.keyPress('enter')
 			time.sleep(3)
 			self.click(self._['finish_partition'])
 			self.client.keyPress('enter')
 			time.sleep(3)
-			self.click(self._['no']) # Nein (kein swap speicher)
+			# Nein (kein swap speicher)
+			self.click(self._['no'])
 			self.client.keyPress('enter')
 			self.client.waitForText(self._['continue_partition'], timeout=self.timeout)
 			self.client.keyPress('down')

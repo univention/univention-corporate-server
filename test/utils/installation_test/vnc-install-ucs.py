@@ -9,9 +9,8 @@ from argparse import ArgumentParser
 from installation import UCSInstallation
 from components.components import components_with_steps as components
 
-import time
 import sys
-import os
+
 
 def main():
 	''' python %prog% --vnc 'utby:1' '''

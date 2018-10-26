@@ -52,7 +52,7 @@ class UCSSetup(UCSInstallation):
 	def network(self):
 		self.client.waitForText('IP address', timeout=self.timeout)
 		self.screenshot('network-setup.png')
-		if self.args.role == 'admember':
+		if self.args.role in ['admember', 'slave']:
 			self.click('Preferred DNS')
 			self.client.enterText(self.args.dns)
 		self.next()
@@ -84,14 +84,29 @@ class UCSSetup(UCSInstallation):
 			text = 'Create a new UCS domain'
 		if role == 'admember':
 			text = 'Join into an existing Microsoft Active'
-		elif role == 'join':
-			text = 'Join into existing UCS domain'
+		elif role in ['join', 'slave']:
+			text = 'Join into an existing UCS domain'
 		elif role == 'fast':
 			text = 'Fast demo'
 		self.client.waitForText(text, timeout=self.timeout)
 		self.client.mouseClickOnText(text, timeout=self.timeout)
 		self.screenshot('domain-setup.png')
 		self.next()
+		if role == 'slave':
+			self.client.keyPress('down')
+			self.next()
+			self.click('Username')
+			self.client.enterText(self.args.join_user)
+			self.click('Password')
+			self.client.enterText(self.args.join_password)
+			self.next()
+		if role == 'admember':
+			self.client.waitForText('Active Directory join', timeout=self.timeout)
+			self.click('Username')
+			self.client.enterText(self.args.join_user)
+			self.click('Password')
+			self.client.enterText(self.args.join_password)
+			self.next()
 
 	def orga(self, orga, password):
 		self.client.waitForText('Account information', timeout=self.timeout)
@@ -115,7 +130,7 @@ class UCSSetup(UCSInstallation):
 		time.sleep(3)
 		self.client.enterText(hostname)
 		self.client.keyPress('tab')
-		if self.args.role == 'admember':
+		if self.args.role in ['admember', 'slave']:
 			self.client.keyPress('tab')
 			self.client.enterText(self.args.password)
 			self.client.keyPress('tab')
@@ -160,14 +175,7 @@ class UCSSetup(UCSInstallation):
 			self.language('English')
 			self.network()
 			self.domain(self.args.role)
-			if self.args.role == 'admember':
-				self.client.waitForText('Active Directory join', timeout=self.timeout)
-				self.click('Username')
-				self.client.enterText(self.args.join_user)
-				self.click('Password')
-				self.client.enterText(self.args.join_password)
-				self.next()
-			else:
+			if self.args.role == 'master':
 				self.orga(self.args.organisation, self.args.password)
 			if not self.args.role == 'fast':
 				self.hostname(self.args.fqdn)
@@ -197,11 +205,11 @@ def main():
 	parser.add_argument('--password', default='univention')
 	parser.add_argument('--organisation', default='ucs')
 	parser.add_argument('--screenshot-dir', default='../screenshots')
-	parser.add_argument('--role', default='master', choices=['master', 'admember', 'fast'])
+	parser.add_argument('--role', default='master', choices=['master', 'admember', 'fast', 'slave'])
 	parser.add_argument('--ucs', help='ucs appliance', action='store_true')
 	parser.add_argument('--components', default=[], choices=components.keys() + ['all'], action='append')
 	args = parser.parse_args()
-	if args.role in ['admember']:
+	if args.role in ['admember', 'slave']:
 		assert args.dns is not None
 		assert args.join_user is not None
 		assert args.join_password is not None
