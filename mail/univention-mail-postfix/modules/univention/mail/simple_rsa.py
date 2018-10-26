@@ -34,21 +34,24 @@
 
 import os
 import stat
+import codecs
 import hashlib
+from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding, rsa, utils
 from cryptography.exceptions import InvalidSignature
 
 try:
-	from typing import Optional
+	from typing import Optional, Tuple
 except ImportError:
 	pass
 
 
-class SimpleRSACryptography(object):
+class SimpleAsymmetric(object):
 	"""
-	Create signature of texts. Create, store and load keys.
+	Asymmetric encryption: Encrypt, decrypt and sign using RSA. Create, store
+	and load keys.
 	"""
 	key_size = 2048
 
@@ -68,17 +71,20 @@ class SimpleRSACryptography(object):
 			backend=default_backend()
 		)
 
-	def store_keys(self, key_file, uid, gid, mode=None):  # type: (str, int, int, Optional[int]) -> None
+	def store_keys(self, key_file, uid, gid, mode=None, write_pub=True):
+		# type: (str, int, int, Optional[int], Optional[bool]) -> None
 		"""
 		Save :py:attr:`self.private_key` in `key_file`. The public key does
-		not need to be saved, it can be generated from the secret key.
+		not need to be saved, it can be generated from the secret key. But
+		it can be exported too.
 
-		Warning: will overwrite an existing file.
+		Warning: will overwrite existing files.
 
 		:param str key_file: file to store secret key in
-		:param int uid: owner of file
-		:param int gid: group of file
+		:param int uid: owner of files
+		:param int gid: group of files
 		:param int mode: file permissions, 600 if not set
+		:param bool write_pub: whether to write the public key to `key_file[:-3]+'pub'`
 		:return: None
 		:raises IOError: if `key_file` cannot be written to
 		"""
@@ -92,6 +98,12 @@ class SimpleRSACryptography(object):
 			os.fchown(fp.fileno(), uid, gid)
 			os.fchmod(fp.fileno(), mode)
 			fp.write(self.private_key_as_str)
+		if write_pub:
+			path = '{}pub'.format(key_file[:-3])
+			with open(path, 'wb') as fp:
+				os.fchown(fp.fileno(), uid, gid)
+				os.fchmod(fp.fileno(), mode)
+				fp.write(self.public_key_as_str)
 
 	def load_keys(self, key_file):  # type: (str) -> None
 		"""
@@ -131,15 +143,18 @@ class SimpleRSACryptography(object):
 			format=serialization.PublicFormat.SubjectPublicKeyInfo
 		)
 
-	def encrypt(self, clear_text):  # type: (str) -> str
+	def encrypt(self, clear_text, public_key=None):  # type: (str, Optional[rsa.RSAPublicKey]) -> str
 		"""
-		Encrypt `text` with :py:attr:`self.public_key`.
+		Encrypt `text` with `public_key` or :py:attr:`self.public_key`.
 
-		:param clear_text: the text to encrypt
+		:param str clear_text: the text to encrypt
+		:param str public_key: key used to encrypt `clear_text`, if unset
+			:py:attr:`self.public_key` is used
 		:return: the encrypted text (cyphertext)
 		:rtype: str
 		"""
-		return self.public_key.encrypt(
+		public_key = public_key or self.public_key
+		return public_key.encrypt(
 			clear_text,
 			padding.OAEP(
 				mgf=padding.MGF1(algorithm=hashes.SHA256()),
@@ -152,7 +167,7 @@ class SimpleRSACryptography(object):
 		"""
 		Decrypt `text` with :py:attr:`self.private_key`.
 
-		:param cyphertext: the text to decrypt
+		:param str cyphertext: the text to decrypt
 		:return: the decrypted text (clear text)
 		:rtype: str
 		:raises ValueError: if cyphertext
@@ -186,17 +201,20 @@ class SimpleRSACryptography(object):
 			utils.Prehashed(hashes.SHA256())
 		)
 
-	def verify(self, signature, text):  # type: (str, str) -> bool
+	def verify(self, signature, text, public_key=None):  # type: (str, str, Optional[rsa.RSAPublicKey]) -> bool
 		"""
 		Verify that `signature` is valid for `text`.
 
 		:param str signature: the signature for `text`
 		:param str text: the message that was signed
+		:param str public_key: key used to verify the signature, if unset
+			:py:attr:`self.public_key` is used
 		:return: True if the signature is correct for the message
 		"""
+		public_key = public_key or self.public_key
 		hashed_msg = hashlib.sha256(bytes(text)).digest()
 		try:
-			self.public_key.verify(
+			public_key.verify(
 				signature,
 				hashed_msg,
 				padding.PSS(
@@ -208,3 +226,67 @@ class SimpleRSACryptography(object):
 			return True
 		except InvalidSignature:
 			return False
+
+	@staticmethod
+	def create_nonce():  # type: () -> int
+		"""
+		Generate a cryptographically secure random number.
+
+		:return: a random integer (from urandom)
+		:rtype: int
+		"""
+		return int(codecs.encode(os.urandom(20), 'hex'), 16)
+
+	@staticmethod
+	def pem2public_key(pem):  # type: (str) -> rsa.RSAPublicKey
+		"""
+		Create a RSA public key from a PEM string.
+
+		:param str pem: PEM string
+		:return: rsa.RSAPublicKey instance
+		:rtype: rsa.RSAPublicKey
+		"""
+		return serialization.load_pem_public_key(pem, default_backend())
+
+
+class SimpleSymmetric(object):
+	"""
+	Symmetric encryption using Fernet (AES [CBC], SHA256).
+	"""
+
+	@staticmethod
+	def create_key():  # type: () -> str
+		"""
+		Create a symmetric key.
+
+		:return: the key
+		:rtype: str
+		"""
+		return Fernet.generate_key()
+
+	@staticmethod
+	def encrypt(text, key=None):  # type: (str, Optional[str]) -> Tuple[str, str]
+		"""
+		Encrypt a text using the supplied or a fresh key.
+
+		:param str text: clear text to encrypt
+		:param str key: use this key or if unset create a fresh one
+		:return: tuple: key, cyphertext
+		:rtype: tuple(str, str)
+		"""
+		key = key or Fernet.generate_key()
+		fernet = Fernet(key)
+		return key, fernet.encrypt(bytes(text))
+
+	@staticmethod
+	def decrypt(text, key):  # type: (str, str) -> str
+		"""
+		Decrypt `text` using `key`.
+
+		:param str text: cyphertext
+		:param str key: key to use
+		:return: clear text
+		:rtype: str
+		"""
+		fernet = Fernet(key)
+		return fernet.decrypt(bytes(text))
