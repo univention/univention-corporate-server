@@ -82,13 +82,13 @@ with udm_test.UCSTestUDM() as udm:
 		dn,
 		{
 			'cn': [file_name],
-			'description': [],  # TODO: ucs_registerLDAPExtension doesnt support description
+			'description': [],  # ucs_registerLDAPExtension doesn't support description
 			'univentionDataFilename': [file_name],
 			'univentionDataType': [kwargs['data_type']],
 			'univentionData': [bz2.compress(data)],
 			'univentionUCSVersionStart': [kwargs['ucsversionstart']],
 			'univentionUCSVersionEnd': [kwargs['ucsversionend']],
-			'univentionDataMeta': [kwargs['meta'][1]],  # TODO: ucs_registerLDAPExtension doesnt support multiple --data_meta
+			'univentionDataMeta': kwargs['meta'],
 			'univentionOwnedByPackage': [kwargs['package']],
 			'univentionOwnedByPackageVersion': [kwargs['packageversion']],
 		}
@@ -119,13 +119,13 @@ with udm_test.UCSTestUDM() as udm:
 		dn,
 		{
 			'cn': [file_name],
-			'description': [],  # TODO: ucs_registerLDAPExtension doesnt support description
+			'description': [],  # ucs_registerLDAPExtension doesnt support description
 			'univentionDataFilename': [file_name],
 			'univentionDataType': [kwargs['data_type']],
 			'univentionData': [bz2.compress(data)],
 			'univentionUCSVersionStart': [kwargs['ucsversionstart']],
 			'univentionUCSVersionEnd': [kwargs['ucsversionend']],
-			'univentionDataMeta': [kwargs['meta'][1]],  # TODO: ucs_registerLDAPExtension doesnt support multiple --data_meta
+			'univentionDataMeta': kwargs['meta'],
 			'univentionOwnedByPackage': [kwargs['package']],
 			'univentionOwnedByPackageVersion': [kwargs['packageversion']],
 		}
