@@ -33,21 +33,29 @@ Create private RSA key.
 Will backup already existing key file.
 """
 
+import grp
+import pwd
+import stat
 import os.path
 import shutil
 import datetime
 
-from univention.mail.rsa_signature import Signature
+from univention.mail.simple_rsa import SimpleAsymmetric
 
 
 RSA_KEY_FILE = '/etc/postfix/sender_check.key'
 
+uid = pwd.getpwnam('listfilter').pw_uid
+gid = grp.getgrnam('nogroup').gr_gid
+mode = stat.S_IRUSR | stat.S_IWUSR
 
 if os.path.exists(RSA_KEY_FILE):
 	backup_path = '{}.{}'.format(RSA_KEY_FILE, datetime.datetime.now().strftime('%Y-%m-%d.%H:%M:%S'))
 	print('WARNING: {!r} exists. Backing up to {!r}.'.format(RSA_KEY_FILE, backup_path))
 	shutil.copy2(RSA_KEY_FILE, backup_path)
 
-sign_service = Signature(RSA_KEY_FILE)
-sign_service.create_keys()
-sign_service.store_keys()
+simple_rsa = SimpleAsymmetric()
+simple_rsa.create_keys()
+simple_rsa.store_keys(RSA_KEY_FILE, uid, gid, mode)
+
+print('Created RSA key in {!r}.'.format(RSA_KEY_FILE))

@@ -106,17 +106,6 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.1-5; 
     fi
 fi
 
-if ! [ -e /etc/postfix/sender_check.key ]; then
-	echo "Creating key file for univention-postfix-sender-check..."
-	/usr/share/univention-mail-postfix/create_keys_for_sender_check_milter
-fi
-if [ "$1" = configure ] && [ -n "$2" ] && dpkg --compare-versions "$2" lt 12.0.0-22; then
-	echo "Enabling univention-postfix-sender-check..."
-	systemctl --system daemon-reload
-	systemctl enable univention-postfix-sender-check
-	systemctl start univention-postfix-sender-check
-fi
-
 for file in transport virtual canonical access relocated; do
   if [ ! -e /etc/postfix/$file ]; then
       touch /etc/postfix/$file

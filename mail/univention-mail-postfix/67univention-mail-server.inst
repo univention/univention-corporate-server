@@ -32,11 +32,13 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=4
+VERSION=5
 
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
+
+RSA_PUB_FILE='/etc/postfix/sender_check.pub'
 
 eval "$(ucr shell)"
 
@@ -72,6 +74,27 @@ at -f /usr/share/univention-mail-postfix/create-dh-parameter-files.sh tomorrow >
 # call server password change script - system was likely not joined before package installation
 /usr/lib/univention-server/server_password_change.d/50univention-mail-server prechange
 /usr/lib/univention-server/server_password_change.d/50univention-mail-server postchange
+
+if ! [ -e "$RSA_PUB_FILE" ]; then
+	echo "Creating key file for univention-postfix-sender-check..."
+	/usr/share/univention-mail-postfix/create_keys_for_sender_check_milter
+fi
+[ -e "$RSA_PUB_FILE" ] || die "Public key file $RSA_PUB_FILE not found."
+cp "$RSA_PUB_FILE" "$RSA_PUB_FILE.$(hostname -f)"
+echo "Registering public key file for univention-postfix-sender-check..."
+ucs_registerLDAPExtension "$@" \
+	--data "$RSA_PUB_FILE.$(hostname -f)" \
+	--data_type "RSA_public_key" \
+	--data_meta "use:sender_check" \
+	--data_meta "host:$(hostname -f)" \
+	|| die
+rm -f "$RSA_PUB_FILE.$(hostname -f)"
+if [ "$1" = configure ] && [ -n "$2" ] && dpkg --compare-versions "$2" lt 12.0.0-22; then
+	echo "Enabling univention-postfix-sender-check service..."
+	systemctl --system daemon-reload
+	systemctl enable univention-postfix-sender-check
+	systemctl restart univention-postfix-sender-check
+fi
 
 joinscript_save_current_version
 
