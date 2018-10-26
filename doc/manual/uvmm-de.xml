@@ -1133,6 +1133,61 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 					Die verwendeten Image-Dateien der Laufwerke sollten dabei <emphasis>nicht</emphasis> mitgelöscht werden.
 				</para>
 			</section>
+			<section id="uvmm:migration:cpu">
+				<title>Migration von virtuellen Maschinen zwischen Servern mit unterschiedlichen CPUs</title>
+				<para>
+					Virtuelle Maschinen können zwischen Servern mit kompatiblen CPUs migriert werden.
+					Neuere CPUs sind normalerweise abwärtskompatibel mit vorherigen Generationen der CPU und fügen nur neuere Funktionen hinzu.
+					Die Umkehrung dagegen ist nicht wahr:
+					Falls das Gast-Betriebssystem sich entschieden hat, eine neuere Funktion zu nutzen, und diese nach der Migration nicht mehr zur Verfügung steht, wird die virtuelle Maschine abstürzen.
+				</para>
+				<para>
+					Um die Migration zwischen inkompatiblen CPUs zu verhindern kann UVMM libvirt beauftragen, das CPU-Modell des Servers zu beachten.
+					Dies kann über die &ucsUCRV; <envar>uvmm/vm/cpu/host-model</envar> konfiguriert werden.
+					Die folgenden Werte sind erlaubt:
+				</para>
+				<variablelist>
+					<varlistentry>
+						<term><literal>missing</literal></term>
+						<listitem>
+							<simpara>
+								UVMM wird die notwendigen Eintragungen in der Beschreibung der virtuellen Maschine vornehmen, nur wenn keine solche existiert.
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><literal>always</literal></term>
+						<listitem>
+							<simpara>
+								UVMM wird die notwendigen Eintragungen in der Beschreibung der virtuellen Maschine immer vornehmen.
+								Die Überschreibt jede andere vorhandene Konfiguration.
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><literal>remove</literal></term>
+						<listitem>
+							<simpara>
+								UVMM wird die Eintragungen in der Beschreibung der virtuellen Maschine immer entfernen.
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term>- nicht gesetzt -</term>
+						<listitem>
+							<simpara>
+								UVMM wird die Eintragungen in der Beschreibung der virtuellen Maschine nicht anpassen.
+								Dies ist der Standard.
+							</simpara>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+				<caution>
+					<para>
+						Falls mehrere UVMM Dienste benutzt werden, sollte <emphasis>nur einer</emphasis> konfiguriert werden oder <emphasis>alle</emphasis> müssen das identische Verhalten haben.
+					</para>
+				</caution>
+			</section>
 		</section>
 	</section>
 

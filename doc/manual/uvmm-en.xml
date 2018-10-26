@@ -1213,7 +1213,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 					If the guest operating system has decided to use a new feature and that feature does no longer work after migration, the virtual machine will crash.
 				</para>
 				<para>
-					To protect against such failures UVMM can tell libvirt to track the CPU model of the host system.
+					To disable migration between incompatible CPUs UVMM can tell libvirt to track the CPU model of the host system.
 					This can be configured using the &ucsUCRV; <envar>uvmm/vm/cpu/host-model</envar>.
 					The following values can be used:
 				</para>
