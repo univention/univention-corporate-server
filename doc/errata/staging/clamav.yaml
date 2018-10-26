@@ -11,6 +11,6 @@ desc: |
    an error related to the MEW unpacker within the "unmew11()" function
    (libclamav/mew.c), which can be exploited to trigger an invalid read memory
    access via a specially crafted EXE file. (CVE-2018-15378)
-bug: [48051]
+bug: [48052]
 cve:
 - CVE-2018-15378
