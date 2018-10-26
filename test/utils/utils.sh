@@ -514,6 +514,15 @@ run_windows_native_client_tests () {
 	run_tests -r native_win_client "$@"
 }
 
+run_samba_dc_tests () {
+	local password="${1:-univention}"
+	set_administrator_dn_for_ucs_test || return 1
+	set_administrator_password_for_ucs_test "$password" || return 1
+	install_ucs_test_checks_from_errata_test ucs-test-samba4 || return 1
+	run_minimal_tests -s samba4
+	return 0
+}
+
 run_ucsschool_tests () {
 	local test_group="$1"
 	declare -a test_args=()
