@@ -226,7 +226,7 @@
 	  <title>Windows domain joins</title>
 	  <para>
 		The procedure for joining a Windows system to a UCS domain made available via Samba is now
-		described for Windows 7/8/10 and Windows 2012. The process is similar for other
+		described as an example for Windows 7/8/10 and Windows 2012. The process is similar for other
 		Windows versions. In addition to the client versions, Windows server systems can also join
 		the domain. Windows servers join the domain as member servers; joining a Windows systems as
 		a domain controller is not supported.
@@ -272,6 +272,29 @@
 		also be resolved. In addition, the time on the client system must also be synchronized with
 		the time on the domain controller.
 	  </para>
+
+		<section id="domain-ldap:Windows_10">
+			<title>Windows 10</title>
+			<para>
+			  The joining of domains is only possible with the Pro and Enterprise editions of
+			  Windows 10.
+			</para>
+			<para>
+			  The control panel can be reached via the search field <guimenu>Search the web and Windows</guimenu>,
+			  which can be found in the start bar.
+			  Under <guimenu>System and Security &ar; System</guimenu> it must be clicked on
+			  <guimenu>Change settings &ar; Change</guimenu>.
+			</para>
+			<para>
+			  The <guimenu>Domain</guimenu> option field must be ticked and the name of the
+			  domain must be entered in the input field for the domain join. The full domain name should be used,
+ 			  e.g. <guimenu>mydomain.intranet</guimenu>. After clicking on the <mousebutton>OK</mousebutton>
+			  button, the username of a domain administrator must be entered in the input field
+			  <guimenu>Username</guimenu>, by default this is <systemitem class="username">Administrator</systemitem>.
+			  The password of the domain administrator has to be entered in the input field <guimenu>Password</guimenu>.
+			  Finally, the process for joining the domain can then be started by clicking on <mousebutton>OK</mousebutton>.
+			</para>
+		</section>
 
 		<section id="domain-ldap:Windows_8">
 			<title>Windows 8</title>

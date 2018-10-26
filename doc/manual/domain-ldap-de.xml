@@ -235,7 +235,7 @@
 		<para>
 			Der Domänenbeitritt von Microsoft Windows-Systemen zu einer durch Samba
 			bereitgestellten UCS-Domäne wird nachfolgend für Windows 7/8/10 und Windows 2012
-			beschrieben. Bei anderen Windows-Versionen funktioniert der
+			beispielhaft beschrieben. Bei anderen Windows-Versionen funktioniert der
 			Beitritt ähnlich. Neben den Client-Versionen können auch Windows Server-Systeme der
 			Domäne beitreten. Windows-Server treten der Domäne als Memberserver bei, ein Beitritt
 			eines Windows-Systems als Domänencontroller wird nicht unterstützt.
@@ -280,6 +280,29 @@
 			muss die Zeit auf dem Client-System mit der Zeit auf dem Domänencontroller
 			synchronisiert sein.
 		</para>
+
+		<section id="domain-ldap:Windows_10">
+			<title>Windows 10</title>
+			<para>
+			  Der Domänenbeitritt ist nur mit der Pro und Enterprise-Edition von Windows 10 möglich.
+			</para>
+			<para>
+			  Die Systemsteuerung kann über das Suchfeld <guimenu>Web und Windows durchsuchen</guimenu>,
+			  welches in der Startleiste zu finden ist gesucht und geöffnet werden. Unter
+			  <guimenu>System und Sicherheit &ar; System</guimenu> muss auf
+			  <guimenu>Einstellungen ändern &ar; Ändern</guimenu> geklickt werden.
+			</para>
+			<para>
+			  Für den Domänenbeitritt muss das Optionsfeld <guimenu>Domäne</guimenu> markiert und der Name der
+			  Domäne in das Eingabefeld eingetragen werden. Es sollte dabei der vollständige Domänenname verwendet
+			  werden, bspw.  <guimenu>mydomain.intranet</guimenu>.  Nach einem Klick auf die Schaltfläche
+			  <mousebutton>OK</mousebutton> muss in das Eingabefeld <guimenu>Benutzername</guimenu> der
+			  Benutzername eines Domänen Administrator, standardmäßig ist dies <systemitem
+			  class="username">Administrator</systemitem> und in das Eingabefeld <guimenu>Kennwort</guimenu> das
+			  Passwort des Domänen Administrator eingetragen werden.  Abschließend kann der Domänenbeitritt mit
+			  einem Klick auf <mousebutton>OK</mousebutton> gestartet werden.
+			</para>
+		</section>
 
 		<section id="domain-ldap:Windows_8">
 			<title>Windows 8</title>
