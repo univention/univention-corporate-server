@@ -24,7 +24,7 @@ class TestUdmGenericVariousModules(TestCase):
 	@classmethod
 	def setUpClass(cls):
 		# we want to use only 1 class for all UDM modules
-		cls.udm = UDM.using_admin().version(0)
+		cls.udm = UDM.admin().version(0)
 		univention.admin.modules.update()
 		cls.avail_modules = sorted([mod for mod in univention.admin.modules.modules.keys()])
 

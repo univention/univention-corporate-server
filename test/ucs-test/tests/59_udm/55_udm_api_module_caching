@@ -12,11 +12,11 @@ from univention.udm import UDM
 
 class TestUdmModuleCaching(TestCase):
 	def test_caching(self):
-		assert UDM.using_admin().version(0).get('users/user') is UDM.using_admin().version(0).get('users/user')
-		assert UDM.using_admin().version(0).get('users/user') is not UDM.using_admin().version(1).get('users/user')
-		assert UDM.using_admin().version(1).get('users/user') is UDM.using_admin().version(1).get('users/user')
-		assert UDM.using_admin().version(0).get('users/user') is not UDM.using_admin().version(0).get('groups/group')
-		assert UDM.using_admin().version(0).get('users/user') is not UDM.using_machine().version(0).get('users/user')
+		assert UDM.admin().version(0).get('users/user') is UDM.admin().version(0).get('users/user')
+		assert UDM.admin().version(0).get('users/user') is not UDM.admin().version(1).get('users/user')
+		assert UDM.admin().version(1).get('users/user') is UDM.admin().version(1).get('users/user')
+		assert UDM.admin().version(0).get('users/user') is not UDM.admin().version(0).get('groups/group')
+		assert UDM.admin().version(0).get('users/user') is not UDM.machine().version(0).get('users/user')
 
 
 if __name__ == '__main__':

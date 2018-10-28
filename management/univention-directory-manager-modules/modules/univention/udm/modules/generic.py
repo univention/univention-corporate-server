@@ -448,7 +448,7 @@ class GenericUdmModule(BaseUdmModule):
 
 	Usage:
 	0. Get module using
-		user_mod = UDM.using_*().get('users/user')
+		user_mod = UDM.admin/machine/credentials().get('users/user')
 	1 Create fresh, not yet saved GenericUdmObject:
 		new_user = user_mod.new()
 	2 Load an existing object:

@@ -33,23 +33,23 @@ class TestUdmAutoOpen(TestCase):
 		cls.ucr_test.revert_to_original_registry()
 		cls.udm_test.cleanup()
 
-	def test_using_admin(self):
-		mod = UDM.using_admin().version(0).get('users/user')
+	def test_admin(self):
+		mod = UDM.admin().version(0).get('users/user')
 		assert mod.connection.binddn == 'cn=admin,{}'.format(self.ucr_test['ldap/base'])
 
-	def test_using_machine(self):
-		mod = UDM.using_machine().version(0).get('users/user')
+	def test_machine(self):
+		mod = UDM.machine().version(0).get('users/user')
 		assert mod.connection.binddn == self.ucr_test['ldap/hostdn']
 
-	def test_using_credentials(self):
+	def test_credentials(self):
 		password = uts.random_name()
 		dn, username = self.udm_test.create_user(password=password)
-		mod = UDM.using_credentials(identity=username, password=password).version(0).get('users/user')
+		mod = UDM.credentials(identity=username, password=password).version(0).get('users/user')
 		assert mod.connection.binddn == dn
 
 		password = uts.random_name()
 		dn, username = self.udm_test.create_user(password=password)
-		mod = UDM.using_credentials(identity=dn, password=password).version(0).get('users/user')
+		mod = UDM.credentials(identity=dn, password=password).version(0).get('users/user')
 		assert mod.connection.binddn == dn
 
 

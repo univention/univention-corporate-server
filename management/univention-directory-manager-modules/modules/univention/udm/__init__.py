@@ -40,7 +40,7 @@ Usage:
 
 from univention.udm import UDM
 
-user_mod = UDM.using_admin().get('users/user')
+user_mod = UDM.admin().get('users/user')
 
 obj = user_mod.get(dn)
 obj.props.firstname = 'foo'  # modify property
@@ -61,19 +61,19 @@ A shortcut exists to get UDM objects directly, without knowing their
 univention object type::
 
 	from univention.udm import UDM
-	UDM.using_admin().obj_by_dn(dn)
+	UDM.admin().obj_by_dn(dn)
 
 A shortcut exists to get UDM objects directly, knowing their univention object
 type, but without knowing their DN::
 
 	from univention.udm import UDM
-	UDM.using_admin().get('groups/group').get_by_id('Domain Users')
+	UDM.admin().get('groups/group').get_by_id('Domain Users')
 
 The API is versioned. A fixed version must be hard coded in your code. Supply
 it as argument to the UDM module factory or via :py:meth:`version()`::
 
-	UDM.using_admin().version(1)  # use API version 1
-	UDM.using_credentials('s3cr3t', 'uid=myuser,..').version(2).obj_by_dn(dn)  # get object using API version 2
+	UDM.admin().version(1)  # use API version 1
+	UDM.credentials('s3cr3t', 'uid=myuser,..').version(2).obj_by_dn(dn)  # get object using API version 2
 """
 
 from __future__ import absolute_import

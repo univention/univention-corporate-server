@@ -41,15 +41,15 @@ class UDM(object):
 		...
 
 	@classmethod
-	def using_admin(cls):  # type: () -> Udm
+	def admin(cls):  # type: () -> UDM
 		...
 
 	@classmethod
-	def using_machine(cls):  # type: () -> Udm
+	def machine(cls):  # type: () -> UDM
 		...
 
 	@classmethod
-	def using_credentials(
+	def credentials(
 			cls,
 			identity,  # type: Text
 			password,  # type: Text
@@ -57,10 +57,10 @@ class UDM(object):
 			server=None,  # type: Optional[Text]
 			port=None,  # type: Optional[int]
 	):
-		# type: (...) -> Udm
+		# type: (...) -> UDM
 		...
 
-	def version(self, api_version):  # type: (int) -> Udm
+	def version(self, api_version):  # type: (int) -> UDM
 		...
 
 	def get(self, name):  # type: (Text) -> BaseUdmModuleTV

@@ -23,7 +23,7 @@ class TestUdmAutoOpen(TestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		cls.udm = UDM.using_admin().version(1)
+		cls.udm = UDM.admin().version(1)
 
 		cls.udm_test = UCSTestUDM()
 		cls.ucr_test = UCSTestConfigRegistry()

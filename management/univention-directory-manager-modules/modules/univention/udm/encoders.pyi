@@ -330,7 +330,7 @@ class DnPropertyEncoder(BaseEncoder):
 		...
 
 	@property
-	def udm(self):  # type: () -> Udm
+	def udm(self):  # type: () -> UDM
 		...
 
 

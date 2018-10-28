@@ -38,11 +38,11 @@ Usage:
 
 from univention.udm import UDM
 
-user_mod = UDM.using_admin().get('users/user')
+user_mod = UDM.admin().get('users/user')
 or
-user_mod = UDM.using_machine().get('users/user')
+user_mod = UDM.machine().get('users/user')
 or
-user_mod = UDM.using_credentials('myuser', 's3cr3t').get('users/user')
+user_mod = UDM.credentials('myuser', 's3cr3t').get('users/user')
 
 obj = user_mod.get(dn)
 obj.props.firstname = 'foo'  # modify property
@@ -56,18 +56,18 @@ obj = user_mod.new()
 obj.props.username = 'bar'
 obj.save().refresh()  # reload obj.props from LDAP after save()
 
-for obj in UDM.using_machine().get('users/user').search('uid=a*'):  # search() returns a generator
+for obj in UDM.machine().get('users/user').search('uid=a*'):  # search() returns a generator
 	print(obj.props.firstname, obj.props.lastname)
 
 A shortcut exists to get a UDM object directly::
 
-	UDM.using_admin().obj_by_dn(dn)
+	UDM.admin().obj_by_dn(dn)
 
 The API is versioned. A fixed version must be hard coded in your code. Supply
 it as argument to the UDM module factory or via :py:meth:`version()`::
 
-	UDM.using_admin().version(1)  # use API version 1
-	UDM.using_credentials('myuser', 'secret').version(2).obj_by_dn(dn)  # get object using API version 2
+	UDM.admin().version(1)  # use API version 1
+	UDM.credentials('myuser', 'secret').version(2).obj_by_dn(dn)  # get object using API version 2
 """
 
 from __future__ import absolute_import, unicode_literals
@@ -87,13 +87,13 @@ class UDM(object):
 	"""
 	Dynamic factory for creating UdmModule objects.
 
-	group_mod = UDM.using_admin().get('groups/group')
-	folder_mod = UDM.using_machine().get('mail/folder')
-	user_mod = UDM.using_credentials('myuser', 's3cr3t').get('users/user')
+	group_mod = UDM.admin().get('groups/group')
+	folder_mod = UDM.machine().get('mail/folder')
+	user_mod = UDM.credentials('myuser', 's3cr3t').get('users/user')
 
 	A shortcut exists to get UDM objects directly::
 
-		UDM.using_admin().obj_by_dn(dn)
+		UDM.admin().obj_by_dn(dn)
 	"""
 	_module_object_cache = {}
 
@@ -113,7 +113,7 @@ class UDM(object):
 			self.version(api_version)
 
 	@classmethod
-	def using_admin(cls):
+	def admin(cls):
 		"""
 		Use a cn=admin connection.
 
@@ -127,7 +127,7 @@ class UDM(object):
 		return cls(get_connection(connection_config))
 
 	@classmethod
-	def using_machine(cls):
+	def machine(cls):
 		"""
 		Use a machine connection.
 
@@ -141,7 +141,7 @@ class UDM(object):
 		return cls(get_connection(connection_config))
 
 	@classmethod
-	def using_credentials(
+	def credentials(
 			cls,
 			identity,
 			password,
