@@ -35,7 +35,7 @@ import datetime
 import lazy_object_proxy
 from univention.admin.syntax import sambaGroupType
 from .binary_props import Base64BinaryProperty
-from .udm import Udm
+from .udm import UDM
 from typing import Any, Dict, List, Optional, Text, Type, TypeVar
 
 
@@ -225,7 +225,7 @@ class DnListPropertyEncoder(BaseEncoder):
 		assert connection is not None, 'Argument "connection" must not be None.'
 		assert api_version is not None, 'Argument "api_version" must not be None.'
 		super(DnListPropertyEncoder, self).__init__(property_name, *args, **kwargs)
-		self._udm = None  # type: Udm
+		self._udm = None  # type: UDM
 
 	def __repr__(self):  # type: () -> Text
 		...
@@ -314,7 +314,7 @@ class DnPropertyEncoder(BaseEncoder):
 		assert connection is not None, 'Argument "connection" must not be None.'
 		assert api_version is not None, 'Argument "api_version" must not be None.'
 		super(DnPropertyEncoder, self).__init__(property_name, *args, **kwargs)
-		self._udm = None  # type: Udm
+		self._udm = None  # type: UDM
 
 	def __repr__(self):  # type: () -> Text
 		...

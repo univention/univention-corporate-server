@@ -190,7 +190,7 @@ class BaseUdmModule(object):
 
 	Usage:
 	0. Get module using
-		user_mod = Udm.using_*().get('users/user')
+		user_mod = UDM.using_*().get('users/user')
 	1 Create fresh, not yet saved BaseUdmObject:
 		new_user = user_mod.new()
 	2 Load an existing object:

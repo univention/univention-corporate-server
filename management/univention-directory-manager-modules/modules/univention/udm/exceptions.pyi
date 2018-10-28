@@ -102,7 +102,7 @@ class MoveError(UdmError):
 
 class NoApiVersionSet(UdmError):
 	"""
-	Raised when Udm.get() or Udm.obj_by_id() is used before setting an API
+	Raised when UDM.get() or UDM.obj_by_id() is used before setting an API
 	version.
 	"""
 	...

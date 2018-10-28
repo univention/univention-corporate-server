@@ -41,8 +41,8 @@ class UdmError(Exception):
 
 
 class ApiVersionMustNotChange(UdmError):
-	"""Raised when Udm.version() is called twice."""
-	msg = 'The version of an Udm instance must not be changed.'
+	"""Raised when UDM.version() is called twice."""
+	msg = 'The version of an UDM instance must not be changed.'
 
 
 class ConnectionError(UdmError):
@@ -103,7 +103,7 @@ class MoveError(UdmError):
 
 class NoApiVersionSet(UdmError):
 	"""
-	Raised when Udm.get() or Udm.obj_by_id() is used before setting an API
+	Raised when UDM.get() or UDM.obj_by_id() is used before setting an API
 	version.
 	"""
 	msg = 'No API version has been set.'

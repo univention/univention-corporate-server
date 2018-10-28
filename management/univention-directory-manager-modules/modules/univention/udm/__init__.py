@@ -34,13 +34,13 @@ It consists of UDM modules and UDM object.
 UDM modules are factories for UDM objects.
 UDM objects manipulate LDAP objects.
 
-The :py:class:`Udm` class is a LDAP connection and UDM module factory.
+The :py:class:`UDM` class is a LDAP connection and UDM module factory.
 
 Usage:
 
-from univention.udm import Udm
+from univention.udm import UDM
 
-user_mod = Udm.using_admin().get('users/user')
+user_mod = UDM.using_admin().get('users/user')
 
 obj = user_mod.get(dn)
 obj.props.firstname = 'foo'  # modify property
@@ -60,31 +60,31 @@ for obj in user_mod.search('uid=a*'):  # search() returns a generator
 A shortcut exists to get UDM objects directly, without knowing their
 univention object type::
 
-	from univention.udm import Udm
-	Udm.using_admin().obj_by_dn(dn)
+	from univention.udm import UDM
+	UDM.using_admin().obj_by_dn(dn)
 
 A shortcut exists to get UDM objects directly, knowing their univention object
 type, but without knowing their DN::
 
-	from univention.udm import Udm
-	Udm.using_admin().get('groups/group').get_by_id('Domain Users')
+	from univention.udm import UDM
+	UDM.using_admin().get('groups/group').get_by_id('Domain Users')
 
 The API is versioned. A fixed version must be hard coded in your code. Supply
-it as argument to the Udm module factory or via :py:meth:`version()`::
+it as argument to the UDM module factory or via :py:meth:`version()`::
 
-	Udm.using_admin().version(1)  # use API version 1
-	Udm.using_credentials('s3cr3t', 'uid=myuser,..').version(2).obj_by_dn(dn)  # get object using API version 2
+	UDM.using_admin().version(1)  # use API version 1
+	UDM.using_credentials('s3cr3t', 'uid=myuser,..').version(2).obj_by_dn(dn)  # get object using API version 2
 """
 
 from __future__ import absolute_import
-from .udm import Udm
+from .udm import UDM
 from .exceptions import (
 	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, MultipleObjects, NoObject,
 	UdmError, UnknownProperty, UnknownUdmModuleType, WrongObjectType, ConnectionError
 )
 
 __all__ = [
-	'Udm',
+	'UDM',
 	'CreateError', 'DeleteError', 'DeletedError', 'NotYetSavedError', 'ModifyError', 'MoveError', 'MultipleObjects',
 	'NoObject', 'UdmError', 'UnknownProperty', 'UnknownUdmModuleType', 'WrongObjectType', 'ConnectionError'
 ]

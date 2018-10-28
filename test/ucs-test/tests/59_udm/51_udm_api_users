@@ -14,7 +14,7 @@ import univention.testing.utils as utils
 from univention.testing.strings import random_string, random_username
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.ucr import UCSTestConfigRegistry
-from univention.udm import Udm
+from univention.udm import UDM
 from univention.udm.exceptions import DeleteError
 
 
@@ -34,7 +34,7 @@ class TestUdmUsersBasic(TestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		cls.udm = Udm.using_admin().version(1)
+		cls.udm = UDM.using_admin().version(1)
 
 		user_mod1 = cls.udm.get('users/user')
 		assert user_mod1.__class__.__name__ == 'UsersUserUdmModule', 'Wrong UDM module.'
@@ -142,7 +142,7 @@ class TestUdmUsersBasic(TestCase):
 				'homePostalAddress': [],
 			},
 		)
-		obj = Udm.using_admin().version(0).get('users/user').get(dn)
+		obj = UDM.using_admin().version(0).get('users/user').get(dn)
 		assert username == obj.props.username
 		obj.props.homePostalAddress = [[ad.street, ad.zipcode, ad.city] for ad in addresses]
 		obj.save()
@@ -167,7 +167,7 @@ class TestUdmUsersBasic(TestCase):
 				'homePostalAddress': [],
 			},
 		)
-		obj = Udm.using_admin().version(1).get('users/user').get(dn)
+		obj = UDM.using_admin().version(1).get('users/user').get(dn)
 		assert username == obj.props.username
 		obj.props.homePostalAddress.extend([ad._asdict() for ad in addresses])
 		obj.save()

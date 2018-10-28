@@ -33,7 +33,7 @@ Base classes for (simplified) UDM modules and objects.
 from __future__ import absolute_import, unicode_literals
 from collections import namedtuple
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, TypeVar
-from .udm import Udm
+from .udm import UDM
 
 
 UdmLdapMapping = namedtuple('UdmLdapMapping', ('ldap2udm', 'udm2ldap'))

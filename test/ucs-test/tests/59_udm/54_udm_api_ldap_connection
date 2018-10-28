@@ -11,7 +11,7 @@ import univention.debug as ud
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.ucr import UCSTestConfigRegistry
 import univention.testing.strings as uts
-from univention.udm import Udm
+from univention.udm import UDM
 
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
@@ -34,22 +34,22 @@ class TestUdmAutoOpen(TestCase):
 		cls.udm_test.cleanup()
 
 	def test_using_admin(self):
-		mod = Udm.using_admin().version(0).get('users/user')
+		mod = UDM.using_admin().version(0).get('users/user')
 		assert mod.connection.binddn == 'cn=admin,{}'.format(self.ucr_test['ldap/base'])
 
 	def test_using_machine(self):
-		mod = Udm.using_machine().version(0).get('users/user')
+		mod = UDM.using_machine().version(0).get('users/user')
 		assert mod.connection.binddn == self.ucr_test['ldap/hostdn']
 
 	def test_using_credentials(self):
 		password = uts.random_name()
 		dn, username = self.udm_test.create_user(password=password)
-		mod = Udm.using_credentials(identity=username, password=password).version(0).get('users/user')
+		mod = UDM.using_credentials(identity=username, password=password).version(0).get('users/user')
 		assert mod.connection.binddn == dn
 
 		password = uts.random_name()
 		dn, username = self.udm_test.create_user(password=password)
-		mod = Udm.using_credentials(identity=dn, password=password).version(0).get('users/user')
+		mod = UDM.using_credentials(identity=dn, password=password).version(0).get('users/user')
 		assert mod.connection.binddn == dn
 
 

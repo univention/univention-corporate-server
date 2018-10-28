@@ -10,7 +10,7 @@ from unittest import main, TestCase
 import univention.debug as ud
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.ucr import UCSTestConfigRegistry
-from univention.udm import Udm
+from univention.udm import UDM
 
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
@@ -23,7 +23,7 @@ class TestUdmAutoOpen(TestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		cls.udm = Udm.using_admin().version(1)
+		cls.udm = UDM.using_admin().version(1)
 
 		cls.udm_test = UCSTestUDM()
 		cls.ucr_test = UCSTestConfigRegistry()

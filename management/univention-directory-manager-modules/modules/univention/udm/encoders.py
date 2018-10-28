@@ -36,7 +36,7 @@ import datetime
 import time
 import lazy_object_proxy
 from .binary_props import Base64BinaryProperty
-from .udm import Udm
+from .udm import UDM
 from .utils import UDebug
 from .exceptions import UnknownUdmModuleType
 from univention.admin.uexceptions import valueInvalidSyntax
@@ -315,7 +315,7 @@ class DnListPropertyEncoder(BaseEncoder):
 		assert connection is not None, 'Argument "connection" must not be None.'
 		assert api_version is not None, 'Argument "api_version" must not be None.'
 		super(DnListPropertyEncoder, self).__init__(property_name, *args, **kwargs)
-		self._udm = Udm(connection, api_version)
+		self._udm = UDM(connection, api_version)
 
 	def _list_of_dns_to_list_of_udm_objects(self, value):
 		udm_module = None
@@ -471,7 +471,7 @@ class DnPropertyEncoder(BaseEncoder):
 		assert connection is not None, 'Argument "connection" must not be None.'
 		assert api_version is not None, 'Argument "api_version" must not be None.'
 		super(DnPropertyEncoder, self).__init__(property_name, *args, **kwargs)
-		self._udm = Udm(connection, api_version)
+		self._udm = UDM(connection, api_version)
 
 	def _dn_to_udm_object(self, value):
 		try:
