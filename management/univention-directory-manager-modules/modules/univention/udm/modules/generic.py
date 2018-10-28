@@ -36,7 +36,7 @@ import sys
 import copy
 import inspect
 from copy import deepcopy
-
+from six import string_types
 from ldap.dn import dn2str, str2dn
 import ldap
 
@@ -49,8 +49,8 @@ import univention.config_registry
 from ..encoders import dn_list_property_encoder_for
 from ..base import BaseUdmModule, BaseUdmModuleMetadata, BaseUdmObject, BaseUdmObjectProperties, UdmLdapMapping
 from ..exceptions import (
-	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, UdmError,
-	UnknownProperty, UnknownUdmModuleType,WrongObjectType
+	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, NoSuperordinate,
+	UdmError, UnknownProperty, UnknownUdmModuleType,WrongObjectType
 )
 from ..plugins import Plugin
 from ..utils import UDebug as ud
@@ -292,6 +292,19 @@ class GenericUdmObject(BaseUdmObject):
 			if v is None and self._orig_udm_object.descriptions[k].multivalue:
 				val = []
 			setattr(self.props, k, val)
+		if self._orig_udm_object.superordinate:
+			sup_module = GenericUdmModule(
+				self._orig_udm_object.superordinate.module,
+				self._lo,
+				self._udm_module.meta.used_api_version
+			)
+			self.superordinate = sup_module._load_obj(
+				dn=None,
+				superordinate=None,
+				orig_udm_object=self._orig_udm_object.superordinate
+			)
+		else:
+			self.superordinate = None
 		self._fresh = True
 
 	def _copy_to_udm_obj(self):
@@ -321,6 +334,8 @@ class GenericUdmObject(BaseUdmObject):
 				new_val2 = new_val
 			if v != new_val2:
 				self._orig_udm_object[k] = new_val2
+		if self.superordinate:
+			self._orig_udm_object.superordinate = self.superordinate._orig_udm_object
 
 	def _init_new_object_props(self):
 		"""
@@ -472,14 +487,17 @@ class GenericUdmModule(BaseUdmModule):
 		super(GenericUdmModule, self).__init__(name, connection, api_version)
 		self._orig_udm_module = self._get_orig_udm_module()
 
-	def new(self):
+	def new(self, superordinate=None):
 		"""
 		Create a new, unsaved GenericUdmObject object.
 
+		:param superordinate: DN or UDM object this one references as its
+			superordinate (required by some modules)
+		:type superordinate: str or GenericUdmObject
 		:return: a new, unsaved GenericUdmObject object
 		:rtype: GenericUdmObject
 		"""
-		return self._load_obj('')
+		return self._load_obj('', superordinate)
 
 	def get(self, dn):
 		"""
@@ -589,7 +607,7 @@ class GenericUdmModule(BaseUdmModule):
 			self._udm_module_cache[key] = udm_module
 		return self._udm_module_cache[key]
 
-	def _get_orig_udm_object(self, dn):
+	def _get_orig_udm_object(self, dn, superordinate=None):
 		"""
 		Retrieve UDM object from LDAP.
 
@@ -597,40 +615,74 @@ class GenericUdmModule(BaseUdmModule):
 		if the object found is not of type :py:attr:`self.name`.
 
 		:param str dn: the DN of the object to load
+		:param superordinate: DN or UDM object this one references as its
+			superordinate (required by some modules)
+		:type superordinate: str or GenericUdmObject
+		:param univention.admin.handlers.simpleLdap orig_udm_object: original
+			UDM object instance, if unset one will be created from `dn`
 		:return: UDM object
 		:rtype: univention.admin.handlers.simpleLdap
 		:raises NoObject: if no object is found at `dn`
 		:raises WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
 		"""
 		udm_module = self._get_orig_udm_module()
+		if superordinate:
+			if isinstance(superordinate, string_types):
+				superordinate_obj = univention.admin.objects.get_superordinate(udm_module, None, self.connection, superordinate)
+			elif isinstance(superordinate, GenericUdmObject):
+				superordinate_obj = superordinate
+			else:
+				raise ValueError('Argument "superordinate" must be a DN (string) or a GenericUdmObject instance.')
+		else:
+			superordinate_obj = None
+		if not dn and not superordinate_obj:
+			# check if objects of this module require a superordinate
+			superordinate_modules = getattr(udm_module, 'superordinate', None)
+			if superordinate_modules:
+				if isinstance(superordinate_modules, string_types):
+					superordinate_modules = [superordinate_modules]
+				raise NoSuperordinate(dn=dn, module_name=self.name, superordinate_types=superordinate_modules)
 		po = univention.admin.uldap.position(self.connection.base)
 		try:
-			obj = univention.admin.objects.get(udm_module, None, self.connection, po, dn=dn)
+			obj = univention.admin.objects.get(udm_module, None, self.connection, po, dn=dn, superordinate=superordinate_obj)
 		except univention.admin.uexceptions.noObject:
 			raise NoObject, NoObject(dn=dn, module_name=self.name), sys.exc_info()[2]
-		except univention.admin.uexceptions.base:
+		except univention.admin.uexceptions.base as exc:
 			raise UdmError, UdmError(
-				'Error loading UDM object at DN {!r}'.format(dn), dn=dn, module_name=self.name
+				'Error loading UDM object at DN {!r}: {}'.format(dn, exc), dn=dn, module_name=self.name
 			), sys.exc_info()[2]
 		self._verify_univention_object_type(obj)
 		if self.meta.auto_open:
 			obj.open()
 		return obj
 
-	def _load_obj(self, dn):
+	def _load_obj(self, dn, superordinate=None, orig_udm_object=None):
 		"""
 		GenericUdmObject factory.
 
 		:param str dn: the DN of the UDM object to load, if '' a new one
+		:param superordinate: DN or UDM object this one references as its
+			superordinate (required by some modules)
+		:type superordinate: str or GenericUdmObject
+		:param univention.admin.handlers.simpleLdap orig_udm_object: original
+			UDM object instance, if unset one will be created from `dn`
 		:return: a GenericUdmObject
 		:rtype: GenericUdmObject
 		:raises NoObject: if no object is found at `dn`
-		:raises WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
+		:raises ValueError: if `orig_udm_object` is not a
+			:py:class:`univention.admin.handlers.simpleLdap` instance
+		:raises WrongObjectType: if the object found at `dn` is not of type
+			:py:attr:`self.name`
 		"""
 		obj = self._udm_object_class()
 		obj._lo = self.connection
 		obj._udm_module = self
-		obj._orig_udm_object = self._get_orig_udm_object(dn)
+		if orig_udm_object:
+			if not isinstance(orig_udm_object, univention.admin.handlers.simpleLdap):
+				raise ValueError('Argument "orig_udm_object" must be an original UDM object instance.')
+			obj._orig_udm_object = orig_udm_object
+		else:
+			obj._orig_udm_object = self._get_orig_udm_object(dn, superordinate)
 		obj.props = obj.udm_prop_class(obj)
 		obj._copy_from_udm_obj()
 		return obj

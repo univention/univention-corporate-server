@@ -96,6 +96,7 @@ class BaseUdmObject(object):
 		self.options = []
 		self.policies = []
 		self.position = ''
+		self.superordinate = None
 		self._udm_module = None
 
 	def __repr__(self):
@@ -216,10 +217,13 @@ class BaseUdmModule(object):
 	def __repr__(self):
 		return '{}({!r})'.format(self.__class__.__name__, self.name)
 
-	def new(self):
+	def new(self, superordinate=None):
 		"""
 		Create a new, unsaved BaseUdmObject object.
 
+		:param superordinate: DN or UDM object this one references as its
+			superordinate (required by some modules)
+		:type superordinate: str or GenericUdmObject
 		:return: a new, unsaved BaseUdmObject object
 		:rtype: BaseUdmObject
 		"""

@@ -34,11 +34,7 @@ Will work for all kinds of UDM modules.
 from __future__ import absolute_import, unicode_literals
 import univention.config_registry
 from ..encoders import BaseEncoder
-from ..base import (
-	BaseUdmObjectProperties, UdmLdapMapping,
-	BaseUdmObjectTV, BaseUdmModuleTV, BaseUdmModuleMetadataTV
-)
-from ..utils import ConnectionConfig
+from ..base import BaseUdmObjectProperties, BaseUdmObjectTV, BaseUdmModuleTV, BaseUdmModuleMetadataTV
 from typing import Any, Dict, Iterator, List, Optional, Text, Tuple, Type, TypeVar, Union
 
 
@@ -107,7 +103,7 @@ class GenericUdmModuleMetadata(BaseUdmModuleMetadataTV):
 
 
 class GenericUdmModule(BaseUdmModuleTV):
-	_udm_object_class = GenericUdmObject  # type: Type[GenericUdmObject]
+	_udm_object_class = GenericUdmObject  # type: Type[GenericUdmObjectTV]
 	_udm_module_meta_class = GenericUdmModuleMetadata  # type: Type[GenericUdmModuleMetadata]
 	_udm_module_cache = {}  # type: Dict[Tuple[Text, Text, Text, Text], UdmHandlerTV]
 	_default_containers = {}  # type: Dict[Text, Dict[Text, Any]]
@@ -117,13 +113,13 @@ class GenericUdmModule(BaseUdmModuleTV):
 	def __init__(self, name, connection, api_version):  # type: (Text, Any, int) -> None
 		self._orig_udm_module = None  # type: UdmHandlerTV
 
-	def new(self, superordinate=None):  # type: (Optional[Text]) -> GenericUdmObject
+	def new(self, superordinate=None):  # type: (Optional[Union[Text, GenericUdmObjectTV]]) -> GenericUdmObjectTV
 		...
 
 	def get(self, dn):  # type: (Text) -> GenericUdmObject
 		...
 
-	def search(self, filter_s='', base='', scope='sub'):  # type: (Text, Text, Text) -> Iterator[GenericUdmObject]
+	def search(self, filter_s='', base='', scope='sub'):  # type: (Text, Text, Text) -> Iterator[GenericUdmObjectTV]
 		...
 	def _dn_exists(self, dn):  # type: (Text) -> bool
 		...
@@ -140,10 +136,11 @@ class GenericUdmModule(BaseUdmModuleTV):
 		...
 
 	def _get_orig_udm_object(self, dn, superordinate=None):
-		# type: (Text, Optional[Text]) -> UdmHandlerTV
+		# type: (Text, Optional[Union[Text, GenericUdmObjectTV]]) -> UdmHandlerTV
 		...
 
-	def _load_obj(self, dn):  # type: (Text) -> GenericUdmObject
+	def _load_obj(self, dn, superordinate=None, orig_udm_object=None):
+		# type: (Text, Optional[Union[Text, GenericUdmObjectTV]], Optional[UdmHandlerTV]) -> GenericUdmObject
 		...
 
 	def _verify_univention_object_type(self, orig_udm_obj):  # type: (UdmHandlerTV) -> None

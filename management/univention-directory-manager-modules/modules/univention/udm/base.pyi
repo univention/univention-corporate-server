@@ -32,8 +32,7 @@ Base classes for (simplified) UDM modules and objects.
 
 from __future__ import absolute_import, unicode_literals
 from collections import namedtuple
-from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, TypeVar
-from .udm import UDM
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, TypeVar, Union
 
 
 UdmLdapMapping = namedtuple('UdmLdapMapping', ('ldap2udm', 'udm2ldap'))
@@ -63,6 +62,7 @@ class BaseUdmObject(object):
 		self.options = []  # type: List[Text]
 		self.policies = []  # type: List[Text]
 		self.position = ''  # type: Text
+		self.superordinate = None  # type: BaseUdmObjectTV
 		self._udm_module = None  # type: BaseUdmModuleTV
 
 	def __repr__(self):  # type: () -> Text
@@ -111,7 +111,7 @@ class BaseUdmModule(object):
 	def __repr__(self):  # type: () -> Text
 		...
 
-	def new(self):  # type: () -> BaseUdmObjectTV
+	def new(self, superordinate=None):  # type: (Optional[Union[Text, BaseUdmObjectTV]]) -> BaseUdmObjectTV
 		...
 
 	def get(self, dn):  # type: (Text) -> BaseUdmObjectTV

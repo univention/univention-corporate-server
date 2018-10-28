@@ -115,6 +115,12 @@ class NoObject(UdmError):
 		...
 
 
+class NoSuperordinate(UdmError):
+	"""Raised when no superordinate was supplied but one is needed."""
+	def __init__(self, msg=None, dn=None, module_name=None, superordinate_types=None):
+		...
+
+
 class MultipleObjects(UdmError):
 	"""Raised when more than one UdmObject was found when there should be at most one."""
 	...
