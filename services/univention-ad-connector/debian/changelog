@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.6-35) unstable; urgency=medium
+
+  * Bug #47395: Fix cn = Subschema in ad connector
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 29 Oct 2018 08:57:26 +0100
+
 univention-ad-connector (11.0.6-34) unstable; urgency=medium
 
   * Bug #47050: restart connector on extended attribute changes
