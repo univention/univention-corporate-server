@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-ad-connector
+fix: 12.0.0-27A~4.3.0.201810290927
+desc: |
+ This update addresses the following issue(s):
+ * Fixes cn = Subschema rejects in ad-connector
+bug: [47396]
