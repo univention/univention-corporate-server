@@ -138,6 +138,13 @@ class LockingError(UpdaterException):
     def __str__(self):
         return "Another updater process is currently running - abort\n%s" % self.args[0]
 
+class UnmetDependencyError(UpdaterException):
+    """
+    Signal unmet package dependencies
+    """
+
+    def __str__(self):
+        return "You have unmet dependencies %s" % self.args[0]
 
 if __name__ == '__main__':
     import doctest
