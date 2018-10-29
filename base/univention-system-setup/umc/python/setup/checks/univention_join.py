@@ -15,25 +15,31 @@ _ = Translation('univention-management-console-module-setup').translate
 
 
 def set_role_and_check_if_join_will_work(role, master_fqdn, admin_username, admin_password):
-	UCR['server/role'] = role
-	UCR.save()
+	orig_role = UCR.get('server/role')
+	try:
+		univention.config_registry.handler_set(['server/role=%s' % (role,)])
 
-	with _temporary_password_file(admin_password) as password_file:
-		p1 = subprocess.Popen([
-			'univention-join',
-			'-dcname', master_fqdn,
-			'-dcaccount', admin_username,
-			'-dcpwd', password_file,
-			'-checkPrerequisites'
-		], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-		stdout, stderr = p1.communicate()
-		if p1.returncode != 0:
-			messages = [ line[11:] for line in stdout.split('\n')
-			   if line.startswith("* Message: ")]
-			raise UMC_Error(_(
-				"univention-join -checkPrerequisites reported a problem. "
-				"Output of check:\n\n"
-			) + "\n".join(messages) )
+		with _temporary_password_file(admin_password) as password_file:
+			p1 = subprocess.Popen([
+				'univention-join',
+				'-dcname', master_fqdn,
+				'-dcaccount', admin_username,
+				'-dcpwd', password_file,
+				'-checkPrerequisites'
+			], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+			stdout, stderr = p1.communicate()
+			if p1.returncode != 0:
+				messages = [ line[11:] for line in stdout.split('\n')
+				   if line.startswith("* Message: ")]
+				raise UMC_Error(_(
+					"univention-join -checkPrerequisites reported a problem. "
+					"Output of check:\n\n"
+				) + "\n".join(messages) )
+	finally:
+		if orig_role:
+			univention.config_registry.handler_set(['server/role=%s' % (orig_role,)])
+		else:
+			univention.config_registry.handler_unset(['server/role'])
 
 
 def receive_domaincontroller_master_information(dns, nameserver, address, username, password):
