@@ -1463,8 +1463,12 @@ def ucs_zone_create(s4connector, object, dns_type):
 	mname = soa['mname']
 	if mname and not mname.endswith("."):
 		mname = "%s." % mname
-	if mname not in ns:
+
+	ns_lower = [x.lower() for x in ns]
+	mname_lower = mname.lower()
+	if mname_lower not in ns_lower:
 		ns.insert(0, mname)
+		ns_lower.insert(0, mname_lower)
 
 	# Does a zone already exist?
 	modify = False
@@ -1476,7 +1480,8 @@ def ucs_zone_create(s4connector, object, dns_type):
 		elif dns_type == 'reverse_zone':
 			zone = univention.admin.handlers.dns.reverse_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=None, attributes=[])
 		zone.open()
-		if set(ns) != set(zone['nameserver']):
+		udm_zone_nameservers_lower = [x.lower() for x in zone['nameserver']]
+		if set(ns_lower) != set(udm_zone_nameservers_lower):
 			zone['nameserver'] = ns
 			modify = True
 		if soa['rname'].replace('.', '@', 1) != zone['contact'].rstrip('.'):

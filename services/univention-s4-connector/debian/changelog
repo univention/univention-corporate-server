@@ -1,3 +1,9 @@
+univention-s4-connector (12.0.2-37) unstable; urgency=medium
+
+  * Bug #44104: Perform a case insensitive compare of ns records
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Oct 2018 14:55:53 +0100
+
 univention-s4-connector (12.0.2-36) unstable; urgency=medium
 
   * Bug #44104: Fix sync_to_ucs reject for DNS SOAs with
