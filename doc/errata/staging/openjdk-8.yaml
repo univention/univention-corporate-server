@@ -1,0 +1,29 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: openjdk-8
+fix: 8u181-b13-2~deb9u1
+desc: |
+ This update addresses the following issues:
+ * Incorrect handling of unsigned attributes in signed Jar manifests
+   (Security, 8194534) (CVE-2018-3136)
+ * Leak of sensitive header data via HTTP redirect (Networking, 8196902)
+   (CVE-2018-3139)
+ * Incomplete enforcement of the trustURLCodebase restriction (JNDI, 8199177)
+   (CVE-2018-3149)
+ * Improper field access checks (Hotspot, 8199226) (CVE-2018-3169)
+ * Missing endpoint identification algorithm check during TLS session
+   resumption (JSSE, 8202613) (CVE-2018-3180)
+ * Unrestricted access to scripting engine (Scripting, 8202936)
+   (CVE-2018-3183)
+ * Infinite loop in RIFF format reader (Sound, 8205361) (CVE-2018-3214)
+bug: [48074]
+cve:
+- CVE-2018-3136
+- CVE-2018-3139
+- CVE-2018-3149
+- CVE-2018-3169
+- CVE-2018-3180
+- CVE-2018-3183
+- CVE-2018-3214
