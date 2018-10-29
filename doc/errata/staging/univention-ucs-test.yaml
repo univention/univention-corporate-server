@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: ucs-test
-fix: 8.0.28-209A~4.3.0.201810231756
+fix: 8.0.28-213A~4.3.0.201810290826
 desc: |
  This update addresses the following issue(s):
  * Added test to check DRS replication works after server password change. Updated version
