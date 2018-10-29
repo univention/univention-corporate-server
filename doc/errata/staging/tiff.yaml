@@ -1,0 +1,19 @@
+product: ucs
+release: "4.2"
+version: [4, 5]
+scope: ucs_4.2-0-errata4.2-5
+src: tiff
+fix: 4.0.3-12.3+deb8u7
+desc: |
+ This update addresses the following issues:
+ * Integer overflow in multiply_ms in tools/ppm2tiff.c (CVE-2018-17100)
+ * Two out-of-bounds writes in cpTags in tools/tiff2bw.c and tools/pal2rgb.c
+   (CVE-2018-17101)
+ * LibTIFF 4.0.9 (with JBIG enabled) decodes arbitrarily-sized JBIG into a
+   buffer, ignoring the buffer size, which leads to a tif_jbig.c JBIGDecode
+   out-of-bounds write. (CVE-2018-18557)
+bug: [48070]
+cve:
+- CVE-2018-17100
+- CVE-2018-17101
+- CVE-2018-18557
