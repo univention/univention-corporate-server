@@ -1,4 +1,4 @@
-from univention.management.console.modules.setup.netconf import Phase, SkipPhase
+from univention.management.console.modules.setup.netconf import Phase
 
 
 class PhaseFlushOldAddresses(Phase):
@@ -7,11 +7,6 @@ class PhaseFlushOldAddresses(Phase):
 	Flush old interfaces to remove old addresses.
 	"""
 	priority = 55
-
-	def check(self):
-		super(PhaseFlushOldAddresses, self).check()
-		if self.changeset.options.appliance_mode:
-			raise SkipPhase("Skipping flush in appliance-mode")
 
 	def pre(self):
 		super(PhaseFlushOldAddresses, self).pre()
