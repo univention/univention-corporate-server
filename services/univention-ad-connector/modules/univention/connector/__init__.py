@@ -665,6 +665,9 @@ class ucs:
 
 		dn, new, old, old_dn = cPickle.load(f)
 
+		if dn == 'cn=Subschema':
+			return True
+
 		def recode_attribs(attribs):
 			nattribs = {}
 			for key in attribs.keys():
