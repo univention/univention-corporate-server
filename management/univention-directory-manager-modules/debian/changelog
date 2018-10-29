@@ -1,3 +1,10 @@
+univention-directory-manager-modules (13.0.25-7) unstable; urgency=medium
+
+  * Bug #47872: Prevent the univentionblog portal_entry overwriting
+    portalEntriesOrder property
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 29 Oct 2018 12:52:54 +0100
+
 univention-directory-manager-modules (13.0.25-6) unstable; urgency=medium
 
   * Bug #48026: Revert loading syntax.py itself
