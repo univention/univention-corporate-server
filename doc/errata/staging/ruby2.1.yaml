@@ -1,0 +1,15 @@
+product: ucs
+release: "4.2"
+version: [4, 5]
+scope: ucs_4.2-0-errata4.2-5
+src: ruby2.1
+fix: 2.1.5-2+deb8u6
+desc: |
+ This update addresses the following issues:
+ * OpenSSL::X509::Name equality check does not work correctly (CVE-2018-16395)
+ * Tainted flags are not propagated in Array#pack and String#unpack with some
+   directives (CVE-2018-16396)
+bug: [48072]
+cve:
+- CVE-2018-16395
+- CVE-2018-16396
