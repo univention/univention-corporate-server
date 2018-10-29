@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: xorg-server
+fix: 2:1.19.2-1+deb9u4
+desc: |
+ This update addresses the following issue:
+ * Incorrect permission check in Xorg X server allows for privilege escalation
+   (CVE-2018-14665)
+bug: [48073]
+cve:
+- CVE-2018-14665
