@@ -235,16 +235,6 @@ class SimpleAsymmetric(object):
 			return False
 
 	@staticmethod
-	def create_nonce():  # type: () -> int
-		"""
-		Generate a cryptographically secure random number.
-
-		:return: a random integer (from urandom)
-		:rtype: int
-		"""
-		return int(codecs.encode(os.urandom(20), 'hex'), 16)
-
-	@staticmethod
 	def pem2public_key(pem):  # type: (str) -> rsa.RSAPublicKey
 		"""
 		Create a RSA public key from a PEM string.
@@ -297,3 +287,13 @@ class SimpleSymmetric(object):
 		"""
 		fernet = Fernet(key)
 		return fernet.decrypt(bytes(text))
+
+
+def create_nonce():  # type: () -> int
+	"""
+	Generate a cryptographically secure random number.
+
+	:return: a random integer (from urandom)
+	:rtype: int
+	"""
+	return int(codecs.encode(os.urandom(20), 'hex'), 16)

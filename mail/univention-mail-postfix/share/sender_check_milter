@@ -72,7 +72,7 @@ from ldap.filter import filter_format
 import libmilter as lm
 import univention.uldap
 from univention.config_registry import ConfigRegistry
-from univention.mail.simple_crypt import SimpleAsymmetric, SimpleSymmetric
+from univention.mail.simple_crypt import SimpleAsymmetric, SimpleSymmetric, create_nonce
 
 try:
 	from typing import Dict, List, Optional, Text, Tuple, Union
@@ -389,7 +389,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 	def nonce(self):  # type: () -> int
 		"""Generate a (instance-cached) cryptographically secure random number."""
 		if not self._nonce:
-			self._nonce = self.crypto.create_nonce()
+			self._nonce = create_nonce()
 		return self._nonce
 
 	def create_signature_text(self):  # type: () -> str
