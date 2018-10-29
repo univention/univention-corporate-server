@@ -331,6 +331,14 @@ class object(univention.admin.handlers.simpleLdap):
 		# This was previously bypassed by unsetting 'portalEntriesOrder' and then resetting with the new order
 		if self.hasChanged('content'):
 			content = self.info.get('content', [])
+
+			# Workaround for Bug #47872 - Comment #1
+			if (len(content) == 1
+					and len(content[0][1]) == 1
+					and content[0][0].startswith('cn=admin,')
+					and content[0][1][0].startswith('cn=univentionblog,')):
+				return
+
 			new_order = [entry for category, entries in content for entry in entries]
 			new_order_no_duplicates = []
 			for entry in new_order:

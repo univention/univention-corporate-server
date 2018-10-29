@@ -61,6 +61,7 @@ ucr.load()
 lo, po = univention.admin.uldap.getMachineConnection()
 
 portal_dns = lo.searchDn(filter='(objectClass=univentionPortal)')
+umc_entry_dn = 'cn=umc-domain,cn=portal,cn=univention,%s' % ucr.get('ldap/base')
 
 for portal_dn in portal_dns:
 	old_entries_order = lo.getAttr(portal_dn, 'univentionPortalEntriesOrder')
@@ -71,6 +72,8 @@ for portal_dn in portal_dns:
 		if not entry_dns:
 			continue
 
+		if umc_entry_dn in entry_dns and len(old_entries_order) == 0:
+			old_entries_order = [umc_entry_dn]
 		if old_entries_order:
 			ordered = [entry for entry in old_entries_order if entry in entry_dns]
 			unordered = [entry for entry in entry_dns if entry not in ordered]
