@@ -40,7 +40,7 @@ import os.path
 import shutil
 import datetime
 
-from univention.mail.simple_rsa import SimpleAsymmetric
+from univention.mail.simple_crypt import SimpleAsymmetric
 
 
 RSA_KEY_FILE = '/etc/postfix/sender_check.key'

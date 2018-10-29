@@ -72,7 +72,7 @@ from ldap.filter import filter_format
 import libmilter as lm
 import univention.uldap
 from univention.config_registry import ConfigRegistry
-from univention.mail.simple_rsa import SimpleAsymmetric, SimpleSymmetric
+from univention.mail.simple_crypt import SimpleAsymmetric, SimpleSymmetric
 
 try:
 	from typing import Dict, List, Optional, Text, Tuple, Union

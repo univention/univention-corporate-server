@@ -28,8 +28,15 @@
 # <http://www.gnu.org/licenses/>.
 
 """
-* Encrypt, decrypt and sign using RSA.
-* Create, store and load RSA keys.
+Asymmetric:
+
+	* Encrypt, decrypt and sign using RSA.
+	* Create, store and load RSA private and public keys.
+
+Symmetric:
+
+	* Encrypt and decrypt sign using AES.
+	* Create AES keys.
 """
 
 import os
