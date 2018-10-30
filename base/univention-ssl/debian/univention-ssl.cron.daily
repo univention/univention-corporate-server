@@ -30,7 +30,7 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 rv=0 tmp=$(mktemp)
 trap "rm -f '$tmp'" EXIT
-exec >"$tmp" 2>&1
+exec 3>&1 >"$tmp" 2>&1
 
 . /usr/share/univention-lib/ucr.sh
 if ! is_ucr_false ssl/validity/check
@@ -55,5 +55,5 @@ if [ "$(ucr get server/role)" = domaincontroller_master ]; then
 	fi
 fi
 
-[ 0 -eq $rv ] || cat "$tmp"
+[ 0 -eq $rv ] || cat "$tmp" >&3
 exit $rv

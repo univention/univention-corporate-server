@@ -1,3 +1,9 @@
+univention-ssl (12.0.0-16) unstable; urgency=low
+
+  * Bug #47896: Show error output again
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 30 Oct 2018 11:42:17 +0100
+
 univention-ssl (12.0.0-15) unstable; urgency=medium
 
   * Bug #44469: Use correct domain when looking up DNS CNAME aliases.
