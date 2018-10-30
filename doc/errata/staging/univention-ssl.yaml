@@ -3,9 +3,9 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-ssl
-fix: 12.0.0-15A~4.3.0.201810301104
+fix: 12.0.0-16A~4.3.0.201810301145
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * SSL host certificates are now also valid for DNS alias records.
  * The cronjob to revoke expired certificates now works properly again.
 bug: [44469, 47896]
