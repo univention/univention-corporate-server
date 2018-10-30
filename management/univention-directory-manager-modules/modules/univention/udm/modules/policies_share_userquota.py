@@ -32,9 +32,9 @@ Module and object specific for "policies/share_userquota" UDM module.
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import StringCaseInsensitiveResultUpperBooleanPropertyEncoder
-from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
+from .generic import GenericModule, GenericObject, GenericObjectProperties
 
-class PoliciesShareUserquotaUdmObjectProperties(GenericUdmObjectProperties):
+class PoliciesShareUserquotaObjectProperties(GenericObjectProperties):
 	"""policies/share_userquota UDM properties."""
 
 	_encoders = {
@@ -42,14 +42,14 @@ class PoliciesShareUserquotaUdmObjectProperties(GenericUdmObjectProperties):
 	}
 
 
-class PoliciesShareUserquotaUdmObject(GenericUdmObject):
+class PoliciesShareUserquotaObject(GenericObject):
 	"""Better representation of policies/share_userquota properties."""
-	udm_prop_class = PoliciesShareUserquotaUdmObjectProperties
+	udm_prop_class = PoliciesShareUserquotaObjectProperties
 
 
-class PoliciesShareUserquotaUdmModule(GenericUdmModule):
-	"""PoliciesShareUserquotaUdmObject factory"""
-	_udm_object_class = PoliciesShareUserquotaUdmObject
+class PoliciesShareUserquotaModule(GenericModule):
+	"""PoliciesShareUserquotaObject factory"""
+	_udm_object_class = PoliciesShareUserquotaObject
 
 	class Meta:
 		supported_api_versions = [1]

@@ -31,21 +31,15 @@ from typing import Iterable, Optional, Text
 
 
 class UdmError(Exception):
-	"""Base class of Exceptions raised by (simplified) UDM modules."""
 	def __init__(self, msg=None, dn=None, module_name=None):
 		# type: (Optional[Text], Optional[Text], Optional[Text]) -> None
 		...
 
-
 class ApiVersionMustNotChange(UdmError):
-	"""Raised when something goes wrong getting a connection."""
 	...
-
 
 class ConnectionError(UdmError):
-	"""Raised when something goes wrong getting a connection."""
 	...
-
 
 class ApiVersionNotSupported(UdmError):
 	def __init__(
@@ -61,92 +55,53 @@ class ApiVersionNotSupported(UdmError):
 
 
 class CreateError(UdmError):
-	"""Raised when an error occurred when creating an object."""
 	...
-
 
 class DeletedError(UdmError):
 	def __init__(self, msg=None, dn=None, module_name=None):
 		# type: (Optional[Text], Optional[Text], Optional[Text]) -> None
 		...
 
-
 class DeleteError(UdmError):
-	"""
-	Raised when a client tries to delete a UdmObject but fails.
-	"""
 	def __init__(self, msg=None, dn=None, module_name=None):
 		# type: (Optional[Text], Optional[Text], Optional[Text]) -> None
 		...
-
 
 class NotYetSavedError(UdmError):
-	"""
-	Raised when a client tries to delete or reload a UdmObject that is not yet
-	saved.
-	"""
 	def __init__(self, msg=None, dn=None, module_name=None):
 		# type: (Optional[Text], Optional[Text], Optional[Text]) -> None
 		...
-
 
 class ModifyError(UdmError):
-	"""Raised if an error occurred when modifying an object."""
 	...
-
 
 class MoveError(UdmError):
-	"""Raised if an error occurred when moving an object."""
 	...
-
 
 class NoApiVersionSet(UdmError):
-	"""
-	Raised when UDM.get() or UDM.obj_by_id() is used before setting an API
-	version.
-	"""
 	...
 
-
 class NoObject(UdmError):
-	"""Raised when a UdmObject could not be found at a DN."""
 	def __init__(self, msg=None, dn=None, module_name=None):
 		# type: (Optional[Text], Optional[Text], Optional[Text]) -> None
 		...
 
-
 class NoSuperordinate(UdmError):
-	"""Raised when no superordinate was supplied but one is needed."""
 	def __init__(self, msg=None, dn=None, module_name=None, superordinate_types=None):
 		...
 
-
 class MultipleObjects(UdmError):
-	"""Raised when more than one UdmObject was found when there should be at most one."""
 	...
 
-
-class UnknownUdmModuleType(UdmError):
-	"""
-	Raised when an LDAP object has no or empty attribute univentionObjectType.
-	"""
+class UnknownModuleType(UdmError):
 	def __init__(self, msg=None, dn=None, module_name=None):
 		# type: (Optional[Text], Optional[Text], Optional[Text]) -> None
 		...
 
-
 class UnknownProperty(UdmError):
-	"""
-	Raised when a client tries to set a property on UdmObject.props, that it
-	does not support.
-	"""
 	...
 
-
 class WrongObjectType(UdmError):
-	"""
-	Raised when the LDAP object to be loaded does not match the UdmModule type.
-	"""
 	def __init__(self, msg=None, dn=None, module_name=None, univention_object_type=None):
 		# type: (Optional[Text], Optional[Text], Optional[Text], Optional[Text]) -> None
 		...

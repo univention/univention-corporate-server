@@ -35,8 +35,8 @@ class TestUdmGenericVariousModules(TestCase):
 			print('Loading {!r}...'.format(mod_name))
 			mod = self.udm.get(mod_name)
 			if mod_name in mail_and_ox_modules:
-				assert mod.__class__.__name__ == 'GenericUdmModule', 'Wrong UDM module, expected {!r}, got {!r}.'.format(
-					'GenericUdmModule', mod.__class__.__name__)
+				assert mod.__class__.__name__ == 'GenericModule', 'Wrong UDM module, expected {!r}, got {!r}.'.format(
+					'GenericModule', mod.__class__.__name__)
 		print('OK: all modules could be loaded.')
 		len_module_object_cache = len(UDM._module_object_cache)
 		assert len_module_object_cache == len(self.avail_modules), 'UDM._module_object_cache has {} entries (should be {}).'.format(len_module_object_cache, len(UDM._module_object_cache))

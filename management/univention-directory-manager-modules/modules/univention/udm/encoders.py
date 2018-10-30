@@ -38,7 +38,7 @@ import lazy_object_proxy
 from .binary_props import Base64BinaryProperty
 from .udm import UDM
 from .utils import UDebug
-from .exceptions import UnknownUdmModuleType
+from .exceptions import UnknownModuleType
 from univention.admin.uexceptions import valueInvalidSyntax
 from univention.admin.syntax import sambaGroupType
 
@@ -328,7 +328,7 @@ class DnListPropertyEncoder(BaseEncoder):
 					if not udm_module:
 						udm_module = self.udm.get(self.udm_module_name)
 					obj = udm_module.get(dn)
-			except UnknownUdmModuleType as exc:
+			except UnknownModuleType as exc:
 				UDebug.warn(str(exc))
 			else:
 				res.append(obj)
@@ -480,7 +480,7 @@ class DnPropertyEncoder(BaseEncoder):
 			else:
 				udm_module = self.udm.get(self.udm_module_name)
 				return udm_module.get(value)
-		except UnknownUdmModuleType as exc:
+		except UnknownModuleType as exc:
 			UDebug.error(str(exc))
 			return None
 

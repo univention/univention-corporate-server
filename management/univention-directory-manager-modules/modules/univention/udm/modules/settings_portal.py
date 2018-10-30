@@ -35,10 +35,10 @@ from ..encoders import (
 	dn_list_property_encoder_for, Base64BinaryPropertyEncoder, StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 	ListOfListOflTextToDictPropertyEncoder,
 )
-from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
+from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
-class SettingsPortalUdmObjectProperties(GenericUdmObjectProperties):
+class SettingsPortalObjectProperties(GenericObjectProperties):
 	"""settings/portal UDM properties."""
 
 	_encoders = {
@@ -55,14 +55,14 @@ class SettingsPortalUdmObjectProperties(GenericUdmObjectProperties):
 	}
 
 
-class SettingsPortalUdmObject(GenericUdmObject):
+class SettingsPortalObject(GenericObject):
 	"""Better representation of settings/portal properties."""
-	udm_prop_class = SettingsPortalUdmObjectProperties
+	udm_prop_class = SettingsPortalObjectProperties
 
 
-class SettingsPortalUdmModule(GenericUdmModule):
-	"""SettingsPortalUdmObject factory"""
-	_udm_object_class = SettingsPortalUdmObject
+class SettingsPortalModule(GenericModule):
+	"""SettingsPortalObject factory"""
+	_udm_object_class = SettingsPortalObject
 
 	class Meta:
 		supported_api_versions = [1]

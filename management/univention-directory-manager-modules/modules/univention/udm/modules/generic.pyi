@@ -34,43 +34,43 @@ Will work for all kinds of UDM modules.
 from __future__ import absolute_import, unicode_literals
 import univention.config_registry
 from ..encoders import BaseEncoder
-from ..base import BaseUdmObjectProperties, BaseUdmObjectTV, BaseUdmModuleTV, BaseUdmModuleMetadataTV
+from ..base import BaseObjectProperties, BaseObjectTV, BaseModuleTV, BaseModuleMetadataTV
 from typing import Any, Dict, Iterator, List, Optional, Text, Tuple, Type, TypeVar, Union
 
 
-GenericUdmObjectPropertiesTV = TypeVar(
-	'GenericUdmObjectPropertiesTV', bound='univention.udm.modules.generic.GenericUdmObjectProperties'
+GenericObjectPropertiesTV = TypeVar(
+	'GenericObjectPropertiesTV', bound='univention.udm.modules.generic.GenericObjectProperties'
 )
-GenericUdmObjectTV = TypeVar('GenericUdmObjectTV', bound='univention.udm.modules.generic.GenericUdmObject')
-GenericUdmModuleMetadataTV = TypeVar(
-	'GenericUdmModuleMetadataTV', bound='univention.udm.modules.generic.GenericUdmModuleMetadata'
+GenericObjectTV = TypeVar('GenericObjectTV', bound='univention.udm.modules.generic.GenericObject')
+GenericModuleMetadataTV = TypeVar(
+	'GenericModuleMetadataTV', bound='univention.udm.modules.generic.GenericModuleMetadata'
 )
-GenericUdmModuleTV = TypeVar('GenericUdmModuleTV', bound='univention.udm.modules.generic.GenericUdmModule')
+GenericModuleTV = TypeVar('GenericModuleTV', bound='univention.udm.modules.generic.GenericModule')
 
-UdmHandlerTV = TypeVar('UdmHandlerTV', bound='univention.admin.handlers.simpleLdap')
+OriUdmHandlerTV = TypeVar('OriUdmHandlerTV', bound='univention.admin.handlers.simpleLdap')
 
 
-class GenericUdmObjectProperties(BaseUdmObjectProperties):
+class GenericObjectProperties(BaseObjectProperties):
 	_encoders = {}  # type: Dict[Text, Type[BaseEncoder]]
 
-	def __init__(self, udm_obj):  # type: (BaseUdmObjectTV) -> None
+	def __init__(self, udm_obj):  # type: (BaseObjectTV) -> None
 		...
 	def __setattr__(self, key, value):  # type: (Text, Any) -> None
 		...
 
-class GenericUdmObject(BaseUdmObjectTV):
+class GenericObject(BaseObjectTV):
 	def __init__(self):  # type: () -> None
-		self._udm_module = None  # type: GenericUdmModuleTV
-		self._lo = None  # type: UdmHandlerTV
-		self._orig_udm_object = None  # type: UdmHandlerTV
+		self._udm_module = None  # type: GenericModuleTV
+		self._lo = None  # type: OriUdmHandlerTV
+		self._orig_udm_object = None  # type: OriUdmHandlerTV
 		self._old_position = ''
 		self._fresh = True
 		self._deleted = False
 
-	def reload(self):  # type: () -> GenericUdmObject
+	def reload(self):  # type: () -> GenericObject
 		...
 
-	def save(self):  # type: () -> GenericUdmObject
+	def save(self):  # type: () -> GenericObject
 		...
 
 	def delete(self):  # type: () -> None
@@ -90,36 +90,36 @@ class GenericUdmObject(BaseUdmObjectTV):
 		...
 
 
-class GenericUdmModuleMetadata(BaseUdmModuleMetadataTV):
-	def __init__(self, meta):  # type: (GenericUdmModuleTV.Meta) -> None
+class GenericModuleMetadata(BaseModuleMetadataTV):
+	def __init__(self, meta):  # type: (GenericModuleTV.Meta) -> None
 		self.supported_api_versions = []  # type: List[int]
 		self.suitable_for = []  # type: List[Text]
 		self.default_positions_property = None  # type: Text
 		self.used_api_version = None  # type: int
-		self._udm_module = None  # type: GenericUdmModuleTV
+		self._udm_module = None  # type: GenericModuleTV
 
-	def instance(self, udm_module, api_version):  # type: (Text, int) -> BaseUdmModuleMetadataTV
+	def instance(self, udm_module, api_version):  # type: (Text, int) -> BaseModuleMetadataTV
 		...
 
 
-class GenericUdmModule(BaseUdmModuleTV):
-	_udm_object_class = GenericUdmObject  # type: Type[GenericUdmObjectTV]
-	_udm_module_meta_class = GenericUdmModuleMetadata  # type: Type[GenericUdmModuleMetadata]
-	_udm_module_cache = {}  # type: Dict[Tuple[Text, Text, Text, Text], UdmHandlerTV]
+class GenericModule(BaseModuleTV):
+	_udm_object_class = GenericObject  # type: Type[GenericObjectTV]
+	_udm_module_meta_class = GenericModuleMetadata  # type: Type[GenericModuleMetadata]
+	_udm_module_cache = {}  # type: Dict[Tuple[Text, Text, Text, Text], OriUdmHandlerTV]
 	_default_containers = {}  # type: Dict[Text, Dict[Text, Any]]
 	supported_api_versions = (0, 1)
 	ucr = None  # type: univention.config_registry.ConfigRegistry
 
 	def __init__(self, name, connection, api_version):  # type: (Text, Any, int) -> None
-		self._orig_udm_module = None  # type: UdmHandlerTV
+		self._orig_udm_module = None  # type: OriUdmHandlerTV
 
-	def new(self, superordinate=None):  # type: (Optional[Union[Text, GenericUdmObjectTV]]) -> GenericUdmObjectTV
+	def new(self, superordinate=None):  # type: (Optional[Union[Text, GenericObjectTV]]) -> GenericObjectTV
 		...
 
-	def get(self, dn):  # type: (Text) -> GenericUdmObject
+	def get(self, dn):  # type: (Text) -> GenericObject
 		...
 
-	def search(self, filter_s='', base='', scope='sub'):  # type: (Text, Text, Text) -> Iterator[GenericUdmObjectTV]
+	def search(self, filter_s='', base='', scope='sub'):  # type: (Text, Text, Text) -> Iterator[GenericObjectTV]
 		...
 	def _dn_exists(self, dn):  # type: (Text) -> bool
 		...
@@ -132,16 +132,16 @@ class GenericUdmModule(BaseUdmModuleTV):
 
 	def _get_default_object_positions(self):  # type: () -> List[Text]
 		...
-	def _get_orig_udm_module(self):  # type: () -> UdmHandlerTV
+	def _get_orig_udm_module(self):  # type: () -> OriUdmHandlerTV
 		...
 
 	def _get_orig_udm_object(self, dn, superordinate=None):
-		# type: (Text, Optional[Union[Text, GenericUdmObjectTV]]) -> UdmHandlerTV
+		# type: (Text, Optional[Union[Text, GenericObjectTV]]) -> OriUdmHandlerTV
 		...
 
 	def _load_obj(self, dn, superordinate=None, orig_udm_object=None):
-		# type: (Text, Optional[Union[Text, GenericUdmObjectTV]], Optional[UdmHandlerTV]) -> GenericUdmObject
+		# type: (Text, Optional[Union[Text, GenericObjectTV]], Optional[OriUdmHandlerTV]) -> GenericObject
 		...
 
-	def _verify_univention_object_type(self, orig_udm_obj):  # type: (UdmHandlerTV) -> None
+	def _verify_univention_object_type(self, orig_udm_obj):  # type: (OriUdmHandlerTV) -> None
 		...

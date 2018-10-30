@@ -32,10 +32,10 @@ Module and object specific for "settings/directory" UDM module.
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import dn_list_property_encoder_for
-from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
+from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
-class SettingsDirectoryUdmObjectProperties(GenericUdmObjectProperties):
+class SettingsDirectoryObjectProperties(GenericObjectProperties):
 	"""settings/directory UDM properties."""
 
 	_encoders = {
@@ -53,14 +53,14 @@ class SettingsDirectoryUdmObjectProperties(GenericUdmObjectProperties):
 	}
 
 
-class SettingsDirectoryUdmObject(GenericUdmObject):
+class SettingsDirectoryObject(GenericObject):
 	"""Better representation of settings/directory properties."""
-	udm_prop_class = SettingsDirectoryUdmObjectProperties
+	udm_prop_class = SettingsDirectoryObjectProperties
 
 
-class SettingsDirectoryUdmModule(GenericUdmModule):
-	"""SettingsDirectoryUdmObject factory"""
-	_udm_object_class = SettingsDirectoryUdmObject
+class SettingsDirectoryModule(GenericModule):
+	"""SettingsDirectoryObject factory"""
+	_udm_object_class = SettingsDirectoryObject
 
 	class Meta:
 		supported_api_versions = [1]

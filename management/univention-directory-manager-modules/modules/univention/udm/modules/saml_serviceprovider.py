@@ -32,10 +32,10 @@ Module and object specific for "saml/serviceprovider" UDM module.
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import StringCaseInsensitiveResultUpperBooleanPropertyEncoder
-from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
+from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
-class SamlServiceproviderUdmObjectProperties(GenericUdmObjectProperties):
+class SamlServiceproviderObjectProperties(GenericObjectProperties):
 	"""saml/serviceprovider UDM properties."""
 
 	_encoders = {
@@ -43,14 +43,14 @@ class SamlServiceproviderUdmObjectProperties(GenericUdmObjectProperties):
 	}
 
 
-class SamlServiceproviderUdmObject(GenericUdmObject):
+class SamlServiceproviderObject(GenericObject):
 	"""Better representation of saml/serviceprovider properties."""
-	udm_prop_class = SamlServiceproviderUdmObjectProperties
+	udm_prop_class = SamlServiceproviderObjectProperties
 
 
-class SamlServiceproviderUdmModule(GenericUdmModule):
-	"""SamlServiceproviderUdmObject factory"""
-	_udm_object_class = SamlServiceproviderUdmObject
+class SamlServiceproviderModule(GenericModule):
+	"""SamlServiceproviderObject factory"""
+	_udm_object_class = SamlServiceproviderObject
 
 	class Meta:
 		supported_api_versions = [1]

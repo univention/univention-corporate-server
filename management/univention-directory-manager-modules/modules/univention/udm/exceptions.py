@@ -76,7 +76,7 @@ class DeletedError(UdmError):
 
 class DeleteError(UdmError):
 	"""
-	Raised when a client tries to delete a UdmObject but fails.
+	Raised when a client tries to delete a UDM object but fails.
 	"""
 	def __init__(self, msg=None, dn=None, module_name=None):
 		msg = msg or 'Object{} could not be deleted.'.format(' {!r}'.format(dn) if dn else '')
@@ -85,8 +85,8 @@ class DeleteError(UdmError):
 
 class NotYetSavedError(UdmError):
 	"""
-	Raised when a client tries to delete or reload a UdmObject that is not yet
-	saved.
+	Raised when a client tries to delete or reload a UDM object that is not
+	yet saved.
 	"""
 	msg = 'Object has not been created/loaded yet.'
 
@@ -110,7 +110,7 @@ class NoApiVersionSet(UdmError):
 
 
 class NoObject(UdmError):
-	"""Raised when a UdmObject could not be found at a DN."""
+	"""Raised when a UDM object could not be found at a DN."""
 	def __init__(self, msg=None, dn=None, module_name=None):
 		msg = msg or 'No object found at DN {!r}.'.format(dn)
 		super(NoObject, self).__init__(msg, dn, module_name)
@@ -125,30 +125,34 @@ class NoSuperordinate(UdmError):
 
 
 class MultipleObjects(UdmError):
-	"""Raised when more than one UdmObject was found when there should be at most one."""
+	"""
+	Raised when more than one UDM object was found when there should be at
+	most one.
+	"""
 	pass
 
 
-class UnknownUdmModuleType(UdmError):
+class UnknownModuleType(UdmError):
 	"""
 	Raised when an LDAP object has no or empty attribute univentionObjectType.
 	"""
 	def __init__(self, msg=None, dn=None, module_name=None):
 		msg = msg or 'No or empty attribute "univentionObjectType" found at DN {!r}.'.format(dn)
-		super(UnknownUdmModuleType, self).__init__(msg, dn, module_name)
+		super(UnknownModuleType, self).__init__(msg, dn, module_name)
 
 
 class UnknownProperty(UdmError):
 	"""
-	Raised when a client tries to set a property on UdmObject.props, that it
-	does not support.
+	Raised when a client tries to set a property on :py:attr:`BaseObject.props`,
+	that it does not support.
 	"""
 	pass
 
 
 class WrongObjectType(UdmError):
 	"""
-	Raised when the LDAP object to be loaded does not match the UdmModule type.
+	Raised when the LDAP object to be loaded does not match the module type
+	(:py:attr:`BaseModule.name`).
 	"""
 	def __init__(self, msg=None, dn=None, module_name=None, univention_object_type=None):
 		msg = msg or 'Wrong UDM module: {!r} is not a {!r}, but a {!r}.'.format(dn, module_name, univention_object_type)

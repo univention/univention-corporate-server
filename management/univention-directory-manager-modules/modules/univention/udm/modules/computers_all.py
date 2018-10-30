@@ -36,10 +36,10 @@ from ..encoders import (
 	DnsEntryZoneReverseListMultiplePropertyEncoder,
 	dn_list_property_encoder_for, dn_property_encoder_for, StringIntBooleanPropertyEncoder, StringIntPropertyEncoder
 )
-from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
+from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
-class ComputersAllUdmObjectProperties(GenericUdmObjectProperties):
+class ComputersAllObjectProperties(GenericObjectProperties):
 	"""computers/* UDM properties."""
 
 	_encoders = {
@@ -58,14 +58,14 @@ class ComputersAllUdmObjectProperties(GenericUdmObjectProperties):
 	}
 
 
-class ComputersAllUdmObject(GenericUdmObject):
+class ComputersAllObject(GenericObject):
 	"""Better representation of computers/* properties."""
-	udm_prop_class = ComputersAllUdmObjectProperties
+	udm_prop_class = ComputersAllObjectProperties
 
 
-class ComputersAllUdmModule(GenericUdmModule):
-	"""ComputersAllUdmObject factory"""
-	_udm_object_class = ComputersAllUdmObject
+class ComputersAllModule(GenericModule):
+	"""ComputersAllObject factory"""
+	_udm_object_class = ComputersAllObject
 
 	class Meta:
 		supported_api_versions = (1,)
@@ -73,11 +73,11 @@ class ComputersAllUdmModule(GenericUdmModule):
 		suitable_for = ['computers/*']
 
 
-class ComputersDCUdmModule(ComputersAllUdmModule):
-	"""ComputersAllUdmObject factory with an adjusted default position"""
+class ComputersDCModule(ComputersAllModule):
+	"""ComputersAllObject factory with an adjusted default position"""
 
 	def _get_default_object_positions(self):
-		ret = super(ComputersDCUdmModule, self)._get_default_object_positions()
+		ret = super(ComputersDCModule, self)._get_default_object_positions()
 		if len(ret) == 4 and \
 			'cn=computers,{}'.format(self.connection.base) in ret and \
 			'cn=memberserver,cn=computers,{}'.format(self.connection.base) in ret and \
@@ -93,11 +93,11 @@ class ComputersDCUdmModule(ComputersAllUdmModule):
 		suitable_for = ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave']
 
 
-class ComputersMemberUdmModule(ComputersAllUdmModule):
-	"""ComputersAllUdmObject factory with an adjusted default position"""
+class ComputersMemberModule(ComputersAllModule):
+	"""ComputersAllObject factory with an adjusted default position"""
 
 	def _get_default_object_positions(self):
-		ret = super(ComputersMemberUdmModule, self)._get_default_object_positions()
+		ret = super(ComputersMemberModule, self)._get_default_object_positions()
 		if len(ret) == 4 and \
 			'cn=computers,{}'.format(self.connection.base) in ret and \
 			'cn=memberserver,cn=computers,{}'.format(self.connection.base) in ret and \

@@ -32,25 +32,25 @@ Module and object specific for "container/ou" UDM module.
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import dn_property_encoder_for
-from .container_cn import ContainerCnUdmModule, ContainerCnUdmObject, ContainerCnUdmObjectProperties
+from .container_cn import ContainerCnModule, ContainerCnObject, ContainerCnObjectProperties
 
 
-class ContainerOuUdmObjectProperties(ContainerCnUdmObjectProperties):
+class ContainerOuObjectProperties(ContainerCnObjectProperties):
 	"""container/ou UDM properties."""
 
-	_encoders = ContainerCnUdmObjectProperties._encoders
+	_encoders = ContainerCnObjectProperties._encoders
 	_encoders['ucsschoolClassShareFileServer'] = dn_property_encoder_for('auto')
 	_encoders['ucsschoolHomeShareFileServer'] = dn_property_encoder_for('auto')
 
 
-class ContainerOuUdmObject(ContainerCnUdmObject):
+class ContainerOuObject(ContainerCnObject):
 	"""Better representation of container/ou properties."""
-	udm_prop_class = ContainerOuUdmObjectProperties
+	udm_prop_class = ContainerOuObjectProperties
 
 
-class ContainerOuUdmModule(ContainerCnUdmModule):
-	"""ContainerOuUdmObject factory"""
-	_udm_object_class = ContainerOuUdmObject
+class ContainerOuModule(ContainerCnModule):
+	"""ContainerOuObject factory"""
+	_udm_object_class = ContainerOuObject
 
 	class Meta:
 		supported_api_versions = [1]

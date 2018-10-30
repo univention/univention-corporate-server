@@ -37,7 +37,7 @@ class TestUdmUsersBasic(TestCase):
 		cls.udm = UDM.admin().version(1)
 
 		user_mod1 = cls.udm.get('users/user')
-		assert user_mod1.__class__.__name__ == 'UsersUserUdmModule', 'Wrong UDM module.'
+		assert user_mod1.__class__.__name__ == 'UsersUserModule', 'Wrong UDM module.'
 		user_mod2 = cls.udm.get('users/user')
 		assert user_mod1 is user_mod2, 'UDM module object cache miss.'
 

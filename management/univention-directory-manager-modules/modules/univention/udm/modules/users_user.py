@@ -35,10 +35,10 @@ from ..encoders import (
 	dn_list_property_encoder_for, dn_property_encoder_for, Base64BinaryPropertyEncoder, DatePropertyEncoder,
 	DisabledPropertyEncoder, HomePostalAddressPropertyEncoder, SambaLogonHoursPropertyEncoder, StringIntPropertyEncoder,
 )
-from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
+from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
-class UsersUserUdmObjectProperties(GenericUdmObjectProperties):
+class UsersUserObjectProperties(GenericObjectProperties):
 	"""users/user UDM properties."""
 
 	_encoders = {
@@ -60,14 +60,14 @@ class UsersUserUdmObjectProperties(GenericUdmObjectProperties):
 	}
 
 
-class UsersUserUdmObject(GenericUdmObject):
+class UsersUserObject(GenericObject):
 	"""Better representation of users/user properties."""
-	udm_prop_class = UsersUserUdmObjectProperties
+	udm_prop_class = UsersUserObjectProperties
 
 
-class UsersUserUdmModule(GenericUdmModule):
-	"""UsersUserUdmObject factory"""
-	_udm_object_class = UsersUserUdmObject
+class UsersUserModule(GenericModule):
+	"""UsersUserObject factory"""
+	_udm_object_class = UsersUserObject
 
 	class Meta:
 		supported_api_versions = [1]

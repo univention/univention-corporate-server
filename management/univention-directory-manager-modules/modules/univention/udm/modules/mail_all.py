@@ -34,7 +34,7 @@ for oxmail/ox$NAME, that opens LDAP objects with both
 ``univentionObjectType=oxmail/ox$NAME`` *and*
 ``univentionObjectType=mail/$NAME``.
 
-:py:meth:`GenericUdmModule._verify_univention_object_type()` raises a
+:py:meth:`GenericModule._verify_univention_object_type()` raises a
 :py:exc:`WrongObjectType` exception when loading it.
 
 The overwritten method :py:meth:`_verify_univention_object_type()` allows both
@@ -44,11 +44,11 @@ mail/* and oxmail/* in univentionObjectType.
 from __future__ import absolute_import, unicode_literals
 import copy
 from ..encoders import ListOfListOflTextToDictPropertyEncoder, StringIntPropertyEncoder
-from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
+from .generic import GenericModule, GenericObject, GenericObjectProperties
 from ..exceptions import WrongObjectType
 
 
-class MailAllUdmObjectProperties(GenericUdmObjectProperties):
+class MailAllObjectProperties(GenericObjectProperties):
 	"""mail/* UDM properties."""
 
 	_encoders = {
@@ -59,14 +59,14 @@ class MailAllUdmObjectProperties(GenericUdmObjectProperties):
 	}
 
 
-class MailAllUdmObject(GenericUdmObject):
+class MailAllObject(GenericObject):
 	"""Better representation of mail/* properties."""
-	udm_prop_class = MailAllUdmObjectProperties
+	udm_prop_class = MailAllObjectProperties
 
 
-class MailAllUdmModule(GenericUdmModule):
-	"""MailAllUdmObject factory"""
-	_udm_object_class = MailAllUdmObject
+class MailAllModule(GenericModule):
+	"""MailAllObject factory"""
+	_udm_object_class = MailAllObject
 
 	def _verify_univention_object_type(self, orig_udm_obj):
 		"""

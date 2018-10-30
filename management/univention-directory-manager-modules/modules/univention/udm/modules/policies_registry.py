@@ -32,9 +32,9 @@ Module and object specific for "policies/registry" UDM module.
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import ListOfListOflTextToDictPropertyEncoder
-from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
+from .generic import GenericModule, GenericObject, GenericObjectProperties
 
-class PoliciesRegistryUdmObjectProperties(GenericUdmObjectProperties):
+class PoliciesRegistryObjectProperties(GenericObjectProperties):
 	"""policies/registry UDM properties."""
 
 	_encoders = {
@@ -42,14 +42,14 @@ class PoliciesRegistryUdmObjectProperties(GenericUdmObjectProperties):
 	}
 
 
-class PoliciesRegistryUdmObject(GenericUdmObject):
+class PoliciesRegistryObject(GenericObject):
 	"""Better representation of policies/registry properties."""
-	udm_prop_class = PoliciesRegistryUdmObjectProperties
+	udm_prop_class = PoliciesRegistryObjectProperties
 
 
-class PoliciesRegistryUdmModule(GenericUdmModule):
-	"""PoliciesRegistryUdmObject factory"""
-	_udm_object_class = PoliciesRegistryUdmObject
+class PoliciesRegistryModule(GenericModule):
+	"""PoliciesRegistryObject factory"""
+	_udm_object_class = PoliciesRegistryObject
 
 	class Meta:
 		supported_api_versions = [1]

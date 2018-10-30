@@ -38,10 +38,10 @@ from ldap.filter import filter_format
 from .exceptions import NoObject, MultipleObjects
 
 
-UdmLdapMapping = namedtuple('UdmLdapMapping', ('ldap2udm', 'udm2ldap'))
+LdapMapping = namedtuple('LdapMapping', ('ldap2udm', 'udm2ldap'))
 
 
-class BaseUdmObjectProperties(object):
+class BaseObjectProperties(object):
 	"""Container for UDM properties."""
 	def __init__(self, udm_obj):
 		self._udm_obj = udm_obj
@@ -60,13 +60,13 @@ class BaseUdmObjectProperties(object):
 		return memo[id_self]
 
 
-class BaseUdmObject(object):
+class BaseObject(object):
 	"""
-	Base class for UdmObject classes.
+	Base class for UDM object classes.
 
 	Usage:
-	* Creation of instances :py:class:`BaseUdmObject` is always done through a
-	:py:class:`BaseUdmModul` instances py:meth:`new()`, py:meth:`get()` or
+	* Creation of instances :py:class:`BaseObject` is always done through a
+	:py:class:`BaseModul` instances py:meth:`new()`, py:meth:`get()` or
 	py:meth:`search()` methods.
 	* Modify an object:
 		user.props.firstname = 'Peter'
@@ -78,18 +78,19 @@ class BaseUdmObject(object):
 	* Delete an object:
 		obj.delete()
 
-	After saving a :py:class:`BaseUdmObject`, it is :py:meth:`reload()`ed
+	After saving a :py:class:`BaseObject`, it is :py:meth:`reload()`ed
 	automtically because UDM hooks and listener modules often add, modify or
 	remove properties when saving to LDAP. As this involves LDAP, it can be
 	disabled if the object is not used afterwards and performance is an issue:
 		user_mod.meta.auto_reload = False
 	"""
-	udm_prop_class = BaseUdmObjectProperties
+	udm_prop_class = BaseObjectProperties
 
 	def __init__(self):
 		"""
-		Don't instantiate a :py:class:`UdmObject` directly. Use a
-		:py:class:`BaseUdmModule`.
+		Don't instantiate a :py:class:`BaseObject` directly. Use
+		:py:meth:`BaseModule.get()`, :py:meth:`BaseModule.new()` or
+		:py:meth:`BaseModule.search()`.
 		"""
 		self.dn = ''
 		self.props = None
@@ -111,7 +112,7 @@ class BaseUdmObject(object):
 		Refresh object from LDAP.
 
 		:return: self
-		:rtype: UdmObject
+		:rtype: BaseObject
 		"""
 		raise NotImplementedError()
 
@@ -120,7 +121,7 @@ class BaseUdmObject(object):
 		Save object to LDAP.
 
 		:return: self
-		:rtype: UdmObject
+		:rtype: BaseObject
 		:raises MoveError: when a move operation fails
 		"""
 		raise NotImplementedError()
@@ -134,7 +135,7 @@ class BaseUdmObject(object):
 		raise NotImplementedError()
 
 
-class BaseUdmModuleMetadata(object):
+class BaseModuleMetadata(object):
 	"""Base class for UDM module meta data."""
 
 	auto_open = True  # whether UDM objects should be `open()`ed
@@ -179,20 +180,20 @@ class BaseUdmModuleMetadata(object):
 
 		:return: a namedtuple containing two mappings: a) from UDM property to
 			LDAP attribute and b) from LDAP attribute to UDM property
-		:rtype: UdmLdapMapping
+		:rtype: LdapMapping
 		"""
 		raise NotImplementedError()
 
 
-class BaseUdmModule(object):
+class BaseModule(object):
 	"""
-	Base class for UdmModule classes. UdmModules are basically UdmObject
+	Base class for UDM module classes. UDM modules are basically UDM object
 	factories.
 
 	Usage:
 	0. Get module using
 		user_mod = UDM.admin/machine/credentials().get('users/user')
-	1 Create fresh, not yet saved BaseUdmObject:
+	1 Create fresh, not yet saved BaseObject:
 		new_user = user_mod.new()
 	2 Load an existing object:
 		group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
@@ -206,8 +207,8 @@ class BaseUdmModule(object):
 		user.props.groups == []
 	"""
 	supported_api_versions = ()
-	_udm_object_class = BaseUdmObject
-	_udm_module_meta_class = BaseUdmModuleMetadata
+	_udm_object_class = BaseObject
+	_udm_module_meta_class = BaseModuleMetadata
 
 	def __init__(self, name, connection, api_version):
 		self.connection = connection
@@ -219,13 +220,13 @@ class BaseUdmModule(object):
 
 	def new(self, superordinate=None):
 		"""
-		Create a new, unsaved BaseUdmObject object.
+		Create a new, unsaved BaseObject object.
 
 		:param superordinate: DN or UDM object this one references as its
 			superordinate (required by some modules)
-		:type superordinate: str or GenericUdmObject
-		:return: a new, unsaved BaseUdmObject object
-		:rtype: BaseUdmObject
+		:type superordinate: str or GenericObject
+		:return: a new, unsaved BaseObject object
+		:rtype: BaseObject
 		"""
 		raise NotImplementedError()
 
@@ -234,8 +235,8 @@ class BaseUdmModule(object):
 		Load UDM object from LDAP.
 
 		:param str dn: DN of the object to load
-		:return: an existing BaseUdmObject object
-		:rtype: BaseUdmObject
+		:return: an existing BaseObject object
+		:rtype: BaseObject
 		:raises NoObject: if no object is found at `dn`
 		:raises WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
 		"""
@@ -249,8 +250,8 @@ class BaseUdmModule(object):
 
 		:param str id: ID of the object to load (e.g. username (uid) for users/user,
 			name (cn) for groups/group etc.)
-		:return: an existing BaseUdmObject object
-		:rtype: BaseUdmObject
+		:return: an existing BaseObject object
+		:rtype: BaseObject
 		:raises NoObject: if no object is found with ID `id`
 		:raises MultipleObjects: if more than one object is found with ID `id`
 		"""
@@ -272,7 +273,7 @@ class BaseUdmModule(object):
 			required, objectClasses will be set by the UDM module)
 		:param str base:
 		:param str scope:
-		:return: iterator of BaseUdmObject objects
-		:rtype: Iterator(BaseUdmObject)
+		:return: iterator of BaseObject objects
+		:rtype: Iterator(BaseObject)
 		"""
 		raise NotImplementedError()

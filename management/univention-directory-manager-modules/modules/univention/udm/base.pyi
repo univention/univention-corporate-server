@@ -35,17 +35,17 @@ from collections import namedtuple
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, TypeVar, Union
 
 
-UdmLdapMapping = namedtuple('UdmLdapMapping', ('ldap2udm', 'udm2ldap'))
+LdapMapping = namedtuple('LdapMapping', ('ldap2udm', 'udm2ldap'))
 
 
-BaseUdmObjectTV = TypeVar('BaseUdmObjectTV', bound='BaseUdmObject')
-BaseUdmModuleTV = TypeVar('BaseUdmModuleTV', bound='BaseUdmModule')
-BaseUdmModuleMetadataTV = TypeVar('BaseUdmModuleMetadataTV', bound='BaseUdmModuleMetadata')
-BaseUdmObjectPropertiesTV = TypeVar('BaseUdmObjectPropertiesTV', bound='BaseUdmObjectProperties')
+BaseObjectTV = TypeVar('BaseObjectTV', bound='BaseObject')
+BaseModuleTV = TypeVar('BaseModuleTV', bound='BaseModule')
+BaseModuleMetadataTV = TypeVar('BaseModuleMetadataTV', bound='BaseModuleMetadata')
+BaseObjectPropertiesTV = TypeVar('BaseObjectPropertiesTV', bound='BaseObjectProperties')
 
 
-class BaseUdmObjectProperties(object):
-	def __init__(self, udm_obj):  # type: (BaseUdmObjectTV) -> None
+class BaseObjectProperties(object):
+	def __init__(self, udm_obj):  # type: (BaseObjectTV) -> None
 		self._udm_obj = udm_obj
 
 	def __repr__(self):  # type: () -> Text
@@ -55,34 +55,34 @@ class BaseUdmObjectProperties(object):
 		...
 
 
-class BaseUdmObject(object):
+class BaseObject(object):
 	def __init__(self):  # type: () -> None
 		self.dn = ''
-		self.props = None  # type: BaseUdmObjectPropertiesTV
+		self.props = None  # type: BaseObjectPropertiesTV
 		self.options = []  # type: List[Text]
 		self.policies = []  # type: List[Text]
 		self.position = ''  # type: Text
-		self.superordinate = None  # type: BaseUdmObjectTV
-		self._udm_module = None  # type: BaseUdmModuleTV
+		self.superordinate = None  # type: BaseObjectTV
+		self._udm_module = None  # type: BaseModuleTV
 
 	def __repr__(self):  # type: () -> Text
 		...
 
-	def reload(self):  # type: () -> BaseUdmObjectTV
+	def reload(self):  # type: () -> BaseObjectTV
 		...
 
-	def save(self):  # type: () -> BaseUdmObjectTV
+	def save(self):  # type: () -> BaseObjectTV
 		...
 
 	def delete(self):  # type: () -> None
 		...
 
 
-class BaseUdmModuleMetadata(object):
+class BaseModuleMetadata(object):
 	auto_open = True
 	auto_reload = True
 
-	def __init__(self, udm_module, api_version):  # type: (BaseUdmModuleTV, int) -> None
+	def __init__(self, udm_module, api_version):  # type: (BaseModuleTV, int) -> None
 		self._udm_module = udm_module
 		self.api_version = api_version
 
@@ -94,32 +94,32 @@ class BaseUdmModuleMetadata(object):
 		...
 
 	@property
-	def mapping(self):  # type: () -> UdmLdapMapping
+	def mapping(self):  # type: () -> LdapMapping
 		...
 
 
-class BaseUdmModule(object):
+class BaseModule(object):
 	supported_api_versions = ()  # type: Iterable[int]
-	_udm_object_class = BaseUdmObject
-	_udm_module_meta_class = BaseUdmModuleMetadata
+	_udm_object_class = BaseObject
+	_udm_module_meta_class = BaseModuleMetadata
 
 	def __init__(self, name, connection, api_version):  # type: (Text, Any, int) -> None
 		self.connection = connection  # type: Any
 		self.name = name  # type: Text
-		self.meta = None  # type: BaseUdmModuleMetadataTV
+		self.meta = None  # type: BaseModuleMetadataTV
 
 	def __repr__(self):  # type: () -> Text
 		...
 
-	def new(self, superordinate=None):  # type: (Optional[Union[Text, BaseUdmObjectTV]]) -> BaseUdmObjectTV
+	def new(self, superordinate=None):  # type: (Optional[Union[Text, BaseObjectTV]]) -> BaseObjectTV
 		...
 
-	def get(self, dn):  # type: (Text) -> BaseUdmObjectTV
+	def get(self, dn):  # type: (Text) -> BaseObjectTV
 		...
 
-	def get_by_id(self, id):  # type: (Text) -> BaseUdmObjectTV
+	def get_by_id(self, id):  # type: (Text) -> BaseObjectTV
 		...
 
 	def search(self, filter_s='', base='', scope='sub'):
-		# type: (Text, Optional[Text], Optional[Text]) -> Iterator[BaseUdmObjectTV]
+		# type: (Text, Optional[Text], Optional[Text]) -> Iterator[BaseObjectTV]
 		...

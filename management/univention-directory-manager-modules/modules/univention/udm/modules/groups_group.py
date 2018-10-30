@@ -35,10 +35,10 @@ from ..encoders import (
 	dn_list_property_encoder_for, SambaGroupTypePropertyEncoder, StringIntBooleanPropertyEncoder,
 	StringIntPropertyEncoder
 )
-from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
+from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
-class GroupsGroupUdmObjectProperties(GenericUdmObjectProperties):
+class GroupsGroupObjectProperties(GenericObjectProperties):
 	"""groups/group UDM properties."""
 
 	_encoders = {
@@ -55,14 +55,14 @@ class GroupsGroupUdmObjectProperties(GenericUdmObjectProperties):
 	}
 
 
-class GroupsGroupUdmObject(GenericUdmObject):
+class GroupsGroupObject(GenericObject):
 	"""Better representation of groups/group properties."""
-	udm_prop_class = GroupsGroupUdmObjectProperties
+	udm_prop_class = GroupsGroupObjectProperties
 
 
-class GroupsGroupUdmModule(GenericUdmModule):
-	"""GroupsGroupUdmObject factory"""
-	_udm_object_class = GroupsGroupUdmObject
+class GroupsGroupModule(GenericModule):
+	"""GroupsGroupObject factory"""
+	_udm_object_class = GroupsGroupObject
 
 	class Meta:
 		supported_api_versions = [1]

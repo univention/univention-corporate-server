@@ -27,15 +27,15 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import, unicode_literals
-from .base import BaseUdmModuleTV, BaseUdmObjectTV
+from .base import BaseModuleTV, BaseObjectTV
 from .utils import UDebug as ud, ConnectionConfig
 from typing import Dict, List, Optional, Text, Tuple, Type
 
 
 class UDM(object):
-	_module_object_cache = {}  # type: Dict[Tuple[int, Text, Text, Text, Text, Text], BaseUdmModuleTV]
+	_module_object_cache = {}  # type: Dict[Tuple[int, Text, Text, Text, Text, Text], BaseModuleTV]
 	_imported = False
-	_modules = []  # type: List[BaseUdmModuleTV]
+	_modules = []  # type: List[BaseModuleTV]
 
 	def __init__(self, connection_config, api_version=None):  # type: (ConnectionConfig, Optional[int]) -> None
 		...
@@ -63,10 +63,10 @@ class UDM(object):
 	def version(self, api_version):  # type: (int) -> UDM
 		...
 
-	def get(self, name):  # type: (Text) -> BaseUdmModuleTV
+	def get(self, name):  # type: (Text) -> BaseModuleTV
 		...
 
-	def obj_by_dn(self, dn):  # type: (Text) -> BaseUdmObjectTV
+	def obj_by_dn(self, dn):  # type: (Text) -> BaseObjectTV
 		...
 
 	@property

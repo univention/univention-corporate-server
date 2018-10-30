@@ -33,25 +33,25 @@ Module and object specific for "users/ldap" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
-from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
+from .generic import GenericModule, GenericObject, GenericObjectProperties
 from ..encoders import DisabledPropertyEncoder
 
 
-class UsersLdapUdmObjectProperties(GenericUdmObjectProperties):
+class UsersLdapObjectProperties(GenericObjectProperties):
 	"""users/ldap UDM properties."""
 
 	_encoders = {
 		'disabled': DisabledPropertyEncoder,
 	}
 
-class UsersLdapUdmObject(GenericUdmObject):
+class UsersLdapObject(GenericObject):
 	"""Better representation of users/ldap properties."""
-	udm_prop_class = UsersLdapUdmObjectProperties
+	udm_prop_class = UsersLdapObjectProperties
 
 
-class UsersLdapUdmModule(GenericUdmModule):
-	"""UsersLdapUdmObject factory"""
-	_udm_object_class = UsersLdapUdmObject
+class UsersLdapModule(GenericModule):
+	"""UsersLdapObject factory"""
+	_udm_object_class = UsersLdapObject
 
 	class Meta:
 		supported_api_versions = [1]

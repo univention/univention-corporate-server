@@ -32,10 +32,10 @@ Module and object specific for "container/cn" UDM module.
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import StringIntBooleanPropertyEncoder
-from .generic import GenericUdmModule, GenericUdmObject, GenericUdmObjectProperties
+from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
-class ContainerCnUdmObjectProperties(GenericUdmObjectProperties):
+class ContainerCnObjectProperties(GenericObjectProperties):
 	"""container/cn UDM properties."""
 
 	_encoders = {
@@ -53,14 +53,14 @@ class ContainerCnUdmObjectProperties(GenericUdmObjectProperties):
 	}
 
 
-class ContainerCnUdmObject(GenericUdmObject):
+class ContainerCnObject(GenericObject):
 	"""Better representation of container/cn properties."""
-	udm_prop_class = ContainerCnUdmObjectProperties
+	udm_prop_class = ContainerCnObjectProperties
 
 
-class ContainerCnUdmModule(GenericUdmModule):
-	"""ContainerCnUdmObject factory"""
-	_udm_object_class = ContainerCnUdmObject
+class ContainerCnModule(GenericModule):
+	"""ContainerCnObject factory"""
+	_udm_object_class = ContainerCnObject
 
 	class Meta:
 		supported_api_versions = [1]
