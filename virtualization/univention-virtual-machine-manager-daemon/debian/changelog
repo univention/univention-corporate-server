@@ -4,6 +4,7 @@ univention-virtual-machine-manager-daemon (7.0.0-17) unstable; urgency=low
   * Bug #47741: Fix file permissions of cache directory.
   * Bug #36661: Fix parsing memory and disk capacities.
   * Bug #48199: Allow configuring migration target host while VM is running.
+  * Bug #48083: Frontend changes for post-copy migration
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 28 Nov 2018 19:07:41 +0100
 

@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define, window, require*/
+/*global define, window, require, console, document*/
 
 define([
 	"dojo/_base/declare",
@@ -446,6 +446,101 @@ define([
 			return false;
 		},
 
+		_hasMigrationMsg: function(item) {
+			if (item.hasOwnProperty('migration') && item.migration.hasOwnProperty('msg')) {
+				return !!item.migration.msg;
+			}
+			return false;
+		},
+
+		_isMigrating: function(item) {
+			return this._hasMigrationMsg(item) && item.migration.hasOwnProperty('type') && item.migration.type !== 0;
+		},
+
+		_migrate: function(ids, items) {
+			if (items.length > 1) {
+				console.error("Migrating multiple machines is not suported at the moment");
+				return;
+			}
+			if (this._isMigrating(items[0])) {
+				this._migrateStatus(ids, items);
+			} else {
+				this._migrateDomain(ids, items);
+			}
+		},
+
+		_getLocalizedMigrationMsg: function(migration) {
+			return lang.replace(
+				_('Migration in progress since {time_elapsed} sec, iteration {memory_iteration}'),
+				function(_, key) {
+					if (key === 'time_elapsed') {
+						return migration[key] / 1000;
+					}
+					return migration[key];
+				}
+			);
+		},
+
+		_migrateStatus: function(ids, items) {
+			var _dialog = null;
+			var _cleanup = function() {
+				_dialog.hide();
+				_dialog.destroyRecursive();
+			};
+			var localizedMigrationMsg = this._getLocalizedMigrationMsg(items[0].migration);
+
+			var form = new Form({
+				style: 'max-width: 500px;',
+				widgets: [ {
+					type: Text,
+					name: 'status',
+					content: _('<p>This machine is currently being migrated.</p><p>%s</p>', localizedMigrationMsg),
+				}],
+				buttons: [{
+					name: 'abort',
+					label: _( 'Abort migration' ),
+					focused: false,
+					tabindex: 2,
+					callback: lang.hitch(this, function() {
+						tools.umcpCommand('uvmm/domain/migrate', {
+						domainURI: ids[ 0 ],
+						mode: -1
+						});
+						this._grid._grid.deselect(ids[0]);
+						_cleanup();
+					})
+				}, {
+					name: 'postcopy',
+					label: _( 'Switch to postcopy' ),
+					focused: false,
+					tabindex: 3,
+					callback: lang.hitch(this, function() {
+						tools.umcpCommand('uvmm/domain/migrate', {
+						domainURI: ids[ 0 ],
+						mode: 101
+						});
+						this._grid._grid.deselect(ids[0]);
+						_cleanup();
+					})
+				}, {
+					name: 'cancel',
+					label: _('Close'),
+					callback: _cleanup,
+					tabindex: 1,
+					defaultButton: true
+				}],
+				layout: [ 'status', ['postcopy', 'abort'] ]
+			});
+
+			_dialog = new Dialog({
+				title: _('Migrate domain'),
+				content: form,
+				'class': 'umcPopup'
+			});
+
+			_dialog.show();
+		},
+
 		_migrateDomain: function( ids, items ) {
 			var _dialog = null, form = null;
 			var unavailable = array.some( items, function( domain ) {
@@ -467,16 +562,13 @@ define([
 
 				var _migrate = lang.hitch(this, function(name) {
 					// send the UMCP command
-					this.showProgress();
 					tools.umcpCommand('uvmm/domain/migrate', {
 						domainURI: ids[ 0 ],
 						targetNodeURI: name
 					}).then(lang.hitch(this, function() {
-						this.moduleStore.onChange();
-						this.hideProgress();
+						this._grid.update();
 					}), lang.hitch(this, function() {
-						this.moduleStore.onChange();
-						this.hideProgress();
+						this._grid.update();
 					}));
 				});
 
@@ -485,8 +577,8 @@ define([
 
 				var validHosts = array.filter( items, function( item ) {
 					if (targethosts.length > 0) {
-					// if targethosts are defined, offline targethosts have to be filtered, too
-					return targethosts.indexOf(item.label) != -1 && item.available && item.id != sourceURI && types.getNodeType( item.id ) == sourceScheme;
+						// if targethosts are defined, offline targethosts have to be filtered, too
+						return targethosts.indexOf(item.label) != -1 && item.available && item.id != sourceURI && types.getNodeType( item.id ) == sourceScheme;
 					} else {
 						return item.id != sourceURI && types.getNodeType( item.id ) == sourceScheme;
 					}
@@ -510,14 +602,15 @@ define([
 						name: 'submit',
 						label: _( 'Migrate' ),
 						style: 'float: right;',
-						callback: function() {
+						callback: lang.hitch(this, function() {
 							var nameWidget = form.getWidget('name');
 							if (nameWidget.isValid()) {
 								var name = nameWidget.get('value');
 								_cleanup();
+								this._grid._grid.deselect(ids[0]);
 								_migrate( name );
 							}
-						}
+						})
 					}, {
 						name: 'cancel',
 						label: _('Cancel'),
@@ -1560,7 +1653,7 @@ define([
 				label: _( 'Migrate' ),
 				isStandardAction: false,
 				isMultiAction: false,
-				callback: lang.hitch(this, '_migrateDomain' ),
+				callback: lang.hitch(this, '_migrate' ),
 				canExecute: function(item) {
 					// FIXME need to find out if there are more than one node of this type
 					return !isTerminated(item);
@@ -1646,6 +1739,8 @@ define([
 			else if (item.type == 'domain' || item.type == 'instance') {
 				if ( !item.node_available ) {
 					iconName += '-off';
+				} else if (this._isMigrating(item)) {
+					iconName += '-migrate';
 				} else if (item.state == 'RUNNING' || item.state == 'IDLE') {
 					iconName += '-on';
 				} else if ( item.state == 'PAUSED' || ( item.state == 'SHUTOFF' && item.suspended ) || (item.state == 'SUSPENDED')) {
@@ -1704,6 +1799,11 @@ define([
 				if (this._hasErrorMsg(item)) {
 					tooltipContent += '<br>';
 					tooltipContent += lang.replace(_('IO error "{reason}" on device "{device}[{srcpath}]"'), item.error);
+				}
+
+				if (this._isMigrating(item)) {
+					tooltipContent += '<br>';
+					tooltipContent += this._getLocalizedMigrationMsg(item.migration);
 				}
 
 				var tooltip = new Tooltip({
