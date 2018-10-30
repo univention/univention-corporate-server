@@ -416,9 +416,10 @@ define([
 		},
 
 		load: function(id) {
-			this._standbyWidget.opacity = 1;
 			this.standby(true);
-			this._standbyWidget.opacity = 0.75;
+			// clear form data
+			this._generalForm.clearFormValues();
+			this._stack.selectChild( this._generalPage, true);
 
 			tools.umcpCommand('uvmm/domain/get', {
 				domainURI: id
@@ -433,8 +434,6 @@ define([
 
 					this.moduleWidget.set('titleDetail', this._domain.name);
 
-					// clear form data
-					this._generalForm.clearFormValues();
 					this._advancedForm.clearFormValues();
 					// set values to form
 					this._generalForm.setFormValues(this._domain);
@@ -502,7 +501,6 @@ define([
 							iwidget.set( 'disabled', domainActive );
 						}
 					} ) );
-					this._stack.selectChild( this._generalPage, true);
 
 					// force a refresh of the grids
 					this._interfaceGrid.filter();
