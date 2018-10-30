@@ -937,6 +937,12 @@ class Node(PersistentCached):
 			except LookupError:
 				return
 			domStat.migration_status(dom.jobStats())
+			try:
+				switch = int(configRegistry['uvmm/migrate/postcopy'])
+			except (LookupError, TypeError, ValueError):
+				return
+			if iteration == switch:
+				dom.migrateStartPostCopy()
 		except Exception:
 			log.error('%s: Exception handling callback', self.pd.uri, exc_info=True)
 			# don't crash the event handler

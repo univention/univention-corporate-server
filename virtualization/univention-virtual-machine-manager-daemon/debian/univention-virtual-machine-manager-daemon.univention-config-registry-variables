@@ -39,3 +39,9 @@ Description[de]=Für die Live-Migration von virtuellen Maschinen kann UVMM das C
 Description[en]=For live migration of virtual machines UVMM can track the exact CPU model of the host systems. Setting this variable to 'missing' will insert such a description only if it is missing. 'always' will also overwrite any previous setting. 'remove' will delete an existing description; any other value (including unset) will not change the description, which is the default.
 Type=str
 Categories=uvmm
+
+[uvmm/migrate/postcopy]
+Description[de]=Die Anzahl der Iterationen für die Live-Migration, nach denen UVMM auf Post-Copy umschaltet. Standard: 0 deaktiviert diese Funktionalität.
+Description[en]=The count of iterations for live migration, after which UVMM switches to post-copy mode. Default: 0 which disables this functionality.
+Type=int
+Categories=uvmm
