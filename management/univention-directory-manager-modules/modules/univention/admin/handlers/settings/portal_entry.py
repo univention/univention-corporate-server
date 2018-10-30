@@ -297,7 +297,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if category_already_in_old_content:
 			new_content = [[category, entries + ([self.dn] if category == portal_category_dn else [])] for category, entries in old_content]
 		else:
-			new_content = old_content + [[portal_category_dn, [self.dn]]]
+			new_content = [[portal_category_dn, [self.dn]]] + old_content
 		if new_content != old_content:
 			try:
 				portal_category_mod = univention.admin.modules.get('settings/portal_category')

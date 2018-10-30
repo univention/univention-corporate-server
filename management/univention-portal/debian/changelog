@@ -1,3 +1,10 @@
+univention-portal (2.0.2-13) unstable; urgency=medium
+
+  * Bug #47872: Prevent 'Applications' category being after 'Administration'
+    when installing an App
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 29 Oct 2018 12:59:46 +0100
+
 univention-portal (2.0.2-12) unstable; urgency=medium
 
   * Bug #47877: Fix broken text of the portal title and name
