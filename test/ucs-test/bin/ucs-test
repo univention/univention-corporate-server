@@ -10,7 +10,6 @@ from time import time
 from optparse import OptionParser, OptionGroup
 
 import univention.testing.format
-from univention.testing.codes import TestCodes
 from univention.testing.internal import setup_environment, setup_debug, \
 	LOG_BASE, get_sections, get_tests
 from univention.testing.data import TestEnvironment, TestCase, TestResult
@@ -140,8 +139,7 @@ class TestSet(object):
 							if not dry_run:
 								test_result.run()
 								if stop_on_failure and test_result.eofs in 'EF':
-									# stop execution, Bug #35988
-									return
+									return 1
 						finally:
 							self.format.end_test(test_result)
 				finally:
@@ -188,13 +186,13 @@ def main():
 	test_set.set_prefix(options.count)
 	test_set.set_format(options.format)
 	try:
-		test_set.run_tests(options.filter, options.dry, options.hold)
+		return test_set.run_tests(options.filter, options.dry, options.hold)
 	finally:
 		coverage.stop()
 
 
 if __name__ == '__main__':
 	try:
-		main()
+		sys.exit(main())
 	except KeyboardInterrupt:
 		sys.exit(1)
