@@ -1796,20 +1796,6 @@ def domain_migrate(source_uri, domain, target_uri):
 			source_dom.undefine()
 		else:
 			raise NodeError(_('Domain "%(domain)s" in state "%(state)s" can not be migrated'), domain=domain, state=STATES[source_state])
-
-		# Updates are handled via the callback mechanism, but remove domain
-		# info as soon as possible to not show stale data
-		try:
-			del source_node.domains[domain]
-		except KeyError:
-			pass
-		# target_node.domains[domain] = Domain(target_dom, node=target_node)
-		for t in range(20):
-			if (domain not in source_node.domains and domain in target_node.domains and target_node.domains[domain].pd.state != libvirt.VIR_DOMAIN_PAUSED):
-				break
-			time.sleep(1)
-		else:
-			logger.warning('Domain "%(domain)s" still not migrated from "%(source)s" to "%(target)s"' % {'domain': domain, 'source': source_uri, 'target': target_uri})
 	except libvirt.libvirtError as ex:
 		if ex.get_error_code() == libvirt.VIR_ERR_CPU_INCOMPATIBLE:
 			raise NodeError(_('The target host has an incompatible CPU; select a different host or try an offline migration. (%(details)s)') % {'details': ex.get_str2()})
