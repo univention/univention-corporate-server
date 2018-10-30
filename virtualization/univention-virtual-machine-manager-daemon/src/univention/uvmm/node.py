@@ -291,18 +291,8 @@ class Domain(PersistentCached):
 		self._redefined |= redefined
 		if self.pd.name is None:
 			self.pd.name = domain.name()
-		for i in range(5):
-			info = domain.info()
-			if info[0] != libvirt.VIR_DOMAIN_NOSTATE:  # ignore =?= libvirt's transient error
-				break
-			if not domain.isActive():
-				info[0] = libvirt.VIR_DOMAIN_SHUTOFF
-				break
-			time.sleep(1)
-		else:
-			logger.warning('No state for %s: %s', self.pd.name, info)
-			return
 
+		info = domain.info()
 		self.pd.state, maxMem, curMem, self.pd.vcpus, runtime = info
 
 		self.pd.maxMem = long(maxMem) << 10  # KiB
@@ -1685,12 +1675,11 @@ def domain_state(uri, domain, state):
 			# Detect if VNC is wanted
 			wait_for_vnc = state in ('RUN', 'PAUSE') and any(True for dev in dom_stat.pd.graphics if dev.type == Graphic.TYPE_VNC)
 			transition()
-			ignore_states = [libvirt.VIR_DOMAIN_NOSTATE]
-			if state == 'RUN':
-				ignore_states.append(libvirt.VIR_DOMAIN_PAUSED)
 			for t in range(20):
+				if state != 'RUN':
+					break
 				cur_state = dom.info()[0]
-				if cur_state not in ignore_states:
+				if cur_state != libvirt.VIR_DOMAIN_PAUSED:
 					# do update explicitly
 					dom_stat.pd.state = cur_state
 					break
@@ -1782,11 +1771,8 @@ def domain_migrate(source_uri, domain, target_uri):
 		source_conn = source_node.conn
 		if source_conn is not None:
 			source_dom = source_conn.lookupByUUIDString(domain)
-			for t in range(10):
-				source_state = source_dom.info()[0]
-				if source_state != libvirt.VIR_DOMAIN_NOSTATE:
-					break
-				time.sleep(1)
+			source_state = source_dom.info()[0]
+
 		target_node = node_query(target_uri)
 		target_conn = target_node.conn
 
