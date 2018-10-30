@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: samba
+fix: 2:4.7.8-1A~4.3.0.201810301307
+desc: |
+ This update addresses the following regression:
+ * Continue samba-tool dbcheck --fix even if a modification failed.
+bug: [48040]
