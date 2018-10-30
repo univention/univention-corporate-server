@@ -90,7 +90,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 	_lo = None
 	_ldap_secret_mtime = 0.0
 	_ucr = None
-	legitimate_address_cache = None  # type: Dict[str, Tuple[datetime.datetime, List[str]]]
+	legitimate_address_cache = None  # type: Dict[str, Union[Tuple[datetime.datetime, List[str]], Dict[str, int]]]
 	regex_email_with_brakets = re.compile(r'.*<(.+@.+\..+)>$')
 	regex_email_no_brakets = re.compile(r'(.+@.+\..+)$')
 	mail_domains = []
@@ -156,11 +156,19 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 	@classmethod
 	def get_legitimate_addresses_for_username(cls, sasl_login_name, include_mail_allowed_sender_address=True):
 		# type: (str, Optional[bool]) -> List[str]
+		stats = cls.legitimate_address_cache['__stats']
 		if sasl_login_name in cls.legitimate_address_cache:
 			expiration, addresses = cls.legitimate_address_cache[sasl_login_name]
 			if expiration > datetime.datetime.now():
+				# manager doesn't update mutable values or items in dict and list proxies, has to be assigned
+				stats['hit'] += 1
+				cls.legitimate_address_cache['__stats'] = stats
 				return addresses
+			else:
+				stats['hit_exp'] += 1
 
+		stats['miss'] += 1
+		cls.legitimate_address_cache['__stats'] = stats
 		lo = cls.get_lo()
 		ldap_attr = ['mailPrimaryAddress', 'mailAlternativeAddress', 'mailAllowedSenderAddress']
 		ldap_filter = filter_format('(&(uid=%s)(objectclass=univentionMail))', (sasl_login_name,))
@@ -225,16 +233,21 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 		return res
 
 	@classmethod
-	def reload_sig_handler(cls, num, frame):
+	def sig_handler_reload(cls, num, frame):
 		"""
 		Reload :py:attr`cls.mail_domains`, :py:attr`cls.public_keys` and purge
 		:py:attr`cls.legitimate_address_cache`.
 		"""
 		cls.mail_domains = cls.get_mail_domains()
 		cls.public_keys = cls.get_public_keys()
+		cache_stats = cls.legitimate_address_cache['__stats'].copy()
 		cls.legitimate_address_cache.clear()
-		cls.log('Reloaded. Mail domains: {} Public keys: {}'.format(
+		cls.legitimate_address_cache['__stats'] = {'hit': 0, 'hit_exp': 0, 'miss': 0}
+		SenderCheckForkFactory._ignore_interrupt = True
+		cls.log('Reloaded. Mail domains: {}, Public keys: {}'.format(
 			', '.join(cls.mail_domains), ', '.join(cls.public_keys.keys())))
+		cls.log('Cache hits: {}, Cache misses: {} (of those expired: {})'.format(
+			cache_stats['hit'], cache_stats['miss'], cache_stats['hit_exp']))
 
 	@lm.noReply
 	def connect(self, hostname, family, ip, port, cmdDict):
@@ -477,7 +490,16 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 
 
 class SenderCheckForkFactory(lm.ForkFactory):
+	_ignore_interrupt = False
+
 	def log(self, msg):
+		if self._ignore_interrupt and 'Interrupted system call' in msg:
+			# process received a signal, the blocking self.sock.accept() in
+			# run() will create a socket.error. This is not a problem because
+			# it is inside a "while True" loop.
+			# -> Suppress logging it to not produce useless tickets.
+			SenderCheckForkFactory._ignore_interrupt = False
+			return
 		SenderCheckMilter.log(msg)
 
 
@@ -498,11 +520,15 @@ def run_milter():
 	opts = lm.SMFIP_NOHELO | lm.SMFIP_NORCPT | lm.SMFIP_NOBODY | lm.SMFIP_NODATA | lm.SMFIF_ADDHDRS | lm.SMFIF_CHGHDRS
 	sync_manager = SyncManager()
 	sync_manager.start(sync_manager_init)
-	SenderCheckMilter.legitimate_address_cache = sync_manager.dict({})
+	SenderCheckMilter.legitimate_address_cache = sync_manager.dict({'__stats': {'hit': 0, 'hit_exp': 0, 'miss': 0}})
 	milter_factory = SenderCheckForkFactory('inet:127.0.0.1:{}'.format(port), SenderCheckMilter, opts)
 
 	def shutdown():
 		SenderCheckMilter.log('Stopping sender_check milter process.')
+		SenderCheckMilter.log('Cache hits: {}, Cache misses: {} (of those expired: {})'.format(
+			SenderCheckMilter.legitimate_address_cache['__stats']['hit'],
+			SenderCheckMilter.legitimate_address_cache['__stats']['miss'],
+			SenderCheckMilter.legitimate_address_cache['__stats']['hit_exp']))
 		milter_factory.close()
 		try:
 			sync_manager.shutdown()
@@ -510,17 +536,16 @@ def run_milter():
 			if exc.errno != 3:  # "No such process" - no problem for us
 				raise
 
-	def sig_handler(num, frame):
+	def sig_handler_shutdown(num, frame):
 		shutdown()
 		sys.exit(0)
 
-	signal.signal(signal.SIGINT, sig_handler)
-	signal.signal(signal.SIGTERM, sig_handler)
-	signal.signal(signal.SIGHUP, SenderCheckMilter.reload_sig_handler)
+	signal.signal(signal.SIGINT, sig_handler_shutdown)
+	signal.signal(signal.SIGTERM, sig_handler_shutdown)
+	signal.signal(signal.SIGHUP, SenderCheckMilter.sig_handler_reload)
 
 	try:
 		milter_factory.run()
-		shutdown()
 	except Exception as exc:
 		# print to journald/syslog and log to mail.log
 		print('EXCEPTION OCCURRED: {}'.format(exc))
@@ -529,11 +554,12 @@ def run_milter():
 		for line in [l.replace('#012', '\n') for l in traceback.format_tb(sys.exc_traceback)]:
 			for _line in [l for l in line.split('\n') if l]:
 				SenderCheckMilter.log(_line, 'ERROR')
+		sys.exit(1)
+	finally:
 		try:
 			shutdown()
 		except Exception:
 			pass
-		sys.exit(3)
 
 
 if __name__ == '__main__':
