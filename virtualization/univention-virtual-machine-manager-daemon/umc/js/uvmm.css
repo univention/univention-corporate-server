@@ -10,6 +10,15 @@
 	display: block;
 }
 
+.umc .umcGrid .dgrid .dgrid-cell.field-vnc {
+	text-overflow: clip;
+}
+
+.umc .umcGrid .dgrid .dgrid-header .field-start,
+.umc .umcGrid .dgrid .dgrid-header .field-vnc {
+	text-align: center;
+}
+
 .umc .umcGrid .dgrid .dgrid-cell.field-start .dijitButtonText,
 .umc .umcGrid .dgrid .dgrid-cell.field-vnc .dijitButtonText {
 	padding: 0px;

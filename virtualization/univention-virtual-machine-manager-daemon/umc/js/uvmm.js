@@ -1723,7 +1723,9 @@ define([
 				style: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
 			});
 			// set content after creating the object because of HTTP404: Bug #25635
-			var widget = new Text({});
+			var widget = new Text({
+				style: 'vertical-align: bottom;'
+			});
 			this._grid.own(widget);
 			widget.set('content', html);
 
