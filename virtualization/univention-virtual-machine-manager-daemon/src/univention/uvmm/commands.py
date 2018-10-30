@@ -479,9 +479,11 @@ class _Commands:
 			raise CommandError('DOMAIN_MIGRATE', _('domain != string: %(domain)s'), domain=request.domain)
 		if not isinstance(request.target_uri, basestring):
 			raise CommandError('DOMAIN_MIGRATE', _('target_uri != string: %(uri)s'), uri=request.target_uri)
-		logger.debug('DOMAIN_MIGRATE %s#%s %s', request.uri, request.domain, request.target_uri)
+		if not isinstance(request.mode, int):
+			raise CommandError('DOMAIN_MIGRATE', _('mode != int: %(mode)s'), mode=request.mode)
+		logger.debug('DOMAIN_MIGRATE %s#%s %s %d', request.uri, request.domain, request.target_uri, request.mode)
 		try:
-			node.domain_migrate(request.uri, request.domain, request.target_uri)
+			node.domain_migrate(request.uri, request.domain, request.target_uri, request.mode)
 		except node.NodeError as ex:
 			raise CommandError('DOMAIN_MIGRATE', ex)
 

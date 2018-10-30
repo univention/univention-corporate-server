@@ -302,6 +302,12 @@ class ParserGenerator(object):
 		sub_parser.add_argument(
 			'target_uri',
 			help='libvirt URI of the target host')
+		sub_parser.add_argument(
+			'mode',
+			nargs='?',
+			type=int,
+			default=0,
+			help='Migration mode: -1=abort, 0=default, 1..99=throttled, 100=post-copy now')
 		sub_parser.set_defaults(protocol=protocol.Request_DOMAIN_MIGRATE)
 
 	def domains(self, sub_parser):

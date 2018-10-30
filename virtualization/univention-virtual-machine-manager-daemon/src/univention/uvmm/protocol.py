@@ -36,7 +36,7 @@ import cPickle as pickle
 import struct
 from .helpers import TranslatableException, N_ as _
 
-VERSION = (2, 0)
+VERSION = (2, 1)
 MAX_MSG_SIZE = 4096
 
 
@@ -257,6 +257,7 @@ class Request_DOMAIN_MIGRATE(Request):
 		self.uri = None
 		self.domain = None
 		self.target_uri = None
+		self.mode = 0
 
 
 class Request_DOMAIN_SNAPSHOT_CREATE(Request):
@@ -594,6 +595,7 @@ class Data_Domain(object):
 		self.available = None  # None: not set, (True|False) -> node availability
 		self.targethosts = None  # List of node hostnames
 		self.error = {}
+		self.migration = {'msg': ''}
 
 
 class Data_Node(object):

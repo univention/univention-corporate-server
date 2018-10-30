@@ -60,7 +60,7 @@ import cPickle as pickle
 
 import univention.config_registry as ucr
 try:
-	from typing import Any, Optional, Set, Type  # noqa
+	from typing import Any, Dict, Optional, Set, Tuple, Type  # noqa
 	from types import TracebackType  # noqa
 except ImportError:
 	pass
@@ -294,7 +294,6 @@ class Domain(PersistentCached):
 
 		info = domain.info()
 		self.pd.state, maxMem, curMem, self.pd.vcpus, runtime = info
-
 		self.pd.maxMem = long(maxMem) << 10  # KiB
 
 		if self.pd.state in (libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
@@ -305,6 +304,13 @@ class Domain(PersistentCached):
 			self.pd.curMem = long(curMem) << 10  # KiB
 			delta_used = runtime - self._time_used  # running [ns]
 			self._time_used = runtime
+			try:
+				stats = domain.jobStats()
+			except libvirt.libvirtError as ex:
+				if ex.get_error_code() != libvirt.VIR_ERR_OPERATION_UNSUPPORTED:
+					logger.warning('Failed to query job status %s: %s', self.pd.uuid, ex.get_error_message())
+			else:
+				self.migration_status(stats)
 
 		# Calculate historical CPU usage
 		# http://www.teamquest.com/resources/gunther/display/5/
@@ -436,6 +442,42 @@ class Domain(PersistentCached):
 			self.pd.annotations = ldap_annotation(self.pd.uuid)
 		except LdapError:
 			self.pd.annotations = {}
+
+	def migration_status(self, stats):
+		# type: (Dict[str, Any]) -> Tuple[str, Dict[str, Any]]
+		"""
+		Convert libvirt job stats to string and dictionary for string formating.
+		"""
+		# final_stats = {
+		#  'data_processed': 1L, 'data_remaining': 0L, 'data_total': 1L,
+		#  'disk_processed': 0L, 'disk_remaining': 0L, 'disk_total': 0L,
+		#  'downtime': 1L, 'downtime_net': 1L,
+		#  'memory_constant': 1L, 'memory_dirty_rate': 0L, 'memory_iteration': 3L, 'memory_normal': 1L, 'memory_normal_bytes': 1L, 'memory_processed': 1L, 'memory_remaining': 0L, 'memory_total': 1L,
+		#  'setup_time': 1L,
+		#  'time_elapsed': 1L, 'time_elapsed_net': 1L,
+		# }
+		# process_stats = {
+		#  'data_processed': 1L, 'data_remaining': 1L, 'data_total': 1L,
+		#  'disk_processed': 0L, 'disk_remaining': 0L, 'disk_total': 0L,
+		#  'downtime': 1L,
+		#  'memory_constant': 1L, 'memory_dirty_rate': 1L, 'memory_iteration': 1L, 'memory_normal': 1L, 'memory_normal_bytes': 1L, 'memory_processed': 1L, 'memory_remaining': 1L, 'memory_total': 1L,
+		#  'setup_time': 1L,
+		#  'time_elapsed': 1L,
+		#  'type': 2,
+		# }
+		self.pd.migration.update(stats)
+		typ = stats.get('type', None)
+		if typ == 0:
+			self.pd.migration['msg'] = ''
+			return ('', {})
+		else:
+			fmt = _('Migration in progress since %(time)s, iteration %(iteration)d')
+		vals = dict(
+			time=ms(stats.get('time_elapsed', 0)),
+			iteration=stats.get('memory_iteration', 1),
+		)
+		self.pd.migration['msg'] = fmt % vals
+		return (fmt, vals)
 
 	def xml2obj(self, xml):
 		"""Parse XML into python object."""
@@ -788,6 +830,11 @@ class Node(PersistentCached):
 			if event == libvirt.VIR_DOMAIN_EVENT_UNDEFINED:
 				if detail == libvirt.VIR_DOMAIN_EVENT_UNDEFINED_REMOVED:
 					del self.domains[uuid]
+			elif event == libvirt.VIR_DOMAIN_EVENT_STOPPED and detail in (
+				libvirt.VIR_DOMAIN_EVENT_STOPPED_MIGRATED,
+				libvirt.VIR_DOMAIN_EVENT_STOPPED_FAILED,
+			):
+				pass
 			else:
 				try:
 					domStat = self.domains[uuid]
@@ -1030,6 +1077,7 @@ class Node(PersistentCached):
 					'description': descr,
 					'node_available': self.pd.last_try == self.pd.last_update,
 					'error': pd.error,
+					'migration': pd.migration,
 				})
 
 		return domains
@@ -1694,6 +1742,8 @@ def domain_state(uri, domain, state):
 					logger.info('Still waiting for VNC of %s...' % domain)
 					stat_key = dom_stat.key()
 					node.wait_update(domain, stat_key)
+
+			dom_stat.pd.migration.clear()
 	except KeyError as ex:
 		logger.error("Domain %s not found", ex)
 		raise NodeError(_('Error managing domain "%(domain)s"'), domain=domain)
@@ -1764,20 +1814,31 @@ def domain_undefine(uri, domain, volumes=[]):
 		raise NodeError(_('Error undefining domain "%(domain)s": %(error)s'), domain=domain, error=ex.get_error_message())
 
 
-def domain_migrate(source_uri, domain, target_uri):
-	"""Migrate a domain from node to the target node."""
+def domain_migrate(source_uri, domain, target_uri, mode=0):
+	# type: (str, str, str, int) -> None
+	"""
+	Start migration a domain from node to the target node.
+
+	The functions does *not* wait for the migration to finish!
+
+	:param str source_uri: libvirt URI of source node.
+	:param str domain: UUID of domain to migrate.
+	:param str target_uri: libvirt URI of target node.
+	:param int mode: Migration mode: 0 to start normal migration, -1 to abort any running migration, 1..99 to set auto-convergence increment, 100 to force post-copy now.
+	:raises NodeError: if migration failes.
+	"""
 	try:
 		source_node = node_query(source_uri)
 		source_conn = source_node.conn
 		if source_conn is not None:
 			source_dom = source_conn.lookupByUUIDString(domain)
 			source_state = source_dom.info()[0]
+		domStat = source_node.domains[domain]
 
 		target_node = node_query(target_uri)
 		target_conn = target_node.conn
 
 		if source_conn is None:  # offline node
-			domStat = source_node.domains[domain]
 			try:
 				cache_file_name = domStat.cache_file_name()
 				with open(cache_file_name, 'r') as cache_file:
@@ -1785,17 +1846,46 @@ def domain_migrate(source_uri, domain, target_uri):
 				target_conn.defineXML(xml)
 			except EnvironmentError as ex:
 				raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=ex)
-		elif source_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED, libvirt.VIR_DOMAIN_PAUSED):
+			return
+
+		params = {}  # type: Dict[str, Any]
+		flags = libvirt.VIR_MIGRATE_PERSIST_DEST | libvirt.VIR_MIGRATE_UNDEFINE_SOURCE
+		if source_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED, libvirt.VIR_DOMAIN_PAUSED):
 			# running domains are live migrated
-			flags = libvirt.VIR_MIGRATE_LIVE | libvirt.VIR_MIGRATE_PERSIST_DEST | libvirt.VIR_MIGRATE_UNDEFINE_SOURCE
-			source_dom.migrate(target_conn, flags, None, None, 0)
+			stats = source_dom.jobStats()
+			if stats['type'] != libvirt.VIR_DOMAIN_JOB_NONE:
+				if mode < 0:
+					logger.info('Domain "%(domain)s" aborting migration: %(stats)r', dict(domain=domain, stats=stats))
+					domStat.pd.migration['msg'] = _('Migration aborted')
+					source_dom.abortJob()
+				elif mode > 100:
+					logger.info('Domain "%(domain)s" switching to post-copy: %(stats)r', dict(domain=domain, stats=stats))
+					domStat.pd.migration['msg'] = _('Post-Copy migration forced')
+					source_dom.migrateStartPostCopy()
+				else:
+					fmt, vals = domStat.migration_status(stats)
+					raise NodeError(fmt, **vals)
+				return
+
+			flags |= libvirt.VIR_MIGRATE_LIVE
+			if source_state == libvirt.VIR_DOMAIN_PAUSED:
+				pass
+			elif 1 <= mode <= 99:
+				flags |= libvirt.VIR_MIGRATE_AUTO_CONVERGE
+				params = {
+					libvirt.VIR_MIGRATE_PARAM_AUTO_CONVERGE_INITIAL: min(mode, 10),
+					libvirt.VIR_MIGRATE_PARAM_AUTO_CONVERGE_INCREMENT: min(mode, 100 - mode),
+				}
+			else:
+				flags |= libvirt.VIR_MIGRATE_POSTCOPY
 		elif source_state in (libvirt.VIR_DOMAIN_SHUTDOWN, libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
 			# for domains not running their definition is migrated
-			xml = source_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
-			target_conn.defineXML(xml)
-			source_dom.undefine()
+			flags |= libvirt.VIR_MIGRATE_OFFLINE | libvirt.VIR_MIGRATE_UNSAFE
 		else:
 			raise NodeError(_('Domain "%(domain)s" in state "%(state)s" can not be migrated'), domain=domain, state=STATES[source_state])
+
+		domStat.pd.migration['msg'] = _('Migration started')
+		source_dom.migrate3(target_conn, params, flags)
 	except libvirt.libvirtError as ex:
 		if ex.get_error_code() == libvirt.VIR_ERR_CPU_INCOMPATIBLE:
 			raise NodeError(_('The target host has an incompatible CPU; select a different host or try an offline migration. (%(details)s)') % {'details': ex.get_str2()})
