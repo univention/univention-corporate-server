@@ -26,6 +26,7 @@ class TestUdmGenericVariousModules(TestCase):
 	def setUpClass(cls):
 		# we want to use only 1 class for all UDM modules
 		cls.udm = UDM.admin().version(0)
+		cls.udm._module_object_cache.clear()
 		univention.admin.modules.update()
 		cls.avail_modules = sorted([mod for mod in univention.admin.modules.modules.keys()])
 
@@ -40,7 +41,7 @@ class TestUdmGenericVariousModules(TestCase):
 					'GenericModule', mod.__class__.__name__)
 		print('OK: all modules could be loaded.')
 		len_module_object_cache = len(UDM._module_object_cache)
-		assert len_module_object_cache == len(self.avail_modules), 'UDM._module_object_cache has {} entries (should be {}).'.format(len_module_object_cache, len(UDM._module_object_cache))
+		assert len_module_object_cache == len(self.avail_modules), 'UDM._module_object_cache has {} entries (should be {}).'.format(len_module_object_cache, len(self.avail_modules))
 		print('OK: object cache is used.')
 		stats = defaultdict(int)
 		for mod_name in self.avail_modules:
