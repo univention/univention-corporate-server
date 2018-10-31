@@ -11,10 +11,10 @@ import os
 from subprocess import call
 from unittest import main, TestCase
 import univention.debug as ud
-from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
+from univention.testing.udm import UCSTestUDM
 from univention.testing.ucr import UCSTestConfigRegistry
 import univention.testing.strings as uts
-from univention.udm import UDM, ConnectionError
+from univention.udm import UDM, ConnectionError, NoApiVersionSet, ApiVersionMustNotChange, ApiVersionNotSupported
 from univention.udm.connections import LDAP_connection
 
 
@@ -40,6 +40,16 @@ class TestUdmAutoOpen(TestCase):
 	@classmethod
 	def setUp(self):
 		LDAP_connection._clear()
+
+	def test_error_in_version(self):
+		with self.assertRaises(NoApiVersionSet):
+			UDM.admin().get('users/user')
+		with self.assertRaises(ApiVersionNotSupported):
+			UDM.admin().version('1')
+		with self.assertRaises(ApiVersionMustNotChange):
+			UDM.admin().version(0).version(1)
+		with self.assertRaises(ApiVersionNotSupported):
+			UDM.admin().version(20).get('users/user')
 
 	def test_admin(self):
 		mod = UDM.admin().version(0).get('users/user')

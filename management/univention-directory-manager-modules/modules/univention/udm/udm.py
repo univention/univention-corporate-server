@@ -71,11 +71,10 @@ it as argument to the UDM module factory or via :py:meth:`version()`::
 """
 
 from __future__ import absolute_import, unicode_literals
-import sys
 from operator import itemgetter
 from fnmatch import fnmatch
 
-from .exceptions import ApiVersionMustNotChange, ApiVersionNotSupported, NoApiVersionSet, NoObject, UnknownModuleType
+from .exceptions import ApiVersionMustNotChange, ApiVersionNotSupported, NoApiVersionSet, NoObject
 from .utils import ConnectionConfig, get_connection
 from .plugins import Plugins
 
@@ -242,12 +241,7 @@ class UDM(object):
 		ldap_obj = self.connection.get(dn, attr=[str('univentionObjectType')])
 		if not ldap_obj:
 			raise NoObject(dn=dn)
-		try:
-			uot = ldap_obj['univentionObjectType'][0]
-			if not uot:
-				raise KeyError  # empty
-		except (KeyError, IndexError):
-			raise UnknownModuleType, UnknownModuleType(dn=dn), sys.exc_info()[2]
+		uot = ldap_obj['univentionObjectType'][0]
 		udm_module = self.get(uot)
 		return udm_module.get(dn)
 
