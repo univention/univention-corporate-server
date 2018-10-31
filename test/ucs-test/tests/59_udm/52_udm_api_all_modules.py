@@ -10,7 +10,7 @@
 from collections import defaultdict
 from unittest import main, TestCase
 import univention.debug as ud
-from univention.udm import UDM, WrongObjectType
+from univention.udm import UDM, WrongObjectType, NoSuperordinate
 import univention.admin.modules
 
 
@@ -47,6 +47,12 @@ class TestUdmGenericVariousModules(TestCase):
 		for mod_name in self.avail_modules:
 			print('Listing objects of type {!r}...'.format(mod_name))
 			mod = self.udm.get(mod_name)
+			if mod_name != 'users/self':  # stange module...
+				try:
+					mod.new()  # test whether a new object may be initialized
+				except NoSuperordinate:
+					# for now...
+					print('Cannot test "new" for {!r}. Requires superordinate'.format(mod_name))
 			mod.meta.auto_open = False
 			num = -1
 			try:

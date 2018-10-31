@@ -80,11 +80,11 @@ from __future__ import absolute_import
 from .udm import UDM
 from .exceptions import (
 	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, MultipleObjects, NoObject,
-	UdmError, UnknownProperty, UnknownModuleType, WrongObjectType, ConnectionError
+	UdmError, UnknownProperty, UnknownModuleType, WrongObjectType, ConnectionError, NoSuperordinate
 )
 
 __all__ = [
 	'UDM',
 	'CreateError', 'DeleteError', 'DeletedError', 'NotYetSavedError', 'ModifyError', 'MoveError', 'MultipleObjects',
-	'NoObject', 'UdmError', 'UnknownProperty', 'UnknownModuleType', 'WrongObjectType', 'ConnectionError'
+	'NoObject', 'UdmError', 'UnknownProperty', 'UnknownModuleType', 'WrongObjectType', 'ConnectionError', 'NoSuperordinate',
 ]
