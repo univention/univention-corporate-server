@@ -31,7 +31,9 @@ Classes for holding binary UDM  object properties.
 """
 
 from __future__ import absolute_import, unicode_literals
+import bz2
 import base64
+import codecs
 
 
 class BaseBinaryProperty(object):
@@ -93,3 +95,25 @@ class Base64BinaryProperty(BaseBinaryProperty):
 	@raw.setter
 	def raw(self, value):
 		self._value = base64.b64encode(value)
+
+
+class Base64Bzip2BinaryProperty(BaseBinaryProperty):
+	"""
+	Container for a binary UDM property encoded using base64 after using bzip2.
+
+	obj.props.<prop>.encoded == base64.b64encode(obj.props.<prop>.decoded)
+
+	>>> binprop = Base64Bzip2BinaryProperty('example', raw_value='raw value')
+	>>> Base64Bzip2BinaryProperty('example', encoded_value=binprop.encoded).raw == 'raw value'
+	True
+	>>> import bz2, base64
+	>>> binprop.encoded == base64.b64encode(bz2.compress(binprop.raw))
+	True
+	"""
+	@property
+	def raw(self):
+		return bz2.decompress(base64.b64decode(self._value))
+
+	@raw.setter
+	def raw(self, value):
+		self._value = base64.b64encode(bz2.compress(value))

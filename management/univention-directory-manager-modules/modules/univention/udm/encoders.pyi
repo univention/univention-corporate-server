@@ -34,7 +34,7 @@ from __future__ import absolute_import, unicode_literals
 import datetime
 import lazy_object_proxy
 from univention.admin.syntax import sambaGroupType
-from .binary_props import Base64BinaryProperty
+from .binary_props import Base64BinaryProperty, Base64Bzip2BinaryProperty
 from .udm import UDM
 from typing import Any, Dict, List, Optional, Text, Type, TypeVar
 
@@ -67,6 +67,16 @@ class Base64BinaryPropertyEncoder(BaseEncoder):
 		...
 
 	def encode(self, value=None):  # type: (Optional[Base64BinaryProperty]) -> Optional[Text]
+		...
+
+
+class Base64Bzip2BinaryPropertyEncoder(BaseEncoder):
+	static = False
+
+	def decode(self, value=None):  # type: (Optional[Text]) -> Optional[Base64Bzip2BinaryProperty]
+		...
+
+	def encode(self, value=None):  # type: (Optional[Base64Bzip2BinaryProperty]) -> Optional[Text]
 		...
 
 

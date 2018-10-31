@@ -27,53 +27,31 @@
 # <http://www.gnu.org/licenses/>.
 
 """
-Classes for holding binary UDM  object properties.
+Module and object specific for "settings/data" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
-from typing import Optional, Text
+from ..encoders import Base64Bzip2BinaryPropertyEncoder
+from .generic import GenericModule, GenericObject, GenericObjectProperties
 
 
-class BaseBinaryProperty(object):
-	def __init__(self, name, encoded_value=None, raw_value=None):
-		# type: (Text, Optional[Text], Optional[Text]) -> None
-		...
+class SettingsDataObjectProperties(GenericObjectProperties):
+	"""settings/data UDM properties."""
 
-	def __repr__(self):  # type: () -> Text
-		...
-
-	@property
-	def encoded(self):  # type: () -> Text
-		...
-
-	@encoded.setter
-	def encoded(self, value):  # type: (Text) -> None
-		...
-
-	@property
-	def raw(self):  # type: () -> Text
-		...
-
-	@raw.setter
-	def raw(self, value):  # type: (Text) -> None
-		...
+	_encoders = {
+		'data': Base64Bzip2BinaryPropertyEncoder,
+	}
 
 
-class Base64BinaryProperty(BaseBinaryProperty):
-	@property
-	def raw(self):  # type: () -> Text
-		...
-
-	@raw.setter
-	def raw(self, value):  # type: (Text) -> None
-		...
+class SettingsDataObject(GenericObject):
+	"""Better representation of settings/portal properties."""
+	udm_prop_class = SettingsDataObjectProperties
 
 
-class Base64Bzip2BinaryProperty(BaseBinaryProperty):
-	@property
-	def raw(self):  # type: () -> Text
-		...
+class SettingsDataModule(GenericModule):
+	"""SettingsDataObject factory"""
+	_udm_object_class = SettingsDataObject
 
-	@raw.setter
-	def raw(self, value):  # type: (Text) -> None
-		...
+	class Meta:
+		supported_api_versions = [1]
+		suitable_for = ['settings/data']
