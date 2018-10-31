@@ -3,6 +3,7 @@
 ## desc: Test UDM APIs module.meta.auto_open feature
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
+## tags: [udm_api]
 ## packages: [python-univention-directory-manager]
 ## bugs: [47316]
 
