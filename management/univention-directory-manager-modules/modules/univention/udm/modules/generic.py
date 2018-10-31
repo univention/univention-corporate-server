@@ -631,7 +631,7 @@ class GenericModule(BaseModule):
 			if isinstance(superordinate, string_types):
 				superordinate_obj = univention.admin.objects.get_superordinate(udm_module, None, self.connection, superordinate)
 			elif isinstance(superordinate, GenericObject):
-				superordinate_obj = superordinate
+				superordinate_obj = superordinate._orig_udm_object
 			else:
 				raise ValueError('Argument "superordinate" must be a DN (string) or a GenericObject instance.')
 		else:
