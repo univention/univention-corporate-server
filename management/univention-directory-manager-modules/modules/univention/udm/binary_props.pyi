@@ -31,8 +31,15 @@ Classes for holding binary UDM  object properties.
 """
 
 from __future__ import absolute_import, unicode_literals
-from typing import Optional, Text
+from collections import namedtuple
+from typing import BinaryIO, Optional, Text, Union
 
+
+FileType = namedtuple('namedtuple', ['mime_type', 'encoding', 'text'])
+
+
+def get_file_type(filename_or_file):  # type: (Union[str, BinaryIO]) -> FileType
+	...
 
 class BaseBinaryProperty(object):
 	def __init__(self, name, encoded_value=None, raw_value=None):
@@ -56,6 +63,10 @@ class BaseBinaryProperty(object):
 
 	@raw.setter
 	def raw(self, value):  # type: (Text) -> None
+		...
+
+	@property
+	def content_type(self):  # type: () -> FileType
 		...
 
 
