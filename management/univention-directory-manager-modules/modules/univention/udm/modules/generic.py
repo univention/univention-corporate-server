@@ -573,14 +573,17 @@ class GenericModule(BaseModule):
 		:return: list of container DNs
 		:rtype: list(str)
 		"""
+		module_contailers = [
+			'{},{}'.format(dc, ucr['ldap/base'])
+			for dc in getattr(self._orig_udm_module, 'default_containers', [])
+		]
+
 		default_positions_property = self.meta.default_positions_property
 		default_containers = self._get_default_containers()
 
 		if default_containers and default_positions_property:
 			dns = default_containers.get(default_positions_property, [])
-			module_contailers = [dn for dn in dns if self._dn_exists(dn)]
-		else:
-			module_contailers = []
+			module_contailers.extend(dn for dn in dns if self._dn_exists(dn))
 		module_contailers.append(self.connection.base)
 		return module_contailers
 
