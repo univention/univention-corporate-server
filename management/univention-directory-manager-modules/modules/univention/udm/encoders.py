@@ -35,7 +35,7 @@ import sys
 import datetime
 import time
 import lazy_object_proxy
-from .binary_props import Base64BinaryProperty, Base64Bzip2BinaryProperty
+from .binary_props import BaseBinaryProperty, Base64BinaryProperty, Base64Bzip2BinaryProperty
 from .udm import UDM
 from .utils import UDebug
 from .exceptions import UnknownModuleType
@@ -73,6 +73,8 @@ class Base64BinaryPropertyEncoder(BaseEncoder):
 
 	def encode(self, value=None):
 		if value:
+			if not isinstance(value, Base64BinaryProperty):
+				value = Base64BinaryProperty(self.property_name, raw_value=value)
 			return value.encoded
 		else:
 			return value
