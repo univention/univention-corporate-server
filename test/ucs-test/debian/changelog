@@ -1,3 +1,9 @@
+ucs-test (8.0.28-217) unstable; urgency=low
+
+  * Bug #47316: fix accidental revert
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 01 Nov 2018 11:16:46 +0100
+
 ucs-test (8.0.28-216) unstable; urgency=low
 
   * Bug #47316: handle loading of modules that require a superordinate
