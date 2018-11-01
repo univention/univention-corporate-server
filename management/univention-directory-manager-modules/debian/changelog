@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.25-8) unstable; urgency=medium
+
+  * Bug #47316: Add simple and extensible API for UDM
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 01 Nov 2018 05:21:32 +0100
+
 univention-directory-manager-modules (13.0.25-7) unstable; urgency=medium
 
   * Bug #47872: Prevent the univentionblog portal_entry overwriting
