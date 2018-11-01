@@ -204,15 +204,19 @@ fi
 /usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3 >>"$UPDATER_LOG" 2>&1
 
 # Bug #46875: unmask the rpcbind service again after update
+# Bug #47313: Restart NFS daemon takes 20 to 30 minutes during upgrade 4.2.x -> 4.3.0
 if grep -q '^rpcbind/autostart: no$' /etc/univention/base-forced.conf; then
-	ucr unset --force rpcbind/autostart
-	systemctl daemon-reload
-	if [ -x /usr/sbin/rpcinfo ]; then
-		systemctl restart rpcbind
-		systemctl restart nfs-kernel-server
-		systemctl restart nfs-server
-		systemctl restart quotarpc
-	fi
+	ucr unset --force rpcbind/autostart >>"$UPDATER_LOG" 2>&1
+	systemctl daemon-reload >>"$UPDATER_LOG" 2>&1
+fi
+if [ -x /usr/sbin/rpcinfo ]; then
+	systemctl unmask nfs-kernel-server.service >>"$UPDATER_LOG" 2>&1
+	systemctl enable nfs-kernel-server.service >>"$UPDATER_LOG" 2>&1
+	systemctl daemon-reload >>"$UPDATER_LOG" 2>&1
+	systemctl restart rpcbind >>"$UPDATER_LOG" 2>&1
+	systemctl restart nfs-kernel-server >>"$UPDATER_LOG" 2>&1
+	systemctl restart nfs-server >>"$UPDATER_LOG" 2>&1
+	systemctl restart quotarpc >>"$UPDATER_LOG" 2>&1
 fi
 
 # Bug #47828: remove possible deactivated updater warniung

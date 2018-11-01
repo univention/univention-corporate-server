@@ -685,11 +685,15 @@ case "${grub_append:-}" in
 esac
 
 # Bug #46875: mask the rpcbind service during update
+# Bug #47313: Restart NFS daemon takes 20 to 30 minutes during upgrade 4.2.x -> 4.3.0
 if [ -x /sbin/rpcbind ]; then
 	is_ucr_true rpcbind/autostart
 	if [ $? -ne 1 ]; then
-		ucr set --force rpcbind/autostart=no
+		ucr set --force rpcbind/autostart=no >>"$UPDATER_LOG" 2>&1
 	fi
+	systemctl stop nfs-kernel-server.service >>"$UPDATER_LOG" 2>&1
+	systemctl disable nfs-kernel-server.service >>"$UPDATER_LOG" 2>&1
+	systemctl mask nfs-kernel-server.service >>"$UPDATER_LOG" 2>&1
 fi
 
 echo ""
