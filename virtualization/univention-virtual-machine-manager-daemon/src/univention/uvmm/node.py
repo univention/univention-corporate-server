@@ -111,7 +111,7 @@ class StoragePool(object):
 
 class DomainTemplate(object):
 
-	'''Container for node capability.'''
+	"""Container for node capability."""
 
 	@staticmethod
 	def list_from_xml(xml):
@@ -171,7 +171,7 @@ class DomainTemplate(object):
 		return 'DomainTemplate(arch=%s dom_type=%s os_type=%s): %s, %s, %s, %s' % (self.arch, self.domain_type, self.os_type, self.emulator, self.loader, self.machines, self.features)
 
 	def matches(self, domain):
-		'''Return True if domain matches os_type, arch and domain_type.'''
+		"""Return True if domain matches os_type, arch and domain_type."""
 		return self.arch == domain.arch and self.domain_type == domain.domain_type and self.os_type == domain.os_type
 
 
@@ -789,7 +789,7 @@ class Node(PersistentCached):
 		del self.domains
 
 	def _register_default_pool(self):
-		'''create a default storage pool if not available'''
+		"""Create a default storage pool if not available"""
 		try:
 			self.conn.storagePoolLookupByName('default')
 			logger.debug("default pool already registered on %s" % self.pd.name)
@@ -1267,9 +1267,9 @@ def _domain_backup(dom, save=True):
 
 
 def _update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
-	'''Create, update or delete node named '_node_name' of '_node_parent'.
+	"""Create, update or delete node named '_node_name' of '_node_parent'.
 	If _node_value == None and all(attr == None), then node is deleted.
-	'''
+	"""
 	node = _node_parent.find(_node_name, namespaces=XMLNS)
 	if _node_value is None and not filter(lambda v: v is not None, attr.values()):
 		if node is not None:
@@ -1301,7 +1301,7 @@ def _domain_edit(node, dom_stat, xml):
 	Apply python object 'dom_stat' to an XML domain description.
 
 	:param Node node: The host system node.
-	:param Domain dom_stat: The virtual machine object.
+	:param Data_Domain dom_stat: The virtual machine object.
 	:param str xml: libvirt domain XML string.
 
 	:returns: A 2-tuple (xml, updates_xml), where `xml` is the updated domain XML string, `updates_xml` a list of device update XML strings.

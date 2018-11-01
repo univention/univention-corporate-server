@@ -45,11 +45,11 @@ logger = logging.getLogger('uvmmd.network')
 
 class NetworkError(TranslatableException):
 
-	'''Error occurred during operation on network object'''
+	"""Error occurred during operation on network object."""
 
 
 def network_is_active(conn, name):
-	'''checks if the network with the given name ist currently active'''
+	"""Check if the network with the given name ist currently active."""
 	try:
 		return name in conn.listNetworks()
 	except libvirt.libvirtError as ex:
@@ -58,8 +58,8 @@ def network_is_active(conn, name):
 
 
 def network_start(conn, name):
-	'''Starts the network specified by given name. Returns Trie if the
-	network could be activated or if it was already active.'''
+	"""Start the network specified by given name. Returns Trie if the
+	network could be activated or if it was already active."""
 	try:
 		network = conn.networkLookupByName(name)
 		if not network.autostart():
@@ -73,6 +73,7 @@ def network_start(conn, name):
 
 
 def network_find_by_bridge(conn, bridge):
+	"""Find the libvirt network using a specific bridge."""
 	try:
 		networks = conn.listAllNetworks()
 	except libvirt.libvirtError as ex:

@@ -277,11 +277,11 @@ class CloudConnection(object):
 		return images
 
 	def logerror(self, logger, msg):
-		'''
+		"""
 		Log the error with the traceback.
 		Set self.publicdata.last_error_message to the error message in order to
 		give the frontend the possibility to show it to the user
-		'''
+		"""
 		logger.error(msg, exc_info=True)
 		self.publicdata.last_error_message = msg
 

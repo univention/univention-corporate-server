@@ -795,7 +795,7 @@ def _map(dictionary, id=None, name=None):
 
 class Disk(object):
 
-	'''Container for disk objects'''
+	"""Container for disk objects."""
 	DEVICE_DISK = 'disk'
 	DEVICE_CDROM = 'cdrom'
 	DEVICE_FLOPPY = 'floppy'
@@ -840,7 +840,7 @@ class Disk(object):
 
 class Interface(object):
 
-	'''Container for interface objects'''
+	"""Container for interface objects."""
 	TYPE_BRIDGE = 'bridge'
 	TYPE_NETWORK = 'network'
 	TYPE_USER = 'user'
@@ -861,7 +861,7 @@ class Interface(object):
 
 class Graphic(object):
 
-	'''Container for graphic objects'''
+	"""Container for graphic objects."""
 	TYPE_VNC = 'vnc'
 	TYPE_SDL = 'sdl'
 	TYPE_SPICE = 'spice'
@@ -895,7 +895,7 @@ class Graphic(object):
 
 class Network(object):
 
-	'''Container for Network objects.'''
+	"""Container for network objects."""
 
 	def __init__(self):
 		self.name = None
