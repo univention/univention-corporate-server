@@ -9,3 +9,5 @@ desc: |
  * Put package "netcat-openbsd" on the next UCS release DVD. It is required
    for VNC access to virtual machines.
 bug: [48015]
+erratum: 296
+announced: 2018-11-01
