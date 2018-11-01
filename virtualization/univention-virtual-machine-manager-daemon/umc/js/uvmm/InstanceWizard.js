@@ -44,7 +44,7 @@ define([
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
 ], function(declare, lang, array, dojoEvent, on, keys, Tooltip, TextBox, Text, ComboBox, HiddenInput, Wizard, types, _) {
-	
+
 	var _showTooltip = function(node, msg, evt) {
 		Tooltip.show(msg, node);
 		if (evt) {
@@ -60,7 +60,7 @@ define([
 		autoValidate: true,
 
 		_size_id: null,
-		
+
 		cloud: null,
 
 		postMixInProperties: function() {
@@ -180,7 +180,6 @@ define([
 						'size_id',
 						'size_info_text',
 						['keyname', 'security_group_ids']
-						
 					],
 					widgets: [{
 						name: 'cloudtype',

@@ -122,7 +122,7 @@ define([
 				if (query) {
 					return tools.umcpCommand('uvmm/query', this.getQuery(items), false).then(lang.hitch(this, function(results) {
 						if (this._uvmmErrorShown) {
-							this.tree.reload();  // reload tree in case the module was opened when UVMM was down
+							this.tree.reload(); // reload tree in case the module was opened when UVMM was down
 							this._uvmmErrorShown = false; // reset if one query succeeds
 						}
 						return results.result;

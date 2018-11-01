@@ -57,7 +57,7 @@ define([
 		_driveStore: null,
 		_driveGrid: null,
 		_driveContainer: null,
-		
+
 		_loadValuesOfProfile: function() {
 			// put limit on memory
 			try {
@@ -115,7 +115,7 @@ define([
 			titlePane.addChild(this._driveGrid);
 
 			// and the titlepane into a container
-			this._driveContainer  = new ContainerWidget({
+			this._driveContainer = new ContainerWidget({
 				region: 'main'
 			});
 			this._driveContainer.addChild(titlePane);

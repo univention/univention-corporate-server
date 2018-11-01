@@ -318,7 +318,7 @@ define([
 				}]
 			});
 		},
-		
+
 		postCreate: function() {
 			this.inherited(arguments);
 			this._updateDriveWidgets('new');
