@@ -1,3 +1,10 @@
+ucs-test (8.0.28-218) unstable; urgency=low
+
+  * Bug #48089: disable UDM grouptype test that fail because of DRS
+    replication
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 01 Nov 2018 11:31:24 +0100
+
 ucs-test (8.0.28-217) unstable; urgency=low
 
   * Bug #47316: fix accidental revert

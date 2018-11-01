@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the groupType attribute while creating groups
-## tags: [udm,apptest]
+## tags: [udm,apptest, SKIP-UCSSCHOOL]
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
