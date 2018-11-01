@@ -528,34 +528,29 @@ download_system_setup_packages ()
 		install_cmd="$(univention-config-registry get update/commands/install)"
 
 		# server role packages
-		packages="server-master server-backup server-slave server-member basesystem"
+		packages="univention-server-master univention-server-backup univention-server-slave univention-server-member univention-basesystem"
 
 		# ad member mode
-		packages="$packages ad-connector samba"
+		packages="$packages univention-ad-connector univention-samba"
 
 		# welcome-screen + dependencies for all roles
 		# libgif4 is removed upon uninstalling X, so put it in package cache
-		packages="$packages welcome-screen kernel-headers"
+		packages="$packages univention-welcome-screen univention-kernel-headers"
+
+		packages="$packages firefox-esr-l10n-de"
 
 		if ! app_appliance_is_software_blacklisted $app; then
-			packages="$packages management-console-module-adtakeover printserver printquota dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon self-service self-service-passwordreset-umc self-service-master"
+			packages="$packages univention-management-console-module-adtakeover univention-printserver univention-printquota univention-dhcp
+				univention-fetchmail univention-kde univention-radius univention-virtual-machine-manager-node-kvm univention-mail-server
+				univention-nagios-server univention-pkgdb univention-samba4 univention-s4-connector univention-squid
+				univention-virtual-machine-manager-daemon univention-self-service univention-self-service-passwordreset-umc
+				univention-self-service-master"
 		fi
 
+		apt-get update
 		for package in $packages; do
-			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 univention-${package} | 
-			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 univention-${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
-
-			check_returnvalue $? "Failed to download required packages for univention-${package}"
-
-			apt-ftparchive packages . >Packages
-			check_returnvalue $? "Failed to create ftparchive directory"
-			apt-get update
-		done
-
-		for package in firefox-esr-l10n-de; do
-			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | 
+			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package}
 			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
-
 			check_returnvalue $? "Failed to download required packages for ${package}"
 		done
 
@@ -572,81 +567,16 @@ appliance_preinstall_common_role ()
 
 appliance_preinstall_non_univention_packages ()
 {
-	packages="
-libblas-common
-libblas3
-libcap2-bin
-libcupsfilters1
-libcupsimage2
-libdaemon0
-libdbi1
-libfftw3-double3
-libfile-copy-recursive-perl
-libfribidi0
-libfsplib0
-libgconf-2-4
-libgd3
-libgfortran3
-libgnutls-dane0
-libgomp1
-libgpm2
-libgs9
-libgs9-common
-libijs-0.35
-libio-socket-inet6-perl
-libirs141
-libjbig2dec0
-libkdc2-heimdal
-liblinear3
-liblqr-1-0
-libltdl7
-liblua5.1-0
-liblua5.3-0
-libm17n-0
-libmagickcore-6.q16-3
-libmagickwand-6.q16-3
-libmcrypt4
-libnet-snmp-perl
-libnetpbm10
-libnfsidmap2
-libnl-3-200
-libnl-genl-3-200
-libnss-extrausers
-libnss-ldap
-libodbc1
-libopenjp2-7
-libopts25
-libotf0
-libpam-cap
-libpam-cracklib
-libpam-heimdal
-libpam-ldap
-libpaper-utils
-libpaper1
-libpcap0.8
-libpq5
-libquadmath0
-libradcli4
-libsnmp-base
-libsnmp-session-perl
-libsnmp30
-libsocket6-perl
-libtirpc1
-libtre5
-libunbound2
-libyaml-0-2
-bind9
-emacs24
-ifplugd
-ntp
-sudo
-vim
-zip"
-	local instpackages=
-	for p in $packages; do
-		instpackages="$instpackages $p"
-	done
-	DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends $instpackages
+	local packages="
+		libblas-common libblas3 libcap2-bin libcupsfilters1 libcupsimage2 libdaemon0 libdbi1 libfftw3-double3
+		libfile-copy-recursive-perl libfribidi0 libfsplib0 libgconf-2-4 libgd3 libgfortran3 libgnutls-dane0
+		libgomp1 libgpm2 libgs9 libgs9-common libijs-0.35 libio-socket-inet6-perl libirs141 libjbig2dec0 libkdc2-heimdal
+		liblinear3 liblqr-1-0 libltdl7 liblua5.1-0 liblua5.3-0 libm17n-0 libmagickcore-6.q16-3 libmagickwand-6.q16-3
+		libmcrypt4 libnet-snmp-perl libnetpbm10 libnfsidmap2 libnl-3-200 libnl-genl-3-200 libnss-extrausers libnss-ldap
+		libodbc1 libopenjp2-7 libopts25 libotf0 libpam-cap libpam-cracklib libpam-heimdal libpam-ldap libpaper-utils
+		libpaper1 libpcap0.8 libpq5 libquadmath0 libradcli4 libsnmp-base libsnmp-session-perl libsnmp30 libsocket6-perl
+		libtirpc1 libtre5 libunbound2 libyaml-0-2 bind9 emacs24 ifplugd ntp sudo vim zip"
+	DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends $packages
 }
 
 install_haveged ()
