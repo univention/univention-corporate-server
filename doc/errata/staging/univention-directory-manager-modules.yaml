@@ -3,10 +3,12 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-directory-manager-modules
-fix: 13.0.25-7A~4.3.0.201810301158
+fix: 13.0.25-8A~4.3.0.201811010524
 desc: |
  This update addresses the following issue(s):
  * The ordering of the default categories in the Portal
    unintentionally changed with a previous update.
    This has been reverted.
-bug: [47872]
+ * A new API has been added that aims to provide a much easier handles for UDM
+   calls.
+bug: [47872, 47316]
