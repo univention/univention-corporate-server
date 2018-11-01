@@ -547,7 +547,7 @@ download_system_setup_packages ()
 				univention-self-service-master"
 		fi
 
-		apt-get update
+		apt-get update || true
 		for package in $packages; do
 			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package}
 			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
