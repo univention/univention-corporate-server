@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner /usr/bin/py.test
 # -*- coding: utf-8 -*-
 ## desc: Test UDM APIs module caching
 ## exposure: dangerous

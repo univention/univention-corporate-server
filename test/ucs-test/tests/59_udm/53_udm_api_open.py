@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner /usr/bin/py.test
 # -*- coding: utf-8 -*-
 ## desc: Test UDM APIs module.meta.auto_open feature
 ## exposure: dangerous
@@ -9,7 +9,7 @@
 
 from unittest import main, TestCase
 import univention.debug as ud
-from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
+from univention.testing.udm import UCSTestUDM
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.udm import UDM
 
