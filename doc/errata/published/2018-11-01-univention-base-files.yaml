@@ -9,3 +9,5 @@ desc: |
  * Ensure that /var/univention-backup exists in
    univention-config-registry-backup
 bug: [47336]
+erratum: 295
+announced: 2018-11-01
