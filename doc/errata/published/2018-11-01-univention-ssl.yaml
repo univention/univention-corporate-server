@@ -9,3 +9,5 @@ desc: |
  * SSL host certificates are now also valid for DNS alias records.
  * The cronjob to revoke expired certificates now works properly again.
 bug: [44469, 47896]
+erratum: 297
+announced: 2018-11-01
