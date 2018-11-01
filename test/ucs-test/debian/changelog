@@ -1,3 +1,9 @@
+ucs-test (8.0.28-216) unstable; urgency=low
+
+  * Bug #47316: handle loading of modules that require a superordinate
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 01 Nov 2018 09:44:30 +0100
+
 ucs-test (8.0.28-215) unstable; urgency=medium
 
   * Bug #47316: Permission bits and runner executable

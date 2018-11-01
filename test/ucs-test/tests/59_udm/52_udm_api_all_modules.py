@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test
+#!/usr/share/ucs-test/runner python
 # -*- coding: utf-8 -*-
 ## desc: Test UDM API for users/user module
 ## exposure: dangerous
@@ -7,7 +7,9 @@
 ## packages: [python-univention-directory-manager]
 ## bugs: [47316]
 
+import sys
 from collections import defaultdict
+from six import string_types
 from unittest import main, TestCase
 import univention.debug as ud
 from univention.udm import UDM, WrongObjectType, NoSuperordinate
@@ -30,6 +32,26 @@ class TestUdmGenericVariousModules(TestCase):
 		univention.admin.modules.update()
 		cls.avail_modules = sorted([mod for mod in univention.admin.modules.modules.keys()])
 
+	def get_new_obj(self, mod):  # type: (GenericModuleTV) -> GenericObjectTV
+		try:
+			return mod.new()
+		except NoSuperordinate as exc:
+			pass
+		print('Module {!r} requires a superordinate, trying to find one...'.format(mod.name))
+		try:
+			sup_modules = mod._orig_udm_module.superordinate
+		except AttributeError:
+			print('Got NoSuperordinate exception ({}), but {!r} has no "superordinate" attribute!'.format(exc, mod.name))
+			raise NoSuperordinate, exc, sys.exc_info()[2]
+		if isinstance(sup_modules, string_types):
+			sup_modules = [sup_modules]
+		for sup_module in sup_modules:
+			for obj in self.udm.get(sup_module).search():
+				print('Using {!r} object at {!r} as superordinate for model of {!r} object.'.format(
+					sup_module, obj.dn, mod.name))
+				return mod.new(obj)
+		raise NoSuperordinate, exc, sys.exc_info()[2]
+
 	def test_load_modules(self):
 		print('Loading all modules...')
 		mail_and_ox_modules = self.ox_modules + self.mail_modules
@@ -47,9 +69,12 @@ class TestUdmGenericVariousModules(TestCase):
 		for mod_name in self.avail_modules:
 			print('Listing objects of type {!r}...'.format(mod_name))
 			mod = self.udm.get(mod_name)
-			if mod_name != 'users/self':  # stange module...
+			if mod_name == 'users/self':
+				print('Skipping module "users/self" with broken mapping.')
+				continue
+			else:
 				try:
-					mod.new()  # test whether a new object may be initialized
+					self.get_new_obj(mod)  # test whether a new object may be initialized
 				except NoSuperordinate:
 					# for now...
 					print('Cannot test "new" for {!r}. Requires superordinate'.format(mod_name))
