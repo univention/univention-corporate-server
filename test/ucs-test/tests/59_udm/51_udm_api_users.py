@@ -16,7 +16,7 @@ from univention.testing.strings import random_string, random_username
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.udm import UDM
-from univention.udm.exceptions import DeleteError
+from univention.udm.exceptions import DeleteError, UnknownProperty, NotYetSavedError, DeletedError, NoObject, ModifyError, CreateError
 
 
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
@@ -70,6 +70,12 @@ class TestUdmUsersBasic(TestCase):
 		cls.ucr_test.revert_to_original_registry()
 		cls.udm_test.cleanup()
 
+	def test_create_user_error(self):
+		user_mod = self.udm.get('users/user')
+		obj = user_mod.new()
+		with self.assertRaises(CreateError):
+			obj.save()
+
 	def test_create_user(self):
 		user_mod = self.udm.get('users/user')
 		obj = user_mod.new()
@@ -84,7 +90,7 @@ class TestUdmUsersBasic(TestCase):
 		print('Creating user with attrs: {!r}'.format(attrs))
 		for k, v in attrs.items():
 			setattr(obj.props, k, v)
-		obj.save().reload()
+		obj.save()
 		print('Created {!r}.'.format(obj))
 		print('Verifying...')
 		assert obj.props.password != attrs['password'], 'Password was not hased or object not reloaded!'
@@ -99,6 +105,38 @@ class TestUdmUsersBasic(TestCase):
 			strict=False,
 			should_exist=True
 		)
+		obj2 = user_mod.get_by_id(obj.props.username)
+		assert obj2.dn == obj.dn
+
+	def test_move_user(self):
+		user_mod = self.udm.get('users/user')
+		dn = self.user_objects[0].dn
+		obj = user_mod.get(dn)
+		old_position = obj.position
+		obj.position = self.ucr_test['ldap/base']
+		obj.save()
+		with self.assertRaises(NoObject):
+			assert user_mod.get(dn)
+		obj.position = old_position
+		obj.save()
+		assert user_mod.get(dn) is not None
+
+	def test_modify_error(self):
+		user_mod = self.udm.get('users/user')
+		obj = user_mod.new()
+		self.user_objects.append(obj)
+		attrs = {
+			'firstname': random_username(),
+			'lastname': random_username(),
+			'username': random_username(),
+			'password': random_username(),
+		}
+		for k, v in attrs.items():
+			setattr(obj.props, k, v)
+		assert obj.save()
+		obj.props.username = 'Administrator'
+		with self.assertRaises(ModifyError):
+			obj.save()
 
 	def test_modify_user(self):
 		user_mod = self.udm.get('users/user')
@@ -199,9 +237,19 @@ class TestUdmUsersBasic(TestCase):
 			got = getattr(obj.props, k)
 			if got != v:
 				utils.fail('Expected for {!r}: {!r} got: {!r}'.format(k, v, got))
+		with self.assertRaises(UnknownProperty):
+			obj.props.unknown = 'Unknown'
+		with self.assertRaises(AttributeError):
+			obj.props.unknown
 
 	def test_remove_user(self):
 		user_mod = self.udm.get('users/user')
+		obj = user_mod.new()
+		with self.assertRaises(NotYetSavedError):
+			obj.reload()
+		with self.assertRaises(NotYetSavedError):
+			obj.delete()
+
 		obj = user_mod.get(self.user_objects[0].dn)
 		print('Deleting {!r}...'.format(obj))
 		obj.delete()
@@ -210,6 +258,11 @@ class TestUdmUsersBasic(TestCase):
 			obj.dn,
 			should_exist=False
 		)
+		with self.assertRaises(DeletedError):
+			obj.save()
+		with self.assertRaises(DeletedError):
+			obj.reload()
+		assert obj.delete() is None
 
 
 if __name__ == '__main__':

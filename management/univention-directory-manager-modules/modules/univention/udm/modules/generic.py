@@ -152,6 +152,7 @@ class GenericObject(BaseObject):
 			raise NotYetSavedError(module_name=self._udm_module.name)
 		self._orig_udm_object = self._udm_module._get_orig_udm_object(self.dn)
 		self._copy_from_udm_obj()
+		ud.debug('{!r} object (dn: {!r}) reloaded'.format(self._udm_module.name, self.dn))
 		return self
 
 	def save(self):
@@ -165,13 +166,14 @@ class GenericObject(BaseObject):
 		if self._deleted:
 			raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name)
 		if not self._fresh:
-			ud.warn('Saving stale UDM object instance.')
+			ud.warn('Saving stale UDM object instance')
 		self._copy_to_udm_obj()
 		if self.dn:
 			if self._old_position and self._old_position != self.position:
 				new_dn_li = [str2dn(self._orig_udm_object.dn)[0]]
 				new_dn_li.extend(str2dn(self.position))
 				new_dn = dn2str(new_dn_li)
+				ud.process('Moving {!r} object {!r} to {!r}'.format(self._udm_module.name, self.dn, new_dn))
 				try:
 					self.dn = self._orig_udm_object.move(new_dn)
 				except univention.admin.uexceptions.invalidOperation as exc:
@@ -197,6 +199,7 @@ class GenericObject(BaseObject):
 						self._udm_module.name, self.dn, exc.message, exc
 					), dn=self.dn, module_name=self._udm_module.name
 				), sys.exc_info()[2]
+			ud.process('Modified {!r} object {!r}'.format(self._udm_module.name, self.dn))
 		else:
 			try:
 				self.dn = self._orig_udm_object.create()
@@ -212,6 +215,7 @@ class GenericObject(BaseObject):
 						self._udm_module.name, exc.message, exc
 					), module_name=self._udm_module.name
 				), sys.exc_info()[2]
+			ud.process('Created {!r} object {!r}'.format(self._udm_module.name, self.dn))
 
 		assert self.dn == self._orig_udm_object.dn
 		assert self.position == self._lo.parentDn(self.dn)
@@ -229,7 +233,7 @@ class GenericObject(BaseObject):
 		:raises DeletedError: if the operation fails
 		"""
 		if self._deleted:
-			ud.warn('{} has already been deleted.'.format(self))
+			ud.warn('{} has already been deleted'.format(self))
 			return
 		if not self.dn or not self._orig_udm_object:
 			raise NotYetSavedError()
@@ -245,6 +249,7 @@ class GenericObject(BaseObject):
 			univention.admin.objects.performCleanup(self._orig_udm_object)
 		self._orig_udm_object = None
 		self._deleted = True
+		ud.process('Deleted {!r} object {!r}'.format(self._udm_module.name, self.dn))
 
 	def _copy_from_udm_obj(self):
 		"""
@@ -266,11 +271,6 @@ class GenericObject(BaseObject):
 			self.policies = self._policies_encoder.decode(self._orig_udm_object.policies)
 		else:
 			self.policies = self._orig_udm_object.policies
-		if self.dn:
-			self.position = self._lo.parentDn(self.dn)
-			self._old_position = self.position
-		else:
-			self.position = self._udm_module._get_default_object_positions()[0]
 		self.props = self.udm_prop_class(self)
 		if not self.dn:
 			self._init_new_object_props()
@@ -306,6 +306,15 @@ class GenericObject(BaseObject):
 			)
 		else:
 			self.superordinate = None
+		if self.dn:
+			self.position = self._lo.parentDn(self.dn)
+			self._old_position = self.position
+		else:
+			if self.superordinate:
+				self.position = self.superordinate.dn
+			else:
+				self.position = self._udm_module._get_default_object_positions()[0]
+			ud.debug('Set position to {!r}'.format(self.position))
 		self._fresh = True
 
 	def _copy_to_udm_obj(self):
@@ -689,6 +698,7 @@ class GenericModule(BaseModule):
 			obj._orig_udm_object = self._get_orig_udm_object(dn, superordinate)
 		obj.props = obj.udm_prop_class(obj)
 		obj._copy_from_udm_obj()
+		ud.debug('{!r} object (dn: {!r}) loaded'.format(self.name, obj.dn))
 		return obj
 
 	def _verify_univention_object_type(self, orig_udm_obj):
@@ -696,7 +706,7 @@ class GenericModule(BaseModule):
 		Check that the ``univentionObjectType`` of the LDAP objects matches the
 		UDM module name.
 
-		:param orig_udm_obj: UDM1 object
+		:param orig_udm_obj: original UDM object
 		:type orig_udm_obj: univention.admin.handlers.simpleLdap
 		:return: None
 		:raises WrongObjectType: if ``univentionObjectType`` of the LDAP object

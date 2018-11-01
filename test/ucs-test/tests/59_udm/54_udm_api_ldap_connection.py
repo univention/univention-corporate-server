@@ -64,6 +64,7 @@ class TestUdmAutoOpen(TestCase):
 			assert str(cm.exception) == 'Could not read secret file'
 		finally:
 			open('/etc/ldap.secret', 'w').write(pw)
+			os.chmod('/etc/ldap.secret', 0600)
 
 	def test_machine(self):
 		mod = UDM.machine().version(0).get('users/user')

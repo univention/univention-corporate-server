@@ -75,7 +75,6 @@ from operator import itemgetter
 from fnmatch import fnmatch
 
 from .exceptions import ApiVersionMustNotChange, ApiVersionNotSupported, NoApiVersionSet, NoObject
-from .utils import ConnectionConfig, get_connection
 from .plugins import Plugins
 
 
@@ -120,10 +119,9 @@ class UDM(object):
 		:rtype: UDM
 		:raises ConnectionError: Non-master systems, server down, etc.
 		"""
-		connection_config = ConnectionConfig(
-			'univention.udm.connections.LDAP_connection',
-			'get_admin_connection', (), {})
-		return cls(get_connection(connection_config))
+		from .connections import LDAP_connection
+		connection = LDAP_connection.get_admin_connection()
+		return cls(connection)
 
 	@classmethod
 	def machine(cls):
@@ -134,10 +132,9 @@ class UDM(object):
 		:rtype: UDM
 		:raises ConnectionError: File permissions, server down, etc.
 		"""
-		connection_config = ConnectionConfig(
-			'univention.udm.connections.LDAP_connection',
-			'get_machine_connection', (), {})
-		return cls(get_connection(connection_config))
+		from .connections import LDAP_connection
+		connection = LDAP_connection.get_machine_connection()
+		return cls(connection)
 
 	@classmethod
 	def credentials(
@@ -163,10 +160,9 @@ class UDM(object):
 		:rtype: UDM
 		:raises ConnectionError: Invalid credentials, server down, etc.
 		"""
-		connection_config = ConnectionConfig(
-			'univention.udm.connections.LDAP_connection',
-			'get_credentials_connection', (identity, password), {'base': base, 'server': server, 'port': port})
-		return cls(get_connection(connection_config))
+		from .connections import LDAP_connection
+		connection = LDAP_connection.get_credentials_connection(identity, password, base, server, port)
+		return cls(connection)
 
 	def version(self, api_version):
 		"""
