@@ -42,7 +42,7 @@ class SenderCheckListener(ListenerModuleHandler):
 	class Configuration:
 		name = 'sender_check_milter_reload'
 		description = 'Reload univention-postfix-sender-check when related settings/data object change.'
-		ldap_filter = '(&(objectClass=univentionData)(univentionDataType=RSA_public_key)(univentionOwnedByPackage=univention-mail-server))'
+		ldap_filter = '(&(objectClass=univentionData)(univentionDataType=mail/signing/RSA_public_key))'
 
 	def post_run(self):
 		self.logger.info('Reloading univention-postfix-sender-check.')

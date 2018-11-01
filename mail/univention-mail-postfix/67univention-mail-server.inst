@@ -84,7 +84,7 @@ cp "$RSA_PUB_FILE" "$RSA_PUB_FILE.$(hostname -f)"
 echo "Registering public key file for univention-postfix-sender-check..."
 ucs_registerLDAPExtension "$@" \
 	--data "$RSA_PUB_FILE.$(hostname -f)" \
-	--data_type "RSA_public_key" \
+	--data_type "mail/signing/RSA_public_key" \
 	--data_meta "use:sender_check" \
 	--data_meta "host:$(hostname -f)" \
 	|| die

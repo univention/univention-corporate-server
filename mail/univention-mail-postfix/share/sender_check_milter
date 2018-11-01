@@ -207,12 +207,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 	def get_public_keys(cls):  # type: () -> Dict[str, str]
 		lo = cls.get_lo()
 		ldap_attr = ['univentionData', 'univentionDataMeta']
-		ldap_filter = (
-			'(&'
-			'(objectClass=univentionData)'
-			'(univentionDataType=RSA_public_key)'
-			'(univentionOwnedByPackage=univention-mail-server)'
-			')')
+		ldap_filter = '(&(objectClass=univentionData)(univentionDataType=mail/signing/RSA_public_key))'
 		ldap_base = 'cn=data,cn=univention,{}'.format(cls.get_ucr()['ldap/base'])
 		ldap_result = lo.search(filter=ldap_filter, attr=ldap_attr, base=ldap_base)
 		res = {}
