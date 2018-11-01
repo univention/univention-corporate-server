@@ -5,7 +5,8 @@ scope: ucs_4.3-0-errata4.3-2
 src: univention-virtual-machine-manager-daemon
 fix: 7.0.0-14
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * Fix assignment of target device name for newly added disks.
  * Drop corrupt cache files on errors.
-bug: [47956,35761]
+ * Report IO errors in UMC frontend.
+bug: [47956,22695]
