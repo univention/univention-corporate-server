@@ -1004,6 +1004,9 @@ class App(object):
 	def docker(self):
 		return self.docker_image is not None
 
+	def uses_docker_compose(self):
+		return os.path.exists(self.get_cache_file('compose'))
+
 	@property
 	def ucr_status_key(self):
 		return 'appcenter/apps/%s/status' % self.id
@@ -1121,6 +1124,12 @@ class App(object):
 		if not os.path.exists(fname):
 			mkdir(os.path.dirname(fname))
 		return fname
+
+	def get_compose_dir(self):
+		return os.path.join(DATA_DIR, self.id, 'compose')
+
+	def get_compose_file(self, fname):
+		return os.path.join(self.get_compose_dir(), fname)
 
 	def get_ucs_version(self):
 		app_cache = self.get_app_cache_obj()

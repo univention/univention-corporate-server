@@ -222,8 +222,8 @@ def call_process2(cmd, logger=None, env=None):
 	return ret, out
 
 
-def call_process(args, logger=None, env=None):
-	process = Popen(args, stdout=PIPE, stderr=PIPE, bufsize=1, close_fds=True, env=env)
+def call_process(args, logger=None, env=None, cwd=None):
+	process = Popen(args, stdout=PIPE, stderr=PIPE, bufsize=1, close_fds=True, env=env, cwd=cwd)
 	if logger is not None:
 		logger.debug('Calling %s' % ' '.join(pipes.quote(arg) for arg in args))
 		remove_ansi_escape_sequence_regex = re.compile(r'\x1B\[[0-9;]*[a-zA-Z]')
