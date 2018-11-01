@@ -6,5 +6,6 @@ src: univention-ldap
 fix: 13.0.7-21A~4.2.0.201810160946
 desc: |
  This update addresses the following issue(s):
- * Change usePrimaryGroupPreset syntax from IA5 to UTF-8 (Backport from 4.3)
+ * The LDAP syntax for userPrimaryGroupPreset has been changed
+   to DirectoryString.
 bug: [47859]
