@@ -72,6 +72,9 @@ jenkins_updates () {
 	[ -z "$target" ] && target="$(echo "${JOB_NAME:-}"|sed -rne 's,^UCSschool-([0-9]+\.[0-9]+)/.*,\1-99,p')"
 
 	test -n "$TARGET_VERSION" && target="$TARGET_VERSION"
+	test -n "$RELEASE_UPDATE" && release_update="$RELEASE_UPDATE"
+	test -n "$ERRATA_UPDATE" && errata_update="$ERRATA_UPDATE"
+
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
 	echo "Starting from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
 	echo "release_update=$release_update"
