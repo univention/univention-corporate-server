@@ -98,7 +98,7 @@ property_descriptions = {
 	'data_type': univention.admin.property(
 		short_description=_('Data Type'),
 		long_description=_('The type of the data'),
-		syntax=univention.admin.syntax.string_numbers_letters_dots,
+		syntax=univention.admin.syntax.string,
 		multivalue=False,
 		options=[],
 		required=True,
