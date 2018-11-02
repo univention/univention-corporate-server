@@ -807,7 +807,7 @@ class Node(PersistentCached):
 			self.pd.last_try = time.time()
 			# double timer interval until maximum
 			hz = min(self.current_frequency * 2, Nodes.BEBO_FREQUENCY)
-			logger.warning("'%s' broken? next check in %s. %s", self.pd.uri, ms(hz), ex)
+			logger.warning("'%s' broken? next check in %s. %s", self.pd.uri, ms(hz), ex, exc_info=True)
 			if hz > self.current_frequency:
 				self.current_frequency = hz
 			self._unregister()
