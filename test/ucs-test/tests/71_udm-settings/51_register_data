@@ -11,6 +11,7 @@ import bz2
 import atexit
 import shutil
 import subprocess
+import pipes
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.ucr as ucr_test
@@ -68,7 +69,7 @@ with udm_test.UCSTestUDM() as udm:
 		'--data_meta', kwargs['meta'][0],
 		'--data_meta', kwargs['meta'][1],
 	]
-	cmd = ['/bin/bash', '-c', 'source /usr/share/univention-lib/ldap.sh && {}'.format(' '.join(register_cmd))]
+	cmd = ['/bin/bash', '-c', 'source /usr/share/univention-lib/ldap.sh && {}'.format(' '.join([pipes.quote(x) for x in register_cmd]))]
 	run_cmd(cmd)
 
 	cmd = ['udm', 'settings/data', 'list', '--filter', 'cn={}'.format(file_name)]
@@ -109,10 +110,10 @@ with udm_test.UCSTestUDM() as udm:
 		'--ucsversionstart', kwargs['ucsversionstart'],
 		'--ucsversionend', kwargs['ucsversionend'],
 		'--data_type', uts.random_name(),
-		'--data_meta', kwargs['meta'][0],
-		'--data_meta', kwargs['meta'][1],
+		'--data_meta', 'Some different meta data',
+		'--data_meta', 'Some very different meta data',
 	]
-	cmd = ['/bin/bash', '-c', 'source /usr/share/univention-lib/ldap.sh && {}'.format(' '.join(register_cmd))]
+	cmd = ['/bin/bash', '-c', 'source /usr/share/univention-lib/ldap.sh && {}'.format(' '.join([pipes.quote(x) for x in register_cmd]))]
 	run_cmd(cmd)
 
 	utils.verify_ldap_object(
