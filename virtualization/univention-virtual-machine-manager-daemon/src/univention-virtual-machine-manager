@@ -37,7 +37,8 @@ import locale
 import json
 import errno
 from argparse import ArgumentParser, ArgumentTypeError
-from univention.uvmm import protocol, client
+import univention.uvmm.protocol as protocol
+import univention.uvmm.client as client
 from univention.uvmm.helpers import TranslatableException, _
 from pprint import pprint
 from uuid import UUID
@@ -96,7 +97,8 @@ def from_ldap(options):
 	from univention.uvmm.uvmm_ldap import ldap_uris, LdapError
 	try:
 		uris = ldap_uris()
-	except LdapError as (translatable_text, fillin):
+	except LdapError as ex:
+		(translatable_text, fillin) = ex
 		print >> sys.stderr, "ERROR:"
 		print >> sys.stderr, _(translatable_text) % fillin
 		return False
@@ -113,7 +115,8 @@ def from_ldap(options):
 			res = sock.send(req)
 			if isinstance(res, protocol.Response_ERROR):
 				raise client.ClientError(res.translatable_text, res.values)
-		except client.ClientError as (translatable_text, fillin):
+		except client.ClientError as ex:
+			(translatable_text, fillin) = ex
 			print >> sys.stderr, _(translatable_text) % fillin
 			result = False
 	sock.close()
@@ -759,7 +762,17 @@ class ParserGenerator(object):
 		Define new cloud connection.
 
 		:param json_options: defines connection name, credentials, URL, etc.
-			"{"name":"myCloud", "type":"OpenStack", "username":"demo", "password":"univention", "auth_url":"http://192.168.0.79:5000", "auth_version":"2.0_password", "tenant":"demo", "service_type":"compute", "service_name":"nova", "service_region":"regionOne"}"
+			{"name":"myCloud",
+			 "type":"OpenStack",
+			 "username":"demo",
+			 "password":"univention",
+			 "auth_url":"http://192.168.0.79:5000",
+			 "auth_version":"2.0_password",
+			 "tenant":"demo",
+			 "service_type":"compute",
+			 "service_name":"nova",
+			 "service_region":"regionOne"
+			}
 		:param testconnection: by default, the connection is only added if an initial test connection is successful. If this parameter is 'false', the connection is added in any case.
 		"""
 		sub_parser.add_argument(
@@ -1038,7 +1051,8 @@ def do_request(args):
 	try:
 		ret = request(args, req)
 		sys.exit(ret)
-	except TranslatableException as (translatable_text, fillin):
+	except TranslatableException as ex:
+		(translatable_text, fillin) = ex
 		print >> sys.stderr, _(translatable_text) % fillin
 		sys.exit(1)
 
