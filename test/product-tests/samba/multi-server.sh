@@ -141,6 +141,7 @@ multi_server_master () {
 	#    Mit Benutzer am Windows7-Client anmelden und Passwort auf "Ünivention123" ändern. Die Samba4/Heimdal-Passwortkomplexitätsprüfung sollte das akzeptieren. DONE
 	#    Uhrzeit auf den UCS DCs eine Stunde vorstellen und neu booten. (Oder Zeit sinnvoll anders nutzen..) Simulated by fetching information from Samba DB and comparing with a date
 	#    Benutzer-Konto Option "Passwort bei der nächsten Anmeldung ändern" im UDM wählen und an jedem Windows System testen, ob das Passwort geändert werden muss. Kann man jetzt wieder "Ünivention123" setzen? DONE
+	sleep 150
 	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ!"
 	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ" --debug 2>&1 | grep Exception
 	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univention123!"
@@ -226,15 +227,16 @@ ms_test_memberslave () {
 prepare-nonmaster() {
  ucr set server/password/interval='0'
  /usr/lib/univention-server/server_password_change
- univention-install --yes univention-printserver-pdf
  test -z "$(find /var -name core)"
 }
 
 prepareslaveprinter () {
+ univention-install --yes univention-printserver-pdf
  rpcclient localhost -U "SAMBATEST\administrator%Univention@99#+?=$" -c 'setdriver "Slaveprinter" "MS Publisher Color Printer"'
  echo "halli hallo" > /home/testshare/test.txt
 }
 preparememberprinter () {
+ univention-install --yes univention-printserver-pdf
  rpcclient localhost -U "SAMBATEST\administrator%Univention@99#+?=$" -c 'setdriver "Memberprinter" "MS Publisher Color Printer"'
  echo "halli hallo" > /home/testshare/test.txt
 }
