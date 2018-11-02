@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0
+src: lazy-object-proxy
+fix: 1.2.2-1
+desc: |
+ This update addresses the following issue:
+ * New maintained dependency of UDM.
+bug: [48086]
+ignore:
+  - release+scope.consistent
+  - version.scope
