@@ -1193,7 +1193,7 @@ def ucs_unregisterLDAPExtension():
 
 	parser.add_option("--data", dest="data",
 			action="append", type="string",
-			help="Data object", metavar="<data object>")
+			help="Data object", metavar="<path to data object>")
 
 	# parser.add_option("-v", "--verbose", action="count")
 
