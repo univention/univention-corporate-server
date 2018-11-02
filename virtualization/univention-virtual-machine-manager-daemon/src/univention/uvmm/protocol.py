@@ -642,6 +642,10 @@ class Cloud_Data_Connection(object):
 		self.last_update = None
 		self.last_update_try = None
 		self.available = False
+		self.search_pattern = ''
+		self.ucs_images = []
+		self.last_error_message = ''
+		self.dn = ''
 
 
 class Cloud_Data_Instance(object):

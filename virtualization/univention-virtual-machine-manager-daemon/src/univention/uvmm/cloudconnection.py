@@ -71,11 +71,12 @@ class CloudConnection(object):
 		self._cache_dir = cache_dir
 		self._cache_hash = ""
 
+		self.driver = None  # type: NodeDriver
 		self.updatethread = None
 		self.config_default_frequency = self.DEFAULT_FREQUENCY
 		self.current_frequency = self.DEFAULT_FREQUENCY
 		self.fast_update_config_default_frequency = 0
-		self.fast_update_time = 0
+		self.fast_update_time = 0.0
 		self.timerEvent = threading.Event()
 
 		self.publicdata = Cloud_Data_Connection()
@@ -296,6 +297,14 @@ class CloudConnection(object):
 			if include:
 				images.append(self.to_cloud_data_image(image))
 		return images
+
+	def list_instances(self, pattern="*"):
+		# type: (str) -> List[Any]
+		raise NotImplementedError()
+
+	def _exec_libcloud(self, func):
+		# type: (Callable) -> Any
+		raise NotImplementedError()
 
 	def logerror(self, logger, msg):
 		# type: (logging.Logger, str) -> None
