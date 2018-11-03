@@ -35,10 +35,10 @@ import sys
 import datetime
 import time
 import lazy_object_proxy
-from .binary_props import BaseBinaryProperty, Base64BinaryProperty, Base64Bzip2BinaryProperty
+from .binary_props import Base64BinaryProperty, Base64Bzip2BinaryProperty
 from .udm import UDM
 from .utils import UDebug
-from .exceptions import UnknownModuleType
+from .exceptions import NoObject, UnknownModuleType
 from univention.admin.uexceptions import valueInvalidSyntax
 from univention.admin.syntax import sambaGroupType
 
@@ -348,6 +348,8 @@ class DnListPropertyEncoder(BaseEncoder):
 					obj = udm_module.get(dn)
 			except UnknownModuleType as exc:
 				UDebug.warn(str(exc))
+			except NoObject as exc:
+				UDebug.warn(str(exc))
 			else:
 				res.append(obj)
 		return res
@@ -500,7 +502,9 @@ class DnPropertyEncoder(BaseEncoder):
 				return udm_module.get(value)
 		except UnknownModuleType as exc:
 			UDebug.error(str(exc))
-			return None
+		except NoObject as exc:
+			UDebug.warn(str(exc))
+		return None
 
 	def decode(self, value=None):
 		new_str = self.DnStr(value)
