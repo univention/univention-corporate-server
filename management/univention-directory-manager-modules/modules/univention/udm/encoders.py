@@ -507,6 +507,8 @@ class DnPropertyEncoder(BaseEncoder):
 		return None
 
 	def decode(self, value=None):
+		if value in (None, ''):
+			return None
 		new_str = self.DnStr(value)
 		if value:
 			new_str.obj = self.MyProxy(lambda: self._dn_to_udm_object(value))

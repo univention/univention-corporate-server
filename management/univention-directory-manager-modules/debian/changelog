@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.25-10) unstable; urgency=low
+
+  * Bug #47316: handle empty value in DnPropertyEncoder
+
+ -- Daniel Troeder <troeder@univention.de>  Sun, 04 Nov 2018 23:22:28 +0100
+
 univention-directory-manager-modules (13.0.25-9) unstable; urgency=low
 
   * Bug #47316: handle NoObject in Dn*PropertyEncoders
