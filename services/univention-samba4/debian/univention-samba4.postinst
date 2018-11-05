@@ -418,6 +418,7 @@ secret: $machine_secret
 
 		if dpkg --compare-versions "$2" lt-nl "8.0.0-1"; then
 			/etc/init.d/samba stop
+			univention-config-registry set samba4/kccsrv/samba_kcc?False
 			/usr/bin/samba-tool dbcheck --reindex
 			/etc/init.d/samba start
 			if [ -x /etc/init.d/bind9 ]; then
