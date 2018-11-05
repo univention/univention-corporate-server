@@ -1,3 +1,10 @@
+univention-samba4 (8.0.0-2) unstable; urgency=medium
+
+  * Bug #48084: Samba 4.9
+  * Bug #48085: Activate new KCC implementation
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Nov 2018 19:49:18 +0100
+
 univention-samba4 (8.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
