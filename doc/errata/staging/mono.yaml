@@ -6,8 +6,8 @@ src: mono
 fix: 3.2.8+dfsg-10+deb8u1
 desc: |
  This update addresses the following issue:
- * CVE-2009-0689 array index error in dtoa implementation of many products
-   (CVE-2009-0689)
+ * It was found that Mono’s string-to-double parser may crash, on specially
+   crafted input. This could lead to arbitrary code execution. (CVE-2009-0689)
 bug: [48097]
 cve:
 - CVE-2009-0689
