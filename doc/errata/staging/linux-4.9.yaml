@@ -1,6 +1,6 @@
 product: ucs
 release: "4.2"
-version: [4, 5]
+version: [5]
 scope: ucs_4.2-0-errata4.2-5
 src: linux-4.9
 fix: 4.9.110-3+deb9u5~deb8u1
