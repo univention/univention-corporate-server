@@ -46,20 +46,6 @@ static int server_list_entries = 0;
 extern int backup_notifier;
 
 
-/* returns true, if all servers in [list] have been contacted same often.
- * BUG: Connection attempts are currently not counted, so this always return 1.
- */
-int suspend_connect(void) {
-	int i;
-	for (i = 1; i < server_list_entries; i++) {
-		if (server_list[i].conn_attemp != server_list[i - 1].conn_attemp) {
-			return 0;
-		}
-	}
-	return 1;
-}
-
-
 /* Select LDAP server and notifier daemon.
  * 1. notifier/server : notifier/server/port
  * 2. @Master|Backup: ldap/master : ldap/master/port
@@ -152,7 +138,6 @@ void select_server(univention_ldap_parameters_t *lp) {
 			int randval = random() % server_list_entries;
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "randval = %d ", randval);
 
-			// server_list[randval].conn_attemp++;
 			lp->host = strdup(server_list[randval].server_name);
 			if (!strcmp(lp->host, ldap_master)) {
 				if (ldap_master_port > 0)

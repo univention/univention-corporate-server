@@ -68,10 +68,8 @@ static int connect_to_ldap(univention_ldap_parameters_t *lp) {
 	while (univention_ldap_open(lp) != LDAP_SUCCESS) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to ldap server (%s)", lp->host);
 
-		if (suspend_connect()) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to any ldap server, retrying in 30 seconds");
 			sleep(30);
-		}
 
 		select_server(lp);
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "chosen server: %s:%d", lp->host, lp->port);

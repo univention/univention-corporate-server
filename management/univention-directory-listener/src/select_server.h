@@ -37,10 +37,8 @@
 
 struct server_list {
 	char *server_name;
-	int conn_attemp;
 };
 
 void select_server(univention_ldap_parameters_t *lp);
-int suspend_connect(void);
 
 #endif

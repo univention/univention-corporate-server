@@ -520,14 +520,12 @@ int main(int argc, char *argv[]) {
 	}
 
 	while (do_connection(lp) != 0) {
-		if (suspend_connect()) {
 			if (initialize_only) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "can not connect any server, exit");
 				exit(1);
 			}
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect any server, retrying in 30 seconds");
 			sleep(30);
-		}
 
 		select_server(lp);
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "chosen server: %s:%d", lp->host, lp->port);
