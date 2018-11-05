@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-directory-listener
+fix: 12.0.0-32A~4.3.0.201811051607
+desc: |
+ This update addresses the following issue:
+ * The Listener opens two connections: a persistent connection to a Notifier
+   and a on-demand connection to a LDAP server. In some rare situations two
+   different hosts were contacted for those connections, which lead to
+   inconsistencies in LDAP replication.
+bug: [48030]
