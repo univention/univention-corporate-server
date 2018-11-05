@@ -5,6 +5,9 @@ scope: ucs_4.3-0-errata4.3-2
 src: samba
 fix: 2:4.7.8-1A~4.3.0.201810301307
 desc: |
- This update addresses the following regression:
+ This update addresses the following issues:
  * Continue samba-tool dbcheck --fix even if a modification failed.
-bug: [48040]
+ * Changing the primary group of a user triggered an inconsistency in
+   the DN SID component of the member attribute. In special situations
+   samba-tool dbcheck was unable to fix this automatically.
+bug: [48040, 48054]
