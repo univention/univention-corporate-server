@@ -57,7 +57,6 @@
 #include "change.h"
 #include "network.h"
 #include "transfile.h"
-#include "select_server.h"
 
 #define DELAY_LDAP_CLOSE 15               /* 15 seconds */
 #define DELAY_ALIVE 5 * 60                /* 5 minutes */
@@ -65,16 +64,22 @@
 
 
 static int connect_to_ldap(univention_ldap_parameters_t *lp) {
-	while (univention_ldap_open(lp) != LDAP_SUCCESS) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to ldap server (%s)", lp->host);
+	int i, rv;
 
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to any ldap server, retrying in 30 seconds");
+	for (i = 0; i < 6; i++) {
+		if (i)
 			sleep(30);
 
-		select_server(lp);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "connecting to LDAP server %s:%d", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port);
+		rv = univention_ldap_open(lp);
+		if (rv == LDAP_SUCCESS)
+			break;
 	}
-
-	return LDAP_SUCCESS;
+	if (rv == LDAP_SUCCESS)
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "connection to LDAP server %s:%d succeeded", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port);
+	else
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "connection to LDAP server %s:%d failed", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port);
+	return rv;
 }
 
 static void check_free_space() {
@@ -171,10 +176,8 @@ int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_fil
 
 		/* ensure that LDAP connection is open */
 		if (trans.lp->ld == NULL) {
-			if ((rv = connect_to_ldap(trans.lp)) != 0) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to connect to LDAP");
+			if ((rv = connect_to_ldap(trans.lp)) != 0)
 				goto out;
-			}
 		}
 
 		/* Try to do the change. If the LDAP server is down, try
@@ -182,9 +185,8 @@ int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_fil
 		while ((rv = change_update_dn(&trans)) != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "change_update_dn failed: %d", rv);
 			if (rv == LDAP_SERVER_DOWN)
-				if ((rv = connect_to_ldap(trans.lp)) == 0)
-					continue;
-			goto out;
+				if ((rv = connect_to_ldap(trans.lp)) != 0)
+					goto out;
 		}
 
 		/* rv had better be LDAP_SUCCESS if we get here */

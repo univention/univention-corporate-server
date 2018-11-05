@@ -51,6 +51,12 @@ extern int backup_notifier;
  * 2. @Master|Backup: ldap/master : ldap/master/port
  * 2. @*: ldap/backup[?] : ldap/backup/port, fallback: ldap/master : ldap/master/port
  * @param lp LDAP configuration object.
+ *
+ * .. warning::
+ *
+ *    notifier and LDAP server must belong to the same host. Otherwise the
+ *    notifier might reference entries, which are not yet correctly replicated
+ *    to the LDAP server. This leads to inconsistencies.
  */
 void select_server(univention_ldap_parameters_t *lp) {
 	static unsigned seed = 0;
