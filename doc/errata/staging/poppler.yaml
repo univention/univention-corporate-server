@@ -1,0 +1,20 @@
+product: ucs
+release: "4.2"
+version: [4, 5]
+scope: ucs_4.2-0-errata4.2-5
+src: poppler
+fix: 0.26.5-2+deb8u5
+desc: |
+ This update addresses the following issues:
+ * Infinite recursion in fofi/FoFiType1C.cc:FoFiType1C::cvtGlyph() function
+   allows denial of service (CVE-2017-18267)
+ * NULL pointer dereference in Annot.h:AnnotPath::getCoordsLength() allows for
+   denial of service via crafted PDF (CVE-2018-10768)
+ * out of bounds read in pdfunite (CVE-2018-13988)
+ * infinite recursion in Parser::getObj function in Parser.cc (CVE-2018-16646)
+bug: [48095]
+cve:
+- CVE-2017-18267
+- CVE-2018-10768
+- CVE-2018-13988
+- CVE-2018-16646
