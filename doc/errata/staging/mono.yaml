@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [4, 5]
+scope: ucs_4.2-0-errata4.2-5
+src: mono
+fix: 3.2.8+dfsg-10+deb8u1
+desc: |
+ This update addresses the following issue:
+ * CVE-2009-0689 array index error in dtoa implementation of many products
+   (CVE-2009-0689)
+bug: [48097]
+cve:
+- CVE-2009-0689
