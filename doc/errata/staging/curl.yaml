@@ -1,0 +1,16 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: curl
+fix: 7.52.1-5+deb9u8
+desc: |
+ This update addresses the following issues:
+ * Heap-based buffer overflow via integer overflow in
+   curl_sasl.c:Curl_sasl_create_plain_message() (CVE-2018-16839)
+ * Heap-based buffer over-read in tool_msgs.c:voutf() allows for information
+   disclosure and crash (CVE-2018-16842)
+bug: [48093]
+cve:
+- CVE-2018-16839
+- CVE-2018-16842
