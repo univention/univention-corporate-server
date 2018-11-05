@@ -159,5 +159,5 @@ result:
 	free(ldap_master);
 	free(server_role);
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "LDAP-Server is %s:%d", lp->host ? lp->host : "NULL", lp->port);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Notifier/LDAP server is %s:%d", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port);
 }

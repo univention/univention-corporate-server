@@ -72,7 +72,6 @@ static int connect_to_ldap(univention_ldap_parameters_t *lp) {
 			sleep(30);
 
 		select_server(lp);
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "chosen server: %s:%d", lp->host, lp->port);
 	}
 
 	return LDAP_SUCCESS;
