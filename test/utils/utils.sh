@@ -65,6 +65,9 @@ rotate_logfiles () {
 
 jenkins_updates () {
 
+	# check extra component
+	test -n "${EXTRA_COMPONENT}" && ucr set repository/online/component/${EXTRA_COMPONENT}=enabled
+
 	ucr set update43/checkfilesystems=no
 	local version_version version_patchlevel version_erratalevel target rc=0
 	target="$(echo "${JOB_NAME:-}"|sed -rne 's,.*/UCS-([0-9]+\.[0-9]+-[0-9]+)/.*,\1,p')"
