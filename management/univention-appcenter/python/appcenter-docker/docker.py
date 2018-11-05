@@ -394,18 +394,30 @@ class Docker(object):
 
 
 class MultiDocker(Docker):
-	def __init__(self, app, logger=None):
-		super(MultiDocker, self).__init__(app, logger)
-		mkdir(self.app.get_compose_dir())
-		shutil.copy2(self.app.get_cache_file('compose'), self.app.get_compose_file('docker-compose.yml'))
-
 	def verify(self):
 		return True
 
 	def pull(self):
-		call_process(['docker-compose', '-p', self.app.id, 'pull'], cwd=self.app.get_compose_dir())
+		self._setup_yml(False)
+		ret, out = call_process2(['docker-compose', '-p', self.app.id, 'pull'], cwd=self.app.get_compose_dir(), logger=_logger)
+		if ret != 0:
+			raise DockerImagePullFailed(self.image, out)
+
+	def _setup_yml(self, recreate):
+		if os.path.exists(self.app.get_compose_file('docker-compose.yml')):
+			if not recreate:
+				return
+		else:
+			mkdir(self.app.get_compose_dir())
+			shutil.copy2(self.app.get_cache_file('compose'), self.app.get_compose_file('docker-compose.yml.template'))
+		with open(self.app.get_compose_file('docker-compose.yml.template')) as fd:
+			template = fd.read()
+			content = ucr_run_filter(template)
+		with open(self.app.get_compose_file('docker-compose.yml'), 'wb') as fd:
+			fd.write(content)
 
 	def create(self, hostname, set_vars):
+		self._setup_yml(True)
 		call_process(['docker-compose', '-p', self.app.id, 'create'], cwd=self.app.get_compose_dir())
 		try:
 			out = ps(only_running=False)
@@ -427,5 +439,7 @@ class MultiDocker(Docker):
 		return call_process(['docker-compose', '-p', self.app.id, 'up', '-d'], cwd=self.app.get_compose_dir()).returncode == 0
 
 	def stop(self):
-		call_process(['docker-compose', '-p', self.app.id, 'down'], cwd=self.app.get_compose_dir())
+		return call_process(['docker-compose', '-p', self.app.id, 'down'], cwd=self.app.get_compose_dir()).returncode == 0
 
+	def rm(self):
+		return self.stop()
