@@ -36,10 +36,12 @@ import shutil
 import os.path
 import re
 import time
+from glob import glob
 
 from ldap.dn import explode_dn
 
-from univention.appcenter.docker import Docker, MultiDocker
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.docker import Docker, rmi
 from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.actions import get_action
 from univention.appcenter.exceptions import DockerCouldNotStartContainer, DatabaseConnectorError, AppCenterErrorContainerStart
@@ -58,8 +60,9 @@ class DockerActionMixin(object):
 	def _get_docker(cls, app):
 		if not app.docker:
 			return
-		if app.uses_docker_compose():
-			return MultiDocker(app, cls.logger)
+		if app.plugin_of:
+			app = Apps().find(app.plugin_of)
+			return cls._get_docker(app)
 		return Docker(app, cls.logger)
 
 	def _store_data(self, app):

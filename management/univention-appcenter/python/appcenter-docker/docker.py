@@ -38,12 +38,11 @@ from subprocess import check_output, call, CalledProcessError
 import os
 import os.path
 import shlex
-import shutil
 from json import loads
 from tempfile import NamedTemporaryFile
 from contextlib import contextmanager
 
-from univention.appcenter.utils import app_ports_with_protocol, call_process, call_process2, shell_safe, get_sha256, mkdir, _
+from univention.appcenter.utils import app_ports_with_protocol, call_process, call_process2, shell_safe, get_sha256, _
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.exceptions import DockerVerificationFailed, DockerImagePullFailed
 from univention.appcenter.ucr import ucr_save, ucr_is_false, ucr_get, ucr_run_filter, ucr_is_true
@@ -391,41 +390,3 @@ class Docker(object):
 	def cp_from_container(self, src, dest, **kwargs):
 		logger = kwargs.pop('_logger', self.logger)
 		return docker_cp(self.container + ':' + src, dest, logger=logger, **kwargs)
-
-
-class MultiDocker(Docker):
-	def __init__(self, app, logger=None):
-		super(MultiDocker, self).__init__(app, logger)
-		mkdir(self.app.get_compose_dir())
-		shutil.copy2(self.app.get_cache_file('compose'), self.app.get_compose_file('docker-compose.yml'))
-
-	def verify(self):
-		return True
-
-	def pull(self):
-		call_process(['docker-compose', '-p', self.app.id, 'pull'], cwd=self.app.get_compose_dir())
-
-	def create(self, hostname, set_vars):
-		call_process(['docker-compose', '-p', self.app.id, 'create'], cwd=self.app.get_compose_dir())
-		try:
-			out = ps(only_running=False)
-		except CalledProcessError:
-			return False
-		else:
-			for line in out.splitlines():
-				try:
-					container, image = line.split()[:2]
-				except ValueError:
-					pass
-				else:
-					if image == self.app.docker_image:
-						ucr_save({self.app.ucr_container_key: container})
-						self.container = container
-						return container
-
-	def up(self):
-		return call_process(['docker-compose', '-p', self.app.id, 'up', '-d'], cwd=self.app.get_compose_dir()).returncode == 0
-
-	def stop(self):
-		call_process(['docker-compose', '-p', self.app.id, 'down'], cwd=self.app.get_compose_dir())
-

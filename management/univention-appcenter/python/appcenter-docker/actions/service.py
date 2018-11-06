@@ -35,7 +35,6 @@
 import os.path
 
 from univention.appcenter.app_cache import Apps
-from univention.appcenter.docker import MultiDocker
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 
 ORIGINAL_INIT_SCRIPT = '/usr/share/docker-app-container-init-script'
@@ -64,9 +63,6 @@ class Start(Service):
 	help = 'Start an app'
 
 	def main(self, args):
-		if args.app.uses_docker_compose():
-			docker = MultiDocker(args.app)
-			return docker.up()
 		return self.call_init(args.app, 'start')
 
 
@@ -76,9 +72,6 @@ class Stop(Service):
 	help = 'Stop an app'
 
 	def main(self, args):
-		if args.app.uses_docker_compose():
-			docker = MultiDocker(args.app)
-			return docker.stop()
 		return self.call_init(args.app, 'stop')
 
 
