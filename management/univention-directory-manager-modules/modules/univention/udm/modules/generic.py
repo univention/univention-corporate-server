@@ -677,7 +677,6 @@ class GenericModule(BaseModule):
 			obj._orig_udm_object = orig_udm_object
 		else:
 			obj._orig_udm_object = self._get_orig_udm_object(dn, superordinate)
-		obj.props = obj.udm_prop_class(obj)
 		obj._copy_from_udm_obj()
 		ud.debug('{!r} object (dn: {!r}) loaded'.format(self.name, obj.dn))
 		return obj
