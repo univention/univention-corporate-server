@@ -199,14 +199,14 @@ def rmdir(directory):
 		shutil.rmtree(directory)
 
 
-def call_process2(cmd, logger=None, env=None, cwd=None):
+def call_process2(cmd, logger=None, env=None):
 	if logger is None:
 		logger = utils_logger
 	logger.info('Running command: {0}'.format(' '.join(cmd)))
 	out = str()
 	ret = 0
 	try:
-		p = Popen(cmd, stdout=PIPE, stderr=STDOUT, bufsize=1, close_fds=True, env=env, cwd=cwd)
+		p = Popen(cmd, stdout=PIPE, stderr=STDOUT, bufsize=1, close_fds=True, env=env)
 		while p.poll() is None:
 			stdout = p.stdout.readline()
 			if stdout:
