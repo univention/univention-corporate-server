@@ -314,15 +314,16 @@ class AppListener(AppListener):
 			self._subprocess(['systemctl', 'disable', 'univention-appcenter-listener-converter@%s.service' % app.id])
 
 	def _unregister_listener(self, app, delay=False):
-		listener_file = '/usr/lib/univention-directory-listener/system/%s.py' % app.id
-		listener_meta_file = '/var/lib/univention-directory-listener/handlers/%s' % app.id
-		if os.path.exists(listener_file):
-			os.unlink(listener_file)
-			self._update_converter_service(app)
-			self.log('Removed Listener for %s' % app)
-			if not delay:
-				self._restart_listener([listener_meta_file])
-			return listener_meta_file
+		if app.listener_udm_modules:
+			listener_file = '/usr/lib/univention-directory-listener/system/%s.py' % app.id
+			listener_meta_file = '/var/lib/univention-directory-listener/handlers/%s' % app.id
+			if os.path.exists(listener_file):
+				os.unlink(listener_file)
+				self._update_converter_service(app)
+				self.log('Removed Listener for %s' % app)
+				if not delay:
+					self._restart_listener([listener_meta_file])
+				return listener_meta_file
 
 	def _restart_listener(self, meta_files):
 		self.log('Restarting Listener...')
