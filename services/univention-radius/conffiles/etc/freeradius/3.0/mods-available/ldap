@@ -419,19 +419,19 @@ print '\t\tfilter = "(uid=%%{%s:-%%{User-Name}})"' % filter
 		type {
 			start {
 				update {
-					description := "Online at %S"
+#					description := "Online at %S"
 				}
 			}
 
 			interim-update {
 				update {
-					description := "Last seen at %S"
+#					description := "Last seen at %S"
 				}
 			}
 
 			stop {
 				update {
-					description := "Offline at %S"
+#					description := "Offline at %S"
 				}
 			}
 		}
@@ -442,7 +442,7 @@ print '\t\tfilter = "(uid=%%{%s:-%%{User-Name}})"' % filter
 	#
 	post-auth {
 		update {
-			description := "Authenticated at %S"
+#			description := "Authenticated at %S"
 		}
 	}
 
