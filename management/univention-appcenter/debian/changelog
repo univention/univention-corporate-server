@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-32) unstable; urgency=medium
+
+  * Bug #47619: Revert
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Nov 2018 14:39:31 +0100
+
 univention-appcenter (7.0.2-31) unstable; urgency=medium
 
   * Bug #47619: Check whether credentials are really needed
