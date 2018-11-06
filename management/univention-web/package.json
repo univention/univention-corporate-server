@@ -28,9 +28,9 @@
 		"path": "branches/ucs-4.2/ucs4.2-0/management/univention-web-js"
 	}],
 	"dependencies": {
-		"dojo": "~1.8",
-		"dijit": "~1.8",
-		"dojox": "~1.8"
+		"dojo": "~1.12.4",
+		"dijit": "~1.12.4",
+		"dojox": "~1.12.4"
 	},
 	"dojoBuild": "umc.profile.js"
 }

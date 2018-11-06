@@ -50,10 +50,10 @@ clean:
 	rm -rf univention-dojo-api-viewer
 	rm -rf dojo-*.tar.gz
 
-dojo: dojo-release-1.12.1-src.tar.gz
-dojo-release-1.12.1-src.tar.gz:
+dojo: dojo-release-1.12.4-src.tar.gz
+dojo-release-1.12.4-src.tar.gz:
 	wget "https://updates.software-univention.de/download/large-build-files/dojo/$@"
-	echo "e3fe0075918ea60426397ce8f8445ad6ec35d4257233afbc254c811b1c544cf8bbaf1ca51ad83fe04a100ea7e3487648eecc3843bf073633b9a724af30c845c6  $@" | sha512sum -c
+	echo "02f0cc882b41003bcbc9e16d372cadd4b19abc1bcb4b1fb99eb8f0868df78fa7520f2cde85cde0f1e6756002efa26f52899e8a901d2725419158ca7f53eb5200  $@" | sha512sum -c
 
 # treat dojo JS package different
 dojo:

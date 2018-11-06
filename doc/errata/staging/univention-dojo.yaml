@@ -2,10 +2,9 @@ product: ucs
 release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
-src: univention-web
-fix: 2.0.0-26A~4.3.0.201810151349
+src: univention-dojo
+fix:
 desc: |
  This update addresses the following issue(s):
- * The scrolling in the UVMM module has been improved.
  * The version of the dojo framework has been upgraded.
-bug: [36624, 47997]
+bug: [47997]

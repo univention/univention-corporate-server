@@ -1,3 +1,9 @@
+univention-dojo (11.0.1-1) unstable; urgency=medium
+
+  * Bug #47997: Update to dojo version 1.12.4
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Tue, 06 Nov 2018 09:49:03 +0100
+
 univention-dojo (11.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump
