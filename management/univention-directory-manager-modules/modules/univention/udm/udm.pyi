@@ -29,7 +29,7 @@
 from __future__ import absolute_import, unicode_literals
 from .base import BaseModuleTV, BaseObjectTV
 from .utils import UDebug as ud, ConnectionConfig
-from typing import Dict, List, Optional, Text, Tuple, Type
+from typing import Any, Dict, List, Optional, Text, Tuple, Type
 
 
 class UDM(object):
@@ -37,8 +37,9 @@ class UDM(object):
 	_imported = False
 	_modules = []  # type: List[BaseModuleTV]
 
-	def __init__(self, connection_config, api_version=None):  # type: (ConnectionConfig, Optional[int]) -> None
-		...
+	def __init__(self, connection, api_version=None):  # type: (Any, Optional[int]) -> None
+		self.connection = connection
+		self._api_version = api_version
 
 	@classmethod
 	def admin(cls):  # type: () -> UDM

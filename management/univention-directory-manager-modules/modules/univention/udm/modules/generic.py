@@ -35,7 +35,6 @@ from __future__ import absolute_import, unicode_literals
 import sys
 import copy
 import inspect
-from copy import deepcopy
 from six import string_types
 from ldap.dn import dn2str, str2dn
 import ldap
@@ -47,27 +46,18 @@ import univention.admin.uldap
 import univention.config_registry
 
 from ..encoders import dn_list_property_encoder_for
-from ..base import BaseModule, BaseModuleMetadata, BaseObject, BaseObjectProperties, LdapMapping
+from ..base import BaseModule, BaseModuleMetadata, BaseObject, BaseObjectProperties, LdapMapping, ModuleMeta
 from ..exceptions import (
 	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, NoSuperordinate,
 	UdmError, UnknownProperty, UnknownModuleType, WrongObjectType
 )
-from ..plugins import Plugin
+from ..plugins import Plugins
 from ..utils import UDebug as ud
 
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 DEFAULT_CONTAINERS_DN = 'cn=default containers,cn=univention,{}'.format(ucr['ldap/base'])
-
-
-class ModuleMeta(Plugin):
-	def __new__(mcs, name, bases, attrs):
-		meta = attrs.pop('Meta', None)
-		new_cls_meta = GenericModuleMetadata(meta)
-		new_cls = super(ModuleMeta, mcs).__new__(mcs, name, bases, attrs)
-		new_cls.meta = new_cls_meta
-		return new_cls
 
 
 class GenericObjectProperties(BaseObjectProperties):
@@ -406,23 +396,10 @@ class GenericObject(BaseObject):
 
 class GenericModuleMetadata(BaseModuleMetadata):
 	def __init__(self, meta):
-		self.supported_api_versions = []
-		self.suitable_for = []
+		super(GenericModuleMetadata, self).__init__(meta)
 		self.default_positions_property = None
-		self.used_api_version = None
-		self._udm_module = None
-		if hasattr(meta, 'supported_api_versions'):
-			self.supported_api_versions = meta.supported_api_versions
-		if hasattr(meta, 'suitable_for'):
-			self.suitable_for = meta.suitable_for
 		if hasattr(meta, 'default_positions_property'):
 			self.default_positions_property = meta.default_positions_property
-
-	def instance(self, udm_module, api_version):
-		cpy = deepcopy(self)
-		cpy._udm_module = udm_module
-		cpy.used_api_version = api_version
-		return cpy
 
 	@property
 	def identifying_property(self):
@@ -467,6 +444,10 @@ class GenericModuleMetadata(BaseModuleMetadata):
 		)
 
 
+class GenericModuleMeta(ModuleMeta):
+	udm_meta_class = GenericModuleMetadata
+
+
 class GenericModule(BaseModule):
 	"""
 	Simple API to use UDM modules. Basically a GenericObject factory.
@@ -483,7 +464,7 @@ class GenericModule(BaseModule):
 		dc_slaves = dc_slave_mod.search(filter_s='cn=s10*')
 		campus_groups = group_mod.search(base='ou=campus,dc=example,dc=com')
 	"""
-	__metaclass__ = ModuleMeta
+	__metaclass__ = GenericModuleMeta
 	_udm_object_class = GenericObject
 	_udm_module_meta_class = GenericModuleMetadata
 	_udm_module_cache = {}

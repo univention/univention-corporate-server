@@ -34,8 +34,8 @@ Will work for all kinds of UDM modules.
 from __future__ import absolute_import, unicode_literals
 import univention.config_registry
 from ..encoders import BaseEncoder
-from ..base import BaseObjectProperties, BaseObjectTV, BaseModuleTV, BaseModuleMetadataTV
-from typing import Any, Dict, Iterator, List, Optional, Text, Tuple, Type, TypeVar, Union
+from ..base import BaseObjectProperties, BaseObjectTV, BaseModuleTV, BaseModuleMetadataTV, ModuleMeta
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, Tuple, Type, TypeVar, Union
 
 
 GenericObjectPropertiesTV = TypeVar(
@@ -48,6 +48,10 @@ GenericModuleMetadataTV = TypeVar(
 GenericModuleTV = TypeVar('GenericModuleTV', bound='univention.udm.modules.generic.GenericModule')
 
 OriUdmHandlerTV = TypeVar('OriUdmHandlerTV', bound='univention.admin.handlers.simpleLdap')
+
+
+ucr = None  # type: univention.config_registry.ConfigRegistry
+DEFAULT_CONTAINERS_DN = ''
 
 
 class GenericObjectProperties(BaseObjectProperties):
@@ -92,14 +96,11 @@ class GenericObject(BaseObjectTV):
 
 class GenericModuleMetadata(BaseModuleMetadataTV):
 	def __init__(self, meta):  # type: (GenericModuleTV.Meta) -> None
-		self.supported_api_versions = []  # type: List[int]
-		self.suitable_for = []  # type: List[Text]
 		self.default_positions_property = None  # type: Text
-		self.used_api_version = None  # type: int
-		self._udm_module = None  # type: GenericModuleTV
 
-	def instance(self, udm_module, api_version):  # type: (Text, int) -> BaseModuleMetadataTV
-		...
+
+class GenericModuleMeta(ModuleMeta):
+	udm_meta_class = GenericModuleMetadata
 
 
 class GenericModule(BaseModuleTV):
@@ -107,8 +108,10 @@ class GenericModule(BaseModuleTV):
 	_udm_module_meta_class = GenericModuleMetadata  # type: Type[GenericModuleMetadata]
 	_udm_module_cache = {}  # type: Dict[Tuple[Text, Text, Text, Text], OriUdmHandlerTV]
 	_default_containers = {}  # type: Dict[Text, Dict[Text, Any]]
-	supported_api_versions = (0, 1)
-	ucr = None  # type: univention.config_registry.ConfigRegistry
+
+	class Meta:
+		supported_api_versions = ()  # type: Iterable[int]
+		suitable_for = []  # type: Iterable[Text]
 
 	def __init__(self, name, connection, api_version):  # type: (Text, Any, int) -> None
 		self._orig_udm_module = None  # type: OriUdmHandlerTV

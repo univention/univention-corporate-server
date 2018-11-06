@@ -35,6 +35,7 @@ import copy
 import pprint
 from collections import namedtuple
 from ldap.filter import filter_format
+from .plugins import Plugin
 from .exceptions import NoObject, MultipleObjects
 
 
@@ -144,15 +145,27 @@ class BaseModuleMetadata(object):
 	auto_open = True  # whether UDM objects should be `open()`ed
 	auto_reload = True  # whether UDM objects should be `reload()`ed after saving
 
-	def __init__(self, udm_module, api_version):
-		self._udm_module = udm_module
-		self.api_version = api_version
+	def __init__(self, meta):
+		self.supported_api_versions = []
+		self.suitable_for = []
+		self.used_api_version = None
+		self._udm_module = None
+		if hasattr(meta, 'supported_api_versions'):
+			self.supported_api_versions = meta.supported_api_versions
+		if hasattr(meta, 'suitable_for'):
+			self.suitable_for = meta.suitable_for
+
 	def __repr__(self):
 		return '{}({})'.format(
 			self.__class__.__name__,
 			', '.join('{}={!r}'.format(k, v) for k, v in self.__dict__.iteritems() if not str(k).startswith('_'))
 		)
 
+	def instance(self, udm_module, api_version):
+		cpy = copy.deepcopy(self)
+		cpy._udm_module = udm_module
+		cpy.used_api_version = api_version
+		return cpy
 
 	@property
 	def identifying_property(self):
@@ -194,6 +207,17 @@ class BaseModuleMetadata(object):
 		raise NotImplementedError()
 
 
+class ModuleMeta(Plugin):
+	udm_meta_class = BaseModuleMetadata
+
+	def __new__(mcs, name, bases, attrs):
+		meta = attrs.pop('Meta', None)
+		new_cls_meta = mcs.udm_meta_class(meta)
+		new_cls = super(ModuleMeta, mcs).__new__(mcs, name, bases, attrs)
+		new_cls.meta = new_cls_meta
+		return new_cls
+
+
 class BaseModule(object):
 	"""
 	Base class for UDM module classes. UDM modules are basically UDM object
@@ -215,9 +239,13 @@ class BaseModule(object):
 		user = user_mod.get(dn)
 		user.props.groups == []
 	"""
-	supported_api_versions = ()
+	__metaclass__ = ModuleMeta
 	_udm_object_class = BaseObject
 	_udm_module_meta_class = BaseModuleMetadata
+
+	class Meta:
+		supported_api_versions = ()
+		suitable_for = []
 
 	def __init__(self, name, connection, api_version):
 		self.connection = connection

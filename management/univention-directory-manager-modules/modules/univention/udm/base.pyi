@@ -33,6 +33,7 @@ Base classes for (simplified) UDM modules and objects.
 from __future__ import absolute_import, unicode_literals
 from collections import namedtuple
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, TypeVar, Union
+from .plugins import Plugin
 
 
 LdapMapping = namedtuple('LdapMapping', ('ldap2udm', 'udm2ldap'))
@@ -82,9 +83,11 @@ class BaseModuleMetadata(object):
 	auto_open = True
 	auto_reload = True
 
-	def __init__(self, udm_module, api_version):  # type: (BaseModuleTV, int) -> None
-		self._udm_module = udm_module
-		self.api_version = api_version
+	def __init__(self, meta):  # type: (BaseModule.Meta) -> None
+		self.supported_api_versions = []  # type: Iterable[int]
+		self.suitable_for = []  # type: Iterable[Text]
+		self.used_api_version = None  # type: int
+		self._udm_module = None  # type: BaseModuleTV
 
 	@property
 	def identifying_property(self):  # type: () -> Text
@@ -98,10 +101,21 @@ class BaseModuleMetadata(object):
 		...
 
 
+class ModuleMeta(Plugin):
+	udm_meta_class = BaseModuleMetadata
+
+	def __new__(mcs, name, bases, attrs):
+		...
+
+
 class BaseModule(object):
-	supported_api_versions = ()  # type: Iterable[int]
+	__metaclass__ = ModuleMeta
 	_udm_object_class = BaseObject
 	_udm_module_meta_class = BaseModuleMetadata
+
+	class Meta:
+		supported_api_versions = ()  # type: Iterable[int]
+		suitable_for = []  # type: Iterable[Text]
 
 	def __init__(self, name, connection, api_version):  # type: (Text, Any, int) -> None
 		self.connection = connection  # type: Any
