@@ -176,8 +176,10 @@
         <title>Create an app with a Docker image</title>
 
         <para>
-            This section describes how to create the app in the App
-            Provider Portal and use a Docker image.
+            This section describes how to create the app in the App Provider
+            Portal and use a Docker image. It focuses on a single container
+            setup. For a setup with multiple containers with Docker Compose
+            please see <xref linkend="create-app-with-docker:compose" />.
         </para>
 
         <para>
@@ -523,6 +525,58 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                     creation</guimenu>.
             </para>
         </section>
+    </section>
+
+    <section id="create-app-with-docker:compose">
+        <title>Create an app with multiple Docker images</title>
+        <para>
+<!-- TODO: Add UCS Version errata Update -->
+            Starting with UCS 4.3-2 errata xxx Univention App Center supports
+            apps that consist of multi docker images. It uses <ulink
+                url="https://docs.docker.com/compose/overview/">Docker
+                Compose</ulink>, a tool for defining and running
+            multi-container Docker applications. The heart of such applications
+            is a YAML file that configures all services for the application.
+            The users'
+        </para>
+        <para>
+            In order to create an multi container app, go to the
+            <guimenu>Docker</guimenu> tab and scroll down to the
+            <guimenu>Docker Compose</guimenu> section and enter the content of
+            your <option>docker-compose.yml</option> file. Please use a "flat"
+            YAML file, because the implementation does currently not support
+            environment variables and references to other files like for
+            example files that should be mounted inside a container. 
+        </para>
+        <para>
+            For a multi container setup you can leave the following sections on the <guimenu>Docker</guimenu> tab empty:
+            <itemizedlist>
+                <listitem>
+                    <simpara>Mounted Volumes</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Database settings for docker container</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Environment database variables</simpara>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            In order to provide access to the applications web interface,
+            please see <xref linkend="create-app-with-docker:web-interface" />.
+        </para>
+        <para>
+            If the app setup requires exclusive ports and a list of ports needs
+            to get forwarded from the host to the container, please see <xref
+                linkend="create-app-with-docker:ports" />.
+        </para>
+        <para>
+            As soon as all the technical settings are made, please see <xref
+                linkend="app-lifecycle" /> for the App life cycle and how to
+            test the app. For app presentation in the App Center please see
+            <xref linkend="app-presentation" />.
+        </para>
     </section>
 </chapter>
 
