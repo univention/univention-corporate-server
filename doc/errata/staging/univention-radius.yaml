@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-radius
-fix: 
+fix: 5.0.0-9A~4.3.0.201811061521
 desc: |
  This update addresses the following issue(s):
  * A user's description attribute is now no longer modified if the
