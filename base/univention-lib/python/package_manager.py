@@ -564,11 +564,11 @@ class PackageManager(object):
 			cmd_disable_exec = [CMD_DISABLE_EXEC, '--exclude-apache']
 		else:
 			cmd_disable_exec = CMD_DISABLE_EXEC
-		self._shell_command(cmd_disable_exec)
+		self._shell_command(cmd_disable_exec, False)
 		try:
 			yield
 		finally:
-			self._shell_command(CMD_ENABLE_EXEC)
+			self._shell_command(CMD_ENABLE_EXEC, False)
 
 	def __del__(self):
 		# should be done automatically. i am a bit paranoid
