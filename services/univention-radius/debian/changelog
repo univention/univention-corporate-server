@@ -1,3 +1,9 @@
+univention-radius (5.0.0-9) unstable; urgency=low
+
+  * Bug #48105: do not modify user's attribute description upon login/logout
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 06 Nov 2018 15:04:34 +0100
+
 univention-radius (5.0.0-8) unstable; urgency=medium
 
   * Bug #46528: fix multiple errors and path
