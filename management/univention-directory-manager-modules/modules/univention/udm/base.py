@@ -47,7 +47,10 @@ class BaseObjectProperties(object):
 		self._udm_obj = udm_obj
 
 	def __repr__(self):
-		return pprint.pformat(dict((k, v) for k, v in self.__dict__.iteritems() if not str(k).startswith('_')), indent=2)
+		return '{}({})'.format(
+			self.__class__.__name__,
+			pprint.pformat(dict((k, v) for k, v in self.__dict__.iteritems() if not str(k).startswith('_')), indent=2)
+		)
 
 	def __deepcopy__(self, memo):
 		id_self = id(self)
@@ -144,6 +147,12 @@ class BaseModuleMetadata(object):
 	def __init__(self, udm_module, api_version):
 		self._udm_module = udm_module
 		self.api_version = api_version
+	def __repr__(self):
+		return '{}({})'.format(
+			self.__class__.__name__,
+			', '.join('{}={!r}'.format(k, v) for k, v in self.__dict__.iteritems() if not str(k).startswith('_'))
+		)
+
 
 	@property
 	def identifying_property(self):
