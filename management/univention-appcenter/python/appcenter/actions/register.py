@@ -297,7 +297,7 @@ class AppListener(AppListener):
 				self._restart_listener([])
 			return True
 		else:
-			return self._unregister_listener(app, delay)
+			pass  # do not remove any listener. could be installed properly by packages
 
 	def _update_converter_service(self, app):
 		listener_file = '/usr/lib/univention-directory-listener/system/%s.py' % app.id
