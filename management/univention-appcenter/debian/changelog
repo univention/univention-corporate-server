@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-34) unstable; urgency=medium
+
+  * Bug #48104: Version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Nov 2018 14:46:31 +0100
+
 univention-appcenter (7.0.2-33) unstable; urgency=medium
 
   * Bug #48104: Do not remove listener modules
