@@ -9,3 +9,5 @@ desc: |
  * A spelling error in the English description for UCRV 'ldap/debug/level' has
    been fixed.
 bug: [48102]
+erratum: 303
+announced: 2018-11-07
