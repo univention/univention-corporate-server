@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: univention-dojo
+fix: 10.0.1-1A~4.2.0.201811071125
+desc: |
+ This update addresses the following issue(s):
+ * Update version of dojo framework to 1.12.4
+bug: [47998]
