@@ -1,3 +1,9 @@
+univention-dojo (10.0.1-1) unstable; urgency=medium
+
+  * Bug #47998: Update dojo version to 1.12.4
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Wed, 07 Nov 2018 11:23:04 +0100
+
 univention-dojo (10.0.0-4) unstable; urgency=medium
 
   * Bug #44059: Center standby animation relative to viewport
