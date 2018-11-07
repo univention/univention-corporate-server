@@ -3,9 +3,9 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-appcenter
-fix: 7.0.2-35A~4.3.0.201811061649
+fix: 7.0.2-36A~4.3.0.201811071253
 desc: |-
   This update addresses the following issue(s):
   * In some cases the App Center removed installed listener modules. This has
     been fixed.
-bug: [48104,47931]
+bug: [48104]
