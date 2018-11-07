@@ -6,5 +6,5 @@ src: univention-ad-connector
 fix: 12.0.0-27A~4.3.0.201810290927
 desc: |
  This update addresses the following issue(s):
- * Fixes cn = Subschema rejects in ad-connector
+ * The special cn=Subschema object caused AD-Connector rejects
 bug: [47396]
