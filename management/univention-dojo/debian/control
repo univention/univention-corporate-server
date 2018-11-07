@@ -5,6 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper,
  ucslint-univention,
  wget,
+ ca-certificates,
 Standards-Version: 3.7.2
 
 Package: univention-dojo

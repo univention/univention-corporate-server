@@ -52,7 +52,7 @@ clean:
 
 dojo: dojo-release-1.12.4-src.tar.gz
 dojo-release-1.12.4-src.tar.gz:
-	wget --no-check-certificate "https://updates.software-univention.de/download/large-build-files/dojo/$@"
+	wget "https://updates.software-univention.de/download/large-build-files/dojo/$@"
 	echo "02f0cc882b41003bcbc9e16d372cadd4b19abc1bcb4b1fb99eb8f0868df78fa7520f2cde85cde0f1e6756002efa26f52899e8a901d2725419158ca7f53eb5200  $@" | sha512sum -c
 
 # treat dojo JS package different
