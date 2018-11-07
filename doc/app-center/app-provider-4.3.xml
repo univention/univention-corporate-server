@@ -582,7 +582,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                 The App Center allows several scripts to be executed on the host
                 and inside the container during installation (<xref
                     linkend="installation-scripts" />), uninstallation (<xref
-                    linkend="uinstallation-scripts" />) and upgrade (<xref
+                    linkend="uninstallation-scripts" />) and upgrade (<xref
                     linkend="upgrade-scripts" />). For multi container setups the
                 App Center needs to know to which image the scripts must be
                 applied. In the <guimenu>Docker</guimenu> tab, define the
