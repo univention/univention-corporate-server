@@ -12,6 +12,6 @@ Categories=service-ldap
 
 [ldap/debug/level]
 Description[de]=Diese Variable konfiguriert den Detailgrad der Logmeldungen des LDAP-Servers. Eine Beschreibung der möglichen Optionen findet sich in 'man slapd.conf' unter 'loglevel'.
-Description[en]=This variable configues the verbosity of the log messages of the LDAP server. A description of the possible options can be found in 'man slapd.conf' under 'loglevel'.
+Description[en]=This variable configures the verbosity of the log messages of the LDAP server. A description of the possible options can be found in 'man slapd.conf' under 'loglevel'.
 Type=str
 Categories=service-ldap

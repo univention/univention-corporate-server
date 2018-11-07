@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-25) unstable; urgency=low
+
+  * Bug #48102: Fix spelling mistake
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 07 Nov 2018 07:21:36 +0100
+
 univention-ldap (14.0.2-24) unstable; urgency=low
 
   * Fix generating DH parameter file (Bug #47974)

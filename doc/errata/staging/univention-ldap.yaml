@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-ldap
+fix: 14.0.2-25
+desc: |
+ This update addresses the following issue:
+ * A spelling error in the English description for UCRV 'ldap/debug/level' has
+   been fixed.
+bug: [48102]
