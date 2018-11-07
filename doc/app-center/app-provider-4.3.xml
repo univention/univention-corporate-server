@@ -537,8 +537,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                 Compose</ulink>, a tool for defining and running
             multi-container Docker applications. The heart of such applications
             is a YAML file that configures all services for the application.
-            Docker Compose version 1.8.0 is used and the supported compose file
-            format version is 2.0.
+            The supported compose file format version is 2.0.
         </para>
         <section id="create-app-with-docker:setup">
             <title>Multi container setup</title>
