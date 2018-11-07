@@ -8,4 +8,4 @@ desc: |-
   This update addresses the following issue(s):
   * In some cases the App Center removed installed listener modules. This has
     been fixed.
-bug: [48104]
+bug: [48104,47931]
