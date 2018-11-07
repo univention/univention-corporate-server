@@ -1,3 +1,9 @@
+univention-web (1.0.42-68) unstable; urgency=medium
+
+  * Bug #47998: Update dojo version to 1.12.4
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Wed, 07 Nov 2018 11:29:17 +0100
+
 univention-web (1.0.42-67) unstable; urgency=medium
 
   * Bug #45076: improve localized sorting performance
