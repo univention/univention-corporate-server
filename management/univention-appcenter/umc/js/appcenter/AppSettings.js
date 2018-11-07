@@ -28,18 +28,10 @@ define([
 					return;
 				}
 				var value = values[variable.name] || null;
-				// Some widgets render required=null into the HTML which causes
-				var required;
-				if (variable.required === null) {
-					required = false;
-				} else {
-					required = variable.required;
-				}
-
 				var params = {
 					name: variable.name,
 					_groupName: variable.group || _('Settings'),
-					required: required,
+					required: variable.required,
 					label: variable.description,
 					disabled: (variable.show_read_only || []).indexOf(phase) !== -1 || values[variable.name] === undefined,
 					value: value
