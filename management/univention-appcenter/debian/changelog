@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-36) unstable; urgency=medium
+
+  * Bug #47931: Don't handle streams in no_umc_restart 
+
+ -- Jens Pelzetter <jpelzett@tossberg.knut.univention.de>  Wed, 07 Nov 2018 12:34:06 +0100
+
 univention-appcenter (7.0.2-35) unstable; urgency=medium
 
   * Bug #48104: Do not remove listener if not responsible
