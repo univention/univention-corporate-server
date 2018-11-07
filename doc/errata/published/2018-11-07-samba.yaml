@@ -11,3 +11,5 @@ desc: |
    the DN SID component of the member attribute. In special situations
    samba-tool dbcheck was unable to fix this automatically.
 bug: [48040, 48054]
+erratum: 301
+announced: 2018-11-07
