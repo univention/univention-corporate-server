@@ -537,46 +537,68 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                 Compose</ulink>, a tool for defining and running
             multi-container Docker applications. The heart of such applications
             is a YAML file that configures all services for the application.
-            The users'
+            Docker Compose version 1.8.0 is used and the supported compose file
+            format version is 2.0.
         </para>
-        <para>
-            In order to create an multi container app, go to the
-            <guimenu>Docker</guimenu> tab and scroll down to the
-            <guimenu>Docker Compose</guimenu> section and enter the content of
-            your <option>docker-compose.yml</option> file. Please use a "flat"
-            YAML file, because the implementation does currently not support
-            environment variables and references to other files like for
-            example files that should be mounted inside a container. 
-        </para>
-        <para>
-            For a multi container setup you can leave the following sections on the <guimenu>Docker</guimenu> tab empty:
-            <itemizedlist>
-                <listitem>
-                    <simpara>Mounted Volumes</simpara>
-                </listitem>
-                <listitem>
-                    <simpara>Database settings for docker container</simpara>
-                </listitem>
-                <listitem>
-                    <simpara>Environment database variables</simpara>
-                </listitem>
-            </itemizedlist>
-        </para>
-        <para>
-            In order to provide access to the applications web interface,
-            please see <xref linkend="create-app-with-docker:web-interface" />.
-        </para>
-        <para>
-            If the app setup requires exclusive ports and a list of ports needs
-            to get forwarded from the host to the container, please see <xref
-                linkend="create-app-with-docker:ports" />.
-        </para>
-        <para>
-            As soon as all the technical settings are made, please see <xref
-                linkend="app-lifecycle" /> for the App life cycle and how to
-            test the app. For app presentation in the App Center please see
-            <xref linkend="app-presentation" />.
-        </para>
+        <section id="create-app-with-docker:setup">
+            <title>Multi container setup</title>
+            <para>
+                In order to create a multi container app, go to the
+                <guimenu>Docker</guimenu> tab in the app provider portal, scroll
+                down to the <guimenu>Docker Compose</guimenu> section and enter the
+                content of your <option>docker-compose.yml</option> file. A "flat"
+                YAML file must be used, because the implementation does currently
+                not support environment variables and references to other files
+                like for example files that should be mounted inside a container.
+            </para>
+            <para>
+                For a multi container setup the following sections on the
+                <guimenu>Docker</guimenu> tab can be left empty:
+                <itemizedlist>
+                    <listitem>
+                        <simpara>Mounted Volumes</simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>Database settings for docker container</simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>Environment database variables</simpara>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                In order to provide access to the application's web interface,
+                please see <xref linkend="create-app-with-docker:web-interface" />.
+            </para>
+            <para>
+                If the app setup requires exclusive ports and a list of ports needs
+                to get forwarded from the host to the container, please see <xref
+                    linkend="create-app-with-docker:ports" />.
+            </para>
+        </section>
+        <section id="create-app-with-docker:script-reference">
+            <title>Script execution reference</title>
+            <para>
+                The App Center allows several scripts to be executed on the host
+                and inside the container during installation (<xref
+                    linkend="installation-scripts" />), uninstallation (<xref
+                    linkend="uinstallation-scripts" />) and upgrade (<xref
+                    linkend="upgrade-scripts" />). For multi container setups the
+                App Center needs to know to which image the scripts must be
+                applied. In the <guimenu>Docker</guimenu> tab, define the
+                <guimenu>Docker image</guimenu> at the top. The image must be the
+                same as defined in the <option>docker-compose.yml</option>.
+            </para>
+        </section>
+        <section id="create-app-with-docker:finish">
+            <title>Finish multi container setup</title>
+            <para>
+                As soon as all the technical settings are made, please see <xref
+                    linkend="app-lifecycle" /> for the next steps and how to
+                test the app. For app presentation in the App Center please see
+                <xref linkend="app-presentation" />.
+            </para>
+        </section>
     </section>
 </chapter>
 
