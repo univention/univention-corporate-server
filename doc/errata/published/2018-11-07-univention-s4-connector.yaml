@@ -11,3 +11,5 @@ desc: |
    was unset or empty in UCR.
  * Fix sync_to_ucs reject for DNS SOAs with trailing dot missing in the NS RR.
 bug: [44711, 44104]
+erratum: 304
+announced: 2018-11-07
