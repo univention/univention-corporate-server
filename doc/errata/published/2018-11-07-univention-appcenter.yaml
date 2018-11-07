@@ -9,3 +9,5 @@ desc: |-
   * In some cases the App Center removed installed listener modules. This has
     been fixed.
 bug: [48104]
+erratum: 302
+announced: 2018-11-07
