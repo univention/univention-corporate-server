@@ -41,6 +41,7 @@ import ldap.sasl
 import subprocess
 import string
 import base64
+
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
 from univention.connector.ad import encode_sid, decode_sid
@@ -87,10 +88,9 @@ if len(sys.argv) < oiterator + 1:
 
 filter = sys.argv[oiterator]
 
-if len(sys.argv) > oiterator + 1:
-	filter_attributes = sys.argv[oiterator + 1].split(',')
-else:
-	filter_attributes = None
+filter_attributes = list()
+for attr in sys.argv[oiterator+1:]:
+	filter_attributes += attr.split(',')
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
