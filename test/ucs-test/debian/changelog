@@ -1,3 +1,9 @@
+ucs-test (8.0.28-222) unstable; urgency=medium
+
+  * Bug #44469: added 101_ssl_cname_san
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 09 Nov 2018 11:37:34 +0100
+
 ucs-test (8.0.28-221) unstable; urgency=medium
 
   * Bug #45049: revert regressive changes to
