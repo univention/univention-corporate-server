@@ -36,87 +36,22 @@ import sys
 import os
 import re
 import univention.config_registry
-from ldap.controls import LDAPControl
-from ldap.controls import SimplePagedResultsControl
 import ldap
 import ldap.sasl
 import subprocess
 import string
 import base64
+from ldap.controls import LDAPControl
+from ldap.controls import SimplePagedResultsControl
+from univention.connector.ad import encode_sid, decode_sid
+from samba.ndr import ndr_unpack
+from samba.dcerpc import misc
 
 objectsid_pattern = re.compile(r'objectsid=([^)]+(?<!\\))', flags=re.I)
 
 
 class kerberosAuthenticationFailed(Exception):
 	pass
-
-
-def encode_object_sid(sid_string, encode_in_base64=True):
-	binary_encoding = ""
-
-	for i in sid.split("-")[1:]:
-		j = int(i)
-
-		oc1 = (j >> 24)
-		oc2 = (j - (oc1 * (2 << 23))) >> 16
-		oc3 = (j - (oc1 * (2 << 23)) - (oc2 * (2 << 15))) >> 8
-		oc4 = j - (oc1 * (2 << 23)) - (oc2 * (2 << 15)) - (oc3 * (2 << 7))
-
-		binary_encoding_chunk = chr(oc4) + chr(oc3) + chr(oc2) + chr(oc1)
-		binary_encoding += binary_encoding_chunk
-
-	if encode_in_base64:
-		return base64.encodestring(binary_encoding)
-
-	return binary_encoding
-
-
-def encode_object_sid_to_binary_ldapfilter(sid_string):
-	binary_encoding = ""
-
-	# The first two bytes do not seem to follow the expected binary LDAP filter
-	# conversion scheme. Thus, we skip them and prepend the encoding of "1-5"
-	# statically
-	for i in sid_string.split("-")[3:]:
-		j = hex(int(i))
-		hex_repr = (((8 - len(j[2:])) * "0") + j[2:])
-
-		binary_encoding_chunk = '\\' + hex_repr[6:8] + "\\" + hex_repr[4:6] + "\\" + hex_repr[2:4] + "\\" + hex_repr[0:2]
-		binary_encoding += binary_encoding_chunk
-
-	return "\\01\\05\\00\\00\\00\\00\\00\\05" + binary_encoding
-
-
-def replace_filter(filter_s):
-	r"""
-	>>> replace_filter('(objectsid=S-1-5-21-3635031200-1553950662-1512387333-1001)')
-	'(objectSid=\\01\\05\\00\\00\\00\\00\\00\\05\\15\\00\\00\\00\\a0\\2c\\aa\\d8\\c6\\67\\9f\\5c\\05\\33\\25\\5a\\e9\\03\\00\\00)'
-	>>> replace_filter('(&(objectsid=S-1-5-21-3635031200-1553950662-1512387333-1001)(!(lastLogoff=0)))')
-	'(&(objectSid=\\01\\05\\00\\00\\00\\00\\00\\05\\15\\00\\00\\00\\a0\\2c\\aa\\d8\\c6\\67\\9f\\5c\\05\\33\\25\\5a\\e9\\03\\00\\00)(!(lastLogoff=0)))'
-	>>> replace_filter('(objectsid=*)')
-	'(objectSid=*)'
-	>>> replace_filter('(objectsid=S-1-5-21*)')
-	'(objectSid=S-1-5-21*)'
-	>>> replace_filter('objectsid=S-1-5-21-3635031200-1553950662-1512387333-1001')
-	'objectSid=\\01\\05\\00\\00\\00\\00\\00\\05\\15\\00\\00\\00\\a0\\2c\\aa\\d8\\c6\\67\\9f\\5c\\05\\33\\25\\5a\\e9\\03\\00\\00'
-	>>> replace_filter('objectsid=*')
-	'objectSid=*'
-	>>> replace_filter('objectsid=S-1-5-21*')
-	'objectSid=S-1-5-21*'
-	>>> replace_filter('(objectsid=\\))')
-	'(objectsid=\\))'
-	>>> replace_filter('objectsid=\\)')
-	'objectsid=\\)'
-	"""
-	return objectsid_pattern.sub(replace_object_sid, filter_s)
-
-
-def replace_object_sid(match):
-	sid = match.group(1)
-	if '*' not in sid:
-		sid = encode_object_sid_to_binary_ldapfilter(sid)
-	return 'objectSid=%s' % (sid,)
-
 
 def usage():
 	print ""
@@ -150,8 +85,7 @@ if len(sys.argv) < oiterator + 1:
 	usage()
 	sys.exit(1)
 
-filter = replace_filter(sys.argv[oiterator])
-
+filter = sys.argv[oiterator]
 
 if len(sys.argv) > oiterator + 1:
 	filter_attributes = sys.argv[oiterator + 1].split(',')
@@ -271,7 +205,6 @@ print "#"
 print "# univention-adsearch"
 print "# filter: %s" % filter
 print "#"
-
 for r in res:
 	if r[0] is None or r[0] == 'None':
 		n_referrals += 1
@@ -279,26 +212,17 @@ for r in res:
 	print ""
 	print "DN: %s" % r[0]
 	for key in r[1]:
-		if key in ["objectGUID", 'ipsecData', 'repsFrom', 'replUpToDateVector']:
-			print "%s: %s" % (key, r[1][key])
-			continue
 		for val in r[1][key]:
 			if key in ["objectSid"]:
-				value = r[1][key][0]
-				sid = 'S-'
-				sid += "%d" % ord(value[0])
-
-				sid_len = ord(value[1])
-
-				sid += "-%d" % ord(value[7])
-
-				for i in range(0, sid_len):
-					res = ord(value[8 + (i * 4)]) + (ord(value[9 + (i * 4)]) << 8) + (ord(value[10 + (i * 4)]) << 16) + (ord(value[11 + (i * 4)]) << 24)
-					sid += "-%u" % res
-				print "%s: %s" % (key, sid)
+				val = decode_sid(val)
+			elif key in ['objectGUID']:
+				val = str(ndr_unpack(misc.GUID, val))
 			else:
-				print "%s: %s" % (key, val)
-
+				try:
+					val = unicode(val)
+				except UnicodeDecodeError:
+					val = base64.b64encode(val)
+			print "%s: %s" % (key, val)
 print ""
 print "#"
 print "# results: %s" % (n_results - n_referrals)
