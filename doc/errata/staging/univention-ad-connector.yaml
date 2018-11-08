@@ -3,8 +3,10 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-ad-connector
-fix: 12.0.0-27A~4.3.0.201810290927
+fix: 12.0.0-29A~4.3.0.201811081347
 desc: |
  This update addresses the following issue(s):
  * The special cn=Subschema object caused AD-Connector rejects
-bug: [47396]
+ * Base64 encode non-printable attributes in univention-adsearch
+ * Space separated attribute list as parameter in univention-adsearch
+bug: [47396,48082,43189]
