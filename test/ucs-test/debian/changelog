@@ -1,3 +1,9 @@
+ucs-test (8.0.28-220) unstable; urgency=medium
+
+  * Bug #45049: Test refactoring
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Nov 2018 18:26:50 +0100
+
 ucs-test (8.0.28-219) unstable; urgency=medium
 
   * Bug #47316: fixed 54_udm_api_ldap_connection.py
