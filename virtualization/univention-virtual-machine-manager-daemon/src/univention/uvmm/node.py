@@ -1296,41 +1296,59 @@ def group_list():
 	return group
 
 
-def _domain_backup(dom, save=True):
-	# type: (libvirt.virDomain, bool) -> None
-	"""Save domain definition to backup file."""
+def _backup(content, fname):
+	# type: (str, str) -> None
+	"""
+	Backup content to file.
+
+	:param str content: The file content.
+	:param str fname: The (relative) file name.
+	"""
 	backup_dir = configRegistry.get('uvmm/backup/directory', '/var/backups/univention-virtual-machine-manager-daemon')
 	if not backup_dir:
 		return
 
-	uuid = dom.UUIDString()
-	xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
-	if len(xml) < 300:  # minimal XML descriptor length
-		logger.error("Failed to backup domain %s: %s", uuid, xml)
-		raise NodeError(_("Failed to backup domain %(domain)s: %(xml)s"), domain=uuid, xml=xml)
-	now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-	suffix = 'xml'
-	if save:
-		suffix += '.save'
+	path = os.path.join(backup_dir, fname)
+	head, tail = os.path.split(path)
 
-	tmp_file_name = os.path.join(backup_dir, "%s_%s_%s.%s" % (uuid, FQDN, now, suffix))
-	file_name = os.path.join(backup_dir, "%s.%s" % (uuid, suffix))
 	try:
 		try:
-			os.mkdir(backup_dir, 0o700)
+			os.makedirs(head, 0o700)
 		except EnvironmentError as ex:
 			if ex.errno != errno.EEXIST:
 				raise
 
-		with open(tmp_file_name, "w") as tmp_file:
-			os.fchmod(tmp_file.fileno(), 0o600)
-			tmp_file.write(xml)
+		with tempfile.NamedTemporaryFile(delete=False, dir=head) as tmp_file:
+			tmp_file.write(content)
 
-		os.rename(tmp_file_name, file_name)
+		os.rename(tmp_file.name, path)
 	except EnvironmentError as ex:
-		logger.warning("Failed to backup domain %s: %s", uuid, ex, exc_info=True)
+		logger.warning("Failed backup to %s: %s", fname, ex, exc_info=True)
 	else:
-		logger.info("Domain backuped to %s.", file_name)
+		logger.info("Domain backuped to %s.", fname)
+
+
+def _domain_backup(dom, save=True):
+	# type: (libvirt.virDomain, bool) -> None
+	"""
+	Save domain definition to backup file.
+
+	:param libvirt.virDomain dom: libvirt domain instance.
+	:param bool save: `True` to create a backup of the previous desciption (e.g. before deleing), `False` to save the current desciption.
+	"""
+	suffix = '.xml.save' if save else '.xml'
+
+	dom_uuid = dom.UUIDString()
+	dom_xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
+	if len(dom_xml) < 300:  # minimal XML descriptor length
+		logger.error("Failed to backup domain %s: %s", dom_uuid, dom_xml)
+		raise NodeError(_("Failed to backup domain %(domain)s: %(xml)s"), domain=dom_uuid, xml=dom_xml)
+	_backup(dom_xml, "%s.%s" % (dom_uuid, suffix))
+
+	for snapshot in dom.listAllSnapshots():
+		snap_name = snapshot.getName()
+		snap_xml = snapshot.getXMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+		_backup(snap_xml, "%s/%s.%s" % (dom_uuid, snap_name, suffix))
 
 
 def _update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
