@@ -1,3 +1,10 @@
+ucs-test (8.0.28-221) unstable; urgency=medium
+
+  * Bug #45049: revert regressive changes to
+    10_ldap/67univention-admingrp-user-passwordreset-protected-domain-admins
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Nov 2018 18:59:53 +0100
+
 ucs-test (8.0.28-220) unstable; urgency=medium
 
   * Bug #45049: Test refactoring
