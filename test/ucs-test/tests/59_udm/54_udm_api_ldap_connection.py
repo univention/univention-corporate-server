@@ -56,15 +56,13 @@ class TestUdmAutoOpen(TestCase):
 		assert mod.connection.binddn == 'cn=admin,{}'.format(self.ucr_test['ldap/base'])
 
 	def test_admin_io_error(self):
-		pw = open('/etc/ldap.secret').read()
 		try:
-			os.unlink('/etc/ldap.secret')
+			os.rename('/etc/ldap.secret', '/etc/ldap.secret.test')
 			with self.assertRaises(ConnectionError) as cm:
 				UDM.admin()
 			assert str(cm.exception) == 'Could not read secret file'
 		finally:
-			open('/etc/ldap.secret', 'w').write(pw)
-			os.chmod('/etc/ldap.secret', 0600)
+			os.rename('/etc/ldap.secret.test', '/etc/ldap.secret')
 
 	def test_machine(self):
 		mod = UDM.machine().version(0).get('users/user')
