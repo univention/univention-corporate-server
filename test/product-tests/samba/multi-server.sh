@@ -37,10 +37,12 @@ multi_server_master () {
 	if ! dpkg -l python-winrm | grep ^ii 1>/dev/null; then
 		( . utils.sh && install_winrm )
 	fi
-	#activate umaintained repo
+
+	#activate umaintained repo TODO remove, siehe cfg
 	ucr set repository/online/unmaintained='yes'
 	apt update
 	univention-install -y faketime
+
  	ucr set server/password/interval='0'
 	/usr/lib/univention-server/server_password_change
 	univention-install --yes univention-printserver-pdf
@@ -215,10 +217,11 @@ ms_test_memberslave () {
 	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server $SLAVE --impersonate --run-as-user Administrator
 	#check sysvol of backup and slave
 	#    SYSVOL-Replikation nach >=(2 mal 5) Minuten
-	#	Vergleich /var/lib/samba/sysvol/$domainname/Policies auf DC Master und DC Backup mit dem DC Slave. DONE
+	#	Vergleich /var/lib/samba/sysvol/$domainname/Policies auf DC Master und DC Backup mit dem DC Slave. TODO, test
 	sshpass -p "$ADMIN_PASSWORD" rsync -ne ssh /var/lib/samba/sysvol/$WINRM_DOMAIN/Policies root@$SLAVE:/var/lib/samba/sysvol/$WINRM_DOMAIN/Policies
 	sshpass -p "$ADMIN_PASSWORD" rsync -ne ssh /var/lib/samba/sysvol/$WINRM_DOMAIN/Policies root@$BACKUP:/var/lib/samba/sysvol/$WINRM_DOMAIN/Policies
-	#Sind alle UCS-Samba-Server in der Netzwerkumgebung der Clients zu sehen?
+
+	# Sind alle UCS-Samba-Server in der Netzwerkumgebung der Clients zu sehen? TODO unter windows net computer list ? nbtstat
 	python shared-utils/ucs-winrm.py run-ps --cmd "ping ucs-master" --impersonate --run-as-user Administrator
 	python shared-utils/ucs-winrm.py run-ps --cmd "ping ucs-slave" --impersonate --run-as-user Administrator
 	python shared-utils/ucs-winrm.py run-ps --cmd "ping ucs-backup" --impersonate --run-as-user Administrator
@@ -226,27 +229,39 @@ ms_test_memberslave () {
 	samba-tool ntacl sysvolreset || true
 }
 
-prepare-nonmaster() {
- ucr set server/password/interval='0'
- /usr/lib/univention-server/server_password_change
- test -z "$(find /var -name core)"
+
+# TODO set -x ...
+prepare-nonmaster () {
+
+	set -x
+	set -e
+	ucr set server/password/interval='0'
+	/usr/lib/univention-server/server_password_change
+	test -z "$(find /var -name core)"
 }
 
 prepareslaveprinter () {
- univention-install --yes univention-printserver-pdf
+ #univention-install --yes univention-printserver-pdf
  rpcclient localhost -U "SAMBATEST\administrator%Univention@99#+?=$" -c 'setdriver "Slaveprinter" "MS Publisher Color Printer"'
  echo "halli hallo" > /home/testshare/test.txt
 }
 preparememberprinter () {
- univention-install --yes univention-printserver-pdf
+ #univention-install --yes univention-printserver-pdf
  rpcclient localhost -U "SAMBATEST\administrator%Univention@99#+?=$" -c 'setdriver "Memberprinter" "MS Publisher Color Printer"'
  echo "halli hallo" > /home/testshare/test.txt
 }
-testprinter-nonmaster () {
- stat /var/spool/cups-pdf/administrator/job_1-document.pdf
+
+testprinter_nonmaster () {
+	set -e
+	set -x
+	stat /var/spool/cups-pdf/administrator/job_1-document.pdf
 }
 
 rodc_test () {
+
+	set -x
+	set -e
+
 	# Schreibzugriffe gegen den RODC sollten scheitern, z.B.
 	ldbedit -H ldap://localhost -UAdministrator%univention samaccountname="$hostname\$" description || echo "expected behaviour : write operation failed"
 	samba-tool user add rodcuser1 Password.99 || echo "expected behaviour : write operation failed"
@@ -254,3 +269,10 @@ rodc_test () {
 	# Der folgende Aufruf sollte daher nur an dem Objekt des RODC selbst und an dem lokalen krbtgt_* Konto diese Passwortattribute finden:
 	ldbsearch -H /var/lib/samba/private/sam.ldb supplementalcredentials
 }
+
+# TODO
+# drucken als unpriviligierter Benutzer
+# Funktionsnamen $server/rolle_prepare bzw. ..._test
+# python shared-utils/ucs-winrm.py setup-printer statt  rpcclient localhost
+# tabs statt spaces
+# samba/utils.sh verwenden
