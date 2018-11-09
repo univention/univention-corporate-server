@@ -171,7 +171,7 @@ class GenericObject(BaseObject):
 						'Moving {!r} object is not supported ({}).'.format(self._udm_module.name, exc),
 						dn=self.dn, module_name=self._udm_module.name
 					), sys.exc_info()[2]
-				except univention.admin.uexceptions.base as exc:
+				except (univention.admin.uexceptions.base, ldap.error) as exc:
 					raise MoveError, MoveError(
 						'Error moving {!r} object from {!r} to {!r}: {}'.format(
 							self._udm_module.name, self.dn, self.position, exc
