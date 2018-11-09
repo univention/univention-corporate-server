@@ -210,3 +210,67 @@ def test_unicode(parse, tmplog):
 		assert c_type == e_type
 		for key, val in e_groups.items():
 			assert c_groups[key] == val
+
+
+def test_trace_plain(parse, tmplog):
+	@ud.trace(with_args=False)
+	def f():
+		pass
+
+	ud.set_function(ud.FUNCTION)
+	assert f() is None
+	ud.exit()
+
+	output = tmplog.read()
+	for ((c_type, c_groups), (e_type, e_groups)) in zip(parse(output), [
+		('init', {}),
+		('begin', {'begin': 'test_debug.f(...): ...'}),
+		('end', {'end': 'test_debug.f(...): ...'}),
+		('exit', {}),
+	]):
+		assert c_type == e_type
+		for key, val in e_groups.items():
+			assert c_groups[key] == val
+
+
+def test_trace_detail(parse, tmplog):
+	@ud.trace(with_args=True, with_return=True, repr=repr)
+	def f(args):
+		return 42
+
+	ud.set_function(ud.FUNCTION)
+	assert f('in') == 42
+	ud.exit()
+
+	output = tmplog.read()
+	for ((c_type, c_groups), (e_type, e_groups)) in zip(parse(output), [
+		('init', {}),
+		('begin', {'begin': "test_debug.f('in'): ..."}),
+		('end', {'end': 'test_debug.f(...): 42'}),
+		('exit', {}),
+	]):
+		assert c_type == e_type
+		for key, val in e_groups.items():
+			assert c_groups[key] == val
+
+
+def test_trace_exception(parse, tmplog):
+	@ud.trace(with_args=False)
+	def f():
+		raise ValueError(42)
+
+	ud.set_function(ud.FUNCTION)
+	with pytest.raises(ValueError):
+		f()
+	ud.exit()
+
+	output = tmplog.read()
+	for ((c_type, c_groups), (e_type, e_groups)) in zip(parse(output), [
+		('init', {}),
+		('begin', {'begin': 'test_debug.f(...): ...'}),
+		('end', {'end': "test_debug.f(...): %r(42)" % ValueError}),
+		('exit', {}),
+	]):
+		assert c_type == e_type
+		for key, val in e_groups.items():
+			assert c_groups[key] == val

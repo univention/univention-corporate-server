@@ -2,5 +2,6 @@ univention-debug (1.0.0-1) unstable; urgency=low
 
   * Bug #49130: Split Python binding into separate package
   * Bug #46100: Add missing log targets to debug2.py
+  * Bug #43422: Add decorator for function logging
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 13 May 2019 14:44:46 +0200

@@ -33,7 +33,11 @@ implementation.
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+from __future__ import absolute_import
 import sys
+from functools import wraps
+from itertools import chain
+from warnings import warn
 import logging
 # import logging.handlers
 
@@ -246,6 +250,9 @@ def set_function(activate):
 	Enable or disable the logging of function begins and ends.
 
 	:param bool activate: enable (True) or disable (False) function tracing.
+
+	.. deprecated:: 4.4
+	   Use function decorator :py:func:`trace` instead.
 	"""
 	global _enable_function
 	_enable_function = activate
@@ -274,6 +281,9 @@ class function(object):
 	:param str fname: name of the function starting.
 	:param bool utf8: Assume the message is UTF-8 encoded.
 
+	.. deprecated:: 4.4
+	   Use function decorator :py:func:`trace` instead.
+
 	>>> def my_func(agr1, agr2=None):
 	...    _d = function('my_func(...)')
 	...    return 'yes'
@@ -282,6 +292,7 @@ class function(object):
 	"""
 
 	def __init__(self, fname, utf8=True):
+		warn('univention.debug2.function is deprecated and will be removed with UCS-5', PendingDeprecationWarning)
 		self.fname = fname
 		if _enable_function:
 			logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_BEGIN : ' + self.fname)
@@ -294,6 +305,65 @@ class function(object):
 		if _enable_function:
 			logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_END   : ' + self.fname)
 			_flush()
+
+
+def trace(with_args=True, with_return=False, repr=object.__repr__):
+	"""
+	Log function call, optional with arguments and result.
+
+	:param bool with_args: Log function arguments.
+	:param bool with_return: Log function result.
+	:param repr: Function accepting a single object and returing a string representation for the given object. Defaults to :py:func:`object.__repr__`, alternative :py:func:`repr`.
+
+	>>> @trace(with_args=True, with_return=True)
+	... def my_func(arg1, arg2=None):
+	...     return 'yes'
+	>>> my_func(42)
+	'yes'
+	>>> class MyClass(object):
+	...     @trace(with_args=True, with_return=True, repr=repr)
+	...     def my_meth(self, arg1, arg2=None):
+	...         return 'yes'
+	>>> MyClass().my_meth(42)
+	'yes'
+	>>> @trace()
+	... def my_bug():
+	...     1 / 0
+	>>> my_bug()
+	Traceback (most recent call last):
+		...
+	ZeroDivisionError: integer division or modulo by zero
+	"""
+	def decorator(f):
+		@wraps(f)
+		def wrapper(*args, **kwargs):
+			fname = '%s.%s' % (f.__module__, f.__name__)
+			_args = ', '.join(
+				chain(
+					(repr(arg) for arg in args),
+					('%s=%s' % (k, repr(v)) for (k, v) in kwargs.items()),
+				)
+			) if with_args else '...'
+
+			logger = logging.getLogger('MAIN')
+			logger.log(100, 'UNIVENTION_DEBUG_BEGIN : %s(%s): ...', fname, _args)
+			_flush()
+			try:
+				ret = f(*args, **kwargs)
+			except:
+				try:
+					(exctype, value) = sys.exc_info()[:2]
+					logger.log(100, 'UNIVENTION_DEBUG_END   : %s(...): %s(%s)', fname, exctype, value)
+				finally:
+					exctype = value = None
+				raise
+			else:
+				logger.log(100, 'UNIVENTION_DEBUG_END   : %s(...): %s', fname, repr(ret) if with_return else '...')
+				return ret
+
+		return wrapper
+
+	return decorator
 
 
 def _flush():
