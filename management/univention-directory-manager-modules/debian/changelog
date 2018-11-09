@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.25-12) unstable; urgency=low
+
+  * Bug #47316: handle invalid DN when moving object
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 09 Nov 2018 12:02:50 +0100
+
 univention-directory-manager-modules (13.0.25-11) unstable; urgency=low
 
   * Bug #47316: move metaclass from generic to base
