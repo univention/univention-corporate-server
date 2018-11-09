@@ -875,58 +875,153 @@
 			</para>
 		</section>
     </section>
-    <section id="users:faillog">
-        <title>Automatisches Sperren von Benutzern nach fehlgeschlagenen Anmeldungen</title>
-        <para>
-            Standardmäßig kann ein Benutzer sein Passwort beliebig oft falsch
-            eingeben. Um Brute Force-Angriffe auf Passwörter zu erschweren, kann eine
-            automatische Sperre von Benutzerkonten nach einer konfigurierbaren Anzahl von
-            fehlerhaften Anmeldungen aktiviert werden. Die Sperre ist standardmäßig lokal
-            pro Rechnersystem aktiviert. Wenn ein Benutzer also auf einem System zu oft
-            sein Passwort falsch eingegeben hat, kann er sich auf einem anderen System
-            weiterhin anmelden. Durch Setzen der &ucsUCRV; <envar>auth/faillog/lock_global</envar> kann
-            die Sperre auch global erfolgen und wird im LDAP registriert. Die globale
-            Sperrung kann nur auf &ucsMaster;/Backup-Systemen eingesetzt
-            werden, da andere Systemrollen nicht über die nötigen Berechtigungen im
-            LDAP-Verzeichnis verfügen. Auf diesen Systemrollen wird der Benutzer aber
-            lokal gesperrt, bzw. über das verwendete Listener-Modul auch wieder entsperrt.
-        </para>
-        <caution>
+	<section id="users:faillog">
+	    <title>Automatisches Sperren von Benutzern nach fehlgeschlagenen Anmeldungen</title>
+	    <para>
+	        Standardmäßig kann ein Benutzer sein Passwort beliebig oft falsch
+	        eingeben. Um Brute Force-Angriffe auf Passwörter zu erschweren, kann eine
+	        automatische Sperre von einem Benutzerkonto nach einer konfigurierbaren Anzahl von
+	        fehlerhaften Anmeldungen aktiviert werden.
+		</para>
+	    <para>
+			UCS vereinheitlicht verschiedene Methoden zur Authentifizierung und Autorisierung von Benutzern.
+			Abhängig von den installierten Softwarekomponenten kann es verschiedene Mechanismen geben, wie
+			fehlgeschlagene Anmeldeversuche konfiguriert und gezählt werden.
+	    </para>
+	    <para>
+			Im folgenden werden die drei unterschiedlichen Methoden beschrieben.
+	    </para>
+		<section id="users:faillog-samba">
+			<title>Samba Active Directory Dienste</title>
 			<para>
-            Diese Einstellung kann auch missbraucht werden, etwa wenn ein Benutzer seinen
-            Bildschirm gesperrt hat und ein anderer Benutzer in Abwesenheit mehrfach das
-            Passwort falsch eingibt. In diesem Fall müsste der Benutzer den Administrator
-            aufsuchen und seinen Account entsperren lassen.
+				In Samba Active Directory Umgebungen werden diverse Dienste von Samba bereitgestellt, wie
+				bspw. Kerberos. Um Benutzer nach fehlgeschlagenen Anmeldungen zu sperren, kann das Tool
+				<command>samba-tool</command> verwendet werden.
 			</para>
-        </caution>
-        <para>
-            Das automatische Sperren von Benutzern nach fehlgeschlagenen Anmeldungen kann
-            durch Setzen der &ucsUCRV; <envar>auth/faillog</envar> auf <literal>yes</literal> aktiviert werden.
-            Die Obergrenze an fehlerhaften Passworteingaben, bei der eine Kontosperre
-            aktiviert wird, wird in der &ucsUCRV; <envar>auth/faillog/limit</envar> konfiguriert.
-            Nach einer korrekten Passworteingabe wird der Zähler jedesmal wieder
-            zurückgesetzt.
-        </para>
-        <para>
-            Der <systemitem class="username">root</systemitem>-Benutzer ist standardmäßig von der Passwort-Sperre ausgenommen, kann
-            aber durch Setzen der &ucsUCRV; <envar>auth/faillog/root</envar> auf <literal>yes</literal> ebenfalls
-            aufgenommen werden.
-        </para>
-        <para>
-            Standardmäßig ist die Sperre unbegrenzt gültig und muss vom Administrator
-            zurückgesetzt werden. Sie kann aber auch nach Ablauf eines Intervalls
-            automatisch wieder aufgehoben werden. Hierzu ist in
-            der &ucsUCRV; <envar>auth/faillog/unlock_time</envar> ein Zeitraum in Sekunden
-            anzugeben. Wird der Wert auf 0 gesetzt, wird die Sperre direkt
-            wiederaufgehoben.
-        </para>
-        <para>
-            Werden Konten nur lokal gesperrt, kann der Administrator ein Benutzerkonto durch
-            Eingabe des Befehls <command>faillog -r -u USERNAME</command> entsperren. Erfolgt die
-            Sperrung global im LDAP, kann der Benutzer im Univention Directory Manager im
-            Reiter <guimenu>Benutzerkonto</guimenu> in den Benutzer-Optionen zurückgesetzt
-            werden.
-        </para>
+			<para>
+				<itemizedlist>
+					<listitem>
+						<simpara>
+							<command>samba-tool domain passwordsettings show</command> zeigt die aktuell eingestellten
+							Werte.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<command>samba-tool domain passwordsettings set --account-lockout-duration=3</command>
+							legt die Anzahl der Minuten fest, die ein Konto gesperrt wird, nachdem zu viele falsche
+							Passwörter eingegeben wurden.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<command>samba-tool domain passwordsettings set --account-lockout-threshold=5</command>
+							legt fest, wie oft ein Benutzer versuchen kann, sich mit einem falschen Passwort
+							anzumelden, bevor das Konto gesperrt wird.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<command>samba-tool domain passwordsettings set --reset-account-lockout-after=5</command>
+							legt die Zeit fest, nach der der Zähler zurückgesetzt wird. Wenn ein Konto automatisch
+							entsperrt wird, aber der Zähler nicht zurückgesetzt wird, dann wird das Konto durch ein
+							einziges falsches Passwort wieder gesperrt.
+						</simpara>
+					</listitem>
+				</itemizedlist>
+			</para>
+			<para>
+				Die manuelle Entsperrung eines Benutzers erfolgt in der Benutzerverwaltung auf dem Reiter <guimenu>Konto</guimenu>
+				über die Aktivierung der Checkbox <guimenu>Aussperrung zurücksetzen</guimenu>.
+			</para>
+		</section>
+		<section id="users:faillog-pam">
+			<title>PAM-Stack</title>
+			<para>
+				Das automatische Sperren von Benutzern nach fehlgeschlagenen Anmeldungen im PAM-Stack kann
+				durch Setzen der &ucsUCRV; <envar>auth/faillog</envar> auf <literal>yes</literal> aktiviert werden.
+				Die Obergrenze an fehlerhaften Passworteingaben, bei der eine Kontosperre
+				aktiviert wird, wird in der &ucsUCRV; <envar>auth/faillog/limit</envar> konfiguriert.
+				Nach einer korrekten Passworteingabe wird der Zähler jedesmal wieder zurückgesetzt.
+			</para>
+			<para>
+				Die Sperre im PAM-Stack ist standardmäßig nur auf ein lokales System begrenzt. Wenn ein
+				Benutzer also auf einem System zu oft sein Passwort falsch eingegeben hat, kann er sich auf
+				einem anderen System weiterhin anmelden. Durch Setzen der &ucsUCRV; <envar>auth/faillog/lock_global</envar>
+				kann die Sperre auch global erfolgen und wird im LDAP registriert. Die globale Sperrung kann nur auf
+				&ucsMaster;/Backup-Systemen eingesetzt werden, da andere Systemrollen nicht über die nötigen
+				Berechtigungen im LDAP-Verzeichnis verfügen. Auf diesen Systemrollen wird der Benutzer aber lokal gesperrt,
+				bzw. über das verwendete Listener-Modul auch wieder entsperrt.
+			</para>
+			<para>
+				Standardmäßig ist die Sperre über den PAM-Stack unbegrenzt gültig
+				Sie kann aber auch nach Ablauf eines Intervalls
+				automatisch wieder aufgehoben werden. Hierzu ist in
+				der &ucsUCRV; <envar>auth/faillog/unlock_time</envar> ein Zeitraum in Sekunden
+				anzugeben. Wird der Wert auf 0 gesetzt, wird die Sperre direkt
+				wiederaufgehoben.
+			</para>
+			<para>
+				Der <systemitem class="username">root</systemitem>-Benutzer ist standardmäßig von der Passwort-Sperre
+				ausgenommen, kann aber durch Setzen der &ucsUCRV; <envar>auth/faillog/root</envar> auf <literal>yes</literal>
+				ebenfalls aufgenommen werden.
+			</para>
+			<para>
+				Werden Konten nur lokal gesperrt, kann der Administrator ein Benutzerkonto durch
+				Eingabe des Befehls <command>faillog -r -u USERNAME</command> entsperren. Erfolgt die
+				Sperrung global im LDAP, kann der Benutzer in Univention Management Console im
+				Reiter <guimenu>Konto</guimenu> in den Benutzer-Optionen <guimenu>Aussperrung zurücksetzen</guimenu>
+				zurückgesetzt werden.
+			</para>
+		</section>
+		<section id="users:faillog-openldap">
+			<title>OpenLDAP</title>
+			<para>
+				Bei Domänencontrollern kann die automatische Kontosperre für den Fall eines wiederholten
+				LDAP-Authentifizierungsfehlers aktiviert werden. Voraussetzung ist, dass das MDB LDAP-Backend
+				verwendet wird. Dies ist seit UCS 4 das Standard Backend, vorherige Systeme müssen
+				auf das MDB LDAP-Backend migriert werden, siehe <biblioref linkend="ucs-performance-guide"/>.
+			</para>
+			<para>
+				Die Aktivierung der automatischen Kontosperrung muss pro Domänencontroller aktiviert werden.
+				Dazu müssen die &ucsUCRV;n <envar>ldap/ppolicy</envar> und <envar>ldap/ppolicy/enabled</envar>
+				auf <envar>yes</envar> gesetzt werden und der OpenLDAP Server muss neu gestartet werden:
+<userinput>
+ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes
+/etc/init.d/slapd restart
+</userinput>
+			</para>
+			<para>
+				Die Standardrichtlinie ist so ausgelegt, dass fünf wiederholte LDAP-Authentifizierungsfehler innerhalb eines
+				Überwachungsintervalls von fünf Minuten dazu führen, dass das authentifizierende Konto in UMC gesperrt wird. Ein
+				gesperrtes Konto kann nur von einem Domain-Administrator über &ucsUMC; freigeschaltet werden.
+			</para>
+			<para>
+				Die Anzahl der wiederholten LDAP-Authentifizierungsfehler kann in dem Konfigurationsobjekt mit der <envar>objectClass</envar>
+				<envar>pwdPolicy</envar> angepasst werden:
+<userinput>
+univention-ldapsearch objectclass=pwdPolicy
+</userinput>
+				Das Attribut <envar>pwdMaxFailure</envar> bestimmt die Anzahl der LDAP-Authentifizierungsfehler vor der Sperrung.
+				Das Attribut <envar>pwdMaxFailureCountInterval</envar> bestimmt das Zeitintervall in Sekunden, das berücksichtigt wird.
+				LDAP-Authentifizierungsfehler außerhalb dieses Intervalls werden bei der Zählung vernachlässigt.
+			</para>
+			<para>
+				Um den Account erst nach 10 Versuchen zu sperren kann der folgende Befehl verwendet werden:
+<userinput>
+ldapmodify -x -D cn=admin,$(ucr get ldap/base) -y /etc/ldap.secret &lt;&lt;__EOT__
+dn: cn=default,cn=ppolicy,cn=univention,$(ucr get ldap/base)
+changetype: modify
+replace: pwdMaxFailure
+pwdMaxFailure: 10
+__EOT__
+</userinput>
+			</para>
+			<para>
+				Die manuelle Entsperrung eines Benutzers erfolgt in der Benutzerverwaltung auf dem Reiter <guimenu>Konto</guimenu>
+				über die Aktivierung der Checkbox <guimenu>Aussperrung zurücksetzen</guimenu>.
+			</para>
+		</section>
     </section>
     <section id="users:templates">
         <title>Benutzervorlagen</title>
