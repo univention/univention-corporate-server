@@ -45,13 +45,12 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.config_registry
 
-from ..encoders import dn_list_property_encoder_for
+from ..encoders import dn_list_property_encoder_for, dn_property_encoder_for, DnPropertyEncoder
 from ..base import BaseModule, BaseModuleMetadata, BaseObject, BaseObjectProperties, LdapMapping, ModuleMeta
 from ..exceptions import (
 	CreateError, DeleteError, DeletedError, NotYetSavedError, ModifyError, MoveError, NoObject, NoSuperordinate,
 	UdmError, UnknownProperty, UnknownModuleType, WrongObjectType
 )
-from ..plugins import Plugins
 from ..utils import UDebug as ud
 
 
@@ -284,24 +283,21 @@ class GenericObject(BaseObject):
 				val = []
 			setattr(self.props, k, val)
 		if self._orig_udm_object.superordinate:
-			sup_module = GenericModule(
-				self._orig_udm_object.superordinate.module,
-				self._lo,
-				self._udm_module.meta.used_api_version
-			)
-			self.superordinate = sup_module._load_obj(
-				dn=None,
-				superordinate=None,
-				orig_udm_object=self._orig_udm_object.superordinate
-			)
-		else:
-			self.superordinate = None
+			if self._udm_module.meta.used_api_version > 0:
+				# encoders exist from API version 1 on
+				superordinate_encoder_class = dn_property_encoder_for('auto')  # 'auto', because superordinate can be anything
+				superordinate_encoder = self._init_encoder(
+					superordinate_encoder_class, property_name='__superordinate', lo=self._lo
+				)
+				self.superordinate = superordinate_encoder.decode(self._orig_udm_object.superordinate.dn)
+			else:
+				self.superordinate = self._orig_udm_object.superordinate.dn
 		if self.dn:
 			self.position = self._lo.parentDn(self.dn)
 			self._old_position = self.position
 		else:
-			if self.superordinate:
-				self.position = self.superordinate.dn
+			if self._orig_udm_object.superordinate:
+				self.position = self._orig_udm_object.superordinate.dn
 			else:
 				self.position = self._udm_module._get_default_object_positions()[0]
 			ud.debug('Set position to {!r}'.format(self.position))
@@ -335,7 +331,22 @@ class GenericObject(BaseObject):
 			if v != new_val2:
 				self._orig_udm_object[k] = new_val2
 		if self.superordinate:
-			self._orig_udm_object.superordinate = self.superordinate._orig_udm_object
+			# _orig_udm_object.superordinate is a orig UDM module
+			if isinstance(self.superordinate, string_types):
+				sup_obj = GenericModule(
+					self._udm_module._orig_udm_module.superordinate,
+					self._lo,
+					self._udm_module.meta.used_api_version
+				).get(self.superordinate)
+				self._orig_udm_object.superordinate = sup_obj._orig_udm_object
+			elif isinstance(self.superordinate, GenericObject):
+				self._orig_udm_object.superordinate = self.superordinate._orig_udm_object
+			elif isinstance(self.superordinate, DnPropertyEncoder.DnStr):
+				self._orig_udm_object.superordinate = self.superordinate.obj._orig_udm_object
+			else:
+				msg = 'Unkown type {!r} in "superordinate" of {!r}.'.format(type(self.superordinate), self)
+				ud.error(msg)
+				raise ValueError(msg)
 
 	def _init_new_object_props(self):
 		"""

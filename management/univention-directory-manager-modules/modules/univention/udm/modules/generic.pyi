@@ -33,7 +33,7 @@ Will work for all kinds of UDM modules.
 
 from __future__ import absolute_import, unicode_literals
 import univention.config_registry
-from ..encoders import BaseEncoder
+from ..encoders import BaseEncoder, DnPropertyEncoder
 from ..base import BaseObjectProperties, BaseObjectTV, BaseModuleTV, BaseModuleMetadataTV, ModuleMeta
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, Tuple, Type, TypeVar, Union
 
@@ -65,6 +65,9 @@ class GenericObjectProperties(BaseObjectProperties):
 class GenericObject(BaseObjectTV):
 	def __init__(self):  # type: () -> None
 		self._udm_module = None  # type: GenericModuleTV
+		self.props = None  # type: GenericObjectPropertiesTV
+		self.policies = []  # type: List[Union[GenericObjectTV, DnPropertyEncoder.DnStr, Text]]
+		self.superordinate = None  # type: Union[GenericObjectTV, DnPropertyEncoder.DnStr, Text]
 		self._lo = None  # type: OriUdmHandlerTV
 		self._orig_udm_object = None  # type: OriUdmHandlerTV
 		self._old_position = ''

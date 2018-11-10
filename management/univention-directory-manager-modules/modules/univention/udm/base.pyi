@@ -63,7 +63,7 @@ class BaseObject(object):
 		self.options = []  # type: List[Text]
 		self.policies = []  # type: List[Text]
 		self.position = ''  # type: Text
-		self.superordinate = None  # type: BaseObjectTV
+		self.superordinate = None  # type: Text
 		self._udm_module = None  # type: BaseModuleTV
 
 	def __repr__(self):  # type: () -> Text
