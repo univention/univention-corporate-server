@@ -1321,7 +1321,7 @@ docker exec "$CONTAINER" ...
             Apps can be awarded with different badges and are therefore
             especially highlighted in the App Center. One of those badges is
             the <ulink
-                url="https://www.univention.com/products/univention-app-center/app-catalog/?term=&recommended_app=1">"Recommended
+                url="https://www.univention.com/products/univention-app-center/app-catalog/?recommended_app=1">"Recommended
                 Apps"</ulink> award for the use in professional environments.
         </para>
         <para>
