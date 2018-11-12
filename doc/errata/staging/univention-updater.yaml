@@ -6,5 +6,6 @@ src: univention-updater
 fix: 13.0.1-62A~4.3.0.201810291008
 desc: |
  This update addresses the following issue:
- * Fixes non existing error message in univention-updater
+ * In case a Debian package update fails due to unmet dependencies
+   univention-updater now logs a more useful error message.
 bug: [34444]
