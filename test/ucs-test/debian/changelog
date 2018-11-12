@@ -1,3 +1,9 @@
+ucs-test (8.0.28-224) unstable; urgency=medium
+
+  * Bug #35239: fix test header of 71ucr_multiple_register
+
+ -- Jannik Ahlers <ahlers@univention.de>  Mon, 12 Nov 2018 10:50:48 +0100
+
 ucs-test (8.0.28-223) unstable; urgency=medium
 
   * Bug #35239: added test 71ucr_multiple_register
