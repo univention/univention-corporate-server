@@ -202,9 +202,17 @@ class ConfigHandlerDiverting(ConfigHandler):
 		"""Return unique hash."""
 		return hash(self.to_file)
 
-	def __cmp__(self, other):
+	def __eq__(self, other):
 		"""Compare this to other handler."""
-		return cmp(self.to_file, other.to_file)
+		if isinstance(other, type(self)):
+			return self.to_file == other.to_file
+		return NotImplemented
+
+	def __ne__(self, other):
+		"""Compare this to other handler."""
+		if isinstance(other, type(self)):
+			return self.to_file != other.to_file
+		return NotImplemented
 
 	def _set_perm(self, stat, to_file=None):
 		"""Set file permissions."""
@@ -457,6 +465,22 @@ class ConfigHandlerScript(ConfigHandler):
 		super(ConfigHandlerScript, self).__init__()
 		self.script = script
 
+	def __hash__(self):
+		"""Return unique hash."""
+		return hash(self.script)
+
+	def __eq__(self, other):
+		"""Compare this to other handler."""
+		if isinstance(other, type(self)):
+			return self.script == other.script
+		return NotImplemented
+
+	def __ne__(self, other):
+		"""Compare this to other handler."""
+		if isinstance(other, type(self)):
+			return self.script != other.script
+		return NotImplemented
+
 	def __call__(self, args):
 		"""Call external programm after change."""
 		_ucr, changed = args
@@ -472,6 +496,22 @@ class ConfigHandlerModule(ConfigHandler):
 	def __init__(self, module):
 		super(ConfigHandlerModule, self).__init__()
 		self.module = module
+
+	def __hash__(self):
+		"""Return unique hash."""
+		return hash(self.module)
+
+	def __eq__(self, other):
+		"""Compare this to other handler."""
+		if isinstance(other, type(self)):
+			return self.module == other.module
+		return NotImplemented
+
+	def __ne__(self, other):
+		"""Compare this to other handler."""
+		if isinstance(other, type(self)):
+			return self.module != other.module
+		return NotImplemented
 
 	def __call__(self, args):
 		"""Call python module after change."""
