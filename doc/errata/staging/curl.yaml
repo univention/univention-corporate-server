@@ -1,0 +1,22 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: curl
+fix: 7.38.0-4+deb8u13
+desc: |
+ This update addresses the following issues:
+ * Incorrect reuse of client certificates (CVE-2016-7141)
+ * escape and unescape integer overflows (CVE-2016-7167)
+ * printf floating point buffer overflow (CVE-2016-9586)
+ * Heap-based buffer overflow via integer overflow in
+   curl_sasl.c:Curl_sasl_create_plain_message() (CVE-2018-16839)
+ * Heap-based buffer over-read in tool_msgs.c:voutf() allows for information
+   disclosure and crash (CVE-2018-16842)
+bug: [48131]
+cve:
+- CVE-2016-7141
+- CVE-2016-7167
+- CVE-2016-9586
+- CVE-2018-16839
+- CVE-2018-16842
