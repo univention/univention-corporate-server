@@ -1315,6 +1315,91 @@ docker exec "$CONTAINER" ...
         </para>
     </section>
 
+    <section id="recommended-apps">
+        <title>Recommended Apps Badge</title>
+        <para>
+            Apps can be awarded with different badges and are therefore
+            especially highlighted in the App Center. One of those badges is
+            the "Recommended Apps" award for the use in professional
+            environments.
+        </para>
+        <para>
+            Apps with the "Recommended Apps" award meet the following quality
+            criteria. The functional scope of the software solution is not
+            evaluated. The criteria serve as guidelines for the decision at
+            Univention to assign the award.
+        </para>
+        <itemizedlist>
+            <listitem>
+                <simpara>
+                    The app can be installed and uninstalled cleanly and does
+                    not alter the UCS system against the rules.
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    Univention is not aware of any open security
+                    vulnerabilities for the app or the app provider has
+                    promised to remedy the vulnerabilities soon. In principle,
+                    Univention does not carry out any active security
+                    monitoring for apps in the App Center. If Univention
+                    becomes aware of security vulnerabilities, the App provider
+                    will be informed and a deadline for an update will be
+                    agreed upon.
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    The version of the software solution offered in the App
+                    Center is maintained by the app provider. 
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    If the software solution requires user accounts to identify
+                    users, the app uses UCS Identity Management as a source of
+                    user accounts.
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    The app provider makes updates of its software for the app
+                    available regularly and promptly to UCS via the App Center.
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    If the app provider offers update paths for its software
+                    solution, the app also supports these update paths.
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    The app vendor ensures that the app deploys its software
+                    solution to new UCS versions within a short period of time,
+                    ensuring that administrators can update UCS.
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    Commercial support is available for the app.
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    The app has been available in the App Center for at least 3 months.
+                </simpara>
+            </listitem>
+            <listitem>
+                <simpara>
+                    For the app, there are virtual app appliances that are
+                    linked on the app vendor's website for download. This makes
+                    commissioning the app on UCS extremely easy.
+                </simpara>
+            </listitem>
+        </itemizedlist>
+    </section>
+
 </chapter>
 
 <chapter id="connection-idm">
