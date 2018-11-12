@@ -1323,12 +1323,10 @@ docker exec "$CONTAINER" ...
             the <ulink
                 url="https://www.univention.com/products/univention-app-center/app-catalog/?recommended_app=1">"Recommended
                 Apps"</ulink> award for the use in professional environments.
-        </para>
-        <para>
-            Apps with the "Recommended Apps" award meet the following quality
-            criteria. The functional scope of the software solution is not
-            evaluated. The criteria serve as guidelines for the decision at
-            Univention to assign the award.
+            Apps with the "Recommended Apps" award meet the below listed
+            quality criteria. The functional scope of the software solution is
+            not evaluated. The award is assigned by the Univention App Center
+            Team and the criteria serve as decision guidelines.
         </para>
         <itemizedlist>
             <listitem>
