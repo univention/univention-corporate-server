@@ -66,7 +66,12 @@ rotate_logfiles () {
 jenkins_updates () {
 
 	# check extra component
-	test -n "${EXTRA_COMPONENT}" && ucr set repository/online/component/${EXTRA_COMPONENT}=enabled
+	if [ -n  "${EXTRA_COMPONENT}" ]; then
+		ucr set \
+			repository/online/component/${EXTRA_COMPONENT}=enabled \
+			repository/online/component/${EXTRA_COMPONENT}/server=updates-test.software-univention.de \
+			repository/online=true
+	fi
 
 	ucr set update43/checkfilesystems=no
 	local version_version version_patchlevel version_erratalevel target rc=0
