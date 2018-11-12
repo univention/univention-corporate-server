@@ -986,10 +986,10 @@
 				Die Aktivierung der automatischen Kontosperrung muss pro Domänencontroller aktiviert werden.
 				Dazu müssen die &ucsUCRV;n <envar>ldap/ppolicy</envar> und <envar>ldap/ppolicy/enabled</envar>
 				auf <envar>yes</envar> gesetzt werden und der OpenLDAP Server muss neu gestartet werden:
-<userinput>
+				<programlisting language="sh">
 ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes
 /etc/init.d/slapd restart
-</userinput>
+				</programlisting>
 			</para>
 			<para>
 				Die Standardrichtlinie ist so ausgelegt, dass fünf wiederholte LDAP-Authentifizierungsfehler innerhalb eines
@@ -999,23 +999,23 @@ ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes
 			<para>
 				Die Anzahl der wiederholten LDAP-Authentifizierungsfehler kann in dem Konfigurationsobjekt mit der <envar>objectClass</envar>
 				<envar>pwdPolicy</envar> angepasst werden:
-<userinput>
+				<programlisting language="sh">
 univention-ldapsearch objectclass=pwdPolicy
-</userinput>
+				</programlisting>
 				Das Attribut <envar>pwdMaxFailure</envar> bestimmt die Anzahl der LDAP-Authentifizierungsfehler vor der Sperrung.
 				Das Attribut <envar>pwdMaxFailureCountInterval</envar> bestimmt das Zeitintervall in Sekunden, das berücksichtigt wird.
 				LDAP-Authentifizierungsfehler außerhalb dieses Intervalls werden bei der Zählung vernachlässigt.
 			</para>
 			<para>
 				Um den Account erst nach 10 Versuchen zu sperren kann der folgende Befehl verwendet werden:
-<userinput>
+				<programlisting language="sh">
 ldapmodify -x -D cn=admin,$(ucr get ldap/base) -y /etc/ldap.secret &lt;&lt;__EOT__
 dn: cn=default,cn=ppolicy,cn=univention,$(ucr get ldap/base)
 changetype: modify
 replace: pwdMaxFailure
 pwdMaxFailure: 10
 __EOT__
-</userinput>
+				</programlisting>
 			</para>
 			<para>
 				Die manuelle Entsperrung eines Benutzers erfolgt in der Benutzerverwaltung auf dem Reiter <guimenu>Konto</guimenu>
