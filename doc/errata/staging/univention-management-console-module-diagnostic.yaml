@@ -12,5 +12,6 @@ desc: |
    The plugin also allows to migrate those objects. Having a
    univentionObjectType allows for other services to use a convenient LDAP
    filter.
- * Code Cleanup
-bug: [47649, 47844]
+ * The ACL check for the Samba/AD sysvol files has been improved to show
+   the name of missing files and directories.
+bug: [47649, 47844, 47583]
