@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-config-registry
+fix: 13.0.0-6A~4.3.0.201811121038
+desc: |
+ This update addresses the following issue(s):
+ * univention-config-registry modules can not get registered multiple times
+   anymore.
+bug: [35239]
