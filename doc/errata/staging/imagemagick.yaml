@@ -1,0 +1,13 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: imagemagick
+fix: 8:6.8.9.9-5+deb8u15
+desc: |
+ This update addresses the following issue:
+ * heap-based buffer over-read in the EncodeImage function of coders/pict.c
+   (CVE-2018-18025)
+bug: [48133]
+cve:
+- CVE-2018-18025
