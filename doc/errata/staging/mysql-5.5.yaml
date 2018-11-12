@@ -1,0 +1,31 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: mysql-5.5
+fix: 5.5.62-0+deb8u1A~4.2.5.201811120817
+desc: |
+ This update addresses the following issues:
+ * use of SSL/TLS not enforced in libmysqld (Return of BACKRONYM)
+   (CVE-2018-2767)
+ * MyISAM unspecified vulnerability (CPU Jul 2018) (CVE-2018-3058)
+ * Server: Security: Privileges unspecified vulnerability (CPU Jul 2018)
+   (CVE-2018-3063)
+ * Server: Options unspecified vulnerability (CPU Jul 2018) (CVE-2018-3066)
+ * Client mysqldump unspecified vulnerability (CPU Jul 2018) (CVE-2018-3070)
+ * Client programs unspecified vulnerability (CPU Jul 2018) (CVE-2018-3081)
+ * Server: Parser unspecified vulnerability (CPU Oct 2018) (CVE-2018-3133)
+ * Client programs unspecified vulnerability (CPU Oct 2018) (CVE-2018-3174)
+ * Server: Storage Engines unspecified vulnerability (CPU Oct 2018)
+   (CVE-2018-3282)
+bug: [48130]
+cve:
+- CVE-2018-2767
+- CVE-2018-3058
+- CVE-2018-3063
+- CVE-2018-3066
+- CVE-2018-3070
+- CVE-2018-3081
+- CVE-2018-3133
+- CVE-2018-3174
+- CVE-2018-3282
