@@ -1,0 +1,48 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: firefox-esr
+fix: 60.3.0esr-1~deb8u1
+desc: |
+ This update addresses the following issues:
+ * Anonymity feature bypass via crafted web site (CVE-2017-16541)
+ * Memory safety bugs fixed in Firefox 62 and Firefox ESR 60.2
+   (CVE-2018-12376)
+ * Use-after-free in driver timers (CVE-2018-12377)
+ * Use-after-free in IndexedDB (CVE-2018-12378)
+ * Out-of-bounds write with malicious MAR file (CVE-2018-12379)
+ * Setting a master password post-Firefox 58 does not delete unencrypted
+   previously stored passwords (CVE-2018-12383)
+ * Crash in TransportSecurityInfo due to cached data (CVE-2018-12385)
+ * Type confusion in JavaScript (CVE-2018-12386)
+ * stack out-of-bounds read in Array.prototype.push (CVE-2018-12387)
+ * Memory safety bugs fixed in Firefox ESR 60.3 (CVE-2018-12389)
+ * Memory safety bugs fixed in Firefox 63 and Firefox ESR 60.3
+   (CVE-2018-12390)
+ * Crash with nested event loops (CVE-2018-12392)
+ * Integer overflow during Unicode conversion while loading JavaScript
+   (CVE-2018-12393)
+ * WebExtension bypass of domain restrictions through header rewriting
+   (CVE-2018-12395)
+ * WebExtension content scripts can execute in disallowed contexts
+   (CVE-2018-12396)
+ * WebExtension local file permission check bypass (CVE-2018-12397)
+bug: [48132]
+cve:
+- CVE-2017-16541
+- CVE-2018-12376
+- CVE-2018-12377
+- CVE-2018-12378
+- CVE-2018-12379
+- CVE-2018-12383
+- CVE-2018-12385
+- CVE-2018-12386
+- CVE-2018-12387
+- CVE-2018-12389
+- CVE-2018-12390
+- CVE-2018-12392
+- CVE-2018-12393
+- CVE-2018-12395
+- CVE-2018-12396
+- CVE-2018-12397
