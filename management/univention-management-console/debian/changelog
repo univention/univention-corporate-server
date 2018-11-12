@@ -1,3 +1,9 @@
+univention-management-console (10.0.6-16) unstable; urgency=medium
+
+  * Bug #47700: fix saml metadata creation for umc
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 12 Nov 2018 13:58:05 +0100
+
 univention-management-console (10.0.6-15) unstable; urgency=medium
 
   * Bug #36624: Activate scrollless UMC for uvmm/uvmm searchpage

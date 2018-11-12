@@ -1,7 +1,10 @@
 # http://pysaml2.readthedocs.org/en/latest/howto/config.html
 import glob
-import re
 from tempfile import NamedTemporaryFile
+from cryptography import x509
+from cryptography.hazmat.primitives.serialization import load_pem_private_key
+from cryptography.hazmat.primitives.serialization import Encoding
+from cryptography.hazmat.backends import default_backend
 
 from saml2 import BINDING_HTTP_REDIRECT, BINDING_HTTP_POST
 from saml2.saml import NAME_FORMAT_URI
@@ -10,6 +13,35 @@ from univention.config_registry.interfaces import Interfaces
 from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
 ucr.load()
+
+
+class CertDoesNotMatchPrivateKeyError(Exception):
+	pass
+
+
+def public_key_compare(key1, key2):
+	pn1 = key1.public_numbers()
+	pn2 = key2.public_numbers()
+	return pn1.e == pn2.e and pn1.n == pn2.n
+
+
+def get_cert():
+	'''
+	The cert file can contain multiple certs (e.g. with lets encrypt)
+	saml expects only the one certificate that matches the private key
+	'''
+	with open(CONFIG['cert_file'], 'rb') as cert_file:
+		cert = x509.load_pem_x509_certificate(cert_file.read(), default_backend())
+		public_cert_key = cert.public_key()
+	with open(CONFIG['key_file'], 'rb') as key_file:
+		private_key = key_file.read()
+		public_key = load_pem_private_key(private_key, password=None, backend=default_backend()).public_key()
+	if public_key_compare(public_cert_key, public_key):
+		return cert.public_bytes(Encoding.PEM)
+	raise CertDoesNotMatchPrivateKeyError(
+		'Cert: "{}" does not match private key: "{}"'.format(CONFIG['cert_file'], CONFIG['key_file'])
+	)
+
 
 if ucr.get('umc/saml/sp-server'):
 	fqdn = ucr.get('umc/saml/sp-server')
@@ -52,7 +84,6 @@ CONFIG = {
 }
 
 tmpfile = NamedTemporaryFile()  # workaround for broken PEM parsing in pysaml2
-with open(CONFIG['cert_file'], 'rb') as fd:
-	tmpfile.write(re.split('\n(?=-----BEGIN CERTIFICATE-----)', fd.read(), re.M)[-1])
-	tmpfile.flush()
+tmpfile.write(get_cert())
+tmpfile.flush()
 CONFIG['cert_file'] = tmpfile.name
