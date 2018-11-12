@@ -1,7 +1,8 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check UCR handlers getting registered only once
 ## roles: [domaincontroller_master, domaincontroller_backup]
-## depends: univention-base-files
+## packages:
+##  - univention-base-files
 ## exposure: dangerous
 
 import pickle
