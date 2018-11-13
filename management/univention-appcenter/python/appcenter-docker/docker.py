@@ -451,9 +451,9 @@ class MultiDocker(Docker):
 					_port = int(port)
 				except ValueError:
 					host_port, container_port = (int(_port) for _port in port.split(':'))
-					used_ports[service][container_port] = host_port
+					used_ports[service_name][container_port] = host_port
 				else:
-					used_ports[service][_port] = _port
+					used_ports[service_name][_port] = _port
 		for app_id, container_port, host_port in app_ports():
 			if app_id != self.app.id:
 				continue

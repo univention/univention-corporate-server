@@ -202,6 +202,8 @@ def rmdir(directory):
 def call_process2(cmd, logger=None, env=None, cwd=None):
 	if logger is None:
 		logger = utils_logger
+	if cwd:
+		logger.debug('Running in %s:' % cwd)
 	logger.info('Running command: {0}'.format(' '.join(cmd)))
 	out = str()
 	ret = 0
@@ -225,6 +227,8 @@ def call_process2(cmd, logger=None, env=None, cwd=None):
 def call_process(args, logger=None, env=None, cwd=None):
 	process = Popen(args, stdout=PIPE, stderr=PIPE, bufsize=1, close_fds=True, env=env, cwd=cwd)
 	if logger is not None:
+		if cwd:
+			logger.debug('Calling in %s:' % cwd)
 		logger.debug('Calling %s' % ' '.join(pipes.quote(arg) for arg in args))
 		remove_ansi_escape_sequence_regex = re.compile(r'\x1B\[[0-9;]*[a-zA-Z]')
 
