@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-39) unstable; urgency=medium
+
+  * Bug #43612: Dev Tools need to support compose file
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 Nov 2018 13:48:53 +0100
+
 univention-appcenter (7.0.2-38) unstable; urgency=medium
 
   * Bug #43612: Typo
