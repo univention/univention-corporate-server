@@ -15,6 +15,7 @@ Depends: ${misc:Depends},
  univention-network-common,
  univention-appcenter,
  net-tools,
+ cron,
  curl,
  jq
 Conflicts: univention-appcenter-docker,
