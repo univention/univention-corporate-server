@@ -1,3 +1,11 @@
+univention-s4-connector (13.0.0-2) unstable; urgency=medium
+
+  * Bug #48142: Samba 4.9 now properly handles the AD passsword change
+    procedure. As the S4-Connector doesn't know the old password in
+    clear text, we should rather use the password reset procedure instead.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Nov 2018 16:20:40 +0100
+
 univention-s4-connector (12.0.2-40) unstable; urgency=medium
 
   * Bug #48362: fixed move in samaccountname_dn_mapping
