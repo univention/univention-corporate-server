@@ -1,3 +1,10 @@
+univention-postgresql (10.0.1-2) unstable; urgency=medium
+
+  * Bug #47276: Add ucr variable postgres9/pg_hba/config/* for additional
+  	configuration options in pg_hba.conf file
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 13 Nov 2018 09:55:29 +0100
+
 univention-postgresql (10.0.1-1) unstable; urgency=medium
 
   * Bug #44160: Add univention-postgresql-9.6, remove

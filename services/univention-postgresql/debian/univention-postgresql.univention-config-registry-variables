@@ -27,3 +27,9 @@ Description[de]=Verfügt der Server auf dem PostgreSQL 9 läuft über mehr als e
 Description[en]=If the server running PostgreSQL has more than one network interface this variable allows the restriction of IP addresses on which PostgreSQL is listening for connections. If the variable is unset all interfaces are served. Multiple IP addresses need to be separated by a comma.
 Type=str
 Categories=System
+
+[postgres9/pg_hba/config/.*]
+Description[de]=Spezifiziert zusätzliche Konfigurationsoptionen für /etc/postgresql/9.6/main/pg_hba.conf. Siehe `https://www.postgresql.org/docs/9.1/auth-pg-hba-conf.html` für Details.
+Description[en]=Specifies additional configuration options for /etc/postgresql/9.6/main/pg_hba.conf. See `https://www.postgresql.org/docs/9.1/auth-pg-hba-conf.html` for details.
+Type=str
+Categories=System
