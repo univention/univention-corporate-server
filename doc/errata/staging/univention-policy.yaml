@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-policy
-fix: 12.0.0-33A~4.3.0.201811131559
+fix: 9.0.0-4A~4.3.0.201811131609
 desc: |
  This update addresses the following issue:
  * Log LDAP connections at log level PROCESS instead of INFO.
