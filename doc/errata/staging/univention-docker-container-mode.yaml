@@ -3,8 +3,9 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-docker-container-mode
-fix: 3.0.2-1A~4.3.0.201811130056
+fix:
 desc: |-
   This update addresses the following issue(s):
-  * Fix missing ifconfig and wrong output parsing
+  * ifconfig was missing in the UCS container. Also fixed parsing of the
+    tool's output.
 bug: [46665]
