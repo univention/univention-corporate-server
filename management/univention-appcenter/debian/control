@@ -97,6 +97,8 @@ Package: univention-appcenter-docker
 Architecture: all
 Depends: python-univention-appcenter (= ${source:Version}),
  univention-docker (>= 2.0.0-4),
+ docker-compose,
+ python-ruamel.yaml
  univention-apache,
  python-requests,
  ${misc:Depends},
