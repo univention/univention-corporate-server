@@ -224,7 +224,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 						cls.log('Invalid data in {!r}.'.format(dn), 'ERROR')
 						continue
 					pub_key = SimpleAsymmetric.pem2public_key(pem_str)
-					res[metadata.replace('host:', '')] = pub_key
+					res[metadata[5:]] = pub_key  # strip leading 'host:'
 		return res
 
 	@classmethod
