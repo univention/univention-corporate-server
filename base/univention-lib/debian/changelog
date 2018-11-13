@@ -1,3 +1,9 @@
+univention-lib (7.0.0-13) unstable; urgency=medium
+
+  * Bug #47931: Don't handle streams in no_umc_restart
+
+ -- Jens Pelzetter <jpelzett@tossberg.knut.univention.de>  Tue, 13 Nov 2018 10:28:37 +0100
+
 univention-lib (7.0.0-12) unstable; urgency=low
 
   * Bug #47206: Protect getMailFromMailOrUid module import
