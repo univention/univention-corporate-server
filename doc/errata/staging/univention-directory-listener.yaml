@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-directory-listener
-fix: 12.0.0-32A~4.3.0.201811051607
+fix: 12.0.0-33A~4.3.0.201811131559
 desc: |
  This update addresses the following issue:
  * The Listener opens two connections: a persistent connection to a Notifier
