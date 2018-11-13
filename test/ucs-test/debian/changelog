@@ -2,7 +2,7 @@ ucs-test (8.0.28-226) ; urgency=medium
 
   * Bug #45049: fixed 10_ldap tests 67,68
 
- -- Julia Bremer <jbremer@brankis.knut.univention.de>  Tue, 13 Nov 2018 17:51:50 +0100
+ -- Julia Bremer <bremer@univention.de>  Tue, 13 Nov 2018 17:51:50 +0100
 
 ucs-test (8.0.28-225) unstable; urgency=medium
 
