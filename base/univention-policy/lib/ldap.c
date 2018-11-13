@@ -231,7 +231,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 
 	/* if uri is given use that */
 	if (lp->uri != NULL) {
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "connecting to %s", lp->uri);
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_PROCESS, "connecting to %s", lp->uri);
 		if ((rv = ldap_initialize(&lp->ld, lp->uri)) != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_initialize: %s", ldap_err2string(rv));
 			goto error;
@@ -240,7 +240,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 	} else {
 		char uri[1024];
 		snprintf(uri, sizeof(uri), "ldap://%s:%d", lp->host, lp->port);
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "connecting to %s", uri);
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_PROCESS, "connecting to %s", uri);
 		if ((rv = ldap_initialize(&lp->ld, uri)) != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_initialize: %s", ldap_err2string(rv));
 			goto error;

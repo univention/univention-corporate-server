@@ -1,3 +1,9 @@
+univention-policy (9.0.0-4) unstable; urgency=low
+
+  * Bug #48030: Log connections at PROCESS level
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Nov 2018 16:07:29 +0100
+
 univention-policy (9.0.0-3) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
