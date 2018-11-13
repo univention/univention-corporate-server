@@ -91,8 +91,8 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 	_ldap_secret_mtime = 0.0
 	_ucr = None
 	legitimate_address_cache = None  # type: Dict[str, Union[Tuple[datetime.datetime, List[str]], Dict[str, int]]]
-	regex_email_with_brakets = re.compile(r'.*<(.+@.+\..+)>$')
-	regex_email_no_brakets = re.compile(r'(.+@.+\..+)$')
+	regex_email_with_brackets = re.compile(r'.*<(.+@.+\..+)>$')
+	regex_email_no_brackets = re.compile(r'(.+@.+\..+)$')
 	mail_domains = []
 	public_keys = {}
 
@@ -361,9 +361,9 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 		pass
 
 	def get_only_email(self, text):  # type: (str) -> str
-		m = self.regex_email_with_brakets.match(text)
+		m = self.regex_email_with_brackets.match(text)
 		if not m:
-			m = self.regex_email_no_brakets.match(text)
+			m = self.regex_email_no_brackets.match(text)
 		if not m:
 			return ''
 		return m.groups()[0]
