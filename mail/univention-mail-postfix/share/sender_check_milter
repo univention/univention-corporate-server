@@ -93,16 +93,16 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 	legitimate_address_cache = None  # type: Dict[str, Union[Tuple[datetime.datetime, List[str]], Dict[str, int]]]
 	regex_email_with_brackets = re.compile(r'.*<(.+@.+\..+)>$')
 	regex_email_no_brackets = re.compile(r'(.+@.+\..+)$')
-	mail_domains = []
-	public_keys = {}
+	mail_domains = []  # type: List[str]
+	public_keys = {}  # type: Dict[str, str]
 
 	def __init__(self, opts=0, protos=0):
 		lm.MilterProtocol.__init__(self, opts, protos)
 		lm.ForkMixin.__init__(self)
 
 		self.sasl_login_name = self.envelope_from = self.reject_msg = self.queue_id = ''
-		self.legitimate_addresses = self.recipients = []
-		self.header_data = {}
+		self.legitimate_addresses = self.recipients = []  # type: List[str]
+		self.header_data = {}  # type: Dict[str, str]
 		self.sign_msg = self.header_from_ok = self.envelope_from_ok = False
 		self._nonce = 0
 
