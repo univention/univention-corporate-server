@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0
+src: ruamel.yaml
+fix: 0.13.4-2
+desc: |
+ This update addresses the following issue:
+ * New maintained dependency of Univention App Center.
+bug: [43612]
+ignore:
+  - release+scope.consistent
+  - version.scope
