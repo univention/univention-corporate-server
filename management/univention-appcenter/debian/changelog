@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-38) unstable; urgency=medium
+
+  * Bug #43612: Typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 Nov 2018 03:47:22 +0100
+
 univention-appcenter (7.0.2-37) unstable; urgency=medium
 
   * Bug #43612: Support volumes and ports in compose.yml
