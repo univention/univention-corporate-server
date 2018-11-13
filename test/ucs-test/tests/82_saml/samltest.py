@@ -5,6 +5,8 @@ from requests_kerberos import HTTPKerberosAuth, OPTIONAL
 import subprocess
 import socket
 import json
+import shutil
+import os
 
 import univention.testing.utils as utils
 import univention.config_registry as configRegistry
@@ -54,6 +56,35 @@ class GuaranteedIdP(object):
 	def __exit__(self, exc_type, exc_value, traceback):
 		subprocess.call(['ucr', 'unset', 'hosts/static/%s' % self.ip])
 		subprocess.call(['invoke-rc.d', 'nscd', 'restart'])
+
+
+class SPCertificate(object):
+
+	@staticmethod
+	def get_server_cert_folder():
+		ucr = configRegistry.ConfigRegistry()
+		ucr.load()
+		hostname = '%s.%s' % (ucr['hostname'], ucr['domainname'])
+		return os.path.join('/etc/univention/ssl', hostname)
+
+	def __init__(self, certificate, update_metadata=True):
+		self.certificate = certificate
+		cert_folder = self.get_server_cert_folder()
+		self.cert_path = os.path.join(cert_folder, 'cert.pem')
+		self.cert_path_backup = os.path.join(cert_folder, 'cert.pem.backup')
+		self.update_metadata = update_metadata
+
+	def __enter__(self):
+		shutil.move(self.cert_path, self.cert_path_backup)
+		with open(self.cert_path, 'w') as cert_file:
+			cert_file.write(self.certificate)
+		if self.update_metadata:
+			subprocess.check_call('/usr/share/univention-management-console/saml/update_metadata')
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		shutil.move(self.cert_path_backup, self.cert_path)
+		if self.update_metadata:
+			subprocess.check_call('/usr/share/univention-management-console/saml/update_metadata')
 
 
 class SamlTest(object):
