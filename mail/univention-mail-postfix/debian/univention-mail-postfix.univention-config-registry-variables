@@ -420,14 +420,14 @@ Type=bool
 Categories=service-mail
 
 [mail/postfix/smtpd_milters/.*]
-Description[de]=Mit Variablen der Form mail/postfix/smtpd_milters/SEQUENZNUMMER=MILTER-ADRESSE können Adressen von Miltern (mail filter) Applikationen konfiguriert werden. Milter werden über neue Mails die über den Postfix smtpd(8) Server herein kommen informiert und können diese akzeptieren, bearbeiten und ablehnen (siehe <http://www.postfix.org/postconf.5.html#smtpd_milters>). Die Sequenznummer wird alphanumerisch sortiert und beeinflusst die Reihenfolge der Milter. Standardmäßig ist diese Variable nicht gesetzt.
-Description[en]=Variables in the format mail/postfix/smtpd_milters/SEQUENCE=MILTER-ADDRESS can be used to configure Milter (mail filter) applications. Milters are informed about new mail that arrives via the Postfix smtpd(8) server and can accept, edit and reject those messages (see <http://www.postfix.org/postconf.5.html#smtpd_milters>). The sequence numbers are sorted alphabetically and ensure the order. The default for this variable is to be unset.
+Description[de]=Mit Variablen der Form mail/postfix/smtpd_milters/SEQUENZNUMMER=MILTER-ADRESSE können Adressen für Milter-Applikationen konfiguriert werden. Milter (mail filter) werden über neue Mails, die über den Postfix smtpd(8)-Server eingeliefert werden, informiert und können diese Mails akzeptieren, bearbeiten und ablehnen (siehe <http://www.postfix.org/postconf.5.html#smtpd_milters>). Die SEQUENZNUMMER wird alphanumerisch sortiert und beeinflusst die Reihenfolge der Milter in der Postfix-Konfiguration. Standardmäßig ist diese Variable nicht gesetzt.
+Description[en]=Variables in the format mail/postfix/smtpd_milters/SEQUENCE=MILTER-ADDRESS can be used to configure Milter applications. Milters (mail filter) are informed about new mails delivered via the Postfix smtpd(8) server and can accept, edit and reject these mails (see <http://www.postfix.org/postconf.5.html#smtpd_milters>). The SEQUENCE number is sorted alphanumerically and influences the order of the milter in the postfix configuration. By default, this variable is not set.
 Type=str
 Categories=service-mail
 
 [mail/postfix/sender_check_milter_port]
-Description[de]=Port auf dem der Milter-Prozess, der die Absenderadressen prüft ("sender_check"), lauschen soll (immer an localhost). Standard: 5656.
-Description[en]=Port on which the Milter process that verifies sender addresses ("sender_check") should listen (always on localhost). Default: 5656.
+Description[de]=Port auf dem der Milter-Prozess, der Absenderadressen für Postfix prüft ("sender_check"), auf Verbindungen wartet (Adresse wird immer "localhost" verwendet). Standard: 5656.
+Description[en]=Port on which the Milter process, that verifies sender addresses for postfix ("sender_check"), should listen (address is always "localhost"). Default: 5656.
 Type=str
 Categories=service-mail
 
