@@ -292,7 +292,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 					self.header_from_ok = True
 					return lm.CONTINUE
 				else:
-					self.log('REJECT: Header_from ({}) not in legitimate addresses ({!s}, self.queue_id).'.format(
+					self.log('REJECT: Header_from ({}) not in legitimate addresses ({!s}, {!s}).'.format(
 						self.header_data['from'], val, ', '.join(self.legitimate_addresses)), self.queue_id)
 					return lm.REJECT
 			else:
