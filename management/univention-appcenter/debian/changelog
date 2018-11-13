@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-37) unstable; urgency=medium
+
+  * Bug #43612: Support volumes and ports in compose.yml
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 13 Nov 2018 03:40:13 +0100
+
 univention-appcenter (7.0.2-36) unstable; urgency=medium
 
   * Bug #47931: Don't handle streams in no_umc_restart 
