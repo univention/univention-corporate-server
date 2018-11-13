@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-postgresql
+fix: 10.0.1-2A~4.3.0.201811131054
+desc: |
+ This update addresses the following issue(s):
+ * The new UCR variable postgres9/pg_hba/config/* allows for additional
+   configuration options in the pg_hba.conf file.
+bug: [47276]
