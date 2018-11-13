@@ -1,3 +1,9 @@
+ucs-test (8.0.28-226) unstable; urgency=medium
+
+  * Bug #45049: Fixed 10_ldap/67univention-admingrp-user-passwordreset-protected-domain-admins
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 13 Nov 2018 18:20:31 +0100
+
 ucs-test (8.0.28-225) unstable; urgency=medium
 
   * Bug #47700: Add tests for saml umc metadata creation
