@@ -594,11 +594,8 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 						pwd_set = False
 					else:
 						raise
-			if pwd_set:
-				if unicodePwd_attr:
-					modlist.append((ldap.MOD_DELETE, 'unicodePwd', unicodePwd_attr))
-				if unicodePwd_new:
-					modlist.append((ldap.MOD_ADD, 'unicodePwd', unicodePwd_new))
+			if pwd_set and unicodePwd_new:
+				modlist.append((ldap.MOD_REPLACE, 'unicodePwd', unicodePwd_new))
 
 	if not ucsLMhash == s4LMhash:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: LM Hash S4: %s LM Hash UCS: %s" % (s4LMhash, ucsLMhash))
@@ -612,12 +609,10 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	if pwd_set or not supplementalCredentials:
 		if krb5Principal:
 			# encoding of Samba4 supplementalCredentials
-			if supplementalCredentials:
-				modlist.append((ldap.MOD_DELETE, 'supplementalCredentials', supplementalCredentials))
 			if krb5Key:
 				supplementalCredentials_new = calculate_supplementalCredentials(krb5Key, supplementalCredentials)
 				if supplementalCredentials_new:
-					modlist.append((ldap.MOD_ADD, 'supplementalCredentials', supplementalCredentials_new))
+					modlist.append((ldap.MOD_REPLACE, 'supplementalCredentials', supplementalCredentials_new))
 				else:
 					ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: no supplementalCredentials_new")
 				# if supplementalCredentials:
