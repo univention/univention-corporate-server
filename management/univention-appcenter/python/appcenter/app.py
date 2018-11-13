@@ -731,6 +731,10 @@ class App(object):
 			*app_report_object_type*.
 		docker_image: Docker Image for the container. If specified the
 			App implicitly becomes a Docker App.
+		docker_main_service: For Multi-Container Docker Apps, this
+			attribute specifies the main service in the compose
+			file. This service's container will be used to run
+			scripts like *docker_script_setup*, etc.
 		docker_migration_works: Whether it is safe to install this
 			version while a non Docker version is or was installed.
 		docker_migration_link: A link to document where the necessary
@@ -895,6 +899,7 @@ class App(object):
 	app_report_attribute_filter = AppAttribute()
 
 	docker_image = AppAttribute()
+	docker_main_service = AppAttribute()
 	docker_migration_works = AppBooleanAttribute()
 	docker_migration_link = AppAttribute()
 	docker_allowed_images = AppListAttribute()
@@ -1002,7 +1007,7 @@ class App(object):
 
 	@property
 	def docker(self):
-		return self.docker_image is not None
+		return self.docker_image is not None or self.docker_main_service is not None
 
 	def uses_docker_compose(self):
 		return os.path.exists(self.get_cache_file('compose'))

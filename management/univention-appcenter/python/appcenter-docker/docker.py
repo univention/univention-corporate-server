@@ -43,7 +43,9 @@ from json import loads
 from tempfile import NamedTemporaryFile
 from contextlib import contextmanager
 
-from univention.appcenter.utils import app_ports_with_protocol, call_process, call_process2, shell_safe, get_sha256, mkdir, _
+import ruamel.yaml as yaml
+
+from univention.appcenter.utils import app_ports_with_protocol, app_ports, call_process, call_process2, shell_safe, get_sha256, mkdir, unique, _
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.exceptions import DockerVerificationFailed, DockerImagePullFailed
 from univention.appcenter.ucr import ucr_save, ucr_is_false, ucr_get, ucr_run_filter, ucr_is_true
@@ -403,18 +405,73 @@ class MultiDocker(Docker):
 		if ret != 0:
 			raise DockerImagePullFailed(self.image, out)
 
+	def _app_volumes(self):
+		volumes = self.app.docker_volumes[:]
+		for app_volume in [self.app.get_data_dir(), self.app.get_conf_dir()]:
+			app_volume = '%s:%s' % (app_volume, app_volume)
+			volumes.append(app_volume)
+		if self.app.host_certificate_access:
+			cert_dir = '/etc/univention/ssl/%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
+			cert_volume = '%s:%s:ro' % (cert_dir, cert_dir)
+			volumes.append(cert_volume)
+		volumes.append('/sys/fs/cgroup:/sys/fs/cgroup:ro')                     # systemd
+		if ucr_is_true('appcenter/docker/container/proxy/settings', default=True):
+			if os.path.isfile('/etc/apt/apt.conf.d/80proxy'):
+				volumes.append('/etc/apt/apt.conf.d/80proxy:/etc/apt/apt.conf.d/80proxy:ro')  # apt proxy
+		return unique(volumes)
+
 	def _setup_yml(self, recreate):
-		if os.path.exists(self.app.get_compose_file('docker-compose.yml')):
+		yml_file = self.app.get_compose_file('docker-compose.yml')
+		template_file = '%s.template' % yml_file
+		if os.path.exists(yml_file):
 			if not recreate:
 				return
 		else:
 			mkdir(self.app.get_compose_dir())
-			shutil.copy2(self.app.get_cache_file('compose'), self.app.get_compose_file('docker-compose.yml.template'))
-		with open(self.app.get_compose_file('docker-compose.yml.template')) as fd:
+			shutil.copy2(self.app.get_cache_file('compose'), template_file)
+		with open(template_file) as fd:
 			template = fd.read()
 			content = ucr_run_filter(template)
-		with open(self.app.get_compose_file('docker-compose.yml'), 'wb') as fd:
+		with open(yml_file, 'wb') as fd:
 			fd.write(content)
+		content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
+		container_def = content['services'][self.app.docker_main_service]
+		volumes = container_def.get('volumes', [])
+		for volume in self._app_volumes():
+			if volume not in volumes:
+				volumes.append(volume)
+		container_def['volumes'] = volumes
+		exposed_ports = {}
+		used_ports = {}
+		for service_name, service in content['services'].iteritems():
+			exposed_ports[service_name] = (int(port) for port in service.get('expose', []))
+			used_ports[service_name] = {}
+			for port in service.get('ports', []):
+				try:
+					_port = int(port)
+				except ValueError:
+					host_port, container_port = (int(_port) for _port in port.split(':'))
+					used_ports[service][container_port] = host_port
+				else:
+					used_ports[service][_port] = _port
+		for app_id, container_port, host_port in app_ports():
+			if app_id != self.app.id:
+				continue
+			for service_name, ports in exposed_ports.iteritems():
+				if container_port in ports:
+					used_ports[service_name][container_port] = host_port
+					break
+			else:
+				for service_name, ports in used_ports.iteritems():
+					if container_port in ports:
+						used_ports[service_name][container_port] = host_port
+						break
+				else:
+					used_ports[self.app.docker_main_service][container_port] = host_port
+		for service_name, ports in used_ports.iteritems():
+			content['services'][service_name]['ports'] = ['%s:%s' % (host_port, container_port) for container_port, host_port in ports.iteritems()]
+		with open(yml_file, 'wb') as fd:
+			yaml.dump(content, fd, Dumper=yaml.RoundTripDumper, encoding='utf-8', allow_unicode=True)
 
 	def create(self, hostname, set_vars):
 		self._setup_yml(True)
@@ -424,22 +481,25 @@ class MultiDocker(Docker):
 		except CalledProcessError:
 			return False
 		else:
+			yml_file = self.app.get_compose_file('docker-compose.yml')
+			content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
+			docker_image = content['services'][self.app.docker_main_service]['image']
 			for line in out.splitlines():
 				try:
 					container, image = line.split()[:2]
 				except ValueError:
 					pass
 				else:
-					if image == self.app.docker_image:
+					if image == docker_image:
 						ucr_save({self.app.ucr_container_key: container})
 						self.container = container
 						return container
 
 	def up(self):
-		return call_process(['docker-compose', '-p', self.app.id, 'up', '-d'], cwd=self.app.get_compose_dir()).returncode == 0
+		return call_process(['docker-compose', '-p', self.app.id, 'up', '-d'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
 
 	def stop(self):
-		return call_process(['docker-compose', '-p', self.app.id, 'down'], cwd=self.app.get_compose_dir()).returncode == 0
+		return call_process(['docker-compose', '-p', self.app.id, 'down'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
 
 	def rm(self):
 		return self.stop()
