@@ -968,43 +968,43 @@ postmap /etc/postfix/smtp_auth
 		<title>Konfiguration zur Verhinderung gefälschter Absender-Adressen</title>
 		<para>
 			Die Standardkonfiguration von <application>Postfix</application> erlaubt authentifizierten Benutzern das
-			Senden mit beliebigen <literal>From</literal> Adressen.
-			Sie erlaubt außerdem das Einliefern von Emails mit einer Domäne im Absender, die das System selbst verwaltet.
+			Senden mit beliebigen <literal>From</literal>-Adressen.
+			Sie erlaubt außerdem das Einliefern von E-Mails mit einer Domäne im Absender, die das Postfix-System selbst verwaltet.
 		</para>
 		<para>
-			Um gefälschte Absendeadressen zu verhindern, kann ein Filter aktiviert werden der beide Fälle verhindert.
+			Um gefälschte Absenderadressen zu verhindern, kann ein Filter aktiviert werden, der beide Fälle verhindert.
 			Der Filter (technisch <application>milter</application> genannt) weist Nachrichten bereits während des
-			SMTP Dialogs zurück, so dass sie nicht einmal bis zum Spam Scanner kommen. Kontrolliert wird sowohl das
-			<literal>From</literal> im <literal>header</literal> von E-Mails als auch das <literal>MAIL FROM</literal>
+			SMTP-Dialogs zurück. Dies passiert bereits, bevor die Mail vom Spam- und Viren-Scanner geprüft wird. Kontrolliert wird sowohl das
+			<literal>From</literal> im Header von E-Mails als auch das <literal>MAIL FROM</literal>
 			im SMTP-Dialog.
 		</para>
 		<para>
-			E-Mails mit einem Absender, der nicht die primäre oder eine der alternativen E-Mail-Adressen des sendenden
-			Benutzers ist, werden abgelehnt.
-			Um dennoch das Senden von E-Mails im Namen Anderer zu ermöglichen, können in der UMC am Benutzer unter
+			Ist der Filter eingerichtet, werden E-Mails mit einem Absender, der nicht der primären oder einer der alternativen E-Mail-Adressen des sendenden
+			Benutzers entspricht, abgelehnt.
+			Um dennoch das Senden von E-Mails im Namen anderer zu ermöglichen, können in der UMC am Benutzer unter
 			<guimenu>Erweiterte Einstellungen &ar; Mail &ar; Erlaubte E-Mail-Absender-Adresse</guimenu>
-			Benutzernamen und E-Mail-Adressen hinterlegt werden. Wenn dort ein Benutzername angegeben wird, so kann
-			sowohl mit dessen primärer also auch allen alternativen E-Mail-Adressen gesendet werden. Wird eine
-			E-Mail-Adresse angegeben, so kann nur diese als Absender verwendet werden.
+			Benutzernamen bzw. E-Mail-Adressen hinterlegt werden. Wenn dort ein Benutzername angegeben wird, so kann
+			sowohl mit dessen primärer also auch allen alternativen E-Mail-Adressen gesendet werden. Wird eine konkrete
+			E-Mail-Adresse angegeben, so kann nur diese als Absender zusätzlich zu den eigenen Mailadressen (primäre und alternative) verwendet werden.
 		</para>
 		<para>
-			Um den <application>sender_check milter</application> zu aktivieren, muss <application>Postfix</application>
-			konfiguriert werden sich zu ihm zu verbinden.
+			Um den Filter <application>sender_check_milter</application> zu aktivieren, muss <application>Postfix</application>
+			entsprechend konfiguriert werden.
 		</para>
 		<para>
 			<application>Postfix</application> unterstützt die gleichzeitige Verwendung mehrerer
 			<application>milter</application>. Daher kann der Wert für <envar>milters</envar> in
 			<application>Postfix'</application> Konfiguration aus mehreren Einträgen bestehen.
-			Um diese sortierbar zu machen, haben die &ucsUCRV; die Form
+			Um diese sortierbar zu machen, haben die &ucsUCR;-Variablen die Form
 			<envar>mail/postfix/smtpd_milters/<replaceable>SEQUENZ</replaceable>=<replaceable>ADRESSE</replaceable></envar>.
 		</para>
 		<para>
-			Der <application>sender_check milter</application> ist ein kleines Programm das an <envar>localhost</envar> am Port <envar>5656</envar> lauscht. Der Port kann mit der &ucsUCRV; <envar>mail/postfix/sender_check_milter_port</envar>
-			eingestellt werden.
-			Zurückweisungen werden in der für Email üblichen Logdatei (<filename>/var/log/mail.log</filename>) protokolliert.
+			<application>sender_check_milter</application> ist ein kleines Programm das auf dem Interface <envar>localhost</envar> auf Port <envar>5656</envar> Verbindungen annimmt. Der Port kann über die &ucsUCRV; <envar>mail/postfix/sender_check_milter_port</envar>
+			konfiguriert werden.
+			Zurückweisungen von E-Mails werden in der für E-Mail üblichen Logdatei (<filename>/var/log/mail.log</filename>) protokolliert.
 		</para>
 		<para>
-			Um den <application>sender_check milter</application> zu aktivieren, führen Sie aus:
+			Um den Filter <application>sender_check_milter</application> zu aktivieren, sind folgende Kommandos auszuführen:
 			<programlisting language="sh">
 ucr set mail/postfix/smtpd_milters/50=inet:localhost:5656
 service postfix reload
@@ -1012,8 +1012,8 @@ service postfix reload
 		</para>
 		<note>
 			<para>
-				Nach jeder Änderung einer auf <application>Postfix</application> bezogenen &ucsUCRV; muss dieses seine
-				Konfiguration neu laden: <command>service postfix reload</command>.
+				Nach jeder Änderung einer auf <application>Postfix</application> bezogenen &ucsUCRV; muss der Prozess seine
+				Konfiguration neu laden, was über das Kommando <command>service postfix reload</command> ausgelöst werden kann.
 			</para>
 		</note>
 	</section>
