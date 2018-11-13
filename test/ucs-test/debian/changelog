@@ -1,8 +1,8 @@
-ucs-test (8.0.28-226) unstable; urgency=medium
+ucs-test (8.0.28-226) ; urgency=medium
 
-  * Bug #45049: Fixed 10_ldap/67univention-admingrp-user-passwordreset-protected-domain-admins
+  * Bug #45049: fixed 10_ldap tests 67,68
 
- -- Julia Bremer <bremer@univention.de>  Tue, 13 Nov 2018 18:20:31 +0100
+ -- Julia Bremer <jbremer@brankis.knut.univention.de>  Tue, 13 Nov 2018 17:51:50 +0100
 
 ucs-test (8.0.28-225) unstable; urgency=medium
 
