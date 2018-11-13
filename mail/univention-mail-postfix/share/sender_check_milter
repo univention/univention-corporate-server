@@ -282,7 +282,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 
 		if key.lower() == 'from':
 			if not self.header_data['from']:
-				self.log('Invalid email address: {!r}: {!r}.'.format(key, val), 'ERROR', self.queue_id)
+				self.log('Invalid email address: {!r}: {!r}.'.format(key, val), self.queue_id, 'ERROR')
 				return lm.REJECT
 			if self.sasl_login_name:
 				# authenticated session
