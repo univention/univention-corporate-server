@@ -1,3 +1,10 @@
+univention-appcenter (7.0.2-41) unstable; urgency=medium
+
+  * Bug #47824: please check this box if you want to proceed error for
+    any unchecked box in app settings
+
+ -- Jens Pelzetter <jpelzett@tossberg.knut.univention.de>  Wed, 14 Nov 2018 08:53:16 +0100
+
 univention-appcenter (7.0.2-40) unstable; urgency=medium
 
   * Bug #43612: Log commands, log cwd
