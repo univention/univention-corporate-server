@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Log LDAP connections at log level PROCESS instead of INFO.
 bug: [48030]
+erratum: 309
+announced: 2018-11-14
