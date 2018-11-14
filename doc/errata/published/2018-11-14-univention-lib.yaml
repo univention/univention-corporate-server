@@ -9,3 +9,5 @@ desc: |-
   * False warning message during App installation removed
 bug:
 - 47931
+erratum: 306
+announced: 2018-11-14
