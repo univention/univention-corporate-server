@@ -101,8 +101,10 @@ prepare_master () {
 	sleep 20
 	rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
 	python shared-utils/ucs-winrm.py print-on-printer --printername Masterprinter --server "$UCS" --impersonate --run-as-user Administrator
+	sleep 20
 	stat /var/spool/cups-pdf/administrator/job_1-document.pdf
 	python shared-utils/ucs-winrm.py print-on-printer --printername Masterprinter --server "$UCS" --impersonate --run-as-user newuser01 --run-as-password "Univention.99"
+	sleep 20
 	stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
 
 	#    Kann man anschließend per kinit für den Benutzer auf UCS-Seite ein Ticket bekommen?
@@ -120,17 +122,7 @@ prepare_master () {
 	udm policies/pwhistory modify --dn 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=sambatest,dc=local' --set pwLength=5
 	udm policies/pwhistory modify --dn 'cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=sambatest,dc=local' --set length=2
 	samba-tool domain passwordsettings set --min-pwd-length=5 --max-pwd-age=2 --history-length=2
-	#change pw after policiesw changes
-	#    Mit Benutzer am Windows7-Client anmelden und Passwort auf "Ünivention123" ändern. Die Samba4/Heimdal-Passwortkomplexitätsprüfung sollte das akzeptieren. DONE
-	#    Uhrzeit auf den UCS DCs eine Stunde vorstellen und neu booten. (Oder Zeit sinnvoll anders nutzen..) Simulated by fetching information from Samba DB and comparing with a date
-	#    Benutzer-Konto Option "Passwort bei der nächsten Anmeldung ändern" im UDM wählen und an jedem Windows System testen, ob das Passwort geändert werden muss. Kann man jetzt wieder "Ünivention123" setzen? DONE
 	sleep 150
-	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ!"
-	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ" --debug 2>&1 | grep Exception
-	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univention123!"
-	#check expiration date of PW
-	#    Mit Benutzer am Windows7-Client anmelden -> Windows muss Passwortänderung verlangen. Passwort ändern: Man sollte nicht wieder das alte Passwort setzen können. Man sollte ein Passwort mit 5 Buchstaben setzen können. DONE
-	python shared-utils/ucs-winrm.py run-ps --cmd "net user newuser01 /domain" --impersonate --run-as-user Administrator | grep $(date -d "+2 days" +"%d.%m.%Y")
 
 	#python shared-utils/ucs-winrm.py run-ps --cmd hostname > WINCLIENTNAME
 	#host $(cat WINCLIENTNAME | grep WIN | cut -c 1-15)
@@ -213,8 +205,8 @@ test_master () {
 	#	Testdruck von wordpad aus auf den verbundenen Drucker DONE simulated with Powershell commands
 	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server $MEMBER --impersonate --run-as-user Administrator
 	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server $SLAVE --impersonate --run-as-user Administrator
-	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "$MEMBER" --impersonate --run-as-user newuser01 --run-as-password "Univention123!"
-	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server "$SLAVE" --impersonate --run-as-user newuser01 --run-as-password "Univention123!"
+	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "$MEMBER" --impersonate --run-as-user newuser01 --run-as-password "Univention.99"
+	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server "$SLAVE" --impersonate --run-as-user newuser01 --run-as-password "Univention.99"
 	#check sysvol of backup and slave
 	#    SYSVOL-Replikation nach >=(2 mal 5) Minuten
 	#	Vergleich /var/lib/samba/sysvol/$domainname/Policies auf DC Master und DC Backup mit dem DC Slave. TODO, test
@@ -228,6 +220,16 @@ test_master () {
 	python shared-utils/ucs-winrm.py run-ps --cmd "ping ucs-member" --impersonate --run-as-user Administrator
 	samba-tool ntacl sysvolreset || true
 	python shared-utils/ucs-winrm.py domain-join --domain sambatest.local --dnsserver "$UCS" --client "$WINCLIENT2" --user "Administrator" --password "$WINCLIENT2_PASSWORD" --domainuser "administrator" --domainpassword "$ADMIN_PASSWORD"
+	#change pw after policiesw changes
+	#    Mit Benutzer am Windows7-Client anmelden und Passwort auf "Ünivention123" ändern. Die Samba4/Heimdal-Passwortkomplexitätsprüfung sollte das akzeptieren. DONE
+	#    Uhrzeit auf den UCS DCs eine Stunde vorstellen und neu booten. (Oder Zeit sinnvoll anders nutzen..) Simulated by fetching information from Samba DB and comparing with a date
+	#    Benutzer-Konto Option "Passwort bei der nächsten Anmeldung ändern" im UDM wählen und an jedem Windows System testen, ob das Passwort geändert werden muss. Kann man jetzt wieder "Ünivention123" setzen? DONE
+	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ!"
+	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ" --debug 2>&1 | grep Exception
+	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univention123!"
+	#check expiration date of PW
+	#    Mit Benutzer am Windows7-Client anmelden -> Windows muss Passwortänderung verlangen. Passwort ändern: Man sollte nicht wieder das alte Passwort setzen können. Man sollte ein Passwort mit 5 Buchstaben setzen können. DONE
+	python shared-utils/ucs-winrm.py run-ps --cmd "net user newuser01 /domain" --impersonate --run-as-user Administrator | grep $(date -d "+2 days" +"%d.%m.%Y")
 }
 
 
