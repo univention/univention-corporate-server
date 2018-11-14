@@ -11,3 +11,4 @@ bug: [48086]
 ignore:
   - release+scope.consistent
   - version.scope
+maintained: true
