@@ -12,3 +12,5 @@ desc: |
  * A new API has been added that aims to provide a much easier handles for UDM
    calls.
 bug: [47872, 47316]
+erratum: 313
+announced: 2018-11-14
