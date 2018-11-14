@@ -10,3 +10,5 @@ desc: |
    unintentionally changed with a previous update.
    This has been reverted.
 bug: [47872]
+erratum: 312
+announced: 2018-11-14
