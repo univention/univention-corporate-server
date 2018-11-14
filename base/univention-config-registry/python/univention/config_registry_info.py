@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
@@ -109,7 +110,7 @@ class ConfigRegistryInfo(object):
 		"""Return dictionary of incomplete category descriptions."""
 		"""Check all categories for completeness."""
 		incomplete = {}
-		for name, cat in self.categories.items():
+		for name, cat in list(self.categories.items()):
 			miss = cat.check()
 			if miss:
 				incomplete[name] = miss
@@ -118,7 +119,7 @@ class ConfigRegistryInfo(object):
 	def check_variables(self):
 		"""Return dictionary of incomplete variable descriptions."""
 		incomplete = {}
-		for name, var in self.variables.items():
+		for name, var in list(self.variables.items()):
 			miss = var.check()
 			if miss:
 				incomplete[name] = miss
@@ -156,12 +157,12 @@ class ConfigRegistryInfo(object):
 		if self.__configRegistry is None:
 			return
 		# Try more specific (longer) regular expressions first
-		for pattern, data in sorted(self.__patterns.items(),
+		for pattern, data in sorted(list(self.__patterns.items()),
 				key=ConfigRegistryInfo.__pattern_sorter, reverse=True):
 			regex = re.compile(pattern)
 			# find config registry variables that match this pattern and are
 			# not already listed in self.variables
-			for key, value in self.__configRegistry.items():
+			for key, value in list(self.__configRegistry.items()):
 				if key in self.variables:
 					continue
 				if not regex.match(key):
@@ -181,7 +182,7 @@ class ConfigRegistryInfo(object):
 		two regular languages" algorithm.
 		"""
 		patterns = {}
-		for pattern, data in sorted(self.__patterns.items(),
+		for pattern, data in sorted(list(self.__patterns.items()),
 				key=ConfigRegistryInfo.__pattern_sorter, reverse=True):
 			regex = re.compile(pattern)
 			match = regex.search(term)
@@ -215,11 +216,11 @@ class ConfigRegistryInfo(object):
 			return False
 
 		cfg = uit.UnicodeConfig()
-		for name, var in self.variables.items():
+		for name, var in list(self.variables.items()):
 			cfg.add_section(name)
-			for key in var.keys():
+			for key in list(var.keys()):
 				items = var.normalize(key)
-				for item, value in items.items():
+				for item, value in list(items.items()):
 					value = value
 					cfg.set(name, item, value)
 
@@ -274,7 +275,7 @@ class ConfigRegistryInfo(object):
 					self.read_variables(cfgfile)
 			self.check_patterns()
 			if not registered_only:
-				for key, value in self.__configRegistry.items():
+				for key, value in list(self.__configRegistry.items()):
 					if key in self.variables:
 						continue
 					var = Variable(registered=False)
@@ -286,7 +287,7 @@ class ConfigRegistryInfo(object):
 
 	def get_categories(self):
 		'''returns a list of category names'''
-		return self.categories.keys()
+		return list(self.categories.keys())
 
 	def get_category(self, name):
 		'''returns a category object associated with the given name or
@@ -300,7 +301,7 @@ class ConfigRegistryInfo(object):
 		if not category:
 			return self.variables
 		temp = {}
-		for name, var in self.variables.items():
+		for name, var in list(self.variables.items()):
 			categories = var.get('categories')
 			if not categories:
 				continue

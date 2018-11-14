@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 """Univention Configuration Registry output filters."""

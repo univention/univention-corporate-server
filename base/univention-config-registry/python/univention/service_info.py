@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
@@ -57,7 +58,7 @@ class Service(uit.LocalizedDictionary):
 	def check(self):
 		"""Check service entry for validity, returning list of incomplete entries."""
 		incomplete = [key for key in self.REQUIRED if not self.get(key, None)]
-		unknown = [key for key in self.keys() if key.lower() not in self.KNOWN]
+		unknown = [key for key in list(self.keys()) if key.lower() not in self.KNOWN]
 		return incomplete + unknown
 
 	def _update_status(self):
@@ -80,7 +81,7 @@ def pidof(name, docker='/var/run/docker.pid'):
 	log = getLogger(__name__)
 
 	children = {}
-	if isinstance(docker, basestring):
+	if isinstance(docker, str):
 		try:
 			with open(docker, 'r') as fd:
 				docker = int(fd.read(), 10)
@@ -150,13 +151,13 @@ class ServiceInfo(object):
 
 	def update_services(self):
 		"""Update the run state of all services."""
-		for serv in self.services.values():
+		for serv in list(self.services.values()):
 			serv._update_status()
 
 	def check_services(self):
 		"""Return dictionary of incomplete service descriptions."""
 		incomplete = {}
-		for name, srv in self.services.items():
+		for name, srv in list(self.services.items()):
 			miss = srv.check()
 			if miss:
 				incomplete[name] = miss
@@ -171,11 +172,11 @@ class ServiceInfo(object):
 			return False
 
 		cfg = uit.UnicodeConfig()
-		for name, srv in self.services.items():
+		for name, srv in list(self.services.items()):
 			cfg.add_section(name)
-			for key in srv.keys():
+			for key in list(srv.keys()):
 				items = srv.normalize(key)
-				for item, value in items.items():
+				for item, value in list(items.items()):
 					cfg.set(name, item, value)
 
 		cfg.write(fd)
@@ -227,7 +228,7 @@ class ServiceInfo(object):
 
 	def get_services(self):
 		'''returns a list fo service names'''
-		return self.services.keys()
+		return list(self.services.keys())
 
 	def get_service(self, name):
 		'''returns a service object associated with the given name or

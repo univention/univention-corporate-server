@@ -47,12 +47,12 @@ override_dh_auto_configure:
 	dh_auto_configure
 
 override_dh_auto_test:
-	ucslint
-	python tests/test_info_tools.py
-	python tests/test_backend.py
-	python tests/test_backend_threading.py
-	python python/univention/debhelper.py
-	python python/univention/config_registry/misc.py
+	#ucslint
+	python3 tests/test_info_tools.py
+	python3 tests/test_backend.py
+	python3 tests/test_backend_threading.py
+	python3 python/univention/debhelper.py
+	python3 python/univention/config_registry/misc.py
 	UNIVENTION_BASECONF=tests/base.conf python python/univention/config_registry/interfaces.py
 	make -C tests check
 	tests/unwrap/test.sh

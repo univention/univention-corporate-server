@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 import warnings
 warnings.warn('univention_baseconfig is deprecated by univention.config_registry', PendingDeprecationWarning)

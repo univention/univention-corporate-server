@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#! /usr/bin/python3
 """Unit test for univention.into_tools."""
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest
@@ -98,22 +98,22 @@ class TestLocalizedDictionary(unittest.TestCase):
 	def test_in(self):
 		"""in and has_key()."""
 		self.assertFalse('foo' in self.obj)
-		self.assertFalse(self.obj.has_key('foo'))
+		self.assertFalse('foo' in self.obj)
 		self.obj['foo'] = 'bar'
 		self.assertTrue('foO' in self.obj)
-		self.assertTrue(self.obj.has_key('foO'))
+		self.assertTrue('foO' in self.obj)
 
 	def test_in_locale(self):
 		"""in and has_key() with locale request."""
 		self.obj['foo'] = 'bar'
 		self.assertTrue('foO[fr]' in self.obj)
-		self.assertTrue(self.obj.has_key('foO[fr]'))
+		self.assertTrue('foO[fr]' in self.obj)
 
 	def test_in_locale_set(self):
 		"""in and has_key() with locale set."""
 		self.obj['foo[fr]'] = 'bar'
 		self.assertTrue('foO' in self.obj)
-		self.assertTrue(self.obj.has_key('foO'))
+		self.assertTrue('foO' in self.obj)
 
 	def test_normalize(self):
 		"""normalize()."""
@@ -122,7 +122,7 @@ class TestLocalizedDictionary(unittest.TestCase):
 			'foo[en]': 'baz',
 			'foo': 'bam',
 		}
-		for key, value in reference.items():
+		for key, value in list(reference.items()):
 			self.obj[key] = value
 		norm = self.obj.normalize('foo')
 		self.assertEqual(norm, reference)
@@ -133,7 +133,7 @@ class TestLocalizedDictionary(unittest.TestCase):
 			'foo[fr]': 'bar',
 			'foo[en]': 'baz',
 		}
-		for key, value in reference.items():
+		for key, value in list(reference.items()):
 			self.obj[key] = value
 		var = self.obj.get_dict('foo')
 		self.assertTrue(isinstance(var, uit.LocalizedValue))

@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 """Univention Configuration Registry helper functions."""
@@ -51,9 +52,9 @@ def replace_dict(line, dictionary):
 
 
 def replace_umlaut(line):
-	u"""Replace german umlauts.
-	>>> replace_umlaut(u'überschrieben')
-	u'ueberschrieben'
+	"""Replace german umlauts.
+	>>> replace_umlaut('überschrieben')
+	'ueberschrieben'
 	"""
 	return replace_dict(line, replace_umlaut.UMLAUTS)  # pylint: disable-msg=E1101
 
@@ -78,13 +79,13 @@ except ImportError:
 
 
 replace_umlaut.UMLAUTS = {  # pylint: disable-msg=W0612
-	u'Ä': 'Ae',
-	u'ä': 'ae',
-	u'Ö': 'Oe',
-	u'ö': 'oe',
-	u'Ü': 'Ue',
-	u'ü': 'ue',
-	u'ß': 'ss',
+	'Ä': 'Ae',
+	'ä': 'ae',
+	'Ö': 'Oe',
+	'ö': 'oe',
+	'Ü': 'Ue',
+	'ü': 'ue',
+	'ß': 'ss',
 }
 
 
@@ -113,22 +114,20 @@ def validate_key(key, out=sys.stderr):
 	key = replace_umlaut(key)
 
 	if old != key:
-		print >> out, \
-			'Please fix invalid umlaut in config variable key "%s" to %s.' % \
-			(old, key)
+		print('Please fix invalid umlaut in config variable key "%s" to %s.' % \
+			(old, key), file=out)
 		return False
 
 	if len(key) > 0:
 		if ': ' in key:
-			print >> out, 'Please fix invalid ": " in config variable key "%s".' % (key,)
+			print('Please fix invalid ": " in config variable key "%s".' % (key,), file=out)
 			return False
 		match = INVALID_KEY_CHARS.search(key)
 
 		if not match:
 			return True
-		print >> out, \
-			'Please fix invalid character "%s" in config variable key "%s".' % \
-			(match.group(), key)
+		print('Please fix invalid character "%s" in config variable key "%s".' % \
+			(match.group(), key), file=out)
 	return False
 
 

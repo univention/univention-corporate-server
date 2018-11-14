@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
@@ -42,7 +43,7 @@ def doIt(*argv):
 	0
 	"""
 	if os.environ.get('DH_VERBOSE', False):
-		print '\t%s' % ' '.join(argv)
+		print('\t%s' % ' '.join(argv))
 	return subprocess.call(argv)
 
 

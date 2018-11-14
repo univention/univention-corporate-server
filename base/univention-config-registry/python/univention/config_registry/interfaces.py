@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Common Python Library
@@ -33,7 +33,7 @@
 
 # pylint: disable-msg=W0142,C0103,R0201,R0904
 
-from backend import ConfigRegistry
+from .backend import ConfigRegistry
 from ipaddr import IPv4Address, IPv4Network, IPv6Address, IPv6Network
 from sys import maxsize
 import re
@@ -69,7 +69,7 @@ def forgiving(translation=None):
 				return func(self, *args, **kwargs)
 			except Exception as ex:
 				best = None
-				for cls, _value in translation.items():
+				for cls, _value in list(translation.items()):
 					if isinstance(ex, cls):
 						if best is None or issubclass(cls, best):
 							best = cls
@@ -235,7 +235,7 @@ class Interfaces(object):
 			self.ipv6_gateway_zone_index = None
 
 		self._all_interfaces = {}
-		for key, value in ucr.items():
+		for key, value in list(ucr.items()):
 			if not value:
 				continue
 			match = RE_IFACE.match(key)
@@ -270,14 +270,14 @@ class Interfaces(object):
 	@property
 	def all_interfaces(self):
 		"""Yield IPv4 interfaces."""
-		for name_settings in sorted(self._all_interfaces.items(),
+		for name_settings in sorted(list(self._all_interfaces.items()),
 				key=lambda name_iface: self._cmp_order(name_iface[1])):
 			yield name_settings
 
 	@property
 	def ipv4_interfaces(self):
 		"""Yield IPv4 interfaces."""
-		for name, iface in sorted(self._all_interfaces.items(),
+		for name, iface in sorted(list(self._all_interfaces.items()),
 				key=lambda _name_iface: self._cmp_order(_name_iface[1])):
 			if iface.ipv4_address() is not None:
 				yield (name, iface)
@@ -285,7 +285,7 @@ class Interfaces(object):
 	@property
 	def ipv6_interfaces(self):
 		"""Yield names of IPv6 interfaces."""
-		for iface in sorted(self._all_interfaces.values(),
+		for iface in sorted(list(self._all_interfaces.values()),
 				key=self._cmp_order):
 			for name in sorted(iface.ipv6_names, key=self._cmp_name):
 				if iface.ipv6_address(name):
@@ -293,7 +293,7 @@ class Interfaces(object):
 
 	def get_default_ip_address(self):
 		"""returns the default IP address."""
-		for iface in sorted(self._all_interfaces.values(),
+		for iface in sorted(list(self._all_interfaces.values()),
 				key=self._cmp_primary):
 			addr = iface.ipv4_address()
 			if addr:
@@ -305,7 +305,7 @@ class Interfaces(object):
 
 	def get_default_ipv4_address(self):
 		"""returns the default IPv4 address."""
-		for iface in sorted(self._all_interfaces.values(),
+		for iface in sorted(list(self._all_interfaces.values()),
 				key=self._cmp_primary):
 			addr = iface.ipv4_address()
 			if addr:
@@ -313,7 +313,7 @@ class Interfaces(object):
 
 	def get_default_ipv6_address(self):
 		"""returns the default IPv6 address."""
-		for iface in sorted(self._all_interfaces.values(),
+		for iface in sorted(list(self._all_interfaces.values()),
 				key=self._cmp_primary):
 			for name in sorted(iface.ipv6_names, key=self._cmp_name):
 				addr = iface.ipv6_address(name)

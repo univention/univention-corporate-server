@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#! /usr/bin/python3
 """Unit test for univention.config_registry.backend."""
 # pylint: disable-msg=C0103,E0611,R0904
 import unittest
@@ -7,6 +7,7 @@ import sys
 import tempfile
 import shutil
 import time
+import gc
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'python'))
 from univention.config_registry.backend import ConfigRegistry
 
@@ -147,13 +148,13 @@ class TestConfigRegistry(unittest.TestCase):
 	def test_has_key_unset(self):
 		"""Test unset ucr.has_key(key)."""
 		ucr = ConfigRegistry()
-		self.assertFalse(ucr.has_key('foo'))
+		self.assertFalse('foo' in ucr)
 
 	def test_has_key_set(self):
 		"""Test set ucr.has_key(key)."""
 		ucr = ConfigRegistry()
 		ucr['foo'] = 'bar'
-		self.assertTrue(ucr.has_key('foo'))
+		self.assertTrue('foo' in ucr)
 
 	def test_has_key_write_unset(self):
 		"""Test unset ucr.has_key(key, True)."""
@@ -229,7 +230,7 @@ class TestConfigRegistry(unittest.TestCase):
 		"""Test merged items."""
 		ucr = self._setup_layers()
 		self.assertEqual(
-			sorted(ucr.iteritems()),
+			sorted(ucr.items()),
 			sorted([('foo', 'FORCED'), ('bar', 'FORCED'), ('baz', 'NORMAL')])
 		)
 
@@ -245,7 +246,7 @@ class TestConfigRegistry(unittest.TestCase):
 		"""Test merged keys."""
 		ucr = self._setup_layers()
 		self.assertEqual(
-			sorted(ucr.iterkeys()),
+			sorted(ucr.keys()),
 			sorted(['foo', 'bar', 'baz'])
 		)
 
@@ -261,7 +262,7 @@ class TestConfigRegistry(unittest.TestCase):
 		"""Test merged items."""
 		ucr = self._setup_layers()
 		self.assertEqual(
-			sorted(ucr.itervalues()),
+			sorted(ucr.values()),
 			sorted(['FORCED', 'FORCED', 'NORMAL'])
 		)
 
@@ -269,6 +270,7 @@ class TestConfigRegistry(unittest.TestCase):
 		"""Test set ucr.clear()."""
 		ucr = self._setup_layers()
 		ucr.clear()
+		print("TESTSTRING: " + str(ucr.get('baz', getscope=True)))
 		self.assertEqual(ucr.get('foo', getscope=True), (ConfigRegistry.FORCED, 'FORCED'))
 		self.assertEqual(ucr.get('bar', getscope=True), (ConfigRegistry.FORCED, 'FORCED'))
 		self.assertIsNone(ucr.get('baz', getscope=True))
@@ -367,7 +369,7 @@ class TestConfigRegistry(unittest.TestCase):
 		if not pid1:  # child 1
 			os.close(read_end)
 			ucr.lock()
-			os.write(write_end, '1')
+			os.write(write_end, b'1')
 			time.sleep(delay)
 			ucr.unlock()
 			os._exit(0)

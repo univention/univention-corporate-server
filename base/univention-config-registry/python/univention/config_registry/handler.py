@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 """Univention Configuration Registry handlers."""
@@ -39,7 +40,7 @@ import os
 import random
 import re
 import subprocess
-import cPickle
+import pickle
 import errno
 from pwd import getpwnam
 from grp import getgrnam
@@ -74,8 +75,8 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 	while True:
 		i = VARIABLE_TOKEN.finditer(template)
 		try:
-			start = i.next()
-			end = i.next()
+			start = next(i)
+			end = next(i)
 			name = template[start.end():end.start()]
 
 			if name in directory:
@@ -101,8 +102,8 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 	while True:
 		i = EXECUTE_TOKEN.finditer(template)
 		try:
-			start = i.next()
-			end = i.next()
+			start = next(i)
+			end = next(i)
 
 			proc = subprocess.Popen((sys.executable,),
 				stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -132,7 +133,7 @@ def run_script(script, arg, changes):
 	value', and the 'new value' are passed separated by '@%@'.
 	"""
 	diff = []
-	for key, value in changes.items():
+	for key, value in list(changes.items()):
 		if value and len(value) > 1 and value[0] and value[1]:
 			diff.append('%s@%%@%s@%%@%s\n' % (key, value[0], value[1]))
 
@@ -157,7 +158,7 @@ def run_module(modpath, arg, ucr, changes):
 		module = __import__(module_name.replace(os.path.sep, '.'))
 		arg2meth[arg](module)(ucr, changes)
 	except (AttributeError, ImportError) as ex:
-		print >> sys.stderr, ex
+		print(ex, file=sys.stderr)
 	del sys.path[0]
 
 
@@ -318,7 +319,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 	def __call__(self, args):
 		"""Generate multfile from subfile templates."""
 		ucr, changed = args
-		print 'Multifile: %s' % self.to_file
+		print('Multifile: %s' % self.to_file)
 
 		if hasattr(self, 'preinst') and self.preinst:
 			run_module(self.preinst, 'preinst', ucr, changed)
@@ -407,7 +408,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 		if hasattr(self, 'preinst') and self.preinst:
 			run_module(self.preinst, 'preinst', ucr, changed)
 
-		print 'File: %s' % self.to_file
+		print('File: %s' % self.to_file)
 
 		to_dir = os.path.dirname(self.to_file)
 		if not os.path.isdir(to_dir):
@@ -416,7 +417,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 		try:
 			stat = os.stat(self.from_file)
 		except EnvironmentError:
-			print >> sys.stderr, "The referenced template file does not exist"
+			print("The referenced template file does not exist", file=sys.stderr)
 			return None
 
 		tmp_to_file = self._temp_file_name()
@@ -484,7 +485,7 @@ class ConfigHandlerScript(ConfigHandler):
 	def __call__(self, args):
 		"""Call external programm after change."""
 		_ucr, changed = args
-		print 'Script: %s' % self.script
+		print('Script: %s' % self.script)
 		if os.path.isfile(self.script):
 			run_script(self.script, 'generate', changed)
 
@@ -516,7 +517,7 @@ class ConfigHandlerModule(ConfigHandler):
 	def __call__(self, args):
 		"""Call python module after change."""
 		ucr, changed = args
-		print 'Module: %s' % self.module
+		print('Module: %s' % self.module)
 		run_module(self.module, 'generate', ucr, changed)
 
 
@@ -568,20 +569,20 @@ class ConfigHandlers:
 				chv = ConfigHandlers
 				if not chv.VERSION_MIN <= version <= chv.VERSION_MAX:
 					raise TypeError("Invalid cache file version.")
-				pickler = cPickle.Unpickler(cache_file)
+				pickler = pickle.Unpickler(cache_file)
 				self._handlers = pickler.load()
 				if version <= 1:
 					# version <= 1: _handlers[multifile] -> [handlers]
 					# version >= 2: _handlers[multifile] -> set([handlers])
 					self._handlers = dict(((k, set(v)) for k, v in
-						self._handlers.items()))
+						list(self._handlers.items())))
 					# version <= 1: _files UNUSED
 					_files = pickler.load()
 				self._subfiles = pickler.load()
 				self._multifiles = pickler.load()
 			finally:
 				cache_file.close()
-		except (Exception, cPickle.UnpicklingError):
+		except (Exception, pickle.UnpicklingError):
 			self.update()
 
 	def strip_basepath(self, path, basepath):
@@ -620,8 +621,8 @@ class ConfigHandlers:
 			try:
 				handler.user = getpwnam(user).pw_uid
 			except LookupError:
-				print >> sys.stderr, ('W: failed to convert the username ' +
-					'%s to the uid' % (user,))
+				print(('W: failed to convert the username ' +
+					'%s to the uid' % (user,)), file=sys.stderr)
 
 		try:
 			group = entry['Group'][0]
@@ -631,8 +632,8 @@ class ConfigHandlers:
 			try:
 				handler.group = getgrnam(group).gr_gid
 			except LookupError:
-				print >> sys.stderr, ('W: failed to convert the groupname ' +
-					'%s to the gid' % (group,))
+				print(('W: failed to convert the groupname ' +
+					'%s to the gid' % (group,)), file=sys.stderr)
 
 		try:
 			mode = entry['Mode'][0]
@@ -642,7 +643,7 @@ class ConfigHandlers:
 			try:
 				handler.mode = int(mode, 8)
 			except ValueError:
-				print >> sys.stderr, 'W: failed to convert mode %s' % (mode,)
+				print('W: failed to convert mode %s' % (mode,), file=sys.stderr)
 
 	def _get_handler_file(self, entry):
 		"""Parse file entry and return Handler instance."""
@@ -722,7 +723,7 @@ class ConfigHandlers:
 			finally:
 				temp_file.close()
 		except EnvironmentError:
-			print >> sys.stderr, "Failed to process Subfile %s" % (name,)
+			print("Failed to process Subfile %s" % (name,), file=sys.stderr)
 			return None
 		qentry = (name, variables)
 		# if multifile handler does not yet exists, queue subfiles for later
@@ -789,7 +790,7 @@ class ConfigHandlers:
 			tmp_handler = ConfigHandlerDiverting(path)
 			tmp_handler.uninstall_divert()
 		# Install missing diversions still wanted
-		for path, handler in wanted.items():
+		for path, handler in list(wanted.items()):
 			handler.install_divert()
 
 	def _save_cache(self):
@@ -797,7 +798,7 @@ class ConfigHandlers:
 		try:
 			with open(ConfigHandlers.CACHE_FILE, 'w') as cache_file:
 				cache_file.write(ConfigHandlers.VERSION_NOTICE)
-				pickler = cPickle.Pickler(cache_file)
+				pickler = pickle.Pickler(cache_file)
 				pickler.dump(self._handlers)
 				pickler.dump(self._subfiles)
 				pickler.dump(self._multifiles)
@@ -858,8 +859,8 @@ class ConfigHandlers:
 			else:
 				continue
 			if not handler:  # Bug #17913
-				print >> sys.stderr, ("Skipping internal error: no handler " +
-					"for %r in %s" % (section, package))
+				print(("Skipping internal error: no handler " +
+					"for %r in %s" % (section, package)), file=sys.stderr)
 				continue
 			if handler.uninstall_divert():
 				obsolete_handlers.add(handler)
@@ -880,11 +881,11 @@ class ConfigHandlers:
 			return
 		pending_handlers = set()
 
-		for reg_var, handlers in self._handlers.items():
+		for reg_var, handlers in list(self._handlers.items()):
 			try:
 				_re = re.compile(reg_var)
 			except re.error as ex:
-				print >> sys.stderr, 'Failed to compile regular expression %s: %s' % (reg_var, ex)
+				print('Failed to compile regular expression %s: %s' % (reg_var, ex), file=sys.stderr)
 				continue
 
 			for variable in variables:
@@ -932,7 +933,7 @@ class ConfigHandlers:
 		"""Call handler passing current configuration variables."""
 		values = {}
 		for variable in handler.variables:
-			if variable in self._handlers.keys():
+			if variable in list(self._handlers.keys()):
 				if ".*" in variable:
 					for i in range(4):
 						val = variable.replace(".*", "%s" % i)

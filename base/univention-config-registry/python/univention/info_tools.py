@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
@@ -30,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import ConfigParser
+import configparser
 import re
 
 # default locale
@@ -121,7 +122,7 @@ class LocalizedDictionary(dict):
 
 		temp = {}
 		variable = dict.__getitem__(self, key)
-		for locale, value in variable.items():
+		for locale, value in list(variable.items()):
 			temp['%s[%s]' % (key, locale)] = value
 
 		if variable.get_default():
@@ -133,7 +134,7 @@ class LocalizedDictionary(dict):
 		if key:
 			return self.__normalize_key(key)
 		temp = {}
-		for key in self.keys():
+		for key in list(self.keys()):
 			temp.update(self.__normalize_key(key))
 		return temp
 
@@ -155,21 +156,21 @@ class LocalizedDictionary(dict):
 # my config parser
 
 
-class UnicodeConfig(ConfigParser.ConfigParser):
+class UnicodeConfig(configparser.ConfigParser):
 
 	def __init__(self):
-		ConfigParser.ConfigParser.__init__(self)
+		configparser.ConfigParser.__init__(self)
 
 	def write(self, fp):
 		"""Write an .ini-format representation of the configuration state."""
 		if self._defaults:
-			fp.write("[%s]\n" % ConfigParser.DEFAULTSECT)
-			for (key, value) in self._defaults.items():
+			fp.write("[%s]\n" % configparser.DEFAULTSECT)
+			for (key, value) in list(self._defaults.items()):
 				fp.write("%s = %s\n" % (key, str(value).replace('\n', '\n\t')))
 			fp.write("\n")
 		for section in self._sections:
 			fp.write("[%s]\n" % section)
-			for (key, value) in self._sections[section].items():
+			for (key, value) in list(self._sections[section].items()):
 				if key != "__name__":
 					fp.write("%s = %s\n" % (key, value.replace('\n', '\n\t')))
 			fp.write("\n")

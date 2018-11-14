@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 """Univention Configuration Registry backend for data storage."""
@@ -51,9 +52,8 @@ class StrictModeException(Exception):
 
 def exception_occured(out=sys.stderr):
 	"""Print exception message and exit."""
-	print >> out, 'E: your request could not be fulfilled'
-	print >> out, \
-		'try `univention-config-registry --help` for more information'
+	print('E: your request could not be fulfilled', file=out)
+	print('try `univention-config-registry --help` for more information', file=out)
 	sys.exit(1)
 
 
@@ -66,7 +66,7 @@ class ConfigRegistry(MutableMapping):
 	Merged persistent value store.
 	This is a merged view of several sub-registries.
 	"""
-	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM, MAX = range(6)
+	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM, MAX = list(range(6))
 	PREFIX = '/etc/univention'
 	BASES = {
 		NORMAL: 'base.conf',
@@ -102,11 +102,11 @@ class ConfigRegistry(MutableMapping):
 
 	def load(self):
 		"""Load registry from file."""
-		for reg in self._registry.values():
+		for reg in list(self._registry.values()):
 			if isinstance(reg, _ConfigRegistry):
 				reg.load()
 		strict = self.is_true('ucr/encoding/strict')
-		for reg in self._registry.values():
+		for reg in list(self._registry.values()):
 			if isinstance(reg, _ConfigRegistry):
 				reg.strict_encoding = strict
 
@@ -143,6 +143,8 @@ class ConfigRegistry(MutableMapping):
 	def __delitem__(self, key):
 		"""Delete registry key."""
 		registry = self._registry[self.scope]
+		if key in ('baz', 'bar', 'foo'):
+			print('abc %s %s' % (self.scope, key))
 		del registry[key]
 
 	def __getitem__(self, key):
@@ -170,9 +172,17 @@ class ConfigRegistry(MutableMapping):
 
 	def __iter__(self):
 		"""Iterate over all registry keys."""
-		merge = self._merge()
-		for key in merge:
-			yield key
+		self.merge = list(self._merge())
+		# for key in merge:
+		# 	yield key
+		return self
+
+	def __next__(self):
+		if len(self.merge) > 0:
+			print(len(self.merge))
+			return self.merge.pop()
+		else:
+			raise StopIteration
 
 	def __len__(self):
 		"""Return length."""
@@ -215,7 +225,7 @@ class ConfigRegistry(MutableMapping):
 			registry = self._registry[reg]
 			if not isinstance(registry, _ConfigRegistry):
 				continue
-			for key, value in registry.items():
+			for key, value in list(registry.items()):
 				if key not in merge:
 					merge[key] = (reg, value) if getscope else value
 		return merge
@@ -223,12 +233,12 @@ class ConfigRegistry(MutableMapping):
 	def items(self, getscope=False):
 		"""Return all registry entries a 2-tuple (key, value) or (key, (scope, value)) if getscope is True."""
 		merge = self._merge(getscope=getscope)
-		return merge.items()
+		return list(merge.items())
 
 	def __str__(self):
 		"""Return registry content as string."""
 		merge = self._merge()
-		return '\n'.join(['%s: %s' % (key, val) for key, val in merge.items()])
+		return '\n'.join(['%s: %s' % (key, val) for key, val in list(merge.items())])
 
 	def is_true(self, key=None, default=False, value=None):
 		"""Return if the strings value of key is considered as true."""
@@ -253,7 +263,7 @@ class ConfigRegistry(MutableMapping):
 		"""
 		registry = self._registry[self.scope]
 		changed = {}
-		for key, value in changes.iteritems():
+		for key, value in changes.items():
 			old_value = registry.get(key, None)
 			if value is None:
 				try:
@@ -283,7 +293,7 @@ class _ConfigRegistry(dict):
 
 	def __init__(self, filename=None):
 		dict.__init__(self)
-		if file:
+		if filename:
 			self.file = filename
 		else:
 			self.file = '/etc/univention/base.conf'
@@ -340,7 +350,7 @@ class _ConfigRegistry(dict):
 		except EnvironmentError as ex:
 			if ex.errno != errno.EEXIST:
 				msg = "E: file '%s' does not exist and could not be created"
-				print >> sys.stderr, msg % (self.file,)
+				print(msg % (self.file,), file=sys.stderr)
 				exception_occured()
 
 	def __save_file(self, filename):
