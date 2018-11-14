@@ -3,9 +3,10 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-appcenter
-fix: 7.0.2-39A~4.3.0.201811131350
+fix: 7.0.2-41A~4.3.0.201811140855
 desc: |-
   This update addresses the following issue(s):
   * The App Center now supports Apps that require multiple containers to work
     by using docker-compose.
-bug: [43612]
+  * Checkboxes in the App-Settings were marked as required in the HTML causing problems when submitting the form
+bug: [43612,47824]
