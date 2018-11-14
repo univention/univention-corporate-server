@@ -1,30 +1,4 @@
-create_share_memberslave () {
-
-	set -x
-	set -e
-
-	# add share and printer to slave and member server
-	# Windows-Heimatverzeichnis" am Benutzer auf \\memberserver\homes setzen, "Laufwerk für das Windows-Heimatverzeichnis" muss vermutlich auch gesetzt werden. TODO teilweise abgedeckt mit untere Fall
-	#	Login als Benutzer, Heimatverzeichnis sollte verbunden sein. Datei anlegen. DONE: Shares on memberserver and slave are mounted and tested on Windowsclient
-	#    Anlegen eines Shares auf dem DC Slave und auf dem Memberserver :DONE
-	#	Anlegen eines Druckers auf dem DC Slave und auf dem Memberserver DONE
-	udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set name="Memberprinter" --set spoolHost="ucs-member.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
-	udm shares/share create --position "cn=shares,dc=sambatest,dc=local" --set name="testshareMember" --set host="ucs-member.sambatest.local" --set path="/home/testshare"
-	udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set name="Slaveprinter" --set spoolHost="ucs-slave.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
-	udm shares/share create --position "cn=shares,dc=sambatest,dc=local" --set name="testshareSlave" --set host="ucs-slave.sambatest.local" --set path="/home/testshare"
-	#create gpo on Backup to check if change of DC is possible
-	#    Per Gruppenrichtlineinverwaltung (GPMC) vom Client aus auf den DC Salve wechseln (Rechts-click auf Domäne, anderen DC auswählen). DONE: simulated by creating a new GPO with Slave as DC
-	python shared-utils/ucs-winrm.py create-gpo-server --credssp --name NewGPOinSlave --comment "testing new GPO in domain" --server $SLAVE
-	sleep 30
-	python shared-utils/ucs-winrm.py link-gpo --name NewGPOinSlave --target "dc=sambatest,dc=local" --credssp
-	# Per Gruppenrichtlineinverwaltung (GPMC) vom Client aus auf den DC Backup wechseln (Rechts-click auf Domäne, anderen DC auswählen)
-	# und dort z.B. die Benutzer-Richtlinie anpassen (z.B. einfach Lautstärkesymbol entfernen -> deaktivieren/Ok). Es sollte keine Fehlermeldung kommen. DONE : simulated by creating GPO with Backup as DC
-	python shared-utils/ucs-winrm.py create-gpo-server --credssp --name NewGPOinBackup --comment "testing new GPO in domain" --server $BACKUP
-	sleep 30
-	python shared-utils/ucs-winrm.py link-gpo --name NewGPOinBackup --target "dc=sambatest,dc=local" --credssp
-}
-
-multi_server_master () {
+prepare_master () {
 
 	set -x
 	set -e
@@ -39,13 +13,13 @@ multi_server_master () {
 	fi
 
 	#activate umaintained repo TODO remove, siehe cfg
-	ucr set repository/online/unmaintained='yes'
-	apt update
-	univention-install -y faketime
+	#ucr set repository/online/unmaintained='yes'
+	#apt update
+	#univention-install -y faketime
 
  	ucr set server/password/interval='0'
 	/usr/lib/univention-server/server_password_change
-	univention-install --yes univention-printserver-pdf
+	#univention-install --yes univention-printserver-pdf
 
 	# get windows client info/name
 	python shared-utils/ucs-winrm.py run-ps --cmd ipconfig
@@ -61,7 +35,13 @@ multi_server_master () {
 	udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set name="Masterprinter" --set spoolHost=$(hostname -A) --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
 
 	python shared-utils/ucs-winrm.py domain-join --domain sambatest.local --dnsserver "$UCS" --domainuser "administrator" --domainpassword "$ADMIN_PASSWORD"
-
+	#Uhrzeit prüfen: Sollte synchron zum DC Master sein (automatischer Abgleich per NTP). DONE
+	python shared-utils/ucs-winrm.py run-ps --credssp --cmd 'Get-Date -Format t' > date
+	WINTIME="$(sed -n 1p date | cut -c1-5)"
+	UCSTIME="$(date -u +"%H:%M")"
+	if  [ $WINTIME == $UCSTIME ]; then
+        	echo "time is synced"
+	fi
 	# Anmeldung auf dem System als Domänen-Benutzer (normales Mitglied von Domain Users). Done
 	python shared-utils/ucs-winrm.py domain-user-validate-password --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
 
@@ -76,7 +56,6 @@ multi_server_master () {
 	python shared-utils/ucs-winrm.py run-ps --credssp --cmd 'set-GPPrefRegistryValue -Name NewGPO -Context User -key "HKCU\Environment" -ValueName NewGPO -Type String -value NewGPO -Action Update'
 	sleep 150
 
-	# TODO A better check on client for applied GPOs
 	python shared-utils/ucs-winrm.py create-share-file --server $UCS --share "testshare" --filename "testfile.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py create-share-file --server $UCS --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share Administrator
 	stat /home/Administrator/test-admin.txt
@@ -114,7 +93,7 @@ multi_server_master () {
 	#printertest network printer in master
 	#	Zugriff als Domänen-Administrator vom Windowsclient aus DONE
 	#	serverseitig einen Druckertreiber hinterlegen, am einfachsten von 32bit XP aus (Windows 7 ist ein bisschen anders, 64bit ist zusätzlich hakelig ).
-	#	Verbinden eines Druckers als unpriviligierter Benutzer vom Windowsclient aus TODO
+	#	Verbinden eines Druckers als unpriviligierter Benutzer vom Windowsclient aus DONE
 	#	Testdruck von wordpad aus auf den verbundenen Drucker DONE
 	#    Druckerzugriff mit serverseitig hinterlegten Druckertreibern: DONE
 	python shared-utils/ucs-winrm.py setup-printer --printername Masterprinter --server "$UCS"
@@ -158,8 +137,28 @@ multi_server_master () {
 
 	test -z "$(find /var -name core)"
 
+	# add share and printer to slave and member server
+	# Windows-Heimatverzeichnis" am Benutzer auf \\memberserver\homes setzen, "Laufwerk für das Windows-Heimatverzeichnis" muss vermutlich auch gesetzt werden. TODO teilweise abgedeckt mit untere Fall
+	#	Login als Benutzer, Heimatverzeichnis sollte verbunden sein. Datei anlegen. DONE: Shares on memberserver and slave are mounted and tested on Windowsclient
+	#    Anlegen eines Shares auf dem DC Slave und auf dem Memberserver :DONE
+	#	Anlegen eines Druckers auf dem DC Slave und auf dem Memberserver DONE
+	udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set name="Memberprinter" --set spoolHost="ucs-member.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
+	udm shares/share create --position "cn=shares,dc=sambatest,dc=local" --set name="testshareMember" --set host="ucs-member.sambatest.local" --set path="/home/testshare"
+	udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set name="Slaveprinter" --set spoolHost="ucs-slave.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
+	udm shares/share create --position "cn=shares,dc=sambatest,dc=local" --set name="testshareSlave" --set host="ucs-slave.sambatest.local" --set path="/home/testshare"
+	#create gpo on Backup to check if change of DC is possible
+	#    Per Gruppenrichtlineinverwaltung (GPMC) vom Client aus auf den DC Salve wechseln (Rechts-click auf Domäne, anderen DC auswählen). DONE: simulated by creating a new GPO with Slave as DC
+	python shared-utils/ucs-winrm.py create-gpo-server --credssp --name NewGPOinSlave --comment "testing new GPO in domain" --server $SLAVE
+	sleep 30
+	python shared-utils/ucs-winrm.py link-gpo --name NewGPOinSlave --target "dc=sambatest,dc=local" --credssp
+	# Per Gruppenrichtlineinverwaltung (GPMC) vom Client aus auf den DC Backup wechseln (Rechts-click auf Domäne, anderen DC auswählen)
+	# und dort z.B. die Benutzer-Richtlinie anpassen (z.B. einfach Lautstärkesymbol entfernen -> deaktivieren/Ok). Es sollte keine Fehlermeldung kommen. DONE : simulated by creating GPO with Backup as DC
+	python shared-utils/ucs-winrm.py create-gpo-server --credssp --name NewGPOinBackup --comment "testing new GPO in domain" --server $BACKUP
+	sleep 30
+	python shared-utils/ucs-winrm.py link-gpo --name NewGPOinBackup --target "dc=sambatest,dc=local" --credssp
+	
 	echo "Success"
-
+	
 	# Check list
 	#Es sollte eine größere UCS Domäne aufgesetzt werden, also DC Master, DC Backup, DC Slave und Memberserver zusätzlich sollte ein RODC installiert werden, siehe Produkttests UCS 3.2 Samba 4#Read-Only-DC. Auf allen Systemen sollte Samba4 (optional Printserver) im Installer ausgewählt werden. Auf dem Memberserver Samba 3. Done: see cfg file
 	#Auf allen Systemen sollte einmal server-password-change aufgerufen werden Done: cfg file
@@ -174,7 +173,6 @@ multi_server_master () {
 	#
 	#Es sollten die AD Tools auf einem Windows Client installiert werden: http://wiki.univention.de/index.php?title=UCS_3.0_Samba_4#Manage_users_with_Active_Directory_tools : As of now impossible beacuse WinRM cannot use AD Tools
 	#(Achtung: "Administrator" ist nicht "MYDOM\Administrator"! Ersterer ist nur der lokale Administrator.).
-	#Uhrzeit prüfen: Sollte synchron zum DC Master sein (automatischer Abgleich per NTP). TODO Windows client has different Timezone than UCS Master, but time are synced
 
 	#GPO
 	#Es sollten die Remote Administration Tools auf dem Windows Client installiert werden, siehe hier
@@ -192,7 +190,7 @@ multi_server_master () {
 	#Änderung
 }
 
-ms_test_memberslave () {
+test_master () {
 
 	set -x
 	set -e
@@ -205,8 +203,8 @@ ms_test_memberslave () {
 	python shared-utils/ucs-winrm.py check-share --server $MEMBER --sharename "testshareMember" --driveletter R --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py check-share --server $SLAVE --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
 	#map printer driver names to network printers
-	#python shared-utils/ucs-winrm.py setup-printer --printername Slaveprinter --server "$SLAVE"
-	#python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$MEMBER"
+	python shared-utils/ucs-winrm.py setup-printer --printername Slaveprinter --server "$SLAVE"
+	python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$MEMBER"
 	#    Druckerzugriff ohne serverseitige Druckertreiber DONE
 	python shared-utils/ucs-winrm.py run-ps --cmd "Add-Printer -Connectionname \\\\$SLAVE\Slaveprinter" --impersonate --run-as-user Administrator
 	python shared-utils/ucs-winrm.py run-ps --cmd "Add-Printer -Connectionname \\\\$MEMBER\Memberprinter" --impersonate --run-as-user Administrator
@@ -215,6 +213,8 @@ ms_test_memberslave () {
 	#	Testdruck von wordpad aus auf den verbundenen Drucker DONE simulated with Powershell commands
 	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server $MEMBER --impersonate --run-as-user Administrator
 	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server $SLAVE --impersonate --run-as-user Administrator
+	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "$MEMBER" --impersonate --run-as-user newuser01 --run-as-password "Univention123!"
+	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server "$SLAVE" --impersonate --run-as-user newuser01 --run-as-password "Univention123!"
 	#check sysvol of backup and slave
 	#    SYSVOL-Replikation nach >=(2 mal 5) Minuten
 	#	Vergleich /var/lib/samba/sysvol/$domainname/Policies auf DC Master und DC Backup mit dem DC Slave. TODO, test
@@ -227,11 +227,12 @@ ms_test_memberslave () {
 	python shared-utils/ucs-winrm.py run-ps --cmd "ping ucs-backup" --impersonate --run-as-user Administrator
 	python shared-utils/ucs-winrm.py run-ps --cmd "ping ucs-member" --impersonate --run-as-user Administrator
 	samba-tool ntacl sysvolreset || true
+	python shared-utils/ucs-winrm.py domain-join --domain sambatest.local --dnsserver "$UCS" --client "$WINCLIENT2" --user "Administrator" --password "$WINCLIENT2_PASSWORD" --domainuser "administrator" --domainpassword "$ADMIN_PASSWORD"
 }
 
 
 # TODO set -x ...
-prepare-nonmaster () {
+prepare_nonmaster () {
 
 	set -x
 	set -e
@@ -240,24 +241,29 @@ prepare-nonmaster () {
 	test -z "$(find /var -name core)"
 }
 
-prepareslaveprinter () {
- #univention-install --yes univention-printserver-pdf
- rpcclient localhost -U "SAMBATEST\administrator%Univention@99#+?=$" -c 'setdriver "Slaveprinter" "MS Publisher Color Printer"'
- echo "halli hallo" > /home/testshare/test.txt
+prepare_slave () {
+	set -e
+	set -x
+	#univention-install --yes univention-printserver-pdf
+	#rpcclient localhost -U "SAMBATEST\administrator%Univention@99#+?=$" -c 'setdriver "Slaveprinter" "MS Publisher Color Printer"'
+	echo "Hello World" > /home/testshare/test.txt
 }
-preparememberprinter () {
- #univention-install --yes univention-printserver-pdf
- rpcclient localhost -U "SAMBATEST\administrator%Univention@99#+?=$" -c 'setdriver "Memberprinter" "MS Publisher Color Printer"'
- echo "halli hallo" > /home/testshare/test.txt
+prepare_member () {
+	set -e
+	set -x
+	#univention-install --yes univention-printserver-pdf
+	#rpcclient localhost -U "SAMBATEST\administrator%Univention@99#+?=$" -c 'setdriver "Memberprinter" "MS Publisher Color Printer"'
+	echo "Hello World" > /home/testshare/test.txt
 }
 
-testprinter_nonmaster () {
+test_nonmaster () {
 	set -e
 	set -x
 	stat /var/spool/cups-pdf/administrator/job_1-document.pdf
+	stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
 }
 
-rodc_test () {
+test_rodc () {
 
 	set -x
 	set -e
@@ -271,8 +277,8 @@ rodc_test () {
 }
 
 # TODO
-# drucken als unpriviligierter Benutzer
-# Funktionsnamen $server/rolle_prepare bzw. ..._test
-# python shared-utils/ucs-winrm.py setup-printer statt  rpcclient localhost
-# tabs statt spaces
+# drucken als unpriviligierter Benutzer DONE
+# Funktionsnamen $server/rolle_prepare bzw. ..._test DONE
+# python shared-utils/ucs-winrm.py setup-printer statt  rpcclient localhost DONE
+# tabs statt spaces DONE
 # samba/utils.sh verwenden
