@@ -11,3 +11,5 @@ desc: |
    different hosts were contacted for those connections, which could lead to
    inconsistencies in LDAP replication.
 bug: [48030]
+erratum: 310
+announced: 2018-11-14
