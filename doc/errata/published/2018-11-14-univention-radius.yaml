@@ -9,3 +9,5 @@ desc: |
  * A user's description attribute is now no longer modified if the
    module "ldap" has been activated manually (Bug #48105).
 bug: [48105]
+erratum: 307
+announced: 2018-11-14
