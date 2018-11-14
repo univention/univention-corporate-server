@@ -9,3 +9,5 @@ desc: |
  * In case a Debian package update fails due to unmet dependencies
    univention-updater now logs a more useful error message.
 bug: [34444]
+erratum: 308
+announced: 2018-11-14
