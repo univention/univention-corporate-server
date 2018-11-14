@@ -7,7 +7,7 @@ fix: 12.0.0-33A~4.3.0.201811131559
 desc: |
  This update addresses the following issue:
  * The Listener opens two connections: a persistent connection to a Notifier
-   and a on-demand connection to an LDAP server. In some rare situations two
+   and an on-demand connection to an LDAP server. In some rare situations two
    different hosts were contacted for those connections, which could lead to
    inconsistencies in LDAP replication.
 bug: [48030]
