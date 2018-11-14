@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The special cn=Subschema object caused AD-Connector rejects
 bug: [47395]
+erratum: 547
+announced: 2018-11-14
