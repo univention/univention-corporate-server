@@ -947,10 +947,21 @@ class App(object):
 		return ret
 
 	def get_docker_image_name(self):
-		image = self.get_docker_images()[0]
-		if self.is_installed():
-			image = ucr_get(self.ucr_image_key) or image
-		return image
+		if self.uses_docker_compose():
+			try:
+				import ruamel.yaml as yaml
+			except ImportError:
+				# appcenter-docker is not installed
+				return None
+			yml_file = self.app.get_cache_file('compose')
+			content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
+			image = content['services'][self.docker_main_service]['image']
+			return image
+		else:
+			image = self.get_docker_images()[0]
+			if self.is_installed():
+				image = ucr_get(self.ucr_image_key) or image
+			return image
 
 	def get_docker_images(self):
 		return [self.docker_image] + self.docker_allowed_images

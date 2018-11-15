@@ -66,7 +66,8 @@ class Start(Service):
 	def main(self, args):
 		if args.app.uses_docker_compose():
 			docker = MultiDocker(args.app)
-			return docker.up()
+			if not docker.is_running():
+				return docker.up()
 		return self.call_init(args.app, 'start')
 
 
@@ -88,6 +89,9 @@ class Restart(Service):
 	help = 'Restart an app'
 
 	def main(self, args):
+		if args.app.uses_docker_compose():
+			docker = MultiDocker(args.app)
+			return docker.restart()
 		return self.call_init(args.app, 'restart')
 
 
@@ -97,6 +101,9 @@ class CRestart(Service):
 	help = 'CRestart an app'
 
 	def main(self, args):
+		if args.app.uses_docker_compose():
+			docker = MultiDocker(args.app)
+			return docker.restart()
 		return self.call_init(args.app, 'crestart')
 
 
@@ -112,4 +119,12 @@ class Status(Service):
 		return super(Status, cls).get_init(app)
 
 	def main(self, args):
+		if args.app.uses_docker_compose():
+			docker = MultiDocker(args.app)
+			running = docker.is_running()
+			if running:
+				self.log('App is running')
+			else:
+				self.log('App is not running')
+			return running
 		return self.call_init(args.app, 'status')

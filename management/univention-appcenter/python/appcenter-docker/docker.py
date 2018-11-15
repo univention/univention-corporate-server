@@ -501,5 +501,9 @@ class MultiDocker(Docker):
 		self._setup_yml()
 		return call_process(['docker-compose', '-p', self.app.id, 'down'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
 
+	def restart(self):
+		self._setup_yml()
+		return call_process(['docker-compose', '-p', self.app.id, 'restart'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
+
 	def rm(self):
 		return self.stop()

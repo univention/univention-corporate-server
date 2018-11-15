@@ -448,23 +448,24 @@ class AppListener(AppListener):
 				# univention-appcenter-docker is not installed
 				pass
 			else:
-				try:
-					init_script = Service.get_init(app)
-					self.log('Creating %s' % init_script)
-					with open(ORIGINAL_INIT_SCRIPT, 'r') as source:
-						lines = source.readlines()
-					with open(init_script, 'w') as target:
-						for line in lines:
-							target.write(re.sub(r'@%@APPID@%@', app.id, line))
-					os.chmod(init_script, 0755)
-					self._call_script('/usr/sbin/update-rc.d', os.path.basename(init_script), 'defaults', '41', '14')
-					self._call_script('/bin/systemctl', 'daemon-reload')
-				except OSError as exc:
-					msg = str(exc)
-					if exc.errno == 17:
-						self.log(msg)
-					else:
-						self.warn(msg)
+				if not app.uses_docker_compose():
+					try:
+						init_script = Service.get_init(app)
+						self.log('Creating %s' % init_script)
+						with open(ORIGINAL_INIT_SCRIPT, 'r') as source:
+							lines = source.readlines()
+						with open(init_script, 'w') as target:
+							for line in lines:
+								target.write(re.sub(r'@%@APPID@%@', app.id, line))
+						os.chmod(init_script, 0755)
+						self._call_script('/usr/sbin/update-rc.d', os.path.basename(init_script), 'defaults', '41', '14')
+						self._call_script('/bin/systemctl', 'daemon-reload')
+					except OSError as exc:
+						msg = str(exc)
+						if exc.errno == 17:
+							self.log(msg)
+						else:
+							self.warn(msg)
 				updates[app.ucr_image_key] = app.get_docker_image_name()
 		return updates
 

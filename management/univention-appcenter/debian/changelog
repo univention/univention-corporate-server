@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-43) unstable; urgency=medium
+
+  * Bug #43612: Do not create systemd service; fix start/stop/restart
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 15 Nov 2018 16:32:54 +0100
+
 univention-appcenter (7.0.2-42) unstable; urgency=medium
 
   * Bug #43612: JS fixes, always recreate compose.yml
