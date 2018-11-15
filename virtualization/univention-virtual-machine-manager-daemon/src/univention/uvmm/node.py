@@ -2041,34 +2041,56 @@ def domain_migrate(source_uri, domain, target_uri, mode=0):
 
 		_domain_backup(source_dom)
 
-		while source_dom.snapshotNum() > 0:
-			for snapshot in source_dom.listAllSnapshots(libvirt.VIR_DOMAIN_SNAPSHOT_LIST_LEAVES):
-				snap_xml = snapshot.getXMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
-				snapshots.append(snap_xml)
-				logger.info('Deleting snapshot %s of domain %s', snapshot.getName(), domain)
-				snapshot.delete(libvirt.VIR_DOMAIN_SNAPSHOT_DELETE_METADATA_ONLY)
-		snapshots.reverse()
-
-		logger.info('Starting migration of domain %s to host %s with flags %x', domain, target_uri, flags)
-		domStat.pd.migration['msg'] = _('Migration started')
-		dest_dom = source_dom.migrate3(target_conn, params, flags)
-		logger.info('Finished migration of domain %s to host %s with flags %x', domain, target_uri, flags)
-		source_node.domains.pop(domain, None)
-
-		for snap_xml in snapshots:
-			snapshot = dest_dom.snapshotCreateXML(snap_xml, libvirt.VIR_DOMAIN_SNAPSHOT_CREATE_REDEFINE)
-			logger.info('Added snapshot %s of domain %s', snapshot.getName(), domain)
-	except libvirt.libvirtError as ex:
-		for snap_xml in snapshots:
+		def _migrate(errors):
 			try:
-				snapshot = source_dom.snapshotCreateXML(snap_xml, libvirt.VIR_DOMAIN_SNAPSHOT_CREATE_REDEFINE)
-				logger.info('Restored snapshot %s of domain %s', snapshot.getName(), domain)
-			except libvirt.libvirtError as ex2:
-				logger.error(_('Failed to restore snapshot after failed migration of domain "%(domain)s": %(error)s'), domain=domain, error=ex2.get_error_message())
+				while source_dom.snapshotNum() > 0:
+					for snapshot in source_dom.listAllSnapshots(libvirt.VIR_DOMAIN_SNAPSHOT_LIST_LEAVES):
+						snap_xml = snapshot.getXMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+						snapshots.append(snap_xml)
+						logger.info('Deleting snapshot "%s" of domain "%s"', snapshot.getName(), domain)
+						snapshot.delete(libvirt.VIR_DOMAIN_SNAPSHOT_DELETE_METADATA_ONLY)
+				snapshots.reverse()
 
-		if ex.get_error_code() == libvirt.VIR_ERR_CPU_INCOMPATIBLE:
-			raise NodeError(_('The target host has an incompatible CPU; select a different host or try an offline migration. (%(details)s)') % {'details': ex.get_str2()})
-		logger.error(ex)
+				dest_dom = source_dom.migrate3(target_conn, params, flags)
+				# domStat.pd.migration is updated by migration_status()
+				logger.info('Finished migration of domain "%s" to host "%s" with flags %x', domain, target_uri, flags)
+				source_node.domains.pop(domain, None)
+
+				for snap_xml in snapshots:
+					snapshot = dest_dom.snapshotCreateXML(snap_xml, libvirt.VIR_DOMAIN_SNAPSHOT_CREATE_REDEFINE)
+					logger.info('Added snapshot "%s" of domain "%s"', snapshot.getName(), domain)
+			except libvirt.libvirtError as ex:
+				logger.error(ex, exc_info=True)
+
+				for snap_xml in snapshots:
+					try:
+						snapshot = source_dom.snapshotCreateXML(snap_xml, libvirt.VIR_DOMAIN_SNAPSHOT_CREATE_REDEFINE)
+						logger.info('Restored snapshot "%s" of domain "%s"', snapshot.getName(), domain)
+					except libvirt.libvirtError as ex2:
+						logger.error(_('Failed to restore snapshot after failed migration of domain "%(domain)s": %(error)s'), dict(domain=domain, error=ex2.get_error_message()))
+
+				if ex.get_error_code() == libvirt.VIR_ERR_CPU_INCOMPATIBLE:
+					msg = _('The target host has an incompatible CPU; select a different host or try an offline migration. (%(details)s)') % dict(details=ex.get_str2())
+				else:
+					msg = _('Error migrating domain "%(domain)s": %(error)s') % dict(domain=domain, error=ex.get_error_message())
+				domStat.pd.migration['msg'] = msg
+				errors.append(msg)
+
+		logger.info('Starting migration of domain "%s" to host "%s" with flags %x', domain, target_uri, flags)
+		domStat.pd.migration['msg'] = _('Migration started')
+
+		errors = []  # type: List[str]
+		if flags & libvirt.VIR_MIGRATE_OFFLINE:
+			_migrate(errors)
+		else:
+			thread = threading.Thread(group=None, target=_migrate, name=domain, args=(errors,), kwargs={})
+			thread.start()
+			thread.join(3.0)
+
+		if errors:
+			raise NodeError(errors[0])
+	except libvirt.libvirtError as ex:
+		logger.error(ex, exc_info=True)
 		raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=ex.get_error_message())
 
 
