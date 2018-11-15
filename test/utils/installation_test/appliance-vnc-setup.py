@@ -50,7 +50,11 @@ class UCSSetup(UCSInstallation):
 		self.next()
 
 	def network(self):
-		self.client.waitForText('IP address', timeout=self.timeout)
+		try:
+			self.client.waitForText('IP address', timeout=self.timeout)
+		except VNCDoException:
+			self.connect()
+			self.client.waitForText('Domain and network', timeout=self.timeout)
 		self.screenshot('network-setup.png')
 		if self.args.role in ['admember', 'slave']:
 			self.click('Preferred DNS')
@@ -172,7 +176,7 @@ class UCSSetup(UCSInstallation):
 
 	def setup(self):
 		try:
-			self.language('English')
+			#self.language('English')
 			self.network()
 			self.domain(self.args.role)
 			if self.args.role == 'master':
