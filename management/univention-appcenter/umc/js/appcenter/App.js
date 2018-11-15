@@ -98,7 +98,7 @@ define([
 			this.rating = props.rating;
 			this.isMaster = props.is_master;
 			this.isUCSComponent = props.is_ucs_component;
-			this.isDocker = !!props.docker_image;
+			this.isDocker = !!props.docker_image || !!props.docker_main_service;
 			this.candidateIsDocker = !!props.candidate_docker;
 			this.dockerMigrationLink = props.docker_migration_link;
 			this.autoModProxy = props.auto_mod_proxy;

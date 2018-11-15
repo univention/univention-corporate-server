@@ -249,6 +249,7 @@ class Docker(object):
 		return False
 
 	def pull(self):
+		self.logger.info('Downloading app image %s' % self.image)
 		try:
 			hub, image_name = self.image.split('/', 1)
 		except ValueError:
@@ -400,7 +401,8 @@ class MultiDocker(Docker):
 		return True
 
 	def pull(self):
-		self._setup_yml(False)
+		self._setup_yml()
+		self.logger.info('Downloading app images')
 		ret, out = call_process2(['docker-compose', '-p', self.app.id, 'pull'], cwd=self.app.get_compose_dir(), logger=_logger)
 		if ret != 0:
 			raise DockerImagePullFailed(self.image, out)
@@ -420,15 +422,11 @@ class MultiDocker(Docker):
 				volumes.append('/etc/apt/apt.conf.d/80proxy:/etc/apt/apt.conf.d/80proxy:ro')  # apt proxy
 		return unique(volumes)
 
-	def _setup_yml(self, recreate):
+	def _setup_yml(self):
 		yml_file = self.app.get_compose_file('docker-compose.yml')
 		template_file = '%s.template' % yml_file
-		if os.path.exists(yml_file):
-			if not recreate:
-				return
-		else:
-			mkdir(self.app.get_compose_dir())
-			shutil.copy2(self.app.get_cache_file('compose'), template_file)
+		mkdir(self.app.get_compose_dir())
+		shutil.copy2(self.app.get_cache_file('compose'), template_file)
 		with open(template_file) as fd:
 			template = fd.read()
 			content = ucr_run_filter(template)
@@ -474,7 +472,7 @@ class MultiDocker(Docker):
 			yaml.dump(content, fd, Dumper=yaml.RoundTripDumper, encoding='utf-8', allow_unicode=True)
 
 	def create(self, hostname, set_vars):
-		self._setup_yml(True)
+		self._setup_yml()
 		call_process(['docker-compose', '-p', self.app.id, 'create'], cwd=self.app.get_compose_dir())
 		try:
 			out = ps(only_running=False)
@@ -496,9 +494,11 @@ class MultiDocker(Docker):
 						return container
 
 	def up(self):
+		self._setup_yml()
 		return call_process(['docker-compose', '-p', self.app.id, 'up', '-d'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
 
 	def stop(self):
+		self._setup_yml()
 		return call_process(['docker-compose', '-p', self.app.id, 'down'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
 
 	def rm(self):

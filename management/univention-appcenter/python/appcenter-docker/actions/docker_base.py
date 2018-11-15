@@ -154,7 +154,6 @@ class DockerActionMixin(object):
 		docker.verify()
 
 		if args.pull_image:
-			self.log('Downloading app image %s' % docker.image)
 			docker.pull()
 
 		self.log('Initializing app image')
