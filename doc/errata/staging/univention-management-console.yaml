@@ -7,5 +7,5 @@ fix: 10.0.6-16A~4.3.0.201811131132
 desc: |
  This update addresses the following issue(s):
  * The scrolling in the UVMM module has been improved.
- * Fix saml metadata creation for non ucsCA certifcates like Let's encrypt.
+ * Fix saml metadata creation for non-ucsCA certificates like Let's Encrypt.
 bug: [36624, 47700]
