@@ -964,7 +964,7 @@ docker exec "$CONTAINER" ...
                 entries</guimenu>. Create a new custom entry with the
             <option>Custom key</option> <userinput>EndOfLife</userinput> and
             the <option>Custom value</option> <userinput>True</userinput>.
-            Afterwards press <guimenu>Sync to Test App Center</guimenu> and
+            Afterwards press <guimenu>Save changes</guimenu> and
             <guimenu>Publish App</guimenu>. Please provide a custom message in
             the publish dialog and let the App Center team know about the
             reasons for the termination.
@@ -2494,11 +2494,11 @@ service my-app-daemon restart
         <section id="appliance:build">
             <title>Appliance build</title>
             <para>
-                As soon as the settings are made, <guimenu>Sync to Test App
-                    Center</guimenu>, click the <guimenu>Publish App</guimenu>
+                As soon as the settings are made, <guimenu>Save
+                    changes</guimenu>, click the <guimenu>Publish App</guimenu>
                 button and provide a custom message to let the Univention team
-                know that an appliance is ready to be build. This will create
-                a ticket which helps to keep the communication in one place.
+                know that an appliance is ready to be build. This will create a
+                ticket which helps to keep the communication in one place.
             </para>
         </section>
 
