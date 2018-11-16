@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: libvirt-python
+fix: 3.0.0-2A~4.3.0.201811161443
+desc: |
+ This update addresses the following issue:
+ * Add missing type annotation for migration.
+bug: [47617]
