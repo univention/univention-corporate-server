@@ -105,7 +105,6 @@ define([
 						}));
 					}
 				} else if (variable.type == 'MultiSetting') {
-					console.log("type is MultiSetting");
 					ret.push(lang.mixin(params, {
 					 	type: MultiInput,
 					 	content: value,
@@ -113,11 +112,11 @@ define([
 						subtypes: [
 							{
 								label: 'Key',
-								type: 'TextBox',
+								type: 'TextBox'
 							},
 							{
 								label: 'Value',
-								type: 'TextBox',
+								type: 'TextBox'
 							}
 						],
 					}));
