@@ -72,18 +72,46 @@ logger = logging.getLogger('uvmmd.node')
 
 CACHE_STATE = '/var/run/uvmmd.cache'
 STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED')
-DOM_EVENT_STRINGS = (
-	("Defined", ("Added", "Updated", "Renamed", "Snapshot")),
-	("Undefined", ("Removed", "Renamed")),
-	("Started", ("Booted", "Migrated", "Restored", "Snapshot", "Wakeup")),
-	("Suspended", ("Paused", "Migrated", "IOError", "Watchdog", "Restored", "Snapshot", "API error", "Postcopy", "Postcopy failed")),
-	("Resumed", ("Unpaused", "Migrated", "Snapshot", "Postcopy")),
-	("Stopped", ("Shutdown", "Destroyed", "Crashed", "Migrated", "Saved", "Failed", "Snapshot")),
-	("Shutdown", ("Finished", "On guest request", "On host request")),
-	("PMSuspended", ("Memory", "Disk")),
-	("Crashed", ("Panicked",)),
-)  # type: Tuple[Tuple[str, Tuple[str, ...]], ...]
-CONNECTION_EVENT_STRINGS = ("Error", "End-of-file", "Keepalive", "Client")
+
+
+class Description(object):
+    __slots__ = ('desc', 'args')
+
+    def __init__(self, *args, **kwargs):
+        self.desc = kwargs.get('desc')
+        self.args = args
+
+    def __str__(self):  # type: () -> str
+        return self.desc
+
+    def __getitem__(self, item):  # type: (int) -> str
+        try:
+            data = self.args[item]
+        except IndexError:
+            return self.__class__(desc=str(item))
+
+        if isinstance(data, str):
+            return self.__class__(desc=data)
+        elif isinstance(data, (list, tuple)):
+            desc, args = data
+            return self.__class__(*args, desc=desc)
+
+        raise TypeError(args)
+
+
+DOM_EVENTS = Description(
+    ("Defined", ("Added", "Updated", "Renamed", "Snapshot")),
+    ("Undefined", ("Removed", "Renamed")),
+    ("Started", ("Booted", "Migrated", "Restored", "Snapshot", "Wakeup")),
+    ("Suspended", ("Paused", "Migrated", "IOError", "Watchdog", "Restored", "Snapshot", "API error", "Postcopy", "Postcopy failed")),
+    ("Resumed", ("Unpaused", "Migrated", "Snapshot", "Postcopy")),
+    ("Stopped", ("Shutdown", "Destroyed", "Crashed", "Migrated", "Saved", "Failed", "Snapshot", "Daemon")),
+    ("Shutdown", ("Finished", "On guest request", "On host request")),
+    ("PMSuspended", ("Memory", "Disk")),
+    ("Crashed", ("Panicked",)),
+)
+ERROR_EVENTS = Description("None", "Pause", "Report")
+CONNECTION_EVENTS = Description("Error", "End-of-file", "Keepalive", "Client")
 
 
 class NodeError(TranslatableException):
@@ -867,8 +895,8 @@ class Node(PersistentCached):
 				"Domain %s(%s) Event %s Details %s",
 				dom.name(),
 				dom.ID(),
-				DOM_EVENT_STRINGS[event][0],
-				DOM_EVENT_STRINGS[event][1][detail],
+				DOM_EVENTS[event],
+				DOM_EVENTS[event][detail],
 			)
 			uuid = dom.UUIDString()
 			if event == libvirt.VIR_DOMAIN_EVENT_UNDEFINED:
@@ -936,13 +964,13 @@ class Node(PersistentCached):
 		log = logger.getChild('io')
 		try:
 			log.debug(
-				"Node %s Domain %s(%s) dev=%s[%s] action=%d reason=%s",
+				"Node %s Domain %s(%s) dev=%s[%s] action=%s reason=%s",
 				self.pd.name,
 				dom.name(),
 				dom.ID(),
 				devalias,
 				srcpath,
-				action,
+				ERROR_EVENTS[action],
 				reason,
 			)
 			uuid = dom.UUIDString()
@@ -1026,7 +1054,7 @@ class Node(PersistentCached):
 		log.info(
 			"Connection %s closed: %s",
 			conn.getURI(),
-			CONNECTION_EVENT_STRINGS[reason],
+			CONNECTION_EVENTS[reason],
 		)
 		self.conn = None
 
