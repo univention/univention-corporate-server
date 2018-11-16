@@ -18,14 +18,13 @@ check_windows_client_sid () {
 }
 
 create_gpo () {
-	local name=$1
-	local ldap_base="$2"
-	local context="$3"
-	local key="$4"
-	python shared-utils/ucs-winrm.py create-gpo --credssp --name "$name" --comment "testing new GPO in domain"
-	python shared-utils/ucs-winrm.py link-gpo --name "$name" --target "$ldap_base" --credssp
-	python shared-utils/ucs-winrm.py run-ps --credssp \
-    	--cmd "set-GPPrefRegistryValue -Name $name -Context $context -key $key -ValueName "$name" -Type String -value "$name" -Action Update"
+	local name="$1"; shift
+	local ldap_base="$1"; shift
+	local context="$1"; shift
+	local key="$1"; shift
+	python shared-utils/ucs-winrm.py create-gpo --credssp --name "$name" --comment "testing new GPO in domain" "$@"
+	python shared-utils/ucs-winrm.py link-gpo --name "$name" --target "$ldap_base" --credssp "$@"
+	python shared-utils/ucs-winrm.py run-ps --credssp --cmd "set-GPPrefRegistryValue -Name $name -Context $context -key $key -ValueName "$name" -Type String -value "$name" -Action Update" "$@"
 }
 
 check_user_in_ucs () {
