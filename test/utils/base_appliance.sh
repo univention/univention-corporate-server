@@ -471,16 +471,6 @@ __EOF__
 	chmod 755 /usr/lib/univention-system-setup/scripts/10_basis/01_save_root_password
 	sed -i 's|\(.*/18root_password.*\)|\n/usr/lib/univention-system-setup/scripts/10_basis/01_save_root_password\n\1|' /usr/lib/univention-system-setup/scripts/setup-join.sh
 
-	# deactivate online repo during app installation
-	cat >/usr/lib/univention-system-setup/appliance-hooks.d/01_repo_settings <<'__EOF__'
-#!/bin/bash
-
-ucr set repository/online=no
-
-exit 0
-__EOF__
-	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/01_repo_settings
-
 	# ensure join and delete setup password
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/99_ensure_join_and_remove_password <<'__EOF__'
 #!/bin/bash
@@ -497,9 +487,6 @@ univention-run-join-scripts -dcaccount "$dn" -dcpwd /tmp/joinpwd
 [ -e /tmp/joinpwd ] && rm /tmp/joinpwd
 
 invoke-rc.d ntp restart
-
-# reactivate repo
-ucr set repository/online=yes
 
 exit 0
 __EOF__
