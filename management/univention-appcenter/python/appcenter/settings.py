@@ -246,15 +246,58 @@ class FileSetting(Setting):
 
 class MultiSetting(Setting):
 	def get_value(self, app, phase='Settings'):
-		value = super(MultiSetting, self).get_value(app, phase)
-		settings_logger.info('get_value called for MultiSetting')
-		return value
+		keys = self._get_keys(app, phase)
+		settings = []
+		if (self.is_outside(app)):
+			for key in keys:
+				value = ucr_get(key)
+				settings.append([key, value])
+			return settings
+		else:
+			if app_is_running(app):
+				from univention.appcenter.actions import get_action
+				configure = get_action('configure')
+				ucr = configure._get_app_ucr(app)
+				for key in keys:
+					value = ucr.get(key)
+					settings.append([key, value])
+				return settings
+			else:
+				settings_logger.info('Cannot read %s while %s is not running' % (self.name, app))
+				return []
+
+	def _get_keys(self, app, phase='Settings'):
+		if (self.is_outside(app)):
+			keys_str = ucr_get(self.name)
+		else:
+			if app_is_running(app):
+				from univention.appcenter.actions import get_action
+				configure = get_action('configure')
+				ucr = configure._get_app_ucr(app)
+				keys_str = ucr.get(self.name)
+			else:
+				settings_logger.info('Cannot read %s while %s is not running' % (self.name, app))
+				keys_str = ''
+		if keys_str is None:
+			if phase == 'Install':
+				keys_str = self.get_initial_value()
+			else:
+				keys_str = ''
+		return keys_str.split(',')
 
 	def set_value(self, app, value, together_config_settings, part):
+		keys = []
+		for setting in value:
+			keys.append(setting[0])
+		together_config_settings[part][self.name] = ','.join(keys)
 		for setting in value:
 			key = setting[0]
 			val = setting[1]
 			together_config_settings[part][key] = val
+		old_keys = self._get_keys(app)
+		for key in old_keys:
+			if key not in together_config_settings[part]:
+				together_config_settings[part][key] = None
 
 	def sanitize_value(self, app, value):
 		result = super(MultiSetting, self).sanitize_value(app, value)

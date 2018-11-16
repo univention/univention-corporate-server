@@ -121,11 +121,6 @@ define([
 							}
 						],
 					}));
-					// ret.push(lang.mixin(params, {
-					// 	type: Text,
-					// 	content: value,
-					// 	_groupName: params._groupName,
-					// }));
 				}
 			});
 			return ret;
