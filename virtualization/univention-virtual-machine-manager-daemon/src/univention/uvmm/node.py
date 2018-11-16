@@ -332,12 +332,12 @@ class Domain(PersistentCached):
 		delta_t = now - self._time_stamp  # wall clock [s]
 		if delta_t > 0.0 and delta_used >= 0L:
 			try:
-				self._cpu_usage = delta_used / delta_t / self.pd.vcpus / 1000000  # ms
+				self._cpu_usage = delta_used / delta_t / self.pd.vcpus / 1e9  # scale [ns] to percentage
 			except ZeroDivisionError:
 				self._cpu_usage = 0
-			for i in range(len(Domain.CPUTIMES)):
-				if delta_t < Domain.CPUTIMES[i]:
-					exp = math.exp(-1.0 * delta_t / Domain.CPUTIMES[i])
+			for i, span in enumerate(Domain.CPUTIMES):
+				if delta_t < span:
+					exp = math.exp(-delta_t / span)
 					self.pd.cputime[i] *= exp
 					self.pd.cputime[i] += (1.0 - exp) * self._cpu_usage
 				else:

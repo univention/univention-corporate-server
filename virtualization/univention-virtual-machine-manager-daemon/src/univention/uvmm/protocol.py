@@ -608,7 +608,7 @@ class Data_Node(object):
 		self.phyMem = None
 		self.curMem = None
 		self.maxMem = None
-		self.cpu_usage = None
+		self.cpu_usage = 0.0
 		self.cpus = None
 		self.cores = (None, None, None, None)
 		self.domains = []  # Data_Domain
