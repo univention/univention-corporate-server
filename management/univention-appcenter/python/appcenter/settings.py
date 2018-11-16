@@ -251,12 +251,20 @@ class MultiSetting(Setting):
 		return value
 
 	def set_value(self, app, value, together_config_settings, part):
-		super(MultiSetting, self).set_value(app, value, together_config_settings, part)
-		settings_logger.info('set_value called for MultiSetting with value %s' % value)
+		for setting in value:
+			key = setting[0]
+			val = setting[1]
+			together_config_settings[part][key] = val
 
 	def sanitize_value(self, app, value):
-		super(MultiSetting, self).sanitize_value(app, value)
-		settings_logger.info('sanitize_value called for MultiSetting with raw value %s of type %s' % (value, type(value)))
+		result = super(MultiSetting, self).sanitize_value(app, value)
+		return result
+
+	def value_for_setting(self, app, value):
+		if value is None:
+			return []
+		else:
+			return value
 
 
 class PasswordSetting(Setting):
