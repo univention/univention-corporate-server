@@ -259,7 +259,7 @@ class MultiSetting(Setting):
 				configure = get_action('configure')
 				ucr = configure._get_app_ucr(app)
 				for key in keys:
-					value = ucr.get(key)
+					value = ucr.get(''.join((self.name, key)))
 					settings.append([key, value])
 				return settings
 			else:
@@ -288,20 +288,15 @@ class MultiSetting(Setting):
 	def set_value(self, app, value, together_config_settings, part):
 		keys = []
 		for setting in value:
-			keys.append(setting[0])
-		together_config_settings[part][self.name] = ','.join(keys)
-		for setting in value:
-			key = setting[0]
+			key = ''.join((self.name, setting[0]))
 			val = setting[1]
+			keys.append(setting[0])
 			together_config_settings[part][key] = val
+		together_config_settings[part][self.name] = ','.join(keys)
 		old_keys = self._get_keys(app)
 		for key in old_keys:
 			if key not in together_config_settings[part]:
 				together_config_settings[part][key] = None
-
-	def sanitize_value(self, app, value):
-		result = super(MultiSetting, self).sanitize_value(app, value)
-		return result
 
 	def value_for_setting(self, app, value):
 		if value is None:
