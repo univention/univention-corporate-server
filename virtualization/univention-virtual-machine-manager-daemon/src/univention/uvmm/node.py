@@ -2021,11 +2021,11 @@ def domain_migrate(source_uri, domain, target_uri, mode=0):
 			source_state = source_dom.info()[0]
 		domStat = source_node.domains[domain]
 
-		target_node = node_query(target_uri)
-		target_conn = target_node.conn
-		assert target_conn is not None
-
 		if source_conn is None:  # offline node
+			target_node = node_query(target_uri)
+			target_conn = target_node.conn
+			assert target_conn is not None
+
 			try:
 				cache_file_name = domStat.cache_file_name()
 				with open(cache_file_name, 'r') as cache_file:
@@ -2070,6 +2070,10 @@ def domain_migrate(source_uri, domain, target_uri, mode=0):
 			flags |= libvirt.VIR_MIGRATE_OFFLINE | libvirt.VIR_MIGRATE_UNSAFE
 		else:
 			raise NodeError(_('Domain "%(domain)s" in state "%(state)s" can not be migrated'), domain=domain, state=STATES[source_state])
+
+		target_node = node_query(target_uri)
+		target_conn = target_node.conn
+		assert target_conn is not None
 
 		_domain_backup(source_dom)
 
