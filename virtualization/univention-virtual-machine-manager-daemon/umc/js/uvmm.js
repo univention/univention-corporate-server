@@ -228,21 +228,8 @@ define([
 				this._grid = new Grid({
 					region: 'main',
 					actions: this._getGridActions('domain'),
-					actionLabel: ucr[ 'uvmm/umc/action/label' ] != 'no', // hide labels of action columns
 					columns: this._getGridColumns('domain'),
 					moduleStore: this.moduleStore
-					/*footerFormatter: lang.hitch(this, function(nItems, nItemsTotal) {
-					// generate the caption for the grid footer
-					if (0 === nItemsTotal) {
-					return _('No %(objPlural)s could be found', map);
-					}
-					else if (1 == nItems) {
-					return _('%(nSelected)d %(objSingular)s of %(nTotal)d selected', map);
-					}
-					else {
-					return _('%(nSelected)d %(objPlural)s of %(nTotal)d selected', map);
-					}
-					}),*/
 				});
 
 				this._searchPage.addChild(this._grid);
@@ -259,12 +246,6 @@ define([
 					grid: this._grid,
 					tree: this._tree,
 					interval: parseInt(ucr['uvmm/umc/autoupdate/interval'], 10),
-					onItemCountChanged: lang.hitch(this, function() {
-						if (!this._itemCountChangedNoteShowed) {
-							this.addNotification(_('The number of virtual machines changed. To update the view, click on "Search".'));
-							this._itemCountChangedNoteShowed = true;
-						}
-					})
 				});
 				this.own(this._gridUpdater);
 
