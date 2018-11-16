@@ -14,11 +14,12 @@ define([
 	"umc/widgets/PasswordInputBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/ComboBox",
+	"umc/widgets/MultiInput",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/TitlePane",
 	"umc/modules/appcenter/AppSettingsFileUploader",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, entities, tools, Form, Text, TextBox, NumberSpinner, Uploader, PasswordInputBox, CheckBox, ComboBox, ContainerWidget, TitlePane, AppSettingsFileUploader, _) {
+], function(declare, lang, array, entities, tools, Form, Text, TextBox, NumberSpinner, Uploader, PasswordInputBox, CheckBox, ComboBox, MultiInput, ContainerWidget, TitlePane, AppSettingsFileUploader, _) {
 	return {
 		getWidgets: function(app, values, phase) {
 			var ret = [];
@@ -103,6 +104,28 @@ define([
 							_groupName: params._groupName
 						}));
 					}
+				} else if (variable.type == 'MultiSetting') {
+					console.log("type is MultiSetting");
+					ret.push(lang.mixin(params, {
+					 	type: MultiInput,
+					 	content: value,
+					 	_groupName: params._groupName,
+						subtypes: [
+							{
+								label: 'Key',
+								type: 'TextBox',
+							},
+							{
+								label: 'Value',
+								type: 'TextBox',
+							}
+						],
+					}));
+					// ret.push(lang.mixin(params, {
+					// 	type: Text,
+					// 	content: value,
+					// 	_groupName: params._groupName,
+					// }));
 				}
 			});
 			return ret;

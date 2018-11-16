@@ -51,7 +51,7 @@ class Setting(TypedIniSectionObject):
 	'''Based on the .settings file, models additional settings for Apps
 	that can be configured before installation, during run-time, etc.'''
 
-	type = IniSectionAttribute(default='String', choices=['String', 'Int', 'Bool', 'List', 'Password', 'File', 'PasswordFile', 'Status'])
+	type = IniSectionAttribute(default='String', choices=['String', 'Int', 'Bool', 'List', 'MultiSetting', 'Password', 'File', 'PasswordFile', 'Status'])
 	description = IniSectionAttribute(localisable=True, required=True)
 	group = IniSectionAttribute(localisable=True)
 	show = IniSectionListAttribute(default=['Settings'], choices=['Install', 'Upgrade', 'Remove', 'Settings'])
@@ -242,6 +242,21 @@ class FileSetting(Setting):
 
 	def should_go_into_image_configuration(self, app):
 		return False
+
+
+class MultiSetting(Setting):
+	def get_value(self, app, phase='Settings'):
+		value = super(MultiSetting, self).get_value(app, phase)
+		settings_logger.info('get_value called for MultiSetting')
+		return value
+
+	def set_value(self, app, value, together_config_settings, part):
+		super(MultiSetting, self).set_value(app, value, together_config_settings, part)
+		settings_logger.info('set_value called for MultiSetting with value %s' % value)
+
+	def sanitize_value(self, app, value):
+		super(MultiSetting, self).sanitize_value(app, value)
+		settings_logger.info('sanitize_value called for MultiSetting with raw value %s of type %s' % (value, type(value)))
 
 
 class PasswordSetting(Setting):
