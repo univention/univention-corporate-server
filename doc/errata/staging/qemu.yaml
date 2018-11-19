@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: qemu
-fix: 1:2.8+dfsg-6+deb9u5A~4.3.2.201811190703
+fix: 1:2.8+dfsg-6+deb9u5A~4.3.0.201811191133
 desc: |
  This update addresses the following issues:
  * ne2000: integer overflow leads to buffer overflow issue (CVE-2018-10839)
