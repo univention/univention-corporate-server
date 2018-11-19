@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: wpa
+fix: 2:2.4-1+deb9u2A~4.3.2.201811191242
+desc: |
+ This update addresses the following issue:
+ * Unauthenticated EAPOL-Key decryption in wpa_supplicant (CVE-2018-14526)
+bug: [48167]
+cve:
+- CVE-2018-14526
