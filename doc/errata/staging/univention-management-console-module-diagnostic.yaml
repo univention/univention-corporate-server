@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-management-console-module-diagnostic
-fix: 4.0.1-8A~4.3.0.201810171807
+fix: 4.0.1-9A~4.3.0.201811191134
 desc: |
  This update addresses the following issue(s):
  * Improved logging of diagnostic module actions
