@@ -41,6 +41,7 @@ define([
 	"dojo/topic",
 	"dojo/on",
 	"dojo/aspect",
+	"dojo/promise/all",
 	"dojo/sniff",
 	"dojox/html/entities",
 	"dijit/Menu",
@@ -74,9 +75,13 @@ define([
 	"umc/modules/uvmm/snapshot",
 	"umc/i18n!umc/modules/uvmm",
 	"xstyle/css!./uvmm.css"
-], function(declare, lang, array, kernel, win, dojoWindow, string, query, Deferred, topic, on, aspect, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
+], function(
+	declare, lang, array, kernel, win, dojoWindow, string, query, Deferred, topic, on, aspect,
+	all, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
-	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, types, snapshot, _) {
+	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard,
+	InstancePage, InstanceWizard, CreatePage, types, snapshot, _
+) {
 
 	var isRunning = function(item) {
 		// isRunning contains state==PAUSED to enable VNC Connections to pause instances
@@ -446,47 +451,15 @@ define([
 			var unavailable = array.some( items, function( domain ) {
 				return domain.node_available === false;
 			} );
-			if ( ids.length > 1 ) {
-				var uniqueNodes = {}, count = 0;
-				array.forEach( ids, function( id ) {
-					var nodeURI = id.slice( 0, id.indexOf( '#' ) );
-					if ( undefined === uniqueNodes[ nodeURI ] ) {
-						++count;
-					}
-					uniqueNodes[ nodeURI ] = true;
-				} );
-				if ( count > 1 ) {
-					dialog.alert( _( 'The selected virtual machines are not all located on the same physical server. The migration will not be performed.' ) );
-					return;
-				}
-			}
 
-			// check if multiple machines with migration target hosts are defined
-			var th_count = 0;
-			var targethosts = [];
-			array.forEach( items, function( item ) {
-				var deferred = tools.umcpCommand('uvmm/targethost/query', { domainURI: item.id });
-
-				deferred.then(lang.hitch(this, function(th_results) {
-					var hostlist = [];
-					array.forEach(th_results.result, function(result) {
-						hostlist.push(result.id);
-					});
-
-					if ( hostlist.length > 0 ) {
-						++th_count;
-					}
-					targethosts = hostlist;
-				}));
-
-			});
-
-			if ( th_count > 1 ) {
-				dialog.alert( _( 'Each virtual machine with defined migration targethosts has to be migrated separately. The migration will not be performed.' ) );
-				return;
-			}
-
-			types.getNodes().then(lang.hitch(this, function(items) {
+			all({
+				targethosts: tools.umcpCommand('uvmm/targethost/query', { domainURI: ids[0] }),
+				nodes: types.getNodes()
+			}).then(lang.hitch(this, function(results) {
+				var items = results.nodes;
+				var targethosts = array.map(results.targethosts.result, function(targethost) {
+					return targethost.id;
+				});
 				var _cleanup = function() {
 					_dialog.hide();
 					_dialog.destroyRecursive();
@@ -1586,7 +1559,7 @@ define([
 				name: 'migrate',
 				label: _( 'Migrate' ),
 				isStandardAction: false,
-				isMultiAction: true,
+				isMultiAction: false,
 				callback: lang.hitch(this, '_migrateDomain' ),
 				canExecute: function(item) {
 					// FIXME need to find out if there are more than one node of this type
