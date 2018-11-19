@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: linux
+fix: 4.9.130-2
+desc: |
+ This update addresses the following issue:
+ * Integer overflow in drivers/video/fbdev/uvesafb.c:uvesafb_setcmap() allows
+   for potential denial of service (CVE-2018-13406)
+bug: [48172]
+cve:
+- CVE-2018-13406
