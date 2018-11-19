@@ -1,3 +1,9 @@
+ucs-test (8.0.28-227) unstable; urgency=medium
+
+  * Bug #47653: Code cleanup 
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 19 Nov 2018 10:19:34 +0100
+
 ucs-test (8.0.28-226) unstable; urgency=medium
 
   * Bug #45049: fixed 10_ldap tests 67,68
