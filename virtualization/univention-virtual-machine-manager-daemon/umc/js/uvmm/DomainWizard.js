@@ -35,7 +35,6 @@ define([
 	"dojo/aspect",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
-	"dijit/form/MappedTextBox",
 	"umc/tools",
 	"umc/widgets/TitlePane",
 	"umc/widgets/TextArea",
@@ -46,9 +45,10 @@ define([
 	"umc/widgets/Wizard",
 	"umc/widgets/ContainerWidget",
 	"umc/modules/uvmm/DriveGrid",
+	"umc/modules/uvmm/MemoryTextBox",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, aspect, Memory, Observable, MappedTextBox, tools, TitlePane, TextArea, TextBox, ComboBox, CheckBox, HiddenInput, Wizard, ContainerWidget, DriveGrid, types, _) {
+], function(declare, lang, array, aspect, Memory, Observable, tools, TitlePane, TextArea, TextBox, ComboBox, CheckBox, HiddenInput, Wizard, ContainerWidget, DriveGrid, MemoryTextBox, types, _) {
 
 	return declare("umc.modules.uvmm.DomainWizard", [ Wizard ], {
 		_profile: null,
@@ -171,27 +171,8 @@ define([
 						label: _('Description')
 					}, {
 						name: 'maxMem',
-						type: MappedTextBox,
+						type: MemoryTextBox,
 						required: true,
-						constraints: {min: 4*1024*1024, max: 4*1024*1024*1024*1024},  // 4 MiB .. 4 TiB
-						format: types.prettyCapacity,
-						parse: function(value) {
-							return types.parseCapacity(value, 'M');
-						},
-						validator: function(value, constraints) {
-							var size = types.parseCapacity(value, 'M');
-							if (size === null) {
-								return false;
-							}
-							if (constraints.min && size < constraints.min) {
-								return false;
-							}
-							if (constraints.max && size > constraints.max) {
-								return false;
-							}
-							return true;
-						},
-						invalidMessage: _('The memory size is invalid (e.g. 3GB or 1024 MB), minimum 4 MB, maximum 4 TB'),
 						label: _('Memory (default unit MB)')
 					}, {
 						name: 'vcpus',

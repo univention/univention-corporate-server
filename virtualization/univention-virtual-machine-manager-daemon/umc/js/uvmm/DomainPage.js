@@ -37,7 +37,6 @@ define([
 	"dojo/dom-attr",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
-	"dijit/form/MappedTextBox",
 	"umc/tools",
 	"umc/dialog",
 	"umc/store",
@@ -59,10 +58,11 @@ define([
 	"umc/modules/uvmm/TargetHostGrid",
 	"umc/modules/uvmm/InterfaceGrid",
 	"umc/modules/uvmm/DriveGrid",
+	"umc/modules/uvmm/MemoryTextBox",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, topic, on, domAttr, Memory, Observable, MappedTextBox, tools, dialog, store, Page, Form, ContainerWidget, TabController, StackContainer, TitlePane, StandbyMixin,
-	TextBox, TextArea, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, TargetHostGrid, InterfaceGrid, DriveGrid, types, _) {
+], function(declare, lang, array, topic, on, domAttr, Memory, Observable, tools, dialog, store, Page, Form, ContainerWidget, TabController, StackContainer, TitlePane, StandbyMixin,
+	TextBox, TextArea, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, TargetHostGrid, InterfaceGrid, DriveGrid, MemoryTextBox, types, _) {
 
 	return declare("umc.modules.uvmm.DomainPage", [ Page, StandbyMixin ], {
 		nested: true,
@@ -198,25 +198,8 @@ define([
 					dynamicValues: types.getCPUs
 				}, {
 					name: 'maxMem',
-					type: MappedTextBox,
+					type: MemoryTextBox,
 					required: true,
-					constraints: {min: 4*1024*1024, max: 4*1024*1024*1024*1024},  // 4 MiB .. 4 TiB
-					format: types.prettyCapacity,
-					parse: types.parseCapacity,
-					validator: function(value, constraints) {
-						var size = types.parseCapacity(value, 'M');
-						if (size === null) {
-							return false;
-						}
-						if (constraints.min && size < constraints.min) {
-							return false;
-						}
-						if (constraints.max && size > constraints.max) {
-							return false;
-						}
-						return true;
-					},
-					invalidMessage: _('The memory size is invalid (e.g. 3GB or 1024 MB), minimum 4 MB, maximum 4 TB'),
 					label: _('Memory (default unit MB)')
 				}, {
 					name: 'boot_hvm',
@@ -472,6 +455,7 @@ define([
 						this.showChild( this._devicesPage );
 						this._headerButtons.save.set( 'disabled', false );
 					}
+					this._advancedForm._widgets.maxMem.resetCache();
 					this._advancedForm.setFormValues(this._domain);
 
 					// special handling for boot devices
@@ -482,7 +466,7 @@ define([
 						idev.$id$ = i + 1;
 					});
 
-					// we need to add pseudo ids for the network interfaces
+					// we need to add pseudo ids for the drives
 					array.forEach(this._domain.disks, function(idrive, i) {
 						idrive.$id$ = i + 1;
 					});

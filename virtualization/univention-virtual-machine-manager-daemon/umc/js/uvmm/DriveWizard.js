@@ -33,7 +33,6 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/when",
-	"dijit/form/MappedTextBox",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/ComboBox",
@@ -41,9 +40,10 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
 	"umc/widgets/Wizard",
+	"umc/modules/uvmm/MemoryTextBox",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, when, MappedTextBox, tools, dialog, ComboBox, HiddenInput, Text, TextBox, Wizard, types, _) {
+], function(declare, lang, array, when, tools, dialog, ComboBox, HiddenInput, Text, TextBox, Wizard, MemoryTextBox, types, _) {
 
 	return declare("umc.modules.uvmm.DriveWizard", [ Wizard ], {
 
@@ -188,15 +188,12 @@ define([
 						})
 					}, {
 						name: 'size_new',
-						type: MappedTextBox,
+						type: MemoryTextBox,
 						size: 'TwoThirds',
 						required: true,
 						depends: ['pool_new'],
 						constraints: {min: 1024*1024},
-						format: types.prettyCapacity,
-						parse: function(value) {
-							return types.parseCapacity(value, 'M');
-						},
+						defaultUnit: 'M',
 						validator: lang.hitch(this, function(value, constraints) {
 							var valid = true, warn = false;
 							var size = types.parseCapacity(value, 'M');
