@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.1-9) unstable; urgency=medium
+
+  * Bug #47583: Fixed typo
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 19 Nov 2018 11:28:08 +0100
+
 univention-management-console-module-diagnostic (4.0.1-8) unstable; urgency=medium
 
   * Bug #47649: Code Cleanup

@@ -88,7 +88,7 @@ def run(_umc_instance, rerun=False, fix_log=''):
 			output_list = output.splitlines()
 			for x in output_list:
 				if x.find("NT_STATUS_OBJECT_NAME_NOT_FOUND") == -1:
-					error_descriptions.append("")
+					error_descriptions.append(x)
 		else:
 			error_descriptions.append(output)
 		if not rerun:
