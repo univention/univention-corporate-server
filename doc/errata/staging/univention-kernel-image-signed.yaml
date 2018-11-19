@@ -2,8 +2,8 @@ product: ucs
 release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
-src: linux
-fix: 4.9.130-2
+src: univention-kernel-image-signed
+fix: 4.0.0-9A~4.3.0.201811191325
 desc: |
  This update of the Linux kernel to version 4.9.130 addresses the following
  issues:
@@ -40,7 +40,7 @@ desc: |
  * USB: yurex: fix out-of-bounds uaccess in read handler (CVE-2018-16276)
  * x86/speculation: Protect against userspace-userspace spectreRSB
    (CVE-2018-15572)
-note: This is the first part of two parts.
+note: This is the second part of two parts.
 bug: [48172]
 cve:
 - CVE-2018-13406
