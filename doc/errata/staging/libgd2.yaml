@@ -1,0 +1,16 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: libgd2
+fix: 2.2.4-2+deb9u3
+desc: |
+ This update addresses the following issues:
+ * Denial of Service (DoS) via infinite loop in libgd gdImageCreateFromGifCtx
+   function in ext/gd/libgd/gd_gif_in.c (CVE-2018-5711)
+ * Double free in src/gd_bump.c:gdImageBmpPtr() via crafted JPEG
+   (CVE-2018-1000222)
+bug: [48175]
+cve:
+- CVE-2018-5711
+- CVE-2018-1000222
