@@ -143,6 +143,9 @@ define([
 				array.forEach(ids, function(iid) {
 					this.moduleStore.remove(iid);
 				}, this);
+				// the moduleStore is filled using setData which seems to sometimes break the remove event
+				// -> call filter manually
+				this.filter();
 			}));
 		},
 
