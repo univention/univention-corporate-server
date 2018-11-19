@@ -1139,7 +1139,7 @@ define([
 			this._policyDeferred = new Deferred();
 			var loadedDeferred = when(this.ldapName, lang.hitch(this, function(ldapName) {
 				this.ldapName = ldapName;
-				return this._loadObject(formBuiltDeferred, this._policyDeferred);
+				return this._loadObject(this.formBuiltDeferred, this._policyDeferred);
 			}));
 			loadedDeferred.then(lang.hitch(this, 'addActiveDirectoryWarning'));
 			loadedDeferred.then(lang.hitch(this, 'set', 'helpLink', metaInfo.help_link));
@@ -1994,9 +1994,14 @@ define([
 
 		getEmptyPropsWithDefaultValues: function() {
 			var emptyPropsWithDefaultValues = {};
-			tools.forIn(lang.getObject('_receivedObjOrigData.$empty_props_with_default_set$', false, this) || {}, function(key, value) {
-				emptyPropsWithDefaultValues[key] = value.default_value;
-			});
+			tools.forIn(lang.getObject('_receivedObjOrigData.$empty_props_with_default_set$', false, this) || {}, lang.hitch(this, function(key, value) {
+				// Ignore empty props with default values if they are not in the form.
+				// This can e.g. happen for the users/self module since all properties are gathered from
+				// users/user but only a few are in the form. (Bug #48047)
+				if (this._receivedObjFormData.hasOwnProperty(key)) {
+					emptyPropsWithDefaultValues[key] = value.default_value;
+				}
+			}));
 			return emptyPropsWithDefaultValues;
 		},
 
