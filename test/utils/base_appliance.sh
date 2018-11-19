@@ -209,7 +209,7 @@ prepare_package_app ()
 	for i in oxseforucs egroupware horde tine20 fortnox kolab-enterprise zarafa kopano-core kix2016; do
 		test "$i" = "$app" && close_fds=TRUE
 	done
-	cat >/usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app}.inst <<__EOF__
+	cat >/usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app} <<__EOF__
 #!/bin/bash
 
 . /usr/share/univention-lib/base.sh
@@ -236,7 +236,7 @@ univention-run-join-scripts -dcaccount "\$dn" -dcpwd /tmp/joinpwd
 
 exit 0
 __EOF__
-	chmod 755 /usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app}.inst
+	chmod 755 /usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app}
 
 	# default packages for non-docker apps
 	mkdir -p /var/cache/univention-system-setup/packages/
