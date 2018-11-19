@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/kernel",
 	"dojo/_base/window",
+	"dojo/dom-class",
 	"dojo/window",
 	"dojo/string",
 	"dojo/query",
@@ -76,7 +77,7 @@ define([
 	"umc/i18n!umc/modules/uvmm",
 	"xstyle/css!./uvmm.css"
 ], function(
-	declare, lang, array, kernel, win, dojoWindow, string, query, Deferred, topic, on, aspect,
+	declare, lang, array, kernel, win, domClass, dojoWindow, string, query, Deferred, topic, on, aspect,
 	all, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
 	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard,
@@ -150,6 +151,9 @@ define([
 
 		// internal Deferred to control the rate of updating _currentWidth
 		_resizeDeferred: null,
+
+		// used to catch context events on the tooltip
+		_contextCatcher: null,
 
 		uninitialize: function() {
 			this.inherited(arguments);
@@ -1391,14 +1395,10 @@ define([
 				label: '',
 				iconClass: 'umcIconPlay',
 				style: 'padding: 0; display: inline; margin: 0;',
-				callback: lang.hitch(this, call, 'RUN', 'start', [id], [item])
+				callback: lang.hitch(this, call, 'RUN', 'start', [id], [item]),
+				title: col.description
 			});
 			this._grid.own(btn);
-			var tooltip = new Tooltip({
-				label: col.description,
-				connectId: [btn.domNode]
-			});
-			btn.own(tooltip);
 			item._univention_cache_button_start = btn;
 			return btn;
 		},
@@ -1415,15 +1415,10 @@ define([
 				label: '',
 				iconClass: 'umcIconView',
 				style: 'padding: 0; display: inline; margin: 0;',
-				callback: lang.hitch(this, 'vncLink', [id], [item])
+				callback: lang.hitch(this, 'vncLink', [id], [item]),
+				title: col.description(item)
 			});
 			this._grid.own(btn);
-			var description = col.description(item);
-			var tooltip = new Tooltip({
-				label: description,
-				connectId: [btn.domNode]
-			});
-			btn.own(tooltip);
 			item._univention_cache_button_vnc = btn;
 			return btn;
 		},
@@ -1809,9 +1804,34 @@ define([
 				var tooltip = new Tooltip({
 					label: tooltipContent,
 					connectId: [ widget.domNode ],
-					position: [ 'below' ]
+					position: [ 'after', 'below' ],
+					showDelay: 0
 				});
 				widget.own(tooltip);
+
+				widget.own(on(this._grid._grid, 'contextmenu', function() {
+					tooltip.close();
+				}));
+
+				// enable contextmenu under tooltip
+				widget.own(on(tooltip, 'show', lang.hitch(this, function() {
+					if (!!this._contextCatcher && this._contextCatcher.hasOwnProperty('remove')) {
+						this._contextCatcher.remove();
+					}
+					this._contextCatcher = on.once(document.body, 'contextmenu', lang.hitch(this, function(evt) {
+						var onTooltip = array.some(evt.path, function(element) {
+							return domClass.contains(element, "dijitTooltip");
+						});
+						if (onTooltip) {
+							evt.preventDefault();
+							tooltip.close();
+							this._grid._grid.clearSelection();
+							this._grid._grid.select(item);
+							this._grid._contextMenu._openMyself(evt);
+						}
+					}));
+					widget.own(this._contextCatcher);
+				})));
 
 				// destroy the tooltip when the widget is destroyed
 				tooltip.connect( widget, 'destroy', 'destroy' );
@@ -1825,18 +1845,11 @@ define([
 				description: description,
 				style: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
 			});
-			var widget = new Text({});
+			var widget = new Text({
+				title: description
+			});
 			this._grid.own(widget);
 			widget.set('content', html);
-
-			var tooltip = new Tooltip({
-				label: description,
-				connectId: [ widget.domNode ],
-				position: [ 'below' ]
-			});
-			widget.own(tooltip);
-			// destroy the tooltip when the widget is destroy
-			tooltip.connect( widget, 'destroy', 'destroy' );
 
 			return widget;
 		},

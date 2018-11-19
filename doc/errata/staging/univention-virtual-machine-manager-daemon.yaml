@@ -12,4 +12,5 @@ desc: |
  * The target hosts for live migration can now be configured even when the
    virtual machine is running.
  * Add Hyper-V Enlightment for Windows VMs.
-bug: [47617, 47741, 36661, 48199, 48024]
+ * Fix tooltips preventing button clicks.
+bug: [47617, 47741, 36661, 48199, 48024, 45498]
