@@ -1,3 +1,9 @@
+univention-lib (7.0.0-14) unstable; urgency=low
+
+  * Bug #47944: add settings/code to ucs_registerLDAPExtension
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 12 Oct 2018 14:21:34 +0200
+
 univention-lib (7.0.0-13) unstable; urgency=medium
 
   * Bug #47931: Don't handle streams in no_umc_restart

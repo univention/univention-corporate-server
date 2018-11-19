@@ -1,0 +1,53 @@
+objectIdentifier univentionData 1.3.6.1.4.1.10176.4220
+objectIdentifier univentionDataAttributeType univentionData:1
+objectIdentifier univentionDataObjectClass univentionData:2
+
+# <https://hutten.knut.univention.de/mediawiki/index.php/Univention-OIDs>
+
+### Definition for univentionData
+
+attributetype ( univentionDataAttributeType:1
+	NAME 'univentionData'
+	DESC 'Data'
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+
+attributetype ( univentionDataAttributeType:2
+	NAME 'univentionDataType'
+	DESC 'Univention data type'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionDataAttributeType:3
+	NAME 'univentionDataMeta'
+	DESC 'Univention data metadata'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionDataAttributeType:4
+	NAME 'univentionDataFilename'
+	DESC 'Filename of file to store data in.'
+	SINGLE-VALUE
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( univentionDataObjectClass:1
+	NAME 'univentionData'
+	DESC 'Univention data object'
+	SUP top
+	STRUCTURAL
+	MUST ( cn $ univentionDataType )
+	MAY ( description
+		$ univentionData
+		$ univentionDataMeta
+		$ univentionDataFilename
+		$ univentionUCSVersionStart
+		$ univentionUCSVersionEnd
+		$ univentionOwnedByPackage
+		$ univentionOwnedByPackageVersion
+		)
+	)
