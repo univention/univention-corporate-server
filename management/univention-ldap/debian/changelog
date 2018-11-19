@@ -1,4 +1,4 @@
-univention-ldap (14.0.2-29) unstable; urgency=low
+univention-ldap (14.0.2-30) unstable; urgency=low
 
   * Bug #47944: update dependencies
 
