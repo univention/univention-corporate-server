@@ -176,7 +176,7 @@ class UCSSetup(UCSInstallation):
 
 	def setup(self):
 		try:
-			#self.language('English')
+			self.language('English')
 			self.network()
 			self.domain(self.args.role)
 			if self.args.role == 'master':
