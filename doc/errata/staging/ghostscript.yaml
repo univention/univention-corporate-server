@@ -1,0 +1,38 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: ghostscript
+fix: 9.25~dfsg-0+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Integer overflow in the mark_curve function (CVE-2017-7948)
+ * Out-of-bounds read in mark_line_tr function (CVE-2017-8908)
+ * Heap-buffer over-read in the xps_load_sfnt_name function (CVE-2017-9610)
+ * Buffer overflow in the xps_load_sfnt_name function (CVE-2017-9618)
+ * Segmentation fault in the xps_true_callback_glyph_name function
+   (CVE-2017-9619)
+ * Heap-buffer over-read in the xps_select_font_encoding function
+   (CVE-2017-9620)
+ * Heap-buffer over-read in the xps_decode_font_char_imp function
+   (CVE-2017-9740)
+ * status command permitted with -dSAFER in psi/zfile.c allowing attackers to
+   identify the size and existence of files (CVE-2018-11645)
+ * saved execution stacks can leak operator arrays (incomplete fix for
+   CVE-2018-17183) (CVE-2018-17961)
+ * saved execution stacks can leak operator arrays (CVE-2018-18073)
+ * 1Policy operator allows a sandbox protection bypass (CVE-2018-18284)
+bug: [48170]
+cve:
+- CVE-2017-7948
+- CVE-2017-8908
+- CVE-2017-9610
+- CVE-2017-9618
+- CVE-2017-9619
+- CVE-2017-9620
+- CVE-2017-9740
+- CVE-2018-11645
+- CVE-2018-17961
+- CVE-2018-18073
+- CVE-2018-18284
+- CVE-2018-17183
