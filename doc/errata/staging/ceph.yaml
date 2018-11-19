@@ -1,0 +1,19 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: ceph
+fix: 10.2.11-1
+desc: |
+ This update addresses the following issues:
+ * libradosstriper processes arbitrary printf placeholders in user input
+   (CVE-2017-7519)
+ * cephx protocol is vulnerable to replay attack (CVE-2018-1128)
+ * cephx uses weak signatures (CVE-2018-1129)
+ * ceph-mon does not perform authorization on OSD pool ops (CVE-2018-10861)
+bug: [48179]
+cve:
+- CVE-2017-7519
+- CVE-2018-1128
+- CVE-2018-1129
+- CVE-2018-10861
