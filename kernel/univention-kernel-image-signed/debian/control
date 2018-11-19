@@ -25,7 +25,7 @@ Description: UCS - Linux kernel (standard)
 
 Package: linux-image-4.9.0-8-amd64-signed
 Architecture: amd64
-Depends: linux-image-4.9.0-8-amd64 (= 4.9.110-3+deb9u6),
+Depends: linux-image-4.9.0-8-amd64 (= 4.9.130-2),
 Description: UCS - Linux kernel (standard)
  This package provides the signed version of:
  .
@@ -42,7 +42,7 @@ Description: UCS - Linux kernel (standard)
 
 Package: linux-image-4.9.0-8-686-pae-signed
 Architecture: i386
-Depends: linux-image-4.9.0-8-686-pae (= 4.9.110-3+deb9u6),
+Depends: linux-image-4.9.0-8-686-pae (= 4.9.130-2),
 Description: UCS - Linux kernel (standard)
  This package depends on the unsigned version of:
  .
