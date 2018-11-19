@@ -1,0 +1,19 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: gnutls28
+fix: 3.5.8-5+deb9u4
+desc: |
+ This update addresses the following issues:
+ * HMAC-SHA-256 vulnerable to Lucky thirteen attack due to not enough dummy
+   function calls (CVE-2018-10844)
+ * HMAC-SHA-384 vulnerable to Lucky thirteen attack due to use of wrong
+   constant (CVE-2018-10845)
+ * "Just in Time" PRIME + PROBE cache-based side channel attack can lead to
+   plaintext recovery (CVE-2018-10846)
+bug: [48174]
+cve:
+- CVE-2018-10844
+- CVE-2018-10845
+- CVE-2018-10846
