@@ -23,7 +23,7 @@ Depends: ${misc:Depends},
  univention-ipcalc,
  bind9-host,
  shell-univention-lib (>= 6.0.9-8),
- python-univention-lib (>= 3.0.26-14),
+ python-univention-lib (>= 7.0.0-14),
  univention-newsid,
  univention-join,
  univention-ldap-overlay-memberof

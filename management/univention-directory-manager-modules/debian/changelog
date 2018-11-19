@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.25-18) unstable; urgency=low
+
+  * Bug #47944: update dependencies
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 19 Nov 2018 14:57:12 +0100
+
 univention-directory-manager-modules (13.0.25-17) unstable; urgency=low
 
   * Bug #47944: rename UDM module settings/code to settings/data
