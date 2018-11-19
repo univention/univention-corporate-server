@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: systemd
+fix: 232-25+deb9u6A~4.3.2.201811190845
+desc: |
+ This update addresses the following issue:
+ * Out-of-bounds heap write in systemd-networkd dhcpv6 option handling
+   (CVE-2018-15688)
+bug: [48162]
+cve:
+- CVE-2018-15688
