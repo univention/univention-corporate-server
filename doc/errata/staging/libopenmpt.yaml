@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: libopenmpt
+fix: 0.2.7386~beta20.3-3+deb9u3
+desc: |
+ This update addresses the following issue:
+ * soundlib/Snd_fx.cpp in OpenMPT before 1.27.07.00 and libopenmpt before
+   0.3.8 allows remote attackers to cause a denial of service (out-of-bounds
+   read) via an IT or MO3 file with many nested pattern loops.
+   (CVE-2018-10017)
+bug: [48177]
+cve:
+- CVE-2018-10017
