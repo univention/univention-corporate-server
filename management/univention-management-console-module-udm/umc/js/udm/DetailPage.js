@@ -1135,17 +1135,17 @@ define([
 			//		Render the form with subtabs containing all object properties that can
 			//		be edited by the user.
 
-			var formBuiltDeferred = new Deferred();
+			this._formBuiltDeferred = new Deferred();
 			this._policyDeferred = new Deferred();
 			var loadedDeferred = when(this.ldapName, lang.hitch(this, function(ldapName) {
 				this.ldapName = ldapName;
-				return this._loadObject(this.formBuiltDeferred, this._policyDeferred);
+				return this._loadObject(this._formBuiltDeferred, this._policyDeferred);
 			}));
 			loadedDeferred.then(lang.hitch(this, 'addActiveDirectoryWarning'));
 			loadedDeferred.then(lang.hitch(this, 'set', 'helpLink', metaInfo.help_link));
 			this._displayProgressOnSubmitButton(loadedDeferred);
 			this.standbyDuring(loadedDeferred);
-			all([loadedDeferred, formBuiltDeferred]).then(lang.hitch(this, '_notifyAboutAutomaticChanges'));
+			all([loadedDeferred, this._formBuiltDeferred]).then(lang.hitch(this, '_notifyAboutAutomaticChanges'));
 
 			if (template && template.length > 0) {
 				template = template[0];
@@ -1160,7 +1160,7 @@ define([
 			// prepare widgets and layout
 			properties = this._prepareWidgets(properties);
 			layout = this._prepareAdvancedSettings(layout);
-			properties = this._prepareOptions(properties, layout, template, formBuiltDeferred);
+			properties = this._prepareOptions(properties, layout, template, this._formBuiltDeferred);
 
 			// render widgets and full layout
 			var widgets = render.widgets(properties, this);
@@ -1173,7 +1173,7 @@ define([
 				this._renderForm(widgets);
 				this._renderMultiEditCheckBoxes(widgets);
 				this._registerOptionWatchHandler();
-				formBuiltDeferred.resolve();
+				this._formBuiltDeferred.resolve();
 
 				// initiate the template mechanism (only for new objects)
 				// searches for given default values in the properties... these will be replaced
@@ -1186,7 +1186,7 @@ define([
 			}));
 			//this._tabs.selectChild(this._tabs.getChildren[0]);
 
-			return all([loadedDeferred, formBuiltDeferred]);
+			return all([loadedDeferred, this._formBuiltDeferred]);
 		},
 
 		buildTemplate: function(_template, properties, widgets) {
@@ -1813,8 +1813,8 @@ define([
 						}
 
 						if (success && this.moduleFlavor == 'users/self') {
-							this._form.clearFormValues();
-							this._form.load(this.ldapName);
+							var loadDeferred = this._loadObject(this._formBuiltDeferred, this._policyDeferred);
+							this.standbyDuring(loadDeferred);
 							dialog.alert(_('The changes have been successfully applied.'));
 							saveDeferred.resolve();
 						} else if (success) {
