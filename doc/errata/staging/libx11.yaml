@@ -1,0 +1,16 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: libx11
+fix: 2:1.6.4-3+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Crash on invalid reply in XListExtensions in ListExt.c (CVE-2018-14598)
+ * off-by-one error in XListExtensions in ListExt.c (CVE-2018-14599)
+ * Out of Bounds write in XListExtensions in ListExt.c (CVE-2018-14600)
+bug: [48180]
+cve:
+- CVE-2018-14598
+- CVE-2018-14599
+- CVE-2018-14600
