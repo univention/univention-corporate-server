@@ -353,7 +353,7 @@ __EOF__
 	chmod 755 /usr/lib/univention-system-setup/scripts/00_system_setup/20remove_docker_app_${app}
 
 	# reinstall the app
-	cat >/usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app}.inst <<__EOF__
+	cat >/usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app} <<__EOF__
 #!/bin/bash
 
 . /usr/share/univention-lib/ucr.sh
@@ -389,7 +389,7 @@ univention-app shell ${app} ucr set repository/online=yes || true
 
 exit 0
 __EOF__
-	chmod 755 /usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app}.inst
+	chmod 755 /usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app}
 
 	# database packages for docker app
 	local packages="$(app_get_database_packages_for_docker_host $app)"
