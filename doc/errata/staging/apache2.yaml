@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: apache2
+fix: 2.4.25-3+deb9u6A~4.3.2.201811190845
+desc: |
+ This update addresses the following issues:
+ * mod_http2: Too much time allocated to workers, possibly leading to DoS
+   (CVE-2018-1333)
+ * DoS for HTTP/2 connections by continuous SETTINGS frames (CVE-2018-11763)
+bug: [48163]
+cve:
+- CVE-2018-1333
+- CVE-2018-11763
