@@ -1695,7 +1695,7 @@ define([
 					iconName += '-pending';
 				}
 			}
-			return iconName + '.png';
+			return iconName + '.svg';
 		},
 
 		iconFormatter: function(label, item) {
@@ -1704,7 +1704,7 @@ define([
 			//		according to the object types.
 
 			// create an HTML image that contains the icon (if we have a valid iconName)
-			var html = string.substitute('<img src="${themeUrl}/icons/16x16/${icon}" height="${height}" width="${width}" style="float:left; margin-right: 5px" /><div style="${style}">${label}</div>', {
+			var html = string.substitute('<img src="${themeUrl}/icons/scalable/${icon}" height="${height}" width="${width}" style="float:left; margin-right: 5px" /><div style="${style}">${label}</div>', {
 				icon: this._iconClass(item),
 				height: '16px',
 				width: '16px',

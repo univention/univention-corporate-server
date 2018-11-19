@@ -306,7 +306,7 @@ define([
 						size: 'Two',
 						name: 'hint',
 						content: lang.replace(
-							'<span><img src="{themeUrl}/icons/16x16/{icon}.png" height="{height}" width="{width}" style="float:left; margin-right:5px;"/>{label}</span>', {
+							'<span><img src="{themeUrl}/icons/scalable/{icon}.svg" height="{height}" width="{width}" style="float:left; margin-right:5px;"/>{label}</span>', {
 								icon: 'uvmm-warn',
 								height: '16px',
 								width: '16px',
