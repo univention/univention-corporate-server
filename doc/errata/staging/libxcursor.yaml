@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: libxcursor
+fix: 1:1.1.14-1+deb9u2
+desc: |
+ This update addresses the following issue:
+ * 1-byte heap-based overflow in _XcursorThemeInherits function in library.c
+   (CVE-2015-9262)
+bug: [48176]
+cve:
+- CVE-2015-9262
