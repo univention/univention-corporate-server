@@ -1,0 +1,17 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u5A~4.3.2.201811190703
+desc: |
+ This update addresses the following issues:
+ * ne2000: integer overflow leads to buffer overflow issue (CVE-2018-10839)
+ * pcnet: integer overflow leads to buffer overflow (CVE-2018-17962)
+ * net: ignore packets with large size (CVE-2018-17963)
+ * Add support for "Speculative Storage Bypass Disable" (SSBD)
+bug: [48165]
+cve:
+- CVE-2018-10839
+- CVE-2018-17962
+- CVE-2018-17963
