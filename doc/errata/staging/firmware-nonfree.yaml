@@ -6,17 +6,14 @@ src: firmware-nonfree
 fix: 20161130-4
 desc: |
  This update addresses the following issues:
- * The Broadcom Wi-Fi driver in the kernel in Android 4.x before 4.4.4, 5.x
-   before 5.1.1 LMY49G, and 6.x before 2016-02-01 allows remote attackers to
+ * The Broadcom Wi-Fi driver in the Linux kernel allows remote attackers to
    execute arbitrary code or cause a denial of service (memory corruption) via
    crafted wireless control message packets, aka internal bug 25662029.
    (CVE-2016-0801)
  * A remote code execution vulnerability in the Broadcom Wi-Fi firmware could
    enable a remote attacker to execute arbitrary code within the context of
    the Wi-Fi SoC. This issue is rated as Critical due to the possibility of
-   remote code execution in the context of the Wi-Fi SoC. Product: Android.
-   Versions: Kernel-3.10, Kernel-3.18. Android ID: A-34199105. References:
-   B-RB#110814. (CVE-2017-0561)
+   remote code execution in the context of the Wi-Fi SoC. (CVE-2017-0561)
  * Broadcom BCM43xx Wi-Fi chips allow remote attackers to execute arbitrary
    code via unspecified vectors, aka the "Broadpwn" issue. (CVE-2017-9417)
  * Reinstallation of the pairwise key in the 4-way handshake (CVE-2017-13077)
