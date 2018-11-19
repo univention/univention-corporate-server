@@ -1,0 +1,20 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: spamassassin
+fix: 3.4.2-0+deb8u1
+desc: |
+ This update addresses the following issues:
+ * loading of modules from current directory (CVE-2016-1238)
+ * Certain unclosed tags in crafted emails allow for scan timeouts and result
+   in denial of service (CVE-2017-15705)
+ * Potential remote code execution vulnerability in PDFInfo plugin
+   (CVE-2018-11780)
+ * Local user code injection in the meta rule syntax (CVE-2018-11781)
+bug: [48160]
+cve:
+- CVE-2016-1238
+- CVE-2017-15705
+- CVE-2018-11780
+- CVE-2018-11781
