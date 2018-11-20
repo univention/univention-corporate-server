@@ -1,0 +1,35 @@
+stages:
+    - build
+    - notify
+
+build:
+    stage: build
+    tags:
+        - ucs-build
+    only:
+        - /^[1-9]\.[0-9]-[0-9]$/    # Only build packages automatically for the main UCS branches
+    script:
+        - ./.build_unbuilt_packages
+
+notify_success:
+    image: univention-ansible:latest
+    stage: notify
+    tags:
+        - ucs-build
+    only:
+        - /^[1-9]\.[0-9]-[0-9]$/
+    allow_failure: true
+    script: |
+        curl -X POST -H 'Content-Type: application/json' --data '{"text":":white_check_mark: Gitlab-CI successfull", "attachments":[{"title":"job succeeded: '"$CI_PROJECT_NAME"' '"$CI_COMMIT_REF_NAME"'","title_link":"'"$CI_JOB_URL"'","text":" *from:* '"$GITLAB_USER_NAME"'  *title:* '"$CI_COMMIT_TITLE"' *descritption:* '"$(echo $CI_COMMIT_DESCRIPTION)"'","color":"#764FA5"}]}' $ROCKETCHAT_WEBHOOK
+
+notify_fail:
+    image: univention-ansible:latest
+    stage: notify
+    tags:
+        - ucs-build
+    only:
+        - /^[1-9]\.[0-9]-[0-9]$/
+    allow_failure: true
+    when: on_failure
+    script: |
+        curl -X POST -H 'Content-Type: application/json' --data '{"text":":negative_squared_cross_mark: Gitlab-CI FAILED", "attachments":[{"title":"job failed: '"$CI_PROJECT_NAME"' '"$CI_COMMIT_REF_NAME"'","title_link":"'"$CI_JOB_URL"'","text":" *from:* '"$GITLAB_USER_NAME"'  *title:* '"$CI_COMMIT_TITLE"' *descritption:* '"$(echo $CI_COMMIT_DESCRIPTION)"'","color":"#764FA5"}]}' $ROCKETCHAT_WEBHOOK
