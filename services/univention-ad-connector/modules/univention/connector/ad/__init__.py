@@ -2099,16 +2099,15 @@ class ad(univention.connector.ucs):
 		object_key = key
 		object_ucs = self._object_mapping(object_key, object)
 		ldap_object_ad = self.get_object(object['dn'])
-
 		kerberosdomain = self.baseConfig.get('%s/ad/mapping/kerberosdomain' % self.CONFIGBASENAME, None)
-		if kerberosdomain and 'userPrincipalName' not in ldap_object_ad:
+		if kerberosdomain and 'userPrincipalName' in ldap_object_ad:
 			ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object_ucs['dn'])
 			ucs_admin_object.open()
-
 			userPrincipalName = "%s@%s" % (ucs_admin_object['username'], kerberosdomain)
-			modlist = [(ldap.MOD_REPLACE, 'userPrincipalName', [userPrincipalName])]
-			ud.debug(ud.LDAP, ud.INFO, "set_userPrincipalName_from_ucr: set kerberos principle %s for AD user %s with modlist %s " % (userPrincipalName, object['dn'], modlist))
-			self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
+			if userPrincipalName not in ldap_object_ad['userPrincipalName']:
+				modlist = [(ldap.MOD_REPLACE, 'userPrincipalName', [userPrincipalName])]
+				ud.debug(ud.LDAP, ud.ERROR, "set_userPrincipalName_from_ucr: set kerberos principle %s for AD user %s with modlist %s " % (userPrincipalName, object['dn'], modlist))
+				self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
 
 	def disable_user_from_ucs(self, key, object):
 		object_key = key

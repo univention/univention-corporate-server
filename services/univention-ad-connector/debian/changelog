@@ -1,3 +1,9 @@
+univention-ad-connector (12.0.0-30) unstable; urgency=medium
+
+  * Bug #48153: update userPrincipalName in AD
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Nov 2018 16:19:31 +0100
+
 univention-ad-connector (12.0.0-29) unstable; urgency=medium
 
   * Bug #43189: space separated attribute list as parameter
@@ -12,7 +18,7 @@ univention-ad-connector (12.0.0-28) unstable; urgency=medium
 
 univention-ad-connector (12.0.0-27) unstable; urgency=medium
 
-  * Bug #47396: Fixed cn = Subschema rejects in ad-connector 
+  * Bug #47396: Fixed cn = Subschema rejects in ad-connector
 
  -- Julia Bremer <bremer@univention.de>  Mon, 29 Oct 2018 09:24:01 +0100
 
