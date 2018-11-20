@@ -24,7 +24,6 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention-lib (>= 7.0.0-14),
  python-univention-license,
  python-univention-directory-manager-cli (= ${binary:Version}),
- univention-ldap-config (>= 14.0.2-28),
  iso-codes,
  python-ipaddr,
  python-lazy-object-proxy
