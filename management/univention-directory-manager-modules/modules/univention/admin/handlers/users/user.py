@@ -470,7 +470,7 @@ property_descriptions = {
 	),
 	'mailAllowedSenderAddress': univention.admin.property(
 		short_description=_('Allowed sender addresses'),
-		long_description=_('E-mail addresses and usernames this user is allowed to use as sender address (additionally to its own primary and alternative addresses), when the "Configuration to prevent forged From addresses" is enabled (see manual). A username means this user is allowed to send using the primary and all alternative addresses of that user. An e-mail address mean this user is allowed to send using only that e-mail.'),
+		long_description=_('E-mail addresses and usernames this user is allowed to use as sender address (additionally to its own primary and alternative addresses), when the "Configuration to prevent forged From addresses" is enabled (see manual). If a username is given, this user is allowed to send using the primary and all alternative addresses of that user. If an e-mail address is given,  this user is allowed to send mails using the specified e-mail address as sender address.'),
 		syntax=univention.admin.syntax.uidOrEmailAddressValidDomain,
 		multivalue=True,
 		required=False,
