@@ -9,4 +9,6 @@ desc: |
  * The special cn=Subschema object caused AD-Connector rejects
  * Base64 encode non-printable attributes in univention-adsearch
  * Space separated attribute list as parameter in univention-adsearch
-bug: [47396,48082,43189]
+ * userPrincipalName is now synced to AD after changing the username
+   in UCS
+bug: [47396,48082,43189,48153]
