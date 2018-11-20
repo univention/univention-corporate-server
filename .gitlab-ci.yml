@@ -12,7 +12,6 @@ build:
         - ./.build_unbuilt_packages
 
 notify_success:
-    image: univention-ansible:latest
     stage: notify
     tags:
         - ucs-build
@@ -23,7 +22,6 @@ notify_success:
         curl -X POST -H 'Content-Type: application/json' --data '{"text":":white_check_mark: Gitlab-CI successfull", "attachments":[{"title":"job succeeded: '"$CI_PROJECT_NAME"' '"$CI_COMMIT_REF_NAME"'","title_link":"'"$CI_JOB_URL"'","text":" *from:* '"$GITLAB_USER_NAME"'  *title:* '"$CI_COMMIT_TITLE"' *descritption:* '"$(echo $CI_COMMIT_DESCRIPTION)"'","color":"#764FA5"}]}' $ROCKETCHAT_WEBHOOK
 
 notify_fail:
-    image: univention-ansible:latest
     stage: notify
     tags:
         - ucs-build
