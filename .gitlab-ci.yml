@@ -19,7 +19,7 @@ notify_success:
         - /^[1-9]\.[0-9]-[0-9]$/
     allow_failure: true
     script: |
-        curl -X POST -H 'Content-Type: application/json' --data '{"emoji":":gitlab:", "text":":white_check_mark: @$GITLAB_USER_LOGIN: Gitlab-CI successfull", "attachments":[{"title":"job succeeded: '"$CI_PROJECT_NAME"' '"$CI_COMMIT_REF_NAME"'","title_link":"'"$CI_JOB_URL"'","text":" *from:* '"$GITLAB_USER_NAME"'  *title:* '"$CI_COMMIT_TITLE"' *descritption:* '"$(echo $CI_COMMIT_DESCRIPTION)"'","color":"#764FA5"}]}' $ROCKETCHAT_WEBHOOK
+        curl -X POST -H 'Content-Type: application/json' --data '{"emoji":":gitlab:", "text":":white_check_mark: @'"$GITLAB_USER_LOGIN"': Gitlab-CI successfull", "attachments":[{"title":"job succeeded: '"$CI_PROJECT_NAME"' '"$CI_COMMIT_REF_NAME"'","title_link":"'"$CI_JOB_URL"'","text":" *from:* '"$GITLAB_USER_NAME"'  *title:* '"$CI_COMMIT_TITLE"' *descritption:* '"$(echo $CI_COMMIT_DESCRIPTION)"'","color":"#764FA5"}]}' $ROCKETCHAT_WEBHOOK
 
 notify_fail:
     stage: notify
@@ -30,4 +30,4 @@ notify_fail:
     allow_failure: true
     when: on_failure
     script: |
-        curl -X POST -H 'Content-Type: application/json' --data '{"emoji":":gitlab:", "text":":negative_squared_cross_mark: @$GITLAB_USER_LOGIN: Gitlab-CI FAILED", "attachments":[{"title":"job failed: '"$CI_PROJECT_NAME"' '"$CI_COMMIT_REF_NAME"'","title_link":"'"$CI_JOB_URL"'","text":" *from:* '"$GITLAB_USER_NAME"'  *title:* '"$CI_COMMIT_TITLE"' *descritption:* '"$(echo $CI_COMMIT_DESCRIPTION)"'","color":"#764FA5"}]}' $ROCKETCHAT_WEBHOOK
+        curl -X POST -H 'Content-Type: application/json' --data '{"emoji":":gitlab:", "text":":negative_squared_cross_mark: @'"$GITLAB_USER_LOGIN"': Gitlab-CI FAILED", "attachments":[{"title":"job failed: '"$CI_PROJECT_NAME"' '"$CI_COMMIT_REF_NAME"'","title_link":"'"$CI_JOB_URL"'","text":" *from:* '"$GITLAB_USER_NAME"'  *title:* '"$CI_COMMIT_TITLE"' *descritption:* '"$(echo $CI_COMMIT_DESCRIPTION)"'","color":"#764FA5"}]}' $ROCKETCHAT_WEBHOOK
