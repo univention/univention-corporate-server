@@ -332,11 +332,8 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 				if self.verify_signature(header_sig, self.create_signature_text()):
 					self.log('CONTINUE: Verified signature by {!r}.'.format(header_sig.split(';', 1)[0]), self.queue_id)
 					return lm.CONTINUE
-				else:
-					self.log('REJECT: Message has a bad signature!', self.queue_id, 'ERROR')
-					self.log(self.reject_msg, self.queue_id)
-					return lm.REJECT
 			else:
+				self.log('REJECT: Message has no valid signature!', self.queue_id, 'ERROR')
 				self.log(self.reject_msg, self.queue_id)
 				return lm.REJECT
 		else:
