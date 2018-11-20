@@ -213,10 +213,13 @@ prepare_package_app ()
 #!/bin/bash
 
 . /usr/share/univention-lib/base.sh
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 set -x
 
 echo "__MSG__:Installing app $app"
+info_header "$0" "$(gettext "Installing $app")"
+
 
 eval "\$(ucr shell update/commands/install)"
 export DEBIAN_FRONTEND=noninteractive
@@ -358,8 +361,11 @@ __EOF__
 
 . /usr/share/univention-lib/ucr.sh
 . /usr/share/univention-lib/base.sh
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 set -x
+
+info_header "$0" "$(gettext "Installing $app")"
 
 APP="$app"
 USER="\$(custom_username Administrator)"
