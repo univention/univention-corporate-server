@@ -12,7 +12,80 @@
 
 	<section id="self-service:Einfuehrung"><title>Einführung</title>
 		<para>
-			Hier kommt Text hin.
+			Für &ucsUCS; steht mit der App <application>Self Service</application> eine webbasierte Komponente bereit,
+			mit der es Benutzern ermöglicht wird, selbständig und ohne Administratorunterstützung ihre Benutzerdaten
+			zu verwalten.
+		</para>
+		<para>
+			Die App kann auf einem &ucsUCS; mit der Serverrolle &ucsMaster;, &ucsBackup; oder &ucsSlave; über das <xref linkend="software:appcenter"/> installiert werden.
+		</para>
+		<para>
+			Zur Zeit existieren die folgenden Module, die über eigene Seiten im UCS-Managementsystem und ohne Authentifizierung erreichbar sind:
+			<itemizedlist>
+				<listitem>
+					<simpara>
+						Passwort ändern
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+						Kontozugang schützen
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+						Passwort zurücksetzen
+					</simpara>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</section>
+
+	<section id="self-service:Passwort_aendern"><title>Passwort ändern</title>
+		<para>
+			Das Modul <application>Passwort ändern</application> erlaubt es Benutzern ihr aktuelles (ggf. auch
+			abgelaufenens) Passwort durch ein neues zu ersetzen, sofern sie sich noch an ihr bestehendes Passwort
+			erinnern.
+		</para>
+	</section>
+
+	<section id="self-service:Kontozugang_schuetzen"><title>Kontozugang schützen</title>
+		<para>
+			Dieses Modul erlaubt es den Benutzern Kontaktmöglichkeiten zu hinterlegen, die bei der Verwendung
+			des Moduls <application>Passwort zurücksetzen</application> verwendet werden, beispielsweise eine
+			E-Mail-Adresse.
+		</para>
+		<para>
+			Um die Kontaktdaten hinterlegen zu können, muss sich ein Benutzer zunächst mit Benutzername und
+			Passwort authentisieren. Benutzer ohne abgespeicherte Kontaktdaten können das Modul
+			<application>Passwort zurücksetzen</application> später nicht verwenden, wenn sie ihr Passwort vergessen.
+		</para>
+		<para>
+			Mitglieder der Gruppe "Domain Admins" können die Kontaktdaten der Benutzer im Benutzer-Modul der &ucsUMC; bearbeiten.
+		</para>
+	</section>
+
+	<section id="self-service:Passwort_zuruecksetzen"><title>Passwort zurücksetzen</title>
+		<para>
+			Mit Hilfe des Moduls <application>Passwort zurücksetzen</application> kann ein Benutzer selbstständig das Passwort
+			zurücksetzen, wenn es vergessen wurde. Voraussetzung ist, dass zuvor Kontaktdaten wie eine E-Mail-Adresse hinterlegt
+			wurden.
+		</para>
+		<para>
+			Das &ucsUCS; System erzeugt zunächst einen Token, der eine begrenzte Zeit gültig ist und verschickt diesen an die
+			hinterlegte Kontaktadresse. Die Eingabe dieses Tokens berechtigt den Benutzer dann zum Hinterlegen eines neuen
+			Passworts.
+		</para>
+		<para>
+			Die Token und ihre Gültigkeit werden in einer PostgreSQL-Datenbank gespeichert.
+		</para>
+		<para>
+			Für die korrekte Funktion des Passwort-Zurücksetzens über E-Mails muss die Konfiguration des
+			lokalen Mailsystems geprüft werden. Das Mailsystem  muss ausgehende E-Mails direkt oder über
+			ein Mail-Relay zustellen können, vgl. <xref linkend="mail::serverconfig::relay"/>.
+		</para>
+		<para>
+			Darüber hinaus können viele weitere Parameter über &ucsUCR; konfiguriert werden:
 		</para>
 	</section>
 
