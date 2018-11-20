@@ -1,0 +1,10 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: samba
+fix: 2:4.6.15-1A~4.2.0.201811201842
+desc: |
+ This update addresses the following issue(s):
+ * TODO
+bug: [00001]
