@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0
+src: backports.ssl-match-hostname
+fix: 3.5.0.1-1
+desc: |
+ This update addresses the following issue:
+ * New maintained dependency of Univention App Center.
+bug: [43612]
+ignore:
+  - release+scope.consistent
+  - version.scope
