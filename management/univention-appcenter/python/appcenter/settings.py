@@ -259,7 +259,7 @@ class MultiSetting(Setting):
 				configure = get_action('configure')
 				ucr = configure._get_app_ucr(app)
 				for key in keys:
-					value = ucr.get(''.join((self.name, key)))
+					value = ucr.get('/'.join((self.name, key)))
 					settings.append([key, value])
 				return settings
 			else:
@@ -288,7 +288,7 @@ class MultiSetting(Setting):
 	def set_value(self, app, value, together_config_settings, part):
 		keys = []
 		for setting in value:
-			key = ''.join((self.name, setting[0]))
+			key = '/'.join((self.name, setting[0]))
 			val = setting[1]
 			keys.append(setting[0])
 			together_config_settings[part][key] = val
