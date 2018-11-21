@@ -11,6 +11,7 @@ desc: |
  * Space separated attribute list as parameter in univention-adsearch
  * The Connector now updates the AD attribute userPrincipalName if the
    UCS username is changed (disabled for all updated systems, unset
-   UCR variable connector/ad/mapping/sync/userPrincipalName to sync
-   username to userPrincipalName)
+   UCR variable connector/ad/mapping/sync/userPrincipalName and restart
+   the AD-Connctor to sync username to userPrincipalName on subsequent
+   object modifications)
 bug: [47396,48082,43189,48153]
