@@ -297,6 +297,7 @@ class MultiSetting(Setting):
 			keys.append(setting[0])
 			together_config_settings[part][key] = val
 		together_config_settings[part][self.name] = ','.join(keys)
+		# Ensure that removed keys are also removed from the base.conf file
 		old_keys = self._get_keys(app)
 		for key in old_keys:
 			if key not in together_config_settings[part]:
