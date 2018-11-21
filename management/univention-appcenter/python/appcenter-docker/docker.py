@@ -401,6 +401,7 @@ class MultiDocker(Docker):
 		return True
 
 	def pull(self):
+		mkdir(self.app.get_compose_dir())
 		yml_file = self.app.get_compose_file('docker-compose.yml')
 		shutil.copy2(self.app.get_cache_file('compose'), yml_file)
 		self.logger.info('Downloading app images')
