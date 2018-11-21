@@ -453,6 +453,13 @@ define([
 			});
 		},
 
+		_hasErrorMsg: function(item) {
+			if (item.hasOwnProperty('error') && item.error.hasOwnProperty('msg')) {
+				return !!item.error.msg;
+			}
+			return false;
+		},
+
 		_migrateDomain: function( ids, items ) {
 			var _dialog = null, form = null;
 			var unavailable = array.some( items, function( domain ) {
@@ -1689,6 +1696,9 @@ define([
 					iconName += '-on';
 				} else if ( item.state == 'PAUSED' || ( item.state == 'SHUTOFF' && item.suspended ) || (item.state == 'SUSPENDED')) {
 					iconName += '-paused';
+					if (this._hasErrorMsg(item)) {
+						iconName += '-error';
+					}
 				} else if (item.state == 'TERMINATED') {
 					iconName += '-terminated';
 				} else if (item.state == 'PENDING') {
@@ -1735,7 +1745,12 @@ define([
 					tooltipContent = lang.replace( _('State: {state}<br>Server: {node}<br>{vnc_port}' ), tooltipData);
 				}
 
-				var tooltip = new Tooltip( {
+				if (this._hasErrorMsg(item)) {
+					tooltipContent += '<br>';
+					tooltipContent += lang.replace(_('IO error "{reason}" on device "{device}[{srcpath}]"'), item.error);
+				}
+
+				var tooltip = new Tooltip({
 					label: tooltipContent,
 					connectId: [ widget.domNode ],
 					position: [ 'below' ]

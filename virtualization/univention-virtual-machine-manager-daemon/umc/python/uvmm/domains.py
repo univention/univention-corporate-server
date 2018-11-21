@@ -121,6 +121,7 @@ class Domains(object):
 						'suspended': bool(domain['suspended']),
 						'description': domain['description'],
 						'node_available': domain['node_available'],
+						'error': domain['error'],
 					})
 			return domain_list
 
