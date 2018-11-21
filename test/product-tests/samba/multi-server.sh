@@ -186,8 +186,8 @@ test_master () {
 	#	Rechtevergabe prüfen DONE (simuliert durch Zugriff mit anderen Benutzer)
 	python shared-utils/ucs-winrm.py check-share --server $MEMBER --sharename "testshareMember" --driveletter R --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py check-share --server $SLAVE --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
-	python shared-utils/ucs-winrm.py check-share --server $MEMBER --sharename "testshareMember" --driveletter R --filename "test.txt" --username 'newuser01' --userpwd "Univention123!" --debug 2>&1 | grep Exception
-	python shared-utils/ucs-winrm.py check-share --server $SLAVE --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'newuser01' --userpwd "Univention123!" --debug 2>&1 | grep Exception
+	python shared-utils/ucs-winrm.py check-share --server $MEMBER --sharename "testshareMember" --driveletter R --filename "test.txt" --username 'newuser01' --userpwd "Univention123!"
+	python shared-utils/ucs-winrm.py check-share --server $SLAVE --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'newuser01' --userpwd "Univention123!"
 	#map printer driver names to network printers
 	python shared-utils/ucs-winrm.py setup-printer --printername Slaveprinter --server "$SLAVE"
 	python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$MEMBER"
