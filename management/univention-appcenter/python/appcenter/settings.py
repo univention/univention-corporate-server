@@ -245,6 +245,10 @@ class FileSetting(Setting):
 
 
 class MultiSetting(Setting):
+
+	key_label = IniSectionAttribute(default='Key', localisable=True)
+	value_label = IniSectionAttribute(default='Value', localisable=True)
+
 	def get_value(self, app, phase='Settings'):
 		keys = self._get_keys(app, phase)
 		settings = []

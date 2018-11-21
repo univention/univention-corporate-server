@@ -105,17 +105,18 @@ define([
 						}));
 					}
 				} else if (variable.type == 'MultiSetting') {
+
 					ret.push(lang.mixin(params, {
 					 	type: MultiInput,
 					 	content: value,
 					 	_groupName: params._groupName,
 						subtypes: [
 							{
-								label: 'Key',
+								label: variable.key_label,
 								type: 'TextBox'
 							},
 							{
-								label: 'Value',
+								label: variable.value_label,
 								type: 'TextBox'
 							}
 						],
