@@ -81,7 +81,7 @@ except ImportError:
 	pass
 
 
-RSA_KEY_FILE = '/etc/postfix/sender_check.key'
+RSA_KEY_FILE = '/usr/lib/univention-mail-postfix/sender_check.key'
 HEADER_SIG = 'X-univention-sender-check-sig'
 HEADER_NONCE = 'X-univention-sender-check-nonce'
 LEGITIMATE_ADDRESSES_CACHE_TTL_UCR = 'mail/postfix/sender_check_milter_cache_ttl'

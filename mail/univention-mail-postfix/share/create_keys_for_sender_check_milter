@@ -43,7 +43,7 @@ import datetime
 from univention.mail.simple_crypt import SimpleAsymmetric
 
 
-RSA_KEY_FILE = '/etc/postfix/sender_check.key'
+RSA_KEY_FILE = '/usr/lib/univention-mail-postfix/sender_check.key'
 
 uid = pwd.getpwnam('listfilter').pw_uid
 gid = grp.getgrnam('nogroup').gr_gid
