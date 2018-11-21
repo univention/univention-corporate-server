@@ -273,7 +273,7 @@ define([
 				// customize the method getIconClass()
 				//onClick: lang.hitch(this, 'filter'),
 				getIconClass: lang.hitch(this, function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
-					return tools.getIconClass(this._iconClass(item));
+					return tools.getIconClass(this._iconClass(item)) + ' uvmm-tree-icon';
 				}),
 				getTooltip: lang.hitch(this, function(item) {
 					return this._getTreeTooltip(item);

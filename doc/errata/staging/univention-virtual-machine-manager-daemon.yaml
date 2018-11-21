@@ -13,4 +13,5 @@ desc: |
    virtual machine is running.
  * Add Hyper-V Enlightment for Windows VMs.
  * Fix tooltips preventing button clicks.
-bug: [47617, 47741, 36661, 48199, 48024, 45498]
+ * Show CPU usage in tree of virtualization hosts.
+bug: [47617, 47741, 36661, 48199, 48024, 45498, 35196]

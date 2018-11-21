@@ -31,21 +31,28 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojo/aspect",
 	"dojox/timing/_base",
 	"dijit/Destroyable"
-], function(declare, lang, timing, Destroyable) {
+], function(declare, lang, array, aspect, timing, Destroyable) {
 	return declare("umc.modules.uvmm.GridUpdater", [Destroyable], {
 		grid: null, // reference to the grid
 		tree: null, // reference to the tree
 		interval: null, // interval in seconds
+		_childrenAdvicer: null,
 
 		constructor: function(kwArgs) {
 			lang.mixin(this, kwArgs);
 			this.interval = parseInt(this.interval, 10);
 			var milliseconds = 1000 * this.interval;
+			this._treeStoreCache = {};
+			this._renewChildrenAdvicer();
+			this.own(aspect.after(this.tree, 'reload', lang.hitch(this, '_renewChildrenAdvicer')));
 			this._timer = new timing.Timer(1000 * this.interval);
 			this._timer.onTick = lang.hitch(this, function() {
 				this.grid.update();
+				this._treeUpdate();
 			});
 			if (milliseconds > 0) {
 				// else: interval=0 or interval=NaN

@@ -28,3 +28,34 @@
 .umc .umcGrid .dgrid .dgrid-cell.field-start .umcIconPlay {
 	margin: 0 16px;
 }
+
+.umc .umcGridTree .dgrid .dgrid-cell.dgrid-column-label.field-label {
+	line-height: normal;
+}
+
+.tree-description {
+	text-overflow: ellipsis;
+	display: inline-block;
+	overflow: hidden;
+	white-space: nowrap;
+	/* expando tree icon: 24px + 32 px
+	*  node icon: 16 px + 5 px
+	*  cpu | mem: ca 100 px
+	*/
+	max-width: calc( 100% - 24px - 32px - 16px - 5px - 100px);
+	line-height: 32px;
+	vertical-align: middle;
+}
+
+.node-ressources {
+	display: inline-block;
+	float: right;
+	padding-right: 5px;
+	line-height: 32px;
+	vertical-align: middle;
+}
+
+.uvmm-tree-icon {
+	line-height: 32px;
+	vertical-align: middle;
+}
