@@ -12,11 +12,6 @@ prepare_master () {
 		( . utils.sh && install_winrm )
 	fi
 
-	#activate umaintained repo TODO remove, siehe cfg
-	#ucr set repository/online/unmaintained='yes'
-	#apt update
-	#univention-install -y faketime
-
  	ucr set server/password/interval='0'
 	/usr/lib/univention-server/server_password_change
 	#univention-install --yes univention-printserver-pdf
@@ -51,9 +46,10 @@ prepare_master () {
 	#	Benutzerkonfiguration -> Richtlinien -> Administrative Vorlagen -> Startmenü und Taskleiste -> Lautstärkesymbol entfernen -> aktivieren/Ok DONE
 	#    Container/OU im Samba4-verzeichnisdienst anlegen, Rechner-GPO (GPO2) anlegen und damit verknüpfen, Test-Windows-client in den Container verschieben. GPO Beispiel:
 	#	Computerkonfiguration -> Richtlinien -> Administrative Vorlagen -> System/Anmelden -> Diese Programme bei der Benutzeranmeldung ausführen -> Auszuführende Elemente -> notepad -> aktivieren/Ok DONE
-	python shared-utils/ucs-winrm.py create-gpo --credssp --name NewGPO --comment "testing new GPO in domain"
-	python shared-utils/ucs-winrm.py link-gpo --name NewGPO --target "dc=sambatest,dc=local" --credssp
-	python shared-utils/ucs-winrm.py run-ps --credssp --cmd 'set-GPPrefRegistryValue -Name NewGPO -Context User -key "HKCU\Environment" -ValueName NewGPO -Type String -value NewGPO -Action Update'
+	create_gpo NewGPO "$ldap_base" User 'HKCU\Environment'
+	#python shared-utils/ucs-winrm.py create-gpo --credssp --name NewGPO --comment "testing new GPO in domain"
+	#python shared-utils/ucs-winrm.py link-gpo --name NewGPO --target "dc=sambatest,dc=local" --credssp
+	#python shared-utils/ucs-winrm.py run-ps --credssp --cmd 'set-GPPrefRegistryValue -Name NewGPO -Context User -key "HKCU\Environment" -ValueName NewGPO -Type String -value NewGPO -Action Update'
 	sleep 150
 
 	python shared-utils/ucs-winrm.py create-share-file --server $UCS --share "testshare" --filename "testfile.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
@@ -140,14 +136,10 @@ prepare_master () {
 	udm shares/share create --position "cn=shares,dc=sambatest,dc=local" --set name="testshareSlave" --set host="ucs-slave.sambatest.local" --set path="/home/testshare"
 	#create gpo on Backup to check if change of DC is possible
 	#    Per Gruppenrichtlineinverwaltung (GPMC) vom Client aus auf den DC Salve wechseln (Rechts-click auf Domäne, anderen DC auswählen). DONE: simulated by creating a new GPO with Slave as DC
-	python shared-utils/ucs-winrm.py create-gpo-server --credssp --name NewGPOinSlave --comment "testing new GPO in domain" --server $SLAVE
-	sleep 30
-	python shared-utils/ucs-winrm.py link-gpo --name NewGPOinSlave --target "dc=sambatest,dc=local" --credssp
+	create_gpo_in_server NewGPOinSlave "dc=sambatest,dc=local" $SLAVE
+	create_gpo_in_server NewGPOinBackup "dc=sambatest,dc=local" $BACKUP
 	# Per Gruppenrichtlineinverwaltung (GPMC) vom Client aus auf den DC Backup wechseln (Rechts-click auf Domäne, anderen DC auswählen)
 	# und dort z.B. die Benutzer-Richtlinie anpassen (z.B. einfach Lautstärkesymbol entfernen -> deaktivieren/Ok). Es sollte keine Fehlermeldung kommen. DONE : simulated by creating GPO with Backup as DC
-	python shared-utils/ucs-winrm.py create-gpo-server --credssp --name NewGPOinBackup --comment "testing new GPO in domain" --server $BACKUP
-	sleep 30
-	python shared-utils/ucs-winrm.py link-gpo --name NewGPOinBackup --target "dc=sambatest,dc=local" --credssp
 	
 	echo "Success"
 	
@@ -191,9 +183,11 @@ test_master () {
 	#    Sind die Shares vom Win7 und Win8.1 / W2012 Client erreichbar und verwendbar?
 	#	Verschiedenen Optionen an Share testen (siehe Handbuch) DONE
 	#	Funktioniert Schreib- und Lesezugriff DONE
-	#	Rechtevergabe prüfen TODO
+	#	Rechtevergabe prüfen DONE (simuliert durch Zugriff mit anderen Benutzer)
 	python shared-utils/ucs-winrm.py check-share --server $MEMBER --sharename "testshareMember" --driveletter R --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py check-share --server $SLAVE --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
+	python shared-utils/ucs-winrm.py check-share --server $MEMBER --sharename "testshareMember" --driveletter R --filename "test.txt" --username 'newuser01' --userpwd "Univention123!" --debug 2>&1 | grep Exception
+	python shared-utils/ucs-winrm.py check-share --server $SLAVE --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'newuser01' --userpwd "Univention123!" --debug 2>&1 | grep Exception
 	#map printer driver names to network printers
 	python shared-utils/ucs-winrm.py setup-printer --printername Slaveprinter --server "$SLAVE"
 	python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$MEMBER"
@@ -213,11 +207,11 @@ test_master () {
 	sshpass -p "$ADMIN_PASSWORD" rsync -ne ssh /var/lib/samba/sysvol/$WINRM_DOMAIN/Policies root@$SLAVE:/var/lib/samba/sysvol/$WINRM_DOMAIN/Policies
 	sshpass -p "$ADMIN_PASSWORD" rsync -ne ssh /var/lib/samba/sysvol/$WINRM_DOMAIN/Policies root@$BACKUP:/var/lib/samba/sysvol/$WINRM_DOMAIN/Policies
 
-	# Sind alle UCS-Samba-Server in der Netzwerkumgebung der Clients zu sehen? TODO unter windows net computer list ? nbtstat
-	python shared-utils/ucs-winrm.py run-ps --cmd "ping ucs-master" --impersonate --run-as-user Administrator
-	python shared-utils/ucs-winrm.py run-ps --cmd "ping ucs-slave" --impersonate --run-as-user Administrator
-	python shared-utils/ucs-winrm.py run-ps --cmd "ping ucs-backup" --impersonate --run-as-user Administrator
-	python shared-utils/ucs-winrm.py run-ps --cmd "ping ucs-member" --impersonate --run-as-user Administrator
+	# Sind alle UCS-Samba-Server in der Netzwerkumgebung der Clients zu sehen? unter windows net computer list ? nbtstat DONE
+	check_dcmember ucs-master
+	check_dcmember ucs-backup
+	check_dcmember ucs-slave
+	check_dcmember ucs-member
 	samba-tool ntacl sysvolreset || true
 	python shared-utils/ucs-winrm.py domain-join --domain sambatest.local --dnsserver "$UCS" --client "$WINCLIENT2" --user "Administrator" --password "$WINCLIENT2_PASSWORD" --domainuser "administrator" --domainpassword "$ADMIN_PASSWORD"
 	#change pw after policiesw changes
@@ -283,4 +277,4 @@ test_rodc () {
 # Funktionsnamen $server/rolle_prepare bzw. ..._test DONE
 # python shared-utils/ucs-winrm.py setup-printer statt  rpcclient localhost DONE
 # tabs statt spaces DONE
-# samba/utils.sh verwenden
+# samba/utils.sh verwenden DONE

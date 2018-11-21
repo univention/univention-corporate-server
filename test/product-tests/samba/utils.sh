@@ -27,6 +27,21 @@ create_gpo () {
 	python shared-utils/ucs-winrm.py run-ps --credssp --cmd "set-GPPrefRegistryValue -Name $name -Context $context -key $key -ValueName "$name" -Type String -value "$name" -Action Update" "$@"
 }
 
+create_gpo_in_server () {
+	local name="$1"; shift
+	local ldap_base="$1"; shift
+	local server="$1"; shift
+	python shared-utils/ucs-winrm.py create-gpo-server --credssp --name "$name" --comment "testing new GPO in non-master" --server $server "$@"
+	sleep 30
+	python shared-utils/ucs-winrm.py link-gpo --name "$name" --target "$ldap_base" --credssp "$@"
+}
+
+check_dcmember () {
+	local name="$1"; shift
+	python shared-utils/ucs-winrm.py run-ps --cmd "ping $name" --impersonate --run-as-user Administrator
+	python shared-utils/ucs-winrm.py run-ps --cmd "nbtstat -a $name" --impersonate --run-as-user Administrator
+}
+
 check_user_in_ucs () {
 	local username="$1"
 	local password="$2"
