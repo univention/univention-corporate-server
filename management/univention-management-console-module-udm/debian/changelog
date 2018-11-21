@@ -1,3 +1,9 @@
+univention-management-console-module-udm (8.0.5-26) unstable; urgency=medium
+
+  * Bug #47880: Add requiredCommand sections to udm.xml
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Wed, 21 Nov 2018 16:16:53 +0100
+
 univention-management-console-module-udm (8.0.5-25) unstable; urgency=medium
 
   * Bug #48047: ignore empty default props if they are not in the form
@@ -202,7 +208,7 @@ univention-management-console-module-udm (7.0.10-23) unstable; urgency=medium
 
 univention-management-console-module-udm (7.0.10-22) unstable; urgency=medium
 
-  * Bug #45644: move the report directory for security reasons from 
+  * Bug #45644: move the report directory for security reasons from
   	/var/www/univention-directory-reports to
   	/usr/share/univention-management-console-module-udm
 

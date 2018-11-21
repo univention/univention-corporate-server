@@ -11,6 +11,20 @@
 			<categories>
 				<category name="users"/>
 			</categories>
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/syntax/choices/info"/>
+				<requiredCommand name="udm/syntax/choices"/>
+				<requiredCommand name="udm/get"/>
+			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="users/contact">
 			<name>Contacts</name>
@@ -19,6 +33,11 @@
 			<categories>
 				<category name="users"/>
 			</categories>
+			<requiredCommands>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/get"/>
+				<requiredCommand name="udm/values"/>
+			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="groups/group">
 			<name>Groups</name>
@@ -27,6 +46,18 @@
 			<categories>
 				<category name="users"/>
 			</categories>
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/get"/>
+			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="computers/computer">
 			<name>Computers</name>
@@ -35,26 +66,88 @@
 			<categories>
 				<category name="devices"/>
 			</categories>
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/get"/>
+			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="networks/network">
 			<name>Networks</name>
 			<description>Configuration of network settings in the domain</description>
 			<keywords>networks</keywords>
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/get"/>
+			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="dns/dns">
 			<name>DNS</name>
 			<description>Configuration of DNS settings in the domain</description>
 			<keywords>dns</keywords>
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/get"/>
+				<requiredCommand name="udm/nav/container/query"/>
+			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="dhcp/dhcp">
 			<name>DHCP</name>
 			<description>Configuration of DHCP settings in the domain</description>
 			<keywords>dhcp</keywords>
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/get"/>
+				<requiredCommand name="udm/nav/container/query"/>
+			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="shares/share">
 			<name>Shares</name>
 			<description>Management of directory shares in the domain</description>
 			<keywords>shares</keywords>
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/get"/>
+			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="shares/print">
 			<name>Printers</name>
@@ -63,11 +156,35 @@
 			<categories>
 				<category name="devices"/>
 			</categories>
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/get"/>
+			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="mail/mail">
 			<name>Mail</name>
 			<description>Management of mail domains and mailing lists</description>
 			<keywords>mail,e-mail,email</keywords>
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/get"/>
+			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="nagios/nagios">
 			<name>Nagios</name>
@@ -76,16 +193,54 @@
 			<categories>
 				<category name="devices"/>
 			</categories>
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/get"/>
+			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="policies/policy">
 			<name>Policies</name>
 			<description>Management of domain wide policies</description>
 			<keywords>policy,policies</keywords>
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/get"/>
+			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="navigation">
 			<name>LDAP directory</name>
 			<description>Browsing and managing the LDAP tree</description>
 			<keywords>ldap,directory,udm</keywords>
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/get"/>
+				<requiredCommand name="udm/nav/container/query"/>
+				<requiredCommand name="udm/nav/object/query"/>
+			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="users/self">
 			<name>User settings</name>
@@ -94,7 +249,19 @@
 			<categories>
 				<category name="users"/>
 			</categories>
-		</flavor> 
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/get"/>
+			</requiredCommands>
+		</flavor>
 		<flavor priority="50" id="license-import">
 			<name>UCS license import</name>
 			<description>Import new license</description>
@@ -111,6 +278,18 @@
 			<categories>
 				<category name="domain"/>
 			</categories>
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/get"/>
+			</requiredCommands>
 		</flavor>
 		<categories>
 			<category name="domain"/>
