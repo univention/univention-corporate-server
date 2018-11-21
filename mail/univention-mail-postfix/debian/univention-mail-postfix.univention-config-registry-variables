@@ -431,6 +431,12 @@ Description[en]=Port on which the Milter process, that verifies sender addresses
 Type=str
 Categories=service-mail
 
+[mail/postfix/sender_check_milter_cache_ttl]
+Description[de]=Sekunden die ein Eintrag im Cache des Milter-Prozess, der Absenderadressen für Postfix prüft ("sender_check"), gültig ist. Standard: 30.
+Description[en]=Seconds an entry in the cache of the Milter process, that verifies sender addresses for postfix ("sender_check"), is valid. Default: 30.
+Type=int
+Categories=service-mail
+
 [mail/postfix/postscreen/enabled]
 Description[de]=Ist diese Option aktiviert, werden eingehende SMTP-Verbindungen durch Postscreen geprüft, bevor sie an den SMTP-Dienst übergeben werden. Ist die Variable nicht gesetzt, erfolgt keine Prüfung (Standard: "no").
 Description[en]=If this option is activated, incoming SMTP connections are checked by postscreen before the connection is passed to the SMTP daemon. If the variable is unset, no check is performed (Default: "no").

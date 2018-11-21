@@ -46,7 +46,8 @@ For each username, the corresponding users mPA and mAA are also accepted.
 The Milter runs as a daemon process. It forks a separate process for each
 connection. Another process holds a cache of legitimate email addresses
 for use (both writing and reading) by all connection handler processes. The
-email addresses are cached for 1 min (LEGITIMATE_ADDRESSES_CACHE_TTL).
+email addresses are cached for the number of seconds configured in UCRV
+mail/postfix/sender_check_milter_cache_ttl.
 
 E-Mails from connections that are verified (using SASL) are cryptographically
 signed. The signature can be verified by other UCS mail servers in the domain.
@@ -83,14 +84,29 @@ except ImportError:
 RSA_KEY_FILE = '/etc/postfix/sender_check.key'
 HEADER_SIG = 'X-univention-sender-check-sig'
 HEADER_NONCE = 'X-univention-sender-check-nonce'
-LEGITIMATE_ADDRESSES_CACHE_TTL = 60
+LEGITIMATE_ADDRESSES_CACHE_TTL_UCR = 'mail/postfix/sender_check_milter_cache_ttl'
+LEGITIMATE_ADDRESSES_CACHE_TTL_UCRV_DEFAULT = 30
+_ucr = None
+
+
+def get_ucr():
+	global _ucr
+	if not _ucr:
+		_ucr = ConfigRegistry()
+		_ucr.load()
+	return _ucr
+
+
+def reload_ucr():
+	global _ucr
+	_ucr.load()
 
 
 class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 	_lo = None
 	_ldap_secret_mtime = 0.0
-	_ucr = None
 	legitimate_address_cache = None  # type: Dict[str, Union[Tuple[datetime.datetime, List[str]], Dict[str, int]]]
+	legitimate_address_cache_ttl = get_ucr().get(LEGITIMATE_ADDRESSES_CACHE_TTL_UCR, LEGITIMATE_ADDRESSES_CACHE_TTL_UCRV_DEFAULT)
 	regex_email_with_brackets = re.compile(r'.*<(.+@.+\..+)>$')
 	regex_email_no_brackets = re.compile(r'(.+@.+\..+)$')
 	mail_domains = []  # type: List[str]
@@ -105,6 +121,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 		self.header_data = {}  # type: Dict[str, str]
 		self.sign_msg = self.header_from_ok = self.envelope_from_ok = False
 		self._nonce = 0
+		self.ucr = get_ucr()
 
 		if not self.mail_domains:
 			self.__class__.mail_domains = self.get_mail_domains()
@@ -112,7 +129,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 		if not self.public_keys:
 			self.public_keys.update(self.get_public_keys())
 		self.log('Public keys: {}'.format(', '.join(self.public_keys.keys())))
-		assert '{}.{}'.format(self.get_ucr()['hostname'], self.get_ucr()['domainname']) in self.public_keys
+		assert '{}.{}'.format(self.ucr['hostname'], self.ucr['domainname']) in self.public_keys
 		self.crypto = SimpleAsymmetric()
 		self.crypto.load_keys(RSA_KEY_FILE)
 
@@ -145,13 +162,6 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 			)
 			cls._ldap_secret_mtime = os.stat('/etc/listfilter.secret').st_mtime
 		return cls._lo
-
-	@classmethod
-	def get_ucr(cls):
-		if not cls._ucr:
-			cls._ucr = ConfigRegistry()
-			cls._ucr.load()
-		return cls._ucr
 
 	@classmethod
 	def get_legitimate_addresses_for_username(cls, sasl_login_name, include_mail_allowed_sender_address=True):
@@ -190,7 +200,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 					res.extend(cls.get_legitimate_addresses_for_username(users_additional_address, False))
 		# cls.log('legitimate addresses for {!r}: {!r}'.format(sasl_login_name, res), 'DEBUG')
 		cls.legitimate_address_cache[sasl_login_name] = (
-			datetime.datetime.now() + datetime.timedelta(seconds=LEGITIMATE_ADDRESSES_CACHE_TTL),
+			datetime.datetime.now() + datetime.timedelta(seconds=cls.legitimate_address_cache_ttl),
 			res
 		)
 		return res
@@ -208,7 +218,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 		lo = cls.get_lo()
 		ldap_attr = ['univentionData', 'univentionDataMeta']
 		ldap_filter = '(&(objectClass=univentionData)(univentionDataType=mail/signing/RSA_public_key))'
-		ldap_base = 'cn=data,cn=univention,{}'.format(cls.get_ucr()['ldap/base'])
+		ldap_base = 'cn=data,cn=univention,{}'.format(get_ucr()['ldap/base'])
 		ldap_result = lo.search(filter=ldap_filter, attr=ldap_attr, base=ldap_base)
 		res = {}
 		for dn, attrs in ldap_result:
@@ -230,11 +240,13 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 	@classmethod
 	def sig_handler_reload(cls, num, frame):
 		"""
-		Reload :py:attr`cls.mail_domains`, :py:attr`cls.public_keys` and purge
-		:py:attr`cls.legitimate_address_cache`.
+		Reload UCR, :py:attr`cls.mail_domains`, :py:attr`cls.public_keys` and
+		purge :py:attr`cls.legitimate_address_cache`.
 		"""
+		reload_ucr()
 		cls.mail_domains = cls.get_mail_domains()
 		cls.public_keys = cls.get_public_keys()
+		cls.legitimate_address_cache_ttl = get_ucr().get(LEGITIMATE_ADDRESSES_CACHE_TTL_UCR, LEGITIMATE_ADDRESSES_CACHE_TTL_UCRV_DEFAULT)
 		cache_stats = cls.legitimate_address_cache['__stats'].copy()
 		cls.legitimate_address_cache.clear()
 		cls.legitimate_address_cache['__stats'] = {'hit': 0, 'hit_exp': 0, 'miss': 0}
@@ -443,7 +455,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 		data = json.loads(header)
 		try:
 			cyphertext = data['cyphertext']
-			enc_symmetric_key = data['{}.{}'.format(self.get_ucr()['hostname'], self.get_ucr()['domainname'])].decode('base64')
+			enc_symmetric_key = data['{}.{}'.format(self.ucr['hostname'], self.ucr['domainname'])].decode('base64')
 		except KeyError:
 			self.log('Nonce was not encrypted for this host, only for: {!r}.'.format(data.keys()), self.queue_id, 'ERROR')
 			return ''
@@ -460,7 +472,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 	def add_header_signature(self, text):  # type: (str) -> None
 		signature = self.crypto.sign(text)
 		sig = signature.encode('base64').strip()
-		res = '{}.{};{}'.format(self.get_ucr()['hostname'], self.get_ucr()['domainname'], sig)
+		res = '{}.{};{}'.format(self.ucr['hostname'], self.ucr['domainname'], sig)
 		self.addHeader(HEADER_SIG, res)
 
 	def remove_header_signature(self):  # type: () -> None
@@ -503,7 +515,7 @@ def sync_manager_init():
 
 def run_milter():
 	syslog.openlog(ident="sender_check", logoption=syslog.LOG_PID, facility=syslog.LOG_MAIL)
-	ucr = SenderCheckMilter.get_ucr()
+	ucr = get_ucr()
 	port = ucr.get('mail/postfix/sender_check_milter_port', 5656)
 	SenderCheckMilter.log('Starting sender_check milter process. Listening on port {}.'.format(port))
 	# test LDAP connection
