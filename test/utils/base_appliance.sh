@@ -206,7 +206,7 @@ prepare_package_app ()
 	local ucsversion="$(app_get_ini $app | awk -F / '{print $(NF-1)}')"
 	local install_cmd="$(univention-config-registry get update/commands/install)"
 	# Due to dovect: https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
-	for i in oxseforucs egroupware horde tine20 fortnox kolab-enterprise zarafa kopano-core kix2016; do
+	for i in oxseforucs egroupware horde tine20 fortnox kolab-enterprise kix2016; do
 		test "$i" = "$app" && close_fds=TRUE
 	done
 	cat >/usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app} <<__EOF__
