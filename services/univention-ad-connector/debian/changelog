@@ -1,3 +1,9 @@
+univention-ad-connector (12.0.0-31) unstable; urgency=medium
+
+  * Bug #48153: fixed last commit
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Nov 2018 10:57:21 +0100
+
 univention-ad-connector (12.0.0-30) unstable; urgency=medium
 
   * Bug #48153: update userPrincipalName in AD
