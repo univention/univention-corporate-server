@@ -401,7 +401,8 @@ class MultiDocker(Docker):
 		return True
 
 	def pull(self):
-		self._setup_yml()
+		yml_file = self.app.get_compose_file('docker-compose.yml')
+		shutil.copy2(self.app.get_cache_file('compose'), yml_file)
 		self.logger.info('Downloading app images')
 		ret, out = call_process2(['docker-compose', '-p', self.app.id, 'pull'], cwd=self.app.get_compose_dir(), logger=_logger)
 		if ret != 0:
@@ -416,14 +417,18 @@ class MultiDocker(Docker):
 			cert_dir = '/etc/univention/ssl/%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 			cert_volume = '%s:%s:ro' % (cert_dir, cert_dir)
 			volumes.append(cert_volume)
-		volumes.append('/sys/fs/cgroup:/sys/fs/cgroup:ro')                     # systemd
-		if ucr_is_true('appcenter/docker/container/proxy/settings', default=True):
-			if os.path.isfile('/etc/apt/apt.conf.d/80proxy'):
-				volumes.append('/etc/apt/apt.conf.d/80proxy:/etc/apt/apt.conf.d/80proxy:ro')  # apt proxy
 		return unique(volumes)
 
-	def _setup_yml(self):
+	def _setup_yml(self, recreate, env=None):
+		env = env or {}
 		yml_file = self.app.get_compose_file('docker-compose.yml')
+		yml_run_file = '%s.run' % yml_file
+		if not recreate:
+			if os.path.exists(yml_file):
+				return
+			elif os.path.exists(yml_run_file):
+				shutil.move(yml_run_file, yml_file)
+				return
 		template_file = '%s.template' % yml_file
 		mkdir(self.app.get_compose_dir())
 		shutil.copy2(self.app.get_cache_file('compose'), template_file)
@@ -452,6 +457,13 @@ class MultiDocker(Docker):
 					used_ports[service_name][container_port] = host_port
 				else:
 					used_ports[service_name][_port] = _port
+			service_env = service.get('environment', {})
+			for k in env.copy():
+				if k in service_env:
+					service_env[k] = env.pop(k)
+		if 'environment' not in container_def:
+			container_def['environment'] = {}
+		container_def['environment'].update(env)
 		for app_id, container_port, host_port in app_ports():
 			if app_id != self.app.id:
 				continue
@@ -470,9 +482,23 @@ class MultiDocker(Docker):
 			content['services'][service_name]['ports'] = ['%s:%s' % (host_port, container_port) for container_port, host_port in ports.iteritems()]
 		with open(yml_file, 'wb') as fd:
 			yaml.dump(content, fd, Dumper=yaml.RoundTripDumper, encoding='utf-8', allow_unicode=True)
+		shutil.copy2(yml_file, yml_run_file)  # "backup"
 
-	def create(self, hostname, set_vars):
-		self._setup_yml()
+	def create(self, hostname, env):
+		env = {k: v for k, v in env.iteritems() if k.isupper()}
+		env_file = self.app.get_cache_file('env')
+		if os.path.exists(env_file):
+			with open(env_file) as fd:
+				for line in fd:
+					if line.startswith('#'):
+						continue
+					if '=' in line:
+						k, v = line.split('=', 1)
+						k = k.strip()
+						v = v.strip()
+						if k not in env:
+							env[k] = v
+		self._setup_yml(recreate=True, env=env)
 		call_process(['docker-compose', '-p', self.app.id, 'create'], cwd=self.app.get_compose_dir())
 		try:
 			out = ps(only_running=False)
@@ -494,15 +520,15 @@ class MultiDocker(Docker):
 						return container
 
 	def up(self):
-		self._setup_yml()
+		self._setup_yml(recreate=False)
 		return call_process(['docker-compose', '-p', self.app.id, 'up', '-d'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
 
 	def stop(self):
-		self._setup_yml()
+		self._setup_yml(recreate=False)
 		return call_process(['docker-compose', '-p', self.app.id, 'down'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
 
 	def restart(self):
-		self._setup_yml()
+		self._setup_yml(recreate=False)
 		return call_process(['docker-compose', '-p', self.app.id, 'restart'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
 
 	def rm(self):

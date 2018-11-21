@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-44) unstable; urgency=medium
+
+  * Bug #43612: Support passing env
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 21 Nov 2018 16:07:47 +0100
+
 univention-appcenter (7.0.2-43) unstable; urgency=medium
 
   * Bug #43612: Do not create systemd service; fix start/stop/restart

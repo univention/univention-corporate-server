@@ -953,7 +953,7 @@ class App(object):
 			except ImportError:
 				# appcenter-docker is not installed
 				return None
-			yml_file = self.app.get_cache_file('compose')
+			yml_file = self.get_cache_file('compose')
 			content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
 			image = content['services'][self.docker_main_service]['image']
 			return image
