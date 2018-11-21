@@ -124,12 +124,14 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 		self.ucr = get_ucr()
 
 		if not self.mail_domains:
-			self.__class__.mail_domains = self.get_mail_domains()
-		self.log('Mail domains: {}'.format(', '.join(self.mail_domains)))
+			self.mail_domains.extend(self.get_mail_domains())
+		self.log('Mail domains: {}'.format(', '.join(self.mail_domains or ['None'])))
 		if not self.public_keys:
 			self.public_keys.update(self.get_public_keys())
-		self.log('Public keys: {}'.format(', '.join(self.public_keys.keys())))
-		assert '{}.{}'.format(self.ucr['hostname'], self.ucr['domainname']) in self.public_keys
+		self.log('Public keys: {}'.format(', '.join(self.public_keys.keys() or ['None'])))
+		fqdn = '{}.{}'.format(self.ucr['hostname'], self.ucr['domainname'])
+		if fqdn not in self.public_keys:
+			raise RuntimeError('Public key of this host ({!r}) not found. Run join script.'.format(fqdn))
 		self.crypto = SimpleAsymmetric()
 		self.crypto.load_keys(RSA_KEY_FILE)
 
@@ -252,7 +254,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 		cls.legitimate_address_cache['__stats'] = {'hit': 0, 'hit_exp': 0, 'miss': 0}
 		SenderCheckForkFactory._ignore_interrupt = True
 		cls.log('Reloaded. Mail domains: {}, Public keys: {}'.format(
-			', '.join(cls.mail_domains), ', '.join(cls.public_keys.keys())))
+			', '.join(cls.mail_domains or ['None']), ', '.join(cls.public_keys.keys() or ['None'])))
 		cls.log('Cache hits: {}, Cache misses: {} (of those expired: {})'.format(
 			cache_stats['hit'], cache_stats['miss'], cache_stats['hit_exp']))
 
