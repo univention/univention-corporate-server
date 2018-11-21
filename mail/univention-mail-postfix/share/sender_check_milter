@@ -165,7 +165,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 
 	@classmethod
 	def get_legitimate_addresses_for_username(cls, sasl_login_name, include_mail_allowed_sender_address=True):
-		# type: (str, Optional[bool]) -> List[str]
+		# type: (str, Optional[bool]) -> Tuple[datetime.datetime, List[str]]
 		stats = cls.legitimate_address_cache['__stats']
 		if sasl_login_name in cls.legitimate_address_cache:
 			expiration, addresses = cls.legitimate_address_cache[sasl_login_name]
@@ -173,7 +173,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 				# manager doesn't update mutable values or items in dict and list proxies, has to be assigned
 				stats['hit'] += 1
 				cls.legitimate_address_cache['__stats'] = stats
-				return addresses
+				return expiration, addresses
 			else:
 				stats['hit_exp'] += 1
 
@@ -187,23 +187,23 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 			attrs = ldap_result[0][1]
 		except IndexError:
 			cls.log('Found no email address for sasl_login_name={!r}.'.format(sasl_login_name), 'ERROR')
-			return []
+			return datetime.datetime.now(), []
 		else:
-			res = attrs.get('mailPrimaryAddress', []) + attrs.get('mailAlternativeAddress', [])
+			addresses = attrs.get('mailPrimaryAddress', []) + attrs.get('mailAlternativeAddress', [])
+			expiration = datetime.datetime.now() + datetime.timedelta(seconds=cls.legitimate_address_cache_ttl)
 
 		if include_mail_allowed_sender_address:
 			users_additional_addresses = attrs.get('mailAllowedSenderAddress', [])
 			for users_additional_address in users_additional_addresses:
 				if '@' in users_additional_address:
-					res.append(users_additional_address)
+					addresses.append(users_additional_address)
 				else:
-					res.extend(cls.get_legitimate_addresses_for_username(users_additional_address, False))
-		# cls.log('legitimate addresses for {!r}: {!r}'.format(sasl_login_name, res), 'DEBUG')
-		cls.legitimate_address_cache[sasl_login_name] = (
-			datetime.datetime.now() + datetime.timedelta(seconds=cls.legitimate_address_cache_ttl),
-			res
-		)
-		return res
+					_exp, _res = cls.get_legitimate_addresses_for_username(users_additional_address, False)
+					addresses.extend(_res)
+					# the entry could be from cache, in which case we "inherit" its (lower) expiration date
+					expiration = min(expiration, _exp)
+		cls.legitimate_address_cache[sasl_login_name] = expiration, addresses
+		return expiration, addresses
 
 	@classmethod
 	def get_mail_domains(cls):  # type: () -> List[str]
@@ -276,7 +276,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 		else:
 			# authenticated session
 			if not self.legitimate_addresses:
-				self.legitimate_addresses = self.get_legitimate_addresses_for_username(self.sasl_login_name)
+				_exp, self.legitimate_addresses = self.get_legitimate_addresses_for_username(self.sasl_login_name)
 			if self.envelope_from in self.legitimate_addresses:
 				self.envelope_from_ok = True
 			else:
@@ -299,7 +299,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 			if self.sasl_login_name:
 				# authenticated session
 				if not self.legitimate_addresses:
-					self.legitimate_addresses = self.get_legitimate_addresses_for_username(self.sasl_login_name)
+					_exp, self.legitimate_addresses = self.get_legitimate_addresses_for_username(self.sasl_login_name)
 				if self.header_data['from'] in self.legitimate_addresses:
 					self.header_from_ok = True
 					return lm.CONTINUE
