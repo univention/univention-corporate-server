@@ -432,8 +432,8 @@ Type=str
 Categories=service-mail
 
 [mail/postfix/sender_check_milter_cache_ttl]
-Description[de]=Sekunden die ein Eintrag im Cache des Milter-Prozess, der Absenderadressen für Postfix prüft ("sender_check"), gültig ist. Standard: 30.
-Description[en]=Seconds an entry in the cache of the Milter process, that verifies sender addresses for postfix ("sender_check"), is valid. Default: 30.
+Description[de]=Sekunden die ein Eintrag im Cache des Milter-Prozess, der Absenderadressen für Postfix prüft ("sender_check"), gültig ist. Standard: 60.
+Description[en]=Seconds an entry in the cache of the Milter process, that verifies sender addresses for postfix ("sender_check"), is valid. Default: 60.
 Type=int
 Categories=service-mail
 
