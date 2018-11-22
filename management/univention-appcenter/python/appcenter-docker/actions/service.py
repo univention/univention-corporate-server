@@ -66,8 +66,7 @@ class Start(Service):
 	def main(self, args):
 		if args.app.uses_docker_compose():
 			docker = MultiDocker(args.app)
-			if not docker.is_running():
-				return docker.up()
+			return docker.start()
 		return self.call_init(args.app, 'start')
 
 

@@ -1,3 +1,10 @@
+univention-appcenter (7.0.2-46) unstable; urgency=medium
+
+  * Bug #43612: Fix start/stop to not remove/recreate the whole multi
+    container setup
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 22 Nov 2018 15:09:08 +0100
+
 univention-appcenter (7.0.2-45) unstable; urgency=medium
 
   * Bug #43612: Create compose dir

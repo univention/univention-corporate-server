@@ -404,6 +404,7 @@ class MultiDocker(Docker):
 		mkdir(self.app.get_compose_dir())
 		yml_file = self.app.get_compose_file('docker-compose.yml')
 		shutil.copy2(self.app.get_cache_file('compose'), yml_file)
+		os.chmod(yml_file, 0600)
 		self.logger.info('Downloading app images')
 		ret, out = call_process2(['docker-compose', '-p', self.app.id, 'pull'], cwd=self.app.get_compose_dir(), logger=_logger)
 		if ret != 0:
@@ -433,6 +434,7 @@ class MultiDocker(Docker):
 		template_file = '%s.template' % yml_file
 		mkdir(self.app.get_compose_dir())
 		shutil.copy2(self.app.get_cache_file('compose'), template_file)
+		os.chmod(yml_file, 0600)
 		with open(template_file) as fd:
 			template = fd.read()
 			content = ucr_run_filter(template)
@@ -500,9 +502,9 @@ class MultiDocker(Docker):
 						if k not in env:
 							env[k] = v
 		self._setup_yml(recreate=True, env=env)
-		call_process(['docker-compose', '-p', self.app.id, 'create'], cwd=self.app.get_compose_dir())
+		call_process(['docker-compose', '-p', self.app.id, 'up', '-d', '--no-build', '--no-recreate'], cwd=self.app.get_compose_dir())
 		try:
-			out = ps(only_running=False)
+			out = ps(only_running=True)
 		except CalledProcessError:
 			return False
 		else:
@@ -520,17 +522,19 @@ class MultiDocker(Docker):
 						self.container = container
 						return container
 
-	def up(self):
+	def start(self):
 		self._setup_yml(recreate=False)
-		return call_process(['docker-compose', '-p', self.app.id, 'up', '-d'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
+		return call_process(['docker-compose', '-p', self.app.id, 'start'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
 
 	def stop(self):
 		self._setup_yml(recreate=False)
-		return call_process(['docker-compose', '-p', self.app.id, 'down'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
+		return call_process(['docker-compose', '-p', self.app.id, 'stop'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
 
 	def restart(self):
 		self._setup_yml(recreate=False)
 		return call_process(['docker-compose', '-p', self.app.id, 'restart'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
 
 	def rm(self):
-		return self.stop()
+		ret = self.stop()
+		ret = ret and call_process(['docker-compose', '-p', self.app.id, 'rm', '--force'], logger=self.logger, cwd=self.app.get_compose_dir()).returncode == 0
+		return ret
