@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issues:
  * Add support for post-copy migration.
  * Fix file permissions of backup directory.
-bug: [47617, 47741]
+ * Fix parsing memory and disk capacity.
+bug: [47617, 47741, 36661]

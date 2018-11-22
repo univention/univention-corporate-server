@@ -81,14 +81,14 @@ define([
 		isActive: function(domain) {
 			return Boolean(domain.state in self.activeStates || domain.suspended);
 		},
-		patternCapacity: /^([0-9]+(?:[,.][0-9]+)?)[ \t]*(?:([KkMmGgTtPp])(?:[Ii]?[Bb])?|[Bb])?$/,
+		patternCapacity: /^([0-9]+(?:[,.][0-9]+)?)[ \t]*(([KkMmGgTtPp])(?:[Ii]?[Bb])?|[Bb])?$/,
 		parseCapacity: function(size, defaultUnit) {
 			var match = self.patternCapacity.exec(size);
 			if (match === null) {
 				return null;
 			}
 			var mem = parseFloat(match[1].replace(',', '.'));
-			var unit = match[2] || defaultUnit || '';
+			var unit = (match[2] ? match[3] : defaultUnit) || '';
 			switch (unit) {
 				case 'P': case 'p':
 					mem *= 1024;

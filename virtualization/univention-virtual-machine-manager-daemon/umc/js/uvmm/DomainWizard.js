@@ -173,7 +173,7 @@ define([
 						name: 'maxMem',
 						type: MappedTextBox,
 						required: true,
-						constraints: {min: 4*1024*1024},
+						constraints: {min: 4*1024*1024, max: 4*1024*1024*1024*1024},  // 4 MiB .. 4 TiB
 						format: types.prettyCapacity,
 						parse: function(value) {
 							return types.parseCapacity(value, 'M');
@@ -191,7 +191,7 @@ define([
 							}
 							return true;
 						},
-						invalidMessage: _('The memory size is invalid (e.g. 3GB or 1024 MB), minimum 4 MB'),
+						invalidMessage: _('The memory size is invalid (e.g. 3GB or 1024 MB), minimum 4 MB, maximum 4 TB'),
 						label: _('Memory (default unit MB)')
 					}, {
 						name: 'vcpus',

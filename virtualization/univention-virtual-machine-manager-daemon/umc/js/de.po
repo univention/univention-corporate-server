@@ -813,11 +813,11 @@ msgstr "Mazedonisch"
 msgid "Machine"
 msgstr "Maschine"
 
-#: umc/js/uvmm/DomainPage.js:220 umc/js/uvmm/InstanceWizard.js:168
+#: umc/js/uvmm/InstanceWizard.js:168
 msgid "Memory"
 msgstr "Speicher"
 
-#: umc/js/uvmm/DomainWizard.js:195
+#: umc/js/uvmm/DomainPage.js:220 umc/js/uvmm/DomainWizard.js:195
 msgid "Memory (default unit MB)"
 msgstr "Größe des Arbeitsspeichers (Standardeinheit MB)"
 
@@ -1373,10 +1373,12 @@ msgstr ""
 "\"Suchen\", um die Ansicht zu aktualisieren."
 
 #: umc/js/uvmm/DomainWizard.js:194 umc/js/uvmm/DomainPage.js:219
-msgid "The memory size is invalid (e.g. 3GB or 1024 MB), minimum 4 MB"
+msgid ""
+"The memory size is invalid (e.g. 3GB or 1024 MB), minimum 4 MB, maximum "
+"4 TB"
 msgstr ""
 "Die angegebenen Speicherkapazität is ungültig (bspw. 3GB oder 1024 MB), "
-"Minimum 4MB"
+"Minimum 4MB, Maximum 4TB"
 
 #: umc/js/uvmm.js:264
 msgid ""
