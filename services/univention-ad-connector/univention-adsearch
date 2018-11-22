@@ -217,6 +217,8 @@ for r in res:
 				val = decode_sid(val)
 			elif key in ['objectGUID']:
 				val = str(ndr_unpack(misc.GUID, val))
+			elif key in ['dnsRecord', 'auditingPolicy']:
+				val = base64.b64encode(val)
 			else:
 				try:
 					val = unicode(val)
