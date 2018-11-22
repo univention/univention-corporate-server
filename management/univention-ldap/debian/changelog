@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-31) unstable; urgency=medium
+
+  * Bug #48091: removed @univentionPortalCategory in portal acl's
+
+ -- Felix Botner <botner@univention.de>  Thu, 22 Nov 2018 16:51:56 +0100
+
 univention-ldap (14.0.2-30) unstable; urgency=low
 
   * Bug #47944: update dependencies
