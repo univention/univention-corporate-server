@@ -1,3 +1,10 @@
+univention-base-files (7.0.0-19) unstable; urgency=medium
+
+  * Bug #30397: ensure that interfaces/primary is first entry
+    /etc/hosts
+
+ -- Felix Botner <botner@univention.de>  Thu, 22 Nov 2018 15:31:24 +0100
+
 univention-base-files (7.0.0-18) unstable; urgency=medium
 
   * Bug #47336: Ensure that /var/univention-backup exists in

@@ -207,6 +207,7 @@ Variables: interfaces/.*/address
 Variables: interfaces/.*/hosts
 Variables: hostname
 Variables: domainname
+Variables: interfaces/primary
 
 Type: subfile
 Multifile: etc/hosts
