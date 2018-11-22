@@ -10,7 +10,7 @@ RE_IPV4 = re.compile(r'^interfaces/([^/]+)/address$')
 RE_IPV6 = re.compile(r'^interfaces/([^/]+)/ipv6/([^/]+)/address$')
 primary = configRegistry.get('interfaces/primary')
 entries = []
-primary_entry = None
+primary_entries = []
 default_hosts = '%(hostname)s.%(domainname)s %(hostname)s' % configRegistry
 for key, value in configRegistry.items():
 	match = RE_IPV4.match(key)
@@ -20,7 +20,7 @@ for key, value in configRegistry.items():
 		hosts = configRegistry.get(key, default_hosts)
 		if hosts:
 			if iface == primary:
-				primary_entry = '%s\t%s' % (value, hosts)
+				primary_entries.append((iface, None, '%s\t%s' % (value, hosts)))
 			else:
 				entries.append((iface, None, '%s\t%s' % (value, hosts)))
 	match = RE_IPV6.match(key)
@@ -32,11 +32,11 @@ for key, value in configRegistry.items():
 			if name == 'default':
 				name = ''
 			if iface == primary:
-				primary_entry = '%s\t%s' % (value, hosts)
+				primary_entries.append((iface, name, '%s\t%s' % (value, hosts)))
 			else:
 				entries.append((iface, name, '%s\t%s' % (value, hosts)))
-if primary_entry:
-	print primary_entry
+for (iface, name, line) in sorted(primary_entries):  # IPv4 < IPv6.default < IPv6.*
+	print line
 for (iface, name, line) in sorted(entries):  # IPv4 < IPv6.default < IPv6.*
 	print line
 @!@
