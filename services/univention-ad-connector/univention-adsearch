@@ -213,18 +213,21 @@ for r in res:
 	print "DN: %s" % r[0]
 	for key in r[1]:
 		for val in r[1][key]:
+			sep = ':'
 			if key in ["objectSid"]:
 				val = decode_sid(val)
 			elif key in ['objectGUID']:
 				val = str(ndr_unpack(misc.GUID, val))
 			elif key in ['dnsRecord', 'auditingPolicy']:
 				val = base64.b64encode(val)
+				sep = '::'
 			else:
 				try:
 					val = unicode(val)
 				except UnicodeDecodeError:
 					val = base64.b64encode(val)
-			print "%s: %s" % (key, val)
+					sep = '::'
+			print("{0}{1} {2}".format(key, sep, val))
 print ""
 print "#"
 print "# results: %s" % (n_results - n_referrals)
