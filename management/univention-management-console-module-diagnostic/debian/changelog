@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.1-10) unstable; urgency=medium
+
+  * Bug #47583: Improved error message in 42_samba_tool_ntacl_sysvolcheck and translation
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 22 Nov 2018 14:09:44 +0100
+
 univention-management-console-module-diagnostic (4.0.1-9) unstable; urgency=medium
 
   * Bug #47583: Fixed typo
