@@ -509,6 +509,12 @@ download_system_setup_packages ()
 {
 	app="$1"
 
+	# autoremove packages before updating package cache
+	# there is an automatic autoremove after installing
+	# u-server-ROLE, so anything removed there would not be
+	# in the package cache
+	apt-get -y autoremove
+
 	echo "download_system_setup_packages for $app"
 
 	mkdir -p /var/cache/univention-system-setup/packages/
@@ -715,6 +721,7 @@ setup_appliance ()
 
 	[ "updates-test.software-univention.de" = "$(ucr get repository/online/server)" ] && ucr set update/secure_apt=no
 	apt-get update
+	apt-get -y autoremove
 	download_system_setup_packages $@
 
 	# Cleanup apt archive
