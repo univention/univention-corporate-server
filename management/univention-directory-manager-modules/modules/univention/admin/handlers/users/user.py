@@ -2132,6 +2132,12 @@ class object(univention.admin.handlers.simpleLdap):
 		except univention.admin.uexceptions.noObject:
 			pass
 
+		# remove own username from other users mailAllowedSenderAddress list
+		filter_s = str(lookup_filter(filter_format('mailAllowedSenderAddress=%s', (self['username'],))))
+		for dn, attrs in self.lo.search(filter_s, attr=['mailAllowedSenderAddress']):
+			new_masa = [masa for masa in attrs['mailAllowedSenderAddress'] if masa != self['username']]
+			self.lo.modify(dn, [('mailAllowedSenderAddress', attrs['mailAllowedSenderAddress'], new_masa)])
+
 	def _move(self, newdn, modify_childs=True, ignore_license=False):
 		olddn = self.dn
 		tmpdn = 'cn=%s-subtree,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.base)
