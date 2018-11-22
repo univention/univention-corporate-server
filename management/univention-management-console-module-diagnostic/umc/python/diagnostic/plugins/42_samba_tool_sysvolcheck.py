@@ -83,16 +83,18 @@ def run(_umc_instance, rerun=False, fix_log=''):
 	if not success or output:
 		error = _('`samba-tool ntacl sysvolcheck` returned a problem with the sysvol ACLs.')
 		error_descriptions.append(error)
+		fix = _("Running 'samba-tool ntacl sysvolreset' may fix the issue")
 		#Filters an unhelpful error message from samba
 		if output.find("NT_STATUS_OBJECT_NAME_NOT_FOUND") != -1:
 			output_list = output.splitlines()
 			for x in output_list:
 				if x.find("NT_STATUS_OBJECT_NAME_NOT_FOUND") == -1:
 					error_descriptions.append(x)
+				else:
+					fix = ""
 		else:
 			error_descriptions.append(output)
 		if not rerun:
-			fix = _('You can run `samba-tool ntacl sysvolreset` to fix the issue.')
 			error_descriptions.append(fix)
 		raise Warning(description='\n'.join(error_descriptions), buttons=buttons)
 
