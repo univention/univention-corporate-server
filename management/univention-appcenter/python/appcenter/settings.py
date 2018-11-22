@@ -250,11 +250,14 @@ class MultiSetting(Setting):
 	value_label = IniSectionAttribute(default='Value', localisable=True)
 
 	def get_value(self, app, phase='Settings'):
+		settings_logger.info('getting value...')
 		keys = self._get_keys(app, phase)
 		settings = []
+		prefix = self.name.replace('/*', '')
 		if (self.is_outside(app)):
 			for key in keys:
-				value = ucr_get(key)
+				settings_logger.info('getting value %s (prefix=%s, key=%s) from conf' % ('/'.join((prefix, key)), prefix, key))
+				value = ucr_get('/'.join((prefix, key)))
 				settings.append([key, value])
 			return settings
 		else:
@@ -263,7 +266,10 @@ class MultiSetting(Setting):
 				configure = get_action('configure')
 				ucr = configure._get_app_ucr(app)
 				for key in keys:
-					value = ucr.get('/'.join((self.name, key)))
+					# settings_logger.info('prefix = %s' % prefix)
+					# settings_logger.info('key    = %s' % key)
+					settings_logger.info('getting value %s (prefix=%s, key=%s) from conf' % ('/'.join((prefix, key)), prefix, key))
+					value = ucr.get('/'.join((prefix, key)))
 					settings.append([key, value])
 				return settings
 			else:
@@ -271,14 +277,16 @@ class MultiSetting(Setting):
 				return []
 
 	def _get_keys(self, app, phase='Settings'):
+		keys_setting = self.name.replace('/*', '')
+		settings_logger.info('keys_setting = %s' % keys_setting)
 		if (self.is_outside(app)):
-			keys_str = ucr_get(self.name)
+			keys_str = ucr_get(keys_setting)
 		else:
 			if app_is_running(app):
 				from univention.appcenter.actions import get_action
 				configure = get_action('configure')
 				ucr = configure._get_app_ucr(app)
-				keys_str = ucr.get(self.name)
+				keys_str = ucr.get(keys_setting)
 			else:
 				settings_logger.info('Cannot read %s while %s is not running' % (self.name, app))
 				keys_str = ''
@@ -287,16 +295,18 @@ class MultiSetting(Setting):
 				keys_str = self.get_initial_value()
 			else:
 				keys_str = ''
+		settings_logger.info('keys_str = %s' % keys_str)
 		return keys_str.split(',')
 
 	def set_value(self, app, value, together_config_settings, part):
+		prefix = self.name.replace('/*', '')
 		keys = []
 		for setting in value:
-			key = '/'.join((self.name, setting[0]))
+			key = '/'.join((prefix, setting[0]))
 			val = setting[1]
 			keys.append(setting[0])
 			together_config_settings[part][key] = val
-		together_config_settings[part][self.name] = ','.join(keys)
+		together_config_settings[part][prefix] = ','.join(keys)
 		# Ensure that removed keys are also removed from the base.conf file
 		old_keys = self._get_keys(app)
 		for key in old_keys:
