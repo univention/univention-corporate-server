@@ -986,6 +986,9 @@ postmap /etc/postfix/smtp_auth
 			Benutzernamen bzw. E-Mail-Adressen hinterlegt werden. Wenn dort ein Benutzername angegeben wird, so kann
 			sowohl mit dessen primärer also auch allen alternativen E-Mail-Adressen gesendet werden. Wird eine konkrete
 			E-Mail-Adresse angegeben, so kann nur diese als Absender zusätzlich zu den eigenen Mailadressen (primäre und alternative) verwendet werden.
+			Mit Hilfe der &ucsUCRV; <envar>mail/postfix/sender_check_milter_whitelist</envar> kann Benutzern erlaubt werden,
+			E-Mails mit jeder Absenderadresse zu verschicken. Dies kann verwendet werden um E-Mails von nicht-UCS-Systemen
+			zu empfangen oder weiter zu leiten.
 		</para>
 		<para>
 			Um den Filter <application>sender_check_milter</application> zu aktivieren, muss <application>Postfix</application>

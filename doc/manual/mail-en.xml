@@ -951,6 +951,8 @@ postmap /etc/postfix/smtp_auth
 			If a username is saved there, the user will be able use that users primary and all its alternative e-mail
 			addresses as sender address. If a concrete e-mail address is used, the user will only be able to use that as sender
 			address (additionally to its own primary and alternative addresses).
+			Using the &ucsUCRV; <envar>mail/postfix/sender_check_milter_whitelist</envar> selected users can be allowed
+			to send e-mails with any sender address. This can be used to receive or forward e-mails from non-UCS systems.
 		</para>
 		<para>
 			To enable the filter <application>sender_check_milter</application>, <application>Postfix</application> must be
