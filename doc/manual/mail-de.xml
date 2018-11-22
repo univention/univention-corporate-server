@@ -969,7 +969,7 @@ postmap /etc/postfix/smtp_auth
 		<para>
 			Die Standardkonfiguration von <application>Postfix</application> erlaubt authentifizierten Benutzern das
 			Senden mit beliebigen <literal>From</literal>-Adressen.
-			Sie erlaubt außerdem das Einliefern von E-Mails mit einer Domäne im Absender, die das Postfix-System selbst verwaltet.
+			Sie erlaubt außerdem das Einliefern von E-Mails mit einer Domäne im Absender, die das systemeigene <application>Postfix</application> selbst verwaltet.
 		</para>
 		<para>
 			Um gefälschte Absenderadressen zu verhindern, kann ein Filter aktiviert werden, der beide Fälle verhindert.
@@ -982,7 +982,7 @@ postmap /etc/postfix/smtp_auth
 			Ist der Filter eingerichtet, werden E-Mails mit einem Absender, der nicht der primären oder einer der alternativen E-Mail-Adressen des sendenden
 			Benutzers entspricht, abgelehnt.
 			Um dennoch das Senden von E-Mails im Namen anderer zu ermöglichen, können in der UMC am Benutzer unter
-			<guimenu>Erweiterte Einstellungen &ar; Mail &ar; Erlaubte E-Mail-Absender-Adresse</guimenu>
+			<guimenu>Erweiterte Einstellungen &ar; Mail &ar; Erlaubte E-Mail-Absender-Adresse</guimenu> mehrere
 			Benutzernamen bzw. E-Mail-Adressen hinterlegt werden. Wenn dort ein Benutzername angegeben wird, so kann
 			sowohl mit dessen primärer also auch allen alternativen E-Mail-Adressen gesendet werden. Wird eine konkrete
 			E-Mail-Adresse angegeben, so kann nur diese als Absender zusätzlich zu den eigenen Mailadressen (primäre und alternative) verwendet werden.
@@ -1014,6 +1014,10 @@ service postfix reload
 			<para>
 				Nach jeder Änderung einer auf <application>Postfix</application> bezogenen &ucsUCRV; muss der Prozess seine
 				Konfiguration neu laden, was über das Kommando <command>service postfix reload</command> ausgelöst werden kann.
+			</para>
+			<para>
+				Nach jeder Änderung einer auf <application>sender_check_milter</application> bezogenen &ucsUCRV; muss der Prozess seine
+				Konfiguration neu laden, was über das Kommando <command>service univention-postfix-sender-check reload</command> ausgelöst werden kann.
 			</para>
 		</note>
 	</section>

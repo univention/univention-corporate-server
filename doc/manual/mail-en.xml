@@ -934,26 +934,26 @@ postmap /etc/postfix/smtp_auth
 			In the default configuration <application>Postfix</application> allows authenticated users to send with an
 			arbitrary <literal>From</literal> address.
 			It also allows non-authenticated users to deliver emails to the	system with a <literal>From</literal>
-			of a domain that is hosted on the system itself.
+			of a domain that is managed by the systems Postfix itself.
 		</para>
 		<para>
 			A filter can be enabled, that will prevent the forging of <literal>From</literal> addresses in both cases.
 			The filter (technically called a <application>milter</application>) will reject such emails during the SMTP
-			dialogue, so that they won't even reach the spam filter.
-			The filter checks both the <literal>From</literal> im the e-mails header as well as the <literal>MAIL
+			dialogue. This happens before the e-mail is checked by the spam filter.
+			The filter checks both the <literal>From</literal> im the e-mails header and the <literal>MAIL
 			FROM</literal> in the SMTP dialogue.
 		</para>
 		<para>
-			E-mails with a sender address that is neither the primary nor one of the alternative e-mail addresses of
-			the sending user will be rejected.
-			To nonetheless be able to send e-mails in someone else's name, usernames and e-mail addresses can be stored
+			If the filter is enabled, an e-mail will be rejected if its sender address is neither the primary nor one of the alternative
+			e-mail addresses of the sending user.
+			To nonetheless be able to send e-mails in someone else's name, multiple usernames and e-mail addresses can be stored
 			for a user in the UMC in <guimenu>Advanced settings &ar; Mail &ar; Allowed e-mail sender address</guimenu>.
 			If a username is saved there, the user will be able use that users primary and all its alternative e-mail
-			addresses as sender address. If an e-mail address is used, the user will only be able to use that as sender
-			address.
+			addresses as sender address. If a concrete e-mail address is used, the user will only be able to use that as sender
+			address (additionally to its own primary and alternative addresses).
 		</para>
 		<para>
-			To enable the <application>sender_check milter</application>, <application>Postfix</application> must be
+			To enable the filter <application>sender_check_milter</application>, <application>Postfix</application> must be
 			configured to connect to it.
 		</para>
 		<para>
@@ -962,12 +962,12 @@ postmap /etc/postfix/smtp_auth
 			<envar>mail/postfix/smtpd_milters/<replaceable>SEQUENCE</replaceable>=<replaceable>ADDRESS</replaceable></envar>.
 		</para>
 		<para>
-			The <application>sender_check milter</application> is a small program that listens by default on port <envar>5656</envar> on <envar>localhost</envar>. The port can be changed using the &ucsUCRV;
+			<application>sender_check_milter</application> is a small program that by default accepts connections on port <envar>5656</envar> on <envar>localhost</envar>. The port can be configured using the &ucsUCRV;
 			<envar>mail/postfix/sender_check_milter_port</envar>.
-			The filter will log rejects to the usual mail log file (<filename>/var/log/mail.log</filename>).
+			The filter will log rejects of e-mail messages to the usual mail system log file (<filename>/var/log/mail.log</filename>).
 		</para>
 		<para>
-			To enable the <application>sender_check milter</application>, run:
+			To enable the <application>sender_check_milter</application> filter, run:
 			<programlisting language="sh">
 ucr set mail/postfix/smtpd_milters/50=inet:localhost:5656
 service postfix reload
@@ -975,8 +975,12 @@ service postfix reload
 		</para>
 		<note>
 			<para>
-				After each change of a <application>Postfix</application> related &ucsUCRV;, reload
-				<application>Postfix</application>: <command>service postfix reload</command>.
+				After each change of a <application>Postfix</application> related &ucsUCRV;, the process must reload
+				its configuration. This can be triggered with the command: <command>service postfix reload</command>.
+			</para>
+			<para>
+				After each change of a <application>sender_check_milter</application> related &ucsUCRV;, the process must reload
+				its configuration. This can be triggered with the command: <command>service univention-postfix-sender-check reload</command>.
 			</para>
 		</note>
 	</section>
