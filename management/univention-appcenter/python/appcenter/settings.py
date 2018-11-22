@@ -32,12 +32,13 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+import itertools
 import os
 import os.path
 
 from univention.appcenter.utils import app_is_running, container_mode, mkdir, _
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_run_filter
+from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_keys, ucr_run_filter
 from univention.appcenter.ini_parser import TypedIniSectionObject, IniSectionBooleanAttribute, IniSectionListAttribute, IniSectionAttribute
 
 settings_logger = get_base_logger().getChild('settings')
@@ -251,14 +252,19 @@ class MultiSetting(Setting):
 
 	def get_value(self, app, phase='Settings'):
 		settings_logger.info('getting value...')
+		prefix = self._get_prefix()
 		keys = self._get_keys(app, phase)
+		settings_logger.info('type(keys): %s' % keys)
+		settings_logger.info('keys from self._get_keys:')
+		for key in keys:
+			settings_logger.info('\t%s' % key)
 		settings = []
-		prefix = self.name.replace('/*', '')
 		if (self.is_outside(app)):
 			for key in keys:
 				settings_logger.info('getting value %s (prefix=%s, key=%s) from conf' % ('/'.join((prefix, key)), prefix, key))
-				value = ucr_get('/'.join((prefix, key)))
-				settings.append([key, value])
+				# value = ucr_get('/'.join((prefix, key)))
+				value = ucr_get(key)
+				settings.append([key[len(prefix) + 1:], value])
 			return settings
 		else:
 			if app_is_running(app):
@@ -266,47 +272,64 @@ class MultiSetting(Setting):
 				configure = get_action('configure')
 				ucr = configure._get_app_ucr(app)
 				for key in keys:
-					# settings_logger.info('prefix = %s' % prefix)
-					# settings_logger.info('key    = %s' % key)
 					settings_logger.info('getting value %s (prefix=%s, key=%s) from conf' % ('/'.join((prefix, key)), prefix, key))
-					value = ucr.get('/'.join((prefix, key)))
-					settings.append([key, value])
+					# value = ucr.get('/'.join((prefix, key)))
+					value = ucr.get(key)
+					settings.append([key[len(prefix) + 1:], value])
 				return settings
 			else:
 				settings_logger.info('Cannot read %s while %s is not running' % (self.name, app))
 				return []
 
+	def _filter_keys(self, key):
+		prefix = self._get_prefix()
+		return key.startswith(prefix) and key != prefix
+
 	def _get_keys(self, app, phase='Settings'):
-		keys_setting = self.name.replace('/*', '')
-		settings_logger.info('keys_setting = %s' % keys_setting)
+		# keys_setting = self.name.replace('/*', '')
+		#settings_logger.info('keys_setting = %s' % keys_setting)
 		if (self.is_outside(app)):
-			keys_str = ucr_get(keys_setting)
+			# keys = itertools.ifilter(self._filter_keys, ucr_keys())
+			keys = filter(self._filter_keys, ucr_keys())
+			#keys_str = ucr_get(keys_setting)
 		else:
 			if app_is_running(app):
 				from univention.appcenter.actions import get_action
 				configure = get_action('configure')
 				ucr = configure._get_app_ucr(app)
-				keys_str = ucr.get(keys_setting)
+				#keys_str = ucr.get(keys_setting)
+				# keys = itertools.ifilter(self._filter_keys, ucr.iterkeys())
+				keys = filter(self._filter_keys, ucr.iterkeys())
 			else:
 				settings_logger.info('Cannot read %s while %s is not running' % (self.name, app))
-				keys_str = ''
-		if keys_str is None:
-			if phase == 'Install':
-				keys_str = self.get_initial_value()
-			else:
-				keys_str = ''
-		settings_logger.info('keys_str = %s' % keys_str)
-		return keys_str.split(',')
+				#keys_str = ''
+				keys = []
+		# if keys_str is None:
+		# 	if phase == 'Install':
+		# 		keys_str = self.get_initial_value()
+		# 		keys = []
+		# 	else:
+		# 		keys_str = ''
+		# 		keys = []
+		# settings_logger.info('keys_str = %s' % keys_str)
+		settings_logger.info('keys:')
+		for key in keys:
+			settings_logger.info('    %s' % key)
+		# return keys_str.split(',')
+		return keys
+
+	def _get_prefix(self):
+		return self.name.replace('/*', '')
 
 	def set_value(self, app, value, together_config_settings, part):
-		prefix = self.name.replace('/*', '')
-		keys = []
+		prefix = self._get_prefix()
+		# keys = []
 		for setting in value:
 			key = '/'.join((prefix, setting[0]))
 			val = setting[1]
-			keys.append(setting[0])
+			# keys.append(setting[0])
 			together_config_settings[part][key] = val
-		together_config_settings[part][prefix] = ','.join(keys)
+		# together_config_settings[part][prefix] = ','.join(keys)
 		# Ensure that removed keys are also removed from the base.conf file
 		old_keys = self._get_keys(app)
 		for key in old_keys:
