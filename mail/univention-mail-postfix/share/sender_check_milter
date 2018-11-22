@@ -86,6 +86,7 @@ HEADER_SIG = 'X-univention-sender-check-sig'
 HEADER_NONCE = 'X-univention-sender-check-nonce'
 LEGITIMATE_ADDRESSES_CACHE_TTL_UCR = 'mail/postfix/sender_check_milter_cache_ttl'
 LEGITIMATE_ADDRESSES_CACHE_TTL_UCRV_DEFAULT = 30
+WHITELISTED_ADDRESSES_UCR = 'mail/postfix/sender_check_milter_whitelist'
 _ucr = None
 
 
@@ -111,6 +112,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 	regex_email_no_brackets = re.compile(r'(.+@.+\..+)$')
 	mail_domains = []  # type: List[str]
 	public_keys = {}  # type: Dict[str, str]
+	whitelisted_addresses = []  # type: List[str]
 
 	def __init__(self, opts=0, protos=0):
 		lm.MilterProtocol.__init__(self, opts, protos)
@@ -129,6 +131,9 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 		if not self.public_keys:
 			self.public_keys.update(self.get_public_keys())
 		self.log('Public keys: {}'.format(', '.join(self.public_keys.keys() or ['None'])))
+		if not self.whitelisted_addresses:
+			self.whitelisted_addresses.extend(sorted(self.ucr.get(WHITELISTED_ADDRESSES_UCR, '').split()))
+		self.log('Whitelisted addresses: {}'.format(', '.join(self.whitelisted_addresses or ['None'])))
 		fqdn = '{}.{}'.format(self.ucr['hostname'], self.ucr['domainname'])
 		if fqdn not in self.public_keys:
 			raise RuntimeError('Public key of this host ({!r}) not found. Run join script.'.format(fqdn))
@@ -252,11 +257,13 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 		cache_stats = cls.legitimate_address_cache['__stats'].copy()
 		cls.legitimate_address_cache.clear()
 		cls.legitimate_address_cache['__stats'] = {'hit': 0, 'hit_exp': 0, 'miss': 0}
+		cls.whitelisted_addresses = sorted(get_ucr().get(WHITELISTED_ADDRESSES_UCR, '').split())
 		SenderCheckForkFactory._ignore_interrupt = True
 		cls.log('Reloaded. Mail domains: {}, Public keys: {}'.format(
 			', '.join(cls.mail_domains or ['None']), ', '.join(cls.public_keys.keys() or ['None'])))
 		cls.log('Cache hits: {}, Cache misses: {} (of those expired: {})'.format(
 			cache_stats['hit'], cache_stats['miss'], cache_stats['hit_exp']))
+		cls.log('Whitelisted addresses: {}'.format(', '.join(cls.whitelisted_addresses or ['None'])))
 
 	@lm.noReply
 	def connect(self, hostname, family, ip, port, cmdDict):
@@ -277,6 +284,9 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 					self.envelope_from, domain))
 		else:
 			# authenticated session
+			if self.sasl_login_name in self.whitelisted_addresses:
+				self.envelope_from_ok = True
+				return lm.CONTINUE
 			if not self.legitimate_addresses:
 				_exp, self.legitimate_addresses = self.get_legitimate_addresses_for_username(self.sasl_login_name)
 			if self.envelope_from in self.legitimate_addresses:
@@ -300,6 +310,9 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 				return lm.REJECT
 			if self.sasl_login_name:
 				# authenticated session
+				if self.sasl_login_name in self.whitelisted_addresses:
+					self.header_from_ok = True
+					return lm.CONTINUE
 				if not self.legitimate_addresses:
 					_exp, self.legitimate_addresses = self.get_legitimate_addresses_for_username(self.sasl_login_name)
 				if self.header_data['from'] in self.legitimate_addresses:
@@ -329,7 +342,11 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 				# this shouldn't happen, better safe than sorry -> reject
 				self.log('From OK, but has reject message!', self.queue_id, 'ERROR')
 				return lm.REJECT
-			self.log('From OK, signing message.', self.queue_id)
+			if self.sasl_login_name in self.whitelisted_addresses:
+				whitelisted_msg = ' ({!r} is whitelisted)'.format(self.sasl_login_name)
+			else:
+				whitelisted_msg = ''
+			self.log('From OK{}, signing message.'.format(whitelisted_msg), self.queue_id)
 			self.sign_msg = True
 		elif self.reject_msg:
 			header_sig = self.header_data.get(HEADER_SIG.lower(), '')
