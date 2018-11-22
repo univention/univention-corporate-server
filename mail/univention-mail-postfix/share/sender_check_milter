@@ -360,7 +360,7 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 				return lm.REJECT
 			test_addresses = {self.header_data['from'].lower(), self.envelope_from.lower()}
 			for test_address in test_addresses:
-				if self.verify_signature(header_sig, self.create_signature_text()):
+				if self.verify_signature(header_sig, self.create_signature_text(from_address=test_address)):
 					self.log('CONTINUE: Verified signature by {!r}.'.format(header_sig.split(';', 1)[0]), self.queue_id)
 					return lm.CONTINUE
 			else:
@@ -416,11 +416,6 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 		else:
 			return s.translate(None, del_chars)
 
-	@classmethod
-	def normalize_subject(cls, text):  # type: (str) -> str
-		"""Remove "spam" and special chars from text."""
-		return cls.my_translate(text[text.find(']')+1:], 'spamSPAM -_*,./|´`=()!"§$%&/()={[]}\\')
-
 	@property
 	def nonce(self):  # type: () -> int
 		"""Generate a (instance-cached) cryptographically secure random number."""
@@ -428,14 +423,14 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 			self._nonce = create_nonce()
 		return self._nonce
 
-	def create_signature_text(self):  # type: () -> str
+	def create_signature_text(self, from_address=None, to=None, date=None, message_id=None):
+		# type: (Optional[str], Optional[str], Optional[str], Optional[str]) -> str
 		"""
 		The signature text for the `X-univention-sender-check-sig` header is
 		created from:
 
 		* `From`
 		* `To`
-		* `Subject`
 		* `Date`
 		* `Message-Id`
 		* nonce
@@ -445,15 +440,20 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 		A nonce (random int) is added that will also be stored encrypted in a
 		separate header (`X-univention-sender-check-nonce`).
 
+		:param str from_address: an email address, envelope-FROM will be used
+			if unset
+		:param str to: an email address, header-To will be used if unset
+		:param str date: a date, header-Date will be used if unset
+		:param str message_id: the mails message-id, header-message-id will be
+			used if unset
 		:return: signature text
 		:rtype: str
 		"""
 		return '|'.join((
-			self.envelope_from.lower(),
-			self.header_data.get('to', '').lower(),
-			self.normalize_subject(self.header_data.get('subject', '').lower()),
-			self.header_data.get('date', ''),
-			self.header_data.get('message-id'),
+			(from_address or self.envelope_from).lower(),
+			(to or self.header_data.get('to', '')).lower(),
+			date or self.header_data.get('date', ''),
+			message_id or self.header_data.get('message-id'),
 			str(self.nonce),
 		))
 
