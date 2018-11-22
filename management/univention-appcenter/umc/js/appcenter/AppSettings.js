@@ -5,7 +5,6 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojox/html/entities",
-	"dojo/store/Memory",
 	"umc/tools",
 	"umc/widgets/Form",
 	"umc/widgets/Text",
@@ -20,7 +19,7 @@ define([
 	"umc/widgets/TitlePane",
 	"umc/modules/appcenter/AppSettingsFileUploader",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, entities, Memory, tools, Form, Text, TextBox, NumberSpinner, Uploader, PasswordInputBox, CheckBox, ComboBox, MultiInput, ContainerWidget, TitlePane, AppSettingsFileUploader, _) {
+], function(declare, lang, array, entities, tools, Form, Text, TextBox, NumberSpinner, Uploader, PasswordInputBox, CheckBox, ComboBox, MultiInput, ContainerWidget, TitlePane, AppSettingsFileUploader, _) {
 	return {
 		getWidgets: function(app, values, phase) {
 			var ret = [];
