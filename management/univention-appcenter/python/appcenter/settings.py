@@ -312,6 +312,7 @@ class MultiSetting(Setting):
 		# 		keys_str = ''
 		# 		keys = []
 		# settings_logger.info('keys_str = %s' % keys_str)
+		keys.sort()
 		settings_logger.info('keys:')
 		for key in keys:
 			settings_logger.info('    %s' % key)
