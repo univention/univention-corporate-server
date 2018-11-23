@@ -236,6 +236,10 @@ define([
 					type: CheckBox,
 					label: _('Direct access (VNC)')
 				}, {
+					name: 'hyperv',
+					type: CheckBox,
+					label: _('Enable Hyper-V Enlightment)')
+				}, {
 					name: 'vnc_remote',
 					type: CheckBox,
 					label: _('Globally available')
@@ -264,7 +268,8 @@ define([
 						'vcpus',
 						'maxMem',
 						'rtc_offset',
-						'boot_hvm'
+						'boot_hvm',
+						'hyperv'
 					]
 				}, {
 					label: _('Remote access'),

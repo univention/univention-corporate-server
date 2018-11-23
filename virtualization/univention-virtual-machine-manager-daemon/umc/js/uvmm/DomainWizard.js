@@ -301,6 +301,7 @@ define([
 		getValues: function() {
 			var values = this._pages.general._form.gatherFormValues();
 			values.nodeURI = this.getWidget('nodeURI').get('value');
+			values.hyperv = true;
 			values.vnc_remote = true;
 			values.disks = this._driveStore.data;
 

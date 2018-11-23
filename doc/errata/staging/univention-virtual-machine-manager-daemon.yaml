@@ -11,4 +11,5 @@ desc: |
  * Fix parsing memory and disk capacity.
  * The target hosts for live migration can now be configured even when the
    virtual machine is running.
-bug: [47617, 47741, 36661, 48199]
+ * Add Hyper-V Enlightment for Windows VMs.
+bug: [47617, 47741, 36661, 48199, 48024]

@@ -541,6 +541,7 @@ class Domain(PersistentCached):
 			logger.error("Failed /domain/@type from %s" % xml)
 		self.pd.uuid = domain_tree.findtext('uuid', namespaces=XMLNS)
 		self.pd.name = domain_tree.findtext('name', namespaces=XMLNS)
+		self.pd.hyperv = domain_tree.find('features/hyperv/relaxed') is not None
 		self.xml2obj_boot(domain_tree)
 		self.xml2obj_clock(domain_tree)
 
@@ -1400,8 +1401,9 @@ def _update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
 			assert match, _node_name
 			prefix, local_name = match.groups()
 			if prefix:
-				_node_name = '{%s}%s' % (XMLNS[prefix], local_name)
-			node = ET.SubElement(_node_parent, _node_name, nsmap=XMLNS if prefix else None)
+				node = ET.SubElement(_node_parent, '{%s}%s' % (XMLNS[prefix], local_name), nsmap=XMLNS)
+			else:
+				node = ET.SubElement(_node_parent, local_name)
 		new_text = _node_value or None
 		if node.text != new_text:
 			_changes.add(None)
@@ -1495,18 +1497,37 @@ def _domain_edit(node, dom_stat, xml):
 	_update_xml(domain, 'vcpu', '%d' % dom_stat.vcpus)
 
 	# /domain/features
-	if defaults and template and template.features:
-		domain_features = _update_xml(domain, 'features', '')
+	domain_features = _update_xml(domain, 'features', '')
+	if defaults and template and template.features or dom_stat.hyperv:
 		for f_name in template.features:
 			_update_xml(domain_features, f_name, '')
+		if dom_stat.hyperv:
+			hyperv = _update_xml(domain_features, 'hyperv', '')
+			_update_xml(hyperv, 'relaxed', '', state='on')
+			_update_xml(hyperv, 'vapic', '', state='on')
+			_update_xml(hyperv, 'spinlocks', '', state='on', retries='8191')
+		else:
+			_update_xml(domain_features, 'hyperv', None)
+	else:
+		_update_xml(domain_features, 'hyperv', None)
 
 	# /domain/clock @offset @timezone @adjustment
 	if dom_stat.rtc_offset in ('utc', 'localtime'):
-		_update_xml(domain, 'clock', '', offset=dom_stat.rtc_offset, timezone=None, adjustment=None, basis=None)
+		clock = _update_xml(domain, 'clock', '', offset=dom_stat.rtc_offset, timezone=None, adjustment=None, basis=None)
 	elif dom_stat.rtc_offset == 'variable':
-		_update_xml(domain, 'clock', '', offset=dom_stat.rtc_offset, timezone=None)
+		clock = _update_xml(domain, 'clock', '', offset=dom_stat.rtc_offset, timezone=None)
 	elif dom_stat.rtc_offset:
-		_update_xml(domain, 'clock', '', offset=dom_stat.rtc_offset)  # timezone='', adjustment=0
+		clock = _update_xml(domain, 'clock', '', offset=dom_stat.rtc_offset)  # timezone='', adjustment=0
+	else:
+		clock = _update_xml(domain, 'clock', '', offset='utc')
+	# /domain/clock/timer
+	_update_xml(clock, 'timer[@name="rtc"]', '', name='rtc', present='yes', tickpolicy='catchup')
+	_update_xml(clock, 'timer[@name="pit"]', '', name='pit', present='yes', tickpolicy='delay')
+	_update_xml(clock, 'timer[@name="hpet"]', '', name='hpet', present='no')
+	if dom_stat.hyperv:
+		_update_xml(clock, 'timer[@name="hypervclock"]', '', name='hypervclock', present='yes')
+	else:
+		_update_xml(clock, 'timer[@name="hypervclock"]', None, name=None, present=None)
 
 	# /domain/on_poweroff
 	if defaults:
