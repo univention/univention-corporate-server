@@ -1,3 +1,15 @@
+univention-management-console-module-diagnostic (4.0.1-12) unstable; urgency=medium
+
+  * Bug #47649: Improved logging of the diagnostic modules, fixed typo
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 23 Nov 2018 12:54:35 +0100
+
+univention-management-console-module-diagnostic (4.0.1-11) unstable; urgency=medium
+
+  * Bug #47649: Improved logging of the diagnostic modules
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 23 Nov 2018 10:14:22 +0100
+
 univention-management-console-module-diagnostic (4.0.1-10) unstable; urgency=medium
 
   * Bug #47583: Improved error message in 42_samba_tool_ntacl_sysvolcheck and translation
