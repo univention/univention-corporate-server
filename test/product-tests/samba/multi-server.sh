@@ -178,7 +178,8 @@ test_master () {
 
 	set -x
 	set -e
-
+	. product-tests/samba/utils.sh
+	
 	#mount network share of slave and member server from windows client
 	#    Sind die Shares vom Win7 und Win8.1 / W2012 Client erreichbar und verwendbar?
 	#	Verschiedenen Optionen an Share testen (siehe Handbuch) DONE
