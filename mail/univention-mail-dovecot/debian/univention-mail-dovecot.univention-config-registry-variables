@@ -409,8 +409,14 @@ Type=str
 Categories=service-mail
 
 [mail/dovecot/sieve/client/cafile]
-Description[de]=Der vollständige Dateiname der Datei mit dem Zertifikat der Stammzertifizierungsstelle (CA), die der Sieve-Client zum Verbinden zu Dovecots Managesieve-Server verwenden soll. Bitte beim Ändern von mail/dovecot/ssl/cafile anpassen. Ist die Variable nicht gesetzt wird /etc/univention/ssl/ucsCA/CAcert.pem verwendet.
-Description[en]=The full path of the file containing the certificate of the certificate authority (CA) that the Sieve client should use to connect to Dovecots managesieve server. Please modify this, if mail/dovecot/ssl/cafile is set. If the variable is unset /etc/univention/ssl/ucsCA/CAcert.pem is used.
+Description[de]=Der vollständige Dateiname der Datei mit dem Zertifikat der Stammzertifizierungsstelle (CA), die der Sieve-Client zum Verbinden zu Dovecots ManageSieve-Server verwenden soll. Bitte beim Ändern von mail/dovecot/ssl/cafile anpassen. Ist die Variable nicht gesetzt wird /etc/univention/ssl/ucsCA/CAcert.pem verwendet.
+Description[en]=The full path of the file containing the certificate of the certificate authority (CA) that the Sieve client should use to connect to Dovecot's ManageSieve server. Please modify this, if mail/dovecot/ssl/cafile is set. If the variable is unset /etc/univention/ssl/ucsCA/CAcert.pem is used.
+Type=str
+Categories=service-mail
+
+[mail/dovecot/sieve/client/server]
+Description[de]=In dieser Variable kann ein abweichender FQDN angegeben werden, der beim Verbindungsaufbau zu Dovecots ManageSieve-Server verwendet wird. Dies ist notwendig, wenn das lokale System und das SSL-Zertifikat abweichende FQDN aufweisen (intern FQDN vs. externer FQDN). Bitte beim Ändern von mail/dovecot/ssl/cafile prüfen, ob diese Variable ebenfalls angepasst werden muss. Ist die Variable nicht gesetzt wird der lokale, interne FQDN verwendet.
+Description[en]=In this variable, you can specify a different FQDN to be used when connecting to Dovecot's ManageSieve server. This is necessary if the local system and the SSL certificate have different FQDNs (internal FQDN vs. external FQDN). When changing mail/dovecot/ssl/cafile, please check whether this variable also needs to be changed. If the variable is not set, the local, internal FQDN is used.
 Type=str
 Categories=service-mail
 
