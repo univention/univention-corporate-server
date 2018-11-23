@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.1-13) unstable; urgency=medium
+
+  * Bug #47649: Code cleanup
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 23 Nov 2018 15:06:43 +0100
+
 univention-management-console-module-diagnostic (4.0.1-12) unstable; urgency=medium
 
   * Bug #47649: Improved logging of the diagnostic modules, fixed typo
