@@ -140,7 +140,7 @@ def run(_umc_instance):
 			error_descriptions.append(' '.join(lvl_errors))
 
 		if problem_on_root:
-			MODULE.error('n'.join(error_descriptions))
+			MODULE.error('\n'.join(error_descriptions))
 			raise Critical('\n'.join(error_descriptions), umc_modules=umc_modules)
 		raise Warning('\n'.join(error_descriptions), umc_modules=umc_modules)
 
