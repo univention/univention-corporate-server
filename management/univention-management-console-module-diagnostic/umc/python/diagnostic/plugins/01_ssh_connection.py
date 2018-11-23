@@ -16,7 +16,11 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('SSH connection to UCS server failed!')
 
-run_descr =['This can be checked by running:  univention-ssh /etc/machine.secret "%s$"@%s echo OK'  %  (ucr["hostname"], 'fqdn')]
+ucr.load()
+fqdn = ".".join((ucr['hostname'], ucr['domainname']))
+run_descr = ['This can be checked by running:  univention-ssh /etc/machine.secret "%s$"@%s echo OK' % (ucr["hostname"], fqdn)]
+
+
 class IgnorePolicy(paramiko.MissingHostKeyPolicy):
 
 	def missing_host_key(self, client, hostname, key):
@@ -24,7 +28,6 @@ class IgnorePolicy(paramiko.MissingHostKeyPolicy):
 
 
 def run(_umc_instance):
-	ucr.load()
 	# Now a workaround for paramico logging to connector-s4.log
 	# because one of the diagnostic plugins instanciates s4connector.s4.s4()
 	# which initializes univention.debug2, which initializes logging.basicConfig
@@ -105,7 +108,7 @@ def run(_umc_instance):
 		if auth_failed:
 			msg += '\n' + auth_msg + ' - ' + auth_info + '\n'
 		msg += '\n'
-		MODULE.error("%s %s"%(msg,data))
+		MODULE.error("%s %s" % (msg, data))
 		raise Critical(msg % data)
 
 

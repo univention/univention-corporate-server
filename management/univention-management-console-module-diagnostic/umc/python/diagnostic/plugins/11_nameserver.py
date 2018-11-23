@@ -21,24 +21,24 @@ umc_modules = [{
 	'module': 'setup',
 	'flavor': 'network'
 }]
-run_descr =['Checks if all nameservers are responsive']
+run_descr = ['Checks if all nameservers are responsive']
 
 
 def run(_umc_instance):
 	ucr.load()
 	failed = []
-
+	fqdn = ".".join((ucr['hostname'], ucr['domainname']))
 	hostnames = {
 		'www.univention.de': ('dns/forwarder1', 'dns/forwarder2', 'dns/forwarder3'),
-		ucr.get('hostname', ''): ('nameserver1', 'nameserver2', 'nameserver3')
+		fqdn: ('nameserver1', 'nameserver2', 'nameserver3')
 	}
 	for hostname, nameservers in hostnames.iteritems():
 		for nameserver in nameservers:
 			if not ucr.get(nameserver):
 				continue
-			
-			MODULE.process("Similar to running: dig +short %s @%s" %(hostname,ucr[nameserver]))
-			MODULE.process("Trying %s to resolve %s" %(ucr[nameserver],hostname))
+
+			MODULE.process("Similar to running: dig +short %s @%s" % (hostname, ucr[nameserver]))
+			MODULE.process("Trying %s to resolve %s" % (ucr[nameserver], hostname))
 			try:
 				query_dns_server(ucr[nameserver], hostname)
 			except DNSException as exc:

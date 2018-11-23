@@ -20,7 +20,8 @@ umc_modules = [{
 	'flavor': 'network'
 }]
 
-run_descr =['This can be checked by using ucr get gateway']
+run_descr = ['This can be checked by running: ping "$(ucr get gateway)"']
+
 
 def run(_umc_instance):
 	ucr.load()

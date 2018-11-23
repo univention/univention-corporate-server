@@ -48,7 +48,7 @@ links = [{
 	'href': 'https://help.univention.com/t/how-to-deal-with-s4-connector-rejects/33',
 	'label': _('Univention Support Database - How to deal with s4-connector rejects')
 }]
-run_descr =['Checks if there are S4 Connector rejects']
+run_descr = ['Checking S4-Connector rejects. Similar to running: univention-s4connector-list-rejected']
 
 
 class MissingConfigurationKey(KeyError):
@@ -74,8 +74,9 @@ def get_s4_connector(configbasename='connector'):
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	if '%s/s4/ldap/certificate' % configbasename not in configRegistry:
+	if '%s/s4/ldap/certificate' % configbasename not in configRegistry or True:
 		if configRegistry.is_true('%s/s4/ldap/ssl' % configbasename):
+			MODULE.error('Missing Configuration Key %s/s4/ldap/certificate' % configbasename)
 			raise MissingConfigurationKey('%s/s4/ldap/certificate' % configbasename)
 
 	if configRegistry.get('%s/s4/ldap/bindpw' % configbasename):
@@ -99,6 +100,7 @@ def get_s4_connector(configbasename='connector'):
 			False
 		)
 	except KeyError as error:
+		MODULE.error('Missing Configuration key %s' % error.message)
 		raise MissingConfigurationKey(error.message)
 	else:
 		return s4
@@ -133,8 +135,8 @@ def run(_umc_instance):
 		s4 = get_s4_connector()
 	except MissingConfigurationKey as error:
 		error_description = _('The UCR variable {variable!r} is unset, but necessary for the S4 Connector.')
+		MODULE.error(error_description.format(variable=error.message))
 		raise Critical(description=error_description.format(variable=error.message))
-	MODULE.process('Checking S4-Connector rejects Similar to running univention-s4connector-list-rejected')
 
 	ucs_rejects = list(get_ucs_rejected(s4))
 	s4_rejects = list(get_s4_rejected(s4))
@@ -157,8 +159,9 @@ def run(_umc_instance):
 				line = _('S4 DN: {s4}, UCS DN: {ucs}')
 				line = line.format(s4=s4_dn, ucs=ucs_dn)
 				error_descriptions.append(line)
-
+		MODULE.error('\n'.join(error_descriptions))
 		raise Warning(description='\n'.join(error_descriptions))
+
 
 if __name__ == '__main__':
 	from univention.management.console.modules.diagnostic import main

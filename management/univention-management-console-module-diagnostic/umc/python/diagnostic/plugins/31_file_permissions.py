@@ -98,23 +98,23 @@ def get_actual_owner(uid, gid):
 
 
 def check_file(path, owner, group, mode, must_exist=False):
-	MODULE.process("Checking permission for %s" %(path))
-	MODULE.process("Similar to running: stat %s"%(path))
-
 	try:
 		file_stat = os.stat(path)
 	except EnvironmentError:
 		if must_exist:
+			MODULE.error("%s must exist, but does not" % (path))
 			return DoesNotExist(path)
 		return True
 
 	expected_owner = (owner, group)
 	actual_owner = get_actual_owner(file_stat.st_uid, file_stat.st_gid)
 	if expected_owner != actual_owner:
+		MODULE.error("Owner mismatch: %s should be owned by %s, is actually owned by %s" % (path, expected_owner, actual_owner))
 		return OwnerMismatch(path, expected_owner, actual_owner)
 
 	actual_mode = stat.S_IMODE(file_stat.st_mode)
 	if actual_mode != mode:
+		MODULE.error("Permission missmatch: %s should have the permission mode %s but has the mode %s" % (path, mode, actual_mode))
 		return PermissionMismatch(path, actual_mode, mode)
 
 	return True

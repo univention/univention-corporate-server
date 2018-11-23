@@ -38,7 +38,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check local AD database for errors')
 description = _('No errors found.'),
-run_descr = ['This can be checked by running samba-tool dbcheck']
+run_descr = ['This can be checked by running: samba-tool dbcheck']
 
 
 def run_samba_tool_dbcheck_fix(umc_instance):

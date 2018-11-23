@@ -48,7 +48,7 @@ from univention.management.console.modules.diagnostic import Critical, ProblemFi
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
-run_descr = ["Trying to authenticatate with machine password against LDAP  Similar to running: univention-ldapsearch -LLLs base dn"]
+run_descr = ["Trying to authenticate with machine password against LDAP  Similar to running: univention-ldapsearch -LLLs base dn"]
 title = _('Check machine password')
 description = _('Authentication with machine password against LDAP successful.')
 links = [{
@@ -77,7 +77,7 @@ def fix_machine_password(umc_instance):
 
 
 def reset_password_change(umc_instance):
-	MODULE.process('Unsetting server/password/change')
+	MODULE.process('Resetting server/password/change')
 	ucr_unset(['server/password/change'])
 	return run(umc_instance, retest=True)
 
@@ -111,12 +111,13 @@ def change_server_password(configRegistry):
 		output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
 		MODULE.process('Output of server_password_change:\n%s' % (output,))
 	except subprocess.CalledProcessError:
-		MODULE.process('Error running server_password_change')
-		MODULE.process('Output:\n%s' % (output,))
+		MODULE.error('Error running server_password_change')
+		MODULE.error('Output:\n%s' % (output,))
 		error_descriptions = [
 			_('Calling /usr/lib/univention-server/server_password_change failed.'),
 			_('Please see {sdb} for more information.'),
 		]
+		MODULE.error(' '.join(error_descriptions))
 		raise Critical(description=' '.join(error_descriptions))
 	finally:
 		ucr_set('server/password/interval={}'.format(interval))

@@ -46,7 +46,7 @@ links = [{
 	'href': _('http://sdb.univention.de/1298'),
 	'label': _('Univention Support Database - DNS Server on DC does not resolve external names')
 }]
-run_descr =['Checks resolving repository servers']
+run_descr = ['Checks resolving repository servers']
 
 
 def repositories():
@@ -60,8 +60,8 @@ def repositories():
 
 def test_resolve(url):
 	parsed = urlparse.urlsplit(url if '//' in url else '//' + url)
-	MODULE.process("Trying to resolve address of repository server %s" %(parsed.hostname))
-	MODULE.process("Similar to running: host %s"%(parsed.hostname))
+	MODULE.process("Trying to resolve address of repository server %s" % (parsed.hostname))
+	MODULE.process("Similar to running: host %s" % (parsed.hostname))
 
 	try:
 		socket.getaddrinfo(parsed.hostname, parsed.scheme)

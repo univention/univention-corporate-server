@@ -42,8 +42,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check errors in sources.list files')
 description = _('All files ok.')
-run_descr = [' Check by opening /etc/apt/sources.list.d/* and look for exceptions']
-
+run_descr = ['Looking for Python exceptions in /etc/apt/sources.list.d/*']
 
 TRACEBACK_REGEX = re.compile((
 	'(?P<start>#\s+)Traceback \(most recent call last\):\n'  # start of exception

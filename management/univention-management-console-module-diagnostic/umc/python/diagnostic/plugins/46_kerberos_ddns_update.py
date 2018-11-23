@@ -81,8 +81,7 @@ class NSUpdateError(UpdateError):
 def kinit(principal, keytab=None, password_file=None):
 	auth = '--keytab={tab}' if keytab else '--password-file={file}'
 	cmd = ('kinit', auth.format(tab=keytab, file=password_file), principal)
-	MODULE.process('Running: %s' %(''.join(cmd)))
-
+	MODULE.process('Running: %s' % (' '.join(cmd)))
 	try:
 		subprocess.check_call(cmd)
 	except subprocess.CalledProcessError:
@@ -95,11 +94,13 @@ def kinit(principal, keytab=None, password_file=None):
 def nsupdate(server, domainname):
 	process = subprocess.Popen(('nsupdate', '-g', '-t', '15'), stdin=subprocess.PIPE,
 		stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	cmd = 'server {server}\nprereq yxdomain {domain}\nsend\nquit\n'
-	MODULE.process("Running: 'echo %s | nsupdate -g -t 15" %(cmd,))
+	cmd_template = 'server {server}\nprereq yxdomain {domain}\nsend\nquit\n'
+	cmd = cmd_template.format(server=server, domain=domainname)
+	MODULE.process("Running: 'echo %s | nsupdate -g -t 15'" % (cmd,))
 
-	_ = process.communicate(cmd.format(server=server, domain=domainname))
+	_ = process.communicate(cmd)
 	if process.poll() != 0:
+		MODULE.error('NS Update Error at %s %s' % (server, domainname))
 		raise NSUpdateError(server, domainname)
 
 
@@ -163,7 +164,7 @@ def run(_umc_instance):
 	if problems:
 		ed = [_('Errors occured while running `kinit` or `nsupdate`.')]
 		ed.extend(str(error) for error in problems)
-		MODULE.error('\n'.join(ed))
+		MODULE.error('/n'.join(ed))
 		raise Critical(description='\n'.join(ed))
 
 

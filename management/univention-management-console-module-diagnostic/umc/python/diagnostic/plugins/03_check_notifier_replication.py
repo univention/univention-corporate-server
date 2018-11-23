@@ -37,7 +37,7 @@ import univention.config_registry
 from univention.management.console.modules.diagnostic import Warning, MODULE
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
-run_descr=['get id of ucr get ldap/master and check if var/lib/univention-directory-listener/notifier_id) is the same ']
+run_descr = ['Checks if last_id from ldap/master and /var/lib/univention-directory-listener/notifier_id are the same']
 title = _('Check for problems with UDN replication')
 description = _('No problems found with UDN replication.')
 
@@ -67,8 +67,8 @@ def run(_umc_instance):
 
 	try:
 		notifier_id = get_id(configRegistry.get('ldap/master'))
-		MODULE.process('Trying to get %s' %(notifier_id))
 	except socket.error:
+		MODULE.error('Error retrieving notifier ID from the UDN.')
 		raise Warning(_('Error retrieving notifier ID from the UDN.'))
 	else:
 		with open('/var/lib/univention-directory-listener/notifier_id') as fob:
@@ -79,6 +79,7 @@ def run(_umc_instance):
 				_('Univention Directory Notifier ID and the locally stored version differ.'),
 				_('This might indicate an error or still processing transactions.')
 			]
+			MODULE.error('\n'.join(ed))
 			raise Warning('\n'.join(ed))
 
 
