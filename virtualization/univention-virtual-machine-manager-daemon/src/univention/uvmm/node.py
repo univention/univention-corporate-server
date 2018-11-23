@@ -1431,7 +1431,6 @@ def _domain_edit(node, dom_stat, xml):
 		xml = '<domain/>'
 		defaults = True
 	live_updates = []
-	update = _update_xml
 
 	# find loader
 	logger.debug('Searching for template: arch=%s domain_type=%s os_type=%s', dom_stat.arch, dom_stat.domain_type, dom_stat.os_type)
@@ -1446,21 +1445,21 @@ def _domain_edit(node, dom_stat, xml):
 	domain = ET.fromstring(xml)
 	domain.attrib['type'] = dom_stat.domain_type
 	# /domain/uuid
-	update(domain, 'uuid', dom_stat.uuid)
+	_update_xml(domain, 'uuid', dom_stat.uuid)
 	# /domain/name
-	update(domain, 'name', dom_stat.name)
+	_update_xml(domain, 'name', dom_stat.name)
 	# /domain/description
 	description = dom_stat.annotations.get('description') or None
-	update(domain, 'description', description)
+	_update_xml(domain, 'description', description)
 	# /domain/os
 	domain_os = domain.find('os', namespaces=XMLNS)
 	if domain_os is None:
 		domain_os = ET.SubElement(domain, 'os')
 	# /domain/os/type @arch
-	update(domain_os, 'type', dom_stat.os_type, arch=dom_stat.arch)
+	_update_xml(domain_os, 'type', dom_stat.os_type, arch=dom_stat.arch)
 	# /domain/os/loader
 	if defaults and template and template.loader:
-		update(domain_os, 'loader', template.loader)
+		_update_xml(domain_os, 'loader', template.loader)
 	if dom_stat.os_type == 'hvm':
 		# /domain/os/boot[]
 		domain_os_boots = domain_os.findall('boot', namespaces=XMLNS)
@@ -1479,48 +1478,49 @@ def _domain_edit(node, dom_stat, xml):
 		raise NodeError(_("Unknown os/type='%(type)s'"), type=dom_stat.os_type)
 	if dom_stat.bootloader:
 		# /domain/bootloader
-		update(domain, 'bootloader', dom_stat.bootloader)
+		_update_xml(domain, 'bootloader', dom_stat.bootloader)
 		# /domain/bootloader_args
-		update(domain, 'bootloader_args', dom_stat.bootloader_args)
+		_update_xml(domain, 'bootloader_args', dom_stat.bootloader_args)
 	# /domain/memory
 	old_maxMem = int(domain.findtext('memory', default=0, namespaces=XMLNS)) << 10  # KiB
-	update(domain, 'memory', '%d' % (dom_stat.maxMem >> 10))  # KiB
+	_update_xml(domain, 'memory', '%d' % (dom_stat.maxMem >> 10))  # KiB
 	# On change, reset currentMemory to new maxMem as well
 	if old_maxMem != dom_stat.maxMem:
 		# /domain/currentMemory
-		update(domain, 'currentMemory', '%d' % (dom_stat.maxMem >> 10))  # KiB
+		_update_xml(domain, 'currentMemory', '%d' % (dom_stat.maxMem >> 10))  # KiB
 	# /domain/vcpu
-	update(domain, 'vcpu', '%d' % dom_stat.vcpus)
+	_update_xml(domain, 'vcpu', '%d' % dom_stat.vcpus)
 
 	# /domain/features
 	if defaults and template and template.features:
-		domain_features = update(domain, 'features', '')
+		domain_features = _update_xml(domain, 'features', '')
 		for f_name in template.features:
-			update(domain_features, f_name, '')
+			_update_xml(domain_features, f_name, '')
 
 	# /domain/clock @offset @timezone @adjustment
 	if dom_stat.rtc_offset in ('utc', 'localtime'):
-		update(domain, 'clock', '', offset=dom_stat.rtc_offset, timezone=None, adjustment=None, basis=None)
+		_update_xml(domain, 'clock', '', offset=dom_stat.rtc_offset, timezone=None, adjustment=None, basis=None)
 	elif dom_stat.rtc_offset == 'variable':
-		update(domain, 'clock', '', offset=dom_stat.rtc_offset, timezone=None)
+		_update_xml(domain, 'clock', '', offset=dom_stat.rtc_offset, timezone=None)
 	elif dom_stat.rtc_offset:
-		update(domain, 'clock', '', offset=dom_stat.rtc_offset)  # timezone='', adjustment=0
+		_update_xml(domain, 'clock', '', offset=dom_stat.rtc_offset)  # timezone='', adjustment=0
+
 	# /domain/on_poweroff
 	if defaults:
-		update(domain, 'on_poweroff', 'destroy')  # (destroy|restart|preserve|rename-restart)
+		_update_xml(domain, 'on_poweroff', 'destroy')  # (destroy|restart|preserve|rename-restart)
 	# /domain/on_reboot
 	if defaults:
-		update(domain, 'on_reboot', 'restart')  # (destroy|restart|preserve|rename-restart)
+		_update_xml(domain, 'on_reboot', 'restart')  # (destroy|restart|preserve|rename-restart)
 	# /domain/on_crash
 	if defaults:
-		update(domain, 'on_crash', 'destroy')  # (destroy|restart|preserve|rename-restart)
+		_update_xml(domain, 'on_crash', 'destroy')  # (destroy|restart|preserve|rename-restart)
 
 	# /domain/devices/*[]
-	domain_devices = update(domain, 'devices', '')
+	domain_devices = _update_xml(domain, 'devices', '')
 
 	# /domain/devices/emulator
 	if defaults and template and template.emulator:
-		update(domain_devices, 'emulator', template.emulator)
+		_update_xml(domain_devices, 'emulator', template.emulator)
 
 	# /domain/devices/disk[]
 	domain_devices_disks = domain_devices.findall('disk', namespaces=XMLNS)
@@ -1552,16 +1552,16 @@ def _domain_edit(node, dom_stat, xml):
 		domain_devices_disk.attrib['type'] = disk.type
 		domain_devices_disk.attrib['device'] = disk.device
 		# /domain/devices/disk/driver @name @type @cache
-		update(domain_devices_disk, 'driver', None, name=disk.driver, type=disk.driver_type, cache=disk.driver_cache)
+		_update_xml(domain_devices_disk, 'driver', None, name=disk.driver, type=disk.driver_type, cache=disk.driver_cache)
 		# /domain/devices/disk/source @file @dev
 		if disk.type == Disk.TYPE_FILE:
-			update(domain_devices_disk, 'source', None, _changes=changes, file=disk.source, dev=None, dir=None, protocol=None)
+			_update_xml(domain_devices_disk, 'source', None, _changes=changes, file=disk.source, dev=None, dir=None, protocol=None)
 		elif disk.type == Disk.TYPE_BLOCK:
-			update(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=disk.source, dir=None, protocol=None)
+			_update_xml(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=disk.source, dir=None, protocol=None)
 		elif disk.type == Disk.TYPE_DIR:
-			update(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=None, dir=disk.source, protocol=None)
+			_update_xml(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=None, dir=disk.source, protocol=None)
 		elif disk.type == Disk.TYPE_NETWORK:
-			update(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=None, dir=None, protocol=disk.source)
+			_update_xml(domain_devices_disk, 'source', None, _changes=changes, file=None, dev=None, dir=None, protocol=disk.source)
 		else:
 			raise NodeError(_("Unknown disk/type='%(type)s'"), type=disk.type)
 		# /domain/devices/disk/readonly
@@ -1600,21 +1600,21 @@ def _domain_edit(node, dom_stat, xml):
 		domain_devices_interface.attrib['type'] = interface.type
 		# /domain/devices/interface/source @bridge @network @dev
 		if interface.type == Interface.TYPE_BRIDGE:
-			update(domain_devices_interface, 'source', '', _changes=changes, bridge=interface.source, network=None, dev=None)
+			_update_xml(domain_devices_interface, 'source', '', _changes=changes, bridge=interface.source, network=None, dev=None)
 		elif interface.type == Interface.TYPE_NETWORK:
-			update(domain_devices_interface, 'source', '', _changes=changes, bridge=None, network=interface.source, dev=None)
+			_update_xml(domain_devices_interface, 'source', '', _changes=changes, bridge=None, network=interface.source, dev=None)
 		elif interface.type == Interface.TYPE_ETHERNET:
-			update(domain_devices_interface, 'source', None, _changes=changes, bridge=None, network=None, dev=interface.source)
+			_update_xml(domain_devices_interface, 'source', None, _changes=changes, bridge=None, network=None, dev=interface.source)
 		elif interface.type == Interface.TYPE_DIRECT:
-			update(domain_devices_interface, 'source', '', _changes=changes, bridge=None, network=None, dev=interface.source)
+			_update_xml(domain_devices_interface, 'source', '', _changes=changes, bridge=None, network=None, dev=interface.source)
 		else:
 			raise NodeError(_("Unknown interface/type='%(type)s'"), type=interface.type)
 		# /domain/devices/interface/script @bridge
-		update(domain_devices_interface, 'script', None, path=interface.script)
+		_update_xml(domain_devices_interface, 'script', None, path=interface.script)
 		# /domain/devices/interface/target @dev
-		update(domain_devices_interface, 'target', None, dev=interface.target)
+		_update_xml(domain_devices_interface, 'target', None, dev=interface.target)
 		# /domain/devices/interface/model @dev
-		update(domain_devices_interface, 'model', None, type=interface.model)
+		_update_xml(domain_devices_interface, 'model', None, type=interface.model)
 		# do live update
 		if changes:
 			live_updates.append(domain_devices_interface)
