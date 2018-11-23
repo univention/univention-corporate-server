@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-22 14:05+0100\n"
+"POT-Creation-Date: 2018-11-23 12:51+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -40,24 +40,24 @@ msgstr ""
 msgid "Please see {sdb} for more information."
 msgstr "Siehe {sdb} für weitere Informationen."
 
-#: 00_check_server_password.py:152
+#: 00_check_server_password.py:153
 msgid "Fix machine password"
 msgstr "Korrigiere Password für das Rechnerkonto"
 
-#: 00_check_server_password.py:157
+#: 00_check_server_password.py:158
 msgid "Authentication against the local LDAP failed with the machine password."
 msgstr ""
 "Authentifizierung gegen das lokale LDAP mit dem Password für das "
 "Rechnerkonto ist fehlgeschlagen."
 
-#: 00_check_server_password.py:161
+#: 00_check_server_password.py:162
 msgid ""
 "Authentication against the master LDAP failed with the machine password."
 msgstr ""
 "Authentifizierung gegen das Master LDAP mit dem Password für das "
 "Rechnerkonto ist fehlgeschlagen."
 
-#: 00_check_server_password.py:170
+#: 00_check_server_password.py:171
 msgid ""
 "Note that password rotation is disabled via the UCR variable server/password/"
 "change."
@@ -65,22 +65,22 @@ msgstr ""
 "Beachten Sie, dass die Passwordrotation durch die UCR Variable server/"
 "password/change deaktiviert ist."
 
-#: 00_check_server_password.py:171
+#: 00_check_server_password.py:172
 msgid "Note that server/password/interval is set to {}."
 msgstr "Beachten Sie, dass server/password/interval auf {} gesetzt ist."
 
-#: 00_check_server_password.py:174
+#: 00_check_server_password.py:175
 #, python-brace-format
 msgid "See {sdb} for information on manual server password change."
 msgstr ""
 "Siehe {sdb} für weitere Informationen für einen manuellen Tausch des "
 "Passwords für das Rechnerkonto."
 
-#: 00_check_server_password.py:181
+#: 00_check_server_password.py:182
 msgid "Set server/password/change=True"
 msgstr "Setze server/password/change=True"
 
-#: 00_check_server_password.py:187
+#: 00_check_server_password.py:188
 msgid "Set server/password/interval=21"
 msgstr "Setze server/password/interval=21"
 
@@ -88,13 +88,13 @@ msgstr "Setze server/password/interval=21"
 msgid "SSH connection to UCS server failed!"
 msgstr "SSH-Verbindung zu anderem UCS Server fehlgeschlagen!"
 
-#: 01_ssh_connection.py:59
+#: 01_ssh_connection.py:62
 msgid "The ssh connection to at least one other UCS server failed. "
 msgstr ""
 "Die SSH-Verbindung zu mindestens einem anderen UCS Server ist "
 "fehlgeschlagen. "
 
-#: 01_ssh_connection.py:60
+#: 01_ssh_connection.py:63
 msgid ""
 "The following list shows the affected remote servers and the reason for the "
 "failed ssh connection:"
@@ -102,11 +102,11 @@ msgstr ""
 "Die folgende Liste zeigt die betroffenen entfernten Rechner und den Grund "
 "für die fehlgeschlagene SSH-Verbindung."
 
-#: 01_ssh_connection.py:62
+#: 01_ssh_connection.py:65
 msgid "Host key for server does not match"
 msgstr "SSH Host-Key des Servers stimmt nicht überein"
 
-#: 01_ssh_connection.py:63
+#: 01_ssh_connection.py:66
 msgid ""
 "The ssh host key of the remote server has changed (maybe the host was "
 "reinstalled). "
@@ -114,7 +114,7 @@ msgstr ""
 "Der SSH Host-Key des entfernten Rechners hat sich geändert (vielleicht wurde "
 "der Rechner neu installiert). "
 
-#: 01_ssh_connection.py:64
+#: 01_ssh_connection.py:67
 #, python-format
 msgid ""
 "Please repair the host key of the remote server in /root/.ssh/known_hosts on "
@@ -123,11 +123,11 @@ msgstr ""
 "Der SSH Host-Key in /root/.ssh/known_hosts des entfernten Rechners muss auf "
 "%(fqdn)s repariert werden."
 
-#: 01_ssh_connection.py:66
+#: 01_ssh_connection.py:69
 msgid "Machine authentication failed"
 msgstr "Authentifizierung mit dem Maschinen-Konto ist fehlgeschlagen"
 
-#: 01_ssh_connection.py:67
+#: 01_ssh_connection.py:70
 #, python-format
 msgid ""
 "Login to the remote server with the uid %(uid)s and the password from /etc/"
@@ -136,7 +136,7 @@ msgstr ""
 "Der Login auf dem entfernten Rechner mit der uid %(uid)s und dem Passwort "
 "aus /etc/machine.secret is fehlgeschlagen. "
 
-#: 01_ssh_connection.py:68
+#: 01_ssh_connection.py:71
 msgid ""
 "Please check /var/log/auth.log on the remote server for further information."
 msgstr ""
@@ -187,7 +187,7 @@ msgstr "Ungültiges Zertifikat {path!r} gefunden."
 msgid "Found malformed certificate {path!r}."
 msgstr "Korruptes Zertifikat {path!r} gefunden."
 
-#: 02_certificate_check.py:294
+#: 02_certificate_check.py:295
 #, python-brace-format
 msgid "Please see {sdb} on how to renew certificates."
 msgstr "Siehe {sdb} für Informationen zum Erneuern von Zertifikaten."
@@ -223,11 +223,11 @@ msgstr ""
 msgid "SAML certificate verification failed!"
 msgstr "Überprüfung der SAML-Zertifikate fehlgeschlagen!"
 
-#: 04_saml_certificate_check.py:96
+#: 04_saml_certificate_check.py:98
 msgid "The certificate of the SAML identity provider does not match."
 msgstr "Das Zertifikat des SAML Identity Providers stimmt nicht überein."
 
-#: 04_saml_certificate_check.py:117
+#: 04_saml_certificate_check.py:119
 msgid "The certificate of the SAML service provider does not match."
 msgstr "Das Zertifikat des SAML Service Providers stimmt nicht überein."
 
@@ -257,7 +257,7 @@ msgstr ""
 "Stellen Sie sicher, dass die Hardware des Gateway-Geräts korrekt "
 "funktioniert."
 
-#: 10_gateway.py:29
+#: 10_gateway.py:30
 msgid "There is no gateway configured."
 msgstr "Es ist kein Gateway eingerichtet."
 
@@ -311,7 +311,7 @@ msgstr ""
 "Es gab einen Fehler beim Benutzen des Proxy-Servers. Das {setup:network} "
 "kann zur Veränderung der Proxy-Konfiguration genutzt werden.\n"
 
-#: 12_proxy.py:70
+#: 12_proxy.py:69
 #, python-format
 msgid ""
 "The proxy host could not be reached. Make sure that hostname (%(hostname)r) "
@@ -320,7 +320,7 @@ msgstr ""
 "Der Proxy-Host konnte nicht erreicht werden. Bitte sicherstellen, dass "
 "Rechnername (%(hostname)r) und Port (%(port)r) korrekt eingestellt sind."
 
-#: 12_proxy.py:72
+#: 12_proxy.py:71
 msgid ""
 "The hostname of the proxy could not be resolved. May check your DNS "
 "configuration."
@@ -328,7 +328,7 @@ msgstr ""
 "Der Rechnername des Proxies konnte nicht aufgelöst werden. Bitte DNS-"
 "Konfiguration überprüfen."
 
-#: 12_proxy.py:74
+#: 12_proxy.py:73
 #, python-format
 msgid ""
 "The server did not respond within %d seconds. Please check your network "
@@ -337,7 +337,7 @@ msgstr ""
 "Der Server antwortete nicht innerhalb von %d Sekunden. Bitte "
 "Netzwerkeinstellungen überprüfen."
 
-#: 12_proxy.py:87
+#: 12_proxy.py:86
 #, python-format
 msgid ""
 "The proxy server is reachable but the HTTP response status code (%d) does "
@@ -346,7 +346,7 @@ msgstr ""
 "Der Proxy-Server ist erreichbar aber der HTTP-Antwort-Status-Code (%d) "
 "besagt keinen Erfolg."
 
-#: 12_proxy.py:88
+#: 12_proxy.py:87
 #, python-format
 msgid ""
 "This warning might be harmless. Nevertheless make sure the authentication "
@@ -441,23 +441,23 @@ msgstr "KDC Erreichbarkeit"
 msgid "ph "
 msgstr ""
 
-#: 22_kdc_service.py:319
+#: 22_kdc_service.py:320
 msgid "The following KDCs were unreachable: {}"
 msgstr "Die folgenden KDCs waren nicht erreichbar: {}"
 
-#: 22_kdc_service.py:337
+#: 22_kdc_service.py:338
 msgid "samba/interfaces does not contain lo, 127.0.0.1 or 0.0.0.0."
 msgstr "samba/interfaces enthält weder lo noch 127.0.0.1 noch 0.0.0.0."
 
-#: 22_kdc_service.py:343
+#: 22_kdc_service.py:344
 msgid "Add lo to samba/interfaces"
 msgstr "Füge lo zu samba/interfaces hinzu"
 
-#: 22_kdc_service.py:346
+#: 22_kdc_service.py:347
 msgid "Reset kerberos/kdc to 127.0.0.1"
 msgstr "Setze kerberos/kdc auf 127.0.0.1 zurück"
 
-#: 22_kdc_service.py:350
+#: 22_kdc_service.py:351
 msgid "No reachable KDCs were found."
 msgstr "Keine erreichbaren KDCs gefunden."
 
@@ -645,32 +645,33 @@ msgstr "`samba-tool drs showrepl` gibt ein Problem mit der Replikation zurück."
 msgid "Check Samba sysvol ACLs for errors"
 msgstr "Überprüfe die Samba SYSVOL ACL Einträge auf Fehler"
 
-#: 42_samba_tool_sysvolcheck.py:53
+#: 42_samba_tool_sysvolcheck.py:54
 #, python-brace-format
 msgid "`{cmd}` succeeded."
 msgstr "`{cmd}` war erfolgreich."
 
-#: 42_samba_tool_sysvolcheck.py:56
+#: 42_samba_tool_sysvolcheck.py:57
 #, python-brace-format
 msgid "`{cmd}` failed."
 msgstr "`{cmd}` ist fehlgeschlagen."
 
-#: 42_samba_tool_sysvolcheck.py:78
+#: 42_samba_tool_sysvolcheck.py:79
 msgid "Run `samba-tool ntacl sysvolreset`"
 msgstr "Führe `samba-tool ntacl sysvolreset` aus"
 
-#: 42_samba_tool_sysvolcheck.py:84
+#: 42_samba_tool_sysvolcheck.py:85
 msgid "`samba-tool ntacl sysvolcheck` returned a problem with the sysvol ACLs."
 msgstr ""
 "`samba-tool ntacl sysvolcheck` meldet ein Problem mit den SYSVOL ACL "
 "Einträgen."
 
-#: 42_samba_tool_sysvolcheck.py:86
+#: 42_samba_tool_sysvolcheck.py:87
 msgid "Running 'samba-tool ntacl sysvolreset' may fix the issue"
 msgstr ""
-"Das Durchführen von samba-tool ntacl sysvolreset kann helfen, das Problem zu beheben."
+"Das Durchführen von samba-tool ntacl sysvolreset kann helfen, das Problem zu "
+"beheben."
 
-#: 42_samba_tool_sysvolcheck.py:102
+#: 42_samba_tool_sysvolcheck.py:103
 msgid "`samba-tool ntacl sysvolcheck` found no problems."
 msgstr "`samba-tool ntacl sysvolcheck` hat keine Probleme gefunden."
 
@@ -686,18 +687,18 @@ msgstr "Keine nicht synchronisierten S4 Connector Objekte gefunden."
 msgid "Univention Support Database - How to deal with s4-connector rejects"
 msgstr ""
 
-#: 43_connectors4_rejects.py:129
+#: 43_connectors4_rejects.py:131
 msgid "Univention S4 Connector is not installed."
 msgstr "Univention S4 Connector ist nicht installiert."
 
-#: 43_connectors4_rejects.py:135
+#: 43_connectors4_rejects.py:137
 msgid ""
 "The UCR variable {variable!r} is unset, but necessary for the S4 Connector."
 msgstr ""
 "Die UCR Variable {variable!r} ist nicht gesetzt, aber notwendig für den S4 "
 "Connector."
 
-#: 43_connectors4_rejects.py:143
+#: 43_connectors4_rejects.py:145
 #, python-brace-format
 msgid ""
 "Found {ucs} UCS rejects and {s4} S4 rejects. See {{sdb}} for more "
@@ -706,24 +707,24 @@ msgstr ""
 "{ucs} nicht synchronisierte UCS Objekte und {s4} nicht synchronisierte S4 "
 "Objekte. Weitere Hinweise finden Sie unter {{sdb}}."
 
-#: 43_connectors4_rejects.py:147
+#: 43_connectors4_rejects.py:149
 msgid "UCS rejected:"
 msgstr "Nicht synchronisierte UCS Objekte:"
 
-#: 43_connectors4_rejects.py:149 43_connectors4_rejects.py:156
+#: 43_connectors4_rejects.py:151 43_connectors4_rejects.py:158
 msgid "not found"
 msgstr "nicht gefunden"
 
-#: 43_connectors4_rejects.py:150
+#: 43_connectors4_rejects.py:152
 #, python-brace-format
 msgid "UCS DN: {ucs}, S4 DN: {s4}, Filename: {fn}"
 msgstr "UCS DN: {ucs}, S4 DN: {s4}, Dateiname: {fn}"
 
-#: 43_connectors4_rejects.py:154
+#: 43_connectors4_rejects.py:156
 msgid "S4 rejected:"
 msgstr "Nicht synchronisierte S4 Objekte:"
 
-#: 43_connectors4_rejects.py:157
+#: 43_connectors4_rejects.py:159
 #, python-brace-format
 msgid "S4 DN: {s4}, UCS DN: {ucs}"
 msgstr ""
@@ -813,7 +814,7 @@ msgid "`nsupdate` check for domain {domain} failed ({details})."
 msgstr ""
 "`nsupdate` Prüfung für die Domänne {domain} ist fehlgeschlagen ({details})."
 
-#: 46_kerberos_ddns_update.py:164
+#: 46_kerberos_ddns_update.py:165
 msgid "Errors occured while running `kinit` or `nsupdate`."
 msgstr "Fehler traten auf bei der Ausführung von `kinit` oder `nsupdate`."
 
@@ -929,10 +930,10 @@ msgstr "Der Paketstatus von %s Paketen ist korrupt."
 
 #: 53_package_status.py:14
 msgid ""
-"Login to the system as root via ssh and run the command \"dpkg --configure -a"
-"\" in order to correct the packages status."
+"You may log in to the system as root via ssh and run the command \"dpkg --"
+"configure -a\" as an attempt to correct the packages status."
 msgstr ""
-"Um den Paketstatus zu korrigieren loggen Sie sich am System per ssh als root "
+"Um den Paketstatus zu korrigieren, loggen Sie sich am System per ssh als root "
 "ein und führen Sie das Kommando \"dpkg --configure -a\" aus."
 
 #: 53_package_status.py:15
@@ -942,7 +943,7 @@ msgstr ""
 "Weitere Informationen über die Ursache können durch Ausführen von \"dpkg --"
 "audit\" erhalten werden."
 
-#: 53_package_status.py:29
+#: 53_package_status.py:30
 msgid "some"
 msgstr "einigen"
 
@@ -950,19 +951,19 @@ msgstr "einigen"
 msgid "Check errors in sources.list files"
 msgstr "Überprüfe Fehler in den sources.list Dateien"
 
-#: 54_sources_list_check.py:76
+#: 54_sources_list_check.py:75
 msgid "Found exception in {path!r}: {exception}"
 msgstr "Fehler in {path!r} gefunden: {exception}"
 
-#: 54_sources_list_check.py:98
+#: 54_sources_list_check.py:97
 msgid "Regenerate sources.list"
 msgstr "Source-Listen neu generieren"
 
-#: 54_sources_list_check.py:102
+#: 54_sources_list_check.py:101
 msgid "Please check the files for more details."
 msgstr "Überprüfen Sie die Dateien für mehr Details."
 
-#: 54_sources_list_check.py:104
+#: 54_sources_list_check.py:103
 msgid "The error might be fixable by regenerating the sources.list."
 msgstr ""
 "Dieser Fehler könnte durch eine erneute Generierung der Source-Listen "
@@ -1019,16 +1020,16 @@ msgstr ""
 "Objekte, die die Anforderungen eines Univention-Objekts implizit erfüllen, "
 "aber dieses Attribut nicht gesetzt haben, sollten migriert werden."
 
-#: 56_univention_types.py:48
+#: 56_univention_types.py:50
 msgid "These objects were found:"
 msgstr "Diese Objekte wurden gefunden:"
 
-#: 56_univention_types.py:55
+#: 56_univention_types.py:57
 #, python-format
 msgid "%d objects should be \"%s\""
 msgstr "%d Objekte sollten \"%s\" sein"
 
-#: 56_univention_types.py:58
+#: 56_univention_types.py:60
 #, python-format
 msgid "Migrate %d LDAP objects"
 msgstr "Migriere %d LDAP-Objekte"
