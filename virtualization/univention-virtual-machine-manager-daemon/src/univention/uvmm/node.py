@@ -112,6 +112,7 @@ DOM_EVENTS = Description(
 )
 ERROR_EVENTS = Description("None", "Pause", "Report")
 CONNECTION_EVENTS = Description("Error", "End-of-file", "Keepalive", "Client")
+RE_XML_NODE = re.compile(r'^(?:.*/)?(?:(\w+):)?(\w+)(?:\[.*\])?$')
 
 
 class NodeError(TranslatableException):
@@ -1395,10 +1396,12 @@ def _update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
 			_node_parent.remove(node)
 	else:
 		if node is None:
-			if ':' in _node_name:
-				prefix, local_name = _node_name.split(':', 1)
+			match = RE_XML_NODE.match(_node_name)
+			assert match, _node_name
+			prefix, local_name = match.groups()
+			if prefix:
 				_node_name = '{%s}%s' % (XMLNS[prefix], local_name)
-			node = ET.SubElement(_node_parent, _node_name, nsmap=XMLNS)
+			node = ET.SubElement(_node_parent, _node_name, nsmap=XMLNS if prefix else None)
 		new_text = _node_value or None
 		if node.text != new_text:
 			_changes.add(None)
