@@ -185,10 +185,14 @@ test_master () {
 	#	Verschiedenen Optionen an Share testen (siehe Handbuch) DONE
 	#	Funktioniert Schreib- und Lesezugriff DONE
 	#	Rechtevergabe prüfen DONE (simuliert durch Zugriff mit anderen Benutzer)
+	udm shares/share modify --dn "cn=testshareMember,cn=shares,dc=sambatest,dc=local" --set group=5000 --set directorymode=0770 --set sambaDirectoryMode=0770
+	udm shares/share modify --dn "cn=testshareSlave,cn=shares,dc=sambatest,dc=local" --set group=5000 --set directorymode=0770 --set sambaDirectoryMode=0770
 	python shared-utils/ucs-winrm.py check-share --server $MEMBER --sharename "testshareMember" --driveletter R --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py check-share --server $SLAVE --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
-	python shared-utils/ucs-winrm.py check-share --server $MEMBER --sharename "testshareMember" --driveletter R --filename "test.txt" --username 'newuser01' --userpwd "Univention123!"
-	python shared-utils/ucs-winrm.py check-share --server $SLAVE --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'newuser01' --userpwd "Univention123!"
+	python shared-utils/ucs-winrm.py create-share-file --server $MEMBER --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention123!" \
+		--share testshareMember --debug 2>&1 | grep 'denied.'
+	python shared-utils/ucs-winrm.py create-share-file --server $SLAVE --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention123!" \
+		--share testshareMember --debug 2>&1 | grep 'denied.'
 	#map printer driver names to network printers
 	python shared-utils/ucs-winrm.py setup-printer --printername Slaveprinter --server "$SLAVE"
 	python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$MEMBER"
@@ -228,7 +232,7 @@ test_master () {
 }
 
 
-# TODO set -x ...
+# set -x ... DONE
 prepare_nonmaster () {
 
 	set -x
