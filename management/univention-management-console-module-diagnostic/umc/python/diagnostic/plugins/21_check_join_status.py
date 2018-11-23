@@ -32,7 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from subprocess import Popen, PIPE, STDOUT
-from univention.management.console.modules.diagnostic import Critical,MODULE
+from univention.management.console.modules.diagnostic import Critical, MODULE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -60,6 +60,7 @@ def run(_umc_instance):
 		errors.append(_('See {erroranalysis} or run the join-scripts via {join}.'))
 		MODULE.error('\n'.join(errors))
 		raise Critical(description='\n'.join(errors))
+
 
 if __name__ == '__main__':
 	from univention.management.console.modules.diagnostic import main

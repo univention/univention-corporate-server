@@ -56,8 +56,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('KDC service check')
 description = ['The check for the KDC reachability was succesful.']
-run_descr = ['Makes a KDC reachability check']
-
+run_descr = ["Performs a KDC reachability check"]
 
 # This checks for the reachability of KDCs by sending a AS-REQ per TCP and UDP.
 # The AS-REQ is send with the fake user `kdc-reachability-check`. The KDCs will
@@ -100,11 +99,13 @@ def reset_kerberos_kdc(umc_instance):
 	ucr_set(['kerberos/kdc=127.0.0.1'])
 	return run(umc_instance, retest=True)
 
+
 description = _('ph ')
 actions = {
 	'add_lo_to_samba_interfaces': add_lo_to_samba_interfaces,
 	'reset_kerberos_kdc': reset_kerberos_kdc,
 }
+
 
 def _c(n, t):
 	return t.clone(tagSet=t.tagSet + tag.Tag(tag.tagClassContext, tag.tagFormatSimple, n))
@@ -248,8 +249,7 @@ def send_and_receive(kdc, port, protocol, as_req):
 
 def probe_kdc(kdc, port, protocol, target_realm, user_name):
 	request = build_kerberos_request(target_realm, user_name)
-	MODULE.process("Trying to cantact KDC %s on port %d" %(kdc,port))
-	MODULE.process("Similar to running: nmap%s -p %d" %(kdc,port))
+	MODULE.process("Trying to contact KDC %s on port %d Similar to running: 'nmap %s -p %d'" % (kdc, port, kdc, port))
 	try:
 		received = send_and_receive(kdc, port, protocol, request)
 	except KerberosException:
@@ -288,6 +288,7 @@ def resolve_kdc_record(protocol, domainname):
 
 	for record in result:
 		yield (record.target.to_text(True), record.port, protocol)
+
 
 def run(_umc_instance, retest=False):
 	configRegistry = univention.config_registry.ConfigRegistry()

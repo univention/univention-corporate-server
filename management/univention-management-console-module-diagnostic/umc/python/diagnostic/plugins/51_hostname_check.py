@@ -48,7 +48,7 @@ links = [{
 }]
 
 VALID_HOSTNAME = re.compile(r"^(?!-)[A-Z0-9-]{1,63}(?<!-)$", re.IGNORECASE)
-run_descr = ['checks non-compliant hostnames. Check https://tools.ietf.org/html/rfc1123#section-2 for the syntax of hostnames']
+run_descr = ['Checks for non-compliant hostnames. Check https://tools.ietf.org/html/rfc1123#section-2 for the syntax of hostnames']
 
 
 def univention_hostnames():

@@ -46,7 +46,6 @@ from univention.management.console.modules.decorators import simple_response, sa
 from univention.management.console.modules.sanitizers import PatternSanitizer, DictSanitizer, StringSanitizer
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.log import MODULE
-
 from univention.management.console.modules.diagnostic import plugins
 
 from univention.lib.i18n import Translation
@@ -100,8 +99,10 @@ class Instance(Base, ProgressMixin):
 	def run(self, plugin, args=None):
 		plugin = self.get(plugin)
 		MODULE.process('Running %s' % (plugin,))
-		MODULE.process(''.join(plugin.run_descr,))
+		for line in plugin.run_descr:
+			MODULE.process(line)
 		args = args or {}
+
 		def thread(self, request):
 			return plugin.execute(self, **args)
 		return thread
@@ -225,9 +226,10 @@ class Plugin(object):
 	def buttons(self):
 		u"""Buttons which are displayed e.g. to automatically solve the problem"""
 		return list(getattr(self.module, 'buttons', []))
+
 	@property
 	def run_descr(self):
-		return list(getattr(self.module, 'run_descr',[]))
+		return list(getattr(self.module, 'run_descr', []))
 
 	@property
 	def popups(self):

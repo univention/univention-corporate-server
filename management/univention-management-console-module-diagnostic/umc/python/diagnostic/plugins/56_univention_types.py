@@ -18,6 +18,7 @@ description = '\n'.join([
 
 _UPDATED = False
 
+
 def udm_objects_without_type(lo):
 	global _UPDATED
 	if not _UPDATED:
@@ -36,6 +37,7 @@ def udm_objects_without_type(lo):
 			else:
 				objs.append((dn, modules, attrs['objectClass']))
 	return objs
+
 
 def run(_umc_instance):
 	if ucr.get('server/role') != 'domaincontroller_master':

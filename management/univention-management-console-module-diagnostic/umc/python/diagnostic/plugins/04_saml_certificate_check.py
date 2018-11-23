@@ -50,7 +50,8 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 
 title = _('SAML certificate verification failed!')
-run_descr =['Checks SAML certificates']
+run_descr = ['Checks SAML certificates']
+
 
 @contextlib.contextmanager
 def download_tempfile(url, headers=None):
@@ -80,9 +81,9 @@ def test_identity_provider_certificate():
 	# download from all ip addresses of ucs-sso. the IDP certificate (/etc/simplesamlphp/*-idp-certificate.crt)
 	# compare this with /usr/share/univention-management-console/saml/idp/*.xml
 	# If it fails: univention-run-joinscripts --force --run-scripts 92univention-management-console-web-server
-	
+
 	sso_fqdn = ucr.get('ucs/server/sso/fqdn')
-	MODULE.process("compares ucs-sso by using 'ucr get ucs/server/sso/fqdn' with /usr/share/univention-management-console/saml/idp/*.xml")
+	MODULE.process("Checks ucs-sso by comparing 'ucr get ucs/server/sso/fqdn' and /usr/share/univention-management-console/saml/idp/*.xml")
 	if not sso_fqdn:
 		return
 	for host in socket.gethostbyname_ex(sso_fqdn)[2]:
@@ -93,6 +94,7 @@ def test_identity_provider_certificate():
 					with open(idp) as fd:
 						cert = find_node(fromstring(fd.read()), '{http://www.w3.org/2000/09/xmldsig#}X509Certificate')
 						if cert.text.strip() not in certificate:
+							MODULE.error('The certificate of the SAML identity provider does not match.')
 							raise Critical(_('The certificate of the SAML identity provider does not match.'))
 
 		except requests.exceptions.ConnectionError:
@@ -113,7 +115,7 @@ def test_service_provider_certificate():
 		for cert in certs:
 			cert = find_node(fromstring(cert[1]['serviceProviderMetadata'][0]), '{http://www.w3.org/2000/09/xmldsig#}X509Certificate')
 			if cert.text.strip() not in fd.read():
-				MODULE.error("Fails because https://help.univention.com/t/renewing-the-ssl-certificates/37 was not used")
+				MODULE.error('The certificate of the SAML service provider does not match.')
 				raise Critical(_('The certificate of the SAML service provider does not match.'))
 
 

@@ -245,6 +245,7 @@ def run(_umc_instance):
 		modules.append(udm_mail_link(folder))
 
 	if modules:
+		MODULE.error('\n'.join(ed))
 		raise Warning(description='\n'.join(ed), umc_modules=modules)
 
 
