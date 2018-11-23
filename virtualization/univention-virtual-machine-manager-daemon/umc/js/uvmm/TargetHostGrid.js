@@ -47,7 +47,6 @@ define([
 	return declare("umc.modules.uvmm.TargetHostGrid", [ Grid ], {
 
 		domain: null,
-		domainActive: false,
 
 		postMixInProperties: function() {
 			lang.mixin(this, {
@@ -61,21 +60,14 @@ define([
 					isMultiAction: true,
 					isStandardAction: true,
 					iconClass: 'umcIconDelete',
-					callback: lang.hitch(this, '_deleteTargethost'),
-					canExecute: lang.hitch(this, function(item) {
-						return !this.domainActive;
-					})
+					callback: lang.hitch(this, '_deleteTargethost')
 				}, {
 					name: 'add',
 					label: _('Add'),
 					isMultiAction: false,
 					isContextAction: false,
 					iconClass: 'umcIconAdd',
-					callback: lang.hitch(this, '_addTargethost'),
-					canExecute: lang.hitch(this, function(item) {
-						return !this.domainActive;
-					})
-
+					callback: lang.hitch(this, '_addTargethost')
 				}]
 			});
 			this.inherited(arguments);
@@ -88,18 +80,6 @@ define([
 
 		filter: function() {
 			this.inherited(arguments, [{ domainURI: this.domain.domainURI }]);
-		},
-
-		_setDomainActiveAttr: function(value) {
-				this.domainActive = value;
-				this._grid.update();
-
-				// disable actions in toolbar
-				array.forEach(this._toolbar.getChildren(), lang.hitch(this, function(widget) {
-					if (widget instanceof Button) {
-						widget.set('disabled', value);
-					}
-				}));
 		},
 
 		_addTargethost: function() {
@@ -179,7 +159,6 @@ define([
 			});
 			_dialog.show();
 		},
-
 
 		_deleteTargethost: function(ids) {
 			if (!ids.length) {

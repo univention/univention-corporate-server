@@ -2467,24 +2467,28 @@ def __domain_targethost(uri, domain):
 		conn = node.conn
 		domconn = conn.lookupByUUIDString(domain)
 		dom = node.domains[domain]
-		dom_xml = domconn.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE | libvirt.VIR_DOMAIN_XML_INACTIVE)
-		dom_tree = ET.fromstring(dom_xml)
-		dom_metadata = _update_xml(dom_tree, 'metadata', None, dummy='')
-		dom_migrationhosts = _update_xml(dom_metadata, 'uvmm:migrationtargethosts', None, dummy='')
-		domain_targethosts = set(elem.text for elem in dom_migrationhosts.findall('uvmm:hostname', namespaces=XMLNS))
+		try:
+			xml = domconn.metadata(libvirt.VIR_DOMAIN_METADATA_ELEMENT, XMLNS['uvmm'], libvirt.VIR_DOMAIN_AFFECT_CONFIG)
+			tree = ET.fromstring(xml)
+			domain_targethosts = set(elem.text for elem in tree.findall('hostname'))
+		except libvirt.libvirtError as ex:
+			if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN_METADATA:
+				raise
+			domain_targethosts = set()
 
 		logger.debug('Migration-target-host of "%s" before modification: %r', domain, domain_targethosts)
 		yield domain_targethosts
 		logger.debug('Migration-target-host of "%s" after modification: %r', domain, domain_targethosts)
 
-		dom_migrationhosts.clear()
-		for hostname in domain_targethosts:
-			ET.SubElement(dom_migrationhosts, '{%(uvmm)s}hostname' % XMLNS, nsmap=XMLNS).text = hostname
+		xml = '<migrationtargethosts>%s</migrationtargethosts>' % (''.join(
+			'<hostname>%s</hostname>' % (xml_escape(hostname),) for hostname in domain_targethosts
+		),)
+		if domconn.setMetadata(libvirt.VIR_DOMAIN_METADATA_ELEMENT, xml, 'uvmm', XMLNS['uvmm'], libvirt.VIR_DOMAIN_AFFECT_CONFIG):
+			logger.error('Failed to update config metadata XML of "%s"', domain)
+		if domconn.setMetadata(libvirt.VIR_DOMAIN_METADATA_ELEMENT, xml, 'uvmm', XMLNS['uvmm'], 0):
+			logger.warning('Failed to update current metadata XML of "%s"', domain)
 
-		dom_xml = ET.tostring(dom_tree)
-		conn.defineXML(dom_xml)
-
-		dom.update(domconn)
+		dom.pd.targethosts = domain_targethosts
 	except libvirt.libvirtError as ex:
 		logger.error(ex)
 		raise NodeError(_('Error modifying migrationtargethost "%(domain)s": %(error)s'), domain=domain, error=ex.get_error_message())
