@@ -1,3 +1,11 @@
+univention-mail-dovecot (4.0.0-12) unstable; urgency=low
+
+  * Bug #41018: add UCR variable mail/dovecot/sieve/client/server to be
+    able to specify an external server FQDN for the upload of the initial
+    sieve script via sieve-connect.
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 23 Nov 2018 11:45:01 +0100
+
 univention-mail-dovecot (4.0.0-11) unstable; urgency=low
 
   * Bug #47642: The PAM stack has been fixed to allow the login via username
