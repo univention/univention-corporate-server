@@ -217,6 +217,12 @@ def handler(dn, new, old, command):
 			if new.get('univentionShareSambaCustomSetting'):
 				for setting in new['univentionShareSambaCustomSetting']:
 					print >>fp, setting
+
+			# implicit settings
+
+			# acl and inherit -> map acl inherit (Bug #47850)
+			if '1' in new.get('univentionShareSambaNtAclSupport', []) and '1' in new.get('univentionShareSambaInheritAcls', []):
+				print >>fp, 'map acl inherit = yes'
 		finally:
 			listener.unsetuid()
 
