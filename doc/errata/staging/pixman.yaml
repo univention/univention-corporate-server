@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: pixman
+fix: 0.32.6-3+deb8u1
+desc: |
+ This update addresses the following issue:
+ * general_composite_rect() integer overflow (CVE-2015-5297)
+bug: [48208]
+cve:
+- CVE-2015-5297
