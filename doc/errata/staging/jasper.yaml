@@ -1,0 +1,20 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: jasper
+fix: 1.900.1-debian1-2.4+deb8u4
+desc: |
+ This update addresses the following issues:
+ * integer overflow in jas_image_cmpt_create() (CVE-2015-5203)
+ * use-after-free and double-free flaws in mif_process_cmpt() (CVE-2015-5221)
+ * missing jas_matrix_create() parameter checks (CVE-2016-8690)
+ * tile memory not released on image parsing errors (CVE-2017-13748)
+ * heap-based buffer over-read in jas_image_ishomosamp() (CVE-2017-14132)
+bug: [48206]
+cve:
+- CVE-2015-5203
+- CVE-2015-5221
+- CVE-2016-8690
+- CVE-2017-13748
+- CVE-2017-14132
