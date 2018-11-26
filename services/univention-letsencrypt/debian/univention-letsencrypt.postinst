@@ -1,0 +1,92 @@
+#!/bin/bash
+# postinst script for univention-letsencrypt
+#
+# Copyright 2016-2018 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+. /usr/share/univention-lib/ucr.sh
+
+do_statoverride () {
+    dpkg-statoverride --list "$4" || (dpkg-statoverride --force --update --add "$@" && echo "Added statoverride $@")
+}
+
+#DEBHELPER#
+
+# Migration from Apache 2.2 to Apache 2.4
+if  [ "$1" = 'configure' -a -n "$2" ] && dpkg --compare-versions "$2" lt '1.1.0-1'; then
+    webserver=apache2
+    # Disable old site with Apache 2.4
+    if [ -e /etc/$webserver/sites-enabled/univention-letsencrypt ] ; then
+        a2dissite univention-letsencrypt
+    fi
+    # Remove old site with Apache 2.4
+    if [ -e /etc/$webserver/sites-available/univention-letsencrypt ] ; then
+        rm -f /etc/$webserver/sites-available/univention-letsencrypt
+    fi
+fi
+
+# Set Apache2 config, which were unset in old postrm
+if  [ "$1" = 'configure' -a -n "$2" ] && dpkg --compare-versions "$2" lt '1.1.2-5'; then
+    if is_ucr_true letsencrypt/services/apache2 ; then
+        /etc/univention/letsencrypt/setup.d/apache2
+        invoke-rc.d apache2 restart
+    fi
+fi
+
+if  [ "$1" = 'configure' -a -n "$2" ] && dpkg --compare-versions "$2" lt '1.2.2-2'; then
+  if ! is_ucr_true letsencrypt/v2migrated; then
+    /usr/share/univention-letsencrypt/setup-letsencrypt
+    ucr set letsencrypt/v2migrated="true"
+  fi
+fi
+
+if [ "$1" = "configure" ] ; then
+    a2ensite univention-letsencrypt.conf
+    invoke-rc.d apache2 restart
+
+    getent passwd letsencrypt || adduser \
+        --system \
+        --no-create-home \
+        --shell "/bin/bash" \
+        --home "/usr/share/univention-letsencrypt" \
+        --disabled-password \
+        --ingroup www-data \
+        letsencrypt
+    nscd -i passwd
+
+    do_statoverride letsencrypt www-data 0755 "/var/www/.well-known/acme-challenge"
+    do_statoverride letsencrypt root 0775 "/etc/univention/letsencrypt"
+fi
+ucr set letsencrypt/services/apache2?no \
+        letsencrypt/services/postfix?no \
+        letsencrypt/services/dovecot?no
+
+# Add exclude pattern for acme-challenge, so validation works if force_https is enabled
+ucr set apache2/force_https/exclude/request_uri/letsencrypt="/.well-known/acme-challenge/.*$"
+service apache2 restart
+
+exit 0

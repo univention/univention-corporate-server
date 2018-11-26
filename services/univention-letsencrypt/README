@@ -1,0 +1,20 @@
+=== SETUP ===
+# univention-install univention-letsencrypt
+# ucr set letsencrypt/services/apache2=yes   # only if service is installed and certificate is required!
+# ucr set letsencrypt/services/postfix=yes   # only if service is installed and certificate is required!
+# ucr set letsencrypt/services/dovecot=yes   # only if service is installed and certificate is required!
+# ucr set letsencrypt/domains="www.somedomain.com www.anotherdomain.org"   # only, if $hostname.$domainname does not fit
+# /usr/share/univention-letsencrypt/setup-letsencrypt
+
+UCR variable "letsencrypt/domains" can also be changed after installation (e.g. for adding additional domains).
+After changing "letsencrypt/domains", call the script /usr/share/univention-letsencrypt/setup-letsencrypt.
+When asked for recreation of domain.csr by the script, answer with "y".
+
+Via cron job, the certificate is refreshed on each first day of month on 3:30 AM.
+
+Currently only 3 services are preconfigured and have to be explicitly enabled:
+apache, postfix, dovecot
+
+Additional services can be added via scripts in
+/etc/univention/letsencrypt/setup.d/ and
+/etc/univention/letsencrypt/post-refresh.d/

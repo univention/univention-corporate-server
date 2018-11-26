@@ -1,0 +1,9 @@
+@%@UCRWARNING=# @%@
+
+SHELL=/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+@!@
+letsencrypt_cron = configRegistry.get('letsencrypt/cron', '30 3 1 * *')
+print "%s   root  /usr/share/univention-letsencrypt/refresh-cert-cron 2>&1 | tee -a /var/log/univention/letsencrypt.log" % (letsencrypt_cron,)
+@!@

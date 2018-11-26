@@ -1,0 +1,35 @@
+[letsencrypt/domains]
+Description[en]=Domain(s) to obtain a certificate for, separated by space
+Description[de]=Domain(s) für die ein Zertifikat geholt werden soll, durch Leerzeichen getrennt
+Type=String
+Categories=univention-letsencrypt
+
+[letsencrypt/services/apache2]
+Description[en]=Use certificate in Apache
+Description[de]=Zertifikat in Apache verwenden
+Type=Bool
+Categories=univention-letsencrypt
+
+[letsencrypt/services/dovecot]
+Description[en]=Use certificate in Dovecot
+Description[de]=Zertifikat in Dovecot verwenden
+Type=Bool
+Categories=univention-letsencrypt
+
+[letsencrypt/services/postfix]
+Description[en]=Use certificate in Postfix
+Description[de]=Zertifikat in Postfix verwenden
+Type=Bool
+Categories=univention-letsencrypt
+
+[letsencrypt/status]
+Description[en]=Status of the Let's Encrypt App
+Description[de]=Status der Let's Encrypt App
+Type=Bool
+Categories=univention-letsencrypt
+
+[letsencrypt/staging]
+Description[en]=Use Let's Encrypt staging environment
+Description[de]=Verwende Let's Encrypts Test-CA
+Type=Bool
+Categories=univention-letsencrypt

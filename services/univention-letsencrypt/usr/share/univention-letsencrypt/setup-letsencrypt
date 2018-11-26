@@ -1,0 +1,115 @@
+#!/bin/bash
+#
+# Copyright 2016-2018 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+. /usr/share/univention-lib/ucr.sh
+
+eval "$(ucr shell)"
+
+DIR_LE="/etc/univention/letsencrypt"
+
+prepare_file () {
+    touch "$1"
+    chown "$3" "$1"
+    chmod "$2" "$1"
+}
+
+if [ ! -e "$DIR_LE" ] ; then
+    mkdir -p "$DIR_LE"
+    chown letsencrypt:root "$DIR_LE"
+    chmod 755 "$DIR_LE"
+fi
+
+if [ ! -e "$DIR_LE/account.key" ] ; then
+    echo "Creating account.key..."
+    prepare_file "$DIR_LE/account.key" 0600 root:root
+    setfacl -m u:letsencrypt:r "$DIR_LE/account.key"
+    openssl genrsa 4096 > "$DIR_LE/account.key"
+fi
+
+if [ ! -e "$DIR_LE/domain.key" ] ; then
+    echo "Creating domain.key..."
+    prepare_file "$DIR_LE/domain.key" 0600 root:root
+    openssl genrsa 4096 > "$DIR_LE/domain.key"
+fi
+
+# use local hostname if no special domains are specified
+if [ -z "$letsencrypt_domains" ] ; then
+    LE_NAMES="$hostname.$domainname"
+else
+    LE_NAMES="$letsencrypt_domains"
+fi
+
+# remove domain.csr if list of domains has been changed and domain.csr is therefore invalid/outdated.
+if [ -e "$DIR_LE/domain.csr" ] ; then
+    if [ ! "$(< "$DIR_LE/domains")" = "$LE_NAMES" ] ; then
+        echo "WARNING: UCR variable letsencrypt/domains does not match domains in CSR."
+        echo "Removing domain.csr..."
+        rm -f "$DIR_LE/domain.csr"
+    fi
+fi
+
+# create domain.csr if missing
+if [ ! -e "$DIR_LE/domain.csr" ] ; then
+    echo "Creating domain.csr..."
+    prepare_file "$DIR_LE/domain.csr" 0644 letsencrypt:root
+    prepare_file "$DIR_LE/domains" 0644 letsencrypt:root
+    echo "$LE_NAMES" > "$DIR_LE/domains"
+
+    if [ "$(echo "$LE_NAMES" | tr ' ' '\n' | wc -l)" = "1" ] ; then
+        # single domain
+        echo "Single domain mode"
+        openssl req -new -sha256 -key "$DIR_LE/domain.key" -subj "/CN=${LE_NAMES}" > "$DIR_LE/domain.csr"
+    else
+        # multiple domains
+        echo "Multi domain mode"
+        subjectAltName="$(echo "$LE_NAMES" | sed -re 's/ /,DNS:/g')"
+        openssl req -new -sha256 -key "$DIR_LE/domain.key" -subj "/" -reqexts SAN -config <(cat /etc/ssl/openssl.cnf <(printf "[SAN]\nsubjectAltName=DNS:${subjectAltName}")) > "$DIR_LE/domain.csr"
+    fi
+fi
+
+# fetch intermediate certificate
+if [ ! -f "$DIR_LE/intermediate.pem" ] ; then
+    echo "Fetching intermediate.pem..."
+    prepare_file "$DIR_LE/intermediate.pem" 0644 letsencrypt:root
+    wget --no-verbose -O - "https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem" > "$DIR_LE/intermediate.pem"
+fi
+
+# add lets encrypt CA to global CA store
+if [ ! -f "/usr/local/share/ca-certificates/lets-encrypt.crt" ] ; then
+    ln -s "$DIR_LE/intermediate.pem" /usr/local/share/ca-certificates/lets-encrypt.crt
+fi
+
+prepare_file "/var/log/univention/letsencrypt.log" 0664 letsencrypt:root
+
+if ! is_ucr_true letsencrypt/staging ; then
+  prepare_file "$DIR_LE/signed_chain.crt" 0644 letsencrypt:root
+  run-parts --verbose "$DIR_LE/setup.d/"
+fi
+# always refresh certificate
+/usr/share/univention-letsencrypt/refresh-cert-cron --setup 2>&1 | tee -a /var/log/univention/letsencrypt.log

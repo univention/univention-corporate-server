@@ -1,0 +1,287 @@
+univention-letsencrypt (1.2.2-3) unstable; urgency=medium
+
+  * evaluate unset variable correctly #10035
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Fri, 11 May 2018 13:37:52 +0200
+
+univention-letsencrypt (1.2.2-2) unstable; urgency=medium
+
+  * check if app has already been migrated during update
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 02 May 2018 16:15:24 +0200
+
+univention-letsencrypt (1.2.2-1) unstable; urgency=medium
+
+  * don't prepare signed_chain in staging mode #10035
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 02 May 2018 15:37:21 +0200
+
+univention-letsencrypt (1.2.2) unstable; urgency=medium
+
+  * don't execute update-ca-certificates
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 02 May 2018 15:27:07 +0200
+
+univention-letsencrypt (1.2.1-9) unstable; urgency=medium
+
+  * don't use certs from staging endpoint anywhere, don't create obsolete chained.pem and signed.crt #10035
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 02 May 2018 15:04:38 +0200
+
+univention-letsencrypt (1.2.1-8) unstable; urgency=medium
+
+  * add option for staging environment #10035
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 02 May 2018 14:14:44 +0200
+
+univention-letsencrypt (1.2.1-7) unstable; urgency=medium
+
+  * fix cert check after refresh #10035
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 02 May 2018 11:50:07 +0200
+
+univention-letsencrypt (1.2.1-6) unstable; urgency=medium
+
+  * add update routine for old versions with acme_tiny v1 #10035
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 02 May 2018 11:12:30 +0200
+
+univention-letsencrypt (1.2.1-5) unstable; urgency=medium
+
+  * fix symlink to chain, fix setup hooks #10035
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Mon, 30 Apr 2018 14:12:00 +0200
+
+univention-letsencrypt (1.2.1-3) unstable; urgency=medium
+
+  * disable internal challenge check
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Mon, 30 Apr 2018 13:44:52 +0200
+
+univention-letsencrypt (1.2.1-2) unstable; urgency=medium
+
+  * update to ACME v2 #10035
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Mon, 30 Apr 2018 13:39:44 +0200
+
+univention-letsencrypt (1.2.1-1) unstable; urgency=medium
+
+  * don't execute update-ca-certificates in postrm #9901
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Mon, 30 Apr 2018 12:54:22 +0200
+
+univention-letsencrypt (1.2.1) unstable; urgency=medium
+
+  * don't execute update-ca-certificates in setup #9901
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Mon, 30 Apr 2018 12:50:50 +0200
+
+univention-letsencrypt (1.2.0) unstable; urgency=medium
+
+  * version bump for UCS 4.3 release
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Thu, 08 Mar 2018 12:44:07 +0100
+
+univention-letsencrypt (1.1.2-6) unstable; urgency=medium
+
+  * fix apache ssl config in postinst
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Tue, 06 Feb 2018 15:00:39 +0100
+
+univention-letsencrypt (1.1.2-5) unstable; urgency=medium
+
+  * update copyright, don't remove configs during update
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Tue, 06 Feb 2018 12:47:21 +0100
+
+univention-letsencrypt (1.1.2-4) unstable; urgency=medium
+
+  * wait until /etc/ssl/certs/ca-certificates.crt exists again, don't restart service during setup
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Mon, 05 Feb 2018 15:53:24 +0100
+
+univention-letsencrypt (1.1.2-3) unstable; urgency=medium
+
+  * parse correct lines from status files
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 13 Dec 2017 14:48:48 +0100
+
+univention-letsencrypt (1.1.2-2) unstable; urgency=medium
+
+  * set status correctly
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Tue, 12 Dec 2017 17:22:51 +0100
+
+univention-letsencrypt (1.1.2-1) unstable; urgency=medium
+
+  * code cleanup
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Tue, 12 Dec 2017 16:46:05 +0100
+
+univention-letsencrypt (1.1.2) unstable; urgency=medium
+
+  * dont stop refresh-cert-cron on error in refresh-cert
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Tue, 12 Dec 2017 12:56:36 +0100
+
+univention-letsencrypt (1.1.1-9) unstable; urgency=medium
+
+  * restart only in refresh scripts
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Tue, 12 Dec 2017 11:20:51 +0100
+
+univention-letsencrypt (1.1.1-8) unstable; urgency=medium
+
+  * fix restarts, check if services are installed before setting up certs
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Tue, 12 Dec 2017 11:05:19 +0100
+
+univention-letsencrypt (1.1.1-7) unstable; urgency=medium
+
+  * reset SSL settings of Dovecot and Postfix to UCS CA aswell, if certificate is invalid
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 06 Dec 2017 17:32:45 +0100
+
+univention-letsencrypt (1.1.1-6) unstable; urgency=medium
+
+  * set status correctly, if error comes from Let's Encrypt, not acme_tiny
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 06 Dec 2017 14:59:59 +0100
+
+univention-letsencrypt (1.1.1-5) unstable; urgency=medium
+
+  * register App status variable, update status in case of error aswell
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Tue, 05 Dec 2017 13:17:12 +0100
+
+univention-letsencrypt (1.1.1-4) unstable; urgency=medium
+
+  * check if there is a valid Let's Encrypt cert before changing UCR settings of Apache2 etc. #8157
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Mon, 04 Dec 2017 16:49:49 +0100
+
+univention-letsencrypt (1.1.1-3) unstable; urgency=medium
+
+  * add status to app settings
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Fri, 24 Nov 2017 14:03:31 +0100
+
+univention-letsencrypt (1.1.1-2) unstable; urgency=medium
+
+  * don't use --fresh in update-ca-certificates #9063
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Fri, 24 Nov 2017 12:50:17 +0100
+
+univention-letsencrypt (1.1.1-1) unstable; urgency=medium
+
+  * add Let's Encrypt CA certificate to trusted certs #9063
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Thu, 23 Nov 2017 10:24:14 +0100
+
+univention-letsencrypt (1.1.1) unstable; urgency=medium
+
+  * bump version
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 15 Nov 2017 16:18:15 +0100
+
+univention-letsencrypt (1.1.0-11) unstable; urgency=medium
+
+  * make acme_tiny executable #9823
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 15 Nov 2017 16:12:01 +0100
+
+univention-letsencrypt (1.1.0-10) unstable; urgency=medium
+
+  * rename new acme-tiny to acme_tiny #9283
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 15 Nov 2017 16:00:12 +0100
+
+univention-letsencrypt (1.1.0-9) unstable; urgency=medium
+
+  * replace acme-tiny with new version #9283
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 15 Nov 2017 15:07:52 +0100
+
+univention-letsencrypt (1.1.0-8) unstable; urgency=medium
+
+  * add ucr category definition #8871
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Thu, 05 Oct 2017 17:44:11 +0200
+
+univention-letsencrypt (1.1.0-7) unstable; urgency=medium
+
+  * add ucr variable definition, so a description is displayed on the shell #8871
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Thu, 05 Oct 2017 14:04:20 +0200
+
+univention-letsencrypt (1.1.0-6) unstable; urgency=medium
+
+  * reset apache2 ssl settings after package removal #8871
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 04 Oct 2017 12:07:05 +0200
+
+univention-letsencrypt (1.1.0-5) unstable; urgency=medium
+
+  * make setup-letsencrypt non-interactive #8871
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Wed, 04 Oct 2017 11:50:51 +0200
+
+univention-letsencrypt (1.1.0-4) unstable; urgency=medium
+
+  * don't unset force_https  #8871
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Mon, 02 Oct 2017 12:05:19 +0200
+
+univention-letsencrypt (1.1.0-3) unstable; urgency=medium
+
+  * restart apache after exclusion pattern has been added #8871
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Mon, 02 Oct 2017 11:46:21 +0200
+
+univention-letsencrypt (1.1.0-2) unstable; urgency=medium
+
+  * add force_https exclusion rule for acme_challenge #8871
+
+ -- Valentin Heidelberger <heidelberger@univention.de>  Mon, 02 Oct 2017 10:32:07 +0200
+
+univention-letsencrypt (1.1.0-1) unstable; urgency=low
+
+  * Migration from Apache 2.2 to Apache 2.4. Isuue #7829
+
+ -- Andreas Peichert <peichert@univention.de>  Tue, 16 May 2017 16:29:58 +0200
+
+univention-letsencrypt (1.0.4-1) unstable; urgency=medium
+
+  * Fixed faulty error handling in refresh-cert
+  * Task #6109 
+
+ -- Timo Denissen <denissen@univention.de>  Wed, 08 Feb 2017 13:55:17 +0100
+
+univention-letsencrypt (1.0.3-1) unstable; urgency=medium
+
+  * Fixed wrong path for setfacl to alter permissions for account.key
+  * Task #6109
+
+ -- Timo Denissen <denissen@univention.de>  Wed, 08 Feb 2017 12:26:52 +0100
+
+univention-letsencrypt (1.0.2-1) unstable; urgency=medium
+
+  * Updated copyright headers
+  * Added missing dependency
+  * Task #6109
+
+ -- Timo Denissen <denissen@univention.de>  Wed, 08 Feb 2017 11:38:00 +0100
+
+univention-letsencrypt (1.0.1-1) unstable; urgency=medium
+
+  * Added /etc to install file
+  * Add UCR variables in postinst
+  * Task #6109
+
+ -- Timo Denissen <denissen@univention.de>  Tue, 07 Feb 2017 20:11:21 +0100
+
+univention-letsencrypt (1.0.0-1) unstable; urgency=low
+
+  * Initial version
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sat, 06 Aug 2016 22:31:13 +0200
