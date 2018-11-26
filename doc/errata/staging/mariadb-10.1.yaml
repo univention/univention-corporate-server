@@ -1,0 +1,78 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: mariadb-10.1
+fix: 10.1.37-0+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Server: Replication unspecified vulnerability (CPU Oct 2017)
+   (CVE-2017-10268)
+ * Server: Optimizer unspecified vulnerability (CPU Oct 2017) (CVE-2017-10378)
+ * Replication in sql/event_data_objects.cc occurs before ACL checks
+   (CVE-2017-15365)
+ * Server : Partition unspecified vulnerability (CPU Jan 2018) (CVE-2018-2562)
+ * InnoDB unspecified vulnerability (CPU Jan 2018) (CVE-2018-2612)
+ * Server: DDL unspecified vulnerability (CPU Jan 2018) (CVE-2018-2622)
+ * Server: Optimizer unspecified vulnerability (CPU Jan 2018) (CVE-2018-2640)
+ * Server: Optimizer unspecified vulnerability (CPU Jan 2018) (CVE-2018-2665)
+ * Server: Optimizer unspecified vulnerability (CPU Jan 2018) (CVE-2018-2668)
+ * Server: Replication unspecified vulnerability (CPU Apr 2018)
+   (CVE-2018-2755)
+ * Client programs unspecified vulnerability (CPU Apr 2018) (CVE-2018-2761)
+ * InnoDB unspecified vulnerability (CPU Apr 2018) (CVE-2018-2766)
+ * use of SSL/TLS not enforced in libmysqld (Return of BACKRONYM)
+   (CVE-2018-2767)
+ * Server: Locking unspecified vulnerability (CPU Apr 2018) (CVE-2018-2771)
+ * Server: Optimizer unspecified vulnerability (CPU Apr 2018) (CVE-2018-2781)
+ * InnoDB unspecified vulnerability (CPU Apr 2018) (CVE-2018-2782)
+ * InnoDB unspecified vulnerability (CPU Apr 2018) (CVE-2018-2784)
+ * InnoDB unspecified vulnerability (CPU Apr 2018) (CVE-2018-2787)
+ * Server: DDL unspecified vulnerability (CPU Apr 2018) (CVE-2018-2813)
+ * Server: DDL unspecified vulnerability (CPU Apr 2018) (CVE-2018-2817)
+ * InnoDB unspecified vulnerability (CPU Apr 2018) (CVE-2018-2819)
+ * MyISAM unspecified vulnerability (CPU Jul 2018) (CVE-2018-3058)
+ * Server: Security: Privileges unspecified vulnerability (CPU Jul 2018)
+   (CVE-2018-3063)
+ * InnoDB unspecified vulnerability (CPU Jul 2018) (CVE-2018-3064)
+ * Server: Options unspecified vulnerability (CPU Jul 2018) (CVE-2018-3066)
+ * Client programs unspecified vulnerability (CPU Jul 2018) (CVE-2018-3081)
+ * InnoDB unspecified vulnerability (CPU Oct 2018) (CVE-2018-3143)
+ * InnoDB unspecified vulnerability (CPU Oct 2018) (CVE-2018-3156)
+ * Client programs unspecified vulnerability (CPU Oct 2018) (CVE-2018-3174)
+ * InnoDB unspecified vulnerability (CPU Oct 2018) (CVE-2018-3251)
+ * Server: Storage Engines unspecified vulnerability (CPU Oct 2018)
+   (CVE-2018-3282)
+bug: [48201]
+cve:
+- CVE-2017-10268
+- CVE-2017-10378
+- CVE-2017-15365
+- CVE-2018-2562
+- CVE-2018-2612
+- CVE-2018-2622
+- CVE-2018-2640
+- CVE-2018-2665
+- CVE-2018-2668
+- CVE-2018-2755
+- CVE-2018-2761
+- CVE-2018-2766
+- CVE-2018-2767
+- CVE-2018-2771
+- CVE-2018-2781
+- CVE-2018-2782
+- CVE-2018-2784
+- CVE-2018-2787
+- CVE-2018-2813
+- CVE-2018-2817
+- CVE-2018-2819
+- CVE-2018-3058
+- CVE-2018-3063
+- CVE-2018-3064
+- CVE-2018-3066
+- CVE-2018-3081
+- CVE-2018-3143
+- CVE-2018-3156
+- CVE-2018-3174
+- CVE-2018-3251
+- CVE-2018-3282
