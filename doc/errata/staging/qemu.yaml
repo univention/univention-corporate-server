@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u5A~4.3.0.201811261055
+desc: |
+ This update addresses the following issues:
+ * Fix snapshot revert after post-copy live migration.
+bug: [47617]
