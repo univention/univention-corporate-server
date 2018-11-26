@@ -6,14 +6,12 @@ src: ceph
 fix: 10.2.11-2
 desc: |
  This update addresses the following issues:
- * libradosstriper processes arbitrary printf placeholders in user input (CVE-2017-7519)
+ * libradosstriper processes arbitrary printf placeholders in user input
+   (CVE-2017-7519)
  * cephx protocol is vulnerable to replay attack (CVE-2018-1128)
  * cephx uses weak signatures (CVE-2018-1129)
  * ceph-mon does not perform authorization on OSD pool ops (CVE-2018-10861)
-
- * 10.2.11-2 (Mon, 19 Nov 2018 21:29:23 +0100)
-  [ James Page ]
-  * [d34d35] Fix build on i386
+ * Fix build on i386
 bug: [48179]
 cve:
 - CVE-2017-7519
