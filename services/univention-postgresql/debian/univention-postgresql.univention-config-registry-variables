@@ -29,8 +29,8 @@ Type=str
 Categories=System
 
 [postgres9/pg_hba/config/.*]
-Description[de]=Spezifiziert zusätzliche Konfigurationsoptionen für /etc/postgresql/9.6/main/pg_hba.conf. Siehe `https://www.postgresql.org/docs/9.6/auth-pg-hba-conf.html` für Details. Die Variable folgt dabei dem Schema postgres9/pg_hba/config/REIHENFOLGE=EINTRAG. Beispiel: 'postgres9/pg_hba/config/1="hostssl mydb myuser 127.0.0.2/32 md5"'.
+Description[de]=Spezifiziert zusätzliche Konfigurationsoptionen für /etc/postgresql/9.6/main/pg_hba.conf. Siehe `https://www.postgresql.org/docs/9.6/auth-pg-hba-conf.html` für Details. Die Variable folgt dabei dem Schema postgres9/pg_hba/config/REIHENFOLGE=EINTRAG. Beispiel: 'postgres9/pg_hba/config/01="hostssl mydb myuser 127.0.0.2/32 md5"'.
 
-Description[en]=Specifies additional configuration options for /etc/postgresql/9.6/main/pg_hba.conf. See `https://www.postgresql.org/docs/9.6/auth-pg-hba-conf.html` for details. The variable follows the scheme postgres9/pg_hba/config/ORDER=ENTRY. Example: 'postgres9/pg_hba/config/1="hostssl mydb myuser 127.0.0.2/32 md5"'.
+Description[en]=Specifies additional configuration options for /etc/postgresql/9.6/main/pg_hba.conf. See `https://www.postgresql.org/docs/9.6/auth-pg-hba-conf.html` for details. The variable follows the scheme postgres9/pg_hba/config/ORDER=ENTRY. Example: 'postgres9/pg_hba/config/01="hostssl mydb myuser 127.0.0.2/32 md5"'.
 Type=str
 Categories=System
