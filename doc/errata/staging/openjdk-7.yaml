@@ -1,0 +1,29 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: openjdk-7
+fix: 7u181-2.6.14-2~deb8u1A~4.2.5.201811260940
+desc: |
+ This update addresses the following issues:
+ * insufficient index validation in PatternSyntaxException getMessage()
+   (Concurrency, 8199547) (CVE-2018-2952)
+ * Incorrect handling of unsigned attributes in signed Jar manifests
+   (Security, 8194534) (CVE-2018-3136)
+ * Leak of sensitive header data via HTTP redirect (Networking, 8196902)
+   (CVE-2018-3139)
+ * Incomplete enforcement of the trustURLCodebase restriction (JNDI, 8199177)
+   (CVE-2018-3149)
+ * Improper field access checks (Hotspot, 8199226) (CVE-2018-3169)
+ * Missing endpoint identification algorithm check during TLS session
+   resumption (JSSE, 8202613) (CVE-2018-3180)
+ * Infinite loop in RIFF format reader (Sound, 8205361) (CVE-2018-3214)
+bug: [48200]
+cve:
+- CVE-2018-2952
+- CVE-2018-3136
+- CVE-2018-3139
+- CVE-2018-3149
+- CVE-2018-3169
+- CVE-2018-3180
+- CVE-2018-3214
