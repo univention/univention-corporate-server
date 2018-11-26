@@ -1,0 +1,18 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: systemd
+fix: 215-17+deb8u8A~4.2.5.201811260940
+desc: |
+ This update addresses the following issues:
+ * automount: access to automounted volumes can lock up (CVE-2018-1049)
+ * Line splitting via fgets() allows for state injection during daemon-reexec
+   (CVE-2018-15686)
+ * Out-of-bounds heap write in systemd-networkd dhcpv6 option handling
+   (CVE-2018-15688)
+bug: [48205]
+cve:
+- CVE-2018-1049
+- CVE-2018-15686
+- CVE-2018-15688
