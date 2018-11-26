@@ -1,0 +1,16 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: liblivemedia
+fix: 2014.01.13-1+deb8u1
+desc: |
+ This update addresses the following issue:
+ * An exploitable code execution vulnerability exists in the HTTP
+   packet-parsing functionality of the LIVE555 RTSP server library version
+   0.92. A specially crafted packet can cause a stack-based buffer overflow,
+   resulting in code execution. An attacker can send a packet to trigger this
+   vulnerability. (CVE-2018-4013)
+bug: [48207]
+cve:
+- CVE-2018-4013
