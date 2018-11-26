@@ -1,3 +1,9 @@
+univention-postgresql (10.0.1-3) unstable; urgency=medium
+
+  * Bug #47276: Add example to ucr variable postgres9/pg_hba/config/*
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 26 Nov 2018 14:42:32 +0100
+
 univention-postgresql (10.0.1-2) unstable; urgency=medium
 
   * Bug #47276: Add ucr variable postgres9/pg_hba/config/* for additional
