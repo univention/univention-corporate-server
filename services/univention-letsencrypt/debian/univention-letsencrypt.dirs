@@ -1,0 +1,3 @@
+etc/univention/letsencrypt/post-refresh.d
+etc/univention/letsencrypt/setup.d
+var/www/.well-known/acme-challenge
