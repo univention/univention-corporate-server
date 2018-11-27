@@ -5,7 +5,10 @@ scope: ucs_4.3-0-errata4.3-2
 src: univention-postgresql
 fix: 10.0.1-4A~4.3.0.201811271006
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The new UCR variable postgres9/pg_hba/config/* allows for additional
    configuration options in the pg_hba.conf file.
-bug: [47276]
+ * The rule for the PostgreSQL superuser has been moved to the beginning
+   of `pg_hba.conf` to always grant access to that internal user. This is
+   required for automatic maintenance and similar tasks.
+bug: [47276, 31081]
