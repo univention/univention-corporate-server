@@ -10,7 +10,8 @@ desc: |
    This is required to improve the error messages shown by the
    UMC diagnostic module.
  * A Denial of Service vulnerability has been fixed
-   in the Samba/AD DC LDAP server
+   in the Samba/AD DC LDAP server (CVE-2018-16851)
 bug: [47583, 48183]
 cve:
 - CVE-2018-16851
+ignore: ['cve.',]
