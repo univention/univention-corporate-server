@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-ad-connector
-fix: 12.0.0-37A~4.3.0.201811272013
+fix: 12.0.0-38A~4.3.0.201811272058
 desc: |
  This update addresses the following issue(s):
  * The synchronizarion of password hashes from AD to UCS has been fixed
@@ -13,4 +13,6 @@ desc: |
    mode in case of changed system time.
  * The error messages for the join into an Active Directory domain
    have been improved.
-bug: [44024,48227,42430]
+ * Fix AD to UCS password hash synchronization in cases where a custom
+   Domain Admin account is configured for the AD connection.
+bug: [44024,48227,42430,47069]
