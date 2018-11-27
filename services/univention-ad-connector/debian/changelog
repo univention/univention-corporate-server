@@ -1,3 +1,10 @@
+univention-ad-connector (12.0.0-35) unstable; urgency=medium
+
+  * Bug #44024: Fix password sync AD to UCS on systems that have
+    connector/ldap/server set to a server with read-only OpenLDAP.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Nov 2018 12:29:15 +0100
+
 univention-ad-connector (12.0.0-34) unstable; urgency=medium
 
   * Bug #48082: univention-adsearch encoding
