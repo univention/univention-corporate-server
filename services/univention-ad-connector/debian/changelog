@@ -1,3 +1,11 @@
+univention-ad-connector (12.0.0-37) unstable; urgency=medium
+
+  * Bug #42430: The traceback failedToSetAdministratorPassword is
+    currently thrown in different places. More tracebacks for different
+    errors have been added.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Nov 2018 20:00:23 +0100
+
 univention-ad-connector (12.0.0-36) unstable; urgency=medium
 
   * Bug #48227: ad/member mode: Fix keberos authentication error

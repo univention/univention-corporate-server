@@ -107,6 +107,26 @@ class failedToSetAdministratorPassword(Exception):
 	'''Failed to set the password of the UCS Administrator to the AD password'''
 
 
+class failedToCreateAdministratorAccount(Exception):
+
+	'''Failed to create the administrator account in UCS'''
+
+
+class sambaSidNotSetForAdministratorAccount(Exception):
+
+	'''sambaSID is not set for Administrator account in UCS'''
+
+
+class failedToSearchForWellKnownSid(Exception):
+
+	'''failed to search for well known SID'''
+
+
+class failedToAddAdministratorAccountToDomainAdmins(Exception):
+
+	'''failed to add Administrator account to Domain Admins'''
+
+
 class domainnameMismatch(Exception):
 
 	'''Domain Names don't match'''
@@ -477,7 +497,7 @@ def prepare_administrator(username, password, ucr=None):
 		except ldap.NO_SUCH_OBJECT:
 			success = False
 		if not success:
-			raise failedToSetAdministratorPassword()
+			raise failedToCreateAdministratorAccount()
 		return
 
 	# Second, if the account existed already, check if it has the well known Administrator SID
@@ -487,13 +507,13 @@ def prepare_administrator(username, password, ucr=None):
 
 	if not user_sid:
 		ud.debug(ud.MODULE, ud.ERROR, "UCS LDAP search for sambaSID of uid=%s failed" % username)
-		raise failedToSetAdministratorPassword()
+		raise sambaSidNotSetForAdministratorAccount()
 
 	is_well_known_admin = False
 	try:
 		is_well_known_admin = _ucs_sid_is_well_known_administrator(user_sid, lo, ucr)
 	except ldap.NO_SUCH_OBJECT:
-		raise failedToSetAdministratorPassword()
+		raise failedToSearchForWellKnownSid()
 
 	# Third, if the account doesn't have the well known Administrator SID, add it to Domain Admins
 	if not is_well_known_admin:
@@ -502,7 +522,7 @@ def prepare_administrator(username, password, ucr=None):
 		except ldap.NO_SUCH_OBJECT:
 			success = False
 		if not success:
-			raise failedToSetAdministratorPassword()
+			raise failedToAddAdministratorAccountToDomainAdmins()
 		return
 
 	# Finally, if the account does have the Administrator SID, set it's UDM password to the AD one.

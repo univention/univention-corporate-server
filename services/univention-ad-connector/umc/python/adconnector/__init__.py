@@ -535,6 +535,14 @@ class Instance(Base, ProgressMixin):
 			_err(exc, _('Could not connect to AD Server %s. Please verify that username and password are correct. (Details:\n%s)') % (ad_domain_info.get('DC DNS Name'), exc))
 		except admember.failedToSetAdministratorPassword as exc:
 			_err(exc, _('Failed to set the password of the UCS Administrator to the Active Directory Administrator password.'))
+		except admember.failedToCreateAdministratorAccount as exc:
+			_err(exc, _('Failed to create the Administrator account in UCS.'))
+		except admember.sambaSidNotSetForAdministratorAccount as exc:
+			_err(exc, _('The sambaSID could not set for the Administrator account in UCS.'))
+		except admember.failedToSearchForWellKnownSid as exc:
+			_err(exc, _('Failed to search for the well known SID.'))
+		except admember.failedToAddAdministratorAccountToDomainAdmins as exc:
+			_err(exc, _('Failed to add the Administrator account to the Domain Admins group.'))
 		except admember.timeSyncronizationFailed as exc:
 			_err(exc, _('Could not synchronize the time between the UCS system and the Active Directory domain controller: %s') % exc)
 		except RuntimeError as exc:

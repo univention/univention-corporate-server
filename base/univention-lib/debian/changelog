@@ -1,3 +1,11 @@
+univention-lib (7.0.0-15) unstable; urgency=medium
+
+  * Bug #42430: The traceback failedToSetAdministratorPassword is
+    currently thrown in different places. More tracebacks for different
+    errors have been added.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Nov 2018 17:25:29 +0100
+
 univention-lib (7.0.0-14) unstable; urgency=low
 
   * Bug #47944: add settings/code to ucs_registerLDAPExtension
