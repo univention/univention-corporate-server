@@ -22,8 +22,8 @@ class TestUMCQuotasManagement(UMCBase):
         Checks whether users are returned correctly
         """
 	request_result = self.client.umc_command('printers/users/query').result
-	usernames = [user.props.username for user in SimpleUDM.machine().get('users/user').search()]
-	assert username == request_result
+	usernames = [user.props.username for user in SimpleUDM.machine().version(1).get('users/user').search()]
+	assert usernames == request_result
 
     def main(self):
         """
