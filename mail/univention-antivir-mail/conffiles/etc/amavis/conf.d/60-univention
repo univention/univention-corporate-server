@@ -1259,7 +1259,7 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
 		print("### http://www.csupomona.edu/~henson/www/projects/SAVI-Perl/")
 		print(" ['Sophos SAVI', \\&sophos_savi ],")
 
-	if 'clamav' in scanner:
+	if 'clamav' in scanner and not configRegistry.is_false('clamav/daemon/autostart'):
 		print("### http://clamav.elektrapro.com/")
 		print(" ['Clam Antivirus-clamd',")
 		print("   \\&ask_daemon, [\"CONTSCAN {}\\n\", '/var/run/clamav/clamd.ctl'],")

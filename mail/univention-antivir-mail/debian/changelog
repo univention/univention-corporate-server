@@ -1,3 +1,10 @@
+univention-antivir-mail (9.0.0-5) unstable; urgency=medium
+
+  * Bug #39372: Remove clamav from amavis config if clamav daemon is disabled
+    via UCR clamav/daemon/autostart=no
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 27 Nov 2018 11:10:59 +0100
+
 univention-antivir-mail (9.0.0-4) unstable; urgency=low
 
   * Bug #45984: disable connection caching
