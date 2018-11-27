@@ -15,3 +15,5 @@ bug: [47583, 48183]
 cve:
 - CVE-2018-16851
 ignore: ['cve.',]
+erratum: 332
+announced: 2018-11-27
