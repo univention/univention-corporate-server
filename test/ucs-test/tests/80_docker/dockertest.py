@@ -96,6 +96,24 @@ class UCTTest_DockerApp_UMCInstallFailed(Exception):
 class UCSTest_DockerApp_RegisterFailed(Exception):
 	pass
 
+def tiny_app(name=None, version=None):
+	name = name or get_app_name()
+	version = version or '1'
+	app = App(name=name, version=version, build_package=False)
+	app.set_ini_parameter(
+		DockerImage='alpine:3.6',
+		DockerScriptInit='/sbin/init',
+		DockerScriptSetup='',
+		DockerScriptStoreData='',
+		DockerScriptRestoreDataBeforeSetup='',
+		DockerScriptRestoreDataAfterSetup='',
+		DockerScriptUpdateAvailable='',
+		DockerScriptUpdatePackages='',
+		DockerScriptUpdateRelease='',
+		DockerScriptUpdateAppVersion='',
+	)
+	return app
+
 def get_docker_appbox_image():
 	image_name = 'docker-test.software-univention.de/ucs-appbox-amd64:4.3-0'
 	print 'Using %s' % image_name
