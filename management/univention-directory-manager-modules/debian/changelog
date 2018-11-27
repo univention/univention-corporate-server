@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.25-21) unstable; urgency=medium
+
+  * Bug #43129: Add AttributeHook to enable extended attribute mappings
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Nov 2018 15:34:58 +0100
+
 univention-directory-manager-modules (13.0.25-20) unstable; urgency=medium
 
   * Bug #38092: Username 'admin' is now allowed

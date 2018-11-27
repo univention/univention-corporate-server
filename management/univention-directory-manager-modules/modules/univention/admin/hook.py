@@ -98,3 +98,37 @@ class simpleHook(object):
 
 	def hook_ldap_post_remove(self, obj):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_remove called')
+
+
+# ATTENTION: Only derive from this class when you are sure
+# every system in your domain has the update installed that
+# introduced this hook. (Nov 2018; UCS 4.3-2)
+# Otherwise you will get errors when you are distributing your new
+# hook via ucs_registerLDAPExtension --udm_hook
+class AttributeHook(simpleHook):
+	'''Convenience Hook that essentially implements a mapping
+	between UDM and LDAP for your extended attributes.
+	Derive from this class and implement map_attribute_value_to_udm
+	and map_attribute_value_to_ldap'''
+        attribute_name = []
+
+        def hook_open(self, obj):
+                value = obj.get(self.attribute_name)
+                obj[self.attribute_name] = self.map_attribute_value_to_udm(value)
+
+        def hook_ldap_modlist(self, obj, ml):
+                new_ml = []
+                for key, old_value, new_value in ml:
+                        if key == self.attribute_name:
+                                new_value = self.map_attribute_value_to_ldap(new_value)
+                        new_ml.append((key, old_value, new_value))
+                return new_ml
+
+        def map_attribute_value_to_ldap(self, value):
+                # return value as it shall be saved in ldap
+                return value
+
+        def map_attribute_value_to_udm(self, value):
+                # return value as it shall be used in udm objects
+                # needs to be syntax compliant
+                return value
