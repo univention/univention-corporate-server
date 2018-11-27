@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: samba
-fix: 4.7.8-1A~4.3.0.201811201204
+fix: 2:4.7.8-1A~4.3.0.201811201337
 desc: |
  This update addresses the following issue(s):
  * samba-tool ntacl sysvolcheck now shows the path of missing files.
