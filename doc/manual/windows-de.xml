@@ -1601,6 +1601,13 @@ immer in dieser Gruppe Mitglied.
 	  </itemizedlist>
 	</para>
 
+    <caution>
+      <para>
+        Die Installation der <emphasis>Active Directory Takeover</emphasis> Applikation
+        deaktiviert den <emphasis>AD member</emphasis>-Modus des Systems.
+      </para>
+    </caution>
+
 	<para>
 	  Für die Migration muss die Applikation <emphasis>Active Directory Takeover</emphasis> aus dem
 	  Univention App Center installiert werden. Sie muss auf dem System installiert werden, auf dem

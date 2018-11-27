@@ -1520,6 +1520,13 @@ The <systemitem class="username">root</systemitem> and <systemitem class="userna
 	  </itemizedlist>
 	</para>
 
+    <caution>
+      <para>
+        The installation of the <emphasis>Active Directory Takeover</emphasis> application deactivates
+        the <emphasis>AD member</emphasis> mode of the current system.
+      </para>
+    </caution>
+
 	<para>
 	  The <emphasis>Active Directory Takeover</emphasis> application must be installed from the
 	  Univention App Center for the migration. It must be installed on the system where the
