@@ -3,15 +3,10 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-ad-connector
-fix: 12.0.0-34A~4.3.0.201811221822
+fix: 12.0.0-35A~4.3.0.201811271232
 desc: |
  This update addresses the following issue(s):
- * The special cn=Subschema object caused AD-Connector rejects
- * Base64 encode non-printable attributes in univention-adsearch
- * Space separated attribute list as parameter in univention-adsearch
- * The Connector now updates the AD attribute userPrincipalName if the
-   UCS username is changed (disabled for all updated systems, unset
-   UCR variable connector/ad/mapping/sync/userPrincipalName and restart
-   the AD-Connctor to sync username to userPrincipalName on subsequent
-   object modifications)
-bug: [47396,48082,43189,48153]
+ * The synchronizarion of password hashes from AD to UCS has been fixed
+    on systems that have UCR connector/ldap/server set to a non-master server
+    with read-only OpenLDAP.
+bug: [44024]
