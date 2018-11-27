@@ -20,20 +20,6 @@ RETVAL=100
 test -n "$connector_ad_ldap_host" || exit 137
 ad_is_connector_running || exit 137
 
-function ad_reset_password ()
-{
-	local uid="$1"
-	local old="$2"
-	local new="$3"
-
-	HOST="$(ucr get connector/ad/ldap/host)"
-	REALM="$(samba-tool domain info "$HOST" | sed -n 's/Domain           : //p')"
-	WG="$(samba-tool domain info "$HOST" | sed -n 's/Netbios domain   : //p')"
-	/usr/bin/samba-tool user password --ipaddress="$HOST" \
-		-U "$uid"%"$old" --newpassword="$new" \
-		--realm="$REALM" -W "$WG"
-	return $?
-}
 
 SYNCMODE="$(ad_get_sync_mode)"
 HOST="$(ucr get connector/ad/ldap/host)"
@@ -60,7 +46,7 @@ udm_create "users/user" || fail_test 110
 udm_modify "users/user" "" "" "" "" \
 	--policy-reference="cn=$UDM_policies_pwhistory_name,cn=pwhistory,cn=users,cn=policies,$ldap_base" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
-ad_reset_password "$UDM_users_user_username" "univention" "123-abc-ABC-?" || fail_test 110
+ad_reset_password "$UDM_users_user_username" "123-abc-ABC-?" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%123-abc-ABC-?" ; fail_bool 0 100
 udm_verify_ldap_attribute "shadowLastChange" "$SHADOW_LASTCHANGE" "users/user" || fail_test 110
@@ -76,7 +62,7 @@ section "Test AD password reset without expiry policy"
 udm_modify "users/user" "" "" "" "" \
 	--policy-dereference="cn=$UDM_policies_pwhistory_name,cn=pwhistory,cn=users,cn=policies,$ldap_base" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
-ad_reset_password "$UDM_users_user_username" "123-abc-ABC-?" "Univention.99" || fail_test 110
+ad_reset_password "$UDM_users_user_username" "Univention.99" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%Univention.99" ; fail_bool 0 100
 udm_verify_ldap_attribute "shadowLastChange" "$SHADOW_LASTCHANGE" "users/user" || fail_test 110

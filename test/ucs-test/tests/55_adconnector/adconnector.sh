@@ -535,26 +535,13 @@ sys.exit (42)
 }
 
 function ad_reset_password () {
-	# SSL must be activated for this otherwise samba-tool can be used, see tests/55_adconnector/050sync_password_sync
-	local userdn="$1"
-	local new_password="$2"
-	local configbase="${3:-connector}"
-
-python2.7 -c "
-import sys
-sys.path.append('$TESTLIBPATH')
-import adconnector
-adconnection = adconnector.ADConnection ('$configbase')
-adconnection.resetpassword_in_ad('$userdn', '$new_password' )
-sys.exit (42)
-"
-	local retval="$?"
-	if [ "$retval" == 42 ]; then
-		return 0
-	else
-		scriptlet_error "changepassword_in_ad"
-		return 2
-	fi
+	local uid="$1"
+	local new="$2"
+	local host="$(ucr get connector/ad/ldap/host)"
+	local admin="$(ucr get connector/ad/ldap/binddn | sed 's/,.*//;s/cn=//i')"
+	local pass="$(cat $(ucr get connector/ad/ldap/bindpw))"
+	samba-tool user setpassword --filter "samAccountName=$uid" --newpassword="$new" --URL="ldap://$host" -U"$admin"%"$pass"
+	return $?
 }
 
 function ad_get_dn () {
