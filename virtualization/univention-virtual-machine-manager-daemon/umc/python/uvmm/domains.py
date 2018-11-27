@@ -48,6 +48,10 @@ from univention.uvmm.storage import POOLS_TYPE
 from urlparse import urlsplit, urldefrag
 
 from .tools import object2dict
+try:
+	from typing import Iterable, List, Set  # noqa
+except ImportError:
+	pass
 
 _ = Translation('univention-management-console-modules-uvmm').translate
 
@@ -438,7 +442,7 @@ class Domains(object):
 			self._create_disk(request.options['nodeURI'], disk, domain_info, profile)
 			for disk in domain['disks']
 		]
-		verify_device_files(domain_info)
+		assign_disks(domain_info.disks)
 
 		# network interface
 		domain_info.interfaces = []
@@ -561,86 +565,59 @@ class Domains(object):
 		)
 
 
-class Bus(object):
-
-	"""
-	Periphery bus like IDE-, SCSI-, VirtIO- und FDC-Bus.
-	"""
-
-	def __init__(self, name, prefix, default=False, unsupported=(Disk.DEVICE_FLOPPY,)):
-		self._next_letter = 'a'
-		self._connected = set()
-		self.name = name
-		self.prefix = prefix
-		self.default = default
-		self.unsupported = unsupported
-
-	def compatible(self, dev):
-		"""
-		Checks the compatibility of the given device with the bus
-		specification: the device type must be supported by the bus and
-		if the bus of the device is set it must match otherwise the bus
-		must be defined as default.
-		"""
-		return (
-			(dev.device not in self.unsupported) and
-			(dev.target_bus == self.name or (not dev.target_bus and self.default))
-		)
-
-	def attach(self, devices):
-		"""
-		Register each device in devices list at bus.
-		"""
-		for dev in devices:
-			if dev.target_dev and (dev.target_bus == self.name or (not dev.target_bus and self.default)):
-				letter = dev.target_dev[-1]
-				self._connected.add(letter)
-
-	def connect(self, dev):
-		"""
-		Connect new device at bus and assign new drive letter.
-		"""
-		if not self.compatible(dev) or dev.target_dev:
-			return False
-		self.next_letter()
-		dev.target_dev = self.prefix % self._next_letter
-		self._connected.add(self._next_letter)
-		self.next_letter()
-		return True
-
-	def next_letter(self):
-		"""
-		Find and return next un-used drive letter.
-		>>> b = Bus('', '')
-		>>> b._next_letter = 'a' ; b._connected.add('a') ; b.next_letter()
-		'b'
-		>>> b._next_letter = 'z' ; b._connected.add('z') ; b.next_letter()
-		'aa'
-		"""
-		while self._next_letter in self._connected:
-			self._next_letter = chr(ord(self._next_letter) + 1)
-		return self._next_letter
+RE_DISK = re.compile(r'^(?:ioemu:)?(fd|hd|sd|vd|xvd|ubd)([a-zA-Z0-9_]+)$')
+DISK_PREFIXES = {
+	'ide': 'hd',
+	'fdc': 'fd',
+	'scsi': 'sd',
+	'virtio': 'vd',
+	'xen': 'xvd',
+	'usb': 'sd',
+	'uml': 'ubd',
+	'sata': 'sd',
+	'sd': 'sd',
+}
 
 
-def verify_device_files(domain_info):
+def assign_disks(disks):  # type: (Iterable[Disk]) -> None
 	"""
 	Verify block devices are connected to allowed buses.
 	"""
-	busses = (
-		Bus('ide', 'hd%s', default=True),
-		Bus('virtio', 'vd%s'),
-		Bus(
-			'fdc',
-			'fd%s',
-			default=True,
-			unsupported=(Disk.DEVICE_DISK, Disk.DEVICE_CDROM)
-		),
-	)
+	# file:/usr/share/libvirt/schemas/domaincommon.rng
 
-	for bus in busses:
-		bus.attach(domain_info.disks)
+	used = set()  # type: Set[str]
+	new = []  # type: List[Disk]
 
-	for dev in domain_info.disks:
-		for bus in busses:
-			if bus.connect(dev):
+	# phase 1: walk disks to collect taken names
+	for num, disk in enumerate(disks):
+		if disk.target_bus:
+			bus = disk.target_bus
+		elif disk.device == Disk.DEVICE_FLOPPY:
+			bus = disk.target_bus = 'fdc'
+		elif disk.device in (Disk.DEVICE_DISK, Disk.DEVICE_CDROM):
+			bus = disk.target_bus = 'ide'
+		else:
+			MODULE.warn('Unknown disk "%s"' % (disk.device,))
+			continue
+
+		dev = disk.target_dev
+		if dev:
+			used.add(dev)
+		else:
+			new.append(disk)
+
+	# phase 2: assign names to new disks
+	for disk in new:
+		bus = disk.target_bus
+		prefix = DISK_PREFIXES[bus]
+		for index in range(num + 1):
+			a, b = divmod(index, 26)
+			dev = '%s%s%s' % (
+				prefix,
+				chr(ord('a') + a - 1) if a else '',
+				chr(ord('a') + b),
+			)
+			if dev not in used:
 				break
+		disk.target_dev = dev
+		used.add(dev)
