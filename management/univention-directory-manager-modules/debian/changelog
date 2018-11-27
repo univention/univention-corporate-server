@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.25-22) unstable; urgency=medium
+
+  * Bug #30387: Update syntax choices every time the modules are reloaded
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Nov 2018 16:39:10 +0100
+
 univention-directory-manager-modules (13.0.25-21) unstable; urgency=medium
 
   * Bug #43129: Add AttributeHook to enable extended attribute mappings

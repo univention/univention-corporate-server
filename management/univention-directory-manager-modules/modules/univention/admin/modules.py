@@ -94,6 +94,10 @@ def update():
 	modules = _modules
 	_superordinates = superordinates
 
+	# since last update(), syntax.d may have new choices
+	# put here as one syntax wants to provide all modules
+	univention.admin.syntax.update_choices()
+
 
 def get(module):
 	'''if module is instance of module, return that; if module is string, return the

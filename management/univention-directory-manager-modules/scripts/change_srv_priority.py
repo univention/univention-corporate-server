@@ -41,9 +41,6 @@ import univention.config_registry
 
 univention.admin.modules.update()
 
-# update choices-lists which are defined in LDAP
-univention.admin.syntax.update_choices()
-
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
