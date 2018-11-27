@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-join
+fix: 10.0.0-25A~4.3.0.201811271547
+desc: |
+ This update addresses the following issue(s):
+ * Only try to download the host certificate for 10 minutes
+   when joining a new system. Otherwise, mark the join as failed.
+bug: [30005]
