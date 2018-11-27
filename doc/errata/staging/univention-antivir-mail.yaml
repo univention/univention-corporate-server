@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-antivir-mail
+fix: 9.0.0-5A~4.3.0.201811271114
+desc: |
+ This update addresses the following issue(s):
+ * Remove clamav from amavis config if clamav-daemon is
+   disabled via UCR clamav/daemon/autostart=no
+bug: [39372]
