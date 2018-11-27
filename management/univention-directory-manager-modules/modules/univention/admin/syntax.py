@@ -958,10 +958,10 @@ class uid_umlauts(simple):
 	def parse(self, text):
 		if " " in text:
 			raise univention.admin.uexceptions.valueError(_("Spaces are not allowed in the username!"))
-		if self._re.match(text.decode("utf-8")) is not None and text != 'admin':
+		if self._re.match(text.decode("utf-8")) is not None:
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots, and may not be 'admin'!"))
+			raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots!"))
 
 
 class uid_umlauts_lower_except_first_letter(simple):
@@ -976,10 +976,10 @@ class uid_umlauts_lower_except_first_letter(simple):
 			if c.isupper():
 				raise univention.admin.uexceptions.valueError(_("Only the first letter of the username may be uppercase!"))
 
-		if self._re.match(unicode_text) is not None and unicode_text != 'admin':
+		if self._re.match(unicode_text) is not None:
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots, and may not be 'admin'!"))
+			raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots!"))
 
 
 class gid(simple):
