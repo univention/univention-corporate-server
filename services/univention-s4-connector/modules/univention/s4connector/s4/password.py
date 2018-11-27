@@ -585,11 +585,20 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		# Usecase: LDB module on ucs_3.0-0-ucsschool slaves creates XP computers/windows in UDM without password
 		if ucsNThash or sambaPwdLastSet:
 			pwd_set = True
-			if unicodePwd_attr:
-				modlist.append((ldap.MOD_DELETE, 'unicodePwd', unicodePwd_attr))
+			unicodePwd_new = None
 			if ucsNThash:
-				unicodePwd_new = binascii.a2b_hex(ucsNThash)
-				modlist.append((ldap.MOD_ADD, 'unicodePwd', unicodePwd_new))
+				try:
+					unicodePwd_new = binascii.a2b_hex(ucsNThash)
+				except TypeError as exc:
+					if ucsNThash.startswith("NO PASSWORD"):
+						pwd_set = False
+					else:
+						raise
+			if pwd_set:
+				if unicodePwd_attr:
+					modlist.append((ldap.MOD_DELETE, 'unicodePwd', unicodePwd_attr))
+				if unicodePwd_new:
+					modlist.append((ldap.MOD_ADD, 'unicodePwd', unicodePwd_new))
 
 	if not ucsLMhash == s4LMhash:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: LM Hash S4: %s LM Hash UCS: %s" % (s4LMhash, ucsLMhash))
