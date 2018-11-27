@@ -1522,8 +1522,10 @@ The <systemitem class="username">root</systemitem> and <systemitem class="userna
 
     <caution>
       <para>
-        The installation of the <emphasis>Active Directory Takeover</emphasis> application deactivates
-        the <emphasis>AD member</emphasis> mode of the current system.
+        If the system is already a member of an Active Directory Domain, installing the
+        <emphasis>Active Directory Takeover<emphasis> application removes this membership.
+        Therefore, the installation of the <emphasis>Takeover<emphasis> application has to
+        take place only shortly before the actual takeover of the AD domain.
       </para>
     </caution>
 

@@ -1603,8 +1603,10 @@ immer in dieser Gruppe Mitglied.
 
     <caution>
       <para>
-        Die Installation der <emphasis>Active Directory Takeover</emphasis> Applikation
-        deaktiviert den <emphasis>AD member</emphasis>-Modus des Systems.
+        Sofern das System bereits Mitglied in einer Active Directory Domäne ist (<xref linkend="ad-connector:ad-member-einrichtung"/>),
+        wird durch die Installation der <emphasis>Active Directory Takeover</emphasis> Appliaktion diese Mitgliedschaft entfernt.
+        Deshalb sollte die Installation der <emphasis>Takeover</emphasis> Appliaktion erst kurz vor der eigentlichen
+        Übernahme der Active Directory Domäne erfolgen.
       </para>
     </caution>
 
