@@ -164,7 +164,7 @@ class Instance(Base):
 		"""
 
 		self.lo, self.position = univention.admin.uldap.getMachineConnection(ldap_master=False)
-		objs = self.lo.search(base=self.position.getDomain(), filter='(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*$)))', attr=['uid'])
+		objs = self.lo.search(base=self.position.getDomain(), filter='(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*$))(uid=*))', attr=['uid'])
 		return [obj[1]["uid"][0] for obj in objs]
 
 	@simple_response
