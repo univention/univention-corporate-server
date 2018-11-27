@@ -797,6 +797,8 @@ class Simple_AD_Connection():
 			with NamedTemporaryFile('w') as tmp_file:
 				tmp_file.write(self.bindpw)
 				tmp_file.flush()
+				p1 = subprocess.Popen(['kdestroy',], close_fds=True)
+				p1.wait()
 				cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % tmp_file.name, princ]
 				p1 = subprocess.Popen(cmd_block, close_fds=True)
 				stdout, stderr = p1.communicate()
@@ -1005,11 +1007,13 @@ class ad(univention.connector.ucs):
 		self.dom_handle = self.samr.OpenDomain(handle, security.SEC_FLAG_MAXIMUM_ALLOWED, sid)
 
 	def get_kerberos_ticket(self):
+		p1 = subprocess.Popen(['kdestroy',], close_fds=True)
+		p1.wait()
 		cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.baseConfig['%s/ad/ldap/bindpw' % self.CONFIGBASENAME], self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]]
-		p1 = subprocess.Popen(cmd_block, close_fds=True)
+		p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()
 		if p1.returncode != 0:
-			raise kerberosAuthenticationFailed('The following command failed: "%s"' % string.join(cmd_block))
+			raise kerberosAuthenticationFailed('The following command failed: "%s" (%s): %s' % (string.join(cmd_block), p1.returncode, stdout))
 
 	def open_ad(self):
 		tls_mode = 2
