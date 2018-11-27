@@ -163,6 +163,10 @@ class DatabaseConnector(object):
 		except (EnvironmentError, TypeError):
 			return None
 
+	def db_exists(self):
+		database_logger.info("DB Exists default implementation called...")
+		return False
+
 	def db_user_exists(self):
 		return False
 
@@ -179,8 +183,10 @@ class DatabaseConnector(object):
 		exists = False
 		if password:
 			database_logger.debug('Password already exists')
-			if self.db_user_exists():
-				database_logger.debug('User already exists')
+			# if self.db_user_exists():
+			#	database_logger.debug('User already exists')
+			if self.db_exists():
+				database_logger.debug('Database already exists')
 				exists = True
 		if not exists:
 			database_logger.info('Creating database for %s' % self.app)
@@ -218,6 +224,16 @@ class PostgreSQL(DatabaseConnector):
 					database_logger.warn(msg)
 			raise DatabaseError('Returncode %s for query' % process.returncode)
 		return list(logger.stdout())
+
+	def db_exists(self):
+		database_logger.info('Checking if database %s exists (postgresql implementation)' % self.get_db_name())
+		stdout = self.execute('SELECT COUNT(*) FROM pg_database WHERE datname = \'%s\'' % self.get_db_name())
+		if stdout and stdout[0].strip() == '1':
+			database_logger.info('Database %s already exists' % self.get_db_name())
+			return True
+		else:
+			database_logger.info('Database %s does not exist' % self.get_db_name())
+			return False
 
 	def db_user_exists(self):
 		stdout = self.execute('SELECT COUNT(*) FROM pg_user WHERE usename = \'%s\'' % self.get_db_user())
@@ -277,6 +293,11 @@ class MySQL(DatabaseConnector):
 			raise DatabaseError(str(exc))
 		else:
 			return cursor
+
+	def db_exists(self):
+		database_logger.info('Checking if database %s exists (mysql implementation)' % self.get_db_name())
+		cursor = self.execute("SELECT schema_name FROM information_schema.schemata WHERE schema_name = '%s'" % self.escape(self.get_db_name()))
+		return cursor.fetchone()[0]
 
 	def db_user_exists(self):
 		cursor = self.execute("SELECT EXISTS (SELECT DISTINCT user FROM mysql.user WHERE user = '%s')" % self.escape(self.get_db_user()))
