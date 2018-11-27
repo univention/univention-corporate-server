@@ -1,3 +1,10 @@
+univention-join (10.0.0-25) unstable; urgency=medium
+
+  * Bug #30005: Stop trying to download host certificate during join
+    after 10 minutes have passed and mark join as failed
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 27 Nov 2018 15:31:26 +0100
+
 univention-join (10.0.0-24) unstable; urgency=medium
 
   * Bug #47338: Fix DHCP entry
