@@ -1,3 +1,11 @@
+univention-system-setup (11.0.5-28) unstable; urgency=medium
+
+  * Bug #42430: The traceback failedToSetAdministratorPassword is
+    currently thrown in different places. More tracebacks for different
+    errors have been added.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Nov 2018 17:26:06 +0100
+
 univention-system-setup (11.0.5-27) unstable; urgency=medium
 
   * Bug #47767: Run FlushOldAddresses pre() also in appliance mode
