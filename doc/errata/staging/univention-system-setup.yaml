@@ -2,12 +2,10 @@ product: ucs
 release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
-src: univention-lib
-fix: 7.0.0-14A~4.3.0.201811191459
+src: univention-system-setup
+fix: 
 desc: |
  This update addresses the following issue(s):
- * The UDM module "settings/data" was added. It can be used to store
-   arbitraty data in LDAP.
  * The error messages for the join into an Active Directory domain
    have been improved.
-bug: [47944,42430]
+bug: [42430]

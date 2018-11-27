@@ -11,4 +11,6 @@ desc: |
    with read-only OpenLDAP.
  * Fix keberos authentication error during AD-Connector restart in ad/member
    mode in case of changed system time.
-bug: [44024,48227]
+ * The error messages for the join into an Active Directory domain
+   have been improved.
+bug: [44024,48227,42430]
