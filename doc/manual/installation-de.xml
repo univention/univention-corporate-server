@@ -694,6 +694,20 @@
   </para>
 </section>
 
+<section id="installation:docker">
+  <title>Installation als Docker Image</title>
+  <para>
+	Univention stellt UCS als Docker Images im Docker Hub bereit
+	<ulink url="https://hub.docker.com/r/univention/"/>. In der Beschreibung der jeweiligen
+	Docker Images ist erklärt, wie diese in Betrieb genommen werden können.
+  </para>
+  <para>
+	Die Docker Images werden bei einer Standard Installation in einem Netzerk betrieben, welches
+	von außerhalb des Servers nicht direkt erreicht werden kann. Sofern mehrere Docker Images
+	eingesetzt werden und diese auf unterschiedlichen Docker Servern betrieben werden,
+	sollte entsprechend ein Software Defined Network oder eine VPN Lösung eingesetzt werden.
+  </para>
+</section>
 
 <section id="installation:xenserver">
   <title>Installation in Citrix XenServer</title>
