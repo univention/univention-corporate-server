@@ -702,7 +702,7 @@
 	Docker Images ist erklärt, wie diese in Betrieb genommen werden können.
   </para>
   <para>
-	Die Docker Images werden bei einer Standard Installation in einem Netzerk betrieben, welches
+	Die Docker Images werden bei einer Standard Installation in einem Netzwerk betrieben, welches
 	von außerhalb des Servers nicht direkt erreicht werden kann. Sofern mehrere Docker Images
 	eingesetzt werden und diese auf unterschiedlichen Docker Servern betrieben werden,
 	sollte entsprechend ein Software Defined Network oder eine VPN Lösung eingesetzt werden.
