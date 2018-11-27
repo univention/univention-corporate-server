@@ -3,8 +3,9 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-directory-manager-modules
-fix: 13.0.25-19A~4.3.0.201811201102
+fix: 13.0.25-20A~4.3.0.201811271106
 desc: |
  This update addresses the following issue(s):
  * The UDM module "settings/data" was added. It can be used to store arbitraty data in LDAP.
-bug: [47944]
+ * The username 'admin' is now allowed
+bug: [47944, 38092]
