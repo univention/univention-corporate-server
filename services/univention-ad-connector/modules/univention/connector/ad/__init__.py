@@ -915,6 +915,16 @@ class ad(univention.connector.ucs):
 
 			ud.debug(ud.LDAP, ud.PROCESS, 'Internal group membership cache was created')
 
+		if self.lo_ad.binddn:
+			try:
+				result = self.lo_ad.search(base=self.lo_ad.binddn, scope='base')
+				self.ad_ldap_bind_username = result[0][1]['sAMAccountName'][0]
+			except Exception, msg:
+				print "Failed to get SID from AD: %s" % msg
+				sys.exit(1)
+		else:
+			self.ad_ldap_bind_username = self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]
+
 		try:
 			result = self.lo_ad.search(filter='(objectclass=domain)',
 				base=ad_ldap_base, scope='base', attr=['objectSid'])
@@ -945,18 +955,13 @@ class ad(univention.connector.ucs):
 
 	def open_drs_connection(self):
 
-		if self.lo_ad.binddn:
-			bind_username = explode_unicode_dn(self.lo_ad.binddn, 1)[0]
-		else:
-			bind_username = self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]
-
 		lp = LoadParm()
 		net = Net(creds=None, lp=lp)
 
 		repl_creds = Credentials()
 		repl_creds.guess(lp)
 		repl_creds.set_kerberos_state(DONT_USE_KERBEROS)
-		repl_creds.set_username(bind_username)
+		repl_creds.set_username(self.ad_ldap_bind_username)
 		repl_creds.set_password(self.lo_ad.bindpw)
 
 		binding_options = "seal,print"
@@ -987,12 +992,7 @@ class ad(univention.connector.ucs):
 		creds.guess(lp)
 		creds.set_kerberos_state(DONT_USE_KERBEROS)
 
-		if self.lo_ad.binddn:
-			bind_username = explode_unicode_dn(self.lo_ad.binddn, 1)[0]
-		else:
-			bind_username = self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]
-
-		creds.set_username(bind_username)
+		creds.set_username(self.ad_ldap_bind_username)
 		creds.set_password(self.lo_ad.bindpw)
 
 		binding_options = "\pipe\samr"
