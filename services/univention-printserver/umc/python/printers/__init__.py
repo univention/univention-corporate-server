@@ -39,6 +39,8 @@ from univention.lib.i18n import Translation
 
 import univention.admin.uldap
 
+from univention.udm import UDM
+from univention.config_registry import ConfigRegistry
 from univention.management.console.base import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
@@ -163,9 +165,14 @@ class Instance(Base):
 			(3)	the ComboBox is able to handle a plain array.
 		"""
 
-		self.lo, self.position = univention.admin.uldap.getMachineConnection(ldap_master=False)
-		objs = self.lo.search(base=self.position.getDomain(), filter='(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*$))(uid=*))', attr=['uid'])
-		return [obj[1]["uid"][0] for obj in objs]
+		ucr = ConfigRegistry()
+		ucr.load()
+		identity = ucr.get('ldap/hostdn')
+		password = open('/etc/machine.secret').read().rstrip('\n')
+		server = ucr.get('ldap/server/name')
+		udm = UDM.credentials(identity, password, server=server).version(1)
+		users = udm.get('users/user').search()
+		return [user.props.username for user in users]
 
 	@simple_response
 	@log
