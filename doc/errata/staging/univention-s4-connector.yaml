@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-s4-connector
+fix: 12.0.2-39A~4.3.0.201811272029
+desc: |
+ This update addresses the following issue(s):
+ * When performing an AD-Takeover out of an ad/member setup, the S4-Connector
+   reported tracebacks due to missing NT password hashes in OpenLDAP.
+bug: [35540]
