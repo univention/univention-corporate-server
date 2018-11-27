@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.25-20) unstable; urgency=medium
+
+  * Bug #38092: Username 'admin' is now allowed
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 27 Nov 2018 11:01:09 +0100
+
 univention-directory-manager-modules (13.0.25-19) unstable; urgency=low
 
   * Bug #47944: update dependencies
