@@ -7,7 +7,8 @@ fix: 2:4.6.15-1A~4.2.0.201811201842
 desc: |
  This update addresses the following issue(s):
  * A Denial of Service vulnerability has been fixed
-   in the Samba/AD DC LDAP server
+   in the Samba/AD DC LDAP server (CVE-2018-16851)
 bug: [48185]
 cve:
 - CVE-2018-16851
+ignore: ['cve.',]
