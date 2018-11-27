@@ -8,4 +8,8 @@ desc: |
  This update addresses the following issue(s):
  * samba-tool ntacl sysvolcheck now shows the path of
    missing files
-bug: [47583]
+ * A Denial of Service vulnerability has been fixed
+   in the Samba/AD DC LDAP server
+bug: [47583, 48183]
+cve:
+- CVE-2018-16851
