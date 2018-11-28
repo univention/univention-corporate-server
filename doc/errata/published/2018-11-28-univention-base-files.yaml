@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Ensure that interfaces/primary is first entry in /etc/hosts.
 bug: [30397]
+erratum: 338
+announced: 2018-11-28
