@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.25-25) unstable; urgency=medium
+
+  * Bug #43129: Fix addlist
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 28 Nov 2018 17:25:49 +0100
+
 univention-directory-manager-modules (13.0.25-24) unstable; urgency=medium
 
   * Bug #43129: Replace tabs, assert correct values

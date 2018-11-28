@@ -111,18 +111,26 @@ class AttributeHook(simpleHook):
 	Derive from this class, set attribute_name to the name of
 	the (udm) attribute and implement map_attribute_value_to_udm
 	and map_attribute_value_to_ldap'''
-	attribute_name = None
+	udm_attribute_name = None
+	ldap_attribute_name = None
 
 	def hook_open(self, obj):
-		assert isinstance(self.attribute_name, basestring), "attribute_name has to be a str"
-		value = obj.get(self.attribute_name)
-		obj[self.attribute_name] = self.map_attribute_value_to_udm(value)
+		assert isinstance(self.udm_attribute_name, basestring), "udm_attribute_name has to be a str"
+		value = obj[self.udm_attribute_name]
+		obj[self.udm_attribute_name] = self.map_attribute_value_to_udm(value)
+
+	def hook_ldap_addlist(self, obj, al):
+		return self.hook_ldap_modlist(obj, al)
 
 	def hook_ldap_modlist(self, obj, ml):
-		assert isinstance(self.attribute_name, basestring), "attribute_name has to be a str"
+		assert isinstance(self.ldap_attribute_name, basestring), "ldap_attribute_name has to be a str"
 		new_ml = []
-		for key, old_value, new_value in ml:
-			if key == self.attribute_name:
+		for ml_value in ml:
+			if len(ml_value) == 2:
+				key, old_value, new_value = ml_value[0], [], ml_value[1]
+			else:
+				key, old_value, new_value = ml_value
+			if key == self.ldap_attribute_name:
 				new_value = self.map_attribute_value_to_ldap(new_value)
 			new_ml.append((key, old_value, new_value))
 		return new_ml
