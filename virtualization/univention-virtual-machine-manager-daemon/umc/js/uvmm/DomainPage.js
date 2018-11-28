@@ -248,7 +248,9 @@ define([
 				}, {
 					name: 'vnc_password',
 					type: PasswordBox,
-					label: _('VNC password')
+					label: _('VNC password'),
+					softMaxLength: 8,
+					softMaxLengthMessage: _('<b>Warning:</b> VNC only supports passwords up to %s characters. Please consider shortening the password.', 8)
 				}, {
 					name: 'kblayout',
 					type: ComboBox,
