@@ -8,8 +8,8 @@
 0010-2: scripts-dev/lv-pool-crash.py
 0010-2: scripts-dev/uvmm-memleak
 0010-2: scripts-dev/watch_vm
-0010-2: test/test_umc_domain.py
-0009-2: test/test_umc_domain.py
+0010-2: test/test_storage2.py
+0009-2: test/test_storage2.py
 0009-2: test/urlparser.py
 0009-2: scripts-dev/check-vms.py
 0009-2: scripts-dev/lv-pool-crash.py
