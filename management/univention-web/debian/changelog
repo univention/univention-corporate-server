@@ -1,3 +1,9 @@
+univention-web (2.0.0-29) unstable; urgency=medium
+
+  * Bug 45323: Fix wrapping of tree items
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 28 Nov 2018 13:22:59 +0100
+
 univention-web (2.0.0-28) unstable; urgency=medium
 
   * Bug #47997: Version bump

@@ -41,11 +41,11 @@
 		.dgrid-cell
 			border: none
 			padding: 0
+			word-break: break-all
 
 		.dgrid-row
 			color: rgba(0, 0, 0, 0.87)
-			height: 32px
-			line-height: @height
+			line-height: 32px
 			box-sizing: content-box
 			transition: background-color 0.2s
 
@@ -59,8 +59,8 @@
 				background: none
 
 			.dgrid-expando-icon
+				height: 32px
 				padding: ((@height - 20px)/2) // icon-image height and width is 20px
-				height: @height
 				width: @height
 				position: relative
 
