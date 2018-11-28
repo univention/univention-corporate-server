@@ -147,6 +147,8 @@ if start_tls > 0:
 
 
 def get_kerberos_ticket():
+	p1 = subprocess.Popen(['kdestroy',], close_fds=True)
+	p1.wait()
 	cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % configRegistry['%s/ad/ldap/bindpw' % CONFIGBASENAME], configRegistry['%s/ad/ldap/binddn' % CONFIGBASENAME]]
 	p1 = subprocess.Popen(cmd_block, close_fds=True)
 	stdout, stderr = p1.communicate()
