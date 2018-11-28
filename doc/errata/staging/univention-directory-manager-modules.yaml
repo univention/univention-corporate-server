@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-directory-manager-modules
-fix: 13.0.25-23A~4.3.0.201811281452
+fix: 13.0.25-24A~4.3.0.201811281557
 desc: |-
   This update addresses the following issue(s):
   * The UDM module "settings/data" was added. It can be used to store
@@ -12,5 +12,5 @@ desc: |-
   * Added a new hook base class: "AttributeHook". This can be used to
     implement a mapping between LDAP and UDM for extended attributes.
   * Keep the choices for the modules in extended attributes updated.
-  * Systemaccounts are not counted if they are 'unlimited' in the license.
+  * System accounts are not counted if they are 'unlimited' in the license.
 bug: [47944, 38092, 43129, 30387, 48145]
