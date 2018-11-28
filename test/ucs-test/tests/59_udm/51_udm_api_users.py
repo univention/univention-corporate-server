@@ -3,7 +3,7 @@
 ## desc: Test UDM API for users/user module
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
-## tags: [udm_api]
+## tags: [udm_api, skip_admember]
 ## packages: [python-univention-directory-manager]
 ## bugs: [47316]
 

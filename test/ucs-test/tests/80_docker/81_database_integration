@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test Database integration of Docker Apps
 ## tags: [docker]
+## bugs: [42690]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
