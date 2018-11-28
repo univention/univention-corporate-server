@@ -1,3 +1,9 @@
+univention-management-console-module-udm (8.0.5-27) unstable; urgency=medium
+
+  * Bug #48106: Moved TextBoxMaxLengthChecker to univention-web
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 28 Nov 2018 14:37:47 +0100
+
 univention-management-console-module-udm (8.0.5-26) unstable; urgency=medium
 
   * Bug #47880: Add requiredCommand sections to udm.xml
