@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Fix a traceback when querying for printer users.
 bug: [44434]
+erratum: 342
+announced: 2018-11-28
