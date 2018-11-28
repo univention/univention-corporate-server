@@ -1,3 +1,11 @@
+univention-radius (5.0.1-1) unstable; urgency=low
+
+  * Bug #42535: add new UCR template for proxy.conf but also include
+    proxy.conf.debian. The new UCR template creates a realm section for
+    the current NETBIOS domain.
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 28 Nov 2018 14:23:21 +0100
+
 univention-radius (5.0.0-9) unstable; urgency=low
 
   * Bug #48105: do not modify user's attribute description upon login/logout
