@@ -10,5 +10,6 @@ desc: |
  * A regression in the users/self module regarding saving
    unset properties with default values has been addressed.
  * The udm module flavors are requiring a minimal set of
-   allowed UMC commands now to be visible in the UMC
-bug: [36624, 48047, 47880]
+   allowed UMC commands now to be visible in the UMC.
+ * A widget has been moved to the common library.
+bug: [36624, 48047, 47880, 48106]
