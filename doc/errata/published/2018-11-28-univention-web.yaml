@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Update version of dojo framework to 1.12.4
 bug: [47998]
+erratum: 559
+announced: 2018-11-28
