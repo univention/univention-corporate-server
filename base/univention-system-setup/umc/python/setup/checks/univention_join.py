@@ -7,6 +7,7 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules import UMC_Error
 from univention.management.console.modules.setup.util import _temporary_password_file
 from univention.management.console.modules.setup.util import get_ucs_domain
+from univention.management.console.modules.setup.util import get_fqdn
 import univention.config_registry
 
 UCR = univention.config_registry.ConfigRegistry()
@@ -29,12 +30,12 @@ def set_role_and_check_if_join_will_work(role, master_fqdn, admin_username, admi
 			], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 			stdout, stderr = p1.communicate()
 			if p1.returncode != 0:
-				messages = [ line[11:] for line in stdout.split('\n')
-				   if line.startswith("* Message: ")]
+				messages = [line[11:] for line in stdout.split('\n')
+					if line.startswith("* Message: ")]
 				raise UMC_Error(_(
 					"univention-join -checkPrerequisites reported a problem. "
 					"Output of check:\n\n"
-				) + "\n".join(messages) )
+				) + "\n".join(messages))
 	finally:
 		if orig_role:
 			univention.config_registry.handler_set(['server/role=%s' % (orig_role,)])
@@ -44,11 +45,18 @@ def set_role_and_check_if_join_will_work(role, master_fqdn, admin_username, admi
 
 def receive_domaincontroller_master_information(dns, nameserver, address, username, password):
 	result = {}
+	check_reverse_lookup_master(dns, nameserver)
 	result['domain'] = check_credentials_nonmaster(dns, nameserver, address, username, password)
 	check_domain_has_activated_license(address, username, password)
 	check_domain_is_higher_or_equal_version(address, username, password)
 	result['install_memberof_overlay'] = check_memberof_overlay_is_installed(address, username, password)
 	return result
+
+
+def check_reverse_lookup_master(dns, nameserver):
+	if dns:
+		if not get_fqdn(nameserver):
+			raise UMC_Error(_('The IP address of the DNS server could not be resolved to a hostname.'))
 
 
 def check_credentials_nonmaster(dns, nameserver, address, username, password):
