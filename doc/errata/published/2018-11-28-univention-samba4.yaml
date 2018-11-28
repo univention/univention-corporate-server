@@ -9,3 +9,5 @@ desc: |
  * Always set 'map acl inherit = yes' for samba shares if
    NT ACLs and inherit ACLs are activated.
 bug: [47850]
+erratum: 343
+announced: 2018-11-28
