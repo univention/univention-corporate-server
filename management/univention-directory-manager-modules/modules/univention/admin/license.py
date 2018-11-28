@@ -381,6 +381,10 @@ class License(object):
 		return disable_add
 
 	def __countSysAccounts(self, lo):
+		if self.licenses[self.version][License.USERS] == 'unlimited':
+			self.sysAccountsFound = 0
+			return
+
 		userfilter = [univention.admin.filter.expression('uid', account) for account in self.sysAccountNames]
 		filter = univention.admin.filter.conjunction('&', [
 			univention.admin.filter.conjunction('|', userfilter),
