@@ -15,4 +15,6 @@ desc: |
    have been improved.
  * Fix AD to UCS password hash synchronization in cases where a custom
    Domain Admin account is configured for the AD connection.
-bug: [44024,48227,42430,47069]
+ * The synchronization of the proxyAddress attribute may fail if is empty.
+   This issue has been fixed.
+bug: [44024,48227,42430,47069,46751]

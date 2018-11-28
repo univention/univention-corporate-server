@@ -67,7 +67,8 @@ def equal(values1, values2):
 def to_proxyAddresses(s4connector, key, object):
 	_d = ud.function('proxyAddesses.ucs_to_ad_mapping')
 	new_con_values = []
-	mailPrimaryAddress = object['attributes'].get('mailPrimaryAddress', [None])[0]
+	ucs_values = object['attributes'].get('mailPrimaryAddress', [])
+	mailPrimaryAddress = ucs_values[0] if ucs_values else None
 	if mailPrimaryAddress:
 		new_con_value = 'SMTP:' + mailPrimaryAddress
 		new_con_values.append(new_con_value)
