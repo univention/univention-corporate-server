@@ -141,7 +141,7 @@ do
 	validate server userCertificate
 	validate server jpegPhoto
 
-	ldiff "$tmpdir/master.ldif" "$tmpdir/server.ldif" ||
+	ldiff --exclude sambaSID "$tmpdir/master.ldif" "$tmpdir/server.ldif" ||
 		fail_fast 1 "Difference between master and server"
 
 	if tail -n +$log_lines /var/log/univention/listener.log |

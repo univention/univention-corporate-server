@@ -1,3 +1,9 @@
+ucs-test (8.0.28-235) unstable; urgency=low
+
+  * Bug #45964: Fix tests/10_ldap/44replication_binary
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Nov 2018 12:53:16 +0100
+
 ucs-test (8.0.28-234) unstable; urgency=medium
 
   * Bug #42690: Add postgresql test
