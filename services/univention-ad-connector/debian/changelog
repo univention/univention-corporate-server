@@ -1,4 +1,10 @@
-univention-ad-connector (12.0.0-40) UNRELEASED; urgency=medium
+univention-ad-connector (12.0.0-41) unstable; urgency=medium
+
+  * Bug #48227: version bump
+
+ -- Arvid Requate <requate@univention.de>  Wed, 28 Nov 2018 15:09:23 +0100
+
+univention-ad-connector (12.0.0-40) unstable; urgency=medium
 
   * Bug #48227: ad/member mode: Fix keberos authentication error
     in case of time skew also in univention-adsearch
