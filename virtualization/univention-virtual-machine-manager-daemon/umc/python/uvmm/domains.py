@@ -48,10 +48,6 @@ from univention.uvmm.storage import POOLS_TYPE
 from urlparse import urlsplit, urldefrag
 
 from .tools import object2dict
-try:
-	from typing import Iterable, List, Set  # noqa
-except ImportError:
-	pass
 
 _ = Translation('univention-management-console-modules-uvmm').translate
 
@@ -442,7 +438,6 @@ class Domains(object):
 			self._create_disk(request.options['nodeURI'], disk, domain_info, profile)
 			for disk in domain['disks']
 		]
-		assign_disks(domain_info.disks)
 
 		# network interface
 		domain_info.interfaces = []
@@ -563,61 +558,3 @@ class Domains(object):
 			domain=domain_uuid,
 			volumes=volume_list
 		)
-
-
-RE_DISK = re.compile(r'^(?:ioemu:)?(fd|hd|sd|vd|xvd|ubd)([a-zA-Z0-9_]+)$')
-DISK_PREFIXES = {
-	'ide': 'hd',
-	'fdc': 'fd',
-	'scsi': 'sd',
-	'virtio': 'vd',
-	'xen': 'xvd',
-	'usb': 'sd',
-	'uml': 'ubd',
-	'sata': 'sd',
-	'sd': 'sd',
-}
-
-
-def assign_disks(disks):  # type: (Iterable[Disk]) -> None
-	"""
-	Verify block devices are connected to allowed buses.
-	"""
-	# file:/usr/share/libvirt/schemas/domaincommon.rng
-
-	used = set()  # type: Set[str]
-	new = []  # type: List[Disk]
-
-	# phase 1: walk disks to collect taken names
-	for num, disk in enumerate(disks):
-		if disk.target_bus:
-			bus = disk.target_bus
-		elif disk.device == Disk.DEVICE_FLOPPY:
-			bus = disk.target_bus = 'fdc'
-		elif disk.device in (Disk.DEVICE_DISK, Disk.DEVICE_CDROM):
-			bus = disk.target_bus = 'ide'
-		else:
-			MODULE.warn('Unknown disk "%s"' % (disk.device,))
-			continue
-
-		dev = disk.target_dev
-		if dev:
-			used.add(dev)
-		else:
-			new.append(disk)
-
-	# phase 2: assign names to new disks
-	for disk in new:
-		bus = disk.target_bus
-		prefix = DISK_PREFIXES[bus]
-		for index in range(num + 1):
-			a, b = divmod(index, 26)
-			dev = '%s%s%s' % (
-				prefix,
-				chr(ord('a') + a - 1) if a else '',
-				chr(ord('a') + b),
-			)
-			if dev not in used:
-				break
-		disk.target_dev = dev
-		used.add(dev)

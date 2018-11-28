@@ -36,6 +36,7 @@ independent from the on-wire-format.
 """
 
 from __future__ import absolute_import
+import re
 import libvirt
 import logging
 from .helpers import TranslatableException, N_ as _, TimeoutError, timeout
@@ -43,8 +44,13 @@ from .protocol import Disk, Data_Pool
 import os.path
 import univention.config_registry as ucr
 import time
+from collections import defaultdict
 from xml.sax.saxutils import escape as xml_escape
 from lxml import etree as ET
+try:
+	from typing import Dict, Iterable, List, Set  # noqa
+except ImportError:
+	pass
 
 POOLS_RW = set(('dir', 'disk', 'fs', 'netfs', 'logical'))
 POOLS_TYPE = {
@@ -57,6 +63,26 @@ POOLS_TYPE = {
 	'netfs': Disk.TYPE_FILE,
 	'scsi': Disk.TYPE_BLOCK,
 }
+RE_DISK = re.compile(r'^(?:ioemu:)?(fd|hd|sd|vd|xvd|ubd)([a-zA-Z0-9_]+)$')
+DISK_PREFIXES = {
+	'ide': 'hd',
+	'fdc': 'fd',
+	'scsi': 'sd',
+	'virtio': 'vd',
+	'xen': 'xvd',
+	'usb': 'sd',
+	'uml': 'ubd',
+	'sata': 'sd',
+	'sd': 'sd',
+}
+# libvirt/conf/domain_conf.c:6698 virDomainDiskDefAssignAddress()
+DISK_ADDR = {  # controller, bus, target, unit
+	'fdc': (2, 0, 0, 1),
+	'sata': (6, 0, 0, 1),
+	'ide': (4, 2, 0, 1),
+	'scsi': (7, 0, 0, 1),
+}
+
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
@@ -460,3 +486,61 @@ def storage_volume_usedby(nodes, volume_path, ignore_cdrom=True):
 				if device.source == volume_path:
 					used_by.append((uri, domain.pd.uuid))
 	return used_by
+
+
+def assign_disks(disks):  # type: (Iterable[Disk]) -> None
+	"""
+	Verify block devices are connected to allowed buses.
+	"""
+	# file:/usr/share/libvirt/schemas/domaincommon.rng
+
+	used_name = set()  # type: Set[str]
+	used_addr = defaultdict(set)  # type: Dict[str, Set[int]]
+	new = []  # type: List[Disk]
+
+	# phase 1: walk disks to collect taken names
+	for num, disk in enumerate(disks):
+		logger.debug('Disk %d: %s', num, disk)
+		if disk.target_bus:
+			bus = disk.target_bus
+		elif disk.device == Disk.DEVICE_FLOPPY:
+			bus = disk.target_bus = 'fdc'
+		elif disk.device in (Disk.DEVICE_DISK, Disk.DEVICE_CDROM):
+			bus = disk.target_bus = 'ide'
+		else:
+			logger.warn('Unknown disk "%s"', disk.device)
+			continue
+
+		# conf/domain_conf.c
+		if disk.address:
+			addr = DISK_ADDR[bus]
+			index = sum(a * b for a, b in zip(addr, disk.address))
+			used_addr[bus].add(index)
+			logger.debug('#%d@%s used by Disk %d: %s', index, bus, num, disk)
+
+		dev = disk.target_dev
+		if dev:
+			used_name.add(dev)
+		else:
+			new.append(disk)
+
+	# phase 2: assign names to new disks
+	for disk in new:
+		bus = disk.target_bus
+		prefix = DISK_PREFIXES[bus]
+		for index in range(2 * num + 1):
+			if index in used_addr[bus]:
+				continue
+			a, b = divmod(index, 26)
+			dev = '%s%s%s' % (
+				prefix,
+				chr(ord('a') + a - 1) if a else '',
+				chr(ord('a') + b),
+			)
+			if dev in used_name:
+				continue
+			logger.info('Assigned #%d@%s to Disk %s', index, bus, disk)
+			break
+		disk.target_dev = dev
+		used_name.add(dev)
+		used_addr[bus].add(index)

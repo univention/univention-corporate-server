@@ -43,7 +43,7 @@ from .helpers import TranslatableException, ms, tuple2version, N_ as _, uri_enco
 from .uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify
 import univention.admin.uexceptions
 import threading
-from .storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_domain_storage_volumes, StorageError
+from .storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_domain_storage_volumes, StorageError, assign_disks
 from .protocol import Data_Domain, Data_Node, Data_Snapshot, Disk, Interface, Graphic
 from .network import network_start, network_find_by_bridge, NetworkError
 import copy
@@ -528,6 +528,14 @@ class Domain(PersistentCached):
 				dev.target_bus = target.attrib.get('bus')  # optional
 			if disk.find('readonly', namespaces=XMLNS) is not None:
 				dev.readonly = True
+			address = disk.find('address', namespaces=XMLNS)
+			if address is not None and address.attrib['type'] == 'drive':
+				dev.address = (
+					int(address.attrib['controller']),
+					int(address.attrib['bus']),
+					int(address.attrib['target']),
+					int(address.attrib['unit']),
+				)
 
 			self.pd.disks.append(dev)
 
@@ -1282,6 +1290,7 @@ def _domain_edit(node, dom_stat, xml):
 		key = (bus, dev)
 		disks[key] = domain_devices_disk
 		domain_devices.remove(domain_devices_disk)
+	assign_disks(dom_stat.disks)
 	for disk in dom_stat.disks:
 		logger.debug('DISK: %s' % disk)
 		changes = set()

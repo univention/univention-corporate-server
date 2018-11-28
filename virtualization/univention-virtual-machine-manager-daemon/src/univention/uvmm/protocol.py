@@ -820,16 +820,18 @@ class Disk(object):
 		self.readonly = False  # disk/readonly
 		self.target_dev = ''  # disk/target/@dev
 		self.target_bus = None  # disk/target/@bus
+		self.address = None  # type: Optional[Tuple[int, int, int, int]] # (controller bus target unit)
 		self.size = None  # not defined
 		self.pool = None
 
 	def __str__(self):
-		return 'Disk(device=%s, type=%s, driver=%s, source=%s, target=%s, size=%s, pool=%s)' % (
+		return 'Disk(device=%s, type=%s, driver=%s, source=%s, target=%s@%s, addr=%r, size=%s, pool=%s)' % (
 			self.device,
 			self.type,
 			self.driver,
 			self.source,
-			self.target_dev,
+			self.target_dev, self.target_bus,
+			self.address,
 			self.size,
 			self.pool,
 		)
