@@ -128,7 +128,7 @@ define([
 			});
 
 			var _getMigrationTargetHosts = lang.hitch(this, function() {
-				var curr_hosts = []
+				var curr_hosts = [];
 				var deferred = tools.umcpCommand('uvmm/targethost/query', { domainURI: this.domain.domainURI });
 				deferred.then(lang.hitch(this, function(current_targethosts) {
 					array.forEach(current_targethosts.result, function(result) {
