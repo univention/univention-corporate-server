@@ -1142,8 +1142,16 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 					Falls das Gast-Betriebssystem sich entschieden hat, eine neuere Funktion zu nutzen, und diese nach der Migration nicht mehr zur Verfügung steht, wird die virtuelle Maschine abstürzen.
 				</para>
 				<para>
-					Um die Migration zwischen inkompatiblen CPUs zu verhindern kann UVMM libvirt beauftragen, das CPU-Modell des Servers zu beachten.
-					Dies kann über die &ucsUCRV; <envar>uvmm/vm/cpu/host-model</envar> konfiguriert werden.
+					Standardmäßig ist kein bestimmtes CPU-Modell explizit konfiguriert:
+					Der virtuellen Machine werden vielmehr direkt die CPU-Funktionen des jeweiligen Virtualisierungsserver durchgereicht.
+					Der Vorteil ist, dass die Performance höher ist, der Nachteil ist, dass es dadurch zu Abstürzen bei der Live-Migration kommen kann.
+					Um die Migration zwischen inkompatiblen CPUs zu verhindern kann UVMM das CPU-Modell der Server beachten.
+					Diese Funktionalität muss pro virtueller Maschine konfiguriert werden und wird erst nach einem Neustart der virtuellen Machine wirksam.
+					Ein Reboot des laufenden Gastbetriebssystems reicht nicht;
+					die virtuelle Maschine muss ggf. aus und erneut gestartet werden.
+				</para>
+				<para>
+					Über die &ucsUCRV; <envar>uvmm/vm/cpu/host-model</envar> kann das Anpassen der virtuellen Maschinen automatisiert werden.
 					Die folgenden Werte sind erlaubt:
 				</para>
 				<variablelist>
@@ -1151,7 +1159,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 						<term><literal>missing</literal></term>
 						<listitem>
 							<simpara>
-								UVMM wird die notwendigen Eintragungen in der Beschreibung der virtuellen Maschine vornehmen, nur wenn keine solche existiert.
+								UVMM aktiviert die Überprüfung für alle virtuellen Maschinen, für die nicht bereits das CPU-Model explizit konfiguriert ist.
 							</simpara>
 						</listitem>
 					</varlistentry>
@@ -1159,8 +1167,8 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 						<term><literal>always</literal></term>
 						<listitem>
 							<simpara>
-								UVMM wird die notwendigen Eintragungen in der Beschreibung der virtuellen Maschine immer vornehmen.
-								Die Überschreibt jede andere vorhandene Konfiguration.
+								UVMM aktiviert die Überprüfung für alle virtuellen Maschinen, unabhängig davon, ob bereits ein CPU-Model explizit konfiguriert ist oder nicht.
+								Die Überschreibt jede andere vorhandene Konfiguration eines CPU-Models.
 							</simpara>
 						</listitem>
 					</varlistentry>
@@ -1168,7 +1176,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 						<term><literal>remove</literal></term>
 						<listitem>
 							<simpara>
-								UVMM wird die Eintragungen in der Beschreibung der virtuellen Maschine immer entfernen.
+								UVMM entfernt jede Konfiguration eines CPU-Models.
 							</simpara>
 						</listitem>
 					</varlistentry>
@@ -1176,7 +1184,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 						<term>- nicht gesetzt -</term>
 						<listitem>
 							<simpara>
-								UVMM wird die Eintragungen in der Beschreibung der virtuellen Maschine nicht anpassen.
+								UVMM konfiguriert kein virtuelle Maschinen um.
 								Dies ist der Standard.
 							</simpara>
 						</listitem>
@@ -1184,7 +1192,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 				</variablelist>
 				<caution>
 					<para>
-						Falls mehrere UVMM Dienste benutzt werden, sollte <emphasis>nur einer</emphasis> konfiguriert werden oder <emphasis>alle</emphasis> müssen das identische Verhalten haben.
+						Falls mehrere UVMM Dienste benutzt werden, so sollte die &ucsUCRV; <envar>uvmm/vm/cpu/host-model</envar> auf allen UCS-Systemen identisch gesetzt werden.
 					</para>
 				</caution>
 			</section>

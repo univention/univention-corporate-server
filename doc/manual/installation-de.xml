@@ -705,7 +705,7 @@
 	Die Docker Images werden bei einer Standardinstallation in einem Netzwerk betrieben, welches
 	von außerhalb des Servers nicht direkt erreicht werden kann. Sofern mehrere Docker Images
 	eingesetzt werden und diese auf unterschiedlichen Docker Servern betrieben werden,
-	sollte entsprechend ein Software Defined Network oder eine VPN Lösung eingesetzt werden.
+	sollte entsprechend ein <foreignphrase>Software Defined Network</foreignphrase> oder eine VPN Lösung eingesetzt werden.
   </para>
 </section>
 
