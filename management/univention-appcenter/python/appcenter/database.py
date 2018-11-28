@@ -183,10 +183,8 @@ class DatabaseConnector(object):
 		exists = False
 		if password:
 			database_logger.debug('Password already exists')
-			# if self.db_user_exists():
-			#	database_logger.debug('User already exists')
-			if self.db_exists():
-				database_logger.debug('Database already exists')
+			if self.db_user_exists() and self.db_exists():
+				database_logger.debug('Database and User already exist')
 				exists = True
 		if not exists:
 			database_logger.info('Creating database for %s' % self.app)
@@ -296,7 +294,7 @@ class MySQL(DatabaseConnector):
 
 	def db_exists(self):
 		database_logger.info('Checking if database %s exists (mysql implementation)' % self.get_db_name())
-		cursor = self.execute("SELECT schema_name FROM information_schema.schemata WHERE schema_name = '%s'" % self.escape(self.get_db_name()))
+		cursor = self.execute("SELECT EXISTS (SELECT schema_name FROM information_schema.schemata WHERE schema_name = '%s')" % self.escape(self.get_db_name()))
 		return cursor.fetchone()[0]
 
 	def db_user_exists(self):
