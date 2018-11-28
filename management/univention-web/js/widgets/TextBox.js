@@ -35,9 +35,10 @@ define([
 	"dojo/on",
 	"dojo/when",
 	"dijit/form/ValidationTextBox",
+	"umc/widgets/TextBoxMaxLengthChecker",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/tools"
-], function(declare, lang, put, on, when, ValidationTextBox, _FormWidgetMixin, tools) {
+], function(declare, lang, put, on, when, ValidationTextBox, TextBoxMaxLengthChecker, _FormWidgetMixin, tools) {
 	return declare("umc.widgets.TextBox", [ ValidationTextBox, _FormWidgetMixin ], {
 		// dynamicValue: String|Function
 		//		Either an UMCP command to query a value from or a javascript function.
@@ -55,6 +56,20 @@ define([
 		//		etc., it can be necessary to specify a module specific umcpCommand
 		//		method.
 		umcpCommand: lang.hitch(tools, 'umcpCommand'),
+
+		// softMaxLength: {?Number}
+		//		The maximum length of characters that should be 
+		//		The maximum number of characters that should be adhered to.
+		//		This maximum is not forced as it is with the 'maxLength' property
+		//		(inherited from dijit/form/_TextBoxMixin.js).
+		//		Instead, a tooltip with the 'softMaxLengthMessage' is displayed.
+		softMaxLength: null,
+
+		// softMaxLengthMessage: {String} [softMaxLengthMessage='']
+		//		The message that is shown as tooltip when 'softMaxLength' is specified
+		//		and overstepped.
+		//		(softMaxLengthMessage can be an HTML string)
+		softMaxLengthMessage: '',
 
 		// inlineLabel: String
 		//		If specified, the given string ias positioned as label above the input field.
@@ -98,6 +113,13 @@ define([
 				this._createInlineLabelNode(this.inlineLabel);
 				this._registerInlineLabelEvents();
 				this._updateInlineLabelVisibility();
+			}
+			if (this.softMaxLength) {
+				new TextBoxMaxLengthChecker({
+					maxLength: this.softMaxLength,
+					warningMessage: this.softMaxLengthMessage,
+					textBoxWidget: this
+				});
 			}
 		},
 
