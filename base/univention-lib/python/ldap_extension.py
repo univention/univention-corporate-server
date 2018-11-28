@@ -482,9 +482,10 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 				ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 
 				# validate
-				p = subprocess.Popen(['/usr/sbin/slapschema', ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+				# Slapschema doesn't fail on schema errors, errors are printed to stdout (Bug #45571)
+				p = subprocess.Popen(['/usr/sbin/slapschema', ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
 				stdout, stderr = p.communicate()
-				if p.returncode != 0:
+				if p.returncode != 0 or stdout:
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: validation failed:\n%s.' % (name, stdout))
 					# Revert changes
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: Removing new file %s.' % (name, new_filename))
@@ -533,9 +534,10 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 					ucr_handlers.update()
 					ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 
-					p = subprocess.Popen(['/usr/sbin/slapschema', ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+					# Slapschema doesn't fail on schema errors, errors are printed to stdout (Bug #45571)
+					p = subprocess.Popen(['/usr/sbin/slapschema', ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
 					stdout, stderr = p.communicate()
-					if p.returncode != 0:
+					if p.returncode != 0 or stdout:
 						ud.debug(ud.LISTENER, ud.WARN, '%s: validation fails without %s:\n%s.' % (name, old_filename, stdout))
 						ud.debug(ud.LISTENER, ud.WARN, '%s: Restoring %s.' % (name, old_filename))
 						# Revert changes
