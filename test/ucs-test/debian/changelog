@@ -1,3 +1,9 @@
+ucs-test (8.0.28-234) unstable; urgency=medium
+
+  * Bug #42690: Add postgresql test
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 28 Nov 2018 12:31:09 +0100
+
 ucs-test (8.0.28-233) unstable; urgency=medium
 
   * Bug #42690: Skip new test until bug is resolved
