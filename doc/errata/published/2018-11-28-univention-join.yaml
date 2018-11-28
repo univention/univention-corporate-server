@@ -9,3 +9,5 @@ desc: |
  * Only try to download the host certificate for 10 minutes
    when joining a new system. Otherwise, mark the join as failed.
 bug: [30005]
+erratum: 340
+announced: 2018-11-28
