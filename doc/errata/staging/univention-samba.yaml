@@ -6,6 +6,6 @@ src: univention-samba
 fix: 12.0.1-9A~4.3.0.201811261350
 desc: |
  This update addresses the following issue(s):
- * Always set set 'map acl inherit = yes' for samba shares if
-   NT ACL's and inherit ALC's are activated.
+ * Always set 'map acl inherit = yes' for samba shares if
+   NT ACLs and inherit ACLs are activated.
 bug: [47850]
