@@ -14,24 +14,23 @@ from univention.uvmm.storage import assign_disks, DISK_PREFIXES  # noqa E402
 
 
 class D(Disk):
-	def __init__(self, bus, dev, device='disk', address=None):
+	def __init__(self, bus, dev, device='disk'):
 		super(D, self).__init__()
 		self.target_bus = bus
 		self.target_dev = dev
 		self.device = device
-		self.address = address
 
 
 def test_none():
 	disks = ()
-	assign_disks(disks)
+	assign_disks(disks, {})
 	assert disks == ()
 
 
 @pytest.mark.parametrize('bus,dev', DISK_PREFIXES.iteritems())
 def test_ide_old(bus, dev):
 	disks = disk, = (D(bus, dev),)
-	assign_disks(disks)
+	assign_disks(disks, {})
 	assert disk.target_bus == bus
 	assert disk.target_dev == dev
 
@@ -44,7 +43,7 @@ def test_ide_old(bus, dev):
 ])
 def test_default_floppy(device, bus, dev):
 	disks = disk, = (D(None, None, device),)
-	assign_disks(disks)
+	assign_disks(disks, {})
 	assert disk.target_bus == bus
 	assert disk.target_dev == dev
 
@@ -58,7 +57,7 @@ def test_two():
 		D('virtio', 'hda'),
 		D(None, None, 'disk'),
 	)
-	assign_disks(disks)
+	assign_disks(disks, {})
 	assert disk1.target_bus == 'virtio'
 	assert disk1.target_dev == 'hda'
 	assert disk2.target_bus == 'ide'
@@ -68,7 +67,7 @@ def test_two():
 def test_many():
 	"""a .. z, aa .. az, ba .. zz, aaa ..."""
 	disks = [D('ide', None) for i in range(27)]
-	assign_disks(disks)
+	assign_disks(disks, {})
 	assert disks[0].target_dev == 'hda'
 	assert disks[-2].target_dev == 'hdz'
 	assert disks[-1].target_dev == 'hdaa'
@@ -76,10 +75,10 @@ def test_many():
 
 def test_addr():
 	disks = disk1, disk2 = (
-		D('ide', 'hdb', address=(0, 0, 0, 0)),
+		D('ide', 'hdb'),
 		D('ide', None),
 	)
-	assign_disks(disks)
+	assign_disks(disks, {'ide': set((0,))})
 	assert disk1.target_dev == 'hdb'
 	assert disk2.target_dev == 'hdc'
 

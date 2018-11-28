@@ -44,11 +44,10 @@ from .protocol import Disk, Data_Pool
 import os.path
 import univention.config_registry as ucr
 import time
-from collections import defaultdict
 from xml.sax.saxutils import escape as xml_escape
-from lxml import etree as ET
+from .xml import XMLNS, ET
 try:
-	from typing import Dict, Iterable, List, Set  # noqa
+	from typing import Dict, Iterable, List, Optional, Set, Tuple  # noqa
 except ImportError:
 	pass
 
@@ -488,14 +487,38 @@ def storage_volume_usedby(nodes, volume_path, ignore_cdrom=True):
 	return used_by
 
 
-def assign_disks(disks):  # type: (Iterable[Disk]) -> None
+def calc_index(disk):  # type: (ET) -> Tuple[str, str, Optional[int]]
+	"""
+	Calculate device number
+
+	:param disk: The xml element of the disk.
+	:returns: The index number
+	"""
+	target = disk.find('target', namespaces=XMLNS)
+	bus = target.attrib['bus']
+	dev = target.attrib['dev']
+
+	address = disk.find('address', namespaces=XMLNS)
+	if address is not None and address.attrib['type'] == 'drive':
+		addr = tuple(int(address.attrib[key]) for key in ['controller', 'bus', 'target', 'unit'])
+		addr_multiplier = DISK_ADDR[bus]
+		index = sum(a * b for a, b in zip(addr, addr_multiplier))  # type: Optional[int]
+	else:
+		index = None
+
+	return bus, dev, index
+
+
+def assign_disks(disks, used_addr):  # type: (Iterable[Disk], Dict[str, Set[int]]) -> None
 	"""
 	Verify block devices are connected to allowed buses.
+
+	:param disks: the list of Disks.
+	:param old_disks: A dictionary mapping the 2-tuple (bus, dev) to the XML elements of the old disks.
 	"""
 	# file:/usr/share/libvirt/schemas/domaincommon.rng
 
 	used_name = set()  # type: Set[str]
-	used_addr = defaultdict(set)  # type: Dict[str, Set[int]]
 	new = []  # type: List[Disk]
 
 	# phase 1: walk disks to collect taken names
@@ -511,13 +534,6 @@ def assign_disks(disks):  # type: (Iterable[Disk]) -> None
 			logger.warn('Unknown disk "%s"', disk.device)
 			continue
 
-		# conf/domain_conf.c
-		if disk.address:
-			addr = DISK_ADDR[bus]
-			index = sum(a * b for a, b in zip(addr, disk.address))
-			used_addr[bus].add(index)
-			logger.debug('#%d@%s used by Disk %d: %s', index, bus, num, disk)
-
 		dev = disk.target_dev
 		if dev:
 			used_name.add(dev)
@@ -529,7 +545,7 @@ def assign_disks(disks):  # type: (Iterable[Disk]) -> None
 		bus = disk.target_bus
 		prefix = DISK_PREFIXES[bus]
 		for index in range(2 * num + 1):
-			if index in used_addr[bus]:
+			if index in used_addr.setdefault(bus, set()):
 				continue
 			a, b = divmod(index, 26)
 			dev = '%s%s%s' % (
@@ -543,4 +559,4 @@ def assign_disks(disks):  # type: (Iterable[Disk]) -> None
 			break
 		disk.target_dev = dev
 		used_name.add(dev)
-		used_addr[bus].add(index)
+		used_addr.setdefault(bus, set()).add(index)

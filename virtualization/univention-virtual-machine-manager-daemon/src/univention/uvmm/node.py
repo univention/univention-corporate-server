@@ -43,9 +43,10 @@ from .helpers import TranslatableException, ms, tuple2version, N_ as _, uri_enco
 from .uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify
 import univention.admin.uexceptions
 import threading
-from .storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_domain_storage_volumes, StorageError, assign_disks
+from .storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_domain_storage_volumes, StorageError, assign_disks, calc_index
 from .protocol import Data_Domain, Data_Node, Data_Snapshot, Disk, Interface, Graphic
 from .network import network_start, network_find_by_bridge, NetworkError
+from .xml import XMLNS, ET
 import copy
 import os
 import stat
@@ -55,7 +56,6 @@ import re
 import random
 from xml.sax.saxutils import escape as xml_escape
 import tempfile
-from lxml import etree as ET
 import cPickle as pickle
 
 import univention.config_registry as ucr
@@ -84,12 +84,6 @@ DOM_EVENT_STRINGS = (
 	("Crashed", ("Panicked",)),
 )
 CONNECTION_EVENT_STRINGS = ("Error", "End-of-file", "Keepalive", "Client")
-
-XMLNS = {
-	'uvmm': 'https://univention.de/uvmm/1.0',
-}
-for prefix, uri in XMLNS.iteritems():
-	ET.register_namespace(prefix, uri)
 
 
 class NodeError(TranslatableException):
@@ -529,14 +523,6 @@ class Domain(PersistentCached):
 				dev.target_bus = target.attrib.get('bus')  # optional
 			if disk.find('readonly', namespaces=XMLNS) is not None:
 				dev.readonly = True
-			address = disk.find('address', namespaces=XMLNS)
-			if address is not None and address.attrib['type'] == 'drive':
-				dev.address = (
-					int(address.attrib['controller']),
-					int(address.attrib['bus']),
-					int(address.attrib['target']),
-					int(address.attrib['unit']),
-				)
 
 			self.pd.disks.append(dev)
 
@@ -1328,14 +1314,16 @@ def _domain_edit(node, dom_stat, xml):
 	# /domain/devices/disk[]
 	domain_devices_disks = domain_devices.findall('disk', namespaces=XMLNS)
 	disks = {}
+	used_addr = {}  # type: Dict[str, Set[int]]
 	for domain_devices_disk in domain_devices_disks:
-		domain_devices_disk_target = domain_devices_disk.find('target', namespaces=XMLNS)
-		bus = domain_devices_disk_target.attrib['bus']
-		dev = domain_devices_disk_target.attrib['dev']
+		bus, dev, index = calc_index(domain_devices_disk)
 		key = (bus, dev)
 		disks[key] = domain_devices_disk
 		domain_devices.remove(domain_devices_disk)
-	assign_disks(dom_stat.disks)
+		if index is not None:
+			used_addr.setdefault(bus, set()).add(index)
+
+	assign_disks(dom_stat.disks, used_addr)
 	for disk in dom_stat.disks:
 		logger.debug('DISK: %s' % disk)
 		changes = set()
