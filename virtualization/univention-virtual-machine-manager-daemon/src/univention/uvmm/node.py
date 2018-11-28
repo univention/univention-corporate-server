@@ -794,6 +794,7 @@ class Node(PersistentCached):
 		self.domainCB = [
 			self.conn.domainEventRegisterAny(None, libvirt.VIR_DOMAIN_EVENT_ID_LIFECYCLE, self.livecycle_event, None),
 			self.conn.domainEventRegisterAny(None, libvirt.VIR_DOMAIN_EVENT_ID_REBOOT, self.reboot_event, None),
+			self.conn.domainEventRegisterAny(None, libvirt.VIR_DOMAIN_EVENT_ID_IO_ERROR_REASON, self.error_event, None),
 		]
 
 	def livecycle_event(self, conn, dom, event, detail, opaque):
@@ -821,6 +822,8 @@ class Node(PersistentCached):
 				domStat.update(dom, redefined=event == libvirt.VIR_DOMAIN_EVENT_DEFINED)
 			if event in (libvirt.VIR_DOMAIN_EVENT_STARTED, libvirt.VIR_DOMAIN_EVENT_RESUMED):
 				self.write_novnc_tokens()
+			if event != libvirt.VIR_DOMAIN_EVENT_SUSPENDED and detail != libvirt.VIR_DOMAIN_EVENT_SUSPENDED_IOERROR:
+				domStat.pd.error = {}
 		except KeyError:
 			# during migration events are not ordered causal
 			pass
@@ -853,6 +856,38 @@ class Node(PersistentCached):
 							raise
 			finally:
 				domStat._restart = 0
+		except Exception:
+			log.error('%s: Exception handling callback', self.pd.uri, exc_info=True)
+			# don't crash the event handler
+
+	def error_event(self, conn, dom, srcpath, devalias, action, reason, opaque):
+		"""
+		Handle IO errors.
+		"""
+		log = logger.getChild('io')
+		try:
+			log.debug(
+				"Node %s Domain %s(%s) dev=%s[%s] action=%d reason=%s",
+				self.pd.name,
+				dom.name(),
+				dom.ID(),
+				devalias,
+				srcpath,
+				action,
+				reason,
+			)
+			uuid = dom.UUIDString()
+			try:
+				domStat = self.domains[uuid]
+			except LookupError:
+				return
+			error = {
+				'reason': reason,
+				'device': devalias,
+				'srcpath': srcpath,
+			}
+			error['msg'] = _('IO error "%(reason)s" on device "%(device)s[%(srcpath)s]"') % error
+			domStat.pd.error.update(error)
 		except Exception:
 			log.error('%s: Exception handling callback', self.pd.uri, exc_info=True)
 			# don't crash the event handler
@@ -1017,7 +1052,8 @@ class Node(PersistentCached):
 					'vnc_port': vnc[1] if vnc else -1,
 					'suspended': pd.suspended,
 					'description': descr,
-					'node_available': self.pd.last_try == self.pd.last_update
+					'node_available': self.pd.last_try == self.pd.last_update,
+					'error': pd.error,
 				})
 
 		return domains

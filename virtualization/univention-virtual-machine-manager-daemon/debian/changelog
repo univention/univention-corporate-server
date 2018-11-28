@@ -2,6 +2,7 @@ univention-virtual-machine-manager-daemon (7.0.0-14) unstable; urgency=low
 
   * Bug #47956: Fix disk target dev name assignment
   * Bug #35761: Drop corrupt cache files on error
+  * Bug #22695: Report IO errors.
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 28 Nov 2018 09:21:40 +0100
 

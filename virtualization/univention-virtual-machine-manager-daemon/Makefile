@@ -83,25 +83,6 @@ src/messages.pot: $(shell find src/univention/uvmm -name \*.py)
 		--copyright-holder="Univention GmbH" \
 		$^
 
-
-SVGS := $(shell find umc/icons/scalable/ \( -name "*.svg" -o -name "*.svgz" \) -printf "%f\n")
-SIZES := 16 50
-FORMATS := png
-
-IMAGES := $(foreach size,$(SIZES),$(foreach img,$(SVGS),umc/icons/$(size)x$(size)/$(basename $(img)).png))
-all:: $(IMAGES)
-
-define CONVERT_template
- umc/icons/$(1)x$(1)/%.png: umc/icons/scalable/%.svg
-	inkscape -w $(1) -h $(1) -f $$< -e $$@
- umc/icons/$(1)x$(1)/%.png: umc/icons/scalable/%.svgz
-	inkscape -w $(1) -h $(1) -f $$< -e $$@
-endef
-$(foreach size,$(SIZES),$(eval $(call CONVERT_template,$(size))))
-
-%.svg: %.svgz
-	gzip -dc <$< >$@
-
 endif
 
 tags: $(shell find src umc -name \*.py)
