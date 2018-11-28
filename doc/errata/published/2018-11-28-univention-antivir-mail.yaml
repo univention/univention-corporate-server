@@ -11,3 +11,5 @@ desc: |
    postfix is unable to process incoming mails due to a non-working
    amavisd (Bug #39372).
 bug: [39372]
+erratum: 337
+announced: 2018-11-28
