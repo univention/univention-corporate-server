@@ -9,3 +9,5 @@ desc: |-
   * ifconfig was missing in the UCS container. Also fixed parsing of the
     tool's output.
 bug: [46665]
+erratum: 339
+announced: 2018-11-28
