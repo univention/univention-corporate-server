@@ -709,7 +709,7 @@ msgstr "Hypervisor Standard"
 
 #: umc/js/uvmm.js:1750
 msgid "IO error \"{reason}\" on device \"{device}[{srcpath}]\""
-msgstr ""
+msgstr "E/A Fehler \"{reason}\" auf Gerät \"{device}[{srcpath}]\""
 
 #: umc/js/uvmm/types.js:277
 msgid "ISO format (iso)"
