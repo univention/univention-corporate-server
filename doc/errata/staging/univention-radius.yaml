@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-radius
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * From now on univention-radius adds a realm-section in proxy.conf
+   to allow RADIUS authentication with DOMAIN\USERNAME. The original
+   proxy.conf is diverted to proxy.conf.debian (Bug #42535).
+bug: [42535]

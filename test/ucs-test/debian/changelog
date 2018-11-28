@@ -1,3 +1,10 @@
+ucs-test (8.0.28-237) unstable; urgency=low
+
+  * Bug #42535: reimplemented 03_username_with_ntdomain to circumvent
+    quoting issues in radtest/radclient
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 28 Nov 2018 14:26:44 +0100
+
 ucs-test (8.0.28-236) unstable; urgency=medium
 
   * Bug #47069: skip 401check_posix_pwd_expiry_after_ad_pwdchange

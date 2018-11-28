@@ -20,6 +20,13 @@ Variables: freeradius/conf/servers/maxrequests
 Variables: ldap/hostdn
 
 Type: file
+File: etc/freeradius/3.0/proxy.conf
+User: root
+Group: freerad
+Mode: 640
+Variables: windows/domain
+
+Type: file
 File: etc/freeradius/3.0/mods-available/eap
 User: root
 Group: freerad
