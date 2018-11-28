@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.25-23) unstable; urgency=medium
+
+  * Bug #48145: Don't count sysAccounts when unlimited license
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 28 Nov 2018 10:40:51 +0100
+
 univention-directory-manager-modules (13.0.25-22) unstable; urgency=medium
 
   * Bug #30387: Update syntax choices every time the modules are reloaded
