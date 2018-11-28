@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-virtual-machine-manager-daemon
-fix: 7.0.0-14
+fix: 7.0.0-14A~4.3.0.201811281129
 desc: |
  This update addresses the following issues:
  * Fix assignment of target device name for newly added disks.
