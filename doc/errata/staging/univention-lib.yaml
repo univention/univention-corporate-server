@@ -10,4 +10,5 @@ desc: |
    arbitraty data in LDAP.
  * The error messages for the join into an Active Directory domain
    have been improved.
-bug: [47944,42430]
+ * Check output from slapschema during registration of new schemas for erros.
+bug: [47944, 42430, 45571]
