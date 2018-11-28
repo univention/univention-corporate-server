@@ -50,4 +50,10 @@ fi
 
 exec >>"$LOGFILE" 2>&1
 echo "=== $$ === $(date --rfc-2822) ==="
+CACHE_STATE='/var/run/uvmmd.cache'
+if [ -s "$CACHE_STATE" ]
+then
+	xargs -0 -a "$CACHE_STATE" rm -f -v
+	rm -f -v "$CACHE_STATE"
+fi
 exec "$DAEMON" -l "$LOGFILE" $DAEMON_OPTS

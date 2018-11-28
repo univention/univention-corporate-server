@@ -7,4 +7,5 @@ fix: 7.0.0-14
 desc: |
  This update addresses the following issue:
  * Fix assignment of target device name for newly added disks.
-bug: [47956]
+ * Drop corrupt cache files on errors.
+bug: [47956,35761]

@@ -70,6 +70,7 @@ configRegistry.load()
 
 logger = logging.getLogger('uvmmd.node')
 
+CACHE_STATE = '/var/run/uvmmd.cache'
 STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED')
 DOM_EVENT_STRINGS = (
 	("Defined", ("Added", "Updated", "Renamed", "Snapshot")),
@@ -675,10 +676,18 @@ class Node(PersistentCached):
 
 			# Load cached node info
 			cache_file_name = self.cache_file_name(uri)
+			logger.debug("Loading cache '%s'", cache_file_name)
+			with open(CACHE_STATE, 'w') as cache:
+				cache.write(cache_file_name)
 			with open(cache_file_name, 'r') as cache_file:
-				data = pickle.Unpickler(cache_file)
-				assert data is not None
-				self.pd = data.load()
+				try:
+					data = pickle.Unpickler(cache_file)
+					self.pd = data.load()
+				except:
+					os.unlink(cache_file_name)
+					raise
+
+			os.unlink(CACHE_STATE)
 			assert self.pd.uri == uri
 			logger.debug("Loaded from cache '%s'", self.pd.uri)
 
@@ -697,7 +706,7 @@ class Node(PersistentCached):
 						assert domStat.cache_file_name() == cache_file_name
 						self.domains[domStat.pd.uuid] = domStat
 						logger.debug("Loaded from cache '%s#%s'", self.pd.uri, domStat.pd.uuid)
-					except (EOFError, EnvironmentError, AssertionError, ET.XMLSyntaxError) as ex:
+					except (EOFError, EnvironmentError, AssertionError, ET.XMLSyntaxError, TypeError) as ex:
 						logger.warning("Failed to load cached domain %s: %s", cache_file_name, ex)
 				del dirs[:]  # just that direcory; no recursion
 		except (EOFError, EnvironmentError, AssertionError, pickle.PickleError) as ex:
