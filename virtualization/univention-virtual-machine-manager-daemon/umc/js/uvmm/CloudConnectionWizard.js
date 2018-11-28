@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"umc/tools",
+	"umc/dialog",
 	"umc/widgets/TextBox",
 	"umc/widgets/PasswordBox",
 	"umc/widgets/ComboBox",
@@ -41,7 +42,7 @@ define([
 	"umc/widgets/Wizard",
 	"umc/widgets/Form",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, tools, TextBox, PasswordBox, ComboBox, CheckBox, HiddenInput, Wizard, Form, _) {
+], function(declare, lang, array, tools, dialog, TextBox, PasswordBox, ComboBox, CheckBox, HiddenInput, Wizard, Form, _) {
 
 	return declare("umc.modules.uvmm.CloudConnectionWizard", [ Wizard ], {
 
@@ -91,9 +92,8 @@ define([
 				this.onFinished(response, values);
 			}), lang.hitch(this, function(errormsg) {
 				this.standby(false);
-				// show error message
 				dialog.alert('Error: ' + errormsg);
-				return 'general';
+				return 'credentials';
 			}));
 		},
 

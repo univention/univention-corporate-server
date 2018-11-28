@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (7.0.0-16) unstable; urgency=medium
+
+  * Bug #48106: show warning for vnc_password if length > 8
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 28 Nov 2018 15:48:27 +0100
+
 univention-virtual-machine-manager-daemon (7.0.0-15) unstable; urgency=low
 
   * Bug #47956: Fix disk target dev name assignment

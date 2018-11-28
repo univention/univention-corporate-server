@@ -112,8 +112,6 @@ define([
 			var unit;
 			if (undefined === val || null === val || "" === val) {
 				return '';
-				// FIXME: phahn, what was the purpose of this?
-				return this.get("displayedValue");
 			} else if (val < 1024) {
 				return sprintf('%d B', val);
 			} else if (val < (1024 * 1024)) {

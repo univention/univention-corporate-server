@@ -53,7 +53,7 @@ define([
 		_instance: null,
 
 		_appendLinkToLabel: function(widget, url) {
-			label = widget.get('label');
+			var label = widget.get('label');
 			widget.set('label', label + ' ' + lang.replace('<a href="{url}" target="_blank">{text}</a>', {
 				'url': url,
 				'text': url
@@ -182,7 +182,7 @@ define([
 					this.moduleWidget.set('titleDetail', this._instance.label);
 
 					// avoid duplicate public_ips
-					newArr = [];
+					var newArr = [];
 					array.forEach(this._instance.public_ips, function(item) {
 						if(array.indexOf(newArr, item)  == -1) {
 							newArr.push(item);
@@ -195,12 +195,12 @@ define([
 
 					// append public/private https link
 					if (this._instance.public_ips[0]) {
-						widget = this._generalForm.getWidget('public_ips');
-						this._appendLinkToLabel(widget, 'https://' + this._instance.public_ips[0]);
+						var widget_public = this._generalForm.getWidget('public_ips');
+						this._appendLinkToLabel(widget_public, 'https://' + this._instance.public_ips[0]);
 					}
 					if (this._instance.private_ips[0]) {
-						widget = this._generalForm.getWidget('private_ips');
-						this._appendLinkToLabel(widget, 'https://' + this._instance.private_ips[0]);
+						var widget_private = this._generalForm.getWidget('private_ips');
+						this._appendLinkToLabel(widget_private, 'https://' + this._instance.private_ips[0]);
 					}
 
 					this.selectChild(this._generalPage, true);

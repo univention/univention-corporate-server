@@ -46,7 +46,7 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			values = this.props || {};
+			var values = this.props || {};
 			// mixin the page structure
 			lang.mixin(this, {
 				pages: [{

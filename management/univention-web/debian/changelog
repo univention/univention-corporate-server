@@ -1,3 +1,9 @@
+univention-web (2.0.0-30) unstable; urgency=medium
+
+  * Bug #48106: Moved TextBoxMaxLengthChecker to univention-web
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 28 Nov 2018 14:38:30 +0100
+
 univention-web (2.0.0-29) unstable; urgency=medium
 
   * Bug 45323: Fix wrapping of tree items

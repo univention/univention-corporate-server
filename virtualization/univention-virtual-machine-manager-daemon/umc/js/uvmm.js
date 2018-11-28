@@ -579,7 +579,7 @@ define([
 					'class': 'umcPopup'
 				});
 
-				if (numberOfValidHosts == 0) {
+				if (numberOfValidHosts === 0) {
 					form._buttons.submit.set('disabled', true);
 				}
 

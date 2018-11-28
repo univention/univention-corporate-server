@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define,dojo*/
 
 define([
 	"dojo/_base/declare",
@@ -98,13 +98,13 @@ define([
 				return [
 					['details', 'keyname'],
 					['details', 'security_group_ids']
-				]
+				];
 			} else if (this.cloud.type == 'EC2') {
 				return [
 					['details', 'keyname'],
 					['details', 'security_group_ids'],
 					['details', 'network_id']
-				]
+				];
 			}
 		},
 

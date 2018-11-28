@@ -31,10 +31,10 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"umc/modules/udm/TextBoxMaxLengthChecker",
+	"umc/widgets/TextBoxMaxLengthChecker",
 	"umc/i18n!umc/modules/udm"
 ], function(declare, lang, TextBoxMaxLengthChecker, _) {
-	return declare("umc.modules.udm.UsernameMaxLengthChecker", TextBoxMaxLengthChecker, {
+	return declare(TextBoxMaxLengthChecker, {
 		maxLength: 20,
 		warningMessage: null,
 		warningMessageTemplate: null,

@@ -36,7 +36,7 @@ define([
 	"dojo/aspect",
 	"dijit/Tooltip"
 ], function(declare, lang, array, on, aspect, Tooltip) {
-	return declare("umc.modules.udm.TextBoxMaxLengthChecker", [], {
+	return declare(null, {
 		// textBoxWidget: dijit.form.TextBox
 		// 		The TextBox widget whose input is watched.
 		// 		If the input is longer than maxLength a Tooltip

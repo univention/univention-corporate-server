@@ -9,4 +9,6 @@ desc: |
  * Fix assignment of target device name for newly added disks.
  * Drop corrupt cache files on errors.
  * Report IO errors in UMC frontend.
-bug: [47956,35761,22695]
+ * Show a warning if the entered VNC password for a cloud connection
+   exceeds a certain length.
+bug: [47956,35761,22695,48106]
