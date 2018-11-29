@@ -3,10 +3,11 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-management-console-module-diagnostic
-fix: 4.0.1-13A~4.3.0.201811231513
+fix: 4.0.1-14A~4.3.0.201811291050
 desc: |
  This update addresses the following issue(s):
- * Improved logging of diagnostic module actions
+ * Improved logging of diagnostic module actions, diagnostic checks
+   are now executed in name order
  * A new diagnostic plugin has been added that scans through LDAP and finds
    objects that lack a univentionObjectType although they should have one.
    The plugin also allows to migrate those objects. Having a
