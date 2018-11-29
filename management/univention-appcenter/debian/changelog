@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-47) unstable; urgency=medium
+
+  * 42690 Improved check for database existence during app installation
+
+ -- Jens Pelzetter <jpelzett@tossberg.knut.univention.de>  Thu, 29 Nov 2018 08:41:41 +0100
+
 univention-appcenter (7.0.2-46) unstable; urgency=medium
 
   * Bug #43612: Fix start/stop to not remove/recreate the whole multi
