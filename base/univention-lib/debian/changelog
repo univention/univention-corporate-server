@@ -1,3 +1,9 @@
+univention-lib (7.0.0-18) unstable; urgency=medium
+
+  * Bug #38057: Fix quoting
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 29 Nov 2018 16:03:17 +0100
+
 univention-lib (7.0.0-17) unstable; urgency=medium
 
   * Bug #38057: umc_init does not assume cn=groups anymore

@@ -91,8 +91,8 @@ umc_init () {
 
 	# link default admin policy to the group "Domain Admins"
 	group_admins="${groups_default_domainadmins:-Domain Admins}"
-	group_admin_dn="$(udm groups/group list --filter name=$group_admins | sed -ne 's/^\DN:*\ *//p')"
-	umc_udm groups/group modify --ignore_exists --dn "$group_admin_dn" \
+	group_admins_dn="$(udm groups/group list --filter name="$group_admins" | sed -ne 's/^DN:*\ *//p')"
+	umc_udm groups/group modify --ignore_exists --dn "$group_admins_dn" \
 		--policy-reference="cn=default-umc-all,cn=UMC,cn=policies,$ldap_base" || exit $?
 
 	# default user policy
@@ -101,7 +101,7 @@ umc_init () {
 
 	# link default user policy to the group "Domain Users"
 	group_users="${groups_default_domainusers:-Domain Users}"
-	group_users_dn="$(udm groups/group list --filter name=$group_users | sed -ne 's/^\DN:*\ *//p')"
+	group_users_dn="$(udm groups/group list --filter name="$group_users" | sed -ne 's/^DN:*\ *//p')"
 	umc_udm groups/group modify --ignore_exists --dn "$group_users_dn" \
 		--policy-reference="cn=default-umc-users,cn=UMC,cn=policies,$ldap_base" || exit $?
 }
