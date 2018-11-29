@@ -1075,7 +1075,7 @@ Microsoft Distributed File System Tree'.
 	<para>
 	  Quotas can either be defined via the UMC module
 	  <guimenu>Filesystem quotas</guimenu> or a policy for shares, see <xref
-	  linkend="shares::quota::policy"/>. The configuration through a policy allows setting a default
+	  linkend="central:policies"/>. The configuration through a policy allows setting a default
 	  value for all users, while the UMC module allows easy configuration of user-specific quota
 	  values.
 	</para>
