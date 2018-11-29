@@ -51,6 +51,7 @@ def run(_umc_instance):
 				failed.append('\n'.join(msgs))
 
 	if failed:
+		MODULE.error('%s%s' % (description % (len(failed),), '\n'.join(failed)))
 		raise Warning('%s%s' % (description % (len(failed),), '\n'.join(failed)))
 
 

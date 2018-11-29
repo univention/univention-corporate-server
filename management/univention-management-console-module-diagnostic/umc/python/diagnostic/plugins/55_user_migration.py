@@ -13,7 +13,7 @@ description = '\n'.join([
 	_('With UCS 4.3 the LDAP format of user objects changed. After upgrading the domaincontroller master all user objects are migrated into the new format.'),
 	_('When a user object is created by a system which is not yet on UCS 4.3 it will have the old format. These user objects need to migrated again.'),
 ])
-run_descr = ['Checks if there are user objects which are not migrated by using /usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3 --check']
+run_descr = ['Checks user objects exist which are not migrated by using /usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3 --check']
 
 
 def run(_umc_instance):

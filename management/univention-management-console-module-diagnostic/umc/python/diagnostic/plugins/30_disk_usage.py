@@ -43,7 +43,7 @@ title = _('Check free disk space')
 description = _('Enough free disk space available.')
 
 DISK_USAGE_THRESHOLD = 90
-run_descr = ['Checks if there is enough free disk space available']
+run_descr = ['Checks if enough free disk space is available']
 
 
 def mount_points():

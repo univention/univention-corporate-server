@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-23 12:51+0100\n"
+"POT-Creation-Date: 2018-11-29 10:43+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -84,17 +84,17 @@ msgstr "Setze server/password/change=True"
 msgid "Set server/password/interval=21"
 msgstr "Setze server/password/interval=21"
 
-#: 01_ssh_connection.py:17
+#: 01_ssh_connection.py:18
 msgid "SSH connection to UCS server failed!"
 msgstr "SSH-Verbindung zu anderem UCS Server fehlgeschlagen!"
 
-#: 01_ssh_connection.py:62
+#: 01_ssh_connection.py:63
 msgid "The ssh connection to at least one other UCS server failed. "
 msgstr ""
 "Die SSH-Verbindung zu mindestens einem anderen UCS Server ist "
 "fehlgeschlagen. "
 
-#: 01_ssh_connection.py:63
+#: 01_ssh_connection.py:64
 msgid ""
 "The following list shows the affected remote servers and the reason for the "
 "failed ssh connection:"
@@ -102,11 +102,11 @@ msgstr ""
 "Die folgende Liste zeigt die betroffenen entfernten Rechner und den Grund "
 "für die fehlgeschlagene SSH-Verbindung."
 
-#: 01_ssh_connection.py:65
+#: 01_ssh_connection.py:66
 msgid "Host key for server does not match"
 msgstr "SSH Host-Key des Servers stimmt nicht überein"
 
-#: 01_ssh_connection.py:66
+#: 01_ssh_connection.py:67
 msgid ""
 "The ssh host key of the remote server has changed (maybe the host was "
 "reinstalled). "
@@ -114,7 +114,7 @@ msgstr ""
 "Der SSH Host-Key des entfernten Rechners hat sich geändert (vielleicht wurde "
 "der Rechner neu installiert). "
 
-#: 01_ssh_connection.py:67
+#: 01_ssh_connection.py:68
 #, python-format
 msgid ""
 "Please repair the host key of the remote server in /root/.ssh/known_hosts on "
@@ -123,11 +123,11 @@ msgstr ""
 "Der SSH Host-Key in /root/.ssh/known_hosts des entfernten Rechners muss auf "
 "%(fqdn)s repariert werden."
 
-#: 01_ssh_connection.py:69
+#: 01_ssh_connection.py:70
 msgid "Machine authentication failed"
 msgstr "Authentifizierung mit dem Maschinen-Konto ist fehlgeschlagen"
 
-#: 01_ssh_connection.py:70
+#: 01_ssh_connection.py:71
 #, python-format
 msgid ""
 "Login to the remote server with the uid %(uid)s and the password from /etc/"
@@ -136,7 +136,7 @@ msgstr ""
 "Der Login auf dem entfernten Rechner mit der uid %(uid)s und dem Passwort "
 "aus /etc/machine.secret is fehlgeschlagen. "
 
-#: 01_ssh_connection.py:71
+#: 01_ssh_connection.py:72
 msgid ""
 "Please check /var/log/auth.log on the remote server for further information."
 msgstr ""
@@ -257,7 +257,7 @@ msgstr ""
 "Stellen Sie sicher, dass die Hardware des Gateway-Geräts korrekt "
 "funktioniert."
 
-#: 10_gateway.py:30
+#: 10_gateway.py:31
 msgid "There is no gateway configured."
 msgstr "Es ist kein Gateway eingerichtet."
 
@@ -337,7 +337,7 @@ msgstr ""
 "Der Server antwortete nicht innerhalb von %d Sekunden. Bitte "
 "Netzwerkeinstellungen überprüfen."
 
-#: 12_proxy.py:86
+#: 12_proxy.py:87
 #, python-format
 msgid ""
 "The proxy server is reachable but the HTTP response status code (%d) does "
@@ -346,7 +346,7 @@ msgstr ""
 "Der Proxy-Server ist erreichbar aber der HTTP-Antwort-Status-Code (%d) "
 "besagt keinen Erfolg."
 
-#: 12_proxy.py:87
+#: 12_proxy.py:88
 #, python-format
 msgid ""
 "This warning might be harmless. Nevertheless make sure the authentication "
@@ -933,8 +933,8 @@ msgid ""
 "You may log in to the system as root via ssh and run the command \"dpkg --"
 "configure -a\" as an attempt to correct the packages status."
 msgstr ""
-"Um den Paketstatus zu korrigieren, loggen Sie sich am System per ssh als root "
-"ein und führen Sie das Kommando \"dpkg --configure -a\" aus."
+"Um den Paketstatus zu korrigieren, loggen Sie sich am System per ssh als "
+"root ein und führen Sie das Kommando \"dpkg --configure -a\" aus."
 
 #: 53_package_status.py:15
 msgid ""

@@ -47,7 +47,7 @@ from univention.management.console.modules.sanitizers import PatternSanitizer, D
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.log import MODULE
 from univention.management.console.modules.diagnostic import plugins
-
+from collections import OrderedDict
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -125,6 +125,7 @@ class Instance(Base, ProgressMixin):
 			except ImportError as exc:
 				MODULE.error('Could not load plugin %r: %r' % (plugin, exc))
 				raise
+		self.modules = OrderedDict(sorted(self.modules.items(), key=lambda t: t[0]))
 
 	def get(self, plugin):
 		return self.modules[plugin]

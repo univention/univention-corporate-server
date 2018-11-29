@@ -74,18 +74,21 @@ def run(_umc_instance, url='http://www.univention.de/', connecttimeout=30, timeo
 		elif code == 0:
 			MODULE.error(traceback.format_exc())
 
+		MODULE.error('\n'.join([description, msg]))
 		raise Critical('\n'.join([description, msg]))
 	else:
 		# page = buf.getvalue()
 		# MODULE.info(page[:100])
 		buf.close()
 		http_status = curl.getinfo(pycurl.HTTP_CODE)
-		if http_status >= 400:
-			raise Warning('\n'.join([
+		if http_status >= 400 or True:
+			warning = '\n'.join([
 				description,
 				_('The proxy server is reachable but the HTTP response status code (%d) does not indicate success.') % (http_status,),
 				_('This warning might be harmless. Nevertheless make sure the authentication credentials (if any) are correct and the proxy server ACLs do not forbid requests to %s.') % (url,)
-			]))
+			])
+			MODULE.warn(warning)
+			raise Warning(warning)
 	finally:
 		curl.close()
 
