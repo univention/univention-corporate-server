@@ -1,3 +1,9 @@
+univention-radius (5.0.1-2) unstable; urgency=low
+
+  * Bug #42535: fixed whitespace typo
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 29 Nov 2018 15:13:43 +0100
+
 univention-radius (5.0.1-1) unstable; urgency=low
 
   * Bug #42535: add new UCR template for proxy.conf but also include
