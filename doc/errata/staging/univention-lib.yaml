@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-lib
-fix: 7.0.0-16A~4.3.0.201811281531
+fix: 7.0.0-17A~4.3.0.201811291208
 desc: |
  This update addresses the following issue(s):
  * The UDM module "settings/data" was added. It can be used to store
@@ -11,4 +11,5 @@ desc: |
  * The error messages for the join into an Active Directory domain
    have been improved.
  * Check output from slapschema during registration of new schemas for erros.
-bug: [47944, 42430, 45571]
+ * Umc_init does not assume cn=groups anymore.
+bug: [47944, 42430, 45571, 38057]
