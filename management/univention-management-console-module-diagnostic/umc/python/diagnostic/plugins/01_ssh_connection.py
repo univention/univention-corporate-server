@@ -10,6 +10,7 @@ from univention.management.console.log import MODULE
 import paramiko
 import logging
 import socket
+import re
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -18,7 +19,7 @@ title = _('SSH connection to UCS server failed!')
 
 ucr.load()
 fqdn = ".".join((ucr['hostname'], ucr['domainname']))
-run_descr = ['This can be checked by running:  univention-ssh /etc/machine.secret "%s$"@%s echo OK' % (ucr["hostname"], fqdn)]
+run_descr = ['This can be checked by running:  univention-ssh /etc/machine.secret "%s@%s" echo OK' % (ucr["hostname"], fqdn)]
 
 
 class IgnorePolicy(paramiko.MissingHostKeyPolicy):
@@ -108,7 +109,11 @@ def run(_umc_instance):
 		if auth_failed:
 			msg += '\n' + auth_msg + ' - ' + auth_info + '\n'
 		msg += '\n'
-		MODULE.error("%s %s" % (msg, data))
+		log_msg = msg.splitlines()
+		for line in log_msg:
+			if not re.match(r'^\s*$', line):
+				MODULE.error("%s" % line)
+		MODULE.error("%s" % data)
 		raise Critical(msg % data)
 
 
