@@ -19,7 +19,7 @@ title = _('SSH connection to UCS server failed!')
 
 ucr.load()
 fqdn = ".".join((ucr['hostname'], ucr['domainname']))
-run_descr = ['This can be checked by running:  univention-ssh /etc/machine.secret "%s@%s" echo OK' % (ucr["hostname"], fqdn)]
+run_descr = ['This can be checked by running:  univention-ssh /etc/machine.secret "%s$@%s" echo OK' % (ucr["hostname"], fqdn)]
 
 
 class IgnorePolicy(paramiko.MissingHostKeyPolicy):
