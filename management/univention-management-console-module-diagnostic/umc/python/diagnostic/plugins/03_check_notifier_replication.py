@@ -37,7 +37,7 @@ import univention.config_registry
 from univention.management.console.modules.diagnostic import Warning, MODULE
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
-run_descr = ['Checks if last_id from ldap/master and /var/lib/univention-directory-listener/notifier_id are the same']
+run_descr = ["Checks if the output of /usr/share/univention-directory-listener/get_notifier_id.py and the value in /var/lib/univention-directory-listener/notifier_id are the same"]
 title = _('Check for problems with UDN replication')
 description = _('No problems found with UDN replication.')
 

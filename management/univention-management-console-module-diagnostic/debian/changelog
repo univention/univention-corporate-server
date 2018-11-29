@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.1-15) unstable; urgency=medium
+
+  * Bug #47649: Adjusted wording 
+
+ -- Julia Bremer <bremer@knut.univention.de>  Thu, 29 Nov 2018 15:10:50 +0100
+
 univention-management-console-module-diagnostic (4.0.1-14) unstable; urgency=medium
 
   * Bug #47649: Fixed inconsistencies and diagnostic checks are now executed in order 

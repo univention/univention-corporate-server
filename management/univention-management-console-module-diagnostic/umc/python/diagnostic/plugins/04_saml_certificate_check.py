@@ -83,7 +83,7 @@ def test_identity_provider_certificate():
 	# If it fails: univention-run-joinscripts --force --run-scripts 92univention-management-console-web-server
 
 	sso_fqdn = ucr.get('ucs/server/sso/fqdn')
-	MODULE.process("Checks ucs-sso by comparing 'ucr get ucs/server/sso/fqdn' and /usr/share/univention-management-console/saml/idp/*.xml")
+	MODULE.process("Checks ucs-sso by comparing 'ucr get ucs/server/sso/fqdn' with the Location field in /usr/share/univention-management-console/saml/idp/*.xml")
 	if not sso_fqdn:
 		return
 	for host in socket.gethostbyname_ex(sso_fqdn)[2]:

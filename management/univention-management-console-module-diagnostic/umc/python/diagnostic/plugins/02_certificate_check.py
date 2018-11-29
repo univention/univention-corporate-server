@@ -47,7 +47,7 @@ from univention.management.console.modules.diagnostic import Critical, Warning, 
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
-run_descr = ['This can be checked by running: ucr get server/roles and ucr get ldap/master']
+run_descr = ['This can be checked by running: ucr get server/role and ucr get ldap/master']
 title = _('Check validity of SSL certificates')
 description = _('All SSL certificates valid.')
 links = [{

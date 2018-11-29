@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-29 10:43+0100\n"
+"POT-Creation-Date: 2018-11-29 15:09+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -441,23 +441,23 @@ msgstr "KDC Erreichbarkeit"
 msgid "ph "
 msgstr ""
 
-#: 22_kdc_service.py:320
+#: 22_kdc_service.py:323
 msgid "The following KDCs were unreachable: {}"
 msgstr "Die folgenden KDCs waren nicht erreichbar: {}"
 
-#: 22_kdc_service.py:338
+#: 22_kdc_service.py:341
 msgid "samba/interfaces does not contain lo, 127.0.0.1 or 0.0.0.0."
 msgstr "samba/interfaces enthält weder lo noch 127.0.0.1 noch 0.0.0.0."
 
-#: 22_kdc_service.py:344
+#: 22_kdc_service.py:347
 msgid "Add lo to samba/interfaces"
 msgstr "Füge lo zu samba/interfaces hinzu"
 
-#: 22_kdc_service.py:347
+#: 22_kdc_service.py:350
 msgid "Reset kerberos/kdc to 127.0.0.1"
 msgstr "Setze kerberos/kdc auf 127.0.0.1 zurück"
 
-#: 22_kdc_service.py:351
+#: 22_kdc_service.py:354
 msgid "No reachable KDCs were found."
 msgstr "Keine erreichbaren KDCs gefunden."
 
