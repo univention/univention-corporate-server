@@ -1,3 +1,9 @@
+univention-lib (7.0.0-19) unstable; urgency=medium
+
+  * Bug #38057: Code cleanup
+
+ -- Julia Bremer <jbremer@brankis.knut.univention.de>  Thu, 29 Nov 2018 16:17:58 +0100
+
 univention-lib (7.0.0-18) unstable; urgency=medium
 
   * Bug #38057: Fix quoting
