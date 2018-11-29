@@ -68,7 +68,7 @@ import univention.admin.modules as udm_modules
 # TODO: use http link header
 # TODO: set Last-Modified
 # FIXME: add_asterisks sanitizer
-# FIXME: prevent in the javascript that navigation container quer is called with container=='None'
+# FIXME: prevent in the javascript that navigation container query is called with container=='None'
 # TODO: translation
 
 
