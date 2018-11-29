@@ -1,3 +1,9 @@
+univention-radius (5.0.1-3) unstable; urgency=medium
+
+  * Bug #42535: Fix missing comment on new line
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 29 Nov 2018 16:22:38 +0100
+
 univention-radius (5.0.1-2) unstable; urgency=low
 
   * Bug #42535: fixed whitespace typo
