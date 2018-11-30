@@ -1,0 +1,39 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: libarchive
+fix: 3.1.2-11+deb8u5
+desc: |
+ This update addresses the following issues:
+ * crash via malformed cpio archive (CVE-2015-8915)
+ * stack based buffer overflow in bsdtar_expand_char (util.c) (CVE-2016-8687)
+ * heap based buffer overflow in detect_form
+   (archive_read_support_format_mtree.c) (CVE-2016-8688)
+ * heap based buffer overflow in read_header
+   (archive_read_support_format_7zip.c) (CVE-2016-8689)
+ * NULL pointer dereference in archive_wstring_append_from_mbs function
+   (CVE-2016-10209)
+ * Heap-based buffer over-read in the archive_le32dec function
+   (CVE-2016-10349)
+ * Heap-based buffer over-read in the archive_read_format_cab_read_header
+   function (CVE-2016-10350)
+ * Out of bounds read in lha_read_file_header_1() function (CVE-2017-5601)
+ * Heap-based buffer over-read in the atol8 function (CVE-2017-14166)
+ * Out-of-bounds read in parse_file_info (CVE-2017-14501)
+ * Off-by-one error in the read_header function (CVE-2017-14502)
+ * Out-of-bounds read in lha_read_data_none (CVE-2017-14503)
+bug: [48242]
+cve:
+- CVE-2015-8915
+- CVE-2016-8687
+- CVE-2016-8688
+- CVE-2016-8689
+- CVE-2016-10209
+- CVE-2016-10349
+- CVE-2016-10350
+- CVE-2017-5601
+- CVE-2017-14166
+- CVE-2017-14501
+- CVE-2017-14502
+- CVE-2017-14503
