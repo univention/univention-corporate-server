@@ -1,0 +1,19 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: ghostscript
+fix: 9.06~dfsg-2+deb8u12
+desc: |
+ This update addresses the following issues:
+ * Improperly implemented security check in zsetdevice function in
+   psi/zdevice.c (CVE-2018-19409)
+ * access bypass in psi/zdevice2.c (CVE-2018-19475)
+ * access bypass in psi/zicc.c (CVE-2018-19476)
+ * access bypass in psi/zfjbig2.c (CVE-2018-19477)
+bug: [48241]
+cve:
+- CVE-2018-19409
+- CVE-2018-19475
+- CVE-2018-19476
+- CVE-2018-19477
