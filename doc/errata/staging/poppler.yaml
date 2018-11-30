@@ -6,10 +6,9 @@ src: poppler
 fix: 0.26.5-2+deb8u6
 desc: |
  This update addresses the following issue:
-
- * 0.26.5-2+deb8u6 (Thu, 08 Nov 2018 11:38:57 +0100) * CVE-2018-16646:
-   Regression fix. Apply the patch from upstream's MR #91 (which got merged
-   upstream) and not the proposed patches from MR #67.
+ * In Poppler the Parser::getObj() function in Parser.cc may cause infinite
+   recursion via a crafted file. A remote attacker can leverage this for a DoS
+   attack. Regression fix. (CVE-2018-16646)
 bug: [48240]
 cve:
 - CVE-2018-16646
