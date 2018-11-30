@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.25-26) unstable; urgency=medium
+
+  * Bug #43129: Old value should have sane value, too
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 30 Nov 2018 01:09:08 +0100
+
 univention-directory-manager-modules (13.0.25-25) unstable; urgency=medium
 
   * Bug #43129: Fix addlist

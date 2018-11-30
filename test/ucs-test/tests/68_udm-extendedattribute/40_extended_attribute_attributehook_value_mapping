@@ -35,13 +35,8 @@ def mydebug(msg):
 mydebug('TEST MODULE LOADED')
 
 class {hook_name}(univention.admin.hook.AttributeHook):
-    attribute_name = '{attr_name}'
-    property_name = '{cli_name}'
-
-    def hook_open(self, obj):
-        mydebug('hook_open() IN')
-        super({hook_name}, self).hook_open(obj)
-        mydebug('hook_open() OUT')
+    ldap_attribute_name = '{attr_name}'
+    udm_attribute_name = '{cli_name}'
 
     def map_attribute_value_to_ldap(self, value):
         mydebug('map_attribute_value_to_ldap(%r)' % (value,))
@@ -54,14 +49,20 @@ class {hook_name}(univention.admin.hook.AttributeHook):
         else:
             # this is not great, but works reasonably well
             mydebug('map_attribute_value_to_ldap(%r) ==> found invalid value' % (value,))
-            raise univention.admin.uexceptions.valueError('%s: Value may not be %r' % (self.attribute_name, value))
+            raise univention.admin.uexceptions.valueError('%s: Value may not be %r' % (self.ldap_attribute_name, value))
 
     def map_attribute_value_to_udm(self, value):
         mydebug('map_attribute_value_to_udm(%r)' % (value,))
         if value == 'yes':
             return 'TRUE'
-        else:
+        elif value == 'no':
             return 'FALSE'
+        elif value in ('', None):
+            return ''
+        else:
+            # this is not great, but works reasonably well
+            mydebug('map_attribute_value_to_udm(%r) ==> found invalid value' % (value,))
+            raise univention.admin.uexceptions.valueError('%s: Value may not be %r' % (self.udm_attribute_name, value))
 """.format(hook_name=hook_name, cli_name=cli_name, attr_name=attr_name))
 
 

@@ -131,6 +131,7 @@ class AttributeHook(simpleHook):
 			else:
 				key, old_value, new_value = ml_value
 			if key == self.ldap_attribute_name:
+				old_value = self.map_attribute_value_to_ldap(old_value)
 				new_value = self.map_attribute_value_to_ldap(new_value)
 			new_ml.append((key, old_value, new_value))
 		return new_ml
