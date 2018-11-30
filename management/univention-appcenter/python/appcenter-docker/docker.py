@@ -460,10 +460,14 @@ class MultiDocker(Docker):
 					used_ports[service_name][container_port] = host_port
 				else:
 					used_ports[service_name][_port] = _port
-			service_env = service.get('environment', {})
-			for k in env.copy():
-				if k in service_env:
-					service_env[k] = env.pop(k)
+			service_env = service.get('environment')
+			if service_env:
+				if isinstance(service_env, list):
+					service_env = {k: None for k in service_env}
+				for k in env.copy():
+					if k in service_env:
+						service_env[k] = env.pop(k)
+				service['environment'] = service_env
 		if 'environment' not in container_def:
 			container_def['environment'] = {}
 		container_def['environment'].update(env)
@@ -488,19 +492,8 @@ class MultiDocker(Docker):
 		shutil.copy2(yml_file, yml_run_file)  # "backup"
 
 	def create(self, hostname, env):
-		env = {k: v for k, v in env.iteritems() if k.isupper()}
-		env_file = self.app.get_cache_file('env')
-		if os.path.exists(env_file):
-			with open(env_file) as fd:
-				for line in fd:
-					if line.startswith('#'):
-						continue
-					if '=' in line:
-						k, v = line.split('=', 1)
-						k = k.strip()
-						v = v.strip()
-						if k not in env:
-							env[k] = v
+		env = {k: yaml.scalarstring.DoubleQuotedScalarString(v) for k, v in env.iteritems()}
+		env.update({shell_safe(k).upper(): v for k, v in env.iteritems()})
 		self._setup_yml(recreate=True, env=env)
 		call_process(['docker-compose', '-p', self.app.id, 'up', '-d', '--no-build', '--no-recreate'], cwd=self.app.get_compose_dir())
 		try:
