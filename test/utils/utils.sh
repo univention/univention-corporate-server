@@ -431,6 +431,18 @@ prevent_ucstest_on_fail () {
 	return $rv
 }
 
+activate_ucsschool_devel_scope () {
+	local component="repository/online/component/ucsschool_DEVEL"
+	ucr set "$component"/description="Development version of UCS@school packages" \
+		"$component"/version="$(ucr get version/version)" \
+		"$component"/server=https://updates-test.software-univention.de \
+		"$component"=enabled
+}
+
+ucsschool_scope_enabled () {
+	[ "${ucsschool_release:-scope}" = "scope" ]
+}
+
 install_ucsschool () {
 	local rv=0
 	case "${ucsschool_release:-scope}" in
@@ -442,11 +454,7 @@ install_ucsschool () {
 			install_apps ucsschool || rv=$?
 			;;
 		scope|*)
-			local component="repository/online/component/ucsschool_DEVEL"
-			ucr set "$component"/description="Development version of UCS@school packages" \
-				"$component"/version="$(ucr get version/version)" \
-				"$component"/server=https://updates-test.software-univention.de \
-				"$component"=enabled || rv=$?
+			activate_ucsschool_devel_scope | | rv=$?
 			echo "install_ucsschool - DEBUG1"
 			# Ensure ucsschool is a registered app
 			echo "ucsschool" >>/var/cache/appcenter-installed.txt
