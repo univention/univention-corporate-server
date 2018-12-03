@@ -48,22 +48,22 @@ echo "Refreshing certificate for following domains:"
 cat  "$DIR_LE/domains"
 
 if is_ucr_true letsencrypt/staging ; then
-  useStaging="--directory-url https://acme-staging-v02.api.letsencrypt.org/directory"
+    useStaging="--directory-url https://acme-staging-v02.api.letsencrypt.org/directory"
 fi
 
 # get new signed certificate
 /usr/share/univention-letsencrypt/acme_tiny.py --disable-check ${useStaging} --account-key "$DIR_LE/account.key" --csr "$DIR_LE/domain.csr" --acme-dir "/var/www/.well-known/acme-challenge/" > "$TMPFN"
 
 if ! is_ucr_true letsencrypt/staging ; then
-# on success (script didn't stop) use correct filename
-mv -f "$TMPFN" "$DIR_LE/signed_chain.crt"
-chmod 0644 "$DIR_LE/signed_chain.crt"
+    # on success (script didn't stop) use correct filename
+    mv -f "$TMPFN" "$DIR_LE/signed_chain.crt"
+    chmod 0644 "$DIR_LE/signed_chain.crt"
 
-# create backup
-cp "$DIR_LE/signed_chain.crt" "$DIR_LE/signed_chain.crt_$(date +%Y%m%d-%H%M%S)"
+    # create backup
+    cp "$DIR_LE/signed_chain.crt" "$DIR_LE/signed_chain.crt_$(date +%Y%m%d-%H%M%S)"
 
-echo "Certificate refreshed at $(date)"
+    echo "Certificate refreshed at $(date)"
 
 else
-echo "Certificate refreshed at $(date) from the staging endpoint. You can now deactivate the staging option in Let's Encrypt's app settings to get a valid certificate."
+    echo "Certificate refreshed at $(date) from the staging endpoint. You can now deactivate the staging option in Let's Encrypt's app settings to get a valid certificate."
 fi

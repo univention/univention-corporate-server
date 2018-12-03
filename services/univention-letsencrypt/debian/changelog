@@ -1,3 +1,10 @@
+univention-letsencrypt (1.2.2-4) unstable; urgency=medium
+
+  * Bug #48204: create apache virtualhost entry instead of replacing the ucs
+  	cert
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 08 Jan 2019 14:39:37 +0100
+
 univention-letsencrypt (1.2.2-3) unstable; urgency=medium
 
   * evaluate unset variable correctly #10035
