@@ -33,7 +33,6 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.docker import rm as docker_rm
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import get_action
 from univention.appcenter.exceptions import UpgradeStartContainerFailed, UpgradePackagesFailed, UpgradeReleaseFailed, UpgradeAppFailed, UpgradeBackupFailed
@@ -169,11 +168,13 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		settings.update(args.set_vars or {})
 		args.set_vars = settings
 		old_docker = self._get_docker(self.old_app)
-		old_container = old_docker.container
 		secret_on_host = os.path.join('/var/lib/univention-appcenter/apps', app.id, 'machine.secret')
 		old_docker.cp_from_container('/etc/machine.secret', secret_on_host)
 		if self._backup_container(self.old_app) is False:
 			raise UpgradeBackupFailed()
+		self.log('Removing old container')
+		if old_docker.container:
+			old_docker.rm()
 		self._had_image_upgrade = True
 		self.log('Setting up new container (%s)' % app)
 		ucr_save({app.ucr_image_key: None})
@@ -184,9 +185,6 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		args.configure = old_configure
 		args.set_vars = settings
 		self._configure(app, args)
-		self.log('Removing old container')
-		if old_container:
-			docker_rm(old_container)
 		self._register_app(app, args)
 		self._call_join_script(app, args)
 		self.old_app = app

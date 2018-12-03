@@ -1,3 +1,9 @@
+univention-appcenter (7.0.2-49) unstable; urgency=medium
+
+  * Bug #43612: Fix upgrade
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 03 Dec 2018 20:51:47 +0100
+
 univention-appcenter (7.0.2-48) unstable; urgency=medium
 
   * Bug #43612: Pass all common UCS env variables to the container
