@@ -1,3 +1,9 @@
+univention-directory-manager-modules (13.0.25-27) unstable; urgency=medium
+
+  * Bug #43129: Added debug ouput
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 03 Dec 2018 20:22:22 +0100
+
 univention-directory-manager-modules (13.0.25-26) unstable; urgency=medium
 
   * Bug #43129: Old value should have sane value, too

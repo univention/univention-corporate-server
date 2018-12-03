@@ -116,8 +116,11 @@ class AttributeHook(simpleHook):
 
 	def hook_open(self, obj):
 		assert isinstance(self.udm_attribute_name, basestring), "udm_attribute_name has to be a str"
-		value = obj[self.udm_attribute_name]
-		obj[self.udm_attribute_name] = self.map_attribute_value_to_udm(value)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (LDAP) -> %s (UDM)' % (self.ldap_attribute_name, self.udm_attribute_name))
+		old_value = obj[self.udm_attribute_name]
+		new_value = self.map_attribute_value_to_udm(old_value)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.AttributeHook: Setting UDM value from %r to %r' % (old_value, new_value))
+		obj[self.udm_attribute_name] = new_value
 
 	def hook_ldap_addlist(self, obj, al):
 		return self.hook_ldap_modlist(obj, al)
@@ -131,8 +134,11 @@ class AttributeHook(simpleHook):
 			else:
 				key, old_value, new_value = ml_value
 			if key == self.ldap_attribute_name:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (UDM) -> %s (LDAP)' % (self.udm_attribute_name, self.ldap_attribute_name))
 				old_value = self.map_attribute_value_to_ldap(old_value)
-				new_value = self.map_attribute_value_to_ldap(new_value)
+				new_new_value = self.map_attribute_value_to_ldap(new_value)
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.AttributeHook: Setting LDAP value from %r to %r' % (new_value, new_new_value))
+				new_value = new_new_value
 			new_ml.append((key, old_value, new_value))
 		return new_ml
 
