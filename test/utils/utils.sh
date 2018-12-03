@@ -1023,5 +1023,13 @@ run_workarounds_before_starting_the_tests ()
 	restart_services_bug_47762
 }
 
+sa_bug47030 () {
+	sa-update -v || true
+	sleep 15
+	sa-update -v || true
+	sa-compile || true
+	service spamassassin restart
+	service amavis restart
+}
 
 # vim:set filetype=sh ts=4:
