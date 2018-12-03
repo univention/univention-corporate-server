@@ -42,10 +42,8 @@ su - letsencrypt -c "/usr/share/univention-letsencrypt/refresh-cert"
 
 status=$(tail -n1 /var/log/univention/letsencrypt.log)
 
-if [[ $status != *"Certificate refreshed"* ]]
-then if [[ $status != *"Error"* ]]
-     then status=$(grep -E "detail\":" /var/log/univention/letsencrypt.log | tail -n 1)
-     fi
+if [[ $status != *"Certificate refreshed"* ]] && [[ $status != *"Error"* ]]; then
+     status=$(grep -E "detail\":" /var/log/univention/letsencrypt.log | tail -n 1)
 fi
 
 ucr set letsencrypt/status="$status"
@@ -63,11 +61,14 @@ if [[ $check_cert -eq 0 ]]; then
         run-parts --verbose "$DIR_LE/post-refresh.d/"
     fi
 else
-    if [[ $apache2_ssl_certificate == "$DIR_LE/signed_chain.crt" ]]; then
-        ucr unset \
-            apache2/ssl/certificatechain \
-            apache2/ssl/certificate \
-            apache2/ssl/key
+    if is_ucr_true letsencrypt/services/apache2; then
+        ucr set letsencrypt/services/apache2="false"
+        if [[ $apache2_ssl_certificate == "$DIR_LE/signed_chain.crt" ]]; then
+            ucr unset \
+                apache2/ssl/certificatechain \
+                apache2/ssl/certificate \
+                apache2/ssl/key
+        fi
         invoke-rc.d apache2 restart
     fi
 

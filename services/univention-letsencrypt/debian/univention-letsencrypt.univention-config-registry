@@ -1,5 +1,9 @@
 Type: file
 File: etc/apache2/sites-available/univention-letsencrypt.conf
+Variables: letsencrypt/domains
+Variables: letsencrypt/services/apache2
+Variables: hostname
+Variables: domainname
 
 Type: file
 File: etc/cron.d/univention-letsencrypt
