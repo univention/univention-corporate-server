@@ -3,11 +3,13 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-appcenter
-fix: 7.0.2-47A~4.3.0.201811290844
+fix: 7.0.2-49A~4.3.0.201812032053
 desc: |-
   This update addresses the following issue(s):
   * The App Center now supports Apps that require multiple containers to work
     by using docker-compose.
-  * Checkboxes in the App-Settings were marked as required in the HTML causing problems when submitting the form
-  * Improved check for database existence when installing an app which uses a database
+  * Checkboxes in the App Settings were marked as required in the HTML causing
+    problems when submitting the form.
+  * Improved check for database existence when installing an app which uses a
+    database.
 bug: [43612,47824,42690]
