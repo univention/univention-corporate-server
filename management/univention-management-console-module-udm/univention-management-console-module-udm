@@ -40,6 +40,7 @@
 # curl -ik --user Administrator:univention http://<IP>:8888/udm/
 #
 
+import io
 import json
 import copy
 import urllib
@@ -132,16 +133,16 @@ class Ressource(RequestHandler):
 		if 'application/json' in self.request.header.get('Accept', ''):
 			lang = 'json'
 		func = getattr(self, '%s_%s' % (self.request.method.lower(), lang), lambda x: x)
-		getattr(self, 'content_negotiation_%s' % (lang,))(func(response))
-		self.finish()
+		response = getattr(self, 'content_negotiation_%s' % (lang,))(func(response))
+		self.finish(response)
 
 	def content_negotiation_json(self, response):
 		self.set_header('Content-Type', 'application/json')
-		self.write(json.dumps(response))
+		return json.dumps(response)
 
 	def content_negotiation_html(self, response):
 		self.set_header('Content-Type', 'text/html')
-		self.write(response)
+		return response
 
 
 def xml_rendering():
@@ -154,6 +155,9 @@ def xml_rendering():
 	ET.SubElement(doc, "field2", name="asdfasd").text = "some vlaue2"
 
 	tree = ET.ElementTree(root)
+	fd = io.BytesIO()
+	tree.write(fd)  # fd could be self!
+	return fd.getvalue()
 
 
 class MainHandler(Ressource):
