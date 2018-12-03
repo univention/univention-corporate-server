@@ -10,7 +10,7 @@ desc: |
    arbitraty data in LDAP.
  * The error messages for the join into an Active Directory domain
    have been improved.
- * Check output from slapschema during registration of new schemas for erros.
+ * Check output from slapschema during registration of new schemas for errors.
  * The umc_init function does not assume to find the LDAP group objects
    "cn=Domain Admins" and and "cn=Domain Users" as direct children of
    the "cn=groups" container anymore. Instead it searches for them (or their
