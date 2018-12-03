@@ -6,6 +6,7 @@
 ##  - domaincontroller_backup
 ## tags:
 ##  - skip_admember
+##  - [SKIP]
 ## join: true
 ## exposure: dangerous
 
