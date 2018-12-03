@@ -454,7 +454,7 @@ install_ucsschool () {
 			install_apps ucsschool || rv=$?
 			;;
 		scope|*)
-			activate_ucsschool_devel_scope | | rv=$?
+			activate_ucsschool_devel_scope || rv=$?
 			echo "install_ucsschool - DEBUG1"
 			# Ensure ucsschool is a registered app
 			echo "ucsschool" >>/var/cache/appcenter-installed.txt
