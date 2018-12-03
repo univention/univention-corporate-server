@@ -51,7 +51,7 @@ from logging.handlers import TimedRotatingFileHandler
 from urlparse import urljoin
 
 import tornado.ioloop
-from tornado.web import Application, RequestHandler
+from tornado.web import Application, RequestHandler, HTTPError
 from tornado.concurrent import run_on_executor
 import tornado.gen
 from concurrent.futures import ThreadPoolExecutor
@@ -61,6 +61,7 @@ from ldap.filter import filter_format
 from univention.management.console.config import ucr
 from univention.management.console.ldap import get_user_connection, get_machine_connection
 from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, UDM_Settings, _get_syntax, container_modules, UDM_Error
+from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, NoIpLeft
 import univention.directory.reports as udr
 import univention.admin.uexceptions as udm_errors
 import univention.admin.modules as udm_modules
@@ -84,6 +85,12 @@ if 'umc-udm-trfh' not in logger.handlers:
 	logger.setLevel(logging.DEBUG)  # TODO: set to info or warn
 
 
+class NotFound(HTTPError):
+
+	def __init__(self, object_type, dn=None):
+		super(NotFound, self).__init__(404)  # FIXME: create error message
+
+
 class Ressource(RequestHandler):
 	executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
@@ -102,7 +109,7 @@ class Ressource(RequestHandler):
 				raise ValueError()
 			username, password = base64.decodestring(authorization.split(' ', 1)[1]).split(':', 1)
 		except (ValueError, IndexError, binascii.Error):
-			raise BadRequest()
+			raise HTTPError(400)
 
 		# TODO: caching
 		lo, po = get_machine_connection()
@@ -308,7 +315,7 @@ class ContainerQueryBase(Ressource):
 						'$isSuperordinate$': udm_modules.isSuperordinate(module.module),
 					})
 			except UDM_Error as exc:
-				raise UMC_Error(str(exc))
+				raise HTTPError(400, None, str(exc))
 
 		return result
 
@@ -472,7 +479,7 @@ class Report(ReportingBase):
 		try:
 			report_file = report.create(object_type, report_type, dns)
 		except udr.ReportError as exc:
-			raise UMC_Error(str(exc))
+			raise HTTPError(400, None, str(exc))
 
 		with open(report_file) as fd:
 			self.set_header('Content-Type', 'text/csv' if report.endswith('.csv') else 'application/pdf')
@@ -627,12 +634,12 @@ class Object(Ressource):
 					obj.info.pop(name, None)
 
 		if object_type == 'users/self' and dn != self._user_dn:
-			raise Forbidden()
+			raise HTTPError(403)
 
 		module = get_module(object_type, dn)
 		obj = module.get(dn)
 		if not obj:
-			raise NotFound(dn)
+			raise NotFound(object_type, dn)
 
 		_remove_uncopyable_properties(obj)
 		obj.set_defaults = True
@@ -709,7 +716,7 @@ class Object(Ressource):
 			property_obj = module.get_property(property_name)
 
 			if property_obj is None:
-				raise BadRequest(_('Property %s not found') % property_name)
+				raise HTTPError(400, None, _('Property %s not found') % property_name)
 
 			if not property_obj.multivalue:
 				value = value[0]
@@ -744,7 +751,7 @@ class PropertyChoices(Ressource):
 		try:
 			syntax = module.module.property_descriptions[property_].syntax
 		except KeyError:
-			raise NotFound()
+			raise NotFound(object_type, dn)
 		request_body = {'syntax': syntax.name}  # FIXME
 		choices = read_syntax_choices(_get_syntax(syntax.name), request_body)
 		self.content_negotiation(choices)
