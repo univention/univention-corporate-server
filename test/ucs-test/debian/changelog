@@ -1,3 +1,9 @@
+ucs-test (8.0.28-241) unstable; urgency=medium
+
+  * Bug #47745: disabled 86_selenium/180_portal_entries
+
+ -- Felix Botner <botner@univention.de>  Mon, 03 Dec 2018 18:23:09 +0100
+
 ucs-test (8.0.28-240) unstable; urgency=medium
 
   * Bug #47238: added utils.wait_for_connector_replication()
@@ -6,7 +12,7 @@ ucs-test (8.0.28-240) unstable; urgency=medium
 
 ucs-test (8.0.28-239) unstable; urgency=medium
 
-  * Bug #47745: 86_selenium/180_portal_entries
+  * Bug #47745: disabled 86_selenium/180_portal_entries
 
  -- Felix Botner <botner@univention.de>  Mon, 03 Dec 2018 17:59:29 +0100
 
