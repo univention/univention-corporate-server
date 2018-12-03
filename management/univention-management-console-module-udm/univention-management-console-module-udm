@@ -134,11 +134,29 @@ class Ressource(RequestHandler):
 		return obj
 
 	def content_negotiation(self, response):
-		# TODO; parse Accept header correctly with quality value
+		accept = self.request.headers.get('Accept', 'text/html').split(',')
+		langs = []
+		for language in accept:
+			score = 1.0
+			parts = language.strip().split(";")
+			for part in (x for x in parts[1:] if x.startswith("q=")):
+				try:
+					score = float(part)
+					break
+				except (ValueError, TypeError):
+					score = 0.0
+			langs.append((parts[0].strip(), score))
+		langs.sort(key=lambda pair: pair[1], reverse=True)
+		lang = None
+		for name, q in langs:
+			if name in ('text/html', 'text/xml', 'application/xml'):
+				lang = 'html'
+			elif name in ('application/json', 'application/*'):
+				lang = 'json'
+				break
+		if not lang:
+			raise HTTPError(406)
 		# TODO: implement XML
-		lang = 'html'
-		if 'application/json' in self.request.header.get('Accept', ''):
-			lang = 'json'
 		func = getattr(self, '%s_%s' % (self.request.method.lower(), lang), lambda x: x)
 		response = getattr(self, 'content_negotiation_%s' % (lang,))(func(response))
 		self.finish(response)
