@@ -1,3 +1,9 @@
+ucs-test (8.0.28-240) unstable; urgency=medium
+
+  * Bug #47238: added utils.wait_for_connector_replication()
+
+ -- Felix Botner <botner@univention.de>  Mon, 03 Dec 2018 18:14:33 +0100
+
 ucs-test (8.0.28-239) unstable; urgency=medium
 
   * Bug #47745: 86_selenium/180_portal_entries
