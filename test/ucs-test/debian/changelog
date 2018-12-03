@@ -1,3 +1,9 @@
+ucs-test (8.0.28-238) unstable; urgency=low
+
+  * Bug #43129: add 40_extended_attribute_attributehook_value_mapping
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 03 Dec 2018 14:50:44 +0100
+
 ucs-test (8.0.28-237) unstable; urgency=low
 
   * Bug #42535: reimplemented 03_username_with_ntdomain to circumvent
