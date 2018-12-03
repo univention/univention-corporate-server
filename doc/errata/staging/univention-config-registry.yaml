@@ -6,6 +6,6 @@ src: univention-config-registry
 fix: 13.0.0-6A~4.3.0.201811121038
 desc: |
  This update addresses the following issue(s):
- * univention-config-registry modules can not get registered multiple times
-   anymore.
+ * univention-config-registry modules cannot accidentally get registered
+   multiple times anymore.
 bug: [35239]
