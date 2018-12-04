@@ -409,13 +409,13 @@ Type=str
 Categories=service-mail
 
 [mail/dovecot/sieve/client/cafile]
-Description[de]=Der vollständige Dateiname der Datei mit dem Zertifikat der Stammzertifizierungsstelle (CA), die der Sieve-Client zum Verbinden zu Dovecots ManageSieve-Server verwenden soll. Bitte beim Ändern von mail/dovecot/ssl/cafile anpassen. Ist die Variable nicht gesetzt wird /etc/univention/ssl/ucsCA/CAcert.pem verwendet.
-Description[en]=The full path of the file containing the certificate of the certificate authority (CA) that the Sieve client should use to connect to Dovecot's ManageSieve server. Please modify this, if mail/dovecot/ssl/cafile is set. If the variable is unset /etc/univention/ssl/ucsCA/CAcert.pem is used.
+Description[de]=Der vollständige Dateiname der Datei mit dem Zertifikat der Stammzertifizierungsstelle (CA), die der Sieve-Client zum Verbinden zu Dovecots ManageSieve-Server verwenden soll. Bitte beim Ändern von mail/dovecot/ssl/cafile anpassen. Bitte prüfen, ob mail/dovecot/sieve/client/server ebenfalls angepasst werden muss. Ist die Variable nicht gesetzt wird /etc/univention/ssl/ucsCA/CAcert.pem verwendet.
+Description[en]=The full path of the file containing the certificate of the certificate authority (CA) that the Sieve client should use to connect to Dovecot's ManageSieve server. Please modify this, if mail/dovecot/ssl/cafile is set. Please check if mail/dovecot/sieve/client/server must be modified as well. If the variable is unset /etc/univention/ssl/ucsCA/CAcert.pem is used.
 Type=str
 Categories=service-mail
 
 [mail/dovecot/sieve/client/server]
-Description[de]=In dieser Variable kann ein abweichender FQDN angegeben werden, der beim Verbindungsaufbau zu Dovecots ManageSieve-Server verwendet wird. Dies ist notwendig, wenn das lokale System und das SSL-Zertifikat abweichende FQDN aufweisen (intern FQDN vs. externer FQDN). Bitte beim Ändern von mail/dovecot/ssl/cafile prüfen, ob diese Variable ebenfalls angepasst werden muss. Ist die Variable nicht gesetzt wird der lokale, interne FQDN verwendet.
+Description[de]=In dieser Variable kann ein abweichender FQDN angegeben werden, der beim Verbindungsaufbau zu Dovecots ManageSieve-Server verwendet wird. Dies ist notwendig, wenn das lokale System und das SSL-Zertifikat abweichende FQDN aufweisen (interner FQDN vs. externer FQDN). Bitte beim Ändern von mail/dovecot/ssl/cafile prüfen, ob diese Variable ebenfalls angepasst werden muss. Ist die Variable nicht gesetzt wird der lokale, interne FQDN verwendet.
 Description[en]=In this variable, you can specify a different FQDN to be used when connecting to Dovecot's ManageSieve server. This is necessary if the local system and the SSL certificate have different FQDNs (internal FQDN vs. external FQDN). When changing mail/dovecot/ssl/cafile, please check whether this variable also needs to be changed. If the variable is not set, the local, internal FQDN is used.
 Type=str
 Categories=service-mail
@@ -433,8 +433,8 @@ Type=bool
 Categories=service-mail
 
 [mail/dovecot/ssl/cafile]
-Description[de]=Der vollständige Dateiname der Datei mit den Zertifikaten der Stammzertifizierungsstelle (CA) zur Verwendung für den IMAP/POP3/Managesieve-Server. Setzen Sie diese Variable nur, wenn Sie wünschen Clients zum Senden eines Zertifikats aufzufordern. Setzen Sie zusätzlich mail/dovecot/auth/ssl_require_client_cert=yes, wenn Sie nicht nur Auffordern, sondern Client-Zertifikate verlangen wollen.
-Description[en]=The full path of the file containing the certificates of the certificate authority (CA) to be used by the IMAP/POP3/managesieve server. Set this only if you intend to request clients to send a certificate. Set mail/dovecot/auth/ssl_require_client_cert=yes is you wish to not only request client certificates, but want to require them.
+Description[de]=Der vollständige Dateiname der Datei mit den Zertifikaten der Stammzertifizierungsstelle (CA) zur Verwendung für den IMAP/POP3/Managesieve-Server. Setzen Sie diese Variable nur, wenn Sie wünschen Clients zum Senden eines Zertifikats aufzufordern. Setzen Sie zusätzlich mail/dovecot/auth/ssl_require_client_cert=yes, wenn Sie nicht nur Auffordern, sondern Client-Zertifikate verlangen wollen. Wenn diese Variable gesetzt wird, sollte auch mail/dovecot/sieve/client/cafile angepasst werden.
+Description[en]=The full path of the file containing the certificates of the certificate authority (CA) to be used by the IMAP/POP3/managesieve server. Set this only if you intend to request clients to send a certificate. Set mail/dovecot/auth/ssl_require_client_cert=yes is you wish to not only request client certificates, but want to require them. If this variable is set, mail/dovecot/sieve/client/cafile should be changed as well.
 Type=str
 Categories=service-mail
 

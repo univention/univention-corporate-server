@@ -1,3 +1,9 @@
+univention-mail-dovecot (4.0.0-13) unstable; urgency=low
+
+  * Bug #41018: update UCR variable descriptions
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 04 Dec 2018 10:10:45 +0100
+
 univention-mail-dovecot (4.0.0-12) unstable; urgency=low
 
   * Bug #41018: add UCR variable mail/dovecot/sieve/client/server to be
