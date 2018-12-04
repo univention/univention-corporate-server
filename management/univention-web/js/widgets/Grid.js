@@ -514,7 +514,11 @@ define([
 				console.warn("unknown grid view selected");
 				return;
 			}
-			var selectedIDs = this.getSelectedIDs();
+			if (newView === 'tile') {
+				this._grid.set('selectionMode', 'single');
+			} else {
+				this._grid.set('selectionMode', 'extended');
+			}
 			this._grid.renderRow = this._views[newView].renderRow;
 			var allBaseClasses = array.map(Object.keys(this._views), function(view) {
 				return this._views[view].baseClass;
@@ -522,7 +526,6 @@ define([
 			domClass.replace(this.domNode, this._views[newView].baseClass, allBaseClasses);
 			this._grid.refresh();
 			this._grid.resize();
-			this._grid.selectIDs(selectedIDs);
 			this.activeViewMode = newView;
 		},
 
@@ -871,7 +874,14 @@ define([
 			}, this);
 
 			var itemsSelected = nItems > 0;
-			domClass.toggle(this._contextActionsToolbar.domNode, 'dijitDisplayNone', !itemsSelected);
+			domClass.toggle(this._header.domNode, 'umcGridHeader--items-selected', itemsSelected);
+			if (this.activeViewMode === 'tile') {
+				domClass.toggle(this._toolbar.domNode, 'dijitDisplayNone', false);
+				domClass.toggle(this._contextActionsToolbar.domNode, 'dijitDisplayNone', true);
+			} else {
+				domClass.toggle(this._toolbar.domNode, 'dijitDisplayNone', itemsSelected);
+				domClass.toggle(this._contextActionsToolbar.domNode, 'dijitDisplayNone', !itemsSelected);
+			}
 		},
 
 		_updateContextItem: function(evt) {

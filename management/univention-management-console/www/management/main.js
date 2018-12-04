@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global umc,define,require,console,window,setTimeout*/
+/*global umc,define,require,console,window,setTimeout,dojo*/
 
 define([
 	"dojo/_base/declare",
@@ -1659,15 +1659,21 @@ define([
 
 			// color the umcHeader
 			styles.insertCssRule(lang.replace('.umc .umcHeader.headerColor-{0}', [module.category_for_color]), cssProperties);
+
 			// color border and set color of NotificationDropDownButton notificationCountNode
 			styles.insertCssRule(lang.replace('.umc .umcHeader.headerColor-{0} .umcNotificationDropDownButton .notificationCountNode', [tab.categoryColor]), lang.replace('border-color: {0}; color: {0};', [color]));
+
 			// color the tabs in the tabs dropDownMenu of the umcHeaer
 			styles.insertCssRule(lang.replace('.umc .umcMoreTabsDropDownMenuContent .dijitMenuItemHover.color-{0},.umc .umcMoreTabsDropDownMenuContent .dijitMenuItemSelected.color-{0}', [module_flavor_css]), lang.replace('background-color: {0}', [color]));
+
 			// color module tabs
 			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitHover', [defaultClasses, module_flavor_css]), cssProperties);
 			styles.insertCssRule(lang.replace('{0}.umcModuleTab-{1}.dijitTabChecked', [defaultClasses, module_flavor_css]), cssProperties);
-			// color action buttons in an dgrid
-			styles.insertCssRule(lang.replace('.umcModule.color-{0} .umcGridHeader .dijitButtonText', [tab.categoryColor]), lang.replace('color: {0}', [color]));
+
+			// color the grid header when items are selected
+			var gridHeaderColor = dojo.blendColors(dojo.colorFromHex(color), dojo.colorFromHex('#ffffff'), 0.7);
+			styles.insertCssRule(lang.replace('.umcModule.color-{0} .umcGridHeader--items-selected', [tab.categoryColor]), lang.replace('background-color: {0}', [gridHeaderColor.toHex()]));
+
 			// color scroll to top floating button
 			styles.insertCssRule(lang.replace('.umcModule.color-{0} .scrollToTopFloatingButton', [tab.categoryColor]), lang.replace('background-color: {0}', [color]));
 		},
