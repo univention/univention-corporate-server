@@ -29,7 +29,7 @@ prepare_master () {
 	udm shares/share create --position "cn=shares,dc=sambatest,dc=local" --set name="testshare" --set host="ucs-master.sambatest.local" --set path="/home/testshare"
 	udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set name="Masterprinter" --set spoolHost=$(hostname -A) --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
 
-	python shared-utils/ucs-winrm.py domain-join --domain sambatest.local --dnsserver "$UCS" --domainuser "administrator" --domainpassword "$ADMIN_PASSWORD"
+	python shared-utils/ucs-winrm.py domain-join --domain sambatest.local --dnsserver "$UCS" --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
 	#Uhrzeit prüfen: Sollte synchron zum DC Master sein (automatischer Abgleich per NTP). DONE
 	python shared-utils/ucs-winrm.py run-ps --credssp --cmd 'Get-Date -Format t' > date
 	WINTIME="$(sed -n 1p date | cut -c1-5)"
