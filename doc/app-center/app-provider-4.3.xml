@@ -685,6 +685,13 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                         </simpara>
                     </listitem>
                 </orderedlist>
+                <para>
+                    As a result, Docker Compose starts a configuration on the
+                    UCS system that no longer matches 100% of the app
+                    provider's input. The modified
+                    <option>docker-compose.yml</option> can be found at
+                    <filename>/var/lib/univention-appcenter/apps/$apps/compose/docker-compose.yml</filename>.
+                </para>
         </section>
         <section id="create-app-with-docker:finish">
             <title>Finish multi container setup</title>
