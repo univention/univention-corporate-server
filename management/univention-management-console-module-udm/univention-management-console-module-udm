@@ -46,8 +46,6 @@ import copy
 import urllib
 import base64
 import binascii
-import logging
-from logging.handlers import TimedRotatingFileHandler
 from urlparse import urljoin
 
 import tornado.ioloop
@@ -65,6 +63,7 @@ from univention.management.console.modules.udm.udm_ldap import SuperordinateDoes
 import univention.directory.reports as udr
 import univention.admin.uexceptions as udm_errors
 import univention.admin.modules as udm_modules
+from univention.lib.i18n import Translation
 # TODO: PAM authentication ?
 # TODO: threads?
 # TODO: use http link header
@@ -73,16 +72,9 @@ import univention.admin.modules as udm_modules
 # FIXME: prevent in the javascript that navigation container query is called with container=='None'
 # TODO: translation
 
+_ = Translation('univention-management-console-module-udm').translate
 
-MAX_WORKERS = 4
-
-logger = logging.getLogger('umc-udm')
-if 'umc-udm-trfh' not in logger.handlers:
-	handler = TimedRotatingFileHandler('/var/log/univention/umc-udm.log', when='D', interval=7)
-	handler.set_name('umc-udm-trfh')
-	handler.setLevel(logging.DEBUG)  # TODO: set to info or warn
-	logger.addHandler(handler)
-	logger.setLevel(logging.DEBUG)  # TODO: set to info or warn
+MAX_WORKERS = 35
 
 
 class NotFound(HTTPError):
@@ -477,7 +469,6 @@ class ReportTypes(ReportingBase):
 		"""Returns a list of reports for the given object type"""
 		# i18n: translattion for univention-directory-reports
 		# _('PDF Document')
-		_ = lambda x: x
 		result = [{'id': name, 'label': _(name)} for name in sorted(self.reports_cfg.get_report_names(object_type))]
 		self.content_negotiation(result)
 
