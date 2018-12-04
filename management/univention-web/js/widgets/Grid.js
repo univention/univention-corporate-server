@@ -108,8 +108,6 @@ define([
 		}
 	});
 
-	var _StatusText = declare([Text]);
-
 	return declare("umc.widgets.Grid", [ContainerWidget, StandbyMixin, _RegisterOnShowMixin], {
 		// summary:
 		//		Encapsulates a complex grid with store, UMCP commands and action buttons;
@@ -413,16 +411,7 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._header = new ContainerWidget({
-				baseClass: 'umcGridHeader'
-			});
-			this.addChild(this._header);
-			this._statusMessage = new _StatusText({
-				'class': 'umcGridStatus',
-				content: this.initialStatusMessage
-			});
-			this.own(this._statusMessage);
-			this.addChild(this._statusMessage);
+			this._buildHeader();
 
 			this._grid = new _Grid(lang.mixin({
 				collection: this.collection,
@@ -481,6 +470,28 @@ define([
 			this.own(on(this._grid, 'scroll', lang.hitch(this, function() {
 				domClass.toggle(this.domNode, 'scrollIsNotAtTop', this._grid.getScrollPosition().y !== 0);
 			})));
+		},
+
+		_buildHeader: function() {
+			this._header = new ContainerWidget({
+				baseClass: 'umcGridHeader'
+			});
+			this._toolbar = new ContainerWidget({
+				baseClass: 'umcGrid__toolbar',
+				'class': 'dijitDisplayNone'
+			});
+			this._contextActionsToolbar = new ContainerWidget({
+				baseClass: 'umcGrid__contextActionsToolbar',
+				'class': 'dijitDisplayNone'
+			});
+			this._statusMessage = new Text({
+				'class': 'umcGridStatus',
+				content: this.initialStatusMessage
+			});
+			this._header.addChild(this._toolbar);
+			this._header.addChild(this._contextActionsToolbar);
+			this._header.addChild(this._statusMessage);
+			this.addChild(this._header);
 		},
 
 		_addViewsToGrid: function() {
@@ -698,7 +709,7 @@ define([
 			this.actions = actions;
 
 			// clear old actions
-			array.forEach([this._header, this._contextMenu], function(iobj) {
+			array.forEach([this._toolbar, this._contextActionsToolbar, this._contextMenu], function(iobj) {
 				array.forEach(iobj.getChildren(), function(ichild) {
 					iobj.removeChild(ichild);
 					ichild.destroyRecursive();
@@ -710,11 +721,8 @@ define([
 			this._setContextActions();
 
 			domClass.toggle(this._header.domNode, 'dijitDisplayNone', !this.actions.length);
-			if (this._toolbar.getChildren().length) {
-				this._header.addChild(this._toolbar);
-			}
-			this._header.addChild(this._contextActionsToolbar);
-			style.set(this._contextActionsToolbar.domNode, 'visibility', 'hidden');
+			domClass.toggle(this._toolbar.domNode, 'dijitDisplayNone', this._toolbar.getChildren().length === 0);
+			domClass.add(this._contextActionsToolbar.domNode, 'dijitDisplayNone');
 
 			// redraw the columns
 			if (doSetColumns !== false) {
@@ -727,9 +735,7 @@ define([
 		},
 
 		_setContextActions: function() {
-			this._contextActionsToolbar = new ContainerWidget({ style: 'float: left' });
 			this._contextActionsMenu = new Menu({});
-			this.own(this._contextActionsToolbar);
 			this.own(this._contextActionsMenu);
 
 			array.forEach(this._getContextActions(), function(iaction) {
@@ -793,8 +799,6 @@ define([
 			// add more menu to toolbar
 			if (this._contextActionsMenu.getChildren().length) {
 				this._contextActionsToolbar.addChild(new _DropDownButton({
-					baseClass: _DropDownButton.prototype.baseClass + ' umcGridMoreMenu',
-					iconClass: 'umcIconNoIcon',
 					label: _('more'),
 					dropDown: this._contextActionsMenu
 				}));
@@ -806,17 +810,6 @@ define([
 		},
 
 		_setGlobalActions: function() {
-			//
-			// toolbar for global actions
-			//
-
-			// add a toolbar which contains all non-context actions
-			this._toolbar = new ContainerWidget({
-				style: 'float: left',
-				baseClass: 'umcGridToolBar'
-			});
-			this.own(this._toolbar);
-
 			var buttonsCfg = array.map(this._getGlobalActions(), function(iaction) {
 				var jaction = iaction;
 				if (iaction.callback) {
@@ -831,10 +824,7 @@ define([
 				return jaction;
 			}, this);
 
-			// render buttons
 			var buttons = render.buttons(buttonsCfg);
-
-			// add buttons to toolbar
 			array.forEach(buttons.$order$, function(ibutton) {
 				this._toolbar.addChild(ibutton);
 				ibutton.on('click', lang.hitch(this, function() {
@@ -880,9 +870,8 @@ define([
 				}
 			}, this);
 
-			// don't show context actions if they are not available
-			var visibility = nItems === 0 ? 'hidden' : 'visible';
-			style.set(this._contextActionsToolbar.domNode, 'visibility', visibility);
+			var itemsSelected = nItems > 0;
+			domClass.toggle(this._contextActionsToolbar.domNode, 'dijitDisplayNone', !itemsSelected);
 		},
 
 		_updateContextItem: function(evt) {

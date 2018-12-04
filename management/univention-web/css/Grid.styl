@@ -60,18 +60,8 @@ $umcGrid-edge-padding = 24px
 	material-shadow(1)
 
 	.umcGridHeader
-		display: inline-block
-		padding: 0
-		padding-left: 8px
-		float: left
-		margin: 10px 0
-
-		& > *:after
-			content: " "
-			display: block
-			clear: both
-			height: 0px
-			visibility: hidden
+		display: flex
+		padding: 8px
 
 		.dijitDropDownButton
 			.dijitButtonContents
@@ -87,15 +77,21 @@ $umcGrid-edge-padding = 24px
 				display: none
 
 	.umcGridStatus
-		margin: 10px 0
+		flex: 1 1 60px
+		min-width: 60px
+		white-space: nowrap
+		overflow: hidden
+		text-overflow: ellipsis
 		height: 52px
 		line-height: @height
-		text-align: center
-		float: right
+		text-align: right
 		font-size: 12px
 		color: rgba(0, 0, 0, 0.54)
-		padding-right: $umcGrid-edge-padding
+		padding-right: 16px
 
+	.umcGrid__toolbar,
+	.umcGrid__contextActionsToolbar
+		flex: 1 1 auto
 
 	.dgrid
 		clear: both
