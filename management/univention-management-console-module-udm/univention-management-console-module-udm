@@ -65,7 +65,6 @@ import univention.admin.uexceptions as udm_errors
 import univention.admin.modules as udm_modules
 from univention.lib.i18n import Translation
 # TODO: PAM authentication ?
-# TODO: threads?
 # TODO: use http link header
 # TODO: set Last-Modified
 # FIXME: add_asterisks sanitizer
@@ -114,6 +113,8 @@ class Ressource(RequestHandler):
 		except:
 			return self.force_authorization()
 
+		self.request.content_negotiation_lang = self.check_acceptable()
+
 	def get_module(self, object_type):
 		module = UDM_Module(object_type)
 		if not module or not module.module:
@@ -127,7 +128,7 @@ class Ressource(RequestHandler):
 			raise NotFound(object_type, dn)
 		return obj
 
-	def content_negotiation(self, response):
+	def check_acceptable(self):
 		accept = self.request.headers.get('Accept', 'text/html').split(',')
 		langs = []
 		for language in accept:
@@ -143,14 +144,19 @@ class Ressource(RequestHandler):
 		langs.sort(key=lambda pair: pair[1], reverse=True)
 		lang = None
 		for name, q in langs:
-			if name in ('text/html', 'text/xml', 'application/xml'):
+			if name in ('text/html', 'text/xml', 'application/xml', 'text/*', '*/*'):
 				lang = 'html'
+				break
 			elif name in ('application/json', 'application/*'):
 				lang = 'json'
 				break
 		if not lang:
 			raise HTTPError(406)
+		return lang
+
+	def content_negotiation(self, response):  # FIXME: move into prepare
 		# TODO: implement XML
+		lang = self.request.content_negotiation_lang
 		func = getattr(self, '%s_%s' % (self.request.method.lower(), lang), lambda x: x)
 		response = getattr(self, 'content_negotiation_%s' % (lang,))(func(response))
 		self.finish(response)
