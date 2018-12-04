@@ -3,7 +3,7 @@ release: "4.3"
 version: [2]
 scope: ucs_4.3-0-errata4.3-2
 src: univention-mail-dovecot
-fix: 
+fix: 4.0.0-13A~4.3.0.201812041012
 desc: |
  This update addresses the following issue(s):
  * When creating users, an SSL error occurred when uploading the initial
