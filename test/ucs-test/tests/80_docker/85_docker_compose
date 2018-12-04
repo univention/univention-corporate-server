@@ -1,0 +1,74 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test docker compose
+## tags: [docker]
+## exposure: dangerous
+## packages:
+##   - docker.io
+
+from dockertest import Appcenter, get_app_version, App, UCSTest_DockerApp_InstallationFailed, get_docker_appbox_image, get_app_name
+from univention.testing.utils import is_port_open
+import pytest
+import os
+import subprocess
+
+DOCKER_COMPOSE = '''
+version: '2.0'
+
+services:
+  test1:
+    image: {image}
+    ports:
+      - "8000:8000"
+    environment:
+      REDIS_PORT_6379_TCP_ADDR: test2
+      REDIS_PORT_6379_TCP_PORT: 6379
+    links:
+      - test2:test2
+    command: /sbin/init
+    restart: always
+  test2:
+    image: {image}
+    volumes:
+      - /var/lib/univention-appcenter/apps/ethercalc/redis:/data
+    command: /sbin/init
+    restart: always
+'''
+
+if __name__ == '__main__':
+	with Appcenter() as appcenter:
+
+		name = get_app_name()
+		setup = '#!/bin/sh'
+		store_data = '#!/bin/sh'
+
+		app = App(name=name, version='1', build_package=False, call_join_scripts=False)
+		try:
+			app.set_ini_parameter(
+				DockerMainService='test1'
+			)
+			app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.6'))
+			app.add_script(setup=setup)
+			app.add_script(store_data=store_data)
+			app.add_to_local_appcenter()
+			appcenter.update()
+			app.install()
+			app.verify(joined=False)
+			app.execute_command_in_container('touch /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)
+
+			app = App(name=name, version='2', build_package=False, call_join_scripts=False)
+			app.set_ini_parameter(
+				DockerMainService='test1',
+			)
+			app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.7'))
+			app.add_script(setup=setup)
+			app.add_script(store_data=store_data)
+			app.add_to_local_appcenter()
+			appcenter.update()
+			app.upgrade()
+			app.verify(joined=False)
+			app.execute_command_in_container('ls /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)
+			image = subprocess.check_output(['docker', 'inspect', app.container_id, '--format={{.Config.Image}}']).strip()
+			assert image == 'docker-test.software-univention.de/alpine:3.7'
+		finally:
+			app.uninstall()
+			app.remove()
