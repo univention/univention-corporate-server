@@ -602,7 +602,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                 <option>docker-compose.yml</option> is altered by the App
                 Center with the following changes:
             </para>
-                <itemizedlist>
+                <orderedlist>
                     <listitem>
                         <simpara>
                             When a Multi Container App is released, the
@@ -684,7 +684,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                             <filename>/etc/machine.secret</filename>.
                         </simpara>
                     </listitem>
-                </itemizedlist>
+                </orderedlist>
         </section>
         <section id="create-app-with-docker:finish">
             <title>Finish multi container setup</title>
