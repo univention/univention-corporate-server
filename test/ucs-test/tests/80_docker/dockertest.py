@@ -39,6 +39,8 @@ import shutil
 import subprocess
 import urllib2
 import threading
+import requests
+import json
 
 
 class UCSTest_Docker_Exception(Exception):
@@ -96,6 +98,7 @@ class UCTTest_DockerApp_UMCInstallFailed(Exception):
 class UCSTest_DockerApp_RegisterFailed(Exception):
 	pass
 
+
 def tiny_app(name=None, version=None):
 	name = name or get_app_name()
 	version = version or '1'
@@ -114,10 +117,21 @@ def tiny_app(name=None, version=None):
 	)
 	return app
 
+
 def get_docker_appbox_image():
 	image_name = 'docker-test.software-univention.de/ucs-appbox-amd64:4.3-0'
-	print 'Using %s' % image_name
+	print('Using %s' % image_name)
 	return image_name
+
+
+def get_latest_docker_appbox_image():
+	url = 'https://docker.software-univention.de/v2/ucs-appbox-amd64/tags/list'
+	username = 'ucs'
+	password = 'readonly'
+	resp = requests.get(url, auth=(username, password)).content
+	data = json.loads(resp)
+	image = 'docker.software-univention.de/ucs-appbox-amd64:' + max(data['tags'])
+	return image
 
 
 def docker_login(server='docker.software-univention.de'):
