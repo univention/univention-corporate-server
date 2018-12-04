@@ -84,7 +84,8 @@ class NotFound(HTTPError):
 
 
 class Ressource(RequestHandler):
-	executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
+
+	pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
 	def force_authorization(self):
 		self.set_header('WWW-Authenticate', 'Basic realm="Univention Management Console"')
@@ -109,6 +110,7 @@ class Ressource(RequestHandler):
 			userdn = lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [username]), unique=True)[0]
 			self.ldap_connection, self.ldap_position = get_user_connection(bind=lambda lo: lo.bind(userdn, password))
 			set_bind_function(lambda lo: lo.bind(userdn, password))
+			self.request.user_dn = userdn
 		except:
 			return self.force_authorization()
 
@@ -159,6 +161,7 @@ class Ressource(RequestHandler):
 
 	def content_negotiation_html(self, response):
 		self.set_header('Content-Type', 'text/html')
+		return json.dumps(response)
 		return response
 
 
@@ -273,6 +276,7 @@ class ObjectTypesNavigation(Ressource):
 
 class ContainerQueryBase(Ressource):
 
+	@tornado.gen.coroutine
 	def _container_query(self, object_type, container, modules, scope):
 		"""Get a list of containers or child objects of the specified container."""
 
@@ -286,7 +290,7 @@ class ContainerQueryBase(Ressource):
 					'label': UDM_Module(object_type).title,
 					'icon': 'udm-%s' % (object_type.replace('/', '-'),),
 				})
-			return [dict({
+			raise tornado.gen.Return([dict({
 				'id': container,
 				'label': ldap_dn2path(container),
 				'icon': 'udm-container-dc',
@@ -296,7 +300,7 @@ class ContainerQueryBase(Ressource):
 				'$flags$': [],
 				'$childs$': True,
 				'$isSuperordinate$': False,
-			}, **defaults)]
+			}, **defaults)])
 
 		result = []
 		for xmodule in modules:
@@ -311,7 +315,8 @@ class ContainerQueryBase(Ressource):
 				if superordinate is None:
 					continue  # superordinate object could not be load -> ignore module
 			try:
-				for item in xmodule.search(container, scope=scope, superordinate=superordinate):
+				items = yield self.pool.submit(xmodule.search, container, scope=scope, superordinate=superordinate)
+				for item in items:
 					module = UDM_Module(item.module)
 					result.append({
 						'id': item.dn,
@@ -327,12 +332,13 @@ class ContainerQueryBase(Ressource):
 			except UDM_Error as exc:
 				raise HTTPError(400, None, str(exc))
 
-		return result
+		raise tornado.gen.Return(result)
 
 
 class Navigation(ContainerQueryBase):
 	"""GET udm/(dns|dhcp|)/navigation/ (the tree content of navigation/DNS/DHCP)"""
 
+	@tornado.gen.coroutine
 	def get(self, object_type):
 		ldap_base = ucr['ldap/base']
 		container = self.get_query_argument('container', None)
@@ -347,7 +353,7 @@ class Navigation(ContainerQueryBase):
 			scope = 'sub'
 			modules = [object_type]
 
-		containers = self._container_query(object_type, container, modules, scope)
+		containers = yield self._container_query(object_type, container, modules, scope)
 		self.content_negotiation(containers)
 
 
@@ -439,7 +445,7 @@ class Containers(Ressource):
 
 		if self.settings is not None:
 			settings = UDM_Settings()
-			settings.user(self.user_dn)
+			settings.user(self.request.user_dn)
 			containers += settings.containers(object_type)
 
 		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
@@ -476,6 +482,7 @@ class ReportTypes(ReportingBase):
 class Report(ReportingBase):
 	"""GET udm/users/user/report/$report_type (create a report of a users)"""
 
+	@tornado.gen.coroutine
 	def get(self, object_type, report_type):
 		# TODO: POST ? with 202 accepted
 		try:
@@ -486,7 +493,7 @@ class Report(ReportingBase):
 		dns = self.get_query_arguments('dn')
 		report = udr.Report(self.ldap_connection)
 		try:
-			report_file = report.create(object_type, report_type, dns)
+			report_file = yield self.pool.submit(report.create, object_type, report_type, dns)
 		except udr.ReportError as exc:
 			raise HTTPError(400, None, str(exc))
 
@@ -534,10 +541,6 @@ class DefaultValue(Ressource):
 
 class Objects(Ressource):
 
-	@run_on_executor
-	def mod_search(self, module, container, objectProperty, objectPropertyValue, superordinate, scope, hidden):
-		return module.search(container, objectProperty, objectPropertyValue, superordinate, scope, hidden) or []
-
 	@tornado.gen.coroutine
 	def get(self, object_type):
 		"""GET udm/users/user/ (nach Benutzern suchen)"""
@@ -561,11 +564,10 @@ class Objects(Ressource):
 			superordinate = mod.get(superordinate)
 			container = container or superordinate
 
-		# result = module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden) or []
-		result = yield self.mod_search(module, container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden) or []
+		result = yield self.pool.submit(module.search, container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden)
 
 		entries = []
-		for obj in result:
+		for obj in result or []:
 			if obj is None:
 				continue
 			module = get_module(object_type, obj.dn)
@@ -594,6 +596,7 @@ class Objects(Ressource):
 
 		self.content_negotiation(entries)
 
+	@tornado.gen.coroutine
 	def post(self, object_type):
 		"""POST udm/users/user/ (Benutzer hinzufügen)"""
 		module = self.get_module(object_type)
@@ -606,7 +609,7 @@ class Objects(Ressource):
 		obj.options = options
 		properties = dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items()))
 
-		dn = module.create(properties, container=container, superordinate=superordinate)
+		dn = yield self.pool.submit(module.create, properties, container=container, superordinate=superordinate)
 		self.set_header('Location', urljoin(self.request.path, urllib.quote(dn)))
 		self.set_status(201)
 
@@ -630,6 +633,7 @@ class Objects(Ressource):
 
 class Object(Ressource):
 
+	@tornado.gen.coroutine
 	def get(self, object_type, dn):
 		"""GET udm/users/user/$DN (get all properties/values of the user)"""
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.request.path, 'self', ''))
@@ -646,7 +650,7 @@ class Object(Ressource):
 			raise HTTPError(403)
 
 		module = get_module(object_type, dn)
-		obj = module.get(dn)
+		obj = yield self.pool.submit(module.get, dn)
 		if not obj:
 			raise NotFound(object_type, dn)
 
@@ -676,6 +680,7 @@ class Object(Ressource):
 		props['url'] = urljoin(self.request.path, obj.dn)
 		self.content_negotiation(props)
 
+	@tornado.gen.coroutine
 	def put(self, object_type, dn):
 		"""PUT udm/users/user/$DN (Benutzer hinzufügen / modifizieren)"""
 		module = get_module(object_type, dn)
@@ -688,13 +693,15 @@ class Object(Ressource):
 		properties = dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items()))
 		try:
 			module._map_properties(obj, properties)
-			obj.modify()
+			yield self.pool.submit(obj.modify)
 		except udm_errors.base as exc:
 			UDM_Error(exc).reraise()
 
+	@tornado.gen.coroutine
 	def patch(self, object_type, dn):
 		pass
 
+	@tornado.gen.coroutine
 	def delete(self, object_type, dn):
 		"""DELETE udm/users/user/$DN (Benutzer löschen)"""
 		module = get_module(object_type, dn)
@@ -703,12 +710,12 @@ class Object(Ressource):
 
 		cleanup = bool(self.get_query_argument('cleanup', False))
 		recursive = bool(self.get_query_argument('recursive', False))
-		module.remove(dn, cleanup, recursive)
+		yield self.pool.submit(module.remove, dn, cleanup, recursive)
 
 	def options(self, object_type, dn):
 		self.set_header('Allow', 'GET, PUT, DELETE, OPTIONS')
 
-	def _validate(self, object_type):
+	def _validate(self, object_type):  # (thread)
 		"""Validates the correctness of values for properties of the
 		given object type. Therefor the syntax definition of the properties is used.
 
@@ -755,6 +762,7 @@ class Object(Ressource):
 class PropertyChoices(Ressource):
 	"""GET udm/users/user/$DN/property/$name/choices (get possible values/choices for that property)"""
 
+	@tornado.gen.coroutine
 	def get(self, object_type, dn, property_):
 		module = self.get_module(object_type)
 		try:
@@ -762,7 +770,7 @@ class PropertyChoices(Ressource):
 		except KeyError:
 			raise NotFound(object_type, dn)
 		request_body = {'syntax': syntax.name}  # FIXME
-		choices = read_syntax_choices(_get_syntax(syntax.name), request_body)
+		choices = yield self.pool.submit(read_syntax_choices, _get_syntax(syntax.name), request_body)
 		self.content_negotiation(choices)
 
 
@@ -779,7 +787,13 @@ class PolicyTypes(Ressource):
 class PolicyResult(Ressource):
 	"""GET udm/users/user/policies/$policy_type/$dn?container=true...&policy=... (get the possible policies of the policy-type for user objects located at the containter)"""
 
+	@tornado.gen.coroutine
 	def get(self, object_type, policy_type, dn):
+		infos = yield self._get(object_type, policy_type, dn)
+		self.content_negotiation(infos)
+
+	@run_on_executor(executor='pool')
+	def _get(self, object_type, policy_type, dn):
 		"""Returns a virtual policy object containing the values that
 		the given object or container inherits"""
 
@@ -838,8 +852,8 @@ class PolicyResult(Ressource):
 				if isinstance(infos[key], (tuple, list)):
 					continue
 				infos[key]['value'] = policy_obj.polinfo[key]
+		return infos
 
-		self.content_negotiation(infos)
 
 class Operations(Ressource):
 	"""GET /udm/progress/$progress-id (get the progress of a started operation like move, report, maybe add/put?, ...)"""
@@ -855,17 +869,17 @@ if __name__ == "__main__":
 		(r"/udm/(([a-z]+/[a-z]+)|navigation)/move-destinations/", MoveDestinations),
 		(r"/udm/([a-z]+/[a-z]+)/options", Options),
 		(r"/udm/([a-z]+/[a-z]+)/templates", Templates),
-		(r"/udm/([a-z]+/[a-z]+)/containers", Containers),
+		(r"/udm/([a-z]+/[a-z]+)/containers", Containers),  # TODO: maybe rename conflicts with above except trailing slash
 		(r"/udm/([a-z]+/[a-z]+)/policies", Policies),
 		(r"/udm/([a-z]+/[a-z]+)/report-types", ReportTypes),
 		(r"/udm/([a-z]+/[a-z]+)/report/([^/]+)", Report),
 		(r"/udm/([a-z]+/[a-z]+)/([^/]+)/properties/", Properties),
 		(r"/udm/([a-z]+/[a-z]+)/([^/]+)/properties/([^/]+)/choices", PropertyChoices),
 		(r"/udm/([a-z]+/[a-z]+)/properties/([^/]+)/default", DefaultValue),
-		(r"/udm/([a-z]+/[a-z]+)/([^/]+)/(policies/[a-z]+)/", PolicyTypes),
-		(r"/udm/([a-z]+/[a-z]+)/(policies/[a-z]+)/([^/]+)/", PolicyResult),
+		(r"/udm/([a-z]+/[a-z]+)/([^/]+)/(policies/[a-z_]+)/", PolicyTypes),
+		(r"/udm/([a-z]+/[a-z]+)/(policies/[a-z_]+)/([^/]+)/", PolicyResult),
 		(r"/udm/([a-z]+/[a-z]+)/", Objects),
-		(r"/udm/([a-z]+/[a-z]+)/([^/]+)", Object),
+		(r"/udm/([a-z]+/[a-z]+)/([^/]+=[^/]+)", Object),
 		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/layout", Layout),
 		(r"/udm/networks/network/([^/]+)/next-free-ip-address", NextFreeIpAddress),
 		(r"/udm/progress/$progress-id", Operations),  # operations?
