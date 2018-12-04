@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [2]
+scope: ucs_4.3-0-errata4.3-2
+src: univention-saml
+fix: 5.0.4-28A~4.3.0.201812041233
+desc: |
+ This update addresses the following issue(s):
+ * The udm module flavors are requiring a minimal set of
+   allowed UMC commands now to be visible in the UMC.
+bug: [47880]
