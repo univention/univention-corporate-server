@@ -189,6 +189,10 @@ test_master () {
 	udm shares/share modify --dn "cn=testshareSlave,cn=shares,dc=sambatest,dc=local" --set group=5000 --set directorymode=0770 --set sambaDirectoryMode=0770
 	python shared-utils/ucs-winrm.py check-share --server $MEMBER --sharename "testshareMember" --driveletter R --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py check-share --server $SLAVE --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
+
+	python shared-utils/ucs-winrm.py create-share-file --server $MEMBER --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention123!" \
+		--share testshareMember --debug 2>&1 || true
+
 	python shared-utils/ucs-winrm.py create-share-file --server $MEMBER --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention123!" \
 		--share testshareMember --debug 2>&1 | grep 'denied.'
 	python shared-utils/ucs-winrm.py create-share-file --server $SLAVE --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention123!" \
