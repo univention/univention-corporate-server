@@ -1,3 +1,9 @@
+ucs-test (8.0.28-244) unstable; urgency=medium
+
+  * Bug #47000: 09_updater/41component-prefix disabled
+
+ -- Felix Botner <botner@univention.de>  Tue, 04 Dec 2018 15:31:07 +0100
+
 ucs-test (8.0.28-243) unstable; urgency=medium
 
   * Bug #43612: 80_docker/85_docker_compose
