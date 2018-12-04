@@ -34,9 +34,16 @@
 				<category name="users"/>
 			</categories>
 			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/policies"/>
+				<requiredCommand name="udm/values"/>
 				<requiredCommand name="udm/query"/>
 				<requiredCommand name="udm/get"/>
-				<requiredCommand name="udm/values"/>
 			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="groups/group">
