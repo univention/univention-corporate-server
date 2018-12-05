@@ -150,6 +150,7 @@ class App(object):
 			'prerm',
 			'uinst',
 			'env',
+			'compose',
 			'listener_trigger',
 		]:
 			for filename in glob(self._components_dir(docker_file)):
