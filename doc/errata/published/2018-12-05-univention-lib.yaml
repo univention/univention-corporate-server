@@ -16,3 +16,5 @@ desc: |
    the "cn=groups" container anymore. Instead it searches for them (or their
    localized equivalents, like "Domänen-Admins").
 bug: [47944, 42430, 45571, 38057]
+erratum: 357
+announced: 2018-12-05
