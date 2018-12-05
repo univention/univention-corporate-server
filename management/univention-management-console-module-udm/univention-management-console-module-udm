@@ -206,7 +206,7 @@ class Ressource(RequestHandler):
 			for thing in response:
 				if isinstance(thing, dict) and thing.get('$url$'):
 					x = thing.copy()
-					a = ET.Element("a", href=x.pop('$url$'), rel="/udm/object")
+					a = ET.Element("a", href=x.pop('$url$'), rel="/udm/relation/object")
 					a.text = json.dumps(x)
 					root.append(a)
 					root.append(ET.Element("br"))
@@ -231,7 +231,45 @@ class Favicon(Ressource):
 class Relations(Ressource):
 
 	def get(self, relation):
-		pass
+		relations = {
+			# IANA:
+			'search': 'Refers to a resource that can be used to search through the link\'s context and related resources.',
+			'create-form': 'The target IRI points to a resource where a submission form can be obtained.',
+			'edit': 'Refers to a resource that can be used to edit the link\'s context.',
+			'edit-form': 'The target IRI points to a resource where a submission form for editing associated resource can be obtained.',
+			'first': 'An IRI that refers to the furthest preceding resource in a series of resources.',
+			'help': 'Refers to context-sensitive help.',
+			'index': 'Refers to an index.',
+			'item': 'The target IRI points to a resource that is a member of the collection represented by the context IRI.',
+			'last': 'An IRI that refers to the furthest following resource in a series of resources.',
+			'latest-version': 'Points to a resource containing the latest (e.g., current) version of the context.',
+			'next': 'Indicates that the link\'s context is a part of a series, and that the next in the series is the link target. ',
+			'original': 'The Target IRI points to an Original Resource.',
+			'prev': 'Indicates that the link\'s context is a part of a series, and that the previous in the series is the link target. ',
+			'preview': 'Refers to a resource that provides a preview of the link\'s context.',
+			'previous': 'Refers to the previous resource in an ordered series of resources. Synonym for "prev".',
+			'self': 'Conveys an identifier for the link\'s context. ',
+			'start': 'Refers to the first resource in a collection of resources.',
+			'type': 'Refers to a resource identifying the abstract semantic type of which the link\'s context is considered to be an instance.',
+			'up': 'Refers to a parent document in a hierarchy of documents.',
+			'icon': 'Refers to an icon representing the link\'s context.',
+			# Univention:
+			'object': '',
+			'object-modules': '',
+			'object-types': 'list of object types matching the given flavor or container',
+			'properties': 'properties of the given object type',
+			'options': 'options specified for the given object type',
+			'layout': 'layout information for the given object type',
+			'templates': 'list of template objects for the given object type',
+			'containers': 'list of default containers for the given object type',
+			'policies': 'list of policy types that apply to the given object type',  # virtual policy object containing the values that the given object or container inherits
+			'report-types': 'list of reports for the given object type',
+			'default-search': 'default search pattern/value for the given object property',
+			'next-free-ip': 'next IP configuration based on the given network object',
+			'property-choices': 'determine valid values for a given syntax class',
+		}
+		result = relations.get(relation)
+		self.content_negotiation(result)
 
 
 class Modules(Ressource):
@@ -249,12 +287,12 @@ class Modules(Ressource):
 		'nagios': 'nagios/nagios',
 		'policies': 'policies/policy',
 		'self': 'users/self',
-		'directory': 'navigation',
+		#'directory': 'navigation',
 	}
 
 	def get(self):
 		for main_type in self.mapping:
-			self.add_header('Link', '</udm/%s/>; rel="/udm/object-modules"; name="%s"; title=""' % (main_type, main_type,))
+			self.add_header('Link', '</udm/%s/>; rel="/udm/relation/object-modules"; name="%s"; title=""' % (main_type, main_type,))
 			# TODO: add license-import
 		self.content_negotiation("Hello, world")
 
@@ -278,9 +316,12 @@ class ObjectTypes(Ressource):
 		if superordinate:
 			module = get_module(object_type, superordinate) or module  # FIXME: the object_type param is wrong?!
 
-		result = module.child_modules
+		result = module.child_modules or []
+		if not result:
+			result.append({'id': module.name, 'label': module.title})
+
 		for mod in result:
-			self.add_header('Link', '</udm/%s/>; rel="/udm/object-types"; name="%s"; title="%s"' % (mod['id'], mod['id'], mod['label']))
+			self.add_header('Link', '</udm/%s/>; rel="/udm/relation/object-types"; name="%s"; title="%s"' % (mod['id'], mod['id'], mod['label']))
 		self.content_negotiation(result)
 
 
@@ -295,6 +336,8 @@ class ObjectTypesNavigation(Ressource):
 				'id': module[0],
 				'label': getattr(module[1], 'short_description', module[0])
 			} for module in udm_modules.modules.items()]
+			for mod in result:
+				self.add_header('Link', '</udm/%s/>; rel="/udm/relation/object-types"; name="%s"; title="%s"' % (mod['id'], mod['id'], mod['label']))
 			self.content_negotiation(result)
 			return
 
@@ -324,6 +367,8 @@ class ObjectTypesNavigation(Ressource):
 			'id': udm_modules.name(module),
 			'label': getattr(module, 'short_description', udm_modules.name(module))
 		} for module in allowed_modules]
+		for mod in result:
+			self.add_header('Link', '</udm/%s/>; rel="/udm/relation/object-types"; name="%s"; title="%s"' % (mod['id'], mod['id'], mod['label']))
 		self.content_negotiation(result)
 
 
@@ -707,15 +752,13 @@ class Objects(Ressource):
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'add/'), 'create-form', ''))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'edit/'), 'edit-form', ''))
 		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'favicon'), 'icon', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'properties'), 'udm/properties', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'options'), 'udm/options', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'layout'), 'udm/layout', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'templates'), 'udm/templates', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'containers'), 'udm/containers', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'policies'), 'udm/policies', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'report-types'), 'udm/report-types', ''))
-#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, ''), '', ''))
-#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, ''), '', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'properties'), 'udm/relation/properties', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'options'), 'udm/relation/options', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'layout'), 'udm/relation/layout', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'templates'), 'udm/relation/templates', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'containers'), 'udm/relation/containers', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'policies'), 'udm/relation/policies', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'report-types'), 'udm/relation/report-types', ''))
 #		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, ''), '', ''))
 
 
@@ -966,9 +1009,9 @@ if __name__ == "__main__":
 		(r"/udm/license/", License),
 		(r"/udm/license/check", LicenseCheck),
 		(r"/udm/license/request", LicenseRequest),
-		(r"/udm/%s/" % (module_type,), ObjectTypes),
 		(r"/udm/navigation/", ObjectTypesNavigation),
 		(r"/udm/%s/containers/" % (object_type,), Navigation),
+		(r"/udm/%s/" % (module_type,), ObjectTypes),
 		(r"/udm/(navigation)/containers/", Navigation),
 		(r"/udm/(%s|navigation)/move-destinations/" % (object_type,), MoveDestinations),
 		(r"/udm/%s/options" % (object_type,), Options),
