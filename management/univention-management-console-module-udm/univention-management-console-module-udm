@@ -199,7 +199,6 @@ class Ressource(RequestHandler):
 		return response
 
 	def get_html(self, response):
-		print 'GET_ HTML'
 		root = []
 		if isinstance(response, (list, tuple)):
 			for thing in response:
@@ -227,7 +226,7 @@ class Favicon(Ressource):
 		return
 
 
-class MainHandler(Ressource):
+class Modules(Ressource):
 
 	mapping = {
 		'users': 'users/user',
@@ -252,7 +251,7 @@ class MainHandler(Ressource):
 		self.content_negotiation("Hello, world")
 
 
-class MainTypes(Ressource):
+class ModuleTypes(Ressource):
 
 	def get(self, main_type):
 		sub_type = 'user'
@@ -271,7 +270,7 @@ class ObjectTypes(Ressource):
 			'container' -- if available only types suitable for the given container are returned (only for the navigation)
 		"""
 		if '/' not in object_type:
-			object_type = MainHandler.mapping.get(object_type, object_type)
+			object_type = Modules.mapping.get(object_type, object_type)
 		superordinate = self.get_query_argument('superordinate', None)
 		module = UDM_Module(object_type)
 		if superordinate:
@@ -913,29 +912,32 @@ class Operations(Ressource):
 
 
 if __name__ == "__main__":
+	module_type = '([a-z]+)'
+	object_type = '([a-z]+/[a-z]+)'
+	dn = '([^/]+(?:=|%3d|%3D)[^/]+)'  # Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548
 	application = Application([
 		(r"/favicon.ico", Favicon),
-		(r"/udm/", MainHandler),
-		(r"/udm/([a-z]+)/", MainTypes),
-		(r"/udm/([a-z]+)/object-types/", ObjectTypes),
-		(r"/udm/([a-z]+/[a-z]+)/object-types/", ObjectTypes),
+		(r"/udm/", Modules),
+		(r"/udm/%s/" % (module_type,), ModuleTypes),
+		(r"/udm/%s/object-types/" % (module_type,), ObjectTypes),
+		(r"/udm/%s/object-types/" % (object_type,), ObjectTypes),
 		(r"/udm/navigation/object-types/", ObjectTypesNavigation),
 		(r"/udm/((?:[a-z]+/[a-z]+)|navigation)/containers/", Navigation),
-		(r"/udm/(([a-z]+/[a-z]+)|navigation)/move-destinations/", MoveDestinations),
-		(r"/udm/([a-z]+/[a-z]+)/options", Options),
-		(r"/udm/([a-z]+/[a-z]+)/templates", Templates),
-		(r"/udm/([a-z]+/[a-z]+)/containers", Containers),  # TODO: maybe rename conflicts with above except trailing slash
-		(r"/udm/([a-z]+/[a-z]+)/policies", Policies),
-		(r"/udm/([a-z]+/[a-z]+)/report-types", ReportTypes),
-		(r"/udm/([a-z]+/[a-z]+)/report/([^/]+)", Report),
-		(r"/udm/([a-z]+/[a-z]+)/([^/]+)/properties/", Properties),
-		(r"/udm/([a-z]+/[a-z]+)/([^/]+)/properties/([^/]+)/choices", PropertyChoices),
-		(r"/udm/([a-z]+/[a-z]+)/properties/([^/]+)/default", DefaultValue),
-		(r"/udm/([a-z]+/[a-z]+)/([^/]+)/(policies/[a-z_]+)/", PolicyTypes),
-		(r"/udm/([a-z]+/[a-z]+)/(policies/[a-z_]+)/([^/]+)/", PolicyResult),
-		(r"/udm/([a-z]+/[a-z]+)/", Objects),
-		(r"/udm/([a-z]+/[a-z]+)/([^/]+(?:=|%3d|%3D)[^/]+)", Object),  # Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548
-		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/layout", Layout),
+		(r"/udm/(%s|navigation)/move-destinations/" % (object_type,), MoveDestinations),
+		(r"/udm/%s/options" % (object_type,), Options),
+		(r"/udm/%s/templates" % (object_type,), Templates),
+		(r"/udm/%s/containers" % (object_type,), Containers),  # TODO: maybe rename conflicts with above except trailing slash
+		(r"/udm/%s/policies" % (object_type,), Policies),
+		(r"/udm/%s/report-types" % (object_type,), ReportTypes),
+		(r"/udm/%s/report/([^/]+)" % (object_type,), Report),
+		(r"/udm/%s/([^/]+)/properties/" % (object_type,), Properties),
+		(r"/udm/%s/([^/]+)/properties/([^/]+)/choices" % (object_type,), PropertyChoices),
+		(r"/udm/%s/properties/([^/]+)/default" % (object_type,), DefaultValue),
+		(r"/udm/%s/([^/]+)/(policies/[a-z_]+)/" % (object_type,), PolicyTypes),
+		(r"/udm/%s/(policies/[a-z_]+)/([^/]+)/" % (object_type,), PolicyResult),
+		(r"/udm/%s/" % (object_type,), Objects),
+		(r"/udm/%s/%s" % (object_type, dn), Object),
+		(r"/udm/%s/([^/]*)/layout" % (object_type,), Layout),
 		(r"/udm/networks/network/([^/]+)/next-free-ip-address", NextFreeIpAddress),
 		(r"/udm/progress/$progress-id", Operations),  # operations?
 		# TODO: meta info
