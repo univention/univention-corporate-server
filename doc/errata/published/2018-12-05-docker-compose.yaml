@@ -11,3 +11,5 @@ bug: [43612]
 ignore:
   - release+scope.consistent
   - version.scope
+erratum: 374
+announced: 2018-12-05
