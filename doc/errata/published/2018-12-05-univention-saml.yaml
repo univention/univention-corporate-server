@@ -9,3 +9,5 @@ desc: |
  * The udm module flavors are requiring a minimal set of
    allowed UMC commands now to be visible in the UMC.
 bug: [47880]
+erratum: 349
+announced: 2018-12-05
