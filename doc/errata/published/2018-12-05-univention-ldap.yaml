@@ -10,3 +10,5 @@ desc: |
    store arbitrary data in LDAP.
  * LDAP ACLs for the portal category module have been fixed.
 bug: [47944,48091]
+erratum: 356
+announced: 2018-12-05
