@@ -11,3 +11,5 @@ desc: |
  * Long item names in the Tree widget no longer overlap underlying items.
  * A widget has been moved to the common library.
 bug: [36624, 47997, 45323, 48106]
+erratum: 347
+announced: 2018-12-05
