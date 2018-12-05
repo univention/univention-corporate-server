@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The version of the dojo framework has been upgraded.
 bug: [47997]
+erratum: 348
+announced: 2018-12-05
