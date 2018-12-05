@@ -228,6 +228,12 @@ class Favicon(Ressource):
 		return
 
 
+class Relations(Ressource):
+
+	def get(self, relation):
+		pass
+
+
 class Modules(Ressource):
 
 	mapping = {
@@ -959,6 +965,7 @@ if __name__ == "__main__":
 	application = Application([
 		(r"/favicon.ico", Favicon),
 		(r"/udm/", Modules),
+		(r"/udm/relation/.*", Relations),
 		(r"/udm/license/", License),
 		(r"/udm/license/check", LicenseCheck),
 		(r"/udm/license/request", LicenseRequest),
