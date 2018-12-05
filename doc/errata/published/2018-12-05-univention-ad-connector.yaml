@@ -18,3 +18,5 @@ desc: |
  * The synchronization of the proxyAddress attribute may fail if is empty.
    This issue has been fixed.
 bug: [44024,48227,42430,47069,46751]
+erratum: 354
+announced: 2018-12-05
