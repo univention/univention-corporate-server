@@ -193,10 +193,10 @@ test_master () {
 	python shared-utils/ucs-winrm.py create-share-file --server $MEMBER --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention123!" \
 		--share testshareMember --debug 2>&1 || true
 
-	python shared-utils/ucs-winrm.py create-share-file --server $MEMBER --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention123!" \
-		--share testshareMember --debug 2>&1 | grep 'denied.'
-	python shared-utils/ucs-winrm.py create-share-file --server $SLAVE --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention123!" \
-		--share testshareMember --debug 2>&1 | grep 'denied.'
+	#python shared-utils/ucs-winrm.py create-share-file --server $MEMBER --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention123!" \
+	#	--share testshareMember --debug 2>&1 | grep 'denied.'
+	#python shared-utils/ucs-winrm.py create-share-file --server $SLAVE --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention123!" \
+	#	--share testshareMember --debug 2>&1 | grep 'denied.'
 	#map printer driver names to network printers
 	python shared-utils/ucs-winrm.py setup-printer --printername Slaveprinter --server "$SLAVE"
 	python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$MEMBER"
