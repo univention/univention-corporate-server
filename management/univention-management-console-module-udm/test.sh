@@ -19,8 +19,9 @@ _curl() {
 }
 
 _curl -i "$base/"
+_curl -i "$base/users/"
+_curl -i "$base/computers/"
 _curl -i "$base/users/user/"
-_curl -i "$base/users/object-types/"
 _curl -i "$base/users/user/options"
 _curl -i "$base/users/user/templates"
 _curl -i "$base/users/user/containers"

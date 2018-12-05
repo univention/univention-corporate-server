@@ -259,32 +259,28 @@ class Modules(Ressource):
 		self.content_negotiation("Hello, world")
 
 
-class ModuleTypes(Ressource):
-
-	def get(self, main_type):
-		sub_type = 'user'
-		object_type = '%s/%s' % (main_type, sub_type)
-		self.add_header('Link', '</udm/%s/>; rel="/udm/object-types"; name="%s"; title=""' % (object_type, object_type))
-		self.content_negotiation("Hello, world")
-
-
 class ObjectTypes(Ressource):
 	"""get the object types of a specific flavor"""
 
-	def get(self, object_type):
+	def get(self, module_type):
 		"""Returns the list of object types matching the given flavor or container.
 
 		requests.options = {}
 			'superordinate' -- if available only types for the given superordinate are returned (not for the navigation)
 			'container' -- if available only types suitable for the given container are returned (only for the navigation)
 		"""
-		if '/' not in object_type:
-			object_type = Modules.mapping.get(object_type, object_type)
+		object_type = Modules.mapping.get(module_type)
+		if not object_type:
+			raise NotFound(object_type)
+
 		superordinate = self.get_query_argument('superordinate', None)
 		module = UDM_Module(object_type)
 		if superordinate:
 			module = get_module(object_type, superordinate) or module  # FIXME: the object_type param is wrong?!
+
 		result = module.child_modules
+		for mod in result:
+			self.add_header('Link', '</udm/%s/>; rel="/udm/object-types"; name="%s"; title="%s"' % (mod['id'], mod['id'], mod['label']))
 		self.content_negotiation(result)
 
 
@@ -970,10 +966,8 @@ if __name__ == "__main__":
 		(r"/udm/license/", License),
 		(r"/udm/license/check", LicenseCheck),
 		(r"/udm/license/request", LicenseRequest),
-		(r"/udm/%s/" % (module_type,), ModuleTypes),
-		(r"/udm/%s/object-types/" % (module_type,), ObjectTypes),
-		(r"/udm/%s/object-types/" % (object_type,), ObjectTypes),
-		(r"/udm/navigation/object-types/", ObjectTypesNavigation),
+		(r"/udm/%s/" % (module_type,), ObjectTypes),
+		(r"/udm/navigation/", ObjectTypesNavigation),
 		(r"/udm/%s/containers/" % (object_type,), Navigation),
 		(r"/udm/(navigation)/containers/", Navigation),
 		(r"/udm/(%s|navigation)/move-destinations/" % (object_type,), MoveDestinations),
