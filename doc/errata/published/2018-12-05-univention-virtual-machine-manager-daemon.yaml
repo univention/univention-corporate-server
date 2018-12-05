@@ -12,3 +12,5 @@ desc: |
  * Show a warning if the entered VNC password for a virtual machine 
    exceeds a certain length.
 bug: [47956,35761,22695,48106]
+erratum: 346
+announced: 2018-12-05
