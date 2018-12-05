@@ -890,4 +890,13 @@ prepare_results () {
 	dump_systemd_journal
 }
 
+sa_bug47030 () {
+	sa-update -v || true
+	sleep 15
+	sa-update -v || true
+	sa-compile || true
+	service spamassassin restart
+	service amavis restart
+}
+
 # vim:set filetype=sh ts=4:
