@@ -424,8 +424,12 @@ define([
 				_selectAll: lang.hitch(this, '_selectAll'),
 				update: lang.hitch(this, 'update'),
 				selectAll: function() {
-					this.inherited(arguments);
-					this._selectAll(); // Bug: dgrid only selects visible entries, we want to select everything. See also dgrid #1198
+					if (this.getSelectedIDs().length === 0) {
+						this.inherited(arguments);
+						this._selectAll(); // Bug: dgrid only selects visible entries, we want to select everything. See also dgrid #1198
+					} else {
+						this.clearSelection();
+					}
 				}
 			}, this.gridOptions || {}));
 
