@@ -953,6 +953,9 @@ define([
 
 		_tabContainer: null,
 		_topContainer: null,
+		_topContainerGeneralCSSClasses: [],
+		_topContainerModuleSpecificCSSClasses: [],
+		_topContainerModuleSpecificCSSClassesWatchHandler: null,
 		_overviewPage: null,
 		_categoriesContainer: null,
 		_setupStaticGui: false,
@@ -981,6 +984,9 @@ define([
 				containerNode: dom.byId('umcTopContainer'),
 				'class': 'umcTopContainer'
 			});
+			if (has('trident')) {
+				domClass.add(this._topContainer.domNode, 'umcTopContainer--layout-IE');
+			}
 
 			// module (and overview) container
 			this._tabContainer = new StackContainer({
@@ -1008,7 +1014,6 @@ define([
 			this._topContainer.addChild(this._tabContainer);
 			this._topContainer.addChild(new NotificationSnackbar({}));
 			this._topContainer.startup();
-			//this._updateScrolling();
 
 			// subscribe to requests for opening modules and closing/focusing tabs
 			topic.subscribe('/umc/modules/open', lang.hitch(this, 'openModule'));
@@ -1038,7 +1043,7 @@ define([
 			this._tabContainer.watch('selectedChildWidget', lang.hitch(this, function(name, oldModule, newModule) {
 				this._lastSelectedChild = oldModule;
 				this._updateHeaderColor(oldModule, newModule);
-				this._updateScrolllessUMC(newModule);
+				this._updateTopContainerCSSClasses(oldModule, newModule);
 
 				if (!newModule.moduleID) {
 					// this is the overview page, not a module
@@ -1088,27 +1093,83 @@ define([
 			}
 		},
 
-		_updateScrolllessUMC: function(newModule) {
-			if (has('trident')) {
-				return; // do not apply special css on IE
+		_updateTopContainerCSSClasses: function(oldModule, newModule) {
+			// remove previously added css classes; cleanup
+			domClass.remove(this._topContainer.domNode, this._topContainerGeneralCSSClasses);
+			this._topContainerGeneralCSSClasses = [];
+
+			if (this._topContainerModuleSpecificCSSClassesWatchHandler) {
+				this._topContainerModuleSpecificCSSClassesWatchHandler.remove();
+				this._topContainerModuleSpecificCSSClassesWatchHandler = null;
 			}
 
-			if (this._scrolllessUMCModuleWatchHandler) {
-				this._scrolllessUMCModuleWatchHandler.remove();
-				this._scrolllessUMCModuleWatchHandler = null;
+			var cssClass;
+
+			// add css class for category color of open module
+			if (lang.exists('categoryColor', newModule)) {
+				cssClass = lang.replace('umcTopContainer--categoryColor-{categoryColor}', newModule);
+				this._topContainerGeneralCSSClasses.push(cssClass);
 			}
 
-			var scrolllessModules = ['udm/navigation', 'uvmm/uvmm'];
-			var newModuleName = lang.replace('{0}/{1}', [newModule.moduleID, newModule.moduleFlavor]);
-			var isScrolllessModule = scrolllessModules.indexOf(newModuleName) >= 0;
-			var addClass = isScrolllessModule && newModule.selectedChildWidget === newModule._searchPage;
-			domClass.toggle(this._topContainer.domNode, 'umcScrollless', addClass);
-			if (isScrolllessModule) {
-				this._scrolllessUMCModuleWatchHandler = newModule.watch('selectedChildWidget', lang.hitch(this, function(name, oldChild, newChild) {
-					var addClass = newChild === newModule._searchPage;
-					domClass.toggle(this._topContainer.domNode, 'umcScrollless', addClass);
+			// add css class for open module id and flavor
+			cssClass = newModule.isOverview ? 'overview' : newModule.moduleID;
+			cssClass = lang.replace('umcTopContainer--layout-{0}', [cssClass]);
+			this._topContainerGeneralCSSClasses.push(cssClass);
+
+			if (lang.exists('moduleFlavor', newModule)) {
+				cssClass = lang.replace('{cssClass}-{moduleFlavor}', {
+					cssClass: cssClass,
+					moduleFlavor: newModule.moduleFlavor.replace(/[^a-zA-Z0-9\-]/g, '-')
+				});
+				this._topContainerGeneralCSSClasses.push(cssClass);
+			}
+
+			domClass.add(this._topContainer.domNode, this._topContainerGeneralCSSClasses);
+
+			// add css classes for module specific pages
+			var modulePages = {
+				'udm': ['_searchPage', '_detailPage'],
+				'quota': ['_overviewPage', '_partitionPage', '_detailPage'],
+				'join': ['_statuspage', '_joinpage', '_logpage'],
+				'uvmm': ['_searchPage', '_domainPage']
+			};
+			this._removeModuleSpecificCSSClasses();
+			if (Object.keys(modulePages).indexOf(newModule.moduleID) >= 0) {
+				this._addModuleSpecificCSSClasses(newModule, modulePages);
+				this._topContainerModuleSpecificCSSClassesWatchHandler = newModule.watch('selectedChildWidget', lang.hitch(this, function() {
+					this._removeModuleSpecificCSSClasses();
+					this._addModuleSpecificCSSClasses(newModule, modulePages);
 				}));
 			}
+
+		},
+
+		_removeModuleSpecificCSSClasses: function() {
+			domClass.remove(this._topContainer.domNode, this._topContainerModuleSpecificCSSClasses);
+			this._topContainerModuleSpecificCSSClasses = [];
+		},
+
+		_addModuleSpecificCSSClasses: function(module, pages) {
+			pages[module.moduleID].forEach(lang.hitch(this, function(page) {
+				if (module.selectedChildWidget === module[page]) {
+					var pageName = page.toLowerCase().replace(/[^a-z]/g, '');
+					var cssClass = lang.replace('umcTopContainer--layout-{moduleID}-{pageName}', {
+						moduleID: module.moduleID,
+						pageName: pageName
+					});
+					this._topContainerModuleSpecificCSSClasses.push(cssClass);
+
+					if (lang.exists('moduleFlavor', module)) {
+						cssClass = lang.replace('umcTopContainer--layout-{moduleID}-{moduleFlavor}-{pageName}', {
+							moduleID: module.moduleID,
+							moduleFlavor: module.moduleFlavor.replace(/[^a-zA-Z0-9\-]/g, '-'),
+							pageName: pageName
+						});
+						this._topContainerModuleSpecificCSSClasses.push(cssClass);
+					}
+				}
+			}));
+			domClass.add(this._topContainer.domNode, this._topContainerModuleSpecificCSSClasses);
 		},
 
 		switchToOverview: function() {
