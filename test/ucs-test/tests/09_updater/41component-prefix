@@ -4,9 +4,7 @@
 ##  1. setup local repository for maintained component from custom prefix
 ##  2. check if the package is installable
 ## roles-not: [basesystem]
-## tags:
-##  - basic
-##  - SKIP
+## tags: [basic]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
