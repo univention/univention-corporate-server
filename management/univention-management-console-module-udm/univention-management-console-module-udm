@@ -204,9 +204,9 @@ class Ressource(RequestHandler):
 		root = []
 		if isinstance(response, (list, tuple)):
 			for thing in response:
-				if isinstance(thing, dict) and thing.get('url'):
+				if isinstance(thing, dict) and thing.get('$url$'):
 					x = thing.copy()
-					a = ET.Element("a", href=x.pop('url'))
+					a = ET.Element("a", href=x.pop('$url$'), rel="/udm/object")
 					a.text = json.dumps(x)
 					root.append(a)
 					root.append(ET.Element("br"))
@@ -254,7 +254,7 @@ class Modules(Ressource):
 
 	def get(self):
 		for main_type in self.mapping:
-			self.add_header('Link', '</udm/%s/>; rel="/udm/object-modules"; title=""' % (main_type,))
+			self.add_header('Link', '</udm/%s/>; rel="/udm/object-modules"; name="%s"; title=""' % (main_type, main_type,))
 			# TODO: add license-import
 		self.content_negotiation("Hello, world")
 
@@ -263,7 +263,8 @@ class ModuleTypes(Ressource):
 
 	def get(self, main_type):
 		sub_type = 'user'
-		self.add_header('Link', '</udm/%s/%s/>; rel="/udm/object-types"; title=""' % (main_type, sub_type))
+		object_type = '%s/%s' % (main_type, sub_type)
+		self.add_header('Link', '</udm/%s/>; rel="/udm/object-types"; name="%s"; title=""' % (object_type, object_type))
 		self.content_negotiation("Hello, world")
 
 
@@ -595,7 +596,7 @@ class Report(ReportingBase):
 class NextFreeIpAddress(Ressource):
 	"""GET udm/networks/network/$DN/next-ip (get the next free IP in this network)"""
 
-	def get(self, dn):
+	def get(self, dn):  # TODO: threaded?! (might have caused something in the past in system setup?!)
 		"""Returns the next IP configuration based on the given network object
 
 		requests.options = {}
@@ -677,7 +678,7 @@ class Objects(Ressource):
 				'labelObjectType': module.subtitle,
 				'name': module.obj_description(obj),
 				'path': ldap_dn2path(obj.dn, include_rdn=False),
-				'url': urljoin(self.request.path_decoded, urllib.quote(obj.dn)),
+				'$url$': urljoin(self.request.path_decoded, urllib.quote(obj.dn)),
 			}
 			if '$value$' in fields:
 				entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
@@ -771,7 +772,7 @@ class Object(Ressource):
 		props['$operations$'] = module.operations
 		props['$references$'] = module.get_references(dn)
 		assert '/' not in obj.dn  # TODO: escape /
-		props['url'] = urljoin(self.request.path_decoded, urllib.quote(obj.dn))
+		props['$url$'] = urljoin(self.request.path_decoded, urllib.quote(obj.dn))
 		self.content_negotiation(props)
 
 	@tornado.gen.coroutine
