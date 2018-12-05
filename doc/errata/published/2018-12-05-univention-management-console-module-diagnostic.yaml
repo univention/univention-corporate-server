@@ -16,3 +16,5 @@ desc: |
  * The ACL check for the Samba/AD sysvol files has been improved to show
    the name of missing files and directories.
 bug: [47649, 47844, 47583]
+erratum: 352
+announced: 2018-12-05
