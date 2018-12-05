@@ -62,6 +62,7 @@ from univention.management.console.config import ucr
 from univention.management.console.ldap import get_user_connection, get_machine_connection
 from univention.management.console.modules.udm.udm_ldap import get_module, set_bind_function, UDM_Module, ldap_dn2path, read_syntax_choices, UDM_Settings, _get_syntax, container_modules, UDM_Error
 from univention.management.console.modules.udm.udm_ldap import SuperordinateDoesNotExist, NoIpLeft
+from univention.management.console.modules.udm.tools import check_license, LicenseError
 import univention.directory.reports as udr
 import univention.admin.uexceptions as udm_errors
 import univention.admin.modules as udm_modules
@@ -419,7 +420,29 @@ class MoveDestinations(ContainerQueryBase):
 
 
 class LicenseRequest(Ressource):
-	pass
+
+	def post(self):
+		pass  # TODO: implement request_new_license()
+
+
+class LicenseCheck(Ressource):
+
+	def get(self):
+		message = None
+		try:
+			check_license(self.ldap_connection)
+		except LicenseError as exc:
+			message = str(exc)
+		self.content_negotiation(message)
+
+
+class License(Ressource):
+
+	def get(self):
+		pass  # TODO: implement license_info()
+
+	def post(self):
+		pass  # TODO: implement license_import()
 
 
 class Properties(Ressource):
@@ -918,6 +941,9 @@ if __name__ == "__main__":
 	application = Application([
 		(r"/favicon.ico", Favicon),
 		(r"/udm/", Modules),
+		(r"/udm/license/", License),
+		(r"/udm/license/check", LicenseCheck),
+		(r"/udm/license/request", LicenseRequest),
 		(r"/udm/%s/" % (module_type,), ModuleTypes),
 		(r"/udm/%s/object-types/" % (module_type,), ObjectTypes),
 		(r"/udm/%s/object-types/" % (object_type,), ObjectTypes),
