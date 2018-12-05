@@ -9,3 +9,5 @@ desc: |
  * The error messages for the join into an Active Directory domain
    have been improved.
 bug: [42430]
+erratum: 359
+announced: 2018-12-05
