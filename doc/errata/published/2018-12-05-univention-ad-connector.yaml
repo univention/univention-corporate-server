@@ -17,6 +17,14 @@ desc: |
    Domain Admin account is configured for the AD connection.
  * The synchronization of the proxyAddress attribute may fail if is empty.
    This issue has been fixed.
-bug: [44024,48227,42430,47069,46751]
+ * The special cn=Subschema object caused AD-Connector rejects
+ * Base64 encode non-printable attributes in univention-adsearch
+ * Space separated attribute list as parameter in univention-adsearch
+ * The Connector now updates the AD attribute userPrincipalName if the
+   UCS username is changed (disabled for all updated systems, unset
+   UCR variable connector/ad/mapping/sync/userPrincipalName and restart
+   the AD-Connctor to sync username to userPrincipalName on subsequent
+   object modifications)
+bug: [44024,48227,42430,47069,46751,47396,48082,43189,48153]
 erratum: 354
 announced: 2018-12-05
