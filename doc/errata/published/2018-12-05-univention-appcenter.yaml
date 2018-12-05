@@ -13,3 +13,5 @@ desc: |-
  * Improved check for database existence when installing an app which uses a
    database.
 bug: [43612,47824,42690]
+erratum: 345
+announced: 2018-12-05
