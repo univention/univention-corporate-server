@@ -530,8 +530,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
     <section id="create-app-with-docker:compose">
         <title>Create an app with multiple Docker images</title>
         <para>
-<!-- TODO: Add UCS Version errata Update -->
-            Starting with UCS 4.3-2 errata xxx Univention App Center supports
+            Starting with UCS 4.3-2 errata 376 Univention App Center supports
             apps that consist of multi docker images. It uses <ulink
                 url="https://docs.docker.com/compose/overview/">Docker
                 Compose</ulink>, a tool for defining and running
