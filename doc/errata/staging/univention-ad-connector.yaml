@@ -6,10 +6,10 @@ src: univention-ad-connector
 fix: 12.0.0-41A~4.3.0.201811281509
 desc: |
  This update addresses the following issue(s):
- * The synchronizarion of password hashes from AD to UCS has been fixed
+ * The synchronization of password hashes from AD to UCS has been fixed
    on systems that have UCR connector/ldap/server set to a non-master server
    with read-only OpenLDAP.
- * Fix keberos authentication error during AD-Connector restart in ad/member
+ * Fix kerberos authentication error during AD-Connector restart in ad/member
    mode in case of changed system time.
  * The error messages for the join into an Active Directory domain
    have been improved.

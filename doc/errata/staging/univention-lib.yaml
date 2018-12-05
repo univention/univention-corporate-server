@@ -7,7 +7,7 @@ fix: 7.0.0-18A~4.3.0.201811291620
 desc: |
  This update addresses the following issue(s):
  * The UDM module "settings/data" was added. It can be used to store
-   arbitraty data in LDAP.
+   arbitrary data in LDAP.
  * The error messages for the join into an Active Directory domain
    have been improved.
  * Check output from slapschema during registration of new schemas for errors.

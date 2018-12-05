@@ -7,7 +7,7 @@ fix: 4.0.1-16A~4.3.0.201811291548
 desc: |
  This update addresses the following issue(s):
  * Improved logging of diagnostic module actions, diagnostic checks
-   are now executed in name order
+   are now executed in alpabetical order
  * A new diagnostic plugin has been added that scans through LDAP and finds
    objects that lack a univentionObjectType although they should have one.
    The plugin also allows to migrate those objects. Having a

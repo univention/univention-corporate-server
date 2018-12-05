@@ -7,6 +7,6 @@ fix: 14.0.2-31A~4.3.0.201811221701
 desc: |
  This update addresses the following issue(s):
  * The UDM module "settings/data" was added. It can be used to
-   store arbitraty data in LDAP.
+   store arbitrary data in LDAP.
  * LDAP ACLs for the portal category module have been fixed.
 bug: [47944,48091]
