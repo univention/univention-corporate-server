@@ -1,3 +1,9 @@
+ucs-test (8.0.28-246) unstable; urgency=low
+
+  * Bug #47000: Move debug from 09_updater/41 to 09/40
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 05 Dec 2018 19:05:05 +0100
+
 ucs-test (8.0.28-245) unstable; urgency=medium
 
   * Bug #43612: 80_docker/85_docker_compose

@@ -12,7 +12,10 @@
 ## exposure: dangerous
 
 RETVAL=110 # Test fehlgeschlagen
+UT_VERBOSE=true
 . pool.sh || exit 137
+
+set -x
 
 compname="test${RANDOM}"
 
@@ -28,6 +31,7 @@ mkpkg "${DIR}"
 
 comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained"
+cat /etc/apt/sources.list.d/20_ucs-online-component.list
 
 (
 	set -e
@@ -44,6 +48,11 @@ config_repo "${comp}=yes" "${comp}/parts=maintained"
 )
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+case "$RETVAL" in
+0|100) ;;
+*) python2.7 -c 'import logging;import sys;logging.basicConfig(level=logging.DEBUG, stream=sys.stderr);from univention.updater.tools import UniventionUpdater;u = UniventionUpdater();print u.print_component_repositories()' || : ;;
+esac
 
 exit ${RETVAL}
 # vim:set ft=sh:
