@@ -9,3 +9,5 @@ desc: |
  * The scrolling in the UVMM module has been improved.
  * Fix saml metadata creation for non-ucsCA certificates like Let's Encrypt.
 bug: [36624, 47700]
+erratum: 350
+announced: 2018-12-05
