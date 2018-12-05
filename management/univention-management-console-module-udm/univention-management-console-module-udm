@@ -933,11 +933,16 @@ class PolicyResult(Ressource):
 class Operations(Ressource):
 	"""GET /udm/progress/$progress-id (get the progress of a started operation like move, report, maybe add/put?, ...)"""
 
+	def get(self, progress):
+		return
+
 
 if __name__ == "__main__":
 	module_type = '([a-z]+)'
-	object_type = '([a-z]+/[a-z]+)'
+	object_type = '([a-z]+/[a-z_]+)'
+	policies_object_type = '(policies/[a-z_]+)'
 	dn = '([^/]+(?:=|%3d|%3D)[^/]+)'  # Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548
+	property_ = '([^/]+)'
 	application = Application([
 		(r"/favicon.ico", Favicon),
 		(r"/udm/", Modules),
@@ -948,7 +953,8 @@ if __name__ == "__main__":
 		(r"/udm/%s/object-types/" % (module_type,), ObjectTypes),
 		(r"/udm/%s/object-types/" % (object_type,), ObjectTypes),
 		(r"/udm/navigation/object-types/", ObjectTypesNavigation),
-		(r"/udm/((?:[a-z]+/[a-z]+)|navigation)/containers/", Navigation),
+		(r"/udm/%s/containers/" % (object_type,), Navigation),
+		(r"/udm/(navigation)/containers/", Navigation),
 		(r"/udm/(%s|navigation)/move-destinations/" % (object_type,), MoveDestinations),
 		(r"/udm/%s/options" % (object_type,), Options),
 		(r"/udm/%s/templates" % (object_type,), Templates),
@@ -956,16 +962,17 @@ if __name__ == "__main__":
 		(r"/udm/%s/policies" % (object_type,), Policies),
 		(r"/udm/%s/report-types" % (object_type,), ReportTypes),
 		(r"/udm/%s/report/([^/]+)" % (object_type,), Report),
-		(r"/udm/%s/([^/]+)/properties/" % (object_type,), Properties),
-		(r"/udm/%s/([^/]+)/properties/([^/]+)/choices" % (object_type,), PropertyChoices),
-		(r"/udm/%s/properties/([^/]+)/default" % (object_type,), DefaultValue),
-		(r"/udm/%s/([^/]+)/(policies/[a-z_]+)/" % (object_type,), PolicyTypes),
-		(r"/udm/%s/(policies/[a-z_]+)/([^/]+)/" % (object_type,), PolicyResult),
+		(r"/udm/%s/%s/properties/" % (object_type, dn), Properties),
+		(r"/udm/%s/%s/properties/%s/choices" % (object_type, dn, property_), PropertyChoices),
+		(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
+		(r"/udm/%s/%s/%s/" % (object_type, dn, policies_object_type), PolicyTypes),
+		(r"/udm/%s/%s/%s/" % (object_type, policies_object_type, dn), PolicyResult),
 		(r"/udm/%s/" % (object_type,), Objects),
 		(r"/udm/%s/%s" % (object_type, dn), Object),
-		(r"/udm/%s/([^/]*)/layout" % (object_type,), Layout),
+		(r"/udm/%s/layout" % (object_type,), Layout),
+		(r"/udm/%s/%s/layout" % (object_type, dn), Layout),
 		(r"/udm/networks/network/([^/]+)/next-free-ip-address", NextFreeIpAddress),
-		(r"/udm/progress/$progress-id", Operations),  # operations?
+		(r"/udm/progress/([0-9]+)", Operations),
 		# TODO: meta info
 		# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
 	])
