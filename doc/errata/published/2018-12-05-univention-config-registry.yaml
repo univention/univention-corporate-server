@@ -9,3 +9,5 @@ desc: |
  * univention-config-registry modules cannot accidentally get registered
    multiple times anymore.
 bug: [35239]
+erratum: 358
+announced: 2018-12-05
