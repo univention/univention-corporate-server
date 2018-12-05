@@ -13,3 +13,5 @@ desc: |
    FQDN for the Sieve script upload that matches the external SSL
    certificate. (Bug #41018).
 bug: [41018]
+erratum: 360
+announced: 2018-12-05
