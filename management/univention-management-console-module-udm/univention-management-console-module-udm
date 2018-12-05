@@ -42,6 +42,7 @@
 # curl -ik --user Administrator:univention http://<IP>:8888/udm/
 #
 
+import os
 import json
 import copy
 import urllib
@@ -551,17 +552,27 @@ class ReportTypes(ReportingBase):
 
 
 class Report(ReportingBase):
-	"""GET udm/users/user/report/$report_type (create a report of a users)"""
+	"""GET udm/users/user/report/$report_type?dn=...&dn=... (create a report of users)"""
 
 	@tornado.gen.coroutine
 	def get(self, object_type, report_type):
-		# TODO: POST ? with 202 accepted
+		# TODO: better use only POST because GET is limited in argument length sometimes?
+		dns = self.get_query_arguments('dn')
+		yield self.create_report(object_type, report_type, dns)
+
+	@tornado.gen.coroutine
+	def post(self, object_type, report_type):
+		# TODO: 202 accepted with progress?
+		dns = self.get_body_arguments('dn')
+		yield self.create_report(object_type, report_type, dns)
+
+	@tornado.gen.coroutine
+	def create_report(self, object_type, report_type, dns):
 		try:
 			report_type in self.reports_cfg.get_report_names(object_type)
 		except KeyError:
 			raise NotFound(report_type)
 
-		dns = self.get_query_arguments('dn')
 		report = udr.Report(self.ldap_connection)
 		try:
 			report_file = yield self.pool.submit(report.create, object_type, report_type, dns)
@@ -569,8 +580,10 @@ class Report(ReportingBase):
 			raise HTTPError(400, None, str(exc))
 
 		with open(report_file) as fd:
-			self.set_header('Content-Type', 'text/csv' if report.endswith('.csv') else 'application/pdf')
-			self.content_negotiation(fd.read())
+			self.set_header('Content-Type', 'text/csv' if report_file.endswith('.csv') else 'application/pdf')
+			self.set_header('Content-Disposition', 'attachment; filename="%s"' % (os.path.basename(report_file).replace('\\', '\\\\').replace('"', '\\"')))
+			self.finish(fd.read())
+		os.remove(report_file)
 
 
 class NextFreeIpAddress(Ressource):
