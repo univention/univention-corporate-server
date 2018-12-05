@@ -34,13 +34,14 @@
 #
 # Setup for development:
 #
+# ucr set security/packetfilter/package/univention-udm/tcp/8888/all=ACCEPT
+# service univention-firewall restart
 # univention-install python-concurrent.futures python-tornado
 # ./univention-management-console-module-udm
 #
 # curl -ik --user Administrator:univention http://<IP>:8888/udm/
 #
 
-import io
 import json
 import copy
 import urllib
@@ -55,6 +56,7 @@ import tornado.gen
 from concurrent.futures import ThreadPoolExecutor
 
 from ldap.filter import filter_format
+import xml.etree.cElementTree as ET
 
 from univention.management.console.config import ucr
 from univention.management.console.ldap import get_user_connection, get_machine_connection
@@ -70,6 +72,7 @@ from univention.lib.i18n import Translation
 # FIXME: add_asterisks sanitizer
 # FIXME: prevent in the javascript that navigation container query is called with container=='None'
 # TODO: translation
+# FIXME: it seems request.path contains the un-urlencoded path, could be security issue!
 
 _ = Translation('univention-management-console-module-udm').translate
 
@@ -79,7 +82,7 @@ MAX_WORKERS = 35
 class NotFound(HTTPError):
 
 	def __init__(self, object_type, dn=None):
-		super(NotFound, self).__init__(404)  # FIXME: create error message
+		super(NotFound, self).__init__(404, None, '%r %r' % (object_type, dn or ''))  # FIXME: create error message
 
 
 class Ressource(RequestHandler):
@@ -92,6 +95,7 @@ class Ressource(RequestHandler):
 		self.finish()
 
 	def prepare(self):
+		self.request.path_decoded = urllib.unquote(self.request.path)
 		authorization = self.request.headers.get('Authorization')
 		if not authorization:
 			return self.force_authorization()
@@ -154,12 +158,12 @@ class Ressource(RequestHandler):
 			raise HTTPError(406)
 		return lang
 
-	def content_negotiation(self, response):  # FIXME: move into prepare
+	def content_negotiation(self, response):
 		# TODO: implement XML
 		lang = self.request.content_negotiation_lang
-		func = getattr(self, '%s_%s' % (self.request.method.lower(), lang), lambda x: x)
-		response = getattr(self, 'content_negotiation_%s' % (lang,))(func(response))
-		self.finish(response)
+		formatter = getattr(self, '%s_%s' % (self.request.method.lower(), lang), getattr(self, 'get_%s' % (lang,)))
+		codec = getattr(self, 'content_negotiation_%s' % (lang,))
+		self.finish(codec(formatter(response)))
 
 	def content_negotiation_json(self, response):
 		self.set_header('Content-Type', 'application/json')
@@ -167,23 +171,60 @@ class Ressource(RequestHandler):
 
 	def content_negotiation_html(self, response):
 		self.set_header('Content-Type', 'text/html')
-		return json.dumps(response)
+
+		root = ET.Element("html")
+		head = ET.SubElement(root, "head")
+		ET.SubElement(head, "title", name="blah").text = "Test"
+		body = ET.SubElement(root, "body")
+		for link in self._headers.get_list('Link'):
+			link, foo, _params = link.partition(';')
+			link = link.strip().lstrip('<').rstrip('>')
+			params = {}
+			if _params.strip():
+				params = dict((x.strip(), y.strip().strip('"')) for x, y in ((param.split('=', 1) + [''])[:2] for param in _params.split(';')))
+			ET.SubElement(head, "link", href=link, **params)
+			ET.SubElement(body, "a", href=link, **params).text = params.get('title', link) or link
+			ET.SubElement(body, "br")
+
+		if isinstance(response, (list, tuple)):
+			body.extend(response)
+		elif response is not None:
+			body.append(response)
+
+		self.write('<!DOCTYPE html>\n')
+		tree = ET.ElementTree(root)
+		tree.write(self)
+
+	def get_json(self, response):
 		return response
 
+	def get_html(self, response):
+		print 'GET_ HTML'
+		root = []
+		if isinstance(response, (list, tuple)):
+			for thing in response:
+				if isinstance(thing, dict) and thing.get('url'):
+					x = thing.copy()
+					a = ET.Element("a", href=x.pop('url'))
+					a.text = json.dumps(x)
+					root.append(a)
+					root.append(ET.Element("br"))
+				else:
+					pre = ET.Element("pre")
+					pre.text = json.dumps(thing)
+					root.append(pre)
+					root.append(ET.Element("br"))
+		else:
+			pre = ET.Element("pre")
+			pre.text = json.dumps(response)
+			root.append(pre)
+		return root
 
-def xml_rendering():
-	import xml.etree.cElementTree as ET
 
-	root = ET.Element("root")
-	doc = ET.SubElement(root, "doc")
+class Favicon(Ressource):
 
-	ET.SubElement(doc, "field1", name="blah").text = "some value1"
-	ET.SubElement(doc, "field2", name="asdfasd").text = "some vlaue2"
-
-	tree = ET.ElementTree(root)
-	fd = io.BytesIO()
-	tree.write(fd)  # fd could be self!
-	return fd.getvalue()
+	def get(self):
+		return
 
 
 class MainHandler(Ressource):
@@ -208,7 +249,7 @@ class MainHandler(Ressource):
 		for main_type in self.mapping:
 			self.add_header('Link', '</udm/%s/>; rel="/udm/object-modules"; title=""' % (main_type,))
 			# TODO: add license-import
-		self.write("Hello, world")
+		self.content_negotiation("Hello, world")
 
 
 class MainTypes(Ressource):
@@ -216,7 +257,7 @@ class MainTypes(Ressource):
 	def get(self, main_type):
 		sub_type = 'user'
 		self.add_header('Link', '</udm/%s/%s/>; rel="/udm/object-types"; title=""' % (main_type, sub_type))
-		self.write("Hello, world")
+		self.content_negotiation("Hello, world")
 
 
 class ObjectTypes(Ressource):
@@ -229,6 +270,8 @@ class ObjectTypes(Ressource):
 			'superordinate' -- if available only types for the given superordinate are returned (not for the navigation)
 			'container' -- if available only types suitable for the given container are returned (only for the navigation)
 		"""
+		if '/' not in object_type:
+			object_type = MainHandler.mapping.get(object_type, object_type)
 		superordinate = self.get_query_argument('superordinate', None)
 		module = UDM_Module(object_type)
 		if superordinate:
@@ -551,6 +594,7 @@ class Objects(Ressource):
 	def get(self, object_type):
 		"""GET udm/users/user/ (nach Benutzern suchen)"""
 		module = self.get_module(object_type)
+		self.options(object_type)
 
 		# TODO: replace the superordinate concept by container
 		superordinate = self.get_query_argument('superordinate', None)
@@ -565,7 +609,7 @@ class Objects(Ressource):
 
 		if superordinate:
 			mod = get_module(superordinate, superordinate)
-			if not module:
+			if not mod:
 				raise SuperordinateDoesNotExist(superordinate)
 			superordinate = mod.get(superordinate)
 			container = container or superordinate
@@ -592,7 +636,7 @@ class Objects(Ressource):
 				'labelObjectType': module.subtitle,
 				'name': module.obj_description(obj),
 				'path': ldap_dn2path(obj.dn, include_rdn=False),
-				'url': urljoin(self.request.path, obj.dn),
+				'url': urljoin(self.request.path_decoded, urllib.quote(obj.dn)),
 			}
 			if '$value$' in fields:
 				entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
@@ -616,25 +660,25 @@ class Objects(Ressource):
 		properties = dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items()))
 
 		dn = yield self.pool.submit(module.create, properties, container=container, superordinate=superordinate)
-		self.set_header('Location', urljoin(self.request.path, urllib.quote(dn)))
+		self.set_header('Location', urljoin(self.request.path_decoded, urllib.quote(dn)))
 		self.set_status(201)
 
 	def options(self, object_type):
 		self.set_header('Allow', 'GET, POST, OPTIONS')
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.request.path, 'search', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'add/'), 'create-form', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'edit/'), 'edit-form', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'favicon'), 'icon', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'properties'), 'udm/properties', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'options'), 'udm/options', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'layout'), 'udm/layout', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'templates'), 'udm/templates', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'containers'), 'udm/containers', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'policies'), 'udm/policies', ''))
-		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, 'report-types'), 'udm/report-types', ''))
-#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, ''), '', ''))
-#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, ''), '', ''))
-#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path, ''), '', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (self.request.path_decoded, 'search', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'add/'), 'create-form', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'edit/'), 'edit-form', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'favicon'), 'icon', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'properties'), 'udm/properties', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'options'), 'udm/options', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'layout'), 'udm/layout', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'templates'), 'udm/templates', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'containers'), 'udm/containers', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'policies'), 'udm/policies', ''))
+		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, 'report-types'), 'udm/report-types', ''))
+#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, ''), '', ''))
+#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, ''), '', ''))
+#		self.add_header('Link', '<%s>; rel="%s"; title="%s"' % (urljoin(self.request.path_decoded, ''), '', ''))
 
 
 class Object(Ressource):
@@ -652,10 +696,13 @@ class Object(Ressource):
 				if not p.copyable:
 					obj.info.pop(name, None)
 
-		if object_type == 'users/self' and dn != self._user_dn:
+		if object_type == 'users/self' and dn != self.request.user_dn:
 			raise HTTPError(403)
 
 		module = get_module(object_type, dn)
+		if module is None:
+			raise NotFound(object_type, dn)
+
 		obj = yield self.pool.submit(module.get, dn)
 		if not obj:
 			raise NotFound(object_type, dn)
@@ -683,7 +730,7 @@ class Object(Ressource):
 		props['$operations$'] = module.operations
 		props['$references$'] = module.get_references(dn)
 		assert '/' not in obj.dn  # TODO: escape /
-		props['url'] = urljoin(self.request.path, obj.dn)
+		props['url'] = urljoin(self.request.path_decoded, urllib.quote(obj.dn))
 		self.content_negotiation(props)
 
 	@tornado.gen.coroutine
@@ -867,8 +914,10 @@ class Operations(Ressource):
 
 if __name__ == "__main__":
 	application = Application([
+		(r"/favicon.ico", Favicon),
 		(r"/udm/", MainHandler),
 		(r"/udm/([a-z]+)/", MainTypes),
+		(r"/udm/([a-z]+)/object-types/", ObjectTypes),
 		(r"/udm/([a-z]+/[a-z]+)/object-types/", ObjectTypes),
 		(r"/udm/navigation/object-types/", ObjectTypesNavigation),
 		(r"/udm/((?:[a-z]+/[a-z]+)|navigation)/containers/", Navigation),
@@ -885,11 +934,10 @@ if __name__ == "__main__":
 		(r"/udm/([a-z]+/[a-z]+)/([^/]+)/(policies/[a-z_]+)/", PolicyTypes),
 		(r"/udm/([a-z]+/[a-z]+)/(policies/[a-z_]+)/([^/]+)/", PolicyResult),
 		(r"/udm/([a-z]+/[a-z]+)/", Objects),
-		(r"/udm/([a-z]+/[a-z]+)/([^/]+=[^/]+)", Object),
+		(r"/udm/([a-z]+/[a-z]+)/([^/]+(?:=|%3d|%3D)[^/]+)", Object),  # Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548
 		(r"/udm/([a-z]+/[a-z]+)/([^/]*)/layout", Layout),
 		(r"/udm/networks/network/([^/]+)/next-free-ip-address", NextFreeIpAddress),
 		(r"/udm/progress/$progress-id", Operations),  # operations?
-		# TODO: possible move locations
 		# TODO: meta info
 		# TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
 	])
