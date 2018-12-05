@@ -23,7 +23,6 @@
 				<requiredCommand name="udm/query"/>
 				<requiredCommand name="udm/syntax/choices/info"/>
 				<requiredCommand name="udm/syntax/choices"/>
-				<requiredCommand name="udm/get"/>
 			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="users/contact">
@@ -43,7 +42,6 @@
 				<requiredCommand name="udm/policies"/>
 				<requiredCommand name="udm/values"/>
 				<requiredCommand name="udm/query"/>
-				<requiredCommand name="udm/get"/>
 			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="groups/group">
@@ -63,7 +61,6 @@
 				<requiredCommand name="udm/policies"/>
 				<requiredCommand name="udm/values"/>
 				<requiredCommand name="udm/query"/>
-				<requiredCommand name="udm/get"/>
 			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="computers/computer">
@@ -83,7 +80,6 @@
 				<requiredCommand name="udm/policies"/>
 				<requiredCommand name="udm/values"/>
 				<requiredCommand name="udm/query"/>
-				<requiredCommand name="udm/get"/>
 			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="networks/network">
@@ -100,7 +96,6 @@
 				<requiredCommand name="udm/policies"/>
 				<requiredCommand name="udm/values"/>
 				<requiredCommand name="udm/query"/>
-				<requiredCommand name="udm/get"/>
 			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="dns/dns">
@@ -117,7 +112,6 @@
 				<requiredCommand name="udm/policies"/>
 				<requiredCommand name="udm/values"/>
 				<requiredCommand name="udm/query"/>
-				<requiredCommand name="udm/get"/>
 				<requiredCommand name="udm/nav/container/query"/>
 			</requiredCommands>
 		</flavor>
@@ -135,7 +129,6 @@
 				<requiredCommand name="udm/policies"/>
 				<requiredCommand name="udm/values"/>
 				<requiredCommand name="udm/query"/>
-				<requiredCommand name="udm/get"/>
 				<requiredCommand name="udm/nav/container/query"/>
 			</requiredCommands>
 		</flavor>
@@ -153,7 +146,6 @@
 				<requiredCommand name="udm/policies"/>
 				<requiredCommand name="udm/values"/>
 				<requiredCommand name="udm/query"/>
-				<requiredCommand name="udm/get"/>
 			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="shares/print">
@@ -173,7 +165,6 @@
 				<requiredCommand name="udm/policies"/>
 				<requiredCommand name="udm/values"/>
 				<requiredCommand name="udm/query"/>
-				<requiredCommand name="udm/get"/>
 			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="mail/mail">
@@ -190,7 +181,6 @@
 				<requiredCommand name="udm/policies"/>
 				<requiredCommand name="udm/values"/>
 				<requiredCommand name="udm/query"/>
-				<requiredCommand name="udm/get"/>
 			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="nagios/nagios">
@@ -210,7 +200,6 @@
 				<requiredCommand name="udm/policies"/>
 				<requiredCommand name="udm/values"/>
 				<requiredCommand name="udm/query"/>
-				<requiredCommand name="udm/get"/>
 			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="policies/policy">
@@ -227,7 +216,6 @@
 				<requiredCommand name="udm/policies"/>
 				<requiredCommand name="udm/values"/>
 				<requiredCommand name="udm/query"/>
-				<requiredCommand name="udm/get"/>
 			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="navigation">
@@ -235,16 +223,12 @@
 			<description>Browsing and managing the LDAP tree</description>
 			<keywords>ldap,directory,udm</keywords>
 			<requiredCommands>
-				<requiredCommand name="udm/reports/query"/>
 				<requiredCommand name="udm/meta_info"/>
-				<requiredCommand name="udm/containers"/>
 				<requiredCommand name="udm/types"/>
 				<requiredCommand name="udm/properties"/>
 				<requiredCommand name="udm/layout"/>
 				<requiredCommand name="udm/policies"/>
 				<requiredCommand name="udm/values"/>
-				<requiredCommand name="udm/query"/>
-				<requiredCommand name="udm/get"/>
 				<requiredCommand name="udm/nav/container/query"/>
 				<requiredCommand name="udm/nav/object/query"/>
 			</requiredCommands>
@@ -266,7 +250,6 @@
 				<requiredCommand name="udm/policies"/>
 				<requiredCommand name="udm/values"/>
 				<requiredCommand name="udm/query"/>
-				<requiredCommand name="udm/get"/>
 			</requiredCommands>
 		</flavor>
 		<flavor priority="50" id="license-import">
@@ -295,7 +278,6 @@
 				<requiredCommand name="udm/policies"/>
 				<requiredCommand name="udm/values"/>
 				<requiredCommand name="udm/query"/>
-				<requiredCommand name="udm/get"/>
 			</requiredCommands>
 		</flavor>
 		<categories>

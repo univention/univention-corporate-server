@@ -1,3 +1,9 @@
+univention-saml (5.0.4-29) unstable; urgency=medium
+
+  * Bug #47880: Tweak required commands
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Wed, 05 Dec 2018 10:04:12 +0200
+
 univention-saml (5.0.4-28) unstable; urgency=medium
 
   * Bug #47880: Add required command block to module definition

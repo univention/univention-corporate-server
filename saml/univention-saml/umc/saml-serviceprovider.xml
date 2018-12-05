@@ -9,11 +9,7 @@
 			<name>SAML identity provider</name>
 			<description>Management of service provider configurations for the single sign-on functionality of the SAML identity provider</description>
 			<keywords>SAML</keywords>
-		</flavor>
-		<categories>
-			<category name="domain"/>
-		</categories>
-		<requiredCommands>
+			<requiredCommands>
 				<requiredCommand name="udm/reports/query"/>
 				<requiredCommand name="udm/meta_info"/>
 				<requiredCommand name="udm/containers"/>
@@ -25,5 +21,9 @@
 				<requiredCommand name="udm/query"/>
 				<requiredCommand name="udm/get"/>
 			</requiredCommands>
+		</flavor>
+		<categories>
+			<category name="domain"/>
+		</categories>
 	</module>
 </umc>

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (8.0.5-29) unstable; urgency=medium
+
+  * Bug #47880: Tweaked requiredCommand further
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Wed, 05 Dec 2018 10:03:23 +0100
+
 univention-management-console-module-udm (8.0.5-28) unstable; urgency=medium
 
   * Bug #47880: Tweaked requiredCommand section for user/contact
