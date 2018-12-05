@@ -11,6 +11,7 @@ from vncdotool.api import VNCDoException
 
 from components.components import components_with_steps as components
 from languages import english
+from languages import french
 from languages import german
 
 import time
@@ -347,6 +348,8 @@ class UCSInstallation(object):
 	def installation(self):
 		if self.args.language == 'eng':
 			self._ = english.strings
+		elif self.args.language == 'fra':
+			self._ = french.strings
 		else:
 			self._ = german.strings
 
