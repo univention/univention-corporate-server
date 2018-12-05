@@ -9,3 +9,5 @@ desc: |
  * When performing an AD-Takeover out of an ad/member setup, the S4-Connector
    reported tracebacks due to missing NT password hashes in OpenLDAP.
 bug: [35540]
+erratum: 353
+announced: 2018-12-05
