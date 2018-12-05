@@ -11,3 +11,5 @@ desc: |
    proxy.conf is diverted to proxy.conf.debian and is included into the new
    proxy.conf (Bug #42535).
 bug: [42535]
+erratum: 361
+announced: 2018-12-05
