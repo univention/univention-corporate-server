@@ -279,6 +279,9 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 
 	def mailFrom(self, frAddr, cmdDict):
 		self.envelope_from = frAddr
+		if self.envelope_from in self.whitelisted_addresses:
+			self.envelope_from_ok = True
+			return lm.CONTINUE
 		try:
 			self.sasl_login_name = cmdDict['auth_authen']
 		except KeyError:
@@ -291,9 +294,6 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 					self.envelope_from, domain))
 		else:
 			# authenticated session
-			if self.sasl_login_name in self.whitelisted_addresses:
-				self.envelope_from_ok = True
-				return lm.CONTINUE
 			if not self.legitimate_addresses:
 				_exp, self.legitimate_addresses = self.get_legitimate_addresses_for_username(self.sasl_login_name)
 			if self.envelope_from in self.legitimate_addresses:
@@ -315,11 +315,11 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 			if not self.header_data['from']:
 				self.log('Invalid email address: {!r}: {!r}.'.format(key, val), self.queue_id, 'ERROR')
 				return lm.REJECT
+			if self.header_data['from'] in self.whitelisted_addresses:
+				self.header_from_ok = True
+				return lm.CONTINUE
 			if self.sasl_login_name:
 				# authenticated session
-				if self.sasl_login_name in self.whitelisted_addresses:
-					self.header_from_ok = True
-					return lm.CONTINUE
 				if not self.legitimate_addresses:
 					_exp, self.legitimate_addresses = self.get_legitimate_addresses_for_username(self.sasl_login_name)
 				if self.header_data['from'] in self.legitimate_addresses:
@@ -344,20 +344,25 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 		# decide what to do with an unauthenticated session
 		# check for delayed REJECT message and for header "X-univention-sender-check-sig" (and "-nonce")
 		self.queue_id = cmdDict.get('i', '')  # get again, in case it isn't set in header()
+		header_sig = self.header_data.get(HEADER_SIG.lower(), '')
+		header_nonce = self.header_data.get(HEADER_NONCE.lower(), '')
 		if self.envelope_from_ok and self.header_from_ok:
 			if self.reject_msg:
 				# this shouldn't happen, better safe than sorry -> reject
 				self.log('From OK, but has reject message!', self.queue_id, 'ERROR')
 				return lm.REJECT
-			if self.sasl_login_name in self.whitelisted_addresses:
-				whitelisted_msg = ' ({!r} is whitelisted)'.format(self.sasl_login_name)
+			if self.header_data['from'] in self.whitelisted_addresses and self.envelope_from in self.whitelisted_addresses:
+				msg = 'From OK ({} is whitelisted), '.format(self.envelope_from)
 			else:
-				whitelisted_msg = ''
-			self.log('From OK{}, signing message.'.format(whitelisted_msg), self.queue_id)
-			self.sign_msg = True
+				msg = 'From OK, '
+			if header_sig or header_nonce:
+				msg += 'not verifying existing signature.'
+				self.sign_msg = False
+			else:
+				msg += 'signing message.'
+				self.sign_msg = True
+			self.log(msg, self.queue_id)
 		elif self.reject_msg:
-			header_sig = self.header_data.get(HEADER_SIG.lower(), '')
-			header_nonce = self.header_data.get(HEADER_NONCE.lower(), '')
 			if not header_sig or not header_nonce:
 				self.log(self.reject_msg, self.queue_id)
 				return lm.REJECT

@@ -438,8 +438,8 @@ Type=int
 Categories=service-mail
 
 [mail/postfix/sender_check_milter_whitelist]
-Description[de]=Freizeichen getrennte Liste von Benutzernamen, die immer E-Mails im Namen anderer verschicken dürfen. Standard: <leer>.
-Description[en]=Space seperated list of usernames who can always send e-mails in the name of others. Default: <empty>.
+Description[de]=Freizeichen getrennte Liste von Absender (E-Mail-Adressen), die immer E-Mails im Namen anderer verschicken dürfen. Standard: <leer>.
+Description[en]=Space seperated list of senders (e-mail addresses) who can always send e-mails in the name of others. Default: <empty>.
 Type=str
 Categories=service-mail
 
