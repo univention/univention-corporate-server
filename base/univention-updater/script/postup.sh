@@ -138,16 +138,16 @@ if [ -f /var/univention-join/joined -a "$server_role" != basesystem ]; then
 		--bindpwdfile "/etc/machine.secret" \
 		--dn "$ldap_hostdn" \
 		--set operatingSystem="Univention Corporate Server" \
-		--set operatingSystemVersion="4.3-2" >>"$UPDATER_LOG" 2>&1
+		--set operatingSystemVersion="4.3-3" >>"$UPDATER_LOG" 2>&1
 fi
 
 # Move to mirror mode for previous errata component
 ucr set \
-	repository/online/component/4.3-1-errata=false \
-	repository/online/component/4.3-1-errata/localmirror=true \
-	repository/online/component/4.3-2-errata=enabled \
-	repository/online/component/4.3-2-errata/description="Errata updates for UCS 4.3-2" \
-	repository/online/component/4.3-2-errata/version="4.3" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/4.3-2-errata=false \
+	repository/online/component/4.3-2-errata/localmirror=true \
+	repository/online/component/4.3-3-errata=enabled \
+	repository/online/component/4.3-3-errata/description="Errata updates for UCS 4.3-3" \
+	repository/online/component/4.3-3-errata/version="4.3" >>"$UPDATER_LOG" 2>&1
 
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then
