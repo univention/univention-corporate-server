@@ -1,0 +1,20 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: nsis
+fix: 2.46-10+deb8u1
+desc: |
+ This update addresses the following issues:
+ * Nullsoft Scriptable Install System (NSIS) before 2.49 uses temporary folder
+   locations that allow unprivileged local users to overwrite files. This
+   allows a local attack in which either a plugin or the uninstaller can be
+   replaced by a Trojan horse program. (CVE-2015-9267)
+ * Nullsoft Scriptable Install System (NSIS) before 2.49 has unsafe implicit
+   linking against Version.dll. In other words, there is no protection
+   mechanism in which a wrapper function resolves the dependency at an
+   appropriate time during runtime. (CVE-2015-9268)
+bug: [48295]
+cve:
+- CVE-2015-9267
+- CVE-2015-9268
