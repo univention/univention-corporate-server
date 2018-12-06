@@ -1,0 +1,160 @@
+// Special style for sites where the page itself should not scroll
+// but only the components of the site e.g. Tree widgets.
+
+@import "variables"
+
+// general style. fixed header
+.umc--umc
+	overflow: hidden
+
+#umcTopContainer
+	position: absolute
+	top: 0
+	bottom: 0
+	left: 0
+	right: 0
+
+.umcHeader
+	position: relative
+	top: 0
+	left: 0
+	right: 0
+
+.umcMainTabContainer
+	position: absolute
+	top: 48px
+	bottom: 0
+	left: 0
+	right: 0
+	overflow-y: auto
+
+// general style. fixed module header
+@media (min-height: 750px)
+	.umcModuleWrapperWrapper
+		overflow-y: auto
+		overflow-x: hidden
+
+	.umcMainTabContainer > .dijitStackContainerChildWrapper
+		height: 100%
+
+	.umcModule
+		height: 100%
+		display: flex
+		flex-direction: column
+
+	.umcModuleWrapperWrapper
+		min-height: 0
+		height: 100%
+
+// umcGrid/umcGridTile/umcTree styling. the default is a max-height of $max-grid-height.
+// can be overwritten to have flexible height with flex-grid-height()
+$max-grid-height = 30em
+.umcGrid,
+.umcGridTile,
+.umcGridTree
+	.dgrid
+		height: auto
+		max-height: $max-grid-height
+		display: flex
+		flex-direction: column
+		.dgrid-scroller
+			position: relative
+			overflow-y: auto
+			overflow-x: hidden
+
+flex-grid-height()
+	.umcGrid,
+	.umcGridTile,
+	.umcGridTree
+		min-height: 0% // firefox bug with flex items that are bigger than the flex container
+		display: flex
+		flex-direction: column
+		margin: 0 !important
+
+		.dgrid
+			max-height: none
+
+fix-grid-height()
+	.umcGrid,
+	.umcGridTile,
+	.umcGridTree
+		.dgrid
+			max-height: $max-grid-height
+
+flex-page()
+	.umcModuleWrapper,
+	.umcModuleContent,
+	.umcModuleContentChildWrapper,
+	.umcPage
+		height: 100%
+
+	.umcPage
+		display: flex
+		&.umcPage--fullWidth
+			flex-direction: column
+
+		.umcPageNav
+			margin-bottom: material-grid(2)
+			flex: 0 0 auto
+			display: flex
+			flex-direction: column
+		&.umcPage--fullWidth .umcPageNav
+			margin-bottom: material-grid(1)
+
+		.umcPageMain
+			margin-bottom: material-grid(2)
+			display: flex
+			flex-direction: column
+
+		.umcPageFooter
+			display: none
+
+unflex-page()
+	.umcModuleWrapper,
+	.umcModuleContent,
+	.umcModuleContentChildWrapper,
+	.umcPage
+		height: auto
+
+	.umcPage
+		flex-direction: column
+
+// specific style. basic page with a search form and a umcGrid (+ optional umcGridTree)
+// does not have content in umcPageFooter (region: 'bottom')
+@media (min-height: 750px) and (min-width: $xs-min)
+	.umcTopContainer--layout-quota-overviewpage,
+	.umcTopContainer--layout-quota-partitionpage,
+	.umcTopContainer--layout-join-statuspage,
+	.umcTopContainer--layout-top,
+	.umcTopContainer--layout-services,
+	.umcTopContainer--layout-ucr,
+	.umcTopContainer--layout-appcenter-packages,
+	.umcTopContainer--layout-udm-searchpage,
+	.umcTopContainer--layout-uvmm-searchpage
+		flex-grid-height()
+		flex-page()
+
+// searchpages with umcGridTree trees have the tree abover the grid on narrow screens.
+// have grids with fixed height for these cases
+@media (min-height: 750px) and (max-width: $sm-max)
+	.umcTopContainer--layout-udm-navigation-searchpage,
+	.umcTopContainer--layout-udm-dhcp-dhcp-searchpage,
+	.umcTopContainer--layout-udm-dns-dns-searchpage,
+	.umcTopContainer--layout-uvmm-searchpage
+		fix-grid-height()
+		unflex-page()
+
+@media (min-height: 750px) and (min-width: $md-min)
+	.umcTopContainer--layout-udm-detailpage,
+	.umcTopContainer--layout-uvmm-domainpage
+		flex-page()
+		.umcUDMDetailPage,
+		.umcUDMDetailForm,
+		.umcUDMDetailForm > div,
+		.umcUDMDetailForm > div > div,
+		.umcUDMDetailForm > div > div > div
+			height: 100%
+
+		.umcPageMain
+			overflow-y: auto
+

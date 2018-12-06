@@ -112,15 +112,23 @@ define([
 			this.inherited(arguments);
 
 			this._bottom = new ContainerWidget({
+				'class': 'umcModuleWrapperWrapper'
+			});
+			var wrapper = new ContainerWidget({
 				baseClass: 'umcModuleWrapper',
 				'class': 'container'
 			});
-			this._bottom.addChild(this.__container);
+			wrapper.addChild(this.__container);
+			this._bottom.addChild(wrapper);
 
 			this._top = new ModuleHeader({
 				//buttons: render.buttons(this.headerButtons, this),
 				title: this.get('title')
 			});
+
+			this.own(on(this._bottom.domNode, 'scroll', lang.hitch(this, function(evt) {
+				domClass.toggle(this.domNode, 'umcModule--scrolled', evt.target.scrollTop > 0);
+			})));
 
 			ContainerWidget.prototype.addChild.apply(this, [this._top]);
 			ContainerWidget.prototype.addChild.apply(this, [this._bottom]);

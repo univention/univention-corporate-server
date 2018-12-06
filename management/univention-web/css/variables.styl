@@ -222,7 +222,21 @@ $image-tree-expand ?= "images/treeExpandImages.png"
 $image-tree-expand-ie6 ?= "images/treeExpandImages8bit.png"
 $image-progressbar-anim ?= "images/progressBarAnim.gif"
 
-// Mixins
+
+//// Google Material Styling
+// grid layout
+$material-grid8 ?= 8px
+$material-grid4 ?= 4px
+material-grid(multiplicant, use4dp=false)
+	if typeof(use4dp) != 'boolean'
+		error('use4dp has to be a boolean')
+	spacing = $material-grid8
+	if use4dp
+		spacing = $material-grid4
+	spacing * multiplicant
+
+
+//// Mixins
 
 border-radius()
 	-moz-border-radius: arguments

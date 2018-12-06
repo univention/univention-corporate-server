@@ -282,6 +282,10 @@ define([
 				domClass.remove(this._main.domNode, this._initialBootstrapClasses);
 				domClass.add(this._main.domNode, this.mainBootstrapClasses);
 			}
+
+			if (!hasNav || this.fullWidth) {
+				domClass.add(this.domNode, this.baseClass + '--fullWidth');
+			}
 		},
 
 		startup: function() {

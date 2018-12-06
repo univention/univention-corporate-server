@@ -998,11 +998,22 @@ define([
 		},
 
 		filter: function(query, options) {
+			style.set(this._grid.headerNode, 'right', ''); // unset 'right' so that the grid resizes correctly
 			domClass.add(this.domNode, this.baseClass + '--filtering');
 			this.standby(true);
 			this._filter(query, options).then(lang.hitch(this, function() {
 				this.standby(false);
 				domClass.remove(this.domNode, this.baseClass + '--filtering');
+
+				// Normally dgrid either has always a scrollbar or no scrollbar at all.
+				// If a scrollbar is shown, dgrid adjust the right alignment of the header
+				// so that the text in the cells and in the header align.
+				// But we want to be able to show the scrollbar only when it is needed.
+				// We adjusted the styling so that the scrollbar is only shown when needed.
+				// Set the right alignment of the header to 0 manually when a scrollbar is shown.
+				if (this._grid.bodyNode.scrollHeight <= this._grid.bodyNode.clientHeight) {
+					style.set(this._grid.headerNode, 'right', '0');
+				}
 			}));
 		},
 
