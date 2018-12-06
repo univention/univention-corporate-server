@@ -821,6 +821,10 @@ class Object(Ressource):
 		if not module:
 			raise NotFound(object_type)  # FIXME: create
 
+		valid = all(x['valid'] if isinstance(x['valid'], bool) else all(x['valid']) for x in self._validate(object_type))
+		if not valid:
+			raise HTTPError(400)
+
 		obj = module.module.object(None, self.ldap_connection, self.ldap_position, dn)
 		obj.open()
 		obj.options = self.get_body_arguments('$options$')
@@ -891,6 +895,7 @@ class Object(Ressource):
 					result.append({'property': property_name, 'valid': True})
 				except (udm_errors.valueInvalidSyntax, udm_errors.valueError) as exc:
 					result.append({'property': property_name, 'valid': False, 'details': str(exc)})
+		return result
 
 
 class PropertyChoices(Ressource):
