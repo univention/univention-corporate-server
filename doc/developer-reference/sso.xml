@@ -21,11 +21,11 @@
 	</para>
 
 	<section id="sso:register">
-		<title>Register new service provider via <foreignphrase>udm</foreignphrase></title>
+		<title>Register new service provider via <command>udm</command></title>
 		<para>
-			New service providers can be registered by using the <foreignphrase>UDM</foreignphrase> module <option>saml/serviceprovider</option>.
+			New service providers can be registered by using the &ucsUDM; module <option>saml/serviceprovider</option>.
 			To create a new service provider entry in a <foreignphrase>joinscript</foreignphrase>, see the following example:
-<screen>
+<programlisting language="sh"><![CDATA[
 eval "$(ucr shell)"
 udm saml/serviceprovider create "$@" \
 	--ignore_exists \
@@ -39,7 +39,7 @@ udm saml/serviceprovider create "$@" \
 	--set privacypolicyURL="https://example.com/policy.html" \
 	--set serviceProviderOrganizationName="My Service Name" \
 	--set serviceproviderdescription="A long description shown to the user on the Single Sign-On page." || die
-</screen>
+]]></programlisting>
 		</para>
 	</section>
 
@@ -48,20 +48,20 @@ udm saml/serviceprovider create "$@" \
 		<para>
 			The service provider usually requires at least a public certificate or XML metadata about the identity provider.
 			The certificate can e.g. be downloaded with the following call:
-<screen>
+<programlisting lang="sh"><![CDATA[
 eval "$(ucr shell)"
 wget --ca-certificate /etc/univention/ssl/ucsCA/CAcert.pem \
 https://"${ucs_server_sso_fqdn:-ucs-sso.$domainname}"/simplesamlphp/saml2/idp/certificate \
 	-O /etc/idp.cert
-</screen>
+]]></programlisting>
 			The XML metadata is available e.g. from
-<screen>
-eval $(ucr shell)
+<programlisting lang="sh"><![CDATA[
+eval "$(ucr shell)"
 wget --ca-certificate /etc/univention/ssl/ucsCA/CAcert.pem \
 https://"${ucs_server_sso_fqdn:-ucs-sso.$domainname}"/simplesamlphp/saml2/idp/metadata.php \
 	-O /etc/idp.metadata
-</screen>
-The <foreignphrase>Single Sign-On</foreignphrase> Login page to be configured in the service provider is <uri>https://ucs-sso.domainname/simplesamlphp/saml2/idp/SSOService.php</uri>
+]]></programlisting>
+The <foreignphrase>Single Sign-On</foreignphrase> Login page to be configured in the service provider is <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php</uri>
 		</para>
 	</section>
 
@@ -69,7 +69,7 @@ The <foreignphrase>Single Sign-On</foreignphrase> Login page to be configured in
 		<title>Add direct login link to <wordasword>ucs-overview</wordasword> page</title>
 		<para>
 			To provide users with a convenient link to an identity provider initiated login, the following ucr command may be used
-<screen>
+<programlisting lang="sh"><![CDATA[
 fqdn="ucs-sso.domainname"
 myspi="MyServiceProviderIdentifier"
 ucr set ucs/web/overview/entries/service/SP/description="External Service Login" \
@@ -78,8 +78,8 @@ ucs/web/overview/entries/service/SP/link="https://$fqdn/simplesamlphp/saml2/idp/
 ucs/web/overview/entries/service/SP/description/de="Externer Dienst Login" \
 ucs/web/overview/entries/service/SP/label/de="Externer Dienst SSO" \
 ucs/web/overview/entries/service/SP/priority=50
-</screen>
-			Where <foreignphrase>MyServiceProviderIdentifier</foreignphrase> is the identifier used when creating the UDM service provider object.
+]]></programlisting>
+			Where <literal>MyServiceProviderIdentifier</literal> is the identifier used when creating the UDM service provider object.
 		</para>
 	</section>
 </chapter>
