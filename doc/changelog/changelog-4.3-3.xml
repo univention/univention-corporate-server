@@ -189,6 +189,10 @@
 				The UCS DVD now contains the package <package>netcat-openbsd</package>.
 				It is required for VNC access to virtual machines (<u:bug>48015</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				If UCS is installed from an USB stick, <package>grub-install</package> shows a screen to select the boot device.
+				That list no longer includes the USB stick itself (<u:bug>47925</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
