@@ -66,9 +66,7 @@ define([
 		helpTextAllowHTML: false,
 		//helpText: _("Install or remove applications on this or another UCS system."),
 
-		navBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
-		mainBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
-		_initialBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
+		fullWidth: true,
 
 		metaCategoryClass: AppCenterMetaCategory,
 
