@@ -329,42 +329,6 @@ define([
 			}
 		},
 
-		_onScroll: function() {
-			var isActiveTab = !!document.getElementById(this.id).offsetParent;
-			if (!isActiveTab) {
-				return;
-			}
-			var viewPortHeight = dojoWindow.getBox().h;
-			var gridPosition = geometry.position(this.domNode);
-			var atBottom = (gridPosition.y + gridPosition.h) <= viewPortHeight;
-			if (atBottom) {
-				this._heightenGrid(2 * viewPortHeight);
-			}
-		},
-
-		_heightenGrid: function(extension) {
-			var gridHeight = style.get(this._grid.domNode, "height");
-			var newMaxGridHeight = gridHeight + extension;
-			style.set(this._grid.domNode, "max-height", newMaxGridHeight + 'px');
-			this._grid.resize();
-			var gridIsFullyRendered = this._grid.domNode.scrollHeight < newMaxGridHeight;
-			if (gridIsFullyRendered) {
-				this._updateFooterContent();
-				this._scrollSignal.remove();
-			}
-		},
-
-		_setInitialGridHeight: function() {
-			if (this._scrollSignal) {
-				this._scrollSignal.remove();
-			}
-			this._scrollSignal = on(win.doc, 'scroll', lang.hitch(this, '_onScroll'));
-			this.own(this._scrollSignal);
-			var viewPortHeight = dojoWindow.getBox().h;
-			var gridHeight = Math.round(viewPortHeight + viewPortHeight / 3);
-			this._heightenGrid(gridHeight);
-		},
-
 		_selectAll: function() {
 			this._grid.collection.fetch().forEach(lang.hitch(this, function(item){
 				var row = this._grid.row(item);
@@ -415,7 +379,6 @@ define([
 
 			this._grid = new _Grid(lang.mixin({
 				collection: this.collection,
-				className: 'dgrid-autoheight',
 				bufferRows: 0,
 				_refresh: lang.hitch(this, '_refresh'),
 				selectionMode: 'extended',
@@ -1035,11 +998,11 @@ define([
 		},
 
 		filter: function(query, options) {
-			style.set(this._grid.domNode, 'max-height', '1px');
+			domClass.add(this.domNode, this.baseClass + '--filtering');
 			this.standby(true);
 			this._filter(query, options).then(lang.hitch(this, function() {
 				this.standby(false);
-				this._setInitialGridHeight();
+				domClass.remove(this.domNode, this.baseClass + '--filtering');
 			}));
 		},
 

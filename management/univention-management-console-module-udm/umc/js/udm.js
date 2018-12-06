@@ -1429,7 +1429,6 @@ define([
 			var tree = new Tree({
 				model: model,
 				persist: false,
-				useAutoHeight: false,
 				style: 'width: 300px; height: 350px; margin-bottom: 20px;',
 				// customize the method getIconClass()
 				getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {

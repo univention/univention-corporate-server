@@ -23,7 +23,7 @@
 
 			.dijitCheckBox
 				icon-image(0, -48, "", "-small", 12px, 12px)
-				
+
 				&.dijitCheckBoxChecked
 					background-position: -48px -48px
 
@@ -150,6 +150,7 @@ $umcGrid-edge-padding = 24px
 			line-height: @height
 			font-size: 12px
 			background-color: inherit
+			border-bottom: 1px solid #e0e0e0
 
 			.dgrid-cell
 				color: rgba(0, 0, 0, 0.54)
@@ -176,9 +177,11 @@ $umcGrid-edge-padding = 24px
 
 		.dgrid-row
 			color: rgba(0, 0, 0, 0.87)
-			border-top: 1px solid #e0e0e0
 			box-sizing: content-box
 			transition: background-color 0.2s
+			border-top: 1px solid #e0e0e0
+			&:nth-child(2) /* can't use first-child since the .dgrid-preload element is at first place */
+				border-top: none
 
 			&:hover
 				background-color: #eeeeee
@@ -191,6 +194,10 @@ $umcGrid-edge-padding = 24px
 				material-flat-button()
 				margin-top: 0
 				margin-bottom: 0
+
+.umc .umcGrid--filtering
+	.dgrid
+		max-height: 0px
 
 
 .umc .dojoxGridHeader
