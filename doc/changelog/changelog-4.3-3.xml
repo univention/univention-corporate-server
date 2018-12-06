@@ -101,6 +101,10 @@
 						<package>openjdk-8</package> (<u:cve>2018-3136</u:cve> <u:cve>2018-3139</u:cve> <u:cve>2018-3149</u:cve> <u:cve>2018-3169</u:cve> <u:cve>2018-3180</u:cve> <u:cve>2018-3183</u:cve> <u:cve>2018-3214</u:cve>) (<u:bug>48074</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
+						<package>openssl</package> (<u:cve>2018-0732</u:cve> <u:cve>2018-0734</u:cve> <u:cve>2018-0735</u:cve> <u:cve>2018-0737</u:cve>)
+						<remark>Need to be imported into errata4.3-2</remark>
+					</simpara></listitem>
+					<listitem><simpara>
 						<package>perl</package> (<u:cve>2018-18311</u:cve> <u:cve>2018-18312</u:cve> <u:cve>2018-18313</u:cve> <u:cve>2018-18314</u:cve>) (<u:bug>48239</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
@@ -131,6 +135,10 @@
 						<package>texlive-bin</package> (<u:cve>2018-17407</u:cve>) (<u:bug>47892</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
+						<package>tiff</package> (<u:cve>2018-5784</u:cve> <u:cve>2018-7456</u:cve> <u:cve>2018-8905</u:cve> <u:cve>2018-10963</u:cve> <u:cve>2018-17101</u:cve> <u:cve>2018-18557</u:cve> <u:cve>2017-11613</u:cve> <u:cve>2017-17095</u:cve>)
+						<remark>Need to be imported into errata4.3-2</remark>
+					</simpara></listitem>
+					<listitem><simpara>
 						<package>unbound</package> (<u:cve>2017-15105</u:cve>) (<u:bug>48173</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
@@ -151,9 +159,98 @@
 				<para>
 					The following updated packages from Debian 9.6 are included (<u:bug>48278</u:bug>):
 					<simplelist type="inline" id="_debian">
-						<member><package></package></member>
+						<member><package>accerciser</package></member>
+						<member><package>base-files</package></member>
+						<member><package>brltty</package></member>
+						<member><package>canna</package></member>
+						<member><package>cargo</package></member>
+						<member><package>chromium-browser</package></member>
+						<member><package>confuse</package></member>
+						<member><package>debian-installer</package></member>
+						<member><package>debian-installer-netboot-images</package></member>
+						<member><package>discount</package></member>
+						<member><package>dnsmasq</package></member>
+						<member><package>dom4j</package></member>
+						<member><package>dpdk</package></member>
+						<member><package>dropbear</package></member>
+						<member><package>drupal7</package></member>
+						<member><package>easytag</package></member>
+						<member><package>enigmail</package></member>
+						<member><package>espeakup</package></member>
+						<member><package>fastforward</package></member>
+						<member><package>firetray</package></member>
+						<member><package>fuse</package></member>
+						<member><package>ganeti</package></member>
+						<member><package>globus-gsi-credential</package></member>
+						<member><package>gnupg2</package></member>
+						<member><package>gphoto2-cffi</package></member>
+						<member><package>graphicsmagick</package></member>
+						<member><package>grub2</package></member>
+						<member><package>hdparm</package></member>
+						<member><package>https-everywhere</package></member>
+						<member><package>i3-wm</package></member>
+						<member><package>icecast2</package></member>
+						<member><package>iipimage</package></member>
+						<member><package>jhead</package></member>
+						<member><package>kamailio</package></member>
+						<member><package>lastpass-cli</package></member>
+						<member><package>ldap2zone</package></member>
+						<member><package>libcgroup</package></member>
+						<member><package>libclamunrar</package></member>
+						<member><package>libdap</package></member>
+						<member><package>libdatetime-timezone-perl</package></member>
+						<member><package>libextractor</package></member>
+						<member><package>libmail-deliverystatus-bounceparser-perl</package></member>
+						<member><package>libseccomp</package></member>
+						<member><package>libxml-stream-perl</package></member>
+						<member><package>libxml-structured-perl</package></member>
+						<member><package>lxcfs</package></member>
+						<member><package>mailman</package></member>
+						<member><package>mbedtls</package></member>
+						<member><package>mediawiki</package></member>
+						<member><package>mgetty</package></member>
+						<member><package>moin</package></member>
+						<member><package>mosquitto</package></member>
+						<member><package>multipath-tools</package></member>
+						<member><package>mupdf</package></member>
+						<member><package>nagstamon</package></member>
+						<member><package>network-manager-applet</package></member>
+						<member><package>nginx</package></member>
+						<member><package>ola</package></member>
+						<member><package>openafs</package></member>
+						<member><package>opensc</package></member>
+						<member><package>otrs2</package></member>
+						<member><package>pkgsel</package></member>
+						<member><package>publicsuffix</package></member>
+						<member><package>python-django</package></member>
+						<member><package>python-imaplib2</package></member>
+						<member><package>roundcube</package></member>
+						<member><package>ruby-json-jwt</package></member>
+						<member><package>rustc</package></member>
+						<member><package>sddm</package></member>
+						<member><package>serf</package></member>
+						<member><package>soundconverter</package></member>
+						<member><package>spice-gtk</package></member>
+						<member><package>sqlcipher</package></member>
+						<member><package>strongswan</package></member>
+						<member><package>subversion</package></member>
+						<member><package>sympa</package></member>
+						<member><package>systraq</package></member>
+						<member><package>thunderbird</package></member>
+						<member><package>tinc</package></member>
+						<member><package>tomcat-native</package></member>
+						<member><package>tor</package></member>
+						<member><package>trafficserver</package></member>
+						<member><package>tzdata</package></member>
+						<member><package>ublock-origin</package></member>
+						<member><package>vagrant</package></member>
+						<member><package>vmtk</package></member>
+						<member><package>x11vnc</package></member>
+						<member><package>xapian-core</package></member>
+						<member><package>xmotd</package></member>
+						<member><package>xorg-server</package></member>
+						<member><package>zutils</package></member>
 					</simplelist>
-					<remark>FIXME</remark>
 				</para>
 			</listitem>
 			<listitem>
@@ -347,9 +444,8 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					Installation routines now ask for valid credentials before actually doing anything.
-					This prevents possible errors when reverting the installation.
-					status should the credentials be invalid (<u:bug>47619</u:bug>).
-					<remark>FIXME</remark>
+					Prior to this change, the user may have been prompted for credentials in the middle of the installation process.
+					Invalid credentials at this point may have led to errors (<u:bug>47619</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Proxy settings in containers are updated before an app upgrade (<u:bug>47439</u:bug>).
