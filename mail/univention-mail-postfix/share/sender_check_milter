@@ -106,6 +106,7 @@ def reload_ucr():
 class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 	_lo = None
 	_ldap_secret_mtime = 0.0
+	_current_data = {}  # to prevent repeatedly logging same configuration
 	legitimate_address_cache = None  # type: Dict[str, Union[Tuple[datetime.datetime, List[str]], Dict[str, int]]]
 	legitimate_address_cache_ttl = get_ucr().get(LEGITIMATE_ADDRESSES_CACHE_TTL_UCR, LEGITIMATE_ADDRESSES_CACHE_TTL_UCRV_DEFAULT)
 	regex_email_with_brackets = re.compile(r'.*<(.+@.+\..+)>$')
@@ -127,13 +128,19 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 
 		if not self.mail_domains:
 			self.mail_domains.extend(self.get_mail_domains())
-		self.log('Mail domains: {}'.format(', '.join(self.mail_domains or ['None'])))
+		if self._current_data.get('mail_domains') != set(self.mail_domains):
+			self._current_data['mail_domains'] = set(self.mail_domains)
+			self.log('Mail domains: {}'.format(', '.join(self.mail_domains or ['None'])))
 		if not self.public_keys:
 			self.public_keys.update(self.get_public_keys())
-		self.log('Public keys: {}'.format(', '.join(self.public_keys.keys() or ['None'])))
+		if self._current_data.get('public_keys') != set(self.public_keys.keys()):
+			self._current_data['public_keys'] = set(self.public_keys.keys())
+			self.log('Public keys: {}'.format(', '.join(self.public_keys.keys() or ['None'])))
 		if not self.whitelisted_addresses:
 			self.whitelisted_addresses.extend(sorted(self.ucr.get(WHITELISTED_ADDRESSES_UCR, '').split()))
-		self.log('Whitelisted addresses: {}'.format(', '.join(self.whitelisted_addresses or ['None'])))
+		if self._current_data.get('whitelisted_addresses') != set(self.whitelisted_addresses):
+			self._current_data['whitelisted_addresses'] = set(self.whitelisted_addresses)
+			self.log('Whitelisted addresses: {}'.format(', '.join(self.whitelisted_addresses or ['None'])))
 		fqdn = '{}.{}'.format(self.ucr['hostname'], self.ucr['domainname'])
 		if fqdn not in self.public_keys:
 			raise RuntimeError('Public key of this host ({!r}) not found. Run join script.'.format(fqdn))
