@@ -192,9 +192,7 @@ define([
 
 			child._headerButtons = null;
 			if (headerButtons && headerButtons.length) {
-				var container = new ContainerWidget({
-					style: 'display: inline-block; margin: 0; padding: 0;'
-				});
+				var container = new ContainerWidget({});
 				child.own(container);
 
 				child._headerButtons = render.buttons(headerButtons.reverse(), container);

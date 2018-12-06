@@ -29,74 +29,31 @@
 
 @import "../variables"
 
-.umc .umcModuleHeader
-	width: 100%
+.umcModuleHeader
+	transition: border-color 0.2s
+	border-bottom: 1px solid transparent
 
-	.umcModuleHeaderWrapper
-		margin: auto
+.umcModule--scrolled .umcModuleHeader
+	border-bottom-color: $grey-medium
 
-	.umcModuleHeaderOuterContainer
-		background: inherit
-		width: 100%
-		padding-top: 25px
-		padding-bottom: @padding-top
-		@media (max-width: 400px)
-			padding-top: 15px
-			padding-bottom: 20px
+.umcModuleHeaderOuterContainer
+	padding: material-grid(2) 0
 
-		transition: font-size 0.2s, padding-bottom 0.2s
+.umcModuleHeaderWrapper
+	display: flex
+	align-items: center
+	flex-wrap: wrap
 
-	.umcModuleHeaderLeft
-		float: left
-		max-width: 80%
+.umcModuleHeaderRight
+	flex: 1 1 auto
+	min-width: 0%
+	text-align: right
 
-	.umcModuleHeaderRight
-		float: right
-		padding-top: 3px
-		.dijitButtonContents
-			position: relative
-
-//	.dijitButton
-//		margin-left: 12px
-//
-//		.dijitButtonNode
-//			background: none
-//			filter: none
-//			border-radius: 0
-//			border: none
-//			padding: 0
-//			box-shadow: none
-//
-//			.dijitButtonText
-//				display: none
-//				position: absolute
-//				color: #ffffff
-//				width: auto
-//				padding: 0
-//				text-align: left
-//
-//
-//			.dijitIcon
-//				display: block
-//				width: 20px
-//				margin: auto
-//
-//
-//
-//	.dijitButton.dijitButtonHover .dijitButtonText
-//		display: inherit
-//
-
-.umc .umcModuleTitle
+.umcModuleTitle
 	font-size: $font-size-headline
-	color: $text-color
-	font-weight: normal
-	line-height: 1em
-	padding: 18px 0
+	line-height: 1.4em
 
 .umc .umcModule
-	background-color: $document-background-color
-
 	.umcModuleWrapper
 		margin: 0 auto
 		padding: 0
