@@ -8,1071 +8,1081 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<chapter id="nagios::general">
-<title>Infrastruktur-Monitoring mit Nagios</title>
 
-<section id="nagios::einfuehrung">
-	<title>Einführung und Aufbau</title>
-	<para>
-	Mit Hilfe der Software Nagios ist es möglich, komplexe IT-Strukturen aus
-	Netzen, Rechnern und Diensten fortlaufend automatisch auf korrekte
-	Funktion zu überprüfen.
-	</para>
+<chapter id="monitoring::general">
+<title>Infrastruktur-Monitoring</title>
 
-	<para>
-	Für das Monitoring bringt Nagios eine umfassende Sammlung an
-	Überwachungsmodulen mit. Diese können
-	neben der Abfrage von Systemkennzahlen (z.B. CPU- und Speicherauslastung,
-	freie Festplattenkapazität) auch die Erreichbarkeit und Funktion
-	unterschiedlicher Dienste (z.B. SSH, SMTP, HTTP) testen. Für die
-	Funktionstests werden in der Regel einfache Programmschritte
-	wie das Ausliefern einer Testmail oder das Auflösen eines DNS-Eintrags
-	durchgeführt. Neben den in Nagios enthaltenen Standardmodulen
-	werden auch UCS-spezifische Überwachungsmodule mitgeliefert, mit denen etwa die
-	Listener/Notifier-Replikation überwacht werden kann.
-	</para>
+	<section id="dashboard::general">
+	<title>UCS Dashboard</title>
 
-	<para>
-	Nagios unterscheidet drei grundlegende Betriebszustände für einen Dienst:
-	</para>
-
-	<itemizedlist>
-		<listitem>
-			<simpara>
-			<emphasis>OK</emphasis> ist der Regelbetrieb
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>CRITICAL</emphasis> beschreibt einen aufgetretenen Fehler, z.B. ein
-			Webserver, der nicht erreichbar ist
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<emphasis>WARNING</emphasis> deutet auf einen möglicherweise bald auftretenden
-			Fehlerzustand hin und ist somit eine Vorstufe zu <emphasis>CRITICAL</emphasis>.
-			Beispiel: Der Test für ausreichend freien Speicherplatz auf der Root-Partition
-			löst erst ab 90 Prozent Füllstand einen Fehler aus, aber bereits ab 75 Prozent eine Warnung.
-			</simpara>
-		</listitem>
-	</itemizedlist>
-
-	<para>
-	Beim Wechsel eines Betriebszustands kann eine vorher festgelegte
-	Kontaktperson über die mögliche Fehlfunktion informiert werden.
-	Neben der reaktiven Benachrichtigung im Fehlerfall kann der aktuelle
-	Status auch jederzeit laufend in einer webbasierten Oberfläche
-	abgefragt werden, in der die Status-Informationen übersichtlich
-	dargestellt werden.
-	</para>
-
-	<figure id="service-detail">
-		<title>Nagios Status-Webinterface</title>
-		<graphic scalefit="1" align="center" width="90%" fileref="illustrations43/nagios_service_detail.png"/>
-	</figure>
-
-	<para>
-	Nagios besteht aus drei Hauptkomponenten:
-	</para>
-
-	<itemizedlist>
-		<listitem>
-			<simpara>
-		Die Kernkomponente einer Nagios-Installation ist der <emphasis>Nagios-Server</emphasis>,
-		der für die Erhebung und Speicherung der Überwachungsdaten zuständig ist.
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-		Die eigentliche Ermittlung der Statusinformationen wird von den
-		<emphasis>Nagios-Plugins</emphasis> getätigt, die in regelmäßigen Abständen vom
-		Nagios-Server aufgerufen werden. Die erhobenen Informationen werden im
-		Nagios-Server gespeichert.
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-		Einige Statusinformationen können nicht über das Netz abgefragt werden
-		kann (z.B. die Abfrage des freien Speicherplatzes auf einer Festplattenpartition).
-		In diesem Fall kommt der NRPED-Dienst (Nagios Remote Plugin Executor
-		Daemon) zum Einsatz, welcher nach einer Anfrage des Nagios-Servers auf
-		dem entfernten Rechner Nagios-Plugins ausführt und die erhobenen
-		Informationen anschließend zurückleitet.
-		Der NRPED wird durch die Komponente <emphasis>Nagios-Client</emphasis>
-		bereitgestellt, die auf allen UCS-Systemrollen vorinstalliert wird.
-			</simpara>
-		</listitem>
-	</itemizedlist>
-
-	<para>
-	Die Nagios-Konfiguration erfolgt in &ucsUMC;, die
-	Nagios-Konfigurationsdateien werden automatisch aus den im
-	LDAP-Verzeichnis gespeicherten Informationen generiert.
-	</para>
-</section>
-
-
-<section id="Nagios:Installation">
-	<title>Installation</title>
-
-	<para>
-	  Ein Nagios-Server kann mit der Applikation <emphasis>Netzwerküberwachung (Nagios)</emphasis>
-	  aus dem Univention App Center installiert werden. Alternativ kann das Softwarepaket
-	  <package>univention-nagios-server</package> installiert werden (anschließend muss
-	  <command>univention-run-join-scripts</command> aufgerufen werden). Weitere Informationen
-	  finden sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
-	  Der Nagios-Server kann auf beliebigen Systemrollen installiert werden, wobei die Verwendung
-	  eines Domänencontroller-Systems empfohlen wird.
-	  Der Nagios-Client ist auf allen Systemrollen standardmäßig installiert.
-	</para>
-
-	<para>
-	Neben den Standard-Plugins, die mit der Installation des
-	Pakets <package>univention-nagios-client</package> mitgebracht werden, können
-	zusätzliche Plugins über folgende Pakete nachinstalliert werden:
-	</para>
-	<itemizedlist>
-		<listitem>
-			<simpara>
-			<package>univention-nagios-raid</package> Überwachung des Software-RAID-Status
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<package>univention-nagios-smart</package> Prüfung des S.M.A.R.T.-Status von Festplatten
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<package>univention-nagios-opsi</package> Prüfung der Softwareverteilung opsi
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-			<package>univention-nagios-ad-connector</package> Prüfung des AD Connectors
-			</simpara>
-		</listitem>
-	</itemizedlist>
-
-	<para>
-	Einige der Pakete werden bei der Installation der entsprechenden
-	Dienste automatisch mit eingerichtet.
-	Wird beispielsweise der UCS AD Connector eingerichtet, bringt dieser
-	das Überwachungs-Plugin <package>univention-nagios-ad-connector</package> mit.
-	</para>
-
-	<section id="nagios:preconfiguredchecks">
-		<title>Vorkonfigurierte Nagios-Prüfungen</title>
-		<para>
-		Während der Installation werden automatisch grundlegende
-		Nagios-Prüfungen für die UCS-Systeme der Domäne eingerichtet. Die
-		Einbindung weiterer Dienste wird in <xref linkend="Nagios:Dienst"/>
-		dokumentiert.
-		</para>
-
-		<informaltable>
-			<tgroup cols="2">
-				<colspec colnum="1" colname="col1" colwidth="1.2*"/>
-				<colspec colnum="2" colname="col2" colwidth="2*"/>
-				<thead>
-					<row>
-						<entry>Nagios-Dienst</entry>
-						<entry>Funktion</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_PING</systemitem></entry>
-						<entry>
-							Testet die Erreichbarkeit des überwachten
-							UCS-Systems mit dem Kommando <command>ping</command>. In
-							der Standardeinstellung wird der Fehlerzustand
-							erreicht, wenn die Antwortzeit 50ms bzw. 100ms
-							überschreitet oder Paketverluste von 20%
-							bzw. 40% auftreten.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_DISK_ROOT</systemitem></entry>
-						<entry>
-							Überwacht den Füllstand
-							der <filename class="partition">/</filename>-Partition. Unterschreitet der
-							verbleibende freie Platz in der
-							Standardeinstellung 25% bzw. 10% wird der
-							Fehlerzustand gesetzt.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_DNS</systemitem></entry>
-						<entry>
-							Testet die Funktion des lokalen DNS-Servers und die
-							Erreichbarkeit der öffentlichen DNS-Server durch die Abfrage
-							des Rechnernamens <systemitem class="fqdomainname">www.univention.de</systemitem>.
-							Ist für die UCS-Domäne kein DNS-Forwarder definiert,
-							schlägt diese Abfrage fehl.
-							In diesem Fall kann <systemitem class="fqdomainname">www.univention.de</systemitem> z.B. gegen den FQDN
-							des Domaincontroller Master ersetzt werden, um die Funktion
-							des Namensauflösung zu testen.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_LOAD</systemitem></entry>
-						<entry>
-							Überwacht die Systemlast.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_LDAP</systemitem></entry>
-						<entry>
-							Überwacht den auf Domänencontrollern laufenden LDAP-Server.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_NTP</systemitem></entry>
-						<entry>
-							Fragt auf dem überwachten UCS-System die Uhrzeit beim NTP-Dienst ab.
-							Tritt eine Abweichung von mehr als 60 bzw. 120 Sekunden auf,
-							wird der Fehlerzustand erreicht.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_SMTP</systemitem></entry>
-						<entry>
-							Testet den Mailserver.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_SSL</systemitem></entry>
-						<entry>
-							Testet die verbleibende Gültigkeitsdauer der UCS-SSL-Zertifikate.
-							Dieses Plugin ist nur für &ucsMaster;- und &ucsBackup;-Systeme geeignet.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_SWAP</systemitem></entry>
-						<entry>
-							Überwacht die Auslastung der Swap-Partition. Unterschreitet der
-							verbleibende freie Platz den Schwellwert (in der Standardeinstellung 40%
-							bzw. 20%), wird der Fehlerzustand gesetzt.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_REPLICATION</systemitem></entry>
-						<entry>
-							Überwacht den Status der LDAP-Replikation, erkennt das Vorhandensein
-							einer <filename>failed.ldif</filename>-Datei sowie den Stillstand der Replikation
-							und warnt vor zu großen Differenzen der Transaktions-IDs.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_NSCD</systemitem></entry>
-						<entry>
-							Testet die Verfügbarkeit des Name Server Cache Dienstes.
-							Läuft kein NSCD-Prozess wird ein CRITICAL-Event ausgelöst,
-							läuft mehr als ein Prozess ein WARNING-Event.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_WINBIND</systemitem></entry>
-						<entry>
-							Testet die Verfügbarkeit des Winbind-Dienstes.
-							Läuft kein Prozess, wird ein CRITICAL-Event ausgelöst.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_SMBD</systemitem></entry>
-						<entry>
-							Testet die Verfügbarkeit des Samba-Dienstes.
-							Läuft kein Prozess, wird ein CRITICAL-Event ausgelöst.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_NMBD</systemitem></entry>
-						<entry>
-							Testet die Verfügbarkeit des NMBD-Dienstes,
-							der in Samba für den NetBIOS-Dienst zuständig ist.
-							Läuft kein Prozess, wird ein CRITICAL-Event ausgelöst.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_JOINSTATUS</systemitem></entry>
-						<entry>
-							Prüft den Join-Status eines Systems.
-							Ist ein System noch nicht Mitglied der Domäne, wird ein CRITICAL-Event
-							ausgelöst, sind nicht-aufgerufene Joinskripte vorhanden, wird ein
-							WARNING-Event zurückgeliefert.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_KPASSWD</systemitem></entry>
-						<entry>
-							Prüft die Verfügbarkeit des Kerberos-Passwort-Dienstes
-							(nur verfügbar auf Domänencontroller Master/Backup).
-							Läuft weniger oder mehr als ein Prozess, wird ein CRITICAL-Event ausgelöst.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_CUPS</systemitem></entry>
-						<entry>
-							Überwacht den CUPS-Druckdienst.
-							Läuft kein <systemitem class="daemon">cupsd</systemitem>-Prozess oder ist die Weboberfläche auf Port 631
-							ist nicht erreichbar, wird der Status CRITICAL zurückgegeben.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_DANSGUARDIAN</systemitem></entry>
-						<entry>
-							Überwacht den Webfilter DansGuardian.
-							Läuft kein DansGuardian-Prozess oder ist der DansGuardian-Proxy
-							ist nicht erreichbar, wird der Status CRITICAL zurückgegeben.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_SQUID</systemitem></entry>
-						<entry>
-							Überwacht den Proxy Squid.
-							Läuft kein Squid-Prozess oder der Squid-Proxy ist nicht erreichbar,
-							wird der Status CRITICAL zurückgegeben.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_LIBVIRTD_KVM</systemitem></entry>
-						<entry>
-							Prüft den Status eines KVM-Virtualisierungs-Servers
-							über eine Anfrage an <command>virsh</command>
-							und gibt den Status CRITICAL zurück, wenn die Rückmeldung
-							mehr als zehn Sekunden dauert.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_LIBVIRTD_XEN</systemitem></entry>
-						<entry>
-							Prüft den Status eines Xen-Virtualisierungs-Servers
-							über eine Abfrage an <command>virsh</command>
-							und gibt den Status CRITICAL zurück, wenn die Rückmeldung
-							mehr als zehn Sekunden dauert.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_UVMMD</systemitem></entry>
-						<entry>
-							Prüft den Status des &ucsUVMM;s über eine Anfrage der verfügbaren Nodes.
-							Können sie nicht aufgelöst werden, wird der Status CRITICAL zurückgegeben.
-						</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</informaltable>
-
-		<para>
-		Für die oben genannten Dienste wurden Standardparameter festgelegt,
-		die auf die Ansprüche der meisten UCS-Installationen zugeschnitten sind.
-		Sollten diese Standardparameter nicht geeignet sein, können sie nachträglich
-		angepasst werden. Dies ist in <xref linkend="Nagios:Dienst"/> dokumentiert.
-		</para>
-
-		<para>
-		Die folgenden Nagios-Dienste sind erst nach der Installation
-		zusätzlicher Pakete auf dem jeweiligen Nagios-Client verfügbar
-		(siehe <xref linkend="Nagios:Installation"/>):
-		</para>
-
-		<informaltable>
-			<tgroup cols="2">
-				<colspec colnum="1" colname="col1" colwidth="1.2*"/>
-				<colspec colnum="2" colname="col2" colwidth="2*"/>
-				<thead>
-					<row>
-						<entry>Nagios-Dienst</entry>
-						<entry>Funktion</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_OPSI</systemitem></entry>
-						<entry>
-							Überwacht den opsi-Daemon.
-							Läuft kein opsi-Prozess oder die opsi-Weboberfläche ist nicht erreichbar,
-							wird der Status CRITICAL zurückgegeben.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_SMART_SDA</systemitem></entry>
-						<entry>
-							Prüft den S.M.A.R.T.-Status der Festplatte <filename class="devicefile">/dev/sda</filename>.
-							Für die Festplatten <filename class="partition">sdb</filename>, <filename class="partition">sdc</filename> und <filename class="partition">sdd</filename> existieren entsprechende Nagios-Dienste.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_RAID</systemitem></entry>
-						<entry>
-							Prüft den Status des Software-RAIDs über <filename>/proc/mdadm</filename>
-							und gibt den Status CRITICAL zurück, sofern eine Festplatte
-							des RAID-Verbunds ausgefallen ist, bzw. den Status WARNING zurück, wenn der
-							Recovery-Vorgang läuft.
-						</entry>
-					</row>
-					<row>
-						<entry><systemitem class="service">UNIVENTION_ADCONNECTOR</systemitem></entry>
-						<entry>
-							Prüft den Status des Active Directory Connectors.
-							Läuft kein Connector-Prozess, wird der Status CRITICAL
-							zurückgegeben. Existiert mehr mehr als ein Prozess pro
-							Connector-Instanz gibt es eine WARNING. Treten Rejects auf, gibt es
-							eine WARNING. Kann der AD-Server nicht erreicht werden, tritt ein
-							CRITICAL-Zustand ein. Das Plugin kann auch in
-							Multi-Connector-Instanzen verwendet werden. Dabei muss der Name der
-							Instanz als Parameter übergeben werden.
-						</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</informaltable>
 	</section>
-</section>
 
-<section id="nagios:Konfiguration_der_Nagios-Überwachung">
-	<title>Konfiguration der Nagios-Überwachung</title>
-	<para>
-	Folgende Einstellungen können in &ucsUMC; vorgenommen werden:
-	</para>
+	<section id="nagios::general">
+	<title>Nagios</title>
 
-	<itemizedlist>
-		<listitem>
-			<simpara>
-		Alle Nagios-Prüfungen, die einem Rechner zugewiesen werden
-		sollen, müssen zuvor registriert werden. Dies erfolgt
-		über <emphasis>Nagios-Dienst</emphasis>-Objekte (siehe <xref linkend="Nagios:Dienst"/>).
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-		Die Zuweisung, welche Prüfungen an einem Rechner durchgeführt
-		werden sollen und welche Kontaktperson im Fehlerfall benachrichtigt
-		werden soll, erfolgt an den jeweiligen Rechnerobjekten.
-			</simpara>
-		</listitem>
-		<listitem>
-			<simpara>
-		Nagiosprüfungen können zeitlich beschränkt werden, z.B. indem
-		die Prüfung der Druckserver nur werktags von 8h bis 20h durchgeführt
-		wird. Dies erfolgt über <emphasis>Nagios-Zeitraum</emphasis>-Objekte, siehe <xref linkend="nagios::timeframe"/>.
-			</simpara>
-		</listitem>
-	</itemizedlist>
-
-	<para>
-	In der Grundeinstellung werden bereits zahlreiche Prüfungen für jeden
-	Rechner festgelegt, d.h. eine Nagios-Grundkonfiguration wird
-	eingerichtet, ohne dass weitere Anpassungen nötig sind.
-	</para>
-
-	<section id="Nagios:Dienst">
-		<title>Konfiguration eines Nagios-Dienstes</title>
+	<section id="nagios::einfuehrung">
+		<title>Einführung und Aufbau</title>
 		<para>
-		Ein Nagios-Dienst definiert die Überwachung eines Dienstes. Einem
-		solchen Objekt kann eine beliebige Anzahl an Rechnern zugeordnet
-		werden, so dass durch die einmalige Angabe von zu verwendenden
-		Nagios-Plugins sowie Überprüfungs- und Benachrichtigungsparametern
-		eine Dienstüberprüfung auf den angegebenen Rechnern eingerichtet
-		werden kann.
+		Mit Hilfe der Software Nagios ist es möglich, komplexe IT-Strukturen aus
+		Netzen, Rechnern und Diensten fortlaufend automatisch auf korrekte
+		Funktion zu überprüfen.
 		</para>
 
 		<para>
-		Nagios-Dienste werden im UMC-Modul <emphasis>Nagios</emphasis>
-		mit dem Objekttyp <guimenu>Nagios-Dienst</guimenu> verwaltet
-		(siehe auch <xref linkend="central:user-interface"/>).
-		Nagios verfügt über keine LDAP-Schnittstelle für die
-		Monitoring-Konfiguration, stattdessen werden die Konfigurationsdateien
-		beim Hinzufügen/Entfernen/Bearbeiten eines Nagios-Dienstes durch ein
-		Listener-Modul generiert.
+		Für das Monitoring bringt Nagios eine umfassende Sammlung an
+		Überwachungsmodulen mit. Diese können
+		neben der Abfrage von Systemkennzahlen (z.B. CPU- und Speicherauslastung,
+		freie Festplattenkapazität) auch die Erreichbarkeit und Funktion
+		unterschiedlicher Dienste (z.B. SSH, SMTP, HTTP) testen. Für die
+		Funktionstests werden in der Regel einfache Programmschritte
+		wie das Ausliefern einer Testmail oder das Auflösen eines DNS-Eintrags
+		durchgeführt. Neben den in Nagios enthaltenen Standardmodulen
+		werden auch UCS-spezifische Überwachungsmodule mitgeliefert, mit denen etwa die
+		Listener/Notifier-Replikation überwacht werden kann.
 		</para>
 
-		<figure id="nagios-service">
+		<para>
+		Nagios unterscheidet drei grundlegende Betriebszustände für einen Dienst:
+		</para>
+
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				<emphasis>OK</emphasis> ist der Regelbetrieb
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				<emphasis>CRITICAL</emphasis> beschreibt einen aufgetretenen Fehler, z.B. ein
+				Webserver, der nicht erreichbar ist
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				<emphasis>WARNING</emphasis> deutet auf einen möglicherweise bald auftretenden
+				Fehlerzustand hin und ist somit eine Vorstufe zu <emphasis>CRITICAL</emphasis>.
+				Beispiel: Der Test für ausreichend freien Speicherplatz auf der Root-Partition
+				löst erst ab 90 Prozent Füllstand einen Fehler aus, aber bereits ab 75 Prozent eine Warnung.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+
+		<para>
+		Beim Wechsel eines Betriebszustands kann eine vorher festgelegte
+		Kontaktperson über die mögliche Fehlfunktion informiert werden.
+		Neben der reaktiven Benachrichtigung im Fehlerfall kann der aktuelle
+		Status auch jederzeit laufend in einer webbasierten Oberfläche
+		abgefragt werden, in der die Status-Informationen übersichtlich
+		dargestellt werden.
+		</para>
+
+		<figure id="service-detail">
+			<title>Nagios Status-Webinterface</title>
+			<graphic scalefit="1" align="center" width="90%" fileref="illustrations43/nagios_service_detail.png"/>
+		</figure>
+
+		<para>
+		Nagios besteht aus drei Hauptkomponenten:
+		</para>
+
+		<itemizedlist>
+			<listitem>
+				<simpara>
+			Die Kernkomponente einer Nagios-Installation ist der <emphasis>Nagios-Server</emphasis>,
+			der für die Erhebung und Speicherung der Überwachungsdaten zuständig ist.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+			Die eigentliche Ermittlung der Statusinformationen wird von den
+			<emphasis>Nagios-Plugins</emphasis> getätigt, die in regelmäßigen Abständen vom
+			Nagios-Server aufgerufen werden. Die erhobenen Informationen werden im
+			Nagios-Server gespeichert.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+			Einige Statusinformationen können nicht über das Netz abgefragt werden
+			kann (z.B. die Abfrage des freien Speicherplatzes auf einer Festplattenpartition).
+			In diesem Fall kommt der NRPED-Dienst (Nagios Remote Plugin Executor
+			Daemon) zum Einsatz, welcher nach einer Anfrage des Nagios-Servers auf
+			dem entfernten Rechner Nagios-Plugins ausführt und die erhobenen
+			Informationen anschließend zurückleitet.
+			Der NRPED wird durch die Komponente <emphasis>Nagios-Client</emphasis>
+			bereitgestellt, die auf allen UCS-Systemrollen vorinstalliert wird.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+
+		<para>
+		Die Nagios-Konfiguration erfolgt in &ucsUMC;, die
+		Nagios-Konfigurationsdateien werden automatisch aus den im
+		LDAP-Verzeichnis gespeicherten Informationen generiert.
+		</para>
+	</section>
+
+
+	<section id="Nagios:Installation">
+		<title>Installation</title>
+
+		<para>
+		  Ein Nagios-Server kann mit der Applikation <emphasis>Netzwerküberwachung (Nagios)</emphasis>
+		  aus dem Univention App Center installiert werden. Alternativ kann das Softwarepaket
+		  <package>univention-nagios-server</package> installiert werden (anschließend muss
+		  <command>univention-run-join-scripts</command> aufgerufen werden). Weitere Informationen
+		  finden sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
+		  Der Nagios-Server kann auf beliebigen Systemrollen installiert werden, wobei die Verwendung
+		  eines Domänencontroller-Systems empfohlen wird.
+		  Der Nagios-Client ist auf allen Systemrollen standardmäßig installiert.
+		</para>
+
+		<para>
+		Neben den Standard-Plugins, die mit der Installation des
+		Pakets <package>univention-nagios-client</package> mitgebracht werden, können
+		zusätzliche Plugins über folgende Pakete nachinstalliert werden:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				<package>univention-nagios-raid</package> Überwachung des Software-RAID-Status
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				<package>univention-nagios-smart</package> Prüfung des S.M.A.R.T.-Status von Festplatten
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				<package>univention-nagios-opsi</package> Prüfung der Softwareverteilung opsi
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				<package>univention-nagios-ad-connector</package> Prüfung des AD Connectors
+				</simpara>
+			</listitem>
+		</itemizedlist>
+
+		<para>
+		Einige der Pakete werden bei der Installation der entsprechenden
+		Dienste automatisch mit eingerichtet.
+		Wird beispielsweise der UCS AD Connector eingerichtet, bringt dieser
+		das Überwachungs-Plugin <package>univention-nagios-ad-connector</package> mit.
+		</para>
+
+		<section id="nagios:preconfiguredchecks">
+			<title>Vorkonfigurierte Nagios-Prüfungen</title>
+			<para>
+			Während der Installation werden automatisch grundlegende
+			Nagios-Prüfungen für die UCS-Systeme der Domäne eingerichtet. Die
+			Einbindung weiterer Dienste wird in <xref linkend="Nagios:Dienst"/>
+			dokumentiert.
+			</para>
+
+			<informaltable>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1.2*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Nagios-Dienst</entry>
+							<entry>Funktion</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_PING</systemitem></entry>
+							<entry>
+								Testet die Erreichbarkeit des überwachten
+								UCS-Systems mit dem Kommando <command>ping</command>. In
+								der Standardeinstellung wird der Fehlerzustand
+								erreicht, wenn die Antwortzeit 50ms bzw. 100ms
+								überschreitet oder Paketverluste von 20%
+								bzw. 40% auftreten.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_DISK_ROOT</systemitem></entry>
+							<entry>
+								Überwacht den Füllstand
+								der <filename class="partition">/</filename>-Partition. Unterschreitet der
+								verbleibende freie Platz in der
+								Standardeinstellung 25% bzw. 10% wird der
+								Fehlerzustand gesetzt.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_DNS</systemitem></entry>
+							<entry>
+								Testet die Funktion des lokalen DNS-Servers und die
+								Erreichbarkeit der öffentlichen DNS-Server durch die Abfrage
+								des Rechnernamens <systemitem class="fqdomainname">www.univention.de</systemitem>.
+								Ist für die UCS-Domäne kein DNS-Forwarder definiert,
+								schlägt diese Abfrage fehl.
+								In diesem Fall kann <systemitem class="fqdomainname">www.univention.de</systemitem> z.B. gegen den FQDN
+								des Domaincontroller Master ersetzt werden, um die Funktion
+								des Namensauflösung zu testen.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_LOAD</systemitem></entry>
+							<entry>
+								Überwacht die Systemlast.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_LDAP</systemitem></entry>
+							<entry>
+								Überwacht den auf Domänencontrollern laufenden LDAP-Server.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_NTP</systemitem></entry>
+							<entry>
+								Fragt auf dem überwachten UCS-System die Uhrzeit beim NTP-Dienst ab.
+								Tritt eine Abweichung von mehr als 60 bzw. 120 Sekunden auf,
+								wird der Fehlerzustand erreicht.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_SMTP</systemitem></entry>
+							<entry>
+								Testet den Mailserver.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_SSL</systemitem></entry>
+							<entry>
+								Testet die verbleibende Gültigkeitsdauer der UCS-SSL-Zertifikate.
+								Dieses Plugin ist nur für &ucsMaster;- und &ucsBackup;-Systeme geeignet.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_SWAP</systemitem></entry>
+							<entry>
+								Überwacht die Auslastung der Swap-Partition. Unterschreitet der
+								verbleibende freie Platz den Schwellwert (in der Standardeinstellung 40%
+								bzw. 20%), wird der Fehlerzustand gesetzt.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_REPLICATION</systemitem></entry>
+							<entry>
+								Überwacht den Status der LDAP-Replikation, erkennt das Vorhandensein
+								einer <filename>failed.ldif</filename>-Datei sowie den Stillstand der Replikation
+								und warnt vor zu großen Differenzen der Transaktions-IDs.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_NSCD</systemitem></entry>
+							<entry>
+								Testet die Verfügbarkeit des Name Server Cache Dienstes.
+								Läuft kein NSCD-Prozess wird ein CRITICAL-Event ausgelöst,
+								läuft mehr als ein Prozess ein WARNING-Event.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_WINBIND</systemitem></entry>
+							<entry>
+								Testet die Verfügbarkeit des Winbind-Dienstes.
+								Läuft kein Prozess, wird ein CRITICAL-Event ausgelöst.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_SMBD</systemitem></entry>
+							<entry>
+								Testet die Verfügbarkeit des Samba-Dienstes.
+								Läuft kein Prozess, wird ein CRITICAL-Event ausgelöst.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_NMBD</systemitem></entry>
+							<entry>
+								Testet die Verfügbarkeit des NMBD-Dienstes,
+								der in Samba für den NetBIOS-Dienst zuständig ist.
+								Läuft kein Prozess, wird ein CRITICAL-Event ausgelöst.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_JOINSTATUS</systemitem></entry>
+							<entry>
+								Prüft den Join-Status eines Systems.
+								Ist ein System noch nicht Mitglied der Domäne, wird ein CRITICAL-Event
+								ausgelöst, sind nicht-aufgerufene Joinskripte vorhanden, wird ein
+								WARNING-Event zurückgeliefert.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_KPASSWD</systemitem></entry>
+							<entry>
+								Prüft die Verfügbarkeit des Kerberos-Passwort-Dienstes
+								(nur verfügbar auf Domänencontroller Master/Backup).
+								Läuft weniger oder mehr als ein Prozess, wird ein CRITICAL-Event ausgelöst.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_CUPS</systemitem></entry>
+							<entry>
+								Überwacht den CUPS-Druckdienst.
+								Läuft kein <systemitem class="daemon">cupsd</systemitem>-Prozess oder ist die Weboberfläche auf Port 631
+								ist nicht erreichbar, wird der Status CRITICAL zurückgegeben.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_DANSGUARDIAN</systemitem></entry>
+							<entry>
+								Überwacht den Webfilter DansGuardian.
+								Läuft kein DansGuardian-Prozess oder ist der DansGuardian-Proxy
+								ist nicht erreichbar, wird der Status CRITICAL zurückgegeben.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_SQUID</systemitem></entry>
+							<entry>
+								Überwacht den Proxy Squid.
+								Läuft kein Squid-Prozess oder der Squid-Proxy ist nicht erreichbar,
+								wird der Status CRITICAL zurückgegeben.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_LIBVIRTD_KVM</systemitem></entry>
+							<entry>
+								Prüft den Status eines KVM-Virtualisierungs-Servers
+								über eine Anfrage an <command>virsh</command>
+								und gibt den Status CRITICAL zurück, wenn die Rückmeldung
+								mehr als zehn Sekunden dauert.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_LIBVIRTD_XEN</systemitem></entry>
+							<entry>
+								Prüft den Status eines Xen-Virtualisierungs-Servers
+								über eine Abfrage an <command>virsh</command>
+								und gibt den Status CRITICAL zurück, wenn die Rückmeldung
+								mehr als zehn Sekunden dauert.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_UVMMD</systemitem></entry>
+							<entry>
+								Prüft den Status des &ucsUVMM;s über eine Anfrage der verfügbaren Nodes.
+								Können sie nicht aufgelöst werden, wird der Status CRITICAL zurückgegeben.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+
+			<para>
+			Für die oben genannten Dienste wurden Standardparameter festgelegt,
+			die auf die Ansprüche der meisten UCS-Installationen zugeschnitten sind.
+			Sollten diese Standardparameter nicht geeignet sein, können sie nachträglich
+			angepasst werden. Dies ist in <xref linkend="Nagios:Dienst"/> dokumentiert.
+			</para>
+
+			<para>
+			Die folgenden Nagios-Dienste sind erst nach der Installation
+			zusätzlicher Pakete auf dem jeweiligen Nagios-Client verfügbar
+			(siehe <xref linkend="Nagios:Installation"/>):
+			</para>
+
+			<informaltable>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1.2*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Nagios-Dienst</entry>
+							<entry>Funktion</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_OPSI</systemitem></entry>
+							<entry>
+								Überwacht den opsi-Daemon.
+								Läuft kein opsi-Prozess oder die opsi-Weboberfläche ist nicht erreichbar,
+								wird der Status CRITICAL zurückgegeben.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_SMART_SDA</systemitem></entry>
+							<entry>
+								Prüft den S.M.A.R.T.-Status der Festplatte <filename class="devicefile">/dev/sda</filename>.
+								Für die Festplatten <filename class="partition">sdb</filename>, <filename class="partition">sdc</filename> und <filename class="partition">sdd</filename> existieren entsprechende Nagios-Dienste.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_RAID</systemitem></entry>
+							<entry>
+								Prüft den Status des Software-RAIDs über <filename>/proc/mdadm</filename>
+								und gibt den Status CRITICAL zurück, sofern eine Festplatte
+								des RAID-Verbunds ausgefallen ist, bzw. den Status WARNING zurück, wenn der
+								Recovery-Vorgang läuft.
+							</entry>
+						</row>
+						<row>
+							<entry><systemitem class="service">UNIVENTION_ADCONNECTOR</systemitem></entry>
+							<entry>
+								Prüft den Status des Active Directory Connectors.
+								Läuft kein Connector-Prozess, wird der Status CRITICAL
+								zurückgegeben. Existiert mehr mehr als ein Prozess pro
+								Connector-Instanz gibt es eine WARNING. Treten Rejects auf, gibt es
+								eine WARNING. Kann der AD-Server nicht erreicht werden, tritt ein
+								CRITICAL-Zustand ein. Das Plugin kann auch in
+								Multi-Connector-Instanzen verwendet werden. Dabei muss der Name der
+								Instanz als Parameter übergeben werden.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</section>
+	</section>
+
+	<section id="nagios:Konfiguration_der_Nagios-Überwachung">
+		<title>Konfiguration der Nagios-Überwachung</title>
+		<para>
+		Folgende Einstellungen können in &ucsUMC; vorgenommen werden:
+		</para>
+
+		<itemizedlist>
+			<listitem>
+				<simpara>
+			Alle Nagios-Prüfungen, die einem Rechner zugewiesen werden
+			sollen, müssen zuvor registriert werden. Dies erfolgt
+			über <emphasis>Nagios-Dienst</emphasis>-Objekte (siehe <xref linkend="Nagios:Dienst"/>).
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+			Die Zuweisung, welche Prüfungen an einem Rechner durchgeführt
+			werden sollen und welche Kontaktperson im Fehlerfall benachrichtigt
+			werden soll, erfolgt an den jeweiligen Rechnerobjekten.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+			Nagiosprüfungen können zeitlich beschränkt werden, z.B. indem
+			die Prüfung der Druckserver nur werktags von 8h bis 20h durchgeführt
+			wird. Dies erfolgt über <emphasis>Nagios-Zeitraum</emphasis>-Objekte, siehe <xref linkend="nagios::timeframe"/>.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+
+		<para>
+		In der Grundeinstellung werden bereits zahlreiche Prüfungen für jeden
+		Rechner festgelegt, d.h. eine Nagios-Grundkonfiguration wird
+		eingerichtet, ohne dass weitere Anpassungen nötig sind.
+		</para>
+
+		<section id="Nagios:Dienst">
 			<title>Konfiguration eines Nagios-Dienstes</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations43/nagios-object_DE.png"/>
+			<para>
+			Ein Nagios-Dienst definiert die Überwachung eines Dienstes. Einem
+			solchen Objekt kann eine beliebige Anzahl an Rechnern zugeordnet
+			werden, so dass durch die einmalige Angabe von zu verwendenden
+			Nagios-Plugins sowie Überprüfungs- und Benachrichtigungsparametern
+			eine Dienstüberprüfung auf den angegebenen Rechnern eingerichtet
+			werden kann.
+			</para>
+
+			<para>
+			Nagios-Dienste werden im UMC-Modul <emphasis>Nagios</emphasis>
+			mit dem Objekttyp <guimenu>Nagios-Dienst</guimenu> verwaltet
+			(siehe auch <xref linkend="central:user-interface"/>).
+			Nagios verfügt über keine LDAP-Schnittstelle für die
+			Monitoring-Konfiguration, stattdessen werden die Konfigurationsdateien
+			beim Hinzufügen/Entfernen/Bearbeiten eines Nagios-Dienstes durch ein
+			Listener-Modul generiert.
+			</para>
+
+			<figure id="nagios-service">
+				<title>Konfiguration eines Nagios-Dienstes</title>
+				<graphic scalefit="1" width="100%" fileref="illustrations43/nagios-object_DE.png"/>
+			</figure>
+
+			<table>
+				<title>Reiter 'Allgemein'</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Attribut</entry>
+							<entry>Beschreibung</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Name</entry>
+							<entry>
+								Ein eindeutiger Name für den Nagios-Dienst.
+							</entry>
+						</row>
+						<row>
+							<entry>Beschreibung</entry>
+							<entry>
+								Eine beliebige Beschreibung des Dienstes.
+							</entry>
+						</row>
+						<row>
+							<entry>Plugin-Kommando</entry>
+							<entry>
+								Das aufzurufende Plugin-Kommando. Jedes Plugin-Kommando legt einen
+								vordefinierten Plugin-Aufruf fest. Diese werden in den
+								Konfigurationsdateien im
+								Verzeichnis <filename class="directory">/etc/nagios-plugins/config/</filename> festgelegt,
+								z.B. <command>check_disk</command>.
+							</entry>
+						</row>
+						<row>
+							<entry>Plugin-Kommando-Parameter</entry>
+							<entry>
+								Da nicht alle Parameter der Nagios-Plugins in den Plugin-Kommandos
+								vordefiniert werden können, ist oft die Angabe zusätzlicher Parameter
+								notwendig. Die hier angegeben Parameter werden durch Ausrufungszeichen
+								("<literal>!</literal>") getrennt.
+								(z.B. <userinput>20%!10%!/home</userinput>).
+							</entry>
+						</row>
+						<row>
+							<entry>NRPE benutzen</entry>
+							<entry>
+								Kann der Test eines Dienstes nicht remote ausgeführt werden
+								(z.B. Prüfung des verfügbaren Plattenplatzes auf der Root-Partition), kann über den
+								Nagios Remote Plugin Executor Daemon (NRPED) das Plugin auf einem entfernten
+								UCS-System aufgerufen werden. Dazu muss dort das
+								Paket <package>univention-nagios-client</package> installiert sein.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+			<table>
+				<title>Reiter 'Intervalle' (erweiterte Einstellungen)</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Attribut</entry>
+							<entry>Beschreibung</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Prüfintervall</entry>
+							<entry>
+								Das Prüfintervall definiert den zeitlichen Abstand in Minuten zwischen
+								zwei Überprüfungen des Dienstes.
+							</entry>
+						</row>
+						<row>
+							<entry>Prüfintervall im Fehlerfall</entry>
+							<entry>
+								Sollte die letzte Überprüfung des Dienstes nicht den Zustand
+								<emphasis>OK</emphasis> zurückgeliefert haben, verwendet Nagios
+								ein anderes Zeitintervall für die weiteren Überprüfungen.
+								Im Fehlerfall kann so die Überprüfungsfrequenz erhöht werden.
+								Wurde der Zustand <emphasis>OK</emphasis> wieder erreicht,
+								verwendet Nagios wieder das reguläre Prüfintervall.
+								Der Wert ist in Minuten anzugeben.
+							</entry>
+						</row>
+						<row>
+							<entry>Maximale Anzahl der Überprüfungen</entry>
+							<entry>
+								<para>
+								Liefert eine Überprüfung einen Nicht-<emphasis>OK</emphasis>-Zustand zurück,
+								wird die hier angegebene Anzahl an Überprüfungen abgewartet, bevor die
+								zuständigen Kontaktpersonen benachrichtigt werden. Erreicht der Dienst
+								vor dem Erreichen des hier angegebenen Limits wieder den
+								Zustand <emphasis>OK</emphasis>, wird der interne Zähler zurückgesetzt
+								und es findet keine Benachrichtigung statt.
+								</para>
+								<note>
+									<para>
+								Die zeitliche Verzögerung einer Benachrichtigung richtet sich
+								sowohl nach der <emphasis>maximalen Anzahl an Überprüfungen</emphasis>
+								als auch dem <emphasis>Prüfintervall im Fehlerfall</emphasis>.
+								Bei einem <emphasis>Prüfintervall im Fehlerfall</emphasis> von zwei Minuten
+								und einer <emphasis>maximalen Anzahl an Überprüfungen</emphasis> von 10
+								findet die erste Benachrichtigung nach 20 Minuten statt.
+									</para>
+								</note>
+							</entry>
+						</row>
+						<row>
+							<entry>Prüfzeitraum</entry>
+							<entry>
+								Um die Überprüfung eines Dienstes zeitlich einzuschränken, kann ein
+								Prüfzeitraum angegeben werden. Außerhalb dieses Zeitraums finden keine
+								Überprüfungen und somit auch keine Benachrichtigungen statt. Dies kann
+								bei Geräten oder Diensten sinnvoll sein, die z.B. über Nacht
+								deaktiviert werden.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+
+			<table>
+				<title>Reiter 'Benachrichtigungen' (erweiterte Einstellungen)</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Attribut</entry>
+							<entry>Beschreibung</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Benachrichtigungsintervall</entry>
+							<entry>
+								Ist der Fehlerfall für einen Dienst eingetreten, werden die
+								Kontaktpersonen in dem hier angegebenen Intervall wiederholt
+								benachrichtigt. Ein Wert von 0 deaktiviert die wiederholte
+								Benachrichtigung. Der Wert ist in Minuten anzugeben. Würde
+								beispielsweise ein Intervall von 240 festgelegt, würde alle vier
+								Stunden eine Benachrichtigung verschickt.
+							</entry>
+						</row>
+						<row>
+							<entry>Benachrichtigungszeitraum</entry>
+							<entry>
+								<para>
+								Benachrichtigungen an die Kontaktpersonen werden nur in dem hier
+								angegebenen Zeitraum versendet. Wechselt ein Dienst außerhalb des hier
+								angegebenen Zeitraums in einen Nicht-<emphasis>OK</emphasis>-Zustand, wird die erste
+								Benachrichtigung erst mit Erreichen des angegebenen Zeitraums
+								versendet, sofern der Nicht-<emphasis>OK</emphasis>-Zustand bis dahin erhalten
+								bleibt.
+								</para>
+								<note>
+									<para>
+										Benachrichtigungen für Störungen, die außerhalb des angegebenen Zeitraums beginnen und enden, werden nicht nachgeholt.
+									</para>
+								</note>
+							</entry>
+						</row>
+						<row>
+							<entry>Benachrichtigen, wenn Zustand WARNING erreicht wird</entry>
+							<entry>
+								Konfiguriert, ob bei dem Wechsel des Dienst-Zustands
+								auf <emphasis>WARNING</emphasis>
+								(siehe <xref linkend="nagios::einfuehrung"/>)
+								eine Benachrichtigung verschickt wird.
+							</entry>
+						</row>
+						<row>
+							<entry>Benachrichtigen, wenn Zustand CRITICAL erreicht wird</entry>
+							<entry>
+								Konfiguriert, ob bei dem Wechsel des Dienst-Zustands
+								auf <emphasis>CRITICAL</emphasis>
+								(siehe <xref linkend="nagios::einfuehrung"/>)
+								eine Benachrichtigung verschickt wird.
+							</entry>
+						</row>
+						<row>
+							<entry>Benachrichtigen, wenn Zustand UNREACHABLE erreicht wird</entry>
+							<entry>
+								Wenn ein Rechner-Objekt einem anderen Objekt untergeordnet ist
+								(siehe <xref linkend="nagios::hostconfig"/>),
+								kann bei dem Ausfall eines überordneten Systems der Status
+								nicht mehr abgefragt werden. Mit dieser Option kann konfiguriert
+								werden, ob dann eine Benachrichtigung ausgelöst wird.
+							</entry>
+						</row>
+						<row>
+							<entry>Benachrichtigen, wenn Zustand RECOVERED erreicht wird</entry>
+							<entry>
+								Konfiguriert, ob bei Korrektur eines
+								Fehler-/Warn-/Nichterreichbarkeitszustands auf den Normalzustand
+								eine Benachrichtigung verschickt wird.
+								Benachrichtigungen werden beim Erreichen des Zustandes
+								"RECOVERED" nur versendet, wenn zuvor auch eine Benachrichtigung für
+								das ursprüngliche Problem ("WARNING"/"CRITICAL"/"UNREACHABLE")
+								versendet wurde.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+			<table>
+				<title>Reiter 'Rechner'</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Attribut</entry>
+							<entry>Beschreibung</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Zugeordnete Rechner</entry>
+							<entry>
+								Die Dienst-Überprüfung wird für bzw. auf den hier zugeordneten
+								Rechnern durchgeführt.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</section>
+
+		<section id="nagios::timeframe">
+			<title>Konfiguration eines Überwachungszeitraums</title>
+			<para>
+			Nagios-Zeitraum-Objekte werden von Nagios-Diensten verwendet, um
+			Zeiträume festzulegen, in denen Dienstüberprüfungen stattfinden oder
+			Kontaktpersonen benachrichtigt werden sollen. Die Angabe der Zeiträume
+			wird für jeden einzelnen Wochentag getrennt durchgeführt.
+			</para>
+
+			<para>
+			Nagios-Dienste werden im UMC-Modul <emphasis>Nagios</emphasis>
+			mit dem Objekttyp <guimenu>Nagios-Zeitraum</guimenu> verwaltet
+			(siehe auch <xref linkend="central:user-interface"/>).
+			</para>
+
+			<para>
+			Nagios verfügt über keine LDAP-Schnittstelle für die
+			Monitoring-Konfiguration, stattdessen werden die Konfigurationsdateien
+			beim Hinzufügen/Entfernen/Bearbeiten eines Nagios-Zeitraums durch ein
+			Listener-Modul generiert.
+			</para>
+
+			<para>
+			Bei der Installation werden drei Standard-Zeiträume eingerichtet. Die
+			automatisch angelegten Zeitrahmen können manuell verändert oder
+			gelöscht werden. Sie werden jedoch teilweise von den ebenfalls
+			automatisch angelegten Nagios-Dienst verwendet. Es ist zu beachten, dass
+			das Löschen eines Nagios-Zeitraums nur dann möglich ist, wenn es nicht
+			mehr von Nagios-Diensten verwendet wird:
+			</para>
+			<informaltable>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Nagios:Zeitraum</entry>
+							<entry>Funktion</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry><wordasword>24x7</wordasword></entry>
+							<entry>
+								Dieses Objekt definiert einen Zeitraum,
+								der Montags um 0:00 Uhr beginnt
+								und ohne zwischenzeitliche Unterbrechungen
+								am Sonntag um 24:00 Uhr endet.
+							</entry>
+						</row>
+						<row>
+							<entry><wordasword>WorkHours</wordasword></entry>
+							<entry>
+								Definiert die Zeitrahmen von 8 Uhr bis 16 Uhr
+								jeweils von Montag bis Freitag.
+							</entry>
+						</row>
+						<row>
+							<entry><wordasword>NonWorkHours</wordasword></entry>
+							<entry>
+								Das Gegenstück zum Nagios-Zeitraum <wordasword>WorkHours</wordasword>.
+								Deckt die Zeitrahmen von 0 Uhr bis 8 Uhr
+								sowie 16 Uhr bis 24 Uhr jeweils Montag bis Freitag
+								sowie am Samstag und Sonntag jeweils von 0 Uhr bis 24 Uhr ab.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+
+			<table>
+				<title>Reiter 'Allgemein'</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Attribut</entry>
+							<entry>Beschreibung</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Name</entry>
+							<entry>
+								Ein eindeutiger Name für den Nagios-Zeitraum.
+							</entry>
+						</row>
+						<row>
+							<entry>Beschreibung</entry>
+							<entry>
+								Ein beliebiger Beschreibungstext.
+							</entry>
+						</row>
+						<row>
+							<entry>Montag - Sonntag</entry>
+							<entry>
+								Dieses Feld enthält eine Liste von Zeiträumen.
+								Soll für einen Wochentag kein Zeitraum definiert werden,
+								muss das entsprechende Wochentagsfeld leer bleiben.
+								Die Angabe eines Zeitraums erfordert immer zweistellige
+								Stunden- und Minutenangaben, die durch einen Doppelpunkt
+								getrennt werden. Start- und Endzeitpunkt werden durch
+								einen Bindestrich getrennt. Sollen für einen Wochentag
+								mehrere Zeiträume definiert werden, können diese durch
+								ein Komma getrennt in das Textfeld eingetragen werden.
+								Ein ganzer Tag wird durch den Zeitraum <emphasis>00:00-24:00</emphasis>
+								repräsentiert, z.B. <emphasis>08:00-12:00,12:45-17:00</emphasis>.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</section>
+
+		<section id="nagios::hostconfig">
+			<title>Zuordnung von Nagios-Prüfungen zu Rechnern</title>
+			<para>
+			Alle in &ucsUMC; verwaltbaren Rechnerobjekte lassen sich mit
+			Nagios überwachen. Nagios-Dienste können nur dann an ein
+			Rechner-Objekt gebunden werden, wenn für diesen eine IP-Adresse sowie
+			ein entsprechender Eintrag für die DNS-Forward-Zone angegeben wurde.
+			Zur Aktivierung der Nagios-Unterstützung muss am
+			betreffenden Rechnerobjekt die Option <guimenu>Nagios</guimenu>
+			eingeschaltet werden. Nach der Aktivierung sind zwei zusätzliche
+			Eingabefeldgruppen unter dem Reiter <guimenu>Erweiterte Einstellungen</guimenu>
+			verfügbar, die u.a. eine komfortable Zuordnung der
+			Nagios-Dienste ermöglichen.
+			</para>
+
+			<figure id="nagios-assign">
+				<title>Zuweisung von Nagios-Prüfungen zu einem Rechner</title>
+				<graphic scalefit="1" width="100%" fileref="illustrations43/nagios-services_DE.png"/>
+			</figure>
+
+			<table>
+				<title>Karteikarte 'Nagios-Dienste' (erweiterte Einstellungen)</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Attribut</entry>
+							<entry>Beschreibung</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Zugeordnete Nagios-Dienste</entry>
+							<entry>
+								<para>
+								Es werden hier alle Nagios-Dienste aufgelistet, die für den aktuellen
+								Rechner geprüft werden sollen.
+								</para>
+
+								<para>
+								Parallel dazu ist weiterhin die Zuordnung von Rechnern am
+								Nagios-Dienst-Objekt möglich.
+								</para>
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+
+			<table>
+				<title>Karteikarte 'Nagios-Benachrichtigung' (erweiterte Einstellungen)</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Attribut</entry>
+							<entry>Beschreibung</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Email-Adressen für Nagios-Benachrichtigungen</entry>
+							<entry>
+								Diese Liste enthält die Email-Adressen von Kontaktpersonen,
+								die beim Feststellen einer Störung per Email benachrichtigt
+								werden sollen. Werden hier keine Email-Adressen angegeben,
+								wird der lokale <systemitem class="username">root</systemitem>-Benutzer benachrichtigt.
+							</entry>
+						</row>
+						<row>
+							<entry>Übergeordnete Rechner</entry>
+							<entry>
+								<para>
+								Durch die Angabe von übergeordneten Rechnern können Abhängigkeiten
+								zwischen Rechnern definiert werden. Nagios testet fortlaufend, ob die
+								einzelnen Rechner erreichbar sind. Sollte ein übergeordneter Rechner
+								nicht erreichbar sein, werden keine Benachrichtigungen für
+								Dienststörungen des untergeordneten Rechners versendet. Die
+								angegebenen Abhängigkeiten verwendet Nagios darüber hinaus in der
+								Benutzeroberfläche zur graphischen Darstellung.
+								</para>
+								<note>
+									<para>
+								Es dürfen keine Schleifen bei der Angabe der übergeordneten Rechner entstehen.
+								Der Nagios-Server würde in diesem Fall die neue Konfiguration nicht übernehmen
+								bzw. sich nicht starten lassen.
+									</para>
+								</note>
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</section>
+
+		<section id="nagios:Einbindung_von_manuell_erstellten_Konfigurationsdateien">
+			<title>Einbindung von manuell erstellten Konfigurationsdateien</title>
+			<para>
+			Sollen zu den durch das Listener-Module erstellten
+			Nagios-Server-Konfigurationsdateien Erweiterungen hinzugefügt werden,
+			können die manuell erstellten Konfigurationsdateien im
+			Verzeichnis <filename class="directory">/etc/nagios/conf.local.d/</filename> abgelegt werden.
+			Die hinzugefügten Konfigurationsdateien werden erst nach einem
+			Neustart des Nagios-Servers beachtet.
+			</para>
+
+			<para>
+			Erweiterungen der NRPE-Konfiguration können im
+			Verzeichnis <filename class="directory">/etc/nagios/nrpe.local.d/</filename> abgelegt
+			werden. Änderungen treten erst nach einem Neustart des Nagios
+			NRPE-Daemons in Kraft.
+			</para>
+		</section>
+	</section>
+
+	<section id="nagios:webinterface">
+	  <title>Abfrage des Systemstatus über das Nagios-Webinterface</title>
+	  <para>
+		Die Nagios-Oberfläche ist auf der Übersichtswebseite (siehe <xref
+		linkend="central-management-umc:login"/>) unter <guimenu>Nagios</guimenu> verlinkt und
+		kann auch direkt unter <uri>https://SERVERNAME-OR-IP/nagios/</uri> erreicht werden.
+	  </para>
+
+		<figure id="nagios-tact-overview">
+			<title>Nagios-Statusübersicht</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations43/overview_EN.png"/>
 		</figure>
 
-		<table>
-			<title>Reiter 'Allgemein'</title>
-			<tgroup cols="2">
-				<colspec colnum="1" colname="col1" colwidth="1*"/>
-				<colspec colnum="2" colname="col2" colwidth="2*"/>
-				<thead>
-					<row>
-						<entry>Attribut</entry>
-						<entry>Beschreibung</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>Name</entry>
-						<entry>
-							Ein eindeutiger Name für den Nagios-Dienst.
-						</entry>
-					</row>
-					<row>
-						<entry>Beschreibung</entry>
-						<entry>
-							Eine beliebige Beschreibung des Dienstes.
-						</entry>
-					</row>
-					<row>
-						<entry>Plugin-Kommando</entry>
-						<entry>
-							Das aufzurufende Plugin-Kommando. Jedes Plugin-Kommando legt einen
-							vordefinierten Plugin-Aufruf fest. Diese werden in den
-							Konfigurationsdateien im
-							Verzeichnis <filename class="directory">/etc/nagios-plugins/config/</filename> festgelegt,
-							z.B. <command>check_disk</command>.
-						</entry>
-					</row>
-					<row>
-						<entry>Plugin-Kommando-Parameter</entry>
-						<entry>
-							Da nicht alle Parameter der Nagios-Plugins in den Plugin-Kommandos
-							vordefiniert werden können, ist oft die Angabe zusätzlicher Parameter
-							notwendig. Die hier angegeben Parameter werden durch Ausrufungszeichen
-							("<literal>!</literal>") getrennt.
-							(z.B. <userinput>20%!10%!/home</userinput>).
-						</entry>
-					</row>
-					<row>
-						<entry>NRPE benutzen</entry>
-						<entry>
-							Kann der Test eines Dienstes nicht remote ausgeführt werden
-							(z.B. Prüfung des verfügbaren Plattenplatzes auf der Root-Partition), kann über den
-							Nagios Remote Plugin Executor Daemon (NRPED) das Plugin auf einem entfernten
-							UCS-System aufgerufen werden. Dazu muss dort das
-							Paket <package>univention-nagios-client</package> installiert sein.
-						</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-		<table>
-			<title>Reiter 'Intervalle' (erweiterte Einstellungen)</title>
-			<tgroup cols="2">
-				<colspec colnum="1" colname="col1" colwidth="1*"/>
-				<colspec colnum="2" colname="col2" colwidth="2*"/>
-				<thead>
-					<row>
-						<entry>Attribut</entry>
-						<entry>Beschreibung</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>Prüfintervall</entry>
-						<entry>
-							Das Prüfintervall definiert den zeitlichen Abstand in Minuten zwischen
-							zwei Überprüfungen des Dienstes.
-						</entry>
-					</row>
-					<row>
-						<entry>Prüfintervall im Fehlerfall</entry>
-						<entry>
-							Sollte die letzte Überprüfung des Dienstes nicht den Zustand
-							<emphasis>OK</emphasis> zurückgeliefert haben, verwendet Nagios
-							ein anderes Zeitintervall für die weiteren Überprüfungen.
-							Im Fehlerfall kann so die Überprüfungsfrequenz erhöht werden.
-							Wurde der Zustand <emphasis>OK</emphasis> wieder erreicht,
-							verwendet Nagios wieder das reguläre Prüfintervall.
-							Der Wert ist in Minuten anzugeben.
-						</entry>
-					</row>
-					<row>
-						<entry>Maximale Anzahl der Überprüfungen</entry>
-						<entry>
-							<para>
-							Liefert eine Überprüfung einen Nicht-<emphasis>OK</emphasis>-Zustand zurück,
-							wird die hier angegebene Anzahl an Überprüfungen abgewartet, bevor die
-							zuständigen Kontaktpersonen benachrichtigt werden. Erreicht der Dienst
-							vor dem Erreichen des hier angegebenen Limits wieder den
-							Zustand <emphasis>OK</emphasis>, wird der interne Zähler zurückgesetzt
-							und es findet keine Benachrichtigung statt.
-							</para>
-							<note>
-								<para>
-							Die zeitliche Verzögerung einer Benachrichtigung richtet sich
-							sowohl nach der <emphasis>maximalen Anzahl an Überprüfungen</emphasis>
-							als auch dem <emphasis>Prüfintervall im Fehlerfall</emphasis>.
-							Bei einem <emphasis>Prüfintervall im Fehlerfall</emphasis> von zwei Minuten
-							und einer <emphasis>maximalen Anzahl an Überprüfungen</emphasis> von 10
-							findet die erste Benachrichtigung nach 20 Minuten statt.
-								</para>
-							</note>
-						</entry>
-					</row>
-					<row>
-						<entry>Prüfzeitraum</entry>
-						<entry>
-							Um die Überprüfung eines Dienstes zeitlich einzuschränken, kann ein
-							Prüfzeitraum angegeben werden. Außerhalb dieses Zeitraums finden keine
-							Überprüfungen und somit auch keine Benachrichtigungen statt. Dies kann
-							bei Geräten oder Diensten sinnvoll sein, die z.B. über Nacht
-							deaktiviert werden.
-						</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-
-		<table>
-			<title>Reiter 'Benachrichtigungen' (erweiterte Einstellungen)</title>
-			<tgroup cols="2">
-				<colspec colnum="1" colname="col1" colwidth="1*"/>
-				<colspec colnum="2" colname="col2" colwidth="2*"/>
-				<thead>
-					<row>
-						<entry>Attribut</entry>
-						<entry>Beschreibung</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>Benachrichtigungsintervall</entry>
-						<entry>
-							Ist der Fehlerfall für einen Dienst eingetreten, werden die
-							Kontaktpersonen in dem hier angegebenen Intervall wiederholt
-							benachrichtigt. Ein Wert von 0 deaktiviert die wiederholte
-							Benachrichtigung. Der Wert ist in Minuten anzugeben. Würde
-							beispielsweise ein Intervall von 240 festgelegt, würde alle vier
-							Stunden eine Benachrichtigung verschickt.
-						</entry>
-					</row>
-					<row>
-						<entry>Benachrichtigungszeitraum</entry>
-						<entry>
-							<para>
-							Benachrichtigungen an die Kontaktpersonen werden nur in dem hier
-							angegebenen Zeitraum versendet. Wechselt ein Dienst außerhalb des hier
-							angegebenen Zeitraums in einen Nicht-<emphasis>OK</emphasis>-Zustand, wird die erste
-							Benachrichtigung erst mit Erreichen des angegebenen Zeitraums
-							versendet, sofern der Nicht-<emphasis>OK</emphasis>-Zustand bis dahin erhalten
-							bleibt.
-							</para>
-							<note>
-								<para>
-									Benachrichtigungen für Störungen, die außerhalb des angegebenen Zeitraums beginnen und enden, werden nicht nachgeholt.
-								</para>
-							</note>
-						</entry>
-					</row>
-					<row>
-						<entry>Benachrichtigen, wenn Zustand WARNING erreicht wird</entry>
-						<entry>
-							Konfiguriert, ob bei dem Wechsel des Dienst-Zustands
-							auf <emphasis>WARNING</emphasis>
-							(siehe <xref linkend="nagios::einfuehrung"/>)
-							eine Benachrichtigung verschickt wird.
-						</entry>
-					</row>
-					<row>
-						<entry>Benachrichtigen, wenn Zustand CRITICAL erreicht wird</entry>
-						<entry>
-							Konfiguriert, ob bei dem Wechsel des Dienst-Zustands
-							auf <emphasis>CRITICAL</emphasis>
-							(siehe <xref linkend="nagios::einfuehrung"/>)
-							eine Benachrichtigung verschickt wird.
-						</entry>
-					</row>
-					<row>
-						<entry>Benachrichtigen, wenn Zustand UNREACHABLE erreicht wird</entry>
-						<entry>
-							Wenn ein Rechner-Objekt einem anderen Objekt untergeordnet ist
-							(siehe <xref linkend="nagios::hostconfig"/>),
-							kann bei dem Ausfall eines überordneten Systems der Status
-							nicht mehr abgefragt werden. Mit dieser Option kann konfiguriert
-							werden, ob dann eine Benachrichtigung ausgelöst wird.
-						</entry>
-					</row>
-					<row>
-						<entry>Benachrichtigen, wenn Zustand RECOVERED erreicht wird</entry>
-						<entry>
-							Konfiguriert, ob bei Korrektur eines
-							Fehler-/Warn-/Nichterreichbarkeitszustands auf den Normalzustand
-							eine Benachrichtigung verschickt wird.
-							Benachrichtigungen werden beim Erreichen des Zustandes
-							"RECOVERED" nur versendet, wenn zuvor auch eine Benachrichtigung für
-							das ursprüngliche Problem ("WARNING"/"CRITICAL"/"UNREACHABLE")
-							versendet wurde.
-						</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-		<table>
-			<title>Reiter 'Rechner'</title>
-			<tgroup cols="2">
-				<colspec colnum="1" colname="col1" colwidth="1*"/>
-				<colspec colnum="2" colname="col2" colwidth="2*"/>
-				<thead>
-					<row>
-						<entry>Attribut</entry>
-						<entry>Beschreibung</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>Zugeordnete Rechner</entry>
-						<entry>
-							Die Dienst-Überprüfung wird für bzw. auf den hier zugeordneten
-							Rechnern durchgeführt.
-						</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
+		<para>
+		Der Zugriff wird in der Standardeinstellung ausschließlich Benutzern der
+		Gruppe <systemitem class="groupname">Domain Admins</systemitem> (z.B. der Benutzer Administrator) gewährt.
+		Es besteht auch die Möglichkeit den Kreis der Anmeldeberechtigten zu erweitern.
+		</para>
+		<!--
+		<comment>
+		Dies ist im Univention Wiki unter WIKIREF-23919 dokumentiert.
+		</comment>
+		-->
 	</section>
 
-	<section id="nagios::timeframe">
-		<title>Konfiguration eines Überwachungszeitraums</title>
-		<para>
-		Nagios-Zeitraum-Objekte werden von Nagios-Diensten verwendet, um
-		Zeiträume festzulegen, in denen Dienstüberprüfungen stattfinden oder
-		Kontaktpersonen benachrichtigt werden sollen. Die Angabe der Zeiträume
-		wird für jeden einzelnen Wochentag getrennt durchgeführt.
-		</para>
 
-		<para>
-		Nagios-Dienste werden im UMC-Modul <emphasis>Nagios</emphasis>
-		mit dem Objekttyp <guimenu>Nagios-Zeitraum</guimenu> verwaltet
-		(siehe auch <xref linkend="central:user-interface"/>).
-		</para>
+	<section id="nagios:newplugins">
+	  <title>Integration eigener Plugins</title>
+	  <para>
+		Die in UCS mitgelieferten und vorkonfigurierten Nagios-Plugins können durch selbst geschriebene
+		oder externe Plugins ergänzt werden. Unter <ulink url="https://exchange.nagios.org/"/> findet sich
+		eine Vielzahl verfügbarer Module.
+	  </para>
 
-		<para>
-		Nagios verfügt über keine LDAP-Schnittstelle für die
-		Monitoring-Konfiguration, stattdessen werden die Konfigurationsdateien
-		beim Hinzufügen/Entfernen/Bearbeiten eines Nagios-Zeitraums durch ein
-		Listener-Modul generiert.
-		</para>
+	  <para>
+		Dieser Abschnitt beschreibt am Beispiel des Plugins <command>check_e2fs_next_fsck</command> die Einbindung eines
+		externen Plugins. Das Plugin prüft, ob ein Filesystem-Check ansteht und liefert eine Warnung wenn
+		dieser sieben oder weniger Tage bevorsteht und einen Fehlerzustand, wenn beim nächsten Reboot
+		ein Filesystem-Check stattfindet.
+	  </para>
 
-		<para>
-		Bei der Installation werden drei Standard-Zeiträume eingerichtet. Die
-		automatisch angelegten Zeitrahmen können manuell verändert oder
-		gelöscht werden. Sie werden jedoch teilweise von den ebenfalls
-		automatisch angelegten Nagios-Dienst verwendet. Es ist zu beachten, dass
-		das Löschen eines Nagios-Zeitraums nur dann möglich ist, wenn es nicht
-		mehr von Nagios-Diensten verwendet wird:
-		</para>
-		<informaltable>
-			<tgroup cols="2">
-				<colspec colnum="1" colname="col1" colwidth="1*"/>
-				<colspec colnum="2" colname="col2" colwidth="2*"/>
-				<thead>
-					<row>
-						<entry>Nagios:Zeitraum</entry>
-						<entry>Funktion</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><wordasword>24x7</wordasword></entry>
-						<entry>
-							Dieses Objekt definiert einen Zeitraum,
-							der Montags um 0:00 Uhr beginnt
-							und ohne zwischenzeitliche Unterbrechungen
-							am Sonntag um 24:00 Uhr endet.
-						</entry>
-					</row>
-					<row>
-						<entry><wordasword>WorkHours</wordasword></entry>
-						<entry>
-							Definiert die Zeitrahmen von 8 Uhr bis 16 Uhr
-							jeweils von Montag bis Freitag.
-						</entry>
-					</row>
-					<row>
-						<entry><wordasword>NonWorkHours</wordasword></entry>
-						<entry>
-							Das Gegenstück zum Nagios-Zeitraum <wordasword>WorkHours</wordasword>.
-							Deckt die Zeitrahmen von 0 Uhr bis 8 Uhr
-							sowie 16 Uhr bis 24 Uhr jeweils Montag bis Freitag
-							sowie am Samstag und Sonntag jeweils von 0 Uhr bis 24 Uhr ab.
-						</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</informaltable>
+	  <para>
+		Je nachdem ob das Plugin über NRPE aufgerufen wird oder nicht, unterscheidet sich die Installation:
+	  </para>
+		<itemizedlist>
+		  <listitem>
+			<simpara>
+			  Wird das Plugin über NRPE aufgerufen, muss es auf allen Nagios-Servern und auf allen zu
+			  prüfenden Systemen in das Verzeichnis <filename class="directory">/usr/lib/nagios/plugins</filename> kopiert
+			  werden.
+			</simpara>
+		  </listitem>
+		  <listitem>
+			<simpara>
+			  Benötigt das Plugin keinen lokalen Zugriff, muss es nur auf den Nagios-Server(n) in das
+			  Verzeichnis <filename class="directory">/usr/lib/nagios/plugins</filename> kopiert werden.
+			</simpara>
+		  </listitem>
+		</itemizedlist>
+	  <para>
+		Das Plugin muss als ausführbare Datei markiert sein (<command>chmod a+x PLUGIN</command>).
+	  </para>
 
-		<table>
-			<title>Reiter 'Allgemein'</title>
-			<tgroup cols="2">
-				<colspec colnum="1" colname="col1" colwidth="1*"/>
-				<colspec colnum="2" colname="col2" colwidth="2*"/>
-				<thead>
-					<row>
-						<entry>Attribut</entry>
-						<entry>Beschreibung</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>Name</entry>
-						<entry>
-							Ein eindeutiger Name für den Nagios-Zeitraum.
-						</entry>
-					</row>
-					<row>
-						<entry>Beschreibung</entry>
-						<entry>
-							Ein beliebiger Beschreibungstext.
-						</entry>
-					</row>
-					<row>
-						<entry>Montag - Sonntag</entry>
-						<entry>
-							Dieses Feld enthält eine Liste von Zeiträumen.
-							Soll für einen Wochentag kein Zeitraum definiert werden,
-							muss das entsprechende Wochentagsfeld leer bleiben.
-							Die Angabe eines Zeitraums erfordert immer zweistellige
-							Stunden- und Minutenangaben, die durch einen Doppelpunkt
-							getrennt werden. Start- und Endzeitpunkt werden durch
-							einen Bindestrich getrennt. Sollen für einen Wochentag
-							mehrere Zeiträume definiert werden, können diese durch
-							ein Komma getrennt in das Textfeld eingetragen werden.
-							Ein ganzer Tag wird durch den Zeitraum <emphasis>00:00-24:00</emphasis>
-							repräsentiert, z.B. <emphasis>08:00-12:00,12:45-17:00</emphasis>.
-						</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
+	  <para>
+		Einige Plugins sind ausschließlich in Perl, Python oder Shell geschrieben und benötigen keine
+		externen Bibliotheken oder Programme. Diese Interpreter sind auf allen UCS-Systemen immer
+		installiert. Wenn das Plugin hingegen externe Programme oder Bibliotheken verwendet, muss
+		sichergestellt werden, das diese auf allen zu prüfenden Systemen (NRPE-Plugin) oder auf den
+		Nagios-Servern (Fern-Prüfung) installiert sind.
+	  </para>
+
+	  <para>
+		Das Nagios-Plugin muss nun registriert werden. Dies erfolgt durch ein Makro im
+		Verzeichnis <filename class="directory">/etc/nagios-plugins/config/</filename>. Hierbei kann z.B. eine Datei wie
+		<filename>local.cfg</filename> verwendet werden, in der dann alle lokal registrierten Plugins
+		eingetragen werden. Das folgende Beispiel registriert das
+		Plugin <command>check_e2fs_next_fsck</command>:
+	  </para>
+
+	<programlisting language="sh">
+	define command{
+	  command_name   check_fsck
+	  command_line   /usr/lib/nagios/plugins/check_e2fs_next_fsck
+	}
+	</programlisting>
+
+	  <para>
+		Viele Plugins verwenden auch Parameter, um die Schwellwerte für Warnungen und Fehler zu
+		konfigurieren. Diese werden dann in der <emphasis>command_line</emphasis>-Zeile festgelegt.
+		Analog zu dem Plugin selbst muss die Makro-Datei bei Verwendung von NRPE auf alle zu
+		überwachenden Systeme kopiert werden.
+		Die Plugins, Makros und eventuellen Abhängigkeiten können auch in ein Debian-Paket paketiert
+		werden. Weitere Hinweise dazu finden sich in <biblioref linkend="developer-reference"/>.
+	  </para>
+
+	  <para>
+		Nun muss der Nagios-Dienst neu gestartet werden:
+	  </para>
+	<programlisting language="sh">
+	/etc/init.d/nagios restart
+	</programlisting>
+
+	  <para>
+		Abschließend muss das neue Plugin noch in &ucsUMC; als <guimenu>Nagios-Dienst</guimenu>
+		registriert werden, siehe <xref linkend="Nagios:Dienst"/>. Als
+		<guimenu>Plugin-Kommando</guimenu> muss der unter <emphasis>command_name</emphasis>
+		in der Makro-Datei registriert Name angegeben werden, in diesem Beispiel
+		<command>check_fsck</command> und die Option <guimenu>NRPE benutzen</guimenu> aktiviert
+		werden.
+		Der neu registrierte Dienst kann nun einzelnen Systemen zugewiesen werden, siehe <xref
+		linkend="nagios::hostconfig"/>.
+	  </para>
+
 	</section>
 
-	<section id="nagios::hostconfig">
-		<title>Zuordnung von Nagios-Prüfungen zu Rechnern</title>
-		<para>
-		Alle in &ucsUMC; verwaltbaren Rechnerobjekte lassen sich mit
-		Nagios überwachen. Nagios-Dienste können nur dann an ein
-		Rechner-Objekt gebunden werden, wenn für diesen eine IP-Adresse sowie
-		ein entsprechender Eintrag für die DNS-Forward-Zone angegeben wurde.
-		Zur Aktivierung der Nagios-Unterstützung muss am
-		betreffenden Rechnerobjekt die Option <guimenu>Nagios</guimenu>
-		eingeschaltet werden. Nach der Aktivierung sind zwei zusätzliche
-		Eingabefeldgruppen unter dem Reiter <guimenu>Erweiterte Einstellungen</guimenu>
-		verfügbar, die u.a. eine komfortable Zuordnung der
-		Nagios-Dienste ermöglichen.
-		</para>
 
-		<figure id="nagios-assign">
-			<title>Zuweisung von Nagios-Prüfungen zu einem Rechner</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations43/nagios-services_DE.png"/>
-		</figure>
-
-		<table>
-			<title>Karteikarte 'Nagios-Dienste' (erweiterte Einstellungen)</title>
-			<tgroup cols="2">
-				<colspec colnum="1" colname="col1" colwidth="1*"/>
-				<colspec colnum="2" colname="col2" colwidth="2*"/>
-				<thead>
-					<row>
-						<entry>Attribut</entry>
-						<entry>Beschreibung</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>Zugeordnete Nagios-Dienste</entry>
-						<entry>
-							<para>
-							Es werden hier alle Nagios-Dienste aufgelistet, die für den aktuellen
-							Rechner geprüft werden sollen.
-							</para>
-
-							<para>
-							Parallel dazu ist weiterhin die Zuordnung von Rechnern am
-							Nagios-Dienst-Objekt möglich.
-							</para>
-						</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-
-		<table>
-			<title>Karteikarte 'Nagios-Benachrichtigung' (erweiterte Einstellungen)</title>
-			<tgroup cols="2">
-				<colspec colnum="1" colname="col1" colwidth="1*"/>
-				<colspec colnum="2" colname="col2" colwidth="2*"/>
-				<thead>
-					<row>
-						<entry>Attribut</entry>
-						<entry>Beschreibung</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>Email-Adressen für Nagios-Benachrichtigungen</entry>
-						<entry>
-							Diese Liste enthält die Email-Adressen von Kontaktpersonen,
-							die beim Feststellen einer Störung per Email benachrichtigt
-							werden sollen. Werden hier keine Email-Adressen angegeben,
-							wird der lokale <systemitem class="username">root</systemitem>-Benutzer benachrichtigt.
-						</entry>
-					</row>
-					<row>
-						<entry>Übergeordnete Rechner</entry>
-						<entry>
-							<para>
-							Durch die Angabe von übergeordneten Rechnern können Abhängigkeiten
-							zwischen Rechnern definiert werden. Nagios testet fortlaufend, ob die
-							einzelnen Rechner erreichbar sind. Sollte ein übergeordneter Rechner
-							nicht erreichbar sein, werden keine Benachrichtigungen für
-							Dienststörungen des untergeordneten Rechners versendet. Die
-							angegebenen Abhängigkeiten verwendet Nagios darüber hinaus in der
-							Benutzeroberfläche zur graphischen Darstellung.
-							</para>
-							<note>
-								<para>
-							Es dürfen keine Schleifen bei der Angabe der übergeordneten Rechner entstehen.
-							Der Nagios-Server würde in diesem Fall die neue Konfiguration nicht übernehmen
-							bzw. sich nicht starten lassen.
-								</para>
-							</note>
-						</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
 	</section>
-
-	<section id="nagios:Einbindung_von_manuell_erstellten_Konfigurationsdateien">
-		<title>Einbindung von manuell erstellten Konfigurationsdateien</title>
-		<para>
-		Sollen zu den durch das Listener-Module erstellten
-		Nagios-Server-Konfigurationsdateien Erweiterungen hinzugefügt werden,
-		können die manuell erstellten Konfigurationsdateien im
-		Verzeichnis <filename class="directory">/etc/nagios/conf.local.d/</filename> abgelegt werden.
-		Die hinzugefügten Konfigurationsdateien werden erst nach einem
-		Neustart des Nagios-Servers beachtet.
-		</para>
-
-		<para>
-		Erweiterungen der NRPE-Konfiguration können im
-		Verzeichnis <filename class="directory">/etc/nagios/nrpe.local.d/</filename> abgelegt
-		werden. Änderungen treten erst nach einem Neustart des Nagios
-		NRPE-Daemons in Kraft.
-		</para>
-	</section>
-</section>
-
-<section id="nagios:webinterface">
-  <title>Abfrage des Systemstatus über das Nagios-Webinterface</title>
-  <para>
-	Die Nagios-Oberfläche ist auf der Übersichtswebseite (siehe <xref
-	linkend="central-management-umc:login"/>) unter <guimenu>Nagios</guimenu> verlinkt und
-	kann auch direkt unter <uri>https://SERVERNAME-OR-IP/nagios/</uri> erreicht werden.
-  </para>
-
-	<figure id="nagios-tact-overview">
-		<title>Nagios-Statusübersicht</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations43/overview_EN.png"/>
-	</figure>
-
-	<para>
-	Der Zugriff wird in der Standardeinstellung ausschließlich Benutzern der
-	Gruppe <systemitem class="groupname">Domain Admins</systemitem> (z.B. der Benutzer Administrator) gewährt.
-	Es besteht auch die Möglichkeit den Kreis der Anmeldeberechtigten zu erweitern.
-	</para>
-	<!--
-	<comment>
-	Dies ist im Univention Wiki unter WIKIREF-23919 dokumentiert.
-	</comment>
-	-->
-</section>
-
-
-<section id="nagios:newplugins">
-  <title>Integration eigener Plugins</title>
-  <para>
-	Die in UCS mitgelieferten und vorkonfigurierten Nagios-Plugins können durch selbst geschriebene
-	oder externe Plugins ergänzt werden. Unter <ulink url="https://exchange.nagios.org/"/> findet sich
-	eine Vielzahl verfügbarer Module.
-  </para>
-
-  <para>
-	Dieser Abschnitt beschreibt am Beispiel des Plugins <command>check_e2fs_next_fsck</command> die Einbindung eines
-	externen Plugins. Das Plugin prüft, ob ein Filesystem-Check ansteht und liefert eine Warnung wenn
-	dieser sieben oder weniger Tage bevorsteht und einen Fehlerzustand, wenn beim nächsten Reboot
-	ein Filesystem-Check stattfindet.
-  </para>
-
-  <para>
-	Je nachdem ob das Plugin über NRPE aufgerufen wird oder nicht, unterscheidet sich die Installation:
-  </para>
-	<itemizedlist>
-	  <listitem>
-		<simpara>
-		  Wird das Plugin über NRPE aufgerufen, muss es auf allen Nagios-Servern und auf allen zu
-		  prüfenden Systemen in das Verzeichnis <filename class="directory">/usr/lib/nagios/plugins</filename> kopiert
-		  werden.
-		</simpara>
-	  </listitem>
-	  <listitem>
-		<simpara>
-		  Benötigt das Plugin keinen lokalen Zugriff, muss es nur auf den Nagios-Server(n) in das
-		  Verzeichnis <filename class="directory">/usr/lib/nagios/plugins</filename> kopiert werden.
-		</simpara>
-	  </listitem>
-	</itemizedlist>
-  <para>
-	Das Plugin muss als ausführbare Datei markiert sein (<command>chmod a+x PLUGIN</command>).
-  </para>
-
-  <para>
-	Einige Plugins sind ausschließlich in Perl, Python oder Shell geschrieben und benötigen keine
-	externen Bibliotheken oder Programme. Diese Interpreter sind auf allen UCS-Systemen immer
-	installiert. Wenn das Plugin hingegen externe Programme oder Bibliotheken verwendet, muss
-	sichergestellt werden, das diese auf allen zu prüfenden Systemen (NRPE-Plugin) oder auf den
-	Nagios-Servern (Fern-Prüfung) installiert sind.
-  </para>
-
-  <para>
-	Das Nagios-Plugin muss nun registriert werden. Dies erfolgt durch ein Makro im
-	Verzeichnis <filename class="directory">/etc/nagios-plugins/config/</filename>. Hierbei kann z.B. eine Datei wie
-	<filename>local.cfg</filename> verwendet werden, in der dann alle lokal registrierten Plugins
-	eingetragen werden. Das folgende Beispiel registriert das
-	Plugin <command>check_e2fs_next_fsck</command>:
-  </para>
-
-<programlisting language="sh">
-define command{
-  command_name   check_fsck
-  command_line   /usr/lib/nagios/plugins/check_e2fs_next_fsck
-}
-</programlisting>
-
-  <para>
-	Viele Plugins verwenden auch Parameter, um die Schwellwerte für Warnungen und Fehler zu
-	konfigurieren. Diese werden dann in der <emphasis>command_line</emphasis>-Zeile festgelegt.
-	Analog zu dem Plugin selbst muss die Makro-Datei bei Verwendung von NRPE auf alle zu
-	überwachenden Systeme kopiert werden.
-	Die Plugins, Makros und eventuellen Abhängigkeiten können auch in ein Debian-Paket paketiert
-	werden. Weitere Hinweise dazu finden sich in <biblioref linkend="developer-reference"/>.
-  </para>
-
-  <para>
-	Nun muss der Nagios-Dienst neu gestartet werden:
-  </para>
-<programlisting language="sh">
-/etc/init.d/nagios restart
-</programlisting>
-
-  <para>
-	Abschließend muss das neue Plugin noch in &ucsUMC; als <guimenu>Nagios-Dienst</guimenu>
-	registriert werden, siehe <xref linkend="Nagios:Dienst"/>. Als
-	<guimenu>Plugin-Kommando</guimenu> muss der unter <emphasis>command_name</emphasis>
-	in der Makro-Datei registriert Name angegeben werden, in diesem Beispiel
-	<command>check_fsck</command> und die Option <guimenu>NRPE benutzen</guimenu> aktiviert
-	werden.
-	Der neu registrierte Dienst kann nun einzelnen Systemen zugewiesen werden, siehe <xref
-	linkend="nagios::hostconfig"/>.
-  </para>
-
-</section>
-
-
 </chapter>
