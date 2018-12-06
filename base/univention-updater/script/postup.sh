@@ -42,28 +42,30 @@ reinstall ()
 }
 check_and_install ()
 {
-	local state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
+	local state
+	state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
 	if [ "$state" = "install" ]; then
 		install "$1"
 	fi
 }
 check_and_reinstall ()
 {
-	local state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
+	local state
+	state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
 	if [ "$state" = "install" ]; then
 		reinstall "$1"
 	fi
 }
 is_installed ()
 {
-	local state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
+	local state
+	state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
 	test "$state" = "install"
-	return $?
 }
 is_deinstalled() {
-	local state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
+	local state
+	state="$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
 	test "$state" = "deinstall"
-	return $?
 }
 
 echo -n "Running postup.sh script:"
@@ -110,7 +112,7 @@ if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
 fi
 
 # executes custom postup script (always required)
-if [ ! -z "$update_custom_postup" ]; then
+if [ -n "$update_custom_postup" ]; then
 	if [ -f "$update_custom_postup" ]; then
 		if [ -x "$update_custom_postup" ]; then
 			echo -n "Running custom postupdate script $update_custom_postup"
@@ -125,14 +127,13 @@ if [ ! -z "$update_custom_postup" ]; then
 fi
 
 if [ -x /usr/sbin/univention-check-templates ]; then
-	/usr/sbin/univention-check-templates >>"$UPDATER_LOG" 2>&1
-	rc=$?
-	if [ "$rc" != 0 ]; then
+	if ! /usr/sbin/univention-check-templates >>"$UPDATER_LOG" 2>&1
+	then
 		echo "Warning: UCR templates were not updated. Please check $UPDATER_LOG or execute univention-check-templates as root."
 	fi
 fi
 
-if [ -f /var/univention-join/joined -a "$server_role" != basesystem ]; then
+if [ -f /var/univention-join/joined ] && [ "$server_role" != basesystem ]; then
 	udm "computers/$server_role" modify \
 		--binddn "$ldap_hostdn" \
 		--bindpwdfile "/etc/machine.secret" \

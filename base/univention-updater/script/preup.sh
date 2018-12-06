@@ -44,8 +44,9 @@ conffile_is_unmodified () {
 	if [ ! -f "$1" ]; then
 		return 1
 	fi
-	local chksum="$(md5sum "$1" | awk '{ print $1 }')"
-	local fnregex="$(python -c 'import re,sys;print re.escape(sys.argv[1])' "$1")"
+	local chksum fnregex
+	chksum="$(md5sum "$1" | awk '{ print $1 }')"
+	fnregex="$(python -c 'import re,sys;print re.escape(sys.argv[1])' "$1")"
 	for testchksum in $(dpkg-query -W -f '${Conffiles}\n' | sed -nre "s,^ $fnregex ([0-9a-f]+)( .*)?$,\1,p") ; do
 		if [ "$testchksum" = "$chksum" ] ; then
 			return 0
@@ -54,19 +55,17 @@ conffile_is_unmodified () {
 	return 1
 }
 
-readcontinue ()
-{
-	while true ; do
+readcontinue () {
+	local var
+	while true
+	do
 		echo -n "Do you want to continue [Y/n]? "
-		read var
-		if [ -z "$var" -o "$var" = "y" -o "$var" = 'Y' ]; then
-			return 0
-		elif [ "$var" = "n" -o "$var" = 'N' ]; then
-			return 1
-		else
-			echo ""
-			continue
-		fi
+		read -r var
+		case "$var" in
+		''|y|Y) return 0 ;;
+		n|N) return 1 ;;
+		*) echo "" ;;
+		esac
 	done
 }
 
@@ -83,12 +82,13 @@ echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
 echo
-if [ ! "$update_warning_releasenotes" = "no" -a ! "$update_warning_releasenotes" = "false" -a ! "$update_warning_releasenotes_internal" = "no" ] ; then
+if [ "$update_warning_releasenotes" != "no" ] && [ "$update_warning_releasenotes" != "false" ] && [ "$update_warning_releasenotes_internal" != "no" ]
+then
 	if [ "$UCS_FRONTEND" = "noninteractive" ]; then
 		echo "Update will wait here for 60 seconds..."
 		echo "Press CTRL-c to abort or press ENTER to continue"
 		# BUG: 'read -t' is the only bash'ism in this file, therefore she-bang has to be /bin/bash not /bin/sh!
-		read -t 60 somevar
+		read -r -t 60 somevar
 	else
 		readcontinue || exit 1
 	fi
@@ -133,7 +133,7 @@ cp /etc/univention/base*.conf "$updateLogDir/"
 ucr dump > "$updateLogDir/ucr.dump"
 
 # call custom preup script if configured
-if [ ! -z "$update_custom_preup" ]; then
+if [ -n "$update_custom_preup" ]; then
 	if [ -f "$update_custom_preup" ]; then
 		if [ -x "$update_custom_preup" ]; then
 			echo "Running custom preupdate script $update_custom_preup"
@@ -148,7 +148,7 @@ if [ ! -z "$update_custom_preup" ]; then
 fi
 
 ## check for hold packages
-hold_packages=$(LC_ALL=C dpkg -l | grep ^h | awk '{print $2}')
+hold_packages="$(LC_ALL=C dpkg -l | grep ^h | awk '{print $2}')"
 if [ -n "$hold_packages" ]; then
 	echo "WARNING: Some packages are marked as hold -- this may interrupt the update and result in an inconsistent"
 	echo "system!"
@@ -164,7 +164,7 @@ if [ -n "$hold_packages" ]; then
 fi
 
 ## Bug #44650 begin - check slapd on member
-if [ -e "$(which slapd)" -a "$server_role" = "memberserver" ]; then
+if [ -e "$(which slapd)" ] && [ "$server_role" = "memberserver" ]; then
 	echo "WARNING: The ldap server is installed on your memberserver. This is not supported"
 	echo "         and may lead to problems during the update. Please deinstall the package"
 	echo "         *slapd* from this system with either the command line tool univention-remove "
@@ -184,6 +184,7 @@ fi
 #################### Bug #22093
 
 list_passive_kernels () {
+	local kernel_version
 	kernel_version="$1"
 	dpkg-query -W -f '${Package}\n' "linux-image-${kernel_version}-ucs*" 2>/dev/null |
 		fgrep -v "linux-image-$(uname -r)"
@@ -192,9 +193,8 @@ list_passive_kernels () {
 get_latest_kernel_pkg () {
 	# returns latest kernel package for given kernel version
 	# currently running kernel is NOT included!
-
+	local kernel_version latest_dpkg latest_kver kver
 	kernel_version="$1"
-
 	latest_dpkg=""
 	latest_kver=""
 	for kver in $(list_passive_kernels "$kernel_version") ; do
@@ -211,19 +211,22 @@ pruneOldKernel () {
 	# removes all kernel packages of given kernel version
 	# EXCEPT currently running kernel and latest kernel package
 	# ==> at least one and at most two kernel should remain for given kernel version
+	local kernel_version
 	kernel_version="$1"
-
+	echo "Pruning old kernels $kernel_version" >&3
 	list_passive_kernels "$kernel_version" |
 		fgrep -v "$(get_latest_kernel_pkg "$kernel_version")" |
 		DEBIAN_FRONTEND=noninteractive xargs -r apt-get -o DPkg::Options::=--force-confold -y --force-yes purge
 }
 
-if [ "$update43_pruneoldkernel" = "yes" ]; then
-	echo -n "Purging old kernel... " | tee -a "$UPDATER_LOG"
-	for kernel_version in 2.6.* 3.2.0 3.10.0 3.16 3.16.0 4.1.0 4.9.0; do
-		pruneOldKernel "$kernel_version" >>"$UPDATER_LOG" 2>&1
+if is_ucr_true 'update43/pruneoldkernel'
+then
+	echo -n "Purging old kernel... "
+	for kernel_version in 2.6.\* 3.2.0 3.10.0 3.16 3.16.0 4.1.0 4.9.0
+	do
+		pruneOldKernel "$kernel_version" >&3 2>&3
 	done
-	echo "done" | tee -a "$UPDATER_LOG"
+	echo "done"
 fi
 
 #####################
@@ -244,11 +247,13 @@ then
 fi
 
 check_space () {
-	partition=$1
-	size=$2
-	usersize=$3
+	local partition size usersize
+	partition="$1"
+	size="$2"
+	usersize="$3"
 	echo -n "Checking for space on $partition: "
-	if [ `df -P "$partition" | tail -n1 | awk '{print $4}'` -gt "$size" ]; then
+	if [ $(($(stat -f -c '%a*%S' "$partition")/1024)) -gt "$size" ]
+	then
 		echo "OK"
 	else
 		echo "failed"
@@ -257,7 +262,8 @@ check_space () {
 		echo "         If necessary you can skip this check by setting the value of the"
 		echo "         config registry variable update43/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
-		if [ "$partition" = "/boot" -a ! "$update43_pruneoldkernel" = "yes" ] ; then
+		if [ "$partition" = "/boot" ] && ! is_ucr_true 'update43/pruneoldkernel'
+		then
 			echo "         Old kernel versions on /boot can be pruned automatically during"
 			echo "         next update attempt by setting config registry variable"
 			echo "         update43/pruneoldkernel to \"yes\"."
@@ -268,8 +274,7 @@ check_space () {
 	fi
 }
 
-fail_if_role_package_will_be_removed ()
-{
+fail_if_role_package_will_be_removed () {
 	local role_package
 
 	case "$server_role" in
@@ -283,8 +288,8 @@ fail_if_role_package_will_be_removed ()
 	test -z "$role_package" && return
 
 	#echo "Executing: LC_ALL=C $update_commands_distupgrade_simulate | grep -q "^Remv $role_package""  >&3 2>&3
-	LC_ALL=C $update_commands_distupgrade_simulate 2>&1 | grep -q "^Remv $role_package"
-	if [ $? = 0 ]; then
+	if LC_ALL=C $update_commands_distupgrade_simulate 2>&1 | grep -q "^Remv $role_package"
+	then
 		echo "ERROR: The pre-check of the update calculated that the"
 		echo "       essential software package $role_package will be removed"
 		echo "       during the upgrade. This could result into a broken system."
@@ -341,7 +346,7 @@ fi
 mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
 
 # check space on filesystems
-if [ "$update43_checkfilesystems" != "no" ]
+if is_ucr_true 'update43/checkfilesystems' || [ $? -eq 2 ]
 then
 	check_space "/var/cache/apt/archives" "4000000" "4000 MB"
 	check_space "/boot" "100000" "100 MB"
@@ -372,15 +377,14 @@ if [ -x /usr/sbin/slapschema ]; then
 fi
 
 # check for valid machine account
-if [ -f /var/univention-join/joined -a ! -f /etc/machine.secret ]
+if [ -f /var/univention-join/joined ] && [ ! -f /etc/machine.secret ]
 then
 	echo "ERROR: The credentials for the machine account could not be found!"
 	echo "       Please re-join this system."
 	exit 1
 fi
 
-eval "$(ucr shell server/role ldap/base ldap/hostdn ldap/server/name)"
-if [ -n "$server_role" -a "$server_role" != "basesystem" -a -n "$ldap_base" -a -n "$ldap_hostdn" ]
+if [ -n "$server_role" ] && [ "$server_role" != "basesystem" ] && [ -n "$ldap_base" ] && [ -n "$ldap_hostdn" ]
 then
 	ldapsearch -x -D "$ldap_hostdn" -w "$(< /etc/machine.secret)" -b "$ldap_base" -s base &>/dev/null
 	if [ $? -eq 49 ]
@@ -399,18 +403,17 @@ fi
 # check for DC Master UCS version
 check_master_version ()
 {
-	if [ -f /var/univention-join/joined ]; then
-		if [ "$server_role" != domaincontroller_master -a "$server_role" != basesystem ]; then
-			master_version="$(univention-ssh /etc/machine.secret ${hostname}\$@$ldap_master /usr/sbin/ucr get version/version 2>/dev/null)" >&3 2>&3
-			master_patchlevel="$(univention-ssh /etc/machine.secret ${hostname}\$@$ldap_master /usr/sbin/ucr get version/patchlevel 2>/dev/null)" >&3 2>&3
-			python -c 'from univention.lib.ucs import UCS_Version
-import sys
-master=UCS_Version("'$master_version'-'$master_patchlevel'")
-me=UCS_Version("'$version_version'-'$version_patchlevel'")
-if master <= me:
-	sys.exit(1)
-'
-			if [ $? != 0 ]; then
+	[ -f /var/univention-join/joined ] || return
+	case "$server_role" in
+	domaincontroller_master) return ;;
+	basesystem) return ;;
+	esac
+
+	local master_version master_patchlevel
+	master_version="$(univention-ssh /etc/machine.secret "${hostname}\$@$ldap_master" /usr/sbin/ucr get version/version 2>/dev/null)" >&3 2>&3
+	master_patchlevel="$(univention-ssh /etc/machine.secret "${hostname}\$@$ldap_master" /usr/sbin/ucr get version/patchlevel 2>/dev/null)" >&3 2>&3
+	dpkg --compare-versions "${master_version}-${master_patchlevel}" le "${version_version}-${version_patchlevel}" || return
+
 				echo "WARNING: Your domain controller master is still on version $master_version-$master_patchlevel."
 				echo "         It is strongly recommended that the domain controller master is"
 				echo "         always the first system to be updated during a release update."
@@ -422,16 +425,13 @@ if master <= me:
 					echo "variable update43/ignore_version to yes."
 					exit 1
 				fi
-			fi
-		fi
-	fi
 }
 check_master_version
 
 # check that no apache configuration files are manually adjusted; Bug #43520
 check_overwritten_umc_templates () {
-	univention-check-templates 2>/dev/null | grep /etc/univention/templates/files/etc/apache2/sites-available/ >>"$UPDATER_LOG" 2>&1
-	if [ $? = 0 ]; then
+	if univention-check-templates 2>/dev/null | grep /etc/univention/templates/files/etc/apache2/sites-available/ >&3 2>&3
+	then
 		echo "WARNING: There are modified Apache configuration files in /etc/univention/templates/files/etc/apache2/sites-available/."
 		echo "Please restore the original configuration files before upgrading and apply the manual changes again after the upgrade succeeded."
 		if is_ucr_true update43/ignore_apache_template_checks; then
@@ -446,15 +446,14 @@ check_overwritten_umc_templates () {
 check_overwritten_umc_templates
 
 # ensure that en_US is included in list of available locales (Bug #44150)
-available_locales="$(/usr/sbin/univention-config-registry get locale)"
-case "$available_locales" in
+case "$locale" in
 	*en_US*) ;;
-	*) /usr/sbin/univention-config-registry set locale="$available_locales en_US.UTF-8:UTF-8";;
+	*) /usr/sbin/univention-config-registry set locale="$locale en_US.UTF-8:UTF-8" ;;
 esac
 
 # autoremove before the update
 if ! is_ucr_true update43/skip/autoremove; then
-	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
+	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >&3 2>&3
 fi
 
 # Pre-upgrade
