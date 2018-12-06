@@ -1734,9 +1734,6 @@ define([
 			// color the grid header when items are selected
 			var gridHeaderColor = dojo.blendColors(dojo.colorFromHex(color), dojo.colorFromHex('#ffffff'), 0.7);
 			styles.insertCssRule(lang.replace('.umcModule.color-{0} .umcGridHeader--items-selected', [tab.categoryColor]), lang.replace('background-color: {0}', [gridHeaderColor.toHex()]));
-
-			// color scroll to top floating button
-			styles.insertCssRule(lang.replace('.umcModule.color-{0} .scrollToTopFloatingButton', [tab.categoryColor]), lang.replace('background-color: {0}', [color]));
 		},
 
 		__getModuleColor: function(module) {

@@ -122,76 +122,11 @@ define([
 				title: this.get('title')
 			});
 
-			var scrollToTopFloatingButton = new ContainerWidget({
-				'class': 'scrollToTopFloatingButton'
-			});
-			var ink = put(scrollToTopFloatingButton.domNode, 'div.icon + div.ink');
-			scrollToTopFloatingButton.on('click', function(e) {
-				// show ink effect
-				var floatingButtonDiameter = domGeom.position(scrollToTopFloatingButton.domNode).w;
-				var floatingButtonLeft = scrollToTopFloatingButton.domNode.offsetLeft;
-				var floatingButtonTop = scrollToTopFloatingButton.domNode.offsetTop;
-				var innerClickX = e.clientX - floatingButtonLeft;
-				var innerClickY = e.clientY - floatingButtonTop;
-				var inkDiameter = Math.max(
-					(floatingButtonDiameter - innerClickX),
-					innerClickX,
-					(floatingButtonDiameter - innerClickY),
-					innerClickY
-				) * 2;
-				var inkRadius = inkDiameter / 2;
-				var x = innerClickX - inkRadius;
-				var y = innerClickY - inkRadius;
-				domStyle.set(ink, {
-					'transition': 'none',
-					'opacity': '',
-					'transform': '',
-					'left': x + 'px',
-					'top': y + 'px',
-					'width': inkDiameter + 'px',
-					'height': inkDiameter + 'px'
-				});
-				setTimeout(function() {
-					domStyle.set(ink, {
-						'transition': '',
-						'opacity': '0',
-						'transform': 'scale(1)'
-					});
-				}, 20);
-
-				// scroll to top of window
-				new baseFx.Animation({
-					duration: 300,
-					easing: fxEasing.cubicOut,
-					curve: [dojo.docScroll().y, 0],
-					onAnimate: function(val) {
-						window.scrollTo(0, val);
-					}
-				}).play();
-			});
-
-			var scrollToTopFloatingButtonSpacer = new ContainerWidget({
-				'class': 'scrollToTopFloatingButtonSpacer'
-			});
-
 			ContainerWidget.prototype.addChild.apply(this, [this._top]);
 			ContainerWidget.prototype.addChild.apply(this, [this._bottom]);
-			ContainerWidget.prototype.addChild.apply(this, [scrollToTopFloatingButton]);
-			ContainerWidget.prototype.addChild.apply(this, [scrollToTopFloatingButtonSpacer]);
 
 			// redirect childrens to stack container
 			this.containerNode = this.__container.containerNode;
-
-			this.own(on(baseWindow.doc, 'scroll', lang.hitch(this, function() {
-				if (!this.selected) {
-					return;
-				}
-
-				// update scrollToTop Button visibility
-				var showScrollToTopButton = dojo.docScroll().y >= 300;
-				domClass.toggle(scrollToTopFloatingButton.domNode, 'shown', showScrollToTopButton);
-				domClass.toggle(scrollToTopFloatingButtonSpacer.domNode, 'shown', showScrollToTopButton);
-			})));
 		},
 
 		selectChild: function(child, animate) {
