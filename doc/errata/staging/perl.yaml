@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: perl
+fix: 5.20.2-3+deb8u12
+desc: |
+ This update addresses the following issue:
+ * Integer overflow leading to buffer overflow (CVE-2018-18311)
+bug: [48294]
+cve:
+- CVE-2018-18311
