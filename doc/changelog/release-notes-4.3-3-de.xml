@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-de-4.3-2">
+<book lang="de" id="releasenotes-de-4.3-3">
 	<bookinfo>
 		<title>UCS 4.3 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.3-2</subtitle>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.3-3</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,29 +44,17 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit Univention Corporate Server 4.3-2 steht das zweite Point-Release für Univention Corporate Server (UCS) 4.3 zur
+			Mit Univention Corporate Server 4.3-3 steht das dritte Point-Release für Univention Corporate Server (UCS) 4.3 zur
 			Verfügung. Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie
 			diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				Während der Aktualisierung auf neue UCS Release- oder Patchlevelversionen wird die Univention Management Console in einen Wartungsmodus versetzt. Während der Wartungsmodus aktiv ist, wird der Fortschritt des Updates auf einer einfachen Webseite dargestellt.
+				<remark>FIXME</remark>
 			</para></listitem>
 			<listitem><para>
-				Samba wurde auf Version 4.7.8 aktualisiert. Aus Sicherheitsgründen ist jetzt die Authentifizierung mit <wordasword>NTLMv1</wordasword> nicht mehr erlaubt. Sofern noch sehr alte Systeme oder Anwendungen im Einsatz sind, die unbedingt <wordasword>NTLMv1</wordasword> benötigen, so kann dies per Univention Configuration Registry wieder aktiviert werden.
-			</para></listitem>
-			<listitem><para>
-				Der Installationswizard wurde erweitert, so dass vor dem Start der Installation mögliche Probleme beim Domänenbeitritt und der Internetanbindung identifiziert werden und Lösungsmöglichkeiten aufgezeigt werden können.
-			</para></listitem>
-			<listitem><para>
-				Eine manuell erstellte oder angepasste SAML Konfiguration für einen Dienst kann nun direkt im LDAP abgelegt werden. Diese Konfiguration wird dann auf alle am Single Sign On beteiligten Identity Provider in der Domäne repliziert.
-			</para></listitem>
-			<listitem><para>
-				Der AD Connector wurde um Werkzeuge erweitert, einzelne Objekte oder ganze Teilbäume erneut zu synchronisieren und Rejects gezielt  zu entfernen.
-			</para></listitem>
-			<listitem><para>
-				Diverse Security Updates wurden in UCS 4.3-2 integriert, bspw. für den Linux Kernel, <wordasword>Samba</wordasword> und <wordasword>Apache2</wordasword>.
+				Diverse Security Updates wurden in UCS 4.3-3 integriert, bspw. für den Linux Kernel, <wordasword>Samba</wordasword> und <wordasword>Apache2</wordasword>.
 				Eine vollständige Liste ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>
@@ -209,10 +197,10 @@
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.3-1</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <wordasword>4.3-2</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-2.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-3.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
