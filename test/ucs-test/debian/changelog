@@ -1,3 +1,9 @@
+ucs-test (8.0.28-247) unstable; urgency=medium
+
+  * Bug #46316: more wait_for_connector_replication
+
+ -- Felix Botner <botner@univention.de>  Thu, 06 Dec 2018 16:54:48 +0100
+
 ucs-test (8.0.28-246) unstable; urgency=low
 
   * Bug #47000: Move debug from 09_updater/41 to 09/40

@@ -229,6 +229,7 @@ class TestUsers(object):
 		wait_for_connector_replication()
 		if kwargs.get('modify', True):
 			user = udm.create_user()[0]
+			wait_for_connector_replication()
 			user = udm.modify_object('users/user', dn=user, **props)
 			udm.verify_ldap_object(user, attrs, strict=False)
 

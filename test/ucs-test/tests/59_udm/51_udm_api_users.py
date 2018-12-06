@@ -119,6 +119,7 @@ class TestUdmUsersBasic(TestCase):
 			assert user_mod.get(dn)
 		obj.position = old_position
 		obj.save()
+		utils.wait_for_connector_replication()
 		assert user_mod.get(dn) is not None
 
 	def test_modify_error(self):
