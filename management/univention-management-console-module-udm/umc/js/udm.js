@@ -1941,9 +1941,7 @@ define([
 
 		_setDetailPage: function(operation, objectType, ldapName, newObjOptions, /*Boolean*/ isClosable, /*String*/ note) {
 			this._destroyDetailPage();
-			var cssClass = this.moduleFlavor == 'users/user' ? 'umcUDMUsersModule' : '';
 			this._detailPage = new DetailPage({
-				'class': cssClass,
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				addWarning: lang.hitch(this, 'addWarning'),
 				addNotification: lang.hitch(this, 'addNotification'),

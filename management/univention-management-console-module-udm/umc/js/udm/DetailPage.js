@@ -187,7 +187,6 @@ define([
 
 		isSyncedObject: null, // object which is modified (or one of multiedited) has univentionObjectFlag == synced
 
-		'class': 'udmDetailPage',
 		standbyOpacity: 0,  // the standby animation should be transparent to improove visiblity when loading the object
 
 		postMixInProperties: function() {
@@ -203,6 +202,9 @@ define([
 			//		Query necessary information from the server for the object detail page
 			//		and initiate the rendering process.
 			this.inherited(arguments);
+
+			domClass.add(this.domNode, 'umcUDMDetailPage');
+			domClass.toggle(this.domNode, 'umcUDMUsersModule', this.moduleFlavor === 'users/user');
 
 			this.set('headerButtons', this.getButtonDefinitions());
 
@@ -311,7 +313,7 @@ define([
 
 				// show type and position of the object
 				if (this.operation !== 'add') {
-					var ldapName = this.ldapName
+					var ldapName = this.ldapName;
 					if (this.operation === 'copy') {
 						ldapName = lang.replace('{0},{1}', [tools.explodeDn(this.ldapName)[0], this.newObjectOptions.container]);
 					}
@@ -2011,7 +2013,7 @@ define([
 				hasEmptyPropsWithDefaultValues = true;
 				return false; // short circuit forIn()
 			});
-			return hasEmptyPropsWithDefaultValues
+			return hasEmptyPropsWithDefaultValues;
 		},
 
 		shouldPreventPopupForEmptyPropWithDefault: function(propName) {
