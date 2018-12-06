@@ -531,7 +531,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
         <title>Create a Multi Container App</title>
         <para>
             Starting with UCS 4.3-2 errata 345 Univention App Center supports
-            Apps that consist of multiple docker images. It uses <ulink
+            apps that consist of multiple docker images. It uses <ulink
                 url="https://docs.docker.com/compose/overview/">Docker
                 Compose</ulink>, a tool for defining and running
             multi-container Docker applications. The heart of such applications
@@ -559,7 +559,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                 please see <xref linkend="create-app-with-docker:web-interface" />.
             </para>
             <para>
-                If the App setup requires exclusive ports and a list of ports needs
+                If the app setup requires exclusive ports and a list of ports needs
                 to get forwarded from the host to the container, please see <xref
                     linkend="create-app-with-docker:ports" />.
             </para>
@@ -590,7 +590,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                             the server side and the Docker Image information is
                             changed to point to the Docker Images in the
                             Univention Docker Registry.  All Docker Images from
-                            published Apps are copied to the Univention Docker
+                            published apps are copied to the Univention Docker
                             Registry to be independent of Docker's own
                             infrastructure. This is the only server-side change
                             to the Docker Compose file.
@@ -678,7 +678,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
             <para>
                 As soon as all the technical settings are made, please see <xref
                     linkend="app-lifecycle" /> for the next steps and how to
-                test the App. For App presentation in the App Center please see
+                test the app. For app presentation in the App Center please see
                 <xref linkend="app-presentation" />.
             </para>
         </section>
