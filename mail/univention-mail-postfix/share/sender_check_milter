@@ -383,10 +383,6 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 				self.log('REJECT: Message{} has no valid signature!'.format(msg_user), self.queue_id, 'ERROR')
 				self.log(self.reject_msg, self.queue_id)
 				return lm.REJECT
-		else:
-			# this shouldn't happen, better safe than sorry -> reject
-			self.log('From not OK, but no reject message!', self.queue_id, 'ERROR')
-			return lm.REJECT
 		return lm.CONTINUE
 
 	def eob(self, cmdDict):
