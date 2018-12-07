@@ -19,8 +19,8 @@
 			Einerseits das UCS Dashboard mit dessen Hilfe Administratoren sehr
 			schnell den Zustand der Domänen und einzelner Server abzulesen.
 			Anderseits gibt es mit Nagios die Möglichkeit, dass fortlaufend im
-			Hintergrund rechner und Dienste zu überprüfen und proaktiv zu
-			benachrichtgien, sollte eine Warnstufe erreicht werden.
+			Hintergrund Rechner und Dienste zu überprüfen und proaktiv zu
+			benachrichtigen, sollte eine Warnstufe erreicht werden.
 		</para>
 		<para>
 			In den beiden folgenden Kapiteln werden die unterschiedlichen Lösungen beschrieben.
@@ -40,7 +40,7 @@
 			<para>
 				Voraussetzung für die Nutzung der <emphasis>UCS Dashboard</emphasis> App ist eine
 				gültige Subskription. Mehr Informationen dazu sind auf der Webseite
-				<url>https://www.univention.de/produkte/preise/</url> zu finden.
+				<ulink url="https://www.univention.de/produkte/preise/"/> zu finden.
 			</para>
 		</section>
 		<section id="dashboard::installation">
@@ -70,14 +70,14 @@
 				</itemizedlist>
 			</para>
 			<para>
-				Die App <emphasis>UCS Dashboard<emphasis> kann aus dem Univention App Center auf einem Server in der
+				Die App <emphasis>UCS Dashboard</emphasis> kann aus dem Univention App Center auf einem Server in der
 				Domäne installiert werden.
-				Das <emphasis>UCS Dashboard<emphasis> kann auf beliebigen Domänencontroller Rollen
-				installiert werden. Die App <emphasis>UCS Dashboard Database</emphasis> wid
+				Das <emphasis>UCS Dashboard</emphasis> kann auf beliebigen Domänencontroller Rollen
+				installiert werden. Die App <emphasis>UCS Dashboard Database</emphasis> wird
 				automatisch auf dem System mitinstalliert.
 			</para>
 			<para>
-				Die App <emphasis>UCS Dashboard Client<emphasis> sollte auf jedem UCS-System installiert
+				Die App <emphasis>UCS Dashboard Client</emphasis> sollte auf jedem UCS-System installiert
 				werden. Nur dadurch werden die Daten des Systems auf dem Dashboard dargestellt.
 			</para>
 		</section>
@@ -113,12 +113,12 @@
 					verfügbar ist.
 				</para>
 				<para>
-					Zusätzlich wird die CPU-Auslastung, Arbeitsspiecherauslastung, der freie Festplattenspeicher und
+					Zusätzlich wird die CPU-Auslastung, Arbeitsspeicherauslastung, der freie Festplattenspeicher und
 					der Status der LDAP-Replikation angezeigt. Dabei sind in den Grafiken entsprechend Serversysteme
 					integriert.
 				</para>
 			</section>
-			<section id="dashboard::nutzung:domain">
+			<section id="dashboard::nutzung:server">
 				<title>Server Dashboard</title>
 				<para>
 					<figure id="dashboard-server">
@@ -128,12 +128,12 @@
 				</para>
 				<para>
 					Standardmäßig wird zusätzlich das Server Dashboard eingerichtet. Auf diesem Dashboard sind
-					detaliierte Informationen zu einzelenen Serversystemen aufgelistet, wie bspw. die CPU- oder
+					detailierte Informationen zu einzelnen Serversystemen aufgelistet, wie bspw. die CPU- oder
 					Speicherauslastung oder der Netzwerkdurchsatz.
 				</para>
 				<para>
-					Die Server können im Drop-Down <guimenu>server</guimenu> ausgewählt werden. Anschließend werden die
-					Grafiken entsprechend aktualsiert.
+					Die Server können im Dropdown <guimenu>server</guimenu> ausgewählt werden. Anschließend werden die
+					Grafiken entsprechend aktualisiert.
 				</para>
 			</section>
 			<section id="dashboard::nutzung:mydashboard">
