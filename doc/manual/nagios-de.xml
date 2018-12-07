@@ -21,7 +21,7 @@
 			eine Warnstufe erreicht werden.
 		</para>
 		<para>
-			In den folgenden Kapiteln werden die beidenunterschiedlichen Lösungen beschrieben.
+			In den folgenden Kapiteln werden die beiden unterschiedlichen Lösungen beschrieben.
 		</para>
 	</section>
 
@@ -125,7 +125,7 @@
 				</para>
 				<para>
 					Standardmäßig wird zusätzlich das Server Dashboard eingerichtet. Auf diesem Dashboard sind
-					detailierte Informationen zu einzelnen Serversystemen aufgelistet, wie bspw. die CPU- oder
+					detaillierte Informationen zu einzelnen Serversystemen aufgelistet, wie bspw. die CPU- oder
 					Speicherauslastung oder der Netzwerkdurchsatz.
 				</para>
 				<para>
