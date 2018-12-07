@@ -497,7 +497,7 @@ class License(Ressource):
 class Properties(Ressource):
 	"""GET udm/users/user/properties (get properties of users/user object type)"""
 
-	def get(self, object_type, dn):
+	def get(self, object_type, dn=None):
 		module = self.get_module(object_type)
 		module.load(force_reload=True)  # reload for instant extended attributes
 
@@ -821,23 +821,32 @@ class Object(Ressource):
 		if not module:
 			raise NotFound(object_type)  # FIXME: create
 
-		valid = all(x['valid'] if isinstance(x['valid'], bool) else all(x['valid']) for x in self._validate(object_type))
-		if not valid:
-			raise HTTPError(400)
+		yield self.modify(module)
 
+	@tornado.gen.coroutine
+	def patch(self, object_type, dn):
+		module = get_module(object_type, dn)
+		if not module:
+			raise NotFound(object_type)
+		yield self.modify(module, self.request.body_arguments)
+
+	@tornado.gen.coroutine
+	def modify(self, module, properties=None):
 		obj = module.module.object(None, self.ldap_connection, self.ldap_position, dn)
 		obj.open()
 		obj.options = self.get_body_arguments('$options$')
-		properties = dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items()))
+		if properties is None:
+			properties = dict((prop, self.get_body_arguments(prop)) for prop in dict(obj.items()))
+
+		valid = all(x['valid'] if isinstance(x['valid'], bool) else all(x['valid']) for x in self._validate(module, properties))
+		if not valid:
+			raise HTTPError(422)
+
 		try:
 			module._map_properties(obj, properties)
 			yield self.pool.submit(obj.modify)
 		except udm_errors.base as exc:
 			UDM_Error(exc).reraise()
-
-	@tornado.gen.coroutine
-	def patch(self, object_type, dn):
-		pass
 
 	@tornado.gen.coroutine
 	def delete(self, object_type, dn):
@@ -853,17 +862,15 @@ class Object(Ressource):
 	def options(self, object_type, dn):
 		self.set_header('Allow', 'GET, PUT, DELETE, OPTIONS')
 
-	def _validate(self, object_type):  # (thread)
+	def _validate(self, module, properties):  # (thread)
 		"""Validates the correctness of values for properties of the
 		given object type. Therefor the syntax definition of the properties is used.
 
 		return: [ { 'property' : <name>, 'valid' : (True|False), 'details' : <message> }, ... ]
 		"""
 
-		module = self.get_module(object_type)
-
 		result = []
-		for property_name, value in self.request.body_arguments.items():
+		for property_name, value in properties.items():
 			# ignore special properties named like $.*$, e.g. $options$
 			if property_name.startswith('$') and property_name.endswith('$'):
 				continue
@@ -896,6 +903,14 @@ class Object(Ressource):
 				except (udm_errors.valueInvalidSyntax, udm_errors.valueError) as exc:
 					result.append({'property': property_name, 'valid': False, 'details': str(exc)})
 		return result
+
+
+class ObjectAdd(Ressource):
+	pass
+
+
+class ObjectEdit(Ressource):
+	pass
 
 
 class PropertyChoices(Ressource):
@@ -1016,6 +1031,7 @@ if __name__ == "__main__":
 		(r"/udm/license/request", LicenseRequest),
 		(r"/udm/navigation/", ObjectTypesNavigation),
 		(r"/udm/%s/containers/" % (object_type,), Navigation),
+		(r"/udm/%s/properties" % (object_type,), Properties),
 		(r"/udm/%s/" % (module_type,), ObjectTypes),
 		(r"/udm/(navigation)/containers/", Navigation),
 		(r"/udm/(%s|navigation)/move-destinations/" % (object_type,), MoveDestinations),
@@ -1030,8 +1046,10 @@ if __name__ == "__main__":
 		(r"/udm/%s/properties/%s/default" % (object_type, property_), DefaultValue),
 		(r"/udm/%s/%s/%s/" % (object_type, dn, policies_object_type), PolicyTypes),
 		(r"/udm/%s/%s/%s/" % (object_type, policies_object_type, dn), PolicyResult),
+		(r"/udm/%s/add" % (object_type,), ObjectAdd),
 		(r"/udm/%s/" % (object_type,), Objects),
 		(r"/udm/%s/%s" % (object_type, dn), Object),
+		(r"/udm/%s/%s/edit" % (object_type, dn), ObjectEdit),
 		(r"/udm/%s/layout" % (object_type,), Layout),
 		(r"/udm/%s/%s/layout" % (object_type, dn), Layout),
 		(r"/udm/networks/network/([^/]+)/next-free-ip-address", NextFreeIpAddress),
