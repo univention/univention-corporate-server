@@ -66,7 +66,8 @@
 					The app <emphasis>UCS Dashboard</emphasis> can be installed from the Univention App Center on a
 					server in the domain. Currently, the installation is only possible on the system roles
 					Domain controller master, backup or slave is allowed.
-					The app <emphasis>UCS Dashboard Database</emphasis> is automatically installed on the same system.
+					The apps <emphasis>UCS Dashboard Database</emphasis> and <emphasis>UCS Dashboard Client</emphasis> 
+					are automatically installed on the same system.
 				</para>
 				<para>
 					The app <emphasis>UCS Dashboard Client</emphasis> should be installed on every UCS system.
@@ -76,7 +77,7 @@
 			<section id="dashboard::usage">
 				<title>Usage</title>
 				<para>
-					After the successful installation, the UCS Dashboard is linked in the portal.
+					After the installation, the UCS Dashboard is linked in the portal.
 					Alternatively, it can be accessed directly via <uri>https://SERVERNAME-OR-IP/ucs-dashboard/</uri>.
 				</para>
 				<para>
@@ -94,12 +95,12 @@
 						</figure>
 					</para>
 					<para>
-						After a successful login, the Domain dashboard is opened by default. On this
+						After the login, the Domain dashboard is opened by default. On this
 						dashboard, general information about the domain is displayed, such as
 						how many servers and how many users exist in the environment.
 					</para>
 					<para>
-						Furthermore, the server systems are listed on the dashboard, in a tabular overview, including
+						Furthermore, the UCS systems are listed on the dashboard, in a tabular overview, including
 						further information, such as the server role, the installed apps or whether an update is 
 						available or not.
 					</para>
