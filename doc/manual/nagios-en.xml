@@ -65,7 +65,7 @@
 				<para>
 					The app <emphasis>UCS Dashboard</emphasis> can be installed from the Univention App Center on a
 					server in the domain. Currently, the installation is only possible on the system roles
-					Domain controller master, backup or slave is allowed.
+					Domain controller master, backup or slave.
 					The apps <emphasis>UCS Dashboard Database</emphasis> and <emphasis>UCS Dashboard Client</emphasis> 
 					are automatically installed on the same system.
 				</para>
