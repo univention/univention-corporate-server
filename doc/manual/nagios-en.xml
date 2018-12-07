@@ -13,14 +13,137 @@
 	<section id="monitoring::einfuehrung">
 		<title>Introduction</title>
 		<para>
+			UCS offers two different solutions for infrastructure monitoring. On the one hand the UCS Dashboard helps administrators
+			to quickly read the state of domains and individual servers. On the other hand, with Nagios it is possible to
+			continuously check computers and services in the background and proactively trigger a notification if a warning level is
+			reached.
 		</para>
+		<para>
+			The following sections describe the two different solutions. 
+		</para>
+		<section id="dashboard::general">
+			<title>UCS Dashboard</title>
+			<section id="dashboard::introduction">
+				<title>Introduction and structure</title>
+				<para>
+					The UCS Dashboard app allows administrators to view the state of the domain and individual
+					servers can be read quickly and clearly on so-called dashboards. The dashboards are
+					accessible via a Web browser, access a database in the background, and deliver
+					continuously updated reports on specific aspects of the domain or server.
+				</para>
+				<para>
+					Prerequisite for using the <emphasis>UCS Dashboard</emphasis> app is a
+					valid subscription. More information can be found on the website
+					<ulink url="https://www.univention.com/products/prices-and-subscriptions/"/>.
+				</para>
+			</section>
+			<section id="dashboard::installation">
+				<title>Installation</title>
+				<para>
+					The UCS Dashboard consists of three parts:
+					<itemizedlist>
+						<listitem>
+							<simpara>
+								The UCS Dashboard app for the visualization of data from the central
+								Database. This component is based on the software component Grafana.
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+								The UCS Dashboard Database app, a time series database for storing
+								of the metrics. This database is based on the software Prometheus.
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+								The UCS Dashboard Client app for deploying the metrics of
+								server systems. This is based on the Prometheus Node Exporter.
+							</simpara>
+						</listitem>
+					</itemizedlist>
+				</para>
+				<para>
+					The app <emphasis>UCS Dashboard</emphasis> can be installed from the Univention App Center on a
+					server in the domain. Currently, the installation is only possible on the system roles
+					Domain controller master, backup or slave is allowed.
+					The app <emphasis>UCS Dashboard Database</emphasis> is automatically installed on the same system.
+				</para>
+				<para>
+					The app <emphasis>UCS Dashboard Client</emphasis> should be installed on every UCS system.
+					Only then will the system data be displayed on the dashboard.
+				</para>
+			</section>
+			<section id="dashboard::usage">
+				<title>Usage</title>
+				<para>
+					After the successful installation, the UCS Dashboard is linked in the portal.
+					Alternatively, it can be accessed directly via <uri>https://SERVERNAME-OR-IP/ucs-dashboard/</uri>.
+				</para>
+				<para>
+					In the default setting, access is only granted to users of the
+					group <systemitem class="groupname">Domain Admins</systemitem> (e.g. the user Administrator).
+					<!--It is also possible to set the circle of the logon authorized persons to
+					expand.-->
+				</para>
+				<section id="dashboard::use:domain">
+					<title>Domain dashboard</title>
+					<para>
+						<figure id="dashboard-domain">
+							<title>Domain dashboard</title>
+							<graphic scalefit="1" width="80%" fileref="illustrations43/dashboard-domain.png"/>
+						</figure>
+					</para>
+					<para>
+						After a successful login, the Domain dashboard is opened by default. On this
+						dashboard, general information about the domain is displayed, such as
+						how many servers and how many users exist in the environment.
+					</para>
+					<para>
+						Furthermore, the server systems are listed on the dashboard, in a tabular overview, including
+						further information, such as the server role, the installed apps or whether an update is 
+						available or not.
+					</para>
+					<para>
+						In addition, the CPU usage, memory usage, free hard disk space and
+						the status of the LDAP replication are displayed.
+						In this graphics all servers are displayed together.
+					</para>
+				</section>
+				<section id="dashboard::nutzung:server">
+					<title>Server dashboard</title>
+					<para>
+						<figure id="dashboard-server">
+							<title>Server dashboard</title>
+							<graphic scalefit="1" width="80%" fileref="illustrations43/dashboard-server.png"/>
+						</figure>
+					</para>
+					<para>
+						By default, the server dashboard is also configured. On this dashboard, 
+						detailed information about individual server systems are shown, such as the CPU- or
+						memory usage or network throughput.
+					</para>
+					<para>
+						The servers can be selected in the dropdown <guimenu>server</guimenu>. Then the
+						graphics show the details about the selected server.
+					</para>
+				</section>
+				<section id="dashboard::usage:mydashboard">
+					<title>Own dashboards</title>
+					<para>
+						The two included dashboards <emphasis>domain dashboard</emphasis> and <emphasis>server
+						dashboard</emphasis> can't be changed, because they are updated by Univention with updates.
+					</para>
+					<para>
+						Instead, you can create your own dashboards. On these dashboards you can then either add already
+						existing elements or new elements can be created. All you need to do is
+						click on the plus sign on the left side. A new dashboard will be created
+						which can be filled with elements.
+					</para>
+				</section>
+			</section>
+		</section>
 	</section>
 
-	<section id="dashboard::general">
-		<title>UCS Dashboard</title>
-		<para>
-		</para>
-	</section>
 
 	<section id="nagios::general">
 	<title>Nagios</title>
