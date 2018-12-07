@@ -14,16 +14,14 @@
 	<section id="monitoring::einfuehrung">
 		<title>Einführung</title>
 		<para>
-			UCS bietet zwei unterschiedliche Lösungen für das Monitoring der
-			Infrastruktur.
-			Einerseits das UCS Dashboard mit dessen Hilfe Administratoren sehr
-			schnell den Zustand der Domänen und einzelner Server abzulesen.
-			Anderseits gibt es mit Nagios die Möglichkeit, dass fortlaufend im
-			Hintergrund Rechner und Dienste zu überprüfen und proaktiv zu
-			benachrichtigen, sollte eine Warnstufe erreicht werden.
+			UCS bietet zwei unterschiedliche Lösungen für das Monitoring der Infrastruktur.
+			Einerseits das UCS Dashboard mit dessen Hilfe Administratoren sehr schnell den Zustand der Domänen
+			und einzelner Server abzulesen.  Anderseits gibt es mit Nagios die Möglichkeit, fortlaufend im
+			Hintergrund Rechner und Dienste zu überprüfen und proaktiv eine Benachrichtigung auszulösen, sollte
+			eine Warnstufe erreicht werden.
 		</para>
 		<para>
-			In den beiden folgenden Kapiteln werden die unterschiedlichen Lösungen beschrieben.
+			In den folgenden Kapiteln werden die beidenunterschiedlichen Lösungen beschrieben.
 		</para>
 	</section>
 
@@ -46,24 +44,24 @@
 		<section id="dashboard::installation">
 			<title>Installation</title>
 			<para>
-				Die App besteht aus drei Komponenten:
+				Das UCS Dashboard besteht aus drei Teilen:
 				<itemizedlist>
 					<listitem>
 						<simpara>
-							Das UCS Dashboard für die Visualisierung von Daten aus der zentralen
+							Die UCS Dashboard App für die Visualisierung von Daten aus der zentralen
 							Datenbank. Diese Komponente basiert auf der Softwarekomponente Grafana.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-							Die UCS Dashboard Database, eine Zeitserien-Datenbank für die Speicherung
+							Die UCS Dashboard Database App, eine Zeitserien-Datenbank für die Speicherung
 							der Metriken. Diese Datenbank wird durch die Software Prometheus
 							bereitgestellt.
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-							Der UCS Dashboard Client für die Bereitstellung der Metriken von
+							Die UCS Dashboard Client App für die Bereitstellung der Metriken von
 							Serversystemen. Dieser baut auf dem Prometheus Node-Exporter auf.
 						</simpara>
 					</listitem>
@@ -71,10 +69,9 @@
 			</para>
 			<para>
 				Die App <emphasis>UCS Dashboard</emphasis> kann aus dem Univention App Center auf einem Server in der
-				Domäne installiert werden.
-				Das <emphasis>UCS Dashboard</emphasis> kann auf beliebigen Domänencontroller Rollen
-				installiert werden. Die App <emphasis>UCS Dashboard Database</emphasis> wird
-				automatisch auf dem System mitinstalliert.
+				Domäne installiert werden. Derzeit ist die Installation nur auf den Systemrollen
+				Domaincontroller Master, Backup oder Slave erlaubt.
+				Die App <emphasis>UCS Dashboard Database</emphasis> wird automatisch auf dem System mitinstalliert.
 			</para>
 			<para>
 				Die App <emphasis>UCS Dashboard Client</emphasis> sollte auf jedem UCS-System installiert
@@ -99,23 +96,23 @@
 				<para>
 					<figure id="dashboard-domain">
 						<title>Domain Dashboard</title>
-						<graphic scalefit="1" width="80%" fileref="illustrations43/domain-dashboard.png"/>
+						<graphic scalefit="1" width="80%" fileref="illustrations43/dashboard-domain.png"/>
 					</figure>
 				</para>
 				<para>
 					Nach der erfolgreichen Anmeldung wird standardmäßig das Domain Dashboard geöffnet. Auf diesem
-					Dashboard ist eine Übersicht werden allgemeine Informationen über die Domäne angezeigt, bspw. wie
+					Dashboard werden allgemeine Informationen über die Domäne angezeigt, bspw. wie
 					viele Server und wie viele Benutzer in der Umgebung existieren.
 				</para>
 				<para>
-					Weiter sind auf dem Dashboard in einer tabellarischen Übersicht die Serversysteme aufgelistet inkl.
-					weiterer Informationen wie bspw. die Server Rolle, die installierten Apps oder ob ein Update
+					Weiter sind auf dem Dashboard, in einer tabellarischen Übersicht, die Serversysteme aufgelistet inkl.
+					weiterer Informationen, wie bspw. die Server Rolle, die installierten Apps oder ob ein Update
 					verfügbar ist.
 				</para>
 				<para>
 					Zusätzlich wird die CPU-Auslastung, Arbeitsspeicherauslastung, der freie Festplattenspeicher und
-					der Status der LDAP-Replikation angezeigt. Dabei sind in den Grafiken entsprechend Serversysteme
-					integriert.
+					der Status der LDAP-Replikation angezeigt. Dabei werden in den Grafiken jeweils
+					alle Serversysteme angezeigt.
 				</para>
 			</section>
 			<section id="dashboard::nutzung:server">
@@ -123,7 +120,7 @@
 				<para>
 					<figure id="dashboard-server">
 						<title>Server Dashboard</title>
-						<graphic scalefit="1" width="80%" fileref="illustrations43/domain-dashboard.png"/>
+						<graphic scalefit="1" width="80%" fileref="illustrations43/dashboard-server.png"/>
 					</figure>
 				</para>
 				<para>
@@ -144,7 +141,7 @@
 					ergänzt und verändert werden können.
 				</para>
 				<para>
-					Es können aber eigene Dashboards erstellt werden. Auf diesen Dashboards können dann entweder bereits
+					Stattdessen können eigene Dashboards erstellt werden. Auf diesen Dashboards können dann entweder bereits
 					vorhandene Elemente hinzugefügt werden oder auch neue Elemente erstellt werden. Dazu muss lediglich
 					auf das Plus Zeichen am linken Rand geklickt werden. Anschließend existiert ein neues Dashboard,
 					welches mit Elementen befüllt werden kann.
