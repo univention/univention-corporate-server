@@ -11,10 +11,146 @@
 
 <chapter id="monitoring::general">
 <title>Infrastruktur-Monitoring</title>
+	<section id="monitoring::einfuehrung">
+		<title>Einführung</title>
+		<para>
+			UCS bietet zwei unterschiedliche Lösungen für das Monitoring der
+			Infrastruktur.
+			Einerseits das UCS Dashboard mit dessen Hilfe Administratoren sehr
+			schnell den Zustand der Domänen und einzelner Server abzulesen.
+			Anderseits gibt es mit Nagios die Möglichkeit, dass fortlaufend im
+			Hintergrund rechner und Dienste zu überprüfen und proaktiv zu
+			benachrichtgien, sollte eine Warnstufe erreicht werden.
+		</para>
+		<para>
+			In den beiden folgenden Kapiteln werden die unterschiedlichen Lösungen beschrieben.
+		</para>
+	</section>
 
 	<section id="dashboard::general">
-	<title>UCS Dashboard</title>
-
+		<title>UCS Dashboard</title>
+		<section id="dashboard::einfuehrung">
+			<title>Einführung und Aufbau</title>
+			<para>
+				Das UCS Dashboard ermöglicht es Administratoren, den Zustand der Domäne und einzelner
+				Server schnell und übersichtlich auf sogenannten Dashboards abzulesen. Die Dashboards sind 
+				über einen Web-Browser erreichbar, greifen im Hintergrund auf eine Datenbank zu und liefern
+				kontinuierlich aktualisierte Reports über bestimmte Aspekte der Domäne oder der Server.
+			</para>
+			<para>
+				Voraussetzung für die Nutzung der <emphasis>UCS Dashboard</emphasis> App ist eine
+				gültige Subskription. Mehr Informationen dazu sind auf der Webseite
+				<url>https://www.univention.de/produkte/preise/</url> zu finden.
+			</para>
+		</section>
+		<section id="dashboard::installation">
+			<title>Installation</title>
+			<para>
+				Die App besteht aus drei Komponenten:
+				<itemizedlist>
+					<listitem>
+						<simpara>
+							Das UCS Dashboard für die Visualisierung von Daten aus der zentralen
+							Datenbank. Diese Komponente basiert auf der Softwarekomponente Grafana.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							Die UCS Dashboard Database, eine Zeitserien-Datenbank für die Speicherung
+							der Metriken. Diese Datenbank wird durch die Software Prometheus
+							bereitgestellt.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							Der UCS Dashboard Client für die Bereitstellung der Metriken von
+							Serversystemen. Dieser baut auf dem Prometheus Node-Exporter auf.
+						</simpara>
+					</listitem>
+				</itemizedlist>
+			</para>
+			<para>
+				Die App <emphasis>UCS Dashboard<emphasis> kann aus dem Univention App Center auf einem Server in der
+				Domäne installiert werden.
+				Das <emphasis>UCS Dashboard<emphasis> kann auf beliebigen Domänencontroller Rollen
+				installiert werden. Die App <emphasis>UCS Dashboard Database</emphasis> wid
+				automatisch auf dem System mitinstalliert.
+			</para>
+			<para>
+				Die App <emphasis>UCS Dashboard Client<emphasis> sollte auf jedem UCS-System installiert
+				werden. Nur dadurch werden die Daten des Systems auf dem Dashboard dargestellt.
+			</para>
+		</section>
+		<section id="dashboard::nutzung">
+			<title>Nutzung</title>
+			<para>
+				Nach der erfolgreichen Installation ist das UCS Dashboard im Portal verlinkt.
+				Alternativ kann es direkt über <uri>https://SERVERNAME-OR-IP/ucs-dashboard/</uri>
+				erreicht werden.
+	  		</para>
+			<para>
+				Der Zugriff wird in der Standardeinstellung ausschließlich Benutzern der
+				Gruppe <systemitem class="groupname">Domain Admins</systemitem> (z.B. der Benutzer Administrator) gewährt.
+				<!--Es besteht auch die Möglichkeit den Kreis der Anmeldeberechtigten zu
+				erweitern.-->
+			</para>
+			<section id="dashboard::nutzung:domain">
+				<title>Domain Dashboard</title>
+				<para>
+					<figure id="dashboard-domain">
+						<title>Domain Dashboard</title>
+						<graphic scalefit="1" width="80%" fileref="illustrations43/domain-dashboard.png"/>
+					</figure>
+				</para>
+				<para>
+					Nach der erfolgreichen Anmeldung wird standardmäßig das Domain Dashboard geöffnet. Auf diesem
+					Dashboard ist eine Übersicht werden allgemeine Informationen über die Domäne angezeigt, bspw. wie
+					viele Server und wie viele Benutzer in der Umgebung existieren.
+				</para>
+				<para>
+					Weiter sind auf dem Dashboard in einer tabellarischen Übersicht die Serversysteme aufgelistet inkl.
+					weiterer Informationen wie bspw. die Server Rolle, die installierten Apps oder ob ein Update
+					verfügbar ist.
+				</para>
+				<para>
+					Zusätzlich wird die CPU-Auslastung, Arbeitsspiecherauslastung, der freie Festplattenspeicher und
+					der Status der LDAP-Replikation angezeigt. Dabei sind in den Grafiken entsprechend Serversysteme
+					integriert.
+				</para>
+			</section>
+			<section id="dashboard::nutzung:domain">
+				<title>Server Dashboard</title>
+				<para>
+					<figure id="dashboard-server">
+						<title>Server Dashboard</title>
+						<graphic scalefit="1" width="80%" fileref="illustrations43/domain-dashboard.png"/>
+					</figure>
+				</para>
+				<para>
+					Standardmäßig wird zusätzlich das Server Dashboard eingerichtet. Auf diesem Dashboard sind
+					detaliierte Informationen zu einzelenen Serversystemen aufgelistet, wie bspw. die CPU- oder
+					Speicherauslastung oder der Netzwerkdurchsatz.
+				</para>
+				<para>
+					Die Server können im Drop-Down <guimenu>server</guimenu> ausgewählt werden. Anschließend werden die
+					Grafiken entsprechend aktualsiert.
+				</para>
+			</section>
+			<section id="dashboard::nutzung:mydashboard">
+				<title>Eigene Dashboards</title>
+				<para>
+					Die beiden mitgelieferten Dashboards <emphasis>Domain Dashboard</emphasis> und <emphasis>Server
+					Dashboard</emphasis> können nicht verändert werden, da diese von Univention durch Aktualisierungen
+					ergänzt und verändert werden können.
+				</para>
+				<para>
+					Es können aber eigene Dashboards erstellt werden. Auf diesen Dashboards können dann entweder bereits
+					vorhandene Elemente hinzugefügt werden oder auch neue Elemente erstellt werden. Dazu muss lediglich
+					auf das Plus Zeichen am linken Rand geklickt werden. Anschließend existiert ein neues Dashboard,
+					welches mit Elementen befüllt werden kann.
+				</para>
+			</section>
+		</section>
 	</section>
 
 	<section id="nagios::general">
@@ -23,26 +159,26 @@
 	<section id="nagios::einfuehrung">
 		<title>Einführung und Aufbau</title>
 		<para>
-		Mit Hilfe der Software Nagios ist es möglich, komplexe IT-Strukturen aus
-		Netzen, Rechnern und Diensten fortlaufend automatisch auf korrekte
-		Funktion zu überprüfen.
+			Mit Hilfe der Software Nagios ist es möglich, komplexe IT-Strukturen aus
+			Netzen, Rechnern und Diensten fortlaufend automatisch auf korrekte
+			Funktion zu überprüfen.
 		</para>
 
 		<para>
-		Für das Monitoring bringt Nagios eine umfassende Sammlung an
-		Überwachungsmodulen mit. Diese können
-		neben der Abfrage von Systemkennzahlen (z.B. CPU- und Speicherauslastung,
-		freie Festplattenkapazität) auch die Erreichbarkeit und Funktion
-		unterschiedlicher Dienste (z.B. SSH, SMTP, HTTP) testen. Für die
-		Funktionstests werden in der Regel einfache Programmschritte
-		wie das Ausliefern einer Testmail oder das Auflösen eines DNS-Eintrags
-		durchgeführt. Neben den in Nagios enthaltenen Standardmodulen
-		werden auch UCS-spezifische Überwachungsmodule mitgeliefert, mit denen etwa die
-		Listener/Notifier-Replikation überwacht werden kann.
+			Für das Monitoring bringt Nagios eine umfassende Sammlung an
+			Überwachungsmodulen mit. Diese können
+			neben der Abfrage von Systemkennzahlen (z.B. CPU- und Speicherauslastung,
+			freie Festplattenkapazität) auch die Erreichbarkeit und Funktion
+			unterschiedlicher Dienste (z.B. SSH, SMTP, HTTP) testen. Für die
+			Funktionstests werden in der Regel einfache Programmschritte
+			wie das Ausliefern einer Testmail oder das Auflösen eines DNS-Eintrags
+			durchgeführt. Neben den in Nagios enthaltenen Standardmodulen
+			werden auch UCS-spezifische Überwachungsmodule mitgeliefert, mit denen etwa die
+			Listener/Notifier-Replikation überwacht werden kann.
 		</para>
 
 		<para>
-		Nagios unterscheidet drei grundlegende Betriebszustände für einen Dienst:
+			Nagios unterscheidet drei grundlegende Betriebszustände für einen Dienst:
 		</para>
 
 		<itemizedlist>
@@ -68,12 +204,12 @@
 		</itemizedlist>
 
 		<para>
-		Beim Wechsel eines Betriebszustands kann eine vorher festgelegte
-		Kontaktperson über die mögliche Fehlfunktion informiert werden.
-		Neben der reaktiven Benachrichtigung im Fehlerfall kann der aktuelle
-		Status auch jederzeit laufend in einer webbasierten Oberfläche
-		abgefragt werden, in der die Status-Informationen übersichtlich
-		dargestellt werden.
+			Beim Wechsel eines Betriebszustands kann eine vorher festgelegte
+			Kontaktperson über die mögliche Fehlfunktion informiert werden.
+			Neben der reaktiven Benachrichtigung im Fehlerfall kann der aktuelle
+			Status auch jederzeit laufend in einer webbasierten Oberfläche
+			abgefragt werden, in der die Status-Informationen übersichtlich
+			dargestellt werden.
 		</para>
 
 		<figure id="service-detail">
@@ -82,42 +218,42 @@
 		</figure>
 
 		<para>
-		Nagios besteht aus drei Hauptkomponenten:
+			Nagios besteht aus drei Hauptkomponenten:
 		</para>
 
 		<itemizedlist>
 			<listitem>
 				<simpara>
-			Die Kernkomponente einer Nagios-Installation ist der <emphasis>Nagios-Server</emphasis>,
-			der für die Erhebung und Speicherung der Überwachungsdaten zuständig ist.
+					Die Kernkomponente einer Nagios-Installation ist der <emphasis>Nagios-Server</emphasis>,
+					der für die Erhebung und Speicherung der Überwachungsdaten zuständig ist.
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
-			Die eigentliche Ermittlung der Statusinformationen wird von den
-			<emphasis>Nagios-Plugins</emphasis> getätigt, die in regelmäßigen Abständen vom
-			Nagios-Server aufgerufen werden. Die erhobenen Informationen werden im
-			Nagios-Server gespeichert.
+					Die eigentliche Ermittlung der Statusinformationen wird von den
+					<emphasis>Nagios-Plugins</emphasis> getätigt, die in regelmäßigen Abständen vom
+					Nagios-Server aufgerufen werden. Die erhobenen Informationen werden im
+					Nagios-Server gespeichert.
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
-			Einige Statusinformationen können nicht über das Netz abgefragt werden
-			kann (z.B. die Abfrage des freien Speicherplatzes auf einer Festplattenpartition).
-			In diesem Fall kommt der NRPED-Dienst (Nagios Remote Plugin Executor
-			Daemon) zum Einsatz, welcher nach einer Anfrage des Nagios-Servers auf
-			dem entfernten Rechner Nagios-Plugins ausführt und die erhobenen
-			Informationen anschließend zurückleitet.
-			Der NRPED wird durch die Komponente <emphasis>Nagios-Client</emphasis>
-			bereitgestellt, die auf allen UCS-Systemrollen vorinstalliert wird.
+					Einige Statusinformationen können nicht über das Netz abgefragt werden
+					kann (z.B. die Abfrage des freien Speicherplatzes auf einer Festplattenpartition).
+					In diesem Fall kommt der NRPED-Dienst (Nagios Remote Plugin Executor
+					Daemon) zum Einsatz, welcher nach einer Anfrage des Nagios-Servers auf
+					dem entfernten Rechner Nagios-Plugins ausführt und die erhobenen
+					Informationen anschließend zurückleitet.
+					Der NRPED wird durch die Komponente <emphasis>Nagios-Client</emphasis>
+					bereitgestellt, die auf allen UCS-Systemrollen vorinstalliert wird.
 				</simpara>
 			</listitem>
 		</itemizedlist>
 
 		<para>
-		Die Nagios-Konfiguration erfolgt in &ucsUMC;, die
-		Nagios-Konfigurationsdateien werden automatisch aus den im
-		LDAP-Verzeichnis gespeicherten Informationen generiert.
+			Die Nagios-Konfiguration erfolgt in &ucsUMC;, die
+			Nagios-Konfigurationsdateien werden automatisch aus den im
+			LDAP-Verzeichnis gespeicherten Informationen generiert.
 		</para>
 	</section>
 
@@ -165,19 +301,19 @@
 		</itemizedlist>
 
 		<para>
-		Einige der Pakete werden bei der Installation der entsprechenden
-		Dienste automatisch mit eingerichtet.
-		Wird beispielsweise der UCS AD Connector eingerichtet, bringt dieser
-		das Überwachungs-Plugin <package>univention-nagios-ad-connector</package> mit.
+			Einige der Pakete werden bei der Installation der entsprechenden
+			Dienste automatisch mit eingerichtet.
+			Wird beispielsweise der UCS AD Connector eingerichtet, bringt dieser
+			das Überwachungs-Plugin <package>univention-nagios-ad-connector</package> mit.
 		</para>
 
 		<section id="nagios:preconfiguredchecks">
 			<title>Vorkonfigurierte Nagios-Prüfungen</title>
 			<para>
-			Während der Installation werden automatisch grundlegende
-			Nagios-Prüfungen für die UCS-Systeme der Domäne eingerichtet. Die
-			Einbindung weiterer Dienste wird in <xref linkend="Nagios:Dienst"/>
-			dokumentiert.
+				Während der Installation werden automatisch grundlegende
+				Nagios-Prüfungen für die UCS-Systeme der Domäne eingerichtet. Die
+				Einbindung weiterer Dienste wird in <xref linkend="Nagios:Dienst"/>
+				dokumentiert.
 			</para>
 
 			<informaltable>
@@ -375,16 +511,16 @@
 			</informaltable>
 
 			<para>
-			Für die oben genannten Dienste wurden Standardparameter festgelegt,
-			die auf die Ansprüche der meisten UCS-Installationen zugeschnitten sind.
-			Sollten diese Standardparameter nicht geeignet sein, können sie nachträglich
-			angepasst werden. Dies ist in <xref linkend="Nagios:Dienst"/> dokumentiert.
+				Für die oben genannten Dienste wurden Standardparameter festgelegt,
+				die auf die Ansprüche der meisten UCS-Installationen zugeschnitten sind.
+				Sollten diese Standardparameter nicht geeignet sein, können sie nachträglich
+				angepasst werden. Dies ist in <xref linkend="Nagios:Dienst"/> dokumentiert.
 			</para>
 
 			<para>
-			Die folgenden Nagios-Dienste sind erst nach der Installation
-			zusätzlicher Pakete auf dem jeweiligen Nagios-Client verfügbar
-			(siehe <xref linkend="Nagios:Installation"/>):
+				Die folgenden Nagios-Dienste sind erst nach der Installation
+				zusätzlicher Pakete auf dem jeweiligen Nagios-Client verfügbar
+				(siehe <xref linkend="Nagios:Installation"/>):
 			</para>
 
 			<informaltable>
@@ -450,52 +586,52 @@
 		<itemizedlist>
 			<listitem>
 				<simpara>
-			Alle Nagios-Prüfungen, die einem Rechner zugewiesen werden
-			sollen, müssen zuvor registriert werden. Dies erfolgt
-			über <emphasis>Nagios-Dienst</emphasis>-Objekte (siehe <xref linkend="Nagios:Dienst"/>).
+					Alle Nagios-Prüfungen, die einem Rechner zugewiesen werden
+					sollen, müssen zuvor registriert werden. Dies erfolgt
+					über <emphasis>Nagios-Dienst</emphasis>-Objekte (siehe <xref linkend="Nagios:Dienst"/>).
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
-			Die Zuweisung, welche Prüfungen an einem Rechner durchgeführt
-			werden sollen und welche Kontaktperson im Fehlerfall benachrichtigt
-			werden soll, erfolgt an den jeweiligen Rechnerobjekten.
+					Die Zuweisung, welche Prüfungen an einem Rechner durchgeführt
+					werden sollen und welche Kontaktperson im Fehlerfall benachrichtigt
+					werden soll, erfolgt an den jeweiligen Rechnerobjekten.
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
-			Nagiosprüfungen können zeitlich beschränkt werden, z.B. indem
-			die Prüfung der Druckserver nur werktags von 8h bis 20h durchgeführt
-			wird. Dies erfolgt über <emphasis>Nagios-Zeitraum</emphasis>-Objekte, siehe <xref linkend="nagios::timeframe"/>.
+					Nagiosprüfungen können zeitlich beschränkt werden, z.B. indem
+					die Prüfung der Druckserver nur werktags von 8h bis 20h durchgeführt
+					wird. Dies erfolgt über <emphasis>Nagios-Zeitraum</emphasis>-Objekte, siehe <xref linkend="nagios::timeframe"/>.
 				</simpara>
 			</listitem>
 		</itemizedlist>
 
 		<para>
-		In der Grundeinstellung werden bereits zahlreiche Prüfungen für jeden
-		Rechner festgelegt, d.h. eine Nagios-Grundkonfiguration wird
-		eingerichtet, ohne dass weitere Anpassungen nötig sind.
+			In der Grundeinstellung werden bereits zahlreiche Prüfungen für jeden
+			Rechner festgelegt, d.h. eine Nagios-Grundkonfiguration wird
+			eingerichtet, ohne dass weitere Anpassungen nötig sind.
 		</para>
 
 		<section id="Nagios:Dienst">
 			<title>Konfiguration eines Nagios-Dienstes</title>
 			<para>
-			Ein Nagios-Dienst definiert die Überwachung eines Dienstes. Einem
-			solchen Objekt kann eine beliebige Anzahl an Rechnern zugeordnet
-			werden, so dass durch die einmalige Angabe von zu verwendenden
-			Nagios-Plugins sowie Überprüfungs- und Benachrichtigungsparametern
-			eine Dienstüberprüfung auf den angegebenen Rechnern eingerichtet
-			werden kann.
+				Ein Nagios-Dienst definiert die Überwachung eines Dienstes. Einem
+				solchen Objekt kann eine beliebige Anzahl an Rechnern zugeordnet
+				werden, so dass durch die einmalige Angabe von zu verwendenden
+				Nagios-Plugins sowie Überprüfungs- und Benachrichtigungsparametern
+				eine Dienstüberprüfung auf den angegebenen Rechnern eingerichtet
+				werden kann.
 			</para>
 
 			<para>
-			Nagios-Dienste werden im UMC-Modul <emphasis>Nagios</emphasis>
-			mit dem Objekttyp <guimenu>Nagios-Dienst</guimenu> verwaltet
-			(siehe auch <xref linkend="central:user-interface"/>).
-			Nagios verfügt über keine LDAP-Schnittstelle für die
-			Monitoring-Konfiguration, stattdessen werden die Konfigurationsdateien
-			beim Hinzufügen/Entfernen/Bearbeiten eines Nagios-Dienstes durch ein
-			Listener-Modul generiert.
+				Nagios-Dienste werden im UMC-Modul <emphasis>Nagios</emphasis>
+				mit dem Objekttyp <guimenu>Nagios-Dienst</guimenu> verwaltet
+				(siehe auch <xref linkend="central:user-interface"/>).
+				Nagios verfügt über keine LDAP-Schnittstelle für die
+				Monitoring-Konfiguration, stattdessen werden die Konfigurationsdateien
+				beim Hinzufügen/Entfernen/Bearbeiten eines Nagios-Dienstes durch ein
+				Listener-Modul generiert.
 			</para>
 
 			<figure id="nagios-service">
@@ -739,32 +875,32 @@
 		<section id="nagios::timeframe">
 			<title>Konfiguration eines Überwachungszeitraums</title>
 			<para>
-			Nagios-Zeitraum-Objekte werden von Nagios-Diensten verwendet, um
-			Zeiträume festzulegen, in denen Dienstüberprüfungen stattfinden oder
-			Kontaktpersonen benachrichtigt werden sollen. Die Angabe der Zeiträume
-			wird für jeden einzelnen Wochentag getrennt durchgeführt.
+				Nagios-Zeitraum-Objekte werden von Nagios-Diensten verwendet, um
+				Zeiträume festzulegen, in denen Dienstüberprüfungen stattfinden oder
+				Kontaktpersonen benachrichtigt werden sollen. Die Angabe der Zeiträume
+				wird für jeden einzelnen Wochentag getrennt durchgeführt.
 			</para>
 
 			<para>
-			Nagios-Dienste werden im UMC-Modul <emphasis>Nagios</emphasis>
-			mit dem Objekttyp <guimenu>Nagios-Zeitraum</guimenu> verwaltet
-			(siehe auch <xref linkend="central:user-interface"/>).
+				Nagios-Dienste werden im UMC-Modul <emphasis>Nagios</emphasis>
+				mit dem Objekttyp <guimenu>Nagios-Zeitraum</guimenu> verwaltet
+				(siehe auch <xref linkend="central:user-interface"/>).
 			</para>
 
 			<para>
-			Nagios verfügt über keine LDAP-Schnittstelle für die
-			Monitoring-Konfiguration, stattdessen werden die Konfigurationsdateien
-			beim Hinzufügen/Entfernen/Bearbeiten eines Nagios-Zeitraums durch ein
-			Listener-Modul generiert.
+				Nagios verfügt über keine LDAP-Schnittstelle für die
+				Monitoring-Konfiguration, stattdessen werden die Konfigurationsdateien
+				beim Hinzufügen/Entfernen/Bearbeiten eines Nagios-Zeitraums durch ein
+				Listener-Modul generiert.
 			</para>
 
 			<para>
-			Bei der Installation werden drei Standard-Zeiträume eingerichtet. Die
-			automatisch angelegten Zeitrahmen können manuell verändert oder
-			gelöscht werden. Sie werden jedoch teilweise von den ebenfalls
-			automatisch angelegten Nagios-Dienst verwendet. Es ist zu beachten, dass
-			das Löschen eines Nagios-Zeitraums nur dann möglich ist, wenn es nicht
-			mehr von Nagios-Diensten verwendet wird:
+				Bei der Installation werden drei Standard-Zeiträume eingerichtet. Die
+				automatisch angelegten Zeitrahmen können manuell verändert oder
+				gelöscht werden. Sie werden jedoch teilweise von den ebenfalls
+				automatisch angelegten Nagios-Dienst verwendet. Es ist zu beachten, dass
+				das Löschen eines Nagios-Zeitraums nur dann möglich ist, wenn es nicht
+				mehr von Nagios-Diensten verwendet wird:
 			</para>
 			<informaltable>
 				<tgroup cols="2">
@@ -854,16 +990,16 @@
 		<section id="nagios::hostconfig">
 			<title>Zuordnung von Nagios-Prüfungen zu Rechnern</title>
 			<para>
-			Alle in &ucsUMC; verwaltbaren Rechnerobjekte lassen sich mit
-			Nagios überwachen. Nagios-Dienste können nur dann an ein
-			Rechner-Objekt gebunden werden, wenn für diesen eine IP-Adresse sowie
-			ein entsprechender Eintrag für die DNS-Forward-Zone angegeben wurde.
-			Zur Aktivierung der Nagios-Unterstützung muss am
-			betreffenden Rechnerobjekt die Option <guimenu>Nagios</guimenu>
-			eingeschaltet werden. Nach der Aktivierung sind zwei zusätzliche
-			Eingabefeldgruppen unter dem Reiter <guimenu>Erweiterte Einstellungen</guimenu>
-			verfügbar, die u.a. eine komfortable Zuordnung der
-			Nagios-Dienste ermöglichen.
+				Alle in &ucsUMC; verwaltbaren Rechnerobjekte lassen sich mit
+				Nagios überwachen. Nagios-Dienste können nur dann an ein
+				Rechner-Objekt gebunden werden, wenn für diesen eine IP-Adresse sowie
+				ein entsprechender Eintrag für die DNS-Forward-Zone angegeben wurde.
+				Zur Aktivierung der Nagios-Unterstützung muss am
+				betreffenden Rechnerobjekt die Option <guimenu>Nagios</guimenu>
+				eingeschaltet werden. Nach der Aktivierung sind zwei zusätzliche
+				Eingabefeldgruppen unter dem Reiter <guimenu>Erweiterte Einstellungen</guimenu>
+				verfügbar, die u.a. eine komfortable Zuordnung der
+				Nagios-Dienste ermöglichen.
 			</para>
 
 			<figure id="nagios-assign">
@@ -926,19 +1062,19 @@
 							<entry>Übergeordnete Rechner</entry>
 							<entry>
 								<para>
-								Durch die Angabe von übergeordneten Rechnern können Abhängigkeiten
-								zwischen Rechnern definiert werden. Nagios testet fortlaufend, ob die
-								einzelnen Rechner erreichbar sind. Sollte ein übergeordneter Rechner
-								nicht erreichbar sein, werden keine Benachrichtigungen für
-								Dienststörungen des untergeordneten Rechners versendet. Die
-								angegebenen Abhängigkeiten verwendet Nagios darüber hinaus in der
-								Benutzeroberfläche zur graphischen Darstellung.
+									Durch die Angabe von übergeordneten Rechnern können Abhängigkeiten
+									zwischen Rechnern definiert werden. Nagios testet fortlaufend, ob die
+									einzelnen Rechner erreichbar sind. Sollte ein übergeordneter Rechner
+									nicht erreichbar sein, werden keine Benachrichtigungen für
+									Dienststörungen des untergeordneten Rechners versendet. Die
+									angegebenen Abhängigkeiten verwendet Nagios darüber hinaus in der
+									Benutzeroberfläche zur graphischen Darstellung.
 								</para>
 								<note>
 									<para>
-								Es dürfen keine Schleifen bei der Angabe der übergeordneten Rechner entstehen.
-								Der Nagios-Server würde in diesem Fall die neue Konfiguration nicht übernehmen
-								bzw. sich nicht starten lassen.
+										Es dürfen keine Schleifen bei der Angabe der übergeordneten Rechner entstehen.
+										Der Nagios-Server würde in diesem Fall die neue Konfiguration nicht übernehmen
+										bzw. sich nicht starten lassen.
 									</para>
 								</note>
 							</entry>
@@ -951,19 +1087,19 @@
 		<section id="nagios:Einbindung_von_manuell_erstellten_Konfigurationsdateien">
 			<title>Einbindung von manuell erstellten Konfigurationsdateien</title>
 			<para>
-			Sollen zu den durch das Listener-Module erstellten
-			Nagios-Server-Konfigurationsdateien Erweiterungen hinzugefügt werden,
-			können die manuell erstellten Konfigurationsdateien im
-			Verzeichnis <filename class="directory">/etc/nagios/conf.local.d/</filename> abgelegt werden.
-			Die hinzugefügten Konfigurationsdateien werden erst nach einem
-			Neustart des Nagios-Servers beachtet.
+				Sollen zu den durch das Listener-Module erstellten
+				Nagios-Server-Konfigurationsdateien Erweiterungen hinzugefügt werden,
+				können die manuell erstellten Konfigurationsdateien im
+				Verzeichnis <filename class="directory">/etc/nagios/conf.local.d/</filename> abgelegt werden.
+				Die hinzugefügten Konfigurationsdateien werden erst nach einem
+				Neustart des Nagios-Servers beachtet.
 			</para>
 
 			<para>
-			Erweiterungen der NRPE-Konfiguration können im
-			Verzeichnis <filename class="directory">/etc/nagios/nrpe.local.d/</filename> abgelegt
-			werden. Änderungen treten erst nach einem Neustart des Nagios
-			NRPE-Daemons in Kraft.
+				Erweiterungen der NRPE-Konfiguration können im
+				Verzeichnis <filename class="directory">/etc/nagios/nrpe.local.d/</filename> abgelegt
+				werden. Änderungen treten erst nach einem Neustart des Nagios
+				NRPE-Daemons in Kraft.
 			</para>
 		</section>
 	</section>
@@ -982,9 +1118,9 @@
 		</figure>
 
 		<para>
-		Der Zugriff wird in der Standardeinstellung ausschließlich Benutzern der
-		Gruppe <systemitem class="groupname">Domain Admins</systemitem> (z.B. der Benutzer Administrator) gewährt.
-		Es besteht auch die Möglichkeit den Kreis der Anmeldeberechtigten zu erweitern.
+			Der Zugriff wird in der Standardeinstellung ausschließlich Benutzern der
+			Gruppe <systemitem class="groupname">Domain Admins</systemitem> (z.B. der Benutzer Administrator) gewährt.
+			Es besteht auch die Möglichkeit den Kreis der Anmeldeberechtigten zu erweitern.
 		</para>
 		<!--
 		<comment>

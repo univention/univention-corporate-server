@@ -10,10 +10,16 @@
 ]>
 <chapter id="monitoring::general">
 <title>Infrastructure monitoring</title>
+	<section id="monitoring::einfuehrung">
+		<title>Introduction</title>
+		<para>
+		</para>
+	</section>
 
 	<section id="dashboard::general">
-	<title>UCS Dashboard</title>
-
+		<title>UCS Dashboard</title>
+		<para>
+		</para>
 	</section>
 
 	<section id="nagios::general">
