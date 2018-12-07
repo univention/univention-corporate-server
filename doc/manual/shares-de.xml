@@ -1120,7 +1120,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 	<para>
 	  Quotas können entweder über das UMC-Modul
 	  <guimenu>Dateisystem Quota</guimenu> oder über eine Richtlinie für Freigaben definiert
-	  werden. Die Konfiguration über die Richtlinie erlaubt die Festlegung eines Standard-Werts für
+	  werden, siehe <xref linkend="central:policies"/>. Die Konfiguration über die Richtlinie erlaubt die Festlegung eines Standard-Werts für
 	  alle Benutzer, während das UMC-Modul eher für die flexible Konfiguration von Benutzer-Quota
 	  für einzelne Benutzer geeignet ist.
 	</para>
