@@ -85,27 +85,12 @@
 
 		/* Styling for month DropDownButton */
 		.dijitDropDownButton
+			material-flat-button()
 			margin: 0
-			box-shadow: none
-
-			.dijitButtonNode
-				background-color: transparent
-
-				.dijitButtonContents
-					line-height: inherit
-
-					.dijitButtonText
-						padding: 0
-						font-size: 1em
-						font-weight: bold
-
-						.dijitCalendarMonthLabel
-							color: $text-color
 
 			// arrow styling
 			.dijitArrowButtonInner
 				icon-image(0, -12, "", "-small", 12px, 12px)
-				margin: 0 8px
 
 			&.dijitDropDownButtonHover .dijitArrowButtonInner
 				icon-image(-12, -12, "", "-small", 12px, 12px)
@@ -181,21 +166,21 @@
 
 	/* Styling for year container */
 	.dijitCalendarYearContainer
-		padding-top: 3px
-		text-align: center
+		padding-top: material-grid(1)
 
 		.dijitCalendarYearLabel
-			font-size: $font-size-button
-			cursor: default
-
-			.dijitCalendarSelectedYear
-				color: $selected-text-color
-				font-weight: bold
-				padding: 0 3px
+			display: flex
+			align-items: center
 
 			.dijitCalendarNextYear,
 			.dijitCalendarPreviousYear
-				padding: 1px 6px
+				text-align: center
+				width: 100%
+				font-size: $font-size-button
+				color: $text-color-lighter
+				font-weight: 500
+				text-transform: uppercase
+				letter-spacing: 1.25px
 
 				&Hover
 					color: $text-color-dark-background
@@ -204,24 +189,11 @@
 					background-color: $primary-color
 
 			.currentYearInput
-				color: white
 				background-color: transparent
-				font-weight: bold
-				font-size: $font-size-button
-				width: 60px
-				border-color: $primary-color
-				&:before,
-				&:after
-					border-color: $primary-color
+				border-color: #5a5a5a
 
-				.dijitSpinnerButtonContainer
-					display: none
-
-				.dijitInputContainer
-					padding: 0
-
-					.dijitInputInner
-						text-align: center
+				.dijitInputInner
+					text-align: center
 
 /* Styling for month drop down list */
 .umc .dijitCalendarMonthMenu

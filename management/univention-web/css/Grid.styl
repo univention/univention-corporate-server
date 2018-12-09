@@ -62,18 +62,11 @@ $umcGrid-edge-padding = 24px
 	.umcGridHeader
 		flex: 0 0 auto
 		display: flex
-		padding: 8px
-
-		.dijitDropDownButton
-			.dijitButtonContents
-				line-height: inherit
-
-				.dijitArrowButtonInner
-					display: none
+		padding: material-grid(1)
 
 		.dijitButton,
 		.dijitDropDownButton
-			material-flat-button(dijitButton dijitDropDownButton)
+			material-flat-button()
 			.dijitIcon
 				display: none
 
@@ -174,7 +167,7 @@ $umcGrid-edge-padding = 24px
 					icon-image(-260, -80)
 
 		.dgrid-row-table
-			height: 48px
+			height: material-grid(6)
 
 		.dgrid-row
 			color: rgba(0, 0, 0, 0.87)

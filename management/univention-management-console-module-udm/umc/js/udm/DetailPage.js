@@ -618,7 +618,7 @@ define([
 							iconClass: 'umcIconEdit',
 							disabled: true,
 							description: _('Edit policy'),
-							'class': 'umcUDMMultiInputEditButton',
+							'class': 'umcUDMMultiInputEditButton umcOutlinedButton umcIconButton--aligned-to-textfield',
 							callback: lang.hitch(this, function(dn) {
 								this._openPolicy(ipolicyType, dn);
 							})
@@ -627,7 +627,7 @@ define([
 					var buttonsConf = [{
 						type: Button,
 						name: '$addPolicy$',
-						'class': 'umcFlatButton',
+						'class': 'umcMultiInputAddButton umcOutlinedButton', // use umcMultiInputAddButton since this button needs same styling
 						label: _('Create new policy'),
 						callback: lang.hitch(this, '_openPolicy', ipolicyType, undefined)
 					}];

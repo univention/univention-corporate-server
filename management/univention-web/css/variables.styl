@@ -1,3 +1,29 @@
+//// Google Material Styling
+// grid layout
+$material-grid8 ?= 8px
+$material-grid4 ?= 4px
+material-grid(multiplicant, use4dp=false)
+	if typeof(use4dp) != 'boolean'
+		error('use4dp has to be a boolean')
+	spacing = $material-grid8
+	if use4dp
+		spacing = $material-grid4
+	spacing * multiplicant
+
+$material-border-radius ?= 2px
+
+// typography
+$material-text-high-emphasis-alpha ?= 0.87
+$material-text-medium-emphasis-alpha ?= 0.6
+$material-text-disabled-alpha ?= 0.38
+$material-text-dark-high = rgba(0, 0, 0, $material-text-high-emphasis-alpha)
+$material-text-dark-medium = rgba(0, 0, 0, $material-text-medium-emphasis-alpha)
+$material-text-dark-disabled = rgba(0, 0, 0, $material-text-disabled-alpha)
+// $material-text-light-high = rgba(255, 255, 255, $material-text-high-emphasis-alpha)
+// $material-text-light-medium = rgba(255, 255, 255, $material-text-medium-emphasis-alpha)
+// $material-text-light-disabled = rgba(255, 255, 255, $material-text-disabled-alpha)
+
+
 // General
 
 $primary-color ?= #5a5a5a													// Base color for entire theme
@@ -66,16 +92,31 @@ $popup-background-color ?= $container-background-color					// Background for Dia
 
 
 // Buttons
+$material-button-height ?= material-grid(9, true)
 $button-border-color ?=  $focused-border-color								// Border for (stand-alone) buttons in normal, hovered, or active state
 $button-background-color ?= $unfocused-clickable-color					// Background color for (unhovered) buttons
 $button-hovered-background-color ?= rgba(0, 0, 0, 0.0784)	// Background color for hovered buttons
 $button-pressed-background-color ?= rgba(0, 0, 0, 0.16)				// Background color for active buttons
 $button-border-radius ?= 2px												// Rounded corner radius for buttons (except in toolbar)
-$button-gradient-bottom-color ?= #c8c8c8
-$button-gradient-top-color ?= #e6e6e6
 $default-button-border-color ?= #646464
 $default-button-gradient-bottom-color ?= #5a5a5a
 $default-button-gradient-top-color ?= #969696
+
+// Buttons in LayoutRow
+// the exact space the Button takes up (padding included)
+$_layoutrow-button-width = "%s + %s + %s" % ($material-textfield-height $labelpane-padding-left $labelpane-padding-right)
+$layoutrow-button-width = "calc(%s)" % ($_layoutrow-button-width)
+
+$layoutrow--make-space-for-buttons(amount-of-physical-buttons, amount-of-visual-buttons=null)
+	if not amount-of-visual-buttons
+		amount-of-visual-buttons = amount-of-physical-buttons
+
+	// Make physical space. With only this the button and the element before the button will overlap. Need to make visual space too
+	margin-right:  "calc( -1 * (%s * (%s))      )" % (amount-of-physical-buttons $_layoutrow-button-width)
+
+	// Make visual space.
+	padding-right: "calc(  1 * (%s * (%s)) + %s )" % (amount-of-visual-buttons $_layoutrow-button-width $labelpane-padding-right)
+
 
 // Input widgets
 $focused-border-color ?= $base-border-color								// Focused textbox, editor, select, etc.
@@ -87,8 +128,16 @@ $textbox-hovered-background-color ?= $unfocused-clickable-color			// Background 
 $textbox-focused-background-color ?= $textbox-background-color
 $textbox-error-background-color ?= $textbox-background-color
 $textbox-disabled-background-color ?= $disabled-background-color
-
 $textbox-padding ?= 0 5px	// Padding for Textbox, Textarea, etc.
+$material-textfield-height ?= material-grid(5)
+$material-textfield-text-padding ?= material-grid(3, true)
+$material-textfield-border-width-base      ?= 1px
+$material-textfield-border-width-inactive  ?= $material-textfield-border-width-base
+// $material-textfield-border-width-hover     ?= $material-textfield-border-width-base
+$material-textfield-border-width-focused   ?= 2px
+// $material-textfield-border-width-activated ?= $material-textfield-border-width-base
+// $material-textfield-border-width-disabled  ?= $material-textfield-border-width-base
+// $material-textfield-border-width-error     ?= $material-textfield-border-width-base
 
 // CheckBox, RadioButton
 $focus-outline-color ?= darken($secondary-color, 65)											// Color for artificial focus outline around labels of checkboxes
@@ -222,30 +271,22 @@ $image-tree-expand ?= "images/treeExpandImages.png"
 $image-tree-expand-ie6 ?= "images/treeExpandImages8bit.png"
 $image-progressbar-anim ?= "images/progressBarAnim.gif"
 
-
-//// Google Material Styling
-// grid layout
-$material-grid8 ?= 8px
-$material-grid4 ?= 4px
-material-grid(multiplicant, use4dp=false)
-	if typeof(use4dp) != 'boolean'
-		error('use4dp has to be a boolean')
-	spacing = $material-grid8
-	if use4dp
-		spacing = $material-grid4
-	spacing * multiplicant
-
+// LabelPane
+$labelpane-padding-top    ?= 0
+$labelpane-padding-right  ?= 0.5em
+$labelpane-padding-bottom ?= 1em
+$labelpane-padding-left   ?= 0.5em
+$labelpane-padding        ?= $labelpane-padding-top $labelpane-padding-right $labelpane-padding-bottom $labelpane-padding-left
 
 //// Mixins
 
+// TODO can be removed. Was previously used for prefixing but that is not necessary anymore (caniuse.com)
 border-radius()
-	-moz-border-radius: arguments
 	border-radius: arguments
 
 
+// TODO can be removed. Was previously used for prefixing but that is not necessary anymore (caniuse.com)
 box-shadow()
-	-webkit-box-shadow: arguments
-	-moz-box-shadow: arguments
 	box-shadow: arguments
 
 
@@ -269,26 +310,20 @@ transform()
 	-ms-transform: unquote(newArgs)
 
 
+// TODO can be removed. Was previously used for prefixing but that is not necessary anymore (caniuse.com)
 transition()
-	-webkit-transition: arguments
-	-moz-transition: arguments
 	transition: arguments
 
+// TODO can be removed. Was previously used for prefixing but that is not necessary anymore (caniuse.com)
 transition-property()
-	-webkit-transition-property: arguments
-	-moz-transition-property: arguments
 	transition-property: arguments
 
-
+// TODO can be removed. Was previously used for prefixing but that is not necessary anymore (caniuse.com)
 transition-duration()
-	-webkit-transition-duration: arguments
-	-moz-transition-duration: arguments
 	transition-duration: arguments
 
-
+// TODO can be removed. Was previously used for prefixing but that is not necessary anymore (caniuse.com)
 transition-timing-function()
-	-webkit-transition-timing-function: arguments
-	-moz-transition-timing-function: arguments
 	transition-timing-function: arguments
 
 
@@ -312,22 +347,52 @@ material-shadow(level)
 		box-shadow: none
 
 
-material-flat-button(buttonClasses=dijitButton)
-	box-shadow: none
-	margin-left: 4px
-	margin-right: @margin-left
+material-flat-button()
+	.dijitButtonNode
+		box-shadow: none
+		background-color: rgba(255, 255, 255, 0)
+		padding: 0 material-grid(1)
 
-	for ibuttonClass in buttonClasses
-		// make sure that buttons hover from transparent background to light translucent black
-		&:not(.{ibuttonClass}Hover) .dijitButtonNode
-			background-color: rgba(255, 255, 255, 0);
-
-		&.{ibuttonClass}Focused .dijitButtonNode
+	&^[-1..-1]Hover,
+	&^[-1..-1]Focused
+		.dijitButtonNode
 			background-color: $button-hovered-background-color
+	&^[-1..-1]Active
+		.dijitButtonNode
+			background-color: $button-pressed-background-color
+	&^[-1..-1]Disabled
+		.dijitButtonNode
+			background-color: rgba(255, 255, 255, 0)
 
+	.dijitArrowButtonInner
+		margin-right: 0
+	.dijitIcon
+		margin-left: 0
+
+material-outlined-button()
+	material-flat-button()
+	.dijitButtonNode
+		border: 1px solid #c8c8c8 // TODO
+		padding: 0 material-grid(2)
+
+	.dijitArrowButtonInner
+		margin-right: material-grid(-1, true)
+	.dijitIcon
+		margin-left: material-grid(-1, true)
+
+umc-icon-button(side-length=$material-button-height)
+	.dijitButtonNode
+		padding: 0
+		height: side-length
+		width: side-length
 	.dijitButtonText
-		padding: 0 12px
+		display: none
+	.dijitIcon,
+	.dijitArrowButtonInner
+		margin: 0
 
+umc-icon-button-aligned-to-textfield()
+	umc-icon-button($material-textfield-height)
 
 
 icon-image(xoffset=0, yoffset=0, dirprefix="", filesuffix="", width=20px, height=20px)
@@ -443,12 +508,6 @@ vertical-gradient-and-filter($color-top, $color-bottom)
 
 
 // Mixins defining gradients
-
-textbox-background-image()
-	// summary:
-	//		Background image used for hovered TextBoxes and similar controls.
-	//		It's just a small inset shadow below the top border (inside of the TextBox).
-	//linear-gradient(rgba(127,127,127,0.2) 0%, rgba(127,127,127,0) 2px)
 
 
 standard-gradient($pathToRoot = "")

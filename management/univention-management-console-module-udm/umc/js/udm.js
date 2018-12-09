@@ -1059,7 +1059,7 @@ define([
 						showLabel: false,
 						label: _('Toggle visual presentation'),
 						iconClass: 'umcGridViewIcon-default',
-						'class': 'umcSearchFormChangeViewButton',
+						'class': 'umcSearchFormChangeViewButton umcFlatButton',
 						callback: lang.hitch(this, '_toggleGridView')
 					});
 					layout.push(['changeView']);
@@ -1429,12 +1429,13 @@ define([
 			var tree = new Tree({
 				model: model,
 				persist: false,
-				style: 'width: 300px; height: 350px; margin-bottom: 20px;',
+				style: 'width: 300px; height: 350px; margin-bottom: 20px;', // TODO does not work good on mobile
 				// customize the method getIconClass()
 				getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
 					return tools.getIconClass((item.icon || 'udm-container-cn') + '.png');
 				}
 			});
+			domStyle.set(tree._gridTree.domNode, 'height', '100%');
 			container.addChild(tree);
 
 			// add footer message
