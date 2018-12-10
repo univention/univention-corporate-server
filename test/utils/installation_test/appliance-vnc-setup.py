@@ -43,6 +43,9 @@ class UCSSetup(UCSInstallation):
 		self.client.mouseClickOnText('NEXT')
 
 	def language(self, language):
+		if self.text_is_visible('Notification', timeout=self.timeout):
+			self.screenshot('notification.png')
+			self.mouseClickOnText('OK')
 		self.client.waitForText('English', timeout=self.timeout, prevent_screen_saver=True)
 		self.screenshot('language-setup.png')
 		self.next()
@@ -220,6 +223,7 @@ def main():
 	assert args.vnc is not None
 	setup = UCSSetup(args=args)
 	setup.setup()
+
 
 if __name__ == '__main__':
 	main()
