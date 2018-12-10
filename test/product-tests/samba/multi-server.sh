@@ -27,14 +27,16 @@ prepare_slave () {
 	set -e
 	set -x
 	prepare
-	echo "Hello World" > /home/testshare/test.txt
+	# TODO
+	#echo "Hello World" > /home/testshare/test.txt
 }
 
 prepare_member () {
 	set -e
 	set -x
 	prepare
-	echo "Hello World" > /home/testshare/test.txt
+	# TODO
+	#echo "Hello World" > /home/testshare/test.txt
 }
 
 prepare_rodc () {
