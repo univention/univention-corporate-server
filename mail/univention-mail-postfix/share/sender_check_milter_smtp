@@ -58,11 +58,7 @@ Documentation:
 	* https://stuffivelearned.org/doku.php?id=programming:python:python-libmilter
 """
 
-import os
-import re
-import bz2
 import sys
-import json
 import signal
 import syslog
 import datetime
@@ -71,111 +67,50 @@ from multiprocessing.managers import SyncManager
 
 from ldap.filter import filter_format
 import libmilter as lm
-import univention.uldap
-from univention.config_registry import ConfigRegistry
-from univention.mail.simple_crypt import SimpleAsymmetric, SimpleSymmetric, create_nonce
+from univention.mail.milter_base import UCSMilterForkFactory, UCSMilterBase
+from univention.mail.sender_check_milter_base import SenderCheckMilterBase
 
 try:
-	from typing import Dict, List, Optional, Text, Tuple, Union
+	from typing import Dict, List, Optional, Set, Text, Tuple, Union
 except ImportError:
 	pass
 
 
-RSA_KEY_FILE = '/usr/lib/univention-mail-postfix/sender_check.key'
 HEADER_SIG = 'X-univention-sender-check-sig'
 HEADER_NONCE = 'X-univention-sender-check-nonce'
 LEGITIMATE_ADDRESSES_CACHE_TTL_UCR = 'mail/postfix/sender_check_milter_cache_ttl'
 LEGITIMATE_ADDRESSES_CACHE_TTL_UCRV_DEFAULT = 60
 WHITELISTED_ADDRESSES_UCR = 'mail/postfix/sender_check_milter_whitelist'
-_ucr = None
+UCRV_SMTP_MILTER_PORT = 'mail/postfix/sender_check_milter_port'
 
 
-def get_ucr():
-	global _ucr
-	if not _ucr:
-		_ucr = ConfigRegistry()
-		_ucr.load()
-	return _ucr
-
-
-def reload_ucr():
-	global _ucr
-	_ucr.load()
-
-
-class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
-	_lo = None
-	_ldap_secret_mtime = 0.0
-	_current_data = {}  # to prevent repeatedly logging same configuration
+class SenderCheckSmtpMilter(SenderCheckMilterBase):
 	legitimate_address_cache = None  # type: Dict[str, Union[Tuple[datetime.datetime, List[str]], Dict[str, int]]]
-	legitimate_address_cache_ttl = get_ucr().get(LEGITIMATE_ADDRESSES_CACHE_TTL_UCR, LEGITIMATE_ADDRESSES_CACHE_TTL_UCRV_DEFAULT)
-	regex_email_with_brackets = re.compile(r'.*<(.+@.+\..+)>$')
-	regex_email_no_brackets = re.compile(r'(.+@.+\..+)$')
-	mail_domains = []  # type: List[str]
-	public_keys = {}  # type: Dict[str, str]
+	legitimate_address_cache_ttl = SenderCheckMilterBase.get_ucr().get(LEGITIMATE_ADDRESSES_CACHE_TTL_UCR, LEGITIMATE_ADDRESSES_CACHE_TTL_UCRV_DEFAULT)
 	whitelisted_addresses = []  # type: List[str]
 
-	def __init__(self, opts=0, protos=0):
-		lm.MilterProtocol.__init__(self, opts, protos)
-		lm.ForkMixin.__init__(self)
+	def __init__(self, opts=0, protos=0):  # type: (Optional[int], Optional[int]) -> None
+		super(SenderCheckSmtpMilter, self).__init__(opts, protos)
 
-		self.sasl_login_name = self.envelope_from = self.reject_msg = self.queue_id = ''
+		self.reject_msg = ''
 		self.legitimate_addresses = self.recipients = []  # type: List[str]
-		self.header_data = {}  # type: Dict[str, str]
 		self.sign_msg = self.header_from_ok = self.envelope_from_ok = False
-		self._nonce = 0
-		self.ucr = get_ucr()
 
-		if not self.mail_domains:
-			self.mail_domains.extend(self.get_mail_domains())
-		if self._current_data.get('mail_domains') != set(self.mail_domains):
-			self._current_data['mail_domains'] = set(self.mail_domains)
-			self.log('Mail domains: {}'.format(', '.join(self.mail_domains or ['None'])))
-		if not self.public_keys:
-			self.public_keys.update(self.get_public_keys())
-		if self._current_data.get('public_keys') != set(self.public_keys.keys()):
-			self._current_data['public_keys'] = set(self.public_keys.keys())
-			self.log('Public keys: {}'.format(', '.join(self.public_keys.keys() or ['None'])))
 		if not self.whitelisted_addresses:
-			self.whitelisted_addresses.extend(sorted(self.ucr.get(WHITELISTED_ADDRESSES_UCR, '').split()))
+			self.whitelisted_addresses.extend(self.get_whitelisted_addresses())
 		if self._current_data.get('whitelisted_addresses') != set(self.whitelisted_addresses):
 			self._current_data['whitelisted_addresses'] = set(self.whitelisted_addresses)
 			self.log('Whitelisted addresses: {}'.format(', '.join(self.whitelisted_addresses or ['None'])))
-		fqdn = '{}.{}'.format(self.ucr['hostname'], self.ucr['domainname'])
-		if fqdn not in self.public_keys:
-			raise RuntimeError('Public key of this host ({!r}) not found. Run join script.'.format(fqdn))
-		self.crypto = SimpleAsymmetric()
-		self.crypto.load_keys(RSA_KEY_FILE)
 
-	@classmethod
-	def log(cls, msg, queue_id=None, level='INFO'):  # type: (str, Optional[str], Optional[str]) -> None
-		if level == 'ERROR':
-			level = 'ERR'
-		try:
-			syslog_level = getattr(syslog, 'LOG_{}'.format(level))
-		except KeyError:
-			syslog_level = syslog.LOG_INFO
-		if queue_id:
-			msg = '{}: {}'.format(queue_id, msg)
-		syslog.syslog(syslog_level, msg)
-
-	def clear_variables(self):
-		self.sasl_login_name = self.envelope_from = self.reject_msg = self.queue_id = ''
+	def clear_variables(self):  # type: () -> None
+		super(SenderCheckSmtpMilter, self).clear_variables()
+		self.reject_msg = ''
 		self.legitimate_addresses = self.recipients = []
-		self.header_data = {}
 		self.sign_msg = self.header_from_ok = self.envelope_from_ok = False
-		self._nonce = 0
 
 	@classmethod
-	def get_lo(cls):
-		secret_mtime = os.stat('/etc/listfilter.secret').st_mtime
-		if not cls._lo or cls._ldap_secret_mtime < secret_mtime:
-			cls._lo = univention.uldap.getMachineConnection(
-				ldap_master=False,
-				secret_file='/etc/listfilter.secret'
-			)
-			cls._ldap_secret_mtime = os.stat('/etc/listfilter.secret').st_mtime
-		return cls._lo
+	def get_whitelisted_addresses(cls):  # type: () -> List[str]
+		return sorted(cls.get_ucr().get(WHITELISTED_ADDRESSES_UCR, '').split())
 
 	@classmethod
 	def get_legitimate_addresses_for_username(cls, sasl_login_name, include_mail_allowed_sender_address=True):
@@ -216,69 +151,29 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 					addresses.extend(_res)
 					# the entry could be from cache, in which case we "inherit" its (lower) expiration date
 					expiration = min(expiration, _exp)
+		addresses = sorted(set(addresses))
 		cls.legitimate_address_cache[sasl_login_name] = expiration, addresses
 		return expiration, addresses
 
 	@classmethod
-	def get_mail_domains(cls):  # type: () -> List[str]
-		lo = cls.get_lo()
-		ldap_attr = ['cn']
-		ldap_filter = 'objectClass=univentionMailDomainname'
-		ldap_result = lo.search(filter=ldap_filter, attr=ldap_attr)
-		return [attr['cn'][0] for dn, attr in ldap_result]
-
-	@classmethod
-	def get_public_keys(cls):  # type: () -> Dict[str, str]
-		lo = cls.get_lo()
-		ldap_attr = ['univentionData', 'univentionDataMeta']
-		ldap_filter = '(&(objectClass=univentionData)(univentionDataType=mail/signing/RSA_public_key))'
-		ldap_base = 'cn=data,cn=univention,{}'.format(get_ucr()['ldap/base'])
-		ldap_result = lo.search(filter=ldap_filter, attr=ldap_attr, base=ldap_base)
-		res = {}
-		for dn, attrs in ldap_result:
-			if not attrs.get('univentionData') or not attrs.get('univentionDataMeta'):
-				cls.log('settings/data object without data or metadata: dn={!r} attrs={!r}'.format(dn, attrs), 'ERROR')
-				continue
-			for metadata in attrs['univentionDataMeta']:
-				if metadata.startswith('host:'):
-					try:
-						bz2data = attrs['univentionData'][0]
-						pem_str = bz2.decompress(bz2data)
-					except (IndexError, ValueError):
-						cls.log('Invalid data in {!r}.'.format(dn), 'ERROR')
-						continue
-					pub_key = SimpleAsymmetric.pem2public_key(pem_str)
-					res[metadata[5:]] = pub_key  # strip leading 'host:'
-		return res
-
-	@classmethod
 	def sig_handler_reload(cls, num, frame):
 		"""
-		Reload UCR, :py:attr`cls.mail_domains`, :py:attr`cls.public_keys` and
-		purge :py:attr`cls.legitimate_address_cache`.
+		Reload UCR, :py:attr`cls.mail_domains`, :py:attr`cls.public_keys`,
+		:py:attr`cls.whitelisted_addresses` and purge :py:attr`cls.legitimate_address_cache`.
 		"""
-		reload_ucr()
-		cls.mail_domains = cls.get_mail_domains()
-		cls.public_keys = cls.get_public_keys()
-		cls.legitimate_address_cache_ttl = get_ucr().get(LEGITIMATE_ADDRESSES_CACHE_TTL_UCR, LEGITIMATE_ADDRESSES_CACHE_TTL_UCRV_DEFAULT)
+		super(SenderCheckSmtpMilter, cls).sig_handler_reload(num, frame)
+		cls.whitelisted_addresses = sorted(cls.get_ucr().get(WHITELISTED_ADDRESSES_UCR, '').split())
+		cls.log('Whitelisted addresses: {}'.format(', '.join(cls.whitelisted_addresses or ['None'])))
+		cls.legitimate_address_cache_ttl = cls.get_ucr().get(LEGITIMATE_ADDRESSES_CACHE_TTL_UCR, LEGITIMATE_ADDRESSES_CACHE_TTL_UCRV_DEFAULT)
 		cache_stats = cls.legitimate_address_cache['__stats'].copy()
 		cls.legitimate_address_cache.clear()
 		cls.legitimate_address_cache['__stats'] = {'hit': 0, 'hit_exp': 0, 'miss': 0}
-		cls.whitelisted_addresses = sorted(get_ucr().get(WHITELISTED_ADDRESSES_UCR, '').split())
-		SenderCheckForkFactory._ignore_interrupt = True
-		cls.log('Reloaded. Mail domains: {}, Public keys: {}'.format(
-			', '.join(cls.mail_domains or ['None']), ', '.join(cls.public_keys.keys() or ['None'])))
 		cls.log('Cache hits: {}, Cache misses: {} (of those expired: {})'.format(
 			cache_stats['hit'], cache_stats['miss'], cache_stats['hit_exp']))
-		cls.log('Whitelisted addresses: {}'.format(', '.join(cls.whitelisted_addresses or ['None'])))
 
-	@lm.noReply
-	def connect(self, hostname, family, ip, port, cmdDict):
-		self.clear_variables()
-		return lm.CONTINUE
+	def mailFrom(self, frAddr, cmdDict):  # type: (str, Dict[str, str]) -> None
+		super(SenderCheckSmtpMilter, self).mailFrom(frAddr, cmdDict)
 
-	def mailFrom(self, frAddr, cmdDict):
-		self.envelope_from = frAddr
 		if self.envelope_from in self.whitelisted_addresses:
 			self.envelope_from_ok = True
 			return lm.CONTINUE
@@ -304,7 +199,9 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 				return lm.REJECT
 		return lm.CONTINUE
 
-	def header(self, key, val, cmdDict):
+	def header(self, key, val, cmdDict):  # type: (str, str, Dict[str, str]) -> None
+		super(SenderCheckSmtpMilter, self).header(key, val, cmdDict)
+
 		self.queue_id = cmdDict.get('i', '')  # is set, although doc says it is only set in DATA, EOH, EOM
 		if key.lower() in ('from', 'to'):
 			self.header_data[key.lower()] = self.get_only_email(val)
@@ -340,10 +237,10 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 					return lm.CONTINUE
 		return lm.CONTINUE
 
-	def eoh(self, cmdDict):
+	def eoh(self, cmdDict):  # type: (Dict[str, str]) -> None
 		# decide what to do with an unauthenticated session
 		# check for delayed REJECT message and for header "X-univention-sender-check-sig" (and "-nonce")
-		self.queue_id = cmdDict.get('i', '')  # get again, in case it isn't set in header()
+		super(SenderCheckSmtpMilter, self).eoh(cmdDict)
 		header_sig = self.header_data.get(HEADER_SIG.lower(), '')
 		header_nonce = self.header_data.get(HEADER_NONCE.lower(), '')
 		if self.envelope_from_ok and self.header_from_ok:
@@ -383,9 +280,13 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 				self.log('REJECT: Message{} has no valid signature!'.format(msg_user), self.queue_id, 'ERROR')
 				self.log(self.reject_msg, self.queue_id)
 				return lm.REJECT
+		elif self.header_data['from'] in self.legitimate_addresses or self.envelope_from in self.legitimate_addresses:
+			# this shouldn't happen, better safe than sorry -> reject
+			self.log('From not OK, but no reject message!', self.queue_id, 'ERROR')
+			return lm.REJECT
 		return lm.CONTINUE
 
-	def eob(self, cmdDict):
+	def eob(self, cmdDict):  # type: (Dict[str, str]) -> None
 		"""
 		This is the callback where you can use modification methods,
 		such as addHeader(), delRcpt(), etc.  If you return CONTINUE
@@ -396,174 +297,48 @@ class SenderCheckMilter(lm.ForkMixin, lm.MilterProtocol):
 			self.add_header_nonce(str(self.nonce))
 		return lm.CONTINUE
 
-	def close(self):
-		# don't log unnecessarily
-		pass
-
-	def get_only_email(self, text):  # type: (str) -> str
-		m = self.regex_email_with_brackets.match(text)
-		if not m:
-			m = self.regex_email_no_brackets.match(text)
-		if not m:
-			return ''
-		return m.groups()[0]
-
 	def set_reject_message(self, msg):  # type: (str) -> None
 		if not self.reject_msg:
 			self.reject_msg = msg
 
-	@classmethod
-	def my_translate(cls, s, del_chars):  # type: (Union[str, Text], Union[str, Text]) -> Union[str, Text]
-		"""
-		Remove characters in `del_chars` from string `s`.
-
-		:param str s: string|unicode from which to remove characters in `del_chars`
-		:param str del_chars: characters to remove from `s`
-		:return: copy of `s` with characters in `del_chars` removed
-		:rtype: str
-		"""
-		if isinstance(s, unicode):
-			translate_table = dict((ord(x), None) for x in del_chars)
-			return s.translate(translate_table)
-		else:
-			return s.translate(None, del_chars)
-
-	@property
-	def nonce(self):  # type: () -> int
-		"""Generate a (instance-cached) cryptographically secure random number."""
-		if not self._nonce:
-			self._nonce = create_nonce()
-		return self._nonce
-
-	def create_signature_text(self, from_address=None, to=None, date=None, message_id=None):
-		# type: (Optional[str], Optional[str], Optional[str], Optional[str]) -> str
-		"""
-		The signature text for the `X-univention-sender-check-sig` header is
-		created from:
-
-		* `From`
-		* `To`
-		* `Date`
-		* `Message-Id`
-		* nonce
-
-		The `Subject` is normalized to handle modifications by spam filters.
-
-		A nonce (random int) is added that will also be stored encrypted in a
-		separate header (`X-univention-sender-check-nonce`).
-
-		:param str from_address: an email address, envelope-FROM will be used
-			if unset
-		:param str to: an email address, header-To will be used if unset
-		:param str date: a date, header-Date will be used if unset
-		:param str message_id: the mails message-id, header-message-id will be
-			used if unset
-		:return: signature text
-		:rtype: str
-		"""
-		return '|'.join((
-			(from_address or self.envelope_from).lower(),
-			(to or self.header_data.get('to', '')).lower(),
-			date or self.header_data.get('date', ''),
-			message_id or self.header_data.get('message-id'),
-			str(self.nonce),
-		))
-
-	def add_header_nonce(self, nonce):  # type: (str) -> None
-		symmetric_key, cyphertext = SimpleSymmetric.encrypt(nonce)
-		data = {'cyphertext': cyphertext}
-		for host, pub_key in self.public_keys.items():
-			data[host] = self.crypto.encrypt(symmetric_key, pub_key).encode('base64').strip()
-		msg = json.dumps(data).encode('base64').strip()
-		self.addHeader(HEADER_NONCE, msg)
-
-	def decrypt_header_nonce(self, header_text):  # type: (str) -> str
+	def dataReceived(self , buf):
 		try:
-			header = header_text.decode('base64')
-		except ValueError:
-			self.log('Invalid data in {}.'.format(HEADER_NONCE), self.queue_id, 'ERROR')
-			return ''
-		data = json.loads(header)
-		try:
-			cyphertext = data['cyphertext']
-			enc_symmetric_key = data['{}.{}'.format(self.ucr['hostname'], self.ucr['domainname'])].decode('base64')
-		except KeyError:
-			self.log('Nonce was not encrypted for this host, only for: {!r}.'.format(data.keys()), self.queue_id, 'ERROR')
-			return ''
-		except ValueError:
-			self.log('Invalid data in {}.'.format(HEADER_NONCE), self.queue_id, 'ERROR')
-			return ''
-		symmetric_key = self.crypto.decrypt(enc_symmetric_key)
-		nonce = SimpleSymmetric.decrypt(cyphertext, symmetric_key)
-		return nonce
+			return super(SenderCheckSmtpMilter, self).dataReceived(buf)
+		except Exception as exc:
+			traceback.print_tb(sys.exc_traceback)
+			self.log('Exception: {} when receiving data.'.format(exc), 'ERROR')
+			self.log('data={!r}'.format(buf), 'ERROR')
+			for line in [l.replace('#012', '\n') for l in traceback.format_tb(sys.exc_traceback)]:
+				for _line in [l for l in line.split('\n') if l]:
+					SenderCheckSmtpMilter.log(_line, 'ERROR')
+			raise
 
-	def remove_header_nonce(self):  # type: () -> None
-		self.chgHeader(HEADER_NONCE, val='')
-
-	def add_header_signature(self, text):  # type: (str) -> None
-		signature = self.crypto.sign(text)
-		sig = signature.encode('base64').strip()
-		res = '{}.{};{}'.format(self.ucr['hostname'], self.ucr['domainname'], sig)
-		self.addHeader(HEADER_SIG, res)
-
-	def remove_header_signature(self):  # type: () -> None
-		self.chgHeader(HEADER_SIG, val='')
-
-	def verify_signature(self, signature, text):  # type: (str, str) -> bool
-		host, _sep, signature = signature.partition(';')
-		try:
-			rsa_pub_key = self.public_keys[host]
-		except KeyError:
-			self.log('No public key registered for host {!r}.'.format(host), self.queue_id, 'ERROR')
-			return False
-		try:
-			sig = signature.decode('base64')
-		except ValueError:
-			self.log('Invalid data in {}.'.format(HEADER_SIG), self.queue_id, 'ERROR')
-			return False
-		return self.crypto.verify(sig, text, rsa_pub_key)
-
-
-class SenderCheckForkFactory(lm.ForkFactory):
-	_ignore_interrupt = False
-
-	def log(self, msg):
-		if self._ignore_interrupt and 'Interrupted system call' in msg:
-			# process received a signal, the blocking self.sock.accept() in
-			# run() will create a socket.error. This is not a problem because
-			# it is inside a "while True" loop.
-			# -> Suppress logging it to not produce useless tickets.
-			SenderCheckForkFactory._ignore_interrupt = False
-			return
-		SenderCheckMilter.log(msg)
-
-
-def sync_manager_init():
+def sync_manager_init():  # type: () -> None
 	signal.signal(signal.SIGINT, signal.SIG_IGN)
 	signal.signal(signal.SIGTERM, signal.SIG_IGN)
 	signal.signal(signal.SIGHUP, signal.SIG_IGN)
 
 
-def run_milter():
-	syslog.openlog(ident="sender_check", logoption=syslog.LOG_PID, facility=syslog.LOG_MAIL)
-	ucr = get_ucr()
-	port = ucr.get('mail/postfix/sender_check_milter_port', 5656)
-	SenderCheckMilter.log('Starting sender_check milter process. Listening on port {}.'.format(port))
+def run_milter():  # type: () -> None
+	syslog.openlog(ident="sender_check_smtp", logoption=syslog.LOG_PID, facility=syslog.LOG_MAIL)
+	ucr = SenderCheckSmtpMilter.get_ucr()
+	port = ucr.get(UCRV_SMTP_MILTER_PORT, 5656)
+	SenderCheckSmtpMilter.log('Starting SMTP sender_check milter process. Listening on port {}.'.format(port))
 	# test LDAP connection
-	SenderCheckMilter.get_lo()
+	SenderCheckSmtpMilter.get_lo()
 
 	opts = lm.SMFIP_NOHELO | lm.SMFIP_NORCPT | lm.SMFIP_NOBODY | lm.SMFIP_NODATA | lm.SMFIF_ADDHDRS | lm.SMFIF_CHGHDRS
 	sync_manager = SyncManager()
 	sync_manager.start(sync_manager_init)
-	SenderCheckMilter.legitimate_address_cache = sync_manager.dict({'__stats': {'hit': 0, 'hit_exp': 0, 'miss': 0}})
-	milter_factory = SenderCheckForkFactory('inet:127.0.0.1:{}'.format(port), SenderCheckMilter, opts)
+	SenderCheckSmtpMilter.legitimate_address_cache = sync_manager.dict({'__stats': {'hit': 0, 'hit_exp': 0, 'miss': 0}})
+	milter_factory = UCSMilterForkFactory('inet:127.0.0.1:{}'.format(port), SenderCheckSmtpMilter, opts)
 
 	def shutdown():
-		SenderCheckMilter.log('Stopping sender_check milter process.')
-		SenderCheckMilter.log('Cache hits: {}, Cache misses: {} (of those expired: {})'.format(
-			SenderCheckMilter.legitimate_address_cache['__stats']['hit'],
-			SenderCheckMilter.legitimate_address_cache['__stats']['miss'],
-			SenderCheckMilter.legitimate_address_cache['__stats']['hit_exp']))
+		SenderCheckSmtpMilter.log('Stopping SMTP sender_check milter process.')
+		SenderCheckSmtpMilter.log('Cache hits: {}, Cache misses: {} (of those expired: {})'.format(
+			SenderCheckSmtpMilter.legitimate_address_cache['__stats']['hit'],
+			SenderCheckSmtpMilter.legitimate_address_cache['__stats']['miss'],
+			SenderCheckSmtpMilter.legitimate_address_cache['__stats']['hit_exp']))
 		milter_factory.close()
 		try:
 			sync_manager.shutdown()
@@ -577,7 +352,7 @@ def run_milter():
 
 	signal.signal(signal.SIGINT, sig_handler_shutdown)
 	signal.signal(signal.SIGTERM, sig_handler_shutdown)
-	signal.signal(signal.SIGHUP, SenderCheckMilter.sig_handler_reload)
+	signal.signal(signal.SIGHUP, SenderCheckSmtpMilter.sig_handler_reload)
 
 	try:
 		milter_factory.run()
@@ -585,10 +360,10 @@ def run_milter():
 		# print to journald/syslog and log to mail.log
 		print('EXCEPTION OCCURRED: {}'.format(exc))
 		traceback.print_tb(sys.exc_traceback)
-		SenderCheckMilter.log('Exception in sender_check milter: {}'.format(exc), 'ERROR')
+		SenderCheckSmtpMilter.log('Exception in sender_check milter: {}'.format(exc), 'ERROR')
 		for line in [l.replace('#012', '\n') for l in traceback.format_tb(sys.exc_traceback)]:
 			for _line in [l for l in line.split('\n') if l]:
-				SenderCheckMilter.log(_line, 'ERROR')
+				SenderCheckSmtpMilter.log(_line, 'ERROR')
 		sys.exit(1)
 	finally:
 		try:

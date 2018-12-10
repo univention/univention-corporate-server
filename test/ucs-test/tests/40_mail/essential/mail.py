@@ -766,20 +766,21 @@ def check_delivery(
 		token,  # type: str
 		recipient_email,  # type: str
 		should_be_delivered,  # type: bool
-		spam=False  # type: Optional[bool]
+		spam=False,  # type: Optional[bool]
+		check_root=True  # type: Optional[bool]  # used only if spam=False
 ):
 	# type: (...) -> None
 	print "%s is waiting for an email; should be delivered = %r" % (recipient_email, should_be_delivered)
 	if spam:
 		delivered = spam_delivered(token, mail_address=recipient_email)
 	else:
-		delivered = mail_delivered(token, mail_address=recipient_email)
+		delivered = mail_delivered(token, mail_address=recipient_email, check_root=check_root)
 	spam_str = 'Spam ' if spam else ''
 	if should_be_delivered != delivered:
 		if delivered:
-			utils.fail('%sMail sent with token = %r to %s un-expectedly delivered' % (spam_str, token, recipient_email))
+			utils.fail('%sMail sent with token = %r to %s unexpectedly delivered' % (spam_str, token, recipient_email))
 		else:
-			utils.fail('%sMail sent with token = %r to %s un-expectedly not delivered' % (spam_str, token, recipient_email))
+			utils.fail('%sMail sent with token = %r to %s unexpectedly not delivered' % (spam_str, token, recipient_email))
 
 
 def check_sending_mail(

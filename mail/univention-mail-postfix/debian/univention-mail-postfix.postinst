@@ -123,8 +123,8 @@ univention-config-registry commit /etc/mailname
 univention-config-registry commit /etc/listfilter.secret
 
 if [ -z "$postfix_autostart" ] || [ "$postfix_autostart" = "yes" ]; then
-	echo "Restarting univention-postfix-sender-check..."
-	deb-systemd-invoke restart univention-postfix-sender-check.service
+	echo "Restarting univention-postfix-sender-check-smtp..."
+	deb-systemd-invoke restart univention-postfix-sender-check-smtp.service
 	echo "Restarting postfix..."
 	deb-systemd-invoke restart postfix.service
 fi

@@ -47,5 +47,5 @@ class SenderCheckListener(ListenerModuleHandler):
 	def post_run(self):
 		self.logger.info('Reloading univention-postfix-sender-check.')
 		with self.as_root():
-			if subprocess.call(['systemctl', 'is-enabled', 'univention-postfix-sender-check']) == 0:
-				subprocess.call(['service', 'univention-postfix-sender-check', 'reload'])
+			if subprocess.call(['systemctl', 'is-enabled', 'univention-postfix-sender-check-smtp']) == 0:
+				subprocess.call(['service', 'univention-postfix-sender-check-smtp', 'reload'])

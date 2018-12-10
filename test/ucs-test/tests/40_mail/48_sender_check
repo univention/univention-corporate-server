@@ -16,6 +16,8 @@ from univention.config_registry import handler_set
 
 
 domain = ''
+postfix_restart = ['service', 'postfix', 'restart']
+sender_check_smtp_reload = ['service', 'univention-postfix-sender-check-smtp', 'reload']
 
 
 def check_sending_mail(sender_envelope, sender, recipient, username, password, should_be_accepted):
@@ -58,14 +60,15 @@ def main():
 	global domain
 
 	with ucr_test.UCSTestConfigRegistry() as ucr:
-		ucrlist = [
-			(k, v) for k, v in ucr.items()
-			if k.startswith('mail/postfix/smtpd_milters/') or k.startswith('mail/postfix/sender_check_milter')
-		]
-		ucrlist.sort()
-		with udm_test.UCSTestUDM() as udm:
-			for k, v in ucrlist:
-				print('*** UCRV {!r}={!r}'.format(k, v))
+		handler_set([
+			'mail/postfix/smtpd_milters/50=inet:localhost:5656',
+		])
+		for k, v in sorted((k, v) for k, v in ucr.items() if '_milter' in k):
+			print('*** UCRV {!r}={!r}'.format(k, v))
+
+		with utils.AutoCallCommand(enter_cmd=postfix_restart, exit_cmd=postfix_restart) as acc1, \
+				utils.AutoCallCommand(enter_cmd=sender_check_smtp_reload, exit_cmd=sender_check_smtp_reload) as acc2, \
+				udm_test.UCSTestUDM() as udm:
 			syslog.openlog(ident="test_48_sender_check", facility=syslog.LOG_MAIL)
 			domain = ucr.get('domainname')
 			password = uts.random_name()
@@ -154,9 +157,10 @@ def main():
 			log('*** Sending w/o authenticating with domain {} in FROM in envelope and header with non-existent email...'.format(new_domain))
 			check_sending_mail(example_email(), new_email(maildomain=new_domain), mpa, None, None, True)
 
-			log('*** Sending w/o authenticating with correct FROM in envelope and header with email address only (new_mpa)...')
+			log('*** Sending w/o authenticating with external FROM in envelope and header with email address only (new_mpa)...')
 			check_sending_mail(new_mpa, new_mpa, mpa, None, None, True)
 
+			log('*** Creating new domain...')
 			lo = utils.get_ldap_connection()
 			if lo.searchDn('objectClass=oxMailDomainServerSettings'):
 				udm_module = 'oxmail/oxdomain'
@@ -170,6 +174,8 @@ def main():
 			)
 			log('*** Created new domain {!r}.'.format(new_domain))
 
+			# reload has been done by listener module hosteddomains.py
+
 			password2 = uts.random_name()
 			user_dn2, username2 = udm.create_user(
 					password=password2,
@@ -179,16 +185,16 @@ def main():
 			log('*** Created user {!r} ({}).'.format(user_dn2, username2))
 			check_ldap_bind(user_dn2, password2)
 
-			log('*** Sending with correct FROM in envelope and header with email address only (new_mpa)...')
+			log('*** Sending with existing email in FROM in envelope and header with email address only (new_mpa)...')
 			check_sending_mail(new_mpa, new_mpa, mpa, new_mpa, password2, True)
 
-			log('*** Sending with correct FROM in envelope and wrong From in header with email address only (new_mpa)...')
+			log('*** Sending with existing email in FROM in envelope and wrong From in header with email address only (new_mpa)...')
 			check_sending_mail(new_mpa, new_email(maildomain=new_domain), mpa, mpa, password, False)
 
 			log('*** Sending with wrong FROM in envelope and correct From in header with email address only (new_mpa)...')
 			check_sending_mail(new_email(maildomain=new_domain), new_mpa, mpa, mpa, password, False)
 
-			log('*** Sending w/o authenticating with correct FROM in envelope and header with email address only (new_mpa)...')
+			log('*** Sending w/o authenticating with existing email in FROM in envelope and header with email address only (new_mpa)...')
 			check_sending_mail(new_mpa, new_mpa, mpa, None, None, False)
 
 			log('*** Sending w/o authenticating with existing email in FROM in envelope and header with example.com...')
@@ -206,7 +212,7 @@ def main():
 			# test whitelist
 			whitelisted_email = new_email()
 			handler_set(['mail/postfix/sender_check_milter_whitelist={}'.format(whitelisted_email)])
-			subprocess.call(['service', 'univention-postfix-sender-check', 'reload'])
+			subprocess.call(['service', 'univention-postfix-sender-check-smtp', 'reload'])
 
 			log('*** Sending w/o authenticating with whitelisted FROM in envelope and header...')
 			check_sending_mail(whitelisted_email, whitelisted_email, mpa, None, None, True)
@@ -221,7 +227,4 @@ def main():
 
 
 if __name__ == '__main__':
-	try:
-		main()
-	finally:
-		subprocess.call(['service', 'univention-postfix-sender-check', 'reload'])
+	main()
