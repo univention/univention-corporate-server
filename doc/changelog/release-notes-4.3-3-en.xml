@@ -51,10 +51,22 @@
 
 		<itemizedlist>
 			<listitem><para>
-				<remark>FIXME</remark>
+				The configuration options for the UCS portal have been extended to better adapt it to your own needs. It is now possible to define own categories for tiles, and there is the possibility to define static links, e.g. to link an imprint.
+			</para></listitem>
+			<listitem><para>
+				The new UCS Dashboard App allows administrators to quickly and easily view the state of the domain or individual servers on different dashboards.
+			</para></listitem>
+			<listitem><para>
+				In addition to minor bug fixes in &ucsUMC;, scrolling has been improved in many places.
+			</para></listitem>
+			<listitem><para>
+				The introduction of a new simplified Python API reduces the development effort for developers to access the UCS Identity Management.
+			</para></listitem>
+			<listitem><para>
 			</para></listitem>
 			<listitem><para>
 				Various security updates have been integrated into UCS 4.3-3, e.g. <wordasword>Apache2</wordasword>, the Linux kernel and <wordasword>Samba4</wordasword>.
+				UCS 4.3-3 is now based on the Debian Pointrelease 9.6 released in November.
 				A complete list is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
