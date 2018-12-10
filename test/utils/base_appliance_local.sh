@@ -130,7 +130,7 @@ _hyperv_image () {
 
 _ec2_image () {
 	# Identifier already set
-	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance --only --ec2-ebs -s $TMP_KVM_IMAGE -v '${UCS_VERSION_INFO}'"
+	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance --only --ec2-ebs -s /tmp/master-ec2-appliance/master.qcow2 -v '${UCS_VERSION_INFO}'"
 }
 
 _set_global_vars () {
