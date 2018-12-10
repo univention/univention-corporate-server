@@ -45,6 +45,7 @@ import datetime
 import itertools
 from textwrap import dedent, wrap
 from errno import ENOENT
+from univention.config_registry import ConfigRegistry
 
 try:
     import univention.debug as ud
@@ -75,7 +76,8 @@ stdout_orig = sys.stdout
 nostdout = False
 
 updater_status = {}
-
+ucr = ConfigRegistry()
+ucr.load()
 
 class UpdateError(Exception):
 
@@ -345,6 +347,11 @@ def main():
     iso = None
 
     ud.init(LOGNAME, 0, 0)
+    loglevel = ucr.get('update/debug/level')
+    if loglevel is None:
+        logelevel=2
+    ud.set_level(ud.NETWORK, loglevel)
+    ud.set_level(ud.PROCESS, loglevel)
     fp_debug = open(LOGNAME, 'a+')
     # sys.stdout=fp_debug
 
