@@ -176,8 +176,10 @@
         <title>Create an app with a Docker image</title>
 
         <para>
-            This section describes how to create the app in the App
-            Provider Portal and use a Docker image.
+            This section describes how to create the app in the App Provider
+            Portal and use a Docker image. It focuses on a single container
+            setup. For a setup with multiple containers with Docker Compose
+            please see <xref linkend="create-app-with-docker:compose" />.
         </para>
 
         <para>
@@ -521,6 +523,163 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                 <guimenu>Configuration files</guimenu> section in the field for
                 <guimenu>Environment file used during the Docker Container
                     creation</guimenu>.
+            </para>
+        </section>
+    </section>
+
+    <section id="create-app-with-docker:compose">
+        <title>Create a Multi Container App</title>
+        <para>
+            Starting with UCS 4.3-2 errata 345 Univention App Center supports
+            apps that consist of multiple docker images. It uses <ulink
+                url="https://docs.docker.com/compose/overview/">Docker
+                Compose</ulink>, a tool for defining and running
+            multi-container Docker applications. The heart of such applications
+            is a YAML file that configures all services for the application.
+            The supported compose file format version is 2.0.
+        </para>
+        <section id="create-app-with-docker:setup">
+            <title>Multi container setup</title>
+            <para>
+                In order to create a Multi Container App, go to the
+                <guimenu>Docker</guimenu> tab in the App Provider Portal, scroll
+                down to the <guimenu>Docker Compose</guimenu> section and enter the
+                content of your <option>docker-compose.yml</option> file. A
+                "flat" YAML file must be used, because the implementation does
+                currently not support references to other files like for
+                example files that should be mounted inside a container.
+            </para>
+            <para>
+                  You also need to define the <guimenu>Name of the "main" service
+                  within the compose.yml</guimenu> below the <guimenu>Contents
+                  of the docker-compose.yml file</guimenu>.
+            </para>
+            <para>
+                In order to provide access to the application's web interface,
+                please see <xref linkend="create-app-with-docker:web-interface" />.
+            </para>
+            <para>
+                If the app setup requires exclusive ports and a list of ports needs
+                to get forwarded from the host to the container, please see <xref
+                    linkend="create-app-with-docker:ports" />.
+            </para>
+        </section>
+        <section id="create-app-with-docker:script-reference">
+            <title>Script execution reference</title>
+            <para>
+                The App Center allows several scripts to be executed on the host
+                and inside the container during installation (<xref
+                    linkend="installation-scripts" />), uninstallation (<xref
+                    linkend="uninstallation-scripts" />) and upgrade (<xref
+                    linkend="upgrade-scripts" />). Scripts run inside the
+                    container are run inside the container of the "main service".
+            </para>
+        </section>
+        <section id="create-app-with-docker:compose-postprocessing">
+            <title>Post processing of Docker Compose file</title>
+            <para>
+                Before a Multi Container App is started by the App Center, the
+                <option>docker-compose.yml</option> is altered by the App
+                Center with the following changes:
+            </para>
+                <orderedlist>
+                    <listitem>
+                        <simpara>
+                            When a Multi Container App is released, the
+                            <option>docker-compose.yml</option> is adjusted on
+                            the server side and the Docker Image information is
+                            changed to point to the Docker Images in the
+                            Univention Docker Registry.  All Docker Images from
+                            published apps are copied to the Univention Docker
+                            Registry to be independent of Docker's own
+                            infrastructure. This is the only server-side change
+                            to the Docker Compose file.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            The App Center adds two standard volumes for the
+                            main service, as they are also included in Single
+                            Container Apps. These are the
+                            <filename>/var/lib/univention-appcenter/apps/$appid/data</filename>
+                            and
+                            <filename>/var/lib/univention-appcenter/apps/$appid/conf</filename>
+                            directories on the UCS host. If volumes are defined
+                            in the App Provider Portal in the App
+                            Configuration, these are also supplemented in
+                            <option>docker-compose.yml</option> by the App
+                            Center for the main service.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            If ports are defined in the App Provider Portal,
+                            they are also added to
+                            <option>docker-compose.yml</option>.  Ports that
+                            have already been defined continue to exist. If the
+                            same port is defined in the portal and in
+                            <option>docker-compose.yml</option>, the
+                            configuration in the App Provider Portal takes
+                            precedence. For example, if
+                            <option>docker-compose.yml</option> states that
+                            port 4500 is provided externally as port 4500, but
+                            the portal defines that this port is to be used as
+                            6500, <option>docker-compose.yml</option> will be
+                            modified to map port 4500 to 6500 on the host. 
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            If <option>docker-compose.yml</option> specifies
+                            that port 80 or 443 should be opened to the outside
+                            and the App Configuration specifies that these
+                            ports should be used by the App Center for the web
+                            interface, the App Center will define a port on the
+                            fly define it in
+                            <option>docker-compose.yml</option>. This is
+                            because UCS hosts usually occupy ports 80 and 443
+                            with a web server. The App Center creates an Apache
+                            Reverse Proxy configuration. See section <xref
+                                linkend="create-app-with-docker:web-interface"
+                                /> for details.
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            UCS provides a number of environment variables via
+                            the App Center, e.g. parameters for an LDAP
+                            connection. The necessary variables are also
+                            written to <option>docker-compose.yml</option> in
+                            the <option>environments</option> section. 
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            Furthermore, in the main service, as in Single
+                            Container Apps, all UCR variables defined on UCS
+                            are available under
+                            <filename>/etc/univention/base.conf</filename>, as
+                            well as the password for the so-called machine
+                            account under
+                            <filename>/etc/machine.secret</filename>.
+                        </simpara>
+                    </listitem>
+                </orderedlist>
+                <para>
+                    As a result, Docker Compose starts a configuration on the
+                    UCS system that no longer matches 100% of the App
+                    Provider's input. The modified
+                    <option>docker-compose.yml</option> can be found at
+                    <filename>/var/lib/univention-appcenter/apps/$appid/compose/docker-compose.yml</filename>.
+                </para>
+        </section>
+        <section id="create-app-with-docker:finish">
+            <title>Finish multi container setup</title>
+            <para>
+                As soon as all the technical settings are made, please see <xref
+                    linkend="app-lifecycle" /> for the next steps and how to
+                test the app. For app presentation in the App Center please see
+                <xref linkend="app-presentation" />.
             </para>
         </section>
     </section>
