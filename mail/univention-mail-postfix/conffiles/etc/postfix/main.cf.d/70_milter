@@ -4,4 +4,10 @@ ucrlist.sort()
 milters = [v for k, v in ucrlist]
 if milters:
 	print('smtpd_milters = {}'.format(' '.join(milters)))
+
+ucrlist = [(k, v) for k, v in configRegistry.items() if k.startswith('mail/postfix/non_smtpd_milters/')]
+ucrlist.sort()
+milters = [v for k, v in ucrlist]
+if milters:
+	print('non_smtpd_milters = {}'.format(' '.join(milters)))
 @!@

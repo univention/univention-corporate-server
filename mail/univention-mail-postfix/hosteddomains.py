@@ -71,5 +71,7 @@ def handler(dn, new, old):
 			univention.config_registry.handler_set([u'mail/hosteddomains=%s' % ' '.join(hosteddomains)])
 			if subprocess.call(['systemctl', 'is-enabled', 'univention-postfix-sender-check-smtp']) == 0:
 				subprocess.call(['service', 'univention-postfix-sender-check-smtp', 'reload'])
+			if subprocess.call(['systemctl', 'is-enabled', 'univention-postfix-sender-check-non-smtp']) == 0:
+				subprocess.call(['service', 'univention-postfix-sender-check-non-smtp', 'reload'])
 		finally:
 			listener.unsetuid()

@@ -3,10 +3,11 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
-from essential.mail import check_ldap_bind, send_mail
+from essential.mail import check_delivery, check_ldap_bind, send_mail
 import smtplib
 import time
 import syslog
+import tempfile
 import subprocess
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -18,6 +19,7 @@ from univention.config_registry import handler_set
 domain = ''
 postfix_restart = ['service', 'postfix', 'restart']
 sender_check_smtp_reload = ['service', 'univention-postfix-sender-check-smtp', 'reload']
+sender_check_non_smtp_reload = ['service', 'univention-postfix-sender-check-non-smtp', 'reload']
 
 
 def check_sending_mail(sender_envelope, sender, recipient, username, password, should_be_accepted):
@@ -62,12 +64,14 @@ def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		handler_set([
 			'mail/postfix/smtpd_milters/50=inet:localhost:5656',
+			'mail/postfix/non_smtpd_milters/50=inet:localhost:5657'
 		])
 		for k, v in sorted((k, v) for k, v in ucr.items() if '_milter' in k):
 			print('*** UCRV {!r}={!r}'.format(k, v))
 
 		with utils.AutoCallCommand(enter_cmd=postfix_restart, exit_cmd=postfix_restart) as acc1, \
 				utils.AutoCallCommand(enter_cmd=sender_check_smtp_reload, exit_cmd=sender_check_smtp_reload) as acc2, \
+				utils.AutoCallCommand(enter_cmd=sender_check_non_smtp_reload, exit_cmd=sender_check_non_smtp_reload) as acc3, \
 				udm_test.UCSTestUDM() as udm:
 			syslog.openlog(ident="test_48_sender_check", facility=syslog.LOG_MAIL)
 			domain = ucr.get('domainname')
@@ -213,6 +217,7 @@ def main():
 			whitelisted_email = new_email()
 			handler_set(['mail/postfix/sender_check_milter_whitelist={}'.format(whitelisted_email)])
 			subprocess.call(['service', 'univention-postfix-sender-check-smtp', 'reload'])
+			subprocess.call(['service', 'univention-postfix-sender-check-non-smtp', 'reload'])
 
 			log('*** Sending w/o authenticating with whitelisted FROM in envelope and header...')
 			check_sending_mail(whitelisted_email, whitelisted_email, mpa, None, None, True)
@@ -222,6 +227,35 @@ def main():
 
 			log('*** Sending w/o authenticating with example.com in FROM in envelope and whitelisted header...')
 			check_sending_mail(example_email(), whitelisted_email, mpa, None, None, True)
+
+			new_mpa2 = new_email(maildomain=new_domain)
+			user_dn3, username3 = udm.create_user(
+					password=uts.random_name(),
+					mailHomeServer='{}.{}'.format(ucr['hostname'], domain),
+					mailPrimaryAddress=new_mpa2,
+			)
+			log('*** Created user {!r} ({}).'.format(user_dn3, username3))
+
+			log('*** Sending using sendmail binary with example.com in FROM in envelope and header...')
+			token = str(time.time())
+			with tempfile.TemporaryFile() as fp:
+				fp.write(token)
+				fp.flush()
+				fp.seek(0)
+				subprocess.call(['mail', '-s', uts.random_name(), '-r', example_email(), new_mpa2], stdin=fp)
+			check_delivery(token, new_mpa2, True, check_root=False)
+			check_delivery('X-univention-sender-check-', new_mpa2, False, check_root=False)  # zzz
+
+			log('*** Sending using sendmail binary with existing email in FROM in envelope and header...')
+			token = str(time.time())
+			with tempfile.TemporaryFile() as fp:
+				fp.write(token)
+				fp.flush()
+				fp.seek(0)
+				subprocess.call(['mail', '-s', uts.random_name(), '-r', new_email(), new_mpa2], stdin=fp)
+			check_delivery(token, new_mpa2, True, check_root=False)
+			check_delivery('X-univention-sender-check-sig', new_mpa2, True, check_root=False)
+			check_delivery('X-univention-sender-check-nonce', new_mpa2, True, check_root=False)
 
 			log('*** End of 48_sender_check')
 

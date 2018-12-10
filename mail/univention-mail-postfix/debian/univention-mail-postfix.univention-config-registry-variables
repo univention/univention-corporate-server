@@ -425,12 +425,21 @@ Description[en]=Variables in the format mail/postfix/smtpd_milters/SEQUENCE=MILT
 Type=str
 Categories=service-mail
 
+[mail/postfix/non_smtpd_milters/.*]
+Description[de]=Mit Variablen der Form mail/postfix/non_smtpd_milters/SEQUENZNUMMER=MILTER-ADRESSE können Adressen für Milter-Applikationen konfiguriert werden. Diese Milter (mail filter) werden über neue Mails, die nicht über den Postfix smtpd(8)-Server eingeliefert werden informiert. Das sind Mails die an der Kommandozeile mit sendmail(1) oder via Postfix qmqpd(8) ankommen oder mit "postsuper -r" erneut in die Queue geschrieben werden. Sie können diese Mails akzeptieren, bearbeiten und ablehnen (siehe <http://www.postfix.org/postconf.5.html#non_smtpd_milters>). Die SEQUENZNUMMER wird alphanumerisch sortiert und beeinflusst die Reihenfolge der Milter in der Postfix-Konfiguration. Standardmäßig ist diese Variable nicht gesetzt.
+Description[en]=Variables in the format mail/postfix/non_smtpd_milters/SEQUENCE=MILTER-ADDRESS can be used to configure Milter applications. Those milters (mail filters) are informed about new mails that do not arrive via the Postfix smtpd(8) server. This includes local submission via the sendmail(1) command line, new mail that arrives via the Postfix qmqpd(8) server, and old mail that is re-injected into the queue with "postsuper -r". They can accept, edit and reject these mails (see <http://www.postfix.org/postconf.5.html#non_smtpd_milters>). The SEQUENCE number is sorted alphanumerically and influences the order of the milter in the postfix configuration. By default, this variable is not set.
 Type=str
 Categories=service-mail
 
 [mail/postfix/sender_check_milter_port]
 Description[de]=Port auf dem der Milter-Prozess, der Absenderadressen für Postfix prüft ("sender_check"), auf Verbindungen wartet (Adresse ist immer "localhost"). Standard: 5656.
 Description[en]=Port on which the milter process, that verifies sender addresses for postfix ("sender_check"), should listen (address is always "localhost"). Default: 5656.
+Type=int
+Categories=service-mail
+
+[mail/postfix/sender_check_non-smtp_milter_port]
+Description[de]=Port auf dem der non-SMTP Milter-Prozess, der Absenderadressen signiert, auf Verbindungen wartet (Adresse ist immer "localhost"). Standard: 5657.
+Description[en]=Port on which the non-SMTP milter process, that signs sender addresses, should listen (address is always "localhost"). Default: 5657.
 Type=int
 Categories=service-mail
 

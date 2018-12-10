@@ -1002,15 +1002,22 @@ postmap /etc/postfix/smtp_auth
 			<envar>mail/postfix/smtpd_milters/<replaceable>SEQUENZ</replaceable>=<replaceable>ADRESSE</replaceable></envar>.
 		</para>
 		<para>
-			<application>sender_check_milter</application> ist ein kleines Programm das auf dem Interface <envar>localhost</envar> auf Port <envar>5656</envar> Verbindungen annimmt. Der Port kann über die &ucsUCRV; <envar>mail/postfix/sender_check_milter_port</envar>
+			<application>sender_check_milter_smtp</application> und <application>sender_check_milter_non-smtp</application> sind zwei kleine Programme die auf dem Interface <envar>localhost</envar> auf den Ports <envar>5656</envar> und <envar>5657</envar> Verbindungen annehmen. Die Ports können über die &ucsUCRV;
+			<envar>mail/postfix/sender_check_milter_port</envar> bzw. <envar>mail/postfix/sender_check_non-smtp_milter_port</envar>
 			konfiguriert werden.
 			Zurückweisungen von E-Mails werden in der für E-Mail üblichen Logdatei (<filename>/var/log/mail.log</filename>) protokolliert.
 		</para>
 		<para>
-			Um den Filter <application>sender_check_milter</application> zu aktivieren, sind folgende Kommandos auszuführen:
+			Um den Filter zu aktivieren, sind folgende Kommandos auszuführen:
 			<programlisting language="sh">
 ucr set mail/postfix/smtpd_milters/50=inet:localhost:5656
+ucr set mail/postfix/non_smtpd_milters/50=inet:localhost:5657
 service postfix reload
+			</programlisting>
+			Die beiden <application>milter</application> Prozesse sollten bereits laufen. Um sie neu zu starten, sind folgende Kommandos auszuführen:
+			<programlisting language="sh">
+service univention-postfix-sender-check-smtp restart
+service univention-postfix-sender-check-non-smtp restart
 			</programlisting>
 		</para>
 		<note>
@@ -1019,8 +1026,8 @@ service postfix reload
 				Konfiguration neu laden, was über das Kommando <command>service postfix reload</command> ausgelöst werden kann.
 			</para>
 			<para>
-				Nach jeder Änderung einer auf <application>sender_check_milter</application> bezogenen &ucsUCRV; muss der Prozess seine
-				Konfiguration neu laden, was über das Kommando <command>service univention-postfix-sender-check reload</command> ausgelöst werden kann.
+				Nach jeder Änderung einer auf die <application>milter</application> bezogenen &ucsUCRV; müssen beide Prozesse ihre
+				Konfiguration neu laden, was über die Kommandos <command>service univention-postfix-sender-check-smtp reload</command> und <command>service univention-postfix-sender-check-non-smtp reload</command> ausgelöst werden kann.
 			</para>
 		</note>
 	</section>

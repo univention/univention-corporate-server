@@ -1,0 +1,15 @@
+[Unit]
+Description=Postfix milter to prevent forged From (non-SMTP)
+After=slapd.service
+
+[Service]
+Type=simple
+ExecStart=/usr/share/univention-mail-postfix/sender_check_milter_non-smtp
+ExecReload=/bin/kill -s HUP $MAINPID
+Restart=always
+RestartSec=3
+User=listfilter
+Group=nogroup
+
+[Install]
+WantedBy=multi-user.target

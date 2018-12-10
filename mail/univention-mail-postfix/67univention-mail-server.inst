@@ -94,6 +94,8 @@ echo "Enabling univention-postfix-sender-check service..."
 systemctl --system daemon-reload
 systemctl enable univention-postfix-sender-check-smtp
 systemctl restart univention-postfix-sender-check-smtp
+systemctl enable univention-postfix-sender-check-non-smtp
+systemctl restart univention-postfix-sender-check-non-smtp
 
 joinscript_save_current_version
 

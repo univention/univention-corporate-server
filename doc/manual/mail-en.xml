@@ -972,6 +972,7 @@ postmap /etc/postfix/smtp_auth
 			To enable the <application>sender_check_milter</application> filter, run:
 			<programlisting language="sh">
 ucr set mail/postfix/smtpd_milters/50=inet:localhost:5656
+ucr set mail/postfix/non_smtpd_milters/50=inet:localhost:5657
 service postfix reload
 			</programlisting>
 		</para>

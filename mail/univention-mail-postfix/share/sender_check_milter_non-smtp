@@ -1,0 +1,149 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Univention mail Postfix
+#  sign emails delivered through non-SMTP channel
+#
+# Copyright 2018 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+"""
+Milter that signs all emails delivered through non-SMTP channel with a hosted
+domain or $domain in FROM.
+"""
+
+import os
+import re
+import bz2
+import sys
+import json
+import signal
+import syslog
+import datetime
+import traceback
+
+import libmilter as lm
+import univention.uldap
+from univention.mail.milter_base import UCSMilterForkFactory, UCSMilterBase
+from univention.mail.sender_check_milter_base import SenderCheckMilterBase
+
+try:
+	from typing import Dict, Optional, List
+except ImportError:
+	pass
+
+
+UCRV_NON_SMTP_MILTER_PORT = 'mail/postfix/sender_check_non-smtp_milter_port'
+
+
+class SenderCheckNonSMTPMilter(SenderCheckMilterBase):
+
+	def __init__(self, opts=0, protos=0):  # type: (Optional[int], Optional[int]) -> None
+		super(SenderCheckNonSMTPMilter, self).__init__(opts, protos)
+		self.sign_msg = False
+
+	def clear_variables(self):  # type: () -> None
+		super(SenderCheckNonSMTPMilter, self).clear_variables()
+		self.sign_msg = False
+
+	@classmethod
+	def get_mail_domains(cls):  # type: () -> List[str]
+		mail_domains = super(SenderCheckNonSMTPMilter, cls).get_mail_domains()
+		mail_domains.extend([cls.get_ucr()['domainname'], '{hostname}.{domainname}'.format(**cls.get_ucr())])
+		return sorted(set(mail_domains))
+
+	def mailFrom(self, frAddr, cmdDict):  # type: (str, Dict[str, str]) -> None
+		super(SenderCheckNonSMTPMilter, self).mailFrom(frAddr, cmdDict)
+		local_part, at, domain = self.envelope_from.rpartition('@')
+		if domain and domain in self.mail_domains:
+			self.sign_msg = True
+		return lm.CONTINUE
+
+	def eoh(self, cmdDict):  # type: (Dict[str, str]) -> None
+		super(SenderCheckNonSMTPMilter, self).eoh(cmdDict)
+		local_part, at, domain = self.header_data['from'].rpartition('@')
+		if domain and domain in self.mail_domains:
+			self.sign_msg = True
+		return lm.CONTINUE
+
+	def eob(self, cmdDict):  # type: (Dict[str, str]) -> None
+		"""
+		This is the callback where you can use modification methods,
+		such as addHeader(), delRcpt(), etc.  If you return CONTINUE
+		from this method, it will be the same as returning ACCEPT.
+		"""
+		from_addr = self.envelope_from or self.header_data['from']
+		if self.sign_msg:
+			self.log('Signing message (From: {}).'.format(from_addr), self.queue_id)
+			self.add_header_signature(self.create_signature_text())
+			self.add_header_nonce(str(self.nonce))
+		else:
+			self.log('Not signing message (From: {}).'.format(from_addr), self.queue_id)
+		return lm.CONTINUE
+
+
+def run_milter():  # type: () -> None
+	syslog.openlog(ident="sender_check_non-smtp", logoption=syslog.LOG_PID, facility=syslog.LOG_MAIL)
+	ucr = SenderCheckNonSMTPMilter.get_ucr()
+	port = ucr.get(UCRV_NON_SMTP_MILTER_PORT, 5657)
+	SenderCheckNonSMTPMilter.log('Starting non-SMTP sender_check milter process. Listening on port {}.'.format(port))
+
+	opts = lm.SMFIP_NOHELO | lm.SMFIP_NORCPT | lm.SMFIP_NOBODY | lm.SMFIP_NODATA | lm.SMFIF_ADDHDRS | lm.SMFIF_CHGHDRS
+	milter_factory = UCSMilterForkFactory('inet:127.0.0.1:{}'.format(port), SenderCheckNonSMTPMilter, opts)
+
+	def shutdown():
+		SenderCheckNonSMTPMilter.log('Stopping non-SMTP sender_check milter process.')
+		milter_factory.close()
+
+	def sig_handler_shutdown(num, frame):
+		shutdown()
+		sys.exit(0)
+
+	signal.signal(signal.SIGINT, sig_handler_shutdown)
+	signal.signal(signal.SIGTERM, sig_handler_shutdown)
+	signal.signal(signal.SIGHUP, SenderCheckNonSMTPMilter.sig_handler_reload)
+
+	try:
+		milter_factory.run()
+	except Exception as exc:
+		# print to journald/syslog and log to mail.log
+		print('EXCEPTION OCCURRED: {}'.format(exc))
+		traceback.print_tb(sys.exc_traceback)
+		SenderCheckNonSMTPMilter.log('Exception in non-SMTP sender_check milter: {}'.format(exc), 'ERROR')
+		for line in [l.replace('#012', '\n') for l in traceback.format_tb(sys.exc_traceback)]:
+			for _line in [l for l in line.split('\n') if l]:
+				SenderCheckNonSMTPMilter.log(_line, 'ERROR')
+		sys.exit(1)
+	finally:
+		try:
+			shutdown()
+		except Exception:
+			pass
+
+
+if __name__ == '__main__':
+	run_milter()

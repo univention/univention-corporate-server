@@ -89,6 +89,7 @@ Type: subfile
 Multifile: etc/postfix/main.cf
 Subfile: etc/postfix/main.cf.d/70_milter
 Variables: mail/postfix/smtpd_milters/.*
+Variables: mail/postfix/non_smtpd_milters/.*
 
 Type: subfile
 Multifile: etc/postfix/main.cf
