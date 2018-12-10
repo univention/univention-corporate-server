@@ -1,14 +1,5 @@
 @import "../variables"
 
-insertBorder()
-	content: ''
-	display: block
-	position: absolute
-	right: 0
-	left: 0
-	bottom: 0
-	border-bottom: arguments
-
 @keyframes shake {
 	10%, 90% {
 		transform: translate(-1px, 0);
@@ -29,7 +20,6 @@ headerHeight = 48px
 	position: relative
 	padding: 0
 	overflow: hidden
-	transition: background-color 0.35s
 
 	.dijitTextBox
 		background-color: transparent
@@ -39,21 +29,16 @@ headerHeight = 48px
 		vertical-align: baseline
 
 	.umcBackToOverview
-		background-image: url('../images/home-white.svg')
-		background-repeat: no-repeat
-		background-position: center center
 		float: left
-		width: 60px
-		height: headerHeight
 		margin: 0
-		transition: background-color 0.35s
-		box-shadow: none
-		border-radius: 0
 
-		.dijitButtonNode
-			display: inline-block
-			width: 100%
-			height: 100% !important
+		.dijitIcon
+			background-image: url('../images/home-white.svg')
+			background-repeat: no-repeat
+			background-position: center center
+			width: material-grid(7)
+			height: headerHeight
+			margin: 0
 
 	.umcMainTabController
 		background: none
@@ -61,6 +46,7 @@ headerHeight = 48px
 
 		.dijitTab
 			transition: background-color 0.2s
+			color: #fff
 
 			// override unwanted styles
 			margin: 0
@@ -73,7 +59,7 @@ headerHeight = 48px
 				height: headerHeight
 				line-height: headerHeight
 				box-sizing: border-box
-				padding: 0 24px
+				padding: 0 material-grid(3)
 				text-transform: uppercase
 				font-weight: 500
 				font-size: $font-size-button
@@ -82,7 +68,7 @@ headerHeight = 48px
 				text-overflow: ellipsis
 
 				^[-1].dijitTabChecked ^[-1..-1]
-					border-bottom: 3px solid #fff
+					border-bottom: material-grid(1, true) solid #fff
 
 			.dijitTabCloseButton
 				display: none
@@ -92,29 +78,16 @@ headerHeight = 48px
 		width: 30px
 		height: 100%
 		margin: 0
-		transition: background-color 0.35s
-		box-shadow: none
 
-		.dijitButtonNode
-			width: 100%
-			height: 100% !important
+		.dijitIcon
+			icon-image(-300, -20, '../', '-white')
+			margin: ((headerHeight - 20px) / 2) 5px
 
-			.dijitDownArrowButton
-				width: 100%
-				height: 100%
+		.dijitArrowButtonInner
+			display: none
 
-				.dijitIcon
-					icon-image(-300, -20, '../', '-white')
-					margin: ((headerHeight - 20px) / 2) 5px
-
-				.dijitArrowButtonInner
-					display: none
-
-		&.dijitHover
-			background-color: rgba(0, 0, 0, 0.1)
-
-		&.invisible
-			visibility: hidden
+	.umcMoreTabsDropDownButton--invisible
+		visibility: hidden
 
 	.umcHeaderLeft
 		position: absolute
@@ -129,13 +102,11 @@ headerHeight = 48px
 		top: 0
 
 		.umcLiveSearch
-			display: inline-block
-			vertical-align: top
-			height: 100%
+			float: left
 			width: 150px
-
 			height: 100%
 			transition: width 0.3s
+			margin-right: material-grid(1)
 
 			.umcSearchBox
 				margin-top: 4px
@@ -149,82 +120,64 @@ headerHeight = 48px
 			.umcLiveSearchSidebarRadioButtonGroup
 				display: none
 
-			&.collapsed
-				width: 60px
+			@media (max-width: $xxs-max)
+				&.collapsed
+					width: 60px
 
-				.umcSearchBox,
-				.umcSearchBox:before,
-				.umcSearchBox:after
-					border-color: transparent
+					.umcSearchBox:after
+						border-color: transparent
 
-				.umcSearchIcon
-					margin-right: 20px
+					.umcSearchIcon
+						margin-right: 20px
 
-				.dijitInputField
-					opacity: 0
-					width: 0
+					.dijitInputField
+						opacity: 0
+						width: 0
 
 		.umcNotificationDropDownButton
+			float: left
 			position: relative
-			width: 60px
-			height: 48px
-			display: inline-block
-			margin: 0
-			box-shadow: none
 
 			.notificationCountNode
 				position: absolute
+				top: 7px
+				right: 14px
+				box-sizing: content-box
 				width: 17px
 				height: 17px
+				background-color: #fff
+				border: 1px solid #6e6e6e
 				border-radius: 50%
-				top: 8px
-				right: 15px
-				background-color: $error-color
 				display: flex
 				justify-content: center
 				align-items: center
 				font-size: 12px
-				color: white
+				color: $material-text-dark-high
 				opacity: 0
 				transition: opacity 0.2s
 			&.hasNotifications .notificationCountNode
 				opacity: 1
 
-			.dijitButtonNode
-				width: 100%
-				height: 100% !important
+			.umcNotificationIcon
+				margin: 14px 18px
+				icon-image(-220, -80, '../', '-white')
+				^[-3].hasNotifications ^[-3..-1]
+					animation-name: shake
+					animation-duration: 1s
 
-				.dijitDownArrowButton
-					width: 100%
-					height: 100%
-
-					.umcNotificationIcon
-						margin: 14px 20px
-						icon-image(-220, -80, '../')
-						^[-3].hasNotifications ^[-3..-1]
-							animation-name: shake
-							animation-duration: 1s
-
-					.dijitArrowButtonInner
-						display: none
+			.dijitArrowButtonInner
+				display: none
 
 		.umcLoginButton
-			margin: 0
-			height: headerHeight
-			line-height: (headerHeight - 4px)
-			padding: 0 10px
-
-			.dijitButtonText
-				padding: 0
-
-			.dijitButtonNode
-				background: transparent !important
+			float: left
+			.dijitIcon
+				margin: 14px 18px
 
 		.umcMobileMenuToggleButton
-			display: inline-block
-			vertical-align: top
+			float: left
 
 		.univentionLogo
+			float: left
 			display: inline-block
 			vertical-align: top
 			background-image: url(../images/univention.svg)
@@ -232,140 +185,42 @@ headerHeight = 48px
 			background-position: center center
 			height: headerHeight
 			width: 160px
-			margin-left: 5px
+			margin-left: material-grid(1)
 
 			@media (max-width: 650px)
 				background-image: url(../images/univention_u.svg)
 				width: 30px
 
-	.dijitButtonNode
-		height: auto !important
-		background: none
-		filter: none
-		border-radius: 0
-		border: none
-		padding: 0
-		box-shadow: none
-
-	.dijitDropDownButton[widgetid=umcMenuHost],
-	.dijitDropDownButton[widgetid=umcMenuMain]
-		display: inline-block
-		text-align: left
-		padding-right: 2px
-
-		.dijitDownArrowButton
-			text-align: left
-
-		&.dijitDisabled
-			.dijitIcon
-				opacity: 1 !important
-
-			.dijitButtonText
-				padding-right: 0
-
-	@media (max-width: 549px)
-		.dijitDropDownButton[widgetid=umcMenuHost]
-			max-width: 60%
-			float: left
-
-		.dijitDropDownButton[widgetid=umcMenuMain]
-			max-width: 40%
-
-	#umcMenuMain,
-	#umcMenuHost
-		outline: none
-
-	#umcMenuMain .dijitButtonText,
-	#umcMenuHost .dijitButtonText
-		display: inline-block
-		background: none
-		filter: none
-		box-shadow: none
-		color: $text-color
-		font-size: $font-size-title
-		opacity: 1 !important /*overwrite generic disabled rule*/
-
-	.dijitDisabled #umcMenuHost .dijitArrowButtonInner
-		width: 0
+	.dijitButton,
+	.dijitDropDownButton
+		margin: 0
+		.dijitButtonNode
+			border-radius: 0
+			height: headerHeight
+			padding: 0
 
 .umc
 	&.umcOverviewShown .umcHeader
 		.umcBackToOverview
-			background-image: url('../images/home.svg')
-			background-color: #c6c6c6
-
-			&.dijitHover,
-			&.dijitActive
-				.dijitButtonNode
-					cursor: default
-
-		.umcMainTabController .dijitTab
-			color: rgba(0, 0, 0, 0.7)
-
-			&.dijitTabChecked,
-			&.dijitTabHover
-				color: rgba(255, 255, 255, 1)
-
-		.umcMoreTabsDropDownButton .dijitButtonNode .dijitDownArrowButton .dijitIcon
-			icon-image(-300, -20, '../')
-
-	&.umcOverviewNotShown .umcHeader,
-	.umcHeader.umcWhiteIcons
-		.umcBackToOverview
-			&.dijitHover
-				background-color: rgba(0, 0, 0, 0.1)
-
-		.umcMainTabController .dijitTab
-			color: rgba(255, 255, 255, 0.7)
-
-			&.dijitTabChecked
-				color: rgba(255, 255, 255, 1)
-
-		.umcHeaderRight
-			.umcSearchBox,
-			.umcSearchBox:before,
-			.umcSearchBox:after
-				color: #fff
-				border-color: #fff
-
-			.umcSearchIcon,
-			.umcLoggedInIcon,
-			.umcLoggedOutIcon
-				background-image: url(../images/icons-white.svg)
-
-			.umcNotificationDropDownButton
-				.notificationCountNode
-					top: 7px
-					right: 14px
-					border-width: 1px
-					border-style: solid
-					background-color: white
-					box-sizing: content-box
-
-				.dijitButtonNode .dijitDownArrowButton .umcNotificationIcon
-					/* use !important to overwrite IE specific rule from icon-image in variables.styl */
-					background-image: url(../images/icons-white.svg) !important
-
-			.umcMobileMenuToggleButton div
+			position: relative
+			&:after
+				content: ''
+				display: block
+				position: absolute
+				bottom: 0
+				left: 0
+				right: 0
+				height: material-grid(1, true)
 				background-color: #fff
 
-			.univentionLogo
-				background-image: url(../images/univention-white.svg)
-
-				@media (max-width: 650px)
-					background-image: url(../images/univention_u-white.svg)
-
-		.dijitSelect, .dijitTextBox
-			.dijitInputContainer .umcInlineLabel
-				color: rgba(255, 255, 255, 1)
-
+/* more tabs drop down menu */
 .umc .umcMoreTabsMenuPopupWrapper
 	margin: 3px 0 0 3px
 
 .umc .umcMoreTabsDropDownMenuContent
 	margin: 0
 	background-color: #fff
-	padding: 8px 0
+	padding: material-grid(1) 0
 
 	.dijitMenuItem
 		transition-property: background-color, color
@@ -375,7 +230,7 @@ headerHeight = 48px
 		.dijitMenuItemLabel
 			text-align: center
 			line-height: 32px
-			padding: 0 24px
+			padding: 0 material-grid(3)
 
 		.dijitMenuItemIconCell,
 		.dijitMenuArrowCell
@@ -384,6 +239,40 @@ headerHeight = 48px
 		&.dijitMenuItemSelected td,
 		&.dijitMenuItemHover td
 			background-color: inherit
+/* more tabs drop down menu  END */
+
+
+.umc .umcHeader.umcWhiteIcons
+	.umcMainTabController .dijitTab
+		color: rgba(255, 255, 255, 0.7)
+
+		&.dijitTabChecked
+			color: rgba(255, 255, 255, 1)
+
+	.umcHeaderRight
+		.umcSearchBox
+			color: #fff
+			border-color: #fff
+
+		.umcSearchIcon,
+		.umcLoggedInIcon,
+		.umcLoggedOutIcon
+			background-image: url(../images/icons-white.svg)
+
+		.umcMobileMenuToggleButton div
+			background-color: #fff
+
+		.univentionLogo
+			background-image: url(../images/univention-white.svg)
+
+			@media (max-width: 650px)
+				background-image: url(../images/univention_u-white.svg)
+
+	.dijitSelect, .dijitTextBox
+		.dijitInputContainer .umcInlineLabel
+			color: rgba(255, 255, 255, 1)
+
+
 
 /* special stylings depending on device class */
 
@@ -411,7 +300,7 @@ headerHeight = 48px
 .umc
 	.umcMobileMenuToggleButton
 		position: relative
-		width: parentWidth = 60px
+		width: parentWidth = material-grid(7)
 		height: parentHeight = headerHeight
 		$stripeWidth = 20px
 		$stripeHeight = 4px
@@ -728,3 +617,28 @@ headerHeight = 48px
 
 			div:nth-child(3)
 				transform: translate3d(0, -7px, 0) rotate(-45deg)
+
+.umc .umcHeader--umc
+	background-color: #6e6e6e
+	material-shadow(1)
+	z-index: 2
+
+	.umcHeaderRight
+		margin-right: 0
+		.univentionLogo
+			margin-left: 0
+			background-image: url(../images/univention_u-white.svg)
+			width: material-grid(7)
+
+		.umcMobileMenuToggleButton div
+			background-color: #fff
+
+		.umcSearchBox
+			color: #fff
+			border-color: #fff
+
+			.umcInlineLabel
+				color: #fff
+
+		.umcSearchIcon
+			background-image: url(../images/icons-white.svg)
