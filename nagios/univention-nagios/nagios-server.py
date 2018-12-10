@@ -593,7 +593,7 @@ def handleHost(dn, new, old):
 	grpname = 'AllHosts'
 	ldapbase = listener.baseConfig['ldap/base']
 	result = re.search('^cn=%s(,.*?)?,%s$' % (host, ldapbase), dn)
-	if result:
+	if result and result.group(1):
 		grpname = re.sub(',\w+=', '_', result.group(1))[1:]
 
 	# fqdn changed ==> remove old entry and create new ones
