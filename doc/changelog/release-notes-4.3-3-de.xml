@@ -64,7 +64,7 @@
 			</para></listitem>
 			<listitem><para>
 				Diverse Security Updates wurden in UCS 4.3-3 integriert, bspw. für den Linux Kernel, <wordasword>Samba</wordasword> und <wordasword>Apache2</wordasword>.
-				UCS 4.3-3 basiert nun auf dem im November veröffentlichten Debian Pointrelease 9.6
+				UCS 4.3-3 basiert auf dem im November veröffentlichten Debian Release 9.6.
 				Eine vollständige Liste ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>
