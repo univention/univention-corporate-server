@@ -6,8 +6,7 @@ src: libphp-phpmailer
 fix: 5.2.14+dfsg-2.3+deb9u1
 desc: |
  This update addresses the following issue:
- * PHPMailer before 5.2.27 and 6.x before 6.0.6 is vulnerable to an object
-   injection attack. (CVE-2018-19296)
+ * PHPMailer is vulnerable to an object injection attack. (CVE-2018-19296)
 bug: [48306]
 cve:
 - CVE-2018-19296
