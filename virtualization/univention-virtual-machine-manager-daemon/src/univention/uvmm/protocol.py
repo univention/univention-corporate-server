@@ -582,6 +582,7 @@ class Data_Domain(object):
 		self.boot = []  # (fd|hd|cdrom|network)+
 
 		self.state = 0
+		self.reason = 0
 		self.maxMem = 0L
 		self.curMem = 0L
 		self.vcpus = 1

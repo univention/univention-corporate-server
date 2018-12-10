@@ -339,6 +339,8 @@ class Domain(PersistentCached):
 		self.pd.state, maxMem, curMem, self.pd.vcpus, runtime = info
 		self.pd.maxMem = long(maxMem) << 10  # KiB
 
+		self.pd.state, self.pd.reason = domain.state()
+
 		if self.pd.state in (libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
 			self.pd.curMem = 0L
 			delta_used = 0L
@@ -1212,6 +1214,7 @@ class Node(PersistentCached):
 					'uuid': pd.uuid,
 					'name': pd.name,
 					'state': STATES[pd.state],
+					'reason': pd.reason,
 					'mem': pd.maxMem,
 					'cpu_usage': pd.cputime[0],
 					'vnc': bool(vnc),
@@ -1929,7 +1932,7 @@ def domain_state(uri, domain, state):
 			for t in range(20):
 				if state != 'RUN':
 					break
-				cur_state = dom.info()[0]
+				cur_state = dom.state()[0]
 				if cur_state != libvirt.VIR_DOMAIN_PAUSED:
 					# do update explicitly
 					dom_stat.pd.state = cur_state
@@ -2042,7 +2045,7 @@ def domain_migrate(source_uri, domain, target_uri, mode=0):
 		source_conn = source_node.conn
 		if source_conn is not None:
 			source_dom = source_conn.lookupByUUIDString(domain)
-			source_state = source_dom.info()[0]
+			source_state, reason = source_dom.state()
 		domStat = source_node.domains[domain]
 
 		if source_conn is None:  # offline node
@@ -2080,7 +2083,8 @@ def domain_migrate(source_uri, domain, target_uri, mode=0):
 
 			flags |= libvirt.VIR_MIGRATE_LIVE
 			if source_state == libvirt.VIR_DOMAIN_PAUSED:
-				pass
+				if reason in (libvirt.VIR_DOMAIN_PAUSED_MIGRATION, libvirt.VIR_DOMAIN_PAUSED_POSTCOPY, libvirt.VIR_DOMAIN_PAUSED_POSTCOPY_FAILED):
+					raise NodeError(_('Domain "%(domain)s" in state "%(state)s" can not be migrated'), domain=domain, state=STATES[source_state])
 			elif 1 <= mode <= 99:
 				flags |= libvirt.VIR_MIGRATE_AUTO_CONVERGE
 				params = {
