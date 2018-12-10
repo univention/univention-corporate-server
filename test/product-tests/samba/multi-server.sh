@@ -1,4 +1,49 @@
+#!/bin/bash
+
+set -x
+set -e
+
+prepare () {
+	set -x
+	set -e
+	ucr set server/password/interval='0'
+	/usr/lib/univention-server/server_password_change
+	test -z "$(find /var -name core)"
+}
+
 prepare_master () {
+	set -x
+	set -e
+	prepare
+}
+
+prepare_backup () {
+	set -x
+	set -e
+	prepare
+}
+
+prepare_slave () {
+	set -e
+	set -x
+	prepare
+	echo "Hello World" > /home/testshare/test.txt
+}
+
+prepare_member () {
+	set -e
+	set -x
+	prepare
+	echo "Hello World" > /home/testshare/test.txt
+}
+
+prepare_rodc () {
+	set -e
+	set -x
+	prepare
+}
+
+test_master () {
 
 	set -x
 	set -e
@@ -7,14 +52,6 @@ prepare_master () {
 
 	eval "$(ucr shell ldap/base windows/domain)"
 
-	# check winrm
-	if ! dpkg -l python-winrm | grep ^ii 1>/dev/null; then
-		( . utils.sh && install_winrm )
-	fi
-
- 	ucr set server/password/interval='0'
-	/usr/lib/univention-server/server_password_change
-	#univention-install --yes univention-printserver-pdf
 
 	# get windows client info/name
 	python shared-utils/ucs-winrm.py run-ps --cmd ipconfig
@@ -140,9 +177,8 @@ prepare_master () {
 	create_gpo_in_server NewGPOinBackup "dc=sambatest,dc=local" $BACKUP
 	# Per Gruppenrichtlineinverwaltung (GPMC) vom Client aus auf den DC Backup wechseln (Rechts-click auf Domäne, anderen DC auswählen)
 	# und dort z.B. die Benutzer-Richtlinie anpassen (z.B. einfach Lautstärkesymbol entfernen -> deaktivieren/Ok). Es sollte keine Fehlermeldung kommen. DONE : simulated by creating GPO with Backup as DC
-	
 	echo "Success"
-	
+
 	# Check list
 	#Es sollte eine größere UCS Domäne aufgesetzt werden, also DC Master, DC Backup, DC Slave und Memberserver zusätzlich sollte ein RODC installiert werden, siehe Produkttests UCS 3.2 Samba 4#Read-Only-DC. Auf allen Systemen sollte Samba4 (optional Printserver) im Installer ausgewählt werden. Auf dem Memberserver Samba 3. Done: see cfg file
 	#Auf allen Systemen sollte einmal server-password-change aufgerufen werden Done: cfg file
@@ -172,14 +208,7 @@ prepare_master () {
 
 	#PASSWORDS
 	#Änderung
-}
 
-test_master () {
-
-	set -x
-	set -e
-	. product-tests/samba/utils.sh
-	
 	#mount network share of slave and member server from windows client
 	#    Sind die Shares vom Win7 und Win8.1 / W2012 Client erreichbar und verwendbar?
 	#	Verschiedenen Optionen an Share testen (siehe Handbuch) DONE
@@ -239,32 +268,19 @@ test_master () {
 }
 
 
-# set -x ... DONE
-prepare_nonmaster () {
-
-	set -x
-	set -e
-	ucr set server/password/interval='0'
-	/usr/lib/univention-server/server_password_change
-	test -z "$(find /var -name core)"
-}
-
-prepare_slave () {
+test_slave () {
 	set -e
 	set -x
-	#univention-install --yes univention-printserver-pdf
-	#rpcclient localhost -U "SAMBATEST\administrator%Univention@99#+?=$" -c 'setdriver "Slaveprinter" "MS Publisher Color Printer"'
-	echo "Hello World" > /home/testshare/test.txt
-}
-prepare_member () {
-	set -e
-	set -x
-	#univention-install --yes univention-printserver-pdf
-	#rpcclient localhost -U "SAMBATEST\administrator%Univention@99#+?=$" -c 'setdriver "Memberprinter" "MS Publisher Color Printer"'
-	echo "Hello World" > /home/testshare/test.txt
+	stat /var/spool/cups-pdf/administrator/job_1-document.pdf
+	stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
 }
 
-test_nonmaster () {
+test_backup() {
+	set -e
+	set -x
+}
+
+test_member () {
 	set -e
 	set -x
 	stat /var/spool/cups-pdf/administrator/job_1-document.pdf
@@ -272,10 +288,8 @@ test_nonmaster () {
 }
 
 test_rodc () {
-
 	set -x
 	set -e
-
 	# Schreibzugriffe gegen den RODC sollten scheitern, z.B.
 	ldbedit -H ldap://localhost -UAdministrator%univention samaccountname="$hostname\$" description || echo "expected behaviour : write operation failed"
 	samba-tool user add rodcuser1 Password.99 || echo "expected behaviour : write operation failed"
