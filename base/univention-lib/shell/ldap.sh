@@ -48,6 +48,12 @@ ucs_getAttrOfDN () { # <attr> <dn> [<ldapsearch-credentials>]
 	fi
 }
 
+die() {
+	rc=$?
+	echo "$1"
+	exit $rc
+}
+
 #
 # ucs_convertUID2DN returns DN of user object for specified UID
 # ucs_convertUID2DN <uid> [<ldapsearch-credentials>]
