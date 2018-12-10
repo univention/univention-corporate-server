@@ -103,6 +103,9 @@
 
 /* PortalContentSelection */
 .umc .dojoDndItem_PortalCategory {
+	display: -ms-grid;
+	-ms-grid-columns: 40px 1fr auto;
+	-ms-grid-rows: auto auto;
 	display: grid;
 	grid-gap: 10px;
 	grid-template-columns: 40px 1fr auto;
@@ -110,16 +113,13 @@
 	grid-template-areas:
 		"handle category delete"
 		"handle entries  delete";
-	display: -ms-grid;
-	-ms-grid-columns: 40px 1fr auto;
-	-ms-grid-rows: auto auto;
 }
 
 .umc .dojoDndItem_PortalCategory > .dojoDndHandle {
-	grid-area: handle;
 	-ms-grid-column: 1;
 	-ms-grid-row: 1;
 	-ms-grid-row-span: 2;
+	grid-area: handle;
 	background-color: #a0a0a0;
 	border-radius: 2px;
 	cursor: move;
@@ -137,38 +137,38 @@
 }
 
 .umc .dojoDndItem_PortalCategory.umcMultiInputContainer > .umcLabelPane:not(.umcMultiInputLastRowEntry){
-	grid-area: category;
 	-ms-grid-column: 2;
 	-ms-grid-row: 1;
+	grid-area: category;
 	width: 100%;
 	padding: 0;
 }
 
 .umc .dojoDndItem_PortalCategory > .umcMultiInputLastRowEntry {
-	grid-area: entries;
 	-ms-grid-column: 2;
 	-ms-grid-row: 2;
+	grid-area: entries;
 	padding: 0 !important;
 	margin: 0 !important;
 }
 
 .umc .dojoDndItem_PortalCategory > .umcMultiInputRemoveButton {
-	grid-area: delete;
 	-ms-grid-column: 3;
 	-ms-grid-row: 1;
 	-ms-grid-row-span: 2;
+	grid-area: delete;
 	margin: 0;
 	padding: 0;
 }
 
 .umc .dojoDndItem_PortalCategory > .dojoDndItem_dndCover,
 .umc .dojoDndItem_PortalEntry > .dojoDndItem_dndCover {
-	grid-column: handle-end / -1;
-	grid-row: 1 / -1;
 	-ms-grid-column: 2;
 	-ms-grid-column-span: 2;
 	-ms-grid-row: 1;
 	-ms-grid-row-span: 2;
+	grid-column: handle-end / -1;
+	grid-row: 1 / -1;
 	background-color: transparent;
 	position: relative;
 	z-index: 1;
@@ -185,18 +185,18 @@
 }
 
 .umc .dojoDndItem_PortalEntry {
+	display: -ms-grid;
+	-ms-grid-columns: 40px 1fr auto;
 	display: grid;
 	grid-gap: 10px;
 	grid-template-columns: 40px 1fr auto;
 	grid-template-areas:
 		"handle entry delete";
-	display: -ms-grid;
-	-ms-grid-columns: 40px 1fr auto;
 }
 
 .umc .dojoDndItem_PortalEntry > .dojoDndHandle{
-	grid-area: handle;
 	-ms-grid-column: 1;
+	grid-area: handle;
 	background-color: #a0a0a0;
 	border-radius: 2px;
 	cursor: move;
@@ -214,15 +214,15 @@
 }
 
 .umc .dojoDndItem_PortalEntry > .umcLabelPane {
-	grid-area: entry;
 	-ms-grid-column: 2;
+	grid-area: entry;
 	padding: 0 !important;
 	width: 100%;
 }
 
 .umc .dojoDndItem_PortalEntry > .umcMultiInputRemoveButton {
-	grid-area: delete; 
 	-ms-grid-column: 3;
+	grid-area: delete; 
 	padding: 0;
 	margin: 0;
 }
