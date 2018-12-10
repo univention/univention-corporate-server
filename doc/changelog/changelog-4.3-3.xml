@@ -523,6 +523,9 @@
 				<listitem><simpara>
 					Allow to customize portal with an about page (<u:bug>43442</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Searching for some UDM properties led to a traceback (<u:bug>47910</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -831,9 +834,6 @@
 					The migration is aborted if the target host's CPU is not compatible.
 					Virtual machines must be restarted to activate pending changes.
 					UVMM monitors running virtual machines for reboot events and restarts them automatically (<u:bug>21386</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Searching for some UDM properties led to a traceback (<u:bug>47910</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
