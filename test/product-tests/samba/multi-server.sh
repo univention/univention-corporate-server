@@ -15,7 +15,6 @@ prepare_master () {
 	set -x
 	set -e
 	prepare
-	return 1
 }
 
 prepare_backup () {
