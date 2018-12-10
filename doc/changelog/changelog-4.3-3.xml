@@ -264,7 +264,9 @@
 						<member><package>docopt</package> (<u:bug>43612</u:bug>)</member>
 						<member><package>lazy-object-proxy</package> (<u:bug>48086</u:bug>)</member>
 						<member><package>libconfig-inifiles-perl</package> (<u:bug>48201</u:bug>)</member>
+						<member><package>libhx</package> (<u:bug>47933</u:bug>)</member>
 						<member><package>libresample</package> (<u:bug>48007</u:bug>)</member>
+						<member><package>python-bsddb3</package> (<u:bug>47933</u:bug>)</member>
 						<member><package>python-docker</package> (<u:bug>43612</u:bug>)</member>
 						<member><package>python-functools32</package> (<u:bug>43612</u:bug>)</member>
 						<member><package>python-jsonschema</package> (<u:bug>43612</u:bug>)</member>
@@ -273,6 +275,7 @@
 						<member><package>ruamel.yaml</package> (<u:bug>43612</u:bug>)</member>
 						<member><package>texttable</package> (<u:bug>43612</u:bug>)</member>
 						<member><package>websocket-client</package> (<u:bug>43612</u:bug>)</member>
+						<member><package>wimlib</package> (<u:bug>47994</u:bug>)</member>
 					</simplelist>
 				</para>
 			</listitem>
