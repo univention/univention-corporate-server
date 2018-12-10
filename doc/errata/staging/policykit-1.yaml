@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [2, 3]
+scope: ucs_4.3-0-errata4.3-3
+src: policykit-1
+fix: 0.105-18+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Improper handling of user with uid > INT_MAX leading to authentication
+   bypass (CVE-2018-19788)
+bug: [48307]
+cve:
+- CVE-2018-19788
