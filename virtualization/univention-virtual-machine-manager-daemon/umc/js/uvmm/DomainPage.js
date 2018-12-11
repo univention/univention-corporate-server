@@ -37,7 +37,6 @@ define([
 	"dojo/dom-attr",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
-	"dijit/form/MappedTextBox",
 	"umc/tools",
 	"umc/dialog",
 	"umc/store",
@@ -59,10 +58,11 @@ define([
 	"umc/modules/uvmm/TargetHostGrid",
 	"umc/modules/uvmm/InterfaceGrid",
 	"umc/modules/uvmm/DriveGrid",
+	"umc/modules/uvmm/MemoryTextBox",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, topic, on, domAttr, Memory, Observable, MappedTextBox, tools, dialog, store, Page, Form, ContainerWidget, TabController, StackContainer, TitlePane, StandbyMixin,
-	TextBox, TextArea, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, TargetHostGrid, InterfaceGrid, DriveGrid, types, _) {
+], function(declare, lang, array, topic, on, domAttr, Memory, Observable, tools, dialog, store, Page, Form, ContainerWidget, TabController, StackContainer, TitlePane, StandbyMixin,
+	TextBox, TextArea, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, TargetHostGrid, InterfaceGrid, DriveGrid, MemoryTextBox, types, _) {
 
 	return declare("umc.modules.uvmm.DomainPage", [ Page, StandbyMixin ], {
 		nested: true,
@@ -198,26 +198,9 @@ define([
 					dynamicValues: types.getCPUs
 				}, {
 					name: 'maxMem',
-					type: MappedTextBox,
+					type: MemoryTextBox,
 					required: true,
-					constraints: {min: 4*1024*1024},
-					format: types.prettyCapacity,
-					parse: types.parseCapacity,
-					validator: function(value, constraints) {
-						var size = types.parseCapacity(value);
-						if (size === null) {
-							return false;
-						}
-						if (constraints.min && size < constraints.min) {
-							return false;
-						}
-						if (constraints.max && size > constraints.max) {
-							return false;
-						}
-						return true;
-					},
-					invalidMessage: _('The memory size is invalid (e.g. 3GB or 1024 MB), minimum 4 MB'),
-					label: _('Memory')
+					label: _('Memory (default unit MB)')
 				}, {
 					name: 'boot_hvm',
 					type: MultiInput,
@@ -235,6 +218,10 @@ define([
 					name: 'vnc',
 					type: CheckBox,
 					label: _('Direct access (VNC)')
+				}, {
+					name: 'hyperv',
+					type: CheckBox,
+					label: _('Enable Hyper-V Enlightment)')
 				}, {
 					name: 'vnc_remote',
 					type: CheckBox,
@@ -264,7 +251,8 @@ define([
 						'vcpus',
 						'maxMem',
 						'rtc_offset',
-						'boot_hvm'
+						'boot_hvm',
+						'hyperv'
 					]
 				}, {
 					label: _('Remote access'),
@@ -380,7 +368,6 @@ define([
 			page.tabController = new TabController({
 				containerId: this._stack.id,
 				region: 'nav'
-				
 			});
 			page.addChild(page.tabController);
 			this._stack.addChild(page);
@@ -429,9 +416,10 @@ define([
 		},
 
 		load: function(id) {
-			this._standbyWidget.opacity = 1;
 			this.standby(true);
-			this._standbyWidget.opacity = 0.75;
+			// clear form data
+			this._generalForm.clearFormValues();
+			this._stack.selectChild( this._generalPage, true);
 
 			tools.umcpCommand('uvmm/domain/get', {
 				domainURI: id
@@ -446,8 +434,6 @@ define([
 
 					this.moduleWidget.set('titleDetail', this._domain.name);
 
-					// clear form data
-					this._generalForm.clearFormValues();
 					this._advancedForm.clearFormValues();
 					// set values to form
 					this._generalForm.setFormValues(this._domain);
@@ -468,6 +454,7 @@ define([
 						this.showChild( this._devicesPage );
 						this._headerButtons.save.set( 'disabled', false );
 					}
+					this._advancedForm._widgets.maxMem.resetCache();
 					this._advancedForm.setFormValues(this._domain);
 
 					// special handling for boot devices
@@ -478,7 +465,7 @@ define([
 						idev.$id$ = i + 1;
 					});
 
-					// we need to add pseudo ids for the network interfaces
+					// we need to add pseudo ids for the drives
 					array.forEach(this._domain.disks, function(idrive, i) {
 						idrive.$id$ = i + 1;
 					});
@@ -514,7 +501,6 @@ define([
 							iwidget.set( 'disabled', domainActive );
 						}
 					} ) );
-					this._stack.selectChild( this._generalPage, true);
 
 					// force a refresh of the grids
 					this._interfaceGrid.filter();

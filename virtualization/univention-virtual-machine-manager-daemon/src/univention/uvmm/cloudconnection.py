@@ -43,6 +43,12 @@ import cPickle as pickle
 
 from .protocol import Cloud_Data_Connection, Cloud_Data_Image, Cloud_Data_Keypair
 from .helpers import TranslatableException, ms, uri_encode
+try:
+	from typing import Any, Callable, Dict, List, Optional  # noqa
+	from .protocol import Cloud_Data_Instance, Cloud_Data_Size, Cloud_Data_Network, Cloud_Data_Subnet  # noqa
+	from libcloud.compute.base import NodeDriver  # noqa
+except ImportError:
+	pass
 
 logger = logging.getLogger('uvmmd.cloudconnection')
 
@@ -55,6 +61,7 @@ class CloudConnectionError(TranslatableException):
 class CloudConnection(object):
 
 	def __init__(self, cloud, cache_dir):
+		# type: (Dict[str, Any], str) -> None
 		self.type = cloud["type"]
 		self.DEFAULT_FREQUENCY = 15 * 1000  # ms
 		self.MAX_UPDATE_INTERVAL = 5 * 60 * 1000  # ms
@@ -64,11 +71,12 @@ class CloudConnection(object):
 		self._cache_dir = cache_dir
 		self._cache_hash = ""
 
+		self.driver = None  # type: NodeDriver
 		self.updatethread = None
 		self.config_default_frequency = self.DEFAULT_FREQUENCY
 		self.current_frequency = self.DEFAULT_FREQUENCY
 		self.fast_update_config_default_frequency = 0
-		self.fast_update_time = 0
+		self.fast_update_time = 0.0
 		self.timerEvent = threading.Event()
 
 		self.publicdata = Cloud_Data_Connection()
@@ -83,7 +91,7 @@ class CloudConnection(object):
 		self.publicdata.last_error_message = ""
 		self.publicdata.search_pattern = cloud['search_pattern']
 
-		self._preselected_images = []
+		self._preselected_images = []  # type: List[str]
 		if "preselected_images" in cloud and cloud["preselected_images"]:
 			logger.debug("Preselected images: %s" % cloud["preselected_images"])
 			self._preselected_images = cloud["preselected_images"]
@@ -92,21 +100,24 @@ class CloudConnection(object):
 
 		self._last_expensive_update = -1000000
 
-		self._instances = []
-		self._keypairs = []
-		self._images = []
-		self._sizes = []
-		self._networks = []
-		self._subnets = []
+		self._instances = []  # type: List[Cloud_Data_Instance]
+		self._keypairs = []  # type: List[Cloud_Data_Keypair]
+		self._images = []  # type: List[Cloud_Data_Image]
+		self._sizes = []  # type: List[Cloud_Data_Size]
+		self._networks = []  # type: List[Cloud_Data_Network]
+		self._subnets = []  # type: List[Cloud_Data_Subnet]
 
 	def _create_connection(self, cloud, testconnection=True):
+		# type: (Dict[str, Any], bool) -> None
 		pass
 
 	def connect(self, cloud, testconnection=True):
+		# type: (Dict[str, Any], bool) -> None
 		self.cache_restore()
 		self._create_connection(cloud, testconnection)
 
 	def unregister(self, wait=False):
+		# type: (bool) -> None
 		logger.debug("in unregister %s" % self.publicdata.name)
 		"""
 		Remove connection to this service
@@ -125,17 +136,20 @@ class CloudConnection(object):
 		logger.debug("Removed connection to %s" % self.publicdata.name)
 
 	def set_frequency(self, freq):
+		# type: (int) -> None
 		self.config_default_frequency = freq
 		self.current_frequency = freq
 		self.timerEvent.set()
 
 	def set_frequency_fast_update(self):
+		# type: () -> None
 		if self.fast_update_time == 0:
 			self.fast_update_time = time.time()
 			self.fast_update_config_default_frequency = self.config_default_frequency
 			self.set_frequency(self.FAST_UPDATE_FREQUENCY)
 
 	def run(self):
+		# type: () -> None
 		logger.info("Starting update thread for %s: %s", self.publicdata.name, self.publicdata.url)
 		while self.updatethread is not None:
 			try:
@@ -149,6 +163,7 @@ class CloudConnection(object):
 		logger.info("Stopping update thread for %s: %s", self.publicdata.name, self.publicdata.url)
 
 	def update(self):
+		# type: () -> None
 		try:
 			logger.debug("Updating information for %s: %s", self.publicdata.name, self.publicdata.url)
 			# double update freqency in case an update error occurs
@@ -182,13 +197,16 @@ class CloudConnection(object):
 		self.publicdata.available = self.publicdata.last_update == self.publicdata.last_update_try
 
 	def update_expensive(self):
+		# type: () -> None
 		pass
 
 	# Caching
 	def cache_file_name(self, suffix=".pic"):
+		# type: (str) -> str
 		return os.path.join(self._cache_dir, uri_encode(self.publicdata.name) + suffix)
 
 	def cache_save(self):
+		# type: () -> None
 		instances = self.list_instances()
 		new_name = self.cache_file_name(suffix=".new")
 		old_name = self.cache_file_name()
@@ -207,6 +225,7 @@ class CloudConnection(object):
 		os.rename(new_name, old_name)
 
 	def cache_restore(self):
+		# type: () -> None
 		# check if there is a cache file
 		cache_file_name = self.cache_file_name()
 		if os.path.isfile(cache_file_name):
@@ -231,6 +250,7 @@ class CloudConnection(object):
 		return instance[0]
 
 	def list_keypairs(self):
+		# type: () -> List[Cloud_Data_Keypair]
 		keypairs = []
 		for keypair in self._keypairs:
 			k = Cloud_Data_Keypair()
@@ -246,6 +266,7 @@ class CloudConnection(object):
 		return keypairs
 
 	def to_cloud_data_image(self, image):
+		# type: (Any) -> Cloud_Data_Image
 		cloud_data_image = Cloud_Data_Image()
 		cloud_data_image.name = image.name
 		cloud_data_image.extra = image.extra
@@ -255,6 +276,7 @@ class CloudConnection(object):
 		return cloud_data_image
 
 	def list_images(self):
+		# type: () -> List[Cloud_Data_Image]
 		# Copied from ucs2cloud.list_images, but without ucs_images and without extra['owner_id'] and a different name attribute
 		regex = None
 		if self.publicdata.search_pattern:
@@ -276,12 +298,21 @@ class CloudConnection(object):
 				images.append(self.to_cloud_data_image(image))
 		return images
 
+	def list_instances(self, pattern="*"):
+		# type: (str) -> List[Any]
+		raise NotImplementedError()
+
+	def _exec_libcloud(self, func):
+		# type: (Callable) -> Any
+		raise NotImplementedError()
+
 	def logerror(self, logger, msg):
-		'''
+		# type: (logging.Logger, str) -> None
+		"""
 		Log the error with the traceback.
 		Set self.publicdata.last_error_message to the error message in order to
 		give the frontend the possibility to show it to the user
-		'''
+		"""
 		logger.error(msg, exc_info=True)
 		self.publicdata.last_error_message = msg
 

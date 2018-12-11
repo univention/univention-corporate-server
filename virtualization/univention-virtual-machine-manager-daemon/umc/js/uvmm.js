@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define, window, require*/
+/*global define, window, require, console, document*/
 
 define([
 	"dojo/_base/declare",
@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/kernel",
 	"dojo/_base/window",
+	"dojo/dom-class",
 	"dojo/window",
 	"dojo/string",
 	"dojo/query",
@@ -41,6 +42,7 @@ define([
 	"dojo/topic",
 	"dojo/on",
 	"dojo/aspect",
+	"dojo/promise/all",
 	"dojo/sniff",
 	"dojox/html/entities",
 	"dijit/Menu",
@@ -74,21 +76,35 @@ define([
 	"umc/modules/uvmm/snapshot",
 	"umc/i18n!umc/modules/uvmm",
 	"xstyle/css!./uvmm.css"
-], function(declare, lang, array, kernel, win, dojoWindow, string, query, Deferred, topic, on, aspect, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
+], function(
+	declare, lang, array, kernel, win, domClass, dojoWindow, string, query, Deferred, topic, on, aspect,
+	all, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
-	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, types, snapshot, _) {
+	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard,
+	InstancePage, InstanceWizard, CreatePage, types, snapshot, _
+) {
 
 	var isRunning = function(item) {
 		// isRunning contains state==PAUSED to enable VNC Connections to pause instances
-		return (item.state == 'RUNNING' || item.state == 'IDLE' || item.state == 'PAUSED') && item.node_available;
+		return (item.state == 'RUNNING' || item.state == 'IDLE' || item.state == 'PAUSED') && item.node_available && !isPausedForMigration(item);
 	};
 
 	var isPaused = function(item) {
 		return (item.state == 'PAUSED') && item.node_available;
 	};
 
+	var isPausedForMigration = function(item) {
+		//  2 Normal migration (Paused on target)
+		// 12 Postcopy migration (Paused on source)
+		return isPaused(item) && [2, 12].indexOf(item.reason) !== -1;
+	};
+
+	var isPausedForSnapshot = function(item) {
+		return isPaused(item) && item.reason === 3;
+	};
+
 	var canStart = function(item) {
-		return item.node_available && (item.state != 'RUNNING' && item.state != 'IDLE' && !isTerminated(item) && item.state != 'PENDING');
+		return item.node_available && (item.state != 'RUNNING' && item.state != 'IDLE' && !isTerminated(item) && item.state != 'PENDING') && !isPausedForMigration(item) && !isPausedForSnapshot(item);
 	};
 
 	var canVNC = function(item) {
@@ -145,6 +161,9 @@ define([
 
 		// internal Deferred to control the rate of updating _currentWidth
 		_resizeDeferred: null,
+
+		// used to catch context events on the tooltip
+		_contextCatcher: null,
 
 		uninitialize: function() {
 			this.inherited(arguments);
@@ -228,21 +247,8 @@ define([
 				this._grid = new Grid({
 					region: 'main',
 					actions: this._getGridActions('domain'),
-					actionLabel: ucr[ 'uvmm/umc/action/label' ] != 'no', // hide labels of action columns
 					columns: this._getGridColumns('domain'),
 					moduleStore: this.moduleStore
-					/*footerFormatter: lang.hitch(this, function(nItems, nItemsTotal) {
-					// generate the caption for the grid footer
-					if (0 === nItemsTotal) {
-					return _('No %(objPlural)s could be found', map);
-					}
-					else if (1 == nItems) {
-					return _('%(nSelected)d %(objSingular)s of %(nTotal)d selected', map);
-					}
-					else {
-					return _('%(nSelected)d %(objPlural)s of %(nTotal)d selected', map);
-					}
-					}),*/
 				});
 
 				this._searchPage.addChild(this._grid);
@@ -259,12 +265,6 @@ define([
 					grid: this._grid,
 					tree: this._tree,
 					interval: parseInt(ucr['uvmm/umc/autoupdate/interval'], 10),
-					onItemCountChanged: lang.hitch(this, function() {
-						if (!this._itemCountChangedNoteShowed) {
-							this.addNotification(_('The number of virtual machines changed. To update the view, click on "Search".'));
-							this._itemCountChangedNoteShowed = true;
-						}
-					})
 				});
 				this.own(this._gridUpdater);
 
@@ -283,7 +283,7 @@ define([
 				// customize the method getIconClass()
 				//onClick: lang.hitch(this, 'filter'),
 				getIconClass: lang.hitch(this, function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
-					return tools.getIconClass(this._iconClass(item));
+					return tools.getIconClass(this._iconClass(item)) + ' uvmm-tree-icon';
 				}),
 				getTooltip: lang.hitch(this, function(item) {
 					return this._getTreeTooltip(item);
@@ -460,52 +460,120 @@ define([
 			return false;
 		},
 
+		_hasMigrationMsg: function(item) {
+			if (item.hasOwnProperty('migration') && item.migration.hasOwnProperty('msg')) {
+				return !!item.migration.msg;
+			}
+			return false;
+		},
+
+		_isMigrating: function(item) {
+			// 1: VIR_DOMAIN_JOB_BOUNDED
+			// 2: VIR_DOMAIN_JOB_UNBOUNDED
+			var runningMigrationTypes = [1, 2];
+			return this._hasMigrationMsg(item) &&
+				item.migration.hasOwnProperty('type') &&
+				runningMigrationTypes.indexOf(item.migration.type) !== -1;
+		},
+
+		_migrate: function(ids, items) {
+			if (items.length > 1) {
+				console.error("Migrating multiple machines is not suported at the moment");
+				return;
+			}
+			if (this._isMigrating(items[0])) {
+				this._migrateStatus(ids, items);
+			} else {
+				this._migrateDomain(ids, items);
+			}
+		},
+
+		_getLocalizedMigrationMsg: function(migration) {
+			return lang.replace(
+				_('Migration in progress since {time_elapsed} sec, iteration {memory_iteration}'),
+				function(_, key) {
+					if (key === 'time_elapsed') {
+						return migration[key] / 1000;
+					}
+					return migration[key];
+				}
+			);
+		},
+
+		_migrateStatus: function(ids, items) {
+			var _dialog = null;
+			var _cleanup = function() {
+				_dialog.hide();
+				_dialog.destroyRecursive();
+			};
+			var localizedMigrationMsg = this._getLocalizedMigrationMsg(items[0].migration);
+
+			var form = new Form({
+				style: 'max-width: 500px;',
+				widgets: [ {
+					type: Text,
+					name: 'status',
+					content: _('<p>This machine is currently being migrated.</p><p>%s</p>', localizedMigrationMsg),
+				}],
+				buttons: [{
+					name: 'abort',
+					label: _( 'Abort migration' ),
+					focused: false,
+					tabindex: 2,
+					callback: lang.hitch(this, function() {
+						tools.umcpCommand('uvmm/domain/migrate', {
+						domainURI: ids[ 0 ],
+						mode: -1
+						});
+						this._grid._grid.deselect(ids[0]);
+						_cleanup();
+					})
+				}, {
+					name: 'postcopy',
+					label: _( 'Switch to postcopy' ),
+					focused: false,
+					tabindex: 3,
+					callback: lang.hitch(this, function() {
+						tools.umcpCommand('uvmm/domain/migrate', {
+						domainURI: ids[ 0 ],
+						mode: 101
+						});
+						this._grid._grid.deselect(ids[0]);
+						_cleanup();
+					})
+				}, {
+					name: 'cancel',
+					label: _('Close'),
+					callback: _cleanup,
+					tabindex: 1,
+					defaultButton: true
+				}],
+				layout: [ 'status', ['postcopy', 'abort'] ]
+			});
+
+			_dialog = new Dialog({
+				title: _('Migrate domain'),
+				content: form,
+				'class': 'umcPopup'
+			});
+
+			_dialog.show();
+		},
+
 		_migrateDomain: function( ids, items ) {
 			var _dialog = null, form = null;
 			var unavailable = array.some( items, function( domain ) {
 				return domain.node_available === false;
 			} );
-			if ( ids.length > 1 ) {
-				var uniqueNodes = {}, count = 0;
-				array.forEach( ids, function( id ) {
-					var nodeURI = id.slice( 0, id.indexOf( '#' ) );
-					if ( undefined === uniqueNodes[ nodeURI ] ) {
-						++count;
-					}
-					uniqueNodes[ nodeURI ] = true;
-				} );
-				if ( count > 1 ) {
-					dialog.alert( _( 'The selected virtual machines are not all located on the same physical server. The migration will not be performed.' ) );
-					return;
-				}
-			}
 
-			// check if multiple machines with migration target hosts are defined
-			var th_count = 0;
-			var targethosts = [];
-			array.forEach( items, function( item ) {
-				var deferred = tools.umcpCommand('uvmm/targethost/query', { domainURI: item.id });
-
-				deferred.then(lang.hitch(this, function(th_results) {
-					var hostlist = [];
-					array.forEach(th_results.result, function(result) {
-						hostlist.push(result.id);
-					});
-
-					if ( hostlist.length > 0 ) {
-						++th_count;
-					}
-					targethosts = hostlist;
-				}));
-
-			});
-
-			if ( th_count > 1 ) {
-				dialog.alert( _( 'Each virtual machine with defined migration targethosts has to be migrated separately. The migration will not be performed.' ) );
-				return;
-			}
-
-			types.getNodes().then(lang.hitch(this, function(items) {
+			all({
+				targethosts: tools.umcpCommand('uvmm/targethost/query', { domainURI: ids[0] }),
+				nodes: types.getNodes()
+			}).then(lang.hitch(this, function(results) {
+				var items = results.nodes;
+				var targethosts = array.map(results.targethosts.result, function(targethost) {
+					return targethost.id;
+				});
 				var _cleanup = function() {
 					_dialog.hide();
 					_dialog.destroyRecursive();
@@ -513,16 +581,13 @@ define([
 
 				var _migrate = lang.hitch(this, function(name) {
 					// send the UMCP command
-					this.showProgress();
 					tools.umcpCommand('uvmm/domain/migrate', {
 						domainURI: ids[ 0 ],
 						targetNodeURI: name
 					}).then(lang.hitch(this, function() {
-						this.moduleStore.onChange();
-						this.hideProgress();
+						this._grid.update();
 					}), lang.hitch(this, function() {
-						this.moduleStore.onChange();
-						this.hideProgress();
+						this._grid.update();
 					}));
 				});
 
@@ -531,8 +596,8 @@ define([
 
 				var validHosts = array.filter( items, function( item ) {
 					if (targethosts.length > 0) {
-					// if targethosts are defined, offline targethosts have to be filtered, too
-					return targethosts.indexOf(item.label) != -1 && item.available && item.id != sourceURI && types.getNodeType( item.id ) == sourceScheme;
+						// if targethosts are defined, offline targethosts have to be filtered, too
+						return targethosts.indexOf(item.label) != -1 && item.available && item.id != sourceURI && types.getNodeType( item.id ) == sourceScheme;
 					} else {
 						return item.id != sourceURI && types.getNodeType( item.id ) == sourceScheme;
 					}
@@ -553,21 +618,21 @@ define([
 						sortStaticValues: true
 					}],
 					buttons: [{
+						name: 'cancel',
+						label: _('Cancel'),
+						callback: _cleanup
+					}, {
 						name: 'submit',
 						label: _( 'Migrate' ),
-						style: 'float: right;',
-						callback: function() {
+						callback: lang.hitch(this, function() {
 							var nameWidget = form.getWidget('name');
 							if (nameWidget.isValid()) {
 								var name = nameWidget.get('value');
 								_cleanup();
+								this._grid._grid.deselect(ids[0]);
 								_migrate( name );
 							}
-						}
-					}, {
-						name: 'cancel',
-						label: _('Cancel'),
-							callback: _cleanup
+						})
 					}],
 					layout: [ 'warning', 'name' ]
 				});
@@ -682,17 +747,16 @@ define([
 				form = new Form({
 					widgets: widgets,
 					buttons: [{
+						name: 'cancel',
+						label: _('Cancel'),
+						callback: _cleanup
+					}, {
 						name: 'submit',
 						label: _( 'Delete' ),
-						style: 'float: right;',
 						callback: function() {
 							_cleanup();
 							_remove();
 						}
-					}, {
-						name: 'cancel',
-						label: _('Cancel'),
-						callback: _cleanup
 					}],
 					layout: layout
 				});
@@ -743,17 +807,16 @@ define([
 			form = new Form({
 				widgets: widgets,
 				buttons: [{
+					name: 'cancel',
+					label: _('Cancel'),
+					callback: _cleanup
+				}, {
 					name: 'submit',
 					label: _( 'Delete' ),
-					style: 'float: right;',
 					callback: function() {
 						_cleanup();
 						_remove();
 					}
-				}, {
-					name: 'cancel',
-					label: _('Cancel'),
-					callback: _cleanup
 				}],
 				layout: layout
 			});
@@ -797,7 +860,7 @@ define([
 			this.addChild(page);
 			this.selectChild(page);
 		},
-		
+
 		_addDomain: function(values) {
 			var wizard = null;
 
@@ -1014,17 +1077,16 @@ define([
 					content: '<p>' + question + '</p>'
 				}],
 				buttons: [{
+					name: 'cancel',
+					label: _('Cancel'),
+					callback: _cleanup
+				}, {
 					name: 'submit',
 					label: buttonLabel,
-					style: 'float: right;',
 					callback: lang.hitch( this, function() {
 						_cleanup();
 						this._changeState( newState, null, ids, items );
 					} )
-				}, {
-					name: 'cancel',
-					label: _('Cancel'),
-					callback: _cleanup
 				}],
 				layout: [ 'question' ]
 			});
@@ -1178,9 +1240,12 @@ define([
 					]
 				} ],
 				buttons: [{
+					name: 'cancel',
+					label: _('Cancel'),
+					callback: _cleanup
+				}, {
 					name: 'submit',
 					label: _('Create'),
-					style: 'float: right;',
 					callback: function() {
 						var nameWidget = form.getWidget('name');
 						var macWidget = form.getWidget('mac_address');
@@ -1190,10 +1255,6 @@ define([
 							_createClone( name, macWidget.get( 'value' ) );
 						}
 					}
-				}, {
-					name: 'cancel',
-					label: _('Cancel'),
-					callback: _cleanup
 				}],
 				layout: [ 'name', 'mac_address' ]
 			});
@@ -1272,7 +1333,7 @@ define([
 			}
 
 			// else type == 'domain'
-			var domainColumns =  [{
+			var domainColumns = [{
 				name: 'label',
 				label: _('Name'),
 				formatter: lang.hitch(this, 'iconFormatter')
@@ -1298,8 +1359,8 @@ define([
 				label: _('Description'),
 				formatter: lang.hitch(this, '_descriptionFormatter')
 			};
-			
-		   var cpuusage = {
+
+			var cpuusage = {
 				name: 'cpuUsage',
 				label: _('CPU usage'),
 				style: 'min-width: 80px;',
@@ -1331,28 +1392,59 @@ define([
 			});
 		},
 
+		_getMigrationPausedInfo: function(item) {
+			if (item.reason === 2) {
+				return _('This machine will be started when the migration completes.');
+			} else if (item.reason === 12) {
+				return _('Do not stop this machine during a postcopy migration. It will be destroyed when the migration completes.');
+			}
+		},
+
 		_startFormatter: function(val, item, col) {
-			if (!canStart(item)) {
+			if (!canStart(item) && !isPausedForMigration(item) && !isPausedForSnapshot(item)) {
 				return '';
 			}
-			if (item._univention_cache_button_start) {
-				return item._univention_cache_button_start;
-			}
+			var btn;
 			var call = item.type == 'instance' ? '_changeStateInstance' : '_changeState';
 			var id = item[this._grid.moduleStore.idProperty];
-			var btn = new Button({
-				label: '',
-				iconClass: 'umcIconPlay',
-				style: 'padding: 0; display: inline; margin: 0;',
-				callback: lang.hitch(this, call, 'RUN', 'start', [id], [item])
+			var _runCallback = lang.hitch(this, call, 'RUN', 'start', [id], [item]);
+			var _migrationInfoCallback = lang.hitch(this, function() {
+				dialog.alert(this._getMigrationPausedInfo(item));
 			});
-			this._grid.own(btn);
-			var tooltip = new Tooltip({
-				label: col.description,
-				connectId: [btn.domNode]
-			});
-			btn.own(tooltip);
-			item._univention_cache_button_start = btn;
+			var snapshotInfo = _('This machine is paused to create a snapshot.');
+			var _snapshotInfoCallback = function() {
+				dialog.alert(snapshotInfo);
+			};
+
+			if (item._univention_cache_button_start) {
+				btn = item._univention_cache_button_start;
+			} else {
+				btn = new Button({
+					label: '',
+					style: 'padding: 0; display: inline; margin: 0;',
+					callback: function() {
+						if (isPausedForMigration(item)) {
+							_migrationInfoCallback();
+						} else if (isPausedForSnapshot(item)) {
+							_snapshotInfoCallback();
+						} else {
+							_runCallback();
+						}
+					}
+				});
+				this._grid.own(btn);
+				item._univention_cache_button_start = btn;
+			}
+			if (isPausedForMigration(item)) {
+				btn.set('iconClass', 'umcHelpIcon');
+				btn.set('title', this._getMigrationPausedInfo(item));
+			} else if (isPausedForSnapshot(item)) {
+				btn.set('iconClass', 'umcHelpIcon');
+				btn.set('title', snapshotInfo);
+			} else {
+				btn.set('iconClass', 'umcIconPlay');
+				btn.set('title', col.description);
+			}
 			return btn;
 		},
 
@@ -1368,15 +1460,10 @@ define([
 				label: '',
 				iconClass: 'umcIconView',
 				style: 'padding: 0; display: inline; margin: 0;',
-				callback: lang.hitch(this, 'vncLink', [id], [item])
+				callback: lang.hitch(this, 'vncLink', [id], [item]),
+				title: col.description(item)
 			});
 			this._grid.own(btn);
-			var description = col.description(item);
-			var tooltip = new Tooltip({
-				label: description,
-				connectId: [btn.domNode]
-			});
-			btn.own(tooltip);
 			item._univention_cache_button_vnc = btn;
 			return btn;
 		},
@@ -1520,7 +1607,7 @@ define([
 				isStandardAction: false,
 				isContextAction: true,
 				canExecute: function(item) {
-					return item.node_available;
+					return item.node_available && !isPausedForMigration(item);
 				},
 				callback: lang.hitch(this, function(ids) {
 					if (!ids.length) {
@@ -1605,11 +1692,11 @@ define([
 				name: 'migrate',
 				label: _( 'Migrate' ),
 				isStandardAction: false,
-				isMultiAction: true,
-				callback: lang.hitch(this, '_migrateDomain' ),
+				isMultiAction: false,
+				callback: lang.hitch(this, '_migrate' ),
 				canExecute: function(item) {
 					// FIXME need to find out if there are more than one node of this type
-					return !isTerminated(item);
+					return !isTerminated(item) && !isPausedForMigration(item);
 				}
 			}, {
 				name: 'remove',
@@ -1639,7 +1726,7 @@ define([
 				return '';
 			}
 			if (item.type === 'domain') {
-				if (!isRunning(item)) {
+				if (!isRunning(item) || isPaused(item)) {
 					// only show CPU info, if the machine is running
 					return '';
 				}
@@ -1648,7 +1735,7 @@ define([
 					return '';
 				}
 			}
-			var percentage = Math.round(item.cpuUsage);
+			var percentage = Math.round(item.cpuUsage * 100);
 			var progressBar = new ProgressBar({
 				value: percentage + '%'
 			});
@@ -1692,6 +1779,8 @@ define([
 			else if (item.type == 'domain' || item.type == 'instance') {
 				if ( !item.node_available ) {
 					iconName += '-off';
+				} else if (this._isMigrating(item)) {
+					iconName += '-migrate';
 				} else if (item.state == 'RUNNING' || item.state == 'IDLE') {
 					iconName += '-on';
 				} else if ( item.state == 'PAUSED' || ( item.state == 'SHUTOFF' && item.suspended ) || (item.state == 'SUSPENDED')) {
@@ -1723,7 +1812,9 @@ define([
 				style: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
 			});
 			// set content after creating the object because of HTTP404: Bug #25635
-			var widget = new Text({});
+			var widget = new Text({
+				style: 'vertical-align: bottom;'
+			});
 			this._grid.own(widget);
 			widget.set('content', html);
 
@@ -1750,12 +1841,42 @@ define([
 					tooltipContent += lang.replace(_('IO error "{reason}" on device "{device}[{srcpath}]"'), item.error);
 				}
 
+				if (this._isMigrating(item)) {
+					tooltipContent += '<br>';
+					tooltipContent += this._getLocalizedMigrationMsg(item.migration);
+				}
+
 				var tooltip = new Tooltip({
 					label: tooltipContent,
 					connectId: [ widget.domNode ],
-					position: [ 'below' ]
+					position: [ 'after', 'below' ],
+					showDelay: 0
 				});
 				widget.own(tooltip);
+
+				widget.own(on(this._grid._grid, 'contextmenu', function() {
+					tooltip.close();
+				}));
+
+				// enable contextmenu under tooltip
+				widget.own(on(tooltip, 'show', lang.hitch(this, function() {
+					if (!!this._contextCatcher && this._contextCatcher.hasOwnProperty('remove')) {
+						this._contextCatcher.remove();
+					}
+					this._contextCatcher = on.once(document.body, 'contextmenu', lang.hitch(this, function(evt) {
+						var onTooltip = array.some(evt.path, function(element) {
+							return domClass.contains(element, "dijitTooltip");
+						});
+						if (onTooltip) {
+							evt.preventDefault();
+							tooltip.close();
+							this._grid._grid.clearSelection();
+							this._grid._grid.select(item);
+							this._grid._contextMenu._openMyself(evt);
+						}
+					}));
+					widget.own(this._contextCatcher);
+				})));
 
 				// destroy the tooltip when the widget is destroyed
 				tooltip.connect( widget, 'destroy', 'destroy' );
@@ -1769,18 +1890,11 @@ define([
 				description: description,
 				style: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
 			});
-			var widget = new Text({});
+			var widget = new Text({
+				title: description
+			});
 			this._grid.own(widget);
 			widget.set('content', html);
-
-			var tooltip = new Tooltip({
-				label: description,
-				connectId: [ widget.domNode ],
-				position: [ 'below' ]
-			});
-			widget.own(tooltip);
-			// destroy the tooltip when the widget is destroy
-			tooltip.connect( widget, 'destroy', 'destroy' );
 
 			return widget;
 		},
@@ -1903,6 +2017,6 @@ define([
 
 		onCloseTab: function() {
 			// event stub
- 		}
+		}
 	});
 });

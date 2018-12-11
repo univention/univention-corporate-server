@@ -35,7 +35,6 @@ define([
 	"dojo/aspect",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
-	"dijit/form/MappedTextBox",
 	"umc/tools",
 	"umc/widgets/TitlePane",
 	"umc/widgets/TextArea",
@@ -46,9 +45,10 @@ define([
 	"umc/widgets/Wizard",
 	"umc/widgets/ContainerWidget",
 	"umc/modules/uvmm/DriveGrid",
+	"umc/modules/uvmm/MemoryTextBox",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, aspect, Memory, Observable, MappedTextBox, tools, TitlePane, TextArea, TextBox, ComboBox, CheckBox, HiddenInput, Wizard, ContainerWidget, DriveGrid, types, _) {
+], function(declare, lang, array, aspect, Memory, Observable, tools, TitlePane, TextArea, TextBox, ComboBox, CheckBox, HiddenInput, Wizard, ContainerWidget, DriveGrid, MemoryTextBox, types, _) {
 
 	return declare("umc.modules.uvmm.DomainWizard", [ Wizard ], {
 		_profile: null,
@@ -57,7 +57,7 @@ define([
 		_driveStore: null,
 		_driveGrid: null,
 		_driveContainer: null,
-		
+
 		_loadValuesOfProfile: function() {
 			// put limit on memory
 			try {
@@ -115,7 +115,7 @@ define([
 			titlePane.addChild(this._driveGrid);
 
 			// and the titlepane into a container
-			this._driveContainer  = new ContainerWidget({
+			this._driveContainer = new ContainerWidget({
 				region: 'main'
 			});
 			this._driveContainer.addChild(titlePane);
@@ -171,27 +171,8 @@ define([
 						label: _('Description')
 					}, {
 						name: 'maxMem',
-						type: MappedTextBox,
+						type: MemoryTextBox,
 						required: true,
-						constraints: {min: 4*1024*1024},
-						format: types.prettyCapacity,
-						parse: function(value) {
-							return types.parseCapacity(value, 'M');
-						},
-						validator: function(value, constraints) {
-							var size = types.parseCapacity(value, 'M');
-							if (size === null) {
-								return false;
-							}
-							if (constraints.min && size < constraints.min) {
-								return false;
-							}
-							if (constraints.max && size > constraints.max) {
-								return false;
-							}
-							return true;
-						},
-						invalidMessage: _('The memory size is invalid (e.g. 3GB or 1024 MB), minimum 4 MB'),
 						label: _('Memory (default unit MB)')
 					}, {
 						name: 'vcpus',
@@ -301,6 +282,7 @@ define([
 		getValues: function() {
 			var values = this._pages.general._form.gatherFormValues();
 			values.nodeURI = this.getWidget('nodeURI').get('value');
+			values.hyperv = true;
 			values.vnc_remote = true;
 			values.disks = this._driveStore.data;
 

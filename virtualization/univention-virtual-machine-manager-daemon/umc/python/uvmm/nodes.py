@@ -82,7 +82,7 @@ class Nodes(object):
 					'virtech': node_uri.scheme,
 					'memUsed': node_pd.curMem,
 					'memAvailable': node_pd.phyMem,
-					'cpuUsage': (node_pd.cpu_usage or 0) / 10.0,
+					'cpuUsage': (node_pd.cpu_usage or 0),
 					'available': node_pd.last_try == node_pd.last_update,
 					'cpus': node_pd.cpus,
 				})

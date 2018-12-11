@@ -184,7 +184,7 @@ define([
 					// avoid duplicate public_ips
 					var newArr = [];
 					array.forEach(this._instance.public_ips, function(item) {
-						if(array.indexOf(newArr, item)  == -1) {
+						if(array.indexOf(newArr, item) == -1) {
 							newArr.push(item);
 						}
 					});

@@ -96,9 +96,9 @@ case "$1" in
 		log_daemon_msg "Restarting $DESC" "$NAME"
 		sv force-restart "$NAME" >/dev/null
 		if running; then
-			 log_end_msg 0
+			log_end_msg 0
 		else
-			 log_end_msg 1
+			log_end_msg 1
 		fi
 		;;
 	crestart)

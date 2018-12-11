@@ -338,6 +338,24 @@ msgstr "Auswahl einer vorhandenen Image-Datei"
 msgid "Clone"
 msgstr "Klonen"
 
+#: umc/js/uvmm.js:497
+msgid "Close"
+msgstr "Schließen"
+
+#: umc/js/uvmm.js:485
+msgid "Abort migration"
+msgstr "Migration abbrechen"
+
+#: umc/js/uvmm.js:473
+msgid "Switch to postcopy"
+msgstr "Zu Postcopymigation wechseln"
+
+#: umc/js/uvmm.js:474
+msgid ""
+"Migration in progress since {time_elapsed} sec, iteration {memory_iteration}"
+msgstr ""
+"Migration gestartet vor {time_elapsed} sec, Iteration {memory_iteration}"
+
 #: umc/js/uvmm/TreeModel.js:95
 msgid "Cloud connections"
 msgstr "Cloud-Verbindungen"
@@ -345,6 +363,22 @@ msgstr "Cloud-Verbindungen"
 #: umc/js/uvmm.js:204
 msgid "Cloud instance"
 msgstr "Cloud-Instanz"
+
+#: umc/js/uvmm.js:1397
+msgid "This machine will be started when the migration completes."
+msgstr "Diese Maschine wird gestartet wenn die Migration abgeschlossen ist."
+
+#: umc/js/uvmm.js:1399
+msgid ""
+"Do not stop this machine during a postcopy migration. "
+"It will be destroyed when the migration completes."
+msgstr ""
+"Diese Maschine, während einer Postcopy-Migration, nicht stoppen. "
+"Sie wird zerstört wenn die Migration fertig ist."
+
+#: umc/js/uvmm.js:1414
+msgid "This machine is paused to create a snapshot."
+msgstr "Diese Maschine ist für einen Snapshot pausiert."
 
 #: umc/js/uvmm/InstanceWizard.js:315
 msgid "Configure Network"
@@ -813,11 +847,11 @@ msgstr "Mazedonisch"
 msgid "Machine"
 msgstr "Maschine"
 
-#: umc/js/uvmm/DomainPage.js:220 umc/js/uvmm/InstanceWizard.js:168
+#: umc/js/uvmm/InstanceWizard.js:168
 msgid "Memory"
 msgstr "Speicher"
 
-#: umc/js/uvmm/DomainWizard.js:195
+#: umc/js/uvmm/DomainPage.js:220 umc/js/uvmm/DomainWizard.js:195
 msgid "Memory (default unit MB)"
 msgstr "Größe des Arbeitsspeichers (Standardeinheit MB)"
 
@@ -1373,10 +1407,12 @@ msgstr ""
 "\"Suchen\", um die Ansicht zu aktualisieren."
 
 #: umc/js/uvmm/DomainWizard.js:194 umc/js/uvmm/DomainPage.js:219
-msgid "The memory size is invalid (e.g. 3GB or 1024 MB), minimum 4 MB"
+msgid ""
+"The memory size is invalid (e.g. 3GB or 1024 MB), minimum 4 MB, maximum "
+"4 TB"
 msgstr ""
 "Die angegebenen Speicherkapazität is ungültig (bspw. 3GB oder 1024 MB), "
-"Minimum 4MB"
+"Minimum 4MB, Maximum 4TB"
 
 #: umc/js/uvmm.js:264
 msgid ""

@@ -365,6 +365,9 @@ define([
 
 					// detach the drive from the domain
 					this.moduleStore.remove( ids[ 0 ] );
+					// the moduleStore is filled using setData which seems to sometimes break the remove event
+					// -> call filter manually
+					this.filter();
 
 					if ( action == 'delete' ) {
 						tools.umcpCommand('uvmm/storage/volume/remove', {
@@ -380,6 +383,9 @@ define([
 			} else {
 				// detach the drive from the domain
 				this.moduleStore.remove( ids[ 0 ] );
+				// the moduleStore is filled using setData which seems to sometimes break the remove event
+				// -> call filter manually
+				this.filter();
 				this.onUpdateProgress( 1, 1 );
 			}
 		},

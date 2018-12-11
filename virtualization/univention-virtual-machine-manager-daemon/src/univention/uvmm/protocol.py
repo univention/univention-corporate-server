@@ -36,7 +36,7 @@ import cPickle as pickle
 import struct
 from .helpers import TranslatableException, N_ as _
 
-VERSION = (2, 0)
+VERSION = (2, 1)
 MAX_MSG_SIZE = 4096
 
 
@@ -257,6 +257,7 @@ class Request_DOMAIN_MIGRATE(Request):
 		self.uri = None
 		self.domain = None
 		self.target_uri = None
+		self.mode = 0
 
 
 class Request_DOMAIN_SNAPSHOT_CREATE(Request):
@@ -581,6 +582,7 @@ class Data_Domain(object):
 		self.boot = []  # (fd|hd|cdrom|network)+
 
 		self.state = 0
+		self.reason = 0
 		self.maxMem = 0L
 		self.curMem = 0L
 		self.vcpus = 1
@@ -594,6 +596,8 @@ class Data_Domain(object):
 		self.available = None  # None: not set, (True|False) -> node availability
 		self.targethosts = None  # List of node hostnames
 		self.error = {}
+		self.migration = {'msg': ''}
+		self.hyperv = True  # True|False
 
 
 class Data_Node(object):
@@ -606,7 +610,7 @@ class Data_Node(object):
 		self.phyMem = None
 		self.curMem = None
 		self.maxMem = None
-		self.cpu_usage = None
+		self.cpu_usage = 0.0
 		self.cpus = None
 		self.cores = (None, None, None, None)
 		self.domains = []  # Data_Domain
@@ -640,6 +644,10 @@ class Cloud_Data_Connection(object):
 		self.last_update = None
 		self.last_update_try = None
 		self.available = False
+		self.search_pattern = ''
+		self.ucs_images = []
+		self.last_error_message = ''
+		self.dn = ''
 
 
 class Cloud_Data_Instance(object):
@@ -793,7 +801,7 @@ def _map(dictionary, id=None, name=None):
 
 class Disk(object):
 
-	'''Container for disk objects'''
+	"""Container for disk objects."""
 	DEVICE_DISK = 'disk'
 	DEVICE_CDROM = 'cdrom'
 	DEVICE_FLOPPY = 'floppy'
@@ -838,7 +846,7 @@ class Disk(object):
 
 class Interface(object):
 
-	'''Container for interface objects'''
+	"""Container for interface objects."""
 	TYPE_BRIDGE = 'bridge'
 	TYPE_NETWORK = 'network'
 	TYPE_USER = 'user'
@@ -859,7 +867,7 @@ class Interface(object):
 
 class Graphic(object):
 
-	'''Container for graphic objects'''
+	"""Container for graphic objects."""
 	TYPE_VNC = 'vnc'
 	TYPE_SDL = 'sdl'
 	TYPE_SPICE = 'spice'
@@ -893,7 +901,7 @@ class Graphic(object):
 
 class Network(object):
 
-	'''Container for Network objects.'''
+	"""Container for network objects."""
 
 	def __init__(self):
 		self.name = None

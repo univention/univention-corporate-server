@@ -92,10 +92,12 @@ class Domains(object):
 			'nodeName': <node>,
 			'node_available': <boolean>,
 			'state': <state>,
+			'reason': <reason>,
 			'suspended': <boolean>,
 			'type': 'domain',
 			'vnc': <boolean>,
 			'vnc_port': <int>,
+			'migration': <dict>,
 			}, ...]
 		"""
 
@@ -113,6 +115,7 @@ class Domains(object):
 						'label': domain['name'],
 						'nodeName': uri.netloc,
 						'state': domain['state'],
+						'reason': domain['reason'],
 						'type': 'domain',
 						'mem': domain['mem'],
 						'cpuUsage': domain['cpu_usage'],
@@ -122,6 +125,7 @@ class Domains(object):
 						'description': domain['description'],
 						'node_available': domain['node_available'],
 						'error': domain['error'],
+						'migration': domain['migration'],
 					})
 			return domain_list
 
@@ -399,6 +403,7 @@ class Domains(object):
 			domain_info.vcpus = int(domain['vcpus'])
 		except ValueError:
 			raise UMC_Error(_('vcpus must be a number'))
+		domain_info.hyperv = domain.get('hyperv', True)
 
 		# boot devices
 		if 'boot' in domain:
@@ -505,14 +510,19 @@ class Domains(object):
 
 		return:
 		"""
-		self.required_options(request, 'domainURI', 'targetNodeURI')
+		self.required_options(request, 'domainURI')
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
+		mode = request.options.get('mode', 0)
+		if mode < 101 and mode > -1:
+			self.required_options(request, 'targetNodeURI')
+		target_uri = request.options.get('targetNodeURI', '')
 		self.uvmm.send(
 			'DOMAIN_MIGRATE',
 			self.process_uvmm_response(request),
 			uri=node_uri,
 			domain=domain_uuid,
-			target_uri=request.options['targetNodeURI']
+			target_uri=target_uri,
+			mode=mode
 		)
 
 	def domain_clone(self, request):

@@ -43,6 +43,11 @@ from .cloudconnection import CloudConnectionError
 from .openstackcloud import OpenStackCloudConnection
 from .ec2cloud import EC2CloudConnection
 import univention.config_registry as ucr
+try:
+	from typing import Dict, List, Optional  # noqa
+	from .cloudconnection import CloudConnection  # noqa
+except ImportError:
+	pass
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
@@ -60,25 +65,30 @@ class CloudConnectionMananger(dict):
 	"""
 
 	def __init__(self):
+		# type: () -> None
 		super(CloudConnectionMananger, self).__init__()
 
 	def __delitem__(self, cloudname):
+		# type: (str) -> None
 		"""x.__delitem__(i) <==> del x[i]"""
 		self[cloudname].unregister(wait=True)
 		super(CloudConnectionMananger, self).__delitem__(cloudname)
 
 	def _parse_cloud_info(self, cloud):
+		# type: (Dict[str, str]) -> None
 		if "name" not in cloud:
 			raise CloudConnectionError("Field 'name' is required for adding a connection")
 		if "type" not in cloud:
 			raise CloudConnectionError("Field 'type' is required for adding a connection")
 
 	def _check_if_connection_exists(self, conn_name):
+		# type: (str) -> None
 		if conn_name not in self:
 			raise CloudConnectionError("No connection named %s available" % conn_name)
 
 	def _get_connections(self, conn_name="*"):
-		connection_list = []
+		# type: (str) -> List[CloudConnection]
+		connection_list = []  # type: List[CloudConnection]
 		if conn_name in ("*", ""):
 			connection_list = self.values()
 		else:
@@ -87,10 +97,12 @@ class CloudConnectionMananger(dict):
 		return connection_list
 
 	def set_cache(self, cache):
+		# type: (str) -> None
 		self.cache_dir = cache
 
 	def list(self, pattern="*"):
-		connection_list = []
+		# type: (str) -> List[CloudConnection]
+		connection_list = []  # type: List[CloudConnection]
 
 		regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
 		for conn in self.values():
@@ -101,6 +113,7 @@ class CloudConnectionMananger(dict):
 		return connection_list
 
 	def set_poll_frequency(self, freq, name=None):
+		# type: (int, Optional[str]) -> None
 		if name:
 			try:
 				self[name].set_frequency(freq)
@@ -111,6 +124,7 @@ class CloudConnectionMananger(dict):
 				connection.set_frequency(freq)
 
 	def add_connection(self, cloud, testconnection=True):
+		# type: (Dict[str, str], bool) -> None
 		"""
 		Add a new cloud connection
 		cloud: dict with cloud name, type, credentials, urls, ...
@@ -134,6 +148,7 @@ class CloudConnectionMananger(dict):
 		logger.info("Added connection to %s" % cloud["name"])
 
 	def remove_connection(self, cloudname):
+		# type: (str) -> None
 		"""Remove connection; cloudname = ldap name attribute"""
 		try:
 			del self[cloudname]
@@ -142,6 +157,7 @@ class CloudConnectionMananger(dict):
 		logger.info("Removed connection to %s" % cloudname)
 
 	def list_conn_instances(self, conn_name, pattern="*"):
+		# type: (str, str) -> Dict[str, List[CloudConnection]]
 		"""
 		List instances available through connection identified by conn_name,
 		matching the pattern. If conn_name = "*", list all connections
@@ -218,19 +234,23 @@ class CloudConnectionMananger(dict):
 		return subnets
 
 	def instance_state(self, conn_name, instance_id, state):
+		# type: (str, str, str) -> None
 		self._check_if_connection_exists(conn_name)
 		self[conn_name].instance_state(instance_id, state)
 
 	def instance_terminate(self, conn_name, instance_id):
+		# type: (str, str) -> None
 		self._check_if_connection_exists(conn_name)
 		self[conn_name].instance_terminate(instance_id)
 
 	def instance_create(self, conn_name, args):
+		# type: (str, str) -> None
 		self._check_if_connection_exists(conn_name)
 		self[conn_name].instance_create(args)
 
 
 def create_cloud_connection(cloud, cache_dir):
+	# type: (Dict[str, str], str) -> CloudConnection
 	if cloud["type"] == "OpenStack":
 		return OpenStackCloudConnection(cloud, cache_dir)
 	elif cloud["type"] == "EC2":

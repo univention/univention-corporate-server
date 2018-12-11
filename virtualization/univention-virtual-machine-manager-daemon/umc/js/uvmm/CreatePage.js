@@ -105,7 +105,7 @@ define([
 					name: 'general',
 					headerText: _('Create a virtual machine or a cloud connection'),
 					helpText: _('Select if you want to create a new machine using an established connection, or if you want to create a new cloud connection to a specific provider.'),
-				        widgets: [{
+					widgets: [{
 						type: RadioButton,
 						radioButtonGroup: 'type',
 						name: 'vm',

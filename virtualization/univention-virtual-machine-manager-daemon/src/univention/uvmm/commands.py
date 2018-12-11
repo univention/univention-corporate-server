@@ -479,9 +479,11 @@ class _Commands:
 			raise CommandError('DOMAIN_MIGRATE', _('domain != string: %(domain)s'), domain=request.domain)
 		if not isinstance(request.target_uri, basestring):
 			raise CommandError('DOMAIN_MIGRATE', _('target_uri != string: %(uri)s'), uri=request.target_uri)
-		logger.debug('DOMAIN_MIGRATE %s#%s %s', request.uri, request.domain, request.target_uri)
+		if not isinstance(request.mode, int):
+			raise CommandError('DOMAIN_MIGRATE', _('mode != int: %(mode)s'), mode=request.mode)
+		logger.debug('DOMAIN_MIGRATE %s#%s %s %d', request.uri, request.domain, request.target_uri, request.mode)
 		try:
-			node.domain_migrate(request.uri, request.domain, request.target_uri)
+			node.domain_migrate(request.uri, request.domain, request.target_uri, request.mode)
 		except node.NodeError as ex:
 			raise CommandError('DOMAIN_MIGRATE', ex)
 
@@ -614,7 +616,7 @@ class _Commands:
 
 	@staticmethod
 	def STORAGE_VOLUMES(server, request):
-		'''List all volumes in a pool.'''
+		"""List all volumes in a pool."""
 		if not isinstance(request.uri, basestring):
 			raise CommandError('STORAGE_VOLUMES', _('uri != string: %(uri)s'), uri=request.uri)
 		logger.debug('STORAGE_VOLUMES %s]' % request.uri)
@@ -631,7 +633,7 @@ class _Commands:
 
 	@staticmethod
 	def STORAGE_VOLUMES_DESTROY(server, request):
-		'''destroy all given volumes in a pool.'''
+		"""Destroy all given volumes in a pool."""
 		if not isinstance(request.uri, basestring):
 			raise CommandError('STORAGE_VOLUMES_DESTROY', _('uri != string: %(uri)s'), uri=request.uri)
 		for vol in request.volumes:
@@ -648,7 +650,7 @@ class _Commands:
 
 	@staticmethod
 	def STORAGE_VOLUME_USEDBY(server, request):
-		'''Return list of domains using the given volume.'''
+		"""Return list of domains using the given volume."""
 		if not isinstance(request.volume, basestring):
 			raise CommandError('STORAGE_VOLUME_USEDBY', _('volume != string: %(volume)s'), volume=request.volume)
 		logger.debug('STORAGE_VOLUME_USEDBY %s]' % request.volume)
