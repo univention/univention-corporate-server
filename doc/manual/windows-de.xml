@@ -952,19 +952,14 @@ ucr set connector/ad/mapping/user/password/kinit=false
   </para>
 
   <para>
-    In der Standardeinstellung werden Container, Organisationseinheiten, Benutzer und Gruppen
-    synchronisiert.
+    In der Standardeinstellung werden Container, Organisationseinheiten, Benutzer, Gruppen
+    und Rechner synchronisiert.
   </para>
 
   <para>
     Hinweise zu den in der Grundeinstellung konfigurierten Attributen und zu beachtende
     Besonderheiten finden sich in <xref
     linkend="ad-connector:details-zur-vorkonfigurierten-synchronisation"/>.
-  </para>
-
-  <para>
-    Die Rechnerkonten werden nicht synchronisiert, da Windows-Rechner nur in eine Domäne
-    eingebunden sein können.
   </para>
 
   <para>
