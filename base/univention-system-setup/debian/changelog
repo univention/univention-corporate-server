@@ -1,3 +1,9 @@
+univention-system-setup (11.0.5-29) unstable; urgency=medium
+
+  * Bug #44162: Add univention-appcenter to the dependencies
+
+ -- Richard Ulmer <ulmer@univention.de>  Tue, 11 Dec 2018 13:07:15 +0100
+
 univention-system-setup (11.0.5-28) unstable; urgency=medium
 
   * Bug #42430: The traceback failedToSetAdministratorPassword is
