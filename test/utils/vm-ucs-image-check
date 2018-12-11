@@ -270,5 +270,13 @@ check_logs () {
 		issue "logrotate status exists" truncate -s 0 /var/lib/logrotate/status
 }
 
+check_journal () {
+	journalctl -q -b -1 -n 0 >"$tmp" 2>/dev/null
+	[ -s "$tmp" ] &&
+		issue "Old journald boot exists" journalctl --rotate
+	[ -s "$tmp" ] &&
+		issue "Old journald files exists" journalctl --vacuum-files=1
+}
+
 main "$@"
 # vim :set backupcopy=auto:
