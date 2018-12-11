@@ -51,10 +51,12 @@
 
 		<itemizedlist>
 			<listitem><para>
-				Die Konfigurationsmöglichkeiten für das UCS Portal wurden erweitert, um es besser an eigene Bedürfnisse anzupassen. Es können jetzt eigene Kategorien für Kacheln definiert werden, und es gibt die Möglichkeit statische Links zu definieren, um beispielweise ein Impressum zu verlinken.
+				Die Konfigurationsmöglichkeiten für das UCS Portal wurden erweitert, um es besser an eigene Bedürfnisse anzupassen.
+				Es können jetzt eigene Kategorien für Kacheln definiert werden.
+				Zudem gibt es die Möglichkeit, statische Links zu definieren, um beispielweise ein Impressum zu verlinken.
 			</para></listitem>
 			<listitem><para>
-				Die neue UCS Dashboard App ermöglicht Administratoren den Zustand der Domäne oder einzelner Server schnell und einfach auf unterschiedlichen Dashboards abzulesen.
+				Die neue <ulink url="https://docs.software-univention.de/handbuch-4.3.html#dashboard::general">UCS Dashboard App</ulink> ermöglicht Administratoren den Zustand der Domäne oder einzelner Server schnell und einfach auf unterschiedlichen Dashboards abzulesen.
 			</para></listitem>
 			<listitem><para>
 				Neben kleineren Fehlerbehebungen in &ucsUMC; wurde insbesondere das Scrolling an vielen Stellen verbessert.
