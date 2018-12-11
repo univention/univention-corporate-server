@@ -174,7 +174,7 @@ check_ec2 () {
 
 check_dns () {
 	local ns
-	for ns in $nameserver1 $nameserver2 $nameserver3 dns_forwarder1 dns_forwarder2 dns_forwarder3
+	for ns in nameserver1 nameserver2 nameserver3 dns_forwarder1 dns_forwarder2 dns_forwarder3
 	do
 		case "${!ns:-}" in
 		8.8.8.8|8.8.4.4|208.67.22[02].22[02]|2602:0:cc[cd]::2) issue "Using public DNS in $ns" ucr unset "$ns" ;;
