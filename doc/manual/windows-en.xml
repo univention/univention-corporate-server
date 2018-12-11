@@ -875,6 +875,7 @@ ucr set connector/ad/ldap/bindpw=/etc/univention/connector/password
 touch /etc/univention/connector/password
 chmod 600 /etc/univention/connector/password
 echo -n "Administrator password" > /etc/univention/connector/password
+ucr set connector/ad/mapping/user/password/kinit=false
   </programlisting>
 
   <para>
