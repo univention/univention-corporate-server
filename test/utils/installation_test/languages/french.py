@@ -63,7 +63,7 @@ strings = {
 	'cups': '',
 	'printquota': '',
 	'kvm': '',
-	'mailserver': '',
+	'mailserver': 'Mail server',
 	'nagios': '',
 	'squid': '',
 	'radius': '',
