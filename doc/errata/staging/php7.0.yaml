@@ -1,0 +1,26 @@
+product: ucs
+release: "4.3"
+version: [2, 3]
+scope: ucs_4.3-0-errata4.3-3
+src: php7.0
+fix: 7.0.33-0+deb9u1
+desc: |
+ This update addresses the following issues:
+ * exif: buffer over-read in exif_process_IFD_in_MAKERNOTE() (CVE-2018-14851)
+ * exif: integer overflow leading to out-of-bound buffer read in
+   exif_thumbnail_extract() (CVE-2018-14883)
+ * Cross-site scripting (XSS) flaw in Apache2 component via body of
+   'Transfer-Encoding: chunked' request (CVE-2018-17082)
+ * imap_open() allows running arbitrary shell commands via mailbox parameter
+   (CVE-2018-19518)
+ * ext/imap/php_imap.c in PHP 5.x and 7.x before 7.3.0 allows remote attackers
+   to cause a denial of service (NULL pointer dereference and application
+   crash) via an empty string in the message argument to the imap_mail
+   function. (CVE-2018-19935)
+bug: [48309]
+cve:
+- CVE-2018-14851
+- CVE-2018-14883
+- CVE-2018-17082
+- CVE-2018-19518
+- CVE-2018-19935
