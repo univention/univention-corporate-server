@@ -127,13 +127,6 @@ slapadd -l ldif
 			configuration of ACLs in UCS can be found in the LDAP chapter of the <biblioref linkend="ucs-manual"/>.
 		</para>
 		<para>
-			The default setting of the LDAP server does not allow anonymous access to the
-			LDAP directory. If the &ucsUCRV; <envar>ldap/acl/read/anonymous</envar> is set
-			to <literal>yes</literal>, these access restrictions do not apply and the
-			LDAP performance is increased. Access to sensitive attributes such as user
-			passwords remains protected via separate ACLs.
-		</para>
-		<para>
 			Nested groups are also supported. The &ucsUCRV;
 			<envar>ldap/acl/nestedgroups</envar> can be used to deactivate the nested
 			groups function for LDAP ACLs, which will result in a speed increase for
