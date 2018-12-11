@@ -271,6 +271,14 @@
 		</para>
 
 		<para>
+			Sofern der Nagios-Server auf einem anderen System als dem Domänencontroller Master
+			installiert wird, so muss auf allen Systemen, auf denen der Nagios-Client installiert
+			ist, die &ucsUCRV; <envar>nagios/client/allowedhosts</envar> mit dem FQDN des Nagios-Servers
+			gesetzt werden. Am einfachsten kann dies über eine &ucsUCR; Richtlinie umgesetzt werden, weitere
+			Informationen sind im Kaptiel <xref linkedd="ucr::templates::policy"/> zu finden.
+		</para>
+
+		<para>
 		Neben den Standard-Plugins, die mit der Installation des
 		Pakets <package>univention-nagios-client</package> mitgebracht werden, können
 		zusätzliche Plugins über folgende Pakete nachinstalliert werden:
