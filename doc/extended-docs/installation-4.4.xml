@@ -87,7 +87,7 @@
 	<title>Introduction</title>
 
 	<para>
-	  This article describes how to set up an appliance based on UCS 4.1. This type of appliance can
+	  This article describes how to set up an appliance based on UCS 4.3. This type of appliance can
 	  also be used to provide preconfigured instances as a cloud service provider. The
 	  creation of images for typical virtualization solutions is another possible application
 	  scenario, see <xref linkend="appliance:create:virt"/>.
@@ -292,7 +292,7 @@ usermod -p \* root
 	  <para>
 		  Virtualization images for <application>VirtualBox</application>, <application>VMware Player</application> and <application>VMware ESX</application> can also be created on
 		the basis of the qcow2 images above. To this end, Univention offers a tool, which can be
-		installed via the <package>generate-appliance</package> package (the integration in UCS 4.1
+		installed via the <package>generate-appliance</package> package (the integration in UCS 4.3
 		can be followed via <u:bug>37137</u:bug>).
 	  </para>
 
