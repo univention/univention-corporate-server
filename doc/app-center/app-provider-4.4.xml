@@ -289,20 +289,6 @@
                     accordingly.
                 </para>
             </important>
-
-            <note>
-                <para>
-                    The App Center does currently <ulink
-                        url="https://forge.univention.org/bugzilla/show_bug.cgi?id=43612">not
-                        support multi container setups</ulink>. The container
-                    needs to include all services needed for the software,
-                    except the database.  The App Center takes care of
-                    providing a database management system directly on the
-                    Docker host that can be used by the Docker container.
-                    Supported are MySQL and PostgreSQL. See <xref
-                        linkend="create-app-with-docker:database" />.
-                </para>
-            </note>
         </section>
 
         <section id="create-app-with-docker:supported-ucs-version">
