@@ -115,11 +115,11 @@
 	In the subsequent course of the installation, the fully qualified host name, under which the
 	computer should be accessible in the network, is entered for a &ucsMaster;. A local
 	name should also be used as the domain name in this case, e.g.,
-	<systemitem class="domainname">company.local</systemitem>. (If the system is used as a mail server, for example,
+	<systemitem class="domainname">company.intranet</systemitem>. (If the system is used as a mail server, for example,
 	the mail domains can be used independently of the domain names).
 	For example, to commission the <systemitem class="systemname">mailserver</systemitem> host system in the
-	<systemitem class="domainname">company.local</systemitem> DNS domain,
-	<systemitem class="fqdomainname">mailserver.company.local</systemitem> should be entered as the fully qualified host
+	<systemitem class="domainname">company.intranet</systemitem> DNS domain,
+	<systemitem class="fqdomainname">mailserver.company.intranet</systemitem> should be entered as the fully qualified host
 	name.
 	The <guimenu>LDAP base</guimenu> is suggested based on the fully qualified host name and
 	only needs to be adjusted in exceptional cases. The root password must be at least eight
