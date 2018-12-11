@@ -364,6 +364,22 @@ msgstr "Cloud-Verbindungen"
 msgid "Cloud instance"
 msgstr "Cloud-Instanz"
 
+#: umc/js/uvmm.js:1397
+msgid "This machine will be started when the migration completes."
+msgstr "Diese Maschine wird gestartet wenn die Migration abgeschlossen ist."
+
+#: umc/js/uvmm.js:1399
+msgid ""
+"Do not stop this machine during a postcopy migration. "
+"It will be destroyed when the migration completes."
+msgstr ""
+"Diese Maschine, während einer Postcopy-Migration, nicht stoppen. "
+"Sie wird zerstört wenn die Migration fertig ist."
+
+#: umc/js/uvmm.js:1414
+msgid "This machine is paused to create a snapshot."
+msgstr "Diese Maschine ist für einen Snapshot pausiert."
+
 #: umc/js/uvmm/InstanceWizard.js:315
 msgid "Configure Network"
 msgstr "Netzwerk konfigurieren"

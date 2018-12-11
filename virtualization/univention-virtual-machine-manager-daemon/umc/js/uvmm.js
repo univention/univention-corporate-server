@@ -86,15 +86,25 @@ define([
 
 	var isRunning = function(item) {
 		// isRunning contains state==PAUSED to enable VNC Connections to pause instances
-		return (item.state == 'RUNNING' || item.state == 'IDLE' || item.state == 'PAUSED') && item.node_available;
+		return (item.state == 'RUNNING' || item.state == 'IDLE' || item.state == 'PAUSED') && item.node_available && !isPausedForMigration(item);
 	};
 
 	var isPaused = function(item) {
 		return (item.state == 'PAUSED') && item.node_available;
 	};
 
+	var isPausedForMigration = function(item) {
+		//  2 Normal migration (Paused on target)
+		// 12 Postcopy migration (Paused on source)
+		return isPaused(item) && [2, 12].indexOf(item.reason) !== -1;
+	};
+
+	var isPausedForSnapshot = function(item) {
+		return isPaused(item) && item.reason === 3;
+	};
+
 	var canStart = function(item) {
-		return item.node_available && (item.state != 'RUNNING' && item.state != 'IDLE' && !isTerminated(item) && item.state != 'PENDING');
+		return item.node_available && (item.state != 'RUNNING' && item.state != 'IDLE' && !isTerminated(item) && item.state != 'PENDING') && !isPausedForMigration(item) && !isPausedForSnapshot(item);
 	};
 
 	var canVNC = function(item) {
@@ -458,7 +468,12 @@ define([
 		},
 
 		_isMigrating: function(item) {
-			return this._hasMigrationMsg(item) && item.migration.hasOwnProperty('type') && item.migration.type !== 0;
+			// 1: VIR_DOMAIN_JOB_BOUNDED
+			// 2: VIR_DOMAIN_JOB_UNBOUNDED
+			var runningMigrationTypes = [1, 2];
+			return this._hasMigrationMsg(item) &&
+				item.migration.hasOwnProperty('type') &&
+				runningMigrationTypes.indexOf(item.migration.type) !== -1;
 		},
 
 		_migrate: function(ids, items) {
@@ -1377,24 +1392,59 @@ define([
 			});
 		},
 
+		_getMigrationPausedInfo: function(item) {
+			if (item.reason === 2) {
+				return _('This machine will be started when the migration completes.');
+			} else if (item.reason === 12) {
+				return _('Do not stop this machine during a postcopy migration. It will be destroyed when the migration completes.');
+			}
+		},
+
 		_startFormatter: function(val, item, col) {
-			if (!canStart(item)) {
+			if (!canStart(item) && !isPausedForMigration(item) && !isPausedForSnapshot(item)) {
 				return '';
 			}
-			if (item._univention_cache_button_start) {
-				return item._univention_cache_button_start;
-			}
+			var btn;
 			var call = item.type == 'instance' ? '_changeStateInstance' : '_changeState';
 			var id = item[this._grid.moduleStore.idProperty];
-			var btn = new Button({
-				label: '',
-				iconClass: 'umcIconPlay',
-				style: 'padding: 0; display: inline; margin: 0;',
-				callback: lang.hitch(this, call, 'RUN', 'start', [id], [item]),
-				title: col.description
+			var _runCallback = lang.hitch(this, call, 'RUN', 'start', [id], [item]);
+			var _migrationInfoCallback = lang.hitch(this, function() {
+				dialog.alert(this._getMigrationPausedInfo(item));
 			});
-			this._grid.own(btn);
-			item._univention_cache_button_start = btn;
+			var snapshotInfo = _('This machine is paused to create a snapshot.');
+			var _snapshotInfoCallback = function() {
+				dialog.alert(snapshotInfo);
+			};
+
+			if (item._univention_cache_button_start) {
+				btn = item._univention_cache_button_start;
+			} else {
+				btn = new Button({
+					label: '',
+					style: 'padding: 0; display: inline; margin: 0;',
+					callback: function() {
+						if (isPausedForMigration(item)) {
+							_migrationInfoCallback();
+						} else if (isPausedForSnapshot(item)) {
+							_snapshotInfoCallback();
+						} else {
+							_runCallback();
+						}
+					}
+				});
+				this._grid.own(btn);
+				item._univention_cache_button_start = btn;
+			}
+			if (isPausedForMigration(item)) {
+				btn.set('iconClass', 'umcHelpIcon');
+				btn.set('title', this._getMigrationPausedInfo(item));
+			} else if (isPausedForSnapshot(item)) {
+				btn.set('iconClass', 'umcHelpIcon');
+				btn.set('title', snapshotInfo);
+			} else {
+				btn.set('iconClass', 'umcIconPlay');
+				btn.set('title', col.description);
+			}
 			return btn;
 		},
 
@@ -1557,7 +1607,7 @@ define([
 				isStandardAction: false,
 				isContextAction: true,
 				canExecute: function(item) {
-					return item.node_available;
+					return item.node_available && !isPausedForMigration(item);
 				},
 				callback: lang.hitch(this, function(ids) {
 					if (!ids.length) {
@@ -1646,7 +1696,7 @@ define([
 				callback: lang.hitch(this, '_migrate' ),
 				canExecute: function(item) {
 					// FIXME need to find out if there are more than one node of this type
-					return !isTerminated(item);
+					return !isTerminated(item) && !isPausedForMigration(item);
 				}
 			}, {
 				name: 'remove',

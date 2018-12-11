@@ -25,6 +25,7 @@
 }
 
 .umc .umcGrid .dgrid .dgrid-cell.field-vnc .umcIconView,
+.umc .umcGrid .dgrid .dgrid-cell.field-start .umcHelpIcon,
 .umc .umcGrid .dgrid .dgrid-cell.field-start .umcIconPlay {
 	margin: 0 16px;
 }
@@ -42,7 +43,7 @@
 	*  node icon: 16 px + 5 px
 	*  cpu | mem: ca 100 px
 	*/
-	max-width: calc( 100% - 24px - 32px - 16px - 5px - 100px);
+	max-width: calc( 100% - 24px - 32px - 16px - 5px - 90px);
 	line-height: 32px;
 	vertical-align: middle;
 }
