@@ -1565,7 +1565,7 @@ immer in dieser Gruppe Mitglied.
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Beitritt des UCS-Domänencontrollers in die Active Directory Domäne
+		  Kopieren aller Objekte aus Active Directory nach UCS
 		</simpara></listitem>
 
 		<listitem><simpara>

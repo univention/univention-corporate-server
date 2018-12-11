@@ -1486,7 +1486,7 @@ The <systemitem class="username">root</systemitem> and <systemitem class="userna
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Joining the UCS domain controller into the Active Directory domain
+		  Copying all objects from Active Directory to UCS
 		</simpara></listitem>
 
 		<listitem><simpara>
