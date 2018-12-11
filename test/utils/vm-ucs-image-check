@@ -32,13 +32,17 @@ die () {
 	exit 1
 }
 
+cleanup () {
+	rm -f "$tmp"
+}
 setup () {
 	tmp="$(mktemp)"
-	trap "rm -f '$tmp'" EXIT
+	trap cleanup EXIT
 }
 
 parse_args () {
-	local args="$(getopt -n "$exe" -o 'hcnv' -l "help,clean,dry-run,verbose" -- "$@")" ||
+	local args arg
+	args="$(getopt -n "$exe" -o 'hcnv' -l "help,clean,dry-run,verbose" -- "$@")" ||
 		die "Failed to parse arguments '$*'"
 	eval set -- "$args"
 
@@ -54,6 +58,7 @@ parse_args () {
 		*) die "Unknown argument '$arg'" ;;
 		esac
 	done
+	# shellcheck disable=SC2046
 	[ $# -ge 1 ] ||
 		set -- $(grep -o '^check_\w\+' "$0")
 	checks=("$@")
@@ -136,9 +141,9 @@ check_grub () {
 	debconf=$(echo 'get grub-pc/install_devices' | debconf-communicate | sed 's/^0 //')
 	[ -b "$debconf" ] ||
 		issue "DebConf GRUB device wrong" debconf-communicate <<<"set grub-pc/install_devices $dev"
-	[ ${grub_rootdelay:-5} -gt 0 ] &&
+	[ "${grub_rootdelay:-5}" -gt 0 ] &&
 		issue "grub/rootdelay != 0" ucr set grub/rootdelay='0'
-	[ ${grub_timeout:-5} -gt 0 ] &&
+	[ "${grub_timeout:-5}" -gt 0 ] &&
 		issue "grub/timeout != 0" ucr set grub/timeout='0'
 }
 
@@ -152,21 +157,21 @@ check_ec2 () {
 	curl --silent --show-error --connect-timeout 1 --max-time 1 --retry-max-time 1 --retry 1 -I http://169.254.169.254/ >/dev/null ||
 		return 0
 	echo "I: EC2"
-	[ "$server_amazon" = true ] ||
+	[ "${server_amazon:-}" = true ] ||
 		issue "UCRV server/amazon" ucr set server/amazon='true'
-	[ "$grub_generate_menu_lst" = no ] ||
+	[ "${grub_generate_menu_lst:-}" = no ] ||
 		issue "generate-menu-lst is enabled" ucr set grub/generate-menu-lst='no'
 	[ -e /boot/grub/menu.lst ] &&
 		issue "menu.lst exists" rm -f /boot/grub/menu.lst*
-	case "$grub_append" in
+	case "${grub_append:-}" in
 	*console=ttyS*) ;;
 	*) issue "Missing serial console" ucr set grub/append="${grub_append:+$grub_append }console=tty0 console=ttyS0" ;;
 	esac
-	case "$grub_terminal" in
+	case "${grub_terminal:-}" in
 	*serial*) ;;
 	*) issue "Missing GRUB terminal" ucr set grub/terminal='console serial' ;;
 	esac
-	case "$grub_serialcommand" in
+	case "${grub_serialcommand:-}" in
 	serial*) ;;
 	*) issue "Missing GRUB serial" ucr set grub/serialcommand='serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1' ;;
 	esac
@@ -183,25 +188,26 @@ check_dns () {
 }
 
 check_ucr () {
-	local old
-	case "$repository_online" in
+	local key value
+	case "${repository_online:-}" in
 	false|no|disable|disabled|0) ;;
 	*) issue "online should be disabled" ucr set repository/online='false' ;;
 	esac
-	case "$repository_online_unmaintained" in
+	case "${repository_online_unmaintained:-}" in
 	false|no|disable|disabled|0) ;;
 	*) issue "unmaintained should be disabled" ucr set repository/online/unmaintained='no' ;;
 	esac
-	while IFS=': ' read key value
+	while IFS=': ' read -r key value
 	do
 		case "$key" in
-		repository/online/component/${version_version}-${version_patchlevel}-errata) expected=enabled ;;
+		repository/online/component/${version_version:-}-${version_patchlevel:-}-errata) expected=enabled ;;
 		repository/online/component/[0-9].[0-9]-[0-9]-errata) expected=false ;;
 		*) continue ;;
 		esac
 		[ "$value" = "$expected" ] ||
 			echo "${key}=${expected}"
 	done </etc/univention/base.conf >"$tmp"
+	# shellcheck disable=SC2046
 	[ -s "$tmp" ] &&
 		issue "Wrong errata component" $(xargs -0 -a "$tmp" echo ucr set)
 }
@@ -222,7 +228,7 @@ check_home () {
 check_dpkg () {
 	local desired status error pkg
 	dpkg-query -f '${Status} ${Package}\n' -W >"$tmp"
-	while read desired status error pkg
+	while read -r desired status error pkg
 	do
 		case "$desired $status $error" in
 		"install ok installed") ;;
@@ -237,7 +243,7 @@ check_kernel () {  # Bug #37144
 	arch="$(dpkg --print-architecture)"
 	current="$(dpkg-query -s univention-kernel-image | sed -rne "/^Depends:/s/.*(linux-image-.*-${arch})(-signed)?(,.*)?\$/\1/p")"
 	dpkg-query -f '${Status} ${Package}\n' -W "linux-image-*-${arch}" >"$tmp"
-	while read desired status error pkg
+	while read -r desired status error pkg
 	do
 		case "$desired $status $error $pkg" in
 		"install ok installed $current") ;;
@@ -260,10 +266,10 @@ check_system_setup () {
 }
 
 check_logs () {
-	find /var/log \( -name \*.gz -o -name \*.[0-9] \) -print0 >"$tmp" || :
+	find /var/log \( -name '*.gz' -o -name '*.[0-9]' \) -print0 >"$tmp" || :
 	[ -s "$tmp" ] &&
 		issue "Old logfiles exist" find /var/log \( -name \*.gz -o -name \*.[0-9] \) -delete
-	find /var/log \( -not -name \*.gz -not -name \*.[0-9] -type f -not -empty \) -print0 >"$tmp" || :
+	find /var/log \( -not -name '*.gz' -not -name '*.[0-9]' -type f -not -empty \) -print0 >"$tmp" || :
 	[ -s "$tmp" ] &&
 		issue "Logfiles exist" find /var/log \( -not -name \*.gz -not -name \*.[0-9] -type f -not -empty \) -delete
 	[ -s /var/lib/logrotate/status ] &&
