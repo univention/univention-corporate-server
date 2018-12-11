@@ -1,0 +1,17 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: lxml
+fix: 3.4.0-1+deb8u1
+desc: |
+ This update addresses the following issues:
+ * An issue was discovered in lxml before 4.2.5. lxml/html/clean.py in the
+   lxml.html.clean module does not remove javascript: URLs that use escaping,
+   allowing a remote attacker to conduct XSS attacks, as demonstrated by "j a
+   v a s c r i p t:" in Internet Explorer. This is a similar issue to
+   CVE-2014-3146. (CVE-2018-19787)
+bug: [48308]
+cve:
+- CVE-2018-19787
+- CVE-2014-3146
