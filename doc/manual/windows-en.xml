@@ -892,15 +892,11 @@ ucr set connector/ad/mapping/user/password/kinit=false
   </para>
 
   <para>
-    In the default setting, containers, organizational units, users and groups are synchronized. Users have an exceptional position since the password cannot be queried via the LDAP protocol in Active Directory.
+    In the default setting, containers, organizational units, users, groups and computers are synchronized. Users have an exceptional position since the password cannot be queried via the LDAP protocol in Active Directory.
   </para>
 
   <para>
     Information on the attributes configured in the basic setting and particularities to take into account can be found in <xref linkend="ad-connector:details-zur-vorkonfigurierten-synchronization"/>.
-  </para>
-
-  <para>
-    The computer accounts are not synchronized, as Windows computers can only be mounted in one domain.
   </para>
 
   <para>
