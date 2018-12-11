@@ -817,7 +817,8 @@ END CATEGORY
 	<para>
 		Bei der Konfiguration eines UCS-Serversystems als Mitglied einer AD-Domäne (<emphasis>AD member</emphasis>-Modus)
 		dient das AD als führender Verzeichnisdienst und das jeweilige UCS-System tritt dem Vertrauenskontext der AD-Domäne
-	  bei. Durch die Domänenmitgliedschaft hat das UCS-System limitierten Zugriff auf Kontodaten der Active
+		bei. Das UCS-System ist nicht in der Lage selbst als Active Directory Domänencontroller zu arbeiten.
+		Durch die Domänenmitgliedschaft hat das UCS-System limitierten Zugriff auf Kontodaten der Active
 		Directory-Domäne, die es über den UCS AD-Connector aus dem AD ausliest und lokal in den eigenen OpenLDAP-basierten
 		Verzeichnisdienst schreibt. In dieser Konfiguration schreibt der UCS AD-Connector keine Änderungen
 	  in das AD.

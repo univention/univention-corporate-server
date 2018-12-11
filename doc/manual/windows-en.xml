@@ -769,7 +769,7 @@ END CATEGORY
   <title>UCS as a member of an Active Directory domain</title>
 
 	<para>
-		In the configuration of a UCS server system as a member of an AD domain (<emphasis>AD member</emphasis> mode), the AD functions as the primary directory service and the respective UCS system joins the trust context of the AD domain. The domain membership gives the UCS system restricted access to the account data of the Active Directory domain, which it exports from the AD by means of the UCS AD Connector and writes locally in its own OpenLDAP-based directory service. In this configuration, the UCS AD Connector does not write any changes in the AD.
+		In the configuration of a UCS server system as a member of an AD domain (<emphasis>AD member</emphasis> mode), the AD functions as the primary directory service and the respective UCS system joins the trust context of the AD domain. The UCS system is not able to operate as an Active Directory domain controller itself. The domain membership gives the UCS system restricted access to the account data of the Active Directory domain, which it exports from the AD by means of the UCS AD Connector and writes locally in its own OpenLDAP-based directory service. In this configuration, the UCS AD Connector does not write any changes in the AD.
 	</para>
 
 	<para>
