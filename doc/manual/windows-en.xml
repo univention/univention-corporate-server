@@ -989,7 +989,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
   </para>
 
   <para>
-	In the <guimenu>Active Directory account</guimenu> field, the user is configured which is used for the access on the AD. The setting is saved in the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar>. The replication user must be a member of the <systemitem class="groupname">Domain Admins</systemitem> group in the AD. If the connector performs read only synchronization from AD to UCS, a standard user account can also be specified.
+	In the <guimenu>Active Directory account</guimenu> field, the user is configured which is used for the access on the AD. The setting is saved in the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar>. The replication user must be a member of the <systemitem class="groupname">Domain Admins</systemitem> group in the AD.
   </para>
 
   <para>
