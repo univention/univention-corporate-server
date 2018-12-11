@@ -395,14 +395,17 @@ instanceType: 4
 		  <title>Installation of Group Policy Management</title>
 
 		  <para>
-			Group Policy Management can be installed as a component of the <emphasis>Remote Server
-			Administration Tools</emphasis> on Windows clients. They can be found at
-			<footnote><para><ulink
-						url="http://www.microsoft.com/en-us/download/details.aspx?id=7887"/></para></footnote>
-			for Windows 7 or at <emphasis>Remote Server Administration Tools (RSAT) for Windows
-			8</emphasis> <footnote><para><ulink
-			url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>
-			for Windows 8.
+			Group Policy Management can be installed as a component of the
+			<emphasis>Remote Server Administration Tools</emphasis>
+			on Windows clients. They can be found at
+			<footnote><para><ulink url="http://www.microsoft.com/en-us/download/details.aspx?id=7887"/></para></footnote>
+			for Windows 7, at
+			<emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
+			<footnote><para><ulink url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>
+			for Windows 8 or at
+			<emphasis>Remote Server Administration Tools (RSAT) for Windows 10</emphasis>
+			<footnote><para><ulink url="https://www.microsoft.com/en-us/download/details.aspx?id=45520"/></para></footnote>
+			for Windows 10.
 		  </para>
 
 			<figure id="windows:gpo:activate"><title>Activating the Group Policy Management tools</title>

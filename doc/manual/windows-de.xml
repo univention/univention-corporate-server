@@ -405,12 +405,16 @@ instanceType: 4
 		  <title>Installation der Gruppenrichtlinienverwaltung</title>
 
 		  <para>
-			Die Gruppenrichtlinienverwaltung kann als Teil der <emphasis>Remote Server
-			Administration Tools</emphasis> auf Windows Clients installiert werden. Sie können für Windows 7 unter <footnote><para><ulink
-					url="http://www.microsoft.com/en-us/download/details.aspx?id=7887"/></para></footnote>
-			oder für Windows 8 unter <emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
-			<footnote><para><ulink
-			url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>
+			Die Gruppenrichtlinienverwaltung kann als Teil der
+			<emphasis>Remote Server Administration Tools</emphasis> auf Windows Clients installiert werden.
+			Sie können für Windows 7 unter
+			<footnote><para><ulink url="http://www.microsoft.com/en-us/download/details.aspx?id=7887"/></para></footnote>,
+			für Windows 8 unter
+			<emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
+			<footnote><para><ulink url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>
+			oder für Windows 10 unter
+			<emphasis>Remote Server Administration Tools (RSAT) for Windows 10</emphasis>
+			<footnote><para><ulink url="https://www.microsoft.com/en-us/download/details.aspx?id=45520"/></para></footnote>
 			bezogen werden.
 		  </para>
 
