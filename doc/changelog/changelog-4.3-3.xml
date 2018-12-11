@@ -102,7 +102,6 @@
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>openssl</package> (<u:cve>2018-0732</u:cve> <u:cve>2018-0734</u:cve> <u:cve>2018-0735</u:cve> <u:cve>2018-0737</u:cve>)
-						<remark>Need to be imported into errata4.3-2</remark>
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>perl</package> (<u:cve>2018-18311</u:cve> <u:cve>2018-18312</u:cve> <u:cve>2018-18313</u:cve> <u:cve>2018-18314</u:cve>) (<u:bug>48239</u:bug>)
@@ -136,7 +135,6 @@
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>tiff</package> (<u:cve>2018-5784</u:cve> <u:cve>2018-7456</u:cve> <u:cve>2018-8905</u:cve> <u:cve>2018-10963</u:cve> <u:cve>2018-17101</u:cve> <u:cve>2018-18557</u:cve> <u:cve>2017-11613</u:cve> <u:cve>2017-17095</u:cve>)
-						<remark>Need to be imported into errata4.3-2</remark>
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>unbound</package> (<u:cve>2017-15105</u:cve>) (<u:bug>48173</u:bug>)
