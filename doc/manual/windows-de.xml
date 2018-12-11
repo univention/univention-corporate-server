@@ -1069,9 +1069,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  Im Feld <guimenu>Active Directory-Konto</guimenu> wird der Benutzer konfiguriert, der für
 	  den Zugriff auf das AD verwendet wird. Die Einstellung wird in der
 	  &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> gespeichert. Der Replikationsbenutzer muss im
-	  AD Mitglied der Gruppe <systemitem class="groupname">Domänen-Admins</systemitem> sein. Synchronisiert
-	  der Connector nur lesend von AD zu UCS, kann auch ein Standardbenutzerkonto
-	  angegeben werden.
+	  AD Mitglied der Gruppe <systemitem class="groupname">Domänen-Admins</systemitem> sein.
 	</para>
 
 	<para>
