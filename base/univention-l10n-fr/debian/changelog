@@ -1,3 +1,9 @@
+univention-l10n-fr (2.0.0-12) unstable; urgency=medium
+
+  * Bug #44162: Remove dependency on univention-management-console
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 12 Dec 2018 13:07:43 +0100
+
 univention-l10n-fr (2.0.0-11) unstable; urgency=low
 
   * Bug #47861: add support for new syntax class mailinglist_name
