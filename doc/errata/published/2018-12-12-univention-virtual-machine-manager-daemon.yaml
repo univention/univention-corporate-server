@@ -15,3 +15,5 @@ desc: |
  * Fix tooltips preventing button clicks.
  * Show CPU usage in tree of virtualization hosts.
 bug: [47617, 47741, 36661, 48199, 48024, 45498, 35196]
+erratum: 382
+announced: 2018-12-12
