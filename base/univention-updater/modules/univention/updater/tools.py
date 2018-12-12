@@ -79,19 +79,6 @@ RE_CREDENTIALS = re.compile(r'^repository/credentials/(?:(?P<realm>[^/]+)/)?(?P<
 MIN_GZIP = 100  # size of non-empty gzip file
 UUID_NULL = '00000000-0000-0000-0000-000000000000'
 
-try:
-    NullHandler = logging.NullHandler
-except AttributeError:
-    class NullHandler(logging.Handler):
-        """
-        Returns a new instance of the NullHandler class.
-        """
-
-        def emit(self, record):
-            """
-            This method does nothing.
-            """
-
 
 def verify_script(script, signature):
     """
@@ -397,7 +384,7 @@ class UCSHttpServer(object):
         :param str user_agent: optional user agent string.
         :param int timeout: optional timeout for network access.
         """
-        self.log.addHandler(NullHandler())
+        self.log.addHandler(logging.NullHandler())
         self.baseurl = baseurl
         self.user_agent = user_agent
         self.timeout = timeout
@@ -616,7 +603,7 @@ class UCSLocalServer(object):
         :param str prefix: The local path of the repository.
         """
         self.log = logging.getLogger('updater.UCSFile')
-        self.log.addHandler(NullHandler())
+        self.log.addHandler(logging.NullHandler())
         prefix = str(prefix).strip('/')
         if prefix:
             self.prefix = '%s/' % prefix
@@ -724,7 +711,7 @@ class UniventionUpdater:
         :raises ConfigurationError: if configured server is not available immediately.
         """
         self.log = logging.getLogger('updater.Updater')
-        self.log.addHandler(NullHandler())
+        self.log.addHandler(logging.NullHandler())
         self.check_access = check_access
         self.connection = None
         self.architectures = [os.popen('dpkg --print-architecture 2>/dev/null').readline()[:-1]]
@@ -1858,7 +1845,7 @@ class LocalUpdater(UniventionUpdater):
     def __init__(self):
         UniventionUpdater.__init__(self)
         self.log = logging.getLogger('updater.LocalUpdater')
-        self.log.addHandler(NullHandler())
+        self.log.addHandler(logging.NullHandler())
         repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
         self.server = UCSLocalServer("%s/mirror/" % repository_path)
 
