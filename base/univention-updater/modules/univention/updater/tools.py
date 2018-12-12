@@ -30,18 +30,19 @@ Univention Update tools.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
 try:
     import univention.debug as ud
 except ImportError:
     import univention.debug2 as ud
 
 # TODO: Convert to absolute imports only AFTER the unit test has been adopted
-from commands import (
+from .commands import (
     cmd_dist_upgrade,
     cmd_dist_upgrade_sim,
     cmd_update,
 )
-from errors import (
+from .errors import (
     UnmetDependencyError,
     CannotResolveComponentServerError,
     ConfigurationError,
@@ -51,8 +52,8 @@ from errors import (
     ProxyError,
     VerificationError,
 )
-from ucs_version import UCS_Version
-from repo_url import UcsRepoUrl
+from .ucs_version import UCS_Version
+from .repo_url import UcsRepoUrl
 
 import errno
 import sys
