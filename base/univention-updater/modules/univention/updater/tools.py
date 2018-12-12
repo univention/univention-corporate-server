@@ -103,8 +103,9 @@ def verify_script(script, signature):
     os.close(sig_fd)
 
     # collect trusted keys of apt-key
-    keys = [os.path.join(verify_script.APT, "trusted.gpg")]
-    apt = os.path.join(verify_script.APT, "trusted.gpg.d")
+    APT = "/etc/apt"
+    keys = [os.path.join(APT, "trusted.gpg")]
+    apt = os.path.join(APT, "trusted.gpg.d")
     keys += [os.path.join(apt, key) for key in os.listdir(apt) if key.endswith('.gpg')]
 
     # build command line
@@ -119,9 +120,6 @@ def verify_script(script, signature):
     stdout, _stderr = proc.communicate(script)
     ret = proc.wait()
     return stdout if ret != 0 else None
-
-
-verify_script.APT = "/etc/apt"
 
 
 class UCSRepo(UCS_Version):
