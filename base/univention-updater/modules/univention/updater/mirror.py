@@ -39,7 +39,7 @@ import itertools
 import logging
 from operator import itemgetter
 
-from .tools import UniventionUpdater, NullHandler
+from .tools import UniventionUpdater
 from .ucs_version import UCS_Version
 from .repo_url import UcsRepoUrl
 try:
@@ -73,7 +73,7 @@ class UniventionMirror(UniventionUpdater):
         """
         UniventionUpdater.__init__(self, check_access)
         self.log = logging.getLogger('updater.Mirror')
-        self.log.addHandler(NullHandler())
+        self.log.addHandler(logging.NullHandler())
         self.repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
 
         version_end = self.configRegistry.get('repository/mirror/version/end') or self.current_version
