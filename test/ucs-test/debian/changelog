@@ -1,3 +1,9 @@
+ucs-test (8.0.28-248) unstable; urgency=medium
+
+  * Bug #48053: Avoid loop in wait_for_replication_and_postrun
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 12 Dec 2018 13:26:31 +0100
+
 ucs-test (8.0.28-247) unstable; urgency=medium
 
   * Bug #46316: more wait_for_connector_replication

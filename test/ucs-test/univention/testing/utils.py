@@ -382,7 +382,10 @@ def wait_for_replication_and_postrun(verbose=True):
             seconds_since_last_change += 1
         else:
             seconds_since_last_change = 0
-        if seconds_since_last_change > 16:
+        if seconds_since_last_change > 12:
+            # Less than 15 sec because a postrun function can potentially make ldap changes,
+            # which would result in a loop here.
+            time.sleep(10)  # Give the postrun function some time
             if verbose:
                 print("Postrun should have run")
             return
