@@ -30,6 +30,7 @@ Univention Updater helper functions for managing a local repository.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
 import os
 import shutil
 import subprocess

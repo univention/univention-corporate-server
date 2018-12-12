@@ -30,6 +30,7 @@ Mirror Univention repository server.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
 import os
 import errno
 import re
@@ -38,9 +39,9 @@ import itertools
 import logging
 from operator import itemgetter
 
-from tools import UniventionUpdater, NullHandler
-from ucs_version import UCS_Version
-from repo_url import UcsRepoUrl
+from .tools import UniventionUpdater, NullHandler
+from .ucs_version import UCS_Version
+from .repo_url import UcsRepoUrl
 try:
     import univention.debug as ud
 except ImportError:
