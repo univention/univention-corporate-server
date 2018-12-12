@@ -1,3 +1,10 @@
+univention-l10n-fr (2.0.0-13) unstable; urgency=medium
+
+  * Bug #44162: Revert the removal of univention-management-console as a
+    dependency
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 12 Dec 2018 15:49:32 +0100
+
 univention-l10n-fr (2.0.0-12) unstable; urgency=medium
 
   * Bug #44162: Remove dependency on univention-management-console
