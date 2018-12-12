@@ -884,14 +884,16 @@ class UniventionUpdater:
         result = []
         while ucs_version:
             try:
-                ucs_version = self.get_next_version(UCS_Version(ucs_version), components, errorsto='exception')
+                ver = self.get_next_version(ucs_version, components, errorsto='exception')
             except RequiredComponentError as ex:
                 self.log.warn('Update blocked by components %s', ', '.join(ex.components))
                 # ex.components blocks update to next version ==> return current list and blocking component
                 return result, ex.components
 
-            if ucs_version:
-                result.append(ucs_version)
+            if not ver:
+                break
+            result.append(ver)
+            ucs_version = UCS_Version(ver)
         self.log.info('Found release updates %r', result)
         return result, None
 
@@ -1298,11 +1300,11 @@ class UniventionUpdater:
         self.log.info('Searching releases [%s..%s), dists=%s', start, end, dists)
         server = self.server
         if dists and 'maintained' in parts:
-            struct = UCSRepoDist(prefix=self.server)
-            for ver in self._iterate_versions(struct, start, end, ['maintained'], archs, server):
+            struct_dist = UCSRepoDist(prefix=self.server)
+            for ver in self._iterate_versions(struct_dist, start, end, ['maintained'], archs, server):
                 yield server, ver
-        struct = UCSRepoPool(prefix=self.server)
-        for ver in self._iterate_versions(struct, start, end, parts, ['all'] + archs, server):
+        struct_pool = UCSRepoPool(prefix=self.server)
+        for ver in self._iterate_versions(struct_pool, start, end, parts, ['all'] + archs, server):
             yield server, ver
 
     def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False):
@@ -1322,13 +1324,13 @@ class UniventionUpdater:
             # server, port, prefix
             server = self._get_component_server(component, for_mirror_list=for_mirror_list)
             # parts
-            parts = set(self.parts)
+            parts_unique = set(self.parts)
             if self.configRegistry.is_true('repository/online/component/%s/unmaintained' % (component)):
-                parts.add("unmaintained")
-            parts = ['%s/component' % (part,) for part in parts]
+                parts_unique.add("unmaintained")
+            parts = ['%s/component' % (part,) for part in parts_unique]
             # versions
             if start == end:
-                versions = (start,)
+                versions = set((start,))
             else:
                 versions = self._get_component_versions(component, start, end)
 
