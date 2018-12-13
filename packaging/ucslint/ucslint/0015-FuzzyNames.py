@@ -32,7 +32,10 @@ try:
 except ImportError:
 	import ucslint.base as uub
 import re
-import tre
+try:
+	import tre
+except ImportError:
+	tre = None
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -77,6 +80,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	def check(self, path):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
+		if not tre:
+			return
 
 		fz = tre.Fuzzyness(maxerr=2)
 		pt = tre.compile("\<univention\>", tre.EXTENDED | tre.ICASE)
