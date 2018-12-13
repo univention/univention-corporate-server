@@ -3,7 +3,7 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-updater
-fix: 13.0.1-64A~4.3.0.201812131057
+fix: 13.0.1-65A~4.3.0.201812131650
 desc: |
  This update addresses the following issue(s):
  * Added an UMC-Variable for changing the debug level of univention-updater

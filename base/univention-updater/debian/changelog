@@ -1,3 +1,9 @@
+univention-updater (13.0.1-65) unstable; urgency=medium
+
+  * Bug #47913: Set debug level in univention-updater
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 13 Dec 2018 16:46:14 +0100
+
 univention-updater (13.0.1-64) unstable; urgency=medium
 
   * Bug #47913: Added UCR-Variable to change debug level of univention-updater
