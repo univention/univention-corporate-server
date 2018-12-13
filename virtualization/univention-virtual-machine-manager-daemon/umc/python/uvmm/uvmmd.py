@@ -3,7 +3,7 @@
 # Univention Management Console
 #  module: UVMM client
 #
-# Copyright 2010-2018 Univention GmbH
+# Copyright 2010-2019 Univention GmbH
 #
 # http://www.univention.de/
 #

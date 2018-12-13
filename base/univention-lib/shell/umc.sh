@@ -4,7 +4,7 @@
 # Univention Lib
 #  shell function for creating UMC operation and acl objects
 #
-# Copyright 2011-2018 Univention GmbH
+# Copyright 2011-2019 Univention GmbH
 #
 # http://www.univention.de/
 #

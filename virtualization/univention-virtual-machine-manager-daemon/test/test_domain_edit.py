@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 """Test univention.uvmm.node.Domain"""
-# Copyright 2010-2018 Univention GmbH
+# Copyright 2010-2019 Univention GmbH
 #
 # http://www.univention.de/
 #

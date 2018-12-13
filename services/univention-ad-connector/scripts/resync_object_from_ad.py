@@ -4,7 +4,7 @@
 # Univention AD Connector
 #  Resync object from AD to OpenLDAP
 #
-# Copyright 2018 Univention GmbH
+# Copyright 2018-2019 Univention GmbH
 #
 # http://www.univention.de/
 #

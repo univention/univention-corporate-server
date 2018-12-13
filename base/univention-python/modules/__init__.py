@@ -2,7 +2,7 @@
 #
 # Univention Python
 #
-# Copyright 2002-2018 Univention GmbH
+# Copyright 2002-2019 Univention GmbH
 #
 # http://www.univention.de/
 #

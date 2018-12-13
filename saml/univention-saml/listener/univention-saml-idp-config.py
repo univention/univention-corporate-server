@@ -1,7 +1,7 @@
 # Univention SAML
 # Listener module to set up SAML IdP configuration
 #
-# Copyright 2018 Univention GmbH
+# Copyright 2018-2019 Univention GmbH
 #
 # http://www.univention.de/
 #

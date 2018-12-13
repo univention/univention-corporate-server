@@ -4,7 +4,7 @@
 # Univention Management Console
 #  quota module: handles partition related commands
 #
-# Copyright 2006-2018 Univention GmbH
+# Copyright 2006-2019 Univention GmbH
 #
 # http://www.univention.de/
 #

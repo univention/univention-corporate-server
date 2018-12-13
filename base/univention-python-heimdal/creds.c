@@ -2,7 +2,7 @@
  * Python Heimdal
  *	Bindings for the credentials API of heimdal
  *
- * Copyright 2003-2018 Univention GmbH
+ * Copyright 2003-2019 Univention GmbH
  *
  * http://www.univention.de/
  *

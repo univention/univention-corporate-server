@@ -7,7 +7,7 @@ connections to remote |UMC| Servers.
 .. deprecated:: 4.2
    Superseded by :py:mod:`univention.lib.umc`.
 """
-# Copyright 2013-2018 Univention GmbH
+# Copyright 2013-2019 Univention GmbH
 #
 # http://www.univention.de/
 #

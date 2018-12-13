@@ -2,7 +2,7 @@
  * PAM Univention Mail Cyrus
  *  PAM Module to change username from email@address.com to username
  *
- * Copyright 2005-2018 Univention GmbH
+ * Copyright 2005-2019 Univention GmbH
  *
  * http://www.univention.de/
  *

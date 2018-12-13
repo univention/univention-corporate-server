@@ -4,7 +4,7 @@
 # Univention App Center
 #  univention-app module for getting log output from a docker app
 #
-# Copyright 2015-2017 Univention GmbH
+# Copyright 2015-2019 Univention GmbH
 #
 # http://www.univention.de/
 #

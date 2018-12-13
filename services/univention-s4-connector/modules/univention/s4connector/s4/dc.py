@@ -4,7 +4,7 @@
 # Univention S4 Connector
 #  dc sync
 #
-# Copyright 2004-2018 Univention GmbH
+# Copyright 2004-2019 Univention GmbH
 #
 # http://www.univention.de/
 #

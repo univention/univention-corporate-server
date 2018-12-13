@@ -3,7 +3,7 @@
 """
 Read and write :file:`/etc/fstab`.
 """
-# Copyright 2006-2018 Univention GmbH
+# Copyright 2006-2019 Univention GmbH
 #
 # http://www.univention.de/
 #
