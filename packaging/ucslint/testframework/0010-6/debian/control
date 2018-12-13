@@ -1,0 +1,10 @@
+Source: ucslint
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends-Indep: debhelper,
+Standards-Version: 4.3.0.2
+
+Package: ucslint
+Architecture: all
+Description: ucslint

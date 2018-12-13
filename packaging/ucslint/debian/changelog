@@ -1,3 +1,9 @@
+ucslint (8.0.0-4) unstable; urgency=low
+
+  * Bug #28499: debian/changelog machine readable DEP-5
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 27 Feb 2019 08:33:42 +0100
+
 ucslint (8.0.0-3) unstable; urgency=low
 
   * Bug #37203: handle missing package

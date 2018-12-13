@@ -1,0 +1,5 @@
+ucslint (1) unstable; urgency=low
+
+  * Bug #28499: Update debian/copyright DEB-5
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 27 Feb 2019 08:16:59 +0100
