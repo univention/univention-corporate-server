@@ -52,6 +52,12 @@ Description[en]=The filename of a program/script which is executed after every r
 Type=str
 Categories=service-software-management
 
+[update/debug/level]
+Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention-updater.log. Mögliche Werte sind 0-4. Ist die Variable nicht gesetzt gilt '2'.
+Description[en]=Specifies the amount of debug information to be written to /var/log/univention/univention-updater.log. Possible values are 0-4. If the variable is unset, '2' applies.
+Type=int
+Categories=service-software-management
+
 [online/repository/clean]
 Description[de]=Wird ein lokales Repository verwendet (siehe 'local/repository') und ist diese Option aktiviert, wird unter /var/lib/univention-repository/var/clean.sh ein Shell-Skript generiert, mit dem gespiegelte und nicht mehr benötigte Repository-Inhalte entfernt werden können. Ist die Variable nicht gesetzt, wird das Skript nicht erzeugt.
 Description[en]=If a local repository is used (see 'local/repository') and if this option is activated, a shell script with the filename /var/lib/univention-repository/var/clean.sh is generated. Executing this shell script removes mirrored repository content, which is no longer used. If the variable is unset, the script is not generated.

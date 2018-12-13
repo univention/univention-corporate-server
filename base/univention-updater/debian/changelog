@@ -1,3 +1,9 @@
+univention-updater (13.0.1-64) unstable; urgency=medium
+
+  * Bug #47913: Added UCR-Variable to change debug level of univention-updater
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 13 Dec 2018 10:48:28 +0100
+
 univention-updater (13.0.1-63) unstable; urgency=medium
 
   * Bug #48273: Adapt links and components for 4.3-3
