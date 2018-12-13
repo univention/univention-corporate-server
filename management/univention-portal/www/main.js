@@ -446,6 +446,7 @@ define([
 		_refresh: function(renderModeAfterRefresh) {
 			var deferred = new Deferred();
 			this._reloadPortalContent().then(lang.hitch(this, function() {
+				domClass.toggle(dom.byId('umcHeader'), 'umcWhiteIcons', lang.getObject('portal.fontColor', false, portalJson) === 'white');
 				this._reloadCss(); // FIXME only reload css if it is necessary (cssBackground / background / fontColor changed)
 				this._render(renderModeAfterRefresh);
 				deferred.resolve();
