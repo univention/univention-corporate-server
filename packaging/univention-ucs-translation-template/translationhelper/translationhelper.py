@@ -28,6 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 from email.Utils import formatdate
+from datetime import date
 from glob import glob
 import fnmatch
 import getpass
@@ -413,7 +414,7 @@ def write_debian_rules(debian_dir_path):
 	with open(os.path.join(debian_dir_path, 'rules'), 'w') as f:
 		f.write("""#!/usr/bin/make -f
 #
-# Copyright 2016-2019 Univention GmbH
+# Copyright 2016-{year} Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -445,7 +446,7 @@ override_dh_auto_test:
 	dh_auto_test
 
 %:
-	dh $@""")
+	dh $@""".format(year=date.today().year))
 
 
 def create_new_package(new_package_dir, target_language, target_locale, language_name, startdir):
@@ -457,33 +458,36 @@ def create_new_package(new_package_dir, target_language, target_locale, language
 	translation_creator = getpass.getuser()
 	translation_host = socket.getfqdn()
 	with open(os.path.join(new_package_dir_debian, 'copyright'), 'w') as f:
-		f.write("""Copyright 2016-2019 Univention GmbH
+		f.write("""\
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Univention GmbH
+Upstream-Contact: <package@univention.de>
+Source: https://updates.software-univention.de/
 
-http://www.univention.de/
-
-All rights reserved.
-
-The source code of the software contained in this package
-as well as the source package itself are made available
-under the terms of the GNU Affero General Public License version 3
-(GNU AGPL V3) as published by the Free Software Foundation.
-
-Binary versions of this package provided by Univention to you as
-well as other copyrighted, protected or trademarked materials like
-Logos, graphics, fonts, specific documentations and configurations,
-cryptographic keys etc. are subject to a license agreement between
-you and Univention and not subject to the GNU AGPL V3.
-
-In the case you use the software under the terms of the GNU AGPL V3,
-the program is provided in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public
-License with the Debian GNU/Linux or Univention distribution in file
-/usr/share/common-licenses/AGPL-3; if not, see
-<http://www.gnu.org/licenses/>.""")
+Files: *
+Copyright: {years} Univention GmbH
+License: AGPL-3.0-only
+ The source code of the software contained in this package
+ as well as the source package itself are made available
+ under the terms of the GNU Affero General Public License version 3
+ (GNU AGPL V3) as published by the Free Software Foundation.
+ .
+ Binary versions of this program provided by Univention to you as
+ well as other copyrighted, protected or trademarked materials like
+ Logos, graphics, fonts, specific documentations and configurations,
+ cryptographic keys etc. are subject to a license agreement between
+ you and Univention and not subject to the GNU AGPL V3.
+ .
+ In the case you use this program under the terms of the GNU AGPL V3,
+ the program is provided in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
+ .
+ You should have received a copy of the GNU Affero General Public
+ License with the Debian GNU/Linux or Univention distribution in file
+ /usr/share/common-licenses/AGPL-3; if not, see
+ <http://www.gnu.org/licenses/>.""".format(years=date.today().year))
 
 	with open(os.path.join(new_package_dir_debian, 'changelog'), 'w') as f:
 		f.write("""%s (1.0.0-1) unstable; urgency=low

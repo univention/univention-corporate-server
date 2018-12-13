@@ -37,6 +37,8 @@
 				</para>
 			</listitem>
 			<listitem><simpara>
+				All <filename>debian/changelog</filename> files have been updated to the machine-readable <ulink url="https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/" lang="">DEP-5</ulink> format.
+				The copyright of all packages has been extended to 2019 (<u:bug>28499</u:bug>):
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -171,7 +173,8 @@
 						The UMC module obtained a graphical overhaul and new filters (<u:bug>48449</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						It is now possible to show a preview of certain Apps that are not (yet) installable. These Apps can be upvoted to get more insights whether users would want this App in the App Center (<u:bug>48472</u:bug>).
+						It is now possible to show a preview of certain Apps that are not (yet) installable.
+						These Apps can be voted for to get more insights whether users would want this App in the App Center (<u:bug>48472</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						The App Center is now able to handle Apps with install permissions. This describes App versions that can only be installed when the App has been bought from the Univention App Center store. (<u:bug>48624</u:bug>, <u:bug>48544</u:bug>).
