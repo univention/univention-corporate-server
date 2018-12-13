@@ -1,0 +1,22 @@
+product: ucs
+release: "4.3"
+version: [2, 3]
+scope: ucs_4.3-0-errata4.3-3
+src: firefox-esr
+fix: 60.4.0esr-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * firefox-esr (CVE-2018-12405)
+ * Memory corruption in Angle (CVE-2018-17466)
+ * firefox-esr (CVE-2018-18492)
+ * firefox-esr (CVE-2018-18493)
+ * firefox-esr (CVE-2018-18494)
+ * firefox-esr (CVE-2018-18498)
+bug: [48319]
+cve:
+- CVE-2018-12405
+- CVE-2018-17466
+- CVE-2018-18492
+- CVE-2018-18493
+- CVE-2018-18494
+- CVE-2018-18498
