@@ -351,7 +351,6 @@ def main():
     if loglevel is None:
         logelevel=2
     ud.set_level(ud.NETWORK, loglevel)
-    ud.set_level(ud.PROCESS, loglevel)
     fp_debug = open(LOGNAME, 'a+')
     # sys.stdout=fp_debug
 
