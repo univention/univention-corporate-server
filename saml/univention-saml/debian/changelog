@@ -1,3 +1,10 @@
+univention-saml (5.0.4-30) unstable; urgency=medium
+
+  * Bug #48348:: Include additional configuration files from
+    /etc/apache2/sso-vhost.conf.d in saml virtualhost config
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 13 Dec 2018 15:51:47 +0100
+
 univention-saml (5.0.4-29) unstable; urgency=medium
 
   * Bug #47880: Tweak required commands
