@@ -1108,7 +1108,13 @@ define([
 				'udm': ['_searchPage', '_detailPage'],
 				'quota': ['_overviewPage', '_partitionPage', '_detailPage'],
 				'join': ['_statuspage', '_joinpage', '_logpage'],
-				'uvmm': ['_searchPage', '_domainPage']
+				'uvmm': ['_searchPage', '_domainPage'],
+				'distribution': ['_searchPage', '_detailPage'],
+				'computerroom': ['_searchPage', '_screenshotView'],
+				'schoolwizards': ['_grid'],
+				'schoolrooms': ['_searchPage', '_detailPage'],
+				'schoolgroups': ['_searchPage', '_detailPage'],
+				'internetrules': ['_assignPage', '_adminPage', '_detailPage']
 			};
 			this._removeModuleSpecificCSSClasses();
 			if (Object.keys(modulePages).indexOf(newModule.moduleID) >= 0) {
@@ -1118,7 +1124,6 @@ define([
 					this._addModuleSpecificCSSClasses(newModule, modulePages);
 				}));
 			}
-
 		},
 
 		_removeModuleSpecificCSSClasses: function() {
