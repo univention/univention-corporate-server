@@ -1,6 +1,7 @@
 univention-updater (14.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
+  * Bug #48327: Adapt links and components for 4.4-0
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:33 +0100
 

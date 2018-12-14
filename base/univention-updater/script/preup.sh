@@ -76,8 +76,8 @@ readcontinue () {
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: https://docs.software-univention.de/release-notes-4.3-3-en.html"
-echo " German version:  https://docs.software-univention.de/release-notes-4.3-3-de.html"
+echo " English version: https://docs.software-univention.de/release-notes-${UPDATE_NEXT_VERSION}-en.html"
+echo " German version:  https://docs.software-univention.de/release-notes-${UPDATE_NEXT_VERSION}-de.html"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
@@ -98,7 +98,7 @@ echo ""
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
-	if [ "$update43_ignoressh" != "yes" ]; then
+	if [ "$update44_ignoressh" != "yes" ]; then
 		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or re-run with \"--ignoressh\" to ignore it."
 		exit 1
@@ -106,7 +106,7 @@ if [ -n "$SSH_CLIENT" ]; then
 fi
 
 if [ "$TERM" = "xterm" ]; then
-	if [ "$update43_ignoreterm" != "yes" ]; then
+	if [ "$update44_ignoreterm" != "yes" ]; then
 		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or re-run with \"--ignoreterm\" to ignore it."
 		exit 1
@@ -152,12 +152,12 @@ hold_packages="$(LC_ALL=C dpkg -l | grep ^h | awk '{print $2}')"
 if [ -n "$hold_packages" ]; then
 	echo "WARNING: Some packages are marked as hold -- this may interrupt the update and result in an inconsistent"
 	echo "system!"
-	echo "Please check the following packages and unmark them or set the UCR variable update43/ignore_hold to yes"
+	echo "Please check the following packages and unmark them or set the UCR variable update44/ignore_hold to yes"
 	for hp in $hold_packages; do
 		echo " - $hp"
 	done
-	if is_ucr_true update43/ignore_hold; then
-		echo "WARNING: update43/ignore_hold is set to true. Skipped as requested."
+	if is_ucr_true update44/ignore_hold; then
+		echo "WARNING: update44/ignore_hold is set to true. Skipped as requested."
 	else
 		exit 1
 	fi
@@ -172,9 +172,9 @@ if [ -e "$(which slapd)" ] && [ "$server_role" = "memberserver" ]; then
 	echo "         or via the package management in the Univention Management Console."
 	echo "         Make sure that only the package slapd gets removed!"
 	echo "         This check can be disabled by setting the UCR variable"
-	echo "         update43/ignore_slapd_on_member to yes."
-	if is_ucr_true update43/ignore_slapd_on_member; then
-		echo "WARNING: update43/ignore_slapd_on_member is set to true. Skipped as requested."
+	echo "         update44/ignore_slapd_on_member to yes."
+	if is_ucr_true update44/ignore_slapd_on_member; then
+		echo "WARNING: update44/ignore_slapd_on_member is set to true. Skipped as requested."
 	else
 		exit 1
 	fi
@@ -219,7 +219,7 @@ pruneOldKernel () {
 		DEBIAN_FRONTEND=noninteractive xargs -r apt-get -o DPkg::Options::=--force-confold -y --force-yes purge
 }
 
-if is_ucr_true 'update43/pruneoldkernel'
+if is_ucr_true 'update44/pruneoldkernel'
 then
 	echo -n "Purging old kernel... "
 	for kernel_version in 2.6.\* 3.2.0 3.10.0 3.16 3.16.0 4.1.0 4.9.0
@@ -260,13 +260,13 @@ check_space () {
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
 		echo "         This may interrupt the update and result in an inconsistent system!"
 		echo "         If necessary you can skip this check by setting the value of the"
-		echo "         config registry variable update43/checkfilesystems to \"no\"."
+		echo "         config registry variable update44/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
-		if [ "$partition" = "/boot" ] && ! is_ucr_true 'update43/pruneoldkernel'
+		if [ "$partition" = "/boot" ] && ! is_ucr_true 'update44/pruneoldkernel'
 		then
 			echo "         Old kernel versions on /boot can be pruned automatically during"
 			echo "         next update attempt by setting config registry variable"
-			echo "         update43/pruneoldkernel to \"yes\"."
+			echo "         update44/pruneoldkernel to \"yes\"."
 		fi
 		echo ""
 		# kill the running univention-updater process
@@ -315,9 +315,9 @@ block_update_if_system_date_is_too_old() {
 		echo "         update will fail if Spamassassin is installed."
 		echo "         "
 		echo "         This check can be disabled by setting the UCR variable"
-		echo "         update43/ignore_system_date to yes."
-		if is_ucr_true update43/ignore_system_date; then
-			echo "WARNING: update43/ignore_system_date is set to true. Skipped as requested."
+		echo "         update44/ignore_system_date to yes."
+		if is_ucr_true update44/ignore_system_date; then
+			echo "WARNING: update44/ignore_system_date is set to true. Skipped as requested."
 		else
 			exit 1
 		fi
@@ -346,7 +346,7 @@ fi
 mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
 
 # check space on filesystems
-if is_ucr_true 'update43/checkfilesystems' || [ $? -eq 2 ]
+if is_ucr_true 'update44/checkfilesystems' || [ $? -eq 2 ]
 then
 	check_space "/var/cache/apt/archives" "4000000" "4000 MB"
 	check_space "/boot" "100000" "100 MB"
@@ -418,11 +418,11 @@ check_master_version ()
 				echo "         It is strongly recommended that the domain controller master is"
 				echo "         always the first system to be updated during a release update."
 
-				if is_ucr_true update43/ignore_version; then
-					echo "WARNING: update43/ignore_version is set to true. Skipped as requested."
+				if is_ucr_true update44/ignore_version; then
+					echo "WARNING: update44/ignore_version is set to true. Skipped as requested."
 				else
 					echo "This check can be skipped by setting the UCR"
-					echo "variable update43/ignore_version to yes."
+					echo "variable update44/ignore_version to yes."
 					exit 1
 				fi
 }
@@ -434,11 +434,11 @@ check_overwritten_umc_templates () {
 	then
 		echo "WARNING: There are modified Apache configuration files in /etc/univention/templates/files/etc/apache2/sites-available/."
 		echo "Please restore the original configuration files before upgrading and apply the manual changes again after the upgrade succeeded."
-		if is_ucr_true update43/ignore_apache_template_checks; then
-			echo "WARNING: update43/ignore_apache_template_checks is set to true. Skipped as requested."
+		if is_ucr_true update44/ignore_apache_template_checks; then
+			echo "WARNING: update44/ignore_apache_template_checks is set to true. Skipped as requested."
 		else
 			echo "This check can be skipped by setting the UCR"
-			echo "variable update43/ignore_apache_template_checks to yes."
+			echo "variable update44/ignore_apache_template_checks to yes."
 			exit 1
 		fi
 	fi
@@ -452,7 +452,7 @@ case "$locale" in
 esac
 
 # autoremove before the update
-if ! is_ucr_true update43/skip/autoremove; then
+if ! is_ucr_true update44/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >&3 2>&3
 fi
 

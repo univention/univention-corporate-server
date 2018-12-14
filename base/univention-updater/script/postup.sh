@@ -101,8 +101,7 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	install univention-managed-client
 fi
 
-# Update to UCS 4.3 autoremove
-if ! is_ucr_true update43/skip/autoremove; then
+if ! is_ucr_true update44/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
 fi
 
@@ -139,16 +138,16 @@ if [ -f /var/univention-join/joined ] && [ "$server_role" != basesystem ]; then
 		--bindpwdfile "/etc/machine.secret" \
 		--dn "$ldap_hostdn" \
 		--set operatingSystem="Univention Corporate Server" \
-		--set operatingSystemVersion="4.3-3" >>"$UPDATER_LOG" 2>&1
+		--set operatingSystemVersion="$UPDATE_NEXT_VERSION" >>"$UPDATER_LOG" 2>&1
 fi
 
 # Move to mirror mode for previous errata component
 ucr set \
-	repository/online/component/4.3-2-errata=false \
-	repository/online/component/4.3-2-errata/localmirror=true \
-	repository/online/component/4.3-3-errata=enabled \
-	repository/online/component/4.3-3-errata/description="Errata updates for UCS 4.3-3" \
-	repository/online/component/4.3-3-errata/version="4.3" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/4.3-3-errata=false \
+	repository/online/component/4.3-3-errata/localmirror=true \
+	repository/online/component/${UPDATE_NEXT_VERSION}-errata=enabled \
+	repository/online/component/${UPDATE_NEXT_VERSION}-errata/description="Errata updates for UCS $UPDATE_NEXT_VERSION" \
+	repository/online/component/${UPDATE_NEXT_VERSION}-errata/version="${UPDATE_NEXT_VERSION%%-*}" >>"$UPDATER_LOG" 2>&1
 
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then

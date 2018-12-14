@@ -27,13 +27,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION="43"
-VERSION_NAME="4.3"
-MIN_VERSION="4.2-3"
+VERSION="44"
+VERSION_NAME="4.4"
+MIN_VERSION="4.3-3"
 UPDATER_LOG="/var/log/univention/updater.log"
 
 # stdout to screen and log
-exec >  >(tee -ia "$UPDATER_LOG")
+exec > >(exec tee -ia "$UPDATER_LOG")
 # stderr to log
 exec 2>>"$UPDATER_LOG"
 
@@ -63,28 +63,13 @@ ignore_check () {
 	return 1
 }
 
-# UCS_VERSION1 is less than or equal to UCS_VERSION2
-ucs_version_is_le () {
-	local version1="$1"
-	local version2="$2"
-	python -c 'from univention.lib.ucs import UCS_Version
-import sys
-master=UCS_Version("'$version1'")
-me=UCS_Version("'$version2'")
-if master <= me:
-	sys.exit(1)
-'
-	test $? -ne 0 && return 1
-	return 0
-}
-
 ##############################################
 # readonly checks here, before release notes #
 ##############################################
 
 update_check_min_version () {
-	ucs_version_is_le "$MIN_VERSION" "${version_version}-${version_patchlevel}"
-	if [ $? -ne 1 ]; then
+	if ! dpkg --compare-versions "$MIN_VERSION" le "${version_version}-${version_patchlevel}"
+	then
 		echo -e "\tThe system needs to be at least at version $MIN_VERSION in order to update!"
 		return 1
 	fi
@@ -191,8 +176,8 @@ update_check_overwritten_umc_templates () {
 update_check_app_appliance () {
 	if dpkg -l univention-app-appliance >/dev/null 1>&2
 	then
-		echo -e "\tThe UCS 4.3 update is not yet available for UCS app appliances."
-		echo -e "\tPlease try to update your system to UCS 4.3 at a later point."
+		echo -e "\tThe UCS ${VERSION_NAME} update is not yet available for UCS app appliances."
+		echo -e "\tPlease try to update your system to UCS ${VERSION_NAME} at a later point."
 		return 1
 	fi
 }
@@ -214,8 +199,8 @@ update_check_master_version () {
 		if [ "$server_role" != domaincontroller_master -a "$server_role" != basesystem ]; then
 			master_version="$(univention-ssh /etc/machine.secret ${hostname}\$@$ldap_master /usr/sbin/ucr get version/version 2>/dev/null)" 1>&2
 			master_patchlevel="$(univention-ssh /etc/machine.secret ${hostname}\$@$ldap_master /usr/sbin/ucr get version/patchlevel 2>/dev/null)" 1>&2
-			ucs_version_is_le "${master_version}-${master_patchlevel}" "${version_version}-${version_patchlevel}"
-			if [ $? != 0 ]; then
+			if dpkg --compare-versions "${master_version}-${master_patchlevel}" le "${version_version}-${version_patchlevel}"
+			then
 				echo -e "\tYour domain controller master is still on version $master_version-$master_patchlevel."
 				echo -e "\tIt is strongly recommended that the domain controller master is"
 				echo -e "\talways the first system to be updated during a release update."
@@ -237,11 +222,11 @@ update_check_disk_space () {
 			echo -e "\tIf necessary you can skip this check by setting the value of the"
 			echo -e "\tconfig registry variable $var to \"no\"."
 			echo -e "\tBut be aware that this is not recommended!"
-			if [ "$partition" = "/boot" -a ! "$update43_pruneoldkernel" = "yes" ] ; then
+			if [ "$partition" = "/boot" -a "$update44_pruneoldkernel" != "yes" ] ; then
 				echo
 				echo -e "\tOld kernel versions on /boot can be pruned automatically during"
 				echo -e "\tnext update attempt by setting config registry variable"
-				echo -e "\tupdate43/pruneoldkernel to \"yes\"."
+				echo -e "\tupdate${VERSION}/pruneoldkernel to \"yes\"."
 			fi
 			return 1
 		fi
@@ -268,7 +253,7 @@ update_check_md5_signature_is_used () {
 			echo -e "\tThe pre-check of the update found that the certificate file:"
 			echo -e "\t$cert_path"
 			echo -e "\tis using md5 as the signature algorithm. This is not supported in"
-			echo -e "\tUCS 4.3 and later versions. The signature algorithm can be set"
+			echo -e "\tUCS ${VERSION_NAME} and later versions. The signature algorithm can be set"
 			echo -e "\ton the domain controller master with:"
 			echo -e "\tucr set ssl/default/hashfunction=sha256"
 			echo -e "\tThe certificate needs to be renewed afterwards. Doing that is"
@@ -282,7 +267,7 @@ update_check_md5_signature_is_used () {
 
 # begin bug 46118 - Remove support for NT DC
 update_check_block_update_of_NT_DC() {
-	local var="update$VERSION/ignore_samba_nt_dc"	
+	local var="update$VERSION/ignore_samba_nt_dc"
 	ignore_check "$var" && return 100
 	if [ "${samba_role}" = "domaincontroller" ]; then
 		if ! dpkg -l univention-samba | grep -q ^ii; then
@@ -311,7 +296,7 @@ update_check_postgresql91 () {
 	install*) ;;
 	*) return 0 ;;
 	esac
-	echo -e "\tPostgreSQL-9.1 is no longer supported by UCS-4.3 and must be migrated to"
+	echo -e "\tPostgreSQL-9.1 is no longer supported by UCS-${VERSION_NAME} and must be migrated to"
 	echo -e "\ta newer version of PostgreSQL. See https://help.univention.com/t/8073 for"
 	echo -e "\tmore details."
 	return 1
@@ -323,7 +308,7 @@ update_check_cyrus_integration () {
 	ignore_check "$var" && return 100
 	if LC_ALL=C dpkg -l 'univention-mail-cyrus' 2>/dev/null | grep ^i 1>&2; then
 		echo -e "\tThe Cyrus integration package was found. Cyrus is not"
-		echo -e "\tsupported anymore by UCS 4.3. Aborting the upgrade. For instructions how to"
+		echo -e "\tsupported anymore by UCS ${VERSION_NAME}. Aborting the upgrade. For instructions how to"
 		echo -e "\tproceed, please refer to https://help.univention.com/t/7957"
 		return 1
 	fi
@@ -343,7 +328,7 @@ update_check_reconfigured_sso () {
 		echo -e "\tafter the update."
 		echo
 		echo -e "\tThis check can be disabled by setting the UCR variable"
-		echo -e "\tupdate43/ignore_sso_domain to yes."
+		echo -e "\t$var to yes."
 		return 1
 	fi
 }
@@ -365,7 +350,7 @@ update_check_kopano_repo () {
 	for repo in kopano/repo/kopano-core kopano/repo/kopano-webapp kopano/repo/kopano-webmeetings; do
 		if is_ucr_true "$repo"; then
 			echo -e "\tAn external repository for the Kopano Apps is currently configured."
-			echo -e "\tThere are known issues when updating to UCS 4.3 and using software"
+			echo -e "\tThere are known issues when updating to UCS ${VERSION_NAME} and using software"
 			echo -e "\tfrom the Kopano software repository."
 			echo -e "\tThe update is blocked while Kopano and Univention are working"
 			echo -e "\ton a solution."
@@ -373,56 +358,6 @@ update_check_kopano_repo () {
 		fi
 	done
 }
-
-# simulate 4.3 user migration, can be removed after 4.3-0
-simulate_user_migration () {
-	python - <<'PYTHON'
-import univention.admin.uldap
-import sys
-from univention.config_registry import ConfigRegistry
-
-ucr = ConfigRegistry()
-ucr.load()
-lo, po = univention.admin.uldap.getAdminConnection()
-default_user_filter = u'(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(objectClass=inetOrgPerson))(!(uidNumber=0))(!(uid=*$)))'
-user_filter = ucr.get('update43/udm/migration/user/filter', default_user_filter)
-ldap_only = 0
-contact_only = 0
-to_user = 0
-
-for dn, user in lo.search(user_filter):
-	ocs = set(user['objectClass'])
-	has_posix = ocs & {'posixAccount', }
-	has_shadow = ocs & {'shadowAccount', }
-	has_samba = ocs & {'sambaSamAccount', }
-	has_kerberos = ocs & {'krb5Principal', 'krb5KDCEntry', }
-	has_mail = ocs & {'univentionMail', }
-	has_org_person = ocs & {'organizationalPerson', }
-	has_inet_org_person = ocs & {'inetOrgPerson', }
-	has_pki = ocs & {'pkiUser', }
-	has_ldap = ocs & {'simpleSecurityObject', 'uidObject'}
-	is_ldap_only = has_ldap and not any([has_posix, has_shadow, has_samba, has_kerberos, has_mail, has_org_person, has_inet_org_person, has_pki])
-	is_contact_only = has_inet_org_person and has_org_person and not any([has_posix, has_shadow, has_samba, has_kerberos, has_mail, has_ldap, has_pki])
-	ocs_to_add = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'inetOrgPerson', 'organizationalPerson'} - ocs
-	if is_ldap_only:
-		sys.stderr.write('object {0} would be migrated to users/ldap object\n'.format(dn))
-		ldap_only += 1
-	elif is_contact_only:
-		sys.stderr.write('object {0} would be migrated to users/contact object\n'.format(dn))
-		contact_only += 1
-	elif ocs_to_add:
-		sys.stderr.write('object {0} would be migrated to a full users/user object\n'.format(dn))
-		to_user += 1
-
-if ldap_only or contact_only or to_user:
-	print('\t{0} objects would be migrated to users/ldap objects'.format(ldap_only))
-if contact_only:
-	print('\t{0} objects would be migrated to users/contact objects'.format(contact_only))
-if to_user:
-	print('\t{0} objects would be migrated to full users/user objects'.format(to_user))
-PYTHON
-}
-
 
 ########
 # main #
@@ -463,23 +398,10 @@ if ! $success; then
 	for key in "${!messages[@]}"; do
 		echo
 		echo "$key:"
-		echo "${messages[$key]}" | fmt -u 
-	done 
+		echo "${messages[$key]}" | fmt -u
+	done
 	echo
 	RET=1
-fi
-
-if [ "$server_role" = "domaincontroller_master" ]; then
-
-	echo
-	echo "Simulating 4.3 user migration ($(date)):"
-	echo
-	echo -e "\tAfter the upgrade to UCS 4.3 all existing user objects are migrated into a new \
-		LDAP format. This check simulates what would happen after the upgrade \
-		(which objects would be modified). \
-		Please check the $UPDATER_LOG for a complete list of objects." | fmt -u
-	echo
-	simulate_user_migration
 fi
 
 exit $RET
