@@ -5,8 +5,7 @@ scope: ucs_4.3-0-errata4.3-3
 src: univention-saml
 fix: 5.0.4-30A~4.3.0.201812131559
 desc: |
- This update addresses the following issue(s):
- * The univention-saml apache2 VirtualHost configuration
-   can now be extended by placing .conf files in the
-   directory /etc/apache2/sso-vhost.conf.d/
+ This update addresses the following issue:
+ * The univention-saml Apache2 VirtualHost configuration can now be extended
+   by placing .conf files in the directory /etc/apache2/sso-vhost.conf.d/
 bug: [48348]
