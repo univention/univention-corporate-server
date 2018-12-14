@@ -5,7 +5,7 @@ scope: ucs_4.3-0-errata4.3-3
 src: univention-system-setup
 fix: 11.0.5-31A~4.3.0.201812111313
 desc: |
- This update addresses the following issue(s):
- * Make the software components for UCS available during installation, when it
-   is run in french.
+ This update addresses the following issue:
+ * Make the software components for UCS available during installation when it
+   is run in French.
 bug: [44162]
