@@ -6,12 +6,14 @@ src: firefox-esr
 fix: 60.4.0esr-1~deb9u1
 desc: |
  This update addresses the following issues:
- * firefox-esr (CVE-2018-12405)
- * Memory corruption in Angle (CVE-2018-17466)
- * firefox-esr (CVE-2018-18492)
- * firefox-esr (CVE-2018-18493)
- * firefox-esr (CVE-2018-18494)
- * firefox-esr (CVE-2018-18498)
+ * Memory safety bugs fixed (CVE-2018-12405)
+ * Buffer overflow and out-of-bounds read in ANGLE library with
+   TextureStorage11 (CVE-2018-17466)
+ * Use-after-free with select element (CVE-2018-18492)
+ * Buffer overflow in accelerated 2D canvas with Skia (CVE-2018-18493)
+ * Same-origin policy violation using location attribute and
+   performance.getEntries to steal cross-origin URLs (CVE-2018-18494)
+ * Integer overflow when calculating buffer sizes for images (CVE-2018-18498)
 bug: [48319]
 cve:
 - CVE-2018-12405
