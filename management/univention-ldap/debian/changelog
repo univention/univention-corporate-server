@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-32) unstable; urgency=medium
+
+  * Bug #43515: Enabled database config in openldap
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 14 Dec 2018 12:51:48 +0100
+
 univention-ldap (14.0.2-31) unstable; urgency=medium
 
   * Bug #48091: removed @univentionPortalCategory in portal acl's
