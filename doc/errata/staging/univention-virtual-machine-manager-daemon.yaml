@@ -3,8 +3,9 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-virtual-machine-manager-daemon
-fix: 7.0.0-19
+fix: 7.0.0-19A~4.3.0.201812141033
 desc: |
  This update addresses the following issue:
- * Normalize CPU utilization of host.
+ * Normalize CPU utilization of host and update error and migration status
+   atomically.
 bug: [48340]
