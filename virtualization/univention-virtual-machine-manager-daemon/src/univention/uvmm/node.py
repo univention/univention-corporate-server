@@ -514,7 +514,7 @@ class Domain(PersistentCached):
 		#  'time_elapsed': 1L,
 		#  'type': 2,
 		# }
-		self.pd.migration.update(stats)
+		self.pd.migration = stats
 		typ = stats.get('type', None)
 		if typ == 0:
 			self.pd.migration['msg'] = ''
@@ -990,7 +990,7 @@ class Node(PersistentCached):
 				'srcpath': srcpath,
 			}
 			error['msg'] = _('IO error "%(reason)s" on device "%(device)s[%(srcpath)s]"') % error
-			domStat.pd.error.update(error)
+			domStat.pd.error = error
 		except Exception:
 			log.error('%s: Exception handling callback', self.pd.uri, exc_info=True)
 			# don't crash the event handler

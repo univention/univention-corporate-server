@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (7.0.0-19) unstable; urgency=low
+
+  * Bug #48340: Replace dictionaries instead of updating them
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 10:31:16 +0100
+
 univention-virtual-machine-manager-daemon (7.0.0-18) unstable; urgency=low
 
   * Bug #48340: Normalize CPU utilization of host.
