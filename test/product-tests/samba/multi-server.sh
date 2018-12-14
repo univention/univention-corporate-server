@@ -3,48 +3,6 @@
 set -x
 set -e
 
-prepare () {
-	set -x
-	set -e
-	ucr set server/password/interval='0'
-	/usr/lib/univention-server/server_password_change
-	test -z "$(find /var -name core)"
-}
-
-prepare_master () {
-	set -x
-	set -e
-	prepare
-}
-
-prepare_backup () {
-	set -x
-	set -e
-	prepare
-}
-
-prepare_slave () {
-	set -e
-	set -x
-	prepare
-	mkdir /home/testshare/
-	echo "Hello World" > /home/testshare/test.txt
-}
-
-prepare_member () {
-	set -e
-	set -x
-	prepare
-	mkdir /home/testshare/
-	echo "Hello World" > /home/testshare/test.txt
-}
-
-prepare_rodc () {
-	set -e
-	set -x
-	prepare
-}
-
 test_master () {
 
 	set -x
@@ -54,42 +12,104 @@ test_master () {
 
 	eval "$(ucr shell ldap/base windows/domain)"
 
+	export UCS_ROOT="root" UCS_PASSWORD="$ADMIN_PASSWORD"
 
 	# get windows client info/name
 	python shared-utils/ucs-winrm.py run-ps --cmd ipconfig
 	python shared-utils/ucs-winrm.py run-ps --cmd "(gwmi win32_operatingsystem).caption"
+
 	# get hostname for check in dns of server from client
-	winclient_name="$(python shared-utils/ucs-winrm.py run-ps  --cmd '$env:computername' --loglevel error | head -1 | tr -d '\r')"
-	test -n "$winclient_name"
+	local win2012_name="$(python shared-utils/ucs-winrm.py run-ps --client $WIN2012 --cmd '$env:computername' --loglevel error | head -1 | tr -d '\r')"
+	local win2016_name="$(python shared-utils/ucs-winrm.py run-ps --client $WIN2016 --cmd '$env:computername' --loglevel error | head -1 | tr -d '\r')"
+	test -n "$win2012_name"
+	test -n "$win2016_name"
 
 	# create new user, shares and PDFprinter in master
-	udm users/user create --position "cn=users,dc=sambatest,dc=local" --set username="newuser01" --set firstname="Random" --set lastname="User" --set password="Univention.99"
+	udm users/user create --position "cn=users,$ldap_base" --set username="newuser01" --set firstname="Random" --set lastname="User" --set password="Univention.99"
+	udm users/user create --position "cn=users,$ldap_base" --set username="newuser02" --set firstname="Random" --set lastname="User" --set password="Univention.99"
+	udm users/user create --position "cn=users,$ldap_base" --set username="newuser03" --set firstname="Random" --set lastname="User" --set password="Univention.99"
+	udm users/user create --position "cn=users,$ldap_base" --set username="newuser04" --set firstname="Random" --set lastname="User" --set password="Univention.99"
+	udm users/user create --position "cn=users,$ldap_base" --set username="newuser05" --set firstname="Random" --set lastname="User" --set password="Univention.99"
 	udm groups/group modify --dn "cn=Domain Admins,cn=groups,dc=sambatest,dc=local" --append users="uid=newuser01,cn=users,dc=sambatest,dc=local"
-	udm shares/share create --position "cn=shares,dc=sambatest,dc=local" --set name="testshare" --set host="ucs-master.sambatest.local" --set path="/home/testshare"
-	udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set name="Masterprinter" --set spoolHost=$(hostname -A) --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
 
-	python shared-utils/ucs-winrm.py domain-join --domain sambatest.local --dnsserver "$UCS" --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
-	#Uhrzeit prüfen: Sollte synchron zum DC Master sein (automatischer Abgleich per NTP). DONE
-	python shared-utils/ucs-winrm.py run-ps --credssp --cmd 'Get-Date -Format t' > date
-	WINTIME="$(sed -n 1p date | cut -c1-5)"
-	UCSTIME="$(date -u +"%H:%M")"
-	if  [ $WINTIME == $UCSTIME ]; then
-        	echo "time is synced"
-	fi
-	# Anmeldung auf dem System als Domänen-Benutzer (normales Mitglied von Domain Users). Done
-	python shared-utils/ucs-winrm.py domain-user-validate-password --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
+	udm shares/share create --position "cn=shares,$ldap_base" --set name="testshare" --set host="ucs-master.sambatest.local" --set path="/home/testshare"
+	udm shares/share create --position "cn=shares,$ldap_base" --set name="testshareMember" --set host="ucs-member.sambatest.local" --set path="/home/testshare"
+	udm shares/share create --position "cn=shares,$ldap_base" --set name="testshareSlave" --set host="ucs-slave.sambatest.local" --set path="/home/testshare"
 
-	#    Default Domain Policy anpassen und testen, ob sich diese korrekt auf Benutzer/Recher auswirkt, z.B.
-	#	Benutzerkonfiguration -> Richtlinien -> Administrative Vorlagen -> Startmenü und Taskleiste -> "Liste "Alle Programme" aus dem Menü Start entfernen" DONE
-	#    Container/OU im Samba4-verzeichnisdienst anlegen, Benutzer-GPO (GPO1) anlegen und damit verknüpfen, Testbenutzer in den Container verschieben. GPO Beispiel:
-	#	Benutzerkonfiguration -> Richtlinien -> Administrative Vorlagen -> Startmenü und Taskleiste -> Lautstärkesymbol entfernen -> aktivieren/Ok DONE
-	#    Container/OU im Samba4-verzeichnisdienst anlegen, Rechner-GPO (GPO2) anlegen und damit verknüpfen, Test-Windows-client in den Container verschieben. GPO Beispiel:
-	#	Computerkonfiguration -> Richtlinien -> Administrative Vorlagen -> System/Anmelden -> Diese Programme bei der Benutzeranmeldung ausführen -> Auszuführende Elemente -> notepad -> aktivieren/Ok DONE
-	create_gpo NewGPO "$ldap_base" User 'HKCU\Environment'
-	#python shared-utils/ucs-winrm.py create-gpo --credssp --name NewGPO --comment "testing new GPO in domain"
-	#python shared-utils/ucs-winrm.py link-gpo --name NewGPO --target "dc=sambatest,dc=local" --credssp
-	#python shared-utils/ucs-winrm.py run-ps --credssp --cmd 'set-GPPrefRegistryValue -Name NewGPO -Context User -key "HKCU\Environment" -ValueName NewGPO -Type String -value NewGPO -Action Update'
-	sleep 150
+	udm shares/printer create --position "cn=printers,$ldap_base" --set name="Memberprinter" --set spoolHost="ucs-member.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
+	udm shares/printer create --position "cn=printers,$ldap_base" --set name="Masterprinter" --set spoolHost="ucs-master.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
+	udm shares/printer create --position "cn=printers,$ldap_base" --set name="Slaveprinter" --set spoolHost="ucs-slave.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
+
+	# Auf allen Systemen sollte einmal server-password-change aufgerufen werden
+	run_on_ucs_hosts "$MASTER $BACKUP $SLAVE $SLAVE_RODC $MEMBER" "ucr set server/password/interval='0' && /usr/lib/univention-server/server_password_change"
+
+	# join windows clients
+	# Uhrzeit prüfen: Sollte synchron zum DC Master sein (automatischer Abgleich per NTP)
+	# Anmeldung auf dem System als Domänen-Benutzer (normales Mitglied von Domain Users)
+	# Sind alle UCS-Samba-Server in der Netzwerkumgebung der Clients zu sehen? unter windows net computer list
+	for client in $WIN2012 $WIN2016; do
+		python shared-utils/ucs-winrm.py domain-join --client $client --dnsserver "$MASTER" --domainuser "$ADMIN" --domainpassword "$ADMIN_PASSWORD"
+		python shared-utils/ucs-winrm.py run-ps --client $client --credssp --cmd 'Get-Date -Format t' > date
+		wintime="$(sed -n 1p date | cut -c1-5)"
+		ucstime="$(date -u +"%H:%M")"
+		test "$wintime" = "$ucstime"
+		python shared-utils/ucs-winrm.py domain-user-validate-password --client $client --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
+		python shared-utils/ucs-winrm.py domain-user-validate-password --client $client --domainuser "newuser01" --domainpassword "Univention.99"
+		python shared-utils/ucs-winrm.py domain-user-validate-password --client $client --domainuser "newuser02" --domainpassword "Univention.99"
+		for ucs in ucs-master ucs-backup ucs-slave ucs-member; do
+			python shared-utils/ucs-winrm.py run-ps --client $client --cmd "nbtstat -a $ucs" | grep -i $ucs
+		done
+	done
+
+	# Alle DCs auf coredump prüfen: find /var -name core
+	run_on_ucs_hosts "$MASTER $BACKUP $SLAVE $SLAVE_RODC" 'test -z "$(find /var -name core)"'
+
+	# Read-Only-DC
+    # Nach dem Join sollten auf dem RODC z.B. keine unicodePwd und supplementalCredentials repliziert sein.
+	# Der folgende Aufruf sollte daher nur an dem Objekt des RODC selbst und an dem lokalen krbtgt_* Konto diese Passwortattribute finden:
+    # Schreibzugriffe gegen den RODC sollten scheitern
+	test 2 -eq $(run_on_ucs_hosts "$SLAVE_RODC" "ldbsearch -H /var/lib/samba/private/sam.ldb unicodePwd" | grep -i ^unicodePwd: | wc -l)
+	test 2 -eq $(run_on_ucs_hosts "$SLAVE_RODC" "ldbsearch -H /var/lib/samba/private/sam.ldb supplementalcredentials" | grep -i ^supplementalcredentials: | wc -l)
+	run_on_ucs_hosts "$SLAVE_RODC" '! samba-tool user add rodcuser1 Password.99'
+
+	# GPO's
+
+	# Per Gruppenrichtlineinverwaltung (GPMC) vom Client aus auf den DC Salve wechseln (Rechts-click auf Domäne, anderen DC auswählen)
+	# Default Domain Policy anpassen und testen, ob sich diese korrekt auf Benutzer/Recher auswirkt, z.B.
+	# Container/OU im Samba4-verzeichnisdienst anlegen, Benutzer-GPO (GPO1) anlegen und damit verknüpfen, Testbenutzer in den Container verschieben. GPO Beispiel:
+	# Container/OU im Samba4-verzeichnisdienst anlegen, Rechner-GPO (GPO2) anlegen und damit verknüpfen, Test-Windows-client in den Container verschieben. GPO Beispiel:
+	# Per Gruppenrichtlineinverwaltung (GPMC) vom Client aus auf den DC Backup wechseln (Rechts-click auf Domäne, anderen DC auswählen)
+	udm container/ou create --set name=gpo1
+	udm container/ou create --set name=gpo2
+	create_gpo GPO5 "$ldap_base" User 'HKCU\Environment' --client $WIN2012
+	create_gpo_on_server GPO4 "$ldap_base" Computer 'HKLM\Environment' $SLAVE --client $WIN2012
+	create_gpo_on_server GPO3 "$ldap_base" User 'HKCU\Environment' $BACKUP --client $WIN2012
+    create_gpo GPO1 "ou=gpo1,$ldap_base" User 'HKCU\Environment'
+    create_gpo GPO2 "ou=gpo1,$ldap_base" Computer 'HKLM\Environment'
+	udm users/user move --dn "uid=newuser05,cn=users,$ldap_base" --position "ou=gpo1,$ldap_base"
+	udm computers/windows move --dn "cn=$win2016_name,cn=computers,$ldap_base" --position "ou=gpo2,$ldap_base"
+
+	python shared-utils/ucs-winrm.py check-applied-gpos --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --client $WIN2012 \
+		--usergpo 'GPO5' --usergpo 'GPO3' --usergpo 'Default Domain Policy' \
+		--computergpo 'GPO4' --computergpo 'Default Domain Policy'
+	python shared-utils/ucs-winrm.py check-applied-gpos --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --client $WIN2016 \
+		--usergpo 'GPO5' --usergpo 'GPO3' --usergpo 'Default Domain Policy' \
+		--computergpo 'GPO4' --computergpo 'GPO2' --computergpo 'Default Domain Policy'
+
+	python shared-utils/ucs-winrm.py check-applied-gpos --username 'newuser01' --userpwd "Univention.99" \
+		--usergpo 'GPO5' --usergpo 'GPO3' --usergpo 'Default Domain Policy' \
+		--computergpo 'GPO4' --computergpo 'Default Domain Policy'
+	python shared-utils/ucs-winrm.py check-applied-gpos --username 'newuser05' --userpwd "Univention.99" \
+		--usergpo 'GPO5' --usergpo 'GPO3' --usergpo 'Default Domain Policy' --usergpo 'GPO1' \
+		--computergpo 'GPO4' --computergpo 'Default Domain Policy'
+
+	# Vergleich /var/lib/samba/sysvol/$domainname/Policies auf DC Master und DC Backup mit dem DC Slave
+	local sysvol="$(find /var/lib/samba/sysvol/sambatest.local/ | md5sum | awk '{print $1}')"
+	test $sysvol = "$(run_on_ucs_hosts $SLAVE "find /var/lib/samba/sysvol/sambatest.local/ | md5sum | awk '{print \$1}'")"
+	test $sysvol = "$(run_on_ucs_hosts $BACKUP "find /var/lib/samba/sysvol/sambatest.local/ | md5sum | awk '{print \$1}'")"
+	test $sysvol = "$(run_on_ucs_hosts $SLAVE_RODC "find /var/lib/samba/sysvol/sambatest.local/ | md5sum | awk '{print \$1}'")"
+
+	# Freigaben
 
 	python shared-utils/ucs-winrm.py create-share-file --server $UCS --share "testshare" --filename "testfile.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py create-share-file --server $UCS --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share Administrator
@@ -169,17 +189,6 @@ test_master () {
 	#	Login als Benutzer, Heimatverzeichnis sollte verbunden sein. Datei anlegen. DONE: Shares on memberserver and slave are mounted and tested on Windowsclient
 	#    Anlegen eines Shares auf dem DC Slave und auf dem Memberserver :DONE
 	#	Anlegen eines Druckers auf dem DC Slave und auf dem Memberserver DONE
-	udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set name="Memberprinter" --set spoolHost="ucs-member.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
-	udm shares/share create --position "cn=shares,dc=sambatest,dc=local" --set name="testshareMember" --set host="ucs-member.sambatest.local" --set path="/home/testshare"
-	udm shares/printer create --position "cn=printers,dc=sambatest,dc=local" --set name="Slaveprinter" --set spoolHost="ucs-slave.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
-	udm shares/share create --position "cn=shares,dc=sambatest,dc=local" --set name="testshareSlave" --set host="ucs-slave.sambatest.local" --set path="/home/testshare"
-	#create gpo on Backup to check if change of DC is possible
-	#    Per Gruppenrichtlineinverwaltung (GPMC) vom Client aus auf den DC Salve wechseln (Rechts-click auf Domäne, anderen DC auswählen). DONE: simulated by creating a new GPO with Slave as DC
-	create_gpo_in_server NewGPOinSlave "dc=sambatest,dc=local" $SLAVE
-	create_gpo_in_server NewGPOinBackup "dc=sambatest,dc=local" $BACKUP
-	# Per Gruppenrichtlineinverwaltung (GPMC) vom Client aus auf den DC Backup wechseln (Rechts-click auf Domäne, anderen DC auswählen)
-	# und dort z.B. die Benutzer-Richtlinie anpassen (z.B. einfach Lautstärkesymbol entfernen -> deaktivieren/Ok). Es sollte keine Fehlermeldung kommen. DONE : simulated by creating GPO with Backup as DC
-	echo "Success"
 
 	# Check list
 	#Es sollte eine größere UCS Domäne aufgesetzt werden, also DC Master, DC Backup, DC Slave und Memberserver zusätzlich sollte ein RODC installiert werden, siehe Produkttests UCS 3.2 Samba 4#Read-Only-DC. Auf allen Systemen sollte Samba4 (optional Printserver) im Installer ausgewählt werden. Auf dem Memberserver Samba 3. Done: see cfg file
@@ -244,19 +253,6 @@ test_master () {
 	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server $SLAVE --impersonate --run-as-user Administrator
 	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "$MEMBER" --impersonate --run-as-user newuser01 --run-as-password "Univention123!"
 	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server "$SLAVE" --impersonate --run-as-user newuser01 --run-as-password "Univention123!"
-	#check sysvol of backup and slave
-	#    SYSVOL-Replikation nach >=(2 mal 5) Minuten
-	#	Vergleich /var/lib/samba/sysvol/$domainname/Policies auf DC Master und DC Backup mit dem DC Slave. TODO, test
-	sshpass -p "$ADMIN_PASSWORD" rsync -ne ssh /var/lib/samba/sysvol/$WINRM_DOMAIN/Policies root@$SLAVE:/var/lib/samba/sysvol/$WINRM_DOMAIN/Policies
-	sshpass -p "$ADMIN_PASSWORD" rsync -ne ssh /var/lib/samba/sysvol/$WINRM_DOMAIN/Policies root@$BACKUP:/var/lib/samba/sysvol/$WINRM_DOMAIN/Policies
-
-	# Sind alle UCS-Samba-Server in der Netzwerkumgebung der Clients zu sehen? unter windows net computer list ? nbtstat DONE
-	check_dcmember ucs-master
-	check_dcmember ucs-backup
-	check_dcmember ucs-slave
-	check_dcmember ucs-member
-	samba-tool ntacl sysvolreset || true
-	python shared-utils/ucs-winrm.py domain-join --domain sambatest.local --dnsserver "$UCS" --client "$WINCLIENT2" --user "Administrator" --password "$WINCLIENT2_PASSWORD" --domainuser "administrator" --domainpassword "$ADMIN_PASSWORD"
 	#change pw after policiesw changes
 	#    Mit Benutzer am Windows7-Client anmelden und Passwort auf "Ünivention123" ändern. Die Samba4/Heimdal-Passwortkomplexitätsprüfung sollte das akzeptieren. DONE
 	#    Uhrzeit auf den UCS DCs eine Stunde vorstellen und neu booten. (Oder Zeit sinnvoll anders nutzen..) Simulated by fetching information from Samba DB and comparing with a date
@@ -289,20 +285,5 @@ test_member () {
 	stat /var/spool/cups-pdf/newuser01/job_2-document.pdf
 }
 
-test_rodc () {
-	set -x
-	set -e
-	# Schreibzugriffe gegen den RODC sollten scheitern, z.B.
-	ldbedit -H ldap://localhost -UAdministrator%univention samaccountname="$hostname\$" description || echo "expected behaviour : write operation failed"
-	samba-tool user add rodcuser1 Password.99 || echo "expected behaviour : write operation failed"
-	# Nach dem Join sollten auf dem RODC z.B. keine unicodePwd und supplementalCredentials repliziert sein.
-	# Der folgende Aufruf sollte daher nur an dem Objekt des RODC selbst und an dem lokalen krbtgt_* Konto diese Passwortattribute finden:
-	ldbsearch -H /var/lib/samba/private/sam.ldb supplementalcredentials
-}
-
 # TODO
 # drucken als unpriviligierter Benutzer DONE
-# Funktionsnamen $server/rolle_prepare bzw. ..._test DONE
-# python shared-utils/ucs-winrm.py setup-printer statt  rpcclient localhost DONE
-# tabs statt spaces DONE
-# samba/utils.sh verwenden DONE
