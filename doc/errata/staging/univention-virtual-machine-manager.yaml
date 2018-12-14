@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-virtual-machine-manager
+fix: 7.0.0-18
+desc: |
+ This update addresses the following issue:
+ * Normalize CPU utilization of host.
+bug: [48340]

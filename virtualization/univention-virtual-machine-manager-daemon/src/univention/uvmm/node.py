@@ -1110,7 +1110,7 @@ class Node(PersistentCached):
 		"""Update node statistics."""
 		curMem = 0
 		maxMem = 0
-		cpu_usage = 0
+		cpu_usage = 0.0
 		cached_domains = self.domains.keys()
 
 		assert self.conn is not None
@@ -1130,7 +1130,7 @@ class Node(PersistentCached):
 				self.domains[uuid] = domStat
 			curMem += domStat.pd.curMem
 			maxMem += domStat.pd.maxMem
-			cpu_usage += domStat._cpu_usage
+			cpu_usage += domStat._cpu_usage * domStat.pd.vcpus
 
 		for uuid in cached_domains:
 			# Remove obsolete domains
@@ -1141,7 +1141,7 @@ class Node(PersistentCached):
 
 		self.pd.curMem = curMem
 		self.pd.maxMem = maxMem
-		self.pd.cpu_usage = min(1000, cpu_usage)
+		self.pd.cpu_usage = cpu_usage / self.pd.cpus
 
 		cache_id = self.calc_cache_id()
 		if self._cache_id != cache_id:
