@@ -1,3 +1,9 @@
+univention-antivir-mail (10.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:35 +0100
+
 univention-antivir-mail (9.0.0-5) unstable; urgency=medium
 
   * Bug #39372: Remove clamav from amavis config if clamav daemon is disabled

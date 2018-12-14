@@ -1,3 +1,9 @@
+univention-python (12.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:31 +0100
+
 univention-python (11.0.0-4) unstable; urgency=medium
 
   * Bug #46066: version bump

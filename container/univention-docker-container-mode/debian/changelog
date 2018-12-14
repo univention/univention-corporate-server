@@ -1,3 +1,9 @@
+univention-docker-container-mode (4.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:33 +0100
+
 univention-docker-container-mode (3.0.2-2) unstable; urgency=medium
 
   * Bug #46665: Add cron to dependencies

@@ -1,3 +1,9 @@
+univention-net-installer (12.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:44 +0100
+
 univention-net-installer (11.0.0-5) unstable; urgency=medium
 
   * Bug #: Adapt to UCS-4.3-3

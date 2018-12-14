@@ -1,3 +1,9 @@
+univention-apache (11.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:42 +0100
+
 univention-apache (10.0.2-2) unstable; urgency=medium
 
   * Bug #44921: Use X-Forwarded-Proto

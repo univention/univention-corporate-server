@@ -1,3 +1,9 @@
+ucs-windows-tools (6.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:47 +0100
+
 ucs-windows-tools (5.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version

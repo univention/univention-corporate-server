@@ -1,3 +1,9 @@
+univention-mariadb (2.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:44 +0100
+
 univention-mariadb (1.0.1-4) unstable; urgency=medium
 
   * Bug #46537: Use mariadb default values for character-set-server and

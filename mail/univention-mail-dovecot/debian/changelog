@@ -1,3 +1,9 @@
+univention-mail-dovecot (5.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:35 +0100
+
 univention-mail-dovecot (4.0.0-13) unstable; urgency=low
 
   * Bug #41018: update UCR variable descriptions

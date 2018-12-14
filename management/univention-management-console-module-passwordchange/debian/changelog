@@ -1,3 +1,9 @@
+univention-management-console-module-passwordchange (4.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:38 +0100
+
 univention-management-console-module-passwordchange (3.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version

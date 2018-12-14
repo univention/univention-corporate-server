@@ -1,3 +1,9 @@
+generate-appliance (5.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:47 +0100
+
 generate-appliance (4.0.0-4) unstable; urgency=medium
 
   * Bug #47355: Adapt conventions for output file names

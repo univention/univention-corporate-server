@@ -1,3 +1,9 @@
+univention-server (14.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:32 +0100
+
 univention-server (13.0.0-8) unstable; urgency=medium
 
   * Bug #47781: fix ucr variable descriptions

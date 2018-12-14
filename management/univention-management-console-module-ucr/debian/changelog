@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (8.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:39 +0100
+
 univention-management-console-module-ucr (7.0.0-3) unstable; urgency=medium
 
   * Bug #29733: Hide empty UCR categories

@@ -1,3 +1,9 @@
+univention-ldap (15.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:37 +0100
+
 univention-ldap (14.0.2-32) unstable; urgency=medium
 
   * Bug #43515: Enabled database config in openldap

@@ -1,3 +1,9 @@
+univention-errata-level (4.4.0-0) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:13:25 +0100
+
 univention-errata-level (4.3.0-0) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump

@@ -1,3 +1,9 @@
+univention-app-appliance (3.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:27 +0100
+
 univention-app-appliance (2.0.0-4) unstable; urgency=low
 
   * Bug #45979: Fix ucslint

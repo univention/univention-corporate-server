@@ -1,3 +1,9 @@
+univention-join (11.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:37 +0100
+
 univention-join (10.0.0-25) unstable; urgency=medium
 
   * Bug #30005: Stop trying to download host certificate during join

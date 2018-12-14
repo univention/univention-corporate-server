@@ -1,3 +1,9 @@
+univention-spamassassin (10.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:35 +0100
+
 univention-spamassassin (9.0.0-6) unstable; urgency=low
 
   * Bug #46555: assign pseudo pty to call of sa-update

@@ -1,3 +1,9 @@
+univention-portal (3.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:39 +0100
+
 univention-portal (2.0.2-13) unstable; urgency=medium
 
   * Bug #47872: Prevent 'Applications' category being after 'Administration'

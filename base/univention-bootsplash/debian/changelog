@@ -1,3 +1,9 @@
+univention-bootsplash (10.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:28 +0100
+
 univention-bootsplash (9.0.0-5) unstable; urgency=medium
 
   * Bug #45939: added

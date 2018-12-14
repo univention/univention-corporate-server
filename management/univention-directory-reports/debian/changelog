@@ -1,3 +1,9 @@
+univention-directory-reports (11.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:37 +0100
+
 univention-directory-reports (10.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version

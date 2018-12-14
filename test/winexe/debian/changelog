@@ -1,3 +1,9 @@
+winexe (5.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:48 +0100
+
 winexe (4.0.0-1) unstable; urgency=medium
 
   * Bug #45841: UCS-4.3 version bump

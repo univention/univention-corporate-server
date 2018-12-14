@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:38 +0100
+
 univention-management-console-module-diagnostic (4.0.1-15) unstable; urgency=medium
 
   * Bug #47649: Adjusted wording 

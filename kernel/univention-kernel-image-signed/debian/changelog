@@ -1,3 +1,9 @@
+univention-kernel-image-signed (5.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:34 +0100
+
 univention-kernel-image-signed (4.0.0-9) unstable; urgency=medium
 
   * Bug #48172: Update to linux-4.9.130-2
