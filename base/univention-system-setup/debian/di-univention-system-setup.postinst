@@ -67,7 +67,9 @@ fi
 
 # Install l10n packages, if necessary
 locale="$(chroot /target /usr/sbin/ucr get locale/default)"
-case "$locale" in fr|fr_*) in-target apt-get -y install univention-l10n-fr ;; esac
+case "$locale" in
+	fr|fr_*) in-target sh -c "DEBIAN_FRONTEND=noninteractive apt-get -y install univention-l10n-fr" ;;
+esac
 
 # start univention-system-setup if in GTK mode
 if [ -n "$DISPLAY" ]; then

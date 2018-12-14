@@ -1,3 +1,9 @@
+univention-system-setup (11.0.5-34) unstable; urgency=medium
+
+  * Bug #44162: Fix apt-get requiring interaction
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 14 Dec 2018 13:53:13 +0100
+
 univention-system-setup (11.0.5-33) unstable; urgency=medium
 
   * Revert "Bug #44162: Add univention-appcenter to the dependencies"
