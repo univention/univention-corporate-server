@@ -3,6 +3,8 @@
 set -e
 set -x
 
+env
+
 getGitlabURL () {
 	local fn
 	local product="$1"
