@@ -8,3 +8,7 @@ Variables: ldap/client/network_timeout
 Variables: ldap/client/timelimit
 Variables: ldap/client/timeout
 Variables: libnss/.*
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/39configdb
