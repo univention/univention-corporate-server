@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-en-4.3-3">
+<book lang="en" id="releasenotes-en-4.4-0">
 	<bookinfo>
-		<title>UCS 4.3 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.3-3</subtitle>
+		<title>UCS 4.4 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.4-0</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -17,7 +17,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2018 Univention GmbH
+				(c) 2002-2019 Univention GmbH
 			</para>
 
 			<para>
@@ -44,29 +44,16 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With Univention Corporate Server 4.3-3, the third point release of Univention Corporate Server (UCS) 4.3 is now
+			With Univention Corporate Server 4.4-0, the forth minor release of Univention Corporate Server (UCS) 4 is now
 			available. It provides several feature improvements and extensions, new properties as well as
 			various improvements and bugfixes. Here is an overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				The configuration options for the UCS portal have been extended to better adapt it to your own needs.
-				It is now possible to define custom categories for tiles.
-				There also is the possibility to define static links, e.g. to link an imprint.
 			</para></listitem>
 			<listitem><para>
-				The new <ulink url="https://docs.software-univention.de/manual-4.3.html#dashboard::general">UCS Dashboard App</ulink> allows administrators to quickly and easily view the state of the domain or individual servers on different dashboards.
-			</para></listitem>
-			<listitem><para>
-				In addition to minor bug fixes in &ucsUMC; the scrolling behavior has been improved in many places.
-			</para></listitem>
-			<listitem><para>
-				The introduction of a new simplified Python API reduces the development effort for developers to access the UCS Identity Management.
-			</para></listitem>
-			<listitem><para>
-				Various security updates have been integrated into UCS 4.3-3, e.g. <wordasword>Apache2</wordasword>, the Linux kernel and <wordasword>Samba4</wordasword>.
-				UCS 4.3-3 is based on the Debian release 9.6 released in November.
+				Various security updates have been integrated into UCS 4.4-0, e.g. <wordasword>Apache2</wordasword>, the Linux kernel and <wordasword>Samba4</wordasword>.
 				A complete list is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
@@ -208,10 +195,10 @@
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <wordasword>4.3-2</wordasword>:
+			Listed are the changes since UCS <wordasword>4.3-3</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.3-3.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-0.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

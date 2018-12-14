@@ -97,7 +97,7 @@
 				<para>
 					<figure id="dashboard-domain">
 						<title>Domain Dashboard</title>
-						<graphic scalefit="1" width="80%" fileref="illustrations43/dashboard-domain.png"/>
+						<graphic scalefit="1" width="80%" fileref="illustrations44/dashboard-domain.png"/>
 					</figure>
 				</para>
 				<para>
@@ -121,7 +121,7 @@
 				<para>
 					<figure id="dashboard-server">
 						<title>Server Dashboard</title>
-						<graphic scalefit="1" width="80%" fileref="illustrations43/dashboard-server.png"/>
+						<graphic scalefit="1" width="80%" fileref="illustrations44/dashboard-server.png"/>
 					</figure>
 				</para>
 				<para>
@@ -212,7 +212,7 @@
 
 		<figure id="service-detail">
 			<title>Nagios Status-Webinterface</title>
-			<graphic scalefit="1" align="center" width="90%" fileref="illustrations43/nagios_service_detail.png"/>
+			<graphic scalefit="1" align="center" width="90%" fileref="illustrations44/nagios_service_detail.png"/>
 		</figure>
 
 		<para>
@@ -634,7 +634,7 @@
 
 			<figure id="nagios-service">
 				<title>Konfiguration eines Nagios-Dienstes</title>
-				<graphic scalefit="1" width="100%" fileref="illustrations43/nagios-object_DE.png"/>
+				<graphic scalefit="1" width="100%" fileref="illustrations44/nagios-object_DE.png"/>
 			</figure>
 
 			<table>
@@ -1002,7 +1002,7 @@
 
 			<figure id="nagios-assign">
 				<title>Zuweisung von Nagios-Prüfungen zu einem Rechner</title>
-				<graphic scalefit="1" width="100%" fileref="illustrations43/nagios-services_DE.png"/>
+				<graphic scalefit="1" width="100%" fileref="illustrations44/nagios-services_DE.png"/>
 			</figure>
 
 			<table>
@@ -1112,7 +1112,7 @@
 
 		<figure id="nagios-tact-overview">
 			<title>Nagios-Statusübersicht</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations43/overview_EN.png"/>
+			<graphic scalefit="1" width="80%" fileref="illustrations44/overview_EN.png"/>
 		</figure>
 
 		<para>

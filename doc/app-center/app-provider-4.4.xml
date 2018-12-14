@@ -6,7 +6,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id='app-provider-4.3'>
+<book lang="en" id='app-provider-4.4'>
 <bookinfo>
   <title>Univention App Center for App Providers</title>
 </bookinfo>
@@ -185,7 +185,7 @@
         <para>
             <figure id="create-app-with-docker:create-app">
                 <title>Add a new App</title>
-                <graphic scalefit="1" width="28%" fileref="illustrations43/app_portal_new_app.png"/>
+                <graphic scalefit="1" width="28%" fileref="illustrations44/app_portal_new_app.png"/>
             </figure>
         </para>
 
@@ -764,7 +764,7 @@ univention-app dev-use-test-appcenter
             <para>
                 <figure id="testing:install:app-center-umc-module">
                     <title>Univention Management Console overview with App Center module</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations43/umc-module-app-center.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations44/umc-module-app-center.png"/>
                 </figure>
             </para>
 
@@ -1016,11 +1016,11 @@ docker exec "$CONTAINER" ...
         <para>
             <figure id="app-life-cycle:update:create-new-version">
                 <title>Menu for Add a new App</title>
-                <graphic scalefit="1" width="28%" fileref="illustrations43/app_portal_create_new_version.png"/>
+                <graphic scalefit="1" width="28%" fileref="illustrations44/app_portal_create_new_version.png"/>
             </figure>
             <figure id="app-life-cycle:update:new-version">
                 <title>Add a new App version</title>
-                <graphic scalefit="1" width="28%" fileref="illustrations43/app_portal_new_version.png"/>
+                <graphic scalefit="1" width="28%" fileref="illustrations44/app_portal_new_version.png"/>
             </figure>
         </para>
     </section>
@@ -1083,30 +1083,30 @@ docker exec "$CONTAINER" ...
             The following examples show how the script can be used.
             <programlisting>
 # creates a new version based on the latest version of myapp
-./univention-appcenter-control new-version 4.3/myapp
+./univention-appcenter-control new-version 4.4/myapp
 
 # finds out on which UCS versions this Docker App may be installed
 # Note: jq is an external tool: apt-get install jq
 # you may parse JSON without it, of course
-./univention-appcenter-control get --json 4.3/myapp | jq '._ini_vars.SupportedUCSVersions'
+./univention-appcenter-control get --json 4.4/myapp | jq '._ini_vars.SupportedUCSVersions'
 
 # creates version 2.0 of myapp based on the (formerly) latest version
-./univention-appcenter-control new-version 4.3/myapp 4.3/myapp=2.0
+./univention-appcenter-control new-version 4.4/myapp 4.4/myapp=2.0
 
 # sets the DockerImage of the new app
-./univention-appcenter-control set 4.3/myapp=2.0 --json '{"DockerImage": "mycompany/myimage:2.0"}'
+./univention-appcenter-control set 4.4/myapp=2.0 --json '{"DockerImage": "mycompany/myimage:2.0"}'
 
-# copies myapp Version 1.0 from UCS 4.2 to UCS 4.3.
-./univention-appcenter-control new-version 4.2/myapp=1.0 4.3/myapp=1.0
+# copies myapp Version 1.0 from UCS 4.2 to UCS 4.4.
+./univention-appcenter-control new-version 4.2/myapp=1.0 4.4/myapp=1.0
 
 # uploads all README files in the current folder to the latest version 
 # myapp in UCS 4.2
-./univention-appcenter-control upload 4.3/myapp README*
+./univention-appcenter-control upload 4.4/myapp README*
 
 # uploads an image. Will be rejected if this image is not specified somewhere 
 # in the ini file. Note: This may overwrite the logo for other
 # version using the same logo name, too.
-./univention-appcenter-control upload 4.3/myapp=1.0 myapp.svg
+./univention-appcenter-control upload 4.4/myapp=1.0 myapp.svg
             </programlisting>
         </para>
     </section>
@@ -2188,12 +2188,12 @@ joinscript_register_schema "$@"
 			settings in the app configuration, see <xref linkend="app-configurations:app-settings:button" />).
 			<figure id="app-configurations:app-settings:button">
 				<title>App settings button</title>
-				<graphic scalefit="1" width="80%" fileref="illustrations43/Appcenter-settings-button.png"/>
+				<graphic scalefit="1" width="80%" fileref="illustrations44/Appcenter-settings-button.png"/>
 			</figure>
 			An example for an App settings dialog is in <xref linkend="app-configurations:app-settings:example" />).
 			<figure id="app-configurations:app-settings:example">
 				<title>App settings example</title>
-				<graphic scalefit="1" width="80%" fileref="illustrations43/Appcenter-settings-example.png"/>
+				<graphic scalefit="1" width="80%" fileref="illustrations44/Appcenter-settings-example.png"/>
 			</figure>
 		</para>
 		<para>
@@ -2627,7 +2627,7 @@ service my-app-daemon restart
             <para>
                 <figure id="appliance:branding:bootloader-figure">
                     <title>Boot loader</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations43/Appliance_Branding_Bootloader.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_Bootloader.png"/>
                 </figure>
             </para>
         </section>
@@ -2654,7 +2654,7 @@ service my-app-daemon restart
             <para>
                 <figure id="appliance:branding:bootsplash-figure">
                     <title>Boot splash</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations43/Appliance_Branding_Bootsplash.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_Bootsplash.png"/>
                 </figure>
             </para>
         </section>
@@ -2685,13 +2685,13 @@ service my-app-daemon restart
             <para>
                 <figure id="appliance:branding:setup-wizard-figure">
                     <title>System setup first screen</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations43/Appliance_Branding_Setup_Wizard.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_Setup_Wizard.png"/>
                 </figure>
             </para>
             <para>
                 <figure id="appliance:branding:umc-branding-figure">
                     <title>System setup summary screen</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations43/Appliance_Branding_UMC.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_UMC.png"/>
                 </figure>
             </para>
         </section>
@@ -2718,7 +2718,7 @@ service my-app-daemon restart
             <para>
                 <figure id="appliance:branding:umc-branding-welcome-screen">
                     <title>Appliance welcome screen</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations43/Appliance_Branding_Welcome_Screen.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_Welcome_Screen.png"/>
                 </figure>
             </para>
         </section>
@@ -2739,7 +2739,7 @@ service my-app-daemon restart
             <para>
                 <figure id="appliance:branding:portal-page-figure">
                     <title>Appliance portal page</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations43/Appliance_Branding_Portal_Page.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations44/Appliance_Branding_Portal_Page.png"/>
                 </figure>
             </para>
         </section>

@@ -85,7 +85,7 @@
 
 		<figure id="idmcloud:o365:wizard">
 			<title>Office 365 Einrichtungsassistent</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations43/office_wizard1_de.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations44/office_wizard1_de.png"/>
 		</figure>
 
 	</section>
@@ -211,7 +211,7 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 
 		<figure id="idmcloud:gsuite:wizard">
 			<title>Google Apps for Work Einrichtungsassistent</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations43/google_wizard1_de.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations44/google_wizard1_de.png"/>
 		</figure>
 
 	</section>

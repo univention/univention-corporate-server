@@ -68,14 +68,14 @@
 	<para>
 	  <figure id="mittelstand">
 		<title>System overview of Ganupa Technologies headquarters (virtualization is not considered)</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations43/mittelstand_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations44/mittelstand_en.png"/>
 	  </figure>
 	</para>
 
 	<para>
 	  <figure id="mittelstand-ueberblick">
 		<title>Global organization scheme of Ganupa Technologies</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations43/mittelstand-ueberblick_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations44/mittelstand-ueberblick_en.png"/>
 	  </figure>
 	</para>
   </section>
@@ -136,7 +136,7 @@
 	<para>
 	  <figure id="uvmm">
 		<title>Managing virtual machines with UVMM</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations43/uvmm_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations44/uvmm_en.png"/>
 	  </figure>
 	</para>
 
