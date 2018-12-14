@@ -64,7 +64,7 @@ cd test
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "jenkins@${BUILD_HOST}" python3 /home/jenkins/build -r "${BUILD_REPO}" -b "${BUILD_BRANCH}" > utils/apt-get-branch-repo.list
 # echo "# ignore" > utils/apt-get-branch-repo.list
 
-declare -a cmd=("./ucs-ec2-tools/ucs-kvm-create" "-c" "branch-tests/base/$CFG_FILE")
+declare -a cmd=("./ucs-ec2-tools/ucs-kvm-create" "-c" "$CFG_FILE")
 "$HALT" && cmd+=("-t")
 "${cmd[@]}"
 test -e "./COMMAND_SUCCESS"
