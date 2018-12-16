@@ -123,7 +123,6 @@ define([
 
 			// MultiSelect widget for displaying the file list
 			this._files = new MultiSelect({
-				style: 'width: 50em',
 				showHeader: true
 			});
 			this.addChild(this._files);
