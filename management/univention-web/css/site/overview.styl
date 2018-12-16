@@ -1,12 +1,12 @@
 @import "../variables"
 
 .umc .umcOverviewContainer
-	padding: 50px 0 0
+	padding: 48px 0 0
 
 /* Category tabs */
 .umc .umcCategoryBar
 	text-align: center
-	margin-bottom: 35px
+	margin-bottom: material-grid(4)
 
 .umc .umcCategoryBar .dijitButton
 	min-width: 95px
@@ -14,7 +14,7 @@
 		min-width: 70px
 
 	max-width: 160px
-	margin: 5px 0
+	margin: material-grid(1, true) 0
 	position: relative
 	vertical-align: top
 
@@ -33,7 +33,6 @@
 
 			.umcCategoryButtonCircleWrapper
 				transition: transform 0.3s, opacity 0.3s
-				-webkit-transition: -webkit-transform 0.3s, opacity 0.3s
 				opacity: 0.75
 				transform: scale(0.8, 0.8)
 
@@ -72,23 +71,11 @@
 		width: 100%
 		background-position: center top
 		transition: transform 0.3s 0.0s
-		-webkit-transition: -webkit-transform 0.3s 0.0s
 		transform: scale(0.8, 0.8)
 		margin: 0
 
 		^[-1].dijitButtonSelected ^[-1..-1]
 			transform: scale(1, 1)
-
-//		.dijitButtonContents
-//			width: 65px
-//			padding-top: 83px
-//			border: 0 none
-//			margin: 10px 32px
-//			padding: 0
-//			background-size: 64px
-//			background-repeat: no-repeat
-//			background-position: top center
-//
 
 
 /* LiveSearchSidebar */
