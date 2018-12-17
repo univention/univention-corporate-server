@@ -1,3 +1,9 @@
+univention-updater (13.0.1-66) unstable; urgency=medium
+
+  * Bug #47913: Code cleanup
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 17 Dec 2018 09:53:26 +0100
+
 univention-updater (13.0.1-65) unstable; urgency=medium
 
   * Bug #47913: Set debug level in univention-updater
