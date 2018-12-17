@@ -1,2 +1,3 @@
 20univention-admin-diary-backend.uinst usr/lib/univention-uninstall/
 60univention-admin-diary-backend.inst usr/lib/univention-install/
+admindiary_backend_wrapper.py usr/share/univention-admin-diary/
