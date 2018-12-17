@@ -220,6 +220,12 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
+
+			this.selectablePagesToLayoutMapping = {
+				'_searchPage': ['navigation', 'dhcp/dhcp', 'dns/dns'].indexOf(this.moduleFlavor) >= 0 ? 'searchpage-grid-and-tree' : 'searchpage-grid',
+				'_detailPage': 'udm-detailpage'
+			};
+
 			// this deferred is resolved when everything has been loaded
 			this._finishedDeferred = new Deferred();
 			this._pageRenderedDeferred = new Deferred();

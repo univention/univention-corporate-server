@@ -65,6 +65,8 @@ define([
 		// initial title set for the module
 		defaultTitle: null,
 
+		selectablePagesToLayoutMapping: null,
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.defaultTitle = this.title;

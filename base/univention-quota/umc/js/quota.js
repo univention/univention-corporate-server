@@ -52,6 +52,12 @@ define([
 		_partitionPage: null,
 		_detailPage: null,
 
+		selectablePagesToLayoutMapping: {
+			'_overviewPage': 'searchpage-grid',
+			'_partitionPage': 'searchpage-grid',
+			'_detailPage': ''
+		},
+
 		buildRendering: function() {
 			this.inherited(arguments);
 			this.renderOverviewPage();

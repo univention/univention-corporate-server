@@ -121,40 +121,21 @@ unflex-page()
 
 // specific style. basic page with a search form and a umcGrid (+ optional umcGridTree)
 // does not have content in umcPageFooter (region: 'bottom')
-@media (min-height: 750px) and (min-width: $xs-min)
-	.umcTopContainer--layout-quota-overviewpage,
-	.umcTopContainer--layout-quota-partitionpage,
-	.umcTopContainer--layout-join-statuspage,
-	.umcTopContainer--layout-top,
-	.umcTopContainer--layout-services,
-	.umcTopContainer--layout-ucr,
-	.umcTopContainer--layout-appcenter-packages,
-	.umcTopContainer--layout-udm-searchpage,
-	.umcTopContainer--layout-uvmm-searchpage,
-	.umcTopContainer--layout-distribution-searchpage,
-	.umcTopContainer--layout-computerroom-searchpage,
-	.umcTopContainer--layout-schoolwizards-grid,
-	.umcTopContainer--layout-schoolusers,
-	.umcTopContainer--layout-schoolrooms-searchpage,
-	.umcTopContainer--layout-schoolgroups-searchpage,
-	.umcTopContainer--layout-internetrules-assign,
-	.umcTopContainer--layout-internetrules-admin-adminpage
+generic-layout-searchpage-grid()
+	@media (min-height: 750px) and (min-width: $xs-min)
 		flex-grid-height()
 		flex-page()
 
 // searchpages with umcGridTree trees have the tree abover the grid on narrow screens.
 // have grids with fixed height for these cases
-@media (min-height: 750px) and (max-width: $sm-max)
-	.umcTopContainer--layout-udm-navigation-searchpage,
-	.umcTopContainer--layout-udm-dhcp-dhcp-searchpage,
-	.umcTopContainer--layout-udm-dns-dns-searchpage,
-	.umcTopContainer--layout-uvmm-searchpage
+generic-layout-searchpage-grid-and-tree()
+	generic-layout-searchpage-grid()
+	@media (min-height: 750px) and (max-width: $sm-max)
 		fix-grid-height()
 		unflex-page()
 
-@media (min-height: 750px) and (min-width: $md-min)
-	.umcTopContainer--layout-udm-detailpage,
-	.umcTopContainer--layout-uvmm-domainpage
+generic-layout-udm-detailpage()
+	@media (min-height: 750px) and (min-width: $md-min)
 		flex-page()
 		.umcUDMDetailPage,
 		.umcUDMDetailForm,
@@ -165,4 +146,35 @@ unflex-page()
 
 		.umcPageMain
 			overflow-y: auto
+
+generic-layout-uvmm-detailpage()
+	@media (min-height: 750px) and (min-width: $md-min)
+		flex-page()
+		.umcModuleContentChildWrapper > div,
+		.umcModuleContentChildWrapper > div > div,
+		.umcModuleContentChildWrapper > div > div > div,
+		.umcModuleContentChildWrapper > div > div > div > div
+			height: 100%
+
+		.umcPageMain
+			overflow-y: auto
+
+.umcTopContainer--layout-top,
+.umcTopContainer--layout-services,
+.umcTopContainer--layout-ucr,
+.umcTopContainer--layout-appcenter-packages
+	generic-layout-searchpage-grid()
+
+
+.umcTopContainer--generic-layout-searchpage-grid
+	generic-layout-searchpage-grid()
+
+.umcTopContainer--generic-layout-searchpage-grid-and-tree
+	generic-layout-searchpage-grid-and-tree()
+
+.umcTopContainer--generic-layout-udm-detailpage
+	generic-layout-udm-detailpage()
+
+.umcTopContainer--generic-layout-uvmm-detailpage
+	generic-layout-uvmm-detailpage()
 

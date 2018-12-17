@@ -1104,24 +1104,12 @@ define([
 			domClass.add(this._topContainer.domNode, this._topContainerGeneralCSSClasses);
 
 			// add css classes for module specific pages
-			var modulePages = {
-				'udm': ['_searchPage', '_detailPage'],
-				'quota': ['_overviewPage', '_partitionPage', '_detailPage'],
-				'join': ['_statuspage', '_joinpage', '_logpage'],
-				'uvmm': ['_searchPage', '_domainPage'],
-				'distribution': ['_searchPage', '_detailPage'],
-				'computerroom': ['_searchPage', '_screenshotView'],
-				'schoolwizards': ['_grid'],
-				'schoolrooms': ['_searchPage', '_detailPage'],
-				'schoolgroups': ['_searchPage', '_detailPage'],
-				'internetrules': ['_assignPage', '_adminPage', '_detailPage']
-			};
 			this._removeModuleSpecificCSSClasses();
-			if (Object.keys(modulePages).indexOf(newModule.moduleID) >= 0) {
-				this._addModuleSpecificCSSClasses(newModule, modulePages);
+			if (newModule.selectablePagesToLayoutMapping) {
+				this._addModuleSpecificCSSClasses(newModule);
 				this._topContainerModuleSpecificCSSClassesWatchHandler = newModule.watch('selectedChildWidget', lang.hitch(this, function() {
 					this._removeModuleSpecificCSSClasses();
-					this._addModuleSpecificCSSClasses(newModule, modulePages);
+					this._addModuleSpecificCSSClasses(newModule);
 				}));
 			}
 		},
@@ -1131,8 +1119,8 @@ define([
 			this._topContainerModuleSpecificCSSClasses = [];
 		},
 
-		_addModuleSpecificCSSClasses: function(module, pages) {
-			pages[module.moduleID].forEach(lang.hitch(this, function(page) {
+		_addModuleSpecificCSSClasses: function(module) {
+			Object.keys(module.selectablePagesToLayoutMapping).forEach(lang.hitch(this, function(page) {
 				if (module.selectedChildWidget === module[page]) {
 					var pageName = page.toLowerCase().replace(/[^a-z]/g, '');
 					var cssClass = lang.replace('umcTopContainer--layout-{moduleID}-{pageName}', {
@@ -1146,6 +1134,13 @@ define([
 							moduleID: module.moduleID,
 							moduleFlavor: module.moduleFlavor.replace(/[^a-zA-Z0-9\-]/g, '-'),
 							pageName: pageName
+						});
+						this._topContainerModuleSpecificCSSClasses.push(cssClass);
+					}
+
+					if (module.selectablePagesToLayoutMapping[page]) {
+						cssClass = lang.replace('umcTopContainer--generic-layout-{layout}', {
+							layout: module.selectablePagesToLayoutMapping[page]
 						});
 						this._topContainerModuleSpecificCSSClasses.push(cssClass);
 					}
