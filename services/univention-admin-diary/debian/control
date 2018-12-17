@@ -1,0 +1,44 @@
+Source: univention-admin-diary
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 7.0.50~),
+ python-support,
+ python-all,
+ ucslint,
+ univention-config-dev
+Standards-Version: 3.7.2
+
+Package: univention-admin-diary-backend
+Architecture: all
+Depends: ${misc:Depends},
+ python-univention-admin-diary (= ${binary:Version})
+Description: Univention Admin Diary backend
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-admin-diary-client
+Architecture: all
+Depends: ${misc:Depends},
+ python-univention-admin-diary (= ${binary:Version})
+Description: Univention Admin Diary client
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: python-univention-admin-diary
+Architecture: all
+Depends: ${misc:Depends},
+ ${python:Depends}
+Provides: ${python:Provides}
+Description: Univention Admin Diary lib
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
