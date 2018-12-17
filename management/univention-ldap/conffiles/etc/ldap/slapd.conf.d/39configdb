@@ -1,16 +1,13 @@
+database config
+rootdn "cn=admin,@%@ldap/base@%@"
+#for SASL authentication
+access to *
+    by dn.exact="gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage"
+    by * break
 @!@
-import subprocess
-from univention.config_registry import ConfigRegistry
-ucr = ConfigRegistry()
-ucr.load()
-print ("database config\n\
-#for SASL authentication\n\
-access to *\n\
-    by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage\n\
-    by * break")
-if ucr.get('ldap/hostdn') :
-    print ("#for simple bind authentication\n\
+if %(ldap/hostdn)s % configRegistry :
+    print ('#for simple bind authentication\n\
     access to *\n\
-    by dn.base=%(ldap/hostdn)s write\n\
-    by * none break") % configRegistry
+    by dn.base="%(ldap/hostdn)s" write\n\
+    by * none break') % configRegistry
 @!@
