@@ -14,6 +14,9 @@ test_master () {
 
 	export UCS_ROOT="root" UCS_PASSWORD="$ADMIN_PASSWORD"
 
+	# Auf allen Systemen sollte einmal server-password-change aufgerufen werden
+	run_on_ucs_hosts "$MASTER $BACKUP $SLAVE $SLAVE_RODC $MEMBER" "ucr set server/password/interval='0' && /usr/lib/univention-server/server_password_change"
+
 	# get windows client info/name
 	python shared-utils/ucs-winrm.py run-ps --cmd ipconfig
 	python shared-utils/ucs-winrm.py run-ps --cmd "(gwmi win32_operatingsystem).caption"
@@ -40,9 +43,6 @@ test_master () {
 	udm shares/printer create --position "cn=printers,$ldap_base" --set name="Masterprinter" --set spoolHost="ucs-master.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
 	udm shares/printer create --position "cn=printers,$ldap_base" --set name="Slaveprinter" --set spoolHost="ucs-slave.sambatest.local" --set uri="cups-pdf:/" --set model="cups-pdf/CUPS-PDF.ppd"
 
-	# Auf allen Systemen sollte einmal server-password-change aufgerufen werden
-	run_on_ucs_hosts "$MASTER $BACKUP $SLAVE $SLAVE_RODC $MEMBER" "ucr set server/password/interval='0' && /usr/lib/univention-server/server_password_change"
-
 	# join windows clients
 	# Uhrzeit prüfen: Sollte synchron zum DC Master sein (automatischer Abgleich per NTP)
 	# Anmeldung auf dem System als Domänen-Benutzer (normales Mitglied von Domain Users)
@@ -58,6 +58,7 @@ test_master () {
 		python shared-utils/ucs-winrm.py domain-user-validate-password --client $client --domainuser "newuser02" --domainpassword "Univention.99"
 		for ucs in ucs-master ucs-backup ucs-slave ucs-member; do
 			python shared-utils/ucs-winrm.py run-ps --client $client --cmd "nbtstat -a $ucs" | grep -i $ucs
+			python shared-utils/ucs-winrm.py run-ps --client $client --cmd "nbtstat -a $ucs"
 		done
 	done
 
