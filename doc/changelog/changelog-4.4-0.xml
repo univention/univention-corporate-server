@@ -612,6 +612,10 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Update package <package>samba</package> to version 4.9.3 (<u:bug>48084</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Enable the new Samba DRS KCC by default (<u:bug>48085</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -628,6 +632,7 @@
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Adjust password has synchronization to Samba 4.9 (<u:bug>48142</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
