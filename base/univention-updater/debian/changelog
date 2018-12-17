@@ -1,3 +1,9 @@
+univention-updater (14.0.0-2) unstable; urgency=medium
+
+  * Bug #43515: Cleanup
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 17 Dec 2018 14:01:29 +0100
+
 univention-updater (14.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
