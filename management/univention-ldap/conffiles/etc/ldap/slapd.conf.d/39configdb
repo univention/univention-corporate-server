@@ -9,4 +9,5 @@ if %(ldap/hostdn)s % configRegistry :
     print ('#for simple bind authentication\n\
     access to *\n\
     by dn.base="%(ldap/hostdn)s" write\n\
+    by * none break') % configRegistry
 @!@
