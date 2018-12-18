@@ -3,6 +3,7 @@ src/dump usr/sbin/
 src/verify usr/sbin/
 src/convert usr/sbin/
 src/listener-ctrl usr/sbin/
+src/get_listener_configuration usr/share/univention-directory-listener/
 python/get_notifier_id.py usr/share/univention-directory-listener/
 python/univention-get-ldif-from-master.py usr/share/univention-directory-listener/
 python/resync-objects.py usr/share/univention-directory-listener/

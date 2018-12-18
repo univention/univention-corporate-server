@@ -117,6 +117,9 @@ modules () {
 		[ -f "$module_file" ] || continue
 		rv=
 		module_name=$(sed -rne "s/^name\s*=\s*['\"]([^'\"]+)['\"]\s*(#.*)?$/\1/p;T;q" "$module_file") || rv="$FAIL"
+		if [ -z "$module_name" ]; then
+			module_name="$(/usr/share/univention-directory-listener/get_listener_configuration $module_file | sed -rne 's/^name: (.*)?$/\1/p;T;q')" || rv="$FAIL"
+		fi
 		module_state=$(cat "$STATE_DIR/$module_name" 2>/dev/null) &&
 			[ "$module_state" -eq 3 ] ||
 			rv="$FAIL"

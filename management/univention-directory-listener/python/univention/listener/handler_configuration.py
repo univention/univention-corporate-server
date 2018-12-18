@@ -125,6 +125,7 @@ class ListenerModuleConfiguration(object):
 		:rtype: list(str)
 		"""
 		return [
+			'active',
 			'attributes',
 			'description',
 			'ldap_filter',

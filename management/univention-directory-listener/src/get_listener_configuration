@@ -1,0 +1,44 @@
+#!/usr/bin/python2.7
+
+import imp
+import sys
+import inspect
+import os.path
+from univention.listener import ListenerModuleHandler
+
+
+try:
+	path = sys.argv[1]
+except IndexError:
+	print("Usage: {} <path to listener module>".format(sys.argv[0]))
+	sys.exit(1)
+
+filename = os.path.basename(path)
+module_name = filename[:-3]
+directory = os.path.dirname(path)
+info = imp.find_module(module_name, [directory])
+res = imp.load_module(module_name, *info)
+
+for thing in dir(res):
+	candidate = getattr(res, thing)
+	if (
+			inspect.isclass(candidate) and
+			issubclass(candidate, ListenerModuleHandler) and
+			candidate is not ListenerModuleHandler
+	):
+		config = candidate._get_configuration()
+		conf_dict = config.get_configuration()
+		del conf_dict['listener_module_class']
+		break
+else:
+	conf_dict = {
+		'active': True,
+		'attributes': getattr(res, 'attributes', []),
+		'description': getattr(res, 'description', ''),
+		'ldap_filter': getattr(res, 'filter', ''),
+		'name': getattr(res, 'name', ''),
+	}
+
+for k in sorted(conf_dict.keys()):
+	print('{}: {}'.format(k, conf_dict[k]))
+sys.exit(0)
