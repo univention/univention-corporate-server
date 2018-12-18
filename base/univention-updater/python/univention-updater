@@ -51,7 +51,7 @@ try:
 except ImportError:
     import univention.debug2 as ud
 
-import univention.config_registry as ucr
+from univention.config_registry import ConfigRegistry
 
 from univention.updater.errors import PreconditionError, ConfigurationError, RequiredComponentError, VerificationError, DownloadError
 from univention.updater.ucs_version import UCS_Version
@@ -209,7 +209,7 @@ def add_temporary_sources_list(temporary_sources_list):
             print >> fp, entry
 
 
-def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None):
+def update_available(mode, ucr, cdrom_mount_point, iso=None, updater=None):
     """ Checks if there is an update available.
     Returns the next version, or None if up-to-date, or throws an UpdateError if the next version can not be identified."""
 
@@ -217,8 +217,8 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 
     nextversion = None
 
-    vv = baseConfig['version/version']
-    vp = baseConfig['version/patchlevel']
+    vv = ucr['version/version']
+    vp = ucr['version/patchlevel']
 
     if mode == 'local':
         dprint('Checking local repository')
@@ -343,11 +343,11 @@ def main():
             break
     iso = None
 
-    baseConfig = ucr.ConfigRegistry()
-    baseConfig.load()
+    ucr = ConfigRegistry()
+    ucr.load()
 
     ud.init(LOGNAME, 0, 0)
-    loglevel = int(baseConfig.get('update/debug/level', 2))
+    loglevel = int(ucr.get('update/debug/level', 2))
     ud.set_level(ud.NETWORK, loglevel)
     fp_debug = open(LOGNAME, 'a+')
     # sys.stdout=fp_debug
@@ -408,7 +408,7 @@ def main():
             dprint("Running updater without apt-get clean")
         elif opt == '--check':
             try:
-                nextversion = update_available(command, baseConfig, cdrom_mount_point, iso=iso)
+                nextversion = update_available(command, ucr, cdrom_mount_point, iso=iso)
                 if nextversion:
                     dprint('Next version is %s' % nextversion)
                     sys.exit(1)
@@ -441,8 +441,8 @@ def main():
 
     deactivateSourcesListMethods(methods=['cdrom'])
 
-    vv = baseConfig['version/version']
-    vp = baseConfig['version/patchlevel']
+    vv = ucr['version/version']
+    vp = ucr['version/patchlevel']
 
     lastversion = '%s-%s' % (vv, vp)
     nextversion = None
@@ -455,7 +455,7 @@ def main():
     if command == 'local':
         log('starting local mode')
         updater = LocalUpdater()
-        nextversion = update_available('local', baseConfig, cdrom_mount_point, iso=iso, updater=updater)
+        nextversion = update_available('local', ucr, cdrom_mount_point, iso=iso, updater=updater)
     elif command == 'cdrom':
         log('starting cdrom mode')
         if iso:
@@ -463,10 +463,10 @@ def main():
         else:
             device_name = "cdrom"
         updater = LocalUpdater()
-        nextversion = update_available('cdrom', baseConfig, cdrom_mount_point, iso=iso)
+        nextversion = update_available('cdrom', ucr, cdrom_mount_point, iso=iso)
     elif command == 'net':
         log('starting net mode')
-        # if baseConfig.is_true('local/repository', False):
+        # if ucr.is_true('local/repository', False):
         #   log('local/repository active, copy from net and start local mode')
         #   resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update', 'net' ] + updateto_args )
         #   if resultCode != 0:
@@ -475,7 +475,7 @@ def main():
         #   call_local(updateto=updateto, clean=clean, ignoressh=ignoressh,
         # ignoreterm=ignoreterm, ignorereleasenotes=ignorereleasenotes)
         updater = UniventionUpdater()
-        nextversion = update_available('net', baseConfig, cdrom_mount_point, iso=iso, updater=updater)
+        nextversion = update_available('net', ucr, cdrom_mount_point, iso=iso, updater=updater)
     else:
         dprint('Unknown mode: %s' % command)
         sys.exit(1)
@@ -503,7 +503,7 @@ def main():
         os.putenv('update%d%d_ignoreterm' % (new_version.major, new_version.minor, ), 'yes')
 
     if command == 'cdrom':
-        if baseConfig.is_true('local/repository', False):
+        if ucr.is_true('local/repository', False):
             log('local/reposity active, copy %s and start local mode' % device_name)
             if iso:
                 resultCode = subprocess.call(['/usr/sbin/univention-repository-update', 'cdrom', '--cdrom', cdrom_mount_point, '--iso', iso] + updateto_args)
@@ -530,11 +530,11 @@ def main():
         rel = updater._iterate_version_repositories(new_version, new_version, ('maintained',), ('all',))
 
         components = updater.get_components()
-        # components = filter(lambda c: 'current' in baseConfig.get('repository/online/component/%s/version' % c, '').split(','), components)
+        # components = filter(lambda c: 'current' in ucr.get('repository/online/component/%s/version' % c, '').split(','), components)
         com = updater._iterate_component_repositories(components, new_version, new_version, ('all',))
 
         all = itertools.chain(rel, com)
-        scripts = updater.get_sh_files(all, baseConfig.is_true('repository/online/verify', True))
+        scripts = updater.get_sh_files(all, ucr.is_true('repository/online/verify', True))
         for phase, order in updater.call_sh_files(scripts, LOGNAME, str(new_version)):
             if (phase, order) == ('update', 'pre'):
                 log('**** Downloading scripts at %s' % datetime.datetime.now().ctime())

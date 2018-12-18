@@ -1,3 +1,9 @@
+univention-updater (14.0.0-5) unstable; urgency=medium
+
+  * Bug #47913: Code cleanup: replace baseConfig by ucr
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Dec 2018 16:47:04 +0100
+
 univention-updater (14.0.0-4) unstable; urgency=medium
 
   * Bug #47913: Fix symbol name and type collision
