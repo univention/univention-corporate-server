@@ -393,11 +393,11 @@ define([
 		},
 
 		addWarning: function(message, title) {
-			this._addNotification(message, title, true);
+			return this._addNotification(message, title, true);
 		},
 
 		addNotification: function(message, title) {
-			this._addNotification(message, title, false);
+			return this._addNotification(message, title, false);
 		},
 
 		_addNotification: function(message, title, isWarning) {
@@ -409,6 +409,7 @@ define([
 				dropDownData.openDeferred.then(lang.hitch(this.dropDown, '_scrollToFirstNotification'));
 			}
 			this.dropDown._truncateNotificationToTwoLines(notification);
+			return notification;
 		},
 
 		openDropDown: function() {
