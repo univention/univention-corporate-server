@@ -673,12 +673,27 @@ define([
 			// define actions
 			var actions = [{
 				name: 'workaround',
-				label: ' ',
-				visible: false,
+				showAction: false, // this action is just used as a defaultAction in a special case
 				isContextAction: false,
 				callback: lang.hitch(this, function(keys, items) {
 					this._tree.set('path', this._ldapDN2TreePath(keys[0]));
 					this.filter();
+				})
+			}, {
+				name: 'parentcontainer',
+				label: _('Parent container'),
+				callback: lang.hitch(this, function() {
+					var path = this._tree.get('path');
+					var ldapDN = path[ path.length - 2 ].id;
+					this._tree.set('path', this._ldapDN2TreePath(ldapDN));
+				}),
+				isContextAction: false,
+				isStandardAction: true,
+				showAction: lang.hitch(this, function() {
+					if (this._tree) {
+						return this.moduleFlavor === 'navigation' && this._tree.get('path').length > 1;
+					}
+					return false;
 				})
 			}, {
 				name: 'add',
@@ -1167,15 +1182,7 @@ define([
 					// tree has been reloaded to its last position
 					this._reloadingPath = '';
 				}
-				if ('navigation' == this.moduleFlavor) {
-					if (this._tree.get('path').length > 1) {
-						this._grid._toolbar.addChild(this._navUpButton, 0);
-					} else {
-						this._grid._toolbar.removeChild(this._navUpButton);
-					}
-					this._navUpButton.set('visible', this._tree.get('path').length > 1);
-				}
-
+				this._grid._updateGlobalActionsVisibility();
 			})));
 
 			// add a context menu to edit/delete items

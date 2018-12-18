@@ -67,12 +67,16 @@ $umcGrid-edge-padding = 24px
 		.dijitButton,
 		.dijitDropDownButton
 			material-flat-button()
+
+		.dijitButton
 			.dijitIcon
 				display: none
+		.umcIconButton
+			.dijitIcon
+				display: inline-block
 
 	.umcGridStatus
-		flex: 1 1 60px
-		min-width: 60px
+		flex: 0 1 auto
 		white-space: nowrap
 		overflow: hidden
 		text-overflow: ellipsis
@@ -85,7 +89,7 @@ $umcGrid-edge-padding = 24px
 
 	.umcGrid__toolbar,
 	.umcGrid__contextActionsToolbar
-		flex: 1 1 auto
+		flex: 1 0 auto
 
 	.dgrid
 		clear: both
@@ -113,16 +117,16 @@ $umcGrid-edge-padding = 24px
 				&:after
 					content: ''
 					display: block
-					icon-image(-260, -60)
+					icon-image(-200, -100)
 
 					^[-3] .dgrid-row.dgrid-selected ^[-3..-1]
-						icon-image(-280, -60)
+						icon-image(-220, -100)
 
 					^[-1].dgrid-allSelected^[-1..-1]
-						icon-image(-280, -60)
+						icon-image(-220, -100)
 
 					^[-1].dgrid-indeterminate^[-1..-1]
-						icon-image(-300, -60)
+						icon-image(-240, -100)
 
 				input
 					display: none

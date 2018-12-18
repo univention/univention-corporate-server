@@ -306,9 +306,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="118.2865"
-     inkscape:cy="181.35512"
+     inkscape:zoom="3.959798"
+     inkscape:cx="260.14768"
+     inkscape:cy="180.27425"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -2589,11 +2589,11 @@
        id="rect4650"
        width="4.2333531"
        height="4.2333531"
-       x="69.320824"
-       y="244.6124"
+       x="53.445824"
+       y="255.19574"
        rx="0.26458332" />
     <g
-       transform="matrix(0.26994855,0,0,0.26991638,73.634891,216.9103)"
+       transform="matrix(0.26994855,0,0,0.26991638,57.75989,227.49364)"
        id="g10570"
        style="color:#282828;fill:none;stroke:#282828;stroke-width:1.86724949;stroke-miterlimit:4;stroke-dasharray:none">
       <g
@@ -2638,7 +2638,7 @@
     <g
        style="color:#282828;fill:none;stroke:#282828;stroke-width:1.86724949;stroke-miterlimit:4;stroke-dasharray:none"
        id="g4225"
-       transform="matrix(0.26994855,0,0,0.26991638,78.926558,216.9103)">
+       transform="matrix(0.26994855,0,0,0.26991638,63.051557,227.49364)">
       <g
          style="color:#282828;stroke-width:1.89339721;stroke-miterlimit:4;stroke-dasharray:none"
          id="g4227"
