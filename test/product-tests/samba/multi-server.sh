@@ -146,7 +146,7 @@ test_master () {
 	run_on_ucs_hosts $MEMBER "stat /home/testshare/test-admin01.txt"
 	run_on_ucs_hosts $SLAVE "stat /home/testshare/test-admin01.txt"
 	run_on_ucs_hosts $SLAVE "stat /home/testshare/test-newuser01.txt"
-	python shared-utils/ucs-winrm.py create-share-file --server ucs-slave --filename test-admin01.txt \
+	python shared-utils/ucs-winrm.py create-share-file --server ucs-slave --filename newuser03-test.txt \
 		--username 'newuser03' --userpwd "Univention.99" --share testshareSlave --debug 2>&1 | grep -i PermissionDenied
 	python shared-utils/ucs-winrm.py create-share-file --server $MASTER --share "testshare" --filename "testfile.txt" --username 'administrator' --userpwd "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py create-share-file --server $MASTER --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share Administrator
