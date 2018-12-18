@@ -1,3 +1,10 @@
+univention-updater (14.0.0-4) unstable; urgency=medium
+
+  * Bug #47913: Fix symbol name and type collision
+  * Explicitly convert UCR value (string) to integer
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Dec 2018 16:20:32 +0100
+
 univention-updater (14.0.0-3) unstable; urgency=low
 
   * Bug #48327: Switch to updates-test for now.
