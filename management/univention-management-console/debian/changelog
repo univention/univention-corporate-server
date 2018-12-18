@@ -1,3 +1,9 @@
+univention-management-console (10.0.6-17) unstable; urgency=medium
+
+  * Bug #48372: show summit 2019 notification in UCS Core editions
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 18 Dec 2018 17:50:16 +0100
+
 univention-management-console (10.0.6-16) unstable; urgency=medium
 
   * Bug #47700: fix saml metadata creation for umc

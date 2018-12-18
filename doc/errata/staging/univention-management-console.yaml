@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-management-console
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The UMC for UCS Core Editions shows a dialog that informs
+   about the Univention Summit 2019.
+bug: [48372]
