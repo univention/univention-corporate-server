@@ -6,8 +6,7 @@ src: firefox-esr
 fix: 60.4.0esr-1~deb8u1
 desc: |
  This update addresses the following issues:
- * Memory safety bugs fixed in Firefox 64 and Firefox ESR 60.4
-   (CVE-2018-12405)
+ * Memory safety bugs fixed (CVE-2018-12405)
  * Memory corruption in Angle (CVE-2018-17466)
  * Use-after-free with select element (CVE-2018-18492)
  * Buffer overflow in accelerated 2D canvas with Skia (CVE-2018-18493)
