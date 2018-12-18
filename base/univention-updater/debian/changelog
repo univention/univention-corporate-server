@@ -1,3 +1,9 @@
+univention-updater (14.0.0-6) unstable; urgency=medium
+
+  * Bug #47913: ignore wrong type in update/debug/level
+
+ -- Felix Botner <botner@univention.de>  Tue, 18 Dec 2018 18:04:43 +0100
+
 univention-updater (14.0.0-5) unstable; urgency=medium
 
   * Bug #47913: Code cleanup: replace baseConfig by ucr

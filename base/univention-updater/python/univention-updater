@@ -347,7 +347,10 @@ def main():
     ucr.load()
 
     ud.init(LOGNAME, 0, 0)
-    loglevel = int(ucr.get('update/debug/level', 2))
+    try:
+        loglevel = int(ucr.get('update/debug/level', 2))
+    except ValueError:
+        loglevel = 2
     ud.set_level(ud.NETWORK, loglevel)
     fp_debug = open(LOGNAME, 'a+')
     # sys.stdout=fp_debug
