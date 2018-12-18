@@ -1,0 +1,261 @@
+#!/usr/bin/python2.7
+
+import json
+import os
+import os.path
+import shutil
+from imghdr import what
+from StringIO import StringIO
+from copy import deepcopy
+import tempfile
+
+import requests
+import tornado.ioloop
+import tornado.web
+
+from univention.udm import UDM
+from univention.config_registry import ConfigRegistry
+
+ucr = ConfigRegistry()
+ucr.load()
+
+udm = UDM.machine().version(1)
+
+def flatten(list_of_lists):
+	# return [item for sublist in list_of_lists for item in sublist]
+	# => does not work well for strings in list
+	ret = []
+	for sublist in list_of_lists:
+		if isinstance(sublist, (list, tuple)):
+			ret.extend(flatten(sublist))
+		else:
+			ret.append(sublist)
+	return ret
+
+class LDAPCache(object):
+	PORTAL_CACHE = '/var/cache/univention-portal/portal.json'
+	REFRESH_FILE = '/var/cache/univention-portal/refresh'
+
+	def __init__(self):
+		self._cache = None
+		self._udm = None
+
+	@property
+	def udm(self):
+		return udm
+		#if self._udm is None:
+		#	self._udm = UDM.machine().version(1)
+		#return self._udm
+
+	def load(self):
+		print 'loading cache file'
+		with open(self.PORTAL_CACHE) as fd:
+			self._cache = json.load(fd)
+
+	def get(self, name):
+		if os.path.exists(self.REFRESH_FILE):
+			self.refresh()
+			try:
+				os.unlink(self.REFRESH_FILE)
+			except EnvironmentError:
+				pass
+			self._cache = None
+		if self._cache is None:
+			try:
+				self.load()
+			except EnvironmentError:
+				self.refresh()
+				self.load()
+		print 'getting %s from cache' % name
+		return deepcopy(self._cache[name])
+
+	def refresh(self):
+		print 'refreshing cache'
+		ldap_hostdn = ucr.get('ldap/hostdn')
+		localhost = self.udm.obj_by_dn(ldap_hostdn)
+		portal_dn = localhost.props.portal
+		portal = self.udm.get('settings/portal').get(portal_dn)
+		content = {}
+		content['portal'] = self._extract_portal(portal)
+		content['links'] = self._extract_links(portal)
+		content['categories'] = self._extract_categories()
+		content['entries'] = self._extract_entries(portal)
+		with tempfile.TemporaryFile() as fd:
+			json.dump(content, fd, sort_keys=True, indent=4)
+			shutil.move(fd.name, self.PORTAL_CACHE)
+
+	def _extract_portal(self, portal):
+		ret = {}
+		ret['dn'] = portal.dn
+		ret['showMenu'] = portal.props.showMenu
+		ret['showLogin'] = portal.props.showLogin
+		ret['showSearch'] = portal.props.showSearch
+		ret['showApps'] = portal.props.showApps
+		ret['showServers'] = portal.props.showServers
+		ret['fontColor'] = portal.props.fontColor
+		ret['logo'] = portal.props.logo
+		ret['name'] = portal.props.displayName
+		ret['content'] = portal.props.content
+		return ret
+
+	def _extract_links(self, portal):
+		ret = {}
+		for link in portal.props.links:
+			location, href, locale, name = link
+			location_list = ret.setdefault(location, [])
+			location_list.append({'name': name, 'locale': locale, 'href': href})
+		return ret
+
+	def _extract_categories(self):
+		ret = {}
+		for category in self.udm.get('settings/portal_category').search():
+			ret[category.dn] = {
+				'dn': category.dn,
+				'display_name': category.props.displayName,  # TODO: UDM encoder
+				}
+		return ret
+
+	def _extract_entries(self, portal):
+		ret = {}
+		for entry in self.udm.get('settings/portal_entry').search('portal=%s' % portal.dn):
+			ret[entry.dn] = {
+				'dn': entry.dn,
+				'name': entry.props.displayName,
+				'description': entry.props.description,
+				'logo_name': self._save_image(entry),
+				'favorite': entry.props.favorite,
+				'activated': entry.props.activated,
+				'allowedGroups': entry.props.allowedGroups,
+				'links': entry.props.link,
+				}
+		return ret
+
+	def _save_image(self, entry):
+		img = entry.props.icon
+		if img:
+			cn = os.path.basename(entry.props.name)
+			fname = os.path.join('/usr/share/univention-portal/icons/entries', cn)
+			try:
+				img = img.raw
+				string_buffer = StringIO(img)
+				suffix = what(string_buffer) or 'svg'
+				fname = '%s.%s' % (fname, suffix)
+				with open(fname, 'wb') as fd:
+					fd.write(img)
+			except (EnvironmentError, TypeError, IOError) as err:
+				print err
+				pass
+			else:
+				return '/univention/portal/icons/entries/%s.%s' % (cn, suffix)
+
+
+class JsonHandler(tornado.web.RequestHandler):
+	def _get_portal(self, user):
+		portal = cache.get('portal')
+		actual_content = portal.pop('content')
+		filtered_content = []
+		for category_dn, entry_dns in actual_content:
+			filter_entry_dns = []
+			for entry_dn in entry_dns:
+				entry = udm.get('settings/portal_entry').get(entry_dn)
+				if entry.props.allowedGroups:
+					for group_dn in entry.props.allowedGroups:
+						group = udm.get('groups/group').get(group_dn)
+						if group.includes_recursive(user):
+							break
+					else:
+						continue
+				filter_entry_dns.append(entry_dn)
+			if filter_entry_dns:
+				filtered_content.append([category_dn, filter_entry_dns])
+		portal['content'] = filtered_content
+		return portal
+
+	def _get_links(self):
+		return cache.get('links')
+
+	def _get_categories(self, content):
+		allowed_categories = [x[0] for x in content]
+		ret = cache.get('categories')
+		for dn in ret.keys():
+			if dn not in allowed_categories:
+				ret.pop(dn)
+		return ret
+
+	def _get_entries(self, content):
+		allowed_entries = flatten([x[1] for x in content])
+		ret = cache.get('entries')
+		for dn in ret.keys():
+			if dn not in allowed_entries:
+				ret.pop(dn)
+		return ret
+
+	def _ask_umc(self, session):
+		response = requests.get('http://localhost:8090/check_session', cookies={'UMCSessionId': session})
+		data = response.json()
+		return data['username']
+
+	def _get_user(self, session):
+		if session is None:
+			print 'no user given'
+			return None
+		print 'searching user for %s' % session
+		username = self._ask_umc(session)
+		if username is None:
+			print 'no user found'
+		else:
+			user = udm.get('users/user').get_by_id(username)
+			print 'found %r' % user
+			return user
+
+	def get(self):
+		session = self.get_cookie('UMCSessionId')
+		user = self._get_user(session)
+		print user
+		answer = {}
+		portal_content = answer['portal'] = self._get_portal(user)
+		answer['links'] = self._get_links()
+		answer['categories'] = self._get_categories(portal_content['content'])
+		answer['entries'] = self._get_entries(portal_content['content'])
+		self.write(answer)
+
+cache = LDAPCache()
+
+def make_app():
+	return tornado.web.Application([
+		(r"/univention/portal/portal.json", JsonHandler),
+	])
+
+if __name__ == "__main__":
+	app = make_app()
+	port = int(ucr.get('portal/port', 8095))
+	print 'firing up portal server at port %s' % port
+	app.listen(port)
+	tornado.ioloop.IOLoop.current().start()
+
+# class Root(Ressource):
+#        @cherrypy.expose
+#        @cherrypy.tools.json_out()
+#        def check_session(self, **kwargs):
+#                """
+#                http://localhost:<ucr:umc/http/port>/
+#                """
+#                user = self.get_user()
+#                if user:
+#                        username = user.username
+#                else:
+#                        username = None 
+#                return {'username': username}
+#
+
+#class GroupsGroupObject(GenericObject):
+#        """Better representation of groups/group properties."""
+#        udm_prop_class = GroupsGroupObjectProperties
+#
+#        def includes_recursive(self, user):
+#                return self.includes(user) or any(group.includes_recursive(user) for group in self.props.nestedGroup.objs)
+#
+#        def includes(self, user):
+#                return user.dn in self.props.users
+#
+

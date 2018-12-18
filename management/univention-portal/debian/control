@@ -12,14 +12,14 @@ Standards-Version: 3.9.5
 
 Package: univention-portal
 Architecture: all
-Breaks: python-univention-appcenter (<< 6.0.3-23)
-Replaces: python-univention-appcenter (<< 6.0.3-23)
 Depends: univention-management-console-server,
  univention-config,
- univention-directory-listener (>= 12.0.0-29),
- python-univention-directory-manager (>= 13.0.25-7),
+ python-tornado,
+ python-requests,
+ univention-directory-listener,
+ python-univention-directory-manager,
  univention-directory-manager-tools,
- python-univention-appcenter (>= 6.0.3-23),
+ python-univention-appcenter,
  ${misc:Depends},
 Description: Univention Portal - Central portal web page for a UCS domain
  Univention Portal is a web interface which allows a central view
