@@ -350,7 +350,6 @@ def main():
     try:
         loglevel = int(baseConfig.get('update/debug/level', 2))
     except ValueError:
-        ud.debug(ud.NETWORK, ud.ERROR, "update/debug/level={} is not a valid debug level, using 2".format(baseConfig.get('update/debug/level')))
         loglevel = 2
     ud.set_level(ud.NETWORK, loglevel)
     fp_debug = open(LOGNAME, 'a+')
