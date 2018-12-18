@@ -1,3 +1,9 @@
+univention-web (2.0.0-31) unstable; urgency=medium
+
+  * Bug #48372: show summit 2019 notification in UCS Core editions
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 18 Dec 2018 17:51:18 +0100
+
 univention-web (2.0.0-30) unstable; urgency=medium
 
   * Bug #48106: Moved TextBoxMaxLengthChecker to univention-web
