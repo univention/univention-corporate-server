@@ -87,7 +87,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		# Copyright (C) 2004-2019 Univention GmbH
 		# Copyright (C) 2004-2019 Univention GmbH
 		# Copyright 2008 by
-		reCopyrightVersion = re.compile('Copyright(\s+\(C\))?\s+([0-9, -]+)\s+(by|Univention\s+GmbH)')
+		# Copyright: 2004-2019 Univention GmbH
+		reCopyrightVersion = re.compile('Copyright(?:\s+\(C\)|:)?\s+([0-9, -]+)\s+(?:by|Univention\s+GmbH)')
 
 		# check files for copyright
 		for fn in check_files:
@@ -121,7 +122,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				if not match:
 					self.addmsg('0010-4', 'cannot find copyright line containing year', filename=fn)
 				else:
-					years = match.group(2)
+					years = match.group(1)
 					current_year = str(time.localtime()[0])
 					if current_year not in years:
 						self.debug('Current year=%s  years="%s"' % (current_year, years))
