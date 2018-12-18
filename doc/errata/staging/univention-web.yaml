@@ -3,7 +3,7 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-web
-fix: 
+fix: 2.0.0-31A~4.3.0.201812181806
 desc: |
  This update addresses the following issue(s):
  * The UMC for UCS Core Editions shows a dialog that informs
