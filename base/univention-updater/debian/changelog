@@ -1,3 +1,9 @@
+univention-updater (13.0.1-67) unstable; urgency=medium
+
+  * Bug #47913: fixed updater
+
+ -- Felix Botner <botner@univention.de>  Tue, 18 Dec 2018 17:28:27 +0100
+
 univention-updater (13.0.1-66) unstable; urgency=medium
 
   * Bug #47913: Code cleanup

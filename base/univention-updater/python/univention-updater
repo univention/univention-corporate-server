@@ -45,7 +45,6 @@ import datetime
 import itertools
 from textwrap import dedent, wrap
 from errno import ENOENT
-from univention.config_registry import ConfigRegistry
 
 try:
     import univention.debug as ud
@@ -76,8 +75,6 @@ stdout_orig = sys.stdout
 nostdout = False
 
 updater_status = {}
-ucr = ConfigRegistry()
-ucr.load()
 
 class UpdateError(Exception):
 
@@ -346,8 +343,15 @@ def main():
             break
     iso = None
 
+    baseConfig = ucr.ConfigRegistry()
+    baseConfig.load()
+
     ud.init(LOGNAME, 0, 0)
-    loglevel = ucr.get('update/debug/level', 2)
+    try:
+        loglevel = int(baseConfig.get('update/debug/level', 2))
+    except ValueError:
+        ud.debug(ud.NETWORK, ud.ERROR, "update/debug/level={} is not a valid debug level, using 2".format(baseConfig.get('update/debug/level')))
+        loglevel = 2
     ud.set_level(ud.NETWORK, loglevel)
     fp_debug = open(LOGNAME, 'a+')
     # sys.stdout=fp_debug
@@ -385,8 +389,6 @@ def main():
         fp_debug.close()
         sys.exit(2)
 
-    baseConfig = ucr.ConfigRegistry()
-    baseConfig.load()
     for opt, val in opts:
         if opt == '--src':
             dprint('Warning: --src is deprecated; value is ignored.')
