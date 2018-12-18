@@ -76,9 +76,9 @@ test_master () {
 	run_on_ucs_hosts "$MASTER $BACKUP $SLAVE $SLAVE_RODC" 'test -z "$(find /var -name core)"'
 
 	# Read-Only-DC
-    # Nach dem Join sollten auf dem RODC z.B. keine unicodePwd und supplementalCredentials repliziert sein.
+	# Nach dem Join sollten auf dem RODC z.B. keine unicodePwd und supplementalCredentials repliziert sein.
 	# Der folgende Aufruf sollte daher nur an dem Objekt des RODC selbst und an dem lokalen krbtgt_* Konto diese Passwortattribute finden:
-    # Schreibzugriffe gegen den RODC sollten scheitern
+	# Schreibzugriffe gegen den RODC sollten scheitern
 	test 2 -eq $(run_on_ucs_hosts "$SLAVE_RODC" "ldbsearch -H /var/lib/samba/private/sam.ldb unicodePwd" | grep -i ^unicodePwd: | wc -l)
 	test 2 -eq $(run_on_ucs_hosts "$SLAVE_RODC" "ldbsearch -H /var/lib/samba/private/sam.ldb supplementalcredentials" | grep -i ^supplementalcredentials: | wc -l)
 	run_on_ucs_hosts "$SLAVE_RODC" '! samba-tool user add rodcuser1 Password.99'
@@ -100,15 +100,14 @@ test_master () {
 	udm users/user move --dn "uid=newuser05,cn=users,$ldap_base" --position "ou=gpo1,$ldap_base"
 	udm computers/windows move --dn "cn=$win2016_name,cn=computers,$ldap_base" --position "ou=gpo2,$ldap_base"
 	# reboot system to apply gpo's
+	python shared-utils/ucs-winrm.py run-ps --cmd 'gpupdate /force' --client $WIN2016  --credssp
 	python shared-utils/ucs-winrm.py reboot --client $WIN2016
-
 	python shared-utils/ucs-winrm.py check-applied-gpos --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --client $WIN2012 \
 		--usergpo 'GPO5' --usergpo 'GPO3' --usergpo 'Default Domain Policy' \
 		--computergpo 'GPO4' --computergpo 'Default Domain Policy'
 	python shared-utils/ucs-winrm.py check-applied-gpos --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --client $WIN2016 \
 		--usergpo 'GPO5' --usergpo 'GPO3' --usergpo 'Default Domain Policy' \
 		--computergpo 'GPO4' --computergpo 'GPO2' --computergpo 'Default Domain Policy'
-
 	python shared-utils/ucs-winrm.py check-applied-gpos --username 'newuser01' --userpwd "Univention.99" --client $WIN2012 \
 		--usergpo 'GPO5' --usergpo 'GPO3' --usergpo 'Default Domain Policy' \
 		--computergpo 'GPO4' --computergpo 'Default Domain Policy'
@@ -140,7 +139,7 @@ test_master () {
 	udm shares/share modify --dn "cn=testshareSlave,cn=shares,dc=sambatest,dc=local" --set group=5000 --set directorymode=0770 --set sambaDirectoryMode=0770
 	udm shares/share modify --dn "cn=testshare,cn=shares,dc=sambatest,dc=local" --set group=5000 --set directorymode=0770 --set sambaDirectoryMode=0770
 	python shared-utils/ucs-winrm.py check-share --server ucs-member --sharename "testshareMember" --driveletter R --filename "test.txt" --username 'Administrator' --userpwd "$ADMIN_PASSWORD"
-	python shared-utils/ucs-winrm.py check-share --server ucs-slabe --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'Administrator' --userpwd "$ADMIN_PASSWORD"
+	python shared-utils/ucs-winrm.py check-share --server ucs-slave --sharename "testshareSlave" --driveletter Q --filename "test.txt" --username 'Administrator' --userpwd "$ADMIN_PASSWORD"
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-member --filename test-admin01.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share testshareMember
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-slave --filename test-admin01.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --share testshareSlave
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-slave --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention.99" --share testshareSlave
@@ -159,12 +158,12 @@ test_master () {
 	stat /home/testshare/test-admin.txt
 	# this should fail
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-master.sambatest.local --filename test-newuser02.txt --username 'newuser02' --userpwd "Univention.99" \
-		--share testshare --client $WIN2016 --debug | grep -i PermissionDenied
+		--share testshare --client $WIN2016 --debug 2>&1 | grep -i PermissionDenied
 	python shared-utils/ucs-winrm.py create-share-file --server ucs-master.sambatest.local --filename test-newuser01.txt --username 'newuser01' --userpwd "Univention.99" \
 		--share Administrator --client $WIN2016 --debug 2>&1 | grep -i PermissionDenied
 	# check windows acl's
-	#	    ACL-Vergabe unter Windows testen(rechte Maustaste/Eigenschaften.. Hinzufügen und Entfernen von ACLs) DONE
-	#	    Serverseitig: getfacl DONE
+	#  ACL-Vergabe unter Windows testen(rechte Maustaste/Eigenschaften.. Hinzufügen und Entfernen von ACLs) DONE
+	#  Serverseitig: getfacl DONE
 	python shared-utils/ucs-winrm.py get-acl-for-share-file --server $MASTER --filename test-newuser02.txt --username 'newuser02' --userpwd "Univention.99" \
 		--share newuser02 --debug | grep "Group.*Domain Users"
 	python shared-utils/ucs-winrm.py get-acl-for-share-file --server $MASTER --filename test-admin.txt --username 'Administrator' --userpwd "$ADMIN_PASSWORD" \
@@ -182,12 +181,12 @@ test_master () {
 
 	# printing
 
-    # Druckerzugriff mit serverseitig hinterlegten Druckertreibern:
-    #  Anlegen eines Druckers auf dem DC Slave und auf dem Memberserver
-    #  Zugriff als Domänen-Administrator vom Windowsclient aus
-    #  serverseitig einen Druckertreiber hinterlegen, am einfachsten von 32bit XP aus (Windows 7 ist ein bisschen anders, 64bit ist zusätzlich hakelig ).
-    #  Verbinden eines Druckers als unpriviligierter Benutzer vom Windowsclient aus
-    #  Testdruck von wordpad aus auf den verbundenen Drucker
+	# Druckerzugriff mit serverseitig hinterlegten Druckertreibern:
+	#  Anlegen eines Druckers auf dem DC Slave und auf dem Memberserver
+	#  Zugriff als Domänen-Administrator vom Windowsclient aus
+	#  serverseitig einen Druckertreiber hinterlegen, am einfachsten von 32bit XP aus (Windows 7 ist ein bisschen anders, 64bit ist zusätzlich hakelig ).
+	#  Verbinden eines Druckers als unpriviligierter Benutzer vom Windowsclient aus
+	#  Testdruck von wordpad aus auf den verbundenen Drucker
 	python shared-utils/ucs-winrm.py setup-printer --printername Masterprinter --server "$MASTER"
 	sleep 20
 	rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
@@ -196,21 +195,35 @@ test_master () {
 	sleep 20
 	stat /var/spool/cups-pdf/administrator/job_1-document.pdf
 	stat /var/spool/cups-pdf/newuser02/job_2-document.pdf
-    # Druckerzugriff ohne serverseitige Druckertreiber
-    #  Anlegen eines Druckers auf dem DC Slave und auf dem Memberserver
-    #  Verbinden zum Drucker als unpriviligierter Benutzer vom Windowsclient aus
-    #  Testdruck von wordpad aus auf den verbundenen Drucker
+	# Druckerzugriff ohne serverseitige Druckertreiber
+	#  Anlegen eines Druckers auf dem DC Slave und auf dem Memberserver
+	#  Verbinden zum Drucker als unpriviligierter Benutzer vom Windowsclient aus
+	#  Testdruck von wordpad aus auf den verbundenen Drucker
 	python shared-utils/ucs-winrm.py setup-printer --printername Slaveprinter --server "$SLAVE"
+	python shared-utils/ucs-winrm.py setup-printer --printername Slaveprinter --server "ucs-slave.sambatest.local" --client $WIN2016
 	python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$MEMBER"
+	python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "ucs-member.sambatest.local" --client $WIN2016
 	sleep 20
-	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server $MEMBER --impersonate --run-as-user Administrator
-	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server $SLAVE --impersonate --run-as-user Administrator
-	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "$MEMBER" --impersonate --run-as-user newuser02 --run-as-password "Univention.99"
-	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server "$SLAVE" --impersonate --run-as-user newuser02 --run-as-password "Univention.99"
-    run_on_ucs_hosts $SLAVE 'stat /var/spool/cups-pdf/administrator/job_1-document.pdf'
-    run_on_ucs_hosts $SLAVE 'stat /var/spool/cups-pdf/newuser02/job_2-document.pdf'
-    run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/administrator/job_1-document.pdf'
-    run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/newuser02/job_2-document.pdf'
+	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server $MEMBER \
+		--impersonate --run-as-user Administrator
+	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server $SLAVE \
+		--impersonate --run-as-user Administrator
+	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "$MEMBER" \
+		--impersonate --run-as-user newuser02 --run-as-password "Univention.99"
+	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server "$SLAVE" \
+		--impersonate --run-as-user newuser02 --run-as-password "Univention.99"
+	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server "ucs-slave.sambatest.local" \
+		--impersonate --run-as-user newuser02 --run-as-password "Univention.99" --client $WIN2016
+	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "ucs-member.sambatest.local" \
+		--impersonate --run-as-user newuser02 --run-as-password "Univention.99" --client $WIN2016
+	sleep 20
+	run_on_ucs_hosts $SLAVE 'stat /var/spool/cups-pdf/administrator/job_1-document.pdf'
+	run_on_ucs_hosts $SLAVE 'stat /var/spool/cups-pdf/newuser02/job_2-document.pdf'
+	run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/administrator/job_1-document.pdf'
+	run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/newuser02/job_2-document.pdf'
+	run_on_ucs_hosts $SLAVE 'stat /var/spool/cups-pdf/newuser02/job_3-document.pdf'
+	run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/newuser02/job_3-document.pdf'
+       # printer GPO's TODO
 
 	# Passworte
 
@@ -239,15 +252,19 @@ test_master () {
 	#  Man sollte nicht wieder das alte Passwort setzen können. Man sollte ein Passwort mit 5 Buchstaben setzen können. DONE
 	#  Kann man jetzt wieder "Ünivention123" setzen? DONE
 	python shared-utils/ucs-winrm.py run-ps --cmd "net user newuser01 /domain" --impersonate --run-as-user Administrator | grep $(date -d "+2 days" +"%d.%m.%Y")
-	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ!"
 	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ" --debug 2>&1 | grep Exception
-	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univention123!"
+	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univ!"
+	sleep 10
+	check_user_in_ucs newuser01 "Univ!"
+	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword 'Univention123!'
+	sleep 10
+	check_user_in_ucs newuser01 'Univention123!'
 	udm users/user modify --dn "uid=newuser01,cn=users,$ldap_base" --set pwdChangeNextLogin=1
 	sleep 10
 	python shared-utils/ucs-winrm.py run-ps --cmd 'ls' --credssp --run-as-user newuser01 --run-as-password 'Univention123!' --client $WIN2012 --debug 2>&1 | grep AccessDenied
 	python shared-utils/ucs-winrm.py run-ps --cmd 'ls' --credssp --run-as-user newuser01 --run-as-password 'Univention123!' --client $WIN2016 --debug 2>&1 | grep AccessDenied
 	! samba-tool user password -U newuser01 --password='Univention123!' --newpassword='Univention123!'
-	samba-tool user password -U newuser01 --password='Univention999!' --newpassword='Ünivention999!'
+	samba-tool user password -U newuser01 --password='Univention123!' --newpassword='Ünivention999!'
 	python shared-utils/ucs-winrm.py logon-as --username newuser01 --userpwd "Ünivention999!" --client $WIN2012
 	python shared-utils/ucs-winrm.py logon-as --username newuser01 --userpwd "Ünivention999!" --client $WIN2016
 	check_user_in_ucs newuser01 "Ünivention999!"
