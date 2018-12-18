@@ -1,0 +1,14 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: xml-security-c
+fix: 1.7.2-3+deb8u2
+desc: |
+ This update addresses the following issue:
+ * DSA verification crashes OpenSSL on invalid combinations of key content
+bug: [48367]
+cve:
+ - TEMP-0913136-041770
+ignore:
+ - cve.TEMP-0913136-041770
