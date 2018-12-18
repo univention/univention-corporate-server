@@ -1,0 +1,24 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: firefox-esr
+fix: 60.4.0esr-1~deb8u1
+desc: |
+ This update addresses the following issues:
+ * Memory safety bugs fixed in Firefox 64 and Firefox ESR 60.4
+   (CVE-2018-12405)
+ * Memory corruption in Angle (CVE-2018-17466)
+ * Use-after-free with select element (CVE-2018-18492)
+ * Buffer overflow in accelerated 2D canvas with Skia (CVE-2018-18493)
+ * Same-origin policy violation using location attribute and
+   performance.getEntries to steal cross-origin URLs (CVE-2018-18494)
+ * Integer overflow when calculating buffer sizes for images (CVE-2018-18498)
+bug: [48366]
+cve:
+- CVE-2018-12405
+- CVE-2018-17466
+- CVE-2018-18492
+- CVE-2018-18493
+- CVE-2018-18494
+- CVE-2018-18498
