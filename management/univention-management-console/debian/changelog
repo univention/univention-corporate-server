@@ -1,3 +1,9 @@
+univention-management-console (11.0.0-2) unstable; urgency=medium
+
+  * Bug #48372: show summit 2019 notification in UCS Core editions
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 18 Dec 2018 18:21:32 +0100
+
 univention-management-console (11.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
