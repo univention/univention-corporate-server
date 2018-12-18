@@ -76,3 +76,88 @@
 	}
 }
 
+/* styling for the Univention Summit 2019 popup */
+.umcSummit2019Dialog {
+	max-width: 100% !important;
+	max-height: 100% !important;
+	overflow-y: auto !important;
+	background: linear-gradient(to bottom, #10191e 0%, #21161f 40%, #10191e 100%) !important;
+}
+.umcSummit2019Dialog .dijitDialogTitleBar {
+	background: transparent !important;
+}
+.umcSummit2019Dialog .dijitDialogPaneContent {
+	background: transparent !important;
+}
+.umcSummit2019Dialog__header-text {
+	color: #fff !important;
+	font-size: 24px !important;
+	margin-bottom: 0.2em !important;
+}
+.umcSummit2019Dialog__header-text--important {
+	color: #00acb6 !important;
+}
+.umcSummit2019Dialog__subheader-text {
+	color: #00acb6 !important;
+	font-size: 20px !important;
+}
+
+.umcSummit2019Message {
+	display: flex !important;
+	color: #fff !important;
+}
+
+.umcSummit2019Message ul {
+	padding-inline-start: 1em !important;
+	list-style: none !important;
+	margin-bottom: 1.5em !important;
+}
+.umcSummit2019Message li:before {
+	content: '\25CF' !important;
+	display: inline-block !important;
+	color: #6CB520 !important;
+	width: 1em !important;
+	margin-left: -1em !important;
+}
+
+.umcSummit2019Message__messageWrapper {
+	font-size: 16px !important;
+	font-weight: 500 !important;
+	max-width: 380px !important;
+}
+
+.umcSummit2019Message__listHeader {
+	display: block !important;
+	margin-bottom: 0.5em !important;
+	color: #6CB520 !important;
+	text-transform: uppercase !important;
+	font-weight: bold !important;
+}
+
+.umcSummit2019Message__link {
+	color: #00acb6 !important;
+}
+.umcSummit2019Message__link:before {
+	content: '\27A4' !important;
+	display: inline-block !important;
+	color: #00acb6 !important;
+	margin-right: 0.5em !important;
+}
+
+.umcSummit2019Message__image {
+	width: 500px !important;
+	background: url(./univention-summit-2019.svg) no-repeat center center !important;
+	flex: 1 1 auto !important;
+}
+
+@media (max-width: 767px) {
+	.umcSummit2019Message {
+		flex-direction: column !important;
+	}
+
+	.umcSummit2019Message__image {
+		margin-top: 2em !important;
+		width: 100% !important;
+		min-height: 200px !important;
+	}
+}
