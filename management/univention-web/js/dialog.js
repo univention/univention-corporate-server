@@ -93,9 +93,12 @@ define([
 			// component:
 			// 		The title for the notification.
 
+			var notificationDeferred = new Deferred();
 			NotificationDropDownButton.getInstance().then(function(dropDownButton) {
-				dropDownButton.addNotification(message, component || _('Notification'));
+				var notification = dropDownButton.addNotification(message, component || _('Notification'));
+				notificationDeferred.resolve(notification);
 			});
+			return notificationDeferred;
 		},
 
 		warn: function(/*String*/ message, /*String?*/ component) {
@@ -106,9 +109,12 @@ define([
 			// component:
 			// 		The title for the notification.
 
+			var notificationDeferred = new Deferred();
 			NotificationDropDownButton.getInstance().then(function(dropDownButton) {
-				dropDownButton.addWarning(message, component || _('Warning'));
+				var notification = dropDownButton.addWarning(message, component || _('Warning'));
+				notificationDeferred.resolve(notification);
 			});
+			return notificationDeferred;
 		},
 
 		_alertDialog: null, // internal reference for the alert dialog
