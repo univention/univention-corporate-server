@@ -22,7 +22,7 @@
 			</listitem>
 			<listitem>
 				<para>
-					The following updated packages from Debian FIXME 0.00 are included (<u:bug>00000</u:bug>):
+					The following updated packages from Debian <remark>FIXME</remark> 0.00 are included (<u:bug>00000</u:bug>):
 					<simplelist type="inline" id="_debian">
 						<member><package>FIXME</package></member>
 					</simplelist>
@@ -615,7 +615,7 @@
 					Update package <package>samba</package> to version 4.9.3 (<u:bug>48084</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Enable the new Samba DRS KCC by default (<u:bug>48085</u:bug>).
+					Enable the new Samba DRS <phrase>Knowledge Consistency Checker</phrase> (<abbrev>KCC</abbrev>) by default (<u:bug>48085</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
