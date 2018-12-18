@@ -1,27 +1,54 @@
-Copyright 2005-2019 Univention GmbH
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Univention GmbH
+Upstream-Contact: <package@univention.de>
+Source: https://updates.software-univention.de/
 
-http://www.univention.de/
+Files: *
+Copyright: 2005-2019 Univention GmbH
+License: AGPL-3.0-only
+ The source code of the software contained in this package
+ as well as the source package itself are made available
+ under the terms of the GNU Affero General Public License version 3
+ (GNU AGPL V3) as published by the Free Software Foundation.
+ .
+ Binary versions of this program provided by Univention to you as
+ well as other copyrighted, protected or trademarked materials like
+ Logos, graphics, fonts, specific documentations and configurations,
+ cryptographic keys etc. are subject to a license agreement between
+ you and Univention and not subject to the GNU AGPL V3.
+ .
+ In the case you use this program under the terms of the GNU AGPL V3,
+ the program is provided in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
+ .
+ You should have received a copy of the GNU Affero General Public
+ License with the Debian GNU/Linux or Univention distribution in file
+ /usr/share/common-licenses/AGPL-3; if not, see
+ <http://www.gnu.org/licenses/>.
 
-All rights reserved.
-
-The source code of the software contained in this package
-as well as the source package itself are made available
-under the terms of the GNU Affero General Public License version 3
-(GNU AGPL V3) as published by the Free Software Foundation.
-
-Binary versions of this package provided by Univention to you as
-well as other copyrighted, protected or trademarked materials like
-Logos, graphics, fonts, specific documentations and configurations,
-cryptographic keys etc. are subject to a license agreement between
-you and Univention and not subject to the GNU AGPL V3.
-
-In the case you use the software under the terms of the GNU AGPL V3,
-the program is provided in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public
-License with the Debian GNU/Linux or Univention distribution in file
-/usr/share/common-licenses/AGPL-3; if not, see
-<http://www.gnu.org/licenses/>.
+Files: dh_2048.pem
+  dh_512.pem
+Copyright: 2003 The Internet Society
+License: RFC-Reference
+ dh_2048.pem merely cites and references RFC3526. This is believed to be fair
+ use; but if not, it's covered by the source document's license under
+ the 'comment on' clause. The license statement follows.
+ .
+ This document and translations of it may be copied and furnished to
+ others, and derivative works that comment on or otherwise explain it
+ or assist in its implementation may be prepared, copied, published
+ and distributed, in whole or in part, without restriction of any
+ kind, provided that the above copyright notice and this paragraph
+ are included on all such copies and derivative works.  However, this
+ document itself may not be modified in any way, such as by removing
+ the copyright notice or references to the Internet Society or other
+ Internet organizations, except as needed for the purpose of
+ developing Internet standards in which case the procedures for
+ copyrights defined in the Internet Standards process must be
+ followed, or as required to translate it into languages other than
+ English.
+ .
+ The limited permissions granted above are perpetual and will not be
+ revoked by the Internet Society or its successors or assigns.

@@ -1,32 +1,6 @@
 # -*- coding: utf-8 -*-
-#
-# Univention SSL
-#  listener ssl module
-#
+# SPDX-License-Identifier: AGPL-3.0
 # Copyright (C) 2004-2019 Univention GmbH
-#
-# http://www.univention.de/
-#
-# All rights reserved.
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License version 2 as
-# published by the Free Software Foundation.
-#
-# Binary versions of this file provided by Univention to you as
-# well as other copyrighted, protected or trademarked materials like
-# Logos, graphics, fonts, specific documentations and configurations,
-# cryptographic keys etc. are subject to a license agreement between
-# you and Univention.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from listener import *
 
@@ -63,7 +37,7 @@ def handler(dn, new, old):
 		return
 
 	try:
-		if new and not old:			
+		if new and not old:
 			if new.has_key('associatedDomain'):
 				domain=new['associatedDomain'][0]
 			else:
@@ -96,7 +70,7 @@ def handler(dn, new, old):
 def set_permissions(tmp1, directory, filename):
 	global uidNumber
 	global gidNumber
-	
+
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (directory, gidNumber, uidNumber))
 	os.chown(directory, uidNumber, gidNumber)
 	os.chmod(directory, 0750)
@@ -117,7 +91,7 @@ def create_certificate(name, serverUidNumber, domainname):
 	global uidNumber
 	global gidNumber
 	uidNumber = serverUidNumber
-	
+
 	ssldir='/etc/univention/ssl'
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'CERTIFICATE: Creating certificate %s' % name)
 
@@ -141,7 +115,7 @@ def create_certificate(name, serverUidNumber, domainname):
 	p = os.popen('ln -sf %s/%s.%s %s/%s' % (ssldir,name,domainname,ssldir,name) )
 	p.close()
 
-	
+
 	a=os.path.walk(certpath,set_permissions, None)
 
 	return
