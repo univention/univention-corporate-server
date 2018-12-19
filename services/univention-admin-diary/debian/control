@@ -13,7 +13,11 @@ Standards-Version: 3.7.2
 Package: univention-admin-diary-backend
 Architecture: all
 Depends: ${misc:Depends},
- python-univention-admin-diary (= ${binary:Version})
+ python-univention-admin-diary (= ${binary:Version}),
+ rsyslog-relp,
+ python-psycopg2,
+ whois,
+ univention-postgres
 Description: Univention Admin Diary backend
  .
  It is part of Univention Corporate Server (UCS), an

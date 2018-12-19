@@ -28,10 +28,32 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.admindiary import AdminDiary
+import datetime
+from contextlib import contextmanager
+
+import psycopg2
+
+password = open('/etc/admin-diary.secret').read().strip()
+
+@contextmanager
+def connection():
+	conn = psycopg2.connect(dbname='diary', user='diary', host='localhost', password=password)
+	yield conn
+	conn.close()
 
 
-class AdminDiaryBackend(AdminDiary):
+def add(entry):
+	with connection() as conn:
+		conn.execute("INSERT INTO log_entries (username, hostname, message, args, issued, tags, log_id, event_name) VALUES (%s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.args, entry.issued, entry.tags, entry.log_id, entry.event_name))
+		conn.commit()
 
-	def __init__(self):
-		AdminDiaryBackend.__init__(self)
+def query():
+	with connection() as conn:
+		conn.execute("SELECT username, hostname, message, args, issued, tags, log_id, event_name FROM log_entries")
+		rows = conn.fetchall()
+		res = [dict(row) for row in rows]
+		for row in res:
+			for k, v in row.items():
+				if isinstance(v, datetime.datetime):
+					row[k] = v.isoformat()
+		return res

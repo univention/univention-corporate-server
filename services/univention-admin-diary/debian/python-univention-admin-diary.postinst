@@ -29,11 +29,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-update-python-modules univention-admin-diary-client.public
+update-python-modules python-univention-admin-diary.public
 update-python-modules --post-install
 
 #DEBHELPER#
-
-invoke-rc.d rsyslog restart
 
 exit 0

@@ -28,10 +28,49 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.admindiary import AdminDiary
+import logging
+from logging.handlers import SysLogHandler
+from univention.admindiary import LogEntry
+import uuid
+from getpass import getuser
 
-
-class AdminDiaryClient(AdminDiary):
-
+class RsyslogEmitter(object):
 	def __init__(self):
-		AdminDiary.__init__(self)
+		self.logger = logging.getLogger('univention-admin-diary')
+		self.logger.setLevel(logging.DEBUG)
+		handler = SysLogHandler(address='/dev/log', facility='user')
+		self.logger.addHandler(handler)
+
+	def emit(self, entry):
+		self.logger.info('ADMINDIARY: ' + str(entry))
+
+emitter = RsyslogEmitter()
+
+def log_event(event, args=None, username=None, log_id=None):
+	args = args or []
+	if not isinstance(args, (list, tuple)):
+		raise TypeError('"args" must be a list')
+	if len(args) != len(event.args):
+		raise ValueError('Logging %s needs %d arguments (%r). %d given' % (event.message, len(event.args), event.args, len(args)))
+	return log(event.message, args, None, event.tags, log_id, event.name)
+
+
+def log(message, args=None, username=None, tags=None, log_id=None, event_name=None):
+	if username is None:
+		username = getuser()
+	if args is None:
+		args = []
+	if tags is None:
+		tags = []
+	if log_id is None:
+		log_id = str(uuid.uuid4())
+	if event_name is None:
+		event_name = 'CUSTOM'
+	entry = LogEntry(username, message, args, tags, log_id, event_name)
+	return log_entry(entry)
+
+
+def log_entry(entry):
+	body = entry.to_json()
+	emitter.emit(body)
+	return entry.log_id

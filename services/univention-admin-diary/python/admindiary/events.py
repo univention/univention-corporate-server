@@ -1,6 +1,5 @@
-#!/bin/sh
-#
-# postinst script
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
 #
 # Copyright 2019 Univention GmbH
 #
@@ -29,11 +28,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-update-python-modules univention-admin-diary-client.public
-update-python-modules --post-install
+class Event(object):
+	def __init__(self, name, message, args=None, tags=None):
+		self.name = name
+		self.message = message
+		self.args = args or []
+		self.tags = tags or []
 
-#DEBHELPER#
-
-invoke-rc.d rsyslog restart
-
-exit 0
+USER_CREATED = Event('USER_CREATED', 'User %s created', ['username'])
+SERVER_PASSWORD_CHANGED = Event('SERVER_PASSWORD_CHANGED', 'Server password changed')
+APP_INSTALLED = Event('APP_INSTALLED', 'App %s installed', ['app'])
