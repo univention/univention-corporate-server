@@ -1,6 +1,6 @@
 product: ucs
 release: "4.3"
-version: [3]
+version: [2,3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-management-console
 fix: 10.0.6-17A~4.3.0.201812181814
