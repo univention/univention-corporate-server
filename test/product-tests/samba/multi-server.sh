@@ -99,9 +99,11 @@ test_master () {
 	create_gpo GPO2 "ou=gpo2,$ldap_base" Computer 'HKLM\Environment'
 	udm users/user move --dn "uid=newuser05,cn=users,$ldap_base" --position "ou=gpo1,$ldap_base"
 	udm computers/windows move --dn "cn=$win2016_name,cn=computers,$ldap_base" --position "ou=gpo2,$ldap_base"
+	sleep 30
 	# reboot system to apply gpo's
-	python shared-utils/ucs-winrm.py run-ps --cmd 'gpupdate /force' --client $WIN2016  --credssp
 	python shared-utils/ucs-winrm.py reboot --client $WIN2016
+	slepp 30
+	python shared-utils/ucs-winrm.py run-ps --cmd 'gpupdate /force' --client $WIN2016  --credssp
 	python shared-utils/ucs-winrm.py check-applied-gpos --username 'Administrator' --userpwd "$ADMIN_PASSWORD" --client $WIN2012 \
 		--usergpo 'GPO5' --usergpo 'GPO3' --usergpo 'Default Domain Policy' \
 		--computergpo 'GPO4' --computergpo 'Default Domain Policy'
