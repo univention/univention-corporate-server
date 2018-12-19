@@ -29,11 +29,22 @@
 # <http://www.gnu.org/licenses/>.
 
 class Event(object):
+	_all_events = {}
+
+	@classmethod
+	def get(cls, name):
+		return cls._all_events.get(name)
+
+	@classmethod
+	def names(cls):
+		return sorted(cls._all_events.keys())
+
 	def __init__(self, name, message, args=None, tags=None):
 		self.name = name
 		self.message = message
 		self.args = args or []
 		self.tags = tags or []
+		self._all_events[self.name] = self
 
 USER_CREATED = Event('USER_CREATED', 'User %s created', ['username'])
 SERVER_PASSWORD_CHANGED = Event('SERVER_PASSWORD_CHANGED', 'Server password changed')
