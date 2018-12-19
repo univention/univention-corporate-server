@@ -1,5 +1,7 @@
-#!/usr/bin/python2.7
-# -*- coding: utf-8 -*-
+#!/bin/bash
+#
+# Univention Admin Diary
+#   machine password hook script
 #
 # Copyright 2019 Univention GmbH
 #
@@ -28,25 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-class Event(object):
-	_all_events = {}
 
-	@classmethod
-	def get(cls, name):
-		return cls._all_events.get(name)
-
-	@classmethod
-	def names(cls):
-		return sorted(cls._all_events.keys())
-
-	def __init__(self, name, message, args=None, tags=None):
-		self.name = name
-		self.message = message
-		self.args = args or []
-		self.tags = tags or []
-		self._all_events[self.name] = self
-
-USER_CREATED = Event('USER_CREATED', 'User %s created', ['username'])
-APP_INSTALLED = Event('APP_INSTALLED', 'App %s installed', ['app'])
-SERVER_PASSWORD_CHANGED = Event('SERVER_PASSWORD_CHANGED', 'Machine account password changed successfully')
-SERVER_PASSWORD_CHANGED_FAILED = Event('SERVER_PASSWORD_CHANGED_FAILED', 'Machine account password change failed!', tags=['error'])
+if [ "$1" = "nochange" ]; then
+	univention-diary-entry-create --event SERVER_PASSWORD_CHANGED_FAILED
+elif [ "$1" = "postchange" ]; then
+	univention-diary-entry-create --event SERVER_PASSWORD_CHANGED
+fi

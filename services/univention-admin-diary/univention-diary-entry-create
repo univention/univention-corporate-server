@@ -4,7 +4,7 @@
 # Univention Admin Diary
 #  CLI Tool adding diary entry into RabbitMQ to be added to the DB - eventually
 #
-# Copyright 2018 Univention GmbH
+# Copyright 2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -45,7 +45,7 @@ def main():
 	parser.add_argument('-u', '--username', help='Username that issues the log entry')
 	parser.add_argument('-t', '--tag', action='append', help='Tags added to the log entry')
 	parser.add_argument('-a', '--arg', action='append', help='Argument used in message')
-	parser.add_argument('-e', '--event', choices=Event.names(), help='Choose one from this convenience list instead of giving TAG and <message>')
+	parser.add_argument('--event', choices=Event.names(), help='Choose one from this convenience list instead of giving TAG and <message>')
 	parser.add_argument('--log-id', help='May be given to ammend an existing diary entry, effectively grouping those together. The LOG_ID is also returned by this program')
 	parser.add_argument('message', nargs=REMAINDER, help='The message')
 	args = parser.parse_args()
