@@ -99,7 +99,7 @@ test_master () {
 	create_gpo GPO2 "ou=gpo2,$ldap_base" Computer 'HKLM\Environment'
 	udm users/user move --dn "uid=newuser05,cn=users,$ldap_base" --position "ou=gpo1,$ldap_base"
 	udm computers/windows move --dn "cn=$win2016_name,cn=computers,$ldap_base" --position "ou=gpo2,$ldap_base"
-	sleep 30
+	sleep 360 # wait for sysvol sync
 	# reboot system to apply gpo's
 	python shared-utils/ucs-winrm.py reboot --client $WIN2016
 	sleep 30
