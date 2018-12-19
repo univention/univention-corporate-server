@@ -9,3 +9,5 @@ desc: |
  * Normalize CPU utilization of host and update error and migration status
    atomically.
 bug: [48340]
+erratum: 388
+announced: 2018-12-19
