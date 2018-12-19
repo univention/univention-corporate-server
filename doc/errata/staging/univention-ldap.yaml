@@ -3,8 +3,8 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-ldap
-fix: 14.0.2-33A~4.3.0.201812171224
+fix: 14.0.2-34A~4.3.0.201812191534
 desc: |
- This update addresses the following issue(s):
- * Enabled cn=config for on-line configuration in openldap
+ This update addresses the following issue:
+ * Enabled cn=config backend, accessible via LDAPI only.
 bug: [43515]
