@@ -16,6 +16,7 @@ Depends: ${misc:Depends},
  python-univention-admin-diary (= ${binary:Version}),
  rsyslog-relp,
  python-psycopg2,
+ python-pyparsing,
  whois,
  univention-postgresql
 Description: Univention Admin Diary backend

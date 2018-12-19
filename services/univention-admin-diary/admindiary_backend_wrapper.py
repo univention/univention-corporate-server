@@ -34,58 +34,12 @@
 """
 
 import sys
-from pyparsing import Word, alphas, Suppress, Combine, nums, string, Regex
 from datetime import datetime
-from admindiary_event_model import Event
 
-class FileStorage(object):
-	""" dummy example """
-	def __init__(self, filename):
-		self.filename = filename
+from pyparsing import Word, alphas, Suppress, Combine, nums, string, Regex
 
-	def __enter__(self):
-		self.out = open(self.filename, "a")
-		return self
-
-	def __exit__(self, *args):
-		self.out.close()
-
-	def append(self, event):
-		self.out.write(str(event) + "\n")
-		# self.out.flush()
-
-	def search(self, event):
-		raise NotImplementedError
-
-	def read(self, event):
-		raise NotImplementedError
-
-	def annotate(self, event):
-		raise NotImplementedError
-
-
-class SQLStorage(object):
-	""" TODO """
-	def __init__(self, filename):
-		raise NotImplementedError
-
-	def __enter__(self):
-		return NotImplemented
-
-	def __exit__(self, *args):
-		raise NotImplementedError
-
-	def append(self, event):
-		raise NotImplementedError
-
-	def search(self, event):
-		raise NotImplementedError
-
-	def read(self, event):
-		raise NotImplementedError
-
-	def annotate(self, event):
-		raise NotImplementedError
+from univention.admindiary import LogEntry
+from univention.admindiary.backend import add
 
 
 class RsyslogTransport(object):
@@ -109,7 +63,7 @@ class RsyslogTransport(object):
 
 		# message
 		payload = Regex(".*")
-		payload.setParseAction(lambda t: "".join(t)) ## json parsing happens in Event class
+		payload.setParseAction(lambda t: "".join(t))  # json parsing happens in Event class
 
 		self._pattern = timestamp("source_datetime") + hostname("source_hostname") + syslogtag + payload("serialized_event_dict")
 
@@ -118,22 +72,20 @@ class RsyslogTransport(object):
 		parsed_dict = parsed.asDict()
 		# merge the nested dictionaries to return a simple structure
 		rsyslog_event_dict = parsed_dict["serialized_event_dict"]
-		rsyslog_event_dict["source_timestamp"] = parsed_dict["source_datetime"].strftime("%Y-%m-%d %H:%M:%S")
-		rsyslog_event_dict["source_hostname"] = parsed_dict["source_hostname"]
 		# and convert to Admin Diary object model
-		return Event(rsyslog_event_dict)
+		entry = LogEntry.from_json(rsyslog_event_dict)
+		return entry
 
 
 def stdin_to_storage():
 	rsyslog_transport = RsyslogTransport("ADMINDIARY:")
 
-	with FileStorage("/tmp/1.log") as storage:
-		while True:
-			line = sys.stdin.readline()
-			if not line:
-				break
-			event = rsyslog_transport.deserialize(line)
-			storage.append(event)
+	while True:
+		line = sys.stdin.readline()
+		if not line:
+			break
+		entry = rsyslog_transport.deserialize(line)
+		add(entry)
 
 
 if __name__ == "__main__":

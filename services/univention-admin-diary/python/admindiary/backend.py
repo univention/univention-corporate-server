@@ -39,13 +39,20 @@ password = open('/etc/admin-diary.secret').read().strip()
 def connection():
 	conn = psycopg2.connect(dbname='diary', user='diary', host='localhost', password=password)
 	yield conn
+	conn.commit()
 	conn.close()
 
 
-def add(entry):
+@contextmanager
+def cursor():
 	with connection() as conn:
-		conn.execute("INSERT INTO log_entries (username, hostname, message, args, issued, tags, log_id, event_name) VALUES (%s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.args, entry.issued, entry.tags, entry.log_id, entry.event_name))
-		conn.commit()
+		cur = conn.cursor()
+		yield cur
+
+
+def add(entry):
+	with cursor() as cur:
+		cur.execute("INSERT INTO log_entries (username, hostname, message, args, issued, tags, log_id, event_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.args, entry.issued, entry.tags, entry.log_id, entry.event_name))
 
 def query():
 	with connection() as conn:
