@@ -1,13 +1,7 @@
+### cn=config backend
 database config
-rootdn "cn=admin,@%@ldap/base@%@"
-#for SASL authentication
+# no rootdn/updatedn, thus no access via LDAP:// for cn=admin
+# access via LDAPI (simple or SASL EXTERNAL bind):
 access to *
-    by dn.exact="gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage"
-    by * break
-@!@
-if %(ldap/hostdn)s % configRegistry :
-    print ('#for simple bind authentication\n\
-    access to *\n\
-    by dn.base="%(ldap/hostdn)s" write\n\
-    by * none break') % configRegistry
-@!@
+    by sockname="PATH=/var/run/slapd/ldapi" write
+    by * none

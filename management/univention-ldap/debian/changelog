@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-34) unstable; urgency=medium
+
+  * Bug #43515: Allow access to cn=config only via LDAPI for now
+
+ -- Arvid Requate <requate@univention.de>  Wed, 19 Dec 2018 15:28:45 +0100
+
 univention-ldap (14.0.2-33) unstable; urgency=medium
 
   * Bug #43515: Only print config entry if ldap/hostdn exists
