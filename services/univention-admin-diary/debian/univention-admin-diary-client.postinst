@@ -29,16 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/share/univention-lib/all.sh
-
 #DEBHELPER#
-
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/20univention-admin-diary-client.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
-call_joinscript 60univention-admin-diary-client.inst
 
 invoke-rc.d rsyslog restart 
 
