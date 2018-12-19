@@ -37,7 +37,7 @@ class LogEntry(object):
 		self.username = username
 		self.hostname = getfqdn()
 		self.message = message
-		self.args = args
+		self.args = [str(arg) for arg in args]
 		self.issued = datetime.now()
 		self.tags = tags
 		self.log_id = log_id

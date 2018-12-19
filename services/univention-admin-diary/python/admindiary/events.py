@@ -47,6 +47,10 @@ class Event(object):
 		self._all_events[self.name] = self
 
 USER_CREATED = Event('USER_CREATED', 'User %s created', ['username'])
-APP_INSTALLED = Event('APP_INSTALLED', 'App %s installed', ['app'])
+
+APP_ACTION_START = Event('APP_ACTION_START', 'App %s: Starting to %s', ['app', 'action'])
+APP_ACTION_SUCCESS = Event('APP_ACTION_SUCCESS', 'App %s (%s): Success', ['app', 'action'])
+APP_ACTION_FAILURE = Event('APP_ACTION_FAILURE', 'App %s (%s): Failure. Error %s', ['app', 'action', 'error_code'], tags=['error'])
+
 SERVER_PASSWORD_CHANGED = Event('SERVER_PASSWORD_CHANGED', 'Machine account password changed successfully')
 SERVER_PASSWORD_CHANGED_FAILED = Event('SERVER_PASSWORD_CHANGED_FAILED', 'Machine account password change failed!', tags=['error'])

@@ -40,6 +40,9 @@ import subprocess
 from argparse import SUPPRESS, Action
 from tempfile import NamedTemporaryFile
 
+from univention.admindiary.client import log_event
+from univention.admindiary.events import APP_ACTION_START, APP_ACTION_SUCCESS, APP_ACTION_FAILURE
+
 from univention.appcenter.app import App
 from univention.appcenter.actions import StoreAppAction, get_action
 from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError, ParallelOperationInProgress
@@ -85,6 +88,7 @@ class InstallRemoveUpgrade(Register):
 		app = args.app
 		status = 200
 		status_details = None
+		log_id = log_event(APP_ACTION_START, [app, self.get_action_name()])
 		try:
 			action = self.get_action_name()
 			self.log('Going to %s %s (%s)' % (action, app.name, app.version))
@@ -144,6 +148,10 @@ class InstallRemoveUpgrade(Register):
 			elif status == 0:
 				pass
 			else:
+				if status == 200:
+					log_event(APP_ACTION_SUCCESS, [app, self.get_action_name()], log_id=log_id)
+				else:
+					log_event(APP_ACTION_FAILURE, [app, self.get_action_name(), status], log_id=log_id)
 				if status != 200:
 					self._revert(app, args)
 				if args.send_info:
