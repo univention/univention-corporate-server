@@ -7,5 +7,5 @@ fix: 7.0.0-19A~4.3.0.201812141033
 desc: |
  This update addresses the following issue:
  * Normalize CPU utilization of host and update error and migration status
-   automically.
+   atomically.
 bug: [48340]
