@@ -9,3 +9,5 @@ desc: |
  * Added the UCR variable `update/debug/level` for changing the debug level of
    the UCS updater.
 bug: [47913]
+erratum: 387
+announced: 2018-12-19
