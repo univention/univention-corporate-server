@@ -1,4 +1,4 @@
-# database definition
+### database definition
 modulepath	/usr/lib/ldap
 moduleload	back_@%@ldap/database/type@%@.so
 @!@
