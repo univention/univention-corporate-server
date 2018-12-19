@@ -9,3 +9,5 @@ desc: |
  * The UMC for UCS Core Editions shows a dialog that informs
    about the Univention Summit 2019.
 bug: [48372]
+erratum: 390
+announced: 2018-12-19
