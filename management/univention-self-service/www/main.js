@@ -64,7 +64,8 @@ define([
 			this._subscribeOnHashEvents();
 			this._addSubPages(Object.keys(this.subpages));
 			new NotificationDropDownButton({
-				iconClass: 'umcNotificationIcon'
+				iconClass: 'umcNotificationIcon',
+				'class': 'umcFlatButton'
 			}).placeAt('umcHeaderRight', 'first');
 		},
 
