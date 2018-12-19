@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+import sys
 from argparse import ArgumentParser, REMAINDER
 
 from univention.admindiary.client import log, log_event
@@ -44,13 +45,17 @@ def main():
 	parser.add_argument('-u', '--username', help='Username that issues the log entry')
 	parser.add_argument('-t', '--tag', action='append', help='Tags added to the log entry')
 	parser.add_argument('-a', '--arg', action='append', help='Argument used in message')
-	parser.add_argument('-e', '--event', choices=Event.names(), help='Choose one from this convenience list instead of giving TAG and MESSAGE')
+	parser.add_argument('-e', '--event', choices=Event.names(), help='Choose one from this convenience list instead of giving TAG and <message>')
 	parser.add_argument('--log-id', help='May be given to ammend an existing diary entry, effectively grouping those together. The LOG_ID is also returned by this program')
 	parser.add_argument('message', nargs=REMAINDER, help='The message')
 	args = parser.parse_args()
 	if args.event:
 		event = Event.get(args.event)
-		print log_event(event, args.arg, args.username, args.log_id)
+		try:
+			print log_event(event, args.arg, args.username, args.log_id)
+		except ValueError as exc:
+			print exc.message
+			sys.exit(1)
 	else:
 		print log(' '.join(args.message), args.arg, args.username, args.tag, args.log_id)
 

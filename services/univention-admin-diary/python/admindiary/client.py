@@ -51,7 +51,7 @@ def log_event(event, args=None, username=None, log_id=None):
 	if not isinstance(args, (list, tuple)):
 		raise TypeError('"args" must be a list')
 	if len(args) != len(event.args):
-		raise ValueError('Logging %s needs %d arguments (%r). %d given' % (event.message, len(event.args), event.args, len(args)))
+		raise ValueError('Logging "%s" needs %d argument(s) (%s). %d given' % (event.message, len(event.args), ', '.join(event.args), len(args)))
 	return log(event.message, args, None, event.tags, log_id, event.name)
 
 
