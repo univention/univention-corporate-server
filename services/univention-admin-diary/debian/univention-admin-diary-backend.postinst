@@ -31,31 +31,28 @@
 
 #DEBHELPER#
 
-case "$1" in
-	configure)
-		su postgres -c "createuser -DRS --login diary"
-		su postgres -c "createdb -O diary -T template0 -E UTF8 diary"
-		touch /etc/admin-diary.secret
-		chmod 0700 /etc/admin-diary.secret
-		echo $(mkpasswd) > /etc/admin-diary.secret
-		su postgres -c "psql postgres -c \"ALTER ROLE \\\"diary\\\" WITH ENCRYPTED PASSWORD '$PASSWORD'\""
-		su postgres -c "psql diary -c 'CREATE TABLE log_entries (
-			id SERIAL PRIMARY KEY,
-			username VARCHAR NOT NULL,
-			hostname VARCHAR NOT NULL,
-			message TEXT NOT NULL,
-			args VARCHAR[],
-			issued TIMESTAMPTZ NOT NULL,
-			tags VARCHAR[],
-			log_id VARCHAR NOT NULL,
-			event_name VARCHAR NOT NULL,
-			created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-		);
-		ALTER TABLE log_entries OWNER TO diary;'"
-		;;
-	*)
-		;;
-esac
+if [ -z "$2" ]; then
+	su postgres -c "createuser -DRS --login diary"
+	su postgres -c "createdb -O diary -T template0 -E UTF8 diary"
+	touch /etc/admin-diary.secret
+	chmod 0700 /etc/admin-diary.secret
+	PASSWORD="$(mkpasswd)"
+	echo "$PASSWORD" > /etc/admin-diary.secret
+	su postgres -c "psql postgres -c \"ALTER ROLE \\\"diary\\\" WITH ENCRYPTED PASSWORD '$PASSWORD'\""
+	su postgres -c "psql diary -c 'CREATE TABLE log_entries (
+		id SERIAL PRIMARY KEY,
+		username VARCHAR NOT NULL,
+		hostname VARCHAR NOT NULL,
+		message TEXT NOT NULL,
+		args VARCHAR[],
+		issued TIMESTAMPTZ NOT NULL,
+		tags VARCHAR[],
+		log_id VARCHAR NOT NULL,
+		event_name VARCHAR NOT NULL,
+		created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+	);
+	ALTER TABLE log_entries OWNER TO diary;'"
+fi
 
 invoke-rc.d rsyslog restart
 
