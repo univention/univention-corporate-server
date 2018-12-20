@@ -1,3 +1,9 @@
+univention-printserver (11.0.1-5) unstable; urgency=medium
+
+  * Bug #47843: allow switching back to "None", "smb" raw model
+
+ -- Felix Botner <botner@univention.de>  Thu, 20 Dec 2018 15:49:30 +0100
+
 univention-printserver (11.0.1-4) unstable; urgency=medium
 
   * Bug #47435: ensure /usr/share/cups/model is a link to /usr/share/ppd

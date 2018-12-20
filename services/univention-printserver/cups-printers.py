@@ -326,26 +326,19 @@ def handler(dn, new, old):
 					continue
 
 				if a == 'univentionPrinterSpoolHost' and 'univentionPrinterModel' not in changes:
-					if new.get('univentionPrinterModel', EMPTY)[0] == 'None':
-						continue
-
-					if new.get('univentionPrinterModel', EMPTY)[0] == 'smb':
-						continue
-
-					args += [options['univentionPrinterModel'], new.get('univentionPrinterModel', EMPTY)[0]]
+					model = new.get('univentionPrinterModel', EMPTY)[0]
+					if model in ['None', 'smb']:
+						model = 'raw'
+					args += [options['univentionPrinterModel'], model]
 
 				if a not in options:
 					continue
 
 				if a == 'univentionPrinterModel':
-					if new.get(a, EMPTY)[0] == 'None':
-						continue
-
-					if new.get(a, EMPTY)[0] == 'smb':
-						continue
-
-					args += [options[a], new.get(a, EMPTY)[0]]
-
+					model = new.get(a, EMPTY)[0]
+					if model in ['None', 'smb']:
+						model = 'raw'
+					args += [options[a], model]
 				else:
 					args += [options[a], '%s' % new.get(a, EMPTY)[0]]
 
