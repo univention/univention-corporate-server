@@ -63,7 +63,7 @@ test_master () {
 		# check time, give it a 5min threshold
 		wintime=$(python shared-utils/ucs-winrm.py run-ps --client $client --credssp --cmd 'Get-Date -Format t')
 		wintime_epoch="$(date -d $wintime +%s)"
-		ucstime_epoch="$(date +%s)"
+		ucstime_epoch="$(date -u +%s)"
 		diff=$(($wintime_epoch-$ucstime_epoch))
 		test ${diff#-} -lt 300
 		python shared-utils/ucs-winrm.py domain-user-validate-password --client $client --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
