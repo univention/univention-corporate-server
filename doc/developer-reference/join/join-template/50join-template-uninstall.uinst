@@ -1,5 +1,7 @@
 #!/bin/sh
 
+## joinscript api: bindpwdfile
+
 # VERSION is needed for some tools to recognize that as a join script
 VERSION=1
 . /usr/share/univention-join/joinscripthelper.lib
