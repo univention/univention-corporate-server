@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.1-17) unstable; urgency=medium
+
+  * Bug #48385: versoin bump
+
+ -- Felix Botner <botner@univention.de>  Thu, 20 Dec 2018 14:41:26 +0100
+
 univention-management-console-module-diagnostic (4.0.1-16) unstable; urgency=medium
 
   * Bug #48385: fixed 12_proxy.py
