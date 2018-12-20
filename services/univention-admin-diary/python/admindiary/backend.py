@@ -37,7 +37,7 @@ password = open('/etc/admin-diary.secret').read().strip()
 
 @contextmanager
 def connection():
-	conn = psycopg2.connect(dbname='diary', user='diary', host='localhost', password=password)
+	conn = psycopg2.connect(dbname='admindiary', user='admindiary', host='localhost', password=password)
 	yield conn
 	conn.commit()
 	conn.close()

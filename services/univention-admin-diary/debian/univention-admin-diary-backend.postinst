@@ -32,14 +32,14 @@
 #DEBHELPER#
 
 if [ -z "$2" ]; then
-	su postgres -c "createuser -DRS --login diary"
-	su postgres -c "createdb -O diary -T template0 -E UTF8 diary"
+	su postgres -c "createuser -DRS --login admindiary"
+	su postgres -c "createdb -O admindiary -T template0 -E UTF8 admindiary"
 	touch /etc/admin-diary.secret
 	chmod 0700 /etc/admin-diary.secret
-	PASSWORD="$(mkpasswd)"
+	PASSWORD="$(mkpasswd admin-diary)"
 	echo "$PASSWORD" > /etc/admin-diary.secret
-	su postgres -c "psql postgres -c \"ALTER ROLE \\\"diary\\\" WITH ENCRYPTED PASSWORD '$PASSWORD'\""
-	su postgres -c "psql diary -c 'CREATE TABLE log_entries (
+	su postgres -c "psql postgres -c \"ALTER ROLE \\\"admindiary\\\" WITH ENCRYPTED PASSWORD '$PASSWORD'\""
+	su postgres -c "psql admindiary -c 'CREATE TABLE log_entries (
 		id SERIAL PRIMARY KEY,
 		username VARCHAR NOT NULL,
 		hostname VARCHAR NOT NULL,
@@ -51,7 +51,7 @@ if [ -z "$2" ]; then
 		event_name VARCHAR NOT NULL,
 		created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 	);
-	ALTER TABLE log_entries OWNER TO diary;'"
+	ALTER TABLE log_entries OWNER TO admindiary;'"
 fi
 
 univention-config-registry set \
