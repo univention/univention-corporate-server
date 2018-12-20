@@ -1,3 +1,9 @@
+univention-updater (14.0.0-7) unstable; urgency=medium
+
+  * Bug #46969: bindpwdfile support
+
+ -- Felix Botner <botner@univention.de>  Thu, 20 Dec 2018 16:35:42 +0100
+
 univention-updater (14.0.0-6) unstable; urgency=medium
 
   * Bug #47913: ignore wrong type in update/debug/level
