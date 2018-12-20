@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.1-16) unstable; urgency=medium
+
+  * Bug #48385: fixed 12_proxy.py
+
+ -- Felix Botner <botner@univention.de>  Thu, 20 Dec 2018 14:35:34 +0100
+
 univention-management-console-module-diagnostic (4.0.1-15) unstable; urgency=medium
 
   * Bug #47649: Adjusted wording 
