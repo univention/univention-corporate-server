@@ -37,12 +37,23 @@ VERSION=1
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
-SERVICE="Admin Diary Client"
-
 eval "$(ucr shell)"
 
-. /usr/share/univention-lib/ldap.sh
-ucs_addServiceToLocalhost "$SERVICE" "$@"
+set_admin_diary_backend() {
+	local ldif
+	local cn_list
+	local fqdn_list
+
+	ldif=$(univention-ldapsearch univentionService="Admin Diary Backend" cn)
+	cn_list=( "$(sed -n 's/^cn: //p' <<<"$ldif")" )
+	fqdn_list=( "${cn_list[@]/%/".$domainname"}" )
+
+	univention-config-registry set \
+		admin/diary/backend="${fqdn_list[*]}"
+}
+
+set_admin_diary_backend
+invoke-rc.d rsyslog restart
 
 joinscript_save_current_version
 

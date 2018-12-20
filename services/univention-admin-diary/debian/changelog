@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-3) unstable; urgency=medium
+
+  * Bug #48342: Update UCR admin/diary/backend from univentionService
+
+ -- Arvid Requate <requate@univention.de>  Thu, 20 Dec 2018 18:35:03 +0100
+
 univention-admin-diary (1.0.0-2) unstable; urgency=medium
 
   * Bug #48342: rsyslog relp+TLS config

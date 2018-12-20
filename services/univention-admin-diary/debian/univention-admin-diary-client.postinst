@@ -34,6 +34,18 @@ update-python-modules --post-install
 
 #DEBHELPER#
 
-invoke-rc.d rsyslog restart
+case "$1" in
+configure)
+	if [ -x /etc/init.d/univention-directory-listener ]; then
+		invoke-rc.d univention-directory-listener crestart
+	fi
+	;;
+abort-upgrade|abort-remove|abort-deconfigure)
+	;;
+*)
+	echo "postinst called with unknown argument \`$1'" >&2
+	exit 1
+	;;
+esac
 
 exit 0

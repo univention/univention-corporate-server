@@ -1,3 +1,4 @@
 python/admindiary/client.py usr/share/pyshared/univention/admindiary/
 univention-diary-entry-create usr/bin/
 server_password_change/univention-admin-diary usr/lib/univention-server/server_password_change.d/
+listener/univention-admin-diary-backend.py usr/lib/univention-directory-listener/system/
