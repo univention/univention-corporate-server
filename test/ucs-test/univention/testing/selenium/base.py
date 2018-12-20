@@ -222,6 +222,23 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 			self.wait_until_all_dialogues_closed()
 		except selenium_exceptions.TimeoutException:
 			pass
+		try:
+			self.wait_for_any_text_in_list([
+				_('Learn more about the Univention Summit now'),
+				_('Welcome to UMC'),
+			], timeout=10)
+			try:
+				self.click_button('OK', timeout=2)
+			except selenium_exceptions.TimeoutException:
+				pass
+			try:
+				self.click_button('Cancel', timeout=2)
+			except selenium_exceptions.TimeoutException:
+				pass
+			self.wait_until_all_dialogues_closed()
+		except selenium_exceptions.TimeoutException:
+			pass
+		self.show_notifications(False)
 		logger.info('Successful login')
 
 	def end_umc_session(self):
