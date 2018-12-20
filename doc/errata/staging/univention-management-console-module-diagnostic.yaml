@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [2,3]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-management-console-module-diagnostic
+fix: 4.0.1-17A~4.3.0.201812201442
+desc: |
+ This update addresses the following issue(s):
+ * The proxy server test has been fixed. 
+bug: [48385]
