@@ -1,3 +1,10 @@
+univention-radius (6.0.2-1) unstable; urgency=low
+
+  * Bug #25935: add RADIUS options for shared secret and virtual server to
+    all computer objects
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 20 Dec 2018 23:55:43 +0100
+
 univention-radius (6.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support
