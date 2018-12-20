@@ -1,3 +1,9 @@
+univention-nagios-raid (8.0.1-1) unstable; urgency=medium
+
+  * Bug #46969: bindpwdfile support
+
+ -- Felix Botner <botner@univention.de>  Thu, 20 Dec 2018 17:31:29 +0100
+
 univention-nagios-raid (8.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
