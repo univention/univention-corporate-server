@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-2) unstable; urgency=medium
+
+  * Bug #48342: rsyslog relp+TLS config
+
+ -- Arvid Requate <requate@univention.de>  Thu, 20 Dec 2018 13:34:47 +0100
+
 univention-admin-diary (1.0.0-1) unstable; urgency=medium
 
   * Bug #48342: initial release 
