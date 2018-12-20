@@ -1,3 +1,9 @@
+univention-kernel-image (11.0.1-10) unstable; urgency=low
+
+  * Bug #48349: Update UCRV update/reboot/required
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 20 Dec 2018 16:00:36 +0100
+
 univention-kernel-image (11.0.1-9) unstable; urgency=low
 
   * Bug #47490: Update to 4.9.110-8 from Debian

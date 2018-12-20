@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Univention kernel meta package
 #  postinst script
@@ -30,8 +30,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#DEBHELPER#
-
 univention-config-registry set update/reboot/required=true
-
-exit 0
+:
