@@ -36,7 +36,7 @@ if [ -z "$2" ]; then
 	su postgres -c "createdb -O admindiary -T template0 -E UTF8 admindiary"
 	touch /etc/admin-diary.secret
 	chmod 0700 /etc/admin-diary.secret
-	PASSWORD="$(mkpasswd admin-diary)"
+	PASSWORD="$(mkpasswd admin-diary --method=sha-512)"
 	echo "$PASSWORD" > /etc/admin-diary.secret
 	su postgres -c "psql postgres -c \"ALTER ROLE \\\"admindiary\\\" WITH ENCRYPTED PASSWORD '$PASSWORD'\""
 	su postgres -c "psql admindiary -c 'CREATE TABLE log_entries (
