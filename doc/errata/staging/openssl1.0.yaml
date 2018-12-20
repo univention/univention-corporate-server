@@ -1,0 +1,21 @@
+product: ucs
+release: "4.3"
+version: [2, 3]
+scope: ucs_4.3-0-errata4.3-3
+src: openssl1.0
+fix: 1.0.2q-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * Malicious server can send large prime to client during DH(E) TLS handshake
+   causing the client to hang (CVE-2018-0732)
+ * timing side channel attack in the DSA signature algorithm (CVE-2018-0734)
+ * RSA key generation cache timing vulnerability in crypto/rsa/rsa_gen.c
+   allows attackers to recover private keys (CVE-2018-0737)
+ * Side-channel vulnerability on SMT/Hyper-Threading architectures (PortSmash)
+   (CVE-2018-5407)
+bug: [48388]
+cve:
+- CVE-2018-0732
+- CVE-2018-0734
+- CVE-2018-0737
+- CVE-2018-5407
