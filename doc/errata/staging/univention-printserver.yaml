@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-printserver
+fix: 11.0.1-5A~4.3.0.201812201559
+desc: |
+ This update addresses the following issue(s):
+ * Ensure /usr/share/cups/model is a link to /usr/share/ppd
+ * Allow switching to None, smb (raw) printer model 
+bug: [47435,47843]
