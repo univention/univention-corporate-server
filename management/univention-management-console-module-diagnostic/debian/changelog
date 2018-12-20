@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-1) unstable; urgency=medium
+
+  * Bug #48385: fixed 12_proxy.py
+
+ -- Felix Botner <botner@univention.de>  Thu, 20 Dec 2018 14:35:34 +0100
+
 univention-management-console-module-diagnostic (5.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
@@ -6,13 +12,13 @@ univention-management-console-module-diagnostic (5.0.0-1) unstable; urgency=medi
 
 univention-management-console-module-diagnostic (4.0.1-15) unstable; urgency=medium
 
-  * Bug #47649: Adjusted wording 
+  * Bug #47649: Adjusted wording
 
  -- Julia Bremer <bremer@knut.univention.de>  Thu, 29 Nov 2018 15:10:50 +0100
 
 univention-management-console-module-diagnostic (4.0.1-14) unstable; urgency=medium
 
-  * Bug #47649: Fixed inconsistencies and diagnostic checks are now executed in order 
+  * Bug #47649: Fixed inconsistencies and diagnostic checks are now executed in order
 
  -- Julia Bremer <bremer@univention.de>  Thu, 29 Nov 2018 10:48:06 +0100
 
