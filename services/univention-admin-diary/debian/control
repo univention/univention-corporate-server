@@ -16,9 +16,9 @@ Depends: ${misc:Depends},
  python-univention-admin-diary (= ${binary:Version}),
  rsyslog-relp,
  python-psycopg2,
+ python-mysqldb,
  python-pyparsing,
- whois,
- univention-postgresql
+ univention-postgresql | univention-mysql
 Description: Univention Admin Diary backend
  .
  It is part of Univention Corporate Server (UCS), an

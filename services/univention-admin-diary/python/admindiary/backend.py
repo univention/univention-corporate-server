@@ -31,36 +31,87 @@
 import datetime
 from contextlib import contextmanager
 
-import psycopg2
+from univention.config_registry import ConfigRegistry
+
+ucr = ConfigRegistry()
+ucr.load()
 
 password = open('/etc/admin-diary.secret').read().strip()
 
+dbms = ucr.get('admin/diary/dbms')
+
 @contextmanager
-def connection():
-	conn = psycopg2.connect(dbname='admindiary', user='admindiary', host='localhost', password=password)
+def connection(module):
+	if dbms == 'mysql':
+		conn = module.connect(db='admindiary', user='admindiary', host='localhost', passwd=password)
+	elif dbms == 'postgresql':
+		conn = module.connect(dbname='admindiary', user='admindiary', host='localhost', password=password)
 	yield conn
 	conn.commit()
 	conn.close()
 
 
 @contextmanager
-def cursor():
-	with connection() as conn:
+def cursor(module):
+	with connection(module) as conn:
 		cur = conn.cursor()
 		yield cur
 
 
-def add(entry):
-	with cursor() as cur:
-		cur.execute("INSERT INTO log_entries (username, hostname, message, args, issued, tags, log_id, event_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.args, entry.issued, entry.tags, entry.log_id, entry.event_name))
+if ucr.get('admin/diary/dbms') == 'postgresql':
+	import psycopg2
 
-def query():
-	with connection() as conn:
-		conn.execute("SELECT username, hostname, message, args, issued, tags, log_id, event_name FROM log_entries")
-		rows = conn.fetchall()
-		res = [dict(row) for row in rows]
-		for row in res:
-			for k, v in row.items():
-				if isinstance(v, datetime.datetime):
-					row[k] = v.isoformat()
-		return res
+	def _postgresql_add(entry):
+		with cursor(psycopg2) as cur:
+			cur.execute("INSERT INTO log_entries (username, hostname, message, args, issued, tags, log_id, event_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.args, entry.issued, entry.tags, entry.log_id, entry.event_name))
+
+	def _postgresql_query():
+		with connection(psycopg2) as conn:
+			conn.execute("SELECT username, hostname, message, args, issued, tags, log_id, event_name FROM log_entries")
+			rows = conn.fetchall()
+			res = [dict(row) for row in rows]
+			for row in res:
+				for k, v in row.items():
+					if isinstance(v, datetime.datetime):
+						row[k] = v.isoformat()
+			return res
+
+	add = _postgresql_add
+	query = _postgresql_query
+elif ucr.get('admin/diary/dbms') == 'mysql':
+	import MySQLdb
+
+	def _mysql_add(entry):
+		with cursor(MySQLdb) as cur:
+			cur.execute("INSERT INTO log_entries (username, hostname, message, issued, log_id, event_name) VALUES (%s, %s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.issued, entry.log_id, entry.event_name))
+			entry_id = cur.lastrowid
+			for arg in entry.args:
+				cur.execute("INSERT INTO arguments (log_entry_id, arg) VALUES (%s, %s)", (entry_id, arg))
+			for tag in entry.tags:
+				cur.execute("INSERT INTO tags (log_entry_id, tag) VALUES (%s, %s)", (entry_id, tag))
+
+	def _mysql_query():
+		with connection(MySQLdb) as conn:
+			conn.execute("SELECT id, username, hostname, message, issued, log_id, event_name FROM log_entries")
+			rows = conn.fetchall()
+			res = [dict(row) for row in rows]
+			for row in res:
+				entry_id = row.pop('id')
+				rows = conn.execute("SELECT arg FROM arguments WHERE log_entry_id = %s", (entry_id,))
+				row['args'] = [row['arg'] for row in rows]
+				rows = conn.execute("SELECT tag FROM tags WHERE log_entry_id = %s", (entry_id,))
+				row['tags'] = [row['tag'] for row in rows]
+				for k, v in row.items():
+					if isinstance(v, datetime.datetime):
+						row[k] = v.isoformat()
+			return res
+	add = _mysql_add
+	query = _mysql_query
+elif ucr.get('admin/diary/dbms') == 'mysql':
+	def _no_add(entry):
+		raise NotImplementedError()
+	def _no_query():
+		raise NotImplementedError()
+
+	add = _no_add
+	query = _no_query
