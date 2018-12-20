@@ -47,7 +47,9 @@ def handler(dn, new, old):
 	listener.setuid(0)
 	try:
 		change = False
-		if service_name in new.get('univentionService', []):
+		new_has_service = service_name in new.get('univentionService', [])
+		old_has_service = service_name in old.get('univentionService', [])
+		if new_has_service and not old_has_service:
 			try:
 				fqdn = '%s.%s' % (new['cn'][0], new['associatedDomain'][0])
 			except (KeyError, IndexError):
@@ -61,7 +63,7 @@ def handler(dn, new, old):
 			new_ucr_value = ' '.join(fqdn_set)
 			handler_set(['admin/diary/backend=%s' % (new_ucr_value,)])
 			change = True
-		elif service_name in old.get('univentionService', []):
+		elif old_has_service:
 			try:
 				fqdn = '%s.%s' % (old['cn'][0], old['associatedDomain'][0])
 			except (KeyError, IndexError):
@@ -77,6 +79,6 @@ def handler(dn, new, old):
 			change = True
 
 		if change:
-			subprocess.call(['invoke-rc.d', 'rsyslog', 'restart'])
+			subprocess.call(['invoke-rc.d', 'rsyslog', 'try-restart'])
 	finally:
 		listener.unsetuid()

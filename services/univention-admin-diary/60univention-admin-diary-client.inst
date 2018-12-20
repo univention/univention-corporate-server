@@ -53,7 +53,7 @@ set_admin_diary_backend() {
 }
 
 set_admin_diary_backend
-invoke-rc.d rsyslog restart
+invoke-rc.d rsyslog try-restart
 
 joinscript_save_current_version
 
