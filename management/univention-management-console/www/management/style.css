@@ -150,6 +150,21 @@
 	flex: 1 1 auto !important;
 }
 
+.umc .umcSummit2019Dialog__closeButton {
+	position: absolute !important;
+	top: 8px !important;
+	right: 8px !important;
+}
+
+.umc .umcSummit2019Dialog__closeButton .dijitButtonNode {
+	background-color: transparent !important;
+}
+
+.umc .umcSummit2019Dialog__closeButton .dijitButtonText {
+	color: #dd0b2f !important;
+	font-size: 30px !important;
+}
+
 @media (max-width: 767px) {
 	.umcSummit2019Message {
 		flex-direction: column !important;

@@ -566,15 +566,19 @@ define([
 				var dialog = new ConfirmDialog({
 					'class': 'umcSummit2019Dialog',
 					title: title,
-					message: message,
-					options: options,
+					message: message
 				});
-				on(dialog, 'confirm', function() {
-					var nowInTwoWeeks = new Date(Date.now() + (1000 * 60 * 60 * 24 * 14));
-					var expires = nowInTwoWeeks < endOfSummit ? nowInTwoWeeks : endOfSummit;
-					cookie('hideSummit2019Dialog', 'true', {expires: expires.toUTCString()});
-					dialog.close();
+				var closeButton = new Button({
+					'class': 'umcSummit2019Dialog__closeButton',
+					label: '\u274C',
+					callback: function() {
+						dialog.close();
+						var nowInTwoWeeks = new Date(Date.now() + (1000 * 60 * 60 * 24 * 14));
+						var expires = nowInTwoWeeks < endOfSummit ? nowInTwoWeeks : endOfSummit;
+						cookie('hideSummit2019Dialog', 'true', {expires: expires.toUTCString()});
+					}
 				});
+				dialog.domNode.appendChild(closeButton.domNode);
 				dialog.show();
 			});
 			img.src = '/univention/management/univention-summit-2019.svg';
