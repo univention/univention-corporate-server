@@ -204,29 +204,18 @@ test_master () {
 	#  Anlegen eines Druckers auf dem DC Slave und auf dem Memberserver
 	#  Verbinden zum Drucker als unpriviligierter Benutzer vom Windowsclient aus
 	#  Testdruck von wordpad aus auf den verbundenen Drucker
-	python shared-utils/ucs-winrm.py setup-printer --printername Slaveprinter --server "$SLAVE"
-	python shared-utils/ucs-winrm.py setup-printer --printername Slaveprinter --server "ucs-slave.sambatest.local" --client $WIN2016
 	python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "$MEMBER"
 	python shared-utils/ucs-winrm.py setup-printer --printername Memberprinter --server "ucs-member.sambatest.local" --client $WIN2016
 	sleep 20
 	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server $MEMBER \
 		--impersonate --run-as-user Administrator
-	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server $SLAVE \
-		--impersonate --run-as-user Administrator
 	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "$MEMBER" \
 		--impersonate --run-as-user newuser02 --run-as-password "Univention.99"
-	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server "$SLAVE" \
-		--impersonate --run-as-user newuser02 --run-as-password "Univention.99"
-	python shared-utils/ucs-winrm.py print-on-printer --printername Slaveprinter --server "ucs-slave.sambatest.local" \
-		--impersonate --run-as-user newuser02 --run-as-password "Univention.99" --client $WIN2016
 	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "ucs-member.sambatest.local" \
 		--impersonate --run-as-user newuser02 --run-as-password "Univention.99" --client $WIN2016
 	sleep 20
-	run_on_ucs_hosts $SLAVE 'stat /var/spool/cups-pdf/administrator/job_1-document.pdf'
-	run_on_ucs_hosts $SLAVE 'stat /var/spool/cups-pdf/newuser02/job_2-document.pdf'
 	run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/administrator/job_1-document.pdf'
 	run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/newuser02/job_2-document.pdf'
-	run_on_ucs_hosts $SLAVE 'stat /var/spool/cups-pdf/newuser02/job_3-document.pdf'
 	run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/newuser02/job_3-document.pdf'
 	# printer GPO's TODO
 
@@ -236,6 +225,7 @@ test_master () {
 	#  Kann man anschließend per kinit für den Benutzer auf UCS-Seite ein Ticket bekommen?
 	#  Kann das Passwort per STRG-ALT-ENTF an den unterschiedlichen Windows-Systemen geändert werden? Not possible : simulated with LDAP pw change
 	python shared-utils/ucs-winrm.py change-user-password --domainuser newuser01 --userpassword "Univention123!"
+	sleep 30
 	check_user_in_ucs newuser01 "Univention123!"
 	python shared-utils/ucs-winrm.py logon-as --username newuser01 --userpwd "Univention123!" --client $WIN2012
 	python shared-utils/ucs-winrm.py logon-as --username newuser01 --userpwd "Univention123!" --client $WIN2016
