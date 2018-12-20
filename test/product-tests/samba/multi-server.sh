@@ -60,10 +60,12 @@ test_master () {
 	# Sind alle UCS-Samba-Server in der Netzwerkumgebung der Clients zu sehen? unter windows net computer list
 	for client in $WIN2012 $WIN2016; do
 		python shared-utils/ucs-winrm.py domain-join --client $client --dnsserver "$MASTER" --domainuser "$ADMIN" --domainpassword "$ADMIN_PASSWORD"
-		python shared-utils/ucs-winrm.py run-ps --client $client --credssp --cmd 'Get-Date -Format t' > date
-		wintime="$(sed -n 1p date | cut -c1-5)"
-		ucstime="$(date -u +"%H:%M")"
-		test "$wintime" = "$ucstime"
+		# check time, give it a 5min threshold
+		wintime=$(python shared-utils/ucs-winrm.py run-ps --client $client --credssp --cmd 'Get-Date -Format t')
+		wintime_epoch="$(date -d $wintime +%s)"
+		ucstime_epoch="$(date +%s)"
+		diff=$(($wintime_epoch-$ucstime_epoch))
+		test ${diff#-} -lt 300
 		python shared-utils/ucs-winrm.py domain-user-validate-password --client $client --domainuser "Administrator" --domainpassword "$ADMIN_PASSWORD"
 		python shared-utils/ucs-winrm.py domain-user-validate-password --client $client --domainuser "newuser01" --domainpassword "Univention.99"
 		python shared-utils/ucs-winrm.py domain-user-validate-password --client $client --domainuser "newuser02" --domainpassword "Univention.99"
