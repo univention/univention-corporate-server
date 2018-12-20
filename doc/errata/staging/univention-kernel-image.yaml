@@ -3,7 +3,7 @@ release: "4.3"
 version: [3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-kernel-image
-fix: 11.0.1-10A~4.3.0.201812201606
+fix: 11.0.1-11
 desc: |
  This update addresses the following issue:
  * Always set UCR variable 'update/reboot/required' when a new kernel is
