@@ -12,7 +12,6 @@ import os
 from os import path
 import time
 import sys
-import ldap.dn
 from subprocess import Popen, PIPE, check_call
 from tempfile import mkdtemp
 from shutil import rmtree
