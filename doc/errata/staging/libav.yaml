@@ -6,95 +6,86 @@ src: libav
 fix: 6:11.12-1~deb8u3
 desc: |
  This update addresses the following issues:
- * The decode_ihdr_chunk function in libavcodec/pngdec.c in FFMpeg before
-   2.1.6, 2.2.x through 2.3.x, and 2.4.x before 2.4.4 allows remote attackers
-   to cause a denial of service (out-of-bounds heap access) and possibly have
-   other unspecified impact via an IDAT before an IHDR in a PNG file.
-   (CVE-2014-9317)
+ * The decode_ihdr_chunk function in libavcodec/pngdec.c before allows remote
+   attackers to cause a denial of service (out-of-bounds heap access) and
+   possibly have other unspecified impact via an IDAT before an IHDR in a PNG
+   file. (CVE-2014-9317)
  * Memory corruption in FFMpeg (CVE-2015-6761)
- * The decode_ihdr_chunk function in libavcodec/pngdec.c in FFmpeg before
-   2.7.2 does not enforce uniqueness of the IHDR (aka image header) chunk in a
-   PNG image, which allows remote attackers to cause a denial of service
-   (out-of-bounds array access) or possibly have unspecified other impact via
-   a crafted image with two or more of these chunks. (CVE-2015-6818)
- * The ff_sbr_apply function in libavcodec/aacsbr.c in FFmpeg before 2.7.2
-   does not check for a matching AAC frame syntax element before proceeding
-   with Spectral Band Replication calculations, which allows remote attackers
-   to cause a denial of service (out-of-bounds array access) or possibly have
-   unspecified other impact via crafted AAC data. (CVE-2015-6820)
- * The ff_mpv_common_init function in libavcodec/mpegvideo.c in FFmpeg before
-   2.7.2 does not properly maintain the encoding context, which allows remote
-   attackers to cause a denial of service (invalid pointer access) or possibly
-   have unspecified other impact via crafted MPEG data. (CVE-2015-6821)
- * The destroy_buffers function in libavcodec/sanm.c in FFmpeg before 2.7.2
-   does not properly maintain height and width values in the video context,
-   which allows remote attackers to cause a denial of service (segmentation
-   violation and application crash) or possibly have unspecified other impact
-   via crafted LucasArts Smush video data. (CVE-2015-6822)
- * The allocate_buffers function in libavcodec/alac.c in FFmpeg before 2.7.2
-   does not initialize certain context data, which allows remote attackers to
-   cause a denial of service (segmentation violation) or possibly have
-   unspecified other impact via crafted Apple Lossless Audio Codec (ALAC)
-   data. (CVE-2015-6823)
- * The sws_init_context function in libswscale/utils.c in FFmpeg before 2.7.2
-   does not initialize certain pixbuf data structures, which allows remote
-   attackers to cause a denial of service (segmentation violation) or possibly
-   have unspecified other impact via crafted video data. (CVE-2015-6824)
- * The ff_frame_thread_init function in libavcodec/pthread_frame.c in FFmpeg
-   before 2.7.2 mishandles certain memory-allocation failures, which allows
-   remote attackers to cause a denial of service (invalid pointer access) or
-   possibly have unspecified other impact via a crafted file, as demonstrated
-   by an AVI file. (CVE-2015-6825)
- * The ff_rv34_decode_init_thread_copy function in libavcodec/rv34.c in FFmpeg
-   before 2.7.2 does not initialize certain structure members, which allows
-   remote attackers to cause a denial of service (invalid pointer access) or
-   possibly have unspecified other impact via crafted (1) RV30 or (2) RV40
-   RealVideo data. (CVE-2015-6826)
- * The ljpeg_decode_yuv_scan function in libavcodec/mjpegdec.c in FFmpeg
-   before 2.8.2 omits certain width and height checks, which allows remote
-   attackers to cause a denial of service (out-of-bounds array access) or
-   possibly have unspecified other impact via crafted MJPEG data.
-   (CVE-2015-8216)
- * The ff_hevc_parse_sps function in libavcodec/hevc_ps.c in FFmpeg before
-   2.8.2 does not validate the Chroma Format Indicator, which allows remote
-   attackers to cause a denial of service (out-of-bounds array access) or
-   possibly have unspecified other impact via crafted High Efficiency Video
-   Coding (HEVC) data. (CVE-2015-8217)
- * The jpeg2000_read_main_headers function in libavcodec/jpeg2000dec.c in
-   FFmpeg before 2.6.5, 2.7.x before 2.7.3, and 2.8.x through 2.8.2 does not
-   enforce uniqueness of the SIZ marker in a JPEG 2000 image, which allows
-   remote attackers to cause a denial of service (out-of-bounds heap-memory
+ * The decode_ihdr_chunk function in libavcodec/pngdec.c does not enforce
+   uniqueness of the IHDR (aka image header) chunk in a PNG image, which
+   allows remote attackers to cause a denial of service (out-of-bounds array
    access) or possibly have unspecified other impact via a crafted image with
-   two or more of these markers. (CVE-2015-8363)
- * Integer overflow in the ff_ivi_init_planes function in libavcodec/ivi.c in
-   FFmpeg before 2.6.5, 2.7.x before 2.7.3, and 2.8.x through 2.8.2 allows
-   remote attackers to cause a denial of service (out-of-bounds heap-memory
-   access) or possibly have unspecified other impact via crafted image
-   dimensions in Indeo Video Interactive data. (CVE-2015-8364)
- * The h264_slice_header_init function in libavcodec/h264_slice.c in FFmpeg
-   before 2.8.3 does not validate the relationship between the number of
-   threads and the number of slices, which allows remote attackers to cause a
+   two or more of these chunks. (CVE-2015-6818)
+ * The ff_sbr_apply function in libavcodec/aacsbr.c does not check for a
+   matching AAC frame syntax element before proceeding with Spectral Band
+   Replication calculations, which allows remote attackers to cause a denial
+   of service (out-of-bounds array access) or possibly have unspecified other
+   impact via crafted AAC data. (CVE-2015-6820)
+ * The ff_mpv_common_init function in libavcodec/mpegvideo.c does not properly
+   maintain the encoding context, which allows remote attackers to cause a
+   denial of service (invalid pointer access) or possibly have unspecified
+   other impact via crafted MPEG data. (CVE-2015-6821)
+ * The destroy_buffers function in libavcodec/sanm.c does not properly
+   maintain height and width values in the video context, which allows remote
+   attackers to cause a denial of service (segmentation violation and
+   application crash) or possibly have unspecified other impact via crafted
+   LucasArts Smush video data. (CVE-2015-6822)
+ * The allocate_buffers function in libavcodec/alac.c does not initialize
+   certain context data, which allows remote attackers to cause a denial of
+   service (segmentation violation) or possibly have unspecified other impact
+   via crafted Apple Lossless Audio Codec (ALAC) data. (CVE-2015-6823)
+ * The sws_init_context function in libswscale/utils.c does not initialize
+   certain pixbuf data structures, which allows remote attackers to cause a
+   denial of service (segmentation violation) or possibly have unspecified
+   other impact via crafted video data. (CVE-2015-6824)
+ * The ff_frame_thread_init function in libavcodec/pthread_frame.c mishandles
+   certain memory-allocation failures, which allows remote attackers to cause
+   a denial of service (invalid pointer access) or possibly have unspecified
+   other impact via a crafted file, as demonstrated by an AVI file.
+   (CVE-2015-6825)
+ * The ff_rv34_decode_init_thread_copy function in libavcodec/rv34.c does not
+   initialize certain structure members, which allows remote attackers to
+   cause a denial of service (invalid pointer access) or possibly have
+   unspecified other impact via crafted (1) RV30 or (2) RV40 RealVideo data.
+   (CVE-2015-6826)
+ * The ljpeg_decode_yuv_scan function in libavcodec/mjpegdec.c omits certain
+   width and height checks, which allows remote attackers to cause a denial of
+   service (out-of-bounds array access) or possibly have unspecified other
+   impact via crafted MJPEG data. (CVE-2015-8216)
+ * The ff_hevc_parse_sps function in libavcodec/hevc_ps.c does not validate
+   the Chroma Format Indicator, which allows remote attackers to cause a
    denial of service (out-of-bounds array access) or possibly have unspecified
-   other impact via crafted H.264 data. (CVE-2015-8661)
- * The ff_dwt_decode function in libavcodec/jpeg2000dwt.c in FFmpeg before
-   2.8.4 does not validate the number of decomposition levels before
-   proceeding with Discrete Wavelet Transform decoding, which allows remote
-   attackers to cause a denial of service (out-of-bounds array access) or
-   possibly have unspecified other impact via crafted JPEG 2000 data.
-   (CVE-2015-8662)
- * The ff_get_buffer function in libavcodec/utils.c in FFmpeg before 2.8.4
-   preserves width and height values after a failure, which allows remote
-   attackers to cause a denial of service (out-of-bounds array access) or
-   possibly have unspecified other impact via a crafted .mov file.
-   (CVE-2015-8663)
- * Heap-based buffer overflow in libavformat/http.c in FFmpeg before 2.8.10,
-   3.0.x before 3.0.5, 3.1.x before 3.1.6, and 3.2.x before 3.2.2 allows
-   remote web servers to execute arbitrary code via a negative chunk size in
-   an HTTP response. (CVE-2016-10190)
- * Heap-based buffer overflow in libavformat/rtmppkt.c in FFmpeg before
-   2.8.10, 3.0.x before 3.0.5, 3.1.x before 3.1.6, and 3.2.x before 3.2.2
-   allows remote attackers to execute arbitrary code by leveraging failure to
-   check for RTMP packet size mismatches. (CVE-2016-10191)
+   other impact via crafted High Efficiency Video Coding (HEVC) data.
+   (CVE-2015-8217)
+ * The jpeg2000_read_main_headers function in libavcodec/jpeg2000dec.c 2.7.x
+   does not enforce uniqueness of the SIZ marker in a JPEG 2000 image, which
+   allows remote attackers to cause a denial of service (out-of-bounds
+   heap-memory access) or possibly have unspecified other impact via a crafted
+   image with two or more of these markers. (CVE-2015-8363)
+ * Integer overflow in the ff_ivi_init_planes function in libavcodec/ivi.c
+   allows remote attackers to cause a denial of service (out-of-bounds
+   heap-memory access) or possibly have unspecified other impact via crafted
+   image dimensions in Indeo Video Interactive data. (CVE-2015-8364)
+ * The h264_slice_header_init function in libavcodec/h264_slice.c does not
+   validate the relationship between the number of threads and the number of
+   slices, which allows remote attackers to cause a denial of service
+   (out-of-bounds array access) or possibly have unspecified other impact via
+   crafted H.264 data. (CVE-2015-8661)
+ * The ff_dwt_decode function in libavcodec/jpeg2000dwt.c does not validate
+   the number of decomposition levels before proceeding with Discrete Wavelet
+   Transform decoding, which allows remote attackers to cause a denial of
+   service (out-of-bounds array access) or possibly have unspecified other
+   impact via crafted JPEG 2000 data. (CVE-2015-8662)
+ * The ff_get_buffer function in libavcodec/utils.c preserves width and height
+   values after a failure, which allows remote attackers to cause a denial of
+   service (out-of-bounds array access) or possibly have unspecified other
+   impact via a crafted .mov file. (CVE-2015-8663)
+ * Heap-based buffer overflow in libavformat/http.c allows remote web servers
+   to execute arbitrary code via a negative chunk size in an HTTP response.
+   (CVE-2016-10190)
+ * Heap-based buffer overflow in libavformat/rtmppkt.c allows remote attackers
+   to execute arbitrary code by leveraging failure to check for RTMP packet
+   size mismatches. (CVE-2016-10191)
 bug: [48391]
 cve:
 - CVE-2014-9317
