@@ -1391,7 +1391,7 @@ class UniventionUpdater:
                                         self.log.info('Found content: code=%d size=%d', code, size)
                                         if size >= MIN_GZIP:
                                             yield ver
-                                        elif size == 0 and server.proxy_handler.proxies:
+                                        elif size == 0 and isinstance(server, UCSHttpServer) and server.proxy_handler.proxies:
                                             uri = server.join(ver.path())
                                             raise ProxyError(uri, "download blocked by proxy?")
                                     except DownloadError as e:
