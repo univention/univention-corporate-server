@@ -138,9 +138,20 @@ class _UCSRepo(UCS_Version):
         kw.setdefault('patchlevel_max', 99)
         for (k, v) in kw.items():
             if isinstance(v, str) and '%(' in v:
-                setattr(self, k, _UCSRepo._substitution(v, self.__dict__))
+                self.__dict__[k] = _UCSRepo._substitution(v, self.__dict__)
             else:
-                setattr(self, k, v)
+                self.__dict__[k] = v
+
+    def __getattr__(self, key):
+        # type: (str) -> Any
+        try:
+            return self.__dict__[key]
+        except KeyError:
+            raise AttributeError(key)
+
+    def __setattr__(self, key, value):
+        # type: (str, Any) -> None
+        self.__dict__[key] = value
 
     def __repr__(self):
         # type: () -> str
