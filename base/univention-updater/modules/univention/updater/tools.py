@@ -605,6 +605,7 @@ class UCSHttpServer(_UCSServer):
         :raises ProxyError: if the HTTP proxy returned an error.
         """
         rel = filename if repo is None else repo.path(filename)
+        assert rel is not None
         if self.user_agent:
             UCSHttpServer.opener.addheaders = [('User-agent', self.user_agent)]
         uri = self.join(rel)
@@ -628,6 +629,7 @@ class UCSHttpServer(_UCSServer):
         ud.debug(ud.NETWORK, ud.ALL, "updater: %s %s" % (req.get_method(), req.get_full_url()))
         try:
             res = UCSHttpServer.opener.open(req, timeout=self.timeout)
+            assert res
             try:
                 # <http://tools.ietf.org/html/rfc2617#section-2>
                 try:
@@ -645,6 +647,7 @@ class UCSHttpServer(_UCSServer):
                 except ValueError as ex:
                     self.log.info("Failed to decode %s: %s", auth, ex)
                 code = res.code
+                assert code
                 size = int(res.headers.get('content-length', 0))
                 content = res.read()
                 self.log.info("Got %s %s: %d %d", req.get_method(), req.get_full_url(), code, size)
@@ -775,6 +778,7 @@ class UCSLocalServer(_UCSServer):
         :raises ProxyError: if the HTTP proxy returned an error.
         """
         rel = filename if repo is None else repo.path(filename)
+        assert rel is not None
         uri = self.join(rel)
         ud.debug(ud.NETWORK, ud.ALL, "updater: %s" % (uri,))
         # urllib2.urlopen() doesn't work for directories
