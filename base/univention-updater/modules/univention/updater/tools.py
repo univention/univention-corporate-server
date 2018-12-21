@@ -1675,12 +1675,11 @@ class UniventionUpdater:
         """
         ver = self.configRegistry.get('repository/online/component/%s/version' % component, '')
         versions = set()  # type: Set[UCS_Version]
+        mm_versions = None  # type: Optional[List[UCS_Version]]
         for version in RE_SPLIT_MULTI.split(ver):
             if version in ('current', ''):  # all from start to end, defaults to same major
                 # Cache releases because it is network expensive
-                try:
-                    mm_versions
-                except NameError:
+                if mm_versions is None:
                     mm_versions = self._releases_in_range(start, end)
                 versions |= set(mm_versions)
             else:
