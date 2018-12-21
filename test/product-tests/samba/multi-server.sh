@@ -62,7 +62,7 @@ test_master () {
 		python shared-utils/ucs-winrm.py domain-join --client $client --dnsserver "$MASTER" --domainuser "$ADMIN" --domainpassword "$ADMIN_PASSWORD"
 		# check time, give it a 5min threshold
 		wintime=$(python shared-utils/ucs-winrm.py run-ps --client $client --credssp --cmd 'Get-Date -Format t')
-		wintime_epoch="$(date -d $wintime +%s)"
+		wintime_epoch="$(date -u -d $wintime +%s)"
 		ucstime_epoch="$(date -u +%s)"
 		diff=$(($wintime_epoch-$ucstime_epoch))
 		test ${diff#-} -lt 300
