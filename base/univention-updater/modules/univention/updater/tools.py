@@ -122,7 +122,7 @@ def verify_script(script, signature):
     return stdout if ret != 0 else None
 
 
-class UCSRepo(UCS_Version):
+class _UCSRepo(UCS_Version):
     """
     Super class to build URLs for APT repositories.
     """
@@ -132,7 +132,7 @@ class UCSRepo(UCS_Version):
         kw.setdefault('patchlevel_max', 99)
         for (k, v) in kw.items():
             if isinstance(v, str) and '%(' in v:
-                setattr(self, k, UCSRepo._substitution(v, self.__dict__))
+                setattr(self, k, _UCSRepo._substitution(v, self.__dict__))
             else:
                 setattr(self, k, v)
 
@@ -163,7 +163,7 @@ class UCSRepo(UCS_Version):
         Helper to print dynamically substituted variable.
 
         >>> h={'major':2}
-        >>> h['version'] = UCSRepo._substitution('%(major)d.%(minor)d', h)
+        >>> h['version'] = _UCSRepo._substitution('%(major)d.%(minor)d', h)
         >>> h['minor'] = 3
         >>> '%(version)s' % h
         '2.3'
@@ -185,8 +185,42 @@ class UCSRepo(UCS_Version):
         def __repr__(self):
             return repr(self.format)
 
+    def deb(self, server, type="deb"):
+        # type: (_UCSServer, str) -> str
+        """
+        Format for :file:`/etc/apt/sources.list`.
 
-class UCSRepoPool(UCSRepo):
+        :param str server: The URL of the repository server.
+        :param str type: The repository type, e.g. `deb` for a binary and `deb-src` for source package repository.
+        :returns: The APT repository stanza.
+        :rtype: str
+        """
+        raise NotImplementedError()
+
+    def path(self, filename=None):
+        # type: (str) -> str
+        """
+        Format pool for directory/file access.
+
+        :param filename: The name of a file in the repository.
+        :returns: relative path.
+        :rtype: str
+        """
+        raise NotImplementedError()
+
+    def clean(self, server):
+        # type: (_UCSServer) -> str
+        """
+        Format for :file:`/etc/apt/mirror.list`
+
+        :param str server: The URL of the repository server.
+        :returns: The APT repository stanza.
+        :rtype: str
+        """
+        raise NotImplementedError()
+
+
+class UCSRepoPool(_UCSRepo):
     """
     Flat Debian APT repository.
     """
@@ -244,7 +278,7 @@ class UCSRepoPool(UCSRepo):
         return "clean %s%s" % (server, super(UCSRepoPool, self)._format(fmt))
 
 
-class UCSRepoPoolNoArch(UCSRepo):
+class UCSRepoPoolNoArch(_UCSRepo):
     """
     Flat Debian APT repository without explicit architecture subdirectory.
     """
@@ -302,7 +336,7 @@ class UCSRepoPoolNoArch(UCSRepo):
         return "clean %s%s" % (server, super(UCSRepoPoolNoArch, self)._format(fmt))
 
 
-class UCSRepoDist(UCSRepo):
+class UCSRepoDist(_UCSRepo):
     """
     Debian APT repository using 'suites'.
 
@@ -355,7 +389,51 @@ class UCSRepoDist(UCSRepo):
         return super(UCSRepoDist, self)._format(fmt)
 
 
-class UCSHttpServer(object):
+class _UCSServer(object):
+    """
+    Abstrace base class to access UCS compatible update server.
+    """
+
+    @classmethod
+    def load_credentials(self, ucr):
+        # type: (ConfigRegistry) -> None
+        """
+        Load credentials from UCR.
+
+        :param ConfigRegistry ucr: An UCR instance.
+        """
+        pass
+
+    def join(self, rel):
+        # type: (str) -> str
+        """
+        Return joined URI without credential.
+
+        :param str rel: relative URI.
+        :return: The joined URI.
+        :rtype: str
+        """
+        raise NotImplementedError()
+
+    def access(self, repo, filename=None, get=False):
+        # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, str]
+        """
+        Access URI and optionally get data.
+
+        :param _UCSRepo repo: the URI to access as an instance of :py:class:`_UCSRepo`.
+        :param str filename: An optional relative path.
+        :param bool get: Fetch data if True - otheriwse check only.
+        :return: a 3-tuple (code, size, content) or None on errors.
+        :rtype: tuple(int, int, str)
+        :raises DownloadError: if the server is unreachable.
+        :raises ValueError: if the credentials use an invalid encoding.
+        :raises ConfigurationError: if a permanent error in the configuration occurs, e.g. the credentials are invalid or the host is unresolvable.
+        :raises ProxyError: if the HTTP proxy returned an error.
+        """
+        raise NotImplementedError()
+
+
+class UCSHttpServer(_UCSServer):
     """
     Access to UCS compatible remote update server.
     """
@@ -484,7 +562,7 @@ class UCSHttpServer(object):
         """
         Access URI and optionally get data.
 
-        :param UCSRepo repo: the URI to access as an instance of :py:class:`UCSRepo`.
+        :param _UCSRepo repo: the URI to access as an instance of :py:class:`_UCSRepo`.
         :param str filename: An optional relative path.
         :param bool get: Fetch data if True - otheriwse check only.
         :return: a 3-tuple (code, size, content) or None on errors.
@@ -589,7 +667,7 @@ class UCSHttpServer(object):
             raise ConfigurationError(uri, 'timeout in network connection')
 
 
-class UCSLocalServer(object):
+class UCSLocalServer(_UCSServer):
     """
     Access to UCS compatible local update server.
     """
@@ -607,15 +685,6 @@ class UCSLocalServer(object):
             self.prefix = '%s/' % prefix
         else:
             self.prefix = ''
-
-    @classmethod
-    def load_credentials(self, ucr):
-        """
-        Load credentials from UCR.
-
-        :param ConfigRegistry ucr: An UCR instance.
-        """
-        pass
 
     def __str__(self):
         """
@@ -657,7 +726,7 @@ class UCSLocalServer(object):
         """
         Access URI and optionally get data.
 
-        :param UCSRepo repo: the URI to access as an instance of :py:class:`UCSRepo`.
+        :param _UCSRepo repo: the URI to access as an instance of :py:class:`_UCSRepo`.
         :param str filename: An optional relative path.
         :param bool get: Fetch data if True - otherwise check only.
         :return: a 3-tuple (code, size, content) or None on errors.
