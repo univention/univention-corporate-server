@@ -36,9 +36,9 @@ import shutil
 import subprocess
 import sys
 
-import univention.config_registry as ucr
+from univention.config_registry import ConfigRegistry
 
-configRegistry = ucr.ConfigRegistry()
+configRegistry = ConfigRegistry()
 configRegistry.load()
 
 # constants

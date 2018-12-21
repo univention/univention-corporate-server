@@ -35,7 +35,7 @@ import os
 import sys
 from pipes import quote
 import subprocess
-import univention.config_registry
+from univention.config_registry import ConfigRegistry
 
 # Name of the cron.d file
 CRON_D = '/etc/cron.d/univention-maintenance'
@@ -65,7 +65,7 @@ def write_cron_job(configRegistry, cron, updateto, reboot, try_release_update):
         print >> file, '%s\troot\t%s' % (cron, ';'.join(cmd))
 
 
-configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry = ConfigRegistry()
 configRegistry.load()
 
 if os.path.exists(CRON_D):

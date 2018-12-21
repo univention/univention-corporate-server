@@ -32,7 +32,7 @@
 
 import univention.admin.license
 import univention.admin.uldap
-import univention.config_registry
+from univention.config_registry import ConfigRegistry
 import univention.config_registry.frontend
 
 
@@ -100,7 +100,7 @@ def main():
 		lo, _ = getReadonlyAdminConnection()
 		filter = univention.admin.license._license.filters['2'][univention.admin.license._license.USERS]
 		return len(lo.searchDn(filter=filter))
-	configRegistry = univention.config_registry.ConfigRegistry()
+	configRegistry = ConfigRegistry()
 	configRegistry.load()
 	univention.config_registry.frontend.ucr_update(
 		configRegistry,

@@ -34,9 +34,9 @@
 import os
 import sys
 import subprocess
-import univention.config_registry
+from univention.config_registry import ConfigRegistry
 
-configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry = ConfigRegistry()
 configRegistry.load()
 
 # Name of the cron.d file
