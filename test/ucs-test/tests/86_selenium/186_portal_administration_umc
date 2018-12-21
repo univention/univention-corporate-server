@@ -1,0 +1,88 @@
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+# -*- coding: utf-8 -*-
+## desc: Test creating a portal via UMC
+## roles:
+##  - domaincontroller_master
+## tags:
+##  - skip_admember
+## join: true
+## exposure: dangerous
+
+import logging
+
+from univention.testing import selenium
+import univention.testing.ucr as ucr_test
+from univention.testing.udm import UCSTestUDM
+from univention.admin import localization
+from univention.udm import UDM
+from selenium.common.exceptions import TimeoutException
+import univention.testing.selenium.udm as selenium_udm
+
+logger = logging.getLogger(__name__)
+
+translator = localization.translation('ucs-test-selenium')
+_ = translator.translate
+
+
+class PortalNotSetException(Exception):
+	pass
+
+
+class UMCTester(object):
+
+	def test_umc(self):
+		try:
+			self.init()
+			self.do_test()
+		finally:
+			self.cleanup()
+
+	def init(self):
+		logger.info('Saving previous set portal of host')
+		self.udm = UDM.admin().version(1)
+		host = self.udm.obj_by_dn(self.ucr['ldap/hostdn'])
+		self.previous_portal = host.props.portal
+	
+	def do_test(self):
+		self.selenium.do_login()
+
+		logger.info('Create portal via UMC and set this host as server')
+		self.portals = selenium_udm.Portals(self.selenium)
+		self.selenium.open_module('Portal settings')
+		self.portal_name = self.portals.add(hostname=self.ucr.get('hostname'))
+		portal = self.udm.obj_by_dn('cn=%s,cn=portal,cn=univention,%s' % (self.portal_name, self.ucr.get('ldap/base')))
+		portal_dname = portal.props.displayName['en_US']
+
+
+		logger.info('Visiting portal')
+		self.selenium.driver.get(self.selenium.base_url)
+		try:
+			self.selenium.wait_for_text(portal_dname)
+		except TimeoutException:
+			raise PortalNotSetException('The portal added via UMC is not visible')
+
+
+	def cleanup(self):
+		logger.info('Cleanup')
+		if hasattr(self, 'portal_name'):
+			logger.info('Delete portal created via UMC')
+			try:
+				self.udm.obj_by_dn('cn=%s,cn=portal,cn=univention,%s' % (self.portal_name, self.ucr.get('ldap/base'))).delete()
+			except Exception:
+				pass
+		if hasattr(self, 'previous_portal'):
+			logger.info('Restore previously set portal on host')
+			host = self.udm.obj_by_dn(self.ucr['ldap/hostdn'])
+			host.props.portal = self.previous_portal
+			host.save()
+
+
+if __name__ == '__main__':
+	with ucr_test.UCSTestConfigRegistry() as ucr, UCSTestUDM() as udm_test, selenium.UMCSeleniumTest() as s:
+		umc_tester = UMCTester()
+		umc_tester.ucr = ucr
+		umc_tester.udm_test = udm_test
+		umc_tester.selenium = s
+
+		umc_tester.test_umc()
+

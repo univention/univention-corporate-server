@@ -1,0 +1,159 @@
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+# -*- coding: utf-8 -*-
+## desc: Test adding portal categories and entries from within the portal
+## roles:
+##  - domaincontroller_master
+## tags:
+##  - skip_admember
+## join: true
+## exposure: dangerous
+
+import logging
+import time
+
+from univention.testing import selenium
+import univention.testing.ucr as ucr_test
+from univention.testing.udm import UCSTestUDM
+import univention.testing.strings as uts
+from univention.admin import localization
+from univention.udm import UDM, NoObject
+from univention.testing.selenium.interactions import expand_path
+from selenium.common.exceptions import NoSuchElementException
+
+logger = logging.getLogger(__name__)
+
+translator = localization.translation('ucs-test-selenium')
+_ = translator.translate
+
+
+class CreationError(Exception):
+	pass
+
+
+class UMCTester(object):
+
+	def test_umc(self):
+		try:
+			self.init()
+			self.do_test()
+		finally:
+			self.cleanup()
+
+	def init(self):
+		logger.info('Creating dummy portal')
+		self.dummy_portal_title = uts.random_string()
+		self.dummy_portal_dn = self.udm_test.create_object(
+				'settings/portal',
+				name=uts.random_string(),
+				displayName=['en_US ' + self.dummy_portal_title]
+		)
+		logger.info('Saving previous set portal of host')
+		udm = UDM.admin().version(1)
+		machine = udm.obj_by_dn(self.ucr['ldap/hostdn'])
+		self.previous_portal = machine.props.portal
+		logger.info('Setting dummy portal as portal for host')
+		machine.props.portal = self.dummy_portal_dn
+		machine.save()
+	
+	def do_test(self):
+		self.selenium.do_login()
+
+		logger.info('Visiting dummy portal')
+		self.selenium.driver.get(self.selenium.base_url)
+		self.selenium.wait_for_text(self.dummy_portal_title)
+
+		logger.info('Check if inline edit is active')
+		self.selenium.wait_until_element_visible('//div[@class="portalEditFloatingButton"]')
+		logger.info('Enter edit mode')
+		self.selenium.click_element('//div[@class="portalEditFloatingButton"]')
+		time.sleep(2)  # css transition
+
+		udm = UDM.admin().version(1)
+		logger.info('Create category')
+		self.cat_name = uts.random_string()  # not sure if using random strings here is a good idea
+		cat_dname = uts.random_string()
+		self.selenium.click_button('Add category')
+		self.selenium.wait_for_text('Create new category')
+		self.selenium.click_text('Create new category')
+		self.selenium.wait_for_text('Internal name *')
+		self.selenium.enter_input('name', self.cat_name)
+		self.selenium.enter_input('__displayName-0-1', cat_dname)
+		self.selenium.click_button('Save')
+		self.selenium.wait_until_all_dialogues_closed()
+		self.selenium.wait_until_all_standby_animations_disappeared()
+		logger.info('Check if the category was created')
+		try:
+			self.selenium.driver.find_element_by_xpath('//h2[text()="%s"]' % (cat_dname))
+			udm.obj_by_dn('cn=%s,cn=categories,cn=portal,cn=univention,%s' % (self.cat_name, self.ucr['ldap/base']))
+		except NoSuchElementException:
+			try:
+				udm.obj_by_dn('cn=%s,cn=categories,cn=portal,cn=univention,%s' % (self.cat_name, self.ucr['ldap/base']))
+			except NoObject:
+				raise CreationError('Creation of the settings/portal_category UDM object failed')
+			raise CreationError('A settings/portal_category UDM object was created but the category was not immediately visible in the portal')
+		except NoObject:
+			raise CreationError('Creation of the settings/portal_category UDM object failed')
+
+
+
+		logger.info('Create entry')
+		self.selenium.click_element(expand_path('//h2[text()="%s"]/following-sibling::*[1]//*[@containsClass="addEntryTile"]' % (cat_dname)))
+		self.selenium.wait_for_text('Internal name *')
+		self.entry_name = uts.random_string()
+		entry_dname = uts.random_string()
+		self.selenium.enter_input('name', self.entry_name)
+		self.selenium.click_button('Next')
+		self.selenium.wait_until_standby_animation_appears_and_disappears()
+		self.selenium.click_button('Next')
+		self.selenium.enter_input('__displayName-0-1', entry_dname)
+		self.selenium.click_button('Next')
+		self.selenium.enter_input('__link-0-0', 'foo')
+		self.selenium.click_button('Next')
+		self.selenium.click_button('Finish')
+		self.selenium.wait_until_all_dialogues_closed()
+		self.selenium.wait_until_all_standby_animations_disappeared()
+		logger.info('Check if the entry was created')
+		try:
+			self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (cat_dname, entry_dname)))
+			udm.obj_by_dn('cn=%s,cn=portal,cn=univention,%s' % (self.entry_name, self.ucr['ldap/base']))
+		except NoSuchElementException:
+			try:
+				udm.obj_by_dn('cn=%s,cn=portal,cn=univention,%s' % (self.entry_name, self.ucr['ldap/base']))
+			except NoObject:
+				raise CreationError('Creation of the settings/portal_entry UDM object failed')
+			raise CreationError('A settings/portal_entry UDM object was created but the entry was not immediately visible in the portal')
+		except NoObject:
+			raise CreationError('Creation of the settings/portal_entry UDM object failed')
+
+
+	def cleanup(self):
+		logger.info('Cleanup')
+		logger.info('Delete the UDM objects created via the portal')
+		udm = UDM.admin().version(1)
+		if hasattr(self, 'cat_name'):
+			try:
+				udm.obj_by_dn('cn=%s,cn=categories,cn=portal,cn=univention,%s' % (self.cat_name, self.ucr['ldap/base'])).delete()
+			except Exception:
+				pass
+		if hasattr(self, 'entry_name'):
+			try:
+				udm.obj_by_dn('cn=%s,cn=portal,cn=univention,%s' % (self.entry_name, self.ucr['ldap/base'])).delete()
+			except Exception:
+				pass
+		if hasattr(self, 'previous_portal'):
+			logger.info('Restore previously set portal on host')
+			udm = UDM.admin().version(1)
+			machine = udm.obj_by_dn(self.ucr['ldap/hostdn'])
+			machine.props.portal = self.previous_portal
+			machine.save()
+
+
+if __name__ == '__main__':
+	with ucr_test.UCSTestConfigRegistry() as ucr, UCSTestUDM() as udm_test, selenium.UMCSeleniumTest() as s:
+		umc_tester = UMCTester()
+		umc_tester.ucr = ucr
+		umc_tester.udm_test = udm_test
+		umc_tester.selenium = s
+
+		umc_tester.test_umc()
+

@@ -39,6 +39,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
 
 from univention.admin import localization
+from univention.testing.selenium.interactions import expand_path
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 
@@ -167,6 +168,43 @@ class UDMBase(object):
 	def open_advanced_add_dialog(self, **kwargs):
 		self.open_add_dialog(**kwargs)
 		self.selenium.click_button(_('Advanced'))
+
+
+class Portals(UDMBase):
+	name = _('Portal settings')
+
+	def __init__(self, selenium):
+		super(Portals, self).__init__(selenium)
+		self.ucr = ucr_test.UCSTestConfigRegistry()
+		self.ucr.load()
+
+	def add(self, portalname=None, hostname=None):
+		if portalname is None:
+			portalname = uts.random_string()
+
+		self.open_add_dialog()
+
+		# FIXME add this to the open_add_dialog() function
+		self.selenium.enter_input_combobox('objectType', 'Portal: Portal')
+		self.selenium.click_button('Next')
+
+		self.selenium.wait_until_standby_animation_appears_and_disappears()
+		self.selenium.enter_input("name", portalname)
+		self.selenium.enter_input('__displayName-0-0', 'en_US')
+		self.selenium.enter_input('__displayName-0-1', uts.random_string())
+
+		if hostname is not None:
+			self.selenium.click_button('Add') # FIXME at the moment there is only 1 Add button on the screen
+			self.selenium.wait_for_text('Add objects')
+			self.selenium.wait_until_standby_animation_appears_and_disappears()
+			self.selenium.click_checkbox_of_dojox_grid_entry(hostname)
+			self.selenium.click_element(expand_path('//*[@containsClass="dijitDialog"]//*[@containsClass="dijitButtonText"][text()="Add"]'))
+			self.selenium.wait_until_all_dialogues_closed()
+
+		self.selenium.click_button(_("Create portal"))
+		self.wait_for_main_grid_load()
+
+		return portalname
 
 
 class Computers(UDMBase):
