@@ -1,5 +1,7 @@
 #!/bin/sh
 
+## joinscript api: bindpwdfile
+
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
 	exit 1

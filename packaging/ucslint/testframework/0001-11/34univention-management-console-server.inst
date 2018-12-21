@@ -1,5 +1,7 @@
 #!/bin/sh
 
+## joinscript api: bindpwdfile
+
 VERSION=3
 
 if ! test -e "/usr/share/univention-join/.joined"; then

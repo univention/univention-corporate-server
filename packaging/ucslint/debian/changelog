@@ -1,3 +1,9 @@
+ucslint (8.0.0-2) unstable; urgency=medium
+
+  * Bug #46969: bindpwdfile support 
+
+ -- Felix Botner <botner@univention.de>  Fri, 21 Dec 2018 13:59:44 +0100
+
 ucslint (8.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump

@@ -59,6 +59,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0001-13': [uub.RESULT_ERROR, 'join script does not include "joinscripthelper.lib"'],
 			'0001-14': [uub.RESULT_ERROR, 'join script does not call "joinscript_init"'],
 			'0001-15': [uub.RESULT_ERROR, 'join script does not call "joinscript_save_current_version"'],
+			'0001-16': [uub.RESULT_ERROR, 'join script does not use joinscript api (possible clear text passwords)'],
 		}
 
 	def postinit(self, path):
@@ -87,9 +88,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'joinscripthelper.lib': 0,
 			'joinscript_init': 0,
 			'joinscript_save_current_version': 0,
+			'joinscript_api': False,
 		}
 		for line in lines:
 			line = line.strip()
+
+			# check joinscript api
+			if line.startswith('## joinscript api:'):
+				cnt['joinscript_api'] = True
+
 			if not line or line.startswith('#'):
 				continue
 
@@ -118,6 +125,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				cnt['unquoted_credential_arg'] += 1
 				self.debug('line contains unquoted $@:\n%s' % line)
 
+		if not cnt['joinscript_api']:
+			self.addmsg('0001-16', 'join script does not use joinscript api (possible clear text passwords)', filename)
 		if cnt['old_cmd_name'] > 0:
 			self.addmsg('0001-1', 'join script contains %d lines using "univention-admin"' % (cnt['old_cmd_name']), filename)
 		if cnt['credential_arg_missing'] > 0:

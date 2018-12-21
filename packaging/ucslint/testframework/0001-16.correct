@@ -1,0 +1,1 @@
+E:0001-16: 34univention-management-console-server.inst: join script does not use joinscript api (possible clear text passwords)
