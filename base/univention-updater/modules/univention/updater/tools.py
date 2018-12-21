@@ -646,9 +646,9 @@ class UCSHttpServer(_UCSServer):
                     pass
                 except ValueError as ex:
                     self.log.info("Failed to decode %s: %s", auth, ex)
-                code = res.code
+                code = res.getcode()
                 assert code
-                size = int(res.headers.get('content-length', 0))
+                size = int(res.info().get('content-length', 0))
                 content = res.read()
                 self.log.info("Got %s %s: %d %d", req.get_method(), req.get_full_url(), code, size)
                 return (code, size, content)
