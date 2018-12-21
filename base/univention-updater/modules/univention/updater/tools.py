@@ -162,7 +162,7 @@ class _UCSRepo(UCS_Version):
         """
         Format longest path for directory/file access.
         """
-        while format:
+        while True:
             try:
                 return format % self
             except KeyError as ex:
