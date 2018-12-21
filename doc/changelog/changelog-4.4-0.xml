@@ -650,6 +650,7 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
+				For security reasons all join scripts now use a password file (<u:bug>46969</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
