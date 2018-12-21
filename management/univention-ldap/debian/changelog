@@ -1,3 +1,9 @@
+univention-ldap (15.0.0-4) unstable; urgency=medium
+
+  * Bug #46969: bindpwdfile support
+
+ -- Felix Botner <botner@univention.de>  Fri, 21 Dec 2018 12:04:37 +0100
+
 univention-ldap (15.0.0-3) unstable; urgency=medium
 
   * Bug #43515: Allow access to cn=config only via LDAPI for now

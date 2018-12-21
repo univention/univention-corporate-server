@@ -1,3 +1,9 @@
+univention-server-overview (2.0.1-1) unstable; urgency=medium
+
+  * Bug #46969: bindpwdfile support
+
+ -- Felix Botner <botner@univention.de>  Fri, 21 Dec 2018 12:05:15 +0100
+
 univention-server-overview (2.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump

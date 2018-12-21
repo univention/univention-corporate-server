@@ -1,3 +1,9 @@
+univention-management-console (11.0.1-1) unstable; urgency=medium
+
+  * Bug #46969: bindpwdfile support
+
+ -- Felix Botner <botner@univention.de>  Fri, 21 Dec 2018 11:57:13 +0100
+
 univention-management-console (11.0.0-2) unstable; urgency=medium
 
   * Bug #48372: show summit 2019 notification in UCS Core editions

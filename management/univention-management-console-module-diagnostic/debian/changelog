@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-2) unstable; urgency=medium
+
+  * Bug #46969: bindpwdfile support
+
+ -- Felix Botner <botner@univention.de>  Fri, 21 Dec 2018 11:53:39 +0100
+
 univention-management-console-module-diagnostic (5.0.1-1) unstable; urgency=medium
 
   * Bug #48385: fixed 12_proxy.py
