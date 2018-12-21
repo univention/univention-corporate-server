@@ -197,7 +197,7 @@ test_master () {
 	rpcclient  -UAdministrator%"$ADMIN_PASSWORD" localhost -c enumprinters
 	python shared-utils/ucs-winrm.py print-on-printer --printername Masterprinter --server "$MASTER" --impersonate --run-as-user Administrator
 	python shared-utils/ucs-winrm.py print-on-printer --printername Masterprinter --server "$MASTER" --impersonate --run-as-user newuser02 --run-as-password "Univention.99"
-	sleep 20
+	sleep 60
 	stat /var/spool/cups-pdf/administrator/job_1-document.pdf
 	stat /var/spool/cups-pdf/newuser02/job_2-document.pdf
 	# Druckerzugriff ohne serverseitige Druckertreiber
@@ -213,7 +213,7 @@ test_master () {
 		--impersonate --run-as-user newuser02 --run-as-password "Univention.99"
 	python shared-utils/ucs-winrm.py print-on-printer --printername Memberprinter --server "ucs-member.sambatest.local" \
 		--impersonate --run-as-user newuser02 --run-as-password "Univention.99" --client $WIN2016
-	sleep 20
+	sleep 60
 	run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/administrator/job_1-document.pdf'
 	run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/newuser02/job_2-document.pdf'
 	run_on_ucs_hosts $MEMBER 'stat /var/spool/cups-pdf/newuser02/job_3-document.pdf'
