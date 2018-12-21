@@ -67,6 +67,14 @@ class Interactions(object):
 			**kwargs
 		)
 
+	def click_checkbox_of_dojox_grid_entry(self, name, **kwargs):
+		logger.info("Clicking the checkbox of the dojox grid entry  %r", name)
+		self.click_element(
+			expand_path('//*[@containsClass="dojoxGridCell"][@role="gridcell"][contains(text(), "%s")]/preceding-sibling::*[1]')
+			% (name,),
+			**kwargs
+		)
+
 	def click_grid_entry(self, name, **kwargs):
 		logger.info("Clicking the grid entry %r", name)
 		self.click_element(
@@ -277,3 +285,22 @@ class Interactions(object):
 		logger.info("Waiting for upload to finish")
 		time.sleep(1) # wait_for_text('Uploading...') is too inconsistent
 		self.wait_until_element_visible(xpath_prefix + uploader_button_xpath)
+
+	def drag_and_drop(self, source, target, find_by='xpath'):
+		"""
+		Wrapper for selenium.webdriver.common.action_chains.drag_and_drop
+		"""
+		if isinstance(source, basestring):  # py3 python3 python 3
+			source = getattr(self.driver, 'find_element_by_%s' % find_by)(source)
+		if isinstance(target, basestring):  # py3 python3 python 3
+			target = getattr(self.driver, 'find_element_by_%s' % find_by)(target)
+		ActionChains(self.driver).drag_and_drop(source, target).perform()
+
+	def drag_and_drop_by_offset(self, source, xoffset, yoffset, find_by='xpath'):
+		"""
+		Wrapper for selenium.webdriver.common.action_chains.drag_and_drop_by_offset
+		"""
+		if isinstance(source, basestring):  # py3 python3 python 3
+			source = getattr(self.driver, 'find_element_by_%s' % find_by)(source)
+		ActionChains(self.driver).drag_and_drop_by_offset(source, xoffset, yoffset).perform()
+
