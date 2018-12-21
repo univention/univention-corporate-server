@@ -40,13 +40,13 @@ import subprocess
 import sys
 from textwrap import dedent
 
-import univention.config_registry as ucr
+from univention.config_registry import ConfigRegistry, handler_set
 import univention.updater.repository as urepo
 from univention.updater.ucs_version import UCS_Version
 from univention.updater.locking import UpdaterLock
 from univention.updater.mirror import makedirs, UniventionMirror
 
-configRegistry = ucr.ConfigRegistry()
+configRegistry = ConfigRegistry()
 configRegistry.load()
 
 _mirror_base = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
@@ -83,11 +83,11 @@ def prepare(options):
     """ Set local/repository and create directory structure """
     # set local/repository
     if configRegistry.is_false('local/repository', True):
-        ucr.handler_set(['local/repository=yes'])
+        handler_set(['local/repository=yes'])
         configRegistry.load()
 
     if configRegistry.is_false('repository/mirror', True):
-        ucr.handler_set(['repository/mirror=yes'])
+        handler_set(['repository/mirror=yes'])
         configRegistry.load()
 
     # create directory structure
@@ -323,7 +323,7 @@ def main():
         if not end or UCS_Version(end) < options.version:
             ucr_set.append('repository/mirror/version/end=%s' % options.version)
 
-        ucr.handler_set(ucr_set)
+        handler_set(ucr_set)
 
         # create symbolic link univention-repository
         try:

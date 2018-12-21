@@ -40,13 +40,13 @@ import sys
 import time
 from textwrap import dedent, wrap
 
-import univention.config_registry as ucr
+from univention.config_registry import ConfigRegistry, handler_commit, handler_set
 import univention.updater.repository as urepo
 from univention.updater.mirror import UniventionMirror, makedirs
 from univention.updater.errors import UpdaterException, VerificationError
 from univention.updater.locking import UpdaterLock
 
-configRegistry = ucr.ConfigRegistry()
+configRegistry = ConfigRegistry()
 configRegistry.load()
 
 # regular expression matching a UCS version X.Y-Z
@@ -154,24 +154,24 @@ def update_net(options):
         mirror.run()
     elif options.security_only:
         # trigger update to find new security repositories
-        ucr.handler_commit(['/etc/apt/mirror.list'])
+        handler_commit(['/etc/apt/mirror.list'])
         mirror.run()
     elif options.errata_only:
         # trigger update to find new errata repositories
-        ucr.handler_commit(['/etc/apt/mirror.list'])
+        handler_commit(['/etc/apt/mirror.list'])
         mirror.run()
     elif options.update_to:
         # trigger update to explicitly mirror until given versions
-        ucr.handler_set(['repository/mirror/version/end=%s' % options.update_to])
+        handler_set(['repository/mirror/version/end=%s' % options.update_to])
         mirror = UniventionMirror()
         mirror.run()
     else:
         # mirror all future versions
-        ucr.handler_commit(['/etc/apt/mirror.list'])
+        handler_commit(['/etc/apt/mirror.list'])
         nextupdate = mirror.release_update_available()
         mirror_run = False
         while nextupdate:
-            ucr.handler_set(['repository/mirror/version/end=%s' % nextupdate])
+            handler_set(['repository/mirror/version/end=%s' % nextupdate])
             # UCR variable repository/mirror/version/end has change - reinit Mirror object
             mirror = UniventionMirror()
             mirror.run()

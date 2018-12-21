@@ -65,7 +65,7 @@ try:
 except ImportError:
     import univention.debug2 as ud
 
-import univention.config_registry as ucr
+from univention.config_registry import ConfigRegistry
 
 from univention.updater.errors import PreconditionError, ConfigurationError, RequiredComponentError, VerificationError, DownloadError
 from univention.updater.ucs_version import UCS_Version
@@ -366,7 +366,7 @@ def main():
             break
     iso = None
 
-    baseConfig = ucr.ConfigRegistry()
+    baseConfig = ConfigRegistry()
     baseConfig.load()
 
     ud.init(LOGNAME, 0, 0)

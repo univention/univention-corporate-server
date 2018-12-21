@@ -47,7 +47,7 @@ import commands
 import shlex
 import subprocess
 
-import univention.config_registry as ucr
+from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 from univention.updater.commands import (
     cmd_config,
     cmd_dist_upgrade,
@@ -63,7 +63,7 @@ from univention.updater.locking import UpdaterLock
 
 LOGNAME = '/var/log/univention/actualise.log'
 
-configRegistry = ucr.ConfigRegistry()
+configRegistry = ConfigRegistry()
 configRegistry.load()
 
 ldap_hostdn = configRegistry.get('ldap/hostdn')
@@ -312,7 +312,7 @@ def main():
                 pkgdb_scope, pkgdb = pkgdb_scan
                 if pkgdb:
                     # disable pkgdb in UCR scope FORCED
-                    ucr.handler_set(['pkgdb/scan=no'], {'force': True})
+                    handler_set(['pkgdb/scan=no'], {'force': True})
 
             rem_packages = getPackageList(configRegistry, 'remove')
             for package in rem_packages:
@@ -393,12 +393,12 @@ def main():
 
     finally:
         if pkgdb:
-            if pkgdb_scope == ucr.ConfigRegistry.FORCED:
+            if pkgdb_scope == ConfigRegistry.FORCED:
                 # old value was set in FORCED scope
-                ucr.handler_set(['pkgdb/scan=%s' % pkgdb], {'force': True})
+                handler_set(['pkgdb/scan=%s' % pkgdb], {'force': True})
             else:
                 # old value was set in any other scope ==> remove value in FORCED scope
-                ucr.handler_unset(['pkgdb/scan'], {'force': True})
+                handler_unset(['pkgdb/scan'], {'force': True})
 
             if str(pkgdb).lower() in ("yes", "enable", "enabled", "true", "1"):
                 if not silent:

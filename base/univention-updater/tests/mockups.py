@@ -181,6 +181,6 @@ def verbose(verbose_mode=True):
     U.ud.set_level(U.ud.NETWORK, level)
 
 
-sys.modules['univention.config_registry'].ConfigRegistry = MockConfigRegistry
+sys.modules['univention.updater.tools'].ConfigRegistry = MockConfigRegistry
 sys.modules['univention.updater.tools'].UCSHttpServer = U.UCSHttpServer = MockUCSHttpServer
 sys.modules['subprocess'].Popen = MockPopen

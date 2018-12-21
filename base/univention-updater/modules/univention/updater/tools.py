@@ -62,7 +62,7 @@ import os
 import copy
 import httplib
 import socket
-import univention.config_registry
+from univention.config_registry import ConfigRegistry
 import urllib2
 import subprocess
 import new
@@ -745,7 +745,7 @@ class UniventionUpdater:
         """
         Re-initialize settings.
         """
-        self.configRegistry = univention.config_registry.ConfigRegistry()
+        self.configRegistry = ConfigRegistry()
         self.configRegistry.load()
 
         self.is_repository_server = self.configRegistry.is_true('local/repository', False)
