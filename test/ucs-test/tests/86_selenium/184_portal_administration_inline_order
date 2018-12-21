@@ -1,0 +1,191 @@
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+# -*- coding: utf-8 -*-
+## desc: Test changing the order of portal categories/entries from within the portal
+## roles:
+##  - domaincontroller_master
+## tags:
+##  - skip_admember
+## join: true
+## exposure: dangerous
+
+import time
+import logging
+import json
+
+from univention.testing import selenium
+import univention.testing.ucr as ucr_test
+from univention.testing.udm import UCSTestUDM
+import univention.testing.strings as uts
+from univention.admin import localization
+from univention.udm import UDM
+from univention.testing.selenium.interactions import expand_path
+
+logger = logging.getLogger(__name__)
+
+translator = localization.translation('ucs-test-selenium')
+_ = translator.translate
+
+
+class UMCTester(object):
+
+	def test_umc(self):
+		try:
+			self.init()
+			self.do_test()
+		finally:
+			self.cleanup()
+
+	def init(self):
+		logger.info('Creating dummy portal entries and categories')
+		self.cat_a_dname = uts.random_string()
+		cat_a_dn = self.udm_test.create_object(
+				'settings/portal_category',
+				name=uts.random_string(),
+				displayName=['en_US ' + self.cat_a_dname]
+		)
+		self.entry_a_1_dname = uts.random_string()
+		entry_a_1_dn = self.udm_test.create_object(
+				'settings/portal_entry',
+				name=uts.random_string(),
+				displayName=['en_US ' + self.entry_a_1_dname],
+				description=['en_US foo'],
+				link=['foo']
+		)
+		self.entry_a_2_dname = uts.random_string()
+		entry_a_2_dn = self.udm_test.create_object(
+				'settings/portal_entry',
+				name=uts.random_string(),
+				displayName=['en_US ' + self.entry_a_2_dname],
+				description=['en_US foo'],
+				link=['foo']
+		)
+		self.cat_b_dname = uts.random_string()
+		cat_b_dn = self.udm_test.create_object(
+				'settings/portal_category',
+				name=uts.random_string(),
+				displayName=['en_US ' + self.cat_b_dname]
+		)
+		self.entry_b_dname = uts.random_string()
+		entry_b_dn = self.udm_test.create_object(
+				'settings/portal_entry',
+				name=uts.random_string(),
+				displayName=['en_US ' + self.entry_b_dname],
+				description=['en_US foo'],
+				link=['foo']
+		)
+
+		logger.info('Creating dummy portal')
+		self.dummy_portal_title = uts.random_string()
+		self.dummy_portal_dn = self.udm_test.create_object(
+				'settings/portal',
+				name=uts.random_string(),
+				displayName=['en_US ' + self.dummy_portal_title],
+				content=json.dumps([
+					[cat_a_dn, [entry_a_1_dn, entry_a_2_dn]],
+					[cat_b_dn, [entry_b_dn]]
+				])
+		)
+		logger.info('Saving previous set portal of host')
+		udm = UDM.admin().version(1)
+		machine = udm.obj_by_dn(self.ucr['ldap/hostdn'])
+		self.previous_portal = machine.props.portal
+		logger.info('Setting dummy portal as portal for host')
+		machine.props.portal = self.dummy_portal_dn
+		machine.save()
+	
+	def do_test(self):
+		self.selenium.do_login()
+
+		logger.info('Visiting dummy portal')
+		self.selenium.driver.get(self.selenium.base_url)
+		self.selenium.wait_for_text(self.dummy_portal_title)
+
+		logger.info('Check if inline edit is active')
+		self.selenium.wait_until_element_visible('//div[@class="portalEditFloatingButton"]')
+		logger.info('Enter edit mode')
+		self.selenium.click_element('//div[@class="portalEditFloatingButton"]')
+		time.sleep(2)  # css transition
+
+		self.selenium.click_button('Order')
+
+		logger.info('Check order before dnd')
+		# Category_B is after Category_A
+		self.selenium.driver.find_element_by_xpath('//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_a_dname, self.cat_b_dname))
+		# Entry_A is in Category_A
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]/following::*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname, self.entry_a_2_dname)))
+		# Entry_B is in Category_B
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
+
+		self.selenium.wait_until_element_visible(expand_path('//*[@containsClass="dojoDndHandle"][text()="%s"]' % (self.cat_a_dname)))
+		self.selenium.wait_until_element_visible(expand_path('//*[@containsClass="dojoDndHandle"][text()="%s"]' % (self.cat_b_dname)))
+		self.selenium.wait_until_element_visible(expand_path('//*[@containsClass="dojoDndItem"]//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.entry_a_1_dname)))
+		self.selenium.wait_until_element_visible(expand_path('//*[@containsClass="dojoDndItem"]//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.entry_a_2_dname)))
+		self.selenium.wait_until_element_visible(expand_path('//*[@containsClass="dojoDndItem"]//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.entry_b_dname)))
+		self.selenium.drag_and_drop(
+			expand_path('//*[@containsClass="dojoDndHandle"][text()="%s"]' % (self.cat_b_dname)),
+			expand_path('//*[@containsClass="dojoDndHandle"][text()="%s"]' % (self.cat_a_dname))
+		)
+		time.sleep(3)
+		logger.info('Check order after category dnd')
+		# Category_A is after Category_B
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_b_dname, self.cat_a_dname)))
+		# Entry_A is in Category_A
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]/following::*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname, self.entry_a_2_dname)))
+		# Entry_B is in Category_B
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
+		# TODO dragging entries across categories does not work in selenium for some reason
+		self.selenium.drag_and_drop(
+			expand_path('//*[@containsClass="dojoDndItem"]//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.entry_a_1_dname)),
+			expand_path('//*[@containsClass="dojoDndItem"]//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.entry_a_2_dname))
+		)
+		time.sleep(3)
+		logger.info('Check order after entry dnd')
+		# Category_A is after Category_B
+		self.selenium.driver.find_element_by_xpath('//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_b_dname, self.cat_a_dname))
+		# Entry_A is in Category_A
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]/following::*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname, self.entry_a_1_dname)))
+		# Entry_B is in Category_B
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
+		self.selenium.click_button('Save entry order')
+		self.selenium.wait_until_standby_animation_appears_and_disappears()
+		self.selenium.wait_until_element_visible('//h2[text()="%s"]' % (self.cat_a_dname))
+		self.selenium.wait_until_element_visible('//h2[text()="%s"]' % (self.cat_b_dname))
+		self.selenium.wait_until_element_visible(expand_path('//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.entry_a_1_dname)))
+		self.selenium.wait_until_element_visible(expand_path('//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.entry_a_2_dname)))
+		self.selenium.wait_until_element_visible(expand_path('//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.entry_b_dname)))
+		logger.info('Check order after save')
+		# Category_A is after Category_B
+		self.selenium.driver.find_element_by_xpath('//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_b_dname, self.cat_a_dname))
+		# Entry_A is in Category_A
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]/following::*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname, self.entry_a_1_dname)))
+		# Entry_B is in Category_B
+		self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
+		time.sleep(5)
+
+	def cleanup(self):
+		logger.info('Cleanup')
+		if hasattr(self, 'previous_portal'):
+			logger.info('Restore previously set portal on host')
+			udm = UDM.admin().version(1)
+			machine = udm.obj_by_dn(self.ucr['ldap/hostdn'])
+			machine.props.portal = self.previous_portal
+			machine.save()
+
+
+if __name__ == '__main__':
+	with ucr_test.UCSTestConfigRegistry() as ucr, UCSTestUDM() as udm_test, selenium.UMCSeleniumTest() as s:
+		umc_tester = UMCTester()
+		umc_tester.ucr = ucr
+		umc_tester.udm_test = udm_test
+		umc_tester.selenium = s
+
+		umc_tester.test_umc()
+
