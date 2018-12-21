@@ -1277,7 +1277,7 @@ class UniventionUpdater:
         :rtype: bool
         """
         new, upgrade, removed = self.component_update_get_packages()
-        return bool(new + upgrade + removed)
+        return any((new, upgrade, removed))
 
     def component_update_get_packages(self):
         # type: () -> Tuple[List[Tuple[str, str]], List[Tuple[str, str, str]], List[Tuple[str, str]]]
