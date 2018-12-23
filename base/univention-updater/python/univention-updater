@@ -498,7 +498,7 @@ def main():
     dprint('Update to = %s' % nextversion)
     update_status(next_version=nextversion)
     if updateto:
-	    update_status(target_version=updateto)
+        update_status(target_version=updateto)
 
     if ignorereleasenotes:
         os.putenv('update_warning_releasenotes_internal', 'no')

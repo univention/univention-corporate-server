@@ -74,8 +74,8 @@ def encode_role(role):
 def encode_additional_info(users=None, role=None):
 	parts = []
 	for key, encoder, datum in (
-			('U', encode_users, users, ),
-			('R', encode_role , role , ),
+		('U', encode_users, users),
+		('R', encode_role, role),
 	):
 		if datum is not None:
 			parts.append(key + ':' + encoder(datum))
@@ -108,6 +108,7 @@ def main():
 			'updater/statistics': encode_additional_info(users=get_users(), role=get_role()),
 		}
 	)
+
 
 if __name__ == "__main__":
 	main()
