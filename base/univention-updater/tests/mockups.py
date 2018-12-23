@@ -13,7 +13,7 @@ import univention.updater.mirror as M
 import univention.config_registry as C
 
 __all__ = [
-    'U', 'M', 'MAJOR', 'MINOR', 'PATCH', 'SEC', 'ERRAT', 'PART', 'ARCH',
+    'U', 'M', 'MAJOR', 'MINOR', 'PATCH', 'ERRAT', 'PART', 'ARCH',
     'MockConfigRegistry', 'MockUCSHttpServer', 'MockPopen', 'MockFile',
     'verbose',
 ]

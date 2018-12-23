@@ -44,7 +44,7 @@ from univention.config_registry import ConfigRegistry, handler_set
 import univention.updater.repository as urepo
 from univention.updater.ucs_version import UCS_Version
 from univention.updater.locking import UpdaterLock
-from univention.updater.mirror import makedirs, UniventionMirror
+from univention.updater.mirror import makedirs
 
 configRegistry = ConfigRegistry()
 configRegistry.load()
