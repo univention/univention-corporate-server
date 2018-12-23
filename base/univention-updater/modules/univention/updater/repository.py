@@ -116,13 +116,12 @@ def copy_package_files(source_dir, dest_dir):
             print >> sys.stderr, "Copying '%s' failed: %s" % (src, ex)
 
 
-def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr=None):
+def update_indexes(base_dir, update_only=False, stdout=None, stderr=None):
     """
-    Re-generate Debian :file:`Packages` files including :file:`dists/` for all architectures.
+    Re-generate Debian :file:`Packages` files for all architectures.
 
     :param str base_dir: Base directory, which contains the per architecture sub directories.
     :param bool update_only: Only update already existing files - skip missing files.
-    :param bool dists: Also generate :file:`Packages` files in :file:`dists/` subdirectory.
     :param file stdout: Override standard output. Defaults to :py:obj:`sys.stdout`.
     :param file stderr: Override standard error output. Defaults to :py:obj:`sys.stderr`.
     """
@@ -157,22 +156,6 @@ def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr
             print >> stdout, 'failed.'
             print >> stderr, "Error: Failed to compress '%s'" % pkgname
             sys.exit(1)
-
-    # create Packages file in dists directory if it exists
-    if dists and os.path.isdir(os.path.join(base_dir, 'dists')):
-        for arch in ARCHITECTURES:
-            if arch == 'all':
-                continue
-            if not os.path.isdir(os.path.join(base_dir, 'dists/univention/main', 'binary-%s' % arch)):
-                continue
-            packages_file = os.path.join(base_dir, 'dists/univention/main', 'binary-%s' % arch, 'Packages')
-            packages_fd = open(packages_file, 'w')
-            ret = subprocess.call(['apt-ftparchive', 'packages', 'all'], stdout=packages_fd, stderr=stderr, cwd=base_dir)
-            packages_fd.close()
-            packages_fd = open(packages_file, 'a')
-            ret = subprocess.call(['apt-ftparchive', 'packages', '%s' % arch], stdout=packages_fd, stderr=stderr, cwd=base_dir)
-            packages_fd.close()
-            gzip_file(packages_file)
 
     print >> stdout, 'done.'
 
