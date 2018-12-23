@@ -119,7 +119,7 @@ def copy_repository(options):
 def copy_packages(options):
     print '  copying packages ...',
     sys.stdout.flush()
-    for subdir in ('packages',) + urepo.ARCHITECTURES:
+    for subdir in urepo.ARCHITECTURES:
         if os.path.exists(os.path.join(options.mount_point, subdir)):
             urepo.copy_package_files(os.path.join(options.mount_point, subdir), _repo_base)
             sys.stdout.flush()
@@ -132,8 +132,7 @@ def copy_dists(options):
     if os.path.isdir(dists_dest):
         shutil.rmtree(dists_dest)
     try:
-        # handle the different dists directories (UCS installer or d-i)
-        for dists_src in (os.path.join(options.mount_point, 'packages', 'dists'), os.path.join(options.mount_point, 'dists')):
+            dists_src = os.path.join(options.mount_point, 'dists')
             if os.path.isdir(dists_src):
                 shutil.copytree(dists_src, dists_dest, symlinks=True)
     except shutil.Error as ex:
@@ -167,15 +166,12 @@ def mount(options):
             return False
 
     print "Checking medium in %s ..." % options.mount_point,
-    found_error = True
-    if os.path.isdir(os.path.join(options.mount_point, 'packages')) and os.path.isdir(os.path.join(options.mount_point, 'profiles')):
-        found_error = False
-    elif os.path.exists(os.path.join(options.mount_point, '.univention_install')) and \
+    if os.path.exists(os.path.join(options.mount_point, '.univention_install')) and \
         os.path.isdir(os.path.join(options.mount_point, 'all')) and \
         (os.path.isdir(os.path.join(options.mount_point, 'amd64')) or
          os.path.isdir(os.path.join(options.mount_point, 'i386'))):
-        found_error = False
-    if found_error:
+        pass
+    else:
         print 'failed.'
         print >> sys.stderr, 'Error: This is not an UCS installation medium.'
         return False
