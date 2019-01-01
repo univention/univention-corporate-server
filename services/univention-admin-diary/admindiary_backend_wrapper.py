@@ -38,7 +38,7 @@ from datetime import datetime
 
 from pyparsing import Word, alphas, Suppress, Combine, nums, string, Regex
 
-from univention.admindiary import LogEntry
+from univention.admindiary import DiaryEntry
 from univention.admindiary.backend import add
 
 
@@ -73,7 +73,7 @@ class RsyslogTransport(object):
 		# merge the nested dictionaries to return a simple structure
 		rsyslog_event_dict = parsed_dict["serialized_event_dict"]
 		# and convert to Admin Diary object model
-		entry = LogEntry.from_json(rsyslog_event_dict)
+		entry = DiaryEntry.from_json(rsyslog_event_dict)
 		return entry
 
 
