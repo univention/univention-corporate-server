@@ -1,7 +1,5 @@
 #!/bin/bash
 #
-# postinst script
-#
 # Copyright 2019 Univention GmbH
 #
 # http://www.univention.de/
@@ -29,28 +27,4 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#DEBHELPER#
-
-SECRET_FILE="/etc/admin-diary.secret"
-if [ ! -e "$SECRET_FILE" ]; then
-	touch "$SECRET_FILE"
-	chmod 0700 "$SECRET_FILE"
-	PASSWORD="$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c20)"
-	echo "$PASSWORD" > "$SECRET_FILE"
-fi
-
-which psql
-if [ "$?" -eq "0" ]; then
-	ucr set admin/diary/dbms?postgresql
-else
-	ucr set admin/diary/dbms?mysql
-fi
-
-univention-config-registry set \
-	security/packetfilter/package/univention-admin-diary/tcp/10514/all=ACCEPT \
-	security/packetfilter/package/univention-admin-diary/tcp/10514/all/en="rsyslog relp+TLS"
-invoke-rc.d univention-firewall restart
-
-invoke-rc.d rsyslog try-restart
-
-exit 0
+/usr/share/univention-admin-diary/setup-dbms

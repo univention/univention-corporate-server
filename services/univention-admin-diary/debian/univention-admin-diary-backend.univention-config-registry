@@ -1,3 +1,7 @@
 Type: file
 File: etc/rsyslog.d/univention-admin-diary-backend.conf
 Variables: admin/diary/.*
+
+Type: script
+Script: univention-admin-diary-setup-dbms
+Variables: admin/diary/dbms

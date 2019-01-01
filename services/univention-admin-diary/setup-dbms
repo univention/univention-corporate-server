@@ -28,11 +28,13 @@
 # <http://www.gnu.org/licenses/>.
 
 db_backend="$(ucr get admin/diary/dbms)"
+PASSWORD="$(cat /etc/admin-diary.secret)"
+
 if [ "$db_backend" = "postgresql" ]; then
 	su postgres -c "createuser -DRS --login admindiary"
 	su postgres -c "createdb -O admindiary -T template0 -E UTF8 admindiary"
 	su postgres -c "psql postgres -c \"ALTER ROLE \\\"admindiary\\\" WITH ENCRYPTED PASSWORD '$PASSWORD'\""
-	su postgres -c "psql admindiary -c 'CREATE TABLE entries (
+	su postgres -c "psql admindiary -c 'CREATE TABLE IF NOT EXISTS entries (
 		id SERIAL PRIMARY KEY,
 		username VARCHAR NOT NULL,
 		hostname VARCHAR NOT NULL,
@@ -48,7 +50,7 @@ if [ "$db_backend" = "postgresql" ]; then
 elif [ "$db_backend" = "mysql" ]; then
 	echo "CREATE DATABASE IF NOT EXISTS admindiary" | mysql -p$(cat /etc/mysql.secret)
 	echo "GRANT ALL ON admindiary.* TO 'admindiary'@'localhost' IDENTIFIED BY '$PASSWORD'" | mysql -p$(cat /etc/mysql.secret)
-	echo "CREATE TABLE entries (
+	echo "CREATE TABLE IF NOT EXISTS entries (
 		id INT NOT NULL AUTO_INCREMENT,
 		username VARCHAR(512) NOT NULL,
 		hostname VARCHAR(512) NOT NULL,
@@ -59,12 +61,12 @@ elif [ "$db_backend" = "mysql" ]; then
 		created_at TIMESTAMP NOT NULL DEFAULT NOW(),
 		PRIMARY KEY(id)
 		);
-		CREATE TABLE arguments (
+		CREATE TABLE IF NOT EXISTS arguments (
 		log_entry_id INT NOT NULL,
 		arg VARCHAR(512) NOT NULL,
 		FOREIGN KEY(log_entry_id) REFERENCES entries(id) ON DELETE CASCADE
 		);
-		CREATE TABLE tags (
+		CREATE TABLE IF NOT EXISTS tags (
 		log_entry_id INT NOT NULL,
 		tag VARCHAR(512) NOT NULL,
 		FOREIGN KEY(log_entry_id) REFERENCES entries(id) ON DELETE CASCADE
