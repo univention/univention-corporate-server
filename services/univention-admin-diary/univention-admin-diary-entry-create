@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Diary
-#  CLI Tool adding diary entry into RabbitMQ to be added to the DB - eventually
+#  CLI Tool adding diary entry into Rsyslog to be added to the DB - eventually
 #
 # Copyright 2019 Univention GmbH
 #
