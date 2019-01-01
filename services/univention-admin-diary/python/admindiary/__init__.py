@@ -30,17 +30,50 @@
 
 from socket import getfqdn
 from datetime import datetime
+import logging
 import json
 
-class LogEntry(object):
-	def __init__(self, username, message, args, tags, log_id, event_name):
+LOG_FILE = '/var/log/univention/admindiary.log'
+
+class _ShortNameFormatter(logging.Formatter):
+	shorten = 'univention.admindiary'
+
+	def format(self, record):
+		record.short_name = record.name
+		if record.short_name.startswith('%s.' % self.shorten):
+			record.short_name = record.short_name[len(self.shorten) + 1:]
+		return super(_ShortNameFormatter, self).format(record)
+
+
+def _setup_logger():
+	base_logger = logging.getLogger('univention.admindiary')
+	if not _setup_logger._setup:
+		log_format = '%(process)6d %(short_name)-12s %(asctime)s [%(levelname)8s]: %(message)s'
+		log_format_time = '%y-%m-%d %H:%M:%S'
+		formatter = _ShortNameFormatter(log_format, log_format_time)
+		handler = logging.FileHandler(LOG_FILE)
+		handler.setFormatter(formatter)
+		base_logger.addHandler(handler)
+		base_logger.setLevel(logging.DEBUG)
+		_setup_logger._setup = True
+	return base_logger
+_setup_logger._setup = False
+
+
+def get_logger(name):
+	base_logger = _setup_logger()
+	return base_logger.getChild(name)
+
+
+class DiaryEntry(object):
+	def __init__(self, username, message, args, tags, diary_id, event_name):
 		self.username = username
 		self.hostname = getfqdn()
 		self.message = message
 		self.args = [str(arg) for arg in args]
 		self.issued = datetime.now()
 		self.tags = tags
-		self.log_id = log_id
+		self.diary_id = diary_id
 		self.event_name = event_name
 
 	def to_json(self):
@@ -51,7 +84,7 @@ class LogEntry(object):
 			'args': self.args,
 			'issued': self.issued.strftime('%Y-%m-%d %H:%M:%S%z'),
 			'tags': self.tags,
-			'log_id': self.log_id,
+			'diary_id': self.diary_id,
 			'event': self.event_name,
 			}
 		return json.dumps(attrs)
@@ -59,7 +92,7 @@ class LogEntry(object):
 	@classmethod
 	def from_json(cls, body):
 		json_body = json.loads(body)
-		entry = cls(json_body['username'], json_body['message'], json_body['args'], json_body['tags'], json_body['log_id'], json_body['event'])
+		entry = cls(json_body['username'], json_body['message'], json_body['args'], json_body['tags'], json_body['diary_id'], json_body['event'])
 		entry.issued = json_body['issued']
 		entry.hostname = json_body['hostname']
 		return entry

@@ -35,29 +35,30 @@
 import sys
 from argparse import ArgumentParser, REMAINDER
 
-from univention.admindiary.client import log, log_event
+from univention.admindiary.client import write, write_event
 from univention.admindiary.events import Event
 
 def main():
 	usage = '%(prog)s [options] <message>'
 	description = '%(prog)s is a program to add an entry to the Admin Diary'
 	parser = ArgumentParser(usage=usage, description=description)
-	parser.add_argument('-u', '--username', help='Username that issues the log entry')
-	parser.add_argument('-t', '--tag', action='append', help='Tags added to the log entry')
+	parser.add_argument('-u', '--username', help='Username that issues the diary entry')
+	parser.add_argument('-t', '--tag', action='append', help='Tags added to the diary entry')
 	parser.add_argument('-a', '--arg', action='append', help='Argument used in message')
 	parser.add_argument('--event', choices=Event.names(), help='Choose one from this convenience list instead of giving TAG and <message>')
-	parser.add_argument('--log-id', help='May be given to ammend an existing diary entry, effectively grouping those together. The LOG_ID is also returned by this program')
+	parser.add_argument('--diary-id', help='May be given to ammend an existing diary entry, effectively grouping those together. The DIARY_ID is also returned by this program')
 	parser.add_argument('message', nargs=REMAINDER, help='The message')
 	args = parser.parse_args()
 	if args.event:
 		event = Event.get(args.event)
-		try:
-			print log_event(event, args.arg, args.username, args.log_id)
-		except ValueError as exc:
-			print exc.message
+		diary_id = write_event(event, args.arg, args.username, args.diary_id)
+		if diary_id is not None:
+			print diary_id
+		else:
+			print >> sys.stderr, 'Could not write event'
 			sys.exit(1)
 	else:
-		print log(' '.join(args.message), args.arg, args.username, args.tag, args.log_id)
+		print write(' '.join(args.message), args.arg, args.username, args.tag, args.diary_id)
 
 if __name__ == '__main__':
 	main()

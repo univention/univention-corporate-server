@@ -30,8 +30,11 @@
 
 import datetime
 from contextlib import contextmanager
+from functools import partial
 
 from univention.config_registry import ConfigRegistry
+
+from univention.admindiary import get_logger
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -39,6 +42,8 @@ ucr.load()
 password = open('/etc/admin-diary.secret').read().strip()
 
 dbms = ucr.get('admin/diary/dbms')
+
+get_logger = partial(get_logger, 'backend')
 
 @contextmanager
 def connection(module):
@@ -63,11 +68,11 @@ if ucr.get('admin/diary/dbms') == 'postgresql':
 
 	def _postgresql_add(entry):
 		with cursor(psycopg2) as cur:
-			cur.execute("INSERT INTO log_entries (username, hostname, message, args, issued, tags, log_id, event_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.args, entry.issued, entry.tags, entry.log_id, entry.event_name))
+			cur.execute("INSERT INTO log_entries (username, hostname, message, args, issued, tags, diary_id, event_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.args, entry.issued, entry.tags, entry.diary_id, entry.event_name))
 
 	def _postgresql_query():
 		with connection(psycopg2) as conn:
-			conn.execute("SELECT username, hostname, message, args, issued, tags, log_id, event_name FROM log_entries")
+			conn.execute("SELECT username, hostname, message, args, issued, tags, diary_id, event_name FROM log_entries")
 			rows = conn.fetchall()
 			res = [dict(row) for row in rows]
 			for row in res:
@@ -83,7 +88,7 @@ elif ucr.get('admin/diary/dbms') == 'mysql':
 
 	def _mysql_add(entry):
 		with cursor(MySQLdb) as cur:
-			cur.execute("INSERT INTO log_entries (username, hostname, message, issued, log_id, event_name) VALUES (%s, %s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.issued, entry.log_id, entry.event_name))
+			cur.execute("INSERT INTO log_entries (username, hostname, message, issued, diary_id, event_name) VALUES (%s, %s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.issued, entry.diary_id, entry.event_name))
 			entry_id = cur.lastrowid
 			for arg in entry.args:
 				cur.execute("INSERT INTO arguments (log_entry_id, arg) VALUES (%s, %s)", (entry_id, arg))
@@ -92,7 +97,7 @@ elif ucr.get('admin/diary/dbms') == 'mysql':
 
 	def _mysql_query():
 		with connection(MySQLdb) as conn:
-			conn.execute("SELECT id, username, hostname, message, issued, log_id, event_name FROM log_entries")
+			conn.execute("SELECT id, username, hostname, message, issued, diary_id, event_name FROM log_entries")
 			rows = conn.fetchall()
 			res = [dict(row) for row in rows]
 			for row in res:
