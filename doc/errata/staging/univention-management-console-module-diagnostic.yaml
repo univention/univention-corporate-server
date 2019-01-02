@@ -3,8 +3,9 @@ release: "4.3"
 version: [2,3]
 scope: ucs_4.3-0-errata4.3-3
 src: univention-management-console-module-diagnostic
-fix: 4.0.1-17A~4.3.0.201812201442
+fix: 4.0.1-18A~4.3.0.201901021835
 desc: |
  This update addresses the following issue(s):
- * The proxy server test has been fixed. 
+ * The proxy server test has been fixed.
+ * A typo has been fixed in the error output of the Kerberos DDNS update check
 bug: [48385]
