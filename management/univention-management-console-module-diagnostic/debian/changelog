@@ -1,6 +1,12 @@
+univention-management-console-module-diagnostic (4.0.1-18) unstable; urgency=medium
+
+  * Bug #48385: fixed typo in 46_kerberos_ddns_update.py
+
+ -- Arvid Requate <requate@univention.de>  Wed, 02 Jan 2019 18:33:06 +0100
+
 univention-management-console-module-diagnostic (4.0.1-17) unstable; urgency=medium
 
-  * Bug #48385: versoin bump
+  * Bug #48385: version bump
 
  -- Felix Botner <botner@univention.de>  Thu, 20 Dec 2018 14:41:26 +0100
 
