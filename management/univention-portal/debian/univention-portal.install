@@ -1,5 +1,6 @@
 www/univention-management-console.svg usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/
 www/* usr/share/univention-portal/
 listener/*.py usr/lib/univention-directory-listener/system
-apache/univention-portal.conf etc/apache2/ucs-sites.conf.d/
 univention-blog.png usr/share/univention-portal/
+univention-portal-server usr/bin/
+univention-portal-server.service /lib/systemd/system

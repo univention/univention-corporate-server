@@ -1,0 +1,11 @@
+[Unit]
+Description=Univention Portal server
+After=apache2.service
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/univention-portal-server
+Restart=on-failure

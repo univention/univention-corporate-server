@@ -1,9 +1,7 @@
-#! /bin/sh
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
 #
-# Univention Portal
-#  postinst script for the univention-portal debian package
-#
-# Copyright 2017-2019 Univention GmbH
+# Copyright 2017-2018 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,18 +28,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#DEBHELPER#
+__package__ = ''  # workaround for PEP 366
 
-ucr set portal/port?8095
-a2ensite univention-portal.conf
+from univention.config_registry import ConfigRegistry
 
-if [ "$1" = "configure" ]; then
-	systemctl daemon-reload
-	systemctl reload apache2
-	systemctl enable univention-portal-server.service
-	systemctl restart univention-directory-listener
-fi
+ucr = ConfigRegistry()
+ucr.load()
 
-systemctl restart univention-portal-server
+name = 'portal_server'
+description = 'Tell portal server to refresh when something important changed'
+filter = '(|(univentionObjectType=settings/portal)(univentionObjectType=settings/portal_category)(univentionObjectType=settings/portal_entry)(&(objectClass=univentionPortalComputer)(cn=%s)))' % ucr.get('hostname')
+attributes = []
 
-exit 0
+def handler(dn, new, old):
+	open('/var/cache/univention-portal/refresh', 'w')
