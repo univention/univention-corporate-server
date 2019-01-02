@@ -1131,6 +1131,17 @@ class Root(Ressource):
 		self.expire_session()
 		raise HTTPRedirect(ucr.get('umc/logout/location') or '/univention/')
 
+	@cherrypy.expose
+	@cherrypy.tools.json_out()
+	def check_session(self, **kwargs):
+		# needed for univention-portal
+		user = self.get_user()
+		if user:
+			username = user.username
+		else:
+			username = None
+		return {'username': username}
+
 
 def get_ip_address():
 	"""get the IP address of client by last entry (from apache) in X-FORWARDED-FOR header"""

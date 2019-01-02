@@ -1,6 +1,36 @@
 #!/usr/bin/python2.7
+#
+# Univention Portal
+#
+# Copyright 2019 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
 
 import json
+import sys
 import os
 import os.path
 import shutil
@@ -8,6 +38,7 @@ from imghdr import what
 from StringIO import StringIO
 from copy import deepcopy
 import tempfile
+import logging
 
 import requests
 import tornado.ioloop
@@ -20,6 +51,35 @@ ucr = ConfigRegistry()
 ucr.load()
 
 udm = UDM.machine().version(1)
+
+LOG_FILE = '/var/log/univention/portal.log'
+
+class ShortNameFormatter(logging.Formatter):
+	shorten = 'univention.portal'
+
+	def format(self, record):
+		record.short_name = record.name
+		if record.short_name.startswith('%s.' % self.shorten):
+			record.short_name = record.short_name[len(self.shorten) + 1:]
+		return super(ShortNameFormatter, self).format(record)
+
+def setup_logger():
+	logger = logging.getLogger('univention.portal')
+	log_format = '%(process)6d %(short_name)-12s %(asctime)s [%(levelname)8s]: ' \
+		'%(message)s'
+	log_format_time = '%y-%m-%d %H:%M:%S'
+	formatter = ShortNameFormatter(log_format, log_format_time)
+	handler = logging.FileHandler(LOG_FILE)
+	handler.setFormatter(formatter)
+	logger.addHandler(handler)
+	handler = logging.StreamHandler(sys.stdout)
+	logger.addHandler(handler)
+	logger.setLevel(logging.DEBUG)
+
+def get_logger(name):
+	logger = logging.getLogger('univention.portal')
+	logger = logger.getChild(name)
+	return logger
 
 def flatten(list_of_lists):
 	# return [item for sublist in list_of_lists for item in sublist]
@@ -48,7 +108,7 @@ class LDAPCache(object):
 		#return self._udm
 
 	def load(self):
-		print 'loading cache file'
+		get_logger('cache').info('loading cache file')
 		with open(self.PORTAL_CACHE) as fd:
 			self._cache = json.load(fd)
 
@@ -66,11 +126,11 @@ class LDAPCache(object):
 			except EnvironmentError:
 				self.refresh()
 				self.load()
-		print 'getting %s from cache' % name
+		get_logger('cache').debug('getting %s from cache' % name)
 		return deepcopy(self._cache[name])
 
 	def refresh(self):
-		print 'refreshing cache'
+		get_logger('cache').info('refreshing cache')
 		ldap_hostdn = ucr.get('ldap/hostdn')
 		localhost = self.udm.obj_by_dn(ldap_hostdn)
 		portal_dn = localhost.props.portal
@@ -80,9 +140,9 @@ class LDAPCache(object):
 		content['links'] = self._extract_links(portal)
 		content['categories'] = self._extract_categories()
 		content['entries'] = self._extract_entries(portal)
-		with tempfile.TemporaryFile() as fd:
+		with tempfile.NamedTemporaryFile(delete=False) as fd:
 			json.dump(content, fd, sort_keys=True, indent=4)
-			shutil.move(fd.name, self.PORTAL_CACHE)
+		shutil.move(fd.name, self.PORTAL_CACHE)
 
 	def _extract_portal(self, portal):
 		ret = {}
@@ -143,8 +203,7 @@ class LDAPCache(object):
 				with open(fname, 'wb') as fd:
 					fd.write(img)
 			except (EnvironmentError, TypeError, IOError) as err:
-				print err
-				pass
+				get_logger('cache').error(err)
 			else:
 				return '/univention/portal/icons/entries/%s.%s' % (cn, suffix)
 
@@ -197,21 +256,25 @@ class JsonHandler(tornado.web.RequestHandler):
 
 	def _get_user(self, session):
 		if session is None:
-			print 'no user given'
+			get_logger('user').debug('no user given')
 			return None
-		print 'searching user for %s' % session
+		get_logger('user').debug('searching user for %s' % session)
 		username = self._ask_umc(session)
 		if username is None:
-			print 'no user found'
+			get_logger('user').debug('no user found')
 		else:
 			user = udm.get('users/user').get_by_id(username)
-			print 'found %r' % user
+			get_logger('user').debug('found %r' % user)
 			return user
+
+	def write_error(self, status_code, **kwargs):
+		if 'exc_info' in kwargs:
+			get_logger('server').exception('Error during service')
+		return super(JsonHandler, self).write_error(status_code, **kwargs)
 
 	def get(self):
 		session = self.get_cookie('UMCSessionId')
 		user = self._get_user(session)
-		print user
 		answer = {}
 		portal_content = answer['portal'] = self._get_portal(user)
 		answer['links'] = self._get_links()
@@ -223,30 +286,16 @@ cache = LDAPCache()
 
 def make_app():
 	return tornado.web.Application([
-		(r"/univention/portal/portal.json", JsonHandler),
+		(r'/', JsonHandler),
 	])
 
 if __name__ == "__main__":
+	setup_logger()
 	app = make_app()
 	port = int(ucr.get('portal/port', 8095))
-	print 'firing up portal server at port %s' % port
+	get_logger('server').info('firing up portal server at port %s' % port)
 	app.listen(port)
 	tornado.ioloop.IOLoop.current().start()
-
-# class Root(Ressource):
-#        @cherrypy.expose
-#        @cherrypy.tools.json_out()
-#        def check_session(self, **kwargs):
-#                """
-#                http://localhost:<ucr:umc/http/port>/
-#                """
-#                user = self.get_user()
-#                if user:
-#                        username = user.username
-#                else:
-#                        username = None 
-#                return {'username': username}
-#
 
 #class GroupsGroupObject(GenericObject):
 #        """Better representation of groups/group properties."""
