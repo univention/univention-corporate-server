@@ -1,0 +1,12 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: sqlite3
+fix: 3.8.7.1-1+deb8u3
+desc: |
+ This update addresses the following issue:
+ * sqlite3 (CVE-2018-20346)
+bug: [48404]
+cve:
+- CVE-2018-20346
