@@ -1,0 +1,15 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: ghostscript
+fix: 9.06~dfsg-2+deb8u13
+desc: |
+ This update addresses the following issues:
+ * Type confusion in setpattern (700141) (CVE-2018-19134)
+ * Attempting to open a carefully crafted PDF file results in long-running
+   computation (699856) (CVE-2018-19478)
+bug: [48406]
+cve:
+- CVE-2018-19134
+- CVE-2018-19478
