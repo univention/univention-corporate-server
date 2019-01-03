@@ -8,15 +8,13 @@ desc: |
  This update addresses the following issues:
  * Improperly implemented security check in zsetdevice function in
    psi/zdevice.c (CVE-2018-19409)
- * psi/zdevice2.c in Artifex Ghostscript before 9.26 allows remote attackers
-   to bypass intended access restrictions because available stack space is not
-   checked when the device remains the same. (CVE-2018-19475)
- * psi/zicc.c in Artifex Ghostscript before 9.26 allows remote attackers to
-   bypass intended access restrictions because of a setcolorspace type
-   confusion. (CVE-2018-19476)
- * psi/zfjbig2.c in Artifex Ghostscript before 9.26 allows remote attackers to
-   bypass intended access restrictions because of a JBIG2Decode type
-   confusion. (CVE-2018-19477)
+ * psi/zdevice2.c allows remote attackers to bypass intended access
+   restrictions because available stack space is not checked when the device
+   remains the same. (CVE-2018-19475)
+ * psi/zicc.c allows remote attackers to bypass intended access restrictions
+   because of a setcolorspace type confusion. (CVE-2018-19476)
+ * psi/zfjbig2.c allows remote attackers to bypass intended access
+   restrictions because of a JBIG2Decode type confusion. (CVE-2018-19477)
 bug: [48238]
 cve:
 - CVE-2018-19409
