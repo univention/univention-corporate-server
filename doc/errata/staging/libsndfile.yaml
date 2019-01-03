@@ -6,28 +6,16 @@ src: libsndfile
 fix: 1.0.25-9.1+deb8u2
 desc: |
  This update addresses the following issues:
-
- * 1.0.25-9.1+deb8u2 (Sat, 15 Dec 2018 13:10:27 +0100) * Non-maintainer upload
-   by the LTS Team. * CVE-2018-13139, CVE-2018-19432: out of bounds read in
-   sf_write_int
- . * CVE-2017-8365: global buffer overflow in i2les_array. * CVE-2017-8363:
- heap-based buffer overflow in flac_buffer_copy * CVE-2017-8362: Invalid memory
- read in flac_buffer_copy. * CVE-2017-8361: global buffer overflow in
- flac_buffer_copy * CVE-2017-14634: multiple divide-by-zero issues in
- double64_init and float32_init. * CVE-2017-17456, CVE-2017-17457,
- CVE-2018-19662, CVE-2018-19661, CVE-2017-14245 and CVE-2017-14246: multiple
- buffer overflow issues in {d,i}2ulaw_array and {d,i}2alaw_array.
-
- * 1.0.25-9.1+deb8u2 (Sat, 15 Dec 2018 13:10:27 +0100) * Non-maintainer upload
-   by the LTS Team. * CVE-2018-13139, CVE-2018-19432: out of bounds read in
-   sf_write_int
- . * CVE-2017-8365: global buffer overflow in i2les_array. * CVE-2017-8363:
- heap-based buffer overflow in flac_buffer_copy * CVE-2017-8362: Invalid memory
- read in flac_buffer_copy. * CVE-2017-8361: global buffer overflow in
- flac_buffer_copy * CVE-2017-14634: multiple divide-by-zero issues in
- double64_init and float32_init. * CVE-2017-17456, CVE-2017-17457,
- CVE-2018-19662, CVE-2018-19661, CVE-2017-14245 and CVE-2017-14246: multiple
- buffer overflow issues in {d,i}2ulaw_array and {d,i}2alaw_array.
+ * CVE-2018-13139, CVE-2018-19432: out of bounds read in sf_write_int
+ * CVE-2017-8365: global buffer overflow in i2les_array.
+ * CVE-2017-8363: heap-based buffer overflow in flac_buffer_copy
+ * CVE-2017-8362: Invalid memory read in flac_buffer_copy.
+ * CVE-2017-8361: global buffer overflow in flac_buffer_copy
+ * CVE-2017-14634: multiple divide-by-zero issues in double64_init and
+   float32_init.
+ * CVE-2017-17456, CVE-2017-17457, CVE-2018-19662, CVE-2018-19661,
+   CVE-2017-14245 and CVE-2017-14246: multiple buffer overflow issues in
+   {d,i}2ulaw_array and {d,i}2alaw_array.
 bug: [48403]
 cve:
 - CVE-2018-13139
