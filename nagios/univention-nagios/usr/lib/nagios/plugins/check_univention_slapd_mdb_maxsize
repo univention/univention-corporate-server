@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 
-eval "$(ucr shell ldap/database/mdb/maxsize ldap/database/type)"
+eval "$(ucr shell ldap/database/type)"
 
 STATE_OK=0
 STATE_WARNING=1
@@ -87,14 +87,14 @@ if [ "$ldap_database_type" = "mdb" ]; then
 		test -x /usr/bin/mdb_stat || nagios_exit "$STATE_WARNING" "mdb_stat not found, please install lmdb-utils"
 		max_pages="$(mdb_stat -e $mdb_dir | sed -ne 's| *Max pages: ||p')"
 		used_pages="$(mdb_stat -e $mdb_dir | sed -ne 's| *Number of pages used: ||p')"
-		in_use=$(($used_pages*100/$max_pages))	
+		in_use=$(($used_pages*100/$max_pages))
 		if [ $in_use -ge $critical ]; then
 			nagios_exit $STATE_CRITICAL "More than $critical% (in fact $in_use%) of mdb database is use, please increase ldap/database/mdb/maxsize (and restart ldap server)"
 			echo "cri"
 		elif [ $in_use -ge $warn ]; then
 			nagios_exit "$STATE_WARNING" "More than $warn% (in fact $in_use%) of mdb database is use, consider increasing ldap/database/mdb/maxsize (and restart ldap server)"
 		else
-			nagios_exit $STATE_OK "System operational"
+			nagios_exit $STATE_OK "System operational (in fact $in_use%)"
 		fi
 	fi
 	nagios_exit $STATE_OK "Slapd database file $mdb_file not found"
