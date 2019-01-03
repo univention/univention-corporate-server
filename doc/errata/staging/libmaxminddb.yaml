@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [2, 3]
+scope: ucs_4.3-0
+src: libmaxminddb
+fix: 1.2.0-1
+desc: |
+ This update addresses the following issue:
+ * Add package as maintained dependency.
+bug: [48409]
+ignore:
+ - version.scope
