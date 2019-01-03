@@ -1,0 +1,34 @@
+product: ucs
+release: "4.3"
+version: [2, 3]
+scope: ucs_4.3-0-errata4.3-3
+src: wireshark
+fix: 2.6.5-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * OpcUa dissector crash (CVE-2018-12086)
+ * CoAP dissector crash (CVE-2018-18225)
+ * Steam IHS Discovery dissector memory leak (CVE-2018-18226)
+ * MS-WSP dissector crash (CVE-2018-18227)
+ * Infinite loop in the MMSE dissector (CVE-2018-19622)
+ * Heap buffer overflow in packet-lbmpdm.c:dissect_segment_ofstable() allows
+   denial of service or possibly arbitrary code execution (CVE-2018-19623)
+ * NULL pointer dereference resulting in a PVFS dissector crash
+   (CVE-2018-19624)
+ * Heap-based buffer over-read in the dissection engine (CVE-2018-19625)
+ * DCOM dissector crash resulting in information leak (CVE-2018-19626)
+ * IxVeriWave parser crash (CVE-2018-19627)
+ * ZigBee ZCL dissector crash (CVE-2018-19628)
+bug: [48409]
+cve:
+- CVE-2018-12086
+- CVE-2018-18225
+- CVE-2018-18226
+- CVE-2018-18227
+- CVE-2018-19622
+- CVE-2018-19623
+- CVE-2018-19624
+- CVE-2018-19625
+- CVE-2018-19626
+- CVE-2018-19627
+- CVE-2018-19628
