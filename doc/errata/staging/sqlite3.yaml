@@ -6,7 +6,11 @@ src: sqlite3
 fix: 3.8.7.1-1+deb8u3
 desc: |
  This update addresses the following issue:
- * sqlite3 (CVE-2018-20346)
+ * SQLite encounters an integer overflow (and resultant buffer overflow) for
+   FTS3 queries that occur after crafted changes to FTS3 shadow tables,
+   allowing remote attackers to execute arbitrary code by leveraging the
+   ability to run arbitrary SQL statements (such as in certain WebSQL use
+   cases), aka Magellan. (CVE-2018-20346)
 bug: [48404]
 cve:
 - CVE-2018-20346
