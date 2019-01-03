@@ -1,3 +1,10 @@
+univention-admin-diary (1.0.0-5) unstable; urgency=medium
+
+  * Bug #48341: backend code
+  * Bug #48342: add UCR varialbe descriptions
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Jan 2019 19:37:38 +0100
+
 univention-admin-diary (1.0.0-4) unstable; urgency=medium
 
   * Bug #48342: only restart rsyslog if necessary
