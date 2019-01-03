@@ -7,9 +7,7 @@ fix: 3.5.1.dfsg-2+deb8u1
 desc: |
  This update addresses the following issues:
  * denial of service due to off-by-one flaw in process_cgivars()
-   (CVE-2013-7108)
- * denial of service due to off-by-one flaw in process_cgivars()
-   (CVE-2013-7205)
+   (CVE-2013-7108, CVE-2013-7205)
  * possible buffer overflows in cmd.cgi (CVE-2014-1878)
  * Privilege escalation issue (CVE-2016-9566)
  * Stored XSS via Plugin Output (CVE-2018-18245)
