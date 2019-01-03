@@ -1,3 +1,9 @@
+ucs-test (9.0.0-4) unstable; urgency=medium
+
+  * Bug #48421: use DSDB_CONTROL_REPLICATED_UPDATE_OID control in samba modify
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 Jan 2019 17:31:42 +0100
+
 ucs-test (9.0.0-3) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support

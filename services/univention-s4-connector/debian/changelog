@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.0-3) unstable; urgency=medium
+
+  * Bug #48421: added DSDB_CONTROL_REPLICATED_UPDATE_OID to samba modify
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 Jan 2019 17:29:59 +0100
+
 univention-s4-connector (13.0.0-2) unstable; urgency=medium
 
   * Bug #48142: Samba 4.9 now properly handles the AD passsword change
