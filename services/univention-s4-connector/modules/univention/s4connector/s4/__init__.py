@@ -57,6 +57,7 @@ LDAP_SERVER_SHOW_DELETED_OID = "1.2.840.113556.1.4.417"
 LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
 LDB_CONTROL_RELAX_OID = "1.3.6.1.4.1.4203.666.5.12"
 LDB_CONTROL_PROVISION_OID = '1.3.6.1.4.1.7165.4.3.16'
+DSDB_CONTROL_REPLICATED_UPDATE_OID = '1.3.6.1.4.1.7165.4.3.3'
 
 # page results
 PAGE_SIZE = 1000
@@ -907,6 +908,7 @@ class s4(univention.s4connector.ucs):
 		# objectSid modification for an Samba4 object is only possible with the "provision" control:
 		if self.configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
 			self.serverctrls_for_add_and_modify.append(LDAPControl(LDB_CONTROL_PROVISION_OID, criticality=0))
+			self.serverctrls_for_add_and_modify.append(LDAPControl(DSDB_CONTROL_REPLICATED_UPDATE_OID, criticality=0))
 
 		# Save a list of objects just created, this is needed to
 		# prevent the back sync of a password if it was changed just

@@ -1,3 +1,15 @@
+univention-s4-connector (12.0.4-2) unstable; urgency=medium
+
+  * Bug #49481: cherry-pick
+
+ -- Felix Botner <botner@univention.de>  Wed, 15 May 2019 14:15:34 +0200
+
+univention-s4-connector (12.0.4-1) unstable; urgency=medium
+
+  * Bug #48421: added DSDB_CONTROL_REPLICATED_UPDATE_OID to samba modify
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 Jan 2019 17:29:59 +0100
+
 univention-s4-connector (12.0.3-1) unstable; urgency=medium
 
   * Bug #49480: Samba 4.9 now properly handles the AD passsword change

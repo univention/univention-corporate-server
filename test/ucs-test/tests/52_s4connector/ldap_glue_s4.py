@@ -148,7 +148,11 @@ class LDAPConnection:
 
 	def set_attribute_with_provision_ctrl(self, dn, key, value):
 		LDB_CONTROL_PROVISION_OID = '1.3.6.1.4.1.7165.4.3.16'
-		ctrls = [LDAPControl(LDB_CONTROL_PROVISION_OID, criticality=0)] + self.serverctrls_for_add_and_modify
+		DSDB_CONTROL_REPLICATED_UPDATE_OID = '1.3.6.1.4.1.7165.4.3.3'
+		ctrls = [
+			LDAPControl(LDB_CONTROL_PROVISION_OID, criticality=0),
+			LDAPControl(DSDB_CONTROL_REPLICATED_UPDATE_OID, criticality=0),
+		] + self.serverctrls_for_add_and_modify
 		self.lo.modify_ext_s(s4.compatible_modstring(unicode(dn)),
 			[(ldap.MOD_REPLACE, key, value)], serverctrls=ctrls)
 
