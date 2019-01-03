@@ -1,6 +1,7 @@
 univention-admin-diary (1.0.0-6) unstable; urgency=medium
 
   * Bug #48342: unset admin/diary/backend in client postrm
+  * crestart listener in client postrm
 
  -- Arvid Requate <requate@univention.de>  Thu, 03 Jan 2019 19:45:55 +0100
 
