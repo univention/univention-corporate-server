@@ -1,0 +1,22 @@
+product: ucs
+release: "4.2"
+version: [5]
+scope: ucs_4.2-0-errata4.2-5
+src: nagios3
+fix: 3.5.1.dfsg-2+deb8u1
+desc: |
+ This update addresses the following issues:
+ * denial of service due to off-by-one flaw in process_cgivars()
+   (CVE-2013-7108)
+ * denial of service due to off-by-one flaw in process_cgivars()
+   (CVE-2013-7205)
+ * possible buffer overflows in cmd.cgi (CVE-2014-1878)
+ * Privilege escalation issue (CVE-2016-9566)
+ * Stored XSS via Plugin Output (CVE-2018-18245)
+bug: [48407]
+cve:
+- CVE-2013-7108
+- CVE-2013-7205
+- CVE-2014-1878
+- CVE-2016-9566
+- CVE-2018-18245
