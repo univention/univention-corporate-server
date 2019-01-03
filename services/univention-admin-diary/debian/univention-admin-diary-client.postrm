@@ -31,6 +31,7 @@
 
 #DEBHELPER#
 
+univention-config-registry unset admin/diary/backend
 invoke-rc.d rsyslog restart
 
 exit 0
