@@ -16,25 +16,21 @@ desc: |
  * Out-of-bounds read in parse_file_info (CVE-2017-14501)
  * Off-by-one error in the read_header function (CVE-2017-14502)
  * Out-of-bounds read in lha_read_data_none (CVE-2017-14503)
- * libarchive version commit 416694915449219d505531b1096384f3237dd6cc onwards
-   (release v3.1.0 onwards) contains a CWE-415: Double Free vulnerability in
-   RAR decoder - libarchive/archive_read_support_format_rar.c, parse_codes(),
+ * libarchive contains a CWE-415: Double Free vulnerability in RAR decoder -
+   libarchive/archive_read_support_format_rar.c, parse_codes(),
    realloc(rar->lzss.window, new_size) with new_size = 0 that can result in
    Crash/DoS. This attack appear to be exploitable via the victim must open a
    specially crafted RAR archive. (CVE-2018-1000877)
- * libarchive version commit 416694915449219d505531b1096384f3237dd6cc onwards
-   (release v3.1.0 onwards) contains a CWE-416: Use After Free vulnerability
-   in RAR decoder - libarchive/archive_read_support_format_rar.c that can
-   result in Crash/DoS - it is unknown if RCE is possible. This attack appear
-   to be exploitable via the victim must open a specially crafted RAR archive.
+ * libarchive contains a CWE-416: Use After Free vulnerability in RAR decoder
+   - libarchive/archive_read_support_format_rar.c that can result in Crash/DoS
+   - it is unknown if RCE is possible. This attack appear to be exploitable
+   via the victim must open a specially crafted RAR archive.
    (CVE-2018-1000878)
- * libarchive version commit 9693801580c0cf7c70e862d305270a16b52826a7 onwards
-   (release v3.2.0 onwards) contains a CWE-20: Improper Input Validation
-   vulnerability in WARC parser -
-   libarchive/archive_read_support_format_warc.c, _warc_read() that can result
-   in DoS - quasi-infinite run time and disk usage from tiny file. This attack
-   appear to be exploitable via the victim must open a specially crafted WARC
-   file. (CVE-2018-1000880)
+ * libarchive contains a CWE-20: Improper Input Validation vulnerability in
+   WARC parser - libarchive/archive_read_support_format_warc.c, _warc_read()
+   that can result in DoS - quasi-infinite run time and disk usage from tiny
+   file. This attack appear to be exploitable via the victim must open a
+   specially crafted WARC file. (CVE-2018-1000880)
 bug: [48408]
 cve:
 - CVE-2016-10209
