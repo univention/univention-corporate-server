@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [2, 3]
+scope: ucs_4.3-0-errata4.3-3
+src: ghostscript
+fix: 9.26~dfsg-0+deb9u2
+desc: |
+ This update addresses the following issue:
+ * Fix regression from erratum 362.
+bug: [48415]
