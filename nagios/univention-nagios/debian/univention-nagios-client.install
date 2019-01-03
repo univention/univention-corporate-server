@@ -12,6 +12,8 @@ usr/lib/nagios/plugins/check_univention_joinstatus usr/lib/nagios/plugins/
 usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper usr/lib/nagios/plugins/
 usr/lib/nagios/plugins/check_univention_ldap usr/lib/nagios/plugins/
 usr/lib/nagios/plugins/check_univention_ldap_suidwrapper usr/lib/nagios/plugins/
+usr/lib/nagios/plugins/check_univention_listener_mdb_maxsize usr/lib/nagios/plugins/
+usr/lib/nagios/plugins/check_univention_listener_mdb_maxsize_suidwrapper usr/lib/nagios/plugins/
 usr/lib/nagios/plugins/check_univention_smtp usr/lib/nagios/plugins/
 usr/lib/nagios/plugins/check_univention_nscd usr/lib/nagios/plugins/
 usr/lib/nagios/plugins/check_univention_nscd_suidwrapper usr/lib/nagios/plugins/

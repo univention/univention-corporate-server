@@ -35,6 +35,7 @@ override_dh_auto_build:
 	dh_auto_build
 	gcc -o usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper.c
 	gcc -o usr/lib/nagios/plugins/check_univention_ldap_suidwrapper       usr/lib/nagios/plugins/check_univention_ldap_suidwrapper.c
+	gcc -o usr/lib/nagios/plugins/check_univention_listener_mdb_maxsize_suidwrapper usr/lib/nagios/plugins/check_univention_listener_mdb_maxsize_suidwrapper.c
 	gcc -o usr/lib/nagios/plugins/check_univention_winbind_suidwrapper usr/lib/nagios/plugins/check_univention_winbind_suidwrapper.c
 	gcc -o usr/lib/nagios/plugins/check_univention_nscd_suidwrapper usr/lib/nagios/plugins/check_univention_nscd_suidwrapper.c
 	gcc -o usr/lib/nagios/plugins/check_univention_slapd_mdb_maxsize_suidwrapper usr/lib/nagios/plugins/check_univention_slapd_mdb_maxsize_suidwrapper.c
@@ -46,6 +47,7 @@ override_dh_fixperms:
 	dh_fixperms
 	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper
 	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_ldap_suidwrapper
+	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_listener_mdb_maxsize_suidwrapper
 	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_winbind_suidwrapper
 	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_nscd_suidwrapper
 	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_slapd_mdb_maxsize_suidwrapper
@@ -56,6 +58,7 @@ override_dh_auto_clean:
 	rm -f debian/univention-nagios-client.conffiles
 	rm -f usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper
 	rm -f usr/lib/nagios/plugins/check_univention_ldap_suidwrapper
+	rm -f usr/lib/nagios/plugins/check_univention_listener_mdb_maxsize_suidwrapper
 	rm -f usr/lib/nagios/plugins/check_univention_winbind_suidwrapper
 	rm -f usr/lib/nagios/plugins/check_univention_nscd_suidwrapper
 	rm -f usr/lib/nagios/plugins/check_univention_slapd_mdb_maxsize_suidwrapper
