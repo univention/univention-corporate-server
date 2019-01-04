@@ -79,7 +79,7 @@ def copy_repository(options, source, version):
 
     # create Packages files
     print >>options.teefile, 'Packages ...',
-    urepo.update_indexes(dest_repo)
+    urepo.gen_indexes(dest_repo, version)
 
     print >>options.teefile, 'Scripts ...',
     for script in ('preup.sh', 'preup.sh.gpg', 'postup.sh', 'postup.sh.gpg'):

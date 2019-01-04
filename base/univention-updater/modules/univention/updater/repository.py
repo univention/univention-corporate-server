@@ -116,50 +116,6 @@ def copy_package_files(source_dir, dest_dir):
             print >> sys.stderr, "Copying '%s' failed: %s" % (src, ex)
 
 
-def update_indexes(base_dir, update_only=False, stdout=None, stderr=None):
-    """
-    Re-generate Debian :file:`Packages` files for all architectures.
-
-    :param str base_dir: Base directory, which contains the per architecture sub directories.
-    :param bool update_only: Only update already existing files - skip missing files.
-    :param file stdout: Override standard output. Defaults to :py:obj:`sys.stdout`.
-    :param file stderr: Override standard error output. Defaults to :py:obj:`sys.stderr`.
-    """
-    # redirekt output
-    if not stdout:
-        stdout = sys.stdout
-    if not stderr:
-        stderr = sys.stderr
-
-    print >> stdout, 'Creating indexes ...',
-    stdout.flush()
-    for arch in ARCHITECTURES:
-        if not os.path.isdir(os.path.join(base_dir, arch)):
-            continue
-        pkgname = os.path.join(base_dir, arch, 'Packages')
-        if update_only and not os.path.isfile(pkgname):
-            continue
-        print >> stdout, arch,
-        stdout.flush()
-        # create Packages file
-        packages_fd = open(pkgname, 'w')
-        pwd, child = os.path.split(base_dir)
-        ret = subprocess.call(['apt-ftparchive', 'packages', os.path.join(child, arch)], stdout=packages_fd, stderr=stderr, cwd=pwd)
-        packages_fd.close()
-
-        if ret:
-            print >> stderr, "Error: Failed to create '%s'" % pkgname
-            sys.exit(1)
-
-        # create Packages.gz file
-        if gzip_file(pkgname):
-            print >> stdout, 'failed.'
-            print >> stderr, "Error: Failed to compress '%s'" % pkgname
-            sys.exit(1)
-
-    print >> stdout, 'done.'
-
-
 def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
     """
     Re-generate Debian :file:`Packages` files from file:`dists/` file.
