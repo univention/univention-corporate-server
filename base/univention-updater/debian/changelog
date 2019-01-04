@@ -1,3 +1,9 @@
+univention-updater (13.0.1-70) unstable; urgency=low
+
+  * Bug #29505: Mark repository tools as deprecated
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Feb 2019 08:50:23 +0100
+
 univention-updater (13.0.1-69) unstable; urgency=low
 
   * Bug #46600: Fix local repository dists Packages setup
