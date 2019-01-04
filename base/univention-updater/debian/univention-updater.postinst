@@ -54,7 +54,6 @@ if [ "$1" = "configure" ]; then
 		update/warning/coloured?"no" \
 		update/warning/lang?"default" \
 		update/warning/tty?"/dev/tty1 /dev/tty2 /dev/tty3 /dev/tty4 /dev/tty5 /dev/tty6 /dev/tty7" \
-		update/umc/nextversion?true \
 		repository/online?no \
 		repository/online/server?"${REPOSITORY}" \
 		repository/online/unmaintained?no \
@@ -63,8 +62,6 @@ if [ "$1" = "configure" ]; then
 		repository/mirror/recreate_packages?no \
 		repository/mirror/basepath?/var/lib/univention-repository \
 		repository/credentials/'Univention Software Repository'/uris?'updates.software-univention.de updates-test.software-univention.de appcenter.software-univention.de appcenter-test.software-univention.de' \
-		update/custom/preup?/var/lib/local-preup.sh \
-		update/custom/postup?/var/lib/local-postup.sh \
 		update/commands/update?"apt-get update" \
 		update/commands/show?"apt-cache show" \
 		update/commands/install?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 install" \
