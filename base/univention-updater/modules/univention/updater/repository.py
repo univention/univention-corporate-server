@@ -124,6 +124,9 @@ def update_indexes(base_dir, update_only=False, stdout=None, stderr=None):
     :param bool update_only: Only update already existing files - skip missing files.
     :param file stdout: Override standard output. Defaults to :py:obj:`sys.stdout`.
     :param file stderr: Override standard error output. Defaults to :py:obj:`sys.stderr`.
+
+    .. deprecated:: 4.3-3
+       Use :func:`gen_indexes` instead.
     """
     # redirekt output
     if not stdout:

@@ -138,6 +138,7 @@ def parse_args():
 
 
 def main():
+    print('This tool is DEPRECATED and will be removed with UCS-4.4')
     destination_dir, source_dirs = parse_args()
 
     with UpdaterLock():

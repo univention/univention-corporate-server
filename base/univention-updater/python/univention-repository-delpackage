@@ -84,6 +84,7 @@ def parse_args():
 
 
 def main():
+    print('This tool is DEPRECATED and will be removed with UCS-4.4')
     files = parse_args()
     urepo.assert_local_repository()
 
