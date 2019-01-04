@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: apt-mirror
+fix: 0.5.4-1A~4.3.0.201901041140
+desc: |
+ This update addresses the following issue:
+ * When mirroring distributions the default architecture was not detected
+   correctly and URLs were scheduled for download multiple times.
+ * The error message complaining about the missing `postmirror.sh` file is no
+   longer displayed.
+bug: [48424]
