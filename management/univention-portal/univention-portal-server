@@ -40,17 +40,16 @@ from copy import deepcopy
 import tempfile
 import logging
 
+from ldap.dn import explode_dn
 import requests
 import tornado.ioloop
 import tornado.web
 
-from univention.udm import UDM
+from univention.udm import UDM, NoObject
 from univention.config_registry import ConfigRegistry
 
 ucr = ConfigRegistry()
 ucr.load()
-
-udm = UDM.machine().version(1)
 
 LOG_FILE = '/var/log/univention/portal.log'
 
@@ -94,18 +93,29 @@ def flatten(list_of_lists):
 
 class LDAPCache(object):
 	PORTAL_CACHE = '/var/cache/univention-portal/portal.json'
-	REFRESH_FILE = '/var/cache/univention-portal/refresh'
+	GROUP_CACHE = '/var/cache/univention-portal/groups.json'
+	REFRESH_PORTAL_FILE = '/var/cache/univention-portal/refresh_portal'
+	REFRESH_GROUP_FILE = '/var/cache/univention-portal/refresh_group'
 
 	def __init__(self):
 		self._cache = None
+		self._groups = {}
 		self._udm = None
 
 	@property
 	def udm(self):
-		return udm
-		#if self._udm is None:
-		#	self._udm = UDM.machine().version(1)
-		#return self._udm
+		if self._udm is None:
+			self._udm = UDM.machine().version(1)
+		return self._udm
+
+	def load_groups(self):
+		get_logger('cache').info('loading group cache file')
+		try:
+			with open(self.GROUP_CACHE) as fd:
+				self._groups = json.load(fd)
+		except EnvironmentError:
+			get_logger('cache').warn('unable to read group cache file')
+			self._groups = {}
 
 	def load(self):
 		get_logger('cache').info('loading cache file')
@@ -113,10 +123,45 @@ class LDAPCache(object):
 			self._cache = json.load(fd)
 
 	def get(self, name):
-		if os.path.exists(self.REFRESH_FILE):
+		if name == 'groups':
+			return self._get_groups()
+		else:
+			return self._get_portal(name)
+
+	def _get_groups(self):
+		if self._groups is None:
+			self.load_groups()
+		if os.path.exists(self.REFRESH_GROUP_FILE):
+			get_logger('cache').info('refreshing groups')
+			working_file = self.REFRESH_GROUP_FILE + '.working'
+			shutil.move(self.REFRESH_GROUP_FILE, working_file)
+			try:
+				with open(working_file) as fd:
+					for group_dn in fd:
+						get_logger('cache').debug('refreshing %s' % group_dn)
+						try:
+							group = self.udm.get('groups/group').get(group_dn)
+						except NoObject:
+							self._groups.pop(group_dn, None)
+						else:
+							self._groups[group.dn] = {
+								'usernames': [explode_dn(dn, True)[0] for dn in group.props.users],
+								'groups': group.props.nestedGroup,
+								}
+				with tempfile.NamedTemporaryFile(delete=False) as fd:
+					json.dump(self._groups, fd, sort_keys=True, indent=4)
+				shutil.move(fd.name, self.GROUP_CACHE)
+			except Exception:
+				with open(self.REFRESH_GROUP_FILE, 'a') as fd:
+					fd.write(open(working_file).read())
+				get_logger('server').exception('Error while refreshing groups')
+		return self._groups
+
+	def _get_portal(self, name):
+		if os.path.exists(self.REFRESH_PORTAL_FILE):
 			self.refresh()
 			try:
-				os.unlink(self.REFRESH_FILE)
+				os.unlink(self.REFRESH_PORTAL_FILE)
 			except EnvironmentError:
 				pass
 			self._cache = None
@@ -209,18 +254,39 @@ class LDAPCache(object):
 
 
 class JsonHandler(tornado.web.RequestHandler):
-	def _get_portal(self, user):
+	def _recursive_search_in_groups(self, username, group, groups, checked_groups):
+		if username in group['usernames']:
+			return True
+		for group_dn in group['groups']:
+			if group_dn in checked_groups:
+				continue
+			group = groups.get(group_dn)
+			if group is None:
+				continue
+			checked_groups.append(group_dn)
+			if self._recursive_search_in_groups(username, group, groups, checked_groups):
+				return True
+		return False
+
+	def _get_portal(self, username):
 		portal = cache.get('portal')
+		entries = cache.get('entries')
+		groups = cache.get('groups')
 		actual_content = portal.pop('content')
 		filtered_content = []
 		for category_dn, entry_dns in actual_content:
 			filter_entry_dns = []
 			for entry_dn in entry_dns:
-				entry = udm.get('settings/portal_entry').get(entry_dn)
-				if entry.props.allowedGroups:
-					for group_dn in entry.props.allowedGroups:
-						group = udm.get('groups/group').get(group_dn)
-						if group.includes_recursive(user):
+				entry = entries.get(entry_dn)
+				if entry is None:
+					continue
+				if entry['allowedGroups']:
+					checked_groups = []
+					for group_dn in entry['allowedGroups']:
+						group = groups.get(group_dn)
+						if group is None:
+							continue
+						if self._recursive_search_in_groups(username, group, groups, checked_groups):
 							break
 					else:
 						continue
@@ -254,7 +320,7 @@ class JsonHandler(tornado.web.RequestHandler):
 		data = response.json()
 		return data['username']
 
-	def _get_user(self, session):
+	def _get_username(self, session):
 		if session is None:
 			get_logger('user').debug('no user given')
 			return None
@@ -263,9 +329,8 @@ class JsonHandler(tornado.web.RequestHandler):
 		if username is None:
 			get_logger('user').debug('no user found')
 		else:
-			user = udm.get('users/user').get_by_id(username)
-			get_logger('user').debug('found %r' % user)
-			return user
+			get_logger('user').debug('found %r' % username)
+			return username
 
 	def write_error(self, status_code, **kwargs):
 		if 'exc_info' in kwargs:
@@ -274,9 +339,9 @@ class JsonHandler(tornado.web.RequestHandler):
 
 	def get(self):
 		session = self.get_cookie('UMCSessionId')
-		user = self._get_user(session)
+		username = self._get_username(session)
 		answer = {}
-		portal_content = answer['portal'] = self._get_portal(user)
+		portal_content = answer['portal'] = self._get_portal(username)
 		answer['links'] = self._get_links()
 		answer['categories'] = self._get_categories(portal_content['content'])
 		answer['entries'] = self._get_entries(portal_content['content'])
