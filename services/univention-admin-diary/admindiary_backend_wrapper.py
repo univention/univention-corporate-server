@@ -35,12 +35,14 @@
 
 import sys
 from datetime import datetime
+from functools import partial
 
-from pyparsing import Word, alphas, Suppress, Combine, nums, string, Regex
+from pyparsing import Word, alphas, Suppress, Combine, nums, string, Regex, ParseException
 
-from univention.admindiary import DiaryEntry
+from univention.admindiary import DiaryEntry, get_logger
 from univention.admindiary.backend import add
 
+get_logger = partial(get_logger, 'backend')
 
 class RsyslogTransport(object):
 	def __init__(self, syslogtag):
@@ -68,13 +70,22 @@ class RsyslogTransport(object):
 		self._pattern = timestamp("source_datetime") + hostname("source_hostname") + syslogtag + payload("serialized_event_dict")
 
 	def deserialize(self, line):
-		parsed = self._pattern.parseString(line)
-		parsed_dict = parsed.asDict()
-		# merge the nested dictionaries to return a simple structure
-		rsyslog_event_dict = parsed_dict["serialized_event_dict"]
-		# and convert to Admin Diary object model
-		entry = DiaryEntry.from_json(rsyslog_event_dict)
-		return entry
+		get_logger().debug('Parsing %s' % line)
+		try:
+			parsed = self._pattern.parseString(line)
+			parsed_dict = parsed.asDict()
+		except ParseException as exc:
+			get_logger().error('Parsing failed! %s (%s)' % (line, exc))
+		else:
+			# merge the nested dictionaries to return a simple structure
+			rsyslog_event_dict = parsed_dict["serialized_event_dict"]
+			# and convert to Admin Diary object model
+			try:
+				entry = DiaryEntry.from_json(rsyslog_event_dict)
+			except (TypeError, KeyError) as exc:
+				get_logger().error('Parsing failed! %r (%s)' % (rsyslog_event_dict, exc))
+			else:
+				return entry
 
 
 def stdin_to_storage():
@@ -85,7 +96,8 @@ def stdin_to_storage():
 		if not line:
 			break
 		entry = rsyslog_transport.deserialize(line)
-		add(entry)
+		if entry:
+			add(entry)
 
 
 if __name__ == "__main__":

@@ -69,6 +69,7 @@ if ucr.get('admin/diary/dbms') == 'postgresql':
 	def _postgresql_add(entry):
 		with cursor(psycopg2) as cur:
 			cur.execute("INSERT INTO entries (username, hostname, message, args, issued, tags, diary_id, event_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.args, entry.issued, entry.tags, entry.diary_id, entry.event_name))
+		get_logger().info('Successfully added %s to postgresql. (%s)' % (entry.diary_id, entry.event_name))
 
 	def _postgresql_query():
 		with connection(psycopg2) as conn:
@@ -94,6 +95,7 @@ elif ucr.get('admin/diary/dbms') == 'mysql':
 				cur.execute("INSERT INTO arguments (log_entry_id, arg) VALUES (%s, %s)", (entry_id, arg))
 			for tag in entry.tags:
 				cur.execute("INSERT INTO tags (log_entry_id, tag) VALUES (%s, %s)", (entry_id, tag))
+		get_logger().info('Successfully added %s to mysql. (%s)' % (entry.diary_id, entry.event_name))
 
 	def _mysql_query():
 		with connection(MySQLdb) as conn:
@@ -112,7 +114,7 @@ elif ucr.get('admin/diary/dbms') == 'mysql':
 			return res
 	add = _mysql_add
 	query = _mysql_query
-elif ucr.get('admin/diary/dbms') == 'mysql':
+else:
 	def _no_add(entry):
 		raise NotImplementedError()
 	def _no_query():

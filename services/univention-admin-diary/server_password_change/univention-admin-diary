@@ -32,7 +32,7 @@
 
 
 if [ "$1" = "nochange" ]; then
-	univention-diary-entry-create --event SERVER_PASSWORD_CHANGED_FAILED
+	univention-admin-diary-entry-create --event SERVER_PASSWORD_CHANGED_FAILED
 elif [ "$1" = "postchange" ]; then
-	univention-diary-entry-create --event SERVER_PASSWORD_CHANGED
+	univention-admin-diary-entry-create --event SERVER_PASSWORD_CHANGED
 fi

@@ -76,6 +76,24 @@ class DiaryEntry(object):
 		self.diary_id = diary_id
 		self.event_name = event_name
 
+	def assert_types(self):
+		if not isinstance(self.username, basestring):
+			raise TypeError('Username has to be "string"')
+		if not isinstance(self.hostname, basestring):
+			raise TypeError('Hostname has to be "string"')
+		if not isinstance(self.message, basestring):
+			raise TypeError('Message has to be "string"')
+		if not isinstance(self.args, list) or not all(isinstance(arg, basestring) for arg in self.args):
+			raise TypeError('Args have to be "list of string"')
+		if not isinstance(self.issued, datetime):
+			raise TypeError('Issued has to be "datetime"')
+		if not isinstance(self.tags, list) or not all(isinstance(tag, basestring) for tag in self.tags):
+			raise TypeError('Tags have to be "list of string"')
+		if not isinstance(self.diary_id, basestring):
+			raise TypeError('Diary ID has to be "string"')
+		if not isinstance(self.event_name, basestring):
+			raise TypeError('Event name has to be "string"')
+
 	def to_json(self):
 		attrs = {
 			'username': self.username,
@@ -93,6 +111,7 @@ class DiaryEntry(object):
 	def from_json(cls, body):
 		json_body = json.loads(body)
 		entry = cls(json_body['username'], json_body['message'], json_body['args'], json_body['tags'], json_body['diary_id'], json_body['event'])
-		entry.issued = json_body['issued']
+		entry.issued = datetime.strptime(json_body['issued'], '%Y-%m-%d %H:%M:%S')
 		entry.hostname = json_body['hostname']
+		entry.assert_types()
 		return entry

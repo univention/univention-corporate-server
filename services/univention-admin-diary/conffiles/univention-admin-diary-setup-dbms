@@ -27,4 +27,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+#cat <&0
+
 /usr/share/univention-admin-diary/setup-dbms
