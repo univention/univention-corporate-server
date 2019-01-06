@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-7) unstable; urgency=medium
+
+  * Bug #48343: Write Admin Diary Entry when rotating server password
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 06 Jan 2019 21:36:48 +0100
+
 univention-admin-diary (1.0.0-6) unstable; urgency=medium
 
   * Bug #48342: unset admin/diary/backend in client postrm
