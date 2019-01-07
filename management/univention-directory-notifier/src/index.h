@@ -32,10 +32,19 @@
 #define __NOTIFIER_INDEX_H__
 
 #include <stdio.h>
-#include <sys/types.h>
+
+static const unsigned long MAGIC = 0x3395e0d4;
+
+struct index_header {
+	unsigned long magic;
+} __attribute__((__packed__));
+struct index_entry {
+	char valid;
+	size_t offset;
+} __attribute__((__packed__));
 
 FILE *index_open(const char *filename);
-ssize_t index_get(FILE *fp, unsigned long id);
+size_t index_get(FILE *fp, unsigned long id);
 void index_set(FILE *fp, unsigned long id, size_t offset);
 
 #endif /* __NOTIFIER_INDEX_H__ */

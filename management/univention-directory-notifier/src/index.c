@@ -30,44 +30,47 @@
  */
 #include "index.h"
 
-#define MAGIC 0x3395e0d4
-
 FILE *index_open(const char *filename) {
 	FILE *fp;
-	unsigned long magic;
+	struct index_header header;
 
 	if ((fp = fopen(filename, "r+")) != NULL) {
-		if (fread(&magic, sizeof(unsigned long), 1, fp) == 1 && magic == MAGIC)
+		if (fread(&header, sizeof(header), 1, fp) == 1 && header.magic == MAGIC)
 			return fp;
+		fclose(fp);
 	}
 	if ((fp = fopen(filename, "w+")) != NULL) {
-		magic = MAGIC;
-		if (fwrite(&magic, sizeof(unsigned long), 1, fp) == 1)
+		header.magic = MAGIC;
+		if (fwrite(&header, sizeof(header), 1, fp) == 1)
 			return fp;
+		fclose(fp);
 	}
 	return NULL;
 }
 
-ssize_t index_get(FILE *fp, unsigned long id) {
-	char valid;
-	size_t result;
+/*
+ * Seek to given index entry.
+ * :param fp: the FILE pointer of the index file.
+ * :param id: the transaction ID.
+ */
+static void index_seek(FILE *fp, unsigned long id) {
+	fseek(fp, sizeof(struct index_header) + id * sizeof(struct index_entry), SEEK_SET);
+}
 
-	fseek(fp, sizeof(unsigned long) + id * (sizeof(char) + sizeof(size_t)), SEEK_SET);
-	if (fread(&valid, sizeof(char), 1, fp) != 1)
+size_t index_get(FILE *fp, unsigned long id) {
+	struct index_entry entry;
+	index_seek(fp, id);
+	if (fread(&entry, sizeof(entry), 1, fp) != 1)
 		return -1;
-	if (valid != 1)
+	if (entry.valid != 1)
 		return -1;
-	if (fread(&result, sizeof(size_t), 1, fp) != 1)
-		return -1;
-
-	return result;
+	return entry.offset;
 }
 
 void index_set(FILE *fp, unsigned long id, size_t offset) {
-	char valid = 1;
-	fseek(fp, sizeof(unsigned long) + id * (sizeof(char) + sizeof(size_t)), SEEK_SET);
-	if (fwrite(&valid, sizeof(char), 1, fp) != 1)
-		return;
-	if (fwrite(&offset, sizeof(size_t), 1, fp) != 1)
-		return;
+	struct index_entry entry = {
+	    .valid = 1, .offset = offset,
+	};
+	index_seek(fp, id);
+	fwrite(&entry, sizeof(entry), 1, fp);
 }

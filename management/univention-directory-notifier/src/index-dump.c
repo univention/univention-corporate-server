@@ -29,27 +29,31 @@
  * <http://www.gnu.org/licenses/>.
  */
 #include <stdio.h>
-#include <sys/types.h>
+
+#include "index.h"
+#include "notify.h"
 
 int main(int argc, char *argv[]) {
-	FILE *fp = fopen(argv[1], "r");
-	unsigned long magic;
-	ssize_t offset, index;
-	char valid;
+	char *filename = argc > 1 ? argv[1] : FILE_NAME_TF_IDX;
+	printf("FILE: %s\n", filename);
 
-	fread(&magic, sizeof(unsigned long), 1, fp);
-	printf("MAGIC: 0x%lx\n", magic);
+	FILE *fp = fopen(filename, "r");
+	struct index_header header;
+	int index;
 
-	while (!feof(fp)) {
-		index = (ftell(fp) - sizeof(unsigned long)) / (sizeof(char) + sizeof(size_t));
+	if (fread(&header, sizeof(header), 1, fp) != 1)
+		fprintf(stderr, "Failed to read header\n");
+	printf("MAGIC: 0x%lx %s\n", header.magic, header.magic == MAGIC ? "VALID" : "INVALID");
 
-		if (fread(&valid, sizeof(char), 1, fp) != 1)
+	for (index = 0; !feof(fp); index++) {
+		struct index_entry entry;
+		if (fread(&entry, sizeof(entry), 1, fp) != 1)
 			break;
-		if (fread(&offset, sizeof(size_t), 1, fp) != 1)
-			break;
 
-		printf("%8d[%c]: %d\n", index, valid == 1 ? 'x' : ' ', offset);
+		printf("%8d[%c]: %zd\n", index, entry.valid == 1 ? 'x' : ' ', entry.offset);
 	}
+
+	fclose(fp);
 
 	return 0;
 }
