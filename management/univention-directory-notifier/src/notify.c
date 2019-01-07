@@ -531,7 +531,7 @@ sigset_t block_mask;
 void signals_block(void) {
 	static int init_done = 0;
 
-	if ((++sig_block_count) != 1)
+	if (++sig_block_count != 1)
 		return;
 
 	if (init_done == 0) {
@@ -551,7 +551,7 @@ void signals_block(void) {
 }
 
 void signals_unblock(void) {
-	if ((--sig_block_count) != 0)
+	if (--sig_block_count != 0)
 		return;
 	sigprocmask(SIG_UNBLOCK, &block_mask, NULL);
 }
@@ -593,7 +593,7 @@ void notify_replog_change_callback(int sig, siginfo_t *si, void *data) {
 	* we don't need to sleep anymore
 	*/
 
-	while ((fgets(line, MAX_LINE, file)) != NULL) {
+	while (fgets(line, MAX_LINE, file) != NULL) {
 		if ((strlen(line) == 1 && line[0] == '\n') || first) {
 			if (!first) {
 				found = true;
@@ -727,7 +727,7 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data) {
 	 *
 	 */
 
-	if ((stat(FILE_NAME_LISTENER, &stat_buf)) != 0) {
+	if (stat(FILE_NAME_LISTENER, &stat_buf) != 0) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "stat error\n");
 		goto error;
 	}
