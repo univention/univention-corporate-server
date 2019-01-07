@@ -39,6 +39,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <pthread.h>
+#include <limits.h>
 
 #include <univention/debug.h>
 #include "notify.h"
@@ -47,7 +48,6 @@
 #include "index.h"
 #include "sem.h"
 
-#define MAX_PATH_LEN 4096
 #define MAX_LINE 4096
 
 extern int sem_id;
@@ -74,7 +74,7 @@ static pthread_mutex_t mut_save = PTHREAD_MUTEX_INITIALIZER;
 void notify_id_get_next(NotifyId_t *next_notify);
 
 static FILE *fopen_lock(const char *name, const char *type, FILE **l_file) {
-	char buf[MAX_PATH_LEN];
+	char buf[PATH_MAX];
 	FILE *file;
 	int count = 0;
 	int l_fd;
