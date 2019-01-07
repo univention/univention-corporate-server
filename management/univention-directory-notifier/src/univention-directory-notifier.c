@@ -30,6 +30,8 @@
  */
 #define _GNU_SOURCE
 
+#include <errno.h>
+#include <error.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <stdio.h>
@@ -134,6 +136,7 @@ int main(int argc, char *argv[]) {
 
 	for (;;) {
 		int c;
+		char *end;
 
 		c = getopt(argc, argv, "Fosrd:S:C:L:T:");
 		if (c < 0)
@@ -144,7 +147,9 @@ int main(int argc, char *argv[]) {
 			foreground = 1;
 			break;
 		case 'd':
-			debug = atoi(optarg);
+			debug = strtol(optarg, &end, 10);
+			if (!*optarg || *end || debug < 0)
+				error(EXIT_FAILURE, errno, "Invalid argument '-%c %s'", c, optarg);
 			break;
 		case 'o':
 		case 'r':
@@ -153,13 +158,19 @@ int main(int argc, char *argv[]) {
 			fprintf(stderr, "Ignoring deprecated option -%c\n", c);
 			break;
 		case 'C':
-			notifier_cache_size = atoll(optarg);
+			notifier_cache_size = strtoll(optarg, &end, 10);
+			if (!*optarg || *end || notifier_cache_size < 1)
+				error(EXIT_FAILURE, errno, "Invalid argument '-%c %s'", c, optarg);
 			break;
 		case 'L':
-			notifier_lock_count = atoll(optarg);
+			notifier_lock_count = strtoll(optarg, &end, 10);
+			if (!*optarg || *end || notifier_lock_count < 1)
+				error(EXIT_FAILURE, errno, "Invalid argument '-%c %s'", c, optarg);
 			break;
 		case 'T':
-			notifier_lock_time = atoll(optarg);
+			notifier_lock_time = strtoll(optarg, &end, 10);
+			if (!*optarg || *end || notifier_lock_time < 1)
+				error(EXIT_FAILURE, errno, "Invalid argument '-%c %s'", c, optarg);
 			break;
 		default:
 			usage();

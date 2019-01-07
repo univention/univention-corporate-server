@@ -64,6 +64,7 @@ extern unsigned long SCHEMA_ID;
 int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) {
 	int nread;
 	char network_data[NETWORK_MAX + 1], *head, *tail;
+	char *end;
 	unsigned long id;
 	char string[1024];
 	unsigned long msg_id = UINT32_MAX;
@@ -102,11 +103,15 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 
 		if (!strncmp(head, "MSGID: ", 7)) {
 			/* read message id  */
-			msg_id = strtoul(head + 7, NULL, 10);
+			msg_id = strtoul(head + 7, &end, 10);
+			if (!head[7] || *end)
+				goto failed;
 		} else if (!strncmp(head, "Version: ", 9)) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: VERSION");
 
-			id = strtoul(head + 9, NULL, 10);
+			id = strtoul(head + 9, &end, 10);
+			if (!head[9] || *end)
+				goto failed;
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "VERSION=%ld", id);
 
 			version = id < VERSION ? id : VERSION;
@@ -127,7 +132,9 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 		} else if (!strncmp(head, "GET_DN ", 7) && msg_id != UINT32_MAX && version > 0) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: GET_DN");
 
-			id = strtoul(head + 7, NULL, 10);
+			id = strtoul(head + 7, &end, 10);
+			if (!head[7] || *end)
+				goto failed;
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "id: %ld", id);
 
 			if (id <= notify_last_id.id) {
@@ -198,6 +205,8 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 
 	return 0;
 
+failed:
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Failed parsing [%s]", head);
 close:
 	close(fd);
 	FD_CLR(fd, &readfds);

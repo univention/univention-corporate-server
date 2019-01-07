@@ -247,7 +247,7 @@ void notify_entry_free(NotifyEntry_t *entry) {
 
 char *notify_transcation_get_one_dn(unsigned long last_known_id) {
 	char buffer[2048];
-	int i, size;
+	int i;
 	char c;
 	unsigned long id;
 	bool found = false;
@@ -274,7 +274,9 @@ char *notify_transcation_get_one_dn(unsigned long last_known_id) {
 			if (buffer[strlen(buffer) - 1] == '\n') {
 				buffer[strlen(buffer) - 1] = '\0';
 			}
-			sscanf(buffer, "%ld", &id);
+			if (sscanf(buffer, "%ld", &id) != 1) {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Failed to parse %s", buffer);
+			}
 			if (id == last_known_id) {
 				found = true;
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Found (get_one_dn, index) %ld", id);
@@ -290,7 +292,10 @@ char *notify_transcation_get_one_dn(unsigned long last_known_id) {
 		}
 
 		if (c == '\n') {
-			size = sscanf(buffer, "%ld", &id);
+			if (sscanf(buffer, "%ld", &id) != 1) {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Failed to parse %s", buffer);
+				break;
+			}
 
 			index_set(index, id, pos);
 
