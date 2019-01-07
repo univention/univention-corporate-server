@@ -28,6 +28,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
+#define _GNU_SOURCE
 #define __USE_GNU
 
 #include <limits.h>
@@ -135,7 +136,6 @@ static NotifyEntry_t *notify_entry_alloc() {
 static long split_transaction_buffer(NotifyEntry_t *entry, char *buf, long l_buf) {
 	NotifyEntry_t *tmp = NULL;
 	NotifyEntry_t *tmp2 = NULL;
-	int size;
 	int start = 1;
 	char *p, *p1;
 	char *s;
@@ -150,12 +150,9 @@ static long split_transaction_buffer(NotifyEntry_t *entry, char *buf, long l_buf
 		if (start) {
 			sscanf(s, "%ld", &(tmp2->notify_id.id));
 			tmp2->command = s[strlen(s) - 1];
-			p_tmp1 = index(s, ' ');
-			p_tmp2 = rindex(s, ' ');
-			size = p_tmp2 - p_tmp1;
-			tmp2->dn = malloc((size) * sizeof(char));
-			memcpy(tmp2->dn, p_tmp1 + 1, p_tmp2 - p_tmp1);
-			tmp2->dn[size - 1] = '\0';
+			p_tmp1 = index(s, ' ') + 1;
+			p_tmp2 = rindex(p_tmp1, ' ');
+			tmp2->dn = strndup(p_tmp1, p_tmp2 - p_tmp1);
 
 			tmp2->next = NULL;
 		} else {
@@ -163,12 +160,9 @@ static long split_transaction_buffer(NotifyEntry_t *entry, char *buf, long l_buf
 
 			sscanf(s, "%ld", &(tmp->notify_id.id));
 			tmp->command = s[strlen(s) - 1];
-			p_tmp1 = index(s, ' ');
-			p_tmp2 = rindex(s, ' ');
-			size = p_tmp2 - p_tmp1;
-			tmp->dn = malloc((size) * sizeof(char));
-			memcpy(tmp->dn, p_tmp1 + 1, p_tmp2 - p_tmp1);
-			tmp->dn[size - 1] = '\0';
+			p_tmp1 = index(s, ' ') + 1;
+			p_tmp2 = rindex(p_tmp2, ' ');
+			tmp->dn = strndup(p_tmp1, p_tmp2 - p_tmp1);
 
 			tmp->next = NULL;
 			tmp2->next = tmp;
@@ -364,11 +358,9 @@ char *notify_entry_to_string(NotifyEntry_t entry) {
 		len += snprintf(buffer, 32, "%ld", entry.notify_id.id);
 
 	len += 1;
-	if ((str = malloc(len * sizeof(char))) == NULL) {
+	if ((str = calloc(len, sizeof(char))) == NULL) {
 		return NULL;
 	}
-
-	memset(str, 0, len);
 	p = str;
 
 		rc = sprintf(p, "%ld %s %c\n", entry.notify_id.id, entry.dn, entry.command);
@@ -418,12 +410,10 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data) {
 		goto error;
 	}
 
-	if ((buf = malloc((stat_buf.st_size + 1) * sizeof(char))) == NULL) {
+	if ((buf = calloc(stat_buf.st_size + 1, sizeof(char))) == NULL) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "malloc error\n");
 		goto error;
 	}
-
-	memset(buf, 0, stat_buf.st_size + 1);
 
 	if ((nread = fread(buf, sizeof(char), stat_buf.st_size, file)) != 0) {
 		split_transaction_buffer(entry, buf, nread);

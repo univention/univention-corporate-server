@@ -45,18 +45,11 @@ static int max_filled = 0;
 
 int notifier_cache_init(unsigned long max_id) {
 	int i;
-	int size;
 	int count = 0;
 	char *buffer;
 
-	cache = malloc(sizeof(notify_cache_t) * notifier_cache_size);
+	cache = calloc(notifier_cache_size, sizeof(notify_cache_t));
 	entry_min_pos = 0;
-
-	for (i = 0; i < notifier_cache_size; i++) {
-		cache[i].dn = NULL;
-		cache[i].id = 0;
-		cache[i].command = 'n';
-	}
 
 	for (i = max_id - (notifier_cache_size - 1); i <= max_id; i++) {
 		char *p, *pp;
@@ -70,12 +63,9 @@ int notifier_cache_init(unsigned long max_id) {
 
 		sscanf(buffer, "%ld", &(cache[count].id));
 		cache[count].command = buffer[strlen(buffer) - 1];
-		p = index(buffer, ' ');
-		pp = rindex(buffer, ' ');
-		size = pp - p;
-		cache[count].dn = malloc((size) * sizeof(char));
-		memcpy(cache[count].dn, p + 1, pp - p);
-		cache[count].dn[size - 1] = '\0';
+		p = index(buffer, ' ') + 1;
+		pp = rindex(p, ' ');
+		cache[count].dn = strndup(p, pp - p);
 
 		free(buffer);
 		count += 1;
@@ -98,16 +88,14 @@ int notifier_cache_add(unsigned long id, char *dn, char cmd) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Added to cache pos %d, id %ld", max_filled, id);
 
 		cache[max_filled].id = id;
-		cache[max_filled].dn = malloc((strlen(dn) + 1) * sizeof(char));
-		strcpy(cache[max_filled].dn, dn);
+		cache[max_filled].dn = strdup(dn);
 		cache[max_filled].command = cmd;
 	} else {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Added to cache pos %d, id %ld", entry_min_pos, id);
 
 		cache[entry_min_pos].id = id;
 		free(cache[entry_min_pos].dn);
-		cache[entry_min_pos].dn = malloc((strlen(dn) + 1) * sizeof(char));
-		strcpy(cache[entry_min_pos].dn, dn);
+		cache[entry_min_pos].dn = strdup(dn);
 		cache[entry_min_pos].command = cmd;
 
 		if (entry_min_pos < (notifier_cache_size - 1)) {
