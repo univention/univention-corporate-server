@@ -416,19 +416,12 @@ int network_client_check_clients ( unsigned long last_known_id )
 int network_client_all_write ( unsigned long id, char *buf, long l_buf)
 {
 	NetworkClient_t *tmp = network_client_first;
-	char *tmp_buf;
 	int rc;
 	char string[8192];
 
 	if ( l_buf == 0 ) {
 		return 0;
 	}
-	if ( (tmp_buf = malloc(sizeof(long)+l_buf)) == NULL ) {
-		return -1;
-	}
-
-	memcpy(tmp_buf, &(l_buf), sizeof(long));
-	memcpy(tmp_buf+sizeof(long), buf, l_buf);
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "l=%ld, --> [%s]",l_buf,buf);
 
@@ -467,8 +460,6 @@ int network_client_all_write ( unsigned long id, char *buf, long l_buf)
 		}
 		tmp = tmp->next;
 	}
-
-	free(tmp_buf);
 
 	return rc;
 }
