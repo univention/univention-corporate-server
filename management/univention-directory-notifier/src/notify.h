@@ -82,7 +82,6 @@ char *notify_transcation_get_one_dn(unsigned long last_known_id);
 void notify_entry_init(NotifyEntry_t *entry);
 void notify_entry_dump(NotifyEntry_t *entry);
 void notify_entry_free(NotifyEntry_t *entry);
-NotifyEntry_t *notify_entry_reverse(NotifyEntry_t *entry);
 
 char *notify_entry_to_string(NotifyEntry_t entry);
 

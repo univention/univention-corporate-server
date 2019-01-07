@@ -49,16 +49,6 @@ FILE *index_open(const char *filename) {
 	return NULL;
 }
 
-void index_invalidate(FILE *fp) {
-	unsigned long magic = MAGIC;
-
-	fseek(fp, 0, SEEK_SET);
-	ftruncate(fileno(fp), 0);
-	fseek(fp, 0, SEEK_SET);
-
-	fwrite(&magic, sizeof(unsigned long), 1, fp);
-}
-
 ssize_t index_get(FILE *fp, unsigned long id) {
 	char valid;
 	size_t result;
