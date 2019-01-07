@@ -28,7 +28,6 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-
 #ifndef __CALLBACK_H__
 #define __CALLBACK_H__
 

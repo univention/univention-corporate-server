@@ -28,37 +28,32 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-
-
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/sem.h>
 #include "sem.h"
 
-int v_sem(int sid)
-{
+int v_sem(int sid) {
 	struct sembuf sb[1];
 	sb[0].sem_num = 0;
 	sb[0].sem_op = 1;
 	sb[0].sem_flg = SEM_UNDO;
-	return semop(sid,sb,1);
+	return semop(sid, sb, 1);
 }
 
-int p_sem(int sid)
-{
+int p_sem(int sid) {
 	struct sembuf sb[1];
 	sb[0].sem_num = 0;
 	sb[0].sem_op = -1;
 	sb[0].sem_flg = SEM_UNDO;
-	return semop(sid,sb,1);
+	return semop(sid, sb, 1);
 }
 
-int initsem(int semid,int val)
-{
+int initsem(int semid, int val) {
 	union semun un;
 	un.val = val;
 
-	semctl(semid,0,SETVAL,un);
+	semctl(semid, 0, SETVAL, un);
 
 	return 0;
 }

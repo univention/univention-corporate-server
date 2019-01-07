@@ -29,10 +29,8 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-
 #ifndef __CACHE_H__
 #define __CACHE_H__
-
 
 typedef struct {
 	unsigned long id;
@@ -40,14 +38,13 @@ typedef struct {
 	char command;
 } notify_cache_t;
 
-unsigned long notifier_cache_get_max_id ( );
-unsigned long notifier_cache_get_min_id ( );
+unsigned long notifier_cache_get_max_id();
+unsigned long notifier_cache_get_min_id();
 
-int	notifier_cache_init ( unsigned long max_id);
+int notifier_cache_init(unsigned long max_id);
 
 int notifier_cache_add(unsigned long id, char *dn, char cmd);
 
-char* notifier_cache_get(unsigned long id);
+char *notifier_cache_get(unsigned long id);
 
 #endif
-

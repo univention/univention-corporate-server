@@ -28,15 +28,13 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-
 #include <stdio.h>
 #include <unistd.h>
 
 #define MAGIC 0x3395e0d4
 
-FILE* index_open(const char *filename)
-{
-	FILE* fp;
+FILE *index_open(const char *filename) {
+	FILE *fp;
 	unsigned long magic;
 
 	if ((fp = fopen(filename, "r+")) != NULL) {
@@ -51,10 +49,9 @@ FILE* index_open(const char *filename)
 	return NULL;
 }
 
-void index_invalidate(FILE *fp)
-{
+void index_invalidate(FILE *fp) {
 	unsigned long magic = MAGIC;
-	
+
 	fseek(fp, 0, SEEK_SET);
 	ftruncate(fileno(fp), 0);
 	fseek(fp, 0, SEEK_SET);
@@ -62,12 +59,11 @@ void index_invalidate(FILE *fp)
 	fwrite(&magic, sizeof(unsigned long), 1, fp);
 }
 
-ssize_t index_get(FILE *fp, unsigned long id)
-{
+ssize_t index_get(FILE *fp, unsigned long id) {
 	char valid;
 	size_t result;
-	
-	fseek(fp, sizeof(unsigned long)+id*(sizeof(char)+sizeof(size_t)), SEEK_SET);
+
+	fseek(fp, sizeof(unsigned long) + id * (sizeof(char) + sizeof(size_t)), SEEK_SET);
 	if (fread(&valid, sizeof(char), 1, fp) != 1)
 		return -1;
 	if (valid != 1)
@@ -78,13 +74,11 @@ ssize_t index_get(FILE *fp, unsigned long id)
 	return result;
 }
 
-void index_set(FILE *fp, unsigned long id, size_t offset)
-{
+void index_set(FILE *fp, unsigned long id, size_t offset) {
 	char valid = 1;
-	fseek(fp, sizeof(unsigned long)+id*(sizeof(char)+sizeof(size_t)), SEEK_SET);
+	fseek(fp, sizeof(unsigned long) + id * (sizeof(char) + sizeof(size_t)), SEEK_SET);
 	if (fwrite(&valid, sizeof(char), 1, fp) != 1)
 		return;
 	if (fwrite(&offset, sizeof(size_t), 1, fp) != 1)
 		return;
 }
-

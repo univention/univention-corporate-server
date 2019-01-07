@@ -31,8 +31,7 @@
 #include <stdio.h>
 #include "index.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 	FILE *fp = fopen(argv[1], "r");
 	unsigned long magic;
 	ssize_t offset, index;
@@ -42,15 +41,14 @@ int main(int argc, char *argv[])
 	printf("MAGIC: 0x%lx\n", magic);
 
 	while (!feof(fp)) {
-		index =(ftell(fp)-sizeof(unsigned long))/(sizeof(char)+sizeof(size_t));
-		
+		index = (ftell(fp) - sizeof(unsigned long)) / (sizeof(char) + sizeof(size_t));
+
 		if (fread(&valid, sizeof(char), 1, fp) != 1)
 			break;
 		if (fread(&offset, sizeof(size_t), 1, fp) != 1)
 			break;
 
-		printf("%8d[%c]: %d\n", index,
-				valid == 1 ? 'x' : ' ', offset);
+		printf("%8d[%c]: %d\n", index, valid == 1 ? 'x' : ' ', offset);
 	}
 
 	return 0;
