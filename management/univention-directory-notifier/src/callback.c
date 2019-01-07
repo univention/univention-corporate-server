@@ -63,7 +63,7 @@ extern unsigned long SCHEMA_ID;
 int get_network_line(char *packet, char *network_line) {
 	int i = 0;
 
-	memset(network_line, 0, 8192);
+	memset(network_line, 0, NETWORK_MAX);
 
 	while (packet[i] != '\0' && packet[i] != '\n') {
 		network_line[i] = packet[i];
@@ -86,7 +86,7 @@ int get_network_line(char *packet, char *network_line) {
 int data_on_connection(int fd, callback_remove_handler remove) {
 	int nread;
 	char *network_packet;
-	char network_line[8192];
+	char network_line[NETWORK_MAX];
 	char *p;
 	unsigned long id;
 	char string[1024];
@@ -106,8 +106,8 @@ int data_on_connection(int fd, callback_remove_handler remove) {
 		return 0;
 	}
 
-	if (nread >= 8192) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d failed, more than 8192 close connection to listener ", fd);
+	if (nread >= NETWORK_MAX) {
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d failed, more than %d close connection to listener ", fd, NETWORK_MAX);
 		close(fd);
 		FD_CLR(fd, &readfds);
 		remove(fd);
@@ -119,7 +119,7 @@ int data_on_connection(int fd, callback_remove_handler remove) {
 	read(fd, network_packet, nread);
 	network_packet[nread] = '\0';
 
-	memset(network_line, 0, 8192);
+	memset(network_line, 0, NETWORK_MAX);
 	p = network_packet;
 
 	while (get_network_line(p, network_line)) {

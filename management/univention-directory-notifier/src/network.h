@@ -31,6 +31,8 @@
 #ifndef __NETWORK_H__
 #define __NETWORK_H__
 
+#define NETWORK_MAX 8192
+
 typedef int (*callback_remove_handler)(int fd);
 typedef int (*callback_handler)(int fd, callback_remove_handler);
 
