@@ -90,57 +90,32 @@ int network_create_socket(int port) {
 }
 
 int network_client_add(int fd, callback_handler handler, int notify) {
-	NetworkClient_t *tmp = network_client_first;
+	NetworkClient_t *tmp;
 
-	if (tmp == NULL) {
 		tmp = malloc(sizeof(NetworkClient_t));
 		tmp->fd = fd;
 		tmp->handler = handler;
 		tmp->notify = notify;
 		tmp->next_id = 0;
-		tmp->next = NULL;
+		tmp->next = network_client_first;
 
 		network_client_first = tmp;
-	} else {
-		while (tmp->next != NULL)
-			tmp = tmp->next;
-
-		tmp->next = malloc(sizeof(NetworkClient_t));
-		tmp = tmp->next;
-
-		tmp->fd = fd;
-		tmp->handler = handler;
-		tmp->notify = notify;
-		tmp->next_id = 0;
-		tmp->next = NULL;
-	}
 
 	return 0;
 }
 
 int network_client_del(int fd) {
-	NetworkClient_t *tmp = network_client_first;
-	NetworkClient_t *tmp1;
+	NetworkClient_t **tmp;
 
 	shutdown(fd, 2);
 
-	if (tmp->fd == fd) {
-		network_client_first = tmp->next;
-
-		free(tmp);
-	} else {
-		while (tmp->next != NULL) {
-			tmp1 = tmp->next;
-			if (tmp1->fd == fd) {
-				tmp->next = tmp1->next;
-
-				free(tmp1);
-
-				break;
-			}
-			tmp = tmp1;
+	for (tmp = &network_client_first; *tmp != NULL; tmp = &((*tmp)->next))
+		if ((*tmp)->fd == fd) {
+			NetworkClient_t *found = *tmp;
+			*tmp = (*tmp)->next;
+			free(found);
+			break;
 		}
-	}
 
 	return 0;
 }
