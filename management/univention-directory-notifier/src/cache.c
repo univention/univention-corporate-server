@@ -29,6 +29,8 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,90 +39,71 @@
 #include "cache.h"
 #include "notify.h"
 
-extern long long notifier_cache_size;
+long long notifier_cache_size = 1000;
 
 static notify_cache_t *cache;
-static int entry_min_pos = 0;
-static int max_filled = 0;
+
+/*
+ * Return cache bucket for transaction id.
+ * :param id: Tranbsaction ID.
+ * :return: Cache entry.
+ */
+static inline notify_cache_t *lookup(unsigned long id) {
+	return cache + id % notifier_cache_size;
+}
 
 int notifier_cache_init(unsigned long max_id) {
-	int i;
-	int count = 0;
-	char *buffer;
+	unsigned long id;
 
 	cache = calloc(notifier_cache_size, sizeof(notify_cache_t));
-	entry_min_pos = 0;
 
-	for (i = max_id - (notifier_cache_size - 1); i <= max_id; i++) {
+	id = max_id <= notifier_cache_size ? 1 : max_id - notifier_cache_size + 1;
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Loading cache %ld..%ld", id, max_id);
+	for (; id <= max_id; id++) {
 		char *p, *pp;
-
-		buffer = notify_transcation_get_one_dn(i);
+		notify_cache_t *entry = lookup(id);
+		char *buffer = notify_transcation_get_one_dn(id);
 		if (buffer == NULL) {
-			max_filled = count;
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "max_filled = %d", max_filled);
-			return 1;
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Failed lookup: %ld", id);
+			continue;
 		}
 
-		sscanf(buffer, "%ld", &(cache[count].id));
-		cache[count].command = buffer[strlen(buffer) - 1];
+		sscanf(buffer, "%ld", &(entry->id));
+		entry->command = buffer[strlen(buffer) - 1];
 		p = index(buffer, ' ') + 1;
 		pp = rindex(p, ' ');
-		cache[count].dn = strndup(p, pp - p);
+		entry->dn = strndup(p, pp - p);
 
 		free(buffer);
-		count += 1;
 	}
-
-	max_filled = count;
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "max_filled = %d", max_filled);
 
 	return 0;
 }
 
 int notifier_cache_add(unsigned long id, char *dn, char cmd) {
-	if (dn == NULL) {
+	if (dn == NULL)
 		return 0;
-	}
 
-	if (max_filled < (notifier_cache_size - 1)) {
-		max_filled += 1;
+	notify_cache_t *entry = lookup(id);
 
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Added to cache pos %d, id %ld", max_filled, id);
-
-		cache[max_filled].id = id;
-		cache[max_filled].dn = strdup(dn);
-		cache[max_filled].command = cmd;
-	} else {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Added to cache pos %d, id %ld", entry_min_pos, id);
-
-		cache[entry_min_pos].id = id;
-		free(cache[entry_min_pos].dn);
-		cache[entry_min_pos].dn = strdup(dn);
-		cache[entry_min_pos].command = cmd;
-
-		if (entry_min_pos < (notifier_cache_size - 1)) {
-			entry_min_pos += 1;
-		} else {
-			entry_min_pos = 0;
-		}
-	}
+	free(entry->dn);
+	entry->id = id;
+	entry->dn = strdup(dn);
+	entry->command = cmd;
 
 	return 0;
 }
 
 char *notifier_cache_get(unsigned long id) {
-	char *str;
-	int i;
+	char *str = NULL;
+	notify_cache_t *entry = lookup(id);
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "searching cache id = %ld", id);
-	for (i = 0; i < max_filled; i++) {
-		if (cache[i].id == id) {
-			str = malloc(8192); /* FIXME */
-			sprintf(str, "%ld %s %c", cache[i].id, cache[i].dn, cache[i].command);
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "string: [%s]", str);
-			return str;
-		}
+	if (entry->id == id) {
+		if (asprintf(&str, "%ld %s %c", entry->id, entry->dn, entry->command) < 0)
+			abort();
 	}
 
-	return NULL;
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "cache[%ld] = [%s]", id, str ? str : "<NULL>");
+	return str;
 }

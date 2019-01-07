@@ -38,6 +38,8 @@ typedef struct {
 	char command;
 } notify_cache_t;
 
+extern long long notifier_cache_size;
+
 int notifier_cache_init(unsigned long max_id);
 
 int notifier_cache_add(unsigned long id, char *dn, char cmd);
