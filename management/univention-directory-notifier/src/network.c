@@ -49,6 +49,11 @@ static NetworkClient_t *network_client_first = NULL;
 static int server_socketfd_listener;
 fd_set readfds;
 
+/*
+ * Open TCP network port.
+ * :param port: TCP port number.
+ * :returns: a socket file descriptor.
+ */
 int network_create_socket(int port) {
 	int server_socketfd;
 	struct sockaddr_in6 server_address;
@@ -89,6 +94,13 @@ int network_create_socket(int port) {
 	return server_socketfd;
 }
 
+/*
+ * Add network connection for new client.
+ * :param fd: The per-client socket file descriptor.
+ * :param handler: The handler function.
+ * :param notify: the initial notify status.
+ * :returns: 0
+ */
 int network_client_add(int fd, callback_handler handler, int notify) {
 	NetworkClient_t *client;
 
@@ -103,6 +115,11 @@ int network_client_add(int fd, callback_handler handler, int notify) {
 	return 0;
 }
 
+/*
+ * Remove network connection for client.
+ * :param fd: The per-client socket file descriptor.
+ * :returns: 0
+ */
 static int network_client_del(int fd) {
 	NetworkClient_t **client;
 
@@ -118,7 +135,6 @@ static int network_client_del(int fd) {
 
 	return 0;
 }
-
 
 /*
  * Setup network connection for new client.
@@ -145,6 +161,11 @@ static int new_connection(NetworkClient_t *client, callback_remove_handler remov
 	return 0;
 }
 
+/*
+ * Setup network server socket.
+ * :param port: TCP port number.
+ * :return 0
+ */
 int network_client_init(int port) {
 	server_socketfd_listener = network_create_socket(port);
 	network_client_add(server_socketfd_listener, new_connection, 0);
@@ -152,6 +173,11 @@ int network_client_init(int port) {
 	return 0;
 }
 
+/*
+ * Handle network and file notification events.
+ * :param check_callbacks: Function to call after each event.
+ * :return: never
+ */
 int network_client_main_loop(callback_check check_callbacks) {
 	NetworkClient_t *client;
 	fd_set testfds;
@@ -188,6 +214,10 @@ int network_client_main_loop(callback_check check_callbacks) {
 	return 0;
 }
 
+/*
+ * Dump status of client connections to debug.
+ * :return: 0
+ */
 int network_client_dump() {
 	NetworkClient_t *client;
 
@@ -199,6 +229,11 @@ int network_client_dump() {
 	return 0;
 }
 
+/*
+ * Walk over all network clients and send notifications.
+ * :param last_known_id: transaction ID.
+ * :return: 0
+ */
 int network_client_check_clients(unsigned long last_known_id) {
 	NetworkClient_t *client;
 	char string[NETWORK_MAX];
@@ -241,6 +276,13 @@ int network_client_check_clients(unsigned long last_known_id) {
 	return 0;
 }
 
+/*
+ * Walk over all network client and data to those waiting for specified transaction.
+ * :param id: transaction ID.
+ * :param buf: a buffer containing data.
+ * :param l_buf: the length of the buffer.
+ * :returns: -1 on errors, 0 on success.
+ */
 int network_client_all_write(unsigned long id, char *buf, size_t l_buf) {
 	NetworkClient_t *client;
 	int rc;

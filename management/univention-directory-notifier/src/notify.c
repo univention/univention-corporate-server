@@ -54,6 +54,13 @@ extern long long notifier_lock_time;
 
 extern unsigned long SCHEMA_ID;
 
+/*
+ * Open file (and its corresponding locking file).
+ * :param name: The name of the file to open.
+ * :param type: The open mode.
+ * :param l_file: Return variable for locking file.
+ * :returns: The FILE pointer.
+ */
 static FILE *fopen_lock(const char *name, const char *type, FILE **l_file) {
 	char buf[PATH_MAX];
 	FILE *file;
@@ -98,6 +105,13 @@ static FILE *fopen_lock(const char *name, const char *type, FILE **l_file) {
 	return file;
 }
 
+/*
+ * Close file (and its corresponding locking file)
+ * :param name: The name of the file to close (for debuuging output).
+ * :param file: The FILE pointer to close.
+ * :param l_file: The FILE pointer of the locking file to close.
+ * :returns: 0
+ */
 static int fclose_lock(const char *name, FILE **file, FILE **l_file) {
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "FCLOSE start");
 	if (*file != NULL) {
@@ -124,7 +138,9 @@ static int fclose_lock(const char *name, FILE **file, FILE **l_file) {
 	return 0;
 }
 
-/* Allocate and initialize a new entry. */
+/* Allocate and initialize a new entry.
+ * :returns: A newly allocated and initialized transaction entry.
+ */
 static NotifyEntry_t *notify_entry_alloc() {
 	NotifyEntry_t *entry = malloc(sizeof(NotifyEntry_t));
 	if (entry)
@@ -159,6 +175,11 @@ static NotifyEntry_t *split_transaction_buffer(char *buf, long l_buf) {
 	return head;
 }
 
+/*
+ * Write entries to files.
+ * :param notify: Notifier configuration.
+ * :param entry: Linked list of entries to write.
+ */
 static void notify_dump_to_files(Notify_t *notify, NotifyEntry_t *entry) {
 	NotifyEntry_t *trans;
 	FILE *index = NULL;
@@ -194,15 +215,30 @@ error:
 	fclose_lock(FILE_NAME_TF, &notify->tf, &notify->l_tf);
 }
 
+/*
+ * Initialize Notifier configuration.
+ * :param notify: Notifier configuration.
+ */
 void notify_init(Notify_t *notify) {
 	notify->tf = NULL;
 	notify->l_tf = NULL;
 }
 
+/*
+ * Initialize entry object.
+ * :param entry: The entry object.
+ */
 void notify_entry_init(NotifyEntry_t *entry) {
 	memset(entry, 0, sizeof(NotifyEntry_t));
 }
 
+/*
+ * Return last notifiert ID.
+ * :param notify: Notifier configuration.
+ * :param notify_id: Notifier ID.
+ * :returns: -1 on errors, 0 on success.
+ * FIXME: this reads characters from the end of the file by seeking and reading N characters until a complete line is found.
+ */
 int notify_transaction_get_last_notify_id(Notify_t *notify, NotifyId_t *notify_id) {
 	int i = 2;
 	char c;
@@ -221,7 +257,7 @@ int notify_transaction_get_last_notify_id(Notify_t *notify, NotifyId_t *notify_i
 	} while (c != '\n' && c != -1 && c != 255 && ftell(notify->tf) != 1);
 
 	if (c == -1 || c == 255) {
-		/* emty file */
+		/* empty file */
 		notify_id->id = 0;
 	} else if (ftell(notify->tf) == 1) {
 		/* only one entry */
@@ -236,6 +272,10 @@ int notify_transaction_get_last_notify_id(Notify_t *notify, NotifyId_t *notify_i
 	return 0;
 }
 
+/*
+ * Free linked list of entry objects.
+ * :param entry: The first entry object.
+ */
 void notify_entry_free(NotifyEntry_t *entry) {
 	while (entry != NULL) {
 		NotifyEntry_t *trans = entry;
@@ -245,6 +285,11 @@ void notify_entry_free(NotifyEntry_t *entry) {
 	}
 }
 
+/*
+ * Return single transaction.
+ * :param last_known_id: The transaction ID to lookup.
+ * :returns: A string with transactions ID, DN and command separated by one blank.
+ */
 char *notify_transcation_get_one_dn(unsigned long last_known_id) {
 	char buffer[2048];
 	int i;
@@ -327,6 +372,10 @@ error:
 	}
 }
 
+/*
+ * Convert entry to string.
+ * :returns: A string with transactions ID, DN and command separated by one blank.
+ */
 static char *notify_entry_to_string(NotifyEntry_t entry) {
 	char *str;
 
@@ -339,6 +388,12 @@ static char *notify_entry_to_string(NotifyEntry_t entry) {
 	return str;
 }
 
+/*
+ * Handle update of LDAP schema.
+ * :param sig: signal number.
+ * :param si: signal information.
+ * :param data: Opaque data.
+ */
 void notify_schema_change_callback(int sig, siginfo_t *si, void *data) {
 	FILE *file;
 
@@ -354,6 +409,12 @@ void notify_schema_change_callback(int sig, siginfo_t *si, void *data) {
 	fclose(file);
 }
 
+/*
+ * Handle transactions from slapd transaction log overlay.
+ * :param sig: signal number.
+ * :param si: signal information.
+ * :param data: Opaque data.
+ */
 void notify_listener_change_callback(int sig, siginfo_t *si, void *data) {
 	NotifyEntry_t *entry = NULL;
 	FILE *file, *l_file;

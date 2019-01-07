@@ -33,6 +33,11 @@
 #include "index.h"
 #include "notify.h"
 
+/*
+ * Dump content of UDN transactions index.
+ * :param argc: Number of command line arguments.
+ * :param argv: Array of command line arguments.
+ */
 int main(int argc, char *argv[]) {
 	char *filename = argc > 1 ? argv[1] : FILE_NAME_TF_IDX;
 	printf("FILE: %s\n", filename);

@@ -52,6 +52,11 @@ static inline notify_cache_t *lookup(unsigned long id) {
 	return cache + id % notifier_cache_size;
 }
 
+/*
+ * Initialize cache with up to given number of entries.
+ * :param max_id: Number of cache entries.
+ * :returns: 0 on success, 1 on errors.
+ */
 int notifier_cache_init(unsigned long max_id) {
 	unsigned long id;
 
@@ -80,6 +85,13 @@ int notifier_cache_init(unsigned long max_id) {
 	return 0;
 }
 
+/*
+ * Add new transaction to cache.
+ * :param id: Transaction ID.
+ * :param dn: Distinguished name.
+ * :param cmd: LDAP command.
+ * :returns: 0
+ */
 int notifier_cache_add(unsigned long id, char *dn, char cmd) {
 	if (dn == NULL)
 		return 0;
@@ -94,6 +106,11 @@ int notifier_cache_add(unsigned long id, char *dn, char cmd) {
 	return 0;
 }
 
+/*
+ * Lookup and return transaction.
+ * :param id: Transaction id to lookup.
+ * :returns: A string with transactions ID, DN and command separated by one blank.
+ */
 char *notifier_cache_get(unsigned long id) {
 	char *str = NULL;
 	notify_cache_t *entry = lookup(id);

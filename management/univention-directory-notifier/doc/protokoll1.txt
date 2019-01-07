@@ -1,7 +1,14 @@
+Univention Directory Notifier Protocol Version 1
+================================================
+
+Convention
+----------
 Kommunikation von Listener zu Notifier: >>>
 Kommunikation von Notifier zu Listener: <<<
 
 
+Description
+-----------
 Listener gibt letzte ID bekannt:
 >>> last_id=9
 

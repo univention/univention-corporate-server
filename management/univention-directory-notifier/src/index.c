@@ -30,6 +30,11 @@
  */
 #include "index.h"
 
+/*
+ * Open index file.
+ * :param filename: Name of the index file.
+ * :returns: a FILE pointer.
+ */
 FILE *index_open(const char *filename) {
 	FILE *fp;
 	struct index_header header;
@@ -57,6 +62,12 @@ static void index_seek(FILE *fp, unsigned long id) {
 	fseek(fp, sizeof(struct index_header) + id * sizeof(struct index_entry), SEEK_SET);
 }
 
+/*
+ * Return position of transaction from index.
+ * :param fp: the FILE pointer of the index file.
+ * :param id: the transaction ID.
+ * :returns: The file position or -1 on errors.
+ */
 size_t index_get(FILE *fp, unsigned long id) {
 	struct index_entry entry;
 	index_seek(fp, id);
@@ -67,6 +78,12 @@ size_t index_get(FILE *fp, unsigned long id) {
 	return entry.offset;
 }
 
+/*
+ * Set position of transaction in index.
+ * :param fp: the FILE pointer of the index file.
+ * :param id: the transaction ID.
+ * :pparam offset: The file position of the transaction.
+ */
 void index_set(FILE *fp, unsigned long id, size_t offset) {
 	struct index_entry entry = {
 	    .valid = 1, .offset = offset,

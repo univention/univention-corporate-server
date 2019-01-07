@@ -1,0 +1,45 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UNIVENTION-DIRECTORY-NOTIFIER 8 2019-01-07 UCS
+.SH NAME
+univention\-directory\-notifier \- UCS LDAP directory notifier
+.SH SYNOPSIS
+.B univention\-directory\-notifier
+.RI [ options ]
+.SH DESCRIPTION
+This manual page documents briefly the
+.B univention\-directory\-notifier
+command, which implements the notification part of the univention LDAP replication and update mechanism.
+It polls updates from the LDAP server and forwards them to all connected
+.BR univention\-directory\-listener (8).
+.SH OPTIONS
+A summary of options is included below.
+.TP
+.B \-F
+Run in foreground (intended for process supervision).
+.TP
+.BI \-d\  level
+Set debugging \fIlevel\fP: \fB0\fP=Error, \fB1\fP=Warning, \fB2\fP=Process, \fB3\fP=Info, \fB4\fP=All.
+.TP
+.BI \-C\  cache-size
+Number of entries in cache. Default: \fI1000\fP.
+.TP
+.BI \-L\  lock-count
+Number of tries to obtain lock. Default: \fI100\fP
+.TP
+.BI \-T\  lock-time
+Delay between lock attempts. Default: \fI100\fP us.
+.SH FILES
+.TP
+.I /var/log/univention/notifier.log
+Log file for the notifier.
+.TP
+.I /var/lib/univention\-ldap/
+Base directory for the notifier.
+.SH SEE ALSO
+.BR univention\-directory\-listener (8),
+.BR slapd (8).
+.br
+This program is documented fully in the
+.IR "Univention Corporate Server Manual" .
+.SH AUTHOR
+Copyright (c) 2001-2019 Univention GmbH, Germany

@@ -51,6 +51,9 @@ long SCHEMA_ID;
 long long notifier_lock_count = 100;
 long long notifier_lock_time = 100;
 
+/*
+ * Print usage information.
+ */
 static void usage(void) {
 	fprintf(stderr, "Usage: univention-directory-notifier [options]\n");
 	fprintf(stderr, "Options:\n");
@@ -58,21 +61,40 @@ static void usage(void) {
 	fprintf(stderr, "   -o          DEPRECATED\n");
 	fprintf(stderr, "   -r          DEPRECATED\n");
 	fprintf(stderr, "   -s          DEPRECATED\n");
-	fprintf(stderr, "   -d   added debug output\n");
-	fprintf(stderr, "   -S   DEPRECATED\n");
+	fprintf(stderr, "   -d <level>  added debug output\n");
+	fprintf(stderr, "   -S <delay>  DEPRECATED\n");
+	fprintf(stderr, "   -C <size>   Number of entries to cache\n");
+	fprintf(stderr, "   -L <count>  Number of lock attempts\n");
+	fprintf(stderr, "   -T <time>   Delay between lock attempts\n");
 	fprintf(stderr, "   -p <port>   TCP port number (6669)\n");
 }
 
 static int SCHEMA_CALLBACK = 0;
 static int LISTENER_CALLBACK = 0;
 
+/*
+ * Callback function to signal pending LDAP schema change.
+ * :param sig: signal number.
+ * :param si: signal information.
+ * :param data: Opaque data.
+ */
 static void set_schema_callback(int sig, siginfo_t *si, void *data) {
 	SCHEMA_CALLBACK = 1;
 }
+
+/*
+ * Callback function to signal pending transaction from slapd transaction log overlay.
+ * :param sig: signal number.
+ * :param si: signal information.
+ * :param data: Opaque data.
+ */
 static void set_listener_callback(int sig, siginfo_t *si, void *data) {
 	LISTENER_CALLBACK = 1;
 }
 
+/*
+ * Setup signal handler for SIGUSR1 to handle LDAP schema changes.
+ */
 static void create_callback_schema() {
 	int fd;
 	struct sigaction act;
@@ -87,6 +109,9 @@ static void create_callback_schema() {
 	fcntl(fd, F_NOTIFY, DN_MODIFY | DN_MULTISHOT);
 }
 
+/*
+ * Setup signal handler for SIGRTMIN to handle transactions from slapd transaction log overlay.
+ */
 static void create_callback_listener() {
 	int fd;
 	struct sigaction act;
@@ -115,6 +140,11 @@ static void check_callbacks() {
 	}
 }
 
+/*
+ * Create file with process identifier.
+ * :param file: The file name of the file.
+ * :returns: -1 on error, 0 on success.
+ */
 static int creating_pidfile(char *file) {
 	FILE *fd;
 
@@ -129,6 +159,11 @@ static int creating_pidfile(char *file) {
 	return 0;
 }
 
+/*
+ * Univention Directory Notifier daemon.
+ * :param argc: Number of command line arguments.
+ * :param argv: Array of command line arguments.
+ */
 int main(int argc, char *argv[]) {
 	int foreground = 0;
 	int debug = 0;

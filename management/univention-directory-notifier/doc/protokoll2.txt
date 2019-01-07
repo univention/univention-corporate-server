@@ -1,7 +1,13 @@
+Univention Directory Notifier Protocol Version 2
+================================================
+
+Convention
+----------
 Kommunikation von Listener zu Notifier: >>>
 Kommunikation von Notifier zu Listener: <<<
 
-
+Description
+-----------
 Listener gibt Protokoll-Version und unterstuetzte Features bekannt:
 >>> Version: 2
 >>> Capabilities: STARTTLS
@@ -54,3 +60,36 @@ Abfrage der aktuellen Schema Transaktions ID:
 <<< MSGID: 78
 <<< 6
 <<<
+
+No-op:
+>>> MSGID: 80
+>>> ALIVE
+>>>
+<<< MSGID: 80
+<<< OKAY
+<<<
+
+Flaws
+-----
+* The protocol is not encrypted.
+  Anybody can get at least the DNs of every changed object.
+  From this the following information can be extracted:
+  - user names
+  - computer names
+  - mail domains
+  - mail addresses
+  - IP addresses
+  - security identifiers
+  - installed applications
+
+* The protocol does not require authentication.
+  Anybody can connect and ask for transactions.
+  This can also be used for a denial-of-service attack:
+  By default only the last 1000 transactions are kept in memory.
+  Everything else will generate additional IO requests.
+  The implementation to lookup transactions is very inefficient:
+  It reads one character at a time from the end of the file.
+
+* Broken network boundaries.
+  TCP is a stream connection, which does *not* honour message boundaries.
+  A request must therefore fit into a single packet.
