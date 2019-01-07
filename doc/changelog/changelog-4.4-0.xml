@@ -617,6 +617,9 @@
 				<listitem><simpara>
 					Enable the new Samba DRS <phrase>Knowledge Consistency Checker</phrase> (<abbrev>KCC</abbrev>) by default (<u:bug>48085</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Accounts for service principals are now created with UDM (<u:bug>47955</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
