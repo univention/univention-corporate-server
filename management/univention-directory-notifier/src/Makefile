@@ -37,7 +37,7 @@ DUMP_LDADD = $(LDADD)
 
 all: univention-directory-notifier
 
-univention-directory-notifier: index.o sem.o cache.o callback.o network.o notify.o univention-directory-notifier.o
+univention-directory-notifier: index.o cache.o callback.o network.o notify.o univention-directory-notifier.o
 	$(CC) $(CFLAGS) -o $@ $^ $(NOTIFIER_LDADD)
 
 univention-directory-notifier-index-dump: index.o index-dump.o

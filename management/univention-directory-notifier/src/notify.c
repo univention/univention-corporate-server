@@ -46,11 +46,8 @@
 #include "network.h"
 #include "cache.h"
 #include "index.h"
-#include "sem.h"
 
 #define MAX_LINE 4096
-
-extern int sem_id;
 
 extern NotifyId_t notify_last_id;
 extern Notify_t notify;

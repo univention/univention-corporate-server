@@ -50,9 +50,6 @@
 #include "notify.h"
 #include "network.h"
 #include "cache.h"
-#include "sem.h"
-
-extern int sem_id;
 
 static int VERSION = 2;
 
@@ -62,7 +59,11 @@ extern NotifyId_t notify_last_id;
 
 extern unsigned long SCHEMA_ID;
 
-/* read one line from network packages*/
+/* read one line from network packages
+ * :param packet: The network data.
+ * :param network_line: Return buffer for line.
+ * :returns: 0 on success, 1 on short lines.
+ */
 int get_network_line(char *packet, char *network_line) {
 	int i = 0;
 
@@ -124,7 +125,6 @@ int data_on_connection(int fd, callback_remove_handler remove) {
 
 	memset(network_line, 0, 8192);
 	p = network_packet;
-	p_sem(sem_id);
 
 	while (get_network_line(p, network_line)) {
 		if (strlen(network_line) > 0) {
@@ -263,7 +263,6 @@ int data_on_connection(int fd, callback_remove_handler remove) {
 			}
 		}
 	}
-	v_sem(sem_id);
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "END Package");
 

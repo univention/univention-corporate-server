@@ -40,16 +40,12 @@
 
 #include <unistd.h>
 #include <sys/ipc.h>
-#include <sys/sem.h>
 
 #include <univention/debug.h>
 
 #include "notify.h"
 #include "network.h"
 #include "cache.h"
-#include "sem.h"
-
-int sem_id;
 
 Notify_t notify;
 NotifyId_t notify_last_id;
@@ -170,8 +166,6 @@ int main(int argc, char *argv[]) {
 	int debug = 0;
 
 	SCHEMA_ID = 0;
-	sem_id = semget(100, 1, 0666);
-	initsem(sem_id, 1);
 
 	for (;;) {
 		int c;
