@@ -31,7 +31,12 @@
 
 scriptname=$(basename "$BASH_SOURCE")
 
-create_spn_account() {
+error () {
+	echo ERROR: $@ >&2
+	exit 1
+}
+
+create_spn_account () {
 
 	command_name=$(basename $0)
 	if [ "$command_name" != "$scriptname" ]; then
@@ -47,20 +52,13 @@ create_spn_account() {
 		--samaccountname <account>:		Account name
 		--serviceprincipalname <spn>:	servicePrincipalName
 		--privatekeytab <filename>:		privateKeytab
-		-type <type>:            type of computer, e.g. "client"
-		-ldapbase <ldap base>:   LDAP Base DN, e.g. dc=test,dc=local
-		-realm <kerberos realm>: Kerberos realm, e.g. TEST.LOCAL
-		-disableVersionCheck     Disable version check against _dcname_
-
 		-h | --help | -?:        print this usage message and exit program
-		--version:               print version information and exit program
 
 		Description:
 		$command_name creates a Samba account with a given servicePrincipalName
 		e.g. $command_name --samaccountname "foo-\$hostname" \\
 		                   --serviceprincipalname "FOO/\$hostname.\$domainname" \\
 		                   --privatekeytab foo.keytab
-
 		%EOR
 	}
 
@@ -68,7 +66,7 @@ create_spn_account() {
 	do
 		case "$1" in
 			"--samaccountname"|"--sAMAccountName")
-				spn_account_name="${2:?missing argument for samaccountname}"
+				samAccountName="${2:?missing argument for samaccountname}"
 				shift 2 || exit 2
 				;;
 			"--serviceprincipalname"|"--servicePrincipalName")
@@ -90,111 +88,104 @@ create_spn_account() {
 		esac
 	done
 
-	if [ -z "$spn_account_name" ]; then
-		echo "Error: Option --samaccountname required"
-		display_help
-		exit 1
-	fi
-	if [ -z "$servicePrincipalName" ]; then
-		echo "Error: Option --serviceprincipalname required"
-		display_help
-		exit 1
-	fi
-	if [ -z "$privateKeytab" ]; then
-		echo "Error: Option --privatekeytab required"
-		display_help
-		exit 1
-	fi
+	test -z "$samAccountName" && error "Option --samaccountname required"
+	test -z "$servicePrincipalName" && error "Option --serviceprincipalname required"
+	test -z "$privateKeytab" && error "Option --privatekeytab required"
 
-	spn_account_name_password=$(create_machine_password)
+	password=$(create_machine_password)
+	samba_private_dir="/var/lib/samba/private"
+	keytab_path="$samba_private_dir/$privateKeytab"
 
-	spn_secrets_ldif=$(ldbsearch -H /var/lib/samba/private/secrets.ldb "(servicePrincipalName=$servicePrincipalName)" \
-			| ldapsearch-wrapper | ldapsearch-decode64)
-	previous_spn_secrets_password=$(sed -n 's/^secret: //p' <<<"$spn_secrets_ldif")
-
-	spn_account_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(servicePrincipalName=$servicePrincipalName)" dn \
-			| ldapsearch-wrapper | sed -n 's/^dn: //p')
-
-	if [ -n "$spn_account_dn" ] && [ -n "$previous_spn_secrets_password" ]; then
-		test_output=$(ldbsearch -k no -H ldap://$(hostname -f) -U"$spn_account_name" \
-			--password="$previous_spn_secrets_password" -b "$spn_account_dn" -s base dn 2>/dev/null \
-			| sed -n 's/^dn: //p')
-		if [ -n "$test_output" ]; then
-			## SPN account password ok, don't touch a running system.
-			return
-		fi
-	fi
-
-	if [ -z "$spn_account_dn" ]; then
-
-		samba-tool user add -- "$spn_account_name" "$spn_account_name_password" || return $?
-
-		samba-tool user setexpiry --noexpiry "$spn_account_name"
-
-		ldbmodify -H /var/lib/samba/private/sam.ldb <<-%EOF
-		dn: CN=$spn_account_name,CN=Users,$samba4_ldap_base
-		changetype: modify
-		replace: servicePrincipalName
-		servicePrincipalName: $servicePrincipalName
-		%EOF
+	## check if user exists
+	SPN_DN="$(udm users/user list "$@" --filter username="$samAccountName" | sed -n 's/^DN: //p')"
+	if [ -n "$SPN_DN" ]; then
+		## modify service account
+		univention-directory-manager users/user modify "$@" \
+			--set password="$password" \
+			--set overridePWHistory=1 \
+			--set overridePWLength=1 \
+			--dn "$SPN_DN" || error "could not modify user account $samAccountName"
 	else
-		echo -n "Setting new password for $spn_account_name account: "
-		local password_set
-		for i in 0 1 2 3 4 5 6 7 8 9; do
-			if samba-tool user setpassword "$spn_account_name" --newpassword="$spn_account_name_password"; then
-				password_set=1
-				break
-			elif [ "$i" -lt 9 ]; then
-				## sometimes the random password does not meet the passwort complexity requirements..
-				echo -n "Trying again with new password: "
-				spn_account_name_password=$(create_machine_password)
-			fi
-		done
-		if [ -z "$password_set" ]; then
-			echo "Error: Failed to set password for $spn_account_name_password"
-			exit 1
-		fi
-
-		samba-tool user setexpiry --noexpiry "$spn_account_name"
+		## create service_accountname via udm, but servicePrincipalName is missing
+		univention-directory-manager users/user create "$@" \
+			--position "cn=users,$ldap_base" \
+			--ignore_exists \
+			--set username="$samAccountName" \
+			--set lastname="Service" \
+			--set password="$password" || error "could not create user account $samAccountName"
 	fi
 
-	# get msDS-KeyVersionNumber
-	msdsKeyVersion=$(ldbsearch -H /var/lib/samba/private/sam.ldb  samAccountName="$spn_account_name" msDS-KeyVersionNumber \
-					| sed -n 's/^msDS-KeyVersionNumber: \(.*\)/\1/p')
-	if [ -z "$msdsKeyVersion" ]; then
-		echo "ERROR: Could not determine msDS-KeyVersionNumber of $spn_account_name account!"
-		exit 1
-	fi
-	
-	spn_secrets_dn=$(sed -n 's/^dn: //p' <<<"$spn_secrets_ldif")
-	if [ -z "$spn_secrets_dn" ]; then
-		ldbadd -H /var/lib/samba/private/secrets.ldb <<-%EOF
-		dn: samAccountName=$spn_account_name,CN=Principals
-		objectClass: kerberosSecret
-		privateKeytab: $privateKeytab
-		realm: $kerberos_realm
-		sAMAccountName: $spn_account_name
-		secret: $spn_account_name_password
-		servicePrincipalName: $servicePrincipalName
-		name: $spn_account_name
-		msDS-KeyVersionNumber: $msdsKeyVersion
-		saltPrincipal: $spn_account_name@$kerberos_realm
-		%EOF
-	else
-		echo -n "Saving password for $spn_account_name account: "
-		ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
-		dn: $spn_secrets_dn
+	## wait for S4 Connector and possibly DRS until the service_accountname is available
+	timeout=${create_spn_account_timeout:-1200}
+	for i in $(seq 1 10 $timeout); do
+		echo "looking for spn account \"$samAccountName\" in local samba"
+		service_account_dn=$(ldbsearch -H $samba_private_dir/sam.ldb samAccountName="$samAccountName" dn | sed -n 's/^dn: \(.*\)/\1/p')
+		[ -n "$service_account_dn" ] && break
+		sleep 10
+	done
+
+
+	test -z "$service_account_dn" && error "$samAccountName account not found in local samba"
+
+	## add servicePrincipalName to account
+	ldbmodify -H "$samba_private_dir/sam.ldb" <<-%EOF
+	dn: $service_account_dn
+	changetype: modify
+	replace: servicePrincipalName
+	servicePrincipalName: $servicePrincipalName
+	-
+	%EOF
+
+	key_version="$(ldbsearch -H "$samba_private_dir/sam.ldb" samAccountName="$samAccountName" msDS-KeyVersionNumber | sed -n 's/^msDS-KeyVersionNumber: //p')"
+	test -z "$key_version" && key_version=1
+
+	## create spn in secrets.ldb
+	spn_secrets="$(ldbsearch -H "$samba_private_dir/secrets.ldb" sAMAccountName="$samAccountName" | sed -n 's/^dn: //p')"
+	if [ -n "$spn_secrets" ]; then
+		## update spn in secrets.ldb
+		ldbmodify -H "$samba_private_dir/secrets.ldb" <<-%EOF
+		dn: samAccountName=$samAccountName,CN=Principals
 		changetype: modify
 		replace: secret
-		secret: $spn_account_name_password
+		secret: $password
 		-
 		replace: msDS-KeyVersionNumber
-		msDS-KeyVersionNumber: $msdsKeyVersion
+		msDS-KeyVersionNumber: $key_version
+		%EOF
+	else
+		## trigger Samba4 to create service keytab
+		ldbadd -H "$samba_private_dir/secrets.ldb" <<-%EOF
+		dn: samAccountName=$samAccountName,CN=Principals
+		objectClass: kerberosSecret
+		sAMAccountName: $samAccountName
+		servicePrincipalName: $servicePrincipalName
+		realm: $kerberos_realm
+		secret: $password
+		msDS-KeyVersionNumber: $key_version
+		privateKeytab: $privateKeytab
+		saltPrincipal: $samAccountName@$kerberos_realm
+		name: $samAccountName
 		%EOF
 	fi
+
+	sleep 3
+
+	if ! [ -f "$keytab_path" ]; then
+		echo "WARNING: samba did not create a keytab for samAccountName=$samAccountName"
+		echo "WARNING: creating keytab manually"
+		/usr/lib/univention-heimdal/univention-create-keytab --keytab="$keytab_path" \
+			--principal="host/$samAccountName.$domainname" \
+			--alias="$servicePrincipalName" \
+			--alias="$samAccountName" \
+			--kvno="$key_version" \
+			--password="$password"
+	fi
+
+	chown proxy "$keytab_path"
+	samba-tool user setexpiry --noexpiry "$samAccountName"
 }
 
 if [ "$(basename $0)" = "$scriptname" ]; then
-	eval "$(ucr shell hostname domainname kerberos/realm samba4/ldap/base)"
+	eval "$(ucr shell hostname domainname kerberos/realm ldap/base)"
 	create_spn_account "$@"
 fi
