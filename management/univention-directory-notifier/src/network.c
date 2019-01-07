@@ -317,10 +317,9 @@ int network_client_main_loop ( )
 	/* main loop */
 	while(1) {
 		int fd;
-		int rc;
 
 		testfds = readfds;
-		if( ((rc=select (FD_SETSIZE, &testfds, (fd_set*)0, (fd_set*)0, (struct timeval *) 0))) < 1) {
+		if( ((select (FD_SETSIZE, &testfds, (fd_set*)0, (fd_set*)0, (struct timeval *) 0))) < 1) {
 								  /*FIXME */
 			if ( errno == EINTR || errno == 29) {
 				/* Ignore signal */
