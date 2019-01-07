@@ -256,7 +256,6 @@ int main(int argc, char* argv[])
 		exit (1);
 	}
 
-	notify_initialize () ;
 	notify_init ( &notify );
 
 	if ( notify_transaction_get_last_notify_id ( &notify, &notify_last_id )  != 0 ) {

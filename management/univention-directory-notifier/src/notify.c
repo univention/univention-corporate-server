@@ -39,7 +39,6 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <sys/stat.h>
-#include <pthread.h>
 #include <time.h>
 #include <ldap.h>
 #include <sasl/sasl.h>
@@ -69,13 +68,6 @@ extern char *strndup (__const char *__string, size_t __n);
 
 extern unsigned long SCHEMA_ID;
 
-static pthread_mutex_t mut_replog = PTHREAD_MUTEX_INITIALIZER;
-static pthread_mutex_t mut_orf = PTHREAD_MUTEX_INITIALIZER;
-static pthread_mutex_t mut_tf = PTHREAD_MUTEX_INITIALIZER;
-static pthread_mutex_t mut_tf_idx = PTHREAD_MUTEX_INITIALIZER;
-static pthread_mutex_t mut_save = PTHREAD_MUTEX_INITIALIZER;
-
-
 void notify_id_get_next(NotifyId_t *next_notify);
 
 
@@ -89,16 +81,12 @@ static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
 
 	if ( !(strcmp(name, FILE_NAME_ORF)) ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK %s", FILE_NAME_ORF);
-		pthread_mutex_lock(&mut_orf);
 	} else if ( !(strcmp(name, FILE_NAME_TF)) ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK %s", FILE_NAME_TF);
-		pthread_mutex_lock(&mut_tf);
 	} else if ( !(strcmp(name, FILE_NAME_TF_IDX)) ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK %s", FILE_NAME_TF_IDX);
-		pthread_mutex_lock(&mut_tf_idx);
 	} else if ( !(strcmp(name, FILE_NAME_SAVE)) ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK %s", FILE_NAME_SAVE);
-		pthread_mutex_lock(&mut_save);
 	}
 
 	snprintf( buf, sizeof(buf), "%s.lock", name );
@@ -154,16 +142,12 @@ static int fclose_lock(const char *name, FILE **file, FILE **l_file)
 
 	if ( !(strcmp(name, FILE_NAME_ORF)) ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "UNLOCK %s", FILE_NAME_ORF);
-		pthread_mutex_unlock(&mut_orf);
 	} else if ( !(strcmp(name, FILE_NAME_TF)) ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "UNLOCK %s", FILE_NAME_TF);
-		pthread_mutex_unlock(&mut_tf);
 	} else if ( !(strcmp(name, FILE_NAME_TF_IDX)) ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "UNLOCK %s", FILE_NAME_TF_IDX);
-		pthread_mutex_unlock(&mut_tf_idx);
 	} else if ( !(strcmp(name, FILE_NAME_SAVE)) ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "UNLOCK %s", FILE_NAME_SAVE);
-		pthread_mutex_unlock(&mut_save);
 	}
 	return 0;
 }
@@ -781,10 +765,6 @@ void notify_replog_change_callback(int sig, siginfo_t *si, void *data)
 	 */
 	bool found = false;
 
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "P_SEM .. ");
-	pthread_mutex_lock(&mut_replog);
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "P_SEM");
-
 	entry = notify_entry_alloc();
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from notify_replog_change_callback");
@@ -904,21 +884,10 @@ void notify_replog_change_callback(int sig, siginfo_t *si, void *data)
 	}
 
 	fclose_lock(FILE_NAME_IRF, &file, &l_file);
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "V_SEM");
-	pthread_mutex_unlock(&mut_replog);
 
 	network_client_check_clients ( notify_last_id.id ) ;
 
 	return;
-}
-
-void notify_initialize ()
-{
-	pthread_mutex_unlock(&mut_replog);
-	pthread_mutex_unlock(&mut_orf);
-	pthread_mutex_unlock(&mut_tf);
-	pthread_mutex_unlock(&mut_tf_idx);
-	pthread_mutex_unlock(&mut_save);
 }
 
 void notify_listener_change_callback(int sig, siginfo_t *si, void *data)

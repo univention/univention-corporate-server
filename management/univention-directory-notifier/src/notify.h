@@ -109,7 +109,4 @@ void notify_replog_change_callback(int sig, siginfo_t *si, void *data);
 void notify_schema_change_callback(int sig, siginfo_t *si, void *data);
 void notify_listener_change_callback(int sig, siginfo_t *si, void *data);
 
-void notify_initialize () ;
-
-
 #endif
