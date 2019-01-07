@@ -531,29 +531,6 @@ void notify_entry_free(NotifyEntry_t *entry )
 	}
 }
 
-NotifyEntry_t* notify_entry_reverse ( NotifyEntry_t *entry )
-{
-	NotifyEntry_t *tmp;
-	NotifyEntry_t *tmp2;
-	NotifyEntry_t *tmp3 = NULL;
-
-	tmp=entry;
-
-	while ( tmp!=NULL ) {
-		tmp2=tmp3;
-
-		tmp3=tmp;
-
-		tmp=tmp->next;
-
-		/* first */
-		tmp3->next=tmp2;
-
-	}
-
-	return tmp3;
-}
-
 char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 {
 	char buffer[2048];

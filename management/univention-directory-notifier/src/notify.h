@@ -94,13 +94,11 @@ typedef struct {
 
 void notify_init ( Notify_t *notify );
 int  notify_transaction_get_last_notify_id ( Notify_t *notify, NotifyId_t *notify_id );
-NotifyEntry_t* notify_transcation_get_dn ( unsigned long last_known_id );
 char* notify_transcation_get_one_dn ( unsigned long last_known_id );
 
 void notify_entry_init ( NotifyEntry_t *entry );
 void notify_entry_dump ( NotifyEntry_t *entry );
 void notify_entry_free(NotifyEntry_t *entry );
-NotifyEntry_t* notify_entry_reverse ( NotifyEntry_t *entry );
 
 char* notify_entry_to_string(NotifyEntry_t entry ) ;
 

@@ -192,51 +192,6 @@ int network_client_del ( int fd )
 
 	return 0;
 }
-unsigned long network_client_get_next_id( int fd)
-{
-	NetworkClient_t *tmp = network_client_first;
-
-	while(tmp != NULL )
-	{
-		if ( tmp->fd == fd )
-		{
-			return tmp->next_id;
-		}
-		tmp = tmp->next;
-	}
-
-	return 0;
-}
-unsigned long network_client_get_msg_id( int fd)
-{
-	NetworkClient_t *tmp = network_client_first;
-
-	while(tmp != NULL )
-	{
-		if ( tmp->fd == fd )
-		{
-			return tmp->msg_id;
-		}
-		tmp = tmp->next;
-	}
-
-	return 0;
-}
-int network_client_waiting( int fd )
-{
-	NetworkClient_t *tmp = network_client_first;
-
-	while(tmp != NULL )
-	{
-		if ( tmp->fd == fd )
-		{
-			return tmp->waiting;
-		}
-		tmp = tmp->next;
-	}
-
-	return 0;
-}
 
 int network_client_set_next_id( int fd, unsigned long id )
 {
