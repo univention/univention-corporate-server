@@ -57,12 +57,7 @@ extern Notify_t notify;
 extern long long notifier_lock_count;
 extern long long notifier_lock_time;
 
-extern char *strndup (__const char *__string, size_t __n);
-
 extern unsigned long SCHEMA_ID;
-
-void notify_id_get_next(NotifyId_t *next_notify);
-
 
 
 static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
