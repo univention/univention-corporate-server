@@ -31,235 +31,42 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import operator
+import logging
+
 import univention.admin.filter
+import univention.uldap
+from ldap import SERVER_DOWN
 import univention.config_registry
-from functools import reduce
-
-userToGroup = {}  # { "user": ["group1", "group2", ], }
-groupInfo = {}  # { "group1": (23, True, ), }
-whitelisting = None
-
-
-def loadInfo():
-	global whitelisting
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
-	whitelisting = configRegistry.is_true('radius/mac/whitelisting')
-	for key in configRegistry:
-		if key.startswith('proxy/filter/usergroup/'):
-			group = key[len('proxy/filter/usergroup/'):]
-			users = configRegistry[key].split(',')
-			for user in users:
-				if user not in userToGroup:
-					userToGroup[user] = []
-				userToGroup[user].append(group)
-		elif key.startswith('proxy/filter/groupdefault/'):
-			group = key[len('proxy/filter/groupdefault/'):]
-			rule = configRegistry[key]
-			priority = 0
-			try:
-				priority = int(configRegistry.get('proxy/filter/setting/%s/priority' % (rule, ), ''))
-			except ValueError:
-				pass
-			wlanEnabled = configRegistry.is_true('proxy/filter/setting/%s/wlan' % (rule, ))
-			if wlanEnabled is not None:
-				groupInfo[group] = (priority, wlanEnabled, )
-
-
-def checkProxyFilterPolicy(username):
-	groups = userToGroup.get(username)
-	if groups is None:
-		return False
-	groups = [groupInfo[group] for group in groups if group in groupInfo]
-	if not groups:
-		return False
-	(maxPriority, _, ) = max(groups)
-	if True not in [wlanEnabled for (priority, wlanEnabled, ) in groups if priority == maxPriority]:
-		return False
-	return True
-
-
-def traceProxyFilterPolicy(username):
-	message = ''
-	groups = userToGroup.get(username)
-	if groups is None:
-		return False, 'User %r not found\n\n' % (username, )
-	groupInfos = [groupInfo[group] for group in groups if group in groupInfo]
-	if groupInfos:
-		(maxPriority, _, ) = max(groupInfos)
-	else:
-		maxPriority = None
-	for group in groups:
-		if group in groupInfo:
-			(priority, wlanEnabled, ) = groupInfo[group]
-			if priority == maxPriority:
-				if wlanEnabled:
-					message += '-> Group %r: ALLOW (priority %r)\n' % (group, priority, )
-				else:
-					message += '-> Group %r: DENY (priority %r)\n' % (group, priority, )
-			else:
-				if wlanEnabled:
-					message += '-> Group %r: allow (ignored) (priority %r)\n' % (group, priority, )
-				else:
-					message += '-> Group %r: deny (ignored) (priority %r)\n' % (group, priority, )
-		else:
-			message += '-> Group %r: not specified\n' % (group, )
-	if True not in [wlanEnabled for (priority, wlanEnabled, ) in groupInfos if priority == maxPriority]:
-		return False, message + '\n'
-	else:
-		return True, message + '\n'
-
-
-def curried(function):
-	return lambda args: function(*args)
-
-
-def concat(list_of_lists):
-	'''concatenate all lists in a list of lists into one list'''
-	return reduce(operator.add, list_of_lists, [])
-
-
-@curried
-def checkAccessAttribute(dn, attributes):
-	access = attributes.get('univentionNetworkAccess')
-	if access == ['1']:
-		return dn, True
-	if access == ['0']:
-		return dn, False
-	return dn, False
-
-
-def reducePolicies(policies):
-	'''evaluate list of same-level policy values ("or" == allow trumps deny)'''
-	return reduce(operator.or_, policies)
-
-
-def filterPolicyGroups(groupPolicies):
-	policies = [policy for (groupDn, policy) in groupPolicies]
-	groupsWithout = [groupDn for (groupDn, policy) in groupPolicies]
-	return policies, groupsWithout
-
-
-def findUser(ldapConnection, uid):
-	return ldapConnection.search(filter=str(univention.admin.filter.expression('uid', uid)), attr=['univentionNetworkAccess'])
-
-
-def findStation(ldapConnection, station):
-	station = ':'.join([byte.encode('hex') for byte in station])
-	return ldapConnection.search(filter=str(univention.admin.filter.expression('macAddress', station)), attr=['univentionNetworkAccess'])
-
-
-def findDnGroups(ldapConnection, dn):
-	return ldapConnection.search(filter=str(univention.admin.filter.expression('uniqueMember', dn)), attr=['univentionNetworkAccess'])
-
-
-def evaluateLdapPolicies(ldapConnection, searchResult):
-	def _findDnGroups(dn):
-		return findDnGroups(ldapConnection, dn)
-	policies, groupsWithoutPolicy = filterPolicyGroups(map(checkAccessAttribute, searchResult))
-	if policies:
-		policy = reducePolicies(policies)
-	else:
-		policy = False
-	if groupsWithoutPolicy:
-		return policy or evaluateLdapPolicies(ldapConnection, concat(map(_findDnGroups, groupsWithoutPolicy)))
-	else:
-		return policy
-
-
-def traceLdapPolicies(ldapConnection, searchResult, level=''):
-	def _findDnGroups(dn):
-		return findDnGroups(ldapConnection, dn)
-
-	@curried
-	def formatPolicyGroup(group, policy):
-		if policy:
-			return level + 'ALLOW %r' % (group, )
-		if not policy:
-			return level + 'DENY %r' % (group, )
-		return ''
-	policyGroups = map(checkAccessAttribute, searchResult)
-	message = '\n'.join(filter(None, map(formatPolicyGroup, policyGroups)))
-	if message:
-		message += '\n'
-	policies, groupsWithoutPolicy = filterPolicyGroups(policyGroups)
-	if groupsWithoutPolicy:
-		# build message tree-like
-		for group in groupsWithoutPolicy:
-			message += level + '%r\n' % (group, )
-			_, messages = traceLdapPolicies(ldapConnection, _findDnGroups(group), level=level + '-> ')
-			message += messages
-		# but evaluate result collapsed
-		result, _ = traceLdapPolicies(ldapConnection, concat(map(_findDnGroups, groupsWithoutPolicy)))
-		if result is not None:
-			policies.append(result)
-	if not policies:
-		return False, message
-	if reducePolicies(policies):
-		return True, message
-	else:
-		return False, message
-
-
-def checkNetworkAccess(ldapConnection, username):
-	result = findUser(ldapConnection, username)
-	if not result:
-		return False
-	return evaluateLdapPolicies(ldapConnection, result)
-
-
-def checkStationWhitelist(ldapConnection, stationId):
-	if not whitelisting:
-		return True
-	result = findStation(ldapConnection, stationId)
-	if not result:
-		return False
-	return evaluateLdapPolicies(ldapConnection, result)
-
-
-def traceNetworkAccess(ldapConnection, username):
-	if userToGroup or groupInfo:  # proxy UCRV set, UCS@school mode
-		resultProxy, message = traceProxyFilterPolicy(username)
-	else:
-		resultProxy, message = False, ''
-	result = findUser(ldapConnection, username)
-	if result:
-		resultLdap, messageLdap = traceLdapPolicies(ldapConnection, result)
-	else:
-		resultLdap, messageLdap = False, 'User %r does not exist\n' % (username, )
-	message += messageLdap + '\n'
-	if bool(resultProxy or resultLdap):
-		message += 'Thus access for user is ALLOWED.\n'
-	else:
-		message += 'Thus access for user is DENIED.\n'
-	return bool(resultProxy or resultLdap), message
-
-
-def traceStationWhitelist(ldapConnection, stationId):
-	result = findStation(ldapConnection, stationId)
-	if result:
-		result, message = traceLdapPolicies(ldapConnection, result)
-	else:
-		result, message = False, 'Station %r does not exist\n' % (':'.join([byte.encode('hex') for byte in stationId]), )
-	if not whitelisting:
-		message += 'MAC filtering is disabled by radius/mac/whitelisting.\n'
-		result = True
-	if result is None:
-		message += '\nThus access for station is DENIED by default.\n'
-	elif result:
-		message += '\nThus access for station is ALLOWED.\n'
-	else:
-		message += '\nThus access for station is DENIED.\n'
-	return bool(result), message
-
 
 SAMBA_ACCOUNT_FLAG_DISABLED = 'D'
 SAMBA_ACCOUNT_FLAG_LOCKED = 'L'
 DISALLOWED_SAMBA_ACCOUNT_FLAGS = frozenset((SAMBA_ACCOUNT_FLAG_DISABLED, SAMBA_ACCOUNT_FLAG_LOCKED, ))
 
 
-def parseUsername(username):
+def convert_network_access_attr(attributes):
+	access = attributes.get('univentionNetworkAccess')
+	if access == ['1']:
+		return True
+	return False
+
+
+def convert_ucs_debuglevel(ucs_debuglevel):
+	logging_debuglevel = (ucs_debuglevel - 5) * -10
+	return logging_debuglevel
+
+
+def decode_stationId(stationId):
+	if not stationId:
+		return None
+	stationId = stationId.lower()
+	# remove all non-hex characters, so different formats may be decoded
+	# e.g. 11:22:33:44:55:66 or 1122.3344.5566 or 11-22-33-44-55-66 or ...
+	stationId = ''.join(c for c in stationId if c in '0123456789abcdef')
+	stationId = stationId.decode('hex')
+	return ':'.join([byte.encode('hex') for byte in stationId])
+
+
+def parse_username(username):
 	'''convert username from host/-format to $-format if required'''
 	if not username.startswith('host/'):
 		return username
@@ -268,25 +75,161 @@ def parseUsername(username):
 	return username + '$'
 
 
-def getNTPasswordHash(ldapConnection, username, stationId):
-	'stationId may be None if it was not supplied to the program'
-	username = parseUsername(username)
-	if userToGroup or groupInfo:  # proxy UCRV set, UCS@school mode
-		if not (checkProxyFilterPolicy(username) or checkNetworkAccess(ldapConnection, username)):
-			return None
-	else:  # UCS mode
-		if not checkNetworkAccess(ldapConnection, username):
-			return None
-	if not checkStationWhitelist(ldapConnection, stationId):
-		return None
-	# user is authorized to use the W-LAN, retrieve NT-password-hash from LDAP and return it
-	result = ldapConnection.search(filter=str(univention.admin.filter.expression('uid', username)), attr=['sambaNTPassword', 'sambaAcctFlags'])
-	if not result:
-		return None
-	sambaAccountFlags = frozenset(result[0][1]['sambaAcctFlags'][0])
-	if sambaAccountFlags & DISALLOWED_SAMBA_ACCOUNT_FLAGS:
-		return None
-	return result[0][1]['sambaNTPassword'][0].decode('hex')
+def get_ldapConnection():
+	try:
+		# try ldap/server/name, then each of ldap/server/addition
+		ldapConnection = univention.uldap.getMachineConnection(ldap_master=False, reconnect=False)
+	except SERVER_DOWN:
+		# then master dc
+		ldapConnection = univention.uldap.getMachineConnection()
+	return ldapConnection
 
 
-loadInfo()
+class NetworkAccessError(Exception):
+
+	def __init__(self, msg):
+		self.msg = msg
+
+
+class UserNotAllowedError(NetworkAccessError):
+	pass
+
+
+class MacNotAllowedError(NetworkAccessError):
+	pass
+
+
+class NoHashError(NetworkAccessError):
+	pass
+
+
+class UserDeactivatedError(NetworkAccessError):
+	pass
+
+
+class NetworkAccess(object):
+
+	def __init__(self, username, stationId, loglevel=None, logfile=None):
+		self.username = parse_username(username)
+		self.mac_address = decode_stationId(stationId)
+		self.ldapConnection = get_ldapConnection()
+		self.configRegistry = univention.config_registry.ConfigRegistry()
+		self.configRegistry.load()
+		self.whitelisting = self.configRegistry.is_true('radius/mac/whitelisting')
+		self._setup_logger(loglevel, logfile)
+		self.logger.debug('Given username: "{}"'.format(username))
+		self.logger.debug('Given stationId: "{}"'.format(stationId))
+
+	def _setup_logger(self, loglevel, logfile):
+		self.configRegistry = univention.config_registry.ConfigRegistry()
+		self.configRegistry.load()
+		if loglevel is not None:
+			ucs_debuglevel = loglevel
+		else:
+			try:
+				ucs_debuglevel = int(self.configRegistry.get('univention-radius-ntlm-auth/debug', '2'))
+			except ValueError:
+				ucs_debuglevel = 2
+		debuglevel = convert_ucs_debuglevel(ucs_debuglevel)
+		self.logger = logging.getLogger('radius-ntlm')
+		self.logger.setLevel(debuglevel)
+		if logfile is not None:
+			log_handler = logging.FileHandler(logfile)
+			log_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)10s: [user={}; mac={}] %(message)s'.format(self.username, self.mac_address))
+		else:
+			log_handler = logging.StreamHandler()
+			log_formatter = logging.Formatter('%(levelname)10s: [user={}; mac={}] %(message)s'.format(self.username, self.mac_address))
+		log_handler.setFormatter(log_formatter)
+		self.logger.addHandler(log_handler)
+		self.logger.info("Loglevel set to: {}".format(ucs_debuglevel))
+
+	def build_access_dict(self, ldap_result):
+		access_dict = dict()
+		for (dn, attributes) in ldap_result:
+			access_dict[dn] = convert_network_access_attr(attributes)
+		return access_dict
+
+	def get_user_network_access(self, uid):
+		users = self.ldapConnection.search(filter=str(univention.admin.filter.expression('uid', uid)), attr=['univentionNetworkAccess'])
+		return self.build_access_dict(users)
+
+	def get_station_network_access(self, mac_address):
+		stations = self.ldapConnection.search(filter=str(univention.admin.filter.expression('macAddress', mac_address)), attr=['univentionNetworkAccess'])
+		return self.build_access_dict(stations)
+
+	def get_groups_network_access(self, dn):
+		groups = self.ldapConnection.search(filter=str(univention.admin.filter.expression('uniqueMember', dn)), attr=['univentionNetworkAccess'])
+		return self.build_access_dict(groups)
+
+	def evaluate_ldap_network_access(self, access, level=''):
+
+		def format_network_access_msg(dn, policy):
+			if policy:
+				return level + 'ALLOW %r' % (dn, )
+			return level + 'DENY %r' % (dn, )
+
+		short_circuit = not self.logger.isEnabledFor(logging.DEBUG)
+		policy = any(access.values())
+		if short_circuit and policy:
+			return policy
+		for dn in access.keys():
+			self.logger.debug(format_network_access_msg(dn, access[dn]))
+			parents_access = self.get_groups_network_access(dn)
+			if self.evaluate_ldap_network_access(parents_access, level=level + '-> '):
+				policy = True
+				if short_circuit:
+					break
+		return policy
+
+	def check_proxy_filter_policy(self):
+		'''Dummy function for ucs@school'''
+		self.logger.debug('ucs@school radius is not installed')
+		return False
+
+	def check_network_access(self):
+		result = self.get_user_network_access(self.username)
+		if not result:
+			self.logger.info('Login attempt with unknown username')
+			return False
+		self.logger.debug('Checking ldap network access for user')
+		policy = self.evaluate_ldap_network_access(result)
+		if policy:
+			self.logger.info('Ldap settings allow attempt to login')
+		else:
+			self.logger.info('Ldap settings deny attempt to login')
+		return policy
+
+	def check_station_whitelist(self):
+		if not self.whitelisting:
+			self.logger.debug('MAC filtering is disabled by radius/mac/whitelisting.')
+			return True
+		self.logger.debug('Checking ldap network access for stationId')
+		if not self.mac_address:
+			self.logger.info('Login attempt without mac address, but mac filtering is enabled.')
+			return False
+		result = self.get_station_network_access(self.mac_address)
+		if not result:
+			self.logger.info('Login attempt with unknown mac address')
+			return False
+		policy = self.evaluate_ldap_network_access(result)
+		if policy:
+			self.logger.info('Ldap settings allow login from stationId')
+		else:
+			self.logger.info('Ldap settings deny login from stationId')
+		return policy
+
+	def getNTPasswordHash(self):
+		'stationId may be None if it was not supplied to the program'
+		if not (self.check_proxy_filter_policy() or self.check_network_access()):
+			raise UserNotAllowedError('User is not allowed to use radius')
+		if not self.check_station_whitelist():
+			raise MacNotAllowedError('stationId is denied, because it is not whotelisted')
+		# user is authorized to use the W-LAN, retrieve NT-password-hash from LDAP and return it
+		self.logger.info('User is allowed to use radius')
+		result = self.ldapConnection.search(filter=str(univention.admin.filter.expression('uid', self.username)), attr=['sambaNTPassword', 'sambaAcctFlags'])
+		if not result:
+			raise NoHashError('No NT-password-hash found')
+		sambaAccountFlags = frozenset(result[0][1]['sambaAcctFlags'][0])
+		if sambaAccountFlags & DISALLOWED_SAMBA_ACCOUNT_FLAGS:
+			raise UserDeactivatedError('Account is deactivated')
+		return result[0][1]['sambaNTPassword'][0].decode('hex')

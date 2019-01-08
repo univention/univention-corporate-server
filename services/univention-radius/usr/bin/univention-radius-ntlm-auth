@@ -32,12 +32,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.networkaccess import getNTPasswordHash
 import optparse
 import sys
-import univention.pyMsChapV2 as pyMsChapV2
-import univention.uldap
-from ldap import SERVER_DOWN
+
+from univention.radius import get_NetworkAccess
+from univention.radius.networkaccess import NetworkAccessError
+import univention.radius.pyMsChapV2 as pyMsChapV2
+
+
+LOGFIILE = '/var/log/univention/radius_ntlm_auth.log'
 
 
 def main():
@@ -60,24 +63,15 @@ def main():
 	if not options.Response:
 		print 'Missing required parameter --nt-response!'
 		return 1
-	if not options.stationId:
-		stationId = ''
-	else:
-		# safely decode station id (fails with exception on mis-formatted id, thus returning 1)
-		stationId = options.stationId.lower()
-		# remove all non-hex characters, so different formats may be decoded
-		# e.g. 11:22:33:44:55:66 or 1122.3344.5566 or 11-22-33-44-55-66 or ...
-		stationId = ''.join(c for c in stationId if c in '0123456789abcdef')
-		stationId = stationId.decode('hex')
 	options.Challenge = options.Challenge.decode('hex')
 	options.Response = options.Response.decode('hex')
+	NetworkAccess = get_NetworkAccess()
+	networkAccess = NetworkAccess(options.Username, options.stationId, logfile=LOGFIILE)
 	try:
-		# try ldap/server/name, then each of ldap/server/addition
-		ldapConnection = univention.uldap.getMachineConnection(ldap_master=False, reconnect=False)
-	except SERVER_DOWN:
-		# then master dc
-		ldapConnection = univention.uldap.getMachineConnection()
-	PasswordHash = getNTPasswordHash(ldapConnection, options.Username, stationId)
+		PasswordHash = networkAccess.getNTPasswordHash()
+	except NetworkAccessError as exc:
+		PasswordHash = None
+		networkAccess.logger.warning(exc.msg)
 	if PasswordHash and pyMsChapV2.ChallengeResponse(options.Challenge, PasswordHash) == options.Response:
 		print 'NT_KEY: %s' % (pyMsChapV2.HashNtPasswordHash(PasswordHash).encode('hex').upper(), )
 		return 0
