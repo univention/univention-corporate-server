@@ -1,19 +1,5 @@
 ### database definition
-modulepath	/usr/lib/ldap
-moduleload	back_@%@ldap/database/type@%@.so
 @!@
-if configRegistry.get('ldap/translogfile'):
-	print "moduleload\ttranslog.so"
-if configRegistry.is_true('ldap/k5pwd', True):
-	print "moduleload\tk5pwd.so"
-if configRegistry.is_true('ldap/pwd_scheme_kinit', True):
-	print "moduleload\tpwd_scheme_kinit.so"
-if configRegistry.get('ldap/database/type') == "mdb" and configRegistry.is_true('ldap/ppolicy', False):
-	print "moduleload\tppolicy.so"
-if configRegistry.is_true('ldap/shadowbind', True):
-	print 'moduleload\tshadowbind.so'
-print 'moduleload\tconstraint.so'
-
 print '\n'
 print 'database\t%(ldap/database/type)s' % configRegistry
 print 'suffix\t\t"%(ldap/base)s"' % configRegistry

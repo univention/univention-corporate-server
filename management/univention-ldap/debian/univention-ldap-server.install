@@ -9,3 +9,4 @@ well-known-sid-name-mapping.d/univention-ldap-server.py usr/lib/univention-pam/w
 scripts/create-dh-parameter-files	usr/share/univention-ldap/
 dh_2048.pem	usr/share/univention-ldap/
 scripts/ldap_setup_index	usr/share/univention-ldap/
+scripts/setup-translog	usr/share/univention-ldap/

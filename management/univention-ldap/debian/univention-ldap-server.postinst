@@ -188,6 +188,7 @@ upgrade_license () {
 }
 
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+	JOIN_FORCE="$([ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 14.0.2-35 && echo 1)" \
 	/usr/lib/univention-install/01univention-ldap-server-init.inst || true
 	/usr/lib/univention-install/10univention-ldap-server.inst || true
 	[ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 11.0.12-5 && upgrade_license || :
