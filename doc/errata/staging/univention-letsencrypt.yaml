@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-letsencrypt
+fix: 1.2.2-4A~4.3.0.201901081457
+desc: |
+ This update addresses the following issue(s):
+ * The univention-letsencrypt package was moved into the UCS git repository
+ * Let's Encrypt now uses virtual hosts in the apache configuration
+bug: [48204]
