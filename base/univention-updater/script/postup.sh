@@ -201,6 +201,16 @@ if ! ls /etc/rc2.d/ | grep -q ntp; then
 fi
 # Bug 46542 - end
 
+# Bug 46780: ensure php7 if nagios is installed
+if [ -e /usr/sbin/nagios ]; then
+	if ! is_installed "libapache2-mod-php7.0" ; then
+		install libapache2-mod-php7.0 >>"$UPDATER_LOG" 2>&1 || true
+	fi
+	a2dismod php5 >>"$UPDATER_LOG" 2>&1 || true
+	a2enmod php7.0 >>"$UPDATER_LOG" 2>&1 || true
+	service nagios restart >>"$UPDATER_LOG" 2>&1 || true
+fi
+
 /usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3 >>"$UPDATER_LOG" 2>&1
 
 # Bug #46875: unmask the rpcbind service again after update
