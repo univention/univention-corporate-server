@@ -31,6 +31,8 @@
 #ifndef __NETWORK_H__
 #define __NETWORK_H__
 
+#include <stddef.h>
+
 #define NETWORK_MAX 8192
 
 typedef int (*callback_remove_handler)(int fd);
@@ -57,7 +59,7 @@ int network_client_init(int port);
 
 int network_client_dump();
 
-int network_client_all_write(unsigned long id, char *buf, long l_buf);
+int network_client_all_write(unsigned long id, char *buf, size_t l_buf);
 int network_client_set_next_id(int fd, unsigned long id);
 int network_client_set_msg_id(int fd, unsigned long msg_id);
 int network_client_set_version(int fd, int version);

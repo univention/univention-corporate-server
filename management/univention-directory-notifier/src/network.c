@@ -293,7 +293,7 @@ int network_client_check_clients(unsigned long last_known_id) {
 	return 0;
 }
 
-int network_client_all_write(unsigned long id, char *buf, long l_buf) {
+int network_client_all_write(unsigned long id, char *buf, size_t l_buf) {
 	NetworkClient_t *tmp;
 	int rc;
 	char string[NETWORK_MAX];
@@ -309,9 +309,7 @@ int network_client_all_write(unsigned long id, char *buf, long l_buf) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d\n", tmp->fd);
 			if (tmp->next_id == id) {
 				memset(string, 0, NETWORK_MAX);
-				sprintf(string, "MSGID: %ld\n", tmp->msg_id);
-				strncat(string, buf, l_buf);
-				strcat(string, "\n");
+				snprintf(string, sizeof(string), "MSGID: %ld\n%.*s\n", tmp->msg_id, (int)l_buf, buf);
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d[%s]\n", tmp->fd, string);
 				rc = write(tmp->fd, string, strlen(string));
 				// rc = write(tmp->fd, buf, l_buf );
