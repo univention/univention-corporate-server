@@ -76,7 +76,6 @@ int network_client_init ( int port );
 
 int network_client_dump ( );
 
-int network_client_write ( int fd, char *buf, long l_buf);
 int network_client_all_write ( unsigned long id, char *buf, long l_buf);
 int network_client_set_next_id( int fd, unsigned long id );
 int network_client_set_msg_id( int fd, unsigned long msg_id );

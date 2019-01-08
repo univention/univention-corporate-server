@@ -69,7 +69,6 @@ int  notify_transaction_get_last_notify_id ( Notify_t *notify, NotifyId_t *notif
 char* notify_transcation_get_one_dn ( unsigned long last_known_id );
 
 void notify_entry_init ( NotifyEntry_t *entry );
-void notify_entry_dump ( NotifyEntry_t *entry );
 void notify_entry_free(NotifyEntry_t *entry );
 
 char* notify_entry_to_string(NotifyEntry_t entry ) ;

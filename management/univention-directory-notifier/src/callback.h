@@ -33,6 +33,5 @@
 #define __CALLBACK_H__
 
 int data_on_connection(int fd, callback_remove_handler remove);
-int data_on_connection_old(int fd, callback_remove_handler remove);
 
 #endif
