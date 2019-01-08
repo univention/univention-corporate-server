@@ -57,7 +57,6 @@ extern Notify_t notify;
 extern int ONLY_NOTIFY;
 extern int WRITE_SAVE_REPLOG;
 extern int WRITE_REPLOG;
-extern long long replog_sleep;
 extern long long notifier_lock_count;
 extern long long notifier_lock_time;
 
@@ -687,39 +686,6 @@ static char* modrdn(char *dn, char *newrdn, char *newsuperior )
 	return new_string;
 }
 
-int sig_block_count = 0;
-sigset_t block_mask;
-
-void signals_block(void)
-{
-	static int init_done = 0;
-
-	if ((++sig_block_count) != 1)
-		return;
-
-	if (init_done == 0) {
-		sigemptyset(&block_mask);
-		sigaddset(&block_mask, SIGPIPE);
-		sigaddset(&block_mask, SIGHUP);
-		sigaddset(&block_mask, SIGINT);
-		sigaddset(&block_mask, SIGQUIT);
-		sigaddset(&block_mask, SIGTERM);
-		sigaddset(&block_mask, SIGABRT);
-		sigaddset(&block_mask, SIGCHLD);
-		sigaddset(&block_mask, SIGUSR1);
-		init_done = 1;
-	}
-
-	sigprocmask(SIG_BLOCK, &block_mask, NULL);
-}
-
-void signals_unblock(void)
-{
-	if ((--sig_block_count) != 0)
-		return;
-	sigprocmask(SIG_UNBLOCK, &block_mask, NULL);
-}
-
 void notify_replog_change_callback(int sig, siginfo_t *si, void *data)
 {
 	NotifyEntry_t *entry;
@@ -745,19 +711,6 @@ void notify_replog_change_callback(int sig, siginfo_t *si, void *data)
 	if ( ( file = fopen_lock ( FILE_NAME_IRF, "r+", &(l_file) ) ) == NULL ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not open %s\n",FILE_NAME_IRF);
 	}
-	 /*
-	  * to be sure the modification is already in the ldap tree
-	  *
-	signals_block();
-	int rc = 1;
-	while ( rc != 0 ) {
-		rc=usleep(replog_sleep);
-	}
-	signals_unblock();
-	 * we don't need to sleep anymore
-	 */
-
-
 
 	while ( (fgets(line, MAX_LINE, file)) != NULL ) {
 
@@ -886,18 +839,6 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 	if ( ( file = fopen_lock ( FILE_NAME_LISTENER, "r+", &(l_file) ) ) == NULL ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not open %s\n",FILE_NAME_LISTENER);
 	}
-
-	/*
-	 * why what are we waiting here
-	signals_block();
-	int rc = 1;
-	while ( rc != 0 ) {
-		rc=usleep(replog_sleep);
-	}
-	signals_unblock();
-	 *
-	 */
-
 
 	if( (stat(FILE_NAME_LISTENER, &stat_buf)) != 0 ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "stat error\n");

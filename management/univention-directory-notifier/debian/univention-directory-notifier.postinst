@@ -90,8 +90,6 @@ fi
 
 univention-config-registry set notifier/debug/level?1
 
-univention-config-registry unset notifier/replog/sleep
-
 create_logfile /var/log/univention/notifier.log "root:adm" 640
 
 # configure firewall

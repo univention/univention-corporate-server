@@ -52,11 +52,6 @@ fi
 if [ "$notifier_debug_level" != 0 ]; then
 	options="$options -d $notifier_debug_level"
 fi
-
-if [ -n "$notifier_replog_sleep" ]; then
-	options="$options -S $notifier_replog_sleep"
-fi
-
 if [ -n "$notifier_cache_size" ]; then
 	options="$options -C $notifier_cache_size"
 fi
