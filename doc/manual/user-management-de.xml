@@ -923,7 +923,7 @@
 					<listitem>
 						<simpara>
 							<command>samba-tool domain passwordsettings set --reset-account-lockout-after=5</command>
-							legt die Zeit fest, nach der der Zähler zurückgesetzt wird. Wenn ein Konto automatisch
+							legt die Anzahl der Minuten fest, nach der der Zähler zurückgesetzt wird. Wenn ein Konto automatisch
 							entsperrt wird, aber der Zähler nicht zurückgesetzt wird, dann wird das Konto durch ein
 							einziges falsches Passwort wieder gesperrt.
 						</simpara>
@@ -942,7 +942,7 @@
 				durch Setzen der &ucsUCRV; <envar>auth/faillog</envar> auf <literal>yes</literal> aktiviert werden.
 				Die Obergrenze an fehlerhaften Passworteingaben, bei der eine Kontosperre
 				aktiviert wird, wird in der &ucsUCRV; <envar>auth/faillog/limit</envar> konfiguriert.
-				Nach einer korrekten Passworteingabe wird der Zähler jedesmal wieder zurückgesetzt.
+				Unterhalb des Limits wird nach einer korrekten Passworteingabe der Zähler jedesmal wieder zurückgesetzt.
 			</para>
 			<para>
 				Die Sperre im PAM-Stack ist standardmäßig nur auf ein lokales System begrenzt. Wenn ein
@@ -954,8 +954,8 @@
 				bzw. über das verwendete Listener-Modul auch wieder entsperrt.
 			</para>
 			<para>
-				Standardmäßig ist die Sperre über den PAM-Stack unbegrenzt gültig
-				Sie kann aber auch nach Ablauf eines Intervalls
+				Standardmäßig ist die Sperre über den PAM-Stack unbegrenzt gültig,
+				sie kann aber auch nach Ablauf eines Intervalls
 				automatisch wieder aufgehoben werden. Hierzu ist in
 				der &ucsUCRV; <envar>auth/faillog/unlock_time</envar> ein Zeitraum in Sekunden
 				anzugeben. Wird der Wert auf 0 gesetzt, wird die Sperre direkt
