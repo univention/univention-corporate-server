@@ -852,50 +852,143 @@
     <section id="users:faillog">
         <title>Automatic lockout of users after failed login attempts</title>
         <para>
-            As standard, a user can enter his password incorrectly any number of times. To
+            As standard, a user can enter her password incorrectly any number of times. To
             hinder brute force attacks on passwords, an automatic lockout for user accounts
-            can be activated after a configured number of failed log-in attempts. The lockout
-            is activated locally per computer system as standard. In other words, if a
-            user enters his password incorrectly too many times on one system, he can
-            still login on another system. Setting the &ucsUCRV; <envar>auth/faillog/lock_global</envar>
-            will make the lock effective globally and register it in the LDAP. The global
-            lock can only be set on domain controller master/backup systems as other
-            system roles do not possess the requisite permissions in the LDAP
-            directory. On these system roles, the user is, however, locally locked or
-            unlocked again via the listener module.
+            can be activated after a configured number of failed log-in attempts.
         </para>
-        <caution>
+        <para>
+			UCS unifies various methods for user authentication and authorization. Depending
+			on the installed software components, there may be different mechanisms for
+			configuring and counting failed logon attempts.
+        </para>
+        <para>
+			The three different methods are described below.
+        </para>
+		<section id="users:faillog-samba">
+			<title>Samba Active Directory Service</title>
 			<para>
-            This setting can also be misused, for example when a user has locked his
-            screen and another user enters the password incorrectly several times in his
-            absence. In this case, the user must contact the administrator to have his
-            account unlocked.
+				In Samba Active Directory environments, various services are provided by Samba, such as Kerberos.
+				To lock users after failed logins, the tool <command>samba-tool</command> can be used.
 			</para>
-        </caution>
-        <para>
-            The automatic lockout of users following failed logins can be activated by
-            setting the &ucsUCRV; <envar>auth/faillog</envar> to <literal>yes</literal>. The upper limit of failed log-in
-            attempts at which an account lockout is activated is configured
-            in the &ucsUCRV; <envar>auth/faillog/limit</envar>. The counter is reset each time the password
-            is entered correctly.
-        </para>
-        <para>
-            As standard, the <systemitem class="username">root</systemitem> user is excluded from the password lock, but can also be
-            subjected to it by setting the &ucsUCRV; <envar>auth/faillog/root</envar> to <literal>yes</literal>.
-        </para>
-        <para>
-            As standard, the lockout is not subject to time limitations and must be reset by
-            the administrator. However, it can also be reset automatically after a certain
-            interval has elapsed. This is done by specifying a time period in seconds
-            in &ucsUCRV; <envar>auth/faillog/unlock_time</envar>. If the value is set to 0, the lock is
-            reset immediately.
-        </para>
-        <para>
-            If accounts are locked locally, the administrator can unlock a user by
-            entering the command <command>faillog -r -u USERNAME</command>. If the lock occurs
-            globally in the LDAP, the user can be reset in
-            the <guimenu>User account</guimenu> tab of a user in &ucsUDM;.
-        </para>
+			<para>
+				<itemizedlist>
+					<listitem>
+						<simpara>
+							<command>samba-tool domain passwordsettings show</command> shows the currently configured
+							values.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<command>samba-tool domain passwordsettings set --account-lockout-duration=3</command>
+							specifies the number of minutes an account will be locked after too many incorrect passwords
+							have been entered.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<command>samba-tool domain passwordsettings set --account-lockout-threshold=5</command>
+							specifies how often a user can attempt to log in with an incorrect password before the account
+							is locked.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+							<command>samba-tool domain passwordsettings set --reset-account-lockout-after=5</command>
+							defines the number of minutes after which the counter is reset. If an account is automatically
+							unlocked, the counter is not reset, the account will be locked again with a single incorrect
+							password.
+						</simpara>
+					</listitem>
+				</itemizedlist>
+			</para>
+			<para>
+				The manual unlocking of a user is done in the user administration on the tab <guimenu>Account</guimenu> by
+				activating the checkbox <guimenu>Unlock account</guimenu>.
+			</para>
+		</section>
+		<section id="users:faillog-pam">
+			<title>PAM-Stack</title>
+			<para>
+				The automatic locking of users after failed logons in the PAM stack can be enabled by setting the
+				&ucsUCRV; <envar>auth/faillog</envar> to <literal>yes</literal>. The upper limit of failed log-in attempts
+				at which an account lockout is configured in the &ucsUCRV; <envar>auth/faillog/limit</envar>.
+				The counter is reset each time the password is entered correctly.
+			</para>
+			<para>
+				The lockout is activated locally per system as standard. In other words, if a
+				user enters her password incorrectly too many times on one system, she can
+				still login on another system. Setting the &ucsUCRV; <envar>auth/faillog/lock_global</envar>
+				will make the lock effective globally and register it in the LDAP. The global
+				lock can only be set on &ucsMaster;/Backup systems as other
+				system roles do not have the necessary permissions in the LDAP
+				directory. On these system roles, the user is, however, locally locked or
+				unlocked again via the listener module.
+			</para>
+			<para>
+				As standard, the lockout is not subject to time limitations and must be reset by
+				the administrator. However, it can also be reset automatically after a certain
+				interval has elapsed. This is done by specifying a time period in seconds
+				in the &ucsUCRV; <envar>auth/faillog/unlock_time</envar>. If the value is set to 0, the lock is
+				reset immediately.
+			</para>
+			<para>
+				As standard, the <systemitem class="username">root</systemitem> user is excluded from the password lock, but can also be
+				subjected to it by setting the &ucsUCRV; <envar>auth/faillog/root</envar> to <literal>yes</literal>.
+			</para>
+			<para>
+				If accounts are only locked locally, the administrator can unlock a user account by entering the command
+				<command>faillog -r -u USERNAME</command>. If the lock occurs globally in the LDAP, the user can be reset
+				in Univention Management Console on the tab <guimenu>Account</guimenu> in the user options
+				<guimenu>Unlock account</guimenu>.
+			</para>
+		</section>
+		<section id="users:faillog-openldap">
+			<title>OpenLDAP</title>
+			<para>
+				On domain controllers, automatic account locking can be enabled for too many failed LDAP server logon attempts.
+				The MDB LDAP backend must be used. This is the default backend since UCS 4, previous systems must be
+				migrated to the MDB LDAP backend, see <biblioref linkend="ucs-performance-guide"/>.
+			</para>
+			<para>
+				Automatic account locking must be enabled for each domain controller. To do this,
+				the &ucsUCRV;n <envar>ldap/ppolicy</envar> and <envar>ldap/ppolicy/enabled</envar> must be set to
+				<envar>yes</envar> and the OpenLDAP server must be restarted:
+				<programlisting language="sh">
+ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes
+/etc/init.d/slapd restart
+				</programlisting>
+			</para>
+			<para>
+				The default policy is designed so that five repeated failed LDAP server logon attempts within five minutes
+				cause the lockout. A locked account can only be unlocked by a domain administrator via &ucsUMC;.
+			</para>
+			<para>
+				The number of repeated failed LDAP server logon attempts can be adjusted in the configuration object with the
+				<envar>objectClass</envar> <envar>pwdPolicy</envar>:
+				<programlisting language="sh">
+univention-ldapsearch objectclass=pwdPolicy
+				</programlisting>
+				The <envar>pwdMaxFailure</envar> attribute determines the number of LDAP authentication errors before locking.
+				The <envar>pwdMaxFailureCountInterval</envar> attribute determines the time interval in seconds that is considered.
+				Failed logon attempts outside this interval are ignored in the count.
+			</para>
+			<para>
+				The following command can be used to block the account after 10 attempts:
+				<programlisting language="sh">
+ldapmodify -x -D cn=admin,$(ucr get ldap/base) -y /etc/ldap.secret &lt;&lt;__EOT__
+dn: cn=default,cn=ppolicy,cn=univention,$(ucr get ldap/base)
+changetype: modify
+replace: pwdMaxFailure
+pwdMaxFailure: 10
+__EOT__
+				</programlisting>
+			</para>
+			<para>
+				The manual unlocking of a user is done in the user administration on the tab <guimenu>Account</guimenu> by
+				activating the checkbox <guimenu>Unlock account</guimenu>.
+			</para>
+		</section>
     </section>
 
     <section id="users:templates">
