@@ -42,6 +42,7 @@ if configRegistry['ldap/server/type'] == "master":
 	print 'include         /usr/share/univention-ldap/schema/univention-ldap-extension.schema'
 	print 'include         /usr/share/univention-ldap/schema/udm-extension.schema'
 	print 'include         /usr/share/univention-ldap/schema/univention-data.schema'
+	print 'include         /usr/share/univention-ldap/schema/univention-translog.schema'
 else:
 	print 'include         /var/lib/univention-ldap/schema.conf'
 @!@

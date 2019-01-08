@@ -1,12 +1,4 @@
-# Warning: This file is auto-generated and might be overwritten by
-#          univention-config-registry.
-#          Please edit the following file(s) instead:
-# Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-config-registry Ueberschrieben werden.
-#          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
-#
-#       /etc/univention/templates/files/var/lib/univention-ldap/ldap/DB_CONFIG
-#
+@%@UCRWARNING=# @%@
 
 @!@
 if configRegistry['ldap/database/type'] == "bdb":
@@ -14,7 +6,7 @@ if configRegistry['ldap/database/type'] == "bdb":
 		print 'set_cachesize %s'%configRegistry['ldap/database/bdb/set_cachesize']
 	else:
 		print 'set_cachesize 0 90000000 1'
-	
+
 	if configRegistry.get('ldap/database/bdb/set_lg_bsize'):
 		print 'set_lg_bsize %s'%configRegistry['ldap/database/bdb/set_lg_bsize']
 	else:
@@ -38,4 +30,3 @@ if configRegistry['ldap/database/type'] == "bdb":
 	if not configRegistry.get('ldap/database/bdb/set_lk_max_lockers', None):
 		print 'set_lk_max_lockers 9000'
 @!@
-

@@ -1,0 +1,41 @@
+# translog OID: 1.3.6.1.4.1.10176.4108
+# <https://hutten.knut.univention.de/mediawiki/index.php/Univention-OIDs>
+#objectIdentifier univention 1.3.6.1.4.1.10176
+#objectIdentifier univentionTranslog univention:4108
+objectIdentifier univentionTranslog 1.3.6.1.4.1.10176.4108
+objectIdentifier univentionTranslogAttributetype univentionTranslog:1
+objectIdentifier univentionTranslogObjectClass univentionTranslog:2
+
+# <http://www.openldap.org/doc/admin24/schema.html>
+
+attributetype ( univentionTranslogAttributetype:1
+	NAME 'univentionTranslogIndex'
+	DESC 'Transaction number'
+	EQUALITY numericStringMatch
+	SUBSTR numericStringSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.36
+	SINGLE-VALUE )
+
+attributetype ( univentionTranslogAttributetype:2
+	NAME 'univentionTranslogDn'
+	DESC 'Transaction distinguished name'
+	EQUALITY distinguishedNameMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+	SINGLE-VALUE )
+
+attributetype ( univentionTranslogAttributetype:3
+	NAME 'univentionTranslogCommand'
+	DESC 'Transaction command add/delete/modify/rename/new'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1}
+	SINGLE-VALUE )
+
+objectclass ( univentionTranslogObjectClass:1
+	NAME 'univentionTranslog'
+	DESC 'Transaction log'
+	STRUCTURAL
+	MUST ( univentionTranslogIndex
+		$ univentionTranslogDn
+		$ univentionTranslogCommand
+		)
+	)

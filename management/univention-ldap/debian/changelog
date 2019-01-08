@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-35) unstable; urgency=low
+
+  * Bug #48427: Add transaction log database.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Jan 2019 11:16:09 +0100
+
 univention-ldap (14.0.2-34) unstable; urgency=medium
 
   * Bug #43515: Allow access to cn=config only via LDAPI for now

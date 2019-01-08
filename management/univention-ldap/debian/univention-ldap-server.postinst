@@ -199,6 +199,7 @@ if [ "$1" = "configure" ]; then
 			ucr set ldap/debug/level=none
 		fi
 	fi
+	/usr/share/univention-ldap/setup-translog || :
 fi
 
 ## after this line slapd.conf is expected to be updated properly and slapd may restart
