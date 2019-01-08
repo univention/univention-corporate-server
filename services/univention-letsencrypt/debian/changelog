@@ -1,3 +1,9 @@
+univention-letsencrypt (2.0.0-1) unstable; urgency=medium
+
+  * Bug #48204: UCS 4.4 version bump
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 08 Jan 2019 15:13:11 +0100
+
 univention-letsencrypt (1.2.2-4) unstable; urgency=medium
 
   * Bug #48204: create apache virtualhost entry instead of replacing the ucs
