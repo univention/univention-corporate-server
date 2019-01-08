@@ -105,19 +105,12 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 
 	if (nread == 0) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "%d failed, got 0 close connection to listener ", fd);
-		close(fd);
-		FD_CLR(fd, &readfds);
-		remove(fd);
 		network_client_dump();
-		return 0;
+		goto close;
 	}
-
 	if (nread >= NETWORK_MAX) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d failed, more than %d close connection to listener ", fd, NETWORK_MAX);
-		close(fd);
-		FD_CLR(fd, &readfds);
-		remove(fd);
-		return 0;
+		goto close;
 	}
 
 	/* read the whole package */
@@ -192,11 +185,7 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 						/* TODO: maybe close connection? */
 
 						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d failed, close connection to listener ", fd);
-						close(fd);
-						FD_CLR(fd, &readfds);
-						remove(fd);
-
-						return 0;
+						goto close;
 					}
 				}
 
@@ -266,5 +255,11 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 
 	network_client_dump();
 
+	return 0;
+
+close:
+	close(fd);
+	FD_CLR(fd, &readfds);
+	remove(fd);
 	return 0;
 }
