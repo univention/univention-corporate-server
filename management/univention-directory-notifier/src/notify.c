@@ -242,7 +242,6 @@ void notify_entry_free(NotifyEntry_t *entry) {
 	NotifyEntry_t *tmp2;
 
 	while (tmp != NULL) {
-		if (tmp->dn)
 			free(tmp->dn);
 		tmp2 = tmp;
 		tmp = tmp->next;
@@ -413,9 +412,9 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data) {
 				dn_string = notify_entry_to_string(*tmp);
 				if (dn_string != NULL) {
 					network_client_all_write(tmp->notify_id.id, dn_string, strlen(dn_string));
+					free(dn_string);
 				}
 			}
-			free(dn_string);
 		}
 	}
 
