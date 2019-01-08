@@ -425,16 +425,13 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data) {
 			NotifyEntry_t *tmp;
 			char *dn_string = NULL;
 
-			tmp = entry;
-
-			while (tmp != NULL) {
+			for (tmp = entry; tmp != NULL; tmp = tmp->next) {
 				notifier_cache_add(tmp->notify_id.id, tmp->dn, tmp->command);
 				notify_last_id.id = tmp->notify_id.id;
 				dn_string = notify_entry_to_string(*tmp);
 				if (dn_string != NULL) {
 					network_client_all_write(tmp->notify_id.id, dn_string, strlen(dn_string));
 				}
-				tmp = tmp->next;
 			}
 			free(dn_string);
 		}

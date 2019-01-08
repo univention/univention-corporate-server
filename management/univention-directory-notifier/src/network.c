@@ -247,21 +247,21 @@ int network_client_main_loop(callback_check check_callbacks) {
 }
 
 int network_client_dump() {
-	NetworkClient_t *tmp = network_client_first;
+	NetworkClient_t *tmp;
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "------------------------------\n");
-	while (tmp != NULL) {
+	for (tmp = network_client_first; tmp != NULL; tmp = tmp->next) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Listener fd = %d\n", tmp->fd);
-		tmp = tmp->next;
 	}
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "------------------------------\n");
 	return 0;
 }
 
 int network_client_check_clients(unsigned long last_known_id) {
-	NetworkClient_t *tmp = network_client_first;
+	NetworkClient_t *tmp;
 	char string[NETWORK_MAX];
-	while (tmp != NULL) {
+
+	for (tmp = network_client_first; tmp != NULL; tmp = tmp->next) {
 		if (tmp->notify) {
 			if (tmp->next_id <= last_known_id) {
 				char *dn_string = NULL;
@@ -295,13 +295,12 @@ int network_client_check_clients(unsigned long last_known_id) {
 				tmp->msg_id = 0;
 			}
 		}
-		tmp = tmp->next;
 	}
 	return 0;
 }
 
 int network_client_all_write(unsigned long id, char *buf, long l_buf) {
-	NetworkClient_t *tmp = network_client_first;
+	NetworkClient_t *tmp;
 	int rc;
 	char string[NETWORK_MAX];
 
@@ -311,7 +310,7 @@ int network_client_all_write(unsigned long id, char *buf, long l_buf) {
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "l=%ld, --> [%s]", l_buf, buf);
 
-	while (tmp != NULL) {
+	for (tmp = network_client_first; tmp != NULL; tmp = tmp->next) {
 		if (tmp->notify) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d\n", tmp->fd);
 			if (tmp->next_id == id) {
@@ -328,7 +327,6 @@ int network_client_all_write(unsigned long id, char *buf, long l_buf) {
 		} else {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Ignore Listener fd = %d\n", tmp->fd);
 		}
-		tmp = tmp->next;
 	}
 
 	return rc;
