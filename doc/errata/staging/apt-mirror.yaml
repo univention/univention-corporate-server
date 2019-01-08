@@ -10,4 +10,4 @@ desc: |
    correctly and URLs were scheduled for download multiple times.
  * The error message complaining about the missing `postmirror.sh` file is no
    longer displayed.
-bug: [48424]
+bug: [48424,27761]
