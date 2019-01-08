@@ -55,7 +55,6 @@ int WRITE_REPLOG = 0;
 
 long SCHEMA_ID;
 
-long long replog_sleep = 500000;
 long long notifier_cache_size = 1000;
 long long notifier_lock_count = 100;
 long long notifier_lock_time = 100;
@@ -68,7 +67,7 @@ void usage(void) {
 	fprintf(stderr, "   -r   write replog file\n");
 	fprintf(stderr, "   -s   write replog-save file\n");
 	fprintf(stderr, "   -d   added debug output\n");
-	fprintf(stderr, "   -S   sleep before reading replog\n");
+	fprintf(stderr, "   -S   DEPRECATED\n");
 }
 
 static int REPLOG_CALLBACK = 0;
@@ -191,7 +190,7 @@ int main(int argc, char *argv[]) {
 			debug = atoi(optarg);
 			break;
 		case 'S':
-			replog_sleep = atoll(optarg);
+			fprintf(stderr, "Ignoring deprecated option -%c\n", c);
 			break;
 		case 'C':
 			notifier_cache_size = atoll(optarg);
