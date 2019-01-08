@@ -324,27 +324,13 @@ error:
 }
 
 char *notify_entry_to_string(NotifyEntry_t entry) {
-	int len = 0;
-	char *str, *p;
-	char buffer[32];
-	int rc;
+	char *str;
 
-	if (entry.dn == NULL) {
+	if (entry.dn == NULL)
 		return NULL;
-	}
 
-		len += 4; /* space + space + newline */
-		len += strlen(entry.dn);
-		len += snprintf(buffer, 32, "%ld", entry.notify_id.id);
-
-	len += 1;
-	if ((str = calloc(len, sizeof(char))) == NULL) {
+	if (asprintf(&str, "%ld %s %c\n", entry.notify_id.id, entry.dn, entry.command) < 0)
 		return NULL;
-	}
-	p = str;
-
-		rc = sprintf(p, "%ld %s %c\n", entry.notify_id.id, entry.dn, entry.command);
-		p += rc;
 
 	return str;
 }
