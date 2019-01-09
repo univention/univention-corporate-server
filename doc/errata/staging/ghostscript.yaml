@@ -6,7 +6,7 @@ src: ghostscript
 fix: 9.06~dfsg-2+deb8u13
 desc: |
  This update addresses the following issues:
- * Type confusion in setpattern (700141) (CVE-2018-19134)
+ * Type confusion in setpattern (CVE-2018-19134)
  * Attempting to open a carefully crafted PDF file results in long-running
    computation (CVE-2018-19478)
 bug: [48406]
