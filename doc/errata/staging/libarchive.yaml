@@ -9,12 +9,12 @@ desc: |
  * libarchive contains a CWE-415: Double Free vulnerability in RAR decoder -
    libarchive/archive_read_support_format_rar.c, parse_codes(),
    realloc(rar->lzss.window, new_size) with new_size = 0 that can result in
-   Crash/DoS. This attack appear to be exploitable via the victim must open a
-   specially crafted RAR archive. (CVE-2018-1000877)
+   Crash/DoS. This attack appears to be exploitable only if the victim opens
+   a specially crafted RAR archive. (CVE-2018-1000877)
  * libarchive version contains a CWE-416: Use After Free vulnerability in RAR
    decoder - libarchive/archive_read_support_format_rar.c that can result in
-   Crash/DoS - it is unknown if RCE is possible. This attack appear to be
-   exploitable via the victim must open a specially crafted RAR archive.
+   Crash/DoS - it is unknown if RCE is possible. This attack appears to be
+   exploitable only if the victim opens a specially crafted RAR archive.
    (CVE-2018-1000878)
 bug: [48405]
 cve:
