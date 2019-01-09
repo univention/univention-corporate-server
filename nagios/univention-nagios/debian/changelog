@@ -1,3 +1,9 @@
+univention-nagios (11.0.1-7) unstable; urgency=medium
+
+  * Bug #43426: fix uncaught type error in nagios server
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 09 Jan 2019 08:55:41 +0100
+
 univention-nagios (11.0.1-6) unstable; urgency=medium
 
   * Bug #47015: fix nagios.log permissions, again
