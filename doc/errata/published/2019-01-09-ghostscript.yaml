@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Fix regression from erratum 362.
 bug: [48415]
+erratum: 391
+announced: 2019-01-09
