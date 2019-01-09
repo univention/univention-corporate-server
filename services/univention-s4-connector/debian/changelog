@@ -1,3 +1,10 @@
+univention-s4-connector (13.0.1-0) unstable; urgency=medium
+
+  * Bug #48362: fixed move in samaccountname_dn_mapping
+    for ucs ldap base != samba ldap base
+
+ -- Felix Botner <botner@univention.de>  Wed, 09 Jan 2019 11:38:37 +0100
+
 univention-s4-connector (13.0.0-3) unstable; urgency=medium
 
   * Bug #48421: added DSDB_CONTROL_REPLICATED_UPDATE_OID to samba modify

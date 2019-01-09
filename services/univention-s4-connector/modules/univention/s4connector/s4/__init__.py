@@ -353,10 +353,11 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 					if dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object):
 						newdn = unicode(result[0][0], 'utf8')
 					else:
+						# move
+						# return a kind of frankenstein DN here, sync_from_ucs replaces the UCS LDAP base
+						# with the samba LDAP base at a later stage, see Bug #48440
 						s4_rdn = ldap.dn.str2dn(result[0][0])[0]
-						new_s4_dn = unicode(ldap.dn.dn2str([s4_rdn] + exploded_dn[1:]), 'utf8')
-						pos = new_s4_dn.lower().rfind(s4connector.lo_s4.base.lower())
-						newdn = new_s4_dn[:pos] + s4connector.lo.base
+						newdn = unicode(ldap.dn.dn2str([s4_rdn] + exploded_dn[1:]), 'utf8')
 				else:
 					newdn_rdn = [('cn', fst_rdn_value_utf8, ldap.AVA_STRING)]
 					newdn = unicode(ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:]), 'utf8')  # new object, don't need to change
