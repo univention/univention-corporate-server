@@ -49,7 +49,8 @@ int network_create_socket(int port);
 int network_client_add(int fd, callback_handler handler, int notify);
 int network_client_del(int fd);
 
-int network_client_main_loop();
+typedef void (*callback_check)(void);
+int network_client_main_loop(callback_check check_callbacks);
 int network_client_init(int port);
 
 int network_client_dump();

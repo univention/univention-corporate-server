@@ -31,7 +31,6 @@
 #define _GNU_SOURCE
 
 #include <errno.h>
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,13 +48,6 @@
 static NetworkClient_t *network_client_first = NULL;
 static int server_socketfd_listener;
 fd_set readfds;
-
-extern void set_schema_callback(int sig, siginfo_t *si, void *data);
-extern void set_listener_callback(int sig, siginfo_t *si, void *data);
-extern int get_schema_callback();
-extern int get_listener_callback();
-extern void unset_schema_callback();
-extern void unset_listener_callback();
 
 int network_create_socket(int port) {
 	int server_socketfd;
@@ -237,18 +229,7 @@ int network_client_init(int port) {
 	return 0;
 }
 
-void check_callbacks() {
-	if (get_schema_callback()) {
-		notify_schema_change_callback(0, NULL, NULL);
-		unset_schema_callback();
-	}
-	if (get_listener_callback()) {
-		notify_listener_change_callback(0, NULL, NULL);
-		unset_listener_callback();
-	}
-}
-
-int network_client_main_loop() {
+int network_client_main_loop(callback_check check_callbacks) {
 	fd_set testfds;
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Starting main loop\n");

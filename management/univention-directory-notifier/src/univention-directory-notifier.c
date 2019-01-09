@@ -64,25 +64,11 @@ void usage(void) {
 static int SCHEMA_CALLBACK = 0;
 static int LISTENER_CALLBACK = 0;
 
-void set_schema_callback(int sig, siginfo_t *si, void *data) {
+static void set_schema_callback(int sig, siginfo_t *si, void *data) {
 	SCHEMA_CALLBACK = 1;
 }
-void set_listener_callback(int sig, siginfo_t *si, void *data) {
+static void set_listener_callback(int sig, siginfo_t *si, void *data) {
 	LISTENER_CALLBACK = 1;
-}
-
-int get_schema_callback() {
-	return SCHEMA_CALLBACK;
-}
-int get_listener_callback() {
-	return LISTENER_CALLBACK;
-}
-
-void unset_schema_callback() {
-	SCHEMA_CALLBACK = 0;
-}
-void unset_listener_callback() {
-	LISTENER_CALLBACK = 0;
 }
 
 void create_callback_schema() {
@@ -111,6 +97,20 @@ void create_callback_listener() {
 	fd = open("/var/lib/univention-ldap/listener/", O_RDONLY);
 	fcntl(fd, F_SETSIG, SIGRTMIN);
 	fcntl(fd, F_NOTIFY, DN_MODIFY | DN_MULTISHOT);
+}
+
+/*
+ * Check status of callbacks and execute functions as needed.
+ */
+static void check_callbacks() {
+	if (SCHEMA_CALLBACK) {
+		notify_schema_change_callback(0, NULL, NULL);
+		SCHEMA_CALLBACK = 0;
+	}
+	if (LISTENER_CALLBACK) {
+		notify_listener_change_callback(0, NULL, NULL);
+		LISTENER_CALLBACK = 0;
+	}
 }
 
 int creating_pidfile(char *file) {
@@ -201,7 +201,7 @@ int main(int argc, char *argv[]) {
 	notify_listener_change_callback(0, NULL, NULL);
 	notify_schema_change_callback(0, NULL, NULL);
 
-	network_client_main_loop();
+	network_client_main_loop(check_callbacks);
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Normal exit");
 
