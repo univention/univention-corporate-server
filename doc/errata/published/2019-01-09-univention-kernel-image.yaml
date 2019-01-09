@@ -9,3 +9,5 @@ desc: |
  * Always set UCR variable 'update/reboot/required' when a new kernel is
    installed.
 bug: [48349]
+erratum: 395
+announced: 2019-01-09
