@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-s4-connector
+fix: 12.0.2-40A~4.3.0.201901091140
+desc: |
+ This update addresses the following issue(s):
+ * Moving objects in UCS with a ldap base different
+   in UCS and Samba has been fixed.
+bug: [48362]
