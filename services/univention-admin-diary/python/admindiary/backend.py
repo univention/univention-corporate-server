@@ -72,10 +72,11 @@ if ucr.get('admin/diary/dbms') == 'postgresql':
 		get_logger().info('Successfully added %s to postgresql. (%s)' % (entry.diary_id, entry.event_name))
 
 	def _postgresql_query():
-		with connection(psycopg2) as conn:
-			conn.execute("SELECT username, hostname, message, args, issued, tags, diary_id, event_name FROM entries")
-			rows = conn.fetchall()
-			res = [dict(row) for row in rows]
+		with cursor(psycopg2) as cur:
+			args = ['id', 'username', 'hostname', 'message', 'args', 'issued', 'tags', 'diary_id', 'event_name']
+			cur.execute("SELECT %s FROM entries" % ', '.join(args))
+			rows = cur.fetchall()
+			res = [dict(zip(args, row)) for row in rows]
 			for row in res:
 				for k, v in row.items():
 					if isinstance(v, datetime.datetime):
@@ -98,15 +99,16 @@ elif ucr.get('admin/diary/dbms') == 'mysql':
 		get_logger().info('Successfully added %s to mysql. (%s)' % (entry.diary_id, entry.event_name))
 
 	def _mysql_query():
-		with connection(MySQLdb) as conn:
-			conn.execute("SELECT id, username, hostname, message, issued, diary_id, event_name FROM entries")
-			rows = conn.fetchall()
-			res = [dict(row) for row in rows]
+		with cursor(MySQLdb) as cur:
+			args = ['id', 'username', 'hostname', 'message', 'issued', 'diary_id', 'event_name']
+			cur.execute("SELECT %s FROM entries" % ', '.join(args))
+			rows = cur.fetchall()
+			res = [dict(zip(args, row)) for row in rows]
 			for row in res:
 				entry_id = row.pop('id')
-				rows = conn.execute("SELECT arg FROM arguments WHERE log_entry_id = %s", (entry_id,))
+				rows = cur.execute("SELECT arg FROM arguments WHERE log_entry_id = %s", (entry_id,))
 				row['args'] = [row['arg'] for row in rows]
-				rows = conn.execute("SELECT tag FROM tags WHERE log_entry_id = %s", (entry_id,))
+				rows = cur.execute("SELECT tag FROM tags WHERE log_entry_id = %s", (entry_id,))
 				row['tags'] = [row['tag'] for row in rows]
 				for k, v in row.items():
 					if isinstance(v, datetime.datetime):

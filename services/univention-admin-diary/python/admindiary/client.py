@@ -31,6 +31,7 @@
 import logging
 from logging.handlers import SysLogHandler
 from univention.admindiary import DiaryEntry, get_logger
+from univention.admindiary.events import Event
 import uuid
 from getpass import getuser
 from functools import partial, wraps
@@ -61,6 +62,13 @@ class RsyslogEmitter(object):
 
 emitter = RsyslogEmitter()
 
+
+@safe
+def add_comment(message, diary_id, username=None):
+	event = Event('COMMENT', message)
+	return write_event(event, username=username, diary_id=diary_id)
+
+
 @safe
 def write_event(event, args=None, username=None, diary_id=None):
 	args = args or []
@@ -68,7 +76,7 @@ def write_event(event, args=None, username=None, diary_id=None):
 		raise TypeError('"args" must be a list')
 	if len(args) != len(event.args):
 		raise ValueError('Writing "%s" needs %d argument(s) (%s). %d given' % (event.message, len(event.args), ', '.join(event.args), len(args)))
-	return write(event.message, args, None, event.tags, diary_id, event.name)
+	return write(event.message, args, username, event.tags, diary_id, event.name)
 
 
 @safe

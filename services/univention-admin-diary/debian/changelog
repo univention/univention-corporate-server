@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-8) unstable; urgency=medium
+
+  * Bug #48342: add comments
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 09 Jan 2019 13:04:08 +0100
+
 univention-admin-diary (1.0.0-7) unstable; urgency=medium
 
   * Bug #48343: Write Admin Diary Entry when rotating server password
