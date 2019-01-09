@@ -243,14 +243,14 @@ int network_client_main_loop(callback_check check_callbacks) {
 		int fd;
 
 		testfds = readfds;
-		if (select(FD_SETSIZE, &testfds, (fd_set *)0, (fd_set *)0, (struct timeval *)0) < 1) {
+		if (select(FD_SETSIZE, &testfds, NULL, NULL, NULL) < 1) {
 			/*FIXME */
 			if (errno == EINTR || errno == 29) {
 				/* Ignore signal */
 				check_callbacks();
 				continue;
 			}
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "unkonwn select error, exit");
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "select() error: %s. exit", strerror(errno));
 			exit(1);
 		}
 
