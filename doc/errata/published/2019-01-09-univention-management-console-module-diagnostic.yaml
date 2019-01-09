@@ -9,3 +9,5 @@ desc: |
  * The proxy server test has been fixed.
  * A typo has been fixed in the error output of the Kerberos DDNS update check
 bug: [48385]
+erratum: 396
+announced: 2019-01-09
