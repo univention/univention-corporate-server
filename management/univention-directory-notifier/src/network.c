@@ -205,6 +205,7 @@ int network_client_init(int port) {
 }
 
 int network_client_main_loop(callback_check check_callbacks) {
+	NetworkClient_t *client;
 	fd_set testfds;
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Starting main loop\n");
@@ -215,8 +216,6 @@ int network_client_main_loop(callback_check check_callbacks) {
 
 	/* main loop */
 	while (1) {
-		int fd;
-
 		testfds = readfds;
 		if (select(FD_SETSIZE, &testfds, NULL, NULL, NULL) < 1) {
 			/*FIXME */
@@ -229,15 +228,10 @@ int network_client_main_loop(callback_check check_callbacks) {
 			exit(1);
 		}
 
-		for (fd = 0; fd < FD_SETSIZE; fd++) {
-			if (FD_ISSET(fd, &testfds)) {
-				NetworkClient_t *tmp;
-				for (tmp = network_client_first; tmp != NULL; tmp = tmp->next) {
-					if (tmp->fd == fd) {
-						tmp->handler(fd, network_client_del);
-						break;
-					}
-				}
+		for (client = network_client_first; client != NULL; client = client->next) {
+			if (FD_ISSET(client->fd, &testfds)) {
+				client->handler(client->fd, network_client_del);
+				break;
 			}
 		}
 		check_callbacks();
