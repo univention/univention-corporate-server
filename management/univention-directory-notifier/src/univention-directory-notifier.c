@@ -60,6 +60,7 @@ static void usage(void) {
 	fprintf(stderr, "   -s          DEPRECATED\n");
 	fprintf(stderr, "   -d   added debug output\n");
 	fprintf(stderr, "   -S   DEPRECATED\n");
+	fprintf(stderr, "   -p <port>   TCP port number (6669)\n");
 }
 
 static int SCHEMA_CALLBACK = 0;
@@ -131,6 +132,7 @@ static int creating_pidfile(char *file) {
 int main(int argc, char *argv[]) {
 	int foreground = 0;
 	int debug = 0;
+	int port = 6669;
 
 	SCHEMA_ID = 0;
 
@@ -138,7 +140,7 @@ int main(int argc, char *argv[]) {
 		int c;
 		char *end;
 
-		c = getopt(argc, argv, "Fosrd:S:C:L:T:");
+		c = getopt(argc, argv, "Fosrd:S:C:L:T:p:");
 		if (c < 0)
 			break;
 
@@ -172,6 +174,11 @@ int main(int argc, char *argv[]) {
 			if (!*optarg || *end || notifier_lock_time < 1)
 				error(EXIT_FAILURE, errno, "Invalid argument '-%c %s'", c, optarg);
 			break;
+		case 'p':
+			port = strtol(optarg, &end, 10);
+			if (!*optarg || *end || port < 1 || port > 65535)
+				error(EXIT_FAILURE, errno, "Invalid argument '-%c %s'", c, optarg);
+			break;
 		default:
 			usage();
 			exit(1);
@@ -203,7 +210,7 @@ int main(int argc, char *argv[]) {
 	notifier_cache_init(notify_last_id.id);
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "   done");
 
-	network_client_init(6669);
+	network_client_init(port);
 
 	create_callback_listener();
 	create_callback_schema();

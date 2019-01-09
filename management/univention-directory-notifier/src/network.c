@@ -146,7 +146,7 @@ static int new_connection(NetworkClient_t *client, callback_remove_handler remov
 }
 
 int network_client_init(int port) {
-	server_socketfd_listener = network_create_socket(6669);
+	server_socketfd_listener = network_create_socket(port);
 	network_client_add(server_socketfd_listener, new_connection, 0);
 
 	return 0;
