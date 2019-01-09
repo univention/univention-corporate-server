@@ -256,7 +256,6 @@ int network_client_all_write(unsigned long id, char *buf, size_t l_buf) {
 		if (client->notify) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d\n", client->fd);
 			if (client->next_id == id) {
-				memset(string, 0, NETWORK_MAX);
 				snprintf(string, sizeof(string), "MSGID: %ld\n%.*s\n", client->msg_id, (int)l_buf, buf);
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d[%s]\n", client->fd, string);
 				rc = write(client->fd, string, strlen(string));

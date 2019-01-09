@@ -63,8 +63,6 @@ extern unsigned long SCHEMA_ID;
 static int get_network_line(char *packet, char *network_line) {
 	int i = 0;
 
-	memset(network_line, 0, NETWORK_MAX);
-
 	while (packet[i] != '\0' && packet[i] != '\n') {
 		network_line[i] = packet[i];
 		i += 1;
@@ -118,7 +116,6 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 	read(fd, network_packet, nread);
 	network_packet[nread] = '\0';
 
-	memset(network_line, 0, NETWORK_MAX);
 	p = network_packet;
 
 	while (get_network_line(p, network_line)) {
@@ -149,8 +146,6 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: Capabilities");
 
 			if (version > -1) {
-				memset(string, 0, sizeof(string));
-
 				snprintf(string, sizeof(string), "Version: %d\nCapabilities: \n\n", version);
 
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "SEND: %s", string);
@@ -210,8 +205,6 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 		} else if (!strncmp(network_line, "GET_ID", strlen("GET_ID")) && msg_id != UINT32_MAX && version > 0) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: GET_ID");
 
-			memset(string, 0, sizeof(string));
-
 			snprintf(string, sizeof(string), "MSGID: %ld\n%ld\n\n", msg_id, notify_last_id.id);
 
 			write(fd, string, strlen(string));
@@ -220,8 +213,6 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 			msg_id = UINT32_MAX;
 		} else if (!strncmp(network_line, "GET_SCHEMA_ID", strlen("GET_SCHEMA_ID")) && msg_id != UINT32_MAX && version > 0) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: GET_SCHEMA_ID");
-
-			memset(string, 0, sizeof(string));
 
 			snprintf(string, sizeof(string), "MSGID: %ld\n%ld\n\n", msg_id, SCHEMA_ID);
 
