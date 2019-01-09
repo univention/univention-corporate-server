@@ -33,6 +33,6 @@
 
 #include "network.h"
 
-int data_on_connection(int fd, callback_remove_handler remove);
+int data_on_connection(NetworkClient_t *client, callback_remove_handler remove);
 
 #endif

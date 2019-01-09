@@ -35,10 +35,13 @@
 
 #define NETWORK_MAX 8192
 
-typedef int (*callback_remove_handler)(int fd);
-typedef int (*callback_handler)(int fd, callback_remove_handler);
+struct network_client;
+typedef struct network_client NetworkClient_t;
 
-typedef struct network_client {
+typedef int (*callback_remove_handler)(int fd);
+typedef int (*callback_handler)(NetworkClient_t *client, callback_remove_handler);
+
+struct network_client {
 	int fd;
 	callback_handler handler;
 	int notify;
@@ -46,12 +49,9 @@ typedef struct network_client {
 	unsigned long next_id;
 	unsigned long msg_id;
 	struct network_client *next;
-} NetworkClient_t;
-
-int network_create_socket(int port);
+};
 
 int network_client_add(int fd, callback_handler handler, int notify);
-int network_client_del(int fd);
 
 typedef void (*callback_check)(void);
 int network_client_main_loop(callback_check check_callbacks);
@@ -60,10 +60,6 @@ int network_client_init(int port);
 int network_client_dump();
 
 int network_client_all_write(unsigned long id, char *buf, size_t l_buf);
-int network_client_set_next_id(int fd, unsigned long id);
-int network_client_set_msg_id(int fd, unsigned long msg_id);
-int network_client_set_version(int fd, int version);
-int network_client_get_version(int fd);
 int network_client_check_clients(unsigned long last_known_id);
 
 #endif

@@ -103,7 +103,7 @@ int network_client_add(int fd, callback_handler handler, int notify) {
 	return 0;
 }
 
-int network_client_del(int fd) {
+static int network_client_del(int fd) {
 	NetworkClient_t **client;
 
 	shutdown(fd, 2);
@@ -119,69 +119,18 @@ int network_client_del(int fd) {
 	return 0;
 }
 
-int network_client_set_next_id(int fd, unsigned long id) {
-	NetworkClient_t *tmp = network_client_first;
 
-	while (tmp != NULL) {
-		if (tmp->fd == fd) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Set next ID for fd %d to %ld\n", fd, id);
-			tmp->next_id = id;
-			tmp->notify = 1;
-			break;
-		}
-		tmp = tmp->next;
-	}
-
-	return 0;
-}
-
-int network_client_set_msg_id(int fd, unsigned long msg_id) {
-	NetworkClient_t *tmp = network_client_first;
-
-	while (tmp != NULL) {
-		if (tmp->fd == fd) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Set msg ID for fd %d to %ld\n", fd, msg_id);
-			tmp->msg_id = msg_id;
-			break;
-		}
-		tmp = tmp->next;
-	}
-
-	return 0;
-}
-
-int network_client_set_version(int fd, int version) {
-	NetworkClient_t *tmp = network_client_first;
-
-	while (tmp != NULL) {
-		if (tmp->fd == fd) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Set version for fd %d to %d\n", fd, version);
-			tmp->version = version;
-			break;
-		}
-		tmp = tmp->next;
-	}
-
-	return 0;
-}
-
-int network_client_get_version(int fd) {
-	NetworkClient_t *tmp = network_client_first;
-
-	while (tmp != NULL) {
-		if (tmp->fd == fd) {
-			return tmp->version;
-		}
-		tmp = tmp->next;
-	}
-
-	return -1;
-}
-
-static int new_connection(int fd, callback_remove_handler remove) {
+/*
+ * Setup network connection for new client.
+ * :param client: The per-client object.
+ * :param remove: UNUSED.
+ * :returns: 0
+ */
+static int new_connection(NetworkClient_t *client, callback_remove_handler remove) {
 	struct sockaddr_in client_address;
 	int client_socketfd;
 	socklen_t client_l;
+	int fd = client->fd;
 
 	client_l = sizeof(client_address);
 
@@ -229,7 +178,7 @@ int network_client_main_loop(callback_check check_callbacks) {
 
 		for (client = network_client_first; client != NULL; client = client->next) {
 			if (FD_ISSET(client->fd, &testfds)) {
-				client->handler(client->fd, network_client_del);
+				client->handler(client, network_client_del);
 				break;
 			}
 		}

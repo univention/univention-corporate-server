@@ -83,7 +83,13 @@ int get_network_line(char *packet, char *network_line) {
 	return 1;
 }
 
-int data_on_connection(int fd, callback_remove_handler remove) {
+/*
+ * handle data from network.
+ * :param client: The per-client object.
+ * :param remove: Function to call to close connection.
+ * :returns: 0
+ */
+int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) {
 	int nread;
 	char *network_packet;
 	char network_line[NETWORK_MAX];
@@ -91,7 +97,7 @@ int data_on_connection(int fd, callback_remove_handler remove) {
 	unsigned long id;
 	char string[1024];
 	unsigned long msg_id = UINT32_MAX;
-	int version;
+	int version = client->version, fd = client->fd;
 
 	ioctl(fd, FIONREAD, &nread);
 
@@ -139,11 +145,8 @@ int data_on_connection(int fd, callback_remove_handler remove) {
 
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "VERSION=%ld", id);
 
-			if (id < VERSION) {
-				network_client_set_version(fd, id);
-			} else {
-				network_client_set_version(fd, VERSION);
-			}
+			version = id < VERSION ? id : VERSION;
+			client->version = version;
 
 			/* reset message id */
 			msg_id = UINT32_MAX;
@@ -151,8 +154,6 @@ int data_on_connection(int fd, callback_remove_handler remove) {
 			p += strlen(network_line);
 		} else if (!strncmp(network_line, "Capabilities: ", strlen("Capabilities: "))) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: Capabilities");
-
-			version = network_client_get_version(fd);
 
 			if (version > -1) {
 				memset(string, 0, sizeof(string));
@@ -167,7 +168,7 @@ int data_on_connection(int fd, callback_remove_handler remove) {
 			}
 
 			p += strlen(network_line);
-		} else if (!strncmp(network_line, "GET_DN ", strlen("GET_DN ")) && msg_id != UINT32_MAX && network_client_get_version(fd) > 0) {
+		} else if (!strncmp(network_line, "GET_DN ", strlen("GET_DN ")) && msg_id != UINT32_MAX && version > 0) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: GET_DN");
 
 			id = strtoul(&(network_line[strlen("GET_DN ")]), NULL, 10);
@@ -210,13 +211,14 @@ int data_on_connection(int fd, callback_remove_handler remove) {
 				}
 			} else {
 				/* set wanted id */
-				network_client_set_next_id(fd, id);
-				network_client_set_msg_id(fd, msg_id);
+				client->next_id = id;
+				client->notify = 1;
+				client->msg_id = msg_id;
 			}
 
 			p += strlen(network_line) + 1;
 			msg_id = UINT32_MAX;
-		} else if (!strncmp(network_line, "GET_ID", strlen("GET_ID")) && msg_id != UINT32_MAX && network_client_get_version(fd) > 0) {
+		} else if (!strncmp(network_line, "GET_ID", strlen("GET_ID")) && msg_id != UINT32_MAX && version > 0) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: GET_ID");
 
 			memset(string, 0, sizeof(string));
@@ -227,7 +229,7 @@ int data_on_connection(int fd, callback_remove_handler remove) {
 
 			p += strlen(network_line) + 1;
 			msg_id = UINT32_MAX;
-		} else if (!strncmp(network_line, "GET_SCHEMA_ID", strlen("GET_SCHEMA_ID")) && msg_id != UINT32_MAX && network_client_get_version(fd) > 0) {
+		} else if (!strncmp(network_line, "GET_SCHEMA_ID", strlen("GET_SCHEMA_ID")) && msg_id != UINT32_MAX && version > 0) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: GET_SCHEMA_ID");
 
 			memset(string, 0, sizeof(string));
@@ -240,7 +242,7 @@ int data_on_connection(int fd, callback_remove_handler remove) {
 
 			p += strlen(network_line) + 1;
 			msg_id = UINT32_MAX;
-		} else if (!strncmp(network_line, "ALIVE", strlen("ALIVE")) && msg_id != UINT32_MAX && network_client_get_version(fd) > 0) {
+		} else if (!strncmp(network_line, "ALIVE", strlen("ALIVE")) && msg_id != UINT32_MAX && version > 0) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: ALIVE");
 
 			snprintf(string, sizeof(string), "MSGID: %ld\nOKAY\n\n", msg_id);
