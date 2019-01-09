@@ -47,4 +47,6 @@ int notifier_cache_add(NotifyId id, char *dn, char cmd);
 
 char *notifier_cache_get(NotifyId id);
 
+int notifer_cache_parse(const char *buffer, notify_cache_t *entry);
+
 #endif

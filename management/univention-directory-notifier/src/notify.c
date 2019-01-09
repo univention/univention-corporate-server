@@ -147,16 +147,12 @@ static NotifyEntry_t *notify_entry_alloc() {
 static NotifyEntry_t *split_transaction_buffer(char *buf, long l_buf) {
 	NotifyEntry_t *head, **tail;
 	char *s;
-	char *p_tmp1, *p_tmp2;
 
 	tail = &head;
 	for (s = strtok(buf, "\n"); s != NULL; s = strtok(NULL, "\n")) {
 		NotifyEntry_t *trans = notify_entry_alloc();
-		sscanf(s, "%ld", &(trans->notify_id.id));
-		trans->command = s[strlen(s) - 1];
-		p_tmp1 = index(s, ' ') + 1;
-		p_tmp2 = rindex(p_tmp1, ' ');
-		trans->dn = strndup(p_tmp1, p_tmp2 - p_tmp1);
+		if (notifer_cache_parse(s, &trans->cache))
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Failed parse: %s", s);
 
 		(*tail) = trans;
 		tail = &trans->next;

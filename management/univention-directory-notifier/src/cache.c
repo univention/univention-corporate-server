@@ -65,19 +65,14 @@ int notifier_cache_init(NotifyId max_id) {
 	id = max_id <= notifier_cache_size ? 1 : max_id - notifier_cache_size + 1;
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Loading cache %ld..%ld", id, max_id);
 	for (; id <= max_id; id++) {
-		char *p, *pp;
 		notify_cache_t *entry = lookup(id);
 		char *buffer = notify_transcation_get_one_dn(id);
 		if (buffer == NULL) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Failed lookup: %ld", id);
 			continue;
 		}
-
-		sscanf(buffer, "%ld", &(entry->id));
-		entry->command = buffer[strlen(buffer) - 1];
-		p = index(buffer, ' ') + 1;
-		pp = rindex(p, ' ');
-		entry->dn = strndup(p, pp - p);
+		if (notifer_cache_parse(buffer, entry))
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Failed parse: %s", buffer);
 
 		free(buffer);
 	}
@@ -122,4 +117,29 @@ char *notifier_cache_get(NotifyId id) {
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "cache[%ld] = [%s]", id, str ? str : "<NULL>");
 	return str;
+}
+
+/*
+ * Parse line into transaction entry.
+ * :param buffer: the string buffer containing a single line.
+ * :param entry: Return variable for parsed entry.
+ * :returns: 0 on success, 1 on errors.
+ */
+int notifer_cache_parse(const char *buffer, notify_cache_t *entry) {
+	const char *head, *tail;
+
+	if (sscanf(buffer, "%ld", &(entry->id)) != 1)
+		return 1;
+	head = index(buffer, ' ');
+	if (head == NULL)
+		return 1;
+	tail = rindex(++head, ' ');
+	if (tail == NULL)
+		return 1;
+	entry->dn = strndup(head, tail - head);
+	if (entry->dn == NULL)
+		return 1;
+	entry->command = tail[1];
+
+	return 0;
 }
