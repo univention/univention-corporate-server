@@ -49,6 +49,8 @@ static NetworkClient_t *network_client_first = NULL;
 static int server_socketfd_listener;
 fd_set readfds;
 
+enum network_protocol network_procotol_version = PROTOCOL_2;
+
 /*
  * Open TCP network port.
  * :param port: TCP port number.

@@ -63,6 +63,7 @@ static void usage(void) {
 	fprintf(stderr, "   -L <count>  Number of lock attempts\n");
 	fprintf(stderr, "   -T <time>   Delay between lock attempts\n");
 	fprintf(stderr, "   -p <port>   TCP port number (6669)\n");
+	fprintf(stderr, "   -v <version> Minimum supported protocol\n");
 }
 
 static int SCHEMA_CALLBACK = 0;
@@ -172,7 +173,7 @@ int main(int argc, char *argv[]) {
 		int c;
 		char *end;
 
-		c = getopt(argc, argv, "Fosrd:S:C:L:T:p:D");
+		c = getopt(argc, argv, "Fosrd:S:C:L:T:p:Dv:");
 		if (c < 0)
 			break;
 
@@ -212,6 +213,11 @@ int main(int argc, char *argv[]) {
 		case 'p':
 			port = strtol(optarg, &end, 10);
 			if (!*optarg || *end || port < 1 || port > 65535)
+				error(EXIT_FAILURE, errno, "Invalid argument '-%c %s'", c, optarg);
+			break;
+		case 'v':
+			network_procotol_version = strtoll(optarg, &end, 10);
+			if (!*optarg || *end || network_procotol_version < PROTOCOL_1 || network_procotol_version >= PROTOCOL_LAST)
 				error(EXIT_FAILURE, errno, "Invalid argument '-%c %s'", c, optarg);
 			break;
 		default:

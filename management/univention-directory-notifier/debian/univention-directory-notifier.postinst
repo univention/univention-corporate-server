@@ -85,14 +85,16 @@ if [ -h /etc/runit/univention/univention-ldap-notifier ]; then
     rm /etc/runit/univention/univention-ldap-notifier
 fi
 
-if [ "$1" = "configure" -a -n "$2" ]; then
-	if dpkg --compare-versions "$2" lt 6.0.8-1; then
-		/etc/init.d/univention-directory-notifier restart || true
-	else
-		/etc/init.d/univention-directory-notifier crestart || true
+if [ "$1" = "configure" ]
+then
+	if [ -z "${2:-}" ]
+	then  # new installation
+		ucr set notifier/protocol/version?3
+		/etc/init.d/univention-directory-notifier restart || :
+	else  # upgrade
+		ucr set notifier/protocol/version?2
+		/etc/init.d/univention-directory-notifier crestart || :
 	fi
-elif [ "$1" = "configure" ]; then
-	/etc/init.d/univention-directory-notifier restart || true
 fi
 
 exit 0

@@ -47,8 +47,6 @@
 #include "network.h"
 #include "notify.h"
 
-static int VERSION = 2;
-
 extern fd_set readfds;
 
 /*
@@ -64,7 +62,8 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 	NotifyId id;
 	char string[1024];
 	unsigned long msg_id = UINT32_MAX;
-	int version = client->version, fd = client->fd;
+	enum network_protocol version = client->version;
+	int fd = client->fd;
 
 	ioctl(fd, FIONREAD, &nread);
 
@@ -104,12 +103,18 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 		} else if (!strncmp(head, "Version: ", 9)) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: VERSION");
 
-			id = strtoul(head + 9, &end, 10);
+			version = strtoul(head + 9, &end, 10);
 			if (!head[9] || *end)
 				goto failed;
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "VERSION=%ld", id);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "VERSION=%d", version);
 
-			version = id < VERSION ? id : VERSION;
+			if (version < network_procotol_version) {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Forbidden VERSION=%d < %d, close connection to listener", version, network_procotol_version);
+				goto close;
+			} else if (version >= PROTOCOL_LAST) {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Future VERSION=%d", version);
+				version = PROTOCOL_LAST - 1;
+			}
 			client->version = version;
 
 			/* reset message id */
@@ -117,14 +122,14 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 		} else if (!strncmp(head, "Capabilities: ", 14)) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: Capabilities");
 
-			if (version > -1) {
+			if (version > PROTOCOL_UNKNOWN) {
 				snprintf(string, sizeof(string), "Version: %d\nCapabilities: \n\n", version);
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "SEND: %s", string);
 				write(fd, string, strlen(string));
 			} else {
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Capabilities recv, but no version line");
 			}
-		} else if (!strncmp(head, "GET_DN ", 7) && msg_id != UINT32_MAX && version > 0) {
+		} else if (!strncmp(head, "GET_DN ", 7) && msg_id != UINT32_MAX && version > PROTOCOL_UNKNOWN && network_procotol_version < PROTOCOL_3) {
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: GET_DN");
 
 			id = strtoul(head + 7, &end, 10);
