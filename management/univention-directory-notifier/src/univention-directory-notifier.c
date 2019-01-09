@@ -58,6 +58,7 @@ static void usage(void) {
 	fprintf(stderr, "Usage: univention-directory-notifier [options]\n");
 	fprintf(stderr, "Options:\n");
 	fprintf(stderr, "   -F   run in foreground (intended for process supervision)\n");
+	fprintf(stderr, "   -D   run in foreground debug mode\n");
 	fprintf(stderr, "   -o          DEPRECATED\n");
 	fprintf(stderr, "   -r          DEPRECATED\n");
 	fprintf(stderr, "   -s          DEPRECATED\n");
@@ -168,6 +169,7 @@ int main(int argc, char *argv[]) {
 	int foreground = 0;
 	int debug = 0;
 	int port = 6669;
+	const char *logfile = "/var/log/univention/notifier.log";
 
 	SCHEMA_ID = 0;
 
@@ -175,11 +177,14 @@ int main(int argc, char *argv[]) {
 		int c;
 		char *end;
 
-		c = getopt(argc, argv, "Fosrd:S:C:L:T:p:");
+		c = getopt(argc, argv, "Fosrd:S:C:L:T:p:D");
 		if (c < 0)
 			break;
 
 		switch (c) {
+		case 'D':
+			logfile = "stderr";
+			/* fall through */
 		case 'F':
 			foreground = 1;
 			break;
@@ -224,7 +229,7 @@ int main(int argc, char *argv[]) {
 		daemon(1, 1);
 	}
 
-	univention_debug_init("/var/log/univention/notifier.log", 1, 1);
+	univention_debug_init(logfile, UV_DEBUG_FLUSH, UV_DEBUG_FUNCTION);
 	univention_debug_set_level(UV_DEBUG_TRANSFILE, debug);
 
 	if (creating_pidfile("/var/run/udsnotifier.pid") != 0) {
