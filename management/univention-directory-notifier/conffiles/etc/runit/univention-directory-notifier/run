@@ -56,7 +56,11 @@ fi
 if [ -n "$notifier_lock_time" ]; then
 	options="$options -T $notifier_lock_time"
 fi
+if [ -n "$notifier_protocol_version" ]; then
+	options="$options -v $notifier_protocol_version"
+fi
 
+# run in foreground
 options="$options -F"
 
 exec /usr/sbin/univention-directory-notifier $options >>/var/log/univention/notifier.log 2>&1

@@ -31,6 +31,8 @@
 
 #define _GNU_SOURCE
 
+#include <errno.h>
+#include <error.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -77,6 +79,7 @@ void usage(void)
 	fprintf(stderr, "   -s   write replog-save file\n");
 	fprintf(stderr, "   -d   added debug output\n");
 	fprintf(stderr, "   -S   sleep before reading replog\n");
+	fprintf(stderr, "   -v <version> Minimum supported protocol\n");
 }
 
 static int REPLOG_CALLBACK = 0;
@@ -195,8 +198,9 @@ int main(int argc, char* argv[])
 
 	for (;;) {
 		int c;
+		char *end;
 
-		c = getopt(argc, argv, "Fosrd:S:C:L:T:");
+		c = getopt(argc, argv, "Fosrd:S:C:L:T:v:");
 		if (c < 0)
 			break;
 
@@ -227,6 +231,11 @@ int main(int argc, char* argv[])
 				break;
 			case 'T':
 				notifier_lock_time=atoll(optarg);
+				break;
+			case 'v':
+				network_procotol_version = strtoll(optarg, &end, 10);
+				if (!*optarg || *end || network_procotol_version < PROTOCOL_1 || network_procotol_version >= PROTOCOL_LAST)
+					error(EXIT_FAILURE, errno, "Invalid argument '-%c %s'", c, optarg);
 				break;
 			default:
 				usage();

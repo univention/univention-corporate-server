@@ -67,6 +67,8 @@ extern void unset_replog_callback ();
 extern void unset_schema_callback ();
 extern void unset_listener_callback ();
 
+enum network_protocol network_procotol_version = PROTOCOL_2;
+
 int network_create_socket( int port )
 {
 	int server_socketfd;
@@ -149,6 +151,7 @@ int network_client_add ( int fd, callback_handler handler, int notify, int old_p
 		tmp->next = NULL;
 
 	}
+	tmp->version = PROTOCOL_UNKNOWN;
 
 	return 0;
 }

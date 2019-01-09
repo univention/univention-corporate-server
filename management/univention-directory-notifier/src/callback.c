@@ -55,8 +55,6 @@
 
 extern int sem_id;
 
-static int VERSION=2;
-
 extern fd_set readfds;
 
 extern NotifyId_t notify_last_id;
@@ -101,10 +99,8 @@ int data_on_connection(int fd, callback_remove_handler remove)
 
 	char string[1024];
 	unsigned long msg_id = UINT32_MAX;
+	enum network_protocol version = network_client_get_version(fd);
 
-	int version;
-
-	
 	ioctl(fd, FIONREAD, &nread);
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "new connection data = %d\n",nread);
@@ -155,18 +151,24 @@ int data_on_connection(int fd, callback_remove_handler remove)
 
 
 		} else if ( !strncmp(network_line, "Version: ", strlen("Version: ")) ) {
+			char *head = network_line, *end;
 
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: VERSION");
 
-			id=strtoul(&(network_line[strlen("Version: ")]), NULL, 10);
+			version = strtoul(head + 9, &end, 10);
+			if (!head[9] || *end)
+				goto failed;
 
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "VERSION=%ld", id);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "VERSION=%d", version);
 
-			if ( id < VERSION ) {
-				network_client_set_version(fd, id);
-			} else {
-				network_client_set_version(fd, VERSION);
+			if (version < network_procotol_version) {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Forbidden VERSION=%d < %d, close connection to listener", version, network_procotol_version);
+				goto close;
+			} else if (version >= PROTOCOL_LAST) {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Future VERSION=%d", version);
+				version = PROTOCOL_LAST - 1;
 			}
+			network_client_set_version(fd, version);
 			
 			/* reset message id */
 			msg_id = UINT32_MAX;
@@ -178,9 +180,7 @@ int data_on_connection(int fd, callback_remove_handler remove)
 
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: Capabilities");
 
-			version=network_client_get_version(fd);
-
-			if ( version > -1 ) {
+			if ( version > PROTOCOL_UNKNOWN ) {
 
 				memset(string, 0, sizeof(string));
 				
@@ -320,6 +320,14 @@ int data_on_connection(int fd, callback_remove_handler remove)
 
 	network_client_dump ();
 
+	return 0;
+
+failed:
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Failed parsing [%s]", p);
+close:
+	close(fd);
+	FD_CLR(fd, &readfds);
+	remove(fd);
 	return 0;
 }
 

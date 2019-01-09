@@ -35,15 +35,22 @@
 typedef int (*callback_remove_handler)(int fd);
 typedef int (*callback_handler)(int fd, callback_remove_handler);
 
-typedef struct network_client {
+enum network_protocol {
+	PROTOCOL_UNKNOWN = 0,
+	PROTOCOL_1,
+	PROTOCOL_2,
+	PROTOCOL_3,
+	PROTOCOL_LAST  // must always be last entry
+};
 
+typedef struct network_client {
 	int fd;
 
 	callback_handler handler;
 
 	int notify;
 
-	int version;
+	enum network_protocol version;
 
 	int server;
 
@@ -79,6 +86,8 @@ unsigned long network_client_get_next_id( int fd);
 unsigned long network_client_get_msg_id( int fd);
 int network_client_waiting( int fd );
 int network_client_check_clients ( unsigned long last_known_id ) ;
+
+extern enum network_protocol network_procotol_version;
 
 #endif
 
