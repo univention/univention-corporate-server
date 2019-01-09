@@ -9,3 +9,5 @@ desc: |
  * Ensure /usr/share/cups/model is a link to /usr/share/ppd
  * Allow switching to None, smb (raw) printer model 
 bug: [47435,47843]
+erratum: 397
+announced: 2019-01-09
