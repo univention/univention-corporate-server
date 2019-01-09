@@ -39,9 +39,6 @@ typedef struct network_client {
 	callback_handler handler;
 	int notify;
 	int version;
-	int server;
-	int old_port;
-	int waiting;
 	unsigned long next_id;
 	unsigned long msg_id;
 	struct network_client *next;
@@ -49,7 +46,7 @@ typedef struct network_client {
 
 int network_create_socket(int port);
 
-int network_client_add(int fd, callback_handler handler, int notify, int old_port);
+int network_client_add(int fd, callback_handler handler, int notify);
 int network_client_del(int fd);
 
 int network_client_main_loop();

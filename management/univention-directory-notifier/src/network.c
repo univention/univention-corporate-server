@@ -106,7 +106,7 @@ int network_create_socket(int port) {
 	return server_socketfd;
 }
 
-int network_client_add(int fd, callback_handler handler, int notify, int old_port) {
+int network_client_add(int fd, callback_handler handler, int notify) {
 	NetworkClient_t *tmp = network_client_first;
 
 	if (tmp == NULL) {
@@ -114,7 +114,6 @@ int network_client_add(int fd, callback_handler handler, int notify, int old_por
 		tmp->fd = fd;
 		tmp->handler = handler;
 		tmp->notify = notify;
-		tmp->old_port = old_port;
 		tmp->next_id = 0;
 		tmp->next = NULL;
 
@@ -129,7 +128,6 @@ int network_client_add(int fd, callback_handler handler, int notify, int old_por
 		tmp->fd = fd;
 		tmp->handler = handler;
 		tmp->notify = notify;
-		tmp->old_port = old_port;
 		tmp->next_id = 0;
 		tmp->next = NULL;
 	}
@@ -236,14 +234,14 @@ static int new_connection(int fd, callback_remove_handler remove) {
 
 	FD_SET(client_socketfd, &readfds);
 
-	network_client_add(client_socketfd, data_on_connection, 0, 0);
+	network_client_add(client_socketfd, data_on_connection, 0);
 
 	return 0;
 }
 
 int network_client_init(int port) {
 	server_socketfd_listener = network_create_socket(6669);
-	network_client_add(server_socketfd_listener, new_connection, 0, 0);
+	network_client_add(server_socketfd_listener, new_connection, 0);
 
 	return 0;
 }
