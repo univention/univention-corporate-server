@@ -53,7 +53,7 @@ extern fd_set readfds;
 
 extern NotifyId_t notify_last_id;
 
-extern unsigned long SCHEMA_ID;
+extern NotifyId SCHEMA_ID;
 
 /*
  * handle data from network.
@@ -65,7 +65,7 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 	int nread;
 	char network_data[NETWORK_MAX + 1], *head, *tail;
 	char *end;
-	unsigned long id;
+	NotifyId id;
 	char string[1024];
 	unsigned long msg_id = UINT32_MAX;
 	int version = client->version, fd = client->fd;

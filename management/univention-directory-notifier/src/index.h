@@ -33,6 +33,8 @@
 
 #include <stdio.h>
 
+#include "cache.h"
+
 static const unsigned long MAGIC = 0x3395e0d4;
 
 struct index_header {
@@ -44,7 +46,7 @@ struct index_entry {
 } __attribute__((__packed__));
 
 FILE *index_open(const char *filename);
-size_t index_get(FILE *fp, unsigned long id);
-void index_set(FILE *fp, unsigned long id, size_t offset);
+size_t index_get(FILE *fp, NotifyId id);
+void index_set(FILE *fp, NotifyId id, size_t offset);
 
 #endif /* __NOTIFIER_INDEX_H__ */

@@ -52,7 +52,7 @@ extern Notify_t notify;
 extern long long notifier_lock_count;
 extern long long notifier_lock_time;
 
-extern unsigned long SCHEMA_ID;
+extern NotifyId SCHEMA_ID;
 
 /*
  * Open file (and its corresponding locking file).
@@ -274,11 +274,11 @@ void notify_entry_free(NotifyEntry_t *entry) {
  * :param last_known_id: The transaction ID to lookup.
  * :returns: A string with transactions ID, DN and command separated by one blank.
  */
-char *notify_transcation_get_one_dn(unsigned long last_known_id) {
+char *notify_transcation_get_one_dn(NotifyId last_known_id) {
 	char buffer[2048];
 	int i;
 	char c;
-	unsigned long id;
+	NotifyId id;
 	bool found = false;
 	FILE *index = NULL;
 	ssize_t pos;

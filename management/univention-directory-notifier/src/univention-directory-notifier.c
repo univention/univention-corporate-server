@@ -46,7 +46,7 @@
 Notify_t notify;
 NotifyId_t notify_last_id;
 
-long SCHEMA_ID;
+NotifyId SCHEMA_ID;
 
 long long notifier_lock_count = 100;
 long long notifier_lock_time = 100;

@@ -32,18 +32,19 @@
 #ifndef __CACHE_H__
 #define __CACHE_H__
 
+typedef unsigned long NotifyId;
 typedef struct {
-	unsigned long id;
+	NotifyId id;
 	char *dn;
 	char command;
 } notify_cache_t;
 
 extern long long notifier_cache_size;
 
-int notifier_cache_init(unsigned long max_id);
+int notifier_cache_init(NotifyId max_id);
 
-int notifier_cache_add(unsigned long id, char *dn, char cmd);
+int notifier_cache_add(NotifyId id, char *dn, char cmd);
 
-char *notifier_cache_get(unsigned long id);
+char *notifier_cache_get(NotifyId id);
 
 #endif

@@ -61,7 +61,7 @@ FILE *index_open(const char *filename) {
  * :param fp: the FILE pointer of the index file.
  * :param id: the transaction ID.
  */
-static void index_seek(FILE *fp, unsigned long id) {
+static void index_seek(FILE *fp, NotifyId id) {
 	fseek(fp, sizeof(struct index_header) + id * sizeof(struct index_entry), SEEK_SET);
 }
 
@@ -71,7 +71,7 @@ static void index_seek(FILE *fp, unsigned long id) {
  * :param id: the transaction ID.
  * :returns: The file position or -1 on errors.
  */
-size_t index_get(FILE *fp, unsigned long id) {
+size_t index_get(FILE *fp, NotifyId id) {
 	struct index_entry entry;
 	index_seek(fp, id);
 	if (fread(&entry, sizeof(entry), 1, fp) != 1)
@@ -87,7 +87,7 @@ size_t index_get(FILE *fp, unsigned long id) {
  * :param id: the transaction ID.
  * :pparam offset: The file position of the transaction.
  */
-void index_set(FILE *fp, unsigned long id, size_t offset) {
+void index_set(FILE *fp, NotifyId id, size_t offset) {
 	struct index_entry entry = {
 	    .valid = 1, .offset = offset,
 	};

@@ -270,7 +270,7 @@ int network_client_dump() {
  * :param last_known_id: transaction ID.
  * :return: 0
  */
-int network_client_check_clients(unsigned long last_known_id) {
+int network_client_check_clients(NotifyId last_known_id) {
 	NetworkClient_t *client;
 	char string[NETWORK_MAX];
 
@@ -316,7 +316,7 @@ int network_client_check_clients(unsigned long last_known_id) {
  * :param l_buf: the length of the buffer.
  * :returns: -1 on errors, 0 on success.
  */
-int network_client_all_write(unsigned long id, char *buf, size_t l_buf) {
+int network_client_all_write(NotifyId id, char *buf, size_t l_buf) {
 	NetworkClient_t *client;
 	int rc;
 	char string[NETWORK_MAX];

@@ -34,6 +34,8 @@
 #include <stddef.h>
 #include <univention/debug.h>
 
+#include "cache.h"
+
 #define NETWORK_MAX 8192
 
 struct network_client;
@@ -47,7 +49,7 @@ struct network_client {
 	callback_handler handler;
 	int notify;
 	int version;
-	unsigned long next_id;
+	NotifyId next_id;
 	unsigned long msg_id;
 	struct network_client *next;
 };
@@ -61,7 +63,7 @@ int network_client_init(int port);
 void network_client_dump1(NetworkClient_t *client, enum uv_debug_level level);
 int network_client_dump();
 
-int network_client_all_write(unsigned long id, char *buf, size_t l_buf);
-int network_client_check_clients(unsigned long last_known_id);
+int network_client_all_write(NotifyId id, char *buf, size_t l_buf);
+int network_client_check_clients(NotifyId last_known_id);
 
 #endif
