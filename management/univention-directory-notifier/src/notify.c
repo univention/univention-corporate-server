@@ -146,22 +146,22 @@ static NotifyEntry_t *split_transaction_buffer(char *buf, long l_buf) {
 
 	tail = &head;
 	for (s = strtok(buf, "\n"); s != NULL; s = strtok(NULL, "\n")) {
-		NotifyEntry_t *tmp = notify_entry_alloc();
-		sscanf(s, "%ld", &(tmp->notify_id.id));
-		tmp->command = s[strlen(s) - 1];
+		NotifyEntry_t *trans = notify_entry_alloc();
+		sscanf(s, "%ld", &(trans->notify_id.id));
+		trans->command = s[strlen(s) - 1];
 		p_tmp1 = index(s, ' ') + 1;
 		p_tmp2 = rindex(p_tmp1, ' ');
-		tmp->dn = strndup(p_tmp1, p_tmp2 - p_tmp1);
+		trans->dn = strndup(p_tmp1, p_tmp2 - p_tmp1);
 
-		(*tail) = tmp;
-		tail = &tmp->next;
+		(*tail) = trans;
+		tail = &trans->next;
 	}
 
 	return head;
 }
 
 void notify_dump_to_files(Notify_t *notify, NotifyEntry_t *entry) {
-	NotifyEntry_t *tmp;
+	NotifyEntry_t *trans;
 	FILE *index = NULL;
 
 	if (entry == NULL)
@@ -177,14 +177,14 @@ void notify_dump_to_files(Notify_t *notify, NotifyEntry_t *entry) {
 		goto error;
 	}
 
-	for (tmp = entry; tmp != NULL; tmp = tmp->next) {
-		if (tmp->dn != NULL && tmp->notify_id.id >= 0) {
-			index_set(index, tmp->notify_id.id, ftell(notify->tf));
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "want to write to transaction file; id=%ld", tmp->notify_id.id);
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "wrote to transaction file; id=%ld; dn=%s, cmd=%c", tmp->notify_id.id, tmp->dn, tmp->command);
-			fprintf(notify->tf, "%ld %s %c\n", tmp->notify_id.id, tmp->dn, tmp->command);
+	for (trans = entry; trans != NULL; trans = trans->next) {
+		if (trans->dn != NULL && trans->notify_id.id >= 0) {
+			index_set(index, trans->notify_id.id, ftell(notify->tf));
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "want to write to transaction file; id=%ld", trans->notify_id.id);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "wrote to transaction file; id=%ld; dn=%s, cmd=%c", trans->notify_id.id, trans->dn, trans->command);
+			fprintf(notify->tf, "%ld %s %c\n", trans->notify_id.id, trans->dn, trans->command);
 		} else {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "tmp->dn == NULL; id=%ld", tmp->notify_id.id);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "trans->dn == NULL; id=%ld", trans->notify_id.id);
 		}
 	}
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "wrote to transaction file; close");
@@ -238,14 +238,11 @@ int notify_transaction_get_last_notify_id(Notify_t *notify, NotifyId_t *notify_i
 }
 
 void notify_entry_free(NotifyEntry_t *entry) {
-	NotifyEntry_t *tmp = entry;
-	NotifyEntry_t *tmp2;
-
-	while (tmp != NULL) {
-			free(tmp->dn);
-		tmp2 = tmp;
-		tmp = tmp->next;
-		free(tmp2);
+	while (entry != NULL) {
+		NotifyEntry_t *trans = entry;
+		entry = entry->next;
+		free(trans->dn);
+		free(trans);
 	}
 }
 
@@ -403,15 +400,15 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data) {
 		ftruncate(fileno(file), 0);
 
 		{
-			NotifyEntry_t *tmp;
+			NotifyEntry_t *trans;
 			char *dn_string = NULL;
 
-			for (tmp = entry; tmp != NULL; tmp = tmp->next) {
-				notifier_cache_add(tmp->notify_id.id, tmp->dn, tmp->command);
-				notify_last_id.id = tmp->notify_id.id;
-				dn_string = notify_entry_to_string(*tmp);
+			for (trans = entry; trans != NULL; trans = trans->next) {
+				notifier_cache_add(trans->notify_id.id, trans->dn, trans->command);
+				notify_last_id.id = trans->notify_id.id;
+				dn_string = notify_entry_to_string(*trans);
 				if (dn_string != NULL) {
-					network_client_all_write(tmp->notify_id.id, dn_string, strlen(dn_string));
+					network_client_all_write(trans->notify_id.id, dn_string, strlen(dn_string));
 					free(dn_string);
 				}
 			}

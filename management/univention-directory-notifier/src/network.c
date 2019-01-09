@@ -90,29 +90,29 @@ int network_create_socket(int port) {
 }
 
 int network_client_add(int fd, callback_handler handler, int notify) {
-	NetworkClient_t *tmp;
+	NetworkClient_t *client;
 
-		tmp = malloc(sizeof(NetworkClient_t));
-		tmp->fd = fd;
-		tmp->handler = handler;
-		tmp->notify = notify;
-		tmp->next_id = 0;
-		tmp->next = network_client_first;
+	client = malloc(sizeof(NetworkClient_t));
+	client->fd = fd;
+	client->handler = handler;
+	client->notify = notify;
+	client->next_id = 0;
+	client->next = network_client_first;
 
-		network_client_first = tmp;
+	network_client_first = client;
 
 	return 0;
 }
 
 int network_client_del(int fd) {
-	NetworkClient_t **tmp;
+	NetworkClient_t **client;
 
 	shutdown(fd, 2);
 
-	for (tmp = &network_client_first; *tmp != NULL; tmp = &((*tmp)->next))
-		if ((*tmp)->fd == fd) {
-			NetworkClient_t *found = *tmp;
-			*tmp = (*tmp)->next;
+	for (client = &network_client_first; *client != NULL; client = &((*client)->next))
+		if ((*client)->fd == fd) {
+			NetworkClient_t *found = *client;
+			*client = (*client)->next;
 			free(found);
 			break;
 		}
@@ -241,52 +241,52 @@ int network_client_main_loop(callback_check check_callbacks) {
 }
 
 int network_client_dump() {
-	NetworkClient_t *tmp;
+	NetworkClient_t *client;
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "------------------------------\n");
-	for (tmp = network_client_first; tmp != NULL; tmp = tmp->next) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Listener fd = %d\n", tmp->fd);
+	for (client = network_client_first; client != NULL; client = client->next) {
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Listener fd = %d\n", client->fd);
 	}
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "------------------------------\n");
 	return 0;
 }
 
 int network_client_check_clients(unsigned long last_known_id) {
-	NetworkClient_t *tmp;
+	NetworkClient_t *client;
 	char string[NETWORK_MAX];
 
-	for (tmp = network_client_first; tmp != NULL; tmp = tmp->next) {
-		if (tmp->notify) {
-			if (tmp->next_id <= last_known_id) {
+	for (client = network_client_first; client != NULL; client = client->next) {
+		if (client->notify) {
+			if (client->next_id <= last_known_id) {
 				char *dn_string = NULL;
 
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "try to read %ld from cache", tmp->next_id);
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "try to read %ld from cache", client->next_id);
 
 				/* try to read from cache */
-				if ((dn_string = notifier_cache_get(tmp->next_id)) == NULL) {
-					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld not found in cache", tmp->next_id);
+				if ((dn_string = notifier_cache_get(client->next_id)) == NULL) {
+					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld not found in cache", client->next_id);
 
-					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld get one dn", tmp->next_id);
+					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld get one dn", client->next_id);
 
 					/* read from transaction file, because not in cache */
-					if ((dn_string = notify_transcation_get_one_dn(tmp->next_id)) == NULL) {
-						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld failed ", tmp->next_id);
-						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d closed, read from transaction file failed ", tmp->fd);
+					if ((dn_string = notify_transcation_get_one_dn(client->next_id)) == NULL) {
+						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld failed ", client->next_id);
+						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d closed, read from transaction file failed ", client->fd);
 						/* TODO: maybe close connection? */
 					}
 				}
 
 				if (dn_string != NULL) {
-					snprintf(string, sizeof(string), "MSGID: %ld\n%s\n\n", tmp->msg_id, dn_string);
+					snprintf(string, sizeof(string), "MSGID: %ld\n%s\n\n", client->msg_id, dn_string);
 
-					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "--> %d: [%s]", tmp->fd, string);
+					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "--> %d: [%s]", client->fd, string);
 
-					write(tmp->fd, string, strlen(string));
+					write(client->fd, string, strlen(string));
 
 					free(dn_string);
 				}
-				tmp->notify = 0;
-				tmp->msg_id = 0;
+				client->notify = 0;
+				client->msg_id = 0;
 			}
 		}
 	}
@@ -294,7 +294,7 @@ int network_client_check_clients(unsigned long last_known_id) {
 }
 
 int network_client_all_write(unsigned long id, char *buf, size_t l_buf) {
-	NetworkClient_t *tmp;
+	NetworkClient_t *client;
 	int rc;
 	char string[NETWORK_MAX];
 
@@ -304,20 +304,20 @@ int network_client_all_write(unsigned long id, char *buf, size_t l_buf) {
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "l=%ld, --> [%s]", l_buf, buf);
 
-	for (tmp = network_client_first; tmp != NULL; tmp = tmp->next) {
-		if (tmp->notify) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d\n", tmp->fd);
-			if (tmp->next_id == id) {
+	for (client = network_client_first; client != NULL; client = client->next) {
+		if (client->notify) {
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d\n", client->fd);
+			if (client->next_id == id) {
 				memset(string, 0, NETWORK_MAX);
-				snprintf(string, sizeof(string), "MSGID: %ld\n%.*s\n", tmp->msg_id, (int)l_buf, buf);
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d[%s]\n", tmp->fd, string);
-				rc = write(tmp->fd, string, strlen(string));
-				// rc = write(tmp->fd, buf, l_buf );
-				tmp->notify = 0;
-				tmp->msg_id = 0;
+				snprintf(string, sizeof(string), "MSGID: %ld\n%.*s\n", client->msg_id, (int)l_buf, buf);
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d[%s]\n", client->fd, string);
+				rc = write(client->fd, string, strlen(string));
+				// rc = write(client->fd, buf, l_buf );
+				client->notify = 0;
+				client->msg_id = 0;
 			}
 		} else {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Ignore Listener fd = %d\n", tmp->fd);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Ignore Listener fd = %d\n", client->fd);
 		}
 	}
 
