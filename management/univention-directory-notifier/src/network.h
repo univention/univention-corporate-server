@@ -52,12 +52,6 @@ typedef struct network_client {
 
 	enum network_protocol version;
 
-	int server;
-
-	int old_port;
-
-	int waiting;
-
 	unsigned long next_id;
 
 	unsigned long msg_id;
@@ -68,7 +62,6 @@ typedef struct network_client {
 
 int network_create_socket( int port );
 
-int network_client_add ( int fd, callback_handler handler, int notify, int old_port);
 int network_client_del ( int fd );
 
 int network_client_main_loop ( );
