@@ -133,47 +133,31 @@ static NotifyEntry_t *notify_entry_alloc() {
 	return entry;
 }
 
-static long split_transaction_buffer(NotifyEntry_t *entry, char *buf, long l_buf) {
-	NotifyEntry_t *tmp = NULL;
-	NotifyEntry_t *tmp2 = NULL;
-	int start = 1;
-	char *p, *p1;
+/*
+ * Split character buffer into entries.
+ * :param buf: The buffer to split.
+ * :param l_buf: The number of charactewrs in the buffer.
+ * :returns: Linked list of entries.
+ */
+static NotifyEntry_t *split_transaction_buffer(char *buf, long l_buf) {
+	NotifyEntry_t *head, **tail;
 	char *s;
 	char *p_tmp1, *p_tmp2;
 
-	tmp2 = entry;
+	tail = &head;
+	for (s = strtok(buf, "\n"); s != NULL; s = strtok(NULL, "\n")) {
+		NotifyEntry_t *tmp = notify_entry_alloc();
+		sscanf(s, "%ld", &(tmp->notify_id.id));
+		tmp->command = s[strlen(s) - 1];
+		p_tmp1 = index(s, ' ') + 1;
+		p_tmp2 = rindex(p_tmp1, ' ');
+		tmp->dn = strndup(p_tmp1, p_tmp2 - p_tmp1);
 
-	p1 = strndup(buf, l_buf);
-	p = p1;
-
-	for (s = strtok(p, "\n"); s != NULL; s = strtok(NULL, "\n")) {
-		if (start) {
-			sscanf(s, "%ld", &(tmp2->notify_id.id));
-			tmp2->command = s[strlen(s) - 1];
-			p_tmp1 = index(s, ' ') + 1;
-			p_tmp2 = rindex(p_tmp1, ' ');
-			tmp2->dn = strndup(p_tmp1, p_tmp2 - p_tmp1);
-
-			tmp2->next = NULL;
-		} else {
-			tmp = notify_entry_alloc();
-
-			sscanf(s, "%ld", &(tmp->notify_id.id));
-			tmp->command = s[strlen(s) - 1];
-			p_tmp1 = index(s, ' ') + 1;
-			p_tmp2 = rindex(p_tmp2, ' ');
-			tmp->dn = strndup(p_tmp1, p_tmp2 - p_tmp1);
-
-			tmp->next = NULL;
-			tmp2->next = tmp;
-			tmp2 = tmp;
-		}
-
-		start = 0;
+		(*tail) = tmp;
+		tail = &tmp->next;
 	}
 
-	free(p1);
-	return 0;
+	return head;
 }
 
 void notify_dump_to_files(Notify_t *notify, NotifyEntry_t *entry) {
@@ -394,8 +378,6 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data) {
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "NOTIFY Listener");
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "... go");
 
-	entry = notify_entry_alloc();
-
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from notify_listener_change_callback");
 	if ((file = fopen_lock(FILE_NAME_LISTENER, "r+", &(l_file))) == NULL) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not open %s\n", FILE_NAME_LISTENER);
@@ -416,7 +398,7 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data) {
 	}
 
 	if ((nread = fread(buf, sizeof(char), stat_buf.st_size, file)) != 0) {
-		split_transaction_buffer(entry, buf, nread);
+		entry = split_transaction_buffer(buf, nread);
 		notify_dump_to_files(&notify, entry);
 		fseek(file, 0, SEEK_SET);
 		ftruncate(fileno(file), 0);
