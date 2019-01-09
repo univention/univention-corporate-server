@@ -64,7 +64,9 @@ cd test
 
 # update packages
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "jenkins@${BUILD_HOST}" python3 /home/jenkins/build -r "${BUILD_REPO}" -b "${BUILD_BRANCH}" > utils/apt-get-branch-repo.list
-# echo "# ignore" > utils/apt-get-branch-repo.list
+
+# replace non deb lines
+sed -i '/^deb /!d' utils/apt-get-branch-repo.list
 
 declare -a cmd=("./ucs-ec2-tools/ucs-kvm-create" "-c" "$CFG_FILE")
 "$HALT" && cmd+=("-t")
