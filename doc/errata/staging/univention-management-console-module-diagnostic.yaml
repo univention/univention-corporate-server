@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-management-console-module-diagnostic
+fix: 4.0.1-19A~4.3.0.201901101224
+desc: |
+ This update addresses the following issue(s):
+ * Added CLI-Tool which exectutes the diagnostic checks
+bug: [47650]
