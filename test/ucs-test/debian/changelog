@@ -1,4 +1,4 @@
-ucs-test (9.0.0-7) unstable; urgency=medium
+ucs-test (9.0.0-8) unstable; urgency=medium
 
   * Bug #45474: 10_ldap/27reconnect_uldap_2 ignore uex UNAVAILABLE
 
