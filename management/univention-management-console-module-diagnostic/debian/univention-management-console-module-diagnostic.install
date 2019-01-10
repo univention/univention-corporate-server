@@ -1,2 +1,3 @@
 umc/python/diagnostic/plugins/* /usr/share/pyshared/univention/management/console/modules/diagnostic/plugins/
 umc/js/diagnostic.css	usr/share/univention-management-console-frontend/js/umc/modules/
+umc/python/diagnostic/univention-run-diagnostic-checks	/usr/bin/

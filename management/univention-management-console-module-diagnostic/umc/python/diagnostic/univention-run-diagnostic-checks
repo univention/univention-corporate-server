@@ -1,0 +1,127 @@
+#!/usr/bin/python2.7
+
+import sys
+import argparse
+from univention.config_registry import ConfigRegistry
+from univention.lib.umc import Client as _Client
+from univention.management.console.modules.diagnostic import MODULE
+from getpass import getpass
+
+
+class Client(_Client):
+
+	print_response = True
+	print_request_data = True
+
+	@classmethod
+	def get_test_connection(cls, username, password, hostname=None, *args, **kwargs):
+		return cls(hostname, username, password, *args, **kwargs)
+
+	def umc_command(self, *args, **kwargs):
+		self.print_request_data = kwargs.pop('print_request_data', True)
+		self.print_response = kwargs.pop('print_response', True)
+		try:
+			return super(Client, self).umc_command(*args, **kwargs)
+		finally:
+			self.print_request_data = True
+			self.print_response = True
+
+	def request(self, method, path, data=None, headers=None):
+		try:
+			response = super(Client, self).request(method, path, data, headers)
+		except Exception:
+			MODULE.error('UMC request failed: %s\n' % (sys.exc_info()[1],))
+			raise
+		return response
+
+
+def test_run_diagnostic_checks(client, plugins, failures):
+	for plugin in plugins:
+		result = client.umc_command('diagnostic/run', {'plugin': plugin['id']}).result
+		if result['type'] == 'success':
+			print 'ran %s successfully' % plugin['id']
+		if result['type'] != 'success':
+			failures.extend([
+				'############################',
+				'## Check failed: %s - %s' % (plugin['id'], result['title']),
+				result['description'],
+				'########### End #############\n',
+			])
+	return failures
+
+
+#returns a list of the plugins whose names did not match any plugin
+#returns a list of the plugins that should be run
+def choose_tests(tests, plugins):
+	chosen_tests = []
+	unused_tests = []
+	for plugin in plugins:
+		for x in range(len(tests)):
+			if plugin['id'] == tests[x]:
+				chosen_tests.append(plugin)
+				tests[x] = ''
+	for x in tests:
+		if x != '':
+			unused_tests.append(x)
+	if unused_tests:
+		tests_not_found = ', '.join(unused_tests)
+		raise Exception('Could not find tests with the name %s\nPlease check for spelling mistakes' % tests_not_found)
+	return chosen_tests
+
+
+def parsing():
+	parser = argparse.ArgumentParser(description='Executes the diagnostic module checks')
+	parser.add_argument("-t", nargs='*', type=str, help='You have to choose tests to run by using "{-t <testname>}" or write "-t all" to execute all tests')
+	parser.add_argument("--bindpwdfile", type=str, help='Path to a file that contains a password')
+	parser.add_argument("--username", type=str, help='Username with which you want to authenticate')
+	args = parser.parse_args()
+	return args.t, args.bindpwdfile, args.username
+
+
+def login(args_username, args_bindpwdfile):
+	if args_username:
+		username = args_username
+	else:
+		username = raw_input('Domain Admin Login:')
+	if args_bindpwdfile:
+		with open(args_bindpwdfile, 'rb') as fd:
+			password = fd.read().strip()
+	else:
+		password = getpass()
+	return username, password
+
+
+def main():
+	ucr = ConfigRegistry()
+	ucr.load()
+	failures = []
+	try:
+		argst, args_bindpwdfile, args_username = parsing()
+		valid_input = True
+		if argst is None:
+			print('You have to choose tests to run by using "{-t <testname>}" or write "-t all" to execute all tests')
+		else:
+			for x in argst:
+				if x.find(".") != -1:
+					print 'Please enter the test name %s again, but without file ending.' % x
+					valid_input = False
+
+		if valid_input:
+			username, password = login(args_username, args_bindpwdfile)
+			client = Client.get_test_connection(username, password)
+			plugins = client.umc_command('diagnostic/query').result
+			if 'all' in argst:
+				failures = test_run_diagnostic_checks(client, plugins, failures)
+			else:
+				chosen_tests = choose_tests(argst, plugins)
+				failures = test_run_diagnostic_checks(client, chosen_tests, failures)
+	except Exception as exc:
+		raise exc
+	finally:
+		print '\nYou can find the logging messages of the diagnostic modules at /var/log/univention/management-console-module-diagnostic.log\n'
+		if failures:
+			raise Exception('\n%s' % ('\n'.join(failures)))
+
+
+if __name__ == '__main__':
+	main()
