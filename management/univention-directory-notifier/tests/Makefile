@@ -1,7 +1,6 @@
-#!/usr/bin/make -f
 #
-# Univention Directory Notifier
-#  rules file for the debian package
+# Univention Directory Listener
+#  Makefile for testing the listener
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -29,32 +28,24 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+#
+SOURCES := $(wildcard test__*.c)
+ALL ?= $(patsubst  %.c,%,$(SOURCES))
 
-override_dh_auto_clean:
-	$(MAKE) -C src clean
-	$(MAKE) -C tests clean
-	dh_auto_clean
+.PHONY: tests
+tests: $(ALL)
+	run-parts --verbose --regex='test__[^.]*$$' .
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install
-	touch debian/univention-directory-notifier/etc/runit/univention-directory-notifier/down
+test__filter__cache_entry_ldap_filter_match: ../src/filter.o
+test__utils__lower_utf8: ../src/utils.o
+test__utils__same_dn: ../src/utils.o
 
-override_dh_installinit:
-	dh_installinit --no-start -r
+include ../src/Makefile
 
-override_dh_fixperms:
-	chmod 755 debian/univention-directory-notifier/etc/network/if-post-down.d/univention-directory-notifier
-	dh_fixperms
+CFLAGS += $(DB_CFLAGS) -I../src -fdata-sections -ffunction-sections
+LDFLAGS += -Wl,--as-needed -Wl,--gc-sections
+LDLIBS += -lldap -llber
 
-override_dh_auto_build:
-	$(MAKE) -C src
-	dh_auto_build
-
-override_dh_auto_test:
-	ucslint
-	make -C tests
-	dh_auto_test
-
-%:
-	dh $@
+.PHONY: clean
+clean::
+	$(RM) *.o

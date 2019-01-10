@@ -218,28 +218,22 @@ int notify_transaction_get_last_notify_id(NotifyId_t *notify_id) {
 	int i = 2;
 	int c;
 
+	notify_id->id = 0;
+
 	if ((notify.tf = fopen_lock(FILE_NAME_TF, "r", &(notify.l_tf))) == NULL) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to lock notify_id");
-		notify_id->id = 0;
 		return -1;
 	}
 
 	do {
 		i++;
-		fseek(notify.tf, -i, SEEK_END);
+		if (fseek(notify.tf, -i, SEEK_END)) {
+			fseek(notify.tf, 0, SEEK_SET);
+			break;
+		}
 		c = fgetc(notify.tf);
-	} while (c != '\n' && c != EOF && ftell(notify.tf) != 1);
-
-	if (c == EOF) {
-		/* empty file */
-		notify_id->id = 0;
-	} else if (ftell(notify.tf) == 1) {
-		/* only one entry */
-		fseek(notify.tf, 0, SEEK_SET);
-		fscanf(notify.tf, "%ld", &(notify_id->id));
-	} else {
-		fscanf(notify.tf, "%ld", &(notify_id->id));
-	}
+	} while (c != '\n');
+	fscanf(notify.tf, "%ld", &(notify_id->id));
 
 	fclose_lock(FILE_NAME_TF, &notify.tf, &notify.l_tf);
 

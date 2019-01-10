@@ -39,7 +39,9 @@
 /* incoming transaction file, from lsitener */
 #define FILE_NAME_LISTENER "/var/lib/univention-ldap/listener/listener"
 /* transaction file, for notifier action */
+#ifndef FILE_NAME_TF
 #define FILE_NAME_TF "/var/lib/univention-ldap/notify/transaction"
+#endif
 #define FILE_NAME_TF_IDX "/var/lib/univention-ldap/notify/transaction.index"
 
 typedef struct { NotifyId id; } NotifyId_t;
