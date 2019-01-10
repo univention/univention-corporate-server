@@ -1,3 +1,9 @@
+univention-lib (7.0.0-20) unstable; urgency=medium
+
+  * Bug #48014: Removed left over echo-line in backup.sh
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 10 Jan 2019 15:48:51 +0100
+
 univention-lib (7.0.0-19) unstable; urgency=medium
 
   * Bug #38057: Code cleanup
