@@ -1,3 +1,9 @@
+univention-nagios (12.0.1-2) unstable; urgency=medium
+
+  * Bug #43426: Fixed Nagios Type Error
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 10 Jan 2019 10:58:19 +0100
+
 univention-nagios (12.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support
