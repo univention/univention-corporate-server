@@ -83,7 +83,7 @@ def repquota(partition, callback, user=None):
 	fs = fstab.File()
 	part = fs.find(spec=partition)
 	if part.type == 'xfs':
-		args += '--version xfs '
+		args += '--format xfs '
 
 	# grep a single user
 	if user:
