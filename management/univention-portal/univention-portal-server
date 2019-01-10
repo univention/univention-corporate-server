@@ -30,6 +30,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import json
+import grp
 import sys
 import os
 import os.path
@@ -250,32 +251,31 @@ class JsonHandler(tornado.web.RequestHandler):
 				return True
 		return False
 
-	def _get_portal(self, username):
+	def _get_portal(self, username, admin_mode):
 		portal = cache.get('portal')
 		entries = cache.get('entries')
 		groups = cache.get('groups')
 		actual_content = portal.pop('content')
 		filtered_content = []
-		get_logger('groups').info(repr(groups))
 		for category_dn, entry_dns in actual_content:
 			filter_entry_dns = []
 			for entry_dn in entry_dns:
 				entry = entries.get(entry_dn)
 				if entry is None:
 					continue
-				if entry['allowedGroups']:
-					get_logger('groups').info('%s has groups' % entry_dn)
-					checked_groups = []
-					for group_dn in entry['allowedGroups']:
-						get_logger('groups').info('Checking %s' % group_dn)
-						group = groups.get(group_dn)
-						if group is None:
-							continue
-						if self._recursive_search_in_groups(username, group, groups, checked_groups):
-							get_logger('groups').info('Found %s' % username)
-							break
-					else:
+				if not admin_mode:
+					if not entry['activated']:
 						continue
+					if entry['allowedGroups']:
+						checked_groups = []
+						for group_dn in entry['allowedGroups']:
+							group = groups.get(group_dn)
+							if group is None:
+								continue
+							if self._recursive_search_in_groups(username, group, groups, checked_groups):
+								break
+						else:
+							continue
 				filter_entry_dns.append(entry_dn)
 			if filter_entry_dns:
 				filtered_content.append([category_dn, filter_entry_dns])
@@ -324,8 +324,8 @@ class JsonHandler(tornado.web.RequestHandler):
 		if username is None:
 			get_logger('user').debug('no user found')
 		else:
-			get_logger('user').debug('found %r' % username)
-			return username
+			get_logger('user').debug('found %s' % username)
+			return username.lower()
 
 	def write_error(self, status_code, **kwargs):
 		if 'exc_info' in kwargs:
@@ -335,8 +335,13 @@ class JsonHandler(tornado.web.RequestHandler):
 	def get(self):
 		session = self.get_cookie('UMCSessionId')
 		username = self._get_username(session)
+		admin_mode = False
+		if self.request.headers.get('X-Univention-Portal-Admin-Mode', 'no') == 'yes':
+			admin_group_name = ucr.get('groups/default/domainadmins', 'Domain Admins')
+			admins = grp.getgrnam(admin_group_name)[3]
+			admin_mode = username in admins
 		answer = {}
-		portal_content = answer['portal'] = self._get_portal(username)
+		portal_content = answer['portal'] = self._get_portal(username, admin_mode)
 		answer['links'] = self._get_links()
 		answer['categories'] = self._get_categories(portal_content['content'])
 		answer['entries'] = self._get_entries(portal_content['content'])

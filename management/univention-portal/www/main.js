@@ -1557,20 +1557,6 @@ define([
 					if (entry.$notInPortalJSON$) {
 						return false;
 					}
-					if (!entry.activated) {
-						return false;
-					}
-					var allowedGroups = (entry.allowedGroups || []).map(function(allowedGroup) {
-						return allowedGroup.toLowerCase();
-					});
-					if (allowedGroups.length) {
-						var userIsInAllowedGroup = userGroups.some(function(userGroup) {
-							return allowedGroups.indexOf(userGroup) >= 0;
-						});
-						if (!userIsInAllowedGroup) {
-							return false;
-						}
- 					}
 				}
 				return true;
 			});
