@@ -1,3 +1,9 @@
+univention-quota (12.0.0-5) unstable; urgency=medium
+
+  * Bug #48315: fix typo
+
+ -- Jannik Ahlers <ahlers@univention.de>  Thu, 10 Jan 2019 16:41:38 +0100
+
 univention-quota (12.0.0-4) unstable; urgency=medium
 
   * Bug #48315: fix quota umc module for xfs file systems
