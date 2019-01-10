@@ -1,6 +1,12 @@
+ucs-test (8.0.28-254) unstable; urgency=medium
+
+  * Bug #45474: 10_ldap/27reconnect_uldap_2 ignore uex UNAVAILABLE
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Jan 2019 15:15:46 +0100
+
 ucs-test (8.0.28-253) unstable; urgency=medium
 
-  * Bug #45474: 10_ldap/27reconnect_uldap_2 irgnore ldap.UNAVAILABLE
+  * Bug #45474: 10_ldap/27reconnect_uldap_2 ignore ldap.UNAVAILABLE
 
  -- Felix Botner <botner@univention.de>  Thu, 10 Jan 2019 13:54:31 +0100
 
