@@ -21,7 +21,7 @@ import traceback
 import time
 import subprocess
 from ldap.filter import filter_format
-from ldap import INSUFFICIENT_ACCESS
+from ldap import INSUFFICIENT_ACCESS, UNAVAILABLE
 
 
 def delayed_slapd_restart():
@@ -74,9 +74,14 @@ def main():
 			count = 0
 			try:
 				while not restart_finished:
-					res = lo.search(filter=filter_s)[0][0]
-					assert res == account.binddn
-					count += 1
+					try:
+						res = lo.search(filter=filter_s)[0][0]
+						assert res == account.binddn
+						count += 1
+					except UNAVAILABLE as exc:
+						# ignore ldap.UNAVAILABLE, slapd is started but database backend not yet available
+						# python-ldap reconnect does not handle this situation
+						pass
 				print('LDAP search finished successfully {} times.'.format(count))
 			except Exception as exc:
 				print('LDAP modify failed after succeeding {} times.'.format(count))
@@ -90,11 +95,16 @@ def main():
 			try:
 				old_description = ''
 				while not restart_finished:
-					new_description = 'Foo bar %s' % (uts.random_string(5),)
-					res = lo.modify(user_dn, [['description', old_description, new_description]])
-					assert res == user_dn
-					old_description = new_description
-					count +=1
+					try:
+						new_description = 'Foo bar %s' % (uts.random_string(5),)
+						res = lo.modify(user_dn, [['description', old_description, new_description]])
+						assert res == user_dn
+						old_description = new_description
+						count +=1
+					except UNAVAILABLE as exc:
+						# ignore ldap.UNAVAILABLE, slapd is started but database backend not yet available
+						# python-ldap reconnect does not handle this situation
+						pass
 				print('LDAP modify finished successfully {} times.'.format(count))
 			except (INSUFFICIENT_ACCESS, univention.admin.uexceptions.permissionDenied):
 				pass  # On DC Slaves no objects can be modified

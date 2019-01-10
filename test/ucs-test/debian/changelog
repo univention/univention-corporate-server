@@ -1,3 +1,9 @@
+ucs-test (8.0.28-253) unstable; urgency=medium
+
+  * Bug #45474: 10_ldap/27reconnect_uldap_2 irgnore ldap.UNAVAILABLE
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Jan 2019 13:54:31 +0100
+
 ucs-test (8.0.28-252) unstable; urgency=medium
 
   * Bug #46316: 59_udm/51_udm_api_users.py check lower() maildomain,
