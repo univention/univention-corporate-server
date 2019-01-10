@@ -180,7 +180,7 @@ static void notify_dump_to_files(Notify_t *notify, NotifyEntry_t *entry) {
 	}
 
 	for (trans = entry; trans != NULL; trans = trans->next) {
-		if (trans->dn != NULL && trans->notify_id.id >= 0) {
+		if (trans->dn != NULL && trans->notify_id.id > 0) {
 			index_set(index, trans->notify_id.id, ftell(notify->tf));
 			fprintf(notify->tf, "%ld %s %c\n", trans->notify_id.id, trans->dn, trans->command);
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "wrote to transaction file; id=%ld; dn=%s, cmd=%c", trans->notify_id.id, trans->dn, trans->command);
