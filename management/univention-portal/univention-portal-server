@@ -105,7 +105,7 @@ class LDAPCache(object):
 	@property
 	def udm(self):
 		if self._udm is None:
-			self._udm = UDM.machine().version(1)
+			self._udm = UDM.machine().version(2)
 		return self._udm
 
 	def load_groups(self):
@@ -228,7 +228,7 @@ class LDAPCache(object):
 				'name': entry.props.displayName,
 				'description': entry.props.description,
 				'logo_name': self._save_image(entry),
-				'favorite': entry.props.favorite,
+				'favorite': bool(entry.props.favorite),
 				'activated': entry.props.activated,
 				'allowedGroups': entry.props.allowedGroups,
 				'links': entry.props.link,

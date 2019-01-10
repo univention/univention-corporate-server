@@ -40,6 +40,7 @@ if [ "$1" = "configure" ]; then
 	systemctl reload apache2
 	systemctl enable univention-portal-server.service
 	systemctl restart univention-directory-listener
+	[ -e /var/www/univention/portal/portal.json ] && rm /var/www/univention/portal/portal.json
 fi
 
 systemctl restart univention-portal-server
