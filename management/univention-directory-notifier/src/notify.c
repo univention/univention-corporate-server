@@ -221,7 +221,7 @@ void notify_entry_init(NotifyEntry_t *entry) {
  */
 int notify_transaction_get_last_notify_id(Notify_t *notify, NotifyId_t *notify_id) {
 	int i = 2;
-	char c;
+	int c;
 
 	if ((notify->tf = fopen_lock(FILE_NAME_TF, "r", &(notify->l_tf))) == NULL) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to lock notify_id");
@@ -233,9 +233,9 @@ int notify_transaction_get_last_notify_id(Notify_t *notify, NotifyId_t *notify_i
 		i++;
 		fseek(notify->tf, -i, SEEK_END);
 		c = fgetc(notify->tf);
-	} while (c != '\n' && c != -1 && c != 255 && ftell(notify->tf) != 1);
+	} while (c != '\n' && c != EOF && ftell(notify->tf) != 1);
 
-	if (c == -1 || c == 255) {
+	if (c == EOF) {
 		/* empty file */
 		notify_id->id = 0;
 	} else if (ftell(notify->tf) == 1) {
@@ -271,8 +271,7 @@ void notify_entry_free(NotifyEntry_t *entry) {
  */
 char *notify_transcation_get_one_dn(NotifyId last_known_id) {
 	char buffer[2048];
-	int i;
-	char c;
+	int i, c;
 	NotifyId id;
 	bool found = false;
 	FILE *index = NULL;
@@ -307,10 +306,6 @@ char *notify_transcation_get_one_dn(NotifyId last_known_id) {
 	fseek(notify.tf, 0, SEEK_SET);
 	pos = 0;
 	while (!found && (c = fgetc(notify.tf)) != EOF) {
-		if (c == 255) {
-			break;
-		}
-
 		if (c == '\n') {
 			if (sscanf(buffer, "%ld", &id) != 1) {
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Failed to parse %s", buffer);
