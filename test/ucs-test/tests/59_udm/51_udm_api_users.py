@@ -146,7 +146,7 @@ class TestUdmUsersBasic(TestCase):
 			'firstname': random_username(),
 			'lastname': random_username(),
 			'description': random_string(),
-			'mailPrimaryAddress': '{}@{}'.format(random_string(), self.mail_domain),
+			'mailPrimaryAddress': '{}@{}'.format(random_string(), self.mail_domain.lower()),
 			'departmentNumber': random_string(),
 		}
 		print('Modifying {!r} with attrs: {!r}'.format(obj, attrs))
