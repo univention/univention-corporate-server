@@ -1,5 +1,12 @@
 ucs-test (9.0.0-5) unstable; urgency=medium
 
+  * Bug #40188: 84_crypto/01_openssl_protocol_version fails on backup
+    added debug
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Jan 2019 10:46:05 +0100
+
+ucs-test (9.0.0-5) unstable; urgency=medium
+
   * Bug #48334: Add 4.4 to the App Center
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 08 Jan 2019 10:34:50 +0100

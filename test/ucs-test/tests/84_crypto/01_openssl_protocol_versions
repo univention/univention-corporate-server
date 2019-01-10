@@ -7,6 +7,8 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
+set -x
+
 RETVAL=100
 
 openssl s_server \
@@ -15,6 +17,8 @@ openssl s_server \
     -cert /etc/univention/ssl/$(hostname -f)/cert.pem \
     -key /etc/univention/ssl/$(hostname -f)/private.key &
 SERVER_PID=$!
+
+sleep 3
 
 finish () {
     kill $SERVER_PID
