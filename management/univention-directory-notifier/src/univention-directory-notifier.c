@@ -233,22 +233,15 @@ int main(int argc, char *argv[]) {
 	univention_debug_set_level(UV_DEBUG_TRANSFILE, debug);
 
 	if (creating_pidfile("/var/run/udsnotifier.pid") != 0) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Couldn't create pid file, exit");
 		exit(1);
 	}
 
 	notify_init(&notify);
 
-	if (notify_transaction_get_last_notify_id(&notify, &notify_last_id) != 0) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "Error notify_transaction_get_last_notify_id\n");
-	}
+	if (!notify_transaction_get_last_notify_id(&notify, &notify_last_id))
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Last transaction id = %ld", notify_last_id.id);
 
-	/* DEBUG */
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Last transaction id = %ld\n", notify_last_id.id);
-
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Fill cache");
 	notifier_cache_init(notify_last_id.id);
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "   done");
 
 	network_client_init(port);
 
@@ -259,8 +252,6 @@ int main(int argc, char *argv[]) {
 	notify_schema_change_callback(0, NULL, NULL);
 
 	network_client_main_loop(check_callbacks);
-
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Normal exit");
 
 	return 0;
 }

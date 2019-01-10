@@ -72,15 +72,15 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 
 	ioctl(fd, FIONREAD, &nread);
 
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "new connection data = %d\n", nread);
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "new connection data = %d", nread);
 
 	if (nread == 0) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "%d failed, got 0 close connection to listener ", fd);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "%d failed, got 0. close connection to listener", fd);
 		network_client_dump();
 		goto close;
 	}
 	if (nread >= NETWORK_MAX) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d failed, more than %d close connection to listener ", fd, NETWORK_MAX);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d failed, more than %d. close connection to listener", fd, NETWORK_MAX);
 		goto close;
 	}
 
@@ -146,14 +146,12 @@ int data_on_connection(NetworkClient_t *client, callback_remove_handler remove) 
 				if ((dn_string = notifier_cache_get(id)) == NULL) {
 					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld not found in cache", id);
 
-					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld get one dn", id);
-
 					/* read from transaction file, because not in cache */
 					if ((dn_string = notify_transcation_get_one_dn(id)) == NULL) {
-						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld failed ", id);
+						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld failed", id);
 						/* TODO: maybe close connection? */
 
-						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d failed, close connection to listener ", fd);
+						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d failed, close connection to listener", fd);
 						goto close;
 					}
 				}

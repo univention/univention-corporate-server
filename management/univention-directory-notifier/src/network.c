@@ -182,7 +182,7 @@ int network_client_main_loop(callback_check check_callbacks) {
 	NetworkClient_t *client;
 	fd_set testfds;
 
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Starting main loop\n");
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Starting main loop");
 	/* create listener socket */
 
 	FD_ZERO(&readfds);
@@ -221,11 +221,11 @@ int network_client_main_loop(callback_check check_callbacks) {
 int network_client_dump() {
 	NetworkClient_t *client;
 
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "------------------------------\n");
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "------------------------------");
 	for (client = network_client_first; client != NULL; client = client->next) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Listener fd = %d\n", client->fd);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Listener fd = %d", client->fd);
 	}
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "------------------------------\n");
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "------------------------------");
 	return 0;
 }
 
@@ -249,12 +249,9 @@ int network_client_check_clients(unsigned long last_known_id) {
 				if ((dn_string = notifier_cache_get(client->next_id)) == NULL) {
 					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld not found in cache", client->next_id);
 
-					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld get one dn", client->next_id);
-
 					/* read from transaction file, because not in cache */
 					if ((dn_string = notify_transcation_get_one_dn(client->next_id)) == NULL) {
-						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld failed ", client->next_id);
-						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%d closed, read from transaction file failed ", client->fd);
+						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "%ld failed", client->next_id);
 						/* TODO: maybe close connection? */
 					}
 				}
@@ -292,21 +289,19 @@ int network_client_all_write(unsigned long id, char *buf, size_t l_buf) {
 		return 0;
 	}
 
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "l=%ld, --> [%s]", l_buf, buf);
-
 	for (client = network_client_first; client != NULL; client = client->next) {
 		if (client->notify) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d\n", client->fd);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d", client->fd);
 			if (client->next_id == id) {
 				snprintf(string, sizeof(string), "MSGID: %ld\n%.*s\n", client->msg_id, (int)l_buf, buf);
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d[%s]\n", client->fd, string);
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d[%s]", client->fd, string);
 				rc = write(client->fd, string, strlen(string));
 				// rc = write(client->fd, buf, l_buf );
 				client->notify = 0;
 				client->msg_id = 0;
 			}
 		} else {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Ignore Listener fd = %d\n", client->fd);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Ignore Listener fd = %d", client->fd);
 		}
 	}
 

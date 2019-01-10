@@ -115,7 +115,6 @@ char *notifier_cache_get(unsigned long id) {
 	char *str = NULL;
 	notify_cache_t *entry = lookup(id);
 
-	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "searching cache id = %ld", id);
 	if (entry->id == id) {
 		if (asprintf(&str, "%ld %s %c", entry->id, entry->dn, entry->command) < 0)
 			abort();

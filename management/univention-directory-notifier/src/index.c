@@ -28,6 +28,8 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
+#include <univention/debug.h>
+
 #include "index.h"
 
 /*
@@ -50,6 +52,7 @@ FILE *index_open(const char *filename) {
 			return fp;
 		fclose(fp);
 	}
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to open index %s", filename);
 	return NULL;
 }
 
