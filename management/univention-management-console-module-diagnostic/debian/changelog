@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (4.0.1-19) unstable; urgency=medium
+
+  * Bug #47650: Added CLI-tool which executes the diagnostic-checks
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 10 Jan 2019 11:47:02 +0100
+
 univention-management-console-module-diagnostic (4.0.1-18) unstable; urgency=medium
 
   * Bug #48385: fixed typo in 46_kerberos_ddns_update.py
