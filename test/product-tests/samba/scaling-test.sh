@@ -8,7 +8,7 @@ setup_user_and_groups () {
 	#start : 15:08
 	#finish : 20:23
 	#ca. 5 hours
-	START=$(date +%s.%N)
+	START=$(date +%s)
 	for i in $(seq 1 5000); do
 		newindex="$i"
 		udm users/user create --position "cn=users,$ldap_base" --set username="benutzer$newindex" \
@@ -23,9 +23,9 @@ setup_user_and_groups () {
 						--append users="uid=benutzer$newindex,cn=users,$ldap_base"
 		done
 	done
-	END=$(date +%s.%N)
+	END=$(date +%s)
 	DIFF=$(echo "$END - $START" | bc)
-	echo "Group and user creation time: /n" >> timestamps.log
+	echo "Group and user creation time in seconds:" >> timestamps.log
 	echo $DIFF >> timestamps.log
 
 }
@@ -38,10 +38,24 @@ login_user () {
 	. product-tests/samba/utils.sh
 	python shared-utils/ucs-winrm.py domain-join --domain sambatest.local --dnsserver "$UCS" --domainuser "Administrator" --domainpassword $ADMIN_PASSWORD
 	python shared-utils/ucs-winrm.py domain-user-validate-password --domainuser "Administrator" --domainpassword $ADMIN_PASSWORD
-	START=$(date +%s.%N)
-	python shared-utils/ucs-winrm.py run-ps --cmd ipconfig --impersonate --run-as-user "Administrator"
-	END=$(date +%s.%N)
+	START=$(date +%s)
+	time python shared-utils/ucs-winrm.py run-ps --cmd ipconfig --impersonate --run-as-user "Administrator"
+	END=$(date +%s)
 	DIFF=$(echo "$END - $START" | bc)
-	echo "Login time" >> timestamps.log
+	echo "Login time in seconds" >> timestamps.log
 	echo $DIFF >> timestamps.log
+}
+
+search_users_with_client () {
+	set -x
+	set -e
+
+	. product-tests/samba/utils.sh
+	START=$(date +%s)
+	time python shared-utils/ucs-winrm.py search-ad --filter "name=benutzer*" ipconfig --credssp
+	END=$(date +%s)
+	DIFF=$(echo "$END - $START" | bc)
+	echo "Search all users in LDAP time in seconds" >> timestamps.log
+	echo $DIFF >> timestamps.log
+
 }
