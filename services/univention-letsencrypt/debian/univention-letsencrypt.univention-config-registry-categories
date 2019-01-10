@@ -1,4 +1,0 @@
-[univention-letsencrypt]
-name[de]=univention-letsencrypt: univention-letsencrypt Einstellungen
-name[en]=univention-letsencrypt: univention-letsencrypt settings
-icon=service-ldap.gif
