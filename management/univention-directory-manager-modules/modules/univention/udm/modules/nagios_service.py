@@ -62,5 +62,5 @@ class NagiosServiceModule(GenericModule):
 	_udm_object_class = NagiosServiceObject
 
 	class Meta:
-		supported_api_versions = [1]
+		supported_api_versions = [1, 2]
 		suitable_for = ['nagios/service']

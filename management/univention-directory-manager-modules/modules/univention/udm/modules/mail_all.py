@@ -85,5 +85,5 @@ class MailAllModule(GenericModule):
 			raise WrongObjectType(dn=orig_udm_obj.dn, module_name=self.name, univention_object_type=', '.join(uni_obj_type))
 
 	class Meta:
-		supported_api_versions = [1]
+		supported_api_versions = [1, 2]
 		suitable_for = ['mail/*']

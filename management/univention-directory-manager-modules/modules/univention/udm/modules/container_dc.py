@@ -54,5 +54,5 @@ class ContainerDcModule(GenericModule):
 	_udm_object_class = ContainerDcObject
 
 	class Meta:
-		supported_api_versions = [1]
+		supported_api_versions = [1, 2]
 		suitable_for = ['containers/dc']
