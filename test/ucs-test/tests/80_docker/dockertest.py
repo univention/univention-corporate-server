@@ -104,7 +104,7 @@ def tiny_app(name=None, version=None):
 	version = version or '1'
 	app = App(name=name, version=version, build_package=False)
 	app.set_ini_parameter(
-		DockerImage='alpine:3.6',
+		DockerImage='docker-test.software-univention.de/alpine:3.6',
 		DockerScriptInit='/sbin/init',
 		DockerScriptSetup='',
 		DockerScriptStoreData='',
