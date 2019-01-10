@@ -30,6 +30,7 @@
 
 __package__ = ''  # workaround for PEP 366
 
+import listener
 from univention.config_registry import ConfigRegistry
 
 ucr = ConfigRegistry()
@@ -41,4 +42,8 @@ filter = '(|(univentionObjectType=settings/portal)(univentionObjectType=settings
 attributes = []
 
 def handler(dn, new, old):
-	open('/var/cache/univention-portal/refresh', 'w')
+	listener.setuid(0)
+	try:
+		open('/var/cache/univention-portal/refresh_portal', 'w')
+	finally:
+		listener.unsetuid()

@@ -40,18 +40,20 @@ from copy import deepcopy
 import tempfile
 import logging
 
-from ldap.dn import explode_dn
 import requests
 import tornado.ioloop
 import tornado.web
 
-from univention.udm import UDM, NoObject
+from univention.udm import UDM
 from univention.config_registry import ConfigRegistry
 
 ucr = ConfigRegistry()
 ucr.load()
 
 LOG_FILE = '/var/log/univention/portal.log'
+_umc_interface = ucr.get('umc/http/interface', '127.0.0.1')
+_umc_port = int(ucr.get('umc/http/port', 8090))
+UMC_SESSION_URL = 'http://%s:%s/check_session' % (_umc_interface, _umc_port)
 
 class ShortNameFormatter(logging.Formatter):
 	shorten = 'univention.portal'
@@ -95,11 +97,11 @@ class LDAPCache(object):
 	PORTAL_CACHE = '/var/cache/univention-portal/portal.json'
 	GROUP_CACHE = '/var/cache/univention-portal/groups.json'
 	REFRESH_PORTAL_FILE = '/var/cache/univention-portal/refresh_portal'
-	REFRESH_GROUP_FILE = '/var/cache/univention-portal/refresh_group'
+	REFRESH_GROUP_FILE = '/var/cache/univention-portal/refresh_groups'
 
 	def __init__(self):
 		self._cache = None
-		self._groups = {}
+		self._groups = None
 		self._udm = None
 
 	@property
@@ -108,14 +110,18 @@ class LDAPCache(object):
 			self._udm = UDM.machine().version(2)
 		return self._udm
 
-	def load_groups(self):
-		get_logger('cache').info('loading group cache file')
-		try:
-			with open(self.GROUP_CACHE) as fd:
-				self._groups = json.load(fd)
-		except EnvironmentError:
-			get_logger('cache').warn('unable to read group cache file')
-			self._groups = {}
+	def _get_groups(self):
+		if self._groups is None or os.path.exists(self.REFRESH_GROUP_FILE):
+			get_logger('cache').info('loading group cache file')
+			try:
+				with open(self.GROUP_CACHE) as fd:
+					self._groups = json.load(fd)
+			except EnvironmentError:
+				get_logger('cache').warn('unable to read group cache file')
+				self._groups = None
+			if os.path.exists(self.REFRESH_GROUP_FILE):
+				os.unlink(self.REFRESH_GROUP_FILE)
+		return self._groups
 
 	def load(self):
 		get_logger('cache').info('loading cache file')
@@ -124,38 +130,9 @@ class LDAPCache(object):
 
 	def get(self, name):
 		if name == 'groups':
-			return self._get_groups()
+			return self._get_groups() or {}
 		else:
 			return self._get_portal(name)
-
-	def _get_groups(self):
-		if self._groups is None:
-			self.load_groups()
-		if os.path.exists(self.REFRESH_GROUP_FILE):
-			get_logger('cache').info('refreshing groups')
-			working_file = self.REFRESH_GROUP_FILE + '.working'
-			shutil.move(self.REFRESH_GROUP_FILE, working_file)
-			try:
-				with open(working_file) as fd:
-					for group_dn in fd:
-						get_logger('cache').debug('refreshing %s' % group_dn)
-						try:
-							group = self.udm.get('groups/group').get(group_dn)
-						except NoObject:
-							self._groups.pop(group_dn, None)
-						else:
-							self._groups[group.dn] = {
-								'usernames': [explode_dn(dn, True)[0] for dn in group.props.users],
-								'groups': group.props.nestedGroup,
-								}
-				with tempfile.NamedTemporaryFile(delete=False) as fd:
-					json.dump(self._groups, fd, sort_keys=True, indent=4)
-				shutil.move(fd.name, self.GROUP_CACHE)
-			except Exception:
-				with open(self.REFRESH_GROUP_FILE, 'a') as fd:
-					fd.write(open(working_file).read())
-				get_logger('server').exception('Error while refreshing groups')
-		return self._groups
 
 	def _get_portal(self, name):
 		if os.path.exists(self.REFRESH_PORTAL_FILE):
@@ -177,17 +154,22 @@ class LDAPCache(object):
 	def refresh(self):
 		get_logger('cache').info('refreshing cache')
 		ldap_hostdn = ucr.get('ldap/hostdn')
-		localhost = self.udm.obj_by_dn(ldap_hostdn)
-		portal_dn = localhost.props.portal
-		portal = self.udm.get('settings/portal').get(portal_dn)
-		content = {}
-		content['portal'] = self._extract_portal(portal)
-		content['links'] = self._extract_links(portal)
-		content['categories'] = self._extract_categories()
-		content['entries'] = self._extract_entries(portal)
-		with tempfile.NamedTemporaryFile(delete=False) as fd:
-			json.dump(content, fd, sort_keys=True, indent=4)
-		shutil.move(fd.name, self.PORTAL_CACHE)
+		try:
+			localhost = self.udm.obj_by_dn(ldap_hostdn)
+			portal_dn = localhost.props.portal
+			portal = self.udm.get('settings/portal').get(portal_dn)
+			content = {}
+			content['portal'] = self._extract_portal(portal)
+			content['links'] = self._extract_links(portal)
+			content['categories'] = self._extract_categories()
+			content['entries'] = self._extract_entries(portal)
+			with tempfile.NamedTemporaryFile(delete=False) as fd:
+				json.dump(content, fd, sort_keys=True, indent=4)
+		except Exception:
+			get_logger('cache').exception('Error during refresh')
+			# hopefully, we can still work with an older cache?
+		else:
+			shutil.move(fd.name, self.PORTAL_CACHE)
 
 	def _extract_portal(self, portal):
 		ret = {}
@@ -274,6 +256,7 @@ class JsonHandler(tornado.web.RequestHandler):
 		groups = cache.get('groups')
 		actual_content = portal.pop('content')
 		filtered_content = []
+		get_logger('groups').info(repr(groups))
 		for category_dn, entry_dns in actual_content:
 			filter_entry_dns = []
 			for entry_dn in entry_dns:
@@ -281,12 +264,15 @@ class JsonHandler(tornado.web.RequestHandler):
 				if entry is None:
 					continue
 				if entry['allowedGroups']:
+					get_logger('groups').info('%s has groups' % entry_dn)
 					checked_groups = []
 					for group_dn in entry['allowedGroups']:
+						get_logger('groups').info('Checking %s' % group_dn)
 						group = groups.get(group_dn)
 						if group is None:
 							continue
 						if self._recursive_search_in_groups(username, group, groups, checked_groups):
+							get_logger('groups').info('Found %s' % username)
 							break
 					else:
 						continue
@@ -316,9 +302,18 @@ class JsonHandler(tornado.web.RequestHandler):
 		return ret
 
 	def _ask_umc(self, session):
-		response = requests.get('http://localhost:8090/check_session', cookies={'UMCSessionId': session})
-		data = response.json()
-		return data['username']
+		try:
+			response = requests.get(UMC_SESSION_URL, cookies={'UMCSessionId': session})
+			data = response.json()
+			username = data['username']
+		except requests.ConnectionError as exc:
+			get_logger('user').error('connection failed: %s' % exc)
+		except ValueError:
+			get_logger('user').error('malformed answer!')
+		except KeyError:
+			get_logger('user').warn('session unknown!')
+		else:
+			return username
 
 	def _get_username(self, session):
 		if session is None:
