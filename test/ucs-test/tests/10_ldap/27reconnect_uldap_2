@@ -81,7 +81,12 @@ def main():
 					except UNAVAILABLE as exc:
 						# ignore ldap.UNAVAILABLE, slapd is started but database backend not yet available
 						# python-ldap reconnect does not handle this situation
+						print('ignore UNAVAILABLE')
 						pass
+					except univention.admin.uexceptions.ldapError as exc:
+						if 'Server is unavailable'.lower() not in str(exc).lower():
+							raise
+						print('ignore univention.admin.uexceptions.ldapError Server is unavailable')
 				print('LDAP search finished successfully {} times.'.format(count))
 			except Exception as exc:
 				print('LDAP modify failed after succeeding {} times.'.format(count))
@@ -105,6 +110,10 @@ def main():
 						# ignore ldap.UNAVAILABLE, slapd is started but database backend not yet available
 						# python-ldap reconnect does not handle this situation
 						pass
+					except univention.admin.uexceptions.ldapError as exc:
+						if 'Server is unavailable'.lower() not in str(exc).lower():
+							raise
+						print('ignore univention.admin.uexceptions.ldapError Server is unavailable')
 				print('LDAP modify finished successfully {} times.'.format(count))
 			except (INSUFFICIENT_ACCESS, univention.admin.uexceptions.permissionDenied):
 				pass  # On DC Slaves no objects can be modified
