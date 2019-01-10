@@ -53,5 +53,5 @@ class ContainerOuModule(ContainerCnModule):
 	_udm_object_class = ContainerOuObject
 
 	class Meta:
-		supported_api_versions = [1]
+		supported_api_versions = [1, 2]
 		suitable_for = ['containers/ou']

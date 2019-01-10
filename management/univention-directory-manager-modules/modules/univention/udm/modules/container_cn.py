@@ -63,5 +63,5 @@ class ContainerCnModule(GenericModule):
 	_udm_object_class = ContainerCnObject
 
 	class Meta:
-		supported_api_versions = [1]
+		supported_api_versions = [1, 2]
 		suitable_for = ['containers/cn']

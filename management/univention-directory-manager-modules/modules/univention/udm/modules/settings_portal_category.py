@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018-2019 Univention GmbH
+# Copyright 2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,30 +27,31 @@
 # <http://www.gnu.org/licenses/>.
 
 """
-Module and object specific for "policies/registry" UDM module.
+Module and object specific for "settings/portal_category" UDM module.
 """
 
 from __future__ import absolute_import, unicode_literals
 from ..encoders import ListOfListOflTextToDictPropertyEncoder
 from .generic import GenericModule, GenericObject, GenericObjectProperties
 
-class PoliciesRegistryObjectProperties(GenericObjectProperties):
-	"""policies/registry UDM properties."""
+
+class SettingsPortalCategoryObjectProperties(GenericObjectProperties):
+	"""settings/portal_category UDM properties."""
 
 	_encoders = {
-		'registry': ListOfListOflTextToDictPropertyEncoder,
+		'displayName': ListOfListOflTextToDictPropertyEncoder,
 	}
 
 
-class PoliciesRegistryObject(GenericObject):
-	"""Better representation of policies/registry properties."""
-	udm_prop_class = PoliciesRegistryObjectProperties
+class SettingsPortalCategoryObject(GenericObject):
+	"""Better representation of settings/portal_category properties."""
+	udm_prop_class = SettingsPortalCategoryObjectProperties
 
 
-class PoliciesRegistryModule(GenericModule):
-	"""PoliciesRegistryObject factory"""
-	_udm_object_class = PoliciesRegistryObject
+class SettingsPortalCategoryModule(GenericModule):
+	"""SettingsPortalCategoryObject factory"""
+	_udm_object_class = SettingsPortalCategoryObject
 
 	class Meta:
-		supported_api_versions = [1, 2]
-		suitable_for = ['policies/registry']
+		supported_api_versions = [2]
+		suitable_for = ['settings/portal_category']
