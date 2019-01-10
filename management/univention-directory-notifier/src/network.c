@@ -92,11 +92,10 @@ int network_create_socket(int port) {
 int network_client_add(int fd, callback_handler handler, int notify) {
 	NetworkClient_t *client;
 
-	client = malloc(sizeof(NetworkClient_t));
+	client = calloc(1, sizeof(NetworkClient_t));
 	client->fd = fd;
 	client->handler = handler;
 	client->notify = notify;
-	client->next_id = 0;
 	client->next = network_client_first;
 
 	network_client_first = client;
