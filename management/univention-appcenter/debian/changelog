@@ -1,3 +1,9 @@
+univention-appcenter (8.0.0-3) unstable; urgency=medium
+
+  * Bug #48343: Renamed diary_id -> context_id
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 10 Jan 2019 21:54:00 +0100
+
 univention-appcenter (8.0.0-2) unstable; urgency=medium
 
   * Bug #48343: Write Admin Diary Entry when installing Apps
