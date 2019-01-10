@@ -71,9 +71,9 @@ def choose_tests(tests, plugins):
 
 def parsing():
 	parser = argparse.ArgumentParser(description='Executes the diagnostic module checks')
-	parser.add_argument("-t", nargs='*', type=str, help='You have to choose tests to run by using "{-t <testname>}" or write "-t all" to execute all tests')
-	parser.add_argument("--bindpwdfile", type=str, help='Path to a file that contains a password')
-	parser.add_argument("--username", type=str, help='Username with which you want to authenticate')
+	parser.add_argument("-t", nargs='*', type=str, help='Choose tests to run by using "{-t <testname>}" or "-t all" to execute all diagnostic checks')
+	parser.add_argument("--bindpwdfile", type=str, help='Path to a file that contains your password')
+	parser.add_argument("--username", type=str, help='Domain Admin username for Authentication')
 	args = parser.parse_args()
 	return args.t, args.bindpwdfile, args.username
 
