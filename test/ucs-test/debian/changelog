@@ -1,3 +1,10 @@
+ucs-test (9.0.0-6) unstable; urgency=medium
+
+  * Bug #46316: 59_udm/51_udm_api_users.py check lower() maildomain,
+    mailPrimaryAddress is lower case after s4connector
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Jan 2019 11:49:52 +0100
+
 ucs-test (9.0.0-5) unstable; urgency=medium
 
   * Bug #40188: 84_crypto/01_openssl_protocol_version fails on backup
