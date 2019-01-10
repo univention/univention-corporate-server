@@ -44,8 +44,9 @@ set_admin_diary_backend() {
 	local cn_list
 	local fqdn_list
 
-	ldif=$(univention-ldapsearch univentionService="Admin Diary Backend" cn)
+	ldif=$(univention-ldapsearch -LLL -o ldif-wrap=no univentionService="Admin Diary Backend" cn)
 	cn_list=( "$(sed -n 's/^cn: //p' <<<"$ldif")" )
+	[ -n "$cn_list" ] || return
 	fqdn_list=( "${cn_list[@]/%/".$domainname"}" )
 
 	univention-config-registry set \

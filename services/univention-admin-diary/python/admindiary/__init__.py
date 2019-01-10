@@ -33,6 +33,11 @@ from datetime import datetime
 import logging
 import json
 
+from univention.config_registry import ConfigRegistry
+
+ucr = ConfigRegistry()
+ucr.load()
+
 LOG_FILE = '/var/log/univention/admindiary.log'
 
 class _ShortNameFormatter(logging.Formatter):
@@ -54,7 +59,7 @@ def _setup_logger():
 		handler = logging.FileHandler(LOG_FILE)
 		handler.setFormatter(formatter)
 		base_logger.addHandler(handler)
-		base_logger.setLevel(logging.DEBUG)
+		base_logger.setLevel(logging.WARNING)
 		_setup_logger._setup = True
 	return base_logger
 _setup_logger._setup = False
@@ -62,18 +67,26 @@ _setup_logger._setup = False
 
 def get_logger(name):
 	base_logger = _setup_logger()
-	return base_logger.getChild(name)
+	logger = base_logger.getChild(name)
+	log_level = ucr.get('admin/diary/logging/%s' % name)
+	if log_level:
+		log_level = logging.getLevelName(log_level)
+		if isinstance(log_level, int):
+			logger.setLevel(log_level)
+		else:
+			logger.warn('Cannot use log level %s. Call ucr set admin/diary/logging/%s=DEBUG (for example)' % (log_level, name))
+	return logger
 
 
 class DiaryEntry(object):
-	def __init__(self, username, message, args, tags, diary_id, event_name):
+	def __init__(self, username, message, args, tags, context_id, event_name):
 		self.username = username
 		self.hostname = getfqdn()
 		self.message = message
 		self.args = [str(arg) for arg in args]
-		self.issued = datetime.now()
+		self.timestamp = datetime.now()
 		self.tags = tags
-		self.diary_id = diary_id
+		self.context_id = context_id
 		self.event_name = event_name
 
 	def assert_types(self):
@@ -85,11 +98,11 @@ class DiaryEntry(object):
 			raise TypeError('Message has to be "string"')
 		if not isinstance(self.args, list) or not all(isinstance(arg, basestring) for arg in self.args):
 			raise TypeError('Args have to be "list of string"')
-		if not isinstance(self.issued, datetime):
-			raise TypeError('Issued has to be "datetime"')
+		if not isinstance(self.timestamp, datetime):
+			raise TypeError('timestamp has to be "datetime"')
 		if not isinstance(self.tags, list) or not all(isinstance(tag, basestring) for tag in self.tags):
 			raise TypeError('Tags have to be "list of string"')
-		if not isinstance(self.diary_id, basestring):
+		if not isinstance(self.context_id, basestring):
 			raise TypeError('Diary ID has to be "string"')
 		if not isinstance(self.event_name, basestring):
 			raise TypeError('Event name has to be "string"')
@@ -100,9 +113,9 @@ class DiaryEntry(object):
 			'hostname': self.hostname,
 			'message': self.message,
 			'args': self.args,
-			'issued': self.issued.strftime('%Y-%m-%d %H:%M:%S%z'),
+			'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S%z'),
 			'tags': self.tags,
-			'diary_id': self.diary_id,
+			'context_id': self.context_id,
 			'event': self.event_name,
 			}
 		return json.dumps(attrs)
@@ -110,8 +123,8 @@ class DiaryEntry(object):
 	@classmethod
 	def from_json(cls, body):
 		json_body = json.loads(body)
-		entry = cls(json_body['username'], json_body['message'], json_body['args'], json_body['tags'], json_body['diary_id'], json_body['event'])
-		entry.issued = datetime.strptime(json_body['issued'], '%Y-%m-%d %H:%M:%S')
+		entry = cls(json_body['username'], json_body['message'], json_body['args'], json_body['tags'], json_body['context_id'], json_body['event'])
+		entry.timestamp = datetime.strptime(json_body['timestamp'], '%Y-%m-%d %H:%M:%S')
 		entry.hostname = json_body['hostname']
 		entry.assert_types()
 		return entry

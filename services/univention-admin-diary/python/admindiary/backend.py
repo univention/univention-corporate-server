@@ -42,15 +42,16 @@ ucr.load()
 password = open('/etc/admin-diary.secret').read().strip()
 
 dbms = ucr.get('admin/diary/dbms')
+dbhost = ucr.get('admin/diary/dbhost', 'localhost')
 
 get_logger = partial(get_logger, 'backend')
 
 @contextmanager
 def connection(module):
 	if dbms == 'mysql':
-		conn = module.connect(db='admindiary', user='admindiary', host='localhost', passwd=password)
+		conn = module.connect(db='admindiary', user='admindiary', host=dbhost, passwd=password)
 	elif dbms == 'postgresql':
-		conn = module.connect(dbname='admindiary', user='admindiary', host='localhost', password=password)
+		conn = module.connect(dbname='admindiary', user='admindiary', host=dbhost, password=password)
 	yield conn
 	conn.commit()
 	conn.close()
@@ -68,12 +69,12 @@ if ucr.get('admin/diary/dbms') == 'postgresql':
 
 	def _postgresql_add(entry):
 		with cursor(psycopg2) as cur:
-			cur.execute("INSERT INTO entries (username, hostname, message, args, issued, tags, diary_id, event_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.args, entry.issued, entry.tags, entry.diary_id, entry.event_name))
-		get_logger().info('Successfully added %s to postgresql. (%s)' % (entry.diary_id, entry.event_name))
+			cur.execute("INSERT INTO entries (username, hostname, message, args, timestamp, tags, context_id, event_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.args, entry.timestamp, entry.tags, entry.context_id, entry.event_name))
+		get_logger().info('Successfully added %s to postgresql. (%s)' % (entry.context_id, entry.event_name))
 
 	def _postgresql_query():
 		with cursor(psycopg2) as cur:
-			args = ['id', 'username', 'hostname', 'message', 'args', 'issued', 'tags', 'diary_id', 'event_name']
+			args = ['id', 'username', 'hostname', 'message', 'args', 'timestamp', 'tags', 'context_id', 'event_name']
 			cur.execute("SELECT %s FROM entries" % ', '.join(args))
 			rows = cur.fetchall()
 			res = [dict(zip(args, row)) for row in rows]
@@ -90,17 +91,17 @@ elif ucr.get('admin/diary/dbms') == 'mysql':
 
 	def _mysql_add(entry):
 		with cursor(MySQLdb) as cur:
-			cur.execute("INSERT INTO entries (username, hostname, message, issued, diary_id, event_name) VALUES (%s, %s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.issued, entry.diary_id, entry.event_name))
+			cur.execute("INSERT INTO entries (username, hostname, message, timestamp, context_id, event_name) VALUES (%s, %s, %s, %s, %s, %s)", (entry.username, entry.hostname, entry.message, entry.timestamp, entry.context_id, entry.event_name))
 			entry_id = cur.lastrowid
 			for arg in entry.args:
 				cur.execute("INSERT INTO arguments (log_entry_id, arg) VALUES (%s, %s)", (entry_id, arg))
 			for tag in entry.tags:
 				cur.execute("INSERT INTO tags (log_entry_id, tag) VALUES (%s, %s)", (entry_id, tag))
-		get_logger().info('Successfully added %s to mysql. (%s)' % (entry.diary_id, entry.event_name))
+		get_logger().info('Successfully added %s to mysql. (%s)' % (entry.context_id, entry.event_name))
 
 	def _mysql_query():
 		with cursor(MySQLdb) as cur:
-			args = ['id', 'username', 'hostname', 'message', 'issued', 'diary_id', 'event_name']
+			args = ['id', 'username', 'hostname', 'message', 'timestamp', 'context_id', 'event_name']
 			cur.execute("SELECT %s FROM entries" % ', '.join(args))
 			rows = cur.fetchall()
 			res = [dict(zip(args, row)) for row in rows]

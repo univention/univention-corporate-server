@@ -46,11 +46,15 @@ class Event(object):
 		self.tags = tags or []
 		self._all_events[self.name] = self
 
-USER_CREATED = Event('USER_CREATED', 'User %s created', ['username'])
+def _(msg):
+	"""dummy for xgettext"""
+	return msg
 
-APP_ACTION_START = Event('APP_ACTION_START', 'App %s: Starting to %s', ['app', 'action'])
-APP_ACTION_SUCCESS = Event('APP_ACTION_SUCCESS', 'App %s (%s): Success', ['app', 'action'])
-APP_ACTION_FAILURE = Event('APP_ACTION_FAILURE', 'App %s (%s): Failure. Error %s', ['app', 'action', 'error_code'], tags=['error'])
+USER_CREATED = Event('USER_CREATED', _('User %s created'), ['username'])
 
-SERVER_PASSWORD_CHANGED = Event('SERVER_PASSWORD_CHANGED', 'Machine account password changed successfully')
-SERVER_PASSWORD_CHANGED_FAILED = Event('SERVER_PASSWORD_CHANGED_FAILED', 'Machine account password change failed!', tags=['error'])
+APP_ACTION_START = Event('APP_ACTION_START', _('App %s: Start of %s'), ['app', 'action'])
+APP_ACTION_SUCCESS = Event('APP_ACTION_SUCCESS', _('App %s (%s): Success'), ['app', 'action'])
+APP_ACTION_FAILURE = Event('APP_ACTION_FAILURE', _('App %s (%s): Failure. Error %s'), ['app', 'action', 'error_code'], tags=['error'])
+
+SERVER_PASSWORD_CHANGED = Event('SERVER_PASSWORD_CHANGED', _('Machine account password changed successfully'))
+SERVER_PASSWORD_CHANGED_FAILED = Event('SERVER_PASSWORD_CHANGED_FAILED', _('Machine account password change failed'), tags=['error'])

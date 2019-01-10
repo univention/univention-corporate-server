@@ -39,7 +39,7 @@ from functools import partial, wraps
 get_logger = partial(get_logger, 'client')
 
 
-def safe(f):
+def exceptionlogging(f):
 	@wraps(f)
 	def wrapper(*args, **kwds):
 		try:
@@ -63,41 +63,41 @@ class RsyslogEmitter(object):
 emitter = RsyslogEmitter()
 
 
-@safe
-def add_comment(message, diary_id, username=None):
+@exceptionlogging
+def add_comment(message, context_id, username=None):
 	event = Event('COMMENT', message)
-	return write_event(event, username=username, diary_id=diary_id)
+	return write_event(event, username=username, context_id=context_id)
 
 
-@safe
-def write_event(event, args=None, username=None, diary_id=None):
+@exceptionlogging
+def write_event(event, args=None, username=None, context_id=None):
 	args = args or []
 	if not isinstance(args, (list, tuple)):
 		raise TypeError('"args" must be a list')
 	if len(args) != len(event.args):
 		raise ValueError('Writing "%s" needs %d argument(s) (%s). %d given' % (event.message, len(event.args), ', '.join(event.args), len(args)))
-	return write(event.message, args, username, event.tags, diary_id, event.name)
+	return write(event.message, args, username, event.tags, context_id, event.name)
 
 
-@safe
-def write(message, args=None, username=None, tags=None, diary_id=None, event_name=None):
+@exceptionlogging
+def write(message, args=None, username=None, tags=None, context_id=None, event_name=None):
 	if username is None:
 		username = getuser()
 	if args is None:
 		args = []
 	if tags is None:
 		tags = []
-	if diary_id is None:
-		diary_id = str(uuid.uuid4())
+	if context_id is None:
+		context_id = str(uuid.uuid4())
 	if event_name is None:
 		event_name = 'CUSTOM'
-	entry = DiaryEntry(username, message, args, tags, diary_id, event_name)
+	entry = DiaryEntry(username, message, args, tags, context_id, event_name)
 	return write_entry(entry)
 
 
-@safe
+@exceptionlogging
 def write_entry(entry):
 	body = entry.to_json()
 	emitter.emit(body)
-	get_logger().info('Successfully wrote %s. (%s)' % (entry.diary_id, entry.event_name))
-	return entry.diary_id
+	get_logger().info('Successfully wrote %s. (%s)' % (entry.context_id, entry.event_name))
+	return entry.context_id
