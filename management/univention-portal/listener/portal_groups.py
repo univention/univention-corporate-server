@@ -47,8 +47,8 @@ class PortalGroups(ListenerModuleHandler):
 	def create(self, dn, new):
 		groups = self._load()
 		groups[dn] = {
-			'usernames': [username for username in new.get('memberUid', []) if not username.endswith('$')],
-			'groups': [member for member in new.get('uniqueMember', []) if member.startswith('cn=') and not ('%s$' % explode_dn(member, True)[0]) in new.get('memberUid', [])],
+			'usernames': [username.lower() for username in new.get('memberUid', []) if not username.endswith('$')],
+			'groups': [member.lower() for member in new.get('uniqueMember', []) if member.startswith('cn=') and not ('%s$' % explode_dn(member, True)[0]) in new.get('memberUid', [])],
 		}
 		self._save(groups)
 		self._refresh_cache()
@@ -57,8 +57,8 @@ class PortalGroups(ListenerModuleHandler):
 		groups = self._load()
 		groups.pop(old_dn, None)
 		groups[dn] = {
-			'usernames': [username for username in new.get('memberUid', []) if not username.endswith('$')],
-			'groups': [member for member in new.get('uniqueMember', []) if member.startswith('cn=') and not ('%s$' % explode_dn(member, True)[0]) in new.get('memberUid', [])],
+			'usernames': [username.lower() for username in new.get('memberUid', []) if not username.endswith('$')],
+			'groups': [member.lower() for member in new.get('uniqueMember', []) if member.startswith('cn=') and not ('%s$' % explode_dn(member, True)[0]) in new.get('memberUid', [])],
 		}
 		self._save(groups)
 		self._refresh_cache()
