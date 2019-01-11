@@ -16,6 +16,7 @@ Depends: univention-config,
  freeradius-ldap,
  freeradius-utils,
  univention-ssl,
- univention-config
+ univention-config,
+ python-passlib
 Description: freeradius 802.1X integration package for Univention Corporate Server
  Sets up a freeradius RADIUS server to support 802.1X authenticators
