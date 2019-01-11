@@ -61,6 +61,9 @@ typedef struct {
 	FILE *l_tf;
 } Notify_t;
 
+extern NotifyId SCHEMA_ID;
+extern NotifyId_t notify_last_id;
+
 void notify_init(Notify_t *notify);
 int notify_transaction_get_last_notify_id(Notify_t *notify, NotifyId_t *notify_id);
 NotifyEntry_t *notify_transcation_get_dn(NotifyId last_known_id);

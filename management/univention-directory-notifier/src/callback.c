@@ -51,10 +51,6 @@ static int VERSION = 2;
 
 extern fd_set readfds;
 
-extern NotifyId_t notify_last_id;
-
-extern NotifyId SCHEMA_ID;
-
 /*
  * handle data from network.
  * :param client: The per-client object.

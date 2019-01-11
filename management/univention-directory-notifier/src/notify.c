@@ -47,12 +47,11 @@
 
 #define MAX_LINE 4096
 
-extern NotifyId_t notify_last_id;
+NotifyId SCHEMA_ID;
+NotifyId_t notify_last_id;
 extern Notify_t notify;
 extern long long notifier_lock_count;
 extern long long notifier_lock_time;
-
-extern NotifyId SCHEMA_ID;
 
 /*
  * Open file (and its corresponding locking file).
