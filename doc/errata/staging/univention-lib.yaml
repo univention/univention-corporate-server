@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [3]
+scope: ucs_4.3-0-errata4.3-3
+src: univention-lib
+fix: 7.0.0-20A~4.3.0.201901101611
+desc: |
+ This update addresses the following issue(s):
+ * Removed unnecessary echo-line in backup.sh
+bug: [48014]
