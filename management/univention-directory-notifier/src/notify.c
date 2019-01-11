@@ -39,6 +39,10 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <pthread.h>
+#include <time.h>
+#include <ldap.h>
+#include <sasl/sasl.h>
+#include <univention/debug.h>
 
 #include <univention/debug.h>
 #include "notify.h"
@@ -294,6 +298,162 @@ error:
 	fclose_lock(FILE_NAME_TF, &notify->tf, &notify->l_tf);
 	fclose_lock(FILE_NAME_ORF, &notify->orf, &notify->l_orf);
 	fclose_lock(FILE_NAME_SAVE, &notify->save, &notify->l_save);
+}
+
+/*
+ * Callback for interactive SASL bind for mechanism "EXTERNAL".
+ * :param ld: The LDAP connection.
+ * :param flags: SASL flags.
+ * :param default: Opaque object for defaults.
+ * :param in: SASL interaction structure.
+ * :returns: error status.
+ * <https://adam.younglogic.com/2012/02/exteranl-sasl/>
+ */
+static int sasl_proc(LDAP *ld, unsigned flags, void *defaults, void *in) {
+	sasl_interact_t *interact = in;
+	const char *dflt = interact->defresult;
+	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "SASL: id=%ld chal=%s prom=%s def=%s", interact->id, interact->challenge, interact->prompt, interact->defresult);
+	switch (interact->id) {
+	case SASL_CB_USER:
+		interact->result = "";
+		interact->len = 0;
+		return LDAP_SUCCESS;
+	default:
+		interact->result = (dflt && *dflt) ? dflt : "";
+		interact->len = strlen(interact->result);
+		return LDAP_INAPPROPRIATE_AUTH;
+	}
+}
+
+/*
+ * Write entries to cn=translog.
+ * :param trans: Linked list of entries to write.
+ */
+static void notify_dump_to_ldap(NotifyEntry_t *trans) {
+	static LDAP *ld = NULL;
+	LDAPControl **serverctrls = NULL;
+	LDAPControl **clientctrls = NULL;
+	int rc;
+	struct sigaction oldact, act = {
+		.sa_handler = SIG_IGN,
+		.sa_flags = 0,
+	};
+
+	if (trans == NULL)
+		return;
+
+	// libldap uses liblber uses write() on the SOCKET to slapd, which raises SIGPIPE when slapd closes the socket due to a timeout.
+	sigaction(SIGPIPE, &act, &oldact);
+
+reopen:
+	if (!ld) {
+		if ((rc = ldap_initialize(&ld, "ldapi:///")) != LDAP_SUCCESS) {
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "ldap_initialize(): %s", ldap_err2string(rc));
+			abort();
+		}
+
+		unsigned long version = LDAP_VERSION3;
+		if ((rc = ldap_set_option(ld, LDAP_OPT_PROTOCOL_VERSION, &version)) != LDAP_SUCCESS) {
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "ldap_set_option(): %s", ldap_err2string(rc));
+			abort();
+		}
+
+		const char *who = NULL;
+		const char mechanism[] = "EXTERNAL";
+		unsigned flags = LDAP_SASL_QUIET;
+		void *defaults = NULL;
+		if ((rc = ldap_sasl_interactive_bind_s(ld, who, mechanism, serverctrls, clientctrls, flags, sasl_proc, defaults)) != LDAP_SUCCESS) {
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "ldap_sasl_interactive_bind_s(): %s", ldap_err2string(rc));
+			abort();
+		}
+	}
+
+	for (; trans != NULL; trans = trans->next) {
+		if (!trans->dn)
+			continue;
+		if (!trans->notify_id.id)
+			continue;
+
+		char dn[44];  // strlen("reqSession=%ld,cn=translog") + strlen(ULONG_MAX)
+		snprintf(dn, sizeof(dn), "reqSession=%ld,cn=translog", trans->notify_id.id);
+
+		char *oc_values[] = { "auditObject", NULL };
+		LDAPMod oc_mod = {
+			.mod_op = LDAP_MOD_ADD,
+			.mod_type = "objectClass",
+			.mod_values = oc_values,
+		};
+
+		char start[16]; // strlen('YYYYmmddHHMMSSZ')
+		time_t t = time(NULL);
+		struct tm tm ;
+		gmtime_r(&t, &tm);
+		strftime(start, sizeof(start), "%Y%m%d%H%M%SZ", &tm);
+		char *start_values[] = { start, NULL };
+		LDAPMod time_mod = {
+			.mod_op = LDAP_MOD_ADD,
+			.mod_type = "reqStart",
+			.mod_values = start_values,
+		};
+
+		char id[21];  // strlen(ULONG_MAX)
+		snprintf(id, sizeof(id), "%ld", trans->notify_id.id);
+		char *index_values[] = { id, NULL };
+		LDAPMod index_mod = {
+			.mod_op = LDAP_MOD_ADD,
+			.mod_type = "reqSession",
+			.mod_values = index_values,
+		};
+
+		char *dn_values[] = { trans->dn, NULL };
+		LDAPMod dn_mod = {
+			.mod_op = LDAP_MOD_ADD,
+			.mod_type = "reqDN",
+			.mod_values = dn_values,
+		};
+
+		char cmd[2];
+		cmd[0] = trans->command;
+		cmd[1] = '\0';
+		char *cmd_values[] = { cmd, NULL };
+		LDAPMod cmd_mod = {
+			.mod_op = LDAP_MOD_ADD,
+			.mod_type = "reqType",
+			.mod_values = cmd_values,
+		};
+
+		LDAPMod *attrs[] = {
+			&oc_mod,
+			&time_mod,
+			&index_mod,
+			&dn_mod,
+			&cmd_mod,
+			NULL
+		};
+
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LDIF dn: %s", dn);
+		for (rc = 0; attrs[rc]; rc++)
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LDIF %s: %s", attrs[rc]->mod_type, attrs[rc]->mod_values[0]);
+
+		rc = ldap_add_ext_s(ld, dn, attrs, serverctrls, clientctrls);
+		switch (rc) {
+			case LDAP_SUCCESS:
+				break;
+			case LDAP_SERVER_DOWN:
+				if ((rc = ldap_unbind_ext_s(ld, serverctrls, clientctrls)) != LDAP_SUCCESS)
+					univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "%ld ldap_unbind_ext_s(): %s", trans->notify_id.id, ldap_err2string(rc));
+				ld = NULL;
+				goto reopen;
+			case LDAP_ALREADY_EXISTS:
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "%ld ldap_add() already exists", trans->notify_id.id);
+				break;
+			default:
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%ld ldap_add(): %s", trans->notify_id.id, ldap_err2string(rc));
+				abort();
+		}
+	}
+
+	sigaction(SIGPIPE, &oldact, NULL);
 }
 
 void notify_init ( Notify_t *notify )
@@ -800,6 +960,7 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 	if ( (nread = fread( buf, sizeof(char), stat_buf.st_size, file)) != 0 ) {
 		split_transaction_buffer ( entry, buf, nread);
 		notify_dump_to_files(&notify, entry);
+		notify_dump_to_ldap(entry);
 		fseek(file, 0, SEEK_SET);
 		ftruncate(fileno(file), 0);
 
