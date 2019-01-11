@@ -261,6 +261,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             try:
                 pkg = self.apt[dep]
                 cand = pkg.candidate
+                if not cand:
+                    raise LookupError(dep)
             except LookupError as ex:
                 self.debug('not found %s: %s' % (dep, ex))
                 continue

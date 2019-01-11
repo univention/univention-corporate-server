@@ -1,3 +1,9 @@
+ucslint (7.0.0-4) unstable; urgency=low
+
+  * Bug #37203: handle missing package
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 11 Jan 2019 10:42:16 +0100
+
 ucslint (7.0.0-3) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
