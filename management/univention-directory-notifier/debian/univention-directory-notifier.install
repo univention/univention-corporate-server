@@ -3,3 +3,4 @@ src/univention-directory-notifier usr/sbin/
 15univention-directory-notifier-post.inst usr/lib/univention-install/
 univention-replicate-one usr/sbin/
 etc/network/if-post-down.d/univention-directory-notifier etc/network/if-post-down.d/
+univention-translog	usr/share/univention-directory-notifier/
