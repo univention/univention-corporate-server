@@ -6,5 +6,5 @@ src: univention-quota
 fix: 12.0.0-5A~4.3.0.201901101646
 desc: |
  This update addresses the following issue(s):
- * Quotas in xfs file systems get shown again
+ * Quotas on xfs file systems are shown again on the UMC.
 bug: [48315]
