@@ -5,3 +5,4 @@ rm_conffile /etc/univention/templates/files/etc/freeradius/modules/mschap 5.0.0~
 rm_conffile /etc/univention/templates/files/etc/freeradius/radiusd.conf 5.0.0~
 rm_conffile /etc/univention/templates/files/etc/freeradius/sites-available/default 5.0.0~
 rm_conffile /etc/univention/templates/files/etc/freeradius/sites-available/inner-tunnel 5.0.0~
+rm_conffile /etc/freeradius/clients.conf.example 6.0.0~
