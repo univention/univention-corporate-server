@@ -6,5 +6,5 @@ src: univention-lib
 fix: 7.0.0-20A~4.3.0.201901101611
 desc: |
  This update addresses the following issue(s):
- * Removed unnecessary echo-line in backup.sh
+ * Do not send cron mails for a successful ldap-backup cron job.
 bug: [48014]
