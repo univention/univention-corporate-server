@@ -1,3 +1,9 @@
+ucslint (8.0.0-3) unstable; urgency=low
+
+  * Bug #37203: handle missing package
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 11 Jan 2019 10:42:16 +0100
+
 ucslint (8.0.0-2) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support 
