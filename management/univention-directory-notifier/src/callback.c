@@ -259,6 +259,25 @@ int data_on_connection(int fd, callback_remove_handler remove)
 			p+=strlen(network_line)+1;
 			msg_id = UINT32_MAX;
 
+		} else if (!strncmp(p, "WAIT_ID ", 8) && msg_id != UINT32_MAX && version >= PROTOCOL_3) {
+			char *head = network_line, *end;
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "RECV: WAIT_ID");
+			id = strtoul(head + 8, &end, 10);
+			if (!head[8] || *end)
+				goto failed;
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "id: %ld", id);
+
+			if (id <= notify_last_id.id) {
+				snprintf(string, sizeof(string), "MSGID: %ld\n%ld\n\n", msg_id, notify_last_id.id);
+				write(fd, string, strlen(string));
+			} else {
+				/* set wanted id */
+				network_client_set_next_id(fd, id);
+				network_client_set_msg_id(fd, msg_id);
+			}
+
+			p += strlen(network_line) + 1;
+			msg_id = UINT32_MAX;
 
 		} else if ( !strncmp(network_line, "GET_ID", strlen("GET_ID")) && msg_id != UINT32_MAX  && network_client_get_version(fd) > 0) {
 
