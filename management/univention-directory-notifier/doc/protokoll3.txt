@@ -1,0 +1,85 @@
+Univention Directory Notifier Protocol Version 3
+================================================
+
+Convention
+----------
+Kommunikation von Listener zu Notifier: >>>
+Kommunikation von Notifier zu Listener: <<<
+
+Description
+-----------
+Listener gibt Protokoll-Version und unterstuetzte Features bekannt:
+>>> Version: 3
+>>> Capabilities: STARTTLS
+>>>
+
+Ebenso der Notifier:
+<<< Version: 3
+<<< Capabilities: STARTTLS
+>>>
+
+Das Protokoll ist asynchron. Jede Anfrage wird mit einer eindeutigen
+Nachrichten ID (MSGID) versehen. Anworten sind immer an eine bestimmte
+MSGID Adressiert. Anfragen muesste nicht in der gleiche Reihenfolge
+beantwortet werden, in der sie gestellt werden.
+
+Wait until transaction 9 has appened
+>>> MSGID: 1
+>>> WAIT_ID 9
+>>>
+Notifier blockt bis eine neue Transaktion verfuegbar ist:
+<<< MSGID: 1
+<<< 9
+<<<
+
+Abfrage des Schemas mit der letzten Schema Transaktions ID 5:
+>>> MSGID: 7
+>>> GET_SCHEMA_DN 5
+>>>
+Notifier blockt nicht. Falls eine Schema-Aenderung vorliegt:
+<<< MSGID: 7
+<<< 6 cn=Subschema
+<<<
+Andernfalls:
+<<< MSGID: 7
+<<<
+
+Abfrage der aktuellen Transaktions ID:
+>>> MSGID: 19
+>>> GET_ID
+>>>
+<<< MSGID: 19
+<<< 11
+<<<
+
+Abfrage der aktuellen Schema Transaktions ID:
+>>> MSGID: 78
+>>> GET_SCHEMA_ID
+>>>
+<<< MSGID: 78
+<<< 6
+<<<
+
+No-op:
+>>> MSGID: 80
+>>> ALIVE
+>>>
+<<< MSGID: 80
+<<< OKAY
+<<<
+
+Flaws
+-----
+* The protocol is not encrypted.
+
+* The protocol does not require authentication.
+  Anybody can connect and ask for transactions.
+  This can also be used for a denial-of-service attack:
+  By default only the last 1000 transactions are kept in memory.
+  Everything else will generate additional IO requests.
+  The implementation to lookup transactions is very inefficient:
+  It reads one character at a time from the end of the file.
+
+* Broken network boundaries.
+  TCP is a stream connection, which does *not* honour message boundaries.
+  A request must therefore fit into a single packet.

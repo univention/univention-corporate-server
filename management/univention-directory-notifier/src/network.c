@@ -331,7 +331,17 @@ int network_client_all_write(NotifyId id, char *buf, size_t l_buf) {
 		network_client_dump1(client, UV_DEBUG_ALL);
 		if (client->notify) {
 			if (client->next_id == id) {
-				snprintf(string, sizeof(string), "MSGID: %ld\n%.*s\n", client->msg_id, (int)l_buf, buf);
+				switch (client->version) {
+					case PROTOCOL_2:
+						snprintf(string, sizeof(string), "MSGID: %ld\n%.*s\n", client->msg_id, (int)l_buf, buf);
+						break;
+					case PROTOCOL_3:
+						snprintf(string, sizeof(string), "MSGID: %ld\n%ld\n\n", client->msg_id, notify_last_id.id);
+						break;
+					default:
+						univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "v%d not implemented fd=%d", client->version, client->fd);
+						continue;
+				}
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Wrote to Listener fd = %d[%s]", client->fd, string);
 				rc = write(client->fd, string, strlen(string));
 				// rc = write(client->fd, buf, l_buf );
